@@ -21,7 +21,6 @@ Set-AutologgerConfig -Name "SQMLogger" -Start 0
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -Value 1 -Force
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Value 1 -Force
 New-ItemProperty -Path HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -Value 1 -Force
-# Отключение и сброс собранной информации для предоставления рекламы ###
 # Отключить отчеты об ошибках Windows
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Value 1 -Force
 # Изменение частоты формирования отзывов на "Никогда"
