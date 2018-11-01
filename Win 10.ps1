@@ -1,4 +1,4 @@
-﻿# Службы диагностического отслеживания
+# Службы диагностического отслеживания
 $services = @(
 "CDPSvc",
 "DiagTrack",
@@ -21,12 +21,7 @@ Set-AutologgerConfig -Name "SQMLogger" -Start 0
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -Value 1 -Force
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Value 1 -Force
 New-ItemProperty -Path HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -Value 1 -Force
-# Отключение и сброс собранной информации для предоставления рекламы
-IF (!(Test-Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo))
-{
-	New-Item -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo -Force
-}
-New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo -Name Enabled -Value 0 -Force
+# Отключение и сброс собранной информации для предоставления рекламы ###
 # Отключить отчеты об ошибках Windows
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Value 1 -Force
 # Изменение частоты формирования отзывов на "Никогда"
@@ -163,7 +158,11 @@ New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft
 New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Main" -Name HomeButtonPage -Type String -Value https://yandex.ru -Force
 # Отправлять запросы "Не отслеживать" в Edge
 New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Main" -Name DoNotTrack -Value 1 -Force
-# Отображать лучшие сайты в новой вкладке в Edge
+# Отображать лучшие сайты в новой вкладке в Edge ###
+IF (!(Test-Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\ServiceUI"))
+{
+	New-Item -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\ServiceUI" -Force
+}
 New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\ServiceUI" -Name NewTabPageDisplayOption -Value 1 -Force
 # Не отображать на панели инструментов кнопку "Избранное" в Edge
 IF (!(Test-Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Extensions\Favorites"))
@@ -275,14 +274,12 @@ cmd.exe /c "assoc Paint.Picture\DefaultIcon=%SystemRoot%\System32\imageres.dll,-
 cmd.exe /c "assoc jpegfile\DefaultIcon=%SystemRoot%\System32\imageres.dll,-72"
 cmd.exe /c "assoc pngfile\DefaultIcon=%SystemRoot%\System32\imageres.dll,-71"
 cmd.exe /c "assoc TIFImage.Document\DefaultIcon=%SystemRoot%\System32\imageres.dll,-122"
-# Удаление OneDrive
+# Удаление OneDrive ###
 Stop-Process -Name OneDrive -ErrorAction SilentlyContinue
 Start-Sleep -s 3
 Start-Process "$env:SystemRoot\SysWOW64\OneDriveSetup.exe" /uninstall -NoNewWindow -Wait
 Start-Sleep -s 3
-Remove-Item "$env:USERPROFILE\OneDrive" -Recurse -Force -ErrorAction SilentlyContinue
-Remove-Item "$env:LOCALAPPDATA\Microsoft\OneDrive" -Recurse -Force -ErrorAction SilentlyContinue
-Remove-Item "$env:ProgramData\Microsoft OneDrive" -Recurse -Force -ErrorAction SilentlyContinue
+Stop-Process -ProcessName explorer
 IF (!(Test-Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive))
 {
 	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive
@@ -292,12 +289,10 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive -Name 
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive -Name DisableMeteredNetworkFileSync -Value 0 -Force
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive -Name DisableLibrariesDefaultSaveToOneDrive -Value 1 -Force
 New-ItemProperty -Path HKCU:\Software\Microsoft\OneDrive -Name DisablePersonalSync -Value 1 -Force
-Remove-Item -Path "Registry::HKEY_CLASSES_ROOT\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" -Recurse -Force -ErrorAction SilentlyContinue
-Remove-Item -Path "Registry::HKEY_CLASSES_ROOT\Wow6432Node\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" -Recurse -Force -ErrorAction SilentlyContinue
-Remove-Item "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\OneDrive.lnk" -Force -ErrorAction SilentlyContinue
-Unregister-ScheduledTask onedrive* -Confirm:$false
-Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -Name OneDriveSetup -Force -ErrorAction SilentlyContinue
-Remove-ItemProperty -Path HKCU:\Environment -Name OneDrive -Force -ErrorAction SilentlyContinue
+Remove-ItemProperty -Path HKCU:\Environment -Name OneDrive -Force
+Remove-Item "$env:USERPROFILE\OneDrive" -Recurse -Force
+Remove-Item "$env:LOCALAPPDATA\Microsoft\OneDrive" -Recurse -Force
+Remove-Item "$env:ProgramData\Microsoft OneDrive" -Recurse -Force
 # Не показывать советы по использованию Windows
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SoftLandingEnabled -Value 0 -Force
 # Включение автоматического обновления для других продуктов Microsoft
@@ -431,7 +426,7 @@ $params = @{
 "Principal"	= $principal
 }
 Register-ScheduledTask @Params -Force
-# Включение в Планировщике задач очистки папки %TEMP% для Windows 10
+# Включение в Планировщике задач очистки папки %TEMP%
 $action = New-ScheduledTaskAction -Execute "Powershell.exe" -Argument 'Get-ChildItem -Path "$env:TEMP" -Force -Recurse | Remove-Item -Force -Recurse -ErrorAction SilentlyContinue'
 $trigger =  New-ScheduledTaskTrigger -Daily -DaysInterval 62 -At 9am
 $settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
@@ -450,7 +445,11 @@ ForEach-Object {
 	New-ItemProperty -Path $_.PsPath -Name Disabled -Value 1 -Force
 	New-ItemProperty -Path $_.PsPath -Name DisabledByUser -Value 1 -Force
 }
-# Включить контроль памяти
+# Включить контроль памяти ###
+IF (!(Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy))
+{
+	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Force
+}
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01 -Value 1 -Force
 # Запускать контроль памяти каждый месяц
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 2048 -Value 30 -Force
@@ -655,7 +654,7 @@ New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlo
 Remove-Item "$env:USERPROFILE\Desktop\Microsoft Edge.lnk" -Force -ErrorAction SilentlyContinue
 # Не отображать все папки в области навигации
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name NavPaneShowAllFolders -Value 0 -Force
-# Отключение пользовательских служб
+# Отключение пользовательских служб ###
 $services = @(
 "cbdhsvc_*",
 "OneSyncSvc_*",
@@ -664,7 +663,7 @@ $services = @(
 "UserDataSvc_*")
 Foreach ($service In $services)
 {
-	Get-Service $service | Stop-Service -ErrorAction SilentlyContinue
+	Get-Service $service | Stop-Service -Force -ErrorAction SilentlyContinue
 }
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\cbdhsvc -Name Start -Value 4 -Force
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\cbdhsvc -Name UserServiceFlags -Value 0 -Force
@@ -726,7 +725,11 @@ IF ($drives)
 	}
 }
 #>
-# Скрыть уведомление Защитника Windows об использовании аккаунта Microsoft
+# Скрыть уведомление Защитника Windows об использовании аккаунта Microsoft ###
+IF (!(Test-Path "HKCU:\Software\Microsoft\Windows Security Health\State"))
+{
+	New-Item -Path "HKCU:\Software\Microsoft\Windows Security Health\State" -Force
+}
 New-ItemProperty "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AccountProtection_MicrosoftAccount_Disconnected -Value 1 -Force
 # Скрыть уведомление Защитника Windows об отключенном фильтре SmartScreen для Microsoft Edge
 New-ItemProperty "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AppAndBrowser_EdgeSmartScreenOff -Value 0 -Force
@@ -756,8 +759,8 @@ $bytes[0x15] = $bytes[0x15] -bor 0x20
 [System.IO.File]::WriteAllBytes("$env:APPDATA\Microsoft\Windows\Start Menu\Programs\System Tools\Command Prompt.lnk", $bytes)
 # Удалить пункт "Создать контакт" из контекстного меню
 Remove-Item -Path "Registry::HKEY_CLASSES_ROOT\.contact\ShellNew" -Recurse -Force -ErrorAction SilentlyContinue
-# Удалить пункт "Создать архив ZIP" из контекстного меню
-Remove-Item -Path "Registry::HKEY_CLASSES_ROOT\.zip\ShellNew" -Recurse -Force -ErrorAction SilentlyContinue
+# Удалить пункт "Создать архив ZIP" из контекстного меню ###
+Remove-Item -Path "Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder" -Recurse -Force -ErrorAction SilentlyContinue
 # Включение Защиты сети в Защитнике Windows
 Set-MpPreference -EnableNetworkProtection Enabled
 # Настройка меню Пуск
@@ -798,4 +801,22 @@ IF (!(Test-Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extension
 	New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Force
 }
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{596AB062-B4D2-4215-9F74-E9109B0A8153}" -Type String -Value "" -Force
+# Удалить пункт "Создать Точечный рисунок" из контекстного меню ###
+Remove-Item -Path "Registry::HKEY_CLASSES_ROOT\.bmp\ShellNew" -Recurse -Force -ErrorAction SilentlyContinue
+# Не включать временную шкалу ###
+New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\System -Name EnableActivityFeed -Value 0 -Force
+# Не разрешать Windows собирать действия с этого компьютера ###
+New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\System -Name PublishUserActivities -Value 0 -Force
+# Не разрешать Windows синхронизировать действия с этого компьютера в облако ###
+New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\System -Name UploadUserActivities -Value 0 -Force
+# Не разрешать приложениям использовать идентификатор рекламы ###
+IF (!(Test-Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo))
+{
+	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo -Force
+}
+New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo -Name DisabledByGroupPolicy -Value 1 -Force
+# Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков ###
+New-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name HttpAcceptLanguageOptOut -Value 1 -Force
+# Не разрешать Windows отслеживать запуски приложений для улучшения мею "Пуск" и результатов поиска ###
+New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_TrackProgs -Value 0 -Force
 Stop-Process -ProcessName explorer
