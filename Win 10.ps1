@@ -439,7 +439,7 @@ $params = @{
 }
 Register-ScheduledTask @Params -Force
 # Запретить приложениям работать в фоновом режиме, кроме Cortana и Безопасность Windows
-Get-ChildItem -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" -Exclude "Microsoft.Windows.Cortana*", "Microsoft.Windows.SecHealthUI*" |
+Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications -Exclude "Microsoft.Windows.Cortana*", "Microsoft.Windows.SecHealthUI*","Microsoft.Windows.ShellExperienceHost*" |
 ForEach-Object {
 	New-ItemProperty -Path $_.PsPath -Name Disabled -Value 1 -Force
 	New-ItemProperty -Path $_.PsPath -Name DisabledByUser -Value 1 -Force
