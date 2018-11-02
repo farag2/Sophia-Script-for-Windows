@@ -157,7 +157,7 @@ New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft
 New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Main" -Name HomeButtonPage -Type String -Value https://yandex.ru -Force
 # Отправлять запросы "Не отслеживать" в Edge
 New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Main" -Name DoNotTrack -Value 1 -Force
-# Отображать лучшие сайты в новой вкладке в Edge ###
+# Отображать лучшие сайты в новой вкладке в Edge
 IF (!(Test-Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\ServiceUI"))
 {
 	New-Item -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\ServiceUI" -Force
@@ -273,7 +273,7 @@ cmd.exe /c "assoc Paint.Picture\DefaultIcon=%SystemRoot%\System32\imageres.dll,-
 cmd.exe /c "assoc jpegfile\DefaultIcon=%SystemRoot%\System32\imageres.dll,-72"
 cmd.exe /c "assoc pngfile\DefaultIcon=%SystemRoot%\System32\imageres.dll,-71"
 cmd.exe /c "assoc TIFImage.Document\DefaultIcon=%SystemRoot%\System32\imageres.dll,-122"
-# Удаление OneDrive ###
+# Удаление OneDrive
 Stop-Process -Name OneDrive -ErrorAction SilentlyContinue
 Start-Sleep -s 3
 Start-Process "$env:SystemRoot\SysWOW64\OneDriveSetup.exe" /uninstall -NoNewWindow -Wait
@@ -444,7 +444,7 @@ ForEach-Object {
 	New-ItemProperty -Path $_.PsPath -Name Disabled -Value 1 -Force
 	New-ItemProperty -Path $_.PsPath -Name DisabledByUser -Value 1 -Force
 }
-# Включить контроль памяти ###
+# Включить контроль памяти
 IF (!(Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy))
 {
 	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Force
@@ -653,7 +653,7 @@ New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlo
 Remove-Item "$env:USERPROFILE\Desktop\Microsoft Edge.lnk" -Force -ErrorAction SilentlyContinue
 # Не отображать все папки в области навигации
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name NavPaneShowAllFolders -Value 0 -Force
-# Отключение пользовательских служб ###
+# Отключение пользовательских служб
 $services = @(
 "cbdhsvc_*",
 "OneSyncSvc_*",
@@ -724,7 +724,7 @@ IF ($drives)
 	}
 }
 #>
-# Скрыть уведомление Защитника Windows об использовании аккаунта Microsoft ###
+# Скрыть уведомление Защитника Windows об использовании аккаунта Microsoft
 IF (!(Test-Path "HKCU:\Software\Microsoft\Windows Security Health\State"))
 {
 	New-Item -Path "HKCU:\Software\Microsoft\Windows Security Health\State" -Force
@@ -758,7 +758,7 @@ $bytes[0x15] = $bytes[0x15] -bor 0x20
 [System.IO.File]::WriteAllBytes("$env:APPDATA\Microsoft\Windows\Start Menu\Programs\System Tools\Command Prompt.lnk", $bytes)
 # Удалить пункт "Создать контакт" из контекстного меню
 Remove-Item -Path "Registry::HKEY_CLASSES_ROOT\.contact\ShellNew" -Recurse -Force -ErrorAction SilentlyContinue
-# Удалить пункт "Создать архив ZIP" из контекстного меню ###
+# Удалить пункт "Создать архив ZIP" из контекстного меню
 Remove-Item -Path "Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder" -Recurse -Force -ErrorAction SilentlyContinue
 # Включение Защиты сети в Защитнике Windows
 Set-MpPreference -EnableNetworkProtection Enabled
@@ -800,22 +800,22 @@ IF (!(Test-Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extension
 	New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Force
 }
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{596AB062-B4D2-4215-9F74-E9109B0A8153}" -Type String -Value "" -Force
-# Удалить пункт "Создать Точечный рисунок" из контекстного меню ###
+# Удалить пункт "Создать Точечный рисунок" из контекстного меню
 Remove-Item -Path "Registry::HKEY_CLASSES_ROOT\.bmp\ShellNew" -Recurse -Force -ErrorAction SilentlyContinue
-# Не включать временную шкалу ###
+# Не включать временную шкалу
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\System -Name EnableActivityFeed -Value 0 -Force
-# Не разрешать Windows собирать действия с этого компьютера ###
+# Не разрешать Windows собирать действия с этого компьютера
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\System -Name PublishUserActivities -Value 0 -Force
-# Не разрешать Windows синхронизировать действия с этого компьютера в облако ###
+# Не разрешать Windows синхронизировать действия с этого компьютера в облако
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\System -Name UploadUserActivities -Value 0 -Force
-# Не разрешать приложениям использовать идентификатор рекламы ###
+# Не разрешать приложениям использовать идентификатор рекламы
 IF (!(Test-Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo))
 {
 	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo -Force
 }
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo -Name DisabledByGroupPolicy -Value 1 -Force
-# Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков ###
+# Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков
 New-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name HttpAcceptLanguageOptOut -Value 1 -Force
-# Не разрешать Windows отслеживать запуски приложений для улучшения мею "Пуск" и результатов поиска ###
+# Не разрешать Windows отслеживать запуски приложений для улучшения мею "Пуск" и результатов поиска
 New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_TrackProgs -Value 0 -Force
 Stop-Process -ProcessName explorer
