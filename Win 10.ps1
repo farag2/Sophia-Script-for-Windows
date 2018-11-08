@@ -1,4 +1,4 @@
-# Службы диагностического отслеживания
+﻿# Службы диагностического отслеживания
 $services = @(
 "CDPSvc",
 "DiagTrack",
@@ -223,8 +223,8 @@ IF (!(Test-Path $env:SystemDrive\Temp))
 [Environment]::SetEnvironmentVariable("TMP","$env:SystemDrive\Temp","Machine")
 [Environment]::SetEnvironmentVariable("TEMP","$env:SystemDrive\Temp","Machine")
 # Удаление UWP-приложений
-Get-AppxPackage -AllUsers | Where-Object name -CNotLike *Store* | Remove-AppxPackage -ErrorAction SilentlyContinue
-Get-AppxProvisionedPackage -Online | Where-Object DisplayName -CNotLike *Store* | Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue
+Get-AppxPackage -AllUsers | Where-Object {$_.Name -CNotLike "*Store*" -and $_.Name -CNotLike "Microsoft.LanguageExperiencePackru-ru"} | Remove-AppxPackage -ErrorAction SilentlyContinue
+Get-AppxProvisionedPackage -Online | Where-Object {$_.DisplayName -CNotLike "*Store*" -and $_.Name -CNotLike "Microsoft.LanguageExperiencePackru-ru"} | Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue
 # Отключение компонентов
 $features = @(
 # Отключение службы "Факсы и сканирование"
@@ -371,22 +371,6 @@ $params = @{
 Register-ScheduledTask @Params -Force
 #>
 # Включение в Планировщике задач удаление устаревших обновлений Office
-$drives = (Get-Disk | Where-Object BusType -ne USB | Get-Partition | Where-Object IsBoot -ne True | Get-Volume).DriveLetter | ForEach-Object {$_ + ':'} | Join-Path -ChildPath $_ -Resolve -ErrorAction SilentlyContinue
-IF ($drives)
-{
-	IF (!(Test-Path D:\Программы\Прочее))
-	{
-		New-Item -ItemType Directory D:\Программы\Прочее -Force
-	}
-	$bat = 'Программы\Прочее\Office_task.bat'
-	$xml = 'Программы\Прочее\xml\Office.xml'
-	filter Get-FirstResolvedPath
-	{
-		(Get-Disk | Where-Object BusType -eq USB | Get-Partition | Get-Volume).DriveLetter | ForEach-Object {$_ + ':\'} | Join-Path -ChildPath $_ -Resolve -ErrorAction SilentlyContinue | Select-Object -First 1
-	}
-	$bat | Get-FirstResolvedPath | Copy-Item -Destination D:\Программы\Прочее -Force
-	$xml | Get-FirstResolvedPath | Get-Item | Get-Content -Raw | Register-ScheduledTask -TaskName "Office" -Force
-}
 <#
 $action = New-ScheduledTaskAction -Execute "Powershell.exe" -Argument @"
 `$getservice = Get-Service -Name wuauserv
