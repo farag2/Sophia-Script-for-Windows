@@ -1,4 +1,5 @@
-﻿# Службы диагностического отслеживания
+﻿[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+# Службы диагностического отслеживания
 $services = @(
 "CDPSvc",
 "DiagTrack",
@@ -259,20 +260,20 @@ New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Applications\photoviewer.dll\
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell\open\command -Name "(Default)" -Type ExpandString -Value "%SystemRoot%\System32\rundll32.exe `"%ProgramFiles%\Windows Photo Viewer\PhotoViewer.dll`", ImageView_Fullscreen %1" -Force
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell\open\DropTarget -Name Clsid -Type String -Value "{FFE2A43C-56B9-4bf5-9A79-CC6D4285608A}" -Force
 # Ассоциация со Средством просмотра фотографий Windows
-cmd.exe /c 'ftype Paint.Picture=%windir%\System32\rundll32.exe "%ProgramFiles%\Windows Photo Viewer\PhotoViewer.dll", ImageView_Fullscreen %1'
-cmd.exe /c 'ftype jpegfile=%windir%\System32\rundll32.exe "%ProgramFiles%\Windows Photo Viewer\PhotoViewer.dll", ImageView_Fullscreen %1'
-cmd.exe /c 'ftype pngfile=%windir%\System32\rundll32.exe "%ProgramFiles%\Windows Photo Viewer\PhotoViewer.dll", ImageView_Fullscreen %1'
-cmd.exe /c 'ftype TIFImage.Document=%windir%\System32\rundll32.exe "%ProgramFiles%\Windows Photo Viewer\PhotoViewer.dll", ImageView_Fullscreen %1'
-cmd.exe /c "assoc .bmp=Paint.Picture"
-cmd.exe /c "assoc .jpg=jpegfile"
-cmd.exe /c "assoc .jpeg=jpegfile"
-cmd.exe /c "assoc .png=pngfile"
-cmd.exe /c "assoc .tif=TIFImage.Document"
-cmd.exe /c "assoc .tiff=TIFImage.Document"
-cmd.exe /c "assoc Paint.Picture\DefaultIcon=%SystemRoot%\System32\imageres.dll,-70"
-cmd.exe /c "assoc jpegfile\DefaultIcon=%SystemRoot%\System32\imageres.dll,-72"
-cmd.exe /c "assoc pngfile\DefaultIcon=%SystemRoot%\System32\imageres.dll,-71"
-cmd.exe /c "assoc TIFImage.Document\DefaultIcon=%SystemRoot%\System32\imageres.dll,-122"
+cmd.exe /c ftype Paint.Picture=%windir%\System32\rundll32.exe "%ProgramFiles%\Windows Photo Viewer\PhotoViewer.dll", ImageView_Fullscreen %1
+cmd.exe /c ftype jpegfile=%windir%\System32\rundll32.exe "%ProgramFiles%\Windows Photo Viewer\PhotoViewer.dll", ImageView_Fullscreen %1
+cmd.exe /c ftype pngfile=%windir%\System32\rundll32.exe "%ProgramFiles%\Windows Photo Viewer\PhotoViewer.dll", ImageView_Fullscreen %1
+cmd.exe /c ftype TIFImage.Document=%windir%\System32\rundll32.exe "%ProgramFiles%\Windows Photo Viewer\PhotoViewer.dll", ImageView_Fullscreen %1
+cmd.exe /c assoc .bmp=Paint.Picture
+cmd.exe /c assoc .jpg=jpegfile
+cmd.exe /c assoc .jpeg=jpegfile
+cmd.exe /c assoc .png=pngfile
+cmd.exe /c assoc .tif=TIFImage.Document
+cmd.exe /c assoc .tiff=TIFImage.Document
+cmd.exe /c assoc Paint.Picture\DefaultIcon=%SystemRoot%\System32\imageres.dll,-70
+cmd.exe /c assoc jpegfile\DefaultIcon=%SystemRoot%\System32\imageres.dll,-72
+cmd.exe /c assoc pngfile\DefaultIcon=%SystemRoot%\System32\imageres.dll,-71
+cmd.exe /c assoc TIFImage.Document\DefaultIcon=%SystemRoot%\System32\imageres.dll,-122
 # Удаление OneDrive
 Stop-Process -Name OneDrive -ErrorAction SilentlyContinue
 Start-Sleep -s 3
@@ -332,7 +333,19 @@ IF (!(Test-Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization))
 }
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization -Name DODownloadMode -Value 0 -Force
 # Включение в Планировщике задач запуска очистки обновлений Windows
-New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Update Cleanup" -Name StateFlags1337 -Value 2 -Force
+$keys = @(
+"Delivery Optimization Files",
+"Device Driver Packages",
+"Previous Installations",
+"Setup Log Files",
+"Temporary Setup Files",
+"Update Cleanup",
+"Windows Defender",
+"Windows Upgrade Log Files")
+Foreach ($key in $keys)
+{
+	New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\$key" -Name StateFlags1337 -Value 2 -Force
+}
 $action = New-ScheduledTaskAction -Execute "$env:SystemRoot\System32\cleanmgr.exe" -Argument "/sagerun:1337"
 $trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 90 -At 9am
 $settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
@@ -599,8 +612,6 @@ Foreach ($key in $keys)
 {
 	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\$key -Name ProgrammaticAccessOnly -Type String -Value "" -Force
 }
-# Удаление из автозагрузки иконки Защитника Windows
-Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run -Name SecurityHealth -Force -ErrorAction SilentlyContinue
 # Открепить от панели задач Microsoft Edge и Microsoft Store
 $getstring = @'
 [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
