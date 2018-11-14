@@ -696,9 +696,9 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\
 # Отключить удаление кэша миниатюр
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" -Name Autorun -Value 0 -Force
 New-ItemProperty -Path "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" -Name Autorun -Value 0 -Force
-# Включить Управляемый доступ к папкам
+<# Включить Управляемый доступ к папкам
 Set-MpPreference -EnableControlledFolderAccess Enabled
-<# Добавить защищенную папку
+# Добавить защищенную папку
 $drives = (Get-Disk | Where-Object BusType -ne USB | Get-Partition | Where-Object IsBoot -ne True | Get-Volume).DriveLetter | ForEach-Object {$_ + ':\'} | Join-Path -ChildPath $_ -Resolve -ErrorAction SilentlyContinue
 IF ($drives)
 {
@@ -800,6 +800,13 @@ IF (!(Test-Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo))
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo -Name DisabledByGroupPolicy -Value 1 -Force
 # Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков
 New-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name HttpAcceptLanguageOptOut -Value 1 -Force
-# Не разрешать Windows отслеживать запуски приложений для улучшения мею "Пуск" и результатов поиска
+# Не разрешать Windows отслеживать запуски приложений для улучшения меню "Пуск" и результатов поиска
 New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_TrackProgs -Value 0 -Force
+# Удалить пункт "Печать" из контекстного меню для bat- и cmd-файлов
+Remove-Item "Registry::HKEY_CLASSES_ROOT\batfile\shell\print\*" -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item "Registry::HKEY_CLASSES_ROOT\cmdfile\shell\print\*" -Recurse -Force -ErrorAction SilentlyContinue
+# Запускать Защитник Windows в песочнице
+setx /M MP_FORCE_USE_SANDBOX 1
+# Удалить пункт "Создать Документ в формате RTF" из контекстного меню
+Remove-Item "Registry::HKEY_CLASSES_ROOT\.rtf\ShellNew" -Recurse -Force -ErrorAction SilentlyContinue
 Stop-Process -ProcessName explorer
