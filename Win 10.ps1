@@ -489,7 +489,7 @@ IF (!(Test-Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent))
 	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent -Force
 }
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent -Name DisableWindowsConsumerFeatures -Value 1 -Force
-# Добавить в исключение Защитник Windows папку
+<# Добавить в исключение Защитник Windows папку
 $drives = (Get-Disk | Get-Partition | Where-Object IsBoot -ne True | Get-Volume).DriveLetter | ForEach-Object {$_ + ':'}
 IF ($drives)
 {
@@ -498,9 +498,7 @@ IF ($drives)
 		Add-MpPreference -ExclusionPath $drive\Программы\Прочее -Force
 	}
 }
-Add-MpPreference -ExclusionPath $env:SystemRoot\KMS\bin\SppExtComObjPatcher.exe -Force
-Add-MpPreference -ExclusionPath $env:SystemRoot\KMS\bin\SppExtComObjPatcher.dll -Force
-Add-MpPreference -ExclusionPath $env:SystemRoot\KMS\bin -Force
+#>
 # Отключение справки по F1
 IF (!(Test-Path "HKCU:\Software\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64"))
 {
