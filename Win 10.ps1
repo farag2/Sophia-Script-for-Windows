@@ -445,7 +445,7 @@ ForEach-Object {
 	New-ItemProperty -Path $_.PsPath -Name Disabled -Value 1 -Force
 	New-ItemProperty -Path $_.PsPath -Name DisabledByUser -Value 1 -Force
 }
-# Включить контроль памяти ###
+# Включить контроль памяти
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01 -Value 1 -Force
 # Запускать контроль памяти каждый месяц
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 2048 -Value 30 -Force
@@ -569,7 +569,7 @@ New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Control Panel\Internat
 New-ItemProperty -Path "Registry::HKEY_USERS\.DEFAULT\Keyboard Layout\Preload" -Name 1 -Type String -Value 00000409 -Force
 New-ItemProperty -Path "Registry::HKEY_USERS\.DEFAULT\Keyboard Layout\Preload" -Name 2 -Type String -Value 00000419 -Force
 # Не показывать панель "Люди" на панели задач
-IF (!(Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People)) ###
+IF (!(Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People))
 {
 	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People -Force
 }
@@ -713,7 +713,7 @@ IF ($drives)
 	}
 }
 #>
-# Скрыть уведомление Защитника Windows об использовании аккаунта Microsoft ###
+# Скрыть уведомление Защитника Windows об использовании аккаунта Microsoft
 New-ItemProperty "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AccountProtection_MicrosoftAccount_Disconnected -Value 1 -Force
 # Скрыть уведомление Защитника Windows об отключенном фильтре SmartScreen для Microsoft Edge
 New-ItemProperty "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AppAndBrowser_EdgeSmartScreenOff -Value 0 -Force
