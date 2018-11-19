@@ -522,15 +522,9 @@ Stop-Process $taskmgr
 $preferences.Preferences[28] = 0
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -Type Binary -Value $preferences.Preferences -Force
 # Запретить отключение Ethernet-адаптера для экономии энергии
-Foreach ($NIC in (Get-NetAdapter -Physical))
-{
-	$PowerSaving = Get-CimInstance -ClassName MSPower_DeviceEnable -Namespace root\wmi | Where-Object {$_.InstanceName -match [Regex]::Escape($NIC.PnPDeviceID)}
-	IF ($PowerSaving.Enable)
-	{
-		$PowerSaving.Enable = $false
-		$PowerSaving | Set-CimInstance
-	}
-}
+$adapter = Get-NetAdapter -Physical | Get-NetAdapterPowerManagement
+$adapter.AllowComputerToTurnOffDevice = 'Disabled'
+$adapter | Set-NetAdapterPowerManagement
 # Установка крупных значков в панели управления
 IF (!(Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
 {
@@ -800,8 +794,8 @@ New-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name Ht
 # Не разрешать Windows отслеживать запуски приложений для улучшения меню "Пуск" и результатов поиска
 New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_TrackProgs -Value 0 -Force
 # Удалить пункт "Печать" из контекстного меню для bat- и cmd-файлов
-Remove-Item "Registry::HKEY_CLASSES_ROOT\batfile\shell\print\*" -Recurse -Force -ErrorAction SilentlyContinue
-Remove-Item "Registry::HKEY_CLASSES_ROOT\cmdfile\shell\print\*" -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item "Registry::HKEY_CLASSES_ROOT\batfile\shell\print" -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item "Registry::HKEY_CLASSES_ROOT\cmdfile\shell\print" -Recurse -Force -ErrorAction SilentlyContinue
 # Запускать Защитник Windows в песочнице
 setx /M MP_FORCE_USE_SANDBOX 1
 # Удалить пункт "Создать Документ в формате RTF" из контекстного меню
