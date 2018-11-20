@@ -766,6 +766,7 @@ New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\
 Remove-Item "Registry::HKEY_CLASSES_ROOT\batfile\shell\print" -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item "Registry::HKEY_CLASSES_ROOT\cmdfile\shell\print" -Recurse -Force -ErrorAction SilentlyContinue
 # Запускать Защитник Windows в песочнице
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 setx /M MP_FORCE_USE_SANDBOX 1
 # Удалить пункт "Создать Документ в формате RTF" из контекстного меню
 Remove-Item "Registry::HKEY_CLASSES_ROOT\.rtf\ShellNew" -Recurse -Force -ErrorAction SilentlyContinue
