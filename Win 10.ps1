@@ -238,20 +238,20 @@ Get-AppxProvisionedPackage -Online | Where-Object {$_.DisplayName -CNotLike "*St
 # Отключение компонентов
 $features = @(
 # Отключение службы "Факсы и сканирование"
-'FaxServicesClientPackage',
+"FaxServicesClientPackage",
 # Отключение компонентов прежних версий
-'LegacyComponents',
+"LegacyComponents",
 # Отключение компонентов работы с мультимедиа
-'MediaPlayback',
+"MediaPlayback",
 # Отключение PowerShell 2.0
-'MicrosoftWindowsPowerShellV2',
-'MicrosoftWindowsPowershellV2Root',
+"MicrosoftWindowsPowerShellV2",
+"MicrosoftWindowsPowershellV2Root",
 # Отключение службы XPS
-'Printing-XPSServices-Features',
+"Printing-XPSServices-Features",
 # Печать в PDF (Майкрософт)
-'Printing-PrintToPDFServices-Features',
+"Printing-PrintToPDFServices-Features",
 # Отключение службы "Клиент рабочих папок"
-'WorkFolders-Client')
+"WorkFolders-Client")
 Foreach ($feature in $features)
 {
 	Disable-WindowsOptionalFeature -Online -FeatureName $feature -NoRestart
@@ -283,7 +283,7 @@ cmd.exe /c assoc Paint.Picture\DefaultIcon=%SystemRoot%\System32\imageres.dll,-7
 cmd.exe /c assoc jpegfile\DefaultIcon=%SystemRoot%\System32\imageres.dll,-72
 cmd.exe /c assoc pngfile\DefaultIcon=%SystemRoot%\System32\imageres.dll,-71
 cmd.exe /c assoc TIFImage.Document\DefaultIcon=%SystemRoot%\System32\imageres.dll,-122
-# Удаление OneDrive
+# Удалить OneDrive
 Stop-Process -Name OneDrive -ErrorAction SilentlyContinue
 Start-Sleep -s 3
 Start-Process "$env:SystemRoot\SysWOW64\OneDriveSetup.exe" /uninstall -NoNewWindow -Wait
@@ -291,7 +291,7 @@ Start-Sleep -s 3
 Stop-Process -ProcessName explorer
 IF (!(Test-Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive))
 {
-	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive
+	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive -Force
 }
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive -Name DisableFileSyncNGSC -Value 1 -Force
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive -Name DisableFileSync -Value 1 -Force
@@ -304,7 +304,7 @@ Remove-Item "$env:LOCALAPPDATA\Microsoft\OneDrive" -Recurse -Force
 Remove-Item "$env:ProgramData\Microsoft OneDrive" -Recurse -Force
 # Не показывать советы по использованию Windows
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SoftLandingEnabled -Value 0 -Force
-# Включение автоматического обновления для других продуктов Microsoft
+# Включить автоматическое обновление для других продуктов Microsoft
 (New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d",7,"")
 # Отключение меню игры
 IF (!(Test-Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR))
@@ -332,8 +332,8 @@ Get-Service swprv,vss | Set-Service -StartupType Disabled
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings" -Name Enabled -Value 0 -Force
 # Всегда отображать все значки в области уведомлений
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name EnableAutoTray -Value 0 -Force
-# Отключение брандмауэра
-Set-NetFirewallProfile -Enabled False
+# Отключить брандмауэр
+Set-NetFirewallProfile -Enabled False -ErrorAction SilentlyContinue
 # Отключение оптимизации доставки для обновлений с других ПК
 Get-Service -Name DoSvc | Stop-Service -ErrorAction SilentlyContinue
 IF (!(Test-Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization))
@@ -341,7 +341,7 @@ IF (!(Test-Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization))
     New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization -Force
 }
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization -Name DODownloadMode -Value 0 -Force
-# Включение в Планировщике задач запуска очистки обновлений Windows
+# Включить в Планировщике задач запуска очистки обновлений Windows
 $keys = @(
 "Delivery Optimization Files",
 "Device Driver Packages",
@@ -401,7 +401,7 @@ $params = @{
 "Principal"	= $principal
 }
 Register-ScheduledTask @Params -Force
-# Включение в Планировщике задач очистки папки %SYSTEMROOT%\Logs\CBS
+# Включить в Планировщике задач очистки папки %SYSTEMROOT%\Logs\CBS
 $action = New-ScheduledTaskAction -Execute "Powershell.exe" -Argument @"
 `$dir = '$env:SystemRoot\Logs\CBS'
 `$foldersize = (Get-ChildItem -Path `$dir -Recurse -Force | Measure-Object -Property Length -Sum).Sum/1MB
@@ -421,7 +421,7 @@ $params = @{
 "Principal"	= $principal
 }
 Register-ScheduledTask @Params -Force
-# Включение в Планировщике задач очистки папки %TEMP%
+# Включить в Планировщике задач очистки папки %TEMP%
 $action = New-ScheduledTaskAction -Execute "Powershell.exe" -Argument 'Get-ChildItem -Path "$env:TEMP" -Force -Recurse | Remove-Item -Force -Recurse -ErrorAction SilentlyContinue'
 $trigger =  New-ScheduledTaskTrigger -Daily -DaysInterval 62 -At 9am
 $settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
@@ -510,7 +510,7 @@ $preferences.Preferences[28] = 0
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -Type Binary -Value $preferences.Preferences -Force
 # Запретить отключение Ethernet-адаптера для экономии энергии
 $adapter = Get-NetAdapter -Physical | Get-NetAdapterPowerManagement
-$adapter.AllowComputerToTurnOffDevice = 'Disabled'
+$adapter.AllowComputerToTurnOffDevice = "Disabled"
 $adapter | Set-NetAdapterPowerManagement
 # Установка крупных значков в панели управления
 IF (!(Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
@@ -669,9 +669,9 @@ New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name
 Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name Extended -Force -ErrorAction SilentlyContinue
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name SuppressionPolicyEx -Type String -Value "{F211AA05-D4DF-4370-A2A0-9F19C09756A7}" -Force
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser\command -Name DelegateExecute -Type String -Value "{ea72d00e-4960-42fa-ba92-7792a7944c1d}" -Force
-# Включение доступа к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами
+# Включить доступа к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableLinkedConnections -Value 1 -Force
-# Включение длинных путей Win32
+# Включить длинных путей Win32
 New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -Value 1 -Force
 # Отключить создание ярлыка Edge на рабочем столе после обновления Windows
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name DisableEdgeDesktopShortcutCreation -Value 1 -Force
@@ -718,7 +718,7 @@ $bytes[0x15] = $bytes[0x15] -bor 0x20
 Remove-Item -Path "Registry::HKEY_CLASSES_ROOT\.contact\ShellNew" -Recurse -Force -ErrorAction SilentlyContinue
 # Удалить пункт "Создать архив ZIP" из контекстного меню
 Remove-Item -Path "Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder" -Recurse -Force -ErrorAction SilentlyContinue
-# Включение Защиты сети в Защитнике Windows
+# Включить Защиты сети в Защитнике Windows
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 Set-MpPreference -EnableNetworkProtection Enabled
 # Настройка меню Пуск
