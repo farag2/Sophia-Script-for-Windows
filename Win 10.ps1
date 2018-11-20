@@ -192,6 +192,12 @@ IF (!(Test-Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Window
 	New-Item -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Extensions\Share" -Force
 }
 New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Extensions\Share" -Name ShowOnAddressBar -Value 0 -Force
+# Отобразить пункты "Показать источник" и "Проверить элемент в контекстном меню Edge
+IF (!(Test-Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\F12"))
+{
+	New-Item -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\F12" -Force
+}
+New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\F12" -Name ShowPageContextMenuEntryPoints -Value 1 -Force
 # Не разрешать Edge запускать и загружать страницу при загрузке Windows и каждый раз при закрытии Edge
 IF (!(Test-Path HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftEdge\TabPreloader))
 {
@@ -490,7 +496,7 @@ IF (!(Test-Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent))
 }
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent -Name DisableWindowsConsumerFeatures -Value 1 -Force
 <# Добавить в исключение Защитник Windows папку
-$drives = (Get-Disk | Get-Partition | Where-Object IsBoot -ne True | Get-Volume).DriveLetter | ForEach-Object {$_ + ':'}
+$drives = (Get-Disk | Get-Partition | Where-Object IsBoot -ne True | Get-Volume).DriveLetter | ForEach-Object {$_ + ':'} | Join-Path -ChildPath $_ -Resolve -ErrorAction SilentlyContinue
 IF ($drives)
 {
 	Foreach ($drive In $drives)
@@ -800,4 +806,48 @@ Remove-Item "Registry::HKEY_CLASSES_ROOT\cmdfile\shell\print" -Recurse -Force -E
 setx /M MP_FORCE_USE_SANDBOX 1
 # Удалить пункт "Создать Документ в формате RTF" из контекстного меню
 Remove-Item "Registry::HKEY_CLASSES_ROOT\.rtf\ShellNew" -Recurse -Force -ErrorAction SilentlyContinue
+# Переопределить расположение папок "Загрузки" и "Документы"
+$drives = (Get-Disk | Where-Object BusType -ne USB | Get-Partition | Where-Object IsBoot -ne True | Get-Volume).DriveLetter | ForEach-Object {$_ + ':\'} | Join-Path -ChildPath $_ -Resolve -ErrorAction SilentlyContinue
+IF ($drives)
+{
+	IF (!(Test-Path $drives\Загрузки))
+	{
+		New-Item -Path $drives\Загрузки -Type Directory -Force
+	}
+	IF (!(Test-Path $drives\Документы))
+	{
+		New-Item -Path $drives\Документы -Type Directory -Force
+	}
+}
+function KnownFolderPath
+{
+	Param (
+		[Parameter(Mandatory = $true)]
+		[ValidateSet('Documents', 'Downloads')]
+		[string]$KnownFolder,
+
+		[Parameter(Mandatory = $true)]
+		[string]$Path
+    )
+	$KnownFolders = @{
+		'Documents' = @('FDD39AD0-238F-46AF-ADB4-6C85480369C7','f42ee2d3-909f-4907-8871-4c22fc0bf756');
+		'Downloads' = @('374DE290-123F-4565-9164-39C4925E467B','7d83ee9b-2244-4e70-b1f5-5393042af1e4');
+	}
+	$Type = ([System.Management.Automation.PSTypeName]'KnownFolders').Type
+	$Signature = @'
+	[DllImport("shell32.dll")]
+	public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, IntPtr token, [MarshalAs(UnmanagedType.LPWStr)] string path);
+'@
+	$Type = Add-Type -MemberDefinition $Signature -Name 'KnownFolders' -Namespace 'SHSetKnownFolderPath' -PassThru
+	#  return $Type::SHSetKnownFolderPath([ref]$KnownFolders[$KnownFolder], 0, 0, $Path)
+	ForEach ($guid in $KnownFolders[$KnownFolder])
+	{
+		$Type::SHSetKnownFolderPath([ref]$guid, 0, 0, $Path)
+	}
+	Attrib +r $Path
+}
+KnownFolderPath -KnownFolder Downloads -Path "$env:SystemDrive\Загрузки"
+New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{7D83EE9B-2244-4E70-B1F5-5393042AF1E4}" -Type ExpandString -Value "%SystemDrive%\Загрузки" -Force
+KnownFolderPath -KnownFolder Documents -Path "$env:SystemDrive\Документы"
+New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{F42EE2D3-909F-4907-8871-4C22FC0BF756}" -Type ExpandString -Value "%SystemDrive%\Документы" -Force
 Stop-Process -ProcessName explorer
