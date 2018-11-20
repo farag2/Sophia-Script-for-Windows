@@ -232,7 +232,7 @@ IF (!(Test-Path $env:SystemDrive\Temp))
 [Environment]::SetEnvironmentVariable("TEMP","$env:SystemDrive\Temp","User")
 [Environment]::SetEnvironmentVariable("TMP","$env:SystemDrive\Temp","Machine")
 [Environment]::SetEnvironmentVariable("TEMP","$env:SystemDrive\Temp","Machine")
-# Удаление UWP-приложений, кроме Microsoft Store и Пкета локализованного интерфейса на русском
+# Удаление UWP-приложений, кроме Microsoft Store и Пакета локализованного интерфейса на русском
 Get-AppxPackage -AllUsers | Where-Object {$_.Name -CNotLike "*Store*" -and $_.Name -CNotLike "Microsoft.LanguageExperiencePackru-ru"} | Remove-AppxPackage -ErrorAction SilentlyContinue
 Get-AppxProvisionedPackage -Online | Where-Object {$_.DisplayName -CNotLike "*Store*" -and $_.Name -CNotLike "Microsoft.LanguageExperiencePackru-ru"} | Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue
 # Отключение компонентов
