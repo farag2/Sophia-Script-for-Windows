@@ -1,5 +1,4 @@
-﻿[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-# Службы диагностического отслеживания
+﻿# Службы диагностического отслеживания
 $services = @(
 "CDPSvc",
 "DiagTrack",
@@ -233,7 +232,7 @@ IF (!(Test-Path $env:SystemDrive\Temp))
 [Environment]::SetEnvironmentVariable("TEMP","$env:SystemDrive\Temp","User")
 [Environment]::SetEnvironmentVariable("TMP","$env:SystemDrive\Temp","Machine")
 [Environment]::SetEnvironmentVariable("TEMP","$env:SystemDrive\Temp","Machine")
-# Удаление UWP-приложений
+# Удаление UWP-приложений, кроме Microsoft Store и Пкета локализованного интерфейса на русском
 Get-AppxPackage -AllUsers | Where-Object {$_.Name -CNotLike "*Store*" -and $_.Name -CNotLike "Microsoft.LanguageExperiencePackru-ru"} | Remove-AppxPackage -ErrorAction SilentlyContinue
 Get-AppxProvisionedPackage -Online | Where-Object {$_.DisplayName -CNotLike "*Store*" -and $_.Name -CNotLike "Microsoft.LanguageExperiencePackru-ru"} | Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue
 # Отключение компонентов
@@ -369,13 +368,6 @@ $params = @{
 }
 Register-ScheduledTask @Params -Force
 # Включение в Планировщике задач очистки папки %SYSTEMROOT%\SoftwareDistribution\Download
-$xml = 'Программы\Прочее\xml\SoftwareDistribution.xml'
-filter Get-FirstResolvedPath
-{
-	(Get-Disk | Where-Object BusType -eq USB | Get-Partition | Get-Volume).DriveLetter | ForEach-Object {$_ + ':\'} | Join-Path -ChildPath $_ -Resolve -ErrorAction SilentlyContinue | Select-Object -First 1
-}
-$xml | Get-FirstResolvedPath | Get-Item | Get-Content -Raw | Register-ScheduledTask -TaskName "SoftwareDistribution" -Force
-<#
 $action = New-ScheduledTaskAction -Execute "Powershell.exe" -Argument @"
 `$getservice = Get-Service -Name wuauserv
 `$getservice.WaitForStatus('Stopped', '01:00:00')
@@ -392,9 +384,7 @@ $params = @{
 "Principal"	= $principal
 }
 Register-ScheduledTask @Params -Force
-#>
-# Включение в Планировщике задач удаление устаревших обновлений Office
-<#
+# Включение в Планировщике задач удаление устаревших обновлений Office, кроме Office 2019
 $action = New-ScheduledTaskAction -Execute "Powershell.exe" -Argument @"
 `$getservice = Get-Service -Name wuauserv
 `$getservice.WaitForStatus('Stopped', '01:00:00')
@@ -411,7 +401,6 @@ $params = @{
 "Principal"	= $principal
 }
 Register-ScheduledTask @Params -Force
-#>
 # Включение в Планировщике задач очистки папки %SYSTEMROOT%\Logs\CBS
 $action = New-ScheduledTaskAction -Execute "Powershell.exe" -Argument @"
 `$dir = '$env:SystemRoot\Logs\CBS'
@@ -495,16 +484,8 @@ IF (!(Test-Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent))
 	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent -Force
 }
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent -Name DisableWindowsConsumerFeatures -Value 1 -Force
-<# Добавить в исключение Защитник Windows папку
-$drives = (Get-Disk | Get-Partition | Where-Object IsBoot -ne True | Get-Volume).DriveLetter | ForEach-Object {$_ + ':'} | Join-Path -ChildPath $_ -Resolve -ErrorAction SilentlyContinue
-IF ($drives)
-{
-	Foreach ($drive In $drives)
-	{
-		Add-MpPreference -ExclusionPath $drive\Программы\Прочее -Force
-	}
-}
-#>
+# Добавить в исключение Защитник Windows папку
+Add-MpPreference -ExclusionPath $drive\Программы\Прочее -Force
 # Отключение справки по F1
 IF (!(Test-Path "HKCU:\Software\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64"))
 {
@@ -701,18 +682,10 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\
 # Отключить удаление кэша миниатюр
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" -Name Autorun -Value 0 -Force
 New-ItemProperty -Path "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" -Name Autorun -Value 0 -Force
-<# Включить Управляемый доступ к папкам
+# Включить Управляемый доступ к папкам
 Set-MpPreference -EnableControlledFolderAccess Enabled
 # Добавить защищенную папку
-$drives = (Get-Disk | Where-Object BusType -ne USB | Get-Partition | Where-Object IsBoot -ne True | Get-Volume).DriveLetter | ForEach-Object {$_ + ':\'} | Join-Path -ChildPath $_ -Resolve -ErrorAction SilentlyContinue
-IF ($drives)
-{
-	Foreach ($drive In $drives)
-	{
-		Add-MpPreference -ControlledFolderAccessProtectedFolders $drive
-	}
-}
-#>
+Add-MpPreference -ControlledFolderAccessProtectedFolders $drive
 # Скрыть уведомление Защитника Windows об использовании аккаунта Microsoft
 New-ItemProperty "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AccountProtection_MicrosoftAccount_Disconnected -Value 1 -Force
 # Скрыть уведомление Защитника Windows об отключенном фильтре SmartScreen для Microsoft Edge
@@ -746,26 +719,16 @@ Remove-Item -Path "Registry::HKEY_CLASSES_ROOT\.contact\ShellNew" -Recurse -Forc
 # Удалить пункт "Создать архив ZIP" из контекстного меню
 Remove-Item -Path "Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder" -Recurse -Force -ErrorAction SilentlyContinue
 # Включение Защиты сети в Защитнике Windows
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 Set-MpPreference -EnableNetworkProtection Enabled
 # Настройка меню Пуск
-filter Get-FirstResolvedPath
-{
-	(Get-Disk | Where-Object BusType -eq USB | Get-Partition | Get-Volume).DriveLetter | ForEach-Object {$_ + ':\'} | Join-Path -ChildPath $_ -Resolve -ErrorAction SilentlyContinue | Select-Object -First 1
-}
-$reg = 'Программы\Прочее\reg\Start.reg'
-$regpath = $reg | Get-FirstResolvedPath
-IF ($regpath)
-{
-	Remove-Item HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount -Recurse -Force
-	Start-Process reg.exe -ArgumentList 'import',"$regpath"
-}
-Else
-{
-	# Открепить все ярлыки от начального экрана
-	$key = Get-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*start.tilegrid`$windows.data.curatedtilecollection.tilecollection\Current
-	$data = $key.Data[0..25] + ([byte[]](202,50,0,226,44,1,1,0,0))
-	New-ItemProperty -Path $key.PSPath -Name Data -Type Binary -Value $data -Force
-}
+$reg = 'D:\Folder\Start.reg'
+Remove-Item HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount -Recurse -Force
+Start-Process reg.exe -ArgumentList 'import',"$reg"
+# Открепить все ярлыки от начального экрана
+$key = Get-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*start.tilegrid`$windows.data.curatedtilecollection.tilecollection\Current
+$data = $key.Data[0..25] + ([byte[]](202,50,0,226,44,1,1,0,0))
+New-ItemProperty -Path $key.PSPath -Name Data -Type Binary -Value $data -Force
 # Отображать цвет элементов в меню Пуск, на панели задач и в центре уведомлений
 New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name ColorPrevalence -Value 1 -Force
 # Отображать цвет элементов в заголовках окон
@@ -807,17 +770,13 @@ setx /M MP_FORCE_USE_SANDBOX 1
 # Удалить пункт "Создать Документ в формате RTF" из контекстного меню
 Remove-Item "Registry::HKEY_CLASSES_ROOT\.rtf\ShellNew" -Recurse -Force -ErrorAction SilentlyContinue
 # Переопределить расположение папок "Загрузки" и "Документы"
-$drives = (Get-Disk | Where-Object BusType -ne USB | Get-Partition | Where-Object IsBoot -ne True | Get-Volume).DriveLetter | ForEach-Object {$_ + ':\'} | Join-Path -ChildPath $_ -Resolve -ErrorAction SilentlyContinue
-IF ($drives)
+IF (!(Test-Path D:\Загрузки))
 {
-	IF (!(Test-Path $drives\Загрузки))
-	{
-		New-Item -Path $drives\Загрузки -Type Directory -Force
-	}
-	IF (!(Test-Path $drives\Документы))
-	{
-		New-Item -Path $drives\Документы -Type Directory -Force
-	}
+	New-Item -Path D:\Загрузки -Type Directory -Force
+}
+IF (!(Test-Path D:\Документы))
+{
+	New-Item -Path D:\Документы -Type Directory -Force
 }
 function KnownFolderPath
 {
