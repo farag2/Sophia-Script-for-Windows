@@ -367,7 +367,7 @@ $params = @{
 "Principal"	= $principal
 }
 Register-ScheduledTask @Params -Force
-# Включение в Планировщике задач очистки папки %SYSTEMROOT%\SoftwareDistribution\Download
+# Включить в Планировщике задач очистки папки %SYSTEMROOT%\SoftwareDistribution\Download
 $action = New-ScheduledTaskAction -Execute "Powershell.exe" -Argument @"
 `$getservice = Get-Service -Name wuauserv
 `$getservice.WaitForStatus('Stopped', '01:00:00')
@@ -472,7 +472,7 @@ IF (!(Test-Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization))
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization -Name NoLockScreen -Value 1 -Force
 # Использовать сценарий автоматической настройки прокси-сервера
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name AutoConfigURL -Type String -Value https://antizapret.prostovpn.org/proxy.pac -Force
-# Включение Num Lock при загрузке
+# Включить Num Lock при загрузке
 New-ItemProperty -Path "Registry::HKEY_USERS\.DEFAULT\Control Panel\Keyboard" -Name InitialKeyboardIndicators -Type String -Value 2147483650 -Force
 # Не показывать рекомендации в меню Пуск
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338388Enabled -Value 0 -Force
@@ -485,7 +485,7 @@ IF (!(Test-Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent))
 }
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent -Name DisableWindowsConsumerFeatures -Value 1 -Force
 # Добавить в исключение Защитник Windows папку
-Add-MpPreference -ExclusionPath $drive\Программы\Прочее -Force
+Add-MpPreference -ExclusionPath D:\Программы\Прочее -Force
 # Отключение справки по F1
 IF (!(Test-Path "HKCU:\Software\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64"))
 {
@@ -520,7 +520,7 @@ IF (!(Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Control
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name AllItemsIconView -Value 0 -Force
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name StartupPage -Value 1 -Force
 # Удалить пункт "Изменить с помощью Paint 3D" из контекстного меню
-$exts = @(".bmp", ".gif", ".jpe", ".jpeg", ".jpg", ".png", ".tif", ".tiff")
+$exts = @(".bmp",".gif", ".jpe", ".jpeg", ".jpg", ".png", ".tif", ".tiff")
 Foreach ($ext in $exts)
 {
 	Remove-Item -Path "Registry::HKEY_CLASSES_ROOT\SystemFileAssociations\$ext\Shell\3D Edit" -Recurse -Force -ErrorAction SilentlyContinue
@@ -656,7 +656,7 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Privacy -
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack\EventTranscriptKey -Name EnableEventTranscript -Value 0 -Force
 # Разрешить Windows исправлять размытость в приложениях
 New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name EnablePerProcessSystemDPI -Value 1 -Force
-# Включение блокировки потенциально нежелательных приложений
+# Включить блокировки потенциально нежелательных приложений
 Set-MpPreference -PUAProtection Enabled
 # Удалить список "Недавно добавленные" из меню "Пуск"
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Value 1 -Force
@@ -685,7 +685,7 @@ New-ItemProperty -Path "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVers
 # Включить Управляемый доступ к папкам
 Set-MpPreference -EnableControlledFolderAccess Enabled
 # Добавить защищенную папку
-Add-MpPreference -ControlledFolderAccessProtectedFolders $drive
+Add-MpPreference -ControlledFolderAccessProtectedFolders D:\
 # Скрыть уведомление Защитника Windows об использовании аккаунта Microsoft
 New-ItemProperty "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AccountProtection_MicrosoftAccount_Disconnected -Value 1 -Force
 # Скрыть уведомление Защитника Windows об отключенном фильтре SmartScreen для Microsoft Edge
@@ -771,43 +771,51 @@ setx /M MP_FORCE_USE_SANDBOX 1
 # Удалить пункт "Создать Документ в формате RTF" из контекстного меню
 Remove-Item "Registry::HKEY_CLASSES_ROOT\.rtf\ShellNew" -Recurse -Force -ErrorAction SilentlyContinue
 # Переопределить расположение папок "Загрузки" и "Документы"
-IF (!(Test-Path D:\Загрузки))
+$drive = (Get-Disk | Where-Object BusType -ne USB | Where-Object IsBoot -ne True | Get-Partition).DriveLetter | ForEach-Object {$_ + ':'}
+IF ($drive)
 {
-	New-Item -Path D:\Загрузки -Type Directory -Force
-}
-IF (!(Test-Path D:\Документы))
-{
-	New-Item -Path D:\Документы -Type Directory -Force
-}
-function KnownFolderPath
-{
-	Param (
-		[Parameter(Mandatory = $true)]
-		[ValidateSet('Documents', 'Downloads')]
-		[string]$KnownFolder,
+    $value = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{F42EE2D3-909F-4907-8871-4C22FC0BF756}"
+    IF ($value -ne "D:\Документы")
+    {
+        function KnownFolderPath
+        {
+	        Param (
+		    [Parameter(Mandatory = $true)]
+		    [ValidateSet('Documents', 'Downloads')]
+		    [string]$KnownFolder,
 
-		[Parameter(Mandatory = $true)]
-		[string]$Path
-    )
-	$KnownFolders = @{
-		'Documents' = @('FDD39AD0-238F-46AF-ADB4-6C85480369C7','f42ee2d3-909f-4907-8871-4c22fc0bf756');
-		'Downloads' = @('374DE290-123F-4565-9164-39C4925E467B','7d83ee9b-2244-4e70-b1f5-5393042af1e4');
-	}
-	$Type = ([System.Management.Automation.PSTypeName]'KnownFolders').Type
-	$Signature = @'
-	[DllImport("shell32.dll")]
-	public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, IntPtr token, [MarshalAs(UnmanagedType.LPWStr)] string path);
+		    [Parameter(Mandatory = $true)]
+		    [string]$Path
+             )
+	        $KnownFolders = @{
+				'Documents' = @('FDD39AD0-238F-46AF-ADB4-6C85480369C7','f42ee2d3-909f-4907-8871-4c22fc0bf756');
+				'Downloads' = @('374DE290-123F-4565-9164-39C4925E467B','7d83ee9b-2244-4e70-b1f5-5393042af1e4');
+			}
+			$Type = ([System.Management.Automation.PSTypeName]'KnownFolders').Type
+			$Signature = @'
+			[DllImport("shell32.dll")]
+			public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, IntPtr token, [MarshalAs(UnmanagedType.LPWStr)] string path);
 '@
-	$Type = Add-Type -MemberDefinition $Signature -Name 'KnownFolders' -Namespace 'SHSetKnownFolderPath' -PassThru
-	#  return $Type::SHSetKnownFolderPath([ref]$KnownFolders[$KnownFolder], 0, 0, $Path)
-	ForEach ($guid in $KnownFolders[$KnownFolder])
-	{
-		$Type::SHSetKnownFolderPath([ref]$guid, 0, 0, $Path)
+			$Type = Add-Type -MemberDefinition $Signature -Name 'KnownFolders' -Namespace 'SHSetKnownFolderPath' -PassThru
+			#  return $Type::SHSetKnownFolderPath([ref]$KnownFolders[$KnownFolder], 0, 0, $Path)
+			ForEach ($guid in $KnownFolders[$KnownFolder])
+			{
+				$Type::SHSetKnownFolderPath([ref]$guid, 0, 0, $Path)
+			}
+			Attrib +r $Path
+		}
+        IF (!(Test-Path $drive\Документы))
+	    {
+		    New-Item -Path $drive\Документы -Type Directory -Force
+	    }
+        IF (!(Test-Path $drive\Загрузки))
+	    {
+		    New-Item -Path $drive\Загрузки -Type Directory -Force
+	    }
+        KnownFolderPath -KnownFolder Downloads -Path "$drive\Загрузки"
+        New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{7D83EE9B-2244-4E70-B1F5-5393042AF1E4}" -Type ExpandString -Value "$drive\Загрузки" -Force
+        KnownFolderPath -KnownFolder Documents -Path "$drive\Документы"
+        New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{F42EE2D3-909F-4907-8871-4C22FC0BF756}" -Type ExpandString -Value "$drive\Документы" -Force
 	}
-	Attrib +r $Path
 }
-KnownFolderPath -KnownFolder Downloads -Path "$env:SystemDrive\Загрузки"
-New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{7D83EE9B-2244-4E70-B1F5-5393042AF1E4}" -Type ExpandString -Value "%SystemDrive%\Загрузки" -Force
-KnownFolderPath -KnownFolder Documents -Path "$env:SystemDrive\Документы"
-New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{F42EE2D3-909F-4907-8871-4C22FC0BF756}" -Type ExpandString -Value "%SystemDrive%\Документы" -Force
 Stop-Process -ProcessName explorer
