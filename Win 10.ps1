@@ -520,7 +520,7 @@ IF (!(Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Control
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name AllItemsIconView -Value 0 -Force
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name StartupPage -Value 1 -Force
 # Удалить пункт "Изменить с помощью Paint 3D" из контекстного меню
-$exts = @(".bmp",".gif", ".jpe", ".jpeg", ".jpg", ".png", ".tif", ".tiff")
+$exts = @(".bmp", ".gif", ".jpe", ".jpeg", ".jpg", ".png", ".tif", ".tiff")
 Foreach ($ext in $exts)
 {
 	Remove-Item -Path "Registry::HKEY_CLASSES_ROOT\SystemFileAssociations\$ext\Shell\3D Edit" -Recurse -Force -ErrorAction SilentlyContinue
