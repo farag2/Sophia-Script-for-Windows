@@ -233,8 +233,8 @@ IF (!(Test-Path $env:SystemDrive\Temp))
 [Environment]::SetEnvironmentVariable("TMP","$env:SystemDrive\Temp","Machine")
 [Environment]::SetEnvironmentVariable("TEMP","$env:SystemDrive\Temp","Machine")
 # Удаление UWP-приложений, кроме Microsoft Store и Пакета локализованного интерфейса на русском
-Get-AppxPackage -AllUsers | Where-Object {$_.Name -CNotLike "*Store*" -and $_.Name -CNotLike "Microsoft.LanguageExperiencePackru-ru"} | Remove-AppxPackage -ErrorAction SilentlyContinue
-Get-AppxProvisionedPackage -Online | Where-Object {$_.DisplayName -CNotLike "*Store*" -and $_.Name -CNotLike "Microsoft.LanguageExperiencePackru-ru"} | Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue
+Get-AppxPackage -AllUsers | Where-Object {$_.Name -CNotLike "AppUp.IntelGraphicsControlPanel" -and $_.Name -CNotLike "Microsoft.LanguageExperiencePackru-ru" -and $_.Name -CNotLike "NVIDIACorp.NVIDIAControlPanel" -and $_.Name -CNotLike "*Store*"} | Remove-AppxPackage -ErrorAction SilentlyContinue
+Get-AppxProvisionedPackage -Online | Where-Object {$_.DisplayName -CNotLike "AppUp.IntelGraphicsControlPanel" -and $_.DisplayName -CNotLike "NVIDIACorp.NVIDIAControlPanel" -and $_.DisplayName -CNotLike "*Store*"} | Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue
 # Отключение компонентов
 $features = @(
 # Отключение службы "Факсы и сканирование"
@@ -298,10 +298,10 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive -Name 
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive -Name DisableMeteredNetworkFileSync -Value 0 -Force
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive -Name DisableLibrariesDefaultSaveToOneDrive -Value 1 -Force
 New-ItemProperty -Path HKCU:\Software\Microsoft\OneDrive -Name DisablePersonalSync -Value 1 -Force
-Remove-ItemProperty -Path HKCU:\Environment -Name OneDrive -Force
-Remove-Item "$env:USERPROFILE\OneDrive" -Recurse -Force
-Remove-Item "$env:LOCALAPPDATA\Microsoft\OneDrive" -Recurse -Force
-Remove-Item "$env:ProgramData\Microsoft OneDrive" -Recurse -Force
+Remove-ItemProperty -Path HKCU:\Environment -Name OneDrive -Force -ErrorAction SilentlyContinue
+Remove-Item "$env:USERPROFILE\OneDrive" -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item "$env:LOCALAPPDATA\Microsoft\OneDrive" -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item "$env:ProgramData\Microsoft OneDrive" -Recurse -Force -ErrorAction SilentlyContinue
 # Не показывать советы по использованию Windows
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SoftLandingEnabled -Value 0 -Force
 # Включить автоматическое обновление для других продуктов Microsoft
@@ -685,7 +685,7 @@ New-ItemProperty -Path "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVers
 # Включить Управляемый доступ к папкам
 Set-MpPreference -EnableControlledFolderAccess Enabled
 # Добавить защищенную папку
-Add-MpPreference -ControlledFolderAccessProtectedFolders D:\
+Add-MpPreference -ControlledFolderAccessProtectedFolders D:\folder
 # Скрыть уведомление Защитника Windows об использовании аккаунта Microsoft
 New-ItemProperty "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AccountProtection_MicrosoftAccount_Disconnected -Value 1 -Force
 # Скрыть уведомление Защитника Windows об отключенном фильтре SmartScreen для Microsoft Edge
@@ -771,23 +771,24 @@ setx /M MP_FORCE_USE_SANDBOX 1
 # Удалить пункт "Создать Документ в формате RTF" из контекстного меню
 Remove-Item "Registry::HKEY_CLASSES_ROOT\.rtf\ShellNew" -Recurse -Force -ErrorAction SilentlyContinue
 # Переопределить расположение папок "Загрузки" и "Документы"
-$drive = (Get-Disk | Where-Object BusType -ne USB | Where-Object IsBoot -ne True | Get-Partition).DriveLetter | ForEach-Object {$_ + ':'}
+$drive = (Get-Disk | Where-Object {$_.BusType -ne "USB" -and $_.IsBoot -ne "True"} | Get-Partition).DriveLetter
 IF ($drive)
 {
-    $value = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{F42EE2D3-909F-4907-8871-4C22FC0BF756}"
-    IF ($value -ne "D:\Документы")
-    {
-        function KnownFolderPath
-        {
-	        Param (
-		    [Parameter(Mandatory = $true)]
-		    [ValidateSet('Documents', 'Downloads')]
-		    [string]$KnownFolder,
+	$drive = (Get-Disk | Where-Object {$_.BusType -ne "USB" -and $_.IsBoot -ne "True"} | Get-Partition).DriveLetter | ForEach-Object {$_ + ':'}
+	$value = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{F42EE2D3-909F-4907-8871-4C22FC0BF756}"
+	IF ($value -ne "D:\Документы")
+	{
+		function KnownFolderPath
+		{
+			Param (
+				[Parameter(Mandatory = $true)]
+				[ValidateSet('Documents', 'Downloads')]
+				[string]$KnownFolder,
 
-		    [Parameter(Mandatory = $true)]
-		    [string]$Path
-             )
-	        $KnownFolders = @{
+				[Parameter(Mandatory = $true)]
+				[string]$Path
+			)
+			$KnownFolders = @{
 				'Documents' = @('FDD39AD0-238F-46AF-ADB4-6C85480369C7','f42ee2d3-909f-4907-8871-4c22fc0bf756');
 				'Downloads' = @('374DE290-123F-4565-9164-39C4925E467B','7d83ee9b-2244-4e70-b1f5-5393042af1e4');
 			}
@@ -804,18 +805,18 @@ IF ($drive)
 			}
 			Attrib +r $Path
 		}
-        IF (!(Test-Path $drive\Документы))
-	    {
-		    New-Item -Path $drive\Документы -Type Directory -Force
-	    }
-        IF (!(Test-Path $drive\Загрузки))
-	    {
-		    New-Item -Path $drive\Загрузки -Type Directory -Force
-	    }
-        KnownFolderPath -KnownFolder Downloads -Path "$drive\Загрузки"
-        New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{7D83EE9B-2244-4E70-B1F5-5393042AF1E4}" -Type ExpandString -Value "$drive\Загрузки" -Force
-        KnownFolderPath -KnownFolder Documents -Path "$drive\Документы"
-        New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{F42EE2D3-909F-4907-8871-4C22FC0BF756}" -Type ExpandString -Value "$drive\Документы" -Force
+		IF (!(Test-Path $drive\Документы))
+		{
+			New-Item -Path $drive\Документы -Type Directory -Force
+		}
+		IF (!(Test-Path $drive\Загрузки))
+		{
+			New-Item -Path $drive\Загрузки -Type Directory -Force
+		}
+		KnownFolderPath -KnownFolder Downloads -Path "$drive\Загрузки"
+		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{7D83EE9B-2244-4E70-B1F5-5393042AF1E4}" -Type ExpandString -Value "$drive\Загрузки" -Force
+		KnownFolderPath -KnownFolder Documents -Path "$drive\Документы"
+		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{F42EE2D3-909F-4907-8871-4C22FC0BF756}" -Type ExpandString -Value "$drive\Документы" -Force
 	}
 }
 Stop-Process -ProcessName explorer
