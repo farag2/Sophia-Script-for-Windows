@@ -1,4 +1,4 @@
-﻿# Службы диагностического отслеживания
+# Службы диагностического отслеживания
 $services = @(
 "CDPSvc",
 "DiagTrack",
@@ -284,7 +284,7 @@ cmd.exe /c assoc jpegfile\DefaultIcon=%SystemRoot%\System32\imageres.dll,-72
 cmd.exe /c assoc pngfile\DefaultIcon=%SystemRoot%\System32\imageres.dll,-71
 cmd.exe /c assoc TIFImage.Document\DefaultIcon=%SystemRoot%\System32\imageres.dll,-122
 # Удалить OneDrive
-Stop-Process -Name OneDrive -ErrorAction SilentlyContinue
+Stop-Process -Name OneDrive -Force -ErrorAction SilentlyContinue
 Start-Sleep -s 3
 Start-Process "$env:SystemRoot\SysWOW64\OneDriveSetup.exe" /uninstall -NoNewWindow -Wait
 Start-Sleep -s 3
