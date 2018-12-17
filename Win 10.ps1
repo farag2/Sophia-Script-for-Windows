@@ -37,7 +37,7 @@ IF (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search"))
 }
 New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name AllowCortana -Value 0 -Force
 # Отключить Контроль Wi-Fi
-IF (Get-NetAdapter -Physical | Where-Object {$_.Name -Match "Беспроводная" -or $_.Name -match "Wi-Fi"})
+IF (Get-NetAdapter -Physical | Where-Object {$_.Name -match "Беспроводная" -or $_.Name -match "Wi-Fi"})
 {
 	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WcmSvc\wifinetworkmanager\config -Name AutoConnectAllowedOEM -Value 0 -Force
 }
@@ -478,12 +478,12 @@ New-ItemProperty -Path "Registry::HKEY_USERS\.DEFAULT\Control Panel\Keyboard" -N
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338388Enabled -Value 0 -Force
 # Отключить автоматическую установку рекомендованных приложений
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SilentInstalledAppsEnabled -Value 0 -Force
-# Отключение возможностей потребителя Microsoft
-IF (!(Test-Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent))
+# Отключение всех функций "Windows: интересное" ###
+IF (!(Test-Path HKCU:\Software\Policies\Microsoft\Windows\CloudContent))
 {
-	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent -Force
+	New-Item -Path HKCU:\Software\Policies\Microsoft\Windows\CloudContent -Force
 }
-New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent -Name DisableWindowsConsumerFeatures -Value 1 -Force
+New-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\CloudContent -Name DisableWindowsSpotlightFeatures -Value 1 -Force
 # Добавить в исключение Защитник Windows папку
 Add-MpPreference -ExclusionPath D:\Программы\Прочее -Force
 # Отключение справки по F1
@@ -509,9 +509,12 @@ Stop-Process $taskmgr
 $preferences.Preferences[28] = 0
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -Type Binary -Value $preferences.Preferences -Force
 # Запретить отключение Ethernet-адаптера для экономии энергии
-$adapter = Get-NetAdapter -Physical | Get-NetAdapterPowerManagement
-$adapter.AllowComputerToTurnOffDevice = "Disabled"
-$adapter | Set-NetAdapterPowerManagement
+IF ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -eq 1)
+{
+	$adapter = Get-NetAdapter -Physical | Get-NetAdapterPowerManagement
+	$adapter.AllowComputerToTurnOffDevice = "Disabled"
+	$adapter | Set-NetAdapterPowerManagement
+}
 # Установка крупных значков в панели управления
 IF (!(Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
 {
@@ -771,52 +774,63 @@ setx /M MP_FORCE_USE_SANDBOX 1
 # Удалить пункт "Создать Документ в формате RTF" из контекстного меню
 Remove-Item "Registry::HKEY_CLASSES_ROOT\.rtf\ShellNew" -Recurse -Force -ErrorAction SilentlyContinue
 # Переопределить расположение папок "Загрузки" и "Документы"
-$drive = (Get-Disk | Where-Object {$_.BusType -ne "USB" -and $_.IsBoot -ne "True"} | Get-Partition).DriveLetter
-IF ($drive)
+$DiskCount = (Get-Disk | Where-Object {$_.BusType -ne "USB"}).Number.Count
+IF ($DiskCount -eq 1)
 {
-	$drive = (Get-Disk | Where-Object {$_.BusType -ne "USB" -and $_.IsBoot -ne "True"} | Get-Partition).DriveLetter | ForEach-Object {$_ + ':'}
-	$value = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{F42EE2D3-909F-4907-8871-4C22FC0BF756}"
-	IF ($value -ne "D:\Документы")
-	{
-		function KnownFolderPath
-		{
-			Param (
-				[Parameter(Mandatory = $true)]
-				[ValidateSet('Documents', 'Downloads')]
-				[string]$KnownFolder,
+	# Один физический диск
+	$drive = (Get-Disk | Where-Object {$_.BusType -ne "USB" -and $_.IsBoot -eq $true} | Get-Partition | Where-Object {$_.IsBoot -eq $false -and $_.IsSystem -eq $false}).DriveLetter
+}
+Else
+{
+	# Больше одного физического диска
+	$drive = (Get-Disk | Where-Object {$_.BusType -ne "USB" -and $_.IsBoot -ne "True"} | Get-Partition | Where-Object {$_.IsHidden -eq $false}).DriveLetter
+}
+$drive = $drive | ForEach-Object {$_ + ':'}
+function KnownFolderPath
+{
+    Param (
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('Documents', 'Downloads')]
+		[string]$KnownFolder,
 
-				[Parameter(Mandatory = $true)]
-				[string]$Path
-			)
-			$KnownFolders = @{
-				'Documents' = @('FDD39AD0-238F-46AF-ADB4-6C85480369C7','f42ee2d3-909f-4907-8871-4c22fc0bf756');
-				'Downloads' = @('374DE290-123F-4565-9164-39C4925E467B','7d83ee9b-2244-4e70-b1f5-5393042af1e4');
-			}
-			$Type = ([System.Management.Automation.PSTypeName]'KnownFolders').Type
-			$Signature = @'
-			[DllImport("shell32.dll")]
-			public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, IntPtr token, [MarshalAs(UnmanagedType.LPWStr)] string path);
-'@
-			$Type = Add-Type -MemberDefinition $Signature -Name 'KnownFolders' -Namespace 'SHSetKnownFolderPath' -PassThru
-			#  return $Type::SHSetKnownFolderPath([ref]$KnownFolders[$KnownFolder], 0, 0, $Path)
-			ForEach ($guid in $KnownFolders[$KnownFolder])
-			{
-				$Type::SHSetKnownFolderPath([ref]$guid, 0, 0, $Path)
-			}
-			Attrib +r $Path
-		}
-		IF (!(Test-Path $drive\Документы))
-		{
-			New-Item -Path $drive\Документы -Type Directory -Force
-		}
-		IF (!(Test-Path $drive\Загрузки))
-		{
-			New-Item -Path $drive\Загрузки -Type Directory -Force
-		}
-		KnownFolderPath -KnownFolder Downloads -Path "$drive\Загрузки"
-		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{7D83EE9B-2244-4E70-B1F5-5393042AF1E4}" -Type ExpandString -Value "$drive\Загрузки" -Force
-		KnownFolderPath -KnownFolder Documents -Path "$drive\Документы"
-		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{F42EE2D3-909F-4907-8871-4C22FC0BF756}" -Type ExpandString -Value "$drive\Документы" -Force
+		[Parameter(Mandatory = $true)]
+		[string]$Path
+	)
+	$KnownFolders = @{
+		'Documents' = @('FDD39AD0-238F-46AF-ADB4-6C85480369C7','F42EE2D3-909F-4907-8871-4C22FC0BF756');
+		'Downloads' = @('374DE290-123F-4565-9164-39C4925E467B','7D83EE9B-2244-4E70-B1F5-5393042AF1E4');
 	}
+	$Type = ([System.Management.Automation.PSTypeName]'KnownFolders').Type
+	$Signature = @'
+	[DllImport("shell32.dll")]
+	public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, IntPtr token, [MarshalAs(UnmanagedType.LPWStr)] string path);
+'@
+	$Type = Add-Type -MemberDefinition $Signature -Name 'KnownFolders' -Namespace 'SHSetKnownFolderPath' -PassThru
+	#  return $Type::SHSetKnownFolderPath([ref]$KnownFolders[$KnownFolder], 0, 0, $Path)
+	ForEach ($guid in $KnownFolders[$KnownFolder])
+	{
+		$Type::SHSetKnownFolderPath([ref]$guid, 0, 0, $Path)
+	}
+	Attrib +r $Path
+}
+$Downloads = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+IF ($Downloads -ne "D:\Загрузки")
+{
+    IF (!(Test-Path $drive\Загрузки))
+    {
+        New-Item -Path $drive\Загрузки -Type Directory -Force
+    }
+    KnownFolderPath -KnownFolder Downloads -Path "$drive\Загрузки"
+    New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{7D83EE9B-2244-4E70-B1F5-5393042AF1E4}" -Type ExpandString -Value "$drive\Загрузки" -Force
+}
+$Documents = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
+IF ($Documents -ne "D:\Документы")
+{	
+	IF (!(Test-Path $drive\Документы))
+	{
+		New-Item -Path $drive\Документы -Type Directory -Force
+	}
+	KnownFolderPath -KnownFolder Documents -Path "$drive\Документы"
+	New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{F42EE2D3-909F-4907-8871-4C22FC0BF756}" -Type ExpandString -Value "$drive\Документы" -Force
 }
 Stop-Process -ProcessName explorer
