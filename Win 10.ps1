@@ -403,7 +403,7 @@ $params = @{
 Register-ScheduledTask @Params -Force
 # Включить в Планировщике задач очистки папки %SYSTEMROOT%\Logs\CBS
 $action = New-ScheduledTaskAction -Execute "Powershell.exe" -Argument @"
-`$dir = '$env:SystemRoot\Logs\CBS'
+`$dir = "$env:SystemRoot\Logs\CBS"
 `$foldersize = (Get-ChildItem -Path `$dir -Recurse -Force | Measure-Object -Property Length -Sum).Sum/1MB
 IF (`$foldersize -GT 10)
 {
@@ -672,9 +672,9 @@ New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name
 Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name Extended -Force -ErrorAction SilentlyContinue
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name SuppressionPolicyEx -Type String -Value "{F211AA05-D4DF-4370-A2A0-9F19C09756A7}" -Force
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser\command -Name DelegateExecute -Type String -Value "{ea72d00e-4960-42fa-ba92-7792a7944c1d}" -Force
-# Включить доступа к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами
+# Включить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableLinkedConnections -Value 1 -Force
-# Включить длинных путей Win32
+# Включить длинные пути Win32
 New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -Value 1 -Force
 # Отключить создание ярлыка Edge на рабочем столе после обновления Windows
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name DisableEdgeDesktopShortcutCreation -Value 1 -Force
@@ -778,12 +778,12 @@ $DiskCount = (Get-Disk | Where-Object {$_.BusType -ne "USB"}).Number.Count
 IF ($DiskCount -eq 1)
 {
 	# Один физический диск
-	$drive = (Get-Disk | Where-Object {$_.BusType -ne "USB" -and $_.IsBoot -eq $true} | Get-Partition | Where-Object {$_.IsBoot -eq $false -and $_.IsSystem -eq $false}).DriveLetter
+	$drive = (Get-Disk | Where-Object {$_.BusType -ne "USB" -and $_.IsBoot -eq $true} | Get-Partition | Get-Volume).DriveLetter
 }
 Else
 {
 	# Больше одного физического диска
-	$drive = (Get-Disk | Where-Object {$_.BusType -ne "USB" -and $_.IsBoot -ne "True"} | Get-Partition | Where-Object {$_.IsHidden -eq $false}).DriveLetter
+	$drive = (Get-Disk | Where-Object {$_.BusType -ne "USB" -and $_.IsBoot -eq $false} | Get-Partition | Get-Volume).DriveLetter
 }
 $drive = $drive | ForEach-Object {$_ + ':'}
 function KnownFolderPath
@@ -825,7 +825,7 @@ IF ($Downloads -ne "D:\Загрузки")
 }
 $Documents = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
 IF ($Documents -ne "D:\Документы")
-{	
+{
 	IF (!(Test-Path $drive\Документы))
 	{
 		New-Item -Path $drive\Документы -Type Directory -Force
