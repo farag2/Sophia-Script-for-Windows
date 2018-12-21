@@ -785,7 +785,7 @@ Else
 	# Больше одного физического диска
 	$drive = (Get-Disk | Where-Object {$_.BusType -ne "USB" -and $_.IsBoot -eq $false} | Get-Partition | Get-Volume).DriveLetter
 }
-$drive = $drive | ForEach-Object {$_ + ':'}
+$drive = $drive | ForEach-Object {$_ + ':'} | Join-Path -ChildPath $_ -Resolve -ErrorAction SilentlyContinue
 function KnownFolderPath
 {
     Param (
