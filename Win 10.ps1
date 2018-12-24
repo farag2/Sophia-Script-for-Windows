@@ -384,23 +384,6 @@ $params = @{
 "Principal"	= $principal
 }
 Register-ScheduledTask @Params -Force
-# Включение в Планировщике задач удаление устаревших обновлений Office, кроме Office 2019
-$action = New-ScheduledTaskAction -Execute "Powershell.exe" -Argument @"
-`$getservice = Get-Service -Name wuauserv
-`$getservice.WaitForStatus('Stopped', '01:00:00')
-Start-Process -FilePath D:\Программы\Прочее\Office_task.bat
-"@
-$trigger = New-ScheduledTaskTrigger -Weekly -At 9am -DaysOfWeek Thursday -WeeksInterval 4
-$settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-$principal = New-ScheduledTaskPrincipal -UserID System -RunLevel Highest
-$params = @{
-"TaskName"	= "Office"
-"Action"	= $action
-"Trigger"	= $trigger
-"Settings"	= $settings
-"Principal"	= $principal
-}
-Register-ScheduledTask @Params -Force
 # Включить в Планировщике задач очистки папки %SYSTEMROOT%\Logs\CBS
 $action = New-ScheduledTaskAction -Execute "Powershell.exe" -Argument @"
 `$dir = "$env:SystemRoot\Logs\CBS"
