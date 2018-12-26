@@ -2,14 +2,9 @@
 $services = @(
 "CDPSvc",
 "DiagTrack",
-"diagnosticshub.standardcollector.service",
-"dmwappushservice",
 "DusmSvc",
 "lfsvc",
-"MapsBroker",
-"NcbService",
-"SSDPSRV",
-"wcncsvc")
+"NcbService")
 Foreach ($service in $services)
 {
 	Get-Service $service | Stop-Service -ErrorAction SilentlyContinue
