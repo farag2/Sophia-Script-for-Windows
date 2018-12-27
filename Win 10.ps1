@@ -757,14 +757,13 @@ $DiskCount = (Get-Disk | Where-Object {$_.BusType -ne "USB"}).Number.Count
 IF ($DiskCount -eq 1)
 {
 	# Один физический диск
-	$drive = (Get-Disk | Where-Object {$_.BusType -ne "USB" -and $_.IsBoot -eq $true} | Get-Partition | Get-Volume).DriveLetter
+	$drive = (Get-Disk | Where-Object {$_.BusType -ne "USB" -and $_.IsBoot -eq $true} | Get-Partition | Get-Volume | Where-Object {$_.DriveLetter -ne $null}).DriveLetter + $_ + ':'
 }
 Else
 {
 	# Больше одного физического диска
-	$drive = (Get-Disk | Where-Object {$_.BusType -ne "USB" -and $_.IsBoot -eq $false} | Get-Partition | Get-Volume).DriveLetter
+	$drive = (Get-Disk | Where-Object {$_.BusType -ne "USB" -and $_.IsBoot -eq $false} | Get-Partition | Get-Volume | Where-Object {$_.DriveLetter -ne $null}).DriveLetter + $_ + ':'
 }
-$drive = $drive | ForEach-Object {$_ + ':'} | Join-Path -ChildPath $_ -Resolve -ErrorAction SilentlyContinue
 function KnownFolderPath
 {
     Param (
@@ -793,7 +792,7 @@ function KnownFolderPath
 	Attrib +r $Path
 }
 $Downloads = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-IF ($Downloads -ne "D:\Загрузки")
+IF ($Downloads -ne "$drive\Загрузки")
 {
     IF (!(Test-Path $drive\Загрузки))
     {
@@ -803,7 +802,7 @@ IF ($Downloads -ne "D:\Загрузки")
     New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{7D83EE9B-2244-4E70-B1F5-5393042AF1E4}" -Type ExpandString -Value "$drive\Загрузки" -Force
 }
 $Documents = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
-IF ($Documents -ne "D:\Документы")
+IF ($Documents -ne "$drive\Документы")
 {
 	IF (!(Test-Path $drive\Документы))
 	{
