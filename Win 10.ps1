@@ -4,7 +4,8 @@ $services = @(
 "DiagTrack",
 "DusmSvc",
 "lfsvc",
-"NcbService")
+"NcbService",
+"SSDPSRV")
 Foreach ($service in $services)
 {
 	Get-Service $service | Stop-Service -ErrorAction SilentlyContinue
