@@ -762,7 +762,7 @@ IF ($DiskCount -eq 1)
 Else
 {
 	# Больше одного физического диска
-	$drive = (Get-Disk | Where-Object {$_.BusType -ne "USB" -and $_.IsBoot -eq $false} | Get-Partition | Get-Volume | Where-Object {$_.DriveLetter -ne $null}).DriveLetter + $_ + ':'
+	$drive = (Get-Disk | Where-Object {$_.BusType -ne "USB" -and $_.IsBoot -eq $false} | Get-Partition | Get-Volume | Where-Object {$_.DriveLetter -ne $null}).DriveLetter | ForEach-Object {$_ + ':'}
 }
 function KnownFolderPath
 {
