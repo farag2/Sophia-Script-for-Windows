@@ -334,7 +334,7 @@ Set-NetFirewallProfile -Enabled False -ErrorAction SilentlyContinue
 Get-Service -Name DoSvc | Stop-Service -ErrorAction SilentlyContinue
 IF (!(Test-Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization))
 {
-    New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization -Force
+	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization -Force
 }
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization -Name DODownloadMode -Value 0 -Force
 # Включить в Планировщике задач запуска очистки обновлений Windows
@@ -402,7 +402,7 @@ $params = @{
 Register-ScheduledTask @Params -Force
 # Включить в Планировщике задач очистки папки %TEMP%
 $action = New-ScheduledTaskAction -Execute "Powershell.exe" -Argument 'Get-ChildItem -Path "$env:TEMP" -Force -Recurse | Remove-Item -Force -Recurse -ErrorAction SilentlyContinue'
-$trigger =  New-ScheduledTaskTrigger -Daily -DaysInterval 62 -At 9am
+$trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 62 -At 9am
 $settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
 $principal = New-ScheduledTaskPrincipal -UserID System -RunLevel Highest
 $params = @{
@@ -681,7 +681,7 @@ $apps = @(
 "OpenSSH.Client*")
 Foreach ($app in $apps)
 {
-    Get-WindowsCapability -Online | Where-Object name -Like $app | Remove-WindowsCapability -Online
+	Get-WindowsCapability -Online | Where-Object name -Like $app | Remove-WindowsCapability -Online
 }
 # Создать ярлык для "Устройства и принтеры"
 $target = "control"
@@ -766,9 +766,9 @@ Else
 }
 function KnownFolderPath
 {
-    Param (
-        [Parameter(Mandatory = $true)]
-        [ValidateSet('Documents', 'Downloads')]
+	Param (
+		[Parameter(Mandatory = $true)]
+		[ValidateSet('Documents', 'Downloads')]
 		[string]$KnownFolder,
 
 		[Parameter(Mandatory = $true)]
@@ -784,7 +784,7 @@ function KnownFolderPath
 	public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, IntPtr token, [MarshalAs(UnmanagedType.LPWStr)] string path);
 '@
 	$Type = Add-Type -MemberDefinition $Signature -Name 'KnownFolders' -Namespace 'SHSetKnownFolderPath' -PassThru
-	#  return $Type::SHSetKnownFolderPath([ref]$KnownFolders[$KnownFolder], 0, 0, $Path)
+	# return $Type::SHSetKnownFolderPath([ref]$KnownFolders[$KnownFolder], 0, 0, $Path)
 	ForEach ($guid in $KnownFolders[$KnownFolder])
 	{
 		$Type::SHSetKnownFolderPath([ref]$guid, 0, 0, $Path)
@@ -794,12 +794,12 @@ function KnownFolderPath
 $Downloads = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 IF ($Downloads -ne "$drive\Загрузки")
 {
-    IF (!(Test-Path $drive\Загрузки))
-    {
-        New-Item -Path $drive\Загрузки -Type Directory -Force
-    }
-    KnownFolderPath -KnownFolder Downloads -Path "$drive\Загрузки"
-    New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{7D83EE9B-2244-4E70-B1F5-5393042AF1E4}" -Type ExpandString -Value "$drive\Загрузки" -Force
+	IF (!(Test-Path $drive\Загрузки))
+	{
+		New-Item -Path $drive\Загрузки -Type Directory -Force
+	}
+	KnownFolderPath -KnownFolder Downloads -Path "$drive\Загрузки"
+	New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{7D83EE9B-2244-4E70-B1F5-5393042AF1E4}" -Type ExpandString -Value "$drive\Загрузки" -Force
 }
 $Documents = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
 IF ($Documents -ne "$drive\Документы")
