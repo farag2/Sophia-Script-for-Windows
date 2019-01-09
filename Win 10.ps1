@@ -464,13 +464,13 @@ IF (!(Test-Path HKCU:\Software\Policies\Microsoft\Windows\CloudContent))
 }
 New-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\CloudContent -Name DisableWindowsSpotlightFeatures -Value 1 -Force
 # Добавить в исключение Защитник Windows папку
-Add-MpPreference -ExclusionPath D:\Программы\Прочее -Force
+Add-MpPreference -ExclusionPath D:\folder -Force
 # Отключить справку по F1
 IF (!(Test-Path "HKCU:\Software\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64"))
 {
 	New-Item -Path "HKCU:\Software\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64" -Force
 }
-New-ItemProperty -Path "HKCU:\Software\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64" -Name "(Default)" -Type String -Value "" -Force
+New-ItemProperty -Path "HKCU:\Software\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64" -Name "(default)" -Type String -Value "" -Force
 # Раскрыть окно Диспетчера задач
 $taskmgr = Get-Process Taskmgr -ErrorAction SilentlyContinue
 IF ($taskmgr)
