@@ -704,7 +704,6 @@ Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.contact\ShellNew -Name Me
 Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder\ShellNew -Name Data -Force -ErrorAction SilentlyContinue
 Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder\ShellNew -Name ItemName -Force -ErrorAction SilentlyContinue
 # Включить Защиты сети в Защитнике Windows
-[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 Set-MpPreference -EnableNetworkProtection Enabled
 # Настройка меню Пуск
 filter Get-FirstResolvedPath
