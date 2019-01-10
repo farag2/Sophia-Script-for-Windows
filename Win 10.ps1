@@ -697,23 +697,33 @@ $bytes = [System.IO.File]::ReadAllBytes("$env:APPDATA\Microsoft\Windows\Start Me
 $bytes[0x15] = $bytes[0x15] -bor 0x20
 [System.IO.File]::WriteAllBytes("$env:APPDATA\Microsoft\Windows\Start Menu\Programs\System Tools\Command Prompt.lnk", $bytes)
 # Удалить пункт "Создать контакт" из контекстного меню
-Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.contact\ShellNew -Name command -Force
-Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.contact\ShellNew -Name iconpath -Force
-Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.contact\ShellNew -Name MenuText -Force
+Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.contact\ShellNew -Name command -Force -ErrorAction SilentlyContinue
+Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.contact\ShellNew -Name iconpath -Force -ErrorAction SilentlyContinue
+Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.contact\ShellNew -Name MenuText -Force -ErrorAction SilentlyContinue
 # Удалить пункт "Создать архив ZIP" из контекстного меню
-Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder\ShellNew -Name Data -Force
-Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder\ShellNew -Name ItemName -Force
+Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder\ShellNew -Name Data -Force -ErrorAction SilentlyContinue
+Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder\ShellNew -Name ItemName -Force -ErrorAction SilentlyContinue
 # Включить Защиты сети в Защитнике Windows
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 Set-MpPreference -EnableNetworkProtection Enabled
 # Настройка меню Пуск
-$reg = 'D:\Folder\Start.reg'
-Remove-Item HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount -Recurse -Force
-Start-Process reg.exe -ArgumentList 'import',"$reg"
-# Открепить все ярлыки от начального экрана
-$key = Get-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*start.tilegrid`$windows.data.curatedtilecollection.tilecollection\Current
-$data = $key.Data[0..25] + ([byte[]](202,50,0,226,44,1,1,0,0))
-New-ItemProperty -Path $key.PSPath -Name Data -Type Binary -Value $data -Force
+filter Get-FirstResolvedPath
+{
+	(Get-Disk | Where-Object {$_.BusType -eq "USB"} | Get-Partition | Get-Volume | Where-Object {$_.DriveLetter -ne $null}).DriveLetter | ForEach-Object {$_ + ':\'} | Join-Path -ChildPath $_ -Resolve -ErrorAction SilentlyContinue | Select-Object -First 1
+}
+$regpath = 'Folder\Start.reg' | Get-FirstResolvedPath
+IF ($regpath)
+{
+	Remove-Item HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount -Recurse -Force
+	Start-Process reg.exe -ArgumentList 'import',"$regpath"
+}
+Else
+{
+	# Открепить все ярлыки от начального экрана
+	$key = Get-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*start.tilegrid`$windows.data.curatedtilecollection.tilecollection\Current
+	$data = $key.Data[0..25] + ([byte[]](202,50,0,226,44,1,1,0,0))
+	New-ItemProperty -Path $key.PSPath -Name Data -Type Binary -Value $data -Force
+}
 # Отображать цвет элементов в меню Пуск, на панели задач и в центре уведомлений
 New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name ColorPrevalence -Value 1 -Force
 # Отображать цвет элементов в заголовках окон
@@ -730,8 +740,8 @@ Remove-Item "$env:USERPROFILE\Desktop\Ваш телефон.lnk" -Force -ErrorAc
 # Удалить пункт "Восстановить прежнюю версию" из контекстного меню
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{596AB062-B4D2-4215-9F74-E9109B0A8153}" -Type String -Value "" -Force
 # Удалить пункт "Создать Точечный рисунок" из контекстного меню
-Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.bmp\ShellNew -Name ItemName -Force
-Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.bmp\ShellNew -Name NullFile -Force
+Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.bmp\ShellNew -Name ItemName -Force -ErrorAction SilentlyContinue
+Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.bmp\ShellNew -Name NullFile -Force -ErrorAction SilentlyContinue
 # Не включать временную шкалу
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\System -Name EnableActivityFeed -Value 0 -Force
 # Не разрешать Windows собирать действия с этого компьютера
@@ -749,14 +759,14 @@ New-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name Ht
 # Не разрешать Windows отслеживать запуски приложений для улучшения меню "Пуск" и результатов поиска
 New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_TrackProgs -Value 0 -Force
 # Удалить пункт "Печать" из контекстного меню для bat- и cmd-файлов
-Remove-Item "Registry::HKEY_CLASSES_ROOT\batfile\shell\print" -Recurse -Force -ErrorAction SilentlyContinue
-Remove-Item "Registry::HKEY_CLASSES_ROOT\cmdfile\shell\print" -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item Registry::HKEY_CLASSES_ROOT\batfile\shell\print -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item Registry::HKEY_CLASSES_ROOT\cmdfile\shell\print -Recurse -Force -ErrorAction SilentlyContinue
 # Запускать Защитник Windows в песочнице
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 setx /M MP_FORCE_USE_SANDBOX 1
 # Удалить пункт "Создать Документ в формате RTF" из контекстного меню
-Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.rtf\ShellNew -Name Data -Force
-Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.rtf\ShellNew -Name ItemName -Force
+Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.rtf\ShellNew -Name Data -Force -ErrorAction SilentlyContinue
+Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.rtf\ShellNew -Name ItemName -Force -ErrorAction SilentlyContinue
 # Переопределить расположение папок "Загрузки" и "Документы"
 $DiskCount = (Get-Disk | Where-Object {$_.BusType -ne "USB"}).Number.Count
 IF ($DiskCount -eq 1)
