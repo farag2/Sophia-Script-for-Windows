@@ -720,7 +720,7 @@ $regpath = 'Folder\Start.reg' | Get-FirstResolvedPath
 IF ($regpath)
 {
 	Remove-Item HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount -Recurse -Force
-	Start-Process reg.exe -ArgumentList 'import',"$regpath"
+	Start-Process -FilePath reg.exe -ArgumentList 'import',"$regpath"
 }
 Else
 {
