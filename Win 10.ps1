@@ -8,8 +8,8 @@ $services = @(
 "SSDPSRV")
 Foreach ($service in $services)
 {
-	Get-Service $service | Stop-Service -ErrorAction SilentlyContinue
-	Get-Service $service | Set-Service -StartupType Disabled -ErrorAction SilentlyContinue
+	Get-Service -ServiceName $service | Stop-Service -Force
+	Get-Service -ServiceName $service | Set-Service -StartupType Disabled
 }
 # Отключить телеметрию и сбор данных для отправки
 Set-AutologgerConfig -Name "AutoLogger-Diagtrack-Listener" -Start 0
@@ -20,14 +20,14 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersi
 # Отключить отчеты об ошибках Windows
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Value 1 -Force
 # Изменить частоту формирования отзывов на "Никогда"
-IF (!(Test-Path HKCU:\Software\Microsoft\Siuf\Rules))
+IF (!(Test-Path -Path HKCU:\Software\Microsoft\Siuf\Rules))
 {
 	New-Item -Path HKCU:\Software\Microsoft\Siuf\Rules -Force
 }
 New-ItemProperty -Path HKCU:\Software\Microsoft\Siuf\Rules -Name NumberOfSIUFInPeriod -Value 0 -Force
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name DoNotShowFeedbackNotifications -Value 1 -Force
 # Отключить Cortana
-IF (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search"))
+IF (!(Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search"))
 {
 	New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Force
 }
@@ -63,7 +63,7 @@ $tasks = @(
 "XblGameSaveTask")
 Foreach ($task in $tasks)
 {
-	Get-ScheduledTask $task | Disable-ScheduledTask
+	Get-ScheduledTask -TaskName $task | Disable-ScheduledTask
 }
 # Отключить в "Журналах Windows/Безопасность" сообщение "Платформа фильтрации IP-пакетов Windows разрешила подключение"
 auditpol /set /subcategory:"{0CCE9226-69AE-11D9-BED3-505054503030}" /success:disable /failure:disable
@@ -82,19 +82,19 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\
 # Не показывать кнопку поиска
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -Value 0 -Force
 # Запрашивать подтверждение при удалении файлов
-IF (!(Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer))
+IF (!(Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer))
 {
 	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Force
 }
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name ConfirmFileDelete -Value 1 -Force
 # Запускать проводник с развернутой лентой
-IF (!(Test-Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
+IF (!(Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
 {
 	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Force
 }
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name ExplorerRibbonStartsMinimized -Value 2 -Force
 # Развернуть диалог переноса файлов
-IF (!(Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager))
+IF (!(Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager))
 {
 	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager -Force
 }
@@ -110,7 +110,7 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer 
 # Отключить поиск программ в Microsoft Store
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Value 1 -Force
 # Не хранить сведения о зоне происхождения вложенных файлов
-IF (!(Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Attachments))
+IF (!(Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Attachments))
 {
 	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Attachments -Force
 }
@@ -120,20 +120,20 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name SmartScreenEnabled -Type String -Value Off -Force
 # Отключить SmartScreen в Edge
 $edge = (Get-AppxPackage "Microsoft.MicrosoftEdge").PackageFamilyName
-IF (!(Test-Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\PhishingFilter"))
+IF (!(Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\PhishingFilter"))
 {
 	New-Item -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\PhishingFilter" -Force
 }
 New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\PhishingFilter" -Name EnabledV9 -Value 0 -Force
 New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\PhishingFilter" -Name PreventOverride -Value 0 -Force
 # Отключить Flash Player в Edge
-IF (!(Test-Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Addons"))
+IF (!(Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Addons"))
 {
 	New-Item -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Addons" -Force
 }
 New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Addons" -Name FlashPlayerEnabled -Value 0 -Force
 # Открывать в новом окне предыдущие страницы в Edge
-IF (!(Test-Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\ContinuousBrowsing"))
+IF (!(Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\ContinuousBrowsing"))
 {
 	New-Item -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\ContinuousBrowsing" -Force
 }
@@ -146,7 +146,7 @@ New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft
 # Отправлять запросы "Не отслеживать" в Edge
 New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Main" -Name DoNotTrack -Value 1 -Force
 # Отображать лучшие сайты в новой вкладке в Edge
-IF (!(Test-Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\ServiceUI"))
+IF (!(Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\ServiceUI"))
 {
 	New-Item -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\ServiceUI" -Force
 }
@@ -253,11 +253,11 @@ Foreach ($feature in $features)
 	Disable-WindowsOptionalFeature -Online -FeatureName $feature -NoRestart
 }
 # Добавить Средство просмотра фотографий Windows в пункт контекстного меню "Открыть с помощью"
-IF (!(Test-Path Registry::HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell\open\command))
+IF (!(Test-Path -Path Registry::HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell\open\command))
 {
 	New-Item -Path Registry::HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell\open\command -Force
 }
-IF (!(Test-Path Registry::HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell\open\DropTarget))
+IF (!(Test-Path -Path Registry::HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell\open\DropTarget))
 {
 	New-Item -Path Registry::HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell\open\DropTarget -Force
 }
@@ -281,11 +281,11 @@ cmd.exe /c assoc pngfile\DefaultIcon=%SystemRoot%\System32\imageres.dll,-71
 cmd.exe /c assoc TIFImage.Document\DefaultIcon=%SystemRoot%\System32\imageres.dll,-122
 # Удалить OneDrive
 Stop-Process -Name OneDrive -Force -ErrorAction SilentlyContinue
-Start-Sleep -s 3
-Start-Process "$env:SystemRoot\SysWOW64\OneDriveSetup.exe" /uninstall -NoNewWindow -Wait
-Start-Sleep -s 3
+Start-Sleep -Seconds 3
+Start-Process -FilePath "$env:SystemRoot\SysWOW64\OneDriveSetup.exe" /uninstall -NoNewWindow -Wait
+Start-Sleep -Seconds 3
 Stop-Process -ProcessName explorer
-IF (!(Test-Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive))
+IF (!(Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive))
 {
 	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive -Force
 }
@@ -295,15 +295,16 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive -Name 
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive -Name DisableLibrariesDefaultSaveToOneDrive -Value 1 -Force
 New-ItemProperty -Path HKCU:\Software\Microsoft\OneDrive -Name DisablePersonalSync -Value 1 -Force
 Remove-ItemProperty -Path HKCU:\Environment -Name OneDrive -Force -ErrorAction SilentlyContinue
-Remove-Item "$env:USERPROFILE\OneDrive" -Recurse -Force -ErrorAction SilentlyContinue
-Remove-Item "$env:LOCALAPPDATA\Microsoft\OneDrive" -Recurse -Force -ErrorAction SilentlyContinue
-Remove-Item "$env:ProgramData\Microsoft OneDrive" -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item -Path $env:USERPROFILE\OneDrive -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item -Path $env:LOCALAPPDATA\Microsoft\OneDrive -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "$env:ProgramData\Microsoft OneDrive" -Recurse -Force -ErrorAction SilentlyContinue
+Unregister-ScheduledTask -TaskName *OneDrive* -Confirm:$false
 # Не показывать советы по использованию Windows
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SoftLandingEnabled -Value 0 -Force
 # Включить автоматическое обновление для других продуктов Microsoft
 (New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d",7,"")
 # Отключить меню игры
-IF (!(Test-Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR))
+IF (!(Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR))
 {
 	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR -Force
 }
@@ -317,13 +318,13 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\GameBar -Name AutoGameModeEnable
 # Отключить подсказки игровой панели
 New-ItemProperty -Path HKCU:\Software\Microsoft\GameBar -Name ShowStartupPanel -Value 0 -Force
 # Отключить восстановление системы
-Disable-ComputerRestore -drive $env:SystemDrive
+Disable-ComputerRestore -Drive $env:SystemDrive
 Get-ScheduledTask -TaskName SR | Disable-ScheduledTask
-Get-Service swprv,vss | Set-Service -StartupType Manual
-Get-Service swprv,vss | Start-Service -ErrorAction SilentlyContinue
+Get-Service -ServiceName swprv,vss | Set-Service -StartupType Manual
+Get-Service -ServiceName swprv,vss | Start-Service
 Get-CimInstance -ClassName Win32_shadowcopy | Remove-CimInstance
-Get-Service swprv,vss | Stop-Service -ErrorAction SilentlyContinue
-Get-Service swprv,vss | Set-Service -StartupType Disabled
+Get-Service -ServiceName swprv,vss | Stop-Service -Force
+Get-Service -ServiceName swprv,vss | Set-Service -StartupType Disabled
 # Отключить Windows Script Host
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings" -Name Enabled -Value 0 -Force
 # Всегда отображать все значки в области уведомлений
@@ -331,7 +332,7 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer 
 # Включить брандмауэр
 Set-NetFirewallProfile -Enabled True
 # Отключить оптимизацию доставки для обновлений с других ПК
-Get-Service -Name DoSvc | Stop-Service -ErrorAction SilentlyContinue
+Get-Service -ServiceName DoSvc | Stop-Service -Force
 IF (!(Test-Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization))
 {
 	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization -Force
@@ -414,12 +415,16 @@ $params = @{
 }
 Register-ScheduledTask @Params -Force
 # Запретить приложениям работать в фоновом режиме, кроме Cortana и Безопасность Windows
-Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications -Exclude "Microsoft.Windows.Cortana*", "Microsoft.Windows.SecHealthUI*","Microsoft.Windows.ShellExperienceHost*" |
+Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications -Exclude "Microsoft.Windows.Cortana*", "Microsoft.Windows.SecHealthUI*", "Microsoft.Windows.ShellExperienceHost*" |
 ForEach-Object {
 	New-ItemProperty -Path $_.PsPath -Name Disabled -Value 1 -Force
 	New-ItemProperty -Path $_.PsPath -Name DisabledByUser -Value 1 -Force
 }
 # Включить контроль памяти
+IF (!(Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy))
+{
+	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Force
+}
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01 -Value 1 -Force
 # Запускать контроль памяти каждый месяц
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 2048 -Value 30 -Force
@@ -458,7 +463,7 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDe
 # Отключить автоматическую установку рекомендованных приложений
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SilentInstalledAppsEnabled -Value 0 -Force
 # Отключить все функции "Windows: интересное" ###
-IF (!(Test-Path HKCU:\Software\Policies\Microsoft\Windows\CloudContent))
+IF (!(Test-Path -Path HKCU:\Software\Policies\Microsoft\Windows\CloudContent))
 {
 	New-Item -Path HKCU:\Software\Policies\Microsoft\Windows\CloudContent -Force
 }
@@ -466,13 +471,13 @@ New-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\CloudContent -N
 # Добавить в исключение Защитник Windows папку
 Add-MpPreference -ExclusionPath D:\folder -Force
 # Отключить справку по F1
-IF (!(Test-Path "HKCU:\Software\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64"))
+IF (!(Test-Path -Path "HKCU:\Software\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64"))
 {
 	New-Item -Path "HKCU:\Software\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64" -Force
 }
 New-ItemProperty -Path "HKCU:\Software\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64" -Name "(default)" -Type String -Value "" -Force
 # Раскрыть окно Диспетчера задач
-$taskmgr = Get-Process Taskmgr -ErrorAction SilentlyContinue
+$taskmgr = Get-Process -Name Taskmgr -ErrorAction SilentlyContinue
 IF ($taskmgr)
 {
 	$taskmgr.CloseMainWindow()
@@ -495,7 +500,7 @@ IF ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -eq 1)
 	$adapter | Set-NetAdapterPowerManagement
 }
 # Установка крупных значков в панели управления
-IF (!(Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
+IF (!(Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
 {
 	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Force
 }
@@ -508,7 +513,7 @@ Foreach ($ext in $exts)
 	Remove-Item -Path "Registry::HKEY_CLASSES_ROOT\SystemFileAssociations\$ext\Shell\3D Edit" -Recurse -Force -ErrorAction SilentlyContinue
 }
 # Удалить пункт "Передать на устройство" из контекстного меню
-IF (!(Test-Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"))
+IF (!(Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"))
 {
 	New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Force
 }
@@ -516,7 +521,7 @@ New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Ex
 # Удалить пункт "Отправить" из контекстного меню
 Remove-Item -LiteralPath Registry::HKEY_CLASSES_ROOT\*\shellex\ContextMenuHandlers\ModernSharing -Recurse -Force -ErrorAction SilentlyContinue
 # Всегда ждать сеть при запуске и входе в систему
-IF (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon"))
+IF (!(Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon"))
 {
 	New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon" -Force
 }
@@ -524,7 +529,7 @@ New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVers
 # Не показывать уведомление "Установлено новое приложение"
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoNewAppAlert -Value 1 -Force
 # Переопределить пользовательский метод ввода на английский язык на экране входа
-IF (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Control Panel\International"))
+IF (!(Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Control Panel\International"))
 {
 	New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Control Panel\International" -Force
 }
@@ -612,18 +617,15 @@ New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer
 # Отключить пользовательские службы
 $services = @(
 "cbdhsvc_*",
-"OneSyncSvc_*",
 "PimIndexMaintenanceSvc_*",
 "UnistoreSvc_*",
 "UserDataSvc_*")
 Foreach ($service In $services)
 {
-	Get-Service $service | Stop-Service -Force -ErrorAction SilentlyContinue
+	Get-Service -ServiceName $service | Stop-Service -Force
 }
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\cbdhsvc -Name Start -Value 4 -Force
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\cbdhsvc -Name UserServiceFlags -Value 0 -Force
-New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\OneSyncSvc -Name Start -Value 4 -Force
-New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\OneSyncSvc -Name UserServiceFlags -Value 0 -Force
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\PimIndexMaintenanceSvc -Name Start -Value 4 -Force
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\PimIndexMaintenanceSvc -Name UserServiceFlags -Value 0 -Force
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UnistoreSvc -Name Start -Value 4 -Force
@@ -669,7 +671,11 @@ Set-MpPreference -EnableControlledFolderAccess Enabled
 # Добавить защищенную папку
 Add-MpPreference -ControlledFolderAccessProtectedFolders D:\folder
 # Скрыть уведомление Защитника Windows об использовании аккаунта Microsoft
-New-ItemProperty "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AccountProtection_MicrosoftAccount_Disconnected -Value 1 -Force
+IF (!(Test-Path -Path "HKCU:\Software\Microsoft\Windows Security Health\State"))
+{
+	New-Item -Path "HKCU:\Software\Microsoft\Windows Security Health\State" -Force
+}
+New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AccountProtection_MicrosoftAccount_Disconnected -Value 1 -Force
 # Скрыть уведомление Защитника Windows об отключенном фильтре SmartScreen для Microsoft Edge
 New-ItemProperty "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AppAndBrowser_EdgeSmartScreenOff -Value 0 -Force
 # Удалить компоненты
@@ -734,8 +740,6 @@ New-ItemProperty -Path "HKCU:\Control Panel\Accessibility" -Name DynamicScrollba
 # Группировать одинаковые службы в один процесс svhost.exe
 $ram = (Get-CimInstance Win32_PhysicalMemory | Measure-Object -Property Capacity -Sum).Sum/1kb
 New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control -Name SvcHostSplitThresholdInKB -Value $ram -Force
-# Удалить ярлык "Ваш телефон" с рабочего стола
-Remove-Item "$env:USERPROFILE\Desktop\Ваш телефон.lnk" -Force -ErrorAction SilentlyContinue
 # Удалить пункт "Восстановить прежнюю версию" из контекстного меню
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{596AB062-B4D2-4215-9F74-E9109B0A8153}" -Type String -Value "" -Force
 # Удалить пункт "Создать Точечный рисунок" из контекстного меню
@@ -758,8 +762,8 @@ New-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name Ht
 # Не разрешать Windows отслеживать запуски приложений для улучшения меню "Пуск" и результатов поиска
 New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_TrackProgs -Value 0 -Force
 # Удалить пункт "Печать" из контекстного меню для bat- и cmd-файлов
-Remove-Item Registry::HKEY_CLASSES_ROOT\batfile\shell\print -Recurse -Force -ErrorAction SilentlyContinue
-Remove-Item Registry::HKEY_CLASSES_ROOT\cmdfile\shell\print -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item -Path Registry::HKEY_CLASSES_ROOT\batfile\shell\print -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item -Path Registry::HKEY_CLASSES_ROOT\cmdfile\shell\print -Recurse -Force -ErrorAction SilentlyContinue
 # Запускать Защитник Windows в песочнице
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 setx /M MP_FORCE_USE_SANDBOX 1
@@ -808,7 +812,7 @@ function KnownFolderPath
 $Downloads = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 IF ($Downloads -ne "$drive\Загрузки")
 {
-	IF (!(Test-Path $drive\Загрузки))
+	IF (!(Test-Pat -Path $drive\Загрузки))
 	{
 		New-Item -Path $drive\Загрузки -Type Directory -Force
 	}
@@ -818,7 +822,7 @@ IF ($Downloads -ne "$drive\Загрузки")
 $Documents = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
 IF ($Documents -ne "$drive\Документы")
 {
-	IF (!(Test-Path $drive\Документы))
+	IF (!(Test-Path -Path $drive\Документы))
 	{
 		New-Item -Path $drive\Документы -Type Directory -Force
 	}
