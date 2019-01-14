@@ -227,15 +227,23 @@ IF (!(Test-Path $env:SystemDrive\Temp))
 [Environment]::SetEnvironmentVariable("TEMP","$env:SystemDrive\Temp","User")
 [Environment]::SetEnvironmentVariable("TMP","$env:SystemDrive\Temp","Machine")
 [Environment]::SetEnvironmentVariable("TEMP","$env:SystemDrive\Temp","Machine")
-# Удалить UWP-приложения, кроме UWP-панели Intel, Пакета локализованного интерфейса на русском, Наброска на фрагменте экрана, Панели управления NVidia и Microsoft Store
+# Удалить UWP-приложения, кроме
+# UWP-панель Intel
 $intel = "AppUp.IntelGraphicsControlPanel"
+# Пакет локализованного интерфейса на русском
 $language = "Microsoft.LanguageExperiencePackru-ru"
+# Набросок на фрагменте экрана
 $sketch = "Microsoft.ScreenSketch"
+# Панель управления NVidia
 $nvidia = "NVIDIACorp.NVIDIAControlPanel"
+# Microsoft Store
 $store = "*Store*"
 Get-AppxPackage -AllUsers | Where-Object {$_.Name -CNotLike $intel -and $_.Name -CNotLike $language -and $_.Name -CNotLike $sketch -and $_.Name -CNotLike $nvidia -and $_.Name -CNotLike $store} | Remove-AppxPackage -ErrorAction SilentlyContinue
+# UWP-панель Intel
 $intel = "AppUp.IntelGraphicsControlPanel"
+# Панель управления NVidia
 $nvidia = "NVIDIACorp.NVIDIAControlPanel"
+# Microsoft Store
 $store = "*Store*"
 Get-AppxProvisionedPackage -Online | Where-Object {$_.DisplayName -CNotLike $intel -and $_.DisplayName -CNotLike $nvidia -and $_.DisplayName -CNotLike $store} | Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue
 # Отключить компоненты
