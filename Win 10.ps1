@@ -3,7 +3,6 @@ $services = @(
 "CDPSvc",
 "DiagTrack",
 "DusmSvc",
-"lfsvc",
 "NcbService",
 "SSDPSRV")
 Foreach ($service in $services)
@@ -228,9 +227,17 @@ IF (!(Test-Path $env:SystemDrive\Temp))
 [Environment]::SetEnvironmentVariable("TEMP","$env:SystemDrive\Temp","User")
 [Environment]::SetEnvironmentVariable("TMP","$env:SystemDrive\Temp","Machine")
 [Environment]::SetEnvironmentVariable("TEMP","$env:SystemDrive\Temp","Machine")
-# Удалить UWP-приложения, кроме Microsoft Store и Пакета локализованного интерфейса на русском
-Get-AppxPackage -AllUsers | Where-Object {$_.Name -CNotLike "AppUp.IntelGraphicsControlPanel" -and $_.Name -CNotLike "Microsoft.LanguageExperiencePackru-ru" -and $_.Name -CNotLike "NVIDIACorp.NVIDIAControlPanel" -and $_.Name -CNotLike "*Store*"} | Remove-AppxPackage -ErrorAction SilentlyContinue
-Get-AppxProvisionedPackage -Online | Where-Object {$_.DisplayName -CNotLike "AppUp.IntelGraphicsControlPanel" -and $_.DisplayName -CNotLike "NVIDIACorp.NVIDIAControlPanel" -and $_.DisplayName -CNotLike "*Store*"} | Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue
+# Удалить UWP-приложения, кроме UWP-панели Intel, Пакета локализованного интерфейса на русском, Наброска на фрагменте экрана, Панели управления NVidia и Microsoft Store
+$intel = "AppUp.IntelGraphicsControlPanel"
+$language = "Microsoft.LanguageExperiencePackru-ru"
+$sketch = "Microsoft.ScreenSketch"
+$nvidia = "NVIDIACorp.NVIDIAControlPanel"
+$store = "*Store*"
+Get-AppxPackage -AllUsers | Where-Object {$_.Name -CNotLike $intel -and $_.Name -CNotLike $language -and $_.Name -CNotLike $sketch -and $_.Name -CNotLike $nvidia -and $_.Name -CNotLike $store} | Remove-AppxPackage -ErrorAction SilentlyContinue
+$intel = "AppUp.IntelGraphicsControlPanel"
+$nvidia = "NVIDIACorp.NVIDIAControlPanel"
+$store = "*Store*"
+Get-AppxProvisionedPackage -Online | Where-Object {$_.DisplayName -CNotLike $intel -and $_.DisplayName -CNotLike $nvidia -and $_.DisplayName -CNotLike $store} | Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue
 # Отключить компоненты
 $features = @(
 # Отключить службу "Факсы и сканирование"
@@ -829,4 +836,8 @@ IF ($Documents -ne "$drive\Документы")
 	KnownFolderPath -KnownFolder Documents -Path "$drive\Документы"
 	New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{F42EE2D3-909F-4907-8871-4C22FC0BF756}" -Type ExpandString -Value "$drive\Документы" -Force
 }
+# Разрешить приложениям доступ к вашему местоположению
+New-ItemProperty -Path HKCU:Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location -Name Value -Type String -Value Deny -Force
+# Выключить определение местоположения для этого устройства
+New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location -Name Value -Type String -Value Deny -Force
 Stop-Process -ProcessName explorer
