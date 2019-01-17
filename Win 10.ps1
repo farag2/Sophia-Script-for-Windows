@@ -582,16 +582,19 @@ Clear-ItemProperty -Path "HKLM:\SOFTWARE\Classes\Folder\shellex\ContextMenuHandl
 # Удалить пункт "Предоставить доступ к" из контекстного меню
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{f81e9010-6ea4-11ce-a7ff-00aa003ca9f6}" -Type String -Value "" -Force
 # Удалить пункт "Включить Bitlocker" из контекстного меню
-$keys = @(
-"encrypt-bde",
-"encrypt-bde-elev",
-"manage-bde",
-"resume-bde",
-"resume-bde-elev",
-"unlock-bde")
-Foreach ($key in $keys)
+IF (Get-WindowsEdition -Online | Where-Object {$_.Edition -eq "Professional" -or $_.Edition -eq "Enterprise"})
 {
-	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\$key -Name ProgrammaticAccessOnly -Type String -Value "" -Force
+	$keys = @(
+	"encrypt-bde",
+	"encrypt-bde-elev",
+	"manage-bde",
+	"resume-bde",
+	"resume-bde-elev",
+	"unlock-bde")
+	Foreach ($key in $keys)
+	{
+		New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\$key -Name ProgrammaticAccessOnly -Type String -Value "" -Force
+	}
 }
 # Открепить от панели задач Microsoft Edge и Microsoft Store
 $getstring = @'
