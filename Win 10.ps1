@@ -734,7 +734,7 @@ filter Get-FirstResolvedPath
 $regpath = 'Folder\Start.reg' | Get-FirstResolvedPath
 IF ($regpath)
 {
-	Remove-Item HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount -Recurse -Force
+	Remove-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount -Recurse -Force
 	Start-Process -FilePath reg.exe -ArgumentList 'import',"$regpath"
 }
 Else
@@ -827,7 +827,7 @@ function KnownFolderPath
 $Downloads = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 IF ($Downloads -ne "$drive\Загрузки")
 {
-	IF (!(Test-Pat -Path $drive\Загрузки))
+	IF (!(Test-Path -Path $drive\Загрузки))
 	{
 		New-Item -Path $drive\Загрузки -Type Directory -Force
 	}
