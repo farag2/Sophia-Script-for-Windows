@@ -1,9 +1,14 @@
 # Службы диагностического отслеживания
 $services = @(
+# Служба платформы подключенных устройств
 "CDPSvc",
+# Функциональные возможности для подключенных пользователей и телеметрия
 "DiagTrack",
+# Использование данных
 "DusmSvc",
+# Посредник подключений к сети
 "NcbService",
+# Обнаружение SSDP
 "SSDPSRV")
 Foreach ($service in $services)
 {
@@ -232,13 +237,15 @@ IF (!(Test-Path $env:SystemDrive\Temp))
 $intel = "AppUp.IntelGraphicsControlPanel"
 # Пакет локализованного интерфейса на русском
 $language = "Microsoft.LanguageExperiencePackru-ru"
+# Фотографии
+$photos = "Microsoft.Windows.Photos"
 # Набросок на фрагменте экрана
 $sketch = "Microsoft.ScreenSketch"
 # Панель управления NVidia
 $nvidia = "NVIDIACorp.NVIDIAControlPanel"
 # Microsoft Store
 $store = "*Store*"
-Get-AppxPackage -AllUsers | Where-Object {$_.Name -CNotLike $intel -and $_.Name -CNotLike $language -and $_.Name -CNotLike $sketch -and $_.Name -CNotLike $nvidia -and $_.Name -CNotLike $store} | Remove-AppxPackage -ErrorAction SilentlyContinue
+Get-AppxPackage -AllUsers | Where-Object {$_.Name -CNotLike $intel -and $_.Name -CNotLike $language -and $_.Name -CNotLike $photos -and $_.Name -CNotLike $sketch -and $_.Name -CNotLike $nvidia -and $_.Name -CNotLike $store} | Remove-AppxPackage -ErrorAction SilentlyContinue
 # UWP-панель Intel
 $intel = "AppUp.IntelGraphicsControlPanel"
 # Панель управления NVidia
@@ -267,33 +274,6 @@ Foreach ($feature in $features)
 {
 	Disable-WindowsOptionalFeature -Online -FeatureName $feature -NoRestart
 }
-# Добавить Средство просмотра фотографий Windows в пункт контекстного меню "Открыть с помощью"
-IF (!(Test-Path -Path Registry::HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell\open\command))
-{
-	New-Item -Path Registry::HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell\open\command -Force
-}
-IF (!(Test-Path -Path Registry::HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell\open\DropTarget))
-{
-	New-Item -Path Registry::HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell\open\DropTarget -Force
-}
-New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell\open -Name MuiVerb -Type String -Value "@photoviewer.dll,-3043" -Force
-New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell\open\command -Name "(default)" -Type ExpandString -Value "%SystemRoot%\System32\rundll32.exe `"%ProgramFiles%\Windows Photo Viewer\PhotoViewer.dll`", ImageView_Fullscreen %1" -Force
-New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell\open\DropTarget -Name Clsid -Type String -Value "{FFE2A43C-56B9-4bf5-9A79-CC6D4285608A}" -Force
-# Ассоциация со Средством просмотра фотографий Windows
-cmd.exe /c ftype Paint.Picture=%windir%\System32\rundll32.exe "%ProgramFiles%\Windows Photo Viewer\PhotoViewer.dll", ImageView_Fullscreen %1
-cmd.exe /c ftype jpegfile=%windir%\System32\rundll32.exe "%ProgramFiles%\Windows Photo Viewer\PhotoViewer.dll", ImageView_Fullscreen %1
-cmd.exe /c ftype pngfile=%windir%\System32\rundll32.exe "%ProgramFiles%\Windows Photo Viewer\PhotoViewer.dll", ImageView_Fullscreen %1
-cmd.exe /c ftype TIFImage.Document=%windir%\System32\rundll32.exe "%ProgramFiles%\Windows Photo Viewer\PhotoViewer.dll", ImageView_Fullscreen %1
-cmd.exe /c assoc .bmp=Paint.Picture
-cmd.exe /c assoc .jpg=jpegfile
-cmd.exe /c assoc .jpeg=jpegfile
-cmd.exe /c assoc .png=pngfile
-cmd.exe /c assoc .tif=TIFImage.Document
-cmd.exe /c assoc .tiff=TIFImage.Document
-cmd.exe /c assoc Paint.Picture\DefaultIcon=%SystemRoot%\System32\imageres.dll,-70
-cmd.exe /c assoc jpegfile\DefaultIcon=%SystemRoot%\System32\imageres.dll,-72
-cmd.exe /c assoc pngfile\DefaultIcon=%SystemRoot%\System32\imageres.dll,-71
-cmd.exe /c assoc TIFImage.Document\DefaultIcon=%SystemRoot%\System32\imageres.dll,-122
 # Удалить OneDrive
 Stop-Process -Name OneDrive -Force -ErrorAction SilentlyContinue
 Start-Sleep -Seconds 3
