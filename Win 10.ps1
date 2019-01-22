@@ -31,11 +31,14 @@ IF (!(Test-Path -Path HKCU:\Software\Microsoft\Siuf\Rules))
 New-ItemProperty -Path HKCU:\Software\Microsoft\Siuf\Rules -Name NumberOfSIUFInPeriod -Value 0 -Force
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name DoNotShowFeedbackNotifications -Value 1 -Force
 # Отключить Cortana
-IF (!(Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search"))
+IF ((Get-WinSystemLocale).Name -ne "ru-RU")
 {
-	New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Force
+	IF (!(Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search"))
+	{
+		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Force
+	}
+	New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name AllowCortana -Value 0 -Force
 }
-New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name AllowCortana -Value 0 -Force
 # Отключить Контроль Wi-Fi
 IF (Get-NetAdapter -Physical | Where-Object {$_.Name -match "Беспроводная" -or $_.Name -match "Wi-Fi"})
 {
@@ -360,22 +363,12 @@ $params = @{
 }
 Register-ScheduledTask @Params -Force
 # Включить в Планировщике задач очистки папки %SYSTEMROOT%\SoftwareDistribution\Download
-$action = New-ScheduledTaskAction -Execute "Powershell.exe" -Argument @"
-`$getservice = Get-Service -Name wuauserv
-`$getservice.WaitForStatus('Stopped', '01:00:00')
-Get-ChildItem -Path $env:SystemRoot\SoftwareDistribution\Download -Recurse -Force | Remove-Item -Recurse -Force
-"@
-$trigger = New-ScheduledTaskTrigger -Weekly -At 9am -DaysOfWeek Thursday -WeeksInterval 4
-$settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-$principal = New-ScheduledTaskPrincipal -UserID System -RunLevel Highest
-$params = @{
-"TaskName"	= "SoftwareDistribution"
-"Action"	= $action
-"Trigger"	= $trigger
-"Settings"	= $settings
-"Principal"	= $principal
+$xml = 'Программы\Прочее\xml\SoftwareDistribution.xml'
+filter Get-FirstResolvedPath
+{
+	(Get-Disk | Where-Object {$_.BusType -eq "USB"} | Get-Partition | Get-Volume | Where-Object {$_.DriveLetter -ne $null}).DriveLetter + ':\' | Join-Path -ChildPath $_ -Resolve -ErrorAction SilentlyContinue
 }
-Register-ScheduledTask @Params -Force
+$xml | Get-FirstResolvedPath | Get-Item | Get-Content -Raw | Register-ScheduledTask -TaskName "SoftwareDistribution" -Force
 # Включить в Планировщике задач очистки папки %SYSTEMROOT%\Logs\CBS
 $action = New-ScheduledTaskAction -Execute "Powershell.exe" -Argument @"
 `$dir = "$env:SystemRoot\Logs\CBS"
@@ -410,7 +403,10 @@ $params = @{
 }
 Register-ScheduledTask @Params -Force
 # Запретить приложениям работать в фоновом режиме, кроме Cortana и Безопасность Windows
-Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications -Exclude "Microsoft.Windows.Cortana*", "Microsoft.Windows.SecHealthUI*", "Microsoft.Windows.ShellExperienceHost*" |
+$Cortana = "Microsoft.Windows.Cortana*"
+$SecHealthUI = "Microsoft.Windows.SecHealthUI*"
+$ShellExperienceHost = "Microsoft.Windows.ShellExperienceHost*"
+Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications -Exclude $Cortana, $SecHealthUI, $ShellExperienceHost |
 ForEach-Object {
 	New-ItemProperty -Path $_.PsPath -Name Disabled -Value 1 -Force
 	New-ItemProperty -Path $_.PsPath -Name DisabledByUser -Value 1 -Force
@@ -464,7 +460,15 @@ IF (!(Test-Path -Path HKCU:\Software\Policies\Microsoft\Windows\CloudContent))
 }
 New-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\CloudContent -Name DisableWindowsSpotlightFeatures -Value 1 -Force
 # Добавить в исключение Защитник Windows папку
-Add-MpPreference -ExclusionPath D:\folder -Force
+$drives = Get-Disk | Where-Object {$_.IsBoot -eq $false}
+IF ($drives)
+{
+	$drives = ($drives | Get-Partition | Get-Volume | Where-Object {$_.DriveLetter -ne $null}).DriveLetter | ForEach-Object {$_ + ':'}
+	Foreach ($drive In $drives)
+	{
+		Set-MpPreference -ExclusionPath $drive\Программы\Прочее -Force
+	}
+}
 # Отключить справку по F1
 IF (!(Test-Path -Path "HKCU:\Software\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64"))
 {
@@ -829,6 +833,16 @@ IF ($Documents -ne "$drive\Документы")
 }
 # Разрешить приложениям доступ к вашему местоположению
 New-ItemProperty -Path HKCU:Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location -Name Value -Type String -Value Deny -Force
-# Выключить определение местоположения для этого устройства
+# Отключить определение местоположения для этого устройства
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location -Name Value -Type String -Value Deny -Force
+# Удалить %SYSTEMDRIVE%\PerfLogs
+IF ((Test-Path -Path $env:SystemDrive\PerfLogs))
+{
+	Remove-Item $env:SystemDrive\PerfLogs -Recurse -Force
+}
+# Удалить %LOCALAPPDATA%\Temp
+IF ((Test-Path -Path $env:LOCALAPPDATA\Temp))
+{
+	Remove-Item $env:LOCALAPPDATA\Temp -Recurse -Force
+}
 Stop-Process -ProcessName explorer
