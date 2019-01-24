@@ -232,9 +232,15 @@ IF (!(Test-Path $env:SystemDrive\Temp))
 	New-Item -Path $env:SystemDrive\Temp -Type Directory -Force
 }
 [Environment]::SetEnvironmentVariable("TMP","$env:SystemDrive\Temp","User")
+New-ItemProperty -Path HKCU:\Environment -Name TMP -Type ExpandString -Value %SystemDrive%\Temp -Force
 [Environment]::SetEnvironmentVariable("TEMP","$env:SystemDrive\Temp","User")
+New-ItemProperty -Path HKCU:\Environment -Name TEMP -Type ExpandString -Value %SystemDrive%\Temp -Force
 [Environment]::SetEnvironmentVariable("TMP","$env:SystemDrive\Temp","Machine")
+New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TMP -Type ExpandString -Value %SystemDrive%\Temp -Force
 [Environment]::SetEnvironmentVariable("TEMP","$env:SystemDrive\Temp","Machine")
+New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TEMP -Type ExpandString -Value %SystemDrive%\Temp -Force
+[Environment]::SetEnvironmentVariable("TMP","$env:SystemDrive\Temp",'Process')
+[Environment]::SetEnvironmentVariable("TEMP","$env:SystemDrive\Temp",'Process')
 # Удалить UWP-приложения, кроме
 # UWP-панель Intel
 $intel = "AppUp.IntelGraphicsControlPanel"
@@ -258,20 +264,20 @@ $store = "*Store*"
 Get-AppxProvisionedPackage -Online | Where-Object {$_.DisplayName -CNotLike $intel -and $_.DisplayName -CNotLike $nvidia -and $_.DisplayName -CNotLike $store} | Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue
 # Отключить компоненты
 $features = @(
-# Отключить службу "Факсы и сканирование"
+# Факсы и сканирование
 "FaxServicesClientPackage",
-# Отключить компоненты прежних версий
+# Компоненты прежних версий
 "LegacyComponents",
-# Отключить компоненты работы с мультимедиа
+# Компоненты работы с мультимедиа
 "MediaPlayback",
-# Отключить PowerShell 2.0
+# PowerShell 2.0
 "MicrosoftWindowsPowerShellV2",
 "MicrosoftWindowsPowershellV2Root",
-# Отключить просмотрщик XPS
+# Средство записи XPS-документов (Microsoft)
 "Printing-XPSServices-Features",
 # Печать в PDF (Майкрософт)
 "Printing-PrintToPDFServices-Features",
-# Отключить службу "Клиент рабочих папок"
+# Клиент рабочих папок
 "WorkFolders-Client")
 Foreach ($feature in $features)
 {
@@ -320,7 +326,7 @@ Disable-ComputerRestore -Drive $env:SystemDrive
 Get-ScheduledTask -TaskName SR | Disable-ScheduledTask
 Get-Service -ServiceName swprv,vss | Set-Service -StartupType Manual
 Get-Service -ServiceName swprv,vss | Start-Service
-Get-CimInstance -ClassName Win32_shadowcopy | Remove-CimInstance
+Get-CimInstance -ClassName Win32_ShadowCopy | Remove-CimInstance
 Get-Service -ServiceName swprv,vss | Stop-Service -Force
 Get-Service -ServiceName swprv,vss | Set-Service -StartupType Disabled
 # Отключить Windows Script Host
@@ -606,7 +612,7 @@ IF (!(Test-Path -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Извлеч
 }
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Извлечь\Command -Name "(default)" -Type String -Value 'msiexec.exe /a "%1" /qb TARGETDIR="%1 extracted"' -Force
 # Не использовать мои данные для входа для автоматического завершения настройки устройства после перезапуска или обновления
-$sid = (Get-CimInstance Win32_UserAccount -Filter "name='$env:USERNAME'").SID
+$sid = (Get-CimInstance -ClassName Win32_UserAccount -Filter "name='$env:USERNAME'").SID
 IF (!(Test-Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$sid"))
 {
 	New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$sid" -Force
@@ -727,14 +733,14 @@ IF ($regpath)
 Else
 {
 	# Открепить все ярлыки от начального экрана
-	$key = Get-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*start.tilegrid`$windows.data.curatedtilecollection.tilecollection\Current
+	$key = Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*start.tilegrid`$windows.data.curatedtilecollection.tilecollection\Current
 	$data = $key.Data[0..25] + ([byte[]](202,50,0,226,44,1,1,0,0))
 	New-ItemProperty -Path $key.PSPath -Name Data -Type Binary -Value $data -Force
 }
 # Отображать цвет элементов в меню Пуск, на панели задач и в центре уведомлений
-New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name ColorPrevalence -Value 1 -Force
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name ColorPrevalence -Value 1 -Force
 # Отображать цвет элементов в заголовках окон
-New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\DWM -Name ColorPrevalence -Value 1 -Force
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\DWM -Name ColorPrevalence -Value 1 -Force
 # Использовать клавишу Print Screen, чтобы запустить функцию создания фрагмента экрана
 New-ItemProperty -Path "HKCU:\Control Panel\Keyboard" -Name PrintScreenKeyForSnippingEnabled -Value 1 -Force
 # Отключить автоматическое скрытие полос прокрутки в Windows
@@ -762,7 +768,7 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo
 # Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков
 New-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name HttpAcceptLanguageOptOut -Value 1 -Force
 # Не разрешать Windows отслеживать запуски приложений для улучшения меню "Пуск" и результатов поиска
-New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_TrackProgs -Value 0 -Force
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_TrackProgs -Value 0 -Force
 # Удалить пункт "Печать" из контекстного меню для bat- и cmd-файлов
 Remove-Item -Path Registry::HKEY_CLASSES_ROOT\batfile\shell\print -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item -Path Registry::HKEY_CLASSES_ROOT\cmdfile\shell\print -Recurse -Force -ErrorAction SilentlyContinue
