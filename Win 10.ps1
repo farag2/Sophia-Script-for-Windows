@@ -6,8 +6,6 @@ $services = @(
 "DiagTrack",
 # Использование данных
 "DusmSvc",
-# Посредник подключений к сети
-"NcbService",
 # Обнаружение SSDP
 "SSDPSRV")
 Foreach ($service in $services)
@@ -29,7 +27,7 @@ IF (!(Test-Path -Path HKCU:\Software\Microsoft\Siuf\Rules))
 	New-Item -Path HKCU:\Software\Microsoft\Siuf\Rules -Force
 }
 New-ItemProperty -Path HKCU:\Software\Microsoft\Siuf\Rules -Name NumberOfSIUFInPeriod -Value 0 -Force
-New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name DoNotShowFeedbackNotifications -Value 1 -Force
+Remove-ItemProperty -Path HKCU:\Software\Microsoft\Siuf\Rules -Name PeriodInNanoSeconds -Force -ErrorAction SilentlyContinue
 # Отключить Cortana
 IF ((Get-WinSystemLocale).Name -ne "ru-RU")
 {
@@ -469,7 +467,7 @@ New-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\CloudContent -N
 $drives = Get-Disk | Where-Object {$_.IsBoot -eq $false}
 IF ($drives)
 {
-	$drives = ($drives | Get-Partition | Get-Volume | Where-Object {$_.DriveLetter -ne $null}).DriveLetter | ForEach-Object {$_ + ':'}
+	$drives = ($drives | Get-Partition | Get-Volume | Where-Object {$_.DriveLetter -ne $null}).DriveLetter + ':'
 	Foreach ($drive In $drives)
 	{
 		Set-MpPreference -ExclusionPath $drive\Программы\Прочее -Force
@@ -504,7 +502,7 @@ IF ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -eq 1)
 	$adapter.AllowComputerToTurnOffDevice = "Disabled"
 	$adapter | Set-NetAdapterPowerManagement
 }
-# Установка крупных значков в панели управления
+# Установить крупные значки в панели управления
 IF (!(Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
 {
 	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Force
@@ -523,7 +521,7 @@ IF (!(Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Ext
 	New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Force
 }
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{7AD84985-87B4-4a16-BE58-8B72A5B390F7}" -Type String -Value "Play to menu" -Force
-# Удалить пункт "Отправить" из контекстного меню
+# Удалить пункт "Отправить" (поделиться) из контекстного меню
 Remove-Item -LiteralPath Registry::HKEY_CLASSES_ROOT\*\shellex\ContextMenuHandlers\ModernSharing -Recurse -Force -ErrorAction SilentlyContinue
 # Всегда ждать сеть при запуске и входе в систему
 IF (!(Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon"))
@@ -560,7 +558,7 @@ IF (!(Test-Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Exp
 New-ItemProperty -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Name ThisPCPolicy -Type String -Value Hide -Force
 # Не показывать анимацию при первом входе в систему
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableFirstLogonAnimation -Value 0 -Force
-# Снятие ограничения на одновременное открытие более 15 элементов
+# Снять ограничения на одновременное открытие более 15 элементов
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name MultipleInvokePromptMinimum -Value 300 -Force
 # Не показывать недавно используемые папки на панели быстрого доступа
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name ShowFrequent -Value 0 -Force
@@ -779,18 +777,9 @@ setx /M MP_FORCE_USE_SANDBOX 1
 Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.rtf\ShellNew -Name Data -Force -ErrorAction SilentlyContinue
 Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.rtf\ShellNew -Name ItemName -Force -ErrorAction SilentlyContinue
 # Переопределить расположение папок "Загрузки" и "Документы"
-$DiskCount = (Get-Disk | Where-Object {$_.BusType -ne "USB"}).Number.Count
-IF ($DiskCount -eq 1)
-{
-	# Один физический диск
-	$drive = (Get-Disk | Where-Object {$_.BusType -ne "USB" -and $_.IsBoot -eq $true} | Get-Partition | Get-Volume | Where-Object {$_.DriveLetter -ne $null}).DriveLetter + ':'
-}
-Else
-{
-	# Два физических диска
-	$drive = (Get-Disk | Where-Object {$_.BusType -ne "USB" -and $_.IsBoot -eq $false} | Get-Partition | Get-Volume | Where-Object {$_.DriveLetter -ne $null}).DriveLetter + ':'
-}
-function KnownFolderPath
+$drive = Read-Host -Prompt "Type disk letter for Documents and Downloads folders"
+$drive = $(${drive}.ToUpper())
+Function KnownFolderPath
 {
 	Param (
 		[Parameter(Mandatory = $true)]
@@ -818,28 +807,26 @@ function KnownFolderPath
 	Attrib +r $Path
 }
 $Downloads = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-IF ($Downloads -ne "$drive\Загрузки")
+IF ($Downloads -ne "${drive}:\Загрузки")
 {
-	IF (!(Test-Path -Path $drive\Загрузки))
+	IF (!(Test-Path -Path "${drive}:\Загрузки"))
 	{
-		New-Item -Path $drive\Загрузки -Type Directory -Force
+		New-Item -Path "${drive}:\Загрузки" -Type Directory -Force
 	}
-	KnownFolderPath -KnownFolder Downloads -Path "$drive\Загрузки"
-	New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{7D83EE9B-2244-4E70-B1F5-5393042AF1E4}" -Type ExpandString -Value "$drive\Загрузки" -Force
+	KnownFolderPath -KnownFolder Downloads -Path "${drive}:\Загрузки"
+	New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{7D83EE9B-2244-4E70-B1F5-5393042AF1E4}" -Type ExpandString -Value "${drive}:\Загрузки" -Force
 }
 $Documents = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
-IF ($Documents -ne "$drive\Документы")
+IF ($Documents -ne "${drive}:\Документы")
 {
-	IF (!(Test-Path -Path $drive\Документы))
+	IF (!(Test-Path -Path "${drive}:\Документы"))
 	{
-		New-Item -Path $drive\Документы -Type Directory -Force
+		New-Item -Path "${drive}:\Документы" -Type Directory -Force
 	}
-	KnownFolderPath -KnownFolder Documents -Path "$drive\Документы"
-	New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{F42EE2D3-909F-4907-8871-4C22FC0BF756}" -Type ExpandString -Value "$drive\Документы" -Force
+	KnownFolderPath -KnownFolder Documents -Path "${drive}:\Документы"
+	New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{F42EE2D3-909F-4907-8871-4C22FC0BF756}" -Type ExpandString -Value "${drive}:\Документы" -Force
 }
-# Разрешить приложениям доступ к вашему местоположению
-New-ItemProperty -Path HKCU:Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location -Name Value -Type String -Value Deny -Force
-# Отключить определение местоположения для этого устройства
+# Выключить местоположение для этого устройства
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location -Name Value -Type String -Value Deny -Force
 # Удалить %SYSTEMDRIVE%\PerfLogs
 IF ((Test-Path -Path $env:SystemDrive\PerfLogs))
@@ -851,4 +838,11 @@ IF ((Test-Path -Path $env:LOCALAPPDATA\Temp))
 {
 	Remove-Item $env:LOCALAPPDATA\Temp -Recurse -Force
 }
+# Удалить %SYSTEMROOT%\Temp
+IF ((Test-Path -Path $env:SystemRoot\Temp))
+{
+	Remove-Item -Path "$env:SystemRoot\Temp" -Recurse -Force
+}
+# Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления
+New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name RestartNotificationsAllowed2 -Value 1 -Force
 Stop-Process -ProcessName explorer
