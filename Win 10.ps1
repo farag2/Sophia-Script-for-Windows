@@ -370,7 +370,7 @@ Register-ScheduledTask @Params -Force
 $xml = 'Программы\Прочее\xml\SoftwareDistribution.xml'
 filter Get-FirstResolvedPath
 {
-	(Get-Disk | Where-Object {$_.BusType -eq "USB"} | Get-Partition | Get-Volume | Where-Object {$_.DriveLetter -ne $null}).DriveLetter + ':\' | Join-Path -ChildPath $_ -Resolve -ErrorAction SilentlyContinue
+	(Get-Disk | Where-Object {$_.BusType -eq "USB"} | Get-Partition | Get-Volume | Where-Object {$null -ne $_.DriveLetter}).DriveLetter + ':\' | Join-Path -ChildPath $_ -Resolve -ErrorAction SilentlyContinue
 }
 $xml | Get-FirstResolvedPath | Get-Item | Get-Content -Raw | Register-ScheduledTask -TaskName "SoftwareDistribution" -Force
 # Включить в Планировщике задач очистки папки %SYSTEMROOT%\Logs\CBS
@@ -467,7 +467,7 @@ New-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\CloudContent -N
 $drives = Get-Disk | Where-Object {$_.IsBoot -eq $false}
 IF ($drives)
 {
-	$drives = ($drives | Get-Partition | Get-Volume | Where-Object {$_.DriveLetter -ne $null}).DriveLetter + ':'
+	$drives = ($drives | Get-Partition | Get-Volume | Where-Object {$null -ne $_.DriveLetter}).DriveLetter + ':'
 	Foreach ($drive In $drives)
 	{
 		Set-MpPreference -ExclusionPath $drive\Программы\Прочее -Force
