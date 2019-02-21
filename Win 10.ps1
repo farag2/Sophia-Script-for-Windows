@@ -1,4 +1,4 @@
-# Службы диагностического отслеживания
+# Отключить службы диагностического отслеживания
 $services = @(
 # Служба платформы подключенных устройств
 "CDPSvc",
@@ -76,9 +76,9 @@ auditpol /set /subcategory:"{0CCE9226-69AE-11D9-BED3-505054503030}" /success:dis
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name LaunchTo -Value 1 -Force
 # Отобразить "Этот компьютер" на Рабочем столе
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel -Name "{20D04FE0-3AEA-1069-A2D8-08002B30309D}" -Value 0 -Force
-# Показывать скрытые файлы
+# Показывать скрытые файлы, папки и диски
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Hidden -Value 1 -Force
-# Показывать расширения файлов
+# Показывать расширения для зарегистрированных типов файлов
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -Value 0 -Force
 # Отключить гибридный спящий режим
 New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Power -Name HibernateEnabled -Value 0 -Force
@@ -224,7 +224,7 @@ New-ItemProperty -Path "HKCU:\Control Panel\Accessibility\StickyKeys" -Name Flag
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name NoPreviousVersionsPage -Value 1 -Force
 # Отключить флажки для выбора элементов
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name AutoCheckSelect -Value 0 -Force
-# Изменить путь переменной среды для временных файлов
+# Изменить путь переменной среды для временных файлов на %SYSTEMDRIVE%\Temp
 IF (!(Test-Path $env:SystemDrive\Temp))
 {
 	New-Item -Path $env:SystemDrive\Temp -Type Directory -Force
@@ -368,11 +368,12 @@ $params = @{
 Register-ScheduledTask @Params -Force
 # Включить в Планировщике задач очистки папки %SYSTEMROOT%\SoftwareDistribution\Download
 $xml = 'Программы\Прочее\xml\SoftwareDistribution.xml'
-filter Get-FirstResolvedPath
+function Get-ResolvedPath
 {
-	(Get-Disk | Where-Object {$_.BusType -eq "USB"} | Get-Partition | Get-Volume | Where-Object {$null -ne $_.DriveLetter}).DriveLetter + ':\' | Join-Path -ChildPath $_ -Resolve -ErrorAction SilentlyContinue
+	param ([Parameter(ValueFromPipeline=1)]$Path)
+	(Get-Disk | Where-Object {$_.BusType -eq "USB"} | Get-Partition | Get-Volume | Where-Object {$null -ne $_.DriveLetter}).DriveLetter | ForEach-Object {Join-Path ($_ + ":") $Path -Resolve -ErrorAction SilentlyContinue}
 }
-$xml | Get-FirstResolvedPath | Get-Item | Get-Content -Raw | Register-ScheduledTask -TaskName "SoftwareDistribution" -Force
+$xml | Get-ResolvedPath | Get-Item | Get-Content -Raw | Register-ScheduledTask -TaskName "SoftwareDistribution" -Force
 # Включить в Планировщике задач очистки папки %SYSTEMROOT%\Logs\CBS
 $action = New-ScheduledTaskAction -Execute "Powershell.exe" -Argument @"
 `$dir = "$env:SystemRoot\Logs\CBS"
@@ -622,9 +623,13 @@ Remove-Item -Path "$env:USERPROFILE\Desktop\Microsoft Edge.lnk" -Force -ErrorAct
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name NavPaneShowAllFolders -Value 0 -Force
 # Отключить пользовательские службы
 $services = @(
+# Пользовательская служба буфера обмена_*
 "cbdhsvc_*",
+# Служба контактных данных_*
 "PimIndexMaintenanceSvc_*",
+# Служба хранения данных пользователя_*
 "UnistoreSvc_*",
+# Служба доступа к данным пользователя_*
 "UserDataSvc_*")
 Foreach ($service In $services)
 {
@@ -695,7 +700,7 @@ Foreach ($app in $apps)
 {
 	Get-WindowsCapability -Online | Where-Object name -Like $app | Remove-WindowsCapability -Online
 }
-# Создать ярлык для "Устройства и принтеры"
+# Создать ярлык для "Устройства и принтеры" в %APPDATA%\Microsoft\Windows\Start Menu\Programs\System Tools
 $target = "control"
 $file = "$env:AppData\Microsoft\Windows\Start Menu\Programs\System Tools\Устройства и принтеры.lnk"
 $shell = New-Object -ComObject Wscript.Shell
@@ -704,7 +709,7 @@ $shortcut.TargetPath = $target
 $shortcut.Arguments = "printers"
 $shortCut.IconLocation = "%SystemRoot%\system32\DeviceCenter.dll"
 $shortcut.Save()
-# Запускать ярлык к Командной строке от имени Администратора
+# Запускать ярлык к командной строке от имени Администратора
 $bytes = [System.IO.File]::ReadAllBytes("$env:APPDATA\Microsoft\Windows\Start Menu\Programs\System Tools\Command Prompt.lnk")
 $bytes[0x15] = $bytes[0x15] -bor 0x20
 [System.IO.File]::WriteAllBytes("$env:APPDATA\Microsoft\Windows\Start Menu\Programs\System Tools\Command Prompt.lnk", $bytes)
@@ -718,11 +723,12 @@ Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder\Shel
 # Включить Защиты сети в Защитнике Windows
 Set-MpPreference -EnableNetworkProtection Enabled
 # Настройка меню Пуск
-filter Get-FirstResolvedPath
+function Get-ResolvedPath
 {
-	(Get-Disk | Where-Object {$_.BusType -eq "USB"} | Get-Partition | Get-Volume | Where-Object {$_.DriveLetter -ne $null}).DriveLetter | ForEach-Object {$_ + ':\'} | Join-Path -ChildPath $_ -Resolve -ErrorAction SilentlyContinue | Select-Object -First 1
+	param ([Parameter(ValueFromPipeline=1)]$Path)
+	(Get-Disk | Where-Object {$_.BusType -eq "USB"} | Get-Partition | Get-Volume | Where-Object {$null -ne $_.DriveLetter}).DriveLetter | ForEach-Object {Join-Path ($_ + ":") $Path -Resolve -ErrorAction SilentlyContinue}
 }
-$regpath = 'Folder\Start.reg' | Get-FirstResolvedPath
+$regpath = 'Программы\Прочее\reg\Start.reg' | Get-ResolvedPath
 IF ($regpath)
 {
 	Remove-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount -Recurse -Force
