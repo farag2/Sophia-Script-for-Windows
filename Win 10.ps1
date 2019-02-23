@@ -239,27 +239,30 @@ New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\E
 New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TEMP -Type ExpandString -Value %SystemDrive%\Temp -Force
 [Environment]::SetEnvironmentVariable("TMP","$env:SystemDrive\Temp",'Process')
 [Environment]::SetEnvironmentVariable("TEMP","$env:SystemDrive\Temp",'Process')
-# Удалить UWP-приложения, кроме
+# Удалить UWP-приложения из текущей учетной записи, кроме
+$apps = @( 
 # UWP-панель Intel
-$intel = "AppUp.IntelGraphicsControlPanel"
+"AppUp.IntelGraphicsControlPanel"
 # Пакет локализованного интерфейса на русском
-$language = "Microsoft.LanguageExperiencePackru-ru"
+"Microsoft.LanguageExperiencePackru-ru"
 # Фотографии
-$photos = "Microsoft.Windows.Photos"
+"Microsoft.Windows.Photos"
 # Набросок на фрагменте экрана
-$sketch = "Microsoft.ScreenSketch"
+"Microsoft.ScreenSketch"
 # Панель управления NVidia
-$nvidia = "NVIDIACorp.NVIDIAControlPanel"
+"NVIDIACorp.NVIDIAControlPanel"
 # Microsoft Store
-$store = "*Store*"
-Get-AppxPackage -AllUsers | Where-Object {$_.Name -CNotLike $intel -and $_.Name -CNotLike $language -and $_.Name -CNotLike $photos -and $_.Name -CNotLike $sketch -and $_.Name -CNotLike $nvidia -and $_.Name -CNotLike $store} | Remove-AppxPackage -ErrorAction SilentlyContinue
+".*Store.*")
+Get-AppxPackage -AllUsers | Where-Object {$_.Name -cnotmatch ($apps -join '|')} | Remove-AppxPackage -ErrorAction SilentlyContinue
+# Удалить UWP-приложения из системной учетной записи, кроме
 # UWP-панель Intel
-$intel = "AppUp.IntelGraphicsControlPanel"
+$apps = @(
+"AppUp.IntelGraphicsControlPanel",
 # Панель управления NVidia
-$nvidia = "NVIDIACorp.NVIDIAControlPanel"
+"NVIDIACorp.NVIDIAControlPanel",
 # Microsoft Store
-$store = "*Store*"
-Get-AppxProvisionedPackage -Online | Where-Object {$_.DisplayName -CNotLike $intel -and $_.DisplayName -CNotLike $nvidia -and $_.DisplayName -CNotLike $store} | Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue
+".*Store.*")
+Get-AppxProvisionedPackage -Online | Where-Object {$_.DisplayName -cnotmatch ($apps -join '|')} | Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue
 # Отключить компоненты
 $features = @(
 # Факсы и сканирование
@@ -407,14 +410,23 @@ $params = @{
 "Principal"	= $principal
 }
 Register-ScheduledTask @Params -Force
-# Запретить приложениям работать в фоновом режиме, кроме Cortana и Безопасность Windows
-$Cortana = "Microsoft.Windows.Cortana*"
-$SecHealthUI = "Microsoft.Windows.SecHealthUI*"
-$ShellExperienceHost = "Microsoft.Windows.ShellExperienceHost*"
-Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications -Exclude $Cortana, $SecHealthUI, $ShellExperienceHost |
-ForEach-Object {
-	New-ItemProperty -Path $_.PsPath -Name Disabled -Value 1 -Force
-	New-ItemProperty -Path $_.PsPath -Name DisabledByUser -Value 1 -Force
+# Запретить приложениям работать в фоновом режиме, кроме
+$apps = @(
+# Content Delivery Manager
+"Microsoft.Windows.ContentDeliveryManager*"
+# Cortana
+"Microsoft.Windows.Cortana*"
+# Безопасность Windows
+"Microsoft.Windows.SecHealthUI*"
+# ShellExperienceHost
+"Microsoft.Windows.ShellExperienceHost*")
+Foreach ($app in $apps)
+{
+	Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications -Exclude $apps |
+	ForEach-Object {
+		New-ItemProperty -Path $_.PsPath -Name Disabled -Value 1 -Force
+		New-ItemProperty -Path $_.PsPath -Name DisabledByUser -Value 1 -Force
+	}
 }
 # Включить контроль памяти
 IF (!(Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy))
@@ -435,21 +447,17 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\
 # Установить схему управления питания для стационарного ПК и ноутбука
 IF ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -eq 1)
 {
+	# Cтационарный ПК
 	powercfg /s 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c
 }
 Else
 {
+	# Ноутбук
 	powercfg /s 381b4222-f694-41f0-9685-ff5bb260df2e
 }
 # Использовать последнюю установленную версию .NET Framework для всех приложений
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\.NETFramework -Name OnlyUseLatestCLR -Value 1 -Force
 New-ItemProperty -Path HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework -Name OnlyUseLatestCLR -Value 1 -Force
-# Не отображать экран блокировки
-IF (!(Test-Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization))
-{
-	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization -Force
-}
-New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization -Name NoLockScreen -Value 1 -Force
 # Использовать сценарий автоматической настройки прокси-сервера
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name AutoConfigURL -Type String -Value https://antizapret.prostovpn.org/proxy.pac -Force
 # Включить Num Lock при загрузке
@@ -611,7 +619,7 @@ IF (!(Test-Path -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Извлеч
 }
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Извлечь\Command -Name "(default)" -Type String -Value 'msiexec.exe /a "%1" /qb TARGETDIR="%1 extracted"' -Force
 # Не использовать мои данные для входа для автоматического завершения настройки устройства после перезапуска или обновления
-$sid = (Get-CimInstance -ClassName Win32_UserAccount -Filter "name='$env:USERNAME'").SID
+$sid = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object {$_.Name -eq "$env:USERNAME"}).SID
 IF (!(Test-Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$sid"))
 {
 	New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$sid" -Force
@@ -757,12 +765,6 @@ New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Ex
 # Удалить пункт "Создать Точечный рисунок" из контекстного меню
 Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.bmp\ShellNew -Name ItemName -Force -ErrorAction SilentlyContinue
 Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.bmp\ShellNew -Name NullFile -Force -ErrorAction SilentlyContinue
-# Не включать временную шкалу
-New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\System -Name EnableActivityFeed -Value 0 -Force
-# Не разрешать Windows собирать действия с этого компьютера
-New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\System -Name PublishUserActivities -Value 0 -Force
-# Не разрешать Windows синхронизировать действия с этого компьютера в облако
-New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\System -Name UploadUserActivities -Value 0 -Force
 # Не разрешать приложениям использовать идентификатор рекламы
 IF (!(Test-Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo))
 {
