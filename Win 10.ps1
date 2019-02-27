@@ -28,15 +28,6 @@ IF (!(Test-Path -Path HKCU:\Software\Microsoft\Siuf\Rules))
 }
 New-ItemProperty -Path HKCU:\Software\Microsoft\Siuf\Rules -Name NumberOfSIUFInPeriod -Value 0 -Force
 Remove-ItemProperty -Path HKCU:\Software\Microsoft\Siuf\Rules -Name PeriodInNanoSeconds -Force -ErrorAction SilentlyContinue
-# Отключить Cortana
-IF ((Get-WinSystemLocale).Name -ne "ru-RU")
-{
-	IF (!(Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search"))
-	{
-		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Force
-	}
-	New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name AllowCortana -Value 0 -Force
-}
 # Отключить Контроль Wi-Fi
 IF (Get-NetAdapter -Physical | Where-Object {$_.Name -match "Беспроводная" -or $_.Name -match "Wi-Fi"})
 {
@@ -74,16 +65,115 @@ Foreach ($task in $tasks)
 auditpol /set /subcategory:"{0CCE9226-69AE-11D9-BED3-505054503030}" /success:disable /failure:disable
 # Открывать "Этот компьютер" в Проводнике
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name LaunchTo -Value 1 -Force
-# Отобразить "Этот компьютер" на Рабочем столе
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel -Name "{20D04FE0-3AEA-1069-A2D8-08002B30309D}" -Value 0 -Force
 # Показывать скрытые файлы, папки и диски
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Hidden -Value 1 -Force
 # Показывать расширения для зарегистрированных типов файлов
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -Value 0 -Force
-# Отключить гибридный спящий режим
-New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Power -Name HibernateEnabled -Value 0 -Force
 # Не показывать кнопку Просмотра задач
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowTaskViewButton -Value 0 -Force
+# Не скрывать конфликт слияния папок
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideMergeConflicts -Value 0 -Force
+# Не показывать при прикреплении окна, что можно прикрепить рядом с ним
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SnapAssist -Value 0 -Force
+# Отключить флажки для выбора элементов
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name AutoCheckSelect -Value 0 -Force
+# Включить отображение секунд в системных часах на панели задач
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowSecondsInSystemClock -Value 1 -Force
+# Не показывать панель "Люди" на панели задач
+IF (!(Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People))
+{
+	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People -Force
+}
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People -Name PeopleBand -Value 0 -Force
+# Не отображать все папки в области навигации
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name NavPaneShowAllFolders -Value 0 -Force
+# Включить прозрачную панель задач
+New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name UseOLEDTaskbarTransparency -Value 1 -Force
+# Не разрешать Windows отслеживать запуски приложений для улучшения меню "Пуск" и результатов поиска и не показывать недавно добавленные приложения
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_TrackProgs -Value 0 -Force
+# Отобразить "Этот компьютер" на Рабочем столе
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel -Name "{20D04FE0-3AEA-1069-A2D8-08002B30309D}" -Value 0 -Force
+# Развернуть диалог переноса файлов
+IF (!(Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager))
+{
+	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager -Force
+}
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager -Name EnthusiastMode -Value 1 -Force
+# Отключить автозапуск с внешних носителей
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers -Name DisableAutoplay -Value 1 -Force
+# He дoбaвлять "- яpлык" для coздaвaeмыx яpлыкoв
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name link -Type Binary -Value ([byte[]](00,00,00,00)) -Force
+# Отключить SmartScreen для приложений и файлов
+New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name SmartScreenEnabled -Type String -Value Off -Force
+# Сохранить скриншот по Win+PrtScr на Рабочем столе
+New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{b7bede81-df94-4682-a7d8-57a52620b86f}" -Name RelativePath -Type String -Value %USERPROFILE%\Desktop -Force
+# Отключить отображение вкладки "Предыдущие версии" в свойствах файлов
+New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name NoPreviousVersionsPage -Value 1 -Force
+# Всегда отображать все значки в области уведомлений
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name EnableAutoTray -Value 0 -Force
+# Установить крупные значки в панели управления
+IF (!(Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
+{
+	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Force
+}
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name AllItemsIconView -Value 0 -Force
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name StartupPage -Value 1 -Force
+# Скрыть папку "Объемные объекты" из "Этот компьютер"
+IF (!(Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag"))
+{
+	New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Force
+}
+New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Name ThisPCPolicy -Type String -Value Hide -Force
+IF (!(Test-Path -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag"))
+{
+	New-Item -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Force
+}
+New-ItemProperty -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Name ThisPCPolicy -Type String -Value Hide -Force
+# Снять ограничения на одновременное открытие более 15 элементов
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name MultipleInvokePromptMinimum -Value 300 -Force
+# Не показывать недавно используемые папки на панели быстрого доступа
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name ShowFrequent -Value 0 -Force
+# Не показывать недавно использовавшиеся файлы на панели быстрого доступа
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name ShowRecent -Value 0 -Force
+# Отключить создание ярлыка Edge на рабочем столе после обновления Windows
+New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name DisableEdgeDesktopShortcutCreation -Value 1 -Force
+# Не показывать советы по использованию Windows
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SoftLandingEnabled -Value 0 -Force
+# Включить контроль памяти
+IF (!(Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy))
+{
+	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Force
+}
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01 -Value 1 -Force
+# Запускать контроль памяти каждый месяц
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 2048 -Value 30 -Force
+# Удалять временные файлы, не используемые в приложениях
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 04 -Value 1 -Force
+# Удалять файлы, которые находятся в корзине
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 08 -Value 1 -Force
+# Удалять файлы, которые находятся в корзине более 30 дней
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 256 -Value 30 -Force
+# Не показывать рекомендации в меню "Пуск"
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338388Enabled -Value 0 -Force
+# Отключить автоматическую установку рекомендованных приложений
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SilentInstalledAppsEnabled -Value 0 -Force
+# Скрыть кнопку Windows Ink Workspace
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\PenWorkspace -Name PenWorkspaceButtonDesiredVisibility -Value 0 -Force
+# Не предоставлять более специлизированные возможности с соотвествующими советами и рекомендациями
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Privacy -Name TailoredExperiencesWithDiagnosticDataEnabled -Value 0 -Force
+# Не разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CDP -Name RomeSdkChannelUserAuthzPolicy -Value 0 -Force
+# Отображать цвет элементов в меню "Пуск", на панели задач и в центре уведомлений
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name ColorPrevalence -Value 1 -Force
+# Выключить местоположение для этого устройства
+New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location -Name Value -Type String -Value Deny -Force
+# Использовать сценарий автоматической настройки прокси-сервера
+New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name AutoConfigURL -Type String -Value https://antizapret.prostovpn.org/proxy.pac -Force
+# Отключить удаление кэша миниатюр
+New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" -Name Autorun -Value 0 -Force
+New-ItemProperty -Path "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" -Name Autorun -Value 0 -Force
+# Отключить гибридный спящий режим
+New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Power -Name HibernateEnabled -Value 0 -Force
 # Не показывать кнопку поиска
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -Value 0 -Force
 # Запрашивать подтверждение при удалении файлов
@@ -92,28 +182,6 @@ IF (!(Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\E
 	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Force
 }
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name ConfirmFileDelete -Value 1 -Force
-# Запускать проводник с развернутой лентой
-IF (!(Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
-{
-	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Force
-}
-New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name ExplorerRibbonStartsMinimized -Value 2 -Force
-# Развернуть диалог переноса файлов
-IF (!(Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager))
-{
-	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager -Force
-}
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager -Name EnthusiastMode -Value 1 -Force
-# Не скрывать конфликт слияния папок
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideMergeConflicts -Value 0 -Force
-# Отключить автозапуск с внешних носителей
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers -Name DisableAutoplay -Value 1 -Force
-# Отключить использование режима одобрения администратором для встроенной учетной записи администратора
-New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name ConsentPromptBehaviorAdmin -Value 0 -Force
-# He дoбaвлять "- яpлык" для coздaвaeмыx яpлыкoв
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name link -Type Binary -Value ([byte[]](00,00,00,00)) -Force
-# Отключить поиск программ в Microsoft Store
-New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Value 1 -Force
 # Не хранить сведения о зоне происхождения вложенных файлов
 IF (!(Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Attachments))
 {
@@ -121,8 +189,58 @@ IF (!(Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\A
 }
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Attachments -Name SaveZoneInformation -Value 1 -Force
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Attachments -Name SaveZoneInformation -Value 1 -Force
-# Отключить SmartScreen для приложений и файлов
-New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name SmartScreenEnabled -Type String -Value Off -Force
+# Отключить использование режима одобрения администратором для встроенной учетной записи администратора
+New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name ConsentPromptBehaviorAdmin -Value 0 -Force
+# Не показывать анимацию при первом входе в систему
+New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableFirstLogonAnimation -Value 0 -Force
+# Включить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами
+New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableLinkedConnections -Value 1 -Force
+# Отключить поиск программ в Microsoft Store
+IF (!(Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
+{
+	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Force
+}
+New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Value 1 -Force
+# Запускать проводник с развернутой лентой
+New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name ExplorerRibbonStartsMinimized -Value 2 -Force
+# Не показывать уведомление "Установлено новое приложение"
+New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoNewAppAlert -Value 1 -Force
+# Не показывать недавно добавленные приложения в меню "Пуск"
+New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Value 1 -Force
+# Отключить меню игры
+IF (!(Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR))
+{
+	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR -Force
+}
+New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR -Name AllowgameDVR -Value 0 -Force
+# Отключить оптимизацию доставки для обновлений с других ПК
+Get-Service -ServiceName DoSvc | Stop-Service -Force
+IF (!(Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization))
+{
+	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization -Force
+}
+New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization -Name DODownloadMode -Value 0 -Force
+# Всегда ждать сеть при запуске и входе в систему
+IF (!(Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon"))
+{
+	New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon" -Force
+}
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name SyncForegroundPolicy -Value 1 -Force
+# Не разрешать приложениям использовать идентификатор рекламы
+IF (!(Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo))
+{
+	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo -Force
+}
+New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo -Name DisabledByGroupPolicy -Value 1 -Force
+# Отключить Cortana
+IF ((Get-WinSystemLocale).Name -ne "ru-RU")
+{
+	IF (!(Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search"))
+	{
+		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Force
+	}
+	New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name AllowCortana -Value 0 -Force
+}
 # Отключить SmartScreen в Edge
 $edge = (Get-AppxPackage "Microsoft.MicrosoftEdge").PackageFamilyName
 IF (!(Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\PhishingFilter"))
@@ -210,20 +328,12 @@ IF (!(Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftEdge\Main))
 	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftEdge\Main -Force
 }
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftEdge\Main -Name AllowPrelaunch -Value 0 -Force
-# Не показывать при прикреплении окна, что можно прикрепить рядом с ним
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SnapAssist -Value 0 -Force
 # Отключить управление принтером, используемым по умолчанию, со стороны Windows
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Windows" -Name LegacyDefaultPrinterMode -Value 1 -Force
-# Сохранить скриншот по Win+PrtScr на Рабочем столе
-New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{b7bede81-df94-4682-a7d8-57a52620b86f}" -Name RelativePath -Type String -Value %USERPROFILE%\Desktop -Force
 # Установка качества фона рабочего стола на 100 %
 New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name JPEGImportQuality -Value 100 -Force
 # Отключить залипание клавиши Shift после 5 нажатий
 New-ItemProperty -Path "HKCU:\Control Panel\Accessibility\StickyKeys" -Name Flags -Type String -Value 506 -Force
-# Отключить отображение вкладки "Предыдущие версии" в свойствах файлов
-New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name NoPreviousVersionsPage -Value 1 -Force
-# Отключить флажки для выбора элементов
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name AutoCheckSelect -Value 0 -Force
 # Изменить путь переменной среды для временных файлов на %SYSTEMDRIVE%\Temp
 IF (!(Test-Path -Path $env:SystemDrive\Temp))
 {
@@ -304,16 +414,8 @@ Remove-Item -Path $env:USERPROFILE\OneDrive -Recurse -Force -ErrorAction Silentl
 Remove-Item -Path $env:LOCALAPPDATA\Microsoft\OneDrive -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item -Path "$env:ProgramData\Microsoft OneDrive" -Recurse -Force -ErrorAction SilentlyContinue
 Unregister-ScheduledTask -TaskName *OneDrive* -Confirm:$false
-# Не показывать советы по использованию Windows
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SoftLandingEnabled -Value 0 -Force
 # Включить автоматическое обновление для других продуктов Microsoft
 (New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d",7,"")
-# Отключить меню игры
-IF (!(Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR))
-{
-	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR -Force
-}
-New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR -Name AllowgameDVR -Value 0 -Force
 # Отключить игровую панель
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\GameDVR -Name AppCaptureEnabled -Value 0 -Force
 New-ItemProperty -Path HKCU:\System\GameConfigStore -Name GameDVR_Enabled -Value 0 -Force
@@ -332,17 +434,6 @@ Get-Service -ServiceName swprv,vss | Stop-Service -Force
 Get-Service -ServiceName swprv,vss | Set-Service -StartupType Disabled
 # Отключить Windows Script Host
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings" -Name Enabled -Value 0 -Force
-# Всегда отображать все значки в области уведомлений
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name EnableAutoTray -Value 0 -Force
-# Включить брандмауэр
-Set-NetFirewallProfile -Enabled True
-# Отключить оптимизацию доставки для обновлений с других ПК
-Get-Service -ServiceName DoSvc | Stop-Service -Force
-IF (!(Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization))
-{
-	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization -Force
-}
-New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization -Name DODownloadMode -Value 0 -Force
 # Включить в Планировщике задач запуск очистки обновлений Windows
 $keys = @(
 "Delivery Optimization Files",
@@ -428,22 +519,6 @@ Foreach ($app in $apps)
 		New-ItemProperty -Path $_.PsPath -Name DisabledByUser -Value 1 -Force
 	}
 }
-# Включить контроль памяти
-IF (!(Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy))
-{
-	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Force
-}
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01 -Value 1 -Force
-# Запускать контроль памяти каждый месяц
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 2048 -Value 30 -Force
-# Удалять временные файлы, не используемые в приложениях
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 04 -Value 1 -Force
-# Удалять файлы, которые находятся в корзине
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 08 -Value 1 -Force
-# Удалять файлы, которые находятся в корзине более 30 дней
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 256 -Value 30 -Force
-# Отобразить секунды в системных часах на панели задач
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowSecondsInSystemClock -Value 1 -Force
 # Установить схему управления питания для стационарного ПК и ноутбука
 IF ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -eq 1)
 {
@@ -458,14 +533,8 @@ Else
 # Использовать последнюю установленную версию .NET Framework для всех приложений
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\.NETFramework -Name OnlyUseLatestCLR -Value 1 -Force
 New-ItemProperty -Path HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework -Name OnlyUseLatestCLR -Value 1 -Force
-# Использовать сценарий автоматической настройки прокси-сервера
-New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name AutoConfigURL -Type String -Value https://antizapret.prostovpn.org/proxy.pac -Force
 # Включить Num Lock при загрузке
 New-ItemProperty -Path "Registry::HKEY_USERS\.DEFAULT\Control Panel\Keyboard" -Name InitialKeyboardIndicators -Type String -Value 2147483650 -Force
-# Не показывать рекомендации в меню "Пуск"
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338388Enabled -Value 0 -Force
-# Отключить автоматическую установку рекомендованных приложений
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SilentInstalledAppsEnabled -Value 0 -Force
 # Добавить в исключение Защитник Windows папку
 $drives = Get-Disk | Where-Object {$_.IsBoot -eq $false}
 IF ($drives)
@@ -476,6 +545,16 @@ IF ($drives)
 		Set-MpPreference -ExclusionPath $drive\Программы\Прочее -Force
 	}
 }
+# Включить Защиты сети в Защитнике Windows
+Set-MpPreference -EnableNetworkProtection Enabled
+# Включить Управляемый доступ к папкам
+Set-MpPreference -EnableControlledFolderAccess Enabled
+# Добавить защищенную папку
+Add-MpPreference -ControlledFolderAccessProtectedFolders D:\folder
+# Включить блокировки потенциально нежелательных приложений
+Set-MpPreference -PUAProtection Enabled
+# Включить брандмауэр
+Set-NetFirewallProfile -Enabled True
 # Отключить справку по F1
 IF (!(Test-Path -Path "HKCU:\Software\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64"))
 {
@@ -505,19 +584,6 @@ IF ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -eq 1)
 	$adapter.AllowComputerToTurnOffDevice = "Disabled"
 	$adapter | Set-NetAdapterPowerManagement
 }
-# Установить крупные значки в панели управления
-IF (!(Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
-{
-	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Force
-}
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name AllItemsIconView -Value 0 -Force
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name StartupPage -Value 1 -Force
-# Удалить пункт "Изменить с помощью Paint 3D" из контекстного меню
-$exts = @(".bmp", ".gif", ".jpe", ".jpeg", ".jpg", ".png", ".tif", ".tiff")
-Foreach ($ext in $exts)
-{
-	Remove-Item -Path "Registry::HKEY_CLASSES_ROOT\SystemFileAssociations\$ext\Shell\3D Edit" -Recurse -Force -ErrorAction SilentlyContinue
-}
 # Удалить пункт "Передать на устройство" из контекстного меню
 IF (!(Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"))
 {
@@ -526,47 +592,12 @@ IF (!(Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Ext
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{7AD84985-87B4-4a16-BE58-8B72A5B390F7}" -Type String -Value "Play to menu" -Force
 # Удалить пункт "Отправить" (поделиться) из контекстного меню
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}" -Type String -Value "" -Force
-# Всегда ждать сеть при запуске и входе в систему
-IF (!(Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon"))
+# Удалить пункт "Изменить с помощью Paint 3D" из контекстного меню
+$exts = @(".bmp", ".gif", ".jpe", ".jpeg", ".jpg", ".png", ".tif", ".tiff")
+Foreach ($ext in $exts)
 {
-	New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon" -Force
+	Remove-Item -Path "Registry::HKEY_CLASSES_ROOT\SystemFileAssociations\$ext\Shell\3D Edit" -Recurse -Force -ErrorAction SilentlyContinue
 }
-New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name SyncForegroundPolicy -Value 1 -Force
-# Не показывать уведомление "Установлено новое приложение"
-New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoNewAppAlert -Value 1 -Force
-# Переопределить пользовательский метод ввода на английский язык на экране входа
-IF (!(Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Control Panel\International"))
-{
-	New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Control Panel\International" -Force
-}
-New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Control Panel\International" -Name BlockUserInputMethodsForSignIn -Value 1 -Force
-New-ItemProperty -Path "Registry::HKEY_USERS\.DEFAULT\Keyboard Layout\Preload" -Name 1 -Type String -Value 00000409 -Force
-New-ItemProperty -Path "Registry::HKEY_USERS\.DEFAULT\Keyboard Layout\Preload" -Name 2 -Type String -Value 00000419 -Force
-# Не показывать панель "Люди" на панели задач
-IF (!(Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People))
-{
-	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People -Force
-}
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People -Name PeopleBand -Value 0 -Force
-# Скрыть папку "Объемные объекты" из "Этот компьютер"
-IF (!(Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag"))
-{
-	New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Force
-}
-New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Name ThisPCPolicy -Type String -Value Hide -Force
-IF (!(Test-Path -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag"))
-{
-	New-Item -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Force
-}
-New-ItemProperty -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Name ThisPCPolicy -Type String -Value Hide -Force
-# Не показывать анимацию при первом входе в систему
-New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableFirstLogonAnimation -Value 0 -Force
-# Снять ограничения на одновременное открытие более 15 элементов
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name MultipleInvokePromptMinimum -Value 300 -Force
-# Не показывать недавно используемые папки на панели быстрого доступа
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name ShowFrequent -Value 0 -Force
-# Не показывать недавно использовавшиеся файлы на панели быстрого доступа
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name ShowRecent -Value 0 -Force
 # Удалить пункт "Добавить в библиотеку" из контекстного меню
 Clear-ItemProperty -Path "Registry::HKEY_CLASSES_ROOT\Folder\shellex\ContextMenuHandlers\Library Location" -Name "(default)" -Force
 Clear-ItemProperty -Path "HKLM:\SOFTWARE\Classes\Folder\shellex\ContextMenuHandlers\Library Location" -Name "(default)" -Force
@@ -587,6 +618,34 @@ IF (Get-WindowsEdition -Online | Where-Object {$_.Edition -eq "Professional" -or
 		New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\$key -Name ProgrammaticAccessOnly -Type String -Value "" -Force
 	}
 }
+# Удалить пункт "Восстановить прежнюю версию" из контекстного меню
+New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{596AB062-B4D2-4215-9F74-E9109B0A8153}" -Type String -Value "" -Force
+# Удалить пункт "Печать" из контекстного меню для bat- и cmd-файлов
+Remove-Item -Path Registry::HKEY_CLASSES_ROOT\batfile\shell\print -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item -Path Registry::HKEY_CLASSES_ROOT\cmdfile\shell\print -Recurse -Force -ErrorAction SilentlyContinue
+# Удалить пункт "Создать контакт" из контекстного меню
+Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.contact\ShellNew -Name command -Force -ErrorAction SilentlyContinue
+Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.contact\ShellNew -Name iconpath -Force -ErrorAction SilentlyContinue
+Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.contact\ShellNew -Name MenuText -Force -ErrorAction SilentlyContinue
+# Удалить пункт "Создать архив ZIP" из контекстного меню
+Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder\ShellNew -Name Data -Force -ErrorAction SilentlyContinue
+Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder\ShellNew -Name ItemName -Force -ErrorAction SilentlyContinue
+# Удалить пункт "Создать Документ в формате RTF" из контекстного меню
+Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.rtf\ShellNew -Name Data -Force -ErrorAction SilentlyContinue
+Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.rtf\ShellNew -Name ItemName -Force -ErrorAction SilentlyContinue
+# Удалить пункт "Создать Точечный рисунок" из контекстного меню
+Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.bmp\ShellNew -Name ItemName -Force -ErrorAction SilentlyContinue
+Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.bmp\ShellNew -Name NullFile -Force -ErrorAction SilentlyContinue
+# Удалить пункт "Отправить" из контекстного меню
+New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AllFilesystemObjects\shellex\ContextMenuHandlers\SendTo -Name "(default)" -Type String -Value "" -Force
+# Переопределить пользовательский метод ввода на английский язык на экране входа
+IF (!(Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Control Panel\International"))
+{
+	New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Control Panel\International" -Force
+}
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Control Panel\International" -Name BlockUserInputMethodsForSignIn -Value 1 -Force
+New-ItemProperty -Path "Registry::HKEY_USERS\.DEFAULT\Keyboard Layout\Preload" -Name 1 -Type String -Value 00000409 -Force
+New-ItemProperty -Path "Registry::HKEY_USERS\.DEFAULT\Keyboard Layout\Preload" -Name 2 -Type String -Value 00000419 -Force
 # Открепить от панели задач Microsoft Edge и Microsoft Store
 $getstring = @'
 [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
@@ -621,8 +680,6 @@ IF (!(Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlog
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$sid" -Name OptOut -Value 1 -Force
 # Удалить ярлык Microsoft Edge с рабочего стола
 Remove-Item -Path "$env:USERPROFILE\Desktop\Microsoft Edge.lnk" -Force -ErrorAction SilentlyContinue
-# Не отображать все папки в области навигации
-New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name NavPaneShowAllFolders -Value 0 -Force
 # Отключить пользовательские службы
 $services = @(
 # Пользовательская служба буфера обмена_*
@@ -645,20 +702,8 @@ New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UnistoreSvc -Name
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UnistoreSvc -Name UserServiceFlags -Value 0 -Force
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UserDataSvc -Name Start -Value 4 -Force
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UserDataSvc -Name UserServiceFlags -Value 0 -Force
-# Скрыть кнопку Windows Ink Workspace
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\PenWorkspace -Name PenWorkspaceButtonDesiredVisibility -Value 0 -Force
-# Не предоставлять более специлизированные возможности с соотвествующими советами и рекомендациями
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Privacy -Name TailoredExperiencesWithDiagnosticDataEnabled -Value 0 -Force
-# Отключить средство просмотра диагностических данных
-New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack\EventTranscriptKey -Name EnableEventTranscript -Value 0 -Force
 # Разрешить Windows исправлять размытость в приложениях
 New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name EnablePerProcessSystemDPI -Value 1 -Force
-# Включить блокировки потенциально нежелательных приложений
-Set-MpPreference -PUAProtection Enabled
-# Не показывать недавно добавленные приложения в меню Пуск
-New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Value 1 -Force
-# Удалить пункт "Отправить" из контекстного меню
-New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AllFilesystemObjects\shellex\ContextMenuHandlers\SendTo -Name "(default)" -Type String -Value "" -Force
 # Удалить принтеры
 Remove-Printer -Name Fax, "Microsoft XPS Document Writer", "Microsoft Print to PDF" -ErrorAction SilentlyContinue
 # Добавить "Запуск от имени друго пользователя" в контекстное меню для exe-файлов
@@ -666,27 +711,12 @@ New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name
 Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name Extended -Force -ErrorAction SilentlyContinue
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name SuppressionPolicyEx -Type String -Value "{F211AA05-D4DF-4370-A2A0-9F19C09756A7}" -Force
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser\command -Name DelegateExecute -Type String -Value "{ea72d00e-4960-42fa-ba92-7792a7944c1d}" -Force
-# Включить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами
-New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableLinkedConnections -Value 1 -Force
 # Включить длинные пути Win32
 New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -Value 1 -Force
-# Отключить создание ярлыка Edge на рабочем столе после обновления Windows
-New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name DisableEdgeDesktopShortcutCreation -Value 1 -Force
-# Не разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CDP -Name RomeSdkChannelUserAuthzPolicy -Value 0 -Force
-# Включить прозрачную панель задач
-New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name UseOLEDTaskbarTransparency -Value 1 -Force
-# Отключить удаление кэша миниатюр
-New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" -Name Autorun -Value 0 -Force
-New-ItemProperty -Path "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" -Name Autorun -Value 0 -Force
-# Включить Управляемый доступ к папкам
-Set-MpPreference -EnableControlledFolderAccess Enabled
-# Добавить защищенную папку
-Add-MpPreference -ControlledFolderAccessProtectedFolders D:\folder
 # Скрыть уведомление Защитника Windows об использовании аккаунта Microsoft
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AccountProtection_MicrosoftAccount_Disconnected -Value 1 -Force
 # Скрыть уведомление Защитника Windows об отключенном фильтре SmartScreen для Microsoft Edge
-New-ItemProperty "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AppAndBrowser_EdgeSmartScreenOff -Value 0 -Force
+New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AppAndBrowser_EdgeSmartScreenOff -Value 0 -Force
 # Удалить компоненты
 $apps = @(
 "App.Support.QuickAssist*",
@@ -711,15 +741,6 @@ $shortcut.Save()
 $bytes = [System.IO.File]::ReadAllBytes("$env:APPDATA\Microsoft\Windows\Start Menu\Programs\System Tools\Command Prompt.lnk")
 $bytes[0x15] = $bytes[0x15] -bor 0x20
 [System.IO.File]::WriteAllBytes("$env:APPDATA\Microsoft\Windows\Start Menu\Programs\System Tools\Command Prompt.lnk", $bytes)
-# Удалить пункт "Создать контакт" из контекстного меню
-Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.contact\ShellNew -Name command -Force -ErrorAction SilentlyContinue
-Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.contact\ShellNew -Name iconpath -Force -ErrorAction SilentlyContinue
-Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.contact\ShellNew -Name MenuText -Force -ErrorAction SilentlyContinue
-# Удалить пункт "Создать архив ZIP" из контекстного меню
-Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder\ShellNew -Name Data -Force -ErrorAction SilentlyContinue
-Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder\ShellNew -Name ItemName -Force -ErrorAction SilentlyContinue
-# Включить Защиты сети в Защитнике Windows
-Set-MpPreference -EnableNetworkProtection Enabled
 # Настройка меню "Пуск"
 function Get-ResolvedPath
 {
@@ -739,8 +760,6 @@ Else
 	$data = $key.Data[0..25] + ([byte[]](202,50,0,226,44,1,1,0,0))
 	New-ItemProperty -Path $key.PSPath -Name Data -Type Binary -Value $data -Force
 }
-# Отображать цвет элементов в меню "Пуск", на панели задач и в центре уведомлений
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name ColorPrevalence -Value 1 -Force
 # Отображать цвет элементов в заголовках окон
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\DWM -Name ColorPrevalence -Value 1 -Force
 # Использовать клавишу Print Screen, чтобы запустить функцию создания фрагмента экрана
@@ -750,30 +769,11 @@ New-ItemProperty -Path "HKCU:\Control Panel\Accessibility" -Name DynamicScrollba
 # Группировать одинаковые службы в один процесс svhost.exe
 $ram = (Get-CimInstance Win32_PhysicalMemory | Measure-Object -Property Capacity -Sum).Sum/1kb
 New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control -Name SvcHostSplitThresholdInKB -Value $ram -Force
-# Удалить пункт "Восстановить прежнюю версию" из контекстного меню
-New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{596AB062-B4D2-4215-9F74-E9109B0A8153}" -Type String -Value "" -Force
-# Удалить пункт "Создать Точечный рисунок" из контекстного меню
-Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.bmp\ShellNew -Name ItemName -Force -ErrorAction SilentlyContinue
-Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.bmp\ShellNew -Name NullFile -Force -ErrorAction SilentlyContinue
-# Не разрешать приложениям использовать идентификатор рекламы
-IF (!(Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo))
-{
-	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo -Force
-}
-New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo -Name DisabledByGroupPolicy -Value 1 -Force
 # Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков
 New-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name HttpAcceptLanguageOptOut -Value 1 -Force
-# Не разрешать Windows отслеживать запуски приложений для улучшения меню "Пуск" и результатов поиска и не показывать недавно добавленные приложения
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_TrackProgs -Value 0 -Force
-# Удалить пункт "Печать" из контекстного меню для bat- и cmd-файлов
-Remove-Item -Path Registry::HKEY_CLASSES_ROOT\batfile\shell\print -Recurse -Force -ErrorAction SilentlyContinue
-Remove-Item -Path Registry::HKEY_CLASSES_ROOT\cmdfile\shell\print -Recurse -Force -ErrorAction SilentlyContinue
 # Запускать Защитник Windows в песочнице
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 setx /M MP_FORCE_USE_SANDBOX 1
-# Удалить пункт "Создать Документ в формате RTF" из контекстного меню
-Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.rtf\ShellNew -Name Data -Force -ErrorAction SilentlyContinue
-Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.rtf\ShellNew -Name ItemName -Force -ErrorAction SilentlyContinue
 # Переопределить расположение папок "Загрузки" и "Документы"
 $drive = Read-Host -Prompt "Type disk letter for Documents and Downloads folders"
 $drive = $(${drive}.ToUpper())
@@ -824,8 +824,6 @@ IF ($Documents -ne "${drive}:\Документы")
 	KnownFolderPath -KnownFolder Documents -Path "${drive}:\Документы"
 	New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{F42EE2D3-909F-4907-8871-4C22FC0BF756}" -Type ExpandString -Value "${drive}:\Документы" -Force
 }
-# Выключить местоположение для этого устройства
-New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location -Name Value -Type String -Value Deny -Force
 # Удалить %SYSTEMDRIVE%\PerfLogs
 IF ((Test-Path -Path $env:SystemDrive\PerfLogs))
 {
