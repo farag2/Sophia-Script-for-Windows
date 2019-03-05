@@ -201,8 +201,8 @@ IF (!(Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
 	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Force
 }
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Value 1 -Force
-# Запускать проводник с развернутой лентой
-New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name ExplorerRibbonStartsMinimized -Value 2 -Force
+# Включить отображение ленты проводника в развернутом виде
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Ribbon -Name MinimizedStateTabletModeOff -Value 0 -Force
 # Не показывать уведомление "Установлено новое приложение"
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoNewAppAlert -Value 1 -Force
 # Не показывать недавно добавленные приложения в меню "Пуск"
@@ -351,6 +351,8 @@ New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\E
 [Environment]::SetEnvironmentVariable("TEMP","$env:SystemDrive\Temp",'Process')
 # Удалить UWP-приложения из текущей учетной записи, кроме
 $apps = @(
+# iTunes
+"AppleInc.iTunes"
 # UWP-панель Intel
 "AppUp.IntelGraphicsControlPanel"
 # Пакет локализованного интерфейса на русском
