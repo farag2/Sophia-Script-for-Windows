@@ -550,7 +550,7 @@ Set-MpPreference -EnableNetworkProtection Enabled
 # Включить Управляемый доступ к папкам
 Set-MpPreference -EnableControlledFolderAccess Enabled
 # Добавить защищенную папку
-Add-MpPreference -ControlledFolderAccessProtectedFolders D:\folder
+# Add-MpPreference -ControlledFolderAccessProtectedFolders D:\folder
 # Включить блокировки потенциально нежелательных приложений
 Set-MpPreference -PUAProtection Enabled
 # Включить брандмауэр
