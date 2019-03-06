@@ -549,10 +549,8 @@ IF ($drives)
 }
 # Включить Защиты сети в Защитнике Windows
 Set-MpPreference -EnableNetworkProtection Enabled
-# Включить Управляемый доступ к папкам
-Set-MpPreference -EnableControlledFolderAccess Enabled
-# Добавить защищенную папку
-# Add-MpPreference -ControlledFolderAccessProtectedFolders D:\folder
+# Выключить Управляемый доступ к папкам
+Set-MpPreference -EnableControlledFolderAccess Disable
 # Включить блокировки потенциально нежелательных приложений
 Set-MpPreference -PUAProtection Enabled
 # Включить брандмауэр
@@ -777,8 +775,6 @@ New-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name Ht
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 setx /M MP_FORCE_USE_SANDBOX 1
 # Переопределить расположение папок "Загрузки" и "Документы"
-$drive = Read-Host -Prompt "Type disk letter for Documents and Downloads folders"
-$drive = $(${drive}.ToUpper())
 Function KnownFolderPath
 {
 	Param (
@@ -806,6 +802,8 @@ Function KnownFolderPath
 	}
 	Attrib +r $Path
 }
+$drive = Read-Host -Prompt 'Введите букву диска, в корне которого будет создана папка "Загрузки"'
+$drive = $(${drive}.ToUpper())
 $Downloads = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 IF ($Downloads -ne "${drive}:\Загрузки")
 {
@@ -816,6 +814,8 @@ IF ($Downloads -ne "${drive}:\Загрузки")
 	KnownFolderPath -KnownFolder Downloads -Path "${drive}:\Загрузки"
 	New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{7D83EE9B-2244-4E70-B1F5-5393042AF1E4}" -Type ExpandString -Value "${drive}:\Загрузки" -Force
 }
+$drive = Read-Host -Prompt 'Введите букву диска, в корне которого будет создана папка "Документы"'
+$drive = $(${drive}.ToUpper())
 $Documents = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
 IF ($Documents -ne "${drive}:\Документы")
 {
