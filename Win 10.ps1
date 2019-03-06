@@ -549,8 +549,10 @@ IF ($drives)
 }
 # Включить Защиты сети в Защитнике Windows
 Set-MpPreference -EnableNetworkProtection Enabled
-# Выключить Управляемый доступ к папкам
-Set-MpPreference -EnableControlledFolderAccess Disable
+# Включить Управляемый доступ к папкам
+Set-MpPreference -EnableControlledFolderAccess Enabled
+# Добавить защищенную папку
+# Add-MpPreference -ControlledFolderAccessProtectedFolders D:\folder
 # Включить блокировки потенциально нежелательных приложений
 Set-MpPreference -PUAProtection Enabled
 # Включить брандмауэр
