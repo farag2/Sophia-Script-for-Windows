@@ -438,13 +438,21 @@ Get-Service -ServiceName swprv,vss | Set-Service -StartupType Disabled
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings" -Name Enabled -Value 0 -Force
 # Включить в Планировщике задач запуск очистки обновлений Windows
 $keys = @(
+# Файлы оптимизации доставки
 "Delivery Optimization Files",
+# Пакеты драйверов устройств
 "Device Driver Packages",
+# Предыдущие установки Windows
 "Previous Installations",
+# Файлы журнала установки
 "Setup Log Files",
+# Temporary Setup Files
 "Temporary Setup Files",
+# Очистка обновлений Windows
 "Update Cleanup",
+# Windows Defender Antivirus
 "Windows Defender",
+# Файлы журнала обновления Windows
 "Windows Upgrade Log Files")
 Foreach ($key in $keys)
 {
@@ -776,20 +784,24 @@ New-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name Ht
 # Запускать Защитник Windows в песочнице
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 setx /M MP_FORCE_USE_SANDBOX 1
-# Переопределить расположение папок "Загрузки" и "Документы"
+# Переопределить расположение папок "Рабочий стол", "Документы", "Загрузки", "Музыка", "Изображения", "Видео"
 Function KnownFolderPath
 {
 	Param (
 		[Parameter(Mandatory = $true)]
-		[ValidateSet('Documents', 'Downloads')]
+		[ValidateSet('Desktop', 'Documents', 'Downloads', 'Music', 'Pictures', 'Videos')]
 		[string]$KnownFolder,
 
 		[Parameter(Mandatory = $true)]
 		[string]$Path
 	)
 	$KnownFolders = @{
-		'Documents' = @('FDD39AD0-238F-46AF-ADB4-6C85480369C7','F42EE2D3-909F-4907-8871-4C22FC0BF756');
-		'Downloads' = @('374DE290-123F-4565-9164-39C4925E467B','7D83EE9B-2244-4E70-B1F5-5393042AF1E4');
+		'Desktop' = @('B4BFCC3A-DB2C-424C-B029-7FE99A87C641');
+		'Documents' = @('FDD39AD0-238F-46AF-ADB4-6C85480369C7','f42ee2d3-909f-4907-8871-4c22fc0bf756');
+		'Downloads' = @('374DE290-123F-4565-9164-39C4925E467B','7d83ee9b-2244-4e70-b1f5-5393042af1e4');
+		'Music' = @('4BD8D571-6D19-48D3-BE97-422220080E43','a0c69a99-21c8-4671-8703-7934162fcf1d');
+		'Pictures' = @('33E28130-4E1E-4676-835A-98395C3BC3BB','0ddd015d-b06c-45d5-8c4c-f59713854639');
+		'Videos' = @('18989B1D-99B5-455B-841C-AB7C74E4DDFC','35286a68-3c57-41a1-bbb1-0eae73d76c95');
 	}
 	$Type = ([System.Management.Automation.PSTypeName]'KnownFolders').Type
 	$Signature = @'
@@ -804,29 +816,102 @@ Function KnownFolderPath
 	}
 	Attrib +r $Path
 }
-$drive = Read-Host -Prompt 'Введите букву диска, в корне которого будет создана папка "Загрузки"'
-$drive = $(${drive}.ToUpper())
-$Downloads = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-IF ($Downloads -ne "${drive}:\Загрузки")
+$getdisk = (Get-Disk | Where-Object {$_.BusType -ne "USB"} | Get-Partition | Get-Volume).DriveLetter
+# Рабочий стол
+$drive = Read-Host -Prompt "Введите букву диска, в корне которого будет создана папка `"Рабочий стол`". `nЧтобы пропустить, нажмите Enter"
+IF ($getdisk -eq $drive)
 {
-	IF (!(Test-Path -Path "${drive}:\Загрузки"))
+	$drive = $(${drive}.ToUpper())
+	$Desktop = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
+	IF ($Desktop -ne "${drive}:\Рабочий стол")
 	{
-		New-Item -Path "${drive}:\Загрузки" -Type Directory -Force
+		IF (!(Test-Path -Path "${drive}:\Рабочий стол"))
+		{
+			New-Item -Path "${drive}:\Рабочий стол" -Type Directory -Force
+		}
+		KnownFolderPath -KnownFolder Desktop -Path "${drive}:\Рабочий стол"
+		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{754AC886-DF64-4CBA-86B5-F7FBF4FBCEF5}" -Type ExpandString -Value "${drive}:\Рабочий стол" -Force
 	}
-	KnownFolderPath -KnownFolder Downloads -Path "${drive}:\Загрузки"
-	New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{7D83EE9B-2244-4E70-B1F5-5393042AF1E4}" -Type ExpandString -Value "${drive}:\Загрузки" -Force
 }
-$drive = Read-Host -Prompt 'Введите букву диска, в корне которого будет создана папка "Документы"'
-$drive = $(${drive}.ToUpper())
-$Documents = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
-IF ($Documents -ne "${drive}:\Документы")
+# Документы
+$drive = Read-Host -Prompt "Введите букву диска, в корне которого будет создана папка `"Документы`". `nЧтобы пропустить, нажмите Enter"
+IF ($getdisk -eq $drive)
 {
-	IF (!(Test-Path -Path "${drive}:\Документы"))
+	$drive = $(${drive}.ToUpper())
+	$Documents = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
+	IF ($Documents -ne "${drive}:\Документы")
 	{
-		New-Item -Path "${drive}:\Документы" -Type Directory -Force
+		IF (!(Test-Path -Path "${drive}:\Документы"))
+		{
+			New-Item -Path "${drive}:\Документы" -Type Directory -Force
+		}
+		KnownFolderPath -KnownFolder Documents -Path "${drive}:\Документы"
+		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{F42EE2D3-909F-4907-8871-4C22FC0BF756}" -Type ExpandString -Value "${drive}:\Документы" -Force
 	}
-	KnownFolderPath -KnownFolder Documents -Path "${drive}:\Документы"
-	New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{F42EE2D3-909F-4907-8871-4C22FC0BF756}" -Type ExpandString -Value "${drive}:\Документы" -Force
+}
+# Загрузки
+$drive = Read-Host -Prompt "Введите букву диска, в корне которого будет создана папка `"Загрузки`". `nЧтобы пропустить, нажмите Enter"
+IF ($getdisk -eq $drive)
+{
+	$drive = $(${drive}.ToUpper())
+	$Downloads = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+	IF ($Downloads -ne "${drive}:\Загрузки")
+	{
+		IF (!(Test-Path -Path "${drive}:\Загрузки"))
+		{
+			New-Item -Path "${drive}:\Загрузки" -Type Directory -Force
+		}
+		KnownFolderPath -KnownFolder Downloads -Path "${drive}:\Загрузки"
+		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{7D83EE9B-2244-4E70-B1F5-5393042AF1E4}" -Type ExpandString -Value "${drive}:\Загрузки" -Force
+	}
+}
+# Музыка
+$drive = Read-Host -Prompt "Введите букву диска, в корне которого будет создана папка `"Музыка`". `nЧтобы пропустить, нажмите Enter"
+IF ($getdisk -eq $drive)
+{
+	$drive = $(${drive}.ToUpper())
+	$Downloads = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
+	IF ($Downloads -ne "${drive}:\Музыка")
+	{
+		IF (!(Test-Path -Path "${drive}:\Музыка"))
+		{
+			New-Item -Path "${drive}:\Музыка" -Type Directory -Force
+		}
+		KnownFolderPath -KnownFolder Downloads -Path "${drive}:\Музыка"
+		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{A0C69A99-21C8-4671-8703-7934162FCF1D}" -Type ExpandString -Value "${drive}:\Музыка" -Force
+	}
+}
+# Изображения
+$drive = Read-Host -Prompt "Введите букву диска, в корне которого будет создана папка `"Изображения`". `nЧтобы пропустить, нажмите Enter"
+IF ($getdisk -eq $drive)
+{
+	$drive = $(${drive}.ToUpper())
+	$Downloads = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
+	IF ($Downloads -ne "${drive}:\Изображения")
+	{
+		IF (!(Test-Path -Path "${drive}:\Изображения"))
+		{
+			New-Item -Path "${drive}:\Изображения" -Type Directory -Force
+		}
+		KnownFolderPath -KnownFolder Downloads -Path "${drive}:\Изображения"
+		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{0DDD015D-B06C-45D5-8C4C-F59713854639}" -Type ExpandString -Value "${drive}:\Изображения" -Force
+	}
+}
+# Видео
+$drive = Read-Host -Prompt "Введите букву диска, в корне которого будет создана папка `"Видео`". `nЧтобы пропустить, нажмите Enter"
+IF ($getdisk -eq $drive)
+{
+	$drive = $(${drive}.ToUpper())
+	$Downloads = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Video"
+	IF ($Downloads -ne "${drive}:\Видео")
+	{
+		IF (!(Test-Path -Path "${drive}:\Видео"))
+		{
+			New-Item -Path "${drive}:\Видео" -Type Directory -Force
+		}
+		KnownFolderPath -KnownFolder Downloads -Path "${drive}:\Видео"
+		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{35286A68-3C57-41A1-BBB1-0EAE73D76C95}" -Type ExpandString -Value "${drive}:\Видео" -Force
+	}
 }
 # Удалить %SYSTEMDRIVE%\PerfLogs
 IF ((Test-Path -Path $env:SystemDrive\PerfLogs))
