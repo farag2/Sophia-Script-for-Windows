@@ -102,7 +102,7 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\
 # Отключить автозапуск с внешних носителей
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers -Name DisableAutoplay -Value 1 -Force
 # He дoбaвлять "- яpлык" для coздaвaeмыx яpлыкoв
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name link -Type Binary -Value ([byte[]](00,00,00,00)) -Force
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name link -Type Binary -Value ([byte[]](00, 00, 00, 00)) -Force
 # Отключить SmartScreen для приложений и файлов
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name SmartScreenEnabled -Type String -Value Off -Force
 # Сохранить скриншот по Win+PrtScr на Рабочем столе
@@ -339,59 +339,59 @@ IF (!(Test-Path -Path $env:SystemDrive\Temp))
 {
 	New-Item -Path $env:SystemDrive\Temp -Type Directory -Force
 }
-[Environment]::SetEnvironmentVariable("TMP","$env:SystemDrive\Temp","User")
+[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "User")
 New-ItemProperty -Path HKCU:\Environment -Name TMP -Type ExpandString -Value %SystemDrive%\Temp -Force
-[Environment]::SetEnvironmentVariable("TEMP","$env:SystemDrive\Temp","User")
+[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "User")
 New-ItemProperty -Path HKCU:\Environment -Name TEMP -Type ExpandString -Value %SystemDrive%\Temp -Force
-[Environment]::SetEnvironmentVariable("TMP","$env:SystemDrive\Temp","Machine")
+[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Machine")
 New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TMP -Type ExpandString -Value %SystemDrive%\Temp -Force
-[Environment]::SetEnvironmentVariable("TEMP","$env:SystemDrive\Temp","Machine")
+[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Machine")
 New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TEMP -Type ExpandString -Value %SystemDrive%\Temp -Force
-[Environment]::SetEnvironmentVariable("TMP","$env:SystemDrive\Temp",'Process')
-[Environment]::SetEnvironmentVariable("TEMP","$env:SystemDrive\Temp",'Process')
+[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Process")
+[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Process")
 # Удалить UWP-приложения из текущей учетной записи, кроме
 $apps = @(
-# iTunes
-"AppleInc.iTunes"
-# UWP-панель Intel
-"AppUp.IntelGraphicsControlPanel"
-# Пакет локализованного интерфейса на русском
-"Microsoft.LanguageExperiencePackru-ru"
-# Фотографии
-"Microsoft.Windows.Photos"
-# Набросок на фрагменте экрана
-"Microsoft.ScreenSketch"
-# Панель управления NVidia
-"NVIDIACorp.NVIDIAControlPanel"
-# Microsoft Store
-".*Store.*")
+	# iTunes
+	"AppleInc.iTunes"
+	# UWP-панель Intel
+	"AppUp.IntelGraphicsControlPanel"
+	# Пакет локализованного интерфейса на русском
+	"Microsoft.LanguageExperiencePackru-ru"
+	# Фотографии
+	"Microsoft.Windows.Photos"
+	# Набросок на фрагменте экрана
+	"Microsoft.ScreenSketch"
+	# Панель управления NVidia
+	"NVIDIACorp.NVIDIAControlPanel"
+	# Microsoft Store
+	".*Store.*")
 Get-AppxPackage -AllUsers | Where-Object {$_.Name -cnotmatch ($apps -join '|')} | Remove-AppxPackage -ErrorAction SilentlyContinue
 # Удалить UWP-приложения из системной учетной записи, кроме
 # UWP-панель Intel
 $apps = @(
-"AppUp.IntelGraphicsControlPanel",
-# Панель управления NVidia
-"NVIDIACorp.NVIDIAControlPanel",
-# Microsoft Store
-".*Store.*")
+	"AppUp.IntelGraphicsControlPanel",
+	# Панель управления NVidia
+	"NVIDIACorp.NVIDIAControlPanel",
+	# Microsoft Store
+	".*Store.*")
 Get-AppxProvisionedPackage -Online | Where-Object {$_.DisplayName -cnotmatch ($apps -join '|')} | Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue
 # Отключить компоненты
 $features = @(
-# Факсы и сканирование
-"FaxServicesClientPackage",
-# Компоненты прежних версий
-"LegacyComponents",
-# Компоненты работы с мультимедиа
-"MediaPlayback",
-# PowerShell 2.0
-"MicrosoftWindowsPowerShellV2",
-"MicrosoftWindowsPowershellV2Root",
-# Средство записи XPS-документов (Microsoft)
-"Printing-XPSServices-Features",
-# Печать в PDF (Майкрософт)
-"Printing-PrintToPDFServices-Features",
-# Клиент рабочих папок
-"WorkFolders-Client")
+	# Факсы и сканирование
+	"FaxServicesClientPackage",
+	# Компоненты прежних версий
+	"LegacyComponents",
+	# Компоненты работы с мультимедиа
+	"MediaPlayback",
+	# PowerShell 2.0
+	"MicrosoftWindowsPowerShellV2",
+	"MicrosoftWindowsPowershellV2Root",
+	# Средство записи XPS-документов (Microsoft)
+	"Printing-XPSServices-Features",
+	# Печать в PDF (Майкрософт)
+	"Printing-PrintToPDFServices-Features",
+	# Клиент рабочих папок
+	"WorkFolders-Client")
 Foreach ($feature in $features)
 {
 	Disable-WindowsOptionalFeature -Online -FeatureName $feature -NoRestart
@@ -417,7 +417,7 @@ Remove-Item -Path $env:LOCALAPPDATA\Microsoft\OneDrive -Recurse -Force -ErrorAct
 Remove-Item -Path "$env:ProgramData\Microsoft OneDrive" -Recurse -Force -ErrorAction SilentlyContinue
 Unregister-ScheduledTask -TaskName *OneDrive* -Confirm:$false
 # Включить автоматическое обновление для других продуктов Microsoft
-(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d",7,"")
+(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
 # Отключить игровую панель
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\GameDVR -Name AppCaptureEnabled -Value 0 -Force
 New-ItemProperty -Path HKCU:\System\GameConfigStore -Name GameDVR_Enabled -Value 0 -Force
@@ -429,11 +429,11 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\GameBar -Name ShowStartupPanel -
 # Отключить восстановление системы
 Disable-ComputerRestore -Drive $env:SystemDrive
 Get-ScheduledTask -TaskName SR | Disable-ScheduledTask
-Get-Service -ServiceName swprv,vss | Set-Service -StartupType Manual
-Get-Service -ServiceName swprv,vss | Start-Service
+Get-Service -ServiceName swprv, vss | Set-Service -StartupType Manual
+Get-Service -ServiceName swprv, vss | Start-Service
 Get-CimInstance -ClassName Win32_ShadowCopy | Remove-CimInstance
-Get-Service -ServiceName swprv,vss | Stop-Service -Force
-Get-Service -ServiceName swprv,vss | Set-Service -StartupType Disabled
+Get-Service -ServiceName swprv, vss | Stop-Service -Force
+Get-Service -ServiceName swprv, vss | Set-Service -StartupType Disabled
 # Отключить Windows Script Host
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings" -Name Enabled -Value 0 -Force
 # Включить в Планировщике задач запуск очистки обновлений Windows
@@ -463,11 +463,11 @@ $trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 90 -At 9am
 $settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
 $principal = New-ScheduledTaskPrincipal -UserID $env:USERNAME -RunLevel Highest
 $params = @{
-"TaskName"	= "Update Cleanup"
-"Action"	= $action
-"Trigger"	= $trigger
-"Settings"	= $settings
-"Principal"	= $principal
+	"TaskName"	= "Update Cleanup"
+	"Action"	= $action
+	"Trigger"	= $trigger
+	"Settings"	= $settings
+	"Principal"	= $principal
 }
 Register-ScheduledTask @Params -Force
 # Включить в Планировщике задач очистки папки %SYSTEMROOT%\SoftwareDistribution\Download
@@ -491,11 +491,11 @@ $trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 62 -At 9am
 $settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
 $principal = New-ScheduledTaskPrincipal -UserID System -RunLevel Highest
 $params = @{
-"TaskName"	= "CBS"
-"Action"	= $action
-"Trigger"	= $trigger
-"Settings"	= $settings
-"Principal"	= $principal
+	"TaskName"	= "CBS"
+	"Action"	= $action
+	"Trigger"	= $trigger
+	"Settings"	= $settings
+	"Principal"	= $principal
 }
 Register-ScheduledTask @Params -Force
 # Включить в Планировщике задач очистки папки %TEMP%
@@ -504,23 +504,23 @@ $trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 62 -At 9am
 $settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
 $principal = New-ScheduledTaskPrincipal -UserID System -RunLevel Highest
 $params = @{
-"TaskName"	= "Temp"
-"Action"	= $action
-"Trigger"	= $trigger
-"Settings"	= $settings
-"Principal"	= $principal
+	"TaskName"	= "Temp"
+	"Action"	= $action
+	"Trigger"	= $trigger
+	"Settings"	= $settings
+	"Principal"	= $principal
 }
 Register-ScheduledTask @Params -Force
 # Запретить приложениям работать в фоновом режиме, кроме
 $apps = @(
-# Content Delivery Manager
-"Microsoft.Windows.ContentDeliveryManager*"
-# Cortana
-"Microsoft.Windows.Cortana*"
-# Безопасность Windows
-"Microsoft.Windows.SecHealthUI*"
-# ShellExperienceHost
-"Microsoft.Windows.ShellExperienceHost*")
+	# Content Delivery Manager
+	"Microsoft.Windows.ContentDeliveryManager*"
+	# Cortana
+	"Microsoft.Windows.Cortana*"
+	# Безопасность Windows
+	"Microsoft.Windows.SecHealthUI*"
+	# ShellExperienceHost
+	"Microsoft.Windows.ShellExperienceHost*")
 Foreach ($app in $apps)
 {
 	Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications -Exclude $apps |
@@ -692,14 +692,14 @@ New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlo
 Remove-Item -Path "$env:USERPROFILE\Desktop\Microsoft Edge.lnk" -Force -ErrorAction SilentlyContinue
 # Отключить пользовательские службы
 $services = @(
-# Пользовательская служба буфера обмена_*
-"cbdhsvc_*",
-# Служба контактных данных_*
-"PimIndexMaintenanceSvc_*",
-# Служба хранения данных пользователя_*
-"UnistoreSvc_*",
-# Служба доступа к данным пользователя_*
-"UserDataSvc_*")
+	# Пользовательская служба буфера обмена_*
+	"cbdhsvc_*",
+	# Служба контактных данных_*
+	"PimIndexMaintenanceSvc_*",
+	# Служба хранения данных пользователя_*
+	"UnistoreSvc_*",
+	# Служба доступа к данным пользователя_*
+	"UserDataSvc_*")
 Foreach ($service In $services)
 {
 	Get-Service -ServiceName $service | Stop-Service -Force
@@ -729,11 +729,11 @@ New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Security Health\State" 
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AppAndBrowser_EdgeSmartScreenOff -Value 0 -Force
 # Удалить компоненты
 $apps = @(
-"App.Support.QuickAssist*",
-"Hello.Face*",
-"Media.WindowsMediaPlayer*",
-"OneCoreUAP.OneSync*",
-"OpenSSH.Client*")
+	"App.Support.QuickAssist*",
+	"Hello.Face*",
+	"Media.WindowsMediaPlayer*",
+	"OneCoreUAP.OneSync*",
+	"OpenSSH.Client*")
 Foreach ($app in $apps)
 {
 	Get-WindowsCapability -Online | Where-Object name -Like $app | Remove-WindowsCapability -Online
@@ -777,7 +777,7 @@ New-ItemProperty -Path "HKCU:\Control Panel\Keyboard" -Name PrintScreenKeyForSni
 # Отключить автоматическое скрытие полос прокрутки в Windows
 New-ItemProperty -Path "HKCU:\Control Panel\Accessibility" -Name DynamicScrollbars -Value 0 -Force
 # Группировать одинаковые службы в один процесс svhost.exe
-$ram = (Get-CimInstance Win32_PhysicalMemory | Measure-Object -Property Capacity -Sum).Sum/1kb
+$ram = (Get-CimInstance Win32_PhysicalMemory | Measure-Object -Property Capacity -Sum).Sum / 1kb
 New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control -Name SvcHostSplitThresholdInKB -Value $ram -Force
 # Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков
 New-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name HttpAcceptLanguageOptOut -Value 1 -Force
@@ -796,12 +796,12 @@ Function KnownFolderPath
 		[string]$Path
 	)
 	$KnownFolders = @{
-		'Desktop' = @('B4BFCC3A-DB2C-424C-B029-7FE99A87C641');
-		'Documents' = @('FDD39AD0-238F-46AF-ADB4-6C85480369C7','f42ee2d3-909f-4907-8871-4c22fc0bf756');
-		'Downloads' = @('374DE290-123F-4565-9164-39C4925E467B','7d83ee9b-2244-4e70-b1f5-5393042af1e4');
-		'Music' = @('4BD8D571-6D19-48D3-BE97-422220080E43','a0c69a99-21c8-4671-8703-7934162fcf1d');
-		'Pictures' = @('33E28130-4E1E-4676-835A-98395C3BC3BB','0ddd015d-b06c-45d5-8c4c-f59713854639');
-		'Videos' = @('18989B1D-99B5-455B-841C-AB7C74E4DDFC','35286a68-3c57-41a1-bbb1-0eae73d76c95');
+		'Desktop'	= @('B4BFCC3A-DB2C-424C-B029-7FE99A87C641');
+		'Documents'	= @('FDD39AD0-238F-46AF-ADB4-6C85480369C7', 'f42ee2d3-909f-4907-8871-4c22fc0bf756');
+		'Downloads'	= @('374DE290-123F-4565-9164-39C4925E467B', '7d83ee9b-2244-4e70-b1f5-5393042af1e4');
+		'Music'		= @('4BD8D571-6D19-48D3-BE97-422220080E43', 'a0c69a99-21c8-4671-8703-7934162fcf1d');
+		'Pictures'	= @('33E28130-4E1E-4676-835A-98395C3BC3BB', '0ddd015d-b06c-45d5-8c4c-f59713854639');
+		'Videos'	= @('18989B1D-99B5-455B-841C-AB7C74E4DDFC', '35286a68-3c57-41a1-bbb1-0eae73d76c95');
 	}
 	$Type = ([System.Management.Automation.PSTypeName]'KnownFolders').Type
 	$Signature = @'
