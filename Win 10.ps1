@@ -870,14 +870,14 @@ $drive = Read-Host -Prompt "Введите букву диска, в корне 
 IF ($getdisk -eq $drive)
 {
 	$drive = $(${drive}.ToUpper())
-	$Downloads = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
-	IF ($Downloads -ne "${drive}:\Музыка")
+	$Music = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
+	IF (Music -ne "${drive}:\Музыка")
 	{
 		IF (!(Test-Path -Path "${drive}:\Музыка"))
 		{
 			New-Item -Path "${drive}:\Музыка" -Type Directory -Force
 		}
-		KnownFolderPath -KnownFolder Downloads -Path "${drive}:\Музыка"
+		KnownFolderPath -KnownFolder Music -Path "${drive}:\Музыка"
 		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{A0C69A99-21C8-4671-8703-7934162FCF1D}" -Type ExpandString -Value "${drive}:\Музыка" -Force
 	}
 }
@@ -886,14 +886,14 @@ $drive = Read-Host -Prompt "Введите букву диска, в корне 
 IF ($getdisk -eq $drive)
 {
 	$drive = $(${drive}.ToUpper())
-	$Downloads = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
-	IF ($Downloads -ne "${drive}:\Изображения")
+	$Pictures = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
+	IF ($Pictures -ne "${drive}:\Изображения")
 	{
 		IF (!(Test-Path -Path "${drive}:\Изображения"))
 		{
 			New-Item -Path "${drive}:\Изображения" -Type Directory -Force
 		}
-		KnownFolderPath -KnownFolder Downloads -Path "${drive}:\Изображения"
+		KnownFolderPath -KnownFolder Pictures -Path "${drive}:\Изображения"
 		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{0DDD015D-B06C-45D5-8C4C-F59713854639}" -Type ExpandString -Value "${drive}:\Изображения" -Force
 	}
 }
@@ -902,14 +902,14 @@ $drive = Read-Host -Prompt "Введите букву диска, в корне 
 IF ($getdisk -eq $drive)
 {
 	$drive = $(${drive}.ToUpper())
-	$Downloads = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Video"
-	IF ($Downloads -ne "${drive}:\Видео")
+	$Videos = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Video"
+	IF ($Videos -ne "${drive}:\Видео")
 	{
 		IF (!(Test-Path -Path "${drive}:\Видео"))
 		{
 			New-Item -Path "${drive}:\Видео" -Type Directory -Force
 		}
-		KnownFolderPath -KnownFolder Downloads -Path "${drive}:\Видео"
+		KnownFolderPath -KnownFolder Videos -Path "${drive}:\Видео"
 		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{35286A68-3C57-41A1-BBB1-0EAE73D76C95}" -Type ExpandString -Value "${drive}:\Видео" -Force
 	}
 }
