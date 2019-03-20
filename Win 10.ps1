@@ -472,6 +472,7 @@ $params = @{
 Register-ScheduledTask @Params -Force
 # Включить в Планировщике задач очистки папки %SYSTEMROOT%\SoftwareDistribution\Download
 $xml = 'Программы\Прочее\xml\SoftwareDistribution.xml'
+# Функция для поиска буквы диска, подключенного по USB, и подставновка ее в путь для $xml
 function Get-ResolvedPath
 {
 	param ([Parameter(ValueFromPipeline=1)]$Path)
@@ -752,6 +753,7 @@ $bytes = [System.IO.File]::ReadAllBytes("$env:APPDATA\Microsoft\Windows\Start Me
 $bytes[0x15] = $bytes[0x15] -bor 0x20
 [System.IO.File]::WriteAllBytes("$env:APPDATA\Microsoft\Windows\Start Menu\Programs\System Tools\Command Prompt.lnk", $bytes)
 # Настройка меню "Пуск"
+# Функция для поиска буквы диска, подключенного по USB, и подставновка ее в путь для $regpath
 function Get-ResolvedPath
 {
 	param ([Parameter(ValueFromPipeline=1)]$Path)
