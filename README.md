@@ -1,2 +1,1 @@
-Other useful scripts:
-https://gist.github.com/farag2
+Always use latest Windows 10 Pro x64 version
