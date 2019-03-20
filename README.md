@@ -3,9 +3,9 @@ https://support.microsoft.com/en-us/help/4464619
 
 Read the script carefully before excutiing commands
 
-Excute the script with powersshell.exe or powershell_ise.exe
+Excute the script with powershell.exe or powershell_ise.exe
 
-Ask question on the offficial thread
+Ask question on the official thread
 http://forum.ru-board.com/topic.cgi?forum=62&topic=30859
 
 Other usefull (no) scripts
