@@ -436,7 +436,7 @@ Get-Service -ServiceName swprv, vss | Stop-Service -Force
 Get-Service -ServiceName swprv, vss | Set-Service -StartupType Disabled
 # Отключить Windows Script Host
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings" -Name Enabled -Value 0 -Force
-# Включить в Планировщике задач запуск очистки обновлений Windows
+# Включить в Планировщике задач запуск очистки диска
 $keys = @(
 # Файлы оптимизации доставки
 "Delivery Optimization Files",
@@ -933,7 +933,16 @@ IF ((Test-Path -Path $env:SystemRoot\Temp))
 }
 # Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name RestartNotificationsAllowed2 -Value 1 -Force
-# Включить патч Retpoline против Spectre v2 ###
+# Включить патч Retpoline против Spectre v2
 New-ItemProperty -Path "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name FeatureSettingsOverride -Value 1024 -Force
 New-ItemProperty -Path "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name FeatureSettingsOverrideMask -Value 1024 -Force
+# Установить параметры производительности графики для отдельных приложений на "Высокая производительность"
+IF ((Get-CimInstance -ClassName Win32_VideoController | Where-Object {$_.AdapterDACType -like "*DAC*"}).Caption)
+{
+	$exe = Read-Host -Prompt "Введите полный путь до исполняемого файла приложения без кавычек. `nЧтобы пропустить, нажмите Enter"
+	IF ($exe)
+	{
+		New-ItemProperty -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Name $exe -Type String -Value "GpuPreference=2;" -Force
+	}
+}
 Stop-Process -ProcessName explorer
