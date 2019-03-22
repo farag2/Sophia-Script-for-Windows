@@ -873,7 +873,7 @@ IF ($getdisk -eq $drive)
 {
 	$drive = $(${drive}.ToUpper())
 	$Music = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
-	IF (Music -ne "${drive}:\Музыка")
+	IF ($Music -ne "${drive}:\Музыка")
 	{
 		IF (!(Test-Path -Path "${drive}:\Музыка"))
 		{
@@ -934,14 +934,19 @@ IF ((Test-Path -Path $env:SystemRoot\Temp))
 # Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name RestartNotificationsAllowed2 -Value 1 -Force
 # Включить патч Retpoline против Spectre v2
-New-ItemProperty -Path "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name FeatureSettingsOverride -Value 1024 -Force
-New-ItemProperty -Path "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name FeatureSettingsOverrideMask -Value 1024 -Force
+New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name FeatureSettingsOverride -Value 1024 -Force
+New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name FeatureSettingsOverrideMask -Value 1024 -Force
 # Установить параметры производительности графики для отдельных приложений на "Высокая производительность"
-IF ((Get-CimInstance -ClassName Win32_VideoController | Where-Object {$_.AdapterDACType -like "*DAC*"}).Caption)
+IF ((Get-CimInstance -ClassName Win32_VideoController | Where-Object {$_.AdapterDACType -ne "Internal"}).Caption)
 {
-	$exe = Read-Host -Prompt "Введите полный путь до исполняемого файла приложения без кавычек. `nЧтобы пропустить, нажмите Enter"
+	IF (Test-Path -Path "${env:ProgramFiles(x86)}\Steam")
+	{
+		Start "${env:ProgramFiles(x86)}\Steam\steamapps\common"
+	}
+	$exe = Read-Host -Prompt "Введите полный путь до исполняемого файла приложения. `nЧтобы пропустить, нажмите Enter"
 	IF ($exe)
 	{
+		$exe = $exe.Replace('"', "")
 		New-ItemProperty -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Name $exe -Type String -Value "GpuPreference=2;" -Force
 	}
 }
