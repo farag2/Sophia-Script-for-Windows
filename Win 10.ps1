@@ -426,14 +426,12 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\GameBar -Name AllowAutoGameMode 
 New-ItemProperty -Path HKCU:\Software\Microsoft\GameBar -Name AutoGameModeEnabled -Value 0 -Force
 # Отключить подсказки игровой панели
 New-ItemProperty -Path HKCU:\Software\Microsoft\GameBar -Name ShowStartupPanel -Value 0 -Force
-# Отключить восстановление системы
-Disable-ComputerRestore -Drive $env:SystemDrive
-Get-ScheduledTask -TaskName SR | Disable-ScheduledTask
+# Включить восстановление системы
+Enable-ComputerRestore -Drive $env:SystemDrive
+Get-ScheduledTask -TaskName SR | Enable-ScheduledTask
 Get-Service -ServiceName swprv, vss | Set-Service -StartupType Manual
 Get-Service -ServiceName swprv, vss | Start-Service
 Get-CimInstance -ClassName Win32_ShadowCopy | Remove-CimInstance
-Get-Service -ServiceName swprv, vss | Stop-Service -Force
-Get-Service -ServiceName swprv, vss | Set-Service -StartupType Disabled
 # Отключить Windows Script Host
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings" -Name Enabled -Value 0 -Force
 # Включить в Планировщике задач запуск очистки диска
@@ -558,10 +556,8 @@ IF ($drives)
 }
 # Включить Защиты сети в Защитнике Windows
 Set-MpPreference -EnableNetworkProtection Enabled
-# Включить Управляемый доступ к папкам
-Set-MpPreference -EnableControlledFolderAccess Enabled
-# Добавить защищенную папку
-# Add-MpPreference -ControlledFolderAccessProtectedFolders D:\folder
+# Выключить Управляемый доступ к папкам
+Set-MpPreference -EnableControlledFolderAccess Disable
 # Включить блокировки потенциально нежелательных приложений
 Set-MpPreference -PUAProtection Enabled
 # Включить брандмауэр
