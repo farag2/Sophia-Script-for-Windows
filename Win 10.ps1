@@ -591,6 +591,25 @@ IF ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -eq 1)
 	$adapter.AllowComputerToTurnOffDevice = "Disabled"
 	$adapter | Set-NetAdapterPowerManagement
 }
+# Добавить пункт "Извлечь" для MSI в контекстное меню
+IF (!(Test-Path -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Извлечь\Command))
+{
+	New-Item -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Извлечь\Command -Force
+}
+New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Извлечь\Command -Name "(default)" -Type String -Value 'msiexec.exe /a "%1" /qb TARGETDIR="%1 extracted"' -Force
+# Добавить "Запуск от имени друго пользователя" в контекстное меню для exe-файлов
+New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name "(default)" -Type String -Value "@shell32.dll,-50944" -Force
+Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name Extended -Force -ErrorAction SilentlyContinue
+New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name SuppressionPolicyEx -Type String -Value "{F211AA05-D4DF-4370-A2A0-9F19C09756A7}" -Force
+New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser\command -Name DelegateExecute -Type String -Value "{ea72d00e-4960-42fa-ba92-7792a7944c1d}" -Force
+# Добавить пункт "Установить" для CAB-файлов в контекстном меню
+IF (!(Test-Path -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command))
+{
+	New-Item -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command -Force
+}
+New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs -Name "(default)" -Type String -Value "Установить" -Force
+New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs -Name HasLUAShield -Type String -Value "" -Force
+New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command -Name "(default)" -Type String -Value 'DISM /Online /Add-Package /PackagePath:"%1"' -Force
 # Удалить пункт "Передать на устройство" из контекстного меню
 IF (!(Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"))
 {
@@ -672,12 +691,6 @@ $unpinFromStart = $getstring[0]::GetString(5387)
 $apps = (New-Object -Com Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
 $apps | Where-Object {$_.Path -like "Microsoft.MicrosoftEdge*"} | ForEach-Object {$_.Verbs() | Where-Object {$_.Name -eq $unpinFromStart} | ForEach-Object {$_.DoIt()}}
 $apps | Where-Object {$_.Path -like "Microsoft.WindowsStore*"} | ForEach-Object {$_.Verbs() | Where-Object {$_.Name -eq $unpinFromStart} | ForEach-Object {$_.DoIt()}}
-# Добавить пункт "Извлечь" для MSI в контекстное меню
-IF (!(Test-Path -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Извлечь\Command))
-{
-	New-Item -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Извлечь\Command -Force
-}
-New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Извлечь\Command -Name "(default)" -Type String -Value 'msiexec.exe /a "%1" /qb TARGETDIR="%1 extracted"' -Force
 # Не использовать мои данные для входа для автоматического завершения настройки устройства после перезапуска или обновления
 $sid = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object {$_.Name -eq "$env:USERNAME"}).SID
 IF (!(Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$sid"))
@@ -713,11 +726,6 @@ New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UserDataSvc -Name
 New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name EnablePerProcessSystemDPI -Value 1 -Force
 # Удалить принтеры
 Remove-Printer -Name Fax, "Microsoft XPS Document Writer", "Microsoft Print to PDF" -ErrorAction SilentlyContinue
-# Добавить "Запуск от имени друго пользователя" в контекстное меню для exe-файлов
-New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name "(default)" -Type String -Value "@shell32.dll,-50944" -Force
-Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name Extended -Force -ErrorAction SilentlyContinue
-New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name SuppressionPolicyEx -Type String -Value "{F211AA05-D4DF-4370-A2A0-9F19C09756A7}" -Force
-New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser\command -Name DelegateExecute -Type String -Value "{ea72d00e-4960-42fa-ba92-7792a7944c1d}" -Force
 # Включить длинные пути Win32
 New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -Value 1 -Force
 # Скрыть уведомление Защитника Windows об использовании аккаунта Microsoft
@@ -937,7 +945,7 @@ IF ((Get-CimInstance -ClassName Win32_VideoController | Where-Object {$_.Adapter
 {
 	IF (Test-Path -Path "${env:ProgramFiles(x86)}\Steam")
 	{
-		Start "${env:ProgramFiles(x86)}\Steam\steamapps\common"
+		Start-Process -FilePath "${env:ProgramFiles(x86)}\Steam\steamapps\common"
 	}
 	$exe = Read-Host -Prompt "Введите полный путь до исполняемого файла приложения. `nЧтобы пропустить, нажмите Enter"
 	IF ($exe)
@@ -946,4 +954,4 @@ IF ((Get-CimInstance -ClassName Win32_VideoController | Where-Object {$_.Adapter
 		New-ItemProperty -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Name $exe -Type String -Value "GpuPreference=2;" -Force
 	}
 }
-Stop-Process -ProcessName explorer
+Stop-Process -ProcessName explore
