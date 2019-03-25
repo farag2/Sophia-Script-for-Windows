@@ -355,8 +355,11 @@ $apps = @(
 	"AppleInc.iTunes"
 	# UWP-панель Intel
 	"AppUp.IntelGraphicsControlPanel"
+	"Microsoft.DesktopAppInstaller"
+	"Microsoft.*Extension*"
 	# Пакет локализованного интерфейса на русском
 	"Microsoft.LanguageExperiencePackru-ru"
+	"Microsoft.NET.Native*"
 	# Фотографии
 	"Microsoft.Windows.Photos"
 	# Набросок на фрагменте экрана
@@ -367,11 +370,13 @@ $apps = @(
 	".*Store.*")
 Get-AppxPackage -AllUsers | Where-Object {$_.Name -cnotmatch ($apps -join '|')} | Remove-AppxPackage -ErrorAction SilentlyContinue
 # Удалить UWP-приложения из системной учетной записи, кроме
-# UWP-панель Intel
 $apps = @(
-	"AppUp.IntelGraphicsControlPanel",
+	# UWP-панель Intel
+	"AppUp.IntelGraphicsControlPanel"
+	"Microsoft.DesktopAppInstaller"
+	"Microsoft.*Extension*"
 	# Панель управления NVidia
-	"NVIDIACorp.NVIDIAControlPanel",
+	"NVIDIACorp.NVIDIAControlPanel"
 	# Microsoft Store
 	".*Store.*")
 Get-AppxProvisionedPackage -Online | Where-Object {$_.DisplayName -cnotmatch ($apps -join '|')} | Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue
@@ -399,9 +404,9 @@ Foreach ($feature in $features)
 # Удалить OneDrive
 Stop-Process -Name OneDrive -Force -ErrorAction SilentlyContinue
 Start-Sleep -Seconds 3
-Start-Process -FilePath "$env:SystemRoot\SysWOW64\OneDriveSetup.exe" /uninstall -NoNewWindow -Wait
+Start-Process -FilePath "$env:SystemRoot\SysWOW64\OneDriveSetup.exe" /uninstall -Wait
 Start-Sleep -Seconds 3
-Stop-Process -ProcessName explorer
+Stop-Process -Name explorer
 IF (!(Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive))
 {
 	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive -Force
@@ -920,21 +925,12 @@ IF ($getdisk -eq $drive)
 	}
 }
 # Удалить %SYSTEMDRIVE%\PerfLogs
-IF ((Test-Path -Path $env:SystemDrive\PerfLogs))
-{
-	Remove-Item $env:SystemDrive\PerfLogs -Recurse -Force
-}
+Remove-Item $env:SystemDrive\PerfLogs -Recurse -Force -ErrorAction SilentlyContinue
 # Удалить %LOCALAPPDATA%\Temp
-IF ((Test-Path -Path $env:LOCALAPPDATA\Temp))
-{
-	Remove-Item $env:LOCALAPPDATA\Temp -Recurse -Force
-}
+Remove-Item $env:LOCALAPPDATA\Temp -Recurse -Force -ErrorAction SilentlyContinue
 # Удалить %SYSTEMROOT%\Temp
-IF ((Test-Path -Path $env:SystemRoot\Temp))
-{
-	Restart-Service -ServiceName Spooler -Force
-	Remove-Item -Path "$env:SystemRoot\Temp" -Recurse -Force
-}
+Restart-Service -ServiceName Spooler -Force
+Remove-Item -Path "$env:SystemRoot\Temp" -Recurse -Force -ErrorAction SilentlyContinue
 # Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name RestartNotificationsAllowed2 -Value 1 -Force
 # Включить патч Retpoline против Spectre v2
@@ -954,4 +950,4 @@ IF ((Get-CimInstance -ClassName Win32_VideoController | Where-Object {$_.Adapter
 		New-ItemProperty -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Name $exe -Type String -Value "GpuPreference=2;" -Force
 	}
 }
-Stop-Process -ProcessName explore
+Stop-Process -Name explore
