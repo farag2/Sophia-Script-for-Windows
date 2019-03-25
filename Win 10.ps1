@@ -950,4 +950,4 @@ IF ((Get-CimInstance -ClassName Win32_VideoController | Where-Object {$_.Adapter
 		New-ItemProperty -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Name $exe -Type String -Value "GpuPreference=2;" -Force
 	}
 }
-Stop-Process -Name explore
+Stop-Process -Name explorer
