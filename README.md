@@ -1,3 +1,5 @@
+Save a script file in UTF-8 with BOM encoding
+
 Always use latest Windows 10 Pro x64 version
 https://support.microsoft.com/en-us/help/4464619
 
