@@ -942,7 +942,7 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name 
 New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name FeatureSettingsOverride -Value 1024 -Force
 New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name FeatureSettingsOverrideMask -Value 1024 -Force
 # Установить параметры производительности графики для отдельных приложений на "Высокая производительность"
-IF ((Get-CimInstance -ClassName Win32_VideoController | Where-Object {$_.AdapterDACType -ne "Internal" -and $_.AdapterDACType -ne $null}).Caption)
+IF ((Get-CimInstance -ClassName Win32_VideoController | Where-Object {$_.AdapterDACType -ne "Internal" -and $null -ne $_.AdapterDACType}}).Caption)
 {
 	IF (Test-Path -Path "${env:ProgramFiles(x86)}\Steam")
 	{
