@@ -22,7 +22,7 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersi
 # Отключить отчеты об ошибках Windows
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Value 1 -Force
 # Изменить частоту формирования отзывов на "Никогда"
-IF (!(Test-Path -Path HKCU:\Software\Microsoft\Siuf\Rules))
+IF (-not (Test-Path -Path HKCU:\Software\Microsoft\Siuf\Rules))
 {
 	New-Item -Path HKCU:\Software\Microsoft\Siuf\Rules -Force
 }
@@ -80,7 +80,7 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\
 # Включить отображение секунд в системных часах на панели задач
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowSecondsInSystemClock -Value 1 -Force
 # Не показывать панель "Люди" на панели задач
-IF (!(Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People))
+IF (-not (Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People))
 {
 	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People -Force
 }
@@ -91,10 +91,10 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name UseOLEDTaskbarTransparency -Value 1 -Force
 # Не разрешать Windows отслеживать запуски приложений для улучшения меню "Пуск" и результатов поиска и не показывать недавно добавленные приложения
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_TrackProgs -Value 0 -Force
-# Отобразить "Этот компьютер" на Рабочем столе
+# Отобразить "Этот компьютер" на рабочем столе
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel -Name "{20D04FE0-3AEA-1069-A2D8-08002B30309D}" -Value 0 -Force
 # Развернуть диалог переноса файлов
-IF (!(Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager))
+IF (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager))
 {
 	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager -Force
 }
@@ -105,26 +105,26 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name link -PropertyType Binary -Value ([byte[]](00, 00, 00, 00)) -Force
 # Отключить SmartScreen для приложений и файлов
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name SmartScreenEnabled -PropertyType String -Value Off -Force
-# Сохранить скриншот по Win+PrtScr на Рабочем столе
+# Сохранить скриншот по Win+PrtScr на рабочем столе
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{b7bede81-df94-4682-a7d8-57a52620b86f}" -Name RelativePath -PropertyType String -Value %USERPROFILE%\Desktop -Force
 # Отключить отображение вкладки "Предыдущие версии" в свойствах файлов
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name NoPreviousVersionsPage -Value 1 -Force
 # Всегда отображать все значки в области уведомлений
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name EnableAutoTray -Value 0 -Force
 # Установить крупные значки в панели управления
-IF (!(Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
+IF (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
 {
 	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Force
 }
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name AllItemsIconView -Value 0 -Force
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name StartupPage -Value 1 -Force
 # Скрыть папку "Объемные объекты" из "Этот компьютер"
-IF (!(Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag"))
+IF (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag"))
 {
 	New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Force
 }
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Name ThisPCPolicy -PropertyType String -Value Hide -Force
-IF (!(Test-Path -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag"))
+IF (-not (Test-Path -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag"))
 {
 	New-Item -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Force
 }
@@ -140,7 +140,7 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer 
 # Не показывать советы по использованию Windows
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SoftLandingEnabled -Value 0 -Force
 # Включить контроль памяти
-IF (!(Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy))
+IF (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy))
 {
 	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Force
 }
@@ -176,14 +176,14 @@ New-ItemProperty -Path "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVers
 New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Power -Name HibernateEnabled -Value 0 -Force
 # Не показывать кнопку поиска
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -Value 0 -Force
-# Запрашивать подтверждение при удалении файлов
-IF (!(Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer))
+# Запрашивать подтверждение на удалении файлов из корзины
+IF (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer))
 {
 	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Force
 }
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name ConfirmFileDelete -Value 1 -Force
 # Не хранить сведения о зоне происхождения вложенных файлов
-IF (!(Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Attachments))
+IF (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Attachments))
 {
 	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Attachments -Force
 }
@@ -196,7 +196,7 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\
 # Включить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableLinkedConnections -Value 1 -Force
 # Отключить поиск программ в Microsoft Store
-IF (!(Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
+IF (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
 {
 	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Force
 }
@@ -208,26 +208,26 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name 
 # Не показывать недавно добавленные приложения в меню "Пуск"
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Value 1 -Force
 # Отключить меню игры
-IF (!(Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR))
+IF (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR))
 {
 	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR -Force
 }
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR -Name AllowgameDVR -Value 0 -Force
 # Отключить оптимизацию доставки для обновлений с других ПК
 Get-Service -ServiceName DoSvc | Stop-Service -Force
-IF (!(Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization))
+IF (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization))
 {
 	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization -Force
 }
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization -Name DODownloadMode -Value 0 -Force
 # Всегда ждать сеть при запуске и входе в систему
-IF (!(Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon"))
+IF (-not (Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon"))
 {
 	New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon" -Force
 }
 New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name SyncForegroundPolicy -Value 1 -Force
 # Не разрешать приложениям использовать идентификатор рекламы
-IF (!(Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo))
+IF (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo))
 {
 	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo -Force
 }
@@ -235,7 +235,7 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo
 # Отключить Cortana
 IF ((Get-WinSystemLocale).Name -ne "ru-RU")
 {
-	IF (!(Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search"))
+	IF (-not (Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search"))
 	{
 		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Force
 	}
@@ -243,20 +243,20 @@ IF ((Get-WinSystemLocale).Name -ne "ru-RU")
 }
 # Отключить SmartScreen в Edge
 $edge = (Get-AppxPackage "Microsoft.MicrosoftEdge").PackageFamilyName
-IF (!(Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\PhishingFilter"))
+IF (-not (Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\PhishingFilter"))
 {
 	New-Item -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\PhishingFilter" -Force
 }
 New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\PhishingFilter" -Name EnabledV9 -Value 0 -Force
 New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\PhishingFilter" -Name PreventOverride -Value 0 -Force
 # Отключить Flash Player в Edge
-IF (!(Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Addons"))
+IF (-not (Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Addons"))
 {
 	New-Item -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Addons" -Force
 }
 New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Addons" -Name FlashPlayerEnabled -Value 0 -Force
 # Открывать в новом окне предыдущие страницы в Edge
-IF (!(Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\ContinuousBrowsing"))
+IF (-not (Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\ContinuousBrowsing"))
 {
 	New-Item -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\ContinuousBrowsing" -Force
 }
@@ -269,61 +269,61 @@ New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft
 # Отправлять запросы "Не отслеживать" в Edge
 New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Main" -Name DoNotTrack -Value 1 -Force
 # Отображать лучшие сайты в новой вкладке в Edge
-IF (!(Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\ServiceUI"))
+IF (-not (Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\ServiceUI"))
 {
 	New-Item -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\ServiceUI" -Force
 }
 New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\ServiceUI" -Name NewTabPageDisplayOption -Value 1 -Force
 # Не отображать на панели инструментов кнопку "Избранное" в Edge
-IF (!(Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Extensions\Favorites"))
+IF (-not (Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Extensions\Favorites"))
 {
 	New-Item -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Extensions\Favorites" -Force
 }
 New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Extensions\Favorites" -Name ShowOnAddressBar -Value 0 -Force
 # Не отображать на панели инструментов кнопку "Список для чтения" в Edge
-IF (!(Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Extensions\ReadingList"))
+IF (-not (Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Extensions\ReadingList"))
 {
 	New-Item -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Extensions\ReadingList" -Force
 }
 New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Extensions\ReadingList" -Name ShowOnAddressBar -Value 0 -Force
 # Не отображать на панели инструментов кнопку "Журнал" в Edge
-IF (!(Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Extensions\History"))
+IF (-not (Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Extensions\History"))
 {
 	New-Item -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Extensions\History" -Force
 }
 New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Extensions\History" -Name ShowOnAddressBar -Value 0 -Force
 # Отображать на панели инструментов кнопку "Загрузки" в Edge
-IF (!(Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Extensions\Downloads"))
+IF (-not (Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Extensions\Downloads"))
 {
 	New-Item -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Extensions\Downloads" -Force
 }
 New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Extensions\Downloads" -Name ShowOnAddressBar -Value 1 -Force
 # Не отображать на панели инструментов кнопку "Добавить примечание" в Edge
-IF (!(Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Extensions\Annotations"))
+IF (-not (Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Extensions\Annotations"))
 {
 	New-Item -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Extensions\Annotations" -Force
 }
 New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Extensions\Annotations" -Name ShowOnAddressBar -Value 0 -Force
 # Не отображать на панели инструментов кнопку "Поделиться этой страницей" в Edge
-IF (!(Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Extensions\Share"))
+IF (-not (Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Extensions\Share"))
 {
 	New-Item -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Extensions\Share" -Force
 }
 New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Extensions\Share" -Name ShowOnAddressBar -Value 0 -Force
 # Отобразить пункты "Показать источник" и "Проверить элемент в контекстном меню Edge
-IF (!(Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\F12"))
+IF (-not (Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\F12"))
 {
 	New-Item -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\F12" -Force
 }
 New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\F12" -Name ShowPageContextMenuEntryPoints -Value 1 -Force
 # Не разрешать Edge запускать и загружать страницу при загрузке Windows и каждый раз при закрытии Edge
-IF (!(Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftEdge\TabPreloader))
+IF (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftEdge\TabPreloader))
 {
 	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftEdge\TabPreloader -Force
 }
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftEdge\TabPreloader -Name AllowTabPreloading -Value 0 -Force
 # Не разрешать предварительный запуск Edge при загрузке Windows, когда система простаивает, и каждый раз при закрытии Edge
-IF (!(Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftEdge\Main))
+IF (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftEdge\Main))
 {
 	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftEdge\Main -Force
 }
@@ -335,7 +335,7 @@ New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name JPEGImportQuality -Va
 # Отключить залипание клавиши Shift после 5 нажатий
 New-ItemProperty -Path "HKCU:\Control Panel\Accessibility\StickyKeys" -Name Flags -PropertyType String -Value 506 -Force
 # Изменить путь переменной среды для временных файлов на %SYSTEMDRIVE%\Temp
-IF (!(Test-Path -Path $env:SystemDrive\Temp))
+IF (-not (Test-Path -Path $env:SystemDrive\Temp))
 {
 	New-Item -Path $env:SystemDrive\Temp -ItemType Directory -Force
 }
@@ -407,7 +407,7 @@ Start-Sleep -Seconds 3
 Start-Process -FilePath "$env:SystemRoot\SysWOW64\OneDriveSetup.exe" /uninstall -Wait
 Start-Sleep -Seconds 3
 Stop-Process -Name explorer
-IF (!(Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive))
+IF (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive))
 {
 	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive -Force
 }
@@ -461,7 +461,7 @@ Foreach ($key in $keys)
 {
 	New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\$key" -Name StateFlags1337 -Value 2 -Force
 }
-$action = New-ScheduledTaskAction -Execute "$env:SystemRoot\System32\cleanmgr.exe" -Argument "/sagerun:1337"
+$action = New-ScheduledTaskAction -Execute "cleanmgr.exe" -Argument "/sagerun:1337"
 $trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 90 -At 9am
 $settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
 $principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
@@ -478,12 +478,12 @@ $xml = 'Программы\Прочее\xml\SoftwareDistribution.xml'
 # Функция для поиска буквы диска, подключенного по USB, и подставновка ее в путь для $xml
 function Get-ResolvedPath
 {
-	param ([Parameter(ValueFromPipeline=1)]$Path)
+	param ([Parameter(ValueFromPipeline = 1)]$Path)
 	(Get-Disk | Where-Object {$_.BusType -eq "USB"} | Get-Partition | Get-Volume | Where-Object {$null -ne $_.DriveLetter}).DriveLetter | ForEach-Object {Join-Path ($_ + ":") $Path -Resolve -ErrorAction SilentlyContinue}
 }
 $xml | Get-ResolvedPath | Get-Item | Get-Content -Raw | Register-ScheduledTask -TaskName "SoftwareDistribution" -Force
 # Включить в Планировщике задач очистку папки %SYSTEMROOT%\Logs\CBS
-$action = New-ScheduledTaskAction -Execute "Powershell.exe" -Argument @"
+$action = New-ScheduledTaskAction -Execute powershell.exe -Argument @"
 `$dir = '$env:SystemRoot\Logs\CBS'
 `$foldersize = (Get-ChildItem -Path `$dir -Recurse -Force | Measure-Object -Property Length -Sum).Sum/1MB
 IF (`$foldersize -GT 10)
@@ -503,7 +503,9 @@ $params = @{
 }
 Register-ScheduledTask @params -Force
 # Включить в Планировщике задач очистки папки %TEMP%
-$action = New-ScheduledTaskAction -Execute "Powershell.exe" -Argument 'Get-ChildItem -Path "$env:TEMP" -Force -Recurse | Remove-Item -Force -Recurse -ErrorAction SilentlyContinue'
+$action = New-ScheduledTaskAction -Execute powershell.exe -Argument @"
+Get-ChildItem -Path `$env:TEMP -Force -Recurse | Remove-Item -Force -Recurse
+"@
 $trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 62 -At 9am
 $settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
 $principal = New-ScheduledTaskPrincipal -UserId System -RunLevel Highest
@@ -568,7 +570,7 @@ Set-MpPreference -PUAProtection Enabled
 # Включить брандмауэр
 Set-NetFirewallProfile -Enabled True
 # Отключить справку по F1
-IF (!(Test-Path -Path "HKCU:\Software\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64"))
+IF (-not (Test-Path -Path "HKCU:\Software\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64"))
 {
 	New-Item -Path "HKCU:\Software\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64" -Force
 }
@@ -589,7 +591,7 @@ Until ($preferences)
 Stop-Process $taskmgr
 $preferences.Preferences[28] = 0
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -PropertyType Binary -Value $preferences.Preferences -Force
-# Запретить отключение Ethernet-адаптера для экономии энергии
+# Запретить отключение Ethernet-адаптера для экономии энергии для стационарного ПК
 IF ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -eq 1)
 {
 	$adapter = Get-NetAdapter -Physical | Get-NetAdapterPowerManagement
@@ -597,7 +599,7 @@ IF ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -eq 1)
 	$adapter | Set-NetAdapterPowerManagement
 }
 # Добавить пункт "Извлечь" для MSI в контекстное меню
-IF (!(Test-Path -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Извлечь\Command))
+IF (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Извлечь\Command))
 {
 	New-Item -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Извлечь\Command -Force
 }
@@ -608,7 +610,7 @@ Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -N
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name SuppressionPolicyEx -PropertyType String -Value "{F211AA05-D4DF-4370-A2A0-9F19C09756A7}" -Force
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser\command -Name DelegateExecute -PropertyType String -Value "{ea72d00e-4960-42fa-ba92-7792a7944c1d}" -Force
 # Добавить пункт "Установить" для CAB-файлов в контекстном меню
-IF (!(Test-Path -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command))
+IF (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command))
 {
 	New-Item -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command -Force
 }
@@ -616,7 +618,7 @@ New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs -Name "
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs -Name HasLUAShield -PropertyType String -Value "" -Force
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command -Name "(default)" -PropertyType String -Value 'DISM /Online /Add-Package /PackagePath:"%1"' -Force
 # Удалить пункт "Передать на устройство" из контекстного меню
-IF (!(Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"))
+IF (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"))
 {
 	New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Force
 }
@@ -670,7 +672,7 @@ Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.bmp\ShellNew -Name NullFi
 # Удалить пункт "Отправить" из контекстного меню
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AllFilesystemObjects\shellex\ContextMenuHandlers\SendTo -Name "(default)" -PropertyType String -Value "" -Force
 # Переопределить пользовательский метод ввода на английский язык на экране входа
-IF (!(Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Control Panel\International"))
+IF (-not (Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Control Panel\International"))
 {
 	New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Control Panel\International" -Force
 }
@@ -698,7 +700,7 @@ $apps | Where-Object {$_.Path -like "Microsoft.MicrosoftEdge*"} | ForEach-Object
 $apps | Where-Object {$_.Path -like "Microsoft.WindowsStore*"} | ForEach-Object {$_.Verbs() | Where-Object {$_.Name -eq $unpinFromStart} | ForEach-Object {$_.DoIt()}}
 # Не использовать мои данные для входа для автоматического завершения настройки устройства после перезапуска или обновления
 $sid = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object {$_.Name -eq "$env:USERNAME"}).SID
-IF (!(Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$sid"))
+IF (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$sid"))
 {
 	New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$sid" -Force
 }
@@ -765,7 +767,7 @@ $bytes[0x15] = $bytes[0x15] -bor 0x20
 # Функция для поиска буквы диска, подключенного по USB, и подставновка ее в путь для $regpath
 function Get-ResolvedPath
 {
-	param ([Parameter(ValueFromPipeline=1)]$Path)
+	param ([Parameter(ValueFromPipeline = 1)]$Path)
 	(Get-Disk | Where-Object {$_.BusType -eq "USB"} | Get-Partition | Get-Volume | Where-Object {$null -ne $_.DriveLetter}).DriveLetter | ForEach-Object {Join-Path ($_ + ":") $Path -Resolve -ErrorAction SilentlyContinue}
 }
 $regpath = 'Программы\Прочее\reg\Start.reg' | Get-ResolvedPath
@@ -836,7 +838,7 @@ IF ($getdisk -eq $drive)
 	$Desktop = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
 	IF ($Desktop -ne "${drive}:\Рабочий стол")
 	{
-		IF (!(Test-Path -Path "${drive}:\Рабочий стол"))
+		IF (-not (Test-Path -Path "${drive}:\Рабочий стол"))
 		{
 			New-Item -Path "${drive}:\Рабочий стол" -ItemType Directory -Force
 		}
@@ -852,7 +854,7 @@ IF ($getdisk -eq $drive)
 	$Documents = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
 	IF ($Documents -ne "${drive}:\Документы")
 	{
-		IF (!(Test-Path -Path "${drive}:\Документы"))
+		IF (-not (Test-Path -Path "${drive}:\Документы"))
 		{
 			New-Item -Path "${drive}:\Документы" -ItemType Directory -Force
 		}
@@ -868,12 +870,15 @@ IF ($getdisk -eq $drive)
 	$Downloads = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 	IF ($Downloads -ne "${drive}:\Загрузки")
 	{
-		IF (!(Test-Path -Path "${drive}:\Загрузки"))
+		IF (-not (Test-Path -Path "${drive}:\Загрузки"))
 		{
 			New-Item -Path "${drive}:\Загрузки" -ItemType Directory -Force
 		}
 		KnownFolderPath -KnownFolder Downloads -Path "${drive}:\Загрузки"
 		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{7D83EE9B-2244-4E70-B1F5-5393042AF1E4}" -PropertyType ExpandString -Value "${drive}:\Загрузки" -Force
+		# Edge
+		$edge = (Get-AppxPackage "Microsoft.MicrosoftEdge").PackageFamilyName
+		New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Main" -Name "Default Download Directory" -PropertyType String -Value "${drive}:\Загрузки" -Force
 	}
 }
 # Музыка
@@ -884,7 +889,7 @@ IF ($getdisk -eq $drive)
 	$Music = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
 	IF ($Music -ne "${drive}:\Музыка")
 	{
-		IF (!(Test-Path -Path "${drive}:\Музыка"))
+		IF (-not (Test-Path -Path "${drive}:\Музыка"))
 		{
 			New-Item -Path "${drive}:\Музыка" -ItemType Directory -Force
 		}
@@ -900,7 +905,7 @@ IF ($getdisk -eq $drive)
 	$Pictures = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
 	IF ($Pictures -ne "${drive}:\Изображения")
 	{
-		IF (!(Test-Path -Path "${drive}:\Изображения"))
+		IF (-not (Test-Path -Path "${drive}:\Изображения"))
 		{
 			New-Item -Path "${drive}:\Изображения" -ItemType Directory -Force
 		}
@@ -916,7 +921,7 @@ IF ($getdisk -eq $drive)
 	$Videos = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Video"
 	IF ($Videos -ne "${drive}:\Видео")
 	{
-		IF (!(Test-Path -Path "${drive}:\Видео"))
+		IF (-not (Test-Path -Path "${drive}:\Видео"))
 		{
 			New-Item -Path "${drive}:\Видео" -ItemType Directory -Force
 		}
@@ -937,13 +942,13 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name 
 New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name FeatureSettingsOverride -Value 1024 -Force
 New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name FeatureSettingsOverrideMask -Value 1024 -Force
 # Установить параметры производительности графики для отдельных приложений на "Высокая производительность"
-IF ((Get-CimInstance -ClassName Win32_VideoController | Where-Object {$_.AdapterDACType -ne "Internal"}).Caption)
+IF ((Get-CimInstance -ClassName Win32_VideoController | Where-Object {$_.AdapterDACType -ne "Internal" -and $_.AdapterDACType -ne $null}).Caption)
 {
 	IF (Test-Path -Path "${env:ProgramFiles(x86)}\Steam")
 	{
 		Start-Process -FilePath "${env:ProgramFiles(x86)}\Steam\steamapps\common"
 	}
-	$exe = Read-Host -Prompt "Введите полный путь до исполняемого файла приложения. `nЧтобы пропустить, нажмите Enter"
+	$exe = Read-Host -Prompt "Введите полный путь до исполняемого файла приложения, `nдля которого следует установить параметры производительности графики на `"Высокая производительность`". `nЧтобы пропустить, нажмите Enter"
 	IF ($exe)
 	{
 		$exe = $exe.Replace('"', "")
