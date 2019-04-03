@@ -555,10 +555,11 @@ New-ItemProperty -Path "Registry::HKEY_USERS\.DEFAULT\Control Panel\Keyboard" -N
 $drives = Get-Disk | Where-Object {$_.IsBoot -eq $false}
 IF ($drives)
 {
-	$drives = ($drives | Get-Partition | Get-Volume | Where-Object {$null -ne $_.DriveLetter}).DriveLetter + ':'
-	Foreach ($drive In $drives)
+	$drives = ($drives | Get-Partition | Get-Volume | Where-Object {$null -ne $_.DriveLetter}).DriveLetter | ForEach-Object {Join-Path ($_ + ":") $Path -Resolve}
+	Foreach ($drive in $drives)
 	{
-		Set-MpPreference -ExclusionPath $drive\Программы\Прочее -Force
+		$folder = "Программы\Прочее"
+		Add-MpPreference -ExclusionPath (Join-Path -Path $drive -ChildPath $folder) -Force
 	}
 }
 # Включить Защиты сети в Защитнике Windows
