@@ -758,7 +758,7 @@ $shell = New-Object -ComObject Wscript.Shell
 $shortcut = $shell.CreateShortcut($file)
 $shortcut.TargetPath = $target
 $shortcut.Arguments = "printers"
-$shortCut.IconLocation = "%SystemRoot%\system32\DeviceCenter.dll"
+$shortCut.IconLocation = "$env:SystemRoot\system32\DeviceCenter.dll"
 $shortcut.Save()
 # Запускать ярлык к командной строке от имени Администратора
 $bytes = [System.IO.File]::ReadAllBytes("$env:APPDATA\Microsoft\Windows\Start Menu\Programs\System Tools\Command Prompt.lnk")
@@ -775,7 +775,7 @@ $regpath = 'Программы\Прочее\reg\Start.reg' | Get-ResolvedPath
 IF ($regpath)
 {
 	Remove-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount -Recurse -Force
-	Start-Process -FilePath reg.exe -ArgumentList 'import',"$regpath"
+	Start-Process -FilePath reg.exe -ArgumentList "import $regpath"
 }
 Else
 {
@@ -783,6 +783,17 @@ Else
 	$key = Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*start.tilegrid`$windows.data.curatedtilecollection.tilecollection\Current
 	$data = $key.Data[0..25] + ([byte[]](202,50,0,226,44,1,1,0,0))
 	New-ItemProperty -Path $key.PSPath -Name Data -PropertyType Binary -Value $data -Force
+	# Отобразить папки "Проводник" и "Параметры" в меню "Пуск" ###
+	$items = @("Проводник", "Параметры")
+	$key = Get-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*windows.data.unifiedtile.startglobalproperties\Current"
+	$data = $key.Data[0..19] -join ","
+	$data += ",203,50,10,$($items.Length)"
+	# Проводник
+	$data += ",5,188,201,168,164,1,36,140,172,3,68,137,133,1,102,160,129,186,203,189,215,168,164,130,1,0"
+	# Параметры
+	$data += ",5,134,145,204,147,5,36,170,163,1,68,195,132,1,102,159,247,157,177,135,203,209,172,212,1,0"
+	$data += ",194,60,1,194,70,1,197,90,1,0"
+	New-ItemProperty -Path $key.PSPath -Name Data -PropertyType Binary -Value $data.Split(",") -Force
 }
 # Отображать цвет элементов в заголовках окон
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\DWM -Name ColorPrevalence -Value 1 -Force
@@ -943,7 +954,7 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name 
 New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name FeatureSettingsOverride -Value 1024 -Force
 New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name FeatureSettingsOverrideMask -Value 1024 -Force
 # Установить параметры производительности графики для отдельных приложений на "Высокая производительность"
-IF ((Get-CimInstance -ClassName Win32_VideoController | Where-Object {$_.AdapterDACType -ne "Internal" -and $null -ne $_.AdapterDACType}}).Caption)
+IF ((Get-CimInstance -ClassName Win32_VideoController | Where-Object {$_.AdapterDACType -ne "Internal" -and $null -ne $_.AdapterDACType}).Caption)
 {
 	IF (Test-Path -Path "${env:ProgramFiles(x86)}\Steam")
 	{
