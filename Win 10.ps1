@@ -155,6 +155,10 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSe
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 256 -Value 30 -Force
 # Не показывать рекомендации в меню "Пуск"
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338388Enabled -Value 0 -Force
+# Не показывать рекомендуемое содержание в приложении "Параметры"
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338393Enabled -Value 0 -Force
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-353694Enabled -Value 0 -Force
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-353696Enabled -Value 0 -Force
 # Отключить автоматическую установку рекомендованных приложений
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SilentInstalledAppsEnabled -Value 0 -Force
 # Скрыть кнопку Windows Ink Workspace
@@ -227,11 +231,7 @@ IF (-not (Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentV
 }
 New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name SyncForegroundPolicy -Value 1 -Force
 # Не разрешать приложениям использовать идентификатор рекламы
-IF (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo))
-{
-	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo -Force
-}
-New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo -Name DisabledByGroupPolicy -Value 1 -Force
+New-ItemProperty -Path HKLM:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo -Name Enabled -Value 0 -Force
 # Отключить Cortana
 IF ((Get-WinSystemLocale).Name -ne "ru-RU")
 {
@@ -355,11 +355,12 @@ $apps = @(
 	"AppleInc.iTunes"
 	# UWP-панель Intel
 	"AppUp.IntelGraphicsControlPanel"
+	# Microsoft Desktop App Installer
 	"Microsoft.DesktopAppInstaller"
+	# Расширения
 	"Microsoft.*Extension*"
 	# Пакет локализованного интерфейса на русском
 	"Microsoft.LanguageExperiencePackru-ru"
-	"Microsoft.NET.Native*"
 	# Фотографии
 	"Microsoft.Windows.Photos"
 	# Набросок на фрагменте экрана
@@ -373,7 +374,9 @@ Get-AppxPackage -AllUsers | Where-Object {$_.Name -cnotmatch ($apps -join '|')} 
 $apps = @(
 	# UWP-панель Intel
 	"AppUp.IntelGraphicsControlPanel"
+	# Microsoft Desktop App Installer
 	"Microsoft.DesktopAppInstaller"
+	# Расширения
 	"Microsoft.*Extension*"
 	# Панель управления NVidia
 	"NVIDIACorp.NVIDIAControlPanel"
@@ -475,7 +478,6 @@ $params = @{
 Register-ScheduledTask @params -Force
 # Включить в Планировщике задач очистки папки %SYSTEMROOT%\SoftwareDistribution\Download
 $xml = 'Программы\Прочее\xml\SoftwareDistribution.xml'
-# Функция для поиска буквы диска, подключенного по USB, и подставновка ее в путь для $xml
 function Get-ResolvedPath
 {
 	param ([Parameter(ValueFromPipeline = 1)]$Path)
@@ -626,6 +628,8 @@ IF (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{7AD84985-87B4-4a16-BE58-8B72A5B390F7}" -PropertyType String -Value "Play to menu" -Force
 # Удалить пункт "Отправить" (поделиться) из контекстного меню
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}" -PropertyType String -Value "" -Force
+# Удалить пункт "Восстановить прежнюю версию" из контекстного меню
+New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{596AB062-B4D2-4215-9F74-E9109B0A8153}" -PropertyType String -Value "" -Force
 # Удалить пункт "Изменить с помощью Paint 3D" из контекстного меню
 $exts = @(".bmp", ".gif", ".jpe", ".jpeg", ".jpg", ".png", ".tif", ".tiff")
 Foreach ($ext in $exts)
@@ -635,8 +639,6 @@ Foreach ($ext in $exts)
 # Удалить пункт "Добавить в библиотеку" из контекстного меню
 Clear-ItemProperty -Path "Registry::HKEY_CLASSES_ROOT\Folder\shellex\ContextMenuHandlers\Library Location" -Name "(default)" -Force
 Clear-ItemProperty -Path "HKLM:\SOFTWARE\Classes\Folder\shellex\ContextMenuHandlers\Library Location" -Name "(default)" -Force
-# Удалить пункт "Предоставить доступ к" из контекстного меню
-New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{f81e9010-6ea4-11ce-a7ff-00aa003ca9f6}" -PropertyType String -Value "" -Force
 # Удалить пункт "Включить Bitlocker" из контекстного меню
 IF (Get-WindowsEdition -Online | Where-Object {$_.Edition -eq "Professional" -or $_.Edition -eq "Enterprise"})
 {
@@ -652,8 +654,6 @@ IF (Get-WindowsEdition -Online | Where-Object {$_.Edition -eq "Professional" -or
 		New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\$key -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
 	}
 }
-# Удалить пункт "Восстановить прежнюю версию" из контекстного меню
-New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{596AB062-B4D2-4215-9F74-E9109B0A8153}" -PropertyType String -Value "" -Force
 # Удалить пункт "Печать" из контекстного меню для bat- и cmd-файлов
 Remove-Item -Path Registry::HKEY_CLASSES_ROOT\batfile\shell\print -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item -Path Registry::HKEY_CLASSES_ROOT\cmdfile\shell\print -Recurse -Force -ErrorAction SilentlyContinue
@@ -751,6 +751,10 @@ Foreach ($app in $apps)
 {
 	Get-WindowsCapability -Online | Where-Object name -Like $app | Remove-WindowsCapability -Online
 }
+# Запускать ярлык к командной строке от имени Администратора
+$bytes = [System.IO.File]::ReadAllBytes("$env:APPDATA\Microsoft\Windows\Start Menu\Programs\System Tools\Command Prompt.lnk")
+$bytes[0x15] = $bytes[0x15] -bor 0x20
+[System.IO.File]::WriteAllBytes("$env:APPDATA\Microsoft\Windows\Start Menu\Programs\System Tools\Command Prompt.lnk", $bytes)
 # Создать ярлык для "Устройства и принтеры" в %APPDATA%\Microsoft\Windows\Start Menu\Programs\System Tools
 $target = "control"
 $file = "$env:AppData\Microsoft\Windows\Start Menu\Programs\System Tools\Устройства и принтеры.lnk"
@@ -760,12 +764,7 @@ $shortcut.TargetPath = $target
 $shortcut.Arguments = "printers"
 $shortCut.IconLocation = "$env:SystemRoot\system32\DeviceCenter.dll"
 $shortcut.Save()
-# Запускать ярлык к командной строке от имени Администратора
-$bytes = [System.IO.File]::ReadAllBytes("$env:APPDATA\Microsoft\Windows\Start Menu\Programs\System Tools\Command Prompt.lnk")
-$bytes[0x15] = $bytes[0x15] -bor 0x20
-[System.IO.File]::WriteAllBytes("$env:APPDATA\Microsoft\Windows\Start Menu\Programs\System Tools\Command Prompt.lnk", $bytes)
 # Настройка меню "Пуск"
-# Функция для поиска буквы диска, подключенного по USB, и подставновка ее в путь для $regpath
 function Get-ResolvedPath
 {
 	param ([Parameter(ValueFromPipeline = 1)]$Path)
@@ -783,18 +782,18 @@ Else
 	$key = Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*start.tilegrid`$windows.data.curatedtilecollection.tilecollection\Current
 	$data = $key.Data[0..25] + ([byte[]](202,50,0,226,44,1,1,0,0))
 	New-ItemProperty -Path $key.PSPath -Name Data -PropertyType Binary -Value $data -Force
-	# Отобразить папки "Проводник" и "Параметры" в меню "Пуск" ###
-	$items = @("Проводник", "Параметры")
-	$key = Get-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*windows.data.unifiedtile.startglobalproperties\Current"
-	$data = $key.Data[0..19] -join ","
-	$data += ",203,50,10,$($items.Length)"
-	# Проводник
-	$data += ",5,188,201,168,164,1,36,140,172,3,68,137,133,1,102,160,129,186,203,189,215,168,164,130,1,0"
-	# Параметры
-	$data += ",5,134,145,204,147,5,36,170,163,1,68,195,132,1,102,159,247,157,177,135,203,209,172,212,1,0"
-	$data += ",194,60,1,194,70,1,197,90,1,0"
-	New-ItemProperty -Path $key.PSPath -Name Data -PropertyType Binary -Value $data.Split(",") -Force
 }
+# Отобразить папки "Проводник" и "Параметры" в меню "Пуск"
+$items = @("Проводник", "Параметры")
+$key = Get-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*windows.data.unifiedtile.startglobalproperties\Current"
+$data = $key.Data[0..19] -join ","
+$data += ",203,50,10,$($items.Length)"
+# Проводник
+$data += ",5,188,201,168,164,1,36,140,172,3,68,137,133,1,102,160,129,186,203,189,215,168,164,130,1,0"
+# Параметры
+$data += ",5,134,145,204,147,5,36,170,163,1,68,195,132,1,102,159,247,157,177,135,203,209,172,212,1,0"
+$data += ",194,60,1,194,70,1,197,90,1,0"
+New-ItemProperty -Path $key.PSPath -Name Data -PropertyType Binary -Value $data.Split(",") -Force
 # Отображать цвет элементов в заголовках окон
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\DWM -Name ColorPrevalence -Value 1 -Force
 # Использовать клавишу Print Screen, чтобы запустить функцию создания фрагмента экрана
