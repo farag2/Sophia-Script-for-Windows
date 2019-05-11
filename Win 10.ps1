@@ -106,7 +106,8 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer 
 # Отключить SmartScreen для приложений и файлов
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name SmartScreenEnabled -PropertyType String -Value Off -Force
 # Сохранить скриншот по Win+PrtScr на рабочем столе
-New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{b7bede81-df94-4682-a7d8-57a52620b86f}" -Name RelativePath -PropertyType String -Value %USERPROFILE%\Desktop -Force
+$value = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
+New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{b7bede81-df94-4682-a7d8-57a52620b86f}" -Name RelativePath -PropertyType String -Value $value -Force
 # Отключить отображение вкладки "Предыдущие версии" в свойствах файлов
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name NoPreviousVersionsPage -Value 1 -Force
 # Всегда отображать все значки в области уведомлений
@@ -178,6 +179,31 @@ New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer
 New-ItemProperty -Path "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" -Name Autorun -Value 0 -Force
 # Отключить гибридный спящий режим
 New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Power -Name HibernateEnabled -Value 0 -Force
+# Изменить путь переменной среды для временных файлов на %SYSTEMDRIVE%\Temp
+IF (-not (Test-Path -Path $env:SystemDrive\Temp))
+{
+	New-Item -Path $env:SystemDrive\Temp -ItemType Directory -Force
+}
+[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "User")
+New-ItemProperty -Path HKCU:\Environment -Name TMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
+[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "User")
+New-ItemProperty -Path HKCU:\Environment -Name TEMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
+[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Machine")
+New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
+[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Machine")
+New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TEMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
+[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Process")
+[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Process")
+# Включить длинные пути Win32
+New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -Value 1 -Force
+# Группировать одинаковые службы в один процесс svhost.exe
+$ram = (Get-CimInstance Win32_PhysicalMemory | Measure-Object -Property Capacity -Sum).Sum / 1kb
+New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control -Name SvcHostSplitThresholdInKB -Value $ram -Force
+# Включить патч Retpoline против Spectre v2
+New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name FeatureSettingsOverride -Value 1024 -Force
+New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name FeatureSettingsOverrideMask -Value 1024 -Force
+# Включить дополнительную информацию при выводе BSoD
+New-ItemProperty -Path HKLM:\System\CurrentControlSet\Control\CrashControl -Name DisplayParameters -Value 1 -Force
 # Не показывать кнопку поиска
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -Value 0 -Force
 # Запрашивать подтверждение на удалении файлов из корзины
@@ -334,21 +360,6 @@ New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Windo
 New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name JPEGImportQuality -Value 100 -Force
 # Отключить залипание клавиши Shift после 5 нажатий
 New-ItemProperty -Path "HKCU:\Control Panel\Accessibility\StickyKeys" -Name Flags -PropertyType String -Value 506 -Force
-# Изменить путь переменной среды для временных файлов на %SYSTEMDRIVE%\Temp
-IF (-not (Test-Path -Path $env:SystemDrive\Temp))
-{
-	New-Item -Path $env:SystemDrive\Temp -ItemType Directory -Force
-}
-[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "User")
-New-ItemProperty -Path HKCU:\Environment -Name TMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
-[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "User")
-New-ItemProperty -Path HKCU:\Environment -Name TEMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
-[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Machine")
-New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
-[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Machine")
-New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TEMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
-[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Process")
-[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Process")
 # Удалить UWP-приложения из текущей учетной записи, кроме
 $apps = @(
 	# iTunes
@@ -424,6 +435,7 @@ Remove-Item -Path $env:USERPROFILE\OneDrive -Recurse -Force -ErrorAction Silentl
 Remove-Item -Path $env:LOCALAPPDATA\Microsoft\OneDrive -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item -Path "$env:ProgramData\Microsoft OneDrive" -Recurse -Force -ErrorAction SilentlyContinue
 Unregister-ScheduledTask -TaskName *OneDrive* -Confirm:$false
+Remove-Item -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\OneDrive.lnk" -Force -ErrorAction SilentlyContinue
 # Включить автоматическое обновление для других продуктов Microsoft
 (New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
 # Отключить игровую панель
@@ -557,7 +569,7 @@ New-ItemProperty -Path "Registry::HKEY_USERS\.DEFAULT\Control Panel\Keyboard" -N
 $drives = Get-Disk | Where-Object {$_.IsBoot -eq $false}
 IF ($drives)
 {
-	$drives = ($drives | Get-Partition | Get-Volume | Where-Object {$null -ne $_.DriveLetter}).DriveLetter | ForEach-Object {Join-Path ($_ + ":") $Path -Resolve}
+	$drives = ($drives | Get-Partition | Get-Volume | Where-Object {$null -ne $_.DriveLetter}).DriveLetter | ForEach-Object {Join-Path ($_ + ":") $Path -Resolve -ErrorAction SilentlyContinue}
 	Foreach ($drive in $drives)
 	{
 		$folder = "Программы\Прочее"
@@ -566,8 +578,13 @@ IF ($drives)
 }
 # Включить Защиты сети в Защитнике Windows
 Set-MpPreference -EnableNetworkProtection Enabled
-# Выключить Управляемый доступ к папкам
-Set-MpPreference -EnableControlledFolderAccess Disable
+# Включить контролируемый доступ к папкам
+$folder = Read-Host -Prompt "Введите путь до папки, чтобы добавить в список защищенных папок.`nЧтобы пропустить, нажмите Enter"
+IF ($folder)
+{
+	Set-MpPreference -EnableControlledFolderAccess Enabled
+	Add-MpPreference -ControlledFolderAccessProtectedFolders $folder
+}
 # Включить блокировки потенциально нежелательных приложений
 Set-MpPreference -PUAProtection Enabled
 # Включить брандмауэр
@@ -695,10 +712,10 @@ public static string GetString(uint strId)
 }
 '@
 $getstring = Add-Type $getstring -PassThru -Name GetStr -Using System.Text
-$unpinFromStart = $getstring[0]::GetString(5387)
+$unpin = $getstring[0]::GetString(5387)
 $apps = (New-Object -Com Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
-$apps | Where-Object {$_.Path -like "Microsoft.MicrosoftEdge*"} | ForEach-Object {$_.Verbs() | Where-Object {$_.Name -eq $unpinFromStart} | ForEach-Object {$_.DoIt()}}
-$apps | Where-Object {$_.Path -like "Microsoft.WindowsStore*"} | ForEach-Object {$_.Verbs() | Where-Object {$_.Name -eq $unpinFromStart} | ForEach-Object {$_.DoIt()}}
+$apps | Where-Object {$_.Path -like "Microsoft.MicrosoftEdge*"} | ForEach-Object {$_.Verbs() | Where-Object {$_.Name -eq $unpin} | ForEach-Object {$_.DoIt()}}
+$apps | Where-Object {$_.Path -like "Microsoft.WindowsStore*"} | ForEach-Object {$_.Verbs() | Where-Object {$_.Name -eq $unpin} | ForEach-Object {$_.DoIt()}}
 # Не использовать мои данные для входа для автоматического завершения настройки устройства после перезапуска или обновления
 $sid = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object {$_.Name -eq "$env:USERNAME"}).SID
 IF (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$sid"))
@@ -718,7 +735,7 @@ $services = @(
 	"UnistoreSvc_*",
 	# Служба доступа к данным пользователя_*
 	"UserDataSvc_*")
-Foreach ($service In $services)
+Foreach ($service in $services)
 {
 	Get-Service -ServiceName $service | Stop-Service -Force
 }
@@ -734,8 +751,6 @@ New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UserDataSvc -Name
 New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name EnablePerProcessSystemDPI -Value 1 -Force
 # Удалить принтеры
 Remove-Printer -Name Fax, "Microsoft XPS Document Writer", "Microsoft Print to PDF" -ErrorAction SilentlyContinue
-# Включить длинные пути Win32
-New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -Value 1 -Force
 # Скрыть уведомление Защитника Windows об использовании аккаунта Microsoft
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AccountProtection_MicrosoftAccount_Disconnected -Value 1 -Force
 # Скрыть уведомление Защитника Windows об отключенном фильтре SmartScreen для Microsoft Edge
@@ -800,9 +815,6 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\DWM -Name ColorPrevalenc
 New-ItemProperty -Path "HKCU:\Control Panel\Keyboard" -Name PrintScreenKeyForSnippingEnabled -Value 1 -Force
 # Отключить автоматическое скрытие полос прокрутки в Windows
 New-ItemProperty -Path "HKCU:\Control Panel\Accessibility" -Name DynamicScrollbars -Value 0 -Force
-# Группировать одинаковые службы в один процесс svhost.exe
-$ram = (Get-CimInstance Win32_PhysicalMemory | Measure-Object -Property Capacity -Sum).Sum / 1kb
-New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control -Name SvcHostSplitThresholdInKB -Value $ram -Force
 # Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков
 New-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name HttpAcceptLanguageOptOut -Value 1 -Force
 # Запускать Защитник Windows в песочнице
@@ -925,7 +937,7 @@ IF ($getdisk -eq $drive)
 	}
 }
 # Видео
-$drive = Read-Host -Prompt "Введите букву диска, в корне которого будет создана папка `"Видео`". `nЧтобы пропустить, нажмите Enter"
+$drive = Read-Host -Prompt "Введите букву диска, в корне которого будет создана папка `"Видео`".`nЧтобы пропустить, нажмите Enter"
 IF ($getdisk -eq $drive)
 {
 	$drive = $(${drive}.ToUpper())
@@ -949,17 +961,14 @@ Restart-Service -ServiceName Spooler -Force
 Remove-Item -Path "$env:SystemRoot\Temp" -Recurse -Force -ErrorAction SilentlyContinue
 # Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name RestartNotificationsAllowed2 -Value 1 -Force
-# Включить патч Retpoline против Spectre v2
-New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name FeatureSettingsOverride -Value 1024 -Force
-New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name FeatureSettingsOverrideMask -Value 1024 -Force
 # Установить параметры производительности графики для отдельных приложений на "Высокая производительность"
-IF ((Get-CimInstance -ClassName Win32_VideoController | Where-Object {$_.AdapterDACType -ne "Internal" -and $null -ne $_.AdapterDACType}).Caption)
+IF (Get-CimInstance -ClassName Win32_VideoController | Where-Object {$_.AdapterDACType -ne "Internal" -and $null -ne $_.AdapterDACType})
 {
 	IF (Test-Path -Path "${env:ProgramFiles(x86)}\Steam")
 	{
 		Start-Process -FilePath "${env:ProgramFiles(x86)}\Steam\steamapps\common"
 	}
-	$exe = Read-Host -Prompt "Введите полный путь до исполняемого файла приложения, `nдля которого следует установить параметры производительности графики на `"Высокая производительность`". `nЧтобы пропустить, нажмите Enter"
+	$exe = Read-Host -Prompt "Введите полный путь до исполняемого файла приложения, для которого следует установить`nпараметры производительности графики на `"Высокая производительность`".`nЧтобы пропустить, нажмите Enter"
 	IF ($exe)
 	{
 		$exe = $exe.Replace('"', "")
