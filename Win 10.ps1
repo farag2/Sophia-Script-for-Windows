@@ -17,8 +17,6 @@ Foreach ($service in $services)
 Update-AutologgerConfig -Name AutoLogger-Diagtrack-Listener -Start 0
 Update-AutologgerConfig -Name SQMLogger -Start 0
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -Value 1 -Force
-New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Value 1 -Force
-New-ItemProperty -Path HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -Value 1 -Force
 # Отключить отчеты об ошибках Windows
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Value 1 -Force
 # Изменить частоту формирования отзывов на "Никогда"
@@ -29,7 +27,7 @@ IF (-not (Test-Path -Path HKCU:\Software\Microsoft\Siuf\Rules))
 New-ItemProperty -Path HKCU:\Software\Microsoft\Siuf\Rules -Name NumberOfSIUFInPeriod -Value 0 -Force
 Remove-ItemProperty -Path HKCU:\Software\Microsoft\Siuf\Rules -Name PeriodInNanoSeconds -Force -ErrorAction SilentlyContinue
 # Отключить Контроль Wi-Fi
-IF (Get-NetAdapter -Physical | Where-Object {$_.Name -match "Беспроводная" -or $_.Name -match "Wi-Fi"})
+IF (Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Name -match "Беспроводная" -or $_.Name -match "Wi-Fi"})
 {
 	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WcmSvc\wifinetworkmanager\config -Name AutoConnectAllowedOEM -Value 0 -Force
 }
@@ -164,7 +162,7 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDe
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SilentInstalledAppsEnabled -Value 0 -Force
 # Скрыть кнопку Windows Ink Workspace
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\PenWorkspace -Name PenWorkspaceButtonDesiredVisibility -Value 0 -Force
-# Не предоставлять более специлизированные возможности с соотвествующими советами и рекомендациями
+# Не предлагать персонализированныее возможности, основанные на выбранном параметре диагностических данных
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Privacy -Name TailoredExperiencesWithDiagnosticDataEnabled -Value 0 -Force
 # Не разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CDP -Name RomeSdkChannelUserAuthzPolicy -Value 0 -Force
@@ -197,7 +195,7 @@ New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\E
 # Включить длинные пути Win32
 New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -Value 1 -Force
 # Группировать одинаковые службы в один процесс svhost.exe
-$ram = (Get-CimInstance Win32_PhysicalMemory | Measure-Object -Property Capacity -Sum).Sum / 1kb
+$ram = (Get-CimInstance -ClassName Win32_PhysicalMemory | Measure-Object -Property Capacity -Sum).Sum / 1kb
 New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control -Name SvcHostSplitThresholdInKB -Value $ram -Force
 # Включить патч Retpoline против Spectre v2
 New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name FeatureSettingsOverride -Value 1024 -Force
@@ -380,7 +378,7 @@ $apps = @(
 	"NVIDIACorp.NVIDIAControlPanel"
 	# Microsoft Store
 	".*Store.*")
-Get-AppxPackage -AllUsers | Where-Object {$_.Name -cnotmatch ($apps -join '|')} | Remove-AppxPackage -ErrorAction SilentlyContinue
+Get-AppxPackage -AllUsers | Where-Object -FilterScript {$_.Name -cnotmatch ($apps -join '|')} | Remove-AppxPackage -ErrorAction SilentlyContinue
 # Удалить UWP-приложения из системной учетной записи, кроме
 $apps = @(
 	# UWP-панель Intel
@@ -393,7 +391,7 @@ $apps = @(
 	"NVIDIACorp.NVIDIAControlPanel"
 	# Microsoft Store
 	".*Store.*")
-Get-AppxProvisionedPackage -Online | Where-Object {$_.DisplayName -cnotmatch ($apps -join '|')} | Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue
+Get-AppxProvisionedPackage -Online | Where-Object -FilterScript {$_.DisplayName -cnotmatch ($apps -join '|')} | Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue
 # Отключить компоненты
 $features = @(
 	# Факсы и сканирование
@@ -492,8 +490,12 @@ Register-ScheduledTask @params -Force
 $xml = 'Программы\Прочее\xml\SoftwareDistribution.xml'
 function Get-ResolvedPath
 {
-	param ([Parameter(ValueFromPipeline = 1)]$Path)
-	(Get-Disk | Where-Object {$_.BusType -eq "USB"} | Get-Partition | Get-Volume | Where-Object {$null -ne $_.DriveLetter}).DriveLetter | ForEach-Object {Join-Path ($_ + ":") $Path -Resolve -ErrorAction SilentlyContinue}
+	param(
+		[Parameter(
+			ValueFromPipeline = 1)]
+		$Path
+	)
+	(Get-Disk | Where-Object -FilterScript {$_.BusType -eq "USB"} | Get-Partition | Get-Volume | Where-Object -FilterScript {$null -ne $_.DriveLetter}).DriveLetter | ForEach-Object {Join-Path ($_ + ":") $Path -Resolve -ErrorAction SilentlyContinue}
 }
 $xml | Get-ResolvedPath | Get-Item | Get-Content -Raw | Register-ScheduledTask -TaskName "SoftwareDistribution" -Force
 # Включить в Планировщике задач очистку папки %SYSTEMROOT%\Logs\CBS
@@ -566,10 +568,10 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework -Name 
 # Включить Num Lock при загрузке
 New-ItemProperty -Path "Registry::HKEY_USERS\.DEFAULT\Control Panel\Keyboard" -Name InitialKeyboardIndicators -PropertyType String -Value 2147483650 -Force
 # Добавить в исключение Защитник Windows папку
-$drives = Get-Disk | Where-Object {$_.IsBoot -eq $false}
+$drives = Get-Disk | Where-Object -FilterScript {$_.IsBoot -eq $false}
 IF ($drives)
 {
-	$drives = ($drives | Get-Partition | Get-Volume | Where-Object {$null -ne $_.DriveLetter}).DriveLetter | ForEach-Object {Join-Path ($_ + ":") $Path -Resolve -ErrorAction SilentlyContinue}
+	$drives = ($drives | Get-Partition | Get-Volume | Where-Object -FilterScript {$null -ne $_.DriveLetter}).DriveLetter | ForEach-Object {Join-Path ($_ + ":") $Path -Resolve -ErrorAction SilentlyContinue}
 	Foreach ($drive in $drives)
 	{
 		$folder = "Программы\Прочее"
@@ -657,7 +659,7 @@ Foreach ($ext in $exts)
 Clear-ItemProperty -Path "Registry::HKEY_CLASSES_ROOT\Folder\shellex\ContextMenuHandlers\Library Location" -Name "(default)" -Force
 Clear-ItemProperty -Path "HKLM:\SOFTWARE\Classes\Folder\shellex\ContextMenuHandlers\Library Location" -Name "(default)" -Force
 # Удалить пункт "Включить Bitlocker" из контекстного меню
-IF (Get-WindowsEdition -Online | Where-Object {$_.Edition -eq "Professional" -or $_.Edition -eq "Enterprise"})
+IF (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Professional" -or $_.Edition -eq "Enterprise"})
 {
 	$keys = @(
 	"encrypt-bde",
@@ -714,10 +716,10 @@ public static string GetString(uint strId)
 $getstring = Add-Type $getstring -PassThru -Name GetStr -Using System.Text
 $unpin = $getstring[0]::GetString(5387)
 $apps = (New-Object -Com Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
-$apps | Where-Object {$_.Path -like "Microsoft.MicrosoftEdge*"} | ForEach-Object {$_.Verbs() | Where-Object {$_.Name -eq $unpin} | ForEach-Object {$_.DoIt()}}
-$apps | Where-Object {$_.Path -like "Microsoft.WindowsStore*"} | ForEach-Object {$_.Verbs() | Where-Object {$_.Name -eq $unpin} | ForEach-Object {$_.DoIt()}}
+$apps | Where-Object -FilterScript {$_.Path -like "Microsoft.MicrosoftEdge*"} | ForEach-Object {$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $unpin} | ForEach-Object {$_.DoIt()}}
+$apps | Where-Object -FilterScript {$_.Path -like "Microsoft.WindowsStore*"} | ForEach-Object {$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $unpin} | ForEach-Object {$_.DoIt()}}
 # Не использовать мои данные для входа для автоматического завершения настройки устройства после перезапуска или обновления
-$sid = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object {$_.Name -eq "$env:USERNAME"}).SID
+$sid = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq "$env:USERNAME"}).SID
 IF (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$sid"))
 {
 	New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$sid" -Force
@@ -727,13 +729,13 @@ New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlo
 Remove-Item -Path "$env:USERPROFILE\Desktop\Microsoft Edge.lnk" -Force -ErrorAction SilentlyContinue
 # Отключить пользовательские службы
 $services = @(
-	# Пользовательская служба буфера обмена_*
+	# Пользовательская служба буфера обмена
 	"cbdhsvc_*",
-	# Служба контактных данных_*
+	# Служба контактных данных
 	"PimIndexMaintenanceSvc_*",
-	# Служба хранения данных пользователя_*
+	# Служба хранения данных пользователя
 	"UnistoreSvc_*",
-	# Служба доступа к данным пользователя_*
+	# Служба доступа к данным пользователя
 	"UserDataSvc_*")
 Foreach ($service in $services)
 {
@@ -760,11 +762,10 @@ $apps = @(
 	"App.Support.QuickAssist*",
 	"Hello.Face*",
 	"Media.WindowsMediaPlayer*",
-	"OneCoreUAP.OneSync*",
-	"OpenSSH.Client*")
+	"OneCoreUAP.OneSync*")
 Foreach ($app in $apps)
 {
-	Get-WindowsCapability -Online | Where-Object name -Like $app | Remove-WindowsCapability -Online
+	Get-WindowsCapability -Online | Where-Object -FilterScript {$_.Name -like $app} | Remove-WindowsCapability -Online
 }
 # Запускать ярлык к командной строке от имени Администратора
 $bytes = [System.IO.File]::ReadAllBytes("$env:APPDATA\Microsoft\Windows\Start Menu\Programs\System Tools\Command Prompt.lnk")
@@ -783,7 +784,7 @@ $shortcut.Save()
 function Get-ResolvedPath
 {
 	param ([Parameter(ValueFromPipeline = 1)]$Path)
-	(Get-Disk | Where-Object {$_.BusType -eq "USB"} | Get-Partition | Get-Volume | Where-Object {$null -ne $_.DriveLetter}).DriveLetter | ForEach-Object {Join-Path ($_ + ":") $Path -Resolve -ErrorAction SilentlyContinue}
+	(Get-Disk | Where-Object -FilterScript {$_.BusType -eq "USB"} | Get-Partition | Get-Volume | Where-Object -FilterScript {$null -ne $_.DriveLetter}).DriveLetter | ForEach-Object {Join-Path ($_ + ":") $Path -Resolve -ErrorAction SilentlyContinue}
 }
 $regpath = 'Программы\Прочее\reg\Start.reg' | Get-ResolvedPath
 IF ($regpath)
@@ -852,7 +853,7 @@ Function KnownFolderPath
 	}
 	Attrib +r $Path
 }
-$getdisk = (Get-Disk | Where-Object {$_.BusType -ne "USB"} | Get-Partition | Get-Volume).DriveLetter
+$getdisk = (Get-Disk | Where-Object -FilterScript {$_.BusType -ne "USB"} | Get-Partition | Get-Volume).DriveLetter
 # Рабочий стол
 $drive = Read-Host -Prompt "Введите букву диска, в корне которого будет создана папка `"Рабочий стол`". `nЧтобы пропустить, нажмите Enter"
 IF ($getdisk -eq $drive)
@@ -962,7 +963,7 @@ Remove-Item -Path "$env:SystemRoot\Temp" -Recurse -Force -ErrorAction SilentlyCo
 # Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name RestartNotificationsAllowed2 -Value 1 -Force
 # Установить параметры производительности графики для отдельных приложений на "Высокая производительность"
-IF (Get-CimInstance -ClassName Win32_VideoController | Where-Object {$_.AdapterDACType -ne "Internal" -and $null -ne $_.AdapterDACType})
+IF ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2 -and (Get-CimInstance -ClassName Win32_VideoController | Where-Object -FilterScript {$_.AdapterDACType -ne "Internal" -and $null -ne $_.AdapterDACType}))
 {
 	IF (Test-Path -Path "${env:ProgramFiles(x86)}\Steam")
 	{
