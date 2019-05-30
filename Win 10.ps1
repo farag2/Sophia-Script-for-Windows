@@ -128,10 +128,6 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer 
 # Turn off SmartScreen for apps and files
 # Отключить SmartScreen для приложений и файлов
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name SmartScreenEnabled -PropertyType String -Value Off -Force
-# Save screenshots by pressing Win+PrtScr to the Desktop
-# Сохранить скриншот по Win+PrtScr на рабочем столе
-$value = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
-New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{b7bede81-df94-4682-a7d8-57a52620b86f}" -Name RelativePath -PropertyType String -Value $value -Force
 # Remove the "Previous Versions" tab from properties context menu
 # Отключить отображение вкладки "Предыдущие версии" в свойствах файлов и папок
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name NoPreviousVersionsPage -Value 1 -Force
@@ -546,8 +542,12 @@ $params = @{
 	"Principal"	=	$principal
 }
 Register-ScheduledTask @params -Force
-# Create scheduled task with the "$env:SystemRoot\SoftwareDistribution\Download" folder cleanup in Task Scheduler
-# Создать в Планировщике задач задачу по очистки папки "$env:SystemRoot\SoftwareDistribution\Download"
+# Create scheduled task with the "$env:SystemRoot\SoftwareDistribution\Download" folder cleanup in Task Scheduler. Edit $xml variable first
+# Создать в Планировщике задач задачу по очистки папки "$env:SystemRoot\SoftwareDistribution\Download". Сначала отредактируйте переменную $xml
+# The function to find the drive letter when the file is located in a fixed folder. Suitable when the file is located on a USB-drive and the drive letter is unknown.
+# Функция для нахождения буквы диска, когда файл находится в известной папке. Подходит, когда файл располагается на USB-носителе и буква диска неизвестна.
+# SoftwareDistribution.xml
+# https://gist.github.com/farag2/17d2d4ec5f1e94663be6998775ad65c0
 $xml = "Программы\Прочее\xml\SoftwareDistribution.xml"
 function Get-ResolvedPath
 {
@@ -872,8 +872,10 @@ $shortcut.TargetPath = $target
 $shortcut.Arguments = "printers"
 $shortCut.IconLocation = "$env:SystemRoot\system32\DeviceCenter.dll"
 $shortcut.Save()
-# Import Start menu layout from pre-saved reg file
-# Импорт настроенного меню "Пуск" из заготовленного reg-файла
+# Import Start menu layout from pre-saved reg file. Edit $reg variable first
+# Импорт настроенного меню "Пуск" из заготовленного reg-файла. Сначала отредактируйте переменную $reg
+# The function to find the drive letter when the file is located in a fixed folder. Suitable when the file is located on a USB-drive and the drive letter is unknown.
+# Функция для нахождения буквы диска, когда файл находится в известной папке. Подходит, когда файл располагается на USB-носителе и буква диска неизвестна.
 function Get-ResolvedPath
 {
 	param (
@@ -882,11 +884,11 @@ function Get-ResolvedPath
 	)
 	(Get-Disk | Where-Object -FilterScript {$_.BusType -eq "USB"} | Get-Partition | Get-Volume | Where-Object -FilterScript {$null -ne $_.DriveLetter}).DriveLetter | ForEach-Object {Join-Path ($_ + ":") $Path -Resolve -ErrorAction SilentlyContinue}
 }
-$regpath = 'Программы\Прочее\reg\Start.reg' | Get-ResolvedPath
-IF ($regpath)
+$reg = 'Программы\Прочее\reg\Start.reg' | Get-ResolvedPath
+IF ($reg)
 {
 	Remove-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount -Recurse -Force
-	Start-Process -FilePath reg.exe -ArgumentList "import $regpath"
+	Start-Process -FilePath reg.exe -ArgumentList "import $reg"
 }
 Else
 {
@@ -978,6 +980,7 @@ IF ($getdisk -eq $drive)
 	}
 }
 # Documents. Edit folder name first
+# Документы
 $drive = Read-Host -Prompt "Type the drive letter in the root of which the specified folder will be created.`nPress Enter to skip.`n`nВведите букву диска, в корне которого будет создана папка `"Документы`". `nЧтобы пропустить, нажмите Enter"
 IF ($getdisk -eq $drive)
 {
@@ -994,6 +997,7 @@ IF ($getdisk -eq $drive)
 	}
 }
 # Downloads. Edit folder name first
+# Загрузки
 $drive = Read-Host -Prompt "Type the drive letter in the root of which the specified folder will be created.`nPress Enter to skip.`n`nВведите букву диска, в корне которого будет создана папка `"Загрузки`". `nЧтобы пропустить, нажмите Enter"
 IF ($getdisk -eq $drive)
 {
@@ -1013,6 +1017,7 @@ IF ($getdisk -eq $drive)
 	}
 }
 # Music. Edit folder name first
+# Музыка
 $drive = Read-Host -Prompt "Type the drive letter in the root of which the specified folder will be created.`nPress Enter to skip.`n`nВведите букву диска, в корне которого будет создана папка `"Музыка`". `nЧтобы пропустить, нажмите Enter"
 IF ($getdisk -eq $drive)
 {
@@ -1029,6 +1034,7 @@ IF ($getdisk -eq $drive)
 	}
 }
 # Pictures. Edit folder name first
+# Изображения
 $drive = Read-Host -Prompt "Type the drive letter in the root of which the specified folder will be created.`nPress Enter to skip.`n`nВведите букву диска, в корне которого будет создана папка `"Изображения`". `nЧтобы пропустить, нажмите Enter"
 IF ($getdisk -eq $drive)
 {
@@ -1045,6 +1051,7 @@ IF ($getdisk -eq $drive)
 	}
 }
 # Videos. Edit folder name first
+# Видео
 $drive = Read-Host -Prompt "Type the drive letter in the root of which the specified folder will be created.`nPress Enter to skip.`n`nВведите букву диска, в корне которого будет создана папка `"Видео`".`nЧтобы пропустить, нажмите Enter"
 IF ($getdisk -eq $drive)
 {
@@ -1060,6 +1067,10 @@ IF ($getdisk -eq $drive)
 		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{35286A68-3C57-41A1-BBB1-0EAE73D76C95}" -PropertyType ExpandString -Value "${drive}:\Видео" -Force
 	}
 }
+# Save screenshots by pressing Win+PrtScr to the Desktop
+# Сохранить скриншот по Win+PrtScr на рабочем столе
+$value = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
+New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{b7bede81-df94-4682-a7d8-57a52620b86f}" -Name RelativePath -PropertyType String -Value $value -Force
 # Remove "$env:SystemDrive\PerfLogs"
 # Удалить "$env:SystemDrive\PerfLogs"
 Remove-Item $env:SystemDrive\PerfLogs -Recurse -Force -ErrorAction SilentlyContinue
