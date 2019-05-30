@@ -543,20 +543,18 @@ $params = @{
 }
 Register-ScheduledTask @params -Force
 # Create scheduled task with the "$env:SystemRoot\SoftwareDistribution\Download" folder cleanup in Task Scheduler. Edit $xml variable first
-# Создать в Планировщике задач задачу по очистки папки "$env:SystemRoot\SoftwareDistribution\Download". Сначала отредактируйте переменную $xml
 # The function to find the drive letter when the file is located in a fixed folder. Suitable when the file is located on a USB-drive and the drive letter is unknown.
-# Функция для нахождения буквы диска, когда файл находится в известной папке. Подходит, когда файл располагается на USB-носителе и буква диска неизвестна.
-# SoftwareDistribution.xml
+# Создать в Планировщике задач задачу по очистки папки "$env:SystemRoot\SoftwareDistribution\Download". Сначала отредактируйте переменную $xml
+# Функция для нахождения буквы диска, когда файл находится в известной папке, но не известна буква диска. Подходит, когда файл располагается на USB-носителе
 # https://gist.github.com/farag2/17d2d4ec5f1e94663be6998775ad65c0
 $xml = "Программы\Прочее\xml\SoftwareDistribution.xml"
 function Get-ResolvedPath
 {
-	param(
-		[Parameter(
-			ValueFromPipeline = 1)]
+	param (
+		[Parameter(ValueFromPipeline = 1)]
 		$Path
 	)
-	(Get-Disk | Where-Object -FilterScript {$_.BusType -eq "USB"} | Get-Partition | Get-Volume | Where-Object -FilterScript {$null -ne $_.DriveLetter}).DriveLetter | ForEach-Object {Join-Path ($_ + ":") $Path -Resolve -ErrorAction SilentlyContinue}
+	(Get-Disk | Where-Object -FilterScript {$_.BusType -eq "USB"} | Get-Partition | Get-Volume | Where-Object -FilterScript {$null -ne $_.DriveLetter}).DriveLetter | ForEach-Object -Process {Join-Path ($_ + ":") $Path -Resolve -ErrorAction SilentlyContinue}
 }
 $xml | Get-ResolvedPath | Get-Item | Get-Content -Raw | Register-ScheduledTask -TaskName "SoftwareDistribution" -Force
 # Create scheduled task with the $env:TEMP folder cleanup in Task Scheduler
@@ -592,7 +590,7 @@ $apps = @(
 Foreach ($app in $apps)
 {
 	Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications -Exclude $apps |
-	ForEach-Object {
+	ForEach-Object -Process {
 		New-ItemProperty -Path $_.PsPath -Name Disabled -Value 1 -Force
 		New-ItemProperty -Path $_.PsPath -Name DisabledByUser -Value 1 -Force
 	}
@@ -622,17 +620,20 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework -Name 
 # Turn on Num Lock at startup
 # Включить Num Lock при загрузке
 New-ItemProperty -Path "Registry::HKEY_USERS\.DEFAULT\Control Panel\Keyboard" -Name InitialKeyboardIndicators -PropertyType String -Value 2147483650 -Force
-# Добавить в исключение Защитник Windows папку
-$drives = Get-Disk | Where-Object -FilterScript {$_.IsBoot -eq $false}
-IF ($drives)
+# Add folder to exclude from Windows Defender Antivirus scan. Edit $folder variable first
+# The function to find the drive letter when the full path to the folder is known and drive letter is unknown. Suitable when a folder is located on a USB-drive
+# Добавить папку в список исключений сканирования Защитника Windows. Сначала отредактируйте переменную $folder
+# Функция для нахождения буквы диска, когда известен полный путь до папки, но не известна буква диска. Подходит, когда папка располагается на USB-носителе
+function Get-ResolvedPath
 {
-	$drives = ($drives | Get-Partition | Get-Volume | Where-Object -FilterScript {$null -ne $_.DriveLetter}).DriveLetter | ForEach-Object {Join-Path ($_ + ":") $Path -Resolve -ErrorAction SilentlyContinue}
-	Foreach ($drive in $drives)
-	{
-		$folder = "Программы\Прочее"
-		Add-MpPreference -ExclusionPath (Join-Path -Path $drive -ChildPath $folder) -Force
-	}
+	param (
+		[Parameter(ValueFromPipeline = 1)]
+		$Path
+	)
+	(Get-Disk | Where-Object -FilterScript {$_.IsBoot -eq $false} | Get-Partition | Get-Volume | Where-Object -FilterScript {$null -ne $_.DriveLetter}).DriveLetter | ForEach-Object -Process {Join-Path ($_ + ":") $Path -Resolve -ErrorAction SilentlyContinue}
 }
+$folder = 'Программы\Прочее' | Get-ResolvedPath
+Add-MpPreference -ExclusionPath $folder -Force
 # Turn on Windows Defender Exploit Guard Network Protection
 # Включить Защиту сети в Защитнике Windows
 Set-MpPreference -EnableNetworkProtection Enabled
@@ -794,8 +795,8 @@ $getstring = @'
 $getstring = Add-Type $getstring -PassThru -Name GetStr -Using System.Text
 $unpin = $getstring[0]::GetString(5387)
 $apps = (New-Object -Com Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
-$apps | Where-Object -FilterScript {$_.Path -like "Microsoft.MicrosoftEdge*"} | ForEach-Object {$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $unpin} | ForEach-Object {$_.DoIt()}}
-$apps | Where-Object -FilterScript {$_.Path -like "Microsoft.WindowsStore*"} | ForEach-Object {$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $unpin} | ForEach-Object {$_.DoIt()}}
+$apps | Where-Object -FilterScript {$_.Path -like "Microsoft.MicrosoftEdge*"} | ForEach-Object -Process {$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $unpin} | ForEach-Object -Process {$_.DoIt()}}
+$apps | Where-Object -FilterScript {$_.Path -like "Microsoft.WindowsStore*"} | ForEach-Object -Process {$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $unpin} | ForEach-Object -Process {$_.DoIt()}}
 # Do not use sign-in info to automatically finish setting up device after an update or restart
 # Не использовать данные для входа для автоматического завершения настройки устройства после перезапуска или обновления
 $sid = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq "$env:USERNAME"}).SID
@@ -873,16 +874,16 @@ $shortcut.Arguments = "printers"
 $shortCut.IconLocation = "$env:SystemRoot\system32\DeviceCenter.dll"
 $shortcut.Save()
 # Import Start menu layout from pre-saved reg file. Edit $reg variable first
+# The function to find the drive letter when the full path to the folder is known and drive letter is unknown. Suitable when the file is located on a USB-drive
 # Импорт настроенного меню "Пуск" из заготовленного reg-файла. Сначала отредактируйте переменную $reg
-# The function to find the drive letter when the file is located in a fixed folder. Suitable when the file is located on a USB-drive and the drive letter is unknown.
-# Функция для нахождения буквы диска, когда файл находится в известной папке. Подходит, когда файл располагается на USB-носителе и буква диска неизвестна.
+# Функция для нахождения буквы диска, когда файл находится в известной папке, но не известна буква диска. Подходит, когда файл располагается на USB-носителе
 function Get-ResolvedPath
 {
 	param (
 		[Parameter(ValueFromPipeline = 1)]
 		$Path
 	)
-	(Get-Disk | Where-Object -FilterScript {$_.BusType -eq "USB"} | Get-Partition | Get-Volume | Where-Object -FilterScript {$null -ne $_.DriveLetter}).DriveLetter | ForEach-Object {Join-Path ($_ + ":") $Path -Resolve -ErrorAction SilentlyContinue}
+	(Get-Disk | Where-Object -FilterScript {$_.BusType -eq "USB"} | Get-Partition | Get-Volume | Where-Object -FilterScript {$null -ne $_.DriveLetter}).DriveLetter | ForEach-Object -Process {Join-Path ($_ + ":") $Path -Resolve -ErrorAction SilentlyContinue}
 }
 $reg = 'Программы\Прочее\reg\Start.reg' | Get-ResolvedPath
 IF ($reg)
