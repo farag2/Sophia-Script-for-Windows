@@ -70,7 +70,7 @@ Foreach ($task in $tasks)
 # Turn off "The Windows Filtering Platform has blocked a connection" message
 # Отключить в "Журналах Windows/Безопасность" сообщение "Платформа фильтрации IP-пакетов Windows разрешила подключение"
 auditpol /set /subcategory:"{0CCE9226-69AE-11D9-BED3-505054503030}" /success:disable /failure:disable
-# Set File Explorer to Open to This PC by Default
+# Set File Explorer to open to This PC by default
 # Открывать "Этот компьютер" в Проводнике
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name LaunchTo -Value 1 -Force
 # Show Hidden Files, Folders, and Drives
@@ -201,7 +201,10 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Privacy -
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CDP -Name RomeSdkChannelUserAuthzPolicy -Value 0 -Force
 # Choose light or dark theme color for default Windows mode
 # Выбрать режим Windows по умолчанию и режим приложения по умолчанию
-$theme = Read-Host -Prompt "Choose light or dark theme color for default Windows mode (type light or dark).`nPress Enter to skip.`n`nВыберите режим Windows по умолчанию (введите light или dark).`nЧтобы пропустить, нажмите Enter"
+$theme = Read-Host -Prompt "Choose light or dark theme color for default Windows mode (type light or dark).
+Press Enter to skip
+`nВыберите режим Windows по умолчанию (введите light или dark).
+Чтобы пропустить, нажмите Enter"
 IF ($theme -eq "Light")
 {
 	# Show color only on taskbar
@@ -221,7 +224,10 @@ IF ($theme -eq "Dark")
 }
 # Choose light or dark theme color for default app mode
 # Выбрать режим приложения по умолчанию
-$apps = Read-Host -Prompt "Choose light or dark theme color for default app mode (type light or dark).`nPress Enter to skip.`n`nВыберите режим приложения по умолчанию (введите light или dark).`nЧтобы пропустить, нажмите Enter"
+$apps = Read-Host -Prompt "Choose light or dark theme color for default app mode (type light or dark).
+Press Enter to skip
+`nВыберите режим приложения по умолчанию (введите light или dark).
+Чтобы пропустить, нажмите Enter"
 IF ($apps -eq "Light")
 {
 	# Light theme color for default app mode
@@ -416,7 +422,7 @@ $apps = @(
 	"NVIDIACorp.NVIDIAControlPanel"
 	# Microsoft Store
 	".*Store.*")
-Get-AppxPackage -AllUsers | Where-Object -FilterScript {$_.Name -cnotmatch ($apps -join '|')} | Remove-AppxPackage -ErrorAction SilentlyContinue
+Get-AppxPackage -AllUsers | Where-Object -FilterScript {$_.Name -cnotmatch ($apps -join "|")} | Remove-AppxPackage -ErrorAction SilentlyContinue
 # Uninstall UWP apps from all accounts except
 # Удалить UWP-приложения из системной учетной записи, кроме
 $apps = @(
@@ -434,7 +440,7 @@ $apps = @(
 	"NVIDIACorp.NVIDIAControlPanel"
 	# Microsoft Store
 	".*Store.*")
-Get-AppxProvisionedPackage -Online | Where-Object -FilterScript {$_.DisplayName -cnotmatch ($apps -join '|')} | Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue
+Get-AppxProvisionedPackage -Online | Where-Object -FilterScript {$_.DisplayName -cnotmatch ($apps -join "|")} | Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue
 # Turn off Windows features
 # Отключить компоненты
 $features = @(
@@ -492,6 +498,7 @@ Remove-Item -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\OneDrive.l
 # Отключить игровую панель
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\GameDVR -Name AppCaptureEnabled -Value 0 -Force
 New-ItemProperty -Path HKCU:\System\GameConfigStore -Name GameDVR_Enabled -Value 0 -Force
+# Turn off Game Mode
 # Отключить игровой режим
 New-ItemProperty -Path HKCU:\Software\Microsoft\GameBar -Name AllowAutoGameMode -Value 0 -Force
 # Turn off Game Bar tips
@@ -597,20 +604,16 @@ Foreach ($app in $apps)
 }
 # Set power management scheme for desktop and laptop
 # Установить схему управления питания для стационарного ПК и ноутбука
-# Desktop
-# Cтационарный ПК
 IF ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -eq 1)
 {
-	# High performance
-	# Высокая производительность
+	# High performance for desktop
+	# Высокая производительность для стационарного ПК
 	powercfg /setactive SCHEME_MIN
 }
-# Laptop
-# Ноутбук
 IF ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -eq 2)
 {
-	# Balanced
-	# Сбалансированная
+	# Balanced for laptop
+	# Сбалансированная для ноутбука
 	powercfg /setactive SCHEME_BALANCED
 }
 # Turn on .NET 4 runtime for all apps
@@ -632,14 +635,17 @@ function Get-ResolvedPath
 	)
 	(Get-Disk | Where-Object -FilterScript {$_.IsBoot -eq $false} | Get-Partition | Get-Volume | Where-Object -FilterScript {$null -ne $_.DriveLetter}).DriveLetter | ForEach-Object -Process {Join-Path ($_ + ":") $Path -Resolve -ErrorAction SilentlyContinue}
 }
-$folder = 'Программы\Прочее' | Get-ResolvedPath
+$folder = "Программы\Прочее" | Get-ResolvedPath -ErrorAction SilentlyContinue
 Add-MpPreference -ExclusionPath $folder -Force
 # Turn on Windows Defender Exploit Guard Network Protection
 # Включить Защиту сети в Защитнике Windows
 Set-MpPreference -EnableNetworkProtection Enabled
 # Turn on Controlled folder access and add protected folder
 # Включить контролируемый доступ к папкам и добавить контролируемую папку
-$folder = Read-Host -Prompt "Type folder path to add to protected folders list.`nPress Enter to skip.`n`nВведите путь до папки, чтобы добавить в список защищенных папок.`nЧтобы пропустить, нажмите Enter"
+$folder = Read-Host -Prompt "Type folder path to add to protected folders list.
+Press Enter to skip
+`nВведите путь до папки, чтобы добавить в список защищенных папок.
+Чтобы пропустить, нажмите Enter"
 IF ($folder)
 {
 	Set-MpPreference -EnableControlledFolderAccess Enabled
@@ -779,7 +785,7 @@ New-ItemProperty -Path "Registry::HKEY_USERS\.DEFAULT\Keyboard Layout\Preload" -
 New-ItemProperty -Path "Registry::HKEY_USERS\.DEFAULT\Keyboard Layout\Preload" -Name 2 -PropertyType String -Value 00000419 -Force
 # Unpin Microsoft Edge and Microsoft Store from taskbar
 # Открепить Microsoft Edge и Microsoft Store от панели задач
-$getstring = @'
+$getstring = @"
 	[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
 	public static extern IntPtr GetModuleHandle(string lpModuleName);
 	[DllImport("user32.dll", CharSet = CharSet.Auto)]
@@ -791,7 +797,7 @@ $getstring = @'
 		LoadString(intPtr, strId, sb, sb.Capacity);
 		return sb.ToString();
 	}
-'@
+"@
 $getstring = Add-Type $getstring -PassThru -Name GetStr -Using System.Text
 $unpin = $getstring[0]::GetString(5387)
 $apps = (New-Object -Com Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
@@ -850,10 +856,15 @@ New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Security Health\State" 
 # Remove Windows capabilities
 # Удалить компоненты
 $apps = @(
+	# Microsoft Quick Assist
+	# Быстрая поддержка (Майкрософт)
 	"App.Support.QuickAssist*",
+	# Windows Hello Face
+	# Распознавание лиц Windows Hello
 	"Hello.Face*",
-	"Media.WindowsMediaPlayer*",
-	"OneCoreUAP.OneSync*")
+	# Windows Media Player
+	# Проигрыватель Windows Media
+	"Media.WindowsMediaPlayer*")
 Foreach ($app in $apps)
 {
 	Get-WindowsCapability -Online | Where-Object -FilterScript {$_.Name -like $app} | Remove-WindowsCapability -Online
@@ -863,12 +874,12 @@ Foreach ($app in $apps)
 $bytes = [System.IO.File]::ReadAllBytes("$env:APPDATA\Microsoft\Windows\Start Menu\Programs\System Tools\Command Prompt.lnk")
 $bytes[0x15] = $bytes[0x15] -bor 0x20
 [System.IO.File]::WriteAllBytes("$env:APPDATA\Microsoft\Windows\Start Menu\Programs\System Tools\Command Prompt.lnk", $bytes)
-# Create shortcut for "Devices and Printers" in "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\System Tools"
-# Создать ярлык для "Устройства и принтеры" в "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\System Tools"
+# Create shortcut for "Devices and Printers" in "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\System Tools". Edit $lnk variable first
+# Создать ярлык для "Устройства и принтеры" в "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\System Tools". Сначала отредактируйте переменную $lnk
 $target = "control"
-$file = "$env:AppData\Microsoft\Windows\Start Menu\Programs\System Tools\Устройства и принтеры.lnk"
+$lnk = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\System Tools\Устройства и принтеры.lnk"
 $shell = New-Object -ComObject Wscript.Shell
-$shortcut = $shell.CreateShortcut($file)
+$shortcut = $shell.CreateShortcut($lnk)
 $shortcut.TargetPath = $target
 $shortcut.Arguments = "printers"
 $shortCut.IconLocation = "$env:SystemRoot\system32\DeviceCenter.dll"
@@ -885,7 +896,7 @@ function Get-ResolvedPath
 	)
 	(Get-Disk | Where-Object -FilterScript {$_.BusType -eq "USB"} | Get-Partition | Get-Volume | Where-Object -FilterScript {$null -ne $_.DriveLetter}).DriveLetter | ForEach-Object -Process {Join-Path ($_ + ":") $Path -Resolve -ErrorAction SilentlyContinue}
 }
-$reg = 'Программы\Прочее\reg\Start.reg' | Get-ResolvedPath
+$reg = "Программы\Прочее\reg\Start.reg" | Get-ResolvedPath
 IF ($reg)
 {
 	Remove-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount -Recurse -Force
@@ -898,21 +909,21 @@ Else
 	$key = Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*start.tilegrid`$windows.data.curatedtilecollection.tilecollection\Current
 	$data = $key.Data[0..25] + ([byte[]](202,50,0,226,44,1,1,0,0))
 	New-ItemProperty -Path $key.PSPath -Name Data -PropertyType Binary -Value $data -Force
+	# Show "Explorer" and "Settings" folders on Start menu
+	# Отобразить папки "Проводник" и "Параметры" в меню "Пуск"
+	$items = @("Проводник", "Параметры")
+	$key = Get-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*windows.data.unifiedtile.startglobalproperties\Current"
+	$data = $key.Data[0..19] -join ","
+	$data += ",203,50,10,$($items.Length)"
+	# Explorer
+	# Проводник
+	$data += ",5,188,201,168,164,1,36,140,172,3,68,137,133,1,102,160,129,186,203,189,215,168,164,130,1,0"
+	# Settings
+	# Параметры
+	$data += ",5,134,145,204,147,5,36,170,163,1,68,195,132,1,102,159,247,157,177,135,203,209,172,212,1,0"
+	$data += ",194,60,1,194,70,1,197,90,1,0"
+	New-ItemProperty -Path $key.PSPath -Name Data -PropertyType Binary -Value $data.Split(",") -Force
 }
-# Show "Explorer" and "Settings" folders on Start menu
-# Отобразить папки "Проводник" и "Параметры" в меню "Пуск"
-$items = @("Проводник", "Параметры")
-$key = Get-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*windows.data.unifiedtile.startglobalproperties\Current"
-$data = $key.Data[0..19] -join ","
-$data += ",203,50,10,$($items.Length)"
-# Explorer
-# Проводник
-$data += ",5,188,201,168,164,1,36,140,172,3,68,137,133,1,102,160,129,186,203,189,215,168,164,130,1,0"
-# Settings
-# Параметры
-$data += ",5,134,145,204,147,5,36,170,163,1,68,195,132,1,102,159,247,157,177,135,203,209,172,212,1,0"
-$data += ",194,60,1,194,70,1,197,90,1,0"
-New-ItemProperty -Path $key.PSPath -Name Data -PropertyType Binary -Value $data.Split(",") -Force
 # Show accent color on the title bars and window borders
 # Отображать цвет элементов в заголовках окон и границ окон
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\DWM -Name ColorPrevalence -Value 1 -Force
@@ -935,26 +946,26 @@ Function KnownFolderPath
 {
 	Param (
 		[Parameter(Mandatory = $true)]
-		[ValidateSet('Desktop', 'Documents', 'Downloads', 'Music', 'Pictures', 'Videos')]
+		[ValidateSet("Desktop", "Documents", "Downloads", "Music", "Pictures", "Videos")]
 		[string]$KnownFolder,
 
 		[Parameter(Mandatory = $true)]
 		[string]$Path
 	)
 	$KnownFolders = @{
-		'Desktop'	= @('B4BFCC3A-DB2C-424C-B029-7FE99A87C641');
-		'Documents'	= @('FDD39AD0-238F-46AF-ADB4-6C85480369C7', 'f42ee2d3-909f-4907-8871-4c22fc0bf756');
-		'Downloads'	= @('374DE290-123F-4565-9164-39C4925E467B', '7d83ee9b-2244-4e70-b1f5-5393042af1e4');
-		'Music'		= @('4BD8D571-6D19-48D3-BE97-422220080E43', 'a0c69a99-21c8-4671-8703-7934162fcf1d');
-		'Pictures'	= @('33E28130-4E1E-4676-835A-98395C3BC3BB', '0ddd015d-b06c-45d5-8c4c-f59713854639');
-		'Videos'	= @('18989B1D-99B5-455B-841C-AB7C74E4DDFC', '35286a68-3c57-41a1-bbb1-0eae73d76c95');
+		"Desktop"	= @("B4BFCC3A-DB2C-424C-B029-7FE99A87C641");
+		"Documents"	= @("FDD39AD0-238F-46AF-ADB4-6C85480369C7", "f42ee2d3-909f-4907-8871-4c22fc0bf756");
+		"Downloads"	= @("374DE290-123F-4565-9164-39C4925E467B", "7d83ee9b-2244-4e70-b1f5-5393042af1e4");
+		"Music"		= @("4BD8D571-6D19-48D3-BE97-422220080E43", "a0c69a99-21c8-4671-8703-7934162fcf1d");
+		"Pictures"	= @("33E28130-4E1E-4676-835A-98395C3BC3BB", "0ddd015d-b06c-45d5-8c4c-f59713854639");
+		"Videos"	= @("18989B1D-99B5-455B-841C-AB7C74E4DDFC", "35286a68-3c57-41a1-bbb1-0eae73d76c95");
 	}
-	$Type = ([System.Management.Automation.PSTypeName]'KnownFolders').Type
-	$Signature = @'
+	$Type = ([System.Management.Automation.PSTypeName]"KnownFolders").Type
+	$Signature = @"
 	[DllImport("shell32.dll")]
 	public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, IntPtr token, [MarshalAs(UnmanagedType.LPWStr)] string path);
-'@
-	$Type = Add-Type -MemberDefinition $Signature -Name 'KnownFolders' -Namespace 'SHSetKnownFolderPath' -PassThru
+"@
+	$Type = Add-Type -MemberDefinition $Signature -Name "KnownFolders" -Namespace "SHSetKnownFolderPath" -PassThru
 	# return $Type::SHSetKnownFolderPath([ref]$KnownFolders[$KnownFolder], 0, 0, $Path)
 	ForEach ($guid in $KnownFolders[$KnownFolder])
 	{
@@ -965,7 +976,10 @@ Function KnownFolderPath
 $getdisk = (Get-Disk | Where-Object -FilterScript {$_.BusType -ne "USB"} | Get-Partition | Get-Volume).DriveLetter
 # Desktop. Edit folder name first
 # Рабочий стол
-$drive = Read-Host -Prompt "Type the drive letter in the root of which the specified folder will be created.`nPress Enter to skip.`n`nВведите букву диска, в корне которого будет создана папка `"Рабочий стол`".`nЧтобы пропустить, нажмите Enter"
+$drive = Read-Host -Prompt "Type the drive letter in the root of which the specified folder will be created.
+Press Enter to skip
+`nВведите букву диска, в корне которого будет создана папка `"Рабочий стол`".
+Чтобы пропустить, нажмите Enter"
 IF ($getdisk -eq $drive)
 {
 	$drive = $(${drive}.ToUpper())
@@ -982,7 +996,10 @@ IF ($getdisk -eq $drive)
 }
 # Documents. Edit folder name first
 # Документы
-$drive = Read-Host -Prompt "Type the drive letter in the root of which the specified folder will be created.`nPress Enter to skip.`n`nВведите букву диска, в корне которого будет создана папка `"Документы`". `nЧтобы пропустить, нажмите Enter"
+$drive = Read-Host -Prompt "Type the drive letter in the root of which the specified folder will be created.
+Press Enter to skip
+`nВведите букву диска, в корне которого будет создана папка `"Документы`".
+Чтобы пропустить, нажмите Enter"
 IF ($getdisk -eq $drive)
 {
 	$drive = $(${drive}.ToUpper())
@@ -999,7 +1016,10 @@ IF ($getdisk -eq $drive)
 }
 # Downloads. Edit folder name first
 # Загрузки
-$drive = Read-Host -Prompt "Type the drive letter in the root of which the specified folder will be created.`nPress Enter to skip.`n`nВведите букву диска, в корне которого будет создана папка `"Загрузки`". `nЧтобы пропустить, нажмите Enter"
+$drive = Read-Host -Prompt "Type the drive letter in the root of which the specified folder will be created.
+Press Enter to skip
+`nВведите букву диска, в корне которого будет создана папка `"Загрузки`".
+Чтобы пропустить, нажмите Enter"
 IF ($getdisk -eq $drive)
 {
 	$drive = $(${drive}.ToUpper())
@@ -1019,7 +1039,10 @@ IF ($getdisk -eq $drive)
 }
 # Music. Edit folder name first
 # Музыка
-$drive = Read-Host -Prompt "Type the drive letter in the root of which the specified folder will be created.`nPress Enter to skip.`n`nВведите букву диска, в корне которого будет создана папка `"Музыка`". `nЧтобы пропустить, нажмите Enter"
+$drive = Read-Host -Prompt "Type the drive letter in the root of which the specified folder will be created.
+Press Enter to skip
+`nВведите букву диска, в корне которого будет создана папка `"Музыка`".
+Чтобы пропустить, нажмите Enter"
 IF ($getdisk -eq $drive)
 {
 	$drive = $(${drive}.ToUpper())
@@ -1036,7 +1059,10 @@ IF ($getdisk -eq $drive)
 }
 # Pictures. Edit folder name first
 # Изображения
-$drive = Read-Host -Prompt "Type the drive letter in the root of which the specified folder will be created.`nPress Enter to skip.`n`nВведите букву диска, в корне которого будет создана папка `"Изображения`". `nЧтобы пропустить, нажмите Enter"
+$drive = Read-Host -Prompt "Type the drive letter in the root of which the specified folder will be created.
+Press Enter to skip
+`nВведите букву диска, в корне которого будет создана папка `"Изображения`".
+Чтобы пропустить, нажмите Enter"
 IF ($getdisk -eq $drive)
 {
 	$drive = $(${drive}.ToUpper())
@@ -1053,7 +1079,10 @@ IF ($getdisk -eq $drive)
 }
 # Videos. Edit folder name first
 # Видео
-$drive = Read-Host -Prompt "Type the drive letter in the root of which the specified folder will be created.`nPress Enter to skip.`n`nВведите букву диска, в корне которого будет создана папка `"Видео`".`nЧтобы пропустить, нажмите Enter"
+$drive = Read-Host -Prompt "Type the drive letter in the root of which the specified folder will be created.
+Press Enter to skip
+`nВведите букву диска, в корне которого будет создана папка `"Видео`".
+Чтобы пропустить, нажмите Enter"
 IF ($getdisk -eq $drive)
 {
 	$drive = $(${drive}.ToUpper())
@@ -1093,7 +1122,10 @@ IF ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2 -and (G
 	{
 		Start-Process -FilePath "${env:ProgramFiles(x86)}\Steam\steamapps\common"
 	}
-	$exe = Read-Host -Prompt "Введите полный путь до исполняемого файла приложения, для которого следует установить`nпараметры производительности графики на `"Высокая производительность`".`nЧтобы пропустить, нажмите Enter"
+	$exe = Read-Host -Prompt "Type full path to the app executable file for which you want to set graphics performance preference to `"High performance GPU`".
+	Press Enter to skip
+	`nВведите полный путь до исполняемого файла приложения, для которого следует установить`nпараметры производительности графики на `"Высокая производительность`".
+	Чтобы пропустить, нажмите Enter"
 	IF ($exe)
 	{
 		$exe = $exe.Replace('"', "")
@@ -1114,7 +1146,21 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation -Name UserPref
 # Включить Windows Sandbox
 IF (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Professional" -or $_.Edition -eq "Enterprise"})
 {
-	Enable-WindowsOptionalFeature –FeatureName Containers-DisposableClientVM -All -Online -NoRestart
+	IF ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled -eq $true)
+	{
+		Enable-WindowsOptionalFeature –FeatureName Containers-DisposableClientVM -All -Online -NoRestart
+	}
+	else
+	{
+		IF ((Get-WindowsOptionalFeature -FeatureName Microsoft-Hyper-V-All -Online).State -eq "Enabled")
+		{
+			Enable-WindowsOptionalFeature –FeatureName Containers-DisposableClientVM -All -Online -NoRestart
+		}
+		else
+		{
+			Write-Output "Enable Virtualization in BIOS"
+		}
+	}
 }
 # Turn off reserved storage
 # Отключить зарезервированное хранилище
