@@ -1178,3 +1178,13 @@ Stop-Process -Name StartMenuExperienceHost -Force
 # Restart File Explorer
 # Перезапустить "File Explorer"
 Stop-Process -Name explorer -Force
+# Errors output
+# Вывод ошибок
+Write-Output ""
+Write-Host Errors -BackgroundColor Red
+($Error | Where-Object -FilterScript {$_ -notmatch "HRESULT" -and $_ -notmatch "TaskManager"} | ForEach-Object {
+	[PSCustomObject] @{
+		Line = $_.InvocationInfo.ScriptLineNumber
+		Error = $_.Exception.Message
+	}
+} | Format-Table -AutoSize -Wrap | Out-String).Trim()
