@@ -1,3 +1,6 @@
+# Сlear $Error
+# Очистка $Error
+$Error.Clear()
 # Turn off diagnostics tracking services
 # Отключить службы диагностического отслеживания
 $services = @(
@@ -490,7 +493,6 @@ Remove-Item -Path $env:USERPROFILE\OneDrive -Recurse -Force -ErrorAction Silentl
 Remove-Item -Path $env:LOCALAPPDATA\Microsoft\OneDrive -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item -Path "$env:ProgramData\Microsoft OneDrive" -Recurse -Force -ErrorAction SilentlyContinue
 Unregister-ScheduledTask -TaskName *OneDrive* -Confirm:$false
-Remove-Item -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\OneDrive.lnk" -Force -ErrorAction SilentlyContinue
 # Turn on updates for other Microsoft products
 # Включить автоматическое обновление для других продуктов Microsoft
 (New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
@@ -636,7 +638,10 @@ function Get-ResolvedPath
 	(Get-Disk | Where-Object -FilterScript {$_.IsBoot -eq $false} | Get-Partition | Get-Volume | Where-Object -FilterScript {$null -ne $_.DriveLetter}).DriveLetter | ForEach-Object -Process {Join-Path ($_ + ":") $Path -Resolve -ErrorAction SilentlyContinue}
 }
 $folder = "Программы\Прочее" | Get-ResolvedPath -ErrorAction SilentlyContinue
-Add-MpPreference -ExclusionPath $folder -Force
+IF ($folder)
+{
+	Add-MpPreference -ExclusionPath $folder -Force
+}
 # Turn on Windows Defender Exploit Guard Network Protection
 # Включить Защиту сети в Защитнике Windows
 Set-MpPreference -EnableNetworkProtection Enabled
@@ -740,12 +745,13 @@ Clear-ItemProperty -Path "HKLM:\SOFTWARE\Classes\Folder\shellex\ContextMenuHandl
 IF (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Professional" -or $_.Edition -eq "Enterprise"})
 {
 	$keys = @(
-	"encrypt-bde",
-	"encrypt-bde-elev",
-	"manage-bde",
-	"resume-bde",
-	"resume-bde-elev",
-	"unlock-bde")
+		"encrypt-bde",
+		"encrypt-bde-elev",
+		"manage-bde",
+		"resume-bde",
+		"resume-bde-elev",
+		"unlock-bde"
+	)
 	Foreach ($key in $keys)
 	{
 		New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\$key -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
@@ -912,8 +918,8 @@ Else
 	# Show "Explorer" and "Settings" folders on Start menu
 	# Отобразить папки "Проводник" и "Параметры" в меню "Пуск"
 	$items = @("Проводник", "Параметры")
-	$key = Get-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*windows.data.unifiedtile.startglobalproperties\Current"
-	$data = $key.Data[0..19] -join ","
+	$key2 = Get-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*windows.data.unifiedtile.startglobalproperties\Current"
+	$data = $key2.Data[0..19] -join ","
 	$data += ",203,50,10,$($items.Length)"
 	# Explorer
 	# Проводник
@@ -922,7 +928,7 @@ Else
 	# Параметры
 	$data += ",5,134,145,204,147,5,36,170,163,1,68,195,132,1,102,159,247,157,177,135,203,209,172,212,1,0"
 	$data += ",194,60,1,194,70,1,197,90,1,0"
-	New-ItemProperty -Path $key.PSPath -Name Data -PropertyType Binary -Value $data.Split(",") -Force
+	New-ItemProperty -Path $key2.PSPath -Name Data -PropertyType Binary -Value $data.Split(",") -Force
 }
 # Show accent color on the title bars and window borders
 # Отображать цвет элементов в заголовках окон и границ окон
