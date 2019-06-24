@@ -406,26 +406,89 @@ $apps = @(
 	# UWP-панель Intel
 	"AppUp.IntelGraphicsControlPanel"
 	"AppUp.IntelGraphicsExperience"
-	# Microsoft Desktop App Installer
-	"Microsoft.DesktopAppInstaller"
-	# Extensions
-	# Расширения
-	"Microsoft.*Extension*"
 	# Language pack
 	# Языковой пакет
 	"Microsoft.LanguageExperiencePack*"
-	# Photos
-	# Фотографии
-	"Microsoft.Windows.Photos"
-	# Screen Sketch
-	# Набросок на фрагменте экрана
-	"Microsoft.ScreenSketch"
 	# NVIDIA Control Panel
 	# Панель управления NVidia
 	"NVIDIACorp.NVIDIAControlPanel"
+	# File Picker
+	# Средство выбора файлов
+	"1527c705-839a-4832-9118-54d4Bd6a0c89"
+	# File Explorer
+	# Проводник
+	"c5e2524a-ea46-4f67-841f-6a9465d9d515"
+	# App Resolver UX
+	# UI распознавателя приложений
+	"E2A4F912-2574-4A75-9BB0-0D023378592B"
+	# Add Suggested Folders To Library
+	# Добавление предложенных папок в библиотеку
+	"F46D4000-FD22-4DB4-AC8E-4E1DDDE828FE"
+	"InputApp"
+	"Microsoft.AAD.BrokerPlugin"
+	"Microsoft.AccountsControl"
+	"Microsoft.AsyncTextService"
+	# Hello setup UI
+	# Пользовательский интерфейс настройки Hello
+	"Microsoft.BioEnrollment"
+	"Microsoft.CredDialogHost"
+	"Microsoft.ECApp"
+	"Microsoft.LockApp"
+	"Microsoft.EdgeDevtoolsPlugin"
+	"Microsoft.MicrosoftEdgeDevToolsClient"
+	# Microsoft Edge
+	"Microsoft.MicrosoftEdge"
+	"Microsoft.PPIProjection"
+	"Microsoft.Win32WebViewHost"
+	"Microsoft.Windows.Apprep.ChxApp"
+	"Microsoft.Windows.AssignedAccessLockApp"
+	"Microsoft.Windows.CallingShellApp"
+	"Microsoft.Windows.CapturePicker"
+	"Microsoft.Windows.CloudExperienceHost"
+	"Microsoft.Windows.ContentDeliveryManager"
+	# Cortana
+	"Microsoft.Windows.Cortana"
+	"Microsoft.Windows.NarratorQuickStart"
+	"Microsoft.Windows.OOBENetworkCaptivePortal"
+	"Microsoft.Windows.OOBENetworkConnectionFlow"
+	"Microsoft.Windows.ParentalControls"
+	# People Hub
+	# Раздел "Люди"
+	"Microsoft.Windows.PeopleExperienceHost"
+	"Microsoft.Windows.PinningConfirmationDialog"
+	"Microsoft.Windows.SecHealthUI"
+	"Microsoft.Windows.SecureAssessmentBrowser"
+	"Microsoft.Windows.ShellExperienceHost"
+	# Start
+	# Меню "Пуск"
+	"Microsoft.Windows.StartMenuExperienceHost"
+	"Microsoft.Windows.XGpuEjectDialog"
+	"Microsoft.XboxGameCallableUI"
+	"Windows.CBSPreview"
+	# Settings
+	# Параметры
+	"windows.immersivecontrolpanel"
+	# Print UI
+	# Пользовательский интерфейс печати
+	"Windows.PrintDialog"
+	"Microsoft.NET.Native*"
+	"Microsoft.UI.Xaml*"
+	"Microsoft.VCLibs*"
+	"Microsoft.Advertising.Xaml"
+	# Microsoft Desktop App Installer
+	"Microsoft.DesktopAppInstaller"
+	# Screen Sketch
+	# Набросок на фрагменте экрана
 	# Microsoft Store
-	".*Store.*")
-Get-AppxPackage -AllUsers | Where-Object -FilterScript {$_.Name -cnotmatch ($apps -join "|")} | Remove-AppxPackage -ErrorAction SilentlyContinue
+	".*Store.*"
+	# Extensions
+	# Расширения
+	"Microsoft.*Extension*"
+	# Photos
+	# Фотографии
+	"Microsoft.Windows.Photos"
+)
+Get-AppxPackage -AllUsers | Where-Object -FilterScript {$_.Name -cnotmatch ($apps -join "|")} | Remove-AppxPackage
 # Uninstall UWP apps from all accounts except
 # Удалить UWP-приложения из системной учетной записи, кроме
 $apps = @(
@@ -443,7 +506,7 @@ $apps = @(
 	"NVIDIACorp.NVIDIAControlPanel"
 	# Microsoft Store
 	".*Store.*")
-Get-AppxProvisionedPackage -Online | Where-Object -FilterScript {$_.DisplayName -cnotmatch ($apps -join "|")} | Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue
+Get-AppxProvisionedPackage -Online | Where-Object -FilterScript {$_.DisplayName -cnotmatch ($apps -join "|")} | Remove-AppxProvisionedPackage -Online
 # Turn off Windows features
 # Отключить компоненты
 $features = @(
@@ -637,7 +700,7 @@ function Get-ResolvedPath
 	)
 	(Get-Disk | Where-Object -FilterScript {$_.IsBoot -eq $false} | Get-Partition | Get-Volume | Where-Object -FilterScript {$null -ne $_.DriveLetter}).DriveLetter | ForEach-Object -Process {Join-Path ($_ + ":") $Path -Resolve -ErrorAction SilentlyContinue}
 }
-$folder = "Программы\Прочее" | Get-ResolvedPath -ErrorAction SilentlyContinue
+$folder = "Программы\Прочее" | Get-ResolvedPath
 IF ($folder)
 {
 	Add-MpPreference -ExclusionPath $folder -Force
@@ -979,128 +1042,134 @@ Function KnownFolderPath
 	}
 	Attrib +r $Path
 }
-$getdisk = (Get-Disk | Where-Object -FilterScript {$_.BusType -ne "USB"} | Get-Partition | Get-Volume).DriveLetter
-# Desktop. Edit folder name first
-# Рабочий стол
-$drive = Read-Host -Prompt "Type the drive letter in the root of which the specified folder will be created.
+$drives = (Get-Disk | Where-Object -FilterScript {$_.BusType -ne "USB"} | Get-Partition | Get-Volume).DriveLetter
+# Desktop. Edit $folder variable first
+# Рабочий стол. Сначала отредактируйте переменную $folder
+$drive = Read-Host -Prompt "Type the drive letter in the root of which the `"Desktop`" folder will be created.
 Press Enter to skip
 `nВведите букву диска, в корне которого будет создана папка `"Рабочий стол`".
 Чтобы пропустить, нажмите Enter"
-IF ($getdisk -eq $drive)
+IF ($drives -eq $drive)
 {
 	$drive = $(${drive}.ToUpper())
-	$Desktop = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
-	IF ($Desktop -ne "${drive}:\Рабочий стол")
+	$folder = "Рабочий стол"
+	$reg = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
+	IF ($reg -ne "${drive}:\$folder")
 	{
-		IF (-not (Test-Path -Path "${drive}:\Рабочий стол"))
+		IF (-not (Test-Path -Path "${drive}:\$folder"))
 		{
-			New-Item -Path "${drive}:\Рабочий стол" -ItemType Directory -Force
+			New-Item -Path "${drive}:\$folder" -ItemType Directory -Force
 		}
-		KnownFolderPath -KnownFolder Desktop -Path "${drive}:\Рабочий стол"
-		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{754AC886-DF64-4CBA-86B5-F7FBF4FBCEF5}" -PropertyType ExpandString -Value "${drive}:\Рабочий стол" -Force
+		KnownFolderPath -KnownFolder Desktop -Path "${drive}:\$folder"
+		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{754AC886-DF64-4CBA-86B5-F7FBF4FBCEF5}" -PropertyType ExpandString -Value "${drive}:\$folder" -Force
 	}
 }
-# Documents. Edit folder name first
-# Документы
-$drive = Read-Host -Prompt "Type the drive letter in the root of which the specified folder will be created.
+# Documents. Edit $folder variable first
+# Документы. Сначала отредактируйте переменную $folder
+$drive = Read-Host -Prompt "Type the drive letter in the root of which the `"Documents`" folder will be created.
 Press Enter to skip
 `nВведите букву диска, в корне которого будет создана папка `"Документы`".
 Чтобы пропустить, нажмите Enter"
-IF ($getdisk -eq $drive)
+IF ($drives -eq $drive)
 {
 	$drive = $(${drive}.ToUpper())
-	$Documents = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
-	IF ($Documents -ne "${drive}:\Документы")
+	$folder = "Документы"
+	$reg = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
+	IF ($reg -ne "${drive}:\$folder")
 	{
-		IF (-not (Test-Path -Path "${drive}:\Документы"))
+		IF (-not (Test-Path -Path "${drive}:\$folder"))
 		{
-			New-Item -Path "${drive}:\Документы" -ItemType Directory -Force
+			New-Item -Path "${drive}:\$folder" -ItemType Directory -Force
 		}
-		KnownFolderPath -KnownFolder Documents -Path "${drive}:\Документы"
-		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{F42EE2D3-909F-4907-8871-4C22FC0BF756}" -PropertyType ExpandString -Value "${drive}:\Документы" -Force
+		KnownFolderPath -KnownFolder Documents -Path "${drive}:\$folder"
+		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{F42EE2D3-909F-4907-8871-4C22FC0BF756}" -PropertyType ExpandString -Value "${drive}:\$folder" -Force
 	}
 }
-# Downloads. Edit folder name first
-# Загрузки
-$drive = Read-Host -Prompt "Type the drive letter in the root of which the specified folder will be created.
+# Downloads. Edit $folder variable first
+# Загрузки. Сначала отредактируйте переменную $folder
+$drive = Read-Host -Prompt "Type the drive letter in the root of which the `"Downloads`" folder will be created.
 Press Enter to skip
 `nВведите букву диска, в корне которого будет создана папка `"Загрузки`".
 Чтобы пропустить, нажмите Enter"
-IF ($getdisk -eq $drive)
+IF ($drives -eq $drive)
 {
 	$drive = $(${drive}.ToUpper())
-	$Downloads = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-	IF ($Downloads -ne "${drive}:\Загрузки")
+	$folder = "Загрузки"
+	$reg = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+	IF ($reg -ne "${drive}:\$folder")
 	{
-		IF (-not (Test-Path -Path "${drive}:\Загрузки"))
+		IF (-not (Test-Path -Path "${drive}:\$folder"))
 		{
-			New-Item -Path "${drive}:\Загрузки" -ItemType Directory -Force
+			New-Item -Path "${drive}:\$folder" -ItemType Directory -Force
 		}
-		KnownFolderPath -KnownFolder Downloads -Path "${drive}:\Загрузки"
-		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{7D83EE9B-2244-4E70-B1F5-5393042AF1E4}" -PropertyType ExpandString -Value "${drive}:\Загрузки" -Force
+		KnownFolderPath -KnownFolder Downloads -Path "${drive}:\$folder"
+		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{7D83EE9B-2244-4E70-B1F5-5393042AF1E4}" -PropertyType ExpandString -Value "${drive}:\$folder" -Force
 		# Edge
 		$edge = (Get-AppxPackage "Microsoft.MicrosoftEdge").PackageFamilyName
-		New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Main" -Name "Default Download Directory" -PropertyType String -Value "${drive}:\Загрузки" -Force
+		New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Main" -Name "Default Download Directory" -PropertyType String -Value "${drive}:\$folder" -Force
 	}
 }
-# Music. Edit folder name first
-# Музыка
-$drive = Read-Host -Prompt "Type the drive letter in the root of which the specified folder will be created.
+# Music. Edit $folder variable first
+# Музыка. Сначала отредактируйте переменную $folder
+$drive = Read-Host -Prompt "Type the drive letter in the root of which the `"Music`" folder will be created.
 Press Enter to skip
 `nВведите букву диска, в корне которого будет создана папка `"Музыка`".
 Чтобы пропустить, нажмите Enter"
-IF ($getdisk -eq $drive)
+IF ($drives -eq $drive)
 {
 	$drive = $(${drive}.ToUpper())
-	$Music = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
-	IF ($Music -ne "${drive}:\Музыка")
+	$folder = "Музыка"
+	$reg = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
+	IF ($reg -ne "${drive}:\$folder")
 	{
-		IF (-not (Test-Path -Path "${drive}:\Музыка"))
+		IF (-not (Test-Path -Path "${drive}:\$folder"))
 		{
-			New-Item -Path "${drive}:\Музыка" -ItemType Directory -Force
+			New-Item -Path "${drive}:\$folder" -ItemType Directory -Force
 		}
-		KnownFolderPath -KnownFolder Music -Path "${drive}:\Музыка"
-		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{A0C69A99-21C8-4671-8703-7934162FCF1D}" -PropertyType ExpandString -Value "${drive}:\Музыка" -Force
+		KnownFolderPath -KnownFolder Music -Path "${drive}:\$folder"
+		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{A0C69A99-21C8-4671-8703-7934162FCF1D}" -PropertyType ExpandString -Value "${drive}:\$folder" -Force
 	}
 }
-# Pictures. Edit folder name first
-# Изображения
-$drive = Read-Host -Prompt "Type the drive letter in the root of which the specified folder will be created.
+# Pictures. Edit $folder variable first
+# Изображения. Сначала отредактируйте переменную $folder
+$drive = Read-Host -Prompt "Type the drive letter in the root of which the `"Pictures`" folder will be created.
 Press Enter to skip
 `nВведите букву диска, в корне которого будет создана папка `"Изображения`".
 Чтобы пропустить, нажмите Enter"
-IF ($getdisk -eq $drive)
+IF ($drives -eq $drive)
 {
 	$drive = $(${drive}.ToUpper())
-	$Pictures = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
-	IF ($Pictures -ne "${drive}:\Изображения")
+	$folder = "Изображения"
+	$reg = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
+	IF ($reg -ne "${drive}:\$folder")
 	{
-		IF (-not (Test-Path -Path "${drive}:\Изображения"))
+		IF (-not (Test-Path -Path "${drive}:\$folder"))
 		{
-			New-Item -Path "${drive}:\Изображения" -ItemType Directory -Force
+			New-Item -Path "${drive}:\$folder" -ItemType Directory -Force
 		}
-		KnownFolderPath -KnownFolder Pictures -Path "${drive}:\Изображения"
-		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{0DDD015D-B06C-45D5-8C4C-F59713854639}" -PropertyType ExpandString -Value "${drive}:\Изображения" -Force
+		KnownFolderPath -KnownFolder Pictures -Path "${drive}:\$folder"
+		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{0DDD015D-B06C-45D5-8C4C-F59713854639}" -PropertyType ExpandString -Value "${drive}:\$folder" -Force
 	}
 }
-# Videos. Edit folder name first
-# Видео
-$drive = Read-Host -Prompt "Type the drive letter in the root of which the specified folder will be created.
+# Videos. Edit $folder variable first
+# Видео. Сначала отредактируйте переменную $folder
+$drive = Read-Host -Prompt "Type the drive letter in the root of which the `"Videos`" folder will be created.
 Press Enter to skip
 `nВведите букву диска, в корне которого будет создана папка `"Видео`".
 Чтобы пропустить, нажмите Enter"
-IF ($getdisk -eq $drive)
+IF ($drives -eq $drive)
 {
 	$drive = $(${drive}.ToUpper())
-	$Videos = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Video"
-	IF ($Videos -ne "${drive}:\Видео")
+	$folder = "Видео"
+	$reg = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Video"
+	IF ($reg -ne "${drive}:\$folder")
 	{
-		IF (-not (Test-Path -Path "${drive}:\Видео"))
+		IF (-not (Test-Path -Path "${drive}:\$folder"))
 		{
-			New-Item -Path "${drive}:\Видео" -ItemType Directory -Force
+			New-Item -Path "${drive}:\$folder" -ItemType Directory -Force
 		}
-		KnownFolderPath -KnownFolder Videos -Path "${drive}:\Видео"
-		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{35286A68-3C57-41A1-BBB1-0EAE73D76C95}" -PropertyType ExpandString -Value "${drive}:\Видео" -Force
+		KnownFolderPath -KnownFolder Videos -Path "${drive}:\$folder"
+		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{35286A68-3C57-41A1-BBB1-0EAE73D76C95}" -PropertyType ExpandString -Value "${drive}:\$folder" -Force
 	}
 }
 # Save screenshots by pressing Win+PrtScr to the Desktop
