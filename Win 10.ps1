@@ -40,7 +40,6 @@ IF (-not (Test-Path -Path HKCU:\Software\Microsoft\Siuf\Rules))
 	New-Item -Path HKCU:\Software\Microsoft\Siuf\Rules -Force
 }
 New-ItemProperty -Path HKCU:\Software\Microsoft\Siuf\Rules -Name NumberOfSIUFInPeriod -Value 0 -Force
-Remove-ItemProperty -Path HKCU:\Software\Microsoft\Siuf\Rules -Name PeriodInNanoSeconds -Force -ErrorAction SilentlyContinue
 # Turn off diagnostics tracking scheduled tasks
 # Отключить задачи диагностического отслеживания
 $tasks = @(
@@ -1053,15 +1052,20 @@ IF ($drives -eq $drive)
 {
 	$drive = $(${drive}.ToUpper())
 	$folder = "Рабочий стол"
+	$root = "${drive}:\$folder"
 	$reg = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
-	IF ($reg -ne "${drive}:\$folder")
+	IF ($reg -ne $root)
 	{
-		IF (-not (Test-Path -Path "${drive}:\$folder"))
+		IF (-not (Test-Path -Path $root))
 		{
-			New-Item -Path "${drive}:\$folder" -ItemType Directory -Force
+			New-Item -Path $root -ItemType Directory -Force
 		}
-		KnownFolderPath -KnownFolder Desktop -Path "${drive}:\$folder"
-		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{754AC886-DF64-4CBA-86B5-F7FBF4FBCEF5}" -PropertyType ExpandString -Value "${drive}:\$folder" -Force
+		IF (-not (Test-Path -Path "$root\desktop.ini"))
+		{
+			Copy-Item -Path "$reg\desktop.ini" -Destination $root -Force
+		}
+		KnownFolderPath -KnownFolder Desktop -Path $root
+		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{754AC886-DF64-4CBA-86B5-F7FBF4FBCEF5}" -PropertyType ExpandString -Value $root -Force
 	}
 }
 # Documents. Edit $folder variable first
@@ -1074,15 +1078,20 @@ IF ($drives -eq $drive)
 {
 	$drive = $(${drive}.ToUpper())
 	$folder = "Документы"
+	$root = "${drive}:\$folder"
 	$reg = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
-	IF ($reg -ne "${drive}:\$folder")
+	IF ($reg -ne $root)
 	{
-		IF (-not (Test-Path -Path "${drive}:\$folder"))
+		IF (-not (Test-Path -Path $root))
 		{
 			New-Item -Path "${drive}:\$folder" -ItemType Directory -Force
 		}
-		KnownFolderPath -KnownFolder Documents -Path "${drive}:\$folder"
-		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{F42EE2D3-909F-4907-8871-4C22FC0BF756}" -PropertyType ExpandString -Value "${drive}:\$folder" -Force
+		IF (-not (Test-Path -Path "$root\desktop.ini"))
+		{
+			Copy-Item -Path "$reg\desktop.ini" -Destination $root -Force
+		}
+		KnownFolderPath -KnownFolder Documents -Path $root
+		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{F42EE2D3-909F-4907-8871-4C22FC0BF756}" -PropertyType ExpandString -Value $root -Force
 	}
 }
 # Downloads. Edit $folder variable first
@@ -1095,18 +1104,23 @@ IF ($drives -eq $drive)
 {
 	$drive = $(${drive}.ToUpper())
 	$folder = "Загрузки"
+	$root = "${drive}:\$folder"
 	$reg = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-	IF ($reg -ne "${drive}:\$folder")
+	IF ($reg -ne $root)
 	{
-		IF (-not (Test-Path -Path "${drive}:\$folder"))
+		IF (-not (Test-Path -Path $root))
 		{
-			New-Item -Path "${drive}:\$folder" -ItemType Directory -Force
+			New-Item -Path $root -ItemType Directory -Force
 		}
-		KnownFolderPath -KnownFolder Downloads -Path "${drive}:\$folder"
-		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{7D83EE9B-2244-4E70-B1F5-5393042AF1E4}" -PropertyType ExpandString -Value "${drive}:\$folder" -Force
+		IF (-not (Test-Path -Path "$root\desktop.ini"))
+		{
+			Copy-Item -Path "$reg\desktop.ini" -Destination $root -Force
+		}
+		KnownFolderPath -KnownFolder Downloads -Path $root
+		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{7D83EE9B-2244-4E70-B1F5-5393042AF1E4}" -PropertyType ExpandString -Value $root -Force
 		# Edge
 		$edge = (Get-AppxPackage "Microsoft.MicrosoftEdge").PackageFamilyName
-		New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Main" -Name "Default Download Directory" -PropertyType String -Value "${drive}:\$folder" -Force
+		New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Main" -Name "Default Download Directory" -PropertyType String -Value $root -Force
 	}
 }
 # Music. Edit $folder variable first
@@ -1119,15 +1133,20 @@ IF ($drives -eq $drive)
 {
 	$drive = $(${drive}.ToUpper())
 	$folder = "Музыка"
+	$root = "${drive}:\$folder"
 	$reg = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
-	IF ($reg -ne "${drive}:\$folder")
+	IF ($reg -ne $root)
 	{
-		IF (-not (Test-Path -Path "${drive}:\$folder"))
+		IF (-not (Test-Path -Path $root))
 		{
-			New-Item -Path "${drive}:\$folder" -ItemType Directory -Force
+			New-Item -Path $root -ItemType Directory -Force
 		}
-		KnownFolderPath -KnownFolder Music -Path "${drive}:\$folder"
-		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{A0C69A99-21C8-4671-8703-7934162FCF1D}" -PropertyType ExpandString -Value "${drive}:\$folder" -Force
+		IF (-not (Test-Path -Path "$root\desktop.ini"))
+		{
+			Copy-Item -Path "$reg\desktop.ini" -Destination $root -Force
+		}
+		KnownFolderPath -KnownFolder Music -Path $root
+		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{A0C69A99-21C8-4671-8703-7934162FCF1D}" -PropertyType ExpandString -Value $root -Force
 	}
 }
 # Pictures. Edit $folder variable first
@@ -1140,15 +1159,20 @@ IF ($drives -eq $drive)
 {
 	$drive = $(${drive}.ToUpper())
 	$folder = "Изображения"
+	$root = "${drive}:\$folder"
 	$reg = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
-	IF ($reg -ne "${drive}:\$folder")
+	IF ($reg -ne $root)
 	{
-		IF (-not (Test-Path -Path "${drive}:\$folder"))
+		IF (-not (Test-Path -Path $root))
 		{
-			New-Item -Path "${drive}:\$folder" -ItemType Directory -Force
+			New-Item -Path $root -ItemType Directory -Force
 		}
-		KnownFolderPath -KnownFolder Pictures -Path "${drive}:\$folder"
-		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{0DDD015D-B06C-45D5-8C4C-F59713854639}" -PropertyType ExpandString -Value "${drive}:\$folder" -Force
+		IF (-not (Test-Path -Path "$root\desktop.ini"))
+		{
+			Copy-Item -Path "$reg\desktop.ini" -Destination $root -Force
+		}
+		KnownFolderPath -KnownFolder Pictures -Path $root
+		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{0DDD015D-B06C-45D5-8C4C-F59713854639}" -PropertyType ExpandString -Value $root -Force
 	}
 }
 # Videos. Edit $folder variable first
@@ -1161,15 +1185,20 @@ IF ($drives -eq $drive)
 {
 	$drive = $(${drive}.ToUpper())
 	$folder = "Видео"
+	$root = "${drive}:\$folder"
 	$reg = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Video"
-	IF ($reg -ne "${drive}:\$folder")
+	IF ($reg -ne $root)
 	{
-		IF (-not (Test-Path -Path "${drive}:\$folder"))
+		IF (-not (Test-Path -Path $root))
 		{
-			New-Item -Path "${drive}:\$folder" -ItemType Directory -Force
+			New-Item -Path $root -ItemType Directory -Force
 		}
-		KnownFolderPath -KnownFolder Videos -Path "${drive}:\$folder"
-		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{35286A68-3C57-41A1-BBB1-0EAE73D76C95}" -PropertyType ExpandString -Value "${drive}:\$folder" -Force
+		IF (-not (Test-Path -Path "$root\desktop.ini"))
+		{
+			Copy-Item -Path "$reg\desktop.ini" -Destination $root -Force
+		}
+		KnownFolderPath -KnownFolder Videos -Path $root
+		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{35286A68-3C57-41A1-BBB1-0EAE73D76C95}" -PropertyType ExpandString -Value $root -Force
 	}
 }
 # Save screenshots by pressing Win+PrtScr to the Desktop
@@ -1257,7 +1286,7 @@ Stop-Process -Name explorer -Force
 # Вывод ошибок
 Write-Output ""
 Write-Host Errors -BackgroundColor Red
-($Error | Where-Object -FilterScript {$_ -notmatch "HRESULT" -and $_ -notmatch "TaskManager"} | ForEach-Object {
+($Error | Where-Object -FilterScript {$_ -notmatch "Taskmgr" -and $_ -notmatch "TaskManager"} | ForEach-Object {
 	[PSCustomObject] @{
 		Line = $_.InvocationInfo.ScriptLineNumber
 		Error = $_.Exception.Message
