@@ -1098,9 +1098,6 @@ Remove-Item -Path "$value\Microsoft Edge.lnk" -Force -ErrorAction SilentlyContin
 # Turn off per-user services
 # Отключить пользовательские службы
 $services = @(
-	# Clipboard User Service
-	# Пользовательская служба буфера обмена
-	"cbdhsvc_*",
 	# Contact Data
 	# Служба контактных данных
 	"PimIndexMaintenanceSvc_*",
@@ -1114,8 +1111,6 @@ foreach ($service in $services)
 {
 	Get-Service -ServiceName $service | Stop-Service -Force
 }
-New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\cbdhsvc -Name Start -Value 4 -Force
-New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\cbdhsvc -Name UserServiceFlags -Value 0 -Force
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\PimIndexMaintenanceSvc -Name Start -Value 4 -Force
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\PimIndexMaintenanceSvc -Name UserServiceFlags -Value 0 -Force
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UnistoreSvc -Name Start -Value 4 -Force
