@@ -498,102 +498,43 @@ New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name JPEGImportQuality -Va
 # Turn off sticky Shift key after pressing 5 times
 # Отключить залипание клавиши Shift после 5 нажатий
 New-ItemProperty -Path "HKCU:\Control Panel\Accessibility\StickyKeys" -Name Flags -PropertyType String -Value 506 -Force
-# Uninstall UWP apps from current account except
-# Удалить UWP-приложения из текущей учетной записи, кроме
-$apps = @(
-	# File Picker
-	# Средство выбора файлов
-	"1527c705-839a-4832-9118-54d4Bd6a0c89"
-	# File Explorer
-	# Проводник
-	"c5e2524a-ea46-4f67-841f-6a9465d9d515"
-	# App Resolver UX
-	# UI распознавателя приложений
-	"E2A4F912-2574-4A75-9BB0-0D023378592B"
-	# Add Suggested Folders To Library
-	# Добавление предложенных папок в библиотеку
-	"F46D4000-FD22-4DB4-AC8E-4E1DDDE828FE"
+# Uninstall UWP apps from all accounts except
+# Удалить UWP-приложения из всех учетных записей, кроме
+$ExcludedApps = @(
 	# iTunes
 	"AppleInc.iTunes"
 	# Intel UWP-panel
 	# UWP-панель Intel
 	"AppUp.IntelGraphicsControlPanel"
 	"AppUp.IntelGraphicsExperience"
-	# Settings
-	# Параметры
-	"windows.immersivecontrolpanel"
-	"InputApp"
-	"Microsoft.AAD.BrokerPlugin"
-	"Microsoft.AccountsControl"
-	"Microsoft.Advertising.Xaml"
-	"Microsoft.AsyncTextService"
-	# Hello setup UI
-	# Пользовательский интерфейс настройки Hello
-	"Microsoft.BioEnrollment"
-	"Microsoft.CredDialogHost"
-	"Windows.CBSPreview"
 	# Microsoft Desktop App Installer
 	"Microsoft.DesktopAppInstaller"
-	"Microsoft.ECApp"
-	"Microsoft.EdgeDevtoolsPlugin"
 	# Extensions
 	# Расширения
 	"Microsoft.*Extension*"
 	# Language pack
 	# Языковой пакет
 	"Microsoft.LanguageExperiencePack*"
-	"Microsoft.LockApp"
-	"Microsoft.MicrosoftEdgeDevToolsClient"
-	"Microsoft.PPIProjection"
-	# Microsoft Edge
-	"Microsoft.MicrosoftEdge"
-	"Microsoft.NET.Native*"
-	# Print UI
-	# Пользовательский интерфейс печати
-	"Windows.PrintDialog"
 	# Screen Sketch
 	# Набросок на фрагменте экрана
 	"Microsoft.ScreenSketch"
-	"Microsoft.UI.Xaml*"
-	"Microsoft.VCLibs*"
-	"Microsoft.Win32WebViewHost"
-	"Microsoft.Windows.Apprep.ChxApp"
-	"Microsoft.Windows.AssignedAccessLockApp"
-	"Microsoft.Windows.CallingShellApp"
-	"Microsoft.Windows.CapturePicker"
-	"Microsoft.Windows.CloudExperienceHost"
-	"Microsoft.Windows.ContentDeliveryManager"
-	# Cortana
-	"Microsoft.Windows.Cortana"
-	"Microsoft.Windows.NarratorQuickStart"
-	"Microsoft.Windows.OOBENetworkCaptivePortal"
-	"Microsoft.Windows.OOBENetworkConnectionFlow"
-	"Microsoft.Windows.ParentalControls"
-	# People Hub
-	# Раздел "Люди"
-	"Microsoft.Windows.PeopleExperienceHost"
 	# Photos
 	# Фотографии
 	"Microsoft.Windows.Photos"
-	"Microsoft.Windows.PinningConfirmationDialog"
-	"Microsoft.Windows.SecHealthUI"
-	"Microsoft.Windows.SecureAssessmentBrowser"
-	"Microsoft.Windows.ShellExperienceHost"
 	# Start
 	# Меню "Пуск"
 	"Microsoft.Windows.StartMenuExperienceHost"
-	"Microsoft.Windows.XGpuEjectDialog"
-	"Microsoft.XboxGameCallableUI"
 	# NVIDIA Control Panel
 	# Панель управления NVidia
 	"NVIDIACorp.NVIDIAControlPanel"
 	# Microsoft Store
 	".*Store.*"
 )
-Get-AppxPackage -AllUsers | Where-Object -FilterScript {$_.Name -cnotmatch ($apps -join "|")} | Remove-AppxPackage
+$OFS = "|"
+Get-AppxPackage -PackageTypeFilter Bundle -AllUsers | Where-Object {$_.Name -cnotmatch $ExcludedApps} | Remove-AppxPackage -AllUsers
 # Uninstall UWP apps from all accounts except
 # Удалить UWP-приложения из системной учетной записи, кроме
-$apps = @(
+$ExcludedApps = @(
 	# Intel UWP-panel
 	# UWP-панель Intel
 	"AppUp.IntelGraphicsControlPanel"
@@ -607,8 +548,10 @@ $apps = @(
 	# Панель управления NVidia
 	"NVIDIACorp.NVIDIAControlPanel"
 	# Microsoft Store
-	".*Store.*")
-Get-AppxProvisionedPackage -Online | Where-Object -FilterScript {$_.DisplayName -cnotmatch ($apps -join "|")} | Remove-AppxProvisionedPackage -Online
+	".*Store.*"
+)
+$OFS = "|"
+Get-AppxProvisionedPackage -Online | Where-Object -FilterScript {$_.DisplayName -cnotmatch $ExcludedApps} | Remove-AppxProvisionedPackage -Online
 # Turn off Windows features
 # Отключить компоненты
 $features = @(
@@ -632,7 +575,8 @@ $features = @(
 	"Printing-PrintToPDFServices-Features",
 	# Work Folders Client
 	# Клиент рабочих папок
-	"WorkFolders-Client")
+	"WorkFolders-Client"
+)
 foreach ($feature in $features)
 {
 	Disable-WindowsOptionalFeature -Online -FeatureName $feature -NoRestart
@@ -948,7 +892,7 @@ Do
 	$preferences = Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -ErrorAction SilentlyContinue
 }
 Until ($preferences)
-Stop-Process $taskmgr
+Stop-Process -Name $taskmgr
 $preferences.Preferences[28] = 0
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -PropertyType Binary -Value $preferences.Preferences -Force
 # Do not allow the computer to turn off the device to save power for desktop
@@ -1005,24 +949,17 @@ foreach ($ext in $exts)
 }
 # Remove "Include in Library" from context menu
 # Удалить пункт "Добавить в библиотеку" из контекстного меню
-Clear-ItemProperty -Path "Registry::HKEY_CLASSES_ROOT\Folder\shellex\ContextMenuHandlers\Library Location" -Name "(default)" -Force
-Clear-ItemProperty -Path "HKLM:\SOFTWARE\Classes\Folder\shellex\ContextMenuHandlers\Library Location" -Name "(default)" -Force
+New-ItemProperty -Path "Registry::HKEY_CLASSES_ROOT\Folder\shellex\ContextMenuHandlers\Library Location" -Name "(default)" -PropertyType String -Value "-{3dad6c5d-2167-4cae-9914-f99e41c12cfa}" -Force
 # Remove "Turn on BitLocker" from context menu
 # Удалить пункт "Включить Bitlocker" из контекстного меню
 IF (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Professional" -or $_.Edition -eq "Enterprise"})
 {
-	$keys = @(
-		"encrypt-bde",
-		"encrypt-bde-elev",
-		"manage-bde",
-		"resume-bde",
-		"resume-bde-elev",
-		"unlock-bde"
-	)
-	foreach ($key in $keys)
-	{
-		New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\$key -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
-	}
+	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\encrypt-bde -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
+	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\encrypt-bde-elev -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
+	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\manage-bde -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
+	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\resume-bde -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
+	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\resume-bde-elev -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
+	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\unlock-bde -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
 }
 # Remove "Edit with Photos" from context menu
 # Удалить пункт "Изменить с помощью приложения "Фотографии"" из контекстного меню
@@ -1039,8 +976,7 @@ New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\batfile\shell\print -Name Pro
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\cmdfile\shell\print -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
 # Remove "Compressed (zipped) Folder" from context menu
 # Удалить пункт "Сжатая ZIP-папка" из контекстного меню
-Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder\ShellNew -Name Data -Force -ErrorAction SilentlyContinue
-Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder\ShellNew -Name ItemName -Force -ErrorAction SilentlyContinue
+Remove-Item -Path Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder\ShellNew -Force -ErrorAction SilentlyContinue
 # Remove "Rich Text Document" from context menu
 # Удалить пункт "Создать Документ в формате RTF" из контекстного меню
 Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.rtf\ShellNew -Name Data -Force -ErrorAction SilentlyContinue
