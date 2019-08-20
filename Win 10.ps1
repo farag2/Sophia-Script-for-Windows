@@ -1699,7 +1699,7 @@ IF (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Pro
 	{
 		try
 		{
-			IF ((Get-CimInstance –ClassName CIM_ComputerSystem).HypervisorPresent -eq $false)
+			IF ((Get-CimInstance –ClassName CIM_ComputerSystem).HypervisorPresent -eq $true)
 			{
 				Enable-WindowsOptionalFeature –FeatureName Containers-DisposableClientVM -All -Online -NoRestart
 			}
