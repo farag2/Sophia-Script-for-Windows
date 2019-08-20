@@ -24,13 +24,11 @@ $services = @(
 	"DusmSvc",
 	# SSDP Discovery
 	# Обнаружение SSDP
-	"SSDPSRV")
-foreach ($service in $services)
-{
-	Get-Service -ServiceName $service | Stop-Service -Force
-	Get-Service -ServiceName $service | Set-Service -StartupType Disabled
-}
-# Turn off the Autologger session at the next computer restart
+	"SSDPSRV"
+)
+Get-Service -Name $services | Stop-Service -Force
+Get-Service -Name $services | Set-Service -StartupType Disabled
+# Turn off the Autologger session at the next computer restart ###
 # Отключить сборщик AutoLogger при следующем запуске ПК
 Update-AutologgerConfig -Name AutoLogger-Diagtrack-Listener -Start 0
 # Turn off the SQMLogger session at the next computer restart
@@ -52,32 +50,30 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Siuf\Rules -Name NumberOfSIUFInP
 # Turn off diagnostics tracking scheduled tasks
 # Отключить задачи диагностического отслеживания
 $tasks = @(
-	"BgTaskRegistrationMaintenanceTask",
-	"Consolidator",
-	"DmClient",
-	"DmClientOnScenarioDownload",
-	"EnableLicenseAcquisition",
-	"FamilySafetyMonitor",
-	"FamilySafetyRefreshTask",
-	"File History (maintenance mode)",
-	"FODCleanupTask",
-	"GatherNetworkInfo",
-	"MapsToastTask",
+	"ProgramDataUpdater",
 	"Microsoft Compatibility Appraiser",
 	"Microsoft-Windows-DiskDiagnosticDataCollector",
+	"TempSignedLicenseExchange",
+	"MapsToastTask",
+	"DmClient",
+	"FODCleanupTask",
+	"DmClientOnScenarioDownload",
+	"BgTaskRegistrationMaintenanceTask",
+	"File History (maintenance mode)",
+	"WinSAT",
+	"UsbCeip",
+	"Consolidator",
+	"Proxy",
 	"MNO Metadata Parser",
 	"NetworkStateChangeTask",
-	"ProgramDataUpdater",
-	"Proxy",
+	"GatherNetworkInfo",
+	"XblGameSaveTask",
+	"EnableLicenseAcquisition",
 	"QueueReporting",
-	"TempSignedLicenseExchange",
-	"UsbCeip",
-	"WinSAT",
-	"XblGameSaveTask")
-foreach ($task in $tasks)
-{
-	Get-ScheduledTask -TaskName $task | Disable-ScheduledTask
-}
+	"FamilySafetyMonitor",
+	"FamilySafetyRefreshTask"
+)
+Get-ScheduledTask -TaskName $tasks | Disable-ScheduledTask
 # Turn off "The Windows Filtering Platform has blocked a connection" message
 # Отключить в "Журналах Windows/Безопасность" сообщение "Платформа фильтрации IP-пакетов Windows разрешила подключение"
 auditpol /set /subcategory:"{0CCE9226-69AE-11D9-BED3-505054503030}" /success:disable /failure:disable
@@ -440,7 +436,7 @@ IF (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR))
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR -Name AllowgameDVR -Value 0 -Force
 # Set download mode for delivery optization on "HTTP only"
 # Отключить оптимизацию доставки для обновлений с других ПК
-Get-Service -ServiceName DoSvc | Stop-Service -Force
+Get-Service -Name DoSvc | Stop-Service -Force
 IF (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization))
 {
 	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization -Force
@@ -498,8 +494,8 @@ New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name JPEGImportQuality -Va
 # Turn off sticky Shift key after pressing 5 times
 # Отключить залипание клавиши Shift после 5 нажатий
 New-ItemProperty -Path "HKCU:\Control Panel\Accessibility\StickyKeys" -Name Flags -PropertyType String -Value 506 -Force
-# Uninstall UWP apps from all accounts except
-# Удалить UWP-приложения из всех учетных записей, кроме
+# Uninstall all UWP apps from all accounts except
+# Удалить все UWP-приложения из всех учетных записей, кроме
 $ExcludedApps = @(
 	# iTunes
 	"AppleInc.iTunes"
@@ -532,8 +528,9 @@ $ExcludedApps = @(
 )
 $OFS = "|"
 Get-AppxPackage -PackageTypeFilter Bundle -AllUsers | Where-Object {$_.Name -cnotmatch $ExcludedApps} | Remove-AppxPackage -AllUsers
-# Uninstall UWP apps from all accounts except
-# Удалить UWP-приложения из системной учетной записи, кроме
+$OFS = " "
+# Uninstall all UWP apps from all accounts except
+# Удалить все UWP-приложения из системной учетной записи, кроме
 $ExcludedApps = @(
 	# Intel UWP-panel
 	# UWP-панель Intel
@@ -552,6 +549,7 @@ $ExcludedApps = @(
 )
 $OFS = "|"
 Get-AppxProvisionedPackage -Online | Where-Object -FilterScript {$_.DisplayName -cnotmatch $ExcludedApps} | Remove-AppxProvisionedPackage -Online
+$OFS = " "
 # Turn off Windows features
 # Отключить компоненты
 $features = @(
@@ -617,8 +615,8 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\GameBar -Name ShowStartupPanel -
 # Включить восстановление системы
 Enable-ComputerRestore -Drive $env:SystemDrive
 Get-ScheduledTask -TaskName SR | Enable-ScheduledTask
-Get-Service -ServiceName swprv, vss | Set-Service -StartupType Manual
-Get-Service -ServiceName swprv, vss | Start-Service
+Get-Service -Name swprv, vss | Set-Service -StartupType Manual
+Get-Service -Name swprv, vss | Start-Service
 Get-CimInstance -ClassName Win32_ShadowCopy | Remove-CimInstance
 # Turn off Windows Script Host
 # Отключить Windows Script Host
@@ -936,9 +934,17 @@ IF (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{7AD84985-87B4-4a16-BE58-8B72A5B390F7}" -PropertyType String -Value "Play to menu" -Force
 # Remove "Share" from context menu
 # Удалить пункт "Отправить" (поделиться) из контекстного меню
+IF (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"))
+{
+	New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Force
+}
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}" -PropertyType String -Value "" -Force
 # Remove "Previous Versions" from file context menu
 # Удалить пункт "Восстановить прежнюю версию" из контекстного меню
+IF (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"))
+{
+	New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Force
+}
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{596AB062-B4D2-4215-9F74-E9109B0A8153}" -PropertyType String -Value "" -Force
 # Remove "Edit with Paint 3D" from context menu
 # Удалить пункт "Изменить с помощью Paint 3D" из контекстного меню
@@ -1042,11 +1048,9 @@ $services = @(
 	"UnistoreSvc_*",
 	# User Data Access
 	# Служба доступа к данным пользователя
-	"UserDataSvc_*")
-foreach ($service in $services)
-{
-	Get-Service -ServiceName $service | Stop-Service -Force
-}
+	"UserDataSvc_*"
+)
+Get-Service -Name $services | Stop-Service -Force
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\PimIndexMaintenanceSvc -Name Start -Value 4 -Force
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\PimIndexMaintenanceSvc -Name UserServiceFlags -Value 0 -Force
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UnistoreSvc -Name Start -Value 4 -Force
@@ -1067,20 +1071,20 @@ New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Security Health\State" 
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AppAndBrowser_EdgeSmartScreenOff -Value 0 -Force
 # Remove Windows capabilities
 # Удалить компоненты
-$apps = @(
+$IncludedApps = @(
 	# Microsoft Quick Assist
 	# Быстрая поддержка (Майкрософт)
-	"App.Support.QuickAssist*",
+	"App.Support.QuickAssist*"
 	# Windows Hello Face
 	# Распознавание лиц Windows Hello
-	"Hello.Face*",
+	"Hello.Face*"
 	# Windows Media Player
 	# Проигрыватель Windows Media
-	"Media.WindowsMediaPlayer*")
-foreach ($app in $apps)
-{
-	Get-WindowsCapability -Online | Where-Object -FilterScript {$_.Name -like $app} | Remove-WindowsCapability -Online
-}
+	"Media.WindowsMediaPlayer*"
+)
+$OFS = "|"
+Get-WindowsCapability -Online | Where-Object -FilterScript {$_.Name -cmatch $IncludedApps} | Remove-WindowsCapability -Online
+$OFS = " "
 # Open shortcut to the Command Prompt from Start menu as Administrator
 # Запускать ярлык к командной строке в меню "Пуск" от имени Администратора
 $bytes = [System.IO.File]::ReadAllBytes("$env:APPDATA\Microsoft\Windows\Start Menu\Programs\System Tools\Command Prompt.lnk")
@@ -1097,23 +1101,28 @@ $shortcut.TargetPath = $target
 $shortcut.Arguments = "printers"
 $shortCut.IconLocation = "$env:SystemRoot\system32\DeviceCenter.dll"
 $shortcut.Save()
-# Import Start menu layout from pre-saved reg file. Edit $reg variable first
-# The function to find the drive letter when the full path to the folder is known and drive letter is unknown. Suitable when the file is located on a USB-drive
-# Импорт настроенного меню "Пуск" из заготовленного reg-файла. Сначала отредактируйте переменную $reg
-# Функция для нахождения буквы диска, когда файл находится в известной папке, но неизвестна буква диска. Подходит, когда файл располагается на USB-носителе
-function Get-ResolvedPath
+# Import Start menu layout from pre-saved reg file
+# Импорт настроенного меню "Пуск" из заготовленного reg-файла
+Add-Type -AssemblyName System.Windows.Forms
+$OpenFileDialog = New-Object System.Windows.Forms.OpenFileDialog
+# Initial directory "Downloads"
+# Начальная папка "Загрузки"
+$OpenFileDialog.InitialDirectory = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+$OpenFileDialog.Multiselect = $false
+IF ($RU)
 {
-	param (
-		[Parameter(ValueFromPipeline = 1)]
-		$Path
-	)
-	(Get-Disk | Where-Object -FilterScript {$_.BusType -eq "USB"} | Get-Partition | Get-Volume | Where-Object -FilterScript {$null -ne $_.DriveLetter}).DriveLetter | ForEach-Object -Process {Join-Path ($_ + ":") $Path -Resolve -ErrorAction SilentlyContinue}
+	$OpenFileDialog.Filter = "Файлы реестра (*.reg)|*.reg|Все файлы (*.*)|*.*"
 }
-$reg = "Программы\Прочее\reg\Startmenu.reg" | Get-ResolvedPath
-IF ($reg)
+else
+{
+	$OpenFileDialog.Filter = "Registration Files (*.reg)|*.reg|All Files (*.*)|*.*"
+}
+$OpenFileDialog.ShowHelp = $true
+$OpenFileDialog.ShowDialog()
+IF ($OpenFileDialog.FileName)
 {
 	Remove-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount -Recurse -Force
-	Start-Process -FilePath reg.exe -ArgumentList "import $reg"
+	regedit.exe /s $OpenFileDialog.FileName
 }
 Else
 {
@@ -1231,12 +1240,14 @@ IF ($RU)
 	$OFS = ", "
 	Write-Host "Ваши диски: " -NoNewline
 	Write-Host "$($drives | Sort-Object -Unique)" -ForegroundColor Yellow
+	$OFS = " "
 }
 else
 {
 	$OFS = ", "
 	Write-Host "`nYour drives: " -NoNewline
 	Write-Host "$($drives | Sort-Object -Unique)" -ForegroundColor Yellow
+	$OFS = " "
 }
 # Desktop
 # Рабочий стол
@@ -1595,7 +1606,7 @@ Remove-Item $env:SystemDrive\PerfLogs -Recurse -Force -ErrorAction SilentlyConti
 Remove-Item $env:LOCALAPPDATA\Temp -Recurse -Force -ErrorAction SilentlyContinue
 # Remove "$env:SYSTEMROOT\Temp"
 # Удалить "$env:SYSTEMROOT\Temp"
-Restart-Service -ServiceName Spooler -Force
+Restart-Service -Name Spooler -Force
 Remove-Item -Path "$env:SystemRoot\Temp" -Recurse -Force -ErrorAction SilentlyContinue
 # Show more Windows Update restart notifications about restarting
 # Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления
@@ -1629,7 +1640,7 @@ IF ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2 -and (G
 		Param
 		(
 			[Parameter(Mandatory = $True)]
-			[string[]] $apps
+			[string[]]$apps
 		)
 		foreach ($app in $apps)
 		{
@@ -1688,7 +1699,7 @@ IF (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Pro
 	{
 		try
 		{
-			IF ((Get-WindowsOptionalFeature -FeatureName Microsoft-Hyper-V-All -Online).State -eq "Enabled")
+			IF ((Get-CimInstance –ClassName CIM_ComputerSystem).HypervisorPresent -eq $false)
 			{
 				Enable-WindowsOptionalFeature –FeatureName Containers-DisposableClientVM -All -Online -NoRestart
 			}
