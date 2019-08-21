@@ -12,12 +12,12 @@ This PowerShell script is for initial setup after fresh installation of Windows 
 
 ## Usage
 To run the script:
-- Download [up-to-date version](https://github.com/farag2/Setup-Windows-10) as .ps1 file;
+- Download [up-to-date version](https://github.com/farag2/Setup-Windows-10/blob/master/Win%2010.ps1) as .ps1 file;
 - Change encoding to "UTF-8 with BOM" and run it through powershell.exe.
 
 or
 
-- Copy the script code and paste it into [PowerShell ISE](https://docs.microsoft.com/ru-ru/powershell/scripting/components/ise/windows-powershell-integrated-scripting-environment--ise-).
+- Copy the script code and paste it into [PowerShell ISE](https://docs.microsoft.com/en-us/powershell/scripting/components/ise/windows-powershell-integrated-scripting-environment--ise-).
 
 **NB**
 - PowerShell and PowerShell ISE must be run with elevated privileges;
@@ -32,7 +32,7 @@ If you're not sure:
 - Ask a question in [forum](http://forum.ru-board.com/topic.cgi?forum=62&topic=30617);
 - [PM](http://forum.ru-board.com/profile.cgi?action=show&member=farag) me.
 
-The script was written for PowerShell 5.1 and for the current version of Windows 10 Pro x64. Some of its functions can be run also on LTSB/LTSC and on older versions of Windows and PowerShell (also on 32bit systems).
+The script was written for PowerShell 5.1 and for the current up-to-date version of Windows 10 Pro x64. Some of its functions can be run also on LTSB/LTSC and on older versions of Windows and PowerShell (also on 32bit systems).
 
 ## Supported Windows version
 | Version |   Code name  |      Marketing name    | Build |
@@ -54,7 +54,7 @@ PowerShell-скрипт предназначен для первоначальн
 
 ## Использование
 Чтобы запустить скрипт:
-- Скачать [актуальную версию](https://github.com/farag2/Setup-Windows-10) в виде файла .ps1;
+- Скачать [актуальную версию](https://github.com/farag2/Setup-Windows-10/blob/master/Win%2010.ps1) в виде файла .ps1;
 - Изменить кодировку на "UTF-8 с BOM" и запустить через powershell.exe.
 
 или
