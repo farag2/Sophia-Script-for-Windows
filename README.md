@@ -85,5 +85,5 @@ PowerShell-скрипт предназначен для первоначальн
 
 ## PS
 Collection of useful [scripts](https://gist.github.com/farag2)
-## PS
+
 Сборник полезных [скриптов](https://gist.github.com/farag2)
