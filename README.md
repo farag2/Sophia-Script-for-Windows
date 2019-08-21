@@ -12,7 +12,7 @@ This PowerShell script is for initial setup after fresh installation of Windows 
 
 ## Usage
 To run the script:
-- Download [up-to-date version](https://github.com/farag2/Setup-Windows-10/blob/master/Win%2010.ps1) as .ps1 file;
+- Download [up-to-date version](https://github.com/farag2/Setup-Windows-10/releases);
 - Change encoding to "UTF-8 with BOM" and run it through powershell.exe.
 
 or
@@ -54,7 +54,7 @@ PowerShell-скрипт предназначен для первоначальн
 
 ## Использование
 Чтобы запустить скрипт:
-- Скачать [актуальную версию](https://github.com/farag2/Setup-Windows-10/blob/master/Win%2010.ps1) в виде файла .ps1;
+- Скачать [актуальную версию](https://github.com/farag2/Setup-Windows-10/releases);
 - Изменить кодировку на "UTF-8 с BOM" и запустить через powershell.exe.
 
 или
