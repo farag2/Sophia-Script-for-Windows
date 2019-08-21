@@ -31,7 +31,7 @@ PowerShell-скрипт предназначен для первоначальн
 - Задайте вопрос на [форуме](http://forum.ru-board.com/topic.cgi?forum=62&topic=30617);
 - Напишите [личное сообщение](http://forum.ru-board.com/profile.cgi?action=show&member=farag).
 
-Скрипт писался под PowerShell 5.1 и актуальную версию Windows 10 Pro x64. Некоторые его функции могут быть запущены на LTSB/LTSC-версия Windows и на более старых версиях Windows и PowerShell (в том числе и на 32-разрядных версиях).
+Скрипт писался под PowerShell 5.1 и актуальную версию Windows 10 Pro x64. Некоторые его функции могут быть запущены на LTSB/LTSC-версия Windows и на более старых версиях Windows и PowerShell (в том числе и на 32-разрядных).
 
 ## Поддерживаемая версия Windows
 
