@@ -1,15 +1,44 @@
-Save a script file in UTF-8 with BOM encoding
+## Содержание
+ - [Описание](#описание)
+ - [Использование](#использование)
+ - [FAQ](#faq)
+ - [Поддерживаемая версия Windows](#поддерживаемая-версия-windows)
+ - [PS](#ps)
+  
+## Описание
 
-Always use latest Windows 10 Pro x64 version
-https://docs.microsoft.com/en-us/windows/release-information/
+PowerShell-скрипт предназначен для первоначальной настройки Windows 10 и частично Windows Server 2016/2019. Скрипт представляет собой набор твиков (улучшений) для тонкой настройки ОС и автоматизации рутинных задач по ее настройке.
 
-Read the script carefully before excuting commands.
-Some of them are presented only as an example.
+## Использование
+Чтобы запустить скрипт:
+- Скачать [актуальную версию](https://github.com/farag2/Setup-Windows-10) в виде файла ps1.
+- Изменить кодировку на "UTF-8 с BOM" и запустить через powershell.exe
 
-Execute the script with powershell.exe or powershell_ise.exe
+&nbsp;
+или
+&nbsp;
 
-Ask question on the official thread
-http://forum.ru-board.com/topic.cgi?forum=62&topic=30859
+- Скопировать весь текст кода и вставить его в [PowerShell ISE](https://docs.microsoft.com/ru-ru/powershell/scripting/components/ise/windows-powershell-integrated-scripting-environment--ise-).
 
-Other usefull (no) scripts
-https://gist.github.com/farag2
+**PowerShell и PowerShell ISE необходимо запускать с правами Администратора**.
+
+## FAQ
+
+**NB:** Внимательно ознакомьтесь с кодом, который запускаете. Некоторые команды представлены лишь в качестве примера. Вы должно осознавать, какой смысл несут те или иные функции в коде. **Если вы не знаете, что делает код, не исполняете его.**
+Если вы не уверены:
+- Создайте новую [Issue](https://github.com/farag2/Setup-Windows-10/issues);
+- Задайте вопрос на [форуме](http://forum.ru-board.com/topic.cgi?forum=62&topic=30617);
+- Написать [личное сообщение](http://forum.ru-board.com/profile.cgi?action=show&member=farag).
+
+Скрипт писался под PowerShell 5.1 и актуальную версию Windows 10 Pro x64. Некоторые его функции могут быть запущены на LTSB/LTSC-версия Windows и на более старых версиях Windows и PowerShell (в том числе и на 32-разрядных версиях).
+
+## Поддерживаемая версия Windows
+
+|  Версия | Кодовое имя  | Маркетинговое название |  Билд |
+| :-----: | -------------| ---------------------- | :---: |
+|  1903   |    19H1      |     May 2019 Update    | 18362 |
+
+&nbsp;
+
+## PS
+Сборник полезных [скриптов](https://gist.github.com/farag2)
