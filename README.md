@@ -29,8 +29,8 @@ Read the code you run carefully. Some functions are presented as an example only
 
 If you're not sure:
 - Open new [issue](https://github.com/farag2/Setup-Windows-10/issues);
-- Ask a question in [forum](http://forum.ru-board.com/topic.cgi?forum=62&topic=30617);
-- [PM](http://forum.ru-board.com/profile.cgi?action=show&member=farag) me.
+- Ask a question in [forum](https://forums.mydigitallife.net/threads/powershell-script-setup-windows-10.80139/);
+- [PM](https://forums.mydigitallife.net/members/farag.425562/) me.
 
 The script was written for PowerShell 5.1 and for the current up-to-date version of Windows 10 Pro x64. Some of its functions can be run also on LTSB/LTSC and on older versions of Windows and PowerShell (also on 32bit systems).
 
