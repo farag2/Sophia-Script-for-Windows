@@ -39,9 +39,6 @@ The script was written for PowerShell 5.1 and for the current version of Windows
 | :-----: | -------------| ---------------------- | :---: |
 |  1903   |    19H1      |     May 2019 Update    | 18362 |
 
-## PS
-Collection of useful [scripts](https://gist.github.com/farag2)
-
 &nbsp;
 
 ## Русский
@@ -84,5 +81,9 @@ PowerShell-скрипт предназначен для первоначальн
 | :-----: | -------------| ---------------------- | :---: |
 |  1903   |    19H1      |     May 2019 Update    | 18362 |
 
+&nbsp;
+
+## PS
+Collection of useful [scripts](https://gist.github.com/farag2)
 ## PS
 Сборник полезных [скриптов](https://gist.github.com/farag2)
