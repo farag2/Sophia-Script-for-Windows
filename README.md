@@ -32,7 +32,7 @@ If you're not sure:
 - Ask a question in [forum](https://forums.mydigitallife.net/threads/powershell-script-setup-windows-10.80139/);
 - [PM](https://forums.mydigitallife.net/members/farag.425562/) me.
 
-The script was written for PowerShell 5.1 and for the current up-to-date version of Windows 10 Pro x64. Some of its functions can be run also on LTSB/LTSC and on older versions of Windows and PowerShell (also on 32bit systems).
+The script was written for PowerShell 5.1 and for the current up-to-date version of Windows 10 Pro x64. Some of functions can be run also on LTSB/LTSC and on older versions of Windows and PowerShell (also on 32bit systems).
 
 ## Supported Windows version
 | Version |   Code name  |      Marketing name    | Build |
@@ -66,14 +66,14 @@ PowerShell-скрипт предназначен для первоначальн
 - Установите [политику](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies) выполнения PowerShel-скриптов, чтобы иметь возможность запускать файлы .ps1.
 
 ## FAQ
-Внимательно ознакомьтесь с кодом, который запускаете. Некоторые команды представлены лишь в качестве примера. Вы должно осознавать, какой смысл несут те или иные функции в коде. **Если вы не знаете, что делает код, не исполняете его.**
+Внимательно ознакомьтесь с кодом, который запускаете. Некоторые команды представлены лишь в качестве примера. Вы должны осознавать, какой смысл несут те или иные функции в коде. **Если вы не знаете, что делает код, не исполняете его.**
 
 Если вы не уверены:
 - Создайте новую [issue](https://github.com/farag2/Setup-Windows-10/issues);
 - Задайте вопрос на [форуме](http://forum.ru-board.com/topic.cgi?forum=62&topic=30617);
 - Напишите [личное сообщение](http://forum.ru-board.com/profile.cgi?action=show&member=farag).
 
-Скрипт писался под PowerShell 5.1 и актуальную версию Windows 10 Pro x64. Некоторые его функции могут быть запущены на LTSB/LTSC-версия Windows и на более старых версиях Windows и PowerShell (в том числе и на 32-разрядных).
+Скрипт писался под PowerShell 5.1 и актуальную версию Windows 10 Pro x64. Некоторые функции могут быть запущены как на LTSB/LTSC-версиях Windows и так на более старых версиях Windows и PowerShell (в том числе и на 32-разрядных).
 
 ## Поддерживаемая версия Windows
 
