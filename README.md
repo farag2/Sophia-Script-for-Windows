@@ -37,7 +37,7 @@ This PowerShell script is for initial setup after fresh installation of Windows 
 
 ![Startmenu](https://github.com/farag2/Windows-10-Setup-Script/blob/master/Screenshots/Startmenu.png)
 
-- Interactive menu
+- Interactive promts
 
 ![Menu](https://github.com/farag2/Windows-10-Setup-Script/blob/master/Screenshots/read-host.png)
 
