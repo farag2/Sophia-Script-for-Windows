@@ -1,4 +1,3 @@
-
 ## Contents
 - [Overview](#overview)
 - [Core features](#core-features)
@@ -35,9 +34,11 @@ This PowerShell script is for initial setup after fresh installation of Windows 
 
 ### Screenshots
 - Startmenu
+
 ![Startmenu](https://github.com/farag2/Windows-10-Setup-Script/blob/master/Screenshots/Startmenu.png)
 
 - Interactive menu
+
 ![Menu](https://github.com/farag2/Windows-10-Setup-Script/blob/master/Screenshots/read-host.png)
 
 ## Usage
