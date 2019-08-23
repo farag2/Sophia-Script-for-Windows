@@ -26,7 +26,7 @@ This PowerShell script is for initial setup after fresh installation of Windows 
 - Create old style shortcut for "Devices and Printers";
 - Import Start menu layout from pre-saved reg file;
   - Download pre-saved Startmenu.reg
-     - [Screenshot](#screenshots)
+  - [Screenshot](#screenshots)
 - Unpin all Start menu tiles;
 - Set location of the "Desktop", "Documents" "Downloads" "Music", "Pictures", and "Videos";
 - Refresh desktop icons, environment variables and taskbar without restarting File Explorer;
@@ -35,11 +35,11 @@ This PowerShell script is for initial setup after fresh installation of Windows 
 ### Screenshots
 - Startmenu
 
-![Startmenu](https://github.com/farag2/Windows-10-Setup-Script/blob/master/Screenshots/Startmenu.png)
+  ![Startmenu](https://github.com/farag2/Windows-10-Setup-Script/blob/master/Screenshots/Startmenu.png)
 
 - Interactive promts
 
-![Menu](https://github.com/farag2/Windows-10-Setup-Script/blob/master/Screenshots/read-host.png)
+  ![Menu](https://github.com/farag2/Windows-10-Setup-Script/blob/master/Screenshots/read-host.png)
 
 ## Usage
 To run the script:
