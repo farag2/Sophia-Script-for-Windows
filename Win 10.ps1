@@ -1642,6 +1642,7 @@ IF ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2 -and (G
 			[Parameter(Mandatory = $True)]
 			[string[]]$apps
 		)
+		$apps = $apps.Replace("`"", "").Split(",").Trim()
 		foreach ($app in $apps)
 		{
 			New-ItemProperty -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Name $app -Type String -Value "GpuPreference=2;" -Force
@@ -1650,12 +1651,11 @@ IF ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2 -and (G
 	Do
 	{
 		$apps = Read-Host -Prompt " "
-		IF ($app -match ".exe" -and $app -match "`"")
+		IF ($apps -match ".exe" -and $apps -match "`"")
 		{
-			$apps = $apps.Replace("`"", "").Split(",").Trim()
 			GpuPreference $apps
 		}
-		elseif ([string]::IsNullOrEmpty($app))
+		elseif ([string]::IsNullOrEmpty($apps))
 		{
 			break
 		}
@@ -1675,7 +1675,7 @@ IF ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2 -and (G
 			}
 		}
 	}
-	Until ($app -match ".exe" -and $app -match "`"")
+	Until ($apps -match ".exe" -and $apps -match "`"")
 }
 # Automatically adjust active hours for me based on daily usage
 # Автоматически изменять период активности для этого устройства на основе действий
