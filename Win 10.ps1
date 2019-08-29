@@ -1,17 +1,16 @@
-﻿# Remove all text from the current display
+# Remove all text from the current display
 # Очистить экран
 Clear-Host
 # Сlear $Error variable
 # Очистка переменной $Error
 $Error.Clear()
-
 # Run sctipt as administrator
 # Запуск скрипта от имени администратора
-if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-    Start-Process powershell.exe "-noexit -NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs;
-    exit
+if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator"))
+{
+	Start-Process -FilePath powershell.exe -ArgumentList "-noexit -NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs
+	exit
 }
-
 # Get information about the current culture settings
 # Получить сведения о параметрах текущей культуры
 IF ((Get-Culture).Name -eq "ru-RU")
