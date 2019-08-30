@@ -66,7 +66,7 @@ Read the code you run carefully. Some functions are presented as an example only
 The script was written for PowerShell 5.1 and for the current up-to-date version of Windows 10 Pro x64. Some of functions can be run also on LTSB/LTSC and on older versions of Windows and PowerShell (also on 32bit systems).
 
 ## Links
-- Ask a question in
+### Ask a question in
  - [Habr](https://habr.com/ru/post/465365/)
  - [Ru-Board](http://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15)
  - [My Digital Life](https://forums.mydigitallife.net/threads/powershell-script-setup-windows-10.80139/)
