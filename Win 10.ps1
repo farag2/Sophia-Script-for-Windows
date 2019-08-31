@@ -13,9 +13,6 @@ IF ((Get-Culture).Name -eq "ru-RU")
 # Turn off diagnostics tracking services
 # Отключить службы диагностического отслеживания
 $services = @(
-	# Connected Devices Platform service
-	# Служба платформы подключенных устройств
-	"CDPSvc",
 	# Connected User Experiences and Telemetry
 	# Функциональные возможности для подключенных пользователей и телеметрия
 	"DiagTrack",
