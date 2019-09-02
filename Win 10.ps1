@@ -790,19 +790,6 @@ Do
 	}
 }
 Until ($paths -match "`"")
-function Get-ResolvedPath
-{
-	param (
-		[Parameter(ValueFromPipeline = 1)]
-		$Path
-	)
-	(Get-Disk | Where-Object -FilterScript {$_.IsBoot -eq $false} | Get-Partition | Get-Volume | Where-Object -FilterScript {$null -ne $_.DriveLetter}).DriveLetter | ForEach-Object -Process {Join-Path ($_ + ":") $Path -Resolve -ErrorAction SilentlyContinue}
-}
-$folder = "Программы\Прочее" | Get-ResolvedPath
-IF ($folder)
-{
-	Add-MpPreference -ExclusionPath $folder -Force
-}
 # Turn on Windows Defender Exploit Guard Network Protection
 # Включить Защиту сети в Защитнике Windows
 Set-MpPreference -EnableNetworkProtection Enabled
@@ -887,7 +874,7 @@ Do
 	$preferences = Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -ErrorAction SilentlyContinue
 }
 Until ($preferences)
-Stop-Process -Name $taskmgr
+Stop-Process -Name Taskmgr
 $preferences.Preferences[28] = 0
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -PropertyType Binary -Value $preferences.Preferences -Force
 # Do not allow the computer to turn off the device to save power for desktop
