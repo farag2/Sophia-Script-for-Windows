@@ -1,15 +1,20 @@
 ## Contents
 - [Overview](#overview)
+- [Supported Windows version](#supported-windows-version)
 - [Core features](#core-features)
 - [Screenshots](#screenshots)
 - [Usage](#usage)
-- [Supported Windows version](#supported-windows-version)
 - [FAQ](#faq)
 - [Links](#links)
 - [PS](#ps)
   
 ## Overview
-This PowerShell script is for initial setup after fresh installation of Windows 10 and partially Windows Server 2016/2019. The script is a set of tweaks for fine-tuning the OS and automating the routine tasks.
+The PowerShell script is a set of tweaks for fine-tuning the OS and automating the routine tasks.
+
+## Supported Windows version
+|Version|Code name|Marketing name |Build|Arch|PowerShell|
+|:-----:|:-------:|:-------------:|:---:|:--:|:--------:|
+| 1903  |  19H1   |May 2019 Update|18362|x64 |   5.1    |
 
 ## Core features
 - Turn off diagnostics tracking services;
@@ -54,11 +59,6 @@ or
 - PowerShell and PowerShell ISE must be run with elevated privileges;
 - Set PowerShell execution policy <code>Set-ExecutionPolicy Unrestricted -Force</code> to be able to run .ps1 files.
   - Read more about [execution policy](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies) 
-
-## Supported Windows version
-| Version |   Code name  |      Marketing name    | Build |
-| :-----: | -------------| ---------------------- | :---: |
-|  1903   |    19H1      |     May 2019 Update    | 18362 |
 
 ## FAQ
 Read the code you run carefully. Some functions are presented as an example only. You must be aware of the meaning of the functions in the code. **If you're not sure what the script does, do not run it.**
