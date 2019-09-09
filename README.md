@@ -49,7 +49,7 @@ The PowerShell script is a set of tweaks for fine-tuning the OS and automating t
 ## Usage
 To run the script:
 - Download [up-to-date version](https://github.com/farag2/Setup-Windows-10/releases);
-- Change encoding to "UTF-8 with BOM" and run it through powershell.exe.
+- Check whether file is encoded in "UTF-8 with BOM" and run it through powershell.exe.
 
 or
 
@@ -62,8 +62,7 @@ or
 
 ## FAQ
 Read the code you run carefully. Some functions are presented as an example only. You must be aware of the meaning of the functions in the code. **If you're not sure what the script does, do not run it.**
-
-The script was written for PowerShell 5.1 and for the current up-to-date version of Windows 10 Pro x64. Some of functions can be run also on LTSB/LTSC and on older versions of Windows and PowerShell (also on 32bit systems).
+Some of functions can be run also on LTSB/LTSC and on older versions of Windows and PowerShell (also on 32bit systems).
 
 ## Links
 ### Ask a question in
