@@ -2,9 +2,10 @@
 - [Overview](#overview)
 - [Supported Windows version](#supported-windows-version)
 - [Core features](#core-features)
-- [Screenshots](#screenshots)
+- [Nota bene](#NB)
 - [Usage](#usage)
 - [FAQ](#faq)
+- [Screenshots](#screenshots)
 - [Links](#links)
 - [PS](#ps)
   
@@ -37,6 +38,24 @@ The PowerShell script is a set of tweaks for fine-tuning the OS and automating t
 - Refresh desktop icons, environment variables and taskbar without restarting File Explorer;
 - Many more File Explorer and context menu "deep" tweaks.
 
+## NB
+- PowerShell and PowerShell ISE must be run with elevated privileges;
+- Set PowerShell execution policy <code>Set-ExecutionPolicy Unrestricted -Force</code> to be able to run .ps1 files.
+  - Read more about [execution policy](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies) 
+  
+## Usage
+To run the script:
+- Download [up-to-date version](https://github.com/farag2/Setup-Windows-10/releases);
+- Check whether file is encoded in **UTF-8 with BOM** and run it through powershell.exe.
+
+or
+
+- Copy the script code and paste it into [PowerShell ISE](https://docs.microsoft.com/en-us/powershell/scripting/components/ise/windows-powershell-integrated-scripting-environment--ise-).
+
+## FAQ
+Read the code you run carefully. Some functions are presented as an example only. You must be aware of the meaning of the functions in the code. **If you're not sure what the script does, do not run it.**
+Some of functions can be run also on LTSB/LTSC and on older versions of Windows and PowerShell (also on 32bit systems).
+
 ### Screenshots
 - Startmenu
 
@@ -46,23 +65,6 @@ The PowerShell script is a set of tweaks for fine-tuning the OS and automating t
 
   ![Menu](https://github.com/farag2/Windows-10-Setup-Script/blob/master/Screenshots/read-host.png)
 
-## Usage
-To run the script:
-- Download [up-to-date version](https://github.com/farag2/Setup-Windows-10/releases);
-- Check whether file is encoded in "UTF-8 with BOM" and run it through powershell.exe.
-
-or
-
-- Copy the script code and paste it into [PowerShell ISE](https://docs.microsoft.com/en-us/powershell/scripting/components/ise/windows-powershell-integrated-scripting-environment--ise-).
-
-**NB**
-- PowerShell and PowerShell ISE must be run with elevated privileges;
-- Set PowerShell execution policy <code>Set-ExecutionPolicy Unrestricted -Force</code> to be able to run .ps1 files.
-  - Read more about [execution policy](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies) 
-
-## FAQ
-Read the code you run carefully. Some functions are presented as an example only. You must be aware of the meaning of the functions in the code. **If you're not sure what the script does, do not run it.**
-Some of functions can be run also on LTSB/LTSC and on older versions of Windows and PowerShell (also on 32bit systems).
 
 ## Links
 ### Ask a question in
