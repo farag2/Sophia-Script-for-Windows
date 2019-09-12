@@ -1,10 +1,22 @@
 ﻿Add-Type -AssemblyName "PresentationCore", "PresentationFramework", "WindowsBase"
 
+#region Embedded Resources
+$byteIco = "AAABAAEAMDAAAAEAIACoJQAAFgAAACgAAAAwAAAAYAAAAAEAIAAAAAAAACQAABILAAASCwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////Af///yP///9V////hf///7b////nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP///wT///8r////Xv///4j///+z////6///////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///8M////M////17///+R////xP////b/////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP///0b///93////qP///9j////9////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP///yH///9S////g////7QAAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP///wP///8i////Tf///4D///+z////6v////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///+Y////yf////b///////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////L////u////7v///+7////p////3f///93////d////3f///84AAAAAAAAAAP///8z////M////wP///7v///+7////u////7b///+q////qv///6r///+q////m////5n///+Z////mf///5L///+I////iP///4j///+IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////L////u////7v///+7////p////3f///93////d////3f///84AAAAAAAAAAP///8z////M////wP///7v///+7////u////7b///+q////qv///6r///+q////m////5n///+Z////mf///5L///+I////iP///4j///+IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///+c////1P////3///////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP///wz///88////d////7P////q//////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////Gv///1X///+R////xP////kAAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP///wsAAAAAAAAAAP///7D////o////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////Gv///03///+I////xP////j/////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP///wX///8z////b////6L////f////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////Gv///03///+I////xP////f/////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP///wT///8z////b////6L////dAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////8AAP///////wAA////////AAD///////8AAP/////A/wAA////+AD/AAD///8AAP8AAP//8AAA/wAA//wwAAD/AAD/ADAAAP8AAPwAMAAA/wAA/AAwAAD/AAD8ADAAAP8AAPwAMAAA/wAA/AAwAAD/AAD8ADAAAP8AAPwAMAAA/wAA/AAwAAD/AAD8ADAAAP8AAPwAMAAA/wAA/AAwAAD/AAD8ADAAAP8AAP///////wAA////////AAD8ADAAAP8AAPwAMAAA/wAA/AAwAAD/AAD8ADAAAP8AAPwAMAAA/wAA/AAwAAD/AAD8ADAAAP8AAPwAMAAA/wAA/AAwAAD/AAD8ADAAAP8AAPwAMAAA/wAA/wAwAAD/AAD/+DAAAP8AAP//sAAA/wAA///8AAD/AAD////AAP8AAP////4A/wAA/////+D/AAD///////8AAP///////wAA////////AAD///////8AAP///////wAA////////AAA="
+$pathIco = "$Env:TEMP\Win10.ico"
+
+if (-not (Test-Path -Path $pathIco))
+{
+	[System.IO.File]::WriteAllBytes($pathIco, [System.Convert]::FromBase64String($byteIco))
+}
+#endregion
+
 [xml]$xamlMarkup = @'
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
-        Title="Win10 Setup Script" Height="800" Width="800" FontSize="16" TextOptions.TextFormattingMode="Display" 
-        ShowInTaskbar="False" WindowStartupLocation="CenterScreen" SnapsToDevicePixels="True">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"                
+        x:Name="Window"
+        Title="Windows 10 Setup Script" MinHeight="800" MinWidth="800" Height="800" Width="800" FontFamily="Sergio UI"
+        FontSize="16" TextOptions.TextFormattingMode="Display" WindowStartupLocation="CenterScreen" 
+        SnapsToDevicePixels="True" WindowStyle="None" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" >
     <Window.Resources>
 
         <!--#region Brushes -->
@@ -332,7 +344,7 @@
             <Setter Property="FontFamily" Value="Segoe UI"/>
             <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
         </Style>
-        
+
         <Style x:Key="ItemTitleStyle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockStyle}">
             <Setter Property="Margin" Value="1"/>
             <Setter Property="FontSize" Value="16"/>
@@ -388,79 +400,143 @@
             <Setter Property="Height" Value="40"/>
             <Setter Property="Background" Value="{StaticResource RadioButton.Checked.Background}"/>
         </Style>
-        
+
+        <Style x:Key="CanvasTitleButton" TargetType="Canvas">
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Width" Value="35"/>
+            <Style.Triggers>
+                <Trigger Property="Canvas.IsMouseOver" Value="True">
+                    <Setter Property="Canvas.Background" Value="#DA1F2E"/>
+                    <Setter Property="Canvas.Opacity" Value="5"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
     </Window.Resources>
-    
+
+    <Border x:Name="BorderWindow" BorderThickness="1" BorderBrush="#0078D7">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
+                <RowDefinition Height="35"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="40"/>                
+                <RowDefinition Height="35"/>
             </Grid.RowDefinitions>
-            <!--#region Toolbox Panel-->
-        <StackPanel Grid.Row="0" Background="#E4E4E4" Orientation="Horizontal">
+            <!--#region Title Panel-->
+            <Canvas Grid.Row="0" Background="{Binding ElementName=BorderWindow, Path=BorderBrush}">
+                <!--Title Icons-->
+                <Viewbox Width="24" Height="24" Canvas.Left="10" Canvas.Top="5">
+                    <Path Data="M3,12V6.75L9,5.43V11.91L3,12M20,3V11.75L10,11.9V5.21L20,3M3,13L9,13.09V19.9L3,18.75V13M20,13.25V22L10,20.09V13.1L20,13.25Z" Fill="{Binding ElementName=TitleHeader, Path=Foreground}" />
+                </Viewbox>
+                <!--Title Header-->
+                <TextBlock x:Name="TitleHeader" Text="{Binding ElementName=Window, Path=Title}" FontFamily="Sergio UI" FontSize="14" Canvas.Left="44" Canvas.Top="10" Foreground="#FFFFFF"/>
+                <!--Title Minimize Button-->
+                <Canvas Name="MinimizeButton" Canvas.Right="35" Canvas.Top="0" Style="{DynamicResource CanvasTitleButton}">
+                    <Viewbox Width="24" Height="24" Canvas.Left="4">
+                        <Path  Data="M20,14H4V10H20" Fill="{Binding ElementName=TitleHeader,Path=Foreground}" />
+                    </Viewbox>
+                </Canvas>
+                <!--Title Close Button-->
+                <Canvas Name="CloseButton" Canvas.Right="0" Canvas.Top="0" Style="{DynamicResource CanvasTitleButton}">
+                    <Viewbox Width="24" Height="24" Canvas.Left="4" Canvas.Top="2">
+                        <Path Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" Fill="{Binding ElementName=TitleHeader,Path=Foreground}" />
+                    </Viewbox>
+                </Canvas>
+            </Canvas>
+            <!--#endregion Title Panel-->
             
-        </StackPanel>
-            <!--#endregion Toolbox Panel-->
-            
-            <!--#region Setting Panel-->
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-            <StackPanel Orientation="Vertical">
-                <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
-                    <Grid Margin="0" HorizontalAlignment="Left">
-                        <ToggleButton x:Name="PrivacyAndTelemetry0" FontFamily="Sergio UI" FontSize="1"
-                          Style="{DynamicResource ToggleSwitchTopStyle}"
-                          Content="" 
-                          IsChecked="False"
-                          />
-                        <TextBlock Margin="65 2 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
-                                    <Setter Property="Text" Value="Turn off &quot;Connected User Experiences and Telemetry&quot; service" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry0, Path=IsChecked}" Value="True">
-                                            <Setter Property="Text" Value="Turn off &quot;Connected User Experiences and Telemetry&quot; service" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry0, Path=IsEnabled}" Value="false">
-                                            <Setter Property="Opacity" Value="0.2" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </Grid>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
-                    <Grid Margin="0" HorizontalAlignment="Left">
-                        <ToggleButton x:Name="PrivacyAndTelemetry1" FontFamily="Sergio UI" FontSize="1"
-                          Style="{DynamicResource ToggleSwitchTopStyle}"
-                          Content="" 
-                          IsChecked="False"
-                          />
-                        <TextBlock Margin="65 2 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
-                                    <Setter Property="Text" Value="Turn off per-user services" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry1, Path=IsChecked}" Value="True">
-                                            <Setter Property="Text" Value="Turn off per-user services" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry1, Path=IsEnabled}" Value="false">
-                                            <Setter Property="Opacity" Value="0.2" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </Grid>
-                </StackPanel>
+            <!--region Control Panel-->
+            <StackPanel Grid.Row="1" Orientation="Vertical" Width="200" Height="200" VerticalAlignment="Top" 
+                        HorizontalAlignment="Right" Margin="10 30 10 0" Panel.ZIndex="10">
+                
             </StackPanel>
-        </ScrollViewer>
+            <!--endregion Control Panel-->
+
+            <!--#region Setting Panel-->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal" Height="35" Margin="0 5 0 0">
+                        <Viewbox Width="24" Height="24" Margin="20 0 5 6" >
+                            <Path Data="M12 5.69L17 10.19V18H15V12H9V18H7V10.19L12 5.69M12 3L2 12H5V20H11V14H13V20H19V12H22L12 3Z" Fill="Black" />
+                        </Viewbox>
+                        <TextBlock Text="Privacy &amp; Telemetry" VerticalAlignment="Center" FontWeight="Bold"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
+                        <Grid Margin="0" HorizontalAlignment="Left">
+                            <ToggleButton Name="ToggleButton0" FontFamily="Sergio UI" FontSize="1"
+                          Style="{DynamicResource ToggleSwitchTopStyle}" Content="" IsChecked="False"/>
+                            <TextBlock Margin="65 2 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                        <Setter Property="Text" Value="Turn off &quot;Connected User Experiences and Telemetry&quot; service" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton0, Path=IsChecked}" Value="True">
+                                                <Setter Property="Text" Value="Turn off &quot;Connected User Experiences and Telemetry&quot; service" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton0, Path=IsEnabled}" Value="false">
+                                                <Setter Property="Opacity" Value="0.2" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
+                        <Grid Margin="0" HorizontalAlignment="Left">
+                            <ToggleButton x:Name="ToggleButton1" FontFamily="Sergio UI" FontSize="1"
+                          Style="{DynamicResource ToggleSwitchTopStyle}" Content="" IsChecked="False"/>
+                            <TextBlock Margin="65 2 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                        <Setter Property="Text" Value="Turn off per-user services" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton1, Path=IsChecked}" Value="True">
+                                                <Setter Property="Text" Value="Turn off per-user services" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton1, Path=IsEnabled}" Value="false">
+                                                <Setter Property="Opacity" Value="0.2" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
             <!--#endregion Setting Panel-->
-		</Grid>
+
+            <!--#region Info Panel-->
+            <StackPanel Grid.Row="2" Background="{Binding ElementName=BorderWindow, Path=BorderBrush}" Orientation="Horizontal">
+
+            </StackPanel>
+            <!--#endregion Info Panel-->
+
+        </Grid>
+    </Border>
 </Window>
 '@
-
 $xamlGui = [System.Windows.Markup.XamlReader]::Load((New-Object System.Xml.XmlNodeReader $xamlMarkup))
-$xamlGui.ShowDialog()
+$xamlGui.Icon = $pathIco
+$xamlMarkup.SelectNodes('//*[@Name]') | ForEach-Object {
+	Set-Variable -Name ($_.Name) -Value $xamlGui.FindName($_.Name)
+}
+
+#region Controls Events
+
+$xamlGui.add_MouseLeftButtonDown({
+	$xamlGui.DragMove()
+})
+
+$MinimizeButton.add_MouseLeftButtonDown({
+	$xamlGui.WindowState = "Minimized"
+})
+
+$CloseButton.add_MouseLeftButtonDown({
+	$xamlGui.Close()
+})
+
+#endregion
+
+$xamlGui.ShowDialog() | Out-Null
 
