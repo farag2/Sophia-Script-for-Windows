@@ -140,7 +140,7 @@
 											  Margin="{TemplateBinding Padding}" 
 											  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
 											  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                            <Grid x:Name="markGrid" Grid.Row="1" Margin="0 8 0 2" Width="44" Height="20"
+                            <Grid x:Name="markGrid" Grid.Row="1" Margin="10 0 10 0" Width="44" Height="20"
 								  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
                                 <Border x:Name="normalBorder" Opacity="1" BorderThickness="2" CornerRadius="10"
 										BorderBrush="{TemplateBinding BorderBrush}" Background="{StaticResource RadioButton.Static.Background}"/>
@@ -390,273 +390,74 @@
         </Style>
         
     </Window.Resources>
-
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+    
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="20"/>
-                <ColumnDefinition Width="520"/>
-                <ColumnDefinition Width="20"/>
-                <ColumnDefinition Width="240"/>
-                <ColumnDefinition Width="20"/>
-            </Grid.ColumnDefinitions>
-            <!--#region Setting Panels-->
-            <StackPanel Orientation="Vertical" Grid.Column="1">
-                <!--#region Privacy & Telemetry Setting-->
-                <StackPanel Orientation="Horizontal" Height="40">
-                    <Viewbox Width="24" Height="24" VerticalAlignment="Center">
-                        <Path Data="M12 5.69L17 10.19V18H15V12H9V18H7V10.19L12 5.69M12 3L2 12H5V20H11V14H13V20H19V12H22L12 3Z" Fill="Black" />
-                    </Viewbox>
-                    <TextBlock Text="Privacy &amp; Telemetry" FontSize="18" FontWeight="Medium" VerticalAlignment="Center" Margin="10 0 0 0"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="40"/>                
+            </Grid.RowDefinitions>
+            <!--#region Toolbox Panel-->
+        <StackPanel Grid.Row="0" Background="#E4E4E4" Orientation="Horizontal">
+            
+        </StackPanel>
+            <!--#endregion Toolbox Panel-->
+            
+            <!--#region Setting Panel-->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
+                    <Grid Margin="0" HorizontalAlignment="Left">
+                        <ToggleButton x:Name="PrivacyAndTelemetry0" FontFamily="Sergio UI" FontSize="1"
+                          Style="{DynamicResource ToggleSwitchTopStyle}"
+                          Content="" 
+                          IsChecked="False"
+                          />
+                        <TextBlock Margin="65 2 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                    <Setter Property="Text" Value="Turn off &quot;Connected User Experiences and Telemetry&quot; service" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry0, Path=IsChecked}" Value="True">
+                                            <Setter Property="Text" Value="Turn off &quot;Connected User Experiences and Telemetry&quot; service" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry0, Path=IsEnabled}" Value="false">
+                                            <Setter Property="Opacity" Value="0.2" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
                 </StackPanel>
-
-                <Grid Margin="0 10 0 0" HorizontalAlignment="Left">
-                    <ToggleButton x:Name="PrivacyAndTelemetry0" FontFamily="Sergio UI" FontSize="16"
+                <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
+                    <Grid Margin="0" HorizontalAlignment="Left">
+                        <ToggleButton x:Name="PrivacyAndTelemetry1" FontFamily="Sergio UI" FontSize="1"
                           Style="{DynamicResource ToggleSwitchTopStyle}"
-                          Content="Turn off &quot;Connected User Experiences and Telemetry&quot; service" 
-                          IsChecked="False" 
+                          Content="" 
+                          IsChecked="False"
                           />
-                    <TextBlock Margin="52 0 0 0" VerticalAlignment="Bottom" FontFamily="Sergio UI" FontSize="16">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
-                                <Setter Property="Text" Value="Off" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry0, Path=IsChecked}" Value="True">
-                                        <Setter Property="Text" Value="On" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry0, Path=IsEnabled}" Value="false">
-                                        <Setter Property="Opacity" Value="0.2" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </Grid>
-                <Grid Margin="0 20 0 0" HorizontalAlignment="Left">
-                    <ToggleButton x:Name="PrivacyAndTelemetry1" FontFamily="Sergio UI" FontSize="16"
-                          Style="{DynamicResource ToggleSwitchTopStyle}"
-                          Content="Turn off per-user services" 
-                          IsChecked="False" 
-                          />
-                    <TextBlock Margin="52 0 0 0" VerticalAlignment="Bottom" FontFamily="Sergio UI" FontSize="16">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
-                                <Setter Property="Text" Value="Off" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry1, Path=IsChecked}" Value="True">
-                                        <Setter Property="Text" Value="On" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry1, Path=IsEnabled}" Value="false">
-                                        <Setter Property="Opacity" Value="0.2" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </Grid>
-                <Grid Margin="0 20 0 0" HorizontalAlignment="Left">
-                    <ToggleButton x:Name="PrivacyAndTelemetry2" FontFamily="Sergio UI" FontSize="16"
-                          Style="{DynamicResource ToggleSwitchTopStyle}"
-                          Content="Turn off the Autologger session at the next computer restart" 
-                          IsChecked="False" 
-                          />
-                    <TextBlock Margin="52 0 0 0" VerticalAlignment="Bottom" FontFamily="Sergio UI" FontSize="16">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
-                                <Setter Property="Text" Value="Off" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry2, Path=IsChecked}" Value="True">
-                                        <Setter Property="Text" Value="On" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry2, Path=IsEnabled}" Value="false">
-                                        <Setter Property="Opacity" Value="0.2" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </Grid>
-                <Grid Margin="0 20 0 0" HorizontalAlignment="Left">
-                    <ToggleButton x:Name="PrivacyAndTelemetry3" FontFamily="Sergio UI" FontSize="16"
-                          Style="{DynamicResource ToggleSwitchTopStyle}"
-                          Content="Turn off the SQMLogger session at the next computer restart" 
-                          IsChecked="False" 
-                          />
-                    <TextBlock Margin="52 0 0 0" VerticalAlignment="Bottom" FontFamily="Sergio UI" FontSize="16">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
-                                <Setter Property="Text" Value="Off" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry3, Path=IsChecked}" Value="True">
-                                        <Setter Property="Text" Value="On" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry3, Path=IsEnabled}" Value="false">
-                                        <Setter Property="Opacity" Value="0.2" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </Grid>
-                <Grid Margin="0 20 0 0" HorizontalAlignment="Left">
-                    <ToggleButton x:Name="PrivacyAndTelemetry4" FontFamily="Sergio UI" FontSize="16"
-                          Style="{DynamicResource ToggleSwitchTopStyle}"
-                          Content="Set the operating system diagnostic data level to &quot;Basic&quot;" 
-                          IsChecked="False" 
-                          />
-                    <TextBlock Margin="52 0 0 0" VerticalAlignment="Bottom" FontFamily="Sergio UI" FontSize="16">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
-                                <Setter Property="Text" Value="Off" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry4, Path=IsChecked}" Value="True">
-                                        <Setter Property="Text" Value="On" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry4, Path=IsEnabled}" Value="false">
-                                        <Setter Property="Opacity" Value="0.2" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </Grid>
-                <Grid Margin="0 20 0 0" HorizontalAlignment="Left">
-                    <ToggleButton x:Name="PrivacyAndTelemetry5" FontFamily="Sergio UI" FontSize="16"
-                          Style="{DynamicResource ToggleSwitchTopStyle}"
-                          Content="Turn off Windows Error Reporting" 
-                          IsChecked="False" 
-                          />
-                    <TextBlock Margin="52 0 0 0" VerticalAlignment="Bottom" FontFamily="Sergio UI" FontSize="16">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
-                                <Setter Property="Text" Value="Off" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry5, Path=IsChecked}" Value="True">
-                                        <Setter Property="Text" Value="On" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry5, Path=IsEnabled}" Value="false">
-                                        <Setter Property="Opacity" Value="0.2" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </Grid>
-                <Grid Margin="0 20 0 0" HorizontalAlignment="Left">
-                    <ToggleButton x:Name="PrivacyAndTelemetry6" FontFamily="Sergio UI" FontSize="16"
-                          Style="{DynamicResource ToggleSwitchTopStyle}"
-                          Content="Change Windows Feedback frequency to &quot;Never&quot;" 
-                          IsChecked="False" 
-                          />
-                    <TextBlock Margin="52 0 0 0" VerticalAlignment="Bottom" FontFamily="Sergio UI" FontSize="16">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
-                                <Setter Property="Text" Value="Off" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry6, Path=IsChecked}" Value="True">
-                                        <Setter Property="Text" Value="On" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry6, Path=IsEnabled}" Value="false">
-                                        <Setter Property="Opacity" Value="0.2" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </Grid>
-                <Grid Margin="0 20 0 0" HorizontalAlignment="Left">
-                    <ToggleButton x:Name="PrivacyAndTelemetry7" FontFamily="Sergio UI" FontSize="16"
-                          Style="{DynamicResource ToggleSwitchTopStyle}"
-                          Content="Turn off diagnostics tracking scheduled tasks" 
-                          IsChecked="False" 
-                          />
-                    <TextBlock Margin="52 0 0 0" VerticalAlignment="Bottom" FontFamily="Sergio UI" FontSize="16">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
-                                <Setter Property="Text" Value="Off" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry7, Path=IsChecked}" Value="True">
-                                        <Setter Property="Text" Value="On" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry7, Path=IsEnabled}" Value="false">
-                                        <Setter Property="Opacity" Value="0.2" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </Grid>
-                <Grid Margin="0 20 0 0" HorizontalAlignment="Left">
-                    <ToggleButton x:Name="PrivacyAndTelemetry8" FontFamily="Sergio UI" FontSize="16"
-                          Style="{DynamicResource ToggleSwitchTopStyle}"
-                          Content="Do not offer tailored experiences based on the diagnostic data setting" 
-                          IsChecked="False" 
-                          />
-                    <TextBlock Margin="52 0 0 0" VerticalAlignment="Bottom" FontFamily="Sergio UI" FontSize="16">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
-                                <Setter Property="Text" Value="Off" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry8, Path=IsChecked}" Value="True">
-                                        <Setter Property="Text" Value="On" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry8, Path=IsEnabled}" Value="false">
-                                        <Setter Property="Opacity" Value="0.2" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </Grid>
-                <Grid Margin="0 20 0 0" HorizontalAlignment="Left">
-                    <ToggleButton x:Name="PrivacyAndTelemetry9" FontFamily="Sergio UI" FontSize="16"
-                          Style="{DynamicResource ToggleSwitchTopStyle}"
-                          Content="Do not let apps on other devices open and message apps on this device" 
-                          IsChecked="False" 
-                          />
-                    <TextBlock Margin="52 0 0 0" VerticalAlignment="Bottom" FontFamily="Sergio UI" FontSize="16">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
-                                <Setter Property="Text" Value="Off" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry9, Path=IsChecked}" Value="True">
-                                        <Setter Property="Text" Value="On" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry9, Path=IsEnabled}" Value="false">
-                                        <Setter Property="Opacity" Value="0.2" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </Grid>
-                <Grid Margin="0 20 0 0" HorizontalAlignment="Left">
-                    <ToggleButton x:Name="PrivacyAndTelemetry10" FontFamily="Sergio UI" FontSize="16"
-                          Style="{DynamicResource ToggleSwitchTopStyle}"
-                          Content="Do not allow apps to use advertising ID" 
-                          IsChecked="False" 
-                          />
-                    <TextBlock Margin="52 0 0 0" VerticalAlignment="Bottom" FontFamily="Sergio UI" FontSize="16">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
-                                <Setter Property="Text" Value="Off" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry10, Path=IsChecked}" Value="True">
-                                        <Setter Property="Text" Value="On" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry10, Path=IsEnabled}" Value="false">
-                                        <Setter Property="Opacity" Value="0.2" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </Grid>
-                <!--#endregion-->
+                        <TextBlock Margin="65 2 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                    <Setter Property="Text" Value="Turn off per-user services" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry1, Path=IsChecked}" Value="True">
+                                            <Setter Property="Text" Value="Turn off per-user services" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry1, Path=IsEnabled}" Value="false">
+                                            <Setter Property="Opacity" Value="0.2" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
+                </StackPanel>
             </StackPanel>
-            <!--#endregion-->
-        </Grid>
-    </ScrollViewer>
+        </ScrollViewer>
+            <!--#endregion Setting Panel-->
+		</Grid>
 </Window>
 '@
 

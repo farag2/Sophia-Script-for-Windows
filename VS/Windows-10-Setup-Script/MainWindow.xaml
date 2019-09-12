@@ -141,7 +141,7 @@
 											  Margin="{TemplateBinding Padding}" 
 											  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
 											  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                            <Grid x:Name="markGrid" Grid.Row="1" Margin="0 8 0 2" Width="44" Height="20"
+                            <Grid x:Name="markGrid" Grid.Row="1" Margin="10 0 10 0" Width="44" Height="20"
 								  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
                                 <Border x:Name="normalBorder" Opacity="1" BorderThickness="2" CornerRadius="10"
 										BorderBrush="{TemplateBinding BorderBrush}" Background="{StaticResource RadioButton.Static.Background}"/>
@@ -391,19 +391,79 @@
         </Style>
         
     </Window.Resources>
+    
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="40"/>                
+            </Grid.RowDefinitions>
+            <!--#region Toolbox Panel-->
+        <StackPanel Grid.Row="0" Background="#E4E4E4" Orientation="Horizontal">
+            
+        </StackPanel>
+            <!--#endregion Toolbox Panel-->
+            
+            <!--#region Setting Panel-->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
+                    <Grid Margin="0" HorizontalAlignment="Left">
+                        <ToggleButton x:Name="PrivacyAndTelemetry0" FontFamily="Sergio UI" FontSize="1"
+                          Style="{DynamicResource ToggleSwitchTopStyle}"
+                          Content="" 
+                          IsChecked="False"
+                          />
+                        <TextBlock Margin="65 2 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                    <Setter Property="Text" Value="Turn off &quot;Connected User Experiences and Telemetry&quot; service" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry0, Path=IsChecked}" Value="True">
+                                            <Setter Property="Text" Value="Turn off &quot;Connected User Experiences and Telemetry&quot; service" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry0, Path=IsEnabled}" Value="false">
+                                            <Setter Property="Opacity" Value="0.2" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
+                    <Grid Margin="0" HorizontalAlignment="Left">
+                        <ToggleButton x:Name="PrivacyAndTelemetry1" FontFamily="Sergio UI" FontSize="1"
+                          Style="{DynamicResource ToggleSwitchTopStyle}"
+                          Content="" 
+                          IsChecked="False"
+                          />
+                        <TextBlock Margin="65 2 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                    <Setter Property="Text" Value="Turn off per-user services" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry1, Path=IsChecked}" Value="True">
+                                            <Setter Property="Text" Value="Turn off per-user services" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=PrivacyAndTelemetry1, Path=IsEnabled}" Value="false">
+                                            <Setter Property="Opacity" Value="0.2" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+            <!--#endregion Setting Panel-->
+            
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-        <Grid ShowGridLines="True">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="20"/>
-                <ColumnDefinition Width="520"/>
-                <ColumnDefinition Width="20"/>
-                <ColumnDefinition Width="240"/>
-                <ColumnDefinition Width="20"/>
-            </Grid.ColumnDefinitions>
+
             <!--#region Setting Panels-->
-            <StackPanel Orientation="Vertical" Grid.Column="1">
-                <!--#region Privacy & Telemetry Setting-->
+            <!--<StackPanel Orientation="Vertical" Grid.Column="1">
+                --><!--#region Privacy & Telemetry Setting--><!--
                 <StackPanel Orientation="Horizontal" Height="40">
                     <Viewbox Width="24" Height="24" VerticalAlignment="Center">
                         <Path Data="M12 5.69L17 10.19V18H15V12H9V18H7V10.19L12 5.69M12 3L2 12H5V20H11V14H13V20H19V12H22L12 3Z" Fill="Black" />
@@ -653,9 +713,8 @@
                         </TextBlock.Style>
                     </TextBlock>
                 </Grid>
-                <!--#endregion-->
+                --><!--#endregion--><!--
             </StackPanel>
-            <!--#endregion-->
-        </Grid>
-    </ScrollViewer>
+            --><!--#endregion-->
+        </Grid>    
 </Window>
