@@ -1,22 +1,17 @@
 ﻿Add-Type -AssemblyName "PresentationCore", "PresentationFramework", "WindowsBase"
 
-#region Embedded Resources
-$byteIco = "AAABAAEAMDAAAAEAIACoJQAAFgAAACgAAAAwAAAAYAAAAAEAIAAAAAAAACQAABILAAASCwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////Af///yP///9V////hf///7b////nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP///wT///8r////Xv///4j///+z////6///////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///8M////M////17///+R////xP////b/////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP///0b///93////qP///9j////9////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP///yH///9S////g////7QAAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP///wP///8i////Tf///4D///+z////6v////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///+Y////yf////b///////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////L////u////7v///+7////p////3f///93////d////3f///84AAAAAAAAAAP///8z////M////wP///7v///+7////u////7b///+q////qv///6r///+q////m////5n///+Z////mf///5L///+I////iP///4j///+IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////L////u////7v///+7////p////3f///93////d////3f///84AAAAAAAAAAP///8z////M////wP///7v///+7////u////7b///+q////qv///6r///+q////m////5n///+Z////mf///5L///+I////iP///4j///+IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////////////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///+c////1P////3///////////////////////////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP///wz///88////d////7P////q//////////////////////////8AAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////Gv///1X///+R////xP////kAAAAAAAAAAP//////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP///wsAAAAAAAAAAP///7D////o////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////Gv///03///+I////xP////j/////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP///wX///8z////b////6L////f////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////Gv///03///+I////xP////f/////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP///wT///8z////b////6L////dAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////8AAP///////wAA////////AAD///////8AAP/////A/wAA////+AD/AAD///8AAP8AAP//8AAA/wAA//wwAAD/AAD/ADAAAP8AAPwAMAAA/wAA/AAwAAD/AAD8ADAAAP8AAPwAMAAA/wAA/AAwAAD/AAD8ADAAAP8AAPwAMAAA/wAA/AAwAAD/AAD8ADAAAP8AAPwAMAAA/wAA/AAwAAD/AAD8ADAAAP8AAP///////wAA////////AAD8ADAAAP8AAPwAMAAA/wAA/AAwAAD/AAD8ADAAAP8AAPwAMAAA/wAA/AAwAAD/AAD8ADAAAP8AAPwAMAAA/wAA/AAwAAD/AAD8ADAAAP8AAPwAMAAA/wAA/wAwAAD/AAD/+DAAAP8AAP//sAAA/wAA///8AAD/AAD////AAP8AAP////4A/wAA/////+D/AAD///////8AAP///////wAA////////AAD///////8AAP///////wAA////////AAA="
-$pathIco = "$Env:TEMP\Win10.ico"
-
-if (-not (Test-Path -Path $pathIco))
-{
-	[System.IO.File]::WriteAllBytes($pathIco, [System.Convert]::FromBase64String($byteIco))
-}
+#region Script Variables
+$ToggleButtons = New-Object System.Collections.ArrayList($null)
 #endregion
 
 [xml]$xamlMarkup = @'
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"                
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"                        
         x:Name="Window"
         Title="Windows 10 Setup Script" MinHeight="800" MinWidth="800" Height="800" Width="800" FontFamily="Sergio UI"
         FontSize="16" TextOptions.TextFormattingMode="Display" WindowStartupLocation="CenterScreen" 
-        SnapsToDevicePixels="True" WindowStyle="None" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" >
+        SnapsToDevicePixels="True" WindowStyle="None" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" 
+        ShowInTaskbar="True">
     <Window.Resources>
 
         <!--#region Brushes -->
@@ -444,27 +439,29 @@ if (-not (Test-Path -Path $pathIco))
             </Canvas>
             <!--#endregion Title Panel-->
             
-            <!--region Control Panel-->
+            <!--#region Control Panel-->
             <StackPanel Grid.Row="1" Orientation="Vertical" Width="200" Height="200" VerticalAlignment="Top" 
                         HorizontalAlignment="Right" Margin="10 30 10 0" Panel.ZIndex="10">
                 
             </StackPanel>
-            <!--endregion Control Panel-->
+            <!--#endregion Control Panel-->
 
             <!--#region Setting Panel-->
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <StackPanel Orientation="Vertical">
+                    <!--#region Privacy & Telemetry-->
                     <StackPanel Orientation="Horizontal" Height="35" Margin="0 5 0 0">
                         <Viewbox Width="24" Height="24" Margin="20 0 5 6" >
                             <Path Data="M12 5.69L17 10.19V18H15V12H9V18H7V10.19L12 5.69M12 3L2 12H5V20H11V14H13V20H19V12H22L12 3Z" Fill="Black" />
                         </Viewbox>
                         <TextBlock Text="Privacy &amp; Telemetry" VerticalAlignment="Center" FontWeight="Bold"/>
                     </StackPanel>
+                    
                     <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
                         <Grid Margin="0" HorizontalAlignment="Left">
                             <ToggleButton Name="ToggleButton0" FontFamily="Sergio UI" FontSize="1"
                           Style="{DynamicResource ToggleSwitchTopStyle}" Content="" IsChecked="False"/>
-                            <TextBlock Margin="65 2 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
+                            <TextBlock Name="TextBlock0" Margin="65 3 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
                                         <Setter Property="Text" Value="Turn off &quot;Connected User Experiences and Telemetry&quot; service" />
@@ -481,11 +478,12 @@ if (-not (Test-Path -Path $pathIco))
                             </TextBlock>
                         </Grid>
                     </StackPanel>
+                    
                     <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
                         <Grid Margin="0" HorizontalAlignment="Left">
-                            <ToggleButton x:Name="ToggleButton1" FontFamily="Sergio UI" FontSize="1"
+                            <ToggleButton Name="ToggleButton1" FontFamily="Sergio UI" FontSize="1"
                           Style="{DynamicResource ToggleSwitchTopStyle}" Content="" IsChecked="False"/>
-                            <TextBlock Margin="65 2 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
+                            <TextBlock Name="TextBlock1" Margin="65 3 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
                                         <Setter Property="Text" Value="Turn off per-user services" />
@@ -494,6 +492,433 @@ if (-not (Test-Path -Path $pathIco))
                                                 <Setter Property="Text" Value="Turn off per-user services" />
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding ElementName=ToggleButton1, Path=IsEnabled}" Value="false">
+                                                <Setter Property="Opacity" Value="0.2" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
+                        <Grid Margin="0" HorizontalAlignment="Left">
+                            <ToggleButton Name="ToggleButton2" FontFamily="Sergio UI" FontSize="1"
+                          Style="{DynamicResource ToggleSwitchTopStyle}" Content="" IsChecked="False"/>
+                            <TextBlock Name="TextBlock2" Margin="65 3 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                        <Setter Property="Text" Value="Turn off the Autologger session at the next computer restart" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton2, Path=IsChecked}" Value="True">
+                                                <Setter Property="Text" Value="Turn off the Autologger session at the next computer restart" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton2, Path=IsEnabled}" Value="false">
+                                                <Setter Property="Opacity" Value="0.2" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
+                        <Grid Margin="0" HorizontalAlignment="Left">
+                            <ToggleButton Name="ToggleButton3" FontFamily="Sergio UI" FontSize="1"
+                          Style="{DynamicResource ToggleSwitchTopStyle}" Content="" IsChecked="False"/>
+                            <TextBlock Name="TextBlock3" Margin="65 3 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                        <Setter Property="Text" Value="Turn off the SQMLogger session at the next computer restart" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton3, Path=IsChecked}" Value="True">
+                                                <Setter Property="Text" Value="Turn off the SQMLogger session at the next computer restart" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton3, Path=IsEnabled}" Value="false">
+                                                <Setter Property="Opacity" Value="0.2" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
+                        <Grid Margin="0" HorizontalAlignment="Left">
+                            <ToggleButton Name="ToggleButton4" FontFamily="Sergio UI" FontSize="1"
+                          Style="{DynamicResource ToggleSwitchTopStyle}" Content="" IsChecked="False"/>
+                            <TextBlock Name="TextBlock4" Margin="65 3 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                        <Setter Property="Text" Value="Set the operating system diagnostic data level to &quot;Basic&quot;" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton4, Path=IsChecked}" Value="True">
+                                                <Setter Property="Text" Value="Set the operating system diagnostic data level to &quot;Basic&quot;" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton4, Path=IsEnabled}" Value="false">
+                                                <Setter Property="Opacity" Value="0.2" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
+                        <Grid Margin="0" HorizontalAlignment="Left">
+                            <ToggleButton Name="ToggleButton5" FontFamily="Sergio UI" FontSize="1"
+                          Style="{DynamicResource ToggleSwitchTopStyle}" Content="" IsChecked="False"/>
+                            <TextBlock Name="TextBlock5" Margin="65 3 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                        <Setter Property="Text" Value="Turn off Windows Error Reporting" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton5, Path=IsChecked}" Value="True">
+                                                <Setter Property="Text" Value="Turn off Windows Error Reporting" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton5, Path=IsEnabled}" Value="false">
+                                                <Setter Property="Opacity" Value="0.2" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
+                        <Grid Margin="0" HorizontalAlignment="Left">
+                            <ToggleButton Name="ToggleButton6" FontFamily="Sergio UI" FontSize="1"
+                          Style="{DynamicResource ToggleSwitchTopStyle}" Content="" IsChecked="False"/>
+                            <TextBlock Name="TextBlock6" Margin="65 3 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                        <Setter Property="Text" Value="Change Windows Feedback frequency to &quot;Never&quot;" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton6, Path=IsChecked}" Value="True">
+                                                <Setter Property="Text" Value="Change Windows Feedback frequency to &quot;Never&quot;" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton6, Path=IsEnabled}" Value="false">
+                                                <Setter Property="Opacity" Value="0.2" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
+                        <Grid Margin="0" HorizontalAlignment="Left">
+                            <ToggleButton Name="ToggleButton7" FontFamily="Sergio UI" FontSize="1"
+                          Style="{DynamicResource ToggleSwitchTopStyle}" Content="" IsChecked="False"/>
+                            <TextBlock Name="TextBlock7" Margin="65 3 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                        <Setter Property="Text" Value="Turn off diagnostics tracking scheduled tasks" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton7, Path=IsChecked}" Value="True">
+                                                <Setter Property="Text" Value="Turn off diagnostics tracking scheduled tasks" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton7, Path=IsEnabled}" Value="false">
+                                                <Setter Property="Opacity" Value="0.2" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
+                        <Grid Margin="0" HorizontalAlignment="Left">
+                            <ToggleButton Name="ToggleButton8" FontFamily="Sergio UI" FontSize="1"
+                          Style="{DynamicResource ToggleSwitchTopStyle}" Content="" IsChecked="False"/>
+                            <TextBlock Name="TextBlock8" Margin="65 3 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                        <Setter Property="Text" Value="Do not offer tailored experiences based on the diagnostic data setting" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton8, Path=IsChecked}" Value="True">
+                                                <Setter Property="Text" Value="Do not offer tailored experiences based on the diagnostic data setting" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton8, Path=IsEnabled}" Value="false">
+                                                <Setter Property="Opacity" Value="0.2" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
+                        <Grid Margin="0" HorizontalAlignment="Left">
+                            <ToggleButton Name="ToggleButton9" FontFamily="Sergio UI" FontSize="1"
+                          Style="{DynamicResource ToggleSwitchTopStyle}" Content="" IsChecked="False"/>
+                            <TextBlock Name="TextBlock9" Margin="65 3 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                        <Setter Property="Text" Value="Do not let apps on other devices open and message apps on this device" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton9, Path=IsChecked}" Value="True">
+                                                <Setter Property="Text" Value="Do not let apps on other devices open and message apps on this device" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton9, Path=IsEnabled}" Value="false">
+                                                <Setter Property="Opacity" Value="0.2" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
+                        <Grid Margin="0" HorizontalAlignment="Left">
+                            <ToggleButton Name="ToggleButton10" FontFamily="Sergio UI" FontSize="1"
+                          Style="{DynamicResource ToggleSwitchTopStyle}" Content="" IsChecked="False"/>
+                            <TextBlock Name="TextBlock10" Margin="65 3 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                        <Setter Property="Text" Value="Do not allow apps to use advertising ID" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton10, Path=IsChecked}" Value="True">
+                                                <Setter Property="Text" Value="Do not allow apps to use advertising ID" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton10, Path=IsEnabled}" Value="false">
+                                                <Setter Property="Opacity" Value="0.2" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
+                        <Grid Margin="0" HorizontalAlignment="Left">
+                            <ToggleButton Name="ToggleButton11" FontFamily="Sergio UI" FontSize="1"
+                          Style="{DynamicResource ToggleSwitchTopStyle}" Content="" IsChecked="False"/>
+                            <TextBlock Name="TextBlock11" Margin="65 3 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                        <Setter Property="Text" Value="Do not use sign-in info to automatically finish setting up device after an update or restart" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton11, Path=IsChecked}" Value="True">
+                                                <Setter Property="Text" Value="Do not use sign-in info to automatically finish setting up device after an update or restart" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton11, Path=IsEnabled}" Value="false">
+                                                <Setter Property="Opacity" Value="0.2" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
+                        <Grid Margin="0" HorizontalAlignment="Left">
+                            <ToggleButton Name="ToggleButton12" FontFamily="Sergio UI" FontSize="1"
+                          Style="{DynamicResource ToggleSwitchTopStyle}" Content="" IsChecked="False"/>
+                            <TextBlock Name="TextBlock12" Margin="65 3 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                        <Setter Property="Text" Value="Do not let websites provide locally relevant content by accessing language list" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton12, Path=IsChecked}" Value="True">
+                                                <Setter Property="Text" Value="Do not let websites provide locally relevant content by accessing language list" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton12, Path=IsEnabled}" Value="false">
+                                                <Setter Property="Opacity" Value="0.2" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
+                        <Grid Margin="0" HorizontalAlignment="Left">
+                            <ToggleButton Name="ToggleButton13" FontFamily="Sergio UI" FontSize="1"
+                          Style="{DynamicResource ToggleSwitchTopStyle}" Content="" IsChecked="False"/>
+                            <TextBlock Name="TextBlock13" Margin="65 3 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                        <Setter Property="Text" Value="Turn off reserved storage" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton13, Path=IsChecked}" Value="True">
+                                                <Setter Property="Text" Value="Turn off reserved storage" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton13, Path=IsEnabled}" Value="false">
+                                                <Setter Property="Opacity" Value="0.2" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
+                        <Grid Margin="0" HorizontalAlignment="Left">
+                            <ToggleButton Name="ToggleButton14" FontFamily="Sergio UI" FontSize="1"
+                          Style="{DynamicResource ToggleSwitchTopStyle}" Content="" IsChecked="False"/>
+                            <TextBlock Name="TextBlock14" Margin="65 3 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                        <Setter Property="Text" Value="Turn off tip, trick, and suggestions as you use Windows" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton14, Path=IsChecked}" Value="True">
+                                                <Setter Property="Text" Value="Turn off tip, trick, and suggestions as you use Windows" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton14, Path=IsEnabled}" Value="false">
+                                                <Setter Property="Opacity" Value="0.2" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
+                        <Grid Margin="0" HorizontalAlignment="Left">
+                            <ToggleButton Name="ToggleButton15" FontFamily="Sergio UI" FontSize="1"
+                          Style="{DynamicResource ToggleSwitchTopStyle}" Content="" IsChecked="False"/>
+                            <TextBlock Name="TextBlock15" Margin="65 3 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                        <Setter Property="Text" Value="Turn off suggested content in the Settings" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton15, Path=IsChecked}" Value="True">
+                                                <Setter Property="Text" Value="Turn off suggested content in the Settings" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton15, Path=IsEnabled}" Value="false">
+                                                <Setter Property="Opacity" Value="0.2" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
+                        <Grid Margin="0" HorizontalAlignment="Left">
+                            <ToggleButton Name="ToggleButton16" FontFamily="Sergio UI" FontSize="1"
+                          Style="{DynamicResource ToggleSwitchTopStyle}" Content="" IsChecked="False"/>
+                            <TextBlock Name="TextBlock16" Margin="65 3 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                        <Setter Property="Text" Value="Turn off automatic installing suggested apps" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton16, Path=IsChecked}" Value="True">
+                                                <Setter Property="Text" Value="Turn off automatic installing suggested apps" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton16, Path=IsEnabled}" Value="false">
+                                                <Setter Property="Opacity" Value="0.2" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </StackPanel>
+                    <!--#endregion-->
+                    
+                    <!--#region UI & Personalization-->
+                    <StackPanel Orientation="Horizontal" Height="35" Margin="0 5 0 0">
+                        <Viewbox Width="24" Height="24" Margin="20 0 5 6" >
+                            <Path Data="M12 5.69L17 10.19V18H15V12H9V18H7V10.19L12 5.69M12 3L2 12H5V20H11V14H13V20H19V12H22L12 3Z" Fill="Black" />
+                        </Viewbox>
+                        <TextBlock Text="UI &amp; Personalization" VerticalAlignment="Center" FontWeight="Bold"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
+                        <Grid Margin="0" HorizontalAlignment="Left">
+                            <ToggleButton Name="ToggleButton17" FontFamily="Sergio UI" FontSize="1"
+                          Style="{DynamicResource ToggleSwitchTopStyle}" Content="" IsChecked="False"/>
+                            <TextBlock Name="TextBlock17" Margin="65 3 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                        <Setter Property="Text" Value="Set File Explorer to open to This PC by default" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton17, Path=IsChecked}" Value="True">
+                                                <Setter Property="Text" Value="Set File Explorer to open to This PC by default" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton17, Path=IsEnabled}" Value="false">
+                                                <Setter Property="Opacity" Value="0.2" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
+                        <Grid Margin="0" HorizontalAlignment="Left">
+                            <ToggleButton Name="ToggleButton18" FontFamily="Sergio UI" FontSize="1"
+                          Style="{DynamicResource ToggleSwitchTopStyle}" Content="" IsChecked="False"/>
+                            <TextBlock Name="TextBlock18" Margin="65 3 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                        <Setter Property="Text" Value="Show Hidden Files, Folders, and Drives" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton18, Path=IsChecked}" Value="True">
+                                                <Setter Property="Text" Value="Show Hidden Files, Folders, and Drives" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton18, Path=IsEnabled}" Value="false">
+                                                <Setter Property="Opacity" Value="0.2" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
+                        <Grid Margin="0" HorizontalAlignment="Left">
+                            <ToggleButton Name="ToggleButton19" FontFamily="Sergio UI" FontSize="1"
+                          Style="{DynamicResource ToggleSwitchTopStyle}" Content="" IsChecked="False"/>
+                            <TextBlock Name="TextBlock19" Margin="65 3 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                        <Setter Property="Text" Value="Show File Name Extensions" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton19, Path=IsChecked}" Value="True">
+                                                <Setter Property="Text" Value="Show File Name Extensions" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton19, Path=IsEnabled}" Value="false">
+                                                <Setter Property="Opacity" Value="0.2" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0 2 0 2">
+                        <Grid Margin="0" HorizontalAlignment="Left">
+                            <ToggleButton Name="ToggleButton20" FontFamily="Sergio UI" FontSize="1"
+                          Style="{DynamicResource ToggleSwitchTopStyle}" Content="" IsChecked="False"/>
+                            <TextBlock Name="TextBlock20" Margin="65 3 0 0" VerticalAlignment="Center" FontFamily="Sergio UI" FontSize="16">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                        <Setter Property="Text" Value="Hide Task View button on taskbar" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton20, Path=IsChecked}" Value="True">
+                                                <Setter Property="Text" Value="Hide Task View button on taskbar" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ElementName=ToggleButton20, Path=IsEnabled}" Value="false">
                                                 <Setter Property="Opacity" Value="0.2" />
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -516,27 +941,59 @@ if (-not (Test-Path -Path $pathIco))
     </Border>
 </Window>
 '@
+
 $xamlGui = [System.Windows.Markup.XamlReader]::Load((New-Object System.Xml.XmlNodeReader $xamlMarkup))
-$xamlGui.Icon = $pathIco
 $xamlMarkup.SelectNodes('//*[@Name]') | ForEach-Object {
-	Set-Variable -Name ($_.Name) -Value $xamlGui.FindName($_.Name)
+    
+    if ($_.Name.Contains("ToggleButton")) {
+
+        $ToggleBtn = $xamlGui.FindName($_.Name)
+        [Void]$ToggleButtons.Add($ToggleBtn)
+    }
+	
+	else
+	{
+		New-Variable -Name $_.Name -Value $xamlGui.FindName($_.Name)
+	}    
 }
 
-#region Controls Events
+#region Script Functions
+function Hide-Console {
+    <#
+    .SYNOPSIS
+    Hide Powershell console before show WPF GUI.    
+    #>
 
-$xamlGui.add_MouseLeftButtonDown({
-	$xamlGui.DragMove()
-})
+    [CmdletBinding()]
+    param ()
 
-$MinimizeButton.add_MouseLeftButtonDown({
-	$xamlGui.WindowState = "Minimized"
-})
+    Add-Type -Name Window -Namespace Console -MemberDefinition '
+    [DllImport("Kernel32.dll")]
+    public static extern IntPtr GetConsoleWindow();
 
-$CloseButton.add_MouseLeftButtonDown({
-	$xamlGui.Close()
-})
+    [DllImport("user32.dll")]
+    public static extern bool ShowWindow(IntPtr hWnd, Int32 nCmdShow);
+'
+    [Console.Window]::ShowWindow([Console.Window]::GetConsoleWindow(), 0)
+}
 
 #endregion
 
-$xamlGui.ShowDialog() | Out-Null
+#region Controls Events
 
+$xamlGui.add_MouseLeftButtonDown( {
+        $xamlGui.DragMove()
+    })
+
+$MinimizeButton.add_MouseLeftButtonDown( {
+        $xamlGui.WindowState = "Minimized"
+    })
+
+$CloseButton.add_MouseLeftButtonDown( {
+        $xamlGui.Close()
+    })
+
+#endregion
+
+Hide-Console
+$xamlGui.ShowDialog() | Out-Null
