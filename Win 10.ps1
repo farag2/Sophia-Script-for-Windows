@@ -11,6 +11,13 @@ IF ((Get-Culture).Name -eq "ru-RU")
 {
 	$RU = $true
 }
+# Set the encoding to UTF-8 without BOM for the PowerShell session
+# Установить кодировку UTF-8 без BOM для текущей сессии PowerShell
+IF ($RU)
+{
+	ping.exe | Out-Null
+	$OutputEncoding = [System.Console]::OutputEncoding = [System.Console]::InputEncoding = [System.Text.Encoding]::UTF8
+}
 # Turn off "Connected User Experiences and Telemetry" service
 # Отключить службу "Функциональные возможности для подключенных пользователей и телеметрия"
 Get-Service -Name DiagTrack | Stop-Service -Force
@@ -37,27 +44,27 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Siuf\Rules -Name NumberOfSIUFInP
 # Turn off diagnostics tracking scheduled tasks
 # Отключить задачи диагностического отслеживания
 $tasks = @(
-	"ProgramDataUpdater",
-	"Microsoft Compatibility Appraiser",
-	"Microsoft-Windows-DiskDiagnosticDataCollector",
-	"TempSignedLicenseExchange",
-	"MapsToastTask",
-	"DmClient",
-	"FODCleanupTask",
-	"DmClientOnScenarioDownload",
-	"BgTaskRegistrationMaintenanceTask",
-	"File History (maintenance mode)",
-	"WinSAT",
-	"UsbCeip",
-	"Consolidator",
-	"Proxy",
-	"MNO Metadata Parser",
-	"NetworkStateChangeTask",
-	"GatherNetworkInfo",
-	"XblGameSaveTask",
-	"EnableLicenseAcquisition",
-	"QueueReporting",
-	"FamilySafetyMonitor",
+	"ProgramDataUpdater"
+	"Microsoft Compatibility Appraiser"
+	"Microsoft-Windows-DiskDiagnosticDataCollector"
+	"TempSignedLicenseExchange"
+	"MapsToastTask"
+	"DmClient"
+	"FODCleanupTask"
+	"DmClientOnScenarioDownload"
+	"BgTaskRegistrationMaintenanceTask"
+	"File History (maintenance mode)"
+	"WinSAT"
+	"UsbCeip"
+	"Consolidator"
+	"Proxy"
+	"MNO Metadata Parser"
+	"NetworkStateChangeTask"
+	"GatherNetworkInfo"
+	"XblGameSaveTask"
+	"EnableLicenseAcquisition"
+	"QueueReporting"
+	"FamilySafetyMonitor"
 	"FamilySafetyRefreshTask"
 )
 Get-ScheduledTask -TaskName $tasks | Disable-ScheduledTask
@@ -523,7 +530,7 @@ $ExcludedApps = @(
 $OFS = "|"
 Get-AppxPackage -PackageTypeFilter Bundle -AllUsers | Where-Object {$_.Name -cnotmatch $ExcludedApps} | Remove-AppxPackage -AllUsers
 $OFS = " "
-# Uninstall all UWP apps from all accounts except
+# Uninstall all provisioned UWP apps from all accounts except
 # Удалить все UWP-приложения из системной учетной записи, кроме
 $ExcludedApps = @(
 	# Intel UWP-panel
@@ -622,8 +629,8 @@ Get-CimInstance -ClassName Win32_ShadowCopy | Remove-CimInstance
 # Turn off Windows Script Host
 # Отключить Windows Script Host
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings" -Name Enabled -PropertyType DWord -Value 0 -Force
-# Create scheduled task with the disk cleanup tool in Task Scheduler. The task runs every 90 days
-# Создать в Планировщике задач задачу по запуску очистки диска. Задача выполняется каждые 90 дней
+# Create a task in the Task Scheduler to start Windows cleaning up. The task runs every 90 days
+# Создать задачу в Планировщике задач по очистке обновлений Windows. Задача выполняется каждые 90 дней
 $keys = @(
 	# Delivery Optimization Files
 	# Файлы оптимизации доставки
@@ -662,9 +669,9 @@ $params = @{
 	"Principal"	=	$principal
 }
 Register-ScheduledTask @params -Force
-# Create task to clean out the "$env:SystemRoot\SoftwareDistribution\Download" folder in Task Scheduler
+# Create a task in the Task Scheduler to clear the "$env:SystemRoot\SoftwareDistribution\Download" folder.
 # The task runs on Thursdays every 4 weeks
-# Создать в Планировщике задач задачу по очистке папки "$env:SystemRoot\SoftwareDistribution\Download"
+# Создать задачу в Планировщике задач по очистке папки "$env:SystemRoot\SoftwareDistribution\Download"
 # Задача выполняется по четвергам каждую 4 неделю
 $action = New-ScheduledTaskAction -Execute powershell.exe -Argument @"
 	`$getservice = Get-Service -Name wuauserv
@@ -682,8 +689,8 @@ $params = @{
 	"Principal"	=	$principal
 }
 Register-ScheduledTask @params -Force
-# Create scheduled task with the $env:TEMP folder cleanup in Task Scheduler. The task runs every 62 days
-# Создать в Планировщике задач очистки папки $env:TEMP. Задача выполняется каждые 62 дня
+# Create a task in the Task Scheduler to clear the $env:TEMP folder. The task runs every 62 days
+# Создать задачу в Планировщике задач по очистке папки $env:TEMP. Задача выполняется каждые 62 дня
 $action = New-ScheduledTaskAction -Execute powershell.exe -Argument @"
 	Get-ChildItem -Path `$env:TEMP -Force -Recurse | Remove-Item -Force -Recurse
 "@
@@ -1075,9 +1082,9 @@ Get-WindowsCapability -Online | Where-Object -FilterScript {$_.Name -cmatch $Inc
 $OFS = " "
 # Open shortcut to the Command Prompt from Start menu as Administrator
 # Запускать ярлык к командной строке в меню "Пуск" от имени Администратора
-$bytes = [System.IO.File]::ReadAllBytes("$env:APPDATA\Microsoft\Windows\Start Menu\Programs\System Tools\Command Prompt.lnk")
+[byte[]]$bytes = Get-Content -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\System Tools\Command Prompt.lnk" -Encoding Byte -Raw
 $bytes[0x15] = $bytes[0x15] -bor 0x20
-[System.IO.File]::WriteAllBytes("$env:APPDATA\Microsoft\Windows\Start Menu\Programs\System Tools\Command Prompt.lnk", $bytes)
+Set-Content -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\System Tools\Command Prompt.lnk" -Value $bytes -Encoding Byte -Force
 # Create old style shortcut for "Devices and Printers" in "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\System Tools"
 # Создать ярлык старого формата для "Устройства и принтеры" в "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\System Tools"
 $target = "control"
@@ -1099,6 +1106,16 @@ $openfiledialog.ShowHelp = $true
 # Начальная папка "Загрузки"
 $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 $OpenFileDialog.InitialDirectory = $DownloadsFolder
+$OpenFileDialog.Multiselect = $false
+$OpenFileDialog.ShowHelp = $false
+IF ($RU)
+{
+	$OpenFileDialog.Filter = "Файлы реестра (*.reg)|*.reg|Все файлы (*.*)|*.*"
+}
+else
+{
+	$OpenFileDialog.Filter = "Registration Files (*.reg)|*.reg|All Files (*.*)|*.*"
+}
 # Focus on open file dialog
 # Перевести фокус на диалог открытия файла
 $tmp = New-Object -TypeName System.Windows.Forms.Form
@@ -1152,7 +1169,6 @@ New-ItemProperty -Path "HKCU:\Control Panel\Accessibility" -Name DynamicScrollba
 New-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name HttpAcceptLanguageOptOut -PropertyType DWord -Value 1 -Force
 # Turn on Windows Defender Sandbox
 # Запускать Защитник Windows в песочнице
-[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 setx /M MP_FORCE_USE_SANDBOX 1
 # Set location of the "Desktop", "Documents" "Downloads" "Music", "Pictures", and "Videos"
 # Переопределить расположение папок "Рабочий стол", "Документы", "Загрузки", "Музыка", "Изображения", "Видео"
@@ -1672,13 +1688,14 @@ IF ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2 -and (G
 # Automatically adjust active hours for me based on daily usage
 # Автоматически изменять период активности для этого устройства на основе действий
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name SmartActiveHoursState -PropertyType DWord -Value 1 -Force
-# Turn on automatic recommended troubleshooting
-# Устранять проблемы без запроса
+# Turn on automatic recommended troubleshooting and tell when problems get fixed
+# Автоматически запускать средства устранения неполадок, а затем сообщать об устранении проблем
+New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 3 -Force
 IF (-not (Test-Path -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation))
 {
 	New-Item -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation -Force
 }
-New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation -Name UserPreference -PropertyType DWord -Value 4 -Force
+New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation -Name UserPreference -PropertyType DWord -Value 3 -Force
 # Turn on Windows Sandbox
 # Включить Windows Sandbox
 IF (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Professional" -or $_.Edition -eq "Enterprise"})
@@ -1702,8 +1719,8 @@ IF (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Pro
 		}
 	}
 }
-# Turn off reserved storage
-# Отключить зарезервированное хранилище
+# Turn off and delete reserved storage after the next update installation
+# Отключить и удалить зарезервированное хранилище после следующей установки обновлений
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveManager -Name BaseHardReserveSize -PropertyType QWord -Value 0 -Force
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveManager -Name BaseSoftReserveSize -PropertyType QWord -Value 0 -Force
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveManager -Name HardReserveAdjustment -PropertyType QWord -Value 0 -Force
@@ -1711,10 +1728,10 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveMa
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveManager -Name ShippedWithReserves -PropertyType DWord -Value 0 -Force
 # Launch folder in a separate process
 # Запускать окна с папками в отдельном процессе
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SeparateProcess -Value 1 -Force
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SeparateProcess -PropertyType DWord -Value 1 -Force
 # Turn on automatic backup the system registry to the "$env:SystemRoot\System32\config\RegBack" folder
 # Включить автоматическое создание копии реестра в папку "$env:SystemRoot\System32\config\RegBack"
-New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Configuration Manager" -Name EnablePeriodicBackup -Value 1 -Force
+New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Configuration Manager" -Name EnablePeriodicBackup -PropertyType DWord -Value 1 -Force
 # Restart Start menu
 # Перезапустить меню "Пуск"
 Stop-Process -Name StartMenuExperienceHost -Force
@@ -1758,4 +1775,4 @@ Write-Host "`nErrors" -BackgroundColor Red
 		Line = $_.InvocationInfo.ScriptLineNumber
 		Error = $_.Exception.Message
 	}
-} | Format-Table -AutoSize -Wrap | Out-String).Trim()
+} | Sort-Object -Property Line | Format-Table -AutoSize -Wrap | Out-String).Trim()
