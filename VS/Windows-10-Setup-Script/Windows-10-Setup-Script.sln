@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.757
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Windows-10-Setup-Script", "Windows-10-Setup-Script.csproj", "{D5A79EFF-F519-43EE-9806-A25ED11852C9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI-1", "..\GUI-1\GUI-1.csproj", "{70233A63-50E9-46A4-9177-D67403D23004}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{D5A79EFF-F519-43EE-9806-A25ED11852C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5A79EFF-F519-43EE-9806-A25ED11852C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5A79EFF-F519-43EE-9806-A25ED11852C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70233A63-50E9-46A4-9177-D67403D23004}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70233A63-50E9-46A4-9177-D67403D23004}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70233A63-50E9-46A4-9177-D67403D23004}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70233A63-50E9-46A4-9177-D67403D23004}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
