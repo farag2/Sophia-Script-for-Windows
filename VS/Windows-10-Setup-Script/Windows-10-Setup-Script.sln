@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Windows-10-Setup-Script", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI-1", "..\GUI-1\GUI-1.csproj", "{70233A63-50E9-46A4-9177-D67403D23004}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI-2", "..\GUI-2\GUI-2.csproj", "{B3FAAFC9-B00B-4ED1-96BC-F951C52D100A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{70233A63-50E9-46A4-9177-D67403D23004}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70233A63-50E9-46A4-9177-D67403D23004}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70233A63-50E9-46A4-9177-D67403D23004}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3FAAFC9-B00B-4ED1-96BC-F951C52D100A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3FAAFC9-B00B-4ED1-96BC-F951C52D100A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3FAAFC9-B00B-4ED1-96BC-F951C52D100A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3FAAFC9-B00B-4ED1-96BC-F951C52D100A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
