@@ -1,17 +1,11 @@
-﻿Add-Type -AssemblyName "PresentationCore", "PresentationFramework", "WindowsBase"
-
-#region Script Variables
-$ToggleButtons = New-Object System.Collections.ArrayList($null)
-#endregion
-
-[xml]$xamlMarkup = @'
-<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"                        
+﻿<Window x:Class="GUI_3.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
         x:Name="Window"
         Title="Windows 10 Setup Script" MinHeight="800" MinWidth="800" Height="800" Width="800" FontFamily="Sergio UI"
         FontSize="16" TextOptions.TextFormattingMode="Display" WindowStartupLocation="CenterScreen" 
         SnapsToDevicePixels="True" WindowStyle="None" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" 
-        ShowInTaskbar="True" Background="#FAFAFA"
+        ShowInTaskbar="True" MouseLeftButtonDown="Window_MouseLeftButtonDown_1" Background="#FAFAFA"
         Foreground="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}">
 
     <Window.Resources>
@@ -616,7 +610,7 @@ $ToggleButtons = New-Object System.Collections.ArrayList($null)
                                     <EventTrigger.Actions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="155" SpeedRatio="3"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="150" SpeedRatio="3"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger.Actions>
@@ -691,60 +685,3 @@ $ToggleButtons = New-Object System.Collections.ArrayList($null)
         </Grid>
     </Border>
 </Window>
-'@
-
-$xamlGui = [System.Windows.Markup.XamlReader]::Load((New-Object System.Xml.XmlNodeReader $xamlMarkup))
-$xamlMarkup.SelectNodes('//*[@Name]') | ForEach-Object {
-    
-    if ($_.Name.Contains("ToggleButton")) {
-
-        $ToggleBtn = $xamlGui.FindName($_.Name)
-        [Void]$ToggleButtons.Add($ToggleBtn)
-    }
-	
-	else
-	{
-		New-Variable -Name $_.Name -Value $xamlGui.FindName($_.Name)
-	}    
-}
-
-#region Script Functions
-function Hide-Console {
-    <#
-    .SYNOPSIS
-    Hide Powershell console before show WPF GUI.    
-    #>
-
-    [CmdletBinding()]
-    param ()
-
-    Add-Type -Name Window -Namespace Console -MemberDefinition '
-    [DllImport("Kernel32.dll")]
-    public static extern IntPtr GetConsoleWindow();
-
-    [DllImport("user32.dll")]
-    public static extern bool ShowWindow(IntPtr hWnd, Int32 nCmdShow);
-'
-    [Console.Window]::ShowWindow([Console.Window]::GetConsoleWindow(), 0)
-}
-
-#endregion
-
-#region Controls Events
-
-$xamlGui.add_MouseLeftButtonDown( {
-        $xamlGui.DragMove()
-    })
-
-$MinimizeButton.add_MouseLeftButtonDown( {
-        $xamlGui.WindowState = "Minimized"
-    })
-
-$CloseButton.add_MouseLeftButtonDown( {
-        $xamlGui.Close()
-    })
-
-#endregion
-
-Hide-Console
-$xamlGui.ShowDialog() | Out-Null
