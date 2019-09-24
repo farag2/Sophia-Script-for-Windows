@@ -8,7 +8,7 @@ $ToggleButtons = New-Object System.Collections.ArrayList($null)
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"                        
         x:Name="Window"
-        Title="Windows 10 Setup Script" MinHeight="800" MinWidth="800" Height="800" Width="800" FontFamily="Sergio UI"
+        Title="Windows 10 Setup Script" MinHeight="800" MinWidth="750" Height="800" Width="750" FontFamily="Sergio UI"
         FontSize="16" TextOptions.TextFormattingMode="Display" WindowStartupLocation="CenterScreen" 
         SnapsToDevicePixels="True" WindowStyle="None" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" 
         ShowInTaskbar="True" Background="#FAFAFA"
@@ -190,29 +190,7 @@ $ToggleButtons = New-Object System.Collections.ArrayList($null)
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>
-
-        <!--ToggleSwitchLeftStyle
-        <Grid Margin="0" HorizontalAlignment="Left">
-            <ToggleButton Name="ToggleButton0" FontFamily="Sergio UI" FontSize="1"
-                          Style="{DynamicResource ToggleSwitchLeftStyle}" Content="" IsChecked="False"/>
-            <TextBlock Margin="65 0 0 0" VerticalAlignment="Center" IsHitTestVisible="False">
-                <TextBlock.Style>
-                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
-                        <Setter Property="Text" Value="Off" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding ElementName=ToggleButton0, Path=IsChecked}" Value="True">
-                                <Setter Property="Text" Value="On" />
-                                <Setter Property="Foreground" Value="{Binding ElementName=BorderWindow, Path=BorderBrush}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding ElementName=ToggleButton0, Path=IsEnabled}" Value="false">
-                                <Setter Property="Opacity" Value="0.2" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
-        </Grid>-->
+        </Style>        
 
         <Style x:Key="ToggleSwitchTopStyle" TargetType="{x:Type ToggleButton}">
             <Setter Property="Background" Value="{StaticResource RadioButton.Static.Background}"/>
@@ -405,12 +383,13 @@ $ToggleButtons = New-Object System.Collections.ArrayList($null)
 
     </Window.Resources>
 
-    <Border Name="BorderWindow" BorderThickness="1" BorderBrush="#673AB7">
+    <Border Name="BorderWindow" BorderThickness="1" BorderBrush="#0078d7">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>                
             </Grid.RowDefinitions>
             <!--#region Title Panel-->
             <Grid Grid.Row="0" Margin="0 0 0 5" Background="{Binding ElementName=BorderWindow, Path=BorderBrush}">
@@ -425,8 +404,8 @@ $ToggleButtons = New-Object System.Collections.ArrayList($null)
                 </Viewbox>
                 <!--Header-->
                 <TextBlock Name="TitleHeader" Text="Windows 10 Setup Script" FontFamily="Sergio UI" FontSize="14"
-                           FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#FFFFFF"/>                
-                <!--Minimize Button-->                
+                           FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#FFFFFF"/>
+                <!--Minimize Button-->
                 <Canvas Name="MinimizeButton" VerticalAlignment="Center" HorizontalAlignment="Right" 
                         Margin="0 0 35 0" Style="{StaticResource TitleButtonStyle}">
                     <Viewbox Width="24" Height="24" Canvas.Left="4">
@@ -443,10 +422,10 @@ $ToggleButtons = New-Object System.Collections.ArrayList($null)
             <!--#endregion Title Panel-->
 
             <!--#region Action Buttons Panel-->
-            <StackPanel Name="ActionButtonsPanel" Orientation="Horizontal" Grid.Row="1" VerticalAlignment="Center">
-                
+            <StackPanel Name="ActionButtonsPanel" Height="40" Margin="0 0 0 5" Orientation="Horizontal" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+
                 <!--#region Apply Setting Button-->
-                <StackPanel Name="ApplySettingPanel" Margin="10 0 0 0" Height="35" Width="35" Orientation="Horizontal">
+                <StackPanel Margin="10 0 0 0" Height="35" Width="35" Orientation="Horizontal">
                     <StackPanel.Style>
                         <Style TargetType="{x:Type StackPanel}">
                             <Style.Triggers>
@@ -494,11 +473,11 @@ $ToggleButtons = New-Object System.Collections.ArrayList($null)
                     </Viewbox>
                     <TextBlock Name="ApplyButtonText" Text="apply settings" FontSize="14" VerticalAlignment="Center"
                                Margin="0 0 8 0" Foreground="{Binding ElementName=BorderWindow, Path=BorderBrush}"/>
-                </StackPanel>                
+                </StackPanel>
                 <!--#endregion Apply Button-->
 
                 <!--#region Save Setting Button-->
-                <StackPanel Name="SaveSettingPanel" Margin="10 0 0 0" Height="35" Width="35" Orientation="Horizontal">
+                <StackPanel Margin="10 0 0 0" Height="35" Width="35" Orientation="Horizontal">
                     <StackPanel.Style>
                         <Style TargetType="{x:Type StackPanel}">
                             <Style.Triggers>
@@ -521,7 +500,7 @@ $ToggleButtons = New-Object System.Collections.ArrayList($null)
                                     <EventTrigger.Actions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="35" SpeedRatio="3"/>                                                
+                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="35" SpeedRatio="3"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger.Actions>
@@ -548,9 +527,9 @@ $ToggleButtons = New-Object System.Collections.ArrayList($null)
                                Margin="0 0 8 0" Foreground="{Binding ElementName=BorderWindow, Path=BorderBrush}"/>
                 </StackPanel>
                 <!--#endregion Save Setting Button-->
-                
+
                 <!--#region Load Setting Button-->
-                <StackPanel Name="LoadSettingPanel" Margin="10 0 0 0" Height="35" Width="35" Orientation="Horizontal">
+                <StackPanel Margin="10 0 0 0" Height="35" Width="35" Orientation="Horizontal">
                     <StackPanel.Style>
                         <Style TargetType="{x:Type StackPanel}">
                             <Style.Triggers>
@@ -602,7 +581,7 @@ $ToggleButtons = New-Object System.Collections.ArrayList($null)
                 <!--#endregion Load Setting Button-->
 
                 <!--#region Change Language Button-->
-                <StackPanel Name="ChangeLanguagePanel" Margin="10 0 0 0" Height="35" Width="35" Orientation="Horizontal">
+                <StackPanel Margin="10 0 0 0" Height="35" Width="35" Orientation="Horizontal">
                     <StackPanel.Style>
                         <Style TargetType="{x:Type StackPanel}">
                             <Style.Triggers>
@@ -616,7 +595,7 @@ $ToggleButtons = New-Object System.Collections.ArrayList($null)
                                     <EventTrigger.Actions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="155" SpeedRatio="3"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="150" SpeedRatio="3"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger.Actions>
@@ -653,41 +632,472 @@ $ToggleButtons = New-Object System.Collections.ArrayList($null)
                 </StackPanel>
                 <!--#endregion Change Language Button-->
 
+                <!--#region Github Button-->
+                <StackPanel Margin="10 0 0 0" Height="35" Width="35" Orientation="Horizontal">
+                    <StackPanel.Style>
+                        <Style TargetType="{x:Type StackPanel}">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#DADADA"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="False">
+                                    <Setter Property="Background" Value="{Binding ElementName=Window, Path=Background}"/>
+                                </Trigger>
+                                <EventTrigger RoutedEvent="MouseEnter">
+                                    <EventTrigger.Actions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="135" SpeedRatio="3"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger.Actions>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="MouseLeave">
+                                    <EventTrigger.Actions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="35" SpeedRatio="3"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger.Actions>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="MouseDown">
+                                    <EventTrigger.Actions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ThicknessAnimation Storyboard.TargetProperty="Margin" Duration="0:0:1" To="10 4 0 0" SpeedRatio="5" AutoReverse="True"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger.Actions>
+                                </EventTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+                    <Viewbox Width="18" Height="18" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="8 0 9 0">
+                        <Canvas Width="24" Height="24">
+                            <Path Data="M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z"
+                                  Fill="{Binding ElementName=BorderWindow, Path=BorderBrush}"/>
+                        </Canvas>
+                    </Viewbox>
+                    <TextBlock Name="GithubButtonText" Text="follow to githib" FontSize="14" VerticalAlignment="Center"
+                               Margin="0 0 8 0" Foreground="{Binding ElementName=BorderWindow, Path=BorderBrush}"/>
+                </StackPanel>
+                <!--#endregion Change Language Button-->
             </StackPanel>
             <!--#endregion Action Buttons Panel-->
-            
-            <!--#region Toggle Setting -->
-            <!--<ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <StackPanel Orientation="Vertical">
-                    --><!--#region Privacy & Telemetry--><!--
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Text="Privacy &amp; Telemetry" FontWeight="Bold" FontSize="18" Margin="10 10 0 10" />
-                        <Grid Margin="10 0 0 10" HorizontalAlignment="Left">
-                            <ToggleButton x:Name="ToggleSwitch1" FontFamily="Sergio UI" FontSize="16"
-                          Style="{DynamicResource ToggleSwitchTopStyle}"
-                          Content="Turn off &quot;Connected User Experiences and Telemetry&quot; service" 
-                          IsChecked="False" 
-                          />
-                            <TextBlock Margin="52 0 0 0" VerticalAlignment="Bottom" FontFamily="Sergio UI" FontSize="16">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
-                                        <Setter Property="Text" Value="Off" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ElementName=ToggleSwitch1, Path=IsChecked}" Value="True">
-                                                <Setter Property="Text" Value="On" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding ElementName=ToggleSwitch1, Path=IsEnabled}" Value="false">
-                                                <Setter Property="Opacity" Value="0.2" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                        </Grid>
-                    </StackPanel>
+
+            <!--#region Alert Panel-->
+            <StackPanel Name="AlertPanel" Height="50" Visibility="Collapsed" Orientation="Horizontal" Grid.Row="2" VerticalAlignment="Center">
+
+            </StackPanel>
+            <!--#endregion Alert Panel-->
+
+            <!--#region Toggle Buttons Panel-->
+            <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <!--#region Privacy & Telemetry-->
+                <StackPanel Orientation="Vertical" VerticalAlignment="Top">
+                    <Border BorderBrush="#DADADA" BorderThickness="1 0 1 1" Margin="10 0 10 0" Height="43" Background="#FFFFFF">
+                        <TextBlock Name="PanelHeaderPrivacy" Text="Privacy &amp; Telemetry Settings" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="28 0 0 0"/>
+                    </Border>
+                    <Border BorderBrush="#DADADA" BorderThickness="1 0 1 1" Margin="10 0 10 0" Background="#FFFFFF">
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <Grid HorizontalAlignment="Left">
+                                <ToggleButton Name="ToggleSwitch0" Style="{DynamicResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                <TextBlock Margin="65 0 10 0" VerticalAlignment="Center" IsHitTestVisible="False">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                            <Setter Property="Text" Value="Change Windows Feedback frequency to &quot;Never&quot;" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch0, Path=IsChecked}" Value="True">
+                                                    <Setter Property="Text" Value="Change Windows Feedback frequency to &quot;Never&quot;"/>
+                                                    <Setter Property="Foreground" Value="{Binding ElementName=BorderWindow, Path=BorderBrush}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch0, Path=IsEnabled}" Value="false">
+                                                    <Setter Property="Opacity" Value="0.2" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                    <Border BorderBrush="#DADADA" BorderThickness="1 0 1 1" Margin="10 0 10 0" Background="#FFFFFF">
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <Grid HorizontalAlignment="Left">
+                                <ToggleButton Name="ToggleSwitch1" Style="{DynamicResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                <TextBlock Margin="65 0 10 0" VerticalAlignment="Center" IsHitTestVisible="False">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                            <Setter Property="Text" Value="Turn off automatic installing suggested apps" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch1, Path=IsChecked}" Value="True">
+                                                    <Setter Property="Text" Value="Turn off automatic installing suggested apps"/>
+                                                    <Setter Property="Foreground" Value="{Binding ElementName=BorderWindow, Path=BorderBrush}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch1, Path=IsEnabled}" Value="false">
+                                                    <Setter Property="Opacity" Value="0.2" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                    <Border BorderBrush="#DADADA" BorderThickness="1 0 1 1" Margin="10 0 10 0" Background="#FFFFFF">
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <Grid HorizontalAlignment="Left">
+                                <ToggleButton Name="ToggleSwitch2" Style="{DynamicResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                <TextBlock Margin="65 0 10 0" VerticalAlignment="Center" IsHitTestVisible="False">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                            <Setter Property="Text" Value="Turn off &quot;Connected User Experiences and Telemetry&quot; service" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch2, Path=IsChecked}" Value="True">
+                                                    <Setter Property="Text" Value="Turn off &quot;Connected User Experiences and Telemetry&quot; service"/>
+                                                    <Setter Property="Foreground" Value="{Binding ElementName=BorderWindow, Path=BorderBrush}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch2, Path=IsEnabled}" Value="false">
+                                                    <Setter Property="Opacity" Value="0.2" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                    <Border BorderBrush="#DADADA" BorderThickness="1 0 1 1" Margin="10 0 10 0" Background="#FFFFFF">
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <Grid HorizontalAlignment="Left">
+                                <ToggleButton Name="ToggleSwitch3" Style="{DynamicResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                <TextBlock Margin="65 0 10 0" VerticalAlignment="Center" IsHitTestVisible="False">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                            <Setter Property="Text" Value="Turn off the SQMLogger session at the next computer restart" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch3, Path=IsChecked}" Value="True">
+                                                    <Setter Property="Text" Value="Turn off the SQMLogger session at the next computer restart"/>
+                                                    <Setter Property="Foreground" Value="{Binding ElementName=BorderWindow, Path=BorderBrush}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch3, Path=IsEnabled}" Value="false">
+                                                    <Setter Property="Opacity" Value="0.2" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                    <Border BorderBrush="#DADADA" BorderThickness="1 0 1 1" Margin="10 0 10 0" Background="#FFFFFF">
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <Grid HorizontalAlignment="Left">
+                                <ToggleButton Name="ToggleSwitch4" Style="{DynamicResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                <TextBlock Margin="65 0 10 0" VerticalAlignment="Center" IsHitTestVisible="False">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                            <Setter Property="Text" Value="Do not allow apps to use advertising ID" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch4, Path=IsChecked}" Value="True">
+                                                    <Setter Property="Text" Value="Do not allow apps to use advertising ID"/>
+                                                    <Setter Property="Foreground" Value="{Binding ElementName=BorderWindow, Path=BorderBrush}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch4, Path=IsEnabled}" Value="false">
+                                                    <Setter Property="Opacity" Value="0.2" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                    <Border BorderBrush="#DADADA" BorderThickness="1 0 1 1" Margin="10 0 10 0" Background="#FFFFFF">
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <Grid HorizontalAlignment="Left">
+                                <ToggleButton Name="ToggleSwitch5" Style="{DynamicResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                <TextBlock Margin="65 0 10 0" VerticalAlignment="Center" IsHitTestVisible="False">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                            <Setter Property="Text" Value="Do not use sign-in info to automatically finish setting up device after an update or restart" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch5, Path=IsChecked}" Value="True">
+                                                    <Setter Property="Text" Value="Do not use sign-in info to automatically finish setting up device after an update or restart"/>
+                                                    <Setter Property="Foreground" Value="{Binding ElementName=BorderWindow, Path=BorderBrush}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch5, Path=IsEnabled}" Value="false">
+                                                    <Setter Property="Opacity" Value="0.2" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                    <Border BorderBrush="#DADADA" BorderThickness="1 0 1 1" Margin="10 0 10 0" Background="#FFFFFF">
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <Grid HorizontalAlignment="Left">
+                                <ToggleButton Name="ToggleSwitch6" Style="{DynamicResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                <TextBlock Margin="65 0 10 0" VerticalAlignment="Center" IsHitTestVisible="False">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                            <Setter Property="Text" Value="Do not let websites provide locally relevant content by accessing language list" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch6, Path=IsChecked}" Value="True">
+                                                    <Setter Property="Text" Value="Do not let websites provide locally relevant content by accessing language list"/>
+                                                    <Setter Property="Foreground" Value="{Binding ElementName=BorderWindow, Path=BorderBrush}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch6, Path=IsEnabled}" Value="false">
+                                                    <Setter Property="Opacity" Value="0.2" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                    <Border BorderBrush="#DADADA" BorderThickness="1 0 1 1" Margin="10 0 10 0" Background="#FFFFFF">
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <Grid HorizontalAlignment="Left">
+                                <ToggleButton Name="ToggleSwitch7" Style="{DynamicResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                <TextBlock Margin="65 0 10 0" VerticalAlignment="Center" IsHitTestVisible="False">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                            <Setter Property="Text" Value="Turn off suggested content in the Settings" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch7, Path=IsChecked}" Value="True">
+                                                    <Setter Property="Text" Value="Turn off suggested content in the Settings"/>
+                                                    <Setter Property="Foreground" Value="{Binding ElementName=BorderWindow, Path=BorderBrush}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch7, Path=IsEnabled}" Value="false">
+                                                    <Setter Property="Opacity" Value="0.2" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                    <Border BorderBrush="#DADADA" BorderThickness="1 0 1 1" Margin="10 0 10 0" Background="#FFFFFF">
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <Grid HorizontalAlignment="Left">
+                                <ToggleButton Name="ToggleSwitch8" Style="{DynamicResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                <TextBlock Margin="65 0 10 0" VerticalAlignment="Center" IsHitTestVisible="False">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                            <Setter Property="Text" Value="Turn off tip, trick, and suggestions as you use Windows" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch8, Path=IsChecked}" Value="True">
+                                                    <Setter Property="Text" Value="Turn off tip, trick, and suggestions as you use Windows"/>
+                                                    <Setter Property="Foreground" Value="{Binding ElementName=BorderWindow, Path=BorderBrush}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch8, Path=IsEnabled}" Value="false">
+                                                    <Setter Property="Opacity" Value="0.2" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                    <Border BorderBrush="#DADADA" BorderThickness="1 0 1 1" Margin="10 0 10 0" Background="#FFFFFF">
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <Grid HorizontalAlignment="Left">
+                                <ToggleButton Name="ToggleSwitch9" Style="{DynamicResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                <TextBlock Margin="65 0 10 0" VerticalAlignment="Center" IsHitTestVisible="False">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                            <Setter Property="Text" Value="Turn off reserved storage" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch9, Path=IsChecked}" Value="True">
+                                                    <Setter Property="Text" Value="Turn off reserved storage"/>
+                                                    <Setter Property="Foreground" Value="{Binding ElementName=BorderWindow, Path=BorderBrush}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch9, Path=IsEnabled}" Value="false">
+                                                    <Setter Property="Opacity" Value="0.2" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                    <Border BorderBrush="#DADADA" BorderThickness="1 0 1 1" Margin="10 0 10 0" Background="#FFFFFF">
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <Grid HorizontalAlignment="Left">
+                                <ToggleButton Name="ToggleSwitch10" Style="{DynamicResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                <TextBlock Margin="65 0 10 0" VerticalAlignment="Center" IsHitTestVisible="False">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                            <Setter Property="Text" Value="Do not let apps on other devices open and message apps on this device, and vice versa" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch10, Path=IsChecked}" Value="True">
+                                                    <Setter Property="Text" Value="Do not let apps on other devices open and message apps on this device, and vice versa"/>
+                                                    <Setter Property="Foreground" Value="{Binding ElementName=BorderWindow, Path=BorderBrush}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch10, Path=IsEnabled}" Value="false">
+                                                    <Setter Property="Opacity" Value="0.2" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                    <Border BorderBrush="#DADADA" BorderThickness="1 0 1 1" Margin="10 0 10 0" Background="#FFFFFF">
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <Grid HorizontalAlignment="Left">
+                                <ToggleButton Name="ToggleSwitch11" Style="{DynamicResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                <TextBlock Margin="65 0 10 0" VerticalAlignment="Center" IsHitTestVisible="False">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                            <Setter Property="Text" Value="Set the operating system diagnostic data level to &quot;Basic&quot;" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch11, Path=IsChecked}" Value="True">
+                                                    <Setter Property="Text" Value="Set the operating system diagnostic data level to &quot;Basic&quot;"/>
+                                                    <Setter Property="Foreground" Value="{Binding ElementName=BorderWindow, Path=BorderBrush}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch11, Path=IsEnabled}" Value="false">
+                                                    <Setter Property="Opacity" Value="0.2" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                    <Border BorderBrush="#DADADA" BorderThickness="1 0 1 1" Margin="10 0 10 0" Background="#FFFFFF">
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <Grid HorizontalAlignment="Left">
+                                <ToggleButton Name="ToggleSwitch12" Style="{DynamicResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                <TextBlock Margin="65 0 10 0" VerticalAlignment="Center" IsHitTestVisible="False">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                            <Setter Property="Text" Value="Turn off the Autologger session at the next computer restart" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch12, Path=IsChecked}" Value="True">
+                                                    <Setter Property="Text" Value="Turn off the Autologger session at the next computer restart"/>
+                                                    <Setter Property="Foreground" Value="{Binding ElementName=BorderWindow, Path=BorderBrush}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch12, Path=IsEnabled}" Value="false">
+                                                    <Setter Property="Opacity" Value="0.2" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                    <Border BorderBrush="#DADADA" BorderThickness="1 0 1 1" Margin="10 0 10 0" Background="#FFFFFF">
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <Grid HorizontalAlignment="Left">
+                                <ToggleButton Name="ToggleSwitch13" Style="{DynamicResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                <TextBlock Margin="65 0 10 0" VerticalAlignment="Center" IsHitTestVisible="False">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                            <Setter Property="Text" Value="Turn off per-user services" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch13, Path=IsChecked}" Value="True">
+                                                    <Setter Property="Text" Value="Turn off per-user services"/>
+                                                    <Setter Property="Foreground" Value="{Binding ElementName=BorderWindow, Path=BorderBrush}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch13, Path=IsEnabled}" Value="false">
+                                                    <Setter Property="Opacity" Value="0.2" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                    <Border BorderBrush="#DADADA" BorderThickness="1 0 1 1" Margin="10 0 10 0" Background="#FFFFFF">
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <Grid HorizontalAlignment="Left">
+                                <ToggleButton Name="ToggleSwitch14" Style="{DynamicResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                <TextBlock Margin="65 0 10 0" VerticalAlignment="Center" IsHitTestVisible="False">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                            <Setter Property="Text" Value="Do not offer tailored experiences based on the diagnostic data setting" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch14, Path=IsChecked}" Value="True">
+                                                    <Setter Property="Text" Value="Do not offer tailored experiences based on the diagnostic data setting"/>
+                                                    <Setter Property="Foreground" Value="{Binding ElementName=BorderWindow, Path=BorderBrush}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch14, Path=IsEnabled}" Value="false">
+                                                    <Setter Property="Opacity" Value="0.2" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                    <Border BorderBrush="#DADADA" BorderThickness="1 0 1 1" Margin="10 0 10 0" Background="#FFFFFF">
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <Grid HorizontalAlignment="Left">
+                                <ToggleButton Name="ToggleSwitch15" Style="{DynamicResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                <TextBlock Margin="65 0 10 0" VerticalAlignment="Center" IsHitTestVisible="False">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                            <Setter Property="Text" Value="Turn off diagnostics tracking scheduled tasks" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch15, Path=IsChecked}" Value="True">
+                                                    <Setter Property="Text" Value="Turn off diagnostics tracking scheduled tasks"/>
+                                                    <Setter Property="Foreground" Value="{Binding ElementName=BorderWindow, Path=BorderBrush}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch15, Path=IsEnabled}" Value="false">
+                                                    <Setter Property="Opacity" Value="0.2" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                    <Border BorderBrush="#DADADA" BorderThickness="1 0 1 1" Margin="10 0 10 0" Background="#FFFFFF">
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <Grid HorizontalAlignment="Left">
+                                <ToggleButton Name="ToggleSwitch16" Style="{DynamicResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                <TextBlock Margin="65 0 10 0" VerticalAlignment="Center" IsHitTestVisible="False">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
+                                            <Setter Property="Text" Value="Turn off Windows Error Reporting" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch16, Path=IsChecked}" Value="True">
+                                                    <Setter Property="Text" Value="Turn off Windows Error Reporting"/>
+                                                    <Setter Property="Foreground" Value="{Binding ElementName=BorderWindow, Path=BorderBrush}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=ToggleSwitch16, Path=IsEnabled}" Value="false">
+                                                    <Setter Property="Opacity" Value="0.2" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                    <!--Placeholder Panel-->
+                    <StackPanel Margin="10 0 10 0" Height="43" Background="Transparent"/>
                 </StackPanel>
-            </ScrollViewer>-->
-            <!--#endregion Toggle Setting-->
+                <!--#endregion Privacy & Telemetry-->
+
+
+            </ScrollViewer>
+            <!--#endregion Toggle Buttons Panel-->            
         </Grid>
     </Border>
 </Window>
