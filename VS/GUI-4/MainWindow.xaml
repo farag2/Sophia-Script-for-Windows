@@ -1,13 +1,10 @@
-﻿Add-Type -AssemblyName "PresentationCore", "PresentationFramework", "WindowsBase"
-
-[xml]$xamlMarkup = @'
-<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"                        
-        x:Name="Window"
+﻿<Window x:Class="GUI_4.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
         Title="Windows 10 Setup Script" MinHeight="905" MinWidth="760" Height="905" Width="760" FontFamily="Sergio UI"
         FontSize="16" TextOptions.TextFormattingMode="Display" WindowStartupLocation="CenterScreen" 
         SnapsToDevicePixels="True" WindowStyle="None" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" 
-        ShowInTaskbar="True" Background="#FAFAFA"
+        ShowInTaskbar="True" MouseLeftButtonDown="Window_MouseLeftButtonDown_1" Background="#FAFAFA"
         Foreground="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}">
 
     <Window.Resources>
@@ -698,7 +695,7 @@
 
                     <!--#region Privacy & Telemetry-->
                     <StackPanel Orientation="Vertical" VerticalAlignment="Top">
-                        <Border Name="BorderPrivacy" BorderBrush="#DADADA" BorderThickness="1 0 1 1" Margin="10 0 10 0" Height="43" Background="#FFFFFF">
+                        <Border Name="BorderPrivacy" BorderBrush="Transparent" BorderThickness="0" Margin="10 0 10 0" Height="43" Background="Transparent">
                             <TextBlock Text="Privacy &amp; Telemetry Settings" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="28 0 10 0"/>
                         </Border>
                         <Border BorderBrush="{Binding ElementName=BorderPrivacy, Path=BorderBrush}" BorderThickness="{Binding ElementName=BorderPrivacy, Path=BorderThickness}" Margin="{Binding ElementName=BorderPrivacy, Path=Margin}" Style="{StaticResource BorderHoverStyle}">
@@ -2977,60 +2974,3 @@
         </Grid>
     </Border>
 </Window>
-'@
-
-$xamlGui = [System.Windows.Markup.XamlReader]::Load((New-Object System.Xml.XmlNodeReader $xamlMarkup))
-$xamlMarkup.SelectNodes('//*[@Name]') | ForEach-Object {
-    
-    if ($_.Name.Contains("ToggleButton")) {
-
-        $ToggleBtn = $xamlGui.FindName($_.Name)
-        [Void]$ToggleButtons.Add($ToggleBtn)
-    }
-	
-	else
-	{
-		New-Variable -Name $_.Name -Value $xamlGui.FindName($_.Name)
-	}    
-}
-
-#region Script Functions
-function Hide-Console {
-    <#
-    .SYNOPSIS
-    Hide Powershell console before show WPF GUI.    
-    #>
-
-    [CmdletBinding()]
-    param ()
-
-    Add-Type -Name Window -Namespace Console -MemberDefinition '
-    [DllImport("Kernel32.dll")]
-    public static extern IntPtr GetConsoleWindow();
-
-    [DllImport("user32.dll")]
-    public static extern bool ShowWindow(IntPtr hWnd, Int32 nCmdShow);
-'
-    [Console.Window]::ShowWindow([Console.Window]::GetConsoleWindow(), 0)
-}
-
-#endregion
-
-#region Controls Events
-
-$xamlGui.add_MouseLeftButtonDown( {
-        $xamlGui.DragMove()
-    })
-
-$MinimizeButton.add_MouseLeftButtonDown( {
-        $xamlGui.WindowState = "Minimized"
-    })
-
-$CloseButton.add_MouseLeftButtonDown( {
-        $xamlGui.Close()
-    })
-
-#endregion
-
-Hide-Console
-$xamlGui.ShowDialog() | Out-Null

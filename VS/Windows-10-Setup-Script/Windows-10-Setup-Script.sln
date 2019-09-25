@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI-2", "..\GUI-2\GUI-2.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI-3", "..\GUI-3\GUI-3.csproj", "{6314A588-2600-4F41-B667-36717A1847B3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI-4", "..\GUI-4\GUI-4.csproj", "{CBC5A83A-6512-420F-83A8-FC1D40A17D20}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{6314A588-2600-4F41-B667-36717A1847B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6314A588-2600-4F41-B667-36717A1847B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6314A588-2600-4F41-B667-36717A1847B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBC5A83A-6512-420F-83A8-FC1D40A17D20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBC5A83A-6512-420F-83A8-FC1D40A17D20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBC5A83A-6512-420F-83A8-FC1D40A17D20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBC5A83A-6512-420F-83A8-FC1D40A17D20}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

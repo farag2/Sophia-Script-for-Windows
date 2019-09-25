@@ -698,7 +698,7 @@
 
                     <!--#region Privacy & Telemetry-->
                     <StackPanel Orientation="Vertical" VerticalAlignment="Top">
-                        <Border Name="BorderPrivacy" BorderBrush="#DADADA" BorderThickness="1 0 1 1" Margin="10 0 10 0" Height="43" Background="#FFFFFF">
+                    <Border Name="BorderPrivacy" BorderBrush="Transparent" BorderThickness="0" Margin="10 0 10 0" Height="43" Background="Transparent">
                             <TextBlock Text="Privacy &amp; Telemetry Settings" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="28 0 10 0"/>
                         </Border>
                         <Border BorderBrush="{Binding ElementName=BorderPrivacy, Path=BorderBrush}" BorderThickness="{Binding ElementName=BorderPrivacy, Path=BorderThickness}" Margin="{Binding ElementName=BorderPrivacy, Path=Margin}" Style="{StaticResource BorderHoverStyle}">
@@ -2615,7 +2615,7 @@
                             <StackPanel Orientation="Horizontal" Margin="10">
                                 <Grid HorizontalAlignment="Left">
                                     <ToggleButton Name="ToggleSwitchSystem31" Style="{DynamicResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TexBlockSystem31" Text="Create old style shortcut for &quot;Devices and Printers&quot; in 'C:\Users\dmitriy.demin\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\System Tools'" Margin="65 0 10 0" VerticalAlignment="Center" IsHitTestVisible="False">
+                                    <TextBlock Name="TexBlockSystem31" Text="Create old style shortcut for &quot;Devices and Printers&quot; in '$env:\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\System Tools'" Margin="65 0 10 0" VerticalAlignment="Center" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
