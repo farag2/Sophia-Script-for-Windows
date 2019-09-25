@@ -1,5 +1,5 @@
 #region Privacy & Telemetry Normalized Text
-$text = "Change Windows Feedback frequency to &quot;Never&quot;",
+$textPrivacy = "Change Windows Feedback frequency to &quot;Never&quot;",
 "Turn off automatic installing suggested apps",
 "Turn off &quot;Connected User Experiences and Telemetry&quot; service",
 "Turn off the SQMLogger session at the next computer restart",
@@ -62,7 +62,7 @@ $textUi = "Set the Control Panel view by large icons",
 "Set File Explorer to open to This PC by default"
 #endregion UI & Personalization Normalized Text
 
-#region System
+#region System Normalized Text
 $textSystem = "Group svchost.exe processes",
 "Remove Windows capabilities",
 "Turn on Num Lock at startup",
@@ -77,13 +77,13 @@ $textSystem = "Group svchost.exe processes",
 "Turn on .NET 4 runtime for all apps",
 "Launch folder in a separate process",
 "Turn off hibernate",
-"Uninstall Onedrive",
+"Uninstall OneDrive",
 "Delete temporary files that apps aren't using",
 "Turn on automatic recommended troubleshooting",
 "Delete files in recycle bin if they have been there for over 30 days",
 "Open shortcut to the Command Prompt from Start menu as Administrator",
 "Turn off app suggestions on Start menu",
-"Turn on firewall & network protection",
+"Turn on firewall &amp; network protection",
 "Remove printers",
 "Turn on Windows Sandbox",
 "Turn off sticky Shift key after pressing 5 times",
@@ -111,30 +111,94 @@ $textSystem = "Group svchost.exe processes",
 "Turn on access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled",
 "Set download mode for delivery optization on &quot;HTTP only&quot;",
 "Turn off Cortana"
-#endregion System
+#endregion System Normalized Text
+
+#region Edge Normalized Text
+$textEdge = "Do not allow Microsoft Edge to pre-launch at Windows startup, when the system is idle, and each time Microsoft Edge is closed",
+"Do not allow Microsoft Edge to start and load the Start and New Tab page at Windows startup and each time Microsoft Edge is closed",
+"Turn off Windows Defender SmartScreen for Microsoft Edge"
+#endregion Edge Normalized Text
+
+#region UWP Normalized Text
+$textUwp = "Uninstall all UWP apps from all accounts"
+#endregion UWP Normalized Text
+
+#region Windows Game Recording Normalized Text
+$text = "Turn off Game Bar", "Turn off Game Mode", "Turn off Game Bar tips", "Turn off Windows Game Recording and Broadcasting"
+#endregion Windows Game Recording Normalized Text
+
+#region Scheduled Tasks Normalized Text
+$textTask = "Create scheduled task with the &quot;%TEMP%&quot; folder cleanup in Task Scheduler. The task runs every 62 days",
+"Create task to clean out the &quot;%SystemRoot%\SoftwareDistribution\Download&quot; folder in Task Scheduler. The task runs on Thursdays every 4 weeks",
+"Create scheduled task with the disk cleanup tool in Task Scheduler. The task runs every 90 days"
+#endregion Scheduled Tasks Normalized Text
+
+#region Microsoft Defender Normalized Text
+$textDefender = "Add folder to exclude from Windows Defender Antivirus scan",
+"Turn on Controlled folder access and add protected folders",
+"Hide notification about disabled Smartscreen for Microsoft Edge",
+"Turn on Windows Defender Sandbox",
+"Hide notification about sign in with Microsoft in the Windows Security",
+"Turn on Windows Defender Exploit Guard Network Protection",
+"Turn on Windows Defender PUA Protection"
+#endregion Microsoft Defender Normalized Text
+
+#region Context Menu Normalized Text
+$text = "Remove &quot;Edit with Paint 3D&quot; from context menu",
+"Remove &quot;Include in Library&quot; from context menu",
+"Remove &quot;Create a new video&quot; from Context Menu",
+"Remove &quot;Rich Text Document&quot; from context menu",
+"Add &quot;Extract&quot; to MSI file type context menu",
+"Add &quot;Install&quot; to CAB file type context menu",
+"Remove &quot;Edit with Photos&quot; from context menu",
+"Remove &quot;Cast to Device&quot; from context menu",
+"Remove &quot;Send to&quot; from folder context menu",
+"Remove &quot;Print&quot; from batch and cmd files context menu",
+"Remove &quot;Compressed (zipped) Folder&quot; from context menu",
+"Turn off &quot;Look for an app in the Microsoft Store&quot; in &quot;Open with&quot; dialog",
+"Make the &quot;Open&quot;, &quot;Print&quot;, &quot;Edit&quot; context menu items available, when more than 15 selected",
+"Remove &quot;Bitmap image&quot; from context menu",
+"Remove &quot;Share&quot; from context menu",
+"Add &quot;Run as different user&quot; from context menu for .exe file type",
+"Remove &quot;Previous Versions&quot; from file context menu",
+"Remove &quot;Edit&quot; from Context Menu",
+"Remove &quot;Turn on BitLocker&quot; from context menu"
+#endregion Context Menu Normalized Text
 
 #region Toggle Buttons Generator
 if (Test-Path -Path "C:\Tmp\toggleButtons.txt") {
     Remove-Item -Path "C:\Tmp\toggleButtons.txt" -Force -Confirm:$false
 }
 
-$toggleSwitchName = "ToggleSwitchPrivacy"
+$toggleSwitchName = "ToggleSwitchMenu"
 
 #"ToggleSwitchPrivacy" # For Privacy & Telemetry Settings
 #"ToggleSwitchUi" # For UI & Personalization Settings
 #"ToggleSwitchSystem" # For System Settings
+#"ToggleSwitchEdge" # For Edge Settings
+#"ToggleSwitchUwp" # For Uwp Settings
+#"ToggleSwitchGame" # For Windows Game Settings
+#"ToggleSwitchTasks" # For Scheduled Tasks Settings
+#"ToggleSwitchDefender" # For Microsoft Defender Settings
+#"ToggleSwitchMenu" # For Context Menu Settings
 
-$textBlockName = "TexBlockPrivacy"
+$textBlockName = "TexBlockMenu"
 #"TexBlockPrivacy" # For Privacy & Telemetry Settings
 #"TexBlockUi" # For UI & Personalization Settings
 #"TexBlockSystem" # For System Settings
+#"TexBlockEdge" # For Edge Settings
+#"TexBlockUwp" # For Uwp Settings
+#"TexBlockGame" # For Windows Game Settings
+#"TexBlockTasks" # For Scheduled Tasks Settings
+#"TexBlockDefender" # For Microsoft Defender Settings
+#"TexBlockMenu" # For Context Menu Settings
 
 for ($i = 0; $i -lt $text.Length; $i++) {
     $content = $text[$i].Replace("""", "&quot;")
 @"
 <Grid HorizontalAlignment="Left" Margin="0 5 0 5">
 <ToggleButton Name="$toggleSwitchName$i" Style="{DynamicResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-<TextBlock Name="$textBlockName$i" Text="$content" Margin="65 0 10 0" VerticalAlignment="Center" IsHitTestVisible="False">
+<TextBlock Name="$textBlockName$i" Text="$content" Margin="65 3 0 0" VerticalAlignment="Center" IsHitTestVisible="False">
 <TextBlock.Style>
 <Style TargetType="{x:Type TextBlock}">
 <Style.Triggers>
@@ -147,6 +211,14 @@ for ($i = 0; $i -lt $text.Length; $i++) {
 </TextBlock>
 </Grid>
 "@ | Out-File -FilePath "C:\Tmp\toggleButtons.txt" -Append
+
+#Placeholder
+if ($i -eq ($text.Length - 1)) {
+@"
+<!--Placeholder Panel-->
+<StackPanel Height="10"/>
+"@ | Out-File -FilePath "C:\Tmp\toggleButtons.txt" -Append
+}
 }
 #endregion Toggle Buttons Generator
 
