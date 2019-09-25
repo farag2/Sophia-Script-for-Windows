@@ -1,5 +1,5 @@
 #region Privacy & Telemetry Normalized Text
-$textPrivacy = "Change Windows Feedback frequency to &quot;Never&quot;",
+$text = "Change Windows Feedback frequency to &quot;Never&quot;",
 "Turn off automatic installing suggested apps",
 "Turn off &quot;Connected User Experiences and Telemetry&quot; service",
 "Turn off the SQMLogger session at the next computer restart",
@@ -63,7 +63,7 @@ $textUi = "Set the Control Panel view by large icons",
 #endregion UI & Personalization Normalized Text
 
 #region System
-$text = "Group svchost.exe processes",
+$textSystem = "Group svchost.exe processes",
 "Remove Windows capabilities",
 "Turn on Num Lock at startup",
 "Turn on the display of stop error information on the BSoD",
@@ -83,8 +83,7 @@ $text = "Group svchost.exe processes",
 "Delete files in recycle bin if they have been there for over 30 days",
 "Open shortcut to the Command Prompt from Start menu as Administrator",
 "Turn off app suggestions on Start menu",
-"Turn
-on firewall & network protection",
+"Turn on firewall & network protection",
 "Remove printers",
 "Turn on Windows Sandbox",
 "Turn off sticky Shift key after pressing 5 times",
@@ -92,16 +91,15 @@ on firewall & network protection",
 "Turn off Windows Script Host",
 "Set &quot;High performance&quot; in graphics performance preference for apps",
 "Automatically adjust active hours for me based on daily usage",
-"Turn on automatic backup the system registry to the 'C:\Windows\System32\config\RegBack' folder",
+"Turn on automatic backup the system registry to the &quot;C:\Windows\System32\config\RegBack&quot; folder",
 "Set location of the &quot;Desktop&quot;, &quot;Documents&quot; &quot;Downloads&quot; &quot;Music&quot;, &quot;Pictures&quot; and &quot;Videos&quot;",
-"Use the PrtScn
-button to open screen snipping",
-"Create old style shortcut for &quot;Devices and Printers&quot; in 'C:\Users\dmitriy.demin\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\System Tools'",
+"Use the PrtScn button to open screen snipping",
+"Create old style shortcut for &quot;Devices and Printers&quot; in &quot;%AppData%\Roaming\Microsoft\Windows\Start Menu\Programs\System Tools&quot;",
 "Turn off F1 Help key",
 "Turn on Win32 long paths",
 "Turn on Retpoline patch against Spectre v2",
 "Do not preserve zone information",
-"Change environment variable for 'C:\Temp' to 'C:\Temp'",
+"Change environment variable for &quot;%Temp%&quot; to &quot;%SystemDrive%\Temp&quot;",
 "Run Storage Sense every month",
 "Never delete files in &quot;Downloads&quot; folder",
 "Turn off location for this device",
@@ -110,8 +108,7 @@ button to open screen snipping",
 "Turn on updates for other Microsoft products",
 "Enable System Restore",
 "Do not allow Windows 10 to manage default printer",
-"Turn on access to mapped
-drives from app running with elevated permissions with Admin Approval Mode enabled",
+"Turn on access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled",
 "Set download mode for delivery optization on &quot;HTTP only&quot;",
 "Turn off Cortana"
 #endregion System
@@ -121,49 +118,60 @@ if (Test-Path -Path "C:\Tmp\toggleButtons.txt") {
     Remove-Item -Path "C:\Tmp\toggleButtons.txt" -Force -Confirm:$false
 }
 
-$toggleSwitchName = "ToggleSwitchSystem" # For UI & Personalization Settings
+$toggleSwitchName = "ToggleSwitchPrivacy"
 
 #"ToggleSwitchPrivacy" # For Privacy & Telemetry Settings
 #"ToggleSwitchUi" # For UI & Personalization Settings
 #"ToggleSwitchSystem" # For System Settings
 
-$texBoxName = "TexBlockSystem" # For UI & Personalization Settings
+$textBlockName = "TexBlockPrivacy"
 #"TexBlockPrivacy" # For Privacy & Telemetry Settings
 #"TexBlockUi" # For UI & Personalization Settings
 #"TexBlockSystem" # For System Settings
 
 for ($i = 0; $i -lt $text.Length; $i++) {
     $content = $text[$i].Replace("""", "&quot;")
-    @"
-<Border BorderBrush="{Binding ElementName=BorderPrivacy, Path=BorderBrush}" BorderThickness="{Binding ElementName=BorderPrivacy, Path=BorderThickness}" Margin="{Binding ElementName=BorderPrivacy, Path=Margin}" Style="{StaticResource BorderHoverStyle}">
-<StackPanel Orientation="Horizontal" Margin="10">
-<Grid HorizontalAlignment="Left">
+@"
+<Grid HorizontalAlignment="Left" Margin="0 5 0 5">
 <ToggleButton Name="$toggleSwitchName$i" Style="{DynamicResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-<TextBlock Name="$texBoxName$i" Text="$content" Margin="65 0 10 0" VerticalAlignment="Center" IsHitTestVisible="False">
+<TextBlock Name="$textBlockName$i" Text="$content" Margin="65 0 10 0" VerticalAlignment="Center" IsHitTestVisible="False">
 <TextBlock.Style>
 <Style TargetType="{x:Type TextBlock}">
 <Style.Triggers>
 <DataTrigger Binding="{Binding ElementName=$toggleSwitchName$i, Path=IsChecked}" Value="True">
 <Setter Property="Foreground" Value="{Binding ElementName=BorderWindow, Path=BorderBrush}"/>
 </DataTrigger>
-<DataTrigger Binding="{Binding ElementName=$toggleSwitchName$i, Path=IsEnabled}" Value="false">
-<Setter Property="Opacity" Value="0.2" />
-</DataTrigger>
 </Style.Triggers>
 </Style>
 </TextBlock.Style>
 </TextBlock>
 </Grid>
-</StackPanel>
-</Border>
 "@ | Out-File -FilePath "C:\Tmp\toggleButtons.txt" -Append
-    # Add Placeholder Panel to Group End
-    if ($i -eq ($text.Length - 1)) {
-@"
-<!--Placeholder Panel-->
-<StackPanel Margin="{Binding ElementName=BorderPrivacy, Path=Margin}" Height="{Binding ElementName=BorderPrivacy, Path=Height}" Background="Transparent"/>
-"@ | Out-File -FilePath "C:\Tmp\toggleButtons.txt" -Append    
-    }
-
 }
 #endregion Toggle Buttons Generator
+
+#region GUI with Substrate
+# @"
+# <Border BorderBrush="{Binding ElementName=BorderPrivacy, Path=BorderBrush}" BorderThickness="{Binding ElementName=BorderPrivacy, Path=BorderThickness}" Margin="{Binding ElementName=BorderPrivacy, Path=Margin}" Style="{StaticResource BorderHoverStyle}">
+# <StackPanel Orientation="Horizontal" Margin="10">
+# <Grid HorizontalAlignment="Left">
+# <ToggleButton Name="$toggleSwitchName$i" Style="{DynamicResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+# <TextBlock Name="$texBoxName$i" Text="$content" Margin="65 0 10 0" VerticalAlignment="Center" IsHitTestVisible="False">
+# <TextBlock.Style>
+# <Style TargetType="{x:Type TextBlock}">
+# <Style.Triggers>
+# <DataTrigger Binding="{Binding ElementName=$toggleSwitchName$i, Path=IsChecked}" Value="True">
+# <Setter Property="Foreground" Value="{Binding ElementName=BorderWindow, Path=BorderBrush}"/>
+# </DataTrigger>
+# <DataTrigger Binding="{Binding ElementName=$toggleSwitchName$i, Path=IsEnabled}" Value="false">
+# <Setter Property="Opacity" Value="0.2" />
+# </DataTrigger>
+# </Style.Triggers>
+# </Style>
+# </TextBlock.Style>
+# </TextBlock>
+# </Grid>
+# </StackPanel>
+# </Border>
+# "@
+#endregion GUI with Substrate
