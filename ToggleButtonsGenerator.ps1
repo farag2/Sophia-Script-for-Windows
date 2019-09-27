@@ -124,7 +124,7 @@ $textUwp = "Uninstall all UWP apps from all accounts"
 #endregion UWP Normalized Text
 
 #region Windows Game Recording Normalized Text
-$text = "Turn off Game Bar", "Turn off Game Mode", "Turn off Game Bar tips", "Turn off Windows Game Recording and Broadcasting"
+$textGame = "Turn off Game Bar", "Turn off Game Mode", "Turn off Game Bar tips", "Turn off Windows Game Recording and Broadcasting"
 #endregion Windows Game Recording Normalized Text
 
 #region Scheduled Tasks Normalized Text
@@ -196,20 +196,27 @@ $textBlockName = "TexBlockMenu"
 for ($i = 0; $i -lt $text.Length; $i++) {
     $content = $text[$i].Replace("""", "&quot;")
 @"
-<Grid HorizontalAlignment="Left" Margin="0 5 0 5">
+<Border BorderBrush="{Binding ElementName=BorderPrivacy, Path=BorderBrush}" BorderThickness="{Binding ElementName=BorderPrivacy, Path=BorderThickness}" Margin="{Binding ElementName=BorderPrivacy, Path=Margin}" Style="{StaticResource BorderHoverStyle}">
+<StackPanel Orientation="Horizontal" Margin="5">
+<Grid HorizontalAlignment="Left">
 <ToggleButton Name="$toggleSwitchName$i" Style="{DynamicResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-<TextBlock Name="$textBlockName$i" Text="$content" Margin="65 3 0 0" VerticalAlignment="Center" IsHitTestVisible="False">
+<TextBlock Name="$textBlockName$i" Text="$content" Margin="65 2 10 0" VerticalAlignment="Center" IsHitTestVisible="False">
 <TextBlock.Style>
 <Style TargetType="{x:Type TextBlock}">
 <Style.Triggers>
 <DataTrigger Binding="{Binding ElementName=$toggleSwitchName$i, Path=IsChecked}" Value="True">
 <Setter Property="Foreground" Value="{Binding ElementName=BorderWindow, Path=BorderBrush}"/>
 </DataTrigger>
+<DataTrigger Binding="{Binding ElementName=$toggleSwitchName$i, Path=IsEnabled}" Value="false">
+<Setter Property="Opacity" Value="0.2" />
+</DataTrigger>
 </Style.Triggers>
 </Style>
 </TextBlock.Style>
 </TextBlock>
 </Grid>
+</StackPanel>
+</Border>
 "@ | Out-File -FilePath "C:\Tmp\toggleButtons.txt" -Append
 
 #Placeholder
