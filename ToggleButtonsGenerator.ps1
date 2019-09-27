@@ -144,7 +144,7 @@ $textDefender = "Add folder to exclude from Windows Defender Antivirus scan",
 #endregion Microsoft Defender Normalized Text
 
 #region Context Menu Normalized Text
-$text = "Remove &quot;Edit with Paint 3D&quot; from context menu",
+$textMenu = "Remove &quot;Edit with Paint 3D&quot; from context menu",
 "Remove &quot;Include in Library&quot; from context menu",
 "Remove &quot;Create a new video&quot; from Context Menu",
 "Remove &quot;Rich Text Document&quot; from context menu",
