@@ -3860,17 +3860,18 @@
 
 $xamlGui = [System.Windows.Markup.XamlReader]::Load((New-Object System.Xml.XmlNodeReader $xamlMarkup))
 $xamlMarkup.SelectNodes('//*[@Name]') | ForEach-Object {
+    New-Variable -Name $_.Name -Value $xamlGui.FindName($_.Name)
     
-    if ($_.Name.Contains("ToggleButton")) {
+    # if ($_.Name.Contains("ToggleButton")) {
 
-        $ToggleBtn = $xamlGui.FindName($_.Name)
-        [Void]$ToggleButtons.Add($ToggleBtn)
-    }
+    #     $ToggleBtn = $xamlGui.FindName($_.Name)
+    #     [Void]$ToggleButtons.Add($ToggleBtn)
+    # }
 	
-	else
-	{
-		New-Variable -Name $_.Name -Value $xamlGui.FindName($_.Name)
-	}    
+	# else
+	# {
+	# 	New-Variable -Name $_.Name -Value $xamlGui.FindName($_.Name)
+	# }    
 }
 
 #region Script Functions
