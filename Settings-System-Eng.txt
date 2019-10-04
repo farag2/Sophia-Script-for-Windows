@@ -1,0 +1,49 @@
+Group svchost.exe processes
+Remove Windows capabilities
+Turn on Num Lock at startup
+Turn on the display of stop error information on the BSoD
+Always wait for the network at computer startup and logon
+Turn on Storage Sense to automatically free up space
+Set the default input method to the English language
+Do not allow the computer to turn off the device to save power for desktop
+Turn off "The Windows Filtering Platform has blocked a connection" message
+Turn off default background apps except
+Turn off SmartScreen for apps and files
+Turn on .NET 4 runtime for all apps
+Launch folder in a separate process
+Turn off hibernate
+Uninstall OneDrive
+Delete temporary files that apps aren't using
+Turn on automatic recommended troubleshooting
+Delete files in recycle bin if they have been there for over 30 days
+Open shortcut to the Command Prompt from Start menu as Administrator
+Turn off app suggestions on Start menu
+Turn on firewall & network protection
+Remove printers
+Turn on Windows Sandbox
+Turn off sticky Shift key after pressing 5 times
+Set power management scheme for desktop and laptop
+Turn off Windows Script Host
+Set "High performance" in graphics performance preference for apps
+Automatically adjust active hours for me based on daily usage
+Turn on automatic backup the system registry to the "%WinDir%\System32\Config\RegBack" folder
+Set location of the "Desktop", "Documents" "Downloads" "Music", "Pictures" and "Videos"
+Use the PrtScn button to open screen snipping
+Create old style shortcut for "Devices and Printers" in "%AppData%\Roaming\Microsoft\Windows\Start Menu\Programs\System Tools"
+Turn off F1 Help key
+Turn on Win32 long paths
+Turn on Retpoline patch against Spectre v2
+Do not preserve zone information
+Change environment variable for "%Temp%" to "%SystemDrive%\Temp"
+Run Storage Sense every month
+Never delete files in "Downloads" folder
+Turn off location for this device
+Turn off Admin Approval Mode for administrators
+Turn off Windows features
+Turn on updates for other Microsoft products
+Enable System Restore
+Do not allow Windows 10 to manage default printer
+Turn on access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled
+Set download mode for delivery optization on "HTTP only"
+Turn off Cortana
+Turn off IPv6
