@@ -646,6 +646,8 @@ New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings" -
 # Turn off default background apps except
 # Запретить стандартным приложениям работать в фоновом режиме, кроме
 $apps = @(
+	# Lock App
+	"Microsoft.LockApp*"
 	# Content Delivery Manager
 	"Microsoft.Windows.ContentDeliveryManager*"
 	# Cortana
@@ -656,7 +658,8 @@ $apps = @(
 	# ShellExperienceHost
 	"Microsoft.Windows.ShellExperienceHost*"
 	# StartMenuExperienceHost
-	"Microsoft.Windows.StartMenuExperienceHost*")
+	"Microsoft.Windows.StartMenuExperienceHost*"
+)
 foreach ($app in $apps)
 {
 	Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications -Exclude $apps |
@@ -697,9 +700,6 @@ IF ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -eq 1)
 # Set the default input method to the English language
 # Установить метод ввода по умолчанию на английский язык
 Set-WinDefaultInputMethodOverride "0409:00000409"
-# Remove printers
-# Удалить принтеры
-Remove-Printer -Name Fax, "Microsoft XPS Document Writer", "Microsoft Print to PDF" -ErrorAction SilentlyContinue
 # Turn on Windows Sandbox
 # Включить Windows Sandbox
 IF (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Professional" -or $_.Edition -eq "Enterprise"})
@@ -1401,6 +1401,9 @@ $ExcludedApps = @(
 	# Screen Sketch
 	# Набросок на фрагменте экрана
 	"Microsoft.ScreenSketch"
+	# Sticky Notes
+	# Записки
+	"Microsoft.MicrosoftStickyNotes"
 	# Calculator
 	# Калькулятор
 	"Microsoft.WindowsCalculator"
@@ -1463,10 +1466,8 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\GameBar -Name ShowStartupPanel -
 #endregion Windows Game Recording
 
 #region Scheduled tasks
-# Create a task in the Task Scheduler to start Windows cleaning up
-# The task runs every 90 days
-# Создать задачу в Планировщике задач по очистке обновлений Windows
-# Задача выполняется каждые 90 дней
+# Create a task in the Task Scheduler to start Windows cleaning up. The task runs every 90 days
+# Создать задачу в Планировщике задач по очистке обновлений Windows. Задача выполняется каждые 90 дней
 $keys = @(
 	# Delivery Optimization Files
 	# Файлы оптимизации доставки
