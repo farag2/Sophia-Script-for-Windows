@@ -1,0 +1,2 @@
+Uninstall all UWP apps from all accounts except
+Uninstall all provisioned UWP apps from all accounts except

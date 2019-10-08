@@ -1,0 +1,39 @@
+Set File Explorer to open to This PC by default
+Show Hidden Files, Folders, and Drives
+Show File Name Extensions
+Hide Task View button on taskbar
+Show folder merge conflicts
+Turn off Snap Assist
+Turn off check boxes to select items
+Show seconds on taskbar clock
+Hide People button on the taskbar
+Hide all folders in the navigation pane
+Remove 3D Objects folder in "This PC" and in the navigation pane
+Hide "Frequent folders" in Quick access
+Hide "Recent files" in Quick access
+Turn on acrylic taskbar transparency
+Show "This PC" on Desktop
+Show more details in file transfer dialog
+Remove the "Previous Versions" tab from properties context menu
+Always show all icons in the notification area
+Set the Control Panel view by large icons
+Hide "Windows Ink Workspace" button in taskbar
+Hide search box or search icon on taskbar
+Turn on recycle bin files delete confirmation
+Turn on ribbon in File Explorer
+Choose theme color for default Windows mode
+Choose theme color for default app mode
+Turn off "New App Installed" notification
+Turn off recently added apps on Start menu
+Turn off user first sign-in animation
+Turn off JPEG desktop wallpaper import quality reduction
+Show Task Manager details
+Unpin Microsoft Edge and Microsoft Store from taskbar
+Remove Microsoft Edge shortcut from the Desktop
+Show accent color on the title bars and window borders
+Turn off automatically hiding scroll bars
+Save screenshots by pressing Win+PrtScr to the Desktop
+Show more Windows Update restart notifications about restarting
+Turn off the "- Shortcut" name extension for new shortcuts
+Use the PrtScn button to open screen snipping
+Automatically adjust active hours for me based on daily usage

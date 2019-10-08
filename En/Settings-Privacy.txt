@@ -1,0 +1,18 @@
+Turn off "Connected User Experiences and Telemetry" service
+Turn off per-user services
+Turn off the Autologger session at the next computer restart
+Turn off the SQMLogger session at the next computer restart
+Set the operating system diagnostic data level to "Basic"
+Turn off Windows Error Reporting
+Change Windows Feedback frequency to "Never"
+Turn off diagnostics tracking scheduled tasks
+Do not offer tailored experiences based on the diagnostic data setting
+Do not let apps on other devices open and message apps on this device, and vice versa
+Do not allow apps to use advertising ID
+Do not use sign-in info to automatically finish setting up device after an update or restart
+Do not let websites provide locally relevant content by accessing language list
+Turn on tip, trick, and suggestions as you use Windows
+Turn off app suggestions on Start menu
+Turn off suggested content in the Settings
+Turn off automatic installing suggested apps
+Turn off app launch tracking to improve Start menu and search results

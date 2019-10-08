@@ -1,7 +1,8 @@
 Add folder to exclude from Windows Defender Antivirus scan
 Turn on Controlled folder access and add protected folders
-Hide notification about disabled Smartscreen for Microsoft Edge
-Turn on Windows Defender Sandbox
-Hide notification about sign in with Microsoft in the Windows Security
+Allow an app through Controlled folder access
 Turn on Windows Defender Exploit Guard Network Protection
 Turn on Windows Defender PUA Protection
+Turn on Windows Defender Sandbox
+Hide notification about sign in with Microsoft in the Windows Security
+Hide notification about disabled Smartscreen for Microsoft Edge

@@ -6,9 +6,10 @@ if (Test-Path -Path $outFile) {
     Write-Warning -Message "File ""ToggleButtonsGenerator.txt"" deleted!"
 }
 
-"Privacy", "Ui", "System", "Edge", "Game", "Task", "Defender", "Menu" | ForEach-Object {
+"Privacy", "UI", "OneDrive", "System", "StartMenu", "Edge",
+"UWPApps", "WindowsGameRecording", "ScheduledTasks", "MicrosoftDefender", "ContextMenu" | ForEach-Object {
     $categoryName = $_
-    $categoryFile = "{0}\Settings-{1}-Eng.txt"-f $currentDir, $categoryName
+    $categoryFile = "{0}\En\Settings-{1}.txt"-f $currentDir, $categoryName
 
     if (Test-Path -Path $categoryFile) {
 
@@ -29,12 +30,12 @@ if (Test-Path -Path $outFile) {
             
             $string = $text[$i]
 
-            if ($string.Contains("""")) {
-                $string = $text[$i].Replace("""", "&quot;")
+            if ($string.Contains('"')) {
+                $string = $text[$i].Replace('"', '&quot;')
             }
 
-            if ($string.Contains("&")) {
-                $string = $text[$i].Replace("&", "&amp;")
+            if ($string.Contains('&')) {
+                $string = $text[$i].Replace('&', '&amp;')
             }
 
             $toggleName = "ToggleSwitch_{0}_{1}"-f $categoryName, $i

@@ -1,3 +1,0 @@
-Create scheduled task with the "%TEMP%" folder cleanup in Task Scheduler. The task runs every 62 days
-Create task to clean out the "%SystemRoot%\SoftwareDistribution\Download" folder in Task Scheduler. The task runs on Thursdays every 4 weeks
-Create scheduled task with the disk cleanup tool in Task Scheduler. The task runs every 90 days
