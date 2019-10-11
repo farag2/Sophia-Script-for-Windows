@@ -1,4 +1,5 @@
 #Requires -RunAsAdministrator
+
 #region Begin
 # Remove all text from the current display
 # Очистить экран
@@ -115,10 +116,10 @@ New-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name Ht
 # Turn on tip, trick, and suggestions as you use Windows
 # Показывать советы, подсказки и рекомендации при использованию Windows
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338389Enabled -PropertyType DWord -Value 1 -Force
-# Turn off app suggestions on Start menu
+# Do not show app suggestions on Start menu
 # Не показывать рекомендации в меню "Пуск"
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338388Enabled -PropertyType DWord -Value 0 -Force
-# Turn off suggested content in the Settings
+# Do not show suggested content in the Settings
 # Не показывать рекомендуемое содержание в приложении "Параметры"
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338393Enabled -PropertyType DWord -Value 0 -Force
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-353694Enabled -PropertyType DWord -Value 0 -Force
@@ -126,44 +127,52 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDe
 # Turn off automatic installing suggested apps
 # Отключить автоматическую установку рекомендованных приложений
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SilentInstalledAppsEnabled -PropertyType DWord -Value 0 -Force
-# Turn off app launch tracking to improve Start menu and search results
+# Do not let track app launches to improve Start menu and search results
 # Не разрешать Windows отслеживать запуски приложений для улучшения меню "Пуск" и результатов поиска и не показывать недавно добавленные приложения
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_TrackProgs -PropertyType DWord -Value 0 -Force
 #endregion Privacy & Telemetry
 
 #region UI & Personalization
+# Show "This PC" on Desktop
+# Отобразить "Этот компьютер" на рабочем столе
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel -Name "{20D04FE0-3AEA-1069-A2D8-08002B30309D}" -PropertyType DWord -Value 0 -Force
 # Set File Explorer to open to This PC by default
 # Открывать "Этот компьютер" в Проводнике
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name LaunchTo -PropertyType DWord -Value 1 -Force
 # Show Hidden Files, Folders, and Drives
 # Показывать скрытые файлы, папки и диски
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Hidden -PropertyType DWord -Value 1 -Force
-# Show File Name Extensions
-# Показывать расширения для зарегистрированных типов файлов
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -PropertyType DWord -Value 0 -Force
-# Hide Task View button on taskbar
-# Не показывать кнопку Просмотра задач
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowTaskViewButton -PropertyType DWord -Value 0 -Force
-# Show folder merge conflicts
-# Не скрывать конфликт слияния папок
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideMergeConflicts -PropertyType DWord -Value 0 -Force
-# Turn off Snap Assist
-# Не показывать при прикреплении окна, что можно прикрепить рядом с ним
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SnapAssist -PropertyType DWord -Value 0 -Force
 # Turn off check boxes to select items
 # Отключить флажки для выбора элементов
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name AutoCheckSelect -PropertyType DWord -Value 0 -Force
-# Show seconds on taskbar clock
-# Включить отображение секунд в системных часах на панели задач
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowSecondsInSystemClock -PropertyType DWord -Value 1 -Force
-# Hide People button on the taskbar
-# Не показывать панель "Люди" на панели задач
-IF (-not (Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People))
+# Show File Name Extensions
+# Показывать расширения для зарегистрированных типов файлов
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -PropertyType DWord -Value 0 -Force
+# Show folder merge conflicts
+# Не скрывать конфликт слияния папок
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideMergeConflicts -PropertyType DWord -Value 0 -Force
+# Show more details in file transfer dialog
+# Развернуть диалог переноса файлов
+IF (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager))
 {
-	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People -Force
+	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager -Force
 }
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People -Name PeopleBand -PropertyType DWord -Value 0 -Force
-# Hide all folders in the navigation pane
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager -Name EnthusiastMode -PropertyType DWord -Value 1 -Force
+# Turn on ribbon in File Explorer
+# Включить отображение ленты проводника в развернутом виде
+IF (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Ribbon))
+{
+	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Ribbon -Force
+}
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Ribbon -Name MinimizedStateTabletModeOff -PropertyType DWord -Value 0 -Force
+# Turn on recycle bin files delete confirmation
+# Запрашивать подтверждение на удалении файлов из корзины
+IF (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer))
+{
+	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Force
+}
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name ConfirmFileDelete -PropertyType DWord -Value 1 -Force
+# Do not show all folders in the navigation pane
 # Не отображать все папки в области навигации
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name NavPaneShowAllFolders -PropertyType DWord -Value 0 -Force
 # Remove 3D Objects folder in "This PC" and in the navigation pane
@@ -173,31 +182,77 @@ IF (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explo
 	New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Force
 }
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Name ThisPCPolicy -PropertyType String -Value Hide -Force
-# Hide "Frequent folders" in Quick access
+# Do not show "Frequent folders" in Quick access
 # Не показывать недавно используемые папки на панели быстрого доступа
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name ShowFrequent -PropertyType DWord -Value 0 -Force
-# Hide "Recent files" in Quick access
+# Do not show "Recent files" in Quick access
 # Не показывать недавно использовавшиеся файлы на панели быстрого доступа
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name ShowRecent -PropertyType DWord -Value 0 -Force
-# Turn on acrylic taskbar transparency
-# Включить прозрачную панель задач
-New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name UseOLEDTaskbarTransparency -PropertyType DWord -Value 1 -Force
-# Show "This PC" on Desktop
-# Отобразить "Этот компьютер" на рабочем столе
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel -Name "{20D04FE0-3AEA-1069-A2D8-08002B30309D}" -PropertyType DWord -Value 0 -Force
-# Show more details in file transfer dialog
-# Развернуть диалог переноса файлов
-IF (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager))
-{
-	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager -Force
-}
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager -Name EnthusiastMode -PropertyType DWord -Value 1 -Force
 # Remove the "Previous Versions" tab from properties context menu
 # Отключить отображение вкладки "Предыдущие версии" в свойствах файлов и папок
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name NoPreviousVersionsPage -PropertyType DWord -Value 1 -Force
+# Hide search box or search icon on taskbar
+# Скрыть поле или значок поиска на Панели задач
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -PropertyType DWord -Value 0 -Force
+# Do not show Cortana button on taskbar
+# Не показывать кнопку Cortana на панели задач
+IF (-not $RU)
+{
+	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowCortanaButton -PropertyType DWord -Value 0 -Force
+}
+# Do not show Task View button on taskbar
+# Не показывать кнопку Просмотра задач
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowTaskViewButton -PropertyType DWord -Value 0 -Force
+# Do not show People button on the taskbar
+# Не показывать панель "Люди" на панели задач
+IF (-not (Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People))
+{
+	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People -Force
+}
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People -Name PeopleBand -PropertyType DWord -Value 0 -Force
+# Do not show "Windows Ink Workspace" button in taskbar
+# Не показывать кнопку Windows Ink Workspace на панели задач
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\PenWorkspace -Name PenWorkspaceButtonDesiredVisibility -PropertyType DWord -Value 0 -Force
+# Show seconds on taskbar clock
+# Отображать секунды в системных часах на панели задач
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowSecondsInSystemClock -PropertyType DWord -Value 1 -Force
 # Always show all icons in the notification area
 # Всегда отображать все значки в области уведомлений
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name EnableAutoTray -PropertyType DWord -Value 0 -Force
+# Turn on acrylic taskbar transparency
+# Включить прозрачную панель задач
+New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name UseOLEDTaskbarTransparency -PropertyType DWord -Value 1 -Force
+# Unpin Microsoft Edge and Microsoft Store from taskbar
+# Открепить Microsoft Edge и Microsoft Store от панели задач
+$Signature = @{
+	Namespace = "WinAPI"
+	Name = "GetStr"
+	Language = "CSharp"
+	MemberDefinition = @"
+		[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+		public static extern IntPtr GetModuleHandle(string lpModuleName);
+		[DllImport("user32.dll", CharSet = CharSet.Auto)]
+		internal static extern int LoadString(IntPtr hInstance, uint uID, StringBuilder lpBuffer, int nBufferMax);
+		public static string GetString(uint strId)
+		{
+			IntPtr intPtr = GetModuleHandle("shell32.dll");
+			StringBuilder sb = new StringBuilder(255);
+			LoadString(intPtr, strId, sb, sb.Capacity);
+			return sb.ToString();
+		}
+"@
+}
+IF (-not ("WinAPI.GetStr" -as [type]))
+{
+	Add-Type @Signature -Using System.Text
+}
+$unpin = [WinAPI.GetStr]::GetString(5387)
+$apps = (New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
+$apps | Where-Object -FilterScript {$_.Path -like "Microsoft.MicrosoftEdge*"} | ForEach-Object -Process {$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $unpin} | ForEach-Object -Process {$_.DoIt()}}
+$apps | Where-Object -FilterScript {$_.Path -like "Microsoft.WindowsStore*"} | ForEach-Object -Process {$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $unpin} | ForEach-Object -Process {$_.DoIt()}}
+# Do not show when snapping a window, what can be attached next to it
+# Не показывать при прикреплении окна, что можно прикрепить рядом с ним
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SnapAssist -PropertyType DWord -Value 0 -Force
 # Set the Control Panel view by large icons
 # Установить крупные значки в панели управления
 IF (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
@@ -206,26 +261,6 @@ IF (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explor
 }
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name AllItemsIconView -PropertyType DWord -Value 0 -Force
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name StartupPage -PropertyType DWord -Value 1 -Force
-# Hide "Windows Ink Workspace" button in taskbar
-# Скрыть кнопку Windows Ink Workspace на панели задач
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\PenWorkspace -Name PenWorkspaceButtonDesiredVisibility -PropertyType DWord -Value 0 -Force
-# Hide search box or search icon on taskbar
-# Скрыть поле или значок поиска на Панели задач
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -PropertyType DWord -Value 0 -Force
-# Turn on recycle bin files delete confirmation
-# Запрашивать подтверждение на удалении файлов из корзины
-IF (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer))
-{
-	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Force
-}
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name ConfirmFileDelete -PropertyType DWord -Value 1 -Force
-# Turn on ribbon in File Explorer
-# Включить отображение ленты проводника в развернутом виде
-IF (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Ribbon))
-{
-	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Ribbon -Force
-}
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Ribbon -Name MinimizedStateTabletModeOff -PropertyType DWord -Value 0 -Force
 # Choose theme color for default Windows mode
 # Выбрать режим Windows по умолчанию
 IF ($RU)
@@ -360,17 +395,14 @@ Do
 	}
 }
 Until ($theme -eq "L" -or $theme -eq "D")
-# Turn off "New App Installed" notification
+# Do not show "New App Installed" notification
 # Не показывать уведомление "Установлено новое приложение"
 IF (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
 {
 	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Force
 }
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoNewAppAlert -PropertyType DWord -Value 1 -Force
-# Turn off recently added apps on Start menu
-# Не показывать недавно добавленные приложения в меню "Пуск"
-New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -PropertyType DWord -Value 1 -Force
-# Turn off user first sign-in animation
+# Do not show user first sign-in animation
 # Не показывать анимацию при первом входе в систему
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableFirstLogonAnimation -PropertyType DWord -Value 0 -Force
 # Turn off JPEG desktop wallpaper import quality reduction
@@ -393,34 +425,6 @@ Until ($preferences)
 Stop-Process -Name Taskmgr
 $preferences.Preferences[28] = 0
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -PropertyType Binary -Value $preferences.Preferences -Force
-# Unpin Microsoft Edge and Microsoft Store from taskbar
-# Открепить Microsoft Edge и Microsoft Store от панели задач
-$Signature = @{
-	Namespace = "WinAPI"
-	Name = "GetStr"
-	Language = "CSharp"
-	MemberDefinition = @"
-		[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
-		public static extern IntPtr GetModuleHandle(string lpModuleName);
-		[DllImport("user32.dll", CharSet = CharSet.Auto)]
-		internal static extern int LoadString(IntPtr hInstance, uint uID, StringBuilder lpBuffer, int nBufferMax);
-		public static string GetString(uint strId)
-		{
-			IntPtr intPtr = GetModuleHandle("shell32.dll");
-			StringBuilder sb = new StringBuilder(255);
-			LoadString(intPtr, strId, sb, sb.Capacity);
-			return sb.ToString();
-		}
-"@
-}
-IF (-not ("WinAPI.GetStr" -as [type]))
-{
-	Add-Type @Signature -Using System.Text
-}
-$unpin = [WinAPI.GetStr]::GetString(5387)
-$apps = (New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
-$apps | Where-Object -FilterScript {$_.Path -like "Microsoft.MicrosoftEdge*"} | ForEach-Object -Process {$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $unpin} | ForEach-Object -Process {$_.DoIt()}}
-$apps | Where-Object -FilterScript {$_.Path -like "Microsoft.WindowsStore*"} | ForEach-Object -Process {$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $unpin} | ForEach-Object -Process {$_.DoIt()}}
 # Remove Microsoft Edge shortcut from the Desktop
 # Удалить ярлык Microsoft Edge с рабочего стола
 $value = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
@@ -431,10 +435,6 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\DWM -Name ColorPrevalenc
 # Turn off automatically hiding scroll bars
 # Отключить автоматическое скрытие полос прокрутки в Windows
 New-ItemProperty -Path "HKCU:\Control Panel\Accessibility" -Name DynamicScrollbars -PropertyType DWord -Value 0 -Force
-# Save screenshots by pressing Win+PrtScr to the Desktop
-# Сохранить скриншот по Win+PrtScr на рабочем столе
-$value = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
-New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{b7bede81-df94-4682-a7d8-57a52620b86f}" -Name RelativePath -PropertyType String -Value $value -Force
 # Show more Windows Update restart notifications about restarting
 # Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name RestartNotificationsAllowed2 -PropertyType DWord -Value 1 -Force
@@ -455,15 +455,6 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name 
 Stop-Process -Name OneDrive -Force -ErrorAction SilentlyContinue
 Start-Process -FilePath "$env:SystemRoot\SysWOW64\OneDriveSetup.exe" -ArgumentList "/uninstall" -Wait
 Stop-Process -Name explorer
-IF (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive))
-{
-	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive -Force
-}
-New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive -Name DisableFileSyncNGSC -PropertyType DWord -Value 1 -Force
-New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive -Name DisableFileSync -PropertyType DWord -Value 1 -Force
-New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive -Name DisableMeteredNetworkFileSync -PropertyType DWord -Value 0 -Force
-New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive -Name DisableLibrariesDefaultSaveToOneDrive -PropertyType DWord -Value 1 -Force
-New-ItemProperty -Path HKCU:\Software\Microsoft\OneDrive -Name DisablePersonalSync -PropertyType DWord -Value 1 -Force
 Remove-ItemProperty -Path HKCU:\Environment -Name OneDrive -Force -ErrorAction SilentlyContinue
 IF ((Get-ChildItem -Path $env:USERPROFILE\OneDrive -ErrorAction SilentlyContinue | Measure-Object).Count -eq 0)
 {
@@ -816,6 +807,7 @@ IF ($RU)
 {
 	Write-Host "`nВведите букву диска, в корне которого будет создана папка для " -NoNewline
 	Write-Host "`"Рабочий стол`"" -ForegroundColor Yellow
+	Write-Host "Файлы не будут перенесены: сделайте это вручную"
 	Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
 }
 else
@@ -823,6 +815,7 @@ else
 	Write-Host "`nType the drive letter in the root of which the " -NoNewline
 	Write-Host "`"Desktop`" " -ForegroundColor Yellow -NoNewline
 	Write-Host "folder will be created."
+	Write-Host "Files will not be moved. Do it manually"
 	Write-Host "`nPress Enter to skip" -NoNewline
 }
 Do
@@ -844,6 +837,9 @@ Do
 			Set-Content -Path "$DesktopFolder\desktop.ini" -Value $DesktopINI["Desktop"] -Encoding Unicode -Force
 			(Get-Item -Path "$DesktopFolder\desktop.ini" -Force).Attributes = "Hidden", "System", "Archive"
 			(Get-Item -Path "$DesktopFolder\desktop.ini" -Force).Refresh()
+			# Save screenshots by pressing Win+PrtScr to the Desktop
+			# Сохранить скриншот по Win+PrtScr на рабочем столе
+			New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{b7bede81-df94-4682-a7d8-57a52620b86f}" -Name RelativePath -PropertyType String -Value $DesktopFolder -Force
 		}
 	}
 	elseif ([string]::IsNullOrEmpty($drive))
@@ -873,6 +869,7 @@ IF ($RU)
 {
 	Write-Host "`nВведите букву диска, в корне которого будет создана папка для " -NoNewline
 	Write-Host "`"Документы`"" -ForegroundColor Yellow
+	Write-Host "Файлы не будут перенесены: сделайте это вручную"
 	Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
 }
 else
@@ -880,6 +877,7 @@ else
 	Write-Host "`nType the drive letter in the root of which the " -NoNewline
 	Write-Host "`"Documents`" " -ForegroundColor Yellow -NoNewline
 	Write-Host "folder will be created."
+	Write-Host "Files will not be moved. Do it manually"
 	Write-Host "`nPress Enter to skip" -NoNewline
 }
 Do
@@ -930,6 +928,7 @@ IF ($RU)
 {
 	Write-Host "`nВведите букву диска, в корне которого будет создана папка для " -NoNewline
 	Write-Host "`"Загрузки`"" -ForegroundColor Yellow
+	Write-Host "Файлы не будут перенесены: сделайте это вручную"
 	Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
 }
 else
@@ -937,6 +936,7 @@ else
 	Write-Host "`nType the drive letter in the root of which the " -NoNewline
 	Write-Host "`"Downloads`" " -ForegroundColor Yellow -NoNewline
 	Write-Host "folder will be created."
+	Write-Host "Files will not be moved. Do it manually"
 	Write-Host "`nPress Enter to skip" -NoNewline
 }
 Do
@@ -990,6 +990,7 @@ IF ($RU)
 {
 	Write-Host "`nВведите букву диска, в корне которого будет создана папка для " -NoNewline
 	Write-Host "`"Музыка`"" -ForegroundColor Yellow
+	Write-Host "Файлы не будут перенесены: сделайте это вручную"
 	Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
 }
 else
@@ -997,6 +998,7 @@ else
 	Write-Host "`nType the drive letter in the root of which the " -NoNewline
 	Write-Host "`"Music`" " -ForegroundColor Yellow -NoNewline
 	Write-Host "folder will be created."
+	Write-Host "Files will not be moved. Do it manually"
 	Write-Host "`nPress Enter to skip" -NoNewline
 }
 Do
@@ -1047,6 +1049,7 @@ IF ($RU)
 {
 	Write-Host "`nВведите букву диска, в корне которого будет создана папка для " -NoNewline
 	Write-Host "`"Изображения`"" -ForegroundColor Yellow
+	Write-Host "Файлы не будут перенесены: сделайте это вручную"
 	Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
 }
 else
@@ -1054,6 +1057,7 @@ else
 	Write-Host "`nType the drive letter in the root of which the " -NoNewline
 	Write-Host "`"Pictures`" " -ForegroundColor Yellow -NoNewline
 	Write-Host "folder will be created."
+	Write-Host "Files will not be moved. Do it manually"
 	Write-Host "`nPress Enter to skip" -NoNewline
 }
 Do
@@ -1104,6 +1108,7 @@ IF ($RU)
 {
 	Write-Host "`nВведите букву диска, в корне которого будет создана папка для " -NoNewline
 	Write-Host "`"Видео`"" -ForegroundColor Yellow
+	Write-Host "Файлы не будут перенесены: сделайте это вручную"
 	Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
 }
 else
@@ -1111,6 +1116,7 @@ else
 	Write-Host "`nType the drive letter in the root of which the " -NoNewline
 	Write-Host "`"Videos`" " -ForegroundColor Yellow -NoNewline
 	Write-Host "folder will be created."
+	Write-Host "Files will not be moved. Do it manually"
 	Write-Host "`nPress Enter to skip" -NoNewline
 }
 Do
@@ -1277,6 +1283,9 @@ New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlo
 #endregion System
 
 #region Start menu
+# Do not show recently added apps on Start menu
+# Не показывать недавно добавленные приложения в меню "Пуск"
+New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -PropertyType DWord -Value 1 -Force
 # Open shortcut to the Command Prompt from Start menu as Administrator
 # Запускать ярлык к командной строке в меню "Пуск" от имени Администратора
 [byte[]]$bytes = Get-Content -Path "$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" -Encoding Byte -Raw
@@ -1863,6 +1872,7 @@ IF (-not ("WinAPI.UpdateEnvExplorer" -as [type]))
 	Add-Type @UpdateEnvExplorerAPI
 }
 [WinAPI.UpdateEnvExplorer]::Refresh()
+
 # Errors output
 # Вывод ошибок
 Write-Host "`nErrors" -BackgroundColor Red
