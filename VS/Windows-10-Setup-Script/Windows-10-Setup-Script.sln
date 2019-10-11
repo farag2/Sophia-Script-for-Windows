@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI-6", "..\GUI-6\GUI-6.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI-7", "..\GUI-7\GUI-7.csproj", "{B14102D2-B716-4B49-898D-FBACA3C68810}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI-8", "..\GUI-8\GUI-8.csproj", "{37F2941F-5C47-4D9D-A718-AA104F666C22}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{B14102D2-B716-4B49-898D-FBACA3C68810}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B14102D2-B716-4B49-898D-FBACA3C68810}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B14102D2-B716-4B49-898D-FBACA3C68810}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37F2941F-5C47-4D9D-A718-AA104F666C22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37F2941F-5C47-4D9D-A718-AA104F666C22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37F2941F-5C47-4D9D-A718-AA104F666C22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37F2941F-5C47-4D9D-A718-AA104F666C22}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
