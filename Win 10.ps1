@@ -837,10 +837,10 @@ Do
 			Set-Content -Path "$DesktopFolder\desktop.ini" -Value $DesktopINI["Desktop"] -Encoding Unicode -Force
 			(Get-Item -Path "$DesktopFolder\desktop.ini" -Force).Attributes = "Hidden", "System", "Archive"
 			(Get-Item -Path "$DesktopFolder\desktop.ini" -Force).Refresh()
-			# Save screenshots by pressing Win+PrtScr to the Desktop
-			# Сохранить скриншот по Win+PrtScr на рабочем столе
-			New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{b7bede81-df94-4682-a7d8-57a52620b86f}" -Name RelativePath -PropertyType String -Value $DesktopFolder -Force
 		}
+		# Save screenshots by pressing Win+PrtScr to the Desktop
+		# Сохранить скриншот по Win+PrtScr на рабочем столе
+		New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{b7bede81-df94-4682-a7d8-57a52620b86f}" -Name RelativePath -PropertyType String -Value $DesktopFolder -Force
 	}
 	elseif ([string]::IsNullOrEmpty($drive))
 	{
@@ -958,7 +958,7 @@ Do
 			Set-Content -Path "$DownloadsFolder\desktop.ini" -Value $DesktopINI["Downloads"] -Encoding Unicode -Force
 			(Get-Item -Path "$DownloadsFolder\desktop.ini" -Force).Attributes = "Hidden", "System", "Archive"
 			(Get-Item -Path "$DownloadsFolder\desktop.ini" -Force).Refresh()
-			# Microsoft Edge
+			# Microsoft Edge download folder
 			$edge = (Get-AppxPackage "Microsoft.MicrosoftEdge").PackageFamilyName
 			New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Main" -Name "Default Download Directory" -PropertyType String -Value $DownloadsFolder -Force
 		}
