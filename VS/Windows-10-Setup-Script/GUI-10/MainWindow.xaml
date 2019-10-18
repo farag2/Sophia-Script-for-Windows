@@ -1,14 +1,16 @@
-Add-Type -AssemblyName "PresentationCore", "PresentationFramework", "WindowsBase"
-
-[xml]$xamlMarkup = @'
-<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"                        
-        Name="Window"
+﻿<Window x:Class="GUI_10.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GUI_10"
+        mc:Ignorable="d"
         Title="Windows 10 Setup Script" Height="795" Width="940" MinHeight="795" MinWidth="940"
         Background="#FFFFFF"        
         FontFamily="Calibri" FontSize="18" TextOptions.TextFormattingMode="Display" WindowStartupLocation="CenterScreen"
         SnapsToDevicePixels="True" 
-        ShowInTaskbar="True" Foreground="#000000">
+        ShowInTaskbar="True" Foreground="#000000"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown">
     <Window.Resources>
 
         <!--#region Brushes -->
@@ -4309,43 +4311,3 @@ Add-Type -AssemblyName "PresentationCore", "PresentationFramework", "WindowsBase
         <!--#endregion Footer-->
     </Grid>
 </Window>
-'@
-
-$xamlGui = [System.Windows.Markup.XamlReader]::Load((New-Object System.Xml.XmlNodeReader $xamlMarkup))
-$xamlMarkup.SelectNodes('//*[@Name]') | ForEach-Object {
-    New-Variable -Name $_.Name -Value $xamlGui.FindName($_.Name)
-        
-}
-
-#region Script Functions
-function Hide-Console {
-    <#
-    .SYNOPSIS
-    Hide Powershell console before show WPF GUI.    
-    #>
-
-    [CmdletBinding()]
-    param ()
-
-    Add-Type -Name Window -Namespace Console -MemberDefinition '
-    [DllImport("Kernel32.dll")]
-    public static extern IntPtr GetConsoleWindow();
-
-    [DllImport("user32.dll")]
-    public static extern bool ShowWindow(IntPtr hWnd, Int32 nCmdShow);
-'
-    [Console.Window]::ShowWindow([Console.Window]::GetConsoleWindow(), 0)
-}
-
-#endregion
-
-#region Controls Events
-
-
-
-
-
-#endregion
-
-Hide-Console
-$Window.ShowDialog() | Out-Null

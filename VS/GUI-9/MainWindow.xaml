@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI_9"
         mc:Ignorable="d"
-        Title="Windows 10 Setup Script" Height="850" Width="1120" MinHeight="0" MinWidth="0"
+        Title="Windows 10 Setup Script" Height="850" Width="1120" MinHeight="850" MinWidth="1120"
         Background="#FFFFFF"        
-        FontFamily="Calibri" FontSize="16" TextOptions.TextFormattingMode="Display" WindowStartupLocation="CenterScreen"
+        FontFamily="Calibri" FontSize="18" TextOptions.TextFormattingMode="Display" WindowStartupLocation="CenterScreen"
         SnapsToDevicePixels="True" 
-        ShowInTaskbar="True" Foreground="#464646"
+        ShowInTaskbar="True" Foreground="#000000"
         MouseLeftButtonDown="Window_MouseLeftButtonDown">
     <Window.Resources>
 
@@ -65,8 +65,8 @@
 
         <Style x:Key="ToggleBorder" TargetType="Border">
             <Setter Property="BorderBrush" Value="#DADADA"/>
-            <Setter Property="BorderThickness" Value="1 1 1 0"/>
-            <Setter Property="Margin" Value="0 0 20 0"/>
+            <Setter Property="BorderThickness" Value="0 1 0 0"/>
+            <Setter Property="Margin" Value="0 0 0 0"/>
             <Setter Property="Background" Value="#FFFFFF"/>
         </Style>
 
@@ -76,8 +76,7 @@
 
         <Style x:Key="ToggleHeaderTextBlock" TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Margin" Value="20 0 0 0"/>
-            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="20 0 0 5"/>
             <Setter Property="FontSize" Value="20"/>
         </Style>
 
@@ -226,13 +225,146 @@
             </Setter>
         </Style>
 
+        <Style x:Key="ToggleSwitchLeftWhiteStyle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="{StaticResource RadioButton.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="#FFFFFF"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Grid x:Name="templateRoot" 
+							  Background="Transparent" 
+							  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>                                    
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <DoubleAnimation To="1" Duration="0" Storyboard.TargetName="pressedBorder" Storyboard.TargetProperty="(UIElement.Opacity)"/>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="optionMark" Storyboard.TargetProperty="Fill" Duration="0">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource RadioButton.Pressed.Glyph}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="checkedBorder" Storyboard.TargetProperty="BorderBrush">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource RadioButton.Disabled.On.Border}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="checkedBorder" Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource RadioButton.Disabled.On.Background}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <DoubleAnimation To="1" Duration="0" Storyboard.TargetName="disabledBorder" Storyboard.TargetProperty="(UIElement.Opacity)"/>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="optionMark" Storyboard.TargetProperty="Fill" Duration="0">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource RadioButton.Disabled.Glyph}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="optionMarkOn" Storyboard.TargetProperty="Fill" Duration="0">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource RadioButton.Disabled.On.Glyph}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="CheckStates">
+                                    <VisualState x:Name="Unchecked"/>
+                                    <VisualState x:Name="Checked">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="optionMark" Storyboard.TargetProperty="Fill" Duration="0">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource RadioButton.Static.Glyph}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <DoubleAnimationUsingKeyFrames Duration="0:0:0.5" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="optionMark">
+                                                <EasingDoubleKeyFrame KeyTime="0" Value="12"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="optionMark" Storyboard.TargetProperty="Fill">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource RadioButton.Checked.Glyph}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="hoverBorder" Storyboard.TargetProperty="BorderBrush">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource RadioButton.MouseOver.On.Border}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="hoverBorder" Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource RadioButton.MouseOver.On.Background}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <DoubleAnimation To="1" Duration="0" Storyboard.TargetName="optionMarkOn" Storyboard.TargetProperty="(UIElement.Opacity)"/>
+                                            <DoubleAnimation To="1" Duration="0" Storyboard.TargetName="checkedBorder" Storyboard.TargetProperty="(UIElement.Opacity)"/>
+                                            <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="disabledBorder" Storyboard.TargetProperty="BorderBrush">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource RadioButton.Disabled.On.Border}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="disabledBorder" Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource RadioButton.Disabled.On.Background}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Indeterminate"/>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="FocusStates">
+                                    <VisualState x:Name="Unfocused"/>
+                                    <VisualState x:Name="Focused"/>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <ContentPresenter x:Name="contentPresenter" 
+											  Focusable="False" RecognizesAccessKey="True" 
+											  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+											  Margin="{TemplateBinding Padding}" 
+											  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+											  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            <Grid x:Name="markGrid" Grid.Row="1" Margin="10 0 10 0" Width="44" Height="20"
+								  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
+                                <Border x:Name="normalBorder" Opacity="1" BorderThickness="2" CornerRadius="10"
+										BorderBrush="{TemplateBinding BorderBrush}" Background="Transparent"/>
+                                <Border x:Name="checkedBorder" Opacity="0" BorderThickness="2" CornerRadius="10"
+										BorderBrush="#FFFFFF" Background="Transparent"/>
+                                <Border x:Name="hoverBorder" Opacity="0" BorderThickness="2" CornerRadius="10"
+										BorderBrush="#FFFFFF" Background="Transparent"/>
+                                <Border x:Name="pressedBorder" Opacity="0" BorderThickness="2" CornerRadius="10"
+										BorderBrush="#FFFFFF" Background="Transparent"/>
+                                <Border x:Name="disabledBorder" Opacity="0" BorderThickness="2" CornerRadius="10"
+										BorderBrush="{StaticResource RadioButton.Disabled.Border}" Background="{StaticResource RadioButton.Disabled.Background}"/>
+                                <Ellipse x:Name="optionMark"
+										 Height="10" Width="10" Fill="#FFFFFF" StrokeThickness="0" 
+										 VerticalAlignment="Center" Margin="5,0" RenderTransformOrigin="0.5,0.5">
+                                    <Ellipse.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="-12"/>
+                                        </TransformGroup>
+                                    </Ellipse.RenderTransform>
+                                </Ellipse>
+                                <Ellipse x:Name="optionMarkOn" Opacity="0"
+										 Height="10" Width="10" Fill="#FFFFFF" StrokeThickness="0" 
+										 VerticalAlignment="Center" Margin="5,0" RenderTransformOrigin="0.5,0.5">
+                                    <Ellipse.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="12"/>
+                                        </TransformGroup>
+                                    </Ellipse.RenderTransform>
+                                </Ellipse>
+                            </Grid>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style x:Key="ViewboxActionButton" TargetType="{x:Type Viewbox}">
             <Setter Property="Width" Value="24"/>
             <Setter Property="Height" Value="24"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="Margin" Value="5 0 7 3"/>
-        </Style>
+        </Style>       
 
         <Style x:Key="ViewboxFooter" TargetType="{x:Type Viewbox}">
             <Setter Property="Width" Value="22"/>
@@ -240,6 +372,12 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="Margin" Value="5 0 5 0"/>
+        </Style>
+
+        <Style x:Key="TextblockActionButton" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
         </Style>
 
     </Window.Resources>
@@ -252,11 +390,12 @@
         </Grid.RowDefinitions>
 
         <!--#region Action Button-->
-        <DockPanel Name="PanelActionButton" Grid.Row="0" Background="#0078d7" Margin="0 0 0 5" >
-            <DockPanel.Effect>
+        <Grid Name="PanelActionButton" Grid.Row="0" Background="#0078d7" Margin="0 0 0 5" >
+            <Grid.Effect>
                 <DropShadowEffect ShadowDepth="2" Direction="315" BlurRadius="3" Opacity="0.5"/>
-            </DockPanel.Effect>
-
+            </Grid.Effect>
+            
+            <!--#region Category Button-->
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" >
 
                 <!--#region Privacy & Telemetry Button-->
@@ -274,7 +413,7 @@
                                     <EventTrigger.Actions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="180" SpeedRatio="3"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="160" SpeedRatio="3"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger.Actions>
@@ -319,7 +458,7 @@
 
                         </Canvas>
                     </Viewbox>
-                    <TextBlock Name="ButtonText_Privacy" Text="Privacy &amp; Telemetry" FontWeight="Bold" Foreground="{Binding ElementName=PathAction_Privacy, Path=Fill}" VerticalAlignment="Center"/>
+                    <TextBlock Name="ButtonText_Privacy" Text="Privacy &amp; Telemetry" Style="{StaticResource TextblockActionButton}" Foreground="{Binding ElementName=PathAction_Privacy, Path=Fill}"/>
                 </StackPanel>
                 <!--#endregion Privacy & Telemetry Button-->
 
@@ -338,7 +477,7 @@
                                     <EventTrigger.Actions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="180" SpeedRatio="3"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="165" SpeedRatio="3"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger.Actions>
@@ -382,7 +521,7 @@
                             </Path>
                         </Canvas>
                     </Viewbox>
-                    <TextBlock Name="ButtonText_Ui" Text="UI &amp; Personalization" FontWeight="Bold" Foreground="{Binding ElementName=PathAction_Ui, Path=Fill}" VerticalAlignment="Center"/>
+                    <TextBlock Name="ButtonText_Ui" Text="UI &amp; Personalization" Style="{StaticResource TextblockActionButton}" Foreground="{Binding ElementName=PathAction_Ui, Path=Fill}"/>
                 </StackPanel>
                 <!--#endregion UI & Personalization Button-->
 
@@ -401,7 +540,7 @@
                                     <EventTrigger.Actions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="115" SpeedRatio="3"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="100" SpeedRatio="3"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger.Actions>
@@ -445,7 +584,7 @@
                             </Path>
                         </Canvas>
                     </Viewbox>
-                    <TextBlock Name="ButtonText_OneDrive" Text="OneDrive" FontWeight="Bold" Foreground="{Binding ElementName=PathAction_OneDrive, Path=Fill}" VerticalAlignment="Center"/>
+                    <TextBlock Name="ButtonText_OneDrive" Text="OneDrive" Style="{StaticResource TextblockActionButton}" Foreground="{Binding ElementName=PathAction_OneDrive, Path=Fill}"/>
                 </StackPanel>
                 <!--#endregion OneDrive Button-->
 
@@ -464,7 +603,7 @@
                                     <EventTrigger.Actions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="100" SpeedRatio="3"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="90" SpeedRatio="3"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger.Actions>
@@ -508,7 +647,7 @@
                             </Path>
                         </Canvas>
                     </Viewbox>
-                    <TextBlock Name="ButtonText_System" Text="System" FontWeight="Bold" Foreground="{Binding ElementName=PathAction_System, Path=Fill}" VerticalAlignment="Center"/>
+                    <TextBlock Name="ButtonText_System" Text="System" Style="{StaticResource TextblockActionButton}" Foreground="{Binding ElementName=PathAction_System, Path=Fill}"/>
                 </StackPanel>
                 <!--#endregion System Button-->
 
@@ -527,7 +666,7 @@
                                     <EventTrigger.Actions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="125" SpeedRatio="3"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="115" SpeedRatio="3"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger.Actions>
@@ -571,7 +710,7 @@
                             </Path>
                         </Canvas>
                     </Viewbox>
-                    <TextBlock Name="ButtonText_StartMenu" Text="Start Menu" FontWeight="Bold" Foreground="{Binding ElementName=PathAction_StartMenu, Path=Fill}" VerticalAlignment="Center"/>
+                    <TextBlock Name="ButtonText_StartMenu" Text="Start Menu" Style="{StaticResource TextblockActionButton}" Foreground="{Binding ElementName=PathAction_StartMenu, Path=Fill}"/>
                 </StackPanel>
                 <!--#endregion Start Menu Button-->
 
@@ -590,7 +729,7 @@
                                     <EventTrigger.Actions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="150" SpeedRatio="3"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="140" SpeedRatio="3"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger.Actions>
@@ -634,7 +773,7 @@
                             </Path>
                         </Canvas>
                     </Viewbox>
-                    <TextBlock Name="ButtonText_Edge" Text="Microsoft Edge" FontWeight="Bold" Foreground="{Binding ElementName=PathAction_Edge, Path=Fill}" VerticalAlignment="Center"/>
+                    <TextBlock Name="ButtonText_Edge" Text="Microsoft Edge" Style="{StaticResource TextblockActionButton}" Foreground="{Binding ElementName=PathAction_Edge, Path=Fill}"/>
                 </StackPanel>
                 <!--#endregion Microsoft Edge Button-->
 
@@ -653,7 +792,7 @@
                                     <EventTrigger.Actions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="120" SpeedRatio="3"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="110" SpeedRatio="3"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger.Actions>
@@ -697,7 +836,7 @@
                             </Path>
                         </Canvas>
                     </Viewbox>
-                    <TextBlock Name="ButtonText_Uwp" Text="UWP Apps" FontWeight="Bold" Foreground="{Binding ElementName=PathAction_Uwp, Path=Fill}" VerticalAlignment="Center"/>
+                    <TextBlock Name="ButtonText_Uwp" Text="UWP Apps" Style="{StaticResource TextblockActionButton}" Foreground="{Binding ElementName=PathAction_Uwp, Path=Fill}"/>
                 </StackPanel>
                 <!--#endregion UWP Apps Button-->
 
@@ -716,7 +855,7 @@
                                     <EventTrigger.Actions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="230" SpeedRatio="3"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="205" SpeedRatio="3"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger.Actions>
@@ -760,7 +899,7 @@
                             </Path>
                         </Canvas>
                     </Viewbox>
-                    <TextBlock Name="ButtonText_Game" Text="Windows Game Recording" FontWeight="Bold" Foreground="{Binding ElementName=PathAction_Game, Path=Fill}" VerticalAlignment="Center"/>
+                    <TextBlock Name="ButtonText_Game" Text="Windows Game Recording" Style="{StaticResource TextblockActionButton}" Foreground="{Binding ElementName=PathAction_Game, Path=Fill}"/>
                 </StackPanel>
                 <!--#endregion Windows Game Recording Button-->
 
@@ -779,7 +918,7 @@
                                     <EventTrigger.Actions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="160" SpeedRatio="3"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="140" SpeedRatio="3"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger.Actions>
@@ -823,7 +962,7 @@
                             </Path>
                         </Canvas>
                     </Viewbox>
-                    <TextBlock Name="ButtonText_Tasks" Text="Scheduled Tasks" FontWeight="Bold" Foreground="{Binding ElementName=PathAction_Tasks, Path=Fill}" VerticalAlignment="Center"/>
+                    <TextBlock Name="ButtonText_Tasks" Text="Scheduled Tasks" Style="{StaticResource TextblockActionButton}" Foreground="{Binding ElementName=PathAction_Tasks, Path=Fill}"/>
                 </StackPanel>
                 <!--#endregion Scheduled Tasks Button-->
 
@@ -842,7 +981,7 @@
                                     <EventTrigger.Actions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="180" SpeedRatio="3"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="160" SpeedRatio="3"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger.Actions>
@@ -886,7 +1025,7 @@
                             </Path>
                         </Canvas>
                     </Viewbox>
-                    <TextBlock Name="ButtonText_Defender" Text="Microsoft Defender" FontWeight="Bold" Foreground="{Binding ElementName=PathAction_Defender, Path=Fill}" VerticalAlignment="Center"/>
+                    <TextBlock Name="ButtonText_Defender" Text="Microsoft Defender" Style="{StaticResource TextblockActionButton}" Foreground="{Binding ElementName=PathAction_Defender, Path=Fill}"/>
                 </StackPanel>
                 <!--#endregion Microsoft Defender Button-->
 
@@ -905,7 +1044,7 @@
                                     <EventTrigger.Actions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="145" SpeedRatio="3"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="135" SpeedRatio="3"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger.Actions>
@@ -949,11 +1088,11 @@
                             </Path>
                         </Canvas>
                     </Viewbox>
-                    <TextBlock Name="ButtonText_ContextMenu" Text="Context Menu" FontWeight="Bold" Foreground="{Binding ElementName=PathAction_ContextMenu, Path=Fill}" VerticalAlignment="Center"/>
+                    <TextBlock Name="ButtonText_ContextMenu" Text="Context Menu" Style="{StaticResource TextblockActionButton}" Foreground="{Binding ElementName=PathAction_ContextMenu, Path=Fill}"/>
                 </StackPanel>
-                <!--#endregion Context Menu Button-->                
+                <!--#endregion Context Menu Button-->
 
-                <!--#region Context Menu Button-->
+                <!--#region Save Button-->
                 <StackPanel Name="ButtonAction_Save" Margin="0 0 10 0" Height="48" Width="35" Orientation="Horizontal" >
                     <StackPanel.Style>
                         <Style TargetType="{x:Type StackPanel}">
@@ -968,7 +1107,7 @@
                                     <EventTrigger.Actions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="135" SpeedRatio="3"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="125" SpeedRatio="3"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger.Actions>
@@ -1012,25 +1151,177 @@
                             </Path>
                         </Canvas>
                     </Viewbox>
-                    <TextBlock Name="ButtonText_Save" Text="Save Settings" FontWeight="Bold" Foreground="{Binding ElementName=PathAction_Save, Path=Fill}" VerticalAlignment="Center"/>
+                    <TextBlock Name="ButtonText_Save" Text="Save Settings" Style="{StaticResource TextblockActionButton}" Foreground="{Binding ElementName=PathAction_Save, Path=Fill}"/>
                 </StackPanel>
-                <!--#endregion Context Menu Button-->
+                <!--#endregion Save Button-->
 
+                <!--#region Load Button-->
+                <StackPanel Name="ButtonAction_Load" Margin="0 0 10 0" Height="48" Width="35" Orientation="Horizontal" >
+                    <StackPanel.Style>
+                        <Style TargetType="{x:Type StackPanel}">
+                            <Style.Triggers>
+                                <Trigger  Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#FFFFFF"/>
+                                </Trigger>
+                                <Trigger  Property="IsMouseOver" Value="False">
+                                    <Setter Property="Background" Value="{Binding ElementName=PanelActionButton, Path=Background}"/>
+                                </Trigger>
+                                <EventTrigger RoutedEvent="MouseEnter">
+                                    <EventTrigger.Actions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="125" SpeedRatio="3"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger.Actions>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="MouseLeave">
+                                    <EventTrigger.Actions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="35" SpeedRatio="3"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger.Actions>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="MouseDown">
+                                    <EventTrigger.Actions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ThicknessAnimation Storyboard.TargetProperty="Margin" Duration="0:0:1" From="0 0 10 0" To="0 5 10 0" SpeedRatio="5" AutoReverse="True" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger.Actions>
+                                </EventTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+                    <Viewbox Style="{StaticResource ViewboxActionButton}" Margin="5 0 7 0">
+                        <Canvas Width="24" Height="24">
+                            <Path Name="PathAction_Load" Data="M7.5,5.6L5,7L6.4,4.5L5,2L7.5,3.4L10,2L8.6,4.5L10,7L7.5,5.6M19.5,15.4L22,14L20.6,16.5L22,19L19.5,17.6L17,19L18.4,16.5L17,14L19.5,15.4M22,2L20.6,4.5L22,7L19.5,5.6L17,7L18.4,4.5L17,2L19.5,3.4L22,2M13.34,12.78L15.78,10.34L13.66,8.22L11.22,10.66L13.34,12.78M14.37,7.29L16.71,9.63C17.1,10 17.1,10.65 16.71,11.04L5.04,22.71C4.65,23.1 4,23.1 3.63,22.71L1.29,20.37C0.9,20 0.9,19.35 1.29,18.96L12.96,7.29C13.35,6.9 14,6.9 14.37,7.29Z">
+                                <Path.Style>
+                                    <Style TargetType="{x:Type Path}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=ButtonAction_Load, Path=IsMouseOver}" Value="True">
+                                                <Setter Property="Fill" Value="{Binding ElementName=PanelActionButton, Path=Background}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ElementName=ButtonAction_Load, Path=IsMouseOver}" Value="False">
+                                                <Setter Property="Fill" Value="#FFFFFF"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Path.Style>
+                            </Path>
+                        </Canvas>
+                    </Viewbox>
+                    <TextBlock Name="ButtonText_Load" Text="Load Settings" Style="{StaticResource TextblockActionButton}" Foreground="{Binding ElementName=PathAction_Load, Path=Fill}"/>
+                </StackPanel>
+                <!--#endregion Load Button-->
+
+                <!--#region Apply Button-->
+                <StackPanel Name="ButtonAction_Apply" Margin="0 0 10 0" Height="48" Width="35" Orientation="Horizontal" >
+                    <StackPanel.Style>
+                        <Style TargetType="{x:Type StackPanel}">
+                            <Style.Triggers>
+                                <Trigger  Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#FFFFFF"/>
+                                </Trigger>
+                                <Trigger  Property="IsMouseOver" Value="False">
+                                    <Setter Property="Background" Value="{Binding ElementName=PanelActionButton, Path=Background}"/>
+                                </Trigger>
+                                <EventTrigger RoutedEvent="MouseEnter">
+                                    <EventTrigger.Actions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="130" SpeedRatio="3"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger.Actions>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="MouseLeave">
+                                    <EventTrigger.Actions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width" Duration="0:0:1" To="35" SpeedRatio="3"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger.Actions>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="MouseDown">
+                                    <EventTrigger.Actions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ThicknessAnimation Storyboard.TargetProperty="Margin" Duration="0:0:1" From="0 0 10 0" To="0 5 10 0" SpeedRatio="5" AutoReverse="True" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger.Actions>
+                                </EventTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+                    <Viewbox Style="{StaticResource ViewboxActionButton}" Margin="5 0 7 0">
+                        <Canvas Width="24" Height="24">
+                            <Path Name="PathAction_Apply" Data="M11,15H13V17H11V15M11,7H13V13H11V7M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20Z">
+                                <Path.Style>
+                                    <Style TargetType="{x:Type Path}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=ButtonAction_Apply, Path=IsMouseOver}" Value="True">
+                                                <Setter Property="Fill" Value="{Binding ElementName=PanelActionButton, Path=Background}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ElementName=ButtonAction_Apply, Path=IsMouseOver}" Value="False">
+                                                <Setter Property="Fill" Value="#FFFFFF"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Path.Style>
+                            </Path>
+                        </Canvas>
+                    </Viewbox>
+                    <TextBlock Name="ButtonText_Apply" Text="Apply Settings" Style="{StaticResource TextblockActionButton}" Foreground="{Binding ElementName=PathAction_Apply, Path=Fill}"/>
+                </StackPanel>
+                <!--#endregion Apply Button-->
 
             </StackPanel>
-        </DockPanel>
+            <!--#endregion Category Button-->
+
+            <!--#region Change Language Toggle-->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="20 0 0 0">
+                <Grid>
+                    <ToggleButton Name="ToggleSwitch_Language" Style="{DynamicResource ToggleSwitchLeftWhiteStyle}" IsChecked="False"/>
+                    <TextBlock Name="TextBlock_Language" FontWeight="Bold" Foreground="#FFFFFF" Margin="65 2 10 0" VerticalAlignment="Center" IsHitTestVisible="False">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=ToggleSwitch_Language, Path=IsChecked}" Value="True">
+                                        <Setter Property="Text" Value="RU"/>
+                                        <Setter Property="Foreground" Value="{Binding ElementName=BorderWindow, Path=BorderBrush}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=ToggleSwitch_Language, Path=IsChecked}" Value="false">
+                                        <Setter Property="Text" Value="EN"/>
+                                        <Setter Property="Foreground" Value="{Binding ElementName=BorderWindow, Path=BorderBrush}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=ToggleSwitch_Language, Path=IsEnabled}" Value="false">
+                                        <Setter Property="Opacity" Value="0.2" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Grid>
+            </StackPanel>
+            <!--#endregion Change Language Toggle-->
+
+        </Grid>
         <!--#endregion Action Button-->
 
         <!--#region Toggle Button-->
         <ScrollViewer Name="ScrollToggle" Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <StackPanel Orientation="Vertical" Margin="10">
+            <StackPanel Orientation="Vertical" Margin="0">
 
                 <!--#region Privacy & Telemetry-->
-                <Border Style="{StaticResource ToggleHeaderBorder}">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Name="HeaderPrivacy" Text="Privacy &amp; Telemetry" Style="{StaticResource ToggleHeaderTextBlock}"/>
-                    </StackPanel>
-                </Border>
+                <StackPanel Orientation="Horizontal" >
+                    <TextBlock Name="Header_Privacy" Text="Privacy &amp; Telemetry" Style="{StaticResource ToggleHeaderTextBlock}"/>
+                </StackPanel>
                 <Border Style="{StaticResource ToggleBorder}">
                     <StackPanel Orientation="Horizontal" Margin="5">
                         <Grid HorizontalAlignment="Left">
@@ -1040,7 +1331,7 @@
                                     <Style TargetType="{x:Type TextBlock}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding ElementName=ToggleSwitch_Privacy_0, Path=IsChecked}" Value="True">
-                                                <Setter Property="Foreground" Value="{Binding ElementName=BorderWindow, Path=BorderBrush}"/>
+                                                <Setter Property="Foreground" Value="{Binding ElementName=PanelActionButton, Path=Background}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding ElementName=ToggleSwitch_Privacy_0, Path=IsEnabled}" Value="false">
                                                 <Setter Property="Opacity" Value="0.2" />

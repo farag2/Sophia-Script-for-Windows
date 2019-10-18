@@ -16,11 +16,9 @@ if (Test-Path -Path $outFile) {
 #region Write Header
 @"
 ######################### $categoryName #########################
-<Border Style="{StaticResource ToggleHeaderBorder}">
 <StackPanel Orientation="Horizontal">
-<TextBlock Name="Header$categoryName" Text="$categoryName" Style="{StaticResource ToggleHeaderTextBlock}"/>
+<TextBlock Name="Header_$categoryName" Text="$categoryName" Style="{StaticResource ToggleHeaderTextBlock}"/>
 </StackPanel>
-</Border>        
 "@ | Out-File -FilePath $outFile -Append
 #endregion Write Header        
         
@@ -52,7 +50,7 @@ if (Test-Path -Path $outFile) {
 <Style TargetType="{x:Type TextBlock}">
 <Style.Triggers>
 <DataTrigger Binding="{Binding ElementName=$toggleName, Path=IsChecked}" Value="True">
-<Setter Property="Foreground" Value="{Binding ElementName=BorderWindow, Path=BorderBrush}"/>
+<Setter Property="Foreground" Value="#0078d7"/>
 </DataTrigger>
 <DataTrigger Binding="{Binding ElementName=$toggleName, Path=IsEnabled}" Value="false">
 <Setter Property="Opacity" Value="0.2" />
@@ -67,7 +65,15 @@ if (Test-Path -Path $outFile) {
 "@ | Out-File -FilePath $outFile -Append
 #endregion Write Toggle Buttons
 
-        } 
+        }
+
+#region Write Placeholder
+@"
+<!--#region Category End Placeholder-->
+<Border Style="{StaticResource ToggleBorder}"/>
+<!--#endregion Category End Placeholder-->
+"@ | Out-File -FilePath $outFile -Append
+#endregion Write Placeholder
 
         Write-Warning -Message "File ""ToggleButtonsGenerator.txt"" created!"
     }
