@@ -415,7 +415,7 @@ IF ($taskmgr)
 {
 	$taskmgr.CloseMainWindow()
 }
-$taskmgr = Start-Process -FilePath taskmgr.exe -WindowStyle Hidden -PassThru
+Start-Process -FilePath .\Taskmgr.exe -WindowStyle Hidden -PassThru
 Do
 {
 	Start-Sleep -Milliseconds 100
@@ -425,6 +425,7 @@ Until ($preferences)
 Stop-Process -Name Taskmgr
 $preferences.Preferences[28] = 0
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -PropertyType Binary -Value $preferences.Preferences -Force
+$Error.RemoveRange(0, $Error.Count)
 # Remove Microsoft Edge shortcut from the Desktop
 # Удалить ярлык Microsoft Edge с рабочего стола
 $value = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
@@ -456,6 +457,8 @@ Stop-Process -Name OneDrive -Force -ErrorAction SilentlyContinue
 Start-Process -FilePath "$env:SystemRoot\SysWOW64\OneDriveSetup.exe" -ArgumentList "/uninstall" -Wait
 Stop-Process -Name explorer
 Remove-ItemProperty -Path HKCU:\Environment -Name OneDrive -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "$env:ProgramData\Microsoft OneDrive" -Recurse -Force -ErrorAction SilentlyContinue
+Unregister-ScheduledTask -TaskName *OneDrive* -Confirm:$false
 IF ((Get-ChildItem -Path $env:USERPROFILE\OneDrive -ErrorAction SilentlyContinue | Measure-Object).Count -eq 0)
 {
 	Remove-Item -Path $env:USERPROFILE\OneDrive -Recurse -Force -ErrorAction SilentlyContinue
@@ -464,9 +467,9 @@ else
 {
 	Write-Error "$env:USERPROFILE\OneDrive folder is not empty"
 }
+Wait-Process -Name OneDriveSetup -ErrorAction SilentlyContinue
 Remove-Item -Path $env:LOCALAPPDATA\Microsoft\OneDrive -Recurse -Force -ErrorAction SilentlyContinue
-Remove-Item -Path "$env:ProgramData\Microsoft OneDrive" -Recurse -Force -ErrorAction SilentlyContinue
-Unregister-ScheduledTask -TaskName *OneDrive* -Confirm:$false
+$Error.RemoveAt(0)
 #endregion OneDrive
 
 #region System
@@ -1876,7 +1879,7 @@ IF (-not ("WinAPI.UpdateEnvExplorer" -as [type]))
 # Errors output
 # Вывод ошибок
 Write-Host "`nErrors" -BackgroundColor Red
-($Error | Where-Object -FilterScript {$_ -notmatch "Taskmgr" -and $_ -notmatch "TaskManager"} | ForEach-Object -Process {
+($Error | ForEach-Object -Process {
 	[PSCustomObject] @{
 		Line = $_.InvocationInfo.ScriptLineNumber
 		Error = $_.Exception.Message
