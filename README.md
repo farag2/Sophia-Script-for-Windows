@@ -16,9 +16,9 @@ Windows 10 Setup Script
 The PowerShell script is a set of tweaks for fine-tuning the OS and automating the routine tasks.
 
 ## Supported Windows version
-|Version|Code name|Marketing name |Build|Arch|PowerShell|
-|:-----:|:-------:|:-------------:|:---:|:--:|:--------:|
-| 1903  |  19H1   |May 2019 Update|18362|x64 |   5.1    |
+|Version|Code name|   Marketing name   |Build|Arch|PowerShell|
+|:-----:|:-------:|:------------------:|:---:|:--:|:--------:|
+| 1909  |  19H2   |November 2019 Update|18363|x64 |   5.1    |
 
 ## Core features
 - Turn off diagnostics tracking services;
