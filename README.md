@@ -72,7 +72,7 @@ Some of functions can be run also on LTSB/LTSC and on older versions of Windows 
 
 ## Links
 ### Ask a question in
- - [Habr](https://habr.com/ru/post/465365/)
+ - [Habr](https://habr.com/en/post/465365/)
  - [Ru-Board](http://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15)
  - [My Digital Life](https://forums.mydigitallife.net/threads/powershell-script-setup-windows-10.80139/)
  - [Reddit](https://www.reddit.com/r/Windows10/comments/ctg8jw/powershell_script_setup_windows_10/)
