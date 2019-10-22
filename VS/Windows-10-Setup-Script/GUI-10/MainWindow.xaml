@@ -1055,7 +1055,7 @@
                 <!--#region Privacy & Telemetry-->
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Name="Header_Privacy" Text="Privacy &amp; Telemetry" Style="{StaticResource ToggleHeaderTextBlock}"/>
-                </StackPanel>
+                </StackPanel>                
                 <Border Style="{StaticResource ToggleBorder}">
                     <StackPanel Orientation="Horizontal" Margin="5">
                         <Grid HorizontalAlignment="Left">
