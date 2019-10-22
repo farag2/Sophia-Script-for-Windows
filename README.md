@@ -30,7 +30,7 @@ The PowerShell script is a set of tweaks for fine-tuning the OS and automating t
 - Turn off Windows features;
 - Create a task in the Task Scheduler to start Windows cleaning up;
 - Create task to clean out the "$env:SystemRoot\SoftwareDistribution\Download" folder in Task Scheduler;
-- Create scheduled task with the $env:TEMP folder cleanup in Task Scheduler;
+- Create a task in the Task Scheduler to clear the "$env:SystemRoot\SoftwareDistribution\Download" folder;
 - Add folder to exclude from Windows Defender Antivirus scan;
 - Turn off per-user services;
 - Create old style shortcut for "Devices and Printers";
