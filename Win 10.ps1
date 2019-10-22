@@ -584,30 +584,27 @@ New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Windo
 $features = @(
 	# Windows Fax and Scan
 	# Факсы и сканирование
-	"FaxServicesClientPackage",
+	"FaxServicesClientPackage"
 	# Legacy Components
 	# Компоненты прежних версий
-	"LegacyComponents",
+	"LegacyComponents"
 	# Media Features
 	# Компоненты работы с мультимедиа
-	"MediaPlayback",
+	"MediaPlayback"
 	# PowerShell 2.0
-	"MicrosoftWindowsPowerShellV2",
-	"MicrosoftWindowsPowershellV2Root",
+	"MicrosoftWindowsPowerShellV2"
+	"MicrosoftWindowsPowershellV2Root"
 	# Microsoft XPS Document Writer
 	# Средство записи XPS-документов (Microsoft)
-	"Printing-XPSServices-Features",
+	"Printing-XPSServices-Features"
 	# Microsoft Print to PDF
 	# Печать в PDF (Майкрософт)
-	"Printing-PrintToPDFServices-Features",
+	"Printing-PrintToPDFServices-Features"
 	# Work Folders Client
 	# Клиент рабочих папок
 	"WorkFolders-Client"
 )
-foreach ($feature in $features)
-{
-	Disable-WindowsOptionalFeature -Online -FeatureName $feature -NoRestart
-}
+Disable-WindowsOptionalFeature -Online -FeatureName $features -NoRestart
 # Remove Windows capabilities
 # Удалить компоненты
 $IncludedApps = @(
@@ -637,9 +634,9 @@ Get-CimInstance -ClassName Win32_ShadowCopy | Remove-CimInstance
 # Turn off Windows Script Host
 # Отключить Windows Script Host
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings" -Name Enabled -PropertyType DWord -Value 0 -Force
-# Turn off default background apps except
-# Запретить стандартным приложениям работать в фоновом режиме, кроме
-$apps = @(
+# Turn off default background apps, except the followings...
+# Запретить стандартным приложениям работать в фоновом режиме, кроме следующих...
+$ExcludedApps = @(
 	# Lock App
 	"Microsoft.LockApp*"
 	# Content Delivery Manager
@@ -654,14 +651,13 @@ $apps = @(
 	# StartMenuExperienceHost
 	"Microsoft.Windows.StartMenuExperienceHost*"
 )
-foreach ($app in $apps)
-{
-	Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications -Exclude $apps |
-	ForEach-Object -Process {
-		New-ItemProperty -Path $_.PsPath -Name Disabled -PropertyType DWord -Value 1 -Force
-		New-ItemProperty -Path $_.PsPath -Name DisabledByUser -PropertyType DWord -Value 1 -Force
-	}
+$OFS = "|"
+Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications | Where-Object -FilterScript {$_.PSChildName -cnotmatch $ExcludedApps} |
+ForEach-Object -Process {
+	New-ItemProperty -Path $_.PsPath -Name Disabled -PropertyType DWord -Value 1 -Force
+	New-ItemProperty -Path $_.PsPath -Name DisabledByUser -PropertyType DWord -Value 1 -Force
 }
+$OFS = " "
 # Set power management scheme for desktop and laptop
 # Установить схему управления питания для стационарного ПК и ноутбука
 IF ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -eq 1)
