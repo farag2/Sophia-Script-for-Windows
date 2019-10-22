@@ -44,7 +44,7 @@ The PowerShell script is a set of tweaks for fine-tuning the OS and automating t
 
 ## NB
 - PowerShell and PowerShell ISE must be run with elevated privileges;
-- Set PowerShell execution policy <code>Set-ExecutionPolicy Unrestricted -Force</code> to be able to run .ps1 files.
+- Set PowerShell execution policy <code>Set-ExecutionPolicy -ExecutionPolicy Bypass -Force</code> to be able to run .ps1 files.
   - Read more about [execution policy](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies) 
   
 ## Usage
