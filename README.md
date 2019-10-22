@@ -28,7 +28,7 @@ The PowerShell script is a set of tweaks for fine-tuning the OS and automating t
   - [Screenshot](#screenshots)
 - Uninstall all UWP apps from all accounts with exception apps list;
 - Turn off Windows features;
-- Create scheduled task with the disk cleanup tool in Task Scheduler;
+- Create a task in the Task Scheduler to start Windows cleaning up;
 - Create task to clean out the "$env:SystemRoot\SoftwareDistribution\Download" folder in Task Scheduler;
 - Create scheduled task with the $env:TEMP folder cleanup in Task Scheduler;
 - Add folder to exclude from Windows Defender Antivirus scan;
