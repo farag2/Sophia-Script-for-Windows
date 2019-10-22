@@ -58,7 +58,7 @@ or
 
 ## FAQ
 Read the code you run carefully. Some functions are presented as an example only. You must be aware of the meaning of the functions in the code. **If you're not sure what the script does, do not run it.**
-Some of functions can be run also on LTSB/LTSC and on older versions of Windows and PowerShell (also on 32bit systems).
+Some of functions can be run also on LTSB/LTSC and on older versions of Windows and PowerShell (not recommended to run on the x86 systems).
 
 ### Screenshots
 - Startmenu
