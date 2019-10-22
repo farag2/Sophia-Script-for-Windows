@@ -35,7 +35,7 @@ The PowerShell script is a set of tweaks for fine-tuning the OS and automating t
 - Turn off per-user services;
 - Create old style shortcut for "Devices and Printers";
 - Import Start menu layout from pre-saved reg file;
-  - Download pre-saved Startmenu.reg
+  - [Download](https://github.com/farag2/Windows-10-Setup-Script/tree/master/Start%20menu%20layout) pre-saved Startmenu.reg
   - [Screenshot](#screenshots)
 - Unpin all Start menu tiles;
 - Set location of the "Desktop", "Documents" "Downloads" "Music", "Pictures", and "Videos";
