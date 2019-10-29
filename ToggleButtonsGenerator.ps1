@@ -13,19 +13,10 @@ if (Test-Path -Path $outFile) {
 
     if (Test-Path -Path $categoryFile) {
 
-#region Write Header
-@"
-######################### $categoryName #########################
-<StackPanel Orientation="Horizontal">
-<TextBlock Name="Header_$categoryName" Text="$categoryName" Style="{StaticResource ToggleHeaderTextBlock}"/>
-</StackPanel>
-"@ | Out-File -FilePath $outFile -Append
-#endregion Write Header        
-        
         $text = Get-Content -Path $categoryFile
 
         for ($i = 0; $i -lt $text.Count; $i++) {
-            
+
             $string = $text[$i]
 
             if ($string.Contains('"')) {
@@ -36,21 +27,30 @@ if (Test-Path -Path $outFile) {
                 $string = $text[$i].Replace('&', '&amp;')
             }
 
-            $toggleName = "ToggleSwitch_{0}_{1}"-f $categoryName, $i
-            $textBlockName = "TextBlock_{0}_{1}"-f $categoryName, $i
+            $toggleName = "Toggle_{0}_{1}" -f $categoryName, $i
+            $textBlockName = "TextToggle_{0}_{1}" -f $categoryName, $i
+
+            if ($i -eq 0) {
+@"
+<!--#region $categoryName Toggle-->
+<StackPanel Name="PanelToggle_$categoryName" Style="{StaticResource PanelToggle}">
+"@ | Out-File -FilePath $outFile -Append
+            }
 
 #region Write Toggle Buttons
 @"
-<Border Style="{StaticResource ToggleBorder}">
-<StackPanel Orientation="Horizontal" Margin="5">
+
 <Grid HorizontalAlignment="Left">
-<ToggleButton Name="$toggleName" Style="{DynamicResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-<TextBlock Name="$textBlockName" Text="$string" Margin="65 2 10 0" VerticalAlignment="Center" IsHitTestVisible="False">
+<ToggleButton Name="$toggleName" Style="{StaticResource ToggleSwitchTopStyle}"
+    Content="$string"
+    FontSize="18" Margin="10" IsChecked="False" />
+<TextBlock Name="$textBlockName" Margin="60 10 10 12" VerticalAlignment="Bottom" FontSize="18">
 <TextBlock.Style>
-<Style TargetType="{x:Type TextBlock}">
+<Style TargetType="TextBlock">
+<Setter Property="Text" Value="Off" />
 <Style.Triggers>
 <DataTrigger Binding="{Binding ElementName=$toggleName, Path=IsChecked}" Value="True">
-<Setter Property="Foreground" Value="#0078d7"/>
+<Setter Property="Text" Value="On" />
 </DataTrigger>
 <DataTrigger Binding="{Binding ElementName=$toggleName, Path=IsEnabled}" Value="false">
 <Setter Property="Opacity" Value="0.2" />
@@ -60,8 +60,6 @@ if (Test-Path -Path $outFile) {
 </TextBlock.Style>
 </TextBlock>
 </Grid>
-</StackPanel>
-</Border>
 "@ | Out-File -FilePath $outFile -Append
 #endregion Write Toggle Buttons
 
@@ -69,9 +67,9 @@ if (Test-Path -Path $outFile) {
 
 #region Write Placeholder
 @"
-<!--#region Category End Placeholder-->
-<Border Style="{StaticResource ToggleBorder}"/>
-<!--#endregion Category End Placeholder-->
+</StackPanel>
+<!--#endregion $categoryName Toggle-->
+
 "@ | Out-File -FilePath $outFile -Append
 #endregion Write Placeholder
 
