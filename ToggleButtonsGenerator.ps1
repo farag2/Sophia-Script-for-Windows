@@ -1,4 +1,4 @@
-$currentDir = $MyInvocation.MyCommand.Definition | Split-Path -Parent
+﻿$currentDir = $MyInvocation.MyCommand.Definition | Split-Path -Parent
 $outFile = "{0}\ToggleButtonsGenerator.txt"-f $currentDir
 
 if (Test-Path -Path $outFile) {
@@ -6,72 +6,55 @@ if (Test-Path -Path $outFile) {
     Write-Warning -Message "File ""ToggleButtonsGenerator.txt"" deleted!"
 }
 
-"Privacy", "UI", "OneDrive", "System", "StartMenu", "Edge",
-"UWPApps", "WindowsGameRecording", "ScheduledTasks", "MicrosoftDefender", "ContextMenu" | ForEach-Object {
-    $categoryName = $_
-    $categoryFile = "{0}\En\Settings-{1}.txt"-f $currentDir, $categoryName
+"Privacy", "Ui", "OneDrive", "System", "StartMenu", "Edge", "Uwp", "Game", "Tasks", "Defender", "ContextMenu" | ForEach-Object {
+    
+	$categoryName = $_
+    $categoryFile = "{0}\En\{1}.txt"-f $currentDir, $categoryName
 
     if (Test-Path -Path $categoryFile) {
 
         $text = Get-Content -Path $categoryFile
+		
+@"
+<!--#region $categoryName Toggles-->
+<StackPanel Name="PanelToggle_$categoryName" Style="{StaticResource PanelToggle}">
+"@ | Out-File -FilePath $outFile -Append            
 
         for ($i = 0; $i -lt $text.Count; $i++) {
 
             $string = $text[$i]
-
-            if ($string.Contains('"')) {
-                $string = $text[$i].Replace('"', '&quot;')
-            }
-
-            if ($string.Contains('&')) {
-                $string = $text[$i].Replace('&', '&amp;')
-            }
-
-            $toggleName = "Toggle_{0}_{1}" -f $categoryName, $i
+			$toggleName = "Toggle_{0}_{1}" -f $categoryName, $i
             $textBlockName = "TextToggle_{0}_{1}" -f $categoryName, $i
 
-            if ($i -eq 0) {
-@"
-<!--#region $categoryName Toggle-->
-<StackPanel Name="PanelToggle_$categoryName" Style="{StaticResource PanelToggle}">
-"@ | Out-File -FilePath $outFile -Append
-            }
-
-#region Write Toggle Buttons
 @"
 
+<Border Style="{StaticResource ToggleBorder}">
+<DockPanel Margin="0 10 0 10">
 <Grid HorizontalAlignment="Left">
-<ToggleButton Name="$toggleName" Style="{StaticResource ToggleSwitchTopStyle}"
-    Content="$string"
-    FontSize="18" Margin="10" IsChecked="False" />
-<TextBlock Name="$textBlockName" Margin="60 10 10 12" VerticalAlignment="Bottom" FontSize="18">
+<ToggleButton Name="$toggleName" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+<TextBlock Name="$textBlockName" Text="$string" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
 <TextBlock.Style>
-<Style TargetType="TextBlock">
-<Setter Property="Text" Value="Off" />
+<Style TargetType="{x:Type TextBlock}">
 <Style.Triggers>
 <DataTrigger Binding="{Binding ElementName=$toggleName, Path=IsChecked}" Value="True">
-<Setter Property="Text" Value="On" />
-</DataTrigger>
-<DataTrigger Binding="{Binding ElementName=$toggleName, Path=IsEnabled}" Value="false">
-<Setter Property="Opacity" Value="0.2" />
-</DataTrigger>
+<Setter Property="Foreground" Value="#3F51B5"/>
+</DataTrigger>                                                    
 </Style.Triggers>
 </Style>
 </TextBlock.Style>
 </TextBlock>
 </Grid>
+</DockPanel>
+</Border>
 "@ | Out-File -FilePath $outFile -Append
-#endregion Write Toggle Buttons
-
         }
 
-#region Write Placeholder
 @"
 </StackPanel>
-<!--#endregion $categoryName Toggle-->
+<!--#endregion $categoryName Toggles-->
 
 "@ | Out-File -FilePath $outFile -Append
-#endregion Write Placeholder
+
 
         Write-Warning -Message "File ""ToggleButtonsGenerator.txt"" created!"
     }

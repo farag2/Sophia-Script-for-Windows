@@ -1,3 +1,0 @@
-Open shortcut to the Command Prompt from Start menu as Administrator
-Create old style shortcut for "Devices and Printers" in "$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools"
-Import Start menu layout from pre-saved reg file

@@ -1,3 +1,0 @@
-Create a task in the Task Scheduler to start Windows cleaning up. The task runs every 90 days
-Create a task in the Task Scheduler to clear the "$env:SystemRoot\SoftwareDistribution\Download" folder. The task runs on Thursdays every 4 weeks
-Create a task in the Task Scheduler to clear the $env:TEMP folder. The task runs every 62 days

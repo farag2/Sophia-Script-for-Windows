@@ -1,0 +1,19 @@
+Add &quot;Extract&quot; to MSI file type context menu
+Add &quot;Run as different user&quot; from context menu for .exe file type
+Remove &quot;Create a new video&quot; from Context Menu
+Remove &quot;Edit&quot; from Context Menu
+Remove &quot;Print&quot; from batch and cmd files context menu
+Remove &quot;Compressed (zipped) Folder&quot; from context menu
+Remove &quot;Rich Text Document&quot; from context menu
+Remove &quot;Bitmap image&quot; from context menu
+Remove &quot;Send to&quot; from folder context menu
+Make the &quot;Open&quot;, &quot;Print&quot;, &quot;Edit&quot; context menu items available, when more than 15 selected
+Turn off &quot;Look for an app in the Microsoft Store&quot; in &quot;Open with&quot; dialog
+Add &quot;Install&quot; to CAB file type context menu
+Remove &quot;Cast to Device&quot; from context menu
+Remove &quot;Share&quot; from context menu
+Remove &quot;Previous Versions&quot; from file context menu
+Remove &quot;Edit with Paint 3D&quot; from context menu
+Remove &quot;Include in Library&quot; from context menu
+Remove &quot;Turn on BitLocker&quot; from context menu
+Remove &quot;Edit with Photos&quot; from context menu
