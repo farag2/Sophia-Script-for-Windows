@@ -1389,8 +1389,8 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftEdge\Main -Nam
 #endregion Edge
 
 #region UWP apps
-# Uninstall all UWP apps from all accounts except
-# Удалить все UWP-приложения из всех учетных записей, кроме
+# Uninstall all UWP apps from all accounts, except the followings...
+# Удалить все UWP-приложения из всех учетных записей, кроме следующих...
 $ExcludedApps = @(
 	# iTunes
 	"AppleInc.iTunes"
@@ -1400,38 +1400,35 @@ $ExcludedApps = @(
 	"AppUp.IntelGraphicsExperience"
 	# Microsoft Desktop App Installer
 	"Microsoft.DesktopAppInstaller"
-	# Extensions
-	# Расширения
-	"Microsoft.*Extension*"
-	# Language pack
-	# Языковой пакет
-	"Microsoft.LanguageExperiencePack*"
-	# Screen Sketch
-	# Набросок на фрагменте экрана
-	"Microsoft.ScreenSketch"
 	# Sticky Notes
 	# Записки
 	"Microsoft.MicrosoftStickyNotes"
-	# Calculator
-	# Калькулятор
-	"Microsoft.WindowsCalculator"
+	# Screen Sketch
+	# Набросок на фрагменте экрана
+	"Microsoft.ScreenSketch"
+	# Microsoft Store
+	"Microsoft.StorePurchaseApp"
+	"Microsoft.WindowsStore"
+	# Web Media Extensions
+	# Расширения для интернет-мультимедиа
+	"Microsoft.WebMediaExtensions"
 	# Photos and Video Editor
 	# Фотографии и Видеоредактор
 	"Microsoft.Windows.Photos"
-	# Start
-	# Меню "Пуск"
-	"Microsoft.Windows.StartMenuExperienceHost"
+	# Calculator
+	# Калькулятор
+	"Microsoft.WindowsCalculator"
 	# NVIDIA Control Panel
 	# Панель управления NVidia
 	"NVIDIACorp.NVIDIAControlPanel"
-	# Microsoft Store
-	".*Store.*"
 )
 $OFS = "|"
 Get-AppxPackage -PackageTypeFilter Bundle -AllUsers | Where-Object {$_.Name -cnotmatch $ExcludedApps} | Remove-AppxPackage -AllUsers
 $OFS = " "
-# Uninstall all provisioned UWP apps from all accounts except
-# Удалить все UWP-приложения из системной учетной записи, кроме
+# Uninstall all provisioned UWP apps from System account, except the followings...
+# App packages will not be installed when new user accounts are created
+# Удалить все UWP-приложения из системной учетной записи, кроме следующих...
+# Приложения не будут установлены при создании новых учетных записей
 $ExcludedApps = @(
 	# Intel UWP-panel
 	# UWP-панель Intel
@@ -1439,14 +1436,36 @@ $ExcludedApps = @(
 	"AppUp.IntelGraphicsExperience"
 	# Microsoft Desktop App Installer
 	"Microsoft.DesktopAppInstaller"
-	# Extensions
-	# Расширения
-	"Microsoft.*Extension*"
+	# HEIF Image Extensions
+	# Расширения для изображений HEIF
+	"Microsoft.HEIFImageExtension"
+	# Sticky Notes
+	# Записки
+	"Microsoft.MicrosoftStickyNotes"
+	# Screen Sketch
+	# Набросок на фрагменте экрана
+	"Microsoft.ScreenSketch"
+	# Microsoft Store
+	"Microsoft.StorePurchaseApp"
+	"Microsoft.WindowsStore"
+	# VP9 Video Extensions
+	# Расширения для VP9-видео
+	"Microsoft.VP9VideoExtensions"
+	# Web Media Extensions
+	# Расширения для интернет-мультимедиа
+	"Microsoft.WebMediaExtensions"
+	# WebP Image Extension
+	# Расширения для изображений WebP
+	"Microsoft.WebpImageExtension"
+	# Photos and Video Editor
+	# Фотографии и Видеоредактор
+	"Microsoft.Windows.Photos"
+	# Calculator
+	# Калькулятор
+	"Microsoft.WindowsCalculator"
 	# NVIDIA Control Panel
 	# Панель управления NVidia
 	"NVIDIACorp.NVIDIAControlPanel"
-	# Microsoft Store
-	".*Store.*"
 )
 $OFS = "|"
 Get-AppxProvisionedPackage -Online | Where-Object -FilterScript {$_.DisplayName -cnotmatch $ExcludedApps} | Remove-AppxProvisionedPackage -Online
