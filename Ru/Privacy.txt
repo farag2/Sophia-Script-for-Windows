@@ -1,18 +1,18 @@
-Turn off &quot;Connected User Experiences and Telemetry&quot; service
-Turn off per-user services
-Do not allow apps to use advertising ID
-Do not use sign-in info to automatically finish setting up device after an update or restart
-Do not let websites provide locally relevant content by accessing language list
-Turn on tip, trick, and suggestions as you use Windows
-Turn off app suggestions on Start menu
-Turn off suggested content in the Settings
-Turn off automatic installing suggested apps
-Turn off app launch tracking to improve Start menu and search results
-Turn off the Autologger session at the next computer restart
-Turn off the SQMLogger session at the next computer restart
-Set the operating system diagnostic data level to &quot;Basic&quot;
-Turn off Windows Error Reporting
-Change Windows Feedback frequency to &quot;Never&quot;
-Turn off diagnostics tracking scheduled tasks
-Do not offer tailored experiences based on the diagnostic data setting
-Do not let apps on other devices open and message apps on this device, and vice versa
+Отключить службу "Функциональные возможности для подключенных пользователей и телеметрия"
+Отключить пользовательские службы
+Отключить сборщик AutoLogger при следующем запуске ПК
+Отключить сборщик SQMLogger при следующем запуске ПК
+Установить уровень отправляемых диагностических сведений на "Базовый"
+Отключить отчеты об ошибках Windows для всех пользователей
+Изменить частоту формирования отзывов на "Никогда"
+Отключить задачи диагностического отслеживания
+Не предлагать персонализированныее возможности, основанные на выбранном параметре диагностических данных
+Не разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот
+Не разрешать приложениям использовать идентификатор рекламы
+Не использовать данные для входа для автоматического завершения настройки устройства после перезапуска или обновления
+Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков
+Показывать советы, подсказки и рекомендации при использованию Windows
+Не показывать рекомендации в меню "Пуск"
+Не показывать рекомендуемое содержание в приложении "Параметры"
+Отключить автоматическую установку рекомендованных приложений
+Не разрешать Windows отслеживать запуски приложений для улучшения меню "Пуск" и результатов поиска и не показывать недавно добавленные приложения

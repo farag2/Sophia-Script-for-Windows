@@ -1,4 +1,4 @@
-Turn off Windows Game Recording and Broadcasting
-Turn off Game Bar
-Turn off Game Mode
-Turn off Game Bar tips
+Отключить Запись и трансляции игр Windows
+Отключить игровую панель
+Отключить игровой режим
+Отключить подсказки игровой панели
