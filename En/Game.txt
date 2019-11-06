@@ -1,2 +1,4 @@
-Uninstall all UWP apps from all accounts except
-Uninstall all provisioned UWP apps from all accounts except
+Turn off Windows Game Recording and Broadcasting
+Turn off Game Bar
+Turn off Game Mode
+Turn off Game Bar tips

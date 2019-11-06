@@ -1,2 +1,47 @@
-Uninstall all UWP apps from all accounts except
-Uninstall all provisioned UWP apps from all accounts except
+Turn on Storage Sense to automatically free up space
+Run Storage Sense every month
+ Delete temporary files that apps aren't using
+ Delete files in recycle bin if they have been there for over 30 days
+ Never delete files in "Downloads" folder
+Let Windows try to fix apps so they're not blurry
+Turn off hibernate
+Turn off location for this device
+Change environment variable for %TEMP% to %SystemDrive%\Temp
+Turn on Win32 long paths
+Group svchost.exe processes
+Turn on Retpoline patch against Spectre v2
+Turn on the display of stop error information on the BSoD
+Do not preserve zone information
+Turn off Admin Approval Mode for administrators
+Turn on access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled
+Set download mode for delivery optization on "HTTP only"
+Always wait for the network at computer startup and logon
+Turn off Cortana
+Do not allow Windows 10 to manage default printer
+Turn off Windows features
+Remove Windows capabilities
+Turn on updates for other Microsoft products
+Enable System Restore
+Turn off Windows Script Host
+Turn off default background apps, except the followings...
+Set power management scheme for desktop and laptop
+Turn on .NET 4 runtime for all apps
+Turn on firewall & network protection
+Do not allow the computer to turn off the device to save power for desktop
+Set the default input method to the English language
+Turn on Windows Sandbox
+Set location of the "Desktop", "Documents" "Downloads" "Music", "Pictures", and "Videos"
+Turn on automatic recommended troubleshooting and tell when problems get fixed
+Set "High performance" in graphics performance preference for apps
+Launch folder in a separate process
+Turn off and delete reserved storage after the next update installation
+Turn on automatic backup the system registry
+Turn off "The Windows Filtering Platform has blocked a connection" message
+Turn off SmartScreen for apps and files
+Turn off F1 Help key
+Turn on Num Lock at startup
+Turn off sticky Shift key after pressing 5 times
+Turn off AutoPlay for all media and devices
+Turn off creation of an Edge shortcut on the desktop for each user profile
+Turn off thumbnail cache removal
+Turn On automatically save my restartable apps when sign out and restart them after sign in
