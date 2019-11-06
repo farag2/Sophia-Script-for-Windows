@@ -1,14 +1,12 @@
 Turn on Storage Sense to automatically free up space
 Run Storage Sense every month
-Delete temporary files that apps aren't using
-Delete files in recycle bin if they have been there for over 30 days
-Never delete files in "Downloads" folder
+	Delete temporary files that apps aren't using
+	Delete files in recycle bin if they have been there for over 30 days
+	Never delete files in "Downloads" folder
 Let Windows try to fix apps so they're not blurry
 Turn off hibernate
 Turn off location for this device
 Change environment variable for $env:TEMP to $env:SystemDrive\Temp
-Remove "$env:LOCALAPPDATA\Temp"
-Remove "$env:SYSTEMROOT\Temp"
 Turn on Win32 long paths
 Group svchost.exe processes
 Turn on Retpoline patch against Spectre v2
@@ -37,7 +35,7 @@ Turn on automatic recommended troubleshooting and tell when problems get fixed
 Set "High performance" in graphics performance preference for apps
 Launch folder in a separate process
 Turn off and delete reserved storage after the next update installation
-Turn on automatic backup the system registry to the "$env:SystemRoot\System32\config\RegBack" folder
+Turn on automatic backup the system registry
 Turn off "The Windows Filtering Platform has blocked a connection" message
 Turn off SmartScreen for apps and files
 Turn off F1 Help key
