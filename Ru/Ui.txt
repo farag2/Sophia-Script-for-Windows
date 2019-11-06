@@ -1,39 +1,38 @@
-Set File Explorer to open to This PC by default
-Show Hidden Files, Folders, and Drives
-Remove 3D Objects folder in &quot;This PC&quot; and in the navigation pane
-Hide &quot;Frequent folders&quot; in Quick access
-Hide &quot;Recent files&quot; in Quick access
-Turn on acrylic taskbar transparency
-Show &quot;This PC&quot; on Desktop
-Show more details in file transfer dialog
-Remove the &quot;Previous Versions&quot; tab from properties context menu
-Always show all icons in the notification area
-Set the Control Panel view by large icons
-Hide &quot;Windows Ink Workspace&quot; button in taskbar
-Show File Name Extensions
-Hide search box or search icon on taskbar
-Turn on recycle bin files delete confirmation
-Turn on ribbon in File Explorer
-Choose theme color for default Windows mode
-Choose theme color for default app mode
-Turn off &quot;New App Installed&quot; notification
-Turn off recently added apps on Start menu
-Turn off user first sign-in animation
-Turn off JPEG desktop wallpaper import quality reduction
-Show Task Manager details
-Hide Task View button on taskbar
-Unpin Microsoft Edge and Microsoft Store from taskbar
-Remove Microsoft Edge shortcut from the Desktop
-Show accent color on the title bars and window borders
-Turn off automatically hiding scroll bars
-Save screenshots by pressing Win+PrtScr to the Desktop
-Show more Windows Update restart notifications about restarting
-Turn off the &quot;- Shortcut&quot; name extension for new shortcuts
-Use the PrtScn button to open screen snipping
-Automatically adjust active hours for me based on daily usage
-Show folder merge conflicts
-Turn off Snap Assist
-Turn off check boxes to select items
-Show seconds on taskbar clock
-Hide People button on the taskbar
-Hide all folders in the navigation pane
+Отобразить "Этот компьютер" на рабочем столе
+Открывать "Этот компьютер" в Проводнике
+Показывать скрытые файлы, папки и диски
+Отключить флажки для выбора элементов
+Показывать расширения для зарегистрированных типов файлов
+Не скрывать конфликт слияния папок
+Развернуть диалог переноса файлов
+Включить отображение ленты проводника в развернутом виде
+Запрашивать подтверждение на удалении файлов из корзины
+Не отображать все папки в области навигации
+Скрыть папку "Объемные объекты" из "Этот компьютер" и на панели быстрого доступа
+Не показывать недавно используемые папки на панели быстрого доступа
+Не показывать недавно использовавшиеся файлы на панели быстрого доступа
+Отключить отображение вкладки "Предыдущие версии" в свойствах файлов и папок
+Скрыть поле или значок поиска на Панели задач
+Не показывать кнопку Cortana на панели задач
+Не показывать кнопку Просмотра задач
+Не показывать панель "Люди" на панели задач
+Не показывать кнопку Windows Ink Workspace на панели задач
+Отображать секунды в системных часах на панели задач
+Всегда отображать все значки в области уведомлений
+Включить прозрачную панель задач
+Открепить Microsoft Edge и Microsoft Store от панели задач
+Не показывать при прикреплении окна, что можно прикрепить рядом с ним
+Установить крупные значки в панели управления
+Выбрать режим Windows по умолчанию
+Выбрать режим приложения по умолчанию
+Не показывать уведомление "Установлено новое приложение"
+Не показывать анимацию при первом входе в систему
+Установка качества фона рабочего стола на 100 %
+Раскрыть окно Диспетчера задач
+Удалить ярлык Microsoft Edge с рабочего стола
+Отображать цвет элементов в заголовках окон и границ окон
+Отключить автоматическое скрытие полос прокрутки в Windows
+Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления
+He дoбaвлять "- яpлык" для coздaвaeмыx яpлыкoв
+Использовать клавишу Print Screen, чтобы запустить функцию создания фрагмента экрана
+Автоматически изменять период активности для этого устройства на основе действий
