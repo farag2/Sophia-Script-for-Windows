@@ -1,3 +1,2 @@
-Turn off Windows Defender SmartScreen for Microsoft Edge
-Do not allow Microsoft Edge to start and load the Start and New Tab page at Windows startup and each time Microsoft Edge is closed
-Do not allow Microsoft Edge to pre-launch at Windows startup, when the system is idle, and each time Microsoft Edge is closed
+Uninstall all UWP apps from all accounts except
+Uninstall all provisioned UWP apps from all accounts except
