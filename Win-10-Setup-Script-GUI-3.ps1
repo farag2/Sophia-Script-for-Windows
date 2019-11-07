@@ -1,10 +1,25 @@
-﻿<Window x:Class="Script_Gui_List.MainWindow"
+﻿Add-Type -AssemblyName "PresentationCore", "PresentationFramework", "WindowsBase"
+
+#region Variable
+$clickedToggle = 0 # If > 0 show "Save" and "Apply" button, else hide "Save" and "Apply" button
+$TextRu_ContextMenu = "Добавить пункт ""Extract"" для MSI в контекстное меню", "Добавить ""Запуск от имени другого пользователя"" в контекстное меню для .exe файлов", "Добавить пункт ""Установить"" для CAB-файлов в контекстном меню", "Удалить пункт ""Передать на устройство"" из контекстного меню", "Удалить пункт ""Отправить"" (поделиться) из контекстного меню", "Удалить пункт ""Восстановить прежнюю версию"" из контекстного меню", "Удалить пункт ""Изменить с помощью Paint 3D"" из контекстного меню", "Удалить пункт ""Добавить в библиотеку"" из контекстного меню", "Удалить пункт ""Включить Bitlocker"" из контекстного меню", "Удалить пункт ""Изменить с помощью приложения ""Фотографии"""" из контекстного меню", "Удалить пункт ""Создать новое видео"" из контекстного меню", "Удалить пункт ""Изменить"" из контекстного меню", "Удалить пункт ""Печать"" из контекстного меню для bat- и cmd-файлов", "Удалить пункт ""Сжатая ZIP-папка"" из контекстного меню", "Удалить пункт ""Создать Документ в формате RTF"" из контекстного меню", "Удалить пункт ""Создать Точечный рисунок"" из контекстного меню", "Удалить пункт ""Отправить"" из контекстного меню папки", "Сделать доступными элементы контекстного меню ""Открыть"", ""Изменить"" и ""Печать"" при выделении более 15 элементов", "Отключить поиск программ в Microsoft Store при открытии диалога ""Открыть с помощью"""
+$TextRu_Edge = "Отключить Windows Defender SmartScreen в Microsoft Edge", "Не разрешать Edge запускать и загружать страницу при загрузке Windows и каждый раз при закрытии Edge", "Не разрешать предварительный запуск Edge при загрузке Windows, когда система простаивает, и каждый раз при закрытии Edge"
+$TextRu_MicrosoftDefender = "Добавить папку в список исключений сканирования Защитника Windows", "Включить контролируемый доступ к папкам и добавить защищенные папки", "Разрешить работу приложения через контролируемый доступ к папкам", "Включить Защиту сети в Защитнике Windows", "Включить блокировки потенциально нежелательных приложений", "Запускать Защитник Windows в песочнице", "Скрыть уведомление Защитника Windows об использовании аккаунта Microsoft", "Скрыть уведомление Защитника Windows об отключенном фильтре SmartScreen для Microsoft Edge"
+$TextRu_OneDrive = "Удалить OneDrive", ""
+$TextRu_Privacy = "Отключить службу ""Функциональные возможности для подключенных пользователей и телеметрия""", "Отключить пользовательские службы", "Отключить сборщик AutoLogger при следующем запуске ПК", "Отключить сборщик SQMLogger при следующем запуске ПК", "Установить уровень отправляемых диагностических сведений на ""Базовый""", "Отключить отчеты об ошибках Windows для всех пользователей", "Изменить частоту формирования отзывов на ""Никогда""", "Отключить задачи диагностического отслеживания", "Не предлагать персонализированныее возможности, основанные на выбранном параметре диагностических данных", "Не разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот", "Не разрешать приложениям использовать идентификатор рекламы", "Не использовать данные для входа для автоматического завершения настройки устройства после перезапуска или обновления", "Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков", "Показывать советы, подсказки и рекомендации при использованию Windows", "Не показывать рекомендации в меню ""Пуск""", "Не показывать рекомендуемое содержание в приложении ""Параметры""", "Отключить автоматическую установку рекомендованных приложений", "Не разрешать Windows отслеживать запуски приложений для улучшения меню ""Пуск"" и результатов поиска и не показывать недавно добавленные приложения"
+$TextRu_ScheduledTasks = "Создать задачу в Планировщике задач по очистке обновлений Windows. Задача выполняется каждые 90 дней", "Создать задачу в Планировщике задач по очистке папки ""%SystemRoot%\SoftwareDistribution\Download"". Задача выполняется по четвергам каждую 4 неделю", "Создать задачу в Планировщике задач по очистке папки ""%TEMP%"". Задача выполняется каждые 62 дня"
+$TextRu_StartMenu = "Не показывать недавно добавленные приложения в меню ""Пуск""", "Запускать ярлык к командной строке в меню ""Пуск"" от имени Администратора", "Создать ярлык старого формата для ""Устройства и принтеры""", "Импорт настроенного макета меню ""Пуск"" из заготовленного reg-файла", "Открепить все ярлыки от начального экрана", "Отобразить папки ""Проводник"" и ""Параметры"" в меню ""Пуск"""
+$TextRu_System = "Включить Память устройства для автоматического освобождения места", "Запускать контроль памяти каждый месяц", "Удалять временные файлы, не используемые в приложениях", "Удалять файлы, которые находятся в корзине более 30 дней", "Никогда не удалять файлы из папки ""Загрузки""", "Разрешить Windows исправлять размытость в приложениях", "Отключить гибридный спящий режим", "Отключить местоположение для этого устройства", "Изменить путь переменной среды для временных файлов на ""%SystemDrive%\Temp""", "Включить длинные пути Win32", "Группировать одинаковые службы в один процесс svhost.exe", "Включить патч Retpoline против Spectre v2", "Включить дополнительную информацию при выводе BSoD", "Не хранить сведения о зоне происхождения вложенных файлов", "Отключить использование режима одобрения администратором для встроенной учетной записи администратора", "Включить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами", "Отключить оптимизацию доставки для обновлений с других ПК", "Всегда ждать сеть при запуске и входе в систему", "Отключить Cortana", "Отключить управление принтером, используемым по умолчанию, со стороны Windows 10", "Отключить компоненты", "Удалить компоненты", "Включить автоматическое обновление для других продуктов Microsoft", "Включить восстановление системы", "Отключить Windows Script Host", "Запретить стандартным приложениям работать в фоновом режиме, кроме следующих...", "Установить схему управления питания для стационарного ПК и ноутбука", "Использовать последнюю установленную версию .NET Framework для всех приложений", "Включить брандмауэр", "Запретить отключение Ethernet-адаптера для экономии энергии для стационарного ПК", "Установить метод ввода по умолчанию на английский язык", "Включить Windows Sandbox", "Переопределить расположение папок ""Рабочий стол"", ""Документы"", ""Загрузки"", ""Музыка"", ""Изображения"", ""Видео""", "Автоматически запускать средства устранения неполадок, а затем сообщать об устранении проблем", "Установить параметры производительности графики для отдельных приложений на ""Высокая производительность""", "Запускать окна с папками в отдельном процессе", "Отключить и удалить зарезервированное хранилище после следующей установки обновлений", "Включить автоматическое создание копии реестра в папку ""%SystemRoot%\System32\config\RegBack""", "Отключить в ""Журналах Windows/Безопасность"" сообщение ""Платформа фильтрации IP-пакетов Windows разрешила подключение""", "Отключить SmartScreen для приложений и файлов", "Отключить справку по нажатию F1", "Включить Num Lock при загрузке", "Отключить залипание клавиши Shift после 5 нажатий", "Отключить автозапуск с внешних носителей", "Отключить создание ярлыка Edge на рабочем столе для каждого профиля пользователя пользователя", "Отключить удаление кэша миниатюр", "Автоматически сохранять мои перезапускаемые приложения при выходе из системы и перезапустить их после выхода"
+$TextRu_UI = "Отобразить ""Этот компьютер"" на рабочем столе", "Открывать ""Этот компьютер"" в Проводнике", "Показывать скрытые файлы, папки и диски", "Отключить флажки для выбора элементов", "Показывать расширения для зарегистрированных типов файлов", "Не скрывать конфликт слияния папок", "Развернуть диалог переноса файлов", "Включить отображение ленты проводника в развернутом виде", "Запрашивать подтверждение на удалении файлов из корзины", "Не отображать все папки в области навигации", "Скрыть папку ""Объемные объекты"" из ""Этот компьютер"" и на панели быстрого доступа", "Не показывать недавно используемые папки на панели быстрого доступа", "Не показывать недавно использовавшиеся файлы на панели быстрого доступа", "Отключить отображение вкладки ""Предыдущие версии"" в свойствах файлов и папок", "Скрыть поле или значок поиска на Панели задач", "Не показывать кнопку Cortana на панели задач", "Не показывать кнопку Просмотра задач", "Не показывать панель ""Люди"" на панели задач", "Не показывать кнопку Windows Ink Workspace на панели задач", "Отображать секунды в системных часах на панели задач", "Всегда отображать все значки в области уведомлений", "Включить прозрачную панель задач", "Открепить Microsoft Edge и Microsoft Store от панели задач", "Не показывать при прикреплении окна, что можно прикрепить рядом с ним", "Установить крупные значки в панели управления", "Выбрать режим Windows по умолчанию", "Выбрать режим приложения по умолчанию", "Не показывать уведомление ""Установлено новое приложение""", "Не показывать анимацию при первом входе в систему", "Установка качества фона рабочего стола на 100 %", "Раскрыть окно Диспетчера задач", "Удалить ярлык Microsoft Edge с рабочего стола", "Отображать цвет элементов в заголовках окон и границ окон", "Отключить автоматическое скрытие полос прокрутки в Windows", "Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления", "He дoбaвлять ""- яpлык"" для coздaвaeмыx яpлыкoв", "Использовать клавишу Print Screen, чтобы запустить функцию создания фрагмента экрана", "Автоматически изменять период активности для этого устройства на основе действий"
+$TextRu_WindowsGameRecording = "Отключить Запись и трансляции игр Windows", "Отключить игровую панель", "Отключить игровой режим", "Отключить подсказки игровой панели"
+#endregion Variable
+
+[xml]$xamlMarkup = @'
+<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Script_Gui_List"
-        mc:Ignorable="d"
         Name="Window" Title="Windows 10 Setup Script" MinHeight="863" MinWidth="950" Height="863" Width="950" 
         FontFamily="Calibri" FontSize="18" TextOptions.TextFormattingMode="Display" WindowStartupLocation="CenterScreen" 
         SnapsToDevicePixels="True" ResizeMode="CanResize" ShowInTaskbar="True" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
@@ -63,6 +78,10 @@
                     <Setter Property="Background" Value="#3F51B5"/>
                 </Trigger>
             </Style.Triggers>
+        </Style>
+
+        <Style x:Key="PanelToggle" TargetType="StackPanel">
+
         </Style>
 
         <Style x:Key="TextblockHamburgerMenu" TargetType="TextBlock">
@@ -322,7 +341,7 @@
                     </Viewbox>
                 </StackPanel>
             </StackPanel>
-            <!--#endregion Hamburger Button-->            
+            <!--#endregion Hamburger Button-->
 
             <!--#region Category Text-->
             <TextBlock Name="TextBlock_Category" Text="Privacy &amp; Telemetry" FontSize="20" Canvas.Left="60" Canvas.Top="14" />
@@ -354,11 +373,11 @@
         <!--#endregion Title Panel-->
 
         <!--#region Body Panel-->
-        <Grid Grid.Row="1" RenderTransformOrigin="0.54,0.504">
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>            
+            </Grid.ColumnDefinitions>
 
             <!--#region Hamburger Panel-->
             <Canvas Name="HamburgerMenu" Width="50" Background="#3F51B5" Grid.Column="0">
@@ -1086,7 +1105,7 @@
                 <StackPanel Name="TogglePanels">
 
                     <!--#region Privacy Toggles-->
-                    <StackPanel Name="PanelToggle_Privacy" Visibility="Visible">
+                    <StackPanel Name="PanelToggle_Privacy" Style="{StaticResource PanelToggle}" Visibility="Visible">
 
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
@@ -1433,7 +1452,7 @@
                     <!--#endregion Privacy Toggles-->
 
                     <!--#region UI Toggles-->
-                    <StackPanel Name="PanelToggle_Ui" Visibility="Collapsed">
+                    <StackPanel Name="PanelToggle_Ui" Style="{StaticResource PanelToggle}" Visibility="Collapsed">
 
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
@@ -2179,7 +2198,7 @@
                     <!--#endregion UI Toggles-->
 
                     <!--#region OneDrive Toggles-->
-                    <StackPanel Name="PanelToggle_OneDrive" Visibility="Collapsed">
+                    <StackPanel Name="PanelToggle_OneDrive" Style="{StaticResource PanelToggle}" Visibility="Collapsed">
 
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
@@ -2203,7 +2222,7 @@
                     <!--#endregion OneDrive Toggles-->
 
                     <!--#region System Toggles-->
-                    <StackPanel Name="PanelToggle_System" Visibility="Collapsed">
+                    <StackPanel Name="PanelToggle_System" Style="{StaticResource PanelToggle}" Visibility="Collapsed">
 
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
@@ -3158,7 +3177,7 @@
                     <!--#endregion System Toggles-->
 
                     <!--#region StartMenu Toggles-->
-                    <StackPanel Name="PanelToggle_StartMenu" Visibility="Collapsed">
+                    <StackPanel Name="PanelToggle_StartMenu" Style="{StaticResource PanelToggle}" Visibility="Collapsed">
 
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
@@ -3220,7 +3239,7 @@
                     <!--#endregion StartMenu Toggles-->
 
                     <!--#region Edge Toggles-->
-                    <StackPanel Name="PanelToggle_Edge" Visibility="Collapsed">
+                    <StackPanel Name="PanelToggle_Edge" Style="{StaticResource PanelToggle}" Visibility="Collapsed">
 
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
@@ -3282,7 +3301,7 @@
                     <!--#endregion Edge Toggles-->
 
                     <!--#region UWP Apps Toggles-->
-                    <StackPanel Name="PanelToggle_Uwp" Visibility="Collapsed">
+                    <StackPanel Name="PanelToggle_Uwp" Style="{StaticResource PanelToggle}" Visibility="Collapsed">
 
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
@@ -3325,7 +3344,7 @@
                     <!--#endregion UWPApps Toggles-->
 
                     <!--#region Windows Game Recording Toggles-->
-                    <StackPanel Name="PanelToggle_Game" Visibility="Collapsed">
+                    <StackPanel Name="PanelToggle_Game" Style="{StaticResource PanelToggle}" Visibility="Collapsed">
 
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
@@ -3406,7 +3425,7 @@
                     <!--#endregion WindowsGameRecording Toggles-->
 
                     <!--#region Scheduled Tasks Toggles-->
-                    <StackPanel Name="PanelToggle_Tasks" Visibility="Collapsed">
+                    <StackPanel Name="PanelToggle_Tasks" Style="{StaticResource PanelToggle}" Visibility="Collapsed">
 
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
@@ -3468,7 +3487,7 @@
                     <!--#endregion ScheduledTasks Toggles-->
 
                     <!--#region Microsoft Defender Toggles-->
-                    <StackPanel Name="PanelToggle_Defender" Visibility="Collapsed">
+                    <StackPanel Name="PanelToggle_Defender" Style="{StaticResource PanelToggle}" Visibility="Collapsed">
 
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
@@ -3625,7 +3644,7 @@
                     <!--#endregion MicrosoftDefender Toggles-->
 
                     <!--#region Context Menu Toggles-->
-                    <StackPanel Name="PanelToggle_ContextMenu" Visibility="Collapsed">
+                    <StackPanel Name="PanelToggle_ContextMenu" Style="{StaticResource PanelToggle}" Visibility="Collapsed">
 
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
@@ -3989,12 +4008,266 @@
                         </Border>
                     </StackPanel>
                     <!--#endregion ContextMenu Toggles-->
-
+                    
                 </StackPanel>
             </ScrollViewer>
             <!--#endregion Toggle Buttons-->
-            
         </Grid>
         <!--#endregion Body Panel-->
     </Grid>
 </Window>
+'@
+
+$xamlGui = [System.Windows.Markup.XamlReader]::Load((New-Object System.Xml.XmlNodeReader $xamlMarkup))
+$xamlMarkup.SelectNodes('//*[@Name]') | ForEach-Object {
+    New-Variable -Name $_.Name -Value $xamlGui.FindName($_.Name) -Force
+}
+
+#region Script Functions
+function Hide-Console {
+    <#
+    .SYNOPSIS
+    Hide Powershell console before show WPF GUI.
+    #>
+
+    [CmdletBinding()]
+    param ()
+
+    Add-Type -Name Window -Namespace Console -MemberDefinition '
+    [DllImport("Kernel32.dll")]
+    public static extern IntPtr GetConsoleWindow();
+
+    [DllImport("user32.dll")]
+    public static extern bool ShowWindow(IntPtr hWnd, Int32 nCmdShow);
+'
+    [Console.Window]::ShowWindow([Console.Window]::GetConsoleWindow(), 0)
+}
+
+function Use-HamburgerMenu {
+    <#
+    .SYNOPSIS
+    Show or hide hamburger menu.
+    #>
+
+    [CmdletBinding()]
+    param ()
+
+    $minWidth = 50
+    $maxWidth = 250
+    $duration = New-Object System.Windows.Duration([timespan]::FromSeconds(1))
+	$widthProperty = New-Object System.Windows.PropertyPath([System.Windows.Controls.Canvas]::WidthProperty)
+
+    if ($HamburgerMenu.ActualWidth -eq $minWidth) {
+        $animation = New-Object System.Windows.Media.Animation.DoubleAnimation($minWidth, $maxWidth, $duration)
+    }
+
+    else {
+        $animation = New-Object System.Windows.Media.Animation.DoubleAnimation($maxWidth, $minWidth, $duration)
+    }
+
+    $animation.SpeedRatio ="3"
+	$storyboard = New-Object System.Windows.Media.Animation.Storyboard
+	[System.Windows.Media.Animation.Storyboard]::SetTargetProperty($animation, $widthProperty)
+    $storyboard.Children.Add($animation)
+    $storyboard.Begin($HamburgerMenu)	
+}
+
+function Set-HamburgerHover {
+    <#
+    .SYNOPSIS
+    Mouse hover effect for hamburger button.
+    #>
+
+    [CmdletBinding()]
+    param
+	(
+		[Parameter(Mandatory=$false)]
+		[switch]$Active
+	)
+	
+	
+	if ($Active)
+	{		
+		$ButtonHamburger.Background = "#2196F3"
+	}
+	
+	else
+	{
+		$ButtonHamburger.Background = "#3F51B5"
+	}	
+}
+
+function Click-HamburgerButton {
+	<#
+    .SYNOPSIS
+    Click event to Hamburger Category Button.
+    #>
+
+	[CmdletBinding()]
+    param
+	(
+		[Parameter(Mandatory=$true)]
+		$ShowPanel,
+		
+		[Parameter(Mandatory=$true)]
+		[string]$SetHeader
+	)
+	
+	$PanelToggle_ContextMenu, $PanelToggle_Defender, $PanelToggle_Edge, $PanelToggle_Game, 
+	$PanelToggle_OneDrive, 	$PanelToggle_Privacy, $PanelToggle_StartMenu, $PanelToggle_System, 
+	$PanelToggle_Tasks, $PanelToggle_Ui, $PanelToggle_Uwp | ForEach-Object {
+		if (($_.Name -eq $ShowPanel.Name) -and ($_.Visibility -eq "Collapsed"))
+		{
+			$_.Visibility = "Visible"
+		}
+		
+		elseif (($_.Name -ne $ShowPanel.Name) -and ($_.Visibility -eq "Visible"))
+		{
+			$_.Visibility = "Collapsed"
+		}	
+	}	
+	
+	$TextBlock_Category.Text = $SetHeader
+}
+
+function Click-ToggleButton {
+	<#
+    .SYNOPSIS
+    Click event to Toggle Buttons.
+    #>
+	
+	[CmdletBinding()]
+    param
+	(
+		[Parameter(Mandatory=$false)]		
+		[switch]$Check
+	)
+		
+	if ($Check)
+	{		
+		$Global:clickedToggle++
+	}
+	
+	elseif (!$Check)
+	{		
+		$Global:clickedToggle--
+	}
+	
+	if ($clickedToggle -gt 0)
+	{
+		$ButtonApply.Visibility = "Visible"
+		$ButtonSave.Visibility = "Visible"
+	}
+	
+	else
+	{
+		$ButtonApply.Visibility = "Hidden"
+		$ButtonSave.Visibility = "Hidden"
+	}	
+}
+
+function Set-Language {
+	<#
+    .SYNOPSIS
+    Click event if "Change Language" button and change Toogle TextBlock text to Russian
+    #>
+
+    [CmdletBinding()]
+    param ()
+	
+	(Get-Variable -Name "TextToggle_*").Name | ForEach-Object {
+		$toggle = $Window.FindName($_)
+		$split = $_.Split("_")
+		$name = "TextRu_{0}"-f $split[1]
+		$text = Get-Variable -Name $name
+		$counter = $split[2]		
+		$toggle.Text += $text.Value[$counter]
+		$ButtonChangeLanguage.Visibility = "Hidden"
+		}
+}
+
+#endregion
+
+#region Controls Events
+
+$ButtonHamburger.Add_MouseLeftButtonDown({
+    Use-HamburgerMenu
+})
+
+$ButtonHamburger.Add_MouseEnter({
+	Set-HamburgerHover -Active
+})
+
+$ButtonHamburger.Add_MouseLeave({
+	Set-HamburgerHover
+
+})
+
+$ButtonChangeLanguage.Add_MouseLeftButtonDown({
+	Set-Language
+})
+
+#endregion
+
+#region Add Click Event to Hamburger Category Buttons
+
+$Button_ContextMenu.Add_MouseLeftButtonDown({
+		Click-HamburgerButton -ShowPanel $PanelToggle_ContextMenu -SetHeader "Context Menu"
+	})
+	
+$Button_Defender.Add_MouseLeftButtonDown({
+		Click-HamburgerButton -ShowPanel $PanelToggle_Defender -SetHeader "Microsoft Defender"
+	})
+	
+$Button_Edge.Add_MouseLeftButtonDown({
+		Click-HamburgerButton -ShowPanel $PanelToggle_Edge -SetHeader "Microsoft Edge"
+	})
+	
+$Button_Game.Add_MouseLeftButtonDown({
+		Click-HamburgerButton -ShowPanel $PanelToggle_Game -SetHeader "Windows Game Recording"
+	})
+	
+$Button_OneDrive.Add_MouseLeftButtonDown({
+		Click-HamburgerButton -ShowPanel $PanelToggle_OneDrive -SetHeader "OneDrive"
+	})
+	
+$Button_Privacy.Add_MouseLeftButtonDown({
+		Click-HamburgerButton -ShowPanel $PanelToggle_Privacy -SetHeader "Privacy & Telemetry"
+	})
+	
+$Button_StartMenu.Add_MouseLeftButtonDown({
+		Click-HamburgerButton -ShowPanel $PanelToggle_StartMenu -SetHeader "Start Menu"
+	})
+	
+$Button_System.Add_MouseLeftButtonDown({
+		Click-HamburgerButton -ShowPanel $PanelToggle_System -SetHeader "System"
+	})
+	
+$Button_Tasks.Add_MouseLeftButtonDown({
+		Click-HamburgerButton -ShowPanel $PanelToggle_Tasks -SetHeader "Scheduled Tasks"
+	})
+
+$Button_Ui.Add_MouseLeftButtonDown({
+		Click-HamburgerButton -ShowPanel $PanelToggle_Ui -SetHeader "UI & Personalization"
+	})
+	
+$Button_Uwp.Add_MouseLeftButtonDown({
+		Click-HamburgerButton -ShowPanel $PanelToggle_Uwp -SetHeader "Uwp Apps"
+	})
+#endregion
+
+#region Add Click Event to Toggle Buttons
+(Get-Variable -Name "Toggle_*").Name | ForEach-Object {
+	$toggle = $Window.FindName($_)	
+	$toggle.Add_Checked({
+		Click-ToggleButton -Check
+	})	
+	
+	$toggle.Add_Unchecked({
+		Click-ToggleButton
+	})	
+}
+#endregion
+
+Hide-Console
+$Window.ShowDialog() | Out-Null
