@@ -4181,7 +4181,7 @@ function Set-Language {
 		$name = "TextRu_{0}"-f $split[1]
 		$text = Get-Variable -Name $name
 		$counter = $split[2]		
-		$toggle.Text += $text.Value[$counter]
+		$toggle.Text = "{0} - {1}"-f $toggle.Text, $text.Value[$counter]
 		$ButtonChangeLanguage.Visibility = "Hidden"
 		}
 }
