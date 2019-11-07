@@ -1,4 +1,4 @@
-﻿$Text_Eng_Privacy =
+$Text_Eng_Privacy =
 	"Turn off `"Connected User Experiences and Telemetry`" service",
 	"Turn off per-user services",
 	"Turn off the SQMLogger session at the next computer restart",
