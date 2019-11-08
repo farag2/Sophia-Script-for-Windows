@@ -1,7 +1,0 @@
-<<<<<<< HEAD
-Uninstall all UWP apps from all accounts, except the followings...
-Uninstall all provisioned UWP apps from System account, except the followings...
-=======
-Uninstall all UWP apps from all accounts except
-Uninstall all provisioned UWP apps from all accounts except
->>>>>>> 01b5a563f3af2b58f0e7ff069febfef207133ff5

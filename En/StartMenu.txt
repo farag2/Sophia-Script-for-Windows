@@ -1,8 +1,0 @@
-Do not show recently added apps on Start menu
-Open shortcut to the Command Prompt from Start menu as Administrator
-Create old style shortcut for "Devices and Printers"
-Import Start menu layout from pre-saved reg file
-Unpin all Start menu tiles
-Show "Explorer" and "Settings" folders on Start menu
-	Explorer
-	Settings

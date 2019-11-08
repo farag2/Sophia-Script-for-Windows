@@ -1,18 +1,1489 @@
 ﻿Add-Type -AssemblyName "PresentationCore", "PresentationFramework", "WindowsBase"
 
 #region Variable
-$clickedToggle = 0 # If > 0 show "Save" and "Apply" button, else hide "Save" and "Apply" button
-$TextRu_ContextMenu = "Добавить пункт ""Extract"" для MSI в контекстное меню", "Добавить ""Запуск от имени другого пользователя"" в контекстное меню для .exe файлов", "Добавить пункт ""Установить"" для CAB-файлов в контекстном меню", "Удалить пункт ""Передать на устройство"" из контекстного меню", "Удалить пункт ""Отправить"" (поделиться) из контекстного меню", "Удалить пункт ""Восстановить прежнюю версию"" из контекстного меню", "Удалить пункт ""Изменить с помощью Paint 3D"" из контекстного меню", "Удалить пункт ""Добавить в библиотеку"" из контекстного меню", "Удалить пункт ""Включить Bitlocker"" из контекстного меню", "Удалить пункт ""Изменить с помощью приложения ""Фотографии"""" из контекстного меню", "Удалить пункт ""Создать новое видео"" из контекстного меню", "Удалить пункт ""Изменить"" из контекстного меню", "Удалить пункт ""Печать"" из контекстного меню для bat- и cmd-файлов", "Удалить пункт ""Сжатая ZIP-папка"" из контекстного меню", "Удалить пункт ""Создать Документ в формате RTF"" из контекстного меню", "Удалить пункт ""Создать Точечный рисунок"" из контекстного меню", "Удалить пункт ""Отправить"" из контекстного меню папки", "Сделать доступными элементы контекстного меню ""Открыть"", ""Изменить"" и ""Печать"" при выделении более 15 элементов", "Отключить поиск программ в Microsoft Store при открытии диалога ""Открыть с помощью"""
-$TextRu_Edge = "Отключить Windows Defender SmartScreen в Microsoft Edge", "Не разрешать Edge запускать и загружать страницу при загрузке Windows и каждый раз при закрытии Edge", "Не разрешать предварительный запуск Edge при загрузке Windows, когда система простаивает, и каждый раз при закрытии Edge"
-$TextRu_MicrosoftDefender = "Добавить папку в список исключений сканирования Защитника Windows", "Включить контролируемый доступ к папкам и добавить защищенные папки", "Разрешить работу приложения через контролируемый доступ к папкам", "Включить Защиту сети в Защитнике Windows", "Включить блокировки потенциально нежелательных приложений", "Запускать Защитник Windows в песочнице", "Скрыть уведомление Защитника Windows об использовании аккаунта Microsoft", "Скрыть уведомление Защитника Windows об отключенном фильтре SmartScreen для Microsoft Edge"
-$TextRu_OneDrive = "Удалить OneDrive", ""
-$TextRu_Privacy = "Отключить службу ""Функциональные возможности для подключенных пользователей и телеметрия""", "Отключить пользовательские службы", "Отключить сборщик AutoLogger при следующем запуске ПК", "Отключить сборщик SQMLogger при следующем запуске ПК", "Установить уровень отправляемых диагностических сведений на ""Базовый""", "Отключить отчеты об ошибках Windows для всех пользователей", "Изменить частоту формирования отзывов на ""Никогда""", "Отключить задачи диагностического отслеживания", "Не предлагать персонализированныее возможности, основанные на выбранном параметре диагностических данных", "Не разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот", "Не разрешать приложениям использовать идентификатор рекламы", "Не использовать данные для входа для автоматического завершения настройки устройства после перезапуска или обновления", "Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков", "Показывать советы, подсказки и рекомендации при использованию Windows", "Не показывать рекомендации в меню ""Пуск""", "Не показывать рекомендуемое содержание в приложении ""Параметры""", "Отключить автоматическую установку рекомендованных приложений", "Не разрешать Windows отслеживать запуски приложений для улучшения меню ""Пуск"" и результатов поиска и не показывать недавно добавленные приложения"
-$TextRu_ScheduledTasks = "Создать задачу в Планировщике задач по очистке обновлений Windows. Задача выполняется каждые 90 дней", "Создать задачу в Планировщике задач по очистке папки ""%SystemRoot%\SoftwareDistribution\Download"". Задача выполняется по четвергам каждую 4 неделю", "Создать задачу в Планировщике задач по очистке папки ""%TEMP%"". Задача выполняется каждые 62 дня"
-$TextRu_StartMenu = "Не показывать недавно добавленные приложения в меню ""Пуск""", "Запускать ярлык к командной строке в меню ""Пуск"" от имени Администратора", "Создать ярлык старого формата для ""Устройства и принтеры""", "Импорт настроенного макета меню ""Пуск"" из заготовленного reg-файла", "Открепить все ярлыки от начального экрана", "Отобразить папки ""Проводник"" и ""Параметры"" в меню ""Пуск"""
-$TextRu_System = "Включить Память устройства для автоматического освобождения места", "Запускать контроль памяти каждый месяц", "Удалять временные файлы, не используемые в приложениях", "Удалять файлы, которые находятся в корзине более 30 дней", "Никогда не удалять файлы из папки ""Загрузки""", "Разрешить Windows исправлять размытость в приложениях", "Отключить гибридный спящий режим", "Отключить местоположение для этого устройства", "Изменить путь переменной среды для временных файлов на ""%SystemDrive%\Temp""", "Включить длинные пути Win32", "Группировать одинаковые службы в один процесс svhost.exe", "Включить патч Retpoline против Spectre v2", "Включить дополнительную информацию при выводе BSoD", "Не хранить сведения о зоне происхождения вложенных файлов", "Отключить использование режима одобрения администратором для встроенной учетной записи администратора", "Включить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами", "Отключить оптимизацию доставки для обновлений с других ПК", "Всегда ждать сеть при запуске и входе в систему", "Отключить Cortana", "Отключить управление принтером, используемым по умолчанию, со стороны Windows 10", "Отключить компоненты", "Удалить компоненты", "Включить автоматическое обновление для других продуктов Microsoft", "Включить восстановление системы", "Отключить Windows Script Host", "Запретить стандартным приложениям работать в фоновом режиме, кроме следующих...", "Установить схему управления питания для стационарного ПК и ноутбука", "Использовать последнюю установленную версию .NET Framework для всех приложений", "Включить брандмауэр", "Запретить отключение Ethernet-адаптера для экономии энергии для стационарного ПК", "Установить метод ввода по умолчанию на английский язык", "Включить Windows Sandbox", "Переопределить расположение папок ""Рабочий стол"", ""Документы"", ""Загрузки"", ""Музыка"", ""Изображения"", ""Видео""", "Автоматически запускать средства устранения неполадок, а затем сообщать об устранении проблем", "Установить параметры производительности графики для отдельных приложений на ""Высокая производительность""", "Запускать окна с папками в отдельном процессе", "Отключить и удалить зарезервированное хранилище после следующей установки обновлений", "Включить автоматическое создание копии реестра в папку ""%SystemRoot%\System32\config\RegBack""", "Отключить в ""Журналах Windows/Безопасность"" сообщение ""Платформа фильтрации IP-пакетов Windows разрешила подключение""", "Отключить SmartScreen для приложений и файлов", "Отключить справку по нажатию F1", "Включить Num Lock при загрузке", "Отключить залипание клавиши Shift после 5 нажатий", "Отключить автозапуск с внешних носителей", "Отключить создание ярлыка Edge на рабочем столе для каждого профиля пользователя пользователя", "Отключить удаление кэша миниатюр", "Автоматически сохранять мои перезапускаемые приложения при выходе из системы и перезапустить их после выхода"
-$TextRu_UI = "Отобразить ""Этот компьютер"" на рабочем столе", "Открывать ""Этот компьютер"" в Проводнике", "Показывать скрытые файлы, папки и диски", "Отключить флажки для выбора элементов", "Показывать расширения для зарегистрированных типов файлов", "Не скрывать конфликт слияния папок", "Развернуть диалог переноса файлов", "Включить отображение ленты проводника в развернутом виде", "Запрашивать подтверждение на удалении файлов из корзины", "Не отображать все папки в области навигации", "Скрыть папку ""Объемные объекты"" из ""Этот компьютер"" и на панели быстрого доступа", "Не показывать недавно используемые папки на панели быстрого доступа", "Не показывать недавно использовавшиеся файлы на панели быстрого доступа", "Отключить отображение вкладки ""Предыдущие версии"" в свойствах файлов и папок", "Скрыть поле или значок поиска на Панели задач", "Не показывать кнопку Cortana на панели задач", "Не показывать кнопку Просмотра задач", "Не показывать панель ""Люди"" на панели задач", "Не показывать кнопку Windows Ink Workspace на панели задач", "Отображать секунды в системных часах на панели задач", "Всегда отображать все значки в области уведомлений", "Включить прозрачную панель задач", "Открепить Microsoft Edge и Microsoft Store от панели задач", "Не показывать при прикреплении окна, что можно прикрепить рядом с ним", "Установить крупные значки в панели управления", "Выбрать режим Windows по умолчанию", "Выбрать режим приложения по умолчанию", "Не показывать уведомление ""Установлено новое приложение""", "Не показывать анимацию при первом входе в систему", "Установка качества фона рабочего стола на 100 %", "Раскрыть окно Диспетчера задач", "Удалить ярлык Microsoft Edge с рабочего стола", "Отображать цвет элементов в заголовках окон и границ окон", "Отключить автоматическое скрытие полос прокрутки в Windows", "Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления", "He дoбaвлять ""- яpлык"" для coздaвaeмыx яpлыкoв", "Использовать клавишу Print Screen, чтобы запустить функцию создания фрагмента экрана", "Автоматически изменять период активности для этого устройства на основе действий"
-$TextRu_WindowsGameRecording = "Отключить Запись и трансляции игр Windows", "Отключить игровую панель", "Отключить игровой режим", "Отключить подсказки игровой панели"
+
+# If variable clickedToggle > 0 show "Save" and "Apply" button, else hide "Save" and "Apply" button
+$clickedToggle = 0
+
+# Variable RU defines UI language
+if ($PSCulture -eq "ru-RU")
+{
+	$RU -eq $true
+}
+
+else
+{
+	$RU -eq $false
+}
+# Variable Category defines Toggle category
+$Category = "ContextMenu", "Edge", "MicrosoftDefender", "OneDrive", "Privacy", "ScheduledTasks", "StartMenu", "System", "UI", "WindowsGameRecording"
+
 #endregion Variable
+
+#region TogglesObjects array
+# TogglesObjects array contains toggle objects for code-behind
+$TogglesObjects =
+@{
+	Category = "ContextMenu"
+	Checked = "0"	
+	ToggleName = "Toggle_ContextMenu_0"
+	TextBlockName = "TextToggle_ContextMenu_0"
+	TextEng = "Add &amp;quot;Extract&amp;quot; to MSI file type context menu" 
+	TextRu = "Добавить пункт &amp;quot;Extract&amp;quot; для MSI в контекстное меню"
+	TextblockUid = "0"
+	ToggleUid = "1000"
+},
+@{
+	Category = "ContextMenu"
+	Checked = "0"	
+	ToggleName = "Toggle_ContextMenu_1"
+	TextBlockName = "TextToggle_ContextMenu_1"
+	TextEng = "Add &amp;quot;Run as different user&amp;quot; from context menu for .exe file type" 
+	TextRu = "Добавить &amp;quot;Запуск от имени друго пользователя&amp;quot; в контекстное меню для .exe файлов"
+	TextblockUid = "1"
+	ToggleUid = "1001"
+},
+@{
+	Category = "ContextMenu"
+	Checked = "0"	
+	ToggleName = "Toggle_ContextMenu_2"
+	TextBlockName = "TextToggle_ContextMenu_2"
+	TextEng = "Add &amp;quot;Install&amp;quot; to CAB file type context menu" 
+	TextRu = "Добавить пункт &amp;quot;Установить&amp;quot; для CAB-файлов в контекстном меню"
+	TextblockUid = "2"
+	ToggleUid = "1002"
+},
+@{
+	Category = "ContextMenu"
+	Checked = "0"	
+	ToggleName = "Toggle_ContextMenu_3"
+	TextBlockName = "TextToggle_ContextMenu_3"
+	TextEng = "Remove &amp;quot;Cast to Device&amp;quot; from context menu" 
+	TextRu = "Удалить пункт &amp;quot;Передать на устройство&amp;quot; из контекстного меню"
+	TextblockUid = "3"
+	ToggleUid = "1003"
+},
+@{
+	Category = "ContextMenu"
+	Checked = "0"	
+	ToggleName = "Toggle_ContextMenu_4"
+	TextBlockName = "TextToggle_ContextMenu_4"
+	TextEng = "Remove &amp;quot;Share&amp;quot; from context menu" 
+	TextRu = "Удалить пункт &amp;quot;Отправить&amp;quot; (поделиться) из контекстного меню"
+	TextblockUid = "4"
+	ToggleUid = "1004"
+},
+@{
+	Category = "ContextMenu"
+	Checked = "0"	
+	ToggleName = "Toggle_ContextMenu_5"
+	TextBlockName = "TextToggle_ContextMenu_5"
+	TextEng = "Remove &amp;quot;Previous Versions&amp;quot; from file context menu" 
+	TextRu = "Удалить пункт &amp;quot;Восстановить прежнюю версию&amp;quot; из контекстного меню"
+	TextblockUid = "5"
+	ToggleUid = "1005"
+},
+@{
+	Category = "ContextMenu"
+	Checked = "0"	
+	ToggleName = "Toggle_ContextMenu_6"
+	TextBlockName = "TextToggle_ContextMenu_6"
+	TextEng = "Remove &amp;quot;Edit with Paint 3D&amp;quot; from context menu" 
+	TextRu = "Удалить пункт &amp;quot;Изменить с помощью Paint 3D&amp;quot; из контекстного меню"
+	TextblockUid = "6"
+	ToggleUid = "1006"
+},
+@{
+	Category = "ContextMenu"
+	Checked = "0"	
+	ToggleName = "Toggle_ContextMenu_7"
+	TextBlockName = "TextToggle_ContextMenu_7"
+	TextEng = "Remove &amp;quot;Include in Library&amp;quot; from context menu" 
+	TextRu = "Удалить пункт &amp;quot;Добавить в библиотеку&amp;quot; из контекстного меню"
+	TextblockUid = "7"
+	ToggleUid = "1007"
+},
+@{
+	Category = "ContextMenu"
+	Checked = "0"	
+	ToggleName = "Toggle_ContextMenu_8"
+	TextBlockName = "TextToggle_ContextMenu_8"
+	TextEng = "Remove &amp;quot;Turn on BitLocker&amp;quot; from context menu" 
+	TextRu = "Удалить пункт &amp;quot;Включить BitLocker&amp;quot; из контекстного меню"
+	TextblockUid = "8"
+	ToggleUid = "1008"
+},
+@{
+	Category = "ContextMenu"
+	Checked = "0"	
+	ToggleName = "Toggle_ContextMenu_9"
+	TextBlockName = "TextToggle_ContextMenu_9"
+	TextEng = "Remove &amp;quot;Edit with Photos&amp;quot; from context menu" 
+	TextRu = "Удалить пункт &amp;quot;Изменить с помощью приложения &amp;quot;Фотографии&amp;quot;&amp;quot; из контекстного меню изображений"
+	TextblockUid = "9"
+	ToggleUid = "1009"
+},
+@{
+	Category = "ContextMenu"
+	Checked = "0"	
+	ToggleName = "Toggle_ContextMenu_10"
+	TextBlockName = "TextToggle_ContextMenu_10"
+	TextEng = "Remove &amp;quot;Create a new video&amp;quot; from Context Menu" 
+	TextRu = "Удалить пункт &amp;quot;Создать новое видео&amp;quot; из контекстного меню"
+	TextblockUid = "10"
+	ToggleUid = "1010"
+},
+@{
+	Category = "ContextMenu"
+	Checked = "0"	
+	ToggleName = "Toggle_ContextMenu_11"
+	TextBlockName = "TextToggle_ContextMenu_11"
+	TextEng = "Remove &amp;quot;Edit&amp;quot; from images Context Menu" 
+	TextRu = "Удалить пункт &amp;quot;Изменить&amp;quot; из контекстного меню изображений"
+	TextblockUid = "11"
+	ToggleUid = "1011"
+},
+@{
+	Category = "ContextMenu"
+	Checked = "0"	
+	ToggleName = "Toggle_ContextMenu_12"
+	TextBlockName = "TextToggle_ContextMenu_12"
+	TextEng = "Remove &amp;quot;Print&amp;quot; from batch and cmd files context menu" 
+	TextRu = "Удалить пункт &amp;quot;Печать&amp;quot; из контекстного меню для bat- и cmd-файлов"
+	TextblockUid = "12"
+	ToggleUid = "1012"
+},
+@{
+	Category = "ContextMenu"
+	Checked = "0"	
+	ToggleName = "Toggle_ContextMenu_13"
+	TextBlockName = "TextToggle_ContextMenu_13"
+	TextEng = "Remove &amp;quot;Compressed (zipped) Folder&amp;quot; from context menu" 
+	TextRu = "Удалить пункт &amp;quot;Сжатая ZIP-папка&amp;quot; из контекстного меню"
+	TextblockUid = "13"
+	ToggleUid = "1013"
+},
+@{
+	Category = "ContextMenu"
+	Checked = "0"	
+	ToggleName = "Toggle_ContextMenu_14"
+	TextBlockName = "TextToggle_ContextMenu_14"
+	TextEng = "Remove &amp;quot;Send to&amp;quot; from folder context menu" 
+	TextRu = "Удалить пункт &amp;quot;Отправить&amp;quot; из контекстного меню папки"
+	TextblockUid = "14"
+	ToggleUid = "1014"
+},
+@{
+	Category = "ContextMenu"
+	Checked = "0"	
+	ToggleName = "Toggle_ContextMenu_15"
+	TextBlockName = "TextToggle_ContextMenu_15"
+	TextEng = "Make the &amp;quot;Open&amp;quot;, &amp;quot;Print&amp;quot;, &amp;quot;Edit&amp;quot; context menu items available, when more than 15 selected" 
+	TextRu = "Сделать доступными элементы контекстного меню &amp;quot;Открыть&amp;quot;, &amp;quot;Изменить&amp;quot; и &amp;quot;Печать&amp;quot; при выделении более 15 элементов"
+	TextblockUid = "15"
+	ToggleUid = "1015"
+},
+@{
+	Category = "ContextMenu"
+	Checked = "0"	
+	ToggleName = "Toggle_ContextMenu_16"
+	TextBlockName = "TextToggle_ContextMenu_16"
+	TextEng = "Turn off &amp;quot;Look for an app in the Microsoft Store&amp;quot; in &amp;quot;Open with&amp;quot; dialog" 
+	TextRu = "Отключить поиск программ в Microsoft Store при открытии диалога &amp;quot;Открыть с помощью&amp;quot;"
+	TextblockUid = "16"
+	ToggleUid = "1016"
+},
+@{
+	Category = "Edge"
+	Checked = "0"	
+	ToggleName = "Toggle_Edge_0"
+	TextBlockName = "TextToggle_Edge_0"
+	TextEng = "Turn off Windows Defender SmartScreen for Microsoft Edge" 
+	TextRu = "Отключить Windows Defender SmartScreen в Microsoft Edge"
+	TextblockUid = "17"
+	ToggleUid = "1017"
+},
+@{
+	Category = "Edge"
+	Checked = "0"	
+	ToggleName = "Toggle_Edge_1"
+	TextBlockName = "TextToggle_Edge_1"
+	TextEng = "Do not allow Microsoft Edge to start and load the Start and New Tab page at Windows startup and each time Microsoft Edge is closed" 
+	TextRu = "Не разрешать Edge запускать и загружать страницу при загрузке Windows и каждый раз при закрытии Edge"
+	TextblockUid = "18"
+	ToggleUid = "1018"
+},
+@{
+	Category = "Edge"
+	Checked = "0"	
+	ToggleName = "Toggle_Edge_2"
+	TextBlockName = "TextToggle_Edge_2"
+	TextEng = "Do not allow Microsoft Edge to pre-launch at Windows startup, when the system is idle, and each time Microsoft Edge is closed" 
+	TextRu = "Не разрешать предварительный запуск Edge при загрузке Windows, когда система простаивает, и каждый раз при закрытии Edge"
+	TextblockUid = "19"
+	ToggleUid = "1019"
+},
+@{
+	Category = "Edge"
+	Checked = "0"	
+	ToggleName = "Toggle_Edge_3"
+	TextBlockName = "TextToggle_Edge_3"
+	TextEng = "Turn off creation of an Edge shortcut on the desktop for each user profile" 
+	TextRu = "Отключить создание ярлыка Edge на рабочем столе для каждого профиля пользователя пользователя"
+	TextblockUid = "20"
+	ToggleUid = "1020"
+},
+@{
+	Category = "MicrosoftDefender"
+	Checked = "0"	
+	ToggleName = "Toggle_MicrosoftDefender_0"
+	TextBlockName = "TextToggle_MicrosoftDefender_0"
+	TextEng = "Add folder to exclude from Windows Defender Antivirus scan" 
+	TextRu = "Добавить папку в список исключений сканирования Защитника Windows"
+	TextblockUid = "21"
+	ToggleUid = "1021"
+},
+@{
+	Category = "MicrosoftDefender"
+	Checked = "0"	
+	ToggleName = "Toggle_MicrosoftDefender_1"
+	TextBlockName = "TextToggle_MicrosoftDefender_1"
+	TextEng = "Turn on Controlled folder access and add protected folders" 
+	TextRu = "Включить контролируемый доступ к папкам и добавить защищенные папки"
+	TextblockUid = "22"
+	ToggleUid = "1022"
+},
+@{
+	Category = "MicrosoftDefender"
+	Checked = "0"	
+	ToggleName = "Toggle_MicrosoftDefender_2"
+	TextBlockName = "TextToggle_MicrosoftDefender_2"
+	TextEng = "Allow an app through Controlled folder access" 
+	TextRu = "Разрешить работу приложения через контролируемый доступ к папкам"
+	TextblockUid = "23"
+	ToggleUid = "1023"
+},
+@{
+	Category = "MicrosoftDefender"
+	Checked = "0"	
+	ToggleName = "Toggle_MicrosoftDefender_3"
+	TextBlockName = "TextToggle_MicrosoftDefender_3"
+	TextEng = "Turn on Windows Defender Exploit Guard Network Protection" 
+	TextRu = "Включить Защиту сети в Защитнике Windows"
+	TextblockUid = "24"
+	ToggleUid = "1024"
+},
+@{
+	Category = "MicrosoftDefender"
+	Checked = "0"	
+	ToggleName = "Toggle_MicrosoftDefender_4"
+	TextBlockName = "TextToggle_MicrosoftDefender_4"
+	TextEng = "Turn on Windows Defender PUA Protection" 
+	TextRu = "Включить блокировки потенциально нежелательных приложений"
+	TextblockUid = "25"
+	ToggleUid = "1025"
+},
+@{
+	Category = "MicrosoftDefender"
+	Checked = "0"	
+	ToggleName = "Toggle_MicrosoftDefender_5"
+	TextBlockName = "TextToggle_MicrosoftDefender_5"
+	TextEng = "Turn on Windows Defender Sandbox" 
+	TextRu = "Запускать Защитник Windows в песочнице"
+	TextblockUid = "26"
+	ToggleUid = "1026"
+},
+@{
+	Category = "MicrosoftDefender"
+	Checked = "0"	
+	ToggleName = "Toggle_MicrosoftDefender_6"
+	TextBlockName = "TextToggle_MicrosoftDefender_6"
+	TextEng = "Hide notification about sign in with Microsoft in the Windows Security" 
+	TextRu = "Скрыть уведомление Защитника Windows об использовании аккаунта Microsoft"
+	TextblockUid = "27"
+	ToggleUid = "1027"
+},
+@{
+	Category = "MicrosoftDefender"
+	Checked = "0"	
+	ToggleName = "Toggle_MicrosoftDefender_7"
+	TextBlockName = "TextToggle_MicrosoftDefender_7"
+	TextEng = "Hide notification about disabled SmartScreen for Microsoft Edge" 
+	TextRu = "Скрыть уведомление Защитника Windows об отключенном фильтре SmartScreen для Microsoft Edge"
+	TextblockUid = "28"
+	ToggleUid = "1028"
+},
+@{
+	Category = "OneDrive"
+	Checked = "0"	
+	ToggleName = "Toggle_OneDrive_0"
+	TextBlockName = "TextToggle_OneDrive_0"
+	TextEng = "Uninstall OneDrive" 
+	TextRu = "Удалить OneDrive"
+	TextblockUid = "29"
+	ToggleUid = "1029"
+},
+@{
+	Category = "OneDrive"
+	Checked = "0"	
+	ToggleName = "Toggle_OneDrive_1"
+	TextBlockName = "TextToggle_OneDrive_1"
+	TextEng = "" 
+	TextRu = ""
+	TextblockUid = "30"
+	ToggleUid = "1030"
+},
+@{
+	Category = "Privacy"
+	Checked = "0"	
+	ToggleName = "Toggle_Privacy_0"
+	TextBlockName = "TextToggle_Privacy_0"
+	TextEng = "Turn off &amp;quot;Connected User Experiences and Telemetry&amp;quot; service" 
+	TextRu = "Отключить службу &amp;quot;Функциональные возможности для подключенных пользователей и телеметрия&amp;quot;"
+	TextblockUid = "31"
+	ToggleUid = "1031"
+},
+@{
+	Category = "Privacy"
+	Checked = "0"	
+	ToggleName = "Toggle_Privacy_1"
+	TextBlockName = "TextToggle_Privacy_1"
+	TextEng = "Turn off per-user services" 
+	TextRu = "Отключить пользовательские службы"
+	TextblockUid = "32"
+	ToggleUid = "1032"
+},
+@{
+	Category = "Privacy"
+	Checked = "0"	
+	ToggleName = "Toggle_Privacy_2"
+	TextBlockName = "TextToggle_Privacy_2"
+	TextEng = "Turn off the SQMLogger session at the next computer restart" 
+	TextRu = "Отключить сборщик SQMLogger при следующем запуске ПК"
+	TextblockUid = "33"
+	ToggleUid = "1033"
+},
+@{
+	Category = "Privacy"
+	Checked = "0"	
+	ToggleName = "Toggle_Privacy_3"
+	TextBlockName = "TextToggle_Privacy_3"
+	TextEng = "Set the operating system diagnostic data level to &amp;quot;Basic&amp;quot;" 
+	TextRu = "Установить уровень отправляемых диагностических сведений на &amp;quot;Базовый&amp;quot;"
+	TextblockUid = "34"
+	ToggleUid = "1034"
+},
+@{
+	Category = "Privacy"
+	Checked = "0"	
+	ToggleName = "Toggle_Privacy_4"
+	TextBlockName = "TextToggle_Privacy_4"
+	TextEng = "Turn off Windows Error Reporting" 
+	TextRu = "Отключить отчеты об ошибках Windows для всех пользователей"
+	TextblockUid = "35"
+	ToggleUid = "1035"
+},
+@{
+	Category = "Privacy"
+	Checked = "0"	
+	ToggleName = "Toggle_Privacy_5"
+	TextBlockName = "TextToggle_Privacy_5"
+	TextEng = "Change Windows Feedback frequency to &amp;quot;Never&amp;quot;" 
+	TextRu = "Изменить частоту формирования отзывов на &amp;quot;Никогда&amp;quot;"
+	TextblockUid = "36"
+	ToggleUid = "1036"
+},
+@{
+	Category = "Privacy"
+	Checked = "0"	
+	ToggleName = "Toggle_Privacy_6"
+	TextBlockName = "TextToggle_Privacy_6"
+	TextEng = "Turn off diagnostics tracking scheduled tasks" 
+	TextRu = "Отключить задачи диагностического отслеживания"
+	TextblockUid = "37"
+	ToggleUid = "1037"
+},
+@{
+	Category = "Privacy"
+	Checked = "0"	
+	ToggleName = "Toggle_Privacy_7"
+	TextBlockName = "TextToggle_Privacy_7"
+	TextEng = "Do not offer tailored experiences based on the diagnostic data setting" 
+	TextRu = "Не предлагать персонализированныее возможности, основанные на выбранном параметре диагностических данных"
+	TextblockUid = "38"
+	ToggleUid = "1038"
+},
+@{
+	Category = "Privacy"
+	Checked = "0"	
+	ToggleName = "Toggle_Privacy_8"
+	TextBlockName = "TextToggle_Privacy_8"
+	TextEng = "Do not let apps on other devices open and message apps on this device, and vice versa" 
+	TextRu = "Не разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот"
+	TextblockUid = "39"
+	ToggleUid = "1039"
+},
+@{
+	Category = "Privacy"
+	Checked = "0"	
+	ToggleName = "Toggle_Privacy_9"
+	TextBlockName = "TextToggle_Privacy_9"
+	TextEng = "Do not allow apps to use advertising ID" 
+	TextRu = "Не разрешать приложениям использовать идентификатор рекламы"
+	TextblockUid = "40"
+	ToggleUid = "1040"
+},
+@{
+	Category = "Privacy"
+	Checked = "0"	
+	ToggleName = "Toggle_Privacy_10"
+	TextBlockName = "TextToggle_Privacy_10"
+	TextEng = "Do not use sign-in info to automatically finish setting up device after an update or restart" 
+	TextRu = "Не использовать данные для входа для автоматического завершения настройки устройства после перезапуска или обновления"
+	TextblockUid = "41"
+	ToggleUid = "1041"
+},
+@{
+	Category = "Privacy"
+	Checked = "0"	
+	ToggleName = "Toggle_Privacy_11"
+	TextBlockName = "TextToggle_Privacy_11"
+	TextEng = "Do not let websites provide locally relevant content by accessing language list" 
+	TextRu = "Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков"
+	TextblockUid = "42"
+	ToggleUid = "1042"
+},
+@{
+	Category = "Privacy"
+	Checked = "0"	
+	ToggleName = "Toggle_Privacy_12"
+	TextBlockName = "TextToggle_Privacy_12"
+	TextEng = "Turn on tip, trick, and suggestions as you use Windows" 
+	TextRu = "Показывать советы, подсказки и рекомендации при использованию Windows"
+	TextblockUid = "43"
+	ToggleUid = "1043"
+},
+@{
+	Category = "Privacy"
+	Checked = "0"	
+	ToggleName = "Toggle_Privacy_13"
+	TextBlockName = "TextToggle_Privacy_13"
+	TextEng = "Do not show app suggestions on Start menu" 
+	TextRu = "Не показывать рекомендации в меню &amp;quot;Пуск&amp;quot;"
+	TextblockUid = "44"
+	ToggleUid = "1044"
+},
+@{
+	Category = "Privacy"
+	Checked = "0"	
+	ToggleName = "Toggle_Privacy_14"
+	TextBlockName = "TextToggle_Privacy_14"
+	TextEng = "Do not show suggested content in the Settings" 
+	TextRu = "Не показывать рекомендуемое содержание в &amp;quot;Параметрах&amp;quot;"
+	TextblockUid = "45"
+	ToggleUid = "1045"
+},
+@{
+	Category = "Privacy"
+	Checked = "0"	
+	ToggleName = "Toggle_Privacy_15"
+	TextBlockName = "TextToggle_Privacy_15"
+	TextEng = "Turn off automatic installing suggested apps" 
+	TextRu = "Отключить автоматическую установку рекомендованных приложений"
+	TextblockUid = "46"
+	ToggleUid = "1046"
+},
+@{
+	Category = "Privacy"
+	Checked = "0"	
+	ToggleName = "Toggle_Privacy_16"
+	TextBlockName = "TextToggle_Privacy_16"
+	TextEng = "Do not let track app launches to improve Start menu and search results" 
+	TextRu = "Не разрешать Windows отслеживать запуски приложений для улучшения меню &amp;quot;Пуск&amp;quot; и результатов поиска и не показывать недавно добавленные приложения"
+	TextblockUid = "47"
+	ToggleUid = "1047"
+},
+@{
+	Category = "ScheduledTasks"
+	Checked = "0"	
+	ToggleName = "Toggle_ScheduledTasks_0"
+	TextBlockName = "TextToggle_ScheduledTasks_0"
+	TextEng = "Create a task in the Task Scheduler to start Windows cleaning up" 
+	TextRu = "Создать задачу в Планировщике задач по очистке обновлений Windows"
+	TextblockUid = "48"
+	ToggleUid = "1048"
+},
+@{
+	Category = "ScheduledTasks"
+	Checked = "0"	
+	ToggleName = "Toggle_ScheduledTasks_1"
+	TextBlockName = "TextToggle_ScheduledTasks_1"
+	TextEng = "Create a task in the Task Scheduler to clear the C:\Windows\SoftwareDistribution\Download folder" 
+	TextRu = "Создать задачу в Планировщике задач по очистке папки %SystemRoot%\SoftwareDistribution\Download"
+	TextblockUid = "49"
+	ToggleUid = "1049"
+},
+@{
+	Category = "ScheduledTasks"
+	Checked = "0"	
+	ToggleName = "Toggle_ScheduledTasks_2"
+	TextBlockName = "TextToggle_ScheduledTasks_2"
+	TextEng = "Create a task in the Task Scheduler to clear the C:\Temp folder" 
+	TextRu = "Создать задачу в Планировщике задач по очистке папки %TEMP%"
+	TextblockUid = "50"
+	ToggleUid = "1050"
+},
+@{
+	Category = "StartMenu"
+	Checked = "0"	
+	ToggleName = "Toggle_StartMenu_0"
+	TextBlockName = "TextToggle_StartMenu_0"
+	TextEng = "Do not show recently added apps on Start menu" 
+	TextRu = "Не показывать недавно добавленные приложения в меню &amp;quot;Пуск&amp;quot;"
+	TextblockUid = "51"
+	ToggleUid = "1051"
+},
+@{
+	Category = "StartMenu"
+	Checked = "0"	
+	ToggleName = "Toggle_StartMenu_1"
+	TextBlockName = "TextToggle_StartMenu_1"
+	TextEng = "Open shortcut to the Command Prompt from Start menu as Administrator" 
+	TextRu = "Запускать ярлык к командной строке в меню &amp;quot;Пуск&amp;quot; от имени Администратора"
+	TextblockUid = "52"
+	ToggleUid = "1052"
+},
+@{
+	Category = "StartMenu"
+	Checked = "0"	
+	ToggleName = "Toggle_StartMenu_2"
+	TextBlockName = "TextToggle_StartMenu_2"
+	TextEng = "Add old style shortcut for &amp;quot;Devices and Printers&amp;quot; to the Start menu" 
+	TextRu = "Добавить ярлык старого формата для &amp;quot;Устройства и принтеры&amp;quot; в меню Пуск"
+	TextblockUid = "53"
+	ToggleUid = "1053"
+},
+@{
+	Category = "StartMenu"
+	Checked = "0"	
+	ToggleName = "Toggle_StartMenu_3"
+	TextBlockName = "TextToggle_StartMenu_3"
+	TextEng = "Import Start menu layout from pre-saved reg file" 
+	TextRu = "Импорт настроенного макета меню &amp;quot;Пуск&amp;quot; из заготовленного reg-файла"
+	TextblockUid = "54"
+	ToggleUid = "1054"
+},
+@{
+	Category = "StartMenu"
+	Checked = "0"	
+	ToggleName = "Toggle_StartMenu_4"
+	TextBlockName = "TextToggle_StartMenu_4"
+	TextEng = "Unpin all Start menu tiles" 
+	TextRu = "Открепить все ярлыки от начального экрана"
+	TextblockUid = "55"
+	ToggleUid = "1055"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_0"
+	TextBlockName = "TextToggle_System_0"
+	TextEng = "Turn on Storage Sense to automatically free up space" 
+	TextRu = "Включить Память устройства для автоматического освобождения места"
+	TextblockUid = "56"
+	ToggleUid = "1056"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_1"
+	TextBlockName = "TextToggle_System_1"
+	TextEng = "Run Storage Sense every month" 
+	TextRu = "Запускать контроль памяти каждый месяц"
+	TextblockUid = "57"
+	ToggleUid = "1057"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_2"
+	TextBlockName = "TextToggle_System_2"
+	TextEng = "Delete temporary files that apps aren't using" 
+	TextRu = "Удалять временные файлы, не используемые в приложениях"
+	TextblockUid = "58"
+	ToggleUid = "1058"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_3"
+	TextBlockName = "TextToggle_System_3"
+	TextEng = "Delete files in recycle bin if they have been there for over 30 days" 
+	TextRu = "Удалять файлы, которые находятся в корзине более 30 дней"
+	TextblockUid = "59"
+	ToggleUid = "1059"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_4"
+	TextBlockName = "TextToggle_System_4"
+	TextEng = "Never delete files in &amp;quot;Downloads&amp;quot; folder" 
+	TextRu = "Никогда не удалять файлы из папки &amp;quot;Загрузки&amp;quot;"
+	TextblockUid = "60"
+	ToggleUid = "1060"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_5"
+	TextBlockName = "TextToggle_System_5"
+	TextEng = "Let Windows try to fix apps so they're not blurry" 
+	TextRu = "Разрешить Windows исправлять размытость в приложениях"
+	TextblockUid = "61"
+	ToggleUid = "1061"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_6"
+	TextBlockName = "TextToggle_System_6"
+	TextEng = "Turn off hibernate" 
+	TextRu = "Отключить гибридный спящий режим"
+	TextblockUid = "62"
+	ToggleUid = "1062"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_7"
+	TextBlockName = "TextToggle_System_7"
+	TextEng = "Turn off location for this device" 
+	TextRu = "Отключить местоположение для этого устройства"
+	TextblockUid = "63"
+	ToggleUid = "1063"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_8"
+	TextBlockName = "TextToggle_System_8"
+	TextEng = "Change environment variable for %TEMP% to %SystemDrive%\Temp" 
+	TextRu = "Изменить путь переменной среды для временных файлов на %SystemDrive%\Temp"
+	TextblockUid = "64"
+	ToggleUid = "1064"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_9"
+	TextBlockName = "TextToggle_System_9"
+	TextEng = "Turn on Win32 long paths" 
+	TextRu = "Включить длинные пути Win32"
+	TextblockUid = "65"
+	ToggleUid = "1065"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_10"
+	TextBlockName = "TextToggle_System_10"
+	TextEng = "Group svchost.exe processes" 
+	TextRu = "Группировать одинаковые службы в один процесс svchost.exe"
+	TextblockUid = "66"
+	ToggleUid = "1066"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_11"
+	TextBlockName = "TextToggle_System_11"
+	TextEng = "Turn on Retpoline patch against Spectre v2" 
+	TextRu = "Включить патч Retpoline против Spectre v2"
+	TextblockUid = "67"
+	ToggleUid = "1067"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_12"
+	TextBlockName = "TextToggle_System_12"
+	TextEng = "Turn on the display of stop error information on the BSoD" 
+	TextRu = "Включить дополнительную информацию при выводе BSoD"
+	TextblockUid = "68"
+	ToggleUid = "1068"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_13"
+	TextBlockName = "TextToggle_System_13"
+	TextEng = "Do not preserve zone information" 
+	TextRu = "Не хранить сведения о зоне происхождения вложенных файлов"
+	TextblockUid = "69"
+	ToggleUid = "1069"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_14"
+	TextBlockName = "TextToggle_System_14"
+	TextEng = "Turn off Admin Approval Mode for administrators" 
+	TextRu = "Отключить использование режима одобрения администратором для встроенной учетной записи администратора"
+	TextblockUid = "70"
+	ToggleUid = "1070"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_15"
+	TextBlockName = "TextToggle_System_15"
+	TextEng = "Turn on access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled" 
+	TextRu = "Включить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами"
+	TextblockUid = "71"
+	ToggleUid = "1071"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_16"
+	TextBlockName = "TextToggle_System_16"
+	TextEng = "Set download mode for delivery optization on &amp;quot;HTTP only&amp;quot;" 
+	TextRu = "Отключить оптимизацию доставки для обновлений с других ПК"
+	TextblockUid = "72"
+	ToggleUid = "1072"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_17"
+	TextBlockName = "TextToggle_System_17"
+	TextEng = " Always wait for the network at computer startup and logon" 
+	TextRu = "Всегда ждать сеть при запуске и входе в систему"
+	TextblockUid = "73"
+	ToggleUid = "1073"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_18"
+	TextBlockName = "TextToggle_System_18"
+	TextEng = "Do not let Windows manage default printer" 
+	TextRu = "Не разрешать Windows управлять принтером, используемым по умолчанию"
+	TextblockUid = "74"
+	ToggleUid = "1074"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_19"
+	TextBlockName = "TextToggle_System_19"
+	TextEng = "Turn off Windows features" 
+	TextRu = "Отключить компоненты"
+	TextblockUid = "75"
+	ToggleUid = "1075"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_20"
+	TextBlockName = "TextToggle_System_20"
+	TextEng = "Remove Windows capabilities" 
+	TextRu = "Удалить компоненты"
+	TextblockUid = "76"
+	ToggleUid = "1076"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_21"
+	TextBlockName = "TextToggle_System_21"
+	TextEng = "Turn on updates for other Microsoft products" 
+	TextRu = "Включить автоматическое обновление для других продуктов Microsoft"
+	TextblockUid = "77"
+	ToggleUid = "1077"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_22"
+	TextBlockName = "TextToggle_System_22"
+	TextEng = "Remove Shadow copies (restoration points)" 
+	TextRu = "Удалить теневые копии (точки восстановения)"
+	TextblockUid = "78"
+	ToggleUid = "1078"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_23"
+	TextBlockName = "TextToggle_System_23"
+	TextEng = "Turn off Windows Script Host" 
+	TextRu = "Отключить Windows Script Host"
+	TextblockUid = "79"
+	ToggleUid = "1079"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_24"
+	TextBlockName = "TextToggle_System_24"
+	TextEng = "Turn off default background apps, except the followings..." 
+	TextRu = "Запретить стандартным приложениям работать в фоновом режиме, кроме следующих..."
+	TextblockUid = "80"
+	ToggleUid = "1080"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_25"
+	TextBlockName = "TextToggle_System_25"
+	TextEng = "Set power management scheme for !!!" 
+	TextRu = "Установить схему управления питания для !!!"
+	TextblockUid = "81"
+	ToggleUid = "1081"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_26"
+	TextBlockName = "TextToggle_System_26"
+	TextEng = "Turn on latest installed .NET runtime for all apps" 
+	TextRu = "Использовать последнюю установленную версию .NET для всех приложений"
+	TextblockUid = "82"
+	ToggleUid = "1082"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_27"
+	TextBlockName = "TextToggle_System_27"
+	TextEng = "Do not allow the computer to turn off the Ethernet adapter to save power" 
+	TextRu = "Запретить отключение Ethernet-адаптера для экономии энергии"
+	TextblockUid = "83"
+	ToggleUid = "1083"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_28"
+	TextBlockName = "TextToggle_System_28"
+	TextEng = "Set the default input method to the English language" 
+	TextRu = "Установить метод ввода по умолчанию на английский язык"
+	TextblockUid = "84"
+	ToggleUid = "1084"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_29"
+	TextBlockName = "TextToggle_System_29"
+	TextEng = "Turn on Windows Sandbox" 
+	TextRu = "Включить Windows Sandbox"
+	TextblockUid = "85"
+	ToggleUid = "1085"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_30"
+	TextBlockName = "TextToggle_System_30"
+	TextEng = "Set location of the &amp;quot;Desktop&amp;quot;, &amp;quot;Documents&amp;quot;, &amp;quot;Downloads&amp;quot;, &amp;quot;Music&amp;quot;, &amp;quot;Pictures&amp;quot;, and &amp;quot;Videos&amp;quot;" 
+	TextRu = "Переопределить расположение папок &amp;quot;Рабочий стол&amp;quot;, &amp;quot;Документы&amp;quot;, &amp;quot;Загрузки&amp;quot;, &amp;quot;Музыка&amp;quot;, &amp;quot;Изображения&amp;quot;, &amp;quot;Видео&amp;quot;"
+	TextblockUid = "86"
+	ToggleUid = "1086"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_31"
+	TextBlockName = "TextToggle_System_31"
+	TextEng = "Run troubleshooters automatically, then notify" 
+	TextRu = "Автоматически запускать средства устранения неполадок, а затем уведомлять"
+	TextblockUid = "87"
+	ToggleUid = "1087"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_32"
+	TextBlockName = "TextToggle_System_32"
+	TextEng = "Set &amp;quot;High performance&amp;quot; in graphics performance preference for apps" 
+	TextRu = "Установить параметры производительности графики для отдельных приложений на &amp;quot;Высокая производительность&amp;quot;"
+	TextblockUid = "88"
+	ToggleUid = "1088"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_33"
+	TextBlockName = "TextToggle_System_33"
+	TextEng = "Launch folder in a separate process" 
+	TextRu = "Запускать окна с папками в отдельном процессе"
+	TextblockUid = "89"
+	ToggleUid = "1089"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_34"
+	TextBlockName = "TextToggle_System_34"
+	TextEng = "Turn off and delete reserved storage after the next update installation" 
+	TextRu = "Отключить и удалить зарезервированное хранилище после следующей установки обновлений"
+	TextblockUid = "90"
+	ToggleUid = "1090"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_35"
+	TextBlockName = "TextToggle_System_35"
+	TextEng = "Turn on automatic backup the system registry to the C:\Windows\System32\config\RegBack folder" 
+	TextRu = "Включить автоматическое создание копии реестра в папку C:\Windows\System32\config\RegBack"
+	TextblockUid = "91"
+	ToggleUid = "1091"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_36"
+	TextBlockName = "TextToggle_System_36"
+	TextEng = "Turn off &amp;quot;The Windows Filtering Platform has blocked a connection&amp;quot; message in &amp;quot;Windows Logs/Security&amp;quot;" 
+	TextRu = "Отключить в &amp;quot;Журналах Windows/Безопасность&amp;quot; сообщение &amp;quot;Платформа фильтрации IP-пакетов Windows разрешила подключение&amp;quot;"
+	TextblockUid = "92"
+	ToggleUid = "1092"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_37"
+	TextBlockName = "TextToggle_System_37"
+	TextEng = "Turn off SmartScreen for apps and files" 
+	TextRu = "Отключить SmartScreen для приложений и файлов"
+	TextblockUid = "93"
+	ToggleUid = "1093"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_38"
+	TextBlockName = "TextToggle_System_38"
+	TextEng = "Turn off F1 Help key" 
+	TextRu = "Отключить справку по нажатию F1"
+	TextblockUid = "94"
+	ToggleUid = "1094"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_39"
+	TextBlockName = "TextToggle_System_39"
+	TextEng = "Turn on Num Lock at startup" 
+	TextRu = "Включить Num Lock при загрузке"
+	TextblockUid = "95"
+	ToggleUid = "1095"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_40"
+	TextBlockName = "TextToggle_System_40"
+	TextEng = "Turn off sticky Shift key after pressing 5 times" 
+	TextRu = "Отключить залипание клавиши Shift после 5 нажатий"
+	TextblockUid = "96"
+	ToggleUid = "1096"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_41"
+	TextBlockName = "TextToggle_System_41"
+	TextEng = "Turn off AutoPlay for all media and devices" 
+	TextRu = "Отключить автозапуск с внешних носителей"
+	TextblockUid = "97"
+	ToggleUid = "1097"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_42"
+	TextBlockName = "TextToggle_System_42"
+	TextEng = "Turn off thumbnail cache removal" 
+	TextRu = "Отключить удаление кэша миниатюр"
+	TextblockUid = "98"
+	ToggleUid = "1098"
+},
+@{
+	Category = "System"
+	Checked = "0"	
+	ToggleName = "Toggle_System_43"
+	TextBlockName = "TextToggle_System_43"
+	TextEng = "Turn On automatically save my restartable apps when sign out and restart them after sign in" 
+	TextRu = "Автоматически сохранять мои перезапускаемые приложения при выходе из системы и перезапустить их после выхода"
+	TextblockUid = "99"
+	ToggleUid = "1099"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_0"
+	TextBlockName = "TextToggle_UI_0"
+	TextEng = "Show &amp;quot;This PC&amp;quot; on Desktop" 
+	TextRu = "Отобразить &amp;quot;Этот компьютер&amp;quot; на рабочем столе"
+	TextblockUid = "100"
+	ToggleUid = "1100"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_1"
+	TextBlockName = "TextToggle_UI_1"
+	TextEng = "Set File Explorer to open to This PC by default" 
+	TextRu = "Открывать &amp;quot;Этот компьютер&amp;quot; в Проводнике"
+	TextblockUid = "101"
+	ToggleUid = "1101"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_2"
+	TextBlockName = "TextToggle_UI_2"
+	TextEng = "Show Hidden Files, Folders, and Drives" 
+	TextRu = "Показывать скрытые файлы, папки и диски"
+	TextblockUid = "102"
+	ToggleUid = "1102"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_3"
+	TextBlockName = "TextToggle_UI_3"
+	TextEng = "Turn off check boxes to select items" 
+	TextRu = "Отключить флажки для выбора элементов"
+	TextblockUid = "103"
+	ToggleUid = "1103"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_4"
+	TextBlockName = "TextToggle_UI_4"
+	TextEng = "Show File Name Extensions" 
+	TextRu = "Показывать расширения для зарегистрированных типов файлов"
+	TextblockUid = "104"
+	ToggleUid = "1104"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_5"
+	TextBlockName = "TextToggle_UI_5"
+	TextEng = "Show folder merge conflicts" 
+	TextRu = "Не скрывать конфликт слияния папок"
+	TextblockUid = "105"
+	ToggleUid = "1105"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_6"
+	TextBlockName = "TextToggle_UI_6"
+	TextEng = "Do not show all folders in the navigation pane" 
+	TextRu = "Не отображать все папки в области навигации"
+	TextblockUid = "106"
+	ToggleUid = "1106"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_7"
+	TextBlockName = "TextToggle_UI_7"
+	TextEng = "Do not show Cortana button on taskbar" 
+	TextRu = "Не показывать кнопку Кортаны на панели задач"
+	TextblockUid = "107"
+	ToggleUid = "1107"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_8"
+	TextBlockName = "TextToggle_UI_8"
+	TextEng = "Do not show Task View button on taskbar" 
+	TextRu = "Не показывать кнопку Просмотра задач"
+	TextblockUid = "108"
+	ToggleUid = "1108"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_9"
+	TextBlockName = "TextToggle_UI_9"
+	TextEng = "Do not show People button on the taskbar" 
+	TextRu = "Не показывать панель &amp;quot;Люди&amp;quot; на панели задач"
+	TextblockUid = "109"
+	ToggleUid = "1109"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_10"
+	TextBlockName = "TextToggle_UI_10"
+	TextEng = "Show seconds on taskbar clock" 
+	TextRu = "Отображать секунды в системных часах на панели задач"
+	TextblockUid = "110"
+	ToggleUid = "1110"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_11"
+	TextBlockName = "TextToggle_UI_11"
+	TextEng = "Turn on acrylic taskbar transparency" 
+	TextRu = "Включить прозрачную панель задач"
+	TextblockUid = "111"
+	ToggleUid = "1111"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_12"
+	TextBlockName = "TextToggle_UI_12"
+	TextEng = "Do not show when snapping a window, what can be attached next to it" 
+	TextRu = "Не показывать при прикреплении окна, что можно прикрепить рядом с ним"
+	TextblockUid = "112"
+	ToggleUid = "1112"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_13"
+	TextBlockName = "TextToggle_UI_13"
+	TextEng = "Show more details in file transfer dialog" 
+	TextRu = "Развернуть диалог переноса файлов"
+	TextblockUid = "113"
+	ToggleUid = "1113"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_14"
+	TextBlockName = "TextToggle_UI_14"
+	TextEng = "Turn on ribbon in File Explorer" 
+	TextRu = "Включить отображение ленты проводника в развернутом виде"
+	TextblockUid = "114"
+	ToggleUid = "1114"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_15"
+	TextBlockName = "TextToggle_UI_15"
+	TextEng = "Turn on recycle bin files delete confirmation" 
+	TextRu = "Запрашивать подтверждение на удалении файлов из корзины"
+	TextblockUid = "115"
+	ToggleUid = "1115"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_16"
+	TextBlockName = "TextToggle_UI_16"
+	TextEng = "Remove 3D Objects folder in &amp;quot;This PC&amp;quot; and in the navigation pane" 
+	TextRu = "Скрыть папку &amp;quot;Объемные объекты&amp;quot; из &amp;quot;Этот компьютер&amp;quot; и на панели быстрого доступа"
+	TextblockUid = "116"
+	ToggleUid = "1116"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_17"
+	TextBlockName = "TextToggle_UI_17"
+	TextEng = "Do not show &amp;quot;Frequent folders&amp;quot; in Quick access" 
+	TextRu = "Не показывать недавно используемые папки на панели быстрого доступа"
+	TextblockUid = "117"
+	ToggleUid = "1117"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_18"
+	TextBlockName = "TextToggle_UI_18"
+	TextEng = "Do not show &amp;quot;Recent files&amp;quot; in Quick access" 
+	TextRu = "Не показывать недавно использовавшиеся файлы на панели быстрого доступа"
+	TextblockUid = "118"
+	ToggleUid = "1118"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_19"
+	TextBlockName = "TextToggle_UI_19"
+	TextEng = "Remove the &amp;quot;Previous Versions&amp;quot; tab from properties context menu" 
+	TextRu = "Отключить отображение вкладки &amp;quot;Предыдущие версии&amp;quot; в свойствах файлов и папок"
+	TextblockUid = "119"
+	ToggleUid = "1119"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_20"
+	TextBlockName = "TextToggle_UI_20"
+	TextEng = "Hide search box or search icon on taskbar" 
+	TextRu = "Скрыть поле или значок поиска на Панели задач"
+	TextblockUid = "120"
+	ToggleUid = "1120"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_21"
+	TextBlockName = "TextToggle_UI_21"
+	TextEng = "Do not show &amp;quot;Windows Ink Workspace&amp;quot; button in taskbar" 
+	TextRu = "Не показывать кнопку Windows Ink Workspace на панели задач"
+	TextblockUid = "121"
+	ToggleUid = "1121"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_22"
+	TextBlockName = "TextToggle_UI_22"
+	TextEng = "Always show all icons in the notification area" 
+	TextRu = "Всегда отображать все значки в области уведомлений"
+	TextblockUid = "122"
+	ToggleUid = "1122"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_23"
+	TextBlockName = "TextToggle_UI_23"
+	TextEng = "Unpin Microsoft Edge and Microsoft Store from taskbar" 
+	TextRu = "Открепить Microsoft Edge и Microsoft Store от панели задач"
+	TextblockUid = "123"
+	ToggleUid = "1123"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_24"
+	TextBlockName = "TextToggle_UI_24"
+	TextEng = "Set the Control Panel view by large icons" 
+	TextRu = "Установить крупные значки в панели управления"
+	TextblockUid = "124"
+	ToggleUid = "1124"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_25"
+	TextBlockName = "TextToggle_UI_25"
+	TextEng = "Choose theme color for default Windows mode" 
+	TextRu = "Выбрать режим Windows по умолчанию"
+	TextblockUid = "125"
+	ToggleUid = "1125"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_26"
+	TextBlockName = "TextToggle_UI_26"
+	TextEng = "Choose theme color for default app mode" 
+	TextRu = "Выбрать режим приложения по умолчанию"
+	TextblockUid = "126"
+	ToggleUid = "1126"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_27"
+	TextBlockName = "TextToggle_UI_27"
+	TextEng = "Do not show &amp;quot;New App Installed&amp;quot; notification" 
+	TextRu = "Не показывать уведомление &amp;quot;Установлено новое приложение&amp;quot;"
+	TextblockUid = "127"
+	ToggleUid = "1127"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_28"
+	TextBlockName = "TextToggle_UI_28"
+	TextEng = "Do not show user first sign-in animation" 
+	TextRu = "Не показывать анимацию при первом входе в систему"
+	TextblockUid = "128"
+	ToggleUid = "1128"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_29"
+	TextBlockName = "TextToggle_UI_29"
+	TextEng = "Turn off JPEG desktop wallpaper import quality reduction" 
+	TextRu = "Установка качества фона рабочего стола на 100 %"
+	TextblockUid = "129"
+	ToggleUid = "1129"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_30"
+	TextBlockName = "TextToggle_UI_30"
+	TextEng = "Show Task Manager details" 
+	TextRu = "Раскрыть окно Диспетчера задач"
+	TextblockUid = "130"
+	ToggleUid = "1130"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_31"
+	TextBlockName = "TextToggle_UI_31"
+	TextEng = "Show accent color on the title bars and window borders" 
+	TextRu = "Отображать цвет элементов в заголовках окон и границ окон"
+	TextblockUid = "131"
+	ToggleUid = "1131"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_32"
+	TextBlockName = "TextToggle_UI_32"
+	TextEng = "Turn off automatically hiding scroll bars" 
+	TextRu = "Отключить автоматическое скрытие полос прокрутки в Windows"
+	TextblockUid = "132"
+	ToggleUid = "1132"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_33"
+	TextBlockName = "TextToggle_UI_33"
+	TextEng = "Show more Windows Update restart notifications about restarting" 
+	TextRu = "Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления"
+	TextblockUid = "133"
+	ToggleUid = "1133"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_34"
+	TextBlockName = "TextToggle_UI_34"
+	TextEng = "Turn off the &amp;quot;- Shortcut&amp;quot; name extension for new shortcuts" 
+	TextRu = "Нe дoбaвлять &amp;quot;- яpлык&amp;quot; для coздaвaeмыx яpлыкoв"
+	TextblockUid = "134"
+	ToggleUid = "1134"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_35"
+	TextBlockName = "TextToggle_UI_35"
+	TextEng = "Use the PrtScn button to open screen snipping" 
+	TextRu = "Использовать клавишу Print Screen, чтобы запустить функцию создания фрагмента экрана"
+	TextblockUid = "135"
+	ToggleUid = "1135"
+},
+@{
+	Category = "UI"
+	Checked = "0"	
+	ToggleName = "Toggle_UI_36"
+	TextBlockName = "TextToggle_UI_36"
+	TextEng = "Automatically adjust active hours for me based on daily usage" 
+	TextRu = "Автоматически изменять период активности для этого устройства на основе действий"
+	TextblockUid = "136"
+	ToggleUid = "1136"
+},
+@{
+	Category = "WindowsGameRecording"
+	Checked = "0"	
+	ToggleName = "Toggle_WindowsGameRecording_0"
+	TextBlockName = "TextToggle_WindowsGameRecording_0"
+	TextEng = "Turn off Windows Game Recording and Broadcasting" 
+	TextRu = "Отключить Запись и трансляции игр Windows"
+	TextblockUid = "137"
+	ToggleUid = "1137"
+},
+@{
+	Category = "WindowsGameRecording"
+	Checked = "0"	
+	ToggleName = "Toggle_WindowsGameRecording_1"
+	TextBlockName = "TextToggle_WindowsGameRecording_1"
+	TextEng = "Turn off Game Bar" 
+	TextRu = "Отключить игровую панель"
+	TextblockUid = "138"
+	ToggleUid = "1138"
+},
+@{
+	Category = "WindowsGameRecording"
+	Checked = "0"	
+	ToggleName = "Toggle_WindowsGameRecording_2"
+	TextBlockName = "TextToggle_WindowsGameRecording_2"
+	TextEng = "Turn off Game Mode" 
+	TextRu = "Отключить игровой режим"
+	TextblockUid = "139"
+	ToggleUid = "1139"
+},
+@{
+	Category = "WindowsGameRecording"
+	Checked = "0"	
+	ToggleName = "Toggle_WindowsGameRecording_3"
+	TextBlockName = "TextToggle_WindowsGameRecording_3"
+	TextEng = "Turn off Game Bar tips" 
+	TextRu = "Отключить подсказки игровой панели"
+	TextblockUid = "140"
+	ToggleUid = "1140"
+}
+#endregion TogglesObjects array
+
+#region Dynamic Toggle Creation
+for ($i=0;$i -lt $Category.Count;$i++)
+{
+	$varName = "TogglesPlaceholder_{0}"-f $Category[$i]
+	$toggles = $null
+	
+	$TogglesObjects | Where-Object {$_.Category -eq $Category[$i]} | ForEach-Object {
+		$toggleName = $_.ToggleName
+		$textblockName = $_.TextBlockName
+		$toggleUid = $_.ToggleUid
+		$textblockUid = $_.TextblockUid
+		
+		if ($RU)
+		{
+			$text = $_.TextRu
+		}
+		
+		else
+		{
+			$text = $_.TextEng
+		}
+		
+		$toggleTemplate = @"
+		
+<Border Style="{StaticResource ToggleBorder}">
+<DockPanel Margin="0 10 0 10">
+<Grid HorizontalAlignment="Left">
+<ToggleButton Name="$toggleName" Uid="$toggleUid" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+<TextBlock Name="$textblockName" Uid="$textblockUid" Text="$text" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+<TextBlock.Style>
+<Style TargetType="{x:Type TextBlock}">
+<Style.Triggers>
+<DataTrigger Binding="{Binding ElementName=$toggleName, Path=IsChecked}" Value="True">
+<Setter Property="Foreground" Value="#3F51B5"/>
+</DataTrigger>
+</Style.Triggers>
+</Style>
+</TextBlock.Style>
+</TextBlock>
+</Grid>
+</DockPanel>
+</Border>
+
+"@
+	$toggles += $toggleTemplate	
+	}
+}
+
+#endregion Dynamic Toggle Creation
 
 [xml]$xamlMarkup = @'
 <Window
