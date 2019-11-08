@@ -120,7 +120,7 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDe
 # Не показывать рекомендации в меню "Пуск"
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338388Enabled -PropertyType DWord -Value 0 -Force
 # Do not show suggested content in the Settings
-# Не показывать рекомендуемое содержание в приложении "Параметры"
+# Не показывать рекомендуемое содержание в "Параметрах"
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338393Enabled -PropertyType DWord -Value 0 -Force
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-353694Enabled -PropertyType DWord -Value 0 -Force
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-353696Enabled -PropertyType DWord -Value 0 -Force
@@ -151,6 +151,34 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\
 # Show folder merge conflicts
 # Не скрывать конфликт слияния папок
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideMergeConflicts -PropertyType DWord -Value 0 -Force
+# Do not show all folders in the navigation pane
+# Не отображать все папки в области навигации
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name NavPaneShowAllFolders -PropertyType DWord -Value 0 -Force
+# Do not show Cortana button on taskbar
+# Не показывать кнопку Cortana на панели задач
+IF (-not $RU)
+{
+	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowCortanaButton -PropertyType DWord -Value 0 -Force
+}
+# Do not show Task View button on taskbar
+# Не показывать кнопку Просмотра задач
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowTaskViewButton -PropertyType DWord -Value 0 -Force
+# Do not show People button on the taskbar
+# Не показывать панель "Люди" на панели задач
+IF (-not (Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People))
+{
+	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People -Force
+}
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People -Name PeopleBand -PropertyType DWord -Value 0 -Force
+# Show seconds on taskbar clock
+# Отображать секунды в системных часах на панели задач
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowSecondsInSystemClock -PropertyType DWord -Value 1 -Force
+# Turn on acrylic taskbar transparency
+# Включить прозрачную панель задач
+New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name UseOLEDTaskbarTransparency -PropertyType DWord -Value 1 -Force
+# Do not show when snapping a window, what can be attached next to it
+# Не показывать при прикреплении окна, что можно прикрепить рядом с ним
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SnapAssist -PropertyType DWord -Value 0 -Force
 # Show more details in file transfer dialog
 # Развернуть диалог переноса файлов
 IF (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager))
@@ -172,9 +200,6 @@ IF (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Polici
 	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Force
 }
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name ConfirmFileDelete -PropertyType DWord -Value 1 -Force
-# Do not show all folders in the navigation pane
-# Не отображать все папки в области навигации
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name NavPaneShowAllFolders -PropertyType DWord -Value 0 -Force
 # Remove 3D Objects folder in "This PC" and in the navigation pane
 # Скрыть папку "Объемные объекты" из "Этот компьютер" и на панели быстрого доступа
 IF (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag"))
@@ -194,34 +219,12 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer 
 # Hide search box or search icon on taskbar
 # Скрыть поле или значок поиска на Панели задач
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -PropertyType DWord -Value 0 -Force
-# Do not show Cortana button on taskbar
-# Не показывать кнопку Cortana на панели задач
-IF (-not $RU)
-{
-	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowCortanaButton -PropertyType DWord -Value 0 -Force
-}
-# Do not show Task View button on taskbar
-# Не показывать кнопку Просмотра задач
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowTaskViewButton -PropertyType DWord -Value 0 -Force
-# Do not show People button on the taskbar
-# Не показывать панель "Люди" на панели задач
-IF (-not (Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People))
-{
-	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People -Force
-}
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People -Name PeopleBand -PropertyType DWord -Value 0 -Force
 # Do not show "Windows Ink Workspace" button in taskbar
 # Не показывать кнопку Windows Ink Workspace на панели задач
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\PenWorkspace -Name PenWorkspaceButtonDesiredVisibility -PropertyType DWord -Value 0 -Force
-# Show seconds on taskbar clock
-# Отображать секунды в системных часах на панели задач
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowSecondsInSystemClock -PropertyType DWord -Value 1 -Force
 # Always show all icons in the notification area
 # Всегда отображать все значки в области уведомлений
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name EnableAutoTray -PropertyType DWord -Value 0 -Force
-# Turn on acrylic taskbar transparency
-# Включить прозрачную панель задач
-New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name UseOLEDTaskbarTransparency -PropertyType DWord -Value 1 -Force
 # Unpin Microsoft Edge and Microsoft Store from taskbar
 # Открепить Microsoft Edge и Microsoft Store от панели задач
 $Signature = @{
@@ -250,9 +253,6 @@ $unpin = [WinAPI.GetStr]::GetString(5387)
 $apps = (New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
 $apps | Where-Object -FilterScript {$_.Path -like "Microsoft.MicrosoftEdge*"} | ForEach-Object -Process {$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $unpin} | ForEach-Object -Process {$_.DoIt()}}
 $apps | Where-Object -FilterScript {$_.Path -like "Microsoft.WindowsStore*"} | ForEach-Object -Process {$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $unpin} | ForEach-Object -Process {$_.DoIt()}}
-# Do not show when snapping a window, what can be attached next to it
-# Не показывать при прикреплении окна, что можно прикрепить рядом с ним
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SnapAssist -PropertyType DWord -Value 0 -Force
 # Set the Control Panel view by large icons
 # Установить крупные значки в панели управления
 IF (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
@@ -440,7 +440,7 @@ New-ItemProperty -Path "HKCU:\Control Panel\Accessibility" -Name DynamicScrollba
 # Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name RestartNotificationsAllowed2 -PropertyType DWord -Value 1 -Force
 # Turn off the "- Shortcut" name extension for new shortcuts
-# He дoбaвлять "- яpлык" для coздaвaeмыx яpлыкoв
+# Нe дoбaвлять "- яpлык" для coздaвaeмыx яpлыкoв
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name link -PropertyType Binary -Value ([byte[]](00, 00, 00, 00)) -Force
 # Use the PrtScn button to open screen snipping
 # Использовать клавишу Print Screen, чтобы запустить функцию создания фрагмента экрана
@@ -513,13 +513,9 @@ New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\E
 New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TEMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
 [Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Process")
 [Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Process")
-# Remove "$env:LOCALAPPDATA\Temp"
-# Удалить "$env:LOCALAPPDATA\Temp"
 Remove-Item $env:LOCALAPPDATA\Temp -Recurse -Force -ErrorAction SilentlyContinue
-# Remove "$env:SYSTEMROOT\Temp"
-# Удалить "$env:SYSTEMROOT\Temp"
 Restart-Service -Name Spooler -Force
-Remove-Item -Path "$env:SystemRoot\Temp" -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item -Path $env:SystemRoot\Temp -Recurse -Force -ErrorAction SilentlyContinue
 # Turn on Win32 long paths
 # Включить длинные пути Win32
 New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -PropertyType DWord -Value 1 -Force
@@ -527,13 +523,6 @@ New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name L
 # Группировать одинаковые службы в один процесс svhost.exe
 $ram = (Get-CimInstance -ClassName Win32_PhysicalMemory | Measure-Object -Property Capacity -Sum).Sum / 1kb
 New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control -Name SvcHostSplitThresholdInKB -PropertyType DWord -Value $ram -Force
-# Turn on Retpoline patch against Spectre v2
-# Включить патч Retpoline против Spectre v2
-IF ((Get-CimInstance -ClassName CIM_OperatingSystem).ProductType -eq 1)
-{
-	New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name FeatureSettingsOverride -PropertyType DWord -Value 1024 -Force
-	New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name FeatureSettingsOverrideMask -PropertyType DWord -Value 1024 -Force
-}
 # Turn on the display of stop error information on the BSoD
 # Включить дополнительную информацию при выводе BSoD
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Control\CrashControl -Name DisplayParameters -PropertyType DWord -Value 1 -Force
@@ -566,18 +555,8 @@ IF (-not (Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentV
 	New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon" -Force
 }
 New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name SyncForegroundPolicy -PropertyType DWord -Value 1 -Force
-# Turn off Cortana
-# Отключить Cortana
-IF (-not $RU)
-{
-	IF (-not (Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search"))
-	{
-		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Force
-	}
-	New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name AllowCortana -PropertyType DWord -Value 0 -Force
-}
-# Do not allow Windows 10 to manage default printer
-# Отключить управление принтером, используемым по умолчанию, со стороны Windows 10
+# Do not let Windows manage default printer
+# Не разрешать Windows управлять принтером, используемым по умолчанию
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Windows" -Name LegacyDefaultPrinterMode -PropertyType DWord -Value 1 -Force
 # Turn off Windows features
 # Отключить компоненты
@@ -624,12 +603,8 @@ $OFS = " "
 # Turn on updates for other Microsoft products
 # Включить автоматическое обновление для других продуктов Microsoft
 (New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
-# Enable System Restore
-# Включить восстановление системы
-Enable-ComputerRestore -Drive $env:SystemDrive
-Get-ScheduledTask -TaskName SR | Enable-ScheduledTask
-Get-Service -Name swprv, vss | Set-Service -StartupType Manual
-Get-Service -Name swprv, vss | Start-Service
+# Remove Shadow copies (restoration points)
+# Удалить теневые копии (точки восстановения)
 Get-CimInstance -ClassName Win32_ShadowCopy | Remove-CimInstance
 # Turn off Windows Script Host
 # Отключить Windows Script Host
@@ -672,17 +647,16 @@ IF ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -eq 2)
 	# Сбалансированная для ноутбука
 	powercfg /setactive SCHEME_BALANCED
 }
-# Turn on .NET 4 runtime for all apps
-# Использовать последнюю установленную версию .NET Framework для всех приложений
+# Turn on latest installed .NET runtime for all apps
+# Использовать последнюю установленную версию .NET для всех приложений
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\.NETFramework -Name OnlyUseLatestCLR -PropertyType DWord -Value 1 -Force
 New-ItemProperty -Path HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework -Name OnlyUseLatestCLR -PropertyType DWord -Value 1 -Force
-# Turn on firewall & network protection
-# Включить брандмауэр
-Set-NetFirewallProfile -Enabled True
-# Do not allow the computer to turn off the device to save power for desktop
-# Запретить отключение Ethernet-адаптера для экономии энергии для стационарного ПК
+# Do not allow the computer to turn off the Ethernet adapter to save power
+# Запретить отключение Ethernet-адаптера для экономии энергии
 IF ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -eq 1)
 {
+	# Desktop
+	# Стационарный ПК
 	$adapter = Get-NetAdapter -Physical | Get-NetAdapterPowerManagement
 	$adapter.AllowComputerToTurnOffDevice = "Disabled"
 	$adapter | Set-NetAdapterPowerManagement
@@ -713,7 +687,7 @@ IF (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Pro
 		}
 	}
 }
-# Set location of the "Desktop", "Documents" "Downloads" "Music", "Pictures", and "Videos"
+# Set location of the "Desktop", "Documents", "Downloads", "Music", "Pictures", and "Videos"
 # Переопределить расположение папок "Рабочий стол", "Документы", "Загрузки", "Музыка", "Изображения", "Видео"
 Function KnownFolderPath
 {
@@ -1244,12 +1218,12 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveMa
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveManager -Name HardReserveAdjustment -PropertyType QWord -Value 0 -Force
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveManager -Name MinDiskSize -PropertyType QWord -Value 0 -Force
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveManager -Name ShippedWithReserves -PropertyType DWord -Value 0 -Force
-# Turn on automatic backup the system registry to the "$env:SystemRoot\System32\config\RegBack" folder
-# Включить автоматическое создание копии реестра в папку "$env:SystemRoot\System32\config\RegBack"
+# Turn on automatic backup the system registry to the $env:SystemRoot\System32\config\RegBack folder
+# Включить автоматическое создание копии реестра в папку $env:SystemRoot\System32\config\RegBack
 New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Configuration Manager" -Name EnablePeriodicBackup -PropertyType DWord -Value 1 -Force
-# Turn off "The Windows Filtering Platform has blocked a connection" message
+# Turn off "The Windows Filtering Platform has blocked a connection" message in "Windows Logs/Security"
 # Отключить в "Журналах Windows/Безопасность" сообщение "Платформа фильтрации IP-пакетов Windows разрешила подключение"
-auditpol /set /subcategory:"{0CCE9226-69AE-11D9-BED3-505054503030}" /success:disable /failure:disable
+auditpol /set /subcategory:"{0CCE9226-69AE-11D9-BED3-505054503030}" /success:disable /failure:enable
 # Turn off SmartScreen for apps and files
 # Отключить SmartScreen для приложений и файлов
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name SmartScreenEnabled -PropertyType String -Value Off -Force
@@ -1269,14 +1243,11 @@ New-ItemProperty -Path "HKCU:\Control Panel\Accessibility\StickyKeys" -Name Flag
 # Turn off AutoPlay for all media and devices
 # Отключить автозапуск с внешних носителей
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers -Name DisableAutoplay -PropertyType DWord -Value 1 -Force
-# Turn off creation of an Edge shortcut on the desktop for each user profile
-# Отключить создание ярлыка Edge на рабочем столе для каждого профиля пользователя пользователя
-New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name DisableEdgeDesktopShortcutCreation -PropertyType DWord -Value 1 -Force
 # Turn off thumbnail cache removal
 # Отключить удаление кэша миниатюр
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" -Name Autorun -PropertyType DWord -Value 0 -Force
 New-ItemProperty -Path "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" -Name Autorun -PropertyType DWord -Value 0 -Force
-# Turn On automatically save my restartable apps when sign out and restart them after sign in ###
+# Turn On automatically save my restartable apps when sign out and restart them after sign in
 # Автоматически сохранять мои перезапускаемые приложения при выходе из системы и перезапустить их после выхода
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name RestartApps -Value 1 -Force
 #endregion System
@@ -1290,8 +1261,8 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name 
 [byte[]]$bytes = Get-Content -Path "$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" -Encoding Byte -Raw
 $bytes[0x15] = $bytes[0x15] -bor 0x20
 Set-Content -Path "$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" -Value $bytes -Encoding Byte -Force
-# Create old style shortcut for "Devices and Printers" in "$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools"
-# Создать ярлык старого формата для "Устройства и принтеры" в "$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools"
+# Add old style shortcut for "Devices and Printers" to the Start menu
+# Добавить ярлык старого формата для "Устройства и принтеры" в меню Пуск
 $target = "control"
 $linkname = (Get-ControlPanelItem | Where-Object -FilterScript {$_.CanonicalName -eq "Microsoft.DevicesAndPrinters"}).Name
 $link = "$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$linkname.lnk"
@@ -1386,6 +1357,9 @@ IF (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftEdge\Main))
 	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftEdge\Main -Force
 }
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftEdge\Main -Name AllowPrelaunch -PropertyType DWord -Value 0 -Force
+# Turn off creation of an Edge shortcut on the desktop for each user profile
+# Отключить создание ярлыка Edge на рабочем столе для каждого профиля пользователя пользователя
+New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name DisableEdgeDesktopShortcutCreation -PropertyType DWord -Value 1 -Force
 #endregion Edge
 
 #region UWP apps
@@ -1493,8 +1467,10 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\GameBar -Name ShowStartupPanel -
 #endregion Windows Game Recording
 
 #region Scheduled tasks
-# Create a task in the Task Scheduler to start Windows cleaning up. The task runs every 90 days
-# Создать задачу в Планировщике задач по очистке обновлений Windows. Задача выполняется каждые 90 дней
+# Create a task in the Task Scheduler to start Windows cleaning up
+# The task runs every 90 days
+# Создать задачу в Планировщике задач по очистке обновлений Windows
+# Задача выполняется каждые 90 дней
 $keys = @(
 	# Delivery Optimization Files
 	# Файлы оптимизации доставки
@@ -1533,9 +1509,9 @@ $params = @{
 	"Principal"	=	$principal
 }
 Register-ScheduledTask @params -Force
-# Create a task in the Task Scheduler to clear the "$env:SystemRoot\SoftwareDistribution\Download" folder.
+# Create a task in the Task Scheduler to clear the $env:SystemRoot\SoftwareDistribution\Download folder
 # The task runs on Thursdays every 4 weeks
-# Создать задачу в Планировщике задач по очистке папки "$env:SystemRoot\SoftwareDistribution\Download"
+# Создать задачу в Планировщике задач по очистке папки $env:SystemRoot\SoftwareDistribution\Download
 # Задача выполняется по четвергам каждую 4 неделю
 $action = New-ScheduledTaskAction -Execute powershell.exe -Argument @"
 	`$getservice = Get-Service -Name wuauserv
@@ -1553,8 +1529,10 @@ $params = @{
 	"Principal"	=	$principal
 }
 Register-ScheduledTask @params -Force
-# Create a task in the Task Scheduler to clear the $env:TEMP folder. The task runs every 62 days
-# Создать задачу в Планировщике задач по очистке папки $env:TEMP. Задача выполняется каждые 62 дня
+# Create a task in the Task Scheduler to clear the $env:TEMP folder
+# The task runs every 62 days
+# Создать задачу в Планировщике задач по очистке папки $env:TEMP
+# Задача выполняется каждые 62 дня
 $action = New-ScheduledTaskAction -Execute powershell.exe -Argument @"
 	Get-ChildItem -Path `$env:TEMP -Force -Recurse | Remove-Item -Force -Recurse
 "@
@@ -1749,7 +1727,7 @@ setx /M MP_FORCE_USE_SANDBOX 1
 # Hide notification about sign in with Microsoft in the Windows Security
 # Скрыть уведомление Защитника Windows об использовании аккаунта Microsoft
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AccountProtection_MicrosoftAccount_Disconnected -PropertyType DWord -Value 1 -Force
-# Hide notification about disabled Smartscreen for Microsoft Edge
+# Hide notification about disabled SmartScreen for Microsoft Edge
 # Скрыть уведомление Защитника Windows об отключенном фильтре SmartScreen для Microsoft Edge
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AppAndBrowser_EdgeSmartScreenOff -PropertyType DWord -Value 0 -Force
 #endregion Microsoft Defender
@@ -1811,7 +1789,7 @@ foreach ($ext in $exts)
 # Удалить пункт "Добавить в библиотеку" из контекстного меню
 New-ItemProperty -Path "Registry::HKEY_CLASSES_ROOT\Folder\shellex\ContextMenuHandlers\Library Location" -Name "(default)" -PropertyType String -Value "-{3dad6c5d-2167-4cae-9914-f99e41c12cfa}" -Force
 # Remove "Turn on BitLocker" from context menu
-# Удалить пункт "Включить Bitlocker" из контекстного меню
+# Удалить пункт "Включить BitLocker" из контекстного меню
 IF (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Professional" -or $_.Edition -eq "Enterprise"})
 {
 	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\encrypt-bde -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
@@ -1822,13 +1800,13 @@ IF (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Pro
 	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\unlock-bde -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
 }
 # Remove "Edit with Photos" from context menu
-# Удалить пункт "Изменить с помощью приложения "Фотографии"" из контекстного меню
+# Удалить пункт "Изменить с помощью приложения "Фотографии"" из контекстного меню изображений
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppX43hnxtbyyps62jhe9sqpdzxn1790zetc\Shell\ShellEdit -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
 # Remove "Create a new video" from Context Menu
 # Удалить пункт "Создать новое видео" из контекстного меню
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppX43hnxtbyyps62jhe9sqpdzxn1790zetc\Shell\ShellCreateVideo -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
-# Remove "Edit" from Context Menu
-# Удалить пункт "Изменить" из контекстного меню
+# Remove "Edit" from images Context Menu
+# Удалить пункт "Изменить" из контекстного меню изображений
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\SystemFileAssociations\image\shell\edit -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
 # Remove "Print" from batch and cmd files context menu
 # Удалить пункт "Печать" из контекстного меню для bat- и cmd-файлов
