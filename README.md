@@ -29,16 +29,15 @@ The PowerShell script is a set of tweaks for fine-tuning the OS and automating t
 - Uninstall all UWP apps from all accounts with exception apps list;
 - Turn off Windows features;
 - Create a task in the Task Scheduler to start Windows cleaning up;
-- Create task to clean out the "$env:SystemRoot\SoftwareDistribution\Download" folder in Task Scheduler;
-- Create a task in the Task Scheduler to clear the "$env:SystemRoot\SoftwareDistribution\Download" folder;
+- Create a task in the Task Scheduler to clear the $env:SystemRoot\SoftwareDistribution\Download folder;
 - Add folder to exclude from Windows Defender Antivirus scan;
 - Turn off per-user services;
-- Create old style shortcut for "Devices and Printers";
+- Add old style shortcut for "Devices and Printers" to the Start menu";
 - Import Start menu layout from pre-saved reg file;
   - [Download](https://github.com/farag2/Windows-10-Setup-Script/tree/master/Start%20menu%20layout) pre-saved Startmenu.reg
   - [Screenshot](#screenshots)
 - Unpin all Start menu tiles;
-- Set location of the "Desktop", "Documents" "Downloads" "Music", "Pictures", and "Videos";
+- Set location of the "Desktop", "Documents", "Downloads", "Music", "Pictures", and "Videos";
 - Refresh desktop icons, environment variables and taskbar without restarting File Explorer;
 - Many more File Explorer and context menu "deep" tweaks.
 
