@@ -1,18 +1,50 @@
 #Requires -RunAsAdministrator
+#Requires -Version 5
 
-#region Begin
-# Remove all text from the current display
-# Очистить экран
+#region Preparation
 Clear-Host
-# Сlear $Error variable
-# Очистка переменной $Error
-$Error.Clear()
+
 # Get information about the current culture settings
 # Получить сведения о параметрах текущей культуры
 IF ($PSUICulture -eq "ru-RU")
 {
 	$RU = $true
 }
+# Detect the OS bitness
+# Определить разрядность ОС
+IF (-not ([Environment]::Is64BitOperatingSystem))
+{
+	IF ($RU)
+	{
+		Write-Host "The script supports Windows 10 x64 only" -BackgroundColor Red
+	}
+	else
+	{
+		Write-Host "Скрипт поддерживает только Windows 10 x64" -BackgroundColor Red
+	}
+	break
+}
+# Detect the PowerShell bitness
+# Определить разрядность PowerShell
+IF (-not ([IntPtr]::Size -eq 8))
+{
+	IF ($RU)
+	{
+		Write-Host "The script supports PowerShell x64 only" -BackgroundColor Red
+	}
+	else
+	{
+		Write-Host "Скрипт поддерживает только PowerShell x64" -BackgroundColor Red
+	}
+	break
+}
+
+#endregion Preparation
+
+#region Begin
+# Сlear $Error variable
+# Очистка переменной $Error
+$Error.Clear()
 # Set the encoding to UTF-8 without BOM for the PowerShell session
 # Установить кодировку UTF-8 без BOM для текущей сессии PowerShell
 IF ($RU)
