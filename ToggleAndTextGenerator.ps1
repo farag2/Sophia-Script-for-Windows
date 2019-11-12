@@ -3,7 +3,7 @@
 
 #region Toggles Text Eng
 
-$Text_Eng_Privacy =
+[Array]$Text_Eng_Privacy =
 	"Turn off `"Connected User Experiences and Telemetry`" service",
 	"Turn off per-user services",
 	"Turn off the SQMLogger session at the next computer restart",
@@ -22,7 +22,7 @@ $Text_Eng_Privacy =
 	"Turn off automatic installing suggested apps",
 	"Do not let track app launches to improve Start menu and search results"
 
-$Text_Eng_UI =
+[Array]$Text_Eng_UI =
 	"Show `"This PC`" on Desktop",
 	"Set File Explorer to open to This PC by default",
 	"Show Hidden Files, Folders, and Drives",
@@ -61,9 +61,9 @@ $Text_Eng_UI =
 	"Use the PrtScn button to open screen snipping",
 	"Automatically adjust active hours for me based on daily usage"
 
-$Text_Eng_OneDrive = "Uninstall OneDrive", ""
+[Array]$Text_Eng_OneDrive = "Uninstall OneDrive"
 
-$Text_Eng_System =
+[Array]$Text_Eng_System =
 	"Turn on Storage Sense to automatically free up space",
 	"Run Storage Sense every month",
 	"Delete temporary files that apps aren't using",
@@ -109,35 +109,35 @@ $Text_Eng_System =
 	"Turn off thumbnail cache removal",
 	"Turn On automatically save my restartable apps when sign out and restart them after sign in"
 
-$Text_Eng_StartMenu =
+[Array]$Text_Eng_StartMenu =
 	"Do not show recently added apps on Start menu",
 	"Open shortcut to the Command Prompt from Start menu as Administrator",
 	"Add old style shortcut for `"Devices and Printers`" to the Start menu",
 	"Import Start menu layout from pre-saved reg file",
 	"Unpin all Start menu tiles"
 
-$Text_Eng_Edge =
+[Array]$Text_Eng_Edge =
 	"Turn off Windows Defender SmartScreen for Microsoft Edge",
 	"Do not allow Microsoft Edge to start and load the Start and New Tab page at Windows startup and each time Microsoft Edge is closed",
 	"Do not allow Microsoft Edge to pre-launch at Windows startup, when the system is idle, and each time Microsoft Edge is closed",
 	"Turn off creation of an Edge shortcut on the desktop for each user profile"
 
-$Text_Eng_UWP =
-	"Uninstall all UWP apps from all accounts, except the followings...",
-	"Uninstall all provisioned UWP apps from System account, except the followings..."
+#$Text_Eng_UWP =
+#	"Uninstall all UWP apps from all accounts, except the followings...",
+#	"Uninstall all provisioned UWP apps from System account, except the followings..."
 
-$Text_Eng_WindowsGameRecording =
+[Array]$Text_Eng_WindowsGameRecording =
 	"Turn off Windows Game Recording and Broadcasting",
 	"Turn off Game Bar",
 	"Turn off Game Mode",
 	"Turn off Game Bar tips"
 
-$Text_Eng_ScheduledTasks = 
+[Array]$Text_Eng_ScheduledTasks = 
 	"Create a task in the Task Scheduler to start Windows cleaning up",
 	"Create a task in the Task Scheduler to clear the $env:SystemRoot\SoftwareDistribution\Download folder",
 	"Create a task in the Task Scheduler to clear the $env:TEMP folder"
 
-$Text_Eng_MicrosoftDefender =
+[Array]$Text_Eng_MicrosoftDefender =
 	"Add folder to exclude from Windows Defender Antivirus scan",
 	"Turn on Controlled folder access and add protected folders",
 	"Allow an app through Controlled folder access",
@@ -147,7 +147,7 @@ $Text_Eng_MicrosoftDefender =
 	"Hide notification about sign in with Microsoft in the Windows Security",
 	"Hide notification about disabled SmartScreen for Microsoft Edge"
 
-$Text_Eng_ContextMenu =
+[Array]$Text_Eng_ContextMenu =
 	"Add `"Extract`" to MSI file type context menu",
 	"Add `"Run as different user`" from context menu for .exe file type",
 	"Add `"Install`" to CAB file type context menu",
@@ -169,7 +169,7 @@ $Text_Eng_ContextMenu =
 #endregion Toggles Text Eng
 	
 #region Toggles Text Ru
-$Text_Ru_Privacy =
+[Array]$Text_Ru_Privacy =
 	"Отключить службу `"Функциональные возможности для подключенных пользователей и телеметрия`"",
 	"Отключить пользовательские службы",
 	"Отключить сборщик SQMLogger при следующем запуске ПК",
@@ -188,7 +188,7 @@ $Text_Ru_Privacy =
 	"Отключить автоматическую установку рекомендованных приложений",
 	"Не разрешать Windows отслеживать запуски приложений для улучшения меню `"Пуск`" и результатов поиска и не показывать недавно добавленные приложения"
 
-$Text_Ru_UI =
+[Array]$Text_Ru_UI =
 	"Отобразить `"Этот компьютер`" на рабочем столе",
 	"Открывать `"Этот компьютер`" в Проводнике",
 	"Показывать скрытые файлы, папки и диски",
@@ -227,9 +227,9 @@ $Text_Ru_UI =
 	"Использовать клавишу Print Screen, чтобы запустить функцию создания фрагмента экрана",
 	"Автоматически изменять период активности для этого устройства на основе действий"
 
-$Text_Ru_OneDrive = "Удалить OneDrive", ""
+[Array]$Text_Ru_OneDrive = "Удалить OneDrive"
 
-$Text_Ru_System =
+[Array]$Text_Ru_System =
 	"Включить Память устройства для автоматического освобождения места",
 	"Запускать контроль памяти каждый месяц",
 	"Удалять временные файлы, не используемые в приложениях",
@@ -275,35 +275,35 @@ $Text_Ru_System =
 	"Отключить удаление кэша миниатюр",
 	"Автоматически сохранять мои перезапускаемые приложения при выходе из системы и перезапустить их после выхода"
 
-$Text_Ru_StartMenu =
+[Array]$Text_Ru_StartMenu =
 	"Не показывать недавно добавленные приложения в меню `"Пуск`"",
 	"Запускать ярлык к командной строке в меню `"Пуск`" от имени Администратора",
 	"Добавить ярлык старого формата для `"Устройства и принтеры`" в меню Пуск",
 	"Импорт настроенного макета меню `"Пуск`" из заготовленного reg-файла",
 	"Открепить все ярлыки от начального экрана"
 
-$Text_Ru_Edge =
+[Array]$Text_Ru_Edge =
 	"Отключить Windows Defender SmartScreen в Microsoft Edge",
 	"Не разрешать Edge запускать и загружать страницу при загрузке Windows и каждый раз при закрытии Edge",
 	"Не разрешать предварительный запуск Edge при загрузке Windows, когда система простаивает, и каждый раз при закрытии Edge",
 	"Отключить создание ярлыка Edge на рабочем столе для каждого профиля пользователя пользователя"
 
-$Text_Ru_UWP =
-	"Удалить все UWP-приложения из всех учетных записей, кроме следующих...",
-	"Удалить все UWP-приложения из системной учетной записи, кроме следующих..."
+#$Text_Ru_UWP =
+#	"Удалить все UWP-приложения из всех учетных записей, кроме следующих...",
+#	"Удалить все UWP-приложения из системной учетной записи, кроме следующих..."
 
-$Text_Ru_WindowsGameRecording =
+[Array]$Text_Ru_WindowsGameRecording =
 	"Отключить Запись и трансляции игр Windows",
 	"Отключить игровую панель",
 	"Отключить игровой режим",
 	"Отключить подсказки игровой панели"
 
-$Text_Ru_ScheduledTasks =
+[Array]$Text_Ru_ScheduledTasks =
 	"Создать задачу в Планировщике задач по очистке обновлений Windows",
 	"Создать задачу в Планировщике задач по очистке папки %SystemRoot%\SoftwareDistribution\Download",
 	"Создать задачу в Планировщике задач по очистке папки %TEMP%"
 
-$Text_Ru_MicrosoftDefender =
+[Array]$Text_Ru_MicrosoftDefender =
 	"Добавить папку в список исключений сканирования Защитника Windows",
 	"Включить контролируемый доступ к папкам и добавить защищенные папки",
 	"Разрешить работу приложения через контролируемый доступ к папкам",
@@ -313,7 +313,7 @@ $Text_Ru_MicrosoftDefender =
 	"Скрыть уведомление Защитника Windows об использовании аккаунта Microsoft",
 	"Скрыть уведомление Защитника Windows об отключенном фильтре SmartScreen для Microsoft Edge"
 
-$Text_Ru_ContextMenu =
+[Array]$Text_Ru_ContextMenu =
 	"Добавить пункт `"Extract`" для MSI в контекстное меню",
 	"Добавить `"Запуск от имени друго пользователя`" в контекстное меню для .exe файлов",
 	"Добавить пункт `"Установить`" для CAB-файлов в контекстном меню",
@@ -336,57 +336,75 @@ $Text_Ru_ContextMenu =
 
 #endregion Toggles Text
 
-$categoryArray = "Text_Eng_ContextMenu", "Text_Eng_Edge", "Text_Eng_MicrosoftDefender", "Text_Eng_OneDrive",
-"Text_Eng_Privacy", "Text_Eng_ScheduledTasks", "Text_Eng_StartMenu", "Text_Eng_System", "Text_Eng_UI", "Text_Eng_WindowsGameRecording"
- 
-$textblockuid = 0
-$toggleuid = 999
-for ($j=0;$j -lt $categoryArray.Count; $j++)
-{	
-	$categoryName = $categoryArray[$j].Split("_")[2]
-	$categoryEng = Get-Variable -Name $categoryArray[$j]
-	$categoryRu = Get-Variable -Name ($categoryArray[$j] -replace "Eng", "Ru")
-		
-	for ($i=0; $i -lt $categoryEng.Value.Length; $i++)
-	{
-		$name = "Toggle_{0}_{1}"-f $categoryName, $i
-		$textblock = "Text{0}"-f $name
-		$toggleuid++
-		$eng = $categoryEng.Value[$i]
-		$ru = $categoryRu.Value[$i]
-		
-		if ($eng.Contains('"'))
-		{
-			$eng = $eng.Replace('"', '&quot;')
-		}
-		
-		if ($eng.Contains('&'))
-		{
-			$eng = $eng.Replace('&', '&amp;')
-		}
-		
-		if ($ru.Contains('"'))
-		{
-			$ru = $ru.Replace('"', '&quot;')
-		}
-		
-		if ($ru.Contains('&'))
-		{
-			$ru = $ru.Replace('&', '&amp;')
-		}
-		
-		@"
-@{
-	Category = "$categoryName"
-	Checked = "0"	
-	ToggleName = "$name"
-	TextBlockName = "$textblock"
-	TextEng = "$eng" 
-	TextRu = "$ru"
-	TextblockUid = "$textblockuid"
-	ToggleUid = "$toggleuid"
-},
-"@
-	$textblockuid++
-	}	
+$curDir = $MyInvocation.MyCommand.Definition | Split-Path -Parent
+$resultFile = "{0}\ToggleAndTextGenerator.txt"-f $curDir
+$toggles = New-Object System.Collections.ArrayList($null)
+$textE = New-Object System.Collections.ArrayList($null)
+$textR = New-Object System.Collections.ArrayList($null)
+$textBlockUid = 0
+$toggleUid = 1000
+$category = "ContextMenu", "Edge", "MicrosoftDefender", "OneDrive", "Privacy", "ScheduledTasks", 
+"StartMenu", "System", "UI", "WindowsGameRecording"
+
+if (Test-Path -Path $resultFile)
+{
+	Remove-Item -Path $resultFile -Confirm:$false -Force
+	Write-Warning -Message "Файл ""$resultFile"" удален!"
 }
+ 
+$category | %{	
+	$catName = "$_"	
+	$textEng = Get-Variable -Name ("Text_Eng_$catName")
+	$textRu = Get-Variable -Name ("Text_Ru_$catName")
+	
+	if ($textEng.Value.Count -eq $textRu.Value.Count)
+	{
+		[Void]$toggles.Add("------------ $catName ------------")
+		for ($i=0;$i -lt $textEng.Value.Count;$i++)
+		{
+			$strE = $textEng.Value[$i]
+			$strR = $textRu.Value[$i]
+			
+			if ($strE.Contains('"')) {$strE = $strE.Replace('"', '""')}
+			if ($strR.Contains('"')) {$strR = $strR.Replace('"', '""')}			
+			
+			[Void]$textE.Add("""{0}"","-f $strE)
+			[Void]$textR.Add("""{0}"","-f $strR)
+			
+			$toggleName = "Toggle_{0}_{1}"-f $catName, $toggleUid
+			$textblockName = "Text_{0}_{1}"-f $catName, $textBlockUid
+			$template = @"
+			
+<Border Style="{StaticResource ToggleBorder}">
+<DockPanel Margin="0 10 0 10">
+<Grid HorizontalAlignment="Left">
+<ToggleButton Name="$toggleName" Uid="$toggleUid" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+<TextBlock Name="$textblockName" Uid="$textBlockUid" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+<TextBlock.Style>
+<Style TargetType="{x:Type TextBlock}">
+<Style.Triggers>
+<DataTrigger Binding="{Binding ElementName=$toggleName, Path=IsChecked}" Value="True">
+<Setter Property="Foreground" Value="#3F51B5"/>
+</DataTrigger>
+</Style.Triggers>
+</Style>
+</TextBlock.Style>
+</TextBlock>
+</Grid>
+</DockPanel>
+</Border>			
+"@
+		[Void]$toggles.Add($template)
+		$toggleUid++
+		$textBlockUid++
+		}
+		[Void]$toggles.Add("------------ $catName ------------")
+	}
+	
+	else
+	{
+		Write-Warning -Message "Количество строк в массивах ""$textEng"" и ""$textRu"" не совпадает!"		
+	}
+}
+
+$toggles | Out-File -FilePath $resultFile -Force -Confirm:$false
