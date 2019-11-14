@@ -1,4 +1,4 @@
-Cls
+﻿Cls
 #region Toggles Text
 
 #region Toggles Text Eng
