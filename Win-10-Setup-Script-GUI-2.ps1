@@ -21,7 +21,6 @@ $gitHub = "https://github.com/farag2/Windows-10-Setup-Script"
 #endregion Variable
 
 #region Text Eng
-
 $TextEng = @(
 	"Add `"Extract`" to MSI file type context menu",
 	"Add `"Run as different user`" from context menu for .exe file type",
@@ -89,6 +88,7 @@ $TextEng = @(
 	"Change %TEMP% environment variable path to %SystemDrive%\Temp",
 	"Turn on Win32 long paths",
 	"Group svchost.exe processes",
+"Turn on Retpoline patch against Spectre v2",
 	"Turn on the display of stop error information on the BSoD",
 	"Do not preserve zone information",
 	"Turn off Admin Approval Mode for administrators",
@@ -233,6 +233,7 @@ $TextRu = @(
 	"Изменить путь переменной среды %TEMP% на %SystemDrive%\Temp",
 	"Включить длинные пути Win32",
 	"Группировать процессы svchost.exe",
+"Включить патч Retpoline против Spectre v2",
 	"Включить дополнительную информацию при выводе BSoD",
 	"Не хранить сведения о зоне происхождения вложенных файлов",
 	"Отключить использование режима одобрения администратором для встроенной учетной записи администратора",
