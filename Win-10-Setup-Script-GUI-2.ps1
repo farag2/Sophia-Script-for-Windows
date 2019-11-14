@@ -8,1490 +8,314 @@ $clickedToggle = 0
 # Variable RU defines UI language
 if ($PSCulture -eq "ru-RU")
 {
-	$RU -eq $true
+	New-Variable -Name "RU" -Value $true
 }
 
 else
 {
-	$RU -eq $false
+	New-Variable -Name "RU" -Value $false
 }
-# Variable Category defines Toggle category
-$Category = "ContextMenu", "Edge", "MicrosoftDefender", "OneDrive", "Privacy", "ScheduledTasks", "StartMenu", "System", "UI", "WindowsGameRecording"
+
+$gitHub = "https://github.com/farag2/Windows-10-Setup-Script"
 
 #endregion Variable
 
-#region TogglesObjects array
-# TogglesObjects array contains toggle objects for code-behind
-$TogglesObjects =
-@{
-	Category = "ContextMenu"
-	Checked = "0"	
-	ToggleName = "Toggle_ContextMenu_0"
-	TextBlockName = "TextToggle_ContextMenu_0"
-	TextEng = "Add &amp;quot;Extract&amp;quot; to MSI file type context menu" 
-	TextRu = "Добавить пункт &amp;quot;Extract&amp;quot; для MSI в контекстное меню"
-	TextblockUid = "0"
-	ToggleUid = "1000"
-},
-@{
-	Category = "ContextMenu"
-	Checked = "0"	
-	ToggleName = "Toggle_ContextMenu_1"
-	TextBlockName = "TextToggle_ContextMenu_1"
-	TextEng = "Add &amp;quot;Run as different user&amp;quot; from context menu for .exe file type" 
-	TextRu = "Добавить &amp;quot;Запуск от имени друго пользователя&amp;quot; в контекстное меню для .exe файлов"
-	TextblockUid = "1"
-	ToggleUid = "1001"
-},
-@{
-	Category = "ContextMenu"
-	Checked = "0"	
-	ToggleName = "Toggle_ContextMenu_2"
-	TextBlockName = "TextToggle_ContextMenu_2"
-	TextEng = "Add &amp;quot;Install&amp;quot; to CAB file type context menu" 
-	TextRu = "Добавить пункт &amp;quot;Установить&amp;quot; для CAB-файлов в контекстном меню"
-	TextblockUid = "2"
-	ToggleUid = "1002"
-},
-@{
-	Category = "ContextMenu"
-	Checked = "0"	
-	ToggleName = "Toggle_ContextMenu_3"
-	TextBlockName = "TextToggle_ContextMenu_3"
-	TextEng = "Remove &amp;quot;Cast to Device&amp;quot; from context menu" 
-	TextRu = "Удалить пункт &amp;quot;Передать на устройство&amp;quot; из контекстного меню"
-	TextblockUid = "3"
-	ToggleUid = "1003"
-},
-@{
-	Category = "ContextMenu"
-	Checked = "0"	
-	ToggleName = "Toggle_ContextMenu_4"
-	TextBlockName = "TextToggle_ContextMenu_4"
-	TextEng = "Remove &amp;quot;Share&amp;quot; from context menu" 
-	TextRu = "Удалить пункт &amp;quot;Отправить&amp;quot; (поделиться) из контекстного меню"
-	TextblockUid = "4"
-	ToggleUid = "1004"
-},
-@{
-	Category = "ContextMenu"
-	Checked = "0"	
-	ToggleName = "Toggle_ContextMenu_5"
-	TextBlockName = "TextToggle_ContextMenu_5"
-	TextEng = "Remove &amp;quot;Previous Versions&amp;quot; from file context menu" 
-	TextRu = "Удалить пункт &amp;quot;Восстановить прежнюю версию&amp;quot; из контекстного меню"
-	TextblockUid = "5"
-	ToggleUid = "1005"
-},
-@{
-	Category = "ContextMenu"
-	Checked = "0"	
-	ToggleName = "Toggle_ContextMenu_6"
-	TextBlockName = "TextToggle_ContextMenu_6"
-	TextEng = "Remove &amp;quot;Edit with Paint 3D&amp;quot; from context menu" 
-	TextRu = "Удалить пункт &amp;quot;Изменить с помощью Paint 3D&amp;quot; из контекстного меню"
-	TextblockUid = "6"
-	ToggleUid = "1006"
-},
-@{
-	Category = "ContextMenu"
-	Checked = "0"	
-	ToggleName = "Toggle_ContextMenu_7"
-	TextBlockName = "TextToggle_ContextMenu_7"
-	TextEng = "Remove &amp;quot;Include in Library&amp;quot; from context menu" 
-	TextRu = "Удалить пункт &amp;quot;Добавить в библиотеку&amp;quot; из контекстного меню"
-	TextblockUid = "7"
-	ToggleUid = "1007"
-},
-@{
-	Category = "ContextMenu"
-	Checked = "0"	
-	ToggleName = "Toggle_ContextMenu_8"
-	TextBlockName = "TextToggle_ContextMenu_8"
-	TextEng = "Remove &amp;quot;Turn on BitLocker&amp;quot; from context menu" 
-	TextRu = "Удалить пункт &amp;quot;Включить BitLocker&amp;quot; из контекстного меню"
-	TextblockUid = "8"
-	ToggleUid = "1008"
-},
-@{
-	Category = "ContextMenu"
-	Checked = "0"	
-	ToggleName = "Toggle_ContextMenu_9"
-	TextBlockName = "TextToggle_ContextMenu_9"
-	TextEng = "Remove &amp;quot;Edit with Photos&amp;quot; from context menu" 
-	TextRu = "Удалить пункт &amp;quot;Изменить с помощью приложения &amp;quot;Фотографии&amp;quot;&amp;quot; из контекстного меню изображений"
-	TextblockUid = "9"
-	ToggleUid = "1009"
-},
-@{
-	Category = "ContextMenu"
-	Checked = "0"	
-	ToggleName = "Toggle_ContextMenu_10"
-	TextBlockName = "TextToggle_ContextMenu_10"
-	TextEng = "Remove &amp;quot;Create a new video&amp;quot; from Context Menu" 
-	TextRu = "Удалить пункт &amp;quot;Создать новое видео&amp;quot; из контекстного меню"
-	TextblockUid = "10"
-	ToggleUid = "1010"
-},
-@{
-	Category = "ContextMenu"
-	Checked = "0"	
-	ToggleName = "Toggle_ContextMenu_11"
-	TextBlockName = "TextToggle_ContextMenu_11"
-	TextEng = "Remove &amp;quot;Edit&amp;quot; from images Context Menu" 
-	TextRu = "Удалить пункт &amp;quot;Изменить&amp;quot; из контекстного меню изображений"
-	TextblockUid = "11"
-	ToggleUid = "1011"
-},
-@{
-	Category = "ContextMenu"
-	Checked = "0"	
-	ToggleName = "Toggle_ContextMenu_12"
-	TextBlockName = "TextToggle_ContextMenu_12"
-	TextEng = "Remove &amp;quot;Print&amp;quot; from batch and cmd files context menu" 
-	TextRu = "Удалить пункт &amp;quot;Печать&amp;quot; из контекстного меню для bat- и cmd-файлов"
-	TextblockUid = "12"
-	ToggleUid = "1012"
-},
-@{
-	Category = "ContextMenu"
-	Checked = "0"	
-	ToggleName = "Toggle_ContextMenu_13"
-	TextBlockName = "TextToggle_ContextMenu_13"
-	TextEng = "Remove &amp;quot;Compressed (zipped) Folder&amp;quot; from context menu" 
-	TextRu = "Удалить пункт &amp;quot;Сжатая ZIP-папка&amp;quot; из контекстного меню"
-	TextblockUid = "13"
-	ToggleUid = "1013"
-},
-@{
-	Category = "ContextMenu"
-	Checked = "0"	
-	ToggleName = "Toggle_ContextMenu_14"
-	TextBlockName = "TextToggle_ContextMenu_14"
-	TextEng = "Remove &amp;quot;Send to&amp;quot; from folder context menu" 
-	TextRu = "Удалить пункт &amp;quot;Отправить&amp;quot; из контекстного меню папки"
-	TextblockUid = "14"
-	ToggleUid = "1014"
-},
-@{
-	Category = "ContextMenu"
-	Checked = "0"	
-	ToggleName = "Toggle_ContextMenu_15"
-	TextBlockName = "TextToggle_ContextMenu_15"
-	TextEng = "Make the &amp;quot;Open&amp;quot;, &amp;quot;Print&amp;quot;, &amp;quot;Edit&amp;quot; context menu items available, when more than 15 selected" 
-	TextRu = "Сделать доступными элементы контекстного меню &amp;quot;Открыть&amp;quot;, &amp;quot;Изменить&amp;quot; и &amp;quot;Печать&amp;quot; при выделении более 15 элементов"
-	TextblockUid = "15"
-	ToggleUid = "1015"
-},
-@{
-	Category = "ContextMenu"
-	Checked = "0"	
-	ToggleName = "Toggle_ContextMenu_16"
-	TextBlockName = "TextToggle_ContextMenu_16"
-	TextEng = "Turn off &amp;quot;Look for an app in the Microsoft Store&amp;quot; in &amp;quot;Open with&amp;quot; dialog" 
-	TextRu = "Отключить поиск программ в Microsoft Store при открытии диалога &amp;quot;Открыть с помощью&amp;quot;"
-	TextblockUid = "16"
-	ToggleUid = "1016"
-},
-@{
-	Category = "Edge"
-	Checked = "0"	
-	ToggleName = "Toggle_Edge_0"
-	TextBlockName = "TextToggle_Edge_0"
-	TextEng = "Turn off Windows Defender SmartScreen for Microsoft Edge" 
-	TextRu = "Отключить Windows Defender SmartScreen в Microsoft Edge"
-	TextblockUid = "17"
-	ToggleUid = "1017"
-},
-@{
-	Category = "Edge"
-	Checked = "0"	
-	ToggleName = "Toggle_Edge_1"
-	TextBlockName = "TextToggle_Edge_1"
-	TextEng = "Do not allow Microsoft Edge to start and load the Start and New Tab page at Windows startup and each time Microsoft Edge is closed" 
-	TextRu = "Не разрешать Edge запускать и загружать страницу при загрузке Windows и каждый раз при закрытии Edge"
-	TextblockUid = "18"
-	ToggleUid = "1018"
-},
-@{
-	Category = "Edge"
-	Checked = "0"	
-	ToggleName = "Toggle_Edge_2"
-	TextBlockName = "TextToggle_Edge_2"
-	TextEng = "Do not allow Microsoft Edge to pre-launch at Windows startup, when the system is idle, and each time Microsoft Edge is closed" 
-	TextRu = "Не разрешать предварительный запуск Edge при загрузке Windows, когда система простаивает, и каждый раз при закрытии Edge"
-	TextblockUid = "19"
-	ToggleUid = "1019"
-},
-@{
-	Category = "Edge"
-	Checked = "0"	
-	ToggleName = "Toggle_Edge_3"
-	TextBlockName = "TextToggle_Edge_3"
-	TextEng = "Turn off creation of an Edge shortcut on the desktop for each user profile" 
-	TextRu = "Отключить создание ярлыка Edge на рабочем столе для каждого профиля пользователя пользователя"
-	TextblockUid = "20"
-	ToggleUid = "1020"
-},
-@{
-	Category = "MicrosoftDefender"
-	Checked = "0"	
-	ToggleName = "Toggle_MicrosoftDefender_0"
-	TextBlockName = "TextToggle_MicrosoftDefender_0"
-	TextEng = "Add folder to exclude from Windows Defender Antivirus scan" 
-	TextRu = "Добавить папку в список исключений сканирования Защитника Windows"
-	TextblockUid = "21"
-	ToggleUid = "1021"
-},
-@{
-	Category = "MicrosoftDefender"
-	Checked = "0"	
-	ToggleName = "Toggle_MicrosoftDefender_1"
-	TextBlockName = "TextToggle_MicrosoftDefender_1"
-	TextEng = "Turn on Controlled folder access and add protected folders" 
-	TextRu = "Включить контролируемый доступ к папкам и добавить защищенные папки"
-	TextblockUid = "22"
-	ToggleUid = "1022"
-},
-@{
-	Category = "MicrosoftDefender"
-	Checked = "0"	
-	ToggleName = "Toggle_MicrosoftDefender_2"
-	TextBlockName = "TextToggle_MicrosoftDefender_2"
-	TextEng = "Allow an app through Controlled folder access" 
-	TextRu = "Разрешить работу приложения через контролируемый доступ к папкам"
-	TextblockUid = "23"
-	ToggleUid = "1023"
-},
-@{
-	Category = "MicrosoftDefender"
-	Checked = "0"	
-	ToggleName = "Toggle_MicrosoftDefender_3"
-	TextBlockName = "TextToggle_MicrosoftDefender_3"
-	TextEng = "Turn on Windows Defender Exploit Guard Network Protection" 
-	TextRu = "Включить Защиту сети в Защитнике Windows"
-	TextblockUid = "24"
-	ToggleUid = "1024"
-},
-@{
-	Category = "MicrosoftDefender"
-	Checked = "0"	
-	ToggleName = "Toggle_MicrosoftDefender_4"
-	TextBlockName = "TextToggle_MicrosoftDefender_4"
-	TextEng = "Turn on Windows Defender PUA Protection" 
-	TextRu = "Включить блокировки потенциально нежелательных приложений"
-	TextblockUid = "25"
-	ToggleUid = "1025"
-},
-@{
-	Category = "MicrosoftDefender"
-	Checked = "0"	
-	ToggleName = "Toggle_MicrosoftDefender_5"
-	TextBlockName = "TextToggle_MicrosoftDefender_5"
-	TextEng = "Turn on Windows Defender Sandbox" 
-	TextRu = "Запускать Защитник Windows в песочнице"
-	TextblockUid = "26"
-	ToggleUid = "1026"
-},
-@{
-	Category = "MicrosoftDefender"
-	Checked = "0"	
-	ToggleName = "Toggle_MicrosoftDefender_6"
-	TextBlockName = "TextToggle_MicrosoftDefender_6"
-	TextEng = "Hide notification about sign in with Microsoft in the Windows Security" 
-	TextRu = "Скрыть уведомление Защитника Windows об использовании аккаунта Microsoft"
-	TextblockUid = "27"
-	ToggleUid = "1027"
-},
-@{
-	Category = "MicrosoftDefender"
-	Checked = "0"	
-	ToggleName = "Toggle_MicrosoftDefender_7"
-	TextBlockName = "TextToggle_MicrosoftDefender_7"
-	TextEng = "Hide notification about disabled SmartScreen for Microsoft Edge" 
-	TextRu = "Скрыть уведомление Защитника Windows об отключенном фильтре SmartScreen для Microsoft Edge"
-	TextblockUid = "28"
-	ToggleUid = "1028"
-},
-@{
-	Category = "OneDrive"
-	Checked = "0"	
-	ToggleName = "Toggle_OneDrive_0"
-	TextBlockName = "TextToggle_OneDrive_0"
-	TextEng = "Uninstall OneDrive" 
-	TextRu = "Удалить OneDrive"
-	TextblockUid = "29"
-	ToggleUid = "1029"
-},
-@{
-	Category = "OneDrive"
-	Checked = "0"	
-	ToggleName = "Toggle_OneDrive_1"
-	TextBlockName = "TextToggle_OneDrive_1"
-	TextEng = "" 
-	TextRu = ""
-	TextblockUid = "30"
-	ToggleUid = "1030"
-},
-@{
-	Category = "Privacy"
-	Checked = "0"	
-	ToggleName = "Toggle_Privacy_0"
-	TextBlockName = "TextToggle_Privacy_0"
-	TextEng = "Turn off &amp;quot;Connected User Experiences and Telemetry&amp;quot; service" 
-	TextRu = "Отключить службу &amp;quot;Функциональные возможности для подключенных пользователей и телеметрия&amp;quot;"
-	TextblockUid = "31"
-	ToggleUid = "1031"
-},
-@{
-	Category = "Privacy"
-	Checked = "0"	
-	ToggleName = "Toggle_Privacy_1"
-	TextBlockName = "TextToggle_Privacy_1"
-	TextEng = "Turn off per-user services" 
-	TextRu = "Отключить пользовательские службы"
-	TextblockUid = "32"
-	ToggleUid = "1032"
-},
-@{
-	Category = "Privacy"
-	Checked = "0"	
-	ToggleName = "Toggle_Privacy_2"
-	TextBlockName = "TextToggle_Privacy_2"
-	TextEng = "Turn off the SQMLogger session at the next computer restart" 
-	TextRu = "Отключить сборщик SQMLogger при следующем запуске ПК"
-	TextblockUid = "33"
-	ToggleUid = "1033"
-},
-@{
-	Category = "Privacy"
-	Checked = "0"	
-	ToggleName = "Toggle_Privacy_3"
-	TextBlockName = "TextToggle_Privacy_3"
-	TextEng = "Set the operating system diagnostic data level to &amp;quot;Basic&amp;quot;" 
-	TextRu = "Установить уровень отправляемых диагностических сведений на &amp;quot;Базовый&amp;quot;"
-	TextblockUid = "34"
-	ToggleUid = "1034"
-},
-@{
-	Category = "Privacy"
-	Checked = "0"	
-	ToggleName = "Toggle_Privacy_4"
-	TextBlockName = "TextToggle_Privacy_4"
-	TextEng = "Turn off Windows Error Reporting" 
-	TextRu = "Отключить отчеты об ошибках Windows для всех пользователей"
-	TextblockUid = "35"
-	ToggleUid = "1035"
-},
-@{
-	Category = "Privacy"
-	Checked = "0"	
-	ToggleName = "Toggle_Privacy_5"
-	TextBlockName = "TextToggle_Privacy_5"
-	TextEng = "Change Windows Feedback frequency to &amp;quot;Never&amp;quot;" 
-	TextRu = "Изменить частоту формирования отзывов на &amp;quot;Никогда&amp;quot;"
-	TextblockUid = "36"
-	ToggleUid = "1036"
-},
-@{
-	Category = "Privacy"
-	Checked = "0"	
-	ToggleName = "Toggle_Privacy_6"
-	TextBlockName = "TextToggle_Privacy_6"
-	TextEng = "Turn off diagnostics tracking scheduled tasks" 
-	TextRu = "Отключить задачи диагностического отслеживания"
-	TextblockUid = "37"
-	ToggleUid = "1037"
-},
-@{
-	Category = "Privacy"
-	Checked = "0"	
-	ToggleName = "Toggle_Privacy_7"
-	TextBlockName = "TextToggle_Privacy_7"
-	TextEng = "Do not offer tailored experiences based on the diagnostic data setting" 
-	TextRu = "Не предлагать персонализированныее возможности, основанные на выбранном параметре диагностических данных"
-	TextblockUid = "38"
-	ToggleUid = "1038"
-},
-@{
-	Category = "Privacy"
-	Checked = "0"	
-	ToggleName = "Toggle_Privacy_8"
-	TextBlockName = "TextToggle_Privacy_8"
-	TextEng = "Do not let apps on other devices open and message apps on this device, and vice versa" 
-	TextRu = "Не разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот"
-	TextblockUid = "39"
-	ToggleUid = "1039"
-},
-@{
-	Category = "Privacy"
-	Checked = "0"	
-	ToggleName = "Toggle_Privacy_9"
-	TextBlockName = "TextToggle_Privacy_9"
-	TextEng = "Do not allow apps to use advertising ID" 
-	TextRu = "Не разрешать приложениям использовать идентификатор рекламы"
-	TextblockUid = "40"
-	ToggleUid = "1040"
-},
-@{
-	Category = "Privacy"
-	Checked = "0"	
-	ToggleName = "Toggle_Privacy_10"
-	TextBlockName = "TextToggle_Privacy_10"
-	TextEng = "Do not use sign-in info to automatically finish setting up device after an update or restart" 
-	TextRu = "Не использовать данные для входа для автоматического завершения настройки устройства после перезапуска или обновления"
-	TextblockUid = "41"
-	ToggleUid = "1041"
-},
-@{
-	Category = "Privacy"
-	Checked = "0"	
-	ToggleName = "Toggle_Privacy_11"
-	TextBlockName = "TextToggle_Privacy_11"
-	TextEng = "Do not let websites provide locally relevant content by accessing language list" 
-	TextRu = "Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков"
-	TextblockUid = "42"
-	ToggleUid = "1042"
-},
-@{
-	Category = "Privacy"
-	Checked = "0"	
-	ToggleName = "Toggle_Privacy_12"
-	TextBlockName = "TextToggle_Privacy_12"
-	TextEng = "Turn on tip, trick, and suggestions as you use Windows" 
-	TextRu = "Показывать советы, подсказки и рекомендации при использованию Windows"
-	TextblockUid = "43"
-	ToggleUid = "1043"
-},
-@{
-	Category = "Privacy"
-	Checked = "0"	
-	ToggleName = "Toggle_Privacy_13"
-	TextBlockName = "TextToggle_Privacy_13"
-	TextEng = "Do not show app suggestions on Start menu" 
-	TextRu = "Не показывать рекомендации в меню &amp;quot;Пуск&amp;quot;"
-	TextblockUid = "44"
-	ToggleUid = "1044"
-},
-@{
-	Category = "Privacy"
-	Checked = "0"	
-	ToggleName = "Toggle_Privacy_14"
-	TextBlockName = "TextToggle_Privacy_14"
-	TextEng = "Do not show suggested content in the Settings" 
-	TextRu = "Не показывать рекомендуемое содержание в &amp;quot;Параметрах&amp;quot;"
-	TextblockUid = "45"
-	ToggleUid = "1045"
-},
-@{
-	Category = "Privacy"
-	Checked = "0"	
-	ToggleName = "Toggle_Privacy_15"
-	TextBlockName = "TextToggle_Privacy_15"
-	TextEng = "Turn off automatic installing suggested apps" 
-	TextRu = "Отключить автоматическую установку рекомендованных приложений"
-	TextblockUid = "46"
-	ToggleUid = "1046"
-},
-@{
-	Category = "Privacy"
-	Checked = "0"	
-	ToggleName = "Toggle_Privacy_16"
-	TextBlockName = "TextToggle_Privacy_16"
-	TextEng = "Do not let track app launches to improve Start menu and search results" 
-	TextRu = "Не разрешать Windows отслеживать запуски приложений для улучшения меню &amp;quot;Пуск&amp;quot; и результатов поиска и не показывать недавно добавленные приложения"
-	TextblockUid = "47"
-	ToggleUid = "1047"
-},
-@{
-	Category = "ScheduledTasks"
-	Checked = "0"	
-	ToggleName = "Toggle_ScheduledTasks_0"
-	TextBlockName = "TextToggle_ScheduledTasks_0"
-	TextEng = "Create a task in the Task Scheduler to start Windows cleaning up" 
-	TextRu = "Создать задачу в Планировщике задач по очистке обновлений Windows"
-	TextblockUid = "48"
-	ToggleUid = "1048"
-},
-@{
-	Category = "ScheduledTasks"
-	Checked = "0"	
-	ToggleName = "Toggle_ScheduledTasks_1"
-	TextBlockName = "TextToggle_ScheduledTasks_1"
-	TextEng = "Create a task in the Task Scheduler to clear the C:\Windows\SoftwareDistribution\Download folder" 
-	TextRu = "Создать задачу в Планировщике задач по очистке папки %SystemRoot%\SoftwareDistribution\Download"
-	TextblockUid = "49"
-	ToggleUid = "1049"
-},
-@{
-	Category = "ScheduledTasks"
-	Checked = "0"	
-	ToggleName = "Toggle_ScheduledTasks_2"
-	TextBlockName = "TextToggle_ScheduledTasks_2"
-	TextEng = "Create a task in the Task Scheduler to clear the C:\Temp folder" 
-	TextRu = "Создать задачу в Планировщике задач по очистке папки %TEMP%"
-	TextblockUid = "50"
-	ToggleUid = "1050"
-},
-@{
-	Category = "StartMenu"
-	Checked = "0"	
-	ToggleName = "Toggle_StartMenu_0"
-	TextBlockName = "TextToggle_StartMenu_0"
-	TextEng = "Do not show recently added apps on Start menu" 
-	TextRu = "Не показывать недавно добавленные приложения в меню &amp;quot;Пуск&amp;quot;"
-	TextblockUid = "51"
-	ToggleUid = "1051"
-},
-@{
-	Category = "StartMenu"
-	Checked = "0"	
-	ToggleName = "Toggle_StartMenu_1"
-	TextBlockName = "TextToggle_StartMenu_1"
-	TextEng = "Open shortcut to the Command Prompt from Start menu as Administrator" 
-	TextRu = "Запускать ярлык к командной строке в меню &amp;quot;Пуск&amp;quot; от имени Администратора"
-	TextblockUid = "52"
-	ToggleUid = "1052"
-},
-@{
-	Category = "StartMenu"
-	Checked = "0"	
-	ToggleName = "Toggle_StartMenu_2"
-	TextBlockName = "TextToggle_StartMenu_2"
-	TextEng = "Add old style shortcut for &amp;quot;Devices and Printers&amp;quot; to the Start menu" 
-	TextRu = "Добавить ярлык старого формата для &amp;quot;Устройства и принтеры&amp;quot; в меню Пуск"
-	TextblockUid = "53"
-	ToggleUid = "1053"
-},
-@{
-	Category = "StartMenu"
-	Checked = "0"	
-	ToggleName = "Toggle_StartMenu_3"
-	TextBlockName = "TextToggle_StartMenu_3"
-	TextEng = "Import Start menu layout from pre-saved reg file" 
-	TextRu = "Импорт настроенного макета меню &amp;quot;Пуск&amp;quot; из заготовленного reg-файла"
-	TextblockUid = "54"
-	ToggleUid = "1054"
-},
-@{
-	Category = "StartMenu"
-	Checked = "0"	
-	ToggleName = "Toggle_StartMenu_4"
-	TextBlockName = "TextToggle_StartMenu_4"
-	TextEng = "Unpin all Start menu tiles" 
-	TextRu = "Открепить все ярлыки от начального экрана"
-	TextblockUid = "55"
-	ToggleUid = "1055"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_0"
-	TextBlockName = "TextToggle_System_0"
-	TextEng = "Turn on Storage Sense to automatically free up space" 
-	TextRu = "Включить Память устройства для автоматического освобождения места"
-	TextblockUid = "56"
-	ToggleUid = "1056"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_1"
-	TextBlockName = "TextToggle_System_1"
-	TextEng = "Run Storage Sense every month" 
-	TextRu = "Запускать контроль памяти каждый месяц"
-	TextblockUid = "57"
-	ToggleUid = "1057"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_2"
-	TextBlockName = "TextToggle_System_2"
-	TextEng = "Delete temporary files that apps aren't using" 
-	TextRu = "Удалять временные файлы, не используемые в приложениях"
-	TextblockUid = "58"
-	ToggleUid = "1058"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_3"
-	TextBlockName = "TextToggle_System_3"
-	TextEng = "Delete files in recycle bin if they have been there for over 30 days" 
-	TextRu = "Удалять файлы, которые находятся в корзине более 30 дней"
-	TextblockUid = "59"
-	ToggleUid = "1059"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_4"
-	TextBlockName = "TextToggle_System_4"
-	TextEng = "Never delete files in &amp;quot;Downloads&amp;quot; folder" 
-	TextRu = "Никогда не удалять файлы из папки &amp;quot;Загрузки&amp;quot;"
-	TextblockUid = "60"
-	ToggleUid = "1060"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_5"
-	TextBlockName = "TextToggle_System_5"
-	TextEng = "Let Windows try to fix apps so they're not blurry" 
-	TextRu = "Разрешить Windows исправлять размытость в приложениях"
-	TextblockUid = "61"
-	ToggleUid = "1061"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_6"
-	TextBlockName = "TextToggle_System_6"
-	TextEng = "Turn off hibernate" 
-	TextRu = "Отключить гибридный спящий режим"
-	TextblockUid = "62"
-	ToggleUid = "1062"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_7"
-	TextBlockName = "TextToggle_System_7"
-	TextEng = "Turn off location for this device" 
-	TextRu = "Отключить местоположение для этого устройства"
-	TextblockUid = "63"
-	ToggleUid = "1063"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_8"
-	TextBlockName = "TextToggle_System_8"
-	TextEng = "Change environment variable for %TEMP% to %SystemDrive%\Temp" 
-	TextRu = "Изменить путь переменной среды для временных файлов на %SystemDrive%\Temp"
-	TextblockUid = "64"
-	ToggleUid = "1064"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_9"
-	TextBlockName = "TextToggle_System_9"
-	TextEng = "Turn on Win32 long paths" 
-	TextRu = "Включить длинные пути Win32"
-	TextblockUid = "65"
-	ToggleUid = "1065"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_10"
-	TextBlockName = "TextToggle_System_10"
-	TextEng = "Group svchost.exe processes" 
-	TextRu = "Группировать одинаковые службы в один процесс svchost.exe"
-	TextblockUid = "66"
-	ToggleUid = "1066"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_11"
-	TextBlockName = "TextToggle_System_11"
-	TextEng = "Turn on Retpoline patch against Spectre v2" 
-	TextRu = "Включить патч Retpoline против Spectre v2"
-	TextblockUid = "67"
-	ToggleUid = "1067"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_12"
-	TextBlockName = "TextToggle_System_12"
-	TextEng = "Turn on the display of stop error information on the BSoD" 
-	TextRu = "Включить дополнительную информацию при выводе BSoD"
-	TextblockUid = "68"
-	ToggleUid = "1068"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_13"
-	TextBlockName = "TextToggle_System_13"
-	TextEng = "Do not preserve zone information" 
-	TextRu = "Не хранить сведения о зоне происхождения вложенных файлов"
-	TextblockUid = "69"
-	ToggleUid = "1069"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_14"
-	TextBlockName = "TextToggle_System_14"
-	TextEng = "Turn off Admin Approval Mode for administrators" 
-	TextRu = "Отключить использование режима одобрения администратором для встроенной учетной записи администратора"
-	TextblockUid = "70"
-	ToggleUid = "1070"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_15"
-	TextBlockName = "TextToggle_System_15"
-	TextEng = "Turn on access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled" 
-	TextRu = "Включить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами"
-	TextblockUid = "71"
-	ToggleUid = "1071"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_16"
-	TextBlockName = "TextToggle_System_16"
-	TextEng = "Set download mode for delivery optization on &amp;quot;HTTP only&amp;quot;" 
-	TextRu = "Отключить оптимизацию доставки для обновлений с других ПК"
-	TextblockUid = "72"
-	ToggleUid = "1072"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_17"
-	TextBlockName = "TextToggle_System_17"
-	TextEng = " Always wait for the network at computer startup and logon" 
-	TextRu = "Всегда ждать сеть при запуске и входе в систему"
-	TextblockUid = "73"
-	ToggleUid = "1073"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_18"
-	TextBlockName = "TextToggle_System_18"
-	TextEng = "Do not let Windows manage default printer" 
-	TextRu = "Не разрешать Windows управлять принтером, используемым по умолчанию"
-	TextblockUid = "74"
-	ToggleUid = "1074"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_19"
-	TextBlockName = "TextToggle_System_19"
-	TextEng = "Turn off Windows features" 
-	TextRu = "Отключить компоненты"
-	TextblockUid = "75"
-	ToggleUid = "1075"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_20"
-	TextBlockName = "TextToggle_System_20"
-	TextEng = "Remove Windows capabilities" 
-	TextRu = "Удалить компоненты"
-	TextblockUid = "76"
-	ToggleUid = "1076"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_21"
-	TextBlockName = "TextToggle_System_21"
-	TextEng = "Turn on updates for other Microsoft products" 
-	TextRu = "Включить автоматическое обновление для других продуктов Microsoft"
-	TextblockUid = "77"
-	ToggleUid = "1077"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_22"
-	TextBlockName = "TextToggle_System_22"
-	TextEng = "Remove Shadow copies (restoration points)" 
-	TextRu = "Удалить теневые копии (точки восстановения)"
-	TextblockUid = "78"
-	ToggleUid = "1078"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_23"
-	TextBlockName = "TextToggle_System_23"
-	TextEng = "Turn off Windows Script Host" 
-	TextRu = "Отключить Windows Script Host"
-	TextblockUid = "79"
-	ToggleUid = "1079"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_24"
-	TextBlockName = "TextToggle_System_24"
-	TextEng = "Turn off default background apps, except the followings..." 
-	TextRu = "Запретить стандартным приложениям работать в фоновом режиме, кроме следующих..."
-	TextblockUid = "80"
-	ToggleUid = "1080"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_25"
-	TextBlockName = "TextToggle_System_25"
-	TextEng = "Set power management scheme for !!!" 
-	TextRu = "Установить схему управления питания для !!!"
-	TextblockUid = "81"
-	ToggleUid = "1081"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_26"
-	TextBlockName = "TextToggle_System_26"
-	TextEng = "Turn on latest installed .NET runtime for all apps" 
-	TextRu = "Использовать последнюю установленную версию .NET для всех приложений"
-	TextblockUid = "82"
-	ToggleUid = "1082"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_27"
-	TextBlockName = "TextToggle_System_27"
-	TextEng = "Do not allow the computer to turn off the Ethernet adapter to save power" 
-	TextRu = "Запретить отключение Ethernet-адаптера для экономии энергии"
-	TextblockUid = "83"
-	ToggleUid = "1083"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_28"
-	TextBlockName = "TextToggle_System_28"
-	TextEng = "Set the default input method to the English language" 
-	TextRu = "Установить метод ввода по умолчанию на английский язык"
-	TextblockUid = "84"
-	ToggleUid = "1084"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_29"
-	TextBlockName = "TextToggle_System_29"
-	TextEng = "Turn on Windows Sandbox" 
-	TextRu = "Включить Windows Sandbox"
-	TextblockUid = "85"
-	ToggleUid = "1085"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_30"
-	TextBlockName = "TextToggle_System_30"
-	TextEng = "Set location of the &amp;quot;Desktop&amp;quot;, &amp;quot;Documents&amp;quot;, &amp;quot;Downloads&amp;quot;, &amp;quot;Music&amp;quot;, &amp;quot;Pictures&amp;quot;, and &amp;quot;Videos&amp;quot;" 
-	TextRu = "Переопределить расположение папок &amp;quot;Рабочий стол&amp;quot;, &amp;quot;Документы&amp;quot;, &amp;quot;Загрузки&amp;quot;, &amp;quot;Музыка&amp;quot;, &amp;quot;Изображения&amp;quot;, &amp;quot;Видео&amp;quot;"
-	TextblockUid = "86"
-	ToggleUid = "1086"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_31"
-	TextBlockName = "TextToggle_System_31"
-	TextEng = "Run troubleshooters automatically, then notify" 
-	TextRu = "Автоматически запускать средства устранения неполадок, а затем уведомлять"
-	TextblockUid = "87"
-	ToggleUid = "1087"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_32"
-	TextBlockName = "TextToggle_System_32"
-	TextEng = "Set &amp;quot;High performance&amp;quot; in graphics performance preference for apps" 
-	TextRu = "Установить параметры производительности графики для отдельных приложений на &amp;quot;Высокая производительность&amp;quot;"
-	TextblockUid = "88"
-	ToggleUid = "1088"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_33"
-	TextBlockName = "TextToggle_System_33"
-	TextEng = "Launch folder in a separate process" 
-	TextRu = "Запускать окна с папками в отдельном процессе"
-	TextblockUid = "89"
-	ToggleUid = "1089"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_34"
-	TextBlockName = "TextToggle_System_34"
-	TextEng = "Turn off and delete reserved storage after the next update installation" 
-	TextRu = "Отключить и удалить зарезервированное хранилище после следующей установки обновлений"
-	TextblockUid = "90"
-	ToggleUid = "1090"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_35"
-	TextBlockName = "TextToggle_System_35"
-	TextEng = "Turn on automatic backup the system registry to the C:\Windows\System32\config\RegBack folder" 
-	TextRu = "Включить автоматическое создание копии реестра в папку C:\Windows\System32\config\RegBack"
-	TextblockUid = "91"
-	ToggleUid = "1091"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_36"
-	TextBlockName = "TextToggle_System_36"
-	TextEng = "Turn off &amp;quot;The Windows Filtering Platform has blocked a connection&amp;quot; message in &amp;quot;Windows Logs/Security&amp;quot;" 
-	TextRu = "Отключить в &amp;quot;Журналах Windows/Безопасность&amp;quot; сообщение &amp;quot;Платформа фильтрации IP-пакетов Windows разрешила подключение&amp;quot;"
-	TextblockUid = "92"
-	ToggleUid = "1092"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_37"
-	TextBlockName = "TextToggle_System_37"
-	TextEng = "Turn off SmartScreen for apps and files" 
-	TextRu = "Отключить SmartScreen для приложений и файлов"
-	TextblockUid = "93"
-	ToggleUid = "1093"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_38"
-	TextBlockName = "TextToggle_System_38"
-	TextEng = "Turn off F1 Help key" 
-	TextRu = "Отключить справку по нажатию F1"
-	TextblockUid = "94"
-	ToggleUid = "1094"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_39"
-	TextBlockName = "TextToggle_System_39"
-	TextEng = "Turn on Num Lock at startup" 
-	TextRu = "Включить Num Lock при загрузке"
-	TextblockUid = "95"
-	ToggleUid = "1095"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_40"
-	TextBlockName = "TextToggle_System_40"
-	TextEng = "Turn off sticky Shift key after pressing 5 times" 
-	TextRu = "Отключить залипание клавиши Shift после 5 нажатий"
-	TextblockUid = "96"
-	ToggleUid = "1096"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_41"
-	TextBlockName = "TextToggle_System_41"
-	TextEng = "Turn off AutoPlay for all media and devices" 
-	TextRu = "Отключить автозапуск с внешних носителей"
-	TextblockUid = "97"
-	ToggleUid = "1097"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_42"
-	TextBlockName = "TextToggle_System_42"
-	TextEng = "Turn off thumbnail cache removal" 
-	TextRu = "Отключить удаление кэша миниатюр"
-	TextblockUid = "98"
-	ToggleUid = "1098"
-},
-@{
-	Category = "System"
-	Checked = "0"	
-	ToggleName = "Toggle_System_43"
-	TextBlockName = "TextToggle_System_43"
-	TextEng = "Turn On automatically save my restartable apps when sign out and restart them after sign in" 
-	TextRu = "Автоматически сохранять мои перезапускаемые приложения при выходе из системы и перезапустить их после выхода"
-	TextblockUid = "99"
-	ToggleUid = "1099"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_0"
-	TextBlockName = "TextToggle_UI_0"
-	TextEng = "Show &amp;quot;This PC&amp;quot; on Desktop" 
-	TextRu = "Отобразить &amp;quot;Этот компьютер&amp;quot; на рабочем столе"
-	TextblockUid = "100"
-	ToggleUid = "1100"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_1"
-	TextBlockName = "TextToggle_UI_1"
-	TextEng = "Set File Explorer to open to This PC by default" 
-	TextRu = "Открывать &amp;quot;Этот компьютер&amp;quot; в Проводнике"
-	TextblockUid = "101"
-	ToggleUid = "1101"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_2"
-	TextBlockName = "TextToggle_UI_2"
-	TextEng = "Show Hidden Files, Folders, and Drives" 
-	TextRu = "Показывать скрытые файлы, папки и диски"
-	TextblockUid = "102"
-	ToggleUid = "1102"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_3"
-	TextBlockName = "TextToggle_UI_3"
-	TextEng = "Turn off check boxes to select items" 
-	TextRu = "Отключить флажки для выбора элементов"
-	TextblockUid = "103"
-	ToggleUid = "1103"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_4"
-	TextBlockName = "TextToggle_UI_4"
-	TextEng = "Show File Name Extensions" 
-	TextRu = "Показывать расширения для зарегистрированных типов файлов"
-	TextblockUid = "104"
-	ToggleUid = "1104"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_5"
-	TextBlockName = "TextToggle_UI_5"
-	TextEng = "Show folder merge conflicts" 
-	TextRu = "Не скрывать конфликт слияния папок"
-	TextblockUid = "105"
-	ToggleUid = "1105"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_6"
-	TextBlockName = "TextToggle_UI_6"
-	TextEng = "Do not show all folders in the navigation pane" 
-	TextRu = "Не отображать все папки в области навигации"
-	TextblockUid = "106"
-	ToggleUid = "1106"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_7"
-	TextBlockName = "TextToggle_UI_7"
-	TextEng = "Do not show Cortana button on taskbar" 
-	TextRu = "Не показывать кнопку Кортаны на панели задач"
-	TextblockUid = "107"
-	ToggleUid = "1107"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_8"
-	TextBlockName = "TextToggle_UI_8"
-	TextEng = "Do not show Task View button on taskbar" 
-	TextRu = "Не показывать кнопку Просмотра задач"
-	TextblockUid = "108"
-	ToggleUid = "1108"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_9"
-	TextBlockName = "TextToggle_UI_9"
-	TextEng = "Do not show People button on the taskbar" 
-	TextRu = "Не показывать панель &amp;quot;Люди&amp;quot; на панели задач"
-	TextblockUid = "109"
-	ToggleUid = "1109"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_10"
-	TextBlockName = "TextToggle_UI_10"
-	TextEng = "Show seconds on taskbar clock" 
-	TextRu = "Отображать секунды в системных часах на панели задач"
-	TextblockUid = "110"
-	ToggleUid = "1110"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_11"
-	TextBlockName = "TextToggle_UI_11"
-	TextEng = "Turn on acrylic taskbar transparency" 
-	TextRu = "Включить прозрачную панель задач"
-	TextblockUid = "111"
-	ToggleUid = "1111"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_12"
-	TextBlockName = "TextToggle_UI_12"
-	TextEng = "Do not show when snapping a window, what can be attached next to it" 
-	TextRu = "Не показывать при прикреплении окна, что можно прикрепить рядом с ним"
-	TextblockUid = "112"
-	ToggleUid = "1112"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_13"
-	TextBlockName = "TextToggle_UI_13"
-	TextEng = "Show more details in file transfer dialog" 
-	TextRu = "Развернуть диалог переноса файлов"
-	TextblockUid = "113"
-	ToggleUid = "1113"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_14"
-	TextBlockName = "TextToggle_UI_14"
-	TextEng = "Turn on ribbon in File Explorer" 
-	TextRu = "Включить отображение ленты проводника в развернутом виде"
-	TextblockUid = "114"
-	ToggleUid = "1114"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_15"
-	TextBlockName = "TextToggle_UI_15"
-	TextEng = "Turn on recycle bin files delete confirmation" 
-	TextRu = "Запрашивать подтверждение на удалении файлов из корзины"
-	TextblockUid = "115"
-	ToggleUid = "1115"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_16"
-	TextBlockName = "TextToggle_UI_16"
-	TextEng = "Remove 3D Objects folder in &amp;quot;This PC&amp;quot; and in the navigation pane" 
-	TextRu = "Скрыть папку &amp;quot;Объемные объекты&amp;quot; из &amp;quot;Этот компьютер&amp;quot; и на панели быстрого доступа"
-	TextblockUid = "116"
-	ToggleUid = "1116"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_17"
-	TextBlockName = "TextToggle_UI_17"
-	TextEng = "Do not show &amp;quot;Frequent folders&amp;quot; in Quick access" 
-	TextRu = "Не показывать недавно используемые папки на панели быстрого доступа"
-	TextblockUid = "117"
-	ToggleUid = "1117"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_18"
-	TextBlockName = "TextToggle_UI_18"
-	TextEng = "Do not show &amp;quot;Recent files&amp;quot; in Quick access" 
-	TextRu = "Не показывать недавно использовавшиеся файлы на панели быстрого доступа"
-	TextblockUid = "118"
-	ToggleUid = "1118"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_19"
-	TextBlockName = "TextToggle_UI_19"
-	TextEng = "Remove the &amp;quot;Previous Versions&amp;quot; tab from properties context menu" 
-	TextRu = "Отключить отображение вкладки &amp;quot;Предыдущие версии&amp;quot; в свойствах файлов и папок"
-	TextblockUid = "119"
-	ToggleUid = "1119"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_20"
-	TextBlockName = "TextToggle_UI_20"
-	TextEng = "Hide search box or search icon on taskbar" 
-	TextRu = "Скрыть поле или значок поиска на Панели задач"
-	TextblockUid = "120"
-	ToggleUid = "1120"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_21"
-	TextBlockName = "TextToggle_UI_21"
-	TextEng = "Do not show &amp;quot;Windows Ink Workspace&amp;quot; button in taskbar" 
-	TextRu = "Не показывать кнопку Windows Ink Workspace на панели задач"
-	TextblockUid = "121"
-	ToggleUid = "1121"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_22"
-	TextBlockName = "TextToggle_UI_22"
-	TextEng = "Always show all icons in the notification area" 
-	TextRu = "Всегда отображать все значки в области уведомлений"
-	TextblockUid = "122"
-	ToggleUid = "1122"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_23"
-	TextBlockName = "TextToggle_UI_23"
-	TextEng = "Unpin Microsoft Edge and Microsoft Store from taskbar" 
-	TextRu = "Открепить Microsoft Edge и Microsoft Store от панели задач"
-	TextblockUid = "123"
-	ToggleUid = "1123"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_24"
-	TextBlockName = "TextToggle_UI_24"
-	TextEng = "Set the Control Panel view by large icons" 
-	TextRu = "Установить крупные значки в панели управления"
-	TextblockUid = "124"
-	ToggleUid = "1124"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_25"
-	TextBlockName = "TextToggle_UI_25"
-	TextEng = "Choose theme color for default Windows mode" 
-	TextRu = "Выбрать режим Windows по умолчанию"
-	TextblockUid = "125"
-	ToggleUid = "1125"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_26"
-	TextBlockName = "TextToggle_UI_26"
-	TextEng = "Choose theme color for default app mode" 
-	TextRu = "Выбрать режим приложения по умолчанию"
-	TextblockUid = "126"
-	ToggleUid = "1126"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_27"
-	TextBlockName = "TextToggle_UI_27"
-	TextEng = "Do not show &amp;quot;New App Installed&amp;quot; notification" 
-	TextRu = "Не показывать уведомление &amp;quot;Установлено новое приложение&amp;quot;"
-	TextblockUid = "127"
-	ToggleUid = "1127"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_28"
-	TextBlockName = "TextToggle_UI_28"
-	TextEng = "Do not show user first sign-in animation" 
-	TextRu = "Не показывать анимацию при первом входе в систему"
-	TextblockUid = "128"
-	ToggleUid = "1128"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_29"
-	TextBlockName = "TextToggle_UI_29"
-	TextEng = "Turn off JPEG desktop wallpaper import quality reduction" 
-	TextRu = "Установка качества фона рабочего стола на 100 %"
-	TextblockUid = "129"
-	ToggleUid = "1129"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_30"
-	TextBlockName = "TextToggle_UI_30"
-	TextEng = "Show Task Manager details" 
-	TextRu = "Раскрыть окно Диспетчера задач"
-	TextblockUid = "130"
-	ToggleUid = "1130"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_31"
-	TextBlockName = "TextToggle_UI_31"
-	TextEng = "Show accent color on the title bars and window borders" 
-	TextRu = "Отображать цвет элементов в заголовках окон и границ окон"
-	TextblockUid = "131"
-	ToggleUid = "1131"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_32"
-	TextBlockName = "TextToggle_UI_32"
-	TextEng = "Turn off automatically hiding scroll bars" 
-	TextRu = "Отключить автоматическое скрытие полос прокрутки в Windows"
-	TextblockUid = "132"
-	ToggleUid = "1132"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_33"
-	TextBlockName = "TextToggle_UI_33"
-	TextEng = "Show more Windows Update restart notifications about restarting" 
-	TextRu = "Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления"
-	TextblockUid = "133"
-	ToggleUid = "1133"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_34"
-	TextBlockName = "TextToggle_UI_34"
-	TextEng = "Turn off the &amp;quot;- Shortcut&amp;quot; name extension for new shortcuts" 
-	TextRu = "Нe дoбaвлять &amp;quot;- яpлык&amp;quot; для coздaвaeмыx яpлыкoв"
-	TextblockUid = "134"
-	ToggleUid = "1134"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_35"
-	TextBlockName = "TextToggle_UI_35"
-	TextEng = "Use the PrtScn button to open screen snipping" 
-	TextRu = "Использовать клавишу Print Screen, чтобы запустить функцию создания фрагмента экрана"
-	TextblockUid = "135"
-	ToggleUid = "1135"
-},
-@{
-	Category = "UI"
-	Checked = "0"	
-	ToggleName = "Toggle_UI_36"
-	TextBlockName = "TextToggle_UI_36"
-	TextEng = "Automatically adjust active hours for me based on daily usage" 
-	TextRu = "Автоматически изменять период активности для этого устройства на основе действий"
-	TextblockUid = "136"
-	ToggleUid = "1136"
-},
-@{
-	Category = "WindowsGameRecording"
-	Checked = "0"	
-	ToggleName = "Toggle_WindowsGameRecording_0"
-	TextBlockName = "TextToggle_WindowsGameRecording_0"
-	TextEng = "Turn off Windows Game Recording and Broadcasting" 
-	TextRu = "Отключить Запись и трансляции игр Windows"
-	TextblockUid = "137"
-	ToggleUid = "1137"
-},
-@{
-	Category = "WindowsGameRecording"
-	Checked = "0"	
-	ToggleName = "Toggle_WindowsGameRecording_1"
-	TextBlockName = "TextToggle_WindowsGameRecording_1"
-	TextEng = "Turn off Game Bar" 
-	TextRu = "Отключить игровую панель"
-	TextblockUid = "138"
-	ToggleUid = "1138"
-},
-@{
-	Category = "WindowsGameRecording"
-	Checked = "0"	
-	ToggleName = "Toggle_WindowsGameRecording_2"
-	TextBlockName = "TextToggle_WindowsGameRecording_2"
-	TextEng = "Turn off Game Mode" 
-	TextRu = "Отключить игровой режим"
-	TextblockUid = "139"
-	ToggleUid = "1139"
-},
-@{
-	Category = "WindowsGameRecording"
-	Checked = "0"	
-	ToggleName = "Toggle_WindowsGameRecording_3"
-	TextBlockName = "TextToggle_WindowsGameRecording_3"
-	TextEng = "Turn off Game Bar tips" 
-	TextRu = "Отключить подсказки игровой панели"
-	TextblockUid = "140"
-	ToggleUid = "1140"
-}
-#endregion TogglesObjects array
+#region Text Eng
 
-#region Dynamic Toggle Creation
-for ($i=0;$i -lt $Category.Count;$i++)
-{
-	$varName = "TogglesPlaceholder_{0}"-f $Category[$i]
-	$toggles = $null
-	
-	$TogglesObjects | Where-Object {$_.Category -eq $Category[$i]} | ForEach-Object {
-		$toggleName = $_.ToggleName
-		$textblockName = $_.TextBlockName
-		$toggleUid = $_.ToggleUid
-		$textblockUid = $_.TextblockUid
-		
-		if ($RU)
-		{
-			$text = $_.TextRu
-		}
-		
-		else
-		{
-			$text = $_.TextEng
-		}
-		
-		$toggleTemplate = @"
-		
-<Border Style="{StaticResource ToggleBorder}">
-<DockPanel Margin="0 10 0 10">
-<Grid HorizontalAlignment="Left">
-<ToggleButton Name="$toggleName" Uid="$toggleUid" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-<TextBlock Name="$textblockName" Uid="$textblockUid" Text="$text" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
-<TextBlock.Style>
-<Style TargetType="{x:Type TextBlock}">
-<Style.Triggers>
-<DataTrigger Binding="{Binding ElementName=$toggleName, Path=IsChecked}" Value="True">
-<Setter Property="Foreground" Value="#3F51B5"/>
-</DataTrigger>
-</Style.Triggers>
-</Style>
-</TextBlock.Style>
-</TextBlock>
-</Grid>
-</DockPanel>
-</Border>
+$TextEng = "Add ""Extract"" to MSI file type context menu",
+	"Add ""Run as different user"" from context menu for .exe file type",
+	"Add ""Install"" to CAB file type context menu",
+	"Remove ""Cast to Device"" from context menu",
+	"Remove ""Share"" from context menu",
+	"Remove ""Previous Versions"" from file context menu",
+	"Remove ""Edit with Paint 3D"" from context menu",
+	"Remove ""Include in Library"" from context menu",
+	"Remove ""Turn on BitLocker"" from context menu",
+	"Remove ""Edit with Photos"" from context menu",
+	"Remove ""Create a new video"" from context menu",
+	"Remove ""Edit"" from images context menu",
+	"Remove ""Print"" from batch and cmd files context menu",
+	"Remove ""Compressed (zipped) Folder"" from context menu",
+	"Remove ""Send to"" from folder context menu",
+	"Make the ""Open"", ""Print"", ""Edit"" context menu items available, when more than 15 selected",
+	"Turn off ""Look for an app in the Microsoft Store"" in ""Open with"" dialog",
+	"Turn off Windows Defender SmartScreen for Microsoft Edge",
+	"Do not allow Microsoft Edge to start and load the Start and New Tab page at Windows startup and each time Microsoft Edge is closed",
+	"Do not allow Microsoft Edge to pre-launch at Windows startup, when the system is idle, and each time Microsoft Edge is closed",
+	"Turn off creation of an Edge shortcut on the desktop for each user profile",
+	"Add exclusion folder from Windows Defender Antivirus scanning",
+	"Turn on Controlled folder access and add protected folders",
+	"Allow an app through Controlled folder access",
+	"Turn on Windows Defender Exploit Guard Network Protection",
+	"Turn on Windows Defender PUA Protection",
+	"Turn on Windows Defender Sandbox",
+	"Hide notification about sign in with Microsoft in the Windows Security",
+	"Hide notification about disabled SmartScreen for Microsoft Edge",
+	"Uninstall OneDrive",
+	"Turn off ""Connected User Experiences and Telemetry"" service",
+	"Turn off per-user services",
+	"Turn off the SQMLogger session at the next computer restart",
+	"Set the operating system diagnostic data level to ""Basic""",
+	"Turn off Windows Error Reporting",
+	"Change Windows Feedback frequency to ""Never""",
+	"Turn off diagnostics tracking scheduled tasks",
+	"Do not offer tailored experiences based on the diagnostic data setting",
+	"Do not let apps on other devices open and message apps on this device, and vice versa",
+	"Do not allow apps to use advertising ID",
+	"Do not use sign-in info to automatically finish setting up device after an update or restart",
+	"Do not let websites provide locally relevant content by accessing language list",
+	"Turn on tip, trick, and suggestions as you use Windows",
+	"Do not show app suggestions on Start menu",
+	"Do not show suggested content in the Settings",
+	"Turn off automatic installing suggested apps",
+	"Do not let track app launches to improve Start menu and search results",
+	"Create a task in the Task Scheduler to start Windows cleaning up",
+	"Create a task in the Task Scheduler to clear the %SystemRoot%\SoftwareDistribution\Download folder",
+	"Create a task in the Task Scheduler to clear the C:\Temp folder",
+	"Do not show recently added apps on Start menu",
+	"Open shortcut to the Command Prompt from Start menu as Administrator",
+	"Add old style shortcut for ""Devices and Printers"" to the Start menu",
+	"Import Start menu layout from pre-saved .reg file",
+	"Unpin all Start menu tiles",
+	"Turn on Storage Sense to automatically free up space",
+	"Run Storage Sense every month",
+	"Delete temporary files that apps aren't using",
+	"Delete files in recycle bin if they have been there for over 30 days",
+	"Never delete files in ""Downloads"" folder",
+	"Let Windows try to fix apps so they're not blurry",
+	"Turn off hibernate",
+	"Turn off location for this device",
+	"Change environment variable for %TEMP% to %SystemDrive%\Temp",
+	"Turn on Win32 long paths",
+	"Group svchost.exe processes",
+	"Turn on the display of stop error information on the BSoD",
+	"Do not preserve zone information",
+	"Turn off Admin Approval Mode for administrators",
+	"Turn on access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled",
+	"Set download mode for delivery optization on ""HTTP only""",
+	" Always wait for the network at computer startup and logon",
+	"Do not let Windows manage default printer",
+	"Turn off Windows features",
+	"Remove Windows capabilities",
+	"Turn on updates for other Microsoft products",
+	"Remove Shadow copies (restoration points)",
+	"Turn off Windows Script Host",
+	"Turn off default background apps, except the followings...",
+	"Set power management scheme for !!!",
+	"Turn on latest installed .NET runtime for all apps",
+	"Do not allow the computer to turn off the Ethernet adapter to save power",
+	"Set the default input method to the English language",
+	"Turn on Windows Sandbox",
+	"Set location of the ""Desktop"", ""Documents"", ""Downloads"", ""Music"", ""Pictures"", and ""Videos""",
+	"Run troubleshooters automatically, then notify",
+	"Set ""High performance"" in graphics performance preference for apps",
+	"Launch folder in a separate process",
+	"Turn off and delete reserved storage after the next update installation",
+	"Turn on automatic backup the system registry to the %SystemRoot%\System32\config\RegBack folder",
+	"Turn off ""The Windows Filtering Platform has blocked a connection"" message in ""Windows Logs\Security""",
+	"Turn off SmartScreen for apps and files",
+	"Turn off F1 Help key",
+	"Turn on Num Lock at startup",
+	"Turn off sticky Shift key after pressing 5 times",
+	"Turn off AutoPlay for all media and devices",
+	"Turn off thumbnail cache removal",
+	"Turn on automatically save my restartable apps when sign out and restart them after sign in",
+	"Show ""This PC"" on Desktop",
+	"Set File Explorer to open to This PC by default",
+	"Show Hidden Files, Folders, and Drives",
+	"Turn off check boxes to select items",
+	"Show File Name Extensions",
+	"Show folder merge conflicts",
+	"Do not show all folders in the navigation pane",
+	"Do not show Cortana button on taskbar",
+	"Do not show Task View button on taskbar",
+	"Do not show People button on the taskbar",
+	"Show seconds on taskbar clock",
+	"Turn on acrylic taskbar transparency",
+	"Do not show when snapping a window, what can be attached next to it",
+	"Show more details in file transfer dialog",
+	"Turn on ribbon in File Explorer",
+	"Turn on recycle bin files delete confirmation",
+	"Remove 3D Objects folder in ""This PC"" and in the navigation pane",
+	"Do not show ""Frequent folders"" in Quick access",
+	"Do not show ""Recent files"" in Quick access",
+	"Remove the ""Previous Versions"" tab from properties context menu",
+	"Hide search box or search icon on taskbar",
+	"Do not show ""Windows Ink Workspace"" button in taskbar",
+	"Always show all icons in the notification area",
+	"Unpin Microsoft Edge and Microsoft Store from taskbar",
+	"Set the Control Panel view by large icons",
+	"Choose theme color for default Windows mode",
+	"Choose theme color for default app mode",
+	"Do not show ""New App Installed"" notification",
+	"Do not show user first sign-in animation",
+	"Turn off JPEG desktop wallpaper import quality reduction",
+	"Show Task Manager details",
+	"Show accent color on the title bars and window borders",
+	"Turn off automatically hiding scroll bars",
+	"Show more Windows Update restart notifications about restarting",
+	"Turn off the ""- Shortcut"" name extension for new shortcuts",
+	"Use the PrtScn button to open screen snipping",
+	"Automatically adjust active hours for me based on daily usage",
+	"Turn off Windows Game Recording and Broadcasting",
+	"Turn off Game Bar",
+	"Turn off Game Mode",
+	"Turn off Game Bar tips"
 
-"@
-	$toggles += $toggleTemplate	
-	}
-}
+#endregion Text Eng
 
-#endregion Dynamic Toggle Creation
+#region Text Ru
+$TextRu = "Добавить пункт ""Extract"" для MSI в контекстное меню",
+	"Добавить ""Запуск от имени другого пользователя"" в контекстное меню для .exe файлов",
+	"Добавить пункт ""Установить"" для CAB-файлов в контекстном меню",
+	"Удалить пункт ""Передать на устройство"" из контекстного меню",
+	"Удалить пункт ""Отправить"" (поделиться) из контекстного меню",
+	"Удалить пункт ""Восстановить прежнюю версию"" из контекстного меню",
+	"Удалить пункт ""Изменить с помощью Paint 3D"" из контекстного меню",
+	"Удалить пункт ""Добавить в библиотеку"" из контекстного меню",
+	"Удалить пункт ""Включить BitLocker"" из контекстного меню",
+	"Удалить пункт ""Изменить с помощью приложения ""Фотографии"""" из контекстного меню",
+	"Удалить пункт ""Создать новое видео"" из контекстного меню",
+	"Удалить пункт ""Изменить"" из контекстного меню изображений",
+	"Удалить пункт ""Печать"" из контекстного меню для bat- и cmd-файлов",
+	"Удалить пункт ""Сжатая ZIP-папка"" из контекстного меню",
+	"Удалить пункт ""Отправить"" из контекстного меню папки",
+	"Сделать доступными элементы контекстного меню ""Открыть"", ""Изменить"" и ""Печать"" при выделении более 15 элементов",
+	"Отключить поиск программ в Microsoft Store при открытии диалога ""Открыть с помощью""",
+	"Отключить Windows Defender SmartScreen в Microsoft Edge",
+	"Не разрешать Edge запускать и загружать страницу при загрузке Windows и каждый раз при закрытии Edge",
+	"Не разрешать предварительный запуск Edge при загрузке Windows, когда система простаивает, и каждый раз при закрытии Edge",
+	"Отключить создание ярлыка Edge на рабочем столе для каждого профиля пользователя пользователя",
+	"Добавить папку в список исключений сканирования Защитника Windows",
+	"Включить контролируемый доступ к папкам и добавить защищенные папки",
+	"Разрешить работу приложения через контролируемый доступ к папкам",
+	"Включить Защиту сети в Защитнике Windows",
+	"Включить блокировки потенциально нежелательных приложений",
+	"Запускать Защитник Windows в песочнице",
+	"Скрыть уведомление Защитника Windows об использовании аккаунта Microsoft",
+	"Скрыть уведомление Защитника Windows об отключенном фильтре SmartScreen для Microsoft Edge",
+	"Удалить OneDrive",
+	"Отключить службу ""Функциональные возможности для подключенных пользователей и телеметрия""",
+	"Отключить пользовательские службы",
+	"Отключить сборщик SQMLogger при следующем запуске ПК",
+	"Установить уровень отправляемых диагностических сведений на ""Базовый""",
+	"Отключить отчеты об ошибках Windows",
+	"Изменить частоту формирования отзывов на ""Никогда""",
+	"Отключить задачи диагностического отслеживания",
+	"Не предлагать персонализированныее возможности, основанные на выбранном параметре диагностических данных",
+	"Не разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот",
+	"Не разрешать приложениям использовать идентификатор рекламы",
+	"Не использовать данные для входа для автоматического завершения настройки устройства после перезапуска или обновления",
+	"Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков",
+	"Показывать советы, подсказки и рекомендации при использованию Windows",
+	"Не показывать рекомендации в меню ""Пуск""",
+	"Не показывать рекомендуемое содержание в ""Параметрах""",
+	"Отключить автоматическую установку рекомендованных приложений",
+	"Не разрешать Windows отслеживать запуски приложений для улучшения меню ""Пуск"" и результатов поиска и не показывать недавно добавленные приложения",
+	"Создать задачу в Планировщике задач по очистке обновлений Windows",
+	"Создать задачу в Планировщике задач по очистке папки %SystemRoot%\SoftwareDistribution\Download",
+	"Создать задачу в Планировщике задач по очистке папки ""%TEMP%""",
+	"Не показывать недавно добавленные приложения в меню ""Пуск""",
+	"Запускать ярлык к командной строке в меню ""Пуск"" от имени Администратора",
+	"Добавить ярлык старого формата для ""Устройства и принтеры"" в меню ""Пуск""",
+	"Импорт настроенного макета меню ""Пуск"" из предварительно сохраненного .reg-файла",
+	"Открепить все ярлыки от начального экрана",
+	"Включить Память устройства для автоматического освобождения места",
+	"Запускать контроль памяти каждый месяц",
+	"Удалять временные файлы, не используемые в приложениях",
+	"Удалять файлы, которые находятся в корзине более 30 дней",
+	"Никогда не удалять файлы из папки ""Загрузки""",
+	"Разрешить Windows исправлять размытость в приложениях",
+	"Отключить гибридный спящий режим",
+	"Отключить местоположение для этого устройства",
+	"Изменить путь переменной среды для временных файлов на ""%SystemDrive%\Temp""",
+	"Включить длинные пути Win32",
+	"Группировать одинаковые службы в один процесс svchost.exe",
+	"Включить дополнительную информацию при выводе BSoD",
+	"Не хранить сведения о зоне происхождения вложенных файлов",
+	"Отключить использование режима одобрения администратором для встроенной учетной записи администратора",
+	"Включить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами",
+	"Отключить оптимизацию доставки для обновлений с других ПК",
+	"Всегда ждать сеть при запуске и входе в систему",
+	"Не разрешать Windows управлять принтером, используемым по умолчанию",
+	"Отключить компоненты",
+	"Удалить компоненты",
+	"Включить автоматическое обновление для других продуктов Microsoft",
+	"Удалить теневые копии (точки восстановения)",
+	"Отключить Windows Script Host",
+	"Запретить стандартным приложениям работать в фоновом режиме, кроме следующих...",
+	"Установить схему управления питания для !!!",
+	"Использовать последнюю установленную версию .NET для всех приложений",
+	"Запретить отключение Ethernet-адаптера для экономии энергии",
+	"Установить метод ввода по умолчанию на английский язык",
+	"Включить Windows Sandbox",
+	"Переопределить расположение папок ""Рабочий стол"", ""Документы"", ""Загрузки"", ""Музыка"", ""Изображения"", ""Видео""",
+	"Автоматически запускать средства устранения неполадок, а затем уведомлять",
+	"Установить параметры производительности графики для отдельных приложений на ""Высокая производительность""",
+	"Запускать окна с папками в отдельном процессе",
+	"Отключить и удалить зарезервированное хранилище после следующей установки обновлений",
+	"Включить автоматическое создание копии реестра в папку %SystemRoot%\System32\config\RegBack",
+	"Отключить в ""Журналах Windows\Безопасность"" сообщение ""Платформа фильтрации IP-пакетов Windows разрешила подключение""",
+	"Отключить SmartScreen для приложений и файлов",
+	"Отключить справку по нажатию F1",
+	"Включить Num Lock при загрузке",
+	"Отключить залипание клавиши Shift после 5 нажатий",
+	"Отключить автозапуск с внешних носителей",
+	"Отключить удаление кэша миниатюр",
+	"Автоматически сохранять мои перезапускаемые приложения при выходе из системы и перезапустить их после выхода",
+	"Отобразить ""Этот компьютер"" на рабочем столе",
+	"Открывать ""Этот компьютер"" в Проводнике",
+	"Показывать скрытые файлы, папки и диски",
+	"Отключить флажки для выбора элементов",
+	"Показывать расширения для зарегистрированных типов файлов",
+	"Не скрывать конфликт слияния папок",
+	"Не отображать все папки в области навигации",
+	"Не показывать кнопку Кортаны на панели задач",
+	"Не показывать кнопку Просмотра задач",
+	"Не показывать панель ""Люди"" на панели задач",
+	"Отображать секунды в системных часах на панели задач",
+	"Включить прозрачную панель задач",
+	"Не показывать при прикреплении окна, что можно прикрепить рядом с ним",
+	"Развернуть диалог переноса файлов",
+	"Включить отображение ленты проводника в развернутом виде",
+	"Запрашивать подтверждение на удалении файлов из корзины",
+	"Скрыть папку ""Объемные объекты"" из ""Этот компьютер"" и на панели быстрого доступа",
+	"Не показывать недавно используемые папки на панели быстрого доступа",
+	"Не показывать недавно использовавшиеся файлы на панели быстрого доступа",
+	"Отключить отображение вкладки ""Предыдущие версии"" в свойствах файлов и папок",
+	"Скрыть поле или значок поиска на Панели задач",
+	"Не показывать кнопку Windows Ink Workspace на панели задач",
+	"Всегда отображать все значки в области уведомлений",
+	"Открепить Microsoft Edge и Microsoft Store от панели задач",
+	"Установить крупные значки в панели управления",
+	"Выбрать режим Windows по умолчанию",
+	"Выбрать режим приложения по умолчанию",
+	"Не показывать уведомление ""Установлено новое приложение""",
+	"Не показывать анимацию при первом входе в систему",
+	"Отключить снижение качества фона рабочего стола в формате JPEG",
+	"Раскрыть окно Диспетчера задач",
+	"Отображать цвет элементов в заголовках окон и границ окон",
+	"Отключить автоматическое скрытие полос прокрутки в Windows",
+	"Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления",
+	"Нe дoбaвлять ""- яpлык"" для coздaвaeмыx яpлыкoв",
+	"Использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана",
+	"Автоматически изменять период активности для этого устройства на основе действий",
+	"Отключить Запись и трансляции игр Windows",
+	"Отключить игровую панель",
+	"Отключить игровой режим",
+	"Отключить подсказки игровой панели"
 
-[xml]$xamlMarkup = @'
+#endregion Text Ru
+
+#region Xaml Markup
+
+[xml]$xamlMarkup = @"
 <Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        Name="Window" Title="Windows 10 Setup Script" MinHeight="863" MinWidth="950" Height="863" Width="950" 
+        Name="Window" Title="Windows 10 Setup Script" MinHeight="908" MinWidth="950" Height="908" Width="950" 
         FontFamily="Calibri" FontSize="18" TextOptions.TextFormattingMode="Display" WindowStartupLocation="CenterScreen" 
         SnapsToDevicePixels="True" ResizeMode="CanResize" ShowInTaskbar="True" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
         Foreground="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}">
@@ -1551,10 +375,6 @@ for ($i=0;$i -lt $Category.Count;$i++)
             </Style.Triggers>
         </Style>
 
-        <Style x:Key="PanelToggle" TargetType="StackPanel">
-
-        </Style>
-
         <Style x:Key="TextblockHamburgerMenu" TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Foreground" Value="#FFFFFF"/>
@@ -1605,7 +425,7 @@ for ($i=0;$i -lt $Category.Count;$i++)
                     <Trigger.EnterActions>
                         <BeginStoryboard>
                             <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:0.2"/>                                
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:0.2"/>
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.EnterActions>
@@ -1622,11 +442,11 @@ for ($i=0;$i -lt $Category.Count;$i++)
             </Style.Triggers>
         </Style>
 
-        <Style x:Key="TextblockActionsButtons" TargetType="TextBlock">            
+        <Style x:Key="TextblockActionsButtons" TargetType="TextBlock">
             <Setter Property="Foreground" Value="#FFFFFF"/>
             <Setter Property="Margin" Value="20 5 20 5"/>
             <Setter Property="FontSize" Value="14"/>
-        </Style>        
+        </Style>
 
         <Style x:Key="ToggleSwitchLeftStyle" TargetType="{x:Type ToggleButton}">
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -1844,7 +664,7 @@ for ($i=0;$i -lt $Category.Count;$i++)
         <!--#endregion Title Panel-->
 
         <!--#region Body Panel-->
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" RenderTransformOrigin="0.54,0.504">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -2576,17 +1396,17 @@ for ($i=0;$i -lt $Category.Count;$i++)
                 <StackPanel Name="TogglePanels">
 
                     <!--#region Privacy Toggles-->
-                    <StackPanel Name="PanelToggle_Privacy" Style="{StaticResource PanelToggle}" Visibility="Visible">
+                    <StackPanel Name="PanelToggle_Privacy" Visibility="Visible">
 
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_Privacy_0" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_Privacy_0" Text="Turn off &quot;Connected User Experiences and Telemetry&quot; service" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_Privacy_1030" Uid="1030" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_Privacy_30" Uid="30" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_0, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_1030, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -2600,12 +1420,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_Privacy_1" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_Privacy_1" Text="Turn off per-user services" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_Privacy_1031" Uid="1031" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_Privacy_31" Uid="31" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_1, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_1031, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -2619,12 +1439,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_Privacy_2" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_Privacy_2" Text="Do not allow apps to use advertising ID" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_Privacy_1032" Uid="1032" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_Privacy_32" Uid="32" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_2, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_1032, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -2638,12 +1458,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_Privacy_3" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_Privacy_3" Text="Do not use sign-in info to automatically finish setting up device after an update or restart" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_Privacy_1033" Uid="1033" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_Privacy_33" Uid="33" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_3, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_1033, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -2657,12 +1477,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_Privacy_4" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_Privacy_4" Text="Do not let websites provide locally relevant content by accessing language list" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_Privacy_1034" Uid="1034" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_Privacy_34" Uid="34" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_4, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_1034, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -2676,12 +1496,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_Privacy_5" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_Privacy_5" Text="Turn on tip, trick, and suggestions as you use Windows" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_Privacy_1035" Uid="1035" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_Privacy_35" Uid="35" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_5, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_1035, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -2695,12 +1515,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_Privacy_6" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_Privacy_6" Text="Turn off app suggestions on Start menu" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_Privacy_1036" Uid="1036" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_Privacy_36" Uid="36" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_6, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_1036, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -2714,12 +1534,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_Privacy_7" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_Privacy_7" Text="Turn off suggested content in the Settings" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_Privacy_1037" Uid="1037" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_Privacy_37" Uid="37" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_7, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_1037, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -2733,12 +1553,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_Privacy_8" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_Privacy_8" Text="Turn off automatic installing suggested apps" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_Privacy_1038" Uid="1038" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_Privacy_38" Uid="38" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_8, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_1038, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -2752,12 +1572,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_Privacy_9" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_Privacy_9" Text="Turn off app launch tracking to improve Start menu and search results" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_Privacy_1039" Uid="1039" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_Privacy_39" Uid="39" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_9, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_1039, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -2771,12 +1591,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_Privacy_10" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_Privacy_10" Text="Turn off the Autologger session at the next computer restart" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_Privacy_1040" Uid="1040" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_Privacy_40" Uid="40" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_10, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_1040, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -2790,12 +1610,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_Privacy_11" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_Privacy_11" Text="Turn off the SQMLogger session at the next computer restart" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_Privacy_1041" Uid="1041" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_Privacy_41" Uid="41" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_11, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_1041, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -2809,12 +1629,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_Privacy_12" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_Privacy_12" Text="Set the operating system diagnostic data level to &quot;Basic&quot;" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_Privacy_1042" Uid="1042" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_Privacy_42" Uid="42" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_12, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_1042, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -2828,12 +1648,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_Privacy_13" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_Privacy_13" Text="Turn off Windows Error Reporting" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_Privacy_1043" Uid="1043" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_Privacy_43" Uid="43" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_13, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_1043, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -2847,12 +1667,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_Privacy_14" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_Privacy_14" Text="Change Windows Feedback frequency to &quot;Never&quot;" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_Privacy_1044" Uid="1044" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_Privacy_44" Uid="44" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_14, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_1044, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -2866,12 +1686,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_Privacy_15" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_Privacy_15" Text="Turn off diagnostics tracking scheduled tasks" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_Privacy_1045" Uid="1045" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_Privacy_45" Uid="45" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_15, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_1045, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -2885,12 +1705,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_Privacy_16" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_Privacy_16" Text="Do not offer tailored experiences based on the diagnostic data setting" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_Privacy_1046" Uid="1046" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_Privacy_46" Uid="46" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_16, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_1046, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -2901,39 +1721,21 @@ for ($i=0;$i -lt $Category.Count;$i++)
                             </DockPanel>
                         </Border>
 
-                        <Border Style="{StaticResource ToggleBorder}">
-                            <DockPanel Margin="0 10 0 10">
-                                <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_Privacy_17" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_Privacy_17" Text="Do not let apps on other devices open and message apps on this device, and vice versa" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
-                                        <TextBlock.Style>
-                                            <Style TargetType="{x:Type TextBlock}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Privacy_17, Path=IsChecked}" Value="True">
-                                                        <Setter Property="Foreground" Value="#3F51B5"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </Grid>
-                            </DockPanel>
-                        </Border>
                     </StackPanel>
                     <!--#endregion Privacy Toggles-->
 
                     <!--#region UI Toggles-->
-                    <StackPanel Name="PanelToggle_Ui" Style="{StaticResource PanelToggle}" Visibility="Collapsed">
+                    <StackPanel Name="PanelToggle_UI" Visibility="Collapsed">
 
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_0" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_0" Text="Set File Explorer to open to This PC by default" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1099" Uid="1099" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_99" Uid="99" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_0, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1099, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -2947,12 +1749,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_1" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_1" Text="Show Hidden Files, Folders, and Drives" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1100" Uid="1100" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_100" Uid="100" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1100, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -2966,12 +1768,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_2" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_2" Text="Remove 3D Objects folder in &quot;This PC&quot; and in the navigation pane" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1101" Uid="1101" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_101" Uid="101" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_2, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1101, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -2985,12 +1787,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_3" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_3" Text="Hide &quot;Frequent folders&quot; in Quick access" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1102" Uid="1102" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_102" Uid="102" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_3, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1102, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3004,12 +1806,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_4" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_4" Text="Hide &quot;Recent files&quot; in Quick access" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1103" Uid="1103" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_103" Uid="103" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_4, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1103, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3023,12 +1825,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_5" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_5" Text="Turn on acrylic taskbar transparency" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1104" Uid="1104" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_104" Uid="104" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_5, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1104, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3042,12 +1844,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_6" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_6" Text="Show &quot;This PC&quot; on Desktop" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1105" Uid="1105" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_105" Uid="105" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_6, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1105, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3061,12 +1863,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_7" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_7" Text="Show more details in file transfer dialog" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1106" Uid="1106" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_106" Uid="106" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_7, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1106, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3080,12 +1882,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_8" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_8" Text="Remove the &quot;Previous Versions&quot; tab from properties context menu" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1107" Uid="1107" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_107" Uid="107" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_8, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1107, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3099,12 +1901,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_9" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_9" Text="Always show all icons in the notification area" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1108" Uid="1108" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_108" Uid="108" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_9, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1108, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3118,12 +1920,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_10" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_10" Text="Set the Control Panel view by large icons" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1109" Uid="1109" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_109" Uid="109" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_10, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1109, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3137,12 +1939,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_11" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_11" Text="Hide &quot;Windows Ink Workspace&quot; button in taskbar" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1110" Uid="1110" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_110" Uid="110" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_11, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1110, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3156,12 +1958,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_12" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_12" Text="Show File Name Extensions" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1111" Uid="1111" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_111" Uid="111" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_12, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1111, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3175,12 +1977,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_13" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_13" Text="Hide search box or search icon on taskbar" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1112" Uid="1112" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_112" Uid="112" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_13, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1112, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3194,12 +1996,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_14" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_14" Text="Turn on recycle bin files delete confirmation" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1113" Uid="1113" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_113" Uid="113" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_14, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1113, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3213,12 +2015,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_15" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_15" Text="Turn on ribbon in File Explorer" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1114" Uid="1114" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_114" Uid="114" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_15, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1114, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3232,12 +2034,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_16" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_16" Text="Choose theme color for default Windows mode" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1115" Uid="1115" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_115" Uid="115" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_16, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1115, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3251,12 +2053,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_17" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_17" Text="Choose theme color for default app mode" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1116" Uid="1116" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_116" Uid="116" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_17, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1116, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3270,12 +2072,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_18" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_18" Text="Turn off &quot;New App Installed&quot; notification" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1117" Uid="1117" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_117" Uid="117" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_18, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1117, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3289,12 +2091,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_19" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_19" Text="Turn off recently added apps on Start menu" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1118" Uid="1118" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_118" Uid="118" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_19, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1118, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3308,12 +2110,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_20" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_20" Text="Turn off user first sign-in animation" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1119" Uid="1119" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_119" Uid="119" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_20, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1119, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3327,12 +2129,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_21" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_21" Text="Turn off JPEG desktop wallpaper import quality reduction" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1120" Uid="1120" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_120" Uid="120" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_21, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1120, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3346,12 +2148,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_22" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_22" Text="Show Task Manager details" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1121" Uid="1121" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_121" Uid="121" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_22, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1121, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3365,12 +2167,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_23" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_23" Text="Hide Task View button on taskbar" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1122" Uid="1122" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_122" Uid="122" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_23, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1122, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3384,12 +2186,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_24" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_24" Text="Unpin Microsoft Edge and Microsoft Store from taskbar" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1123" Uid="1123" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_123" Uid="123" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_24, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1123, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3403,12 +2205,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_25" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_25" Text="Remove Microsoft Edge shortcut from the Desktop" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1124" Uid="1124" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_124" Uid="124" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_25, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1124, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3422,12 +2224,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_26" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_26" Text="Show accent color on the title bars and window borders" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1125" Uid="1125" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_125" Uid="125" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_26, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1125, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3441,12 +2243,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_27" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_27" Text="Turn off automatically hiding scroll bars" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1126" Uid="1126" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_126" Uid="126" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_27, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1126, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3460,12 +2262,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_28" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_28" Text="Save screenshots by pressing Win+PrtScr to the Desktop" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1127" Uid="1127" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_127" Uid="127" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_28, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1127, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3479,12 +2281,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_29" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_29" Text="Show more Windows Update restart notifications about restarting" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1128" Uid="1128" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_128" Uid="128" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_29, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1128, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3498,12 +2300,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_30" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_30" Text="Turn off the &quot;- Shortcut&quot; name extension for new shortcuts" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1129" Uid="1129" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_129" Uid="129" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_30, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1129, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3517,12 +2319,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_31" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_31" Text="Use the PrtScn button to open screen snipping" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1130" Uid="1130" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_130" Uid="130" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_31, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1130, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3536,12 +2338,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_32" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_32" Text="Automatically adjust active hours for me based on daily usage" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1131" Uid="1131" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_131" Uid="131" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_32, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1131, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3555,12 +2357,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_33" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_33" Text="Show folder merge conflicts" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1132" Uid="1132" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_132" Uid="132" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_33, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1132, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3574,12 +2376,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_34" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_34" Text="Turn off Snap Assist" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1133" Uid="1133" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_133" Uid="133" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_34, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1133, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3593,12 +2395,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_35" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_35" Text="Turn off check boxes to select items" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1134" Uid="1134" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_134" Uid="134" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_35, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1134, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3612,12 +2414,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_36" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_36" Text="Show seconds on taskbar clock" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_UI_1135" Uid="1135" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_UI_135" Uid="135" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_36, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_1135, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3628,58 +2430,21 @@ for ($i=0;$i -lt $Category.Count;$i++)
                             </DockPanel>
                         </Border>
 
-                        <Border Style="{StaticResource ToggleBorder}">
-                            <DockPanel Margin="0 10 0 10">
-                                <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_37" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_37" Text="Hide People button on the taskbar" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
-                                        <TextBlock.Style>
-                                            <Style TargetType="{x:Type TextBlock}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_37, Path=IsChecked}" Value="True">
-                                                        <Setter Property="Foreground" Value="#3F51B5"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </Grid>
-                            </DockPanel>
-                        </Border>
-
-                        <Border Style="{StaticResource ToggleBorder}">
-                            <DockPanel Margin="0 10 0 10">
-                                <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UI_38" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UI_38" Text="Hide all folders in the navigation pane" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
-                                        <TextBlock.Style>
-                                            <Style TargetType="{x:Type TextBlock}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UI_38, Path=IsChecked}" Value="True">
-                                                        <Setter Property="Foreground" Value="#3F51B5"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </Grid>
-                            </DockPanel>
-                        </Border>
                     </StackPanel>
                     <!--#endregion UI Toggles-->
 
                     <!--#region OneDrive Toggles-->
-                    <StackPanel Name="PanelToggle_OneDrive" Style="{StaticResource PanelToggle}" Visibility="Collapsed">
+                    <StackPanel Name="PanelToggle_OneDrive" Visibility="Collapsed">
 
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_OneDrive_0" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_OneDrive_0" Text="Uninstall OneDrive" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_OneDrive_1029" Uid="1029" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_OneDrive_29" Uid="29" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_OneDrive_0, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_OneDrive_1029, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3689,21 +2454,22 @@ for ($i=0;$i -lt $Category.Count;$i++)
                                 </Grid>
                             </DockPanel>
                         </Border>
+
                     </StackPanel>
                     <!--#endregion OneDrive Toggles-->
 
                     <!--#region System Toggles-->
-                    <StackPanel Name="PanelToggle_System" Style="{StaticResource PanelToggle}" Visibility="Collapsed">
+                    <StackPanel Name="PanelToggle_System" Visibility="Collapsed">
 
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_0" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_0" Text="Turn on Storage Sense to automatically free up space" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1055" Uid="1055" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_55" Uid="55" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_0, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1055, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3717,12 +2483,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_1" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_1" Text="Run Storage Sense every month" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1056" Uid="1056" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_56" Uid="56" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1056, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3736,12 +2502,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_2" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_2" Text="Remove &quot;%SYSTEMROOT%\Temp&quot;" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1057" Uid="1057" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_57" Uid="57" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_2, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1057, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3755,12 +2521,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_3" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_3" Text="Turn on Win32 long paths" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1058" Uid="1058" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_58" Uid="58" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_3, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1058, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3774,12 +2540,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_4" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_4" Text="Group svchost.exe processes" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1059" Uid="1059" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_59" Uid="59" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_4, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1059, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3793,12 +2559,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_5" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_5" Text="Turn on Retpoline patch against Spectre v2" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1060" Uid="1060" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_60" Uid="60" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_5, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1060, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3812,12 +2578,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_6" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_6" Text="Turn on the display of stop error information on the BSoD" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1061" Uid="1061" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_61" Uid="61" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_6, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1061, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3831,12 +2597,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_7" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_7" Text="Do not preserve zone information" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1062" Uid="1062" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_62" Uid="62" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_7, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1062, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3850,12 +2616,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_8" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_8" Text="Turn off Admin Approval Mode for administrators" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1063" Uid="1063" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_63" Uid="63" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_8, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1063, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3869,12 +2635,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_9" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_9" Text="Turn on access to mapped drives from app running with elevated permissions with" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1064" Uid="1064" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_64" Uid="64" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_9, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1064, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3888,12 +2654,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_10" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_10" Text="Admin Approval Mode enabled" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1065" Uid="1065" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_65" Uid="65" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_10, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1065, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3907,12 +2673,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_11" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_11" Text="Set download mode for delivery optization on &quot;HTTP only&quot;" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1066" Uid="1066" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_66" Uid="66" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_11, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1066, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3926,12 +2692,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_12" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_12" Text="Always wait for the network at computer startup and logon" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1067" Uid="1067" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_67" Uid="67" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_12, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1067, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3945,12 +2711,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_13" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_13" Text="Delete temporary files that apps aren't using" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1068" Uid="1068" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_68" Uid="68" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_13, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1068, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3964,12 +2730,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_14" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_14" Text="Turn off Cortana" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1069" Uid="1069" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_69" Uid="69" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_14, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1069, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -3983,12 +2749,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_15" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_15" Text="Do not allow Windows 10 to manage default printer" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1070" Uid="1070" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_70" Uid="70" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_15, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1070, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4002,12 +2768,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_16" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_16" Text="Turn off Windows features" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1071" Uid="1071" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_71" Uid="71" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_16, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1071, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4021,12 +2787,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_17" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_17" Text="Remove Windows capabilities" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1072" Uid="1072" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_72" Uid="72" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_17, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1072, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4040,12 +2806,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_18" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_18" Text="Turn on updates for other Microsoft products" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1073" Uid="1073" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_73" Uid="73" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_18, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1073, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4059,12 +2825,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_19" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_19" Text="Enable System Restore" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1074" Uid="1074" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_74" Uid="74" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_19, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1074, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4078,12 +2844,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_20" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_20" Text="Turn off Windows Script Host" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1075" Uid="1075" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_75" Uid="75" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_20, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1075, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4097,12 +2863,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_21" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_21" Text="Turn off default background apps except" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1076" Uid="1076" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_76" Uid="76" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_21, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1076, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4116,12 +2882,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_22" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_22" Text="Set power management scheme for desktop and laptop" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1077" Uid="1077" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_77" Uid="77" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_22, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1077, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4135,12 +2901,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_23" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_23" Text="Turn on .NET 4 runtime for all apps" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1078" Uid="1078" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_78" Uid="78" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_23, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1078, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4154,12 +2920,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_24" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_24" Text="Delete files in recycle bin if they have been there for over 30 days" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1079" Uid="1079" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_79" Uid="79" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_24, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1079, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4173,12 +2939,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_25" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_25" Text="Turn on firewall  network protection" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1080" Uid="1080" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_80" Uid="80" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_25, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1080, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4192,12 +2958,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_26" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_26" Text="Do not allow the computer to turn off the device to save power for desktop" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1081" Uid="1081" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_81" Uid="81" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_26, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1081, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4211,12 +2977,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_27" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_27" Text="Set the default input method to the English language" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1082" Uid="1082" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_82" Uid="82" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_27, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1082, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4230,12 +2996,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_28" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_28" Text="Turn on Windows Sandbox" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1083" Uid="1083" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_83" Uid="83" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_28, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1083, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4249,12 +3015,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_29" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_29" Text="Set location of the &quot;Desktop&quot;, &quot;Documents&quot; &quot;Downloads&quot; &quot;Music&quot;, &quot;Pictures&quot;, and &quot;Videos&quot;" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1084" Uid="1084" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_84" Uid="84" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_29, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1084, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4268,12 +3034,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_30" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_30" Text="Turn on automatic recommended troubleshooting and tell when problems get fixed" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1085" Uid="1085" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_85" Uid="85" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_30, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1085, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4287,12 +3053,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_31" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_31" Text="Set &quot;High performance&quot; in graphics performance preference for apps" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1086" Uid="1086" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_86" Uid="86" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_31, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1086, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4306,12 +3072,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_32" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_32" Text="Launch folder in a separate process" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1087" Uid="1087" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_87" Uid="87" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_32, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1087, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4325,12 +3091,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_33" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_33" Text="Turn off and delete reserved storage after the next update installation" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1088" Uid="1088" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_88" Uid="88" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_33, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1088, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4344,12 +3110,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_34" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_34" Text="Turn on automatic backup the system registry to the &quot;%SystemRoot%\System32\Config\RegBack&quot; folder" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1089" Uid="1089" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_89" Uid="89" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_34, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1089, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4363,12 +3129,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_35" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_35" Text="Never delete files in &quot;Downloads&quot; folder" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1090" Uid="1090" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_90" Uid="90" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_35, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1090, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4382,12 +3148,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_36" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_36" Text="Turn off &quot;The Windows Filtering Platform has blocked a connection&quot; message" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1091" Uid="1091" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_91" Uid="91" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_36, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1091, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4401,12 +3167,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_37" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_37" Text="Turn off SmartScreen for apps and files" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1092" Uid="1092" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_92" Uid="92" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_37, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1092, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4420,12 +3186,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_38" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_38" Text="Turn off F1 Help key" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1093" Uid="1093" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_93" Uid="93" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_38, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1093, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4439,12 +3205,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_39" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_39" Text="Turn on Num Lock at startup" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1094" Uid="1094" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_94" Uid="94" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_39, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1094, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4458,12 +3224,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_40" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_40" Text="Turn off sticky Shift key after pressing 5 times" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1095" Uid="1095" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_95" Uid="95" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_40, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1095, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4477,12 +3243,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_41" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_41" Text="Turn off AutoPlay for all media and devices" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1096" Uid="1096" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_96" Uid="96" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_41, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1096, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4496,12 +3262,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_42" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_42" Text="Turn off creation of an Edge shortcut on the desktop for each user profile" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1097" Uid="1097" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_97" Uid="97" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_42, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1097, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4515,12 +3281,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_43" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_43" Text="Turn off thumbnail cache removal" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_System_1098" Uid="1098" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_System_98" Uid="98" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_43, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_1098, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4531,134 +3297,21 @@ for ($i=0;$i -lt $Category.Count;$i++)
                             </DockPanel>
                         </Border>
 
-                        <Border Style="{StaticResource ToggleBorder}">
-                            <DockPanel Margin="0 10 0 10">
-                                <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_44" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_44" Text="Turn On automatically save my restartable apps when sign out and restart them after sign in" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
-                                        <TextBlock.Style>
-                                            <Style TargetType="{x:Type TextBlock}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_44, Path=IsChecked}" Value="True">
-                                                        <Setter Property="Foreground" Value="#3F51B5"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </Grid>
-                            </DockPanel>
-                        </Border>
-
-                        <Border Style="{StaticResource ToggleBorder}">
-                            <DockPanel Margin="0 10 0 10">
-                                <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_45" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_45" Text="Let Windows try to fix apps so they're not blurry" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
-                                        <TextBlock.Style>
-                                            <Style TargetType="{x:Type TextBlock}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_45, Path=IsChecked}" Value="True">
-                                                        <Setter Property="Foreground" Value="#3F51B5"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </Grid>
-                            </DockPanel>
-                        </Border>
-
-                        <Border Style="{StaticResource ToggleBorder}">
-                            <DockPanel Margin="0 10 0 10">
-                                <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_46" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_46" Text="Turn off hibernate" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
-                                        <TextBlock.Style>
-                                            <Style TargetType="{x:Type TextBlock}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_46, Path=IsChecked}" Value="True">
-                                                        <Setter Property="Foreground" Value="#3F51B5"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </Grid>
-                            </DockPanel>
-                        </Border>
-
-                        <Border Style="{StaticResource ToggleBorder}">
-                            <DockPanel Margin="0 10 0 10">
-                                <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_47" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_47" Text="Turn off location for this device" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
-                                        <TextBlock.Style>
-                                            <Style TargetType="{x:Type TextBlock}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_47, Path=IsChecked}" Value="True">
-                                                        <Setter Property="Foreground" Value="#3F51B5"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </Grid>
-                            </DockPanel>
-                        </Border>
-
-                        <Border Style="{StaticResource ToggleBorder}">
-                            <DockPanel Margin="0 10 0 10">
-                                <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_48" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_48" Text="Change environment variable for &quot;%TEMP%&quot; to &quot;%SystemDrive%\Temp&quot;" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
-                                        <TextBlock.Style>
-                                            <Style TargetType="{x:Type TextBlock}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_48, Path=IsChecked}" Value="True">
-                                                        <Setter Property="Foreground" Value="#3F51B5"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </Grid>
-                            </DockPanel>
-                        </Border>
-
-                        <Border Style="{StaticResource ToggleBorder}">
-                            <DockPanel Margin="0 10 0 10">
-                                <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_System_49" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_System_49" Text="Remove &quot;%LOCALAPPDATA%\Temp&quot;" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
-                                        <TextBlock.Style>
-                                            <Style TargetType="{x:Type TextBlock}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_System_49, Path=IsChecked}" Value="True">
-                                                        <Setter Property="Foreground" Value="#3F51B5"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </Grid>
-                            </DockPanel>
-                        </Border>
                     </StackPanel>
                     <!--#endregion System Toggles-->
 
                     <!--#region StartMenu Toggles-->
-                    <StackPanel Name="PanelToggle_StartMenu" Style="{StaticResource PanelToggle}" Visibility="Collapsed">
+                    <StackPanel Name="PanelToggle_StartMenu" Visibility="Collapsed">
 
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_StartMenu_0" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_StartMenu_0" Text="Open shortcut to the Command Prompt from Start menu as Administrator" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_StartMenu_1050" Uid="1050" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_StartMenu_50" Uid="50" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_StartMenu_0, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_StartMenu_1050, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4672,12 +3325,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_StartMenu_1" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_StartMenu_1" Text="Create old style shortcut for &quot;Devices and Printers&quot; in &quot;%APPDATA%\Microsoft\Windows\Start menu\Programs\System Tools&quot;" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_StartMenu_1051" Uid="1051" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_StartMenu_51" Uid="51" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_StartMenu_1, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_StartMenu_1051, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4691,12 +3344,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_StartMenu_2" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_StartMenu_2" Text="Import Start menu layout from pre-saved reg file" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_StartMenu_1052" Uid="1052" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_StartMenu_52" Uid="52" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_StartMenu_2, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_StartMenu_1052, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4706,21 +3359,60 @@ for ($i=0;$i -lt $Category.Count;$i++)
                                 </Grid>
                             </DockPanel>
                         </Border>
+
+                        <Border Style="{StaticResource ToggleBorder}">
+                            <DockPanel Margin="0 10 0 10">
+                                <Grid HorizontalAlignment="Left">
+                                    <ToggleButton Name="Toggle_StartMenu_1053" Uid="1053" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_StartMenu_53" Uid="53" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_StartMenu_1053, Path=IsChecked}" Value="True">
+                                                        <Setter Property="Foreground" Value="#3F51B5"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Grid>
+                            </DockPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource ToggleBorder}">
+                            <DockPanel Margin="0 10 0 10">
+                                <Grid HorizontalAlignment="Left">
+                                    <ToggleButton Name="Toggle_StartMenu_1054" Uid="1054" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_StartMenu_54" Uid="54" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_StartMenu_1054, Path=IsChecked}" Value="True">
+                                                        <Setter Property="Foreground" Value="#3F51B5"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Grid>
+                            </DockPanel>
+                        </Border>
+
                     </StackPanel>
                     <!--#endregion StartMenu Toggles-->
 
                     <!--#region Edge Toggles-->
-                    <StackPanel Name="PanelToggle_Edge" Style="{StaticResource PanelToggle}" Visibility="Collapsed">
+                    <StackPanel Name="PanelToggle_Edge" Visibility="Collapsed">
 
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_Edge_0" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_Edge_0" Text="Turn off Windows Defender SmartScreen for Microsoft Edge" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_Edge_1017" Uid="1017" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_Edge_17" Uid="17" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Edge_0, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Edge_1017, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4734,12 +3426,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_Edge_1" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_Edge_1" Text="Do not allow Microsoft Edge to start and load the Start and New Tab page at Windows startup and each time Microsoft Edge is closed" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_Edge_1018" Uid="1018" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_Edge_18" Uid="18" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Edge_1, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Edge_1018, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4753,12 +3445,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_Edge_2" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_Edge_2" Text="Do not allow Microsoft Edge to pre-launch at Windows startup, when the system is idle, and each time Microsoft Edge is closed" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_Edge_1019" Uid="1019" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_Edge_19" Uid="19" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Edge_2, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Edge_1019, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4768,64 +3460,47 @@ for ($i=0;$i -lt $Category.Count;$i++)
                                 </Grid>
                             </DockPanel>
                         </Border>
+
+                        <Border Style="{StaticResource ToggleBorder}">
+                            <DockPanel Margin="0 10 0 10">
+                                <Grid HorizontalAlignment="Left">
+                                    <ToggleButton Name="Toggle_Edge_1020" Uid="1020" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_Edge_20" Uid="20" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_Edge_1020, Path=IsChecked}" Value="True">
+                                                        <Setter Property="Foreground" Value="#3F51B5"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Grid>
+                            </DockPanel>
+                        </Border>
+                        
                     </StackPanel>
                     <!--#endregion Edge Toggles-->
 
                     <!--#region UWP Apps Toggles-->
-                    <StackPanel Name="PanelToggle_Uwp" Style="{StaticResource PanelToggle}" Visibility="Collapsed">
+                    <StackPanel Name="PanelToggle_UwpApps" Visibility="Collapsed">                      
 
-                        <Border Style="{StaticResource ToggleBorder}">
-                            <DockPanel Margin="0 10 0 10">
-                                <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UWPApps_0" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UWPApps_0" Text="Uninstall all UWP apps from all accounts except" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
-                                        <TextBlock.Style>
-                                            <Style TargetType="{x:Type TextBlock}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UWPApps_0, Path=IsChecked}" Value="True">
-                                                        <Setter Property="Foreground" Value="#3F51B5"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </Grid>
-                            </DockPanel>
-                        </Border>
-
-                        <Border Style="{StaticResource ToggleBorder}">
-                            <DockPanel Margin="0 10 0 10">
-                                <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_UWPApps_1" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_UWPApps_1" Text="Uninstall all provisioned UWP apps from all accounts except" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
-                                        <TextBlock.Style>
-                                            <Style TargetType="{x:Type TextBlock}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_UWPApps_1, Path=IsChecked}" Value="True">
-                                                        <Setter Property="Foreground" Value="#3F51B5"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </Grid>
-                            </DockPanel>
-                        </Border>
                     </StackPanel>
                     <!--#endregion UWPApps Toggles-->
 
                     <!--#region Windows Game Recording Toggles-->
-                    <StackPanel Name="PanelToggle_Game" Style="{StaticResource PanelToggle}" Visibility="Collapsed">
+                    <StackPanel Name="PanelToggle_WindowsGameRecording" Visibility="Collapsed">
 
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_WindowsGameRecording_0" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_WindowsGameRecording_0" Text="Turn off Windows Game Recording and Broadcasting" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_WindowsGameRecording_1136" Uid="1136" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_WindowsGameRecording_136" Uid="136" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_WindowsGameRecording_0, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_WindowsGameRecording_1136, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4839,12 +3514,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_WindowsGameRecording_1" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_WindowsGameRecording_1" Text="Turn off Game Bar" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_WindowsGameRecording_1137" Uid="1137" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_WindowsGameRecording_137" Uid="137" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_WindowsGameRecording_1, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_WindowsGameRecording_1137, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4858,12 +3533,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_WindowsGameRecording_2" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_WindowsGameRecording_2" Text="Turn off Game Mode" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_WindowsGameRecording_1138" Uid="1138" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_WindowsGameRecording_138" Uid="138" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_WindowsGameRecording_2, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_WindowsGameRecording_1138, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4877,12 +3552,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_WindowsGameRecording_3" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_WindowsGameRecording_3" Text="Turn off Game Bar tips" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_WindowsGameRecording_1139" Uid="1139" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_WindowsGameRecording_139" Uid="139" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_WindowsGameRecording_3, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_WindowsGameRecording_1139, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4892,21 +3567,22 @@ for ($i=0;$i -lt $Category.Count;$i++)
                                 </Grid>
                             </DockPanel>
                         </Border>
+
                     </StackPanel>
                     <!--#endregion WindowsGameRecording Toggles-->
 
                     <!--#region Scheduled Tasks Toggles-->
-                    <StackPanel Name="PanelToggle_Tasks" Style="{StaticResource PanelToggle}" Visibility="Collapsed">
+                    <StackPanel Name="PanelToggle_ScheduledTasks" Visibility="Collapsed">
 
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_ScheduledTasks_0" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_ScheduledTasks_0" Text="Create a task in the Task Scheduler to start Windows cleaning up. The task runs every 90 days" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_ScheduledTasks_1047" Uid="1047" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_ScheduledTasks_47" Uid="47" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ScheduledTasks_0, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ScheduledTasks_1047, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4920,12 +3596,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_ScheduledTasks_1" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_ScheduledTasks_1" Text="Create a task in the Task Scheduler to clear the &quot;%SystemRoot%\SoftwareDistribution\Download&quot; folder. The task runs on Thursdays every 4 weeks" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_ScheduledTasks_1048" Uid="1048" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_ScheduledTasks_48" Uid="48" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ScheduledTasks_1, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ScheduledTasks_1048, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4939,12 +3615,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_ScheduledTasks_2" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_ScheduledTasks_2" Text="Create a task in the Task Scheduler to clear the &quot;%TEMP%&quot; folder. The task runs every 62 days" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_ScheduledTasks_1049" Uid="1049" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_ScheduledTasks_49" Uid="49" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ScheduledTasks_2, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ScheduledTasks_1049, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4954,21 +3630,22 @@ for ($i=0;$i -lt $Category.Count;$i++)
                                 </Grid>
                             </DockPanel>
                         </Border>
+
                     </StackPanel>
                     <!--#endregion ScheduledTasks Toggles-->
 
                     <!--#region Microsoft Defender Toggles-->
-                    <StackPanel Name="PanelToggle_Defender" Style="{StaticResource PanelToggle}" Visibility="Collapsed">
+                    <StackPanel Name="PanelToggle_MicrosoftDefender" Visibility="Collapsed">
 
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_MicrosoftDefender_0" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_MicrosoftDefender_0" Text="Add folder to exclude from Windows Defender Antivirus scan" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_MicrosoftDefender_1021" Uid="1021" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_MicrosoftDefender_21" Uid="21" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_MicrosoftDefender_0, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_MicrosoftDefender_1021, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -4982,12 +3659,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_MicrosoftDefender_1" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_MicrosoftDefender_1" Text="Turn on Controlled folder access and add protected folders" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_MicrosoftDefender_1022" Uid="1022" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_MicrosoftDefender_22" Uid="22" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_MicrosoftDefender_1, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_MicrosoftDefender_1022, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -5001,12 +3678,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_MicrosoftDefender_2" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_MicrosoftDefender_2" Text="Allow an app through Controlled folder access" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_MicrosoftDefender_1023" Uid="1023" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_MicrosoftDefender_23" Uid="23" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_MicrosoftDefender_2, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_MicrosoftDefender_1023, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -5020,12 +3697,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_MicrosoftDefender_3" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_MicrosoftDefender_3" Text="Turn on Windows Defender Exploit Guard Network Protection" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_MicrosoftDefender_1024" Uid="1024" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_MicrosoftDefender_24" Uid="24" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_MicrosoftDefender_3, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_MicrosoftDefender_1024, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -5039,12 +3716,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_MicrosoftDefender_4" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_MicrosoftDefender_4" Text="Turn on Windows Defender PUA Protection" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_MicrosoftDefender_1025" Uid="1025" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_MicrosoftDefender_25" Uid="25" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_MicrosoftDefender_4, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_MicrosoftDefender_1025, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -5058,12 +3735,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_MicrosoftDefender_5" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_MicrosoftDefender_5" Text="Turn on Windows Defender Sandbox" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_MicrosoftDefender_1026" Uid="1026" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_MicrosoftDefender_26" Uid="26" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_MicrosoftDefender_5, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_MicrosoftDefender_1026, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -5077,12 +3754,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_MicrosoftDefender_6" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_MicrosoftDefender_6" Text="Hide notification about sign in with Microsoft in the Windows Security" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_MicrosoftDefender_1027" Uid="1027" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_MicrosoftDefender_27" Uid="27" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_MicrosoftDefender_6, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_MicrosoftDefender_1027, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -5096,12 +3773,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_MicrosoftDefender_7" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_MicrosoftDefender_7" Text="Hide notification about disabled Smartscreen for Microsoft Edge" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_MicrosoftDefender_1028" Uid="1028" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_MicrosoftDefender_28" Uid="28" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_MicrosoftDefender_7, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_MicrosoftDefender_1028, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -5111,21 +3788,22 @@ for ($i=0;$i -lt $Category.Count;$i++)
                                 </Grid>
                             </DockPanel>
                         </Border>
+
                     </StackPanel>
                     <!--#endregion MicrosoftDefender Toggles-->
 
                     <!--#region Context Menu Toggles-->
-                    <StackPanel Name="PanelToggle_ContextMenu" Style="{StaticResource PanelToggle}" Visibility="Collapsed">
-
+                    <StackPanel Name="PanelToggle_ContextMenu" Visibility="Collapsed">
+                        
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_ContextMenu_0" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_ContextMenu_0" Text="Add &quot;Extract&quot; to MSI file type context menu" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_ContextMenu_1000" Uid="1000" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_ContextMenu_0" Uid="0" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_0, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_1000, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -5139,12 +3817,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_ContextMenu_1" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_ContextMenu_1" Text="Add &quot;Run as different user&quot; from context menu for .exe file type" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_ContextMenu_1001" Uid="1001" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_ContextMenu_1" Uid="1" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_1, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_1001, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -5158,12 +3836,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_ContextMenu_2" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_ContextMenu_2" Text="Remove &quot;Create a new video&quot; from Context Menu" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_ContextMenu_1002" Uid="1002" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_ContextMenu_2" Uid="2" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_2, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_1002, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -5177,12 +3855,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_ContextMenu_3" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_ContextMenu_3" Text="Remove &quot;Edit&quot; from Context Menu" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_ContextMenu_1003" Uid="1003" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_ContextMenu_3" Uid="3" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_3, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_1003, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -5196,12 +3874,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_ContextMenu_4" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_ContextMenu_4" Text="Remove &quot;Print&quot; from batch and cmd files context menu" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_ContextMenu_1004" Uid="1004" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_ContextMenu_4" Uid="4" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_4, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_1004, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -5215,12 +3893,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_ContextMenu_5" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_ContextMenu_5" Text="Remove &quot;Compressed (zipped) Folder&quot; from context menu" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_ContextMenu_1005" Uid="1005" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_ContextMenu_5" Uid="5" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_5, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_1005, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -5234,12 +3912,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_ContextMenu_6" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_ContextMenu_6" Text="Remove &quot;Rich Text Document&quot; from context menu" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_ContextMenu_1006" Uid="1006" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_ContextMenu_6" Uid="6" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_6, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_1006, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -5253,12 +3931,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_ContextMenu_7" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_ContextMenu_7" Text="Remove &quot;Bitmap image&quot; from context menu" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_ContextMenu_1007" Uid="1007" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_ContextMenu_7" Uid="7" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_7, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_1007, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -5272,12 +3950,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_ContextMenu_8" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_ContextMenu_8" Text="Remove &quot;Send to&quot; from folder context menu" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_ContextMenu_1008" Uid="1008" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_ContextMenu_8" Uid="8" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_8, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_1008, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -5291,12 +3969,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_ContextMenu_9" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_ContextMenu_9" Text="Make the &quot;Open&quot;, &quot;Print&quot;, &quot;Edit&quot; context menu items available, when more than 15 selected" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_ContextMenu_1009" Uid="1009" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_ContextMenu_9" Uid="9" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_9, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_1009, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -5310,12 +3988,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_ContextMenu_10" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_ContextMenu_10" Text="Turn off &quot;Look for an app in the Microsoft Store&quot; in &quot;Open with&quot; dialog" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_ContextMenu_1010" Uid="1010" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_ContextMenu_10" Uid="10" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_10, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_1010, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -5329,12 +4007,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_ContextMenu_11" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_ContextMenu_11" Text="Add &quot;Install&quot; to CAB file type context menu" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_ContextMenu_1011" Uid="1011" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_ContextMenu_11" Uid="11" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_11, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_1011, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -5348,12 +4026,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_ContextMenu_12" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_ContextMenu_12" Text="Remove &quot;Cast to Device&quot; from context menu" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_ContextMenu_1012" Uid="1012" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_ContextMenu_12" Uid="12" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_12, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_1012, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -5367,12 +4045,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_ContextMenu_13" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_ContextMenu_13" Text="Remove &quot;Share&quot; from context menu" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_ContextMenu_1013" Uid="1013" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_ContextMenu_13" Uid="13" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_13, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_1013, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -5386,12 +4064,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_ContextMenu_14" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_ContextMenu_14" Text="Remove &quot;Previous Versions&quot; from file context menu" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_ContextMenu_1014" Uid="1014" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_ContextMenu_14" Uid="14" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_14, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_1014, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -5405,12 +4083,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_ContextMenu_15" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_ContextMenu_15" Text="Remove &quot;Edit with Paint 3D&quot; from context menu" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_ContextMenu_1015" Uid="1015" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_ContextMenu_15" Uid="15" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_15, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_1015, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -5424,50 +4102,12 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         <Border Style="{StaticResource ToggleBorder}">
                             <DockPanel Margin="0 10 0 10">
                                 <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_ContextMenu_16" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_ContextMenu_16" Text="Remove &quot;Include in Library&quot; from context menu" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+                                    <ToggleButton Name="Toggle_ContextMenu_1016" Uid="1016" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
+                                    <TextBlock Name="Text_ContextMenu_16" Uid="16" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_16, Path=IsChecked}" Value="True">
-                                                        <Setter Property="Foreground" Value="#3F51B5"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </Grid>
-                            </DockPanel>
-                        </Border>
-
-                        <Border Style="{StaticResource ToggleBorder}">
-                            <DockPanel Margin="0 10 0 10">
-                                <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_ContextMenu_17" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_ContextMenu_17" Text="Remove &quot;Turn on BitLocker&quot; from context menu" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
-                                        <TextBlock.Style>
-                                            <Style TargetType="{x:Type TextBlock}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_17, Path=IsChecked}" Value="True">
-                                                        <Setter Property="Foreground" Value="#3F51B5"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </Grid>
-                            </DockPanel>
-                        </Border>
-
-                        <Border Style="{StaticResource ToggleBorder}">
-                            <DockPanel Margin="0 10 0 10">
-                                <Grid HorizontalAlignment="Left">
-                                    <ToggleButton Name="Toggle_ContextMenu_18" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-                                    <TextBlock Name="TextToggle_ContextMenu_18" Text="Remove &quot;Edit with Photos&quot; from context menu" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
-                                        <TextBlock.Style>
-                                            <Style TargetType="{x:Type TextBlock}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_18, Path=IsChecked}" Value="True">
+                                                    <DataTrigger Binding="{Binding ElementName=Toggle_ContextMenu_1016, Path=IsChecked}" Value="True">
                                                         <Setter Property="Foreground" Value="#3F51B5"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -5479,15 +4119,18 @@ for ($i=0;$i -lt $Category.Count;$i++)
                         </Border>
                     </StackPanel>
                     <!--#endregion ContextMenu Toggles-->
-                    
+
                 </StackPanel>
             </ScrollViewer>
             <!--#endregion Toggle Buttons-->
+
         </Grid>
         <!--#endregion Body Panel-->
     </Grid>
 </Window>
-'@
+"@
+
+#endregion Xaml Markup
 
 $xamlGui = [System.Windows.Markup.XamlReader]::Load((New-Object System.Xml.XmlNodeReader $xamlMarkup))
 $xamlMarkup.SelectNodes('//*[@Name]') | ForEach-Object {
@@ -5578,27 +4221,28 @@ function Click-HamburgerButton {
     param
 	(
 		[Parameter(Mandatory=$true)]
-		$ShowPanel,
+		$Panel,
 		
 		[Parameter(Mandatory=$true)]
-		[string]$SetHeader
+		[string]$Header
 	)
 	
-	$PanelToggle_ContextMenu, $PanelToggle_Defender, $PanelToggle_Edge, $PanelToggle_Game, 
-	$PanelToggle_OneDrive, 	$PanelToggle_Privacy, $PanelToggle_StartMenu, $PanelToggle_System, 
-	$PanelToggle_Tasks, $PanelToggle_Ui, $PanelToggle_Uwp | ForEach-Object {
-		if (($_.Name -eq $ShowPanel.Name) -and ($_.Visibility -eq "Collapsed"))
+	$PanelToggle_ContextMenu, $PanelToggle_Edge, $PanelToggle_MicrosoftDefender, $PanelToggle_OneDrive,
+	$PanelToggle_Privacy, $PanelToggle_ScheduledTasks, $PanelToggle_StartMenu, $PanelToggle_System,
+	$PanelToggle_UI, $PanelToggle_UwpApps, $PanelToggle_WindowsGameRecording | ForEach-Object {
+		
+		if (($_.Name -eq $Panel.Name) -and ($_.Visibility -eq "Collapsed"))
 		{
 			$_.Visibility = "Visible"
 		}
 		
-		elseif (($_.Name -ne $ShowPanel.Name) -and ($_.Visibility -eq "Visible"))
+		elseif (($_.Name -ne $Panel.Name) -and ($_.Visibility -eq "Visible"))
 		{
 			$_.Visibility = "Collapsed"
 		}	
 	}	
 	
-	$TextBlock_Category.Text = $SetHeader
+	$TextBlock_Category.Text = $Header
 }
 
 function Click-ToggleButton {
@@ -5611,15 +4255,15 @@ function Click-ToggleButton {
     param
 	(
 		[Parameter(Mandatory=$false)]		
-		[switch]$Check
-	)
-		
-	if ($Check)
+		[switch]$IsChecked
+	)	
+	
+	if ($IsChecked)
 	{		
 		$Global:clickedToggle++
 	}
 	
-	elseif (!$Check)
+	elseif (!$IsChecked)
 	{		
 		$Global:clickedToggle--
 	}
@@ -5640,21 +4284,62 @@ function Click-ToggleButton {
 function Set-Language {
 	<#
     .SYNOPSIS
-    Click event if "Change Language" button and change Toogle TextBlock text to Russian
+    Change Language button click event
+    #>
+
+    [CmdletBinding()]
+    param 
+	(
+		[Parameter(Mandatory=$false)]		
+		[switch]$Change
+	)
+	
+	(Get-Variable -Name "Text_*").Name | ForEach-Object {
+		$textToggle = $Window.FindName($_)
+			
+		if ($Change)
+		{
+			if ($RU)
+			{
+				$textToggle.Text = $TextEng[$textToggle.Uid]
+			}
+				
+			else
+			{
+				$textToggle.Text = $TextRu[$textToggle.Uid]
+			}			
+		}
+			
+		else
+		{
+			if ($RU)
+			{
+				$textToggle.Text = $TextRu[$textToggle.Uid]
+			}
+			
+			else
+			{
+				$textToggle.Text = $TextEng[$textToggle.Uid]
+			}
+		}			
+	}
+	
+	if ($Change)
+	{
+		$Global:RU = !$RU
+	}
+}
+
+function Follow-OnGitHub {
+	<#
+    .SYNOPSIS
+    Open Farag2 GitHub in Default Browser
     #>
 
     [CmdletBinding()]
     param ()
 	
-	(Get-Variable -Name "TextToggle_*").Name | ForEach-Object {
-		$toggle = $Window.FindName($_)
-		$split = $_.Split("_")
-		$name = "TextRu_{0}"-f $split[1]
-		$text = Get-Variable -Name $name
-		$counter = $split[2]		
-		$toggle.Text = $text.Value[$counter]
-		$ButtonChangeLanguage.Visibility = "Hidden"
-		}
+	Start-Process -FilePath "explorer.exe" -ArgumentList $gitHub
 }
 
 #endregion
@@ -5675,70 +4360,73 @@ $ButtonHamburger.Add_MouseLeave({
 })
 
 $ButtonChangeLanguage.Add_MouseLeftButtonDown({
-	Set-Language
+	Set-Language -Change
 })
 
-#endregion
-
-#region Add Click Event to Hamburger Category Buttons
+$ButtonGitHub.Add_MouseLeftButtonDown({
+	Follow-OnGitHub
+})
 
 $Button_ContextMenu.Add_MouseLeftButtonDown({
-		Click-HamburgerButton -ShowPanel $PanelToggle_ContextMenu -SetHeader "Context Menu"
+		Click-HamburgerButton -Panel $PanelToggle_ContextMenu -Header "Context Menu"
 	})
 	
 $Button_Defender.Add_MouseLeftButtonDown({
-		Click-HamburgerButton -ShowPanel $PanelToggle_Defender -SetHeader "Microsoft Defender"
+		Click-HamburgerButton -Panel $PanelToggle_MicrosoftDefender -Header "Microsoft Defender"
 	})
 	
 $Button_Edge.Add_MouseLeftButtonDown({
-		Click-HamburgerButton -ShowPanel $PanelToggle_Edge -SetHeader "Microsoft Edge"
+		Click-HamburgerButton -Panel $PanelToggle_Edge -Header "Microsoft Edge"
 	})
 	
 $Button_Game.Add_MouseLeftButtonDown({
-		Click-HamburgerButton -ShowPanel $PanelToggle_Game -SetHeader "Windows Game Recording"
+		Click-HamburgerButton -Panel $PanelToggle_WindowsGameRecording -Header "Windows Game Recording"
 	})
 	
 $Button_OneDrive.Add_MouseLeftButtonDown({
-		Click-HamburgerButton -ShowPanel $PanelToggle_OneDrive -SetHeader "OneDrive"
+		Click-HamburgerButton -Panel $PanelToggle_OneDrive -Header "OneDrive"
 	})
 	
 $Button_Privacy.Add_MouseLeftButtonDown({
-		Click-HamburgerButton -ShowPanel $PanelToggle_Privacy -SetHeader "Privacy & Telemetry"
+		Click-HamburgerButton -Panel $PanelToggle_Privacy -Header "Privacy & Telemetry"
 	})
 	
 $Button_StartMenu.Add_MouseLeftButtonDown({
-		Click-HamburgerButton -ShowPanel $PanelToggle_StartMenu -SetHeader "Start Menu"
+		Click-HamburgerButton -Panel $PanelToggle_StartMenu -Header "Start Menu"
 	})
 	
 $Button_System.Add_MouseLeftButtonDown({
-		Click-HamburgerButton -ShowPanel $PanelToggle_System -SetHeader "System"
+		Click-HamburgerButton -Panel $PanelToggle_System -Header "System"
 	})
 	
 $Button_Tasks.Add_MouseLeftButtonDown({
-		Click-HamburgerButton -ShowPanel $PanelToggle_Tasks -SetHeader "Scheduled Tasks"
+		Click-HamburgerButton -Panel $PanelToggle_ScheduledTasks -Header "Scheduled Tasks"
 	})
 
 $Button_Ui.Add_MouseLeftButtonDown({
-		Click-HamburgerButton -ShowPanel $PanelToggle_Ui -SetHeader "UI & Personalization"
+		Click-HamburgerButton -Panel $PanelToggle_UI -Header "UI & Personalization"
 	})
 	
 $Button_Uwp.Add_MouseLeftButtonDown({
-		Click-HamburgerButton -ShowPanel $PanelToggle_Uwp -SetHeader "Uwp Apps"
+		Click-HamburgerButton -Panel $PanelToggle_UwpApps -Header "Uwp Apps"
 	})
-#endregion
+#endregion Controls Events
 
 #region Add Click Event to Toggle Buttons
+
 (Get-Variable -Name "Toggle_*").Name | ForEach-Object {
-	$toggle = $Window.FindName($_)	
-	$toggle.Add_Checked({
-		Click-ToggleButton -Check
+	$currentToggle = $Window.FindName($_)	
+	$currentToggle.Add_Checked({
+		Click-ToggleButton -IsChecked
 	})	
 	
-	$toggle.Add_Unchecked({
+	$currentToggle.Add_Unchecked({
 		Click-ToggleButton
 	})	
 }
-#endregion
 
+#endregion Add Click Event to Toggle Buttons
+
+Set-Language
 Hide-Console
 $Window.ShowDialog() | Out-Null
