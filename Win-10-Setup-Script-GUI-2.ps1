@@ -1,4 +1,4 @@
-﻿Add-Type -AssemblyName "PresentationCore", "PresentationFramework", "WindowsBase"
+Add-Type -AssemblyName "PresentationCore", "PresentationFramework", "WindowsBase"
 
 #region Variable
 
@@ -8,12 +8,12 @@ $clickedToggle = 0
 # Variable RU defines UI language
 if ($PSCulture -eq "ru-RU")
 {
-	New-Variable -Name "RU" -Value $true
+	New-Variable -Name "RU" -Value $true -ErrorAction SilentlyContinue
 }
 
 else
 {
-	New-Variable -Name "RU" -Value $false
+	New-Variable -Name "RU" -Value $false -ErrorAction SilentlyContinue
 }
 
 $gitHub = "https://github.com/farag2/Windows-10-Setup-Script"
@@ -22,23 +22,24 @@ $gitHub = "https://github.com/farag2/Windows-10-Setup-Script"
 
 #region Text Eng
 
-$TextEng = "Add ""Extract"" to MSI file type context menu",
-	"Add ""Run as different user"" from context menu for .exe file type",
-	"Add ""Install"" to CAB file type context menu",
-	"Remove ""Cast to Device"" from context menu",
-	"Remove ""Share"" from context menu",
-	"Remove ""Previous Versions"" from file context menu",
-	"Remove ""Edit with Paint 3D"" from context menu",
-	"Remove ""Include in Library"" from context menu",
-	"Remove ""Turn on BitLocker"" from context menu",
-	"Remove ""Edit with Photos"" from context menu",
-	"Remove ""Create a new video"" from context menu",
-	"Remove ""Edit"" from images context menu",
-	"Remove ""Print"" from batch and cmd files context menu",
-	"Remove ""Compressed (zipped) Folder"" from context menu",
-	"Remove ""Send to"" from folder context menu",
-	"Make the ""Open"", ""Print"", ""Edit"" context menu items available, when more than 15 selected",
-	"Turn off ""Look for an app in the Microsoft Store"" in ""Open with"" dialog",
+$TextEng = @(
+	"Add `"Extract`" to MSI file type context menu",
+	"Add `"Run as different user`" from context menu for .exe file type",
+	"Add `"Install`" to CAB file type context menu",
+	"Remove `"Cast to Device`" from context menu",
+	"Remove `"Share`" from context menu",
+	"Remove `"Previous Versions`" from file context menu",
+	"Remove `"Edit with Paint 3D`" from context menu",
+	"Remove `"Include in Library`" from context menu",
+	"Remove `"Turn on BitLocker`" from context menu",
+	"Remove `"Edit with Photos`" from context menu",
+	"Remove `"Create a new video`" from context menu",
+	"Remove `"Edit`" from images context menu",
+	"Remove `"Print`" from batch and cmd files context menu",
+	"Remove `"Compressed (zipped) Folder`" from context menu",
+	"Remove `"Send to`" from folder context menu",
+	"Make the `"Open`", `"Print`", `"Edit`" context menu items available, when more than 15 selected",
+	"Turn off `"Look for an app in the Microsoft Store`" in `"Open with`" dialog",
 	"Turn off Windows Defender SmartScreen for Microsoft Edge",
 	"Do not allow Microsoft Edge to start and load the Start and New Tab page at Windows startup and each time Microsoft Edge is closed",
 	"Do not allow Microsoft Edge to pre-launch at Windows startup, when the system is idle, and each time Microsoft Edge is closed",
@@ -52,12 +53,12 @@ $TextEng = "Add ""Extract"" to MSI file type context menu",
 	"Hide notification about sign in with Microsoft in the Windows Security",
 	"Hide notification about disabled SmartScreen for Microsoft Edge",
 	"Uninstall OneDrive",
-	"Turn off ""Connected User Experiences and Telemetry"" service",
+	"Turn off `"Connected User Experiences and Telemetry`" service",
 	"Turn off per-user services",
 	"Turn off the SQMLogger session at the next computer restart",
-	"Set the operating system diagnostic data level to ""Basic""",
+	"Set the operating system diagnostic data level to `"Basic`"",
 	"Turn off Windows Error Reporting",
-	"Change Windows Feedback frequency to ""Never""",
+	"Change Windows Feedback frequency to `"Never`"",
 	"Turn off diagnostics tracking scheduled tasks",
 	"Do not offer tailored experiences based on the diagnostic data setting",
 	"Do not let apps on other devices open and message apps on this device, and vice versa",
@@ -71,29 +72,29 @@ $TextEng = "Add ""Extract"" to MSI file type context menu",
 	"Do not let track app launches to improve Start menu and search results",
 	"Create a task in the Task Scheduler to start Windows cleaning up",
 	"Create a task in the Task Scheduler to clear the %SystemRoot%\SoftwareDistribution\Download folder",
-	"Create a task in the Task Scheduler to clear the C:\Temp folder",
+	"Create a task in the Task Scheduler to clear the %SystemRoot%\Temp folder",
 	"Do not show recently added apps on Start menu",
 	"Open shortcut to the Command Prompt from Start menu as Administrator",
-	"Add old style shortcut for ""Devices and Printers"" to the Start menu",
+	"Add old style shortcut for `"Devices and Printers`" to the Start menu",
 	"Import Start menu layout from pre-saved .reg file",
 	"Unpin all Start menu tiles",
 	"Turn on Storage Sense to automatically free up space",
 	"Run Storage Sense every month",
 	"Delete temporary files that apps aren't using",
 	"Delete files in recycle bin if they have been there for over 30 days",
-	"Never delete files in ""Downloads"" folder",
+	"Never delete files in `"Downloads`" folder",
 	"Let Windows try to fix apps so they're not blurry",
 	"Turn off hibernate",
 	"Turn off location for this device",
-	"Change environment variable for %TEMP% to %SystemDrive%\Temp",
+	"Change %TEMP% environment variable path to %SystemDrive%\Temp",
 	"Turn on Win32 long paths",
 	"Group svchost.exe processes",
 	"Turn on the display of stop error information on the BSoD",
 	"Do not preserve zone information",
 	"Turn off Admin Approval Mode for administrators",
 	"Turn on access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled",
-	"Set download mode for delivery optization on ""HTTP only""",
-	" Always wait for the network at computer startup and logon",
+	"Set download mode for delivery optization on `"HTTP only`"",
+	"Always wait for the network at computer startup and logon",
 	"Do not let Windows manage default printer",
 	"Turn off Windows features",
 	"Remove Windows capabilities",
@@ -106,13 +107,13 @@ $TextEng = "Add ""Extract"" to MSI file type context menu",
 	"Do not allow the computer to turn off the Ethernet adapter to save power",
 	"Set the default input method to the English language",
 	"Turn on Windows Sandbox",
-	"Set location of the ""Desktop"", ""Documents"", ""Downloads"", ""Music"", ""Pictures"", and ""Videos""",
+	"Set location of the `"Desktop`", `"Documents`", `"Downloads`", `"Music`", `"Pictures`", and `"Videos`"",
 	"Run troubleshooters automatically, then notify",
-	"Set ""High performance"" in graphics performance preference for apps",
+	"Set `"High performance`" in graphics performance preference for apps",
 	"Launch folder in a separate process",
 	"Turn off and delete reserved storage after the next update installation",
 	"Turn on automatic backup the system registry to the %SystemRoot%\System32\config\RegBack folder",
-	"Turn off ""The Windows Filtering Platform has blocked a connection"" message in ""Windows Logs\Security""",
+	"Turn off `"The Windows Filtering Platform has blocked a connection`" message in `"Windows Logs\Security`"",
 	"Turn off SmartScreen for apps and files",
 	"Turn off F1 Help key",
 	"Turn on Num Lock at startup",
@@ -120,7 +121,7 @@ $TextEng = "Add ""Extract"" to MSI file type context menu",
 	"Turn off AutoPlay for all media and devices",
 	"Turn off thumbnail cache removal",
 	"Turn on automatically save my restartable apps when sign out and restart them after sign in",
-	"Show ""This PC"" on Desktop",
+	"Show `"This PC`" on Desktop",
 	"Set File Explorer to open to This PC by default",
 	"Show Hidden Files, Folders, and Drives",
 	"Turn off check boxes to select items",
@@ -136,52 +137,53 @@ $TextEng = "Add ""Extract"" to MSI file type context menu",
 	"Show more details in file transfer dialog",
 	"Turn on ribbon in File Explorer",
 	"Turn on recycle bin files delete confirmation",
-	"Remove 3D Objects folder in ""This PC"" and in the navigation pane",
-	"Do not show ""Frequent folders"" in Quick access",
-	"Do not show ""Recent files"" in Quick access",
-	"Remove the ""Previous Versions"" tab from properties context menu",
+	"Remove 3D Objects folder in `"This PC`" and in the navigation pane",
+	"Do not show `"Frequent folders`" in Quick access",
+	"Do not show `"Recent files`" in Quick access",
+	"Remove the `"Previous Versions`" tab from properties context menu",
 	"Hide search box or search icon on taskbar",
-	"Do not show ""Windows Ink Workspace"" button in taskbar",
+	"Do not show `"Windows Ink Workspace`" button in taskbar",
 	"Always show all icons in the notification area",
 	"Unpin Microsoft Edge and Microsoft Store from taskbar",
 	"Set the Control Panel view by large icons",
 	"Choose theme color for default Windows mode",
 	"Choose theme color for default app mode",
-	"Do not show ""New App Installed"" notification",
+	"Do not show `"New App Installed`" notification",
 	"Do not show user first sign-in animation",
 	"Turn off JPEG desktop wallpaper import quality reduction",
 	"Show Task Manager details",
 	"Show accent color on the title bars and window borders",
 	"Turn off automatically hiding scroll bars",
 	"Show more Windows Update restart notifications about restarting",
-	"Turn off the ""- Shortcut"" name extension for new shortcuts",
+	"Turn off the `"- Shortcut`" name extension for new shortcuts",
 	"Use the PrtScn button to open screen snipping",
 	"Automatically adjust active hours for me based on daily usage",
 	"Turn off Windows Game Recording and Broadcasting",
 	"Turn off Game Bar",
 	"Turn off Game Mode",
 	"Turn off Game Bar tips"
-
+)
 #endregion Text Eng
 
 #region Text Ru
-$TextRu = "Добавить пункт ""Extract"" для MSI в контекстное меню",
-	"Добавить ""Запуск от имени другого пользователя"" в контекстное меню для .exe файлов",
-	"Добавить пункт ""Установить"" для CAB-файлов в контекстном меню",
-	"Удалить пункт ""Передать на устройство"" из контекстного меню",
-	"Удалить пункт ""Отправить"" (поделиться) из контекстного меню",
-	"Удалить пункт ""Восстановить прежнюю версию"" из контекстного меню",
-	"Удалить пункт ""Изменить с помощью Paint 3D"" из контекстного меню",
-	"Удалить пункт ""Добавить в библиотеку"" из контекстного меню",
-	"Удалить пункт ""Включить BitLocker"" из контекстного меню",
-	"Удалить пункт ""Изменить с помощью приложения ""Фотографии"""" из контекстного меню",
-	"Удалить пункт ""Создать новое видео"" из контекстного меню",
-	"Удалить пункт ""Изменить"" из контекстного меню изображений",
-	"Удалить пункт ""Печать"" из контекстного меню для bat- и cmd-файлов",
-	"Удалить пункт ""Сжатая ZIP-папка"" из контекстного меню",
-	"Удалить пункт ""Отправить"" из контекстного меню папки",
-	"Сделать доступными элементы контекстного меню ""Открыть"", ""Изменить"" и ""Печать"" при выделении более 15 элементов",
-	"Отключить поиск программ в Microsoft Store при открытии диалога ""Открыть с помощью""",
+$TextRu = @(
+	"Добавить пункт `"Extract`" для MSI в контекстное меню",
+	"Добавить `"Запуск от имени другого пользователя`" в контекстное меню для .exe файлов",
+	"Добавить пункт `"Установить`" для CAB-файлов в контекстном меню",
+	"Удалить пункт `"Передать на устройство`" из контекстного меню",
+	"Удалить пункт `"Отправить`" (поделиться) из контекстного меню",
+	"Удалить пункт `"Восстановить прежнюю версию`" из контекстного меню",
+	"Удалить пункт `"Изменить с помощью Paint 3D`" из контекстного меню",
+	"Удалить пункт `"Добавить в библиотеку`" из контекстного меню",
+	"Удалить пункт `"Включить BitLocker`" из контекстного меню",
+	"Удалить пункт `"Изменить с помощью приложения `"Фотографии`"`" из контекстного меню",
+	"Удалить пункт `"Создать новое видео`" из контекстного меню",
+	"Удалить пункт `"Изменить`" из контекстного меню изображений",
+	"Удалить пункт `"Печать`" из контекстного меню для bat- и cmd-файлов",
+	"Удалить пункт `"Сжатая ZIP-папка`" из контекстного меню",
+	"Удалить пункт `"Отправить`" из контекстного меню папки",
+	"Сделать доступными элементы контекстного меню `"Открыть`", `"Изменить`" и `"Печать`" при выделении более 15 элементов",
+	"Отключить поиск программ в Microsoft Store при открытии диалога `"Открыть с помощью`"",
 	"Отключить Windows Defender SmartScreen в Microsoft Edge",
 	"Не разрешать Edge запускать и загружать страницу при загрузке Windows и каждый раз при закрытии Edge",
 	"Не разрешать предварительный запуск Edge при загрузке Windows, когда система простаивает, и каждый раз при закрытии Edge",
@@ -195,12 +197,12 @@ $TextRu = "Добавить пункт ""Extract"" для MSI в контекс�
 	"Скрыть уведомление Защитника Windows об использовании аккаунта Microsoft",
 	"Скрыть уведомление Защитника Windows об отключенном фильтре SmartScreen для Microsoft Edge",
 	"Удалить OneDrive",
-	"Отключить службу ""Функциональные возможности для подключенных пользователей и телеметрия""",
+	"Отключить службу `"Функциональные возможности для подключенных пользователей и телеметрия`"",
 	"Отключить пользовательские службы",
 	"Отключить сборщик SQMLogger при следующем запуске ПК",
-	"Установить уровень отправляемых диагностических сведений на ""Базовый""",
+	"Установить уровень отправляемых диагностических сведений на `"Базовый`"",
 	"Отключить отчеты об ошибках Windows",
-	"Изменить частоту формирования отзывов на ""Никогда""",
+	"Изменить частоту формирования отзывов на `"Никогда`"",
 	"Отключить задачи диагностического отслеживания",
 	"Не предлагать персонализированныее возможности, основанные на выбранном параметре диагностических данных",
 	"Не разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот",
@@ -208,29 +210,29 @@ $TextRu = "Добавить пункт ""Extract"" для MSI в контекс�
 	"Не использовать данные для входа для автоматического завершения настройки устройства после перезапуска или обновления",
 	"Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков",
 	"Показывать советы, подсказки и рекомендации при использованию Windows",
-	"Не показывать рекомендации в меню ""Пуск""",
-	"Не показывать рекомендуемое содержание в ""Параметрах""",
+	"Не показывать рекомендации в меню `"Пуск`"",
+	"Не показывать рекомендуемое содержание в `"Параметрах`"",
 	"Отключить автоматическую установку рекомендованных приложений",
-	"Не разрешать Windows отслеживать запуски приложений для улучшения меню ""Пуск"" и результатов поиска и не показывать недавно добавленные приложения",
+	"Не разрешать Windows отслеживать запуски приложений для улучшения меню `"Пуск`" и результатов поиска и не показывать недавно добавленные приложения",
 	"Создать задачу в Планировщике задач по очистке обновлений Windows",
 	"Создать задачу в Планировщике задач по очистке папки %SystemRoot%\SoftwareDistribution\Download",
-	"Создать задачу в Планировщике задач по очистке папки ""%TEMP%""",
-	"Не показывать недавно добавленные приложения в меню ""Пуск""",
-	"Запускать ярлык к командной строке в меню ""Пуск"" от имени Администратора",
-	"Добавить ярлык старого формата для ""Устройства и принтеры"" в меню ""Пуск""",
-	"Импорт настроенного макета меню ""Пуск"" из предварительно сохраненного .reg-файла",
+	"Создать задачу в Планировщике задач по очистке папки %TEMP%",
+	"Не показывать недавно добавленные приложения в меню `"Пуск`"",
+	"Запускать ярлык к командной строке в меню `"Пуск`" от имени Администратора",
+	"Добавить ярлык старого формата для `"Устройства и принтеры`" в меню `"Пуск`"",
+	"Импорт настроенного макета меню `"Пуск`" из предварительно сохраненного .reg-файла",
 	"Открепить все ярлыки от начального экрана",
 	"Включить Память устройства для автоматического освобождения места",
 	"Запускать контроль памяти каждый месяц",
 	"Удалять временные файлы, не используемые в приложениях",
 	"Удалять файлы, которые находятся в корзине более 30 дней",
-	"Никогда не удалять файлы из папки ""Загрузки""",
+	"Никогда не удалять файлы из папки `"Загрузки`"",
 	"Разрешить Windows исправлять размытость в приложениях",
 	"Отключить гибридный спящий режим",
 	"Отключить местоположение для этого устройства",
-	"Изменить путь переменной среды для временных файлов на ""%SystemDrive%\Temp""",
+	"Изменить путь переменной среды %TEMP% на %SystemDrive%\Temp",
 	"Включить длинные пути Win32",
-	"Группировать одинаковые службы в один процесс svchost.exe",
+	"Группировать процессы svchost.exe",
 	"Включить дополнительную информацию при выводе BSoD",
 	"Не хранить сведения о зоне происхождения вложенных файлов",
 	"Отключить использование режима одобрения администратором для встроенной учетной записи администратора",
@@ -249,13 +251,13 @@ $TextRu = "Добавить пункт ""Extract"" для MSI в контекс�
 	"Запретить отключение Ethernet-адаптера для экономии энергии",
 	"Установить метод ввода по умолчанию на английский язык",
 	"Включить Windows Sandbox",
-	"Переопределить расположение папок ""Рабочий стол"", ""Документы"", ""Загрузки"", ""Музыка"", ""Изображения"", ""Видео""",
+	"Переопределить расположение папок `"Рабочий стол`", `"Документы`", `"Загрузки`", `"Музыка`", `"Изображения`", `"Видео`"",
 	"Автоматически запускать средства устранения неполадок, а затем уведомлять",
-	"Установить параметры производительности графики для отдельных приложений на ""Высокая производительность""",
+	"Установить параметры производительности графики для отдельных приложений на `"Высокая производительность`"",
 	"Запускать окна с папками в отдельном процессе",
 	"Отключить и удалить зарезервированное хранилище после следующей установки обновлений",
 	"Включить автоматическое создание копии реестра в папку %SystemRoot%\System32\config\RegBack",
-	"Отключить в ""Журналах Windows\Безопасность"" сообщение ""Платформа фильтрации IP-пакетов Windows разрешила подключение""",
+	"Отключить в `"Журналах Windows\Безопасность`" сообщение `"Платформа фильтрации IP-пакетов Windows разрешила подключение`"",
 	"Отключить SmartScreen для приложений и файлов",
 	"Отключить справку по нажатию F1",
 	"Включить Num Lock при загрузке",
@@ -263,8 +265,8 @@ $TextRu = "Добавить пункт ""Extract"" для MSI в контекс�
 	"Отключить автозапуск с внешних носителей",
 	"Отключить удаление кэша миниатюр",
 	"Автоматически сохранять мои перезапускаемые приложения при выходе из системы и перезапустить их после выхода",
-	"Отобразить ""Этот компьютер"" на рабочем столе",
-	"Открывать ""Этот компьютер"" в Проводнике",
+	"Отобразить `"Этот компьютер`" на рабочем столе",
+	"Открывать `"Этот компьютер`" в Проводнике",
 	"Показывать скрытые файлы, папки и диски",
 	"Отключить флажки для выбора элементов",
 	"Показывать расширения для зарегистрированных типов файлов",
@@ -272,17 +274,17 @@ $TextRu = "Добавить пункт ""Extract"" для MSI в контекс�
 	"Не отображать все папки в области навигации",
 	"Не показывать кнопку Кортаны на панели задач",
 	"Не показывать кнопку Просмотра задач",
-	"Не показывать панель ""Люди"" на панели задач",
+	"Не показывать панель `"Люди`" на панели задач",
 	"Отображать секунды в системных часах на панели задач",
 	"Включить прозрачную панель задач",
 	"Не показывать при прикреплении окна, что можно прикрепить рядом с ним",
 	"Развернуть диалог переноса файлов",
 	"Включить отображение ленты проводника в развернутом виде",
 	"Запрашивать подтверждение на удалении файлов из корзины",
-	"Скрыть папку ""Объемные объекты"" из ""Этот компьютер"" и на панели быстрого доступа",
+	"Скрыть папку `"Объемные объекты`" из `"Этот компьютер`" и на панели быстрого доступа",
 	"Не показывать недавно используемые папки на панели быстрого доступа",
 	"Не показывать недавно использовавшиеся файлы на панели быстрого доступа",
-	"Отключить отображение вкладки ""Предыдущие версии"" в свойствах файлов и папок",
+	"Отключить отображение вкладки `"Предыдущие версии`" в свойствах файлов и папок",
 	"Скрыть поле или значок поиска на Панели задач",
 	"Не показывать кнопку Windows Ink Workspace на панели задач",
 	"Всегда отображать все значки в области уведомлений",
@@ -290,21 +292,21 @@ $TextRu = "Добавить пункт ""Extract"" для MSI в контекс�
 	"Установить крупные значки в панели управления",
 	"Выбрать режим Windows по умолчанию",
 	"Выбрать режим приложения по умолчанию",
-	"Не показывать уведомление ""Установлено новое приложение""",
+	"Не показывать уведомление `"Установлено новое приложение`"",
 	"Не показывать анимацию при первом входе в систему",
 	"Отключить снижение качества фона рабочего стола в формате JPEG",
 	"Раскрыть окно Диспетчера задач",
 	"Отображать цвет элементов в заголовках окон и границ окон",
 	"Отключить автоматическое скрытие полос прокрутки в Windows",
 	"Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления",
-	"Нe дoбaвлять ""- яpлык"" для coздaвaeмыx яpлыкoв",
+	"Нe дoбaвлять `"- яpлык`" для coздaвaeмыx яpлыкoв",
 	"Использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана",
 	"Автоматически изменять период активности для этого устройства на основе действий",
 	"Отключить Запись и трансляции игр Windows",
 	"Отключить игровую панель",
 	"Отключить игровой режим",
 	"Отключить подсказки игровой панели"
-
+)
 #endregion Text Ru
 
 #region Xaml Markup
@@ -4254,31 +4256,31 @@ function Click-ToggleButton {
 	[CmdletBinding()]
     param
 	(
-		[Parameter(Mandatory=$false)]		
+		[Parameter(Mandatory=$false)]
 		[switch]$IsChecked
-	)	
-	
+	)
+
 	if ($IsChecked)
-	{		
+	{
 		$Global:clickedToggle++
 	}
-	
+
 	elseif (!$IsChecked)
-	{		
+	{
 		$Global:clickedToggle--
 	}
-	
+
 	if ($clickedToggle -gt 0)
 	{
 		$ButtonApply.Visibility = "Visible"
 		$ButtonSave.Visibility = "Visible"
 	}
-	
+
 	else
 	{
 		$ButtonApply.Visibility = "Hidden"
 		$ButtonSave.Visibility = "Hidden"
-	}	
+	}
 }
 
 function Set-Language {
@@ -4290,10 +4292,10 @@ function Set-Language {
     [CmdletBinding()]
     param 
 	(
-		[Parameter(Mandatory=$false)]		
+		[Parameter(Mandatory=$false)]
 		[switch]$Change
 	)
-	
+
 	(Get-Variable -Name "Text_*").Name | ForEach-Object {
 		$textToggle = $Window.FindName($_)
 			
@@ -4303,27 +4305,27 @@ function Set-Language {
 			{
 				$textToggle.Text = $TextEng[$textToggle.Uid]
 			}
-				
+
 			else
 			{
 				$textToggle.Text = $TextRu[$textToggle.Uid]
-			}			
+			}
 		}
-			
+
 		else
 		{
 			if ($RU)
 			{
 				$textToggle.Text = $TextRu[$textToggle.Uid]
 			}
-			
+
 			else
 			{
 				$textToggle.Text = $TextEng[$textToggle.Uid]
 			}
-		}			
+		}
 	}
-	
+
 	if ($Change)
 	{
 		$Global:RU = !$RU
@@ -4339,7 +4341,7 @@ function Follow-OnGitHub {
     [CmdletBinding()]
     param ()
 	
-	Start-Process -FilePath "explorer.exe" -ArgumentList $gitHub
+	Start-Process -FilePath $gitHub
 }
 
 #endregion
@@ -4415,14 +4417,14 @@ $Button_Uwp.Add_MouseLeftButtonDown({
 #region Add Click Event to Toggle Buttons
 
 (Get-Variable -Name "Toggle_*").Name | ForEach-Object {
-	$currentToggle = $Window.FindName($_)	
+	$currentToggle = $Window.FindName($_)
 	$currentToggle.Add_Checked({
 		Click-ToggleButton -IsChecked
-	})	
-	
+	})
+
 	$currentToggle.Add_Unchecked({
 		Click-ToggleButton
-	})	
+	})
 }
 
 #endregion Add Click Event to Toggle Buttons
