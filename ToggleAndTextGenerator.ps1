@@ -1,4 +1,4 @@
-﻿Cls
+Cls
 #region Toggles Text
 
 #region Toggles Text Eng
@@ -72,16 +72,15 @@
 	"Let Windows try to fix apps so they're not blurry",
 	"Turn off hibernate",
 	"Turn off location for this device",
-	"Change environment variable for %TEMP% to %SystemDrive%\Temp",
+	"Change %TEMP% environment variable path to %SystemDrive%\Temp",
 	"Turn on Win32 long paths",
 	"Group svchost.exe processes",
-	"Turn on Retpoline patch against Spectre v2",
 	"Turn on the display of stop error information on the BSoD",
 	"Do not preserve zone information",
 	"Turn off Admin Approval Mode for administrators",
 	"Turn on access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled",
 	"Set download mode for delivery optization on `"HTTP only`"",
-	" Always wait for the network at computer startup and logon",
+	"Always wait for the network at computer startup and logon",
 	"Do not let Windows manage default printer",
 	"Turn off Windows features",
 	"Remove Windows capabilities",
@@ -99,21 +98,21 @@
 	"Set `"High performance`" in graphics performance preference for apps",
 	"Launch folder in a separate process",
 	"Turn off and delete reserved storage after the next update installation",
-	"Turn on automatic backup the system registry to the $env:SystemRoot\System32\config\RegBack folder",
-	"Turn off `"The Windows Filtering Platform has blocked a connection`" message in `"Windows Logs/Security`"",
+	"Turn on automatic backup the system registry to the %SystemRoot%\System32\config\RegBack folder",
+	"Turn off `"The Windows Filtering Platform has blocked a connection`" message in `"Windows Logs\Security`"",
 	"Turn off SmartScreen for apps and files",
 	"Turn off F1 Help key",
 	"Turn on Num Lock at startup",
 	"Turn off sticky Shift key after pressing 5 times",
 	"Turn off AutoPlay for all media and devices",
 	"Turn off thumbnail cache removal",
-	"Turn On automatically save my restartable apps when sign out and restart them after sign in"
+	"Turn on automatically save my restartable apps when sign out and restart them after sign in"
 
 [Array]$Text_Eng_StartMenu =
 	"Do not show recently added apps on Start menu",
 	"Open shortcut to the Command Prompt from Start menu as Administrator",
 	"Add old style shortcut for `"Devices and Printers`" to the Start menu",
-	"Import Start menu layout from pre-saved reg file",
+	"Import Start menu layout from pre-saved .reg file",
 	"Unpin all Start menu tiles"
 
 [Array]$Text_Eng_Edge =
@@ -134,11 +133,11 @@
 
 [Array]$Text_Eng_ScheduledTasks = 
 	"Create a task in the Task Scheduler to start Windows cleaning up",
-	"Create a task in the Task Scheduler to clear the $env:SystemRoot\SoftwareDistribution\Download folder",
-	"Create a task in the Task Scheduler to clear the $env:TEMP folder"
+	"Create a task in the Task Scheduler to clear the %SystemRoot%\SoftwareDistribution\Download folder",
+	"Create a task in the Task Scheduler to clear the %SystemRoot%\Temp folder"
 
 [Array]$Text_Eng_MicrosoftDefender =
-	"Add folder to exclude from Windows Defender Antivirus scan",
+	"Add exclusion folder from Windows Defender Antivirus scanning",
 	"Turn on Controlled folder access and add protected folders",
 	"Allow an app through Controlled folder access",
 	"Turn on Windows Defender Exploit Guard Network Protection",
@@ -158,23 +157,22 @@
 	"Remove `"Include in Library`" from context menu",
 	"Remove `"Turn on BitLocker`" from context menu",
 	"Remove `"Edit with Photos`" from context menu",
-	"Remove `"Create a new video`" from Context Menu",
-	"Remove `"Edit`" from images Context Menu",
+	"Remove `"Create a new video`" from context menu",
+	"Remove `"Edit`" from images context menu",
 	"Remove `"Print`" from batch and cmd files context menu",
 	"Remove `"Compressed (zipped) Folder`" from context menu",
 	"Remove `"Send to`" from folder context menu",
 	"Make the `"Open`", `"Print`", `"Edit`" context menu items available, when more than 15 selected",
 	"Turn off `"Look for an app in the Microsoft Store`" in `"Open with`" dialog"
-	
 #endregion Toggles Text Eng
-	
+
 #region Toggles Text Ru
 [Array]$Text_Ru_Privacy =
 	"Отключить службу `"Функциональные возможности для подключенных пользователей и телеметрия`"",
 	"Отключить пользовательские службы",
 	"Отключить сборщик SQMLogger при следующем запуске ПК",
 	"Установить уровень отправляемых диагностических сведений на `"Базовый`"",
-	"Отключить отчеты об ошибках Windows для всех пользователей",
+	"Отключить отчеты об ошибках Windows",
 	"Изменить частоту формирования отзывов на `"Никогда`"",
 	"Отключить задачи диагностического отслеживания",
 	"Не предлагать персонализированныее возможности, основанные на выбранном параметре диагностических данных",
@@ -218,13 +216,13 @@
 	"Выбрать режим приложения по умолчанию",
 	"Не показывать уведомление `"Установлено новое приложение`"",
 	"Не показывать анимацию при первом входе в систему",
-	"Установка качества фона рабочего стола на 100 %",
+	"Отключить снижение качества фона рабочего стола в формате JPEG",
 	"Раскрыть окно Диспетчера задач",
 	"Отображать цвет элементов в заголовках окон и границ окон",
 	"Отключить автоматическое скрытие полос прокрутки в Windows",
 	"Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления",
 	"Нe дoбaвлять `"- яpлык`" для coздaвaeмыx яpлыкoв",
-	"Использовать клавишу Print Screen, чтобы запустить функцию создания фрагмента экрана",
+	"Использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана",
 	"Автоматически изменять период активности для этого устройства на основе действий"
 
 [Array]$Text_Ru_OneDrive = "Удалить OneDrive"
@@ -238,10 +236,9 @@
 	"Разрешить Windows исправлять размытость в приложениях",
 	"Отключить гибридный спящий режим",
 	"Отключить местоположение для этого устройства",
-	"Изменить путь переменной среды для временных файлов на %SystemDrive%\Temp",
+	"Изменить путь переменной среды %TEMP% на %SystemDrive%\Temp",
 	"Включить длинные пути Win32",
-	"Группировать одинаковые службы в один процесс svchost.exe",
-	"Включить патч Retpoline против Spectre v2",
+	"Группировать процессы svchost.exe",
 	"Включить дополнительную информацию при выводе BSoD",
 	"Не хранить сведения о зоне происхождения вложенных файлов",
 	"Отключить использование режима одобрения администратором для встроенной учетной записи администратора",
@@ -265,8 +262,8 @@
 	"Установить параметры производительности графики для отдельных приложений на `"Высокая производительность`"",
 	"Запускать окна с папками в отдельном процессе",
 	"Отключить и удалить зарезервированное хранилище после следующей установки обновлений",
-	"Включить автоматическое создание копии реестра в папку $env:SystemRoot\System32\config\RegBack",
-	"Отключить в `"Журналах Windows/Безопасность`" сообщение `"Платформа фильтрации IP-пакетов Windows разрешила подключение`"",
+	"Включить автоматическое создание копии реестра в папку %SystemRoot%\System32\config\RegBack",
+	"Отключить в `"Журналах Windows\Безопасность`" сообщение `"Платформа фильтрации IP-пакетов Windows разрешила подключение`"",
 	"Отключить SmartScreen для приложений и файлов",
 	"Отключить справку по нажатию F1",
 	"Включить Num Lock при загрузке",
@@ -278,8 +275,8 @@
 [Array]$Text_Ru_StartMenu =
 	"Не показывать недавно добавленные приложения в меню `"Пуск`"",
 	"Запускать ярлык к командной строке в меню `"Пуск`" от имени Администратора",
-	"Добавить ярлык старого формата для `"Устройства и принтеры`" в меню Пуск",
-	"Импорт настроенного макета меню `"Пуск`" из заготовленного reg-файла",
+	"Добавить ярлык старого формата для `"Устройства и принтеры`" в меню `"Пуск`"",
+	"Импорт настроенного макета меню `"Пуск`" из предварительно сохраненного .reg-файла",
 	"Открепить все ярлыки от начального экрана"
 
 [Array]$Text_Ru_Edge =
@@ -315,7 +312,7 @@
 
 [Array]$Text_Ru_ContextMenu =
 	"Добавить пункт `"Extract`" для MSI в контекстное меню",
-	"Добавить `"Запуск от имени друго пользователя`" в контекстное меню для .exe файлов",
+	"Добавить `"Запуск от имени другого пользователя`" в контекстное меню для .exe файлов",
 	"Добавить пункт `"Установить`" для CAB-файлов в контекстном меню",
 	"Удалить пункт `"Передать на устройство`" из контекстного меню",
 	"Удалить пункт `"Отправить`" (поделиться) из контекстного меню",
@@ -323,7 +320,7 @@
 	"Удалить пункт `"Изменить с помощью Paint 3D`" из контекстного меню",
 	"Удалить пункт `"Добавить в библиотеку`" из контекстного меню",
 	"Удалить пункт `"Включить BitLocker`" из контекстного меню",
-	"Удалить пункт `"Изменить с помощью приложения `"Фотографии`"`" из контекстного меню изображений",
+	"Удалить пункт `"Изменить с помощью приложения `"Фотографии`"`" из контекстного меню",
 	"Удалить пункт `"Создать новое видео`" из контекстного меню",
 	"Удалить пункт `"Изменить`" из контекстного меню изображений",
 	"Удалить пункт `"Печать`" из контекстного меню для bat- и cmd-файлов",
@@ -331,7 +328,6 @@
 	"Удалить пункт `"Отправить`" из контекстного меню папки",
 	"Сделать доступными элементы контекстного меню `"Открыть`", `"Изменить`" и `"Печать`" при выделении более 15 элементов",
 	"Отключить поиск программ в Microsoft Store при открытии диалога `"Открыть с помощью`""
-	
 #endregion Toggles Text Ru
 
 #endregion Toggles Text
