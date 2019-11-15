@@ -38,7 +38,6 @@ IF (-not ([IntPtr]::Size -eq 8))
 	}
 	break
 }
-
 #endregion Preparation
 
 #region Begin
@@ -89,8 +88,8 @@ Update-AutologgerConfig -Name SQMLogger -Start 0
 # Установить уровень отправляемых диагностических сведений на "Базовый"
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 1 -Force
 # Turn off Windows Error Reporting
-# Отключить отчеты об ошибках Windows для всех пользователей
-New-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\Windows Error Reporting" -Name Disabled -PropertyType DWord -Value 1 -Force
+# Отключить отчеты об ошибках Windows
+New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\Windows Error Reporting" -Name Disabled -PropertyType DWord -Value 1 -Force
 # Change Windows Feedback frequency to "Never"
 # Изменить частоту формирования отзывов на "Никогда"
 IF (-not (Test-Path -Path HKCU:\Software\Microsoft\Siuf\Rules))
@@ -438,7 +437,7 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name 
 # Не показывать анимацию при первом входе в систему
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableFirstLogonAnimation -PropertyType DWord -Value 0 -Force
 # Turn off JPEG desktop wallpaper import quality reduction
-# Установка качества фона рабочего стола на 100 %
+# Отключить снижение качества фона рабочего стола в формате JPEG
 New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name JPEGImportQuality -PropertyType DWord -Value 100 -Force
 # Show Task Manager details
 # Раскрыть окно Диспетчера задач
@@ -475,7 +474,7 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name 
 # Нe дoбaвлять "- яpлык" для coздaвaeмыx яpлыкoв
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name link -PropertyType Binary -Value ([byte[]](00, 00, 00, 00)) -Force
 # Use the PrtScn button to open screen snipping
-# Использовать клавишу Print Screen, чтобы запустить функцию создания фрагмента экрана
+# Использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана
 New-ItemProperty -Path "HKCU:\Control Panel\Keyboard" -Name PrintScreenKeyForSnippingEnabled -PropertyType DWord -Value 1 -Force
 # Automatically adjust active hours for me based on daily usage
 # Автоматически изменять период активности для этого устройства на основе действий
@@ -505,8 +504,8 @@ $Error.RemoveAt(0)
 #endregion OneDrive
 
 #region System
-# Turn on Storage Sense to automatically free up space
-# Включить Память устройства для автоматического освобождения места
+# Turn on Storage Sense
+# Включить Память устройства
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01 -PropertyType DWord -Value 1 -Force
 # Run Storage Sense every month
 # Запускать контроль памяти каждый месяц
@@ -552,11 +551,11 @@ Remove-Item -Path $env:SystemRoot\Temp -Recurse -Force -ErrorAction SilentlyCont
 # Включить длинные пути Win32
 New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -PropertyType DWord -Value 1 -Force
 # Group svchost.exe processes
-# Группировать одинаковые службы в один процесс svhost.exe
+# Группировать процессы svchost.exe
 $ram = (Get-CimInstance -ClassName Win32_PhysicalMemory | Measure-Object -Property Capacity -Sum).Sum / 1kb
 New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control -Name SvcHostSplitThresholdInKB -PropertyType DWord -Value $ram -Force
-# Turn on the display of stop error information on the BSoD
-# Включить дополнительную информацию при выводе BSoD
+# Display the Stop error information on the BSoD
+# Отображать Stop-ошибку при появлении BSoD
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Control\CrashControl -Name DisplayParameters -PropertyType DWord -Value 1 -Force
 # Do not preserve zone information
 # Не хранить сведения о зоне происхождения вложенных файлов
@@ -572,8 +571,8 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\
 # Turn on access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled
 # Включить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableLinkedConnections -PropertyType DWord -Value 1 -Force
-# Set download mode for delivery optization on "HTTP only"
-# Отключить оптимизацию доставки для обновлений с других ПК
+# Turn off Delivery Optimization
+# Отключить оптимизацию доставки
 Get-Service -Name DoSvc | Stop-Service -Force
 IF (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization))
 {
@@ -963,7 +962,8 @@ Do
 			Set-Content -Path "$DownloadsFolder\desktop.ini" -Value $DesktopINI["Downloads"] -Encoding Unicode -Force
 			(Get-Item -Path "$DownloadsFolder\desktop.ini" -Force).Attributes = "Hidden", "System", "Archive"
 			(Get-Item -Path "$DownloadsFolder\desktop.ini" -Force).Refresh()
-			# Microsoft Edge download folder
+			# Microsoft Edge downloads folder
+			# Папка загрузок Microsoft Edge
 			$edge = (Get-AppxPackage "Microsoft.MicrosoftEdge").PackageFamilyName
 			New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Main" -Name "Default Download Directory" -PropertyType String -Value $DownloadsFolder -Force
 		}
@@ -1279,7 +1279,7 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\
 # Отключить удаление кэша миниатюр
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" -Name Autorun -PropertyType DWord -Value 0 -Force
 New-ItemProperty -Path "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" -Name Autorun -PropertyType DWord -Value 0 -Force
-# Turn On automatically save my restartable apps when sign out and restart them after sign in
+# Turn on automatically save my restartable apps when sign out and restart them after sign in
 # Автоматически сохранять мои перезапускаемые приложения при выходе из системы и перезапустить их после выхода
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name RestartApps -Value 1 -Force
 #endregion System
@@ -1304,8 +1304,8 @@ $shortcut.TargetPath = $target
 $shortcut.Arguments = "printers"
 $shortCut.IconLocation = "$env:SystemRoot\system32\DeviceCenter.dll"
 $shortcut.Save()
-# Import Start menu layout from pre-saved reg file
-# Импорт настроенного макета меню "Пуск" из заготовленного reg-файла
+# Import Start menu layout from pre-saved .reg file
+# Импорт настроенного макета меню "Пуск" из предварительно сохраненного .reg-файла
 Add-Type -AssemblyName System.Windows.Forms
 $OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
 $OpenFileDialog.Multiselect = $false
@@ -1582,7 +1582,7 @@ Register-ScheduledTask @params -Force
 #endregion Scheduled tasks
 
 #region Microsoft Defender
-# Add folder to exclude from Windows Defender Antivirus scan
+# Add exclusion folder from Windows Defender Antivirus scanning
 # Добавить папку в список исключений сканирования Защитника Windows
 IF ($RU)
 {
@@ -1832,12 +1832,12 @@ IF (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Pro
 	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\unlock-bde -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
 }
 # Remove "Edit with Photos" from context menu
-# Удалить пункт "Изменить с помощью приложения "Фотографии"" из контекстного меню изображений
+# Удалить пункт "Изменить с помощью приложения "Фотографии"" из контекстного меню
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppX43hnxtbyyps62jhe9sqpdzxn1790zetc\Shell\ShellEdit -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
-# Remove "Create a new video" from Context Menu
+# Remove "Create a new video" from context menu
 # Удалить пункт "Создать новое видео" из контекстного меню
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppX43hnxtbyyps62jhe9sqpdzxn1790zetc\Shell\ShellCreateVideo -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
-# Remove "Edit" from images Context Menu
+# Remove "Edit" from images context menu
 # Удалить пункт "Изменить" из контекстного меню изображений
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\SystemFileAssociations\image\shell\edit -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
 # Remove "Print" from batch and cmd files context menu
