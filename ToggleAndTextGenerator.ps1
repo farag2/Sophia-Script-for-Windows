@@ -64,7 +64,7 @@
 [Array]$Text_Eng_OneDrive = "Uninstall OneDrive"
 
 [Array]$Text_Eng_System =
-	"Turn on Storage Sense to automatically free up space",
+	"Turn on Storage Sense",
 	"Run Storage Sense every month",
 	"Delete temporary files that apps aren't using",
 	"Delete files in recycle bin if they have been there for over 30 days",
@@ -72,14 +72,14 @@
 	"Let Windows try to fix apps so they're not blurry",
 	"Turn off hibernate",
 	"Turn off location for this device",
-	"Change %TEMP% environment variable path to %SystemDrive%\Temp",
+	"Change environment variable for %TEMP% to %SystemDrive%\Temp",
 	"Turn on Win32 long paths",
 	"Group svchost.exe processes",
-	"Turn on the display of stop error information on the BSoD",
+	"Display the Stop error information on the BSoD",
 	"Do not preserve zone information",
 	"Turn off Admin Approval Mode for administrators",
 	"Turn on access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled",
-	"Set download mode for delivery optization on `"HTTP only`"",
+	"Turn off Delivery Optimization",
 	"Always wait for the network at computer startup and logon",
 	"Do not let Windows manage default printer",
 	"Turn off Windows features",
@@ -184,7 +184,7 @@
 	"Не показывать рекомендации в меню `"Пуск`"",
 	"Не показывать рекомендуемое содержание в `"Параметрах`"",
 	"Отключить автоматическую установку рекомендованных приложений",
-	"Не разрешать Windows отслеживать запуски приложений для улучшения меню `"Пуск`" и результатов поиска и не показывать недавно добавленные приложения"
+	"Не разрешать Windows отслеживать запуски приложений для улучшения меню `"Пуск`" и результатов поиска"
 
 [Array]$Text_Ru_UI =
 	"Отобразить `"Этот компьютер`" на рабочем столе",
@@ -207,7 +207,7 @@
 	"Не показывать недавно используемые папки на панели быстрого доступа",
 	"Не показывать недавно использовавшиеся файлы на панели быстрого доступа",
 	"Отключить отображение вкладки `"Предыдущие версии`" в свойствах файлов и папок",
-	"Скрыть поле или значок поиска на Панели задач",
+	"Скрыть поле или значок поиска на панели задач",
 	"Не показывать кнопку Windows Ink Workspace на панели задач",
 	"Всегда отображать все значки в области уведомлений",
 	"Открепить Microsoft Edge и Microsoft Store от панели задач",
@@ -228,7 +228,7 @@
 [Array]$Text_Ru_OneDrive = "Удалить OneDrive"
 
 [Array]$Text_Ru_System =
-	"Включить Память устройства для автоматического освобождения места",
+	"Включить Память устройства",
 	"Запускать контроль памяти каждый месяц",
 	"Удалять временные файлы, не используемые в приложениях",
 	"Удалять файлы, которые находятся в корзине более 30 дней",
@@ -239,11 +239,11 @@
 	"Изменить путь переменной среды %TEMP% на %SystemDrive%\Temp",
 	"Включить длинные пути Win32",
 	"Группировать процессы svchost.exe",
-	"Включить дополнительную информацию при выводе BSoD",
+	"Отображать Stop-ошибку при появлении BSoD",
 	"Не хранить сведения о зоне происхождения вложенных файлов",
 	"Отключить использование режима одобрения администратором для встроенной учетной записи администратора",
 	"Включить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами",
-	"Отключить оптимизацию доставки для обновлений с других ПК",
+	"Отключить оптимизацию доставки",
 	"Всегда ждать сеть при запуске и входе в систему",
 	"Не разрешать Windows управлять принтером, используемым по умолчанию",
 	"Отключить компоненты",
