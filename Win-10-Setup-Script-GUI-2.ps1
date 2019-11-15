@@ -4197,9 +4197,9 @@ function Click-HamburgerButton {
 		[string]$Header
 	)
 	
-	$PanelToggle_ContextMenu, $PanelToggle_Edge, $PanelToggle_MicrosoftDefender, $PanelToggle_OneDrive,
-	$PanelToggle_Privacy, $PanelToggle_ScheduledTasks, $PanelToggle_StartMenu, $PanelToggle_System,
-	$PanelToggle_UI, $PanelToggle_UwpApps, $PanelToggle_WindowsGameRecording | ForEach-Object {
+	$PanelToggle_ContextMenu, $PanelToggle_Edge, $PanelToggle_Defender, $PanelToggle_OneDrive,
+	$PanelToggle_Privacy, $PanelToggle_Tasks, $PanelToggle_StartMenu, $PanelToggle_System,
+	$PanelToggle_Ui, $PanelToggle_Uwp, $PanelToggle_Game | ForEach-Object {
 		
 		if (($_.Name -eq $Panel.Name) -and ($_.Visibility -eq "Collapsed"))
 		{
@@ -4343,7 +4343,7 @@ $Button_ContextMenu.Add_MouseLeftButtonDown({
 	})
 	
 $Button_Defender.Add_MouseLeftButtonDown({
-		Click-HamburgerButton -Panel $PanelToggle_MicrosoftDefender -Header "Microsoft Defender"
+		Click-HamburgerButton -Panel $PanelToggle_Defender -Header "Microsoft Defender"
 	})
 	
 $Button_Edge.Add_MouseLeftButtonDown({
@@ -4351,7 +4351,7 @@ $Button_Edge.Add_MouseLeftButtonDown({
 	})
 	
 $Button_Game.Add_MouseLeftButtonDown({
-		Click-HamburgerButton -Panel $PanelToggle_WindowsGameRecording -Header "Windows Game Recording"
+		Click-HamburgerButton -Panel $PanelToggle_Game -Header "Windows Game Recording"
 	})
 	
 $Button_OneDrive.Add_MouseLeftButtonDown({
@@ -4371,15 +4371,15 @@ $Button_System.Add_MouseLeftButtonDown({
 	})
 	
 $Button_Tasks.Add_MouseLeftButtonDown({
-		Click-HamburgerButton -Panel $PanelToggle_ScheduledTasks -Header "Scheduled Tasks"
+		Click-HamburgerButton -Panel $PanelToggle_Tasks -Header "Scheduled Tasks"
 	})
 
 $Button_Ui.Add_MouseLeftButtonDown({
-		Click-HamburgerButton -Panel $PanelToggle_UI -Header "UI & Personalization"
+		Click-HamburgerButton -Panel $PanelToggle_Ui -Header "UI & Personalization"
 	})
 	
 $Button_Uwp.Add_MouseLeftButtonDown({
-		Click-HamburgerButton -Panel $PanelToggle_UwpApps -Header "Uwp Apps"
+		Click-HamburgerButton -Panel $PanelToggle_Uwp -Header "Uwp Apps"
 	})
 #endregion Controls Events
 
