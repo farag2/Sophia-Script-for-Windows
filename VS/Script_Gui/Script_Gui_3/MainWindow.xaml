@@ -99,45 +99,35 @@
         </Style>
 
         <Style x:Key="BorderActionsButtons" TargetType="Border">
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Margin" Value="5 0 5 0"/>
-            <Setter Property="Canvas.Top" Value="10"/>
+            <Setter Property="BorderThickness" Value="1"/>                      
             <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#2196F3"/>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderBrush" Value="#607D8B"/>
+                </Trigger>
+
+                <Trigger Property="IsEnabled" Value="True">
+                    <Setter Property="Background" Value="#3F51B5"/>
                     <Setter Property="BorderBrush" Value="#2196F3"/>
                 </Trigger>
-                <Trigger Property="IsMouseOver" Value="False">
-                    <Setter Property="Background" Value="#3F51B5"/>
+
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#2196F3"/>
                     <Setter Property="BorderBrush" Value="#3F51B5"/>
-                </Trigger>
-                <Trigger Property="Visibility" Value="Visible">
-                    <Trigger.EnterActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:0.2"/>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </Trigger.EnterActions>
-                </Trigger>
+                </Trigger>               
+                
                 <EventTrigger RoutedEvent="MouseDown">
                     <EventTrigger.Actions>
                         <BeginStoryboard>
                             <Storyboard>
-                                <ThicknessAnimation Storyboard.TargetProperty="Margin" Duration="0:0:0.5" From="5 0 5 0" To="5 5 5 0" SpeedRatio="5" AutoReverse="True" />
+                                <ThicknessAnimation Storyboard.TargetProperty="Margin" Duration="0:0:0.5" From="0 0 0 0" To="0 5 0 0" SpeedRatio="5" AutoReverse="True" />
                             </Storyboard>
                         </BeginStoryboard>
                     </EventTrigger.Actions>
                 </EventTrigger>
             </Style.Triggers>
         </Style>
-
-        <Style x:Key="TextblockActionsButtons" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="#FFFFFF"/>
-            <Setter Property="Margin" Value="20 5 20 5"/>
-            <Setter Property="FontSize" Value="14"/>
-        </Style>
-
+        
         <Style x:Key="ToggleSwitchLeftStyle" TargetType="{x:Type ToggleButton}">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Background" Value="{StaticResource RadioButton.Static.Background}"/>
@@ -329,25 +319,128 @@
             <!--#endregion Category Text-->
 
             <!--#region Save Load Apply Buttons-->
+            <StackPanel Orientation="Horizontal" Canvas.Top="0" Canvas.Right="10" Height="50" >
 
             <!--#region Apply Button-->
-            <Border Name="ButtonApply" Style="{StaticResource BorderActionsButtons}" Canvas.Right="180" Visibility="Hidden" >
-                <TextBlock Text="Apply" Style="{StaticResource TextblockActionsButtons}"/>
-            </Border>
-            <!--#endregion Apply Button-->
+                <StackPanel Margin="10">
+                    <Border Name="ButtonApply" IsEnabled="False" >
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="BorderThickness" Value="1"/>                                
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="BorderBrush" Value="#607D8B"/>
+                                    </Trigger>
+                                    <Trigger Property="IsEnabled" Value="True">
+                                        <Setter Property="Background" Value="#3F51B5"/>
+                                        <Setter Property="BorderBrush" Value="#2196F3"/>
+                                    </Trigger>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#2196F3"/>
+                                        <Setter Property="BorderBrush" Value="#3F51B5"/>
+                                    </Trigger>
+                                    <EventTrigger RoutedEvent="MouseDown">
+                                        <EventTrigger.Actions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ThicknessAnimation Storyboard.TargetProperty="Margin" Duration="0:0:0.5" From="0 0 0 0" To="0 5 0 0" SpeedRatio="5" AutoReverse="True" />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger.Actions>
+                                    </EventTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock Name="TextButtonApply" Text="">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Margin" Value="15 5 15 5"/>
+                                    <Setter Property="FontSize" Value="14"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=ButtonApply, Path=IsEnabled}" Value="True">
+                                            <Setter Property="Foreground" Value="#FFFFFF"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=ButtonApply, Path=IsEnabled}" Value="False">
+                                            <Setter Property="Foreground" Value="#607D8B"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Border>
+                </StackPanel>
+                <!--#endregion Apply Button-->
 
             <!--#region Save Button-->
-            <Border Name="ButtonSave" Style="{StaticResource BorderActionsButtons}" Canvas.Right="100" Visibility="Hidden" >
-                <TextBlock Text="Save" Style="{StaticResource TextblockActionsButtons}"/>
-            </Border>
-            <!--#endregion Save Button-->
+                <StackPanel Margin="10">
+                    <Border Name="ButtonSave" IsEnabled="False" >
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="BorderThickness" Value="1"/>                                
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="BorderBrush" Value="#607D8B"/>
+                                    </Trigger>
+                                    <Trigger Property="IsEnabled" Value="True">
+                                        <Setter Property="Background" Value="#3F51B5"/>
+                                        <Setter Property="BorderBrush" Value="#2196F3"/>
+                                    </Trigger>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#2196F3"/>
+                                        <Setter Property="BorderBrush" Value="#3F51B5"/>
+                                    </Trigger>
+                                    <EventTrigger RoutedEvent="MouseDown">
+                                        <EventTrigger.Actions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ThicknessAnimation Storyboard.TargetProperty="Margin" Duration="0:0:0.5" From="0 0 0 0" To="0 5 0 0" SpeedRatio="5" AutoReverse="True" />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger.Actions>
+                                    </EventTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock Name="TextButtonSave" Text="">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Margin" Value="15 5 15 5"/>
+                                    <Setter Property="FontSize" Value="14"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=ButtonSave, Path=IsEnabled}" Value="True">
+                                            <Setter Property="Foreground" Value="#FFFFFF"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=ButtonSave, Path=IsEnabled}" Value="False">
+                                            <Setter Property="Foreground" Value="#607D8B"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Border>
+                </StackPanel>
+                <!--#endregion Save Button-->
 
             <!--#region Load Button-->
-            <Border Name="ButtonLoad" Style="{StaticResource BorderActionsButtons}" Canvas.Right="20">
-                <TextBlock Text="Load" Style="{StaticResource TextblockActionsButtons}"/>
-            </Border>
-            <!--#endregion Load Button-->
-
+                <StackPanel Margin="10">
+                    <Border Name="ButtonLoad" Style="{StaticResource BorderActionsButtons}">
+                        <TextBlock Name="TextButtonLoad" Text="
+">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Margin" Value="15 5 15 5"/>
+                                    <Setter Property="FontSize" Value="14"/>
+                                    <Setter Property="Foreground" Value="#FFFFFF"/>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Border>
+                </StackPanel>
+                <!--#endregion Load Button-->
+                
+            </StackPanel>
             <!--#endregion Save Load Apply Buttons-->
 
         </Canvas>
