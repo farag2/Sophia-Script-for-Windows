@@ -59,7 +59,7 @@ or
 Read the code you run carefully. Some functions are presented as an example only. You must be aware of the meaning of the functions in the code. **If you're not sure what the script does, do not run it.**
 Some of functions can be run also on LTSB/LTSC and on older versions of Windows and PowerShell (not recommended to run on the x86 systems).
 
-### Screenshots
+## Screenshots
 - Startmenu
 
   ![Startmenu](https://github.com/farag2/Windows-10-Setup-Script/blob/master/Screenshots/Startmenu.png)
@@ -70,7 +70,10 @@ Some of functions can be run also on LTSB/LTSC and on older versions of Windows 
 
 
 ## Links
-### Ask a question in
+ - [Release information](https://docs.microsoft.com/en-us/windows/release-information)
+ - [Known issues](https://docs.microsoft.com/en-us/windows/release-information/status-windows-10-1909)
+
+## Ask a question on
  - [Habr](https://habr.com/en/post/465365/)
  - [Ru-Board](http://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15)
  - [My Digital Life](https://forums.mydigitallife.net/threads/powershell-script-setup-windows-10.80139/)
