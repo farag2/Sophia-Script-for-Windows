@@ -17,6 +17,8 @@ else
 }
 
 $gitHub = "https://github.com/farag2/Windows-10-Setup-Script"
+$headerEng = "Context Menu", "Microsoft Defender", "Microsoft Edge", "Windows Game Recording and Broadcasting", "OneDrive", "Privacy & Telemetry", "Start Menu", "System", "Task Scheduler", "UI & Personalization", "UWP Apps"
+$headerRu = "Контекстное меню", "Microsoft Defender", "Microsoft Edge", "Запись и трансляция игр Windows", "OneDrive", "Конфиденциальность и телеметрия", "Меню `"Пуск`"", "Система", "Планировщик заданий", "UI и персонализация", "UWP-приложения"
 
 #endregion Variable
 
@@ -406,7 +408,9 @@ $TextRu = "Добавить пункт ""Extract"" для MSI в контекс�
         </Style>
 
         <Style x:Key="BorderActionsButtons" TargetType="Border">
-            <Setter Property="BorderThickness" Value="1"/>                      
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="100"/>
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Background" Value="Transparent"/>
@@ -415,12 +419,12 @@ $TextRu = "Добавить пункт ""Extract"" для MSI в контекс�
 
                 <Trigger Property="IsEnabled" Value="True">
                     <Setter Property="Background" Value="#3F51B5"/>
-                    <Setter Property="BorderBrush" Value="#2196F3"/>
+                    <Setter Property="BorderBrush" Value="#3F51B5"/>
                 </Trigger>
 
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="#2196F3"/>
-                    <Setter Property="BorderBrush" Value="#3F51B5"/>
+                    <Setter Property="BorderBrush" Value="#2196F3"/>
                 </Trigger>               
                 
                 <EventTrigger RoutedEvent="MouseDown">
@@ -626,128 +630,130 @@ $TextRu = "Добавить пункт ""Extract"" для MSI в контекс�
             <!--#endregion Category Text-->
 
             <!--#region Save Load Apply Buttons-->
-            <StackPanel Orientation="Horizontal" Canvas.Top="0" Canvas.Right="10" Height="50" >
 
             <!--#region Apply Button-->
-                <StackPanel Margin="10">
-                    <Border Name="ButtonApply" IsEnabled="False" >
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="BorderThickness" Value="1"/>                                
-                                <Style.Triggers>
-                                    <Trigger Property="IsEnabled" Value="False">
-                                        <Setter Property="Background" Value="Transparent"/>
-                                        <Setter Property="BorderBrush" Value="#607D8B"/>
-                                    </Trigger>
-                                    <Trigger Property="IsEnabled" Value="True">
-                                        <Setter Property="Background" Value="#3F51B5"/>
-                                        <Setter Property="BorderBrush" Value="#2196F3"/>
-                                    </Trigger>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#2196F3"/>
-                                        <Setter Property="BorderBrush" Value="#3F51B5"/>
-                                    </Trigger>
-                                    <EventTrigger RoutedEvent="MouseDown">
-                                        <EventTrigger.Actions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ThicknessAnimation Storyboard.TargetProperty="Margin" Duration="0:0:0.5" From="0 0 0 0" To="0 5 0 0" SpeedRatio="5" AutoReverse="True" />
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </EventTrigger.Actions>
-                                    </EventTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <TextBlock Name="TextButtonApply" Text="">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Margin" Value="15 5 15 5"/>
-                                    <Setter Property="FontSize" Value="14"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ElementName=ButtonApply, Path=IsEnabled}" Value="True">
-                                            <Setter Property="Foreground" Value="#FFFFFF"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding ElementName=ButtonApply, Path=IsEnabled}" Value="False">
-                                            <Setter Property="Foreground" Value="#607D8B"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </Border>
-                </StackPanel>
-                <!--#endregion Apply Button-->
+            <Border Name="ButtonApply" IsEnabled="False" >
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="Height" Value="30"/>
+                        <Setter Property="Width" Value="100"/>
+                        <Setter Property="Canvas.Top" Value="10"/>
+                        <Setter Property="Canvas.Right" Value="260"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderBrush" Value="#607D8B"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="True">
+                                <Setter Property="Background" Value="#3F51B5"/>
+                                <Setter Property="BorderBrush" Value="#3F51B5"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#2196F3"/>
+                                <Setter Property="BorderBrush" Value="#2196F3"/>
+                            </Trigger>
+                            <EventTrigger RoutedEvent="MouseDown">
+                                <EventTrigger.Actions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation Storyboard.TargetProperty="Margin" Duration="0:0:0.5" From="0 0 0 0" To="0 5 0 0" SpeedRatio="5" AutoReverse="True" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger.Actions>
+                            </EventTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <TextBlock Name="TextButtonApply" Text="">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="FontSize" Value="14"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=ButtonApply, Path=IsEnabled}" Value="True">
+                                    <Setter Property="Foreground" Value="#FFFFFF"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=ButtonApply, Path=IsEnabled}" Value="False">
+                                    <Setter Property="Foreground" Value="#607D8B"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Border>
+            <!--#endregion Apply Button-->
 
             <!--#region Save Button-->
-                <StackPanel Margin="10">
-                    <Border Name="ButtonSave" IsEnabled="False" >
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="BorderThickness" Value="1"/>                                
-                                <Style.Triggers>
-                                    <Trigger Property="IsEnabled" Value="False">
-                                        <Setter Property="Background" Value="Transparent"/>
-                                        <Setter Property="BorderBrush" Value="#607D8B"/>
-                                    </Trigger>
-                                    <Trigger Property="IsEnabled" Value="True">
-                                        <Setter Property="Background" Value="#3F51B5"/>
-                                        <Setter Property="BorderBrush" Value="#2196F3"/>
-                                    </Trigger>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#2196F3"/>
-                                        <Setter Property="BorderBrush" Value="#3F51B5"/>
-                                    </Trigger>
-                                    <EventTrigger RoutedEvent="MouseDown">
-                                        <EventTrigger.Actions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ThicknessAnimation Storyboard.TargetProperty="Margin" Duration="0:0:0.5" From="0 0 0 0" To="0 5 0 0" SpeedRatio="5" AutoReverse="True" />
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </EventTrigger.Actions>
-                                    </EventTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <TextBlock Name="TextButtonSave" Text="">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Margin" Value="15 5 15 5"/>
-                                    <Setter Property="FontSize" Value="14"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ElementName=ButtonSave, Path=IsEnabled}" Value="True">
-                                            <Setter Property="Foreground" Value="#FFFFFF"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding ElementName=ButtonSave, Path=IsEnabled}" Value="False">
-                                            <Setter Property="Foreground" Value="#607D8B"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </Border>
-                </StackPanel>
-                <!--#endregion Save Button-->
+            <Border Name="ButtonSave" IsEnabled="False" >
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="Height" Value="30"/>
+                        <Setter Property="Width" Value="100"/>
+                        <Setter Property="Canvas.Top" Value="10"/>
+                        <Setter Property="Canvas.Right" Value="140"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderBrush" Value="#607D8B"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="True">
+                                <Setter Property="Background" Value="#3F51B5"/>
+                                <Setter Property="BorderBrush" Value="#3F51B5"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#2196F3"/>
+                                <Setter Property="BorderBrush" Value="#2196F3"/>
+                            </Trigger>
+                            <EventTrigger RoutedEvent="MouseDown">
+                                <EventTrigger.Actions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation Storyboard.TargetProperty="Margin" Duration="0:0:0.5" From="0 0 0 0" To="0 5 0 0" SpeedRatio="5" AutoReverse="True" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger.Actions>
+                            </EventTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <TextBlock Name="TextButtonSave" Text="">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="FontSize" Value="14"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=ButtonSave, Path=IsEnabled}" Value="True">
+                                    <Setter Property="Foreground" Value="#FFFFFF"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=ButtonSave, Path=IsEnabled}" Value="False">
+                                    <Setter Property="Foreground" Value="#607D8B"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Border>
+            <!--#endregion Save Button-->
 
             <!--#region Load Button-->
-                <StackPanel Margin="10">
-                    <Border Name="ButtonLoad" Style="{StaticResource BorderActionsButtons}">
-                        <TextBlock Name="TextButtonLoad" Text="
-">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Margin" Value="15 5 15 5"/>
-                                    <Setter Property="FontSize" Value="14"/>
-                                    <Setter Property="Foreground" Value="#FFFFFF"/>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </Border>
-                </StackPanel>
-                <!--#endregion Load Button-->
-                
-            </StackPanel>
+            <Border Name="ButtonLoad" Style="{StaticResource BorderActionsButtons}" Canvas.Top="10" Canvas.Right="20">
+                <TextBlock Name="TextButtonLoad" Text="">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="Foreground" Value="#FFFFFF"/>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Border>
+            <!--#endregion Load Button-->
+
             <!--#endregion Save Load Apply Buttons-->
 
         </Canvas>
@@ -4287,9 +4293,9 @@ function Click-HamburgerButton {
 		$Panel,
 		
 		[Parameter(Mandatory=$true)]
-		[string]$Header
+		$HeaderNumber
 	)
-	
+			
 	$PanelToggle_ContextMenu, $PanelToggle_Edge, $PanelToggle_Defender, $PanelToggle_OneDrive,
 	$PanelToggle_Privacy, $PanelToggle_Tasks, $PanelToggle_StartMenu, $PanelToggle_System,
 	$PanelToggle_Ui, $PanelToggle_Uwp, $PanelToggle_Game | ForEach-Object {
@@ -4305,7 +4311,15 @@ function Click-HamburgerButton {
 		}	
 	}	
 	
-	$TextBlock_Category.Text = $Header
+	if ($RU)
+	{
+		$TextBlock_Category.Text = $headerRu[$HeaderNumber]
+	}
+	
+	else
+	{
+		$TextBlock_Category.Text = $headerEng[$HeaderNumber]
+	}
 }
 
 function Click-ToggleButton {
@@ -4344,10 +4358,10 @@ function Click-ToggleButton {
 	}
 }
 
-function Set-Language {
+function Set-TogglesLanguage {
 	<#
     .SYNOPSIS
-    Change Language button click event
+    Change Toggles Language by "Change Language" button clicked
     #>
 
     [CmdletBinding()]
@@ -4394,17 +4408,61 @@ function Set-Language {
 	}
 	
 	if ($RU)
-	{
+	{		
 		$TextButtonApply.Text = "Применить"
 		$TextButtonSave.Text = "Сохранить"
 		$TextButtonLoad.Text = "Загрузить"
 	}
 	
 	else
-	{
+	{		
 		$TextButtonApply.Text = "Apply"
 		$TextButtonSave.Text = "Save"
 		$TextButtonLoad.Text = "Load"
+	}
+}
+
+function Set-HeaderLanguage {
+	<#
+    .SYNOPSIS
+    Change Headers Language by "Change Language" button clicked
+    #>
+
+    [CmdletBinding()]
+    param()
+	
+	$panelNumber = $null
+	$PanelToggle_ContextMenu, $PanelToggle_Edge, $PanelToggle_Defender, $PanelToggle_OneDrive,
+	$PanelToggle_Privacy, $PanelToggle_Tasks, $PanelToggle_StartMenu, $PanelToggle_System,
+	$PanelToggle_Ui, $PanelToggle_Uwp, $PanelToggle_Game | ForEach-Object {
+		
+		if ($_.Visibility -eq "Visible")
+		{
+			switch ($_.Name)
+			{
+				"PanelToggle_ContextMenu" {$panelNumber = 0}
+				"PanelToggle_Defender" {$panelNumber = 1}
+				"PanelToggle_Edge" {$panelNumber = 2}
+				"PanelToggle_Game" {$panelNumber = 3}
+				"PanelToggle_OneDrive" {$panelNumber = 4}
+				"PanelToggle_Privacy" {$panelNumber = 5}
+				"PanelToggle_StartMenu" {$panelNumber = 6}
+				"PanelToggle_System" {$panelNumber = 7}
+				"PanelToggle_Tasks" {$panelNumber = 8}
+				"PanelToggle_Ui" {$panelNumber = 9}
+				"PanelToggle_Uwp" {$panelNumber = 10}			
+			}
+		}
+	}
+	
+	if ($RU)
+	{
+		$TextBlock_Category.Text = $headerRu[$panelNumber]
+	}
+	
+	else
+	{
+		$TextBlock_Category.Text = $headerEng[$panelNumber]
 	}
 }
 
@@ -4437,8 +4495,9 @@ $ButtonHamburger.Add_MouseLeave({
 
 })
 
-$ButtonChangeLanguage.Add_MouseLeftButtonDown({
-	Set-Language -Change
+$ButtonChangeLanguage.Add_MouseLeftButtonDown({	
+	Set-TogglesLanguage -Change
+	Set-HeaderLanguage
 })
 
 $ButtonGitHub.Add_MouseLeftButtonDown({
@@ -4446,47 +4505,47 @@ $ButtonGitHub.Add_MouseLeftButtonDown({
 })
 
 $Button_ContextMenu.Add_MouseLeftButtonDown({
-		Click-HamburgerButton -Panel $PanelToggle_ContextMenu -Header "Context Menu"
+		Click-HamburgerButton -Panel $PanelToggle_ContextMenu -HeaderNumber "0"
 	})
 	
 $Button_Defender.Add_MouseLeftButtonDown({
-		Click-HamburgerButton -Panel $PanelToggle_Defender -Header "Microsoft Defender"
+		Click-HamburgerButton -Panel $PanelToggle_Defender -HeaderNumber "1"
 	})
 	
 $Button_Edge.Add_MouseLeftButtonDown({
-		Click-HamburgerButton -Panel $PanelToggle_Edge -Header "Microsoft Edge"
+		Click-HamburgerButton -Panel $PanelToggle_Edge -HeaderNumber "2"
 	})
 	
 $Button_Game.Add_MouseLeftButtonDown({
-		Click-HamburgerButton -Panel $PanelToggle_Game -Header "Windows Game Recording"
+		Click-HamburgerButton -Panel $PanelToggle_Game -HeaderNumber "3"
 	})
 	
 $Button_OneDrive.Add_MouseLeftButtonDown({
-		Click-HamburgerButton -Panel $PanelToggle_OneDrive -Header "OneDrive"
+		Click-HamburgerButton -Panel $PanelToggle_OneDrive -HeaderNumber "4"
 	})
 	
 $Button_Privacy.Add_MouseLeftButtonDown({
-		Click-HamburgerButton -Panel $PanelToggle_Privacy -Header "Privacy & Telemetry"
+		Click-HamburgerButton -Panel $PanelToggle_Privacy -HeaderNumber "5"
 	})
 	
 $Button_StartMenu.Add_MouseLeftButtonDown({
-		Click-HamburgerButton -Panel $PanelToggle_StartMenu -Header "Start Menu"
+		Click-HamburgerButton -Panel $PanelToggle_StartMenu -HeaderNumber "6"
 	})
 	
 $Button_System.Add_MouseLeftButtonDown({
-		Click-HamburgerButton -Panel $PanelToggle_System -Header "System"
+		Click-HamburgerButton -Panel $PanelToggle_System -HeaderNumber "7"
 	})
 	
 $Button_Tasks.Add_MouseLeftButtonDown({
-		Click-HamburgerButton -Panel $PanelToggle_Tasks -Header "Scheduled Tasks"
+		Click-HamburgerButton -Panel $PanelToggle_Tasks -HeaderNumber "8"
 	})
 
 $Button_Ui.Add_MouseLeftButtonDown({
-		Click-HamburgerButton -Panel $PanelToggle_Ui -Header "UI & Personalization"
+		Click-HamburgerButton -Panel $PanelToggle_Ui -HeaderNumber "9"
 	})
 	
 $Button_Uwp.Add_MouseLeftButtonDown({
-		Click-HamburgerButton -Panel $PanelToggle_Uwp -Header "Uwp Apps"
+		Click-HamburgerButton -Panel $PanelToggle_Uwp -HeaderNumber "10"
 	})
 #endregion Controls Events
 
@@ -4505,6 +4564,8 @@ $Button_Uwp.Add_MouseLeftButtonDown({
 
 #endregion Add Click Event to Toggle Buttons
 
-Set-Language
-Hide-Console
+
+Set-TogglesLanguage
+Set-HeaderLanguage
+Hide-Console | Out-Null
 $Window.ShowDialog() | Out-Null

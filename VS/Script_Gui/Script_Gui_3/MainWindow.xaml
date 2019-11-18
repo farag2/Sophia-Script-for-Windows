@@ -99,7 +99,9 @@
         </Style>
 
         <Style x:Key="BorderActionsButtons" TargetType="Border">
-            <Setter Property="BorderThickness" Value="1"/>                      
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="100"/>
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Background" Value="Transparent"/>
@@ -108,12 +110,12 @@
 
                 <Trigger Property="IsEnabled" Value="True">
                     <Setter Property="Background" Value="#3F51B5"/>
-                    <Setter Property="BorderBrush" Value="#2196F3"/>
+                    <Setter Property="BorderBrush" Value="#3F51B5"/>
                 </Trigger>
 
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="#2196F3"/>
-                    <Setter Property="BorderBrush" Value="#3F51B5"/>
+                    <Setter Property="BorderBrush" Value="#2196F3"/>
                 </Trigger>               
                 
                 <EventTrigger RoutedEvent="MouseDown">
@@ -315,132 +317,134 @@
             <!--#endregion Hamburger Button-->
 
             <!--#region Category Text-->
-            <TextBlock Name="TextBlock_Category" Text="Privacy &amp; Telemetry" FontSize="20" Canvas.Left="60" Canvas.Top="14" />
+            <TextBlock Name="TextBlock_Category" Text="" FontSize="20" Canvas.Left="60" Canvas.Top="14" />
             <!--#endregion Category Text-->
 
             <!--#region Save Load Apply Buttons-->
-            <StackPanel Orientation="Horizontal" Canvas.Top="0" Canvas.Right="10" Height="50" >
 
             <!--#region Apply Button-->
-                <StackPanel Margin="10">
-                    <Border Name="ButtonApply" IsEnabled="False" >
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="BorderThickness" Value="1"/>                                
-                                <Style.Triggers>
-                                    <Trigger Property="IsEnabled" Value="False">
-                                        <Setter Property="Background" Value="Transparent"/>
-                                        <Setter Property="BorderBrush" Value="#607D8B"/>
-                                    </Trigger>
-                                    <Trigger Property="IsEnabled" Value="True">
-                                        <Setter Property="Background" Value="#3F51B5"/>
-                                        <Setter Property="BorderBrush" Value="#2196F3"/>
-                                    </Trigger>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#2196F3"/>
-                                        <Setter Property="BorderBrush" Value="#3F51B5"/>
-                                    </Trigger>
-                                    <EventTrigger RoutedEvent="MouseDown">
-                                        <EventTrigger.Actions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ThicknessAnimation Storyboard.TargetProperty="Margin" Duration="0:0:0.5" From="0 0 0 0" To="0 5 0 0" SpeedRatio="5" AutoReverse="True" />
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </EventTrigger.Actions>
-                                    </EventTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <TextBlock Name="TextButtonApply" Text="">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Margin" Value="15 5 15 5"/>
-                                    <Setter Property="FontSize" Value="14"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ElementName=ButtonApply, Path=IsEnabled}" Value="True">
-                                            <Setter Property="Foreground" Value="#FFFFFF"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding ElementName=ButtonApply, Path=IsEnabled}" Value="False">
-                                            <Setter Property="Foreground" Value="#607D8B"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </Border>
-                </StackPanel>
-                <!--#endregion Apply Button-->
+            <Border Name="ButtonApply" IsEnabled="False" >
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="Height" Value="30"/>
+                        <Setter Property="Width" Value="100"/>
+                        <Setter Property="Canvas.Top" Value="10"/>
+                        <Setter Property="Canvas.Right" Value="260"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderBrush" Value="#607D8B"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="True">
+                                <Setter Property="Background" Value="#3F51B5"/>
+                                <Setter Property="BorderBrush" Value="#3F51B5"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#2196F3"/>
+                                <Setter Property="BorderBrush" Value="#2196F3"/>
+                            </Trigger>
+                            <EventTrigger RoutedEvent="MouseDown">
+                                <EventTrigger.Actions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation Storyboard.TargetProperty="Margin" Duration="0:0:0.5" From="0 0 0 0" To="0 5 0 0" SpeedRatio="5" AutoReverse="True" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger.Actions>
+                            </EventTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <TextBlock Name="TextButtonApply" Text="">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="FontSize" Value="14"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=ButtonApply, Path=IsEnabled}" Value="True">
+                                    <Setter Property="Foreground" Value="#FFFFFF"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=ButtonApply, Path=IsEnabled}" Value="False">
+                                    <Setter Property="Foreground" Value="#607D8B"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Border>
+            <!--#endregion Apply Button-->
 
             <!--#region Save Button-->
-                <StackPanel Margin="10">
-                    <Border Name="ButtonSave" IsEnabled="False" >
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="BorderThickness" Value="1"/>                                
-                                <Style.Triggers>
-                                    <Trigger Property="IsEnabled" Value="False">
-                                        <Setter Property="Background" Value="Transparent"/>
-                                        <Setter Property="BorderBrush" Value="#607D8B"/>
-                                    </Trigger>
-                                    <Trigger Property="IsEnabled" Value="True">
-                                        <Setter Property="Background" Value="#3F51B5"/>
-                                        <Setter Property="BorderBrush" Value="#2196F3"/>
-                                    </Trigger>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#2196F3"/>
-                                        <Setter Property="BorderBrush" Value="#3F51B5"/>
-                                    </Trigger>
-                                    <EventTrigger RoutedEvent="MouseDown">
-                                        <EventTrigger.Actions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ThicknessAnimation Storyboard.TargetProperty="Margin" Duration="0:0:0.5" From="0 0 0 0" To="0 5 0 0" SpeedRatio="5" AutoReverse="True" />
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </EventTrigger.Actions>
-                                    </EventTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <TextBlock Name="TextButtonSave" Text="">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Margin" Value="15 5 15 5"/>
-                                    <Setter Property="FontSize" Value="14"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ElementName=ButtonSave, Path=IsEnabled}" Value="True">
-                                            <Setter Property="Foreground" Value="#FFFFFF"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding ElementName=ButtonSave, Path=IsEnabled}" Value="False">
-                                            <Setter Property="Foreground" Value="#607D8B"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </Border>
-                </StackPanel>
-                <!--#endregion Save Button-->
+            <Border Name="ButtonSave" IsEnabled="False" >
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="Height" Value="30"/>
+                        <Setter Property="Width" Value="100"/>
+                        <Setter Property="Canvas.Top" Value="10"/>
+                        <Setter Property="Canvas.Right" Value="140"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderBrush" Value="#607D8B"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="True">
+                                <Setter Property="Background" Value="#3F51B5"/>
+                                <Setter Property="BorderBrush" Value="#3F51B5"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#2196F3"/>
+                                <Setter Property="BorderBrush" Value="#2196F3"/>
+                            </Trigger>
+                            <EventTrigger RoutedEvent="MouseDown">
+                                <EventTrigger.Actions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation Storyboard.TargetProperty="Margin" Duration="0:0:0.5" From="0 0 0 0" To="0 5 0 0" SpeedRatio="5" AutoReverse="True" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger.Actions>
+                            </EventTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <TextBlock Name="TextButtonSave" Text="">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="FontSize" Value="14"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=ButtonSave, Path=IsEnabled}" Value="True">
+                                    <Setter Property="Foreground" Value="#FFFFFF"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=ButtonSave, Path=IsEnabled}" Value="False">
+                                    <Setter Property="Foreground" Value="#607D8B"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Border>
+            <!--#endregion Save Button-->
 
             <!--#region Load Button-->
-                <StackPanel Margin="10">
-                    <Border Name="ButtonLoad" Style="{StaticResource BorderActionsButtons}">
-                        <TextBlock Name="TextButtonLoad" Text="
-">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Margin" Value="15 5 15 5"/>
-                                    <Setter Property="FontSize" Value="14"/>
-                                    <Setter Property="Foreground" Value="#FFFFFF"/>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </Border>
-                </StackPanel>
-                <!--#endregion Load Button-->
-                
-            </StackPanel>
+            <Border Name="ButtonLoad" Style="{StaticResource BorderActionsButtons}" Canvas.Top="10" Canvas.Right="20">
+                <TextBlock Name="TextButtonLoad" Text="">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="Foreground" Value="#FFFFFF"/>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Border>
+            <!--#endregion Load Button-->
+
             <!--#endregion Save Load Apply Buttons-->
 
         </Canvas>
