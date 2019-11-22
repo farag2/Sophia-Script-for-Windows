@@ -17,8 +17,8 @@ else
 }
 
 $gitHub = "https://github.com/farag2/Windows-10-Setup-Script"
-$headerEng = "Context Menu", "Microsoft Defender", "Microsoft Edge", "Windows Game Recording and Broadcasting", "OneDrive", "Privacy & Telemetry", "Start Menu", "System", "Task Scheduler", "UI & Personalization", "UWP Apps"
-$headerRu = "Контекстное меню", "Microsoft Defender", "Microsoft Edge", "Запись и трансляция игр Windows", "OneDrive", "Конфиденциальность и телеметрия", "Меню `"Пуск`"", "Система", "Планировщик заданий", "UI и персонализация", "UWP-приложения"
+$headerEng = "Context Menu", "Microsoft Defender", "Microsoft Edge", "Windows Game Recording and Broadcasting", "OneDrive", "Privacy & Telemetry", "Start Menu", "System", "Task Scheduler", "UI & Personalization","", "UWP Apps"
+$headerRu = "Контекстное меню", "Microsoft Defender", "Microsoft Edge", "Запись и трансляция игр Windows", "OneDrive", "Конфиденциальность и телеметрия", "Меню `"Пуск`"", "Система", "Планировщик заданий", "UI и персонализация", "", "UWP-приложения"
 
 $hamburgerEng = "Change Language", "Context Menu", "Microsoft Defender", "Microsoft Edge", "Windows Game Recording and Broadcasting","Follow to GitHub", "OneDrive", "Privacy & Telemetry", "Start Menu", "System", "Task Scheduler", "UI & Personalization", "UWP Apps"
 $hamburgerRu = "Переключить язык", "Контекстное меню", "Microsoft Defender", "Microsoft Edge", "Запись и трансляция игр Windows", "Открыть GitHub", "OneDrive", "Конфиденциальность и телеметрия", "Меню `"Пуск`"", "Система", "Планировщик заданий", "UI и персонализация", "UWP-приложения"
@@ -593,13 +593,33 @@ $TextRu = "Добавить пункт ""Extract"" для MSI в контекс�
             <Setter Property="Background" Value="#FFFFFF"/>
         </Style>
 
+        <Style x:Key="AnimatedViewbox" TargetType="Viewbox">            
+            <Setter Property="Width" Value="48"/>
+            <Setter Property="Height" Value="48"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0 10 0 10"/>
+            <Setter Property="RenderTransformOrigin" Value="05,05"/>
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=IsVisible}" Value="True">
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)" To="360" Duration="0:0:6" RepeatBehavior="Forever"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </DataTrigger.EnterActions>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
     </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        </Grid.RowDefinitions>        
 
         <!--#region Title Panel-->
         <Canvas Grid.Row="0" Background="#E4E4E4">
@@ -767,6 +787,21 @@ $TextRu = "Добавить пункт ""Extract"" для MSI в контекс�
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+
+            <!--#region Info Panel-->
+            <StackPanel Name="PanelToggle_UserInfo" Grid.Column="1" Width="450" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed">
+                <Viewbox Name="UserInfo_Viewbox" Style="{StaticResource AnimatedViewbox}">
+                    <Viewbox.RenderTransform>
+                        <RotateTransform/>
+                    </Viewbox.RenderTransform>                    
+                    <Canvas Width="24" Height="24">
+                        <Path Data="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"
+                              Fill="#3F51B5"/>
+                    </Canvas>
+                </Viewbox>
+                <TextBlock Name="UserInfo_TextBlock" Text="" FontWeight="Bold" Foreground="#3F51B5" Margin="0 10 0 10" TextWrapping="Wrap" HorizontalAlignment="Center"/>
+            </StackPanel>
+            <!--#endregion Info Panel-->
 
             <!--#region Hamburger Panel-->
             <Canvas Name="HamburgerMenu" Width="50" Background="#3F51B5" Grid.Column="0">
@@ -4202,7 +4237,7 @@ $TextRu = "Добавить пункт ""Extract"" для MSI в контекс�
                             </DockPanel>
                         </Border>
                     </StackPanel>
-                    <!--#endregion ContextMenu Toggles-->
+                    <!--#endregion ContextMenu Toggles-->                   
 
                 </StackPanel>
             </ScrollViewer>
@@ -4220,6 +4255,31 @@ $xamlGui = [System.Windows.Markup.XamlReader]::Load((New-Object System.Xml.XmlNo
 $xamlMarkup.SelectNodes('//*[@Name]') | ForEach-Object {
     New-Variable -Name $_.Name -Value $xamlGui.FindName($_.Name) -Force
 }
+
+#region Fill Gui Elements Arrays
+$hamburgerText = New-Object System.Collections.ArrayList($null)
+(Get-Variable -Name "Textblock_Hamburger_*").Name | ForEach-Object {
+	$ham = $Window.FindName($_)
+	[Void]$hamburgerText.Add($ham)
+}
+
+$toggleText = New-Object System.Collections.ArrayList($null)
+(Get-Variable -Name "Text_*").Name | ForEach-Object {
+	$toggle = $Window.FindName($_)
+	[Void]$toggleText.Add($toggle)
+}
+
+$toggleSwitch = New-Object System.Collections.ArrayList($null)
+(Get-Variable -Name "Toggle_*").Name | ForEach-Object {
+	$switch = $Window.FindName($_)
+	[Void]$toggleSwitch.Add($switch)
+}
+
+$togglesPanels = $PanelToggle_ContextMenu, $PanelToggle_Defender, $PanelToggle_Edge, $PanelToggle_Game, 
+				$PanelToggle_OneDrive, $PanelToggle_Privacy, $PanelToggle_StartMenu, $PanelToggle_System,
+				$PanelToggle_Tasks, $PanelToggle_Ui, $PanelToggle_UserInfo, $PanelToggle_Uwp
+				
+#endregion Gui Elements Array Collections
 
 #region Script Functions
 function Hide-Console {
@@ -4241,7 +4301,7 @@ function Hide-Console {
     [Console.Window]::ShowWindow([Console.Window]::GetConsoleWindow(), 0)
 }
 
-function Use-HamburgerMenu {
+function Click-HamburgerMenu {
     <#
     .SYNOPSIS
     Show or hide hamburger menu.
@@ -4249,21 +4309,38 @@ function Use-HamburgerMenu {
 
     [CmdletBinding()]
     param ()
-
-    $minWidth = 50
+		
+	$minWidth = 50
     $maxWidth = 250
     $duration = New-Object System.Windows.Duration([timespan]::FromSeconds(1))
 	$widthProperty = New-Object System.Windows.PropertyPath([System.Windows.Controls.Canvas]::WidthProperty)
 
-    if ($HamburgerMenu.ActualWidth -eq $minWidth) {
-        $animation = New-Object System.Windows.Media.Animation.DoubleAnimation($minWidth, $maxWidth, $duration)
+    if ($HamburgerMenu.ActualWidth -eq $minWidth) 
+	{
+        # Fix text (russian) freeze in minimize hamburger menu				
+		
+		for ($i=0;$i -lt $hamburgerText.Count;$i++)
+		{
+			$hamburgerText[$i].TextWrapping = "Wrap"
+		
+		}	
+		
+		$animation = New-Object System.Windows.Media.Animation.DoubleAnimation($minWidth, $maxWidth, $duration)
     }
 
-    else {
-        $animation = New-Object System.Windows.Media.Animation.DoubleAnimation($maxWidth, $minWidth, $duration)
+    else 
+	{
+        # Fix text (russian) freeze in minimize hamburger menu
+		for ($i=0;$i -lt $hamburgerText.Count;$i++)
+		{
+			$hamburgerText[$i].TextWrapping = "NoWrap"
+		
+		}	
+		
+		$animation = New-Object System.Windows.Media.Animation.DoubleAnimation($maxWidth, $minWidth, $duration)
     }
 
-    $animation.SpeedRatio ="3"
+    $animation.SpeedRatio ="2"
 	$storyboard = New-Object System.Windows.Media.Animation.Storyboard
 	[System.Windows.Media.Animation.Storyboard]::SetTargetProperty($animation, $widthProperty)
     $storyboard.Children.Add($animation)
@@ -4295,46 +4372,63 @@ function Set-HamburgerHover {
 	}	
 }
 
-function Click-HamburgerButton {
+function Set-ActivePanel {
 	<#
     .SYNOPSIS
-    Click event to Hamburger Category Button.
+    Set Active Panel by Name.
     #>
-
+	
 	[CmdletBinding()]
     param
 	(
-		[Parameter(Mandatory=$true)]
-		$Panel,
-		
-		[Parameter(Mandatory=$true)]
-		$HeaderNumber
+		[Parameter(Mandatory=$true, ValueFromPipeline=$true, HelpMessage="Name for select panel: ContextMenu, Defender, Edge, Game, OneDrive, Privacy, StartMenu, System, Tasks, Ui, UserInfo, Uwp")]
+		[ValidateSet("ContextMenu", "Defender", "Edge", "Game", "OneDrive", "Privacy", "StartMenu", "System", "Tasks", "Ui", "UserInfo", "Uwp")]
+		[ValidateNotNull()]
+		[string]$Name
 	)
-			
-	$PanelToggle_ContextMenu, $PanelToggle_Edge, $PanelToggle_Defender, $PanelToggle_OneDrive,
-	$PanelToggle_Privacy, $PanelToggle_Tasks, $PanelToggle_StartMenu, $PanelToggle_System,
-	$PanelToggle_Ui, $PanelToggle_Uwp, $PanelToggle_Game | ForEach-Object {
 		
-		if (($_.Name -eq $Panel.Name) -and ($_.Visibility -eq "Collapsed"))
+	$panelName = "PanelToggle_{0}"-f $Name
+	for ($i=0;$i -lt $togglesPanels.Count;$i++)
+	{
+		if ($togglesPanels[$i].Name -eq $panelName)
 		{
-			$_.Visibility = "Visible"
+			$togglesPanels[$i].Visibility = "Visible"
+			
+			if ($RU)
+			{
+				$TextBlock_Category.Text = $headerRu[$i]
+			}
+			
+			else
+			{
+				$TextBlock_Category.Text = $headerEng[$i]
+			}		
 		}
 		
-		elseif (($_.Name -ne $Panel.Name) -and ($_.Visibility -eq "Visible"))
+		else
 		{
-			$_.Visibility = "Collapsed"
+			$togglesPanels[$i].Visibility = "Collapsed"
 		}	
 	}
+}
+
+function Get-ActivePanel {
+	<#
+    .SYNOPSIS
+    Return Current Active Panel Name.
+    #>
 	
-	if ($RU)
+	[CmdletBinding()]
+    param ()
+		
+	for ($i=0;$i -lt $togglesPanels.Count;$i++)
 	{
-		$TextBlock_Category.Text = $headerRu[$HeaderNumber]
+		if ($togglesPanels[$i].Visibility -eq "Visible")
+		{
+			$panelName = $togglesPanels[$i].Name -replace "PanelToggle_",""
+			return $panelName
+		}	
 	}
-	
-	else
-	{
-		$TextBlock_Category.Text = $headerEng[$HeaderNumber]
-	}	
 }
 
 function Click-ToggleButton {
@@ -4409,76 +4503,115 @@ function Set-GuiLanguage {
 	
 	#endregion Set Save Load Apply Buttons
 	
-	#region Set Category Header
+	#region Set Hamburger Buttons
 	
-	if ($TextBlock_Category.Text.Length -eq 0) # First Script Run
+	if ($RU)
 	{
-		if ($RU)
+		for ($i=0;$i -lt $hamburgerText.Count;$i++)
 		{
-			$TextBlock_Category.Text = $headerRu[5]
+			$hamburgerText[$i].Text = $hamburgerRu[$i]
 		}
-		
-		else
-		{
-			$TextBlock_Category.Text = $headerEng[5]
-		}		
 	}
 	
 	else
 	{
-		if ($headerRu.IndexOf($TextBlock_Category.Text) -eq "-1")
+		for ($i=0;$i -lt $hamburgerText.Count;$i++)
 		{
-			$TextBlock_Category.Text = $headerRu[$headerEng.IndexOf($TextBlock_Category.Text)]
+			$hamburgerText[$i].Text = $hamburgerEng[$i]
 		}
-		
-		else
-		{
-			$TextBlock_Category.Text = $headerEng[$headerRu.IndexOf($TextBlock_Category.Text)]
-		}
-	
-	}
-	
-	#endregion Set Category Header
-	
-	#region Set Hamburger Buttons
-	
-	$hamText = (Get-Variable -Name "Textblock_Hamburger_*").Name
-	
-	for ($i=0;$i -lt $hamText.Count;$i++)
-	{
-		$text = $Window.FindName($hamText[$i])
-		
-		if ($RU)
-		{
-			$text.Text = $hamburgerRu[$i]
-		}
-
-		else
-		{
-			$text.Text = $hamburgerEng[$i]
-		}	
 	}
 	
 	#endregion Set Hamburger Buttons
 		
-	#region Set Toggle Text Language
-		
-	(Get-Variable -Name "Text_*").Name | ForEach-Object {
-			
-		$toggleText = $Window.FindName($_)
-		
-		if ($RU)
+	#region Set Toggle Text Language	
+	
+	if ($RU)
+	{
+		for ($i=0;$i -lt $toggleText.Count;$i++)
 		{
-			$toggleText.Text = $TextRu[$toggleText.Uid]
+			$toggleText[$i].Text = $TextRu[$toggleText[$i].Uid]
+		}
+	}
+	
+	else
+	{
+		for ($i=0;$i -lt $toggleText.Count;$i++)
+		{
+			$toggleText[$i].Text = $TextEng[$toggleText[$i].Uid]
+		}
+	}	
+	
+	#endregion Set Toggle Text Language	
+}
+
+function Show-InfoPanel {
+	<#
+    .SYNOPSIS
+    Show Message for User
+    #>
+
+    [CmdletBinding()]
+    param 
+	(
+		[Parameter(Mandatory=$false)]
+		[ValidateNotNull()]
+		[string]$TextRu,
+		
+		[Parameter(Mandatory=$false)]
+		[ValidateNotNull()]
+		[string]$TextEng,
+		
+		[Parameter(Mandatory=$false)]
+		[switch]$ShowAnimation,
+		
+		[Parameter(Mandatory=$false)]
+		[switch]$Hide
+	)
+	
+	$TextBlock_Category.Text = ""
+	$panelName = "PanelToggle_UserInfo"
+	
+	for ($i=0;$i -lt $togglesPanels.Count;$i++)
+	{
+		if ($togglesPanels[$i].Name -eq $panelName)
+		{
+			if ($Hide)
+			{
+				$togglesPanels[$i].Visibility = "Collapsed"
+				$UserInfo_TextBlock.Text = ""
+			}
+			
+			else
+			{
+				$togglesPanels[$i].Visibility = "Visible"
+			}
 		}
 		
 		else
 		{
-			$toggleText.Text = $TextEng[$toggleText.Uid]
-		}			
+			$togglesPanels[$i].Visibility = "Collapsed"
+		}	
 	}
-		
-	#endregion Set Toggle Text Language	
+	
+	if ($ShowAnimation)
+	{
+		$UserInfo_Viewbox.Visibility = "Visible"
+	}
+	
+	else
+	{
+		$UserInfo_Viewbox.Visibility = "Collapsed"
+	}
+	
+	if ($RU)
+	{
+		$UserInfo_TextBlock.Text = $TextRu
+	}
+	
+	else
+	{
+		$UserInfo_TextBlock.Text = $TextEng
+	}
 }
 
 function Follow-OnGitHub {
@@ -4498,7 +4631,7 @@ function Follow-OnGitHub {
 #region Controls Events
 
 $ButtonHamburger.Add_MouseLeftButtonDown({
-    Use-HamburgerMenu
+    Click-HamburgerMenu
 })
 
 $ButtonHamburger.Add_MouseEnter({
@@ -4507,77 +4640,80 @@ $ButtonHamburger.Add_MouseEnter({
 
 $ButtonHamburger.Add_MouseLeave({
 	Set-HamburgerHover
-
 })
 
 $Button_Hamburger_ChangeLanguage.Add_MouseLeftButtonDown({	
+	$panelName = Get-ActivePanel	
 	Set-GuiLanguage -Switch
+	Set-ActivePanel -Name $panelName	
 })
 
 $Button_Hamburger_ContextMenu.Add_MouseLeftButtonDown({
-	Click-HamburgerButton -Panel $PanelToggle_ContextMenu -HeaderNumber "0"
-	})
+	Set-ActivePanel -Name "ContextMenu"
+})
 	
 $Button_Hamburger_Defender.Add_MouseLeftButtonDown({
-	Click-HamburgerButton -Panel $PanelToggle_Defender -HeaderNumber "1"
-	})
+	Set-ActivePanel -Name "Defender"
+})
 	
 $Button_Hamburger_Edge.Add_MouseLeftButtonDown({
-	Click-HamburgerButton -Panel $PanelToggle_Edge -HeaderNumber "2"
-	})
+	Set-ActivePanel -Name "Edge"
+})
 	
 $Button_Hamburger_Game.Add_MouseLeftButtonDown({
-	Click-HamburgerButton -Panel $PanelToggle_Game -HeaderNumber "3"
-	})
+	Set-ActivePanel -Name "Game"
+})
 	
 $Button_Hamburger_GitHub.Add_MouseLeftButtonDown({
 	Follow-OnGitHub
 })
 	
 $Button_Hamburger_OneDrive.Add_MouseLeftButtonDown({
-	Click-HamburgerButton -Panel $PanelToggle_OneDrive -HeaderNumber "4"
-	})
+	Set-ActivePanel -Name "OneDrive"
+})
 	
 $Button_Hamburger_Privacy.Add_MouseLeftButtonDown({
-	Click-HamburgerButton -Panel $PanelToggle_Privacy -HeaderNumber "5"
-	})
+	Set-ActivePanel -Name "Privacy"
+})
 	
 $Button_Hamburger_StartMenu.Add_MouseLeftButtonDown({
-	Click-HamburgerButton -Panel $PanelToggle_StartMenu -HeaderNumber "6"
-	})
+	Set-ActivePanel -Name "StartMenu"
+})
 	
 $Button_Hamburger_System.Add_MouseLeftButtonDown({
-	Click-HamburgerButton -Panel $PanelToggle_System -HeaderNumber "7"
-	})
+	Set-ActivePanel -Name "System"
+})
 	
 $Button_Hamburger_Tasks.Add_MouseLeftButtonDown({
-	Click-HamburgerButton -Panel $PanelToggle_Tasks -HeaderNumber "8"
-	})
+	Set-ActivePanel -Name "Tasks"
+})
 
 $Button_Hamburger_UI.Add_MouseLeftButtonDown({
-	Click-HamburgerButton -Panel $PanelToggle_Ui -HeaderNumber "9"
-	})
+	Set-ActivePanel -Name "Ui"
+})
 	
 $Button_Hamburger_Uwp.Add_MouseLeftButtonDown({
-	Click-HamburgerButton -Panel $PanelToggle_Uwp -HeaderNumber "10"
-	})
-#endregion Controls Events
+	Set-ActivePanel -Name "Uwp"
+})
 
-#region Add Click Event to Toggle Buttons
+#region Add Toggle Buttons Click Event
 
-(Get-Variable -Name "Toggle_*").Name | ForEach-Object {
-	$currentToggle = $Window.FindName($_)
-	$currentToggle.Add_Checked({
+for ($i=0;$i -lt $toggleSwitch.Count;$i++)
+{
+	$toggleSwitch[$i].Add_Checked({
 	Click-ToggleButton -IsChecked
-	})
+	})	
 
-	$currentToggle.Add_Unchecked({
+	$toggleSwitch[$i].Add_Unchecked({
 		Click-ToggleButton
 	})
 }
 
-#endregion Add Click Event to Toggle Buttons
+#endregion Add Toggle Buttons Click Event
 
+#endregion Controls Events
+
+Set-ActivePanel -Name "Privacy"
 Set-GuiLanguage
 Hide-Console | Out-Null
 $Window.ShowDialog() | Out-Null
