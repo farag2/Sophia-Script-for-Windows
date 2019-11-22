@@ -534,8 +534,7 @@
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_Privacy, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -590,8 +589,7 @@
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_UI, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -646,8 +644,7 @@
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_OneDrive, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -702,8 +699,7 @@
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_System, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -758,8 +754,7 @@
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_StartMenu, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -814,8 +809,7 @@
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_Edge, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -870,8 +864,7 @@
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_Uwp, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -926,8 +919,7 @@
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_Game, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -982,8 +974,7 @@
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_Tasks, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -1038,8 +1029,7 @@
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_Defender, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -1094,8 +1084,7 @@
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_ContextMenu, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -1150,8 +1139,7 @@
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_ChangeLanguage, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -1206,8 +1194,7 @@
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_GitHub, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>

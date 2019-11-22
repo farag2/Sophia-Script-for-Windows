@@ -20,8 +20,8 @@ $gitHub = "https://github.com/farag2/Windows-10-Setup-Script"
 $headerEng = "Context Menu", "Microsoft Defender", "Microsoft Edge", "Windows Game Recording and Broadcasting", "OneDrive", "Privacy & Telemetry", "Start Menu", "System", "Task Scheduler", "UI & Personalization","", "UWP Apps"
 $headerRu = "Контекстное меню", "Microsoft Defender", "Microsoft Edge", "Запись и трансляция игр Windows", "OneDrive", "Конфиденциальность и телеметрия", "Меню `"Пуск`"", "Система", "Планировщик заданий", "UI и персонализация", "", "UWP-приложения"
 
-$hamburgerEng = "Change Language", "Context Menu", "Microsoft Defender", "Microsoft Edge", "Windows Game Recording and Broadcasting","Follow to GitHub", "OneDrive", "Privacy & Telemetry", "Start Menu", "System", "Task Scheduler", "UI & Personalization", "UWP Apps"
-$hamburgerRu = "Переключить язык", "Контекстное меню", "Microsoft Defender", "Microsoft Edge", "Запись и трансляция игр Windows", "Открыть GitHub", "OneDrive", "Конфиденциальность и телеметрия", "Меню `"Пуск`"", "Система", "Планировщик заданий", "UI и персонализация", "UWP-приложения"
+$hamburgerEng = "Change Language", "Context Menu", "Microsoft Defender", "Microsoft Edge", "Windows Game Recording`nand Broadcasting","Follow to GitHub", "OneDrive", "Privacy & Telemetry", "Start Menu", "System", "Task Scheduler", "UI & Personalization", "UWP Apps"
+$hamburgerRu = "Переключить язык", "Контекстное меню", "Microsoft Defender", "Microsoft Edge", "Запись и трансляция`nигр Windows", "Открыть GitHub", "OneDrive", "Конфиденциальность`nи телеметрия", "Меню `"Пуск`"", "Система", "Планировщик заданий", "UI и персонализация", "UWP-приложения"
 #endregion Variable
 
 #region Text Eng
@@ -845,8 +845,7 @@ $TextRu = "Добавить пункт ""Extract"" для MSI в контекс�
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_Privacy, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -901,8 +900,7 @@ $TextRu = "Добавить пункт ""Extract"" для MSI в контекс�
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_UI, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -957,8 +955,7 @@ $TextRu = "Добавить пункт ""Extract"" для MSI в контекс�
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_OneDrive, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -1013,8 +1010,7 @@ $TextRu = "Добавить пункт ""Extract"" для MSI в контекс�
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_System, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -1069,8 +1065,7 @@ $TextRu = "Добавить пункт ""Extract"" для MSI в контекс�
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_StartMenu, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -1125,8 +1120,7 @@ $TextRu = "Добавить пункт ""Extract"" для MSI в контекс�
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_Edge, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -1181,8 +1175,7 @@ $TextRu = "Добавить пункт ""Extract"" для MSI в контекс�
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_Uwp, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -1237,8 +1230,7 @@ $TextRu = "Добавить пункт ""Extract"" для MSI в контекс�
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_Game, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -1293,8 +1285,7 @@ $TextRu = "Добавить пункт ""Extract"" для MSI в контекс�
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_Tasks, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -1349,8 +1340,7 @@ $TextRu = "Добавить пункт ""Extract"" для MSI в контекс�
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_Defender, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -1405,8 +1395,7 @@ $TextRu = "Добавить пункт ""Extract"" для MSI в контекс�
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_ContextMenu, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -1461,8 +1450,7 @@ $TextRu = "Добавить пункт ""Extract"" для MSI в контекс�
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_ChangeLanguage, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -1517,8 +1505,7 @@ $TextRu = "Добавить пункт ""Extract"" для MSI в контекс�
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_GitHub, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -4319,11 +4306,11 @@ function Click-HamburgerMenu {
 	{
         # Fix text (russian) freeze in minimize hamburger menu				
 		
-		for ($i=0;$i -lt $hamburgerText.Count;$i++)
-		{
-			$hamburgerText[$i].TextWrapping = "Wrap"
-		
-		}	
+#		for ($i=0;$i -lt $hamburgerText.Count;$i++)
+#		{
+#			$hamburgerText[$i].TextWrapping = "Wrap"
+#		
+#		}	
 		
 		$animation = New-Object System.Windows.Media.Animation.DoubleAnimation($minWidth, $maxWidth, $duration)
     }
@@ -4331,12 +4318,12 @@ function Click-HamburgerMenu {
     else 
 	{
         # Fix text (russian) freeze in minimize hamburger menu
-		for ($i=0;$i -lt $hamburgerText.Count;$i++)
-		{
-			$hamburgerText[$i].TextWrapping = "NoWrap"
-		
-		}	
-		
+#		for ($i=0;$i -lt $hamburgerText.Count;$i++)
+#		{
+#			$hamburgerText[$i].TextWrapping = "NoWrap"
+#		
+#		}	
+#		
 		$animation = New-Object System.Windows.Media.Animation.DoubleAnimation($maxWidth, $minWidth, $duration)
     }
 
