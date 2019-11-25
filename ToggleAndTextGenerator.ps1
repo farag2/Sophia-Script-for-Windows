@@ -375,7 +375,7 @@ $category | %{
 <DockPanel Margin="0 10 0 10">
 <Grid HorizontalAlignment="Left">
 <ToggleButton Name="$toggleName" Uid="$toggleUid" Style="{StaticResource ToggleSwitchLeftStyle}" IsChecked="False"/>
-<TextBlock Name="$textblockName" Uid="$textBlockUid" Text="" Margin="65 0 10 0" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False">
+<TextBlock Name="$textblockName" Uid="$textBlockUid" Text="" Margin="65 0 10 0" VerticalAlignment="Center" IsHitTestVisible="False">
 <TextBlock.Style>
 <Style TargetType="{x:Type TextBlock}">
 <Style.Triggers>
