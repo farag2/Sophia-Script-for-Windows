@@ -1,6 +1,38 @@
 ﻿Add-Type -AssemblyName "PresentationCore", "PresentationFramework", "WindowsBase"
 
 #region Variable
+# Default Script Settings File Extension for File Dialogs
+$scriptSettingExt = ".wtss"
+$scriptSettingFilter = 'Win10 Setup Script Settings|*{0}'-f $scriptSettingExt
+$scriptSettingFileName = "My Win10 Setup Script Settings"
+$scriptSettingInitialDir = [environment]::getfolderpath("MyDocuments")
+
+# Create and Tune Open File Dialog
+$openFileDialog = New-Object Microsoft.Win32.OpenFileDialog($null)
+$openFileDialog.Multiselect = $false
+$openFileDialog.ReadOnlyChecked = $false
+$openFileDialog.ShowReadOnly = $false
+$openFileDialog.AddExtension = $true
+$openFileDialog.CheckFileExists = $true
+$openFileDialog.CheckPathExists = $true
+$openFileDialog.DefaultExt = $scriptSettingExt
+$openFileDialog.DereferenceLinks = $true
+$openFileDialog.Filter = $scriptSettingFilter
+$openFileDialog.InitialDirectory = $scriptSettingInitialDir
+$openFileDialog.ValidateNames = $true
+
+# Create and Tune Save File Dialog
+$saveFileDialog = New-Object Microsoft.Win32.SaveFileDialog($null)
+$saveFileDialog.CreatePrompt = $false
+$saveFileDialog.AddExtension = $true
+$saveFileDialog.CheckFileExists = $true
+$saveFileDialog.CheckPathExists = $true
+$saveFileDialog.DefaultExt = $scriptSettingExt
+$saveFileDialog.DereferenceLinks = $true
+$saveFileDialog.Filter = $scriptSettingFilter
+$saveFileDialog.InitialDirectory = $scriptSettingInitialDir
+$saveFileDialog.ValidateNames = $true
+$saveFileDialog.OverwritePrompt = $true
 
 # If variable clickedToggle > 0 show "Save" and "Apply" button, else hide "Save" and "Apply" button
 $clickedToggle = 0
@@ -316,7 +348,7 @@ $TextRu = "Добавить пункт ""Extract"" для MSI в контекс�
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        Name="Window" Title="Windows 10 Setup Script" MinHeight="863" MinWidth="750" Height="863" Width="750" 
+        Name="Window" Title="Windows 10 Setup Script" MinHeight="863" MinWidth="800" Height="863" Width="800" 
         FontFamily="Calibri" FontSize="18" TextOptions.TextFormattingMode="Display" WindowStartupLocation="CenterScreen" 
         SnapsToDevicePixels="True" ResizeMode="CanResize" ShowInTaskbar="True" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
         Foreground="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}">
@@ -595,7 +627,7 @@ $TextRu = "Добавить пункт ""Extract"" для MSI в контекс�
 
     </Window.Resources>
 
-    <Grid>
+    <Grid Name="GridWindow">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
@@ -4279,6 +4311,7 @@ $togglesPanels = $PanelToggle_ContextMenu, $PanelToggle_Defender, $PanelToggle_E
 #endregion Gui Elements Array Collections
 
 #region Script Functions
+
 function Hide-Console {
     <#
     .SYNOPSIS
@@ -4315,13 +4348,13 @@ function Click-HamburgerMenu {
     if ($HamburgerMenu.ActualWidth -eq $minWidth) 
 	{		
 		$animation = New-Object System.Windows.Media.Animation.DoubleAnimation($minWidth, $maxWidth, $duration)
-		$Window.Width += 200
+		$Window.Width += 150
     }
 
     else 
 	{
 		$animation = New-Object System.Windows.Media.Animation.DoubleAnimation($maxWidth, $minWidth, $duration)
-		$Window.Width -= 200
+		$Window.Width -= 150
     }
 
     $animation.SpeedRatio ="2"
@@ -4537,38 +4570,50 @@ function Show-InfoPanel {
     [CmdletBinding()]
     param 
 	(
-		[Parameter(Mandatory=$false)]
+		[Parameter(Mandatory=$true)]
 		[ValidateNotNull()]
 		[string]$TextRu,
 		
-		[Parameter(Mandatory=$false)]
+		[Parameter(Mandatory=$true)]
 		[ValidateNotNull()]
 		[string]$TextEng,
+		
+		[Parameter(Mandatory=$true)]
+		[ValidateNotNull()]
+		[string]$HeaderRu,
+		
+		[Parameter(Mandatory=$true)]
+		[ValidateNotNull()]
+		[string]$HeaderEng,
 		
 		[Parameter(Mandatory=$false)]
 		[switch]$ShowAnimation,
 		
 		[Parameter(Mandatory=$false)]
 		[switch]$Hide
-	)
+	)	
 	
-	$TextBlock_Category.Text = ""
-	$panelName = "PanelToggle_UserInfo"
+	if ($Hide)
+	{
+		$ButtonApply.Visibility = "Visible"
+		$ButtonSave.Visibility = "Visible"
+		$ButtonLoad.Visibility = "Visible"
+		$UserInfo_Border.Visibility = "Collapsed"
+		Exit
+	}
+	
+	else
+	{
+		$ButtonApply.Visibility = "Collapsed"
+		$ButtonSave.Visibility = "Collapsed"
+		$ButtonLoad.Visibility = "Collapsed"		
+	}
 	
 	for ($i=0;$i -lt $togglesPanels.Count;$i++)
 	{
-		if ($togglesPanels[$i].Name -eq $panelName)
+		if ($togglesPanels[$i].Name -eq "PanelToggle_UserInfo")
 		{
-			if ($Hide)
-			{
-				$togglesPanels[$i].Visibility = "Collapsed"
-				$UserInfo_TextBlock.Text = ""
-			}
-			
-			else
-			{
-				$togglesPanels[$i].Visibility = "Visible"
-			}
+			$togglesPanels[$i].Visibility = "Visible"
 		}
 		
 		else
@@ -4577,25 +4622,22 @@ function Show-InfoPanel {
 		}	
 	}
 	
-	if ($ShowAnimation)
-	{
-		$UserInfo_Border.Visibility = "Visible"
-	}
-	
-	else
-	{
-		$UserInfo_Border.Visibility = "Collapsed"
-	}
-	
 	if ($RU)
 	{
+		$TextBlock_Category.Text = $HeaderRu
 		$UserInfo_TextBlock.Text = $TextRu
 	}
 	
 	else
 	{
+		$TextBlock_Category.Text = $HeaderEng
 		$UserInfo_TextBlock.Text = $TextEng
 	}
+	
+	if ($ShowAnimation)
+	{
+		$UserInfo_Border.Visibility = "Visible"
+	}	
 }
 
 function Follow-OnGitHub {
@@ -4614,7 +4656,7 @@ function Follow-OnGitHub {
 
 #region Controls Events
 
-$ButtonHamburger.Add_MouseLeftButtonDown({
+$ButtonHamburger.Add_MouseLeftButtonUp({
     Click-HamburgerMenu
 })
 
@@ -4626,58 +4668,71 @@ $ButtonHamburger.Add_MouseLeave({
 	Set-HamburgerHover
 })
 
-$Button_Hamburger_ChangeLanguage.Add_MouseLeftButtonDown({		
+$Button_Hamburger_ChangeLanguage.Add_MouseLeftButtonUp({		
 	$panelName = Get-ActivePanel	
 	Set-GuiLanguage -Switch
 	Set-ActivePanel -Name $panelName	
 })
 
-$Button_Hamburger_ContextMenu.Add_MouseLeftButtonDown({
+$Button_Hamburger_ContextMenu.Add_MouseLeftButtonUp({
 	Set-ActivePanel -Name "ContextMenu"
 })
 	
-$Button_Hamburger_Defender.Add_MouseLeftButtonDown({
+$Button_Hamburger_Defender.Add_MouseLeftButtonUp({
 	Set-ActivePanel -Name "Defender"
 })
 	
-$Button_Hamburger_Edge.Add_MouseLeftButtonDown({
+$Button_Hamburger_Edge.Add_MouseLeftButtonUp({
 	Set-ActivePanel -Name "Edge"
 })
 	
-$Button_Hamburger_Game.Add_MouseLeftButtonDown({
+$Button_Hamburger_Game.Add_MouseLeftButtonUp({
 	Set-ActivePanel -Name "Game"
 })
 	
-$Button_Hamburger_GitHub.Add_MouseLeftButtonDown({
+$Button_Hamburger_GitHub.Add_MouseLeftButtonUp({
 	Follow-OnGitHub
 })
 	
-$Button_Hamburger_OneDrive.Add_MouseLeftButtonDown({
+$Button_Hamburger_OneDrive.Add_MouseLeftButtonUp({
 	Set-ActivePanel -Name "OneDrive"
 })
 	
-$Button_Hamburger_Privacy.Add_MouseLeftButtonDown({
+$Button_Hamburger_Privacy.Add_MouseLeftButtonUp({
 	Set-ActivePanel -Name "Privacy"
 })
 	
-$Button_Hamburger_StartMenu.Add_MouseLeftButtonDown({
+$Button_Hamburger_StartMenu.Add_MouseLeftButtonUp({
 	Set-ActivePanel -Name "StartMenu"
 })
 	
-$Button_Hamburger_System.Add_MouseLeftButtonDown({
+$Button_Hamburger_System.Add_MouseLeftButtonUp({
 	Set-ActivePanel -Name "System"
 })
 	
-$Button_Hamburger_Tasks.Add_MouseLeftButtonDown({
+$Button_Hamburger_Tasks.Add_MouseLeftButtonUp({
 	Set-ActivePanel -Name "Tasks"
 })
 
-$Button_Hamburger_UI.Add_MouseLeftButtonDown({
+$Button_Hamburger_UI.Add_MouseLeftButtonUp({
 	Set-ActivePanel -Name "Ui"
 })
 	
-$Button_Hamburger_Uwp.Add_MouseLeftButtonDown({
+$Button_Hamburger_Uwp.Add_MouseLeftButtonUp({
 	Set-ActivePanel -Name "Uwp"
+})
+
+$ButtonLoad.add_MouseLeftButtonUp({
+	$openFileDialog.ShowDialog()
+})
+
+$ButtonSave.add_MouseLeftButtonUp({
+	$saveFileDialog.ShowDialog()
+})
+
+$ButtonApply.add_MouseLeftButtonUp({
+	Show-InfoPanel -TextRu "Мы применяем настройки, пожалуйста подождите..." -TextEng "We apply settings, please wait..." -HeaderRu "Применение настроек" -HeaderEng "Apply settings" -ShowAnimation
+	$GridWindow.IsEnabled = $false	
 })
 
 #region Add Toggle Buttons Click Event

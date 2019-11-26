@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Script_Gui_3"
         mc:Ignorable="d"
-        Name="Window" Title="Windows 10 Setup Script" MinHeight="863" MinWidth="950" Height="863" Width="950" 
+        Name="Window" Title="Windows 10 Setup Script" MinHeight="863" MinWidth="800" Height="863" Width="800" 
         FontFamily="Calibri" FontSize="18" TextOptions.TextFormattingMode="Display" WindowStartupLocation="CenterScreen" 
         SnapsToDevicePixels="True" ResizeMode="CanResize" ShowInTaskbar="True" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
         Foreground="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}">
@@ -54,7 +54,7 @@
         <Style x:Key="PanelHamburgerMenu" TargetType="StackPanel">
             <Setter Property="Orientation" Value="Horizontal"/>
             <Setter Property="Height" Value="55"/>
-            <Setter Property="Width" Value="{Binding ElementName=HamburgerMenu, Path=Width}"/>            
+            <Setter Property="Width" Value="{Binding ElementName=HamburgerMenu, Path=Width}"/>
             <Style.Triggers>
                 <Trigger  Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="#2196F3"/>
@@ -116,8 +116,8 @@
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="#2196F3"/>
                     <Setter Property="BorderBrush" Value="#2196F3"/>
-                </Trigger>               
-                
+                </Trigger>
+
                 <EventTrigger RoutedEvent="MouseDown">
                     <EventTrigger.Actions>
                         <BeginStoryboard>
@@ -129,7 +129,7 @@
                 </EventTrigger>
             </Style.Triggers>
         </Style>
-        
+
         <Style x:Key="ToggleSwitchLeftStyle" TargetType="{x:Type ToggleButton}">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Background" Value="{StaticResource RadioButton.Static.Background}"/>
@@ -280,15 +280,15 @@
             <Setter Property="BorderThickness" Value="0 0 0 1"/>
             <Setter Property="Margin" Value="0 0 0 0"/>
             <Setter Property="Background" Value="#FFFFFF"/>
-        </Style>        
+        </Style>
 
     </Window.Resources>
 
-    <Grid>
+    <Grid Name="GridWindow">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>        
+        </Grid.RowDefinitions>
 
         <!--#region Title Panel-->
         <Canvas Grid.Row="0" Background="#E4E4E4">
@@ -534,7 +534,7 @@
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
+                                    <Setter Property="Margin" Value="5 0 5 0"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_Privacy, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -589,7 +589,7 @@
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
+                                    <Setter Property="Margin" Value="5 0 5 0"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_UI, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -644,7 +644,7 @@
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
+                                    <Setter Property="Margin" Value="5 0 5 0"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_OneDrive, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -699,7 +699,7 @@
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
+                                    <Setter Property="Margin" Value="5 0 5 0"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_System, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -754,7 +754,7 @@
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
+                                    <Setter Property="Margin" Value="5 0 5 0"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_StartMenu, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -809,7 +809,7 @@
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
+                                    <Setter Property="Margin" Value="5 0 5 0"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_Edge, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -864,7 +864,7 @@
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
+                                    <Setter Property="Margin" Value="5 0 5 0"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_Uwp, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -919,7 +919,7 @@
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
+                                    <Setter Property="Margin" Value="5 0 5 0"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_Game, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -974,7 +974,7 @@
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
+                                    <Setter Property="Margin" Value="5 0 5 0"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_Tasks, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -1029,7 +1029,7 @@
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
+                                    <Setter Property="Margin" Value="5 0 5 0"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_Defender, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -1084,7 +1084,7 @@
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
+                                    <Setter Property="Margin" Value="5 0 5 0"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_ContextMenu, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -1139,7 +1139,7 @@
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
+                                    <Setter Property="Margin" Value="5 0 5 0"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_ChangeLanguage, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -1194,7 +1194,7 @@
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                     <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
+                                    <Setter Property="Margin" Value="5 0 5 0"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=Button_Hamburger_GitHub, Path=IsMouseOver}" Value="True">
                                             <Setter Property="Opacity" Value="1"/>
@@ -1542,7 +1542,7 @@
                                 </Grid>
                             </DockPanel>
                         </Border>
-                        
+
                     </StackPanel>
                     <!--#endregion Privacy Toggles-->
 
@@ -2251,7 +2251,7 @@
                                 </Grid>
                             </DockPanel>
                         </Border>
-                        
+
                     </StackPanel>
                     <!--#endregion UI Toggles-->
 
@@ -2276,7 +2276,7 @@
                                 </Grid>
                             </DockPanel>
                         </Border>
-                        
+
                     </StackPanel>
                     <!--#endregion OneDrive Toggles-->
 
@@ -3099,7 +3099,7 @@
                                 </Grid>
                             </DockPanel>
                         </Border>
-                        
+
                     </StackPanel>
                     <!--#endregion System Toggles-->
 
@@ -3200,7 +3200,7 @@
                                 </Grid>
                             </DockPanel>
                         </Border>
-                        
+
                     </StackPanel>
                     <!--#endregion StartMenu Toggles-->
 
@@ -3282,14 +3282,14 @@
                                 </Grid>
                             </DockPanel>
                         </Border>
-                        
+
                     </StackPanel>
                     <!--#endregion Edge Toggles-->
 
                     <!--#region UWP Apps Toggles-->
                     <StackPanel Name="PanelToggle_Uwp" Visibility="Collapsed">
 
-                        
+
                     </StackPanel>
                     <!--#endregion UWPApps Toggles-->
 
@@ -3371,7 +3371,7 @@
                                 </Grid>
                             </DockPanel>
                         </Border>
-                        
+
                     </StackPanel>
                     <!--#endregion WindowsGameRecording Toggles-->
 
@@ -3434,7 +3434,7 @@
                                 </Grid>
                             </DockPanel>
                         </Border>
-                        
+
                     </StackPanel>
                     <!--#endregion ScheduledTasks Toggles-->
 
@@ -3592,7 +3592,7 @@
                                 </Grid>
                             </DockPanel>
                         </Border>
-                        
+
                     </StackPanel>
                     <!--#endregion MicrosoftDefender Toggles-->
 
@@ -3921,9 +3921,9 @@
                                 </Grid>
                             </DockPanel>
                         </Border>
-                        
+
                     </StackPanel>
-                    <!--#endregion ContextMenu Toggles-->                   
+                    <!--#endregion ContextMenu Toggles-->
 
                 </StackPanel>
             </ScrollViewer>
