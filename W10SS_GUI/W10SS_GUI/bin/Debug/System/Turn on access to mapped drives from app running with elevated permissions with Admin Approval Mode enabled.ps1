@@ -1,0 +1,3 @@
+﻿# Turn on access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled
+# Включить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами
+New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableLinkedConnections -PropertyType DWord -Value 1 -Force
