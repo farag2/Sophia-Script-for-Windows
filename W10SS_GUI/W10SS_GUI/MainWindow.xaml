@@ -5,8 +5,171 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:W10SS_GUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Name="Window" Title="Windows 10 Setup Script" MinHeight="863" MinWidth="800" Height="863" Width="800" 
+        FontFamily="Calibri" FontSize="18" TextOptions.TextFormattingMode="Display" 
+        WindowStartupLocation="CenterScreen" SnapsToDevicePixels="True" 
+        ResizeMode="CanResize" ShowInTaskbar="True" WindowStyle="None" AllowsTransparency="False"
+        Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+        Foreground="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="1" CornerRadius ="0" ResizeBorderThickness="4" 
+            GlassFrameThickness="0"/>
+    </WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <Style x:Key="WindowCloseButton" TargetType="StackPanel">
+            <Setter Property="Canvas.Top" Value="0"/>
+            <Setter Property="Canvas.Right" Value="0"/>
+            <Setter Property="Width" Value="32"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Background" Value="{Binding ElementName=windowHeader, Path=Background}"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#E81123"/>                    
+                </Trigger>                
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="WindowsMinimizeButton" TargetType="StackPanel" BasedOn="{StaticResource WindowCloseButton}">
+            <Setter Property="Canvas.Right" Value="32"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#C5C5C5"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="HamburgerMenu" TargetType="StackPanel">                        
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="40"/>            
+            <Setter Property="Background" Value="#3F51B5"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#2196F3"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="HamburgerContainer" TargetType="StackPanel">
+            <Style.Triggers>                
+                <EventTrigger RoutedEvent="MouseDown">
+                <EventTrigger.Actions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ThicknessAnimation Storyboard.TargetProperty="Margin" Duration="0:0:0.5" From="0 0 0 0" To="0 5 0 0" SpeedRatio="5" AutoReverse="True" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger.Actions>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="HamburgerPanel" TargetType="StackPanel">                        
+            <Setter Property="Width" Value="{Binding ElementName=buttonHamburger, Path=Width}"/>
+            <Setter Property="Background" Value="{Binding ElementName=buttonHamburger, Path=Background, Mode=OneTime}"/>
+        </Style>
+        <Style x:Key="HamburgerButton" TargetType="StackPanel" BasedOn="{StaticResource HamburgerMenu}">
+            <Setter Property="Width" Value="{Binding ElementName=panelHamburger, Path=Width}"/>
+            <Setter Property="Orientation" Value="Horizontal"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Name="gridWindow">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
         
+        <!--#region Header -->
+        <Canvas Name="windowHeader" Grid.Row="0" Background="#E4E4E4">
+            <!--#region Window Close Button -->
+            <StackPanel Name="buttonClose" Style="{StaticResource WindowCloseButton}" MouseLeftButtonDown="ButtonClose_MouseLeftButtonDown">                
+                <Viewbox Width="18" Height="24">
+                    <Canvas Width="24" Height="24">
+                        <Path Fill="Black" Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                    </Canvas>
+                </Viewbox>
+            </StackPanel>
+            <!--#endregion Window Close Button -->
+            <!--#region Window Minimize Button -->
+            <StackPanel Name="buttonMinimize" Style="{StaticResource WindowsMinimizeButton}" MouseLeftButtonDown="ButtonMinimize_MouseLeftButtonDown">
+                <Viewbox Width="18" Height="24">
+                    <Canvas Width="24" Height="24">
+                        <Path Fill="Black" Data="M20,14H4V10H20" />
+                    </Canvas>
+                </Viewbox>
+            </StackPanel>
+            <!--#endregion Window Minimize Button -->
+            <!--#region Hamburger Button-->
+            <StackPanel Name="buttonHamburger" Style="{StaticResource HamburgerMenu}" MouseDown="ButtonHamburger_MouseDown">
+                <StackPanel Name="containerHamburger" Style="{StaticResource HamburgerContainer}"
+                            Background="{Binding ElementName=buttonHamburger, Path=Background}">
+                    <Viewbox Width="28" Height="28" Margin="6">
+                        <Canvas Width="24" Height="24">
+                            <Path Data="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" Fill="#FFFFFF" />
+                        </Canvas>
+                    </Viewbox>
+                </StackPanel>
+            </StackPanel>
+            <!--#endregion Hamburger Button-->
+            <!--#region Header Category Text-->
+            <TextBlock Name="textHeader" FontSize="20" Canvas.Left="60" Canvas.Top="8" />
+            <!--#endregion Header Category Text-->
+        </Canvas>
+        <!--#endregion Header -->
+
+        <!--#region Context -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <!--#region Hamburger Panel-->
+            <StackPanel Name="panelHamburger" Style="{StaticResource HamburgerPanel}" >
+                <!--#region Privacy & Telemetry Button-->
+                <StackPanel Name="buttonHamburgerPrivacy" Style="{StaticResource HamburgerButton}">
+                    <StackPanel.Triggers>
+                        <EventTrigger RoutedEvent="MouseDown">
+                            <EventTrigger.Actions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ThicknessAnimation Storyboard.TargetName="containerPrivacy" Storyboard.TargetProperty="Margin" Duration="0:0:0.5" From="0 0 0 0" To="0 5 0 0" SpeedRatio="5" AutoReverse="True" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger.Actions>
+                        </EventTrigger>
+                    </StackPanel.Triggers>
+                    <DockPanel Name="containerPrivacy" Width="{Binding ElementName=HamburgerMenu, Path=Width}">
+                        <Viewbox Name="viewboxPrivacy" Width="28" Height="28" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5">
+                            <Canvas Width="24" Height="24">
+                                <Path Name="pathHamburgerPrivacy" Data="M18,20V10H6V20H18M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V10A2,2 0 0,1 6,8H15V6A3,3 0 0,0 12,3A3,3 0 0,0 9,6H7A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,17A2,2 0 0,1 10,15A2,2 0 0,1 12,13A2,2 0 0,1 14,15A2,2 0 0,1 12,17Z"
+                                  Fill="#FFFFFF">                                    
+                                </Path>
+                            </Canvas>
+                        </Viewbox>
+                        <TextBlock Name="textblockHamburgerPrivacy" Text="{DynamicResource textblockHamburgerPrivacy}">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="Foreground" Value="{Binding ElementName=pathHamburgerPrivacy, Path=Fill}"/>
+                                    <Setter Property="FontSize" Value="16"/>
+                                    <Setter Property="Margin" Value="5 0 5 0"/>                                    
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </DockPanel>
+                </StackPanel>
+                <!--#endregion Privacy & Telemetry Button-->
+            </StackPanel>
+            <!--#endregion Hamburger Panel-->
+        </Grid>        
+        <!--#endregion Context -->
+
+        <!--#region Footer -->
+        <Border Name="windowFooter" Grid.Row="2" Background="{Binding ElementName=windowHeader, Path=Background}">
+            
+        </Border>
+        <!--#endregion Footer -->
+
     </Grid>
+    
 </Window>

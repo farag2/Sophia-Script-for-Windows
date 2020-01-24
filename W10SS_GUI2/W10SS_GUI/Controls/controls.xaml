@@ -1,0 +1,66 @@
+﻿<ResourceDictionary x:Class="W10SS_GUI.Controls"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--#region Window Close Button -->
+    <ControlTemplate x:Key="buttonWindowClose" TargetType="Button">
+        <StackPanel Name="buttonClose" Background="{DynamicResource ResourceKey=windowHeaderBackground}" MouseLeftButtonDown="ButtonClose_MouseLeftButtonDown" >            
+            <Viewbox Width="18" Height="24">
+                <Canvas Width="24" Height="24">
+                    <Path Fill="{DynamicResource ResourceKey=ColorBlack}" Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                </Canvas>
+            </Viewbox>
+        </StackPanel>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="buttonClose" Property="Background" Value="{DynamicResource ResourceKey=windowHeaderClose}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <!--#endregion Window Close Button -->
+    
+    <!--#region Window Minimize Button -->
+    <ControlTemplate x:Key="buttonWindowMinimize" TargetType="Button">
+        <StackPanel Name="buttonMinimize" Background="{DynamicResource ResourceKey=windowHeaderBackground}" MouseLeftButtonDown="ButtonMinimize_MouseLeftButtonDown">
+            <Viewbox Width="18" Height="24">
+                <Canvas Width="24" Height="24">
+                    <Path Fill="{DynamicResource ResourceKey=ColorBlack}" Data="M20,14H4V10H20" />
+                </Canvas>
+            </Viewbox>
+        </StackPanel>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="buttonMinimize" Property="Background" Value="{DynamicResource ResourceKey=windowHeaderMinimize}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <!--#endregion Window Minimize Button -->
+    
+    <!--#region Hamburger Button-->
+    <ControlTemplate x:Key="buttonHamburger" TargetType="Button">
+        <StackPanel Name="buttonHamburger" Background="{DynamicResource ResourceKey=buttonHamburgerBackground}" MouseLeftButtonDown="ButtonHamburger_MouseLeftButtonDown">
+            <StackPanel Name="containerHamburger" >
+                <Viewbox Width="28" Height="28" Margin="6">
+                    <Canvas Width="24" Height="24">
+                        <Path Data="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" Fill="{DynamicResource ResourceKey=ColorWhite}" />
+                    </Canvas>
+                </Viewbox>
+            </StackPanel>
+        </StackPanel>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="buttonHamburger" Property="Background" Value="{DynamicResource ResourceKey=buttonHamburgerHover}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ThicknessAnimation Storyboard.TargetName="containerHamburger" Storyboard.TargetProperty="Margin" Duration="0:0:.5" From="0 0 0 0" To="0 5 0 0" SpeedRatio="5" AutoReverse="True"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>                                  
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <!--#endregion Hamburger Button-->
+    
+</ResourceDictionary>

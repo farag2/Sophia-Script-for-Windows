@@ -1,0 +1,49 @@
+﻿<Window x:Class="W10SS_GUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:W10SS_GUI"
+        mc:Ignorable="d"
+        Name="Window" Title="Windows 10 Setup Script" MinHeight="863" MinWidth="800" Height="863" Width="800" 
+        FontFamily="Calibri" FontSize="18" TextOptions.TextFormattingMode="Display" 
+        WindowStartupLocation="CenterScreen" SnapsToDevicePixels="True" 
+        ResizeMode="CanResize" ShowInTaskbar="True" WindowStyle="None" AllowsTransparency="False"
+        Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+        Foreground="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" MouseLeftButtonDown="Window_MouseLeftButtonDown" Initialized="Window_Initialized">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="1" CornerRadius ="0" ResizeBorderThickness="4" 
+            GlassFrameThickness="0"/>
+    </WindowChrome.WindowChrome>
+    <Grid Name="gridWindow">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+
+        <!--#region Header -->
+        <Canvas Name="windowHeader" Grid.Row="0" Background="{DynamicResource ResourceKey=windowHeaderBackground}">
+            <Button Template="{StaticResource ResourceKey=buttonWindowClose}" Width="32" Height="24" Canvas.Top="0" Canvas.Right="0"/>
+            <Button Template="{StaticResource ResourceKey=buttonWindowMinimize}" Width="32" Height="24" Canvas.Top="0" Canvas.Right="32"/>
+            <Button Template="{StaticResource ResourceKey=buttonHamburger}" Width="40" Height="40" Canvas.Top="0" Canvas.Left="0"/>
+            <TextBlock Name="textHeader" FontSize="20" Canvas.Left="60" Canvas.Top="8" Text="Test Test Here" />
+        </Canvas>
+        <!--#endregion Header -->
+
+        <!--#region Context -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="40"/>
+            </Grid.ColumnDefinitions>
+            
+            <!--#region Hamburger Panel-->
+            <StackPanel Name="panelHamburger" Width="40" MaxWidth="210" Background="{DynamicResource buttonHamburgerBackground}"/>
+            <!--#endregion Hamburger Panel-->
+
+        </Grid>
+        <!--#endregion Context -->
+    </Grid>
+</Window>

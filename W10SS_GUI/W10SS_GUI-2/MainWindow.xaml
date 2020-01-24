@@ -1,0 +1,117 @@
+﻿<Window x:Class="W10SS_GUI_2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:W10SS_GUI_2"
+        mc:Ignorable="d"
+        Name="Window" Title="Windows 10 Setup Script" MinHeight="863" MinWidth="800" Height="863" Width="800" 
+        FontFamily="Segoe UI" FontSize="18" TextOptions.TextFormattingMode="Display" 
+        WindowStartupLocation="CenterScreen" SnapsToDevicePixels="True" 
+        ResizeMode="CanResize" ShowInTaskbar="True" WindowStyle="None" AllowsTransparency="False"
+        Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+        Foreground="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="1" CornerRadius ="0" ResizeBorderThickness="4" GlassFrameThickness="0"/>
+    </WindowChrome.WindowChrome>
+    <Window.Resources>
+        <Style x:Key="WindowCloseButton" TargetType="StackPanel">
+            <Setter Property="Canvas.Top" Value="0"/>
+            <Setter Property="Canvas.Right" Value="0"/>
+            <Setter Property="Width" Value="32"/>
+            
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Background" Value="#E4E4E4"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#E81123"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="WindowsMinimizeButton" TargetType="StackPanel" BasedOn="{StaticResource WindowCloseButton}">
+            <Setter Property="Canvas.Right" Value="32"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#C5C5C5"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="HamburgerMenu" TargetType="StackPanel">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Background" Value="#3F51B5"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#2196F3"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="HamburgerContainer" TargetType="StackPanel">
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="MouseDown">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ThicknessAnimation Storyboard.TargetProperty="Margin" Duration="0:0:0.5" From="0 0 0 0" To="0 5 0 0" SpeedRatio="5" AutoReverse="True" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="HamburgerPanel" TargetType="StackPanel">
+            <Setter Property="Width" Value="{Binding ElementName=buttonHamburger, Path=Width}"/>
+            <Setter Property="Background" Value="{Binding ElementName=buttonHamburger, Path=Background, Mode=OneTime}"/>
+        </Style>
+        <Style x:Key="HamburgerButton" TargetType="StackPanel" BasedOn="{StaticResource HamburgerMenu}">
+            <Setter Property="Width" Value="{Binding ElementName=panelHamburger, Path=Width}"/>
+            <Setter Property="Orientation" Value="Horizontal"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+    </Window.Resources>
+    <Border BorderThickness="2" BorderBrush="#005faf" >
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="44"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="20"/>
+            </Grid.RowDefinitions>
+            <StackPanel Width="44" Height="44" Background="Wheat" VerticalAlignment="Center" HorizontalAlignment="Left" Panel.ZIndex="10"/>
+            <StackPanel Grid.Row="0">                
+                <DockPanel Height="24" Background="#E4E4E4" LastChildFill="True" VerticalAlignment="Center">
+                    <!--#region Window Close Button -->
+                    <StackPanel Name="buttonClose" Style="{StaticResource WindowCloseButton}" DockPanel.Dock="Right">
+                        <Viewbox Width="18" Height="24">
+                            <Canvas Width="24" Height="24">
+                                <Path Fill="Black" Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                            </Canvas>
+                        </Viewbox>
+                    </StackPanel>
+                    <!--#endregion Window Close Button -->
+                    <!--#region Window Minimize Button -->
+                    <StackPanel Name="buttonMinimize" Style="{StaticResource WindowsMinimizeButton}" DockPanel.Dock="Right">
+                        <Viewbox Width="18" Height="24">
+                            <Canvas Width="24" Height="24">
+                                <Path Fill="Black" Data="M20,14H4V10H20" />
+                            </Canvas>
+                        </Viewbox>
+                    </StackPanel>
+                    <!--#endregion Window Minimize Button -->
+                    <!--#region Window Title Text -->
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock Text="Windows 10 Setup Script" FontSize="14" FontWeight="ExtraLight"/>
+                    </StackPanel>
+                    <!--#endregion Window Title Text -->
+                </DockPanel>
+            </StackPanel>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="44"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="80"/>
+                </Grid.ColumnDefinitions>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>
