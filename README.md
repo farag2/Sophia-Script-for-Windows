@@ -9,7 +9,7 @@ Windows 10 Setup Script
 - [Usage](#usage)
 - [FAQ](#faq)
 - [Screenshots](#screenshots)
-- [Links](#links)
+- [Microsoft Docs](#Microsoft-Docs)
 - [PS](#ps)
   
 ## Overview
@@ -26,6 +26,7 @@ The PowerShell script is a set of tweaks for fine-tuning the OS and automating t
 - Turn off diagnostics tracking scheduled tasks;
 - Interactive prompts
   - [Screenshot](#screenshots)
+- Multilingual support: English & Russian
 - Uninstall all UWP apps from all accounts with exception apps list;
 - Turn off Windows features;
 - Create a task in the Task Scheduler to start Windows cleaning up;
@@ -56,7 +57,7 @@ or
 - Copy the script code and paste it into [PowerShell ISE](https://docs.microsoft.com/en-us/powershell/scripting/components/ise/windows-powershell-integrated-scripting-environment--ise-).
 
 ## FAQ
-Read the code you run carefully. Some functions are presented as an example only. You must be aware of the meaning of the functions in the code. **If you're not sure what the script does, do not run it.**
+Read the code you run carefully. Some functions are presented as an example only. You must be aware of the meaning of the functions in the code. **If you're not sure what the script does, do not run it**. Strongly recommended to run the script after fresh installation.
 Some of functions can be run also on LTSB/LTSC and on older versions of Windows and PowerShell (not recommended to run on the x86 systems).
 
 ## Screenshots
@@ -69,7 +70,7 @@ Some of functions can be run also on LTSB/LTSC and on older versions of Windows 
   ![Menu](https://github.com/farag2/Windows-10-Setup-Script/blob/master/Screenshots/read-host.png)
 
 
-## Links
+## Microsoft Docs
  - [Release information](https://docs.microsoft.com/en-us/windows/release-information)
  - [Known issues](https://docs.microsoft.com/en-us/windows/release-information/status-windows-10-1909)
 
