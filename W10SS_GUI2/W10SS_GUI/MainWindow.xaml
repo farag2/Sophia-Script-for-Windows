@@ -24,10 +24,10 @@
 
         <!--#region Header -->
         <Canvas Name="windowHeader" Grid.Row="0" Background="{DynamicResource ResourceKey=windowHeaderBackground}">
-            <Button Template="{StaticResource ResourceKey=buttonWindowClose}" Width="32" Height="24" Canvas.Top="0" Canvas.Right="0"/>
-            <Button Template="{StaticResource ResourceKey=buttonWindowMinimize}" Width="32" Height="24" Canvas.Top="0" Canvas.Right="32"/>
-            <Button Template="{StaticResource ResourceKey=buttonHamburger}" Width="40" Height="40" Canvas.Top="0" Canvas.Left="0"/>
-            <TextBlock Name="textHeader" FontSize="20" Canvas.Left="60" Canvas.Top="8" Text="Test Test Here" />
+            <Button Name="buttonWindowClose" Template="{StaticResource ResourceKey=buttonWindowClose}" Width="32" Height="24" Canvas.Top="0" Canvas.Right="0" />
+            <Button Name="buttonWindowMinimize" Template="{StaticResource ResourceKey=buttonWindowMinimize}" Width="32" Height="24" Canvas.Top="0" Canvas.Right="32" />
+            <Button Name="buttonHamburger" Template="{StaticResource ResourceKey=buttonHamburger}" Width="40" Height="40" Canvas.Top="0" Canvas.Left="0"/>
+            <TextBlock Name="textHeader" FontSize="20" Canvas.Left="60" Canvas.Top="8" Text="Windows 10 Setup Script" />
         </Canvas>
         <!--#endregion Header -->
 
@@ -40,10 +40,14 @@
             </Grid.ColumnDefinitions>
             
             <!--#region Hamburger Panel-->
-            <StackPanel Name="panelHamburger" Width="40" MaxWidth="210" Background="{DynamicResource buttonHamburgerBackground}"/>
+            <StackPanel Name="panelHamburger" MinWidth="40" Width="40" MaxWidth="210" Background="{DynamicResource buttonHamburgerBackground}" />
             <!--#endregion Hamburger Panel-->
 
         </Grid>
         <!--#endregion Context -->
+
+        <!--#region Footer -->
+        <StackPanel Grid.Row="2" Background="{DynamicResource ResourceKey=windowHeaderBackground}"/>
+        <!--#endregion Footer -->
     </Grid>
 </Window>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,9 +21,11 @@ namespace W10SS_GUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        AnimationFactory AnimationFactory = new AnimationFactory();
+
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -32,7 +35,37 @@ namespace W10SS_GUI
 
         private void Window_Initialized(object sender, EventArgs e)
         {
-            Animation.NewAnimationFactory();
+            SetLanguageDictionary();
+            buttonWindowClose.Click += ButtonWindowClose_Click;
+            buttonWindowMinimize.Click += ButtonWindowMinimize_Click;
+            buttonHamburger.Click += ButtonHamburger_Click;
         }
+
+        private void ButtonWindowMinimize_Click(object sender, RoutedEventArgs e) => Application.Current.MainWindow.WindowState = WindowState.Minimized;
+        
+        private void ButtonWindowClose_Click(object sender, RoutedEventArgs e) => Application.Current.MainWindow.Close();
+        
+        private void SetLanguageDictionary()
+        {
+            ResourceDictionary dict = new ResourceDictionary();
+
+            switch (Thread.CurrentThread.CurrentCulture.ToString())
+            {
+                default:
+                    dict.Source = new Uri("pack://application:,,,/Localized/EN.xaml", UriKind.Absolute);
+                    break;
+            }
+
+            Resources.MergedDictionaries.Add(dict);
+        }
+
+        private void ButtonHamburger_Click(object sender, RoutedEventArgs e)
+        {
+            AnimationFactory.Animations["Hamburger"].To = panelHamburger.ActualWidth == panelHamburger.MinWidth ?
+                panelHamburger.MaxWidth : panelHamburger.MinWidth;
+            AnimationFactory.Storyboards["Hamburger"].Begin(panelHamburger);
+        }
+
+       
     }
 }
