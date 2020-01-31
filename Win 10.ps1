@@ -63,10 +63,10 @@ Get-Service -Name DiagTrack | Set-Service -StartupType Disabled
 $services = @(
 	# Contact Data
 	# Служба контактных данных
-	"PimIndexMaintenanceSvc_*",
+	"PimIndexMaintenanceSvc_*"
 	# User Data Storage
 	# Служба хранения данных пользователя
-	"UnistoreSvc_*",
+	"UnistoreSvc_*"
 	# User Data Access
 	# Служба доступа к данным пользователя
 	"UserDataSvc_*"
@@ -78,12 +78,12 @@ New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UnistoreSvc -Name
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UnistoreSvc -Name UserServiceFlags -PropertyType DWord -Value 0 -Force
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UserDataSvc -Name Start -PropertyType DWord -Value 4 -Force
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UserDataSvc -Name UserServiceFlags -PropertyType DWord -Value 0 -Force
-# Turn off the Autologger session at the next computer restart
-# Отключить сборщик AutoLogger при следующем запуске ПК
-Update-AutologgerConfig -Name AutoLogger-Diagtrack-Listener -Start 0
-# Turn off the SQMLogger session at the next computer restart
-# Отключить сборщик SQMLogger при следующем запуске ПК
-Update-AutologgerConfig -Name SQMLogger -Start 0
+# Stop event trace sessions
+# Остановить сеансы отслеживания событий
+Get-EtwTraceSession -Name DiagLog | Remove-EtwTraceSession
+# Turn off the data collectors at the next computer restart
+# Отключить сборщики данных при следующем запуске ПК
+Update-AutologgerConfig -Name DiagLog, AutoLogger-Diagtrack-Listener -Start 0
 # Set the operating system diagnostic data level to "Basic"
 # Установить уровень отправляемых диагностических сведений на "Базовый"
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 1 -Force
@@ -100,28 +100,51 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Siuf\Rules -Name NumberOfSIUFInP
 # Turn off diagnostics tracking scheduled tasks
 # Отключить задачи диагностического отслеживания
 $tasks = @(
-	"ProgramDataUpdater"
+	# Collects program telemetry information if opted-in to the Microsoft Customer Experience Improvement Program.
+	# Собирает телеметрические данные программы при участии в Программе улучшения качества программного обеспечения Майкрософт
 	"Microsoft Compatibility Appraiser"
-	"Microsoft-Windows-DiskDiagnosticDataCollector"
-	"TempSignedLicenseExchange"
-	"MapsToastTask"
-	"DmClient"
-	"FODCleanupTask"
-	"DmClientOnScenarioDownload"
-	"BgTaskRegistrationMaintenanceTask"
-	"File History (maintenance mode)"
-	"WinSAT"
-	"UsbCeip"
-	"Consolidator"
+	# Collects program telemetry information if opted-in to the Microsoft Customer Experience Improvement Program
+	# Сбор телеметрических данных программы при участии в программе улучшения качества ПО
+	"ProgramDataUpdater"
+	# This task collects and uploads autochk SQM data if opted-in to the Microsoft Customer Experience Improvement Program
+	# Эта задача собирает и загружает данные SQM при участии в программе улучшения качества программного обеспечения
 	"Proxy"
-	"MNO Metadata Parser"
-	"NetworkStateChangeTask"
-	"GatherNetworkInfo"
-	"XblGameSaveTask"
-	"EnableLicenseAcquisition"
-	"QueueReporting"
+	# If the user has consented to participate in the Windows Customer Experience Improvement Program, this job collects and sends usage data to Microsoft
+	# Если пользователь изъявил желание участвовать в программе по улучшению качества программного обеспечения Windows, эта задача будет собирать и отправлять сведения о работе программного обеспечения в Майкрософт
+	"Consolidator"
+	# The USB CEIP (Customer Experience Improvement Program) task collects Universal Serial Bus related statistics and information about your machine
+	# При выполнении задачи программы улучшения качества ПО шины USB (USB CEIP) осуществляется сбор статистических данных об использовании универсальной последовательной шины USB и сведений о компьютере
+	"UsbCeip"
+	# The Windows Disk Diagnostic reports general disk and system information to Microsoft for users participating in the Customer Experience Program
+	# Для пользователей, участвующих в программе контроля качества программного обеспечения, служба диагностики дисков Windows предоставляет общие сведения о дисках и системе в корпорацию Майкрософт
+	"Microsoft-Windows-DiskDiagnosticDataCollector"
+	# Protects user files from accidental loss by copying them to a backup location when the system is unattended
+	# Защищает файлы пользователя от случайной потери за счет их копирования в резервное расположение, когда система находится в автоматическом режиме
+	"File History (maintenance mode)"
+	# HelloFace
+	# HelloFace
+	"FODCleanupTask"
+	# Measures a system's performance and capabilities
+	# Измеряет быстродействие и возможности системы
+	"WinSAT"
+	# Эта задача показывает различные тосты (всплывающие уведомления) приложения "Карты".
+	# This task shows various Map related toasts
+	"MapsToastTask"
+	# This task checks for updates to maps which you have downloaded for offline use
+	# Эта задача проверяет наличие обновлений для карт, загруженных для автономного использования
+	"MapsUpdateTask"
+	# Initializes Family Safety monitoring and enforcement
+	# Инициализация контроля и применения правил семейной безопасности
 	"FamilySafetyMonitor"
+	# Synchronizes the latest settings with the Microsoft family features service
+	# Синхронизирует последние параметры со службой функций семьи учетных записей Майкрософт
 	"FamilySafetyRefreshTask"
+	# Windows Error Reporting task to process queued reports
+	# Задача отчетов об ошибках обрабатывает очередь отчетов
+	"QueueReporting"
+	# XblGameSave Standby Task
+	# XblGameSave Standby Task
+	"XblGameSaveTask"
 )
 Get-ScheduledTask -TaskName $tasks | Disable-ScheduledTask
 # Do not offer tailored experiences based on the diagnostic data setting
@@ -158,9 +181,9 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDe
 # Turn off automatic installing suggested apps
 # Отключить автоматическую установку рекомендованных приложений
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SilentInstalledAppsEnabled -PropertyType DWord -Value 0 -Force
-# Do not let track app launches to improve Start menu and search results
-# Не разрешать Windows отслеживать запуски приложений для улучшения меню "Пуск" и результатов поиска и не показывать недавно добавленные приложения
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_TrackProgs -PropertyType DWord -Value 0 -Force
+# Let track app launches to improve Start menu and search results
+# Разрешить Windows отслеживать запуски приложений для улучшения меню "Пуск" и результатов поиска
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_TrackProgs -PropertyType DWord -Value 1 -Force
 #endregion Privacy & Telemetry
 
 #region UI & Personalization
@@ -176,7 +199,7 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\
 # Turn off check boxes to select items
 # Отключить флажки для выбора элементов
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name AutoCheckSelect -PropertyType DWord -Value 0 -Force
-# Show File Name Extensions
+# Show file name extensions
 # Показывать расширения для зарегистрированных типов файлов
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -PropertyType DWord -Value 0 -Force
 # Show folder merge conflicts
@@ -248,7 +271,7 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer 
 # Отключить отображение вкладки "Предыдущие версии" в свойствах файлов и папок
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name NoPreviousVersionsPage -PropertyType DWord -Value 1 -Force
 # Hide search box or search icon on taskbar
-# Скрыть поле или значок поиска на Панели задач
+# Скрыть поле или значок поиска на панели задач
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -PropertyType DWord -Value 0 -Force
 # Do not show "Windows Ink Workspace" button in taskbar
 # Не показывать кнопку Windows Ink Workspace на панели задач
@@ -446,7 +469,7 @@ IF ($taskmgr)
 {
 	$taskmgr.CloseMainWindow()
 }
-Start-Process -FilePath .\Taskmgr.exe -WindowStyle Hidden -PassThru
+Start-Process -FilePath Taskmgr.exe -WindowStyle Hidden -PassThru
 Do
 {
 	Start-Sleep -Milliseconds 100
@@ -528,7 +551,7 @@ New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Power -Name Hibern
 # Turn off location for this device
 # Отключить местоположение для этого устройства
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location -Name Value -PropertyType String -Value Deny -Force
-# Change environment variable for $env:TEMP to $env:SystemDrive\Temp
+# Change $env:TEMP environment variable path to $env:SystemDrive\Temp
 # Изменить путь переменной среды для временных файлов на $env:SystemDrive\Temp
 IF (-not (Test-Path -Path $env:SystemDrive\Temp))
 {
@@ -1282,6 +1305,9 @@ New-ItemProperty -Path "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVers
 # Turn on automatically save my restartable apps when sign out and restart them after sign in
 # Автоматически сохранять мои перезапускаемые приложения при выходе из системы и перезапустить их после выхода
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name RestartApps -Value 1 -Force
+# Include command line in progress creation events
+# Включать командную строку в событиях создания процесса
+New-ItemProperty -Path HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -PropertyType DWord -Value 1 -Force
 #endregion System
 
 #region Start menu
@@ -1524,7 +1550,8 @@ $keys = @(
 	"Windows Defender",
 	# Windows upgrade log files
 	# Файлы журнала обновления Windows
-	"Windows Upgrade Log Files")
+	"Windows Upgrade Log Files"
+)
 foreach ($key in $keys)
 {
 	New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\$key" -Name StateFlags1337 -PropertyType DWord -Value 2 -Force
@@ -1903,11 +1930,14 @@ IF (-not ("WinAPI.UpdateEnvExplorer" -as [type]))
 
 # Errors output
 # Вывод ошибок
-Write-Host "`nErrors" -BackgroundColor Red
-($Error | ForEach-Object -Process {
-	[PSCustomObject] @{
-		Line = $_.InvocationInfo.ScriptLineNumber
-		Error = $_.Exception.Message
-	}
-} | Sort-Object -Property Line | Format-Table -AutoSize -Wrap | Out-String).Trim()
+if ($Error)
+{
+	Write-Host "`nErrors" -BackgroundColor Red
+	($Error | ForEach-Object -Process {
+		[PSCustomObject] @{
+			Line = $_.InvocationInfo.ScriptLineNumber
+			Error = $_.Exception.Message
+		}
+	} | Sort-Object -Property Line | Format-Table -AutoSize -Wrap | Out-String).Trim()
+}
 #endregion End
