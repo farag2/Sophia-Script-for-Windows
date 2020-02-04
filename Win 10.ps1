@@ -80,13 +80,24 @@ New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UserDataSvc -Name
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UserDataSvc -Name UserServiceFlags -PropertyType DWord -Value 0 -Force
 # Stop event trace sessions
 # Остановить сеансы отслеживания событий
-Get-EtwTraceSession -Name DiagLog | Remove-EtwTraceSession
+Get-EtwTraceSession -Name DiagLog -ErrorAction SilentlyContinue | Remove-EtwTraceSession
 # Turn off the data collectors at the next computer restart
 # Отключить сборщики данных при следующем запуске ПК
 Update-AutologgerConfig -Name DiagLog, AutoLogger-Diagtrack-Listener -Start 0
-# Set the operating system diagnostic data level to "Basic"
-# Установить уровень отправляемых диагностических сведений на "Базовый"
-New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 1 -Force
+# Set the operating system diagnostic data level
+# Установить уровень отправляемых диагностических сведений
+if ((Get-WindowsEdition -Online).Edition -eq "Enterprise" -or (Get-WindowsEdition -Online).Edition -eq "Education")
+{
+	# "Security"
+	# "Безопасность"
+	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 0 -Force
+}
+else
+{
+	# "Basic"
+	# "Базовый"
+	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 1 -Force
+}
 # Turn off Windows Error Reporting
 # Отключить отчеты об ошибках Windows
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\Windows Error Reporting" -Name Disabled -PropertyType DWord -Value 1 -Force
@@ -509,7 +520,38 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name 
 # Удалить OneDrive
 Stop-Process -Name OneDrive -Force -ErrorAction SilentlyContinue
 Start-Process -FilePath "$env:SystemRoot\SysWOW64\OneDriveSetup.exe" -ArgumentList "/uninstall" -Wait
-Stop-Process -Name explorer
+# Refresh desktop icons, environment variables and taskbar without restarting File Explorer
+# Обновить иконки рабочего стола, переменные среды и панель задач без перезапуска "Проводника"
+$UpdateEnvExplorerAPI = @{
+	Namespace = "WinAPI"
+	Name = "UpdateEnvExplorer"
+	Language = "CSharp"
+	MemberDefinition = @"
+		private static readonly IntPtr HWND_BROADCAST = new IntPtr(0xffff);
+		private const int WM_SETTINGCHANGE = 0x1a;
+		private const int SMTO_ABORTIFHUNG = 0x0002;
+		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
+		static extern bool SendNotifyMessage(IntPtr hWnd, uint Msg, IntPtr wParam, string lParam);
+		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
+		private static extern IntPtr SendMessageTimeout(IntPtr hWnd, int Msg, IntPtr wParam, string lParam, int fuFlags, int uTimeout, IntPtr lpdwResult);
+		[DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = false)]
+		private static extern int SHChangeNotify(int eventId, int flags, IntPtr item1, IntPtr item2);
+		public static void Refresh()
+		{
+			// Update desktop icons
+			SHChangeNotify(0x8000000, 0x1000, IntPtr.Zero, IntPtr.Zero);
+			// Update environment variables
+			SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, IntPtr.Zero, null, SMTO_ABORTIFHUNG, 100, IntPtr.Zero);
+			// Update taskbar
+			SendNotifyMessage(HWND_BROADCAST, WM_SETTINGCHANGE, IntPtr.Zero, "TraySettings");
+		}
+"@
+}
+IF (-not ("WinAPI.UpdateEnvExplorer" -as [type]))
+{
+	Add-Type @UpdateEnvExplorerAPI
+}
+[WinAPI.UpdateEnvExplorer]::Refresh()
 Remove-ItemProperty -Path HKCU:\Environment -Name OneDrive -Force -ErrorAction SilentlyContinue
 Remove-Item -Path "$env:ProgramData\Microsoft OneDrive" -Recurse -Force -ErrorAction SilentlyContinue
 Unregister-ScheduledTask -TaskName *OneDrive* -Confirm:$false
@@ -1367,13 +1409,56 @@ IF ($OpenFileDialog.FileName)
 	Remove-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount -Recurse -Force
 	regedit.exe /s $OpenFileDialog.FileName
 }
-Else
+else
 {
 	# Unpin all Start menu tiles
 	# Открепить все ярлыки от начального экрана
-	$tilecollection = Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*start.tilegrid`$windows.data.curatedtilecollection.tilecollection\Current
-	$unpin = $tilecollection.Data[0..25] + ([byte[]](202,50,0,226,44,1,1,0,0))
-	New-ItemProperty -Path $tilecollection.PSPath -Name Data -PropertyType Binary -Value $unpin -Force
+	IF ($RU)
+	{
+		Write-Host "`nЧтобы открепить все ярлыки от начального экрана, введите букву: " -NoNewline
+		Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
+		Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
+	}
+	else
+	{
+		Write-Host "`nTo unpin all Start menu tiles type: " -NoNewline
+		Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
+		Write-Host "`nPress Enter to skip" -NoNewline
+	}
+	Do
+	{
+		$Unpin = Read-Host -Prompt " "
+		IF ($Unpin -eq "Y")
+		{
+			$TileCollection = Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*start.tilegrid`$windows.data.curatedtilecollection.tilecollection\Current
+			$Value = $TileCollection.Data[0..25] + ([byte[]](202,50,0,226,44,1,1,0,0))
+			New-ItemProperty -Path $TileCollection.PSPath -Name Data -PropertyType Binary -Value $Value -Force
+		}
+		elseif ([string]::IsNullOrEmpty($Unpin))
+		{
+			break
+		}
+		else
+		{
+			IF ($RU)
+			{
+				Write-Host "`nНеправильная буква." -ForegroundColor Yellow
+				Write-Host "Введите правильную букву: " -NoNewline
+				Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
+				Write-Host ", чтобы открепить все ярлыки от начального экрана" -NoNewline
+				Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
+			}
+			else
+			{
+				Write-Host "`nInvalid letter." -ForegroundColor Yellow
+				Write-Host "Type the correct letter: " -NoNewline
+				Write-Host "[[Y]es" -ForegroundColor Yellow -NoNewline
+				Write-Host " to unpin all Start menu tiles" -NoNewline
+				Write-Host "`nPress Enter to skip" -NoNewline
+			}
+		}
+	}
+	Until ($Unpin -eq "Y")
 	# Show "Explorer" and "Settings" folders on Start menu
 	# Отобразить папки "Проводник" и "Параметры" в меню "Пуск"
 	$items = @("File Explorer", "Settings")
@@ -1389,6 +1474,9 @@ Else
 	$data += ",194,60,1,194,70,1,197,90,1,0"
 	New-ItemProperty -Path $startmenu.PSPath -Name Data -PropertyType Binary -Value $data.Split(",") -Force
 }
+# Restart Start menu
+# Перезапустить меню "Пуск"
+Stop-Process -Name StartMenuExperienceHost -Force
 #endregion Start menu
 
 #region Edge
@@ -1897,31 +1985,6 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name 
 Stop-Process -Name StartMenuExperienceHost -Force
 # Refresh desktop icons, environment variables and taskbar without restarting File Explorer
 # Обновить иконки рабочего стола, переменные среды и панель задач без перезапуска "Проводника"
-$UpdateEnvExplorerAPI = @{
-	Namespace = "WinAPI"
-	Name = "UpdateEnvExplorer"
-	Language = "CSharp"
-	MemberDefinition = @"
-		private static readonly IntPtr HWND_BROADCAST = new IntPtr(0xffff);
-		private const int WM_SETTINGCHANGE = 0x1a;
-		private const int SMTO_ABORTIFHUNG = 0x0002;
-		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
-		static extern bool SendNotifyMessage(IntPtr hWnd, uint Msg, IntPtr wParam, string lParam);
-		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
-		private static extern IntPtr SendMessageTimeout(IntPtr hWnd, int Msg, IntPtr wParam, string lParam, int fuFlags, int uTimeout, IntPtr lpdwResult);
-		[DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = false)]
-		private static extern int SHChangeNotify(int eventId, int flags, IntPtr item1, IntPtr item2);
-		public static void Refresh()
-		{
-			// Update desktop icons
-			SHChangeNotify(0x8000000, 0x1000, IntPtr.Zero, IntPtr.Zero);
-			// Update environment variables
-			SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, IntPtr.Zero, null, SMTO_ABORTIFHUNG, 100, IntPtr.Zero);
-			// Update taskbar
-			SendNotifyMessage(HWND_BROADCAST, WM_SETTINGCHANGE, IntPtr.Zero, "TraySettings");
-		}
-"@
-}
 IF (-not ("WinAPI.UpdateEnvExplorer" -as [type]))
 {
 	Add-Type @UpdateEnvExplorerAPI
@@ -1932,7 +1995,7 @@ IF (-not ("WinAPI.UpdateEnvExplorer" -as [type]))
 # Вывод ошибок
 if ($Error)
 {
-	Write-Host "`nErrors" -BackgroundColor Red
+	Write-Host "`nWarnings/Errors" -BackgroundColor Red
 	($Error | ForEach-Object -Process {
 		[PSCustomObject] @{
 			Line = $_.InvocationInfo.ScriptLineNumber
