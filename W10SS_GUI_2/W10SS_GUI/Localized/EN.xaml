@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">                    
+    <system:String x:Key="textHamburgerPrivacy">Privacy &amp; Telemetry</system:String>
+    <system:String x:Key="textHamburgerUi">UI &amp; Personalization</system:String>
+    <system:String x:Key="textHamburgerOneDrive">OneDrive</system:String>
+    <system:String x:Key="textHamburgerSystem">System</system:String>
+    <system:String x:Key="textHamburgerStartMenu">Start Menu</system:String>
+    <system:String x:Key="textHamburgerUwp">UWP Apps</system:String>
+    <system:String x:Key="textHamburgerWinGame" xml:space="preserve">Windows Game
+Recording</system:String>
+    <system:String x:Key="textHamburgerTaskScheduler">Task Scheduler</system:String>
+    <system:String x:Key="textHamburgerDefender">Microsoft Defender</system:String>
+    <system:String x:Key="textHamburgerContextMenu">Context Menu</system:String>
+</ResourceDictionary>

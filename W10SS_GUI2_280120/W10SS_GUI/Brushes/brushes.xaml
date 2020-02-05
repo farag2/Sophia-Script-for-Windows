@@ -1,8 +1,0 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:W10SS_GUI.Brushes">
-    <SolidColorBrush x:Key="ColorBlack" Color="Black"/>
-    <SolidColorBrush x:Key="ColorWhite" Color="White"/>
-    <SolidColorBrush x:Key="buttonHamburgerBackground" Color="#0173c7"/>
-    <SolidColorBrush x:Key="buttonHamburgerHover" Color="#2a8ad4"/>
-</ResourceDictionary>

@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib"
+                    xmlns:local="clr-namespace:W10SS_GUI.Controls">
+    <system:Double x:Key="buttonHamburgerWidth">40</system:Double>    
+    <system:Double x:Key="buttonHamburgerHeight">40</system:Double>
+    <system:Double x:Key="buttonHamburgerFontSize">20</system:Double>
+    <system:Double x:Key="panelHamburgerMinWidth">40</system:Double>
+    <system:Double x:Key="panelHamburgerWidth">220</system:Double>
+    <system:Double x:Key="panelHamburgerMaxWidth">220</system:Double>
+    <system:Double x:Key="buttonHamburgerCategoryFontSize">16</system:Double>
+    
+</ResourceDictionary>

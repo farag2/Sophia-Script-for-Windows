@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib"
+                    xmlns:local="clr-namespace:W10SS_GUI.Resource">
+    <system:String x:Key="iconHamburgerPrivacy">&#xF103;</system:String>
+    <system:String x:Key="iconHamburgerUi">&#xE771;</system:String>
+    <system:String x:Key="iconHamburgerOneDrive">&#xE754;</system:String>
+    <system:String x:Key="iconHamburgerSystem">&#xE770;</system:String>
+    <system:String x:Key="iconHamburgerStartMenu">&#xECA5;</system:String>
+    <system:String x:Key="iconHamburgerUwp">&#xE8D9;</system:String>
+    <system:String x:Key="iconHamburgerWinGame">&#xE7FC;</system:String>
+    <system:String x:Key="iconHamburgerTaskScheduler">&#xE823;</system:String>
+    <system:String x:Key="iconHamburgerDefender">&#xE83D;</system:String>
+    <system:String x:Key="iconHamburgerContextMenu">&#xE292;</system:String>
+</ResourceDictionary>

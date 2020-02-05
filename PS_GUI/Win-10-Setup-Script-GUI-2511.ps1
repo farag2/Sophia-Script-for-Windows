@@ -45,7 +45,7 @@ if ($PSCulture -eq "ru-RU")
 
 else
 {
-	[bool]$RU = $true	
+	[bool]$RU = $false	
 }
 
 $gitHub = "https://github.com/farag2/Windows-10-Setup-Script"

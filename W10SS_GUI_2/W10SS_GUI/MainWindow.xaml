@@ -1,0 +1,90 @@
+﻿<Window x:Class="W10SS_GUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"        
+        xmlns:local="clr-namespace:W10SS_GUI"        
+        xmlns:uc="clr-namespace:W10SS_GUI.Controls"
+        mc:Ignorable="d"
+        Name="Window" Title="Windows 10 Setup Script" MinHeight="863" MinWidth="800" Height="863" Width="800" 
+        FontSize="18" TextOptions.TextFormattingMode="Display" 
+        WindowStartupLocation="CenterScreen" SnapsToDevicePixels="True" 
+        ResizeMode="CanResize" ShowInTaskbar="True"
+        Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+        Foreground="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"         
+        Initialized="Window_Initialized" SizeToContent="WidthAndHeight">
+
+    <Grid Name="gridWindow">
+
+        <!--#region Hamburger Panel-->
+        <Canvas Name="panelHamburger" 
+                MinWidth="{StaticResource panelHamburgerMinWidth}" 
+                Width="{StaticResource panelHamburgerMinWidth}" 
+                MaxWidth="{StaticResource panelHamburgerMaxWidth}" 
+                Background="{DynamicResource buttonHamburgerBackground}"
+                HorizontalAlignment="Left" Panel.ZIndex="10">            
+            <Canvas.Triggers>
+                <EventTrigger RoutedEvent="MouseEnter">
+                    <BeginStoryboard Storyboard="{StaticResource animationHamburgerOpen}"/>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseLeave">
+                    <BeginStoryboard Storyboard="{StaticResource animationHamburgerClose}"/>
+                </EventTrigger>
+            </Canvas.Triggers>
+            
+            <uc:HamburgerCategoryButton Icon="{StaticResource iconHamburgerPrivacy}" 
+                                        Text="{DynamicResource textHamburgerPrivacy}" 
+                                        Width="{Binding ElementName=panelHamburger, Path=Width}"
+                                        Canvas.Top="0" Canvas.Right="0"/>
+
+            <uc:HamburgerCategoryButton Icon="{StaticResource iconHamburgerUi}" 
+                                        Text="{DynamicResource textHamburgerUi}" 
+                                        Width="{Binding ElementName=panelHamburger, Path=Width}"
+                                        Canvas.Top="40" Canvas.Right="0"/>
+
+            <uc:HamburgerCategoryButton Icon="{StaticResource iconHamburgerOneDrive}" 
+                                        Text="{DynamicResource textHamburgerOneDrive}" 
+                                        Width="{Binding ElementName=panelHamburger, Path=Width}"
+                                        Canvas.Top="80" Canvas.Right="0"/>
+
+            <uc:HamburgerCategoryButton Icon="{StaticResource iconHamburgerSystem}" 
+                                        Text="{DynamicResource textHamburgerSystem}" 
+                                        Width="{Binding ElementName=panelHamburger, Path=Width}"
+                                        Canvas.Top="120" Canvas.Right="0"/>
+
+            <uc:HamburgerCategoryButton Icon="{StaticResource iconHamburgerStartMenu}" 
+                                        Text="{DynamicResource textHamburgerStartMenu}" 
+                                        Width="{Binding ElementName=panelHamburger, Path=Width}"
+                                        Canvas.Top="160" Canvas.Right="0"/>
+
+            <uc:HamburgerCategoryButton Icon="{StaticResource iconHamburgerUwp}" 
+                                        Text="{DynamicResource textHamburgerUwp}" 
+                                        Width="{Binding ElementName=panelHamburger, Path=Width}"
+                                        Canvas.Top="200" Canvas.Right="0" Loaded="HamburgerCategoryButton_Loaded"/>
+
+            <uc:HamburgerCategoryButton Icon="{StaticResource iconHamburgerWinGame}" 
+                                        Text="{DynamicResource textHamburgerWinGame}" 
+                                        Width="{Binding ElementName=panelHamburger, Path=Width}"
+                                        Canvas.Top="240" Canvas.Right="0"/>
+
+            <uc:HamburgerCategoryButton Icon="{StaticResource iconHamburgerTaskScheduler}" 
+                                        Text="{DynamicResource textHamburgerTaskScheduler}" 
+                                        Width="{Binding ElementName=panelHamburger, Path=Width}"
+                                        Canvas.Top="280" Canvas.Right="0"/>
+
+            <uc:HamburgerCategoryButton Icon="{StaticResource iconHamburgerDefender}" 
+                                        Text="{DynamicResource textHamburgerDefender}" 
+                                        Width="{Binding ElementName=panelHamburger, Path=Width}"
+                                        Canvas.Top="320" Canvas.Right="0"/>
+
+            <uc:HamburgerCategoryButton Icon="{StaticResource iconHamburgerContextMenu}" 
+                                        Text="{DynamicResource textHamburgerContextMenu}" 
+                                        Width="{Binding ElementName=panelHamburger, Path=Width}"
+                                        Canvas.Top="360" Canvas.Right="0"/>
+        </Canvas>
+        <!--#endregion Hamburger Panel-->
+
+   
+    
+    </Grid>
+</Window>

@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="W10SS_GUI.Controls.HamburgerCategoryButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:W10SS_GUI.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="{StaticResource buttonHamburgerHeight}" d:DesignWidth="{StaticResource panelHamburgerMaxWidth}">
+    <Grid>
+        <StackPanel Name="hamburgerButton" 
+                    Width="{DynamicResource panelHamburgerMaxWidth}" 
+                    Height="{DynamicResource buttonHamburgerHeight}" 
+                    Orientation="Horizontal">
+            <StackPanel.Background>
+                <SolidColorBrush Color="{DynamicResource buttonHamburgerBackgroundColor }" x:Name="buttonHamburgerBackgroundColor"/>                
+            </StackPanel.Background>
+            <StackPanel.Triggers>
+                <EventTrigger RoutedEvent="MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetName="buttonHamburgerBackgroundColor" Storyboard.TargetProperty="Color"
+                                            Duration="0:0:0.1" To="{DynamicResource buttonHamburgerHoverColor}" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetName="buttonHamburgerBackgroundColor" Storyboard.TargetProperty="Color"
+                                            Duration="0:0:0.5" To="{DynamicResource buttonHamburgerBackgroundColor}" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseLeftButtonDown">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ThicknessAnimation Storyboard.TargetName="hamburgerContainer" Storyboard.TargetProperty="Margin" 
+                                                    Duration="0:0:0.5" From="0 0 0 0" To="0 5 0 0" SpeedRatio="5"
+                                                    AutoReverse="True"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </StackPanel.Triggers>
+
+            <StackPanel Name="hamburgerContainer" Orientation="Horizontal">
+                <TextBlock Name="textIcon" FontFamily="Segoe MDL2 Assets" FontSize="{DynamicResource  buttonHamburgerIconsSize}"                     
+                           Margin="10 10 10 10" Foreground="{DynamicResource textHamburgerForeground}"
+                           Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=IconText}"/>
+
+                <TextBlock Name="textCategory" FontSize="{DynamicResource textHamburgerSize}" 
+                           Margin="0 0 0 5"
+                           Foreground="{DynamicResource textHamburgerForeground}"
+                           VerticalAlignment="Center"
+                           Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=Text}"/>                
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>
