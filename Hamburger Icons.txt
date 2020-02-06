@@ -8,6 +8,13 @@
 "Task Scheduler" U+E823
 "Microsoft Defender" U+E83D
 "Context Menu" U+E292
+
+Сменить язык U+F2B7
+Перейти на Github U+E71B
+Применить U+E8FB
+Сохранить U+E74E
+Загрузить U+E896
+
 --------------------------------------
 Конфиденциальность и телеметрия
 UI и персонализация
@@ -27,11 +34,11 @@ Microsoft Defender
 
 
 
+Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=Icon}"
 
 
 
-
-
+Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=Text}"
 
 
 

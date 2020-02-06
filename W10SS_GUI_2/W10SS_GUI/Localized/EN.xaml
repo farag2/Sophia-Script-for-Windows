@@ -7,8 +7,7 @@
     <system:String x:Key="textHamburgerSystem">System</system:String>
     <system:String x:Key="textHamburgerStartMenu">Start Menu</system:String>
     <system:String x:Key="textHamburgerUwp">UWP Apps</system:String>
-    <system:String x:Key="textHamburgerWinGame" xml:space="preserve">Windows Game
-Recording</system:String>
+    <system:String x:Key="textHamburgerWinGame">Windows Game</system:String>
     <system:String x:Key="textHamburgerTaskScheduler">Task Scheduler</system:String>
     <system:String x:Key="textHamburgerDefender">Microsoft Defender</system:String>
     <system:String x:Key="textHamburgerContextMenu">Context Menu</system:String>

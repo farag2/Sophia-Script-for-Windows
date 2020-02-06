@@ -46,7 +46,21 @@ namespace W10SS_GUI.Controls
 
         // Using a DependencyProperty as the backing store for IconText.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IconProperty =
-            DependencyProperty.Register("IconText", typeof(string), typeof(HamburgerCategoryButton), new PropertyMetadata(default (string)));
+            DependencyProperty.Register("Icon", typeof(string), typeof(HamburgerCategoryButton), new PropertyMetadata(default(string)));
+
+
+
+        public Thickness TextMargin
+        {
+            get { return (Thickness)GetValue(TextMarginProperty); }
+            set { SetValue(TextMarginProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for TextMargin.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TextMarginProperty =
+            DependencyProperty.Register("TextMargin", typeof(Thickness), typeof(HamburgerCategoryButton), new PropertyMetadata(default(Thickness)));
+
+
 
 
     }

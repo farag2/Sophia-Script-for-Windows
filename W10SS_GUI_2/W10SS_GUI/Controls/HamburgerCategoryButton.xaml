@@ -44,11 +44,12 @@
 
             <StackPanel Name="hamburgerContainer" Orientation="Horizontal">
                 <TextBlock Name="textIcon" FontFamily="Segoe MDL2 Assets" FontSize="{DynamicResource  buttonHamburgerIconsSize}"                     
-                           Margin="10 10 10 10" Foreground="{DynamicResource textHamburgerForeground}"
-                           Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=IconText}"/>
+                           Margin="10 0 10 0" Foreground="{DynamicResource textHamburgerForeground}"
+                           VerticalAlignment="Center"
+                           Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=Icon}"/>
 
                 <TextBlock Name="textCategory" FontSize="{DynamicResource textHamburgerSize}" 
-                           Margin="0 0 0 5"
+                           Margin="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=TextMargin}"
                            Foreground="{DynamicResource textHamburgerForeground}"
                            VerticalAlignment="Center"
                            Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=Text}"/>                
