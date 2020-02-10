@@ -133,7 +133,6 @@ $tasks = @(
 	# Защищает файлы пользователя от случайной потери за счет их копирования в резервное расположение, когда система находится в автоматическом режиме
 	"File History (maintenance mode)"
 	# HelloFace
-	# HelloFace
 	"FODCleanupTask"
 	# Measures a system's performance and capabilities
 	# Измеряет быстродействие и возможности системы
@@ -259,7 +258,7 @@ IF (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explor
 }
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Ribbon -Name MinimizedStateTabletModeOff -PropertyType DWord -Value 0 -Force
 # Turn on recycle bin files delete confirmation
-# Запрашивать подтверждение на удалении файлов из корзины
+# Запрашивать подтверждение на удаление файлов в корзину
 IF (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer))
 {
 	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Force
@@ -346,56 +345,62 @@ else
 	Write-Host "for the dark"
 	Write-Host "`nPress Enter to skip" -NoNewline
 }
-Do
+do
 {
 	$theme = Read-Host -Prompt " "
-	IF ($theme -eq "L")
-	{
-		# Show color only on taskbar
-		# Отображать цвет элементов только на панели задач
-		New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name ColorPrevalence -PropertyType DWord -Value 0 -Force
-		# Light Theme Color for Default Windows Mode
-		# Режим Windows по умолчанию светлый
-		New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -PropertyType DWord -Value 1 -Force
-	}
-	elseif ($theme -eq "D")
-	{
-		# Turn on the display of color on Start menu, taskbar, and action center
-		# Отображать цвет элементов в меню "Пуск", на панели задач и в центре уведомлений
-		New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name ColorPrevalence -PropertyType DWord -Value 1 -Force
-		# Dark Theme Color for Default Windows Mode
-		# Режим Windows по умолчанию темный
-		New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -PropertyType DWord -Value 0 -Force
-	}
-	elseif ([string]::IsNullOrEmpty($theme))
+	if ([string]::IsNullOrEmpty($theme))
 	{
 		break
 	}
 	else
 	{
-		IF ($RU)
+		switch ($theme)
 		{
-			Write-Host "`nНеправильная буква." -ForegroundColor Yellow
-			Write-Host "Введите правильную букву: " -NoNewline
-			Write-Host "[L]ight " -ForegroundColor Yellow -NoNewline
-			Write-Host "для светлого режима или " -NoNewline
-			Write-Host "[D]ark " -ForegroundColor Yellow -NoNewline
-			Write-Host "для тёмного."
-			Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
-		}
-		else
-		{
-			Write-Host "`nInvalid letter." -ForegroundColor Yellow
-			Write-Host "Type the correct letter: " -NoNewline
-			Write-Host "[L]ight " -ForegroundColor Yellow -NoNewline
-			Write-Host "for the light mode or " -NoNewline
-			Write-Host "[D]ark " -ForegroundColor Yellow -NoNewline
-			Write-Host "for the dark."
-			Write-Host "`nPress Enter to skip" -NoNewline
+			"L"
+			{
+				# Show color only on taskbar
+				# Отображать цвет элементов только на панели задач
+				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name ColorPrevalence -PropertyType DWord -Value 0 -Force
+				# Light Theme Color for Default Windows Mode
+				# Режим Windows по умолчанию светлый
+				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -PropertyType DWord -Value 1 -Force
+			}
+			"D"
+			{
+				# Turn on the display of color on Start menu, taskbar, and action center
+				# Отображать цвет элементов в меню "Пуск", на панели задач и в центре уведомлений
+				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name ColorPrevalence -PropertyType DWord -Value 1 -Force
+				# Dark Theme Color for Default Windows Mode
+				# Режим Windows по умолчанию темный
+				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -PropertyType DWord -Value 0 -Force
+			}
+			Default
+			{
+				IF ($RU)
+				{
+					Write-Host "`nНеправильная буква." -ForegroundColor Yellow
+					Write-Host "Введите правильную букву: " -NoNewline
+					Write-Host "[L]ight " -ForegroundColor Yellow -NoNewline
+					Write-Host "для светлого режима или " -NoNewline
+					Write-Host "[D]ark " -ForegroundColor Yellow -NoNewline
+					Write-Host "для тёмного."
+					Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
+				}
+				else
+				{
+					Write-Host "`nInvalid letter." -ForegroundColor Yellow
+					Write-Host "Type the correct letter: " -NoNewline
+					Write-Host "[L]ight " -ForegroundColor Yellow -NoNewline
+					Write-Host "for the light mode or " -NoNewline
+					Write-Host "[D]ark " -ForegroundColor Yellow -NoNewline
+					Write-Host "for the dark."
+					Write-Host "`nPress Enter to skip" -NoNewline
+				}
+			}
 		}
 	}
 }
-Until ($theme -eq "L" -or $theme -eq "D")
+until ($theme -eq "L" -or $theme -eq "D")
 # Choose theme color for default app mode
 # Выбрать режим приложения по умолчанию
 IF ($RU)
@@ -416,46 +421,52 @@ else
 	Write-Host "for the dark"
 	Write-Host "`nPress Enter to skip" -NoNewline
 }
-Do
+do
 {
 	$theme = Read-Host -Prompt " "
-	IF ($theme -eq "L")
-	{
-		# Light theme color for default app mode
-		# Режим приложений по умолчанию светлый
-		New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -PropertyType DWord -Value 1 -Force
-	}
-	IF ($theme -eq "D")
-	{
-		# Dark theme color for default app mode
-		# Режим приложений по умолчанию темный
-		New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -PropertyType DWord -Value 0 -Force
-	}
-	elseif ([string]::IsNullOrEmpty($theme))
+	if ([string]::IsNullOrEmpty($theme))
 	{
 		break
 	}
 	else
 	{
-		IF ($RU)
+		switch ($theme)
 		{
-			Write-Host "`nНеправильная буква." -ForegroundColor Yellow
-			Write-Host "Введите правильную букву: " -NoNewline
-			Write-Host "[L]ight " -ForegroundColor Yellow -NoNewline
-			Write-Host "для светлого режима или " -NoNewline
-			Write-Host "[D]ark " -ForegroundColor Yellow -NoNewline
-			Write-Host "для тёмного."
-			Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
-		}
-		else
-		{
-			Write-Host "`nInvalid letter." -ForegroundColor Yellow
-			Write-Host "Type the correct letter: " -NoNewline
-			Write-Host "[L]ight " -ForegroundColor Yellow -NoNewline
-			Write-Host "for the light mode or " -NoNewline
-			Write-Host "[D]ark " -ForegroundColor Yellow -NoNewline
-			Write-Host "for the dark."
-			Write-Host "`nPress Enter to skip" -NoNewline
+			"L"
+			{
+				# Light theme color for default app mode
+				# Режим приложений по умолчанию светлый
+				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -PropertyType DWord -Value 1 -Force
+			}
+			"D"
+			{
+				# Dark theme color for default app mode
+				# Режим приложений по умолчанию темный
+				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -PropertyType DWord -Value 0 -Force
+			}
+			Default
+			{
+				IF ($RU)
+				{
+					Write-Host "`nНеправильная буква." -ForegroundColor Yellow
+					Write-Host "Введите правильную букву: " -NoNewline
+					Write-Host "[L]ight " -ForegroundColor Yellow -NoNewline
+					Write-Host "для светлого режима или " -NoNewline
+					Write-Host "[D]ark " -ForegroundColor Yellow -NoNewline
+					Write-Host "для тёмного."
+					Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
+				}
+				else
+				{
+					Write-Host "`nInvalid letter." -ForegroundColor Yellow
+					Write-Host "Type the correct letter: " -NoNewline
+					Write-Host "[L]ight " -ForegroundColor Yellow -NoNewline
+					Write-Host "for the light mode or " -NoNewline
+					Write-Host "[D]ark " -ForegroundColor Yellow -NoNewline
+					Write-Host "for the dark."
+					Write-Host "`nPress Enter to skip" -NoNewline
+				}
+			}
 		}
 	}
 }
@@ -481,12 +492,12 @@ IF ($taskmgr)
 	$taskmgr.CloseMainWindow()
 }
 Start-Process -FilePath Taskmgr.exe -WindowStyle Hidden -PassThru
-Do
+do
 {
 	Start-Sleep -Milliseconds 100
 	$preferences = Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -ErrorAction SilentlyContinue
 }
-Until ($preferences)
+until ($preferences)
 Stop-Process -Name Taskmgr
 $preferences.Preferences[28] = 0
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -PropertyType Binary -Value $preferences.Preferences -Force
@@ -887,7 +898,7 @@ else
 	Write-Host "Files will not be moved. Do it manually"
 	Write-Host "`nPress Enter to skip" -NoNewline
 }
-Do
+do
 {
 	$drive = Read-Host -Prompt " "
 	IF ($drives -eq $drive)
@@ -949,7 +960,7 @@ else
 	Write-Host "Files will not be moved. Do it manually"
 	Write-Host "`nPress Enter to skip" -NoNewline
 }
-Do
+do
 {
 	$drive = Read-Host -Prompt " "
 	IF ($drives -eq $drive)
@@ -1008,7 +1019,7 @@ else
 	Write-Host "Files will not be moved. Do it manually"
 	Write-Host "`nPress Enter to skip" -NoNewline
 }
-Do
+do
 {
 	$drive = Read-Host -Prompt " "
 	IF ($drives -eq $drive)
@@ -1071,7 +1082,7 @@ else
 	Write-Host "Files will not be moved. Do it manually"
 	Write-Host "`nPress Enter to skip" -NoNewline
 }
-Do
+do
 {
 	$drive = Read-Host -Prompt " "
 	IF ($drives -eq $drive)
@@ -1130,7 +1141,7 @@ else
 	Write-Host "Files will not be moved. Do it manually"
 	Write-Host "`nPress Enter to skip" -NoNewline
 }
-Do
+do
 {
 	$drive = Read-Host -Prompt " "
 	IF ($drives -eq $drive)
@@ -1189,7 +1200,7 @@ else
 	Write-Host "Files will not be moved. Do it manually"
 	Write-Host "`nPress Enter to skip" -NoNewline
 }
-Do
+do
 {
 	$drive = Read-Host -Prompt " "
 	IF ($drives -eq $drive)
@@ -1276,7 +1287,7 @@ IF ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2 -and (G
 			New-ItemProperty -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Name $app -PropertyType String -Value "GpuPreference=2;" -Force
 		}
 	}
-	Do
+	do
 	{
 		$apps = Read-Host -Prompt " "
 		IF ($apps -match ".exe" -and $apps -match "`"")
@@ -1425,55 +1436,62 @@ else
 		Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
 		Write-Host "`nPress Enter to skip" -NoNewline
 	}
-	Do
+	do
 	{
 		$Unpin = Read-Host -Prompt " "
-		IF ($Unpin -eq "Y")
-		{
-			$TileCollection = Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*start.tilegrid`$windows.data.curatedtilecollection.tilecollection\Current
-			$Value = $TileCollection.Data[0..25] + ([byte[]](202,50,0,226,44,1,1,0,0))
-			New-ItemProperty -Path $TileCollection.PSPath -Name Data -PropertyType Binary -Value $Value -Force
-		}
-		elseif ([string]::IsNullOrEmpty($Unpin))
+		if ([string]::IsNullOrEmpty($theme))
 		{
 			break
 		}
 		else
 		{
-			IF ($RU)
+			switch ($Unpin)
 			{
-				Write-Host "`nНеправильная буква." -ForegroundColor Yellow
-				Write-Host "Введите правильную букву: " -NoNewline
-				Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-				Write-Host ", чтобы открепить все ярлыки от начального экрана" -NoNewline
-				Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
-			}
-			else
-			{
-				Write-Host "`nInvalid letter." -ForegroundColor Yellow
-				Write-Host "Type the correct letter: " -NoNewline
-				Write-Host "[[Y]es" -ForegroundColor Yellow -NoNewline
-				Write-Host " to unpin all Start menu tiles" -NoNewline
-				Write-Host "`nPress Enter to skip" -NoNewline
+				"Y"
+				{
+					$TileCollection = Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*start.tilegrid`$windows.data.curatedtilecollection.tilecollection\Current
+					$Value = $TileCollection.Data[0..25] + ([byte[]](202,50,0,226,44,1,1,0,0))
+					New-ItemProperty -Path $TileCollection.PSPath -Name Data -PropertyType Binary -Value $Value -Force
+				}
+				Default
+				{
+					if ($RU)
+					{
+						Write-Host "`nНеправильная буква." -ForegroundColor Yellow
+						Write-Host "Введите правильную букву: " -NoNewline
+						Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
+						Write-Host ", чтобы открепить все ярлыки от начального экрана" -NoNewline
+						Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
+					}
+					else
+					{
+						Write-Host "`nInvalid letter." -ForegroundColor Yellow
+						Write-Host "Type the correct letter: " -NoNewline
+						Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
+						Write-Host " to unpin all Start menu tiles" -NoNewline
+						Write-Host "`nPress Enter to skip" -NoNewline
+					}
+				}
 			}
 		}
 	}
 	Until ($Unpin -eq "Y")
-	# Show "Explorer" and "Settings" folders on Start menu
-	# Отобразить папки "Проводник" и "Параметры" в меню "Пуск"
-	$items = @("File Explorer", "Settings")
-	$startmenu = Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*windows.data.unifiedtile.startglobalproperties\Current"
-	$data = $startmenu.Data[0..19] -join ","
-	$data += ",203,50,10,$($items.Length)"
-	# Explorer
-	# Проводник
-	$data += ",5,188,201,168,164,1,36,140,172,3,68,137,133,1,102,160,129,186,203,189,215,168,164,130,1,0"
-	# Settings
-	# Параметры
-	$data += ",5,134,145,204,147,5,36,170,163,1,68,195,132,1,102,159,247,157,177,135,203,209,172,212,1,0"
-	$data += ",194,60,1,194,70,1,197,90,1,0"
-	New-ItemProperty -Path $startmenu.PSPath -Name Data -PropertyType Binary -Value $data.Split(",") -Force
 }
+# Show "Explorer" and "Settings" folders on Start menu
+# Отобразить папки "Проводник" и "Параметры" в меню "Пуск"
+$items = @("File Explorer", "Settings")
+$startmenu = Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*windows.data.unifiedtile.startglobalproperties\Current"
+$data = $startmenu.Data[0..19] -join ","
+$data += ",203,50,10,$($items.Length)"
+# Explorer
+# Проводник
+$data += ",5,188,201,168,164,1,36,140,172,3,68,137,133,1,102,160,129,186,203,189,215,168,164,130,1,0"
+# Settings
+# Параметры
+$data += ",5,134,145,204,147,5,36,170,163,1,68,195,132,1,102,159,247,157,177,135,203,209,172,212,1,0"
+$data += ",194,60,1,194,70,1,197,90,1,0"
+New-ItemProperty -Path $startmenu.PSPath -Name Data -PropertyType Binary -Value $data.Split(",") -Force
+
 # Restart Start menu
 # Перезапустить меню "Пуск"
 Stop-Process -Name StartMenuExperienceHost -Force
@@ -1724,7 +1742,7 @@ function ExclusionPath
 	$paths = $paths.Replace("`"", "").Split(",").Trim()
 	Add-MpPreference -ExclusionPath $paths -Force
 }
-Do
+do
 {
 	$paths = Read-Host -Prompt " "
 	IF ($paths -match "`"")
@@ -1778,7 +1796,7 @@ function ControlledFolderAccess
 	$paths = $paths.Replace("`"", "").Split(",").Trim()
 	Add-MpPreference -ControlledFolderAccessProtectedFolders $paths
 }
-Do
+do
 {
 	$paths = Read-Host -Prompt " "
 	IF ($paths -match "`"")
@@ -1833,7 +1851,7 @@ IF ((Get-MpPreference).EnableControlledFolderAccess -eq 1)
 		$paths = $paths.Replace("`"", "").Split(",").Trim()
 		Add-MpPreference -ControlledFolderAccessAllowedApplications $paths
 	}
-	Do
+	do
 	{
 		$paths = Read-Host -Prompt " "
 		IF ($paths -match "`"")
@@ -1890,7 +1908,7 @@ New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract\Com
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract -Name MUIVerb -PropertyType String -Value "@shell32.dll,-31382" -Force
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract -Name Icon -PropertyType String -Value "shell32.dll,-16817" -Force
 # Add "Run as different user" from context menu for .exe file type
-# Добавить "Запуск от имени друго пользователя" в контекстное меню для .exe файлов
+# Добавить "Запуск от имени другого пользователя" в контекстное меню для .exe файлов
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name "(default)" -PropertyType String -Value "@shell32.dll,-50944" -Force
 Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name Extended -Force -ErrorAction SilentlyContinue
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name SuppressionPolicyEx -PropertyType String -Value "{F211AA05-D4DF-4370-A2A0-9F19C09756A7}" -Force
