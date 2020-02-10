@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="W10SS_GUI.Controls.HamburgerCategoryButton"
+﻿<UserControl x:Class="W10SS_GUI.Controls.HamburgerCategoryFlashButton"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:W10SS_GUI.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="{StaticResource buttonHamburgerHeight}" d:DesignWidth="{StaticResource panelHamburgerMaxWidth}">
-    <UserControl.Resources>
+    <UserControl.Resources>        
         <Style TargetType="TextBlock">
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="True">
@@ -18,38 +18,49 @@
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
-    <Grid>
-        <StackPanel Name="hamburgerButton" 
+    <Grid Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=Tag}">
+        <StackPanel Name="hamburgerButton"
                     Width="{DynamicResource panelHamburgerMaxWidth}" 
                     Height="{DynamicResource buttonHamburgerHeight}" 
-                    Orientation="Horizontal"
-                    Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=Tag}">
+                    Orientation="Horizontal">
             <StackPanel.Background>
-                <SolidColorBrush Color="{DynamicResource buttonHamburgerBackgroundColor }" x:Name="buttonHamburgerBackgroundColor"/>                
+                <SolidColorBrush Color="{DynamicResource buttonHamburgerBackgroundColor }" x:Name="buttonHamburgerBackgroundColor"/>
             </StackPanel.Background>
-            <StackPanel.Triggers>
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Style.Triggers>
+                        <Trigger Property="IsEnabled" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard Name="animationHamburgerIsEnabled" Storyboard="{DynamicResource animationHamburgerApplyButtonIsEnabled}"/>
+                            </Trigger.EnterActions>                            
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">                            
+                            <Trigger.EnterActions>
+                                <PauseStoryboard BeginStoryboardName="animationHamburgerIsEnabled" />
+                                <BeginStoryboard Name="animationHamburgerIsDisabled" Storyboard="{DynamicResource animationHamburgerApplyButtonIsDisabled}"/>
+                            </Trigger.EnterActions>
+                            
+                        </Trigger>                        
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
+            <StackPanel.Triggers>                
                 <EventTrigger RoutedEvent="MouseEnter">
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <ColorAnimation Storyboard.TargetName="buttonHamburgerBackgroundColor" Storyboard.TargetProperty="Color"
-                                            Duration="0:0:0.1" To="{DynamicResource buttonHamburgerHoverColor}" />
-                        </Storyboard>
-                    </BeginStoryboard>
+                    <BeginStoryboard Storyboard="{DynamicResource animationHamburgerApplyHover}" />
                 </EventTrigger>
                 <EventTrigger RoutedEvent="MouseLeave">
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <ColorAnimation Storyboard.TargetName="buttonHamburgerBackgroundColor" Storyboard.TargetProperty="Color"
-                                            Duration="0:0:0.5" To="{DynamicResource buttonHamburgerBackgroundColor}" />
-                        </Storyboard>
-                    </BeginStoryboard>
+                    <BeginStoryboard Storyboard="{DynamicResource animationHamburgerApplyButtonIsEnabled}"/>
                 </EventTrigger>
                 <EventTrigger RoutedEvent="MouseLeftButtonDown">
-                    <BeginStoryboard>
+                    <BeginStoryboard >
                         <Storyboard>
-                            <ThicknessAnimation Storyboard.TargetName="hamburgerContainer" Storyboard.TargetProperty="Margin" 
-                                                    Duration="0:0:0.5" From="0 0 0 0" To="0 5 0 0" SpeedRatio="5"
-                                                    AutoReverse="True"/>
+                            <ThicknessAnimation Storyboard.TargetName="hamburgerContainer" 
+                                                Storyboard.TargetProperty="Margin"
+                                                Duration="0:0:0.5" 
+                                                From="0 0 0 0" 
+                                                To="0 5 0 0" 
+                                                SpeedRatio="5"
+                                                AutoReverse="True"/>
                         </Storyboard>
                     </BeginStoryboard>
                 </EventTrigger>
@@ -64,7 +75,7 @@
                 <TextBlock Name="textCategory" FontSize="{DynamicResource textHamburgerSize}" 
                            Margin="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=TextMargin}"                           
                            VerticalAlignment="Center"
-                           Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=Text}"/>                
+                           Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=Text}"/>
             </StackPanel>
         </StackPanel>
     </Grid>

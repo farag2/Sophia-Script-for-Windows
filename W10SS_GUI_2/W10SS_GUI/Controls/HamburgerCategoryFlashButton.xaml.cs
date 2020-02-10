@@ -16,16 +16,14 @@ using System.Windows.Shapes;
 namespace W10SS_GUI.Controls
 {
     /// <summary>
-    /// Логика взаимодействия для HamburgerCategoryButton.xaml
+    /// Логика взаимодействия для HamburgerCategoryFlashButton.xaml
     /// </summary>
-    public partial class HamburgerCategoryButton : UserControl
+    public partial class HamburgerCategoryFlashButton : UserControl
     {
-        public HamburgerCategoryButton()
+        public HamburgerCategoryFlashButton()
         {
             InitializeComponent();
         }
-
-
 
         public string Text
         {
@@ -35,7 +33,7 @@ namespace W10SS_GUI.Controls
 
         // Using a DependencyProperty as the backing store for Text.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty TextProperty =
-            DependencyProperty.Register("Text", typeof(string), typeof(HamburgerCategoryButton), new PropertyMetadata(default(string)));
+            DependencyProperty.Register("Text", typeof(string), typeof(HamburgerCategoryFlashButton), new PropertyMetadata(default(string)));
 
 
         public string Icon
@@ -46,7 +44,7 @@ namespace W10SS_GUI.Controls
 
         // Using a DependencyProperty as the backing store for IconText.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IconProperty =
-            DependencyProperty.Register("Icon", typeof(string), typeof(HamburgerCategoryButton), new PropertyMetadata(default(string)));
+            DependencyProperty.Register("Icon", typeof(string), typeof(HamburgerCategoryFlashButton), new PropertyMetadata(default(string)));
 
 
 
@@ -58,7 +56,6 @@ namespace W10SS_GUI.Controls
 
         // Using a DependencyProperty as the backing store for TextMargin.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty TextMarginProperty =
-            DependencyProperty.Register("TextMargin", typeof(Thickness), typeof(HamburgerCategoryButton), new PropertyMetadata(default(Thickness)));
-
+            DependencyProperty.Register("TextMargin", typeof(Thickness), typeof(HamburgerCategoryFlashButton), new PropertyMetadata(default(Thickness)));        
     }
 }

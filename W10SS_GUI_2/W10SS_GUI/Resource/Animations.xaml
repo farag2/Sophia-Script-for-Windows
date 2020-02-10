@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:W10SS_GUI.Resource">
+                    xmlns:local="clr-namespace:W10SS_GUI.Resource">    
+
     <Storyboard x:Key="animationHamburgerOpen">
         <DoubleAnimation Storyboard.TargetProperty="(FrameworkElement.Width)" To="{StaticResource panelHamburgerMaxWidth}" Duration="0:0:0.3"/>
     </Storyboard>
@@ -8,5 +9,17 @@
     <Storyboard x:Key="animationHamburgerClose">
         <DoubleAnimation Storyboard.TargetProperty="(FrameworkElement.Width)" To="{StaticResource panelHamburgerMinWidth}" Duration="0:0:0.3"/>
     </Storyboard>
+
+    <Storyboard x:Key="animationHamburgerApplyButtonIsEnabled" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+        <ColorAnimation From="#e81123" To="#97020e" Duration="0:0:2" AutoReverse="True" RepeatBehavior="Forever" />
+    </Storyboard>
+
+    <Storyboard x:Key="animationHamburgerApplyButtonIsDisabled" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+        <ColorAnimation To="#353535" Duration="0:0:0.1" />
+    </Storyboard>
+
+    <Storyboard x:Key="animationHamburgerApplyHover" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+        <ColorAnimation To="#e81123" Duration="0:0:0.1" />
+    </Storyboard>   
 
 </ResourceDictionary>

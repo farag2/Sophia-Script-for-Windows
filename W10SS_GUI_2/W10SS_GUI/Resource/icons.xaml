@@ -12,4 +12,7 @@
     <system:String x:Key="iconHamburgerTaskScheduler">&#xE823;</system:String>
     <system:String x:Key="iconHamburgerDefender">&#xE83D;</system:String>
     <system:String x:Key="iconHamburgerContextMenu">&#xE292;</system:String>
+    <system:String x:Key="iconHamburgerApplySettings">&#xE713;</system:String>
+    <system:String x:Key="iconHamburgerSaveSettings">&#xE74E;</system:String>
+    <system:String x:Key="iconHamburgerLoadSettings">&#xE896;</system:String>
 </ResourceDictionary>

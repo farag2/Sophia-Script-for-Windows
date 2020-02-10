@@ -3,8 +3,10 @@
     <SolidColorBrush x:Key="buttonHamburgerBackground" Color="#353535"/>    
     <SolidColorBrush x:Key="buttonHamburgerHover" Color="#4A4A4A"/>
     <SolidColorBrush x:Key="textHamburgerForeground" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="textHamburgerForegroundDisabled" Color="#848484"/>
 
     <Color x:Key="buttonHamburgerBackgroundColor">#353535</Color>
-    <Color x:Key="buttonHamburgerHoverColor">#4A4A4A</Color>
-    
+    <Color x:Key="buttonHamburgerHoverColor">#4A4A4A</Color>    
+    <Color x:Key="buttonHamburgerApplyHoverColor">#e81123</Color>
+
 </ResourceDictionary>

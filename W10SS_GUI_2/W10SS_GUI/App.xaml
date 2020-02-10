@@ -12,6 +12,7 @@
                 <ResourceDictionary Source="pack://application:,,,/Resource/controlsSize.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/Resource/icons.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/Resource/animations.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Resource/constants.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
