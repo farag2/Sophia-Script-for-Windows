@@ -80,7 +80,7 @@ New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UserDataSvc -Name
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UserDataSvc -Name UserServiceFlags -PropertyType DWord -Value 0 -Force
 # Stop event trace sessions
 # Остановить сеансы отслеживания событий
-Get-EtwTraceSession -Name DiagLog -ErrorAction SilentlyContinue | Remove-EtwTraceSession
+Get-EtwTraceSession -Name DiagLog -ErrorAction Ignore | Remove-EtwTraceSession
 # Turn off the data collectors at the next computer restart
 # Отключить сборщики данных при следующем запуске ПК
 Update-AutologgerConfig -Name DiagLog, AutoLogger-Diagtrack-Listener -Start 0
@@ -486,7 +486,7 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\
 New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name JPEGImportQuality -PropertyType DWord -Value 100 -Force
 # Show Task Manager details
 # Раскрыть окно Диспетчера задач
-$taskmgr = Get-Process -Name Taskmgr -ErrorAction SilentlyContinue
+$taskmgr = Get-Process -Name Taskmgr -ErrorAction Ignore
 IF ($taskmgr)
 {
 	$taskmgr.CloseMainWindow()
@@ -495,17 +495,16 @@ Start-Process -FilePath Taskmgr.exe -WindowStyle Hidden -PassThru
 do
 {
 	Start-Sleep -Milliseconds 100
-	$preferences = Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -ErrorAction SilentlyContinue
+	$preferences = Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -ErrorAction Ignore
 }
 until ($preferences)
 Stop-Process -Name Taskmgr
 $preferences.Preferences[28] = 0
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -PropertyType Binary -Value $preferences.Preferences -Force
-$Error.RemoveRange(0, $Error.Count)
 # Remove Microsoft Edge shortcut from the Desktop
 # Удалить ярлык Microsoft Edge с рабочего стола
 $value = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
-Remove-Item -Path "$value\Microsoft Edge.lnk" -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "$value\Microsoft Edge.lnk" -Force -ErrorAction Ignore
 # Show accent color on the title bars and window borders
 # Отображать цвет элементов в заголовках окон и границ окон
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\DWM -Name ColorPrevalence -PropertyType DWord -Value 1 -Force
@@ -529,54 +528,29 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name 
 #region OneDrive
 # Uninstall OneDrive
 # Удалить OneDrive
-Stop-Process -Name OneDrive -Force -ErrorAction SilentlyContinue
+Stop-Process -Name OneDrive -Force -ErrorAction Ignore
 Start-Process -FilePath "$env:SystemRoot\SysWOW64\OneDriveSetup.exe" -ArgumentList "/uninstall" -Wait
-# Refresh desktop icons, environment variables and taskbar without restarting File Explorer
-# Обновить иконки рабочего стола, переменные среды и панель задач без перезапуска "Проводника"
-$UpdateEnvExplorerAPI = @{
-	Namespace = "WinAPI"
-	Name = "UpdateEnvExplorer"
-	Language = "CSharp"
-	MemberDefinition = @"
-		private static readonly IntPtr HWND_BROADCAST = new IntPtr(0xffff);
-		private const int WM_SETTINGCHANGE = 0x1a;
-		private const int SMTO_ABORTIFHUNG = 0x0002;
-		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
-		static extern bool SendNotifyMessage(IntPtr hWnd, uint Msg, IntPtr wParam, string lParam);
-		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
-		private static extern IntPtr SendMessageTimeout(IntPtr hWnd, int Msg, IntPtr wParam, string lParam, int fuFlags, int uTimeout, IntPtr lpdwResult);
-		[DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = false)]
-		private static extern int SHChangeNotify(int eventId, int flags, IntPtr item1, IntPtr item2);
-		public static void Refresh()
-		{
-			// Update desktop icons
-			SHChangeNotify(0x8000000, 0x1000, IntPtr.Zero, IntPtr.Zero);
-			// Update environment variables
-			SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, IntPtr.Zero, null, SMTO_ABORTIFHUNG, 100, IntPtr.Zero);
-			// Update taskbar
-			SendNotifyMessage(HWND_BROADCAST, WM_SETTINGCHANGE, IntPtr.Zero, "TraySettings");
-		}
-"@
-}
-IF (-not ("WinAPI.UpdateEnvExplorer" -as [type]))
-{
-	Add-Type @UpdateEnvExplorerAPI
-}
-[WinAPI.UpdateEnvExplorer]::Refresh()
-Remove-ItemProperty -Path HKCU:\Environment -Name OneDrive -Force -ErrorAction SilentlyContinue
-Remove-Item -Path "$env:ProgramData\Microsoft OneDrive" -Recurse -Force -ErrorAction SilentlyContinue
+Stop-Process -Name explorer -Force
+Remove-ItemProperty -Path HKCU:\Environment -Name OneDrive -Force -ErrorAction Ignore
+Remove-Item -Path "$env:ProgramData\Microsoft OneDrive" -Recurse -Force -ErrorAction Ignore
 Unregister-ScheduledTask -TaskName *OneDrive* -Confirm:$false
-IF ((Get-ChildItem -Path $env:USERPROFILE\OneDrive -ErrorAction SilentlyContinue | Measure-Object).Count -eq 0)
+IF ((Get-ChildItem -Path $env:USERPROFILE\OneDrive -ErrorAction Ignore | Measure-Object).Count -eq 0)
 {
-	Remove-Item -Path $env:USERPROFILE\OneDrive -Recurse -Force -ErrorAction SilentlyContinue
+	Remove-Item -Path $env:USERPROFILE\OneDrive -Recurse -Force -ErrorAction Ignore
 }
 else
 {
-	Write-Error "$env:USERPROFILE\OneDrive folder is not empty"
+	IF ($RU)
+	{
+		Write-Error -Message "Папка $env:USERPROFILE\OneDrive не пуста. Удалите ее вручную" -ErrorAction SilentlyContinue
+	}
+	else
+	{
+		Write-Error -Message "$env:USERPROFILE\OneDrive folder is not empty. Delete it manually" -ErrorAction SilentlyContinue
+	}
 }
-Wait-Process -Name OneDriveSetup -ErrorAction SilentlyContinue
-Remove-Item -Path $env:LOCALAPPDATA\Microsoft\OneDrive -Recurse -Force -ErrorAction SilentlyContinue
-$Error.RemoveAt(0)
+Wait-Process -Name OneDriveSetup -ErrorAction Ignore
+Remove-Item -Path $env:LOCALAPPDATA\Microsoft\OneDrive -Recurse -Force -ErrorAction Ignore
 #endregion OneDrive
 
 #region System
@@ -620,9 +594,9 @@ New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\E
 New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TEMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
 [Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Process")
 [Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Process")
-Remove-Item $env:LOCALAPPDATA\Temp -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item $env:LOCALAPPDATA\Temp -Recurse -Force -ErrorAction Ignore
 Restart-Service -Name Spooler -Force
-Remove-Item -Path $env:SystemRoot\Temp -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item -Path $env:SystemRoot\Temp -Recurse -Force -ErrorAction Ignore
 # Turn on Win32 long paths
 # Включить длинные пути Win32
 New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -PropertyType DWord -Value 1 -Force
@@ -1355,9 +1329,6 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\
 # Отключить удаление кэша миниатюр
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" -Name Autorun -PropertyType DWord -Value 0 -Force
 New-ItemProperty -Path "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" -Name Autorun -PropertyType DWord -Value 0 -Force
-# Turn on automatically save my restartable apps when sign out and restart them after sign in
-# Автоматически сохранять мои перезапускаемые приложения при выходе из системы и перезапустить их после выхода
-New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name RestartApps -Value 1 -Force
 # Include command line in progress creation events
 # Включать командную строку в событиях создания процесса
 New-ItemProperty -Path HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -PropertyType DWord -Value 1 -Force
@@ -1439,7 +1410,7 @@ else
 	do
 	{
 		$Unpin = Read-Host -Prompt " "
-		if ([string]::IsNullOrEmpty($theme))
+		if ([string]::IsNullOrEmpty($Unpin))
 		{
 			break
 		}
@@ -1904,13 +1875,14 @@ IF (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract\
 {
 	New-Item -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract\Command -Force
 }
-New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract\Command -Name "(default)" -PropertyType String -Value "msiexec.exe /a `"%1`" /qb TARGETDIR=`"%1 extracted`"" -Force
+$Value = "{0}" -f 'msiexec.exe /a "%1" /qb TARGETDIR="%1 extracted"'
+New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract\Command -Name "(default)" -PropertyType String -Value $Value -Force
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract -Name MUIVerb -PropertyType String -Value "@shell32.dll,-31382" -Force
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract -Name Icon -PropertyType String -Value "shell32.dll,-16817" -Force
 # Add "Run as different user" from context menu for .exe file type
 # Добавить "Запуск от имени другого пользователя" в контекстное меню для .exe файлов
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name "(default)" -PropertyType String -Value "@shell32.dll,-50944" -Force
-Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name Extended -Force -ErrorAction SilentlyContinue
+Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name Extended -Force -ErrorAction Ignore
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name SuppressionPolicyEx -PropertyType String -Value "{F211AA05-D4DF-4370-A2A0-9F19C09756A7}" -Force
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser\command -Name DelegateExecute -PropertyType String -Value "{ea72d00e-4960-42fa-ba92-7792a7944c1d}" -Force
 # Add "Install" to CAB file type context menu
@@ -1919,7 +1891,8 @@ IF (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Comm
 {
 	New-Item -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command -Force
 }
-New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command -Name "(default)" -PropertyType String -Value "cmd /c DISM /Online /Add-Package /PackagePath:`"%1`" /NoRestart & pause" -Force
+$Value = "{0}" -f 'cmd /c DISM /Online /Add-Package /PackagePath:"%1" /NoRestart & pause'
+New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command -Name "(default)" -PropertyType String -Value $Value -Force
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs -Name MUIVerb -PropertyType String -Value "@shell32.dll,-10210" -Force
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs -Name HasLUAShield -PropertyType String -Value "" -Force
 # Remove "Cast to Device" from context menu
@@ -1979,13 +1952,13 @@ New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\batfile\shell\print -Name Pro
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\cmdfile\shell\print -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
 # Remove "Compressed (zipped) Folder" from context menu
 # Удалить пункт "Сжатая ZIP-папка" из контекстного меню
-Remove-Item -Path Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder\ShellNew -Force -ErrorAction SilentlyContinue
+Remove-Item -Path Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder\ShellNew -Force -ErrorAction Ignore
 # Remove "Rich Text Document" from context menu
 # Удалить пункт "Создать Документ в формате RTF" из контекстного меню
-Remove-Item -Path Registry::HKEY_CLASSES_ROOT\.rtf\ShellNew -Force -ErrorAction SilentlyContinue
+Remove-Item -Path Registry::HKEY_CLASSES_ROOT\.rtf\ShellNew -Force -ErrorAction Ignore
 # Remove "Bitmap image" from context menu
 # Удалить пункт "Создать Точечный рисунок" из контекстного меню
-Remove-Item -Path Registry::HKEY_CLASSES_ROOT\.bmp\ShellNew -Force -ErrorAction SilentlyContinue
+Remove-Item -Path Registry::HKEY_CLASSES_ROOT\.bmp\ShellNew -Force -ErrorAction Ignore
 # Remove "Send to" from folder context menu
 # Удалить пункт "Отправить" из контекстного меню папки
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AllFilesystemObjects\shellex\ContextMenuHandlers\SendTo -Name "(default)" -PropertyType String -Value "" -Force
@@ -2003,6 +1976,31 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name 
 Stop-Process -Name StartMenuExperienceHost -Force
 # Refresh desktop icons, environment variables and taskbar without restarting File Explorer
 # Обновить иконки рабочего стола, переменные среды и панель задач без перезапуска "Проводника"
+$UpdateEnvExplorerAPI = @{
+	Namespace = "WinAPI"
+	Name = "UpdateEnvExplorer"
+	Language = "CSharp"
+	MemberDefinition = @"
+		private static readonly IntPtr HWND_BROADCAST = new IntPtr(0xffff);
+		private const int WM_SETTINGCHANGE = 0x1a;
+		private const int SMTO_ABORTIFHUNG = 0x0002;
+		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
+		static extern bool SendNotifyMessage(IntPtr hWnd, uint Msg, IntPtr wParam, string lParam);
+		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
+		private static extern IntPtr SendMessageTimeout(IntPtr hWnd, int Msg, IntPtr wParam, string lParam, int fuFlags, int uTimeout, IntPtr lpdwResult);
+		[DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = false)]
+		private static extern int SHChangeNotify(int eventId, int flags, IntPtr item1, IntPtr item2);
+		public static void Refresh()
+		{
+			// Update desktop icons
+			SHChangeNotify(0x8000000, 0x1000, IntPtr.Zero, IntPtr.Zero);
+			// Update environment variables
+			SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, IntPtr.Zero, null, SMTO_ABORTIFHUNG, 100, IntPtr.Zero);
+			// Update taskbar
+			SendNotifyMessage(HWND_BROADCAST, WM_SETTINGCHANGE, IntPtr.Zero, "TraySettings");
+		}
+"@
+}
 IF (-not ("WinAPI.UpdateEnvExplorer" -as [type]))
 {
 	Add-Type @UpdateEnvExplorerAPI
