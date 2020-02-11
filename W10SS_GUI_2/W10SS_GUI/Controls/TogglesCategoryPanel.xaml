@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="W10SS_GUI.Controls.TogglesCategoryPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:W10SS_GUI.Controls"
+             mc:Ignorable="d"             
+             Name="togglesCategoryPanel">
+    
+    <StackPanel Name="panelTogglesCategory"
+                Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=Width}"
+                Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=Tag}"
+                Orientation="Vertical"
+                Background="{DynamicResource windowBackground}">                
+        
+        <StackPanel Name="panelTogglesHeader"
+                    Height="{StaticResource togglesCategoryPanelHeaderHeight}"
+                    Orientation="Horizontal">
+
+            <TextBlock Name="textTogglesHeader" 
+                       FontSize="{StaticResource togglesCategoryPanelHeaderFontSize}"
+                       FontFamily="{StaticResource textTogglesHeaderFontFamily}"
+                       Margin="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=HeaderMargin}"                           
+                       VerticalAlignment="Center"
+                       Text="{DynamicResource textHamburgerPrivacy}"/>
+        </StackPanel>
+
+        <ScrollViewer Name="scrollTogglesCategory"
+                          HorizontalScrollBarVisibility="Disabled"
+                          VerticalScrollBarVisibility="Auto">
+
+            <StackPanel Name="Context" Orientation="Vertical" Margin="20" />            
+
+        </ScrollViewer>
+
+    </StackPanel>
+</UserControl>

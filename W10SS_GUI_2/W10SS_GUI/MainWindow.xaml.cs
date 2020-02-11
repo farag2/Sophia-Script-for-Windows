@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using W10SS_GUI.Controls;
 
 namespace W10SS_GUI
 {
@@ -23,7 +24,7 @@ namespace W10SS_GUI
     {
         public MainWindow()
         {
-            InitializeComponent();            
+            InitializeComponent();
         }        
 
         private void Window_Initialized(object sender, EventArgs e)

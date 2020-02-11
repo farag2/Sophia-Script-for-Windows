@@ -56,7 +56,7 @@
             </StackPanel.Triggers>
 
             <StackPanel Name="hamburgerContainer" Orientation="Horizontal">
-                <TextBlock Name="textIcon" FontFamily="Segoe MDL2 Assets" FontSize="{DynamicResource  buttonHamburgerIconsSize}"                     
+                <TextBlock Name="textIcon" FontFamily="{StaticResource textHamburgerCategoryButtonIcon}" FontSize="{DynamicResource  buttonHamburgerIconsSize}"                     
                            Margin="10 0 10 0" 
                            VerticalAlignment="Center"
                            Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=Icon}"/>

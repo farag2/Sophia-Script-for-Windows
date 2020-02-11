@@ -6,15 +6,17 @@
         xmlns:local="clr-namespace:W10SS_GUI"        
         xmlns:uc="clr-namespace:W10SS_GUI.Controls"
         mc:Ignorable="d"
-        Name="Window" Title="{StaticResource textWindowTitle}" MinHeight="{StaticResource windowMinHeight}" 
-        Height="{StaticResource windowHeight}"
+        Name="Window" Title="{StaticResource textWindowTitle}"         
+        MinHeight="{StaticResource windowMinHeight}"
         MinWidth="{StaticResource windowMinWidth}"
+        Height="{StaticResource windowHeight}"        
         Width="{StaticResource windowWidth}" 
+        FontFamily="{StaticResource windowFontFamily}"
         FontSize="{DynamicResource windowFontSize}" TextOptions.TextFormattingMode="Display" 
         WindowStartupLocation="CenterScreen" SnapsToDevicePixels="True" 
         ResizeMode="CanResize" ShowInTaskbar="True"
-        Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
-        Foreground="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"         
+        Background="{DynamicResource windowBackground}"
+        Foreground="{DynamicResource windowForeground}"         
         Initialized="Window_Initialized" SizeToContent="WidthAndHeight">
 
     <Grid Name="gridWindow">
@@ -145,21 +147,27 @@
         </Canvas>
         <!--#endregion Hamburger Panel-->
 
-        <!--#region Category Panels -->
-        <ScrollViewer Name="scrollCategory"
-                      Grid.Column="1"
-                      VerticalScrollBarVisibility="Auto"
-                      HorizontalScrollBarVisibility="Disabled">
+        <!--#region Toggles Category Panels -->
+        <Grid Name="gridTogglesCategoryPanels" Grid.Column="1">
 
-            <Grid Name="gridCategoryPanels" Grid.Column="1"                     
-              Width="500"
-              HorizontalAlignment="Left">
-            </Grid>
+            <uc:TogglesCategoryPanel x:Name="panelTogglesCategoryPrivacy"
+                                     Width="{Binding ElementName=gridTogglesCategoryPanels, Path=ActualWidth}"
+                                     VerticalAlignment="Top"
+                                     HorizontalAlignment="Left"
+                                     HeaderMargin="20 0 20 6"
+                                     Tag="{StaticResource tagCategoryPrivacy}"/>
 
-        </ScrollViewer>
-            
-        
-        <!--#region Category Panels -->   
+
+
+
+
+
+
+
+
+
+        </Grid>
+        <!--#endregion Toggles Category Panels -->  
     
     </Grid>
 </Window>

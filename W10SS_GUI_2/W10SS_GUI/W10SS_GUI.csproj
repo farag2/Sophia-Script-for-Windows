@@ -71,15 +71,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\TogglesCategoryPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resource\animations.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Resource\constants.xaml">
+    <Page Include="Resource\fonts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Resource\controls.xaml">
+    <Page Include="Resource\tags.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -108,6 +112,9 @@
     </Compile>
     <Compile Include="Controls\HamburgerCategoryFlashButton.xaml.cs">
       <DependentUpon>HamburgerCategoryFlashButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TogglesCategoryPanel.xaml.cs">
+      <DependentUpon>TogglesCategoryPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

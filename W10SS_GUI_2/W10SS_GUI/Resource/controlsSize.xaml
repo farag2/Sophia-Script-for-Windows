@@ -15,5 +15,12 @@
     
     <system:Double x:Key="panelHamburgerMinWidth">40</system:Double>
     <system:Double x:Key="panelHamburgerWidth">220</system:Double>
-    <system:Double x:Key="panelHamburgerMaxWidth">220</system:Double>    
+    <system:Double x:Key="panelHamburgerMaxWidth">220</system:Double>
+
+    <system:Double x:Key="togglesCategoryPanelWidth">500</system:Double>
+    <system:Double x:Key="togglesCategoryPanelHeaderHeight">40</system:Double>
+    <system:Double x:Key="togglesCategoryPanelHeaderFontSize">20</system:Double>
+
+
+    
 </ResourceDictionary>
