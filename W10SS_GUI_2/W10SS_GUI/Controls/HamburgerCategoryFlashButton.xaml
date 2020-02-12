@@ -67,7 +67,7 @@
             </StackPanel.Triggers>
 
             <StackPanel Name="hamburgerContainer" Orientation="Horizontal">
-                <TextBlock Name="textIcon" FontFamily="{StaticResource textHamburgerCategoryFlashButtonIcon}" FontSize="{DynamicResource  buttonHamburgerIconsSize}"                     
+                <TextBlock Name="textIcon" FontFamily="{StaticResource fontHamburgerCategoryFlashButtonIcon}" FontSize="{DynamicResource  buttonHamburgerIconsSize}"                     
                            Margin="10 0 10 0" 
                            VerticalAlignment="Center"
                            Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=Icon}"/>

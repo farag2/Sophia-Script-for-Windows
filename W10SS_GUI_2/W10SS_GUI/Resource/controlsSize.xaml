@@ -21,6 +21,12 @@
     <system:Double x:Key="togglesCategoryPanelHeaderHeight">40</system:Double>
     <system:Double x:Key="togglesCategoryPanelHeaderFontSize">20</system:Double>
 
+    <system:Double x:Key="toggleSwitchWidth">500</system:Double>
+    <system:Double x:Key="toggleSwitchHeight">70</system:Double>
+    <system:Double x:Key="toggleSwitchIconsFontSize">24</system:Double>
+    <system:Double x:Key="toggleSwitchIconsWidth">25</system:Double>    
+    <system:Double x:Key="toggleSwitchHeaderMaxHeight">55</system:Double>
 
-    
+
+
 </ResourceDictionary>

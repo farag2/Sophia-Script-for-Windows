@@ -3,9 +3,12 @@
                     xmlns:local="clr-namespace:W10SS_GUI.Resource"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-    <FontFamily x:Key="textTogglesHeaderFontFamily">Calibri</FontFamily>
-    <FontFamily x:Key="textHamburgerCategoryButtonIcon">Segoe MDL2 Assets</FontFamily>
-    <FontFamily x:Key="textHamburgerCategoryFlashButtonIcon">Segoe MDL2 Assets</FontFamily>
-    <FontFamily x:Key="windowFontFamily">Segoe UI</FontFamily>
-    
+    <FontFamily x:Key="fontTogglesPanelHeader">Calibri</FontFamily>
+    <FontFamily x:Key="fontHamburgerCategoryButtonIcon">Segoe MDL2 Assets</FontFamily>
+    <FontFamily x:Key="fontHamburgerCategoryFlashButtonIcon">Segoe MDL2 Assets</FontFamily>
+    <FontFamily x:Key="fontWindow">Segoe UI</FontFamily>
+
+    <FontFamily x:Key="fontToggleIcon">Segoe MDL2 Assets</FontFamily>
+    <FontFamily x:Key="fontToggleSwitchHeader">Calibri</FontFamily>
+
 </ResourceDictionary>

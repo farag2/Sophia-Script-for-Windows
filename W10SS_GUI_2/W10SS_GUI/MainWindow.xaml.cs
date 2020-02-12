@@ -24,7 +24,7 @@ namespace W10SS_GUI
     {
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }        
 
         private void Window_Initialized(object sender, EventArgs e)

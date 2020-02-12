@@ -19,7 +19,7 @@
 
             <TextBlock Name="textTogglesHeader" 
                        FontSize="{StaticResource togglesCategoryPanelHeaderFontSize}"
-                       FontFamily="{StaticResource textTogglesHeaderFontFamily}"
+                       FontFamily="{StaticResource fontTogglesPanelHeader}"
                        Margin="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=HeaderMargin}"                           
                        VerticalAlignment="Center"
                        Text="{DynamicResource textHamburgerPrivacy}"/>
