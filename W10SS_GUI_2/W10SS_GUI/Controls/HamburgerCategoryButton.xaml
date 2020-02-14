@@ -10,10 +10,10 @@
         <Style TargetType="TextBlock">
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="True">
-                    <Setter Property="Foreground" Value="{DynamicResource textHamburgerForeground}" />
+                    <Setter Property="Foreground" Value="{DynamicResource colorTextHamburgerForeground}" />
                 </Trigger>
                 <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Foreground" Value="{DynamicResource textHamburgerForegroundDisabled}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource colorTextHamburgerForegroundDisabled}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>

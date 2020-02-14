@@ -174,35 +174,68 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <!--#endregion Toggle Switch Style-->        
+        <!--#endregion Toggle Switch Style-->
+
+        <!--#region Toggle Background Hover-->
+        <!--<Style TargetType="Grid">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource colorToggleBackgroundHover}"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="False">
+                    <Setter Property="Background" Value="{DynamicResource colorToggleBackground}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>-->        
+        <!--#endregion Toggle Background Hover-->        
+        
     </UserControl.Resources>
 
-    <Grid Name="gridToggleSwitch"    
+    <Grid Name="gridToggleSwitch"          
           Width="{StaticResource toggleSwitchWidth}" 
-          Height="{StaticResource toggleSwitchHeight}" 
-          Background="{DynamicResource windowBackground}"
-          HorizontalAlignment="Left">
+          Height="{StaticResource toggleSwitchHeight}"           
+          HorizontalAlignment="Left"
+          Margin="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=Margin}" 
+          MouseEnter="GridToggleSwitch_MouseEnter" MouseLeave="GridToggleSwitch_MouseLeave"
+          >                   
 
-        <TextBlock Name="iconToggleSwitch" FontFamily="{StaticResource fontToggleIcon}"
+        <TextBlock Name="iconToggleSwitch" 
+                   FontFamily="{StaticResource fontToggleIcon}"
                    Width="{StaticResource toggleSwitchIconsWidth}"
                    FontSize="{DynamicResource toggleSwitchIconsFontSize}"
-                   Margin="10 0 10 0"
+                   Margin="10 0 5 0"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Left"
-                   Text="&#xE1CD;"/>
+                   Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=Icon}"/>
 
-        <TextBlock Name="textToggleSwitchHeader" FontFamily="{StaticResource fontToggleSwitchHeader}"                   
-                   MaxHeight="{StaticResource toggleSwitchHeaderMaxHeight}"
-                   TextWrapping="Wrap"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Left"
-                   Margin="45 10 60 10"
-                   Text="Do not use sign-in info to automatically finish setting up device after an update or restart" />
+        <StackPanel VerticalAlignment="Center" 
+                    HorizontalAlignment="Left"
+                    Margin="45 5 60 5">
+        
+            <TextBlock Name="textToggleSwitchHeader" 
+                       FontFamily="{StaticResource fontToggleSwitchHeader}"                                      
+                       FontSize="{StaticResource fontSizeToggleSwitchHeader}"                       
+                       TextWrapping="Wrap"   
+                       Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=Header}"                       
+                       MaxHeight="{StaticResource toggleSwitchHeaderMaxHeight}"
+                       MaxWidth="{StaticResource toggleSwitchTextMaxWidth}"/>
 
+            <TextBlock Name="textToggleSwitchDescription" 
+                       FontFamily="{StaticResource fontToggleSwitchDescription}"                   
+                       FontSize="{StaticResource fontSizeToggleSwitchDescription}"
+                       Foreground="{DynamicResource colorToggleDescription}" 
+                       Padding="0 3 0 3"
+                       MaxHeight="{StaticResource toggleSwitchDescriptionMaxHeight}"
+                       MaxWidth="{StaticResource toggleSwitchTextMaxWidth}"
+                       TextWrapping="Wrap"                            
+                       Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=Description}" />
+        </StackPanel>
+        
         <ToggleButton Name="toggleSwitch"
                       VerticalAlignment="Center" 
                       HorizontalAlignment="Right"
-                      IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=IsChecked}"/>
+                      IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=IsChecked}" 
+                      Click="ToggleSwitch_Click" />
 
     </Grid>
 </UserControl>

@@ -10,5 +10,6 @@
 
     <FontFamily x:Key="fontToggleIcon">Segoe MDL2 Assets</FontFamily>
     <FontFamily x:Key="fontToggleSwitchHeader">Calibri</FontFamily>
+    <FontFamily x:Key="fontToggleSwitchDescription">Calibri</FontFamily>
 
 </ResourceDictionary>

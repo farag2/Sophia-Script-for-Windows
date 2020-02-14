@@ -15,9 +15,15 @@
         FontSize="{DynamicResource windowFontSize}" TextOptions.TextFormattingMode="Display" 
         WindowStartupLocation="CenterScreen" SnapsToDevicePixels="True" 
         ResizeMode="CanResize" ShowInTaskbar="True"
-        Background="{DynamicResource windowBackground}"
-        Foreground="{DynamicResource windowForeground}"         
+        Background="{DynamicResource colorWindowBackground}"
+        Foreground="{DynamicResource colorWindowForeground}"         
         Initialized="Window_Initialized" SizeToContent="WidthAndHeight">
+    <Window.Style>
+        <Style TargetType="{x:Type Window}">
+            <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+            <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
+        </Style>
+    </Window.Style>
 
     <Grid Name="gridWindow">
         <Grid.ColumnDefinitions>
@@ -31,7 +37,7 @@
                 MinWidth="{StaticResource panelHamburgerMinWidth}" 
                 Width="{StaticResource panelHamburgerMinWidth}" 
                 MaxWidth="{StaticResource panelHamburgerMaxWidth}" 
-                Background="{DynamicResource buttonHamburgerBackground}"
+                Background="{DynamicResource colorButtonHamburgerBackground}"
                 HorizontalAlignment="Left">            
             <Canvas.Triggers>
                 <EventTrigger RoutedEvent="MouseEnter">
@@ -148,17 +154,33 @@
         <!--#endregion Hamburger Panel-->
 
         <!--#region Toggles Category Panels -->
-        <Grid Name="gridTogglesCategoryPanels" Grid.Column="1"
+        <Grid Name="gridTogglesCategoryPanels" 
+              Grid.Column="1"
               VerticalAlignment="Top">
 
-            <uc:TogglesCategoryPanel x:Name="panelTogglesCategoryPrivacy"
-                                     Width="{Binding ElementName=gridTogglesCategoryPanels, Path=ActualWidth}"
-                                     VerticalAlignment="Top"
-                                     HorizontalAlignment="Left"
-                                     HeaderMargin="20 0 20 6"
-                                     Tag="{StaticResource tagCategoryPrivacy}"/>
+            <StackPanel>
+                
+                <uc:ToggleSwitch 
+                    Icon="&#xE196;"
+                    Header="Change Windows Feedback frequency to Never"
+                    Description="Изменить частоту формирования отзывов на Никогда" />
 
-            
+                <uc:ToggleSwitch 
+                    Icon="&#xE192;"
+                    Header="Do not allow apps to use advertising ID"
+                    Description="Не разрешать приложениям использовать идентификатор рекламы"/>
+
+                <uc:ToggleSwitch 
+                    Icon="&#xE70C;"
+                    Header="Do not let apps on other devices open and message apps on this device, and vice versa"
+                    Description="Не разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот"/>
+
+                <uc:ToggleSwitch 
+                    Icon="&#xE909;"
+                    Header="Do not let websites provide locally relevant content by accessing language list"
+                    Description="Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков"/>
+            </StackPanel>
+
 
 
 

@@ -4,7 +4,7 @@
                     xmlns:local="clr-namespace:W10SS_GUI.Resource">
     <system:String x:Key="iconHamburgerPrivacy">&#xF103;</system:String>
     <system:String x:Key="iconHamburgerUi">&#xE771;</system:String>
-    <system:String x:Key="iconHamburgerOneDrive">&#xE754;</system:String>
+    <system:String x:Key="iconHamburgerOneDrive">&#xE753;</system:String>
     <system:String x:Key="iconHamburgerSystem">&#xE770;</system:String>
     <system:String x:Key="iconHamburgerStartMenu">&#xECA5;</system:String>
     <system:String x:Key="iconHamburgerUwp">&#xE8D9;</system:String>

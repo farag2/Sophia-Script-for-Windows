@@ -20,12 +20,13 @@ namespace W10SS_GUI.Controls
     /// </summary>
     public partial class ToggleSwitch : UserControl
     {
+        private Brush brushBackground { get; set; } = Application.Current.TryFindResource("colorToggleBackground") as Brush;
+        private Brush brushBackgroundHover { get; set; } = Application.Current.TryFindResource("colorToggleBackgroundHover") as Brush;
+
         public ToggleSwitch()
         {
             InitializeComponent();
         }
-
-
 
         public bool IsChecked
         {
@@ -37,6 +38,56 @@ namespace W10SS_GUI.Controls
         public static readonly DependencyProperty IsCheckedProperty =
             DependencyProperty.Register("IsChecked", typeof(bool), typeof(ToggleSwitch), new PropertyMetadata(default(bool)));
 
+        public string Icon
+        {
+            get { return (string)GetValue(IconProperty); }
+            set { SetValue(IconProperty, value); }
+        }
 
+        // Using a DependencyProperty as the backing store for Icon.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IconProperty =
+            DependencyProperty.Register("Icon", typeof(string), typeof(ToggleSwitch), new PropertyMetadata(default(string)));
+
+        public string Header
+        {
+            get { return (string)GetValue(HeaderProperty); }
+            set { SetValue(HeaderProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Header.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty HeaderProperty =
+            DependencyProperty.Register("Header", typeof(string), typeof(ToggleSwitch), new PropertyMetadata(default(string)));
+
+        public string Description
+        {
+            get { return (string)GetValue(DescriptionProperty); }
+            set { SetValue(DescriptionProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Description.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DescriptionProperty =
+            DependencyProperty.Register("Description", typeof(string), typeof(ToggleSwitch), new PropertyMetadata(default(string)));
+
+
+
+
+
+        private void ToggleSwitch_Click(object sender, RoutedEventArgs e)
+        {
+            gridToggleSwitch.Background = toggleSwitch.IsChecked == true ? brushBackgroundHover : brushBackground ;
+        }
+
+        private void GridToggleSwitch_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (toggleSwitch.IsChecked == false) gridToggleSwitch.Background = brushBackgroundHover;
+
+        }
+
+        private void GridToggleSwitch_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (toggleSwitch.IsChecked == false) gridToggleSwitch.Background = brushBackground;
+
+
+        }
     }
 }
