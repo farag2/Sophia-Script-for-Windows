@@ -1,4 +1,4 @@
-#Requires -RunAsAdministrator
+﻿#Requires -RunAsAdministrator
 #Requires -Version 5
 
 #region Preparation
@@ -44,6 +44,21 @@ IF (-not ([IntPtr]::Size -eq 8))
 # Сlear $Error variable
 # Очистка переменной $Error
 $Error.Clear()
+# Checking the file encoding if it runs locally
+# Проверка кодировки файла, если он запускается локально
+if ($PSCommandPath)
+{
+	[System.IO.FileInfo]$script = Get-Item -Path $PSCommandPath
+	$SequenceBOM = New-Object System.Byte[] 3
+	$reader = $script.OpenRead()
+	$bytesRead = $reader.Read($SequenceBOM, 0, 3)
+	$reader.Dispose()
+	if ($bytesRead -eq 3 -and $SequenceBOM[0] -ne 239 -and $SequenceBOM[1] -ne 187 -and $SequenceBOM[2] -ne 191)
+	{
+		Write-Warning "The file wasn't saved in `"UTF-8 with BOM`" encoding"
+		break
+	}
+}
 # Set the encoding to UTF-8 without BOM for the PowerShell session
 # Установить кодировку UTF-8 без BOM для текущей сессии PowerShell
 IF ($RU)
@@ -191,7 +206,7 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDe
 # Turn off automatic installing suggested apps
 # Отключить автоматическую установку рекомендованных приложений
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SilentInstalledAppsEnabled -PropertyType DWord -Value 0 -Force
-# Let track app launches to improve Start menu and search results
+# Let Windows track app launches to improve Start menu and search results
 # Разрешить Windows отслеживать запуски приложений для улучшения меню "Пуск" и результатов поиска
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_TrackProgs -PropertyType DWord -Value 1 -Force
 #endregion Privacy & Telemetry
@@ -203,7 +218,7 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\
 # Set File Explorer to open to This PC by default
 # Открывать "Этот компьютер" в Проводнике
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name LaunchTo -PropertyType DWord -Value 1 -Force
-# Show Hidden Files, Folders, and Drives
+# Show hidden files, folders, and drives
 # Показывать скрытые файлы, папки и диски
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Hidden -PropertyType DWord -Value 1 -Force
 # Turn off check boxes to select items
@@ -470,7 +485,7 @@ do
 		}
 	}
 }
-Until ($theme -eq "L" -or $theme -eq "D")
+until ($theme -eq "L" -or $theme -eq "D")
 # Do not show "New App Installed" notification
 # Не показывать уведомление "Установлено новое приложение"
 IF (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
@@ -484,7 +499,7 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\
 # Turn off JPEG desktop wallpaper import quality reduction
 # Отключить снижение качества фона рабочего стола в формате JPEG
 New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name JPEGImportQuality -PropertyType DWord -Value 100 -Force
-# Show Task Manager details
+# Show Task manager details
 # Раскрыть окно Диспетчера задач
 $taskmgr = Get-Process -Name Taskmgr -ErrorAction Ignore
 IF ($taskmgr)
@@ -916,7 +931,7 @@ do
 		}
 	}
 }
-Until ($drives -eq $drive)
+until ($drives -eq $drive)
 # Documents
 # Документы
 IF ($RU)
@@ -975,7 +990,7 @@ do
 		}
 	}
 }
-Until ($drives -eq $drive)
+until ($drives -eq $drive)
 # Downloads
 # Загрузки
 IF ($RU)
@@ -1038,7 +1053,7 @@ do
 		}
 	}
 }
-Until ($drives -eq $drive)
+until ($drives -eq $drive)
 # Music
 # Музыка
 IF ($RU)
@@ -1097,7 +1112,7 @@ do
 		}
 	}
 }
-Until ($drives -eq $drive)
+until ($drives -eq $drive)
 # Pictures
 # Изображения
 IF ($RU)
@@ -1156,7 +1171,7 @@ do
 		}
 	}
 }
-Until ($drives -eq $drive)
+until ($drives -eq $drive)
 # Videos
 # Видео
 IF ($RU)
@@ -1215,7 +1230,7 @@ do
 		}
 	}
 }
-Until ($drives -eq $drive)
+until ($drives -eq $drive)
 # Turn on automatic recommended troubleshooting and tell when problems get fixed
 # Автоматически запускать средства устранения неполадок, а затем сообщать об устранении проблем
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 3 -Force
@@ -1288,7 +1303,7 @@ IF ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2 -and (G
 			}
 		}
 	}
-	Until ($apps -match ".exe" -and $apps -match "`"")
+	until ($apps -match ".exe" -and $apps -match "`"")
 }
 # Launch folder in a separate process
 # Запускать окна с папками в отдельном процессе
@@ -1446,7 +1461,7 @@ else
 			}
 		}
 	}
-	Until ($Unpin -eq "Y")
+	until ($Unpin -eq "Y")
 }
 # Show "Explorer" and "Settings" folders on Start menu
 # Отобразить папки "Проводник" и "Параметры" в меню "Пуск"
@@ -1740,7 +1755,7 @@ do
 		}
 	}
 }
-Until ($paths -match "`"")
+until ($paths -match "`"")
 # Turn on Controlled folder access and add protected folders
 # Включить контролируемый доступ к папкам и добавить защищенные папки
 IF ($RU)
@@ -1794,7 +1809,7 @@ do
 		}
 	}
 }
-Until ($paths -match "`"")
+until ($paths -match "`"")
 # Allow an app through Controlled folder access
 # Разрешить работу приложения через контролируемый доступ к папкам
 IF ((Get-MpPreference).EnableControlledFolderAccess -eq 1)
@@ -1849,7 +1864,7 @@ IF ((Get-MpPreference).EnableControlledFolderAccess -eq 1)
 			}
 		}
 	}
-	Until ($paths -match "`"")
+	until ($paths -match "`"")
 }
 # Turn on Windows Defender Exploit Guard Network Protection
 # Включить Защиту сети в Защитнике Windows
