@@ -81,4 +81,4 @@ Read the code you run carefully. Some functions are presented as an example only
  - [Reddit](https://www.reddit.com/r/Windows10/comments/ctg8jw/powershell_script_setup_windows_10/)
 
 ## PS
-Collection of useful [scripts](https://gist.github.com/farag2)
+Collection of useful [scripts](https://github.com/farag2/Utilities)
