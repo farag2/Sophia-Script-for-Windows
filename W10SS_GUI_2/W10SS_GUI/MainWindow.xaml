@@ -12,12 +12,14 @@
         Height="{StaticResource windowHeight}"        
         Width="{StaticResource windowWidth}" 
         FontFamily="{StaticResource fontWindow}"
-        FontSize="{DynamicResource windowFontSize}" TextOptions.TextFormattingMode="Display" 
-        WindowStartupLocation="CenterScreen" SnapsToDevicePixels="True" 
-        ResizeMode="CanResize" ShowInTaskbar="True"
+        FontSize="{DynamicResource windowFontSize}"         
+        WindowStartupLocation="CenterScreen" 
+        SnapsToDevicePixels="True" 
+        ResizeMode="CanResize" 
+        ShowInTaskbar="True"
         Background="{DynamicResource colorWindowBackground}"
         Foreground="{DynamicResource colorWindowForeground}"         
-        Initialized="Window_Initialized" SizeToContent="WidthAndHeight">
+        Initialized="Window_Initialized" SizeToContent="Manual">
     <Window.Style>
         <Style TargetType="{x:Type Window}">
             <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
@@ -25,20 +27,19 @@
         </Style>
     </Window.Style>
 
-    <Grid Name="gridWindow">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>            
-        </Grid.ColumnDefinitions>
+    <Grid Name="gridWindow">        
 
         <!--#region Hamburger Panel-->
-        <Canvas Name="panelHamburger"
-                Grid.Column="0"
+        <Canvas Name="panelHamburger"                
                 MinWidth="{StaticResource panelHamburgerMinWidth}" 
                 Width="{StaticResource panelHamburgerMinWidth}" 
                 MaxWidth="{StaticResource panelHamburgerMaxWidth}" 
                 Background="{DynamicResource colorButtonHamburgerBackground}"
-                HorizontalAlignment="Left">            
+                HorizontalAlignment="Left"
+                Panel.ZIndex="10">
+            <Canvas.Effect>
+                <DropShadowEffect Direction="380" BlurRadius="10" Opacity="0.6"/>
+            </Canvas.Effect>
             <Canvas.Triggers>
                 <EventTrigger RoutedEvent="MouseEnter">
                     <BeginStoryboard Storyboard="{StaticResource animationHamburgerOpen}"/>
@@ -149,47 +150,124 @@
                                         Width="{Binding ElementName=panelHamburger, Path=Width}"
                                         TextMargin="0 0 10 3"
                                         Canvas.Bottom="80" Canvas.Left="0"/>
-            
+
+            <uc:HamburgerCategoryButton x:Name="buttonHamburgerLanguageSettings"                                        
+                                        Icon="{StaticResource iconHamburgerLanguageSettings}" 
+                                        Text="{DynamicResource textHamburgerLanguage}" 
+                                        Width="{Binding ElementName=panelHamburger, Path=Width}"
+                                        TextMargin="0 0 10 3"
+                                        Canvas.Bottom="160" Canvas.Left="0"/>
+
+            <uc:HamburgerCategoryButton x:Name="buttonHamburgerOpenGithub"                                        
+                                        Icon="{StaticResource iconHamburgerOpenGithub}" 
+                                        Text="{DynamicResource textHamburgerOpenGithub}" 
+                                        Width="{Binding ElementName=panelHamburger, Path=Width}"
+                                        TextMargin="0 0 10 3"
+                                        Canvas.Bottom="200" Canvas.Left="0"/>
+
         </Canvas>
         <!--#endregion Hamburger Panel-->
 
-        <!--#region Toggles Category Panels -->
-        <Grid Name="gridTogglesCategoryPanels" 
-              Grid.Column="1"
-              VerticalAlignment="Top">
+        <!--#region Toggles Header-->
 
-            <StackPanel>
+        <StackPanel Name="panelTogglesHeader"                      
+                    Height="{StaticResource togglesCategoryPanelHeaderHeight}"
+                    Orientation="Horizontal"
+                    VerticalAlignment="Top"
+                    Margin="40 0 0 0">
+            
+            <TextBlock Name="iconTogglesHeader"
+                       FontSize="{StaticResource iconTogglesCategoryPanelHeaderFontSize}"
+                       FontFamily="{StaticResource fontToggleIcon}"
+                           Margin="15 5 10 5"                       
+                           Text="{StaticResource iconHamburgerPrivacy}"/>
+
+            <TextBlock Name="textTogglesHeader" 
+                           FontSize="{StaticResource fontSizeTogglesCategoryPanelHeader}"
+                           FontFamily="{StaticResource fontTogglesPanelHeader}"
+                           VerticalAlignment="Center"
+                           Text="{DynamicResource textHamburgerPrivacy}"/>
+
+        </StackPanel>
+
+        <!--#endregion Toggles Header-->
+        
+        <!--#region Toggles Category Panels-->
+
+        <ScrollViewer Name="scrollTogglesCategoryPrivacy"                                           
+                      Margin="40 40 0 0"
+                      HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto" >
+
+            <StackPanel Name="panelTogglesCategoryContainer">
+
+                <StackPanel Name="paneTogglesCategoryPrivacy"
+                            Tag="{StaticResource tagCategoryPrivacy}">
                 
-                <uc:ToggleSwitch 
-                    Icon="&#xE196;"
-                    Header="Change Windows Feedback frequency to Never"
-                    Description="Изменить частоту формирования отзывов на Никогда" />
+                <uc:ToggleSwitch Icon="&#xE196;"
+                                 Header="Change Windows Feedback frequency to Never"
+                                 Description="Изменить частоту формирования отзывов на Никогда" />
 
                 <uc:ToggleSwitch 
-                    Icon="&#xE192;"
-                    Header="Do not allow apps to use advertising ID"
-                    Description="Не разрешать приложениям использовать идентификатор рекламы"/>
+                            Icon="&#xE192;" 
+                            Header="Do not allow apps to use advertising ID" 
+                            Description="Не разрешать приложениям использовать идентификатор рекламы"/>
 
                 <uc:ToggleSwitch 
-                    Icon="&#xE70C;"
-                    Header="Do not let apps on other devices open and message apps on this device, and vice versa"
-                    Description="Не разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот"/>
+                            Icon="&#xE70C;"
+                            Header="Do not let apps on other devices open and message apps on this device, and vice versa"
+                            Description="Не разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот"/>
 
                 <uc:ToggleSwitch 
-                    Icon="&#xE909;"
-                    Header="Do not let websites provide locally relevant content by accessing language list"
-                    Description="Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков"/>
+                            Icon="&#xE909;"
+                            Header="Do not let websites provide locally relevant content by accessing language list"
+                            Description="Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков"/>
+
+                <uc:ToggleSwitch 
+                            Icon="&#xE196;"
+                            Header="Change Windows Feedback frequency to Never"
+                            Description="Изменить частоту формирования отзывов на Никогда" />
+
+                <uc:ToggleSwitch 
+                            Icon="&#xE192;" 
+                            Header="Do not allow apps to use advertising ID" 
+                            Description="Не разрешать приложениям использовать идентификатор рекламы"/>
+
+                <uc:ToggleSwitch 
+                            Icon="&#xE70C;"
+                            Header="Do not let apps on other devices open and message apps on this device, and vice versa"
+                            Description="Не разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот"/>
+
+                <uc:ToggleSwitch 
+                            Icon="&#xE909;"
+                            Header="Do not let websites provide locally relevant content by accessing language list"
+                            Description="Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков"/>
+                <uc:ToggleSwitch 
+                            Icon="&#xE196;"
+                            Header="Change Windows Feedback frequency to Never"
+                            Description="Изменить частоту формирования отзывов на Никогда" />
+
+                <uc:ToggleSwitch 
+                            Icon="&#xE192;" 
+                            Header="Do not allow apps to use advertising ID" 
+                            Description="Не разрешать приложениям использовать идентификатор рекламы"/>
+
+                <uc:ToggleSwitch 
+                            Icon="&#xE70C;"
+                            Header="Do not let apps on other devices open and message apps on this device, and vice versa"
+                            Description="Не разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот"/>
+
+                <uc:ToggleSwitch 
+                            Icon="&#xE909;"
+                            Header="Do not let websites provide locally relevant content by accessing language list"
+                            Description="Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков"/>
+                </StackPanel>
+
             </StackPanel>
+            
+        </ScrollViewer>
 
+        <!--#endregion TToggles Category Panels-->
 
-
-
-
-
-
-
-        </Grid>
-        <!--#endregion Toggles Category Panels -->  
-    
     </Grid>
 </Window>

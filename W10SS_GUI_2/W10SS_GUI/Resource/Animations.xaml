@@ -2,12 +2,20 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:W10SS_GUI.Resource">    
 
-    <Storyboard x:Key="animationHamburgerOpen">
-        <DoubleAnimation Storyboard.TargetProperty="(FrameworkElement.Width)" To="{StaticResource panelHamburgerMaxWidth}" Duration="0:0:0.3"/>
+    <Storyboard x:Key="animationHamburgerOpen" >
+        <DoubleAnimation Storyboard.TargetProperty="(FrameworkElement.Width)" To="{StaticResource panelHamburgerMaxWidth}" Duration="0:0:0.15" >
+            <DoubleAnimation.EasingFunction>
+                <SineEase EasingMode="EaseIn" />
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
     </Storyboard>
 
     <Storyboard x:Key="animationHamburgerClose">
-        <DoubleAnimation Storyboard.TargetProperty="(FrameworkElement.Width)" To="{StaticResource panelHamburgerMinWidth}" Duration="0:0:0.3"/>
+        <DoubleAnimation Storyboard.TargetProperty="(FrameworkElement.Width)" To="{StaticResource panelHamburgerMinWidth}" Duration="0:0:0.30" >
+            <DoubleAnimation.EasingFunction>
+                <SineEase EasingMode="EaseInOut" />
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
     </Storyboard>
 
     <Storyboard x:Key="animationHamburgerApplyButtonIsEnabled" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">

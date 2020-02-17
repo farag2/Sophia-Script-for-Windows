@@ -11,7 +11,7 @@
                 Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=Width}"
                 Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=Tag}"
                 Orientation="Vertical"
-                Background="{DynamicResource windowBackground}">                
+                Background="{DynamicResource colorWindowBackground}">                
         
         <StackPanel Name="panelTogglesHeader"
                     Height="{StaticResource togglesCategoryPanelHeaderHeight}"

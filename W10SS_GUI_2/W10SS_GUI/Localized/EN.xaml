@@ -17,5 +17,7 @@
     <system:String x:Key="textHamburgerApply">Apply Settings</system:String>
     <system:String x:Key="textHamburgerSave">Save Settings</system:String>
     <system:String x:Key="textHamburgerLoad">Load Settings</system:String>
+    <system:String x:Key="textHamburgerLanguage">Change Language</system:String>
+    <system:String x:Key="textHamburgerOpenGithub">Follow to GitHub</system:String>
     
 </ResourceDictionary>

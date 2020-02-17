@@ -15,4 +15,6 @@
     <system:String x:Key="iconHamburgerApplySettings">&#xE713;</system:String>
     <system:String x:Key="iconHamburgerSaveSettings">&#xE74E;</system:String>
     <system:String x:Key="iconHamburgerLoadSettings">&#xE896;</system:String>
+    <system:String x:Key="iconHamburgerLanguageSettings">&#xF2B7;</system:String>
+    <system:String x:Key="iconHamburgerOpenGithub">&#xE128;</system:String>
 </ResourceDictionary>
