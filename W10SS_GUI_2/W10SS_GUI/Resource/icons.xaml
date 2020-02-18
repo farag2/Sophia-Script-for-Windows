@@ -1,20 +1,20 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:system="clr-namespace:System;assembly=mscorlib"
-                    xmlns:local="clr-namespace:W10SS_GUI.Resource">
+                    xmlns:system="clr-namespace:System;assembly=mscorlib"                    
+                    xmlns:local="clr-namespace:W10SS_GUI.Resource">    
     <system:String x:Key="iconHamburgerPrivacy">&#xF103;</system:String>
     <system:String x:Key="iconHamburgerUi">&#xE771;</system:String>
-    <system:String x:Key="iconHamburgerOneDrive">&#xE753;</system:String>
+    <Geometry x:Key="iconHamburgerOneDrive">M18.21 10.29Q19 10.34 19.7 10.68 20.39 11 20.9 11.57 21.41 12.12 21.71 12.83 22 13.54 22 14.34 22 15.18 21.68 15.92 21.36 16.66 20.8 17.21 20.25 17.76 19.5 18.08 18.78 18.41 17.94 18.41H7Q5.97 18.41 5.06 18 4.15 17.61 3.47 16.94 2.79 16.26 2.4 15.35 2 14.44 2 13.41 2 12.59 2.26 11.83 2.5 11.08 3 10.45 3.44 9.82 4.08 9.35 4.72 8.88 5.5 8.63 5.87 8.5 6.21 8.5 6.56 8.43 6.93 8.41H6.94Q7.37 7.75 7.95 7.23 8.5 6.71 9.2 6.34 9.87 6 10.62 5.78 11.37 5.59 12.16 5.59 13.22 5.59 14.2 5.94 15.18 6.29 16 6.91 16.8 7.53 17.37 8.39 17.95 9.26 18.21 10.29M12.16 6.84Q11.05 6.84 10.06 7.3 9.06 7.75 8.36 8.6 8.73 8.7 9.07 8.85 9.4 9 9.73 9.2L13.71 11.58L16 10.62Q16.21 10.53 16.44 10.45 16.67 10.38 16.92 10.33 16.68 9.55 16.21 8.91 15.74 8.27 15.11 7.81 14.5 7.35 13.73 7.1 13 6.84 12.16 6.84M4 15.66L12.27 12.18L9.08 10.26Q8.59 9.97 8.06 9.81 7.5 9.66 6.95 9.66 6.19 9.66 5.5 9.96 4.84 10.26 4.34 10.77 3.84 11.29 3.54 11.97 3.25 12.65 3.25 13.41 3.25 14 3.45 14.59 3.64 15.19 4 15.66M17.94 17.16Q18.41 17.16 18.84 17 19.27 16.86 19.64 16.58L13.61 13L5.03 16.59Q5.47 16.86 5.97 17 6.47 17.16 7 17.16M20.45 15.61Q20.75 15 20.75 14.34 20.75 13.7 20.5 13.17 20.26 12.65 19.85 12.28 19.43 11.91 18.88 11.71 18.32 11.5 17.7 11.5 17.35 11.5 17 11.6 16.66 11.68 16.33 11.81 16 11.93 15.67 12.08 15.35 12.23 15.04 12.37Z</Geometry>
     <system:String x:Key="iconHamburgerSystem">&#xE770;</system:String>
     <system:String x:Key="iconHamburgerStartMenu">&#xECA5;</system:String>
-    <system:String x:Key="iconHamburgerUwp">&#xE8D9;</system:String>
-    <system:String x:Key="iconHamburgerWinGame">&#xE7FC;</system:String>
-    <system:String x:Key="iconHamburgerTaskScheduler">&#xE823;</system:String>
+    <system:String x:Key="iconHamburgerUwp">&#xECAA;</system:String>
+    <Geometry x:Key="iconHamburgerWinGame">M7,6H17A6,6 0 0,1 23,12A6,6 0 0,1 17,18C15.22,18 13.63,17.23 12.53,16H11.47C10.37,17.23 8.78,18 7,18A6,6 0 0,1 1,12A6,6 0 0,1 7,6M6,9V11H4V13H6V15H8V13H10V11H8V9H6M15.5,12A1.5,1.5 0 0,0 14,13.5A1.5,1.5 0 0,0 15.5,15A1.5,1.5 0 0,0 17,13.5A1.5,1.5 0 0,0 15.5,12M18.5,9A1.5,1.5 0 0,0 17,10.5A1.5,1.5 0 0,0 18.5,12A1.5,1.5 0 0,0 20,10.5A1.5,1.5 0 0,0 18.5,9Z</Geometry>
+    <Geometry x:Key="iconHamburgerTaskScheduler">M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z</Geometry>    
     <system:String x:Key="iconHamburgerDefender">&#xE83D;</system:String>
     <system:String x:Key="iconHamburgerContextMenu">&#xE292;</system:String>
-    <system:String x:Key="iconHamburgerApplySettings">&#xE713;</system:String>
-    <system:String x:Key="iconHamburgerSaveSettings">&#xE74E;</system:String>
-    <system:String x:Key="iconHamburgerLoadSettings">&#xE896;</system:String>
-    <system:String x:Key="iconHamburgerLanguageSettings">&#xF2B7;</system:String>
-    <system:String x:Key="iconHamburgerOpenGithub">&#xE128;</system:String>
+    <Geometry x:Key="iconHamburgerApplySettings">M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z</Geometry>
+    <Geometry x:Key="iconHamburgerSaveSettings">M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z</Geometry>
+    <Geometry x:Key="iconHamburgerLoadSettings">M14,12L10,8V11H2V13H10V16M20,18V6C20,4.89 19.1,4 18,4H6A2,2 0 0,0 4,6V9H6V6H18V18H6V15H4V18A2,2 0 0,0 6,20H18A2,2 0 0,0 20,18Z</Geometry>
+    <Geometry x:Key="iconHamburgerLanguageSettings">M12.87,15.07L10.33,12.56L10.36,12.53C12.1,10.59 13.34,8.36 14.07,6H17V4H10V2H8V4H1V6H12.17C11.5,7.92 10.44,9.75 9,11.35C8.07,10.32 7.3,9.19 6.69,8H4.69C5.42,9.63 6.42,11.17 7.67,12.56L2.58,17.58L4,19L9,14L12.11,17.11L12.87,15.07M18.5,10H16.5L12,22H14L15.12,19H19.87L21,22H23L18.5,10M15.88,17L17.5,12.67L19.12,17H15.88Z</Geometry>
+    <Geometry x:Key="iconHamburgerOpenGithub">M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z</Geometry>
 </ResourceDictionary>

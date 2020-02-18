@@ -38,15 +38,15 @@ namespace W10SS_GUI.Controls
         public static readonly DependencyProperty IsCheckedProperty =
             DependencyProperty.Register("IsChecked", typeof(bool), typeof(ToggleSwitch), new PropertyMetadata(default(bool)));
 
-        public string Icon
-        {
-            get { return (string)GetValue(IconProperty); }
-            set { SetValue(IconProperty, value); }
-        }
+        //public string Icon
+        //{
+        //    get { return (string)GetValue(IconProperty); }
+        //    set { SetValue(IconProperty, value); }
+        //}
 
-        // Using a DependencyProperty as the backing store for Icon.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty IconProperty =
-            DependencyProperty.Register("Icon", typeof(string), typeof(ToggleSwitch), new PropertyMetadata(default(string)));
+        //// Using a DependencyProperty as the backing store for Icon.  This enables animation, styling, binding, etc...
+        //public static readonly DependencyProperty IconProperty =
+        //    DependencyProperty.Register("Icon", typeof(string), typeof(ToggleSwitch), new PropertyMetadata(default(string)));
 
         public string Header
         {

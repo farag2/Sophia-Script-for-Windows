@@ -9,7 +9,7 @@
     <system:String x:Key="tagCategorySystem">System</system:String>
     <system:String x:Key="tagCategoryStartMenu">Start Menu</system:String>
     <system:String x:Key="tagCategoryUwp">UWP Apps</system:String>
-    <system:String x:Key="tagCategoryWinGame">Windows Game Recording</system:String>
+    <system:String x:Key="tagCategoryWinGame">Game Mode</system:String>
     <system:String x:Key="tagCategoryTaskScheduler">Task Scheduler</system:String>
     <system:String x:Key="tagCategoryDefender">Microsoft Defender</system:String>
     <system:String x:Key="tagCategoryContextMenu">Context Menu</system:String>

@@ -2,10 +2,12 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib"
                     xmlns:local="clr-namespace:W10SS_GUI.Controls">
+    
     <system:Double x:Key="windowMinHeight">885</system:Double>
     <system:Double x:Key="windowHeight">885</system:Double>
     <system:Double x:Key="windowMinWidth">645</system:Double>
     <system:Double x:Key="windowWidth">645</system:Double>
+    <system:Double x:Key="windowMaxWidth">1250</system:Double>
     <system:Double x:Key="windowFontSize">18</system:Double>
 
     <system:Double x:Key="buttonHamburgerWidth">40</system:Double>    

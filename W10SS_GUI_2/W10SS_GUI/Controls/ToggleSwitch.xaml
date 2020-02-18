@@ -185,18 +185,19 @@
           MouseEnter="GridToggleSwitch_MouseEnter" MouseLeave="GridToggleSwitch_MouseLeave"
           >                   
 
-        <TextBlock Name="iconToggleSwitch" 
+        <!--<TextBlock Name="iconToggleSwitch" 
                    FontFamily="{StaticResource fontToggleIcon}"
                    Width="{StaticResource toggleSwitchIconsWidth}"
                    FontSize="{DynamicResource toggleSwitchIconsFontSize}"
                    Margin="10 0 5 0"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Left"
-                   Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=Icon}"/>
+                   Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=Icon}"/>-->
 
         <StackPanel VerticalAlignment="Center" 
                     HorizontalAlignment="Left"
-                    Margin="45 5 60 5">
+                    Margin="10 5 60 5">
+                    <!--Margin="45 5 60 5">-->
         
             <TextBlock Name="textToggleSwitchHeader" 
                        FontFamily="{StaticResource fontToggleSwitchHeader}"                                      

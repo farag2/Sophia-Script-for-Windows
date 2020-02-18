@@ -37,6 +37,10 @@
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>
+    </ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -68,10 +72,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\HamburgerCategoryFlashButton.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\TogglesCategoryPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -116,9 +116,6 @@
     </Compile>
     <Compile Include="Controls\HamburgerCategoryFlashButton.xaml.cs">
       <DependentUpon>HamburgerCategoryFlashButton.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\TogglesCategoryPanel.xaml.cs">
-      <DependentUpon>TogglesCategoryPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ToggleSwitch.xaml.cs">
       <DependentUpon>ToggleSwitch.xaml</DependentUpon>
