@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using W10SS_GUI.Controls;
 
 namespace W10SS_GUI
 {
@@ -21,27 +22,15 @@ namespace W10SS_GUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        AnimationFactory AnimationFactory = new AnimationFactory();
-
         public MainWindow()
         {
             InitializeComponent();            
-        }
-
-        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            DragMove();
-        }
+        }        
 
         private void Window_Initialized(object sender, EventArgs e)
         {
-            SetLanguageDictionary();            
-            buttonHamburger.Click += ButtonHamburger_Click;
-        }
-
-        private void ButtonWindowMinimize_Click(object sender, RoutedEventArgs e) => Application.Current.MainWindow.WindowState = WindowState.Minimized;
-        
-        private void ButtonWindowClose_Click(object sender, RoutedEventArgs e) => Application.Current.MainWindow.Close();
+            SetLanguageDictionary();                        
+        }        
         
         private void SetLanguageDictionary()
         {
@@ -55,15 +44,6 @@ namespace W10SS_GUI
             }
 
             Resources.MergedDictionaries.Add(dict);
-        }
-
-        private void ButtonHamburger_Click(object sender, RoutedEventArgs e)
-        {
-            AnimationFactory.Animations["Hamburger"].To = panelHamburger.ActualWidth == panelHamburger.MinWidth ?
-                panelHamburger.MaxWidth : panelHamburger.MinWidth;
-            AnimationFactory.Storyboards["Hamburger"].Begin(panelHamburger);
-        }
-
-       
+        }        
     }
 }

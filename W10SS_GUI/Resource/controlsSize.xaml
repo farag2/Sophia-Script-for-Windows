@@ -2,12 +2,39 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib"
                     xmlns:local="clr-namespace:W10SS_GUI.Controls">
+    
+    <system:Double x:Key="windowMinHeight">885</system:Double>
+    <system:Double x:Key="windowHeight">885</system:Double>
+    <system:Double x:Key="windowMinWidth">645</system:Double>
+    <system:Double x:Key="windowWidth">645</system:Double>
+    <system:Double x:Key="windowMaxWidth">1250</system:Double>
+    <system:Double x:Key="windowFontSize">18</system:Double>
+
     <system:Double x:Key="buttonHamburgerWidth">40</system:Double>    
     <system:Double x:Key="buttonHamburgerHeight">40</system:Double>
-    <system:Double x:Key="buttonHamburgerFontSize">20</system:Double>
-    <system:Double x:Key="panelHamburgerMinWidth">40</system:Double>
-    <system:Double x:Key="panelHamburgerWidth">220</system:Double>
-    <system:Double x:Key="panelHamburgerMaxWidth">220</system:Double>
-    <system:Double x:Key="buttonHamburgerCategoryFontSize">16</system:Double>
+    <system:Double x:Key="buttonHamburgerIconsSize">20</system:Double>
+    <system:Double x:Key="textHamburgerSize">16</system:Double>
     
+    <system:Double x:Key="panelHamburgerMinWidth">40</system:Double>
+    <system:Double x:Key="panelHamburgerWidth">200</system:Double>
+    <system:Double x:Key="panelHamburgerMaxWidth">200</system:Double>
+
+    <system:Double x:Key="togglesCategoryPanelWidth">500</system:Double>
+    <system:Double x:Key="togglesCategoryPanelHeaderHeight">40</system:Double>
+    <system:Double x:Key="fontSizeTogglesCategoryPanelHeader">26</system:Double>
+    <system:Double x:Key="iconTogglesCategoryPanelHeaderFontSize">34</system:Double>
+
+    <system:Double x:Key="toggleSwitchMinWidth">550</system:Double>
+    <system:Double x:Key="toggleSwitchMaxWidth">1050</system:Double>
+    <system:Double x:Key="toggleSwitchHeight">100</system:Double>
+    <system:Double x:Key="toggleSwitchIconsFontSize">24</system:Double>
+    <system:Double x:Key="toggleSwitchIconsWidth">25</system:Double>    
+    <system:Double x:Key="toggleSwitchHeaderMaxHeight">44</system:Double>
+    <system:Double x:Key="toggleSwitchDescriptionMaxHeight">40</system:Double>
+    <system:Double x:Key="toggleSwitchTextMaxWidth">421</system:Double>    
+    <system:Double x:Key="fontSizeToggleSwitchDescription">14</system:Double>
+    <system:Double x:Key="fontSizeToggleSwitchHeader">16</system:Double>
+
+
+
 </ResourceDictionary>
