@@ -16,11 +16,11 @@ IF (-not ([Environment]::Is64BitOperatingSystem))
 {
 	IF ($RU)
 	{
-		Write-Host "The script supports Windows 10 x64 only" -BackgroundColor Red
+		Write-Warning -Message "Скрипт поддерживает только Windows 10 x64"
 	}
 	else
 	{
-		Write-Host "Скрипт поддерживает только Windows 10 x64" -BackgroundColor Red
+		Write-Warning -Message "The script supports Windows 10 x64 only"
 	}
 	break
 }
@@ -30,11 +30,11 @@ IF (-not ([IntPtr]::Size -eq 8))
 {
 	IF ($RU)
 	{
-		Write-Host "The script supports PowerShell x64 only" -BackgroundColor Red
+		Write-Warning -Message "Скрипт поддерживает только PowerShell x64"
 	}
 	else
 	{
-		Write-Host "Скрипт поддерживает только PowerShell x64" -BackgroundColor Red
+		Write-Warning -Message "The script supports PowerShell x64 only"
 	}
 	break
 }
@@ -55,7 +55,14 @@ if ($PSCommandPath)
 	$reader.Dispose()
 	if ($bytesRead -eq 3 -and $SequenceBOM[0] -ne 239 -and $SequenceBOM[1] -ne 187 -and $SequenceBOM[2] -ne 191)
 	{
-		Write-Warning "The file wasn't saved in `"UTF-8 with BOM`" encoding"
+		IF ($RU)
+		{
+			Write-Warning -Message "Файл не был сохранен в кодировке `"UTF-8 с BOM`""
+		}
+		else
+		{
+			Write-Warning -Message "The file wasn't saved in `"UTF-8 with BOM`" encoding"
+		}
 		break
 	}
 }
@@ -152,8 +159,8 @@ $tasks = @(
 	# Measures a system's performance and capabilities
 	# Измеряет быстродействие и возможности системы
 	"WinSAT"
-	# Эта задача показывает различные тосты (всплывающие уведомления) приложения "Карты".
 	# This task shows various Map related toasts
+	# Эта задача показывает различные тосты (всплывающие уведомления) приложения "Карты"
 	"MapsToastTask"
 	# This task checks for updates to maps which you have downloaded for offline use
 	# Эта задача проверяет наличие обновлений для карт, загруженных для автономного использования
@@ -168,12 +175,11 @@ $tasks = @(
 	# Задача отчетов об ошибках обрабатывает очередь отчетов
 	"QueueReporting"
 	# XblGameSave Standby Task
-	# XblGameSave Standby Task
 	"XblGameSaveTask"
 )
 Get-ScheduledTask -TaskName $tasks | Disable-ScheduledTask
 # Do not offer tailored experiences based on the diagnostic data setting
-# Не предлагать персонализированныее возможности, основанные на выбранном параметре диагностических данных
+# Не предлагать персонализированные возможности, основанные на выбранном параметре диагностических данных
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Privacy -Name TailoredExperiencesWithDiagnosticDataEnabled -PropertyType DWord -Value 0 -Force
 # Do not let apps on other devices open and message apps on this device, and vice versa
 # Не разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот
@@ -206,9 +212,6 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDe
 # Turn off automatic installing suggested apps
 # Отключить автоматическую установку рекомендованных приложений
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SilentInstalledAppsEnabled -PropertyType DWord -Value 0 -Force
-# Let Windows track app launches to improve Start menu and search results
-# Разрешить Windows отслеживать запуски приложений для улучшения меню "Пуск" и результатов поиска
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_TrackProgs -PropertyType DWord -Value 1 -Force
 #endregion Privacy & Telemetry
 
 #region UI & Personalization
@@ -279,8 +282,8 @@ IF (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Polici
 	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Force
 }
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name ConfirmFileDelete -PropertyType DWord -Value 1 -Force
-# Remove 3D Objects folder in "This PC" and in the navigation pane
-# Скрыть папку "Объемные объекты" из "Этот компьютер" и на панели быстрого доступа
+# Hide 3D Objects folder from "This PC" and from Quick access
+# Скрыть папку "Объемные объекты" из "Этот компьютер" и из панели быстрого доступа
 IF (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag"))
 {
 	New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Force
@@ -292,8 +295,8 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer 
 # Do not show "Recent files" in Quick access
 # Не показывать недавно использовавшиеся файлы на панели быстрого доступа
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name ShowRecent -PropertyType DWord -Value 0 -Force
-# Remove the "Previous Versions" tab from properties context menu
-# Отключить отображение вкладки "Предыдущие версии" в свойствах файлов и папок
+# Turn off the "Previous Versions" tab from properties context menu
+# Отключить вкладку "Предыдущие версии" в свойствах файлов и папок
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name NoPreviousVersionsPage -PropertyType DWord -Value 1 -Force
 # Hide search box or search icon on taskbar
 # Скрыть поле или значок поиска на панели задач
@@ -332,8 +335,8 @@ $unpin = [WinAPI.GetStr]::GetString(5387)
 $apps = (New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
 $apps | Where-Object -FilterScript {$_.Path -like "Microsoft.MicrosoftEdge*"} | ForEach-Object -Process {$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $unpin} | ForEach-Object -Process {$_.DoIt()}}
 $apps | Where-Object -FilterScript {$_.Path -like "Microsoft.WindowsStore*"} | ForEach-Object -Process {$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $unpin} | ForEach-Object -Process {$_.DoIt()}}
-# Set the Control Panel view by large icons
-# Установить крупные значки в панели управления
+# Set the "Control Panel" view on "Large icons"
+# Установить крупные значки в Панели управления
 IF (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
 {
 	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Force
@@ -822,7 +825,7 @@ Function KnownFolderPath
 	}
 	(Get-Item -Path $Path -Force).Attributes = "ReadOnly"
 }
-[hashtable] $DesktopINI = @{
+$DesktopINI = @{
 	"Desktop"	=	"",
 					"[.ShellClassInfo]",
 					"LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21769",
@@ -1318,12 +1321,6 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveMa
 # Turn on automatic backup the system registry to the $env:SystemRoot\System32\config\RegBack folder
 # Включить автоматическое создание копии реестра в папку $env:SystemRoot\System32\config\RegBack
 New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Configuration Manager" -Name EnablePeriodicBackup -PropertyType DWord -Value 1 -Force
-# Turn off "The Windows Filtering Platform has blocked a connection" message in "Windows Logs/Security"
-# Отключить в "Журналах Windows/Безопасность" сообщение "Платформа фильтрации IP-пакетов Windows разрешила подключение"
-auditpol /set /subcategory:"{0CCE9226-69AE-11D9-BED3-505054503030}" /success:disable /failure:enable
-# Turn off SmartScreen for apps and files
-# Отключить SmartScreen для приложений и файлов
-New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name SmartScreenEnabled -PropertyType String -Value Off -Force
 # Turn off F1 Help key
 # Отключить справку по нажатию F1
 IF (-not (Test-Path -Path "HKCU:\Software\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64"))
@@ -1338,15 +1335,17 @@ New-ItemProperty -Path "Registry::HKEY_USERS\.DEFAULT\Control Panel\Keyboard" -N
 # Отключить залипание клавиши Shift после 5 нажатий
 New-ItemProperty -Path "HKCU:\Control Panel\Accessibility\StickyKeys" -Name Flags -PropertyType String -Value 506 -Force
 # Turn off AutoPlay for all media and devices
-# Отключить автозапуск с внешних носителей
+# Отключить автозапуск для всех носителей и устройств
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers -Name DisableAutoplay -PropertyType DWord -Value 1 -Force
 # Turn off thumbnail cache removal
 # Отключить удаление кэша миниатюр
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" -Name Autorun -PropertyType DWord -Value 0 -Force
 New-ItemProperty -Path "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" -Name Autorun -PropertyType DWord -Value 0 -Force
-# Include command line in progress creation events
-# Включать командную строку в событиях создания процесса
-New-ItemProperty -Path HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -PropertyType DWord -Value 1 -Force
+# Use Unicode UTF-8 for worldwide language support (beta)
+# Использовать Юникод (UTF-8) для поддержки языка во всем мире (бета-версия)
+New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Nls\CodePage -Name ACP -PropertyType String -Value 65001 -Force
+New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Nls\CodePage -Name MACCP -PropertyType String -Value 65001 -Force
+New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Nls\CodePage -Name OEMCP -PropertyType String -Value 65001 -Force
 #endregion System
 
 #region Start menu
@@ -1373,14 +1372,10 @@ $shortcut.Save()
 # Импорт настроенного макета меню "Пуск" из предварительно сохраненного .reg-файла
 Add-Type -AssemblyName System.Windows.Forms
 $OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
-$OpenFileDialog.Multiselect = $false
-$openfiledialog.ShowHelp = $true
 # Initial directory "Downloads"
 # Начальная папка "Загрузки"
 $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 $OpenFileDialog.InitialDirectory = $DownloadsFolder
-$OpenFileDialog.Multiselect = $false
-$OpenFileDialog.ShowHelp = $false
 IF ($RU)
 {
 	$OpenFileDialog.Filter = "Файлы реестра (*.reg)|*.reg|Все файлы (*.*)|*.*"
@@ -1477,22 +1472,12 @@ $data += ",5,188,201,168,164,1,36,140,172,3,68,137,133,1,102,160,129,186,203,189
 $data += ",5,134,145,204,147,5,36,170,163,1,68,195,132,1,102,159,247,157,177,135,203,209,172,212,1,0"
 $data += ",194,60,1,194,70,1,197,90,1,0"
 New-ItemProperty -Path $startmenu.PSPath -Name Data -PropertyType Binary -Value $data.Split(",") -Force
-
 # Restart Start menu
 # Перезапустить меню "Пуск"
 Stop-Process -Name StartMenuExperienceHost -Force
 #endregion Start menu
 
 #region Edge
-# Turn off Windows Defender SmartScreen for Microsoft Edge
-# Отключить Windows Defender SmartScreen в Microsoft Edge
-$edge = (Get-AppxPackage "Microsoft.MicrosoftEdge").PackageFamilyName
-IF (-not (Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\PhishingFilter"))
-{
-	New-Item -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\PhishingFilter" -Force
-}
-New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\PhishingFilter" -Name EnabledV9 -PropertyType DWord -Value 0 -Force
-New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\PhishingFilter" -Name PreventOverride -PropertyType DWord -Value 0 -Force
 # Do not allow Microsoft Edge to start and load the Start and New Tab page at Windows startup and each time Microsoft Edge is closed
 # Не разрешать Edge запускать и загружать страницу при загрузке Windows и каждый раз при закрытии Edge
 IF (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftEdge\TabPreloader))
@@ -1596,25 +1581,15 @@ Get-AppxProvisionedPackage -Online | Where-Object -FilterScript {$_.DisplayName 
 $OFS = " "
 #endregion UWP apps
 
-#region Windows Game Recording
-# Turn off Windows Game Recording and Broadcasting
-# Отключить Запись и трансляции игр Windows
-IF (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR))
-{
-	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR -Force
-}
-New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR -Name AllowgameDVR -PropertyType DWord -Value 0 -Force
-# Turn off Game Bar
-# Отключить игровую панель
+#region Gaming
+# Turn off Xbox Game Bar
+# Отключить Xbox Game Bar
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\GameDVR -Name AppCaptureEnabled -PropertyType DWord -Value 0 -Force
 New-ItemProperty -Path HKCU:\System\GameConfigStore -Name GameDVR_Enabled -PropertyType DWord -Value 0 -Force
-# Turn off Game Mode
-# Отключить игровой режим
-New-ItemProperty -Path HKCU:\Software\Microsoft\GameBar -Name AllowAutoGameMode -PropertyType DWord -Value 0 -Force
-# Turn off Game Bar tips
-# Отключить подсказки игровой панели
+# Turn off Xbox Game Bar tips
+# Отключить советы Xbox Game Bar
 New-ItemProperty -Path HKCU:\Software\Microsoft\GameBar -Name ShowStartupPanel -PropertyType DWord -Value 0 -Force
-#endregion Windows Game Recording
+#endregion Gaming
 
 #region Scheduled tasks
 # Create a task in the Task Scheduler to start Windows cleaning up
@@ -1700,7 +1675,7 @@ $params = @{
 Register-ScheduledTask @params -Force
 #endregion Scheduled tasks
 
-#region Microsoft Defender
+#region Windows Defender & Security
 # Add exclusion folder from Windows Defender Antivirus scanning
 # Добавить папку в список исключений сканирования Защитника Windows
 IF ($RU)
@@ -1866,22 +1841,62 @@ IF ((Get-MpPreference).EnableControlledFolderAccess -eq 1)
 	}
 	until ($paths -match "`"")
 }
-# Turn on Windows Defender Exploit Guard Network Protection
-# Включить Защиту сети в Защитнике Windows
+# Turn on Windows Defender Exploit Guard network protection
+# Включить защиту сети в Защитнике Windows
 Set-MpPreference -EnableNetworkProtection Enabled
-# Turn on Windows Defender PUA Protection
-# Включить блокировки потенциально нежелательных приложений
+# Turn on detection for potentially unwanted applications
+# Включить обнаружение потенциально нежелательных приложений
 Set-MpPreference -PUAProtection Enabled
-# Turn on Windows Defender Sandbox
-# Запускать Защитник Windows в песочнице
+# Run Microsoft Defender within a sandbox
+# Запускать Microsoft Defender в песочнице
 setx /M MP_FORCE_USE_SANDBOX 1
-# Hide notification about sign in with Microsoft in the Windows Security
-# Скрыть уведомление Защитника Windows об использовании аккаунта Microsoft
+# Dismiss Microsoft Defender offer in the Windows Security about signing in Microsoft account
+# Отклонить предложение Microsoft Defender в "Безопасность Windows" о входе в аккаунт Microsoft
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AccountProtection_MicrosoftAccount_Disconnected -PropertyType DWord -Value 1 -Force
-# Hide notification about disabled SmartScreen for Microsoft Edge
-# Скрыть уведомление Защитника Windows об отключенном фильтре SmartScreen для Microsoft Edge
+# Dismiss Microsoft Defender offer in the Windows Security about to turn on the SmartScreen filter for Microsoft Edge
+# Отклонить предложение Защитника Windows в "Безопасность Windows" включить фильтр SmartScreen для Microsoft Edge
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AppAndBrowser_EdgeSmartScreenOff -PropertyType DWord -Value 0 -Force
-#endregion Microsoft Defender
+# Turn on logging for all Windows PowerShell modules
+# Включить ведение журнала для всех модулей Windows PowerShell
+IF (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging\ModuleNames))
+{
+	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging\ModuleNames -Force
+}
+New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging\ModuleNames -Name * -PropertyType String -Value * -Force
+New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging\ModuleNames -Name EnableModuleLogging -PropertyType DWord -Value 1 -Force
+# Turn on logging of all PowerShell script input to the Microsoft-Windows-PowerShell/Operational event log
+# Включить регистрацию всех вводимых сценариев PowerShell в журнале событий Microsoft-Windows-PowerShell/Operational
+IF (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging))
+{
+	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging -Force
+}
+New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging -Name EnableScriptBlockLogging -PropertyType DWord -Value 1 -Force
+# Turn on events auditing generated when a process is created or starts
+# Включить аудит событий, возникающих при создании или запуске процесса
+IF ($RU)
+{
+	auditpol /set /subcategory:"Создание процесса" /success:enable /failure:enable
+}
+else
+{
+	auditpol /set /subcategory:"Process Creation" /success:enable /failure:enable
+}
+# Include command line in progress creation events
+# Включать командную строку в событиях создания процесса
+New-ItemProperty -Path HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -PropertyType DWord -Value 1 -Force
+# Turn off SmartScreen for apps and files
+# Отключить SmartScreen для приложений и файлов
+New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name SmartScreenEnabled -PropertyType String -Value Off -Force
+# Turn off Microsoft Defender SmartScreen for Microsoft Edge
+# Отключить Microsoft Defender SmartScreen в Microsoft Edge
+$edge = (Get-AppxPackage "Microsoft.MicrosoftEdge").PackageFamilyName
+IF (-not (Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\PhishingFilter"))
+{
+	New-Item -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\PhishingFilter" -Force
+}
+New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\PhishingFilter" -Name EnabledV9 -PropertyType DWord -Value 0 -Force
+New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\PhishingFilter" -Name PreventOverride -PropertyType DWord -Value 0 -Force
+#endregion Windows Defender & Security
 
 #region Context menu
 # Add "Extract" to MSI file type context menu
@@ -1900,8 +1915,8 @@ New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name
 Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name Extended -Force -ErrorAction Ignore
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name SuppressionPolicyEx -PropertyType String -Value "{F211AA05-D4DF-4370-A2A0-9F19C09756A7}" -Force
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser\command -Name DelegateExecute -PropertyType String -Value "{ea72d00e-4960-42fa-ba92-7792a7944c1d}" -Force
-# Add "Install" to CAB file type context menu
-# Добавить пункт "Установить" для CAB-файлов в контекстном меню
+# Add "Install" to .cab archive type context menu
+# Добавить пункт "Установить" для .cab архивов в контекстное меню
 IF (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command))
 {
 	New-Item -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command -Force
@@ -1924,13 +1939,6 @@ IF (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell
 	New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Force
 }
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}" -PropertyType String -Value "" -Force
-# Remove "Previous Versions" from file context menu
-# Удалить пункт "Восстановить прежнюю версию" из контекстного меню
-IF (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"))
-{
-	New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Force
-}
-New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{596AB062-B4D2-4215-9F74-E9109B0A8153}" -PropertyType String -Value "" -Force
 # Remove "Edit with Paint 3D" from context menu
 # Удалить пункт "Изменить с помощью Paint 3D" из контекстного меню
 $exts = @(".bmp", ".gif", ".jpe", ".jpeg", ".jpg", ".png", ".tif", ".tiff")
@@ -1961,8 +1969,8 @@ New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppX43hnxtbyyps62jhe9sqpdzxn1
 # Remove "Edit" from images context menu
 # Удалить пункт "Изменить" из контекстного меню изображений
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\SystemFileAssociations\image\shell\edit -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
-# Remove "Print" from batch and cmd files context menu
-# Удалить пункт "Печать" из контекстного меню для bat- и cmd-файлов
+# Remove "Print" from batch and .cmd files context menu
+# Удалить пункт "Печать" из контекстного меню для .bat и .cmd файлов
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\batfile\shell\print -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\cmdfile\shell\print -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
 # Remove "Compressed (zipped) Folder" from context menu
@@ -1981,7 +1989,7 @@ New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AllFilesystemObjects\shellex\
 # Сделать доступными элементы контекстного меню "Открыть", "Изменить" и "Печать" при выделении более 15 элементов
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name MultipleInvokePromptMinimum -PropertyType DWord -Value 300 -Force
 # Turn off "Look for an app in the Microsoft Store" in "Open with" dialog
-# Отключить поиск программ в Microsoft Store при открытии диалога "Открыть с помощью"
+# Отключить "Поиск приложения в Microsoft Store" при открытии диалога "Открыть с помощью"
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -PropertyType DWord -Value 1 -Force
 #endregion Context menu
 
