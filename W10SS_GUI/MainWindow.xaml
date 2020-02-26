@@ -19,9 +19,7 @@
         ResizeMode="CanResize" 
         ShowInTaskbar="True"
         Background="{DynamicResource colorWindowBackground}"
-        Foreground="{DynamicResource colorWindowForeground}"         
-        Initialized="Window_Initialized" 
-        Icon="windows10.ico"
+        Foreground="{DynamicResource colorWindowForeground}"                        
         SizeToContent="Manual">
     <Window.Style>
         <Style TargetType="{x:Type Window}">
@@ -59,7 +57,8 @@
                                         TextMargin="0 0 10 3"
                                         Tag="{StaticResource tagCategoryPrivacy}"
                                         ViewboxPathVisibility="Collapsed"
-                                        Canvas.Top="0" Canvas.Left="0"/>
+                                        Canvas.Top="0" Canvas.Left="0" 
+                                        MouseLeftButtonDown="ButtonHamburger_Click"/>
 
             <uc:HamburgerCategoryButton x:Name="buttonHamburgerUi"
                                         Icon="{StaticResource iconHamburgerUi}" 
@@ -68,7 +67,8 @@
                                         TextMargin="0 0 10 -2"
                                         Tag="{StaticResource tagCategoryUi}"
                                         ViewboxPathVisibility="Collapsed"
-                                        Canvas.Top="40" Canvas.Left="0"/>
+                                        Canvas.Top="40" Canvas.Left="0"
+                                        MouseLeftButtonDown="ButtonHamburger_Click"/>
 
             <uc:HamburgerCategoryButton x:Name="buttonHamburgerOneDrive"
                                         IconVisibility="Collapsed"
@@ -77,7 +77,8 @@
                                         Width="{Binding ElementName=panelHamburger, Path=Width}"
                                         TextMargin="0 0 10 3"
                                         Tag="{StaticResource tagCategoryOneDrive}"
-                                        Canvas.Top="80" Canvas.Left="0" />
+                                        Canvas.Top="80" Canvas.Left="0"
+                                        MouseLeftButtonDown="ButtonHamburger_Click"/>
 
             <uc:HamburgerCategoryButton x:Name="buttonHamburgerSystem"
                                         Icon="{StaticResource iconHamburgerSystem}" 
@@ -86,7 +87,8 @@
                                         TextMargin="0 0 10 1"
                                         Tag="{StaticResource tagCategorySystem}"
                                         ViewboxPathVisibility="Collapsed"
-                                        Canvas.Top="120" Canvas.Left="0"/>
+                                        Canvas.Top="120" Canvas.Left="0"
+                                        MouseLeftButtonDown="ButtonHamburger_Click"/>
 
             <uc:HamburgerCategoryButton x:Name="buttonHamburgerStartMenu"
                                         Icon="{StaticResource iconHamburgerStartMenu}" 
@@ -95,7 +97,8 @@
                                         TextMargin="0 0 10 5"
                                         Tag="{StaticResource tagCategoryStartMenu}"
                                         ViewboxPathVisibility="Collapsed"
-                                        Canvas.Top="160" Canvas.Left="0"/>
+                                        Canvas.Top="160" Canvas.Left="0"
+                                        MouseLeftButtonDown="ButtonHamburger_Click"/>
 
             <uc:HamburgerCategoryButton x:Name="buttonHamburgerUwp"
                                         Icon="{StaticResource iconHamburgerUwp}" 
@@ -104,7 +107,8 @@
                                         TextMargin="0 0 10 1"
                                         Tag="{StaticResource tagCategoryUwp}"
                                         ViewboxPathVisibility="Collapsed"
-                                        Canvas.Top="200" Canvas.Left="0" />
+                                        Canvas.Top="200" Canvas.Left="0"
+                                        MouseLeftButtonDown="ButtonHamburger_Click"/>
 
             <uc:HamburgerCategoryButton x:Name="buttonHamburgerWinGame"
                                         IconVisibility="Collapsed"
@@ -113,7 +117,8 @@
                                         Width="{Binding ElementName=panelHamburger, Path=Width}"
                                         TextMargin="0 0 10 4"
                                         Tag="{StaticResource tagCategoryWinGame}"                                        
-                                        Canvas.Top="240" Canvas.Left="0"/>
+                                        Canvas.Top="240" Canvas.Left="0"
+                                        MouseLeftButtonDown="ButtonHamburger_Click"/>
 
             <uc:HamburgerCategoryButton x:Name="buttonHamburgerTaskScheduler"
                                         IconVisibility="Collapsed"
@@ -122,7 +127,8 @@
                                         Width="{Binding ElementName=panelHamburger, Path=Width}"
                                         TextMargin="0 0 10 2"
                                         Tag="{StaticResource tagCategoryTaskScheduler}"
-                                        Canvas.Top="280" Canvas.Left="0"/>
+                                        Canvas.Top="280" Canvas.Left="0"
+                                        MouseLeftButtonDown="ButtonHamburger_Click"/>
 
             <uc:HamburgerCategoryButton x:Name="buttonHamburgerDefender"
                                         Icon="{StaticResource iconHamburgerDefender}" 
@@ -131,7 +137,8 @@
                                         TextMargin="0 0 10 4"
                                         Tag="{StaticResource tagCategoryDefender}"
                                         ViewboxPathVisibility="Collapsed"
-                                        Canvas.Top="320" Canvas.Left="0"/>
+                                        Canvas.Top="320" Canvas.Left="0"
+                                        MouseLeftButtonDown="ButtonHamburger_Click"/>
 
             <uc:HamburgerCategoryButton x:Name="buttonHamburgerContextMenu"
                                         Icon="{StaticResource iconHamburgerContextMenu}" 
@@ -140,7 +147,8 @@
                                         TextMargin="0 0 10 3"
                                         Tag="{StaticResource tagCategoryContextMenu}"
                                         ViewboxPathVisibility="Collapsed"
-                                        Canvas.Top="360" Canvas.Left="0"/>
+                                        Canvas.Top="360" Canvas.Left="0"
+                                        MouseLeftButtonDown="ButtonHamburger_Click"/>
 
             <uc:HamburgerCategoryFlashButton x:Name="buttonHamburgerApplySettings"
                                              IsEnabled="False"
@@ -174,7 +182,8 @@
                                         Text="{DynamicResource textHamburgerLanguage}" 
                                         Width="{Binding ElementName=panelHamburger, Path=Width}"
                                         TextMargin="0 0 10 3"
-                                        Canvas.Bottom="160" Canvas.Left="0"/>
+                                        Canvas.Bottom="160" Canvas.Left="0" 
+                                        MouseLeftButtonDown="ButtonHamburgerLanguageSettings_Click"/>
 
             <uc:HamburgerCategoryButton x:Name="buttonHamburgerOpenGithub"                                        
                                         IconVisibility="Collapsed"
@@ -194,19 +203,13 @@
                     Orientation="Horizontal"
                     VerticalAlignment="Top"
                     Margin="40 0 0 0">
-            
-            <!--<TextBlock Name="iconTogglesHeader"
-                       FontSize="{StaticResource iconTogglesCategoryPanelHeaderFontSize}"
-                       FontFamily="{StaticResource fontToggleIcon}"
-                           Margin="15 5 10 5"                       
-                           Text="{StaticResource iconHamburgerPrivacy}"/>-->
 
             <TextBlock Name="textTogglesHeader" 
                        FontSize="{StaticResource fontSizeTogglesCategoryPanelHeader}"
                        FontFamily="{StaticResource fontTogglesPanelHeader}"
                        VerticalAlignment="Center"
                        Margin="15 5 0 5"
-                       Text="{DynamicResource textHamburgerPrivacy}"/>
+                       Text=""/>
 
         </StackPanel>
 
@@ -221,56 +224,45 @@
 
             <StackPanel Name="panelTogglesCategoryContainer">
 
-                <StackPanel Name="panelTogglesCategoryPrivacy"
-                            Tag="{StaticResource tagCategoryPrivacy}">
+                <StackPanel x:Name="panelTogglesCategoryPrivacy"
+                            Tag="{StaticResource tagCategoryPrivacy}"
+                            Visibility="Collapsed" />
 
-                    <uc:ToggleSwitch 
-                                 Header="Change Windows Feedback frequency to Never"
-                                 Description="Изменить частоту формирования отзывов на Никогда" />
+                <StackPanel Name="panelTogglesCategoryUi"
+                            Tag="{StaticResource tagCategoryUi}"
+                            Visibility="Collapsed"/>
 
-                    <uc:ToggleSwitch 
-                            Header="Do not allow apps to use advertising ID" 
-                            Description="Не разрешать приложениям использовать идентификатор рекламы"/>
+                <StackPanel Name="panelTogglesCategoryOneDrive"
+                            Tag="{StaticResource tagCategoryOneDrive}"
+                            Visibility="Collapsed"/>
 
-                    <uc:ToggleSwitch 
-                            Header="Do not let apps on other devices open and message apps on this device, and vice versa"
-                            Description="Не разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот"/>
+                <StackPanel Name="panelTogglesCategorySystem"
+                            Tag="{StaticResource tagCategorySystem}"
+                            Visibility="Collapsed"/>
 
-                    <uc:ToggleSwitch 
-                            Header="Do not let websites provide locally relevant content by accessing language list"
-                            Description="Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков"/>
+                <StackPanel Name="panelTogglesCategoryStartMenu"
+                            Tag="{StaticResource tagCategoryStartMenu}"
+                            Visibility="Collapsed"/>
 
-                    <uc:ToggleSwitch 
-                            Header="Change Windows Feedback frequency to Never"
-                            Description="Изменить частоту формирования отзывов на Никогда" />
+                <StackPanel Name="panelTogglesCategoryUwp"
+                            Tag="{StaticResource tagCategoryUwp}"
+                            Visibility="Collapsed"/>
 
-                    <uc:ToggleSwitch  
-                            Header="Do not allow apps to use advertising ID" 
-                            Description="Не разрешать приложениям использовать идентификатор рекламы"/>
+                <StackPanel Name="panelTogglesCategoryWinGame"
+                            Tag="{StaticResource tagCategoryWinGame}"
+                            Visibility="Collapsed"/>
 
-                    <uc:ToggleSwitch 
-                            Header="Do not let apps on other devices open and message apps on this device, and vice versa"
-                            Description="Не разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот"/>
+                <StackPanel Name="panelTogglesCategoryTaskScheduler"
+                            Tag="{StaticResource tagCategoryTaskScheduler}"
+                            Visibility="Collapsed"/>
 
-                    <uc:ToggleSwitch 
-                            Header="Do not let websites provide locally relevant content by accessing language list"
-                            Description="Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков"/>
-                    <uc:ToggleSwitch 
-                            Header="Change Windows Feedback frequency to Never"
-                            Description="Изменить частоту формирования отзывов на Никогда" />
+                <StackPanel Name="panelTogglesCategoryDefender"
+                            Tag="{StaticResource tagCategoryDefender}"
+                            Visibility="Collapsed"/>
 
-                    <uc:ToggleSwitch 
-                            Header="Do not allow apps to use advertising ID" 
-                            Description="Не разрешать приложениям использовать идентификатор рекламы"/>
-
-                    <uc:ToggleSwitch 
-                            Header="Do not let apps on other devices open and message apps on this device, and vice versa"
-                            Description="Не разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот"/>
-
-                    <uc:ToggleSwitch 
-                            Header="Do not let websites provide locally relevant content by accessing language list"
-                            Description="Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков"/>
-                </StackPanel>
+                <StackPanel Name="panelTogglesCategoryContextMenu"
+                            Tag="{StaticResource tagCategoryContextMenu}"
+                            Visibility="Collapsed"/>
 
             </StackPanel>
             

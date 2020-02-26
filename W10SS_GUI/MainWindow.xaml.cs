@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -22,28 +24,56 @@ namespace W10SS_GUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Dictionary<string, StackPanel> TogglesCategoryPanels = new Dictionary<string, StackPanel>();
+        private AppCulture AppCulture = new AppCulture();        
+
         public MainWindow()
         {
-            InitializeComponent();            
-        }        
+            InitializeComponent();
+            SetUiLanguage();
+            InitializeVariables();
+            InitializeToggles();                           
+        }
 
-        private void Window_Initialized(object sender, EventArgs e)
+        private void InitializeToggles()
         {
-            SetLanguageDictionary();                        
-        }        
-        
-        private void SetLanguageDictionary()
-        {
-            ResourceDictionary dict = new ResourceDictionary();
+            //AppDomain.CurrentDomain.BaseDirectory
+        }
 
-            switch (Thread.CurrentThread.CurrentCulture.ToString())
+        private void InitializeVariables()
+        {
+            ICollection tagsDictionaryValues = Application.Current.Resources.MergedDictionaries.Where(r => r.Source.Segments[2] == "tags.xaml").FirstOrDefault().Values;            
+            
+            foreach (var tagValue in tagsDictionaryValues)
             {
-                default:
-                    dict.Source = new Uri("pack://application:,,,/Localized/EN.xaml", UriKind.Absolute);
-                    break;
+                TogglesCategoryPanels.Add(tagValue.ToString(), panelTogglesCategoryContainer.Children.OfType<StackPanel>().Where(p => p.Tag == tagValue).FirstOrDefault());
             }
 
-            Resources.MergedDictionaries.Add(dict);
-        }        
+            textTogglesHeader.Text = buttonHamburgerPrivacy.Text;
+        }
+
+        private void SetUiLanguage()
+        {
+            Resources.MergedDictionaries.Add(AppCulture.CurrentCulture);                
+        }
+
+        private void ButtonHamburger_Click(object sender, MouseButtonEventArgs e)
+        {
+            HamburgerCategoryButton button = sender as HamburgerCategoryButton;
+            string tag = button.Tag.ToString();
+
+            foreach (KeyValuePair<string, StackPanel> kvp in TogglesCategoryPanels)
+            {
+                kvp.Value.Visibility = kvp.Key == tag ? Visibility.Visible : Visibility.Collapsed;
+            }
+
+            textTogglesHeader.Text = button.Text;    
+        }
+
+        private void ButtonHamburgerLanguageSettings_Click(object sender, MouseButtonEventArgs e)
+        {            
+            Resources.MergedDictionaries.Add(AppCulture.ChangeCulture());
+            textTogglesHeader.Text = buttonHamburgerPrivacy.Text;
+        }
     }
 }

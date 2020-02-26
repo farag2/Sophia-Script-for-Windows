@@ -111,6 +111,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Classes\AppCulture.cs" />
     <Compile Include="Controls\HamburgerCategoryButton.xaml.cs">
       <DependentUpon>HamburgerCategoryButton.xaml</DependentUpon>
     </Compile>
@@ -159,5 +160,6 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
