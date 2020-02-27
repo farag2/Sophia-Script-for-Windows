@@ -3,15 +3,15 @@
                     xmlns:local="clr-namespace:W10SS_GUI.Localized"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="textWindowTitle">Windows 10 Setup Script</system:String>
-
-    <system:String x:Key="textHamburgerPrivacy">Телеметрия</system:String>
-    <system:String x:Key="textHamburgerUi">Персонализация</system:String>    
+    
+    <system:String x:Key="textHamburgerPrivacy">Безопасность и телеметрия</system:String>
+    <system:String x:Key="textHamburgerUi">UI &amp; персонализация</system:String>    
     <system:String x:Key="textHamburgerOneDrive">OneDrive</system:String>
     <system:String x:Key="textHamburgerSystem">Система</system:String>
     <system:String x:Key="textHamburgerStartMenu">Меню "Пуск"</system:String>
-    <system:String x:Key="textHamburgerUwp">UWP Приложения</system:String>
+    <system:String x:Key="textHamburgerUwp">UWP-приложения</system:String>
     <system:String x:Key="textHamburgerWinGame">Игровой режим</system:String>
-    <system:String x:Key="textHamburgerTaskScheduler">Планировщик</system:String>
+    <system:String x:Key="textHamburgerTaskScheduler">Планировщик задач</system:String>
     <system:String x:Key="textHamburgerDefender">Microsoft Defender</system:String>
     <system:String x:Key="textHamburgerContextMenu">Контекстное меню</system:String>
 
