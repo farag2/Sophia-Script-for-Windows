@@ -224,7 +224,7 @@
 
             <StackPanel Name="panelTogglesCategoryContainer">
 
-                <StackPanel Name="panelTogglesCategoryPrivacy"
+                <StackPanel x:Name="panelTogglesCategoryPrivacy"
                             Tag="{StaticResource tagCategoryPrivacy}"
                             Visibility="Collapsed" />
 

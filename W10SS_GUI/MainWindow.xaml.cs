@@ -16,7 +16,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using W10SS_GUI.Controls;
-using W10SS_GUI.Classes;
 
 namespace W10SS_GUI
 {
@@ -25,28 +24,33 @@ namespace W10SS_GUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        
-        private AppCulture AppCulture = new AppCulture();
-        private Gui Gui;
-        
+        private Dictionary<string, StackPanel> TogglesCategoryPanels = new Dictionary<string, StackPanel>();
+        private AppCulture AppCulture = new AppCulture();        
+
         public MainWindow()
         {
             InitializeComponent();
+            SetUiLanguage();
             InitializeVariables();
-            SetUiLanguage();                        
-            InitializeToggles();
-            Gui.SetActivePanel(PanelsTag: Tags.Privacy, HeaderText: Resources["textHamburgerPrivacy"] as string);
-        }
-
-        private void InitializeVariables()
-        {
-            Gui = new Gui();
+            InitializeToggles();                           
         }
 
         private void InitializeToggles()
         {
             //AppDomain.CurrentDomain.BaseDirectory
-        }        
+        }
+
+        private void InitializeVariables()
+        {
+            ICollection tagsDictionaryValues = Application.Current.Resources.MergedDictionaries.Where(r => r.Source.Segments[2] == "tags.xaml").FirstOrDefault().Values;            
+            
+            foreach (var tagValue in tagsDictionaryValues)
+            {
+                TogglesCategoryPanels.Add(tagValue.ToString(), panelTogglesCategoryContainer.Children.OfType<StackPanel>().Where(p => p.Tag == tagValue).FirstOrDefault());
+            }
+
+            textTogglesHeader.Text = buttonHamburgerPrivacy.Text;
+        }
 
         private void SetUiLanguage()
         {
@@ -56,13 +60,20 @@ namespace W10SS_GUI
         private void ButtonHamburger_Click(object sender, MouseButtonEventArgs e)
         {
             HamburgerCategoryButton button = sender as HamburgerCategoryButton;
-            Gui.SetActivePanel(PanelsTag:button.Tag as string, HeaderText:button.Text);
+            string tag = button.Tag.ToString();
+
+            foreach (KeyValuePair<string, StackPanel> kvp in TogglesCategoryPanels)
+            {
+                kvp.Value.Visibility = kvp.Key == tag ? Visibility.Visible : Visibility.Collapsed;
+            }
+
+            textTogglesHeader.Text = button.Text;    
         }
 
         private void ButtonHamburgerLanguageSettings_Click(object sender, MouseButtonEventArgs e)
         {            
             Resources.MergedDictionaries.Add(AppCulture.ChangeCulture());
-            Gui.SetActivePanel(PanelsTag: Tags.Privacy, HeaderText: Resources["textHamburgerPrivacy"] as string);
-        }        
+            textTogglesHeader.Text = buttonHamburgerPrivacy.Text;
+        }
     }
 }
