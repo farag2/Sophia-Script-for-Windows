@@ -708,8 +708,11 @@ Get-CimInstance -ClassName Win32_ShadowCopy | Remove-CimInstance
 # Turn off Windows Script Host
 # Отключить Windows Script Host
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings" -Name Enabled -PropertyType DWord -Value 0 -Force
-# Turn off default background apps, except the followings...
-# Запретить стандартным приложениям работать в фоновом режиме, кроме следующих...
+# Turn off background apps, except the followings...
+# Запретить приложениям работать в фоновом режиме, кроме следующих...
+Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications | Where-Object -FilterScript {$_.PSChildName -cnotmatch $ExcludedApps} | ForEach-Object -Process {
+	Remove-ItemProperty -Path $_.PsPath -Name * -Force
+}
 $ExcludedApps = @(
 	# Lock App
 	"Microsoft.LockApp*"
@@ -724,10 +727,11 @@ $ExcludedApps = @(
 	"Microsoft.Windows.ShellExperienceHost*"
 	# StartMenuExperienceHost
 	"Microsoft.Windows.StartMenuExperienceHost*"
+	# Microsoft Store
+	"Microsoft.WindowsStore*"
 )
 $OFS = "|"
-Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications | Where-Object -FilterScript {$_.PSChildName -cnotmatch $ExcludedApps} |
-ForEach-Object -Process {
+Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications | Where-Object -FilterScript {$_.PSChildName -cnotmatch $ExcludedApps} | ForEach-Object -Process {
 	New-ItemProperty -Path $_.PsPath -Name Disabled -PropertyType DWord -Value 1 -Force
 	New-ItemProperty -Path $_.PsPath -Name DisabledByUser -PropertyType DWord -Value 1 -Force
 }
@@ -750,15 +754,18 @@ IF ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -eq 2)
 # Использовать последнюю установленную версию .NET для всех приложений
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\.NETFramework -Name OnlyUseLatestCLR -PropertyType DWord -Value 1 -Force
 New-ItemProperty -Path HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework -Name OnlyUseLatestCLR -PropertyType DWord -Value 1 -Force
-# Do not allow the computer to turn off the Ethernet adapter to save power
-# Запретить отключение Ethernet-адаптера для экономии энергии
+# Do not allow the computer to turn off the network adapters to save power
+# Запретить отключение сетевых адаптеров для экономии энергии
 IF ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -eq 1)
 {
 	# Desktop
 	# Стационарный ПК
-	$adapter = Get-NetAdapter -Physical | Get-NetAdapterPowerManagement
-	$adapter.AllowComputerToTurnOffDevice = "Disabled"
-	$adapter | Set-NetAdapterPowerManagement
+	$adapters = Get-NetAdapter -Physical | Get-NetAdapterPowerManagement | Where-Object -FilterScript {$_.AllowComputerToTurnOffDevice -ne "Unsupported"}
+	foreach ($adapter in $adapters)
+	{
+		$adapter.AllowComputerToTurnOffDevice = "Disabled"
+		$adapter | Set-NetAdapterPowerManagement
+	}
 }
 # Set the default input method to the English language
 # Установить метод ввода по умолчанию на английский язык
@@ -1032,7 +1039,7 @@ do
 			(Get-Item -Path "$DownloadsFolder\desktop.ini" -Force).Refresh()
 			# Microsoft Edge downloads folder
 			# Папка загрузок Microsoft Edge
-			$edge = (Get-AppxPackage "Microsoft.MicrosoftEdge").PackageFamilyName
+			$edge = (Get-AppxPackage -Name "Microsoft.MicrosoftEdge").PackageFamilyName
 			New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Main" -Name "Default Download Directory" -PropertyType String -Value $DownloadsFolder -Force
 		}
 	}
@@ -1346,6 +1353,10 @@ New-ItemProperty -Path "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVers
 #region Start menu
 # Do not show recently added apps on Start menu
 # Не показывать недавно добавленные приложения в меню "Пуск"
+IF (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
+{
+	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Force
+}
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -PropertyType DWord -Value 1 -Force
 # Open shortcut to the Command Prompt from Start menu as Administrator
 # Запускать ярлык к командной строке в меню "Пуск" от имени Администратора
@@ -1884,7 +1895,7 @@ New-ItemProperty -Path HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name SmartScreenEnabled -PropertyType String -Value Off -Force
 # Turn off Microsoft Defender SmartScreen for Microsoft Edge
 # Отключить Microsoft Defender SmartScreen в Microsoft Edge
-$edge = (Get-AppxPackage "Microsoft.MicrosoftEdge").PackageFamilyName
+$edge = (Get-AppxPackage -Name "Microsoft.MicrosoftEdge").PackageFamilyName
 IF (-not (Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\PhishingFilter"))
 {
 	New-Item -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\PhishingFilter" -Force
@@ -1984,7 +1995,11 @@ New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AllFilesystemObjects\shellex\
 # Сделать доступными элементы контекстного меню "Открыть", "Изменить" и "Печать" при выделении более 15 элементов
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name MultipleInvokePromptMinimum -PropertyType DWord -Value 300 -Force
 # Turn off "Look for an app in the Microsoft Store" in "Open with" dialog
-# Отключить "Поиск приложения в Microsoft Store" при открытии диалога "Открыть с помощью"
+# Отключить "Поиск приложения в Microsoft Store" в диалоге "Открыть с помощью"
+IF (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
+{
+	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Force
+}
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -PropertyType DWord -Value 1 -Force
 #endregion Context menu
 
