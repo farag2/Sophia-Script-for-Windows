@@ -3,22 +3,22 @@
                     xmlns:local="clr-namespace:W10SS_GUI.Localized"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="textWindowTitle">Windows 10 Setup Script</system:String>
-
-    <system:String x:Key="textHamburgerPrivacy">Телеметрия</system:String>
-    <system:String x:Key="textHamburgerUi">Персонализация</system:String>    
-    <system:String x:Key="textHamburgerOneDrive">OneDrive</system:String>
-    <system:String x:Key="textHamburgerSystem">Система</system:String>
-    <system:String x:Key="textHamburgerStartMenu">Меню "Пуск"</system:String>
-    <system:String x:Key="textHamburgerUwp">UWP Приложения</system:String>
-    <system:String x:Key="textHamburgerWinGame">Игровой режим</system:String>
-    <system:String x:Key="textHamburgerTaskScheduler">Планировщик</system:String>
-    <system:String x:Key="textHamburgerDefender">Microsoft Defender</system:String>
-    <system:String x:Key="textHamburgerContextMenu">Контекстное меню</system:String>
+    
+    <system:String x:Key="HamburgerPrivacy">Безопасность и телеметрия</system:String>
+    <system:String x:Key="HamburgerUi">UI &amp; персонализация</system:String>    
+    <system:String x:Key="HamburgerOneDrive">OneDrive</system:String>
+    <system:String x:Key="HamburgerSystem">Система</system:String>
+    <system:String x:Key="HamburgerStartMenu">Меню "Пуск"</system:String>
+    <system:String x:Key="HamburgerUwp">UWP-приложения</system:String>
+    <system:String x:Key="HamburgerWinGame">Игровой режим</system:String>
+    <system:String x:Key="HamburgerTaskScheduler">Планировщик задач</system:String>
+    <system:String x:Key="HamburgerDefender">Microsoft Defender</system:String>
+    <system:String x:Key="HamburgerContextMenu">Контекстное меню</system:String>
 
     <system:String x:Key="textHamburgerApply">Применить</system:String>
     <system:String x:Key="textHamburgerSave">Сохранить</system:String>
     <system:String x:Key="textHamburgerLoad">Импортировать</system:String>
     <system:String x:Key="textHamburgerLanguage">English</system:String>
-    <system:String x:Key="textHamburgerOpenGithub">GitHub</system:String>
+    <system:String x:Key="textHamburgerOpenGithub">GitHub</system:String>    
 
 </ResourceDictionary>

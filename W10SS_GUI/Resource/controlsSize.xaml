@@ -16,9 +16,10 @@
     <system:Double x:Key="textHamburgerSize">16</system:Double>
     
     <system:Double x:Key="panelHamburgerMinWidth">40</system:Double>
-    <system:Double x:Key="panelHamburgerWidth">200</system:Double>
-    <system:Double x:Key="panelHamburgerMaxWidth">200</system:Double>
-
+    <system:Double x:Key="panelHamburgerMaxWidth">250</system:Double>
+    <system:Double x:Key="panelHamburgerRuMaxWidth">250</system:Double>
+    <system:Double x:Key="panelHamburgerEnMaxWidth">200</system:Double>
+    
     <system:Double x:Key="togglesCategoryPanelWidth">500</system:Double>
     <system:Double x:Key="togglesCategoryPanelHeaderHeight">40</system:Double>
     <system:Double x:Key="fontSizeTogglesCategoryPanelHeader">26</system:Double>

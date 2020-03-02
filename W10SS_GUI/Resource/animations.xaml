@@ -3,7 +3,7 @@
                     xmlns:local="clr-namespace:W10SS_GUI.Resource">    
 
     <Storyboard x:Key="animationHamburgerOpen" >
-        <DoubleAnimation Storyboard.TargetProperty="(FrameworkElement.Width)" To="{StaticResource panelHamburgerMaxWidth}" Duration="0:0:0.15" >
+        <DoubleAnimation Storyboard.TargetProperty="(FrameworkElement.Width)" To="{DynamicResource panelHamburgerMaxWidth}" Duration="0:0:0.15" >
             <DoubleAnimation.EasingFunction>
                 <SineEase EasingMode="EaseIn" />
             </DoubleAnimation.EasingFunction>

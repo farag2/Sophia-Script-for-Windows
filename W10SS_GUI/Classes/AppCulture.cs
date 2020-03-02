@@ -19,13 +19,10 @@ namespace W10SS_GUI
         private string _culture = Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName == Culture.RU ? Culture.RU : Culture.EN;
         private ResourceDictionary resourceDictionaryEn = new ResourceDictionary() { Source = new Uri("pack://application:,,,/Localized/EN.xaml", UriKind.Absolute) };
         private ResourceDictionary resourceDictionaryRu = new ResourceDictionary() { Source = new Uri("pack://application:,,,/Localized/RU.xaml", UriKind.Absolute) };
-        internal ResourceDictionary CurrentCulture
-        {
-            get
-            {
-                return _culture == Culture.RU ? resourceDictionaryRu : resourceDictionaryEn;
-            }            
-        }
+
+        internal ResourceDictionary CurrentCulture => _culture == Culture.RU ? resourceDictionaryRu : resourceDictionaryEn;
+
+        internal string CurrentCultureName => _culture == Culture.RU ? Culture.RU : Culture.EN;
 
         internal ResourceDictionary ChangeCulture()
         {

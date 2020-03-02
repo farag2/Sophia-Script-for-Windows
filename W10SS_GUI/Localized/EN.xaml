@@ -2,22 +2,22 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="textWindowTitle">Windows 10 Setup Script</system:String>
-
-    <system:String x:Key="textHamburgerPrivacy">Privacy &amp; Telemetry</system:String>
-    <system:String x:Key="textHamburgerUi">UI &amp; Personalization</system:String>
-    <system:String x:Key="textHamburgerOneDrive">OneDrive</system:String>
-    <system:String x:Key="textHamburgerSystem">System</system:String>
-    <system:String x:Key="textHamburgerStartMenu">Start Menu</system:String>
-    <system:String x:Key="textHamburgerUwp">UWP Apps</system:String>
-    <system:String x:Key="textHamburgerWinGame">Game Mode</system:String>
-    <system:String x:Key="textHamburgerTaskScheduler">Task Scheduler</system:String>
-    <system:String x:Key="textHamburgerDefender">Microsoft Defender</system:String>
-    <system:String x:Key="textHamburgerContextMenu">Context Menu</system:String>
     
-    <system:String x:Key="textHamburgerApply">Apply Settings</system:String>
-    <system:String x:Key="textHamburgerSave">Save Settings</system:String>
-    <system:String x:Key="textHamburgerLoad">Import Settings</system:String>
+    <system:String x:Key="HamburgerPrivacy">Privacy &amp; Telemetry</system:String>
+    <system:String x:Key="HamburgerUi">UI &amp; Personalization</system:String>
+    <system:String x:Key="HamburgerOneDrive">OneDrive</system:String>
+    <system:String x:Key="HamburgerSystem">System</system:String>
+    <system:String x:Key="HamburgerStartMenu">Start Menu</system:String>
+    <system:String x:Key="HamburgerUwp">UWP Apps</system:String>
+    <system:String x:Key="HamburgerWinGame">Game Mode</system:String>
+    <system:String x:Key="HamburgerTaskScheduler">Task Scheduler</system:String>
+    <system:String x:Key="HamburgerDefender">Microsoft Defender</system:String>
+    <system:String x:Key="HamburgerContextMenu">Context Menu</system:String>
+    
+    <system:String x:Key="textHamburgerApply">Apply</system:String>
+    <system:String x:Key="textHamburgerSave">Save</system:String>
+    <system:String x:Key="textHamburgerLoad">Import</system:String>
     <system:String x:Key="textHamburgerLanguage">Русский</system:String>
-    <system:String x:Key="textHamburgerOpenGithub">GitHub</system:String>
-    
+    <system:String x:Key="textHamburgerOpenGithub">GitHub</system:String>    
+
 </ResourceDictionary>
