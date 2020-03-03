@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -35,7 +36,7 @@ namespace W10SS_GUI.Classes
                 _togglesCategoryPanels.Add(tagValue.ToString(), MainWindow.panelTogglesCategoryContainer.Children.OfType<StackPanel>().Where(p => p.Tag == tagValue).FirstOrDefault());
             }
         }
-
+        
         internal void SetActivePanel(HamburgerCategoryButton button)
         {
             _lastclickedbutton = button;
@@ -50,11 +51,42 @@ namespace W10SS_GUI.Classes
 
         internal void SetHamburgerWidth(string cultureName)
         {
-            Storyboard storyboard = MainWindow.TryFindResource("animationHamburgerOpen") as Storyboard;
-            DoubleAnimation animation = storyboard.Children[0] as DoubleAnimation;
+            Storyboard hamburgerOpen = MainWindow.TryFindResource("animationHamburgerOpen") as Storyboard;
+            DoubleAnimation animation = hamburgerOpen.Children[0] as DoubleAnimation;
             animation.To = cultureName == "ru"
                 ? Convert.ToDouble(MainWindow.TryFindResource("panelHamburgerRuMaxWidth"))
-                : Convert.ToDouble(MainWindow.TryFindResource("panelHamburgerEnMaxWidth"));                   
+                : Convert.ToDouble(MainWindow.TryFindResource("panelHamburgerEnMaxWidth"));
         }
+
+        internal void InitializeToggles()
+        {
+            List<string> tagsByName = _togglesCategoryPanels.Keys.ToList();
+            List<string> appScriptsFolders = tagsByName.Select(k => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, k)).ToList();
+
+            for (int i = 0; i < appScriptsFolders.Count; i++)
+            {
+                StackPanel panel = GetPanelByName(tagsByName[i]);
+
+                if (Directory.Exists(appScriptsFolders[i]))
+                {
+                    uint sc = 0;
+                    foreach (string item in Directory.GetFiles(appScriptsFolders[i], "*.ps1", SearchOption.AllDirectories))
+                    {                        
+                        ToggleSwitch toggleSwitch = new ToggleSwitch()
+                        {
+                            
+                        };
+                        sc++;
+                    }
+                }
+
+                else
+                {
+
+                }
+            }
+        }
+
+        internal StackPanel GetPanelByName(string name) => _togglesCategoryPanels[name] as StackPanel;
     }
 }

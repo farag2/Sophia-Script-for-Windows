@@ -24,8 +24,7 @@ namespace W10SS_GUI
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {
-        
+    {        
         private AppCulture AppCulture = new AppCulture();
         private Gui Gui;
         
@@ -42,6 +41,9 @@ namespace W10SS_GUI
         private void InitializeToggles()
         {
             //AppDomain.CurrentDomain.BaseDirectory
+
+
+
         }        
 
         private void SetUiLanguage()
@@ -66,7 +68,7 @@ namespace W10SS_GUI
             InitializeVariables();
             SetUiLanguage();
             Gui.SetHamburgerWidth(AppCulture.CurrentCultureName);
-            InitializeToggles();
+            Gui.InitializeToggles();
             Gui.SetActivePanel(HamburgerPrivacy);
         }        
     }
