@@ -739,9 +739,6 @@ $OFS = " "
 # Remove Shadow copies (restoration points)
 # Удалить теневые копии (точки восстановения)
 Get-CimInstance -ClassName Win32_ShadowCopy | Remove-CimInstance
-# Turn off Windows Script Host
-# Отключить Windows Script Host
-New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings" -Name Enabled -PropertyType DWord -Value 0 -Force
 # Turn off background apps, except the followings...
 # Запретить приложениям работать в фоновом режиме, кроме следующих...
 Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications | Where-Object -FilterScript {$_.PSChildName -cnotmatch $ExcludedApps} | ForEach-Object -Process {
@@ -1937,6 +1934,9 @@ if (-not (Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Micros
 }
 New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\PhishingFilter" -Name EnabledV9 -PropertyType DWord -Value 0 -Force
 New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\PhishingFilter" -Name PreventOverride -PropertyType DWord -Value 0 -Force
+# Turn off Windows Script Host
+# Отключить Windows Script Host
+New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings" -Name Enabled -PropertyType DWord -Value 0 -Force
 #endregion Windows Defender & Security
 
 #region Context menu
