@@ -59,16 +59,18 @@ namespace W10SS_GUI
         private void ButtonHamburgerLanguageSettings_Click(object sender, MouseButtonEventArgs e)
         {            
             Resources.MergedDictionaries.Add(AppCulture.ChangeCulture());
-            textTogglesHeader.Text = Convert.ToString(Resources[Gui.LastClickedButtonName]);
             Gui.SetHamburgerWidth(AppCulture.CurrentCultureName);
+            Gui.HamburgerReopen();
+            textTogglesHeader.Text = Convert.ToString(Resources[Gui.LastClickedButtonName]);            
         }
 
         private void Window_Initialized(object sender, EventArgs e)
         {
             InitializeVariables();
+            Gui.InitializeToggles();
             SetUiLanguage();
             Gui.SetHamburgerWidth(AppCulture.CurrentCultureName);
-            Gui.InitializeToggles();
+            
             Gui.SetActivePanel(HamburgerPrivacy);
         }        
     }

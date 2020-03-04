@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media.Animation;
 using W10SS_GUI.Controls;
 using W10SS_GUI.Properties;
@@ -12,7 +14,7 @@ namespace W10SS_GUI.Classes
 {
     internal class Gui
     {
-        private Dictionary<string, StackPanel> _togglesCategoryPanels = new Dictionary<string, StackPanel>();
+        private Dictionary<string, StackPanel> _togglesCategoryAndPanels = new Dictionary<string, StackPanel>();
         private MainWindow MainWindow = Application.Current.MainWindow as MainWindow;
         private HamburgerCategoryButton _lastclickedbutton;
 
@@ -29,11 +31,11 @@ namespace W10SS_GUI.Classes
             InitializeVariables();            
         }
 
-        internal void InitializeVariables()
+        private void InitializeVariables()
         {
             foreach (var tagValue in Application.Current.Resources.MergedDictionaries.Where(r => r.Source.Segments[2] == "tags.xaml").FirstOrDefault().Values)
             {
-                _togglesCategoryPanels.Add(tagValue.ToString(), MainWindow.panelTogglesCategoryContainer.Children.OfType<StackPanel>().Where(p => p.Tag == tagValue).FirstOrDefault());
+                _togglesCategoryAndPanels.Add(tagValue.ToString(), MainWindow.panelTogglesCategoryContainer.Children.OfType<StackPanel>().Where(p => p.Tag == tagValue).FirstOrDefault());
             }
         }
         
@@ -41,12 +43,28 @@ namespace W10SS_GUI.Classes
         {
             _lastclickedbutton = button;
 
-            foreach (KeyValuePair<string, StackPanel> kvp in _togglesCategoryPanels)
+            foreach (KeyValuePair<string, StackPanel> kvp in _togglesCategoryAndPanels)
             {
                 kvp.Value.Visibility = kvp.Key == button.Tag as string ? Visibility.Visible : Visibility.Collapsed;
             }
 
             MainWindow.textTogglesHeader.Text = MainWindow.Resources[button.Name] as string;            
+        }
+
+        internal void HamburgerReopen()
+        {
+            MouseEventArgs mouseLeaveArgs = new MouseEventArgs(Mouse.PrimaryDevice, 0)
+            {
+                RoutedEvent = Mouse.MouseLeaveEvent
+            };
+
+            MouseEventArgs mouseEnterArgs = new MouseEventArgs(Mouse.PrimaryDevice, 0)
+            {
+                RoutedEvent = Mouse.MouseEnterEvent
+            };
+
+            MainWindow.panelHamburger.RaiseEvent(mouseLeaveArgs);
+            MainWindow.panelHamburger.RaiseEvent(mouseEnterArgs);
         }
 
         internal void SetHamburgerWidth(string cultureName)
@@ -55,38 +73,28 @@ namespace W10SS_GUI.Classes
             DoubleAnimation animation = hamburgerOpen.Children[0] as DoubleAnimation;
             animation.To = cultureName == "ru"
                 ? Convert.ToDouble(MainWindow.TryFindResource("panelHamburgerRuMaxWidth"))
-                : Convert.ToDouble(MainWindow.TryFindResource("panelHamburgerEnMaxWidth"));
+                : Convert.ToDouble(MainWindow.TryFindResource("panelHamburgerEnMaxWidth"));            
         }
 
         internal void InitializeToggles()
         {
-            List<string> tagsByName = _togglesCategoryPanels.Keys.ToList();
-            List<string> appScriptsFolders = tagsByName.Select(k => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, k)).ToList();
-
-            for (int i = 0; i < appScriptsFolders.Count; i++)
+            for (int i = 0; i < _togglesCategoryAndPanels.Keys.Count; i++)
             {
-                StackPanel panel = GetPanelByName(tagsByName[i]);
+                string scriptsCategoryDirs = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _togglesCategoryAndPanels.Keys.ToList()[i]);
+                List<string> scriptsFiles = Directory.Exists(scriptsCategoryDirs)
+                    && Directory.EnumerateFiles(scriptsCategoryDirs, "*.*", SearchOption.AllDirectories).Where(f => f.EndsWith(".ps1")).Count() > 0
+                    ? Directory.EnumerateFiles(scriptsCategoryDirs, "*.*", SearchOption.AllDirectories).Where(f => f.EndsWith(".ps1")).ToList()
+                    : null ;
 
-                if (Directory.Exists(appScriptsFolders[i]))
+                scriptsFiles?.ForEach(s =>
                 {
-                    uint sc = 0;
-                    foreach (string item in Directory.GetFiles(appScriptsFolders[i], "*.ps1", SearchOption.AllDirectories))
-                    {                        
-                        ToggleSwitch toggleSwitch = new ToggleSwitch()
-                        {
-                            
-                        };
-                        sc++;
-                    }
-                }
+                    Gui.ReadToggleData(s);
 
-                else
-                {
-
-                }
+                    
+                });
             }
         }
 
-        internal StackPanel GetPanelByName(string name) => _togglesCategoryPanels[name] as StackPanel;
+        internal StackPanel GetPanelByName(string name) => _togglesCategoryAndPanels[name] as StackPanel;
     }
 }
