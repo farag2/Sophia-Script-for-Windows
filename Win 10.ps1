@@ -739,6 +739,9 @@ $OFS = " "
 # Remove Shadow copies (restoration points)
 # Удалить теневые копии (точки восстановения)
 Get-CimInstance -ClassName Win32_ShadowCopy | Remove-CimInstance
+# Turn off Windows Script Host
+# Отключить Windows Script Host
+New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings" -Name Enabled -PropertyType DWord -Value 0 -Force
 # Turn off background apps, except the followings...
 # Запретить приложениям работать в фоновом режиме, кроме следующих...
 Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications | Where-Object -FilterScript {$_.PSChildName -cnotmatch $ExcludedApps} | ForEach-Object -Process {
