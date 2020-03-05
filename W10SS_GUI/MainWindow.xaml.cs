@@ -60,7 +60,7 @@ namespace W10SS_GUI
         {            
             Resources.MergedDictionaries.Add(AppCulture.ChangeCulture());
             Gui.SetHamburgerWidth(AppCulture.CurrentCultureName);
-            Gui.HamburgerReopen();
+            Gui.HamburgerReOpen();
             textTogglesHeader.Text = Convert.ToString(Resources[Gui.LastClickedButtonName]);            
         }
 
@@ -69,8 +69,7 @@ namespace W10SS_GUI
             InitializeVariables();
             Gui.InitializeToggles();
             SetUiLanguage();
-            Gui.SetHamburgerWidth(AppCulture.CurrentCultureName);
-            
+            Gui.SetHamburgerWidth(AppCulture.CurrentCultureName);            
             Gui.SetActivePanel(HamburgerPrivacy);
         }        
     }

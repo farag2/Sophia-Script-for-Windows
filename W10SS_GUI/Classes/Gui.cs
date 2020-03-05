@@ -17,25 +17,20 @@ namespace W10SS_GUI.Classes
         private Dictionary<string, StackPanel> _togglesCategoryAndPanels = new Dictionary<string, StackPanel>();
         private MainWindow MainWindow = Application.Current.MainWindow as MainWindow;
         private HamburgerCategoryButton _lastclickedbutton;
+        private List<ToggleSwitch> TogglesSwitches = new List<ToggleSwitch>();
 
-        internal string LastClickedButtonName
-        {
-            get
-            {
-                return _lastclickedbutton.Name as string;
-            }
-        }
+        internal string LastClickedButtonName => _lastclickedbutton.Name as string;
 
         internal Gui()
         {
-            InitializeVariables();            
+            InitializeGuiVariables();            
         }
 
-        private void InitializeVariables()
+        private void InitializeGuiVariables()
         {
-            foreach (var tagValue in Application.Current.Resources.MergedDictionaries.Where(r => r.Source.Segments[2] == "tags.xaml").FirstOrDefault().Values)
+            foreach (var tagValue in Application.Current.Resources.MergedDictionaries.Where(r => r.Source.LocalPath == "/Resource/tags.xaml").First().Values)
             {
-                _togglesCategoryAndPanels.Add(tagValue.ToString(), MainWindow.panelTogglesCategoryContainer.Children.OfType<StackPanel>().Where(p => p.Tag == tagValue).FirstOrDefault());
+                _togglesCategoryAndPanels.Add(tagValue.ToString(), MainWindow.panelTogglesCategoryContainer.Children.OfType<StackPanel>().Where(p => p.Tag == tagValue).First());
             }
         }
         
@@ -51,7 +46,7 @@ namespace W10SS_GUI.Classes
             MainWindow.textTogglesHeader.Text = MainWindow.Resources[button.Name] as string;            
         }
 
-        internal void HamburgerReopen()
+        internal void HamburgerReOpen()
         {
             MouseEventArgs mouseLeaveArgs = new MouseEventArgs(Mouse.PrimaryDevice, 0)
             {
@@ -80,21 +75,121 @@ namespace W10SS_GUI.Classes
         {
             for (int i = 0; i < _togglesCategoryAndPanels.Keys.Count; i++)
             {
-                string scriptsCategoryDirs = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _togglesCategoryAndPanels.Keys.ToList()[i]);
-                List<string> scriptsFiles = Directory.Exists(scriptsCategoryDirs)
-                    && Directory.EnumerateFiles(scriptsCategoryDirs, "*.*", SearchOption.AllDirectories).Where(f => f.EndsWith(".ps1")).Count() > 0
-                    ? Directory.EnumerateFiles(scriptsCategoryDirs, "*.*", SearchOption.AllDirectories).Where(f => f.EndsWith(".ps1")).ToList()
-                    : null ;
+                string categoryName = _togglesCategoryAndPanels[_togglesCategoryAndPanels.Keys.ToList()[i]].Name;
+                string psScriptsDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, categoryName.Name);
+                
+                TogglesSwitches = Directory.Exists(psScriptsDir)
+                    && Directory.EnumerateFiles(psScriptsDir, "*.*", SearchOption.AllDirectories)
+                                .Where(f => f.EndsWith(".ps1"))
+                                .Count() > 0
 
-                scriptsFiles?.ForEach(s =>
-                {
-                    Gui.ReadToggleData(s);
+                    ? Directory.EnumerateFiles(psScriptsDir, "*.*", SearchOption.AllDirectories)
+                               .Where(f => f.EndsWith(".ps1"))
+                               .Select(p => CreateToogleSwitchFromScript(scriptPath:p, panelName:categoryName))
+                               .ToList()
+                    : null;
 
-                    
-                });
+
+
             }
         }
 
-        internal StackPanel GetPanelByName(string name) => _togglesCategoryAndPanels[name] as StackPanel;
+        internal ToggleSwitch CreateToogleSwitchFromScript(string scriptPath, string panelName)
+        {
+            ToggleSwitch toggleSwitch = new ToggleSwitch();
+            //{
+            //    ScriptPath = scriptPath,
+            //    PanelName = panel
+            //};
+
+            //try
+            //{
+            //    using (StreamReader streamReader = new StreamReader(scriptPath, Encoding.UTF8))
+            //    {
+            //        for (int i = 0; i < 4; i++)
+            //        {
+            //            string textLine = streamReader.ReadLine();
+            //            toggleInfo.IsValid = textLine.StartsWith("# ") && textLine.Length >= 10 ? true : false;
+
+            //            switch (i)
+            //            {
+            //                case 0:
+            //                    toggleInfo.HeaderEN = textLine.Replace("# ", "");
+            //                    break;
+
+            //                case 1:
+            //                    toggleInfo.DescriptionEN = textLine.Replace("# ", "");
+            //                    break;
+
+            //                case 2:
+            //                    toggleInfo.HeaderRU = textLine.Replace("# ", "");
+            //                    break;
+
+            //                case 3:
+            //                    toggleInfo.DescriptionRU = textLine.Replace("# ", "");
+            //                    break;
+
+            //                default:
+            //                    break;
+            //            }
+            //        }
+            //    }
+            //}
+            //catch (Exception)
+            //{
+
+            //}
+
+            return toggleSwitch;
+        }
+
+        //internal ToggleInfo NewToogleInfoFromScript(string scriptPath, string panelName)
+        //{
+        //    ToggleInfo toggleInfo = new ToggleInfo
+        //    {
+        //        ScriptPath = scriptPath,
+        //        PanelName = panelName
+        //    };
+
+        //    try
+        //    {
+        //        using (StreamReader streamReader = new StreamReader(scriptPath, Encoding.UTF8))
+        //        {
+        //            for (int i = 0; i < 4; i++)
+        //            {
+        //                string textLine = streamReader.ReadLine();
+        //                toggleInfo.IsValid = textLine.StartsWith("# ") && textLine.Length >= 10 ? true : false;
+
+        //                switch (i)
+        //                {
+        //                    case 0:
+        //                        toggleInfo.HeaderEN = textLine.Replace("# ", "");
+        //                        break;
+
+        //                    case 1:
+        //                        toggleInfo.DescriptionEN = textLine.Replace("# ", "");
+        //                        break;
+
+        //                    case 2:
+        //                        toggleInfo.HeaderRU = textLine.Replace("# ", "");
+        //                        break;
+
+        //                    case 3:
+        //                        toggleInfo.DescriptionRU = textLine.Replace("# ", "");
+        //                        break;
+
+        //                    default:
+        //                        break;
+        //                }
+        //            }                   
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //    }
+
+        //    return toggleInfo;
+        //}
     }
 }

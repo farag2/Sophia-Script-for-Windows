@@ -68,8 +68,26 @@ namespace W10SS_GUI.Controls
         public static readonly DependencyProperty DescriptionProperty =
             DependencyProperty.Register("Description", typeof(string), typeof(ToggleSwitch), new PropertyMetadata(default(string)));
 
+        public bool IsValid
+        {
+            get { return (bool)GetValue(IsValidProperty); }
+            set { SetValue(IsValidProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsValid.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsValidProperty =
+            DependencyProperty.Register("IsValid", typeof(bool), typeof(ToggleSwitch), new PropertyMetadata(default(bool)));
 
 
+        public string ScriptPath
+        {
+            get { return (string)GetValue(ScriptPathProperty); }
+            set { SetValue(ScriptPathProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ScriptPath.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ScriptPathProperty =
+            DependencyProperty.Register("ScriptPath", typeof(string), typeof(ToggleSwitch), new PropertyMetadata(default(string)));
 
 
         private void ToggleSwitch_Click(object sender, RoutedEventArgs e)
@@ -80,14 +98,11 @@ namespace W10SS_GUI.Controls
         private void GridToggleSwitch_MouseEnter(object sender, MouseEventArgs e)
         {
             if (toggleSwitch.IsChecked == false) gridToggleSwitch.Background = brushBackgroundHover;
-
         }
 
         private void GridToggleSwitch_MouseLeave(object sender, MouseEventArgs e)
         {
             if (toggleSwitch.IsChecked == false) gridToggleSwitch.Background = brushBackground;
-
-
         }
     }
 }
