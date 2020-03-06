@@ -235,9 +235,6 @@ New-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name Ht
 # Turn on tip, trick, and suggestions as you use Windows
 # Показывать советы, подсказки и рекомендации при использованию Windows
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338389Enabled -PropertyType DWord -Value 1 -Force
-# Do not show app suggestions on Start menu
-# Не показывать рекомендации в меню "Пуск"
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338388Enabled -PropertyType DWord -Value 0 -Force
 # Do not show suggested content in the Settings
 # Не показывать рекомендуемое содержание в "Параметрах"
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338393Enabled -PropertyType DWord -Value 0 -Force
@@ -302,8 +299,8 @@ if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explor
 	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager -Force
 }
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager -Name EnthusiastMode -PropertyType DWord -Value 1 -Force
-# Turn on ribbon in File Explorer
-# Включить отображение ленты проводника в развернутом виде
+# Show the Ribbon expanded in File Explorer
+# Отображать ленту проводника в развернутом виде
 if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Ribbon))
 {
 	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Ribbon -Force
@@ -1380,6 +1377,13 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\
 # Отключить удаление кэша миниатюр
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" -Name Autorun -PropertyType DWord -Value 0 -Force
 New-ItemProperty -Path "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" -Name Autorun -PropertyType DWord -Value 0 -Force
+# Turn on network discovery and file and printers sharing
+# Включить сетевое обнаружение и общий доступ к файлам и принтерам
+if ((Get-NetConnectionProfile).NetworkCategory -ne "DomainAuthenticated")
+{
+	Get-NetFirewallRule -Group "@FirewallAPI.dll,-32752", "@FirewallAPI.dll,-28502" | Set-NetFirewallRule -Profile Private -Enabled True
+	Set-NetConnectionProfile -NetworkCategory Private
+}
 #endregion System
 
 #region Start menu
@@ -1395,19 +1399,88 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name 
 [byte[]]$bytes = Get-Content -Path "$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" -Encoding Byte -Raw
 $bytes[0x15] = $bytes[0x15] -bor 0x20
 Set-Content -Path "$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" -Value $bytes -Encoding Byte -Force
-# Add old style shortcut for "Devices and Printers" to the Start menu
-# Добавить ярлык старого формата для "Устройства и принтеры" в меню Пуск
-$target = "control"
-$linkname = (Get-ControlPanelItem | Where-Object -FilterScript {$_.CanonicalName -eq "Microsoft.DevicesAndPrinters"}).Name
-$link = "$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$linkname.lnk"
-$shell = New-Object -ComObject Wscript.Shell
-$shortcut = $shell.CreateShortcut($link)
-$shortcut.TargetPath = $target
-$shortcut.Arguments = "printers"
-$shortCut.IconLocation = "$env:SystemRoot\system32\DeviceCenter.dll"
-$shortcut.Save()
-# Import Start menu layout from pre-saved .reg file
-# Импорт настроенного макета меню "Пуск" из предварительно сохраненного .reg-файла
+# Show "Explorer" and "Settings" folders on Start menu
+# Отобразить папки "Проводник" и "Параметры" в меню "Пуск"
+$items = @("File Explorer", "Settings")
+$startmenu = Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*windows.data.unifiedtile.startglobalproperties\Current"
+$data = $startmenu.Data[0..19] -join ","
+$data += ",203,50,10,$($items.Length)"
+# Explorer
+# Проводник
+$data += ",5,188,201,168,164,1,36,140,172,3,68,137,133,1,102,160,129,186,203,189,215,168,164,130,1,0"
+# Settings
+# Параметры
+$data += ",5,134,145,204,147,5,36,170,163,1,68,195,132,1,102,159,247,157,177,135,203,209,172,212,1,0"
+$data += ",194,60,1,194,70,1,197,90,1,0"
+New-ItemProperty -Path $startmenu.PSPath -Name Data -PropertyType Binary -Value $data.Split(",") -Force
+# Unpin all Start menu tiles
+# Открепить все ярлыки от начального экрана
+if ($RU)
+{
+	Write-Host "`nЧтобы открепить все ярлыки от начального экрана, введите букву: " -NoNewline
+	Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
+	Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
+}
+else
+{
+	Write-Host "`nTo unpin all Start menu tiles type: " -NoNewline
+	Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
+	Write-Host "`nPress Enter to skip" -NoNewline
+}
+do
+{
+	$Unpin = Read-Host -Prompt " "
+	if ([string]::IsNullOrEmpty($Unpin))
+	{
+		break
+	}
+	else
+	{
+		switch ($Unpin)
+		{
+			"Y"
+			{
+				$TileCollection = Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*start.tilegrid`$windows.data.curatedtilecollection.tilecollection\Current
+				$Value = $TileCollection.Data[0..25] + ([byte[]](202,50,0,226,44,1,1,0,0))
+				New-ItemProperty -Path $TileCollection.PSPath -Name Data -PropertyType Binary -Value $Value -Force
+			}
+			Default
+			{
+				if ($RU)
+				{
+					Write-Host "`nНеправильная буква." -ForegroundColor Yellow
+					Write-Host "Введите правильную букву: " -NoNewline
+					Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
+					Write-Host ", чтобы открепить все ярлыки от начального экрана" -NoNewline
+					Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
+				}
+				else
+				{
+					Write-Host "`nInvalid letter." -ForegroundColor Yellow
+					Write-Host "Type the correct letter: " -NoNewline
+					Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
+					Write-Host " to unpin all Start menu tiles" -NoNewline
+					Write-Host "`nPress Enter to skip" -NoNewline
+				}
+			}
+		}
+	}
+}
+until ($Unpin -eq "Y")
+# Download syspin.exe to the "Downloads" folder
+# Скачать syspin.exe в папку "Загрузки"
+# http://www.technosys.net/products/utils/pintotaskbar
+# Hash (SHA256): 6967E7A3C2251812DD6B3FA0265FB7B61AADC568F562A98C50C345908C6E827
+$OutFile = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+$HT = @{
+	Uri = "https://github.com/farag2/Windows-10-Setup-Script/raw/master/Start%20menu%20layout/syspin.exe"
+	OutFile = "$OutFile\syspin.exe"
+	Verbose = [switch]::Present
+}
+Invoke-WebRequest @HT
+# Закрепить на начальном экране ярлыки
+# Pin to Start the shortcuts
 Add-Type -AssemblyName System.Windows.Forms
 $OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
 # Initial directory "Downloads"
@@ -1416,11 +1489,11 @@ $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows
 $OpenFileDialog.InitialDirectory = $DownloadsFolder
 if ($RU)
 {
-	$OpenFileDialog.Filter = "Файлы реестра (*.reg)|*.reg|Все файлы (*.*)|*.*"
+	$OpenFileDialog.Filter = "*.exe|*.exe|Все файлы (*.*)|*.*"
 }
 else
 {
-	$OpenFileDialog.Filter = "Registration Files (*.reg)|*.reg|All Files (*.*)|*.*"
+	$OpenFileDialog.Filter = "*.exe|*.exe|All Files (*.*)|*.*"
 }
 # Focus on open file dialog
 # Перевести фокус на диалог открытия файла
@@ -1436,80 +1509,64 @@ $tmp.add_Shown(
 $tmp.ShowDialog()
 if ($OpenFileDialog.FileName)
 {
-	Remove-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount -Recurse -Force
-	regedit.exe /s $OpenFileDialog.FileName
-}
-else
-{
-	if ($RU)
+	# Add old style shortcut for "Devices and Printers" to the Start menu
+	# Добавить ярлык старого формата для "Устройства и принтеры" в меню Пуск
+	$Items = (New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
+	$ControlPanelLocalizedName = ($Items | Where-Object -FilterScript {$_.Path -eq "Microsoft.Windows.ControlPanel"}).Name
+	# If Control Panel shortcut was ever pinned
+	# Если ярлык панели управления когда-либо закреплялся
+	if (Test-Path -Path "$env:APPDATA\Microsoft\Windows\Start menu\Programs\$ControlPanelLocalizedName.lnk")
 	{
-		Write-Host "`nЧтобы открепить все ярлыки от начального экрана, введите букву: " -NoNewline
-		Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-		Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
+		$Args = @"
+			"$env:APPDATA\Microsoft\Windows\Start menu\Programs\$ControlPanelLocalizedName.lnk" "51201"
+"@
+		Start-Process -FilePath $OpenFileDialog.FileName -WindowStyle Hidden -ArgumentList $Args -Wait
 	}
 	else
 	{
-		Write-Host "`nTo unpin all Start menu tiles type: " -NoNewline
-		Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-		Write-Host "`nPress Enter to skip" -NoNewline
+		$shell = New-Object -ComObject Wscript.Shell
+		# Place the shortcut in "$env:SystemRoot\System32\$linkname.lnk"
+		# Разместим ярлык в "$env:SystemRoot\System32\$linkname.lnk"
+		$shortcut = $shell.CreateShortcut("$env:SystemRoot\System32\$ControlPanelLocalizedName.lnk")
+		$shortcut.TargetPath = "$env:SystemRoot\System32\control.exe"
+		$shortcut.Save()
+		# Pin to Start Control Panel
+		# The "Pin" verb is not available on the control.exe file so the shortcut has to be created
+		# Закрепить на начальном "Панель управления"
+		# Глагол "Закрепить на начальном экране" недоступен для control.exe, поэтому необходимо создать ярлык
+		$Args = @"
+			"$env:SystemRoot\System32\$ControlPanelLocalizedName.lnk" "51201"
+"@
+		Start-Process -FilePath $OpenFileDialog.FileName -WindowStyle Hidden -ArgumentList $Args -Wait
+		Remove-Item -Path "$env:SystemRoot\System32\$ControlPanelLocalizedName.lnk" -Force
 	}
-	do
-	{
-		$Unpin = Read-Host -Prompt " "
-		if ([string]::IsNullOrEmpty($Unpin))
-		{
-			break
-		}
-		else
-		{
-			switch ($Unpin)
-			{
-				"Y"
-				{
-					# Unpin all Start menu tiles
-					# Открепить все ярлыки от начального экрана
-					$TileCollection = Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*start.tilegrid`$windows.data.curatedtilecollection.tilecollection\Current
-					$Value = $TileCollection.Data[0..25] + ([byte[]](202,50,0,226,44,1,1,0,0))
-					New-ItemProperty -Path $TileCollection.PSPath -Name Data -PropertyType Binary -Value $Value -Force
-					# Show "Explorer" and "Settings" folders on Start menu
-					# Отобразить папки "Проводник" и "Параметры" в меню "Пуск"
-					$items = @("File Explorer", "Settings")
-					$startmenu = Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*windows.data.unifiedtile.startglobalproperties\Current"
-					$data = $startmenu.Data[0..19] -join ","
-					$data += ",203,50,10,$($items.Length)"
-					# Explorer
-					# Проводник
-					$data += ",5,188,201,168,164,1,36,140,172,3,68,137,133,1,102,160,129,186,203,189,215,168,164,130,1,0"
-					# Settings
-					# Параметры
-					$data += ",5,134,145,204,147,5,36,170,163,1,68,195,132,1,102,159,247,157,177,135,203,209,172,212,1,0"
-					$data += ",194,60,1,194,70,1,197,90,1,0"
-					New-ItemProperty -Path $startmenu.PSPath -Name Data -PropertyType Binary -Value $data.Split(",") -Force
-				}
-				Default
-				{
-					if ($RU)
-					{
-						Write-Host "`nНеправильная буква." -ForegroundColor Yellow
-						Write-Host "Введите правильную букву: " -NoNewline
-						Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-						Write-Host ", чтобы открепить все ярлыки от начального экрана" -NoNewline
-						Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
-					}
-					else
-					{
-						Write-Host "`nInvalid letter." -ForegroundColor Yellow
-						Write-Host "Type the correct letter: " -NoNewline
-						Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-						Write-Host " to unpin all Start menu tiles" -NoNewline
-						Write-Host "`nPress Enter to skip" -NoNewline
-					}
-				}
-			}
-		}
-	}
-	until ($Unpin -eq "Y")
+	# Add old style shortcut for "Devices and Printers" to the Start menu
+	# Добавить ярлык старого формата для "Устройства и принтеры" в меню Пуск
+	$DevicesAndPrintersLocalizedName = (Get-ControlPanelItem | Where-Object -FilterScript {$_.CanonicalName -eq "Microsoft.DevicesAndPrinters"}).Name
+	$shell = New-Object -ComObject Wscript.Shell
+	$shortcut = $shell.CreateShortcut("$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesAndPrintersLocalizedName.lnk")
+	$shortcut.TargetPath = "control"
+	$shortcut.Arguments = "printers"
+	$shortCut.IconLocation = "$env:SystemRoot\system32\DeviceCenter.dll"
+	$shortcut.Save()
+	# Pin to Start Devices and Printers
+	# Закрепить на начальном "Устройства и принтеры"
+	$Args = @"
+		"$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesAndPrintersLocalizedName.lnk" "51201"
+"@
+	Start-Process -FilePath $OpenFileDialog.FileName -WindowStyle Hidden -ArgumentList $Args -Wait
+	# Pin to Start Command Prompt
+	# Закрепить на начальном "Командная строка"
+	$Args = @"
+		"$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" "51201"
+"@
+	Start-Process -FilePath $OpenFileDialog.FileName -WindowStyle Hidden -ArgumentList $Args -Wait
 }
+Remove-Item -Path "$OutFile\syspin.exe" -Force -ErrorAction Ignore
+
+# Do not show app suggestions on Start menu
+# Не показывать рекомендации в меню "Пуск"
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338388Enabled -PropertyType DWord -Value 0 -Force
 # Restart Start menu
 # Перезапустить меню "Пуск"
 Stop-Process -Name StartMenuExperienceHost -Force
@@ -2039,9 +2096,6 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name 
 #endregion Context menu
 
 #region End
-# Restart Start menu
-# Перезапустить меню "Пуск"
-Stop-Process -Name StartMenuExperienceHost -Force
 # Refresh desktop icons, environment variables and taskbar without restarting File Explorer
 # Обновить иконки рабочего стола, переменные среды и панель задач без перезапуска "Проводника"
 $UpdateEnvExplorerAPI = @{
