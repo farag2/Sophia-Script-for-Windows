@@ -18,8 +18,8 @@
 .EXAMPLE
 	PS C:\WINDOWS\system32> & '.\Win 10.ps1'
 .NOTES
-	Version: v4.0.22
-	Date: 03.03.2020
+	Version: v4.0.23
+	Date: 06.03.2020
 	Written by: farag
 	Thanks to all http://forum.ru-board.com members involved
 	Ask a question on
