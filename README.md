@@ -34,8 +34,10 @@ The PowerShell script is a set of tweaks for fine-tuning the OS and automating t
 - Add folder to exclude from Windows Defender Antivirus scan;
 - Turn off per-user services;
 - Add old style shortcut for "Devices and Printers" to the Start menu";
-- Import Start menu layout from pre-saved reg file;
-  - [Download](https://github.com/farag2/Windows-10-Setup-Script/tree/master/Start%20menu%20layout) pre-saved Startmenu.reg
+- Pin shortcuts to Start menu using syspin.exe
+  - [Download](https://github.com/farag2/Windows-10-Setup-Script/raw/master/Start%20menu%20layout/syspin.exe) syspin.exe 
+  - App [site](http://www.technosys.net/products/utils/pintotaskbar)
+  - Hash (SHA256): 6967E7A3C2251812DD6B3FA0265FB7B61AADC568F562A98C50C345908C6E827
   - [Screenshot](#screenshots)
 - Unpin all Start menu tiles;
 - Set location of the "Desktop", "Documents", "Downloads", "Music", "Pictures", and "Videos";
