@@ -15,12 +15,13 @@ namespace W10SS_GUI.Classes
     internal class Gui
     {
         private Dictionary<string, StackPanel> _togglesCategoryAndPanels = new Dictionary<string, StackPanel>();
+        private static uint TogglesCounter = default(uint);
         private MainWindow MainWindow = Application.Current.MainWindow as MainWindow;
         private HamburgerCategoryButton _lastclickedbutton;
-        private List<ToggleSwitch> TogglesSwitches = new List<ToggleSwitch>();
+        private static List<ToggleSwitch> TogglesSwitches = new List<ToggleSwitch>();
 
         internal string LastClickedButtonName => _lastclickedbutton.Name as string;
-
+        
         internal Gui()
         {
             InitializeGuiVariables();            
@@ -75,121 +76,74 @@ namespace W10SS_GUI.Classes
         {
             for (int i = 0; i < _togglesCategoryAndPanels.Keys.Count; i++)
             {
-                string categoryName = _togglesCategoryAndPanels[_togglesCategoryAndPanels.Keys.ToList()[i]].Name;
-                string psScriptsDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, categoryName.Name);
+                string categoryName = _togglesCategoryAndPanels.Keys.ToList()[i];
+                StackPanel categoryPanel = _togglesCategoryAndPanels[categoryName];
+                string psScriptsDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, categoryName);
                 
-                TogglesSwitches = Directory.Exists(psScriptsDir)
+                List<ToggleSwitch> togglesSwitches = Directory.Exists(psScriptsDir)
                     && Directory.EnumerateFiles(psScriptsDir, "*.*", SearchOption.AllDirectories)
                                 .Where(f => f.EndsWith(".ps1"))
                                 .Count() > 0
 
                     ? Directory.EnumerateFiles(psScriptsDir, "*.*", SearchOption.AllDirectories)
                                .Where(f => f.EndsWith(".ps1"))
-                               .Select(p => CreateToogleSwitchFromScript(scriptPath:p, panelName:categoryName))
+                               .Select(f => CreateToogleSwitchFromScript(f))
                                .ToList()
-                    : null;
+                    : null ;
 
-
-
+                togglesSwitches?.Where(t => t.IsValid == true).ToList().ForEach(t => categoryPanel.Children.Add(t));               
             }
         }
 
-        internal ToggleSwitch CreateToogleSwitchFromScript(string scriptPath, string panelName)
+        internal static ToggleSwitch CreateToogleSwitchFromScript(string scriptPath)
         {
-            ToggleSwitch toggleSwitch = new ToggleSwitch();
-            //{
-            //    ScriptPath = scriptPath,
-            //    PanelName = panel
-            //};
+            string dictionaryHeaderID = $"ToggleHeader-{TogglesCounter}";
+            string dictionaryDescriptionID = $"ToggleDescription-{TogglesCounter}";
+            string[] arrayLines = new string[4];
 
-            //try
-            //{
-            //    using (StreamReader streamReader = new StreamReader(scriptPath, Encoding.UTF8))
-            //    {
-            //        for (int i = 0; i < 4; i++)
-            //        {
-            //            string textLine = streamReader.ReadLine();
-            //            toggleInfo.IsValid = textLine.StartsWith("# ") && textLine.Length >= 10 ? true : false;
+            ResourceDictionary dictionaryEN = new ResourceDictionary
+            {
+                Source = new Uri("/Localized/EN.xaml", UriKind.Relative)
+            };
 
-            //            switch (i)
-            //            {
-            //                case 0:
-            //                    toggleInfo.HeaderEN = textLine.Replace("# ", "");
-            //                    break;
+            ResourceDictionary dictionaryRU = new ResourceDictionary()
+            {
+                Source = new Uri("/Localized/RU.xaml", UriKind.Relative)
+            };
 
-            //                case 1:
-            //                    toggleInfo.DescriptionEN = textLine.Replace("# ", "");
-            //                    break;
+            ToggleSwitch toggleSwitch = new ToggleSwitch()
+            {
+                ScriptPath = scriptPath
+            };
+                        
+            try
+            {
+                using (StreamReader streamReader = new StreamReader(scriptPath, Encoding.UTF8))
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        string textLine = streamReader.ReadLine();                        
+                        toggleSwitch.IsValid = textLine.StartsWith("# ") && textLine.Length >= 10 ? true : false;
+                        arrayLines[i] = textLine.Replace("# ", "");                                               
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                
+            }
 
-            //                case 2:
-            //                    toggleInfo.HeaderRU = textLine.Replace("# ", "");
-            //                    break;
+            dictionaryEN[dictionaryHeaderID] = arrayLines[0];
+            dictionaryEN[dictionaryDescriptionID] = arrayLines[1];
+            dictionaryRU[dictionaryHeaderID] = arrayLines[2];
+            dictionaryRU[dictionaryDescriptionID] = arrayLines[3];
 
-            //                case 3:
-            //                    toggleInfo.DescriptionRU = textLine.Replace("# ", "");
-            //                    break;
-
-            //                default:
-            //                    break;
-            //            }
-            //        }
-            //    }
-            //}
-            //catch (Exception)
-            //{
-
-            //}
-
+            toggleSwitch.SetResourceReference(ToggleSwitch.HeaderProperty, dictionaryHeaderID);
+            toggleSwitch.SetResourceReference(ToggleSwitch.DescriptionProperty, dictionaryDescriptionID);
+            
+            TogglesCounter++;
+            TogglesSwitches.Add(toggleSwitch);
             return toggleSwitch;
-        }
-
-        //internal ToggleInfo NewToogleInfoFromScript(string scriptPath, string panelName)
-        //{
-        //    ToggleInfo toggleInfo = new ToggleInfo
-        //    {
-        //        ScriptPath = scriptPath,
-        //        PanelName = panelName
-        //    };
-
-        //    try
-        //    {
-        //        using (StreamReader streamReader = new StreamReader(scriptPath, Encoding.UTF8))
-        //        {
-        //            for (int i = 0; i < 4; i++)
-        //            {
-        //                string textLine = streamReader.ReadLine();
-        //                toggleInfo.IsValid = textLine.StartsWith("# ") && textLine.Length >= 10 ? true : false;
-
-        //                switch (i)
-        //                {
-        //                    case 0:
-        //                        toggleInfo.HeaderEN = textLine.Replace("# ", "");
-        //                        break;
-
-        //                    case 1:
-        //                        toggleInfo.DescriptionEN = textLine.Replace("# ", "");
-        //                        break;
-
-        //                    case 2:
-        //                        toggleInfo.HeaderRU = textLine.Replace("# ", "");
-        //                        break;
-
-        //                    case 3:
-        //                        toggleInfo.DescriptionRU = textLine.Replace("# ", "");
-        //                        break;
-
-        //                    default:
-        //                        break;
-        //                }
-        //            }                   
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //    }
-
-        //    return toggleInfo;
-        //}
+        }        
     }
 }

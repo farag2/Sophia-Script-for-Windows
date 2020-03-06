@@ -112,7 +112,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Classes\AppCulture.cs" />
-    <Compile Include="Classes\ToggleInfo.cs" />
     <Compile Include="Controls\HamburgerCategoryButton.xaml.cs">
       <DependentUpon>HamburgerCategoryButton.xaml</DependentUpon>
     </Compile>

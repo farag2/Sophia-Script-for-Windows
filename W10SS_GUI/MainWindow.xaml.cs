@@ -37,15 +37,7 @@ namespace W10SS_GUI
         {
             Gui = new Gui();
         }
-
-        private void InitializeToggles()
-        {
-            //AppDomain.CurrentDomain.BaseDirectory
-
-
-
-        }        
-
+        
         private void SetUiLanguage()
         {
             Resources.MergedDictionaries.Add(AppCulture.CurrentCulture);                
