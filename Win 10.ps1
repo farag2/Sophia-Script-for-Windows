@@ -18,8 +18,8 @@
 .EXAMPLE
 	PS C:\WINDOWS\system32> & '.\Win 10.ps1'
 .NOTES
-	Version: v4.0.23
-	Date: 06.03.2020
+	Version: v4.0.24
+	Date: 11.03.2020
 	Written by: farag
 	Thanks to all http://forum.ru-board.com members involved
 	Ask a question on
@@ -306,13 +306,12 @@ if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explor
 	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Ribbon -Force
 }
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Ribbon -Name MinimizedStateTabletModeOff -PropertyType DWord -Value 0 -Force
-# Turn on recycle bin files delete confirmation
+# Display recycle bin files delete confirmation
 # Запрашивать подтверждение на удаление файлов в корзину
-if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer))
-{
-	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Force
-}
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name ConfirmFileDelete -PropertyType DWord -Value 1 -Force
+$ShellState = Get-ItemPropertyValue -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name ShellState
+$ShellState[4] = 51
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name ShellState -PropertyType Binary -Value $ShellState -Force
+Stop-Process -Name explorer -Force
 # Hide 3D Objects folder from "This PC" and from Quick access
 # Скрыть папку "Объемные объекты" из "Этот компьютер" и из панели быстрого доступа
 if (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag"))
@@ -621,11 +620,14 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSe
 # Let Windows try to fix apps so they're not blurry
 # Разрешить Windows исправлять размытость в приложениях
 New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name EnablePerProcessSystemDPI -PropertyType DWord -Value 1 -Force
-# Turn off hibernate
-# Отключить гибридный спящий режим
-New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Power -Name HibernateEnabled -PropertyType DWord -Value 0 -Force
-# Turn off location for this device
-# Отключить местоположение для этого устройства
+# Turn off hibernate for devices, except laptops
+# Отключить режим гибернации для устройств, кроме ноутбуков
+if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2)
+{
+	powercfg /hibernate off
+}
+# Turn off location access for this device
+# Отключить доступ к сведениям о расположении для этого устройства
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location -Name Value -PropertyType String -Value Deny -Force
 # Change $env:TEMP environment variable path to $env:SystemDrive\Temp
 # Изменить путь переменной среды для временных файлов на $env:SystemDrive\Temp
@@ -673,11 +675,8 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\
 # Turn off Delivery Optimization
 # Отключить оптимизацию доставки
 Get-Service -Name DoSvc | Stop-Service -Force
-if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization))
-{
-	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization -Force
-}
-New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization -Name DODownloadMode -PropertyType DWord -Value 0 -Force
+Set-DODownloadMode -DownloadMode 0
+Delete-DeliveryOptimizationCache -Force
 # Always wait for the network at computer startup and logon
 # Всегда ждать сеть при запуске и входе в систему
 if (-not (Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon"))
@@ -738,7 +737,7 @@ $OFS = " "
 Get-CimInstance -ClassName Win32_ShadowCopy | Remove-CimInstance
 # Turn off background apps, except the followings...
 # Запретить приложениям работать в фоновом режиме, кроме следующих...
-Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications | Where-Object -FilterScript {$_.PSChildName -cnotmatch $ExcludedApps} | ForEach-Object -Process {
+Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications | ForEach-Object -Process {
 	Remove-ItemProperty -Path $_.PsPath -Name * -Force
 }
 $ExcludedApps = @(
@@ -767,19 +766,19 @@ $OFS = " "
 # Open "Background apps" page
 # Открыть раздел "Фоновые приложения"
 Start-Process -FilePath ms-settings:privacy-backgroundapps
-# Set power management scheme for desktop and laptop
-# Установить схему управления питания для стационарного ПК и ноутбука
-if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -eq 1)
-{
-	# High performance for desktop
-	# Высокая производительность для стационарного ПК
-	powercfg /setactive SCHEME_MIN
-}
+# Set power management scheme
+# Установить схему управления питания
 if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -eq 2)
 {
 	# Balanced for laptop
 	# Сбалансированная для ноутбука
 	powercfg /setactive SCHEME_BALANCED
+}
+else
+{
+	# High performance for desktop
+	# Высокая производительность для стационарного ПК
+	powercfg /setactive SCHEME_MIN
 }
 # Turn on latest installed .NET runtime for all apps
 # Использовать последнюю установленную версию .NET для всех приложений
@@ -1349,10 +1348,7 @@ if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2 -and (G
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SeparateProcess -PropertyType DWord -Value 1 -Force
 # Turn off and delete reserved storage after the next update installation
 # Отключить и удалить зарезервированное хранилище после следующей установки обновлений
-New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveManager -Name BaseHardReserveSize -PropertyType QWord -Value 0 -Force
-New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveManager -Name BaseSoftReserveSize -PropertyType QWord -Value 0 -Force
-New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveManager -Name HardReserveAdjustment -PropertyType QWord -Value 0 -Force
-New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveManager -Name MinDiskSize -PropertyType QWord -Value 0 -Force
+New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveManager -Name PassedPolicy -PropertyType DWord -Value 0 -Force
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveManager -Name ShippedWithReserves -PropertyType DWord -Value 0 -Force
 # Turn on automatic backup the system registry to the $env:SystemRoot\System32\config\RegBack folder
 # Включить автоматическое создание копии реестра в папку $env:SystemRoot\System32\config\RegBack
