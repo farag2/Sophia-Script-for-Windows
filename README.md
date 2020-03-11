@@ -13,7 +13,7 @@ Windows 10 Setup Script
 - [PS](#ps)
   
 ## Overview
-The PowerShell script is a set of tweaks for fine-tuning the OS and automating the routine tasks.
+The PowerShell script is a set of tweaks for OS fine-tuning and automating the routine tasks.
 
 ## Supported Windows versions
 |Version|Code name|   Marketing name   |Build|  Arch  |   Editions   |
