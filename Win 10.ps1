@@ -18,8 +18,8 @@
 .EXAMPLE
 	PS C:\WINDOWS\system32> & '.\Win 10.ps1'
 .NOTES
-	Version: v4.0.24
-	Date: 11.03.2020
+	Version: v4.0.25
+	Date: 13.03.2020
 	Written by: farag
 	Thanks to all http://forum.ru-board.com members involved
 	Ask a question on
@@ -311,7 +311,6 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\
 $ShellState = Get-ItemPropertyValue -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name ShellState
 $ShellState[4] = 51
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name ShellState -PropertyType Binary -Value $ShellState -Force
-Stop-Process -Name explorer -Force
 # Hide 3D Objects folder from "This PC" and from Quick access
 # Скрыть папку "Объемные объекты" из "Этот компьютер" и из панели быстрого доступа
 if (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag"))
@@ -2102,6 +2101,7 @@ $UpdateEnvExplorerAPI = @{
 		private static readonly IntPtr HWND_BROADCAST = new IntPtr(0xffff);
 		private const int WM_SETTINGCHANGE = 0x1a;
 		private const int SMTO_ABORTIFHUNG = 0x0002;
+
 		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
 		static extern bool SendNotifyMessage(IntPtr hWnd, uint Msg, IntPtr wParam, string lParam);
 		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
@@ -2111,11 +2111,29 @@ $UpdateEnvExplorerAPI = @{
 		public static void Refresh()
 		{
 			// Update desktop icons
+			// Обновить иконки рабочего стола
 			SHChangeNotify(0x8000000, 0x1000, IntPtr.Zero, IntPtr.Zero);
 			// Update environment variables
+			// Обновить переменные среды
 			SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, IntPtr.Zero, null, SMTO_ABORTIFHUNG, 100, IntPtr.Zero);
 			// Update taskbar
+			// Обновить панель задач
 			SendNotifyMessage(HWND_BROADCAST, WM_SETTINGCHANGE, IntPtr.Zero, "TraySettings");
+		}
+
+		private static readonly IntPtr hWnd = new IntPtr(65535);
+		private const int Msg = 273;
+		// Virtual key ID of the F5 in Explorer
+		// Виртуальный код клавиши F5 в Проводнике
+		private static readonly UIntPtr UIntPtr = new UIntPtr(41504);
+
+		[DllImport("user32.dll", SetLastError=true)]
+		public static extern int PostMessageW(IntPtr hWnd, uint Msg, UIntPtr wParam, IntPtr lParam);
+		public static void PostMessage()
+		{
+			// F5 pressing simulation to refresh the desktop
+			// Симуляция нажатия F5 для обновления рабочего стола
+			PostMessageW(hWnd, Msg, UIntPtr, IntPtr.Zero);
 		}
 "@
 }
@@ -2124,6 +2142,7 @@ if (-not ("WinAPI.UpdateEnvExplorer" -as [type]))
 	Add-Type @UpdateEnvExplorerAPI
 }
 [WinAPI.UpdateEnvExplorer]::Refresh()
+[WinAPI.UpdateEnvExplorer]::PostMessage()
 
 # Errors output
 # Вывод ошибок
