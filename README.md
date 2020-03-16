@@ -8,7 +8,7 @@ Windows 10 Setup Script
 - [Nota bene](#NB)
 - [Usage](#usage)
 - [FAQ](#faq)
-- [Intro](#Intro)
+- [Intro](#intro)
 - [Microsoft Docs](#Microsoft-Docs)
 - [PS](#ps)
  
