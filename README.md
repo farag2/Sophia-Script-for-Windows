@@ -8,10 +8,12 @@ Windows 10 Setup Script
 - [Nota bene](#NB)
 - [Usage](#usage)
 - [FAQ](#faq)
-- [Screenshots](#screenshots)
+- [Intro](#Intro)
 - [Microsoft Docs](#Microsoft-Docs)
 - [PS](#ps)
-  
+ 
+![alt text](https://github.com/mirinsoft/debotnet/blob/master/intro.gif)
+
 ## Overview
 The PowerShell script is a set of tweaks for OS fine-tuning and automating the routine tasks.
 
@@ -63,14 +65,8 @@ Read the code you run carefully. Some functions are presented as an example only
 **Strongly recommended to run the script after fresh installation**. Some of functions can be run also on LTSB/LTSC and on older versions of Windows and PowerShell (not recommended to run on the x86 systems).
 
 ## Screenshots
-- Startmenu
-
-  ![Startmenu](https://github.com/farag2/Windows-10-Setup-Script/blob/master/Screenshots/Startmenu.png)
-
-- Interactive promts
-
-  ![Menu](https://github.com/farag2/Windows-10-Setup-Script/blob/master/Screenshots/read-host.png)
-
+- Intro
+  ![intro](https://github.com/farag2/Windows-10-Setup-Script/raw/master/Screenshots/intro.gif)
 
 ## Microsoft Docs
  - [Release information](https://docs.microsoft.com/en-us/windows/release-information)
