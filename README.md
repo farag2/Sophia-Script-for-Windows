@@ -62,8 +62,7 @@ or
 Read the code you run carefully. Some functions are presented as an example only. You must be aware of the meaning of the functions in the code. **If you're not sure what the script does, do not run it**.
 **Strongly recommended to run the script after fresh installation**. Some of functions can be run also on LTSB/LTSC and on older versions of Windows and PowerShell (not recommended to run on the x86 systems).
 
-## Screenshots
-- Intro
+## Intro
   ![intro](https://github.com/farag2/Windows-10-Setup-Script/raw/master/Screenshots/intro.gif)
 
 ## Microsoft Docs
