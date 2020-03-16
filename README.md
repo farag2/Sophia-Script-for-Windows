@@ -12,8 +12,6 @@ Windows 10 Setup Script
 - [Microsoft Docs](#Microsoft-Docs)
 - [PS](#ps)
  
-![alt text](https://github.com/mirinsoft/debotnet/blob/master/intro.gif)
-
 ## Overview
 The PowerShell script is a set of tweaks for OS fine-tuning and automating the routine tasks.
 
