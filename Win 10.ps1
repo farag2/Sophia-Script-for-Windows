@@ -3,7 +3,7 @@
 	The PowerShell script is a set of tweaks for fine-tuning Windows 10 and automating the routine tasks.
 .DESCRIPTION
 	Supported Windows versions:
-	Windows 10 18362/18363 (1903/1909) x64. Tested on Pro/Enterprise editions.
+	Windows 10 18362/18363 (1903/1909) x64 only. Tested on Pro/Enterprise editions.
 
 	Check whether file is encoded in UTF-8 with BOM.
 	PowerShell must be run with elevated privileges;
@@ -18,8 +18,8 @@
 .EXAMPLE
 	PS C:\WINDOWS\system32> & '.\Win 10.ps1'
 .NOTES
-	Version: v4.0.25
-	Date: 13.03.2020
+	Version: v4.0.26
+	Date: 16.03.2020
 	Written by: farag
 	Thanks to all http://forum.ru-board.com members involved
 	Ask a question on
@@ -78,8 +78,8 @@ if (-not ([IntPtr]::Size -eq 8))
 # Сlear $Error variable
 # Очистка переменной $Error
 $Error.Clear()
-# Checking the file encoding if it runs locally
-# Проверка кодировки файла, если он запускается локально
+# Checking whether the script was saved in UTF-8 with BOM encoding if it runs locally
+# Проверка: был ли скрипт сохранен в кодировке UTF-8 c BOM, если он запускается локально
 if ($PSCommandPath)
 {
 	[System.IO.FileInfo]$script = Get-Item -Path $PSCommandPath
@@ -212,18 +212,9 @@ $tasks = @(
 	"XblGameSaveTask"
 )
 Get-ScheduledTask -TaskName $tasks | Disable-ScheduledTask
-# Do not offer tailored experiences based on the diagnostic data setting
-# Не предлагать персонализированные возможности, основанные на выбранном параметре диагностических данных
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Privacy -Name TailoredExperiencesWithDiagnosticDataEnabled -PropertyType DWord -Value 0 -Force
-# Do not let apps on other devices open and message apps on this device, and vice versa
-# Не разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CDP -Name RomeSdkChannelUserAuthzPolicy -PropertyType DWord -Value 0 -Force
-# Do not allow apps to use advertising ID
-# Не разрешать приложениям использовать идентификатор рекламы
-New-ItemProperty -Path HKLM:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo -Name Enabled -PropertyType DWord -Value 0 -Force
 # Do not use sign-in info to automatically finish setting up device after an update or restart
 # Не использовать данные для входа для автоматического завершения настройки устройства после перезапуска или обновления
-$sid = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq "$env:USERNAME"}).SID
+$SID = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
 if (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$sid"))
 {
 	New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$sid" -Force
@@ -232,6 +223,12 @@ New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlo
 # Do not let websites provide locally relevant content by accessing language list
 # Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков
 New-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name HttpAcceptLanguageOptOut -PropertyType DWord -Value 1 -Force
+# Do not allow apps to use advertising ID
+# Не разрешать приложениям использовать идентификатор рекламы
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo -Name Enabled -PropertyType DWord -Value 0 -Force
+# Do not let apps on other devices open and message apps on this device, and vice versa
+# Не разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CDP -Name RomeSdkChannelUserAuthzPolicy -PropertyType DWord -Value 0 -Force
 # Turn on tip, trick, and suggestions as you use Windows
 # Показывать советы, подсказки и рекомендации при использованию Windows
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338389Enabled -PropertyType DWord -Value 1 -Force
@@ -240,9 +237,22 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDe
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338393Enabled -PropertyType DWord -Value 0 -Force
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-353694Enabled -PropertyType DWord -Value 0 -Force
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-353696Enabled -PropertyType DWord -Value 0 -Force
+# Show me the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested
+# Показывать экран приветствия Windows после обновлений и иногда при входе, чтобы сообщить о новых функциях и предложениях
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-310093Enabled -PropertyType DWord -Value 0 -Force
 # Turn off automatic installing suggested apps
 # Отключить автоматическую установку рекомендованных приложений
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SilentInstalledAppsEnabled -PropertyType DWord -Value 0 -Force
+# Do not suggest ways I can finish setting up my device to get the most out of Windows
+# Не предлагать способы, с помощью которых можно завершить настройку устройства на максимально эффективное использование Windows
+if (-not (Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement))
+{
+	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement -Force
+}
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement -Name ScoobeSystemSettingEnabled -PropertyType DWord -Value 0 -Force
+# Do not offer tailored experiences based on the diagnostic data setting
+# Не предлагать персонализированные возможности, основанные на выбранном параметре диагностических данных
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Privacy -Name TailoredExperiencesWithDiagnosticDataEnabled -PropertyType DWord -Value 0 -Force
 #endregion Privacy & Telemetry
 
 #region UI & Personalization
@@ -269,7 +279,7 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name NavPaneShowAllFolders -PropertyType DWord -Value 0 -Force
 # Do not show Cortana button on taskbar
 # Не показывать кнопку Cortana на панели задач
-IF (-not $RU)
+if (-not $RU)
 {
 	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowCortanaButton -PropertyType DWord -Value 0 -Force
 }
@@ -289,6 +299,7 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\
 # Turn on acrylic taskbar transparency
 # Включить прозрачную панель задач
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name UseOLEDTaskbarTransparency -PropertyType DWord -Value 1 -Force
+New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\Dwm -Name ForceEffectMode -PropertyType DWord -Value 1 -Force
 # Do not show when snapping a window, what can be attached next to it
 # Не показывать при прикреплении окна, что можно прикрепить рядом с ним
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SnapAssist -PropertyType DWord -Value 0 -Force
@@ -343,6 +354,7 @@ $Signature = @{
 	Name = "GetStr"
 	Language = "CSharp"
 	MemberDefinition = @"
+		// https://github.com/Disassembler0/Win10-Initial-Setup-Script/issues/8#issue-227159084
 		[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
 		public static extern IntPtr GetModuleHandle(string lpModuleName);
 		[DllImport("user32.dll", CharSet = CharSet.Auto)]
@@ -360,6 +372,8 @@ if (-not ("WinAPI.GetStr" -as [type]))
 {
 	Add-Type @Signature -Using System.Text
 }
+# Extract the "Unpin from taskbar" string from shell32.dll
+# Извлечь строку "Открепить от панели задач" из shell32.dll
 $unpin = [WinAPI.GetStr]::GetString(5387)
 $apps = (New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
 $apps | Where-Object -FilterScript {$_.Path -like "Microsoft.MicrosoftEdge*"} | ForEach-Object -Process {$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $unpin} | ForEach-Object -Process {$_.DoIt()}}
@@ -405,8 +419,8 @@ do
 		{
 			"L"
 			{
-				# Show color only on taskbar
-				# Отображать цвет элементов только на панели задач
+				# Do not show color only on taskbar
+				# Не отображать цвет элементов только на панели задач
 				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name ColorPrevalence -PropertyType DWord -Value 0 -Force
 				# Light Theme Color for Default Windows Mode
 				# Режим Windows по умолчанию светлый
@@ -550,8 +564,8 @@ $preferences.Preferences[28] = 0
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -PropertyType Binary -Value $preferences.Preferences -Force
 # Remove Microsoft Edge shortcut from the Desktop
 # Удалить ярлык Microsoft Edge с рабочего стола
-$value = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
-Remove-Item -Path "$value\Microsoft Edge.lnk" -Force -ErrorAction Ignore
+$DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
+Remove-Item -Path "$DesktopFolder\Microsoft Edge.lnk" -Force -ErrorAction Ignore
 # Show accent color on the title bars and window borders
 # Отображать цвет элементов в заголовках окон и границ окон
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\DWM -Name ColorPrevalence -PropertyType DWord -Value 1 -Force
@@ -603,19 +617,26 @@ Remove-Item -Path $env:LOCALAPPDATA\Microsoft\OneDrive -Recurse -Force -ErrorAct
 #region System
 # Turn on Storage Sense
 # Включить Память устройства
+if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy))
+{
+	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -ItemType Directory -Force
+}
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01 -PropertyType DWord -Value 1 -Force
-# Run Storage Sense every month
-# Запускать контроль памяти каждый месяц
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 2048 -PropertyType DWord -Value 30 -Force
-# Delete temporary files that apps aren't using
-# Удалять временные файлы, не используемые в приложениях
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 04 -PropertyType DWord -Value 1 -Force
-# Delete files in recycle bin if they have been there for over 30 days
-# Удалять файлы, которые находятся в корзине более 30 дней
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 256 -PropertyType DWord -Value 30 -Force
-# Never delete files in "Downloads" folder
-# Никогда не удалять файлы из папки "Загрузки"
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 512 -PropertyType DWord -Value 0 -Force
+if ((Get-ItemPropertyValue -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01) -eq "1")
+{
+	# Run Storage Sense every month
+	# Запускать контроль памяти каждый месяц
+	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 2048 -PropertyType DWord -Value 30 -Force
+	# Delete temporary files that apps aren't using
+	# Удалять временные файлы, не используемые в приложениях
+	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 04 -PropertyType DWord -Value 1 -Force
+	# Delete files in recycle bin if they have been there for over 30 days
+	# Удалять файлы, которые находятся в корзине более 30 дней
+	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 256 -PropertyType DWord -Value 30 -Force
+	# Never delete files in "Downloads" folder
+	# Никогда не удалять файлы из папки "Загрузки"
+	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 512 -PropertyType DWord -Value 0 -Force
+}
 # Let Windows try to fix apps so they're not blurry
 # Разрешить Windows исправлять размытость в приложениях
 New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name EnablePerProcessSystemDPI -PropertyType DWord -Value 1 -Force
@@ -1396,6 +1417,7 @@ $bytes[0x15] = $bytes[0x15] -bor 0x20
 Set-Content -Path "$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" -Value $bytes -Encoding Byte -Force
 # Show "Explorer" and "Settings" folders on Start menu
 # Отобразить папки "Проводник" и "Параметры" в меню "Пуск"
+# https://github.com/Disassembler0/Win10-Initial-Setup-Script/issues/199
 $items = @("File Explorer", "Settings")
 $startmenu = Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*windows.data.unifiedtile.startglobalproperties\Current"
 $data = $startmenu.Data[0..19] -join ","
@@ -1468,12 +1490,12 @@ until ($Unpin -eq "Y")
 # Hash (SHA256): 6967E7A3C2251812DD6B3FA0265FB7B61AADC568F562A98C50C345908C6E827
 $OutFile = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-$HT = @{
+$param = @{
 	Uri = "https://github.com/farag2/Windows-10-Setup-Script/raw/master/Start%20menu%20layout/syspin.exe"
 	OutFile = "$OutFile\syspin.exe"
 	Verbose = [switch]::Present
 }
-Invoke-WebRequest @HT
+Invoke-WebRequest @param
 # Закрепить на начальном экране ярлыки
 # Pin to Start the shortcuts
 Add-Type -AssemblyName System.Windows.Forms
@@ -1512,10 +1534,10 @@ if ($OpenFileDialog.FileName)
 	# Если ярлык панели управления когда-либо закреплялся
 	if (Test-Path -Path "$env:APPDATA\Microsoft\Windows\Start menu\Programs\$ControlPanelLocalizedName.lnk")
 	{
-		$Args = @"
+		$Arguments = @"
 			"$env:APPDATA\Microsoft\Windows\Start menu\Programs\$ControlPanelLocalizedName.lnk" "51201"
 "@
-		Start-Process -FilePath $OpenFileDialog.FileName -WindowStyle Hidden -ArgumentList $Args -Wait
+		Start-Process -FilePath $OpenFileDialog.FileName -WindowStyle Hidden -ArgumentList $Arguments -Wait
 	}
 	else
 	{
@@ -1529,10 +1551,10 @@ if ($OpenFileDialog.FileName)
 		# The "Pin" verb is not available on the control.exe file so the shortcut has to be created
 		# Закрепить на начальном "Панель управления"
 		# Глагол "Закрепить на начальном экране" недоступен для control.exe, поэтому необходимо создать ярлык
-		$Args = @"
+		$Arguments = @"
 			"$env:SystemRoot\System32\$ControlPanelLocalizedName.lnk" "51201"
 "@
-		Start-Process -FilePath $OpenFileDialog.FileName -WindowStyle Hidden -ArgumentList $Args -Wait
+		Start-Process -FilePath $OpenFileDialog.FileName -WindowStyle Hidden -ArgumentList $Arguments -Wait
 		Remove-Item -Path "$env:SystemRoot\System32\$ControlPanelLocalizedName.lnk" -Force
 	}
 	# Add old style shortcut for "Devices and Printers" to the Start menu
@@ -1546,16 +1568,16 @@ if ($OpenFileDialog.FileName)
 	$shortcut.Save()
 	# Pin to Start Devices and Printers
 	# Закрепить на начальном "Устройства и принтеры"
-	$Args = @"
+	$Arguments = @"
 		"$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesAndPrintersLocalizedName.lnk" "51201"
 "@
-	Start-Process -FilePath $OpenFileDialog.FileName -WindowStyle Hidden -ArgumentList $Args -Wait
+	Start-Process -FilePath $OpenFileDialog.FileName -WindowStyle Hidden -ArgumentList $Arguments -Wait
 	# Pin to Start Command Prompt
 	# Закрепить на начальном "Командная строка"
-	$Args = @"
+	$Arguments = @"
 		"$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" "51201"
 "@
-	Start-Process -FilePath $OpenFileDialog.FileName -WindowStyle Hidden -ArgumentList $Args -Wait
+	Start-Process -FilePath $OpenFileDialog.FileName -WindowStyle Hidden -ArgumentList $Arguments -Wait
 }
 Remove-Item -Path "$OutFile\syspin.exe" -Force -ErrorAction Ignore
 
@@ -1669,6 +1691,9 @@ $ExcludedApps = @(
 $OFS = "|"
 Get-AppxProvisionedPackage -Online | Where-Object -FilterScript {$_.DisplayName -cnotmatch $ExcludedApps} | Remove-AppxProvisionedPackage -Online
 $OFS = " "
+# Check for updates for UWP apps
+# Проверить обновления UWP-приложений
+Get-CimInstance -Namespace "Root\cimv2\mdm\dmmap" -ClassName "MDM_EnterpriseModernAppManagement_AppManagement01" | Invoke-CimMethod -MethodName UpdateScanMethod
 #endregion UWP apps
 
 #region Gaming
@@ -2091,11 +2116,11 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name 
 #endregion Context menu
 
 #region End
-# Refresh desktop icons, environment variables and taskbar without restarting File Explorer
-# Обновить иконки рабочего стола, переменные среды и панель задач без перезапуска "Проводника"
-$UpdateEnvExplorerAPI = @{
+# Refresh desktop icons, environment variables, taskbar and send F5 pressing simulation to refresh the desktop
+# Обновить иконки рабочего стола, переменные среды, панель задач и симулировать нажатие F5 для обновления рабочего стола
+$UpdateExplorer = @{
 	Namespace = "WinAPI"
-	Name = "UpdateEnvExplorer"
+	Name = "UpdateExplorer"
 	Language = "CSharp"
 	MemberDefinition = @"
 		private static readonly IntPtr HWND_BROADCAST = new IntPtr(0xffff);
@@ -2137,23 +2162,44 @@ $UpdateEnvExplorerAPI = @{
 		}
 "@
 }
-if (-not ("WinAPI.UpdateEnvExplorer" -as [type]))
+if (-not ("WinAPI.UpdateExplorer" -as [type]))
 {
-	Add-Type @UpdateEnvExplorerAPI
+	Add-Type @UpdateExplorer
 }
-[WinAPI.UpdateEnvExplorer]::Refresh()
-[WinAPI.UpdateEnvExplorer]::PostMessage()
+[WinAPI.UpdateExplorer]::Refresh()
+[WinAPI.UpdateExplorer]::PostMessage()
+# Restart Start menu
+# Перезапустить меню "Пуск"
+Stop-Process -Name StartMenuExperienceHost -Force
 
 # Errors output
 # Вывод ошибок
 if ($Error)
 {
-	Write-Host "`nWarnings/Errors" -BackgroundColor Red
+	if ($RU)
+	{
+		Write-Host "`nПредупреждения/ошибки" -BackgroundColor Red
+	}
+	else
+	{
+		Write-Host "`nWarnings/errors" -BackgroundColor Red
+	}
 	($Error | ForEach-Object -Process {
 		[PSCustomObject] @{
 			Line = $_.InvocationInfo.ScriptLineNumber
 			Error = $_.Exception.Message
 		}
 	} | Sort-Object -Property Line | Format-Table -AutoSize -Wrap | Out-String).Trim()
+}
+else
+{
+	if ($RU)
+	{
+		Write-Host "`nНет предупреждений/ошибок" -BackgroundColor Green
+	}
+	else
+	{
+		Write-Host "`nNo warnings/errors" -BackgroundColor Green
+	}
 }
 #endregion End
