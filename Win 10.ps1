@@ -18,8 +18,8 @@
 .EXAMPLE
 	PS C:\WINDOWS\system32> & '.\Win 10.ps1'
 .NOTES
-	Version: v4.0.26
-	Date: 16.03.2020
+	Version: v4.0.27
+	Date: 18.03.2020
 	Written by: farag
 	Thanks to all http://forum.ru-board.com members involved
 	Ask a question on
@@ -78,28 +78,6 @@ if (-not ([IntPtr]::Size -eq 8))
 # Сlear $Error variable
 # Очистка переменной $Error
 $Error.Clear()
-# Checking whether the script was saved in UTF-8 with BOM encoding if it runs locally
-# Проверка: был ли скрипт сохранен в кодировке UTF-8 c BOM, если он запускается локально
-if ($PSCommandPath)
-{
-	[System.IO.FileInfo]$script = Get-Item -Path $PSCommandPath
-	$SequenceBOM = New-Object System.Byte[] 3
-	$reader = $script.OpenRead()
-	$bytesRead = $reader.Read($SequenceBOM, 0, 3)
-	$reader.Dispose()
-	if ($bytesRead -eq 3 -and $SequenceBOM[0] -ne 239 -and $SequenceBOM[1] -ne 187 -and $SequenceBOM[2] -ne 191)
-	{
-		if ($RU)
-		{
-			Write-Warning -Message "Файл не был сохранен в кодировке `"UTF-8 с BOM`""
-		}
-		else
-		{
-			Write-Warning -Message "The file wasn't saved in `"UTF-8 with BOM`" encoding"
-		}
-		break
-	}
-}
 # Set the encoding to UTF-8 without BOM for the PowerShell session
 # Установить кодировку UTF-8 без BOM для текущей сессии PowerShell
 if ($RU)
@@ -139,7 +117,7 @@ New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UserDataSvc -Name
 Get-EtwTraceSession -Name DiagLog -ErrorAction Ignore | Remove-EtwTraceSession
 # Turn off the data collectors at the next computer restart
 # Отключить сборщики данных при следующем запуске ПК
-Update-AutologgerConfig -Name DiagLog, AutoLogger-Diagtrack-Listener -Start 0
+Update-AutologgerConfig -Name DiagLog, Diagtrack-Listener -Start 0 -ErrorAction Ignore
 # Set the operating system diagnostic data level
 # Установить уровень отправляемых диагностических сведений
 if ((Get-WindowsEdition -Online).Edition -eq "Enterprise" -or (Get-WindowsEdition -Online).Edition -eq "Education")
@@ -229,6 +207,9 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Advertisi
 # Do not let apps on other devices open and message apps on this device, and vice versa
 # Не разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CDP -Name RomeSdkChannelUserAuthzPolicy -PropertyType DWord -Value 0 -Force
+# Show me the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested
+# Показывать экран приветствия Windows после обновлений и иногда при входе, чтобы сообщить о новых функциях и предложениях
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-310093Enabled -PropertyType DWord -Value 0 -Force
 # Turn on tip, trick, and suggestions as you use Windows
 # Показывать советы, подсказки и рекомендации при использованию Windows
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338389Enabled -PropertyType DWord -Value 1 -Force
@@ -237,9 +218,6 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDe
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338393Enabled -PropertyType DWord -Value 0 -Force
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-353694Enabled -PropertyType DWord -Value 0 -Force
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-353696Enabled -PropertyType DWord -Value 0 -Force
-# Show me the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested
-# Показывать экран приветствия Windows после обновлений и иногда при входе, чтобы сообщить о новых функциях и предложениях
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-310093Enabled -PropertyType DWord -Value 0 -Force
 # Turn off automatic installing suggested apps
 # Отключить автоматическую установку рекомендованных приложений
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SilentInstalledAppsEnabled -PropertyType DWord -Value 0 -Force
@@ -260,7 +238,7 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Privacy -
 # Отобразить "Этот компьютер" на рабочем столе
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel -Name "{20D04FE0-3AEA-1069-A2D8-08002B30309D}" -PropertyType DWord -Value 0 -Force
 # Set File Explorer to open to This PC by default
-# Открывать "Этот компьютер" в Проводнике
+# Открывать "Этот компьютер" в проводнике
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name LaunchTo -PropertyType DWord -Value 1 -Force
 # Show hidden files, folders, and drives
 # Показывать скрытые файлы, папки и диски
@@ -419,18 +397,12 @@ do
 		{
 			"L"
 			{
-				# Do not show color only on taskbar
-				# Не отображать цвет элементов только на панели задач
-				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name ColorPrevalence -PropertyType DWord -Value 0 -Force
 				# Light Theme Color for Default Windows Mode
 				# Режим Windows по умолчанию светлый
 				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -PropertyType DWord -Value 1 -Force
 			}
 			"D"
 			{
-				# Turn on the display of color on Start menu, taskbar, and action center
-				# Отображать цвет элементов в меню "Пуск", на панели задач и в центре уведомлений
-				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name ColorPrevalence -PropertyType DWord -Value 1 -Force
 				# Dark Theme Color for Default Windows Mode
 				# Режим Windows по умолчанию темный
 				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -PropertyType DWord -Value 0 -Force
@@ -591,7 +563,6 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name 
 # Удалить OneDrive
 Stop-Process -Name OneDrive -Force -ErrorAction Ignore
 Start-Process -FilePath "$env:SystemRoot\SysWOW64\OneDriveSetup.exe" -ArgumentList "/uninstall" -Wait
-Stop-Process -Name explorer -Force
 Remove-ItemProperty -Path HKCU:\Environment -Name OneDrive -Force -ErrorAction Ignore
 Remove-Item -Path "$env:ProgramData\Microsoft OneDrive" -Recurse -Force -ErrorAction Ignore
 Unregister-ScheduledTask -TaskName *OneDrive* -Confirm:$false
@@ -610,7 +581,18 @@ else
 		Write-Error -Message "$env:USERPROFILE\OneDrive folder is not empty. Delete it manually" -ErrorAction SilentlyContinue
 	}
 }
-Wait-Process -Name OneDriveSetup -ErrorAction Ignore
+# Save all opened folders in order to restore them after File Explorer restarting
+# Сохранить все открытые папки, чтобы восстановить их после перезапуска проводника
+$OpenedFolders = (New-Object -ComObject "Shell.Application").Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}
+# In order to delete "$env:LOCALAPPDATA\Microsoft\OneDrive" folder the File Explorer process has to be restarted
+# Чтобы удалить папку "$env:LOCALAPPDATA\Microsoft\OneDrive" необходимо перезапустить проводник
+Stop-Process -Name explorer -Force
+# Restore closed folders
+# Восстановить закрытые папки
+if ($OpenedFolders)
+{
+	Invoke-Item -Path $OpenedFolders
+}
 Remove-Item -Path $env:LOCALAPPDATA\Microsoft\OneDrive -Recurse -Force -ErrorAction Ignore
 #endregion OneDrive
 
@@ -1318,7 +1300,7 @@ if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2 -and (G
 	}
 	if (Test-Path -Path "${env:ProgramFiles(x86)}\Steam")
 	{
-		Start-Process -FilePath "${env:ProgramFiles(x86)}\Steam\steamapps\common"
+		Invoke-Item -Path "${env:ProgramFiles(x86)}\Steam\steamapps\common"
 	}
 	function GpuPreference
 	{
@@ -1415,14 +1397,14 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name 
 [byte[]]$bytes = Get-Content -Path "$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" -Encoding Byte -Raw
 $bytes[0x15] = $bytes[0x15] -bor 0x20
 Set-Content -Path "$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" -Value $bytes -Encoding Byte -Force
-# Show "Explorer" and "Settings" folders on Start menu
+# Show the "File Explorer" and "Settings" folders on Start menu
 # Отобразить папки "Проводник" и "Параметры" в меню "Пуск"
 # https://github.com/Disassembler0/Win10-Initial-Setup-Script/issues/199
 $items = @("File Explorer", "Settings")
 $startmenu = Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*windows.data.unifiedtile.startglobalproperties\Current"
 $data = $startmenu.Data[0..19] -join ","
 $data += ",203,50,10,$($items.Length)"
-# Explorer
+# File Explorer
 # Проводник
 $data += ",5,188,201,168,164,1,36,140,172,3,68,137,133,1,102,160,129,186,203,189,215,168,164,130,1,0"
 # Settings
@@ -1611,7 +1593,9 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer 
 
 #region UWP apps
 # Uninstall all UWP apps from all accounts, except the followings...
+# Retrieve UWP apps package names by (Get-AppxPackage -PackageTypeFilter Bundle -AllUsers).Name command
 # Удалить все UWP-приложения из всех учетных записей, кроме следующих...
+# Получите имена пакетов UWP-приложений с помощью команды (Get-AppxPackage -PackageTypeFilter Bundle -AllUsers).Name
 $ExcludedApps = @(
 	# iTunes
 	"AppleInc.iTunes"
@@ -1644,12 +1628,19 @@ $ExcludedApps = @(
 	"NVIDIACorp.NVIDIAControlPanel"
 )
 $OFS = "|"
-Get-AppxPackage -PackageTypeFilter Bundle -AllUsers | Where-Object {$_.Name -cnotmatch $ExcludedApps} | Remove-AppxPackage -AllUsers
+$Packages = (Get-AppxPackage -PackageTypeFilter Bundle -AllUsers).Name | Select-String $ExcludedApps -NotMatch
+foreach ($Package in $Packages)
+{
+	Write-Progress -Activity $Package -PercentComplete ($Packages.IndexOf($Package)/$Packages.Count * 100)
+	Get-AppxPackage -PackageTypeFilter Bundle -AllUsers | Where-Object -FilterScript {$_.Name -cmatch $Package} | Remove-AppxPackage -AllUsers
+}
 $OFS = " "
 # Uninstall all provisioned UWP apps from System account, except the followings...
-# App packages will not be installed when new user accounts are created
+# Apps will not be installed when new user accounts are created
+# Retrieve system UWP apps package names by (Get-AppxProvisionedPackage -Online).DisplayName command
 # Удалить все UWP-приложения из системной учетной записи, кроме следующих...
 # Приложения не будут установлены при создании новых учетных записей
+# Получите имена пакетов системных UWP-приложений с помощью команды (Get-AppxProvisionedPackage -Online).DisplayName command
 $ExcludedApps = @(
 	# Intel UWP-panel
 	# UWP-панель Intel
@@ -1689,9 +1680,14 @@ $ExcludedApps = @(
 	"NVIDIACorp.NVIDIAControlPanel"
 )
 $OFS = "|"
-Get-AppxProvisionedPackage -Online | Where-Object -FilterScript {$_.DisplayName -cnotmatch $ExcludedApps} | Remove-AppxProvisionedPackage -Online
+$Packages = (Get-AppxProvisionedPackage -Online).DisplayName | Select-String $ExcludedApps -NotMatch
+foreach ($Package in $Packages)
+{
+	Write-Progress -Activity $Package -PercentComplete ($Packages.IndexOf($Package)/$Packages.Count * 100)
+	Get-AppxProvisionedPackage -Online | Where-Object -FilterScript {$_.DisplayName -cmatch $Package} | Remove-AppxProvisionedPackage -Online
+}
 $OFS = " "
-# Check for updates for UWP apps
+# Check for UWP apps updates
 # Проверить обновления UWP-приложений
 Get-CimInstance -Namespace "Root\cimv2\mdm\dmmap" -ClassName "MDM_EnterpriseModernAppManagement_AppManagement01" | Invoke-CimMethod -MethodName UpdateScanMethod
 #endregion UWP apps
@@ -2148,8 +2144,8 @@ $UpdateExplorer = @{
 
 		private static readonly IntPtr hWnd = new IntPtr(65535);
 		private const int Msg = 273;
-		// Virtual key ID of the F5 in Explorer
-		// Виртуальный код клавиши F5 в Проводнике
+		// Virtual key ID of the F5 in File Explorer
+		// Виртуальный код клавиши F5 в проводнике
 		private static readonly UIntPtr UIntPtr = new UIntPtr(41504);
 
 		[DllImport("user32.dll", SetLastError=true)]
