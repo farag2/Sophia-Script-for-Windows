@@ -18,8 +18,8 @@
 .EXAMPLE
 	PS C:\WINDOWS\system32> & '.\Win 10.ps1'
 .NOTES
-	Version: v4.0.27
-	Date: 18.03.2020
+	Version: v4.0.28
+	Date: 20.03.2020
 	Written by: farag
 	Thanks to all http://forum.ru-board.com members involved
 	Ask a question on
@@ -237,30 +237,30 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Privacy -
 # Show "This PC" on Desktop
 # Отобразить "Этот компьютер" на рабочем столе
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel -Name "{20D04FE0-3AEA-1069-A2D8-08002B30309D}" -PropertyType DWord -Value 0 -Force
-# Set File Explorer to open to This PC by default
-# Открывать "Этот компьютер" в проводнике
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name LaunchTo -PropertyType DWord -Value 1 -Force
-# Show hidden files, folders, and drives
-# Показывать скрытые файлы, папки и диски
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Hidden -PropertyType DWord -Value 1 -Force
 # Turn off check boxes to select items
 # Отключить флажки для выбора элементов
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name AutoCheckSelect -PropertyType DWord -Value 0 -Force
+# Show hidden files, folders, and drives
+# Показывать скрытые файлы, папки и диски
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Hidden -PropertyType DWord -Value 1 -Force
 # Show file name extensions
 # Показывать расширения для зарегистрированных типов файлов
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -PropertyType DWord -Value 0 -Force
 # Show folder merge conflicts
 # Не скрывать конфликт слияния папок
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideMergeConflicts -PropertyType DWord -Value 0 -Force
+# Set File Explorer to open to This PC by default
+# Открывать "Этот компьютер" в проводнике
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name LaunchTo -PropertyType DWord -Value 1 -Force
 # Do not show all folders in the navigation pane
 # Не отображать все папки в области навигации
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name NavPaneShowAllFolders -PropertyType DWord -Value 0 -Force
 # Do not show Cortana button on taskbar
-# Не показывать кнопку Cortana на панели задач
-if (-not $RU)
-{
-	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowCortanaButton -PropertyType DWord -Value 0 -Force
-}
+# Не показывать кнопку Кортаны на панели задач
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowCortanaButton -PropertyType DWord -Value 0 -Force
+# Do not show sync provider notification
+# Не показывать уведомления поставщика синхронзации
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowSyncProviderNotifications -PropertyType DWord -Value 0 -Force
 # Do not show Task View button on taskbar
 # Не показывать кнопку Просмотра задач
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowTaskViewButton -PropertyType DWord -Value 0 -Force
@@ -541,10 +541,10 @@ Remove-Item -Path "$DesktopFolder\Microsoft Edge.lnk" -Force -ErrorAction Ignore
 # Show accent color on the title bars and window borders
 # Отображать цвет элементов в заголовках окон и границ окон
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\DWM -Name ColorPrevalence -PropertyType DWord -Value 1 -Force
-# Turn off automatically hiding scroll bars
+# Do not automatically hide scroll bars in Windows
 # Отключить автоматическое скрытие полос прокрутки в Windows
 New-ItemProperty -Path "HKCU:\Control Panel\Accessibility" -Name DynamicScrollbars -PropertyType DWord -Value 0 -Force
-# Show more Windows Update restart notifications about restarting
+# Show a nitification when your PC requires a restart to finish updating
 # Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name RestartNotificationsAllowed2 -PropertyType DWord -Value 1 -Force
 # Turn off the "- Shortcut" name extension for new shortcuts
@@ -585,7 +585,7 @@ else
 # Сохранить все открытые папки, чтобы восстановить их после перезапуска проводника
 $OpenedFolders = (New-Object -ComObject "Shell.Application").Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}
 # In order to delete "$env:LOCALAPPDATA\Microsoft\OneDrive" folder the File Explorer process has to be restarted
-# Чтобы удалить папку "$env:LOCALAPPDATA\Microsoft\OneDrive" необходимо перезапустить проводник
+# Чтобы удалить папку "$env:LOCALAPPDATA\Microsoft\OneDrive", необходимо перезапустить процесс проводника
 Stop-Process -Name explorer -Force
 # Restore closed folders
 # Восстановить закрытые папки
@@ -689,9 +689,9 @@ New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVers
 # Do not let Windows manage default printer
 # Не разрешать Windows управлять принтером, используемым по умолчанию
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Windows" -Name LegacyDefaultPrinterMode -PropertyType DWord -Value 1 -Force
-# Turn off Windows features
+# Disable Windows features
 # Отключить компоненты
-$features = @(
+$WindowsOptionalFeatures = @(
 	# Windows Fax and Scan
 	# Факсы и сканирование
 	"FaxServicesClientPackage"
@@ -714,10 +714,10 @@ $features = @(
 	# Клиент рабочих папок
 	"WorkFolders-Client"
 )
-Disable-WindowsOptionalFeature -Online -FeatureName $features -NoRestart
+Disable-WindowsOptionalFeature -Online -FeatureName $WindowsOptionalFeatures -NoRestart
 # Remove Windows capabilities
 # Удалить компоненты
-$IncludedApps = @(
+$Capabilities = @(
 	# Microsoft Quick Assist
 	# Быстрая поддержка (Майкрософт)
 	"App.Support.QuickAssist*"
@@ -729,7 +729,7 @@ $IncludedApps = @(
 	"Media.WindowsMediaPlayer*"
 )
 $OFS = "|"
-Get-WindowsCapability -Online | Where-Object -FilterScript {$_.Name -cmatch $IncludedApps} | Remove-WindowsCapability -Online
+Get-WindowsCapability -Online | Where-Object -FilterScript {$_.Name -cmatch $Capabilities} | Remove-WindowsCapability -Online
 $OFS = " "
 # Turn on updates for other Microsoft products
 # Включить автоматическое обновление для других продуктов Microsoft
@@ -742,7 +742,7 @@ Get-CimInstance -ClassName Win32_ShadowCopy | Remove-CimInstance
 Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications | ForEach-Object -Process {
 	Remove-ItemProperty -Path $_.PsPath -Name * -Force
 }
-$ExcludedApps = @(
+$ExcludedBackgroundApps = @(
 	# Lock App
 	"Microsoft.LockApp*"
 	# Content Delivery Manager
@@ -760,7 +760,7 @@ $ExcludedApps = @(
 	"Microsoft.WindowsStore*"
 )
 $OFS = "|"
-Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications | Where-Object -FilterScript {$_.PSChildName -cnotmatch $ExcludedApps} | ForEach-Object -Process {
+Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications | Where-Object -FilterScript {$_.PSChildName -cnotmatch $ExcludedBackgroundApps} | ForEach-Object -Process {
 	New-ItemProperty -Path $_.PsPath -Name Disabled -PropertyType DWord -Value 1 -Force
 	New-ItemProperty -Path $_.PsPath -Name DisabledByUser -PropertyType DWord -Value 1 -Force
 }
@@ -806,15 +806,15 @@ if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Pro
 {
 	if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled -eq $true)
 	{
-		Enable-WindowsOptionalFeature –FeatureName Containers-DisposableClientVM -All -Online -NoRestart
+		Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart
 	}
 	else
 	{
 		try
 		{
-			if ((Get-CimInstance –ClassName CIM_ComputerSystem).HypervisorPresent -eq $true)
+			if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent -eq $true)
 			{
-				Enable-WindowsOptionalFeature –FeatureName Containers-DisposableClientVM -All -Online -NoRestart
+				Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart
 			}
 		}
 		catch
@@ -948,8 +948,21 @@ do
 			(Get-Item -Path "$DesktopFolder\desktop.ini" -Force).Refresh()
 		}
 		# Save screenshots by pressing Win+PrtScr to the Desktop
-		# Сохранить скриншот по Win+PrtScr на рабочем столе
-		New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{b7bede81-df94-4682-a7d8-57a52620b86f}" -Name RelativePath -PropertyType String -Value $DesktopFolder -Force
+		# Сохранять скриншоты по нажатию Win+PrtScr на рабочем столе
+		$DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
+		Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -Value $DesktopFolder -Force
+		# Save all opened folders in order to restore them after File Explorer restart
+		# Сохранить все открытые папки, чтобы восстановить их после перезапуска проводника
+		$OpenedFolders = (New-Object -ComObject "Shell.Application").Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}
+		# In order for the changes to take effect the File Explorer process has to be restarted
+		# Чтобы изменения вступили в силу, необходимо перезапустить процесс проводника
+		Stop-Process -Name explorer -Force
+		# Restore closed folders
+		# Восстановить закрытые папки
+		if ($OpenedFolders)
+		{
+			Invoke-Item -Path $OpenedFolders
+		}
 	}
 	elseif ([string]::IsNullOrEmpty($drive))
 	{
@@ -1385,19 +1398,22 @@ if ((Get-NetConnectionProfile).NetworkCategory -ne "DomainAuthenticated")
 #endregion System
 
 #region Start menu
-# Do not show recently added apps on Start menu
+# Do not show recently added apps on the Start menu
 # Не показывать недавно добавленные приложения в меню "Пуск"
 if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
 {
 	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Force
 }
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -PropertyType DWord -Value 1 -Force
-# Open shortcut to the Command Prompt from Start menu as Administrator
+# Do not show app suggestions on the Start menu
+# Не показывать рекомендации в меню "Пуск"
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338388Enabled -PropertyType DWord -Value 0 -Force
+# Open shortcut to the Command Prompt from the Start menu as Administrator
 # Запускать ярлык к командной строке в меню "Пуск" от имени Администратора
 [byte[]]$bytes = Get-Content -Path "$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" -Encoding Byte -Raw
 $bytes[0x15] = $bytes[0x15] -bor 0x20
 Set-Content -Path "$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" -Value $bytes -Encoding Byte -Force
-# Show the "File Explorer" and "Settings" folders on Start menu
+# Show the "File Explorer" and "Settings" folders on the Start menu
 # Отобразить папки "Проводник" и "Параметры" в меню "Пуск"
 # https://github.com/Disassembler0/Win10-Initial-Setup-Script/issues/199
 $items = @("File Explorer", "Settings")
@@ -1412,7 +1428,7 @@ $data += ",5,188,201,168,164,1,36,140,172,3,68,137,133,1,102,160,129,186,203,189
 $data += ",5,134,145,204,147,5,36,170,163,1,68,195,132,1,102,159,247,157,177,135,203,209,172,212,1,0"
 $data += ",194,60,1,194,70,1,197,90,1,0"
 New-ItemProperty -Path $startmenu.PSPath -Name Data -PropertyType Binary -Value $data.Split(",") -Force
-# Unpin all Start menu tiles
+# Unpin all the Start menu tiles
 # Открепить все ярлыки от начального экрана
 if ($RU)
 {
@@ -1422,7 +1438,7 @@ if ($RU)
 }
 else
 {
-	Write-Host "`nTo unpin all Start menu tiles type: " -NoNewline
+	Write-Host "`nTo unpin all the Start menu tiles type: " -NoNewline
 	Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
 	Write-Host "`nPress Enter to skip" -NoNewline
 }
@@ -1458,7 +1474,7 @@ do
 					Write-Host "`nInvalid letter." -ForegroundColor Yellow
 					Write-Host "Type the correct letter: " -NoNewline
 					Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-					Write-Host " to unpin all Start menu tiles" -NoNewline
+					Write-Host " to unpin all the Start menu tiles" -NoNewline
 					Write-Host "`nPress Enter to skip" -NoNewline
 				}
 			}
@@ -1466,25 +1482,26 @@ do
 	}
 }
 until ($Unpin -eq "Y")
+# Restart Start menu
+# Перезапустить меню "Пуск"
+Stop-Process -Name StartMenuExperienceHost -Force
+
+# Pin the shortcuts to Start
+# Закрепить ярлыки на начальном экране
 # Download syspin.exe to the "Downloads" folder
 # Скачать syspin.exe в папку "Загрузки"
 # http://www.technosys.net/products/utils/pintotaskbar
-# Hash (SHA256): 6967E7A3C2251812DD6B3FA0265FB7B61AADC568F562A98C50C345908C6E827
-$OutFile = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+# SHA256: 6967E7A3C2251812DD6B3FA0265FB7B61AADC568F562A98C50C345908C6E827
+$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $param = @{
-	Uri = "https://github.com/farag2/Windows-10-Setup-Script/raw/master/Start%20menu%20layout/syspin.exe"
-	OutFile = "$OutFile\syspin.exe"
+	Uri = "https://github.com/farag2/Windows-10-Setup-Script/raw/master/Start%20menu%20pinning/syspin.exe"
+	OutFile = "$DownloadsFolder\syspin.exe"
 	Verbose = [switch]::Present
 }
 Invoke-WebRequest @param
-# Закрепить на начальном экране ярлыки
-# Pin to Start the shortcuts
 Add-Type -AssemblyName System.Windows.Forms
 $OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
-# Initial directory "Downloads"
-# Начальная папка "Загрузки"
-$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 $OpenFileDialog.InitialDirectory = $DownloadsFolder
 if ($RU)
 {
@@ -1496,24 +1513,16 @@ else
 }
 # Focus on open file dialog
 # Перевести фокус на диалог открытия файла
-$tmp = New-Object -TypeName System.Windows.Forms.Form
-$tmp.add_Shown(
-{
-	$tmp.Visible = $false
-	$tmp.Activate()
-	$tmp.TopMost = $true
-	$OpenFileDialog.ShowDialog($tmp)
-	$tmp.Close()
-})
-$tmp.ShowDialog()
+$tmp = New-Object System.Windows.Forms.Form -Property @{TopMost = $true}
+$OpenFileDialog.ShowDialog($tmp)
 if ($OpenFileDialog.FileName)
 {
-	# Add old style shortcut for "Devices and Printers" to the Start menu
-	# Добавить ярлык старого формата для "Устройства и принтеры" в меню Пуск
+	# Pin "Control Panel" to Start
+	# Закрепить "Панель управления" на начальном экране
 	$Items = (New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
 	$ControlPanelLocalizedName = ($Items | Where-Object -FilterScript {$_.Path -eq "Microsoft.Windows.ControlPanel"}).Name
-	# If Control Panel shortcut was ever pinned
-	# Если ярлык панели управления когда-либо закреплялся
+	# Check whether the Control Panel shortcut was ever pinned
+	# Проверка: закреплялся ли когда-нибудь ярлык панели управления
 	if (Test-Path -Path "$env:APPDATA\Microsoft\Windows\Start menu\Programs\$ControlPanelLocalizedName.lnk")
 	{
 		$Arguments = @"
@@ -1523,24 +1532,22 @@ if ($OpenFileDialog.FileName)
 	}
 	else
 	{
+		# The "Pin" verb is not available on the control.exe file so the shortcut has to be created
+		# Глагол "Закрепить на начальном экране" недоступен для control.exe, поэтому необходимо создать ярлык
 		$shell = New-Object -ComObject Wscript.Shell
-		# Place the shortcut in "$env:SystemRoot\System32\$linkname.lnk"
-		# Разместим ярлык в "$env:SystemRoot\System32\$linkname.lnk"
 		$shortcut = $shell.CreateShortcut("$env:SystemRoot\System32\$ControlPanelLocalizedName.lnk")
 		$shortcut.TargetPath = "$env:SystemRoot\System32\control.exe"
 		$shortcut.Save()
-		# Pin to Start Control Panel
-		# The "Pin" verb is not available on the control.exe file so the shortcut has to be created
-		# Закрепить на начальном "Панель управления"
-		# Глагол "Закрепить на начальном экране" недоступен для control.exe, поэтому необходимо создать ярлык
 		$Arguments = @"
 			"$env:SystemRoot\System32\$ControlPanelLocalizedName.lnk" "51201"
 "@
 		Start-Process -FilePath $OpenFileDialog.FileName -WindowStyle Hidden -ArgumentList $Arguments -Wait
 		Remove-Item -Path "$env:SystemRoot\System32\$ControlPanelLocalizedName.lnk" -Force
 	}
-	# Add old style shortcut for "Devices and Printers" to the Start menu
-	# Добавить ярлык старого формата для "Устройства и принтеры" в меню Пуск
+	# Pin "Devices and Printers" to Start
+	# Create old style shortcut for "Devices and Printers" in the Start menu
+	# Закрепить "Устройства и принтеры" на начальном экране
+	# Создать ярлык старого формата для "Устройства и принтеры" в меню "Пуск"
 	$DevicesAndPrintersLocalizedName = (Get-ControlPanelItem | Where-Object -FilterScript {$_.CanonicalName -eq "Microsoft.DevicesAndPrinters"}).Name
 	$shell = New-Object -ComObject Wscript.Shell
 	$shortcut = $shell.CreateShortcut("$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesAndPrintersLocalizedName.lnk")
@@ -1548,25 +1555,24 @@ if ($OpenFileDialog.FileName)
 	$shortcut.Arguments = "printers"
 	$shortCut.IconLocation = "$env:SystemRoot\system32\DeviceCenter.dll"
 	$shortcut.Save()
-	# Pin to Start Devices and Printers
-	# Закрепить на начальном "Устройства и принтеры"
+	# Unless the "Devices and Printers" shortcut won't dispalyed in the Start menu
+	# Иначе ярлык "Устройства и принтеры" не будет отображаться в меню "Пуск"
+	Start-Sleep -Seconds 3
 	$Arguments = @"
 		"$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesAndPrintersLocalizedName.lnk" "51201"
 "@
 	Start-Process -FilePath $OpenFileDialog.FileName -WindowStyle Hidden -ArgumentList $Arguments -Wait
-	# Pin to Start Command Prompt
-	# Закрепить на начальном "Командная строка"
+	# Pin "Command Prompt" to Start
+	# Закрепить "Командную строку" на начальном экране
 	$Arguments = @"
 		"$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" "51201"
 "@
 	Start-Process -FilePath $OpenFileDialog.FileName -WindowStyle Hidden -ArgumentList $Arguments -Wait
 }
-Remove-Item -Path "$OutFile\syspin.exe" -Force -ErrorAction Ignore
-
-# Do not show app suggestions on Start menu
-# Не показывать рекомендации в меню "Пуск"
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338388Enabled -PropertyType DWord -Value 0 -Force
-# Restart Start menu
+# Delete downloaded syspin.exe
+# Удалить скачанный syspin.exe
+Remove-Item -Path "$DownloadsFolder\syspin.exe" -Force
+# Restart the Start menu
 # Перезапустить меню "Пуск"
 Stop-Process -Name StartMenuExperienceHost -Force
 #endregion Start menu
@@ -1593,13 +1599,18 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer 
 
 #region UWP apps
 # Uninstall all UWP apps from all accounts, except the followings...
+# App packages will not be installed when new user accounts are created
 # Retrieve UWP apps package names by (Get-AppxPackage -PackageTypeFilter Bundle -AllUsers).Name command
 # Удалить все UWP-приложения из всех учетных записей, кроме следующих...
+# Приложения не будут установлены при создании новых учетных записей
 # Получите имена пакетов UWP-приложений с помощью команды (Get-AppxPackage -PackageTypeFilter Bundle -AllUsers).Name
-$ExcludedApps = @(
+$ExcludedAppxPackages = @(
+	# AMD Radeon UWP panel
+	# UWP-панель AMD Radeon
+	"AdvancedMicroDevicesInc*"
 	# iTunes
 	"AppleInc.iTunes"
-	# Intel UWP-panel
+	# Intel UWP panel
 	# UWP-панель Intel
 	"AppUp.IntelGraphicsControlPanel"
 	"AppUp.IntelGraphicsExperience"
@@ -1628,64 +1639,13 @@ $ExcludedApps = @(
 	"NVIDIACorp.NVIDIAControlPanel"
 )
 $OFS = "|"
-$Packages = (Get-AppxPackage -PackageTypeFilter Bundle -AllUsers).Name | Select-String $ExcludedApps -NotMatch
-foreach ($Package in $Packages)
+$AppxPackages = (Get-AppxPackage -PackageTypeFilter Bundle -AllUsers).Name | Select-String $ExcludedAppxPackages -NotMatch
+foreach ($AppxPackage in $AppxPackages)
 {
-	Write-Progress -Activity $Package -PercentComplete ($Packages.IndexOf($Package)/$Packages.Count * 100)
-	Get-AppxPackage -PackageTypeFilter Bundle -AllUsers | Where-Object -FilterScript {$_.Name -cmatch $Package} | Remove-AppxPackage -AllUsers
+	Write-Progress -Activity "Uninstalling UWP apps" -Status "Removing $AppxPackage" -PercentComplete ($AppxPackages.IndexOf($AppxPackage)/$AppxPackages.Count * 100)
+	Get-AppxPackage -PackageTypeFilter Bundle -AllUsers | Where-Object -FilterScript {$_.Name -cmatch $AppxPackage} | Remove-AppxPackage -AllUsers
 }
-$OFS = " "
-# Uninstall all provisioned UWP apps from System account, except the followings...
-# Apps will not be installed when new user accounts are created
-# Retrieve system UWP apps package names by (Get-AppxProvisionedPackage -Online).DisplayName command
-# Удалить все UWP-приложения из системной учетной записи, кроме следующих...
-# Приложения не будут установлены при создании новых учетных записей
-# Получите имена пакетов системных UWP-приложений с помощью команды (Get-AppxProvisionedPackage -Online).DisplayName command
-$ExcludedApps = @(
-	# Intel UWP-panel
-	# UWP-панель Intel
-	"AppUp.IntelGraphicsControlPanel"
-	"AppUp.IntelGraphicsExperience"
-	# Microsoft Desktop App Installer
-	"Microsoft.DesktopAppInstaller"
-	# HEIF Image Extensions
-	# Расширения для изображений HEIF
-	"Microsoft.HEIFImageExtension"
-	# Sticky Notes
-	# Записки
-	"Microsoft.MicrosoftStickyNotes"
-	# Screen Sketch
-	# Набросок на фрагменте экрана
-	"Microsoft.ScreenSketch"
-	# Microsoft Store
-	"Microsoft.StorePurchaseApp"
-	"Microsoft.WindowsStore"
-	# VP9 Video Extensions
-	# Расширения для VP9-видео
-	"Microsoft.VP9VideoExtensions"
-	# Web Media Extensions
-	# Расширения для интернет-мультимедиа
-	"Microsoft.WebMediaExtensions"
-	# WebP Image Extension
-	# Расширения для изображений WebP
-	"Microsoft.WebpImageExtension"
-	# Photos and Video Editor
-	# Фотографии и Видеоредактор
-	"Microsoft.Windows.Photos"
-	# Calculator
-	# Калькулятор
-	"Microsoft.WindowsCalculator"
-	# NVIDIA Control Panel
-	# Панель управления NVidia
-	"NVIDIACorp.NVIDIAControlPanel"
-)
-$OFS = "|"
-$Packages = (Get-AppxProvisionedPackage -Online).DisplayName | Select-String $ExcludedApps -NotMatch
-foreach ($Package in $Packages)
-{
-	Write-Progress -Activity $Package -PercentComplete ($Packages.IndexOf($Package)/$Packages.Count * 100)
-	Get-AppxProvisionedPackage -Online | Where-Object -FilterScript {$_.DisplayName -cmatch $Package} | Remove-AppxProvisionedPackage -Online
-}
+Write-Progress -Activity "Uninstalling UWP apps" -Completed
 $OFS = " "
 # Check for UWP apps updates
 # Проверить обновления UWP-приложений
@@ -2013,8 +1973,8 @@ New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings" -
 #endregion Windows Defender & Security
 
 #region Context menu
-# Add "Extract" to MSI file type context menu
-# Добавить пункт "Extract" для MSI в контекстное меню
+# Add "Extract" to the .msi context menu
+# Добавить пункт "Extract" для .msi в контекстное меню
 if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract\Command))
 {
 	New-Item -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract\Command -Force
@@ -2023,14 +1983,14 @@ $Value = "{0}" -f 'msiexec.exe /a "%1" /qb TARGETDIR="%1 extracted"'
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract\Command -Name "(default)" -PropertyType String -Value $Value -Force
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract -Name MUIVerb -PropertyType String -Value "@shell32.dll,-31382" -Force
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract -Name Icon -PropertyType String -Value "shell32.dll,-16817" -Force
-# Add "Run as different user" from context menu for .exe file type
+# Add "Run as different user" to the context menu for the .exe file type
 # Добавить "Запуск от имени другого пользователя" в контекстное меню для .exe файлов
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name "(default)" -PropertyType String -Value "@shell32.dll,-50944" -Force
 Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name Extended -Force -ErrorAction Ignore
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name SuppressionPolicyEx -PropertyType String -Value "{F211AA05-D4DF-4370-A2A0-9F19C09756A7}" -Force
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser\command -Name DelegateExecute -PropertyType String -Value "{ea72d00e-4960-42fa-ba92-7792a7944c1d}" -Force
-# Add "Install" to .cab archive type context menu
-# Добавить пункт "Установить" для .cab архивов в контекстное меню
+# Add "Install" to the .cab archives context menu
+# Добавить пункт "Установить" в контекстное меню .cab архивов
 if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command))
 {
 	New-Item -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command -Force
@@ -2039,31 +1999,31 @@ $Value = "{0}" -f 'cmd /c DISM /Online /Add-Package /PackagePath:"%1" /NoRestart
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command -Name "(default)" -PropertyType String -Value $Value -Force
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs -Name MUIVerb -PropertyType String -Value "@shell32.dll,-10210" -Force
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs -Name HasLUAShield -PropertyType String -Value "" -Force
-# Remove "Cast to Device" from context menu
+# Remove "Cast to Device" from the context menu
 # Удалить пункт "Передать на устройство" из контекстного меню
 if (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"))
 {
 	New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Force
 }
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{7AD84985-87B4-4a16-BE58-8B72A5B390F7}" -PropertyType String -Value "Play to menu" -Force
-# Remove "Share" from context menu
+# Remove "Share" from the context menu
 # Удалить пункт "Отправить" (поделиться) из контекстного меню
 if (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"))
 {
 	New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Force
 }
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}" -PropertyType String -Value "" -Force
-# Remove "Edit with Paint 3D" from context menu
+# Remove "Edit with Paint 3D" from the context menu
 # Удалить пункт "Изменить с помощью Paint 3D" из контекстного меню
 $exts = @(".bmp", ".gif", ".jpe", ".jpeg", ".jpg", ".png", ".tif", ".tiff")
 foreach ($ext in $exts)
 {
 	New-ItemProperty -Path "Registry::HKEY_CLASSES_ROOT\SystemFileAssociations\$ext\Shell\3D Edit" -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
 }
-# Remove "Include in Library" from context menu
+# Remove "Include in Library" from the context menu
 # Удалить пункт "Добавить в библиотеку" из контекстного меню
 New-ItemProperty -Path "Registry::HKEY_CLASSES_ROOT\Folder\shellex\ContextMenuHandlers\Library Location" -Name "(default)" -PropertyType String -Value "-{3dad6c5d-2167-4cae-9914-f99e41c12cfa}" -Force
-# Remove "Turn on BitLocker" from context menu
+# Remove "Turn on BitLocker" from the context menu
 # Удалить пункт "Включить BitLocker" из контекстного меню
 if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Professional" -or $_.Edition -eq "Enterprise"})
 {
@@ -2074,16 +2034,19 @@ if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Pro
 	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\resume-bde-elev -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
 	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\unlock-bde -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
 }
-# Remove "Edit with Photos" from context menu
+# Remove "Edit with Photos" from the context menu
 # Удалить пункт "Изменить с помощью приложения "Фотографии"" из контекстного меню
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppX43hnxtbyyps62jhe9sqpdzxn1790zetc\Shell\ShellEdit -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
-# Remove "Create a new video" from context menu
+# Remove "Create a new video" from the context menu
 # Удалить пункт "Создать новое видео" из контекстного меню
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppX43hnxtbyyps62jhe9sqpdzxn1790zetc\Shell\ShellCreateVideo -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
-# Remove "Edit" from images context menu
+# Remove "Bitmap image" from the context menu
+# Удалить пункт "Создать Точечный рисунок" из контекстного меню
+Remove-Item -Path Registry::HKEY_CLASSES_ROOT\.bmp\ShellNew -Force -ErrorAction Ignore
+# Remove "Edit" from the images context menu
 # Удалить пункт "Изменить" из контекстного меню изображений
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\SystemFileAssociations\image\shell\edit -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
-# Remove "Print" from batch and .cmd files context menu
+# Remove "Print" from the .bat and .cmd context menu
 # Удалить пункт "Печать" из контекстного меню для .bat и .cmd файлов
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\batfile\shell\print -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\cmdfile\shell\print -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
@@ -2093,13 +2056,10 @@ Remove-Item -Path Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder\ShellNew -Fo
 # Remove "Rich Text Document" from context menu
 # Удалить пункт "Создать Документ в формате RTF" из контекстного меню
 Remove-Item -Path Registry::HKEY_CLASSES_ROOT\.rtf\ShellNew -Force -ErrorAction Ignore
-# Remove "Bitmap image" from context menu
-# Удалить пункт "Создать Точечный рисунок" из контекстного меню
-Remove-Item -Path Registry::HKEY_CLASSES_ROOT\.bmp\ShellNew -Force -ErrorAction Ignore
-# Remove "Send to" from folder context menu
+# Remove "Send to" from the folder context menu
 # Удалить пункт "Отправить" из контекстного меню папки
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AllFilesystemObjects\shellex\ContextMenuHandlers\SendTo -Name "(default)" -PropertyType String -Value "" -Force
-# Make the "Open", "Print", "Edit" context menu items available, when more than 15 selected
+# Make the "Open", "Print", "Edit" context menu items available, when more than 15 items selected
 # Сделать доступными элементы контекстного меню "Открыть", "Изменить" и "Печать" при выделении более 15 элементов
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name MultipleInvokePromptMinimum -PropertyType DWord -Value 300 -Force
 # Turn off "Look for an app in the Microsoft Store" in "Open with" dialog
@@ -2164,7 +2124,7 @@ if (-not ("WinAPI.UpdateExplorer" -as [type]))
 }
 [WinAPI.UpdateExplorer]::Refresh()
 [WinAPI.UpdateExplorer]::PostMessage()
-# Restart Start menu
+# Restart the Start menu
 # Перезапустить меню "Пуск"
 Stop-Process -Name StartMenuExperienceHost -Force
 
