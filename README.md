@@ -25,7 +25,6 @@ The PowerShell script is a set of tweaks for OS fine-tuning and automating the r
 - Turn off diagnostics tracking services;
 - Turn off diagnostics tracking scheduled tasks;
 - Interactive prompts
-  - [Screenshot](#screenshots)
 - Multilingual support: English & Russian
 - Uninstall all UWP apps from all accounts with exception apps list;
 - Turn off Windows features;
@@ -38,7 +37,7 @@ The PowerShell script is a set of tweaks for OS fine-tuning and automating the r
   - [Download](https://github.com/farag2/Windows-10-Setup-Script/raw/master/Start%20menu%20layout/syspin.exe) syspin.exe 
   - App [site](http://www.technosys.net/products/utils/pintotaskbar)
   - Hash (SHA256): 6967E7A3C2251812DD6B3FA0265FB7B61AADC568F562A98C50C345908C6E827
-  - [Screenshot](#screenshots)
+  - [Screenshot](#intro)
 - Unpin all Start menu tiles;
 - Set location of the "Desktop", "Documents", "Downloads", "Music", "Pictures", and "Videos";
 - Refresh desktop icons, environment variables and taskbar without restarting File Explorer;
