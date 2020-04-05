@@ -18,8 +18,8 @@
 .EXAMPLE
 	PS C:\WINDOWS\system32> & '.\Win 10.ps1'
 .NOTES
-	Version: v4.0.28
-	Date: 20.03.2020
+	Version: v4.0.29
+	Date: 05.04.2020
 	Written by: farag
 	Thanks to all http://forum.ru-board.com members involved
 	Ask a question on
@@ -166,8 +166,6 @@ $tasks = @(
 	# Protects user files from accidental loss by copying them to a backup location when the system is unattended
 	# Защищает файлы пользователя от случайной потери за счет их копирования в резервное расположение, когда система находится в автоматическом режиме
 	"File History (maintenance mode)"
-	# HelloFace
-	"FODCleanupTask"
 	# Measures a system's performance and capabilities
 	# Измеряет быстродействие и возможности системы
 	"WinSAT"
@@ -189,6 +187,13 @@ $tasks = @(
 	# XblGameSave Standby Task
 	"XblGameSaveTask"
 )
+# If device is not a laptop
+# Если устройство не является ноутбуком
+if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2)
+{
+	# HelloFace
+	$tasks += "FODCleanupTask"
+}
 Get-ScheduledTask -TaskName $tasks | Disable-ScheduledTask
 # Do not use sign-in info to automatically finish setting up device after an update or restart
 # Не использовать данные для входа для автоматического завершения настройки устройства после перезапуска или обновления
@@ -203,6 +208,10 @@ New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlo
 New-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name HttpAcceptLanguageOptOut -PropertyType DWord -Value 1 -Force
 # Do not allow apps to use advertising ID
 # Не разрешать приложениям использовать идентификатор рекламы
+if (-not (Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo))
+{
+	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo -Force
+}
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo -Name Enabled -PropertyType DWord -Value 0 -Force
 # Do not let apps on other devices open and message apps on this device, and vice versa
 # Не разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот
@@ -561,39 +570,174 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name 
 #region OneDrive
 # Uninstall OneDrive
 # Удалить OneDrive
-Stop-Process -Name OneDrive -Force -ErrorAction Ignore
-Start-Process -FilePath "$env:SystemRoot\SysWOW64\OneDriveSetup.exe" -ArgumentList "/uninstall" -Wait
-Remove-ItemProperty -Path HKCU:\Environment -Name OneDrive -Force -ErrorAction Ignore
-Remove-Item -Path "$env:ProgramData\Microsoft OneDrive" -Recurse -Force -ErrorAction Ignore
-Unregister-ScheduledTask -TaskName *OneDrive* -Confirm:$false
-if ((Get-ChildItem -Path $env:USERPROFILE\OneDrive -ErrorAction Ignore | Measure-Object).Count -eq 0)
+if (Test-Path -Path HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\OneDriveSetup.exe)
 {
-	Remove-Item -Path $env:USERPROFILE\OneDrive -Recurse -Force -ErrorAction Ignore
-}
-else
-{
+	# OnedDrive installed for all users
+	# OneDrive установлен для всех пользователей
 	if ($RU)
 	{
-		Write-Error -Message "Папка $env:USERPROFILE\OneDrive не пуста. Удалите ее вручную" -ErrorAction SilentlyContinue
+		Write-Verbose -Message "Удаление OneDrive" -Verbose
 	}
 	else
 	{
-		Write-Error -Message "$env:USERPROFILE\OneDrive folder is not empty. Delete it manually" -ErrorAction SilentlyContinue
+		Write-Verbose -Message "Uninstalling OneDrive" -Verbose
 	}
+	Stop-Process -Name OneDrive -Force -ErrorAction Ignore
+	# Save all opened folders in order to restore them after File Explorer restarting
+	# Сохранить все открытые папки, чтобы восстановить их после перезапуска проводника
+	Clear-Variable -Name OpenedFolders -Force -ErrorAction Ignore
+	$OpenedFolders = {(New-Object -ComObject "Shell.Application").Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
+	$OneDriveSetup = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\OneDriveSetup.exe" -Name UninstallString
+	$OneDriveSetup = $OneDriveSetup.Replace("/uninstall","").Replace("/allusers","").Trim()
+	$Arguments = @"
+		"/uninstall" "/allusers"
+"@
+	Start-Process -FilePath $OneDriveSetup -ArgumentList $Arguments -Wait
+	if ($RU)
+	{
+		Write-Verbose -Message "Проверка: заблокирована ли библиотека FileSyncShell64.dll процессом проводника" -Verbose
+	}
+	else
+	{
+		Write-Verbose -Message "Checking whether the FileSyncShell64.dll library is locked by File Explorer process" -Verbose
+	}
+	Stop-Process -Name FileCoAuth -Force -ErrorAction Ignore
+	# In order to delete OneDrive folder the File Explorer process has to be restarted
+	# Чтобы удалить папку OneDrive, необходимо перезапустить процесс проводника
+	Stop-Process -Name explorer -Force
+	# Waiting for the FileSyncShell64.dll library to be unloaded
+	# Ожидаем, пока библиотека FileSyncShell64.dll будет выгружена
+	$FileSyncShell64dllFolder = Get-ChildItem -Path "${env:ProgramFiles(x86)}\Microsoft OneDrive\*\amd64\FileSyncShell64.dll" -Recurse -Force
+	foreach ($FileSyncShell64dll in $FileSyncShell64dllFolder)
+	{
+		do
+		{
+			try
+			{
+				$FileStream = [System.IO.File]::Open($FileSyncShell64dll.FullName,"Open","Write")
+				$FileStream.Close()
+				$FileStream.Dispose()
+				$Locked = $false
+			}
+			catch [System.UnauthorizedAccessException]
+			{
+				$Locked = $true
+			}
+			catch [Exception]
+			{
+				$Locked = $true
+				Start-Sleep -Milliseconds 500
+			}
+		}
+		while ($Locked)
+	}
+	# After the FileSyncShell64.dll is now unloaded, folder can be removed
+	# После того, как FileSyncShell64.dll выгружен, папка может быть удалена
+	Remove-Item -Path "${env:ProgramFiles(x86)}\Microsoft OneDrive" -Recurse -Force
+	$OneDriveSetup = $true
 }
-# Save all opened folders in order to restore them after File Explorer restarting
-# Сохранить все открытые папки, чтобы восстановить их после перезапуска проводника
-$OpenedFolders = (New-Object -ComObject "Shell.Application").Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}
-# In order to delete "$env:LOCALAPPDATA\Microsoft\OneDrive" folder the File Explorer process has to be restarted
-# Чтобы удалить папку "$env:LOCALAPPDATA\Microsoft\OneDrive", необходимо перезапустить процесс проводника
-Stop-Process -Name explorer -Force
-# Restore closed folders
-# Восстановить закрытые папки
-if ($OpenedFolders)
+if (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\OneDriveSetup.exe)
 {
-	Invoke-Item -Path $OpenedFolders
+	# OnedDrive installed for a user
+	# OneDrive установлен для одного пользователя
+	if ($RU)
+	{
+		Write-Verbose -Message "Удаление OneDrive" -Verbose
+	}
+	else
+	{
+		Write-Verbose -Message "Uninstalling OneDrive" -Verbose
+	}
+	Stop-Process -Name OneDrive -Force -ErrorAction Ignore
+	# Save all opened folders in order to restore them after File Explorer restarting
+	# Сохранить все открытые папки, чтобы восстановить их после перезапуска проводника
+	Clear-Variable -Name OpenedFolders -Force -ErrorAction Ignore
+	$OpenedFolders = {(New-Object -ComObject "Shell.Application").Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
+	$OneDriveSetup = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\OneDriveSetup.exe" -Name UninstallString
+	$OneDriveSetup = $OneDriveSetup.Replace("/uninstall","").Trim()
+	$Arguments = @"
+		"/uninstall"
+"@
+	Start-Process -FilePath $OneDriveSetup -ArgumentList $Arguments -Wait
+	if ($RU)
+	{
+		Write-Verbose -Message "Проверка: заблокирована ли библиотека FileSyncShell64.dll процессом проводника" -Verbose
+	}
+	else
+	{
+		Write-Verbose -Message "Checking whether the FileSyncShell64.dll library is locked by File Explorer process" -Verbose
+	}
+	Stop-Process -Name FileCoAuth -Force -ErrorAction Ignore
+	# In order to delete OneDrive folder the File Explorer process has to be restarted to unload FileSyncShell64.dll
+	# Чтобы удалить папку OneDrive, необходимо перезапустить процесс проводника, чтобы выгрузить FileSyncShell64.dll
+	Stop-Process -Name explorer -Force
+	# Waiting for the FileSyncShell64.dll library to be unloaded
+	# Ожидаем, пока библиотека FileSyncShell64.dll будет выгружена
+	$FileSyncShell64dllFolder = Get-ChildItem -Path "$env:LOCALAPPDATA\Microsoft\OneDrive\*\amd64\FileSyncShell64.dll" -Recurse -Force
+	foreach ($FileSyncShell64dll in $FileSyncShell64dllFolder)
+	{
+		do
+		{
+			try
+			{
+				$FileStream = [System.IO.File]::Open($FileSyncShell64dll.FullName,"Open","Write")
+				$FileStream.Close()
+				$FileStream.Dispose()
+				$Locked = $false
+			}
+			catch [System.UnauthorizedAccessException]
+			{
+				$Locked = $true
+			}
+			catch [Exception]
+			{
+				$Locked = $true
+				Start-Sleep -Milliseconds 500
+			}
+		}
+		while ($Locked)
+	}
+	# After the FileSyncShell64.dll is now unloaded, folder can be removed
+	# После того, как FileSyncShell64.dll выгружен, папка может быть удалена удалена
+	Remove-Item -Path "$env:LOCALAPPDATA\Microsoft\OneDrive" -Recurse -Force
+	$OneDriveSetup = $true
 }
-Remove-Item -Path $env:LOCALAPPDATA\Microsoft\OneDrive -Recurse -Force -ErrorAction Ignore
+if ($OneDriveSetup)
+{
+	# Restore closed folders
+	# Восстановить закрытые папки
+	foreach ($OpenedFolder in $OpenedFolders)
+	{
+		if (Test-Path -Path $OpenedFolder)
+		{
+			Invoke-Item -Path $OpenedFolder
+		}
+	}
+	$OneDriveFolder = Get-ItemPropertyValue -Path HKCU:\Environment -Name OneDrive
+	if ((Get-ChildItem -Path $OneDriveFolder | Measure-Object).Count -eq 0)
+	{
+		Remove-Item -Path $OneDriveFolder -Recurse -Force
+	}
+	else
+	{
+		if ($RU)
+		{
+			Write-Error -Message "Папка $OneDriveFolder не пуста. Удалите ее вручную" -ErrorAction SilentlyContinue
+		}
+		else
+		{
+			Write-Error -Message "$OneDriveFolder folder is not empty. Delete it manually" -ErrorAction SilentlyContinue
+		}
+		Invoke-Item -Path $OneDriveFolder
+	}
+	Remove-ItemProperty -Path HKCU:\Environment -Name OneDrive, OneDriveConsumer -Force -ErrorAction Ignore
+	Remove-Item -Path HKCU:\Software\Microsoft\OneDrive -Recurse -Force -ErrorAction Ignore
+	Remove-Item -Path HKLM:\SOFTWARE\WOW6432Node\Microsoft\OneDrive -Recurse -Force -ErrorAction Ignore
+	Remove-Item -Path "$env:ProgramData\Microsoft OneDrive" -Recurse -Force -ErrorAction Ignore
+	Remove-Item -Path $env:LOCALAPPDATA\OneDrive -Recurse -Force -ErrorAction Ignore
+	Remove-Item -Path $env:LOCALAPPDATA\Microsoft\OneDrive -Recurse -Force -ErrorAction Ignore
+	Unregister-ScheduledTask -TaskName *OneDrive* -Confirm:$false
+}
 #endregion OneDrive
 
 #region System
@@ -721,13 +865,18 @@ $Capabilities = @(
 	# Microsoft Quick Assist
 	# Быстрая поддержка (Майкрософт)
 	"App.Support.QuickAssist*"
-	# Windows Hello Face
-	# Распознавание лиц Windows Hello
-	"Hello.Face*"
 	# Windows Media Player
 	# Проигрыватель Windows Media
 	"Media.WindowsMediaPlayer*"
 )
+# If device is not a laptop
+# Если устройство не является ноутбуком
+if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2)
+{
+	# Windows Hello Face
+	# Распознавание лиц Windows Hello
+	$Capabilities += "Hello.Face*"
+}
 $OFS = "|"
 Get-WindowsCapability -Online | Where-Object -FilterScript {$_.Name -cmatch $Capabilities} | Remove-WindowsCapability -Online
 $OFS = " "
@@ -786,9 +935,9 @@ else
 # Использовать последнюю установленную версию .NET для всех приложений
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\.NETFramework -Name OnlyUseLatestCLR -PropertyType DWord -Value 1 -Force
 New-ItemProperty -Path HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework -Name OnlyUseLatestCLR -PropertyType DWord -Value 1 -Force
-# Do not allow the computer to turn off the network adapters to save power
-# Запретить отключение сетевых адаптеров для экономии энергии
-if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -eq 1)
+# Do not allow the computer (if device is not a laptop) to turn off the network adapters to save power
+# Запретить отключение сетевых адаптеров для экономии энергии (если устройство не является ноутбуком)
+if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2)
 {
 	$adapters = Get-NetAdapter -Physical | Get-NetAdapterPowerManagement | Where-Object -FilterScript {$_.AllowComputerToTurnOffDevice -ne "Unsupported"}
 	foreach ($adapter in $adapters)
@@ -804,6 +953,8 @@ Set-WinDefaultInputMethodOverride "0409:00000409"
 # Включить Windows Sandbox
 if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Professional" -or $_.Edition -eq "Enterprise"})
 {
+	# Checking whether x86 virtualization is enabled in BIOS
+	# Проверка: включена ли в BIOS аппаратная виртуализация x86
 	if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled -eq $true)
 	{
 		Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart
@@ -812,14 +963,16 @@ if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Pro
 	{
 		try
 		{
+			# Checking whether Hyper-V is enabled
+			# Проверка: включен ли Hyper-V
 			if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent -eq $true)
 			{
 				Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart
 			}
 		}
-		catch
+		catch [Exception]
 		{
-			Write-Error "Enable Virtualization in BIOS"
+			Write-Error -Message "Enable Virtualization in BIOS" -ErrorAction SilentlyContinue
 		}
 	}
 }
@@ -950,18 +1103,22 @@ do
 		# Save screenshots by pressing Win+PrtScr to the Desktop
 		# Сохранять скриншоты по нажатию Win+PrtScr на рабочем столе
 		$DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
-		Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -Value $DesktopFolder -Force
+		Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -Type ExpandString -Value $DesktopFolder -Force
 		# Save all opened folders in order to restore them after File Explorer restart
 		# Сохранить все открытые папки, чтобы восстановить их после перезапуска проводника
-		$OpenedFolders = (New-Object -ComObject "Shell.Application").Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}
+		Clear-Variable -Name OpenedFolders -Force -ErrorAction Ignore
+		$OpenedFolders = {(New-Object -ComObject "Shell.Application").Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
 		# In order for the changes to take effect the File Explorer process has to be restarted
 		# Чтобы изменения вступили в силу, необходимо перезапустить процесс проводника
 		Stop-Process -Name explorer -Force
 		# Restore closed folders
 		# Восстановить закрытые папки
-		if ($OpenedFolders)
+		foreach ($OpenedFolder in $OpenedFolders)
 		{
-			Invoke-Item -Path $OpenedFolders
+			if (Test-Path -Path $OpenedFolder)
+			{
+				Invoke-Item -Path $OpenedFolder
+			}
 		}
 	}
 	elseif ([string]::IsNullOrEmpty($drive))
@@ -1294,7 +1451,7 @@ if (-not (Test-Path -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation))
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation -Name UserPreference -PropertyType DWord -Value 3 -Force
 # Set "High performance" in graphics performance preference for apps
 # Установить параметры производительности графики для отдельных приложений на "Высокая производительность"
-if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2 -and (Get-CimInstance -ClassName Win32_VideoController | Where-Object -FilterScript {$_.AdapterDACType -ne "Internal" -and $null -ne $_.AdapterDACType}))
+if (Get-CimInstance -ClassName Win32_VideoController | Where-Object -FilterScript {$_.AdapterDACType -ne "Internal" -and $null -ne $_.AdapterDACType})
 {
 	if ($RU)
 	{
@@ -1323,6 +1480,10 @@ if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2 -and (G
 			[Parameter(Mandatory = $True)]
 			[string[]]$apps
 		)
+		if (-not (Test-Path -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences))
+		{
+			New-Item -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Force
+		}
 		$apps = $apps.Replace("`"", "").Split(",").Trim()
 		foreach ($app in $apps)
 		{
@@ -1398,7 +1559,7 @@ if ((Get-NetConnectionProfile).NetworkCategory -ne "DomainAuthenticated")
 #endregion System
 
 #region Start menu
-# Do not show recently added apps on the Start menu
+# Do not show recently added apps on the Start menu for all users
 # Не показывать недавно добавленные приложения в меню "Пуск"
 if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
 {
@@ -1413,21 +1574,21 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDe
 [byte[]]$bytes = Get-Content -Path "$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" -Encoding Byte -Raw
 $bytes[0x15] = $bytes[0x15] -bor 0x20
 Set-Content -Path "$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" -Value $bytes -Encoding Byte -Force
-# Show the "File Explorer" and "Settings" folders on the Start menu
+# Show the "File Explorer" and "Settings" folders on Start
 # Отобразить папки "Проводник" и "Параметры" в меню "Пуск"
 # https://github.com/Disassembler0/Win10-Initial-Setup-Script/issues/199
-$items = @("File Explorer", "Settings")
-$startmenu = Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*windows.data.unifiedtile.startglobalproperties\Current"
-$data = $startmenu.Data[0..19] -join ","
-$data += ",203,50,10,$($items.Length)"
+$Folders = @("File Explorer", "Settings")
+$StartMenu = Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*windows.data.unifiedtile.startglobalproperties\Current"
+$Data = $StartMenu.Data[0..19] -join ","
+$Data += ",203,50,10,$($Folders.Length)"
 # File Explorer
 # Проводник
-$data += ",5,188,201,168,164,1,36,140,172,3,68,137,133,1,102,160,129,186,203,189,215,168,164,130,1,0"
+$Data += ",5,188,201,168,164,1,36,140,172,3,68,137,133,1,102,160,129,186,203,189,215,168,164,130,1,0"
 # Settings
 # Параметры
-$data += ",5,134,145,204,147,5,36,170,163,1,68,195,132,1,102,159,247,157,177,135,203,209,172,212,1,0"
-$data += ",194,60,1,194,70,1,197,90,1,0"
-New-ItemProperty -Path $startmenu.PSPath -Name Data -PropertyType Binary -Value $data.Split(",") -Force
+$Data += ",5,134,145,204,147,5,36,170,163,1,68,195,132,1,102,159,247,157,177,135,203,209,172,212,1,0"
+$Data += ",194,60,1,194,70,1,197,90,1,0"
+New-ItemProperty -Path $StartMenu.PSPath -Name Data -PropertyType Binary -Value $Data.Split(",") -Force
 # Unpin all the Start menu tiles
 # Открепить все ярлыки от начального экрана
 if ($RU)
@@ -1521,6 +1682,14 @@ if ($OpenFileDialog.FileName)
 	# Закрепить "Панель управления" на начальном экране
 	$Items = (New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
 	$ControlPanelLocalizedName = ($Items | Where-Object -FilterScript {$_.Path -eq "Microsoft.Windows.ControlPanel"}).Name
+	if ($RU)
+	{
+		Write-Verbose -Message "Ярлык `"$ControlPanelLocalizedName`" закрепляется на начальном экране" -Verbose
+	}
+	else
+	{
+		Write-Verbose -Message "`"$ControlPanelLocalizedName`" shortcut is being pinned to Start" -Verbose
+	}
 	# Check whether the Control Panel shortcut was ever pinned
 	# Проверка: закреплялся ли когда-нибудь ярлык панели управления
 	if (Test-Path -Path "$env:APPDATA\Microsoft\Windows\Start menu\Programs\$ControlPanelLocalizedName.lnk")
@@ -1545,18 +1714,26 @@ if ($OpenFileDialog.FileName)
 		Remove-Item -Path "$env:SystemRoot\System32\$ControlPanelLocalizedName.lnk" -Force
 	}
 	# Pin "Devices and Printers" to Start
-	# Create old style shortcut for "Devices and Printers" in the Start menu
+	# Create old style shortcut for the "Devices and Printers" in the Start menu
 	# Закрепить "Устройства и принтеры" на начальном экране
 	# Создать ярлык старого формата для "Устройства и принтеры" в меню "Пуск"
 	$DevicesAndPrintersLocalizedName = (Get-ControlPanelItem | Where-Object -FilterScript {$_.CanonicalName -eq "Microsoft.DevicesAndPrinters"}).Name
+	if ($RU)
+	{
+		Write-Verbose -Message "Ярлык `"$DevicesAndPrintersLocalizedName`" закрепляется на начальном экране" -Verbose
+	}
+	else
+	{
+		Write-Verbose -Message "`"$DevicesAndPrintersLocalizedName`" shortcut is being pinned to Start" -Verbose
+	}
 	$shell = New-Object -ComObject Wscript.Shell
 	$shortcut = $shell.CreateShortcut("$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesAndPrintersLocalizedName.lnk")
 	$shortcut.TargetPath = "control"
 	$shortcut.Arguments = "printers"
 	$shortCut.IconLocation = "$env:SystemRoot\system32\DeviceCenter.dll"
 	$shortcut.Save()
-	# Unless the "Devices and Printers" shortcut won't dispalyed in the Start menu
-	# Иначе ярлык "Устройства и принтеры" не будет отображаться в меню "Пуск"
+	# Pause for 3 sec, unless the "Devices and Printers" shortcut won't displayed in the Start menu
+	# Пауза на 3 с, иначе ярлык "Устройства и принтеры" не будет отображаться в меню "Пуск"
 	Start-Sleep -Seconds 3
 	$Arguments = @"
 		"$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesAndPrintersLocalizedName.lnk" "51201"
@@ -1564,6 +1741,14 @@ if ($OpenFileDialog.FileName)
 	Start-Process -FilePath $OpenFileDialog.FileName -WindowStyle Hidden -ArgumentList $Arguments -Wait
 	# Pin "Command Prompt" to Start
 	# Закрепить "Командную строку" на начальном экране
+	if ($RU)
+	{
+		Write-Verbose -Message "Ярлык `"Командная строка`" закрепляется на начальном экране" -Verbose
+	}
+	else
+	{
+		Write-Verbose -Message "`"Command Prompt`" shortcut is being pinned to Start" -Verbose
+	}
 	$Arguments = @"
 		"$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" "51201"
 "@
@@ -1637,15 +1822,11 @@ $ExcludedAppxPackages = @(
 	# NVIDIA Control Panel
 	# Панель управления NVidia
 	"NVIDIACorp.NVIDIAControlPanel"
+	# Realtek Audio Console
+	"RealtekSemiconductorCorp.RealtekAudioControl"
 )
 $OFS = "|"
-$AppxPackages = (Get-AppxPackage -PackageTypeFilter Bundle -AllUsers).Name | Select-String $ExcludedAppxPackages -NotMatch
-foreach ($AppxPackage in $AppxPackages)
-{
-	Write-Progress -Activity "Uninstalling UWP apps" -Status "Removing $AppxPackage" -PercentComplete ($AppxPackages.IndexOf($AppxPackage)/$AppxPackages.Count * 100)
-	Get-AppxPackage -PackageTypeFilter Bundle -AllUsers | Where-Object -FilterScript {$_.Name -cmatch $AppxPackage} | Remove-AppxPackage -AllUsers
-}
-Write-Progress -Activity "Uninstalling UWP apps" -Completed
+Get-AppxPackage -PackageTypeFilter Bundle -AllUsers | Where-Object -FilterScript {$_.Name -cnotmatch $ExcludedAppxPackages} | Remove-AppxPackage -AllUsers -Verbose
 $OFS = " "
 # Check for UWP apps updates
 # Проверить обновления UWP-приложений
@@ -2134,16 +2315,16 @@ if ($Error)
 {
 	if ($RU)
 	{
-		Write-Host "`nПредупреждения/ошибки" -BackgroundColor Red
+		Write-Host "`nПредупреждения/ошибки" -ForegroundColor Red
 	}
 	else
 	{
-		Write-Host "`nWarnings/errors" -BackgroundColor Red
+		Write-Host "`nErrors/Warnings" -ForegroundColor Red
 	}
 	($Error | ForEach-Object -Process {
 		[PSCustomObject] @{
 			Line = $_.InvocationInfo.ScriptLineNumber
-			Error = $_.Exception.Message
+			"Errors/Warnings" = $_.Exception.Message
 		}
 	} | Sort-Object -Property Line | Format-Table -AutoSize -Wrap | Out-String).Trim()
 }
@@ -2151,11 +2332,11 @@ else
 {
 	if ($RU)
 	{
-		Write-Host "`nНет предупреждений/ошибок" -BackgroundColor Green
+		Write-Host "`nНет предупреждений/ошибок" -ForegroundColor Green
 	}
 	else
 	{
-		Write-Host "`nNo warnings/errors" -BackgroundColor Green
+		Write-Host "`nNo warnings/errors" -ForegroundColor Green
 	}
 }
 #endregion End
