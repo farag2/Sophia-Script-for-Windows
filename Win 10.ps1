@@ -18,8 +18,8 @@
 .EXAMPLE
 	PS C:\WINDOWS\system32> & '.\Win 10.ps1'
 .NOTES
-	Version: v4.0.29
-	Date: 05.04.2020
+	Version: v4.0.30
+	Date: 08.04.2020
 	Written by: farag
 	Thanks to all http://forum.ru-board.com members involved
 	Ask a question on
@@ -570,10 +570,9 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name 
 #region OneDrive
 # Uninstall OneDrive
 # Удалить OneDrive
-if (Test-Path -Path HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\OneDriveSetup.exe)
+[string] $UninstallString = Get-Package -Name "Microsoft OneDrive" -ErrorAction Ignore | ForEach-Object -Process {$_.Meta.Attributes["UninstallString"]}
+if ($UninstallString)
 {
-	# OnedDrive installed for all users
-	# OneDrive установлен для всех пользователей
 	if ($RU)
 	{
 		Write-Verbose -Message "Удаление OneDrive" -Verbose
@@ -582,17 +581,21 @@ if (Test-Path -Path HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\
 	{
 		Write-Verbose -Message "Uninstalling OneDrive" -Verbose
 	}
-	Stop-Process -Name OneDrive -Force -ErrorAction Ignore
+	Stop-Process -Name OneDrive -Force
 	# Save all opened folders in order to restore them after File Explorer restarting
 	# Сохранить все открытые папки, чтобы восстановить их после перезапуска проводника
 	Clear-Variable -Name OpenedFolders -Force -ErrorAction Ignore
 	$OpenedFolders = {(New-Object -ComObject "Shell.Application").Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
-	$OneDriveSetup = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\OneDriveSetup.exe" -Name UninstallString
-	$OneDriveSetup = $OneDriveSetup.Replace("/uninstall","").Replace("/allusers","").Trim()
-	$Arguments = @"
-		"/uninstall" "/allusers"
-"@
-	Start-Process -FilePath $OneDriveSetup -ArgumentList $Arguments -Wait
+	# Getting link to the OneDriveSetup.exe and its' argument(s)
+	# Получаем ссылку на OneDriveSetup.exe и его аргумент(ы)
+	[string[]] $OneDriveSetup = ($UninstallString -Replace("\s*/",",/")).Trim().Split(",")
+	Start-Process -FilePath $OneDriveSetup[0] -ArgumentList $OneDriveSetup[1..2] -Wait
+	Stop-Process -Name explorer -Force
+	# Getting link to the OneDrive folder
+	# Получаем ссылку на папку OneDrive
+	$OneDriveFolder = Split-Path -Path (Split-Path -Path $OneDriveSetup[0] -Parent)
+	# Waiting for the FileSyncShell64.dll to be unloaded, using System.IO.File class
+	# Ожидаем, пока FileSyncShell64.dll выгрузится, используя класс System.IO.File
 	if ($RU)
 	{
 		Write-Verbose -Message "Проверка: заблокирована ли библиотека FileSyncShell64.dll процессом проводника" -Verbose
@@ -601,13 +604,7 @@ if (Test-Path -Path HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\
 	{
 		Write-Verbose -Message "Checking whether the FileSyncShell64.dll library is locked by File Explorer process" -Verbose
 	}
-	Stop-Process -Name FileCoAuth -Force -ErrorAction Ignore
-	# In order to delete OneDrive folder the File Explorer process has to be restarted
-	# Чтобы удалить папку OneDrive, необходимо перезапустить процесс проводника
-	Stop-Process -Name explorer -Force
-	# Waiting for the FileSyncShell64.dll library to be unloaded
-	# Ожидаем, пока библиотека FileSyncShell64.dll будет выгружена
-	$FileSyncShell64dllFolder = Get-ChildItem -Path "${env:ProgramFiles(x86)}\Microsoft OneDrive\*\amd64\FileSyncShell64.dll" -Recurse -Force
+	$FileSyncShell64dllFolder = Get-ChildItem -Path "$OneDriveFolder\*\amd64\FileSyncShell64.dll" -Force
 	foreach ($FileSyncShell64dll in $FileSyncShell64dllFolder)
 	{
 		do
@@ -630,82 +627,10 @@ if (Test-Path -Path HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\
 			}
 		}
 		while ($Locked)
-	}
-	# After the FileSyncShell64.dll is now unloaded, folder can be removed
-	# После того, как FileSyncShell64.dll выгружен, папка может быть удалена
-	Remove-Item -Path "${env:ProgramFiles(x86)}\Microsoft OneDrive" -Recurse -Force
-	$OneDriveSetup = $true
-}
-if (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\OneDriveSetup.exe)
-{
-	# OnedDrive installed for a user
-	# OneDrive установлен для одного пользователя
-	if ($RU)
-	{
-		Write-Verbose -Message "Удаление OneDrive" -Verbose
-	}
-	else
-	{
-		Write-Verbose -Message "Uninstalling OneDrive" -Verbose
-	}
-	Stop-Process -Name OneDrive -Force -ErrorAction Ignore
-	# Save all opened folders in order to restore them after File Explorer restarting
-	# Сохранить все открытые папки, чтобы восстановить их после перезапуска проводника
-	Clear-Variable -Name OpenedFolders -Force -ErrorAction Ignore
-	$OpenedFolders = {(New-Object -ComObject "Shell.Application").Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
-	$OneDriveSetup = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\OneDriveSetup.exe" -Name UninstallString
-	$OneDriveSetup = $OneDriveSetup.Replace("/uninstall","").Trim()
-	$Arguments = @"
-		"/uninstall"
-"@
-	Start-Process -FilePath $OneDriveSetup -ArgumentList $Arguments -Wait
-	if ($RU)
-	{
-		Write-Verbose -Message "Проверка: заблокирована ли библиотека FileSyncShell64.dll процессом проводника" -Verbose
-	}
-	else
-	{
-		Write-Verbose -Message "Checking whether the FileSyncShell64.dll library is locked by File Explorer process" -Verbose
-	}
-	Stop-Process -Name FileCoAuth -Force -ErrorAction Ignore
-	# In order to delete OneDrive folder the File Explorer process has to be restarted to unload FileSyncShell64.dll
-	# Чтобы удалить папку OneDrive, необходимо перезапустить процесс проводника, чтобы выгрузить FileSyncShell64.dll
-	Stop-Process -Name explorer -Force
-	# Waiting for the FileSyncShell64.dll library to be unloaded
-	# Ожидаем, пока библиотека FileSyncShell64.dll будет выгружена
-	$FileSyncShell64dllFolder = Get-ChildItem -Path "$env:LOCALAPPDATA\Microsoft\OneDrive\*\amd64\FileSyncShell64.dll" -Recurse -Force
-	foreach ($FileSyncShell64dll in $FileSyncShell64dllFolder)
-	{
-		do
-		{
-			try
-			{
-				$FileStream = [System.IO.File]::Open($FileSyncShell64dll.FullName,"Open","Write")
-				$FileStream.Close()
-				$FileStream.Dispose()
-				$Locked = $false
-			}
-			catch [System.UnauthorizedAccessException]
-			{
-				$Locked = $true
-			}
-			catch [Exception]
-			{
-				$Locked = $true
-				Start-Sleep -Milliseconds 500
-			}
-		}
-		while ($Locked)
-	}
-	# After the FileSyncShell64.dll is now unloaded, folder can be removed
-	# После того, как FileSyncShell64.dll выгружен, папка может быть удалена удалена
-	Remove-Item -Path "$env:LOCALAPPDATA\Microsoft\OneDrive" -Recurse -Force
-	$OneDriveSetup = $true
-}
-if ($OneDriveSetup)
-{
-	# Restore closed folders
-	# Восстановить закрытые папки
+	} 
+	Remove-Item -Path $OneDriveFolder -Recurse -Force
+	# Restoring closed folders
+	# Восстановляем закрытые папки
 	foreach ($OpenedFolder in $OpenedFolders)
 	{
 		if (Test-Path -Path $OpenedFolder)
@@ -713,22 +638,24 @@ if ($OneDriveSetup)
 			Invoke-Item -Path $OpenedFolder
 		}
 	}
-	$OneDriveFolder = Get-ItemPropertyValue -Path HKCU:\Environment -Name OneDrive
-	if ((Get-ChildItem -Path $OneDriveFolder | Measure-Object).Count -eq 0)
+	# Getting link to the OneDrive user folder
+	# Получаем ссылку на папку пользователя OneDrive
+	$OneDriveUserFolder = Get-ItemPropertyValue -Path HKCU:\Environment -Name OneDrive
+	if ((Get-ChildItem -Path $OneDriveUserFolder | Measure-Object).Count -eq 0)
 	{
-		Remove-Item -Path $OneDriveFolder -Recurse -Force
+		Remove-Item -Path $OneDriveUserFolder -Recurse -Force
 	}
 	else
 	{
 		if ($RU)
 		{
-			Write-Error -Message "Папка $OneDriveFolder не пуста. Удалите ее вручную" -ErrorAction SilentlyContinue
+			Write-Error -Message "Папка $OneDriveUserFolder не пуста. Удалите ее вручную" -ErrorAction SilentlyContinue
 		}
 		else
 		{
-			Write-Error -Message "$OneDriveFolder folder is not empty. Delete it manually" -ErrorAction SilentlyContinue
+			Write-Error -Message "$OneDriveUserFolder folder is not empty. Delete it manually" -ErrorAction SilentlyContinue
 		}
-		Invoke-Item -Path $OneDriveFolder
+		Invoke-Item -Path $OneDriveUserFolder
 	}
 	Remove-ItemProperty -Path HKCU:\Environment -Name OneDrive, OneDriveConsumer -Force -ErrorAction Ignore
 	Remove-Item -Path HKCU:\Software\Microsoft\OneDrive -Recurse -Force -ErrorAction Ignore
@@ -736,6 +663,7 @@ if ($OneDriveSetup)
 	Remove-Item -Path "$env:ProgramData\Microsoft OneDrive" -Recurse -Force -ErrorAction Ignore
 	Remove-Item -Path $env:LOCALAPPDATA\OneDrive -Recurse -Force -ErrorAction Ignore
 	Remove-Item -Path $env:LOCALAPPDATA\Microsoft\OneDrive -Recurse -Force -ErrorAction Ignore
+	Remove-Item -Path $env:SystemDrive\OneDriveTemp -Recurse -Force -ErrorAction Ignore
 	Unregister-ScheduledTask -TaskName *OneDrive* -Confirm:$false
 }
 #endregion OneDrive
@@ -1549,13 +1477,18 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\
 # Отключить удаление кэша миниатюр
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" -Name Autorun -PropertyType DWord -Value 0 -Force
 New-ItemProperty -Path "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" -Name Autorun -PropertyType DWord -Value 0 -Force
-# Turn on network discovery and file and printers sharing
-# Включить сетевое обнаружение и общий доступ к файлам и принтерам
+# Turn on network discovery and file and printers sharing if device is not domain-joined
+# Включить сетевое обнаружение и общий доступ к файлам и принтерам, если устройство не присоединенно к домену
 if ((Get-NetConnectionProfile).NetworkCategory -ne "DomainAuthenticated")
 {
 	Get-NetFirewallRule -Group "@FirewallAPI.dll,-32752", "@FirewallAPI.dll,-28502" | Set-NetFirewallRule -Profile Private -Enabled True
 	Set-NetConnectionProfile -NetworkCategory Private
 }
+# Open Microsoft Store "HEVC Video Extensions from Device Manufacturer" page
+# The extensions can be installed without Microsoft account 
+# Открыть страницу "Расширения для видео HEVC от производителя устройства" в Microsoft Store
+# Расширения могут быть установлены без учетной записи Microsoft
+Start-Process -FilePath ms-windows-store://pdp/?ProductId=9n4wgh0z6vhq
 #endregion System
 
 #region Start menu
