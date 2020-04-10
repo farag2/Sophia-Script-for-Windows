@@ -18,8 +18,8 @@
 .EXAMPLE
 	PS C:\WINDOWS\system32> & '.\Win 10.ps1'
 .NOTES
-	Version: v4.0.30
-	Date: 08.04.2020
+	Version: v4.0.31
+	Date: 10.04.2020
 	Written by: farag
 	Thanks to all http://forum.ru-board.com members involved
 	Ask a question on
@@ -582,6 +582,7 @@ if ($UninstallString)
 		Write-Verbose -Message "Uninstalling OneDrive" -Verbose
 	}
 	Stop-Process -Name OneDrive -Force
+	Stop-Process -Name FileCoAuth -ErrorAction Ignore -Force
 	# Save all opened folders in order to restore them after File Explorer restarting
 	# Сохранить все открытые папки, чтобы восстановить их после перезапуска проводника
 	Clear-Variable -Name OpenedFolders -Force -ErrorAction Ignore
@@ -591,44 +592,6 @@ if ($UninstallString)
 	[string[]] $OneDriveSetup = ($UninstallString -Replace("\s*/",",/")).Trim().Split(",")
 	Start-Process -FilePath $OneDriveSetup[0] -ArgumentList $OneDriveSetup[1..2] -Wait
 	Stop-Process -Name explorer -Force
-	# Getting link to the OneDrive folder
-	# Получаем ссылку на папку OneDrive
-	$OneDriveFolder = Split-Path -Path (Split-Path -Path $OneDriveSetup[0] -Parent)
-	# Waiting for the FileSyncShell64.dll to be unloaded, using System.IO.File class
-	# Ожидаем, пока FileSyncShell64.dll выгрузится, используя класс System.IO.File
-	if ($RU)
-	{
-		Write-Verbose -Message "Проверка: заблокирована ли библиотека FileSyncShell64.dll процессом проводника" -Verbose
-	}
-	else
-	{
-		Write-Verbose -Message "Checking whether the FileSyncShell64.dll library is locked by File Explorer process" -Verbose
-	}
-	$FileSyncShell64dllFolder = Get-ChildItem -Path "$OneDriveFolder\*\amd64\FileSyncShell64.dll" -Force
-	foreach ($FileSyncShell64dll in $FileSyncShell64dllFolder)
-	{
-		do
-		{
-			try
-			{
-				$FileStream = [System.IO.File]::Open($FileSyncShell64dll.FullName,"Open","Write")
-				$FileStream.Close()
-				$FileStream.Dispose()
-				$Locked = $false
-			}
-			catch [System.UnauthorizedAccessException]
-			{
-				$Locked = $true
-			}
-			catch [Exception]
-			{
-				$Locked = $true
-				Start-Sleep -Milliseconds 500
-			}
-		}
-		while ($Locked)
-	} 
-	Remove-Item -Path $OneDriveFolder -Recurse -Force
 	# Restoring closed folders
 	# Восстановляем закрытые папки
 	foreach ($OpenedFolder in $OpenedFolders)
@@ -638,8 +601,8 @@ if ($UninstallString)
 			Invoke-Item -Path $OpenedFolder
 		}
 	}
-	# Getting link to the OneDrive user folder
-	# Получаем ссылку на папку пользователя OneDrive
+	# Getting  the OneDrive user folder path
+	# Получаем путь до папки пользователя OneDrive
 	$OneDriveUserFolder = Get-ItemPropertyValue -Path HKCU:\Environment -Name OneDrive
 	if ((Get-ChildItem -Path $OneDriveUserFolder | Measure-Object).Count -eq 0)
 	{
@@ -661,10 +624,47 @@ if ($UninstallString)
 	Remove-Item -Path HKCU:\Software\Microsoft\OneDrive -Recurse -Force -ErrorAction Ignore
 	Remove-Item -Path HKLM:\SOFTWARE\WOW6432Node\Microsoft\OneDrive -Recurse -Force -ErrorAction Ignore
 	Remove-Item -Path "$env:ProgramData\Microsoft OneDrive" -Recurse -Force -ErrorAction Ignore
-	Remove-Item -Path $env:LOCALAPPDATA\OneDrive -Recurse -Force -ErrorAction Ignore
-	Remove-Item -Path $env:LOCALAPPDATA\Microsoft\OneDrive -Recurse -Force -ErrorAction Ignore
 	Remove-Item -Path $env:SystemDrive\OneDriveTemp -Recurse -Force -ErrorAction Ignore
 	Unregister-ScheduledTask -TaskName *OneDrive* -Confirm:$false
+	# Getting the OneDrive folder path
+	# Получаем путь до папки OneDrive
+	$OneDriveFolder = Split-Path -Path (Split-Path -Path $OneDriveSetup[0] -Parent)
+	# Waiting for the FileSyncShell64.dll to be unloaded, using System.IO.File class
+	# Ожидаем, пока FileSyncShell64.dll выгрузится, используя класс System.IO.File
+	$FileSyncShell64dllFolder = Get-ChildItem -Path "$OneDriveFolder\*\amd64\FileSyncShell64.dll" -Force
+	foreach ($FileSyncShell64dll in $FileSyncShell64dllFolder)
+	{
+		do
+		{
+			try
+			{
+				$FileStream = [System.IO.File]::Open($FileSyncShell64dll.FullName,"Open","Write")
+				$FileStream.Close()
+				$FileStream.Dispose()
+				$Locked = $false
+			}
+			catch [System.UnauthorizedAccessException]
+			{
+				$Locked = $true
+			}
+			catch [Exception]
+			{
+				Start-Sleep -Milliseconds 500
+				if ($RU)
+				{
+					Write-Verbose -Message "Ожидаем, пока $FileSyncShell64dll будет разблокирована" -Verbose
+				}
+				else
+				{
+					Write-Verbose -Message "Waiting for the $FileSyncShell64dll to be unlocked" -Verbose
+				}
+			}
+		}
+		while ($Locked)
+	}
+	Remove-Item -Path $OneDriveFolder -Recurse -Force
+	Remove-Item -Path $env:LOCALAPPDATA\OneDrive -Recurse -Force -ErrorAction Ignore
+	Remove-Item -Path $env:LOCALAPPDATA\Microsoft\OneDrive -Recurse -Force -ErrorAction Ignore
 }
 #endregion OneDrive
 
@@ -694,8 +694,8 @@ if ((Get-ItemPropertyValue -Path HKCU:\Software\Microsoft\Windows\CurrentVersion
 # Let Windows try to fix apps so they're not blurry
 # Разрешить Windows исправлять размытость в приложениях
 New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name EnablePerProcessSystemDPI -PropertyType DWord -Value 1 -Force
-# Turn off hibernate for devices, except laptops
-# Отключить режим гибернации для устройств, кроме ноутбуков
+# Turn off hibernate if device is not a laptops
+# Отключить режим гибернации, если устройство не является ноутбуком
 if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2)
 {
 	powercfg /hibernate off
@@ -703,8 +703,8 @@ if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2)
 # Turn off location access for this device
 # Отключить доступ к сведениям о расположении для этого устройства
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location -Name Value -PropertyType String -Value Deny -Force
-# Change $env:TEMP environment variable path to $env:SystemDrive\Temp
-# Изменить путь переменной среды для временных файлов на $env:SystemDrive\Temp
+# Change %TEMP% environment variable path to %SystemDrive%\Temp
+# Изменить путь переменной среды для %TEMP% на %SystemDrive%\Temp
 if (-not (Test-Path -Path $env:SystemDrive\Temp))
 {
 	New-Item -Path $env:SystemDrive\Temp -ItemType Directory -Force
@@ -1502,8 +1502,8 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name 
 # Do not show app suggestions on the Start menu
 # Не показывать рекомендации в меню "Пуск"
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338388Enabled -PropertyType DWord -Value 0 -Force
-# Open shortcut to the Command Prompt from the Start menu as Administrator
-# Запускать ярлык к командной строке в меню "Пуск" от имени Администратора
+# Open the Command Prompt shortcut from the Start menu as Administrator
+# Запускать ярлык командной строки в меню "Пуск" от имени Администратора
 [byte[]]$bytes = Get-Content -Path "$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" -Encoding Byte -Raw
 $bytes[0x15] = $bytes[0x15] -bor 0x20
 Set-Content -Path "$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" -Value $bytes -Encoding Byte -Force
@@ -1752,6 +1752,20 @@ $ExcludedAppxPackages = @(
 	# Calculator
 	# Калькулятор
 	"Microsoft.WindowsCalculator"
+	# Xbox Identity Provider
+	# Поставщик удостоверений Xbox
+	"Microsoft.XboxIdentityProvider"
+	# Xbox
+	# Компаньон консоли Xbox
+	"Microsoft.XboxApp"
+	# Xbox TCUI
+	"Microsoft.Xbox.TCUI"
+	# Xbox Speech To Text Overlay
+	"Microsoft.XboxSpeechToTextOverlay"
+	# Xbox Game Bar
+	"Microsoft.XboxGamingOverlay"
+	# Xbox Game Bar Plugin
+	"Microsoft.XboxGameOverlay"
 	# NVIDIA Control Panel
 	# Панель управления NVidia
 	"NVIDIACorp.NVIDIAControlPanel"
@@ -1774,6 +1788,29 @@ New-ItemProperty -Path HKCU:\System\GameConfigStore -Name GameDVR_Enabled -Prope
 # Turn off Xbox Game Bar tips
 # Отключить советы Xbox Game Bar
 New-ItemProperty -Path HKCU:\Software\Microsoft\GameBar -Name ShowStartupPanel -PropertyType DWord -Value 0 -Force
+# Uninstall all Xbox related UWP apps from all accounts
+# App packages will not be installed when new user accounts are created
+# Удалить все UWP-приложения, связанные с Xbox, из всех учетных записей
+# Приложения не будут установлены при создании новых учетных записей
+$XboxAppxPackages = @(
+	# Xbox Identity Provider
+	# Поставщик удостоверений Xbox
+	"Microsoft.XboxIdentityProvider"
+	# Xbox
+	# Компаньон консоли Xbox
+	"Microsoft.XboxApp"
+	# Xbox TCUI
+	"Microsoft.Xbox.TCUI"
+	# Xbox Speech To Text Overlay
+	"Microsoft.XboxSpeechToTextOverlay"
+	# Xbox Game Bar
+	"Microsoft.XboxGamingOverlay"
+	# Xbox Game Bar Plugin
+	"Microsoft.XboxGameOverlay"
+)
+$OFS = "|"
+Get-AppxPackage -PackageTypeFilter Bundle -AllUsers | Where-Object -FilterScript {$_.Name -cmatch $XboxAppxPackages} | Remove-AppxPackage -AllUsers -Verbose
+$OFS = " "
 #endregion Gaming
 
 #region Scheduled tasks
@@ -1820,9 +1857,9 @@ $params = @{
 	"Principal"	=	$principal
 }
 Register-ScheduledTask @params -Force
-# Create a task in the Task Scheduler to clear the $env:SystemRoot\SoftwareDistribution\Download folder
+# Create a task in the Task Scheduler to clear the %SystemRoot%\SoftwareDistribution\Download folder
 # The task runs on Thursdays every 4 weeks
-# Создать задачу в Планировщике задач по очистке папки $env:SystemRoot\SoftwareDistribution\Download
+# Создать задачу в Планировщике задач по очистке папки %SystemRoot%\SoftwareDistribution\Download
 # Задача выполняется по четвергам каждую 4 неделю
 $action = New-ScheduledTaskAction -Execute powershell.exe -Argument @"
 	`$getservice = Get-Service -Name wuauserv
@@ -1840,9 +1877,9 @@ $params = @{
 	"Principal"	=	$principal
 }
 Register-ScheduledTask @params -Force
-# Create a task in the Task Scheduler to clear the $env:TEMP folder
+# Create a task in the Task Scheduler to clear the %TEMP% folder
 # The task runs every 62 days
-# Создать задачу в Планировщике задач по очистке папки $env:TEMP
+# Создать задачу в Планировщике задач по очистке папки %TEMP%
 # Задача выполняется каждые 62 дня
 $action = New-ScheduledTaskAction -Execute powershell.exe -Argument @"
 	Get-ChildItem -Path `$env:TEMP -Force -Recurse | Remove-Item -Force -Recurse
@@ -2252,7 +2289,7 @@ if ($Error)
 	}
 	else
 	{
-		Write-Host "`nErrors/Warnings" -ForegroundColor Red
+		Write-Host "`nWarnings/errors" -ForegroundColor Red
 	}
 	($Error | ForEach-Object -Process {
 		[PSCustomObject] @{
