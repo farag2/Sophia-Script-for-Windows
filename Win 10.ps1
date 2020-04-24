@@ -18,7 +18,7 @@
 .EXAMPLE
 	PS C:\WINDOWS\system32> & '.\Win 10.ps1'
 .NOTES
-	Version: v4.0.32
+	Version: v4.0.33
 	Date: 20.04.2020
 	Written by: farag
 	Thanks to all http://forum.ru-board.com members involved
@@ -36,7 +36,7 @@
 #Requires -Version 5
 
 #region Preparation
-Set-StrictMode -Version Latest
+# Set-StrictMode -Version Latest
 Clear-Host
 
 # Get information about the current culture settings
@@ -587,7 +587,7 @@ if ($UninstallString)
 	# Save all opened folders in order to restore them after File Explorer restarting
 	# Сохранить все открытые папки, чтобы восстановить их после перезапуска проводника
 	Clear-Variable -Name OpenedFolders -Force -ErrorAction Ignore
-	$OpenedFolders = {(New-Object -ComObject "Shell.Application").Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
+	$OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
 	# Getting link to the OneDriveSetup.exe and its' argument(s)
 	# Получаем ссылку на OneDriveSetup.exe и его аргумент(ы)
 	[string[]] $OneDriveSetup = ($UninstallString -Replace("\s*/",",/")).Trim().Split(",")
@@ -624,7 +624,7 @@ if ($UninstallString)
 		}
 		else
 		{
-			Write-Error -Message "$OneDriveUserFolder folder is not empty. Delete it manually" -ErrorAction SilentlyContinue
+			Write-Error -Message "The $OneDriveUserFolder folder is not empty. Delete it manually" -ErrorAction SilentlyContinue
 		}
 		Invoke-Item -Path $OneDriveUserFolder
 	}
@@ -907,7 +907,14 @@ if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Pro
 		}
 		catch [Exception]
 		{
-			Write-Error -Message "Enable Virtualization in BIOS" -ErrorAction SilentlyContinue
+			if ($RU)
+			{
+				Write-Error -Message "Включите в BIOS виртуализацию" -ErrorAction SilentlyContinue
+			}
+			else
+			{
+				Write-Error -Message "Enable Virtualization in BIOS" -ErrorAction SilentlyContinue
+			}
 		}
 	}
 }
@@ -1027,7 +1034,14 @@ do
 		{
 			if ((Get-ChildItem -Path $DesktopReg | Measure-Object).Count -ne 0)
 			{
-				Write-Error -Message "В папке $DesktopReg осталась информация" -ErrorAction SilentlyContinue
+				if ($RU)
+				{
+					Write-Error -Message "В папке $DesktopReg осталась информация" -ErrorAction SilentlyContinue
+				}
+				else
+				{
+					Write-Error -Message "The $DesktopReg folder is not empty" -ErrorAction SilentlyContinue
+				}
 			}
 			if (-not (Test-Path -Path $DesktopFolder))
 			{
@@ -1046,7 +1060,7 @@ do
 		# Save all opened folders in order to restore them after File Explorer restart
 		# Сохранить все открытые папки, чтобы восстановить их после перезапуска проводника
 		Clear-Variable -Name OpenedFolders -Force -ErrorAction Ignore
-		$OpenedFolders = {(New-Object -ComObject "Shell.Application").Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
+		$OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
 		# In order for the changes to take effect the File Explorer process has to be restarted
 		# Чтобы изменения вступили в силу, необходимо перезапустить процесс проводника
 		Stop-Process -Name explorer -Force
@@ -1110,7 +1124,14 @@ do
 		{
 			if ((Get-ChildItem -Path $DocumentsReg | Measure-Object).Count -ne 0)
 			{
-				Write-Error -Message "В папке $DocumentsReg осталась информация" -ErrorAction SilentlyContinue
+				if ($RU)
+				{
+					Write-Error -Message "В папке $DocumentsReg осталась информация" -ErrorAction SilentlyContinue
+				}
+				else
+				{
+					Write-Error -Message "The $DocumentsReg folder is not empty" -ErrorAction SilentlyContinue
+				}
 			}
 			if (-not (Test-Path -Path $DocumentsFolder))
 			{
@@ -1173,7 +1194,14 @@ do
 		{
 			if ((Get-ChildItem -Path $DownloadsReg | Measure-Object).Count -ne 0)
 			{
-				Write-Error -Message "В папке $DownloadsReg осталась информация" -ErrorAction SilentlyContinue
+				if ($RU)
+				{
+					Write-Error -Message "В папке $DownloadsReg осталась информация" -ErrorAction SilentlyContinue
+				}
+				else
+				{
+					Write-Error -Message "The $DownloadsReg folder is not empty" -ErrorAction SilentlyContinue
+				}
 			}
 			if (-not (Test-Path -Path $DownloadsFolder))
 			{
@@ -1240,7 +1268,14 @@ do
 		{
 			if ((Get-ChildItem -Path $MusicReg | Measure-Object).Count -ne 0)
 			{
-				Write-Error -Message "В папке $MusicReg осталась информация" -ErrorAction SilentlyContinue
+				if ($RU)
+				{
+					Write-Error -Message "В папке $MusicReg осталась информация" -ErrorAction SilentlyContinue
+				}
+				else
+				{
+					Write-Error -Message "The $MusicReg folder is not empty" -ErrorAction SilentlyContinue
+				}
 			}
 			if (-not (Test-Path -Path $MusicFolder))
 			{
@@ -1303,7 +1338,14 @@ do
 		{
 			if ((Get-ChildItem -Path $PicturesReg | Measure-Object).Count -ne 0)
 			{
-				Write-Error -Message "В папке $PicturesReg осталась информация" -ErrorAction SilentlyContinue
+				if ($RU)
+				{
+					Write-Error -Message "В папке $PicturesReg осталась информация" -ErrorAction SilentlyContinue
+				}
+				else
+				{
+					Write-Error -Message "The $PicturesReg folder is not empty" -ErrorAction SilentlyContinue
+				}
 			}
 			if (-not (Test-Path -Path $PicturesFolder))
 			{
@@ -1366,7 +1408,14 @@ do
 		{
 			if ((Get-ChildItem -Path $VideosReg | Measure-Object).Count -ne 0)
 			{
-				Write-Error -Message "В папке $VideosReg осталась информация" -ErrorAction SilentlyContinue
+				if ($RU)
+				{
+					Write-Error -Message "В папке $VideosReg осталась информация" -ErrorAction SilentlyContinue
+				}
+				else
+				{
+					Write-Error -Message "The $PicturesReg folder is not empty" -ErrorAction SilentlyContinue
+				}
 			}
 			if (-not (Test-Path -Path $VideosFolder))
 			{
@@ -1412,71 +1461,94 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation -Name UserPref
 # Установить параметры производительности графики для отдельных приложений на "Высокая производительность"
 if (Get-CimInstance -ClassName Win32_VideoController | Where-Object -FilterScript {$_.AdapterDACType -ne "Internal" -and $null -ne $_.AdapterDACType})
 {
-	if ($RU)
-	{
-		Write-Host "`nВведите полные пути до .exe файлов, " -NoNewline
-		Write-Host "для которого следует установить"
-		Write-Host "параметры производительности графики на `"Высокая производительность`"."
-		Write-Host "Пути должны быть разделены запятыми и взяты в кавычки." -ForegroundColor Yellow
-		Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
-	}
-	else
-	{
-		Write-Host "`nType the full paths to .exe files for which to set"
-		Write-Host "graphics performance preference to `"High performance GPU`"."
-		Write-Host "The paths must be separated by commas and taken in quotes." -ForegroundColor Yellow
-		Write-Host "`nPress Enter to skip" -NoNewline
-	}
-	if (Test-Path -Path "${env:ProgramFiles(x86)}\Steam")
-	{
-		Invoke-Item -Path "${env:ProgramFiles(x86)}\Steam\steamapps\common"
-	}
-	function GpuPreference
-	{
-		[CmdletBinding()]
-		Param
-		(
-			[Parameter(Mandatory = $True)]
-			[string[]]$apps
-		)
-		if (-not (Test-Path -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences))
-		{
-			New-Item -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Force
-		}
-		$apps = $apps.Replace("`"", "").Split(",").Trim()
-		foreach ($app in $apps)
-		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Name $app -PropertyType String -Value "GpuPreference=2;" -Force
-		}
-	}
 	do
 	{
-		$apps = Read-Host -Prompt " "
-		if ($apps -match ".exe" -and $apps -match "`"")
+		if ($RU)
 		{
-			GpuPreference $apps
+			Write-Host "`nЧтобы добавить приложение, для которого будет установлена настройка производительности графики"
+			Write-Host "на `"Высокая производительность`", введите букву: "
+			Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
+			Write-Host " или " -NoNewline
+			Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
+			Write-Host ", чтобы пропустить" -NoNewline
+			Write-Host "`nТакже, чтобы пропустить, нажмите Enter" -NoNewline
 		}
-		elseif ([string]::IsNullOrEmpty($apps))
+		else
+		{
+			Write-Host "`nTo add an app for which the graphics performance preference"
+			Write-Host "will be set to `"High performance`" type: "
+			Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
+			Write-Host " or " -NoNewline
+			Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
+			Write-Host " to skip" -NoNewline
+			Write-Host "`nAlso press Enter to skip" -NoNewline
+		}
+		$Prompt = Read-Host -Prompt " "
+		if ([string]::IsNullOrEmpty($Prompt))
 		{
 			break
 		}
 		else
 		{
-			if ($RU)
+			switch ($Prompt)
 			{
-				Write-Host "`nПути не взяты в кавычки или не содержат ссылки на .exe файлы." -ForegroundColor Yellow
-				Write-Host "Введите полные пути до .exe файлов, взяв в кавычки и разделив запятыми."
-				Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
-			}
-			else
-			{
-				Write-Host "`nThe paths hasn't been taken in quotes or do not contain links to .exe files" -ForegroundColor Yellow
-				Write-Host "Type the full paths to .exe files by quoting and separating by commas."
-				Write-Host "`nPress Enter to skip" -NoNewline
+				"Y"
+				{
+					if (-not (Test-Path -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences))
+					{
+						New-Item -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Force
+					}
+					Add-Type -AssemblyName System.Windows.Forms
+					$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
+					if ($RU)
+					{
+						$OpenFileDialog.Filter = "*.exe|*.exe|Все файлы (*.*)|*.*"
+					}
+					else
+					{
+						$OpenFileDialog.Filter = "*.exe|*.exe|All Files (*.*)|*.*"
+					}
+					$OpenFileDialog.InitialDirectory = "$env:ProgramFiles}"
+					$OpenFileDialog.Multiselect = $false
+					# Focus on open file dialog
+					# Перевести фокус на диалог открытия файла
+					$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+					$OpenFileDialog.ShowDialog($tmp)
+					if ($OpenFileDialog.FileName)
+					{
+						New-ItemProperty -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Name $OpenFileDialog.FileName -PropertyType String -Value "GpuPreference=2;" -Force
+					}
+				}
+				"N" {}
+				Default
+				{
+					if ($RU)
+					{
+						Write-Host "`nНеправильная буква." -ForegroundColor Yellow
+						Write-Host "`nЧтобы добавить приложение, для которого будет установлена настройка производительности графики"
+						Write-Host "на `"Высокая производительность`", введите букву: "
+						Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
+						Write-Host " или " -NoNewline
+						Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
+						Write-Host ", чтобы пропустить" -NoNewline
+						Write-Host "`nТакже, чтобы пропустить, нажмите Enter" -NoNewline
+					}
+					else
+					{
+						Write-Host "`nInvalid letter." -ForegroundColor Yellow
+						Write-Host "`nTo add an app for which the graphics performance preference"
+						Write-Host "will be set to `"High performance`" type: "
+						Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
+						Write-Host " or " -NoNewline
+						Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
+						Write-Host " to skip" -NoNewline
+						Write-Host "`nAlso press Enter to skip" -NoNewline
+					}
+				}
 			}
 		}
 	}
-	until ($apps -match ".exe" -and $apps -match "`"")
+	while ($Prompt -ne "N")
 }
 # Launch folder in a separate process
 # Запускать окна с папками в отдельном процессе
@@ -1635,6 +1707,7 @@ else
 Add-Type -AssemblyName System.Windows.Forms
 $OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
 $OpenFileDialog.InitialDirectory = $DownloadsFolder
+$OpenFileDialog.Multiselect = $false
 if ($RU)
 {
 	$OpenFileDialog.Filter = "*.exe|*.exe|Все файлы (*.*)|*.*"
@@ -1645,7 +1718,7 @@ else
 }
 # Focus on open file dialog
 # Перевести фокус на диалог открытия файла
-$tmp = New-Object System.Windows.Forms.Form -Property @{TopMost = $true}
+$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
 $OpenFileDialog.ShowDialog($tmp)
 if ($OpenFileDialog.FileName)
 {
@@ -1993,7 +2066,7 @@ do
 				$OpenFileDialog.RootFolder = "MyComputer"
 				# Focus on open file dialog
 				# Перевести фокус на диалог открытия файла
-				$tmp = New-Object System.Windows.Forms.Form -Property @{TopMost = $true}
+				$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
 				$OpenFileDialog.ShowDialog($tmp)
 				if ($OpenFileDialog.SelectedPath)
 				{
@@ -2077,9 +2150,10 @@ if ((Get-MpPreference).EnableControlledFolderAccess -eq 1)
 						$OpenFileDialog.Filter = "*.exe|*.exe|All Files (*.*)|*.*"
 					}
 					$OpenFileDialog.InitialDirectory = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
+					$OpenFileDialog.Multiselect = $false
 					# Focus on open file dialog
 					# Перевести фокус на диалог открытия файла
-					$tmp = New-Object System.Windows.Forms.Form -Property @{TopMost = $true}
+					$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
 					$OpenFileDialog.ShowDialog($tmp)
 					if ($OpenFileDialog.FileName)
 					{
@@ -2162,7 +2236,7 @@ do
 				$OpenFileDialog.RootFolder = "MyComputer"
 				# Focus on open file dialog
 				# Перевести фокус на диалог открытия файла
-				$tmp = New-Object System.Windows.Forms.Form -Property @{TopMost = $true}
+				$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
 				$OpenFileDialog.ShowDialog($tmp)
 				if ($OpenFileDialog.SelectedPath)
 				{
@@ -2243,9 +2317,10 @@ do
 					$OpenFileDialog.Filter = "*.exe|*.exe|All Files (*.*)|*.*"
 				}
 				$OpenFileDialog.InitialDirectory = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
+				$OpenFileDialog.Multiselect = $false
 				# Focus on open file dialog
 				# Перевести фокус на диалог открытия файла
-				$tmp = New-Object System.Windows.Forms.Form -Property @{TopMost = $true}
+				$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
 				$OpenFileDialog.ShowDialog($tmp)
 				if ($OpenFileDialog.FileName)
 				{
@@ -2294,7 +2369,7 @@ setx /M MP_FORCE_USE_SANDBOX 1
 # Отклонить предложение Windows Defender в "Безопасность Windows" о входе в аккаунт Microsoft
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AccountProtection_MicrosoftAccount_Disconnected -PropertyType DWord -Value 1 -Force
 # Dismiss Windows Defender offer in the Windows Security about to turn on the SmartScreen filter for Microsoft Edge
-# Отклонить предложение Windows Defender в "Безопасность Windows" включить фильтр SmartScreen для Microsoft Edge
+# Отклонить предложение Microsoft Defender в "Безопасность Windows" включить фильтр SmartScreen для Microsoft Edge
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AppAndBrowser_EdgeSmartScreenOff -PropertyType DWord -Value 0 -Force
 # Turn on logging for all Windows PowerShell modules
 # Включить ведение журнала для всех модулей Windows PowerShell
@@ -2419,8 +2494,8 @@ New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\SystemFileAssociations\image\
 # Удалить пункт "Печать" из контекстного меню .bat и .cmd файлов
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\batfile\shell\print -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\cmdfile\shell\print -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
-# Remove "Compressed (zipped) Folder" from context menu
-# Удалить пункт "Сжатая ZIP-папка" из контекстного меню
+# Remove "Compressed (zipped) Folder" from the "New" context menu
+# Удалить пункт "Сжатая ZIP-папка" из контекстного меню "Создать"
 Remove-Item -Path Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder\ShellNew -Force -ErrorAction Ignore
 # Remove "Rich Text Document" from the "New" context menu
 # Удалить пункт "Документ в формате RTF" из контекстного меню "Создать"
