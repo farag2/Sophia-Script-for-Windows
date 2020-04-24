@@ -7,24 +7,31 @@ Windows 10 Setup Script is a set of tweaks for OS fine-tuning and automating the
 </div>
 
 ## Core features
-- Turn off diagnostics tracking services;
+- Set up Privacy & Telemetry;
 - Turn off diagnostics tracking scheduled tasks;
-- Interactive prompts
-- Multilingual support: English & Russian
+- Set up UI & Personalization;
+- Uninstall OneDrive "correctly";
+- Interactive prompts;
+- Unpin Microsoft Edge and Microsoft Store from taskbar programmatically;
+- Change %TEMP% environment variable path to %SystemDrive%\Temp
+- Set location of the user folders to %SystemDrive% programmatically
+  - "Desktop";
+  - "Documents";
+  - "Downloads";
+  - "Music";
+  - "Pictures"
+  - "Videos.
 - Uninstall all UWP apps from all accounts with exception apps list;
 - Turn off Windows features;
 - Create a task in the Task Scheduler to start Windows cleaning up;
 - Create a task in the Task Scheduler to clear the $env:SystemRoot\SoftwareDistribution\Download folder;
-- Add folder to exclude from Windows Defender Antivirus scan;
-- Turn off per-user services;
-- Add old style shortcut for "Devices and Printers" to the Start menu";
+- Unpin all Start menu tiles;
 - Pin shortcuts to Start menu using syspin.exe
   - [Download](https://github.com/farag2/Windows-10-Setup-Script/raw/master/Start%20menu%20layout/syspin.exe) syspin.exe 
   - App [site](http://www.technosys.net/products/utils/pintotaskbar)
   - Hash (SHA256): 6967E7A3C2251812DD6B3FA0265FB7B61AADC568F562A98C50C345908C6E827
   - [Screenshot](#intro)
-- Unpin all Start menu tiles;
-- Set location of the "Desktop", "Documents", "Downloads", "Music", "Pictures", and "Videos";
+- Add exclusion folder from Microsoft Defender Antivirus scanning;
 - Refresh desktop icons, environment variables and taskbar without restarting File Explorer;
 - Many more File Explorer and context menu "deep" tweaks.
 
