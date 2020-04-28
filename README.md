@@ -37,9 +37,8 @@ Windows 10 Setup Script is a set of tweaks for OS fine-tuning and automating the
 To run the script:
 - Download [up-to-date version](https://github.com/farag2/Setup-Windows-10/releases);
 - Check whether file is encoded in **UTF-8 with BOM** and run it through powershell.exe;
-- PowerShell must be run with elevated privileges;
-- Set PowerShell execution policy <code>Set-ExecutionPolicy -ExecutionPolicy Bypass -Force</code> to be able to run .ps1 files.
-  - Read more about [execution policy](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies)
+- Run Start.cmd as Administrator;
+- The script will start immediately.
 
 ## Supported Windows versions
 |Version|Code name|   Marketing name   |Build|  Arch  |   Editions   |
