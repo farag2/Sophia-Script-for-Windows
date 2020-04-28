@@ -1,8 +1,6 @@
 <div align="center">
   <h1>Windows 10 Setup Script</h1>
 
-[![Downloads](https://img.shields.io/github/downloads/farag2/Windows-10-Setup-Script/total?style=for-the-badge)](https://github.com/farag2/Windows-10-Setup-Script/releases)
-
 Windows 10 Setup Script is a set of tweaks for OS fine-tuning and automating the routine tasks.
 </div>
 
