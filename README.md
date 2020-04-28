@@ -36,7 +36,8 @@ Windows 10 Setup Script is a set of tweaks for OS fine-tuning and automating the
 ## Usage
 To run the script:
 - Download [up-to-date version](https://github.com/farag2/Setup-Windows-10/releases);
-- Check whether file is encoded in **UTF-8 with BOM** and run it through powershell.exe;
+- Expand the archive;
+- Check whether .ps1 is encoded in **UTF-8 with BOM**;
 - Run Start.cmd as Administrator;
 - The script will start immediately.
 
