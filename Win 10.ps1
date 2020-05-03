@@ -1,9 +1,9 @@
 ﻿<#
 .SYNOPSIS
-	The PowerShell script is a set of tweaks for fine-tuning Windows 10 and automating the routine tasks.
+	"Windows 10 Setup Script" is a set of tweaks for OS fine-tuning and automating the routine tasks.
 .DESCRIPTION
 	Supported Windows versions:
-	Windows 10 18362/18363 (1903/1909) x64 only. Tested on Pro/Enterprise editions.
+	Windows 10 1903/1909 (19H1/19H2), 18362/18363 build, x64 only. Tested on Pro/Enterprise editions.
 
 	Check whether file is encoded in UTF-8 with BOM.
 	PowerShell must be run with elevated privileges;
@@ -18,13 +18,14 @@
 .EXAMPLE
 	PS C:\> & '.\Win 10.ps1'
 .NOTES
-	Version: v4.0.34
-	Date: 28.04.2020
+	Version: v4.1
+	Date: 03.05.2020
 	Written by: farag
 	Thanks to all http://forum.ru-board.com members involved
 	Ask a question on
 	- http://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
 	- https://habr.com/en/post/465365/
+	- https://4pda.ru/forum/index.php?s=&showtopic=523489&view=findpost&p=95909388
 	- https://forums.mydigitallife.net/threads/powershell-script-setup-windows-10.80139/
 	- https://www.reddit.com/r/Windows10/comments/ctg8jw/powershell_script_setup_windows_10/
 	Copyright (c) 2020 farag
@@ -35,8 +36,7 @@
 #Requires -RunAsAdministrator
 #Requires -Version 5
 
-#region Preparation
-Set-StrictMode -Version Latest
+#region Check
 Clear-Host
 
 # Get information about the current culture settings
@@ -79,9 +79,11 @@ if (-not ([IntPtr]::Size -eq 8))
 	}
 	break
 }
-#endregion Preparation
+#endregion Check
 
 #region Begin
+Set-StrictMode -Version Latest
+
 # Сlear $Error variable
 # Очистка переменной $Error
 $Error.Clear()
@@ -133,12 +135,12 @@ do
 				}
 				# Set system restore point creation frequency to 5 minutes
 				# Установить частоту создания точек восстановления на 5 минут
-				New-ItemProperty -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 5 -Force
+				New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 5 -Force
 				# Descriptive name format for the restore point: <day of weekend>, <Month> <date>, <year> <time>
 				# Формат описания точки восстановления: <день недели>, <дата> <месяц> <год> <время>
 				$CheckpointDescription = (Get-Date).GetDateTimeFormats()[13]
 				Checkpoint-Computer -Description $CheckpointDescription -RestorePointType MODIFY_SETTINGS
-				New-ItemProperty -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 1440 -Force
+				New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 1440 -Force
 			}
 			"N"
 			{
@@ -329,7 +331,6 @@ $tasks = @(
 	# XblGameSave Standby Task
 	"XblGameSaveTask"
 )
-
 # If device is not a laptop
 # Если устройство не является ноутбуком
 if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2)
@@ -995,16 +996,26 @@ $WindowsOptionalFeatures = @(
 	"WorkFolders-Client"
 )
 Disable-WindowsOptionalFeature -Online -FeatureName $WindowsOptionalFeatures -NoRestart
-
+ 
 # Remove Windows capabilities
 # Удалить дополнительные компоненты Windows
-$Capabilities = @(
+Add-Type -AssemblyName PresentationCore
+Add-Type -AssemblyName PresentationFramework
+
+# Windows capabilities array list to remove
+# Массив имен дополнительных компонентов Windows для удаления
+$Capabilities = New-Object System.Collections.ArrayList($null)
+
+# Windows capabilities that will be checked to remove by default
+# Дополнительные компоненты Windows, которые будут отмечены на удаление по умолчанию
+$CheckedCapabilities = @(
 	# Microsoft Quick Assist
 	# Быстрая поддержка (Майкрософт)
 	"App.Support.QuickAssist*"
 	# Windows Media Player
 	# Проигрыватель Windows Media
 	"Media.WindowsMediaPlayer*"
+
 )
 # If device is not a laptop
 # Если устройство не является ноутбуком
@@ -1012,11 +1023,169 @@ if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2)
 {
 	# Windows Hello Face
 	# Распознавание лиц Windows Hello
-	$Capabilities += "Hello.Face*"
+	$CheckedCapabilities += "Hello.Face*"
 }
-$OFS = "|"
-Get-WindowsCapability -Online | Where-Object -FilterScript {$_.Name -cmatch $Capabilities} | Remove-WindowsCapability -Online
-$OFS = " "
+#endregion Variables
+
+#region XAML Markup
+[xml]$XAML = '
+<Window
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	Name="Window" Title="Packages to uninstall"
+	MinHeight="450" MinWidth="400"
+	SizeToContent="Width" WindowStartupLocation="CenterScreen"
+	TextOptions.TextFormattingMode="Display" SnapsToDevicePixels="True"
+	FontFamily="Segoe UI" FontSize="12" ShowInTaskbar="False">
+	<Window.Resources>
+		<Style TargetType="StackPanel">
+			<Setter Property="Orientation" Value="Horizontal"/>
+		</Style>
+		<Style TargetType="CheckBox">
+			<Setter Property="Margin" Value="10, 10, 5, 10"/>
+			<Setter Property="IsChecked" Value="True"/>
+		</Style>
+		<Style TargetType="TextBlock">
+			<Setter Property="Margin" Value="5, 10, 10, 10"/>
+		</Style>
+		<Style TargetType="Button">
+			<Setter Property="Margin" Value="20"/>
+			<Setter Property="Padding" Value="10"/>
+		</Style>
+	</Window.Resources>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<ScrollViewer Name="Scroll" Grid.Row="0"
+			HorizontalScrollBarVisibility="Disabled"
+			VerticalScrollBarVisibility="Auto">
+			<StackPanel Name="PanelContainer" Orientation="Vertical"/>
+		</ScrollViewer>
+		<Button Name="Button" Grid.Row="1" Content="Uninstall"/>
+	</Grid>
+</Window>
+'
+#endregion XAML Markup
+
+$Reader = (New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML)
+$GUI = [Windows.Markup.XamlReader]::Load($Reader)
+$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
+	Set-Variable -Name ($_.Name) -Value $GUI.FindName($_.Name) -Scope Global
+}
+
+#region Functions
+function Get-CheckboxClicked
+{
+	[CmdletBinding()]
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ValueFromPipeline = $true
+		)]
+		[ValidateNotNull()]
+		$CheckBox
+	)
+
+	$Capability = $CheckBox.Parent.Children[1].Text
+	if ($CheckBox.IsChecked)
+	{
+		[void]$Capabilities.Add($Capability)
+	}
+	else
+	{
+		[void]$Capabilities.Remove($Capability)
+	}
+	if ($Capabilities.Count -gt 0)
+	{
+		$Button.IsEnabled = $true
+	}
+	else
+	{
+		$Button.IsEnabled = $false
+	}
+}
+
+function DeleteButton
+{
+	[void]$Window.Close()
+	$OFS = "|"
+	Get-WindowsCapability -Online | Where-Object -FilterScript {$_.Name -cmatch $Capabilities} | Remove-WindowsCapability -Online
+	$OFS = " "
+}
+
+function Add-CapabilityControl
+{
+	[CmdletBinding()]
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ValueFromPipeline = $true
+		)]
+		[ValidateNotNull()]
+		[string]$Capability
+	)
+
+	$CheckBox = New-Object -TypeName System.Windows.Controls.CheckBox
+	$CheckBox.Add_Click({Get-CheckboxClicked -CheckBox $_.Source})
+
+	$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
+	$TextBlock.Text = $Capability
+
+	$StackPanel = New-Object -TypeName System.Windows.Controls.StackPanel
+	[void]$StackPanel.Children.Add($CheckBox)
+	[void]$StackPanel.Children.Add($TextBlock)
+
+	[void]$PanelContainer.Children.Add($StackPanel)
+
+	$CheckBox.IsChecked = $false
+
+	if ($CheckedCapabilities | Where-Object -FilterScript {$Capability -like $_})
+	{
+		$CheckBox.IsChecked = $true
+		# If package checked, add to the array list to remove
+		# Если пакет выделен, то добавить в массив для удаления
+		[void]$Capabilities.Add($Capability)
+	}
+}
+#endregion Functions
+
+#region Events Handlers
+# Window Loaded Event
+$Window.Add_Loaded({
+	# Windows capabilities that will be shown in the GUI
+	# Дополнительные компоненты Windows, которые будут выводиться в GUI
+	$ExcludedCapabilities = @(
+		# Language components
+		# Языковые компоненты
+		"Language\."
+		# Mail, contacts, and calendar sync component
+		# Компонент синхронизации почты, контактов и календаря.
+		"OneCoreUAP\.OneSync"
+	)
+	$OFS = "|"
+	(Get-WindowsCapability -Online | Where-Object -FilterScript {($_.State -eq "Installed") -and ($_.Name -cnotmatch $ExcludedCapabilities)}).Name | ForEach-Object -Process {
+		Add-CapabilityControl -Capability $_
+	}
+	$OFS = " "
+})
+
+# Button Click Event
+$Button.Add_Click({DeleteButton})
+#endregion Events Handlers
+
+if ($RU)
+{
+	Write-Verbose -Message "GUI открывается..." -Verbose
+}
+else
+{
+	Write-Verbose "GUI opening..." -Verbose
+}
+$GUI.ShowDialog() | Out-Null
 
 # Turn on updates for other Microsoft products
 # Включить автоматическое обновление для других продуктов Microsoft
@@ -1669,100 +1838,6 @@ if (-not (Test-Path -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation))
 }
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation -Name UserPreference -PropertyType DWord -Value 3 -Force
 
-# Set "High performance" in graphics performance preference for apps
-# Установить параметры производительности графики для отдельных приложений на "Высокая производительность"
-if (Get-CimInstance -ClassName Win32_VideoController | Where-Object -FilterScript {$_.AdapterDACType -ne "Internal" -and $null -ne $_.AdapterDACType})
-{
-	do
-	{
-		if ($RU)
-		{
-			Write-Host "`nЧтобы добавить приложение, для которого будет установлена настройка производительности графики"
-			Write-Host "на `"Высокая производительность`", введите букву: "
-			Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-			Write-Host " или " -NoNewline
-			Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
-			Write-Host ", чтобы пропустить" -NoNewline
-			Write-Host "`nТакже, чтобы пропустить, нажмите Enter" -NoNewline
-		}
-		else
-		{
-			Write-Host "`nTo add an app for which the graphics performance preference"
-			Write-Host "will be set to `"High performance`" type: "
-			Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-			Write-Host " or " -NoNewline
-			Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
-			Write-Host " to skip" -NoNewline
-			Write-Host "`nAlso press Enter to skip" -NoNewline
-		}
-		$Prompt = Read-Host -Prompt " "
-		if ([string]::IsNullOrEmpty($Prompt))
-		{
-			break
-		}
-		else
-		{
-			switch ($Prompt)
-			{
-				"Y"
-				{
-					if (-not (Test-Path -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences))
-					{
-						New-Item -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Force
-					}
-					Add-Type -AssemblyName System.Windows.Forms
-					$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
-					if ($RU)
-					{
-						$OpenFileDialog.Filter = "*.exe|*.exe|Все файлы (*.*)|*.*"
-					}
-					else
-					{
-						$OpenFileDialog.Filter = "*.exe|*.exe|All Files (*.*)|*.*"
-					}
-					$OpenFileDialog.InitialDirectory = "$env:ProgramFiles}"
-					$OpenFileDialog.Multiselect = $false
-					# Focus on open file dialog
-					# Перевести фокус на диалог открытия файла
-					$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
-					$OpenFileDialog.ShowDialog($tmp)
-					if ($OpenFileDialog.FileName)
-					{
-						New-ItemProperty -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Name $OpenFileDialog.FileName -PropertyType String -Value "GpuPreference=2;" -Force
-					}
-				}
-				"N" {}
-				Default
-				{
-					if ($RU)
-					{
-						Write-Host "`nНеправильная буква." -ForegroundColor Yellow
-						Write-Host "`nЧтобы добавить приложение, для которого будет установлена настройка производительности графики"
-						Write-Host "на `"Высокая производительность`", введите букву: "
-						Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-						Write-Host " или " -NoNewline
-						Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
-						Write-Host ", чтобы пропустить" -NoNewline
-						Write-Host "`nТакже, чтобы пропустить, нажмите Enter" -NoNewline
-					}
-					else
-					{
-						Write-Host "`nInvalid letter." -ForegroundColor Yellow
-						Write-Host "`nTo add an app for which the graphics performance preference"
-						Write-Host "will be set to `"High performance`" type: "
-						Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-						Write-Host " or " -NoNewline
-						Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
-						Write-Host " to skip" -NoNewline
-						Write-Host "`nAlso press Enter to skip" -NoNewline
-					}
-				}
-			}
-		}
-	}
-	while ($Prompt -ne "N")
-}
-
 # Launch folder in a separate process
 # Запускать окна с папками в отдельном процессе
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SeparateProcess -PropertyType DWord -Value 1 -Force
@@ -1974,8 +2049,8 @@ if ($OpenFileDialog.FileName)
 		# Глагол "Закрепить на начальном экране" недоступен для control.exe, поэтому необходимо создать ярлык
 		$shell = New-Object -ComObject Wscript.Shell
 		$shortcut = $shell.CreateShortcut("$env:SystemRoot\System32\$ControlPanelLocalizedName.lnk")
-		$shortcut.TargetPath = "$env:SystemRoot\System32\control.exe"
-		$shortcut.Save()
+		$Shortcut.TargetPath = "$env:SystemRoot\System32\control.exe"
+		$Shortcut.Save()
 		$Arguments = @"
 			"$env:SystemRoot\System32\$ControlPanelLocalizedName.lnk" "51201"
 "@
@@ -1997,10 +2072,10 @@ if ($OpenFileDialog.FileName)
 	}
 	$shell = New-Object -ComObject Wscript.Shell
 	$shortcut = $shell.CreateShortcut("$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesAndPrintersLocalizedName.lnk")
-	$shortcut.TargetPath = "control"
-	$shortcut.Arguments = "printers"
-	$shortCut.IconLocation = "$env:SystemRoot\system32\DeviceCenter.dll"
-	$shortcut.Save()
+	$Shortcut.TargetPath = "control"
+	$Shortcut.Arguments = "printers"
+	$Shortcut.IconLocation = "$env:SystemRoot\system32\DeviceCenter.dll"
+	$Shortcut.Save()
 	# Pause for 3 sec, unless the "Devices and Printers" shortcut won't displayed in the Start menu
 	# Пауза на 3 с, иначе ярлык "Устройства и принтеры" не будет отображаться в меню "Пуск"
 	Start-Sleep -Seconds 3
@@ -2054,13 +2129,27 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer 
 #endregion Edge
 
 #region UWP apps
-# Uninstall all UWP apps from all accounts, except the followings...
-# App packages will not be installed when new user accounts are created
-# Retrieve UWP apps package names by (Get-AppxPackage -PackageTypeFilter Bundle -AllUsers).Name command
-# Удалить все UWP-приложения из всех учетных записей, кроме следующих...
-# Приложения не будут установлены при создании новых учетных записей
-# Получите имена пакетов UWP-приложений с помощью команды (Get-AppxPackage -PackageTypeFilter Bundle -AllUsers).Name
-$ExcludedAppxPackages = @(
+<#
+Uninstall all UWP apps from all accounts
+GUI with the ability to select the package to remove
+App packages will not be installed when new user accounts are created
+Add UWP apps packages names to the $UnchekedAppXPackages array list by retrieving their packages names with (Get-AppxPackage -PackageTypeFilter Bundle -AllUsers).Name command
+
+Удалить все UWP-приложения из всех учетных записей
+GUI с возможностью выбрать пакет для удаления
+Приложения не будут установлены при создании новых учетных записей
+Добавьте имена пакетов UWP-приложений в массив $UnchekedAppXPackages, получив их имена пакетов с помощью команды (Get-AppxPackage -PackageTypeFilter Bundle -AllUsers).Name
+#>
+Add-Type -AssemblyName PresentationCore, PresentationFramework
+
+#region Variables
+# UWP-apps array list to remove
+# Массив имен UWP-приложений для удаления
+$AppxPackages = New-Object System.Collections.ArrayList($null)
+
+# UWP-apps that won't be checked to remove by default
+# UWP-приложения, которые не будут отмечены на удаление по умолчанию
+$UncheckedAppxPackages = @(
 	# AMD Radeon UWP panel
 	# UWP-панель AMD Radeon
 	"AdvancedMicroDevicesInc*"
@@ -2070,20 +2159,12 @@ $ExcludedAppxPackages = @(
 	# UWP-панель Intel
 	"AppUp.IntelGraphicsControlPanel"
 	"AppUp.IntelGraphicsExperience"
-	# Microsoft Desktop App Installer
-	"Microsoft.DesktopAppInstaller"
 	# Sticky Notes
 	# Записки
 	"Microsoft.MicrosoftStickyNotes"
 	# Screen Sketch
 	# Набросок на фрагменте экрана
 	"Microsoft.ScreenSketch"
-	# Microsoft Store
-	"Microsoft.StorePurchaseApp"
-	"Microsoft.WindowsStore"
-	# Web Media Extensions
-	# Расширения для интернет-мультимедиа
-	"Microsoft.WebMediaExtensions"
 	# Photos and Video Editor
 	# Фотографии и Видеоредактор
 	"Microsoft.Windows.Photos"
@@ -2110,16 +2191,181 @@ $ExcludedAppxPackages = @(
 	# Realtek Audio Console
 	"RealtekSemiconductorCorp.RealtekAudioControl"
 )
-$OFS = "|"
-Get-AppxPackage -PackageTypeFilter Bundle -AllUsers | Where-Object -FilterScript {$_.Name -cnotmatch $ExcludedAppxPackages} | Remove-AppxPackage -AllUsers -Verbose
-$OFS = " "
+#endregion Variables
 
-# Open Microsoft Store "HEVC Video Extensions from Device Manufacturer" page
-# The extension can be installed without Microsoft account
-# "Movies & TV" app required
-# Открыть страницу "Расширения для видео HEVC от производителя устройства" в Microsoft Store
-# Расширение может быть установлено без учетной записи Microsoft
-# Для работы необходимо приложение "Кино и ТВ"
+#region XAML Markup
+[xml]$XAML = '
+<Window
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	Name="Window" Title="Packages to uninstall"
+	MinHeight="450" MinWidth="400"
+	SizeToContent="Width" WindowStartupLocation="CenterScreen"
+	TextOptions.TextFormattingMode="Display" SnapsToDevicePixels="True"
+	FontFamily="Segoe UI" FontSize="12" ShowInTaskbar="False">
+	<Window.Resources>
+		<Style TargetType="StackPanel">
+			<Setter Property="Orientation" Value="Horizontal"/>
+		</Style>
+		<Style TargetType="CheckBox">
+			<Setter Property="Margin" Value="10, 10, 5, 10"/>
+			<Setter Property="IsChecked" Value="True"/>
+		</Style>
+		<Style TargetType="TextBlock">
+			<Setter Property="Margin" Value="5, 10, 10, 10"/>
+		</Style>
+		<Style TargetType="Button">
+			<Setter Property="Margin" Value="20"/>
+			<Setter Property="Padding" Value="10"/>
+		</Style>
+	</Window.Resources>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<ScrollViewer Name="Scroll" Grid.Row="0"
+			HorizontalScrollBarVisibility="Disabled"
+			VerticalScrollBarVisibility="Auto">
+			<StackPanel Name="PanelContainer" Orientation="Vertical"/>
+		</ScrollViewer>
+		<Button Name="Button" Grid.Row="1" Content="Uninstall"/>
+	</Grid>
+</Window>
+'
+#endregion XAML Markup
+
+$Reader = (New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML)
+$GUI = [Windows.Markup.XamlReader]::Load($Reader)
+$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
+	Set-Variable -Name ($_.Name) -Value $GUI.FindName($_.Name) -Scope Global
+}
+
+#region Functions
+function Get-CheckboxClicked
+{
+	[CmdletBinding()]
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ValueFromPipeline = $true
+		)]
+		[ValidateNotNull()]
+		$CheckBox
+	)
+
+	$AppxName = $CheckBox.Parent.Children[1].Text
+	if ($CheckBox.IsChecked)
+	{
+		[void]$AppxPackages.Add($AppxName)
+	}
+	else
+	{
+		[void]$AppxPackages.Remove($AppxName)
+	}
+	if ($AppxPackages.Count -gt 0)
+	{
+		$Button.IsEnabled = $true
+	}
+	else
+	{
+		$Button.IsEnabled = $false
+	}
+}
+
+function DeleteButton
+{
+	[void]$Window.Close()
+	$OFS = "|"
+	Get-AppxPackage -PackageTypeFilter Bundle -AllUsers | Where-Object -FilterScript {$_.Name -cmatch $AppxPackages} | Remove-AppxPackage -AllUsers -Verbose
+	$OFS = " "
+}
+
+function Add-AppxControl
+{
+	[CmdletBinding()]
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ValueFromPipeline = $true
+		)]
+		[ValidateNotNull()]
+		[string]$AppxName
+	)
+
+	$CheckBox = New-Object -TypeName System.Windows.Controls.CheckBox
+	$CheckBox.Add_Click({Get-CheckboxClicked -CheckBox $_.Source})
+
+	$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
+	$TextBlock.Text = $AppxName
+
+	$StackPanel = New-Object -TypeName System.Windows.Controls.StackPanel
+	[void]$StackPanel.Children.Add($CheckBox)
+	[void]$StackPanel.Children.Add($TextBlock)
+
+	[void]$PanelContainer.Children.Add($StackPanel)
+
+	if ($UncheckedAppxPackages.Contains($AppxName))
+	{
+		$CheckBox.IsChecked = $false
+		# Exit function, item is not checked
+		# Выход из функции, если элемент не выделен
+		return
+	}
+
+	# If package checked, add to the array list to uninstall
+	# Если пакет выделен, то добавить в массив для удаления
+	[void]$AppxPackages.Add($AppxName)
+}
+#endregion Functions
+
+#region Events Handlers
+# Window Loaded Event
+$Window.Add_Loaded({
+	# UWP-apps that won't be shown in the form
+	# UWP-приложения, которые не будут выводиться в форме
+	$ExcludedAppxPackages = @(
+		# Microsoft Desktop App Installer
+		"Microsoft.DesktopAppInstaller"
+		# Microsoft Store
+		"Microsoft.StorePurchaseApp"
+		"Microsoft.WindowsStore"
+		# Web Media Extensions
+		# Расширения для интернет-мультимедиа
+		"Microsoft.WebMediaExtensions"
+	)
+	$OFS = "|"
+	(Get-AppxPackage -PackageTypeFilter Bundle -AllUsers | Where-Object -FilterScript {$_.Name -cnotmatch $ExcludedAppxPackages}).Name | ForEach-Object -Process {
+		Add-AppxControl -AppxName $_
+	}
+	$OFS = " "
+})
+
+# Button Click Event
+$Button.Add_Click({DeleteButton})
+#endregion Events Handlers
+
+if ($RU)
+{
+	Write-Verbose -Message "GUI открывается..." -Verbose
+}
+else
+{
+	Write-Verbose "GUI opening..." -Verbose
+}
+$GUI.ShowDialog() | Out-Null
+
+<#
+Open Microsoft Store "HEVC Video Extensions from Device Manufacturer" page
+The extension can be installed without Microsoft account
+"Movies & TV" app required
+
+Открыть страницу "Расширения для видео HEVC от производителя устройства" в Microsoft Store
+Расширение может быть установлено без учетной записи Microsoft
+Для работы необходимо приложение "Кино и ТВ"
+#>
 if (Get-AppxPackage -Name Microsoft.ZuneVideo)
 {
 	Start-Process -FilePath ms-windows-store://pdp/?ProductId=9n4wgh0z6vhq
@@ -2140,10 +2386,13 @@ New-ItemProperty -Path HKCU:\System\GameConfigStore -Name GameDVR_Enabled -Prope
 # Отключить советы Xbox Game Bar
 New-ItemProperty -Path HKCU:\Software\Microsoft\GameBar -Name ShowStartupPanel -PropertyType DWord -Value 0 -Force
 
-# Uninstall all Xbox related UWP apps from all accounts
-# App packages will not be installed when new user accounts are created
-# Удалить все UWP-приложения, связанные с Xbox, из всех учетных записей
-# Приложения не будут установлены при создании новых учетных записей
+<#
+Uninstall all Xbox related UWP apps from all accounts
+App packages will not be installed when new user accounts are created
+
+Удалить все UWP-приложения, связанные с Xbox, из всех учетных записей
+Приложения не будут установлены при создании новых учетных записей
+#>
 $XboxAppxPackages = @(
 	# Xbox Identity Provider
 	# Поставщик удостоверений Xbox
@@ -2163,6 +2412,100 @@ $XboxAppxPackages = @(
 $OFS = "|"
 Get-AppxPackage -PackageTypeFilter Bundle -AllUsers | Where-Object -FilterScript {$_.Name -cmatch $XboxAppxPackages} | Remove-AppxPackage -AllUsers -Verbose
 $OFS = " "
+
+# Set "High performance" in graphics performance preference for apps
+# Установить параметры производительности графики для отдельных приложений на "Высокая производительность"
+if (Get-CimInstance -ClassName Win32_VideoController | Where-Object -FilterScript {$_.AdapterDACType -ne "Internal" -and $null -ne $_.AdapterDACType})
+{
+	do
+	{
+		if ($RU)
+		{
+			Write-Host "`nЧтобы добавить приложение, для которого будет установлена настройка производительности графики"
+			Write-Host "на `"Высокая производительность`", введите букву: "
+			Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
+			Write-Host " или " -NoNewline
+			Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
+			Write-Host ", чтобы пропустить" -NoNewline
+			Write-Host "`nТакже, чтобы пропустить, нажмите Enter" -NoNewline
+		}
+		else
+		{
+			Write-Host "`nTo add an app for which the graphics performance preference"
+			Write-Host "will be set to `"High performance`" type: "
+			Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
+			Write-Host " or " -NoNewline
+			Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
+			Write-Host " to skip" -NoNewline
+			Write-Host "`nAlso press Enter to skip" -NoNewline
+		}
+		$Prompt = Read-Host -Prompt " "
+		if ([string]::IsNullOrEmpty($Prompt))
+		{
+			break
+		}
+		else
+		{
+			switch ($Prompt)
+			{
+				"Y"
+				{
+					if (-not (Test-Path -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences))
+					{
+						New-Item -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Force
+					}
+					Add-Type -AssemblyName System.Windows.Forms
+					$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
+					if ($RU)
+					{
+						$OpenFileDialog.Filter = "*.exe|*.exe|Все файлы (*.*)|*.*"
+					}
+					else
+					{
+						$OpenFileDialog.Filter = "*.exe|*.exe|All Files (*.*)|*.*"
+					}
+					$OpenFileDialog.InitialDirectory = "$env:ProgramFiles}"
+					$OpenFileDialog.Multiselect = $false
+					# Focus on open file dialog
+					# Перевести фокус на диалог открытия файла
+					$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+					$OpenFileDialog.ShowDialog($tmp)
+					if ($OpenFileDialog.FileName)
+					{
+						New-ItemProperty -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Name $OpenFileDialog.FileName -PropertyType String -Value "GpuPreference=2;" -Force
+					}
+				}
+				"N" {}
+				Default
+				{
+					if ($RU)
+					{
+						Write-Host "`nНеправильная буква." -ForegroundColor Yellow
+						Write-Host "`nЧтобы добавить приложение, для которого будет установлена настройка производительности графики"
+						Write-Host "на `"Высокая производительность`", введите букву: "
+						Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
+						Write-Host " или " -NoNewline
+						Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
+						Write-Host ", чтобы пропустить" -NoNewline
+						Write-Host "`nТакже, чтобы пропустить, нажмите Enter" -NoNewline
+					}
+					else
+					{
+						Write-Host "`nInvalid letter." -ForegroundColor Yellow
+						Write-Host "`nTo add an app for which the graphics performance preference"
+						Write-Host "will be set to `"High performance`" type: "
+						Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
+						Write-Host " or " -NoNewline
+						Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
+						Write-Host " to skip" -NoNewline
+						Write-Host "`nAlso press Enter to skip" -NoNewline
+					}
+				}
+			}
+		}
+	}
+	while ($Prompt -ne "N")
+}
 #endregion Gaming
 
 #region Scheduled tasks
@@ -2170,7 +2513,7 @@ $OFS = " "
 # The task runs every 90 days
 # Создать задачу в Планировщике задач по очистке обновлений Windows
 # Задача выполняется каждые 90 дней
-$keys = @(
+$VolumeCaches = @(
 	# Delivery Optimization Files
 	# Файлы оптимизации доставки
 	"Delivery Optimization Files",
@@ -2193,9 +2536,9 @@ $keys = @(
 	# Файлы журнала обновления Windows
 	"Windows Upgrade Log Files"
 )
-foreach ($key in $keys)
+foreach ($VolumeCache in $VolumeCaches)
 {
-	New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\$key" -Name StateFlags1337 -PropertyType DWord -Value 2 -Force
+	New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\$VolumeCache" -Name StateFlags1337 -PropertyType DWord -Value 2 -Force
 }
 $action = New-ScheduledTaskAction -Execute "cleanmgr.exe" -Argument "/sagerun:1337"
 $trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 90 -At 9am
@@ -2622,7 +2965,7 @@ auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:ena
 $ProcessCreation = auditpol /get /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /r | ConvertFrom-Csv | Select-Object "Inclusion Setting"
 if ($ProcessCreation."Inclusion Setting" -ne "No Auditing")
 {
-	New-ItemProperty -Path HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -PropertyType DWord -Value 1 -Force
+	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -PropertyType DWord -Value 1 -Force
 }
 
 # Turn on logging for all Windows PowerShell modules
