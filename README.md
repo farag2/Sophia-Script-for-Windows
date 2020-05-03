@@ -28,11 +28,15 @@ Windows 10 Setup Script is a set of tweaks for OS fine-tuning and automating the
   - [Download](https://github.com/farag2/Windows-10-Setup-Script/raw/master/Start%20menu%20layout/syspin.exe) syspin.exe 
   - App [site](http://www.technosys.net/products/utils/pintotaskbar)
   - Hash (SHA256): 6967E7A3C2251812DD6B3FA0265FB7B61AADC568F562A98C50C345908C6E827
-  - [Screenshot](#intro)
 - Add exclusion folder from Microsoft Defender Antivirus scanning;
 - Refresh desktop icons, environment variables and taskbar without restarting File Explorer;
 - Many more File Explorer and context menu "deep" tweaks.
 
+## Images
+  ![intro](https://github.com/farag2/Windows-10-Setup-Script/raw/master/intro.gif)
+  ![intro](https://raw.githubusercontent.com/farag2/Windows-10-Setup-Script/master/Images/GUI-1.png)
+  ![intro](https://raw.githubusercontent.com/farag2/Windows-10-Setup-Script/master/Images/GUI-2.png)
+  
 ## Usage
 To run the script:
 - Download [up-to-date version](https://github.com/farag2/Setup-Windows-10/releases);
@@ -50,9 +54,6 @@ To run the script:
 ## FAQ
 Read the code you run carefully. Some functions are presented as an example only. You must be aware of the meaning of the functions in the code. **If you're not sure what the script does, do not run it**.
 **Strongly recommended to run the script after fresh installation**. Some of functions can be run also on LTSB/LTSC and on older versions of Windows and PowerShell (not recommended to run on the x86 systems).
-
-## Intro
-  ![intro](https://github.com/farag2/Windows-10-Setup-Script/raw/master/intro.gif)
 
 ## Microsoft Docs
  - [Release information](https://docs.microsoft.com/en-us/windows/release-information)
