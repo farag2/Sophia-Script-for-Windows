@@ -33,7 +33,7 @@ Windows 10 Setup Script is a set of tweaks for OS fine-tuning and automating the
 - Many more File Explorer and context menu "deep" tweaks.
 
 ## Images
-  ![intro](https://github.com/farag2/Windows-10-Setup-Script/raw/master/intro.gif)
+  ![intro](https://github.com/farag2/Windows-10-Setup-Script/raw/master/Images/intro.gif)
   ![intro](https://raw.githubusercontent.com/farag2/Windows-10-Setup-Script/master/Images/GUI-1.png)
   ![intro](https://raw.githubusercontent.com/farag2/Windows-10-Setup-Script/master/Images/GUI-2.png)
   
