@@ -25,7 +25,6 @@
 - Create a task in the Task Scheduler to clear the $env:SystemRoot\SoftwareDistribution\Download folder;
 - Unpin all Start menu tiles;
 - Pin shortcuts to Start menu using syspin.exe
-  - [Download](https://github.com/farag2/Windows-10-Setup-Script/raw/master/Start%20menu%20layout/syspin.exe) syspin.exe 
   - App [site](http://www.technosys.net/products/utils/pintotaskbar)
   - Hash (SHA256): 6967E7A3C2251812DD6B3FA0265FB7B61AADC568F562A98C50C345908C6E827
 - Add exclusion folder from Microsoft Defender Antivirus scanning;
