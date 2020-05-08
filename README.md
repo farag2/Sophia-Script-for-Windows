@@ -1,7 +1,7 @@
 <div align="center">
   <h1>Windows 10 Setup Script</h1>
 
-Windows 10 Setup Script is a set of tweaks for OS fine-tuning and automating the routine tasks.
+"Windows 10 Setup Script" is a set of tweaks for OS fine-tuning and automating the routine tasks.
 </div>
 
 ## Core features
@@ -63,7 +63,7 @@ Read the code you run carefully. Some functions are presented as an example only
  - [Habr](https://habr.com/en/post/465365/)
  - [Ru-Board](http://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15)
  - [4PDA](https://4pda.ru/forum/index.php?showtopic=523489&st=42980#entry95909388)
- - [My Digital Life](https://forums.mydigitallife.net/threads/powershell-script-setup-windows-10.80139/)
+ - [My Digital Life](https://forums.mydigitallife.net/threads/powershell-script-setup-windows-10.81675/)
  - [Reddit](https://www.reddit.com/r/Windows10/comments/ctg8jw/powershell_script_setup_windows_10/)
 
 ## PS
