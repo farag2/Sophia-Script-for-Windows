@@ -2466,7 +2466,7 @@ $ToastXml.LoadXml($ToastTemplate.OuterXml)
 
 [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($app).Show($ToastXml)
 
-# Start-Sleep -Seconds 60
+Start-Sleep -Seconds 60
 
 # Process startup info
 # Параметры запуска процесса
