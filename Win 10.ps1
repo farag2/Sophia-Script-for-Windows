@@ -3,7 +3,9 @@
 	"Windows 10 Setup Script" is a set of tweaks for OS fine-tuning and automating the routine tasks.
 .DESCRIPTION
 	Supported Windows versions:
-	Windows 10 1903/1909 (19H1/19H2), 18362/18363 build, x64 only. Tested on Pro/Enterprise editions.
+	Windows 10 1903/1909 (19H1/19H2), 18362/18363 build, x64 only
+	
+	Tested on Home/Pro/Enterprise editions
 
 	Check whether file is encoded in UTF-8 with BOM.
 	PowerShell must be run with elevated privileges;
@@ -18,8 +20,8 @@
 .EXAMPLE
 	PS C:\> & '.\Win 10.ps1'
 .NOTES
-	Version: v4.1
-	Date: 03.05.2020
+	Version: v4.2
+	Date: 12.05.2020
 	Written by: farag
 	Thanks to all http://forum.ru-board.com members involved
 	Ask a question on
@@ -79,6 +81,21 @@ if (-not ([IntPtr]::Size -eq 8))
 	}
 	break
 }
+
+# Detect whether the script is running via PowerShell ISE
+# Определить, запущен ли скрипт в PowerShell ISE
+if ($psISE)
+{
+	if ($RU)
+	{
+		Write-Warning -Message "Скрипт не может быть запущен в PowerShell ISE"
+	}
+	else
+	{
+		Write-Warning -Message "The script can not be run via PowerShell ISE"
+	}
+	break
+}
 #endregion Check
 
 #region Begin
@@ -100,128 +117,86 @@ if ($RU)
 # Создать точку восстановления
 if ($RU)
 {
-	Write-Host "`nЧтобы создать точку восстановления, введите букву: " -NoNewline
-	Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-	Write-Host " или " -NoNewline
-	Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
-	Write-Host ", чтобы пропустить" -NoNewline
-	Write-Host "`nТакже, чтобы пропустить, нажмите Enter" -NoNewline
+	$Title = "Точка восстановления"
+	$Message = "Чтобы создайте точку восстановления, введите необходимую букву"
+	$Options = "&Создать", "&Не создавать", "&Пропустить"
 }
 else
 {
-	Write-Host "`nTo сreate a restore point type: " -NoNewline
-	Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-	Write-Host " or " -NoNewline
-	Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
-	Write-Host " to skip" -NoNewline
-	Write-Host "`nAlso press Enter to skip" -NoNewline
+	$Title = "Restore point"
+	$Message = "To create a restore point enter the required letter"
+	$Options = "&Create", "&Do not create", "&Skip"
 }
-do
+$DefaultChoice = 2
+$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+
+switch ($Result)
 {
-	$Prompt = Read-Host -Prompt " "
-	if ([string]::IsNullOrEmpty($Prompt))
+	"0"
 	{
-		break
-	}
-	else
-	{
-		switch ($Prompt)
+		if (-not (Get-ComputerRestorePoint))
 		{
-			"Y"
+			Enable-ComputerRestore -Drive $env:SystemDrive
+		}
+		# Set system restore point creation frequency to 5 minutes
+		# Установить частоту создания точек восстановления на 5 минут
+		New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 5 -Force
+		# Descriptive name format for the restore point: <Month>.<date>.<year> <time>
+		# Формат описания точки восстановления: <дата>.<месяц>.<год> <время>
+		$CheckpointDescription = Get-Date -Format "dd.MM.yyyy HH:mm"
+		Checkpoint-Computer -Description $CheckpointDescription -RestorePointType MODIFY_SETTINGS
+		New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 1440 -Force
+	}
+	"1"
+	{
+		if ($RU)
+		{
+			$Title = "Точки восстановления"
+			$Message = "Чтобы удалить все точки восстановления, введите необходимую букву"
+			$Options = "&Удалить", "&Пропустить"
+		}
+		else
+		{
+			$Title = "Restore point"
+			$Message = "To remove all restore points enter the required letter"
+			$Options = "&Delete", "&Skip"
+		}
+		$DefaultChoice = 1
+		$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+
+		switch ($Result)
+		{
+			"0"
 			{
-				if (-not (Get-ComputerRestorePoint))
-				{
-					Enable-ComputerRestore -Drive $env:SystemDrive
-				}
-				# Set system restore point creation frequency to 5 minutes
-				# Установить частоту создания точек восстановления на 5 минут
-				New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 5 -Force
-				# Descriptive name format for the restore point: <day of weekend>, <Month> <date>, <year> <time>
-				# Формат описания точки восстановления: <день недели>, <дата> <месяц> <год> <время>
-				$CheckpointDescription = (Get-Date).GetDateTimeFormats()[13]
-				Checkpoint-Computer -Description $CheckpointDescription -RestorePointType MODIFY_SETTINGS
-				New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 1440 -Force
+				# Delete all restore points
+				# Удалить все точки восстановения
+				Get-CimInstance -ClassName Win32_ShadowCopy | Remove-CimInstance
 			}
-			"N"
+			"1"
 			{
 				if ($RU)
 				{
-					Write-Host "`nЧтобы удалить все точки восстановления, введите букву: " -NoNewline
-					Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-					Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
+					Write-Verbose -Message "Пропущено" -Verbose
 				}
 				else
 				{
-					Write-Host "`nTo remove all restore points type: " -NoNewline
-					Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-					Write-Host "`nPress Enter to skip" -NoNewline
-				}
-				do
-				{
-					$Prompt = Read-Host -Prompt " "
-					if ([string]::IsNullOrEmpty($Prompt))
-					{
-						break
-					}
-					else
-					{
-						switch ($Prompt)
-						{
-							"Y"
-							{
-								# Delete all restore points
-								# Удалить все точки восстановения
-								Get-CimInstance -ClassName Win32_ShadowCopy | Remove-CimInstance
-							}
-							Default
-							{
-								if ($RU)
-								{
-									Write-Host "`nНеправильная буква." -ForegroundColor Yellow
-									Write-Host "`nЧтобы удалить все точки восстановления, введите букву: " -NoNewline
-									Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-									Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
-								}
-								else
-								{
-									Write-Host "`nInvalid letter." -ForegroundColor Yellow
-									Write-Host "`nTo remove all restore points type: " -NoNewline
-									Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-									Write-Host "`nPress Enter to skip" -NoNewline
-								}
-							}
-						}
-					}
-				}
-				until ($Prompt -eq "Y")
-			}
-			Default
-			{
-				if ($RU)
-				{
-					Write-Host "`nНеправильная буква." -ForegroundColor Yellow
-					Write-Host "`nЧтобы создать точку восстановления, введите букву: " -NoNewline
-					Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-					Write-Host " или " -NoNewline
-					Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
-					Write-Host ", чтобы пропустить" -NoNewline
-					Write-Host "`nТакже, чтобы пропустить, нажмите Enter" -NoNewline
-				}
-				else
-				{
-					Write-Host "`nInvalid letter." -ForegroundColor Yellow
-					Write-Host "`nTo сreate a restore point type: " -NoNewline
-					Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-					Write-Host " or " -NoNewline
-					Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
-					Write-Host " to skip" -NoNewline
-					Write-Host "`nAlso press Enter to skip" -NoNewline
+					Write-Verbose -Message "Skipped" -Verbose
 				}
 			}
 		}
 	}
+	"2"
+	{
+		if ($RU)
+		{
+			Write-Verbose -Message "Пропущено" -Verbose
+		}
+		else
+		{
+			Write-Verbose -Message "Skipped" -Verbose
+		}
+	}
 }
-until ($Prompt -eq "Y")
 #endregion Begin
 
 #region Privacy & Telemetry
@@ -437,7 +412,7 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\
 # Не показывать кнопку Просмотра задач
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowTaskViewButton -PropertyType DWord -Value 0 -Force
 
-# Do not show People on the taskbar
+# Do not show People button on the taskbar
 # Не показывать панель "Люди" на панели задач
 if (-not (Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People))
 {
@@ -553,143 +528,89 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\
 # Выбрать режим Windows по умолчанию
 if ($RU)
 {
-	Write-Host "`nВыберите режим Windows по умолчанию, введя букву: "
-	Write-Host "[L]ight " -ForegroundColor Yellow -NoNewline
-	Write-Host "для светлого режима или " -NoNewline
-	Write-Host "[D]ark " -ForegroundColor Yellow -NoNewline
-	Write-Host "для тёмного."
-	Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
+	$Title = "Режим Windows по умолчанию"
+	$Message = "Чтобы выбрать режим Windows по умолчанию, введите необходимую букву"
+	$Options = "&Светлый", "&Темный", "&Пропустить"
 }
 else
 {
-	Write-Host "`nChoose theme color for default Windows mode by typing"
-	Write-Host "[L]ight " -ForegroundColor Yellow -NoNewline
-	Write-Host "for the light mode or " -NoNewline
-	Write-Host "[D]ark " -ForegroundColor Yellow -NoNewline
-	Write-Host "for the dark"
-	Write-Host "`nPress Enter to skip" -NoNewline
+	$Title = "Default Windows mode"
+	$Message = "To choose theme color for default Windows mode enter the required letter"
+	$Options = "&Light", "&Dark", "&Skip"
 }
-do
+$DefaultChoice = 1
+$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+
+switch ($Result)
 {
-	$theme = Read-Host -Prompt " "
-	if ([string]::IsNullOrEmpty($theme))
+	"0"
 	{
-		break
+		# Light theme color for default Windows mode
+		# Режим Windows по умолчанию светлый
+		New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -PropertyType DWord -Value 1 -Force
 	}
-	else
+	"1"
 	{
-		switch ($theme)
+		# Dark theme color for default Windows mode
+		# Режим Windows по умолчанию темный
+		New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -PropertyType DWord -Value 0 -Force
+	}
+	"2"
+	{
+		if ($RU)
 		{
-			"L"
-			{
-				# Light theme color for default Windows mode
-				# Режим Windows по умолчанию светлый
-				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -PropertyType DWord -Value 1 -Force
-			}
-			"D"
-			{
-				# Dark theme color for default Windows mode
-				# Режим Windows по умолчанию темный
-				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -PropertyType DWord -Value 0 -Force
-			}
-			Default
-			{
-				if ($RU)
-				{
-					Write-Host "`nНеправильная буква." -ForegroundColor Yellow
-					Write-Host "Введите правильную букву: " -NoNewline
-					Write-Host "[L]ight " -ForegroundColor Yellow -NoNewline
-					Write-Host "для светлого режима или " -NoNewline
-					Write-Host "[D]ark " -ForegroundColor Yellow -NoNewline
-					Write-Host "для тёмного."
-					Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
-				}
-				else
-				{
-					Write-Host "`nInvalid letter." -ForegroundColor Yellow
-					Write-Host "Type the correct letter: " -NoNewline
-					Write-Host "[L]ight " -ForegroundColor Yellow -NoNewline
-					Write-Host "for the light mode or " -NoNewline
-					Write-Host "[D]ark " -ForegroundColor Yellow -NoNewline
-					Write-Host "for the dark."
-					Write-Host "`nPress Enter to skip" -NoNewline
-				}
-			}
+			Write-Verbose -Message "Пропущено" -Verbose
+		}
+		else
+		{
+			Write-Verbose -Message "Skipped" -Verbose
 		}
 	}
 }
-until ($theme -eq "L" -or $theme -eq "D")
 
 # Choose theme color for default app mode
 # Выбрать режим приложения по умолчанию
 if ($RU)
 {
-	Write-Host "`nВыберите режим приложения по умолчанию, введя букву: "
-	Write-Host "[L]ight " -ForegroundColor Yellow -NoNewline
-	Write-Host "для светлого режима или " -NoNewline
-	Write-Host "[D]ark " -ForegroundColor Yellow -NoNewline
-	Write-Host "для тёмного."
-	Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
+	$Title = "Режим приложения по умолчанию"
+	$Message = "Чтобы выбрать режим приложения по умолчанию, введите необходимую букву"
+	$Options = "&Светлый", "&Темный", "&Пропустить"
 }
 else
 {
-	Write-Host "`nChoose theme color for default app mode by typing"
-	Write-Host "[L]ight " -ForegroundColor Yellow -NoNewline
-	Write-Host "for the light mode or " -NoNewline
-	Write-Host "[D]ark " -ForegroundColor Yellow -NoNewline
-	Write-Host "for the dark"
-	Write-Host "`nPress Enter to skip" -NoNewline
+	$Title = "Default app mode"
+	$Message = "To choose theme color for default app mode enter the required letter"
+	$Options = "&Light", "&Dark", "&Skip"
 }
-do
+$DefaultChoice = 1
+$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+
+switch ($Result)
 {
-	$theme = Read-Host -Prompt " "
-	if ([string]::IsNullOrEmpty($theme))
+	"0"
 	{
-		break
+		# Light theme color for default app mode
+		# Режим приложений по умолчанию светлый
+		New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -PropertyType DWord -Value 1 -Force
 	}
-	else
+	"1"
 	{
-		switch ($theme)
+		# Dark theme color for default app mode
+		# Режим приложений по умолчанию темный
+		New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -PropertyType DWord -Value 0 -Force
+	}
+	"2"
+	{
+		if ($RU)
 		{
-			"L"
-			{
-				# Light theme color for default app mode
-				# Режим приложений по умолчанию светлый
-				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -PropertyType DWord -Value 1 -Force
-			}
-			"D"
-			{
-				# Dark theme color for default app mode
-				# Режим приложений по умолчанию темный
-				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -PropertyType DWord -Value 0 -Force
-			}
-			Default
-			{
-				if ($RU)
-				{
-					Write-Host "`nНеправильная буква." -ForegroundColor Yellow
-					Write-Host "Введите правильную букву: " -NoNewline
-					Write-Host "[L]ight " -ForegroundColor Yellow -NoNewline
-					Write-Host "для светлого режима или " -NoNewline
-					Write-Host "[D]ark " -ForegroundColor Yellow -NoNewline
-					Write-Host "для тёмного."
-					Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
-				}
-				else
-				{
-					Write-Host "`nInvalid letter." -ForegroundColor Yellow
-					Write-Host "Type the correct letter: " -NoNewline
-					Write-Host "[L]ight " -ForegroundColor Yellow -NoNewline
-					Write-Host "for the light mode or " -NoNewline
-					Write-Host "[D]ark " -ForegroundColor Yellow -NoNewline
-					Write-Host "for the dark."
-					Write-Host "`nPress Enter to skip" -NoNewline
-				}
-			}
+			Write-Verbose -Message "Пропущено" -Verbose
+		}
+		else
+		{
+			Write-Verbose -Message "Skipped" -Verbose
 		}
 	}
 }
-until ($theme -eq "L" -or $theme -eq "D")
 
 # Show accent color on Start, taskbar, and action center
 # Отображать цвет элементов в меню "Пуск", на панели задач и в центре уведовлений
@@ -760,7 +681,7 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name 
 #region OneDrive
 # Uninstall OneDrive
 # Удалить OneDrive
-[string] $UninstallString = Get-Package -Name "Microsoft OneDrive" -ErrorAction Ignore | ForEach-Object -Process {$_.Meta.Attributes["UninstallString"]}
+[string]$UninstallString = Get-Package -Name "Microsoft OneDrive" -ErrorAction Ignore | ForEach-Object -Process {$_.Meta.Attributes["UninstallString"]}
 if ($UninstallString)
 {
 	if ($RU)
@@ -779,7 +700,7 @@ if ($UninstallString)
 	$OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
 	# Getting link to the OneDriveSetup.exe and its' argument(s)
 	# Получаем ссылку на OneDriveSetup.exe и его аргумент(ы)
-	[string[]] $OneDriveSetup = ($UninstallString -Replace("\s*/",",/")).Trim().Split(",")
+	[string[]]$OneDriveSetup = ($UninstallString -Replace("\s*/",",/")).Split(",").Trim()
 	if ($OneDriveSetup.Count -eq 2)
 	{
 		Start-Process -FilePath $OneDriveSetup[0] -ArgumentList $OneDriveSetup[1..1] -Wait
@@ -996,11 +917,10 @@ $WindowsOptionalFeatures = @(
 	"WorkFolders-Client"
 )
 Disable-WindowsOptionalFeature -Online -FeatureName $WindowsOptionalFeatures -NoRestart
- 
+
 # Remove Windows capabilities
 # Удалить дополнительные компоненты Windows
-Add-Type -AssemblyName PresentationCore
-Add-Type -AssemblyName PresentationFramework
+Add-Type -AssemblyName PresentationCore, PresentationFramework
 
 # Windows capabilities array list to remove
 # Массив имен дополнительных компонентов Windows для удаления
@@ -1126,7 +1046,8 @@ function Add-CapabilityControl
 			ValueFromPipeline = $true
 		)]
 		[ValidateNotNull()]
-		[string]$Capability
+		[string]
+		$Capability
 	)
 
 	$CheckBox = New-Object -TypeName System.Windows.Controls.CheckBox
@@ -1298,13 +1219,16 @@ if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Pro
 # Установить расположение пользовательских папок на %SystemDrive%
 function KnownFolderPath
 {
-	Param (
+	param
+	(
 		[Parameter(Mandatory = $true)]
 		[ValidateSet("Desktop", "Documents", "Downloads", "Music", "Pictures", "Videos")]
-		[string]$KnownFolder,
+		[string]
+		$KnownFolder,
 
 		[Parameter(Mandatory = $true)]
-		[string]$Path
+		[string]
+		$Path
 	)
 	$KnownFolders = @{
 		"Desktop"	= @("B4BFCC3A-DB2C-424C-B029-7FE99A87C641");
@@ -1924,66 +1848,52 @@ New-ItemProperty -Path $StartMenu.PSPath -Name Data -PropertyType Binary -Value 
 # Открепить все ярлыки от начального экрана
 if ($RU)
 {
-	Write-Host "`nЧтобы открепить все ярлыки от начального экрана, введите букву: " -NoNewline
-	Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-	Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
+	$Title = "Ярлыки начального экрана"
+	$Message = "Чтобы открепить все ярлыки от начального экрана, введите необходимую букву"
+	$Options = "&Открепить", "&Пропустить"
 }
 else
 {
-	Write-Host "`nTo unpin all the Start menu tiles type: " -NoNewline
-	Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-	Write-Host "`nPress Enter to skip" -NoNewline
+	$Title = "Start menu tiles"
+	$Message = "To unpin all the Start menu tiles enter the required letter"
+	$Options = "&Unpin", "&Skip"
 }
-do
+$DefaultChoice = 1
+$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+
+switch ($Result)
 {
-	$Unpin = Read-Host -Prompt " "
-	if ([string]::IsNullOrEmpty($Unpin))
+	"0"
 	{
-		break
+		$TileCollection = Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*start.tilegrid`$windows.data.curatedtilecollection.tilecollection\Current
+		$Value = $TileCollection.Data[0..25] + ([byte[]](202,50,0,226,44,1,1,0,0))
+		New-ItemProperty -Path $TileCollection.PSPath -Name Data -PropertyType Binary -Value $Value -Force
+		# Restart Start menu
+		# Перезапустить меню "Пуск"
+		Stop-Process -Name StartMenuExperienceHost -Force
+
 	}
-	else
+	"1"
 	{
-		switch ($Unpin)
+		if ($RU)
 		{
-			"Y"
-			{
-				$TileCollection = Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*start.tilegrid`$windows.data.curatedtilecollection.tilecollection\Current
-				$Value = $TileCollection.Data[0..25] + ([byte[]](202,50,0,226,44,1,1,0,0))
-				New-ItemProperty -Path $TileCollection.PSPath -Name Data -PropertyType Binary -Value $Value -Force
-			}
-			Default
-			{
-				if ($RU)
-				{
-					Write-Host "`nНеправильная буква." -ForegroundColor Yellow
-					Write-Host "`nЧтобы открепить все ярлыки от начального экрана, введите букву: " -NoNewline
-					Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-					Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
-				}
-				else
-				{
-					Write-Host "`nInvalid letter." -ForegroundColor Yellow
-					Write-Host "`nTo unpin all the Start menu tiles type: " -NoNewline
-					Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-					Write-Host "`nPress Enter to skip" -NoNewline
-				}
-			}
+			Write-Verbose -Message "Пропущено" -Verbose
+		}
+		else
+		{
+			Write-Verbose -Message "Skipped" -Verbose
 		}
 	}
 }
-until ($Unpin -eq "Y")
-# Restart Start menu
-# Перезапустить меню "Пуск"
-Stop-Process -Name StartMenuExperienceHost -Force
 
 # Pin the shortcuts to Start
 # Закрепить ярлыки на начальном экране
-# Download syspin.exe to the "Downloads" folder
-# Скачать syspin.exe в папку "Загрузки"
 # http://www.technosys.net/products/utils/pintotaskbar
 # SHA256: 6967E7A3C2251812DD6B3FA0265FB7B61AADC568F562A98C50C345908C6E827
 if (Test-Connection -ComputerName google.com -Quiet)
 {
+	# Download syspin.exe to the "Downloads" folder
+	# Скачать syspin.exe в папку "Загрузки"
 	$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 	[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 	$param = @{
@@ -2292,7 +2202,8 @@ function Add-AppxControl
 			ValueFromPipeline = $true
 		)]
 		[ValidateNotNull()]
-		[string]$AppxName
+		[string]
+		$AppxName
 	)
 
 	$CheckBox = New-Object -TypeName System.Windows.Controls.CheckBox
@@ -2417,102 +2328,76 @@ $OFS = " "
 # Установить параметры производительности графики для отдельных приложений на "Высокая производительность"
 if (Get-CimInstance -ClassName Win32_VideoController | Where-Object -FilterScript {$_.AdapterDACType -ne "Internal" -and $null -ne $_.AdapterDACType})
 {
-	do
+	if ($RU)
 	{
-		if ($RU)
+		$Title = "Настройка производительности графики"
+		$Message = "Чтобы добавить приложение, для которого будет установлена настройка производительности графики на `"Высокая производительность`", введите необходимую букву"
+		$Options = "&Создать", "&Пропустить"
+	}
+	else
+	{
+		$Title = "Graphics performance preference"
+		$Message = "To add an app for which the graphics performance preference will be set to `"High performance`" enter the required letter"
+		$Options = "&Add", "&Skip"
+	}
+	$DefaultChoice = 1
+	$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+
+	switch ($Result)
+	{
+		"0"
 		{
-			Write-Host "`nЧтобы добавить приложение, для которого будет установлена настройка производительности графики"
-			Write-Host "на `"Высокая производительность`", введите букву: "
-			Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-			Write-Host " или " -NoNewline
-			Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
-			Write-Host ", чтобы пропустить" -NoNewline
-			Write-Host "`nТакже, чтобы пропустить, нажмите Enter" -NoNewline
-		}
-		else
-		{
-			Write-Host "`nTo add an app for which the graphics performance preference"
-			Write-Host "will be set to `"High performance`" type: "
-			Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-			Write-Host " or " -NoNewline
-			Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
-			Write-Host " to skip" -NoNewline
-			Write-Host "`nAlso press Enter to skip" -NoNewline
-		}
-		$Prompt = Read-Host -Prompt " "
-		if ([string]::IsNullOrEmpty($Prompt))
-		{
-			break
-		}
-		else
-		{
-			switch ($Prompt)
+			if (-not (Test-Path -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences))
 			{
-				"Y"
-				{
-					if (-not (Test-Path -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences))
-					{
-						New-Item -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Force
-					}
-					Add-Type -AssemblyName System.Windows.Forms
-					$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
-					if ($RU)
-					{
-						$OpenFileDialog.Filter = "*.exe|*.exe|Все файлы (*.*)|*.*"
-					}
-					else
-					{
-						$OpenFileDialog.Filter = "*.exe|*.exe|All Files (*.*)|*.*"
-					}
-					$OpenFileDialog.InitialDirectory = "$env:ProgramFiles}"
-					$OpenFileDialog.Multiselect = $false
-					# Focus on open file dialog
-					# Перевести фокус на диалог открытия файла
-					$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
-					$OpenFileDialog.ShowDialog($tmp)
-					if ($OpenFileDialog.FileName)
-					{
-						New-ItemProperty -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Name $OpenFileDialog.FileName -PropertyType String -Value "GpuPreference=2;" -Force
-					}
-				}
-				"N" {}
-				Default
-				{
-					if ($RU)
-					{
-						Write-Host "`nНеправильная буква." -ForegroundColor Yellow
-						Write-Host "`nЧтобы добавить приложение, для которого будет установлена настройка производительности графики"
-						Write-Host "на `"Высокая производительность`", введите букву: "
-						Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-						Write-Host " или " -NoNewline
-						Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
-						Write-Host ", чтобы пропустить" -NoNewline
-						Write-Host "`nТакже, чтобы пропустить, нажмите Enter" -NoNewline
-					}
-					else
-					{
-						Write-Host "`nInvalid letter." -ForegroundColor Yellow
-						Write-Host "`nTo add an app for which the graphics performance preference"
-						Write-Host "will be set to `"High performance`" type: "
-						Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-						Write-Host " or " -NoNewline
-						Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
-						Write-Host " to skip" -NoNewline
-						Write-Host "`nAlso press Enter to skip" -NoNewline
-					}
-				}
+				New-Item -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Force
+			}
+			Add-Type -AssemblyName System.Windows.Forms
+			$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
+			if ($RU)
+			{
+				$OpenFileDialog.Filter = "*.exe|*.exe|Все файлы (*.*)|*.*"
+			}
+			else
+			{
+				$OpenFileDialog.Filter = "*.exe|*.exe|All Files (*.*)|*.*"
+			}
+			$OpenFileDialog.InitialDirectory = "$env:ProgramFiles}"
+			$OpenFileDialog.Multiselect = $false
+			# Focus on open file dialog
+			# Перевести фокус на диалог открытия файла
+			$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+			$OpenFileDialog.ShowDialog($tmp)
+			if ($OpenFileDialog.FileName)
+			{
+				New-ItemProperty -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Name $OpenFileDialog.FileName -PropertyType String -Value "GpuPreference=2;" -Force
+			}
+		}
+		"1"
+		{
+			if ($RU)
+			{
+				Write-Verbose -Message "Пропущено" -Verbose
+			}
+			else
+			{
+				Write-Verbose -Message "Skipped" -Verbose
 			}
 		}
 	}
-	while ($Prompt -ne "N")
 }
 #endregion Gaming
 
 #region Scheduled tasks
-# Create a task in the Task Scheduler to start Windows cleaning up
-# The task runs every 90 days
-# Создать задачу в Планировщике задач по очистке обновлений Windows
-# Задача выполняется каждые 90 дней
+<#
+Create a task in the Task Scheduler to start Windows cleaning up
+The task runs every 90 days
+Создать задачу в Планировщике задач по очистке обновлений Windows
+Задача выполняется каждые 90 дней
+#>
+Get-ChildItem -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches | ForEach-Object -Process {
+	Remove-ItemProperty -Path $_.PsPath -Name StateFlags1337 -Force -ErrorAction Ignore
+}
+
 $VolumeCaches = @(
 	# Delivery Optimization Files
 	# Файлы оптимизации доставки
@@ -2527,9 +2412,6 @@ $VolumeCaches = @(
 	"Setup Log Files",
 	# Temporary Setup Files
 	"Temporary Setup Files",
-	# Windows Update Cleanup
-	# Очистка обновлений Windows
-	"Update Cleanup",
 	# Windows Defender Antivirus
 	"Windows Defender",
 	# Windows upgrade log files
@@ -2540,7 +2422,129 @@ foreach ($VolumeCache in $VolumeCaches)
 {
 	New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\$VolumeCache" -Name StateFlags1337 -PropertyType DWord -Value 2 -Force
 }
-$action = New-ScheduledTaskAction -Execute "cleanmgr.exe" -Argument "/sagerun:1337"
+
+$PS1Script = '
+$app = "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\cleanmgr.exe"
+
+[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime]
+$Template = [Windows.UI.Notifications.ToastTemplateType]::ToastImageAndText01
+[xml]$ToastTemplate = ([Windows.UI.Notifications.ToastNotificationManager]::GetTemplateContent($Template).GetXml())
+
+if ($PSUICulture -eq "ru-RU")
+{
+	[xml]$ToastTemplate = @"
+	<toast launch="app-defined-string">
+		<visual>
+			<binding template="ToastGeneric">
+				<text>Очистка неиспользуемых обновлений начнется через минуту</text>
+			</binding>
+		</visual>
+		<actions>
+		<action activationType="background" content="Хорошо" arguments="later"/>
+		</actions>
+	</toast>
+"@
+}
+else
+{
+	[xml]$ToastTemplate = @"
+	<toast launch="app-defined-string">
+		<visual>
+			<binding template="ToastGeneric">
+				<text>Cleaning up unused updates will start in a minute</text>
+			</binding>
+		</visual>
+		<actions>
+			<action activationType="background" content="OK" arguments="later"/>
+		</actions>
+	</toast>
+"@
+}
+
+$ToastXml = New-Object -TypeName Windows.Data.Xml.Dom.XmlDocument
+$ToastXml.LoadXml($ToastTemplate.OuterXml)
+
+[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($app).Show($ToastXml)
+
+# Start-Sleep -Seconds 60
+
+# Process startup info
+# Параметры запуска процесса
+$ProcessInfo = New-Object System.Diagnostics.ProcessStartInfo
+$ProcessInfo.FileName = "$env:SystemRoot\system32\cleanmgr.exe"
+$ProcessInfo.Arguments = "/sagerun:1337"
+$ProcessInfo.UseShellExecute = $true
+$ProcessInfo.WindowStyle = [System.Diagnostics.ProcessWindowStyle]::Minimized
+
+# Process object using the startup info
+# Объект процесса, используя заданные параметры
+$Process = New-Object System.Diagnostics.Process
+$Process.StartInfo = $ProcessInfo
+
+# Start the process
+# Запуск процесса
+$Process.Start() | Out-Null
+
+Start-Sleep -Seconds 3
+$SourceMainWindowHandle = (Get-Process -Name cleanmgr).MainWindowHandle
+
+function MinimizeWindow
+{
+	[CmdletBinding()]
+	Param
+	(
+		[Parameter(Mandatory = $true)]
+			$Process
+	)
+		$ShowWindowAsync = @{
+		Namespace = "WinAPI"
+		Name = "Win32ShowWindowAsync"
+		Language = "CSharp"
+		MemberDefinition = @"
+				[DllImport("user32.dll")]
+			public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
+"@
+	}
+	if (-not ("WinAPI.Win32ShowWindowAsync" -as [type]))
+	{
+		Add-Type @ShowWindowAsync
+	}
+
+	$MainWindowHandle = (Get-Process -Name $Process).MainWindowHandle
+	[WinAPI.Win32ShowWindowAsync]::ShowWindowAsync($MainWindowHandle, 2)
+}
+
+while ($true)
+{
+	$CurrentMainWindowHandle = (Get-Process -Name cleanmgr).MainWindowHandle
+	if ([int]$SourceMainWindowHandle -ne [int]$CurrentMainWindowHandle)
+	{
+		MinimizeWindow -Process cleanmgr
+		break
+	}
+	Start-Sleep -Milliseconds 5
+}
+
+$ProcessInfo = New-Object System.Diagnostics.ProcessStartInfo
+# Cleaning up unused updates
+# Очистка неиспользованных обновлений
+$ProcessInfo.FileName = "$env:SystemRoot\system32\dism.exe"
+$ProcessInfo.Arguments = "/Online /English /Cleanup-Image /StartComponentCleanup /NoRestart"
+$ProcessInfo.UseShellExecute = $true
+$ProcessInfo.WindowStyle = [System.Diagnostics.ProcessWindowStyle]::Minimized
+
+# Process object using the startup info
+# Объект процесса, используя заданные параметры
+$Process = New-Object System.Diagnostics.Process
+$Process.StartInfo = $ProcessInfo
+
+# Start the process
+# Запуск процесса
+$Process.Start() | Out-Null
+'
+$EncodedScript = [Convert]::ToBase64String([System.Text.Encoding]::Unicode.GetBytes($PS1Script))
+
+$action = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -EncodedCommand $EncodedScript"
 $trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 90 -At 9am
 $settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
 $principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
@@ -2553,15 +2557,17 @@ $params = @{
 }
 Register-ScheduledTask @params -Force
 
-# Create a task in the Task Scheduler to clear the %SystemRoot%\SoftwareDistribution\Download folder
-# The task runs on Thursdays every 4 weeks
-# Создать задачу в Планировщике задач по очистке папки %SystemRoot%\SoftwareDistribution\Download
-# Задача выполняется по четвергам каждую 4 неделю
-$action = New-ScheduledTaskAction -Execute powershell.exe -Argument @"
-	`$getservice = Get-Service -Name wuauserv
-	`$getservice.WaitForStatus('Stopped', '01:00:00')
-	Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -Force | Remove-Item -Recurse -Force
-"@
+<#
+Create a task in the Task Scheduler to clear the %SystemRoot%\SoftwareDistribution\Download folder
+The task runs on Thursdays every 4 weeks
+Создать задачу в Планировщике задач по очистке папки %SystemRoot%\SoftwareDistribution\Download
+Задача выполняется по четвергам каждую 4 неделю
+#>
+$Argument = "
+	(Get-Service -Name wuauserv).WaitForStatus('Stopped', '01:00:00')
+	Get-ChildItem -Path $env:SystemRoot\SoftwareDistribution\Download -Recurse -Force | Remove-Item -Recurse -Force
+"
+$action = New-ScheduledTaskAction -Execute powershell.exe -Argument $Argument
 $trigger = New-JobTrigger -Weekly -WeeksInterval 4 -DaysOfWeek Thursday -At 9am
 $settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
 $principal = New-ScheduledTaskPrincipal -UserId "NT AUTHORITY\SYSTEM" -RunLevel Highest
@@ -2574,13 +2580,14 @@ $params = @{
 }
 Register-ScheduledTask @params -Force
 
-# Create a task in the Task Scheduler to clear the %TEMP% folder
-# The task runs every 62 days
-# Создать задачу в Планировщике задач по очистке папки %TEMP%
-# Задача выполняется каждые 62 дня
-$action = New-ScheduledTaskAction -Execute powershell.exe -Argument @"
-	Get-ChildItem -Path `$env:TEMP -Force -Recurse | Remove-Item -Force -Recurse
-"@
+<#
+Create a task in the Task Scheduler to clear the %TEMP% folder
+The task runs every 62 days
+Создать задачу в Планировщике задач по очистке папки %TEMP%
+Задача выполняется каждые 62 дня
+#>
+$Argument = "Get-ChildItem -Path $env:TEMP -Force -Recurse | Remove-Item -Force -Recurse"
+$action = New-ScheduledTaskAction -Execute powershell.exe -Argument $Argument
 $trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 62 -At 9am
 $settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
 $principal = New-ScheduledTaskPrincipal -UserId "NT AUTHORITY\SYSTEM" -RunLevel Highest
@@ -2597,344 +2604,229 @@ Register-ScheduledTask @params -Force
 #region Windows Defender & Security
 # Turn on Controlled folder access and add protected folders
 # Включить контролируемый доступ к папкам и добавить защищенные папки
-do
+if ($RU)
 {
-	if ($RU)
+	$Title = "Контролируемый доступ к папкам"
+	$Message = "Чтобы включить контролируемый доступ к папкам и добавить папку в список защищенных, введите необходимую букву"
+	$Options = "&Добавить защищенную папку", "&Пропустить"
+}
+else
+{
+	$Title = "Controlled folder access"
+	$Message = "To turn on Controlled folder access and add protected folder enter the required letter"
+	$Options = "&Add a protected folder", "&Skip"
+}
+$DefaultChoice = 1
+$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+
+switch ($Result)
+{
+	"0"
 	{
-		Write-Host "`nЧтобы включить контролируемый доступ к папкам"
-		Write-Host "и добавить папки в список защищенных, введите букву: "
-		Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-		Write-Host " или " -NoNewline
-		Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
-		Write-Host ", чтобы пропустить" -NoNewline
-		Write-Host "`nТакже, чтобы пропустить, нажмите Enter" -NoNewline
-	}
-	else
-	{
-		Write-Host "`nTo turn on Controlled folder access and add protected folders type:"
-		Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-		Write-Host " or " -NoNewline
-		Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
-		Write-Host " to skip" -NoNewline
-		Write-Host "`nAlso press Enter to skip" -NoNewline
-	}
-	$Prompt = Read-Host -Prompt " "
-	if ([string]::IsNullOrEmpty($Prompt))
-	{
-		break
-	}
-	else
-	{
-		switch ($Prompt)
+		Add-Type -AssemblyName System.Windows.Forms
+		$OpenFileDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
+		if ($RU)
 		{
-			"Y"
-			{
-				Add-Type -AssemblyName System.Windows.Forms
-				$OpenFileDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
-				if ($RU)
-				{
-					$OpenFileDialog.Description = "Выберите папку"
-				}
-				else
-				{
-					$OpenFileDialog.Description = "Select a folder"
-				}
-				$OpenFileDialog.RootFolder = "MyComputer"
-				# Focus on open file dialog
-				# Перевести фокус на диалог открытия файла
-				$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
-				$OpenFileDialog.ShowDialog($tmp)
-				if ($OpenFileDialog.SelectedPath)
-				{
-					Set-MpPreference -EnableControlledFolderAccess Enabled
-					Add-MpPreference -ControlledFolderAccessProtectedFolders $OpenFileDialog.SelectedPath -Force
-				}
-			}
-			"N" {}
-			Default
-			{
-				if ($RU)
-				{
-					Write-Host "`nНеправильная буква." -ForegroundColor Yellow
-					Write-Host "Чтобы включить контролируемый доступ к папкам"
-					Write-Host "и добавить папки в список защищенных, введите букву: "
-					Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-					Write-Host " или " -NoNewline
-					Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
-					Write-Host ", чтобы пропустить" -NoNewline
-					Write-Host "`nТакже, чтобы пропустить, нажмите Enter" -NoNewline
-				}
-				else
-				{
-					Write-Host "`nInvalid letter." -ForegroundColor Yellow
-					Write-Host "To turn on Controlled folder access and add protected folders type:"
-					Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-					Write-Host " or " -NoNewline
-					Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
-					Write-Host " to skip" -NoNewline
-					Write-Host "`nAlso press Enter to skip" -NoNewline
-				}
-			}
+			$OpenFileDialog.Description = "Выберите папку"
+		}
+		else
+		{
+			$OpenFileDialog.Description = "Select a folder"
+		}
+		$OpenFileDialog.RootFolder = "MyComputer"
+		# Focus on open file dialog
+		# Перевести фокус на диалог открытия файла
+		$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+		$OpenFileDialog.ShowDialog($tmp)
+		if ($OpenFileDialog.SelectedPath)
+		{
+			Set-MpPreference -EnableControlledFolderAccess Enabled
+			Add-MpPreference -ControlledFolderAccessProtectedFolders $OpenFileDialog.SelectedPath -Force
+		}
+		$Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+	}
+	"1"
+	{
+		if ($RU)
+		{
+			Write-Verbose -Message "Пропущено" -Verbose
+		}
+		else
+		{
+			Write-Verbose -Message "Skipped" -Verbose
 		}
 	}
 }
-while ($Prompt -ne "N")
 
 # Allow an app through Controlled folder access
 # Разрешить работу приложения через контролируемый доступ к папкам
 if ((Get-MpPreference).EnableControlledFolderAccess -eq 1)
 {
-	do
+	if ($RU)
+	{
+		$Title = "Контролируемый доступ к папкам"
+		$Message = "Чтобы разрешить работу приложения через контролируемый доступ к папкам, введите необходимую букву"
+		$Options = "&Добавить разрешенное приложение", "&Пропустить"
+	}
+	else
+	{
+		$Title = "Controlled folder access"
+		$Message = "To allow an app through Controlled folder access enter the required letter"
+		$Options = "&Add a protected folder", "&Skip"
+	}
+	$DefaultChoice = 1
+	$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+
+	switch ($Result)
+	{
+		"0"
+		{
+			Add-Type -AssemblyName System.Windows.Forms
+			$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
+			if ($RU)
+			{
+				$OpenFileDialog.Filter = "*.exe|*.exe|Все файлы (*.*)|*.*"
+			}
+			else
+			{
+				$OpenFileDialog.Filter = "*.exe|*.exe|All Files (*.*)|*.*"
+			}
+			$OpenFileDialog.InitialDirectory = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
+			$OpenFileDialog.Multiselect = $false
+			# Focus on open file dialog
+			# Перевести фокус на диалог открытия файла
+			$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+			$OpenFileDialog.ShowDialog($tmp)
+			if ($OpenFileDialog.FileName)
+			{
+				Add-MpPreference -ControlledFolderAccessAllowedApplications $OpenFileDialog.FileName -Force
+			}
+			$Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+		}
+		"1"
+		{
+			if ($RU)
+			{
+				Write-Verbose -Message "Пропущено" -Verbose
+			}
+			else
+			{
+				Write-Verbose -Message "Skipped" -Verbose
+			}
+		}
+	}
+}
+
+# Add exclusion folder from Microsoft Defender Antivirus scanning
+# Добавить папку в список исключений сканирования Microsoft Defender
+if ($RU)
+{
+	$Title = "Microsoft Defender"
+	$Message = "Чтобы исключить папку из списка сканирования антивредоносной программы Microsoft Defender, введите необходимую букву"
+	$Options = "&Исключить папку", "&Пропустить"
+}
+else
+{
+	$Title = "Microsoft Defender"
+	$Message = "To exclude folder from Microsoft Defender Antivirus Scan enter the required letter"
+	$Options = "&Exclude folder", "&Skip"
+}
+$DefaultChoice = 1
+$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+
+switch ($Result)
+{
+	"0"
+	{
+		Add-Type -AssemblyName System.Windows.Forms
+		$OpenFileDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
+		if ($RU)
+		{
+			$OpenFileDialog.Description = "Выберите папку"
+		}
+		else
+		{
+			$OpenFileDialog.Description = "Select a folder"
+		}
+		$OpenFileDialog.RootFolder = "MyComputer"
+		# Focus on open file dialog
+		# Перевести фокус на диалог открытия файла
+		$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+		$OpenFileDialog.ShowDialog($tmp)
+		if ($OpenFileDialog.SelectedPath)
+		{
+			Add-MpPreference -ExclusionPath $OpenFileDialog.SelectedPath -Force
+		}
+		$Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+	}
+	"1"
 	{
 		if ($RU)
 		{
-			Write-Host "`nЧтобы разрешить работу приложения"
-			Write-Host "через контролируемый доступ к папкам, введите букву: "
-			Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-			Write-Host " или " -NoNewline
-			Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
-			Write-Host ", чтобы пропустить" -NoNewline
-			Write-Host "`nТакже, чтобы пропустить, нажмите Enter" -NoNewline
+			Write-Verbose -Message "Пропущено" -Verbose
 		}
 		else
 		{
-			Write-Host "`nTo allow an app through Controlled folder access type:"
-			Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-			Write-Host " or " -NoNewline
-			Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
-			Write-Host " to skip" -NoNewline
-			Write-Host "`nAlso press Enter to skip" -NoNewline
+			Write-Verbose -Message "Skipped" -Verbose
 		}
-		$Prompt = Read-Host -Prompt " "
-		if ([string]::IsNullOrEmpty($Prompt))
+	}
+}
+
+# Add exclusion file from Microsoft Defender Antivirus scanning
+# Добавить файл в список исключений сканирования Microsoft Defender
+if ($RU)
+{
+	$Title = "Microsoft Defender"
+	$Message = "Чтобы исключить файл из списка сканирования антивредоносной программы Microsoft Defender, введите необходимую букву"
+	$Options = "&Исключить файл", "&Пропустить"
+}
+else
+{
+	$Title = "Microsoft Defender"
+	$Message = "To exclude file from Microsoft Defender Antivirus Scan enter the required letter"
+	$Options = "&Exclude file", "&Skip"
+}
+$DefaultChoice = 1
+$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+
+switch ($Result)
+{
+	"0"
+	{
+		Add-Type -AssemblyName System.Windows.Forms
+		$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
+		if ($RU)
 		{
-			break
+			$OpenFileDialog.Filter = "Все файлы (*.*)|*.*"
 		}
 		else
 		{
-			switch ($Prompt)
-			{
-				"Y"
-				{
-					Add-Type -AssemblyName System.Windows.Forms
-					$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
-					if ($RU)
-					{
-						$OpenFileDialog.Filter = "*.exe|*.exe|Все файлы (*.*)|*.*"
-					}
-					else
-					{
-						$OpenFileDialog.Filter = "*.exe|*.exe|All Files (*.*)|*.*"
-					}
-					$OpenFileDialog.InitialDirectory = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
-					$OpenFileDialog.Multiselect = $false
-					# Focus on open file dialog
-					# Перевести фокус на диалог открытия файла
-					$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
-					$OpenFileDialog.ShowDialog($tmp)
-					if ($OpenFileDialog.FileName)
-					{
-						Add-MpPreference -ControlledFolderAccessAllowedApplications $OpenFileDialog.FileName -Force
-					}
-				}
-				"N" {}
-				Default
-				{
-					if ($RU)
-					{
-						Write-Host "`nНеправильная буква." -ForegroundColor Yellow
-						Write-Host "`nЧтобы разрешить работу приложения"
-						Write-Host "через контролируемый доступ к папкам, введите букву: "
-						Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-						Write-Host " или " -NoNewline
-						Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
-						Write-Host ", чтобы пропустить" -NoNewline
-						Write-Host "`nТакже, чтобы пропустить, нажмите Enter" -NoNewline
-					}
-					else
-					{
-						Write-Host "`nTo allow an app through Controlled folder access type:"
-						Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-						Write-Host " or " -NoNewline
-						Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
-						Write-Host " to skip" -NoNewline
-						Write-Host "`nAlso press Enter to skip" -NoNewline
-					}
-				}
-			}
+			$OpenFileDialog.Filter = "All Files (*.*)|*.*"
 		}
-	}
-	while ($Prompt -ne "N")
-}
-
-# Add exclusion folder from Windows Defender Antivirus scanning
-# Добавить папку в список исключений сканирования Windows Defender
-do
-{
-	if ($RU)
-	{
-		Write-Host "`nЧтобы исключить папку из списка сканирования"
-		Write-Host "антивредоносной программы Windows Defender, введите букву: "
-		Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-		Write-Host " или " -NoNewline
-		Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
-		Write-Host ", чтобы пропустить" -NoNewline
-		Write-Host "`nТакже, чтобы пропустить, нажмите Enter" -NoNewline
-	}
-	else
-	{
-		Write-Host "`nTo exclude folders from Windows Defender Antivirus Scan type: "
-		Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-		Write-Host " or " -NoNewline
-		Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
-		Write-Host " to skip" -NoNewline
-		Write-Host "`nAlso press Enter to skip" -NoNewline
-	}
-	$Prompt = Read-Host -Prompt " "
-	if ([string]::IsNullOrEmpty($Prompt))
-	{
-		break
-	}
-	else
-	{
-		switch ($Prompt)
+		$OpenFileDialog.InitialDirectory = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
+		$OpenFileDialog.Multiselect = $false
+		# Focus on open file dialog
+		# Перевести фокус на диалог открытия файла
+		$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+		$OpenFileDialog.ShowDialog($tmp)
+		if ($OpenFileDialog.FileName)
 		{
-			"Y"
-			{
-				Add-Type -AssemblyName System.Windows.Forms
-				$OpenFileDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
-				if ($RU)
-				{
-					$OpenFileDialog.Description = "Выберите папку"
-				}
-				else
-				{
-					$OpenFileDialog.Description = "Select a folder"
-				}
-				$OpenFileDialog.RootFolder = "MyComputer"
-				# Focus on open file dialog
-				# Перевести фокус на диалог открытия файла
-				$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
-				$OpenFileDialog.ShowDialog($tmp)
-				if ($OpenFileDialog.SelectedPath)
-				{
-					Add-MpPreference -ExclusionPath $OpenFileDialog.SelectedPath -Force
-				}
-			}
-			"N" {}
-			Default
-			{
-				if ($RU)
-				{
-					Write-Host "`nНеправильная буква." -ForegroundColor Yellow
-					Write-Host "`nЧтобы исключить папку из списка сканирования"
-					Write-Host "антивредоносной программы Windows Defender, введите букву: "
-					Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-					Write-Host " или " -NoNewline
-					Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
-					Write-Host ", чтобы пропустить" -NoNewline
-					Write-Host "`nТакже, чтобы пропустить, нажмите Enter" -NoNewline
-				}
-				else
-				{
-					Write-Host "`nInvalid letter." -ForegroundColor Yellow
-					Write-Host "`nTo exclude folders from Windows Defender Antivirus Scan type: "
-					Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-					Write-Host " or " -NoNewline
-					Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
-					Write-Host " to skip" -NoNewline
-					Write-Host "`nAlso press Enter to skip" -NoNewline
-				}
-			}
+			Add-MpPreference -ExclusionPath $OpenFileDialog.FileName -Force
 		}
+		$Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 	}
-}
-while ($Prompt -ne "N")
-
-# Add exclusion file from Windows Defender Antivirus scanning
-# Добавить файл в список исключений сканирования Windows Defender
-do
-{
-	if ($RU)
+	"1"
 	{
-		Write-Host "`nЧтобы исключить файл из списка сканирования"
-		Write-Host "антивредоносной программы Windows Defender, введите букву: "
-		Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-		Write-Host " или " -NoNewline
-		Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
-		Write-Host ", чтобы пропустить" -NoNewline
-		Write-Host "`nТакже, чтобы пропустить, нажмите Enter" -NoNewline
-	}
-	else
-	{
-		Write-Host "`nTo exclude file from Windows Defender Antivirus Scan type: "
-		Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-		Write-Host " or " -NoNewline
-		Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
-		Write-Host " to skip" -NoNewline
-		Write-Host "`nAlso press Enter to skip" -NoNewline
-	}
-	$Prompt = Read-Host -Prompt " "
-	if ([string]::IsNullOrEmpty($Prompt))
-	{
-		break
-	}
-	else
-	{
-		switch ($Prompt)
+		if ($RU)
 		{
-			"Y"
-			{
-				Add-Type -AssemblyName System.Windows.Forms
-				$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
-				if ($RU)
-				{
-					$OpenFileDialog.Filter = "*.exe|*.exe|Все файлы (*.*)|*.*"
-				}
-				else
-				{
-					$OpenFileDialog.Filter = "*.exe|*.exe|All Files (*.*)|*.*"
-				}
-				$OpenFileDialog.InitialDirectory = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
-				$OpenFileDialog.Multiselect = $false
-				# Focus on open file dialog
-				# Перевести фокус на диалог открытия файла
-				$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
-				$OpenFileDialog.ShowDialog($tmp)
-				if ($OpenFileDialog.FileName)
-				{
-					Add-MpPreference -ExclusionPath $OpenFileDialog.FileName -Force
-				}
-			}
-			"N" {}
-			Default
-			{
-				if ($RU)
-				{
-					Write-Host "`nНеправильная буква." -ForegroundColor Yellow
-					Write-Host "`nЧтобы исключить файл из списка сканирования"
-					Write-Host "антивредоносной программы Windows Defender, введите букву: "
-					Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-					Write-Host " или " -NoNewline
-					Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
-					Write-Host ", чтобы пропустить" -NoNewline
-					Write-Host "`nТакже, чтобы пропустить, нажмите Enter" -NoNewline
-				}
-				else
-				{
-					Write-Host "`nInvalid letter." -ForegroundColor Yellow
-					Write-Host "`nTo exclude file from Windows Defender Antivirus Scan type: "
-					Write-Host "[Y]es" -ForegroundColor Yellow -NoNewline
-					Write-Host " or " -NoNewline
-					Write-Host "[N]o" -ForegroundColor Yellow -NoNewline
-					Write-Host " to skip" -NoNewline
-					Write-Host "`nAlso press Enter to skip" -NoNewline
-				}
-			}
+			Write-Verbose -Message "Пропущено" -Verbose
+		}
+		else
+		{
+			Write-Verbose -Message "Skipped" -Verbose
 		}
 	}
 }
-while ($Prompt -ne "N")
 
 # Turn on Windows Defender Exploit Guard network protection
 # Включить защиту сети в Windows Defender
