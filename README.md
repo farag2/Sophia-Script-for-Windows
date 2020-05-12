@@ -33,6 +33,7 @@
 
 ## Images
   ![intro](https://github.com/farag2/Windows-10-Setup-Script/raw/master/Images/intro.gif)
+  ![intro](https://github.com/farag2/Windows-10-Setup-Script/raw/master/Images/img-1.png)
   ![intro](https://raw.githubusercontent.com/farag2/Windows-10-Setup-Script/master/Images/GUI-1.png)
   ![intro](https://raw.githubusercontent.com/farag2/Windows-10-Setup-Script/master/Images/GUI-2.png)
   
