@@ -20,8 +20,8 @@
 .EXAMPLE
 	PS C:\> & '.\Win 10.ps1'
 .NOTES
-	Version: v4.2
-	Date: 12.05.2020
+	Version: v4.2.1
+	Date: 16.05.2020
 	Written by: farag
 	Thanks to all http://forum.ru-board.com members involved
 	Ask a question on
@@ -922,6 +922,7 @@ Disable-WindowsOptionalFeature -Online -FeatureName $WindowsOptionalFeatures -No
 # Удалить дополнительные компоненты Windows
 Add-Type -AssemblyName PresentationCore, PresentationFramework
 
+#region Variables
 # Windows capabilities array list to remove
 # Массив имен дополнительных компонентов Windows для удаления
 $Capabilities = New-Object System.Collections.ArrayList($null)
@@ -945,6 +946,25 @@ if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2)
 	# Распознавание лиц Windows Hello
 	$CheckedCapabilities += "Hello.Face*"
 }
+# Windows capabilities that will be shown in the GUI
+# Дополнительные компоненты Windows, которые будут выводиться в GUI
+$ExcludedCapabilities = @(
+	# The DirectX Database to configure and optimize apps when multiple Graphics Adapters are present
+	# База данных DirectX для настройки и оптимизации приложений при наличии нескольких графических адаптеров
+	"DirectX\.Configuration\.Database"
+	# Language components
+	# Языковые компоненты
+	"Language\."
+	# Mail, contacts, and calendar sync component
+	# Компонент синхронизации почты, контактов и календаря.
+	"OneCoreUAP\.OneSync"
+	# Management of printers, printer drivers, and printer servers
+	# Управление принтерами, драйверами принтеров и принт-серверами
+	"Print\.Management\.Console"
+	# Features critical to Windows functionality
+	# Компоненты, критичные для работоспособности Windows
+	"Windows\.Client\.ShellComponents"
+)
 #endregion Variables
 
 #region XAML Markup
@@ -952,7 +972,7 @@ if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2)
 <Window
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	Name="Window" Title="Packages to uninstall"
+	Name="Window" Title="Capabilities to uninstall"
 	MinHeight="450" MinWidth="400"
 	SizeToContent="Width" WindowStartupLocation="CenterScreen"
 	TextOptions.TextFormattingMode="Display" SnapsToDevicePixels="True"
@@ -990,9 +1010,9 @@ if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2)
 #endregion XAML Markup
 
 $Reader = (New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML)
-$GUI = [Windows.Markup.XamlReader]::Load($Reader)
+$Form = [Windows.Markup.XamlReader]::Load($Reader)
 $XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
-	Set-Variable -Name ($_.Name) -Value $GUI.FindName($_.Name) -Scope Global
+	Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name) -Scope Global
 }
 
 #region Functions
@@ -1067,7 +1087,7 @@ function Add-CapabilityControl
 	if ($CheckedCapabilities | Where-Object -FilterScript {$Capability -like $_})
 	{
 		$CheckBox.IsChecked = $true
-		# If package checked, add to the array list to remove
+		# If capability checked, add to the array list to remove
 		# Если пакет выделен, то добавить в массив для удаления
 		[void]$Capabilities.Add($Capability)
 	}
@@ -1077,16 +1097,6 @@ function Add-CapabilityControl
 #region Events Handlers
 # Window Loaded Event
 $Window.Add_Loaded({
-	# Windows capabilities that will be shown in the GUI
-	# Дополнительные компоненты Windows, которые будут выводиться в GUI
-	$ExcludedCapabilities = @(
-		# Language components
-		# Языковые компоненты
-		"Language\."
-		# Mail, contacts, and calendar sync component
-		# Компонент синхронизации почты, контактов и календаря.
-		"OneCoreUAP\.OneSync"
-	)
 	$OFS = "|"
 	(Get-WindowsCapability -Online | Where-Object -FilterScript {($_.State -eq "Installed") -and ($_.Name -cnotmatch $ExcludedCapabilities)}).Name | ForEach-Object -Process {
 		Add-CapabilityControl -Capability $_
@@ -1098,15 +1108,31 @@ $Window.Add_Loaded({
 $Button.Add_Click({DeleteButton})
 #endregion Events Handlers
 
-if ($RU)
+if (Get-WindowsCapability -Online | Where-Object -FilterScript {($_.State -eq "Installed") -and ($_.Name -cnotmatch ($ExcludedCapabilities -join "|"))})
 {
-	Write-Verbose -Message "GUI открывается..." -Verbose
+	if ($RU)
+	{
+		Write-Verbose -Message "Форма открывается..." -Verbose
+	}
+	else
+	{
+		Write-Verbose "Form opening..." -Verbose
+	}
+	# Display form
+	# Display форму
+	$Form.ShowDialog() | Out-Null
 }
 else
 {
-	Write-Verbose "GUI opening..." -Verbose
+	if ($RU)
+	{
+		Write-Verbose -Message "No capabilities to display" -Verbose
+	}
+	else
+	{
+		Write-Verbose "Отсутствуют дополнительные компоненты для отображения" -Verbose
+	}
 }
-$GUI.ShowDialog() | Out-Null
 
 # Turn on updates for other Microsoft products
 # Включить автоматическое обновление для других продуктов Microsoft
@@ -1150,13 +1176,13 @@ if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -eq 2)
 {
 	# Balanced for laptop
 	# Сбалансированная для ноутбука
-	powercfg /setactive SCHEME_BALANCED
+	POWERCFG /SETACTIVE SCHEME_BALANCED
 }
 else
 {
 	# High performance for desktop
 	# Высокая производительность для стационарного ПК
-	powercfg /setactive SCHEME_MIN
+	POWERCFG /SETACTIVE SCHEME_MIN
 }
 
 # Use latest installed .NET runtime for all apps
@@ -1871,7 +1897,6 @@ switch ($Result)
 		# Restart Start menu
 		# Перезапустить меню "Пуск"
 		Stop-Process -Name StartMenuExperienceHost -Force
-
 	}
 	"1"
 	{
@@ -2040,15 +2065,15 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer 
 
 #region UWP apps
 <#
-Uninstall all UWP apps from all accounts
+Uninstall UWP apps from all accounts
 GUI with the ability to select the package to remove
 App packages will not be installed when new user accounts are created
 Add UWP apps packages names to the $UnchekedAppXPackages array list by retrieving their packages names with (Get-AppxPackage -PackageTypeFilter Bundle -AllUsers).Name command
 
-Удалить все UWP-приложения из всех учетных записей
+Удалить UWP-приложения из всех учетных записей
 GUI с возможностью выбрать пакет для удаления
 Приложения не будут установлены при создании новых учетных записей
-Добавьте имена пакетов UWP-приложений в массив $UnchekedAppXPackages, получив их имена пакетов с помощью команды (Get-AppxPackage -PackageTypeFilter Bundle -AllUsers).Name
+Добавьте имена пакетов UWP-приложений в массив $UnchekedAppXPackages, получив названия их пакетов с помощью команды (Get-AppxPackage -PackageTypeFilter Bundle -AllUsers).Name
 #>
 Add-Type -AssemblyName PresentationCore, PresentationFramework
 
@@ -2101,6 +2126,19 @@ $UncheckedAppxPackages = @(
 	# Realtek Audio Console
 	"RealtekSemiconductorCorp.RealtekAudioControl"
 )
+
+# UWP-apps that won't be shown in the form
+# UWP-приложения, которые не будут выводиться в форме
+$ExcludedAppxPackages = @(
+	# Microsoft Desktop App Installer
+	"Microsoft.DesktopAppInstaller"
+	# Microsoft Store
+	"Microsoft.StorePurchaseApp"
+	"Microsoft.WindowsStore"
+	# Web Media Extensions
+	# Расширения для интернет-мультимедиа
+	"Microsoft.WebMediaExtensions"
+)
 #endregion Variables
 
 #region XAML Markup
@@ -2146,9 +2184,9 @@ $UncheckedAppxPackages = @(
 #endregion XAML Markup
 
 $Reader = (New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML)
-$GUI = [Windows.Markup.XamlReader]::Load($Reader)
+$Form = [Windows.Markup.XamlReader]::Load($Reader)
 $XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
-	Set-Variable -Name ($_.Name) -Value $GUI.FindName($_.Name) -Scope Global
+	Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name) -Scope Global
 }
 
 #region Functions
@@ -2235,18 +2273,6 @@ function Add-AppxControl
 #region Events Handlers
 # Window Loaded Event
 $Window.Add_Loaded({
-	# UWP-apps that won't be shown in the form
-	# UWP-приложения, которые не будут выводиться в форме
-	$ExcludedAppxPackages = @(
-		# Microsoft Desktop App Installer
-		"Microsoft.DesktopAppInstaller"
-		# Microsoft Store
-		"Microsoft.StorePurchaseApp"
-		"Microsoft.WindowsStore"
-		# Web Media Extensions
-		# Расширения для интернет-мультимедиа
-		"Microsoft.WebMediaExtensions"
-	)
 	$OFS = "|"
 	(Get-AppxPackage -PackageTypeFilter Bundle -AllUsers | Where-Object -FilterScript {$_.Name -cnotmatch $ExcludedAppxPackages}).Name | ForEach-Object -Process {
 		Add-AppxControl -AppxName $_
@@ -2258,15 +2284,31 @@ $Window.Add_Loaded({
 $Button.Add_Click({DeleteButton})
 #endregion Events Handlers
 
-if ($RU)
+if (Get-AppxPackage -PackageTypeFilter Bundle -AllUsers | Where-Object -FilterScript {$_.Name -cnotmatch ($ExcludedAppxPackages -join "|")})
 {
-	Write-Verbose -Message "GUI открывается..." -Verbose
+	if ($RU)
+	{
+		Write-Verbose -Message "Форма открывается..." -Verbose
+	}
+	else
+	{
+		Write-Verbose "Form opening..." -Verbose
+	}
+	# Display form
+	# Display форму
+	$Form.ShowDialog() | Out-Null
 }
 else
 {
-	Write-Verbose "GUI opening..." -Verbose
+	if ($RU)
+	{
+		Write-Verbose -Message "No UWP apps to display" -Verbose
+	}
+	else
+	{
+		Write-Verbose "Отсутствуют UWP-приложения для отображения" -Verbose
+	}
 }
-$GUI.ShowDialog() | Out-Null
 
 <#
 Open Microsoft Store "HEVC Video Extensions from Device Manufacturer" page
@@ -2371,6 +2413,7 @@ if (Get-CimInstance -ClassName Win32_VideoController | Where-Object -FilterScrip
 			{
 				New-ItemProperty -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Name $OpenFileDialog.FileName -PropertyType String -Value "GpuPreference=2;" -Force
 			}
+			$Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 		}
 		"1"
 		{
@@ -2544,18 +2587,27 @@ $Process.Start() | Out-Null
 '
 $EncodedScript = [Convert]::ToBase64String([System.Text.Encoding]::Unicode.GetBytes($PS1Script))
 
-$action = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -EncodedCommand $EncodedScript"
-$trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 90 -At 9am
-$settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-$principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
-$params = @{
-	"TaskName"	=	"Update Cleanup"
-	"Action"	=	$action
-	"Trigger"	=	$trigger
-	"Settings"	=	$settings
-	"Principal"	=	$principal
+$Action = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -EncodedCommand $EncodedScript"
+$Trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 90 -At 9am
+$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
+$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
+if ($RU)
+{
+	$Description = "Очистка неиспользуемых обновлений Windows и прочих ненужных файлов, используя встроенную программу 'Очистка диска'"
 }
-Register-ScheduledTask @params -Force
+else
+{
+	$Description = "Cleaning up unused Windows Update files and other unnecessary files using built-in 'Disk cleanup'"
+}
+$Parameters = @{
+	"Action"		= $Action
+	"Trigger"		= $Trigger
+	"Settings"		= $Settings
+	"Principal"		= $Principal
+	"Description"	= $Description
+	"TaskName"		= "Update Cleanup"
+}
+Register-ScheduledTask @Parameters -Force
 
 <#
 Create a task in the Task Scheduler to clear the %SystemRoot%\SoftwareDistribution\Download folder
@@ -2567,18 +2619,27 @@ $Argument = "
 	(Get-Service -Name wuauserv).WaitForStatus('Stopped', '01:00:00')
 	Get-ChildItem -Path $env:SystemRoot\SoftwareDistribution\Download -Recurse -Force | Remove-Item -Recurse -Force
 "
-$action = New-ScheduledTaskAction -Execute powershell.exe -Argument $Argument
-$trigger = New-JobTrigger -Weekly -WeeksInterval 4 -DaysOfWeek Thursday -At 9am
-$settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-$principal = New-ScheduledTaskPrincipal -UserId "NT AUTHORITY\SYSTEM" -RunLevel Highest
-$params = @{
-	"TaskName"	=	"SoftwareDistribution"
-	"Action"	=	$action
-	"Trigger"	=	$trigger
-	"Settings"	=	$settings
-	"Principal"	=	$principal
+$Action = New-ScheduledTaskAction -Execute powershell.exe -Argument $Argument
+$Trigger = New-JobTrigger -Weekly -WeeksInterval 4 -DaysOfWeek Thursday -At 9am
+$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
+$Principal = New-ScheduledTaskPrincipal -UserId "NT AUTHORITY\SYSTEM" -RunLevel Highest
+if ($RU)
+{
+	$Description = "Очистка папки %SystemRoot%\SoftwareDistribution\Download"
 }
-Register-ScheduledTask @params -Force
+else
+{
+	$Description = "The %SystemRoot%\SoftwareDistribution\Download folder cleaning"
+}
+$Parameters = @{
+	"Action"		= $Action
+	"Trigger"		= $Trigger
+	"Settings"		= $Settings
+	"Principal"		= $Principal
+	"Description"	= $Description
+	"TaskName"		= "SoftwareDistribution"
+}
+Register-ScheduledTask @Parameters -Force
 
 <#
 Create a task in the Task Scheduler to clear the %TEMP% folder
@@ -2587,18 +2648,27 @@ The task runs every 62 days
 Задача выполняется каждые 62 дня
 #>
 $Argument = "Get-ChildItem -Path $env:TEMP -Force -Recurse | Remove-Item -Force -Recurse"
-$action = New-ScheduledTaskAction -Execute powershell.exe -Argument $Argument
-$trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 62 -At 9am
-$settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-$principal = New-ScheduledTaskPrincipal -UserId "NT AUTHORITY\SYSTEM" -RunLevel Highest
-$params = @{
-	"TaskName"	=	"Temp"
-	"Action"	=	$action
-	"Trigger"	=	$trigger
-	"Settings"	=	$settings
-	"Principal"	=	$principal
+$Action = New-ScheduledTaskAction -Execute powershell.exe -Argument $Argument
+$Trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 62 -At 9am
+$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
+$Principal = New-ScheduledTaskPrincipal -UserId "NT AUTHORITY\SYSTEM" -RunLevel Highest
+if ($RU)
+{
+	$Description = "Очистка папки %TEMP%"
 }
-Register-ScheduledTask @params -Force
+else
+{
+	$Description = "The %TEMP% folder cleaning"
+}
+$Parameters = @{
+	"Action"		= $Action
+	"Trigger"		= $Trigger
+	"Settings"		= $Settings
+	"Principal"		= $Principal
+	"Description"	= $Description
+	"TaskName"		= "Temp"
+}
+Register-ScheduledTask @Parameters -Force
 #endregion Scheduled tasks
 
 #region Windows Defender & Security
@@ -2854,7 +2924,7 @@ auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:ena
 
 # Include command line in process creation events
 # Включать командную строку в событиях создания процесса
-$ProcessCreation = auditpol /get /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /r | ConvertFrom-Csv | Select-Object "Inclusion Setting"
+$ProcessCreation = auditpol /get /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /r | ConvertFrom-Csv | Select-Object -ExpandProperty "Inclusion Setting"
 if ($ProcessCreation."Inclusion Setting" -ne "No Auditing")
 {
 	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -PropertyType DWord -Value 1 -Force
