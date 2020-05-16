@@ -7,8 +7,9 @@
 	
 	Tested on Home/Pro/Enterprise editions
 
-	Check whether file is encoded in UTF-8 with BOM.
-	PowerShell must be run with elevated privileges;
+	Check whether file is encoded in UTF-8 with BOM
+	The script can not be executed via PowerShell ISE
+	PowerShell must be run with elevated privileges
 	Set PowerShell execution policy: Set-ExecutionPolicy -ExecutionPolicy Bypass -Force to be able to run .ps1 files.
 
 	Read the code you run carefully.
@@ -2066,12 +2067,12 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer 
 #region UWP apps
 <#
 Uninstall UWP apps from all accounts
-GUI with the ability to select the package to remove
+A form with the ability to select the package to remove
 App packages will not be installed when new user accounts are created
 Add UWP apps packages names to the $UnchekedAppXPackages array list by retrieving their packages names with (Get-AppxPackage -PackageTypeFilter Bundle -AllUsers).Name command
 
 Удалить UWP-приложения из всех учетных записей
-GUI с возможностью выбрать пакет для удаления
+Форма с возможностью выбрать пакет для удаления
 Приложения не будут установлены при создании новых учетных записей
 Добавьте имена пакетов UWP-приложений в массив $UnchekedAppXPackages, получив названия их пакетов с помощью команды (Get-AppxPackage -PackageTypeFilter Bundle -AllUsers).Name
 #>
@@ -2924,8 +2925,8 @@ auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:ena
 
 # Include command line in process creation events
 # Включать командную строку в событиях создания процесса
-$ProcessCreation = auditpol /get /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /r | ConvertFrom-Csv | Select-Object -ExpandProperty "Inclusion Setting"
-if ($ProcessCreation."Inclusion Setting" -ne "No Auditing")
+$ProcessCreation = auditpol /get /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /r | ConvertFrom-Csv | Select-Object -Property "Inclusion Setting"
+if ($ProcessCreation -ne "No Auditing")
 {
 	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -PropertyType DWord -Value 1 -Force
 }
