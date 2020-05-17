@@ -10,7 +10,6 @@
 - Set up UI & Personalization;
 - Uninstall OneDrive "correctly";
 - Interactive prompts;
-- Unpin Microsoft Edge and Microsoft Store from taskbar programmatically;
 - Change %TEMP% environment variable path to %SystemDrive%\Temp
 - Set location of the user folders to %SystemDrive% programmatically
   - "Desktop";
@@ -19,15 +18,18 @@
   - "Music";
   - "Pictures"
   - "Videos.
-- Uninstall all UWP apps from all accounts with exception apps list;
+- Uninstall UWP apps from all accounts with exception apps list with pop-up form written in WPF;
 - Turn off Windows features;
-- Create a task in the Task Scheduler to start Windows cleaning up;
-- Create a task in the Task Scheduler to clear the $env:SystemRoot\SoftwareDistribution\Download folder;
+- Remove Windows capabilities with pop-up form written in WPF;
+- Create a Windows cleaning up task in the Task Scheduler;
+- Create a task in the Task Scheduler to clear
+  - %SystemRoot%\SoftwareDistribution\Download
+  - %TEMP%
 - Unpin all Start menu tiles;
-- Pin shortcuts to Start menu using syspin.exe
-  - App [site](http://www.technosys.net/products/utils/pintotaskbar)
-  - Hash (SHA256): 6967E7A3C2251812DD6B3FA0265FB7B61AADC568F562A98C50C345908C6E827
-- Add exclusion folder from Microsoft Defender Antivirus scanning;
+- Pin shortcuts to Start menu using [syspin.exe](http://www.technosys.net/products/utils/pintotaskbar)
+- Turn on Controlled folder access and add protected folders;
+- Add exclusion folder from Microsoft Defender Antivirus scanning
+- Add exclusion file from Microsoft Defender Antivirus scanning
 - Refresh desktop icons, environment variables and taskbar without restarting File Explorer;
 - Many more File Explorer and context menu "deep" tweaks.
 
@@ -46,10 +48,10 @@ To run the script:
 - The script will start immediately.
 
 ## Supported Windows versions
-|Version|Code name|   Marketing name   |Build|  Arch  |   Editions   |
-|:-----:|:-------:|:------------------:|:---:|:------:|:------------:|
-| 1909  |  19H2   |November 2019 Update|18363|x64 only|Pro/Enterprise|
-| 1903  |  19H1   |   May 2019 Update  |18362|x64 only|Pro/Enterprise|
+|Version|Code name|   Marketing name   |Build|  Arch  |      Editions     |
+|:-----:|:-------:|:------------------:|:---:|:------:|:-----------------:|
+| 1909  |  19H2   |November 2019 Update|18363|x64 only|Home/Pro/Enterprise|
+| 1903  |  19H1   |   May 2019 Update  |18362|x64 only|Home/Pro/Enterprise|
 
 ## FAQ
 Read the code you run carefully. Some functions are presented as an example only. You must be aware of the meaning of the functions in the code. **If you're not sure what the script does, do not run it**.
