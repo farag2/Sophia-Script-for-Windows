@@ -35,7 +35,7 @@
 
 ## Images
   ![intro](https://github.com/farag2/Windows-10-Setup-Script/raw/master/Images/intro.gif)
-  ![intro](https://github.com/farag2/Windows-10-Setup-Script/raw/master/Images/img-1.png)
+  ![intro](https://github.com/farag2/Windows-10-Setup-Script/raw/master/Images/img-2.png)
   ![intro](https://raw.githubusercontent.com/farag2/Windows-10-Setup-Script/master/Images/GUI-1.png)
   ![intro](https://raw.githubusercontent.com/farag2/Windows-10-Setup-Script/master/Images/GUI-2.png)
   
@@ -58,7 +58,7 @@ Read the code you run carefully. Some functions are presented as an example only
 **Strongly recommended to run the script after fresh installation**. Some of functions can be run also on LTSB/LTSC and on older versions of Windows and PowerShell (not recommended to run on the x86 systems).
 
 ## GUI version (C#)
-[Cooking](https://github.com/farag2/Windows-10-Setup-Script/tree/GUI-dev)
+Still [Cooking](https://github.com/farag2/Windows-10-Setup-Script/tree/GUI-dev)
 
 ## Microsoft Docs
  - [Release information](https://docs.microsoft.com/en-us/windows/release-information)
