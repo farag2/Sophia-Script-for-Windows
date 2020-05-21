@@ -6,7 +6,6 @@
 
 ## Core features
 
-
 - Set up Privacy & Telemetry;
 
 - Turn off diagnostics tracking scheduled tasks;
