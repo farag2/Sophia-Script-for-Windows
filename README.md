@@ -96,7 +96,7 @@ Still [Cooking](https://github.com/farag2/Windows-10-Setup-Script/tree/GUI-dev)
  
  - [Ru-Board](http://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15)
  
- - [4PDA](https://4pda.ru/forum/index.php?showtopic=523489&st=42980#entry95909388)
+ - [4PDA](https://4pda.ru/forum/index.php?s=&showtopic=523489&view=findpost&p=95909388)
  
  - [My Digital Life](https://forums.mydigitallife.net/threads/powershell-script-setup-windows-10.81675/)
  
