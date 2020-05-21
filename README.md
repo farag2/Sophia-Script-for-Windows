@@ -34,9 +34,12 @@
 - Create a Windows cleaning up task in the Task Scheduler;
 
 - Create tasks in the Task Scheduler to clear
+
   - %SystemRoot%\SoftwareDistribution\Download
+  
   - %TEMP%
- 
+
+
 - Unpin all Start menu tiles;
 
 - Pin shortcuts to Start menu using [syspin.exe](http://www.technosys.net/products/utils/pintotaskbar)
