@@ -32,13 +32,18 @@
   - "Pictures"
   - "Videos.
   
+  
 - Uninstall UWP apps from all accounts with exception apps list with pop-up form written in WPF;
+
 
 - Turn off Windows features;
 
+
 - Remove Windows capabilities with pop-up form written in [WPF](https://github.com/farag2/Windows-10-Setup-Script/raw/master/Images/Img-3.png);
 
+
 - Create a Windows cleaning up task in the Task Scheduler;
+
 
 - Create tasks in the Task Scheduler to clear
 
@@ -49,17 +54,24 @@
 
 - Unpin all Start menu tiles;
 
+
 - Pin shortcuts to Start menu using [syspin.exe](http://www.technosys.net/products/utils/pintotaskbar)
+
 
 - Turn on Controlled folder access and add protected folders;
 
+
 - Add exclusion folder from Microsoft Defender Antivirus scanning;
+
 
 - Add exclusion file from Microsoft Defender Antivirus scanning;
 
+
 - Refresh desktop icons, environment variables and taskbar without restarting File Explorer;
 
+
 - Many more File Explorer and context menu "deep" tweaks.
+
 
 ## Images
 <details>
@@ -76,11 +88,15 @@
 To run the script:
 - Download [up-to-date version](https://github.com/farag2/Setup-Windows-10/releases);
 
+
 - Expand the archive;
+
 
 - Check whether .ps1 is encoded in **UTF-8 with BOM**;
 
+
 - Run Start.cmd as Administrator;
+
 
 - The script will start immediately.
 
