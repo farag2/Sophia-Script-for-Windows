@@ -25,12 +25,9 @@
   - "Pictures"
   - "Videos.
   
-  
 - Uninstall UWP apps from all accounts with exception apps list with pop-up form written in WPF;
 
-
 - Turn off Windows features;
-
 
 - Remove Windows capabilities with pop-up form written in [WPF](https://github.com/farag2/Windows-10-Setup-Script/raw/master/Images/Img-3.png);
 
