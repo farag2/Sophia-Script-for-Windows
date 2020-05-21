@@ -6,19 +6,25 @@
 
 ## Core features
 
- - Set up Privacy & Telemetry;
+- Set up Privacy & Telemetry;
 
- - Turn off diagnostics tracking scheduled tasks;
 
- - Set up UI & Personalization;
+- Turn off diagnostics tracking scheduled tasks;
 
- - Uninstall OneDrive "correctly";
 
- - Interactive prompts;
+- Set up UI & Personalization;
 
- - Change %TEMP% environment variable path to %SystemDrive%\Temp
 
- - Change location of the user folders programmatically (without moving user files) within interactive menu using up/down arrows and Enter key to make a selection
+- Uninstall OneDrive "correctly";
+
+
+- Interactive prompts;
+
+
+- Change %TEMP% environment variable path to %SystemDrive%\Temp
+
+
+- Change location of the user folders programmatically (without moving user files) within interactive menu using up/down arrows and Enter key to make a selection
   - "Desktop";
   - "Documents";
   - "Downloads";
