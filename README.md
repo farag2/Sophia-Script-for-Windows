@@ -11,7 +11,7 @@
 - Uninstall OneDrive "correctly";
 - Interactive prompts;
 - Change %TEMP% environment variable path to %SystemDrive%\Temp
-- Set location of the user folders to %SystemDrive% programmatically
+- Change location of the user folders programmatically (without moving user files
   - "Desktop";
   - "Documents";
   - "Downloads";
