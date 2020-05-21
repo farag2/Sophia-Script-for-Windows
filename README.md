@@ -17,7 +17,7 @@
 
 - Change %TEMP% environment variable path to %SystemDrive%\Temp
 
-- Change location of the user folders programmatically (without moving user files
+- Change location of the user folders programmatically (without moving user files) within interactive menu using up/down arrows and Enter key to make a selection
   - "Desktop";
   - "Documents";
   - "Downloads";
@@ -27,14 +27,20 @@
 - Uninstall UWP apps from all accounts with exception apps list with pop-up form written in WPF;
 
 - Turn off Windows features;
-- Remove Windows capabilities with pop-up form written in WPF;
+
+- Remove Windows capabilities with pop-up form written in [WPF](https://github.com/farag2/Windows-10-Setup-Script/raw/master/Images/Img-3.png);
+
 - Create a Windows cleaning up task in the Task Scheduler;
+
 - Create a task in the Task Scheduler to clear
   - %SystemRoot%\SoftwareDistribution\Download
   - %TEMP%
 - Unpin all Start menu tiles;
+
 - Pin shortcuts to Start menu using [syspin.exe](http://www.technosys.net/products/utils/pintotaskbar)
+
 - Turn on Controlled folder access and add protected folders;
+
 - Add exclusion folder from Microsoft Defender Antivirus scanning
 - Add exclusion file from Microsoft Defender Antivirus scanning
 - Refresh desktop icons, environment variables and taskbar without restarting File Explorer;
