@@ -5,14 +5,9 @@
 </div>
 
 ## Core features
-
-- Set up Privacy & Telemetry;
-
-
-- Turn off diagnostics tracking scheduled tasks;
-
-
-- Set up UI & Personalization;
+  - Set up Privacy & Telemetry;
+  - Turn off diagnostics tracking scheduled tasks;
+  - Set up UI & Personalization;
 
 
 - Uninstall OneDrive "correctly";
