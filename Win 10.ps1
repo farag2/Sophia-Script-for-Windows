@@ -1,6 +1,6 @@
 ﻿<#
 .SYNOPSIS
-	"Windows 10 Setup Script" is a set of tweaks for OS fine-tuning and automating the routine tasks.
+	"Windows 10 Setup Script" is a set of tweaks for OS fine-tuning and automating the routine tasks
 .DESCRIPTION
 	Supported Windows versions:
 	Windows 10 1903/1909 (19H1/19H2), 18362/18363 build, x64 only
@@ -21,8 +21,8 @@
 .EXAMPLE
 	PS C:\> & '.\Win 10.ps1'
 .NOTES
-	Version: v4.2.1
-	Date: 16.05.2020
+	Version: v4.3
+	Date: 21.05.2020
 	Written by: farag
 	Thanks to all http://forum.ru-board.com members involved
 	Ask a question on
@@ -235,8 +235,8 @@ Get-EtwTraceSession -Name DiagLog -ErrorAction Ignore | Remove-EtwTraceSession
 # Отключить сборщики данных при следующем запуске ПК
 Update-AutologgerConfig -Name DiagLog, Diagtrack-Listener -Start 0 -ErrorAction Ignore
 
-# Set the operating system diagnostic data level
-# Установить уровень отправляемых диагностических сведений
+# Set the minimal operating system diagnostic data level
+# Установить минимальный уровень отправляемых диагностических сведений
 if ((Get-WindowsEdition -Online).Edition -eq "Enterprise" -or (Get-WindowsEdition -Online).Edition -eq "Education")
 {
 	# "Security"
@@ -389,7 +389,7 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\
 # Показывать расширения для зарегистрированных типов файлов
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -PropertyType DWord -Value 0 -Force
 
-# Show folder merge conflicts
+# Do not hide folder merge conflicts
 # Не скрывать конфликт слияния папок
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideMergeConflicts -PropertyType DWord -Value 0 -Force
 
@@ -516,7 +516,7 @@ $apps = (New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0
 $apps | Where-Object -FilterScript {$_.Path -like "Microsoft.MicrosoftEdge*"} | ForEach-Object -Process {$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $unpin} | ForEach-Object -Process {$_.DoIt()}}
 $apps | Where-Object -FilterScript {$_.Path -like "Microsoft.WindowsStore*"} | ForEach-Object -Process {$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $unpin} | ForEach-Object -Process {$_.DoIt()}}
 
-# Set the "Control Panel" view on "Large icons"
+# Set the large icons in the Control Panel
 # Установить крупные значки в Панели управления
 if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
 {
@@ -614,10 +614,10 @@ switch ($Result)
 }
 
 # Show accent color on Start, taskbar, and action center
-# Отображать цвет элементов в меню "Пуск", на панели задач и в центре уведовлений
-if ((Get-ItemPropertyValue -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme) -ne 0)
+# Отображать цвет элементов в меню "Пуск", на панели задач и в центре уведомлений
+if ((Get-ItemPropertyValue -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme) -ne 1)
 {
-	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name ColorPrevalence -PropertyType DWord -Value 0 -Force
+	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name ColorPrevalence -PropertyType DWord -Value 1 -Force
 }
 
 # Show accent color on the title bars and window borders
@@ -947,8 +947,8 @@ if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2)
 	# Распознавание лиц Windows Hello
 	$CheckedCapabilities += "Hello.Face*"
 }
-# Windows capabilities that will be shown in the GUI
-# Дополнительные компоненты Windows, которые будут выводиться в GUI
+# Windows capabilities that will be shown in the form
+# Дополнительные компоненты Windows, которые будут выводиться в form
 $ExcludedCapabilities = @(
 	# The DirectX Database to configure and optimize apps when multiple Graphics Adapters are present
 	# База данных DirectX для настройки и оптимизации приложений при наличии нескольких графических адаптеров
@@ -1242,8 +1242,8 @@ if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Pro
 	}
 }
 
-# Set location of the user folders to %SystemDrive%
-# Установить расположение пользовательских папок на %SystemDrive%
+# Change location of the user folders
+# Изменить расположение пользовательских папок
 function KnownFolderPath
 {
 	param
@@ -1284,501 +1284,263 @@ function KnownFolderPath
 	}
 	(Get-Item -Path $Path -Force).Attributes = "ReadOnly"
 }
-$DesktopINI = @{
-	"Desktop"	=	"",
-					"[.ShellClassInfo]",
-					"LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21769",
-					"IconResource=%SystemRoot%\system32\imageres.dll,-183"
-	"Documents"	=	"",
-					"[.ShellClassInfo]",
-					"LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21770",
-					"IconResource=%SystemRoot%\system32\imageres.dll,-112",
-					"IconFile=%SystemRoot%\system32\shell32.dll",
-					"IconIndex=-235"
-	"Downloads"	=	"",
-					"[.ShellClassInfo]","LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21798",
-					"IconResource=%SystemRoot%\system32\imageres.dll,-184"
-	"Music"		=	"",
-					"[.ShellClassInfo]","LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21790",
-					"InfoTip=@%SystemRoot%\system32\shell32.dll,-12689",
-					"IconResource=%SystemRoot%\system32\imageres.dll,-108",
-					"IconFile=%SystemRoot%\system32\shell32.dll","IconIndex=-237"
-	"Pictures"	=	"",
-					"[.ShellClassInfo]",
-					"LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21779",
-					"InfoTip=@%SystemRoot%\system32\shell32.dll,-12688",
-					"IconResource=%SystemRoot%\system32\imageres.dll,-113",
-					"IconFile=%SystemRoot%\system32\shell32.dll",
-					"IconIndex=-236"
-	"Videos"	=	"",
-					"[.ShellClassInfo]",
-					"LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21791",
-					"InfoTip=@%SystemRoot%\system32\shell32.dll,-12690",
-					"IconResource=%SystemRoot%\system32\imageres.dll,-189",
-					"IconFile=%SystemRoot%\system32\shell32.dll","IconIndex=-238"
-}
-$drives = (Get-Disk | Where-Object -FilterScript {$_.BusType -ne "USB"} | Get-Partition | Get-Volume).DriveLetter
-if ($RU)
+
+function UserShellFolder
 {
-	$OFS = ", "
-	Write-Host "`nВаши диски: " -NoNewline
-	Write-Host "$($drives | Sort-Object -Unique)" -ForegroundColor Yellow
-	$OFS = " "
+	param
+	(
+		[Parameter(Mandatory = $true)]
+		[ValidateSet("Desktop", "Documents", "Downloads", "Music", "Pictures", "Videos")]
+		[string]
+		$UserFolder,
+
+		[Parameter(Mandatory = $true)]
+		[string]
+		$FolderPath
+	)
+
+	$UserShellFoldersRegName = @{
+		"Desktop"	=	"Desktop"
+		"Documents"	=	"Personal"
+		"Downloads"	=	"{374DE290-123F-4565-9164-39C4925E467B}"
+		"Music"		=	"My Music"
+		"Pictures"	=	"My Pictures"
+		"Videos"	=	"My Video"
+	}
+
+	$UserShellFoldersGUID = @{
+		"Desktop"	=	"{754AC886-DF64-4CBA-86B5-F7FBF4FBCEF5}"
+		"Documents"	=	"{F42EE2D3-909F-4907-8871-4C22FC0BF756}"
+		"Downloads"	=	"{7D83EE9B-2244-4E70-B1F5-5393042AF1E4}"
+		"Music"		=	"{A0C69A99-21C8-4671-8703-7934162FCF1D}"
+		"Pictures"	=	"{0DDD015D-B06C-45D5-8C4C-F59713854639}"
+		"Videos"	=	"{35286A68-3C57-41A1-BBB1-0EAE73D76C95}"
+	}
+
+	$DesktopINI = @{
+		"Desktop"	=	"",
+						"[.ShellClassInfo]",
+						"LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21769",
+						"IconResource=%SystemRoot%\system32\imageres.dll,-183"
+		"Documents"	=	"",
+						"[.ShellClassInfo]",
+						"LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21770",
+						"IconResource=%SystemRoot%\system32\imageres.dll,-112",
+						"IconFile=%SystemRoot%\system32\shell32.dll",
+						"IconIndex=-235"
+		"Downloads"	=	"",
+						"[.ShellClassInfo]","LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21798",
+						"IconResource=%SystemRoot%\system32\imageres.dll,-184"
+		"Music"		=	"",
+						"[.ShellClassInfo]","LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21790",
+						"InfoTip=@%SystemRoot%\system32\shell32.dll,-12689",
+						"IconResource=%SystemRoot%\system32\imageres.dll,-108",
+						"IconFile=%SystemRoot%\system32\shell32.dll","IconIndex=-237"
+		"Pictures"	=	"",
+						"[.ShellClassInfo]",
+						"LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21779",
+						"InfoTip=@%SystemRoot%\system32\shell32.dll,-12688",
+						"IconResource=%SystemRoot%\system32\imageres.dll,-113",
+						"IconFile=%SystemRoot%\system32\shell32.dll",
+						"IconIndex=-236"
+		"Videos"	=	"",
+						"[.ShellClassInfo]",
+						"LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21791",
+						"InfoTip=@%SystemRoot%\system32\shell32.dll,-12690",
+						"IconResource=%SystemRoot%\system32\imageres.dll,-189",
+						"IconFile=%SystemRoot%\system32\shell32.dll","IconIndex=-238"
+	}
+
+	$UserShellFolderRegValue = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name $UserShellFoldersRegName[$UserFolder]
+	if ($UserShellFolderRegValue -ne $FolderPath)
+	{
+		if ((Get-ChildItem -Path $UserShellFolderRegValue | Measure-Object).Count -ne 0)
+		{
+			if ($RU)
+			{
+				Write-Error -Message "В папке $UserShellFolderRegValue осталась файлы. Переместите их вручную в новое расположение" -ErrorAction SilentlyContinue
+			}
+			else
+			{
+				Write-Error -Message "Some files left in the $UserShellFolderRegValue folder. Move them manually to a new location" -ErrorAction SilentlyContinue
+			}
+		}
+		if (-not (Test-Path -Path $FolderPath))
+		{
+			New-Item -Path $FolderPath -ItemType Directory -Force
+		}
+		KnownFolderPath -KnownFolder $UserFolder -Path $FolderPath
+		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name $UserShellFoldersGUID[$UserFolder] -PropertyType ExpandString -Value $FolderPath -Force
+		Set-Content -Path "$FolderPath\desktop.ini" -Value $DesktopINI[$UserFolder] -Encoding Unicode -Force
+		(Get-Item -Path "$FolderPath\desktop.ini" -Force).Attributes = "Hidden", "System", "Archive"
+		(Get-Item -Path "$FolderPath\desktop.ini" -Force).Refresh()
+	}
+}
+
+function ShowMenu
+{
+	param
+	(
+		[Parameter(Mandatory = $true)]
+		[string]
+		$Title,
+
+		[Parameter(Mandatory = $true)]
+		[array]
+		$Menu,
+
+		[Parameter(Mandatory = $true)]
+		[int]
+		$Default
+	)
+
+	Write-Verbose $Title -Verbose
+
+	$minY = [Console]::CursorTop
+	$y = [Math]::Max([Math]::Min($Default, $Menu.Count), 0)
+	do
+	{
+		[Console]::CursorTop = $minY
+		[Console]::CursorLeft = 0
+		$i = 0
+		foreach ($item in $Menu)
+		{
+			$colors = @{
+				BackgroundColor = if ($i -ne $y)
+				{
+					[Console]::BackgroundColor
+				}
+				else
+				{
+					"Cyan"
+				}
+				ForegroundColor = if ($i -ne $y)
+				{
+					[Console]::ForegroundColor
+				}
+				else
+				{
+					"Blue"
+				}
+			}
+			Write-Host (' {0}. {1} ' -f ($i+1), $item) @colors
+			$i++
+		}
+		$k = [Console]::ReadKey()
+		switch ($k.Key)
+		{
+			"UpArrow"
+			{
+				if ($y -gt 0)
+				{
+					$y--
+				}
+			}
+			"DownArrow"
+			{
+				if ($y -lt ($Menu.Count - 1))
+				{
+					$y++
+				}
+			}
+			"Enter"
+			{
+				return $Menu[$y]
+			}
+		}
+	}
+	while ($k.Key -notin ([ConsoleKey]::Escape, [ConsoleKey]::Enter))
+}
+
+$DriveLetters = @((Get-Disk | Where-Object -FilterScript {$_.BusType -ne "USB"} | Get-Partition | Get-Volume | Where-Object -FilterScript {$null -ne $_.DriveLetter}).DriveLetter | Sort-Object)
+if ($DriveLetters.Count -gt 1)
+{
+	# If drive letters count is more than, then make the second drive in the list the default drive
+	# Если количество букв дисков больше одного, то сделать второй диск в списке диском по умолчанию
+	$Default = 1
 }
 else
 {
-	$OFS = ", "
-	Write-Host "`nYour drives: " -NoNewline
-	Write-Host "$($drives | Sort-Object -Unique)" -ForegroundColor Yellow
-	$OFS = " "
+	$Default = 0
 }
+
 # Desktop
 # Рабочий стол
 if ($RU)
 {
-	Write-Host "`nВведите букву диска, в корне которого будет создана папка для " -NoNewline
-	Write-Host "`"Рабочий стол`"" -ForegroundColor Yellow
-	Write-Host "Файлы не будут перенесены: сделайте это вручную"
-	Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
+	$Title = "Выберите букву диска, в корне которого будет создана папка для `"Рабочий стол`".`nФайлы не будут перенесены: сделайте это вручную"
 }
 else
 {
-	Write-Host "`nType the drive letter in the root of which the " -NoNewline
-	Write-Host "`"Desktop`" " -ForegroundColor Yellow -NoNewline
-	Write-Host "folder will be created."
-	Write-Host "Files will not be moved. Do it manually"
-	Write-Host "`nPress Enter to skip" -NoNewline
+	$Title = "Choose the drive letter in the root of which the `"Desktop`" folder will be created.`nFiles will not be moved. Do it manually"
 }
-do
-{
-	$drive = Read-Host -Prompt " "
-	if ($drives -eq $drive)
-	{
-		$drive = $(${drive}.ToUpper())
-		$DesktopFolder = "${drive}:\Desktop"
-		$DesktopReg = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
-		if ($DesktopReg -ne $DesktopFolder)
-		{
-			if ((Get-ChildItem -Path $DesktopReg | Measure-Object).Count -ne 0)
-			{
-				if ($RU)
-				{
-					Write-Error -Message "В папке $DesktopReg осталась информация" -ErrorAction SilentlyContinue
-				}
-				else
-				{
-					Write-Error -Message "The $DesktopReg folder is not empty" -ErrorAction SilentlyContinue
-				}
-			}
-			if (-not (Test-Path -Path $DesktopFolder))
-			{
-				New-Item -Path $DesktopFolder -ItemType Directory -Force
-			}
-			KnownFolderPath -KnownFolder Desktop -Path $DesktopFolder
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{754AC886-DF64-4CBA-86B5-F7FBF4FBCEF5}" -PropertyType ExpandString -Value $DesktopFolder -Force
-			Set-Content -Path "$DesktopFolder\desktop.ini" -Value $DesktopINI["Desktop"] -Encoding Unicode -Force
-			(Get-Item -Path "$DesktopFolder\desktop.ini" -Force).Attributes = "Hidden", "System", "Archive"
-			(Get-Item -Path "$DesktopFolder\desktop.ini" -Force).Refresh()
-		}
+$SelectedDrive = ShowMenu -Title $Title -Menu $DriveLetters -Default $Default
+UserShellFolder -UserFolder Desktop -FolderPath "${SelectedDrive}:\Desktop"
 
-		# Save screenshots by pressing Win+PrtScr to the Desktop
-		# Сохранять скриншоты по нажатию Win+PrtScr на рабочем столе
-		$DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
-		Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -Type ExpandString -Value $DesktopFolder -Force
-		# Save all opened folders in order to restore them after File Explorer restart
-		# Сохранить все открытые папки, чтобы восстановить их после перезапуска проводника
-		Clear-Variable -Name OpenedFolders -Force -ErrorAction Ignore
-		$OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
-		# In order for the changes to take effect the File Explorer process has to be restarted
-		# Чтобы изменения вступили в силу, необходимо перезапустить процесс проводника
-		Stop-Process -Name explorer -Force
-		# Restore closed folders
-		# Восстановить закрытые папки
-		foreach ($OpenedFolder in $OpenedFolders)
-		{
-			if (Test-Path -Path $OpenedFolder)
-			{
-				Invoke-Item -Path $OpenedFolder
-			}
-		}
-
-	}
-	elseif ([string]::IsNullOrEmpty($drive))
-	{
-		break
-	}
-	else
-	{
-		if ($RU)
-		{
-			Write-Host "`nДиск $(${drive}.ToUpper()): не существует. " -ForegroundColor Yellow -NoNewline
-			Write-Host "Введите букву диска."
-			Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
-		}
-		else
-		{
-			Write-Host "The disk $(${drive}.ToUpper()): does not exist. " -ForegroundColor Yellow -NoNewline
-			Write-Host "Type the drive letter."
-			Write-Host "`nPress Enter to skip" -NoNewline
-		}
-	}
-}
-until ($drives -eq $drive)
 # Documents
 # Документы
 if ($RU)
 {
-	Write-Host "`nВведите букву диска, в корне которого будет создана папка для " -NoNewline
-	Write-Host "`"Документы`"" -ForegroundColor Yellow
-	Write-Host "Файлы не будут перенесены: сделайте это вручную"
-	Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
+	$Title = "Выберите букву диска, в корне которого будет создана папка для `"Документы`".`nФайлы не будут перенесены: сделайте это вручную"
 }
 else
 {
-	Write-Host "`nType the drive letter in the root of which the " -NoNewline
-	Write-Host "`"Documents`" " -ForegroundColor Yellow -NoNewline
-	Write-Host "folder will be created."
-	Write-Host "Files will not be moved. Do it manually"
-	Write-Host "`nPress Enter to skip" -NoNewline
+	$Title = "Choose the drive letter in the root of which the `"Documents`" folder will be created.`nFiles will not be moved. Do it manually"
 }
-do
-{
-	$drive = Read-Host -Prompt " "
-	if ($drives -eq $drive)
-	{
-		$drive = $(${drive}.ToUpper())
-		$DocumentsFolder = "${drive}:\Documents"
-		$DocumentsReg = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
-		if ($DocumentsReg -ne $DocumentsFolder)
-		{
-			if ((Get-ChildItem -Path $DocumentsReg | Measure-Object).Count -ne 0)
-			{
-				if ($RU)
-				{
-					Write-Error -Message "В папке $DocumentsReg осталась информация" -ErrorAction SilentlyContinue
-				}
-				else
-				{
-					Write-Error -Message "The $DocumentsReg folder is not empty" -ErrorAction SilentlyContinue
-				}
-			}
-			if (-not (Test-Path -Path $DocumentsFolder))
-			{
-				New-Item -Path $DocumentsFolder -ItemType Directory -Force
-			}
-			KnownFolderPath -KnownFolder Documents -Path $DocumentsFolder
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{F42EE2D3-909F-4907-8871-4C22FC0BF756}" -PropertyType ExpandString -Value $DocumentsFolder -Force
-			Set-Content -Path "$DocumentsFolder\desktop.ini" -Value $DesktopINI["Documents"] -Encoding Unicode -Force
-			(Get-Item -Path "$DocumentsFolder\desktop.ini" -Force).Attributes = "Hidden", "System", "Archive"
-			(Get-Item -Path "$DocumentsFolder\desktop.ini" -Force).Refresh()
-		}
-	}
-	elseif ([string]::IsNullOrEmpty($drive))
-	{
-		break
-	}
-	else
-	{
-		if ($RU)
-		{
-			Write-Host "`nДиск $(${drive}.ToUpper()): не существует. " -ForegroundColor Yellow -NoNewline
-			Write-Host "Введите букву диска."
-			Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
-		}
-		else
-		{
-			Write-Host "The disk $(${drive}.ToUpper()): does not exist. " -ForegroundColor Yellow -NoNewline
-			Write-Host "Type the drive letter."
-			Write-Host "`nPress Enter to skip" -NoNewline
-		}
-	}
-}
-until ($drives -eq $drive)
+$SelectedDrive = ShowMenu -Title $Title -Menu $DriveLetters -Default $Default
+UserShellFolder -UserFolder Documents -FolderPath "${SelectedDrive}:\Documents"
+
 # Downloads
 # Загрузки
 if ($RU)
 {
-	Write-Host "`nВведите букву диска, в корне которого будет создана папка для " -NoNewline
-	Write-Host "`"Загрузки`"" -ForegroundColor Yellow
-	Write-Host "Файлы не будут перенесены: сделайте это вручную"
-	Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
+	$Title = "Выберите букву диска, в корне которого будет создана папка для `"Загрузки`""
 }
 else
 {
-	Write-Host "`nType the drive letter in the root of which the " -NoNewline
-	Write-Host "`"Downloads`" " -ForegroundColor Yellow -NoNewline
-	Write-Host "folder will be created."
-	Write-Host "Files will not be moved. Do it manually"
-	Write-Host "`nPress Enter to skip" -NoNewline
+	$Title = "Choose the drive letter in the root of which the `"Downloads`" folder will be created.`nFiles will not be moved. Do it manually"
 }
-do
-{
-	$drive = Read-Host -Prompt " "
-	if ($drives -eq $drive)
-	{
-		$drive = $(${drive}.ToUpper())
-		$DownloadsFolder = "${drive}:\Downloads"
-		$DownloadsReg = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-		if ($DownloadsReg -ne $DownloadsFolder)
-		{
-			if ((Get-ChildItem -Path $DownloadsReg | Measure-Object).Count -ne 0)
-			{
-				if ($RU)
-				{
-					Write-Error -Message "В папке $DownloadsReg осталась информация" -ErrorAction SilentlyContinue
-				}
-				else
-				{
-					Write-Error -Message "The $DownloadsReg folder is not empty" -ErrorAction SilentlyContinue
-				}
-			}
-			if (-not (Test-Path -Path $DownloadsFolder))
-			{
-				New-Item -Path $DownloadsFolder -ItemType Directory -Force
-			}
-			KnownFolderPath -KnownFolder Downloads -Path $DownloadsFolder
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{7D83EE9B-2244-4E70-B1F5-5393042AF1E4}" -PropertyType ExpandString -Value $DownloadsFolder -Force
-			Set-Content -Path "$DownloadsFolder\desktop.ini" -Value $DesktopINI["Downloads"] -Encoding Unicode -Force
-			(Get-Item -Path "$DownloadsFolder\desktop.ini" -Force).Attributes = "Hidden", "System", "Archive"
-			(Get-Item -Path "$DownloadsFolder\desktop.ini" -Force).Refresh()
+$SelectedDrive = ShowMenu -Title $Title -Menu $DriveLetters -Default $Default
+UserShellFolder -UserFolder Downloads -FolderPath "${SelectedDrive}:\Downloads"
 
-			# Microsoft Edge downloads folder
-			# Папка загрузок Microsoft Edge
-			$edge = (Get-AppxPackage -Name Microsoft.MicrosoftEdge).PackageFamilyName
-			New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$edge\MicrosoftEdge\Main" -Name "Default Download Directory" -PropertyType String -Value $DownloadsFolder -Force
-		}
-	}
-	elseif ([string]::IsNullOrEmpty($drive))
-	{
-		break
-	}
-	else
-	{
-		if ($RU)
-		{
-			Write-Host "`nДиск $(${drive}.ToUpper()): не существует. " -ForegroundColor Yellow -NoNewline
-			Write-Host "Введите букву диска."
-			Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
-		}
-		else
-		{
-			Write-Host "The disk $(${drive}.ToUpper()): does not exist. " -ForegroundColor Yellow -NoNewline
-			Write-Host "Type the drive letter."
-			Write-Host "`nPress Enter to skip" -NoNewline
-		}
-	}
-}
-until ($drives -eq $drive)
 # Music
 # Музыка
 if ($RU)
 {
-	Write-Host "`nВведите букву диска, в корне которого будет создана папка для " -NoNewline
-	Write-Host "`"Музыка`"" -ForegroundColor Yellow
-	Write-Host "Файлы не будут перенесены: сделайте это вручную"
-	Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
+	$Title = "Выберите букву диска, в корне которого будет создана папка для `"Музыка`".`nФайлы не будут перенесены: сделайте это вручную"
 }
 else
 {
-	Write-Host "`nType the drive letter in the root of which the " -NoNewline
-	Write-Host "`"Music`" " -ForegroundColor Yellow -NoNewline
-	Write-Host "folder will be created."
-	Write-Host "Files will not be moved. Do it manually"
-	Write-Host "`nPress Enter to skip" -NoNewline
+	$Title = "Choose the drive letter in the root of which the `"Music`" folder will be created.`nFiles will not be moved. Do it manually"
 }
-do
-{
-	$drive = Read-Host -Prompt " "
-	if ($drives -eq $drive)
-	{
-		$drive = $(${drive}.ToUpper())
-		$MusicFolder = "${drive}:\Music"
-		$MusicReg = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
-		if ($MusicReg -ne $MusicFolder)
-		{
-			if ((Get-ChildItem -Path $MusicReg | Measure-Object).Count -ne 0)
-			{
-				if ($RU)
-				{
-					Write-Error -Message "В папке $MusicReg осталась информация" -ErrorAction SilentlyContinue
-				}
-				else
-				{
-					Write-Error -Message "The $MusicReg folder is not empty" -ErrorAction SilentlyContinue
-				}
-			}
-			if (-not (Test-Path -Path $MusicFolder))
-			{
-				New-Item -Path $MusicFolder -ItemType Directory -Force
-			}
-			KnownFolderPath -KnownFolder Music -Path $MusicFolder
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{A0C69A99-21C8-4671-8703-7934162FCF1D}" -PropertyType ExpandString -Value $MusicFolder -Force
-			Set-Content -Path "$MusicFolder\desktop.ini" -Value $DesktopINI["Music"] -Encoding Unicode -Force
-			(Get-Item -Path "$MusicFolder\desktop.ini" -Force).Attributes = "Hidden", "System", "Archive"
-			(Get-Item -Path "$MusicFolder\desktop.ini" -Force).Refresh()
-		}
-	}
-	elseif ([string]::IsNullOrEmpty($drive))
-	{
-		break
-	}
-	else
-	{
-		if ($RU)
-		{
-			Write-Host "`nДиск $(${drive}.ToUpper()): не существует. " -ForegroundColor Yellow -NoNewline
-			Write-Host "Введите букву диска."
-			Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
-		}
-		else
-		{
-			Write-Host "The disk $(${drive}.ToUpper()): does not exist. " -ForegroundColor Yellow -NoNewline
-			Write-Host "Type the drive letter."
-			Write-Host "`nPress Enter to skip" -NoNewline
-		}
-	}
-}
-until ($drives -eq $drive)
+$SelectedDrive = ShowMenu -Title $Title -Menu $DriveLetters -Default $Default
+UserShellFolder -UserFolder Music -FolderPath "${SelectedDrive}:\Music"
+
 # Pictures
 # Изображения
 if ($RU)
 {
-	Write-Host "`nВведите букву диска, в корне которого будет создана папка для " -NoNewline
-	Write-Host "`"Изображения`"" -ForegroundColor Yellow
-	Write-Host "Файлы не будут перенесены: сделайте это вручную"
-	Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
+	$Title = "Выберите букву диска, в корне которого будет создана папка для `"Изображения`".`nФайлы не будут перенесены: сделайте это вручную"
 }
 else
 {
-	Write-Host "`nType the drive letter in the root of which the " -NoNewline
-	Write-Host "`"Pictures`" " -ForegroundColor Yellow -NoNewline
-	Write-Host "folder will be created."
-	Write-Host "Files will not be moved. Do it manually"
-	Write-Host "`nPress Enter to skip" -NoNewline
+	$Title = "Choose the drive letter in the root of which the `"Pictures`" folder will be created.`nFiles will not be moved. Do it manually"
 }
-do
-{
-	$drive = Read-Host -Prompt " "
-	if ($drives -eq $drive)
-	{
-		$drive = $(${drive}.ToUpper())
-		$PicturesFolder = "${drive}:\Pictures"
-		$PicturesReg = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
-		if ($PicturesReg -ne $PicturesFolder)
-		{
-			if ((Get-ChildItem -Path $PicturesReg | Measure-Object).Count -ne 0)
-			{
-				if ($RU)
-				{
-					Write-Error -Message "В папке $PicturesReg осталась информация" -ErrorAction SilentlyContinue
-				}
-				else
-				{
-					Write-Error -Message "The $PicturesReg folder is not empty" -ErrorAction SilentlyContinue
-				}
-			}
-			if (-not (Test-Path -Path $PicturesFolder))
-			{
-				New-Item -Path $PicturesFolder -ItemType Directory -Force
-			}
-			KnownFolderPath -KnownFolder Pictures -Path $PicturesFolder
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{0DDD015D-B06C-45D5-8C4C-F59713854639}" -PropertyType ExpandString -Value $PicturesFolder -Force
-			Set-Content -Path "$PicturesFolder\desktop.ini" -Value $DesktopINI["Pictures"] -Encoding Unicode -Force
-			(Get-Item -Path "$PicturesFolder\desktop.ini" -Force).Attributes = "Hidden", "System", "Archive"
-			(Get-Item -Path "$PicturesFolder\desktop.ini" -Force).Refresh()
-		}
-	}
-	elseif ([string]::IsNullOrEmpty($drive))
-	{
-		break
-	}
-	else
-	{
-		if ($RU)
-		{
-			Write-Host "`nДиск $(${drive}.ToUpper()): не существует. " -ForegroundColor Yellow -NoNewline
-			Write-Host "Введите букву диска."
-			Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
-		}
-		else
-		{
-			Write-Host "`nThe disk $(${drive}.ToUpper()): does not exist. " -ForegroundColor Yellow -NoNewline
-			Write-Host "Type the drive letter."
-			Write-Host "`nPress Enter to skip" -NoNewline
-		}
-	}
-}
-until ($drives -eq $drive)
+$SelectedDrive = ShowMenu -Title $Title -Menu $DriveLetters -Default $Default
+UserShellFolder -UserFolder Pictures -FolderPath "${SelectedDrive}:\Pictures"
+
 # Videos
 # Видео
 if ($RU)
 {
-	Write-Host "`nВведите букву диска, в корне которого будет создана папка для " -NoNewline
-	Write-Host "`"Видео`"" -ForegroundColor Yellow
-	Write-Host "Файлы не будут перенесены: сделайте это вручную"
-	Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
+	$Title = "Выберите букву диска, в корне которого будет создана папка для `"Видео`".`nФайлы не будут перенесены: сделайте это вручную"
 }
 else
 {
-	Write-Host "`nType the drive letter in the root of which the " -NoNewline
-	Write-Host "`"Videos`" " -ForegroundColor Yellow -NoNewline
-	Write-Host "folder will be created."
-	Write-Host "Files will not be moved. Do it manually"
-	Write-Host "`nPress Enter to skip" -NoNewline
+	$Title = "Choose the drive letter in the root of which the `"Videos`" folder will be created.`nFiles will not be moved. Do it manually"
 }
-do
-{
-	$drive = Read-Host -Prompt " "
-	if ($drives -eq $drive)
-	{
-		$drive = $(${drive}.ToUpper())
-		$VideosFolder = "${drive}:\Videos"
-		$VideosReg = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Video"
-		if ($VideosReg -ne $VideosFolder)
-		{
-			if ((Get-ChildItem -Path $VideosReg | Measure-Object).Count -ne 0)
-			{
-				if ($RU)
-				{
-					Write-Error -Message "В папке $VideosReg осталась информация" -ErrorAction SilentlyContinue
-				}
-				else
-				{
-					Write-Error -Message "The $PicturesReg folder is not empty" -ErrorAction SilentlyContinue
-				}
-			}
-			if (-not (Test-Path -Path $VideosFolder))
-			{
-				New-Item -Path $VideosFolder -ItemType Directory -Force
-			}
-			KnownFolderPath -KnownFolder Videos -Path $VideosFolder
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{35286A68-3C57-41A1-BBB1-0EAE73D76C95}" -PropertyType ExpandString -Value $VideosFolder -Force
-			Set-Content -Path "$VideosFolder\desktop.ini" -Value $DesktopINI["Videos"] -Encoding Unicode -Force
-			(Get-Item -Path "$VideosFolder\desktop.ini" -Force).Attributes = "Hidden", "System", "Archive"
-			(Get-Item -Path "$VideosFolder\desktop.ini" -Force).Refresh()
-		}
-	}
-	elseif ([string]::IsNullOrEmpty($drive))
-	{
-		break
-	}
-	else
-	{
-		if ($RU)
-		{
-			Write-Host "`nДиск $(${drive}.ToUpper()): не существует. " -ForegroundColor Yellow -NoNewline
-			Write-Host "Введите букву диска."
-			Write-Host "`nЧтобы пропустить, нажмите Enter" -NoNewline
-		}
-		else
-		{
-			Write-Host "`nThe disk $(${drive}.ToUpper()): does not exist. " -ForegroundColor Yellow -NoNewline
-			Write-Host "Type the drive letter."
-			Write-Host "`nPress Enter to skip" -NoNewline
-		}
-	}
-}
-until ($drives -eq $drive)
+$SelectedDrive = ShowMenu -Title $Title -Menu $DriveLetters -Default $Default
+UserShellFolder -UserFolder Videos -FolderPath "${SelectedDrive}:\Videos"
 
 # Turn on automatic recommended troubleshooting and tell when problems get fixed
 # Автоматически запускать средства устранения неполадок, а затем сообщать об устранении проблем
@@ -2433,9 +2195,9 @@ if (Get-CimInstance -ClassName Win32_VideoController | Where-Object -FilterScrip
 
 #region Scheduled tasks
 <#
-Create a task in the Task Scheduler to start Windows cleaning up
+Create a Windows cleaning up task in the Task Scheduler
 The task runs every 90 days
-Создать задачу в Планировщике задач по очистке обновлений Windows
+Создать задачу в Планировщике задач по очистке Windows
 Задача выполняется каждые 90 дней
 #>
 Get-ChildItem -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches | ForEach-Object -Process {
@@ -2594,19 +2356,22 @@ $Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
 $Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
 if ($RU)
 {
-	$Description = "Очистка неиспользуемых обновлений Windows и прочих ненужных файлов, используя встроенную программу 'Очистка диска'"
+	$Description =
+	"Очистка неиспользуемых файлов и обновлений Windows, используя встроенную программу Очистка диска. Чтобы расшифровать закодированную строку используйте [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String(`"строка`"))"
 }
 else
 {
-	$Description = "Cleaning up unused Windows Update files and other unnecessary files using built-in 'Disk cleanup'"
+	$Description =
+	"Cleaning up unused Windows files and updates using built-in Disk cleanup app. To decode encoded command use [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String(`"string`"))"
 }
 $Parameters = @{
-	"Action"		= $Action
-	"Trigger"		= $Trigger
-	"Settings"		= $Settings
+	"TaskName"		= "Windows Cleanup"
+	"TaskPath"		= "Setup Script"
 	"Principal"		= $Principal
+	"Action"		= $Action
 	"Description"	= $Description
-	"TaskName"		= "Update Cleanup"
+	"Settings"		= $Settings
+	"Trigger"		= $Trigger
 }
 Register-ScheduledTask @Parameters -Force
 
@@ -2633,12 +2398,13 @@ else
 	$Description = "The %SystemRoot%\SoftwareDistribution\Download folder cleaning"
 }
 $Parameters = @{
-	"Action"		= $Action
-	"Trigger"		= $Trigger
-	"Settings"		= $Settings
-	"Principal"		= $Principal
-	"Description"	= $Description
 	"TaskName"		= "SoftwareDistribution"
+	"TaskPath"		= "Setup Script"
+	"Principal"		= $Principal
+	"Action"		= $Action
+	"Description"	= $Description
+	"Settings"		= $Settings
+	"Trigger"		= $Trigger
 }
 Register-ScheduledTask @Parameters -Force
 
@@ -2662,12 +2428,13 @@ else
 	$Description = "The %TEMP% folder cleaning"
 }
 $Parameters = @{
-	"Action"		= $Action
-	"Trigger"		= $Trigger
-	"Settings"		= $Settings
-	"Principal"		= $Principal
-	"Description"	= $Description
 	"TaskName"		= "Temp"
+	"TaskPath"		= "Setup Script"
+	"Principal"		= $Principal
+	"Action"		= $Action
+	"Description"	= $Description
+	"Settings"		= $Settings
+	"Trigger"		= $Trigger
 }
 Register-ScheduledTask @Parameters -Force
 #endregion Scheduled tasks
@@ -2695,24 +2462,24 @@ switch ($Result)
 	"0"
 	{
 		Add-Type -AssemblyName System.Windows.Forms
-		$OpenFileDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
+		$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
 		if ($RU)
 		{
-			$OpenFileDialog.Description = "Выберите папку"
+			$FolderBrowserDialog.Description = "Выберите папку"
 		}
 		else
 		{
-			$OpenFileDialog.Description = "Select a folder"
+			$FolderBrowserDialog.Description = "Select a folder"
 		}
-		$OpenFileDialog.RootFolder = "MyComputer"
+		$FolderBrowserDialog.RootFolder = "MyComputer"
 		# Focus on open file dialog
 		# Перевести фокус на диалог открытия файла
 		$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
-		$OpenFileDialog.ShowDialog($tmp)
-		if ($OpenFileDialog.SelectedPath)
+		$FolderBrowserDialog.ShowDialog($tmp)
+		if ($FolderBrowserDialog.SelectedPath)
 		{
 			Set-MpPreference -EnableControlledFolderAccess Enabled
-			Add-MpPreference -ControlledFolderAccessProtectedFolders $OpenFileDialog.SelectedPath -Force
+			Add-MpPreference -ControlledFolderAccessProtectedFolders $FolderBrowserDialog.SelectedPath -Force
 		}
 		$Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 	}
@@ -2992,7 +2759,7 @@ if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Comm
 {
 	New-Item -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command -Force
 }
-$Value = "{0}" -f 'cmd /c DISM /Online /Add-Package /PackagePath:"%1" /NoRestart & pause'
+$Value = "{0}" -f 'cmd /c DISM.exe /Online /Add-Package /PackagePath:"%1" /NoRestart & pause'
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command -Name "(default)" -PropertyType String -Value $Value -Force
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs -Name MUIVerb -PropertyType String -Value "@shell32.dll,-10210" -Force
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs -Name HasLUAShield -PropertyType String -Value "" -Force
@@ -3087,7 +2854,7 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name 
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name NoPreviousVersionsPage -PropertyType DWord -Value 1 -Force
 #endregion Context menu
 
-#region End
+#region Refresh
 # Refresh desktop icons, environment variables, taskbar and send F5 pressing simulation to refresh the desktop
 # Обновить иконки рабочего стола, переменные среды, панель задач и симулировать нажатие F5 для обновления рабочего стола
 $UpdateExplorer = @{
@@ -3140,38 +2907,30 @@ if (-not ("WinAPI.UpdateExplorer" -as [type]))
 }
 [WinAPI.UpdateExplorer]::Refresh()
 [WinAPI.UpdateExplorer]::PostMessage()
+
 # Restart the Start menu
 # Перезапустить меню "Пуск"
 Stop-Process -Name StartMenuExperienceHost -Force
+#endregion Refresh
 
 # Errors output
 # Вывод ошибок
 if ($Error)
 {
-	if ($RU)
-	{
-		Write-Host "`nПредупреждения/ошибки" -ForegroundColor Red
-	}
-	else
-	{
-		Write-Host "`nWarnings/errors" -ForegroundColor Red
-	}
 	($Error | ForEach-Object -Process {
-		[PSCustomObject] @{
-			Line = $_.InvocationInfo.ScriptLineNumber
-			"Errors/Warnings" = $_.Exception.Message
+		if ($RU)
+		{
+			[PSCustomObject] @{
+				Строка = $_.InvocationInfo.ScriptLineNumber
+				"Ошибки/предупреждения" = $_.Exception.Message
+			}
+		}
+		else
+		{
+			[PSCustomObject] @{
+				Line = $_.InvocationInfo.ScriptLineNumber
+				"Errors/Warnings" = $_.Exception.Message
+			}
 		}
 	} | Sort-Object -Property Line | Format-Table -AutoSize -Wrap | Out-String).Trim()
 }
-else
-{
-	if ($RU)
-	{
-		Write-Host "`nНет предупреждений/ошибок" -ForegroundColor Green
-	}
-	else
-	{
-		Write-Host "`nNo warnings/errors" -ForegroundColor Green
-	}
-}
-#endregion End
