@@ -48,13 +48,13 @@
 - Pin shortcuts to Start menu using [syspin.exe](http://www.technosys.net/products/utils/pintotaskbar)
 
 
-- Turn on Controlled folder access and add protected folders;
+- Turn on Controlled folder access and add protected folders using dialog menu;
 
 
-- Add exclusion folder from Microsoft Defender Antivirus scanning;
+- Add exclusion folder from Microsoft Defender Antivirus scanning using dialog menu;
 
 
-- Add exclusion file from Microsoft Defender Antivirus scanning;
+- Add exclusion file from Microsoft Defender Antivirus scanning using dialog menu;
 
 
 - Refresh desktop icons, environment variables and taskbar without restarting File Explorer;
