@@ -116,7 +116,7 @@ Still [Cooking](https://github.com/farag2/Windows-10-Setup-Script/tree/GUI-dev)
  
  - [My Digital Life](https://forums.mydigitallife.net/threads/powershell-script-setup-windows-10.81675/)
  
- - [Reddit](https://www.reddit.com/r/Windows10/comments/ctg8jw/powershell_script_setup_windows_10/)
+ - [Reddit](https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/)
 
 ## PS
 Collection of useful [scripts](https://github.com/farag2/Utilities)
