@@ -6,11 +6,17 @@
 
 ## Core features
 - Set up Privacy & Telemetry;
+
 - Turn off diagnostics tracking scheduled tasks;
+
 - Set up UI & Personalization;
+
 - Uninstall OneDrive "correctly";
+
 - Interactive prompts;
+
 - Change %TEMP% environment variable path to %SystemDrive%\Temp
+
 - Change location of the user folders programmatically (without moving user files
   - "Desktop";
   - "Documents";
@@ -19,6 +25,7 @@
   - "Pictures"
   - "Videos.
 - Uninstall UWP apps from all accounts with exception apps list with pop-up form written in WPF;
+
 - Turn off Windows features;
 - Remove Windows capabilities with pop-up form written in WPF;
 - Create a Windows cleaning up task in the Task Scheduler;
