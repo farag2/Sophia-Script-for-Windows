@@ -52,12 +52,16 @@
 - Many more File Explorer and context menu "deep" tweaks.
 
 ## Images
+<details>
+  <summary>Images and the GIF</summary>
+
   ![intro](https://github.com/farag2/Windows-10-Setup-Script/raw/master/Images/intro.gif)
   ![intro](https://github.com/farag2/Windows-10-Setup-Script/raw/master/Images/img-2.png)
   ![intro](https://github.com/farag2/Windows-10-Setup-Script/raw/master/Images/Img-3.png)
   ![intro](https://github.com/farag2/Windows-10-Setup-Script/blob/master/Images/GUI-1.png)
   ![intro](https://github.com/farag2/Windows-10-Setup-Script/blob/master/Images/GUI-2.png)
-  
+</details> 
+
 ## Usage
 To run the script:
 - Download [up-to-date version](https://github.com/farag2/Setup-Windows-10/releases);
