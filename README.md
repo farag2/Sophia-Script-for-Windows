@@ -32,7 +32,7 @@
 
 - Create a Windows cleaning up task in the Task Scheduler;
 
-- Create a task in the Task Scheduler to clear
+- Create tasks in the Task Scheduler to clear
   - %SystemRoot%\SoftwareDistribution\Download
   - %TEMP%
 - Unpin all Start menu tiles;
