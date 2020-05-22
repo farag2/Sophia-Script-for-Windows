@@ -37,7 +37,7 @@
 ## Images
 
 <details>
-  <summary>Images and YouTube video</summary>
+  <summary>Images and YouTube videos</summary>
 
 [![](http://img.youtube.com/vi/8MzuDLNH9QU/0.jpg)](http://www.youtube.com/watch?v=8MzuDLNH9QU "Windows 10 Setup Script in Action")
 [![](http://img.youtube.com/vi/cjyi9nX8sFA/0.jpg)](http://www.youtube.com/watch?v=cjyi9nX8sFA "Cleaning up unused Windows files and updates")
@@ -53,8 +53,8 @@ To run the script:
 - Download [up-to-date version](https://github.com/farag2/Setup-Windows-10/releases);
 - Expand the archive;
 - Check whether .ps1 is encoded in **UTF-8 with BOM**;
-- Run Start.cmd as Administrator;
-- The script will start immediately.
+- Run .ps1 file via PowerShell.exe;
+  - Or Start.cmd as Administrator. The script will start immediately.
 
 ## Supported Windows versions
 
