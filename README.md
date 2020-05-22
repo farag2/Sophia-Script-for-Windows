@@ -37,13 +37,13 @@
 ## Images
 
 <details>
-  <summary>Images and the GIF</summary>
+  <summary>Images and YouTube video</summary>
 
-  ![intro](https://github.com/farag2/Windows-10-Setup-Script/raw/master/Images/intro.gif)
-  ![intro](https://github.com/farag2/Windows-10-Setup-Script/raw/master/Images/img-2.png)
-  ![intro](https://github.com/farag2/Windows-10-Setup-Script/raw/master/Images/Img-3.png)
-  ![intro](https://github.com/farag2/Windows-10-Setup-Script/blob/master/Images/GUI-1.png)
-  ![intro](https://github.com/farag2/Windows-10-Setup-Script/blob/master/Images/GUI-2.png)
+[![](http://img.youtube.com/vi/8MzuDLNH9QU/0.jpg)](http://www.youtube.com/watch?v=8MzuDLNH9QU "Windows 10 Setup Script in Action")
+[![](http://img.youtube.com/vi/cjyi9nX8sFA/0.jpg)](http://www.youtube.com/watch?v=cjyi9nX8sFA "Cleaning up unused Windows files and updates")
+  ![Image](https://i.imgur.com/azbQLAN.png)
+  ![Image](https://i.imgur.com/nJPs2XV.png)
+  ![intro](https://i.imgur.com/zXCi8SJ.png)
 </details>
 
 ## Usage
