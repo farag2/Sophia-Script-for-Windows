@@ -4,7 +4,6 @@
 **"Windows 10 Setup Script" is a set of tweaks for OS fine-tuning and automating the routine tasks** 🏆
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/farag2/Windows-10-Setup-Script)
-![GitHub All Releases](https://img.shields.io/github/downloads/farag2/Windows-10-Setup-Script/total)
 </div>
 
 ## Core features
