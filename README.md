@@ -23,6 +23,7 @@
 - Turn off Windows features;
 - Remove Windows capabilities with pop-up form written in [WPF](#Images);
 - Create a Windows cleaning up task in the Task Scheduler;
+ - A toast notification will pop up a minute before the task [starts](#Images)
 - Create tasks in the Task Scheduler to clear
   - %SystemRoot%\SoftwareDistribution\Download
   - %TEMP%
