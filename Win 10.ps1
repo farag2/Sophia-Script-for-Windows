@@ -55,32 +55,47 @@ else
 
 # Detect the OS bitness
 # Определить разрядность ОС
-switch ([Environment]::Is64BitOperatingSystem) {
-	$false {
-		if ($RU) { Write-Warning -Message "Скрипт поддерживает только Windows 10 x64" }
-		else { Write-Warning -Message "The script supports Windows 10 x64 only" }
+if (-not ([Environment]::Is64BitOperatingSystem))
+{
+	if ($RU)
+	{
+		Write-Warning -Message "Скрипт поддерживает только Windows 10 x64"
 	}
-	Default {}
-
+	else
+	{
+		Write-Warning -Message "The script supports Windows 10 x64 only"
+	}
+	break
+}
 
 # Detect the PowerShell bitness
 # Определить разрядность PowerShell
-switch ([IntPtr]::Size -eq 8) {
-	$false {
-		if ($RU) { Write-Warning -Message "Скрипт поддерживает только PowerShell x64" }
-		else { Write-Warning -Message "The script supports PowerShell x64 only" }
-	Default {}
+if (-not ([IntPtr]::Size -eq 8))
+{
+	if ($RU)
+	{
+		Write-Warning -Message "Скрипт поддерживает только PowerShell x64"
+	}
+	else
+	{
+		Write-Warning -Message "The script supports PowerShell x64 only"
+	}
+	break
 }
-
 
 # Detect whether the script is running via PowerShell ISE
 # Определить, запущен ли скрипт в PowerShell ISE
-switch ($psISE) {
-	$true {
-		if ($RU) { Write-Warning -Message "Скрипт не может быть запущен в PowerShell ISE" }
-		else { Write-Warning -Message "The script can not be run via PowerShell ISE" }
+if ($psISE)
+{
+	if ($RU)
+	{
+		Write-Warning -Message "Скрипт не может быть запущен в PowerShell ISE"
 	}
-	Default {}
+	else
+	{
+		Write-Warning -Message "The script can not be run via PowerShell ISE"
+	}
+	break
 }
 #endregion Check
 
