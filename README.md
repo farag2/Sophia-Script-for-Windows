@@ -1,7 +1,7 @@
 <div align="center">
   <h1>Windows 10 Setup Script</h1>
 
-"Windows 10 Setup Script" is a set of tweaks for OS fine-tuning and automating the routine tasks.
+**"Windows 10 Setup Script" is a set of tweaks for OS fine-tuning and automating the routine tasks** 🏆
 </div>
 
 ## Core features
@@ -19,9 +19,9 @@
   - "Music";
   - "Pictures"
   - "Videos.
-- Uninstall UWP apps from all accounts with exception apps list with pop-up form written in WPF;
+- Uninstall UWP apps from all accounts with exception apps list with pop-up form written in [WPF](#Images);
 - Turn off Windows features;
-- Remove Windows capabilities with pop-up form written in [WPF](https://github.com/farag2/Windows-10-Setup-Script/raw/master/Images/Img-3.png);
+- Remove Windows capabilities with pop-up form written in [WPF](#Images);
 - Create a Windows cleaning up task in the Task Scheduler;
 - Create tasks in the Task Scheduler to clear
   - %SystemRoot%\SoftwareDistribution\Download
