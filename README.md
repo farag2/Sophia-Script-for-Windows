@@ -29,6 +29,7 @@
   - %TEMP%
 - Unpin all Start menu tiles;
 - Pin shortcuts to Start menu using [syspin.exe](http://www.technosys.net/products/utils/pintotaskbar)
+ - Three shortcuts are preconfigured to be pinned: Control Panel, "old style" Devices and Printers, and Command Promt
 - Turn on Controlled folder access and add protected folders using dialog menu;
 - Add exclusion folder from Microsoft Defender Antivirus scanning using dialog menu;
 - Add exclusion file from Microsoft Defender Antivirus scanning using dialog menu;
