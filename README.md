@@ -6,6 +6,23 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/farag2/Windows-10-Setup-Script)
 </div>
 
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/farag)
+
+## Screenshots
+
+![Image](https://i.imgur.com/azbQLAN.png)
+![Image](https://i.imgur.com/nJPs2XV.png)
+![intro](https://i.imgur.com/zXCi8SJ.png)
+
+## Videos
+
+<details>
+  <summary>YouTube videos</summary>
+
+[![](http://img.youtube.com/vi/8MzuDLNH9QU/0.jpg)](http://www.youtube.com/watch?v=8MzuDLNH9QU "Windows 10 Setup Script in Action")
+[![](http://img.youtube.com/vi/cjyi9nX8sFA/0.jpg)](http://www.youtube.com/watch?v=cjyi9nX8sFA "Cleaning up unused Windows files and updates")
+</details>
+
 ## Core features
 
 - Set up Privacy & Telemetry;
@@ -37,18 +54,6 @@
 - Add exclusion file from Microsoft Defender Antivirus scanning using dialog menu;
 - Refresh desktop icons, environment variables and taskbar without restarting File Explorer;
 - Many more File Explorer and context menu "deep" tweaks.
-
-## Images
-
-<details>
-  <summary>Images and YouTube videos</summary>
-
-[![](http://img.youtube.com/vi/8MzuDLNH9QU/0.jpg)](http://www.youtube.com/watch?v=8MzuDLNH9QU "Windows 10 Setup Script in Action")
-[![](http://img.youtube.com/vi/cjyi9nX8sFA/0.jpg)](http://www.youtube.com/watch?v=cjyi9nX8sFA "Cleaning up unused Windows files and updates")
-  ![Image](https://i.imgur.com/azbQLAN.png)
-  ![Image](https://i.imgur.com/nJPs2XV.png)
-  ![intro](https://i.imgur.com/zXCi8SJ.png)
-</details>
 
 ## Usage
 
