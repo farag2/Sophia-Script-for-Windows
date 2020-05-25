@@ -1,11 +1,12 @@
 ---
 name: Bug report
 about: Report errors or unexpected behavior
-title: ''
-labels: ''
-assignees: ''
 
 ---
+Before submitting a bug report:
+
+- Make sure you are able to repro it on the latest released version;
+- The .ps1 file has UTF-8 with BOM enconding.
 
 **Describe the bug**
 A clear and concise description of what the bug is.
