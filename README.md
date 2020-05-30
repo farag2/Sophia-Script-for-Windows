@@ -5,6 +5,7 @@
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/farag2/Windows-10-Setup-Script)
 ![GitHub All Releases](https://img.shields.io/github/downloads/farag2/Windows-10-Setup-Script/total)
+Version for [20H1](https://gist.github.com/farag2/5a6d9952247aefe42ba81a9d95507765)
 </div>
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Q5Q51QUJC)
