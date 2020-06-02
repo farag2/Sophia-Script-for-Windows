@@ -19,7 +19,7 @@ Before submitting a bug report:
 If applicable, add screenshots to help explain your problem.
 
 **Desktop (please complete the following information):**
- - Windows build: [e.g. 18363.863]
+- Windows build: [e.g. 18363.863]
 
 **Additional context**
 Add any other context about the problem here.
