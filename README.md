@@ -5,6 +5,7 @@
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/farag2/Windows-10-Setup-Script)
 ![GitHub All Releases](https://img.shields.io/github/downloads/farag2/Windows-10-Setup-Script/total)
+
 Version for [20H1](https://gist.github.com/farag2/5a6d9952247aefe42ba81a9d95507765)
 </div>
 
@@ -21,8 +22,8 @@ Version for [20H1](https://gist.github.com/farag2/5a6d9952247aefe42ba81a9d955077
 <details>
   <summary>YouTube videos</summary>
 
-[![](http://img.youtube.com/vi/8MzuDLNH9QU/0.jpg)](http://www.youtube.com/watch?v=8MzuDLNH9QU "Windows 10 Setup Script in Action")
-[![](http://img.youtube.com/vi/cjyi9nX8sFA/0.jpg)](http://www.youtube.com/watch?v=cjyi9nX8sFA "Cleaning up unused Windows files and updates")
+[![Image](http://img.youtube.com/vi/8MzuDLNH9QU/0.jpg)](http://www.youtube.com/watch?v=8MzuDLNH9QU)
+[![Image](http://img.youtube.com/vi/cjyi9nX8sFA/0.jpg)](http://www.youtube.com/watch?v=cjyi9nX8sFA)
 </details>
 
 ## Core features
@@ -44,13 +45,13 @@ Version for [20H1](https://gist.github.com/farag2/5a6d9952247aefe42ba81a9d955077
 - Turn off Windows features;
 - Remove Windows capabilities with pop-up form written in [WPF](#Images);
 - Create a Windows cleaning up task in the Task Scheduler;
- - A toast notification will pop up a minute before the task [starts](#Images)
+  - A toast notification will pop up a minute before the task [starts](#Images)
 - Create tasks in the Task Scheduler to clear
   - %SystemRoot%\SoftwareDistribution\Download
   - %TEMP%
 - Unpin all Start menu tiles;
 - Pin shortcuts to Start menu using [syspin.exe](http://www.technosys.net/products/utils/pintotaskbar)
- - Three shortcuts are preconfigured to be pinned: Control Panel, "old style" Devices and Printers, and Command Promt
+  - Three shortcuts are preconfigured to be pinned: Control Panel, "old style" Devices and Printers, and Command Prompt
 - Turn on Controlled folder access and add protected folders using dialog menu;
 - Add exclusion folder from Microsoft Defender Antivirus scanning using dialog menu;
 - Add exclusion file from Microsoft Defender Antivirus scanning using dialog menu;
