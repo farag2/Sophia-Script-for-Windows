@@ -9,6 +9,7 @@
 Version for [20H1](https://gist.github.com/farag2/5a6d9952247aefe42ba81a9d95507765)
 </div>
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9cffc84998644839a97d8fcf756eb148)](https://app.codacy.com/manual/farag2/Windows-10-Setup-Script?utm_source=github.com&utm_medium=referral&utm_content=farag2/Windows-10-Setup-Script&utm_campaign=Badge_Grade_Settings)
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Q5Q51QUJC)
 
 ## Screenshots
