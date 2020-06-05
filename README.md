@@ -14,9 +14,9 @@
 
 ## Screenshots
 
-![Image](https://i.imgur.com/azbQLAN.png)
-![Image](https://i.imgur.com/nJPs2XV.png)
-![intro](https://i.imgur.com/zXCi8SJ.png)
+![intro](https://i.imgur.com/OjWeooZ.png)
+![Image](https://i.imgur.com/BDOoE4B.png)
+![Image](https://i.imgur.com/stEsBkN.png)
 
 ## Videos
 
