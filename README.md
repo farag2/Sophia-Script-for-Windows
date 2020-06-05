@@ -14,7 +14,7 @@
 
 ## Screenshots
 
-![intro](https://i.imgur.com/OjWeooZ.png)
+![Image](https://i.imgur.com/OjWeooZ.png)
 ![Image](https://i.imgur.com/BDOoE4B.png)
 ![Image](https://i.imgur.com/stEsBkN.png)
 
@@ -42,11 +42,11 @@
   - "Music";
   - "Pictures"
   - "Videos.
-- Uninstall UWP apps from all accounts with exception apps list with pop-up form written in [WPF](#Images);
+- Uninstall UWP apps from all accounts with exception apps list with pop-up form written in [WPF](#Screenshots);
 - Turn off Windows features;
-- Remove Windows capabilities with pop-up form written in [WPF](#Images);
+- Remove Windows capabilities with pop-up form written in [WPF](#Screenshots);
 - Create a Windows cleaning up task in the Task Scheduler;
-  - A toast notification will pop up a minute before the task [starts](#Images)
+  - A toast notification will pop up a minute before the task [starts](#Screenshots)
 - Create tasks in the Task Scheduler to clear
   - %SystemRoot%\SoftwareDistribution\Download
   - %TEMP%
