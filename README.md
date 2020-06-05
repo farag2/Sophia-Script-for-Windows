@@ -7,7 +7,7 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/farag2/Windows-10-Setup-Script)
 ![GitHub All Releases](https://img.shields.io/github/downloads/farag2/Windows-10-Setup-Script/total)
 
-Version for [20H1](https://gist.github.com/farag2/5a6d9952247aefe42ba81a9d95507765)
+[2004](https://gist.github.com/farag2/5a6d9952247aefe42ba81a9d95507765) test version
 </div>
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Q5Q51QUJC)
@@ -88,7 +88,8 @@ Still [Cooking](https://github.com/farag2/Windows-10-Setup-Script/tree/GUI-dev)
 ## Microsoft Docs
 
 - [Release information](https://docs.microsoft.com/en-us/windows/release-information)
-- [Known issues](https://docs.microsoft.com/en-us/windows/release-information/status-windows-10-1909)
+- [Known issues for 1909](https://docs.microsoft.com/en-us/windows/release-information/status-windows-10-1909)
+- [Known issues for 2004](https://docs.microsoft.com/ru-ru/windows/release-information/status-windows-10-2004)
 
 ## Ask a question on
 
@@ -97,7 +98,3 @@ Still [Cooking](https://github.com/farag2/Windows-10-Setup-Script/tree/GUI-dev)
 - [4PDA](https://4pda.ru/forum/index.php?s=&showtopic=523489&view=findpost&p=95909388)
 - [My Digital Life](https://forums.mydigitallife.net/threads/powershell-script-setup-windows-10.81675/)
 - [Reddit](https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/)
-
-## PS
-
-Collection of useful [scripts](https://github.com/farag2/Utilities)
