@@ -6,8 +6,6 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/b88d2880e17a4844bef470f2e7929c6b)](https://www.codacy.com/manual/farag2/Windows-10-Setup-Script)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/farag2/Windows-10-Setup-Script)
 ![GitHub All Releases](https://img.shields.io/github/downloads/farag2/Windows-10-Setup-Script/total)
-
-[2004](https://gist.github.com/farag2/5a6d9952247aefe42ba81a9d95507765) test version
 </div>
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Q5Q51QUJC)
@@ -66,15 +64,16 @@ To run the script:
 - Download [up-to-date version](https://github.com/farag2/Setup-Windows-10/releases);
 - Expand the archive;
 - Check whether .ps1 is encoded in **UTF-8 with BOM**;
-- Run .ps1 file via PowerShell.exe;
+- Run .ps1 file via powershell.exe;
   - Or Start.cmd as Administrator. The script will start immediately.
 
 ## Supported Windows versions
 
 |Version|Code name|   Marketing name   |Build|  Arch  |      Editions     |
 |:-----:|:-------:|:------------------:|:---:|:------:|:-----------------:|
-| 1909  |  19H2   |November 2019 Update|18363|x64 only|Home/Pro/Enterprise|
-| 1903  |  19H1   |   May 2019 Update  |18362|x64 only|Home/Pro/Enterprise|
+| 2004  |  20H1   |   May 2020 Update  |18363|  x64   |Home/Pro/Enterprise|
+| 1909  |  19H2   |November 2019 Update|18363|  x64   |Home/Pro/Enterprise|
+| 1903  |  19H1   |   May 2019 Update  |18362|  x64   |Home/Pro/Enterprise|
 
 ## FAQ
 
