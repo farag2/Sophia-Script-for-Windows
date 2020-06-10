@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
 	"Windows 10 Setup Script" is a set of tweaks for OS fine-tuning and automating the routine tasks
 .DESCRIPTION
