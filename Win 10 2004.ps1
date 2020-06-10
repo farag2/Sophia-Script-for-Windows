@@ -957,9 +957,6 @@ $CheckedCapabilities = @(
 	"Media.WindowsMediaPlayer*"
 	# Microsoft Paint
 	"Microsoft.Windows.MSPaint*"
-	# Notepad
-	# Блокнот
-	"Microsoft.Windows.Notepad*"
 	# WordPad
 	"Microsoft.Windows.WordPad*"
 	# Integrated faxing and scanning application for Windows
@@ -975,7 +972,7 @@ if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2)
 	$CheckedCapabilities += "Hello.Face*"
 }
 # Windows capabilities that will be shown in the form
-# Дополнительные компоненты Windows, которые будут выводиться в form
+# Дополнительные компоненты Windows, которые будут выводиться в форме
 $ExcludedCapabilities = @(
 	# The DirectX Database to configure and optimize apps when multiple Graphics Adapters are present
 	# База данных DirectX для настройки и оптимизации приложений при наличии нескольких графических адаптеров
@@ -983,8 +980,11 @@ $ExcludedCapabilities = @(
 	# Language components
 	# Языковые компоненты
 	"Language\."
+	# Notepad
+	# Блокнот
+	"Microsoft.Windows.Notepad*"
 	# Mail, contacts, and calendar sync component
-	# Компонент синхронизации почты, контактов и календаря.
+	# Компонент синхронизации почты, контактов и календаря
 	"OneCoreUAP\.OneSync"
 	# Management of printers, printer drivers, and printer servers
 	# Управление принтерами, драйверами принтеров и принт-серверами
@@ -1261,7 +1261,7 @@ if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Pro
 	{
 		try
 		{
-			# Checking whether a Hyper-V is enabled
+			# Determining whether a Hyper-V is enabled
 			# Проверка: включен ли Hyper-V
 			if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent -eq $true)
 			{
@@ -1414,8 +1414,8 @@ function UserShellFolder
 						"IconFile=%SystemRoot%\system32\shell32.dll","IconIndex=-238"
 	}
 
-	# Checking the current user folder path
-	# Проверяем текущее значение пути пользовательской папки
+	# Determining the current user folder path
+	# Определяем текущее значение пути пользовательской папки
 	$UserShellFolderRegValue = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name $UserShellFoldersRegName[$UserFolder]
 	if ($UserShellFolderRegValue -ne $FolderPath)
 	{
@@ -2526,16 +2526,26 @@ if (Get-CimInstance -ClassName Win32_VideoController | Where-Object -FilterScrip
 	}
 }
 
-# Turn on hardware-accelerated GPU scheduling. Restart needed
-# Включить планирование графического процессора с аппаратным ускорением. Необходима перезагрузка
+<#
+Turn on hardware-accelerated GPU scheduling. Restart needed
+Determining whether the PC has a dedicated GPU to use this feature
+
+Включить планирование графического процессора с аппаратным ускорением. Необходима перезагрузка
+Определяем, имеется ли у ПК внешняя видеокарта для использования данной функции
+#>
 if ((Get-CimInstance -ClassName CIM_VideoController | Where-Object -FilterScript {$_.AdapterDACType -ne "Internal"}))
 {
-	# Checking whether a WDDM verion is 2.7 or higher
-	# Проверка: имеет ли WDDM версию 2.7 или выше
-	$WddmVersion_Min = Get-ItemPropertyValue -Path HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\FeatureSetUsage -Name WddmVersion_Min
-	if ($WddmVersion_Min -ge 2700)
+	# Determining whether an OS is not installed on a virtual machine
+	# Проверяем, не установлена ли ОС на виртуальной машине
+	if ((Get-CimInstance -ClassName CIM_ComputerSystem).Model -notmatch "Virtual")
 	{
-		New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers" -Name HwSchMode -PropertyType DWord -Value 2 -Force
+		# Checking whether a WDDM verion is 2.7 or higher
+		# Проверка: имеет ли WDDM версию 2.7 или выше
+		$WddmVersion_Min = Get-ItemPropertyValue -Path HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\FeatureSetUsage -Name WddmVersion_Min
+		if ($WddmVersion_Min -ge 2700)
+		{
+			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers" -Name HwSchMode -PropertyType DWord -Value 2 -Force
+		}
 	}
 }
 #endregion Gaming
@@ -2644,18 +2654,18 @@ $SourceMainWindowHandle = (Get-Process -Name cleanmgr).MainWindowHandle
 function MinimizeWindow
 {
 	[CmdletBinding()]
-	Param
+	param
 	(
 		[Parameter(Mandatory = $true)]
-			$Process
+		$Process
 	)
-		$ShowWindowAsync = @{
-		Namespace = "WinAPI"
-		Name = "Win32ShowWindowAsync"
-		Language = "CSharp"
-		MemberDefinition = @"
-				[DllImport("user32.dll")]
-			public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
+	$ShowWindowAsync = @{
+	Namespace = "WinAPI"
+	Name = "Win32ShowWindowAsync"
+	Language = "CSharp"
+	MemberDefinition = @"
+		[DllImport("user32.dll")]
+		public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 "@
 	}
 	if (-not ("WinAPI.Win32ShowWindowAsync" -as [type]))
