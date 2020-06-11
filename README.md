@@ -71,7 +71,7 @@ To run the script:
 
 |Version|Code name|   Marketing name   |Build | Arch |      Editions     |
 |:-----:|:-------:|:------------------:|:----:|:----:|:-----------------:|
-| 2004  |  20H1   |   May 2020 Update  |18363 |  x64 |Home/Pro/Enterprise|
+| 2004  |  20H1   |   May 2020 Update  |19041 |  x64 |Home/Pro/Enterprise|
 | 1909  |  19H2   |November 2019 Update|18363 |  x64 |Home/Pro/Enterprise|
 | 1903  |  19H1   |   May 2019 Update  |18362 |  x64 |Home/Pro/Enterprise|
 | 1809  |         |LTSC Enterprise 2019|17763 |  x64 |                   |
