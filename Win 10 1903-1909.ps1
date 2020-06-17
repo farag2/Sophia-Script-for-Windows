@@ -18,8 +18,8 @@
 .EXAMPLE
 	PS C:\> & '.\Win 10.ps1'
 .NOTES
-	Version: v4.4.1
-	Date: 10.06.2020
+	Version: v4.4.2
+	Date: 17.06.2020
 	Written by: farag & oZ-Zo
 	Thanks to all http://forum.ru-board.com members involved
 
@@ -112,14 +112,6 @@ Set-StrictMode -Version Latest
 # Сlear $Error variable
 # Очистка переменной $Error
 $Error.Clear()
-
-# Set the encoding to UTF-8 without BOM for the PowerShell session
-# Установить кодировку UTF-8 без BOM для текущей сессии PowerShell
-if ($RU)
-{
-	ping.exe | Out-Null
-	$OutputEncoding = [System.Console]::OutputEncoding = [System.Console]::InputEncoding = [System.Text.Encoding]::UTF8
-}
 
 # Create a restore point
 # Создать точку восстановления
@@ -520,6 +512,7 @@ if (-not ("WinAPI.GetStr" -as [type]))
 {
 	Add-Type @Signature -Using System.Text
 }
+
 # Extract the "Unpin from taskbar" string from shell32.dll
 # Извлечь строку "Открепить от панели задач" из shell32.dll
 $unpin = [WinAPI.GetStr]::GetString(5387)
@@ -874,7 +867,7 @@ New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name L
 
 # Group svchost.exe processes
 # Группировать процессы svchost.exe
-$RAMCapacity = (Get-CimInstance -ClassName Win32_PhysicalMemory | Measure-Object -Property Capacity -Sum).Sum/1kb
+$RAMCapacity = (Get-CimInstance -ClassName Win32_PhysicalMemory | Measure-Object -Property Capacity -Sum).Sum / 1KB
 New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control -Name SvcHostSplitThresholdInKB -PropertyType DWord -Value $RAMCapacity -Force
 
 # Display the Stop error information on the BSoD
@@ -971,7 +964,7 @@ if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2)
 	$CheckedCapabilities += "Hello.Face*"
 }
 # Windows capabilities that will be shown in the form
-# Дополнительные компоненты Windows, которые будут выводиться в form
+# Дополнительные компоненты Windows, которые будут выводиться в форме
 $ExcludedCapabilities = @(
 	# The DirectX Database to configure and optimize apps when multiple Graphics Adapters are present
 	# База данных DirectX для настройки и оптимизации приложений при наличии нескольких графических адаптеров
@@ -980,7 +973,7 @@ $ExcludedCapabilities = @(
 	# Языковые компоненты
 	"Language\."
 	# Mail, contacts, and calendar sync component
-	# Компонент синхронизации почты, контактов и календаря.
+	# Компонент синхронизации почты, контактов и календаря
 	"OneCoreUAP\.OneSync"
 	# Management of printers, printer drivers, and printer servers
 	# Управление принтерами, драйверами принтеров и принт-серверами
@@ -1255,7 +1248,7 @@ if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Pro
 	{
 		try
 		{
-			# Checking whether a Hyper-V is enabled
+			# Determining whether a Hyper-V is enabled
 			# Проверка: включен ли Hyper-V
 			if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent -eq $true)
 			{
@@ -1408,8 +1401,8 @@ function UserShellFolder
 						"IconFile=%SystemRoot%\system32\shell32.dll","IconIndex=-238"
 	}
 
-	# Checking the current user folder path
-	# Проверяем текущее значение пути пользовательской папки
+	# Determining the current user folder path
+	# Определяем текущее значение пути пользовательской папки
 	$UserShellFolderRegValue = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name $UserShellFoldersRegName[$UserFolder]
 	if ($UserShellFolderRegValue -ne $FolderPath)
 	{
@@ -1954,12 +1947,43 @@ switch ($Result)
 {
 	"0"
 	{
-		$TileCollection = Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*start.tilegrid`$windows.data.curatedtilecollection.tilecollection\Current
-		$Value = $TileCollection.Data[0..25] + ([byte[]](202,50,0,226,44,1,1,0,0))
-		New-ItemProperty -Path $TileCollection.PSPath -Name Data -PropertyType Binary -Value $Value -Force
-		# Restart Start menu
+		$StartMenuLayout = @"
+		<LayoutModificationTemplate xmlns:defaultlayout="http://schemas.microsoft.com/Start/2014/FullDefaultLayout" xmlns:start="http://schemas.microsoft.com/Start/2014/StartLayout" Version="1" xmlns="http://schemas.microsoft.com/Start/2014/LayoutModification">
+		<LayoutOptions StartTileGroupCellWidth="6" />
+			<DefaultLayoutOverride>
+				<StartLayoutCollection>
+					<defaultlayout:StartLayout GroupCellWidth="6" />
+				</StartLayoutCollection>
+			</DefaultLayoutOverride>
+		</LayoutModificationTemplate>
+"@
+		$StartMenuLayoutPath = "$env:TEMP\StartMenuLayout.xml"
+		# Saving StartMenuLayout.xml in UTF-8 encoding
+		# Сохраняем StartMenuLayout.xml в кодирвоке UTF-8
+		Set-Content -Value (New-Object System.Text.UTF8Encoding).GetBytes($StartMenuLayout) -Encoding Byte -Path $StartMenuLayoutPath -Force
+
+		# Temporarily disable changing Start layout
+		# Временно выключаем возможность редактировать начальный экран
+		if (-not (Test-Path -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
+		{
+			New-Item -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Force
+		}
+		New-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name LockedStartLayout -Value 1 -Force
+		New-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name StartLayoutFile -Value $StartMenuLayoutPath -Force
+
+		# Restart the Start menu
 		# Перезапустить меню "Пуск"
 		Stop-Process -Name StartMenuExperienceHost -Force
+		Start-Sleep -Seconds 3
+
+		Remove-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name LockedStartLayout -Force
+		Remove-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name StartLayoutFile -Force
+
+		# Restart the Start menu
+		# Перезапустить меню "Пуск"
+		Stop-Process -Name StartMenuExperienceHost -Force
+		# https://en.wikipedia.org/wiki/8.3_filename
+		Get-Item -Path $StartMenuLayoutPath -Force | Remove-Item -Force
 	}
 	"1"
 	{
@@ -1976,51 +2000,47 @@ switch ($Result)
 
 # Pin the shortcuts to Start
 # Закрепить ярлыки на начальном экране
-# http://www.technosys.net/products/utils/pintotaskbar
-# SHA256: 6967E7A3C2251812DD6B3FA0265FB7B61AADC568F562A98C50C345908C6E827
-if (Test-Connection -ComputerName google.com -Quiet)
+if (Test-Path -Path $PSScriptRoot\syspin.exe)
 {
-	# Download syspin.exe to the "Downloads" folder
-	# Скачать syspin.exe в папку "Загрузки"
-	$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-	[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-	$Parameters = @{
-		Uri = "https://github.com/farag2/Windows-10-Setup-Script/raw/master/Start%20menu%20pinning/syspin.exe"
-		OutFile = "$DownloadsFolder\syspin.exe"
-		Verbose = [switch]::Present
-	}
-	Invoke-WebRequest @Parameters
+	$syspin = $true
 }
 else
 {
-	if ($RU)
+	try
 	{
-		Write-Warning -Message "Отсутствует интернет-соединение" -ErrorAction SilentlyContinue
+		# Downloading syspin.exe
+		# Скачиваем syspin.exe
+		# http://www.technosys.net/products/utils/pintotaskbar
+		# SHA256: 6967E7A3C2251812DD6B3FA0265FB7B61AADC568F562A98C50C345908C6E827
+		[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+		if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
+		{
+			$Parameters = @{
+				Uri = "https://github.com/farag2/Windows-10-Setup-Script/raw/master/Start%20menu%20pinning/syspin.exe"
+				OutFile = "$PSScriptRoot\syspin.exe"
+				Verbose = [switch]::Present
+			}
+			Invoke-WebRequest @Parameters
+			$syspin = $true
+		}
 	}
-	else
+	catch
 	{
-		Write-Warning -Message "No Internet connection" -ErrorAction SilentlyContinue
+		if ($Error.Exception.Status -eq "NameResolutionFailure")
+		{
+			if ($RU)
+			{
+				Write-Warning -Message "Отсутствует интернет-соединение" -ErrorAction SilentlyContinue
+			}
+			else
+			{
+				Write-Warning -Message "No Internet connection" -ErrorAction SilentlyContinue
+			}
+		}
 	}
 }
 
-Add-Type -AssemblyName System.Windows.Forms
-$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
-$OpenFileDialog.InitialDirectory = $DownloadsFolder
-$OpenFileDialog.Multiselect = $false
-if ($RU)
-{
-	$OpenFileDialog.Filter = "*.exe|*.exe|Все файлы (*.*)|*.*"
-}
-else
-{
-	$OpenFileDialog.Filter = "*.exe|*.exe|All Files (*.*)|*.*"
-}
-# Focus on open file dialog
-# Перевести фокус на диалог открытия файла
-$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
-$OpenFileDialog.ShowDialog($tmp)
-
-if ($OpenFileDialog.FileName)
+if ($syspin -eq $true)
 {
 	# Pin "Control Panel" to Start
 	# Закрепить "Панель управления" на начальном экране
@@ -2041,7 +2061,7 @@ if ($OpenFileDialog.FileName)
 		$Arguments = @"
 			"$env:APPDATA\Microsoft\Windows\Start menu\Programs\$ControlPanelLocalizedName.lnk" "51201"
 "@
-		Start-Process -FilePath $OpenFileDialog.FileName -WindowStyle Hidden -ArgumentList $Arguments -Wait
+			Start-Process -FilePath $PSScriptRoot\syspin.exe -WindowStyle Hidden -ArgumentList $Arguments -Wait
 	}
 	else
 	{
@@ -2055,8 +2075,7 @@ if ($OpenFileDialog.FileName)
 		$Arguments = @"
 			"$env:SystemRoot\System32\$ControlPanelLocalizedName.lnk" "51201"
 "@
-		Start-Process -FilePath $OpenFileDialog.FileName -WindowStyle Hidden -ArgumentList $Arguments -Wait
-
+		Start-Process -FilePath $PSScriptRoot\syspin.exe -WindowStyle Hidden -ArgumentList $Arguments -Wait
 		Remove-Item -Path "$env:SystemRoot\System32\$ControlPanelLocalizedName.lnk" -Force
 	}
 
@@ -2086,7 +2105,7 @@ if ($OpenFileDialog.FileName)
 	$Arguments = @"
 		"$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesAndPrintersLocalizedName.lnk" "51201"
 "@
-	Start-Process -FilePath $OpenFileDialog.FileName -WindowStyle Hidden -ArgumentList $Arguments -Wait
+	Start-Process -FilePath $PSScriptRoot\syspin.exe -WindowStyle Hidden -ArgumentList $Arguments -Wait
 
 	# Pin "Command Prompt" to Start
 	# Закрепить "Командную строку" на начальном экране
@@ -2101,16 +2120,12 @@ if ($OpenFileDialog.FileName)
 	$Arguments = @"
 		"$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" "51201"
 "@
-	Start-Process -FilePath $OpenFileDialog.FileName -WindowStyle Hidden -ArgumentList $Arguments -Wait
+	Start-Process -FilePath $PSScriptRoot\syspin.exe -WindowStyle Hidden -ArgumentList $Arguments -Wait
+
+	# Restart the Start menu
+	# Перезапустить меню "Пуск"
+	Stop-Process -Name StartMenuExperienceHost -Force
 }
-
-# Delete downloaded syspin.exe
-# Удалить скачанный syspin.exe
-Remove-Item -Path "$DownloadsFolder\syspin.exe" -Force
-
-# Restart the Start menu
-# Перезапустить меню "Пуск"
-Stop-Process -Name StartMenuExperienceHost -Force
 #endregion Start menu
 
 #region Edge
@@ -2538,6 +2553,7 @@ if (Get-CimInstance -ClassName Win32_VideoController | Where-Object -FilterScrip
 <#
 Create a Windows cleaning up task in the Task Scheduler
 The task runs every 90 days
+
 Создать задачу в Планировщике задач по очистке Windows
 Задача выполняется каждые 90 дней
 #>
@@ -2638,18 +2654,19 @@ $SourceMainWindowHandle = (Get-Process -Name cleanmgr).MainWindowHandle
 function MinimizeWindow
 {
 	[CmdletBinding()]
-	Param
+	param
 	(
 		[Parameter(Mandatory = $true)]
-			$Process
+		$Process
 	)
-		$ShowWindowAsync = @{
-		Namespace = "WinAPI"
-		Name = "Win32ShowWindowAsync"
-		Language = "CSharp"
-		MemberDefinition = @"
-				[DllImport("user32.dll")]
-			public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
+
+	$ShowWindowAsync = @{
+	Namespace = "WinAPI"
+	Name = "Win32ShowWindowAsync"
+	Language = "CSharp"
+	MemberDefinition = @"
+		[DllImport("user32.dll")]
+		public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 "@
 	}
 	if (-not ("WinAPI.Win32ShowWindowAsync" -as [type]))
@@ -2719,6 +2736,7 @@ Register-ScheduledTask @Parameters -Force
 <#
 Create a task in the Task Scheduler to clear the %SystemRoot%\SoftwareDistribution\Download folder
 The task runs on Thursdays every 4 weeks
+
 Создать задачу в Планировщике задач по очистке папки %SystemRoot%\SoftwareDistribution\Download
 Задача выполняется по четвергам каждую 4 неделю
 #>
@@ -2752,6 +2770,7 @@ Register-ScheduledTask @Parameters -Force
 <#
 Create a task in the Task Scheduler to clear the %TEMP% folder
 The task runs every 62 days
+
 Создать задачу в Планировщике задач по очистке папки %TEMP%
 Задача выполняется каждые 62 дня
 #>
