@@ -83,7 +83,7 @@ Read the code you run carefully. Some functions are presented as an example only
 
 ## GUI version (C#)
 
-Still [Cooking](https://github.com/farag2/Windows-10-Setup-Script/tree/GUI-dev)
+Still cooking (moved to the private repository)
 
 ## Microsoft Docs
 
