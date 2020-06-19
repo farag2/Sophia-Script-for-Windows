@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
 	"Windows 10 Setup Script" is a set of tweaks for OS fine-tuning and automating the routine tasks
 .DESCRIPTION
@@ -15,7 +15,7 @@
 .EXAMPLE
 	PS C:\> & '.\LTSC.ps1'
 .NOTES
-	Version: v4.5
+	Version: v4.5.0.1
 	Date: 10.06.2020
 	Written by: farag & oZ-Zo
 	Thanks to all http://forum.ru-board.com members involved
@@ -109,14 +109,6 @@ Set-StrictMode -Version Latest
 # Сlear $Error variable
 # Очистка переменной $Error
 $Error.Clear()
-
-# Set the encoding to UTF-8 without BOM for the PowerShell session
-# Установить кодировку UTF-8 без BOM для текущей сессии PowerShell
-if ($RU)
-{
-	ping.exe | Out-Null
-	$OutputEncoding = [System.Console]::OutputEncoding = [System.Console]::InputEncoding = [System.Text.Encoding]::UTF8
-}
 
 # Create a restore point
 # Создать точку восстановления
@@ -231,14 +223,6 @@ New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UnistoreSvc -Name
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UserDataSvc -Name Start -PropertyType DWord -Value 4 -Force
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UserDataSvc -Name UserServiceFlags -PropertyType DWord -Value 0 -Force
 
-# Stop event trace sessions
-# Остановить сеансы отслеживания событий
-Get-EtwTraceSession -Name DiagLog, Diagtrack-Listener -ErrorAction Ignore | Remove-EtwTraceSession -ErrorAction Ignore
-
-# Turn off the data collectors at the next computer restart
-# Отключить сборщики данных при следующем запуске ПК
-Update-AutologgerConfig -Name DiagLog, Diagtrack-Listener -Start 0 -ErrorAction Ignore
-
 # Set the minimal operating system diagnostic data level
 # Установить минимальный уровень отправляемых диагностических сведений
 if ((Get-WindowsEdition -Online).Edition -like "Enterprise*" -or (Get-WindowsEdition -Online).Edition -eq "Education")
@@ -320,11 +304,11 @@ Get-ScheduledTask -TaskName $tasks | Disable-ScheduledTask
 # Do not use sign-in info to automatically finish setting up device and reopen apps after an update or restart
 # Не использовать данные для входа для автоматического завершения настройки устройства и открытия приложений после перезапуска или обновления
 $SID = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
-if (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$sid"))
+if (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$SID"))
 {
 	New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$SID" -Force
 }
-New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$sid" -Name OptOut -PropertyType DWord -Value 1 -Force
+New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$SID" -Name OptOut -PropertyType DWord -Value 1 -Force
 
 # Do not let websites provide locally relevant content by accessing language list
 # Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков
@@ -653,15 +637,18 @@ if (-not (Test-Path -Path $env:SystemDrive\Temp))
 	New-Item -Path $env:SystemDrive\Temp -ItemType Directory -Force
 }
 [Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "User")
-New-ItemProperty -Path HKCU:\Environment -Name TMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
-[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "User")
-New-ItemProperty -Path HKCU:\Environment -Name TEMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
 [Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Machine")
-New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
-[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Machine")
-New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TEMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
 [Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Process")
+New-ItemProperty -Path HKCU:\Environment -Name TMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
+
+[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "User")
+[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Machine")
 [Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Process")
+New-ItemProperty -Path HKCU:\Environment -Name TEMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
+
+New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
+New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TEMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
+
 # Spooler restart
 # Перезапуск Диспетчер печати
 Restart-Service -Name Spooler -Force
@@ -674,7 +661,7 @@ New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name L
 
 # Group svchost.exe processes
 # Группировать процессы svchost.exe
-$RAMCapacity = (Get-CimInstance -ClassName Win32_PhysicalMemory | Measure-Object -Property Capacity -Sum).Sum/1kb
+$RAMCapacity = (Get-CimInstance -ClassName Win32_PhysicalMemory | Measure-Object -Property Capacity -Sum).Sum / 1KB
 New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control -Name SvcHostSplitThresholdInKB -PropertyType DWord -Value $RAMCapacity -Force
 
 # Display the Stop error information on the BSoD
@@ -772,7 +759,7 @@ if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2)
 	$CheckedCapabilities += "Hello.Face*"
 }
 # Windows capabilities that will be shown in the form
-# Дополнительные компоненты Windows, которые будут выводиться в form
+# Дополнительные компоненты Windows, которые будут выводиться в форме
 $ExcludedCapabilities = @(
 	# The DirectX Database to configure and optimize apps when multiple Graphics Adapters are present
 	# База данных DirectX для настройки и оптимизации приложений при наличии нескольких графических адаптеров
@@ -781,7 +768,7 @@ $ExcludedCapabilities = @(
 	# Языковые компоненты
 	"Language\."
 	# Mail, contacts, and calendar sync component
-	# Компонент синхронизации почты, контактов и календаря.
+	# Компонент синхронизации почты, контактов и календаря
 	"OneCoreUAP\.OneSync"
 )
 #endregion Variables
@@ -1022,7 +1009,7 @@ if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Pro
 	{
 		try
 		{
-			# Checking whether a Hyper-V is enabled
+			# Determining whether a Hyper-V is enabled
 			# Проверка: включен ли Hyper-V
 			if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent -eq $true)
 			{
@@ -1045,6 +1032,8 @@ if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Pro
 
 # Change location of the user folders
 # Изменить расположение пользовательских папок
+function UserShellFolder
+{
 <#
 .SYNOPSIS
 	Change location of the each user folders using SHSetKnownFolderPath function
@@ -1053,53 +1042,6 @@ if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Pro
 .NOTES
 	User files or folders won't me moved to the new location
 #>
-function KnownFolderPath
-{
-	[CmdletBinding()]
-	param
-	(
-		[Parameter(Mandatory = $true)]
-		[ValidateSet("Desktop", "Documents", "Downloads", "Music", "Pictures", "Videos")]
-		[string]
-		$KnownFolder,
-
-		[Parameter(Mandatory = $true)]
-		[string]
-		$Path
-	)
-
-	$KnownFolders = @{
-		"Desktop"	= @("B4BFCC3A-DB2C-424C-B029-7FE99A87C641");
-		"Documents"	= @("FDD39AD0-238F-46AF-ADB4-6C85480369C7", "f42ee2d3-909f-4907-8871-4c22fc0bf756");
-		"Downloads"	= @("374DE290-123F-4565-9164-39C4925E467B", "7d83ee9b-2244-4e70-b1f5-5393042af1e4");
-		"Music"		= @("4BD8D571-6D19-48D3-BE97-422220080E43", "a0c69a99-21c8-4671-8703-7934162fcf1d");
-		"Pictures"	= @("33E28130-4E1E-4676-835A-98395C3BC3BB", "0ddd015d-b06c-45d5-8c4c-f59713854639");
-		"Videos"	= @("18989B1D-99B5-455B-841C-AB7C74E4DDFC", "35286a68-3c57-41a1-bbb1-0eae73d76c95");
-	}
-
-	$Signature = @{
-		Namespace = "WinAPI"
-		Name = "KnownFolders"
-		Language = "CSharp"
-		MemberDefinition = @"
-			[DllImport("shell32.dll")]
-			public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, IntPtr token, [MarshalAs(UnmanagedType.LPWStr)] string path);
-"@
-	}
-	if (-not ("WinAPI.KnownFolders" -as [type]))
-	{
-		Add-Type @Signature
-	}
-
-	foreach ($guid in $KnownFolders[$KnownFolder])
-	{
-		[WinAPI.KnownFolders]::SHSetKnownFolderPath([ref]$guid, 0, 0, $Path)
-	}
-	(Get-Item -Path $Path -Force).Attributes = "ReadOnly"
-}
-
-function UserShellFolder
-{
 	[CmdletBinding()]
 	param
 	(
@@ -1112,6 +1054,59 @@ function UserShellFolder
 		[string]
 		$FolderPath
 	)
+
+	function KnownFolderPath
+	{
+	<#
+	.SYNOPSIS
+		Redirect user folders to a new location
+	.EXAMPLE
+		KnownFolderPath -KnownFolder Desktop -Path "C:\Desktop"
+	.NOTES
+		User files or folders won't me moved to the new location
+	#>
+		[CmdletBinding()]
+		param
+		(
+			[Parameter(Mandatory = $true)]
+			[ValidateSet("Desktop", "Documents", "Downloads", "Music", "Pictures", "Videos")]
+			[string]
+			$KnownFolder,
+
+			[Parameter(Mandatory = $true)]
+			[string]
+			$Path
+		)
+
+		$KnownFolders = @{
+			"Desktop"	= @("B4BFCC3A-DB2C-424C-B029-7FE99A87C641");
+			"Documents"	= @("FDD39AD0-238F-46AF-ADB4-6C85480369C7", "f42ee2d3-909f-4907-8871-4c22fc0bf756");
+			"Downloads"	= @("374DE290-123F-4565-9164-39C4925E467B", "7d83ee9b-2244-4e70-b1f5-5393042af1e4");
+			"Music"		= @("4BD8D571-6D19-48D3-BE97-422220080E43", "a0c69a99-21c8-4671-8703-7934162fcf1d");
+			"Pictures"	= @("33E28130-4E1E-4676-835A-98395C3BC3BB", "0ddd015d-b06c-45d5-8c4c-f59713854639");
+			"Videos"	= @("18989B1D-99B5-455B-841C-AB7C74E4DDFC", "35286a68-3c57-41a1-bbb1-0eae73d76c95");
+		}
+
+		$Signature = @{
+			Namespace = "WinAPI"
+			Name = "KnownFolders"
+			Language = "CSharp"
+			MemberDefinition = @"
+				[DllImport("shell32.dll")]
+				public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, IntPtr token, [MarshalAs(UnmanagedType.LPWStr)] string path);
+"@
+		}
+		if (-not ("WinAPI.KnownFolders" -as [type]))
+		{
+			Add-Type @Signature
+		}
+
+		foreach ($guid in $KnownFolders[$KnownFolder])
+		{
+			[WinAPI.KnownFolders]::SHSetKnownFolderPath([ref]$guid, 0, 0, $Path)
+		}
+		(Get-Item -Path $Path -Force).Attributes = "ReadOnly"
+	}
 
 	$UserShellFoldersRegName = @{
 		"Desktop"	=	"Desktop"
@@ -1167,8 +1162,8 @@ function UserShellFolder
 						"IconFile=%SystemRoot%\system32\shell32.dll","IconIndex=-238"
 	}
 
-	# Checking the current user folder path
-	# Проверяем текущее значение пути пользовательской папки
+	# Determining the current user folder path
+	# Определяем текущее значение пути пользовательской папки
 	$UserShellFolderRegValue = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name $UserShellFoldersRegName[$UserFolder]
 	if ($UserShellFolderRegValue -ne $FolderPath)
 	{
@@ -1634,7 +1629,7 @@ New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlo
 
 # Turn on network discovery and file and printers sharing if device is not domain-joined
 # Включить сетевое обнаружение и общий доступ к файлам и принтерам, если устройство не присоединенно к домену
-if ((Get-NetConnectionProfile).NetworkCategory -ne "DomainAuthenticated")
+if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain -eq $false)
 {
 	Get-NetFirewallRule -Group "@FirewallAPI.dll,-32752", "@FirewallAPI.dll,-28502" | Set-NetFirewallRule -Profile Private -Enabled True
 	Set-NetConnectionProfile -NetworkCategory Private
@@ -1770,6 +1765,7 @@ if (Get-CimInstance -ClassName Win32_VideoController | Where-Object -FilterScrip
 <#
 Create a Windows cleaning up task in the Task Scheduler
 The task runs every 90 days
+
 Создать задачу в Планировщике задач по очистке Windows
 Задача выполняется каждые 90 дней
 #>
@@ -1870,18 +1866,19 @@ $SourceMainWindowHandle = (Get-Process -Name cleanmgr).MainWindowHandle
 function MinimizeWindow
 {
 	[CmdletBinding()]
-	Param
+	param
 	(
 		[Parameter(Mandatory = $true)]
-			$Process
+		$Process
 	)
-		$ShowWindowAsync = @{
-		Namespace = "WinAPI"
-		Name = "Win32ShowWindowAsync"
-		Language = "CSharp"
-		MemberDefinition = @"
-				[DllImport("user32.dll")]
-			public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
+
+	$ShowWindowAsync = @{
+	Namespace = "WinAPI"
+	Name = "Win32ShowWindowAsync"
+	Language = "CSharp"
+	MemberDefinition = @"
+		[DllImport("user32.dll")]
+		public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 "@
 	}
 	if (-not ("WinAPI.Win32ShowWindowAsync" -as [type]))
@@ -1951,6 +1948,7 @@ Register-ScheduledTask @Parameters -Force
 <#
 Create a task in the Task Scheduler to clear the %SystemRoot%\SoftwareDistribution\Download folder
 The task runs on Thursdays every 4 weeks
+
 Создать задачу в Планировщике задач по очистке папки %SystemRoot%\SoftwareDistribution\Download
 Задача выполняется по четвергам каждую 4 неделю
 #>
@@ -1984,6 +1982,7 @@ Register-ScheduledTask @Parameters -Force
 <#
 Create a task in the Task Scheduler to clear the %TEMP% folder
 The task runs every 62 days
+
 Создать задачу в Планировщике задач по очистке папки %TEMP%
 Задача выполняется каждые 62 дня
 #>
@@ -2265,7 +2264,11 @@ auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:ena
 
 # Include command line in process creation events
 # Включать командную строку в событиях создания процесса
-$ProcessCreation = auditpol /get /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /r | ConvertFrom-Csv | Select-Object -Property "Inclusion Setting"
+if ($RU)
+{
+	$OutputEncoding = [System.Console]::OutputEncoding = [System.Console]::InputEncoding = [System.Text.Encoding]::UTF8
+}
+$ProcessCreation = auditpol /get /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /r | ConvertFrom-Csv | Select-Object -ExpandProperty "Inclusion Setting"
 if ($ProcessCreation -ne "No Auditing")
 {
 	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -PropertyType DWord -Value 1 -Force
@@ -2277,11 +2280,11 @@ if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\M
 {
 	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging\ModuleNames -Force
 }
+New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging -Name EnableModuleLogging -PropertyType DWord -Value 1 -Force
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging\ModuleNames -Name * -PropertyType String -Value * -Force
-New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging\ModuleNames -Name EnableModuleLogging -PropertyType DWord -Value 1 -Force
 
-# Turn on logging of all PowerShell script input to the Microsoft-Windows-PowerShell/Operational event log
-# Включить регистрацию всех вводимых сценариев PowerShell в журнале событий Microsoft-Windows-PowerShell/Operational
+# Turn on logging of all PowerShell script input to the Windows PowerShell event log
+# Включить регистрацию всех вводимых сценариев PowerShell в журнале событий Windows PowerShell
 if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging))
 {
 	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging -Force
