@@ -18,8 +18,8 @@
 .EXAMPLE
 	PS C:\> & '.\Win 10.ps1'
 .NOTES
-	Version: v4.6
-	Date: 17.06.2020
+	Version: v4.5.2
+	Date: 19.06.2020
 	Written by: farag & oZ-Zo
 	Thanks to all http://forum.ru-board.com members involved
 
@@ -225,14 +225,6 @@ New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UnistoreSvc -Name
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UnistoreSvc -Name UserServiceFlags -PropertyType DWord -Value 0 -Force
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UserDataSvc -Name Start -PropertyType DWord -Value 4 -Force
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UserDataSvc -Name UserServiceFlags -PropertyType DWord -Value 0 -Force
-
-# Stop event trace sessions
-# Остановить сеансы отслеживания событий
-Get-EtwTraceSession -Name DiagLog, Diagtrack-Listener -ErrorAction Ignore | Remove-EtwTraceSession -ErrorAction Ignore
-
-# Turn off the data collectors at the next computer restart
-# Отключить сборщики данных при следующем запуске ПК
-Update-AutologgerConfig -Name DiagLog, Diagtrack-Listener -Start 0 -ErrorAction Ignore
 
 # Set the minimal operating system diagnostic data level
 # Установить минимальный уровень отправляемых диагностических сведений
@@ -841,15 +833,18 @@ if (-not (Test-Path -Path $env:SystemDrive\Temp))
 	New-Item -Path $env:SystemDrive\Temp -ItemType Directory -Force
 }
 [Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "User")
-New-ItemProperty -Path HKCU:\Environment -Name TMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
-[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "User")
-New-ItemProperty -Path HKCU:\Environment -Name TEMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
 [Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Machine")
-New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
-[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Machine")
-New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TEMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
 [Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Process")
+New-ItemProperty -Path HKCU:\Environment -Name TMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
+
+[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "User")
+[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Machine")
 [Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Process")
+New-ItemProperty -Path HKCU:\Environment -Name TEMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
+
+New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
+New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TEMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
+
 # Spooler restart
 # Перезапуск Диспетчер печати
 Restart-Service -Name Spooler -Force
@@ -1887,7 +1882,7 @@ New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlo
 
 # Turn on network discovery and file and printers sharing if device is not domain-joined
 # Включить сетевое обнаружение и общий доступ к файлам и принтерам, если устройство не присоединенно к домену
-if ((Get-NetConnectionProfile).NetworkCategory -ne "DomainAuthenticated")
+if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain -eq $false)
 {
 	Get-NetFirewallRule -Group "@FirewallAPI.dll,-32752", "@FirewallAPI.dll,-28502" | Set-NetFirewallRule -Profile Private -Enabled True
 	Set-NetConnectionProfile -NetworkCategory Private
@@ -3068,7 +3063,11 @@ auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:ena
 
 # Include command line in process creation events
 # Включать командную строку в событиях создания процесса
-$ProcessCreation = auditpol /get /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /r | ConvertFrom-Csv | Select-Object -Property "Inclusion Setting"
+if ($RU)
+{
+	$OutputEncoding = [System.Console]::OutputEncoding = [System.Console]::InputEncoding = [System.Text.Encoding]::UTF8
+}
+$ProcessCreation = auditpol /get /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /r | ConvertFrom-Csv | Select-Object -ExpandProperty "Inclusion Setting"
 if ($ProcessCreation -ne "No Auditing")
 {
 	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -PropertyType DWord -Value 1 -Force
@@ -3080,11 +3079,11 @@ if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\M
 {
 	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging\ModuleNames -Force
 }
+New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging -Name EnableModuleLogging -PropertyType DWord -Value 1 -Force
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging\ModuleNames -Name * -PropertyType String -Value * -Force
-New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging\ModuleNames -Name EnableModuleLogging -PropertyType DWord -Value 1 -Force
 
-# Turn on logging of all PowerShell script input to the Microsoft-Windows-PowerShell/Operational event log
-# Включить регистрацию всех вводимых сценариев PowerShell в журнале событий Microsoft-Windows-PowerShell/Operational
+# Turn on logging of all PowerShell script input to the Windows PowerShell event log
+# Включить регистрацию всех вводимых сценариев PowerShell в журнале событий Windows PowerShell
 if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging))
 {
 	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging -Force
