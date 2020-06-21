@@ -11,7 +11,7 @@
 
 **Chris Titus Tech video about the script**
 
-[![YT](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/YouTube_Logo_2017.svg/330px-YouTube_Logo_2017.svg.png)](https://youtu.be/8E6OT_QcHaU)
+[![YT](https://i.imgur.com/mADOh3c.png)](https://youtu.be/8E6OT_QcHaU)
 
 
 
