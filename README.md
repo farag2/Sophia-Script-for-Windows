@@ -69,8 +69,14 @@ To run the script:
 - Download [up-to-date version](https://github.com/farag2/Setup-Windows-10/releases);
 - Expand the archive;
 - Check whether .ps1 is encoded in **UTF-8 with BOM**;
-- Run .ps1 file via powershell.exe;
-  - Or Start.cmd as Administrator. The script will start immediately.
+- Run .ps1 file via powershell.exe with elevated privileges;
+  - Set execution policy to be able to run scripts only in the current PowerShell session
+  
+  ```powershell
+  Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+  ```
+ 
+- Or Start.cmd as Administrator.
 
 ## Supported Windows 10 versions
 
@@ -79,12 +85,12 @@ To run the script:
 | 2004  |  20H1   |   May 2020 Update  |19041 |  x64 |Home/Pro/Enterprise|
 | 1909  |  19H2   |November 2019 Update|18363 |  x64 |Home/Pro/Enterprise|
 | 1903  |  19H1   |   May 2019 Update  |18362 |  x64 |Home/Pro/Enterprise|
-| 1809  |         |LTSC Enterprise 2019|17763 |  x64 |                   |
+| 1809  |         |LTSC Enterprise 2019|17763 |  x64 |   Enterprise      |
 
 ## FAQ
 
-Read the code you run carefully. Some functions are presented as an example only. You must be aware of the meaning of the functions in the code. **If you're not sure what the script does, do not run it**.
-**Strongly recommended to run the script after fresh installation**. Some of functions can be run also on LTSB/LTSC and on older versions of Windows and PowerShell (not recommended to run on the x86 systems).
+* Due to the fact that the script includes about 150 functions, you should must the entire script and comment out those sections that you do not want to be execute otherwise likely you will enable features that you do not want to be enabled.
+* Running the script is best done on a fresh install because running the script on tweaked system may result in occurring errors.
 
 ## GUI version (C#)
 
