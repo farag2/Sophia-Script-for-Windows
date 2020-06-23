@@ -1,8 +1,20 @@
-<#
+﻿<#
 .SYNOPSIS
 	"Windows 10 Setup Script" is a set of tweaks for OS fine-tuning and automating the routine tasks
+
+	Version: v4.4.3
+	Date: 23.06.2020
+	Copyright (c) 2020 farag & oZ-Zo
+
+	Thanks to all http://forum.ru-board.com members involved
+
 .DESCRIPTION
 	Supported Windows 10 version: 1809 Enterprise LTSC, 17763 build, x64
+
+	Due to the fact that the script includes about 140 functions,
+	you should read the entire script and comment out those sections that you do not want to be execute
+
+	Running the script is best done on a fresh install because running the script on tweaked system may result in occurring errors
 
 	Check whether the .ps1 file is encoded in UTF-8 with BOM
 	The script can not be executed via PowerShell ISE
@@ -11,15 +23,9 @@
 	Set execution policy to be able to run scripts only in the current PowerShell session:
 		Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 
-	Running the script is best done on a fresh install
 .EXAMPLE
 	PS C:\> & '.\LTSC.ps1'
 .NOTES
-	Version: v4.5.0.1
-	Date: 10.06.2020
-	Written by: farag & oZ-Zo
-	Thanks to all http://forum.ru-board.com members involved
-
 	Ask a question on
 	http://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
 	https://habr.com/en/post/465365/
@@ -27,7 +33,6 @@
 	https://forums.mydigitallife.net/threads/powershell-script-setup-windows-10.81675/
 	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
 
-	Copyright (c) 2020 farag & oZ-Zo
 .LINK
 	https://github.com/farag2/Windows-10-Setup-Script
 #>
@@ -2272,6 +2277,47 @@ $ProcessCreation = auditpol /get /subcategory:"{0CCE922B-69AE-11D9-BED3-50505450
 if ($ProcessCreation -ne "No Auditing")
 {
 	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -PropertyType DWord -Value 1 -Force
+}
+
+# Create "Process Creation" Event Viewer Custom View
+# Создать настаиваемое представление "Создание процесса" в Настраиваемых представлениях
+if ($RU)
+{
+	$OutputEncoding = [System.Console]::OutputEncoding = [System.Console]::InputEncoding = [System.Text.Encoding]::UTF8
+}
+$ProcessCreation = auditpol /get /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /r | ConvertFrom-Csv | Select-Object -ExpandProperty "Inclusion Setting"
+if ($ProcessCreation -ne "No Auditing")
+{
+	$XMLfile = @"
+	<ViewerConfig>
+		<QueryConfig>
+			<QueryParams>
+				<UserQuery />
+			</QueryParams>
+			<QueryNode>
+				<Name>Process Creation</Name>
+				<Description>Process Creation and Command-line Auditing Events</Description>
+				<QueryList>
+					<Query Id="0" Path="Security">
+						<Select Path="Security">*[System[(EventID=4688)]]</Select>
+					</Query>
+				</QueryList>
+			</QueryNode>
+		</QueryConfig>
+	</ViewerConfig>
+"@
+	$ProcessCreationPath = "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml"
+	# Saving ProcessCreation.xml in UTF-8 encoding
+	# Сохраняем ProcessCreation.xml в кодировке UTF-8
+	Set-Content -Value (New-Object System.Text.UTF8Encoding).GetBytes($XMLfile) -Encoding Byte -Path $ProcessCreationPath -Force
+
+	if ($RU)
+	{
+		[xml]$XML = Get-Content -Path $ProcessCreationPath
+		$XML.ViewerConfig.QueryConfig.QueryNode.Name = "Создание процесса"
+		$XML.ViewerConfig.QueryConfig.QueryNode.Description = "События содания нового процесса и аудит командной строки"
+		$xml.Save("$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml")
+	}
 }
 
 # Turn on logging for all Windows PowerShell modules
