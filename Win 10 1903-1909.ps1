@@ -2,7 +2,7 @@
 .SYNOPSIS
 	"Windows 10 Setup Script" is a set of tweaks for OS fine-tuning and automating the routine tasks
 
-	Version: v4.4.3
+	Version: v4.4.4
 	Date: 23.06.2020
 	Copyright (c) 2020 farag & oZ-Zo
 
@@ -15,7 +15,8 @@
 	Tested on Home/Pro/Enterprise editions
 
 	Due to the fact that the script includes about 150 functions,
-	you should read the entire script and comment out those sections that you do not want to be execute
+	you must read the entire script and comment out those sections that you do not want to be execute,
+	otherwise likely you will enable features that you do not want to be enabled
 
 	Running the script is best done on a fresh install because running the script on tweaked system may result in occurring errors
 
@@ -27,7 +28,7 @@
 		Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 
 .EXAMPLE
-	PS C:\> & '.\Win 10 2004.ps1'
+	PS C:\> & '.\Win 10 1903-1909.ps1'
 
 .NOTES
 	Ask a question on
