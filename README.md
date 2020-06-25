@@ -89,8 +89,8 @@ To run the script:
 
 ## FAQ
 
-* Due to the fact that the script includes about 150 functions, you should must the entire script and comment out those sections that you do not want to be execute otherwise likely you will enable features that you do not want to be enabled.
-* Running the script is best done on a fresh install because running the script on tweaked system may result in occurring errors.
+* Due to the fact that the script includes about 150 functions, you must read the entire script and comment out those sections that you do not want to be executed otherwise likely you will enable features that you do not want to be enabled.
+* Running the script is best done on a fresh install because running it on tweaked system may result in errors occurring.
 
 ## GUI version (C#)
 
