@@ -7,13 +7,15 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/farag2/Windows-10-Setup-Script)
 ![GitHub All Releases](https://img.shields.io/github/downloads/farag2/Windows-10-Setup-Script/total)
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Q5Q51QUJC)
-</div>
 
-**Chris Titus Tech video about the script**
+**Chris Titus Tech video**
 
 [![YT](https://i.imgur.com/mADOh3c.png)](https://youtu.be/8E6OT_QcHaU)
 
+**Britec09 video**
 
+[![YT](https://i.imgur.com/mADOh3c.png)](https://youtu.be/WK_A9c-m2PQ)
+</div>
 
 ## Screenshots
 
