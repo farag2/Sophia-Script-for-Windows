@@ -2,8 +2,8 @@
 .SYNOPSIS
 	"Windows 10 Setup Script" is a set of tweaks for OS fine-tuning and automating the routine tasks
 
-	Version: v4.4.4
-	Date: 23.06.2020
+	Version: v4.4.5
+	Date: 29.06.2020
 	Copyright (c) 2020 farag & oZ-Zo
 
 	Thanks to all http://forum.ru-board.com members involved
@@ -15,10 +15,10 @@
 	Tested on Home/Pro/Enterprise editions
 
 	Due to the fact that the script includes about 150 functions,
-	you must read the entire script and comment out those sections that you do not want to be execute,
+	you must read the entire script and comment out those sections that you do not want to be executed,
 	otherwise likely you will enable features that you do not want to be enabled
 
-	Running the script is best done on a fresh install because running the script on tweaked system may result in occurring errors
+	Running the script is best done on a fresh install because running it on tweaked system may result in errors occurring
 
 	Check whether the .ps1 file is encoded in UTF-8 with BOM
 	The script can not be executed via PowerShell ISE
@@ -614,13 +614,6 @@ switch ($Result)
 			Write-Verbose -Message "Skipped" -Verbose
 		}
 	}
-}
-
-# Show accent color on Start, taskbar, and action center
-# Отображать цвет элементов в меню "Пуск", на панели задач и в центре уведомлений
-if ((Get-ItemPropertyValue -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme) -ne 1)
-{
-	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name ColorPrevalence -PropertyType DWord -Value 1 -Force
 }
 
 # Show accent color on the title bars and window borders
@@ -3051,6 +3044,7 @@ New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Security Health\State" 
 # Turn on events auditing generated when a process is created or starts
 # Включить аудит событий, возникающих при создании или запуске процесса
 auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:enable /failure:enable
+$ProcessCreation = $true
 
 # Include command line in process creation events
 # Включать командную строку в событиях создания процесса
@@ -3058,27 +3052,23 @@ if ($RU)
 {
 	$OutputEncoding = [System.Console]::OutputEncoding = [System.Console]::InputEncoding = [System.Text.Encoding]::UTF8
 }
-$ProcessCreation = auditpol /get /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /r | ConvertFrom-Csv | Select-Object -ExpandProperty "Inclusion Setting"
-if ($ProcessCreation -ne "No Auditing")
+
+if ($ProcessCreation)
 {
 	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -PropertyType DWord -Value 1 -Force
+	$ProcessCreationIncludeCmdLine_Enabled = $true
 }
 
 # Create "Process Creation" Event Viewer Custom View
-# Создать настаиваемое представление "Создание процесса" в Настраиваемых представлениях
+# Создать настаиваемое представление "Создание процесса" в Просмотре событий
 if ($RU)
 {
 	$OutputEncoding = [System.Console]::OutputEncoding = [System.Console]::InputEncoding = [System.Text.Encoding]::UTF8
 }
-$ProcessCreation = auditpol /get /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /r | ConvertFrom-Csv | Select-Object -ExpandProperty "Inclusion Setting"
-if (Get-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -ErrorAction Ignore)
-{
-	$ProcessCreationIncludeCmdLine_Enabled = $true
-}
 
-if (($ProcessCreation -ne "No Auditing") -and ($ProcessCreationIncludeCmdLine_Enabled -eq $true))
+if ($ProcessCreation -and $ProcessCreationIncludeCmdLine_Enabled)
 {
-	$XMLfile = @"
+	$XML = @"
 	<ViewerConfig>
 		<QueryConfig>
 			<QueryParams>
@@ -3096,14 +3086,18 @@ if (($ProcessCreation -ne "No Auditing") -and ($ProcessCreationIncludeCmdLine_En
 		</QueryConfig>
 	</ViewerConfig>
 "@
-	$ProcessCreationPath = "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml"
+	if (-not (Test-Path -Path "$env:ProgramData\Microsoft\Event Viewer\Views"))
+	{
+		New-Item -Path "$env:ProgramData\Microsoft\Event Viewer\Views" -ItemType Directory -Force
+	}
+	$ProcessCreationFilePath = "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml"
 	# Saving ProcessCreation.xml in UTF-8 encoding
 	# Сохраняем ProcessCreation.xml в кодировке UTF-8
-	Set-Content -Value (New-Object System.Text.UTF8Encoding).GetBytes($XMLfile) -Encoding Byte -Path $ProcessCreationPath -Force
+	Set-Content -Value (New-Object System.Text.UTF8Encoding).GetBytes($XML) -Encoding Byte -Path $ProcessCreationFilePath -Force
 
 	if ($RU)
 	{
-		[xml]$XML = Get-Content -Path $ProcessCreationPath
+		[xml]$XML = Get-Content -Path $ProcessCreationFilePath
 		$XML.ViewerConfig.QueryConfig.QueryNode.Name = "Создание процесса"
 		$XML.ViewerConfig.QueryConfig.QueryNode.Description = "События содания нового процесса и аудит командной строки"
 		$xml.Save("$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml")
