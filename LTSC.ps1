@@ -1,8 +1,8 @@
-﻿<#
+<#
 .SYNOPSIS
 	"Windows 10 Setup Script" is a set of tweaks for OS fine-tuning and automating the routine tasks
 
-	Version: v4.4.3
+	Version: v4.4.4
 	Date: 23.06.2020
 	Copyright (c) 2020 farag & oZ-Zo
 
@@ -537,17 +537,6 @@ switch ($Result)
 		}
 	}
 }
-
-# Show accent color on Start, taskbar, and action center
-# Отображать цвет элементов в меню "Пуск", на панели задач и в центре уведомлений
-if ((Get-ItemPropertyValue -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme) -ne 1)
-{
-	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name ColorPrevalence -PropertyType DWord -Value 1 -Force
-}
-
-# Show accent color on the title bars and window borders
-# Отображать цвет элементов в заголовках окон и границ окон
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\DWM -Name ColorPrevalence -PropertyType DWord -Value 1 -Force
 
 # Do not show "New App Installed" notification
 # Не показывать уведомление "Установлено новое приложение"
