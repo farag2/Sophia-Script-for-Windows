@@ -616,10 +616,6 @@ switch ($Result)
 	}
 }
 
-# Show accent color on the title bars and window borders
-# Отображать цвет элементов в заголовках окон и границ окон
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\DWM -Name ColorPrevalence -PropertyType DWord -Value 1 -Force
-
 # Do not show "New App Installed" notification
 # Не показывать уведомление "Установлено новое приложение"
 if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
