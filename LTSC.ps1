@@ -2256,57 +2256,63 @@ New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Security Health\State" 
 # Включить аудит событий, возникающих при создании или запуске процесса
 auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:enable /failure:enable
 
-# Include command line in process creation events
-# Включать командную строку в событиях создания процесса
-if ($RU)
-{
-	$OutputEncoding = [System.Console]::OutputEncoding = [System.Console]::InputEncoding = [System.Text.Encoding]::UTF8
-}
-$ProcessCreation = auditpol /get /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /r | ConvertFrom-Csv | Select-Object -ExpandProperty "Inclusion Setting"
-if ($ProcessCreation -ne "No Auditing")
-{
-	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -PropertyType DWord -Value 1 -Force
-}
+<#
+Include command line in process creation events
+In order this feature to work events auditing must be enabled
 
-# Create "Process Creation" Event Viewer Custom View
-# Создать настаиваемое представление "Создание процесса" в Настраиваемых представлениях
+Включать командную строку в событиях создания процесса
+Необходимо включить аудит событий, чтобы работала данная опция
+#>
 if ($RU)
 {
 	$OutputEncoding = [System.Console]::OutputEncoding = [System.Console]::InputEncoding = [System.Text.Encoding]::UTF8
 }
-$ProcessCreation = auditpol /get /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /r | ConvertFrom-Csv | Select-Object -ExpandProperty "Inclusion Setting"
-if ($ProcessCreation -ne "No Auditing")
+New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -PropertyType DWord -Value 1 -Force
+
+<#
+Create "Process Creation" Event Viewer Custom View
+In order this feature to work events auditing and command line in process creation events must be enabled
+
+Создать настаиваемое представление "Создание процесса" в Просмотре событий
+Необходимо включить аудит событий и командную строку в событиях создания процесса, чтобы работала данная опция
+#>
+if ($RU)
 {
-	$XMLfile = @"
-	<ViewerConfig>
-		<QueryConfig>
-			<QueryParams>
-				<UserQuery />
-			</QueryParams>
-			<QueryNode>
-				<Name>Process Creation</Name>
-				<Description>Process Creation and Command-line Auditing Events</Description>
-				<QueryList>
-					<Query Id="0" Path="Security">
-						<Select Path="Security">*[System[(EventID=4688)]]</Select>
-					</Query>
-				</QueryList>
-			</QueryNode>
-		</QueryConfig>
-	</ViewerConfig>
+	$OutputEncoding = [System.Console]::OutputEncoding = [System.Console]::InputEncoding = [System.Text.Encoding]::UTF8
+}
+$XML = @"
+<ViewerConfig>
+	<QueryConfig>
+		<QueryParams>
+			<UserQuery />
+		</QueryParams>
+		<QueryNode>
+			<Name>Process Creation</Name>
+			<Description>Process Creation and Command-line Auditing Events</Description>
+			<QueryList>
+				<Query Id="0" Path="Security">
+					<Select Path="Security">*[System[(EventID=4688)]]</Select>
+				</Query>
+			</QueryList>
+		</QueryNode>
+	</QueryConfig>
+</ViewerConfig>
 "@
-	$ProcessCreationPath = "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml"
-	# Saving ProcessCreation.xml in UTF-8 encoding
-	# Сохраняем ProcessCreation.xml в кодировке UTF-8
-	Set-Content -Value (New-Object System.Text.UTF8Encoding).GetBytes($XMLfile) -Encoding Byte -Path $ProcessCreationPath -Force
+if (-not (Test-Path -Path "$env:ProgramData\Microsoft\Event Viewer\Views"))
+{
+	New-Item -Path "$env:ProgramData\Microsoft\Event Viewer\Views" -ItemType Directory -Force
+}
+$ProcessCreationFilePath = "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml"
+# Saving ProcessCreation.xml in UTF-8 encoding
+# Сохраняем ProcessCreation.xml в кодировке UTF-8
+Set-Content -Value (New-Object System.Text.UTF8Encoding).GetBytes($XML) -Encoding Byte -Path $ProcessCreationFilePath -Force
 
-	if ($RU)
-	{
-		[xml]$XML = Get-Content -Path $ProcessCreationPath
-		$XML.ViewerConfig.QueryConfig.QueryNode.Name = "Создание процесса"
-		$XML.ViewerConfig.QueryConfig.QueryNode.Description = "События содания нового процесса и аудит командной строки"
-		$xml.Save("$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml")
-	}
+if ($RU)
+{
+	[xml]$XML = Get-Content -Path $ProcessCreationFilePath
+	$XML.ViewerConfig.QueryConfig.QueryNode.Name = "Создание процесса"
+	$XML.ViewerConfig.QueryConfig.QueryNode.Description = "События содания нового процесса и аудит командной строки"
+	$xml.Save("$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml")
 }
 
 # Turn on logging for all Windows PowerShell modules
