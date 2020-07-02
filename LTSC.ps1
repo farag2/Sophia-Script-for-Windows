@@ -2,8 +2,8 @@
 .SYNOPSIS
 	"Windows 10 Setup Script" is a set of tweaks for OS fine-tuning and automating the routine tasks
 
-	Version: v4.4.4
-	Date: 23.06.2020
+	Version: v4.4.5
+	Date: 02.07.2020
 	Copyright (c) 2020 farag & oZ-Zo
 
 	Thanks to all http://forum.ru-board.com members involved
