@@ -17,6 +17,16 @@
 
 [![YT](https://i.imgur.com/mADOh3c.png)](https://youtu.be/WK_A9c-m2PQ)
 
+## FAQ
+
+* Due to the fact that the script includes about 150 functions, you must read the entire script and comment out those sections that you do not want to be executed otherwise likely you will enable features that you do not want to be enabled.
+* Running the script is best done on a fresh install because running it on tweaked system may result in errors occurring.
+* Some third-party antiviruses flag this script or its' part as malicious one. This is a false positive due to
+
+https://github.com/farag2/Windows-10-Setup-Script/blob/298307bafee70b55ea00d9cba7a9e14ea6e4f5a4/Win%2010%202004.ps1#L2689
+
+You can read more on section "Create a Windows cleaning up task in the Task Scheduler". You might need to disable tamper protection from your antivirus settings,re-enable it after running the script, and reboot
+
 ## Screenshots
 
 ![Image](https://i.imgur.com/OjWeooZ.png)
@@ -88,11 +98,6 @@ To run the script:
 | 1909  |  19H2   |November 2019 Update|18363 |  x64 |Home/Pro/Enterprise|
 | 1903  |  19H1   |   May 2019 Update  |18362 |  x64 |Home/Pro/Enterprise|
 | 1809  |         |LTSC Enterprise 2019|17763 |  x64 |   Enterprise      |
-
-## FAQ
-
-* Due to the fact that the script includes about 150 functions, you must read the entire script and comment out those sections that you do not want to be executed otherwise likely you will enable features that you do not want to be enabled.
-* Running the script is best done on a fresh install because running it on tweaked system may result in errors occurring.
 
 ## GUI version (C#)
 
