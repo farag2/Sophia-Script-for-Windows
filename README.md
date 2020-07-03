@@ -21,11 +21,7 @@
 
 * Due to the fact that the script includes about 150 functions, you must read the entire script and comment out those sections that you do not want to be executed otherwise likely you will enable features that you do not want to be enabled.
 * Running the script is best done on a fresh install because running it on tweaked system may result in errors occurring.
-* Some third-party antiviruses flag this script or its' part as malicious one. This is a false positive due to
-
-https://github.com/farag2/Windows-10-Setup-Script/blob/298307bafee70b55ea00d9cba7a9e14ea6e4f5a4/Win%2010%202004.ps1#L2689
-
-You can read more on section "Create a Windows cleaning up task in the Task Scheduler". You might need to disable tamper protection from your antivirus settings,re-enable it after running the script, and reboot
+* Some third-party antiviruses flag this script or its' part as malicious one. This is a false positive due to [$EncodedScript](https://github.com/farag2/Windows-10-Setup-Script/blob/298307bafee70b55ea00d9cba7a9e14ea6e4f5a4/Win%2010%202004.ps1#L2689) variable. You can read more on section "Create a Windows cleaning up task in the Task Scheduler". You might need to disable tamper protection from your antivirus settings,re-enable it after running the script, and reboot
 
 ## Screenshots
 
