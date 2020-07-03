@@ -77,14 +77,14 @@ To run the script:
 - Download [up-to-date version](https://github.com/farag2/Setup-Windows-10/releases);
 - Expand the archive;
 - Check whether .ps1 is encoded in **UTF-8 with BOM**;
-- Run .ps1 file via powershell.exe with elevated privileges;
-  - Set execution policy to be able to run scripts only in the current PowerShell session
-  
-  ```powershell
+- Set execution policy to be able to run scripts only in the current PowerShell session
+
+ ```powershell
   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
   ```
- 
-- Or Start.cmd as Administrator.
+
+- Run .ps1 file via powershell.exe with elevated privileges;
+  - or launch Start.cmd as Administrator.
 
 ## Supported Windows 10 versions
 
