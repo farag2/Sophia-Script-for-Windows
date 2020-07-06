@@ -11,7 +11,7 @@
 
 **Chris Titus Tech video**
 
-[![YT](https://i.imgur.com/mADOh3c.png)](https://youtu.be/8E6OT_QcHaU)
+[![YT](https://i.imgur.com/mADOh3c.png)](https://www.youtube.com/watch?v=8E6OT_QcHaU&t=370)
 
 **Britec09 video**
 
