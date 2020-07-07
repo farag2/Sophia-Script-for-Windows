@@ -2,8 +2,8 @@
 .SYNOPSIS
 	"Windows 10 Setup Script" is a set of tweaks for OS fine-tuning and automating the routine tasks
 
-	Version: v4.5.4
-	Date: 29.06.2020
+	Version: v4.5.5
+	Date: 07.07.2020
 	Copyright (c) 2020 farag & oZ-Zo
 
 	Thanks to all http://forum.ru-board.com members involved
@@ -19,6 +19,10 @@
 	otherwise likely you will enable features that you do not want to be enabled
 
 	Running the script is best done on a fresh install because running it on tweaked system may result in errors occurring
+
+	Some third-party antiviruses flag this script or its' part as malicious one. This is a false positive due to $EncodedScript variable
+	You can read more on section "Create a Windows cleaning up task in the Task Scheduler"
+	You might need to disable tamper protection from your antivirus settings,re-enable it after running the script, and reboot
 
 	Check whether the .ps1 file is encoded in UTF-8 with BOM
 	The script can not be executed via PowerShell ISE
@@ -2458,51 +2462,55 @@ if (Get-CimInstance -ClassName Win32_VideoController | Where-Object -FilterScrip
 		$Options = "&Add", "&Skip"
 	}
 	$DefaultChoice = 1
-	$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
-	switch ($Result)
+	do
 	{
-		"0"
+		$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+		switch ($Result)
 		{
-			if (-not (Test-Path -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences))
+			"0"
 			{
-				New-Item -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Force
-			}
+				if (-not (Test-Path -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences))
+				{
+					New-Item -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Force
+				}
 
-			Add-Type -AssemblyName System.Windows.Forms
-			$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
-			if ($RU)
-			{
-				$OpenFileDialog.Filter = "*.exe|*.exe|Все файлы (*.*)|*.*"
+				Add-Type -AssemblyName System.Windows.Forms
+				$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
+				if ($RU)
+				{
+					$OpenFileDialog.Filter = "*.exe|*.exe|Все файлы (*.*)|*.*"
+				}
+				else
+				{
+					$OpenFileDialog.Filter = "*.exe|*.exe|All Files (*.*)|*.*"
+				}
+				$OpenFileDialog.InitialDirectory = "${env:ProgramFiles(x86)}"
+				$OpenFileDialog.Multiselect = $false
+				# Focus on open file dialog
+				# Перевести фокус на диалог открытия файла
+				$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+				$OpenFileDialog.ShowDialog($tmp)
+				if ($OpenFileDialog.FileName)
+				{
+					New-ItemProperty -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Name $OpenFileDialog.FileName -PropertyType String -Value "GpuPreference=2;" -Force
+				}
+				$Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 			}
-			else
+			"1"
 			{
-				$OpenFileDialog.Filter = "*.exe|*.exe|All Files (*.*)|*.*"
-			}
-			$OpenFileDialog.InitialDirectory = "${env:ProgramFiles(x86)}"
-			$OpenFileDialog.Multiselect = $false
-			# Focus on open file dialog
-			# Перевести фокус на диалог открытия файла
-			$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
-			$OpenFileDialog.ShowDialog($tmp)
-			if ($OpenFileDialog.FileName)
-			{
-				New-ItemProperty -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Name $OpenFileDialog.FileName -PropertyType String -Value "GpuPreference=2;" -Force
-			}
-			$Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
-		}
-		"1"
-		{
-			if ($RU)
-			{
-				Write-Verbose -Message "Пропущено" -Verbose
-			}
-			else
-			{
-				Write-Verbose -Message "Skipped" -Verbose
+				if ($RU)
+				{
+					Write-Verbose -Message "Пропущено" -Verbose
+				}
+				else
+				{
+					Write-Verbose -Message "Skipped" -Verbose
+				}
 			}
 		}
 	}
+	until ($Result -eq 1)
 }
 
 <#
@@ -2795,46 +2803,49 @@ else
 	$Options = "&Add a protected folder", "&Skip"
 }
 $DefaultChoice = 1
-$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
-switch ($Result)
+do
 {
-	"0"
+	$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+	switch ($Result)
 	{
-		Add-Type -AssemblyName System.Windows.Forms
-		$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
-		if ($RU)
+		"0"
 		{
-			$FolderBrowserDialog.Description = "Выберите папку"
+			Add-Type -AssemblyName System.Windows.Forms
+			$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
+			if ($RU)
+			{
+				$FolderBrowserDialog.Description = "Выберите папку"
+			}
+			else
+			{
+				$FolderBrowserDialog.Description = "Select a folder"
+			}
+			$FolderBrowserDialog.RootFolder = "MyComputer"
+			# Focus on open file dialog
+			# Перевести фокус на диалог открытия файла
+			$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+			$FolderBrowserDialog.ShowDialog($tmp)
+			if ($FolderBrowserDialog.SelectedPath)
+			{
+				Set-MpPreference -EnableControlledFolderAccess Enabled
+				Add-MpPreference -ControlledFolderAccessProtectedFolders $FolderBrowserDialog.SelectedPath -Force
+			}
 		}
-		else
+		"1"
 		{
-			$FolderBrowserDialog.Description = "Select a folder"
-		}
-		$FolderBrowserDialog.RootFolder = "MyComputer"
-		# Focus on open file dialog
-		# Перевести фокус на диалог открытия файла
-		$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
-		$FolderBrowserDialog.ShowDialog($tmp)
-		if ($FolderBrowserDialog.SelectedPath)
-		{
-			Set-MpPreference -EnableControlledFolderAccess Enabled
-			Add-MpPreference -ControlledFolderAccessProtectedFolders $FolderBrowserDialog.SelectedPath -Force
-		}
-		$Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
-	}
-	"1"
-	{
-		if ($RU)
-		{
-			Write-Verbose -Message "Пропущено" -Verbose
-		}
-		else
-		{
-			Write-Verbose -Message "Skipped" -Verbose
+			if ($RU)
+			{
+				Write-Verbose -Message "Пропущено" -Verbose
+			}
+			else
+			{
+				Write-Verbose -Message "Skipped" -Verbose
+			}
 		}
 	}
 }
+until ($Result -eq 1)
 
 # Allow an app through Controlled folder access
 # Разрешить работу приложения через контролируемый доступ к папкам
@@ -2853,46 +2864,49 @@ if ((Get-MpPreference).EnableControlledFolderAccess -eq 1)
 		$Options = "&Add a protected folder", "&Skip"
 	}
 	$DefaultChoice = 1
-	$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
-	switch ($Result)
+	do
 	{
-		"0"
+		$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+		switch ($Result)
 		{
-			Add-Type -AssemblyName System.Windows.Forms
-			$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
-			if ($RU)
+			"0"
 			{
-				$OpenFileDialog.Filter = "*.exe|*.exe|Все файлы (*.*)|*.*"
+				Add-Type -AssemblyName System.Windows.Forms
+				$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
+				if ($RU)
+				{
+					$OpenFileDialog.Filter = "*.exe|*.exe|Все файлы (*.*)|*.*"
+				}
+				else
+				{
+					$OpenFileDialog.Filter = "*.exe|*.exe|All Files (*.*)|*.*"
+				}
+				$OpenFileDialog.InitialDirectory = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
+				$OpenFileDialog.Multiselect = $false
+				# Focus on open file dialog
+				# Перевести фокус на диалог открытия файла
+				$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+				$OpenFileDialog.ShowDialog($tmp)
+				if ($OpenFileDialog.FileName)
+				{
+					Add-MpPreference -ControlledFolderAccessAllowedApplications $OpenFileDialog.FileName -Force
+				}
 			}
-			else
+			"1"
 			{
-				$OpenFileDialog.Filter = "*.exe|*.exe|All Files (*.*)|*.*"
-			}
-			$OpenFileDialog.InitialDirectory = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
-			$OpenFileDialog.Multiselect = $false
-			# Focus on open file dialog
-			# Перевести фокус на диалог открытия файла
-			$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
-			$OpenFileDialog.ShowDialog($tmp)
-			if ($OpenFileDialog.FileName)
-			{
-				Add-MpPreference -ControlledFolderAccessAllowedApplications $OpenFileDialog.FileName -Force
-			}
-			$Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
-		}
-		"1"
-		{
-			if ($RU)
-			{
-				Write-Verbose -Message "Пропущено" -Verbose
-			}
-			else
-			{
-				Write-Verbose -Message "Skipped" -Verbose
+				if ($RU)
+				{
+					Write-Verbose -Message "Пропущено" -Verbose
+				}
+				else
+				{
+					Write-Verbose -Message "Skipped" -Verbose
+				}
 			}
 		}
 	}
+	until ($Result -eq 1)
 }
 
 # Add exclusion folder from Microsoft Defender Antivirus scanning
@@ -2910,45 +2924,48 @@ else
 	$Options = "&Exclude folder", "&Skip"
 }
 $DefaultChoice = 1
-$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
-switch ($Result)
+do
 {
-	"0"
+	$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+	switch ($Result)
 	{
-		Add-Type -AssemblyName System.Windows.Forms
-		$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
-		if ($RU)
+		"0"
 		{
-			$FolderBrowserDialog.Description = "Выберите папку"
+			Add-Type -AssemblyName System.Windows.Forms
+			$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
+			if ($RU)
+			{
+				$FolderBrowserDialog.Description = "Выберите папку"
+			}
+			else
+			{
+				$FolderBrowserDialog.Description = "Select a folder"
+			}
+			$FolderBrowserDialog.RootFolder = "MyComputer"
+			# Focus on open file dialog
+			# Перевести фокус на диалог открытия файла
+			$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+			$FolderBrowserDialog.ShowDialog($tmp)
+			if ($FolderBrowserDialog.SelectedPath)
+			{
+				Add-MpPreference -ExclusionPath $FolderBrowserDialog.SelectedPath -Force
+			}
 		}
-		else
+		"1"
 		{
-			$FolderBrowserDialog.Description = "Select a folder"
-		}
-		$FolderBrowserDialog.RootFolder = "MyComputer"
-		# Focus on open file dialog
-		# Перевести фокус на диалог открытия файла
-		$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
-		$FolderBrowserDialog.ShowDialog($tmp)
-		if ($FolderBrowserDialog.SelectedPath)
-		{
-			Add-MpPreference -ExclusionPath $FolderBrowserDialog.SelectedPath -Force
-		}
-		$Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
-	}
-	"1"
-	{
-		if ($RU)
-		{
-			Write-Verbose -Message "Пропущено" -Verbose
-		}
-		else
-		{
-			Write-Verbose -Message "Skipped" -Verbose
+			if ($RU)
+			{
+				Write-Verbose -Message "Пропущено" -Verbose
+			}
+			else
+			{
+				Write-Verbose -Message "Skipped" -Verbose
+			}
 		}
 	}
 }
+until ($Result -eq 1)
 
 # Add exclusion file from Microsoft Defender Antivirus scanning
 # Добавить файл в список исключений сканирования Microsoft Defender
@@ -2965,46 +2982,49 @@ else
 	$Options = "&Exclude file", "&Skip"
 }
 $DefaultChoice = 1
-$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
-switch ($Result)
+do
 {
-	"0"
+	$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+	switch ($Result)
 	{
-		Add-Type -AssemblyName System.Windows.Forms
-		$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
-		if ($RU)
+		"0"
 		{
-			$OpenFileDialog.Filter = "Все файлы (*.*)|*.*"
+			Add-Type -AssemblyName System.Windows.Forms
+			$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
+			if ($RU)
+			{
+				$OpenFileDialog.Filter = "Все файлы (*.*)|*.*"
+			}
+			else
+			{
+				$OpenFileDialog.Filter = "All Files (*.*)|*.*"
+			}
+			$OpenFileDialog.InitialDirectory = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
+			$OpenFileDialog.Multiselect = $false
+			# Focus on open file dialog
+			# Перевести фокус на диалог открытия файла
+			$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+			$OpenFileDialog.ShowDialog($tmp)
+			if ($OpenFileDialog.FileName)
+			{
+				Add-MpPreference -ExclusionPath $OpenFileDialog.FileName -Force
+			}
 		}
-		else
+		"1"
 		{
-			$OpenFileDialog.Filter = "All Files (*.*)|*.*"
-		}
-		$OpenFileDialog.InitialDirectory = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
-		$OpenFileDialog.Multiselect = $false
-		# Focus on open file dialog
-		# Перевести фокус на диалог открытия файла
-		$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
-		$OpenFileDialog.ShowDialog($tmp)
-		if ($OpenFileDialog.FileName)
-		{
-			Add-MpPreference -ExclusionPath $OpenFileDialog.FileName -Force
-		}
-		$Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
-	}
-	"1"
-	{
-		if ($RU)
-		{
-			Write-Verbose -Message "Пропущено" -Verbose
-		}
-		else
-		{
-			Write-Verbose -Message "Skipped" -Verbose
+			if ($RU)
+			{
+				Write-Verbose -Message "Пропущено" -Verbose
+			}
+			else
+			{
+				Write-Verbose -Message "Skipped" -Verbose
+			}
 		}
 	}
 }
+until ($Result -eq 1)
 
 # Turn on Microsoft Defender Exploit Guard network protection
 # Включить защиту сети в Microsoft Defender Exploit Guard
@@ -3029,64 +3049,60 @@ New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Security Health\State" 
 # Turn on events auditing generated when a process is created or starts
 # Включить аудит событий, возникающих при создании или запуске процесса
 auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:enable /failure:enable
-$ProcessCreation = $true
 
-# Include command line in process creation events
-# Включать командную строку в событиях создания процесса
+<#
+Include command line in process creation events
+In order this feature to work events auditing must be enabled
+
+Включать командную строку в событиях создания процесса
+Необходимо включить аудит событий, чтобы работала данная опция
+#>
 if ($RU)
 {
 	$OutputEncoding = [System.Console]::OutputEncoding = [System.Console]::InputEncoding = [System.Text.Encoding]::UTF8
 }
+New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -PropertyType DWord -Value 1 -Force
 
-if ($ProcessCreation)
-{
-	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -PropertyType DWord -Value 1 -Force
-	$ProcessCreationIncludeCmdLine_Enabled = $true
-}
+<#
+Create "Process Creation" Event Viewer Custom View
+In order this feature to work events auditing and command line in process creation events must be enabled
 
-# Create "Process Creation" Event Viewer Custom View
-# Создать настаиваемое представление "Создание процесса" в Просмотре событий
-if ($RU)
-{
-	$OutputEncoding = [System.Console]::OutputEncoding = [System.Console]::InputEncoding = [System.Text.Encoding]::UTF8
-}
-
-if ($ProcessCreation -and $ProcessCreationIncludeCmdLine_Enabled)
-{
-	$XML = @"
-	<ViewerConfig>
-		<QueryConfig>
-			<QueryParams>
-				<UserQuery />
-			</QueryParams>
-			<QueryNode>
-				<Name>Process Creation</Name>
-				<Description>Process Creation and Command-line Auditing Events</Description>
-				<QueryList>
-					<Query Id="0" Path="Security">
-						<Select Path="Security">*[System[(EventID=4688)]]</Select>
-					</Query>
-				</QueryList>
-			</QueryNode>
-		</QueryConfig>
-	</ViewerConfig>
+Создать настаиваемое представление "Создание процесса" в Просмотре событий
+Необходимо включить аудит событий и командную строку в событиях создания процесса, чтобы работала данная опция
+#>
+$XML = @"
+<ViewerConfig>
+	<QueryConfig>
+		<QueryParams>
+			<UserQuery />
+		</QueryParams>
+		<QueryNode>
+			<Name>Process Creation</Name>
+			<Description>Process Creation and Command-line Auditing Events</Description>
+			<QueryList>
+				<Query Id="0" Path="Security">
+					<Select Path="Security">*[System[(EventID=4688)]]</Select>
+				</Query>
+			</QueryList>
+		</QueryNode>
+	</QueryConfig>
+</ViewerConfig>
 "@
-	if (-not (Test-Path -Path "$env:ProgramData\Microsoft\Event Viewer\Views"))
-	{
-		New-Item -Path "$env:ProgramData\Microsoft\Event Viewer\Views" -ItemType Directory -Force
-	}
-	$ProcessCreationFilePath = "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml"
-	# Saving ProcessCreation.xml in UTF-8 encoding
-	# Сохраняем ProcessCreation.xml в кодировке UTF-8
-	Set-Content -Value (New-Object System.Text.UTF8Encoding).GetBytes($XML) -Encoding Byte -Path $ProcessCreationFilePath -Force
+if (-not (Test-Path -Path "$env:ProgramData\Microsoft\Event Viewer\Views"))
+{
+	New-Item -Path "$env:ProgramData\Microsoft\Event Viewer\Views" -ItemType Directory -Force
+}
+$ProcessCreationFilePath = "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml"
+# Saving ProcessCreation.xml in UTF-8 encoding
+# Сохраняем ProcessCreation.xml в кодировке UTF-8
+Set-Content -Value (New-Object System.Text.UTF8Encoding).GetBytes($XML) -Encoding Byte -Path $ProcessCreationFilePath -Force
 
-	if ($RU)
-	{
-		[xml]$XML = Get-Content -Path $ProcessCreationFilePath
-		$XML.ViewerConfig.QueryConfig.QueryNode.Name = "Создание процесса"
-		$XML.ViewerConfig.QueryConfig.QueryNode.Description = "События содания нового процесса и аудит командной строки"
-		$xml.Save("$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml")
-	}
+if ($RU)
+{
+	[xml]$XML = Get-Content -Path $ProcessCreationFilePath
+	$XML.ViewerConfig.QueryConfig.QueryNode.Name = "Создание процесса"
+	$XML.ViewerConfig.QueryConfig.QueryNode.Description = "События содания нового процесса и аудит командной строки"
+	$xml.Save("$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml")
 }
 
 # Turn on logging for all Windows PowerShell modules
