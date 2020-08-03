@@ -1,9 +1,9 @@
-<#
+﻿<#
 .SYNOPSIS
 	"Windows 10 Setup Script" is a set of tweaks for OS fine-tuning and automating the routine tasks
 
-	Version: v4.4.5
-	Date: 02.07.2020
+	Version: v4.4.6
+	Date: 03.08.2020
 	Copyright (c) 2020 farag & oZ-Zo
 
 	Thanks to all http://forum.ru-board.com members involved
@@ -1086,8 +1086,8 @@ function UserShellFolder
 			Name = "KnownFolders"
 			Language = "CSharp"
 			MemberDefinition = @"
-				[DllImport("shell32.dll")]
-				public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, IntPtr token, [MarshalAs(UnmanagedType.LPWStr)] string path);
+[DllImport("shell32.dll")]
+public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, IntPtr token, [MarshalAs(UnmanagedType.LPWStr)] string path);
 "@
 		}
 		if (-not ("WinAPI.KnownFolders" -as [type]))
@@ -1292,13 +1292,13 @@ $Title = ""
 if ($RU)
 {
 	$Message = "Чтобы изменить местоположение папки `"Рабочий стол`", введите необходимую букву"
-	Write-Warning "`nФайлы не будут перенесены"
+	Write-Warning -Message "`nФайлы не будут перенесены"
 	$Options = "&Изменить", "&Пропустить"
 }
 else
 {
 	$Message = "To change the location of the Desktop folder enter the required letter"
-	Write-Warning "`nFiles will not be moved"
+	Write-Warning -Message "`nFiles will not be moved"
 	$Options = "&Change", "&Skip"
 }
 $DefaultChoice = 1
@@ -1338,13 +1338,13 @@ $Title = ""
 if ($RU)
 {
 	$Message = "Чтобы изменить местоположение папки `"Документы`", введите необходимую букву"
-	Write-Warning "`nФайлы не будут перенесены"
+	Write-Warning -Message "`nФайлы не будут перенесены"
 	$Options = "&Изменить", "&Пропустить"
 }
 else
 {
 	$Message = "To change the location of the Documents folder enter the required letter"
-	Write-Warning "`nFiles will not be moved"
+	Write-Warning -Message "`nFiles will not be moved"
 	$Options = "&Change", "&Skip"
 }
 $DefaultChoice = 1
@@ -1384,13 +1384,13 @@ $Title = ""
 if ($RU)
 {
 	$Message = "Чтобы изменить местоположение папки `"Загрузки`", введите необходимую букву"
-	Write-Warning "`nФайлы не будут перенесены"
+	Write-Warning -Message "`nФайлы не будут перенесены"
 	$Options = "&Изменить", "&Пропустить"
 }
 else
 {
 	$Message = "To change the location of the Downloads folder enter the required letter"
-	Write-Warning "`nFiles will not be moved"
+	Write-Warning -Message "`nFiles will not be moved"
 	$Options = "&Change", "&Skip"
 }
 $DefaultChoice = 1
@@ -1430,13 +1430,13 @@ $Title = ""
 if ($RU)
 {
 	$Message = "Чтобы изменить местоположение папки `"Музыка`", введите необходимую букву"
-	Write-Warning "`nФайлы не будут перенесены"
+	Write-Warning -Message "`nФайлы не будут перенесены"
 	$Options = "&Изменить", "&Пропустить"
 }
 else
 {
 	$Message = "To change the location of the Music folder enter the required letter"
-	Write-Warning "`nFiles will not be moved"
+	Write-Warning -Message "`nFiles will not be moved"
 	$Options = "&Change", "&Skip"
 }
 $DefaultChoice = 1
@@ -1477,13 +1477,13 @@ $Title = ""
 if ($RU)
 {
 	$Message = "Чтобы изменить местоположение папки `"Изображения`", введите необходимую букву"
-	Write-Warning "`nФайлы не будут перенесены"
+	Write-Warning -Message "`nФайлы не будут перенесены"
 	$Options = "&Изменить", "&Пропустить"
 }
 else
 {
 	$Message = "To change the location of the Pictures folder enter the required letter"
-	Write-Warning "`nFiles will not be moved"
+	Write-Warning -Message "`nFiles will not be moved"
 	$Options = "&Change", "&Skip"
 }
 $DefaultChoice = 1
@@ -1523,13 +1523,13 @@ $Title = ""
 if ($RU)
 {
 	$Message = "Чтобы изменить местоположение папки `"Видео`", введите необходимую букву"
-	Write-Warning "`nФайлы не будут перенесены"
+	Write-Warning -Message "`nФайлы не будут перенесены"
 	$Options = "&Изменить", "&Пропустить"
 }
 else
 {
 	$Message = "To change the location of the Videos folder enter the required letter"
-	Write-Warning "`nFiles will not be moved"
+	Write-Warning -Message "`nFiles will not be moved"
 	$Options = "&Change", "&Skip"
 }
 $DefaultChoice = 1
@@ -1617,10 +1617,6 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" -Name Autorun -PropertyType DWord -Value 0 -Force
 New-ItemProperty -Path "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" -Name Autorun -PropertyType DWord -Value 0 -Force
 
-# Turn on automatically save my restartable apps when sign out and restart them after sign in
-# Автоматически сохранять мои перезапускаемые приложения при выходе из системы и перезапустить их после выхода
-New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name RestartApps -Value 1 -Force
-
 # Turn on network discovery and file and printers sharing if device is not domain-joined
 # Включить сетевое обнаружение и общий доступ к файлам и принтерам, если устройство не присоединенно к домену
 if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain -eq $false)
@@ -1628,6 +1624,10 @@ if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain -eq $false)
 	Get-NetFirewallRule -Group "@FirewallAPI.dll,-32752", "@FirewallAPI.dll,-28502" | Set-NetFirewallRule -Profile Private -Enabled True
 	Set-NetConnectionProfile -NetworkCategory Private
 }
+
+# Automatically adjust active hours for me based on daily usage
+# Автоматически изменять период активности для этого устройства на основе действий
+New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name SmartActiveHoursState -PropertyType DWord -Value 1 -Force
 #endregion System
 
 #region Start menu
@@ -1707,51 +1707,55 @@ if (Get-CimInstance -ClassName Win32_VideoController | Where-Object -FilterScrip
 		$Options = "&Add", "&Skip"
 	}
 	$DefaultChoice = 1
-	$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
-	switch ($Result)
+	do
 	{
-		"0"
+		$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+		switch ($Result)
 		{
-			if (-not (Test-Path -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences))
+			"0"
 			{
-				New-Item -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Force
-			}
+				if (-not (Test-Path -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences))
+				{
+					New-Item -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Force
+				}
 
-			Add-Type -AssemblyName System.Windows.Forms
-			$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
-			if ($RU)
-			{
-				$OpenFileDialog.Filter = "*.exe|*.exe|Все файлы (*.*)|*.*"
+				Add-Type -AssemblyName System.Windows.Forms
+				$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
+				if ($RU)
+				{
+					$OpenFileDialog.Filter = "*.exe|*.exe|Все файлы (*.*)|*.*"
+				}
+				else
+				{
+					$OpenFileDialog.Filter = "*.exe|*.exe|All Files (*.*)|*.*"
+				}
+				$OpenFileDialog.InitialDirectory = "${env:ProgramFiles(x86)}"
+				$OpenFileDialog.Multiselect = $false
+				# Focus on open file dialog
+				# Перевести фокус на диалог открытия файла
+				$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+				$OpenFileDialog.ShowDialog($tmp)
+				if ($OpenFileDialog.FileName)
+				{
+					New-ItemProperty -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Name $OpenFileDialog.FileName -PropertyType String -Value "GpuPreference=2;" -Force
+				}
+				$Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 			}
-			else
+			"1"
 			{
-				$OpenFileDialog.Filter = "*.exe|*.exe|All Files (*.*)|*.*"
-			}
-			$OpenFileDialog.InitialDirectory = "${env:ProgramFiles(x86)}"
-			$OpenFileDialog.Multiselect = $false
-			# Focus on open file dialog
-			# Перевести фокус на диалог открытия файла
-			$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
-			$OpenFileDialog.ShowDialog($tmp)
-			if ($OpenFileDialog.FileName)
-			{
-				New-ItemProperty -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Name $OpenFileDialog.FileName -PropertyType String -Value "GpuPreference=2;" -Force
-			}
-			$Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
-		}
-		"1"
-		{
-			if ($RU)
-			{
-				Write-Verbose -Message "Пропущено" -Verbose
-			}
-			else
-			{
-				Write-Verbose -Message "Skipped" -Verbose
+				if ($RU)
+				{
+					Write-Verbose -Message "Пропущено" -Verbose
+				}
+				else
+				{
+					Write-Verbose -Message "Skipped" -Verbose
+				}
 			}
 		}
 	}
+	until ($Result -eq 1)
 }
 #endregion Gaming
 
@@ -1802,31 +1806,31 @@ $Template = [Windows.UI.Notifications.ToastTemplateType]::ToastImageAndText01
 if ($PSUICulture -eq "ru-RU")
 {
 	[xml]$ToastTemplate = @"
-	<toast launch="app-defined-string">
-		<visual>
-			<binding template="ToastGeneric">
-				<text>Очистка неиспользуемых файлов и обновлений Windows начнется через минуту</text>
-			</binding>
-		</visual>
-		<actions>
-		<action activationType="background" content="Хорошо" arguments="later"/>
-		</actions>
-	</toast>
+<toast launch="app-defined-string">
+	<visual>
+		<binding template="ToastGeneric">
+			<text>Очистка неиспользуемых файлов и обновлений Windows начнется через минуту</text>
+		</binding>
+	</visual>
+	<actions>
+	<action activationType="background" content="Хорошо" arguments="later"/>
+	</actions>
+</toast>
 "@
 }
 else
 {
 	[xml]$ToastTemplate = @"
-	<toast launch="app-defined-string">
-		<visual>
-			<binding template="ToastGeneric">
-				<text>Cleaning up unused Windows files and updates start in a minute</text>
-			</binding>
-		</visual>
-		<actions>
-			<action activationType="background" content="OK" arguments="later"/>
-		</actions>
-	</toast>
+<toast launch="app-defined-string">
+	<visual>
+		<binding template="ToastGeneric">
+			<text>Cleaning up unused Windows files and updates start in a minute</text>
+		</binding>
+	</visual>
+	<actions>
+		<action activationType="background" content="OK" arguments="later"/>
+	</actions>
+</toast>
 "@
 }
 
@@ -1871,8 +1875,8 @@ function MinimizeWindow
 	Name = "Win32ShowWindowAsync"
 	Language = "CSharp"
 	MemberDefinition = @"
-		[DllImport("user32.dll")]
-		public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
+[DllImport("user32.dll")]
+public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 "@
 	}
 	if (-not ("WinAPI.Win32ShowWindowAsync" -as [type]))
@@ -2021,46 +2025,49 @@ else
 	$Options = "&Add a protected folder", "&Skip"
 }
 $DefaultChoice = 1
-$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
-switch ($Result)
+do
 {
-	"0"
+	$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+	switch ($Result)
 	{
-		Add-Type -AssemblyName System.Windows.Forms
-		$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
-		if ($RU)
+		"0"
 		{
-			$FolderBrowserDialog.Description = "Выберите папку"
+			Add-Type -AssemblyName System.Windows.Forms
+			$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
+			if ($RU)
+			{
+				$FolderBrowserDialog.Description = "Выберите папку"
+			}
+			else
+			{
+				$FolderBrowserDialog.Description = "Select a folder"
+			}
+			$FolderBrowserDialog.RootFolder = "MyComputer"
+			# Focus on open file dialog
+			# Перевести фокус на диалог открытия файла
+			$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+			$FolderBrowserDialog.ShowDialog($tmp)
+			if ($FolderBrowserDialog.SelectedPath)
+			{
+				Set-MpPreference -EnableControlledFolderAccess Enabled
+				Add-MpPreference -ControlledFolderAccessProtectedFolders $FolderBrowserDialog.SelectedPath -Force
+			}
 		}
-		else
+		"1"
 		{
-			$FolderBrowserDialog.Description = "Select a folder"
-		}
-		$FolderBrowserDialog.RootFolder = "MyComputer"
-		# Focus on open file dialog
-		# Перевести фокус на диалог открытия файла
-		$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
-		$FolderBrowserDialog.ShowDialog($tmp)
-		if ($FolderBrowserDialog.SelectedPath)
-		{
-			Set-MpPreference -EnableControlledFolderAccess Enabled
-			Add-MpPreference -ControlledFolderAccessProtectedFolders $FolderBrowserDialog.SelectedPath -Force
-		}
-		$Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
-	}
-	"1"
-	{
-		if ($RU)
-		{
-			Write-Verbose -Message "Пропущено" -Verbose
-		}
-		else
-		{
-			Write-Verbose -Message "Skipped" -Verbose
+			if ($RU)
+			{
+				Write-Verbose -Message "Пропущено" -Verbose
+			}
+			else
+			{
+				Write-Verbose -Message "Skipped" -Verbose
+			}
 		}
 	}
 }
+until ($Result -eq 1)
 
 # Allow an app through Controlled folder access
 # Разрешить работу приложения через контролируемый доступ к папкам
@@ -2079,46 +2086,49 @@ if ((Get-MpPreference).EnableControlledFolderAccess -eq 1)
 		$Options = "&Add a protected folder", "&Skip"
 	}
 	$DefaultChoice = 1
-	$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
-	switch ($Result)
+	do
 	{
-		"0"
+		$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+		switch ($Result)
 		{
-			Add-Type -AssemblyName System.Windows.Forms
-			$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
-			if ($RU)
+			"0"
 			{
-				$OpenFileDialog.Filter = "*.exe|*.exe|Все файлы (*.*)|*.*"
+				Add-Type -AssemblyName System.Windows.Forms
+				$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
+				if ($RU)
+				{
+					$OpenFileDialog.Filter = "*.exe|*.exe|Все файлы (*.*)|*.*"
+				}
+				else
+				{
+					$OpenFileDialog.Filter = "*.exe|*.exe|All Files (*.*)|*.*"
+				}
+				$OpenFileDialog.InitialDirectory = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
+				$OpenFileDialog.Multiselect = $false
+				# Focus on open file dialog
+				# Перевести фокус на диалог открытия файла
+				$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+				$OpenFileDialog.ShowDialog($tmp)
+				if ($OpenFileDialog.FileName)
+				{
+					Add-MpPreference -ControlledFolderAccessAllowedApplications $OpenFileDialog.FileName -Force
+				}
 			}
-			else
+			"1"
 			{
-				$OpenFileDialog.Filter = "*.exe|*.exe|All Files (*.*)|*.*"
-			}
-			$OpenFileDialog.InitialDirectory = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
-			$OpenFileDialog.Multiselect = $false
-			# Focus on open file dialog
-			# Перевести фокус на диалог открытия файла
-			$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
-			$OpenFileDialog.ShowDialog($tmp)
-			if ($OpenFileDialog.FileName)
-			{
-				Add-MpPreference -ControlledFolderAccessAllowedApplications $OpenFileDialog.FileName -Force
-			}
-			$Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
-		}
-		"1"
-		{
-			if ($RU)
-			{
-				Write-Verbose -Message "Пропущено" -Verbose
-			}
-			else
-			{
-				Write-Verbose -Message "Skipped" -Verbose
+				if ($RU)
+				{
+					Write-Verbose -Message "Пропущено" -Verbose
+				}
+				else
+				{
+					Write-Verbose -Message "Skipped" -Verbose
+				}
 			}
 		}
 	}
+	until ($Result -eq 1)
 }
 
 # Add exclusion folder from Windows Defender Antivirus scanning
@@ -2136,45 +2146,48 @@ else
 	$Options = "&Exclude folder", "&Skip"
 }
 $DefaultChoice = 1
-$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
-switch ($Result)
+do
 {
-	"0"
+	$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+	switch ($Result)
 	{
-		Add-Type -AssemblyName System.Windows.Forms
-		$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
-		if ($RU)
+		"0"
 		{
-			$FolderBrowserDialog.Description = "Выберите папку"
+			Add-Type -AssemblyName System.Windows.Forms
+			$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
+			if ($RU)
+			{
+				$FolderBrowserDialog.Description = "Выберите папку"
+			}
+			else
+			{
+				$FolderBrowserDialog.Description = "Select a folder"
+			}
+			$FolderBrowserDialog.RootFolder = "MyComputer"
+			# Focus on open file dialog
+			# Перевести фокус на диалог открытия файла
+			$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+			$FolderBrowserDialog.ShowDialog($tmp)
+			if ($FolderBrowserDialog.SelectedPath)
+			{
+				Add-MpPreference -ExclusionPath $FolderBrowserDialog.SelectedPath -Force
+			}
 		}
-		else
+		"1"
 		{
-			$FolderBrowserDialog.Description = "Select a folder"
-		}
-		$FolderBrowserDialog.RootFolder = "MyComputer"
-		# Focus on open file dialog
-		# Перевести фокус на диалог открытия файла
-		$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
-		$FolderBrowserDialog.ShowDialog($tmp)
-		if ($FolderBrowserDialog.SelectedPath)
-		{
-			Add-MpPreference -ExclusionPath $FolderBrowserDialog.SelectedPath -Force
-		}
-		$Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
-	}
-	"1"
-	{
-		if ($RU)
-		{
-			Write-Verbose -Message "Пропущено" -Verbose
-		}
-		else
-		{
-			Write-Verbose -Message "Skipped" -Verbose
+			if ($RU)
+			{
+				Write-Verbose -Message "Пропущено" -Verbose
+			}
+			else
+			{
+				Write-Verbose -Message "Skipped" -Verbose
+			}
 		}
 	}
 }
+until ($Result -eq 1)
 
 # Add exclusion file from Windows Defender Antivirus scanning
 # Добавить файл в список исключений сканирования Windows Defender
@@ -2191,46 +2204,49 @@ else
 	$Options = "&Exclude file", "&Skip"
 }
 $DefaultChoice = 1
-$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
-switch ($Result)
+do
 {
-	"0"
+	$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+	switch ($Result)
 	{
-		Add-Type -AssemblyName System.Windows.Forms
-		$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
-		if ($RU)
+		"0"
 		{
-			$OpenFileDialog.Filter = "Все файлы (*.*)|*.*"
+			Add-Type -AssemblyName System.Windows.Forms
+			$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
+			if ($RU)
+			{
+				$OpenFileDialog.Filter = "Все файлы (*.*)|*.*"
+			}
+			else
+			{
+				$OpenFileDialog.Filter = "All Files (*.*)|*.*"
+			}
+			$OpenFileDialog.InitialDirectory = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
+			$OpenFileDialog.Multiselect = $false
+			# Focus on open file dialog
+			# Перевести фокус на диалог открытия файла
+			$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+			$OpenFileDialog.ShowDialog($tmp)
+			if ($OpenFileDialog.FileName)
+			{
+				Add-MpPreference -ExclusionPath $OpenFileDialog.FileName -Force
+			}
 		}
-		else
+		"1"
 		{
-			$OpenFileDialog.Filter = "All Files (*.*)|*.*"
-		}
-		$OpenFileDialog.InitialDirectory = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
-		$OpenFileDialog.Multiselect = $false
-		# Focus on open file dialog
-		# Перевести фокус на диалог открытия файла
-		$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
-		$OpenFileDialog.ShowDialog($tmp)
-		if ($OpenFileDialog.FileName)
-		{
-			Add-MpPreference -ExclusionPath $OpenFileDialog.FileName -Force
-		}
-		$Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
-	}
-	"1"
-	{
-		if ($RU)
-		{
-			Write-Verbose -Message "Пропущено" -Verbose
-		}
-		else
-		{
-			Write-Verbose -Message "Skipped" -Verbose
+			if ($RU)
+			{
+				Write-Verbose -Message "Пропущено" -Verbose
+			}
+			else
+			{
+				Write-Verbose -Message "Skipped" -Verbose
+			}
 		}
 	}
 }
+until ($Result -eq 1)
 
 # Turn on Windows Defender Exploit Guard network protection
 # Включить защиту сети в Windows Defender Exploit Guard
@@ -2276,10 +2292,6 @@ In order this feature to work events auditing and command line in process creati
 Создать настаиваемое представление "Создание процесса" в Просмотре событий
 Необходимо включить аудит событий и командную строку в событиях создания процесса, чтобы работала данная опция
 #>
-if ($RU)
-{
-	$OutputEncoding = [System.Console]::OutputEncoding = [System.Console]::InputEncoding = [System.Text.Encoding]::UTF8
-}
 $XML = @"
 <ViewerConfig>
 	<QueryConfig>
@@ -2359,7 +2371,7 @@ if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Comm
 {
 	New-Item -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command -Force
 }
-$Value = "{0}" -f 'cmd /c DISM.exe /Online /Add-Package /PackagePath:"%1" /NoRestart & pause'
+$Value = "{0}" -f "cmd /c DISM.exe /Online /Add-Package /PackagePath:`"%1`" /NoRestart & pause"
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command -Name "(Default)" -PropertyType String -Value $Value -Force
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs -Name MUIVerb -PropertyType String -Value "@shell32.dll,-10210" -Force
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs -Name HasLUAShield -PropertyType String -Value "" -Force
@@ -2452,34 +2464,34 @@ $UpdateExplorer = @{
 	Name = "UpdateExplorer"
 	Language = "CSharp"
 	MemberDefinition = @"
-		private static readonly IntPtr HWND_BROADCAST = new IntPtr(0xffff);
-		private const int WM_SETTINGCHANGE = 0x1a;
-		private const int SMTO_ABORTIFHUNG = 0x0002;
+private static readonly IntPtr HWND_BROADCAST = new IntPtr(0xffff);
+private const int WM_SETTINGCHANGE = 0x1a;
+private const int SMTO_ABORTIFHUNG = 0x0002;
 
-		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
-		static extern bool SendNotifyMessage(IntPtr hWnd, uint Msg, IntPtr wParam, string lParam);
-		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
-		private static extern IntPtr SendMessageTimeout(IntPtr hWnd, int Msg, IntPtr wParam, string lParam, int fuFlags, int uTimeout, IntPtr lpdwResult);
-		[DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = false)]
-		private static extern int SHChangeNotify(int eventId, int flags, IntPtr item1, IntPtr item2);
-		public static void Refresh()
-		{
-			// Update desktop icons
-			// Обновить иконки рабочего стола
-			SHChangeNotify(0x8000000, 0x1000, IntPtr.Zero, IntPtr.Zero);
-			// Update environment variables
-			// Обновить переменные среды
-			SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, IntPtr.Zero, null, SMTO_ABORTIFHUNG, 100, IntPtr.Zero);
-			// Update taskbar
-			// Обновить панель задач
-			SendNotifyMessage(HWND_BROADCAST, WM_SETTINGCHANGE, IntPtr.Zero, "TraySettings");
-		}
+[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
+static extern bool SendNotifyMessage(IntPtr hWnd, uint Msg, IntPtr wParam, string lParam);
+[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
+private static extern IntPtr SendMessageTimeout(IntPtr hWnd, int Msg, IntPtr wParam, string lParam, int fuFlags, int uTimeout, IntPtr lpdwResult);
+[DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = false)]
+private static extern int SHChangeNotify(int eventId, int flags, IntPtr item1, IntPtr item2);
+public static void Refresh()
+{
+	// Update desktop icons
+	// Обновить иконки рабочего стола
+	SHChangeNotify(0x8000000, 0x1000, IntPtr.Zero, IntPtr.Zero);
+	// Update environment variables
+	// Обновить переменные среды
+	SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, IntPtr.Zero, null, SMTO_ABORTIFHUNG, 100, IntPtr.Zero);
+	// Update taskbar
+	// Обновить панель задач
+	SendNotifyMessage(HWND_BROADCAST, WM_SETTINGCHANGE, IntPtr.Zero, "TraySettings");
+}
 
-		private static readonly IntPtr hWnd = new IntPtr(65535);
-		private const int Msg = 273;
-		// Virtual key ID of the F5 in File Explorer
-		// Виртуальный код клавиши F5 в проводнике
-		private static readonly UIntPtr UIntPtr = new UIntPtr(41504);
+private static readonly IntPtr hWnd = new IntPtr(65535);
+private const int Msg = 273;
+// Virtual key ID of the F5 in File Explorer
+// Виртуальный код клавиши F5 в проводнике
+private static readonly UIntPtr UIntPtr = new UIntPtr(41504);
 
 		[DllImport("user32.dll", SetLastError=true)]
 		public static extern int PostMessageW(IntPtr hWnd, uint Msg, UIntPtr wParam, IntPtr lParam);

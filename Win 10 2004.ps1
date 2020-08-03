@@ -2,8 +2,8 @@
 .SYNOPSIS
 	"Windows 10 Setup Script" is a set of tweaks for OS fine-tuning and automating the routine tasks
 
-	Version: v4.5.5
-	Date: 07.07.2020
+	Version: v4.5.6
+	Date: 03.08.2020
 	Copyright (c) 2020 farag & oZ-Zo
 
 	Thanks to all http://forum.ru-board.com members involved
@@ -493,18 +493,18 @@ $Signature = @{
 	Name = "GetStr"
 	Language = "CSharp"
 	MemberDefinition = @"
-		// https://github.com/Disassembler0/Win10-Initial-Setup-Script/issues/8#issue-227159084
-		[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
-		public static extern IntPtr GetModuleHandle(string lpModuleName);
-		[DllImport("user32.dll", CharSet = CharSet.Auto)]
-		internal static extern int LoadString(IntPtr hInstance, uint uID, StringBuilder lpBuffer, int nBufferMax);
-		public static string GetString(uint strId)
-		{
-			IntPtr intPtr = GetModuleHandle("shell32.dll");
-			StringBuilder sb = new StringBuilder(255);
-			LoadString(intPtr, strId, sb, sb.Capacity);
-			return sb.ToString();
-		}
+// https://github.com/Disassembler0/Win10-Initial-Setup-Script/issues/8#issue-227159084
+[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+public static extern IntPtr GetModuleHandle(string lpModuleName);
+[DllImport("user32.dll", CharSet = CharSet.Auto)]
+internal static extern int LoadString(IntPtr hInstance, uint uID, StringBuilder lpBuffer, int nBufferMax);
+public static string GetString(uint strId)
+	{
+	IntPtr intPtr = GetModuleHandle("shell32.dll");
+	StringBuilder sb = new StringBuilder(255);
+	LoadString(intPtr, strId, sb, sb.Capacity);
+	return sb.ToString();
+}
 "@
 }
 if (-not ("WinAPI.GetStr" -as [type]))
@@ -662,9 +662,17 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer 
 # Использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана
 New-ItemProperty -Path "HKCU:\Control Panel\Keyboard" -Name PrintScreenKeyForSnippingEnabled -PropertyType DWord -Value 1 -Force
 
-# Automatically adjust active hours for me based on daily usage
-# Автоматически изменять период активности для этого устройства на основе действий
-New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name SmartActiveHoursState -PropertyType DWord -Value 1 -Force
+# Turn on Windows 10 20H2 new Start style
+# Включить новый стиль Пуска как в Windows 10 20H2
+if (Get-HotFix -Id KB4568831 -ErrorAction Ignore)
+{
+	if (-not (Test-Path -Path HKLM:\SYSTEM\CurrentControlSet\Control\FeatureManagement\Overrides\0\2093230218s))
+	{
+		New-Item -Path HKLM:\SYSTEM\CurrentControlSet\Control\FeatureManagement\Overrides\0\2093230218 -Force
+	}
+	New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FeatureManagement\Overrides\0\2093230218 -Name EnabledState -PropertyType DWORD -Value 2 -Force
+	New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FeatureManagement\Overrides\0\2093230218 -Name EnabledStateOptions -PropertyType DWORD -Value 0 -Force
+}
 #endregion UI & Personalization
 
 #region OneDrive
@@ -824,6 +832,7 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Capabilit
 
 # Change %TEMP% environment variable path to the %SystemDrive%\Temp
 # Изменить путь переменной среды для %TEMP% на %SystemDrive%\Temp
+# https://github.com/microsoft/WSL/issues/5437
 if (-not (Test-Path -Path $env:SystemDrive\Temp))
 {
 	New-Item -Path $env:SystemDrive\Temp -ItemType Directory -Force
@@ -917,6 +926,115 @@ $WindowsOptionalFeatures = @(
 	"WorkFolders-Client"
 )
 Disable-WindowsOptionalFeature -Online -FeatureName $WindowsOptionalFeatures -NoRestart
+
+# Install the Windows Subsystem for Linux (WSL)
+# Установить подсистему Windows для Linux (WSL)
+if ($RU)
+{
+	$Title = "Windows Subsystem for Linux"
+	$Message = "Чтобы установить Windows Subsystem for Linux, введите необходимую букву"
+	$Options = "&Установить", "&Пропустить"
+}
+else
+{
+	$Title = "Windows Subsystem for Linux"
+	$Message = "To install the Windows Subsystem for Linux enter the required letter"
+	$Options = "&Install", "&Skip"
+}
+$DefaultChoice = 1
+$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+
+switch ($Result)
+{
+	"0"
+	{
+		# Enable the Windows Subsystem for Linux
+		# Включить подсистему Windows для Linux
+		Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -NoRestart
+		# Enable Virtual Machine Platform
+		# Включить поддержку платформы для виртуальных машин
+		Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -NoRestart
+
+		# Downloading the Linux kernel update package
+		# Скачиваем пакет обновления ядра Linux
+		try
+		{
+			[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+			if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
+			{
+				$Parameters = @{
+					Uri = "https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi"
+					OutFile = "$PSScriptRoot\wsl_update_x64.msi"
+					Verbose = [switch]::Present
+				}
+				Invoke-WebRequest @Parameters
+
+				Start-Process -FilePath $PSScriptRoot\wsl_update_x64.msi -ArgumentList "/passive" -Wait
+				Remove-Item -Path $PSScriptRoot\wsl_update_x64.msi -Force
+			}
+		}
+		catch
+		{
+			if ($Error.Exception.Status -eq "NameResolutionFailure")
+			{
+				if ($RU)
+				{
+					Write-Warning -Message "Отсутствует интернет-соединение" -ErrorAction SilentlyContinue
+				}
+				else
+				{
+					Write-Warning -Message "No Internet connection" -ErrorAction SilentlyContinue
+				}
+			}
+		}
+
+		<#
+		# Comment out only after installing the Windows Subsystem for Linux
+		# Раскомментируйте только после установки подсистемы Windows для Linux
+
+		# Set WSL 2 as your default version. Run the command only after restart
+		# Установить WSL 2 как версию по умолчанию. Выполните команду только после перезагрузки
+		wsl --set-default-version 2
+
+		# Configuring .wslconfig
+		# Настраиваем .wslconfig
+		# https://github.com/microsoft/WSL/issues/5437
+		if (-not (Test-Path -Path "$env:HOMEPATH\.wslconfig"))
+		{
+			$wslconfig = @"
+[wsl2]
+swap=0
+"@
+			# Saving .wslconfig in UTF-8 encoding
+			# Сохраняем .wslconfig в кодировке UTF-8
+			Set-Content -Path "$env:HOMEPATH\.wslconfig" -Value (New-Object System.Text.UTF8Encoding).GetBytes($wslconfig) -Encoding Byte -Force
+		}
+		else
+		{
+			$String = Get-Content -Path "$env:HOMEPATH\.wslconfig" | Select-String -Pattern "swap=" -SimpleMatch
+			if ($String)
+			{
+				(Get-Content -Path "$env:HOMEPATH\.wslconfig").Replace("swap=1", "swap=0") | Set-Content -Path "$env:HOMEPATH\.wslconfig" -Force
+			}
+			else
+			{
+				Add-Content -Path "$env:HOMEPATH\.wslconfig" -Value "swap=0" -Force
+			}
+		}
+		#>
+	}
+	"1"
+	{
+		if ($RU)
+		{
+			Write-Verbose -Message "Пропущено" -Verbose
+		}
+		else
+		{
+			Write-Verbose -Message "Skipped" -Verbose
+		}
+	}
+}
 
 # Remove Windows capabilities
 # Удалить дополнительные компоненты Windows
@@ -1328,8 +1446,8 @@ function UserShellFolder
 			Name = "KnownFolders"
 			Language = "CSharp"
 			MemberDefinition = @"
-				[DllImport("shell32.dll")]
-				public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, IntPtr token, [MarshalAs(UnmanagedType.LPWStr)] string path);
+[DllImport("shell32.dll")]
+public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, IntPtr token, [MarshalAs(UnmanagedType.LPWStr)] string path);
 "@
 		}
 		if (-not ("WinAPI.KnownFolders" -as [type]))
@@ -1534,13 +1652,13 @@ $Title = ""
 if ($RU)
 {
 	$Message = "Чтобы изменить местоположение папки `"Рабочий стол`", введите необходимую букву"
-	Write-Warning "`nФайлы не будут перенесены"
+	Write-Warning -Message "`nФайлы не будут перенесены"
 	$Options = "&Изменить", "&Пропустить"
 }
 else
 {
 	$Message = "To change the location of the Desktop folder enter the required letter"
-	Write-Warning "`nFiles will not be moved"
+	Write-Warning -Message "`nFiles will not be moved"
 	$Options = "&Change", "&Skip"
 }
 $DefaultChoice = 1
@@ -1580,13 +1698,13 @@ $Title = ""
 if ($RU)
 {
 	$Message = "Чтобы изменить местоположение папки `"Документы`", введите необходимую букву"
-	Write-Warning "`nФайлы не будут перенесены"
+	Write-Warning -Message "`nФайлы не будут перенесены"
 	$Options = "&Изменить", "&Пропустить"
 }
 else
 {
 	$Message = "To change the location of the Documents folder enter the required letter"
-	Write-Warning "`nFiles will not be moved"
+	Write-Warning -Message "`nFiles will not be moved"
 	$Options = "&Change", "&Skip"
 }
 $DefaultChoice = 1
@@ -1626,13 +1744,13 @@ $Title = ""
 if ($RU)
 {
 	$Message = "Чтобы изменить местоположение папки `"Загрузки`", введите необходимую букву"
-	Write-Warning "`nФайлы не будут перенесены"
+	Write-Warning -Message "`nФайлы не будут перенесены"
 	$Options = "&Изменить", "&Пропустить"
 }
 else
 {
 	$Message = "To change the location of the Downloads folder enter the required letter"
-	Write-Warning "`nFiles will not be moved"
+	Write-Warning -Message "`nFiles will not be moved"
 	$Options = "&Change", "&Skip"
 }
 $DefaultChoice = 1
@@ -1672,13 +1790,13 @@ $Title = ""
 if ($RU)
 {
 	$Message = "Чтобы изменить местоположение папки `"Музыка`", введите необходимую букву"
-	Write-Warning "`nФайлы не будут перенесены"
+	Write-Warning -Message "`nФайлы не будут перенесены"
 	$Options = "&Изменить", "&Пропустить"
 }
 else
 {
 	$Message = "To change the location of the Music folder enter the required letter"
-	Write-Warning "`nFiles will not be moved"
+	Write-Warning -Message "`nFiles will not be moved"
 	$Options = "&Change", "&Skip"
 }
 $DefaultChoice = 1
@@ -1719,13 +1837,13 @@ $Title = ""
 if ($RU)
 {
 	$Message = "Чтобы изменить местоположение папки `"Изображения`", введите необходимую букву"
-	Write-Warning "`nФайлы не будут перенесены"
+	Write-Warning -Message "`nФайлы не будут перенесены"
 	$Options = "&Изменить", "&Пропустить"
 }
 else
 {
 	$Message = "To change the location of the Pictures folder enter the required letter"
-	Write-Warning "`nFiles will not be moved"
+	Write-Warning -Message "`nFiles will not be moved"
 	$Options = "&Change", "&Skip"
 }
 $DefaultChoice = 1
@@ -1765,13 +1883,13 @@ $Title = ""
 if ($RU)
 {
 	$Message = "Чтобы изменить местоположение папки `"Видео`", введите необходимую букву"
-	Write-Warning "`nФайлы не будут перенесены"
+	Write-Warning -Message "`nФайлы не будут перенесены"
 	$Options = "&Изменить", "&Пропустить"
 }
 else
 {
 	$Message = "To change the location of the Videos folder enter the required letter"
-	Write-Warning "`nFiles will not be moved"
+	Write-Warning -Message "`nFiles will not be moved"
 	$Options = "&Change", "&Skip"
 }
 $DefaultChoice = 1
@@ -1883,6 +2001,10 @@ if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain -eq $false)
 	Get-NetFirewallRule -Group "@FirewallAPI.dll,-32752", "@FirewallAPI.dll,-28502" | Set-NetFirewallRule -Profile Private -Enabled True
 	Set-NetConnectionProfile -NetworkCategory Private
 }
+
+# Automatically adjust active hours for me based on daily usage
+# Автоматически изменять период активности для этого устройства на основе действий
+New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name SmartActiveHoursState -PropertyType DWord -Value 1 -Force
 #endregion System
 
 #region Start menu
@@ -1947,19 +2069,19 @@ switch ($Result)
 	"0"
 	{
 		$StartMenuLayout = @"
-		<LayoutModificationTemplate xmlns:defaultlayout="http://schemas.microsoft.com/Start/2014/FullDefaultLayout" xmlns:start="http://schemas.microsoft.com/Start/2014/StartLayout" Version="1" xmlns="http://schemas.microsoft.com/Start/2014/LayoutModification">
-		<LayoutOptions StartTileGroupCellWidth="6" />
-			<DefaultLayoutOverride>
-				<StartLayoutCollection>
-					<defaultlayout:StartLayout GroupCellWidth="6" />
-				</StartLayoutCollection>
-			</DefaultLayoutOverride>
-		</LayoutModificationTemplate>
+<LayoutModificationTemplate xmlns:defaultlayout="http://schemas.microsoft.com/Start/2014/FullDefaultLayout" xmlns:start="http://schemas.microsoft.com/Start/2014/StartLayout" Version="1" xmlns="http://schemas.microsoft.com/Start/2014/LayoutModification">
+<LayoutOptions StartTileGroupCellWidth="6" />
+	<DefaultLayoutOverride>
+		<StartLayoutCollection>
+			<defaultlayout:StartLayout GroupCellWidth="6" />
+		</StartLayoutCollection>
+	</DefaultLayoutOverride>
+</LayoutModificationTemplate>
 "@
 		$StartMenuLayoutPath = "$env:TEMP\StartMenuLayout.xml"
 		# Saving StartMenuLayout.xml in UTF-8 encoding
 		# Сохраняем StartMenuLayout.xml в кодировке UTF-8
-		Set-Content -Value (New-Object System.Text.UTF8Encoding).GetBytes($StartMenuLayout) -Encoding Byte -Path $StartMenuLayoutPath -Force
+		Set-Content -Path $StartMenuLayoutPath -Value (New-Object System.Text.UTF8Encoding).GetBytes($StartMenuLayout) -Encoding Byte -Force
 
 		# Temporarily disable changing Start layout
 		# Временно выключаем возможность редактировать начальный экран
@@ -2058,9 +2180,9 @@ if ($syspin -eq $true)
 	if (Test-Path -Path "$env:APPDATA\Microsoft\Windows\Start menu\Programs\$ControlPanelLocalizedName.lnk")
 	{
 		$Arguments = @"
-			"$env:APPDATA\Microsoft\Windows\Start menu\Programs\$ControlPanelLocalizedName.lnk" "51201"
+"$env:APPDATA\Microsoft\Windows\Start menu\Programs\$ControlPanelLocalizedName.lnk" "51201"
 "@
-			Start-Process -FilePath $PSScriptRoot\syspin.exe -WindowStyle Hidden -ArgumentList $Arguments -Wait
+		Start-Process -FilePath $PSScriptRoot\syspin.exe -WindowStyle Hidden -ArgumentList $Arguments -Wait
 	}
 	else
 	{
@@ -2072,7 +2194,7 @@ if ($syspin -eq $true)
 		$Shortcut.Save()
 
 		$Arguments = @"
-			"$env:SystemRoot\System32\$ControlPanelLocalizedName.lnk" "51201"
+"$env:SystemRoot\System32\$ControlPanelLocalizedName.lnk" "51201"
 "@
 		Start-Process -FilePath $PSScriptRoot\syspin.exe -WindowStyle Hidden -ArgumentList $Arguments -Wait
 		Remove-Item -Path "$env:SystemRoot\System32\$ControlPanelLocalizedName.lnk" -Force
@@ -2102,7 +2224,7 @@ if ($syspin -eq $true)
 	# Пауза на 3 с, иначе ярлык "Устройства и принтеры" не будет отображаться в меню "Пуск"
 	Start-Sleep -Seconds 3
 	$Arguments = @"
-		"$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesAndPrintersLocalizedName.lnk" "51201"
+"$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesAndPrintersLocalizedName.lnk" "51201"
 "@
 	Start-Process -FilePath $PSScriptRoot\syspin.exe -WindowStyle Hidden -ArgumentList $Arguments -Wait
 
@@ -2117,7 +2239,7 @@ if ($syspin -eq $true)
 		Write-Verbose -Message "`"Command Prompt`" shortcut is being pinned to Start" -Verbose
 	}
 	$Arguments = @"
-		"$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" "51201"
+"$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" "51201"
 "@
 	Start-Process -FilePath $PSScriptRoot\syspin.exe -WindowStyle Hidden -ArgumentList $Arguments -Wait
 
@@ -2167,6 +2289,7 @@ $UncheckedAppxPackages = @(
 	# Photos and Video Editor
 	# Фотографии и Видеоредактор
 	"Microsoft.Windows.Photos"
+	"Microsoft.Photos.MediaEngineDLC"
 	# Calculator
 	# Калькулятор
 	"Microsoft.WindowsCalculator"
@@ -2584,31 +2707,31 @@ $Template = [Windows.UI.Notifications.ToastTemplateType]::ToastImageAndText01
 if ($PSUICulture -eq "ru-RU")
 {
 	[xml]$ToastTemplate = @"
-	<toast launch="app-defined-string">
-		<visual>
-			<binding template="ToastGeneric">
-				<text>Очистка неиспользуемых файлов и обновлений Windows начнется через минуту</text>
-			</binding>
-		</visual>
-		<actions>
-		<action activationType="background" content="Хорошо" arguments="later"/>
-		</actions>
-	</toast>
+<toast launch="app-defined-string">
+	<visual>
+		<binding template="ToastGeneric">
+			<text>Очистка неиспользуемых файлов и обновлений Windows начнется через минуту</text>
+		</binding>
+	</visual>
+	<actions>
+	<action activationType="background" content="Хорошо" arguments="later"/>
+	</actions>
+</toast>
 "@
 }
 else
 {
 	[xml]$ToastTemplate = @"
-	<toast launch="app-defined-string">
-		<visual>
-			<binding template="ToastGeneric">
-				<text>Cleaning up unused Windows files and updates start in a minute</text>
-			</binding>
-		</visual>
-		<actions>
-			<action activationType="background" content="OK" arguments="later"/>
-		</actions>
-	</toast>
+<toast launch="app-defined-string">
+	<visual>
+		<binding template="ToastGeneric">
+			<text>Cleaning up unused Windows files and updates start in a minute</text>
+		</binding>
+	</visual>
+	<actions>
+		<action activationType="background" content="OK" arguments="later"/>
+	</actions>
+</toast>
 "@
 }
 
@@ -2653,8 +2776,8 @@ function MinimizeWindow
 	Name = "Win32ShowWindowAsync"
 	Language = "CSharp"
 	MemberDefinition = @"
-		[DllImport("user32.dll")]
-		public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
+[DllImport("user32.dll")]
+public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 "@
 	}
 	if (-not ("WinAPI.Win32ShowWindowAsync" -as [type]))
@@ -3149,7 +3272,7 @@ if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Comm
 {
 	New-Item -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command -Force
 }
-$Value = "{0}" -f 'cmd /c DISM.exe /Online /Add-Package /PackagePath:"%1" /NoRestart & pause'
+$Value = "{0}" -f "cmd /c DISM.exe /Online /Add-Package /PackagePath:`"%1`" /NoRestart & pause"
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command -Name "(Default)" -PropertyType String -Value $Value -Force
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs -Name MUIVerb -PropertyType String -Value "@shell32.dll,-10210" -Force
 New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs -Name HasLUAShield -PropertyType String -Value "" -Force
@@ -3269,43 +3392,43 @@ $UpdateExplorer = @{
 	Name = "UpdateExplorer"
 	Language = "CSharp"
 	MemberDefinition = @"
-		private static readonly IntPtr HWND_BROADCAST = new IntPtr(0xffff);
-		private const int WM_SETTINGCHANGE = 0x1a;
-		private const int SMTO_ABORTIFHUNG = 0x0002;
+private static readonly IntPtr HWND_BROADCAST = new IntPtr(0xffff);
+private const int WM_SETTINGCHANGE = 0x1a;
+private const int SMTO_ABORTIFHUNG = 0x0002;
 
-		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
-		static extern bool SendNotifyMessage(IntPtr hWnd, uint Msg, IntPtr wParam, string lParam);
-		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
-		private static extern IntPtr SendMessageTimeout(IntPtr hWnd, int Msg, IntPtr wParam, string lParam, int fuFlags, int uTimeout, IntPtr lpdwResult);
-		[DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = false)]
-		private static extern int SHChangeNotify(int eventId, int flags, IntPtr item1, IntPtr item2);
-		public static void Refresh()
-		{
-			// Update desktop icons
-			// Обновить иконки рабочего стола
-			SHChangeNotify(0x8000000, 0x1000, IntPtr.Zero, IntPtr.Zero);
-			// Update environment variables
-			// Обновить переменные среды
-			SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, IntPtr.Zero, null, SMTO_ABORTIFHUNG, 100, IntPtr.Zero);
-			// Update taskbar
-			// Обновить панель задач
-			SendNotifyMessage(HWND_BROADCAST, WM_SETTINGCHANGE, IntPtr.Zero, "TraySettings");
-		}
+[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
+static extern bool SendNotifyMessage(IntPtr hWnd, uint Msg, IntPtr wParam, string lParam);
+[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
+private static extern IntPtr SendMessageTimeout(IntPtr hWnd, int Msg, IntPtr wParam, string lParam, int fuFlags, int uTimeout, IntPtr lpdwResult);
+[DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = false)]
+private static extern int SHChangeNotify(int eventId, int flags, IntPtr item1, IntPtr item2);
+public static void Refresh()
+{
+	// Update desktop icons
+	// Обновить иконки рабочего стола
+	SHChangeNotify(0x8000000, 0x1000, IntPtr.Zero, IntPtr.Zero);
+	// Update environment variables
+	// Обновить переменные среды
+	SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, IntPtr.Zero, null, SMTO_ABORTIFHUNG, 100, IntPtr.Zero);
+	// Update taskbar
+	// Обновить панель задач
+	SendNotifyMessage(HWND_BROADCAST, WM_SETTINGCHANGE, IntPtr.Zero, "TraySettings");
+}
 
-		private static readonly IntPtr hWnd = new IntPtr(65535);
-		private const int Msg = 273;
-		// Virtual key ID of the F5 in File Explorer
-		// Виртуальный код клавиши F5 в проводнике
-		private static readonly UIntPtr UIntPtr = new UIntPtr(41504);
+private static readonly IntPtr hWnd = new IntPtr(65535);
+private const int Msg = 273;
+// Virtual key ID of the F5 in File Explorer
+// Виртуальный код клавиши F5 в проводнике
+private static readonly UIntPtr UIntPtr = new UIntPtr(41504);
 
-		[DllImport("user32.dll", SetLastError=true)]
-		public static extern int PostMessageW(IntPtr hWnd, uint Msg, UIntPtr wParam, IntPtr lParam);
-		public static void PostMessage()
-		{
-			// F5 pressing simulation to refresh the desktop
-			// Симуляция нажатия F5 для обновления рабочего стола
-			PostMessageW(hWnd, Msg, UIntPtr, IntPtr.Zero);
-		}
+[DllImport("user32.dll", SetLastError=true)]
+public static extern int PostMessageW(IntPtr hWnd, uint Msg, UIntPtr wParam, IntPtr lParam);
+public static void PostMessage()
+{
+	// F5 pressing simulation to refresh the desktop
+	// Симуляция нажатия F5 для обновления рабочего стола
+	PostMessageW(hWnd, Msg, UIntPtr, IntPtr.Zero);
+}
 "@
 }
 if (-not ("WinAPI.UpdateExplorer" -as [type]))
