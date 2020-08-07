@@ -99,7 +99,7 @@ To run the script:
 
 Still cooking (moved to the private repository)
 
-## 20H2 test version
+## 21H1 test version
 https://gist.github.com/farag2/5a6d9952247aefe42ba81a9d95507765
 
 ## Microsoft Docs
