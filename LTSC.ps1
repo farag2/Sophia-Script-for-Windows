@@ -207,27 +207,6 @@ switch ($Result)
 Get-Service -Name DiagTrack | Stop-Service -Force
 Get-Service -Name DiagTrack | Set-Service -StartupType Disabled
 
-# Turn off per-user services
-# Отключить cлужбы для отдельных пользователей
-$services = @(
-	# Contact Data
-	# Служба контактных данных
-	"PimIndexMaintenanceSvc_*"
-	# User Data Storage
-	# Служба хранения данных пользователя
-	"UnistoreSvc_*"
-	# User Data Access
-	# Служба доступа к данным пользователя
-	"UserDataSvc_*"
-)
-Get-Service -Name $services | Stop-Service -Force
-New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\PimIndexMaintenanceSvc -Name Start -PropertyType DWord -Value 4 -Force
-New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\PimIndexMaintenanceSvc -Name UserServiceFlags -PropertyType DWord -Value 0 -Force
-New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UnistoreSvc -Name Start -PropertyType DWord -Value 4 -Force
-New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UnistoreSvc -Name UserServiceFlags -PropertyType DWord -Value 0 -Force
-New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UserDataSvc -Name Start -PropertyType DWord -Value 4 -Force
-New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UserDataSvc -Name UserServiceFlags -PropertyType DWord -Value 0 -Force
-
 # Set the minimal operating system diagnostic data level
 # Установить минимальный уровень отправляемых диагностических сведений
 if ((Get-WindowsEdition -Online).Edition -like "Enterprise*" -or (Get-WindowsEdition -Online).Edition -eq "Education")
@@ -381,10 +360,6 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\
 # Show seconds on taskbar clock
 # Отображать секунды в системных часах на панели задач
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowSecondsInSystemClock -PropertyType DWord -Value 1 -Force
-
-# Increase taskbar transparency
-# Увеличить прозрачность панели задач
-New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name UseOLEDTaskbarTransparency -PropertyType DWord -Value 1 -Force
 
 # Do not show when snapping a window, what can be attached next to it
 # Не показывать при прикреплении окна, что можно прикрепить рядом с ним
@@ -626,28 +601,71 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Capabilit
 
 # Change %TEMP% environment variable path to the %SystemDrive%\Temp
 # Изменить путь переменной среды для %TEMP% на %SystemDrive%\Temp
-if (-not (Test-Path -Path $env:SystemDrive\Temp))
+# See pinned issues: https://github.com/farag2/Windows-10-Setup-Script/issues
+$Title = ""
+if ($RU)
 {
-	New-Item -Path $env:SystemDrive\Temp -ItemType Directory -Force
+	$Message = "Чтобы изменить путь переменной среды для %TEMP% на %SystemDrive%\Temp, введите необходимую букву"
+	Write-Warning -Message "`nПеред выполнением закройте все работающие программы"
+	$Options = "&Изменить", "&Пропустить"
 }
-[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "User")
-[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Machine")
-[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Process")
-New-ItemProperty -Path HKCU:\Environment -Name TMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
+else
+{
+	$Message = "To change %TEMP% environment variable path to the %SystemDrive%\Temp enter the required letter"
+	Write-Warning -Message "`nClose all running programs before proceeding"
+	$Options = "&Change", "&Skip"
+}
+$DefaultChoice = 1
+$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
-[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "User")
-[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Machine")
-[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Process")
-New-ItemProperty -Path HKCU:\Environment -Name TEMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
+switch ($Result)
+{
+	"0"
+	{
+		if (-not (Test-Path -Path $env:SystemDrive\Temp))
+		{
+			New-Item -Path $env:SystemDrive\Temp -ItemType Directory -Force
+		}
 
-New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
-New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TEMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
+		[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "User")
+		[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Machine")
+		[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Process")
+		New-ItemProperty -Path HKCU:\Environment -Name TMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
 
-# Spooler restart
-# Перезапуск Диспетчер печати
-Restart-Service -Name Spooler -Force
-Remove-Item -Path $env:SystemRoot\Temp -Recurse -Force -ErrorAction Ignore
-Remove-Item -Path $env:LOCALAPPDATA\Temp -Recurse -Force -ErrorAction Ignore
+		[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "User")
+		[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Machine")
+		[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Process")
+		New-ItemProperty -Path HKCU:\Environment -Name TEMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
+
+		New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
+		New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TEMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
+
+		# Spooler restart
+		# Перезапуск Диспетчер печати
+		Restart-Service -Name Spooler -Force
+
+		Stop-Process -Name OneDrive -Force -ErrorAction Ignore
+		Stop-Process -Name FileCoAuth -Force -ErrorAction Ignore
+
+		Remove-Item -Path $env:SystemRoot\Temp -Recurse -Force -ErrorAction Ignore
+		Remove-Item -Path $env:LOCALAPPDATA\Temp -Recurse -Force -ErrorAction Ignore
+
+		# Create a symbolic link to the %SystemDrive%\Temp folder
+		# Создать символическую ссылку к папке %SystemDrive%\Temp
+		New-Item -Path $env:LOCALAPPDATA\Temp -ItemType SymbolicLink -Value $env:SystemDrive\Temp -Force
+	}
+	"1"
+	{
+		if ($RU)
+		{
+			Write-Verbose -Message "Пропущено" -Verbose
+		}
+		else
+		{
+			Write-Verbose -Message "Skipped" -Verbose
+		}
+	}
+}
 
 # Turn on Win32 long paths
 # Включить длинные пути Win32
@@ -1715,11 +1733,6 @@ if (Get-CimInstance -ClassName Win32_VideoController | Where-Object -FilterScrip
 		{
 			"0"
 			{
-				if (-not (Test-Path -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences))
-				{
-					New-Item -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Force
-				}
-
 				Add-Type -AssemblyName System.Windows.Forms
 				$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
 				if ($RU)
@@ -1738,9 +1751,12 @@ if (Get-CimInstance -ClassName Win32_VideoController | Where-Object -FilterScrip
 				$OpenFileDialog.ShowDialog($tmp)
 				if ($OpenFileDialog.FileName)
 				{
+					if (-not (Test-Path -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences))
+					{
+						New-Item -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Force
+					}
 					New-ItemProperty -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Name $OpenFileDialog.FileName -PropertyType String -Value "GpuPreference=2;" -Force
 				}
-				$Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 			}
 			"1"
 			{
@@ -2493,14 +2509,14 @@ private const int Msg = 273;
 // Виртуальный код клавиши F5 в проводнике
 private static readonly UIntPtr UIntPtr = new UIntPtr(41504);
 
-		[DllImport("user32.dll", SetLastError=true)]
-		public static extern int PostMessageW(IntPtr hWnd, uint Msg, UIntPtr wParam, IntPtr lParam);
-		public static void PostMessage()
-		{
-			// F5 pressing simulation to refresh the desktop
-			// Симуляция нажатия F5 для обновления рабочего стола
-			PostMessageW(hWnd, Msg, UIntPtr, IntPtr.Zero);
-		}
+[DllImport("user32.dll", SetLastError=true)]
+public static extern int PostMessageW(IntPtr hWnd, uint Msg, UIntPtr wParam, IntPtr lParam);
+public static void PostMessage()
+{
+	// F5 pressing simulation to refresh the desktop
+	// Симуляция нажатия F5 для обновления рабочего стола
+	PostMessageW(hWnd, Msg, UIntPtr, IntPtr.Zero);
+}
 "@
 }
 if (-not ("WinAPI.UpdateExplorer" -as [type]))

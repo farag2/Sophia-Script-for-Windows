@@ -2,8 +2,8 @@
 .SYNOPSIS
 	"Windows 10 Setup Script" is a set of tweaks for OS fine-tuning and automating the routine tasks
 
-	Version: v4.5.6
-	Date: 03.08.2020
+	Version: v4.5.7
+	Date: 17.08.2020
 	Copyright (c) 2020 farag & oZ-Zo
 
 	Thanks to all http://forum.ru-board.com members involved
@@ -215,27 +215,6 @@ switch ($Result)
 # Отключить службу "Функциональные возможности для подключенных пользователей и телеметрия"
 Get-Service -Name DiagTrack | Stop-Service -Force
 Get-Service -Name DiagTrack | Set-Service -StartupType Disabled
-
-# Turn off per-user services
-# Отключить cлужбы для отдельных пользователей
-$services = @(
-	# Contact Data
-	# Служба контактных данных
-	"PimIndexMaintenanceSvc_*"
-	# User Data Storage
-	# Служба хранения данных пользователя
-	"UnistoreSvc_*"
-	# User Data Access
-	# Служба доступа к данным пользователя
-	"UserDataSvc_*"
-)
-Get-Service -Name $services | Stop-Service -Force
-New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\PimIndexMaintenanceSvc -Name Start -PropertyType DWord -Value 4 -Force
-New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\PimIndexMaintenanceSvc -Name UserServiceFlags -PropertyType DWord -Value 0 -Force
-New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UnistoreSvc -Name Start -PropertyType DWord -Value 4 -Force
-New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UnistoreSvc -Name UserServiceFlags -PropertyType DWord -Value 0 -Force
-New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UserDataSvc -Name Start -PropertyType DWord -Value 4 -Force
-New-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\UserDataSvc -Name UserServiceFlags -PropertyType DWord -Value 0 -Force
 
 # Set the minimal operating system diagnostic data level
 # Установить минимальный уровень отправляемых диагностических сведений
@@ -662,9 +641,9 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer 
 # Использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана
 New-ItemProperty -Path "HKCU:\Control Panel\Keyboard" -Name PrintScreenKeyForSnippingEnabled -PropertyType DWord -Value 1 -Force
 
-# Turn on Windows 10 20H2 new Start style
-# Включить новый стиль Пуска как в Windows 10 20H2
-if (Get-HotFix -Id KB4568831 -ErrorAction Ignore)
+# Turn on Windows 10 20H2 new Start style if minimum build version is 19041.423
+# Включить новый стиль Пуска как в Windows 10 20H2, если номер билда минимум 19041.423
+if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name UBR) -ge 423)
 {
 	if (-not (Test-Path -Path HKLM:\SYSTEM\CurrentControlSet\Control\FeatureManagement\Overrides\0\2093230218s))
 	{
@@ -832,29 +811,71 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Capabilit
 
 # Change %TEMP% environment variable path to the %SystemDrive%\Temp
 # Изменить путь переменной среды для %TEMP% на %SystemDrive%\Temp
-# https://github.com/microsoft/WSL/issues/5437
-if (-not (Test-Path -Path $env:SystemDrive\Temp))
+# See pinned issues: https://github.com/farag2/Windows-10-Setup-Script/issues
+$Title = ""
+if ($RU)
 {
-	New-Item -Path $env:SystemDrive\Temp -ItemType Directory -Force
+	$Message = "Чтобы изменить путь переменной среды для %TEMP% на %SystemDrive%\Temp, введите необходимую букву"
+	Write-Warning -Message "`nПеред выполнением закройте все работающие программы"
+	$Options = "&Изменить", "&Пропустить"
 }
-[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "User")
-[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Machine")
-[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Process")
-New-ItemProperty -Path HKCU:\Environment -Name TMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
+else
+{
+	$Message = "To change %TEMP% environment variable path to the %SystemDrive%\Temp enter the required letter"
+	Write-Warning -Message "`nClose all running programs before proceeding"
+	$Options = "&Change", "&Skip"
+}
+$DefaultChoice = 1
+$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
-[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "User")
-[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Machine")
-[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Process")
-New-ItemProperty -Path HKCU:\Environment -Name TEMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
+switch ($Result)
+{
+	"0"
+	{
+		if (-not (Test-Path -Path $env:SystemDrive\Temp))
+		{
+			New-Item -Path $env:SystemDrive\Temp -ItemType Directory -Force
+		}
 
-New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
-New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TEMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
+		[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "User")
+		[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Machine")
+		[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Process")
+		New-ItemProperty -Path HKCU:\Environment -Name TMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
 
-# Spooler restart
-# Перезапуск Диспетчер печати
-Restart-Service -Name Spooler -Force
-Remove-Item -Path $env:SystemRoot\Temp -Recurse -Force -ErrorAction Ignore
-Remove-Item -Path $env:LOCALAPPDATA\Temp -Recurse -Force -ErrorAction Ignore
+		[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "User")
+		[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Machine")
+		[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Process")
+		New-ItemProperty -Path HKCU:\Environment -Name TEMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
+
+		New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
+		New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TEMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
+
+		# Spooler restart
+		# Перезапуск Диспетчер печати
+		Restart-Service -Name Spooler -Force
+
+		Stop-Process -Name OneDrive -Force -ErrorAction Ignore
+		Stop-Process -Name FileCoAuth -Force -ErrorAction Ignore
+
+		Remove-Item -Path $env:SystemRoot\Temp -Recurse -Force -ErrorAction Ignore
+		Remove-Item -Path $env:LOCALAPPDATA\Temp -Recurse -Force -ErrorAction Ignore
+
+		# Create a symbolic link to the %SystemDrive%\Temp folder
+		# Создать символическую ссылку к папке %SystemDrive%\Temp
+		New-Item -Path $env:LOCALAPPDATA\Temp -ItemType SymbolicLink -Value $env:SystemDrive\Temp -Force
+	}
+	"1"
+	{
+		if ($RU)
+		{
+			Write-Verbose -Message "Пропущено" -Verbose
+		}
+		else
+		{
+			Write-Verbose -Message "Skipped" -Verbose
+		}
+	}
+}
 
 # Turn on Win32 long paths
 # Включить длинные пути Win32
@@ -929,6 +950,7 @@ Disable-WindowsOptionalFeature -Online -FeatureName $WindowsOptionalFeatures -No
 
 # Install the Windows Subsystem for Linux (WSL)
 # Установить подсистему Windows для Linux (WSL)
+# https://github.com/farag2/Windows-10-Setup-Script/issues/43
 if ($RU)
 {
 	$Title = "Windows Subsystem for Linux"
@@ -1018,7 +1040,7 @@ swap=0
 			}
 			else
 			{
-				Add-Content -Path "$env:HOMEPATH\.wslconfig" -Value "swap=0" -Force
+				Add-Content -Path "$env:HOMEPATH\.wslconfig" -Value "`r`nswap=0" -Force
 			}
 		}
 		#>
@@ -1351,7 +1373,7 @@ Set-WinDefaultInputMethodOverride "0409:00000409"
 
 # Turn on Windows Sandbox
 # Включить Windows Sandbox
-if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Professional" -or $_.Edition -eq "Enterprise"})
+if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Professional" -or $_.Edition -like "Enterprise*"})
 {
 	# Checking whether a x86 virtualization is enabled in BIOS
 	# Проверка: включена ли в BIOS аппаратная виртуализация x86
@@ -2045,7 +2067,7 @@ New-ItemProperty -Path $StartMenu.PSPath -Name Data -PropertyType Binary -Value 
 
 # Restart the Start menu
 # Перезапустить меню "Пуск"
-Stop-Process -Name StartMenuExperienceHost -Force
+Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
 
 # Unpin all the Start tiles
 # Открепить все ярлыки от начального экрана
@@ -2094,17 +2116,14 @@ switch ($Result)
 
 		# Restart the Start menu
 		# Перезапустить меню "Пуск"
-		Stop-Process -Name StartMenuExperienceHost -Force
+		Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
 		Start-Sleep -Seconds 3
 
 		Remove-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name LockedStartLayout -Force
 		Remove-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name StartLayoutFile -Force
 
-		# Restart the Start menu
-		# Перезапустить меню "Пуск"
-		Stop-Process -Name StartMenuExperienceHost -Force
-		# https://en.wikipedia.org/wiki/8.3_filename
-		Get-Item -Path $StartMenuLayoutPath -Force | Remove-Item -Force
+		Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
+		Remove-Item -LiteralPath $StartMenuLayoutPath -Force
 	}
 	"1"
 	{
@@ -2204,7 +2223,7 @@ if ($syspin -eq $true)
 	# Create old style shortcut for the "Devices and Printers" in the Start menu
 	# Закрепить "Устройства и принтеры" на начальном экране
 	# Создать ярлык старого формата для "Устройства и принтеры" в меню "Пуск"
-	$DevicesAndPrintersLocalizedName = (Get-ControlPanelItem | Where-Object -FilterScript {$_.CanonicalName -eq "Microsoft.DevicesAndPrinters"}).Name
+	$DevicesAndPrintersLocalizedName = (Get-ControlPanelItem -CanonicalName "Microsoft.DevicesAndPrinters").Name
 	if ($RU)
 	{
 		Write-Verbose -Message "Ярлык `"$DevicesAndPrintersLocalizedName`" закрепляется на начальном экране" -Verbose
@@ -2245,7 +2264,7 @@ if ($syspin -eq $true)
 
 	# Restart the Start menu
 	# Перезапустить меню "Пуск"
-	Stop-Process -Name StartMenuExperienceHost -Force
+	Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
 }
 #endregion Start menu
 
@@ -2593,11 +2612,6 @@ if (Get-CimInstance -ClassName Win32_VideoController | Where-Object -FilterScrip
 		{
 			"0"
 			{
-				if (-not (Test-Path -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences))
-				{
-					New-Item -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Force
-				}
-
 				Add-Type -AssemblyName System.Windows.Forms
 				$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
 				if ($RU)
@@ -2616,9 +2630,12 @@ if (Get-CimInstance -ClassName Win32_VideoController | Where-Object -FilterScrip
 				$OpenFileDialog.ShowDialog($tmp)
 				if ($OpenFileDialog.FileName)
 				{
+					if (-not (Test-Path -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences))
+					{
+						New-Item -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Force
+					}
 					New-ItemProperty -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Name $OpenFileDialog.FileName -PropertyType String -Value "GpuPreference=2;" -Force
 				}
-				$Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 			}
 			"1"
 			{
@@ -3341,7 +3358,7 @@ New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AllFilesystemObjects\shellex\
 
 # Hide the "Turn on BitLocker" item from the context menu
 # Скрыть пункт "Включить BitLocker" из контекстного меню
-if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Professional" -or $_.Edition -eq "Enterprise"})
+if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Professional" -or $_.Edition -like "Enterprise*"})
 {
 	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\encrypt-bde -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
 	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\encrypt-bde-elev -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
@@ -3445,7 +3462,7 @@ if (-not ("WinAPI.UpdateExplorer" -as [type]))
 
 # Restart the Start menu
 # Перезапустить меню "Пуск"
-Stop-Process -Name StartMenuExperienceHost -Force
+Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
 #endregion Refresh
 
 # Errors output
