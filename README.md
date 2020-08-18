@@ -79,7 +79,7 @@ To run the script:
 - Check whether .ps1 is encoded in **UTF-8 with BOM**;
 - Set execution policy to be able to run scripts only in the current PowerShell session
 
- ```powershell
+  ```powershell
   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
   ```
 
