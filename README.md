@@ -95,7 +95,7 @@ To run the script:
 
 ## GUI version (C#)
 
-Still cooking (moved to the private repository)
+[oz-zo](https://github.com/oz-zo) still cooking (moved to the private repository)
 
 ## 21H1 test version
 https://gist.github.com/farag2/5a6d9952247aefe42ba81a9d95507765
