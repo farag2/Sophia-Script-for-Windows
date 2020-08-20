@@ -11,7 +11,7 @@
 
 |Author|Link|
 |-------------|-------------|
-|**Chris Titus Tech**|[![YT](https://i.imgur.com/mADOh3c.png)](https://youtu.be/8E6OT_QcHaU&t=370)|
+|**Chris Titus Tech**|[![YT](https://i.imgur.com/mADOh3c.png)](https://youtu.be/8E6OT_QcHaU?t=370)|
 |**Britec09**|[![YT](https://i.imgur.com/mADOh3c.png)](https://youtu.be/WK_A9c-m2PQ)|
 |**gHacks.net**|[![ghacks](https://i.imgur.com/K4f8VBo.png)](https://www.ghacks.net/2020/08/19/run-windows-10-setup-script-after-installation-to-customize-the-os/)|
 
