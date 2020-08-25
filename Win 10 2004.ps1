@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
 	"Windows 10 Setup Script" is a set of tweaks for OS fine-tuning and automating the routine tasks
 
@@ -54,14 +54,7 @@ Clear-Host
 
 # Get information about the current culture settings
 # Получить сведения о параметрах текущей культуры
-if ($PSUICulture -eq "ru-RU")
-{
-	$RU = $true
-}
-else
-{
-	$RU = $false
-}
+$RU = ($PSUICulture -eq "ru-RU")
 
 # Detect the OS bitness
 # Определить разрядность ОС
@@ -135,7 +128,7 @@ if ($RU)
 else
 {
 	$Title = "Restore point"
-	$Message = "To create a restore point enter the required letter"
+	$Message = "Would you like to enable System Restore and create a restore point?"
 	$Options = "&Create", "&Do not create", "&Skip"
 }
 $DefaultChoice = 2
@@ -145,17 +138,21 @@ switch ($Result)
 {
 	"0"
 	{
+		# Enable System Restore
 		if (-not (Get-ComputerRestorePoint))
 		{
 			Enable-ComputerRestore -Drive $env:SystemDrive
 		}
-		# Set system restore point creation frequency to 5 minutes
+
+		# Set restore point creation frequency to 5 minutes
 		# Установить частоту создания точек восстановления на 5 минут
 		New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 5 -Force
-		# Descriptive name format for the restore point: <Month>.<date>.<year> <time>
-		# Формат описания точки восстановления: <дата>.<месяц>.<год> <время>
-		$CheckpointDescription = Get-Date -Format "dd.MM.yyyy HH:mm"
-		Checkpoint-Computer -Description $CheckpointDescription -RestorePointType MODIFY_SETTINGS
+
+		# Create a System Restore checkpoint. Date and time of the creation will be automatically added.
+		# Создайте контрольную точку восстановления системы. Дата и время создания будут добавлены автоматически.
+		Checkpoint-Computer -Description "Windows 10 Setup Script.ps1" -RestorePointType MODIFY_SETTINGS
+
+    # Revert the System Restore checkpoint creation frequency to 1440 minutes
 		New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 1440 -Force
 	}
 	"1"
@@ -169,7 +166,7 @@ switch ($Result)
 		else
 		{
 			$Title = "Restore point"
-			$Message = "To remove all restore points enter the required letter"
+			$Message = "Would you like to delete all System restore checkpoints?"
 			$Options = "&Delete", "&Skip"
 		}
 		$DefaultChoice = 1
@@ -211,12 +208,12 @@ switch ($Result)
 #endregion Begin
 
 #region Privacy & Telemetry
-# Turn off "Connected User Experiences and Telemetry" service
+# Disable the "Connected User Experiences and Telemetry" service (DiagTrack)
 # Отключить службу "Функциональные возможности для подключенных пользователей и телеметрия"
 Get-Service -Name DiagTrack | Stop-Service -Force
 Get-Service -Name DiagTrack | Set-Service -StartupType Disabled
 
-# Set the minimal operating system diagnostic data level
+# Set the operating system's level of diagnostic data gathering to minimum
 # Установить минимальный уровень отправляемых диагностических сведений
 if ((Get-WindowsEdition -Online).Edition -eq "Enterprise" -or (Get-WindowsEdition -Online).Edition -eq "Education")
 {
@@ -231,11 +228,11 @@ else
 	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 1 -Force
 }
 
-# Turn off Windows Error Reporting
+# Turn off Windows Error Reporting for the current user
 # Отключить отчеты об ошибках Windows
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\Windows Error Reporting" -Name Disabled -PropertyType DWord -Value 1 -Force
 
-# Change Windows Feedback frequency to "Never"
+# Change Windows feedback frequency to "Never" for the current user
 # Изменить частоту формирования отзывов на "Никогда"
 if (-not (Test-Path -Path HKCU:\Software\Microsoft\Siuf\Rules))
 {
@@ -255,10 +252,10 @@ $tasks = @(
 	# This task collects and uploads autochk SQM data if opted-in to the Microsoft Customer Experience Improvement Program
 	# Эта задача собирает и загружает данные SQM при участии в программе улучшения качества программного обеспечения
 	"Proxy"
-	# If the user has consented to participate in the Windows Customer Experience Improvement Program, this job collects and sends usage data to Microsoft
+	# If the user has consented to participate in the Windows Customer Experience Improvement Program, this job collects and sends usage data to Microsoft.
 	# Если пользователь изъявил желание участвовать в программе по улучшению качества программного обеспечения Windows, эта задача будет собирать и отправлять сведения о работе программного обеспечения в Майкрософт
 	"Consolidator"
-	# The USB CEIP (Customer Experience Improvement Program) task collects Universal Serial Bus related statistics and information about your machine
+	# The USB CEIP (Customer Experience Improvement Program) task collects Universal Serial Bus related statistics and information about your machine and sends it to the Windows Device Connectivity engineering group at Microsoft.  The information received is used to help improve the reliability, stability, and overall functionality of USB in Windows.  If the user has not consented to participate in Windows CEIP, this task does not do anything.
 	# При выполнении задачи программы улучшения качества ПО шины USB (USB CEIP) осуществляется сбор статистических данных об использовании универсальной последовательной шины USB и сведений о компьютере
 	"UsbCeip"
 	# The Windows Disk Diagnostic reports general disk and system information to Microsoft for users participating in the Customer Experience Program
@@ -288,7 +285,7 @@ $tasks = @(
 	# XblGameSave Standby Task
 	"XblGameSaveTask"
 )
-# If device is not a laptop
+# Is this device a laptop? If not, disable FODCleanupTask too.
 # Если устройство не является ноутбуком
 if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2)
 {
@@ -306,11 +303,11 @@ if (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Wi
 }
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$SID" -Name OptOut -PropertyType DWord -Value 1 -Force
 
-# Do not let websites provide locally relevant content by accessing language list
+# Do not let websites provide locally relevant content by accessing language list (current user only)
 # Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков
 New-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name HttpAcceptLanguageOptOut -PropertyType DWord -Value 1 -Force
 
-# Do not allow apps to use advertising ID
+# Do not allow apps to use advertising ID (current user only)
 # Не разрешать приложениям использовать идентификатор рекламы
 if (-not (Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo))
 {
@@ -318,29 +315,29 @@ if (-not (Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingI
 }
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo -Name Enabled -PropertyType DWord -Value 0 -Force
 
-# Do not let apps on other devices open and message apps on this device, and vice versa
+# Do not let apps on other devices open apps and send messages on this device (current user only)
 # Не разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CDP -Name RomeSdkChannelUserAuthzPolicy -PropertyType DWord -Value 0 -Force
 
-# Do not show the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested
+# Do not show the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested (current user only)
 # Не показывать экран приветствия Windows после обновлений и иногда при входе, чтобы сообщить о новых функциях и предложениях
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-310093Enabled -PropertyType DWord -Value 0 -Force
 
-# Get tip, trick, and suggestions as you use Windows
+# Get tip, trick, and suggestions as you use Windows (current user only)
 # Получать советы, подсказки и рекомендации при использованию Windows
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338389Enabled -PropertyType DWord -Value 1 -Force
 
-# Do not show suggested content in the Settings app
+# Do not show suggested content in the Settings app (current user only)
 # Не показывать рекомендуемое содержимое в приложении "Параметры"
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338393Enabled -PropertyType DWord -Value 0 -Force
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-353694Enabled -PropertyType DWord -Value 0 -Force
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-353696Enabled -PropertyType DWord -Value 0 -Force
 
-# Turn off automatic installing suggested apps
+# Turn off automatic installing suggested apps, including the notorious "Candy Crush Saga" (current user only)
 # Отключить автоматическую установку рекомендованных приложений
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SilentInstalledAppsEnabled -PropertyType DWord -Value 0 -Force
 
-# Do not suggest ways I can finish setting up my device to get the most out of Windows
+# Do not suggest ways I can finish setting up my device to get the most out of Windows (current user only)
 # Не предлагать способы завершения настройки устройства для максимально эффективного использования Windows
 if (-not (Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement))
 {
@@ -348,53 +345,53 @@ if (-not (Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileE
 }
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement -Name ScoobeSystemSettingEnabled -PropertyType DWord -Value 0 -Force
 
-# Do not offer tailored experiences based on the diagnostic data setting
+# Do not offer tailored experiences based on the diagnostic data setting (current user only)
 # Не предлагать персонализированные возможности, основанные на выбранном параметре диагностических данных
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Privacy -Name TailoredExperiencesWithDiagnosticDataEnabled -PropertyType DWord -Value 0 -Force
 #endregion Privacy & Telemetry
 
 #region UI & Personalization
-# Show "This PC" on Desktop
+# Show "This PC" on Desktop (current user only)
 # Отобразить "Этот компьютер" на рабочем столе
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel -Name "{20D04FE0-3AEA-1069-A2D8-08002B30309D}" -PropertyType DWord -Value 0 -Force
 
-# Do not use check boxes to select items
+# Do not use check boxes to select items (current user only)
 # Не использовать флажки для выбора элементов
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name AutoCheckSelect -PropertyType DWord -Value 0 -Force
 
-# Show hidden files, folders, and drives
+# Show hidden files, folders, and drives (current user only)
 # Показывать скрытые файлы, папки и диски
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Hidden -PropertyType DWord -Value 1 -Force
 
-# Show file name extensions
+# Show file name extensions (current user only)
 # Показывать расширения для зарегистрированных типов файлов
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -PropertyType DWord -Value 0 -Force
 
-# Do not hide folder merge conflicts
+# Do not hide folder merge conflicts (current user only)
 # Не скрывать конфликт слияния папок
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideMergeConflicts -PropertyType DWord -Value 0 -Force
 
-# Open File Explorer to: "This PC"
+# Open File Explorer to: "This PC" (current user only)
 # Открывать проводник для: "Этот компьютер"
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name LaunchTo -PropertyType DWord -Value 1 -Force
 
-# Do not show all folders in the navigation pane
+# Do not show all folders in the navigation pane (current user only)
 # Не отображать все папки в области навигации
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name NavPaneShowAllFolders -PropertyType DWord -Value 0 -Force
 
-# Do not show Cortana button on taskbar
+# Do not show Cortana button on taskbar (current user only)
 # Не показывать кнопку Кортаны на панели задач
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowCortanaButton -PropertyType DWord -Value 0 -Force
 
-# Do not show sync provider notification within File Explorer
+# Do not show sync provider notification within File Explorer (current user only)
 # Не показывать уведомления поставщика синхронизации в проводнике
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowSyncProviderNotifications -PropertyType DWord -Value 0 -Force
 
-# Do not show Task View button on taskbar
+# Do not show Task View button on taskbar (current user only)
 # Не показывать кнопку Просмотра задач
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowTaskViewButton -PropertyType DWord -Value 0 -Force
 
-# Do not show People button on the taskbar
+# Do not show People button on the taskbar (current user only)
 # Не показывать панель "Люди" на панели задач
 if (-not (Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People))
 {
@@ -402,15 +399,15 @@ if (-not (Test-Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Adv
 }
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People -Name PeopleBand -PropertyType DWord -Value 0 -Force
 
-# Show seconds on taskbar clock
+# Show seconds on taskbar clock (current user only)
 # Отображать секунды в системных часах на панели задач
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowSecondsInSystemClock -PropertyType DWord -Value 1 -Force
 
-# Do not show when snapping a window, what can be attached next to it
+# Do not show when snapping a window, what can be attached next to it (current user only)
 # Не показывать при прикреплении окна, что можно прикрепить рядом с ним
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SnapAssist -PropertyType DWord -Value 0 -Force
 
-# Show more details in file transfer dialog
+# Always open the file transfer dialog box in the detailed mode (current user only)
 # Развернуть диалог переноса файлов
 if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager))
 {
@@ -418,7 +415,7 @@ if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explor
 }
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager -Name EnthusiastMode -PropertyType DWord -Value 1 -Force
 
-# Show the Ribbon expanded in File Explorer
+# Show the ribbon expanded in File Explorer (current user only)
 # Отображать ленту проводника в развернутом виде
 if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Ribbon))
 {
@@ -427,7 +424,7 @@ if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explor
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Ribbon -Name MinimizedStateTabletModeOff -PropertyType DWord -Value 0 -Force
 
 <#
-Display recycle bin files delete confirmation
+Recycle Bin: Display the deletion confirmation dialog box (current user only)
 Function [WinAPI.UpdateExplorer]::PostMessage() call required at the end
 
 Запрашивать подтверждение на удаление файлов в корзину
@@ -437,7 +434,7 @@ $ShellState = Get-ItemPropertyValue -Path HKCU:\Software\Microsoft\Windows\Curre
 $ShellState[4] = 51
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name ShellState -PropertyType Binary -Value $ShellState -Force
 
-# Hide 3D Objects folder from "This PC" and from Quick access
+# Hide the "3D Objects" folder from "This PC" and "Quick access" (current user only)
 # Скрыть папку "Объемные объекты" из "Этот компьютер" и из панели быстрого доступа
 if (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag"))
 {
@@ -445,27 +442,27 @@ if (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explo
 }
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Name ThisPCPolicy -PropertyType String -Value Hide -Force
 
-# Do not show "Frequent folders" in Quick access
+# Do not show frequently used folders in "Quick access" (current user only)
 # Не показывать недавно используемые папки на панели быстрого доступа
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name ShowFrequent -PropertyType DWord -Value 0 -Force
 
-# Do not show "Recent files" in Quick access
+# Do not show recently used files in "Quick access" (current user only)
 # Не показывать недавно использовавшиеся файлы на панели быстрого доступа
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name ShowRecent -PropertyType DWord -Value 0 -Force
 
-# Hide search box or search icon on taskbar
+# Hide the search box or the search icon from the taskbar (current user only)
 # Скрыть поле или значок поиска на панели задач
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -PropertyType DWord -Value 0 -Force
 
-# Do not show "Windows Ink Workspace" button in taskbar
+# Do not show the "Windows Ink Workspace" button in taskbar (current user only)
 # Не показывать кнопку Windows Ink Workspace на панели задач
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\PenWorkspace -Name PenWorkspaceButtonDesiredVisibility -PropertyType DWord -Value 0 -Force
 
-# Always show all icons in the notification area
+# Always show all icons in the notification area (current user only)
 # Всегда отображать все значки в области уведомлений
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name EnableAutoTray -PropertyType DWord -Value 0 -Force
 
-# Unpin Microsoft Edge and Microsoft Store from taskbar
+# Unpin "Microsoft Edge" and "Microsoft Store" from the taskbar (current user only)
 # Открепить Microsoft Edge и Microsoft Store от панели задач
 $Signature = @{
 	Namespace = "WinAPI"
@@ -498,7 +495,7 @@ $apps = (New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0
 $apps | Where-Object -FilterScript {$_.Path -like "Microsoft.MicrosoftEdge*"} | ForEach-Object -Process {$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $unpin} | ForEach-Object -Process {$_.DoIt()}}
 $apps | Where-Object -FilterScript {$_.Path -like "Microsoft.WindowsStore*"} | ForEach-Object -Process {$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $unpin} | ForEach-Object -Process {$_.DoIt()}}
 
-# Set the large icons in the Control Panel
+# Set the large icons in the Control Panel (current user only)
 # Установить крупные значки в Панели управления
 if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
 {
@@ -507,7 +504,7 @@ if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explor
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name AllItemsIconView -PropertyType DWord -Value 0 -Force
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name StartupPage -PropertyType DWord -Value 1 -Force
 
-# Choose theme color for default Windows mode
+# Choose the color scheme for Windows shell (current user only)
 # Выбрать режим Windows по умолчанию
 if ($RU)
 {
@@ -518,7 +515,7 @@ if ($RU)
 else
 {
 	$Title = "Default Windows mode"
-	$Message = "To choose theme color for default Windows mode enter the required letter"
+	$Message = "You may now set the default Windows color scheme to either Light or Dark. Please choose."
 	$Options = "&Light", "&Dark", "&Skip"
 }
 $DefaultChoice = 1
@@ -528,13 +525,13 @@ switch ($Result)
 {
 	"0"
 	{
-		# Light theme color for default Windows mode
+		# Light color scheme for default Windows mode
 		# Режим Windows по умолчанию светлый
 		New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -PropertyType DWord -Value 1 -Force
 	}
 	"1"
 	{
-		# Dark theme color for default Windows mode
+		# Dark color scheme for default Windows mode
 		# Режим Windows по умолчанию темный
 		New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -PropertyType DWord -Value 0 -Force
 	}
@@ -551,7 +548,7 @@ switch ($Result)
 	}
 }
 
-# Choose theme color for default app mode
+# Choose the default color scheme for apps (current user only)
 # Выбрать режим приложения по умолчанию
 if ($RU)
 {
@@ -562,7 +559,7 @@ if ($RU)
 else
 {
 	$Title = "Default app mode"
-	$Message = "To choose theme color for default app mode enter the required letter"
+	$Message = "You may now set the default color scheme of Windows apps to either Light or Dark. Please choose."
 	$Options = "&Light", "&Dark", "&Skip"
 }
 $DefaultChoice = 1
@@ -572,13 +569,13 @@ switch ($Result)
 {
 	"0"
 	{
-		# Light theme color for default app mode
+		# Light color scheme as the default for apps
 		# Режим приложений по умолчанию светлый
 		New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -PropertyType DWord -Value 1 -Force
 	}
 	"1"
 	{
-		# Dark theme color for default app mode
+		# Dark color scheme as the default for apps
 		# Режим приложений по умолчанию темный
 		New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -PropertyType DWord -Value 0 -Force
 	}
@@ -595,7 +592,7 @@ switch ($Result)
 	}
 }
 
-# Do not show "New App Installed" notification
+# Do not show the "New App Installed" indicator
 # Не показывать уведомление "Установлено новое приложение"
 if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
 {
@@ -607,25 +604,28 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name 
 # Не показывать анимацию при первом входе в систему
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableFirstLogonAnimation -PropertyType DWord -Value 0 -Force
 
-# Turn off JPEG desktop wallpaper import quality reduction
+# Set the  quality factor of the JPEG desktop wallpapers to maximum. (current user only)
 # Отключить снижение качества при импорте фонового изображение рабочего стола в формате JPEG
 New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name JPEGImportQuality -PropertyType DWord -Value 100 -Force
 
-# Expand Task manager window
+# Start Task Manager in expanded mode (current user only)
 # Раскрыть окно Диспетчера задач
 $taskmgr = Get-Process -Name Taskmgr -ErrorAction Ignore
 if ($taskmgr)
 {
 	$taskmgr.CloseMainWindow()
 }
-Start-Process -FilePath Taskmgr.exe -WindowStyle Hidden -PassThru
-do
-{
-	Start-Sleep -Milliseconds 100
-	$preferences = Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -ErrorAction Ignore
+$preferences = Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -ErrorAction Ignore
+if ($null -eq $preferences) {
+	Start-Process -FilePath Taskmgr.exe -WindowStyle Hidden -PassThru
+	do
+	{
+		Start-Sleep -Milliseconds 100
+		$preferences = Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -ErrorAction Ignore
+	}
+	until ($preferences)
+	Stop-Process -Name Taskmgr
 }
-until ($preferences)
-Stop-Process -Name Taskmgr
 $preferences.Preferences[28] = 0
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -PropertyType Binary -Value $preferences.Preferences -Force
 
@@ -633,19 +633,19 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManag
 # Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name RestartNotificationsAllowed2 -PropertyType DWord -Value 1 -Force
 
-# Do not add the "- Shortcut" for created shortcuts
+# Do not add the "- Shortcut" suffix to the file name of created shortcuts (current user only)
 # Нe дoбaвлять "- яpлык" для coздaвaeмыx яpлыкoв
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name link -PropertyType Binary -Value ([byte[]](00, 00, 00, 00)) -Force
 
-# Use the PrtScn button to open screen snipping
+# Use the PrtScn button to open screen snipping (current user only)
 # Использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана
 New-ItemProperty -Path "HKCU:\Control Panel\Keyboard" -Name PrintScreenKeyForSnippingEnabled -PropertyType DWord -Value 1 -Force
 
-# Turn on Windows 10 20H2 new Start style if minimum build version is 19041.423
+# Enable the new style for the Start menu if the minimum version number is 19041.423. The style is scheduled for debut in Windows 10 version 20H2.
 # Включить новый стиль Пуска как в Windows 10 20H2, если номер билда минимум 19041.423
 if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name UBR) -ge 423)
 {
-	if (-not (Test-Path -Path HKLM:\SYSTEM\CurrentControlSet\Control\FeatureManagement\Overrides\0\2093230218s))
+	if (-not (Test-Path -Path HKLM:\SYSTEM\CurrentControlSet\Control\FeatureManagement\Overrides\0\2093230218))
 	{
 		New-Item -Path HKLM:\SYSTEM\CurrentControlSet\Control\FeatureManagement\Overrides\0\2093230218 -Force
 	}
@@ -657,7 +657,7 @@ if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVer
 #region OneDrive
 # Uninstall OneDrive
 # Удалить OneDrive
-[string]$UninstallString = Get-Package -Name "Microsoft OneDrive" -ErrorAction Ignore | ForEach-Object -Process {$_.Meta.Attributes["UninstallString"]}
+[string]$UninstallString = Get-Package -Name "Microsoft OneDrive" -ProviderName 'Programs' -ErrorAction Ignore | ForEach-Object -Process {$_.Meta.Attributes["UninstallString"]}
 if ($UninstallString)
 {
 	if ($RU)
@@ -771,7 +771,7 @@ if ($UninstallString)
 #endregion OneDrive
 
 #region System
-# Turn on Storage Sense
+# Turn on Storage Sense (current user only)
 # Включить контроль памяти
 if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy))
 {
@@ -794,22 +794,22 @@ if ((Get-ItemPropertyValue -Path HKCU:\Software\Microsoft\Windows\CurrentVersion
 	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 512 -PropertyType DWord -Value 0 -Force
 }
 
-# Let Windows try to fix apps so they're not blurry
+# Let Windows try to fix apps so they're not blurry (current user only)
 # Разрешить Windows исправлять размытость в приложениях
 New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name EnablePerProcessSystemDPI -PropertyType DWord -Value 1 -Force
 
-# Turn off hibernate if device is not a laptop
+# Turn off hibernation if the device is not a laptop
 # Отключить режим гибернации, если устройство не является ноутбуком
 if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2)
 {
 	POWERCFG /HIBERNATE OFF
 }
 
-# Turn off location access for this device
+# Turn off geolocation sensors for this device
 # Отключить доступ к сведениям о расположении для этого устройства
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location -Name Value -PropertyType String -Value Deny -Force
 
-# Change %TEMP% environment variable path to the %SystemDrive%\Temp
+# Change %TEMP% environment variable path to the %SystemDrive%\Temp (Both machine-wide, and for the current user)
 # Изменить путь переменной среды для %TEMP% на %SystemDrive%\Temp
 # See pinned issues: https://github.com/farag2/Windows-10-Setup-Script/issues
 $Title = ""
@@ -821,8 +821,8 @@ if ($RU)
 }
 else
 {
-	$Message = "To change %TEMP% environment variable path to the %SystemDrive%\Temp enter the required letter"
-	Write-Warning -Message "`nClose all running programs before proceeding"
+	$Message = "Would you like to change the target of the %TEMP% environment variable to the `"$env:SystemDrive\Temp`"?"
+	Write-Warning -Message "`nClose all running programs before proceeding!"
 	$Options = "&Change", "&Skip"
 }
 $DefaultChoice = 1
@@ -840,17 +840,17 @@ switch ($Result)
 		[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "User")
 		[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Machine")
 		[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Process")
-		New-ItemProperty -Path HKCU:\Environment -Name TMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
+		New-ItemProperty -Path 'HKCU:\Environment' -Name TMP -PropertyType ExpandString -Value '%SystemDrive%\Temp' -Force
 
 		[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "User")
 		[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Machine")
 		[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Process")
-		New-ItemProperty -Path HKCU:\Environment -Name TEMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
+		New-ItemProperty -Path 'HKCU:\Environment' -Name TEMP -PropertyType ExpandString -Value '%SystemDrive%\Temp' -Force
 
-		New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
-		New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TEMP -PropertyType ExpandString -Value %SystemDrive%\Temp -Force
+		New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TMP -PropertyType ExpandString -Value '%SystemDrive%\Temp' -Force
+		New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TEMP -PropertyType ExpandString -Value '%SystemDrive%\Temp' -Force
 
-		# Spooler restart
+		# Restart the Printer Spooler service (Spooler)
 		# Перезапуск Диспетчер печати
 		Restart-Service -Name Spooler -Force
 
@@ -877,11 +877,11 @@ switch ($Result)
 	}
 }
 
-# Turn on Win32 long paths
+# Turn on Windows NT long paths
 # Включить длинные пути Win32
 New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -PropertyType DWord -Value 1 -Force
 
-# Group svchost.exe processes
+# Force creation of as few svchost.exe processes as possible
 # Группировать процессы svchost.exe
 $RAMCapacity = (Get-CimInstance -ClassName Win32_PhysicalMemory | Measure-Object -Property Capacity -Sum).Sum / 1KB
 New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control -Name SvcHostSplitThresholdInKB -PropertyType DWord -Value $RAMCapacity -Force
@@ -890,7 +890,7 @@ New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control -Name SvcHostSplit
 # Отображать Stop-ошибку при появлении BSoD
 New-ItemProperty -Path HKLM:\System\CurrentControlSet\Control\CrashControl -Name DisplayParameters -PropertyType DWord -Value 1 -Force
 
-# Do not preserve zone information in file attachments
+# Prevent SmartScreen from marking files that have been downloaded from the Internet as unsafe
 # Не хранить сведения о зоне происхождения вложенных файлов
 if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Attachments))
 {
@@ -898,7 +898,7 @@ if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Polici
 }
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Attachments -Name SaveZoneInformation -PropertyType DWord -Value 1 -Force
 
-# Turn off Admin Approval Mode for administrators
+# Change "User Account Control: Behavior of the elevation prompt for administrators in Admin Approval Mode" to "Elevate without prompting"
 # Отключить использование режима одобрения администратором для встроенной учетной записи администратора
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name ConsentPromptBehaviorAdmin -PropertyType DWord -Value 0 -Force
 
@@ -906,7 +906,7 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\
 # Включить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableLinkedConnections -PropertyType DWord -Value 1 -Force
 
-# Turn off Delivery Optimization
+# Stop the Delivery Optimization service (DoSvc) and opt out of the Delivery Optimization-assisted downloading
 # Отключить оптимизацию доставки
 Get-Service -Name DoSvc | Stop-Service -Force
 Set-DODownloadMode -DownloadMode 0
@@ -920,11 +920,11 @@ if (-not (Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentV
 }
 New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name SyncForegroundPolicy -PropertyType DWord -Value 1 -Force
 
-# Do not let Windows manage default printer
+# Do not let Windows decide which printer should be the default one (current user only)
 # Не разрешать Windows управлять принтером, используемым по умолчанию
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Windows" -Name LegacyDefaultPrinterMode -PropertyType DWord -Value 1 -Force
 
-# Turn off Windows features
+# Disable the following Windows features
 # Отключить компоненты Windows
 $WindowsOptionalFeatures = @(
 	# Legacy Components
@@ -960,7 +960,7 @@ if ($RU)
 else
 {
 	$Title = "Windows Subsystem for Linux"
-	$Message = "To install the Windows Subsystem for Linux enter the required letter"
+	$Message = "Would you like to install Windows Subsystem for Linux (WSL)?"
 	$Options = "&Install", "&Skip"
 }
 $DefaultChoice = 1
@@ -1058,16 +1058,16 @@ swap=0
 	}
 }
 
-# Remove Windows capabilities
+# Prepare to disable certain Feature-on-demand v2 (FODv2) capabilities
 # Удалить дополнительные компоненты Windows
 Add-Type -AssemblyName PresentationCore, PresentationFramework
 
 #region Variables
-# Windows capabilities array list to remove
+# Initialize an Array List to store the FODv2 items to remove
 # Массив имен дополнительных компонентов Windows для удаления
 $Capabilities = New-Object -TypeName System.Collections.ArrayList($null)
 
-# Windows capabilities that will be checked to remove by default
+# In the upcoming dialog box, the following FODv2 items will have their checkboxes checked, recommending the user to remove them
 # Дополнительные компоненты Windows, которые будут отмечены на удаление по умолчанию
 $CheckedCapabilities = @(
 	# Steps Recorder
@@ -1087,7 +1087,7 @@ $CheckedCapabilities = @(
 	# Факсы и сканирование Windows
 	"Print.Fax.Scan*"
 )
-# If device is not a laptop
+# If the device is not a laptop, also suggest the Windows Hello Face component
 # Если устройство не является ноутбуком
 if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2)
 {
@@ -1095,7 +1095,7 @@ if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2)
 	# Распознавание лиц Windows Hello
 	$CheckedCapabilities += "Hello.Face*"
 }
-# Windows capabilities that will be shown in the form
+# In the upcoming dialog box, the following FODv2 items will be shown, but their checkboxes would be clear.
 # Дополнительные компоненты Windows, которые будут выводиться в форме
 $ExcludedCapabilities = @(
 	# The DirectX Database to configure and optimize apps when multiple Graphics Adapters are present
@@ -1120,6 +1120,7 @@ $ExcludedCapabilities = @(
 #endregion Variables
 
 #region XAML Markup
+# This section the defines the design of the upcoming dialog box.
 [xml]$XAML = '
 <Window
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -1262,7 +1263,7 @@ $Window.Add_Loaded({
 	}
 	else
 	{
-		$Window.Title = "Capabilities to Uninstall"
+		$Window.Title = "Optional features (FODv2) to remove"
 		$Button.Content = "Uninstall"
 	}
 })
@@ -1279,7 +1280,7 @@ if (Get-WindowsCapability -Online | Where-Object -FilterScript {($_.State -eq "I
 	}
 	else
 	{
-		Write-Verbose -Message "Form opening..." -Verbose
+		Write-Verbose -Message "Displaying the dialog box..." -Verbose
 	}
 	# Display form
 	# Отобразить форму
@@ -1289,7 +1290,7 @@ else
 {
 	if ($RU)
 	{
-		Write-Verbose -Message "No capabilities to display" -Verbose
+		Write-Verbose -Message "Nothing to display" -Verbose
 	}
 	else
 	{
@@ -1297,30 +1298,31 @@ else
 	}
 }
 
-# Turn on updates for other Microsoft products
+# Opt-in to Microsoft Update service, so that updates are offered Microsoft products other than Windows
 # Включить автоматическое обновление для других продуктов Microsoft
 (New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
 
-# Turn off background apps, except the followings...
+# Turn off background apps, except the followings... (current user only)
 # Запретить приложениям работать в фоновом режиме, кроме следующих...
 Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications | ForEach-Object -Process {
 	Remove-ItemProperty -Path $_.PsPath -Name * -Force
 }
 $ExcludedBackgroundApps = @(
-	# Lock App
+	# Lock screen app
 	"Microsoft.LockApp*"
-	# Content Delivery Manager
+	# Content Delivery Manager (delivers those beautiful Windows Spotlight wallpapers to the lock screen, unless you are in a sanctioned country)
 	"Microsoft.Windows.ContentDeliveryManager*"
-	# Cortana
+	# The old version of Cortana; Windows 10 v20H1 uninstalls it on the first run after upgrade
+	# The new Cortana is Microsoft.549981C3F5F10
 	"Microsoft.Windows.Cortana*"
 	# Windows Search
 	"Microsoft.Windows.Search*"
 	# Windows Security
 	# Безопасность Windows
 	"Microsoft.Windows.SecHealthUI*"
-	# ShellExperienceHost
+	# Windows Shell Experience (Action center, snipping support, toast notification, touch screen keyboard)
 	"Microsoft.Windows.ShellExperienceHost*"
-	# StartMenuExperienceHost
+	# The Start menu
 	"Microsoft.Windows.StartMenuExperienceHost*"
 	# Microsoft Store
 	"Microsoft.WindowsStore*"
@@ -1335,7 +1337,7 @@ $OFS = " "
 # Открыть раздел "Фоновые приложения"
 Start-Process -FilePath ms-settings:privacy-backgroundapps
 
-# Set power management scheme
+# Set the power management scheme to the following...
 # Установить схему управления питания
 if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -eq 2)
 {
