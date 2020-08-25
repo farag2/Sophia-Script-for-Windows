@@ -9,12 +9,9 @@
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Q5Q51QUJC)
 </div>
 
-|Author|Link|
-|-------------|-------------|
-|**Chris Titus Tech**|[![YT](https://i.imgur.com/mADOh3c.png)](https://youtu.be/8E6OT_QcHaU?t=370)|
-|**Britec09**|[![YT](https://i.imgur.com/mADOh3c.png)](https://youtu.be/WK_A9c-m2PQ)|
-|**gHacks.net**|[![ghacks](https://i.imgur.com/K4f8VBo.png)](https://www.ghacks.net/2020/08/19/run-windows-10-setup-script-after-installation-to-customize-the-os/)|
-|**Neowin**|[![neowin](https://i.imgur.com/5fILFqz.png)](https://www.neowin.net/news/this-windows-10-setup-script-lets-you-fine-tune-around-150-functions-for-new-installs)
+|              |                 |                |                |                |
+|--------------|-----------------|----------------|----------------|----------------|
+| [![YT](https://i.imgur.com/mADOh3c.png)](https://youtu.be/8E6OT_QcHaU?t=370) | [![YT](https://i.imgur.com/mADOh3c.png)](https://youtu.be/WK_A9c-m2PQ) | [![ghacks](https://i.imgur.com/K4f8VBo.png)](https://www.ghacks.net/2020/08/19/run-windows-10-setup-script-after-installation-to-customize-the-os/) | [![neowin](https://i.imgur.com/5fILFqz.png)](https://www.neowin.net/news/this-windows-10-setup-script-lets-you-fine-tune-around-150-functions-for-new-installs) | [![comss](https://cdn.comss.net/img/logo51.png)](https://www.comss.ru/page.php?id=7889) |
 
 ## FAQ
 
