@@ -1289,11 +1289,11 @@ else
 {
 	if ($RU)
 	{
-		Write-Verbose -Message "No capabilities to display" -Verbose
+		Write-Verbose -Message "Отсутствуют дополнительные компоненты для отображения" -Verbose		
 	}
 	else
 	{
-		Write-Verbose -Message "Отсутствуют дополнительные компоненты для отображения" -Verbose
+		Write-Verbose -Message "No capabilities to display" -Verbose
 	}
 }
 
