@@ -906,7 +906,7 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\
 # Включить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableLinkedConnections -PropertyType DWord -Value 1 -Force
 
-# Stop the Delivery Optimization service (DoSvc) and opt out of the Delivery Optimization-assisted downloading
+# Opt out of the Delivery Optimization-assisted downloading
 # Отключить оптимизацию доставки
 Get-Service -Name DoSvc | Stop-Service -Force
 Set-DODownloadMode -DownloadMode 0
@@ -1377,7 +1377,7 @@ Set-WinDefaultInputMethodOverride "0409:00000409"
 # Включить Windows Sandbox
 if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Professional" -or $_.Edition -like "Enterprise*"})
 {
-	# Checking whether a x86 virtualization is enabled in BIOS
+	# Checking whether x86 virtualization is enabled in the firmware
 	# Проверка: включена ли в BIOS аппаратная виртуализация x86
 	if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled -eq $true)
 	{
@@ -1387,7 +1387,7 @@ if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Pro
 	{
 		try
 		{
-			# Determining whether a Hyper-V is enabled
+			# Determining whether Hyper-V is enabled
 			# Проверка: включен ли Hyper-V
 			if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent -eq $true)
 			{
@@ -1504,7 +1504,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 		"Videos"	=	"{35286A68-3C57-41A1-BBB1-0EAE73D76C95}"
 	}
 
-	# Hidden desktop.ini for each type of user folders
+	# Contents of the hidden desktop.ini file for each type of user folders
 	# Скрытый desktop.ini для каждого типа пользовательских папок
 	$DesktopINI = @{
 		"Desktop"	=	"",
@@ -1681,7 +1681,7 @@ if ($RU)
 }
 else
 {
-	$Message = "To change the location of the Desktop folder enter the required letter"
+	$Message = "Would you like to change the location of the Desktop folder?"
 	Write-Warning -Message "`nFiles will not be moved"
 	$Options = "&Change", "&Skip"
 }
@@ -1727,7 +1727,7 @@ if ($RU)
 }
 else
 {
-	$Message = "To change the location of the Documents folder enter the required letter"
+	$Message = "Would you like to change the location of the Documents folder?"
 	Write-Warning -Message "`nFiles will not be moved"
 	$Options = "&Change", "&Skip"
 }
@@ -1773,7 +1773,7 @@ if ($RU)
 }
 else
 {
-	$Message = "To change the location of the Downloads folder enter the required letter"
+	$Message = "Would you like to change the location of the Downloads folder?"
 	Write-Warning -Message "`nFiles will not be moved"
 	$Options = "&Change", "&Skip"
 }
@@ -1819,7 +1819,7 @@ if ($RU)
 }
 else
 {
-	$Message = "To change the location of the Music folder enter the required letter"
+	$Message = "Would you like to change the location of the Music folder?"
 	Write-Warning -Message "`nFiles will not be moved"
 	$Options = "&Change", "&Skip"
 }
@@ -1866,7 +1866,7 @@ if ($RU)
 }
 else
 {
-	$Message = "To change the location of the Pictures folder enter the required letter"
+	$Message = "Would you like to change the location of the Pictures folder enter?"
 	Write-Warning -Message "`nFiles will not be moved"
 	$Options = "&Change", "&Skip"
 }
@@ -1912,7 +1912,7 @@ if ($RU)
 }
 else
 {
-	$Message = "To change the location of the Videos folder enter the required letter"
+	$Message = "Would you like to change the location of the Videos folder?"
 	Write-Warning -Message "`nFiles will not be moved"
 	$Options = "&Change", "&Skip"
 }
@@ -1947,17 +1947,20 @@ switch ($Result)
 	}
 }
 
-# Save screenshots by pressing Win+PrtScr to the Desktop
+# Save screenshots by pressing Win+PrtScr to Desktop
 # Сохранять скриншоты по нажатию Win+PrtScr на рабочем столе
 $DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -Type ExpandString -Value $DesktopFolder -Force
+
 # Save all opened folders in order to restore them after File Explorer restart
 # Сохранить все открытые папки, чтобы восстановить их после перезапуска проводника
 Clear-Variable -Name OpenedFolders -Force -ErrorAction Ignore
 $OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
+
 # In order for the changes to take effect the File Explorer process has to be restarted
 # Чтобы изменения вступили в силу, необходимо перезапустить процесс проводника
 Stop-Process -Name explorer -Force
+
 # Restore closed folders
 # Восстановить закрытые папки
 foreach ($OpenedFolder in $OpenedFolders)
@@ -1985,11 +1988,15 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\
 # Отключить и удалить зарезервированное хранилище после следующей установки обновлений
 Set-WindowsReservedStorageState -State Disabled
 
-# Turn on automatic backup the system registry to the %SystemRoot%\System32\config\RegBack folder
+# Turn on automatic backup of the system registry to the %SystemRoot%\System32\config\RegBack folder
 # Включить автоматическое создание копии реестра в папку %SystemRoot%\System32\config\RegBack
-New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Configuration Manager" -Name EnablePeriodicBackup -PropertyType DWord -Value 1 -Force
+<# DISABLED:
+  This feature is abandoned. On Windows 10, v20H1, these backups are incomplete and therefore dangerous.
+  Microsoft recommends using System Restore instead.
+# New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Configuration Manager" -Name EnablePeriodicBackup -PropertyType DWord -Value 1 -Force
+#>
 
-# Turn off Help page opening by F1 key
+# Disable help lookup via F1; this feature is deprecated
 # Отключить открытие справки по нажатию F1
 if (-not (Test-Path -Path "HKCU:\Software\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64"))
 {
@@ -2001,11 +2008,11 @@ New-ItemProperty -Path "HKCU:\Software\Classes\Typelib\{8cec5860-07a1-11d9-b15e-
 # Включить Num Lock при загрузке
 New-ItemProperty -Path "Registry::HKEY_USERS\.DEFAULT\Control Panel\Keyboard" -Name InitialKeyboardIndicators -PropertyType String -Value 2147483650 -Force
 
-# Turn off sticky Shift key after pressing 5 times
+# Do not activate StickyKey after tapping the Shift key 5 times
 # Отключить залипание клавиши Shift после 5 нажатий
 New-ItemProperty -Path "HKCU:\Control Panel\Accessibility\StickyKeys" -Name Flags -PropertyType String -Value 506 -Force
 
-# Turn off AutoPlay for all media and devices
+# Disable AutoPlay for all media and devices
 # Отключить автозапуск для всех носителей и устройств
 New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers -Name DisableAutoplay -PropertyType DWord -Value 1 -Force
 
@@ -2014,11 +2021,11 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" -Name Autorun -PropertyType DWord -Value 0 -Force
 New-ItemProperty -Path "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" -Name Autorun -PropertyType DWord -Value 0 -Force
 
-# Turn on automatically save my restartable apps when sign out and restart them after sign in
+# Automatically save my restartable apps when signing out and restart them after signing in
 # Автоматически сохранять мои перезапускаемые приложения при выходе из системы и перезапустить их после выхода
 New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name RestartApps -Value 1 -Force
 
-# Turn on network discovery and file and printers sharing if device is not domain-joined
+# Enable "Network Discovery" and "File and Printers Sharing" for workgroup networks
 # Включить сетевое обнаружение и общий доступ к файлам и принтерам, если устройство не присоединенно к домену
 if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain -eq $false)
 {
@@ -2082,7 +2089,7 @@ if ($RU)
 else
 {
 	$Title = "Start menu tiles"
-	$Message = "To unpin all the Start menu tiles enter the required letter"
+	$Message = "Would you like to unpin all the Start menu tiles?"
 	$Options = "&Unpin", "&Skip"
 }
 $DefaultChoice = 1
@@ -2107,7 +2114,7 @@ switch ($Result)
 		# Сохраняем StartMenuLayout.xml в кодировке UTF-8
 		Set-Content -Path $StartMenuLayoutPath -Value (New-Object System.Text.UTF8Encoding).GetBytes($StartMenuLayout) -Encoding Byte -Force
 
-		# Temporarily disable changing Start layout
+		# Temporarily disable changing the Start menu layout
 		# Временно выключаем возможность редактировать начальный экран
 		if (-not (Test-Path -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
 		{
@@ -2222,7 +2229,7 @@ if ($syspin -eq $true)
 	}
 
 	# Pin "Devices and Printers" to Start
-	# Create old style shortcut for the "Devices and Printers" in the Start menu
+	# Create old-style shortcut for the "Devices and Printers" in the Start menu
 	# Закрепить "Устройства и принтеры" на начальном экране
 	# Создать ярлык старого формата для "Устройства и принтеры" в меню "Пуск"
 	$DevicesAndPrintersLocalizedName = (Get-ControlPanelItem -CanonicalName "Microsoft.DevicesAndPrinters").Name
@@ -2273,23 +2280,25 @@ if ($syspin -eq $true)
 #region UWP apps
 <#
 Uninstall UWP apps
-A form with the ability to select the package to remove
-App packages will not be installed when new user accounts are created, if "Uninstall for All Users" checked
-Add UWP apps packages names to the $UncheckedAppXPackages array list by retrieving their packages names within (Get-AppxPackage -PackageTypeFilter Bundle -AllUsers).Name command
+A dialog box that enables the user to select packages to remove
+App packages will not be installed when new user accounts are created, if "Uninstall for All Users" is checked
+Add UWP apps packages names to the $UncheckedAppXPackages array list by retrieving their packages names using the following command:
+  (Get-AppxPackage -PackageTypeFilter Bundle -AllUsers).Name
 
 Удалить UWP-приложения
 Форма с возможностью выбрать пакет для удаления
 Приложения не будут установлены при создании новых учетных записей, если отмечено "Удалять для всех пользователей"
-Добавьте имена пакетов UWP-приложений в массив $UncheckedAppXPackages, получив названия их пакетов с помощью команды (Get-AppxPackage -PackageTypeFilter Bundle -AllUsers).Name
+Добавьте имена пакетов UWP-приложений в массив $UncheckedAppXPackages, получив названия их пакетов с помощью команды
+   (Get-AppxPackage -PackageTypeFilter Bundle -AllUsers).Name
 #>
 Add-Type -AssemblyName PresentationCore, PresentationFramework
 
 #region Variables
-# UWP-apps array list to remove
+# ArrayList containing the UWP apps to remove
 # Массив имен UWP-приложений для удаления
 $AppxPackages = New-Object -TypeName System.Collections.ArrayList($null)
 
-# UWP-apps that won't be checked to remove by default
+# List of UWP apps that won't be recommended for removal
 # UWP-приложения, которые не будут отмечены на удаление по умолчанию
 $UncheckedAppxPackages = @(
 	# AMD Radeon UWP panel
@@ -2297,7 +2306,7 @@ $UncheckedAppxPackages = @(
 	"AdvancedMicroDevicesInc*"
 	# iTunes
 	"AppleInc.iTunes"
-	# Intel UWP panel
+	# Intel Graphics Control Center
 	# UWP-панель Intel
 	"AppUp.IntelGraphicsControlPanel"
 	"AppUp.IntelGraphicsExperience"
@@ -2307,7 +2316,7 @@ $UncheckedAppxPackages = @(
 	# Screen Sketch
 	# Набросок на фрагменте экрана
 	"Microsoft.ScreenSketch"
-	# Photos and Video Editor
+	# Photos (and Video Editor)
 	# Фотографии и Видеоредактор
 	"Microsoft.Windows.Photos"
 	"Microsoft.Photos.MediaEngineDLC"
@@ -2335,7 +2344,7 @@ $UncheckedAppxPackages = @(
 	"RealtekSemiconductorCorp.RealtekAudioControl"
 )
 
-# UWP-apps that won't be shown in the form
+# UWP apps that won't be shown in the form
 # UWP-приложения, которые не будут выводиться в форме
 $ExcludedAppxPackages = @(
 	# Microsoft Desktop App Installer
@@ -2602,7 +2611,7 @@ if (Get-CimInstance -ClassName Win32_VideoController | Where-Object -FilterScrip
 	else
 	{
 		$Title = "Graphics performance preference"
-		$Message = "To add an app for which the graphics performance preference will be set to `"High performance`" enter the required letter"
+		$Message = "Would you like to set the graphics performance setting of an app of your choice to `"High performance`"?"
 		$Options = "&Add", "&Skip"
 	}
 	$DefaultChoice = 1
@@ -2705,7 +2714,7 @@ $VolumeCaches = @(
 	"Setup Log Files",
 	# Temporary Setup Files
 	"Temporary Setup Files",
-	# Microsoft Defender Antivirus
+	# Windows Defender Antivirus
 	"Windows Defender",
 	# Windows upgrade log files
 	# Файлы журнала обновления Windows
@@ -2929,7 +2938,7 @@ $Parameters = @{
 Register-ScheduledTask @Parameters -Force
 #endregion Scheduled tasks
 
-#region Microsoft Defender & Security
+#region Windows Defender & Security
 # Turn on Controlled folder access and add protected folders
 # Включить контролируемый доступ к папкам и добавить защищенные папки
 if ($RU)
@@ -2941,7 +2950,7 @@ if ($RU)
 else
 {
 	$Title = "Controlled folder access"
-	$Message = "To turn on Controlled folder access and add protected folder enter the required letter"
+	$Message = "Would you like Windows Defender to restrict access to sensitive folders that you specify?"
 	$Options = "&Add a protected folder", "&Skip"
 }
 $DefaultChoice = 1
@@ -3002,7 +3011,7 @@ if ((Get-MpPreference).EnableControlledFolderAccess -eq 1)
 	else
 	{
 		$Title = "Controlled folder access"
-		$Message = "To allow an app through Controlled folder access enter the required letter"
+		$Message = "Would you like to specify an app that is allowed to access controlled folders?"
 		$Options = "&Add a protected folder", "&Skip"
 	}
 	$DefaultChoice = 1
@@ -3051,18 +3060,18 @@ if ((Get-MpPreference).EnableControlledFolderAccess -eq 1)
 	until ($Result -eq 1)
 }
 
-# Add exclusion folder from Microsoft Defender Antivirus scanning
-# Добавить папку в список исключений сканирования Microsoft Defender
+# Add exclusion folder from Windows Defender Antivirus scanning
+# Добавить папку в список исключений сканирования Windows Defender
 if ($RU)
 {
-	$Title = "Microsoft Defender"
-	$Message = "Чтобы исключить папку из списка сканирования антивредоносной программы Microsoft Defender, введите необходимую букву"
+	$Title = "Windows Defender"
+	$Message = "Чтобы исключить папку из списка сканирования антивредоносной программы Windows Defender, введите необходимую букву"
 	$Options = "&Исключить папку", "&Пропустить"
 }
 else
 {
-	$Title = "Microsoft Defender"
-	$Message = "To exclude folder from Microsoft Defender Antivirus Scan enter the required letter"
+	$Title = "Windows Defender"
+	$Message = "Would you like to specify a folder to be excluded from Windows Defender malware scans?"
 	$Options = "&Exclude folder", "&Skip"
 }
 $DefaultChoice = 1
@@ -3109,18 +3118,18 @@ do
 }
 until ($Result -eq 1)
 
-# Add exclusion file from Microsoft Defender Antivirus scanning
-# Добавить файл в список исключений сканирования Microsoft Defender
+# Add exclusion file from Windows Defender Antivirus scanning
+# Добавить файл в список исключений сканирования Windows Defender
 if ($RU)
 {
-	$Title = "Microsoft Defender"
-	$Message = "Чтобы исключить файл из списка сканирования антивредоносной программы Microsoft Defender, введите необходимую букву"
+	$Title = "Windows Defender"
+	$Message = "Чтобы исключить файл из списка сканирования антивредоносной программы Windows Defender, введите необходимую букву"
 	$Options = "&Исключить файл", "&Пропустить"
 }
 else
 {
-	$Title = "Microsoft Defender"
-	$Message = "To exclude file from Microsoft Defender Antivirus Scan enter the required letter"
+	$Title = "Windows Defender"
+	$Message = "Would you like to specify a file to be excluded from Windows Defender malware scans?"
 	$Options = "&Exclude file", "&Skip"
 }
 $DefaultChoice = 1
@@ -3168,23 +3177,23 @@ do
 }
 until ($Result -eq 1)
 
-# Turn on Microsoft Defender Exploit Guard network protection
-# Включить защиту сети в Microsoft Defender Exploit Guard
+# Turn on Windows Defender Exploit Guard network protection
+# Включить защиту сети в Windows Defender Exploit Guard
 Set-MpPreference -EnableNetworkProtection Enabled
 
 # Turn on detection for potentially unwanted applications and block them
 # Включить обнаружение потенциально нежелательных приложений и блокировать их
 Set-MpPreference -PUAProtection Enabled
 
-# Run Microsoft Defender within a sandbox
-# Запускать Microsoft Defender в песочнице
+# Run Windows Defender within a sandbox
+# Запускать Windows Defender в песочнице
 setx /M MP_FORCE_USE_SANDBOX 1
 
-# Dismiss Microsoft Defender offer in the Windows Security about signing in Microsoft account
-# Отклонить предложение Microsoft Defender в "Безопасность Windows" о входе в аккаунт Microsoft
+# Dismiss Windows Defender offer in the Windows Security about signing in Microsoft account
+# Отклонить предложение Windows Defender в "Безопасность Windows" о входе в аккаунт Microsoft
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AccountProtection_MicrosoftAccount_Disconnected -PropertyType DWord -Value 1 -Force
 
-# Dismiss Microsoft Defender offer in the Windows Security about to turn on the SmartScreen filter for Microsoft Edge
+# Dismiss Windows Defender offer in the Windows Security about turning on the SmartScreen filter for Microsoft Edge
 # Отклонить предложение Windows Defender в "Безопасность Windows" включить фильтр SmartScreen для Microsoft Edge
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AppAndBrowser_EdgeSmartScreenOff -PropertyType DWord -Value 0 -Force
 
@@ -3256,7 +3265,7 @@ if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\M
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging -Name EnableModuleLogging -PropertyType DWord -Value 1 -Force
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging\ModuleNames -Name * -PropertyType String -Value * -Force
 
-# Turn on logging of all PowerShell script input to the Windows PowerShell event log
+# Log all PowerShell script input to the Windows PowerShell event log
 # Включить регистрацию всех вводимых сценариев PowerShell в журнале событий Windows PowerShell
 if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging))
 {
@@ -3271,7 +3280,7 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer 
 # Turn off Windows Script Host
 # Отключить Windows Script Host
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings" -Name Enabled -PropertyType DWord -Value 0 -Force
-#endregion Microsoft Defender & Security
+#endregion Windows Defender & Security
 
 #region Context menu
 # Add the "Extract" item to Windows Installer (.msi) context menu
@@ -3362,12 +3371,12 @@ New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AllFilesystemObjects\shellex\
 # Скрыть пункт "Включить BitLocker" из контекстного меню
 if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Professional" -or $_.Edition -like "Enterprise*"})
 {
-	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\encrypt-bde -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
-	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\encrypt-bde-elev -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
-	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\manage-bde -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
-	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\resume-bde -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
-	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\resume-bde-elev -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
-	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\unlock-bde -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
+	New-ItemProperty -Path 'Registry::HKEY_CLASSES_ROOT\Drive\shell\encrypt-bde'      -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
+	New-ItemProperty -Path 'Registry::HKEY_CLASSES_ROOT\Drive\shell\encrypt-bde-elev' -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
+	New-ItemProperty -Path 'Registry::HKEY_CLASSES_ROOT\Drive\shell\manage-bde'       -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
+	New-ItemProperty -Path 'Registry::HKEY_CLASSES_ROOT\Drive\shell\resume-bde'       -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
+	New-ItemProperty -Path 'Registry::HKEY_CLASSES_ROOT\Drive\shell\resume-bde-elev'  -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
+	New-ItemProperty -Path 'Registry::HKEY_CLASSES_ROOT\Drive\shell\unlock-bde'       -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
 }
 
 # Remove the "Bitmap image" item from the "New" context menu
@@ -3444,7 +3453,7 @@ private static readonly UIntPtr UIntPtr = new UIntPtr(41504);
 public static extern int PostMessageW(IntPtr hWnd, uint Msg, UIntPtr wParam, IntPtr lParam);
 public static void PostMessage()
 {
-	// F5 pressing simulation to refresh the desktop
+	// Simulate pressing F5 to refresh the desktop
 	// Симуляция нажатия F5 для обновления рабочего стола
 	PostMessageW(hWnd, Msg, UIntPtr, IntPtr.Zero);
 }
@@ -3455,7 +3464,7 @@ if (-not ("WinAPI.UpdateExplorer" -as [type]))
 	Add-Type @UpdateExplorer
 }
 
-# Send F5 pressing simulation to refresh the desktop
+# Simulate pressing F5 to refresh the desktop
 # Симулировать нажатие F5 для обновления рабочего стола
 [WinAPI.UpdateExplorer]::PostMessage()
 # Refresh desktop icons, environment variables, taskbar
