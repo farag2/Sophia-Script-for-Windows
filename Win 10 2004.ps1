@@ -380,7 +380,7 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\
 
 # Do not show all folders in the navigation pane
 # Не отображать все папки в области навигации
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name NavPaneShowAllFolders -PropertyType DWord -Value 0 -Force
+# New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name NavPaneShowAllFolders -PropertyType DWord -Value 0 -Force
 
 # Do not show Cortana button on taskbar
 # Не показывать кнопку Кортаны на панели задач
@@ -404,7 +404,7 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\
 
 # Show seconds on taskbar clock
 # Отображать секунды в системных часах на панели задач
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowSecondsInSystemClock -PropertyType DWord -Value 1 -Force
+# New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowSecondsInSystemClock -PropertyType DWord -Value 1 -Force
 
 # Do not show when snapping a window, what can be attached next to it
 # Не показывать при прикреплении окна, что можно прикрепить рядом с ним
@@ -455,7 +455,7 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer 
 
 # Hide search box or search icon on taskbar
 # Скрыть поле или значок поиска на панели задач
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -PropertyType DWord -Value 0 -Force
+# New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -PropertyType DWord -Value 0 -Force
 
 # Do not show "Windows Ink Workspace" button in taskbar
 # Не показывать кнопку Windows Ink Workspace на панели задач
@@ -500,12 +500,12 @@ $apps | Where-Object -FilterScript {$_.Path -like "Microsoft.WindowsStore*"} | F
 
 # Set the large icons in the Control Panel
 # Установить крупные значки в Панели управления
-if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
-{
-	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Force
-}
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name AllItemsIconView -PropertyType DWord -Value 0 -Force
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name StartupPage -PropertyType DWord -Value 1 -Force
+# if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
+# {
+# 	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Force
+# }
+# New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name AllItemsIconView -PropertyType DWord -Value 0 -Force
+# New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name StartupPage -PropertyType DWord -Value 1 -Force
 
 # Choose theme color for default Windows mode
 # Выбрать режим Windows по умолчанию
@@ -643,20 +643,21 @@ New-ItemProperty -Path "HKCU:\Control Panel\Keyboard" -Name PrintScreenKeyForSni
 
 # Turn on Windows 10 20H2 new Start style if minimum build version is 19041.423
 # Включить новый стиль Пуска как в Windows 10 20H2, если номер билда минимум 19041.423
-if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name UBR) -ge 423)
-{
-	if (-not (Test-Path -Path HKLM:\SYSTEM\CurrentControlSet\Control\FeatureManagement\Overrides\0\2093230218s))
-	{
-		New-Item -Path HKLM:\SYSTEM\CurrentControlSet\Control\FeatureManagement\Overrides\0\2093230218 -Force
-	}
-	New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FeatureManagement\Overrides\0\2093230218 -Name EnabledState -PropertyType DWORD -Value 2 -Force
-	New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FeatureManagement\Overrides\0\2093230218 -Name EnabledStateOptions -PropertyType DWORD -Value 0 -Force
-}
+# if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name UBR) -ge 423)
+# {
+# 	if (-not (Test-Path -Path HKLM:\SYSTEM\CurrentControlSet\Control\FeatureManagement\Overrides\0\2093230218s))
+# 	{
+# 		New-Item -Path HKLM:\SYSTEM\CurrentControlSet\Control\FeatureManagement\Overrides\0\2093230218 -Force
+# 	}
+# 	New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FeatureManagement\Overrides\0\2093230218 -Name EnabledState -PropertyType DWORD -Value 2 -Force
+# 	New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FeatureManagement\Overrides\0\2093230218 -Name EnabledStateOptions -PropertyType DWORD -Value 0 -Force
+#}
 #endregion UI & Personalization
 
 #region OneDrive
 # Uninstall OneDrive
 # Удалить OneDrive
+<#
 [string]$UninstallString = Get-Package -Name "Microsoft OneDrive" -ErrorAction Ignore | ForEach-Object -Process {$_.Meta.Attributes["UninstallString"]}
 if ($UninstallString)
 {
@@ -769,30 +770,31 @@ if ($UninstallString)
 	Remove-Item -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\OneDrive.lnk" -Force -ErrorAction Ignore
 }
 #endregion OneDrive
+#>
 
 #region System
 # Turn on Storage Sense
 # Включить контроль памяти
-if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy))
-{
-	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -ItemType Directory -Force
-}
-New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01 -PropertyType DWord -Value 1 -Force
-if ((Get-ItemPropertyValue -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01) -eq "1")
-{
+#if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy))
+#{
+#	New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -ItemType Directory -Force
+#}
+#New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01 -PropertyType DWord -Value 1 -Force
+#if ((Get-ItemPropertyValue -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01) -eq "1")
+#{
 	# Run Storage Sense every month
 	# Запускать контроль памяти каждый месяц
-	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 2048 -PropertyType DWord -Value 30 -Force
+	# New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 2048 -PropertyType DWord -Value 30 -Force
 	# Delete temporary files that apps aren't using
 	# Удалять временные файлы, не используемые в приложениях
-	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 04 -PropertyType DWord -Value 1 -Force
+	# New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 04 -PropertyType DWord -Value 1 -Force
 	# Delete files in recycle bin if they have been there for over 30 days
 	# Удалять файлы из корзины, если они находятся в корзине более 30 дней
-	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 256 -PropertyType DWord -Value 30 -Force
+	# New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 256 -PropertyType DWord -Value 30 -Force
 	# Never delete files in "Downloads" folder
 	# Никогда не удалять файлы из папки "Загрузки"
-	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 512 -PropertyType DWord -Value 0 -Force
-}
+	# New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 512 -PropertyType DWord -Value 0 -Force
+#}
 
 # Let Windows try to fix apps so they're not blurry
 # Разрешить Windows исправлять размытость в приложениях
@@ -1369,45 +1371,47 @@ if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2)
 
 # Set the default input method to the English language
 # Установить метод ввода по умолчанию на английский язык
-Set-WinDefaultInputMethodOverride "0409:00000409"
+# Set-WinDefaultInputMethodOverride "0409:00000409"
 
 # Turn on Windows Sandbox
 # Включить Windows Sandbox
-if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Professional" -or $_.Edition -like "Enterprise*"})
-{
-	# Checking whether a x86 virtualization is enabled in BIOS
-	# Проверка: включена ли в BIOS аппаратная виртуализация x86
-	if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled -eq $true)
-	{
-		Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart
-	}
-	else
-	{
-		try
-		{
-			# Determining whether a Hyper-V is enabled
-			# Проверка: включен ли Hyper-V
-			if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent -eq $true)
-			{
-				Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart
-			}
-		}
-		catch [Exception]
-		{
-			if ($RU)
-			{
-				Write-Error -Message "Включите в BIOS виртуализацию" -ErrorAction SilentlyContinue
-			}
-			else
-			{
-				Write-Error -Message "Enable Virtualization in BIOS" -ErrorAction SilentlyContinue
-			}
-		}
-	}
-}
+#if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Professional" -or $_.Edition -like "Enterprise*"})
+#{
+#	# Checking whether a x86 virtualization is enabled in BIOS
+
+#	# Проверка: включена ли в BIOS аппаратная виртуализация x86
+#	if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled -eq $true)
+#	{
+#		Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart
+#	}
+#	else
+#	{
+#		try
+#		{
+#			# Determining whether a Hyper-V is enabled
+#			# Проверка: включен ли Hyper-V
+#			if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent -eq $true)
+#			{
+#				Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart
+#			}
+#		}
+#		catch [Exception]
+#		{
+#			if ($RU)
+#			{
+#				Write-Error -Message "Включите в BIOS виртуализацию" -ErrorAction SilentlyContinue
+#			}
+#			else
+#			{
+#				Write-Error -Message "Enable Virtualization in BIOS" -ErrorAction SilentlyContinue
+#			}
+#		}
+#	}
+#}
 
 # Change location of the user folders
 # Изменить расположение пользовательских папок
+
 function UserShellFolder
 {
 <#
