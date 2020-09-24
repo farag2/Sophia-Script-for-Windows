@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>indows 10 Sophia Script</h1>
+  <h1>Windows 10 Sophia Script</h1>
 
 **"Windows 10 Sophia Script" is a set of functions for Windows 10 fine-tuning and automating the routine tasks** 🏆
 
