@@ -1,10 +1,9 @@
 <div align="center">
   <h1>Windows 10 Setup Script</h1>
 
-**"Windows 10 Setup Script" is a set of tweaks for OS fine-tuning and automating the routine tasks** 🏆
+**"Windows 10 Sophia Script" is a set of functions for Windows 10 fine-tuning and automating the routine tasks** 🏆
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/b88d2880e17a4844bef470f2e7929c6b)](https://www.codacy.com/manual/farag2/Windows-10-Setup-Script)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/farag2/Windows-10-Setup-Script)
 ![GitHub All Releases](https://img.shields.io/github/downloads/farag2/Windows-10-Setup-Script/total)
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Q5Q51QUJC)
 </div>
@@ -16,9 +15,9 @@
 
 ## FAQ
 
-* Due to the fact that the script includes about 150 functions, you must read the entire script and comment out those sections that you do not want to be executed otherwise likely you will enable features that you do not want to be enabled.
+* Due to the fact that the script includes more than **270** functions, you must read the entire **preset file** carefully and **comment out/uncomment** those functions that you do/do not want to be executed. Every tweak in a preset file has its' corresponding function to **restore the default settings**.
 * Running the script is best done on a fresh install because running it on tweaked system may result in errors occurring.
-* Some third-party antiviruses flag this script or its' part as malicious one. This is a false positive due to [$EncodedScript](https://github.com/farag2/Windows-10-Setup-Script/blob/0f9bbee7e1d43f487eb0855e0d1e44ff569fc4a9/200x/2004.ps1#L2837) variable. You can read more about in "Create a task to clean up unused files and Windows updates in the Task Scheduler" section. You might need to disable tamper protection from your antivirus settings, re-enable it after running the script, and reboot.
+* Some third-party antiviruses flag this script or its' part as malicious one. This is a false positive due to [$EncodedScript](https://github.com/farag2/Windows-10-Sophia-Script/blob/0f9bbee7e1d43f487eb0855e0d1e44ff569fc4a9/200x/2004.ps1#L2837) variable. You can read more about in "CreateCleanUpTask" function. You might need to disable tamper protection from your antivirus settings, re-enable it after running the script, and reboot.
 
 ## Screenshots
 
@@ -55,7 +54,8 @@
   * "Pictures"
   * "Videos.
 * Uninstall UWP apps from all accounts with exception apps list with pop-up form written in [WPF](#Screenshots);
-* Turn off Windows features;
+* Disable Windows features;
+* Install and setup WSL
 * Remove Windows capabilities with pop-up form written in [WPF](#Screenshots);
 * Create a Windows cleaning up task in the Task Scheduler;
   * A toast notification will pop up a minute before the task [starts](#Screenshots)
@@ -69,23 +69,31 @@
 * Add exclusion folder from Microsoft Defender Antivirus scanning using dialog menu;
 * Add exclusion file from Microsoft Defender Antivirus scanning using dialog menu;
 * Refresh desktop icons, environment variables and taskbar without restarting File Explorer;
+* Setup Windows 10 security;
 * Many more File Explorer and context menu "deep" tweaks.
 
 ## Usage
 
 To run the script:
 
-* Download [up-to-date version](https://github.com/farag2/Setup-Windows-10/releases);
+* Download [up-to-date version](https://github.com/farag2/Windows-10-Sophia-Script/releases);
 * Expand the archive;
-* Check whether .ps1 is encoded in **UTF-8 with BOM**;
+* Open folder where the archive was expanded;
+* Look through the preset file to configure functions that you want to be ran;
+* Click "File" in File Explorer, hover over "Open Windows PowerShell", and select "Open Windows PowerShell as Administrator" [screenshots](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/);
 * Set execution policy to be able to run scripts only in the current PowerShell session
 
   ```powershell
   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
   ```
 
-* Run .ps1 file via powershell.exe with elevated privileges;
-  * or launch Start.cmd as Administrator.
+* Type
+
+```
+.\Preset
+```
+
+and press Enter
 
 ## Supported Windows 10 versions
 
