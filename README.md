@@ -80,7 +80,7 @@ To run the script:
 * Expand the archive;
 * Open folder where the archive was expanded;
 * Look through the preset file to configure functions that you want to be ran;
-* Click "File" in File Explorer, hover over "Open Windows PowerShell", and select "Open Windows PowerShell as Administrator" [screenshots](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/);
+* Click "File" in File Explorer, hover over "Open Windows PowerShell", and select "Open Windows PowerShell as Administrator" [(screenshots)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/);
 * Set execution policy to be able to run scripts only in the current PowerShell session
 
   ```powershell
