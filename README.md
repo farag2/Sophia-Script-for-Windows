@@ -90,7 +90,7 @@ To run the script:
 * Type
 
 ```
-.\Preset
+.\Preset.ps1
 ```
 
 and press Enter
