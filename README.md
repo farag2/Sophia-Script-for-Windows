@@ -93,7 +93,7 @@ To run the script:
 .\Preset.ps1
 ```
 
-and press Enter
+* Press Enter
 
 ## Supported Windows 10 versions
 
