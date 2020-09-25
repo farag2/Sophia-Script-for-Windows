@@ -13,7 +13,7 @@
 | [![YT](https://i.imgur.com/mADOh3c.png)](https://youtu.be/8E6OT_QcHaU?t=370) | [![YT](https://i.imgur.com/mADOh3c.png)](https://youtu.be/WK_A9c-m2PQ) | [![ghacks](https://i.imgur.com/K4f8VBo.png)](https://www.ghacks.net/2020/08/19/run-windows-10-setup-script-after-installation-to-customize-the-os/) | [![neowin](https://i.imgur.com/5fILFqz.png)](https://www.neowin.net/news/this-windows-10-setup-script-lets-you-fine-tune-around-150-functions-for-new-installs) | [![comss](https://cdn.comss.net/img/logo51.png)](https://www.comss.ru/page.php?id=7889) | [![habr](https://i.imgur.com/cXWLr4I.png)](https://habr.com/en/post/465365/) |
 
 
-## FAQ
+## ⚠️ Before running ⚠️
 
 * Due to the fact that the script includes more than **270** functions, you must read the entire **preset file** carefully and **comment out/uncomment** those functions that you do/do not want to be executed. Every tweak in a preset file has its' corresponding function to **restore the default settings**.
 * Running the script is best done on a fresh install because running it on tweaked system may result in errors occurring.
@@ -33,9 +33,10 @@
 
 <details>
   <summary>Videos</summary>
+  
+[![YT](https://i.imgur.com/mADOh3c.png)](https://youtu.be/8MzuDLNH9QU)
 
-[![Image](http://img.youtube.com/vi/8MzuDLNH9QU/0.jpg)](http://www.youtube.com/watch?v=8MzuDLNH9QU)
-[![Image](http://img.youtube.com/vi/cjyi9nX8sFA/0.jpg)](http://www.youtube.com/watch?v=cjyi9nX8sFA)
+[![YT](https://i.imgur.com/mADOh3c.png)](https://youtu.be/cjyi9nX8sFA)
 </details>
 
 ## Core features
