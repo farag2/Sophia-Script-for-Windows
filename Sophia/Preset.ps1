@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Windows 10 Sophia Script"
 
-	Version: v5.0.0
-	Date: 24.09.2020
+	Version: v5.0.1
+	Date: 25.09.2020
 	Copyright (c) 2020 farag & oZ-Zo
 
 	Thanks to all http://forum.ru-board.com members involved
@@ -659,12 +659,24 @@ EnableWindowsSandbox
 # Выключить Windows Sandbox
 # DisableWindowsSandbox
 
-# Change the location of the user folders to %SystemDrive% (current user only)
-# Изменить расположение пользовательских папок на %SystemDrive% (только для текущего пользователя)
+<#
+	Change the location of the user folders to any drives root (current user only)
+	It is suggested to move it to any disks root of your choice using the interactive menu by default
+	User files or folders won't me moved to a new location
+
+	Изменить расположение пользовательских папок (только для текущего пользователя)
+	По умолчанию предлагается переместить в корень любого диска на выбор с помощью интерактивного меню
+	Пользовательские файлы и папки не будут перемещены в новое расположение
+#>
 ChangeUserShellFolderLocation
 
-# Change the location of the user folders to the default values (current user only)
-# Изменить расположение пользовательских папок на значения по умолчанию (только для текущего пользователя)
+<#
+	Change the location of the user folders to the default values (current user only)
+	User files or folders won't me moved to the new location
+
+	Изменить расположение пользовательских папок на значения по умолчанию (только для текущего пользователя)
+	Пользовательские файлы и папки не будут перемещены в новое расположение
+#>
 # SetDefaultUserShellFolderLocation
 
 # Save screenshots by pressing Win+PrtScr to the Desktop folder (current user only)
@@ -675,12 +687,22 @@ WinPrtScrDesktopFolder
 # Cохранять скриншоты по нажатию Win+PrtScr в папку "Изображения" (значение по умолчанию) (только для текущего пользователя)
 # WinPrtScrDefaultFolder
 
-# Run troubleshooters automatically, then notify
-# Автоматически запускать средства устранения неполадок, а затем уведомлять
+<#
+	Run troubleshooters automatically, then notify
+	In order this feature to work the OS level of diagnostic data gathering must be set to "Full"
+
+	Автоматически запускать средства устранения неполадок, а затем уведомлять
+	Необходимо установить уровень сбора диагностических сведений ОС на "Максимальный", чтобы работала данная функция
+#>
 AutomaticRecommendedTroubleshooting
 
-# Ask me before running troubleshooters (default value)
-# Спрашивать перед запуском средств устранения неполадок (значение по умолчанию)
+<#
+	Ask me before running troubleshooters (default value)
+	In order this feature to work the OS level of diagnostic data gathering must be set to "Full"
+
+	Спрашивать перед запуском средств устранения неполадок (значение по умолчанию)
+	Необходимо установить уровень сбора диагностических сведений ОС на "Максимальный", чтобы работала данная функция
+#>
 # DefaultRecommendedTroubleshooting
 
 # Launch folder windows in a separate process (current user only)
@@ -1030,11 +1052,13 @@ EnableAuditCommandLineProcess
 # Не включать командную строку в событиях создания процесса
 # DisableAuditCommandLineProcess
 
-# Create "Process Creation" Event Viewer Custom View
-# In order this feature to work events auditing and command line in process creation events must be enabled ("EnableAuditProcess" function)
+<#
+	Create "Process Creation" Event Viewer Custom View
+	In order this feature to work events auditing and command line in process creation events must be enabled ("EnableAuditProcess" function)
 
-# Создать настаиваемое представление "Создание процесса" в Просмотре событий
-# Необходимо включить аудит событий и командной строки в событиях создания процесса, чтобы работала данная опция (функция "EnableAuditProcess")
+	Создать настаиваемое представление "Создание процесса" в Просмотре событий
+	Необходимо включить аудит событий и командной строки в событиях создания процесса, чтобы работал данный функционал (функция "EnableAuditProcess")
+#>
 CreateEventViewerCustomView
 
 # Remove "Process Creation" Event Viewer Custom View

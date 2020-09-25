@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	"Windows 10 Sophia Script" is a set of functions for Windows 10 fine-tuning and automating the routine tasks
 
-	Version: v5.0.0
-	Date: 24.09.2020
+	Version: v5.0.1
+	Date: 25.09.2020
 	Copyright (c) 2020 farag & oZ-Zo
 
 	Thanks to all http://forum.ru-board.com members involved
@@ -88,6 +88,9 @@ function Check
 				Write-Warning -Message "Controlled folder access disabled"
 			}
 			Set-MpPreference -EnableControlledFolderAccess Disabled
+
+			# Open "Ransomware protection" page
+			# Открыть раздел "Защита от программ-шатажистов"
 			Start-Process -FilePath windowsdefender://RansomwareProtection
 		}
 		Default {}
@@ -107,7 +110,9 @@ function CreateRestorePoint
 	# Set system restore point creation frequency to 5 minutes
 	# Установить частоту создания точек восстановления на 5 минут
 	New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 5 -Force
-	Checkpoint-Computer -Description "Windows 10 Setup Script.ps1" -RestorePointType MODIFY_SETTINGS
+
+	Checkpoint-Computer -Description "Windows 10 Sophia Script.ps1" -RestorePointType MODIFY_SETTINGS
+
 	# Revert the System Restore checkpoint creation frequency to 1440 minutes
 	# Вернуть частоту создания точек восстановления на 1440 минут
 	New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 1440 -Force
@@ -130,8 +135,8 @@ function EnableTelemetryServices
 	Get-Service -Name DiagTrack | Start-Service
 }
 
-# Set the OS level of diagnostic data gathering to minimum
-# Установить уровень сбора диагностических сведений ОС на минимальный
+# Set the OS level of diagnostic data gathering to "Minimum"
+# Установить уровень сбора диагностических сведений ОС на "Минимальный"
 function SetMinimalDiagnosticDataLevel
 {
 	if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -like "Enterprise*" -or $_.Edition -eq "Education"})
@@ -982,8 +987,8 @@ function UnpinTaskbarEdgeStore
 	# Извлечь строку "Открепить от панели задач" из shell32.dll
 	$LocalizedString = [WinAPI.GetStr]::GetString(5387)
 	$Apps = (New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
-	$Apps | Where-Object -FilterScript {$_.Path -like "Microsoft.MicrosoftEdge*"} | ForEach-Object -Process {$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $LocalizedString} | ForEach-Object -Process {$_.DoIt()}}
-	$Apps | Where-Object -FilterScript {$_.Path -like "Microsoft.WindowsStore*"} | ForEach-Object -Process {$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $LocalizedString} | ForEach-Object -Process {$_.DoIt()}}
+	$Apps | Where-Object -FilterScript {$_.Path -eq "MSEdge"} | ForEach-Object -Process {$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $LocalizedString} | ForEach-Object -Process {$_.DoIt()}}
+	$Apps | Where-Object -FilterScript {$_.Name -eq "Microsoft Store"} | ForEach-Object -Process {$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $LocalizedString} | ForEach-Object -Process {$_.DoIt()}}
 }
 
 # View the Control Panel icons by: large icons (current user only)
@@ -1505,7 +1510,7 @@ function SetTempPath
 	Stop-Process -Name FileCoAuth -Force -ErrorAction Ignore
 
 	Remove-Item -Path $env:SystemRoot\Temp -Recurse -Force -ErrorAction Ignore
-	Remove-Item -Path $env:LOCALAPPDATA\Temp -Recurse -Force -ErrorAction Ignore
+	Get-Item -Path $env:LOCALAPPDATA\Temp | Where-Object -FilterScript {$_.LinkType -ne "SymbolicLink"} | Remove-Item -Recurse -Force -ErrorAction Ignore
 
 	# Create a symbolic link to the %SystemDrive%\Temp folder
 	# Создать символическую ссылку к папке %SystemDrive%\Temp
@@ -2414,19 +2419,26 @@ function DisableWindowsSandbox
 			{
 				if ($RU)
 				{
-					Write-Error -Message "Включите в BIOS виртуализацию" -ErrorAction SilentlyContinue
+					Write-Error -Message "Включите в BIOS/UEFI виртуализацию" -ErrorAction SilentlyContinue
 				}
 				else
 				{
-					Write-Error -Message "Enable Virtualization in BIOS" -ErrorAction SilentlyContinue
+					Write-Error -Message "Enable virtualization in BIOS/UEFI" -ErrorAction SilentlyContinue
 				}
 			}
 		}
 	}
 }
 
-# Change the location of the user folders to %SystemDrive% (current user only)
-# Изменить расположение пользовательских папок на %SystemDrive% (только для текущего пользователя)
+<#
+	Change the location of the user folders to any drives root (current user only)
+	It is suggested to move it to any disks root of your choice using the interactive menu by default
+	User files or folders won't me moved to a new location
+
+	Изменить расположение пользовательских папок (только для текущего пользователя)
+	По умолчанию предлагается переместить в корень любого диска на выбор с помощью интерактивного меню
+	Пользовательские файлы и папки не будут перемещены в новое расположение
+#>
 function ChangeUserShellFolderLocation
 {
 	function UserShellFolder
@@ -2434,12 +2446,13 @@ function ChangeUserShellFolderLocation
 	<#
 		.SYNOPSIS
 		Change the location of the each user folders using SHSetKnownFolderPath function
+		https://docs.microsoft.com/en-us/windows/win32/api/shlobj_core/nf-shlobj_core-shgetknownfolderpath
 
 		.EXAMPLE
 		UserShellFolder -UserFolder Desktop -FolderPath "$env:SystemDrive:\Desktop" -RemoveDesktopINI
 
 		.NOTES
-		User files or folders won't me moved to the new location
+		User files or folders won't me moved to a new location
 		The RemoveDesktopINI argument removes desktop.ini in the old user shell folder
 	#>
 		[CmdletBinding()]
@@ -2985,8 +2998,13 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 	}
 }
 
-# Change the location of the user folders to the default values (current user only)
-# Изменить расположение пользовательских папок на значения по умолчанию (только для текущего пользователя)
+<#
+	Change the location of the user folders to the default values (current user only)
+	User files or folders won't me moved to the new location
+
+	Изменить расположение пользовательских папок на значения по умолчанию (только для текущего пользователя)
+	Пользовательские файлы и папки не будут перемещены в новое расположение
+#>
 function SetDefaultUserShellFolderLocation
 {
 	function UserShellFolder
@@ -2994,6 +3012,7 @@ function SetDefaultUserShellFolderLocation
 	<#
 		.SYNOPSIS
 		Change the location of the each user folders using SHSetKnownFolderPath function
+		https://docs.microsoft.com/en-us/windows/win32/api/shlobj_core/nf-shlobj_core-shgetknownfolderpath
 
 		.EXAMPLE
 		UserShellFolder -UserFolder Desktop -FolderPath "$env:SystemDrive:\Desktop" -RemoveDesktopINI
@@ -3444,8 +3463,13 @@ function WinPrtScrDefaultFolder
 	}
 }
 
-# Run troubleshooters automatically, then notify
-# Автоматически запускать средства устранения неполадок, а затем уведомлять
+<#
+	Run troubleshooters automatically, then notify
+	In order this feature to work the OS level of diagnostic data gathering must be set to "Full"
+
+	Автоматически запускать средства устранения неполадок, а затем уведомлять
+	Необходимо установить уровень сбора диагностических сведений ОС на "Максимальный", чтобы работала данная функция
+#>
 function AutomaticRecommendedTroubleshooting
 {
 	if (-not (Test-Path -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation))
@@ -3454,13 +3478,18 @@ function AutomaticRecommendedTroubleshooting
 	}
 	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation -Name UserPreference -PropertyType DWord -Value 3 -Force
 
-	# Set the OS level of diagnostic data gathering to full
-	# Установить уровень сбора диагностических сведений ОС на максимальный
+	# Set the OS level of diagnostic data gathering to "Full"
+	# Установить уровень сбора диагностических сведений ОС на "Максимальный"
 	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 3 -Force
 }
 
-# Ask me before running troubleshooters (default value)
-# Спрашивать перед запуском средств устранения неполадок (значение по умолчанию)
+<#
+	Ask me before running troubleshooters (default value)
+	In order this feature to work the OS level of diagnostic data gathering must be set to "Full"
+
+	Спрашивать перед запуском средств устранения неполадок (значение по умолчанию)
+	Необходимо установить уровень сбора диагностических сведений ОС на "Максимальный", чтобы работала данная функция
+#>
 function DefaultRecommendedTroubleshooting
 {
 	if (-not (Test-Path -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation))
@@ -3469,8 +3498,8 @@ function DefaultRecommendedTroubleshooting
 	}
 	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation -Name UserPreference -PropertyType DWord -Value 2 -Force
 
-	# Set the OS level of diagnostic data gathering to full
-	# Установить уровень сбора диагностических сведений ОС на максимальный
+	# Set the OS level of diagnostic data gathering to "Full"
+	# Установить уровень сбора диагностических сведений ОС на "Максимальный"
 	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 3 -Force
 }
 
@@ -4697,6 +4726,8 @@ $Process.StartInfo = $ProcessInfo
 # Запуск процесса
 $Process.Start() | Out-Null
 '
+	# Encode $PS1Script variable to be able to pipeline it as an argument
+	# Закодировать переменную $PS1Script, чтобы передать ее как аргумент
 	$EncodedScript = [Convert]::ToBase64String([System.Text.Encoding]::Unicode.GetBytes($PS1Script))
 
 	$Action = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -EncodedCommand $EncodedScript"
@@ -4715,7 +4746,7 @@ $Process.Start() | Out-Null
 	}
 	$Parameters = @{
 		"TaskName"		= "Windows Cleanup"
-		"TaskPath"		= "Setup Script"
+		"TaskPath"		= "Sophia Script"
 		"Principal"		= $Principal
 		"Action"		= $Action
 		"Description"	= $Description
@@ -4759,7 +4790,7 @@ function CreateSoftwareDistributionTask
 	}
 	$Parameters = @{
 		"TaskName"		= "SoftwareDistribution"
-		"TaskPath"		= "Setup Script"
+		"TaskPath"		= "Sophia Script"
 		"Principal"		= $Principal
 		"Action"		= $Action
 		"Description"	= $Description
@@ -4800,7 +4831,7 @@ function CreateTempTask
 	}
 	$Parameters = @{
 		"TaskName"		= "Temp"
-		"TaskPath"		= "Setup Script"
+		"TaskPath"		= "Sophia Script"
 		"Principal"		= $Principal
 		"Action"		= $Action
 		"Description"		= $Description
@@ -5327,7 +5358,7 @@ function DisableAuditProcess
 	In order this feature to work events auditing must be enabled ("EnableAuditProcess" function)
 
 	Включать командную строку в событиях создания процесса
-	Необходимо включить аудит событий, чтобы работала данная опция (функция "EnableAuditProcess")
+	Необходимо включить аудит событий, чтобы работал данный функционал (функция "EnableAuditProcess")
 #>
 function EnableAuditCommandLineProcess
 {
@@ -5346,7 +5377,7 @@ function DisableAuditCommandLineProcess
 	In order this feature to work events auditing and command line in process creation events must be enabled ("EnableAuditProcess" function)
 
 	Создать настаиваемое представление "Создание процесса" в Просмотре событий
-	Необходимо включить аудит событий и командной строки в событиях создания процесса, чтобы работала данная опция (функция "EnableAuditProcess")
+	Необходимо включить аудит событий и командной строки в событиях создания процесса, чтобы работал данный функционал (функция "EnableAuditProcess")
 #>
 function CreateEventViewerCustomView
 {
