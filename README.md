@@ -24,9 +24,8 @@
 <details>
   <summary>Screenshots</summary>
   
-![Image](https://i.imgur.com/OjWeooZ.png)
-![Image](https://i.imgur.com/BDOoE4B.png)
-![Image](https://i.imgur.com/stEsBkN.png)
+![Image](https://i.imgur.com/5up2HrJ.png)
+![Image](https://i.imgur.com/AXY12aJ.png)
 </details>
 
 ## Videos
