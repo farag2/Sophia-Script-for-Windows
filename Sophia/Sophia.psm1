@@ -5797,10 +5797,6 @@ function RemoveRichTextDocumentNewContext
 	{
 		Remove-Item -Path Registry::HKEY_CLASSES_ROOT\.rtf\ShellNew -Force -ErrorAction Ignore
 	}
-	else
-	{
-		Get-WindowsCapability -Online -Name "Microsoft.Windows.WordPad*" | Add-WindowsCapability -Online
-	}
 }
 
 # Restore the "Rich Text Document" item in the "New" context menu
