@@ -260,7 +260,7 @@ function DisableScheduledTasks
 	# Если устройство не является ноутбуком, отключить также и FODCleanupTask
 	if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2)
 	{
-		# HelloFace
+		# Windows Hello
 		$ScheduledTaskList += "FODCleanupTask"
 	}
 
@@ -505,8 +505,8 @@ function DisableTailoredExperiences
 	New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Privacy -Name TailoredExperiencesWithDiagnosticDataEnabled -PropertyType DWord -Value 1 -Force
 }
 
-# Disable Bing search in the Start Menu
-# Отключить в меню "Пуск" поиск через Bing
+# Disable Bing search in the Start Menu (for the USA only)
+# Отключить в меню "Пуск" поиск через Bing (только для США)
 function DisableBingSearch
 {
 	if ((Get-WinHomeLocation).GeoId -eq 244)
@@ -519,8 +519,8 @@ function DisableBingSearch
 	}
 }
 
-# Enable Bing search in the Start Menu
-# Включить в меню "Пуск" поиск через Bing
+# Enable Bing search in the Start Menu only (for the USA only)
+# Включить в меню "Пуск" поиск через Bing (только для США)
 function EnableBingSearch
 {
 	if ((Get-WinHomeLocation).GeoId -eq 244)
@@ -1771,8 +1771,6 @@ function InstallWSL
 #>
 function SetupWSL
 {
-	# Download the Linux kernel update package
-	# Скачать пакет обновления ядра Linux
 	try
 	{
 		if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
@@ -1851,11 +1849,11 @@ function SetupWSL
 	{
 		if ($RU)
 		{
-			Write-Warning -Message "Windows Subsystem for Linux Update is not installed"
+			Write-Warning -Message "Пакет обновления ядра Linux не установлен"
 		}
 		else
 		{
-			Write-Warning -Message "Restart PC and run`nwsl --set-default-version 2"
+			Write-Warning -Message "Windows Subsystem for Linux Update is not installed"
 		}
 	}
 }
@@ -3771,11 +3769,11 @@ function UnpinAllStartTiles
 	Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
 	Start-Sleep -Seconds 3
 
-	Remove-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name LockedStartLayout -Force -ErrorAction SilentlyContinue
-	Remove-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name StartLayoutFile -Force -ErrorAction SilentlyContinue
+	Remove-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name LockedStartLayout -Force -ErrorAction Ignore
+	Remove-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name StartLayoutFile -Force -ErrorAction Ignore
 
 	Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
-	Get-Item -Path $StartMenuLayoutPath | Remove-Item -Force -ErrorAction SilentlyContinue
+	Get-Item -Path $StartMenuLayoutPath | Remove-Item -Force -ErrorAction Ignore
 }
 
 <#
@@ -3872,7 +3870,7 @@ function PinControlPanel
 	"$env:SystemRoot\System32\$ControlPanelLocalizedName.lnk" "51201"
 "@
 			Start-Process -FilePath $PSScriptRoot\syspin.exe -WindowStyle Hidden -ArgumentList $Arguments -Wait
-			Remove-Item -Path "$env:SystemRoot\System32\$ControlPanelLocalizedName.lnk" -Force -ErrorAction SilentlyContinue
+			Remove-Item -Path "$env:SystemRoot\System32\$ControlPanelLocalizedName.lnk" -Force -ErrorAction Ignore
 		}
 
 		# Restart the Start menu
@@ -3969,7 +3967,7 @@ function PinDevicesPrinters
 }
 
 <#
-	Pin the Command Prompt" shortcut to Start within syspin
+	Pin the "Command Prompt" shortcut to Start within syspin
 	Закрепить ярлык "Командная строка" на начальном экране с помощью syspin
 
 	http://www.technosys.net/products/utils/pintotaskbar
@@ -4541,7 +4539,7 @@ function EnableGPUScheduling
 		if ((Get-CimInstance -ClassName CIM_ComputerSystem).Model -notmatch "Virtual")
 		{
 			# Checking whether a WDDM verion is 2.7 or higher
-			# Проверка: имеет ли WDDM версию 2.7 и выше
+			# Проверка: имеет ли WDDM версию 2.7 или выше
 			$WddmVersion_Min = Get-ItemPropertyValue -Path HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\FeatureSetUsage -Name WddmVersion_Min
 			if ($WddmVersion_Min -ge 2700)
 			{
@@ -5557,7 +5555,7 @@ function RemoveCABInstallContext
 }
 
 # Add the "Run as different user" item to the .exe files types context menu
-# Добавить пункт "Запуск от имени другого пользователя" в контекстного меню .exe файлов
+# Добавить пункт "Запуск от имени другого пользователя" в контекстное меню .exe файлов
 function AddExeRunAsDifferentUserContext
 {
 	Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name Extended -Force -ErrorAction Ignore
@@ -5797,7 +5795,7 @@ function RemoveRichTextDocumentNewContext
 {
 	if ((Get-WindowsCapability -Online -Name "Microsoft.Windows.WordPad*").State -eq "Installed")
 	{
-		Remove-Item -Path Registry::HKEY_CLASSES_ROOT\.rtf\ShellNew -Force -ErrorAction SilentlyContinue
+		Remove-Item -Path Registry::HKEY_CLASSES_ROOT\.rtf\ShellNew -Force -ErrorAction Ignore
 	}
 	else
 	{
