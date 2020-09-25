@@ -28,15 +28,9 @@
 ![Image](https://i.imgur.com/AXY12aJ.png)
 </details>
 
-## Videos
+## Sophia Script in Action
 
-<details>
-  <summary>Videos</summary>
-  
-[![YT](https://i.imgur.com/mADOh3c.png)](https://youtu.be/8MzuDLNH9QU)
-
-[![YT](https://i.imgur.com/mADOh3c.png)](https://youtu.be/cjyi9nX8sFA)
-</details>
+[![YT](https://i.imgur.com/mADOh3c.png)](https://youtu.be/TpYxw3FYoNk)
 
 ## Core features
 
