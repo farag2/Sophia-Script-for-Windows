@@ -69,11 +69,13 @@
 
 To run the script:
 
-* Download [up-to-date version](https://github.com/farag2/Windows-10-Sophia-Script/releases);
+* Download [up-to-date version](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest);
 * Expand the archive;
-* Open folder where the archive was expanded;
+* Open folder with the expanded archive;
 * Look through the preset file to configure functions that you want to be ran;
-* Click "File" in File Explorer, hover over "Open Windows PowerShell", and select "Open Windows PowerShell as Administrator" [(screenshots)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/);
+  * Comment out function with the ```#``` char if you don't want it to be ran;
+  * Uncomment function by removing the ```#``` char if you want it to be ran.
+* Click "File" in File Explorer, hover over "Open Windows PowerShell", and select "Open Windows PowerShell as Administrator" [(how-to with screenshots)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/);
 * Set execution policy to be able to run scripts only in the current PowerShell session
 
   ```powershell
