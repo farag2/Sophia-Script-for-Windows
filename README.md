@@ -8,9 +8,9 @@
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Q5Q51QUJC)
 </div>
 
-|              |                 |                |                |                |                |                |
-|--------------|-----------------|----------------|----------------|----------------|----------------|----------------|
-| [![YT](https://i.imgur.com/mADOh3c.png)](https://youtu.be/8E6OT_QcHaU?t=370) | [![YT](https://i.imgur.com/mADOh3c.png)](https://youtu.be/WK_A9c-m2PQ) | [![ghacks](https://i.imgur.com/K4f8VBo.png)](https://www.ghacks.net/2020/09/27/windows-10-setup-script-has-a-new-name-and-is-now-easier-to-use/) | [![neowin](https://i.imgur.com/5fILFqz.png)](https://www.neowin.net/news/this-windows-10-setup-script-lets-you-fine-tune-around-150-functions-for-new-installs) | [![comss](https://cdn.comss.net/img/logo51.png)](https://www.comss.ru/page.php?id=8019) | [![habr](https://i.imgur.com/cXWLr4I.png)](https://habr.com/en/post/465365/) | [![dm](https://i.imgur.com/6sAI2wZ.png)](https://www.deskmodder.de/blog/2020/09/25/windows-10-sophia-script-windows-10-feintuning-mit-powershell/) |
+|              |                |                |                |                |                |
+|--------------|----------------|----------------|----------------|----------------|----------------|
+| [![YT](https://i.imgur.com/mADOh3c.png)](https://youtu.be/8E6OT_QcHaU?t=370) | [![ghacks](https://i.imgur.com/K4f8VBo.png)](https://www.ghacks.net/2020/09/27/windows-10-setup-script-has-a-new-name-and-is-now-easier-to-use/) | [![neowin](https://i.imgur.com/5fILFqz.png)](https://www.neowin.net/news/this-windows-10-setup-script-lets-you-fine-tune-around-150-functions-for-new-installs) | [![comss](https://cdn.comss.net/img/logo51.png)](https://www.comss.ru/page.php?id=8019) | [![habr](https://i.imgur.com/cXWLr4I.png)](https://habr.com/en/post/521202/) | [![dm](https://i.imgur.com/6sAI2wZ.png)](https://www.deskmodder.de/blog/2020/09/25/windows-10-sophia-script-windows-10-feintuning-mit-powershell/) |
 
 ## ⚠️ Before running ⚠️
 
@@ -53,8 +53,8 @@
 * Create a Windows cleaning up task in the Task Scheduler;
   * A toast notification will pop up a minute before the task [starts](#Screenshots)
 * Create tasks in the Task Scheduler to clear
-  * %SystemRoot%\SoftwareDistribution\Download
-  * %TEMP%
+  * ```%SystemRoot%\SoftwareDistribution\Download```
+  * ```%TEMP%```
 * Unpin all Start menu tiles;
 * Pin shortcuts to Start menu using [syspin.exe](http://www.technosys.net/products/utils/pintotaskbar)
   * Three shortcuts are preconfigured to be pinned: Control Panel, "old style" Devices and Printers, and Command Prompt
@@ -92,12 +92,13 @@ To run the script:
 
 ## Supported Windows 10 versions
 
-|Version|Code name|   Marketing name   |Build | Arch |      Editions     |
-|:-----:|:-------:|:------------------:|:----:|:----:|:-----------------:|
-| 2004  |  20H1   |   May 2020 Update  |19041 |  x64 |Home/Pro/Enterprise|
-| 1909  |  19H2   |November 2019 Update|18363 |  x64 |Home/Pro/Enterprise|
-| 1903  |  19H1   |   May 2019 Update  |18362 |  x64 |Home/Pro/Enterprise|
-| 1809  |         |LTSC Enterprise 2019|17763 |  x64 |   Enterprise      |
+|Version|Code name|   Marketing name   |Build | Arch |      Editions     | Script version |
+|:-----:|:-------:|:------------------:|:----:|:----:|:-----------------:|:--------------:|
+| 2009  |  20H2   |October 2020 Update |19042 |  x64 |Home/Pro/Enterprise|[5.0.1](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/Sophia)|
+| 2004  |  20H1   |   May 2020 Update  |19041 |  x64 |Home/Pro/Enterprise|[5.0.1](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/Sophia)|
+| 1909  |  19H2   |November 2019 Update|18363 |  x64 |Home/Pro/Enterprise|[4.5](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/190x)|
+| 1903  |  19H1   |   May 2019 Update  |18362 |  x64 |Home/Pro/Enterprise|[4.5](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/190x)|
+| 1809  |         |LTSC Enterprise 2019|17763 |  x64 |   Enterprise      |[4.5](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/LTSC)|
 
 ## GUI version (C#)
 
