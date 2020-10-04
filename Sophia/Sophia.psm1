@@ -491,16 +491,12 @@ function EnableSuggestedContent
 # Не предлагать персонализированные возможности, основанные на выбранном параметре диагностических данных (только для текущего пользователя)
 function DisableTailoredExperiences
 {
-	if (-not (Test-Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement))
-	{
-		New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement -Force
-	}
 	New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Privacy -Name TailoredExperiencesWithDiagnosticDataEnabled -PropertyType DWord -Value 0 -Force
 }
 
 # Offer tailored experiences based on the diagnostic data setting
 # Предлагать персонализированные возможности, основанные на выбранном параметре диагностических данных
-function DisableTailoredExperiences
+function EnableTailoredExperiences
 {
 	New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Privacy -Name TailoredExperiencesWithDiagnosticDataEnabled -PropertyType DWord -Value 1 -Force
 }

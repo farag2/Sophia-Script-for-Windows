@@ -166,7 +166,7 @@ DisableTailoredExperiences
 
 # Offer tailored experiences based on the diagnostic data setting
 # Предлагать персонализированные возможности, основанные на выбранном параметре диагностических данных
-# DisableTailoredExperiences
+# EnableTailoredExperiences
 
 # Disable Bing search in the Start Menu
 # Отключить в меню "Пуск" поиск через Bing
