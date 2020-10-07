@@ -500,7 +500,7 @@ function DisableTailoredExperiences
 
 # Offer tailored experiences based on the diagnostic data setting
 # Предлагать персонализированные возможности, основанные на выбранном параметре диагностических данных
-function DisableTailoredExperiences
+function EnableTailoredExperiences
 {
 	New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Privacy -Name TailoredExperiencesWithDiagnosticDataEnabled -PropertyType DWord -Value 1 -Force
 }
