@@ -85,17 +85,28 @@ To run the script:
 * Type
 
 ```
-.\Preset.ps1
+.\Sophia.ps1
 ```
 
 * Press Enter
+
+## How to translate
+
+* Get your OS UI culture by
+
+   ```powershell
+   $PSUICulture
+   ```
+
+* Create a folder with the UI culture name;
+* Place your localized Sophia.psd1 file into this folder
 
 ## Supported Windows 10 versions
 
 |Version|Code name|   Marketing name   |Build | Arch |      Editions     | Script version |
 |:-----:|:-------:|:------------------:|:----:|:----:|:-----------------:|:--------------:|
-| 2009  |  20H2   |October 2020 Update |19042 |  x64 |Home/Pro/Enterprise|[5.0.1](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/Sophia)|
-| 2004  |  20H1   |   May 2020 Update  |19041 |  x64 |Home/Pro/Enterprise|[5.0.1](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/Sophia)|
+| 2009  |  20H2   |October 2020 Update |19042 |  x64 |Home/Pro/Enterprise|[5.1](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/Sophia)|
+| 2004  |  20H1   |   May 2020 Update  |19041 |  x64 |Home/Pro/Enterprise|[5.1](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/Sophia)|
 | 1909  |  19H2   |November 2019 Update|18363 |  x64 |Home/Pro/Enterprise|[4.5](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/190x)|
 | 1903  |  19H1   |   May 2019 Update  |18362 |  x64 |Home/Pro/Enterprise|[4.5](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/190x)|
 | 1809  |         |LTSC Enterprise 2019|17763 |  x64 |   Enterprise      |[4.5](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/LTSC)|
