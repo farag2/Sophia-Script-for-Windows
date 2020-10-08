@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	"Windows 10 Sophia Script" is a set of functions for Windows 10 fine-tuning and automating the routine tasks
 
-	Version: v5.0.1
-	Date: 25.09.2020
+	Version: v5.1
+	Date: 08.10.2020
 	Copyright (c) 2020 farag & oZ-Zo
 
 	Thanks to all http://forum.ru-board.com members involved
@@ -22,13 +22,11 @@
 		Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 
 	.EXAMPLE
-	PS C:\> & '.\Preset.ps1'
+	PS C:\> .\Sophia.ps1
 
 	.NOTES
-	Ask a question on
 	http://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
-	https://habr.com/en/post/465365/
-	https://4pda.ru/forum/index.php?s=&showtopic=523489&view=findpost&p=95909388
+	https://habr.com/en/post/521202/
 	https://forums.mydigitallife.net/threads/powershell-script-setup-windows-10.81675/
 	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
 
@@ -50,24 +48,13 @@ function Check
 	# Очистка переменной $Error
 	$Global:Error.Clear()
 
-	# Get information about the current culture settings
-	# Получить сведения о параметрах текущей культуры
-	$Global:RU = $PSUICulture -eq "ru-RU"
-
 	# Detect the OS bitness
 	# Определить разрядность ОС
 	switch ([Environment]::Is64BitOperatingSystem)
 	{
 		$false
 		{
-			if ($RU)
-			{
-				Write-Warning -Message "Скрипт поддерживает только Windows 10 x64"
-			}
-			else
-			{
-				Write-Warning -Message "The script supports Windows 10 x64 only"
-			}
+			Write-Warning -Message $Localization.UnsupportedOSBitness
 			break
 		}
 		Default {}
@@ -79,14 +66,7 @@ function Check
 	{
 		$true
 		{
-			if ($RU)
-			{
-				Write-Warning -Message "Контролируемый доступ к папкам выключен"
-			}
-			else
-			{
-				Write-Warning -Message "Controlled folder access disabled"
-			}
+			Write-Warning -Message $Localization.ControlledFolderAccessDisabled
 			Set-MpPreference -EnableControlledFolderAccess Disabled
 
 			# Open "Ransomware protection" page
@@ -467,7 +447,7 @@ function EnableAppsSilentInstalling
 
 # Do not suggest ways I can finish setting up my device to get the most out of Windows (current user only)
 # Не предлагать способы завершения настройки устройства для максимально эффективного использования Windows (только для текущего пользователя)
-function DisableSuggestedContent
+function DisableWhatsNewInWindows
 {
 	if (-not (Test-Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement))
 	{
@@ -478,7 +458,7 @@ function DisableSuggestedContent
 
 # Suggest ways I can finish setting up my device to get the most out of Windows
 # Предлагать способы завершения настройки устройства для максимально эффективного использования Windows
-function EnableSuggestedContent
+function EnableWhatsNewInWindows
 {
 	if (-not (Test-Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement))
 	{
@@ -491,22 +471,18 @@ function EnableSuggestedContent
 # Не предлагать персонализированные возможности, основанные на выбранном параметре диагностических данных (только для текущего пользователя)
 function DisableTailoredExperiences
 {
-	if (-not (Test-Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement))
-	{
-		New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement -Force
-	}
 	New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Privacy -Name TailoredExperiencesWithDiagnosticDataEnabled -PropertyType DWord -Value 0 -Force
 }
 
 # Offer tailored experiences based on the diagnostic data setting
 # Предлагать персонализированные возможности, основанные на выбранном параметре диагностических данных
-function DisableTailoredExperiences
+function EnableTailoredExperiences
 {
 	New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Privacy -Name TailoredExperiencesWithDiagnosticDataEnabled -PropertyType DWord -Value 1 -Force
 }
 
 # Disable Bing search in the Start Menu (for the USA only)
-# Отключить в меню "Пуск" поиск через Bing (только для США)
+# Отключить поиск через Bing в меню "Пуск" (только для США)
 function DisableBingSearch
 {
 	if ((Get-WinHomeLocation).GeoId -eq 244)
@@ -1196,14 +1172,7 @@ function UninstallOneDrive
 	[string]$UninstallString = Get-Package -Name "Microsoft OneDrive" -ProviderName Programs -ErrorAction Ignore | ForEach-Object -Process {$_.Meta.Attributes["UninstallString"]}
 	if ($UninstallString)
 	{
-		if ($RU)
-		{
-			Write-Verbose -Message "Удаление OneDrive" -Verbose
-		}
-		else
-		{
-			Write-Verbose -Message "Uninstalling OneDrive" -Verbose
-		}
+		Write-Verbose -Message $Localization.OneDriveUninstalling -Verbose
 		Stop-Process -Name OneDrive -Force -ErrorAction Ignore
 		Stop-Process -Name OneDriveSetup -Force -ErrorAction Ignore
 		Stop-Process -Name FileCoAuth -Force -ErrorAction Ignore
@@ -1229,14 +1198,8 @@ function UninstallOneDrive
 		}
 		else
 		{
-			if ($RU)
-			{
-				Write-Error -Message "Папка $OneDriveUserFolder не пуста. Удалите ее вручную" -ErrorAction SilentlyContinue
-			}
-			else
-			{
-				Write-Error -Message "The $OneDriveUserFolder folder is not empty. Delete it manually" -ErrorAction SilentlyContinue
-			}
+			$Message = Invoke-Command -ScriptBlock ([ScriptBlock]::Create($Localization.OneDriveNotEmptyFolder))
+			Write-Error -Message $Message -ErrorAction SilentlyContinue
 			Invoke-Item -Path $OneDriveUserFolder
 		}
 
@@ -1256,40 +1219,23 @@ function UninstallOneDrive
 		Clear-Variable -Name OpenedFolders -Force -ErrorAction Ignore
 		$OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
 
-		# Terminate File Explorer process without restarting
-		# Завершить процесс проводника без перезапуска
+		# Terminate File Explorer process
+		# Завершить процесс проводника
 		TASKKILL /F /IM explorer.exe
 
-		# Waiting for the FileSyncShell64.dll to be unloaded, using System.IO.File class
-		# Ожидаем, пока FileSyncShell64.dll выгрузится, используя класс System.IO.File
-		$FileSyncShell64dllFolder = Get-ChildItem -Path "$OneDriveFolder\*\amd64\FileSyncShell64.dll" -Force
-		foreach ($FileSyncShell64dll in $FileSyncShell64dllFolder)
+		# Attempt to unregister FileSyncShell64.dll and remove
+		# Попытка разрегистрировать FileSyncShell64.dll и удалить
+		$FileSyncShell64dlls = Get-ChildItem -Path "$OneDriveFolder\*\amd64\FileSyncShell64.dll" -Force
+		foreach ($FileSyncShell64dll in $FileSyncShell64dlls.FullName)
 		{
-			do
-			{
-				try
-				{
-					$FileStream = [System.IO.File]::Open($FileSyncShell64dll.FullName,"Open","Write")
-					$FileStream.Close()
-					$FileStream.Dispose()
-					$Locked = $false
-				}
-				catch [System.Management.Automation.MethodInvocationException]
-				{
-					$Locked = $true
+			Start-Process -FilePath regsvr32.exe -ArgumentList "/u /s $FileSyncShell64dll" -Wait
+			Remove-Item -Path $FileSyncShell64dll -Force -ErrorAction Ignore
 
-					if ($RU)
-					{
-						Write-Verbose -Message "Waiting FileSyncShell64.dll to be unloaded" -Verbose
-					}
-					else
-					{
-						Write-Verbose -Message "Waiting FileSyncShell64.dll to be unloaded" -Verbose
-					}
-					Start-Sleep -Milliseconds 500
-				}
+			if (Test-Path -Path $FileSyncShell64dll)
+			{
+				$Message = Invoke-Command -ScriptBlock ([ScriptBlock]::Create($Localization.OneDriveFileSyncShell64dllBlocked))
+				Write-Error -Message $Message -ErrorAction SilentlyContinue
 			}
-			while ($Locked)
 		}
 
 		# Restoring closed folders
@@ -1319,14 +1265,7 @@ function InstallOneDrive
 	{
 		if (Test-Path -Path $env:SystemRoot\SysWOW64\OneDriveSetup.exe)
 		{
-			if ($RU)
-			{
-				Write-Verbose -Message "OneDriveSetup.exe is starting" -Verbose
-			}
-			else
-			{
-				Write-Verbose -Message "Запускается OneDriveSetup.exe" -Verbose
-			}
+			Write-Verbose -Message $Localization.OneDriveInstalling -Verbose
 			Start-Process -FilePath $env:SystemRoot\SysWOW64\OneDriveSetup.exe
 		}
 		else
@@ -1337,14 +1276,7 @@ function InstallOneDrive
 			{
 				if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
 				{
-					if ($RU)
-					{
-						Write-Verbose "Скачивается OneDrive... ~33 МБ" -Verbose
-					}
-					else
-					{
-						Write-Verbose "Downloading OneDrive... ~33 MB" -Verbose
-					}
+					Write-Verbose -Message $Localization.OneDriveDownloading -Verbose
 
 					[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 					$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
@@ -1358,19 +1290,9 @@ function InstallOneDrive
 					Start-Process -FilePath "$DownloadsFolder\OneDriveSetup.exe"
 				}
 			}
-			catch
+			catch [System.Net.WebException]
 			{
-				if ($Global:Error.Exception.Status -eq "NameResolutionFailure")
-				{
-					if ($RU)
-					{
-						Write-Warning -Message "Отсутствует интернет-соединение"
-					}
-					else
-					{
-						Write-Warning -Message "No Internet connection"
-					}
-				}
+				Write-Warning -Message $Localization.NoInternetConnection
 			}
 		}
 		Get-ScheduledTask -TaskName "Onedrive* Update*" | Start-ScheduledTask
@@ -1518,16 +1440,13 @@ function SetTempPath
 	{
 		New-Item -Path $env:LOCALAPPDATA\Temp -ItemType SymbolicLink -Value $env:SystemDrive\Temp -Force
 	}
-	catch
+	catch [System.Exception]
 	{
-		if ($RU)
-		{
-			Write-Error -Message "Папка $env:LOCALAPPDATA\Temp не пуста. Очистите ее вручную" -ErrorAction SilentlyContinue
-		}
-		else
-		{
-			Write-Error -Message "The $env:LOCALAPPDATA\Temp folder is not empty. Clear it manually" -ErrorAction SilentlyContinue
-		}
+		$Message = Invoke-Command -ScriptBlock ([ScriptBlock]::Create($Localization.LOCALAPPDATANotEmptyFolder))
+		Write-Error -Message $Message -ErrorAction SilentlyContinue
+	}
+	finally
+	{
 		Invoke-Item -Path $env:LOCALAPPDATA\Temp
 	}
 }
@@ -1771,52 +1690,31 @@ function InstallWSL
 #>
 function SetupWSL
 {
-	try
+	if ((Get-Package -Name "Windows Subsystem for Linux Update" -ProviderName msi -Force -ErrorAction Ignore).Status -ne "Installed")
 	{
-		if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
+		try
 		{
-			if ($RU)
+			if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
 			{
-				Write-Verbose "Скачивается пакет обновления ядра Linux... ~14 МБ" -Verbose
-			}
-			else
-			{
-				Write-Verbose "Downloading the Linux kernel update package... ~14 MB" -Verbose
-			}
+				Write-Verbose $Localization.WSLUpdateDownloading -Verbose
 
-			[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-			$Parameters = @{
-				Uri = "https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi"
-				OutFile = "$DownloadsFolder\wsl_update_x64.msi"
-				Verbose = [switch]::Present
-			}
-			Invoke-WebRequest @Parameters
+				[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+				$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+				$Parameters = @{
+					Uri = "https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi"
+					OutFile = "$DownloadsFolder\wsl_update_x64.msi"
+					Verbose = [switch]::Present
+				}
+				Invoke-WebRequest @Parameters
 
-			if ($RU)
-			{
-				Write-Verbose "Установка пакета обновления ядра Linux..." -Verbose
+				Write-Verbose $Localization.WSLUpdateInstalling -Verbose
+				Start-Process -FilePath "$DownloadsFolder\wsl_update_x64.msi" -ArgumentList "/passive" -Wait
+				Remove-Item -Path "$DownloadsFolder\wsl_update_x64.msi" -Force
 			}
-			else
-			{
-				Write-Verbose "Installing the Linux kernel update package..." -Verbose
-			}
-			Start-Process -FilePath "$DownloadsFolder\wsl_update_x64.msi" -ArgumentList "/passive" -Wait
-			Remove-Item -Path "$DownloadsFolder\wsl_update_x64.msi" -Force
 		}
-	}
-	catch
-	{
-		if ($Global:Error.Exception.Status -eq "NameResolutionFailure")
+		catch [System.Net.WebException]
 		{
-			if ($RU)
-			{
-				Write-Warning -Message "Отсутствует интернет-соединение"
-			}
-			else
-			{
-				Write-Warning -Message "No Internet connection"
-			}
+			Write-Warning -Message $Localization.NoInternetConnection
 		}
 	}
 
@@ -1827,34 +1725,9 @@ function SetupWSL
 		Установить WSL 2 как архитектуру по умолчанию при установке нового дистрибутива Linux
 		Чтобы получать обновления ядра, включите параметр Центра обновления Windows: "Получение обновлений для других продуктов Майкрософт при обновлении Windows"
 	#>
-	if ((Get-Package -Name "Windows Subsystem for Linux Update" -ProviderName msi -Force).Status -eq "Installed")
+	if ((Get-Package -Name "Windows Subsystem for Linux Update" -ProviderName msi -Force -ErrorAction Ignore).Status -eq "Installed")
 	{
-		try
-		{
-			wsl --set-default-version 2
-		}
-		catch
-		{
-			if ($RU)
-			{
-				Write-Warning -Message "Перезагрузите ПК и выполните`nwsl --set-default-version 2"
-			}
-			else
-			{
-				Write-Warning -Message "Restart PC and run`nwsl --set-default-version 2"
-			}
-		}
-	}
-	else
-	{
-		if ($RU)
-		{
-			Write-Warning -Message "Пакет обновления ядра Linux не установлен"
-		}
-		else
-		{
-			Write-Warning -Message "Windows Subsystem for Linux Update is not installed"
-		}
+		wsl --set-default-version 2
 	}
 }
 
@@ -2156,16 +2029,8 @@ function DisableWindowsCapabilities
 		}
 		$OFS = " "
 
-		if ($RU)
-		{
-			$Window.Title = "Удалить дополнительные компоненты"
-			$Button.Content = "Удалить"
-		}
-		else
-		{
-			$Window.Title = "Optional features (FODv2) to remove"
-			$Button.Content = "Uninstall"
-		}
+		$Window.Title = $Localization.FODWindowTitle
+		$Button.Content = $Localization.FODWindowButton
 	})
 
 	# Button Click Event
@@ -2174,28 +2039,14 @@ function DisableWindowsCapabilities
 
 	if (Get-WindowsCapability -Online | Where-Object -FilterScript {($_.State -eq "Installed") -and ($_.Name -cnotmatch ($ExcludedCapabilities -join "|"))})
 	{
-		if ($RU)
-		{
-			Write-Verbose -Message "Диалоговое окно открывается..." -Verbose
-		}
-		else
-		{
-			Write-Verbose -Message "Displaying the dialog box..." -Verbose
-		}
+		Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
 		# Display the dialog box
 		# Отобразить диалоговое окно
 		$Form.ShowDialog() | Out-Null
 	}
 	else
 	{
-		if ($RU)
-		{
-			Write-Verbose -Message "Отсутствуют данные" -Verbose
-		}
-		else
-		{
-			Write-Verbose -Message "Nothing to display" -Verbose
-		}
+		Write-Verbose -Message $Localization.NoData -Verbose
 	}
 }
 
@@ -2227,35 +2078,35 @@ function DisableBackgroundUWPApps
 	$ExcludedBackgroundApps = @(
 		# Lock screen app
 		# Экран блокировки
-		"Microsoft.LockApp*",
+		"Microsoft.LockApp",
 
 		# Content Delivery Manager (delivers Windows Spotlight wallpapers to the lock screen)
 		# Content Delivery Manager (доставляет обои для Windows Spotlight на экран блокировки)
-		"Microsoft.Windows.ContentDeliveryManager*",
+		"Microsoft.Windows.ContentDeliveryManager",
 
 		# Cortana
-		"Microsoft.Windows.Cortana*",
+		"Microsoft.Windows.Cortana",
 
 		# Windows Search
-		"Microsoft.Windows.Search*",
+		"Microsoft.Windows.Search",
 
 		# Windows Security
 		# Безопасность Windows
-		"Microsoft.Windows.SecHealthUI*",
+		"Microsoft.Windows.SecHealthUI",
 
 		# Windows Shell Experience (Action center, snipping support, toast notification, touch screen keyboard)
 		# Windows Shell Experience (Центр уведомлений, приложение "Ножницы", тостовые уведомления, сенсорная клавиатура)
-		"Microsoft.Windows.ShellExperienceHost*",
+		"Microsoft.Windows.ShellExperienceHost",
 
 		# The Start menu
 		# Меню "Пуск"
-		"Microsoft.Windows.StartMenuExperienceHost*",
+		"Microsoft.Windows.StartMenuExperienceHost",
 
 		# Microsoft Store
-		"Microsoft.WindowsStore*"
+		"Microsoft.WindowsStore"
 	)
 	$OFS = "|"
-	Get-ChildItem -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications | Where-Object -FilterScript {$_.PSChildName -cnotmatch $ExcludedBackgroundApps} | ForEach-Object -Process {
+	Get-ChildItem -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications | Where-Object -FilterScript {$_.PSChildName -notmatch "^$($ExcludedBackgroundApps.ForEach({[regex]::Escape($_)}))"} | ForEach-Object -Process {
 		New-ItemProperty -Path $_.PsPath -Name Disabled -PropertyType DWord -Value 1 -Force
 		New-ItemProperty -Path $_.PsPath -Name DisabledByUser -PropertyType DWord -Value 1 -Force
 	}
@@ -2375,16 +2226,9 @@ function EnableWindowsSandbox
 					Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart
 				}
 			}
-			catch [Exception]
+			catch [System.Exception]
 			{
-				if ($RU)
-				{
-					Write-Error -Message "Включите в BIOS виртуализацию" -ErrorAction SilentlyContinue
-				}
-				else
-				{
-					Write-Error -Message "Enable Virtualization in BIOS" -ErrorAction SilentlyContinue
-				}
+				Write-Error -Message $Localization.EnableHardwareVT -ErrorAction SilentlyContinue
 			}
 		}
 	}
@@ -2413,16 +2257,9 @@ function DisableWindowsSandbox
 					Disable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -Online -NoRestart
 				}
 			}
-			catch [Exception]
+			catch [System.Exception]
 			{
-				if ($RU)
-				{
-					Write-Error -Message "Включите в BIOS/UEFI виртуализацию" -ErrorAction SilentlyContinue
-				}
-				else
-				{
-					Write-Error -Message "Enable virtualization in BIOS/UEFI" -ErrorAction SilentlyContinue
-				}
+				Write-Error -Message $Localization.EnableHardwareVT -ErrorAction SilentlyContinue
 			}
 		}
 	}
@@ -2586,14 +2423,8 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 		{
 			if ((Get-ChildItem -Path $UserShellFolderRegValue | Measure-Object).Count -ne 0)
 			{
-				if ($RU)
-				{
-					Write-Error -Message "В папке $UserShellFolderRegValue осталась файлы. Переместите их вручную в новое расположение" -ErrorAction SilentlyContinue
-				}
-				else
-				{
-					Write-Error -Message "Some files left in the $UserShellFolderRegValue folder. Move them manually to a new location" -ErrorAction SilentlyContinue
-				}
+				$Message = Invoke-Command -ScriptBlock ([ScriptBlock]::Create($Localization.UserShellFolderNotEmpty))
+				Write-Error -Message $Message -ErrorAction SilentlyContinue
 			}
 
 			# Creating a new folder if there is no one
@@ -2697,14 +2528,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 	# Store all drives letters to use them within ShowMenu function
 	# Сохранить все буквы диска, чтобы использовать их в функции ShowMenu
-	if ($RU)
-	{
-		Write-Verbose "Получение дисков..." -Verbose
-	}
-	else
-	{
-		Write-Verbose "Retrieving drives..." -Verbose
-	}
+	Write-Verbose $Localization.RetrievingDrivesList -Verbose
 	$DriveLetters = @((Get-Disk | Where-Object -FilterScript {$_.BusType -ne "USB"} | Get-Partition | Get-Volume | Where-Object -FilterScript {$null -ne $_.DriveLetter}).DriveLetter | Sort-Object)
 
 	# If the number of disks is more than one, set the second drive in the list as default drive
@@ -2720,19 +2544,14 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 	# Desktop
 	# Рабочий стол
+	Write-Verbose -Message $Localization.DesktopDriveSelect -Verbose
+	Write-Warning -Message $Localization.DesktopFilesWontBeMoved
+
 	$Title = ""
-	if ($RU)
-	{
-		$Message = "Хотите изменить местоположение папки `"Рабочий стол`"?"
-		Write-Warning -Message "`nФайлы не будут перенесены"
-		$Options = "&Изменить", "&Пропустить"
-	}
-	else
-	{
-		$Message = "Would you like to change the location of the Desktop folder?"
-		Write-Warning -Message "`nFiles will not be moved"
-		$Options = "&Change", "&Skip"
-	}
+	$Message = $Localization.DesktopFolderRequest
+	$Change = $Localization.DesktopFolderChange
+	$Skip = $Localization.DesktopFolderSkip
+	$Options = "&$Change", "&$Skip"
 	$DefaultChoice = 1
 	$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -2740,45 +2559,25 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 	{
 		"0"
 		{
-			if ($RU)
-			{
-				$Title = "`nВыберите диск, в корне которого будет создана папка для `"Рабочий стол`""
-			}
-			else
-			{
-				$Title = "`nSelect the drive within the root of which the `"Desktop`" folder will be created"
-			}
-			$SelectedDrive = ShowMenu -Title $Title -Menu $DriveLetters -Default $Default
+			$SelectedDrive = ShowMenu -Title $Localization.DesktopDriveSelect -Menu $DriveLetters -Default $Default
 			UserShellFolder -UserFolder Desktop -FolderPath "${SelectedDrive}:\Desktop" -RemoveDesktopINI
 		}
 		"1"
 		{
-			if ($RU)
-			{
-				Write-Verbose -Message "Пропущено" -Verbose
-			}
-			else
-			{
-				Write-Verbose -Message "Skipped" -Verbose
-			}
+			Write-Verbose -Message $Localization.DesktopSkipped -Verbose
 		}
 	}
 
 	# Documents
 	# Документы
+	Write-Verbose -Message $Localization.DocumentsDriveSelect -Verbose
+	Write-Warning -Message $Localization.DocumentsFilesWontBeMoved
+
 	$Title = ""
-	if ($RU)
-	{
-		$Message = "Хотите изменить местоположение папки `"Документы`"?"
-		Write-Warning -Message "`nФайлы не будут перенесены"
-		$Options = "&Изменить", "&Пропустить"
-	}
-	else
-	{
-		$Message = "Would you like to change the location of the Documents folder"
-		Write-Warning -Message "`nFiles will not be moved"
-		$Options = "&Change", "&Skip"
-	}
+	$Message = $Localization.DocumentsFolderRequest
+	$Change = $Localization.DocumentsFolderChange
+	$Skip = $Localization.DocumentsFolderSkip
+	$Options = "&$Change", "&$Skip"
 	$DefaultChoice = 1
 	$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -2786,45 +2585,25 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 	{
 		"0"
 		{
-			if ($RU)
-			{
-				$Title = "`nВыберите диск, в корне которого будет создана папка для `"Документы`""
-			}
-			else
-			{
-				$Title = "`nSelect the drive within the root of which the `"Documents`" folder will be created"
-			}
-			$SelectedDrive = ShowMenu -Title $Title -Menu $DriveLetters -Default $Default
+			$SelectedDrive = ShowMenu -Title $Localization.DocumentsDriveSelect -Menu $DriveLetters -Default $Default
 			UserShellFolder -UserFolder Documents -FolderPath "${SelectedDrive}:\Documents" -RemoveDesktopINI
 		}
 		"1"
 		{
-			if ($RU)
-			{
-				Write-Verbose -Message "Пропущено" -Verbose
-			}
-			else
-			{
-				Write-Verbose -Message "Skipped" -Verbose
-			}
+			Write-Verbose -Message $Localization.DocumentsSkipped -Verbose
 		}
 	}
 
 	# Downloads
 	# Загрузки
+	Write-Verbose -Message $Localization.DownloadsDriveSelect -Verbose
+	Write-Warning -Message $Localization.DownloadsFilesWontBeMoved
+
 	$Title = ""
-	if ($RU)
-	{
-		$Message = "Хотите изменить местоположение папки `"Загрузки`"?"
-		Write-Warning -Message "`nФайлы не будут перенесены"
-		$Options = "&Изменить", "&Пропустить"
-	}
-	else
-	{
-		$Message = "Would you like to change the location of the Downloads folder?"
-		Write-Warning -Message "`nFiles will not be moved"
-		$Options = "&Change", "&Skip"
-	}
+	$Message = $Localization.DownloadsFolderRequest
+	$Change = $Localization.DownloadsFolderChange
+	$Skip = $Localization.DownloadsFolderSkip
+	$Options = "&$Change", "&$Skip"
 	$DefaultChoice = 1
 	$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -2832,45 +2611,25 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 	{
 		"0"
 		{
-			if ($RU)
-			{
-				$Title = "`nВыберите диск, в корне которого будет создана папка для `"Загрузки`"?"
-			}
-			else
-			{
-				$Title = "`nSelect the drive within the root of which the `"Downloads`" folder will be created"
-			}
-			$SelectedDrive = ShowMenu -Title $Title -Menu $DriveLetters -Default $Default
+			$SelectedDrive = ShowMenu -Title $Localization.DownloadsDriveSelect -Menu $DriveLetters -Default $Default
 			UserShellFolder -UserFolder Downloads -FolderPath "${SelectedDrive}:\Downloads" -RemoveDesktopINI
 		}
 		"1"
 		{
-			if ($RU)
-			{
-				Write-Verbose -Message "Пропущено" -Verbose
-			}
-			else
-			{
-				Write-Verbose -Message "Skipped" -Verbose
-			}
+			Write-Verbose -Message $Localization.DownloadsSkipped -Verbose
 		}
 	}
 
 	# Music
 	# Музыка
+	Write-Verbose -Message $Localization.MusicDriveSelect -Verbose
+	Write-Warning -Message $Localization.MusicFilesWontBeMoved
+
 	$Title = ""
-	if ($RU)
-	{
-		$Message = "Хотите изменить местоположение папки `"Музыка`"?"
-		Write-Warning -Message "`nФайлы не будут перенесены"
-		$Options = "&Изменить", "&Пропустить"
-	}
-	else
-	{
-		$Message = "Would you like to change the location of the Music folder?"
-		Write-Warning -Message "`nFiles will not be moved"
-		$Options = "&Change", "&Skip"
-	}
+	$Message = $Localization.MusicFolderRequest
+	$Change = $Localization.MusicFolderChange
+	$Skip = $Localization.MusicFolderSkip
+	$Options = "&$Change", "&$Skip"
 	$DefaultChoice = 1
 	$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -2878,46 +2637,25 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 	{
 		"0"
 		{
-			if ($RU)
-			{
-				$Title = "`nВыберите диск, в корне которого будет создана папка для `"Музыка`""
-			}
-			else
-			{
-				$Title = "`nSelect the drive within the root of which the `"Music`" folder will be created"
-			}
-			$SelectedDrive = ShowMenu -Title $Title -Menu $DriveLetters -Default $Default
+			$SelectedDrive = ShowMenu -Title $Localization.MusicDriveSelect -Menu $DriveLetters -Default $Default
 			UserShellFolder -UserFolder Music -FolderPath "${SelectedDrive}:\Music" -RemoveDesktopINI
 		}
 		"1"
 		{
-			if ($RU)
-			{
-				Write-Verbose -Message "Пропущено" -Verbose
-			}
-			else
-			{
-				Write-Verbose -Message "Skipped" -Verbose
-			}
+			Write-Verbose -Message $Localization.MusicSkipped -Verbose
 		}
 	}
 
-
 	# Pictures
 	# Изображения
+	Write-Verbose -Message $Localization.PicturesDriveSelect -Verbose
+	Write-Warning -Message $Localization.PicturesFilesWontBeMoved
+
 	$Title = ""
-	if ($RU)
-	{
-		$Message = "Хотите изменить местоположение папки `"Изображения`"?"
-		Write-Warning -Message "`nФайлы не будут перенесены"
-		$Options = "&Изменить", "&Пропустить"
-	}
-	else
-	{
-		$Message = "Would you like to change the location of the Pictures folder?"
-		Write-Warning -Message "`nFiles will not be moved"
-		$Options = "&Change", "&Skip"
-	}
+	$Message = $Localization.PicturesFolderRequest
+	$Change = $Localization.PicturesFolderChange
+	$Skip = $Localization.PicturesFolderSkip
+	$Options = "&$Change", "&$Skip"
 	$DefaultChoice = 1
 	$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -2925,45 +2663,25 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 	{
 		"0"
 		{
-			if ($RU)
-			{
-				$Title = "`nВыберите диск, в корне которого будет создана папка для `"Изображения`""
-			}
-			else
-			{
-				$Title = "`nSelect the drive within the root of which the `"Pictures`" folder will be created"
-			}
-			$SelectedDrive = ShowMenu -Title $Title -Menu $DriveLetters -Default $Default
+			$SelectedDrive = ShowMenu -Title $Localization.PicturesDriveSelect -Menu $DriveLetters -Default $Default
 			UserShellFolder -UserFolder Pictures -FolderPath "${SelectedDrive}:\Pictures" -RemoveDesktopINI
 		}
 		"1"
 		{
-			if ($RU)
-			{
-				Write-Verbose -Message "Пропущено" -Verbose
-			}
-			else
-			{
-				Write-Verbose -Message "Skipped" -Verbose
-			}
+			Write-Verbose -Message $Localization.PicturesSkipped -Verbose
 		}
 	}
 
 	# Videos
 	# Видео
+	Write-Verbose -Message $Localization.VideosDriveSelect -Verbose
+	Write-Warning -Message $Localization.VideosFilesWontBeMoved
+
 	$Title = ""
-	if ($RU)
-	{
-		$Message = "Хотите изменить местоположение папки `"Видео`"?"
-		Write-Warning -Message "`nФайлы не будут перенесены"
-		$Options = "&Изменить", "&Пропустить"
-	}
-	else
-	{
-		$Message = "Would you like to change the location of the Videos folder?"
-		Write-Warning -Message "`nFiles will not be moved"
-		$Options = "&Change", "&Skip"
-	}
+	$Message = $Localization.VideosFolderRequest
+	$Change = $Localization.VideosFolderChange
+	$Skip = $Localization.VideosFolderSkip
+	$Options = "&$Change", "&$Skip"
 	$DefaultChoice = 1
 	$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -2971,27 +2689,12 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 	{
 		"0"
 		{
-			if ($RU)
-			{
-				$Title = "`nВыберите диск, в корне которого будет создана папка для `"Видео`""
-			}
-			else
-			{
-				$Title = "`nSelect the drive within the root of which the `"Videos`" folder will be created"
-			}
-			$SelectedDrive = ShowMenu -Title $Title -Menu $DriveLetters -Default $Default
+			$SelectedDrive = ShowMenu -Title $Localization.VideosDriveSelect -Menu $DriveLetters -Default $Default
 			UserShellFolder -UserFolder Videos -FolderPath "${SelectedDrive}:\Videos" -RemoveDesktopINI
 		}
 		"1"
 		{
-			if ($RU)
-			{
-				Write-Verbose -Message "Пропущено" -Verbose
-			}
-			else
-			{
-				Write-Verbose -Message "Skipped" -Verbose
-			}
+			Write-Verbose -Message $Localization.VideosSkipped -Verbose
 		}
 	}
 }
@@ -3151,14 +2854,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 		{
 			if ((Get-ChildItem -Path $UserShellFolderRegValue | Measure-Object).Count -ne 0)
 			{
-				if ($RU)
-				{
-					Write-Error -Message "В папке $UserShellFolderRegValue осталась файлы. Переместите их вручную в новое расположение" -ErrorAction SilentlyContinue
-				}
-				else
-				{
-					Write-Error -Message "Some files left in the $UserShellFolderRegValue folder. Move them manually to a new location" -ErrorAction SilentlyContinue
-				}
+				Write-Error -Message $Localization.UserShellFolderNotEmpty -ErrorAction SilentlyContinue
 			}
 
 			# Creating a new folder if there is no one
@@ -3186,19 +2882,14 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 	# Desktop
 	# Рабочий стол
+	Write-Verbose -Message $Localization.DesktopDriveSelect -Verbose
+	Write-Warning -Message $Localization.DesktopFilesWontBeMoved
+
 	$Title = ""
-	if ($RU)
-	{
-		$Message = "Хотите изменить местоположение папки `"Рабочий стол`" на значение по умолчанию?"
-		Write-Warning -Message "`nФайлы не будут перенесены"
-		$Options = "&Изменить", "&Пропустить"
-	}
-	else
-	{
-		$Message = "Would you like to change the location of the Desktop folder to the default value?"
-		Write-Warning -Message "`nFiles will not be moved"
-		$Options = "&Change", "&Skip"
-	}
+	$Message = $Localization.DesktopDefaultFolder
+	$Change = $Localization.DesktopFolderChange
+	$Skip = $Localization.DesktopFolderSkip
+	$Options = "&$Change", "&$Skip"
 	$DefaultChoice = 1
 	$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -3210,32 +2901,20 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 		}
 		"1"
 		{
-			if ($RU)
-			{
-				Write-Verbose -Message "Пропущено" -Verbose
-			}
-			else
-			{
-				Write-Verbose -Message "Skipped" -Verbose
-			}
+			Write-Verbose -Message $Localization.DesktopSkipped -Verbose
 		}
 	}
 
 	# Documents
 	# Документы
+	Write-Verbose -Message $Localization.DocumentsDriveSelect -Verbose
+	Write-Warning -Message $Localization.DocumentsFilesWontBeMoved
+
 	$Title = ""
-	if ($RU)
-	{
-		$Message = "Хотите изменить местоположение папки `"Документы`" на значение по умолчанию?"
-		Write-Warning -Message "`nФайлы не будут перенесены"
-		$Options = "&Изменить", "&Пропустить"
-	}
-	else
-	{
-		$Message = "Would you like to change the location of the Documents folder to the default value?"
-		Write-Warning -Message "`nFiles will not be moved"
-		$Options = "&Change", "&Skip"
-	}
+	$Message = $Localization.DocumentsDefaultFolder
+	$Change = $Localization.DocumentsFolderChange
+	$Skip = $Localization.DocumentsFolderSkip
+	$Options = "&$Change", "&$Skip"
 	$DefaultChoice = 1
 	$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -3247,32 +2926,20 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 		}
 		"1"
 		{
-			if ($RU)
-			{
-				Write-Verbose -Message "Пропущено" -Verbose
-			}
-			else
-			{
-				Write-Verbose -Message "Skipped" -Verbose
-			}
+			Write-Verbose -Message $Localization.DocumentsSkipped -Verbose
 		}
 	}
 
 	# Downloads
 	# Загрузки
+	Write-Verbose -Message $Localization.DownloadsDriveSelect -Verbose
+	Write-Warning -Message $Localization.DownloadsFilesWontBeMoved
+
 	$Title = ""
-	if ($RU)
-	{
-		$Message = "Хотите изменить местоположение папки `"Загрузки`" на значение по умолчанию?"
-		Write-Warning -Message "`nФайлы не будут перенесены"
-		$Options = "&Изменить", "&Пропустить"
-	}
-	else
-	{
-		$Message = "Would you like to change the location of the Downloads folder to the default value?"
-		Write-Warning -Message "`nFiles will not be moved"
-		$Options = "&Change", "&Skip"
-	}
+	$Message = $Localization.DownloadsDefaultFolder
+	$Change = $Localization.DownloadsFolderChange
+	$Skip = $Localization.DownloadsFolderSkip
+	$Options = "&$Change", "&$Skip"
 	$DefaultChoice = 1
 	$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -3284,32 +2951,20 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 		}
 		"1"
 		{
-			if ($RU)
-			{
-				Write-Verbose -Message "Пропущено" -Verbose
-			}
-			else
-			{
-				Write-Verbose -Message "Skipped" -Verbose
-			}
+			Write-Verbose -Message $Localization.DownloadsSkipped -Verbose
 		}
 	}
 
 	# Music
 	# Музыка
+	Write-Verbose -Message $Localization.MusicDriveSelect -Verbose
+	Write-Warning -Message $Localization.MusicFilesWontBeMoved
+
 	$Title = ""
-	if ($RU)
-	{
-		$Message = "Хотите изменить местоположение папки `"Музыка`" на значение по умолчанию?"
-		Write-Warning -Message "`nФайлы не будут перенесены"
-		$Options = "&Изменить", "&Пропустить"
-	}
-	else
-	{
-		$Message = "Would you like to change the location of the Music folder to the default value?"
-		Write-Warning -Message "`nFiles will not be moved"
-		$Options = "&Change", "&Skip"
-	}
+	$Message = $Localization.MusicDefaultFolder
+	$Change = $Localization.MusicFolderChange
+	$Skip = $Localization.MusicFolderSkip
+	$Options = "&$Change", "&$Skip"
 	$DefaultChoice = 1
 	$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -3321,33 +2976,21 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 		}
 		"1"
 		{
-			if ($RU)
-			{
-				Write-Verbose -Message "Пропущено" -Verbose
-			}
-			else
-			{
-				Write-Verbose -Message "Skipped" -Verbose
-			}
+			Write-Verbose -Message $Localization.MusicSkipped -Verbose
 		}
 	}
 
 
 	# Pictures
 	# Изображения
+	Write-Verbose -Message $Localization.PicturesDriveSelect -Verbose
+	Write-Warning -Message $Localization.PicturesFilesWontBeMoved
+
 	$Title = ""
-	if ($RU)
-	{
-		$Message = "Хотите изменить местоположение папки `"Изображения`" на значение по умолчанию?"
-		Write-Warning -Message "`nФайлы не будут перенесены"
-		$Options = "&Изменить", "&Пропустить"
-	}
-	else
-	{
-		$Message = "Would you like to change the location of the Pictures folder to the default value?"
-		Write-Warning -Message "`nFiles will not be moved"
-		$Options = "&Change", "&Skip"
-	}
+	$Message = $Localization.PicturesDefaultFolder
+	$Change = $Localization.PicturesFolderChange
+	$Skip = $Localization.PicturesFolderSkip
+	$Options = "&$Change", "&$Skip"
 	$DefaultChoice = 1
 	$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -3359,32 +3002,20 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 		}
 		"1"
 		{
-			if ($RU)
-			{
-				Write-Verbose -Message "Пропущено" -Verbose
-			}
-			else
-			{
-				Write-Verbose -Message "Skipped" -Verbose
-			}
+			Write-Verbose -Message $Localization.PicturesSkipped -Verbose
 		}
 	}
 
 	# Videos
 	# Видео
+	Write-Verbose -Message $Localization.VideosDriveSelect -Verbose
+	Write-Warning -Message $Localization.VideosFilesWontBeMoved
+
 	$Title = ""
-	if ($RU)
-	{
-		$Message = "Хотите изменить местоположение папки `"Видео`" на значение по умолчанию?"
-		Write-Warning -Message "`nФайлы не будут перенесены"
-		$Options = "&Изменить", "&Пропустить"
-	}
-	else
-	{
-		$Message = "Would you like to change the location of the Videos folder to the default value?"
-		Write-Warning -Message "`nFiles will not be moved"
-		$Options = "&Change", "&Skip"
-	}
+	$Message = $Localization.VideosDefaultFolder
+	$Change = $Localization.VideosFolderChange
+	$Skip = $Localization.VideosFolderSkip
+	$Options = "&$Change", "&$Skip"
 	$DefaultChoice = 1
 	$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -3396,14 +3027,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 		}
 		"1"
 		{
-			if ($RU)
-			{
-				Write-Verbose -Message "Пропущено" -Verbose
-			}
-			else
-			{
-				Write-Verbose -Message "Skipped" -Verbose
-			}
+			Write-Verbose -Message $Localization.VideosSkipped -Verbose
 		}
 	}
 }
@@ -3519,7 +3143,14 @@ function DisableFoldersLaunchSeparateProcess
 # Отключить и удалить зарезервированное хранилище после следующей установки обновлений
 function DisableReservedStorage
 {
-	Set-WindowsReservedStorageState -State Disabled
+	try
+	{
+		Set-WindowsReservedStorageState -State Disabled
+	}
+	catch [System.Runtime.InteropServices.COMException]
+	{
+		Write-Error -Message $Localization.ReservedStorageIsInUse -ErrorAction SilentlyContinue
+	}
 }
 
 # Turn on reserved storage
@@ -3633,6 +3264,8 @@ function EnableNetworkDiscovery
 			"@FirewallAPI.dll,-28502"
 		)
 		Set-NetFirewallRule -Group $FirewallRules -Profile Private -Enabled True
+
+		Set-NetFirewallRule -Profile Public, Private -Name FPS-SMB-In-TCP -Enabled True
 		Set-NetConnectionProfile -NetworkCategory Private
 	}
 }
@@ -3753,7 +3386,7 @@ function UnpinAllStartTiles
 	$StartMenuLayoutPath = "$env:TEMP\StartMenuLayout.xml"
 	# Saving StartMenuLayout.xml in UTF-8 encoding
 	# Сохраняем StartMenuLayout.xml в кодировке UTF-8
-	Set-Content -Path $StartMenuLayoutPath -Value (New-Object System.Text.UTF8Encoding).GetBytes($StartMenuLayout) -Encoding Byte -Force
+	Set-Content -Path $StartMenuLayoutPath -Value (New-Object -TypeName System.Text.UTF8Encoding).GetBytes($StartMenuLayout) -Encoding Byte -Force
 
 	# Temporarily disable changing the Start menu layout
 	# Временно выключаем возможность редактировать начальный экран меню "Пуск"
@@ -3797,14 +3430,7 @@ function PinControlPanel
 			# Скачиваем syspin
 			if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
 			{
-				if ($RU)
-				{
-					Write-Verbose "Скачивается syspin... ~20 КБ" -Verbose
-				}
-				else
-				{
-					Write-Verbose "Downloading syspin... ~33 KB" -Verbose
-				}
+				Write-Verbose -Message $Localization.syspinDownloading -Verbose
 
 				[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 				$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
@@ -3819,19 +3445,9 @@ function PinControlPanel
 				$syspin = $true
 			}
 		}
-		catch
+		catch [System.Net.WebException]
 		{
-			if ($Global:Error.Exception.Status -eq "NameResolutionFailure")
-			{
-				if ($RU)
-				{
-					Write-Warning -Message "Отсутствует интернет-соединение"
-				}
-				else
-				{
-					Write-Warning -Message "No Internet connection"
-				}
-			}
+			Write-Warning -Message $Localization.NoInternetConnection
 		}
 	}
 
@@ -3839,14 +3455,8 @@ function PinControlPanel
 	{
 		$Items = (New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
 		$ControlPanelLocalizedName = ($Items | Where-Object -FilterScript {$_.Path -eq "Microsoft.Windows.ControlPanel"}).Name
-		if ($RU)
-		{
-			Write-Verbose -Message "Ярлык `"$ControlPanelLocalizedName`" закрепляется на начальном экране" -Verbose
-		}
-		else
-		{
-			Write-Verbose -Message "`"$ControlPanelLocalizedName`" shortcut is being pinned to Start" -Verbose
-		}
+		$Message = Invoke-Command -ScriptBlock ([ScriptBlock]::Create($Localization.ControlPanelPinning))
+		Write-Verbose -Message $Message -Verbose
 
 		# Check whether the Control Panel shortcut was ever pinned
 		# Проверка: закреплялся ли когда-нибудь ярлык панели управления
@@ -3900,14 +3510,7 @@ function PinDevicesPrinters
 			# Скачиваем syspin
 			if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
 			{
-				if ($RU)
-				{
-					Write-Verbose "Скачивается syspin... ~20 КБ" -Verbose
-				}
-				else
-				{
-					Write-Verbose "Downloading syspin... ~33 KB" -Verbose
-				}
+				Write-Verbose -Message $Localization.syspinDownloading -Verbose
 
 				[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 				$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
@@ -3922,33 +3525,18 @@ function PinDevicesPrinters
 				$syspin = $true
 			}
 		}
-		catch
+		catch [System.Net.WebException]
 		{
-			if ($Global:Error.Exception.Status -eq "NameResolutionFailure")
-			{
-				if ($RU)
-				{
-					Write-Warning -Message "Отсутствует интернет-соединение"
-				}
-				else
-				{
-					Write-Warning -Message "No Internet connection"
-				}
-			}
+			Write-Warning -Message $Localization.NoInternetConnection
 		}
 	}
 
 	if ($syspin -eq $true)
 	{
 		$DevicesAndPrintersLocalizedName = (Get-ControlPanelItem -CanonicalName "Microsoft.DevicesAndPrinters").Name
-		if ($RU)
-		{
-			Write-Verbose -Message "Ярлык `"$DevicesAndPrintersLocalizedName`" закрепляется на начальном экране" -Verbose
-		}
-		else
-		{
-			Write-Verbose -Message "`"$DevicesAndPrintersLocalizedName`" shortcut is being pinned to Start" -Verbose
-		}
+		$Message = Invoke-Command -ScriptBlock ([ScriptBlock]::Create($Localization.DevicesPrintersPinning))
+		Write-Verbose -Message $Message -Verbose
+
 		$Shell = New-Object -ComObject Wscript.Shell
 		$Shortcut = $Shell.CreateShortcut("$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesAndPrintersLocalizedName.lnk")
 		$Shortcut.TargetPath = "control"
@@ -3987,14 +3575,7 @@ function PinCommandPrompt
 			# Скачиваем syspin
 			if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
 			{
-				if ($RU)
-				{
-					Write-Verbose "Скачивается syspin... ~20 КБ" -Verbose
-				}
-				else
-				{
-					Write-Verbose "Downloading syspin... ~33 KB" -Verbose
-				}
+				Write-Verbose -Message $Localization.syspinDownloading -Verbose
 
 				[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 				$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
@@ -4009,32 +3590,15 @@ function PinCommandPrompt
 				$syspin = $true
 			}
 		}
-		catch
+		catch [System.Net.WebException]
 		{
-			if ($Global:Error.Exception.Status -eq "NameResolutionFailure")
-			{
-				if ($RU)
-				{
-					Write-Warning -Message "Отсутствует интернет-соединение"
-				}
-				else
-				{
-					Write-Warning -Message "No Internet connection"
-				}
-			}
+			Write-Warning -Message $Localization.NoInternetConnection
 		}
 	}
 
 	if ($syspin -eq $true)
 	{
-		if ($RU)
-		{
-			Write-Verbose -Message "Ярлык `"Командная строка`" закрепляется на начальном экране" -Verbose
-		}
-		else
-		{
-			Write-Verbose -Message "Command Prompt shortcut is being pinned to Start" -Verbose
-		}
+		Write-Verbose -Message $Localization.CMDPinning -Verbose
 		$Arguments = @"
 	"$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" "51201"
 "@
@@ -4077,9 +3641,6 @@ function UninstallUWPApps
 		# UWP-панель AMD Radeon
 		"AdvancedMicroDevicesInc*",
 
-		# iTunes
-		"AppleInc.iTunes",
-
 		# Intel Graphics Control Center
 		# UWP-панель Intel
 		"AppUp.IntelGraphicsControlPanel",
@@ -4096,7 +3657,6 @@ function UninstallUWPApps
 		# Photos (and Video Editor)
 		# Фотографии и Видеоредактор
 		"Microsoft.Windows.Photos",
-
 		"Microsoft.Photos.MediaEngineDLC",
 
 		# Calculator
@@ -4311,18 +3871,9 @@ function UninstallUWPApps
 		}
 		$OFS = " "
 
-		if ($RU)
-		{
-			$TextblockRemoveAll.Text = "Удалять для всех пользователей"
-			$Window.Title = "Удалить UWP-приложения"
-			$Button.Content = "Удалить"
-		}
-		else
-		{
-			$TextblockRemoveAll.Text = "Uninstall for All Users"
-			$Window.Title = "UWP Packages to Uninstall"
-			$Button.Content = "Uninstall"
-		}
+		$TextblockRemoveAll.Text = $Localization.UninstallUWPForAll
+		$Window.Title = $Localization.UninstallUWPTitle
+		$Button.Content = $Localization.UninstallUWPUninstallButton
 	})
 
 	# Button Click Event
@@ -4331,28 +3882,14 @@ function UninstallUWPApps
 
 	if (Get-AppxPackage -PackageTypeFilter Bundle -AllUsers | Where-Object -FilterScript {$_.Name -cnotmatch ($ExcludedAppxPackages -join "|")})
 	{
-		if ($RU)
-		{
-			Write-Verbose -Message "Диалоговое окно открывается..." -Verbose
-		}
-		else
-		{
-			Write-Verbose -Message "Displaying the dialog box..." -Verbose
-		}
+		Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
 		# Display the dialog box
 		# Отобразить диалоговое окно
 		$Form.ShowDialog() | Out-Null
 	}
 	else
 	{
-		if ($RU)
-		{
-			Write-Verbose -Message "Отсутствуют данные" -Verbose
-		}
-		else
-		{
-			Write-Verbose -Message "Nothing to display" -Verbose
-		}
+		Write-Verbose -Message $Localization.NoData -Verbose
 	}
 }
 
@@ -4459,18 +3996,11 @@ function SetAppGraphicsPerformance
 {
 	if (Get-CimInstance -ClassName Win32_VideoController | Where-Object -FilterScript {$_.AdapterDACType -ne "Internal" -and $null -ne $_.AdapterDACType})
 	{
-		if ($RU)
-		{
-			$Title = "Настройка производительности графики"
-			$Message = "Установить для любого приложения по вашему выбору настройки производительности графики на `"Высокая производительность`"?"
-			$Options = "&Добавить", "&Пропустить"
-		}
-		else
-		{
-			$Title = "Graphics performance preference"
-			$Message = "Would you like to set the graphics performance setting of an app of your choice to `"High performance`"?"
-			$Options = "&Add", "&Skip"
-		}
+		$Title = $Localization.GraphicsPerformanceTitle
+		$Message = $Localization.GraphicsPerformanceRequest
+		$Add = $Localization.GraphicsPerformanceAdd
+		$Skip = $Localization.GraphicsPerformanceSkip
+		$Options = "&$Add", "&$Skip"
 		$DefaultChoice = 1
 
 		do
@@ -4482,14 +4012,7 @@ function SetAppGraphicsPerformance
 				{
 					Add-Type -AssemblyName System.Windows.Forms
 					$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
-					if ($RU)
-					{
-						$OpenFileDialog.Filter = "*.exe|*.exe|Все файлы (*.*)|*.*"
-					}
-					else
-					{
-						$OpenFileDialog.Filter = "*.exe|*.exe|All Files (*.*)|*.*"
-					}
+					$OpenFileDialog.Filter = $Localization.GraphicsPerformanceFilter
 					$OpenFileDialog.InitialDirectory = "${env:ProgramFiles(x86)}"
 					$OpenFileDialog.Multiselect = $false
 					# Focus on open file dialog
@@ -4508,14 +4031,7 @@ function SetAppGraphicsPerformance
 				}
 				"1"
 				{
-					if ($RU)
-					{
-						Write-Verbose -Message "Пропущено" -Verbose
-					}
-					else
-					{
-						Write-Verbose -Message "Skipped" -Verbose
-					}
+					Write-Verbose -Message $Localization.GraphicsPerformanceSkipped -Verbose
 				}
 			}
 		}
@@ -4560,9 +4076,11 @@ function DisableGPUScheduling
 #region Scheduled tasks
 <#
 	Create a task to clean up unused files and Windows updates in the Task Scheduler
+	A minute before the task starts, a warning in the Windows action center will appear
 	The task runs every 90 days
 
 	Создать задачу в Планировщике задач по очистке неиспользуемых файлов и обновлений Windows
+	За минуту до выполнения задачи в Центре уведомлений Windows появится предупреждение
 	Задача выполняется каждые 90 дней
 #>
 function CreateCleanUpTask
@@ -4620,9 +4138,6 @@ if ($PSUICulture -eq "ru-RU")
 			<text>Очистка неиспользуемых файлов и обновлений Windows начнется через минуту</text>
 		</binding>
 	</visual>
-	<actions>
-	<action activationType="background" content="Хорошо" arguments="later"/>
-	</actions>
 </toast>
 "@
 }
@@ -4635,9 +4150,6 @@ else
 			<text>Cleaning up unused Windows files and updates starts in a minute</text>
 		</binding>
 	</visual>
-	<actions>
-		<action activationType="background" content="OK" arguments="later"/>
-	</actions>
 </toast>
 "@
 }
@@ -4659,7 +4171,7 @@ $ProcessInfo.WindowStyle = [System.Diagnostics.ProcessWindowStyle]::Minimized
 
 # Process object using the startup info
 # Объект процесса, используя заданные параметры
-$Process = New-Object System.Diagnostics.Process
+$Process = New-Object -TypeName System.Diagnostics.Process
 $Process.StartInfo = $ProcessInfo
 
 # Start the process
@@ -4717,7 +4229,7 @@ $ProcessInfo.WindowStyle = [System.Diagnostics.ProcessWindowStyle]::Minimized
 
 # Process object using the startup info
 # Объект процесса, используя заданные параметры
-$Process = New-Object System.Diagnostics.Process
+$Process = New-Object -TypeName System.Diagnostics.Process
 $Process.StartInfo = $ProcessInfo
 
 # Start the process
@@ -4732,16 +4244,7 @@ $Process.Start() | Out-Null
 	$Trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 90 -At 9am
 	$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
 	$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
-	if ($RU)
-	{
-		$Description =
-		"Очистка неиспользуемых файлов и обновлений Windows, используя встроенную программу Очистка диска. Чтобы расшифровать закодированную строку используйте [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String(`"строка`"))"
-	}
-	else
-	{
-		$Description =
-		"Cleaning up unused Windows files and updates using built-in Disk cleanup app. To decode encoded command use [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String(`"string`"))"
-	}
+	$Description = $Localization.CleanUpTaskDescription
 	$Parameters = @{
 		"TaskName"		= "Windows Cleanup"
 		"TaskPath"		= "Sophia Script"
@@ -4778,14 +4281,7 @@ function CreateSoftwareDistributionTask
 	$Trigger = New-JobTrigger -Weekly -WeeksInterval 4 -DaysOfWeek Thursday -At 9am
 	$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
 	$Principal = New-ScheduledTaskPrincipal -UserId "NT AUTHORITY\SYSTEM" -RunLevel Highest
-	if ($RU)
-	{
-		$Description = "Очистка папки %SystemRoot%\SoftwareDistribution\Download"
-	}
-	else
-	{
-		$Description = "The %SystemRoot%\SoftwareDistribution\Download folder cleaning"
-	}
+	$Description = $Localization.SoftwareDistributionTaskDescription
 	$Parameters = @{
 		"TaskName"		= "SoftwareDistribution"
 		"TaskPath"		= "Sophia Script"
@@ -4819,20 +4315,13 @@ function CreateTempTask
 	$Trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 62 -At 9am
 	$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
 	$Principal = New-ScheduledTaskPrincipal -UserId "NT AUTHORITY\SYSTEM" -RunLevel Highest
-	if ($RU)
-	{
-		$Description = "Очистка папки %TEMP%"
-	}
-	else
-	{
-		$Description = "The %TEMP% folder cleaning"
-	}
+	$Description = $Localization.TempTaskDescription
 	$Parameters = @{
 		"TaskName"		= "Temp"
 		"TaskPath"		= "Sophia Script"
 		"Principal"		= $Principal
 		"Action"		= $Action
-		"Description"		= $Description
+		"Description"	= $Description
 		"Settings"		= $Settings
 		"Trigger"		= $Trigger
 	}
@@ -4852,18 +4341,11 @@ function DeleteTempTask
 # Включить контролируемый доступ к папкам и добавить защищенные папки
 function AddProtectedFolders
 {
-	if ($RU)
-	{
-		$Title = "Контролируемый доступ к папкам"
-		$Message = "Хотите включить контролируемый доступ к папкаму и указать папку, которую Защитник Microsoft будет защищать от вредоносных приложений и угроз?"
-		$Options = "&Добавить", "&Пропустить"
-	}
-	else
-	{
-		$Title = "Controlled folder access"
-		$Message = "Would you like to enable Controlled folder access and specify the folder that Microsoft Defender will protect from malicious apps and threats?"
-		$Options = "&Add", "&Skip"
-	}
+	$Title = $Localization.AddProtectedFoldersTitle
+	$Message = $Localization.AddProtectedFoldersRequest
+	$Add = $Localization.AddProtectedFoldersAdd
+	$Skip = $Localization.AddProtectedFoldersSkip
+	$Options = "&$Add", "&$Skip"
 	$DefaultChoice = 1
 
 	do
@@ -4875,14 +4357,7 @@ function AddProtectedFolders
 			{
 				Add-Type -AssemblyName System.Windows.Forms
 				$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
-				if ($RU)
-				{
-					$FolderBrowserDialog.Description = "Выберите папку"
-				}
-				else
-				{
-					$FolderBrowserDialog.Description = "Select a folder"
-				}
+				$FolderBrowserDialog.Description = $Localization.AddProtectedFoldersDescription
 				$FolderBrowserDialog.RootFolder = "MyComputer"
 
 				# Focus on open file dialog
@@ -4899,60 +4374,22 @@ function AddProtectedFolders
 			}
 			"1"
 			{
-				if ($RU)
-				{
-					Write-Verbose -Message "Пропущено" -Verbose
-				}
-				else
-				{
-					Write-Verbose -Message "Skipped" -Verbose
-				}
+				Write-Verbose -Message $Localization.AddProtectedFoldersSkipped -Verbose
 			}
 		}
 	}
 	until ($Result -eq 1)
 }
 
-# Disable Controlled folder access and remove all added protected folders
-# Выключить контролируемый доступ к папкам и удалить все добавленные защищенные папки
+# Remove all added protected folders
+# Удалить все добавленные защищенные папки
 function RemoveProtectedFolders
 {
-	if ($RU)
+	if ($null -ne (Get-MpPreference).ControlledFolderAccessProtectedFolders)
 	{
-		$Title = "Контролируемый доступ к папкам"
-		$Message = "Хотите выключить контролируемый доступ к папкам и удалить все добавленные защищенные папки?"
-		$Options = "&Удалить", "&Пропустить"
-	}
-	else
-	{
-		$Title = "Controlled folder access"
-		$Message = "Would you like to turn off Controlled folder access and remove all added protected folders?"
-		$Options = "&Remove", "&Skip"
-	}
-	$DefaultChoice = 1
-
-	$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
-	switch ($Result)
-	{
-		"0"
-		{
-			if ($null -ne (Get-MpPreference).ControlledFolderAccessProtectedFolders)
-			{
-				(Get-MpPreference).ControlledFolderAccessProtectedFolders | Format-Table -AutoSize -Wrap
-				Remove-MpPreference -ControlledFolderAccessProtectedFolders (Get-MpPreference).ControlledFolderAccessProtectedFolders -Force
-			}
-		}
-		"1"
-		{
-			if ($RU)
-			{
-				Write-Verbose -Message "Пропущено" -Verbose
-			}
-			else
-			{
-				Write-Verbose -Message "Skipped" -Verbose
-			}
-		}
+		Write-Verbose -Message $Localization.RemoveProtectedFoldersList -Verbose
+		Remove-MpPreference -ControlledFolderAccessProtectedFolders (Get-MpPreference).ControlledFolderAccessProtectedFolders -Force
+		(Get-MpPreference).ControlledFolderAccessProtectedFolders | Format-Table -AutoSize -Wrap
 	}
 }
 
@@ -4960,18 +4397,11 @@ function RemoveProtectedFolders
 # Разрешить работу приложения через контролируемый доступ к папкам
 function AddAppControlledFolder
 {
-	if ($RU)
-	{
-		$Title = "Контролируемый доступ к папкам"
-		$Message = "Указать приложение, которому разрешена работа через контролируемый доступ к папкам"
-		$Options = "&Добавить", "&Пропустить"
-	}
-	else
-	{
-		$Title = "Controlled folder access"
-		$Message = "Would you like to specify an app that is allowed through Controlled Folder access?"
-		$Options = "&Add", "&Skip"
-	}
+	$Title = $Localization.AddAppControlledFolderTitle
+	$Message = $Localization.AddAppControlledFolderRequest
+	$Add = $Localization.AddAppControlledFolderAdd
+	$Skip = $Localization.AddAppControlledFolderSkip
+	$Options = "&$Add", "&$Skip"
 	$DefaultChoice = 1
 
 	do
@@ -4983,14 +4413,7 @@ function AddAppControlledFolder
 			{
 				Add-Type -AssemblyName System.Windows.Forms
 				$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
-				if ($RU)
-				{
-					$OpenFileDialog.Filter = "*.exe|*.exe|Все файлы (*.*)|*.*"
-				}
-				else
-				{
-					$OpenFileDialog.Filter = "*.exe|*.exe|All Files (*.*)|*.*"
-				}
+				$OpenFileDialog.Filter = $Localization.AddAppControlledFolderFilter
 				$OpenFileDialog.InitialDirectory = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
 				$OpenFileDialog.Multiselect = $false
 
@@ -5007,60 +4430,22 @@ function AddAppControlledFolder
 			}
 			"1"
 			{
-				if ($RU)
-				{
-					Write-Verbose -Message "Пропущено" -Verbose
-				}
-				else
-				{
-					Write-Verbose -Message "Skipped" -Verbose
-				}
+				Write-Verbose -Message $Localization.AddAppControlledFolderSkipped -Verbose
 			}
 		}
 	}
 	until ($Result -eq 1)
 }
 
-# Do not allow an app through Controlled folder access
-# Не разрешать работу приложения через контролируемый доступ к папкам
-function RemoveAppsControlledFolder
+# Remove all allowed apps through Controlled folder access
+# Удалить все добавленные разрешенные приложение через контролируемый доступ к папкам
+function RemoveAllowedAppsControlledFolder
 {
-	if ($RU)
+	if ($null -ne (Get-MpPreference).ControlledFolderAccessAllowedApplications)
 	{
-		$Title = "Контролируемый доступ к папкам"
-		$Message = "Удалить все приложения, которым разрешена работа через контролируемый доступ к папкам"
-		$Options = "&Удалить", "&Пропустить"
-	}
-	else
-	{
-		$Title = "Controlled folder access"
-		$Message = "Would you like to remove all apps that are allowed through Controlled Folder access?"
-		$Options = "&Remove", "&Skip"
-	}
-	$DefaultChoice = 1
-
-	$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
-	switch ($Result)
-	{
-		"0"
-		{
-			if ($null -ne (Get-MpPreference).ControlledFolderAccessAllowedApplications)
-			{
-				(Get-MpPreference).ControlledFolderAccessAllowedApplications | Format-Table -AutoSize -Wrap
-				Remove-MpPreference -ControlledFolderAccessAllowedApplications (Get-MpPreference).ControlledFolderAccessAllowedApplications -Force
-			}
-		}
-		"1"
-		{
-			if ($RU)
-			{
-				Write-Verbose -Message "Пропущено" -Verbose
-			}
-			else
-			{
-				Write-Verbose -Message "Skipped" -Verbose
-			}
-		}
+		Write-Verbose -Message $Localization.RemoveAllowedAppsControlledFolderList -Verbose
+		(Get-MpPreference).ControlledFolderAccessAllowedApplications | Format-Table -AutoSize -Wrap
+		Remove-MpPreference -ControlledFolderAccessAllowedApplications (Get-MpPreference).ControlledFolderAccessAllowedApplications -Force
 	}
 }
 
@@ -5068,18 +4453,11 @@ function RemoveAppsControlledFolder
 # Добавить папку в список исключений сканирования Microsoft Defender
 function AddDefenderExclusionFolder
 {
-	if ($RU)
-	{
-		$Title = "Microsoft Defender"
-		$Message = "Указать папку, чтобы исключить ее из списка сканирования Microsoft Defender?"
-		$Options = "&Добавить", "&Пропустить"
-	}
-	else
-	{
-		$Title = "Microsoft Defender"
-		$Message = "Would you like to specify a folder to be excluded from Microsoft Defender malware scans?"
-		$Options = "&Add", "&Skip"
-	}
+	$Title = $Localization.AddDefenderExclusionFolderTitle
+	$Message = $Localization.AddDefenderExclusionFolderRequest
+	$Add = $Localization.AddDefenderExclusionFolderAdd
+	$Skip = $Localization.AddDefenderExclusionFolderSkip
+	$Options = "&$Add", "&$Skip"
 	$DefaultChoice = 1
 
 	do
@@ -5091,14 +4469,7 @@ function AddDefenderExclusionFolder
 			{
 				Add-Type -AssemblyName System.Windows.Forms
 				$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
-				if ($RU)
-				{
-					$FolderBrowserDialog.Description = "Выберите папку"
-				}
-				else
-				{
-					$FolderBrowserDialog.Description = "Select a folder"
-				}
+				$FolderBrowserDialog.Description = $Localization.AddDefenderExclusionFolderDescription
 				$FolderBrowserDialog.RootFolder = "MyComputer"
 
 				# Focus on open file dialog
@@ -5114,14 +4485,7 @@ function AddDefenderExclusionFolder
 			}
 			"1"
 			{
-				if ($RU)
-				{
-					Write-Verbose -Message "Пропущено" -Verbose
-				}
-				else
-				{
-					Write-Verbose -Message "Skipped" -Verbose
-				}
+				Write-Verbose -Message $Localization.AddDefenderExclusionFolderSkipped -Verbose
 			}
 		}
 	}
@@ -5132,43 +4496,12 @@ function AddDefenderExclusionFolder
 # Удалить все папки из списка исключений сканирования Microsoft Defender
 function RemoveDefenderExclusionFolders
 {
-	if ($RU)
+	if ($null -ne (Get-MpPreference).ExclusionPath)
 	{
-		$Title = "Microsoft Defender"
-		$Message = "Удалить все папки из списка исключений сканирования Microsoft Defender?"
-		$Options = "&Удалить", "&Пропустить"
-	}
-	else
-	{
-		$Title = "Microsoft Defender"
-		$Message = "Would you like to remove all excluded folders from Microsoft Defender scanning?"
-		$Options = "&Remove", "&Skip"
-	}
-	$DefaultChoice = 1
-
-	$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
-	switch ($Result)
-	{
-		"0"
-		{
-			if ($null -ne (Get-MpPreference).ExclusionPath)
-			{
-				$ExcludedFolders = (Get-Item -Path (Get-MpPreference).ExclusionPath -Force | Where-Object -FilterScript {$_.Attributes -match "Directory"}).FullName
-				$ExcludedFolders | Format-Table -AutoSize -Wrap
-				Remove-MpPreference -ExclusionPath $ExcludedFolders -Force
-			}
-		}
-		"1"
-		{
-			if ($RU)
-			{
-				Write-Verbose -Message "Пропущено" -Verbose
-			}
-			else
-			{
-				Write-Verbose -Message "Skipped" -Verbose
-			}
-		}
+		Write-Verbose -Message "Removed excluded folders:" -Verbose
+		$ExcludedFolders = (Get-Item -Path (Get-MpPreference).ExclusionPath -Force | Where-Object -FilterScript {$_.Attributes -match "Directory"}).FullName
+		$ExcludedFolders | Format-Table -AutoSize -Wrap
+		Remove-MpPreference -ExclusionPath $ExcludedFolders -Force
 	}
 }
 
@@ -5176,18 +4509,11 @@ function RemoveDefenderExclusionFolders
 # Добавить файл в список исключений сканирования Microsoft Defender
 function AddDefenderExclusionFile
 {
-	if ($RU)
-	{
-		$Title = "Microsoft Defender"
-		$Message = "Указать файл, чтобы исключить его из списка сканирования Microsoft Defender?"
-		$Options = "&Добавить", "&Пропустить"
-	}
-	else
-	{
-		$Title = "Microsoft Defender"
-		$Message = "Would you like to specify a file to be excluded from Microsoft Defender malware scans?"
-		$Options = "&Add", "&Skip"
-	}
+	$Title = $Localization.AddDefenderExclusionFileTitle
+	$Message = $Localization.AddDefenderExclusionFileRequest
+	$Add = $Localization.AddDefenderExclusionFileAdd
+	$Skip = $Localization.AddDefenderExclusionFileSkip
+	$Options = "&$Add", "&$Skip"
 	$DefaultChoice = 1
 
 	do
@@ -5199,14 +4525,7 @@ function AddDefenderExclusionFile
 			{
 				Add-Type -AssemblyName System.Windows.Forms
 				$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
-				if ($RU)
-				{
-					$OpenFileDialog.Filter = "Все файлы (*.*)|*.*"
-				}
-				else
-				{
-					$OpenFileDialog.Filter = "All Files (*.*)|*.*"
-				}
+				$OpenFileDialog.Filter = $Localization.AddDefenderExclusionFileFilter
 				$OpenFileDialog.InitialDirectory = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
 				$OpenFileDialog.Multiselect = $false
 
@@ -5223,14 +4542,7 @@ function AddDefenderExclusionFile
 			}
 			"1"
 			{
-				if ($RU)
-				{
-					Write-Verbose -Message "Пропущено" -Verbose
-				}
-				else
-				{
-					Write-Verbose -Message "Skipped" -Verbose
-				}
+				Write-Verbose -Message $Localization.AddDefenderExclusionFileSkipped -Verbose
 			}
 		}
 	}
@@ -5241,43 +4553,12 @@ function AddDefenderExclusionFile
 # Удалить все файлы из списка исключений сканирования Microsoft Defender
 function RemoveDefenderExclusionFiles
 {
-	if ($RU)
+	if ($null -ne (Get-MpPreference).ExclusionPath)
 	{
-		$Title = "Microsoft Defender"
-		$Message = "Удалить все файлы из списка исключений сканирования Microsoft Defender?"
-		$Options = "&Удалить", "&Пропустить"
-	}
-	else
-	{
-		$Title = "Microsoft Defender"
-		$Message = "Would you like to remove all excluded files from Microsoft Defender scanning?"
-		$Options = "&Remove", "&Skip"
-	}
-	$DefaultChoice = 1
-
-	$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
-	switch ($Result)
-	{
-		"0"
-		{
-			if ($null -ne (Get-MpPreference).ExclusionPath)
-			{
-				$ExcludedFiles = (Get-Item -Path (Get-MpPreference).ExclusionPath -Force | Where-Object -FilterScript {$_.Attributes -notmatch "Directory"}).FullName
-				$ExcludedFiles | Format-Table -AutoSize -Wrap
-				Remove-MpPreference -ExclusionPath $ExcludedFiles -Force
-			}
-		}
-		"1"
-		{
-			if ($RU)
-			{
-				Write-Verbose -Message "Пропущено" -Verbose
-			}
-			else
-			{
-				Write-Verbose -Message "Skipped" -Verbose
-			}
-		}
+		Write-Verbose -Message "Removed excluded files:" -Verbose
+		$ExcludedFiles = (Get-Item -Path (Get-MpPreference).ExclusionPath -Force | Where-Object -FilterScript {$_.Attributes -notmatch "Directory"}).FullName
+		$ExcludedFiles | Format-Table -AutoSize -Wrap
+		Remove-MpPreference -ExclusionPath $ExcludedFiles -Force
 	}
 }
 
@@ -5380,39 +4661,30 @@ function DisableAuditCommandLineProcess
 function CreateEventViewerCustomView
 {
 	$XML = @"
-<ViewerConfig>
-	<QueryConfig>
-		<QueryParams>
-			<UserQuery />
-		</QueryParams>
-		<QueryNode>
-			<Name>Process Creation</Name>
-			<Description>Process Creation and Command-line Auditing Events</Description>
-			<QueryList>
-				<Query Id="0" Path="Security">
-					<Select Path="Security">*[System[(EventID=4688)]]</Select>
-				</Query>
-			</QueryList>
-		</QueryNode>
-	</QueryConfig>
-</ViewerConfig>
+	<ViewerConfig>
+		<QueryConfig>
+			<QueryParams>
+				<UserQuery />
+			</QueryParams>
+			<QueryNode>
+				<Name>$($Localization.EventViewerCustomViewName)</Name>
+				<Description>$($Localization.EventViewerCustomViewDescription)</Description>
+				<QueryList>
+					<Query Id="0" Path="Security">
+						<Select Path="Security">*[System[(EventID=4688)]]</Select>
+					</Query>
+				</QueryList>
+			</QueryNode>
+		</QueryConfig>
+	</ViewerConfig>
 "@
 	if (-not (Test-Path -Path "$env:ProgramData\Microsoft\Event Viewer\Views"))
 	{
 		New-Item -Path "$env:ProgramData\Microsoft\Event Viewer\Views" -ItemType Directory -Force
 	}
-	$ProcessCreationFilePath = "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml"
 	# Saving ProcessCreation.xml in UTF-8 encoding
 	# Сохраняем ProcessCreation.xml в кодировке UTF-8
-	Set-Content -Path $ProcessCreationFilePath -Value (New-Object System.Text.UTF8Encoding).GetBytes($XML) -Encoding Byte -Force
-
-	if ($RU)
-	{
-		[xml]$XML = Get-Content -Path $ProcessCreationFilePath
-		$XML.ViewerConfig.QueryConfig.QueryNode.Name = "Создание процесса"
-		$XML.ViewerConfig.QueryConfig.QueryNode.Description = "События содания нового процесса и аудит командной строки"
-		$xml.Save("$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml")
-	}
+	Set-Content -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Value (New-Object -TypeName System.Text.UTF8Encoding).GetBytes($XML) -Encoding Byte -Force
 }
 
 # Remove "Process Creation" Event Viewer Custom View
@@ -5948,14 +5220,7 @@ public static void PostMessage()
 	# Перезапустить меню "Пуск"
 	Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
 
-	if ($RU)
-	{
-		Write-Warning -Message "Перезагрузите вам ПК"
-	}
-	else
-	{
-		Write-Warning -Message "Restart your PC"
-	}
+	Write-Warning -Message $Localization.RestartWarning
 }
 #endregion Refresh
 
@@ -5966,21 +5231,10 @@ function Errors
 	if ($Global:Error)
 	{
 		($Global:Error | ForEach-Object -Process {
-			if ($RU)
-			{
-				[PSCustomObject] @{
-					Строка = $_.InvocationInfo.ScriptLineNumber
-					Файл = Split-Path -Path $PSCommandPath -Leaf
-					"Ошибки/предупреждения" = $_.Exception.Message
-				}
-			}
-			else
-			{
-				[PSCustomObject] @{
-					Line = $_.InvocationInfo.ScriptLineNumber
-					File = Split-Path -Path $PSCommandPath -Leaf
-					"Errors/Warnings" = $_.Exception.Message
-				}
+			[PSCustomObject] @{
+				$Localization.ErrorsLine = $_.InvocationInfo.ScriptLineNumber
+				$Localization.ErrorsFile = Split-Path -Path $PSCommandPath -Leaf
+				$Localization.ErrorsMessage = $_.Exception.Message
 			}
 		} | Sort-Object -Property Line | Format-Table -AutoSize -Wrap | Out-String).Trim()
 	}

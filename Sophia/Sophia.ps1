@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Windows 10 Sophia Script"
 
-	Version: v5.0.1
-	Date: 25.09.2020
+	Version: v5.1
+	Date: 05.10.2020
 	Copyright (c) 2020 farag & oZ-Zo
 
 	Thanks to all http://forum.ru-board.com members involved
@@ -22,13 +22,11 @@
 		Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 
 	.EXAMPLE
-	PS C:\> & '.\Preset.ps1'
+	PS C:\> .\Sophia.ps1
 
 	.NOTES
-	Ask a question on
 	http://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
-	https://habr.com/en/post/465365/
-	https://4pda.ru/forum/index.php?s=&showtopic=523489&view=findpost&p=95909388
+	https://habr.com/en/post/521202/
 	https://forums.mydigitallife.net/threads/powershell-script-setup-windows-10.81675/
 	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
 
@@ -38,6 +36,8 @@
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name .\Sophia.psm1 -Force
+
+Import-LocalizedData -BindingVariable Global:Localization
 
 # Checking
 # Проверка
@@ -154,11 +154,11 @@ DisableAppsSilentInstalling
 
 # Do not suggest ways I can finish setting up my device to get the most out of Windows (current user only)
 # Не предлагать способы завершения настройки устройства для максимально эффективного использования Windows (только для текущего пользователя)
-DisableSuggestedContent
+DisableWhatsNewInWindows
 
 # Suggest ways I can finish setting up my device to get the most out of Windows
 # Предлагать способы завершения настройки устройства для максимально эффективного использования Windows
-# EnableSuggestedContent
+# EnableWhatsNewInWindows
 
 # Do not offer tailored experiences based on the diagnostic data setting (current user only)
 # Не предлагать персонализированные возможности, основанные на выбранном параметре диагностических данных (только для текущего пользователя)
@@ -166,14 +166,14 @@ DisableTailoredExperiences
 
 # Offer tailored experiences based on the diagnostic data setting
 # Предлагать персонализированные возможности, основанные на выбранном параметре диагностических данных
-# DisableTailoredExperiences
+# EnableTailoredExperiences
 
 # Disable Bing search in the Start Menu
 # Отключить в меню "Пуск" поиск через Bing
 DisableBingSearch
 
 # Enable Bing search in the Start Menu
-# Включить в меню "Пуск" поиск через Bing
+# Включить поиск через Bing в меню "Пуск"
 # EnableBingSearch
 #endregion Privacy & Telemetry
 
@@ -492,11 +492,11 @@ SetTempPath
 
 # Enable Windows 260 character path limit
 # Включить ограничение Windows на 260 символов в пути
-EnableWin32LongPaths
+# EnableWin32LongPaths
 
 # Disable Windows 260 character path limit
 # Отключить ограничение Windows на 260 символов в пути
-# DisableWin32LongPaths
+DisableWin32LongPaths
 
 # Display the Stop error information on the BSoD
 # Отображать Stop-ошибку при появлении BSoD
@@ -930,9 +930,11 @@ EnableGPUScheduling
 #region Scheduled tasks
 <#
 	Create a task to clean up unused files and Windows updates in the Task Scheduler
+	A minute before the task starts, a warning in the Windows action center will appear
 	The task runs every 90 days
 
 	Создать задачу в Планировщике задач по очистке неиспользуемых файлов и обновлений Windows
+	За минуту до выполнения задачи в Центре уведомлений Windows появится предупреждение
 	Задача выполняется каждые 90 дней
 #>
 CreateCleanUpTask
@@ -971,17 +973,17 @@ CreateTempTask
 # Включить контролируемый доступ к папкам и добавить защищенные папки
 AddProtectedFolders
 
-# Disable Controlled folder access and remove all added protected folders
-# Выключить контролируемый доступ к папкам и удалить все добавленные защищенные папки
+# Remove all added protected folders
+# Удалить все добавленные защищенные папки
 # RemoveProtectedFolders
 
 # Allow an app through Controlled folder access
 # Разрешить работу приложения через контролируемый доступ к папкам
 AddAppControlledFolder
 
-# Do not allow an app through Controlled folder access
-# Не разрешать работу приложения через контролируемый доступ к папкам
-# RemoveAppsControlledFolder
+# Remove all allowed apps through Controlled folder access
+# Удалить все добавленные разрешенные приложение через контролируемый доступ к папкам
+# RemoveAllowedAppsControlledFolder
 
 # Add a folder to the exclusion from Microsoft Defender scanning
 # Добавить папку в список исключений сканирования Microsoft Defender
