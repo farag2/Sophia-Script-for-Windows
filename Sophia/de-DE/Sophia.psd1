@@ -111,7 +111,7 @@ GraphicsPerformanceFilter = *.exe|*.exe|Alle Dateien (*.*)|*.*
 GraphicsPerformanceSkipped = Übersprungen
 
 # CreateCleanUpTask
-CleanUpTaskToast = Die Bereinigung nicht verwendeter Windows-Dateien und -Updates beginnt in einer Minute 
+CleanUpTaskToast = Die Bereinigung nicht verwendeter Windows-Dateien und -Updates beginnt in einer Minute
 CleanUpTaskDescription = Bereinigen nicht verwendeter Windows-Dateien und -Updates mithilfe der integrierten App zur Datenträgerbereinigung. Verwenden Sie zum Dekodieren des codierten Befehls [System.Text.Encoding] :: UTF8.GetString ([System.Convert] :: FromBase64String ("string")).
 
 # CreateSoftwareDistributionTask
