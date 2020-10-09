@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	"Windows 10 Sophia Script" is a set of functions for Windows 10 fine-tuning and automating the routine tasks
 
-	Version: v5.1
-	Date: 08.10.2020
+	Version: v5.1.1
+	Date: 09.10.2020
 	Copyright (c) 2020 farag & oZ-Zo
 
 	Thanks to all http://forum.ru-board.com members involved
@@ -37,11 +37,6 @@
 #region Check
 function Check
 {
-	#Requires -RunAsAdministrator
-	#Requires -Version 5.1
-
-	Clear-Host
-
 	Set-StrictMode -Version Latest
 
 	# Сlear the $Error variable
@@ -57,7 +52,6 @@ function Check
 			Write-Warning -Message $Localization.UnsupportedOSBitness
 			break
 		}
-		Default {}
 	}
 
 	# Turn off Controlled folder access to let the script proceed
@@ -73,7 +67,6 @@ function Check
 			# Открыть раздел "Защита от программ-шатажистов"
 			Start-Process -FilePath windowsdefender://RansomwareProtection
 		}
-		Default {}
 	}
 }
 #endregion Check
@@ -146,6 +139,7 @@ function DisableWindowsErrorReporting
 {
 	if ((Get-WindowsEdition -Online).Edition -notmatch "Core*")
 	{
+		Get-ScheduledTask -TaskName QueueReporting | Disable-ScheduledTask
 		New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\Windows Error Reporting" -Name Disabled -PropertyType DWord -Value 1 -Force
 	}
 }
@@ -154,6 +148,7 @@ function DisableWindowsErrorReporting
 # Включить отчеты об ошибках Windows для текущего пользователя
 function EnableWindowsErrorReporting
 {
+	Get-ScheduledTask -TaskName QueueReporting | Enable-ScheduledTask
 	Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction SilentlyContinue
 }
 
@@ -228,10 +223,6 @@ function DisableScheduledTasks
 		# Синхронизирует последние параметры со службой функций семьи учетных записей Майкрософт
 		"FamilySafetyRefreshTask",
 
-		# Windows Error Reporting task to process queued reports
-		# Задача отчетов об ошибках обрабатывает очередь отчетов
-		"QueueReporting",
-
 		# XblGameSave Standby Task
 		"XblGameSaveTask"
 	)
@@ -299,10 +290,6 @@ function EnableScheduledTasks
 		# Synchronizes the latest settings with the Microsoft family features service
 		# Синхронизирует последние параметры со службой функций семьи учетных записей Майкрософт
 		"FamilySafetyRefreshTask",
-
-		# Windows Error Reporting task to process queued reports
-		# Задача отчетов об ошибках обрабатывает очередь отчетов
-		"QueueReporting",
 
 		# XblGameSave Standby Task
 		"XblGameSaveTask"
@@ -1485,8 +1472,8 @@ function SetDefaultTempPath
 	# Перезапустить службу "Диспетчер печати" (Spooler)
 	Restart-Service -Name Spooler -Force
 
-	Stop-Process -Name OneDrive -Force -ErrorAction SilentlyContinue
-	Stop-Process -Name FileCoAuth -Force -ErrorAction SilentlyContinue
+	Stop-Process -Name OneDrive -Force -ErrorAction Ignore
+	Stop-Process -Name FileCoAuth -Force -ErrorAction Ignore
 
 	Remove-Item -Path $env:SystemDrive\Temp -Recurse -Force -ErrorAction Ignore
 }
@@ -4129,30 +4116,15 @@ $app = "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\cleanmgr.exe"
 $Template = [Windows.UI.Notifications.ToastTemplateType]::ToastImageAndText01
 [xml]$ToastTemplate = ([Windows.UI.Notifications.ToastNotificationManager]::GetTemplateContent($Template).GetXml())
 
-if ($PSUICulture -eq "ru-RU")
-{
-	[xml]$ToastTemplate = @"
+[xml]$ToastTemplate = @"
 <toast launch="app-defined-string">
 	<visual>
 		<binding template="ToastGeneric">
-			<text>Очистка неиспользуемых файлов и обновлений Windows начнется через минуту</text>
+			<text>$($Localization.CleanUpTaskToast)</text>
 		</binding>
 	</visual>
 </toast>
 "@
-}
-else
-{
-	[xml]$ToastTemplate = @"
-<toast launch="app-defined-string">
-	<visual>
-		<binding template="ToastGeneric">
-			<text>Cleaning up unused Windows files and updates starts in a minute</text>
-		</binding>
-	</visual>
-</toast>
-"@
-}
 
 $ToastXml = New-Object -TypeName Windows.Data.Xml.Dom.XmlDocument
 $ToastXml.LoadXml($ToastTemplate.OuterXml)
@@ -4388,8 +4360,8 @@ function RemoveProtectedFolders
 	if ($null -ne (Get-MpPreference).ControlledFolderAccessProtectedFolders)
 	{
 		Write-Verbose -Message $Localization.RemoveProtectedFoldersList -Verbose
-		Remove-MpPreference -ControlledFolderAccessProtectedFolders (Get-MpPreference).ControlledFolderAccessProtectedFolders -Force
 		(Get-MpPreference).ControlledFolderAccessProtectedFolders | Format-Table -AutoSize -Wrap
+		Remove-MpPreference -ControlledFolderAccessProtectedFolders (Get-MpPreference).ControlledFolderAccessProtectedFolders -Force
 	}
 }
 
@@ -4498,8 +4470,8 @@ function RemoveDefenderExclusionFolders
 {
 	if ($null -ne (Get-MpPreference).ExclusionPath)
 	{
-		Write-Verbose -Message "Removed excluded folders:" -Verbose
-		$ExcludedFolders = (Get-Item -Path (Get-MpPreference).ExclusionPath -Force | Where-Object -FilterScript {$_.Attributes -match "Directory"}).FullName
+		Write-Verbose -Message $Localization.RemoveDefenderExclusionFoldersList -Verbose
+		$ExcludedFolders = (Get-Item -Path (Get-MpPreference).ExclusionPath -Force -ErrorAction Ignore | Where-Object -FilterScript {$_.Attributes -match "Directory"}).FullName
 		$ExcludedFolders | Format-Table -AutoSize -Wrap
 		Remove-MpPreference -ExclusionPath $ExcludedFolders -Force
 	}
@@ -4555,8 +4527,8 @@ function RemoveDefenderExclusionFiles
 {
 	if ($null -ne (Get-MpPreference).ExclusionPath)
 	{
-		Write-Verbose -Message "Removed excluded files:" -Verbose
-		$ExcludedFiles = (Get-Item -Path (Get-MpPreference).ExclusionPath -Force | Where-Object -FilterScript {$_.Attributes -notmatch "Directory"}).FullName
+		Write-Verbose -Message $Localization.RemoveDefenderExclusionFilesList -Verbose
+		$ExcludedFiles = (Get-Item -Path (Get-MpPreference).ExclusionPath -Force -ErrorAction Ignore | Where-Object -FilterScript {$_.Attributes -notmatch "Directory"}).FullName
 		$ExcludedFiles | Format-Table -AutoSize -Wrap
 		Remove-MpPreference -ExclusionPath $ExcludedFiles -Force
 	}

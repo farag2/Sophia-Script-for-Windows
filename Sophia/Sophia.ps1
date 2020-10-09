@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Windows 10 Sophia Script"
 
-	Version: v5.1
-	Date: 05.10.2020
+	Version: v5.1.1
+	Date: 09.10.2020
 	Copyright (c) 2020 farag & oZ-Zo
 
 	Thanks to all http://forum.ru-board.com members involved
@@ -15,7 +15,7 @@
 	and comment out/uncomment those functions that you do/do not want to be executed
 	Every tweak in a preset file has its' corresponding function to restore the default settings
 
-	Running the script is best done on a fresh install because running it on tweaked system may result in errors occurring
+	Running the script is best done on a fresh install because running it on wrong tweaked system may result in errors occurring
 
 	PowerShell must be run with elevated privileges
 	Set execution policy to be able to run scripts only in the current PowerShell session:
@@ -34,8 +34,13 @@
 	https://github.com/farag2/Windows-10-Sophia-Script
 #>
 
+#Requires -RunAsAdministrator
+#Requires -Version 5.1
+
+Clear-Host
+
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
-Import-Module -Name .\Sophia.psm1 -Force
+Import-Module -Name .\Sophia.psd1 -PassThru -Force
 
 Import-LocalizedData -BindingVariable Global:Localization
 
@@ -492,11 +497,11 @@ SetTempPath
 
 # Enable Windows 260 character path limit
 # Включить ограничение Windows на 260 символов в пути
-# EnableWin32LongPaths
+EnableWin32LongPaths
 
 # Disable Windows 260 character path limit
 # Отключить ограничение Windows на 260 символов в пути
-DisableWin32LongPaths
+# DisableWin32LongPaths
 
 # Display the Stop error information on the BSoD
 # Отображать Stop-ошибку при появлении BSoD
