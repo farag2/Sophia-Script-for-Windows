@@ -118,7 +118,7 @@ CleanUpTaskDescription = 使用内置磁盘清理工具清理未使用的Windows
 SoftwareDistributionTaskDescription = 定时清理 %SystemRoot%\\SoftwareDistribution\\Download
 
 # CreateTempTask
-TempTaskDescription = 清理 %TEMP% 文件夹 
+TempTaskDescription = 清理%TEMP%文件夹
 
 # AddProtectedFolders
 AddProtectedFoldersTitle = 受控文件夹访问权限
