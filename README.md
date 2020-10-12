@@ -6,6 +6,7 @@
 ![Minimum Supported PowerShell Version](https://img.shields.io/badge/PowerShell-5.1-brightgreen.svg)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/b1ce4ce852f148a88c47ea33ad172044)](https://www.codacy.com/manual/farag2/Windows-10-Sophia-Script)
 ![GitHub All Releases](https://img.shields.io/github/downloads/farag2/Windows-10-Setup-Script/total)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/farag2/Windows-10-Sophia-Script)
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Q5Q51QUJC)
 </div>
