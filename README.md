@@ -11,9 +11,40 @@
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Q5Q51QUJC)
 </div>
 
-|              |                |                |                |                |                |
-|--------------|----------------|----------------|----------------|----------------|----------------|
-| [![YT](https://i.imgur.com/mADOh3c.png)](https://youtu.be/8E6OT_QcHaU?t=370) | [![ghacks](https://i.imgur.com/K4f8VBo.png)](https://www.ghacks.net/2020/09/27/windows-10-setup-script-has-a-new-name-and-is-now-easier-to-use/) | [![neowin](https://i.imgur.com/5fILFqz.png)](https://www.neowin.net/news/this-windows-10-setup-script-lets-you-fine-tune-around-150-functions-for-new-installs) | [![comss](https://cdn.comss.net/img/logo51.png)](https://www.comss.ru/page.php?id=8019) | [![habr](https://i.imgur.com/cXWLr4I.png)](https://habr.com/en/post/521202/) | [![dm](https://i.imgur.com/6sAI2wZ.png)](https://www.deskmodder.de/blog/2020/09/25/windows-10-sophia-script-windows-10-feintuning-mit-powershell/) |
+<table>
+	<tr>
+		<td>
+			<a href="https://youtu.be/8E6OT_QcHaU?t=370">
+				<img alt="Qries" src="https://i.imgur.com/mADOh3c.png">
+			</a>
+		</td>
+		<td>
+			<a href="https://www.ghacks.net/2020/09/27/windows-10-setup-script-has-a-new-name-and-is-now-easier-to-use/">
+				<img alt="Qries" src="https://i.imgur.com/K4f8VBo.png">
+			</a>
+		</td>
+		<td>
+			<a href="https://www.neowin.net/news/this-windows-10-setup-script-lets-you-fine-tune-around-150-functions-for-new-installs">
+				<img alt="Qries" src="https://i.imgur.com/5fILFqz.png">
+			</a>
+		</td>
+		<td>
+			<a href="https://www.comss.ru/page.php?id=8019">
+				<img alt="Qries" src="https://cdn.comss.net/img/logo51.png">
+			</a>
+		</td>
+		<td>
+			<a href="https://habr.com/en/post/521202">
+				<img alt="Qries" src="https://i.imgur.com/cXWLr4I.png">
+			</a>
+		</td>
+		<td>
+			<a href="https://www.deskmodder.de/blog/2020/09/25/windows-10-sophia-script-windows-10-feintuning-mit-powershell/">
+				<img alt="Qries" src="https://i.imgur.com/6sAI2wZ.png">
+			</a>
+		</td>
+	</tr>
+</table>
 
 ## ⚠️ Before running ⚠️
 
