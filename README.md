@@ -19,6 +19,11 @@
 			</a>
 		</td>
 		<td>
+			<a href="https://4sysops.com/archives/windows-10-sophia-script-powershell-functions-for-windows-10-fine-tuning-and-automating-routine-configuration-tasks/">
+				<img alt="Qries" src="https://i.imgur.com/cZ32Hkt.png">
+			</a>
+		</td>
+		<td>
 			<a href="https://www.ghacks.net/2020/09/27/windows-10-setup-script-has-a-new-name-and-is-now-easier-to-use/">
 				<img alt="Qries" src="https://i.imgur.com/K4f8VBo.png">
 			</a>
@@ -141,8 +146,8 @@ To run the script:
 |:-----:|:-------:|:------------------:|:----:|:----:|:-----------------:|:--------------:|
 | 2009  |  20H2   |October 2020 Update |19042 |  x64 |Home/Pro/Enterprise|[5.1.1](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
 | 2004  |  20H1   |   May 2020 Update  |19041 |  x64 |Home/Pro/Enterprise|[5.1.1](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
-| 1909  |  19H2   |November 2019 Update|18363 |  x64 |Home/Pro/Enterprise|[4.5](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/190x)|
-| 1903  |  19H1   |   May 2019 Update  |18362 |  x64 |Home/Pro/Enterprise|[4.5](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/190x)|
+| 1909  |  19H2   |November 2019 Update|18363 |  x64 |Home/Pro/Enterprise|[4.5](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/4.x%20(outdated)/190x)|
+| 1903  |  19H1   |   May 2019 Update  |18362 |  x64 |Home/Pro/Enterprise|[4.5](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/4.x%20(outdated)/190x)|
 | 1809  |         |LTSC Enterprise 2019|17763 |  x64 |   Enterprise      |[4.5](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/LTSC)|
 
 ## GUI version (C#)
