@@ -40,9 +40,9 @@
 Clear-Host
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
-Import-Module -Name .\Sophia.psd1 -PassThru -Force
+Import-Module -Name $PSScriptRoot\Sophia.psd1 -PassThru -Force
 
-Import-LocalizedData -BindingVariable Global:Localization
+Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia
 
 # Checking
 # Проверка
