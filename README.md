@@ -124,7 +124,7 @@ To run the script:
 * Type
 
 ```
-.\Sophia.psd1
+.\Sophia.ps1
 ```
 
 * Press Enter
