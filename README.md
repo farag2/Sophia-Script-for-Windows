@@ -55,7 +55,7 @@
 
 * Due to the fact that the script includes more than **270** functions, you must read the entire **preset file** carefully and **comment out/uncomment** those functions that you do/do not want to be executed. Every tweak in a preset file has its' corresponding function to **restore the default settings**.
 * Running the script is best done on a fresh install because running it on **wrong** tweaked system may result in errors occurring.
-* Some third-party antiviruses flag this script or its' part as malicious one. This is a **false positive/** due to [$EncodedScript](https://github.com/farag2/Windows-10-Sophia-Script/blob/0f9bbee7e1d43f487eb0855e0d1e44ff569fc4a9/200x/2004.ps1#L2837) variable. You can read more about in "CreateCleanUpTask" function. You might need to disable tamper protection from your antivirus settings, re-enable it after running the script, and reboot.
+* Some third-party antiviruses flag this script or its' part as malicious one. This is a **false positive** due to [$EncodedScript](https://github.com/farag2/Windows-10-Sophia-Script/blob/0f9bbee7e1d43f487eb0855e0d1e44ff569fc4a9/200x/2004.ps1#L2837) variable. You can read more about in "CreateCleanUpTask" function. You might need to disable tamper protection from your antivirus settings, re-enable it after running the script, and reboot.
 
 ## Screenshots
 
