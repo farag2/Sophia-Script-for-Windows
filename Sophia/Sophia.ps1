@@ -1012,7 +1012,7 @@ PUAppsDetection -Enable
 
 # Disable detection for potentially unwanted applications and block them (default value)
 # Выключить обнаружение потенциально нежелательных приложений и блокировать их (значение по умолчанию)
-# PUAppsDetection -Disabled
+# PUAppsDetection -Disable
 
 # Enable sandboxing for Microsoft Defender
 # Включить песочницу для Microsoft Defender
