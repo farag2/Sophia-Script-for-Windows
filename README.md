@@ -189,6 +189,5 @@ To run the script:
 ## Ask a question on
 
 * [Ru-Board](http://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15)
-* [4PDA](https://4pda.ru/forum/index.php?s=&showtopic=523489&view=findpost&p=95909388)
 * [My Digital Life](https://forums.mydigitallife.net/threads/powershell-script-setup-windows-10.81675/)
 * [Reddit](https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/)
