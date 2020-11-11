@@ -1,7 +1,7 @@
 <div align="center">
   <h1>Windows 10 Sophia Script</h1>
 
-**"Windows 10 Sophia Script" is a PowerShell module for Windows 10 fine-tuning and automating the routine tasks** 🏆
+**A PowerShell module for Windows 10 fine-tuning and automating the routine tasks** 🏆
 
 ![Minimum Supported PowerShell Version](https://img.shields.io/badge/PowerShell-5.1-brightgreen.svg)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/b1ce4ce852f148a88c47ea33ad172044)](https://www.codacy.com/manual/farag2/Windows-10-Sophia-Script)
