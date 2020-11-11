@@ -6,10 +6,37 @@
 ![Minimum Supported PowerShell Version](https://img.shields.io/badge/PowerShell-5.1-brightgreen.svg)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/b1ce4ce852f148a88c47ea33ad172044)](https://www.codacy.com/manual/farag2/Windows-10-Sophia-Script)
 ![GitHub All Releases](https://img.shields.io/github/downloads/farag2/Windows-10-Setup-Script/total)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/farag2/Windows-10-Sophia-Script)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/farag2/Windows-10-Sophia-Script) [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Q5Q51QUJC)
 
-[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Q5Q51QUJC)
+Available in 
+<img width="25px" src="https://flaglane.com/download/british-flag/british-flag.svg"></img>
+<img width="20px" src="https://flaglane.com/download/chinese-flag/chinese-flag-graphic.png"></img>
+<img width="22px" src="https://flaglane.com/download/german-flag/german-flag.svg"></img>
+<img width="20px" src="https://flaglane.com/download/french-flag/french-flag.svg"></img>
+<img width="20px" src="https://flaglane.com/download/italian-flag/italian-flag.svg"></img>
+<img width="23px" src="https://flaglane.com/download/russian-flag/russian-flag.svg"></img>
+<img width="20px" src="https://flaglane.com/download/ukrainian-flag/ukrainian-flag.svg"></img>
+<img width="21px" src="https://flaglane.com/download/turkish-flag/turkish-flag.svg"></img>
 </div>
+
+<hr>
+<p align="center">
+	&bull;
+	<a href="https://github.com/farag2/Windows-10-Sophia-Script/releases"><b>Download</b></a>
+	&bull;
+	<a href="#screenshots">Screenshots</a>
+	&bull;
+	<a href="#sophia-script-in-action">Video</a>
+	&bull;
+	<a href="#core-features">Core features</a>
+	&bull;
+	<a href="#usage">Usage</a>
+	&bull;
+	<a href="#how-to-translate">How to translate</a>
+	&bull;
+	<a href="#supported-windows-10-versions">Supported Windows 10 versions</a>
+</p>
+<hr>
 
 <table>
 	<tr>
@@ -144,8 +171,8 @@ To run the script:
 
 |Version|Code name|   Marketing name   |Build | Arch |      Editions     | Script version |
 |:-----:|:-------:|:------------------:|:----:|:----:|:-----------------:|:--------------:|
-| 2009  |  20H2   |October 2020 Update |19042 |  x64 |Home/Pro/Enterprise|[5.1.1](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
-| 2004  |  20H1   |   May 2020 Update  |19041 |  x64 |Home/Pro/Enterprise|[5.1.1](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 2009  |  20H2   |October 2020 Update |19042 |  x64 |Home/Pro/Enterprise|[5.2](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 2004  |  20H1   |   May 2020 Update  |19041 |  x64 |Home/Pro/Enterprise|[5.2](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
 | 1909  |  19H2   |November 2019 Update|18363 |  x64 |Home/Pro/Enterprise|[4.5](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/4.x%20(outdated)/190x)|
 | 1903  |  19H1   |   May 2019 Update  |18362 |  x64 |Home/Pro/Enterprise|[4.5](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/4.x%20(outdated)/190x)|
 | 1809  |         |LTSC Enterprise 2019|17763 |  x64 |   Enterprise      |[4.5](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/LTSC)|
@@ -154,13 +181,10 @@ To run the script:
 
 [oz-zo](https://github.com/oz-zo) still cooking (moved to the private repository)
 
-## 21H1 test version
-https://gist.github.com/farag2/5a6d9952247aefe42ba81a9d95507765
-
 ## Microsoft Docs
 
 * [Release information](https://docs.microsoft.com/en-us/windows/release-information)
-* [Known issues for 2004](https://docs.microsoft.com/ru-ru/windows/release-information/status-windows-10-2004)
+* [Known issues for 20H2](https://docs.microsoft.com/ru-ru/windows/release-information/status-windows-10-20h2)
 
 ## Ask a question on
 
