@@ -6,18 +6,15 @@ ControlledFolderAccessDisabled = Контролируемый доступ к п
 
 # OneDrive
 OneDriveUninstalling = Удаление OneDrive...
-OneDriveNotEmptyFolder = "Папка $OneDriveUserFolder не пуста. Удалите ее вручную"
+OneDriveNotEmptyFolder = "Папка $OneDriveUserFolder не пуста `nУдалите ее вручную"
 OneDriveFileSyncShell64dllBlocked = "$FileSyncShell64dll заблокирован. Удалите его вручную"
 OneDriveInstalling = Ждем выгрузку файла FileSyncShell64.dll
 OneDriveDownloading = Скачивается OneDrive... ~33 МБ
-NoInternetConnection = Отсутствует интернет-соединение
+OneDriveNoInternetConnection = Отсутствует интернет-соединение
 
-# SetTempPath
-LOCALAPPDATANotEmptyFolder = "Папка $env:LOCALAPPDATA\\Temp не пуста. Очистите ее вручную и повторите попытку"
-
-# WSL
-WSLUpdateDownloading = Скачивается пакет обновления ядра Linux... ~14 МБ
-WSLUpdateInstalling = Установка пакета обновления ядра Linux...
+# TempPath
+LOCALAPPDATAFilesBlocked = "The following files are being blocked by third-party party apps `nRemove them manually and continue"
+LOCALAPPDATANotEmpty = "Папка $env:LOCALAPPDATA\\Temp не пуста. Очистите ее вручную и повторите попытку"
 
 # DisableWindowsCapabilities
 FODWindowTitle = Удалить дополнительные компоненты
@@ -25,7 +22,7 @@ FODWindowButton = Удалить
 DialogBoxOpening = Диалоговое окно открывается...
 NoData = Отсутствуют данные
 
-# EnableWindowsSandbox/DisableWindowsSandbox
+# WindowsSandbox
 EnableHardwareVT = Включите виртуализацию в UEFI
 
 # ChangeUserShellFolderLocation
@@ -88,8 +85,8 @@ PicturesDefaultFolder = Хотите изменить местоположени
 # Видео
 VideosDefaultFolder = Хотите изменить местоположение папки "Видео" на значение по умолчанию?
 
-# DisableReservedStorage
-ReservedStorageIsInUse = This operation is not supported when reserved storage is in use. Please wait for any servicing operations to complete and then try again later
+# ReservedStorage
+ReservedStorageIsInUse = Операция не поддерживается, пока используется зарезервированное хранилище. Пожалуйста, дождитесь окончания всех обслуживающих операций и попробуйте заново
 
 # PinControlPanel/PinDevicesPrinters/PinCommandPrompt
 syspinDownloading = Скачивается syspin... ~20 КБ
@@ -101,6 +98,10 @@ CMDPinning = Ярлык "Командная строка" закрепляетс
 UninstallUWPForAll = Удалить для всех пользователей
 UninstallUWPTitle = Удалить UWP-приложения
 UninstallUWPUninstallButton = Удалить
+
+# WSL
+WSLUpdateDownloading = Скачивается пакет обновления ядра Linux... ~14 МБ
+WSLUpdateInstalling = Установка пакета обновления ядра Linux...
 
 # SetAppGraphicsPerformance
 GraphicsPerformanceTitle = Настройка производительности графики
