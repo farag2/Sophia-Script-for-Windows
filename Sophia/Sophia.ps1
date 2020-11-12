@@ -3,7 +3,7 @@
 	Default preset file for "Windows 10 Sophia Script"
 
 	Version: v5.2
-	Date: 10.11.2020
+	Date: 11.11.2020
 	Copyright (c) 2020 farag & oZ-Zo
 
 	Thanks to all http://forum.ru-board.com members involved
@@ -50,7 +50,7 @@ Check
 
 # Create a restore point
 # Создать точку восстановления
-CreateRestorePoint
+# CreateRestorePoint
 
 #region Privacy & Telemetry
 # Disable the "Connected User Experiences and Telemetry" service
@@ -293,7 +293,7 @@ FileExplorerRibbon -Expanded
 
 # Always minimize the ribbon in the File Explorer (current user only) (default value)
 # Не отображать ленту проводника в развернутом виде (только для текущего пользователя) (значение по умолчанию)
-# FileExplorerRibbonExpanded -Minimized
+# FileExplorerRibbon -Minimized
 
 # Display recycle bin files delete confirmation
 # Запрашивать подтверждение на удаление файлов в корзину
@@ -741,12 +741,12 @@ SmartActiveHours -Enable
 # Не изменять автоматически период активности для этого устройства на основе действий (значение по умолчанию)
 # SmartActiveHours -Disable
 
-# Перезапускать это устройство как можно быстрее, если для установки обновления требуется перезагрузка
-# Restart this device as soon as possible when a restart is required to install an update
+# Enable restarting this device as soon as possible when a restart is required to install an update
+# Включить перезапуск этого устройства как можно быстрее, если для установки обновления требуется перезагрузка
 DeviceRestartAfterUpdate -Enable
 
-# Не перезапускать это устройство как можно быстрее, если для установки обновления требуется перезагрузка (default value)
-# Do not restart this device as soon as possible when a restart is required to install an update (значение по умолчанию)
+# Disable restarting this device as soon as possible when a restart is required to install an update (default value)
+# Выключить перезапуск этого устройства как можно быстрее, если для установки обновления требуется перезагрузка (значение по умолчанию)
 # DeviceRestartAfterUpdate -Disable
 #endregion System
 
@@ -1165,7 +1165,7 @@ ShareContext -Hide
 
 # Show the "Edit with Paint 3D" item in the context menu (default value)
 # Показывать пункт "Изменить с помощью Paint 3D" в контекстном меню (значение по умолчанию)
-# ShowEditWithPaint3DContext
+# EditWithPaint3DContext -Show
 
 # Hide the "Edit with Photos" item from the context menu
 # Скрыть пункт "Изменить с помощью приложения "Фотографии"" из контекстного меню
