@@ -50,7 +50,7 @@ Check
 
 # Create a restore point
 # Создать точку восстановления
-# CreateRestorePoint
+CreateRestorePoint
 
 #region Privacy & Telemetry
 # Disable the "Connected User Experiences and Telemetry" service
