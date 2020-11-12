@@ -46,6 +46,11 @@ Available in
 			</a>
 		</td>
 		<td>
+			<a href="https://benchtweakgaming.com/2020/11/12/windows-10-debloat-tool/">
+				<img alt="Qries" src="https://benchtweakgaming.com/wp-content/uploads/2020/10/cropped-LOGO_btg_CLEAN_WITH_WORDS_90PX_CUT-3.png">
+			</a>
+		</td>
+		<td>
 			<a href="https://4sysops.com/archives/windows-10-sophia-script-powershell-functions-for-windows-10-fine-tuning-and-automating-routine-configuration-tasks/">
 				<img alt="Qries" src="https://i.imgur.com/cZ32Hkt.png">
 			</a>
