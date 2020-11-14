@@ -178,8 +178,8 @@ To run the script:
 |:-----:|:-------:|:------------------:|:----:|:----:|:-----------------:|:--------------:|
 | 2009  |  20H2   |October 2020 Update |19042 |  x64 |Home/Pro/Enterprise|[5.2](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
 | 2004  |  20H1   |   May 2020 Update  |19041 |  x64 |Home/Pro/Enterprise|[5.2](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
-| 1909  |  19H2   |November 2019 Update|18363 |  x64 |Home/Pro/Enterprise|[4.5](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/4.x%20(outdated)/190x)|
-| 1903  |  19H1   |   May 2019 Update  |18362 |  x64 |Home/Pro/Enterprise|[4.5](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/4.x%20(outdated)/190x)|
+| 1909  |  19H2   |November 2019 Update|18363 |  x64 |Home/Pro/Enterprise|[4.5, deprecated](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/4.x%20(outdated)/190x)|
+| 1903  |  19H1   |   May 2019 Update  |18362 |  x64 |Home/Pro/Enterprise|[4.5, deprecated](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/4.x%20(outdated)/190x)|
 | 1809  |         |LTSC Enterprise 2019|17763 |  x64 |   Enterprise      |[4.5](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/LTSC)|
 
 ## GUI version (C#)
