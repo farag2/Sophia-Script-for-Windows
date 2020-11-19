@@ -22,7 +22,7 @@ Available in
 <hr>
 <p align="center">
 	&bull;
-	<a href="https://github.com/farag2/Windows-10-Sophia-Script/releases"><b>Download</b></a>
+	<a href="https://github.com/farag2/Windows-10-Sophia-Script/releases"><b>DOWNLOAD</b></a>
 	&bull;
 	<a href="#screenshots">Screenshots</a>
 	&bull;
