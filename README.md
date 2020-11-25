@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>Windows 10 Sophia Script</h1>
+  <h1>Sophia Script</h1>
 
 **A PowerShell module for Windows 10 fine-tuning and automating the routine tasks** 🏆
 
