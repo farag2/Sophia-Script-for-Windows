@@ -8,16 +8,7 @@
 [![Github stats](https://img.shields.io/github/downloads/farag2/Windows-10-Setup-Script/total.svg?label=downloads%20%28since%20May%202020%29)](https://github.com/farag2/Windows-10-Sophia-Script/releases)
 ![ko-fi](https://img.shields.io/github/v/release/farag2/Windows-10-Sophia-Script) [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Q5Q51QUJC)
 
-Available in 
-<img width="25px" src="https://flaglane.com/download/british-flag/british-flag.svg"></img>
-<img width="20px" src="https://flaglane.com/download/chinese-flag/chinese-flag-graphic.png"></img>
-<img width="22px" src="https://flaglane.com/download/german-flag/german-flag.svg"></img>
-<img width="20px" src="https://flaglane.com/download/french-flag/french-flag.svg"></img>
-<img width="20px" src="https://flaglane.com/download/italian-flag/italian-flag.svg"></img>
-<img width="23px" src="https://flaglane.com/download/russian-flag/russian-flag.svg"></img>
-<img width="20px" src="https://flaglane.com/download/ukrainian-flag/ukrainian-flag.svg"></img>
-<img width="21px" src="https://flaglane.com/download/turkish-flag/turkish-flag.svg"></img>
-</div>
+Available in: :uk: :cn: :de: :fr: :it: :ru: :ukraine: :tr:
 
 <hr>
 <p align="center">
