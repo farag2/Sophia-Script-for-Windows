@@ -8,7 +8,7 @@
 [![Github stats](https://img.shields.io/github/downloads/farag2/Windows-10-Setup-Script/total.svg?label=downloads%20%28since%20May%202020%29)](https://github.com/farag2/Windows-10-Sophia-Script/releases)
 ![ko-fi](https://img.shields.io/github/v/release/farag2/Windows-10-Sophia-Script) [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Q5Q51QUJC)
 
-Available in: :uk: :cn: :de: :fr: :it: :ru: :ukraine: :tr:
+Available in: :uk: :cn: :de: :fr: :it: :ru: :ukraine: :tr: 
 
 <hr>
 <p align="center">
