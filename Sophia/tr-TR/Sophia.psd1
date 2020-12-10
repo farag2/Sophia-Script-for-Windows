@@ -2,6 +2,7 @@ ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                   = Bu betik sadece Windows 10 x64 destekliyor
 UnsupportedOSBuild                     = Bu betik sadece Windows 10 2004/20H1 sürüm ve üstünü destekliyor
 ControlledFolderAccessDisabled         = Kontrollü klasör erişimi devre dışı bırakıldı
+NewUserShellFolderLocation             = Yeni konum: "{0}"
 
 # ScheduledTasks
 ScheduledTasks                         = Zamanlanan görevler
