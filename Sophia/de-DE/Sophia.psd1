@@ -10,14 +10,11 @@ OneDriveNotEmptyFolder = "Der Ordner $OneDriveUserFolder ist nicht leer.Löschen
 OneDriveFileSyncShell64dllBlocked = "$FileSyncShell64dll ist blockiert. Löschen Sie es manuell"
 OneDriveInstalling = OneDriveSetup.exe wird gestartet...
 OneDriveDownloading = OneDrive herunterladen... ~33 MB
-NoInternetConnection = Keine Internetverbindung
+OneDriveNoInternetConnection = Keine Internetverbindung
 
-# SetTempPath
-LOCALAPPDATANotEmptyFolder = "Der Ordner $env:LOCALAPPDATA\\Temp ist nicht leer. Löschen Sie ihn manuell und versuchen Sie es erneut"
-
-# WSL
-WSLUpdateDownloading = Herunterladen des Linux-Kernel-Update-Pakets... ~14 MB
-WSLUpdateInstalling = Installieren des Linux-Kernel-Update-Pakets...
+# TempPath
+LOCALAPPDATAFilesBlocked = "The following files are being blocked by third-party party apps `nRemove them manually and continue"
+LOCALAPPDATANotEmpty = "Der Ordner $env:LOCALAPPDATA\\Temp ist nicht leer. Löschen Sie ihn manuell und versuchen Sie es erneut"
 
 # DisableWindowsCapabilities
 FODWindowTitle = Optionale Funktionen (FODv2) zum Entfernen
@@ -25,53 +22,53 @@ FODWindowButton = Deinstallieren
 DialogBoxOpening = Dialogfeld anzeigen...
 NoData = Nichts zum Anzeigen
 
-# EnableWindowsSandbox/DisableWindowsSandbox
+# WindowsSandbox
 EnableHardwareVT = Virtualisierung in UEFI aktivieren
 
 # ChangeUserShellFolderLocation
 UserShellFolderNotEmpty = "Der Ordner $UserShellFolderRegValue ist nicht leer. Verschieben Sie sie manuell an einen neuen Speicherort"
 RetrievingDrivesList = Laufwerksliste abrufen...
 # Desktop
-DesktopChangeFolderRequest = Möchten Sie den Speicherort des Desktop Ordners ändern?
+DesktopDriveSelect = Wählen Sie das Laufwerk aus, in dessen Stammverzeichnis der Desktop Ordner erstellt werden soll
 DesktopFilesWontBeMoved = Dateien werden nicht verschoben
+DesktopFolderRequest = Möchten Sie den Speicherort des Desktop Ordners ändern?
 DesktopFolderChange = Ändern
 DesktopFolderSkip = Überspringen
-DesktopDriveSelect = Wählen Sie das Laufwerk aus, in dessen Stammverzeichnis der Desktop Ordner erstellt werden soll
 DesktopSkipped = Übersprungen
 # Documents
-DocumentsChangeFolderRequest = Möchten Sie den Speicherort des Ordners Dokumente ändern?
+DocumentsDriveSelect = Wählen Sie das Laufwerk aus, in dessen Stammverzeichnis der Ordner Dokumente erstellt werden soll
 DocumentsFilesWontBeMoved = Dateien werden nicht verschoben
+DocumentsFolderRequest = Möchten Sie den Speicherort des Ordners Dokumente ändern?
 DocumentsFolderChange = Ändern
 DocumentsFolderSkip = Überspringen
-DocumentsDriveSelect = Wählen Sie das Laufwerk aus, in dessen Stammverzeichnis der Ordner Dokumente erstellt werden soll
 DocumentsSkipped = Übersprungen
 # Downloads
-DownloadsChangeFolderRequest = Möchten Sie den Speicherort des Download Ordners ändern?
+DownloadsDriveSelect = Wählen Sie das Laufwerk aus, in dessen Stammverzeichnis der Ordner Downloads erstellt werden soll
 DownloadsFilesWontBeMoved = Dateien werden nicht verschoben
+DownloadsFolderRequest = Möchten Sie den Speicherort des Download Ordners ändern?
 DownloadsFolderChange = Ändern
 DownloadsFolderSkip = Überspringen
-DownloadsDriveSelect = Wählen Sie das Laufwerk aus, in dessen Stammverzeichnis der Ordner Downloads erstellt werden soll
 DownloadsSkipped = Übersprungen
 # Music
-MusicChangeFolderRequest = Möchten Sie den Speicherort des Musikordners ändern?
+MusicDriveSelect = Wählen Sie das Laufwerk aus, in dessen Stammverzeichnis der Musikordner erstellt werden soll
 MusicFilesWontBeMoved = Dateien werden nicht verschoben
+MusicFolderRequest = Möchten Sie den Speicherort des Musikordners ändern?
 MusicFolderChange = Ändern
 MusicFolderSkip = Überspringen
-MusicDriveSelect = Wählen Sie das Laufwerk aus, in dessen Stammverzeichnis der Musikordner erstellt werden soll
 MusicSkipped = Übersprungen
 # Pictures
-PicturesChangeFolderRequest = Möchten Sie den Speicherort des Ordner Bilder ändern?
+PicturesDriveSelect = Wählen Sie das Laufwerk aus, in dessen Stammverzeichnis der Ordner Bilder erstellt werden soll
 PicturesFilesWontBeMoved = Dateien werden nicht verschoben
+PicturesFolderRequest = Möchten Sie den Speicherort des Ordner Bilder ändern?
 PicturesFolderChange = Ändern
 PicturesFolderSkip = Überspringen
-PicturesDriveSelect = Wählen Sie das Laufwerk aus, in dessen Stammverzeichnis der Ordner Bilder erstellt werden soll
 PicturesSkipped = Übersprungen
 # Videos
-VideosChangeFolderRequest = Möchten Sie den Speicherort des Video Ordners ändern?
+VideosDriveSelect = Wählen Sie das Laufwerk aus, in dessen Stammverzeichnis der Ordner Videos erstellt werden soll
 VideosFilesWontBeMoved = Dateien werden nicht verschoben
+VideosFolderRequest = Möchten Sie den Speicherort des Video Ordners ändern?
 VideosFolderChange = Ändern
 VideosFolderSkip = Überspringen
-VideosDriveSelect = Wählen Sie das Laufwerk aus, in dessen Stammverzeichnis der Ordner Videos erstellt werden soll
 VideosSkipped = Übersprungen
 
 # SetDefaultUserShellFolderLocation
@@ -88,11 +85,14 @@ PicturesDefaultFolder = Möchten Sie den Speicherort des Ordners Bilder auf den 
 # Videos
 VideosDefaultFolder = Möchten Sie den Speicherort des Video Ordners auf den Standardwert ändern?
 
-# DisableReservedStorage
+# ReservedStorage
 ReservedStorageIsInUse = Dieser Vorgang wird nicht unterstützt, wenn reservierter Speicher verwendet wird. Bitte warten Sie, bis alle Wartungsvorgänge abgeschlossen sind, und versuchen Sie es später erneut
 
-# PinControlPanel/PinDevicesPrinters/PinCommandPrompt
+# syspin
+syspinNoInternetConnection = Keine Internetverbindung
 syspinDownloading = Syspin herunterladen... ~20 KB
+
+# PinControlPanel/PinDevicesPrinters/PinCommandPrompt
 ControlPanelPinning = "Die Verknüpfung $ControlPanelLocalizedName wird an Start angeheftet"
 DevicesPrintersPinning = "Die Verknüpfung $DevicesAndPrintersLocalizedName wird an Start angeheftet"
 CMDPinning = Die Verknüpfung zur Eingabeaufforderung wird an Start angeheftet
@@ -101,6 +101,10 @@ CMDPinning = Die Verknüpfung zur Eingabeaufforderung wird an Start angeheftet
 UninstallUWPForAll = Deinstallieren für alle Benutzer
 UninstallUWPTitle = Zu deinstallierende UWP-Pakete
 UninstallUWPUninstallButton = Deinstallieren
+
+# WSL
+WSLUpdateDownloading = Herunterladen des Linux-Kernel-Update-Pakets... ~14 MB
+WSLUpdateInstalling = Installieren des Linux-Kernel-Update-Pakets...
 
 # SetAppGraphicsPerformance
 GraphicsPerformanceTitle = Grafik-Leistungspräferenz

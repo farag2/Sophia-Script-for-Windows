@@ -10,14 +10,11 @@ OneDriveNotEmptyFolder = "The $OneDriveUserFolder folder is not empty `nDelete i
 OneDriveFileSyncShell64dllBlocked = "$FileSyncShell64dll is blocked `nDelete it manually"
 OneDriveInstalling = OneDriveSetup.exe is starting...
 OneDriveDownloading = Downloading OneDrive... ~33 MB
-NoInternetConnection = No Internet connection
+OneDriveNoInternetConnection = No Internet connection
 
-# SetTempPath
-LOCALAPPDATANotEmptyFolder = "The $env:LOCALAPPDATA\\Temp folder is not empty `nDeleteClear it manually and try again"
-
-# WSL
-WSLUpdateDownloading = Downloading the Linux kernel update package... ~14 MB
-WSLUpdateInstalling = Installing the Linux kernel update package...
+# TempPath
+LOCALAPPDATAFilesBlocked = "The following files are being blocked by third-party party apps `nRemove them manually and continue"
+LOCALAPPDATANotEmpty = "The $env:LOCALAPPDATA\\Temp folder is not empty `nClear it manually and try again"
 
 # DisableWindowsCapabilities
 FODWindowTitle = Optional features (FODv2) to remove
@@ -25,53 +22,53 @@ FODWindowButton = Uninstall
 DialogBoxOpening = Displaying the dialog box...
 NoData = Nothing to display
 
-# EnableWindowsSandbox/DisableWindowsSandbox
+# WindowsSandbox
 EnableHardwareVT = Enable Virtualization in UEFI
 
 # ChangeUserShellFolderLocation
 UserShellFolderNotEmpty = "Some files left in the $UserShellFolderRegValue folder `nMove them manually to a new location"
 RetrievingDrivesList = Retrieving drives list...
 # Desktop
-DesktopChangeFolderRequest = Would you like to change the location of the Desktop folder?
+DesktopDriveSelect = Select the drive within the root of which the Desktop folder will be created
 DesktopFilesWontBeMoved = Files will not be moved
+DesktopFolderRequest = Would you like to change the location of the Desktop folder?
 DesktopFolderChange = Change
 DesktopFolderSkip = Skip
-DesktopDriveSelect = Select the drive within the root of which the Desktop folder will be created
 DesktopSkipped = Skipped
 # Documents
-DocumentsChangeFolderRequest = Would you like to change the location of the Documents folder?
+DocumentsDriveSelect = Select the drive within the root of which the Documents folder will be created
 DocumentsFilesWontBeMoved = Files will not be moved
+DocumentsFolderRequest = Would you like to change the location of the Documents folder?
 DocumentsFolderChange = Change
 DocumentsFolderSkip = Skip
-DocumentsDriveSelect = Select the drive within the root of which the Documents folder will be created
 DocumentsSkipped = Skipped
 # Downloads
-DownloadsChangeFolderRequest = Would you like to change the location of the Downloads folder?
+DownloadsDriveSelect = Select the drive within the root of which the Downloads folder will be created
 DownloadsFilesWontBeMoved = Files will not be moved
+DownloadsFolderRequest = Would you like to change the location of the Downloads folder?
 DownloadsFolderChange = Change
 DownloadsFolderSkip = Skip
-DownloadsDriveSelect = Select the drive within the root of which the Downloads folder will be created
 DownloadsSkipped = Skipped
 # Music
-MusicChangeFolderRequest = Would you like to change the location of the Music folder?
+MusicDriveSelect = Select the drive within the root of which the Music folder will be created
 MusicFilesWontBeMoved = Files will not be moved
+MusicFolderRequest = Would you like to change the location of the Music folder?
 MusicFolderChange = Change
 MusicFolderSkip = Skip
-MusicDriveSelect = Select the drive within the root of which the Music folder will be created
 MusicSkipped = Skipped
 # Pictures
-PicturesChangeFolderRequest = Would you like to change the location of the Pictures folder?
+PicturesDriveSelect = Select the drive within the root of which the Pictures folder will be created
 PicturesFilesWontBeMoved = Files will not be moved
+PicturesFolderRequest = Would you like to change the location of the Pictures folder?
 PicturesFolderChange = Change
 PicturesFolderSkip = Skip
-PicturesDriveSelect = Select the drive within the root of which the Pictures folder will be created
 PicturesSkipped = Skipped
 # Videos
-VideosChangeFolderRequest = Would you like to change the location of the Videos folder?
+VideosDriveSelect = Select the drive within the root of which the Videos folder will be created
 VideosFilesWontBeMoved = Files will not be moved
+VideosFolderRequest = Would you like to change the location of the Videos folder?
 VideosFolderChange = Change
 VideosFolderSkip = Skip
-VideosDriveSelect = Select the drive within the root of which the Videos folder will be created
 VideosSkipped = Skipped
 
 # SetDefaultUserShellFolderLocation
@@ -88,11 +85,14 @@ PicturesDefaultFolder = Would you like to change the location of the Pictures fo
 # Videos
 VideosDefaultFolder = Would you like to change the location of the Videos folder to the default value?
 
-# DisableReservedStorage
+# ReservedStorage
 ReservedStorageIsInUse = This operation is not supported when reserved storage is in use `nPlease wait for any servicing operations to complete and then try again later
 
-# PinControlPanel/PinDevicesPrinters/PinCommandPrompt
+# syspin
+syspinNoInternetConnection = No Internet connection
 syspinDownloading = Downloading syspin... ~20 KB
+
+# PinControlPanel/PinDevicesPrinters/PinCommandPrompt
 ControlPanelPinning = "$ControlPanelLocalizedName shortcut is being pinned to Start"
 DevicesPrintersPinning = "$DevicesAndPrintersLocalizedName shortcut is being pinned to Start"
 CMDPinning = Command Prompt shortcut is being pinned to Start
@@ -101,6 +101,10 @@ CMDPinning = Command Prompt shortcut is being pinned to Start
 UninstallUWPForAll = Uninstall for All Users
 UninstallUWPTitle = UWP Packages to Uninstall
 UninstallUWPUninstallButton = Uninstall
+
+# WSL
+WSLUpdateDownloading = Downloading the Linux kernel update package... ~14 MB
+WSLUpdateInstalling = Installing the Linux kernel update package...
 
 # SetAppGraphicsPerformance
 GraphicsPerformanceTitle = Graphics performance preference

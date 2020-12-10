@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Windows 10 Sophia Script"
 
-	Version: v5.1.1
-	Date: 09.10.2020
+	Version: v5.2
+	Date: 11.11.2020
 	Copyright (c) 2020 farag & oZ-Zo
 
 	Thanks to all http://forum.ru-board.com members involved
@@ -40,9 +40,9 @@
 Clear-Host
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
-Import-Module -Name .\Sophia.psd1 -PassThru -Force
+Import-Module -Name $PSScriptRoot\Sophia.psd1 -PassThru -Force
 
-Import-LocalizedData -BindingVariable Global:Localization
+Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia
 
 # Checking
 # Проверка
@@ -53,303 +53,307 @@ Check
 CreateRestorePoint
 
 #region Privacy & Telemetry
-# Disable the "Connected User Experiences and Telemetry" service (DiagTrack)
-# Отключить службу "Функциональные возможности для подключенных пользователей и телеметрия" (DiagTrack)
-DisableTelemetryServices
+# Disable the "Connected User Experiences and Telemetry" service
+# Отключить службу "Функциональные возможности для подключенных пользователей и телеметрия"
+TelemetryService -Disable
 
-# Enable the "Connected User Experiences and Telemetry" service (DiagTrack)
-# Включить службу "Функциональные возможности для подключенных пользователей и телеметрия" (DiagTrack)
-# EnableTelemetryServices
+# Enable the "Connected User Experiences and Telemetry" service (default value)
+# Включить службу "Функциональные возможности для подключенных пользователей и телеметрия" (значение по умолчанию)
+# TelemetryService -Enable
 
 # Set the OS level of diagnostic data gathering to minimum
 # Установить уровень сбора диагностических сведений ОС на минимальный
-SetMinimalDiagnosticDataLevel
+DiagnosticDataLevel -Minimal
 
 # Set the default OS level of diagnostic data gathering
 # Установить уровень сбора диагностических сведений ОС по умолчанию
-# SetDefaultDiagnosticDataLevel
+# DiagnosticDataLevel -Default
 
 # Turn off Windows Error Reporting for the current user
 # Отключить отчеты об ошибках Windows для текущего пользователя
-DisableWindowsErrorReporting
+ErrorReporting -Disable
 
-# Turn on Windows Error Reporting for the current user
-# Включить отчеты об ошибках Windows для текущего пользователя
-# EnableWindowsErrorReporting
+# Turn on Windows Error Reporting for the current user (default value)
+# Включить отчеты об ошибках Windows для текущего пользователя (значение по умолчанию)
+# ErrorReporting -Enable
 
 # Change Windows feedback frequency to "Never" for the current user
 # Изменить частоту формирования отзывов на "Никогда" для текущего пользователя
-DisableWindowsFeedback
+WindowsFeedback -Disable
 
-# Change Windows Feedback frequency to "Automatically" for the current user
-# Изменить частоту формирования отзывов на "Автоматически" для текущего пользователя
-# EnableWindowsFeedback
+# Change Windows Feedback frequency to "Automatically" for the current user (default value)
+# Изменить частоту формирования отзывов на "Автоматически" для текущего пользователя (значение по умолчанию)
+# WindowsFeedback -Enable
 
 # Turn off diagnostics tracking scheduled tasks
 # Отключить задачи диагностического отслеживания
-DisableScheduledTasks
+ScheduledTasks -Disable
 
-# Turn on diagnostics tracking scheduled tasks
-# Включить задачи диагностического отслеживания
-# EnableScheduledTasks
+# Turn on diagnostics tracking scheduled tasks (default value)
+# Включить задачи диагностического отслеживания (значение по умолчанию)
+# ScheduledTasks -Enable
 
 # Do not use sign-in info to automatically finish setting up device and reopen apps after an update or restart (current user only)
 # Не использовать данные для входа для автоматического завершения настройки устройства и открытия приложений после перезапуска или обновления (только для текущего пользователя)
-DisableSigninInfo
+SigninInfo -Disable
 
-# Use sign-in info to automatically finish setting up device and reopen apps after an update or restart (current user only)
-# Использовать данные для входа для автоматического завершения настройки устройства и открытия приложений после перезапуска или обновления (только для текущего пользователя)
-# EnableSigninInfo
+# Use sign-in info to automatically finish setting up device and reopen apps after an update or restart (current user only) (default value)
+# Использовать данные для входа для автоматического завершения настройки устройства и открытия приложений после перезапуска или обновления (только для текущего пользователя) (значение по умолчанию)
+# SigninInfo -Enable
 
 # Do not let websites provide locally relevant content by accessing language list (current user only)
 # Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков (только для текущего пользователя)
-DisableLanguageListAccess
+LanguageListAccess -Disable
 
-# Let websites provide locally relevant content by accessing language list (current user only)
-# Позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков (только для текущего пользователя)
-# EnableLanguageListAccess
+# Let websites provide locally relevant content by accessing language list (current user only) (default value)
+# Позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков (только для текущего пользователя) (значение по умолчанию)
+# LanguageListAccess -Enable
 
 # Do not allow apps to use advertising ID (current user only)
 # Не разрешать приложениям использовать идентификатор рекламы (только для текущего пользователя)
-DisableAdvertisingID
+AdvertisingID -Disable
 
-# Allow apps to use advertising ID (current user only)
-# Разрешать приложениям использовать идентификатор рекламы (только для текущего пользователя)
-# EnableAdvertisingID
+# Allow apps to use advertising ID (current user only) (default value)
+# Разрешать приложениям использовать идентификатор рекламы (только для текущего пользователя) (значение по умолчанию)
+# AdvertisingID -Enable
 
 # Do not let apps on other devices open and message apps on this device, and vice versa (current user only)
 # Не разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот (только для текущего пользователя)
-DisableShareAcrossDevices
+ShareAcrossDevices -Disable
 
-# Let apps on other devices open and message apps on this device, and vice versa (current user only)
-# Разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот (только для текущего пользователя)
-# EnableShareAcrossDevices
+# Let apps on other devices open and message apps on this device, and vice versa (current user only) (default value)
+# Разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот (только для текущего пользователя) (значение по умолчанию)
+# ShareAcrossDevices -Enable
 
-# Do not show the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested (current user only)
-# Не показывать экран приветствия Windows после обновлений и иногда при входе, чтобы сообщить о новых функциях и предложениях (только для текущего пользователя)
-DisableWindowsWelcomeExperience
+# Hide the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested (current user only)
+# Скрывать экран приветствия Windows после обновлений и иногда при входе, чтобы сообщить о новых функциях и предложениях (только для текущего пользователя)
+WindowsWelcomeExperience -Hide
 
-# Show the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested (current user only)
-# Показывать экран приветствия Windows после обновлений и иногда при входе, чтобы сообщить о новых функциях и предложениях (только для текущего пользователя)
-# EnableWindowsWelcomeExperience
+# Show the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested (current user only) (default value)
+# Показывать экран приветствия Windows после обновлений и иногда при входе, чтобы сообщить о новых функциях и предложениях (только для текущего пользователя) (значение по умолчанию)
+# WindowsWelcomeExperience -Show
 
-# Get tip, trick, and suggestions as you use Windows (current user only)
-# Получать советы, подсказки и рекомендации при использованию Windows (только для текущего пользователя)
-EnableWindowsTips
+# Get tip, trick, and suggestions as you use Windows (current user only) (default value)
+# Получать советы, подсказки и рекомендации при использованию Windows (только для текущего пользователя) (значение по умолчанию)
+WindowsTips -Enable
 
 # Do not get tip, trick, and suggestions as you use Windows (current user only)
 # Не получать советы, подсказки и рекомендации при использованию Windows (только для текущего пользователя)
-# DisableWindowsTips
+# WindowsTips -Disable
 
-# Do not show suggested content in the Settings app (current user only)
-# Не показывать рекомендуемое содержимое в приложении "Параметры" (только для текущего пользователя)
-DisableSuggestedContent
+# Hide suggested content in the Settings app (current user only)
+# Скрывать рекомендуемое содержимое в приложении "Параметры" (только для текущего пользователя)
+SettingsSuggestedContent -Hide
 
-# Show suggested content in the Settings app (current user only)
-# Показывать рекомендуемое содержимое в приложении "Параметры" (только для текущего пользователя)
-# EnableSuggestedContent
+# Show suggested content in the Settings app (current user only) (default value)
+# Показывать рекомендуемое содержимое в приложении "Параметры" (только для текущего пользователя) (значение по умолчанию)
+# SettingsSuggestedContent -Show
 
 # Turn off automatic installing suggested apps (current user only)
 # Отключить автоматическую установку рекомендованных приложений (только для текущего пользователя)
-DisableAppsSilentInstalling
+AppsSilentInstalling -Disable
 
-# Turn on automatic installing suggested apps (current user only)
-# Включить автоматическую установку рекомендованных приложений (только для текущего пользователя)
-# EnableAppsSilentInstalling
+# Turn on automatic installing suggested apps (current user only) (default value)
+# Включить автоматическую установку рекомендованных приложений (только для текущего пользователя) (значение по умолчанию)
+# AppsSilentInstalling -Enable
 
 # Do not suggest ways I can finish setting up my device to get the most out of Windows (current user only)
 # Не предлагать способы завершения настройки устройства для максимально эффективного использования Windows (только для текущего пользователя)
-DisableWhatsNewInWindows
+WhatsNewInWindows -Disable
 
-# Suggest ways I can finish setting up my device to get the most out of Windows
-# Предлагать способы завершения настройки устройства для максимально эффективного использования Windows
-# EnableWhatsNewInWindows
+# Suggest ways I can finish setting up my device to get the most out of Windows (default value)
+# Предлагать способы завершения настройки устройства для максимально эффективного использования Windows (значение по умолчанию)
+# WhatsNewInWindows -Enable
 
 # Do not offer tailored experiences based on the diagnostic data setting (current user only)
 # Не предлагать персонализированные возможности, основанные на выбранном параметре диагностических данных (только для текущего пользователя)
-DisableTailoredExperiences
+TailoredExperiences -Disable
 
-# Offer tailored experiences based on the diagnostic data setting
-# Предлагать персонализированные возможности, основанные на выбранном параметре диагностических данных
-# EnableTailoredExperiences
+# Offer tailored experiences based on the diagnostic data setting (default value)
+# Предлагать персонализированные возможности, основанные на выбранном параметре диагностических данных (значение по умолчанию)
+# TailoredExperiences -Enable
 
 # Disable Bing search in the Start Menu
 # Отключить в меню "Пуск" поиск через Bing
-DisableBingSearch
+BingSearch -Disable
 
-# Enable Bing search in the Start Menu
-# Включить поиск через Bing в меню "Пуск"
-# EnableBingSearch
+# Enable Bing search in the Start Menu (current user only) (default value)
+# Включить поиск через Bing в меню "Пуск" (только для текущего пользователя) (значение по умолчанию)
+# BingSearch -Enable
 #endregion Privacy & Telemetry
 
 #region UI & Personalization
 # Show "This PC" on Desktop (current user only)
 # Отобразить "Этот компьютер" на рабочем столе (только для текущего пользователя)
-ShowThisPC
+ThisPC -Show
 
-# Do not show "This PC" on Desktop (current user only)
-# Не отображать "Этот компьютер" на рабочем столе (только для текущего пользователя)
-# HideThisPC
+# Hide "This PC" on Desktop (current user only) (default value)
+# Скрывать "Этот компьютер" на рабочем столе (только для текущего пользователя) (значение по умолчанию)
+# ThisPC -Hide
 
 # Do not use check boxes to select items (current user only)
 # Не использовать флажки для выбора элементов (только для текущего пользователя)
-DisableCheckBoxes
+CheckBoxes -Disable
 
-# Use check boxes to select items (current user only)
-# Использовать флажки для выбора элементов (только для текущего пользователя)
-# EnableCheckBoxes
+# Use check boxes to select items (current user only) (default value)
+# Использовать флажки для выбора элементов (только для текущего пользователя) (значение по умолчанию)
+# CheckBoxes -Enable
 
 # Show hidden files, folders, and drives (current user only)
-# Показывать скрытые файлы, папки и диски (только для текущего пользователя)
-ShowHiddenItems
+# Отображать скрытые файлы, папки и диски (только для текущего пользователя)
+HiddenItems -Enable
 
-# Do not show hidden files, folders, and drives (current user only)
-# Не показывать скрытые файлы, папки и диски (только для текущего пользователя)
-# HideHiddenItems
+# Do not show hidden files, folders, and drives (current user only) (default value)
+# Не отображать скрытые файлы, папки и диски (только для текущего пользователя) (значение по умолчанию)
+# HiddenItems -Disable
 
 # Show file name extensions (current user only)
-# Показывать расширения имён файлов (только для текущего пользователя)
-ShowFileExtensions
+# Отображать расширения имён файлов (только для текущего пользователя)
+FileExtensions -Show
 
-# Do not show file name extensions (current user only)
-# Не показывать расширения имён файлов файлов (только для текущего пользователя)
-# HideFileExtensions
+# Hide file name extensions (current user only) (default value)
+# Скрывать расширения имён файлов файлов (только для текущего пользователя) (значение по умолчанию)
+# FileExtensions -Hide
 
 # Do not hide folder merge conflicts (current user only)
 # Не скрывать конфликт слияния папок (только для текущего пользователя)
-ShowMergeConflicts
+MergeConflicts -Show
 
-# Hide folder merge conflicts (current user only)
-# Скрывать конфликт слияния папок (только для текущего пользователя)
-# HideMergeConflicts
+# Hide folder merge conflicts (current user only) (default value)
+# Скрывать конфликт слияния папок (только для текущего пользователя) (значение по умолчанию)
+# MergeConflicts -Hide
 
 # Open File Explorer to: "This PC" (current user only)
 # Открывать проводник для: "Этот компьютер" (только для текущего пользователя)
-OpenFileExplorerToThisPC
+OpenFileExplorerTo -ThisPC
 
-# Open File Explorer to: "Quick access" (current user only)
-# Открывать проводник для: "Быстрый доступ" (только для текущего пользователя)
-# OpenFileExplorerToQuickAccess
+# Open File Explorer to: "Quick access" (current user only) (default value)
+# Открывать проводник для: "Быстрый доступ" (только для текущего пользователя) (значение по умолчанию)
+# OpenFileExplorerTo -QuickAccess
 
-# Do not show Cortana button on the taskbar (current user only)
-# Не показывать кнопку Кортаны на панели задач (только для текущего пользователя)
-HideCortanaButton
+# Hide Cortana button on the taskbar (current user only)
+# Скрывать кнопку Кортаны на панели задач (только для текущего пользователя)
+CortanaButton -Hide
 
-# Show Cortana button on the taskbar (current user only)
-# Показывать кнопку Кортаны на панели задач (только для текущего пользователя)
-# ShowCortanaButton
+# Show Cortana button on the taskbar (current user only) (default value)
+# Показать кнопку Кортаны на панели задач (только для текущего пользователя) (значение по умолчанию)
+# CortanaButton -Show
 
 # Do not show sync provider notification within File Explorer (current user only)
 # Не показывать уведомления поставщика синхронизации в проводнике (только для текущего пользователя)
-HideOneDriveFileExplorerAd
+OneDriveFileExplorerAd -Hide
 
-# Show sync provider notification within File Explorer (current user only)
-# Показывать уведомления поставщика синхронизации в проводнике (только для текущего пользователя)
-# ShowOneDriveFileExplorerAd
+# Show sync provider notification within File Explorer (current user only) (default value)
+# Показывать уведомления поставщика синхронизации в проводнике (только для текущего пользователя) (значение по умолчанию)
+# OneDriveFileExplorerAd -Show
 
-# Do not show Task View button on the taskbar (current user only)
-# Не показывать кнопку Просмотра задач (только для текущего пользователя)
-HideTaskViewButton
+# Hide Task View button on the taskbar (current user only)
+# Скрывать кнопку Просмотра задач (только для текущего пользователя)
+TaskViewButton -Hide
 
-# Show Task View button on the taskbar (current user only)
-# Показывать кнопку Просмотра задач (только для текущего пользователя)
-# ShowTaskViewButton
+# Show Task View button on the taskbar (current user only) (default value)
+# Показывать кнопку Просмотра задач (только для текущего пользователя) (значение по умолчанию)
+# TaskViewButton -Show
 
-# Do not show People button on the taskbar (current user only)
-# Не показывать панель "Люди" на панели задач (только для текущего пользователя)
-HidePeopleTaskbar
+# Hide People button on the taskbar (current user only)
+# Скрывать панель "Люди" на панели задач (только для текущего пользователя)
+PeopleTaskbar -Hide
 
-# Show People button on the taskbar (current user only)
-# Показывать панель "Люди" на панели задач (только для текущего пользователя)
-# ShowPeopleTaskbar
+# Show People button on the taskbar (current user only) (default value)
+# Показывать панель "Люди" на панели задач (только для текущего пользователя) (значение по умолчанию)
+# PeopleTaskbar -Show
 
 # Show seconds on the taskbar clock (current user only)
 # Отображать секунды в системных часах на панели задач (только для текущего пользователя)
-ShowSecondsInSystemClock
+SecondsInSystemClock -Show
 
-# Do not show seconds on the taskbar clock (current user only)
-# не отображать секунды в системных часах на панели задач (только для текущего пользователя)
-# HideSecondsInSystemClock
+# Hide seconds on the taskbar clock (current user only) (default value)
+# Скрывать секунды в системных часах на панели задач (только для текущего пользователя) (значение по умолчанию)
+# SecondsInSystemClock -Hide
 
-# Do not show when snapping a window, what can be attached next to it (current user only)
-# Не показывать при прикреплении окна, что можно прикрепить рядом с ним (только для текущего пользователя)
-DisableSnapAssist
+# When I snap a window, do not show what I can snap next to it (current user only)
+# При прикреплении окна не показывать, что можно прикрепить рядом с ним (только для текущего пользователя)
+SnapAssist -Disable
 
-# Show when snapping a window, what can be attached next to it (current user only)
-# Показывать при прикреплении окна, что можно прикрепить рядом с ним (только для текущего пользователя)
-# EnableSnapAssist
+# When I snap a window, show what I can snap next to it (current user only) (default value)
+# При прикреплении окна не показывать/показывать, что можно прикрепить рядом с ним (только для текущего пользователя) (значение по умолчанию)
+# SnapAssist -Enable
 
 # Always open the file transfer dialog box in the detailed mode (current user only)
 # Всегда открывать диалоговое окно передачи файлов в развернутом виде (только для текущего пользователя)
-FileTransferDialogDetailed
+FileTransferDialog -Detailed
 
-# Always open the file transfer dialog box in the compact mode (current user only)
-# Всегда открывать диалоговое окно передачи файлов в свернутом виде (только для текущего пользователя)
-# FileTransferDialogCompact
+# Always open the file transfer dialog box in the compact mode (current user only) (default value)
+# Всегда открывать диалоговое окно передачи файлов в свернутом виде (только для текущего пользователя) (значение по умолчанию)
+# FileTransferDialog -Compact
 
-# Show the ribbon expanded in File Explorer (current user only)
-# Отображать ленту проводника в развернутом виде (только для текущего пользователя)
-FileExplorerRibbonExpanded
+# Always expand the ribbon in the File Explorer (current user only)
+# Всегда разворачивать ленту в проводнике (только для текущего пользователя)
+FileExplorerRibbon -Expanded
 
-# Do not show the ribbon expanded in File Explorer (current user only)
-# Не отображать ленту проводника в развернутом виде (только для текущего пользователя)
-# FileExplorerRibbonMinimized
+# Always minimize the ribbon in the File Explorer (current user only) (default value)
+# Не отображать ленту проводника в развернутом виде (только для текущего пользователя) (значение по умолчанию)
+# FileExplorerRibbon -Minimized
 
 # Display recycle bin files delete confirmation
 # Запрашивать подтверждение на удаление файлов в корзину
-EnableRecycleBinDeleteConfirmation
+RecycleBinDeleteConfirmation -Enable
 
-# Do not display recycle bin files delete confirmation
-# Не запрашивать подтверждение на удаление файлов в корзину
-# DisableRecycleBinDeleteConfirmation
+# Do not display recycle bin files delete confirmation (default value)
+# Не запрашивать подтверждение на удаление файлов в корзину (значение по умолчанию)
+# RecycleBinDeleteConfirmation -Disable
 
-# Hide the "3D Objects" folder from "This PC" and "Quick access" (current user only)
-# Скрыть папку "Объемные объекты" из "Этот компьютер" и из панели быстрого доступа (только для текущего пользователя)
-Hide3DObjects
+# Hide the "3D Objects" folder in "This PC" and "Quick access" (current user only)
+# Скрыть папку "Объемные объекты" в "Этот компьютер" и панели быстрого доступа (только для текущего пользователя)
+3DObjects -Hide
 
-# Show the "3D Objects" folder from "This PC" and "Quick access" (current user only)
-# Отобразить папку "Объемные объекты" из "Этот компьютер" и из панели быстрого доступа (только для текущего пользователя)
-# Show3DObjects
+# Show the "3D Objects" folder in "This PC" and "Quick access" (current user only) (default value)
+# Отобразить папку "Объемные объекты" в "Этот компьютер" и панели быстрого доступа (только для текущего пользователя) (значение по умолчанию)
+# 3DObjects -Show
 
-# Do not show frequently used folders in "Quick access" (current user only)
-# Не показывать недавно используемые папки на панели быстрого доступа (только для текущего пользователя)
-HideQuickAccessFrequentFolders
+# Hide frequently used folders in "Quick access" (current user only)
+# Скрыть недавно используемые папки на панели быстрого доступа (только для текущего пользователя)
+QuickAccessFrequentFolders -Hide
 
-# Show frequently used folders in "Quick access" (current user only)
-# Показывать недавно используемые папки на панели быстрого доступа (только для текущего пользователя)
-# ShowQuickAccessFrequentFolders
+# Show frequently used folders in "Quick access" (current user only) (default value)
+# Показывать недавно используемые папки на панели быстрого доступа (только для текущего пользователя) (значение по умолчанию)
+# QuickAccessFrequentFolders -Show
 
 # Do not show recently used files in Quick access (current user only)
 # Не показывать недавно использовавшиеся файлы на панели быстрого доступа (только для текущего пользователя)
-HideQuickAccessRecentFiles
+QuickAccessRecentFiles -Hide
 
-# Show recently used files in Quick access (current user only)
-# Показывать недавно использовавшиеся файлы на панели быстрого доступа (только для текущего пользователя)
-# ShowQuickAccessShowRecentFiles
+# Show recently used files in Quick access (current user only) (default value)
+# Показывать недавно использовавшиеся файлы на панели быстрого доступа (только для текущего пользователя) (значение по умолчанию)
+# QuickAccessRecentFiles -Show
 
 # Hide the search box or the search icon from the taskbar (current user only)
 # Скрыть поле или значок поиска на панели задач (только для текущего пользователя)
-HideTaskbarSearch
+TaskbarSearch -Hide
 
-# Show the search box from the taskbar (current user only)
+# Show the search box on the taskbar (current user only)
 # Показать поле поиска на панели задач (только для текущего пользователя)
-# ShowTaskbarSearch
+# TaskbarSearch -SearchIcon
+
+# Show the search icon on the taskbar (current user only) (default value)
+# Показать поле поиска на панели задач (только для текущего пользователя) (значение по умолчанию)
+# TaskbarSearch -SearchBox
 
 # Do not show the "Windows Ink Workspace" button on the taskbar (current user only)
 # Не показывать кнопку Windows Ink Workspace на панели задач (current user only)
-HideWindowsInkWorkspace
+WindowsInkWorkspace -Hide
 
-# Show the "Windows Ink Workspace" button in taskbar (current user only)
-# Показывать кнопку Windows Ink Workspace на панели задач (current user only)
-# ShowWindowsInkWorkspace
+# Show the "Windows Ink Workspace" button in taskbar (current user only) (default value)
+# Показывать кнопку Windows Ink Workspace на панели задач (current user only) (значение по умолчанию)
+# WindowsInkWorkspace -Show
 
 # Always show all icons in the notification area (current user only)
 # Всегда отображать все значки в области уведомлений (только для текущего пользователя)
-ShowTrayIcons
+TrayIcons -Show
 
-# Do not show all icons in the notification area (current user only)
-# Не отображать все значки в области уведомлений (только для текущего пользователя)
-# HideTrayIcons
+# Do not show all icons in the notification area (current user only) (default value)
+# Не отображать все значки в области уведомлений (только для текущего пользователя) (значение по умолчанию)
+# TrayIcons -Hide
 
 # Unpin "Microsoft Edge" and "Microsoft Store" from the taskbar (current user only)
 # Открепить Microsoft Edge и Microsoft Store от панели задач (только для текущего пользователя)
@@ -357,83 +361,83 @@ UnpinTaskbarEdgeStore
 
 # View the Control Panel icons by: large icons (current user only)
 # Просмотр иконок Панели управления как: крупные значки (только для текущего пользователя)
-ControlPanelLargeIcons
+ControlPanelView -LargeIcons
 
-# View the Control Panel icons by: category (current user only)
-# Просмотр значки Панели управления как "категория" (только для текущего пользователя)
-# ControlPanelCategoryIcons
-
-# Set the Windows mode color scheme to the light (current user only)
-# Установить режим цвета для Windows на светлый (только для текущего пользователя)
-# WindowsColorSchemeLight
+# View the Control Panel icons by: category (current user only) (default value)
+# Просмотр значки Панели управления как "категория" (только для текущего пользователя) (значение по умолчанию)
+# ControlPanelView -Category
 
 # Set the Windows mode color scheme to the dark (current user only)
 # Установить цвет режима Windows по умолчанию на темный (только для текущего пользователя)
-WindowsColorSchemeDark
+WindowsColorScheme -Dark
 
-# Set the default app mode color scheme to the light (current user only)
-# Установить цвет режима приложений по умолчанию на светлый (только для текущего пользователя)
-# AppModeLight
+# Set the Windows mode color scheme to the light (current user only)
+# Установить режим цвета для Windows на светлый (только для текущего пользователя)
+# WindowsColorScheme -Light
 
 # Set the default app mode color scheme to the dark (current user only)
 # Установить цвет режима приложений по умолчанию на темный (только для текущего пользователя)
-AppModeDark
+AppMode -Dark
+
+# Set the default app mode color scheme to the light (current user only)
+# Установить цвет режима приложений по умолчанию на светлый (только для текущего пользователя)
+# AppMode -Light
 
 # Do not show the "New App Installed" indicator
 # Не показывать уведомление "Установлено новое приложение"
-DisableNewAppInstalledNotification
+NewAppInstalledNotification -Hide
 
-# Show the "New App Installed" indicator
-# Показывать уведомление "Установлено новое приложение"
-# EnableNewAppInstalledNotification
+# Show the "New App Installed" indicator (default value)
+# Показывать уведомление "Установлено новое приложение" (значение по умолчанию)
+# NewAppInstalledNotification -Show
 
-# Do not show user first sign-in animation after the upgrade
-# Не показывать анимацию при первом входе в систему после обновления
-HideFirstSigninAnimation
+# Hide user first sign-in animation after the upgrade
+# Скрывать анимацию при первом входе в систему после обновления
+FirstLogonAnimation -Disable
 
-# Show user first sign-in animation the upgrade
-# Показывать анимацию при первом входе в систему после обновления
-# ShowFirstSigninAnimation
+# Show user first sign-in animation after the upgrade (default value)
+# Показывать анимацию при первом входе в систему после обновления (значение по умолчанию)
+# FirstLogonAnimation -Enable
 
 # Set the quality factor of the JPEG desktop wallpapers to maximum (current user only)
 # Установить коэффициент качества обоев рабочего стола в формате JPEG на максимальный (только для текущего пользователя)
-JPEGWallpapersQualityMax
+JPEGWallpapersQuality -Max
 
 # Set the quality factor of the JPEG desktop wallpapers to default (current user only)
 # Установить коэффициент качества обоев рабочего стола в формате JPEG по умолчанию (только для текущего пользователя)
-# JPEGWallpapersQualityDefault
+# JPEGWallpapersQuality -Default
 
 # Start Task Manager in expanded mode (current user only)
 # Запускать Диспетчера задач в развернутом виде (только для текущего пользователя)
-TaskManagerWindowExpanded
+TaskManagerWindow -Expanded
 
-# Start Task Manager in compact mode (current user only)
-# Запускать Диспетчера задач в свернутом виде (только для текущего пользователя)
-# TaskManagerWindowCompact
+# Start Task Manager in compact mode (current user only) (default value)
+# Запускать Диспетчера задач в свернутом виде (только для текущего пользователя) (значение по умолчанию)
+# TaskManagerWindow -Compact
 
 # Show a notification when your PC requires a restart to finish updating
 # Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления
-ShowRestartNotification
+RestartNotification -Show
 
-# Do not show a notification when your PC requires a restart to finish updating
-# Не показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления
-# HideRestartNotification
+# Do not show a notification when your PC requires a restart to finish updating (default value)
+# Не показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления (значение по умолчанию)
+# RestartNotification -Hide
 
 # Do not add the "- Shortcut" suffix to the file name of created shortcuts (current user only)
 # Нe дoбaвлять "- яpлык" к имени coздaвaeмых яpлыков (только для текущего пользователя)
-DisableShortcutsSuffix
+ShortcutsSuffix -Disable
 
-# Add the "- Shortcut" suffix to the file name of created shortcuts (current user only)
-# Дoбaвлять "- яpлык" к имени coздaвaeмых яpлыков (только для текущего пользователя)
-# EnableShortcutsSuffix
+# Add the "- Shortcut" suffix to the file name of created shortcuts (current user only) (default value)
+# Дoбaвлять "- яpлык" к имени coздaвaeмых яpлыков (только для текущего пользователя) (значение по умолчанию)
+# ShortcutsSuffix -Enable
 
 # Use the PrtScn button to open screen snipping (current user only)
 # Использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана (только для текущего пользователя)
-EnablePrtScnSnippingTool
+PrtScnSnippingTool -Enable
 
-# Do not use the PrtScn button to open screen snipping (current user only)
-# Не использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана (только для текущего пользователя)
-# DisablePrtScnSnippingTool
+# Do not use the PrtScn button to open screen snipping (current user only) (default value)
+# Не использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана (только для текущего пользователя) (значение по умолчанию)
+# PrtScnSnippingTool -Disable
 #endregion UI & Personalization
 
 #region OneDrive
@@ -441,124 +445,312 @@ EnablePrtScnSnippingTool
 # Удалить OneDrive
 UninstallOneDrive
 
-# Install OneDrive (current user only)
-# Установить OneDrive (только для текущего пользователя)
+# Install OneDrive (current user only) (default value)
+# Установить OneDrive (только для текущего пользователя) (значение по умолчанию)
 # InstallOneDrive
 #endregion OneDrive
 
 #region System
+#region StorageSense
 # Turn on Storage Sense (current user only)
 # Включить Контроль памяти (только для текущего пользователя)
-EnableStorageSense
+StorageSense -Enable
 
-# Turn off Storage Sense (current user only)
-# Выключить Контроль памяти (только для текущего пользователя)
-# DisableStorageSense
+# Turn off Storage Sense (current user only) (default value)
+# Выключить Контроль памяти (только для текущего пользователя) (значение по умолчанию)
+# StorageSense -Disable
 
 # Run Storage Sense every month (current user only)
 # Запускать Контроль памяти каждый месяц (только для текущего пользователя)
-StorageSenseMonthFrequency
+StorageSenseFrequency -Month
 
 # Run Storage Sense during low free disk space (default value) (current user only)
 # Запускать Контроль памяти, когда остается мало место на диске (значение по умолчанию) (только для текущего пользователя)
-# StorageSenseDefaultFrequency
+# StorageSenseFrequency -Default
 
 # Delete temporary files that apps aren't using (current user only)
 # Удалять временные файлы, не используемые в приложениях (только для текущего пользователя)
-EnableStorageSenseTempFiles
+StorageSenseTempFiles -Enable
 
 # Do not delete temporary files that apps aren't using (current user only)
 # Не удалять временные файлы, не используемые в приложениях (только для текущего пользователя)
-# DisableStorageSenseTempFiles
+# StorageSenseTempFiles -Disable
 
 # Delete files in recycle bin if they have been there for over 30 days (current user only)
 # Удалять файлы из корзины, если они находятся в корзине более 30 дней (только для текущего пользователя)
-EnableStorageSenseRecycleBin
+StorageSenseRecycleBin -Enable
 
 # Do not delete files in recycle bin if they have been there for over 30 days (current user only)
-# Не удалять файлы из корзины, если они находятся в корзине более 30 дней(только для текущего пользователя)
-# DisableStorageSenseRecycleBin
+# Не удалять файлы из корзины, если они находятся в корзине более 30 дней (только для текущего пользователя)
+# StorageSenseRecycleBin -Disable
+#endregion StorageSense
 
 # Disable hibernation if the device is not a laptop
 # Отключить режим гибернации, если устройство не является ноутбуком
-DisableHibernate
+Hibernate -Disable
 
-# Turn on hibernate
-# Включить режим гибернации
-# EnableHibernate
+# Enable hibernate (default value)
+# Включить режим гибернации (значение по умолчанию)
+# Hibernate -Enable
 
 # Change the %TEMP% environment variable path to the %SystemDrive%\Temp (both machine-wide, and for the current user)
 # Изменить путь переменной среды для %TEMP% на %SystemDrive%\Temp (для всех пользователей)
-SetTempPath
+TempPath -SystemDrive
 
-# Change %TEMP% environment variable path to the %LOCALAPPDATA%\Temp (default value) (both machine-wide, and for the current user)
-# Изменить путь переменной среды для %TEMP% на LOCALAPPDATA%\Temp (значение по умолчанию) (для всех пользователей)
-# SetDefaultTempPath
-
-# Enable Windows 260 character path limit
-# Включить ограничение Windows на 260 символов в пути
-EnableWin32LongPaths
+# Change %TEMP% environment variable path to the %LOCALAPPDATA%\Temp (both machine-wide, and for the current user) (default value)
+# Изменить путь переменной среды для %TEMP% на LOCALAPPDATA%\Temp (для всех пользователей) (значение по умолчанию)
+# TempPath -Default
 
 # Disable Windows 260 character path limit
 # Отключить ограничение Windows на 260 символов в пути
-# DisableWin32LongPaths
+Win32LongPathLimit -Disable
+
+# Enable Windows 260 character path limit (default value)
+# Включить ограничение Windows на 260 символов в пути (значение по умолчанию)
+# Win32LongPathLimit -Enable
 
 # Display the Stop error information on the BSoD
 # Отображать Stop-ошибку при появлении BSoD
-EnableBSoDStopError
+BSoDStopError -Enable
 
-# Do not display the Stop error information on the BSoD
-# Не отображать Stop-ошибку при появлении BSoD
-# DisableBSoDStopError
+# Do not display the Stop error information on the BSoD (default value)
+# Не отображать Stop-ошибку при появлении BSoD (значение по умолчанию)
+# BSoDStopError -Disable
 
 # Change "Behavior of the elevation prompt for administrators in Admin Approval Mode" to "Elevate without prompting"
 # Изменить "Поведение запроса на повышение прав для администраторов в режиме одобрения администратором" на "Повышение прав без запроса"
-DisableAdminApprovalMode
+AdminApprovalMode -Disable
 
 # Change "Behavior of the elevation prompt for administrators in Admin Approval Mode" to "Prompt for consent for non-Windows binaries" (default value)
 # Изменить "Поведение запроса на повышение прав для администраторов в режиме одобрения администратором" на "Запрос согласия для исполняемых файлов, отличных от Windows" (значение по умолчанию)
-# EnableAdminApprovalMode
+# AdminApprovalMode -Enable
 
 # Turn on access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled
 # Включить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами
-EnableMappedDrivesAppElevatedAccess
+MappedDrivesAppElevatedAccess -Enable
 
-# Turn off access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled
-# Выключить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами
-# DisableMappedDrivesAppElevatedAccess
+# Turn off access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled (default value)
+# Выключить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами (значение по умолчанию)
+# MappedDrivesAppElevatedAccess -Disable
 
 # Opt out of the Delivery Optimization-assisted updates downloading
 # Отказаться от загрузки обновлений с помощью оптимизации доставки
-DisableDeliveryOptimization
+DeliveryOptimization -Disable
 
-# Opt-in to the Delivery Optimization-assisted updates downloading
-# Включить загрузку обновлений с помощью оптимизации доставки
-# EnableDeliveryOptimization
+# Opt-in to the Delivery Optimization-assisted updates downloading (default value)
+# Включить загрузку обновлений с помощью оптимизации доставки (значение по умолчанию)
+# DeliveryOptimization -Enable
 
 # Always wait for the network at computer startup and logon for workgroup networks
 # Всегда ждать сеть при запуске и входе в систему для рабочих групп
-AlwaysWaitNetworkStartup
+WaitNetworkStartup -Enable
 
-# Never wait for the network at computer startup and logon for workgroup networks
-# Никогда ждать сеть при запуске и входе в систему для рабочих групп
-# NeverWaitNetworkStartup
+# Never wait for the network at computer startup and logon for workgroup networks (default value)
+# Никогда не ждать сеть при запуске и входе в систему для рабочих групп (значение по умолчанию)
+# WaitNetworkStartup -Disable
 
 # Do not let Windows decide which printer should be the default one (current user only)
 # Не разрешать Windows решать, какой принтер должен использоваться по умолчанию (только для текущего пользователя)
-DisableWindowsManageDefaultPrinter
+WindowsManageDefaultPrinter -Disable
 
-# Let Windows decide which printer should be the default one (current user only)
-# Разрешать Windows решать, какой принтер должен использоваться по умолчанию (только для текущего пользователя)
-# EnableWindowsManageDefaultPrinter
+# Let Windows decide which printer should be the default one (current user only) (default value)
+# Разрешать Windows решать, какой принтер должен использоваться по умолчанию (только для текущего пользователя) (значение по умолчанию)
+# WindowsManageDefaultPrinter -Enable
 
 # Disable the following Windows features
 # Отключить следующие компоненты Windows
-DisableWindowsFeatures
+WindowsFeatures -Disable
 
-# Enable the following Windows features
-# Включить следующие компоненты Windows
-# EnableWindowsFeatures
+# Enable Windows features (default value)
+# Включить компоненты Windows (значение по умолчанию)
+# WindowsFeatures -Enable
 
+# Disable Feature On Demand v2 (FODv2) capabilities using the pop-up dialog box
+# Отключить компоненты "Функции по требованию" (FODv2), используя всплывающее диалоговое окно
+DisableWindowsCapabilities
+
+# Opt-in to Microsoft Update service, so to receive updates for other Microsoft products
+# Подключаться к службе Microsoft Update так, чтобы при обновлении Windows получать обновления для других продуктов Майкрософт
+UpdateMicrosoftProducts -Enable
+
+# Opt-out of Microsoft Update service, so not to receive updates for other Microsoft products (default value)
+# Не подключаться к службе Microsoft Update так, чтобы при обновлении Windows не получать обновления для других продуктов Майкрософт (значение по умолчанию)
+# UpdateMicrosoftProducts -Disable
+
+# Do not let UWP apps run in the background except some (current user only)
+# Не разрешать UWP-приложениям работать в фоновом режиме, кроме некоторых (только для текущего пользователя)
+BackgroundUWPApps -Disable
+
+# Let UWP apps run in the background (current user only) (default value)
+# Разрешить UWP-приложениям работать в фоновом режиме (только для текущего пользователя) (значение по умолчанию)
+# BackgroundUWPApps -Enable
+
+# Set the power management scheme on "High performance" if device is a desktop
+# Установить схему управления питанием на "Высокая производительность", если устройство является стационарным ПК
+PowerManagementScheme -High
+
+# Set the power management scheme on "Balanced" (default value)
+# Установить схему управления питанием на "Сбалансированная" (значение по умолчанию)
+# PowerManagementScheme -Balanced
+
+# Use latest installed .NET runtime for all apps
+# Использовать последнюю установленную среду выполнения .NET для всех приложений
+LatestInstalled.NET -Enable
+
+# Do not use latest installed .NET runtime for all apps (default value)
+# Не использовать последнюю установленную версию .NET для всех приложений (значение по умолчанию)
+# LatestInstalled.NET -Disable
+
+# Do not allow the computer (if device is not a laptop) to turn off the network adapters to save power
+# Запретить отключение всех сетевых адаптеров для экономии энергии (если устройство не является ноутбуком)
+PCTurnOffDevice -Disable
+
+# Allow the computer to turn off the network adapters to save power (default value)
+# Разрешить отключение всех сетевых адаптеров для экономии энергии (значение по умолчанию)
+# PCTurnOffDevice -Enable
+
+# Set the default input method to the English language
+# Установить метод ввода по умолчанию на английский язык
+SetInputMethod -English
+
+# Reset the default input method
+# Сбросить метод ввода по умолчанию
+# SetInputMethod -Default
+
+<#
+	Change the location of the user folders to any disks root of your choice using the interactive menu (current user only)
+	User files or folders won't me moved to a new location
+
+	Изменить расположение пользовательских папок в корень любого диска на выбор с помощью интерактивного меню (только для текущего пользователя)
+	Пользовательские файлы и папки не будут перемещены в новое расположение
+#>
+ChangeUserShellFolderLocation -Root
+
+<#
+	Change the location of the user folders to the default values (current user only)
+	User files or folders won't me moved to the new location
+
+	Изменить расположение пользовательских папок на значения по умолчанию (только для текущего пользователя)
+	Пользовательские файлы и папки не будут перемещены в новое расположение
+#>
+# ChangeUserShellFolderLocation -Default
+
+# Save screenshots by pressing Win+PrtScr to the Desktop folder (current user only)
+# Сохранять скриншоты по нажатию Win+PrtScr в папку "рабочий стол" (только для текущего пользователя)
+WinPrtScrFolder -Desktop
+
+# Save screenshots by pressing Win+PrtScr to the Pictures folder (current user only) (default value)
+# Cохранять скриншоты по нажатию Win+PrtScr в папку "Изображения" (только для текущего пользователя) (значение по умолчанию)
+# WinPrtScrFolder -Default
+
+<#
+	Run troubleshooters automatically, then notify
+	In order this feature to work the OS level of diagnostic data gathering must be set to "Optional diagnostic data"
+
+	Автоматически запускать средства устранения неполадок, а затем уведомлять
+	Необходимо установить уровень сбора диагностических сведений ОС на "Необязательные диагностические данные", чтобы работала данная функция
+#>
+RecommendedTroubleshooting -Automatic
+
+<#
+	Ask me before running troubleshooters (default value)
+	In order this feature to work the OS level of diagnostic data gathering must be set to "Optional diagnostic data"
+
+	Спрашивать перед запуском средств устранения неполадок (значение по умолчанию)
+	Необходимо установить уровень сбора диагностических сведений ОС на "Необязательные диагностические данные", чтобы работала данная функция
+#>
+# RecommendedTroubleshooting -Default
+
+# Launch folder windows in a separate process (current user only)
+# Запускать окна с папками в отдельном процессе (только для текущего пользователя)
+FoldersLaunchSeparateProcess -Enable
+
+# Do not launch folder windows in a separate process (current user only) (default value)
+# Не запускать окна с папками в отдельном процессе (только для текущего пользователя) (значение по умолчанию)
+# FoldersLaunchSeparateProcess -Disable
+
+# Disable and delete reserved storage after the next update installation
+# Отключить и удалить зарезервированное хранилище после следующей установки обновлений
+ReservedStorage -Disable
+
+# Enable reserved storage (default value)
+# Включить зарезервированное хранилище (значение по умолчанию)
+# ReservedStorage -Enable
+
+# Disable help lookup via F1 (current user only)
+# Отключить открытие справки по нажатию F1 (только для текущего пользователя)
+F1HelpPage -Disable
+
+# Enable help lookup via F1 (current user only) (default value)
+# Включить открытие справки по нажатию F1 (только для текущего пользователя) (значение по умолчанию)
+# F1HelpPage -Enable
+
+# Enable Num Lock at startup
+# Включить Num Lock при загрузке
+NumLock -Enable
+
+# Disable Num Lock at startup (default value)
+# Выключить Num Lock при загрузке (значение по умолчанию)
+# NumLock -Disable
+
+# Disable StickyKey after tapping the Shift key 5 times (current user only)
+# Выключить залипание клавиши Shift после 5 нажатий (только для текущего пользователя)
+StickyShift -Disable
+
+# Enable StickyKey after tapping the Shift key 5 times (current user only) (default value)
+# Включить залипание клавиши Shift после 5 нажатий (только для текущего пользователя) (значение по умолчанию)
+# StickyShift -Enable
+
+# Disable AutoPlay for all media and devices (current user only)
+# Выключать автозапуск для всех носителей и устройств (только для текущего пользователя)
+Autoplay -Disable
+
+# Enable AutoPlay for all media and devices (current user only) (default value)
+# Включить автозапуск для всех носителей и устройств (только для текущего пользователя) (значение по умолчанию)
+# Autoplay -Enable
+
+# Disable thumbnail cache removal
+# Отключить удаление кэша миниатюр
+ThumbnailCacheRemoval -Disable
+
+# Enable thumbnail cache removal (default value)
+# Включить удаление кэша миниатюр (значение по умолчанию)
+# ThumbnailCacheRemoval -Enable
+
+# Enable automatically saving my restartable apps when signing out and restart them after signing in (current user only)
+# Включить автоматическое сохранение моих перезапускаемых приложений при выходе из системы и перезапускать их после выхода (только для текущего пользователя)
+SaveRestartableApps -Enable
+
+# Disable automatically saving my restartable apps when signing out and restart them after signing in (current user only) (default value)
+# Выключить автоматическое сохранение моих перезапускаемых приложений при выходе из системы и перезапускать их после выхода (только для текущего пользователя) (значение по умолчанию)
+# SaveRestartableApps -Disable
+
+# Enable "Network Discovery" and "File and Printers Sharing" for workgroup networks
+# Включить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп
+NetworkDiscovery -Enable
+
+# Disable "Network Discovery" and "File and Printers Sharing" for workgroup networks (default value)
+# Выключить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп (значение по умолчанию)
+# NetworkDiscovery -Disable
+
+# Automatically adjust active hours for me based on daily usage
+# Автоматически изменять период активности для этого устройства на основе действий
+SmartActiveHours -Enable
+
+# Do not automatically adjust active hours for me based on daily usage (default value)
+# Не изменять автоматически период активности для этого устройства на основе действий (значение по умолчанию)
+# SmartActiveHours -Disable
+
+# Enable restarting this device as soon as possible when a restart is required to install an update
+# Включить перезапуск этого устройства как можно быстрее, если для установки обновления требуется перезагрузка
+DeviceRestartAfterUpdate -Enable
+
+# Disable restarting this device as soon as possible when a restart is required to install an update (default value)
+# Выключить перезапуск этого устройства как можно быстрее, если для установки обновления требуется перезагрузка (значение по умолчанию)
+# DeviceRestartAfterUpdate -Disable
+#endregion System
+
+#region WSL
 <#
 	Install the Windows Subsystem for Linux (WSL)
 	Установить подсистему Windows для Linux (WSL)
@@ -566,7 +758,11 @@ DisableWindowsFeatures
 	https://github.com/farag2/Windows-10-Setup-Script/issues/43
 	https://github.com/microsoft/WSL/issues/5437
 #>
-# InstallWSL
+# WSL -Enable
+
+# Uninstall the Windows Subsystem for Linux (WSL)
+# Удалить подсистему Windows для Linux (WSL)
+# WSL -Disable
 
 <#
 	Download and install the Linux kernel update package
@@ -579,7 +775,7 @@ DisableWindowsFeatures
 
 	https://github.com/microsoft/WSL/issues/5437
 #>
-# SetupWSL
+# EnableWSL2
 
 <#
 	Disable swap file in WSL
@@ -590,7 +786,7 @@ DisableWindowsFeatures
 
 	https://github.com/microsoft/WSL/issues/5437
 #>
-# DisableWSLSwap
+# WSLSwap -Disable
 
 <#
 	Enable swap file in WSL
@@ -598,272 +794,66 @@ DisableWindowsFeatures
 
 	https://github.com/microsoft/WSL/issues/5437
 #>
-# EnableWSLSwap
-
-# Uninstall the Windows Subsystem for Linux (WSL2)
-# Удалить подсистему Windows для Linux (WSL2)
-# UninstallWSL
-
-# Disable certain Feature On Demand v2 (FODv2) capabilities
-# Отключить определенные компоненты "Функции по требованию" (FODv2)
-DisableWindowsCapabilities
-
-# Opt-in to Microsoft Update service, so to receive updates for other Microsoft products
-# Подключаться к службе Microsoft Update так, чтобы при обновлении Windows получать обновления для других продуктов Майкрософт
-EnableUpdatesMicrosoftProducts
-
-# Opt-out of Microsoft Update service, so not to receive updates for other Microsoft products
-# Не подключаться к службе Microsoft Update так, чтобы при обновлении Windows не получать обновления для других продуктов Майкрософт
-# DisableUpdatesMicrosoftProducts
-
-# Do not let UWP apps run in the background, except the followings... (current user only)
-# Не разрешать UWP-приложениям работать в фоновом режиме, кроме следующих... (только для текущего пользователя)
-DisableBackgroundUWPApps
-
-# Let UWP apps run in the background (current user only)
-# Разрешить UWP-приложениям работать в фоновом режиме (только для текущего пользователя)
-# EnableBackgroundUWPApps
-
-# Set the power management scheme on "High performance" if device is a desktop
-# Установить схему управления питанием на "Высокая производительность", если устройство является стационарным ПК
-DesktopPowerManagementScheme
-
-# Set the power management scheme on "Balanced" (default value)
-# Установить схему управления питанием на "Сбалансированная" (значение по умолчанию)
-# DefaultPowerManagementScheme
-
-# Use latest installed .NET runtime for all apps
-# Использовать последнюю установленную среду выполнения .NET для всех приложений
-EnableLatestInstalled.NET
-
-# Do not use latest installed .NET runtime for all apps
-# Не использовать последнюю установленную версию .NET для всех приложений
-# DisableLatestInstalled.NET
-
-# Do not allow the computer (if device is not a laptop) to turn off the network adapters to save power
-# Запретить отключение всех сетевых адаптеров для экономии энергии (если устройство не является ноутбуком)
-DisallowPCTurnOffDevice
-
-# Allow the computer to turn off the network adapters to save power
-# Разрешить отключение всех сетевых адаптеров для экономии энергии
-# AllowPCTurnOffDevice
-
-# Set the default input method to the English language
-# Установить метод ввода по умолчанию на английский язык
-SetEnglishDefaultInputMethod
-
-# Reset the default input method
-# Сбросить метод ввода по умолчанию
-# ResetDefaultInputMethod
-
-# Enable Windows Sandbox
-# Включить Windows Sandbox
-EnableWindowsSandbox
-
-# Disable Windows Sandbox
-# Выключить Windows Sandbox
-# DisableWindowsSandbox
-
-<#
-	Change the location of the user folders to any drives root (current user only)
-	It is suggested to move it to any disks root of your choice using the interactive menu by default
-	User files or folders won't me moved to a new location
-
-	Изменить расположение пользовательских папок (только для текущего пользователя)
-	По умолчанию предлагается переместить в корень любого диска на выбор с помощью интерактивного меню
-	Пользовательские файлы и папки не будут перемещены в новое расположение
-#>
-ChangeUserShellFolderLocation
-
-<#
-	Change the location of the user folders to the default values (current user only)
-	User files or folders won't me moved to the new location
-
-	Изменить расположение пользовательских папок на значения по умолчанию (только для текущего пользователя)
-	Пользовательские файлы и папки не будут перемещены в новое расположение
-#>
-# SetDefaultUserShellFolderLocation
-
-# Save screenshots by pressing Win+PrtScr to the Desktop folder (current user only)
-# Сохранять скриншоты по нажатию Win+PrtScr в папку "рабочий стол" (только для текущего пользователя)
-WinPrtScrDesktopFolder
-
-# Save screenshots by pressing Win+PrtScr to the Pictures folder (default value) (current user only)
-# Cохранять скриншоты по нажатию Win+PrtScr в папку "Изображения" (значение по умолчанию) (только для текущего пользователя)
-# WinPrtScrDefaultFolder
-
-<#
-	Run troubleshooters automatically, then notify
-	In order this feature to work the OS level of diagnostic data gathering must be set to "Full"
-
-	Автоматически запускать средства устранения неполадок, а затем уведомлять
-	Необходимо установить уровень сбора диагностических сведений ОС на "Максимальный", чтобы работала данная функция
-#>
-AutomaticRecommendedTroubleshooting
-
-<#
-	Ask me before running troubleshooters (default value)
-	In order this feature to work the OS level of diagnostic data gathering must be set to "Full"
-
-	Спрашивать перед запуском средств устранения неполадок (значение по умолчанию)
-	Необходимо установить уровень сбора диагностических сведений ОС на "Максимальный", чтобы работала данная функция
-#>
-# DefaultRecommendedTroubleshooting
-
-# Launch folder windows in a separate process (current user only)
-# Запускать окна с папками в отдельном процессе (только для текущего пользователя)
-EnableFoldersLaunchSeparateProcess
-
-# Do not folder windows in a separate process (current user only)
-# Не запускать окна с папками в отдельном процессе (только для текущего пользователя)
-# DisableFoldersLaunchSeparateProcess
-
-# Disable and delete reserved storage after the next update installation
-# Отключить и удалить зарезервированное хранилище после следующей установки обновлений
-DisableReservedStorage
-
-# Turn on reserved storage
-# Включить зарезервированное хранилище
-# EnableReservedStorage
-
-# Disable help lookup via F1 (current user only)
-# Отключить открытие справки по нажатию F1 (только для текущего пользователя)
-DisableF1HelpPage
-
-# Turn on Help page opening by F1 key (current user only)
-# Включить открытие справки по нажатию F1 (только для текущего пользователя)
-# EnableF1HelpPage
-
-# Turn on Num Lock at startup
-# Включить Num Lock при загрузке
-EnableNumLock
-
-# Turn off Num Lock at startup
-# Выключить Num Lock при загрузке
-# DisableNumLock
-
-# Do not activate StickyKey after tapping the Shift key 5 times (current user only)
-# Не включать залипание клавиши Shift после 5 нажатий (только для текущего пользователя)
-DisableStickyShift
-
-# Activate StickyKey after tapping the Shift key 5 times (current user only)
-# Включать залипание клавиши Shift после 5 нажатий (только для текущего пользователя)
-# EnableStickyShift
-
-# Do not use AutoPlay for all media and devices (current user only)
-# Не использовать автозапуск для всех носителей и устройств (только для текущего пользователя)
-DisableAutoplay
-
-# Use AutoPlay for all media and devices (current user only)
-# Использовать автозапуск для всех носителей и устройств (только для текущего пользователя)
-# EnableAutoplay
-
-# Disable thumbnail cache removal
-# Отключить удаление кэша миниатюр
-DisableThumbnailCacheRemoval
-
-# Enable thumbnail cache removal
-# Включить удаление кэша миниатюр
-# EnableThumbnailCacheRemoval
-
-# Automatically save my restartable apps when signing out and restart them after signing in (current user only)
-# Автоматически сохранять мои перезапускаемые приложения при выходе из системы и перезапускать их после выхода (только для текущего пользователя)
-EnableSaveRestartableApps
-
-# Do not automatically save my restartable apps when signing out and restart them after signing in
-# Не сохранять автоматически мои перезапускаемые приложения при выходе из системы и перезапускать их после выхода
-# DisableSaveRestartableApps
-
-# Enable "Network Discovery" and "File and Printers Sharing" for workgroup networks
-# Включить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп
-EnableNetworkDiscovery
-
-# Disable "Network Discovery" and "File and Printers Sharing" for workgroup networks
-# Выключить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп
-# DisableNetworkDiscovery
-
-# Automatically adjust active hours for me based on daily usage
-# Автоматически изменять период активности для этого устройства на основе действий
-EnableSmartActiveHours
-
-# Do not automatically adjust active hours for me based on daily usage
-# Не изменять автоматически период активности для этого устройства на основе действий
-# DisableSmartActiveHours
-
-# Перезапускать это устройство как можно быстрее, если для установки обновления требуется перезагрузка
-# Restart this device as soon as possible when a restart is required to install an update
-EnableDeviceRestartAfterUpdate
-
-# Не перезапускать это устройство как можно быстрее, если для установки обновления требуется перезагрузка
-# Do not restart this device as soon as possible when a restart is required to install an update
-# DisableDeviceRestartAfterUpdate
-#endregion System
+# WSLSwap -Enable
+#endregion WSL
 
 #region Start menu
-# Do not show recently added apps in the Start menu
-# Не показывать недавно добавленные приложения в меню "Пуск"
-HideRecentlyAddedApps
+# Hide recently added apps in the Start menu
+# Скрывать недавно добавленные приложения в меню "Пуск"
+RecentlyAddedApps -Hide
 
-# Show recently added apps in the Start menu
-# Показывать недавно добавленные приложения в меню "Пуск"
-# ShowRecentlyAddedApps
+# Show recently added apps in the Start menu (default value)
+# Показывать недавно добавленные приложения в меню "Пуск" (значение по умолчанию)
+# RecentlyAddedApps -Show
 
-# Do not show app suggestions in the Start menu
-# Не показывать рекомендации в меню "Пуск"
-HideAppSuggestions
+# Hide app suggestions in the Start menu
+# Скрывать рекомендации в меню "Пуск"
+AppSuggestions -Hide
 
-# Show app suggestions in the Start menu
-# Показывать рекомендации в меню "Пуск"
-# ShowAppSuggestions
+# Show app suggestions in the Start menu (default value)
+# Показывать рекомендации в меню "Пуск" (значение по умолчанию)
+# AppSuggestions -Show
 
 # Run the Command Prompt shortcut from the Start menu as Administrator
 # Запускать ярлык командной строки в меню "Пуск" от имени Администратора
-RunCMDShortcutElevated
+RunCMDShortcut -Elevated
 
-# Run the Command Prompt shortcut from the Start menu as user
-# Запускать ярлык командной строки в меню "Пуск" от имени пользователя
-# RunCMDShortcutUser
+# Run the Command Prompt shortcut from the Start menu as user (default value)
+# Запускать ярлык командной строки в меню "Пуск" от имени пользователя (значение по умолчанию)
+# RunCMDShortcut -NonElevated
 
 # Unpin all the Start tiles
 # Открепить все ярлыки от начального экрана
 UnpinAllStartTiles
 
 <#
-	Pin the "Control Panel" shortcut to Start within syspin
-	Закрепить ярлык "Панели управления" на начальном экране с помощью syspin
+	Test if syspin.exe is in a folder. Unless download it
+	Проверить, находится ли файл syspin.exe в папке. Иначе скачать его
 
 	http://www.technosys.net/products/utils/pintotaskbar
 	SHA256: 6967E7A3C2251812DD6B3FA0265FB7B61AADC568F562A98C50C345908C6E827
 #>
+syspin
+
+# Pin the "Control Panel" shortcut to Start within syspin
+# Закрепить ярлык "Панели управления" на начальном экране с помощью syspin
 PinControlPanel
 
-<#
-	Pin the old-style "Devices and Printers" shortcut to Start within syspin
-	Закрепить ярлык старого формата "Устройства и принтеры" на начальном экране с помощью syspin
-
-	http://www.technosys.net/products/utils/pintotaskbar
-	SHA256: 6967E7A3C2251812DD6B3FA0265FB7B61AADC568F562A98C50C345908C6E827
-#>
+# Pin the old-style "Devices and Printers" shortcut to Start within syspin
+# Закрепить ярлык старого формата "Устройства и принтеры" на начальном экране с помощью syspin
 PinDevicesPrinters
 
-<#
-	Pin the Command Prompt" shortcut to Start within syspin
-	Закрепить ярлык "Командная строка" на начальном экране с помощью syspin
-
-	http://www.technosys.net/products/utils/pintotaskbar
-	SHA256: 6967E7A3C2251812DD6B3FA0265FB7B61AADC568F562A98C50C345908C6E827
-#>
+# Pin the Command Prompt" shortcut to Start within syspin
+# Закрепить ярлык "Командная строка" на начальном экране с помощью syspin
 PinCommandPrompt
 #endregion Start menu
 
 #region UWP apps
 <#
-	Uninstall UWP apps
-	A dialog box that enables the user to select packages to remove
+	Uninstall UWP apps using the pop-up dialog box that enables the user to select packages to remove
 	App packages will not be installed for new users if "Uninstall for All Users" is checked
 
-	Удалить UWP-приложения
-	Диалоговое окно, позволяющее пользователю отметить пакеты на удаление
+	Удалить UWP-приложения, используя всплывающее диалоговое окно, позволяющее пользователю отметить пакеты на удаление
 	Приложения не будут установлены для новых пользователе, если отмечено "Удалять для всех пользователей"
 #>
 UninstallUWPApps
@@ -874,18 +864,18 @@ UninstallUWPApps
 	"Movies & TV" app required
 
 	Открыть страницу "Расширения для видео HEVC от производителя устройства" в Microsoft Store
-	Расширение может быть установлено без учетной записи Microsoft бесплатно вместо 0,99 $
+	Расширение может быть установлено бесплатно без учетной записи Microsoft вместо 0,99 $
 	Для работы необходимо приложение "Кино и ТВ"
 #>
 InstallHEVC
 
-# Turn off Cortana autostarting
-# Удалить Кортана из автозагрузки
-DisableCortanaAutostart
+# Disable Cortana autostarting
+# Выключить автозагрузку Кортана
+CortanaAutostart -Disable
 
-# Turn on Cortana autostarting
-# Добавить Кортана в автозагрузку
-# EnableCortanaAutostart
+# Disable Cortana autostarting (default value)
+# Включить автозагрузку Кортана (значение по умолчанию)
+# CortanaAutostart -Enable
 
 # Check for UWP apps updates
 # Проверить обновления UWP-приложений
@@ -893,21 +883,21 @@ CheckUWPAppsUpdates
 #endregion UWP apps
 
 #region Gaming
-# Turn off Xbox Game Bar
+# Disable Xbox Game Bar
 # Отключить Xbox Game Bar
-DisableXboxGameBar
+XboxGameBar -Disable
 
-# Turn on Xbox Game Bar
-# Включить Xbox Game Bar
-# EnableXboxGameBar
+# Enable Xbox Game Bar (default value)
+# Включить Xbox Game Bar (значение по умолчанию)
+# XboxGameBar -Enable
 
-# Turn off Xbox Game Bar tips
+# Disable Xbox Game Bar tips
 # Отключить советы Xbox Game Bar
-DisableXboxGameTips
+XboxGameTips -Disable
 
-# Turn on Xbox Game Bar tips
-# Включить советы Xbox Game Bar
-# EnableXboxGameTips
+# Enable Xbox Game Bar tips (default value)
+# Включить советы Xbox Game Bar (значение по умолчанию)
+# XboxGameTips -Enable
 
 <#
 	Set "High performance" in graphics performance preference for an app
@@ -925,11 +915,11 @@ SetAppGraphicsPerformance
 	Включить планирование графического процессора с аппаратным ускорением. Необходима перезагрузка
 	Только при наличии внешней видеокарты и WDDM версии 2.7 и выше
 #>
-EnableGPUScheduling
+GPUScheduling -Enable
 
-# Turn off hardware-accelerated GPU scheduling. Restart needed
-# Выключить планирование графического процессора с аппаратным ускорением. Необходима перезагрузка
-# DisableGPUScheduling
+# Turn off hardware-accelerated GPU scheduling (default value). Restart needed
+# Выключить планирование графического процессора с аппаратным ускорением (значение по умолчанию). Необходима перезагрузка
+# GPUScheduling -Disable
 #endregion Gaming
 
 #region Scheduled tasks
@@ -948,16 +938,18 @@ CreateCleanUpTask
 # Удалить задачу в Планировщике задач по очистке неиспользуемых файлов и обновлений Windows
 # DeleteCleanUpTask
 
-# Create a task to clear the %SystemRoot%\SoftwareDistribution\Download folder in the Task Scheduler
-# The task runs on Thursdays every 4 weeks
+<#
+	Create a task to clear the %SystemRoot%\SoftwareDistribution\Download folder in the Task Scheduler
+	The task runs on Thursdays every 4 weeks
 
-# Создать задачу в Планировщике задач по очистке папки %SystemRoot%\SoftwareDistribution\Download
-# Задача выполняется по четвергам каждую 4 неделю
+	Создать задачу в Планировщике задач по очистке папки %SystemRoot%\SoftwareDistribution\Download
+	Задача выполняется по четвергам каждую 4 неделю
+#>
 CreateSoftwareDistributionTask
 
 # Delete a task to clear the %SystemRoot%\SoftwareDistribution\Download folder in the Task Scheduler
 # Удалить задачу в Планировщике задач по очистке папки %SystemRoot%\SoftwareDistribution\Download
-# DeleteCSoftwareDistributionTask
+# DeleteSoftwareDistributionTask
 
 <#
 	Create a task to clear the %TEMP% folder in the Task Scheduler
@@ -1006,29 +998,29 @@ AddDefenderExclusionFile
 # Удалить все файлы из списка исключений сканирования Microsoft Defender
 # RemoveDefenderExclusionFiles
 
-# Turn on Microsoft Defender Exploit Guard network protection
+# Enable Microsoft Defender Exploit Guard network protection
 # Включить защиту сети в Microsoft Defender Exploit Guard
-EnableNetworkProtection
+NetworkProtection -Enable
 
-# Turn off Microsoft Defender Exploit Guard network protection
+# Disable Microsoft Defender Exploit Guard network protection (default value)
 # Выключить защиту сети в Microsoft Defender Exploit Guard
-# DisableNetworkProtection
+# NetworkProtection -Disable
 
-# Turn on detection for potentially unwanted applications and block them
+# Enable detection for potentially unwanted applications and block them
 # Включить обнаружение потенциально нежелательных приложений и блокировать их
-EnablePUAppsDetection
+PUAppsDetection -Enable
 
-# Turn off detection for potentially unwanted applications and block them
-# Выключить обнаружение потенциально нежелательных приложений и блокировать их
-# DisabledPUAppsDetection
+# Disable detection for potentially unwanted applications and block them (default value)
+# Выключить обнаружение потенциально нежелательных приложений и блокировать их (значение по умолчанию)
+# PUAppsDetection -Disable
 
-# Run Microsoft Defender within a sandbox
-# Запускать Microsoft Defender в песочнице
-EnableDefenderSandbox
+# Enable sandboxing for Microsoft Defender
+# Включить песочницу для Microsoft Defender
+DefenderSandbox -Enable
 
-# Do not run Microsoft Defender within a sandbox
-# Не запускать Microsoft Defender в песочнице
-# DisableDefenderSandbox
+# Disable sandboxing for Microsoft Defender (default value)
+# Выключить песочницу для Microsoft Defender (значение по умолчанию)
+# DefenderSandbox -Disable
 
 # Dismiss Microsoft Defender offer in the Windows Security about signing in Microsoft account
 # Отклонить предложение Microsoft Defender в "Безопасность Windows" о входе в аккаунт Microsoft
@@ -1038,26 +1030,26 @@ DismissMSAccount
 # Отклонить предложение Microsoft Defender в "Безопасность Windows" включить фильтр SmartScreen для Microsoft Edge
 DismissSmartScreenFilter
 
-# Turn on events auditing generated when a process is created or starts
+# Enable events auditing generated when a process is created or starts
 # Включить аудит событий, возникающих при создании или запуске процесса
-EnableAuditProcess
+AuditProcess -Enable
 
-# Turn off events auditing generated when a process is created or starts
-# Выключить аудит событий, возникающих при создании или запуске процесса
-# DisableAuditProcess
+# Disable events auditing generated when a process is created or starts (default value)
+# Выключить аудит событий, возникающих при создании или запуске процесса (значение по умолчанию)
+# AuditProcess -Disable
 
 <#
 	Include command line in process creation events
-	In order this feature to work events auditing must be enabled ("EnableAuditProcess" function)
+	In order this feature to work events auditing must be enabled ("AuditProcess" function)
 
 	Включать командную строку в событиях создания процесса
-	Необходимо включить аудит событий, чтобы работала данная опция (функция "EnableAuditProcess")
+	Необходимо включить аудит событий, чтобы работала данная опция (функция "AuditProcess")
 #>
-EnableAuditCommandLineProcess
+AuditCommandLineProcess -Enable
 
-# Do not include command line in process creation events
-# Не включать командную строку в событиях создания процесса
-# DisableAuditCommandLineProcess
+# Do not include command line in process creation events (default value)
+# Не включать командную строку в событиях создания процесса (значение по умолчанию)
+# AuditCommandLineProcess -Disable
 
 <#
 	Create "Process Creation" Event Viewer Custom View
@@ -1066,205 +1058,218 @@ EnableAuditCommandLineProcess
 	Создать настаиваемое представление "Создание процесса" в Просмотре событий
 	Необходимо включить аудит событий и командной строки в событиях создания процесса, чтобы работал данный функционал (функция "EnableAuditProcess")
 #>
-CreateEventViewerCustomView
+EventViewerCustomView -Enable
 
-# Remove "Process Creation" Event Viewer Custom View
-# Удалить настаиваемое представление "Создание процесса" в Просмотре событий
-# RemoveEventViewerCustomView
+# Remove "Process Creation" Event Viewer Custom View (default value)
+# Удалить настаиваемое представление "Создание процесса" в Просмотре событий (значение по умолчанию)
+# EventViewerCustomView -Disable
 
-# Log for all Windows PowerShell modules
-# Вести журнал для всех модулей Windows PowerShell
-EnablePowerShellModulesLogging
+# Enable logging for all Windows PowerShell modules
+# Включить ведение журнала для всех модулей Windows PowerShell
+PowerShellModulesLogging -Enable
 
-# Do not log for all Windows PowerShell modules
-# Не вести журнал для всех модулей Windows PowerShell
-# DisablePowerShellModulesLogging
+# Disable logging for all Windows PowerShell modules (default value)
+# Выключить ведение журнала для всех модулей Windows PowerShell (значение по умолчанию)
+# PowerShellModulesLogging -Disable
 
-# Log all PowerShell scripts input to the Windows PowerShell event log
-# Вести регистрацию всех вводимых сценариев PowerShell в журнале событий Windows PowerShell
-EnablePowerShellScriptsLogging
+# Enable logging for all PowerShell scripts input to the Windows PowerShell event log
+# Включить ведение журнала для всех вводимых сценариев PowerShell в журнале событий Windows PowerShell
+PowerShellScriptsLogging -Enable
 
-# Do not log all PowerShell scripts input to the Windows PowerShell event log
-# Не вести регистрацию всех вводимых сценариев PowerShell в журнале событий Windows PowerShell
-# DisablePowerShellScriptsLogging
+# Disable logging for all PowerShell scripts input to the Windows PowerShell event log (default value)
+# Выключить ведение журнала для всех вводимых сценариев PowerShell в журнале событий Windows PowerShell (значение по умолчанию)
+# PowerShellScriptsLogging -Disable
 
-# Do not check apps and files within Microsofot Defender SmartScreen
-# Не проверять приложения и файлы фильтром SmartScreen в Microsoft Defender
-DisableAppsSmartScreen
+# Disable apps and files checking within Microsofot Defender SmartScreen
+# Выключить проверку приложений и файлов фильтром SmartScreen в Microsoft Defender
+AppsSmartScreen -Disable
 
-# Check apps and files within Microsofot Defender SmartScreen
-# Проверять приложения и файлы фильтром SmartScreen в Microsoft Defender
-# EnableAppsSmartScreen
+# Enable apps and files checking within Microsofot Defender SmartScree (default value)
+# Включить проверку приложений и файлов фильтром SmartScreen в Microsoft Defender (значение по умолчанию)
+# AppsSmartScreen -Enable
 
-# Prevent SmartScreen from marking files that have been downloaded from the Internet as unsafe (current user only)
-# Не позволять SmartScreen отмечать файлы, скачанные из интернета, как небезопасные (только для текущего пользователя)
-DisableSaveZoneInformation
+# Disable the Attachment Manager marking files that have been downloaded from the Internet as unsafe (current user only)
+# Выключить проверку Диспетчером вложений файлов, скачанных из интернета как небезопасные (только для текущего пользователя)
+SaveZoneInformation -Disable
 
-# Mark files that have been downloaded from the Internet as unsafe within SmartScreen (current user only)
-# Отмечать файлы, скачанные из интернета, как небезопасные с помощью SmartScreen (только для текущего пользователя)
-# EnableSaveZoneInformation
+# Enable the Attachment Manager marking files that have been downloaded from the Internet as unsafe (current user only) (default value)
+# Включить проверку Диспетчера вложений файлов, скачанных из интернета как небезопасные (только для текущего пользователя) (значение по умолчанию)
+# SaveZoneInformation -Enable
 
-# Turn off Windows Script Host (current user only)
-# Отключить Windows Script Host (только для текущего пользователя)
-DisableWindowsScriptHost
+<#
+	Disable Windows Script Host (current user only)
+	It becomes impossible to run .js and .vbs files
 
-# Turn on Windows Script Host (current user only)
-# Включить Windows Script Host (только для текущего пользователя)
-# EnableWindowsScriptHost
+	Отключить Windows Script Host (только для текущего пользователя)
+	Становится невозможным запустить файлы .js и .vbs
+#>
+WindowsScriptHost -Disable
+
+# Emable Windows Script Host (current user only) (default value)
+# Включить Windows Script Host (только для текущего пользователя) (значение по умолчанию)
+# WindowsScriptHost -Enable
+
+# Enable Windows Sandbox
+# Включить Windows Sandbox
+WindowsSandbox -Enable
+
+# Disable Windows Sandbox (default value)
+# Выключить Windows Sandbox (значение по умолчанию)
+# WindowsSandbox -Disable
 #endregion Microsoft Defender & Security
 
 #region Context menu
 # Add the "Extract all" item to Windows Installer (.msi) context menu
 # Добавить пункт "Извлечь все" в контекстное меню Windows Installer (.msi)
-AddMSIExtractContext
+MSIExtractContext -Add
 
-# Remove the "Extract all" item from Windows Installer (.msi) context menu
-# Удалить пункт "Извлечь все" из контекстного меню Windows Installer (.msi)
-# RemoveMSIExtractContext
+# Remove the "Extract all" item from Windows Installer (.msi) context menu (default value)
+# Удалить пункт "Извлечь все" из контекстного меню Windows Installer (.msi) (значение по умолчанию)
+# MSIExtractContext -Remove
 
 # Add the "Install" item to the .cab archives context menu
 # Добавить пункт "Установить" в контекстное меню .cab архивов
-AddCABInstallContext
+CABInstallContext -Add
 
-# Remove the "Install" item from the .cab archives context menu
-# Удалить пункт "Установить" из контекстного меню .cab архивов
-# RemoveCABInstallContext
+# Remove the "Install" item from the .cab archives context menu (default value)
+# Удалить пункт "Установить" из контекстного меню .cab архивов (значение по умолчанию)
+# CABInstallContext -Remove
 
 # Add the "Run as different user" item to the .exe files types context menu
 # Добавить пункт "Запуск от имени другого пользователя" в контекстного меню .exe файлов
-AddExeRunAsDifferentUserContext
+RunAsDifferentUserContext -Add
 
-# Remove the "Run as different user" item from the .exe files types context menu
-# Удалить пункт "Запуск от имени другого пользователя" из контекстное меню .exe файлов
-# RemoveExeRunAsDifferentUserContext
+# Remove the "Run as different user" item from the .exe files types context menu (default value)
+# Удалить пункт "Запуск от имени другого пользователя" из контекстное меню .exe файлов (значение по умолчанию)
+# RunAsDifferentUserContext -Remove
 
 # Hide the "Cast to Device" item from the context menu
 # Скрыть пункт "Передать на устройство" из контекстного меню
-HideCastToDeviceContext
+CastToDeviceContext -Hide
 
-# Show the "Cast to Device" item in the context menu
-# Показывать пункт "Передать на устройство" в контекстном меню
-# ShowCastToDeviceContext
+# Show the "Cast to Device" item in the context menu (default value)
+# Показывать пункт "Передать на устройство" в контекстном меню (значение по умолчанию)
+# CastToDeviceContext -Show
 
 # Hide the "Share" item from the context menu
 # Скрыть пункт "Отправить" (поделиться) из контекстного меню
-HideShareContext
+ShareContext -Hide
 
-# Show the "Share" item in the context menu
-# Показывать пункт "Отправить" (поделиться) в контекстном меню
-# ShowShareContext
+# Show the "Share" item in the context menu (default value)
+# Показывать пункт "Отправить" (поделиться) в контекстном меню (значение по умолчанию)
+# ShareContext -Show
 
 # Hide the "Edit with Paint 3D" item from the context menu
 # Скрыть пункт "Изменить с помощью Paint 3D" из контекстного меню
-HideEditWithPaint3DContext
+# EditWithPaint3DContext -Hide
 
-# Show the "Edit with Paint 3D" item in the context menu
-# Показывать пункт "Изменить с помощью Paint 3D" в контекстном меню
-# ShowEditWithPaint3DContext
+# Show the "Edit with Paint 3D" item in the context menu (default value)
+# Показывать пункт "Изменить с помощью Paint 3D" в контекстном меню (значение по умолчанию)
+# EditWithPaint3DContext -Show
 
 # Hide the "Edit with Photos" item from the context menu
 # Скрыть пункт "Изменить с помощью приложения "Фотографии"" из контекстного меню
-HideEditWithPhotosContext
+EditWithPhotosContext -Hide
 
-# Show the "Edit with Photos" item in the context menu
-# Показывать пункт "Изменить с помощью приложения "Фотографии"" в контекстном меню
-# ShowEditWithPhotosContext
+# Show the "Edit with Photos" item in the context menu (default value)
+# Показывать пункт "Изменить с помощью приложения "Фотографии"" в контекстном меню (значение по умолчанию)
+# EditWithPhotosContext -Show
 
 # Hide the "Create a new video" item from the context menu
 # Скрыть пункт "Создать новое видео" из контекстного меню
-HideCreateANewVideoContext
+CreateANewVideoContext -Hide
 
-# Show the "Create a new video" item in the context menu
-# Показывать пункт "Создать новое видео" в контекстном меню
-# ShowCreateANewVideoContext
+# Show the "Create a new video" item in the context menu (default value)
+# Показывать пункт "Создать новое видео" в контекстном меню (значение по умолчанию)
+# CreateANewVideoContext -Show
 
 # Hide the "Edit" item from the images context menu
 # Скрыть пункт "Изменить" из контекстного меню изображений
-HideImagesEditContext
+ImagesEditContext -Hide
 
-# Show the "Edit" item from in images context menu
-# Показывать пункт "Изменить" в контекстном меню изображений
-# ShowImagesEditContext
+# Show the "Edit" item from in images context menu (default value)
+# Показывать пункт "Изменить" в контекстном меню изображений (значение по умолчанию)
+# ImagesEditContext -Show
 
 # Hide the "Print" item from the .bat and .cmd context menu
 # Скрыть пункт "Печать" из контекстного меню .bat и .cmd файлов
-HidePrintCMDContext
+PrintCMDContext -Hide
 
-# Show the "Print" item in the .bat and .cmd context menu
-# Показывать пункт "Печать" в контекстном меню .bat и .cmd файлов
-# ShowPrintCMDContext
+# Show the "Print" item in the .bat and .cmd context menu (default value)
+# Показывать пункт "Печать" в контекстном меню .bat и .cmd файлов (значение по умолчанию)
+# PrintCMDContext -Show
 
 # Hide the "Include in Library" item from the context menu
 # Скрыть пункт "Добавить в библиотеку" из контекстного меню
-HideIncludeInLibraryContext
+IncludeInLibraryContext -Hide
 
-# Show the "Include in Library" item in the context menu
-# Показывать пункт "Добавить в библиотеку" в контекстном меню
-# ShowIncludeInLibraryContext
+# Show the "Include in Library" item in the context menu (default value)
+# Показывать пункт "Добавить в библиотеку" в контекстном меню (значение по умолчанию)
+# IncludeInLibraryContext -Show
 
 # Hide the "Send to" item from the folders context menu
 # Скрыть пункт "Отправить" из контекстного меню папок
-HideSendToContext
+SendToContext -Hide
 
-# Show the "Send to" item in the folders context menu
-# Показывать пункт "Отправить" в контекстном меню папок
-# ShowSendToContext
+# Show the "Send to" item in the folders context menu (default value)
+# Показывать пункт "Отправить" в контекстном меню папок (значение по умолчанию)
+# SendToContext -Show
 
 # Hide the "Turn on BitLocker" item from the context menu
 # Скрыть пункт "Включить BitLocker" из контекстного меню
-HideBitLockerContext
+BitLockerContext -Hide
 
-# Show the "Turn on BitLocker" item in the context menu
-# Показывать пункт "Включить BitLocker" в контекстном меню
-# ShowBitLockerContext
+# Show the "Turn on BitLocker" item in the context menu (default value)
+# Показывать пункт "Включить BitLocker" в контекстном меню (значение по умолчанию)
+# BitLockerContext -Show
 
 # Remove the "Bitmap image" item from the "New" context menu
 # Удалить пункт "Точечный рисунок" из контекстного меню "Создать"
-RemoveBitmapImageNewContext
+BitmapImageNewContext -Remove
 
-# Restore the "Bitmap image" item in the "New" context menu
-# Восстановить пункт "Точечный рисунок" в контекстного меню "Создать"
-# RestoreBitmapImageNewContext
+# Add the "Bitmap image" item in the "New" context menu (default value)
+# Восстановить пункт "Точечный рисунок" в контекстного меню "Создать" (значение по умолчанию)
+# BitmapImageNewContext -Add
 
 # Remove the "Rich Text Document" item from the "New" context menu
 # Удалить пункт "Документ в формате RTF" из контекстного меню "Создать"
-RemoveRichTextDocumentNewContext
+RichTextDocumentNewContext -Remove
 
-# Restore the "Rich Text Document" item in the "New" context menu
-# Восстановить пункт "Документ в формате RTF" в контекстного меню "Создать"
-# RestoreRichTextDocumentNewContext
+# Add the "Rich Text Document" item in the "New" context menu (default value)
+# Восстановить пункт "Документ в формате RTF" в контекстного меню "Создать" (значение по умолчанию)
+# RichTextDocumentNewContext -Add
 
 # Remove the "Compressed (zipped) Folder" item from the "New" context menu
 # Удалить пункт "Сжатая ZIP-папка" из контекстного меню "Создать"
-RemoveCompressedFolderNewContext
+CompressedFolderNewContext -Remove
 
-# Restore the "Compressed (zipped) Folder" item from the "New" context menu
-# Восстановить пункт "Сжатая ZIP-папка" в контекстном меню "Создать"
-# RestoreCompressedFolderNewContext
+# Add the "Compressed (zipped) Folder" item from the "New" context menu (default value)
+# Восстановить пункт "Сжатая ZIP-папка" в контекстном меню "Создать" (значение по умолчанию)
+# CompressedFolderNewContext -Add
 
-# Make the "Open", "Print", and "Edit" context menu items available, when more than 15 items selected
-# Сделать доступными элементы контекстного меню "Открыть", "Изменить" и "Печать" при выделении более 15 элементов
-EnableMultipleInvokeContext
+# Enable the "Open", "Print", and "Edit" context menu items for more than 15 items selected
+# Включить элементы контекстного меню "Открыть", "Изменить" и "Печать" при выделении более 15 элементов
+MultipleInvokeContext -Enable
 
-# Disable the "Open", "Print", and "Edit" context menu items for more than 15 items selected
-# Отключить элементы контекстного меню "Открыть", "Изменить" и "Печать" при выделении более 15 элементов
-# DisableMultipleInvokeContext
+# Disable the "Open", "Print", and "Edit" context menu items for more than 15 items selected (default value)
+# Отключить элементы контекстного меню "Открыть", "Изменить" и "Печать" при выделении более 15 элементов (значение по умолчанию)
+# MultipleInvokeContext -Disable
 
 # Hide the "Look for an app in the Microsoft Store" item in the "Open with" dialog
 # Скрыть пункт "Поиск приложения в Microsoft Store" в диалоге "Открыть с помощью"
-DisableUseStoreOpenWith
+UseStoreOpenWith -Hide
 
-# Show the "Look for an app in the Microsoft Store" item in the "Open with" dialog
-# Отображать пункт "Поиск приложения в Microsoft Store" в диалоге "Открыть с помощью"
-# EnableUseStoreOpenWith
+# Show the "Look for an app in the Microsoft Store" item in the "Open with" dialog (default value)
+# Отображать пункт "Поиск приложения в Microsoft Store" в диалоге "Открыть с помощью" (значение по умолчанию)
+# UseStoreOpenWith -Show
 
 # Hide the "Previous Versions" tab from files and folders context menu and also the "Restore previous versions" context menu item
 # Скрыть вкладку "Предыдущие версии" в свойствах файлов и папок, а также пункт контекстного меню "Восстановить прежнюю версию"
-DisablePreviousVersionsPage
+PreviousVersionsPage -Hide
 
-# Show the "Previous Versions" tab from files and folders context menu and also the "Restore previous versions" context menu item
-# Отображать вкладку "Предыдущие версии" в свойствах файлов и папок, а также пункт контекстного меню "Восстановить прежнюю версию"
-# EnablePreviousVersionsPage
+# Show the "Previous Versions" tab from files and folders context menu and also the "Restore previous versions" context menu item (default value)
+# Отображать вкладку "Предыдущие версии" в свойствах файлов и папок, а также пункт контекстного меню "Восстановить прежнюю версию" (значение по умолчанию)
+# PreviousVersionsPage -Show
 #endregion Context menu
 
 <#
