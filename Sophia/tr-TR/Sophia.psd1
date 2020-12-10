@@ -1,181 +1,146 @@
-# Do not remove double quotes in double-quoted strings where they are present
-
 ConvertFrom-StringData -StringData @'
-UnsupportedOSBitness = Bu betik sadece Windows 10 x64 için geçerlidir
-UnsupportedOSBuild = Bu betik sadece Windows 10 2004/20H1 ve üstü için geçerlidir
-ControlledFolderAccessDisabled = Kontrollü klasör erişimi devre dışı bırakıldı
+UnsupportedOSBitness                   = Bu betik sadece Windows 10 x64 destekliyor
+UnsupportedOSBuild                     = Bu betik sadece Windows 10 2004/20H1 sürüm ve üstünü destekliyor
+ControlledFolderAccessDisabled         = Kontrollü klasör erişimi devre dışı bırakıldı
 
 # ScheduledTasks
-ScheduledTasks = Zamanlanmış görevler
+ScheduledTasks                         = Zamanlanan görevler
 
 # OneDrive
-OneDriveUninstalling = Uninstalling OneDrive...
-OneDriveNotEmptyFolder = "{0}" folder is not empty. Delete it manually
-OneDriveFileSyncShell64dllBlocked = "{0}" is blocked. Delete it manually
-OneDriveInstalling = OneDrive is installing...
-OneDriveDownloading = Downloading OneDrive... ~33 MB
+OneDriveUninstalling                   = OneDrive kaldırılıyor...
+OneDriveNotEmptyFolder                 = "{0}" klasörü boş değil. Kendiniz silin
+OneDriveFileSyncShell64dllBlocked      = "{0}" engellendi. Kendiniz silin
+OneDriveInstalling                     = OneDrive kuruluyor...
+OneDriveDownloading                    = OneDrive indiriliyor... ~33 MB
 
-# SetTempPath
-LOCALAPPDATANotEmptyFolder = "$env:LOCALAPPDATA\\Temp klasörü boş değil. `nKendiniz temizleyip tekrar deneyin"
+# TempPath
+ClearFolder                            = "{0}" klasöründeki tüm dosyaları silin
+FilesBlocked                           = Aşağıdaki dosyalar 3. parti uygulamalar tarafından engelleniyor. `nKendiniz silin ve devam edin
+TempNotEmpty                           = "{0}" klasörü boş değil. Kendiniz temizleyin
 
-# WSL
-WSLUpdateDownloading = Linux Kernel yükseltme paketi indiriliyor... ~14 MB
-WSLUpdateInstalling = Linux Kernel yükseltme paketi yükleniyor...
+# WindowsFeature
+WindowsFeaturesTitle                   = Windows özellikleri
 
-# DisableWindowsCapabilities
-FODWindowTitle = İsteğe bağlı kaldırılabilecek özellikler (FODv2)
-FODWindowButton = Kaldır
-DialogBoxOpening = Diyalog penceresi gösteriliyor...
-NoData = Gösterilecek bir şey yok
+# WindowsCapabilities
+Patient                                = Lütfen bekleyin...
+FODWindowTitle                         = İsteğe bağlı özellikler (FODv2)
 
-# EnableWindowsSandbox/DisableWindowsSandbox
-EnableHardwareVT = UEFI için Sanallaştırmayı etkinleştir
+# WindowsSandbox
+EnableHardwareVT                       = UEFI'dan sanallaştırmayı aktifleştirin
 
-# ChangeUserShellFolderLocation
-UserShellFolderNotEmpty = "$UserShellFolderRegValue klasöründe birkaç dosya kaldı. `nKendiniz yeni konuma taşıyın"
-RetrievingDrivesList = Sürücü listesi alınıyor...
-# Desktop
-DesktopChangeFolderRequest = Masaüstü klasörünün konumunu değiştirmek ister misiniz?
-DesktopFilesWontBeMoved = Dosyalar taşınmayacak
-DesktopFolderChange = Değiştir
-DesktopFolderSkip = Atla
-DesktopDriveSelect = Masaüstü klasörünün oluşturulacağı ana sürücüyü seçin
-DesktopSkipped = Atlandı
-# Documents
-DocumentsChangeFolderRequest = Dökümanlar klasörünün konumunu değiştirmek ister misiniz?
-DocumentsFilesWontBeMoved = Dosyalar taşınmayacak
-DocumentsFolderChange = Değiştir
-DocumentsFolderSkip = Atla
-DocumentsDriveSelect = Dökümanlar klasörünün oluşturulacağı ana sürücüyü seçin
-DocumentsSkipped = Atlandı
-# Downloads
-DownloadsChangeFolderRequest = İndirilenler klasörünün konumunu değiştirmek ister misiniz?
-DownloadsFilesWontBeMoved = Dosyalar taşınmayacak
-DownloadsFolderChange = Değiştir
-DownloadsFolderSkip = Atla
-DownloadsDriveSelect = İndirilenler klasörünün oluşturulacağı ana sürücüyü seçin
-DownloadsSkipped = Atlandı
-# Music
-MusicChangeFolderRequest = Müzikler klasörünün konumunu değiştirmek ister misiniz?
-MusicFilesWontBeMoved = Dosyalar taşınmayacak
-MusicFolderChange = Değiştir
-MusicFolderSkip = Atla
-MusicDriveSelect = Müzikler klasörünün oluşturulacağı ana sürücüyü seçin
-MusicSkipped = Atlandı
-# Pictures
-PicturesChangeFolderRequest = Resimler klasörünün konumunu değiştirmek ister misiniz?
-PicturesFilesWontBeMoved = Dosyalar taşınmayacak
-PicturesFolderChange = Değiştir
-PicturesFolderSkip = Atla
-PicturesDriveSelect = Resimler klasörünün oluşturulacağı ana sürücüyü seçin
-PicturesSkipped = Atlandı
-# Videos
-VideosChangeFolderRequest = Videolar klasörünün konumunu değiştirmek ister misiniz?
-VideosFilesWontBeMoved = Dosyalar taşınmayacak
-VideosFolderChange = Değiştir
-VideosFolderSkip = Atla
-VideosDriveSelect = Videolar klasörünün oluşturulacağı ana sürücüyü seçin
-VideosSkipped = Atlandı
+# SetUserShellFolderLocation
+UserShellFolderNotEmpty                = "{0}" klasöründe bazı dosyalar kaldı. `nKendiniz yeni konuma taşıyın
+RetrievingDrivesList                   = Sürücü listesi alınıyor...
 
-# SetDefaultUserShellFolderLocation
-# Desktop
-DesktopDefaultFolder = Masaüstü klasörünün konumunu varsayılan değerle değiştirmek ister misiniz?
-# Documents
-DocumentsDefaultFolder = Dökümanlar klasörünün konumunu varsayılan değerle değiştirmek ister misiniz?
-# Downloads
-DownloadsDefaultFolder = İndirilenler klasörünün konumunu varsayılan değerle değiştirmek ister misiniz?
-# Music
-MusicDefaultFolder = Müzikler klasörünün konumunu varsayılan değerle değiştirmek ister misiniz?
-# Pictures
-PicturesDefaultFolder = Resimler klasörünün konumunu varsayılan değerle değiştirmek ister misiniz?
-# Videos
-VideosDefaultFolder = Videolar klasörünün konumunu varsayılan değerle değiştirmek ister misiniz?
+DesktopDriveSelect                     = Masaüstü klasörün oluşturulacağı kök içindeki sürücüyü seçin
+DocumentsDriveSelect                   = Belgeler klasörün oluşturulacağı kök içindeki sürücüyü seçin
+DownloadsDriveSelect                   = İndirilenler klasörün oluşturulacağı kök içindeki sürücüyü seçin
+MusicDriveSelect                       = Müzikler klasörün oluşturulacağı kök içindeki sürücüyü seçin
+PicturesDriveSelect                    = Resimler klasörün oluşturulacağı kök içindeki sürücüyü seçin
+VideosDriveSelect                      = Videolar klasörün oluşturulacağı kök içindeki sürücüyü seçin
 
-# DisableReservedStorage
-ReservedStorageIsInUse = Ayrılmış Depolama özelliği kullanımdayken bu işlem desteklenmez `nLütfen servis işlemlerinin tamamlanmasını bekleyin ve daha sonra tekrar deneyin
+DesktopFRequest                        = Masaüstü klasörünün yerini değiştirmek ister misiniz?
+DocumentsRequest                       = Belgeler klasörünün yerini değiştirmek ister misiniz?
+DownloadsRequest                       = İndirilenler klasörünün yerini değiştirmek ister misiniz?
+MusicRequest                           = Müzikler klasörünün yerini değiştirmek ister misiniz?
+PicturesRequest                        = Resimler klasörünün yerini değiştirmek ister misiniz?
+VideosRequest                          = Videolar klasörünün yerini değiştirmek ister misiniz?
 
-# PinControlPanel/PinDevicesPrinters/PinCommandPrompt
-syspinDownloading = Syspin indiriliyor... ~20 KB
-ControlPanelPinning = "$ControlPanelLocalizedName kısayolu başlangıca sabitleniyor"
-DevicesPrintersPinning = "$DevicesAndPrintersLocalizedName kısayolu başlangıca sabitleniyor"
-CMDPinning = Komut İstemi kısayolu Başlat'a sabitleniyor
+DesktopFolderSelect                    = Masaüstü klasörü için bir klasör seçin.
+DocumentsFolderSelect                  = Belgeler klasörü için bir klasör seçin.
+DownloadsFolderSelect                  = İndirilenler klasörü için bir klasör seçin.
+MusicFolderSelect                      = Müzikler klasörü için bir klasör seçin.
+PicturesFolderSelect                   = Resimler klasörü için bir klasör seçin.
+VideosFolderSelect                     = Videolar klasörü için bir klasör seçin.
+
+DesktopDefaultFolder                   = Masaüstü klasörünün yerini eski haline getirmek ister misiniz?
+DocumentsDefaultFolder                 = Belgeler klasörünün yerini eski haline getirmek ister misiniz?
+DownloadsDefaultFolder                 = İndirilenler klasörünün yerini eski haline getirmek ister misiniz?
+MusicDefaultFolder                     = Müzikler klasörünün yerini eski haline getirmek ister misiniz?
+PicturesDefaultFolder                  = Resimler klasörünün yerini eski haline getirmek ister misiniz?
+VideosDefaultFolder                    = Videolar klasörünün yerini eski haline getirmek ister misiniz?
+
+# ReservedStorage
+ReservedStorageIsInUse                 =  Ayrılmış depolama kullanımdayken bu işlem desteklenmez. `nLütfen tüm servis işlemlerinin tamamlanmasını bekleyin ve daha sonra tekrar deneyin
+
+# Shortcuts pinning
+syspinDownloading                      = syspin indiriliyor... ~20 KB
+ShortcutPinning                        = "{0}" kısayolu Başlangıç sekmesine sabitlendi
 
 # UninstallUWPApps
-UninstallUWPForAll = Tüm kullanıcılar için kaldır
-UninstallUWPTitle = Kaldırılacak UWP Paketleri
-UninstallUWPUninstallButton = Kaldır
+UninstallUWPForAll                     = Tüm kullanıcılar için kaldır
+UninstallUWPTitle                      = Kaldırmak için UWP paketleri
+
+# WSL
+WSLUpdateDownloading                   = Linux kernel güncelleme paketi indiriliyor... ~14 MB
+WSLUpdateInstalling                    = Kernel güncelleme paketi kuruluyor
 
 # SetAppGraphicsPerformance
-GraphicsPerformanceTitle = Grafik performans tercihi
-GraphicsPerformanceRequest = Seçtiğiniz bir uygulamanın grafik performansı ayarını "Yüksek performans" olarak belirlemek ister misiniz?
-GraphicsPerformanceAdd = Ekle
-GraphicsPerformanceSkip = Atla
-GraphicsPerformanceFilter = *.exe|*.exe|Tüm Dosyalar (*.*)|*.*
-GraphicsPerformanceSkipped = Atlandı
+GraphicsPerformanceTitle               = Grafik performans tercihi
+GraphicsPerformanceRequest             = Seçtiğiniz bir uygulamanın grafik performansı ayarını "Yüksek performans" olarak belirlemek ister misiniz?
+GraphicsPerformanceFilter              = *.exe|*.exe|Tüm Dosyalar (*.*)|*.*
 
-# CreateCleanUpTask
-CleanUpTaskToast = Kullanılmayan Windows dosyalarının ve güncellemelerin temizlenmesi bir dakika içinde başlıyor
-CleanUpTaskDescription = Kullanılmayan Windows dosyaları ve güncellemeleri yerleşik Disk Temizleme uygulaması kullanarak temizleniyor. Şifrelenmiş komutun şifrelemesini kaldırma için şu komutu kullanın [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String("string"))
+# CleanUpTask
+CleanUpTaskToast                       = Kullanılmayan Windows dosyalarının ve güncellemelerin temizlenmesi bir dakika içinde başlar
+CleanUpTaskDescription                 = Kullanılmayan Windows dosyaları ve güncellemeleri yerleşik Disk Temizleme uygulaması ile temizleniyor
 
-# CreateSoftwareDistributionTask
-SoftwareDistributionTaskDescription = %SystemRoot%\\SoftwareDistribution\\Download
-
-# CreateTempTask
-TempTaskDescription = %TEMP% klasörü temizleniyor
+# TempTask/SoftwareDistributionTask
+FolderTaskDescription                  = "{0}" klasörü temizleniyor
 
 # AddProtectedFolders
-AddProtectedFoldersTitle = Kontrollü klasör erişimi
-AddProtectedFoldersRequest = Kontrollü klasör erişimini etkinleştirmek ve Microsoft Defender'ın kötü amaçlı uygulamalardan ve tehditlerden koruyacağı klasörü belirtmek ister misiniz?
-AddProtectedFoldersAdd = Ekle
-AddProtectedFoldersSkip = Atla
-AddProtectedFoldersDescription = Klasör seç
-AddProtectedFoldersSkipped = Atlandı
+ProtectedFoldersTitle                  = Kontrollü klasör erişimi
+ProtectedFoldersRequest                = Kontrollü klasör erişimini etkinleştirmek ve Microsoft Defender'ın kötü amaçlı uygulamalardan ve tehditlerden koruyacağı klasörü belirtmek ister misiniz?
 
 # RemoveProtectedFolders
-RemoveProtectedFoldersList = Kaldırılan klasörler
+ProtectedFoldersListRemoved            = Silinen klasörler
 
 # AddAppControlledFolder
-AddAppControlledFolderTitle = Kontrollü klasör erişimi
-AddAppControlledFolderRequest = Kontrollü Klasör erişimine izin verilen bir uygulama belirtmek ister misiniz?
-AddAppControlledFolderAdd = Ekle
-AddAppControlledFolderSkip = Atla
-AddAppControlledFolderFilter = *.exe|*.exe|Tüm Dosyalar (*.*)|*.*
-AddAppControlledFolderSkipped = Atlandı
+AppControlledFolderTitle               = Kontrollü klasör erişimi
+AppControlledFolderRequest             = Kontrollü Klasör erişimine izin verilen bir uygulama belirtmek ister misiniz?
+AppControlledFolderFilter              = *.exe|*.exe|Tüm Dosyalar (*.*)|*.*
 
 # RemoveAllowedAppsControlledFolder
-RemoveAllowedAppsControlledFolderList = İzin verilen uygulamalar kaldırıldı
+AllowedAppsControlledFolderListRemoved = Tüm kaldırılan uygulamalar
 
 # AddDefenderExclusionFolder
-AddDefenderExclusionFolderTitle = Microsoft Defender
-AddDefenderExclusionFolderRequest = Microsoft Defender kötü amaçlı yazılım taramalarının dışında tutulacak bir klasör belirtmek ister misiniz?
-AddDefenderExclusionFolderAdd = Ekle
-AddDefenderExclusionFolderSkip = Atla
-AddDefenderExclusionFolderDescription = Klasör seç
-AddDefenderExclusionFolderSkipped = Atlandı
+DefenderExclusionFolderTitle           = Microsoft Defender
+DefenderExclusionFolderRequest         = Microsoft Defender kötü amaçlı yazılım taramalarının dışında tutulacak bir klasör belirtmek ister misiniz?
 
 # RemoveDefenderExclusionFolders
-RemoveDefenderExclusionFoldersList = Hariç tutulan klasörler kaldırıldı
+DefenderExclusionFoldersListRemoved    = Hariç tutulan klasörler kaldırıldı
 
 # AddDefenderExclusionFile
-AddDefenderExclusionFileTitle = Microsoft Defender
-AddDefenderExclusionFileRequest = Microsoft Defender kötü amaçlı yazılım taramalarının dışında bırakılacak bir dosya belirtmek ister misiniz?
-AddDefenderExclusionFileAdd = Ekle
-AddDefenderExclusionFileSkip = Atla
-AddDefenderExclusionFileFilter = Tüm Dosyalar (*.*)|*.*
-AddDefenderExclusionFileSkipped = Atlandı
+AddDefenderExclusionFileRequest        = Microsoft Defender kötü amaçlı yazılım taramalarının dışında bırakılacak bir dosya belirtmek ister misiniz?
+AddDefenderExclusionFileFilter         = Tüm Dosyalar (*.*)|*.*
 
 # RemoveDefenderExclusionFiles
-RemoveDefenderExclusionFilesList = Hariç tutulan dosyalar kaldırıldı
+RemoveDefenderExclusionFilesList       = Hariç tutulan dosyalar kaldırıldı
 
-# CreateEventViewerCustomView
-EventViewerCustomViewName = Süreç Oluşturma
-EventViewerCustomViewDescription = Süreç Oluşturma ve Komut Satırı Denetleme Olayları
+# EventViewerCustomView
+EventViewerCustomViewName              = Süreç Oluşturma
+EventViewerCustomViewDescription       = Süreç oluşturma ve komut satırı denetleme olayları
 
 # Refresh
-RestartWarning = Bilgisayarını yeniden başlat
+RestartWarning                         = Bilgisayarınızı yeniden başlattığınızdan emin olun
 
 # Errors
-ErrorsLine = Satır
-ErrorsFile = Dosya
-ErrorsMessage = Hatalar/Uyarılar
+ErrorsLine                             = Satır
+ErrorsFile                             = Dosya
+ErrorsMessage                          = Hatalar/Uyarılar
+
+# Misc
+Add                                    = Ekle
+Change                                 = Değiştir
+Continue                               = Devam et
+DialogBoxOpening                       = İletişim kutusunu görüntüleniyor...
+Disable                                = Devre dışı bırak
+Enable                                 = Aktif et
+FolderSelect                           = Klasör seç
+FilesWontBeMoved                       = Dosyalar taşınmayacak
+NoData                                 = Görüntülenecek bir şey yok
+NoInternetConnection                   = İnternet bağlantısı yok
+Select                                 = Seç
+Skip                                   = Atla
+Skipped                                = Atlandı
+Uninstall                              = Kaldır
 '@
