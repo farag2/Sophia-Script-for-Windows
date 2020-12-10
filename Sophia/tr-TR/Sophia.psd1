@@ -9,12 +9,11 @@ ControlledFolderAccessDisabled = Kontrollü klasör erişimi devre dışı bıra
 ScheduledTasks = Zamanlanmış görevler
 
 # OneDrive
-OneDriveUninstalling = OneDrive kaldırılıyor...
-OneDriveNotEmptyFolder = "$OneDriveUserFolder klasörü boş değil. `nKendiniz silin"
-OneDriveFileSyncShell64dllBlocked = "$FileSyncShell64dll engellendi. `nKendiniz silin"
-OneDriveInstalling = OneDriveSetup.exe başlatılıyor...
-OneDriveDownloading = OneDrive indiriliyor... ~33 MB
-NoInternetConnection = İnternet bağlantısı yok
+OneDriveUninstalling = Uninstalling OneDrive...
+OneDriveNotEmptyFolder = "{0}" folder is not empty. Delete it manually
+OneDriveFileSyncShell64dllBlocked = "{0}" is blocked. Delete it manually
+OneDriveInstalling = OneDrive is installing...
+OneDriveDownloading = Downloading OneDrive... ~33 MB
 
 # SetTempPath
 LOCALAPPDATANotEmptyFolder = "$env:LOCALAPPDATA\\Temp klasörü boş değil. `nKendiniz temizleyip tekrar deneyin"
