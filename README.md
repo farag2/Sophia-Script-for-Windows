@@ -149,7 +149,7 @@ To run the script:
 
 ## How to translate
 
-* Get your OS UI culture by
+* Get your OS UI culture byCommunity Edition
 
    ```powershell
    $PSUICulture
@@ -166,9 +166,9 @@ To run the script:
 | 2004  |  20H1   |   May 2020 Update  |19041 |  x64 |Home/Pro/Enterprise|[5.3](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
 | 1809  |         |LTSC Enterprise 2019|17763 |  x64 |   Enterprise      |[4.5](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/LTSC)|
 
-## GUI version (C#)
+## SophiApp Community Edition (C# + WPF)
 
-[oz-zo](https://github.com/oz-zo) still cooking (moved to the private repository)
+Internal build by @oz-zo being compiled in the private repository every Suturday within Github Actions. First public alpha on January, 2021...
 
 ## Microsoft Docs
 
