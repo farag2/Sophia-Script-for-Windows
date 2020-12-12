@@ -168,7 +168,7 @@ To run the script:
 
 ## SophiApp Community Edition (C# + WPF)
 
-Internal build by @oz-zo being compiled in the private repository every Suturday within Github Actions. First public alpha on January, 2021...
+Internal build by [oz-zo](https://github.com/oz-zo) being compiled in the private repository every Suturday within Github Actions. First public alpha on January, 2021...
 
 ## Microsoft Docs
 
