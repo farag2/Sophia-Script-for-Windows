@@ -144,12 +144,7 @@ To run the script:
   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
   ```
 
-* Type
-
-```
-.\Sophia.ps1
-```
-
+* Type ```.\Sophia.ps1```
 * Press Enter
 
 ## How to translate
