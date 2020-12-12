@@ -2,11 +2,11 @@
 	.SYNOPSIS
 	Default preset file for "Windows 10 Sophia Script"
 
-	Version: v5.2
-	Date: 11.11.2020
+	Version: v5.3
+	Date: 12.12.2020
 	Copyright (c) 2020 farag & oZ-Zo
 
-	Thanks to all http://forum.ru-board.com members involved
+	Thanks to all https://forum.ru-board.com members involved
 
 	.DESCRIPTION
 	Supported Windows 10 versions: 2004 (20H1)/2009 (20H2), 19041/19042, Home/Pro/Enterprise, x64
@@ -25,7 +25,7 @@
 	PS C:\> .\Sophia.ps1
 
 	.NOTES
-	http://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
+	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
 	https://habr.com/en/post/521202/
 	https://forums.mydigitallife.net/threads/powershell-script-setup-windows-10.81675/
 	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
@@ -38,6 +38,8 @@
 #Requires -Version 5.1
 
 Clear-Host
+
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.3 | $([char]0x00A9) farag & oz-zo, 2015–2020"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Sophia.psd1 -PassThru -Force
@@ -173,8 +175,8 @@ TailoredExperiences -Disable
 # Предлагать персонализированные возможности, основанные на выбранном параметре диагностических данных (значение по умолчанию)
 # TailoredExperiences -Enable
 
-# Disable Bing search in the Start Menu
-# Отключить в меню "Пуск" поиск через Bing
+# Disable Bing search in the Start Menu (for the USA only)
+# Отключить в меню "Пуск" поиск через Bing (только для США)
 BingSearch -Disable
 
 # Enable Bing search in the Start Menu (current user only) (default value)
@@ -493,15 +495,15 @@ Hibernate -Disable
 # Включить режим гибернации (значение по умолчанию)
 # Hibernate -Enable
 
-# Change the %TEMP% environment variable path to the %SystemDrive%\Temp (both machine-wide, and for the current user)
-# Изменить путь переменной среды для %TEMP% на %SystemDrive%\Temp (для всех пользователей)
-TempPath -SystemDrive
+# Change the %TEMP% environment variable path to "%SystemDrive%\Temp" (both machine-wide, and for the current user)
+# Изменить путь переменной среды для %TEMP% на "%SystemDrive%\Temp" (для всех пользователей)
+TempFolder -SystemDrive
 
-# Change %TEMP% environment variable path to the %LOCALAPPDATA%\Temp (both machine-wide, and for the current user) (default value)
-# Изменить путь переменной среды для %TEMP% на LOCALAPPDATA%\Temp (для всех пользователей) (значение по умолчанию)
-# TempPath -Default
+# Change %TEMP% environment variable path to "%LOCALAPPDATA%\Temp" (both machine-wide, and for the current user) (default value)
+# Изменить путь переменной среды для %TEMP% на "LOCALAPPDATA%\Temp" (для всех пользователей) (значение по умолчанию)
+# TempFolder -Default
 
-# Disable Windows 260 character path limit
+# Disable Windows 260 characters path limit
 # Отключить ограничение Windows на 260 символов в пути
 Win32LongPathLimit -Disable
 
@@ -557,17 +559,21 @@ WindowsManageDefaultPrinter -Disable
 # Разрешать Windows решать, какой принтер должен использоваться по умолчанию (только для текущего пользователя) (значение по умолчанию)
 # WindowsManageDefaultPrinter -Enable
 
-# Disable the following Windows features
-# Отключить следующие компоненты Windows
+# Disable the Windows features using the pop-up dialog box that enables the user to select features to remove
+# Отключить компоненты Windows, используя всплывающее диалоговое окно, позволяющее пользователю отметить компоненты на удаление
 WindowsFeatures -Disable
 
-# Enable Windows features (default value)
-# Включить компоненты Windows (значение по умолчанию)
+# Enable the Windows features using the pop-up dialog box that enables the user to select features to remove
+# Включить компоненты Windows, используя всплывающее диалоговое окно, позволяющее пользователю отметить компоненты на удаление
 # WindowsFeatures -Enable
 
-# Disable Feature On Demand v2 (FODv2) capabilities using the pop-up dialog box
+# Disable Features On Demand v2 (FODv2) capabilities using the pop-up dialog box
 # Отключить компоненты "Функции по требованию" (FODv2), используя всплывающее диалоговое окно
-DisableWindowsCapabilities
+WindowsCapabilities -Disable
+
+# Enable Feature On Demand v2 (FODv2) capabilities using the pop-up dialog box
+# Включить компоненты "Функции по требованию" (FODv2), используя всплывающее диалоговое окно
+# WindowsCapabilities -Enable
 
 # Opt-in to Microsoft Update service, so to receive updates for other Microsoft products
 # Подключаться к службе Microsoft Update так, чтобы при обновлении Windows получать обновления для других продуктов Майкрософт
@@ -577,12 +583,12 @@ UpdateMicrosoftProducts -Enable
 # Не подключаться к службе Microsoft Update так, чтобы при обновлении Windows не получать обновления для других продуктов Майкрософт (значение по умолчанию)
 # UpdateMicrosoftProducts -Disable
 
-# Do not let UWP apps run in the background except some (current user only)
-# Не разрешать UWP-приложениям работать в фоновом режиме, кроме некоторых (только для текущего пользователя)
+# Do not let all UWP apps run in the background (current user only)
+# Не разрешать всем UWP-приложениям работать в фоновом режиме (только для текущего пользователя)
 BackgroundUWPApps -Disable
 
-# Let UWP apps run in the background (current user only) (default value)
-# Разрешить UWP-приложениям работать в фоновом режиме (только для текущего пользователя) (значение по умолчанию)
+# Let all UWP apps run in the background (current user only) (default value)
+# Разрешить всем UWP-приложениям работать в фоновом режиме (только для текущего пользователя) (значение по умолчанию)
 # BackgroundUWPApps -Enable
 
 # Set the power management scheme on "High performance" if device is a desktop
@@ -624,7 +630,16 @@ SetInputMethod -English
 	Изменить расположение пользовательских папок в корень любого диска на выбор с помощью интерактивного меню (только для текущего пользователя)
 	Пользовательские файлы и папки не будут перемещены в новое расположение
 #>
-ChangeUserShellFolderLocation -Root
+SetUserShellFolderLocation -Root
+
+<#
+	Select a folder for the location of the user folders manually using a folder browser dialog (current user only)
+	User files or folders won't me moved to a new location
+
+	Выбрать папку для расположения пользовательских папок вручную, используя диалог "Обзор папок" (только для текущего пользователя)
+	Пользовательские файлы и папки не будут перемещены в новое расположение
+#>
+# SetUserShellFolderLocation -Custom
 
 <#
 	Change the location of the user folders to the default values (current user only)
@@ -633,7 +648,7 @@ ChangeUserShellFolderLocation -Root
 	Изменить расположение пользовательских папок на значения по умолчанию (только для текущего пользователя)
 	Пользовательские файлы и папки не будут перемещены в новое расположение
 #>
-# ChangeUserShellFolderLocation -Default
+# SetUserShellFolderLocation -Default
 
 # Save screenshots by pressing Win+PrtScr to the Desktop folder (current user only)
 # Сохранять скриншоты по нажатию Win+PrtScr в папку "рабочий стол" (только для текущего пользователя)
@@ -741,12 +756,12 @@ SmartActiveHours -Enable
 # Не изменять автоматически период активности для этого устройства на основе действий (значение по умолчанию)
 # SmartActiveHours -Disable
 
-# Enable restarting this device as soon as possible when a restart is required to install an update
-# Включить перезапуск этого устройства как можно быстрее, если для установки обновления требуется перезагрузка
+# Restart this device as soon as possible when a restart is required to install an update
+# Перезапускать это устройство как можно быстрее, если для установки обновления требуется перезагрузка
 DeviceRestartAfterUpdate -Enable
 
-# Disable restarting this device as soon as possible when a restart is required to install an update (default value)
-# Выключить перезапуск этого устройства как можно быстрее, если для установки обновления требуется перезагрузка (значение по умолчанию)
+# Do not restart this device as soon as possible when a restart is required to install an update (default value)
+# Не перезапуск этого устройства как можно быстрее, если для установки обновления требуется перезагрузка (значение по умолчанию)
 # DeviceRestartAfterUpdate -Disable
 #endregion System
 
@@ -755,7 +770,7 @@ DeviceRestartAfterUpdate -Enable
 	Install the Windows Subsystem for Linux (WSL)
 	Установить подсистему Windows для Linux (WSL)
 
-	https://github.com/farag2/Windows-10-Setup-Script/issues/43
+	https://github.com/farag2/Windows-10-Sophia-Script/issues/43
 	https://github.com/microsoft/WSL/issues/5437
 #>
 # WSL -Enable
@@ -771,9 +786,10 @@ DeviceRestartAfterUpdate -Enable
 
 	Скачать и установить пакет обновления ядра Linux
 	Установить WSL 2 как версию по умолчанию при установке нового дистрибутива Linux
-	Выполните функцию только после установки WSL и перезагрузки ПК
+	Выполните функцию только после установки WSL и перезагрузка ПК
 
 	https://github.com/microsoft/WSL/issues/5437
+	https://github.com/farag2/Windows-10-Sophia-Script/issues/43
 #>
 # EnableWSL2
 
@@ -873,7 +889,7 @@ InstallHEVC
 # Выключить автозагрузку Кортана
 CortanaAutostart -Disable
 
-# Disable Cortana autostarting (default value)
+# Enable Cortana autostarting (default value)
 # Включить автозагрузку Кортана (значение по умолчанию)
 # CortanaAutostart -Enable
 
@@ -924,45 +940,45 @@ GPUScheduling -Enable
 
 #region Scheduled tasks
 <#
-	Create a task to clean up unused files and Windows updates in the Task Scheduler
+	Create the "Windows Cleanup" task to clean up unused files and Windows updates in the Task Scheduler
 	A minute before the task starts, a warning in the Windows action center will appear
 	The task runs every 90 days
 
-	Создать задачу в Планировщике задач по очистке неиспользуемых файлов и обновлений Windows
+	Создать задачу "Windows Cleanup" в Планировщике задач по очистке неиспользуемых файлов и обновлений Windows
 	За минуту до выполнения задачи в Центре уведомлений Windows появится предупреждение
 	Задача выполняется каждые 90 дней
 #>
-CreateCleanUpTask
+CleanUpTask -Register
 
-# Delete a task to clean up unused files and Windows updates in the Task Scheduler
-# Удалить задачу в Планировщике задач по очистке неиспользуемых файлов и обновлений Windows
-# DeleteCleanUpTask
+# Delete the "Windows Cleanup" task to clean up unused files and Windows updates in the Task Scheduler
+# Удалить задачу "Windows Cleanup" в Планировщике задач по очистке неиспользуемых файлов и обновлений Windows
+# CleanUpTask -Delete
 
 <#
-	Create a task to clear the %SystemRoot%\SoftwareDistribution\Download folder in the Task Scheduler
+	Create the "SoftwareDistribution" task to clear the %SystemRoot%\SoftwareDistribution\Download folder in the Task Scheduler
 	The task runs on Thursdays every 4 weeks
 
-	Создать задачу в Планировщике задач по очистке папки %SystemRoot%\SoftwareDistribution\Download
+	Создать задачу "SoftwareDistribution" в Планировщике задач по очистке папки %SystemRoot%\SoftwareDistribution\Download
 	Задача выполняется по четвергам каждую 4 неделю
 #>
-CreateSoftwareDistributionTask
+SoftwareDistributionTask -Register
 
-# Delete a task to clear the %SystemRoot%\SoftwareDistribution\Download folder in the Task Scheduler
-# Удалить задачу в Планировщике задач по очистке папки %SystemRoot%\SoftwareDistribution\Download
-# DeleteSoftwareDistributionTask
+# Delete the "SoftwareDistribution" task to clear the %SystemRoot%\SoftwareDistribution\Download folder in the Task Scheduler
+# Удалить задачу "SoftwareDistributionp" в Планировщике задач по очистке папки %SystemRoot%\SoftwareDistribution\Download
+# SoftwareDistributionTask -Delete
 
 <#
-	Create a task to clear the %TEMP% folder in the Task Scheduler
+	Create the "Temp" task to clear the %TEMP% folder in the Task Scheduler
 	The task runs every 62 days
 
-	Создать задачу в Планировщике задач по очистке папки %TEMP%
+	Создать задачу "Temp" в Планировщике задач по очистке папки %TEMP%
 	Задача выполняется каждые 62 дня
 #>
-CreateTempTask
+TempTask -Register
 
 # Delete a task to clear the %TEMP% folder in the Task Scheduler
 # Удалить задачу в Планировщике задач по очистке папки %TEMP%
-# DeleteTempTask
+# TempTask -Delete
 #endregion Scheduled tasks
 
 #region Microsoft Defender & Security
@@ -1040,10 +1056,10 @@ AuditProcess -Enable
 
 <#
 	Include command line in process creation events
-	In order this feature to work events auditing must be enabled ("AuditProcess" function)
+	In order this feature to work events auditing will be enabled ("AuditProcess -Enable" function)
 
 	Включать командную строку в событиях создания процесса
-	Необходимо включить аудит событий, чтобы работала данная опция (функция "AuditProcess")
+	Для того, чтобы работал данный функционал, будет включен аудит событий (функция "AuditProcess -Enable")
 #>
 AuditCommandLineProcess -Enable
 
@@ -1053,10 +1069,10 @@ AuditCommandLineProcess -Enable
 
 <#
 	Create "Process Creation" Event Viewer Custom View
-	In order this feature to work events auditing and command line in process creation events must be enabled ("EnableAuditProcess" function)
+	In order this feature to work events auditing ("AuditProcess -Enable" function) and command line in process creation events will be enabled
 
 	Создать настаиваемое представление "Создание процесса" в Просмотре событий
-	Необходимо включить аудит событий и командной строки в событиях создания процесса, чтобы работал данный функционал (функция "EnableAuditProcess")
+	Для того, чтобы работал данный функционал, буден включен аудит событий (функция "AuditProcess -Enable") и командной строки в событиях создания процесса
 #>
 EventViewerCustomView -Enable
 
@@ -1089,7 +1105,7 @@ AppsSmartScreen -Disable
 # AppsSmartScreen -Enable
 
 # Disable the Attachment Manager marking files that have been downloaded from the Internet as unsafe (current user only)
-# Выключить проверку Диспетчером вложений файлов, скачанных из интернета как небезопасные (только для текущего пользователя)
+# Выключить проверку Диспетчером вложений файлов, скачанных из интернета, как небезопасные (только для текущего пользователя)
 SaveZoneInformation -Disable
 
 # Enable the Attachment Manager marking files that have been downloaded from the Internet as unsafe (current user only) (default value)
@@ -1161,7 +1177,7 @@ ShareContext -Hide
 
 # Hide the "Edit with Paint 3D" item from the context menu
 # Скрыть пункт "Изменить с помощью Paint 3D" из контекстного меню
-# EditWithPaint3DContext -Hide
+EditWithPaint3DContext -Hide ###
 
 # Show the "Edit with Paint 3D" item in the context menu (default value)
 # Показывать пункт "Изменить с помощью Paint 3D" в контекстном меню (значение по умолчанию)

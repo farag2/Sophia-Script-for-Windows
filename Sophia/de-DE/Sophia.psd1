@@ -1,182 +1,89 @@
-﻿# Entfernen Sie keine doppelten Anführungszeichen, wenn diese vorhanden sind
-
-ConvertFrom-StringData -StringData @'
-UnsupportedOSBitness = Das Skript unterstützt nur Windows 10 x64
-ControlledFolderAccessDisabled = Kontrollierter Ordnerzugriff deaktiviert
-
-# OneDrive
-OneDriveUninstalling = Deinstalliere OneDrive...
-OneDriveNotEmptyFolder = "Der Ordner $OneDriveUserFolder ist nicht leer.Löschen Sie ihn manuell. "
-OneDriveFileSyncShell64dllBlocked = "$FileSyncShell64dll ist blockiert. Löschen Sie es manuell"
-OneDriveInstalling = OneDriveSetup.exe wird gestartet...
-OneDriveDownloading = OneDrive herunterladen... ~33 MB
-OneDriveNoInternetConnection = Keine Internetverbindung
-
-# TempPath
-LOCALAPPDATAFilesBlocked = "The following files are being blocked by third-party party apps `nRemove them manually and continue"
-LOCALAPPDATANotEmpty = "Der Ordner $env:LOCALAPPDATA\\Temp ist nicht leer. Löschen Sie ihn manuell und versuchen Sie es erneut"
-
-# DisableWindowsCapabilities
-FODWindowTitle = Optionale Funktionen (FODv2) zum Entfernen
-FODWindowButton = Deinstallieren
-DialogBoxOpening = Dialogfeld anzeigen...
-NoData = Nichts zum Anzeigen
-
-# WindowsSandbox
-EnableHardwareVT = Virtualisierung in UEFI aktivieren
-
-# ChangeUserShellFolderLocation
-UserShellFolderNotEmpty = "Der Ordner $UserShellFolderRegValue ist nicht leer. Verschieben Sie sie manuell an einen neuen Speicherort"
-RetrievingDrivesList = Laufwerksliste abrufen...
-# Desktop
-DesktopDriveSelect = Wählen Sie das Laufwerk aus, in dessen Stammverzeichnis der Desktop Ordner erstellt werden soll
-DesktopFilesWontBeMoved = Dateien werden nicht verschoben
-DesktopFolderRequest = Möchten Sie den Speicherort des Desktop Ordners ändern?
-DesktopFolderChange = Ändern
-DesktopFolderSkip = Überspringen
-DesktopSkipped = Übersprungen
-# Documents
-DocumentsDriveSelect = Wählen Sie das Laufwerk aus, in dessen Stammverzeichnis der Ordner Dokumente erstellt werden soll
-DocumentsFilesWontBeMoved = Dateien werden nicht verschoben
-DocumentsFolderRequest = Möchten Sie den Speicherort des Ordners Dokumente ändern?
-DocumentsFolderChange = Ändern
-DocumentsFolderSkip = Überspringen
-DocumentsSkipped = Übersprungen
-# Downloads
-DownloadsDriveSelect = Wählen Sie das Laufwerk aus, in dessen Stammverzeichnis der Ordner Downloads erstellt werden soll
-DownloadsFilesWontBeMoved = Dateien werden nicht verschoben
-DownloadsFolderRequest = Möchten Sie den Speicherort des Download Ordners ändern?
-DownloadsFolderChange = Ändern
-DownloadsFolderSkip = Überspringen
-DownloadsSkipped = Übersprungen
-# Music
-MusicDriveSelect = Wählen Sie das Laufwerk aus, in dessen Stammverzeichnis der Musikordner erstellt werden soll
-MusicFilesWontBeMoved = Dateien werden nicht verschoben
-MusicFolderRequest = Möchten Sie den Speicherort des Musikordners ändern?
-MusicFolderChange = Ändern
-MusicFolderSkip = Überspringen
-MusicSkipped = Übersprungen
-# Pictures
-PicturesDriveSelect = Wählen Sie das Laufwerk aus, in dessen Stammverzeichnis der Ordner Bilder erstellt werden soll
-PicturesFilesWontBeMoved = Dateien werden nicht verschoben
-PicturesFolderRequest = Möchten Sie den Speicherort des Ordner Bilder ändern?
-PicturesFolderChange = Ändern
-PicturesFolderSkip = Überspringen
-PicturesSkipped = Übersprungen
-# Videos
-VideosDriveSelect = Wählen Sie das Laufwerk aus, in dessen Stammverzeichnis der Ordner Videos erstellt werden soll
-VideosFilesWontBeMoved = Dateien werden nicht verschoben
-VideosFolderRequest = Möchten Sie den Speicherort des Video Ordners ändern?
-VideosFolderChange = Ändern
-VideosFolderSkip = Überspringen
-VideosSkipped = Übersprungen
-
-# SetDefaultUserShellFolderLocation
-# Desktop
-DesktopDefaultFolder = Möchten Sie den Speicherort des Desktop Ordners auf den Standardwert ändern?
-# Documents
-DocumentsDefaultFolder = Möchten Sie den Speicherort des Ordners Dokumente auf den Standardwert ändern?
-# Downloads
-DownloadsDefaultFolder = Möchten Sie den Speicherort des Download Ordners auf den Standardwert ändern?
-# Music
-MusicDefaultFolder = Möchten Sie den Speicherort des Musikordners auf den Standardwert ändern?
-# Pictures
-PicturesDefaultFolder = Möchten Sie den Speicherort des Ordners Bilder auf den Standardwert ändern?
-# Videos
-VideosDefaultFolder = Möchten Sie den Speicherort des Video Ordners auf den Standardwert ändern?
-
-# ReservedStorage
-ReservedStorageIsInUse = Dieser Vorgang wird nicht unterstützt, wenn reservierter Speicher verwendet wird. Bitte warten Sie, bis alle Wartungsvorgänge abgeschlossen sind, und versuchen Sie es später erneut
-
-# syspin
-syspinNoInternetConnection = Keine Internetverbindung
-syspinDownloading = Syspin herunterladen... ~20 KB
-
-# PinControlPanel/PinDevicesPrinters/PinCommandPrompt
-ControlPanelPinning = "Die Verknüpfung $ControlPanelLocalizedName wird an Start angeheftet"
-DevicesPrintersPinning = "Die Verknüpfung $DevicesAndPrintersLocalizedName wird an Start angeheftet"
-CMDPinning = Die Verknüpfung zur Eingabeaufforderung wird an Start angeheftet
-
-# UninstallUWPApps
-UninstallUWPForAll = Deinstallieren für alle Benutzer
-UninstallUWPTitle = Zu deinstallierende UWP-Pakete
-UninstallUWPUninstallButton = Deinstallieren
-
-# WSL
-WSLUpdateDownloading = Herunterladen des Linux-Kernel-Update-Pakets... ~14 MB
-WSLUpdateInstalling = Installieren des Linux-Kernel-Update-Pakets...
-
-# SetAppGraphicsPerformance
-GraphicsPerformanceTitle = Grafik-Leistungspräferenz
-GraphicsPerformanceRequest = Möchten Sie die Grafikleistungseinstellung einer App Ihrer Wahl auf "Hohe Leistung" setzen?"?
-GraphicsPerformanceAdd = Hinzufügen
-GraphicsPerformanceSkip = Überspringen
-GraphicsPerformanceFilter = *.exe|*.exe|Alle Dateien (*.*)|*.*
-GraphicsPerformanceSkipped = Übersprungen
-
-# CreateCleanUpTask
-CleanUpTaskToast = Die Bereinigung nicht verwendeter Windows-Dateien und -Updates beginnt in einer Minute
-CleanUpTaskDescription = Bereinigen nicht verwendeter Windows-Dateien und -Updates mithilfe der integrierten App zur Datenträgerbereinigung. Verwenden Sie zum Dekodieren des codierten Befehls [System.Text.Encoding] :: UTF8.GetString ([System.Convert] :: FromBase64String ("string")).
-
-# CreateSoftwareDistributionTask
-SoftwareDistributionTaskDescription = Der %SystemRoot%\\SoftwareDistribution\\Download
-
-# CreateTempTask
-TempTaskDescription = Bereinigen des %TEMP% Ordners
-
-# AddProtectedFolders
-AddProtectedFoldersTitle = Kontrollierter Ordnerzugriff
-AddProtectedFoldersRequest = Möchten Sie den kontrollierten Ordnerzugriff aktivieren und den Ordner angeben, den Microsoft Defender vor schädlichen Apps und Bedrohungen schützt??
-AddProtectedFoldersAdd = Hinzufügen
-AddProtectedFoldersSkip = Überspringen
-AddProtectedFoldersDescription = Wählen Sie einen Ordner
-AddProtectedFoldersSkipped = Übersprungen
-
-# RemoveProtectedFolders
-RemoveProtectedFoldersList = Ordner entfernt
-
-# AddAppControlledFolder
-AddAppControlledFolderTitle = Kontrollierter Ordnerzugriff
-AddAppControlledFolderRequest = Möchten Sie eine App angeben, die über den Zugriff auf kontrollierte Ordner zulässig ist?
-AddAppControlledFolderAdd = Hinzufügen
-AddAppControlledFolderSkip = Überspringen
-AddAppControlledFolderFilter = *.exe|*.exe|Alle Dateien (*.*)|*.*
-AddAppControlledFolderSkipped = Übersprungen
-
-# RemoveAllowedAppsControlledFolder
-RemoveAllowedAppsControlledFolderList = Zulässige Apps entfernt
-
-# AddDefenderExclusionFolder
-AddDefenderExclusionFolderTitle = Microsoft Defender
-AddDefenderExclusionFolderRequest = Möchten Sie einen Ordner angeben, der von Microsoft Defender-Malware-Scans ausgeschlossen werden soll?
-AddDefenderExclusionFolderAdd = Hinzufügen
-AddDefenderExclusionFolderSkip = Überspringen
-AddDefenderExclusionFolderDescription = Wählen Sie einen Ordner
-AddDefenderExclusionFolderSkipped = Übersprungen
-
-# RemoveDefenderExclusionFolders
-RemoveDefenderExclusionFoldersList = Ausgeschlossene Ordner entfernt
-
-# AddDefenderExclusionFile
-AddDefenderExclusionFileTitle = Microsoft Defender
-AddDefenderExclusionFileRequest = Möchten Sie eine Datei angeben, die von Microsoft Defender-Malware-Scans ausgeschlossen werden soll?
-AddDefenderExclusionFileAdd = Hinzufügen
-AddDefenderExclusionFileSkip = Überspringen
-AddDefenderExclusionFileFilter = Alle Dateien (*.*)|*.*
-AddDefenderExclusionFileSkipped = Übersprungen
-
-# RemoveDefenderExclusionFiles
-RemoveDefenderExclusionFilesList = Ausgeschlossene Dateien entfernt
-
-# CreateEventViewerCustomView
-EventViewerCustomViewName = Prozesserstellung
-EventViewerCustomViewDescription = Neue Prozessereignisse und Befehlszeilenüberwachung
-
-# Refresh
-RestartWarning = Starten Sie Ihren PC neu
-
-# Errors
-ErrorsLine = Zeile
-ErrorsFile = Datei
-ErrorsMessage = Fehler/Warnungen
+﻿ConvertFrom-StringData -StringData @'
+UnsupportedOSBitness                   = Das Skript unterstützt nur Windows 10 x64
+UnsupportedOSBuild                     = Das Skript unterstützt Windows 10 2004 / 20H1-Versionen und höher
+ControlledFolderAccessDisabled         = Kontrollierter Ordnerzugriff deaktiviert
+ScheduledTasks                         = Geplante Aufgaben
+OneDriveUninstalling                   = Deinstalliere OneDrive...
+OneDriveNotEmptyFolder                 = Der Ordner "{0}" ist nicht leer. Löschen Sie es manuell
+OneDriveFileSyncShell64dllBlocked      = "{0}" ist blockiert. Löschen Sie es manuell
+OneDriveInstalling                     = OneDrive wird installiert...
+OneDriveDownloading                    = OneDrive herunterladen... ~33 MB
+ClearFolder                            = Löscht alle Dateien im Ordner "{0}"
+FilesBlocked                           = Die folgenden Dateien werden von Apps von Drittanbietern blockiert. 'nEntfernen Sie sie manuell und fahren Sie fort
+TempNotEmpty                           = Der Ordner "{0}" ist nicht leer. Löschen Sie ihn manuell
+WindowsFeaturesWindowTitle             = Windows Eigenschaften
+Patient                                = Bitte Warten...
+FODWindowTitle                         = Optionale eigenschaften (FODv2)
+EnableHardwareVT                       = Virtualisierung in UEFI aktivieren
+UserShellFolderNotEmpty                = Einige im Ordner "{0}" verbliebene Dateien `nVerschieben Sie sie manuell an einen neuen Ort
+RetrievingDrivesList                   = Abrufen der Laufwerksliste...
+NewUserShellFolderLocation             = Neuer Standort: "{0}"
+DesktopDriveSelect                     = Wählen Sie das Laufwerk, in dessen Stammverzeichnis der Desktop-Ordner erstellt werden soll
+DocumentsDriveSelect                   = Wählen Sie das Laufwerk, in dessen Stammverzeichnis der Ordner "Dokumente" erstellt werden soll
+DownloadsDriveSelect                   = Wählen Sie das Laufwerk, in dessen Stammverzeichnis der Ordner Downloads erstellt wird
+MusicDriveSelect                       = Wählen Sie das Laufwerk, in dessen Stammverzeichnis der Ordner "Musik" erstellt wird
+PicturesDriveSelect                    = Wählen Sie das Laufwerk, in dessen Stammverzeichnis der Ordner "Bilder" erstellt werden soll
+VideosDriveSelect                      = Wählen Sie das Laufwerk, in dessen Stammverzeichnis der Ordner Videos erstellt wird
+DesktopRequest                         = Möchten Sie den Speicherort des Desktop-Ordners ändern?
+DocumentsRequest                       = Möchten Sie den Speicherort des Ordners Dokumente ändern?
+DownloadsRequest                       = Möchten Sie den Speicherort des Ordners Downloads ändern?
+MusicRequest                           = Möchten Sie den Speicherort des Ordners Musik ändern?
+PicturesRequest                        = Möchten Sie den Speicherort des Ordners Bilder ändern?
+VideosRequest                          = Möchten Sie den Speicherort des Ordners Videos ändern?
+DesktopFolderSelect                    = Wählen Sie einen Ordner für den Ordner Desktop
+DocumentsFolderSelect                  = Wählen Sie einen Ordner für den Ordner Dokumente
+DownloadsFolderSelect                  = Wählen Sie einen Ordner für den Ordner Downloads
+MusicFolderSelect                      = Wählen Sie einen Ordner für den Ordner Musik
+PicturesFolderSelect                   = Wählen Sie einen Ordner für den Ordner Bilder aus
+VideosFolderSelect                     = Wählen Sie einen Ordner für den Ordner Videos
+DesktopDefaultFolder                   = Möchten Sie den Speicherort des Desktop-Ordners auf den Standardwert ändern?
+DocumentsDefaultFolder                 = Möchten Sie den Speicherort des Ordners Dokumente auf den Standardwert ändern?
+DownloadsDefaultFolder                 = Möchten Sie den Speicherort des Ordners Downloads auf den Standardwert ändern?
+MusicDefaultFolder                     = Möchten Sie den Speicherort des Ordners Musik auf den Standardwert ändern?
+PicturesDefaultFolder                  = Möchten Sie den Speicherort des Ordners "Bilder" auf den Standardwert ändern?
+VideosDefaultFolder                    = Möchten Sie den Speicherort des Ordners Videos auf den Standardwert ändern?
+ReservedStorageIsInUse                 = Dieser Vorgang wird nicht unterstützt, wenn reservierter Speicher verwendet wird `nBitte warten Sie, bis alle Wartungsvorgänge abgeschlossen sind, und versuchen Sie es dann später erneut
+syspinDownloading                      = Herunterladen von Syspin... ~20 KB
+ShortcutPinning                        = Die Verknüpfung "{0}" wird an Start angeheftet
+UninstallUWPForAll                     = Deinstallation für alle Benutzer
+UninstallUWPTitle                      = Zu deinstallierende UWP-Pakete
+WSLUpdateDownloading                   = Herunterladen des Update-Pakets für den Linux-Kernel... ~14 MB
+WSLUpdateInstalling                    = Installation des Aktualisierungspakets für den Linux-Kernel...
+GraphicsPerformanceTitle               = Bevorzugte Grafikleistung
+GraphicsPerformanceRequest             = Möchten Sie die Einstellung der Grafikleistung einer App Ihrer Wahl auf "Hohe Leistung" setzen?
+CleanUpTaskToast                       = Das Bereinigen ungenutzter Windows-Dateien und Updates beginnt in einer Minute
+CleanUpTaskDescription                 = Bereinigung ungenutzter Windows-Dateien und -Updates mit der integrierten Festplatten-Bereinigungsanwendung
+FolderTaskDescription                  = Die "{0}"-Ordnerbereinigung
+ControlledFolderAccess                 = Kontrollierter Ordner-Zugriff
+ProtectedFoldersRequest                = Möchten Sie den kontrollierten Ordnerzugriff aktivieren und den Ordner angeben, den Microsoft Defender vor bösartigen Anwendungen und Bedrohungen schützen soll?
+ProtectedFoldersListRemoved            = Gelöschte Ordner
+AppControlledFolderRequest             = Möchten Sie eine Anwendung angeben, die über den Zugriff auf Kontrollierte Ordner erlaubt ist?
+AllowedControlledFolderAppsRemoved     = Erlaubte Anwendungen entfernt
+DefenderTitle                          = Microsoft Defender
+DefenderExclusionFolderRequest         = Möchten Sie einen Ordner angeben, der von den Malware-Scans von Microsoft Defender ausgeschlossen werden soll?
+DefenderExclusionFoldersListRemoved    = Ausgeschlossene Ordner entfernt
+AddDefenderExclusionFileRequest        = Möchten Sie eine Datei angeben, die von den Malware-Scans von Microsoft Defender ausgeschlossen werden soll?
+DefenderExclusionFilesRemoved          = Ausgeschlossene Dateien entfernt
+EventViewerCustomViewName              = Prozess-Erstellung
+EventViewerCustomViewDescription       = Ereignisse zur Prozesserstellung und Befehlszeilen-Auditierung
+RestartWarning                         = Achten Sie darauf, Ihren PC neu zu starten
+ErrorsLine                             = Zeile
+ErrorsFile                             = Datei
+ErrorsMessage                          = Fehler/Warnungen
+Add                                    = Hinzufügen
+AllFilesFilter                         = Alle Dateien (*.*)|*.*
+Change                                 = Ändern
+Continue                               = Fortfahren
+DialogBoxOpening                       = Anzeigen des Dialogfensters...
+Disable                                = Deaktivieren
+Enable                                 = Aktivieren
+EXEFilesFilter                         = *.exe|*.exe|Alle Dateien (*.*)|*.*
+FolderSelect                           = Wählen Sie einen Ordner aus
+FilesWontBeMoved                       = Dateien werden nicht verschoben
+NoData                                 = Nichts anzuzeigen
+NoInternetConnection                   = Keine Internetverbindung
+Select                                 = Wählen Sie
+Skip                                   = Überspringen
+Skipped                                = Übersprungen
+Uninstall                              = Deinstallieren
 '@

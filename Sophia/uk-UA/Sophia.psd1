@@ -1,182 +1,89 @@
-﻿# Не видаляйте подвійні лапки в рядках з подвійними лапками, якщо вони присутні
-
-ConvertFrom-StringData -StringData @'
-UnsupportedOSBitness = Скрипт підтримує тільки Windows 10 x64
-ControlledFolderAccessDisabled = Контрольований доступ до папок вимкнений
-
-# OneDrive
-OneDriveUninstalling = Видалення OneDrive...
-OneDriveNotEmptyFolder = "Папка $OneDriveUserFolder не порожня. Видаліть її вручну"
-OneDriveFileSyncShell64dllBlocked = "$FileSyncShell64dll заблокований. Видаліть його вручну"
-OneDriveInstalling = Очікуємо вигрузку файла FileSyncShell64.dll
-OneDriveDownloading = Завантажується OneDrive... ~33 МБ
-OneDriveNoInternetConnection = Відсутнє інтернет-з'єднання
-
-# TempPath
-LOCALAPPDATAFilesBlocked = "The following files are being blocked by third-party party apps `nRemove them manually and continue"
-LOCALAPPDATANotEmpty = "Папка $env:LOCALAPPDATA\\Temp не порожня. Очистіть її вручну і спробуйте ще раз"
-
-# DisableWindowsCapabilities
-FODWindowTitle = Видалити додаткові компоненти
-FODWindowButton = Видалити
-DialogBoxOpening = Діалогове вікно відкривається...
-NoData = Відсутні дані
-
-# WindowsSandbox
-EnableHardwareVT = Увімкніть віртуалізацію в UEFI
-
-# ChangeUserShellFolderLocation
-UserShellFolderNotEmpty = "У папці $UserShellFolderRegValue залишились файли. Перемістіть їх вручну в нове розташування"
-RetrievingDrivesList = Отримання списку дисків...
-# Робочий стіл
-DesktopDriveSelect = Виберіть диск, в корені якого буде створена папка для "Робочий стіл"
-DesktopFilesWontBeMoved = Файли не будуть перенесені
-DesktopFolderRequest = Бажаєте змінити місце розташування папки "Робочий стіл"?
-DesktopFolderChange = Змінити
-DesktopFolderSkip = Пропустити
-DesktopSkipped = Пропущено
-# Документи
-DocumentsDriveSelect = Виберіть диск, в корені якого буде створена папка для "Документи"
-DocumentsFilesWontBeMoved = Файли не будуть перенесені
-DocumentsFolderRequest = Бажаєте змінити місце розташування папки "Документи"?
-DocumentsFolderChange = Змінити
-DocumentsFolderSkip = Пропустити
-DocumentsSkipped = Пропущено
-# Завантаження
-DownloadsDriveSelect = Виберіть диск, в корені якого буде створена папка для "Завантаження"
-DownloadsFilesWontBeMoved = Файли не будуть перенесені
-DownloadsFolderRequest = Бажаєте змінити місце розташування папки "Завантаження"?
-DownloadsFolderChange = Змінити
-DownloadsFolderSkip = Пропустити
-DownloadsSkipped = Пропущено
-# Музика
-MusicDriveSelect = Виберіть диск, в корені якого буде створена папка для "Музика"
-MusicFilesWontBeMoved = Файли не будуть перенесені
-MusicFolderRequest = Бажаєте змінити місце розташування папки "Музика"?
-MusicFolderChange = Змінити
-MusicFolderSkip = Пропустити
-MusicSkipped = Пропущено
-# Зображення
-PicturesDriveSelect = Виберіть диск, в корені якого буде створена папка для "Зображення"
-PicturesFilesWontBeMoved = Файли не будуть перенесені
-PicturesFolderRequest = Бажаєте змінити місце розташування папки "Зображення"?
-PicturesFolderChange = Змінити
-PicturesFolderSkip = Пропустити
-PicturesSkipped = Пропущено
-# Відео
-VideosDriveSelect = Виберіть диск, в корені якого буде створена папка для "Відео"
-VideosFilesWontBeMoved = Файли не будуть перенесені
-VideosFolderRequest = Бажаєте змінити місце розташування папки "Відео"?
-VideosFolderChange = Змінити
-VideosFolderSkip = Пропустити
-VideosSkipped = Пропущено
-
-# SetDefaultUserShellFolderLocation
-# Робочий стіл
-DesktopDefaultFolder = Бажаєте змінити місце розташування папки "Робочий стіл" на значення за замовчуванням?
-# Документи
-DocumentsDefaultFolder = Бажаєте змінити місце розташування папки "Документи" на значення за замовчуванням?
-# Завантаження
-DownloadsDefaultFolder = Бажаєте змінити місце розташування папки "Завантаження" на значення за замовчуванням?
-# Музика
-MusicDefaultFolder = Бажаєте змінити місце розташування папки "Музика" на значення за замовчуванням?
-# Зображення
-PicturesDefaultFolder = Бажаєте змінити місце розташування папки "Зображення" на значення за замовчуванням?
-# Відео
-VideosDefaultFolder = Бажаєте змінити місце розташування папки "Відео" на значення за замовчуванням?
-
-# DisableReservedStorage
-ReservedStorageIsInUse = Ця операція не підтримується, коли використовується зарезервоване сховище. Дочекайтеся завершення будь-яких операцій з обслуговування і спробуйте ще раз.
-
-# syspin
-syspinNoInternetConnection = Відсутнє інтернет-з'єднання
-syspinDownloading = Завантажується syspin... ~20 КБ
-
-# PinControlPanel/PinDevicesPrinters/PinCommandPrompt
-ControlPanelPinning = "Ярлик `"$ControlPanelLocalizedName`" закріплюється на початковому екрані"
-DevicesPrintersPinning = "Ярлик `"$DevicesAndPrintersLocalizedName`" закріплюється на початковому екрані"
-CMDPinning = Ярлик "Командний рядок" закріплюється на початковому екрані
-
-# UninstallUWPApps
-UninstallUWPForAll = Видалити для всіх користувачів
-UninstallUWPTitle = Видалити UWP-додатки
-UninstallUWPUninstallButton = Видалити
-
-# WSL
-WSLUpdateDownloading = Завантажується пакет оновлення ядра Linux... ~14 МБ
-WSLUpdateInstalling = Встановлення пакета оновлення ядра Linux...
-
-# SetAppGraphicsPerformance
-GraphicsPerformanceTitle = Налаштування продуктивності графіки
-GraphicsPerformanceRequest = Встановити для будь-якої програми за вашим вибором налаштування продуктивності графіки на "Висока продуктивність"?
-GraphicsPerformanceAdd = Додати
-GraphicsPerformanceSkip = Пропустити
-GraphicsPerformanceFilter = *.exe|*.exe|Всі файли (*.*)|*.*
-GraphicsPerformanceSkipped = Пропущено
-
-# CreateCleanUpTask
-CleanUpTaskToast = Очищення зайвих файлів і оновлень Windows почнеться через хвилину
-CleanUpTaskDescription = Очищення зайвих файлів і оновлень Windows, використовуючи вбудовану програму очищення диска. Щоб розшифрувати закодований рядок використовуйте [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String("рядок"))
-
-# CreateSoftwareDistributionTask
-SoftwareDistributionTaskDescription = Очищення папки %SystemRoot%\\SoftwareDistribution\\Download
-
-# CreateTempTask
-TempTaskDescription = Очищення папки %TEMP%
-
-# AddProtectedFolders
-AddProtectedFoldersTitle = Контрольований доступ до папок
-AddProtectedFoldersRequest = Бажаєте увімкнути контрольований доступ до папок і вказати папку, яку Захисник Microsoft буде захищати від шкідливих додатків і загроз?
-AddProtectedFoldersAdd = Додати
-AddProtectedFoldersSkip = Пропустити
-AddProtectedFoldersDescription = Виберіть папку
-AddProtectedFoldersSkipped = Пропущено
-
-# RemoveProtectedFolders
-RemoveProtectedFoldersList = Видалені папки
-
-# AddAppControlledFolder
-AddAppControlledFolderTitle = Контрольований доступ до папок
-AddAppControlledFolderRequest = Указать приложение, которому разрешена работа через контролируемый доступ к папкам
-AddAppControlledFolderAdd = Додати
-AddAppControlledFolderSkip = Пропустити
-AddAppControlledFolderFilter = *.exe|*.exe|Всі файли (*.*)|*.*
-AddAppControlledFolderSkipped = Пропущено
-
-# RemoveAllowedAppsControlledFolder
-RemoveAllowedAppsControlledFolderList = Видалені дозволені додатки
-
-# AddDefenderExclusionFolder
-AddDefenderExclusionFolderTitle = Microsoft Defender
-AddDefenderExclusionFolderRequest = Вказати папку, щоб виключити її зі списку сканування Microsoft Defender?
-AddDefenderExclusionFolderAdd = Додати
-AddDefenderExclusionFolderSkip = Пропустити
-AddDefenderExclusionFolderDescription = Виберіть папку
-AddDefenderExclusionFolderSkipped = Пропущено
-
-# RemoveDefenderExclusionFolders
-RemoveDefenderExclusionFoldersList = Виключені папки видалено
-
-# AddDefenderExclusionFile
-AddDefenderExclusionFileTitle = Microsoft Defender
-AddDefenderExclusionFileRequest = Вказати файл, щоб виключити його зі списку сканування Microsoft Defender?
-AddDefenderExclusionFileAdd = Додати
-AddDefenderExclusionFileSkip = Пропустити
-AddDefenderExclusionFileFilter = Всі файли (*.*)|*.*
-AddDefenderExclusionFileSkipped = Пропущено
-
-# RemoveDefenderExclusionFiles
-RemoveDefenderExclusionFilesList = Виключені файли видалено
-
-# CreateEventViewerCustomView
-EventViewerCustomViewName = Створення процесу
-EventViewerCustomViewDescription = Події створення нового процесу і аудит командного рядка
-
-# Refresh
-RestartWarning = Перезавантажте ваш ПК
-
-# Errors
-ErrorsLine = Рядок
-ErrorsFile = Файл
-ErrorsMessage = Помилки/попередження
+﻿ConvertFrom-StringData -StringData @'
+UnsupportedOSBitness                   = Скрипт підтримує тільки Windows 10 x64
+UnsupportedOSBuild                     = Скрипт підтримує тільки Windows 10 версії 2004/20H1 та вище
+ControlledFolderAccessDisabled         = Контрольований доступ до папок вимкнений
+ScheduledTasks                         = Заплановані задачі
+OneDriveUninstalling                   = Видалення OneDrive...
+OneDriveNotEmptyFolder                 = Папка "{0}" не порожня. Видаліть її 
+OneDriveFileSyncShell64dllBlocked      = "{0}" заблокований. Видаліть його вручну
+OneDriveInstalling                     = OneDrive встановлюється...
+OneDriveDownloading                    = Завантажується OneDrive... ~33 МБ
+ClearFolder                            = Видаліть всі файли у папці "{0}"
+FilesBlocked                           = Наступні файли блокуються сторонніми програмами\nВидаліть їх вручну та продовжуйте
+TempNotEmpty                           = Папка "{0}" не порожня. Очистіть її вручну
+WindowsFeaturesWindowTitle             = Компоненти Windows
+Patient                                = Будь ласка, зачекайте...
+FODWindowTitle                         = Додаткові компоненти (FODv2)
+EnableHardwareVT                       = Увімкніть віртуалізацію в UEFI
+UserShellFolderNotEmpty                = У папці "{0}" залишились файли. Перемістіть їх вручну у нове розташування
+RetrievingDrivesList                   = Отримання списку дисків...
+NewUserShellFolderLocation             = Нове розташування: "{0}"
+DesktopDriveSelect                     = Виберіть диск, в корні якого буде створена папка для "Робочий стіл"
+DocumentsDriveSelect                   = Виберіть диск, в корні якого буде створена папка для "Документи"
+DownloadsDriveSelect                   = Виберіть диск, в корні якого буде створена папка для "Завантаження"
+MusicDriveSelect                       = Виберіть диск, в корні якого буде створена папка для "Музика"
+PicturesDriveSelect                    = Виберіть диск, в корні якого буде створена папка для "Зображения"
+VideosDriveSelect                      = Виберіть диск, в корні якого буде створена папка для "Відео"
+DesktopRequest                         = Хочете змінити розташування папки "Робочий стіл"?
+DocumentsRequest                       = Хочете змінити розташування папки "Документи"?
+DownloadsRequest                       = Хочете змінити розташування папки "Завантаження"?
+MusicRequest                           = Хочете змінити розташування папки "Музика"?
+PicturesRequest                        = Хочете змінити розташування папки "Зображения"?
+VideosRequest                          = Хочете змінити розташування папки "Відео"?
+DesktopFolderSelect                    = Виберіть папку для "Робочий стіл"
+DocumentsFolderSelect                  = Виберіть папку для "Документи"
+DownloadsFolderSelect                  = Виберіть папку для "Завантаження"
+MusicFolderSelect                      = Виберіть папку для "Музика"
+PicturesFolderSelect                   = Виберіть папку для "Зображения"
+VideosFolderSelect                     = Виберіть папку для "Відео"
+DesktopDefaultFolder                   = Хочете змінити розташування папки "Робочий стіл" на значення за замовчуванням?
+DocumentsDefaultFolder                 = Хочете змінити розташування папки "Документи" на значення за замовчуванням?
+DownloadsDefaultFolder                 = Хочете змінити розташування папки "Завантаження" на значення за замовчуванням?
+MusicDefaultFolder                     = Хочете змінити розташування папки "Музика" на значення за замовчуванням?
+PicturesDefaultFolder                  = Хочете змінити розташування папки "Зображения" на значення за замовчуванням?
+VideosDefaultFolder                    = Хочете змінити розташування папки "Відео" на значення за замовчуванням?
+ReservedStorageIsInUse                 = Операція не підтримується, поки використовується зарезервоване сховище\nБудь ласка, дочекайтеся закінчення всіх обслуговуючих операцій і спробуйте знову
+syspinDownloading                      = Завантажується syspin... ~20 КБ
+ShortcutPinning                        = Ярлик "{0}" закріплюється на початковому екрані
+UninstallUWPForAll                     = Видалити для всіх користувачів
+UninstallUWPTitle                      = Видалити UWP-додатки
+WSLUpdateDownloading                   = Завантажується пакет оновлення ядра Linux... ~14 МБ
+WSLUpdateInstalling                    = Встановлення пакета оновлення ядра Linux...
+GraphicsPerformanceTitle               = Налаштування продуктивності графіки
+GraphicsPerformanceRequest             = Встановити для будь-якої програми за вашим вибором налаштування продуктивності графіки на "Висока продуктивність"?
+CleanUpTaskToast                       = Очищення зайвих файлів і оновлень Windows почнеться через хвилину
+CleanUpTaskDescription                 = Очищення зайвих файлів і оновлень Windows, використовуючи вбудовану програму очищення диска
+FolderTaskDescription                  = Очищення папки "{0}"
+ControlledFolderAccess                 = Контрольований доступ до папок
+ProtectedFoldersRequest                = Бажаєте увімкнути контрольований доступ до папок і вказати папку, яку Microsoft Defender буде захищати від шкідливих додатків і загроз?
+ProtectedFoldersListRemoved            = Видалення папки
+AppControlledFolderRequest             = Вказати додаток, якому дозволена робота через контрольований доступ до папок
+AllowedControlledFolderAppsRemoved     = Видалені дозволені додатки
+DefenderTitle                          = Microsoft Defender
+DefenderExclusionFolderRequest         = Вказати папку, щоб виключити її зі списку сканування Microsoft Defender?
+DefenderExclusionFoldersListRemoved    = Виключені папки видалені
+AddDefenderExclusionFileRequest        = Вказати файл, щоб виключити його зі списку сканування Microsoft Defender?
+DefenderExclusionFilesRemoved          = Виключені файли видалені
+EventViewerCustomViewName              = Створення процесу
+EventViewerCustomViewDescription       = Події створення нового процесу і аудит командного рядка
+RestartWarning                         = Обов'язково перезавантажте ваш ПК
+ErrorsLine                             = Рядок
+ErrorsFile                             = Файл
+ErrorsMessage                          = Помилки/попередження
+Add                                    = Додати
+AllFilesFilter                         = Усі файли (*.*)|*.*
+Change                                 = Змінити
+Continue                               = Продовжити
+DialogBoxOpening                       = Діалогове вікно відкривається...
+Disable                                = Вимкнути
+Enable                                 = Увімкнути
+EXEFilesFilter                         = *.exe|*.exe|Усі файли (*.*)|*.*
+FolderSelect                           = Виберіть папку
+FilesWontBeMoved                       = Файли не будуть перенесені
+NoData                                 = Відсутні дані
+NoInternetConnection                   = Відсутнє інтернет-з'єднання
+Select                                 = Вибрати
+Skip                                   = Пропустити
+Skipped                                = Пропущено
+Uninstall                              = Видалити
 '@

@@ -2,18 +2,14 @@
 	.SYNOPSIS
 	"Windows 10 Sophia Script" is a PowerShell module for Windows 10 fine-tuning and automating the routine tasks
 
-	Version: v5.2
-	Date: 10.11.2020
+	Version: v5.3
+	Date: 12.12.2020
 	Copyright (c) 2020 farag & oZ-Zo
 
-	Thanks to all http://forum.ru-board.com members involved
+	Thanks to all https://forum.ru-board.com members involved
 
 	.DESCRIPTION
 	Supported Windows 10 versions: 2004 (20H1)/2009 (20H2), 19041/19042, Home/Pro/Enterprise, x64
-
-	Some third-party antiviruses flag this script or its' part as malicious one
-	This is a false positive due to $EncodedScript variable. You can read more about in "CreateCleanUpTask" function
-	You might need to disable tamper protection from your antivirus settings, re-enable it after running the script, and reboot
 
 	Running the script is best done on a fresh install because running it on wrong tweaked system may result in errors occurring
 
@@ -25,7 +21,7 @@
 	PS C:\> .\Sophia.ps1
 
 	.NOTES
-	http://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
+	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
 	https://habr.com/en/post/521202/
 	https://forums.mydigitallife.net/threads/powershell-script-setup-windows-10.81675/
 	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
@@ -45,12 +41,23 @@ function Check
 
 	# Detect the OS bitness
 	# Определить разрядность ОС
-	switch ([Environment]::Is64BitOperatingSystem)
+	switch ([System.Environment]::Is64BitOperatingSystem)
 	{
 		$false
 		{
 			Write-Warning -Message $Localization.UnsupportedOSBitness
-			break
+			exit
+		}
+	}
+
+	# Detect the OS build version
+	# Определить номер билда ОС
+	switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber -ge 19041)
+	{
+		$false
+		{
+			Write-Warning -Message $Localization.UnsupportedOSBuild
+			exit
 		}
 	}
 
@@ -94,7 +101,7 @@ function CreateRestorePoint
 #region Privacy & Telemetry
 <#
 	.SYNOPSIS
-	Disable/enable the "Connected User Experiences and Telemetry" service (DiagTrack)
+	Disable | enable the "Connected User Experiences and Telemetry" service (DiagTrack)
 	Отключить/включить службу "Функциональные возможности для подключенных пользователей и телеметрия" (DiagTrack)
 
 	.PARAMETER Disable
@@ -355,20 +362,29 @@ function ScheduledTasks
 	(
 		[Parameter(
 			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable,
-
-		[Parameter(
-			Mandatory = $true,
 			ParameterSetName = "Enable"
 		)]
 		[switch]
-		$Enable
+		$Enable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable
 	)
 
-	$ScheduledTaskList = @(
+	Add-Type -AssemblyName PresentationCore, PresentationFramework
+
+	#region Variables
+	# Initialize an array list to store the scheduled tasks to remove
+	# Создать массив задач для удаления
+	$Tasks = New-Object -TypeName System.Collections.ArrayList($null)
+
+	# The following tasks will have their checkboxes checked
+	# Следующие задачи будут иметь чекбоксы отмеченными
+	$CheckedScheduledTasks = @(
 		# Collects program telemetry information if opted-in to the Microsoft Customer Experience Improvement Program
 		# Собирает телеметрические данные программы при участии в Программе улучшения качества программного обеспечения Майкрософт
 		"Microsoft Compatibility Appraiser",
@@ -426,20 +442,211 @@ function ScheduledTasks
 	if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2)
 	{
 		# Windows Hello
-		$ScheduledTaskList += "FODCleanupTask"
+		$CheckedScheduledTasks += "FODCleanupTask"
 	}
+	#endregion Variables
+
+	#region XAML Markup
+	# The section defines the design of the upcoming dialog box
+	# Раздел, определяющий форму диалогового окна
+	[xml]$XAML = '
+	<Window
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		Name="Window"
+		MinHeight="450" MinWidth="400"
+		SizeToContent="Width" WindowStartupLocation="CenterScreen"
+		TextOptions.TextFormattingMode="Display" SnapsToDevicePixels="True"
+		FontFamily="Segoe UI" FontSize="12" ShowInTaskbar="False">
+		<Window.Resources>
+			<Style TargetType="StackPanel">
+				<Setter Property="Orientation" Value="Horizontal"/>
+			</Style>
+			<Style TargetType="CheckBox">
+				<Setter Property="Margin" Value="10, 10, 5, 10"/>
+				<Setter Property="IsChecked" Value="True"/>
+			</Style>
+			<Style TargetType="TextBlock">
+				<Setter Property="Margin" Value="5, 10, 10, 10"/>
+			</Style>
+			<Style TargetType="Button">
+				<Setter Property="Margin" Value="20"/>
+				<Setter Property="Padding" Value="10"/>
+			</Style>
+		</Window.Resources>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
+			<ScrollViewer Name="Scroll" Grid.Row="0"
+				HorizontalScrollBarVisibility="Disabled"
+				VerticalScrollBarVisibility="Auto">
+				<StackPanel Name="PanelContainer" Orientation="Vertical"/>
+			</ScrollViewer>
+			<Button Name="Button" Grid.Row="1"/>
+		</Grid>
+	</Window>
+	'
+	#endregion XAML Markup
+
+	$Reader = (New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML)
+	$Form = [Windows.Markup.XamlReader]::Load($Reader)
+	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
+		Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name) -Scope Global
+	}
+
+	#region Functions
+	function Get-CheckboxClicked
+	{
+		[CmdletBinding()]
+		param
+		(
+			[Parameter(
+				Mandatory = $true,
+				ValueFromPipeline = $true
+			)]
+			[ValidateNotNull()]
+			$CheckBox
+		)
+
+		$Task = $CheckBox.Parent.Children[1].Text
+		if ($CheckBox.IsChecked)
+		{
+			[void]$Tasks.Add($Task)
+		}
+		else
+		{
+			[void]$Tasks.Remove($Task)
+		}
+		if ($Tasks.Count -gt 0)
+		{
+			$Button.IsEnabled = $true
+		}
+		else
+		{
+			$Button.IsEnabled = $false
+		}
+	}
+
+	function DisableButton
+	{
+		[void]$Window.Close()
+		$OFS = "|"
+		Get-ScheduledTask | Where-Object -FilterScript {$_.TaskName -cmatch $Tasks} | Disable-ScheduledTask
+		$OFS = " "
+	}
+
+	function EnableButton
+	{
+		[void]$Window.Close()
+		$OFS = "|"
+		Get-ScheduledTask | Where-Object -FilterScript {$_.TaskName -cmatch $Tasks} | Enable-ScheduledTask
+		$OFS = " "
+	}
+
+	function Add-TaskControl
+	{
+		[CmdletBinding()]
+		param
+		(
+			[Parameter(
+				Mandatory = $true,
+				ValueFromPipeline = $true
+			)]
+			[ValidateNotNull()]
+			[string]
+			$Task
+		)
+
+		$CheckBox = New-Object -TypeName System.Windows.Controls.CheckBox
+		$CheckBox.Add_Click({Get-CheckboxClicked -CheckBox $_.Source})
+
+		$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
+		$TextBlock.Text = $Task
+
+		$StackPanel = New-Object -TypeName System.Windows.Controls.StackPanel
+		[void]$StackPanel.Children.Add($CheckBox)
+		[void]$StackPanel.Children.Add($TextBlock)
+
+		[void]$PanelContainer.Children.Add($StackPanel)
+
+		$CheckBox.IsChecked = $false
+
+		# If task checked, add to the array list to remove
+		# Если задача выделена, то добавить в массив для удаления
+		if ($CheckedScheduledTasks | Where-Object -FilterScript {$Task -like $_})
+		{
+			$CheckBox.IsChecked = $true
+			[void]$Tasks.Add($Task)
+		}
+	}
+	#endregion Functions
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
-		"Disable"
-		{
-			Get-ScheduledTask -TaskName $ScheduledTaskList | Disable-ScheduledTask
-		}
 		"Enable"
 		{
-			Get-ScheduledTask -TaskName $ScheduledTaskList | Enable-ScheduledTask
+			#region Events Handlers
+			$OptionalTasks = New-Object -TypeName System.Collections.ArrayList($null)
+			# Window Loaded Event
+			$Window.Add_Loaded({
+				$OFS = "|"
+				$OptionalTasks = @(Get-ScheduledTask | Where-Object -FilterScript {($_.State -eq "Disabled") -and ($_.TaskName -in $CheckedScheduledTasks)})
+				if ($OptionalTasks.Count -gt 0)
+				{
+					$OptionalTasks | ForEach-Object -Process {
+						Add-TaskControl -Task $_.TaskName
+					}
+
+					$Button.Content = $Localization.Enable
+				}
+				else
+				{
+					Write-Verbose -Message $Localization.NoData -Verbose
+					$Form.Close()
+				}
+				$OFS = " "
+			})
+
+			# Button Click Event
+			$Button.Add_Click({EnableButton})
+			#endregion Events Handlers
+		}
+		"Disable"
+		{
+			#region Events Handlers
+			$OptionalTasks = New-Object System.Collections.ArrayList($null)
+			# Window Loaded Event
+			$Window.Add_Loaded({
+				$OFS = "|"
+				$OptionalTasks = @(Get-ScheduledTask | Where-Object -FilterScript {($_.State -eq "Ready") -and ($_.TaskName -in $CheckedScheduledTasks)})
+				if ($OptionalTasks.Count -gt 0)
+				{
+					$OptionalTasks | ForEach-Object -Process {
+						Add-TaskControl -Task $_.TaskName
+					}
+
+					$Button.Content = $Localization.Disable
+				}
+				else
+				{
+					Write-Verbose -Message $Localization.NoData -Verbose
+					$Form.Close()
+				}
+				$OFS = " "
+			})
+
+			# Button Click Event
+			$Button.Add_Click({DisableButton})
+			#endregion Events Handlers
 		}
 	}
+
+	Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
+
+	$Window.Title = $Localization.ScheduledTasks
+	$Form.ShowDialog() | Out-Null
 }
 
 <#
@@ -2993,8 +3200,8 @@ function UninstallOneDrive
 		}
 		else
 		{
-			$Message = Invoke-Command -ScriptBlock ([ScriptBlock]::Create($Localization.OneDriveNotEmptyFolder))
-			Write-Error -Message $Message -ErrorAction SilentlyContinue
+			Write-Error -Message ($Localization.OneDriveNotEmptyFolder -f $OneDriveUserFolder) -ErrorAction SilentlyContinue
+
 			Invoke-Item -Path $OneDriveUserFolder
 		}
 
@@ -3028,8 +3235,7 @@ function UninstallOneDrive
 
 			if (Test-Path -Path $FileSyncShell64dll)
 			{
-				$Message = Invoke-Command -ScriptBlock ([ScriptBlock]::Create($Localization.OneDriveFileSyncShell64dllBlocked))
-				Write-Error -Message $Message -ErrorAction SilentlyContinue
+				Write-Error -Message ($Localization.OneDriveFileSyncShell64dllBlocked -f $FileSyncShell64dll) -ErrorAction SilentlyContinue
 			}
 		}
 
@@ -3088,6 +3294,7 @@ function InstallOneDrive
 			catch [System.Net.WebException]
 			{
 				Write-Warning -Message $Localization.NoInternetConnection
+				Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 			}
 		}
 		Get-ScheduledTask -TaskName "Onedrive* Update*" | Start-ScheduledTask
@@ -3348,7 +3555,7 @@ function StorageSenseRecycleBin
 
 <#
 	.SYNOPSIS
-	Disable (if the device is not a laptop)/enable hibernation 
+	Disable (if the device is not a laptop)/enable hibernation
 	Отключить (если устройство не является ноутбуком)/включить режим гибернации
 
 	.PARAMETER Disable
@@ -3402,28 +3609,28 @@ function Hibernate
 
 <#
 	.SYNOPSIS
-	Change the %TEMP% environment variable path to the %SystemDrive%\Temp/default value
-	Изменить путь переменной среды для %TEMP% на %SystemDrive%\Temp/по умолчанию
+	Change the %TEMP% environment variable path to the "%SystemDrive%\Temp"/default value
+	Изменить путь переменной среды для %TEMP% на "%SystemDrive%\Temp"/по умолчанию
 
 	.PARAMETER SystemDrive
-	Change the %TEMP% environment variable path to the %SystemDrive%\Temp
-	Изменить путь переменной среды для %TEMP% на %SystemDrive%\Temp
+	Change the %TEMP% environment variable path to "%SystemDrive%\Temp"
+	Изменить путь переменной среды для %TEMP% на "%SystemDrive%\Temp"
 
 	.PARAMETER Default
-	Change the %TEMP% environment variable path to the %LOCALAPPDATA%\Temp
-	Изменить путь переменной среды для %TEMP% на %LOCALAPPDATA%\Temp
+	Change the %TEMP% environment variable path to "%LOCALAPPDATA%\Temp"
+	Изменить путь переменной среды для %TEMP% на "%LOCALAPPDATA%\Temp"
 
 	.EXAMPLE
-	TempPath -SystemDrive
+	TempFolder -SystemDrive
 
 	.EXAMPLE
-	TempPath -Default
+	TempFolder -Default
 
 	.NOTES
 	Machine-wide
 	Для всех пользователей
 #>
-function TempPath
+function TempFolder
 {
 	param
 	(
@@ -3446,9 +3653,68 @@ function TempPath
 	{
 		"SystemDrive"
 		{
+			# Restart the Printer Spooler service (Spooler)
+			# Перезапустить службу "Диспетчер печати" (Spooler)
+			Restart-Service -Name Spooler -Force
+
+			Stop-Process -Name OneDrive -Force -ErrorAction Ignore
+			Stop-Process -Name FileCoAuth -Force -ErrorAction Ignore
+
+			Remove-Item -Path $env:SystemRoot\Temp -Recurse -Force -ErrorAction Ignore
+			Get-Item -Path $env:LOCALAPPDATA\Temp -Force -ErrorAction Ignore | Where-Object -FilterScript {$_.LinkType -ne "SymbolicLink"} | Remove-Item -Recurse -Force -ErrorAction Ignore
+
 			if (-not (Test-Path -Path $env:SystemDrive\Temp))
 			{
 				New-Item -Path $env:SystemDrive\Temp -ItemType Directory -Force
+			}
+
+			if (Test-Path -Path $env:LOCALAPPDATA\Temp -ErrorAction Ignore)
+			{
+				if ((Get-ChildItem -Path $env:LOCALAPPDATA\Temp -Force -ErrorAction Ignore | Measure-Object).Count -ne 0)
+				{
+					Invoke-Item -Path $env:LOCALAPPDATA\Temp
+
+					do
+					{
+						$Title = ""
+						$Message = $Localization.ClearFolder -f "$env:LOCALAPPDATA\Temp"
+						$Continue = $Localization.Continue
+						$Skip = $Localization.Skip
+						$Options = "&$Continue", "&$Skip"
+						$DefaultChoice = 0
+
+						$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+						switch ($Result)
+						{
+							"0"
+							{
+								# Create a symbolic link to the %SystemDrive%\Temp folder
+								# Создать символическую ссылку к папке %SystemDrive%\Temp
+								try
+								{
+									Get-Item -Path $env:LOCALAPPDATA\Temp -Force | Where-Object -FilterScript {$_.LinkType -ne "SymbolicLink"} | Remove-Item -Recurse -Force -ErrorAction Ignore
+									New-Item -Path $env:LOCALAPPDATA\Temp -ItemType SymbolicLink -Value $env:SystemDrive\Temp -Force -ErrorAction SilentlyContinue
+								}
+								catch [System.Exception]
+								{
+									Write-Verbose -Message $Localization.FilesBlocked -Verbose
+									Write-Verbose -Message (Get-ChildItem -Path $env:LOCALAPPDATA\Temp -Force).Name -Verbose
+								}
+							}
+							"1"
+							{
+								Write-Verbose -Message $Localization.Skipped -Verbose
+							}
+						}
+					}
+					until ((Get-ChildItem -Path $env:LOCALAPPDATA\Temp -Force -ErrorAction Ignore | Measure-Object).Count -eq 0)
+				}
+			}
+			else
+			{
+				# Create a symbolic link to the %SystemDrive%\Temp folder
+				# Создать символическую ссылку к папке %SystemDrive%\Temp
+				New-Item -Path $env:LOCALAPPDATA\Temp -ItemType SymbolicLink -Value $env:SystemDrive\Temp -Force
 			}
 
 			[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "User")
@@ -3463,38 +3729,15 @@ function TempPath
 
 			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TMP -PropertyType ExpandString -Value $env:SystemDrive\Temp -Force
 			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TEMP -PropertyType ExpandString -Value $env:SystemDrive\Temp -Force
-
-			# Restart the Printer Spooler service (Spooler)
-			# Перезапустить службу "Диспетчер печати" (Spooler)
-			Restart-Service -Name Spooler -Force
-
-			Stop-Process -Name OneDrive -Force -ErrorAction Ignore
-			Stop-Process -Name FileCoAuth -Force -ErrorAction Ignore
-
-			Remove-Item -Path $env:SystemRoot\Temp -Recurse -Force -ErrorAction Ignore
-			Get-Item -Path $env:LOCALAPPDATA\Temp | Where-Object -FilterScript {$_.LinkType -ne "SymbolicLink"} | Remove-Item -Recurse -Force -ErrorAction Ignore
-
-			# Create a symbolic link to the %SystemDrive%\Temp folder
-			# Создать символическую ссылку к папке %SystemDrive%\Temp
-			try
-			{
-				New-Item -Path $env:LOCALAPPDATA\Temp -ItemType SymbolicLink -Value $env:SystemDrive\Temp -Force
-			}
-			catch [System.Exception]
-			{
-				$Message = Invoke-Command -ScriptBlock ([ScriptBlock]::Create($Localization.LOCALAPPDATANotEmpty))
-				Write-Error -Message $Message -ErrorAction SilentlyContinue
-			}
-			finally
-			{
-				Invoke-Item -Path $env:LOCALAPPDATA\Temp
-			}
 		}
 		"Default"
 		{
 			# Remove a symbolic link to the %SystemDrive%\Temp folder
 			# Удалить символическую ссылку к папке %SystemDrive%\Temp
-			(Get-Item -Path $env:LOCALAPPDATA\Temp -Force).Delete()
+			if (Get-Item -Path $env:LOCALAPPDATA\Temp -Force -ErrorAction Ignore | Where-Object -FilterScript {$_.LinkType -eq "SymbolicLink"})
+			{
+				(Get-Item -Path $env:LOCALAPPDATA\Temp -Force).Delete()
+			}
 
 			if (-not (Test-Path -Path $env:SystemRoot\Temp))
 			{
@@ -3503,6 +3746,22 @@ function TempPath
 			if (-not (Test-Path -Path $env:LOCALAPPDATA\Temp))
 			{
 				New-Item -Path $env:LOCALAPPDATA\Temp -ItemType Directory -Force
+			}
+
+			# Restart the Printer Spooler service (Spooler)
+			# Перезапустить службу "Диспетчер печати" (Spooler)
+			Restart-Service -Name Spooler -Force
+
+			Stop-Process -Name OneDrive -Force -ErrorAction Ignore
+			Stop-Process -Name FileCoAuth -Force -ErrorAction Ignore
+
+			if ((Get-ChildItem -Path $env:SystemDrive\Temp -Force -ErrorAction Ignore | Measure-Object).Count -eq 0)
+			{
+				Remove-Item -Path $env:SystemDrive\Temp -Recurse -Force
+			}
+			else
+			{
+				Write-Verbose -Message ($Localization.TempNotEmpty -f $env:TEMP) -Verbose
 			}
 
 			[Environment]::SetEnvironmentVariable("TMP", "$env:LOCALAPPDATA\Temp", "User")
@@ -3517,15 +3776,6 @@ function TempPath
 
 			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TMP -PropertyType ExpandString -Value $env:SystemRoot\TEMP -Force
 			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TEMP -PropertyType ExpandString -Value $env:SystemRoot\TEMP -Force
-
-			# Restart the Printer Spooler service (Spooler)
-			# Перезапустить службу "Диспетчер печати" (Spooler)
-			Restart-Service -Name Spooler -Force
-
-			Stop-Process -Name OneDrive -Force -ErrorAction Ignore
-			Stop-Process -Name FileCoAuth -Force -ErrorAction Ignore
-
-			Remove-Item -Path $env:SystemDrive\Temp -Recurse -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -3587,11 +3837,11 @@ function Win32LongPathLimit
 	Отображать/не отображать Stop-ошибку при появлении BSoD
 
 	.PARAMETER Disable
-	Disable Windows 260 character path limit
+	Disable Windows 260 characters path limit
 	Включить ограничение Windows на 260 символов в пути
 
 	.PARAMETER Enable
-	Enable Windows 260 character path limit
+	Enable Windows 260 characters path limit
 	Включить ограничение Windows на 260 символов в пути
 
 	.EXAMPLE
@@ -3904,16 +4154,16 @@ function WindowsManageDefaultPrinter
 
 <#
 	.SYNOPSIS
-	Disable/enable the following Windows features
-	Отключить/включить следующие компоненты Windows
+	Disable/enable Windows features
+	Отключить/включить компоненты Windows
 
 	.PARAMETER Disable
-	Disable the following Windows features
-	Отключить следующие компоненты Windows
+	Disable Windows features
+	Отключить компоненты Windows
 
 	.PARAMETER Enable
-	Enable the following Windows features
-	Включить следующие компоненты Windows
+	Enable Windows features
+	Включить компоненты Windows
 
 	.EXAMPLE
 	WindowsFeatures -Disable
@@ -3922,7 +4172,10 @@ function WindowsManageDefaultPrinter
 	WindowsFeatures -Enable
 
 	.NOTES
+	A pop-up dialog box enables the user to select features to remove
 	Current user only
+
+	Используется всплывающее диалоговое окно, позволяющее пользователю отметить компоненты на удаление
 	Только для текущего пользователя
 #>
 function WindowsFeatures
@@ -3944,7 +4197,16 @@ function WindowsFeatures
 		$Disable
 	)
 
-	$WindowsOptionalFeatures = @(
+	Add-Type -AssemblyName PresentationCore, PresentationFramework
+
+	#region Variables
+	# Initialize an array list to store the Windows Features items to remove
+	# Создать массив имен компонентов Windows для удаления
+	$Features = New-Object -TypeName System.Collections.ArrayList($null)
+
+	# The following Windows Features are recommended the user to remove
+	# Следующие компоненты Windows рекомендуются к удалению
+	$WindowsFeatures = @(
 		# Legacy Components
 		# Компоненты прежних версий
 		"LegacyComponents",
@@ -3965,33 +4227,261 @@ function WindowsFeatures
 		# Клиент рабочих папок
 		"WorkFolders-Client"
 	)
+	#endregion Variables
+
+	#region XAML Markup
+	# The section defines the design of the upcoming dialog box
+	# Раздел, определяющий форму диалогового окна
+	[xml]$XAML = '
+	<Window
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		Name="Window"
+		MinHeight="450" MinWidth="400"
+		SizeToContent="Width" WindowStartupLocation="CenterScreen"
+		TextOptions.TextFormattingMode="Display" SnapsToDevicePixels="True"
+		FontFamily="Segoe UI" FontSize="12" ShowInTaskbar="False">
+		<Window.Resources>
+			<Style TargetType="StackPanel">
+				<Setter Property="Orientation" Value="Horizontal"/>
+			</Style>
+			<Style TargetType="CheckBox">
+				<Setter Property="Margin" Value="10, 10, 5, 10"/>
+				<Setter Property="IsChecked" Value="True"/>
+			</Style>
+			<Style TargetType="TextBlock">
+				<Setter Property="Margin" Value="5, 10, 10, 10"/>
+			</Style>
+			<Style TargetType="Button">
+				<Setter Property="Margin" Value="20"/>
+				<Setter Property="Padding" Value="10"/>
+			</Style>
+		</Window.Resources>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
+			<ScrollViewer Name="Scroll" Grid.Row="0"
+				HorizontalScrollBarVisibility="Disabled"
+				VerticalScrollBarVisibility="Auto">
+				<StackPanel Name="PanelContainer" Orientation="Vertical"/>
+			</ScrollViewer>
+			<Button Name="Button" Grid.Row="1"/>
+		</Grid>
+	</Window>
+	'
+	#endregion XAML Markup
+
+	$Reader = (New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML)
+	$Form = [Windows.Markup.XamlReader]::Load($Reader)
+	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
+		Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name) -Scope Global
+	}
+
+	#region Functions
+	function Get-CheckboxClicked
+	{
+		[CmdletBinding()]
+		param
+		(
+			[Parameter(
+				Mandatory = $true,
+				ValueFromPipeline = $true
+			)]
+			[ValidateNotNull()]
+			$CheckBox
+		)
+
+		$Feature = $CheckBox.Parent.Children[1].Text
+		if ($CheckBox.IsChecked)
+		{
+			[void]$Features.Add($Feature)
+		}
+		else
+		{
+			[void]$Features.Remove($Feature)
+		}
+		if ($Features.Count -gt 0)
+		{
+			$Button.IsEnabled = $true
+		}
+		else
+		{
+			$Button.IsEnabled = $false
+		}
+	}
+
+	function DisableButton
+	{
+		[void]$Window.Close()
+		Disable-WindowsOptionalFeature -Online -FeatureName $Features -NoRestart
+	}
+
+	function EnableButton
+	{
+		[void]$Window.Close()
+		Enable-WindowsOptionalFeature -Online -FeatureName $Features -NoRestart
+	}
+
+	function Add-FeatureControl
+	{
+		[CmdletBinding()]
+		param
+		(
+			[Parameter(
+				Mandatory = $true,
+				ValueFromPipeline = $true
+			)]
+			[ValidateNotNull()]
+			[string]
+			$Feature
+		)
+
+		$CheckBox = New-Object -TypeName System.Windows.Controls.CheckBox
+		$CheckBox.Add_Click({Get-CheckboxClicked -CheckBox $_.Source})
+
+		$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
+		$TextBlock.Text = $Feature
+
+		$StackPanel = New-Object -TypeName System.Windows.Controls.StackPanel
+		[void]$StackPanel.Children.Add($CheckBox)
+		[void]$StackPanel.Children.Add($TextBlock)
+
+		[void]$PanelContainer.Children.Add($StackPanel)
+
+		$CheckBox.IsChecked = $false
+
+		# If feature checked, add to the array list to remove
+		# Если компонент выделен, то добавить в массив для удаления
+		if ($WindowsFeatures | Where-Object -FilterScript {$Feature -like $_})
+		{
+			$CheckBox.IsChecked = $true
+			[void]$Features.Add($Feature)
+		}
+	}
+	#endregion Functions
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
-		"Disable"
-		{
-			Disable-WindowsOptionalFeature -Online -FeatureName $WindowsOptionalFeatures -NoRestart
-		}
 		"Enable"
 		{
-			Enable-WindowsOptionalFeature -Online -FeatureName $WindowsOptionalFeatures -NoRestart
+			#region Events Handlers
+			$OptionalFeatures = New-Object -TypeName System.Collections.ArrayList($null)
+			# Window Loaded Event
+			$Window.Add_Loaded({
+				$OFS = "|"
+				$OptionalFeatures = Get-WindowsOptionalFeature -Online | Where-Object -FilterScript {($_.State -eq "Disabled" -or $_.State -eq "DisablePending") -and ($_.FeatureName -in $WindowsFeatures)}
+				if ($OptionalFeatures.Count -gt 0)
+				{
+					$OptionalFeatures | ForEach-Object -Process {
+						Add-FeatureControl -Feature $_.FeatureName
+					}
+
+					$Button.Content = $Localization.Enable
+				}
+				else
+				{
+					Write-Verbose -Message $Localization.NoData -Verbose
+					$Form.Close()
+				}
+				$OFS = " "
+			})
+
+			# Button Click Event
+			$Button.Add_Click({EnableButton})
+			#endregion Events Handlers
+		}
+		"Disable"
+		{
+			#region Events Handlers
+			$OptionalFeatures = New-Object -TypeName System.Collections.ArrayList($null)
+			# Window Loaded Event
+			$Window.Add_Loaded({
+				$OFS = "|"
+				$OptionalFeatures = Get-WindowsOptionalFeature -Online | Where-Object -FilterScript {($_.State -eq "Enabled" -or $_.State -eq "EnablePending") -and ($_.FeatureName -in $WindowsFeatures)}
+				if ($OptionalFeatures.Count -gt 0)
+				{
+					$OptionalFeatures | ForEach-Object -Process {
+						Add-FeatureControl -Feature $_.FeatureName
+					}
+
+					$Button.Content = $Localization.Disable
+				}
+				else
+				{
+					Write-Verbose -Message $Localization.NoData -Verbose
+					$Form.Close()
+				}
+				$OFS = " "
+			})
+
+			# Button Click Event
+			$Button.Add_Click({DisableButton})
+			#endregion Events Handlers
 		}
 	}
+
+	Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
+
+	$Window.Title = $Localization.WindowsFeaturesWindowTitle
+	$Form.ShowDialog() | Out-Null
 }
 
-# Disable the following Feature On Demand v2 (FODv2) capabilities
-# Отключить следующие компоненты "Функции по требованию" (FODv2)
-function DisableWindowsCapabilities
+<#
+	.SYNOPSIS
+	Disable/enable Features On Demand v2 (FODv2) capabilities
+	Отключить/включить компоненты "Функции по требованию" (FODv2)
+
+	.PARAMETER Disable
+	Disable Features On Demand v2 (FODv2) capabilities
+	Отключить компоненты "Функции по требованию" (FODv2)
+
+	.PARAMETER Enable
+	Enable Features On Demand v2 (FODv2) capabilities
+	Включить компоненты "Функции по требованию" (FODv2)
+
+	.EXAMPLE
+	WindowsCapabilities -Disable
+
+	.EXAMPLE
+	WindowsCapabilities -Enable
+
+	.NOTES
+	A pop-up dialog box enables the user to select features to remove
+	Current user only
+
+	Используется всплывающее диалоговое окно, позволяющее пользователю отметить компоненты на удаление
+	Только для текущего пользователя
+#>
+function WindowsCapabilities
 {
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable
+	)
+
 	Add-Type -AssemblyName PresentationCore, PresentationFramework
 
 	#region Variables
-	# Initialize an array list to store the FODv2 items to remove
-	# Создать массив имен дополнительных компонентов для удаления
+	# Initialize an array list to store the FODv2 items to disable
+	# Создать массив имен дополнительных компонентов для отключения
 	$Capabilities = New-Object -TypeName System.Collections.ArrayList($null)
 
-	# The following FODv2 items will have their checkboxes checked, recommending the user to remove them
-	# Следующие дополнительные компоненты будут иметь чекбоксы отмеченными. Рекомендуются к удалению
+	# The following FODv2 items will have their checkboxes checked
+	# Следующие дополнительные компоненты будут иметь чекбоксы отмеченными
 	$CheckedCapabilities = @(
 		# Steps Recorder
 		# Средство записи действий
@@ -4015,16 +4505,9 @@ function DisableWindowsCapabilities
 		# Факсы и сканирование Windows
 		"Print.Fax.Scan*"
 	)
-	# If device is not a laptop disable "Hello.Face*" too
-	# Если устройство не является ноутбуком, отключить также и "Hello.Face"
-	if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2)
-	{
-		# Windows Hello Face
-		$CheckedCapabilities += "Hello.Face*"
-	}
 
-	# The following FODv2 items will be shown, but their checkboxes would be clear
-	# Следующие дополнительные компоненты будут видны, но их чекбоксы не будут отмечены
+	# The following FODv2 items will be excluded from the display
+	# Следующие дополнительные компоненты будут исключены из отображения
 	$ExcludedCapabilities = @(
 		# The DirectX Database to configure and optimize apps when multiple Graphics Adapters are present
 		# База данных DirectX для настройки и оптимизации приложений при наличии нескольких графических адаптеров
@@ -4135,11 +4618,21 @@ function DisableWindowsCapabilities
 		}
 	}
 
-	function DeleteButton
+	function DisableButton
 	{
 		[void]$Window.Close()
 		$OFS = "|"
 		Get-WindowsCapability -Online | Where-Object -FilterScript {$_.Name -cmatch $Capabilities} | Remove-WindowsCapability -Online
+		$OFS = " "
+	}
+
+	function EnableButton
+	{
+		Write-Verbose -Message $Localization.Patient -Verbose
+
+		[void]$Window.Close()
+		$OFS = "|"
+		Get-WindowsCapability -Online | Where-Object -FilterScript {$_.Name -cmatch $Capabilities} | Add-WindowsCapability -Online
 		$OFS = " "
 	}
 
@@ -4171,44 +4664,91 @@ function DisableWindowsCapabilities
 
 		$CheckBox.IsChecked = $false
 
+		# If capability checked, add to the array list to remove
+		# Если компонент выделен, то добавить в массив для удаления
 		if ($CheckedCapabilities | Where-Object -FilterScript {$Capability -like $_})
 		{
 			$CheckBox.IsChecked = $true
-			# If capability checked, add to the array list to remove
-			# Если пакет выделен, то добавить в массив для удаления
 			[void]$Capabilities.Add($Capability)
 		}
 	}
 	#endregion Functions
 
-	#region Events Handlers
-	# Window Loaded Event
-	$Window.Add_Loaded({
-		$OFS = "|"
-		(Get-WindowsCapability -Online | Where-Object -FilterScript {($_.State -eq "Installed") -and ($_.Name -cnotmatch $ExcludedCapabilities)}).Name | ForEach-Object -Process {
-			Add-CapabilityControl -Capability $_
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Enable"
+		{
+			#region Events Handlers
+			$OptionalCapabilities = New-Object -TypeName System.Collections.ArrayList($null)
+			# Window Loaded Event
+			$Window.Add_Loaded({
+				$OFS = "|"
+				$OptionalCapabilities = Get-WindowsCapability -Online | Where-Object -FilterScript {($_.State -eq "NotPresent") -and ($_.Name -cmatch $CheckedCapabilities) -and ($_.Name -cnotmatch $ExcludedCapabilities)}
+				if ($OptionalCapabilities.Count -gt 0)
+				{
+					$OptionalCapabilities | ForEach-Object -Process {
+						Add-CapabilityControl -Capability $_.Name
+					}
+
+						$Button.Content = $Localization.Enable
+				}
+				else
+				{
+					Write-Verbose -Message $Localization.NoData -Verbose
+					$Form.Close()
+				}
+				$OFS = " "
+			})
+
+			# Button Click Event
+			$Button.Add_Click({EnableButton})
+			#endregion Events Handlers
 		}
-		$OFS = " "
+		"Disable"
+		{
+			#region Events Handlers
+			$OptionalCapabilities = New-Object -TypeName System.Collections.ArrayList($null)
+			# Window Loaded Event
+			$Window.Add_Loaded({
+				$OFS = "|"
+				$OptionalCapabilities = Get-WindowsCapability -Online | Where-Object -FilterScript {($_.State -eq "Installed") -and ($_.Name -cmatch $CheckedCapabilities) -and ($_.Name -cnotmatch $ExcludedCapabilities)}
+				if ($OptionalCapabilities.Count -gt 0)
+				{
+					$OptionalCapabilities | ForEach-Object -Process {
+						Add-CapabilityControl -Capability $_.Name
+					}
 
-		$Window.Title = $Localization.FODWindowTitle
-		$Button.Content = $Localization.FODWindowButton
-	})
+					$Button.Content = $Localization.Disable
+				}
+				else
+				{
+					Write-Verbose -Message $Localization.NoData -Verbose
+					$Form.Close()
+				}
+				$OFS = " "
+			})
 
-	# Button Click Event
-	$Button.Add_Click({DeleteButton})
-	#endregion Events Handlers
-
-	if (Get-WindowsCapability -Online | Where-Object -FilterScript {($_.State -eq "Installed") -and ($_.Name -cnotmatch ($ExcludedCapabilities -join "|"))})
-	{
-		Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
-		# Display the dialog box
-		# Отобразить диалоговое окно
-		$Form.ShowDialog() | Out-Null
+			# Button Click Event
+			$Button.Add_Click({DisableButton})
+			#endregion Events Handlers
+		}
 	}
-	else
+
+	try
 	{
-		Write-Verbose -Message $Localization.NoData -Verbose
+		(Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription
 	}
+	catch [System.Net.WebException]
+	{
+		Write-Warning -Message $Localization.NoInternetConnection
+		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+		return
+	}
+
+	Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
+
+	$Window.Title = $Localization.FODWindowTitle
+	$Form.ShowDialog() | Out-Null
 }
 
 <#
@@ -4371,7 +4911,7 @@ function BackgroundUWPApps
 
 <#
 	.SYNOPSIS
-	Set the power management scheme on "High performance" (if device is a desktop)/"Balanced" 
+	Set the power management scheme on "High performance" (if device is a desktop)/"Balanced"
 	Установить схему управления питанием на "Высокая производительность" (если устройство является стационарным ПК)/"Сбалансированная"
 
 	.PARAMETER High
@@ -4603,15 +5143,22 @@ function SetInputMethod
 	Change the location of the user folders to any disks root of your choice using the interactive menu
 	Изменить расположение пользовательских папок в корень любого диска на выбор с помощью интерактивного меню
 
+	.PARAMETER Custom
+	Select a folder for the location of the user folders manually using a folder browser dialog
+	Выбрать папку для расположения пользовательских папок вручную, используя диалог "Обзор папок"
+
 	.PARAMETER Default
 	Change the location of the user folders to the default values
 	Изменить расположение пользовательских папок на значения по умолчанию
 
 	.EXAMPLE
-	ChangeUserShellFolderLocation -Root
+	SetUserShellFolderLocation -Root
 
 	.EXAMPLE
-	ChangeUserShellFolderLocation -Default
+	SetUserShellFolderLocation -Custom
+
+	.EXAMPLE
+	SetUserShellFolderLocation -Default
 
 	.NOTES
 	User files or folders won't me moved to a new location
@@ -4620,7 +5167,7 @@ function SetInputMethod
 	Пользовательские файлы и папки не будут перемещены в новое расположение
 	Только для текущего пользователя
 #>
-function ChangeUserShellFolderLocation
+function SetUserShellFolderLocation
 {
 
 	param
@@ -4631,6 +5178,13 @@ function ChangeUserShellFolderLocation
 		)]
 		[switch]
 		$Root,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Custom"
+		)]
+		[switch]
+		$Custom,
 
 		[Parameter(
 			Mandatory = $true,
@@ -4789,8 +5343,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 		{
 			if ((Get-ChildItem -Path $UserShellFolderRegValue | Measure-Object).Count -ne 0)
 			{
-				$Message = Invoke-Command -ScriptBlock ([ScriptBlock]::Create($Localization.UserShellFolderNotEmpty))
-				Write-Error -Message $Message -ErrorAction SilentlyContinue
+				Write-Error -Message ($Localization.UserShellFolderNotEmpty -f $UserShellFolderRegValue) -ErrorAction SilentlyContinue
 			}
 
 			# Creating a new folder if there is no one
@@ -4825,6 +5378,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 		ShowMenu -Menu $ListOfItems -Default $DefaultChoice
 
 		.NOTES
+		Не работает в PowerShell ISE
 		Doesn't work in PowerShell ISE
 	#>
 	function ShowMenu
@@ -4899,7 +5453,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 		{
 			# Store all drives letters to use them within ShowMenu function
 			# Сохранить все буквы диска, чтобы использовать их в функции ShowMenu
-			Write-Verbose $Localization.RetrievingDrivesList -Verbose
+			Write-Verbose -Message $Localization.RetrievingDrivesList -Verbose
 			$DriveLetters = @((Get-Disk | Where-Object -FilterScript {$_.BusType -ne "USB"} | Get-Partition | Get-Volume | Where-Object -FilterScript {$null -ne $_.DriveLetter}).DriveLetter | Sort-Object)
 
 			# If the number of disks is more than one, set the second drive in the list as default drive
@@ -4916,12 +5470,12 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			# Desktop
 			# Рабочий стол
 			Write-Verbose -Message $Localization.DesktopDriveSelect -Verbose
-			Write-Warning -Message $Localization.DesktopFilesWontBeMoved
+			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
-			$Message = $Localization.DesktopFolderRequest
-			$Change = $Localization.DesktopFolderChange
-			$Skip = $Localization.DesktopFolderSkip
+			$Message = $Localization.DesktopRequest
+			$Change = $Localization.Change
+			$Skip = $Localization.Skip
 			$Options = "&$Change", "&$Skip"
 			$DefaultChoice = 1
 			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
@@ -4935,19 +5489,19 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.DesktopSkipped -Verbose
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
 			# Documents
 			# Документы
 			Write-Verbose -Message $Localization.DocumentsDriveSelect -Verbose
-			Write-Warning -Message $Localization.DocumentsFilesWontBeMoved
+			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
-			$Message = $Localization.DocumentsFolderRequest
-			$Change = $Localization.DocumentsFolderChange
-			$Skip = $Localization.DocumentsFolderSkip
+			$Message = $Localization.DocumentsRequest
+			$Change = $Localization.Change
+			$Skip = $Localization.Skip
 			$Options = "&$Change", "&$Skip"
 			$DefaultChoice = 1
 			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
@@ -4961,19 +5515,19 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.DocumentsSkipped -Verbose
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
 			# Downloads
 			# Загрузки
 			Write-Verbose -Message $Localization.DownloadsDriveSelect -Verbose
-			Write-Warning -Message $Localization.DownloadsFilesWontBeMoved
+			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
-			$Message = $Localization.DownloadsFolderRequest
-			$Change = $Localization.DownloadsFolderChange
-			$Skip = $Localization.DownloadsFolderSkip
+			$Message = $Localization.DownloadsRequest
+			$Change = $Localization.Change
+			$Skip = $Localization.Skip
 			$Options = "&$Change", "&$Skip"
 			$DefaultChoice = 1
 			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
@@ -4987,19 +5541,19 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.DownloadsSkipped -Verbose
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
 			# Music
 			# Музыка
 			Write-Verbose -Message $Localization.MusicDriveSelect -Verbose
-			Write-Warning -Message $Localization.MusicFilesWontBeMoved
+			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
-			$Message = $Localization.MusicFolderRequest
-			$Change = $Localization.MusicFolderChange
-			$Skip = $Localization.MusicFolderSkip
+			$Message = $Localization.MusicRequest
+			$Change = $Localization.Change
+			$Skip = $Localization.Skip
 			$Options = "&$Change", "&$Skip"
 			$DefaultChoice = 1
 			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
@@ -5013,19 +5567,19 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.MusicSkipped -Verbose
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
 			# Pictures
 			# Изображения
 			Write-Verbose -Message $Localization.PicturesDriveSelect -Verbose
-			Write-Warning -Message $Localization.PicturesFilesWontBeMoved
+			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
-			$Message = $Localization.PicturesFolderRequest
-			$Change = $Localization.PicturesFolderChange
-			$Skip = $Localization.PicturesFolderSkip
+			$Message = $Localization.PicturesRequest
+			$Change = $Localization.Change
+			$Skip = $Localization.Skip
 			$Options = "&$Change", "&$Skip"
 			$DefaultChoice = 1
 			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
@@ -5039,19 +5593,19 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.PicturesSkipped -Verbose
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
 			# Videos
 			# Видео
 			Write-Verbose -Message $Localization.VideosDriveSelect -Verbose
-			Write-Warning -Message $Localization.VideosFilesWontBeMoved
+			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
-			$Message = $Localization.VideosFolderRequest
-			$Change = $Localization.VideosFolderChange
-			$Skip = $Localization.VideosFolderSkip
+			$Message = $Localization.VideosRequest
+			$Change = $Localization.Change
+			$Skip = $Localization.Skip
 			$Options = "&$Change", "&$Skip"
 			$DefaultChoice = 1
 			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
@@ -5065,7 +5619,237 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.VideosSkipped -Verbose
+					Write-Verbose -Message $Localization.Skipped -Verbose
+				}
+			}
+		}
+		"Custom"
+		{
+			# Desktop
+			# Рабочий стол
+			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			$Title = ""
+			$Message = $Localization.DesktopFolderSelect
+			$Select = $Localization.Select
+			$Skip = $Localization.Skip
+			$Options = "&$Select", "&$Skip"
+			$DefaultChoice = 1
+			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+
+			switch ($Result)
+			{
+				"0"
+				{
+					Add-Type -AssemblyName System.Windows.Forms
+					$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
+					$FolderBrowserDialog.Description = $Localization.FolderSelect
+					$FolderBrowserDialog.RootFolder = "MyComputer"
+
+					# Focus on open file dialog
+					# Перевести фокус на диалог открытия файла
+					$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+					$FolderBrowserDialog.ShowDialog($Focus)
+
+					if ($FolderBrowserDialog.SelectedPath)
+					{
+						UserShellFolder -UserFolder Desktop -FolderPath $FolderBrowserDialog.SelectedPath -RemoveDesktopINI
+						Write-Verbose -Message ($Localization.NewUserFolderLocation -f $FolderBrowserDialog.SelectedPath) -Verbose
+					}
+				}
+				"1"
+				{
+					Write-Verbose -Message $Localization.Skipped -Verbose
+				}
+			}
+
+			# Documents
+			# Документы
+			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			$Title = ""
+			$Message = $Localization.DocumentsFolderSelect
+			$Select = $Localization.Select
+			$Skip = $Localization.Skip
+			$Options = "&$Select", "&$Skip"
+			$DefaultChoice = 1
+			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+
+			switch ($Result)
+			{
+				"0"
+				{
+					Add-Type -AssemblyName System.Windows.Forms
+					$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
+					$FolderBrowserDialog.Description = $Localization.FolderSelect
+					$FolderBrowserDialog.RootFolder = "MyComputer"
+
+					# Focus on open file dialog
+					# Перевести фокус на диалог открытия файла
+					$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+					$FolderBrowserDialog.ShowDialog($Focus)
+
+					if ($FolderBrowserDialog.SelectedPath)
+					{
+						UserShellFolder -UserFolder Documents -FolderPath $FolderBrowserDialog.SelectedPath -RemoveDesktopINI
+						Write-Verbose -Message ($Localization.NewUserFolderLocation -f $FolderBrowserDialog.SelectedPath) -Verbose
+					}
+				}
+				"1"
+				{
+					Write-Verbose -Message $Localization.Skipped -Verbose
+				}
+			}
+
+			# Downloads
+			# Загрузки
+			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			$Title = ""
+			$Message = $Localization.DownloadsFolderSelect
+			$Select = $Localization.Select
+			$Skip = $Localization.Skip
+			$Options = "&$Select", "&$Skip"
+			$DefaultChoice = 1
+			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+
+			switch ($Result)
+			{
+				"0"
+				{
+					Add-Type -AssemblyName System.Windows.Forms
+					$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
+					$FolderBrowserDialog.Description = $Localization.FolderSelect
+					$FolderBrowserDialog.RootFolder = "MyComputer"
+
+					# Focus on open file dialog
+					# Перевести фокус на диалог открытия файла
+					$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+					$FolderBrowserDialog.ShowDialog($Focus)
+
+					if ($FolderBrowserDialog.SelectedPath)
+					{
+						UserShellFolder -UserFolder Downloads -FolderPath $FolderBrowserDialog.SelectedPath -RemoveDesktopINI
+						Write-Verbose -Message ($Localization.NewUserFolderLocation -f $FolderBrowserDialog.SelectedPath) -Verbose
+					}
+				}
+				"1"
+				{
+					Write-Verbose -Message $Localization.Skipped -Verbose
+				}
+			}
+
+			# Music
+			# Музыка
+			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			$Title = ""
+			$Message = $Localization.MusicFolderSelect
+			$Select = $Localization.Select
+			$Skip = $Localization.Skip
+			$Options = "&$Select", "&$Skip"
+			$DefaultChoice = 1
+			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+
+			switch ($Result)
+			{
+				"0"
+				{
+					Add-Type -AssemblyName System.Windows.Forms
+					$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
+					$FolderBrowserDialog.Description = $Localization.FolderSelect
+					$FolderBrowserDialog.RootFolder = "MyComputer"
+
+					# Focus on open file dialog
+					# Перевести фокус на диалог открытия файла
+					$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+					$FolderBrowserDialog.ShowDialog($Focus)
+
+					if ($FolderBrowserDialog.SelectedPath)
+					{
+						UserShellFolder -UserFolder Music -FolderPath $FolderBrowserDialog.SelectedPath -RemoveDesktopINI
+						Write-Verbose -Message ($Localization.NewUserFolderLocation -f $FolderBrowserDialog.SelectedPath) -Verbose
+					}
+				}
+				"1"
+				{
+					Write-Verbose -Message $Localization.Skipped -Verbose
+				}
+			}
+
+			# Pictures
+			# Изображения
+			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			$Title = ""
+			$Message = $Localization.PicturesFolderSelect
+			$Select = $Localization.Select
+			$Skip = $Localization.Skip
+			$Options = "&$Select", "&$Skip"
+			$DefaultChoice = 1
+			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+
+			switch ($Result)
+			{
+				"0"
+				{
+					Add-Type -AssemblyName System.Windows.Forms
+					$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
+					$FolderBrowserDialog.Description = $Localization.FolderSelect
+					$FolderBrowserDialog.RootFolder = "MyComputer"
+
+					# Focus on open file dialog
+					# Перевести фокус на диалог открытия файла
+					$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+					$FolderBrowserDialog.ShowDialog($Focus)
+
+					if ($FolderBrowserDialog.SelectedPath)
+					{
+						UserShellFolder -UserFolder Pictures -FolderPath $FolderBrowserDialog.SelectedPath -RemoveDesktopINI
+						Write-Verbose -Message ($Localization.NewUserFolderLocation -f $FolderBrowserDialog.SelectedPath) -Verbose
+					}
+				}
+				"1"
+				{
+					Write-Verbose -Message $Localization.Skipped -Verbose
+				}
+			}
+
+			# Videos
+			# Видео
+			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			$Title = ""
+			$Message = $Localization.VideosFolderSelect
+			$Select = $Localization.Select
+			$Skip = $Localization.Skip
+			$Options = "&$Select", "&$Skip"
+			$DefaultChoice = 1
+			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+
+			switch ($Result)
+			{
+				"0"
+				{
+					Add-Type -AssemblyName System.Windows.Forms
+					$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
+					$FolderBrowserDialog.Description = $Localization.FolderSelect
+					$FolderBrowserDialog.RootFolder = "MyComputer"
+
+					# Focus on open file dialog
+					# Перевести фокус на диалог открытия файла
+					$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+					$FolderBrowserDialog.ShowDialog($Focus)
+
+					if ($FolderBrowserDialog.SelectedPath)
+					{
+						UserShellFolder -UserFolder Videos -FolderPath $FolderBrowserDialog.SelectedPath -RemoveDesktopINI
+						Write-Verbose -Message ($Localization.NewUserFolderLocation -f $FolderBrowserDialog.SelectedPath) -Verbose
+					}
+				}
+				"1"
+				{
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 		}
@@ -5073,12 +5857,12 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 		{
 			# Desktop
 			# Рабочий стол
-			Write-Warning -Message $Localization.DesktopFilesWontBeMoved
+			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
 			$Message = $Localization.DesktopDefaultFolder
-			$Change = $Localization.DesktopFolderChange
-			$Skip = $Localization.DesktopFolderSkip
+			$Change = $Localization.Change
+			$Skip = $Localization.Skip
 			$Options = "&$Change", "&$Skip"
 			$DefaultChoice = 1
 			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
@@ -5091,18 +5875,18 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.DesktopSkipped -Verbose
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
 			# Documents
 			# Документы
-			Write-Warning -Message $Localization.DocumentsFilesWontBeMoved
+			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
 			$Message = $Localization.DocumentsDefaultFolder
-			$Change = $Localization.DocumentsFolderChange
-			$Skip = $Localization.DocumentsFolderSkip
+			$Change = $Localization.Change
+			$Skip = $Localization.Skip
 			$Options = "&$Change", "&$Skip"
 			$DefaultChoice = 1
 			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
@@ -5115,18 +5899,18 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.DocumentsSkipped -Verbose
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
 			# Downloads
 			# Загрузки
-			Write-Warning -Message $Localization.DownloadsFilesWontBeMoved
+			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
 			$Message = $Localization.DownloadsDefaultFolder
-			$Change = $Localization.DownloadsFolderChange
-			$Skip = $Localization.DownloadsFolderSkip
+			$Change = $Localization.Change
+			$Skip = $Localization.Skip
 			$Options = "&$Change", "&$Skip"
 			$DefaultChoice = 1
 			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
@@ -5139,18 +5923,18 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.DownloadsSkipped -Verbose
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
 			# Music
 			# Музыка
-			Write-Warning -Message $Localization.MusicFilesWontBeMoved
+			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
 			$Message = $Localization.MusicDefaultFolder
-			$Change = $Localization.MusicFolderChange
-			$Skip = $Localization.MusicFolderSkip
+			$Change = $Localization.Change
+			$Skip = $Localization.Skip
 			$Options = "&$Change", "&$Skip"
 			$DefaultChoice = 1
 			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
@@ -5163,18 +5947,18 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.MusicSkipped -Verbose
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
 			# Pictures
 			# Изображения
-			Write-Warning -Message $Localization.PicturesFilesWontBeMoved
+			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
 			$Message = $Localization.PicturesDefaultFolder
-			$Change = $Localization.PicturesFolderChange
-			$Skip = $Localization.PicturesFolderSkip
+			$Change = $Localization.Change
+			$Skip = $Localization.Skip
 			$Options = "&$Change", "&$Skip"
 			$DefaultChoice = 1
 			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
@@ -5187,18 +5971,18 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.PicturesSkipped -Verbose
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
 			# Videos
 			# Видео
-			Write-Warning -Message $Localization.VideosFilesWontBeMoved
+			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
 			$Message = $Localization.VideosDefaultFolder
-			$Change = $Localization.VideosFolderChange
-			$Skip = $Localization.VideosFolderSkip
+			$Change = $Localization.Change
+			$Skip = $Localization.Skip
 			$Options = "&$Change", "&$Skip"
 			$DefaultChoice = 1
 			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
@@ -5211,7 +5995,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.VideosSkipped -Verbose
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 		}
@@ -5978,7 +6762,7 @@ function DeviceRestartAfterUpdate
 	Install/uninstall the Windows Subsystem for Linux (WSL)
 	Установить/удалить подсистему Windows для Linux (WSL)
 
-	https://github.com/farag2/Windows-10-Setup-Script/issues/43
+	https://github.com/farag2/Windows-10-Sophia-Script/issues/43
 	https://github.com/microsoft/WSL/issues/5437
 
 	.PARAMETER Enable
@@ -6029,6 +6813,8 @@ function WSL
 		"Enable"
 		{
 			Enable-WindowsOptionalFeature -Online -FeatureName $WSLFeatures -NoRestart
+
+			Write-Warning -Message $Localization.RestartWarning
 		}
 		"Disable"
 		{
@@ -6041,15 +6827,24 @@ function WSL
 }
 
 <#
-	Download and install the Linux kernel update package
-	Set WSL 2 as the default version when installing a new Linux distribution
-	Run the function only after WSL installed and PC restart
+	.SYNOPSIS
+	Download, install the Linux kernel update package and set WSL 2 as the default version when installing a new Linux distribution
+	Скачать, установить пакет обновления ядра Linux и установить WSL 2 как версию по умолчанию при установке нового дистрибутива Linux
 
-	Скачать и установить пакет обновления ядра Linux
-	Установить WSL 2 как версию по умолчанию при установке нового дистрибутива Linux
+	.PARAMETER Enable
+	Enable restarting this device as soon as possible when a restart is required to install an update
+	Включить перезапуск этого устройства как можно быстрее, если для установки обновления требуется перезагрузка
+
+	.PARAMETER Disable
+	Disable restarting this device as soon as possible when a restart is required to install an update
+	Выключить перезапуск этого устройства как можно быстрее, если для установки обновления требуется перезагрузка
+
+	.NOTES
+	Run the function only after WSL installed and PC restart
 	Выполните функцию только после установки WSL и перезагрузки ПК
 
 	https://github.com/microsoft/WSL/issues/5437
+	https://github.com/farag2/Windows-10-Sophia-Script/issues/43
 #>
 function EnableWSL2
 {
@@ -6059,7 +6854,7 @@ function EnableWSL2
 		{
 			if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
 			{
-				Write-Verbose $Localization.WSLUpdateDownloading -Verbose
+				Write-Verbose -Message $Localization.WSLUpdateDownloading -Verbose
 
 				[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 				$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
@@ -6070,20 +6865,24 @@ function EnableWSL2
 				}
 				Invoke-WebRequest @Parameters
 
-				Write-Verbose $Localization.WSLUpdateInstalling -Verbose
+				Write-Verbose -Message $Localization.WSLUpdateInstalling -Verbose
 				Start-Process -FilePath "$DownloadsFolder\wsl_update_x64.msi" -ArgumentList "/passive" -Wait
+
 				Remove-Item -Path "$DownloadsFolder\wsl_update_x64.msi" -Force
+
+				Write-Warning -Message $Localization.RestartWarning
 			}
 		}
 		catch [System.Net.WebException]
 		{
 			Write-Warning -Message $Localization.NoInternetConnection
+			Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 		}
 	}
 
 	<#
 		Set WSL 2 as the default architecture when installing a new Linux distribution
-		To receive kernel updates, enable the Windows Update setting: 'Receive updates for other Microsoft products when you update Windows'
+		To receive kernel updates, enable the Windows Update setting: "Receive updates for other Microsoft products when you update Windows"
 
 		Установить WSL 2 как архитектуру по умолчанию при установке нового дистрибутива Linux
 		Чтобы получать обновления ядра, включите параметр Центра обновления Windows: "Получение обновлений для других продуктов Майкрософт при обновлении Windows"
@@ -6117,7 +6916,7 @@ function EnableWSL2
 	WSLSwap -Disable
 
 	.NOTES
-	https://github.com/farag2/Windows-10-Setup-Script/issues/43
+	https://github.com/farag2/Windows-10-Sophia-Script/issues/43
 	https://github.com/microsoft/WSL/issues/5437
 #>
 function WSLSwap
@@ -6138,6 +6937,16 @@ function WSLSwap
 		[switch]
 		$Disable
 	)
+
+			$WSLFeatures = @(
+				# Windows Subsystem for Linux
+				# Подсистема Windows для Linux
+				"Microsoft-Windows-Subsystem-Linux",
+
+				# Virtual Machine Platform
+				# Поддержка платформы для виртуальных машин
+				"VirtualMachinePlatform"
+			)
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
@@ -6425,7 +7234,7 @@ function syspin
 
 				[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 				$Parameters = @{
-					Uri = "https://github.com/farag2/Windows-10-Setup-Script/raw/master/Start%20menu%20pinning/syspin.exe"
+					Uri = "https://github.com/farag2/Windows-10-Sophia-Script/raw/master/Start%20menu%20pinning/syspin.exe"
 					OutFile = "$PSScriptRoot\syspin.exe"
 					Verbose = [switch]::Present
 				}
@@ -6437,6 +7246,7 @@ function syspin
 		catch [System.Net.WebException]
 		{
 			Write-Warning -Message $Localization.NoInternetConnection
+			Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 		}
 	}
 }
@@ -6449,8 +7259,8 @@ function PinControlPanel
 	{
 		$Items = (New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
 		$ControlPanelLocalizedName = ($Items | Where-Object -FilterScript {$_.Path -eq "Microsoft.Windows.ControlPanel"}).Name
-		$Message = Invoke-Command -ScriptBlock ([ScriptBlock]::Create($Localization.ControlPanelPinning))
-		Write-Verbose -Message $Message -Verbose
+
+		Write-Verbose -Message ($Localization.ShortcutPinning -f $ControlPanelLocalizedName) -Verbose
 
 		# Check whether the Control Panel shortcut was ever pinned
 		# Проверка: закреплялся ли когда-нибудь ярлык панели управления
@@ -6467,7 +7277,7 @@ function PinControlPanel
 			# Глагол "Закрепить на начальном экране" недоступен для control.exe, поэтому необходимо создать ярлык
 			$Shell = New-Object -ComObject Wscript.Shell
 			$Shortcut = $Shell.CreateShortcut("$env:SystemRoot\System32\$ControlPanelLocalizedName.lnk")
-			$Shortcut.TargetPath = "$env:SystemRoot\System32\control.exe"
+			$Shortcut.TargetPath = "control"
 			$Shortcut.Save()
 
 			$Arguments = @"
@@ -6490,8 +7300,7 @@ function PinDevicesPrinters
 	if ($Global:syspin -eq $true)
 	{
 		$DevicesAndPrintersLocalizedName = (Get-ControlPanelItem -CanonicalName "Microsoft.DevicesAndPrinters").Name
-		$Message = Invoke-Command -ScriptBlock ([ScriptBlock]::Create($Localization.DevicesPrintersPinning))
-		Write-Verbose -Message $Message -Verbose
+		Write-Verbose -Message ($Localization.ShortcutPinning -f $DevicesAndPrintersLocalizedName) -Verbose
 
 		$Shell = New-Object -ComObject Wscript.Shell
 		$Shortcut = $Shell.CreateShortcut("$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesAndPrintersLocalizedName.lnk")
@@ -6516,7 +7325,35 @@ function PinCommandPrompt
 {
 	if ($Global:syspin -eq $true)
 	{
-		Write-Verbose -Message $Localization.CMDPinning -Verbose
+		$Signature = @{
+			Namespace = "WinAPI"
+			Name = "GetStr"
+			Language = "CSharp"
+			MemberDefinition = @"
+// https://github.com/Disassembler0/Win10-Initial-Setup-Script/issues/8#issue-227159084
+[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+public static extern IntPtr GetModuleHandle(string lpModuleName);
+[DllImport("user32.dll", CharSet = CharSet.Auto)]
+internal static extern int LoadString(IntPtr hInstance, uint uID, StringBuilder lpBuffer, int nBufferMax);
+public static string GetString(uint strId)
+{
+	IntPtr intPtr = GetModuleHandle("shell32.dll");
+	StringBuilder sb = new StringBuilder(255);
+	LoadString(intPtr, strId, sb, sb.Capacity);
+	return sb.ToString();
+}
+"@
+		}
+		if (-not ("WinAPI.GetStr" -as [type]))
+		{
+			Add-Type @Signature -Using System.Text
+		}
+
+		# Extract the "Command Prompt" string from shell32.dll
+		# Извлечь строку Командная строка" из shell32.dll
+		$CommandPrompt = [WinAPI.GetStr]::GetString(22022)
+		Write-Verbose -Message ($Localization.ShortcutPinning -f $CommandPrompt) -Verbose
+
 		$Arguments = @"
 	"$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" "51201"
 "@
@@ -6531,13 +7368,17 @@ function PinCommandPrompt
 
 #region UWP apps
 <#
+	.SYNOPSIS
 	Uninstall UWP apps using the pop-up dialog box that enables the user to select packages to remove
 	App packages will not be installed for new users if the "Uninstall for All Users" box is checked
-	Add UWP apps packages names to the $UncheckedAppXPackages array list by retrieving their packages names using the following command:
-		(Get-AppxPackage -PackageTypeFilter Bundle -AllUsers).Name
 
 	Удалить UWP-приложения, используя всплывающее диалоговое окно, позволяющее пользователю отметить пакеты на удаление
 	Приложения не будут установлены для новых пользователе, если отмечено "Удалять для всех пользователей"
+
+	.NOTES
+	Add UWP apps packages names to the $UncheckedAppXPackages array list by retrieving their packages names using the following command:
+		(Get-AppxPackage -PackageTypeFilter Bundle -AllUsers).Name
+
 	Добавьте имена пакетов UWP-приложений в массив $UncheckedAppXPackages, получив названия их пакетов с помощью команды:
 		(Get-AppxPackage -PackageTypeFilter Bundle -AllUsers).Name
 #>
@@ -6612,8 +7453,8 @@ function UninstallUWPApps
 		"RealtekSemiconductorCorp.RealtekAudioControl"
 	)
 
-	# UWP apps that won't be shown in the form
-	# UWP-приложения, которые не будут выводиться в форме
+	# The following UWP apps will be excluded from the display
+	# Следующие UWP-приложения будут исключены из отображения
 	$ExcludedAppxPackages = @(
 		# Microsoft Desktop App Installer
 		"Microsoft.DesktopAppInstaller",
@@ -6723,7 +7564,7 @@ function UninstallUWPApps
 		}
 	}
 
-	function DeleteButton
+	function UninstallButton
 	{
 		[void]$Window.Close()
 		$OFS = "|"
@@ -6782,23 +7623,24 @@ function UninstallUWPApps
 	# Window Loaded Event
 	$Window.Add_Loaded({
 		$OFS = "|"
-		(Get-AppxPackage -PackageTypeFilter Bundle -AllUsers | Where-Object -FilterScript {$_.Name -cnotmatch $ExcludedAppxPackages}).Name | ForEach-Object -Process {
-			Add-AppxControl -AppxName $_
+		Get-AppxPackage -PackageTypeFilter Bundle -AllUsers | Where-Object -FilterScript {$_.Name -cnotmatch $ExcludedAppxPackages} | ForEach-Object -Process {
+			Add-AppxControl -AppxName $_.Name
 		}
 		$OFS = " "
-
-		$TextblockRemoveAll.Text = $Localization.UninstallUWPForAll
-		$Window.Title = $Localization.UninstallUWPTitle
-		$Button.Content = $Localization.UninstallUWPUninstallButton
 	})
 
 	# Button Click Event
-	$Button.Add_Click({DeleteButton})
+	$Button.Add_Click({UninstallButton})
 	#endregion Events Handlers
 
 	if (Get-AppxPackage -PackageTypeFilter Bundle -AllUsers | Where-Object -FilterScript {$_.Name -cnotmatch ($ExcludedAppxPackages -join "|")})
 	{
 		Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
+
+		$TextblockRemoveAll.Text = $Localization.UninstallUWPForAll
+		$Window.Title = $Localization.UninstallUWPTitle
+		$Button.Content = $Localization.Uninstall
+
 		# Display the dialog box
 		# Отобразить диалоговое окно
 		$Form.ShowDialog() | Out-Null
@@ -7025,8 +7867,8 @@ function SetAppGraphicsPerformance
 	{
 		$Title = $Localization.GraphicsPerformanceTitle
 		$Message = $Localization.GraphicsPerformanceRequest
-		$Add = $Localization.GraphicsPerformanceAdd
-		$Skip = $Localization.GraphicsPerformanceSkip
+		$Add = $Localization.Add
+		$Skip = $Localization.Skip
 		$Options = "&$Add", "&$Skip"
 		$DefaultChoice = 1
 
@@ -7039,13 +7881,15 @@ function SetAppGraphicsPerformance
 				{
 					Add-Type -AssemblyName System.Windows.Forms
 					$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
-					$OpenFileDialog.Filter = $Localization.GraphicsPerformanceFilter
+					$OpenFileDialog.Filter = $Localization.EXEFilesFilter
 					$OpenFileDialog.InitialDirectory = "${env:ProgramFiles(x86)}"
 					$OpenFileDialog.Multiselect = $false
+
 					# Focus on open file dialog
 					# Перевести фокус на диалог открытия файла
-					$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
-					$OpenFileDialog.ShowDialog($tmp)
+					$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+					$OpenFileDialog.ShowDialog($Focus)
+
 					if ($OpenFileDialog.FileName)
 					{
 						if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\DirectX\UserGpuPreferences))
@@ -7058,7 +7902,7 @@ function SetAppGraphicsPerformance
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.GraphicsPerformanceSkipped -Verbose
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 		}
@@ -7141,128 +7985,152 @@ function GPUScheduling
 
 #region Scheduled tasks
 <#
-	Create a task to clean up unused files and Windows updates in the Task Scheduler
+	.SYNOPSIS
+	Create/delete the "Windows Cleanup" task to clean up unused files and Windows updates in the Task Scheduler
+	Создать/удалить задачу "Windows Cleanup" в Планировщике задач по очистке неиспользуемых файлов и обновлений Windows
+
+	.PARAMETER Register
+	Create the "Windows Cleanup" task to clean up unused files and Windows updates in the Task Scheduler
+	Создать задачу "Windows Cleanup" в Планировщике задач по очистке неиспользуемых файлов и обновлений Windows
+
+	.PARAMETER Delete
+	Delete the "Windows Cleanup" task to clean up unused files and Windows updates from the Task Scheduler
+	Удалить задачу "Windows Cleanup" из Планировщика задач по очистке неиспользуемых файлов и обновлений Windows
+
+	.EXAMPLE
+	CleanUpTask -Register
+
+	.EXAMPLE
+	CleanUpTask -Delete
+
+	.NOTES
 	A minute before the task starts, a warning in the Windows action center will appear
 	The task runs every 90 days
 
-	Создать задачу в Планировщике задач по очистке неиспользуемых файлов и обновлений Windows
 	За минуту до выполнения задачи в Центре уведомлений Windows появится предупреждение
 	Задача выполняется каждые 90 дней
 #>
-function CreateCleanUpTask
+function CleanUpTask
 {
-	Get-ChildItem -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches | ForEach-Object -Process {
-		Remove-ItemProperty -Path $_.PsPath -Name StateFlags1337 -Force -ErrorAction Ignore
-	}
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Register"
+		)]
+		[switch]
+		$Register,
 
-	$VolumeCaches = @(
-		# Delivery Optimization Files
-		# Файлы оптимизации доставки
-		"Delivery Optimization Files",
-
-		# Device driver packages
-		# Пакеты драйверов устройств
-		"Device Driver Packages",
-
-		# Previous Windows Installation(s)
-		# Предыдущие установки Windows
-		"Previous Installations",
-
-		# Setup log files
-		# Файлы журнала установки
-		"Setup Log Files",
-
-		# Temporary Setup Files
-		# Временные файлы установки
-		"Temporary Setup Files",
-
-		# Microsoft Defender
-		"Windows Defender",
-
-		# Windows upgrade log files
-		# Файлы журнала обновления Windows
-		"Windows Upgrade Log Files"
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Delete"
+		)]
+		[switch]
+		$Delete
 	)
-	foreach ($VolumeCache in $VolumeCaches)
-	{
-		New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\$VolumeCache" -Name StateFlags1337 -PropertyType DWord -Value 2 -Force
-	}
 
-	$PS1Script = '
-$app = "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\cleanmgr.exe"
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Register"
+		{
+			Get-ChildItem -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches | ForEach-Object -Process {
+				Remove-ItemProperty -Path $_.PsPath -Name StateFlags1337 -Force -ErrorAction Ignore
+			}
+
+			$VolumeCaches = @(
+				# Delivery Optimization Files
+				# Файлы оптимизации доставки
+				"Delivery Optimization Files",
+
+				# Device driver packages
+				# Пакеты драйверов устройств
+				"Device Driver Packages",
+
+				# Previous Windows Installation(s)
+				# Предыдущие установки Windows
+				"Previous Installations",
+
+				# Setup log files
+				# Файлы журнала установки
+				"Setup Log Files",
+
+				# Temporary Setup Files
+				# Временные файлы установки
+				"Temporary Setup Files",
+
+				# Microsoft Defender
+				"Windows Defender",
+
+				# Windows upgrade log files
+				# Файлы журнала обновления Windows
+				"Windows Upgrade Log Files"
+			)
+			foreach ($VolumeCache in $VolumeCaches)
+			{
+				New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\$VolumeCache" -Name StateFlags1337 -PropertyType DWord -Value 2 -Force
+			}
+
+			$TaskScript = @"
+`$cleanmgr = """{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\cleanmgr.exe"""
 
 [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime]
-$Template = [Windows.UI.Notifications.ToastTemplateType]::ToastImageAndText01
-[xml]$ToastTemplate = ([Windows.UI.Notifications.ToastNotificationManager]::GetTemplateContent($Template).GetXml())
+`$Template = [Windows.UI.Notifications.ToastNotificationManager]::GetTemplateContent([Windows.UI.Notifications.ToastTemplateType]::ToastText01)
 
-[xml]$ToastTemplate = @"
-<toast launch="app-defined-string">
-	<visual>
-		<binding template="ToastGeneric">
-			<text>$($Localization.CleanUpTaskToast)</text>
-		</binding>
-	</visual>
-</toast>
-"@
+`$ToastXML = [xml]`$Template.GetXml()
+`$ToastXML.GetElementsByTagName("""text""").AppendChild(`$ToastXML.CreateTextNode("""$Localization.CleanUpTaskToast"""))
 
-$ToastXml = New-Object -TypeName Windows.Data.Xml.Dom.XmlDocument
-$ToastXml.LoadXml($ToastTemplate.OuterXml)
+`$XML = New-Object -TypeName Windows.Data.Xml.Dom.XmlDocument
+`$XML.LoadXml(`$ToastXML.OuterXml)
+[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier(`$cleanmgr).Show(`$XML)
 
-[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($app).Show($ToastXml)
+Get-Process -Name cleanmgr | Stop-Process -Force
 
 Start-Sleep -Seconds 60
 
-# Process startup info
-# Параметры запуска процесса
-$ProcessInfo = New-Object -TypeName System.Diagnostics.ProcessStartInfo
-$ProcessInfo.FileName = "$env:SystemRoot\system32\cleanmgr.exe"
-$ProcessInfo.Arguments = "/sagerun:1337"
-$ProcessInfo.UseShellExecute = $true
-$ProcessInfo.WindowStyle = [System.Diagnostics.ProcessWindowStyle]::Minimized
+`$ProcessInfo = New-Object -TypeName System.Diagnostics.ProcessStartInfo
+`$ProcessInfo.FileName = """$env:SystemRoot\system32\cleanmgr.exe"""
+`$ProcessInfo.Arguments = """/sagerun:1337"""
+`$ProcessInfo.UseShellExecute = `$true
+`$ProcessInfo.WindowStyle = [System.Diagnostics.ProcessWindowStyle]::Minimized
 
-# Process object using the startup info
-# Объект процесса, используя заданные параметры
-$Process = New-Object -TypeName System.Diagnostics.Process
-$Process.StartInfo = $ProcessInfo
-
-# Start the process
-# Запуск процесса
-$Process.Start() | Out-Null
+`$Process = New-Object -TypeName System.Diagnostics.Process
+`$Process.StartInfo = `$ProcessInfo
+`$Process.Start() | Out-Null
 
 Start-Sleep -Seconds 3
-$SourceMainWindowHandle = (Get-Process -Name cleanmgr).MainWindowHandle
+
+[int]`$SourceMainWindowHandle = (Get-Process -Name cleanmgr | Where-Object -FilterScript {`$_.PriorityClass -eq """BelowNormal"""}).MainWindowHandle
 
 function MinimizeWindow
 {
 	[CmdletBinding()]
 	param
 	(
-		[Parameter(Mandatory = $true)]
-		$Process
+		[Parameter(Mandatory = `$true)]
+		`$Process
 	)
 
-	$ShowWindowAsync = @{
-	Namespace = "WinAPI"
-	Name = "Win32ShowWindowAsync"
-	Language = "CSharp"
-	MemberDefinition = @"
-[DllImport("user32.dll")]
+	`$ShowWindowAsync = @{
+		Namespace = """WinAPI"""
+		Name = """Win32ShowWindowAsync"""
+		Language = """CSharp"""
+		MemberDefinition = @'
+[DllImport("""user32.dll""")]
 public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
-"@
+'@
 	}
-	if (-not ("WinAPI.Win32ShowWindowAsync" -as [type]))
+	if (-not ("""WinAPI.Win32ShowWindowAsync""" -as [type]))
 	{
 		Add-Type @ShowWindowAsync
 	}
-
-	$MainWindowHandle = (Get-Process -Name $Process).MainWindowHandle
-	[WinAPI.Win32ShowWindowAsync]::ShowWindowAsync($MainWindowHandle, 2)
+	`$MainWindowHandle = (Get-Process -Name `$Process | Where-Object -FilterScript {`$_.PriorityClass -eq """BelowNormal"""}).MainWindowHandle
+	[WinAPI.Win32ShowWindowAsync]::ShowWindowAsync(`$MainWindowHandle, 2)
 }
 
-while ($true)
+while (`$true)
 {
-	$CurrentMainWindowHandle = (Get-Process -Name cleanmgr).MainWindowHandle
-	if ([int]$SourceMainWindowHandle -ne [int]$CurrentMainWindowHandle)
+	[int]`$CurrentMainWindowHandle = (Get-Process -Name cleanmgr | Where-Object -FilterScript {`$_.PriorityClass -eq """BelowNormal"""}).MainWindowHandle
+	if (`$SourceMainWindowHandle -ne `$CurrentMainWindowHandle)
 	{
 		MinimizeWindow -Process cleanmgr
 		break
@@ -7270,120 +8138,181 @@ while ($true)
 	Start-Sleep -Milliseconds 5
 }
 
-$ProcessInfo = New-Object -TypeName System.Diagnostics.ProcessStartInfo
-# Cleaning up unused updates
-# Очистка неиспользованных обновлений
-$ProcessInfo.FileName = "$env:SystemRoot\system32\dism.exe"
-$ProcessInfo.Arguments = "/Online /English /Cleanup-Image /StartComponentCleanup /NoRestart"
-$ProcessInfo.UseShellExecute = $true
-$ProcessInfo.WindowStyle = [System.Diagnostics.ProcessWindowStyle]::Minimized
+`$ProcessInfo = New-Object -TypeName System.Diagnostics.ProcessStartInfo
+`$ProcessInfo.FileName = """`$env:SystemRoot\system32\dism.exe"""
+`$ProcessInfo.Arguments = """/Online /English /Cleanup-Image /StartComponentCleanup /NoRestart"""
+`$ProcessInfo.UseShellExecute = `$true
+`$ProcessInfo.WindowStyle = [System.Diagnostics.ProcessWindowStyle]::Minimized
 
-# Process object using the startup info
-# Объект процесса, используя заданные параметры
-$Process = New-Object -TypeName System.Diagnostics.Process
-$Process.StartInfo = $ProcessInfo
+`$Process = New-Object -TypeName System.Diagnostics.Process
+`$Process.StartInfo = `$ProcessInfo
+`$Process.Start() | Out-Null
+"@
 
-# Start the process
-# Запуск процесса
-$Process.Start() | Out-Null
-'
-	# Encode $PS1Script variable to be able to pipeline it as an argument
-	# Закодировать переменную $PS1Script, чтобы передать ее как аргумент
-	$EncodedScript = [Convert]::ToBase64String([System.Text.Encoding]::Unicode.GetBytes($PS1Script))
-
-	$Action = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -EncodedCommand $EncodedScript"
-	$Trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 90 -At 9am
-	$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-	$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
-	$Description = $Localization.CleanUpTaskDescription
-	$Parameters = @{
-		"TaskName"		= "Windows Cleanup"
-		"TaskPath"		= "Sophia Script"
-		"Principal"		= $Principal
-		"Action"		= $Action
-		"Description"	= $Description
-		"Settings"		= $Settings
-		"Trigger"		= $Trigger
+			$Action = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $TaskScript"
+			$Trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 90 -At 9am
+			$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
+			$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
+			$Description = $Localization.CleanUpTaskDescription
+			$Parameters = @{
+				"TaskName"		= "Windows Cleanup"
+				"TaskPath"		= "Sophia Script"
+				"Principal"		= $Principal
+				"Action"		= $Action
+				"Description"	= $Description
+				"Settings"		= $Settings
+				"Trigger"		= $Trigger
+			}
+			Register-ScheduledTask @Parameters -Force
+		}
+		"Delete"
+		{
+			Unregister-ScheduledTask -TaskName "Windows Cleanup" -Confirm:$false
+		}
 	}
-	Register-ScheduledTask @Parameters -Force
-}
-
-# Delete a task to clean up unused files and Windows updates in the Task Scheduler
-# Удалить задачу в Планировщике задач по очистке неиспользуемых файлов и обновлений Windows
-function DeleteCleanUpTask
-{
-	Unregister-ScheduledTask -TaskName "Windows Cleanup" -Confirm:$false
 }
 
 <#
-	Create a task to clear the %SystemRoot%\SoftwareDistribution\Download folder in the Task Scheduler
-	The task runs on Thursdays every 4 weeks
+	.SYNOPSIS
+	Create/delete the "SoftwareDistribution" task to clear the %SystemRoot%\SoftwareDistribution\Download folder in the Task Scheduler
+	Создать/удалить задачу "SoftwareDistribution" в Планировщике задач по очистке папки %SystemRoot%\SoftwareDistribution\Download
 
-	Создать задачу в Планировщике задач по очистке папки %SystemRoot%\SoftwareDistribution\Download
+	.PARAMETER Register
+	Create the "SoftwareDistribution" task to clear the %SystemRoot%\SoftwareDistribution\Download folder in the Task Scheduler
+	Создать задачу "SoftwareDistribution" в Планировщике задач по очистке папки %SystemRoot%\SoftwareDistribution\Download
+
+	.PARAMETER Delete
+	Delete the "SoftwareDistribution" task to clear the %SystemRoot%\SoftwareDistribution\Download folder from the Task Scheduler
+	Удалить задачу "SoftwareDistribution" из Планировщика задач по очистке папки %SystemRoot%\SoftwareDistribution\Download
+
+	.EXAMPLE
+	SoftwareDistributionTask -Register
+
+	.EXAMPLE
+	SoftwareDistributionTask -Delete
+
+	.NOTES
+	The task runs on Thursdays every 4 weeks
 	Задача выполняется по четвергам каждую 4 неделю
 #>
-function CreateSoftwareDistributionTask
+function SoftwareDistributionTask
 {
-	$Argument = "
-		(Get-Service -Name wuauserv).WaitForStatus('Stopped', '01:00:00')
-		Get-ChildItem -Path $env:SystemRoot\SoftwareDistribution\Download -Recurse -Force | Remove-Item -Recurse -Force
-	"
-	$Action = New-ScheduledTaskAction -Execute powershell.exe -Argument $Argument
-	$Trigger = New-JobTrigger -Weekly -WeeksInterval 4 -DaysOfWeek Thursday -At 9am
-	$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-	$Principal = New-ScheduledTaskPrincipal -UserId "NT AUTHORITY\SYSTEM" -RunLevel Highest
-	$Description = $Localization.SoftwareDistributionTaskDescription
-	$Parameters = @{
-		"TaskName"		= "SoftwareDistribution"
-		"TaskPath"		= "Sophia Script"
-		"Principal"		= $Principal
-		"Action"		= $Action
-		"Description"	= $Description
-		"Settings"		= $Settings
-		"Trigger"		= $Trigger
-	}
-	Register-ScheduledTask @Parameters -Force
-}
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Register"
+		)]
+		[switch]
+		$Register,
 
-# Delete a task to clear the %SystemRoot%\SoftwareDistribution\Download folder in the Task Scheduler
-# Удалить задачу в Планировщике задач по очистке папки %SystemRoot%\SoftwareDistribution\Download
-function DeleteSoftwareDistributionTask
-{
-	Unregister-ScheduledTask -TaskName SoftwareDistribution -Confirm:$false
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Delete"
+		)]
+		[switch]
+		$Delete
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Register"
+		{
+			$Argument = @"
+(Get-Service -Name wuauserv).WaitForStatus('Stopped', '01:00:00')
+Get-ChildItem -Path $env:SystemRoot\SoftwareDistribution\Download -Recurse -Force | Remove-Item -Recurse -Force
+"@
+			$Action = New-ScheduledTaskAction -Execute powershell.exe -Argument $Argument
+			$Trigger = New-JobTrigger -Weekly -WeeksInterval 4 -DaysOfWeek Thursday -At 9am
+			$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
+			$Principal = New-ScheduledTaskPrincipal -UserId "NT AUTHORITY\SYSTEM" -RunLevel Highest
+			$Description = $Localization.FolderTaskDescription -f "$env:SystemRoot\SoftwareDistribution\Download"
+			$Parameters = @{
+				"TaskName"		= "SoftwareDistribution"
+				"TaskPath"		= "Sophia Script"
+				"Principal"		= $Principal
+				"Action"		= $Action
+				"Description"	= $Description
+				"Settings"		= $Settings
+				"Trigger"		= $Trigger
+			}
+			Register-ScheduledTask @Parameters -Force
+		}
+		"Delete"
+		{
+			Unregister-ScheduledTask -TaskName SoftwareDistribution -Confirm:$false
+		}
+	}
 }
 
 <#
-	Create a task to clear the %TEMP% folder in the Task Scheduler
-	The task runs every 62 days
+	.SYNOPSIS
+	Create the "Temp" task to clear the %TEMP% folder in the Task Scheduler
+	Создать задачу "Temp" в Планировщике задач по очистке папки %TEMP%
 
-	Создать задачу в Планировщике задач по очистке папки %TEMP%
+	.PARAMETER Register
+	Create the "Temp" to clear the %TEMP% folder in the Task Scheduler
+	Создать задачу "Temp" в Планировщике задач по очистке папки %TEMP%
+
+	.PARAMETER Delete
+	Delete the "Temp" task to clear the %TEMP% folder from the Task Scheduler
+	Удалить задачу "Temp" из Планировщика задач по очистке папки %TEMP%
+
+	.EXAMPLE
+	TempTask -Register
+
+	.EXAMPLE
+	TempTask -Delete
+
+	.NOTES
+	The task runs every 62 days
 	Задача выполняется каждые 62 дня
 #>
-function CreateTempTask
+function TempTask
 {
-	$Argument = "Get-ChildItem -Path $env:TEMP -Force -Recurse | Remove-Item -Recurse -Force"
-	$Action = New-ScheduledTaskAction -Execute powershell.exe -Argument $Argument
-	$Trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 62 -At 9am
-	$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-	$Principal = New-ScheduledTaskPrincipal -UserId "NT AUTHORITY\SYSTEM" -RunLevel Highest
-	$Description = $Localization.TempTaskDescription
-	$Parameters = @{
-		"TaskName"		= "Temp"
-		"TaskPath"		= "Sophia Script"
-		"Principal"		= $Principal
-		"Action"		= $Action
-		"Description"	= $Description
-		"Settings"		= $Settings
-		"Trigger"		= $Trigger
-	}
-	Register-ScheduledTask @Parameters -Force
-}
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Register"
+		)]
+		[switch]
+		$Register,
 
-# Delete a task to clear the %TEMP% folder in the Task Scheduler
-# Удалить задачу в Планировщике задач по очистке папки %TEMP%
-function DeleteTempTask
-{
-	Unregister-ScheduledTask -TaskName Temp -Confirm:$false
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Delete"
+		)]
+		[switch]
+		$Delete
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Register"
+		{
+			$Argument = "Get-ChildItem -Path $env:TEMP -Force -Recurse | Remove-Item -Recurse -Force"
+			$Action = New-ScheduledTaskAction -Execute powershell.exe -Argument $Argument
+			$Trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 62 -At 9am
+			$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
+			$Principal = New-ScheduledTaskPrincipal -UserId "NT AUTHORITY\SYSTEM" -RunLevel Highest
+			$Description = $Localization.FolderTaskDescription
+			$Parameters = @{
+				"TaskName"		= "Temp"
+				"TaskPath"		= "Sophia Script"
+				"Principal"		= $Principal
+				"Action"		= $Action
+				"Description"	= $Description
+				"Settings"		= $Settings
+				"Trigger"		= $Trigger
+			}
+			Register-ScheduledTask @Parameters -Force
+		}
+		"Delete"
+		{
+			Unregister-ScheduledTask -TaskName Temp -Confirm:$false
+		}
+	}
 }
 #endregion Scheduled tasks
 
@@ -7392,10 +8321,10 @@ function DeleteTempTask
 # Включить контролируемый доступ к папкам и добавить защищенные папки
 function AddProtectedFolders
 {
-	$Title = $Localization.AddProtectedFoldersTitle
-	$Message = $Localization.AddProtectedFoldersRequest
-	$Add = $Localization.AddProtectedFoldersAdd
-	$Skip = $Localization.AddProtectedFoldersSkip
+	$Title = $Localization.ControlledFolderAccess
+	$Message = $Localization.ProtectedFoldersRequest
+	$Add = $Localization.Add
+	$Skip = $Localization.Skip
 	$Options = "&$Add", "&$Skip"
 	$DefaultChoice = 1
 
@@ -7408,14 +8337,14 @@ function AddProtectedFolders
 			{
 				Add-Type -AssemblyName System.Windows.Forms
 				$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
-				$FolderBrowserDialog.Description = $Localization.AddProtectedFoldersDescription
+				$FolderBrowserDialog.Description = $Localization.FolderSelect
 				$FolderBrowserDialog.RootFolder = "MyComputer"
 
 				# Focus on open file dialog
 				# Перевести фокус на диалог открытия файла
-				$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+				$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+				$FolderBrowserDialog.ShowDialog($Focus)
 
-				$FolderBrowserDialog.ShowDialog($tmp)
 				if ($FolderBrowserDialog.SelectedPath)
 				{
 					Set-MpPreference -EnableControlledFolderAccess Enabled
@@ -7425,7 +8354,7 @@ function AddProtectedFolders
 			}
 			"1"
 			{
-				Write-Verbose -Message $Localization.AddProtectedFoldersSkipped -Verbose
+				Write-Verbose -Message $Localization.Skipped -Verbose
 			}
 		}
 	}
@@ -7438,9 +8367,9 @@ function RemoveProtectedFolders
 {
 	if ($null -ne (Get-MpPreference).ControlledFolderAccessProtectedFolders)
 	{
-		Write-Verbose -Message $Localization.RemoveProtectedFoldersList -Verbose
 		(Get-MpPreference).ControlledFolderAccessProtectedFolders | Format-Table -AutoSize -Wrap
 		Remove-MpPreference -ControlledFolderAccessProtectedFolders (Get-MpPreference).ControlledFolderAccessProtectedFolders -Force
+		Write-Verbose -Message $Localization.ProtectedFoldersListRemoved -Verbose
 	}
 }
 
@@ -7448,10 +8377,10 @@ function RemoveProtectedFolders
 # Разрешить работу приложения через контролируемый доступ к папкам
 function AddAppControlledFolder
 {
-	$Title = $Localization.AddAppControlledFolderTitle
-	$Message = $Localization.AddAppControlledFolderRequest
-	$Add = $Localization.AddAppControlledFolderAdd
-	$Skip = $Localization.AddAppControlledFolderSkip
+	$Title = $Localization.ControlledFolderAccess
+	$Message = $Localization.AppControlledFolderRequest
+	$Add = $Localization.Add
+	$Skip = $Localization.Skip
 	$Options = "&$Add", "&$Skip"
 	$DefaultChoice = 1
 
@@ -7464,15 +8393,15 @@ function AddAppControlledFolder
 			{
 				Add-Type -AssemblyName System.Windows.Forms
 				$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
-				$OpenFileDialog.Filter = $Localization.AddAppControlledFolderFilter
+				$OpenFileDialog.Filter = $Localization.EXEFilesFilter
 				$OpenFileDialog.InitialDirectory = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
 				$OpenFileDialog.Multiselect = $false
 
 				# Focus on open file dialog
 				# Перевести фокус на диалог открытия файла
-				$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+				$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+				$OpenFileDialog.ShowDialog($Focus)
 
-				$OpenFileDialog.ShowDialog($tmp)
 				if ($OpenFileDialog.FileName)
 				{
 					Add-MpPreference -ControlledFolderAccessAllowedApplications $OpenFileDialog.FileName -Force
@@ -7481,7 +8410,7 @@ function AddAppControlledFolder
 			}
 			"1"
 			{
-				Write-Verbose -Message $Localization.AddAppControlledFolderSkipped -Verbose
+				Write-Verbose -Message $Localization.Skipped -Verbose
 			}
 		}
 	}
@@ -7494,9 +8423,9 @@ function RemoveAllowedAppsControlledFolder
 {
 	if ($null -ne (Get-MpPreference).ControlledFolderAccessAllowedApplications)
 	{
-		Write-Verbose -Message $Localization.RemoveAllowedAppsControlledFolderList -Verbose
 		(Get-MpPreference).ControlledFolderAccessAllowedApplications | Format-Table -AutoSize -Wrap
 		Remove-MpPreference -ControlledFolderAccessAllowedApplications (Get-MpPreference).ControlledFolderAccessAllowedApplications -Force
+		Write-Verbose -Message $Localization.AllowedControlledFolderAppsRemoved -Verbose
 	}
 }
 
@@ -7504,10 +8433,10 @@ function RemoveAllowedAppsControlledFolder
 # Добавить папку в список исключений сканирования Microsoft Defender
 function AddDefenderExclusionFolder
 {
-	$Title = $Localization.AddDefenderExclusionFolderTitle
-	$Message = $Localization.AddDefenderExclusionFolderRequest
-	$Add = $Localization.AddDefenderExclusionFolderAdd
-	$Skip = $Localization.AddDefenderExclusionFolderSkip
+	$Title = $Localization.DefenderTitle
+	$Message = $Localization.DefenderExclusionFolderRequest
+	$Add = $Localization.Add
+	$Skip = $Localization.Skip
 	$Options = "&$Add", "&$Skip"
 	$DefaultChoice = 1
 
@@ -7520,14 +8449,14 @@ function AddDefenderExclusionFolder
 			{
 				Add-Type -AssemblyName System.Windows.Forms
 				$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
-				$FolderBrowserDialog.Description = $Localization.AddDefenderExclusionFolderDescription
+				$FolderBrowserDialog.Description = $Localization.FolderSelect
 				$FolderBrowserDialog.RootFolder = "MyComputer"
 
 				# Focus on open file dialog
 				# Перевести фокус на диалог открытия файла
-				$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+				$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+				$FolderBrowserDialog.ShowDialog($Focus)
 
-				$FolderBrowserDialog.ShowDialog($tmp)
 				if ($FolderBrowserDialog.SelectedPath)
 				{
 					Add-MpPreference -ExclusionPath $FolderBrowserDialog.SelectedPath -Force
@@ -7536,7 +8465,7 @@ function AddDefenderExclusionFolder
 			}
 			"1"
 			{
-				Write-Verbose -Message $Localization.AddDefenderExclusionFolderSkipped -Verbose
+				Write-Verbose -Message $Localization.Skipped -Verbose
 			}
 		}
 	}
@@ -7549,10 +8478,10 @@ function RemoveDefenderExclusionFolders
 {
 	if ($null -ne (Get-MpPreference).ExclusionPath)
 	{
-		Write-Verbose -Message $Localization.RemoveDefenderExclusionFoldersList -Verbose
 		$ExcludedFolders = (Get-Item -Path (Get-MpPreference).ExclusionPath -Force -ErrorAction Ignore | Where-Object -FilterScript {$_.Attributes -match "Directory"}).FullName
 		$ExcludedFolders | Format-Table -AutoSize -Wrap
 		Remove-MpPreference -ExclusionPath $ExcludedFolders -Force
+		Write-Verbose -Message $Localization.DefenderExclusionFoldersListRemoved -Verbose
 	}
 }
 
@@ -7560,10 +8489,10 @@ function RemoveDefenderExclusionFolders
 # Добавить файл в список исключений сканирования Microsoft Defender
 function AddDefenderExclusionFile
 {
-	$Title = $Localization.AddDefenderExclusionFileTitle
+	$Title = "Microsoft Defender"
 	$Message = $Localization.AddDefenderExclusionFileRequest
-	$Add = $Localization.AddDefenderExclusionFileAdd
-	$Skip = $Localization.AddDefenderExclusionFileSkip
+	$Add = $Localization.Add
+	$Skip = $Localization.Skip
 	$Options = "&$Add", "&$Skip"
 	$DefaultChoice = 1
 
@@ -7576,15 +8505,15 @@ function AddDefenderExclusionFile
 			{
 				Add-Type -AssemblyName System.Windows.Forms
 				$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
-				$OpenFileDialog.Filter = $Localization.AddDefenderExclusionFileFilter
+				$OpenFileDialog.Filter = $Localization.AllFilesFilter
 				$OpenFileDialog.InitialDirectory = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
 				$OpenFileDialog.Multiselect = $false
 
 				# Focus on open file dialog
 				# Перевести фокус на диалог открытия файла
-				$tmp = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+				$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+				$OpenFileDialog.ShowDialog($Focus)
 
-				$OpenFileDialog.ShowDialog($tmp)
 				if ($OpenFileDialog.FileName)
 				{
 					Add-MpPreference -ExclusionPath $OpenFileDialog.FileName -Force
@@ -7593,7 +8522,7 @@ function AddDefenderExclusionFile
 			}
 			"1"
 			{
-				Write-Verbose -Message $Localization.AddDefenderExclusionFileSkipped -Verbose
+				Write-Verbose -Message $Localization.Skipped -Verbose
 			}
 		}
 	}
@@ -7606,10 +8535,10 @@ function RemoveDefenderExclusionFiles
 {
 	if ($null -ne (Get-MpPreference).ExclusionPath)
 	{
-		Write-Verbose -Message $Localization.RemoveDefenderExclusionFilesList -Verbose
 		$ExcludedFiles = (Get-Item -Path (Get-MpPreference).ExclusionPath -Force -ErrorAction Ignore | Where-Object -FilterScript {$_.Attributes -notmatch "Directory"}).FullName
 		$ExcludedFiles | Format-Table -AutoSize -Wrap
 		Remove-MpPreference -ExclusionPath $ExcludedFiles -Force
+		Write-Verbose -Message $Localization.DefenderExclusionFilesRemoved -Verbose
 	}
 }
 
@@ -7841,7 +8770,7 @@ function AuditProcess
 	Не включать командную строку в событиях создания процесса
 
 	.PARAMETER Enable
-	Include/ command line in process creation events
+	Include command line in process creation events
 	Включать командную строку в событиях создания процесса
 
 	.EXAMPLE
@@ -7851,8 +8780,8 @@ function AuditProcess
 	AuditCommandLineProcess -Enable
 
 	.NOTES
-	In order this feature to work events auditing must be enabled ("AuditProcess" function)
-	Необходимо включить аудит событий, чтобы работал данный функционал (функция "AuditProcess")
+	In order this feature to work events auditing ("AuditProcess -Enable" function) will be enabled
+	Для того, чтобы работал данный функционал, будет включен аудит событий (функция "AuditProcess -Enable")
 #>
 function AuditCommandLineProcess
 {
@@ -7881,6 +8810,10 @@ function AuditCommandLineProcess
 		}
 		"Enable"
 		{
+			# Enable events auditing generated when a process is created or starts
+			# Включить аудит событий, возникающих при создании или запуске процесса
+			auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:enable /failure:enable
+
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -PropertyType DWord -Value 1 -Force
 		}
 	}
@@ -7906,8 +8839,8 @@ function AuditCommandLineProcess
 	EventViewerCustomView -Enable
 
 	.NOTES
-	In order this feature to work events auditing must be enabled ("AuditProcess" function)
-	Необходимо включить аудит событий, чтобы работал данный функционал (функция "AuditProcess")
+	In order this feature to work events auditing ("AuditProcess -Enable" function) and command line in process creation events will be enabled
+	Для того, чтобы работал данный функционал, буден включен аудит событий (функция "AuditProcess -Enable") и командной строки в событиях создания процесса
 #>
 function EventViewerCustomView
 {
@@ -7936,6 +8869,14 @@ function EventViewerCustomView
 		}
 		"Enable"
 		{
+			# Enable events auditing generated when a process is created or starts
+			# Включить аудит событий, возникающих при создании или запуске процесса
+			auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:enable /failure:enable
+
+			# Include command line in process creation events
+			# Включать командную строку в событиях создания процесса
+			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -PropertyType DWord -Value 1 -Force
+
 			$XML = @"
 <ViewerConfig>
 	<QueryConfig>
@@ -7958,6 +8899,7 @@ function EventViewerCustomView
 			{
 				New-Item -Path "$env:ProgramData\Microsoft\Event Viewer\Views" -ItemType Directory -Force
 			}
+
 			# Saving ProcessCreation.xml in UTF-8 encoding
 			# Сохраняем ProcessCreation.xml в кодировке UTF-8
 			Set-Content -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Value (New-Object -TypeName System.Text.UTF8Encoding).GetBytes($XML) -Encoding Byte -Force

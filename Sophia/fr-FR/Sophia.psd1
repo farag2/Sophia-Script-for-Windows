@@ -1,182 +1,89 @@
-﻿# Ne supprimez pas les guillemets doubles dans les chaînes entre guillemets lorsqu'ils sont présents
-
-ConvertFrom-StringData -StringData @'
-UnsupportedOSBitness = Le script ne fonctionne uniquement avec Windows 10 x64
-ControlledFolderAccessDisabled = Accès contrôlé aux dossiers désactivé
-
-# OneDrive
-OneDriveUninstalling = Désinstaller OneDrive...
-OneDriveNotEmptyFolder = "Le dossier $OneDriveUserFolder n'est pas vide le supprimer manuellement"
-OneDriveFileSyncShell64dllBlocked = "$FileSyncShell64dll est bloqué le supprimer manuellement"
-OneDriveInstalling = OneDriveSetup.exe est en cours de démarrage...
-OneDriveDownloading = Téléchargement de OneDrive... ~33 MB
-OneDriveNoInternetConnection = Pas de connexion Internet
-
-# TempPath
-LOCALAPPDATAFilesBlocked = "The following files are being blocked by third-party party apps `nRemove them manually and continue"
-LOCALAPPDATANotEmpty = "Le dossier $env:LOCALAPPDATA\\Temp n'est pas vide le supprimer manuellement"
-
-# DisableWindowsCapabilities
-FODWindowTitle = Fonctionnalités optionnelles (FODv2) à supprimer
-FODWindowButton = Désinstaller
-DialogBoxOpening = Afficher la boite de dialogue...
-NoData = Rien à afficher
-
-# WindowsSandbox
-EnableHardwareVT = Activer la Virtualisation dans UEFI
-
-# ChangeUserShellFolderLocation
-UserShellFolderNotEmpty = "Des fichiers sont situés dans $UserShellFolderRegValue les déplacer vers une nouvelle destination"
-RetrievingDrivesList = Récupération de la liste des lecteurs...
-# Desktop
-DesktopDriveSelect = Sélectionnez le lecteur à la racine duquel le dossier Bureau sera créé
-DesktopFilesWontBeMoved = Les fichiers ne seront pas déplacés
-DesktopFolderRequest = Souhaitez vous changer l'emplacement du dossier Bureau?
-DesktopFolderChange = Modifier
-DesktopFolderSkip = Passer
-DesktopSkipped = Passé
-# Documents
-DocumentsDriveSelect = Sélectionnez le lecteur à la racine duquel le dossier Documents sera créé
-DocumentsFilesWontBeMoved = Les fichiers ne seront pas déplacés
-DocumentsFolderRequest = Souhaitez vous changer l'emplacement du dossier Documents?
-DocumentsFolderChange = Modifier
-DocumentsFolderSkip = Passer
-DocumentsSkipped = Passé
-# Downloads
-DownloadsDriveSelect = Sélectionnez le lecteur à la racine duquel le dossier Téléchargements sera créé
-DownloadsFilesWontBeMoved = Les fichiers ne seront pas déplacés
-DownloadsFolderRequest = Souhaitez vous changer l'emplacement du dossier Téléchargements?
-DownloadsFolderChange = Modifier
-DownloadsFolderSkip = Passer
-DownloadsSkipped = Passé
-# Music
-MusicDriveSelect = Sélectionnez le lecteur à la racine duquel le dossier Musique sera créé
-MusicFilesWontBeMoved = Les fichiers ne seront pas déplacés
-MusicFolderRequest = Souhaitez vous changer l'emplacement du dossier Musique?
-MusicFolderChange = Modifier
-MusicFolderSkip = Passer
-MusicSkipped = Passé
-# Pictures
-PicturesDriveSelect = Sélectionnez le lecteur à la racine duquel le dossier Images sera créé
-PicturesFilesWontBeMoved = Les fichiers ne seront pas déplacés
-PicturesFolderRequest = Souhaitez vous changer l'emplacement du dossier Images ?
-PicturesFolderChange = Modifier
-PicturesFolderSkip = Passer
-PicturesSkipped = Passé
-# Videos
-VideosDriveSelect = Sélectionnez le lecteur à la racine duquel le dossier Vidéos sera créé
-VideosFilesWontBeMoved = Les fichiers ne seront pas déplacés
-VideosFolderRequest = Souhaitez vous changer l'emplacement du dossier Vidéos ?
-VideosFolderChange = Modifier
-VideosFolderSkip = Passer
-VideosSkipped = Passé
-
-# SetDefaultUserShellFolderLocation
-# Desktop
-DesktopDefaultFolder = Souhaitez-vous modifier l'emplacement du dossier Bureau par la valeur par défaut ?
-# Documents
-DocumentsDefaultFolder = Souhaitez-vous modifier l'emplacement du dossier Documents par la valeur par défaut ?
-# Downloads
-DownloadsDefaultFolder = Souhaitez-vous modifier l'emplacement du dossier Téléchargements par la valeur par défaut ?
-# Music
-MusicDefaultFolder = Souhaitez-vous modifier l'emplacement du dossier Musique par la valeur par défaut ?
-# Pictures
-PicturesDefaultFolder = Souhaitez-vous modifier l'emplacement du dossier Images par la valeur par défaut ?
-# Videos
-VideosDefaultFolder = Souhaitez-vous modifier l'emplacement du dossier Vidéos par la valeur par défaut ?
-
-# ReservedStorage
-ReservedStorageIsInUse = Cette opération n'est pas prise en charge lorsque le stockage réservé est utilisé veuillez attendre la fin des opérations de maintenance, puis réessayer plus tard
-
-# syspin
-syspinNoInternetConnection = Pas de connexion Internet
-syspinDownloading = Téléchargement de syspin... ~20 KB
-
-# PinControlPanel/PinDevicesPrinters/PinCommandPrompt
-ControlPanelPinning = "Le raccourci $ControlPanelLocalizedName a été épinglé au menu de démarrage"
-DevicesPrintersPinning = "Le raccourci $DevicesAndPrintersLocalizedName a été épinglé au menu de démarrage"
-CMDPinning = Le raccourci Invites de commandes a été épinglé au menu de démarrage
-
-# UninstallUWPApps
-UninstallUWPForAll = Désinstaller pour tous les utilisateurs
-UninstallUWPTitle = Paquetages UWP à désinstaller
-UninstallUWPUninstallButton = Désinstaller
-
-# WSL
-WSLUpdateDownloading = Télécharger le paquetage de mise à jour du kernel Linux... ~14 MB
-WSLUpdateInstalling = Installation du paquetage de mise à jour du kernel Linux...
-
-# SetAppGraphicsPerformance
-GraphicsPerformanceTitle = Préférence de performances graphiques
-GraphicsPerformanceRequest = Souhaitez-vous définir le paramètre de performances graphiques d'une application de votre choix sur "Haute performance" ?
-GraphicsPerformanceAdd = Ajouter
-GraphicsPerformanceSkip = Passer
-GraphicsPerformanceFilter = *.exe|*.exe|Tous les fichiers (*.*)|*.*
-GraphicsPerformanceSkipped = Passer
-
-# CreateCleanUpTask
-CleanUpTaskToast = Le nettoyage des fichiers Windows inutilisés et des mises à jour commence dans une minute
-CleanUpTaskDescription = Nettoyer les fichiers Windows inutilisés et les mises à jour à l'aide de l'application de nettoyage de disque intégrée. Pour décoder une commande codée, utilisez [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String("string"))
-
-# CreateSoftwareDistributionTask
-SoftwareDistributionTaskDescription = Le %SystemRoot%\\SoftwareDistribution\\Download
-
-# CreateTempTask
-TempTaskDescription = Nettoyage du dossier %TEMP%
-
-# AddProtectedFolders
-AddProtectedFoldersTitle = Accès contrôlé aux dossiers
-AddProtectedFoldersRequest = Souhaitez-vous activer l'accès contrôlé aux dossiers et spécifier le dossier que Microsoft Defender protégera contre les applications malveillantes et les menaces?
-AddProtectedFoldersAdd = Ajouter
-AddProtectedFoldersSkip = Passer
-AddProtectedFoldersDescription = Sélectionner un dossier
-AddProtectedFoldersSkipped = Passé
-
-# RemoveProtectedFolders
-RemoveProtectedFoldersList = Dossier supprimé
-
-# AddAppControlledFolder
-AddAppControlledFolderTitle = Accès contrôlé aux dossiers
-AddAppControlledFolderRequest = Souhaitez-vous spécifier une application autorisée via l'accès contrôlé aux dossiers ?
-AddAppControlledFolderAdd = Ajouter
-AddAppControlledFolderSkip = Passer
-AddAppControlledFolderFilter = *.exe|*.exe|Tous les fichiers (*.*)|*.*
-AddAppControlledFolderSkipped = Passé
-
-# RemoveAllowedAppsControlledFolder
-RemoveAllowedAppsControlledFolderList = Applications approuvées supprimées
-
-# AddDefenderExclusionFolder
-AddDefenderExclusionFolderTitle = Microsoft Defender
-AddDefenderExclusionFolderRequest = Souhaitez-vous spécifier un dossier à exclure des analyses de logiciels malveillants de Microsoft Defender?
-AddDefenderExclusionFolderAdd = Ajouter
-AddDefenderExclusionFolderSkip = Passer
-AddDefenderExclusionFolderDescription = Séléctionner un dossier
-AddDefenderExclusionFolderSkipped = Passé
-
-# RemoveDefenderExclusionFolders
-RemoveDefenderExclusionFoldersList = Fichiers exclus supprimés
-
-# AddDefenderExclusionFile
-AddDefenderExclusionFileTitle = Microsoft Defender
-AddDefenderExclusionFileRequest = Souhaitez-vous spécifier un fichier à exclure des analyses de logiciels malveillants de Microsoft Defender ?
-AddDefenderExclusionFileAdd = Ajouter
-AddDefenderExclusionFileSkip = Passer
-AddDefenderExclusionFileFilter = Tous les fichiers (*.*)|*.*
-AddDefenderExclusionFileSkipped = Passé
-
-# RemoveDefenderExclusionFiles
-RemoveDefenderExclusionFilesList = Fichiers exclus supprimés
-
-# CreateEventViewerCustomView
-EventViewerCustomViewName = Création du processus
-EventViewerCustomViewDescription = Création du processus et audit d'évènements en ligne de commande
-
-# Refresh
-RestartWarning = Redémarrer votre PC
-
-# Erreurs
-ErrorsLine = Ligne
-ErrorsFile = Fichier
-ErrorsMessage = Erreurs/Avertissements
+﻿ConvertFrom-StringData -StringData @'
+UnsupportedOSBitness                   = Le script supporte uniquement Windows 10 x64
+UnsupportedOSBuild                     = Le script supporte les versions Windows 10 2004/20H1 et ultérieures
+ControlledFolderAccessDisabled         = Contrôle d'accès aux dossiers désactivé
+ScheduledTasks                         = Tâches planifiées
+OneDriveUninstalling                   = Désinstalltion de OneDrive...
+OneDriveNotEmptyFolder                 = Le dossier "{0}" est vide. Le supprimer manuellement
+OneDriveFileSyncShell64dllBlocked      = "{0}" est bloqué. Le supprimer manuellement
+OneDriveInstalling                     = OneDrive en cours d'installation...
+OneDriveDownloading                    = Téléchargement de OneDrive... ~33 Mo
+ClearFolder                            = Supprimer tous les fichiers dans le dossier "{0}"
+FilesBlocked                           = Les fichiers suivants sont bloqués par une application tierce `nRetirer les manuellement et continuer
+TempNotEmpty                           = Le dossier "{0}" n'est pas vide. L'effacer manuellement
+WindowsFeaturesWindowTitle             = Fonctionnalités
+Patient                                = Veuillez patienter...
+FODWindowTitle                         = Fonctionnalités optionnelles (FODv2)
+EnableHardwareVT                       = Activer la virtualisation dans UEFI
+UserShellFolderNotEmpty                = Certains fichiers laissés dans le dossier "{0}"  `nDéplacer les manuellement vers un nouvel emplacement
+RetrievingDrivesList                   = Récupération de la liste des lecteurs...
+NewUserShellFolderLocation             = Nouvel emplacement: "{0}"
+DesktopDriveSelect                     = Sélectionnez le lecteur à la racine duquel le dossier Bureau sera créé
+DocumentsDriveSelect                   = Sélectionnez le lecteur à la racine duquel le dossier Documents sera créé
+DownloadsDriveSelect                   = Sélectionnez le lecteur à la racine duquel le dossier Téléchargements sera créé
+MusicDriveSelect                       = Sélectionnez le lecteur à la racine duquel le dossier Musique sera créé
+PicturesDriveSelect                    = Sélectionnez le lecteur à la racine duquel le dossier Images sera créé
+VideosDriveSelect                      = Sélectionnez le lecteur à la racine duquel le dossier Vidéos sera créé
+DesktopRequest                         = Souhaitez-vous changer l'emplacement du dossier Bureau?
+DocumentsRequest                       = Souhaitez-vous changer l'emplacement du dossier Documents?
+DownloadsRequest                       = Souhaitez-vous changer l'emplacement du dossier Téléchargements?
+MusicRequest                           = Souhaitez-vous changer l'emplacement du dossier Musique?
+PicturesRequest                        = Souhaitez-vous changer l'emplacement du dossier Images?
+VideosRequest                          = Souhaitez-vous changer l'emplacement du dossier Vidéos?
+DesktopFolderSelect                    = Sélectionner un dossier pour le dossier Bureau
+DocumentsFolderSelect                  = Sélectionner un dossier pour le dossier Documents
+DownloadsFolderSelect                  = Sélectionner un dossier pour le dossier Téléchargements
+MusicFolderSelect                      = Sélectionner un dossier pour le dossier Musique
+PicturesFolderSelect                   = Sélectionner un dossier pour le dossier Images
+VideosFolderSelect                     = Sélectionner un dossier pour le dossier Vidéos
+DesktopDefaultFolder                   = Souhaitez-vous changer l'emplacement du dossier Bureau à la valeur par défaut?
+DocumentsDefaultFolder                 = Souhaitez-vous changer l'emplacement du dossier Documents à la valeur par défaut?
+DownloadsDefaultFolder                 = Souhaitez-vous changer l'emplacement du dossier Téléchargements à la valeur par défaut?
+MusicDefaultFolder                     = Souhaitez-vous changer l'emplacement du dossier Musique à la valeur par défaut?
+PicturesDefaultFolder                  = Souhaitez-vous changer l'emplacement du dossier Images à la valeur par défaut?
+VideosDefaultFolder                    = Souhaitez-vous changer l'emplacement du dossier Vidéos à la valeur par défaut?
+ReservedStorageIsInUse                 = Cette opération n'est pas suppportée le stockage réservé est en cours d'utilisation `nVeuillez attendre la fin des opérations de maintenance, puis réessayer plus tard
+syspinDownloading                      = Téléchargement de syspin... ~20 Ko
+ShortcutPinning                        = Le raccourci "{0}" est épinglé sur Démarrer
+UninstallUWPForAll                     = Désinstaller pour tous les utilisateurs
+UninstallUWPTitle                      = Packages UWP à désinstaller
+WSLUpdateDownloading                   = Téléchargement du package de mise à jour du noyau Linux... ~14 Mo
+WSLUpdateInstalling                    = Installation du package de mise à jour du noyau Linux...
+GraphicsPerformanceTitle               = Préférence de performances graphiques
+GraphicsPerformanceRequest             = Souhaitez-vous définir le paramètre de performances graphiques d'une application de votre choix sur "Haute performance"?
+CleanUpTaskToast                       = Le nettoyage des fichiers Windows inutilisés et des mises à jour débute dans une minute
+CleanUpTaskDescription                 = Nettoyage des fichiers Windows inutilisés et des mises à jour à l'aide de l'application intégrée pour le nettoyage de disque
+FolderTaskDescription                  = Nettoyage du dossier "{0}"
+ControlledFolderAccess                 = Contrôle d'accès aux dossiers
+ProtectedFoldersRequest                = Souhaitez-vous activer le contrôle d'accès aux dossiers et spécifier le dossier que Microsoft Defender protégera contre les applications malveillantes et les menaces?
+ProtectedFoldersListRemoved            = Dossiers supprimés
+AppControlledFolderRequest             = Souhaitez-vous spécifier une application autorisée via le contrôle d'accès aux dossiers?
+AllowedControlledFolderAppsRemoved     = Applications autorisées supprimées
+DefenderTitle                          = Microsoft Defender
+DefenderExclusionFolderRequest         = Souhaitez-vous spécifier un dossier à exclure des analyses de logiciels malveillants de Microsoft Defender?
+DefenderExclusionFoldersListRemoved    = Dossiers exclus supprimés
+AddDefenderExclusionFileRequest        = Souhaitez-vous spécifier un fichier à exclure des analyses de logiciels malveillants de Microsoft Defender?
+DefenderExclusionFilesRemoved          = Fichiers exclus supprimés
+EventViewerCustomViewName              = Création du processus
+EventViewerCustomViewDescription       = Audit des événements de création du processus et de ligne de commande
+RestartWarning                         = Assurez-vous de redémarrer votre PC
+ErrorsLine                             = Ligne
+ErrorsFile                             = Fichier
+ErrorsMessage                          = Erreurs / Avertissements
+Add                                    = Ajouter
+AllFilesFilter                         = Tous les Fichiers (*.*)|*.*
+Change                                 = Changer
+Continue                               = Continuer
+DialogBoxOpening                       = Afficher la boîte de dialogue...
+Disable                                = Désactiver
+Enable                                 = Activer
+EXEFilesFilter                         = *.exe|*.exe|Tous les Fichiers (*.*)|*.*
+FolderSelect                           = Sélectionner un dossier
+FilesWontBeMoved                       = Les fichiers ne seront pas déplacés
+NoData                                 = Rien à afficher
+NoInternetConnection                   = Pas de connexion Internet
+Select                                 = Sélectionner
+Skip                                   = Passer
+Skipped                                = Passé
+Uninstall                              = Désinstaller
 '@
