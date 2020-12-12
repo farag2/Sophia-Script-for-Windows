@@ -8,7 +8,7 @@
 [![Github stats](https://img.shields.io/github/downloads/farag2/Windows-10-Setup-Script/total.svg?label=downloads%20%28since%20May%202020%29)](https://github.com/farag2/Windows-10-Sophia-Script/releases)
 ![ko-fi](https://img.shields.io/github/v/release/farag2/Windows-10-Sophia-Script) [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Q5Q51QUJC)
 
-Available in: :uk: :cn: :de: :fr: :it: :ru: :ukraine: :tr:
+Available in: :uk: :cn: :de: :fr: :it: :ru: :ukraine: :tr: :es:
 </div>
 
 <hr>
@@ -77,9 +77,8 @@ Available in: :uk: :cn: :de: :fr: :it: :ru: :ukraine: :tr:
 
 ## ⚠️ Before running ⚠️
 
-* Due to the fact that the script includes more than **270** functions, you must read the entire **preset file** carefully and **comment out/uncomment** those functions that you do/do not want to be executed. Every tweak in a preset file has its' corresponding function to **restore the default settings**.
+* Due to the fact that the script includes more than **150** functions with different arguments, you must read the entire **Sophia.ps1** carefully and **comment out/uncomment** those functions that you do/do not want to be executed. Every tweak in the preset file has its' corresponding function to **restore the default settings**.
 * Running the script is best done on a fresh install because running it on **wrong** tweaked system may result in errors occurring.
-* Some third-party antiviruses flag this script or its' part as malicious one. This is a **false positive** due to [$EncodedScript](https://github.com/farag2/Windows-10-Sophia-Script/blob/0f9bbee7e1d43f487eb0855e0d1e44ff569fc4a9/200x/2004.ps1#L2837) variable. You can read more about in "CreateCleanUpTask" function. You might need to disable tamper protection from your antivirus settings, re-enable it after running the script, and reboot.
 
 ## Screenshots
 
@@ -97,12 +96,12 @@ Available in: :uk: :cn: :de: :fr: :it: :ru: :ukraine: :tr:
 ## Core features
 
 * Set up Privacy & Telemetry;
-* Turn off diagnostics tracking scheduled tasks;
+* Turn off diagnostics tracking scheduled tasks with pop-up form written in [WPF](#Screenshots);
 * Set up UI & Personalization;
 * Uninstall OneDrive "correctly";
 * Interactive prompts;
 * Change %TEMP% environment variable path to %SystemDrive%\Temp
-* Change location of the user folders programmatically (without moving user files) within interactive menu using up/down arrows and Enter key to make a selection
+* Change location of the user folders programmatically (without moving user files) within interactive menu using arrows to select a drive
   * "Desktop";
   * "Documents";
   * "Downloads";
@@ -170,8 +169,6 @@ To run the script:
 |:-----:|:-------:|:------------------:|:----:|:----:|:-----------------:|:--------------:|
 | 2009  |  20H2   |October 2020 Update |19042 |  x64 |Home/Pro/Enterprise|[5.2](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
 | 2004  |  20H1   |   May 2020 Update  |19041 |  x64 |Home/Pro/Enterprise|[5.2](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
-| 1909  |  19H2   |November 2019 Update|18363 |  x64 |Home/Pro/Enterprise|[4.5, deprecated](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/4.x%20(outdated)/190x)|
-| 1903  |  19H1   |   May 2019 Update  |18362 |  x64 |Home/Pro/Enterprise|[4.5, deprecated](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/4.x%20(outdated)/190x)|
 | 1809  |         |LTSC Enterprise 2019|17763 |  x64 |   Enterprise      |[4.5](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/LTSC)|
 
 ## GUI version (C#)
