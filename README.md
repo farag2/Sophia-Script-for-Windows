@@ -183,5 +183,5 @@ To run the script:
 ## Ask a question on
 
 * [Ru-Board](http://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15)
-* [My Digital Life](https://forums.mydigitallife.net/threads/powershell-script-setup-windows-10.81675/)
+* [My Digital Life](https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/)
 * [Reddit](https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/)
