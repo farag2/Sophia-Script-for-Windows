@@ -3703,11 +3703,11 @@ function TempFolder
 							}
 							"1"
 							{
-								Write-Verbose -Message $Localization.Skipped -Verbose
+								Write-Verbose -Message $Localization.SkippedSymbolic -Verbose
 							}
 						}
 					}
-					until ((Get-ChildItem -Path $env:LOCALAPPDATA\Temp -Force -ErrorAction Ignore | Measure-Object).Count -eq 0)
+					until (((Get-ChildItem -Path $env:LOCALAPPDATA\Temp -Force -ErrorAction Ignore | Measure-Object).Count -eq 0) -or ($Result -eq 1))
 				}
 			}
 			else
@@ -3717,18 +3717,21 @@ function TempFolder
 				New-Item -Path $env:LOCALAPPDATA\Temp -ItemType SymbolicLink -Value $env:SystemDrive\Temp -Force
 			}
 
-			[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "User")
-			[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Machine")
-			[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Process")
-			New-ItemProperty -Path HKCU:\Environment -Name TMP -PropertyType ExpandString -Value $env:SystemDrive\Temp -Force
+			if (Get-Item -Path "C:\Users\Юлия\AppData\Local\Temp" -ErrorAction Ignore | Where-Object -FilterScript {$_.LinkType -eq "SymbolicLink"})
+			{
+				[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "User")
+				[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Machine")
+				[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Process")
+				New-ItemProperty -Path HKCU:\Environment -Name TMP -PropertyType ExpandString -Value $env:SystemDrive\Temp -Force
 
-			[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "User")
-			[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Machine")
-			[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Process")
-			New-ItemProperty -Path HKCU:\Environment -Name TEMP -PropertyType ExpandString -Value $env:SystemDrive\Temp -Force
+				[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "User")
+				[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Machine")
+				[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Process")
+				New-ItemProperty -Path HKCU:\Environment -Name TEMP -PropertyType ExpandString -Value $env:SystemDrive\Temp -Force
 
-			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TMP -PropertyType ExpandString -Value $env:SystemDrive\Temp -Force
-			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TEMP -PropertyType ExpandString -Value $env:SystemDrive\Temp -Force
+				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TMP -PropertyType ExpandString -Value $env:SystemDrive\Temp -Force
+				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TEMP -PropertyType ExpandString -Value $env:SystemDrive\Temp -Force
+			}
 		}
 		"Default"
 		{
