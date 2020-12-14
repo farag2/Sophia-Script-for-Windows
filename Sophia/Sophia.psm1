@@ -3698,7 +3698,7 @@ function TempFolder
 								catch [System.Exception]
 								{
 									Write-Verbose -Message $Localization.FilesBlocked -Verbose
-									Write-Verbose -Message (Get-ChildItem -Path $env:LOCALAPPDATA\Temp -Force).Name -Verbose
+									Write-Verbose -Message ((Get-ChildItem -Path $env:LOCALAPPDATA\Temp -Force).FullName | Out-String) -Verbose
 								}
 							}
 							"1"
