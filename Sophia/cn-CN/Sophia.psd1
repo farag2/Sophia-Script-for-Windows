@@ -85,5 +85,6 @@ NoInternetConnection                   = 无网络连接
 Select                                 = 选择
 Skip                                   = 跳过
 Skipped                                = 已跳过
+SymbolicSkipped                        = 跳过创建符号链接
 Uninstall                              = 卸载
 '@

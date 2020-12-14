@@ -85,5 +85,6 @@ NoInternetConnection                   = Keine Internetverbindung
 Select                                 = Wählen Sie
 Skip                                   = Überspringen
 Skipped                                = Übersprungen
+SymbolicSkipped                        = Das Erstellen eines symbolischen Links wurde übersprungen
 Uninstall                              = Deinstallieren
 '@

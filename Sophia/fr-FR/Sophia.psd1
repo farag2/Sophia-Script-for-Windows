@@ -69,7 +69,7 @@ EventViewerCustomViewDescription       = Audit des événements de création du 
 RestartWarning                         = Assurez-vous de redémarrer votre PC
 ErrorsLine                             = Ligne
 ErrorsFile                             = Fichier
-ErrorsMessage                          = Erreurs / Avertissements
+ErrorsMessage                          = Erreurs/Avertissements
 Add                                    = Ajouter
 AllFilesFilter                         = Tous les Fichiers (*.*)|*.*
 Change                                 = Changer
@@ -85,5 +85,6 @@ NoInternetConnection                   = Pas de connexion Internet
 Select                                 = Sélectionner
 Skip                                   = Passer
 Skipped                                = Passé
+SymbolicSkipped                        = La création d'un lien symbolique a été ignorée
 Uninstall                              = Désinstaller
 '@

@@ -85,5 +85,6 @@ NoInternetConnection                   = Відсутнє інтернет-з'є
 Select                                 = Вибрати
 Skip                                   = Пропустити
 Skipped                                = Пропущено
+SymbolicSkipped                        = Пропущено створення символічного посилання
 Uninstall                              = Видалити
 '@

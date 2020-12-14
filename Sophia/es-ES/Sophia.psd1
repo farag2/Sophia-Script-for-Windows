@@ -85,5 +85,6 @@ NoInternetConnection                   = No hay conexión a Internet
 Select                                 = Seleccionar
 Skip                                   = Omitir
 Skipped                                = Omitido
+SymbolicSkipped                        = Se omitió la creación de un enlace simbólico
 Uninstall                              = Desinstalar
 '@

@@ -85,5 +85,6 @@ NoInternetConnection                   = İnternet bağlantısı yok
 Select                                 = Seç
 Skip                                   = Atla
 Skipped                                = Atlandı
+SymbolicSkipped                        = Sembolik bir bağlantı oluşturma atlandı
 Uninstall                              = Kaldır
 '@

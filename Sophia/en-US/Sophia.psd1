@@ -85,5 +85,6 @@ NoInternetConnection                   = No Internet connection
 Select                                 = Select
 Skip                                   = Skip
 Skipped                                = Skipped
+SymbolicSkipped                        = Skipped creating a symbolic link
 Uninstall                              = Uninstall
 '@
