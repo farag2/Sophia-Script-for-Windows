@@ -3717,7 +3717,7 @@ function TempFolder
 				New-Item -Path $env:LOCALAPPDATA\Temp -ItemType SymbolicLink -Value $env:SystemDrive\Temp -Force
 			}
 
-			if (Get-Item -Path "C:\Users\Юлия\AppData\Local\Temp" -ErrorAction Ignore | Where-Object -FilterScript {$_.LinkType -eq "SymbolicLink"})
+			if (Get-Item -Path $env:LOCALAPPDATA\Temp -ErrorAction Ignore | Where-Object -FilterScript {$_.LinkType -eq "SymbolicLink"})
 			{
 				[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "User")
 				[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Machine")
