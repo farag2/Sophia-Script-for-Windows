@@ -80,6 +80,14 @@ Available in: :uk: :cn: :de: :fr: :it: :ru: :ukraine: :tr: :es:
 * Due to the fact that the script includes more than **150** functions with different arguments, you must read the entire **Sophia.ps1** carefully and **comment out/uncomment** those functions that you do/do not want to be executed. Every tweak in the preset file has its' corresponding function to **restore the default settings**.
 * Running the script is best done on a fresh install because running it on **wrong** tweaked system may result in errors occurring.
 
+## Supported Windows 10 versions
+
+|Version|Code name|   Marketing name   |Build | Arch |      Editions     | Script version |
+|:-----:|:-------:|:------------------:|:----:|:----:|:-----------------:|:--------------:|
+| 2009  |  20H2   |October 2020 Update |19042 |  x64 |Home/Pro/Enterprise|[5.3](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 2004  |  20H1   |   May 2020 Update  |19041 |  x64 |Home/Pro/Enterprise|[5.3](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 1809  |         |LTSC Enterprise 2019|17763 |  x64 |   Enterprise      |[4.5](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/LTSC)|
+
 ## Screenshots
 
 <details>
@@ -158,25 +166,12 @@ To run the script:
 * Create a folder with the UI culture name;
 * Place your localized Sophia.psd1 file into this folder
 
-## Supported Windows 10 versions
-
-|Version|Code name|   Marketing name   |Build | Arch |      Editions     | Script version |
-|:-----:|:-------:|:------------------:|:----:|:----:|:-----------------:|:--------------:|
-| 2009  |  20H2   |October 2020 Update |19042 |  x64 |Home/Pro/Enterprise|[5.3](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
-| 2004  |  20H1   |   May 2020 Update  |19041 |  x64 |Home/Pro/Enterprise|[5.3](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
-| 1809  |         |LTSC Enterprise 2019|17763 |  x64 |   Enterprise      |[4.5](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/LTSC)|
-
-## SophiApp Community Edition (C# + WPF)
-
-Internal build by [oz-zo](https://github.com/oz-zo) being compiled in the private repository every Suturday within Github Actions. First public alpha on January, 2021...
-
-## Microsoft Docs
-
-* [Release information](https://docs.microsoft.com/en-us/windows/release-information)
-* [Known issues for 20H2](https://docs.microsoft.com/ru-ru/windows/release-information/status-windows-10-20h2)
-
 ## Ask a question on
 
 * [Ru-Board](http://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15)
 * [My Digital Life](https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/)
-* [Reddit](https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/)
+* [Reddit (archived)](https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/)
+
+## SophiApp Community Edition (C# + WPF)
+
+Internal build by [oz-zo](https://github.com/oz-zo) being compiled in the private repository every Suturday within Github Actions
