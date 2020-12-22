@@ -450,7 +450,7 @@ PrtScnSnippingTool -Enable
 # Не использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана (только для текущего пользователя) (значение по умолчанию)
 # PrtScnSnippingTool -Disable
 
-# Let let use a different input method for each app window (current user only)
+# Let use a different input method for each app window (current user only)
 # Позволить выбирать метод ввода для каждого окна (только для текущего пользователя)
 AppsLanguageSwitch -Disable
 
