@@ -98,7 +98,7 @@ Available in: :uk: :cn: :de: :fr: :it: :ru: :ukraine: :tr: :es:
   
 ![Image](https://i.imgur.com/5up2HrJ.png)
 ![Image](https://i.imgur.com/AXY12aJ.png)
-![Image](https://i.imgur.com/BDOoE4B.png)
+![Image](https://i.imgur.com/kUONPI2.png)
 ![Image](https://i.imgur.com/DpV0UJw.png)
 </details>
 
