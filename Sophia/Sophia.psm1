@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	"Windows 10 Sophia Script" is a PowerShell module for Windows 10 fine-tuning and automating the routine tasks
 
-	Version: v5.3
-	Date: 12.12.2020
+	Version: v5.3.1
+	Date: 21.12.2020
 	Copyright (c) 2020 farag & oZ-Zo
 
 	Thanks to all https://forum.ru-board.com members involved
@@ -30,8 +30,8 @@
 	https://github.com/farag2/Windows-10-Sophia-Script
 #>
 
-#region Check
-function Check
+#region Checkings
+function Checkings
 {
 	Set-StrictMode -Version Latest
 
@@ -61,6 +61,10 @@ function Check
 		}
 	}
 
+	# Unblock all files in the folder by removing the Zone.Identifier alternate data stream with a value of "3"
+	# Разблокировать все файлы в папке, удалив альтернативный потоки данных Zone.Identifier со значением "3"
+	Get-ChildItem -Path $PSScriptRoot -Recurse -Force | Unblock-File -Confirm:$false
+
 	# Turn off Controlled folder access to let the script proceed
 	# Выключить контролируемый доступ к папкам
 	switch ((Get-MpPreference).EnableControlledFolderAccess -eq 1)
@@ -76,7 +80,20 @@ function Check
 		}
 	}
 }
-#endregion Check
+#endregion Checkings
+
+<#
+	Enable script logging. The log will be being recorded into the script folder
+	To stop logging just close the console or type "Stop-Transcript"
+
+	Включить логирование работы скрипта. Лог будет записываться в папку скрипта
+	Чтобы остановить логгирование, закройте консоль или наберите "Stop-Transcript"
+#>
+function Logging
+{
+	$TrascriptFilename = "Log-$((Get-Date).ToString("dd.MM.yyyy-HH-mm"))"
+	Start-Transcript -Path $PSScriptRoot\$TrascriptFilename.txt -Force
+}
 
 # Create a restore point
 # Создать точку восстановления
@@ -87,9 +104,9 @@ function CreateRestorePoint
 		Enable-ComputerRestore -Drive $env:SystemDrive
 	}
 
-	# Set system restore point creation frequency to 5 minutes
-	# Установить частоту создания точек восстановления на 5 минут
-	New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 5 -Force
+	# Never skip creating a restore point
+	# Никогда не пропускать создание точек восстановления
+	New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 0 -Force
 
 	Checkpoint-Computer -Description "Windows 10 Sophia Script" -RestorePointType MODIFY_SETTINGS
 
@@ -2570,8 +2587,8 @@ function UnpinTaskbarEdgeStore
 	# Extract the "Unpin from taskbar" string from shell32.dll
 	# Извлечь строку "Открепить от панели задач" из shell32.dll
 	$LocalizedString = [WinAPI.GetStr]::GetString(5387)
+
 	$Apps = (New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
-	$Apps | Where-Object -FilterScript {$_.Path -eq "MSEdge"} | ForEach-Object -Process {$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $LocalizedString} | ForEach-Object -Process {$_.DoIt()}}
 	$Apps | Where-Object -FilterScript {$_.Name -eq "Microsoft Store"} | ForEach-Object -Process {$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $LocalizedString} | ForEach-Object -Process {$_.DoIt()}}
 }
 
@@ -3164,6 +3181,61 @@ function PrtScnSnippingTool
 		}
 	}
 }
+
+<#
+	.SYNOPSIS
+	Let/do not let use a different input method for each app window
+	Позволить/не позволять выбирать метод ввода для каждого окна
+
+	.PARAMETER Disable
+	Let use a different input method for each app window
+	Позволить выбирать метод ввода для каждого окна
+
+	.PARAMETER Enable
+	Do not let use a different input method for each app window
+	Не позволять выбирать метод ввода для каждого окна
+
+	.EXAMPLE
+	AppsLanguageSwitch -Disable
+
+	.EXAMPLE
+	AppsLanguageSwitch -Enable
+
+	.NOTES
+	Current user only
+	Только для текущего пользователя
+#>
+function AppsLanguageSwitch
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Disable"
+		{
+			Set-WinLanguageBarOption -UseLegacySwitchMode
+		}
+		"Enable"
+		{
+			Set-WinLanguageBarOption
+		}
+	}
+}
 #endregion UI & Personalization
 
 #region OneDrive
@@ -3295,6 +3367,7 @@ function InstallOneDrive
 			{
 				Write-Warning -Message $Localization.NoInternetConnection
 				Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+				return
 			}
 		}
 		Get-ScheduledTask -TaskName "Onedrive* Update*" | Start-ScheduledTask
@@ -3660,13 +3733,13 @@ function TempFolder
 			Stop-Process -Name OneDrive -Force -ErrorAction Ignore
 			Stop-Process -Name FileCoAuth -Force -ErrorAction Ignore
 
-			Remove-Item -Path $env:SystemRoot\Temp -Recurse -Force -ErrorAction Ignore
-			Get-Item -Path $env:LOCALAPPDATA\Temp -Force -ErrorAction Ignore | Where-Object -FilterScript {$_.LinkType -ne "SymbolicLink"} | Remove-Item -Recurse -Force -ErrorAction Ignore
-
 			if (-not (Test-Path -Path $env:SystemDrive\Temp))
 			{
 				New-Item -Path $env:SystemDrive\Temp -ItemType Directory -Force
 			}
+
+			Remove-Item -Path $env:SystemRoot\Temp -Recurse -Force -ErrorAction Ignore
+			Get-Item -Path $env:LOCALAPPDATA\Temp -Force -ErrorAction Ignore | Where-Object -FilterScript {$_.LinkType -ne "SymbolicLink"} | Remove-Item -Recurse -Force -ErrorAction Ignore
 
 			if (Test-Path -Path $env:LOCALAPPDATA\Temp -ErrorAction Ignore)
 			{
@@ -6251,7 +6324,14 @@ function ReservedStorage
 		}
 		"Disable"
 		{
-			Set-WindowsReservedStorageState -State Disabled
+			try
+			{
+				Set-WindowsReservedStorageState -State Disabled
+			}
+			catch [System.Runtime.InteropServices.COMException]
+			{
+				Write-Error -Message $Localization.ReservedStorageIsInUse -ErrorAction SilentlyContinue
+			}
 		}
 	}
 }
@@ -6880,6 +6960,7 @@ function EnableWSL2
 		{
 			Write-Warning -Message $Localization.NoInternetConnection
 			Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+			return
 		}
 	}
 
@@ -7189,7 +7270,7 @@ function UnpinAllStartTiles
 	$StartMenuLayoutPath = "$env:TEMP\StartMenuLayout.xml"
 	# Saving StartMenuLayout.xml in UTF-8 encoding
 	# Сохраняем StartMenuLayout.xml в кодировке UTF-8
-	Set-Content -Path $StartMenuLayoutPath -Value (New-Object -TypeName System.Text.UTF8Encoding).GetBytes($StartMenuLayout) -Encoding Byte -Force
+	Set-Content -Path $StartMenuLayoutPath -Value $StartMenuLayout -Force
 
 	# Temporarily disable changing the Start menu layout
 	# Временно выключаем возможность редактировать начальный экран меню "Пуск"
@@ -7217,7 +7298,7 @@ function UnpinAllStartTiles
 	Проверить, находится ли файл syspin.exe в папке. Иначе скачать его
 
 	http://www.technosys.net/products/utils/pintotaskbar
-	SHA256: 6967E7A3C2251812DD6B3FA0265FB7B61AADC568F562A98C50C345908C6E827
+	SHA256: 07D6C3A19A8E3E243E9545A41DD30A9EE1E9AD79CDD6D446C229D689E5AB574A
 #>
 function syspin
 {
@@ -7250,89 +7331,17 @@ function syspin
 		{
 			Write-Warning -Message $Localization.NoInternetConnection
 			Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+			return
 		}
 	}
-}
 
-# Pin the "Control Panel" shortcut to Start within syspin
-# Закрепить ярлык "Панели управления" на начальном экране с помощью syspin
-function PinControlPanel
-{
-	if ($Global:syspin -eq $true)
-	{
-		$Items = (New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
-		$ControlPanelLocalizedName = ($Items | Where-Object -FilterScript {$_.Path -eq "Microsoft.Windows.ControlPanel"}).Name
-
-		Write-Verbose -Message ($Localization.ShortcutPinning -f $ControlPanelLocalizedName) -Verbose
-
-		# Check whether the Control Panel shortcut was ever pinned
-		# Проверка: закреплялся ли когда-нибудь ярлык панели управления
-		if (Test-Path -Path "$env:APPDATA\Microsoft\Windows\Start menu\Programs\$ControlPanelLocalizedName.lnk")
-		{
-			$Arguments = @"
-	"$env:APPDATA\Microsoft\Windows\Start menu\Programs\$ControlPanelLocalizedName.lnk" "51201"
-"@
-			Start-Process -FilePath $PSScriptRoot\syspin.exe -WindowStyle Hidden -ArgumentList $Arguments -Wait
-		}
-		else
-		{
-			# The "Pin" verb is not available on the control.exe file so the shortcut has to be created
-			# Глагол "Закрепить на начальном экране" недоступен для control.exe, поэтому необходимо создать ярлык
-			$Shell = New-Object -ComObject Wscript.Shell
-			$Shortcut = $Shell.CreateShortcut("$env:SystemRoot\System32\$ControlPanelLocalizedName.lnk")
-			$Shortcut.TargetPath = "control"
-			$Shortcut.Save()
-
-			$Arguments = @"
-	"$env:SystemRoot\System32\$ControlPanelLocalizedName.lnk" "51201"
-"@
-			Start-Process -FilePath $PSScriptRoot\syspin.exe -WindowStyle Hidden -ArgumentList $Arguments -Wait
-			Remove-Item -Path "$env:SystemRoot\System32\$ControlPanelLocalizedName.lnk" -Force -ErrorAction Ignore
-		}
-
-		# Restart the Start menu
-		# Перезапустить меню "Пуск"
-		Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
-	}
-}
-
-# Pin the old-style "Devices and Printers" shortcut to Start within syspin
-# Закрепить ярлык старого формата "Устройства и принтеры" на начальном экране с помощью syspin
-function PinDevicesPrinters
-{
-	if ($Global:syspin -eq $true)
-	{
-		$DevicesAndPrintersLocalizedName = (Get-ControlPanelItem -CanonicalName "Microsoft.DevicesAndPrinters").Name
-		Write-Verbose -Message ($Localization.ShortcutPinning -f $DevicesAndPrintersLocalizedName) -Verbose
-
-		$Shell = New-Object -ComObject Wscript.Shell
-		$Shortcut = $Shell.CreateShortcut("$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesAndPrintersLocalizedName.lnk")
-		$Shortcut.TargetPath = "control"
-		$Shortcut.Arguments = "printers"
-		$Shortcut.IconLocation = "$env:SystemRoot\system32\DeviceCenter.dll"
-		$Shortcut.Save()
-
-		# Pause for 3 sec, unless the "Devices and Printers" shortcut won't displayed in the Start menu
-		# Пауза на 3 с, иначе ярлык "Устройства и принтеры" не будет отображаться в меню "Пуск"
-		Start-Sleep -Seconds 3
-		$Arguments = @"
-	"$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesAndPrintersLocalizedName.lnk" "51201"
-"@
-		Start-Process -FilePath $PSScriptRoot\syspin.exe -WindowStyle Hidden -ArgumentList $Arguments -Wait
-	}
-}
-
-# Pin the "Command Prompt" shortcut to Start within syspin
-# Закрепить ярлык "Командная строка" на начальном экране с помощью syspin
-function PinCommandPrompt
-{
-	if ($Global:syspin -eq $true)
-	{
-		$Signature = @{
-			Namespace = "WinAPI"
-			Name = "GetStr"
-			Language = "CSharp"
-			MemberDefinition = @"
+	# Extract string from shell32.dll using its' number
+	# Извлечь строку из shell32.dll, зная ее номер
+	$Signature = @{
+		Namespace = "WinAPI"
+		Name = "GetStr"
+		Language = "CSharp"
+		MemberDefinition = @"
 // https://github.com/Disassembler0/Win10-Initial-Setup-Script/issues/8#issue-227159084
 [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
 public static extern IntPtr GetModuleHandle(string lpModuleName);
@@ -7346,25 +7355,99 @@ public static string GetString(uint strId)
 	return sb.ToString();
 }
 "@
-		}
-		if (-not ("WinAPI.GetStr" -as [type]))
-		{
-			Add-Type @Signature -Using System.Text
-		}
+	}
+	if (-not ("WinAPI.GetStr" -as [type]))
+	{
+		Add-Type @Signature -Using System.Text
+	}
+}
 
+# Pin the "Control Panel" shortcut to Start within syspin
+# Закрепить ярлык "Панели управления" на начальном экране с помощью syspin
+function PinControlPanel
+{
+	if ($Global:syspin)
+	{
+		# Extract the "Control Panel" string from shell32.dll
+		# Извлечь строку "Панель управления" из shell32.dll
+		$ControlPanel = [WinAPI.GetStr]::GetString(12712)
+
+		Write-Verbose -Message ($Localization.ShortcutPinning -f $ControlPanel) -Verbose
+
+		# Check whether the Control Panel shortcut was ever pinned
+		# Проверка: закреплялся ли когда-нибудь ярлык панели управления
+		if (Test-Path -Path "$env:APPDATA\Microsoft\Windows\Start menu\Programs\$ControlPanel.lnk")
+		{
+			$Arguments = @"
+	"$env:APPDATA\Microsoft\Windows\Start menu\Programs\$ControlPanel.lnk" "51201"
+"@
+			Start-Process -FilePath $PSScriptRoot\syspin.exe -WindowStyle Hidden -ArgumentList $Arguments -Wait
+		}
+		else
+		{
+			# The "Pin" verb is not available on the control.exe file so the shortcut has to be created
+			# Глагол "Закрепить на начальном экране" недоступен для control.exe, поэтому необходимо создать ярлык
+			$Shell = New-Object -ComObject Wscript.Shell
+			$Shortcut = $Shell.CreateShortcut("$env:SystemRoot\System32\$ControlPanel.lnk")
+			$Shortcut.TargetPath = "control"
+			$Shortcut.Save()
+
+			$Arguments = @"
+	"$env:SystemRoot\System32\$ControlPanel.lnk" "51201"
+"@
+			Start-Process -FilePath $PSScriptRoot\syspin.exe -WindowStyle Hidden -ArgumentList $Arguments -Wait
+
+			Remove-Item -Path "$env:SystemRoot\System32\$ControlPanel.lnk" -Force -ErrorAction Ignore
+		}
+	}
+}
+
+# Pin the old-style "Devices and Printers" shortcut to Start within syspin
+# Закрепить ярлык старого формата "Устройства и принтеры" на начальном экране с помощью syspin
+function PinDevicesPrinters
+{
+	if ($Global:syspin)
+	{
+		# Extract the "Devices and Printers" string from shell32.dll
+		# Извлечь строку "Устройства и принтеры" из shell32.dll
+		$DevicesPrinters = [WinAPI.GetStr]::GetString(30493)
+
+		Write-Verbose -Message ($Localization.ShortcutPinning -f $DevicesPrinters) -Verbose
+
+		$Shell = New-Object -ComObject Wscript.Shell
+		$Shortcut = $Shell.CreateShortcut("$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesPrinters.lnk")
+		$Shortcut.TargetPath = "control"
+		$Shortcut.Arguments = "printers"
+		$Shortcut.IconLocation = "$env:SystemRoot\system32\DeviceCenter.dll"
+		$Shortcut.Save()
+
+		# Pause for 3 sec, unless the "Devices and Printers" shortcut won't displayed in the Start menu
+		# Пауза на 3 с, иначе ярлык "Устройства и принтеры" не будет отображаться в меню "Пуск"
+		Start-Sleep -Seconds 3
+
+		$Arguments = @"
+	"$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesPrinters.lnk" "51201"
+"@
+		Start-Process -FilePath $PSScriptRoot\syspin.exe -WindowStyle Hidden -ArgumentList $Arguments -Wait
+	}
+}
+
+# Pin the "Command Prompt" shortcut to Start within syspin
+# Закрепить ярлык "Командная строка" на начальном экране с помощью syspin
+function PinCommandPrompt
+{
+	if ($Global:syspin)
+	{
 		# Extract the "Command Prompt" string from shell32.dll
-		# Извлечь строку Командная строка" из shell32.dll
+		# Извлечь строку "Командная строка" из shell32.dll
 		$CommandPrompt = [WinAPI.GetStr]::GetString(22022)
+
 		Write-Verbose -Message ($Localization.ShortcutPinning -f $CommandPrompt) -Verbose
 
 		$Arguments = @"
 	"$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" "51201"
 "@
 		Start-Process -FilePath $PSScriptRoot\syspin.exe -WindowStyle Hidden -ArgumentList $Arguments -Wait
-
-		# Restart the Start menu
-		# Перезапустить меню "Пуск"
-		Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
 	}
 }
 #endregion Start menu
@@ -8080,7 +8163,7 @@ function CleanUpTask
 `$Template = [Windows.UI.Notifications.ToastNotificationManager]::GetTemplateContent([Windows.UI.Notifications.ToastTemplateType]::ToastText01)
 
 `$ToastXML = [xml]`$Template.GetXml()
-`$ToastXML.GetElementsByTagName("""text""").AppendChild(`$ToastXML.CreateTextNode("""$Localization.CleanUpTaskToast"""))
+`$ToastXML.GetElementsByTagName("""text""").AppendChild(`$ToastXML.CreateTextNode("""$($Localization.CleanUpTaskToast)"""))
 
 `$XML = New-Object -TypeName Windows.Data.Xml.Dom.XmlDocument
 `$XML.LoadXml(`$ToastXML.OuterXml)
@@ -8905,7 +8988,7 @@ function EventViewerCustomView
 
 			# Saving ProcessCreation.xml in UTF-8 encoding
 			# Сохраняем ProcessCreation.xml в кодировке UTF-8
-			Set-Content -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Value (New-Object -TypeName System.Text.UTF8Encoding).GetBytes($XML) -Encoding Byte -Force
+			Set-Content -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Value $XML -Force
 		}
 	}
 }

@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Windows 10 Sophia Script"
 
-	Version: v5.3
-	Date: 12.12.2020
+	Version: v5.3.1
+	Date: 21.12.2020
 	Copyright (c) 2020 farag & oZ-Zo
 
 	Thanks to all https://forum.ru-board.com members involved
@@ -11,9 +11,9 @@
 	.DESCRIPTION
 	Supported Windows 10 versions: 2004 (20H1)/2009 (20H2), 19041/19042, Home/Pro/Enterprise, x64
 
-	Due to the fact that the script includes more than 270 functions, you must read the entire preset file carefully
-	and comment out/uncomment those functions that you do/do not want to be executed
-	Every tweak in a preset file has its' corresponding function to restore the default settings
+	Due to the fact that the script includes more than 150 functions with different arguments, you must read the entire Sophia.ps1 carefully and
+	comment out/uncomment those functions that you do/do not want to be executed
+	Every tweak in the preset file has its' corresponding function to restore the default settings
 
 	Running the script is best done on a fresh install because running it on wrong tweaked system may result in errors occurring
 
@@ -39,16 +39,25 @@
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.3 | $([char]0x00A9) farag & oz-zo, 2015–2020"
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.3.1 | ©️ farag & oz-zo, 2015–2020 | $((Invoke-WebRequest -Uri https://wttr.in/?format=3 -UseBasicParsing).Content) | Happy New Year!"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Sophia.psd1 -PassThru -Force
 
 Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia
 
-# Checking
-# Проверка
-Check
+# Checkings
+# Проверки
+Checkings
+
+<#
+	Enable script logging. The log will be being recorded into the script folder
+	To stop logging just close the console or type "Stop-Transcript"
+
+	Включить логирование работы скрипта. Лог будет записываться в папку скрипта
+	Чтобы остановить логгирование, закройте консоль или наберите "Stop-Transcript"
+#>
+# Logging
 
 # Create a restore point
 # Создать точку восстановления
@@ -440,6 +449,14 @@ PrtScnSnippingTool -Enable
 # Do not use the PrtScn button to open screen snipping (current user only) (default value)
 # Не использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана (только для текущего пользователя) (значение по умолчанию)
 # PrtScnSnippingTool -Disable
+
+# Let let use a different input method for each app window (current user only)
+# Позволить выбирать метод ввода для каждого окна (только для текущего пользователя)
+AppsLanguageSwitch -Disable
+
+# Do not let use a different input method for each app window (current user only) (default value)
+# Не позволять выбирать метод ввода для каждого окна (только для текущего пользователя) (значение по умолчанию)
+# AppsLanguageSwitch -Enable
 #endregion UI & Personalization
 
 #region OneDrive
@@ -497,7 +514,7 @@ Hibernate -Disable
 
 # Change the %TEMP% environment variable path to "%SystemDrive%\Temp" (both machine-wide, and for the current user)
 # Изменить путь переменной среды для %TEMP% на "%SystemDrive%\Temp" (для всех пользователей)
-TempFolder -SystemDrive
+# TempFolder -SystemDrive
 
 # Change %TEMP% environment variable path to "%LOCALAPPDATA%\Temp" (both machine-wide, and for the current user) (default value)
 # Изменить путь переменной среды для %TEMP% на "LOCALAPPDATA%\Temp" (для всех пользователей) (значение по умолчанию)
@@ -847,7 +864,7 @@ UnpinAllStartTiles
 	Проверить, находится ли файл syspin.exe в папке. Иначе скачать его
 
 	http://www.technosys.net/products/utils/pintotaskbar
-	SHA256: 6967E7A3C2251812DD6B3FA0265FB7B61AADC568F562A98C50C345908C6E827
+	SHA256: 07D6C3A19A8E3E243E9545A41DD30A9EE1E9AD79CDD6D446C229D689E5AB574A
 #>
 syspin
 
@@ -1177,7 +1194,7 @@ ShareContext -Hide
 
 # Hide the "Edit with Paint 3D" item from the context menu
 # Скрыть пункт "Изменить с помощью Paint 3D" из контекстного меню
-EditWithPaint3DContext -Hide ###
+EditWithPaint3DContext -Hide
 
 # Show the "Edit with Paint 3D" item in the context menu (default value)
 # Показывать пункт "Изменить с помощью Paint 3D" в контекстном меню (значение по умолчанию)
