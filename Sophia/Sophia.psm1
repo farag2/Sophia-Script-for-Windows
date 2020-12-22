@@ -3817,7 +3817,7 @@ function TempFolder
 
 			if (-not (Test-Path -Path $env:SystemRoot\Temp))
 			{
-				New-Item -Path $env:SystemRoot\Temp
+				New-Item -Path $env:SystemRoot\Temp -ItemType Directory -Force
 			}
 			if (-not (Test-Path -Path $env:LOCALAPPDATA\Temp))
 			{
