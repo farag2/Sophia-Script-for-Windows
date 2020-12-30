@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                   = Bu betik sadece Windows 10 x64 destekliyor
-UnsupportedOSBuild                     = Bu betik sadece Windows 10 2004/20H1 sürüm ve üstünü destekliyor
+UnsupportedOSBuild                     = Bu betik sadece Windows 10 1809 Enterprise LTSC
 ControlledFolderAccessDisabled         = Kontrollü klasör erişimi devre dışı bırakıldı
 ScheduledTasks                         = Zamanlanan görevler
 ClearFolder                            = "{0}" klasöründeki tüm dosyaları silin?

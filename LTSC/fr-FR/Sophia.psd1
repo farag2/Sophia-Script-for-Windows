@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                   = Le script supporte uniquement Windows 10 x64
-UnsupportedOSBuild                     = Le script supporte les versions Windows 10 2004/20H1 et ultérieures
+UnsupportedOSBuild                     = Le script supporte les versions Windows 10 1809 Enterprise LTSC
 ControlledFolderAccessDisabled         = Contrôle d'accès aux dossiers désactivé
 ScheduledTasks                         = Tâches planifiées
 ClearFolder                            = Supprimer tous les fichiers dans le dossier "{0}"?
