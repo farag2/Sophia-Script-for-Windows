@@ -191,6 +191,9 @@ function TelemetryService
 
 	.EXAMPLE
 	DiagnosticDataLevel -Default
+
+	.LINK
+	[Possible values for AllowTelemetry](https://docs.microsoft.com/en-us/mem/configmgr/desktop-analytics/group-policy-settings)
 #>
 function DiagnosticDataLevel
 {
@@ -257,6 +260,9 @@ function DiagnosticDataLevel
 	.NOTES
 	Current user only
 	Только для текущего пользователя
+
+	.LINK
+	[Windows Error Reporting subkey](https://docs.microsoft.com/en-us/windows/win32/wer/wer-settings)
 #>
 function ErrorReporting
 {
@@ -317,6 +323,9 @@ function ErrorReporting
 	.NOTES
 	Current user only
 	Только для текущего пользователя
+
+	.LINK
+	[Possible values for NumberOfSIUFInPeriod](https://docs.microsoft.com/en-us/windows/privacy/manage-connections-from-windows-operating-system-components-to-microsoft-services)
 #>
 function WindowsFeedback
 {
@@ -749,6 +758,9 @@ function SigninInfo
 	.NOTES
 	Current user only
 	Только для текущего пользователя
+
+	.LINK
+	[Possible values for HttpAcceptLanguageOptOut](https://docs.microsoft.com/en-us/windows/privacy/manage-connections-from-windows-operating-system-components-to-microsoft-services)
 #>
 function LanguageListAccess
 {
@@ -804,6 +816,9 @@ function LanguageListAccess
 	.NOTES
 	Current user only
 	Только для текущего пользователя
+
+	.LINK
+	[Possible values for AdvertisingInfo](https://docs.microsoft.com/en-us/windows/privacy/manage-connections-from-windows-operating-system-components-to-microsoft-services)
 #>
 function AdvertisingID
 {
