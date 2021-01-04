@@ -178,4 +178,4 @@ To run the script:
 
 ## SophiApp Community Edition (C# + WPF)
 
-Internal build by [oz-zo](https://github.com/oz-zo) being compiled in the private repository every Suturday within Github Actions
+Internal build by [oz-zo](https://github.com/oz-zo) being compiled in the [SophiApp](https://github.com/farag2/SophiApp) repository every Suturday within Github Actions
