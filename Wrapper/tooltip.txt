@@ -1,0 +1,311 @@
+<#privacy&telemetry#>
+
+TelemetryService -Disable;Disable the "Connected User Experiences and Telemetry" service;
+TelemetryService -Enable;Enable the "Connected User Experiences and Telemetry" service (default value);
+DiagnosticDataLevel -Minimal;Set the OS level of diagnostic data gathering to minimum;
+DiagnosticDataLevel -Default;Set the default OS level of diagnostic data gathering;
+ErrorReporting -Disable;Turn off Windows Error Reporting for the current user;
+ErrorReporting -Enable;Turn on Windows Error Reporting for the current user (default value);
+WindowsFeedback -Disable;Change Windows feedback frequency to "Never" for the current user;
+WindowsFeedback -Enable;Change Windows Feedback frequency to "Automatically" for the current user (default value);
+ScheduledTasks -Disable;Turn off diagnostics tracking scheduled tasks;
+ScheduledTasks -Enable;Turn on diagnostics tracking scheduled tasks (default value);
+SigninInfo -Disable;Do not use sign-in info to automatically finish setting up device and reopen apps after an update or restart (current user only);
+SigninInfo -Enable;Use sign-in info to automatically finish setting up device and reopen apps after an update or restart (current user only) (default value);
+LanguageListAccess -Disable;Do not let websites provide locally relevant content by accessing language list (current user only);
+LanguageListAccess -Enable;Let websites provide locally relevant content by accessing language list (current user only) (default value);
+AdvertisingID -Disable;Do not allow apps to use advertising ID (current user only);
+AdvertisingID -Enable;Allow apps to use advertising ID (current user only) (default value);
+ShareAcrossDevices -Disable;Do not let apps on other devices open and message apps on this device, and vice versa (current user only);
+ShareAcrossDevices -Enable;Let apps on other devices open and message apps on this device, and vice versa (current user only) (default value);
+WindowsWelcomeExperience -Hide;Hide the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested (current user only);
+WindowsWelcomeExperience -Show;Show the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested (current user only) (default value);
+WindowsTips -Enable;Get tip, trick, and suggestions as you use Windows (current user only) (default value);
+WindowsTips -Disable;Do not get tip, trick, and suggestions as you use Windows (current user only);
+SettingsSuggestedContent -Hide;Hide suggested content in the Settings app (current user only);
+SettingsSuggestedContent -Show;Show suggested content in the Settings app (current user only) (default value);
+AppsSilentInstalling -Disable;Turn off automatic installing suggested apps (current user only);
+AppsSilentInstalling -Enable;Turn on automatic installing suggested apps (current user only) (default value);
+WhatsNewInWindows -Disable;Do not suggest ways I can finish setting up my device to get the most out of Windows (current user only);
+WhatsNewInWindows -Enable;Suggest ways I can finish setting up my device to get the most out of Windows (default value);
+TailoredExperiences -Disable;Do not offer tailored experiences based on the diagnostic data setting (current user only);
+TailoredExperiences -Enable;Offer tailored experiences based on the diagnostic data setting (default value);
+BingSearch -Disable;Disable Bing search in the Start Menu (for the USA only);
+BingSearch -Enable;Enable Bing search in the Start Menu (current user only) (default value)
+
+<#ui&personal#>
+
+ThisPC -Show;Show "This PC" on Desktop (current user only);
+ThisPC -Hide;Hide "This PC" on Desktop (current user only) (default value);
+CheckBoxes -Disable;Do not use check boxes to select items (current user only);
+CheckBoxes -Enable;Use check boxes to select items (current user only) (default value);
+HiddenItems -Enable;Show hidden files, folders, and drives (current user only);
+HiddenItems -Disable;Do not show hidden files, folders, and drives (current user only) (default value);
+FileExtensions -Show;Show file name extensions (current user only);
+FileExtensions -Hide;Hide file name extensions (current user only) (default value);
+MergeConflicts -Show;Do not hide folder merge conflicts (current user only);
+MergeConflicts -Hide;Hide folder merge conflicts (current user only) (default value);
+OpenFileExplorerTo -ThisPC;Open File Explorer to: "This PC" (current user only);
+OpenFileExplorerTo -QuickAccess;Open File Explorer to: "Quick access" (current user only) (default value);
+CortanaButton -Hide;Hide Cortana button on the taskbar (current user only);
+CortanaButton -Show;Show Cortana button on the taskbar (current user only) (default value);
+OneDriveFileExplorerAd -Hide;Do not show sync provider notification within File Explorer (current user only);
+OneDriveFileExplorerAd -Show;Show sync provider notification within File Explorer (current user only) (default value);
+TaskViewButton -Hide;Hide Task View button on the taskbar (current user only);
+TaskViewButton -Show;Show Task View button on the taskbar (current user only) (default value);
+PeopleTaskbar -Hide;Hide People button on the taskbar (current user only);
+PeopleTaskbar -Show;Show People button on the taskbar (current user only) (default value);
+SecondsInSystemClock -Show;Show seconds on the taskbar clock (current user only);
+SecondsInSystemClock -Hide;Hide seconds on the taskbar clock (current user only) (default value);
+SnapAssist -Disable;When I snap a window, do not show what I can snap next to it (current user only);
+SnapAssist -Enable;When I snap a window, show what I can snap next to it (current user only) (default value);
+FileTransferDialog -Detailed;Always open the file transfer dialog box in the detailed mode (current user only);
+FileTransferDialog -Compact;Always open the file transfer dialog box in the compact mode (current user only) (default value);
+FileExplorerRibbon -Expanded;Always expand the ribbon in the File Explorer (current user only);
+FileExplorerRibbon -Minimized;Always minimize the ribbon in the File Explorer (current user only) (default value);
+RecycleBinDeleteConfirmation -Enable;Display recycle bin files delete confirmation;
+RecycleBinDeleteConfirmation -Disable;Do not display recycle bin files delete confirmation (default value);
+3DObjects -Hide;Hide the "3D Objects" folder in "This PC" and "Quick access" (current user only);
+3DObjects -Show;Show the "3D Objects" folder in "This PC" and "Quick access" (current user only) (default value);
+QuickAccessFrequentFolders -Hide;Hide frequently used folders in "Quick access" (current user only);
+QuickAccessFrequentFolders -Show;Show frequently used folders in "Quick access" (current user only) (default value);
+QuickAccessRecentFiles -Hide;Do not show recently used files in Quick access (current user only);
+QuickAccessRecentFiles -Show;Show recently used files in Quick access (current user only) (default value);
+WindowsInkWorkspace -Hide;Do not show the "Windows Ink Workspace" button on the taskbar (current user only);
+WindowsInkWorkspace -Show;Show the "Windows Ink Workspace" button in taskbar (current user only) (default value);
+TrayIcons -Show;Always show all icons in the notification area (current user only);
+TrayIcons -Hide;Do not show all icons in the notification area (current user only) (default value);
+UnpinTaskbarEdgeStore;Unpin "Microsoft Edge" and "Microsoft Store" from the taskbar (current user only);
+ControlPanelView -LargeIcons;View the Control Panel icons by: large icons (current user only);
+ControlPanelView -Category;View the Control Panel icons by: category (current user only) (default value);
+WindowsColorScheme -Dark;Set the Windows mode color scheme to the dark (current user only);
+WindowsColorScheme -Light;Set the Windows mode color scheme to the light (current user only);
+AppMode -Dark;Set the default app mode color scheme to the dark (current user only);
+AppMode -Light;Set the default app mode color scheme to the light (current user only);
+NewAppInstalledNotification -Hide;Do not show the "New App Installed" indicator;
+NewAppInstalledNotification -Show;Show the "New App Installed" indicator (default value);
+FirstLogonAnimation -Disable;Hide user first sign-in animation after the upgrade;
+FirstLogonAnimation -Enable;Show user first sign-in animation after the upgrade (default value);
+JPEGWallpapersQuality -Max;Set the quality factor of the JPEG desktop wallpapers to maximum (current user only);
+JPEGWallpapersQuality -Default;Set the quality factor of the JPEG desktop wallpapers to default (current user only);
+TaskManagerWindow -Expanded;Start Task Manager in expanded mode (current user only);
+TaskManagerWindow -Compact;Start Task Manager in compact mode (current user only) (default value);
+RestartNotification -Show;Show a notification when your PC requires a restart to finish updating;
+RestartNotification -Hide;Do not show a notification when your PC requires a restart to finish updating (default value);
+ShortcutsSuffix -Disable;Do not add the "- Shortcut" suffix to the file name of created shortcuts (current user only);
+ShortcutsSuffix -Enable;Add the "- Shortcut" suffix to the file name of created shortcuts (current user only) (default value);
+PrtScnSnippingTool -Enable;Use the PrtScn button to open screen snipping (current user only);
+PrtScnSnippingTool -Disable;Do not use the PrtScn button to open screen snipping (current user only) (default value);
+AppsLanguageSwitch -Disable;Let let use a different input method for each app window (current user only);
+AppsLanguageSwitch -Enable;Do not let use a different input method for each app window (current user only) (default value)
+
+<#onedrive#>
+
+UninstallOneDrive;Uninstall OneDrive;
+InstallOneDrive;Install OneDrive (current user only) (default value)
+
+<#system#>
+
+StorageSense -Enable;Turn on Storage Sense (current user only);
+StorageSense -Disable;Turn off Storage Sense (current user only) (default value);
+StorageSenseFrequency -Month;Run Storage Sense every month (current user only);
+StorageSenseFrequency -Default;Run Storage Sense during low free disk space (default value) (current user only);
+StorageSenseTempFiles -Enable;Delete temporary files that apps aren't using (current user only);
+StorageSenseTempFiles -Disable;Do not delete temporary files that apps aren't using (current user only);
+StorageSenseRecycleBin -Enable;Delete files in recycle bin if they have been there for over 30 days (current user only);
+StorageSenseRecycleBin -Disable;Do not delete files in recycle bin if they have been there for over 30 days (current user only);
+Hibernate -Disable;Disable hibernation if the device is not a laptop;
+Hibernate -Enable;Enable hibernate (default value);
+TempFolder -SystemDrive;Change the %TEMP% environment variable path to "%SystemDrive%\Temp" (both machine-wide, and for the current user);
+TempFolder -Default;Change %TEMP% environment variable path to "%LOCALAPPDATA%\Temp" (both machine-wide, and for the current user) (default value);
+Win32LongPathLimit -Disable;Disable Windows 260 characters path limit;
+Win32LongPathLimit -Enable;Enable Windows 260 character path limit (default value);
+BSoDStopError -Enable;Display the Stop error information on the BSoD;
+BSoDStopError -Disable;Do not display the Stop error information on the BSoD (default value);
+AdminApprovalMode -Disable;Change "Behavior of the elevation prompt for administrators in Admin Approval Mode" to "Elevate without prompting";
+AdminApprovalMode -Enable;Change "Behavior of the elevation prompt for administrators in Admin Approval Mode" to "Prompt for consent for non-Windows binaries" (default value);
+MappedDrivesAppElevatedAccess -Enable;Turn on access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled;
+MappedDrivesAppElevatedAccess -Disable;Turn off access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled (default value);
+DeliveryOptimization -Disable;Opt out of the Delivery Optimization-assisted updates downloading;
+DeliveryOptimization -Enable;Opt-in to the Delivery Optimization-assisted updates downloading (default value);
+WaitNetworkStartup -Enable;Always wait for the network at computer startup and logon for workgroup networks;
+WaitNetworkStartup -Disable;Never wait for the network at computer startup and logon for workgroup networks (default value);
+WindowsManageDefaultPrinter -Disable;Do not let Windows decide which printer should be the default one (current user only);
+WindowsManageDefaultPrinter -Enable;Let Windows decide which printer should be the default one (current user only) (default value);
+WindowsFeatures -Disable;Disable the Windows features using the pop-up dialog box that enables the user to select features to remove;
+WindowsFeatures -Enable;Enable the Windows features using the pop-up dialog box that enables the user to select features to remove;
+WindowsCapabilities -Disable;Disable Features On Demand v2 (FODv2) capabilities using the pop-up dialog box;
+WindowsCapabilities -Enable;Enable Feature On Demand v2 (FODv2) capabilities using the pop-up dialog box;
+UpdateMicrosoftProducts -Enable;Opt-in to Microsoft Update service, so to receive updates for other Microsoft products;
+UpdateMicrosoftProducts -Disable;Opt-out of Microsoft Update service, so not to receive updates for other Microsoft products (default value);
+BackgroundUWPApps -Disable;Do not let all UWP apps run in the background (current user only);
+BackgroundUWPApps -Enable;Let all UWP apps run in the background (current user only) (default value);
+PowerManagementScheme -High;Set the power management scheme on "High performance" if device is a desktop;
+PowerManagementScheme -Balanced;Set the power management scheme on "Balanced" (default value);
+LatestInstalled.NET -Enable;Use latest installed .NET runtime for all apps;
+LatestInstalled.NET -Disable;Do not use latest installed .NET runtime for all apps (default value);
+PCTurnOffDevice -Disable;Do not allow the computer (if device is not a laptop) to turn off the network adapters to save power;
+PCTurnOffDevice -Enable;Allow the computer to turn off the network adapters to save power (default value);
+SetInputMethod -English;Set the default input method to the English language;
+SetInputMethod -Default;Reset the default input method;
+WinPrtScrFolder -Desktop;Save screenshots by pressing Win+PrtScr to the Desktop folder (current user only);
+WinPrtScrFolder -Default;Save screenshots by pressing Win+PrtScr to the Pictures folder (current user only) (default value);
+RecommendedTroubleshooting -Automatic;Run troubleshooters automatically, then notify. In order this feature to work the OS level of diagnostic data gathering must be set to "Optional diagnostic data";
+RecommendedTroubleshooting -Default;Ask me before running troubleshooters (default value). In order this feature to work the OS level of diagnostic data gathering must be set to "Optional diagnostic data";
+FoldersLaunchSeparateProcess -Enable;Launch folder windows in a separate process (current user only);
+FoldersLaunchSeparateProcess -Disable;Do not launch folder windows in a separate process (current user only) (default value);
+ReservedStorage -Disable;Disable and delete reserved storage after the next update installation;
+ReservedStorage -Enable;Enable reserved storage (default value);
+F1HelpPage -Disable;Disable help lookup via F1 (current user only);
+F1HelpPage -Enable;Enable help lookup via F1 (current user only) (default value);
+NumLock -Enable;Enable Num Lock at startup;
+NumLock -Disable;Disable Num Lock at startup (default value);
+StickyShift -Disable;Disable StickyKey after tapping the Shift key 5 times (current user only);
+StickyShift -Enable;Enable StickyKey after tapping the Shift key 5 times (current user only) (default value);
+Autoplay -Disable;Disable AutoPlay for all media and devices (current user only);
+Autoplay -Enable;Enable AutoPlay for all media and devices (current user only) (default value);
+ThumbnailCacheRemoval -Disable;Disable thumbnail cache removal;
+ThumbnailCacheRemoval -Enable;Enable thumbnail cache removal (default value);
+SaveRestartableApps -Enable;Enable automatically saving my restartable apps when signing out and restart them after signing in (current user only);
+SaveRestartableApps -Disable;Disable automatically saving my restartable apps when signing out and restart them after signing in (current user only) (default value);
+NetworkDiscovery -Enable;Enable "Network Discovery" and "File and Printers Sharing" for workgroup networks;
+NetworkDiscovery -Disable;Disable "Network Discovery" and "File and Printers Sharing" for workgroup networks (default value);
+SmartActiveHours -Enable;Automatically adjust active hours for me based on daily usage;
+SmartActiveHours -Disable;Do not automatically adjust active hours for me based on daily usage (default value);
+DeviceRestartAfterUpdate -Enable;Restart this device as soon as possible when a restart is required to install an update;
+DeviceRestartAfterUpdate -Disable;Do not restart this device as soon as possible when a restart is required to install an update (default value);
+WSL -Enable;Install the Windows Subsystem for Linux (WSL). https://github.com/farag2/Windows-10-Sophia-Script/issues/43. https://github.com/microsoft/WSL/issues/5437;
+WSL -Disable;Uninstall the Windows Subsystem for Linux (WSL);
+EnableWSL2;Download and install the Linux kernel update package. Set WSL 2 as the default version when installing a new Linux distribution. Run the function only after WSL installed and PC restart. https://github.com/microsoft/WSL/issues/5437. https://github.com/farag2/Windows-10-Sophia-Script/issues/43;
+WSLSwap -Disable;Disable swap file in WSL. Use only if the %TEMP% environment variable path changed. https://github.com/microsoft/WSL/issues/5437;
+WSLSwap -Enable;Enable swap file in WSL. https://github.com/microsoft/WSL/issues/5437
+
+<#start#>
+
+RecentlyAddedApps -Hide;Hide recently added apps in the Start menu;
+RecentlyAddedApps -Show;Show recently added apps in the Start menu (default value);
+AppSuggestions -Hide;Hide app suggestions in the Start menu;
+AppSuggestions -Show;Show app suggestions in the Start menu (default value);
+RunCMDShortcut -Elevated;Run the Command Prompt shortcut from the Start menu as Administrator;
+RunCMDShortcut -NonElevated;Run the Command Prompt shortcut from the Start menu as user (default value);
+UnpinAllStartTiles;Unpin all the Start tiles;
+syspin;Test if syspin.exe is in a folder. Unless download it. http://www.technosys.net/products/utils/pintotaskbar. SHA256: 07D6C3A19A8E3E243E9545A41DD30A9EE1E9AD79CDD6D446C229D689E5AB574A;
+PinControlPanel;Pin the "Control Panel" shortcut to Start within syspin;
+PinDevicesPrinters;Pin the old-style "Devices and Printers" shortcut to Start within syspin;
+PinCommandPrompt;Pin the Command Prompt" shortcut to Start within syspin
+
+<#uwp#>
+
+UninstallUWPApps;Uninstall UWP apps using the pop-up dialog box that enables the user to select packages to remove. App packages will not be installed for new users if "Uninstall for All Users" is checked;
+InstallHEVC;Open Microsoft Store "HEVC Video Extensions from Device Manufacturer" page. The extension can be installed without Microsoft account for free instead of $0.99. "Movies & TV" app required;
+CortanaAutostart -Disable;Disable Cortana autostarting;
+CortanaAutostart -Enable;Enable Cortana autostarting (default value);
+CheckUWPAppsUpdates;Check for UWP apps updates
+
+<#gaming#>
+
+XboxGameBar -Disable;Disable Xbox Game Bar;
+XboxGameBar -Enable;Enable Xbox Game Bar (default value);
+XboxGameTips -Disable;Disable Xbox Game Bar tips;
+XboxGameTips -Enable;Enable Xbox Game Bar tips (default value);
+SetAppGraphicsPerformance;Set "High performance" in graphics performance preference for an app. Only with a dedicated GPU;
+GPUScheduling -Enable;Turn on hardware-accelerated GPU scheduling. Restart needed. Only with a dedicated GPU and WDDM verion is 2.7 or higher;
+GPUScheduling -Disable;Turn off hardware-accelerated GPU scheduling (default value). Restart needed
+
+<#scheduled#>
+
+CleanUpTask -Register;Create the "Windows Cleanup" task to clean up unused files and Windows updates in the Task Scheduler. A minute before the task starts, a warning in the Windows action center will appear. The task runs every 90 days;
+CleanUpTask -Delete;Delete the "Windows Cleanup" task to clean up unused files and Windows updates in the Task Scheduler;
+SoftwareDistributionTask -Register;Create the "SoftwareDistribution" task to clear the %SystemRoot%\SoftwareDistribution\Download folder in the Task Scheduler. The task runs on Thursdays every 4 weeks;
+SoftwareDistributionTask -Delete;Delete the "SoftwareDistribution" task to clear the %SystemRoot%\SoftwareDistribution\Download folder in the Task Scheduler;
+CreateTempTask;Create a task to clear the %TEMP% folder in the Task Scheduler. The task runs every 62 days;
+DeleteTempTask;Delete a task to clear the %TEMP% folder in the Task Scheduler
+
+<#defender&security#>
+
+AddProtectedFolders;Enable Controlled folder access and add protected folders;
+RemoveProtectedFolders;Remove all added protected folders;
+AddAppControlledFolder;Allow an app through Controlled folder access;
+RemoveAllowedAppsControlledFolder;Remove all allowed apps through Controlled folder access;
+AddDefenderExclusionFolder;Add a folder to the exclusion from Microsoft Defender scanning;
+RemoveDefenderExclusionFolders;Remove all excluded folders from Microsoft Defender scanning;
+AddDefenderExclusionFile;Add a file to the exclusion from Microsoft Defender scanning;
+RemoveDefenderExclusionFiles;Remove all excluded files from Microsoft Defender scanning;
+NetworkProtection -Enable;Enable Microsoft Defender Exploit Guard network protection;
+NetworkProtection -Disable;Disable Microsoft Defender Exploit Guard network protection (default value);
+PUAppsDetection -Enable;Enable detection for potentially unwanted applications and block them;
+PUAppsDetection -Disable;Disable detection for potentially unwanted applications and block them (default value);
+DefenderSandbox -Enable;Enable sandboxing for Microsoft Defender;
+DefenderSandbox -Disable;Disable sandboxing for Microsoft Defender (default value);
+DismissMSAccount;Dismiss Microsoft Defender offer in the Windows Security about signing in Microsoft account;
+DismissSmartScreenFilter;Dismiss Microsoft Defender offer in the Windows Security about turning on the SmartScreen filter for Microsoft Edge;
+AuditProcess -Enable;Enable events auditing generated when a process is created or starts;
+AuditProcess -Disable;Disable events auditing generated when a process is created or starts (default value);
+AuditCommandLineProcess -Enable;Include command line in process creation events. In order this feature to work events auditing will be enabled ("AuditProcess -Enable" function);
+AuditCommandLineProcess -Disable;Do not include command line in process creation events (default value);
+EventViewerCustomView -Enable;Create "Process Creation" Event Viewer Custom View. In order this feature to work events auditing ("AuditProcess -Enable" function) and command line in process creation events will be enabled;
+EventViewerCustomView -Disable;Remove "Process Creation" Event Viewer Custom View (default value);
+PowerShellModulesLogging -Enable;Enable logging for all Windows PowerShell modules;
+PowerShellModulesLogging -Disable;Disable logging for all Windows PowerShell modules (default value);
+PowerShellScriptsLogging -Enable;Enable logging for all PowerShell scripts input to the Windows PowerShell event log;
+PowerShellScriptsLogging -Disable;Disable logging for all PowerShell scripts input to the Windows PowerShell event log (default value);
+AppsSmartScreen -Disable;Disable apps and files checking within Microsofot Defender SmartScreen;
+AppsSmartScreen -Enable;Enable apps and files checking within Microsofot Defender SmartScree (default value);
+SaveZoneInformation -Disable;Disable the Attachment Manager marking files that have been downloaded from the Internet as unsafe (current user only);
+SaveZoneInformation -Enable;Enable the Attachment Manager marking files that have been downloaded from the Internet as unsafe (current user only) (default value);
+WindowsScriptHost -Disable;Disable Windows Script Host (current user only). It becomes impossible to run .js and .vbs files;
+WindowsScriptHost -Enable;Emable Windows Script Host (current user only) (default value);
+WindowsSandbox -Enable;Enable Windows Sandbox;
+WindowsSandbox -Disable;Disable Windows Sandbox (default value)
+
+<#context#>
+
+MSIExtractContext -Add;Add the "Extract all" item to Windows Installer (.msi) context menu;
+MSIExtractContext -Remove;Remove the "Extract all" item from Windows Installer (.msi) context menu (default value);
+CABInstallContext -Add;Add the "Install" item to the .cab archives context menu;
+CABInstallContext -Remove;Remove the "Install" item from the .cab archives context menu (default value);
+RunAsDifferentUserContext -Add;Add the "Run as different user" item to the .exe files types context menu;
+RunAsDifferentUserContext -Remove;Remove the "Run as different user" item from the .exe files types context menu (default value);
+CastToDeviceContext -Hide;Hide the "Cast to Device" item from the context menu;
+CastToDeviceContext -Show;Show the "Cast to Device" item in the context menu (default value);
+ShareContext -Hide;Hide the "Share" item from the context menu;
+ShareContext -Show;Show the "Share" item in the context menu (default value);
+EditWithPaint3DContext -Hide;Hide the "Edit with Paint 3D" item from the context menu;
+EditWithPaint3DContext -Show;Show the "Edit with Paint 3D" item in the context menu (default value);
+EditWithPhotosContext -Hide;Hide the "Edit with Photos" item from the context menu;
+EditWithPhotosContext -Show;Show the "Edit with Photos" item in the context menu (default value);
+CreateANewVideoContext -Hide;Hide the "Create a new video" item from the context menu;
+CreateANewVideoContext -Show;Show the "Create a new video" item in the context menu (default value);
+ImagesEditContext -Hide;Hide the "Edit" item from the images context menu;
+ImagesEditContext -Show;Show the "Edit" item from in images context menu (default value);
+PrintCMDContext -Hide;Hide the "Print" item from the .bat and .cmd context menu;
+PrintCMDContext -Show;Show the "Print" item in the .bat and .cmd context menu (default value);
+IncludeInLibraryContext -Hide;Hide the "Include in Library" item from the context menu;
+IncludeInLibraryContext -Show;Show the "Include in Library" item in the context menu (default value);
+SendToContext -Hide;Hide the "Send to" item from the folders context menu;
+SendToContext -Show;Show the "Send to" item in the folders context menu (default value);
+BitLockerContext -Hide;Hide the "Turn on BitLocker" item from the context menu;
+BitLockerContext -Show;Show the "Turn on BitLocker" item in the context menu (default value);
+BitmapImageNewContext -Remove;Remove the "Bitmap image" item from the "New" context menu;
+BitmapImageNewContext -Add;Add the "Bitmap image" item in the "New" context menu (default value);
+RichTextDocumentNewContext -Remove;Remove the "Rich Text Document" item from the "New" context menu;
+RichTextDocumentNewContext -Add;Add the "Rich Text Document" item in the "New" context menu (default value);
+CompressedFolderNewContext -Remove;Remove the "Compressed (zipped) Folder" item from the "New" context menu;
+CompressedFolderNewContext -Add;Add the "Compressed (zipped) Folder" item from the "New" context menu (default value);
+MultipleInvokeContext -Enable;Enable the "Open", "Print", and "Edit" context menu items for more than 15 items selected;
+MultipleInvokeContext -Disable;Disable the "Open", "Print", and "Edit" context menu items for more than 15 items selected (default value);
+UseStoreOpenWith -Hide;Hide the "Look for an app in the Microsoft Store" item in the "Open with" dialog;
+UseStoreOpenWith -Show;Show the "Look for an app in the Microsoft Store" item in the "Open with" dialog (default value);
+PreviousVersionsPage -Hide;Hide the "Previous Versions" tab from files and folders context menu and also the "Restore previous versions" context menu item;
+PreviousVersionsPage -Show;Show the "Previous Versions" tab from files and folders context menu and also the "Restore previous versions" context menu item (default value)
+
+<#other#>
+
+TaskbarSearch -Hide;Hide the search box or the search icon from the taskbar (current user only);
+TaskbarSearch -SearchIcon;Show the search box on the taskbar (current user only);
+TaskbarSearch -SearchBox;Show the search icon on the taskbar (current user only) (default value);
+SetUserShellFolderLocation -Root;Change the location of the user folders to any disks root of your choice using the interactive menu (current user only). User files or folders won't me moved to a new location;
+SetUserShellFolderLocation -Custom;Select a folder for the location of the user folders manually using a folder browser dialog (current user only). User files or folders won't me moved to a new location;
+SetUserShellFolderLocation -Default;Change the location of the user folders to the default values (current user only). User files or folders won't me moved to the new location
+
+<#end#>
