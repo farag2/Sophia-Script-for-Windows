@@ -1,4 +1,4 @@
-File: README.TXT for 'Windows 10 Sophia Script Wrapper' created by https://benchtweakgaming.com/2020/10/10/windows-10-debloat-tool/
+File: README.TXT for 'Sophia Script Wrapper' created by https://benchtweakgaming.com/2020/10/10/windows-10-debloat-tool/
 Created for farag2 Windows 10 Sophia Script: https://github.com/farag2/Windows-10-Sophia-Script
 
 INTRODUCTION
@@ -33,7 +33,7 @@ FILES
 -----
 There needs to be 5 files for this program to run properly.
 
-►Windows10SophiaScriptWrapper.exe	:The GUI program.
+►Sophia Script Wrapper.exe	:The GUI program.
 ►data.txt : 			Contains the options (function names) to select from (usually only 2 options that 
 				something is Enable or Disable or ‘LeaveAlone’). Notice the sections ‘<#something#>’ 
 				and how a comma separate the function commands. The last command option in each 
