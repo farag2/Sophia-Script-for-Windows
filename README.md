@@ -167,7 +167,7 @@ To run the script:
 
 ## How to translate
 
-* Get your OS UI culture byCommunity Edition
+* Get your OS UI culture by
 
    ```powershell
    $PSUICulture
