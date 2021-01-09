@@ -13,7 +13,7 @@
 ![Made with Love](https://img.shields.io/badge/Made%20with-%E2%9D%A4-red.svg?colorB=11a9f7)
 [![Twitter](https://img.shields.io/badge/Logo%20by-teahead-blue?style=flat&logo=Twitter)](https://twitter.com/tea_head_)
 
-Available in: :uk: :cn: :de: :fr: :it: :ru: :ukraine: :tr: :es:
+Available in: 🇬🇧 🇨🇳 🇩🇪 🇫🇷 🇮🇹 🇷🇺 🇺🇦 🇹🇷 🇪🇸
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Q5Q51QUJC)
 </div>
