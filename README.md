@@ -109,7 +109,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ## Sophia Script in Action
 
-[![YT](https://i.imgur.com/mADOh3c.png)](https://youtu.be/TpYxw3FYoNk)
+[![YT](https://i.imgur.com/mADOh3c.png)](https://youtu.be/ZSwj8SrcVPg)
 
 ## Core features
 
