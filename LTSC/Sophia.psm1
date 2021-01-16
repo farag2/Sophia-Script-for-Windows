@@ -2,9 +2,9 @@
 	.SYNOPSIS
 	"Windows 10 Sophia Script" (LTSC version) is a PowerShell module for Windows 10 fine-tuning and automating the routine tasks
 
-	Version: v5.0
-	Date: 29.12.2020
-	Copyright (c) 2020 farag & oZ-Zo
+	Version: v5.0.1
+	Date: 17.01.2020
+	Copyright (c) 2021 farag & oZ-Zo
 
 	Thanks to all https://forum.ru-board.com members involved
 
@@ -65,7 +65,7 @@ function Checkings
 	Get-ChildItem -Path $PSScriptRoot -Recurse -Force | Unblock-File -Confirm:$false
 
 	# Turn off Controlled folder access to let the script proceed
-	# Выключить контролируемый доступ к папкам
+	# Отключить контролируемый доступ к папкам
 	switch ((Get-MpPreference).EnableControlledFolderAccess -eq 1)
 	{
 		$true
@@ -117,28 +117,28 @@ function CreateRestorePoint
 #region Privacy & Telemetry
 <#
 	.SYNOPSIS
-	Disable | enable the "Connected User Experiences and Telemetry" service (DiagTrack)
-	Отключить/включить службу "Функциональные возможности для подключенных пользователей и телеметрия" (DiagTrack)
+	Disable/enable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and block connection
+	Отключить/включить службу DiagTrack, правила брандмауэра для исходящего трафик клиента единой телеметрии и заблокировать соединение
 
 	.PARAMETER Disable
-	Disable the DiagTrack service
-	Отключить службу DiagTrack
+	Disable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and block connection
+	Отключить службу DiagTrack, правила брандмауэра для исходящего трафик клиента единой телеметрии и заблокировать соединение
 
 	.PARAMETER Enable
-	Enable the DiagTrack service
-	Включить службу DiagTrack
+	Enable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and allow connection
+	Включить службу DiagTrack, правила брандмауэра для исходящего трафик клиента единой телеметрии и разрешить соединение
 
 	.EXAMPLE
-	TelemetryService -Disable
+	DiagTrackService -Disable
 
 	.EXAMPLE
-	TelemetryService -Enable
+	DiagTrackService -Enable
 
 	.NOTES
 	Current user only
 	Только для текущего пользователя
 #>
-function TelemetryService
+function DiagTrackService
 {
 	param
 	(
@@ -163,11 +163,19 @@ function TelemetryService
 		{
 			Get-Service -Name DiagTrack | Set-Service -StartupType Automatic
 			Get-Service -Name DiagTrack | Start-Service
+
+			# Enable firewall rule for Unified Telemetry Client Outbound Traffic and allow connection
+			# Включить правила брандмауэра для исходящего трафика клиента единой телеметрии и разрешить соединение
+			Get-NetFirewallRule -Group DiagTrack | Set-NetFirewallRule -Enabled True -Action Allow
 		}
 		"Disable"
 		{
 			Get-Service -Name DiagTrack | Stop-Service -Force
 			Get-Service -Name DiagTrack | Set-Service -StartupType Disabled
+
+			# Disable firewall rule for Unified Telemetry Client Outbound Traffic and block connection
+			# Отключить правила брандмауэра для исходящего трафик клиента единой телеметрии и заблокировать соединение
+			Get-NetFirewallRule -Group DiagTrack | Set-NetFirewallRule -Enabled False -Action Block
 		}
 	}
 }
@@ -2633,11 +2641,11 @@ function AppsLanguageSwitch
 <#
 	.SYNOPSIS
 	Turn on/turn off Storage Sense
-	Включить/выключить Контроль памяти
+	Включить/отключить Контроль памяти
 
 	.PARAMETER Disable
 	Turn off Storage Sense
-	Выключить Контроль памяти
+	Отключить Контроль памяти
 
 	.PARAMETER Enable
 	Turn on off Storage Sense
@@ -3112,7 +3120,7 @@ function TempFolder
 <#
 	.SYNOPSIS
 	Disable/enable Windows 260 character path limit
-	Выключить/включить ограничение Windows на 260 символов в пути
+	Отключить/включить ограничение Windows на 260 символов в пути
 
 	.PARAMETER Disable
 	Disable Windows 260 character path limit
@@ -3265,11 +3273,11 @@ function AdminApprovalMode
 <#
 	.SYNOPSIS
 	Turn on/turn off access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled
-	Включить/выключить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами
+	Включить/отключить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами
 
 	.PARAMETER Disable
 	Turn off access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled
-	Выключить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами
+	Отключить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами
 
 	.PARAMETER Enable
 	Turn on access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled
@@ -3316,7 +3324,7 @@ function MappedDrivesAppElevatedAccess
 <#
 	.SYNOPSIS
 	Opt-out of/opt-in to the Delivery Optimization-assisted updates downloading
-	Выключить/включить загрузку обновлений с помощью оптимизации доставки
+	Отключить/включить загрузку обновлений с помощью оптимизации доставки
 
 	.PARAMETER Disable
 	Opt-out of to the Delivery Optimization-assisted updates downloading
@@ -5404,7 +5412,7 @@ function F1HelpPage
 <#
 	.SYNOPSIS
 	Enable/disable Num Lock at startup
-	Включить/выключить Num Lock при загрузке
+	Включить/отключить Num Lock при загрузке
 
 	.PARAMETER Enable
 	Enable Num Lock at startup
@@ -5412,7 +5420,7 @@ function F1HelpPage
 
 	.PARAMETER Disable
 	Disable Num Lock at startup
-	Выключить Num Lock при загрузке
+	Отключить Num Lock при загрузке
 
 	.EXAMPLE
 	NumLock -Enable
@@ -5458,8 +5466,59 @@ function NumLock
 
 <#
 	.SYNOPSIS
+	Enable/disable Caps Lock
+	Включить/отключить Num Lock
+
+	.PARAMETER Enable
+	Enable Capsm Lock
+	Включить Caps Lock
+
+	.PARAMETER Disable
+	Disable Caps Lock
+	Отключить Caps Lock
+
+	.EXAMPLE
+	CapsLock -Enable
+
+	.EXAMPLE
+	CapsLock -Disable
+#>
+function CapsLock
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Enable"
+		{
+			Remove-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" -Name "Scancode Map" -Force
+		}
+		"Disable"
+		{
+			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" -Name "Scancode Map" -PropertyType Binary -Value ([byte[]](0,0,0,0,0,0,0,0,2,0,0,0,0,0,58,0,0,0,0,0)) -Force
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
 	Disable/enable StickyKey after tapping the Shift key 5 times
-	Выключить/включить залипание клавиши Shift после 5 нажатий
+	Отключить/включить залипание клавиши Shift после 5 нажатий
 
 	.PARAMETER Enable
 	Enable StickyKey after tapping the Shift key 5 times
@@ -5467,7 +5526,7 @@ function NumLock
 
 	.PARAMETER Disable
 	Disable StickyKey after tapping the Shift key 5 times
-	Выключить залипание клавиши Shift после 5 нажатий
+	Отключить залипание клавиши Shift после 5 нажатий
 
 	.EXAMPLE
 	StickyShift -Enable
@@ -5514,15 +5573,15 @@ function StickyShift
 <#
 	.SYNOPSIS
 	Disable/enable AutoPlay for all media and devices
-	Выключить/включить автозапуск для всех носителей и устройств
+	Отключить/включить автозапуск для всех носителей и устройств
 
 	.PARAMETER Enable
 	Disable/enable AutoPlay for all media and devices
-	Выключить/включить автозапуск для всех носителей и устройств
+	Отключить/включить автозапуск для всех носителей и устройств
 
 	.PARAMETER Disable
 	Disable/enable AutoPlay for all media and devices
-	Выключить/включить автозапуск для всех носителей и устройств
+	Отключить/включить автозапуск для всех носителей и устройств
 
 	.EXAMPLE
 	Autoplay -Enable
@@ -5569,7 +5628,7 @@ function Autoplay
 <#
 	.SYNOPSIS
 	Disable/enable thumbnail cache removal
-	Выключить/включить удаление кэша миниатюр
+	Отключить/включить удаление кэша миниатюр
 
 	.PARAMETER Enable
 	Enable thumbnail cache removal
@@ -5577,7 +5636,7 @@ function Autoplay
 
 	.PARAMETER Disable
 	Disable thumbnail cache removal
-	Выключить удаление кэша миниатюр
+	Отключить удаление кэша миниатюр
 
 	.EXAMPLE
 	ThumbnailCacheRemoval -Enable
@@ -5620,7 +5679,7 @@ function ThumbnailCacheRemoval
 <#
 	.SYNOPSIS
 	Enable/disable "Network Discovery" and "File and Printers Sharing" for workgroup networks
-	Включить/выключить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп
+	Включить/отключить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп
 
 	.PARAMETER Enable
 	Enable "Network Discovery" and "File and Printers Sharing" for workgroup networks
@@ -5628,7 +5687,7 @@ function ThumbnailCacheRemoval
 
 	.PARAMETER Disable
 	Disable "Network Discovery" and "File and Printers Sharing" for workgroup networks
-	Выключить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп
+	Отключить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп
 
 	.EXAMPLE
 	NetworkDiscovery -Enable
@@ -5690,7 +5749,7 @@ function NetworkDiscovery
 <#
 	.SYNOPSIS
 	Enable/disable automatically adjusting active hours for me based on daily usage
-	Включить/выключить автоматическое изменение периода активности для этого устройства на основе действий
+	Включить/отключить автоматическое изменение периода активности для этого устройства на основе действий
 
 	.PARAMETER Enable
 	Enable automatically adjusting active hours for me based on daily usage
@@ -5698,7 +5757,7 @@ function NetworkDiscovery
 
 	.PARAMETER Disable
 	Disable automatically adjusting active hours for me based on daily usage
-	Выключить автоматическое изменение периода активности для этого устройства на основе действий
+	Отключить автоматическое изменение периода активности для этого устройства на основе действий
 
 	.EXAMPLE
 	SmartActiveHours -Enable
@@ -5906,11 +5965,11 @@ function RunCMDShortcut
 <#
 	.SYNOPSIS
 	Disable/enable Xbox Game Bar
-	Выключить/включить Xbox Game Bar
+	Отключить/включить Xbox Game Bar
 
 	.PARAMETER Disable
 	Disable Xbox Game Bar
-	Выключить Xbox Game Bar
+	Отключить Xbox Game Bar
 
 	.PARAMETER Enable
 	Enable Xbox Game Bar
@@ -5965,11 +6024,11 @@ function XboxGameBar
 <#
 	.SYNOPSIS
 	Disable/enable Xbox Game Bar tips
-	Выключить/включить советы Xbox Game Bar
+	Отключить/включить советы Xbox Game Bar
 
 	.PARAMETER Disable
 	Disable Xbox Game Bar tips
-	Выключить советы Xbox Game Bar
+	Отключить советы Xbox Game Bar
 
 	.PARAMETER Enable
 	Enable Xbox Game Bar tips
@@ -6638,11 +6697,11 @@ function RemoveDefenderExclusionFiles
 <#
 	.SYNOPSIS
 	Enable/disable Microsoft Defender Exploit Guard network protection
-	Включить/выключить защиту сети в Microsoft Defender Exploit Guard
+	Включить/отключить защиту сети в Microsoft Defender Exploit Guard
 
 	.PARAMETER Disable
 	Disable Microsoft Defender Exploit Guard network protection
-	Выключить защиту сети в Microsoft Defender Exploit Guard
+	Отключить защиту сети в Microsoft Defender Exploit Guard
 
 	.PARAMETER Enable
 	Enable Microsoft Defender Exploit Guard network protection
@@ -6689,15 +6748,15 @@ function NetworkProtection
 <#
 	.SYNOPSIS
 	Enable/disable detection for potentially unwanted applications and block them
-	Включить/выключить обнаружение потенциально нежелательных приложений и блокировать их
+	Включить/отключить обнаружение потенциально нежелательных приложений и блокировать их
 
 	.PARAMETER Disable
 	Enable/disable detection for potentially unwanted applications and block them
-	Включить/выключить обнаружение потенциально нежелательных приложений и блокировать их
+	Включить/отключить обнаружение потенциально нежелательных приложений и блокировать их
 
 	.PARAMETER Enable
 	Enable/disable detection for potentially unwanted applications and block them
-	Включить/выключить обнаружение потенциально нежелательных приложений и блокировать их
+	Включить/отключить обнаружение потенциально нежелательных приложений и блокировать их
 
 	.EXAMPLE
 	PUAppsDetection -Disable
@@ -6740,11 +6799,11 @@ function PUAppsDetection
 <#
 	.SYNOPSIS
 	Enable/disable sandboxing for Microsoft Defender
-	Включить/выключить песочницу для Microsoft Defender
+	Включить/отключить песочницу для Microsoft Defender
 
 	.PARAMETER Disable
 	Disable sandboxing for Microsoft Defender
-	Выключить песочницу для Microsoft Defender
+	Отключить песочницу для Microsoft Defender
 
 	.PARAMETER Enable
 	Enable sandboxing for Microsoft Defender
@@ -6805,11 +6864,11 @@ function DismissSmartScreenFilter
 <#
 	.SYNOPSIS
 	Enable/disable events auditing generated when a process is created or starts
-	Включить/выключить аудит событий, возникающих при создании или запуске процесса
+	Включить/отключить аудит событий, возникающих при создании или запуске процесса
 
 	.PARAMETER Disable
 	Disable events auditing generated when a process is created or starts
-	Выключить аудит событий, возникающих при создании или запуске процесса
+	Отключить аудит событий, возникающих при создании или запуске процесса
 
 	.PARAMETER Enable
 	Enable events auditing generated when a process is created or starts
@@ -7003,11 +7062,11 @@ function EventViewerCustomView
 <#
 	.SYNOPSIS
 	Enable/disable logging for all Windows PowerShell modules
-	Включить/выключить ведение журнала для всех модулей Windows PowerShell
+	Включить/отключить ведение журнала для всех модулей Windows PowerShell
 
 	.PARAMETER Disable
 	Disable logging for all Windows PowerShell modules
-	Выключить ведение журнала для всех модулей Windows PowerShell
+	Отключить ведение журнала для всех модулей Windows PowerShell
 
 	.PARAMETER Enable
 	Enable logging for all Windows PowerShell modules
@@ -7060,11 +7119,11 @@ function PowerShellModulesLogging
 <#
 	.SYNOPSIS
 	Enable/disable logging for all PowerShell scripts input to the Windows PowerShell event log
-	Включить/выключить ведение журнала для всех вводимых сценариев PowerShell в журнале событий Windows PowerShell
+	Включить/отключить ведение журнала для всех вводимых сценариев PowerShell в журнале событий Windows PowerShell
 
 	.PARAMETER Disable
 	Disable logging for all PowerShell scripts input to the Windows PowerShell event log
-	Выключить ведение журнала для всех вводимых сценариев PowerShell в журнале событий Windows PowerShell
+	Отключить ведение журнала для всех вводимых сценариев PowerShell в журнале событий Windows PowerShell
 
 	.PARAMETER Enable
 	Enable logging for all PowerShell scripts input to the Windows PowerShell event log
@@ -7115,11 +7174,11 @@ function PowerShellScriptsLogging
 <#
 	.SYNOPSIS
 	Disable/enable apps and files checking within Microsofot Defender SmartScreen
-	Выключить/включить проверку приложений и файлов фильтром SmartScreen в Microsoft Defender
+	Отключить/включить проверку приложений и файлов фильтром SmartScreen в Microsoft Defender
 
 	.PARAMETER Disable
 	Disable apps and files checking within Microsofot Defender SmartScreen
-	Выключить проверку приложений и файлов фильтром SmartScreen в Microsoft Defender
+	Отключить проверку приложений и файлов фильтром SmartScreen в Microsoft Defender
 
 	.PARAMETER Enable
 	Enable apps and files checking within Microsofot Defender SmartScreen
@@ -7166,11 +7225,11 @@ function AppsSmartScreen
 <#
 	.SYNOPSIS
 	Disable/enable the Attachment Manager marking files that have been downloaded from the Internet as unsafe
-	Выключить/включить проверку Диспетчером вложений файлов, скачанных из интернета как небезопасные
+	Отключить/включить проверку Диспетчером вложений файлов, скачанных из интернета как небезопасные
 
 	.PARAMETER Disable
 	Disable the Attachment Manager marking files that have been downloaded from the Internet as unsafe
-	Выключить проверку Диспетчером вложений файлов, скачанных из интернета как небезопасные
+	Отключить проверку Диспетчером вложений файлов, скачанных из интернета как небезопасные
 
 	.PARAMETER Enable
 	Enable the Attachment Manager marking files that have been downloaded from the Internet as unsafe
@@ -7225,11 +7284,11 @@ function SaveZoneInformation
 <#
 	.SYNOPSIS
 	Disable/enable Windows Script Host
-	Выключить/включить Windows Script Host
+	Отключить/включить Windows Script Host
 
 	.PARAMETER Disable
 	Disable Windows Script Host
-	Выключить Windows Script Host
+	Отключить Windows Script Host
 
 	.PARAMETER Enable
 	Enable Windows Script Host
@@ -7287,11 +7346,11 @@ function WindowsScriptHost
 <#
 	.SYNOPSIS
 	Disable/enable Windows Sandbox
-	Выключить/включить Windows Sandbox
+	Отключить/включить Windows Sandbox
 
 	.PARAMETER Disable
 	Disable Windows Sandbox
-	Выключить Windows Sandbox
+	Отключить Windows Sandbox
 
 	.PARAMETER Enable
 	Enable Windows Sandbox
