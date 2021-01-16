@@ -2,9 +2,9 @@
 	.SYNOPSIS
 	Default preset file for "Windows 10 Sophia Script"
 
-	Version: v5.3.1
-	Date: 21.12.2020
-	Copyright (c) 2020 farag & oZ-Zo
+	Version: v5.3.2
+	Date: 15.01.2021
+	Copyright (c) 2021 farag & oZ-Zo
 
 	Thanks to all https://forum.ru-board.com members involved
 
@@ -26,7 +26,7 @@
 
 	.NOTES
 	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
-	https://habr.com/en/post/521202/
+	https://habr.com/post/521202/
 	https://forums.mydigitallife.net/threads/powershell-script-setup-windows-10.81675/
 	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
 
@@ -39,7 +39,7 @@
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.3.1 | ©️ farag & oz-zo, 2015–2020 | $((Invoke-WebRequest -Uri https://wttr.in/?format=3 -UseBasicParsing).Content) | Happy New Year!"
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.3.2 | ©️ farag & oz-zo, 2015–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Sophia.psd1 -PassThru -Force
@@ -64,13 +64,13 @@ Checkings
 CreateRestorePoint
 
 #region Privacy & Telemetry
-# Disable the "Connected User Experiences and Telemetry" service
-# Отключить службу "Функциональные возможности для подключенных пользователей и телеметрия"
-TelemetryService -Disable
+# Disable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and block connection
+# Отключить службу DiagTrack, правила брандмауэра для исходящего трафик клиента единой телеметрии и заблокировать соединение
+DiagTrackService -Disable
 
-# Enable the "Connected User Experiences and Telemetry" service (default value)
-# Включить службу "Функциональные возможности для подключенных пользователей и телеметрия" (значение по умолчанию)
-# TelemetryService -Enable
+# Enable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and allow connection
+# Включить службу DiagTrack, правила брандмауэра для исходящего трафик клиента единой телеметрии и разрешить соединение
+# DiagTrackService -Enable
 
 # Set the OS level of diagnostic data gathering to minimum
 # Установить уровень сбора диагностических сведений ОС на минимальный
@@ -452,11 +452,11 @@ PrtScnSnippingTool -Enable
 
 # Let me use a different input method for each app window (current user only)
 # Позволить выбирать метод ввода для каждого окна (только для текущего пользователя)
-AppsLanguageSwitch -Disable
+AppsLanguageSwitch -Enable
 
 # Do not let use a different input method for each app window (current user only) (default value)
 # Не позволять выбирать метод ввода для каждого окна (только для текущего пользователя) (значение по умолчанию)
-# AppsLanguageSwitch -Enable
+# AppsLanguageSwitch -Disable
 #endregion UI & Personalization
 
 #region OneDrive
@@ -576,16 +576,26 @@ WindowsManageDefaultPrinter -Disable
 # Разрешать Windows решать, какой принтер должен использоваться по умолчанию (только для текущего пользователя) (значение по умолчанию)
 # WindowsManageDefaultPrinter -Enable
 
-# Disable the Windows features using the pop-up dialog box that enables the user to select features to remove
-# Отключить компоненты Windows, используя всплывающее диалоговое окно, позволяющее пользователю отметить компоненты на удаление
+<#
+	Disable the Windows features using the pop-up dialog box that enables the user to select features to remove
+	Отключить компоненты Windows, используя всплывающее диалоговое окно, позволяющее пользователю отметить компоненты на удаление
+
+	If you want to leave "Multimedia settings" in the advanced settings of Power Options do not uninstall this feature
+	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах электропитания, не удаляйте этот компонент
+#>
 WindowsFeatures -Disable
 
 # Enable the Windows features using the pop-up dialog box that enables the user to select features to remove
 # Включить компоненты Windows, используя всплывающее диалоговое окно, позволяющее пользователю отметить компоненты на удаление
 # WindowsFeatures -Enable
 
-# Disable Features On Demand v2 (FODv2) capabilities using the pop-up dialog box
-# Отключить компоненты "Функции по требованию" (FODv2), используя всплывающее диалоговое окно
+<#
+	Disable Features On Demand v2 (FODv2) capabilities using the pop-up dialog box
+	Отключить компоненты "Функции по требованию" (FODv2), используя всплывающее диалоговое окно
+
+	If you want to leave "Multimedia settings" in the advanced settings of Power Options do not uninstall this feature
+	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах электропитания, не удаляйте этот компонент
+#>
 WindowsCapabilities -Disable
 
 # Enable Feature On Demand v2 (FODv2) capabilities using the pop-up dialog box
@@ -724,6 +734,14 @@ NumLock -Enable
 # Disable Num Lock at startup (default value)
 # Выключить Num Lock при загрузке (значение по умолчанию)
 # NumLock -Disable
+
+# Enable Caps Lock
+# Включить Caps Lock
+# CapsLock -Enable
+
+# Disable Caps Lock (default value)
+# Выключить Caps Lock (значение по умолчанию)
+# CapsLock -Disable
 
 # Disable StickyKey after tapping the Shift key 5 times (current user only)
 # Выключить залипание клавиши Shift после 5 нажатий (только для текущего пользователя)
@@ -1136,7 +1154,7 @@ SaveZoneInformation -Disable
 	Отключить Windows Script Host (только для текущего пользователя)
 	Становится невозможным запустить файлы .js и .vbs
 #>
-WindowsScriptHost -Disable
+# WindowsScriptHost -Disable
 
 # Emable Windows Script Host (current user only) (default value)
 # Включить Windows Script Host (только для текущего пользователя) (значение по умолчанию)
