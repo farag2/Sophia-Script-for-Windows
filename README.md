@@ -41,11 +41,6 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 <table>
 	<tr>
 		<td>
-			<a href="https://youtu.be/8E6OT_QcHaU?t=370">
-				<img src="https://img.youtube.com/vi/8E6OT_QcHaU/0.jpg">
-			</a>
-		</td>
-		<td>
 			<a href="https://rutracker.org/forum/viewtopic.php?t=5996011">
 				<img src="https://static.t-ru.org/logo/logo-3.svg" height="100px">
 			</a>
@@ -109,7 +104,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ## Videos
 
-[![YT](https://img.youtube.com/vi/8E6OT_QcHaU/0.jpg)](https://youtu.be/8E6OT_QcHaU?t=370)
+[![YT](https://img.youtube.com/vi/8E6OT_QcHaU/1.jpg)](https://youtu.be/8E6OT_QcHaU?t=370)
 [![YT](https://i.imgur.com/mADOh3c.png)](https://youtu.be/ZSwj8SrcVPg)
 
 ## Core features
