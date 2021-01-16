@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.3.2 - 16.01.2020
+
+## Windows 10 2004 (20H1)/20H2 (2009)/LTSC
+
+Diff from v5.3
+[5.3.1...5.3.2](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.3.1...5.3.2)
+
+* Updated "TelemetryService" function
+  * Renamed into "DiagTrackService";
+  * Added "Disable firewall rule for Unified Telemetry Client Outbound Traffic and block connection" feature.
+    * Closed #116
+    * To do it manually run
+
+    ```powershell
+    Get-NetFirewallRule -Group DiagTrack | Set-NetFirewallRule -Enabled False -Action Block
+    ```
+
+* Added online checking whether the current module version is the latest;
+* Added "Disable Caps Lock" function;
+* Swaped "disable"/"enable" arguments in the "AppsLanguageSwitch" function;
+* Minor changes. :feelsgood:
+
 ## 5.3.1 - 22.12.2020
 
 ## Windows 10 2004 (20H1)/20H2 (2009)
