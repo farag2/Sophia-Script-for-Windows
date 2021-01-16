@@ -42,42 +42,42 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 	<tr>
 		<td>
 			<a href="https://youtu.be/8E6OT_QcHaU?t=370">
-				<img alt="Qries" src="https://i.imgur.com/mADOh3c.png">
+				<img src="https://img.youtube.com/vi/8E6OT_QcHaU/0.jpg">
 			</a>
 		</td>
 		<td>
 			<a href="https://benchtweakgaming.com/2020/11/12/windows-10-debloat-tool/">
-				<img alt="Qries" src="https://benchtweakgaming.com/wp-content/uploads/2020/10/cropped-LOGO_btg_CLEAN_WITH_WORDS_90PX_CUT-3.png">
+				<img src="https://benchtweakgaming.com/wp-content/uploads/2020/10/cropped-LOGO_btg_CLEAN_WITH_WORDS_90PX_CUT-3.png">
 			</a>
 		</td>
 		<td>
 			<a href="https://4sysops.com/archives/windows-10-sophia-script-powershell-functions-for-windows-10-fine-tuning-and-automating-routine-configuration-tasks/">
-				<img alt="Qries" src="https://i.imgur.com/cZ32Hkt.png">
+				<img src="https://i.imgur.com/cZ32Hkt.png">
 			</a>
 		</td>
 		<td>
 			<a href="https://www.ghacks.net/2020/09/27/windows-10-setup-script-has-a-new-name-and-is-now-easier-to-use/">
-				<img alt="Qries" src="https://i.imgur.com/K4f8VBo.png">
+				<img src="https://i.imgur.com/K4f8VBo.png">
 			</a>
 		</td>
 		<td>
 			<a href="https://www.neowin.net/news/this-windows-10-setup-script-lets-you-fine-tune-around-150-functions-for-new-installs">
-				<img alt="Qries" src="https://i.imgur.com/5fILFqz.png">
+				<img src="https://i.imgur.com/5fILFqz.png">
 			</a>
 		</td>
 		<td>
 			<a href="https://www.comss.ru/page.php?id=8019">
-				<img alt="Qries" src="https://cdn.comss.net/img/logo51.png">
+				<img src="https://cdn.comss.net/img/logo51.png">
 			</a>
 		</td>
 		<td>
 			<a href="https://habr.com/en/post/521202">
-				<img alt="Qries" src="https://i.imgur.com/cXWLr4I.png">
+				<img src="https://i.imgur.com/cXWLr4I.png">
 			</a>
 		</td>
 		<td>
 			<a href="https://www.deskmodder.de/blog/2020/09/25/windows-10-sophia-script-windows-10-feintuning-mit-powershell/">
-				<img alt="Qries" src="https://i.imgur.com/6sAI2wZ.png">
+				<img src="https://i.imgur.com/6sAI2wZ.png">
 			</a>
 		</td>
 	</tr>
