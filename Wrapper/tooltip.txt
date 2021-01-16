@@ -1,7 +1,7 @@
 <#privacy&telemetry#>
 
-TelemetryService -Disable;Disable the "Connected User Experiences and Telemetry" service;
-TelemetryService -Enable;Enable the "Connected User Experiences and Telemetry" service (default value);
+DiagTrackService -Disable;Disable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and block connection;
+DiagTrackService -Enable;Enable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and allow connection (default value);
 DiagnosticDataLevel -Minimal;Set the OS level of diagnostic data gathering to minimum;
 DiagnosticDataLevel -Default;Set the default OS level of diagnostic data gathering;
 ErrorReporting -Disable;Turn off Windows Error Reporting for the current user;
@@ -160,6 +160,8 @@ F1HelpPage -Disable;Disable help lookup via F1 (current user only);
 F1HelpPage -Enable;Enable help lookup via F1 (current user only) (default value);
 NumLock -Enable;Enable Num Lock at startup;
 NumLock -Disable;Disable Num Lock at startup (default value);
+CapsLock -Enable;Enable Caps Lock;
+CapsLock -Disable;Disable Caps Lock (default value);
 StickyShift -Disable;Disable StickyKey after tapping the Shift key 5 times (current user only);
 StickyShift -Enable;Enable StickyKey after tapping the Shift key 5 times (current user only) (default value);
 Autoplay -Disable;Disable AutoPlay for all media and devices (current user only);

@@ -1,6 +1,6 @@
 <#privacy&telemetry#>
 
-TelemetryService -Disable,TelemetryService -Enable,
+DiagTrackService -Disable,DiagTrackService -Enable,
 DiagnosticDataLevel -Minimal,DiagnosticDataLevel -Default,
 ErrorReporting -Disable,ErrorReporting -Enable,
 WindowsFeedback -Disable,WindowsFeedback -Enable,
@@ -85,6 +85,7 @@ FoldersLaunchSeparateProcess -Enable,FoldersLaunchSeparateProcess -Disable,
 ReservedStorage -Disable,ReservedStorage -Enable,
 F1HelpPage -Disable,F1HelpPage -Enable,
 NumLock -Enable,NumLock -Disable,
+CapsLock -Enable,CapsLock -Disable,
 StickyShift -Disable,StickyShift -Enable,
 Autoplay -Disable,Autoplay -Enable,
 ThumbnailCacheRemoval -Disable,ThumbnailCacheRemoval -Enable,
