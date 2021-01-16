@@ -2,9 +2,9 @@
 	.SYNOPSIS
 	"Windows 10 Sophia Script" is a PowerShell module for Windows 10 fine-tuning and automating the routine tasks
 
-	Version: v5.3.1
-	Date: 21.12.2020
-	Copyright (c) 2020 farag & oZ-Zo
+	Version: v5.3.2
+	Date: 16.01.2021
+	Copyright (c) 2021 farag & oZ-Zo
 
 	Thanks to all https://forum.ru-board.com members involved
 
@@ -75,9 +75,33 @@ function Checkings
 			Set-MpPreference -EnableControlledFolderAccess Disabled
 
 			# Open "Ransomware protection" page
-			# Открыть раздел "Защита от программ-шатажистов"
+			# Открыть раздел "Защита от программ-шантажистов"
 			Start-Process -FilePath windowsdefender://RansomwareProtection
 		}
+	}
+
+	# Checking whether the current module version is the latest
+	# Проверка: используется ли последняя версия модуля
+	try
+	{
+		$LatestRelease = ((Invoke-RestMethod -Uri "https://api.github.com/repos/farag2/Windows-10-Sophia-Script/releases") | Where-Object -FilterScript {$_.prerelease -eq $false}).tag_name.Replace("v","")[0]
+		$CurrentRelease = (Get-Module -Name Sophia).Version.ToString()
+		switch ([System.Version]$LatestRelease -ne [System.Version]$CurrentRelease)
+		{
+			$true
+			{
+				Write-Warning -Message $Localization.UnsupportedRelease
+				Write-Error -Message $Localization.UnsupportedRelease -ErrorAction SilentlyContinue
+
+				Start-Process -FilePath "https://github.com/farag2/Windows-10-Sophia-Script/releases/latest"
+				exit
+			}
+		}
+	}
+	catch [System.Net.WebException]
+	{
+		Write-Warning -Message $Localization.NoInternetConnection
+		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 	}
 }
 #endregion Checkings
@@ -118,28 +142,28 @@ function CreateRestorePoint
 #region Privacy & Telemetry
 <#
 	.SYNOPSIS
-	Disable | enable the "Connected User Experiences and Telemetry" service (DiagTrack)
-	Отключить/включить службу "Функциональные возможности для подключенных пользователей и телеметрия" (DiagTrack)
+	Disable/enable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and block connection
+	Отключить/включить службу DiagTrack, правила брандмауэра для исходящего трафик клиента единой телеметрии и заблокировать соединение
 
 	.PARAMETER Disable
-	Disable the DiagTrack service
-	Отключить службу DiagTrack
+	Disable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and block connection
+	Отключить службу DiagTrack, правила брандмауэра для исходящего трафик клиента единой телеметрии и заблокировать соединение
 
 	.PARAMETER Enable
-	Enable the DiagTrack service
-	Включить службу DiagTrack
+	Enable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and allow connection
+	Включить службу DiagTrack, правила брандмауэра для исходящего трафик клиента единой телеметрии и разрешить соединение
 
 	.EXAMPLE
-	TelemetryService -Disable
+	DiagTrackService -Disable
 
 	.EXAMPLE
-	TelemetryService -Enable
+	DiagTrackService -Enable
 
 	.NOTES
 	Current user only
 	Только для текущего пользователя
 #>
-function TelemetryService
+function DiagTrackService
 {
 	param
 	(
@@ -164,11 +188,19 @@ function TelemetryService
 		{
 			Get-Service -Name DiagTrack | Set-Service -StartupType Automatic
 			Get-Service -Name DiagTrack | Start-Service
+
+			# Enable firewall rule for Unified Telemetry Client Outbound Traffic and allow connection
+			# Включить правила брандмауэра для исходящего трафика клиента единой телеметрии и разрешить соединение
+			Get-NetFirewallRule -Group DiagTrack | Set-NetFirewallRule -Enabled True -Action Allow
 		}
 		"Disable"
 		{
 			Get-Service -Name DiagTrack | Stop-Service -Force
 			Get-Service -Name DiagTrack | Set-Service -StartupType Disabled
+
+			# Disable firewall rule for Unified Telemetry Client Outbound Traffic and block connection
+			# Отключить правила брандмауэра для исходящего трафик клиента единой телеметрии и заблокировать соединение
+			Get-NetFirewallRule -Group DiagTrack | Set-NetFirewallRule -Enabled False -Action Block
 		}
 	}
 }
@@ -2993,7 +3025,7 @@ function TaskManagerWindow
 	do
 	{
 		Start-Sleep -Milliseconds 100
-		$Preferences = Get-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -ErrorAction Ignore
+		$Preferences = Get-ItemPropertyValue -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -ErrorAction Ignore
 	}
 	until ($Preferences)
 
@@ -3003,13 +3035,13 @@ function TaskManagerWindow
 	{
 		"Expanded"
 		{
-			$Preferences.Preferences[28] = 0
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -PropertyType Binary -Value $Preferences.Preferences -Force
+			$Preferences[28] = 0
+			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -PropertyType Binary -Value $Preferences -Force
 		}
 		"Compact"
 		{
-			$Preferences.Preferences[28] = 1
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -PropertyType Binary -Value $Preferences.Preferences -Force
+			$Preferences[28] = 1
+			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -PropertyType Binary -Value $Preferences -Force
 		}
 	}
 }
@@ -3188,11 +3220,11 @@ function PrtScnSnippingTool
 	Let/do not let use a different input method for each app window
 	Позволить/не позволять выбирать метод ввода для каждого окна
 
-	.PARAMETER Disable
+	.PARAMETER Enable
 	Let use a different input method for each app window
 	Позволить выбирать метод ввода для каждого окна
 
-	.PARAMETER Enable
+	.PARAMETER Disable
 	Do not let use a different input method for each app window
 	Не позволять выбирать метод ввода для каждого окна
 
@@ -3227,11 +3259,11 @@ function AppsLanguageSwitch
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
-		"Disable"
+		"Enable"
 		{
 			Set-WinLanguageBarOption -UseLegacySwitchMode
 		}
-		"Enable"
+		"Disable"
 		{
 			Set-WinLanguageBarOption
 		}
@@ -3381,11 +3413,11 @@ function InstallOneDrive
 <#
 	.SYNOPSIS
 	Turn on/turn off Storage Sense
-	Включить/выключить Контроль памяти
+	Включить/отключить Контроль памяти
 
 	.PARAMETER Disable
 	Turn off Storage Sense
-	Выключить Контроль памяти
+	Отключить Контроль памяти
 
 	.PARAMETER Enable
 	Turn on off Storage Sense
@@ -3777,7 +3809,7 @@ function TempFolder
 							}
 							"1"
 							{
-								Write-Verbose -Message $Localization.SkippedSymbolic -Verbose
+								Write-Verbose -Message $Localization.SymbolicSkipped -Verbose
 							}
 						}
 					}
@@ -3860,7 +3892,7 @@ function TempFolder
 <#
 	.SYNOPSIS
 	Disable/enable Windows 260 character path limit
-	Выключить/включить ограничение Windows на 260 символов в пути
+	Отключить/включить ограничение Windows на 260 символов в пути
 
 	.PARAMETER Disable
 	Disable Windows 260 character path limit
@@ -4013,11 +4045,11 @@ function AdminApprovalMode
 <#
 	.SYNOPSIS
 	Turn on/turn off access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled
-	Включить/выключить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами
+	Включить/отключить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами
 
 	.PARAMETER Disable
 	Turn off access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled
-	Выключить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами
+	Отключить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами
 
 	.PARAMETER Enable
 	Turn on access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled
@@ -4064,7 +4096,7 @@ function MappedDrivesAppElevatedAccess
 <#
 	.SYNOPSIS
 	Opt-out of/opt-in to the Delivery Optimization-assisted updates downloading
-	Выключить/включить загрузку обновлений с помощью оптимизации доставки
+	Отключить/включить загрузку обновлений с помощью оптимизации доставки
 
 	.PARAMETER Disable
 	Opt-out of to the Delivery Optimization-assisted updates downloading
@@ -4288,8 +4320,13 @@ function WindowsFeatures
 		# Компоненты прежних версий
 		"LegacyComponents",
 
-		# Media Features
-		# Компоненты работы с мультимедиа
+		<#
+			Media Features
+			Компоненты работы с мультимедиа
+
+			If you want to leave "Multimedia settings" in the advanced settings of Power Options do not uninstall this feature
+			Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах электропитания, не удаляйте этот компонент
+		#>
 		"MediaPlayback",
 
 		# PowerShell 2.0
@@ -4568,8 +4605,13 @@ function WindowsCapabilities
 		# Быстрая поддержка (Майкрософт)
 		"App.Support.QuickAssist*",
 
-		# Windows Media Player
-		# Проигрыватель Windows Media
+		<#
+			Windows Media Player
+			Проигрыватель Windows Media
+
+			If you want to leave "Multimedia settings" in the advanced settings of Power Options do not uninstall this feature
+			Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах электропитания, не удаляйте этот компонент
+		#>
 		"Media.WindowsMediaPlayer*",
 
 		# Microsoft Paint
@@ -4767,7 +4809,7 @@ function WindowsCapabilities
 						Add-CapabilityControl -Capability $_.Name
 					}
 
-						$Button.Content = $Localization.Enable
+					$Button.Content = $Localization.Enable
 				}
 				else
 				{
@@ -6399,7 +6441,7 @@ function F1HelpPage
 <#
 	.SYNOPSIS
 	Enable/disable Num Lock at startup
-	Включить/выключить Num Lock при загрузке
+	Включить/отключить Num Lock при загрузке
 
 	.PARAMETER Enable
 	Enable Num Lock at startup
@@ -6407,7 +6449,7 @@ function F1HelpPage
 
 	.PARAMETER Disable
 	Disable Num Lock at startup
-	Выключить Num Lock при загрузке
+	Отключить Num Lock при загрузке
 
 	.EXAMPLE
 	NumLock -Enable
@@ -6453,8 +6495,59 @@ function NumLock
 
 <#
 	.SYNOPSIS
+	Enable/disable Caps Lock
+	Включить/отключить Num Lock
+
+	.PARAMETER Enable
+	Enable Capsm Lock
+	Включить Caps Lock
+
+	.PARAMETER Disable
+	Disable Caps Lock
+	Отключить Caps Lock
+
+	.EXAMPLE
+	CapsLock -Enable
+
+	.EXAMPLE
+	CapsLock -Disable
+#>
+function CapsLock
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Enable"
+		{
+			Remove-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" -Name "Scancode Map" -Force
+		}
+		"Disable"
+		{
+			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" -Name "Scancode Map" -PropertyType Binary -Value ([byte[]](0,0,0,0,0,0,0,0,2,0,0,0,0,0,58,0,0,0,0,0)) -Force
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
 	Disable/enable StickyKey after tapping the Shift key 5 times
-	Выключить/включить залипание клавиши Shift после 5 нажатий
+	Отключить/включить залипание клавиши Shift после 5 нажатий
 
 	.PARAMETER Enable
 	Enable StickyKey after tapping the Shift key 5 times
@@ -6462,7 +6555,7 @@ function NumLock
 
 	.PARAMETER Disable
 	Disable StickyKey after tapping the Shift key 5 times
-	Выключить залипание клавиши Shift после 5 нажатий
+	Отключить залипание клавиши Shift после 5 нажатий
 
 	.EXAMPLE
 	StickyShift -Enable
@@ -6509,15 +6602,15 @@ function StickyShift
 <#
 	.SYNOPSIS
 	Disable/enable AutoPlay for all media and devices
-	Выключить/включить автозапуск для всех носителей и устройств
+	Отключить/включить автозапуск для всех носителей и устройств
 
 	.PARAMETER Enable
 	Disable/enable AutoPlay for all media and devices
-	Выключить/включить автозапуск для всех носителей и устройств
+	Отключить/включить автозапуск для всех носителей и устройств
 
 	.PARAMETER Disable
 	Disable/enable AutoPlay for all media and devices
-	Выключить/включить автозапуск для всех носителей и устройств
+	Отключить/включить автозапуск для всех носителей и устройств
 
 	.EXAMPLE
 	Autoplay -Enable
@@ -6564,7 +6657,7 @@ function Autoplay
 <#
 	.SYNOPSIS
 	Disable/enable thumbnail cache removal
-	Выключить/включить удаление кэша миниатюр
+	Отключить/включить удаление кэша миниатюр
 
 	.PARAMETER Enable
 	Enable thumbnail cache removal
@@ -6572,7 +6665,7 @@ function Autoplay
 
 	.PARAMETER Disable
 	Disable thumbnail cache removal
-	Выключить удаление кэша миниатюр
+	Отключить удаление кэша миниатюр
 
 	.EXAMPLE
 	ThumbnailCacheRemoval -Enable
@@ -6615,7 +6708,7 @@ function ThumbnailCacheRemoval
 <#
 	.SYNOPSIS
 	Enable/disable automatically saving my restartable apps when signing out and restart them after signing in
-	Включить/выключить автоматическое сохранение моих перезапускаемых приложений при выходе из системы и перезапускать их после выхода
+	Включить/отключить автоматическое сохранение моих перезапускаемых приложений при выходе из системы и перезапускать их после выхода
 
 	.PARAMETER Enable
 	Enable automatically saving my restartable apps when signing out and restart them after signing in
@@ -6623,7 +6716,7 @@ function ThumbnailCacheRemoval
 
 	.PARAMETER Disable
 	Disable automatically saving my restartable apps when signing out and restart them after signing in
-	Выключить автоматическое сохранение моих перезапускаемых приложений при выходе из системы и перезапускать их после выхода
+	Отключить автоматическое сохранение моих перезапускаемых приложений при выходе из системы и перезапускать их после выхода
 
 	.EXAMPLE
 	SaveRestartableApps -Enable
@@ -6670,7 +6763,7 @@ function SaveRestartableApps
 <#
 	.SYNOPSIS
 	Enable/disable "Network Discovery" and "File and Printers Sharing" for workgroup networks
-	Включить/выключить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп
+	Включить/отключить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп
 
 	.PARAMETER Enable
 	Enable "Network Discovery" and "File and Printers Sharing" for workgroup networks
@@ -6678,7 +6771,7 @@ function SaveRestartableApps
 
 	.PARAMETER Disable
 	Disable "Network Discovery" and "File and Printers Sharing" for workgroup networks
-	Выключить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп
+	Отключить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп
 
 	.EXAMPLE
 	NetworkDiscovery -Enable
@@ -6740,7 +6833,7 @@ function NetworkDiscovery
 <#
 	.SYNOPSIS
 	Enable/disable automatically adjusting active hours for me based on daily usage
-	Включить/выключить автоматическое изменение периода активности для этого устройства на основе действий
+	Включить/отключить автоматическое изменение периода активности для этого устройства на основе действий
 
 	.PARAMETER Enable
 	Enable automatically adjusting active hours for me based on daily usage
@@ -6748,7 +6841,7 @@ function NetworkDiscovery
 
 	.PARAMETER Disable
 	Disable automatically adjusting active hours for me based on daily usage
-	Выключить автоматическое изменение периода активности для этого устройства на основе действий
+	Отключить автоматическое изменение периода активности для этого устройства на основе действий
 
 	.EXAMPLE
 	SmartActiveHours -Enable
@@ -6791,7 +6884,7 @@ function SmartActiveHours
 <#
 	.SYNOPSIS
 	Enable/disable restarting this device as soon as possible when a restart is required to install an update
-	Включить/выключить перезапуск этого устройства как можно быстрее, если для установки обновления требуется перезагрузка
+	Включить/отключить перезапуск этого устройства как можно быстрее, если для установки обновления требуется перезагрузка
 
 	.PARAMETER Enable
 	Enable restarting this device as soon as possible when a restart is required to install an update
@@ -6799,7 +6892,7 @@ function SmartActiveHours
 
 	.PARAMETER Disable
 	Disable restarting this device as soon as possible when a restart is required to install an update
-	Выключить перезапуск этого устройства как можно быстрее, если для установки обновления требуется перезагрузка
+	Отключить перезапуск этого устройства как можно быстрее, если для установки обновления требуется перезагрузка
 
 	.EXAMPLE
 	DeviceRestartAfterUpdate -Enable
@@ -6855,7 +6948,7 @@ function DeviceRestartAfterUpdate
 
 	.PARAMETER Disable
 	Disable restarting this device as soon as possible when a restart is required to install an update
-	Выключить перезапуск этого устройства как можно быстрее, если для установки обновления требуется перезагрузка
+	Отключить перезапуск этого устройства как можно быстрее, если для установки обновления требуется перезагрузка
 
 	.EXAMPLE
 	WSL -Enable
@@ -6921,7 +7014,7 @@ function WSL
 
 	.PARAMETER Disable
 	Disable restarting this device as soon as possible when a restart is required to install an update
-	Выключить перезапуск этого устройства как можно быстрее, если для установки обновления требуется перезагрузка
+	Отключить перезапуск этого устройства как можно быстрее, если для установки обновления требуется перезагрузка
 
 	.NOTES
 	Run the function only after WSL installed and PC restart
@@ -6981,7 +7074,7 @@ function EnableWSL2
 <#
 	.SYNOPSIS
 	Disable/enable swap file in WSL
-	Выключить/включить файл подкачки в WSL
+	Отключить/включить файл подкачки в WSL
 
 	Use only if the %TEMP% environment variable path changed
 	Используйте только в случае, если изменился путь переменной среды для %TEMP%
@@ -6992,7 +7085,7 @@ function EnableWSL2
 
 	.PARAMETER Disable
 	Disable swap file in WSL
-	Выключить файл подкачки в WSL
+	Отключить файл подкачки в WSL
 
 	.EXAMPLE
 	WSLSwap -Enable
@@ -7022,16 +7115,6 @@ function WSLSwap
 		[switch]
 		$Disable
 	)
-
-			$WSLFeatures = @(
-				# Windows Subsystem for Linux
-				# Подсистема Windows для Linux
-				"Microsoft-Windows-Subsystem-Linux",
-
-				# Virtual Machine Platform
-				# Поддержка платформы для виртуальных машин
-				"VirtualMachinePlatform"
-			)
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
@@ -7305,7 +7388,7 @@ function syspin
 {
 	if (Test-Path -Path $PSScriptRoot\syspin.exe)
 	{
-		$Global:syspin = $true
+		$Script:syspin = $true
 	}
 	else
 	{
@@ -7367,7 +7450,7 @@ public static string GetString(uint strId)
 # Закрепить ярлык "Панели управления" на начальном экране с помощью syspin
 function PinControlPanel
 {
-	if ($Global:syspin)
+	if ($Script:syspin)
 	{
 		# Extract the "Control Panel" string from shell32.dll
 		# Извлечь строку "Панель управления" из shell32.dll
@@ -7407,7 +7490,7 @@ function PinControlPanel
 # Закрепить ярлык старого формата "Устройства и принтеры" на начальном экране с помощью syspin
 function PinDevicesPrinters
 {
-	if ($Global:syspin)
+	if ($Script:syspin)
 	{
 		# Extract the "Devices and Printers" string from shell32.dll
 		# Извлечь строку "Устройства и принтеры" из shell32.dll
@@ -7437,7 +7520,7 @@ function PinDevicesPrinters
 # Закрепить ярлык "Командная строка" на начальном экране с помощью syspin
 function PinCommandPrompt
 {
-	if ($Global:syspin)
+	if ($Script:syspin)
 	{
 		# Extract the "Command Prompt" string from shell32.dll
 		# Извлечь строку "Командная строка" из shell32.dll
@@ -7758,7 +7841,7 @@ function InstallHEVC
 <#
 	.SYNOPSIS
 	Disable/enable Cortana autostarting
-	Выключить/включить автозагрузку Кортана
+	Отключить/включить автозагрузку Кортана
 
 	.PARAMETER Disable
 	Enable Cortana autostarting
@@ -7766,7 +7849,7 @@ function InstallHEVC
 
 	.PARAMETER Enable
 	Disable Cortana autostarting
-	Выключить автозагрузку Кортана
+	Отключить автозагрузку Кортана
 
 	.EXAMPLE
 	CortanaAutostart -Disable
@@ -7828,11 +7911,11 @@ function CheckUWPAppsUpdates
 <#
 	.SYNOPSIS
 	Disable/enable Xbox Game Bar
-	Выключить/включить Xbox Game Bar
+	Отключить/включить Xbox Game Bar
 
 	.PARAMETER Disable
 	Disable Xbox Game Bar
-	Выключить Xbox Game Bar
+	Отключить Xbox Game Bar
 
 	.PARAMETER Enable
 	Enable Xbox Game Bar
@@ -7886,15 +7969,15 @@ function XboxGameBar
 
 <#
 	.SYNOPSIS
-	Disable/enable Xbox Game Bar
-	Выключить/включить советы Xbox Game Bar
+	Disable/enable Xbox Game Bar tips
+	Отключить/включить советы Xbox Game Bar
 
 	.PARAMETER Disable
-	Disable Xbox Game Bar
-	Выключить советы Xbox Game Bar
+	Disable Xbox Game Bar tips
+	Отключить советы Xbox Game Bar
 
 	.PARAMETER Enable
-	Enable Xbox Game Bar
+	Enable Xbox Game Bar tips
 	Включить советы Xbox Game Bar
 
 	.EXAMPLE
@@ -8000,11 +8083,11 @@ function SetAppGraphicsPerformance
 <#
 	.SYNOPSIS
 	Enable/disable hardware-accelerated GPU scheduling
-	Включить/выключить планирование графического процессора с аппаратным ускорением
+	Включить/отключить планирование графического процессора с аппаратным ускорением
 
 	.PARAMETER Disable
 	Disable hardware-accelerated GPU scheduling
-	Выключить планирование графического процессора с аппаратным ускорением
+	Отключить планирование графического процессора с аппаратным ускорением
 
 	.PARAMETER Enable
 	Enable hardware-accelerated GPU scheduling
@@ -8632,11 +8715,11 @@ function RemoveDefenderExclusionFiles
 <#
 	.SYNOPSIS
 	Enable/disable Microsoft Defender Exploit Guard network protection
-	Включить/выключить защиту сети в Microsoft Defender Exploit Guard
+	Включить/отключить защиту сети в Microsoft Defender Exploit Guard
 
 	.PARAMETER Disable
 	Disable Microsoft Defender Exploit Guard network protection
-	Выключить защиту сети в Microsoft Defender Exploit Guard
+	Отключить защиту сети в Microsoft Defender Exploit Guard
 
 	.PARAMETER Enable
 	Enable Microsoft Defender Exploit Guard network protection
@@ -8683,15 +8766,15 @@ function NetworkProtection
 <#
 	.SYNOPSIS
 	Enable/disable detection for potentially unwanted applications and block them
-	Включить/выключить обнаружение потенциально нежелательных приложений и блокировать их
+	Включить/отключить обнаружение потенциально нежелательных приложений и блокировать их
 
 	.PARAMETER Disable
 	Enable/disable detection for potentially unwanted applications and block them
-	Включить/выключить обнаружение потенциально нежелательных приложений и блокировать их
+	Включить/отключить обнаружение потенциально нежелательных приложений и блокировать их
 
 	.PARAMETER Enable
 	Enable/disable detection for potentially unwanted applications and block them
-	Включить/выключить обнаружение потенциально нежелательных приложений и блокировать их
+	Включить/отключить обнаружение потенциально нежелательных приложений и блокировать их
 
 	.EXAMPLE
 	PUAppsDetection -Disable
@@ -8734,11 +8817,11 @@ function PUAppsDetection
 <#
 	.SYNOPSIS
 	Enable/disable sandboxing for Microsoft Defender
-	Включить/выключить песочницу для Microsoft Defender
+	Включить/отключить песочницу для Microsoft Defender
 
 	.PARAMETER Disable
 	Disable sandboxing for Microsoft Defender
-	Выключить песочницу для Microsoft Defender
+	Отключить песочницу для Microsoft Defender
 
 	.PARAMETER Enable
 	Enable sandboxing for Microsoft Defender
@@ -8799,11 +8882,11 @@ function DismissSmartScreenFilter
 <#
 	.SYNOPSIS
 	Enable/disable events auditing generated when a process is created or starts
-	Включить/выключить аудит событий, возникающих при создании или запуске процесса
+	Включить/отключить аудит событий, возникающих при создании или запуске процесса
 
 	.PARAMETER Disable
 	Disable events auditing generated when a process is created or starts
-	Выключить аудит событий, возникающих при создании или запуске процесса
+	Отключить аудит событий, возникающих при создании или запуске процесса
 
 	.PARAMETER Enable
 	Enable events auditing generated when a process is created or starts
@@ -8997,11 +9080,11 @@ function EventViewerCustomView
 <#
 	.SYNOPSIS
 	Enable/disable logging for all Windows PowerShell modules
-	Включить/выключить ведение журнала для всех модулей Windows PowerShell
+	Включить/отключить ведение журнала для всех модулей Windows PowerShell
 
 	.PARAMETER Disable
 	Disable logging for all Windows PowerShell modules
-	Выключить ведение журнала для всех модулей Windows PowerShell
+	Отключить ведение журнала для всех модулей Windows PowerShell
 
 	.PARAMETER Enable
 	Enable logging for all Windows PowerShell modules
@@ -9054,11 +9137,11 @@ function PowerShellModulesLogging
 <#
 	.SYNOPSIS
 	Enable/disable logging for all PowerShell scripts input to the Windows PowerShell event log
-	Включить/выключить ведение журнала для всех вводимых сценариев PowerShell в журнале событий Windows PowerShell
+	Включить/отключить ведение журнала для всех вводимых сценариев PowerShell в журнале событий Windows PowerShell
 
 	.PARAMETER Disable
 	Disable logging for all PowerShell scripts input to the Windows PowerShell event log
-	Выключить ведение журнала для всех вводимых сценариев PowerShell в журнале событий Windows PowerShell
+	Отключить ведение журнала для всех вводимых сценариев PowerShell в журнале событий Windows PowerShell
 
 	.PARAMETER Enable
 	Enable logging for all PowerShell scripts input to the Windows PowerShell event log
@@ -9109,11 +9192,11 @@ function PowerShellScriptsLogging
 <#
 	.SYNOPSIS
 	Disable/enable apps and files checking within Microsofot Defender SmartScreen
-	Выключить/включить проверку приложений и файлов фильтром SmartScreen в Microsoft Defender
+	Отключить/включить проверку приложений и файлов фильтром SmartScreen в Microsoft Defender
 
 	.PARAMETER Disable
 	Disable apps and files checking within Microsofot Defender SmartScreen
-	Выключить проверку приложений и файлов фильтром SmartScreen в Microsoft Defender
+	Отключить проверку приложений и файлов фильтром SmartScreen в Microsoft Defender
 
 	.PARAMETER Enable
 	Enable apps and files checking within Microsofot Defender SmartScreen
@@ -9160,11 +9243,11 @@ function AppsSmartScreen
 <#
 	.SYNOPSIS
 	Disable/enable the Attachment Manager marking files that have been downloaded from the Internet as unsafe
-	Выключить/включить проверку Диспетчером вложений файлов, скачанных из интернета как небезопасные
+	Отключить/включить проверку Диспетчером вложений файлов, скачанных из интернета как небезопасные
 
 	.PARAMETER Disable
 	Disable the Attachment Manager marking files that have been downloaded from the Internet as unsafe
-	Выключить проверку Диспетчером вложений файлов, скачанных из интернета как небезопасные
+	Отключить проверку Диспетчером вложений файлов, скачанных из интернета как небезопасные
 
 	.PARAMETER Enable
 	Enable the Attachment Manager marking files that have been downloaded from the Internet as unsafe
@@ -9219,11 +9302,11 @@ function SaveZoneInformation
 <#
 	.SYNOPSIS
 	Disable/enable Windows Script Host
-	Выключить/включить Windows Script Host
+	Отключить/включить Windows Script Host
 
 	.PARAMETER Disable
 	Disable Windows Script Host
-	Выключить Windows Script Host
+	Отключить Windows Script Host
 
 	.PARAMETER Enable
 	Enable Windows Script Host
@@ -9281,11 +9364,11 @@ function WindowsScriptHost
 <#
 	.SYNOPSIS
 	Disable/enable Windows Sandbox
-	Выключить/включить Windows Sandbox
+	Отключить/включить Windows Sandbox
 
 	.PARAMETER Disable
 	Disable Windows Sandbox
-	Выключить Windows Sandbox
+	Отключить Windows Sandbox
 
 	.PARAMETER Enable
 	Enable Windows Sandbox
@@ -10531,7 +10614,7 @@ function Errors
 	if ($Global:Error)
 	{
 		($Global:Error | ForEach-Object -Process {
-			[PSCustomObject] @{
+			[PSCustomObject]@{
 				$Localization.ErrorsLine = $_.InvocationInfo.ScriptLineNumber
 				$Localization.ErrorsFile = Split-Path -Path $PSCommandPath -Leaf
 				$Localization.ErrorsMessage = $_.Exception.Message
