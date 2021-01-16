@@ -46,8 +46,8 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 			</a>
 		</td>
 		<td>
-			<a href="https://benchtweakgaming.com/2020/11/12/windows-10-debloat-tool/">
-				<img src="https://benchtweakgaming.com/wp-content/uploads/2020/10/cropped-LOGO_btg_CLEAN_WITH_WORDS_90PX_CUT-3.png">
+			<a href="https://rutracker.org/forum/viewtopic.php?t=5996011">
+				<img src="https://static.t-ru.org/logo/logo-3.svg" height="100px">
 			</a>
 		</td>
 		<td>
@@ -179,6 +179,7 @@ To run the script:
 ## Ask a question on
 
 * [Ru-Board](http://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15)
+* [rutracker](https://rutracker.org/forum/viewtopic.php?t=5996011)
 * [My Digital Life](https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/)
 * [Reddit (archived)](https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/)
 
