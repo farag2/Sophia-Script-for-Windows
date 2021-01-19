@@ -87,9 +87,9 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 |Version|Code name|   Marketing name   |Build | Arch |      Editions     | Script version |
 |:-----:|:-------:|:------------------:|:----:|:----:|:-----------------:|:--------------:|
-| 2009  |  20H2   |October 2020 Update |19042 |  x64 |Home/Pro/Enterprise|[5.3.1](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
-| 2004  |  20H1   |   May 2020 Update  |19041 |  x64 |Home/Pro/Enterprise|[5.3.1](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
-| 1809  |         |LTSC Enterprise 2019|17763 |  x64 |   Enterprise      |[5.0](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 2009  |  20H2   |October 2020 Update |19042 |  x64 |Home/Pro/Enterprise|[5.3.2](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 2004  |  20H1   |   May 2020 Update  |19041 |  x64 |Home/Pro/Enterprise|[5.3.2](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 1809  |         |LTSC Enterprise 2019|17763 |  x64 |   Enterprise      |[5.0.1](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
 
 ## Screenshots
 
@@ -148,9 +148,9 @@ To run the script:
 * Download [up-to-date version](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest);
 * Expand the archive;
 * Open folder with the expanded archive;
-* Look through the ```Sophia.ps1``` file to configure functions that you want to be ran;
-  * Comment out function with the ```#``` char if you don't want it to be ran;
-  * Uncomment function by removing the ```#``` char if you want it to be ran.
+* Look through the ```Sophia.ps1``` file to configure functions that you want to be run;
+  * Comment out function with the ```#``` char if you don't want it to be run;
+  * Uncomment function by removing the ```#``` char if you want it to be run.
 * Click "File" in File Explorer, hover over "Open Windows PowerShell", and select "Open Windows PowerShell as Administrator" [(how-to with screenshots)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/);
 * Set execution policy to be able to run scripts only in the current PowerShell session
 
