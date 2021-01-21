@@ -18,7 +18,7 @@ Diff from v5.3.2
   * If you want to run the specific functions without editing the preset file you can run them as parameters now
 
   ```powershell
-  .\Sophia.ps1 -Functions "FunctionName1 -Parameter", "FunctionName2 -Parameter"
+  .\Sophia.ps1 -Functions CreateRestorePoint, "ScheduledTasks -Disable", "WindowsCapabilities -Disable", Refresh
   ```
 
   * The quotation marks required;
