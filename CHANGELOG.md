@@ -71,7 +71,6 @@ Diff from v5.3
 * Updated syspin app up to the 0.99.9.1;
 * Minor changes. :feelsgood:
 * Added the New Year ```easter egg``` to the console title! :hand_over_mouth:
-* It's the latest release this year. :hugs: Happy New Year! ![Image](https://forum.ru-board.com/board/s/deds.gif)
 
 ## 5.3 - 12.12.2020
 
