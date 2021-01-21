@@ -35,6 +35,8 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 	<a href="#how-to-translate">How to translate</a>
 	&bull;
 	<a href="#supported-windows-10-versions">Supported Windows 10 versions</a>
+	&bull;
+	<a href="https://github.com/farag2/Windows-10-Sophia-Script/blob/master/CHANGELOG.md">Complete Changelog</a>
 </p>
 <hr>
 
