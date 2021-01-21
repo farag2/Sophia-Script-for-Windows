@@ -2,14 +2,14 @@
 	.SYNOPSIS
 	Default preset file for "Windows 10 Sophia Script"
 
-	Version: v5.3.2
-	Date: 15.01.2021
+	Version: v5.3.3
+	Date: 20.01.2021
 	Copyright (c) 2021 farag & oZ-Zo
 
 	Thanks to all https://forum.ru-board.com members involved
 
 	.DESCRIPTION
-	Supported Windows 10 versions: 2004 (20H1)/2009 (20H2), 19041/19042, Home/Pro/Enterprise, x64
+	Supported Windows 10 versions: 2004 (20H1)/20H2 (2009), 19041/19042, Home/Pro/Enterprise, x64
 
 	Due to the fact that the script includes more than 150 functions with different arguments, you must read the entire Sophia.ps1 carefully and
 	comment out/uncomment those functions that you do/do not want to be executed
@@ -37,14 +37,40 @@
 #Requires -RunAsAdministrator
 #Requires -Version 5.1
 
+[CmdletBinding()]
+param
+(
+	[Parameter(Mandatory = $false)]
+	[string[]]
+	$Functions
+)
+
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.3.2 | ©️ farag & oz-zo, 2015–2021"
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.3.3 | ©️ farag & oz-zo, 2015–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Sophia.psd1 -PassThru -Force
 
 Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia
+
+
+<#
+	.SYNOPSIS
+	Adds the feature to run the script by specifying module functions as parameters
+	Добавляет возможность запускать скрипт, указывая в качестве параметров функции модуля
+
+	.EXAMPLE
+	.\Sophia.ps1 -Functions "FunctionName1 -Parameter", "FunctionName2 -Parameter"
+#>
+if ($Functions)
+{
+	foreach ($Function in $Functions)
+	{
+		Invoke-Expression -Command $Function
+	}
+	exit
+}
 
 # Checkings
 # Проверки
@@ -610,8 +636,8 @@ UpdateMicrosoftProducts -Enable
 # Не подключаться к службе Microsoft Update так, чтобы при обновлении Windows не получать обновления для других продуктов Майкрософт (значение по умолчанию)
 # UpdateMicrosoftProducts -Disable
 
-# Do not let all UWP apps run in the background (current user only)
-# Не разрешать всем UWP-приложениям работать в фоновом режиме (только для текущего пользователя)
+# Do not let UWP apps run in the background (current user only)
+# Не разрешать UWP-приложениям работать в фоновом режиме (только для текущего пользователя)
 BackgroundUWPApps -Disable
 
 # Let all UWP apps run in the background (current user only) (default value)
@@ -1065,8 +1091,13 @@ PUAppsDetection -Enable
 # Выключить обнаружение потенциально нежелательных приложений и блокировать их (значение по умолчанию)
 # PUAppsDetection -Disable
 
-# Enable sandboxing for Microsoft Defender
-# Включить песочницу для Microsoft Defender
+<#
+	Enable sandboxing for Microsoft Defender
+	There is a bug in KVM with QEMU: enabling this function causes VM to freeze up during the loading phase of Windows
+
+	Включить песочницу для Microsoft Defender
+	В KVM с QEMU присутсвует баг: включение этой функции приводит ВМ к зависанию во время загрузки Windows
+#>
 DefenderSandbox -Enable
 
 # Disable sandboxing for Microsoft Defender (default value)
