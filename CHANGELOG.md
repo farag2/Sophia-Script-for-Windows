@@ -26,7 +26,7 @@ Diff from v5.3.2
 * Bugfixed and improved the "WindowsCapabilities" function. Thnx to [cheetoh](https://forums.mydigitallife.net/members/cheetoh.977530)
 * There is a bug in KVM with QEMU: enabling the "DefenderSandbox -Enabled" function causes VM to freeze up during the loading phase of Windows
   * Read more on #120
-* The ```MediaPlayback``` feature in the ```WindowsFeatures``` function is unchecked now by default
+* The ```MediaPlayback``` feature in the ```WindowsFeatures``` function is unchecked now by default. Thnx to [Nevals](https://forums.mydigitallife.net/members/nevals.1442013)
   * If you want to leave "Multimedia settings" in the advanced settings of Power Options do not uninstall this feature
 * Updated description;
 * Minor changes. :feelsgood:
