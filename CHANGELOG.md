@@ -28,7 +28,6 @@ Diff from v5.3.2
   * Read more in #120
 * Updated description;
 * Minor changes. :feelsgood:
-* The full changelog for all years can be found [here](https://github.com/farag2/Windows-10-Sophia-Script/blob/master/Changelog.md).
 
 ## 5.3.2 - 16.01.2020
 
