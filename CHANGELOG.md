@@ -5,18 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+
+## 5.3.3 - 21.01.2020
+
+## Windows 10 2004 (20H1)/20H2 (2009) | LTSC
+
+Diff from v5.3.2
+[5.3.2...5.3.3](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.3.2...5.3.3)
+
+* Added the feature to run the script by specifying module functions as parameters
+  If you want to run the specific functions without editing the preset file you can run them as parameters now
+
+  ```powershell
+  .\Sophia.ps1 -Functions "FunctionName1 -Parameter", "FunctionName2 -Parameter"
+  ```
+
+  * The quotation marks required.
+* Bugfixed and improved the "WindowsCapabilities" function. Thx to [cheetoh](https://forums.mydigitallife.net/members/cheetoh.977530)
+* There is a bug in KVM with QEMU: enabling the "DefenderSandbox -Enabled" function causes VM to freeze up during the loading phase of Windows
+  * Read more in #120
+* Updated description;
+* Minor changes. :feelsgood:
+* The full changelog for all years can be found [here](https://github.com/farag2/Windows-10-Sophia-Script/blob/master/Changelog.md).
+
 ## 5.3.2 - 16.01.2020
 
-## Windows 10 2004 (20H1)/20H2 (2009)/LTSC
+## Windows 10 2004 (20H1)/20H2 (2009) | LTSC
 
-Diff from v5.3
+Diff from v5.3.1
 [5.3.1...5.3.2](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.3.1...5.3.2)
 
 * Updated "TelemetryService" function
   * Renamed into "DiagTrackService";
   * Added "Disable firewall rule for Unified Telemetry Client Outbound Traffic and block connection" feature.
     * Closed #116
-    * To do it manually run
+    * To do it run manually
 
     ```powershell
     Get-NetFirewallRule -Group DiagTrack | Set-NetFirewallRule -Enabled False -Action Block
