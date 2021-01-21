@@ -158,6 +158,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 * Type ```.\Sophia.ps1``` to run the whole preset file;
 * Press <kbd>Enter</kbd>.
+
 How to run the specific function(s) (example):
 
 ```powershell
