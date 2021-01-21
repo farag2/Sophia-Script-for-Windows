@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Windows 10 Sophia Script" (LTSC version)
 
-	Version: v5.0.1
-	Date: 16.01.2021
+	Version: v5.0.2
+	Date: 20.01.2021
 	Copyright (c) 2021 farag & oZ-Zo
 
 	Thanks to all https://forum.ru-board.com members involved
@@ -37,14 +37,39 @@
 #Requires -RunAsAdministrator
 #Requires -Version 5.1
 
+[CmdletBinding()]
+param
+(
+	[Parameter(Mandatory = $false)]
+	[string[]]
+	$Functions
+)
+
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script for LTSC v5.0.1 | ©️ farag & oz-zo, 2015–2021"
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script for LTSC v5.0.2 | ©️ farag & oz-zo, 2015–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Sophia.psd1 -PassThru -Force
 
 Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia
+
+<#
+	.SYNOPSIS
+	Adds the feature to run the script by specifying module functions as parameters
+	Добавляет возможность запускать скрипт, указывая в качестве параметров функции модуля
+
+	.EXAMPLE
+	.\Sophia.ps1 -Functions "FunctionName1 -Parameter", "FunctionName2 -Parameter"
+#>
+if ($Functions)
+{
+	foreach ($Function in $Functions)
+	{
+		Invoke-Expression -Command $Function
+	}
+	exit
+}
 
 # Checkings
 # Проверки
@@ -801,8 +826,13 @@ PUAppsDetection -Enable
 # Выключить обнаружение потенциально нежелательных приложений и блокировать их (значение по умолчанию)
 # PUAppsDetection -Disable
 
-# Enable sandboxing for Microsoft Defender
-# Включить песочницу для Microsoft Defender
+<#
+	Enable sandboxing for Microsoft Defender
+	There is a bug in KVM with QEMU: enabling this function causes VM to freeze up during the loading phase of Windows
+
+	Включить песочницу для Microsoft Defender
+	В KVM с QEMU присутсвует баг: включение этой функции приводит ВМ к зависанию во время загрузки Windows
+#>
 DefenderSandbox -Enable
 
 # Disable sandboxing for Microsoft Defender (default value)

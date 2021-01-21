@@ -2,7 +2,7 @@
 	.SYNOPSIS
 	"Windows 10 Sophia Script" (LTSC version) is a PowerShell module for Windows 10 fine-tuning and automating the routine tasks
 
-	Version: v5.0.1
+	Version: v5.0.2
 	Date: 17.01.2020
 	Copyright (c) 2021 farag & oZ-Zo
 
@@ -22,7 +22,7 @@
 
 	.NOTES
 	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
-	https://habr.com/en/post/521202/
+	https://habr.com/post/521202/
 	https://forums.mydigitallife.net/threads/powershell-script-setup-windows-10.81675/
 	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
 
@@ -30,6 +30,7 @@
 	https://github.com/farag2/Windows-10-Sophia-Script
 #>
 
+#region Checkings
 function Checkings
 {
 	Set-StrictMode -Version Latest
@@ -51,7 +52,7 @@ function Checkings
 
 	# Detect the OS build version
 	# Определить номер билда ОС
-	switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber -ge 17763)
+	switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber -eq 17763)
 	{
 		$false
 		{
@@ -66,15 +67,16 @@ function Checkings
 
 	# Turn off Controlled folder access to let the script proceed
 	# Отключить контролируемый доступ к папкам
-	switch ((Get-MpPreference).EnableControlledFolderAccess -eq 1)
+	switch ((Get-MpPreference).EnableControlledFolderAccess)
 	{
-		$true
+		"1"
 		{
 			Write-Warning -Message $Localization.ControlledFolderAccessDisabled
+			$Script:ControlledFolderAccess = $true
 			Set-MpPreference -EnableControlledFolderAccess Disabled
 
 			# Open "Ransomware protection" page
-			# Открыть раздел "Защита от программ-шатажистов"
+			# Открыть раздел "Защита от программ-шантажистов"
 			Start-Process -FilePath windowsdefender://RansomwareProtection
 		}
 	}
@@ -368,6 +370,15 @@ function WindowsFeedback
 
 	.EXAMPLE
 	ScheduledTasks -Enable
+
+	.NOTES
+	A pop-up dialog box enables the user to select tasks
+	Current user only
+
+	Используется всплывающее диалоговое окно, позволяющее пользователю отмечать задачи
+	Только для текущего пользователя
+
+	Made by https://github.com/oz-zo
 #>
 function ScheduledTasks
 {
@@ -1141,7 +1152,6 @@ function FileExtensions
 	Current user only
 	Только для текущего пользователя
 #>
-
 function MergeConflicts
 {
 	param
@@ -1252,7 +1262,6 @@ function OpenFileExplorerTo
 	Current user only
 	Только для текущего пользователя
 #>
-
 function TaskViewButton
 {
 	param
@@ -1308,7 +1317,6 @@ function TaskViewButton
 	Current user only
 	Только для текущего пользователя
 #>
-
 function PeopleTaskbar
 {
 	param
@@ -2390,7 +2398,7 @@ function TaskManagerWindow
 	do
 	{
 		Start-Sleep -Milliseconds 100
-		$Preferences = Get-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -ErrorAction Ignore
+		$Preferences = Get-ItemPropertyValue -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -ErrorAction Ignore
 	}
 	until ($Preferences)
 
@@ -2400,13 +2408,13 @@ function TaskManagerWindow
 	{
 		"Expanded"
 		{
-			$Preferences.Preferences[28] = 0
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -PropertyType Binary -Value $Preferences.Preferences -Force
+			$Preferences[28] = 0
+			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -PropertyType Binary -Value $Preferences -Force
 		}
 		"Compact"
 		{
-			$Preferences.Preferences[28] = 1
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -PropertyType Binary -Value $Preferences.Preferences -Force
+			$Preferences[28] = 1
+			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -PropertyType Binary -Value $Preferences -Force
 		}
 	}
 }
@@ -2585,11 +2593,11 @@ function PrtScnSnippingTool
 	Let/do not let use a different input method for each app window
 	Позволить/не позволять выбирать метод ввода для каждого окна
 
-	.PARAMETER Disable
+	.PARAMETER Enable
 	Let use a different input method for each app window
 	Позволить выбирать метод ввода для каждого окна
 
-	.PARAMETER Enable
+	.PARAMETER Disable
 	Do not let use a different input method for each app window
 	Не позволять выбирать метод ввода для каждого окна
 
@@ -2624,11 +2632,11 @@ function AppsLanguageSwitch
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
-		"Disable"
+		"Enable"
 		{
 			Set-WinLanguageBarOption -UseLegacySwitchMode
 		}
-		"Enable"
+		"Disable"
 		{
 			Set-WinLanguageBarOption
 		}
@@ -3547,8 +3555,13 @@ function WindowsFeatures
 		# Компоненты прежних версий
 		"LegacyComponents",
 
-		# Media Features
-		# Компоненты работы с мультимедиа
+		<#
+			Media Features
+			Компоненты работы с мультимедиа
+
+			If you want to leave "Multimedia settings" in the advanced settings of Power Options do not uninstall this feature
+			Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах электропитания, не удаляйте этот компонент
+		#>
 		"MediaPlayback",
 
 		# PowerShell 2.0
@@ -3784,11 +3797,13 @@ function WindowsFeatures
 	WindowsCapabilities -Enable
 
 	.NOTES
-	A pop-up dialog box enables the user to select features to remove
+	A pop-up dialog box enables the user to select features
 	Current user only
 
-	Используется всплывающее диалоговое окно, позволяющее пользователю отметить компоненты на удаление
+	Используется всплывающее диалоговое окно, позволяющее пользователю отмечать компоненты
 	Только для текущего пользователя
+
+	Made by https://github.com/oz-zo
 #>
 function WindowsCapabilities
 {
@@ -3819,37 +3834,45 @@ function WindowsCapabilities
 	# The following FODv2 items will have their checkboxes checked
 	# Следующие дополнительные компоненты будут иметь чекбоксы отмеченными
 	$CheckedCapabilities = @(
-		# Steps Recorder
-		# Средство записи действий
-		"App.StepsRecorder*",
-
 		# Microsoft Quick Assist
 		# Быстрая поддержка (Майкрософт)
-		"App.Support.QuickAssist*",
+		"App.Support.QuickAssist*"
+	)
 
-		# Windows Media Player
-		# Проигрыватель Windows Media
+	# The following FODv2 items will have their checkboxes unchecked
+	# Следующие дополнительные компоненты будут иметь чекбоксы неотмеченными
+		$UncheckedCapabilities = @(
+		# Internet Explorer 11
+		"Browser.InternetExplorer*",
+
+		# Math Recognizer
+		# Распознаватель математических знаков
+		"MathRecognizer*",
+
+		<#
+			Windows Media Player
+			Проигрыватель Windows Media
+
+			If you want to leave "Multimedia settings" element in the advanced settings of Power Options do not uninstall this feature
+			Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах электропитания, не удаляйте этот компонент
+		#>
 		"Media.WindowsMediaPlayer*",
 
-		# Integrated faxing and scanning application for Windows
-		# Факсы и сканирование Windows
-		"Print.Fax.Scan*"
+		# Language components
+		# Языковые компоненты
+		"OpenSSH.Client*"
 	)
 
 	# The following FODv2 items will be excluded from the display
 	# Следующие дополнительные компоненты будут исключены из отображения
 	$ExcludedCapabilities = @(
-		# The DirectX Database to configure and optimize apps when multiple Graphics Adapters are present
-		# База данных DirectX для настройки и оптимизации приложений при наличии нескольких графических адаптеров
-		"DirectX\.Configuration\.Database",
-
 		# Language components
 		# Языковые компоненты
-		"Language\.",
+		"Language.*",
 
 		# Mail, contacts, and calendar sync component
 		# Компонент синхронизации почты, контактов и календаря
-		"OneCoreUAP\.OneSync"
+		"OneCoreUAP.OneSync*"
 	)
 	#endregion Variables
 
@@ -3942,16 +3965,24 @@ function WindowsCapabilities
 		$OFS = "|"
 		Get-WindowsCapability -Online | Where-Object -FilterScript {$_.Name -cmatch $Capabilities} | Remove-WindowsCapability -Online
 		$OFS = " "
+
+		if ([string]$Capabilities -cmatch "Browser.InternetExplorer*")
+		{
+			Write-Warning -Message $Localization.RestartWarning
+		}
 	}
 
 	function EnableButton
 	{
-		Write-Verbose -Message $Localization.Patient -Verbose
-
 		[void]$Window.Close()
 		$OFS = "|"
 		Get-WindowsCapability -Online | Where-Object -FilterScript {$_.Name -cmatch $Capabilities} | Add-WindowsCapability -Online
 		$OFS = " "
+
+		if ([string]$Capabilities -cmatch "Browser.InternetExplorer*")
+		{
+			Write-Warning -Message $Localization.RestartWarning
+		}
 	}
 
 	function Add-CapabilityControl
@@ -3980,15 +4011,19 @@ function WindowsCapabilities
 
 		[void]$PanelContainer.Children.Add($StackPanel)
 
-		$CheckBox.IsChecked = $false
+		# If capability checked, add to the array list to remove
+		# Если компонент выделен, то добавить в массив для удаления
+		if ($UnCheckedCapabilities | Where-Object -FilterScript {$Capability -like $_})
+		{
+			$CheckBox.IsChecked = $false
+			# Exit function, item is not checked
+			# Выход из функции, если элемент не выделен
+			return
+		}
 
 		# If capability checked, add to the array list to remove
 		# Если компонент выделен, то добавить в массив для удаления
-		if ($CheckedCapabilities | Where-Object -FilterScript {$Capability -like $_})
-		{
-			$CheckBox.IsChecked = $true
-			[void]$Capabilities.Add($Capability)
-		}
+		[void]$Capabilities.Add($Capability)
 	}
 	#endregion Functions
 
@@ -3996,12 +4031,23 @@ function WindowsCapabilities
 	{
 		"Enable"
 		{
+			try
+			{
+				(Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription
+			}
+			catch [System.Net.WebException]
+			{
+				Write-Warning -Message $Localization.NoInternetConnection
+				Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+				return
+			}
+
 			#region Events Handlers
 			$OptionalCapabilities = New-Object -TypeName System.Collections.ArrayList($null)
 			# Window Loaded Event
 			$Window.Add_Loaded({
 				$OFS = "|"
-				$OptionalCapabilities = Get-WindowsCapability -Online | Where-Object -FilterScript {($_.State -eq "NotPresent") -and ($_.Name -cmatch $CheckedCapabilities) -and ($_.Name -cnotmatch $ExcludedCapabilities)}
+				$OptionalCapabilities = Get-WindowsCapability -Online | Where-Object -FilterScript {($_.State -eq "NotPresent") -and ($_.Name -cmatch $CheckedCapabilities) -($_.Name -cmatch $UncheckedCapabilities) -and ($_.Name -cnotmatch $ExcludedCapabilities)}
 				if ($OptionalCapabilities.Count -gt 0)
 				{
 					$OptionalCapabilities | ForEach-Object -Process {
@@ -4029,7 +4075,7 @@ function WindowsCapabilities
 			# Window Loaded Event
 			$Window.Add_Loaded({
 				$OFS = "|"
-				$OptionalCapabilities = Get-WindowsCapability -Online | Where-Object -FilterScript {($_.State -eq "Installed") -and ($_.Name -cmatch $CheckedCapabilities) -and ($_.Name -cnotmatch $ExcludedCapabilities)}
+				$OptionalCapabilities = Get-WindowsCapability -Online | Where-Object -FilterScript {($_.State -eq "Installed") -and ($_.Name -cnotmatch $ExcludedCapabilities)}
 				if ($OptionalCapabilities.Count -gt 0)
 				{
 					$OptionalCapabilities | ForEach-Object -Process {
@@ -4050,17 +4096,6 @@ function WindowsCapabilities
 			$Button.Add_Click({DisableButton})
 			#endregion Events Handlers
 		}
-	}
-
-	try
-	{
-		(Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription
-	}
-	catch [System.Net.WebException]
-	{
-		Write-Warning -Message $Localization.NoInternetConnection
-		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
-		return
 	}
 
 	Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
@@ -4412,13 +4447,10 @@ function SetUserShellFolderLocation
 		$Default
 	)
 
-	function UserShellFolder
-	{
 	<#
 		.SYNOPSIS
 		Change the location of the each user folder using SHSetKnownFolderPath function
 		Изменить расположение каждой пользовательской папки, используя функцию "SHSetKnownFolderPath"
-		https://docs.microsoft.com/en-us/windows/win32/api/shlobj_core/nf-shlobj_core-shgetknownfolderpath
 
 		.PARAMETER RemoveDesktopINI
 		The RemoveDesktopINI argument removes desktop.ini in the old user shell folder
@@ -4430,7 +4462,11 @@ function SetUserShellFolderLocation
 		.NOTES
 		User files or folders won't me moved to a new location
 		Пользовательские файлы не будут перенесены в новое расположение
+
+		https://docs.microsoft.com/en-us/windows/win32/api/shlobj_core/nf-shlobj_core-shgetknownfolderpath
 	#>
+	function UserShellFolder
+	{
 		[CmdletBinding()]
 		param
 		(
@@ -4596,8 +4632,10 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 		ShowMenu -Menu $ListOfItems -Default $DefaultChoice
 
 		.NOTES
-		Не работает в PowerShell ISE
 		Doesn't work in PowerShell ISE
+		Не работает в PowerShell ISE
+
+		https://qna.habr.com/user/MaxKozlov
 	#>
 	function ShowMenu
 	{
@@ -4678,11 +4716,11 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			# Если количество дисков больше одного, сделать второй диск в списке диском по умолчанию
 			if ($DriveLetters.Count -gt 1)
 			{
-				$Global:Default = 1
+				$Script:Default = 1
 			}
 			else
 			{
-				$Global:Default = 0
+				$Script:Default = 0
 			}
 
 			# Desktop
@@ -4702,7 +4740,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			{
 				"0"
 				{
-					$SelectedDrive = ShowMenu -Title $Localization.DesktopDriveSelect -Menu $DriveLetters -Default $Global:Default
+					$SelectedDrive = ShowMenu -Title $Localization.DesktopDriveSelect -Menu $DriveLetters -Default $Script:Default
 					UserShellFolder -UserFolder Desktop -FolderPath "${SelectedDrive}:\Desktop" -RemoveDesktopINI
 				}
 				"1"
@@ -4728,7 +4766,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			{
 				"0"
 				{
-					$SelectedDrive = ShowMenu -Title $Localization.DocumentsDriveSelect -Menu $DriveLetters -Default $Global:Default
+					$SelectedDrive = ShowMenu -Title $Localization.DocumentsDriveSelect -Menu $DriveLetters -Default $Script:Default
 					UserShellFolder -UserFolder Documents -FolderPath "${SelectedDrive}:\Documents" -RemoveDesktopINI
 				}
 				"1"
@@ -4754,7 +4792,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			{
 				"0"
 				{
-					$SelectedDrive = ShowMenu -Title $Localization.DownloadsDriveSelect -Menu $DriveLetters -Default $Global:Default
+					$SelectedDrive = ShowMenu -Title $Localization.DownloadsDriveSelect -Menu $DriveLetters -Default $Script:Default
 					UserShellFolder -UserFolder Downloads -FolderPath "${SelectedDrive}:\Downloads" -RemoveDesktopINI
 				}
 				"1"
@@ -4780,7 +4818,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			{
 				"0"
 				{
-					$SelectedDrive = ShowMenu -Title $Localization.MusicDriveSelect -Menu $DriveLetters -Default $Global:Default
+					$SelectedDrive = ShowMenu -Title $Localization.MusicDriveSelect -Menu $DriveLetters -Default $Script:Default
 					UserShellFolder -UserFolder Music -FolderPath "${SelectedDrive}:\Music" -RemoveDesktopINI
 				}
 				"1"
@@ -4806,7 +4844,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			{
 				"0"
 				{
-					$SelectedDrive = ShowMenu -Title $Localization.PicturesDriveSelect -Menu $DriveLetters -Default $Global:Default
+					$SelectedDrive = ShowMenu -Title $Localization.PicturesDriveSelect -Menu $DriveLetters -Default $Script:Default
 					UserShellFolder -UserFolder Pictures -FolderPath "${SelectedDrive}:\Pictures" -RemoveDesktopINI
 				}
 				"1"
@@ -4832,7 +4870,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			{
 				"0"
 				{
-					$SelectedDrive = ShowMenu -Title $Localization.VideosDriveSelect -Menu $DriveLetters -Default $Global:Default
+					$SelectedDrive = ShowMenu -Title $Localization.VideosDriveSelect -Menu $DriveLetters -Default $Script:Default
 					UserShellFolder -UserFolder Videos -FolderPath "${SelectedDrive}:\Videos" -RemoveDesktopINI
 				}
 				"1"
@@ -6814,6 +6852,10 @@ function PUAppsDetection
 
 	.EXAMPLE
 	DefenderSandbox -Enable
+
+	.NOTES
+	There is a bug in KVM with QEMU: enabling this function causes VM to freeze up during the loading phase of Windows
+	В KVM с QEMU присутсвует баг: включение этой функции приводит ВМ к зависанию во время загрузки Windows
 #>
 function DefenderSandbox
 {
@@ -8414,6 +8456,13 @@ public static void PostMessage()
 	# Перезапустить меню "Пуск"
 	Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
 
+	# Turn on Controlled folder access if it was turned on
+	# Включить контролируемый доступ к папкам, если был включен
+	if ($Script:ControlledFolderAccess)
+	{
+		Set-MpPreference -EnableControlledFolderAccess Enabled
+	}
+
 	Write-Warning -Message $Localization.RestartWarning
 }
 #endregion Refresh
@@ -8425,7 +8474,7 @@ function Errors
 	if ($Global:Error)
 	{
 		($Global:Error | ForEach-Object -Process {
-			[PSCustomObject] @{
+			[PSCustomObject]@{
 				$Localization.ErrorsLine = $_.InvocationInfo.ScriptLineNumber
 				$Localization.ErrorsFile = Split-Path -Path $PSCommandPath -Leaf
 				$Localization.ErrorsMessage = $_.Exception.Message
