@@ -143,8 +143,6 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ## Usage
 
-To run the script:
-
 * Download [up-to-date version](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest);
 * Expand the archive;
 * Open folder with the expanded archive;
@@ -158,10 +156,9 @@ To run the script:
   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
   ```
 
-* Type ```.\Sophia.ps1```
-* Press Enter
-
-To run specific function(s) (example):
+* Type ```.\Sophia.ps1``` to run the whole preset file;
+* Press <kbd>Enter</kbd>.
+How to run the specific function(s) (example):
 
 ```powershell
 .\Sophia.ps1 -Functions CreateRestorePoint, "ScheduledTasks -Disable", "WindowsCapabilities -Disable", Refresh
