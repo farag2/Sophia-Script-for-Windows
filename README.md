@@ -161,6 +161,14 @@ To run the script:
 * Type ```.\Sophia.ps1```
 * Press Enter
 
+To run specific function(s) (example):
+
+```powershell
+.\Sophia.ps1 -Functions CreateRestorePoint, "ScheduledTasks -Disable", "WindowsCapabilities -Disable", Refresh
+```
+
+* The quotation marks required.
+
 ## How to translate
 
 * Get your OS UI culture by
