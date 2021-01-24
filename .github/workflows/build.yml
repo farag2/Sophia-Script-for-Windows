@@ -21,13 +21,15 @@ jobs:
             $BUILD_DIR += ${env:GITHUB_REF} -replace ‘refs/tags/’, ‘’
           }
           # Get-ChildItem Env:
+          $ZIP="$BUILD_DIR.zip"
           mkdir $BUILD_DIR
           echo $BUILD_DIR
+          echo $ZIP
           cp -R Sophia/* $BUILD_DIR
           del -Force -Recurse "$BUILD_DIR/PowerShell 7.x"
           # gci -Recurse $BUILD_DIR | select FullName
           iwr http://www.technosys.net/download.aspx?file=syspin.exe -OutFile $BUILD_DIR/syspin.exe
-          Compress-Archive -Path $BUILD_DIR -DestinationPath $BUILD_DIR.zip
+          Compress-Archive -Path $BUILD_DIR -DestinationPath "$ZIP.zip"
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
