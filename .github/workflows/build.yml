@@ -29,7 +29,7 @@ jobs:
           del -Force -Recurse "$BUILD_DIR/PowerShell 7.x"
           # gci -Recurse $BUILD_DIR | select FullName
           iwr http://www.technosys.net/download.aspx?file=syspin.exe -OutFile $BUILD_DIR/syspin.exe
-          Compress-Archive -Path $BUILD_DIR -DestinationPath "$ZIP.zip"
+          Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP
       # - name: Create Release
       #   id: create_release
       #   uses: actions/create-release@v1
