@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Build 5.x
         run: |
-          $BUILD_DIR = "Sophia-ps5-"
+          $BUILD_DIR = "Sophia-"
           if ($env:GITHUB_REF -eq "refs/heads/master") {
             $BUILD_DIR += "master"
           } else {
@@ -27,6 +27,24 @@ jobs:
           echo $ZIP
           cp -R Sophia/* $BUILD_DIR
           del -Force -Recurse "$BUILD_DIR/PowerShell 7.x"
+          iwr http://www.technosys.net/download.aspx?file=syspin.exe -OutFile $BUILD_DIR/syspin.exe
+          Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP
+      - name: Build 7.x
+        run: |
+          $BUILD_DIR = "Sophia-PS7-"
+          if ($env:GITHUB_REF -eq "refs/heads/master") {
+            $BUILD_DIR += "master"
+          } else {
+            $BUILD_DIR += ${env:GITHUB_REF} -replace ‘refs/tags/’, ‘’
+          }
+          # Get-ChildItem Env:
+          $ZIP="$BUILD_DIR.zip"
+          mkdir $BUILD_DIR
+          echo $BUILD_DIR
+          echo $ZIP
+          cp -R Sophia/* $BUILD_DIR
+          mv -Force "$BUILD_DIR/Sophia/PowerShell 7.x/*" "$BUILD_DIR/Sophia/*"
+          del "$BUILD_DIR/Sophia/PowerShell 7.x/*"
           iwr http://www.technosys.net/download.aspx?file=syspin.exe -OutFile $BUILD_DIR/syspin.exe
           Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP
       - name: Upload to release
