@@ -1,10 +1,10 @@
 name: Patch
 
-on: push  # to debug
-# on:
-#   push:
-#     tags:
-#       - '*.*.*'
+on:
+  push:
+    tags:
+      - '*.*.*'
+      - '*.*'
 
 jobs:
   patch:
