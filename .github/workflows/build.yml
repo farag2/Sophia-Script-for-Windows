@@ -15,7 +15,8 @@ jobs:
       - name: Build 5.x
         env:
           BUILD_DIR: Sophia-ps5-${{ github.ref }}
-        run: 
+        run: |
+          Get-ChildItem Env:
           mkdir $BUILD_DIR
           cp -R Sophia/* $BUILD_DIR
           del -Force -Recurse "$BUILD_DIR/PowerShell 7.x"
