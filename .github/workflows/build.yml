@@ -13,7 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build 5.x
-        # shell: pwsh
         run: |
           $BUILD_DIR = "Sophia-"
           if ($env:GITHUB_REF -eq "refs/heads/master") {
@@ -21,10 +20,28 @@ jobs:
           } else {
             $BUILD_DIR += ${env:GITHUB_REF} -replace ‘refs/tags/’, ‘’
           }
-          Get-ChildItem Env:
+          # Get-ChildItem Env:
           mkdir $BUILD_DIR
           cp -R Sophia/* $BUILD_DIR
           del -Force -Recurse "$BUILD_DIR/PowerShell 7.x"
-          gci -Recurse $BUILD_DIR | select FullName
-        
-
+          # gci -Recurse $BUILD_DIR | select FullName
+          iwr http://www.technosys.net/download.aspx?file=syspin.exe -OutFile $BUILD_DIR/syspin.exe
+          Compress-Archive -Path $BUILD_DIR -DestinationPath $BUILD_DIR.zip
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: true
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: Sophia-*.zip
+          tag: ${{ github.ref }}
+          overwrite: true
+          asset_content_type: application/zip
