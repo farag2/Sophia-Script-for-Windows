@@ -13,12 +13,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build 5.x
-        env:
-          BUILD_DIR: Sophia-ps5-${{ github.ref }}
-          SOURCE_NAME: ${{ github.ref }} -replace ‘refs/\w+/’, ‘’
-          SOURCE_BRANCH: ${{ github.ref }} -replace ‘refs/heads/’, ‘’
-          SOURCE_TAG: ${{ github.ref }} -replace ‘refs/tags/’, ‘’
         run: |
+          if ($env:GITHUB_REF -eq "refs/heads/master") {
+            BUILD_DIR = "master"
+          } else {
+            BUILD_DIR = ${env:GITHUB_REF} -replace ‘refs/tags/’, ‘’
+          }
           Get-ChildItem Env:
           mkdir $BUILD_DIR
           cp -R Sophia/* $BUILD_DIR
