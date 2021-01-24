@@ -1,0 +1,23 @@
+name: Patch
+
+on: push  # to debug
+# on:
+#   push:
+#     tags:
+#       - '*.*.*'
+
+jobs:
+  patch:
+    runs-on: windows-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build 5.x
+        env:
+          BUILD_DIR = "Sophia-ps5-${{ github.ref }}"
+        run: 
+          mkdir $BUILD_DIR
+          cp -R Sophia/* $BUILD_DIR
+          del -Force -Recurse "$BUILD_DIR/PowerShell 7.x"
+          gci -Recurse
+
