@@ -30,12 +30,13 @@ jobs:
           Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP
       - name: Build 7.x
         run: |
-          $BUILD_DIR = "Sophia-PS7-"
+          $BUILD_DIR = "Sophia-"
           if ($env:GITHUB_REF -eq "refs/heads/master") {
             $BUILD_DIR += "master"
           } else {
             $BUILD_DIR += ${env:GITHUB_REF} -replace ‘refs/tags/’, ‘’
           }
+          $BUILD_DIR += "-PS7"
           $ZIP="$BUILD_DIR.zip"
           mkdir $BUILD_DIR
           echo $BUILD_DIR
@@ -47,12 +48,13 @@ jobs:
           Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP
       - name: Build LTSC
         run: |
-          $BUILD_DIR = "Sophia-LTSC-"
+          $BUILD_DIR = "Sophia-"
           if ($env:GITHUB_REF -eq "refs/heads/master") {
             $BUILD_DIR += "master"
           } else {
             $BUILD_DIR += ${env:GITHUB_REF} -replace ‘refs/tags/’, ‘’
           }
+          $BUILD_DIR += "-LTSC"
           $ZIP="$BUILD_DIR.zip"
           mkdir $BUILD_DIR
           echo $BUILD_DIR
