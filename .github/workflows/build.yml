@@ -43,8 +43,8 @@ jobs:
           echo $BUILD_DIR
           echo $ZIP
           cp -R Sophia/* $BUILD_DIR
-          mv -Force "$BUILD_DIR/Sophia/PowerShell 7.x/*" "$BUILD_DIR/Sophia/*"
-          del "$BUILD_DIR/Sophia/PowerShell 7.x/*"
+          mv -Force "$BUILD_DIR/PowerShell 7.x/*" $BUILD_DIR
+          del "$BUILD_DIR/PowerShell 7.x/"
           iwr http://www.technosys.net/download.aspx?file=syspin.exe -OutFile $BUILD_DIR/syspin.exe
           Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP
       - name: Upload to release
