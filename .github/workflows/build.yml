@@ -13,6 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build 5.x
+        shell: pwsh
         run: |
           $BUILD_DIR = "Sophia-"
           if ($env:GITHUB_REF -eq "refs/heads/master") {
@@ -25,4 +26,5 @@ jobs:
           cp -R Sophia/* $BUILD_DIR
           del -Force -Recurse "$BUILD_DIR/PowerShell 7.x"
           gci -Recurse $BUILD_DIR | select FullName
+        
 
