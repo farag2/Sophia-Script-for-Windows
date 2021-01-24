@@ -23,5 +23,5 @@ jobs:
           mkdir $BUILD_DIR
           cp -R Sophia/* $BUILD_DIR
           del -Force -Recurse "$BUILD_DIR/PowerShell 7.x"
-          gci -Recurse | select FullName
+          gci -Recurse $BUILD_DIR | select FullName
 
