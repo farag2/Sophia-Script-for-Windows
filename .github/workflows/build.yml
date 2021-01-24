@@ -14,10 +14,11 @@ jobs:
       - uses: actions/checkout@v2
       - name: Build 5.x
         run: |
+          $BUILD_DIR = "Sophia-"
           if ($env:GITHUB_REF -eq "refs/heads/master") {
-            $BUILD_DIR = "master"
+            $BUILD_DIR .= "master"
           } else {
-            $BUILD_DIR = ${env:GITHUB_REF} -replace ‘refs/tags/’, ‘’
+            $BUILD_DIR .= ${env:GITHUB_REF} -replace ‘refs/tags/’, ‘’
           }
           Get-ChildItem Env:
           mkdir $BUILD_DIR
