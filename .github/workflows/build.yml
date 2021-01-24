@@ -48,3 +48,4 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
           asset_content_type: application/zip
+          file_glob: true
