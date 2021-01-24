@@ -15,6 +15,9 @@ jobs:
       - name: Build 5.x
         env:
           BUILD_DIR: Sophia-ps5-${{ github.ref }}
+          SOURCE_NAME: ${{ github.ref }} -replace ‘refs/\w+/’, ‘’
+          SOURCE_BRANCH: ${{ github.ref }} -replace ‘refs/heads/’, ‘’
+          SOURCE_TAG: ${{ github.ref }} -replace ‘refs/tags/’, ‘’
         run: |
           Get-ChildItem Env:
           mkdir $BUILD_DIR
