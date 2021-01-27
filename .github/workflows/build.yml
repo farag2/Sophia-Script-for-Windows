@@ -1,0 +1,73 @@
+name: Patch
+
+on:
+  push:
+    tags:
+      - '*.*.*'
+      - '*.*'
+
+jobs:
+  patch:
+    runs-on: windows-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build 5.x
+        run: |
+          $BUILD_DIR = "Sophia-"
+          if ($env:GITHUB_REF -eq "refs/heads/master") {
+            $BUILD_DIR += "master"
+          } else {
+            $BUILD_DIR += ${env:GITHUB_REF} -replace ‘refs/tags/’, ‘’
+          }
+          $ZIP="$BUILD_DIR.zip"
+          mkdir $BUILD_DIR
+          echo $BUILD_DIR
+          echo $ZIP
+          cp -R Sophia/* $BUILD_DIR
+          del -Force -Recurse "$BUILD_DIR/PowerShell 7.x"
+          iwr http://www.technosys.net/download.aspx?file=syspin.exe -OutFile $BUILD_DIR/syspin.exe
+          Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP
+      - name: Build 7.x
+        run: |
+          $BUILD_DIR = "Sophia-"
+          if ($env:GITHUB_REF -eq "refs/heads/master") {
+            $BUILD_DIR += "master"
+          } else {
+            $BUILD_DIR += ${env:GITHUB_REF} -replace ‘refs/tags/’, ‘’
+          }
+          $BUILD_DIR += "-PS7"
+          $ZIP="$BUILD_DIR.zip"
+          mkdir $BUILD_DIR
+          echo $BUILD_DIR
+          echo $ZIP
+          cp -R Sophia/* $BUILD_DIR
+          mv -Force "$BUILD_DIR/PowerShell 7.x/*" $BUILD_DIR
+          del "$BUILD_DIR/PowerShell 7.x/"
+          iwr http://www.technosys.net/download.aspx?file=syspin.exe -OutFile $BUILD_DIR/syspin.exe
+          Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP
+      - name: Build LTSC
+        run: |
+          $BUILD_DIR = "Sophia-"
+          if ($env:GITHUB_REF -eq "refs/heads/master") {
+            $BUILD_DIR += "master"
+          } else {
+            $BUILD_DIR += ${env:GITHUB_REF} -replace ‘refs/tags/’, ‘’
+          }
+          $BUILD_DIR += "-LTSC"
+          $ZIP="$BUILD_DIR.zip"
+          mkdir $BUILD_DIR
+          echo $BUILD_DIR
+          echo $ZIP
+          cp -R LTSC/* $BUILD_DIR
+          iwr http://www.technosys.net/download.aspx?file=syspin.exe -OutFile $BUILD_DIR/syspin.exe
+          Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP
+      - name: Upload to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: Sophia-*.zip
+          tag: ${{ github.ref }}
+          overwrite: true
+          asset_content_type: application/zip
+          file_glob: true
