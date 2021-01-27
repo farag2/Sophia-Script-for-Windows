@@ -89,9 +89,9 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 |Version|Code name|   Marketing name   |Build | Arch |      Editions     | Script version |
 |:-----:|:-------:|:------------------:|:----:|:----:|:-----------------:|:--------------:|
-| 2009  |  20H2   |October 2020 Update |19042 |  x64 |Home/Pro/Enterprise|[5.3.2](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
-| 2004  |  20H1   |   May 2020 Update  |19041 |  x64 |Home/Pro/Enterprise|[5.3.2](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
-| 1809  |         |LTSC Enterprise 2019|17763 |  x64 |   Enterprise      |[5.0.1](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 2009  |  20H2   |October 2020 Update |19042 |  x64 |Home/Pro/Enterprise|[5.3.3](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 2004  |  20H1   |   May 2020 Update  |19041 |  x64 |Home/Pro/Enterprise|[5.3.3](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 1809  |         |LTSC Enterprise 2019|17763 |  x64 |   Enterprise      |[5.0.2](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
 
 ## Screenshots
 
@@ -131,8 +131,8 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 * Create a Windows cleaning up task in the Task Scheduler;
   * A toast notification will pop up a minute before the task [starts](#Screenshots)
 * Create tasks in the Task Scheduler to clear
-  * ```%SystemRoot%\SoftwareDistribution\Download```
-  * ```%TEMP%```
+  * `%SystemRoot%\SoftwareDistribution\Download`
+  * `%TEMP%`
 * Unpin all Start menu tiles;
 * Pin shortcuts to Start menu using [syspin.exe](http://www.technosys.net/products/utils/pintotaskbar)
   * Three shortcuts are preconfigured to be pinned: Control Panel, "old style" Devices and Printers, and Command Prompt
@@ -148,9 +148,9 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 * Download [up-to-date version](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest);
 * Expand the archive;
 * Open folder with the expanded archive;
-* Look through the ```Sophia.ps1``` file to configure functions that you want to be run;
-  * Comment out function with the ```#``` char if you don't want it to be run;
-  * Uncomment function by removing the ```#``` char if you want it to be run.
+* Look through the `Sophia.ps1` file to configure functions that you want to be run;
+  * Comment out function with the `#` char if you don't want it to be run;
+  * Uncomment function by removing the `#` char if you want it to be run.
 * Click "File" in File Explorer, hover over "Open Windows PowerShell", and select "Open Windows PowerShell as Administrator" [(how-to with screenshots)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/);
 * Set execution policy to be able to run scripts only in the current PowerShell session
 
@@ -158,7 +158,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
   ```
 
-* Type ```.\Sophia.ps1``` to run the whole preset file;
+* Type `.\Sophia.ps1` to run the whole preset file;
 * Press <kbd>Enter</kbd>.
 
 How to run the specific function(s) (example):
