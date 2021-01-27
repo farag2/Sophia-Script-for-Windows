@@ -1,0 +1,108 @@
+name: Archives
+
+on:
+  push:
+    tags:
+      - '*.*.*'
+      - '*.*'
+
+jobs:
+  patch:
+    runs-on: windows-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@master
+      - name: Build 5.x
+        run: |
+          $BUILD_DIR = "Sophia v"
+          if ($env:GITHUB_REF -eq "refs/heads/master")
+          {
+            $BUILD_DIR += "master"
+          }
+          else
+          {
+            $BUILD_DIR += ${env:GITHUB_REF} -replace "refs/tags/", ""
+          }
+
+          $ZIP = "$BUILD_DIR.zip"
+
+          New-Item -Path $BUILD_DIR -ItemType Directory -Force
+
+          Write-Host $BUILD_DIR
+          Write-Host $ZIP
+
+          Copy-Item -Path "Sophia\*" -Destination $BUILD_DIR -Recurse -Force
+          Copy-Item -Path "Start menu pinning\syspin.exe" -Destination $BUILD_DIR -Force
+          Remove-Item -Path "$BUILD_DIR\PowerShell 7.x" -Recurse -Force
+
+          Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP -Force
+
+      - name: Build 7.x
+        run: |
+          $BUILD_DIR = "Sophia v"
+          if ($env:GITHUB_REF -eq "refs/heads/master")
+          {
+            $BUILD_DIR += "master"
+          }
+          else
+          {
+            $BUILD_DIR += ${env:GITHUB_REF} -replace "refs/tags/", ""
+          }
+          $BUILD_DIR += " PS7.x"
+
+          $ZIP = "$BUILD_DIR.zip"
+
+          New-Item -Path $BUILD_DIR -ItemType Directory -Force
+
+          Write-Host $BUILD_DIR
+          Write-Host $ZIP
+
+          Copy-Item -Path "Sophia\*" -Destination $BUILD_DIR -Recurse -Force
+          Move-Item -Path "$BUILD_DIR/PowerShell 7.x\*" -Destination $BUILD_DIR -Force
+          Get-ChildItem -Path "$BUILD_DIR/PowerShell 7.x\*" -Recurse | Move-Item -Destination $BUILD_DIR -Force
+          Copy-Item -Path "Start menu pinning\syspin.exe" -Destination $BUILD_DIR -Recurse -Force
+          Remove-Item -Path "$BUILD_DIR/PowerShell 7.x\" -Force
+
+          Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP -Force
+
+      - name: Build LTSC
+        run: |
+          $BUILD_DIR = "Sophia LTSC v"
+          $ModuleVersion = (Import-PowerShellDataFile -Path "LTSC\Sophia.psd1").ModuleVersion
+          Write-Host $ModuleVersion
+          $BUILD_DIR += $ModuleVersion
+
+          $ZIP = "$BUILD_DIR.zip"
+
+          New-Item -Path $BUILD_DIR -ItemType Directory -Force
+
+          Write-Host $BUILD_DIR
+          Write-Host $ZIP
+
+          Copy-Item -Path "LTSC\*" -Destination $BUILD_DIR -Recurse -Force
+
+          Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP -Force
+
+      - name: Wrapper
+        run: |
+          $BUILD_DIR = "Sophia Script Wrapper"
+          $ZIP = "$BUILD_DIR.zip"
+
+          New-Item -Path $BUILD_DIR -ItemType Directory -Force
+
+          Write-Host $BUILD_DIR
+          Write-Host $ZIP
+
+          Copy-Item -Path "Wrapper\*" -Destination $BUILD_DIR -Recurse -Force
+          Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP -Force
+
+      - name: Upload archives to release
+        uses: svenstaro/upload-release-action@master
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: Sophia*.zip
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
+          prerelease: false
+ 
