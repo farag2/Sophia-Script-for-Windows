@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@master
       - name: Build 5.x
         run: |
-          $BUILD_DIR = "Sophia v"
+          $BUILD_DIR = "Sophia Script v"
           if ($env:GITHUB_REF -eq "refs/heads/master")
           {
             $BUILD_DIR += "master"
@@ -39,7 +39,7 @@ jobs:
 
       - name: Build 7.x
         run: |
-          $BUILD_DIR = "Sophia v"
+          $BUILD_DIR = "Sophia Script v"
           if ($env:GITHUB_REF -eq "refs/heads/master")
           {
             $BUILD_DIR += "master"
@@ -67,7 +67,7 @@ jobs:
 
       - name: Build LTSC
         run: |
-          $BUILD_DIR = "Sophia LTSC v"
+          $BUILD_DIR = "Sophia Script LTSC v"
           $ModuleVersion = (Import-PowerShellDataFile -Path "LTSC\Sophia.psd1").ModuleVersion
           Write-Host $ModuleVersion
           $BUILD_DIR += $ModuleVersion
