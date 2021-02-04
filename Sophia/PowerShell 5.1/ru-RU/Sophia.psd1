@@ -1,4 +1,4 @@
-﻿ConvertFrom-StringData -StringData @'
+ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                   = Скрипт поддерживает только Windows 10 x64
 UnsupportedOSBuild                     = Скрипт поддерживает только Windows 10 версии 2004/20H1 и выше
 UnsupportedRelease                     = Обнаружена новая версия
