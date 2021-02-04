@@ -1,6 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                   = Este script solo soporta Windows 10 x64
 UnsupportedOSBuild                     = Este script solo soporta Windows 10 1809 Enterprise LTSC
+UnsupportedRelease                     = Nueva versión encontrada
 ControlledFolderAccessDisabled         = Acceso a carpetas controlado desactivado
 ScheduledTasks                         = Tareas programadas
 ClearFolder                            = Elimine todos los archivos en la carpeta "{0}"?
@@ -75,4 +76,5 @@ Skip                                   = Omitir
 Skipped                                = Omitido
 SymbolicSkipped                        = Se omitió la creación de un enlace simbólico
 Uninstall                              = Desinstalar
+Install                                = Instalar
 '@

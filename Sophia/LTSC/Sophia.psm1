@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	"Windows 10 Sophia Script" (LTSC version) is a PowerShell module for Windows 10 fine-tuning and automating the routine tasks
 
-	Version: v5.0.2
-	Date: 17.01.2020
+	Version: v5.0.3
+	Date: 04.02.2021
 	Copyright (c) 2021 farag & oZ-Zo
 
 	Thanks to all https://forum.ru-board.com members involved
@@ -23,7 +23,7 @@
 	.NOTES
 	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
 	https://habr.com/post/521202/
-	https://forums.mydigitallife.net/threads/powershell-script-setup-windows-10.81675/
+	https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/
 	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
 
 	.LINK
@@ -61,6 +61,35 @@ function Checkings
 		}
 	}
 
+	# Checking whether the current module version is the latest
+	# Проверка: используется ли последняя версия модуля
+	try
+	{
+		$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+		Invoke-WebRequest -Uri "https://raw.githubusercontent.com/farag2/Windows-10-Sophia-Script/master/LTSC/Sophia.psd1" -OutFile $DownloadsFolder\Manifest.psd1 -UseBasicParsing
+		$LatestRelease = (Import-PowerShellDataFile -Path $DownloadsFolder\Manifest.psd1).ModuleVersion
+		$CurrentRelease = (Get-Module -Name Sophia).Version.ToString()
+		Remove-Item -Path $DownloadsFolder\Manifest.psd1 -Force
+
+		switch ([System.Version]$LatestRelease -lt [System.Version]$CurrentRelease)
+		{
+			$true
+			{
+				Write-Warning -Message $Localization.UnsupportedRelease
+
+				Start-Sleep -Seconds 5
+
+				Start-Process -FilePath "https://github.com/farag2/Windows-10-Sophia-Script/releases/latest"
+				exit
+			}
+		}
+	}
+	catch [System.Net.WebException]
+	{
+		Write-Warning -Message $Localization.NoInternetConnection
+		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+	}
+
 	# Unblock all files in the folder by removing the Zone.Identifier alternate data stream with a value of "3"
 	# Разблокировать все файлы в папке, удалив альтернативный потоки данных Zone.Identifier со значением "3"
 	Get-ChildItem -Path $PSScriptRoot -Recurse -Force | Unblock-File -Confirm:$false
@@ -79,6 +108,10 @@ function Checkings
 			# Открыть раздел "Защита от программ-шантажистов"
 			Start-Process -FilePath windowsdefender://RansomwareProtection
 		}
+		"0"
+		{
+			$Script:ControlledFolderAccess = $false
+		}
 	}
 }
 #endregion Checkings
@@ -96,13 +129,22 @@ function Logging
 	Start-Transcript -Path $PSScriptRoot\$TrascriptFilename.txt -Force
 }
 
-# Create a restore point
-# Создать точку восстановления
+# Create a restore point for the system drive
+# Создать точку восстановления для системного диска
 function CreateRestorePoint
 {
-	if (-not (Get-ComputerRestorePoint))
+	$SystemDriveUniqueID = (Get-Volume | Where-Object {$_.DriveLetter -eq "$($env:SystemDrive[0])"}).UniqueID
+	$SystemProtection = ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SPP\Clients")."{09F7EDC5-294E-4180-AF6A-FB0E6A0E9513}") | Where-Object -FilterScript {$_ -match [regex]::Escape($SystemDriveUniqueID)}
+
+	$ComputerRestorePoint = $false
+
+	switch ($null -eq $SystemProtection)
 	{
-		Enable-ComputerRestore -Drive $env:SystemDrive
+		$true
+		{
+			$ComputerRestorePoint = $true
+			Enable-ComputerRestore -Drive $env:SystemDrive
+		}
 	}
 
 	# Never skip creating a restore point
@@ -114,6 +156,13 @@ function CreateRestorePoint
 	# Revert the System Restore checkpoint creation frequency to 1440 minutes
 	# Вернуть частоту создания точек восстановления на 1440 минут
 	New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 1440 -Force
+
+	# Turn off System Protection for the system drive if it was turned off without deleting existing restore points
+	# Отключить защиту системы для диска C:\, если был отключен, не удаляя точки восстановления
+	if ($ComputerRestorePoint)
+	{
+		Disable-ComputerRestore -Drive $env:SystemDrive
+	}
 }
 
 #region Privacy & Telemetry
@@ -402,17 +451,13 @@ function ScheduledTasks
 	Add-Type -AssemblyName PresentationCore, PresentationFramework
 
 	#region Variables
-	# Initialize an array list to store the scheduled tasks to remove
-	# Создать массив задач для удаления
-	$Tasks = New-Object -TypeName System.Collections.ArrayList($null)
+	# Initialize an array list to store the selected scheduled tasks
+	# Создать массив для выбранных задач
+	$SelectedTasks = New-Object -TypeName System.Collections.ArrayList($null)
 
 	# The following tasks will have their checkboxes checked
 	# Следующие задачи будут иметь чекбоксы отмеченными
-	$CheckedScheduledTasks = @(
-		# Collects program telemetry information if opted-in to the Microsoft Customer Experience Improvement Program
-		# Собирает телеметрические данные программы при участии в Программе улучшения качества программного обеспечения Майкрософт
-		"Microsoft Compatibility Appraiser",
-
+	[string[]]$CheckedScheduledTasks = @(
 		# Collects program telemetry information if opted-in to the Microsoft Customer Experience Improvement Program
 		# Сбор телеметрических данных программы при участии в программе улучшения качества ПО
 		"ProgramDataUpdater",
@@ -432,14 +477,6 @@ function ScheduledTasks
 		# The Windows Disk Diagnostic reports general disk and system information to Microsoft for users participating in the Customer Experience Program
 		# Для пользователей, участвующих в программе контроля качества программного обеспечения, служба диагностики дисков Windows предоставляет общие сведения о дисках и системе в корпорацию Майкрософт
 		"Microsoft-Windows-DiskDiagnosticDataCollector",
-
-		# Protects user files from accidental loss by copying them to a backup location when the system is unattended
-		# Защищает файлы пользователя от случайной потери за счет их копирования в резервное расположение, когда система находится в автоматическом режиме
-		"File History (maintenance mode)",
-
-		# Measures a system's performance and capabilities
-		# Измеряет быстродействие и возможности системы
-		"WinSAT",
 
 		# This task shows various Map related toasts
 		# Эта задача показывает различные тосты (всплывающие уведомления) приложения "Карты"
@@ -517,7 +554,7 @@ function ScheduledTasks
 	$Reader = (New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML)
 	$Form = [Windows.Markup.XamlReader]::Load($Reader)
 	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
-		Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name) -Scope Global
+		Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name)
 	}
 
 	#region Functions
@@ -534,16 +571,18 @@ function ScheduledTasks
 			$CheckBox
 		)
 
-		$Task = $CheckBox.Parent.Children[1].Text
+		$Task = $Tasks | Where-Object -FilterScript {$_.TaskName -eq $CheckBox.Parent.Children[1].Text}
+
 		if ($CheckBox.IsChecked)
 		{
-			[void]$Tasks.Add($Task)
+			[void]$SelectedTasks.Add($Task)
 		}
 		else
 		{
-			[void]$Tasks.Remove($Task)
+			[void]$SelectedTasks.Remove($Task)
 		}
-		if ($Tasks.Count -gt 0)
+		
+		if ($SelectedTasks.Count -gt 0)
 		{
 			$Button.IsEnabled = $true
 		}
@@ -555,18 +594,22 @@ function ScheduledTasks
 
 	function DisableButton
 	{
+		Write-Verbose -Message $Localization.Patient -Verbose
+
 		[void]$Window.Close()
-		$OFS = "|"
-		Get-ScheduledTask | Where-Object -FilterScript {$_.TaskName -cmatch $Tasks} | Disable-ScheduledTask
-		$OFS = " "
+
+		$SelectedTasks  | ForEach-Object -Process {Write-Verbose $_.TaskName -Verbose}
+		$SelectedTasks | Disable-ScheduledTask
 	}
 
 	function EnableButton
 	{
+		Write-Verbose -Message $Localization.Patient -Verbose
+
 		[void]$Window.Close()
-		$OFS = "|"
-		Get-ScheduledTask | Where-Object -FilterScript {$_.TaskName -cmatch $Tasks} | Enable-ScheduledTask
-		$OFS = " "
+
+		$SelectedTasks  | ForEach-Object -Process {Write-Verbose $_.TaskName -Verbose}
+		$SelectedTasks | Enable-ScheduledTask
 	}
 
 	function Add-TaskControl
@@ -579,30 +622,32 @@ function ScheduledTasks
 				ValueFromPipeline = $true
 			)]
 			[ValidateNotNull()]
-			[string]
 			$Task
 		)
 
-		$CheckBox = New-Object -TypeName System.Windows.Controls.CheckBox
-		$CheckBox.Add_Click({Get-CheckboxClicked -CheckBox $_.Source})
-
-		$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
-		$TextBlock.Text = $Task
-
-		$StackPanel = New-Object -TypeName System.Windows.Controls.StackPanel
-		[void]$StackPanel.Children.Add($CheckBox)
-		[void]$StackPanel.Children.Add($TextBlock)
-
-		[void]$PanelContainer.Children.Add($StackPanel)
-
-		$CheckBox.IsChecked = $false
-
-		# If task checked, add to the array list to remove
-		# Если задача выделена, то добавить в массив для удаления
-		if ($CheckedScheduledTasks | Where-Object -FilterScript {$Task -like $_})
+		process
 		{
-			$CheckBox.IsChecked = $true
-			[void]$Tasks.Add($Task)
+			$CheckBox = New-Object -TypeName System.Windows.Controls.CheckBox
+			$CheckBox.Add_Click({Get-CheckboxClicked -CheckBox $_.Source})
+
+			$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
+			$TextBlock.Text = $Task.TaskName
+
+			$StackPanel = New-Object -TypeName System.Windows.Controls.StackPanel
+			[void]$StackPanel.Children.Add($CheckBox)
+			[void]$StackPanel.Children.Add($TextBlock)
+			[void]$PanelContainer.Children.Add($StackPanel)
+
+			# If task checked add to the array list
+			# Если задача выделена, то добавить в массив
+			if ($CheckedScheduledTasks | Where-Object -FilterScript {$Task.TaskName -match $_})
+			{
+				[void]$SelectedTasks.Add($Task)
+			}
+			else
+			{
+				$CheckBox.IsChecked = $false
+			}
 		}
 	}
 	#endregion Functions
@@ -611,63 +656,36 @@ function ScheduledTasks
 	{
 		"Enable"
 		{
-			#region Events Handlers
-			$OptionalTasks = New-Object -TypeName System.Collections.ArrayList($null)
-			# Window Loaded Event
-			$Window.Add_Loaded({
-				$OFS = "|"
-				$OptionalTasks = @(Get-ScheduledTask | Where-Object -FilterScript {($_.State -eq "Disabled") -and ($_.TaskName -in $CheckedScheduledTasks)})
-				if ($OptionalTasks.Count -gt 0)
-				{
-					$OptionalTasks | ForEach-Object -Process {
-						Add-TaskControl -Task $_.TaskName
-					}
 
-					$Button.Content = $Localization.Enable
-				}
-				else
-				{
-					Write-Verbose -Message $Localization.NoData -Verbose
-					$Form.Close()
-				}
-				$OFS = " "
-			})
-
-			# Button Click Event
-			$Button.Add_Click({EnableButton})
-			#endregion Events Handlers
+			$State = "Disabled"
+			$ButtonContent = $Localization.Enable
+			$ButtonAdd_Click = {EnableButton}
 		}
 		"Disable"
 		{
-			#region Events Handlers
-			$OptionalTasks = New-Object System.Collections.ArrayList($null)
-			# Window Loaded Event
-			$Window.Add_Loaded({
-				$OFS = "|"
-				$OptionalTasks = @(Get-ScheduledTask | Where-Object -FilterScript {($_.State -eq "Ready") -and ($_.TaskName -in $CheckedScheduledTasks)})
-				if ($OptionalTasks.Count -gt 0)
-				{
-					$OptionalTasks | ForEach-Object -Process {
-						Add-TaskControl -Task $_.TaskName
-					}
-
-					$Button.Content = $Localization.Disable
-				}
-				else
-				{
-					Write-Verbose -Message $Localization.NoData -Verbose
-					$Form.Close()
-				}
-				$OFS = " "
-			})
-
-			# Button Click Event
-			$Button.Add_Click({DisableButton})
-			#endregion Events Handlers
+			$State = "Ready"
+			$ButtonContent = $Localization.Disable
+			$ButtonAdd_Click = {DisableButton}
 		}
 	}
 
+	Write-Verbose -Message $Localization.Patient -Verbose
+
+	# Получаем общий список задач, согласно условиям
+	# Getting a list of tasks according to the conditions
+	$Tasks = Get-ScheduledTask | Where-Object -FilterScript {($_.State -eq $State) -and ($_.TaskName -in $CheckedScheduledTasks)}
+
+	if (-not ($Tasks))
+	{
+		Write-Verbose -Message $Localization.NoData -Verbose
+		return
+	}
+
 	Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
+
+	$Window.Add_Loaded({$Tasks | Add-TaskControl})
+	$Button.Content = $ButtonContent
+	$Button.Add_Click({& $ButtonAdd_Click})
 
 	$Window.Title = $Localization.ScheduledTasks
 	$Form.ShowDialog() | Out-Null
@@ -2389,16 +2407,21 @@ function TaskManagerWindow
 	)
 
 	$Taskmgr = Get-Process -Name Taskmgr -ErrorAction Ignore
+
+	Start-Sleep -Seconds 1
+
 	if ($Taskmgr)
 	{
 		$Taskmgr.CloseMainWindow()
 	}
-	Start-Process -FilePath Taskmgr.exe -WindowStyle Hidden -PassThru
+	Start-Process -FilePath Taskmgr.exe -PassThru
+
+	Start-Sleep -Seconds 3
 
 	do
 	{
 		Start-Sleep -Milliseconds 100
-		$Preferences = Get-ItemPropertyValue -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -ErrorAction Ignore
+		$Preferences = Get-ItemPropertyValue -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences
 	}
 	until ($Preferences)
 
@@ -3516,11 +3539,13 @@ function WindowsManageDefaultPrinter
 	WindowsFeatures -Enable
 
 	.NOTES
-	A pop-up dialog box enables the user to select features to remove
+	A pop-up dialog box enables the user to select features
 	Current user only
 
-	Используется всплывающее диалоговое окно, позволяющее пользователю отметить компоненты на удаление
+	Используется всплывающее диалоговое окно, позволяющее пользователю отмечать компоненты
 	Только для текущего пользователя
+
+	Made by https://github.com/oz-zo, iNNOKENTIY21
 #>
 function WindowsFeatures
 {
@@ -3544,13 +3569,13 @@ function WindowsFeatures
 	Add-Type -AssemblyName PresentationCore, PresentationFramework
 
 	#region Variables
-	# Initialize an array list to store the Windows Features items to remove
-	# Создать массив имен компонентов Windows для удаления
-	$Features = New-Object -TypeName System.Collections.ArrayList($null)
+	# Initialize an array list to store the selected Windows features
+	# Создать массив для выбранных компонентов Windows
+	$SelectedFeatures = New-Object -TypeName System.Collections.ArrayList($null)
 
-	# The following Windows Features are recommended the user to remove
-	# Следующие компоненты Windows рекомендуются к удалению
-	$WindowsFeatures = @(
+	# The following FODv2 items will have their checkboxes checked
+	# Следующие дополнительные компоненты будут иметь чекбоксы отмеченными
+	[string[]]$CheckedFeatures = @(
 		# Legacy Components
 		# Компоненты прежних версий
 		"LegacyComponents",
@@ -3625,7 +3650,7 @@ function WindowsFeatures
 	$Reader = (New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML)
 	$Form = [Windows.Markup.XamlReader]::Load($Reader)
 	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
-		Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name) -Scope Global
+		Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name)
 	}
 
 	#region Functions
@@ -3642,16 +3667,17 @@ function WindowsFeatures
 			$CheckBox
 		)
 
-		$Feature = $CheckBox.Parent.Children[1].Text
+		$Feature = $Features | Where-Object -FilterScript {$_.DisplayName -eq $CheckBox.Parent.Children[1].Text}
+
 		if ($CheckBox.IsChecked)
 		{
-			[void]$Features.Add($Feature)
+			[void]$SelectedFeatures.Add($Feature)
 		}
 		else
 		{
-			[void]$Features.Remove($Feature)
+			[void]$SelectedFeatures.Remove($Feature)
 		}
-		if ($Features.Count -gt 0)
+		if ($SelectedFeatures.Count -gt 0)
 		{
 			$Button.IsEnabled = $true
 		}
@@ -3663,14 +3689,22 @@ function WindowsFeatures
 
 	function DisableButton
 	{
+		Write-Verbose -Message $Localization.Patient -Verbose
+
 		[void]$Window.Close()
-		Disable-WindowsOptionalFeature -Online -FeatureName $Features -NoRestart
+
+		$SelectedFeatures | ForEach-Object -Process {Write-Verbose $_.DisplayName -Verbose}
+		$SelectedFeatures | Disable-WindowsOptionalFeature -Online -NoRestart
 	}
 
 	function EnableButton
 	{
+		Write-Verbose -Message $Localization.Patient -Verbose
+
 		[void]$Window.Close()
-		Enable-WindowsOptionalFeature -Online -FeatureName $Features -NoRestart
+
+		$SelectedFeatures | ForEach-Object -Process {Write-Verbose -Message $_.DisplayName -Verbose}
+		$SelectedFeatures | Enable-WindowsOptionalFeature -Online -NoRestart
 	}
 
 	function Add-FeatureControl
@@ -3683,30 +3717,32 @@ function WindowsFeatures
 				ValueFromPipeline = $true
 			)]
 			[ValidateNotNull()]
-			[string]
 			$Feature
 		)
 
-		$CheckBox = New-Object -TypeName System.Windows.Controls.CheckBox
-		$CheckBox.Add_Click({Get-CheckboxClicked -CheckBox $_.Source})
-
-		$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
-		$TextBlock.Text = $Feature
-
-		$StackPanel = New-Object -TypeName System.Windows.Controls.StackPanel
-		[void]$StackPanel.Children.Add($CheckBox)
-		[void]$StackPanel.Children.Add($TextBlock)
-
-		[void]$PanelContainer.Children.Add($StackPanel)
-
-		$CheckBox.IsChecked = $false
-
-		# If feature checked, add to the array list to remove
-		# Если компонент выделен, то добавить в массив для удаления
-		if ($WindowsFeatures | Where-Object -FilterScript {$Feature -like $_})
+		process
 		{
+			$CheckBox = New-Object -TypeName System.Windows.Controls.CheckBox
+			$CheckBox.Add_Click({Get-CheckboxClicked -CheckBox $_.Source})
+			$CheckBox.ToolTip = $Feature.Description
+
+			$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
+			$TextBlock.Text = $Feature.DisplayName
+			$TextBlock.ToolTip = $Feature.Description
+
+			$StackPanel = New-Object -TypeName System.Windows.Controls.StackPanel
+			[void]$StackPanel.Children.Add($CheckBox)
+			[void]$StackPanel.Children.Add($TextBlock)
+			[void]$PanelContainer.Children.Add($StackPanel)
+
 			$CheckBox.IsChecked = $true
-			[void]$Features.Add($Feature)
+
+			# If feature checked add to the array list
+			# Если компонент выделен, то добавить в массив
+			if ($CheckBox.IsChecked)
+			{
+				[void]$SelectedFeatures.Add($Feature)
+			}
 		}
 	}
 	#endregion Functions
@@ -3715,63 +3751,40 @@ function WindowsFeatures
 	{
 		"Enable"
 		{
-			#region Events Handlers
-			$OptionalFeatures = New-Object -TypeName System.Collections.ArrayList($null)
-			# Window Loaded Event
-			$Window.Add_Loaded({
-				$OFS = "|"
-				$OptionalFeatures = Get-WindowsOptionalFeature -Online | Where-Object -FilterScript {($_.State -eq "Disabled" -or $_.State -eq "DisablePending") -and ($_.FeatureName -in $WindowsFeatures)}
-				if ($OptionalFeatures.Count -gt 0)
-				{
-					$OptionalFeatures | ForEach-Object -Process {
-						Add-FeatureControl -Feature $_.FeatureName
-					}
 
-					$Button.Content = $Localization.Enable
-				}
-				else
-				{
-					Write-Verbose -Message $Localization.NoData -Verbose
-					$Form.Close()
-				}
-				$OFS = " "
-			})
-
-			# Button Click Event
-			$Button.Add_Click({EnableButton})
-			#endregion Events Handlers
+			$State = @("Disabled", "DisablePending")
+			$ButtonContent = $Localization.Enable
+			$ButtonAdd_Click = {EnableButton}
 		}
 		"Disable"
 		{
-			#region Events Handlers
-			$OptionalFeatures = New-Object -TypeName System.Collections.ArrayList($null)
-			# Window Loaded Event
-			$Window.Add_Loaded({
-				$OFS = "|"
-				$OptionalFeatures = Get-WindowsOptionalFeature -Online | Where-Object -FilterScript {($_.State -eq "Enabled" -or $_.State -eq "EnablePending") -and ($_.FeatureName -in $WindowsFeatures)}
-				if ($OptionalFeatures.Count -gt 0)
-				{
-					$OptionalFeatures | ForEach-Object -Process {
-						Add-FeatureControl -Feature $_.FeatureName
-					}
-
-					$Button.Content = $Localization.Disable
-				}
-				else
-				{
-					Write-Verbose -Message $Localization.NoData -Verbose
-					$Form.Close()
-				}
-				$OFS = " "
-			})
-
-			# Button Click Event
-			$Button.Add_Click({DisableButton})
-			#endregion Events Handlers
+			$State = @("Enabled", "EnablePending")
+			$ButtonContent = $Localization.Disable
+			$ButtonAdd_Click = {DisableButton}
 		}
 	}
 
+	Write-Verbose -Message $Localization.Patient -Verbose
+
+	# Получаем общий список дополнительных компонентов, согласно условиям
+	# Getting a list of features according to the conditions
+	$OFS = "|"
+	$Features = Get-WindowsOptionalFeature -Online | Where-Object -FilterScript {
+		($_.State -in $State) -and ($_.FeatureName -cmatch $CheckedFeatures)
+	} | ForEach-Object -Process {Get-WindowsOptionalFeature -FeatureName $_.FeatureName -Online}
+	$OFS = " "
+
+	if (-not ($Features))
+	{
+		Write-Verbose -Message $Localization.NoData -Verbose
+		return
+	}
+
 	Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
+
+	$Window.Add_Loaded({$Features | Add-FeatureControl})
+	$Button.Content = $ButtonContent
+	$Button.Add_Click({& $ButtonAdd_Click})
 
 	$Window.Title = $Localization.WindowsFeaturesWindowTitle
 	$Form.ShowDialog() | Out-Null
@@ -3779,22 +3792,22 @@ function WindowsFeatures
 
 <#
 	.SYNOPSIS
-	Disable/enable Features On Demand v2 (FODv2) capabilities
-	Отключить/включить компоненты "Функции по требованию" (FODv2)
+	Uninstall/install Features On Demand v2 (FODv2) capabilities
+	Удалить/установить компоненты "Функции по требованию" (FODv2)
 
-	.PARAMETER Disable
-	Disable Features On Demand v2 (FODv2) capabilities
-	Отключить компоненты "Функции по требованию" (FODv2)
+	.PARAMETER Uninstall
+	Uninstall Features On Demand v2 (FODv2) capabilities
+	Удалить компоненты "Функции по требованию" (FODv2)
 
-	.PARAMETER Enable
-	Enable Features On Demand v2 (FODv2) capabilities
-	Включить компоненты "Функции по требованию" (FODv2)
-
-	.EXAMPLE
-	WindowsCapabilities -Disable
+	.PARAMETER Install
+	Install Features On Demand v2 (FODv2) capabilities
+	Установить компоненты "Функции по требованию" (FODv2)
 
 	.EXAMPLE
-	WindowsCapabilities -Enable
+	WindowsCapabilities -Uninstall
+
+	.EXAMPLE
+	WindowsCapabilities -Install
 
 	.NOTES
 	A pop-up dialog box enables the user to select features
@@ -3803,7 +3816,7 @@ function WindowsFeatures
 	Используется всплывающее диалоговое окно, позволяющее пользователю отмечать компоненты
 	Только для текущего пользователя
 
-	Made by https://github.com/oz-zo
+	Made by https://github.com/oz-zo, iNNOKENTIY21
 #>
 function WindowsCapabilities
 {
@@ -3811,29 +3824,29 @@ function WindowsCapabilities
 	(
 		[Parameter(
 			Mandatory = $true,
-			ParameterSetName = "Enable"
+			ParameterSetName = "Install"
 		)]
 		[switch]
-		$Enable,
+		$Install,
 
 		[Parameter(
 			Mandatory = $true,
-			ParameterSetName = "Disable"
+			ParameterSetName = "Uninstall"
 		)]
 		[switch]
-		$Disable
+		$Uninstall
 	)
 
 	Add-Type -AssemblyName PresentationCore, PresentationFramework
 
 	#region Variables
-	# Initialize an array list to store the FODv2 items to disable
-	# Создать массив имен дополнительных компонентов для отключения
-	$Capabilities = New-Object -TypeName System.Collections.ArrayList($null)
+	# Initialize an array list to store the selected FODv2 items
+	# Создать массив дополнительных компонентов для выбранных элементов
+	$SelectedCapabilities = New-Object -TypeName System.Collections.ArrayList($null)
 
 	# The following FODv2 items will have their checkboxes checked
 	# Следующие дополнительные компоненты будут иметь чекбоксы отмеченными
-	$CheckedCapabilities = @(
+	[string[]]$CheckedCapabilities = @(
 		# Microsoft Quick Assist
 		# Быстрая поддержка (Майкрософт)
 		"App.Support.QuickAssist*"
@@ -3841,7 +3854,7 @@ function WindowsCapabilities
 
 	# The following FODv2 items will have their checkboxes unchecked
 	# Следующие дополнительные компоненты будут иметь чекбоксы неотмеченными
-		$UncheckedCapabilities = @(
+	[string[]]$UncheckedCapabilities = @(
 		# Internet Explorer 11
 		"Browser.InternetExplorer*",
 
@@ -3858,17 +3871,25 @@ function WindowsCapabilities
 		#>
 		"Media.WindowsMediaPlayer*",
 
-		# Language components
-		# Языковые компоненты
+		# OpenSSH Client
+		# Клиент OpenSSH
 		"OpenSSH.Client*"
 	)
 
 	# The following FODv2 items will be excluded from the display
 	# Следующие дополнительные компоненты будут исключены из отображения
-	$ExcludedCapabilities = @(
+	[string[]]$ExcludedCapabilities = @(
+		# The DirectX Database to configure and optimize apps when multiple Graphics Adapters are present
+		# База данных DirectX для настройки и оптимизации приложений при наличии нескольких графических адаптеров
+		"DirectX.Configuration.Database*",
+
 		# Language components
 		# Языковые компоненты
 		"Language.*",
+
+		# Notepad
+		# Блокнот
+		"Microsoft.Windows.Notepad*",
 
 		# Mail, contacts, and calendar sync component
 		# Компонент синхронизации почты, контактов и календаря
@@ -3923,10 +3944,24 @@ function WindowsCapabilities
 	$Reader = (New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML)
 	$Form = [Windows.Markup.XamlReader]::Load($Reader)
 	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
-		Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name) -Scope Global
+		Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name)
 	}
 
 	#region Functions
+	function InternetConnectionStatus
+	{
+		try
+		{
+			(Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription
+		}
+		catch [System.Net.WebException]
+		{
+			Write-Warning -Message $Localization.NoInternetConnection
+			Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+			return
+		}
+	}
+
 	function Get-CheckboxClicked
 	{
 		[CmdletBinding()]
@@ -3940,16 +3975,18 @@ function WindowsCapabilities
 			$CheckBox
 		)
 
-		$Capability = $CheckBox.Parent.Children[1].Text
+		$Capability = $Capabilities | Where-Object -FilterScript {$_.DisplayName -eq $CheckBox.Parent.Children[1].Text}
+
 		if ($CheckBox.IsChecked)
 		{
-			[void]$Capabilities.Add($Capability)
+			[void]$SelectedCapabilities.Add($Capability)
 		}
 		else
 		{
-			[void]$Capabilities.Remove($Capability)
+			[void]$SelectedCapabilities.Remove($Capability)
 		}
-		if ($Capabilities.Count -gt 0)
+
+		if ($SelectedCapabilities.Count -gt 0)
 		{
 			$Button.IsEnabled = $true
 		}
@@ -3959,27 +3996,31 @@ function WindowsCapabilities
 		}
 	}
 
-	function DisableButton
+	function UninstallButton
 	{
-		[void]$Window.Close()
-		$OFS = "|"
-		Get-WindowsCapability -Online | Where-Object -FilterScript {$_.Name -cmatch $Capabilities} | Remove-WindowsCapability -Online
-		$OFS = " "
+		Write-Verbose -Message $Localization.Patient -Verbose
 
-		if ([string]$Capabilities -cmatch "Browser.InternetExplorer*")
+		[void]$Window.Close()
+
+		$SelectedCapabilities | ForEach-Object -Process {Write-Verbose -Message $_.DisplayName -Verbose}
+		$SelectedCapabilities | Where-Object -FilterScript {$_.Name -in (Get-WindowsCapability -Online).Name} | Remove-WindowsCapability -Online
+
+		if ([string]$SelectedCapabilities.Name -cmatch "Browser.InternetExplorer*")
 		{
 			Write-Warning -Message $Localization.RestartWarning
 		}
 	}
 
-	function EnableButton
+	function InstallButton
 	{
-		[void]$Window.Close()
-		$OFS = "|"
-		Get-WindowsCapability -Online | Where-Object -FilterScript {$_.Name -cmatch $Capabilities} | Add-WindowsCapability -Online
-		$OFS = " "
+		Write-Verbose -Message $Localization.Patient -Verbose
 
-		if ([string]$Capabilities -cmatch "Browser.InternetExplorer*")
+		[void]$Window.Close()
+
+		$SelectedCapabilities | ForEach-Object -Process {Write-Verbose -Message $_.DisplayName -Verbose}
+		$SelectedCapabilities | Where-Object -FilterScript {$_.Name -in ((Get-WindowsCapability -Online).Name)} | Add-WindowsCapability -Online
+
+		if ([string]$SelectedCapabilities.Name -cmatch "Browser.InternetExplorer*")
 		{
 			Write-Warning -Message $Localization.RestartWarning
 		}
@@ -3995,110 +4036,80 @@ function WindowsCapabilities
 				ValueFromPipeline = $true
 			)]
 			[ValidateNotNull()]
-			[string]
 			$Capability
 		)
 
-		$CheckBox = New-Object -TypeName System.Windows.Controls.CheckBox
-		$CheckBox.Add_Click({Get-CheckboxClicked -CheckBox $_.Source})
-
-		$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
-		$TextBlock.Text = $Capability
-
-		$StackPanel = New-Object -TypeName System.Windows.Controls.StackPanel
-		[void]$StackPanel.Children.Add($CheckBox)
-		[void]$StackPanel.Children.Add($TextBlock)
-
-		[void]$PanelContainer.Children.Add($StackPanel)
-
-		# If capability checked, add to the array list to remove
-		# Если компонент выделен, то добавить в массив для удаления
-		if ($UnCheckedCapabilities | Where-Object -FilterScript {$Capability -like $_})
+		process
 		{
-			$CheckBox.IsChecked = $false
-			# Exit function, item is not checked
-			# Выход из функции, если элемент не выделен
-			return
-		}
+			$CheckBox = New-Object -TypeName System.Windows.Controls.CheckBox
+			$CheckBox.Add_Click({Get-CheckboxClicked -CheckBox $_.Source})
+			$CheckBox.ToolTip = $Capability.Description
 
-		# If capability checked, add to the array list to remove
-		# Если компонент выделен, то добавить в массив для удаления
-		[void]$Capabilities.Add($Capability)
+			$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
+			$TextBlock.Text = $Capability.DisplayName
+			$TextBlock.ToolTip = $Capability.Description
+
+			$StackPanel = New-Object -TypeName System.Windows.Controls.StackPanel
+			[void]$StackPanel.Children.Add($CheckBox)
+			[void]$StackPanel.Children.Add($TextBlock)
+			[void]$PanelContainer.Children.Add($StackPanel)
+
+			# If capability checked add to the array list
+			# Если компонент выделен, то добавить в массив
+			if ($UnCheckedCapabilities | Where-Object -FilterScript {$Capability.Name -like $_})
+			{
+				$CheckBox.IsChecked = $false
+				# Exit function if item is not checked
+				# Выход из функции, если элемент не выделен
+				return
+			}
+
+			# If capability checked add to the array list
+			# Если компонент выделен, то добавить в массив
+			[void]$SelectedCapabilities.Add($Capability)
+		}
 	}
 	#endregion Functions
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
-		"Enable"
+		"Install"
 		{
-			try
-			{
-				(Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription
-			}
-			catch [System.Net.WebException]
-			{
-				Write-Warning -Message $Localization.NoInternetConnection
-				Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
-				return
-			}
+			InternetConnectionStatus
 
-			#region Events Handlers
-			$OptionalCapabilities = New-Object -TypeName System.Collections.ArrayList($null)
-			# Window Loaded Event
-			$Window.Add_Loaded({
-				$OFS = "|"
-				$OptionalCapabilities = Get-WindowsCapability -Online | Where-Object -FilterScript {($_.State -eq "NotPresent") -and ($_.Name -cmatch $CheckedCapabilities) -($_.Name -cmatch $UncheckedCapabilities) -and ($_.Name -cnotmatch $ExcludedCapabilities)}
-				if ($OptionalCapabilities.Count -gt 0)
-				{
-					$OptionalCapabilities | ForEach-Object -Process {
-						Add-CapabilityControl -Capability $_.Name
-					}
-
-					$Button.Content = $Localization.Enable
-				}
-				else
-				{
-					Write-Verbose -Message $Localization.NoData -Verbose
-					$Form.Close()
-				}
-				$OFS = " "
-			})
-
-			# Button Click Event
-			$Button.Add_Click({EnableButton})
-			#endregion Events Handlers
+			$State = "NotPresent"
+			$ButtonContent = $Localization.Install
+			$ButtonAdd_Click = {InstallButton}
 		}
-		"Disable"
+		"Uninstall"
 		{
-			#region Events Handlers
-			$OptionalCapabilities = New-Object -TypeName System.Collections.ArrayList($null)
-			# Window Loaded Event
-			$Window.Add_Loaded({
-				$OFS = "|"
-				$OptionalCapabilities = Get-WindowsCapability -Online | Where-Object -FilterScript {($_.State -eq "Installed") -and ($_.Name -cnotmatch $ExcludedCapabilities)}
-				if ($OptionalCapabilities.Count -gt 0)
-				{
-					$OptionalCapabilities | ForEach-Object -Process {
-						Add-CapabilityControl -Capability $_.Name
-					}
-
-					$Button.Content = $Localization.Disable
-				}
-				else
-				{
-					Write-Verbose -Message $Localization.NoData -Verbose
-					$Form.Close()
-				}
-				$OFS = " "
-			})
-
-			# Button Click Event
-			$Button.Add_Click({DisableButton})
-			#endregion Events Handlers
+			$State = "Installed"
+			$ButtonContent = $Localization.Uninstall
+			$ButtonAdd_Click = {UninstallButton}
 		}
 	}
 
+	Write-Verbose -Message $Localization.Patient -Verbose
+
+	# Получаем общий список дополнительных компонентов, согласно условиям
+	# Getting a list of capabilities according to the conditions
+	$OFS = "|"
+	$Capabilities = Get-WindowsCapability -Online | Where-Object -FilterScript {
+		($_.State -eq $State) -and (($_.Name -cmatch $UncheckedCapabilities) -or ($_.Name -cmatch $CheckedCapabilities) -and ($_.Name -cnotmatch $ExcludedCapabilities))
+	} | ForEach-Object -Process {Get-WindowsCapability -Name $_.Name -Online}
+	$OFS = " "
+
+	if (-not ($Capabilities))
+	{
+		Write-Verbose -Message $Localization.NoData -Verbose
+		return
+	}
+
 	Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
+
+	$Window.Add_Loaded({$Capabilities | Add-CapabilityControl})
+	$Button.Content = $ButtonContent
+	$Button.Add_Click({& $ButtonAdd_Click})
 
 	$Window.Title = $Localization.FODWindowTitle
 	$Form.ShowDialog() | Out-Null
@@ -7344,10 +7355,10 @@ function SaveZoneInformation
 
 	.NOTES
 	Current user only
-	It becomes impossible to run .js and .vbs files
+	Blocks WSH from executing .js and .vbs files
 
 	Только для текущего пользователя
-	Становится невозможным запустить файлы .js и .vbs
+	Блокирует запуск файлов .js и .vbs
 #>
 function WindowsScriptHost
 {
@@ -8104,7 +8115,19 @@ function BitmapImageNewContext
 			}
 			else
 			{
-				Get-WindowsCapability -Online -Name "Microsoft.Windows.MSPaint*" | Add-WindowsCapability -Online
+				try
+				{
+					if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
+					{
+						Get-WindowsCapability -Online -Name "Microsoft.Windows.MSPaint*" | Add-WindowsCapability -Online
+					}
+				}
+				catch [System.Net.WebException]
+				{
+					Write-Warning -Message $Localization.NoInternetConnection
+					Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+					return
+				}
 			}
 		}
 	}
@@ -8170,7 +8193,19 @@ function RichTextDocumentNewContext
 			}
 			else
 			{
-				Get-WindowsCapability -Online -Name "Microsoft.Windows.WordPad*" | Add-WindowsCapability -Online
+				try
+				{
+					if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
+					{
+						Get-WindowsCapability -Online -Name "Microsoft.Windows.WordPad*" | Add-WindowsCapability -Online
+					}
+				}
+				catch [System.Net.WebException]
+				{
+					Write-Warning -Message $Localization.NoInternetConnection
+					Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+					return
+				}
 			}
 		}
 	}

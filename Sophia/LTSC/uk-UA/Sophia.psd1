@@ -1,6 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                   = Скрипт підтримує тільки Windows 10 x64
 UnsupportedOSBuild                     = Скрипт підтримує тільки Windows 10 1809 Enterprise LTSC
+UnsupportedRelease                     = Виявлено нову версію
 ControlledFolderAccessDisabled         = Контрольований доступ до папок вимкнений
 ScheduledTasks                         = Заплановані задачі
 ClearFolder                            = Видаліть всі файли у папці "{0}"?
@@ -75,4 +76,5 @@ Skip                                   = Пропустити
 Skipped                                = Пропущено
 SymbolicSkipped                        = Пропущено створення символічного посилання
 Uninstall                              = Видалити
+Install                                = Встановити
 '@

@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Windows 10 Sophia Script" (LTSC version)
 
-	Version: v5.0.2
-	Date: 20.01.2021
+	Version: v5.0.3
+	Date: 04.02.2021
 	Copyright (c) 2021 farag & oZ-Zo
 
 	Thanks to all https://forum.ru-board.com members involved
@@ -27,7 +27,7 @@
 	.NOTES
 	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
 	https://habr.com/post/521202/
-	https://forums.mydigitallife.net/threads/powershell-script-setup-windows-10.81675/
+	https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/
 	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
 
 	.LINK
@@ -47,7 +47,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script for LTSC v5.0.2 | ©️ farag & oz-zo, 2015–2021"
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script for LTSC v5.0.3 | ©️ farag & oz-zo, 2015–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Sophia.psd1 -PassThru -Force
@@ -60,14 +60,23 @@ Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia
 	Добавляет возможность запускать скрипт, указывая в качестве параметров функции модуля
 
 	.EXAMPLE
-	.\Sophia.ps1 -Functions "FunctionName1 -Parameter", "FunctionName2 -Parameter"
+	.\Sophia.ps1 -Functions "FunctionName1 -Parameter", "FunctionName2 -Parameter", FunctionName3
+
+	.NOTES
+	Regardless of the functions entered as an argument, the "Checkings" function will be executed first, and the "Refresh" and "Errors" functions will be executed at the end
+	Вне зависимости от введенных функций в качестве аргумента, сначала будет выполнена функция "Checkings", и в конце — "Refresh" и "Errors"
 #>
 if ($Functions)
 {
+	Invoke-Command -ScriptBlock {Checkings}
+
 	foreach ($Function in $Functions)
 	{
 		Invoke-Expression -Command $Function
 	}
+
+	Invoke-Command -ScriptBlock {Refresh; Errors}
+
 	exit
 }
 
@@ -508,30 +517,30 @@ WindowsManageDefaultPrinter -Disable
 # WindowsManageDefaultPrinter -Enable
 
 <#
-	Disable the Windows features using the pop-up dialog box that enables the user to select features to remove
-	Отключить компоненты Windows, используя всплывающее диалоговое окно, позволяющее пользователю отметить компоненты на удаление
+	Disable the Windows features using the pop-up dialog box
+	Отключить компоненты Windows, используя всплывающее диалоговое окно
 
-	If you want to leave "Multimedia settings" in the advanced settings of Power Options do not uninstall this feature
-	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах электропитания, не удаляйте этот компонент
+	If you want to leave "Multimedia settings" element in the advanced settings of Power Options do not uninstall the "MediaPlayback" feature
+	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах электропитания, не удаляйте компонент "MediaPlayback"
 #>
 WindowsFeatures -Disable
 
-# Enable the Windows features using the pop-up dialog box that enables the user to select features to remove
-# Включить компоненты Windows, используя всплывающее диалоговое окно, позволяющее пользователю отметить компоненты на удаление
+# Enable the Windows features using the pop-up dialog box
+# Включить компоненты Windows, используя всплывающее диалоговое окно
 # WindowsFeatures -Enable
 
 <#
-	Disable Features On Demand v2 (FODv2) capabilities using the pop-up dialog box
-	Отключить компоненты "Функции по требованию" (FODv2), используя всплывающее диалоговое окно
+	Uninstall Features On Demand v2 (FODv2) capabilities using the pop-up dialog box
+	Удалить компоненты "Функции по требованию" (FODv2), используя всплывающее диалоговое окно
 
-	If you want to leave "Multimedia settings" in the advanced settings of Power Options do not uninstall this feature
-	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах электропитания, не удаляйте этот компонент
+	If you want to leave "Multimedia settings" element in the advanced settings of Power Options do not uninstall the "MediaPlayback" feature
+	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах электропитания, не удаляйте компонент "MediaPlayback"
 #>
-WindowsCapabilities -Disable
+WindowsCapabilities -Uninstall
 
-# Enable Feature On Demand v2 (FODv2) capabilities using the pop-up dialog box
-# Включить компоненты "Функции по требованию" (FODv2), используя всплывающее диалоговое окно
-# WindowsCapabilities -Enable
+# Install Features On Demand v2 (FODv2) capabilities using the pop-up dialog box
+# Установить компоненты "Функции по требованию" (FODv2), используя всплывающее диалоговое окно
+# WindowsCapabilities -Install
 
 # Opt-in to Microsoft Update service, so to receive updates for other Microsoft products
 # Подключаться к службе Microsoft Update так, чтобы при обновлении Windows получать обновления для других продуктов Майкрософт
@@ -915,14 +924,14 @@ SaveZoneInformation -Disable
 
 <#
 	Disable Windows Script Host (current user only)
-	It becomes impossible to run .js and .vbs files
+	Blocks WSH from executing .js and .vbs files
 
 	Отключить Windows Script Host (только для текущего пользователя)
-	Становится невозможным запустить файлы .js и .vbs
+	Блокирует запуск файлов .js и .vbs
 #>
 # WindowsScriptHost -Disable
 
-# Emable Windows Script Host (current user only) (default value)
+# Enable Windows Script Host (current user only) (default value)
 # Включить Windows Script Host (только для текущего пользователя) (значение по умолчанию)
 # WindowsScriptHost -Enable
 

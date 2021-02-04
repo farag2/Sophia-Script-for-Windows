@@ -1,6 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                   = 该脚本仅支持Windows 10 x64
 UnsupportedOSBuild                     = 该脚本支持Windows 10版本1809 Enterprise LTSC
+UnsupportedRelease                     = 找到新版本
 ControlledFolderAccessDisabled         = “受控文件夹访问”禁用
 ScheduledTasks                         = 计划任务
 ClearFolder                            = 删除"{0}"文件夹中的所有文件?
@@ -75,4 +76,5 @@ Skip                                   = 跳过
 Skipped                                = 已跳过
 SymbolicSkipped                        = 跳过创建符号链接
 Uninstall                              = 卸载
+Install                                = 安装
 '@

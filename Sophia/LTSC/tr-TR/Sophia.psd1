@@ -1,6 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                   = Bu betik sadece Windows 10 x64 destekliyor
 UnsupportedOSBuild                     = Bu betik sadece Windows 10 1809 Enterprise LTSC
+UnsupportedRelease                     = Yeni sürüm bulundu
 ControlledFolderAccessDisabled         = Kontrollü klasör erişimi devre dışı bırakıldı
 ScheduledTasks                         = Zamanlanan görevler
 ClearFolder                            = "{0}" klasöründeki tüm dosyaları silin?
@@ -75,4 +76,5 @@ Skip                                   = Atla
 Skipped                                = Atlandı
 SymbolicSkipped                        = Sembolik bir bağlantı oluşturma atlandı
 Uninstall                              = Kaldır
+Install                                = Yüklemek
 '@
