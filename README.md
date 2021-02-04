@@ -100,9 +100,10 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
   <summary>Screenshots</summary>
   
 ![Image](https://i.imgur.com/5up2HrJ.png)
-![Image](https://i.imgur.com/AXY12aJ.png)
-![Image](https://i.imgur.com/kUONPI2.png)
+![Image](https://i.imgur.com/Fuf4CaD.png)
+![Image](https://i.imgur.com/qZhFqr3.png)
 ![Image](https://i.imgur.com/DpV0UJw.png)
+![Image](https://i.imgur.com/2C3NOke.png)
 </details>
 
 ## Videos
