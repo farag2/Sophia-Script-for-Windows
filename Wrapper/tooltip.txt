@@ -1,3 +1,8 @@
+<#systemprotection#>
+
+Logging;Enable script logging. The log will be being recorded into the script folder.To stop logging just close the console or type "Stop-Transcript";
+CreateRestorePoint;Create a restore point
+
 <#privacy&telemetry#>
 
 DiagTrackService -Disable;Disable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and block connection;
@@ -101,8 +106,8 @@ AppsLanguageSwitch -Enable;Do not let use a different input method for each app 
 
 <#onedrive#>
 
-UninstallOneDrive;Uninstall OneDrive;
-InstallOneDrive;Install OneDrive (current user only) (default value)
+OneDrive -Uninstall;Uninstall OneDrive;
+OneDrive -Install;Install OneDrive (current user only) (default value)
 
 <#system#>
 
@@ -132,10 +137,10 @@ WaitNetworkStartup -Enable;Always wait for the network at computer startup and l
 WaitNetworkStartup -Disable;Never wait for the network at computer startup and logon for workgroup networks (default value);
 WindowsManageDefaultPrinter -Disable;Do not let Windows decide which printer should be the default one (current user only);
 WindowsManageDefaultPrinter -Enable;Let Windows decide which printer should be the default one (current user only) (default value);
-WindowsFeatures -Disable;Disable the Windows features using the pop-up dialog box that enables the user to select features to remove;
-WindowsFeatures -Enable;Enable the Windows features using the pop-up dialog box that enables the user to select features to remove;
-WindowsCapabilities -Disable;Disable Features On Demand v2 (FODv2) capabilities using the pop-up dialog box;
-WindowsCapabilities -Enable;Enable Feature On Demand v2 (FODv2) capabilities using the pop-up dialog box;
+WindowsFeatures -Disable;Disable the Windows features using the pop-up dialog box;
+WindowsFeatures -Enable;Enable the Windows features using the pop-up dialog box;
+WindowsCapabilities -Uninstall;Uninstall Features On Demand v2 (FODv2) capabilities using the pop-up dialog box;
+WindowsCapabilities -Install;Install Features On Demand v2 (FODv2) capabilities using the pop-up dialog box;
 UpdateMicrosoftProducts -Enable;Opt-in to Microsoft Update service, so to receive updates for other Microsoft products;
 UpdateMicrosoftProducts -Disable;Opt-out of Microsoft Update service, so not to receive updates for other Microsoft products (default value);
 BackgroundUWPApps -Disable;Do not let all UWP apps run in the background (current user only);
@@ -179,8 +184,6 @@ DeviceRestartAfterUpdate -Disable;Do not restart this device as soon as possible
 WSL -Enable;Install the Windows Subsystem for Linux (WSL). https://github.com/farag2/Windows-10-Sophia-Script/issues/43. https://github.com/microsoft/WSL/issues/5437;
 WSL -Disable;Uninstall the Windows Subsystem for Linux (WSL);
 EnableWSL2;Download and install the Linux kernel update package. Set WSL 2 as the default version when installing a new Linux distribution. Run the function only after WSL installed and PC restart. https://github.com/microsoft/WSL/issues/5437. https://github.com/farag2/Windows-10-Sophia-Script/issues/43;
-WSLSwap -Disable;Disable swap file in WSL. Use only if the %TEMP% environment variable path changed. https://github.com/microsoft/WSL/issues/5437;
-WSLSwap -Enable;Enable swap file in WSL. https://github.com/microsoft/WSL/issues/5437
 
 <#start#>
 
@@ -191,15 +194,14 @@ AppSuggestions -Show;Show app suggestions in the Start menu (default value);
 RunCMDShortcut -Elevated;Run the Command Prompt shortcut from the Start menu as Administrator;
 RunCMDShortcut -NonElevated;Run the Command Prompt shortcut from the Start menu as user (default value);
 UnpinAllStartTiles;Unpin all the Start tiles;
-syspin;Test if syspin.exe is in a folder. Unless download it. http://www.technosys.net/products/utils/pintotaskbar. SHA256: 07D6C3A19A8E3E243E9545A41DD30A9EE1E9AD79CDD6D446C229D689E5AB574A;
-PinControlPanel;Pin the "Control Panel" shortcut to Start within syspin;
-PinDevicesPrinters;Pin the old-style "Devices and Printers" shortcut to Start within syspin;
-PinCommandPrompt;Pin the Command Prompt" shortcut to Start within syspin
+PinControlPanel;Pin the "Control Panel" shortcut to Start within the syspin app;
+PinDevicesPrinters;Pin the old-style "Devices and Printers" shortcut to Start within the syspin app;
+PinCommandPrompt;Pin the Command Prompt" shortcut to Start within the syspin app
 
 <#uwp#>
 
-UninstallUWPApps;Uninstall UWP apps using the pop-up dialog box that enables the user to select packages to remove. App packages will not be installed for new users if "Uninstall for All Users" is checked;
-InstallHEVC;Open Microsoft Store "HEVC Video Extensions from Device Manufacturer" page. The extension can be installed without Microsoft account for free instead of $0.99. "Movies & TV" app required;
+UninstallUWPApps;Uninstall UWP apps using the pop-up dialog box. App packages will not be installed for new users if "Uninstall for All Users" is checked;
+InstallHEIF;Open Microsoft Store "HEVC Video Extensions from Device Manufacturer" page to install this extension manually to be able to open .heic and .heif image formats. The extension can be installed without Microsoft account;
 CortanaAutostart -Disable;Disable Cortana autostarting;
 CortanaAutostart -Enable;Enable Cortana autostarting (default value);
 CheckUWPAppsUpdates;Check for UWP apps updates
@@ -255,7 +257,7 @@ AppsSmartScreen -Disable;Disable apps and files checking within Microsofot Defen
 AppsSmartScreen -Enable;Enable apps and files checking within Microsofot Defender SmartScree (default value);
 SaveZoneInformation -Disable;Disable the Attachment Manager marking files that have been downloaded from the Internet as unsafe (current user only);
 SaveZoneInformation -Enable;Enable the Attachment Manager marking files that have been downloaded from the Internet as unsafe (current user only) (default value);
-WindowsScriptHost -Disable;Disable Windows Script Host (current user only). It becomes impossible to run .js and .vbs files;
+WindowsScriptHost -Disable;Disable Windows Script Host (current user only). Blocks WSH from executing .js and .vbs files;
 WindowsScriptHost -Enable;Emable Windows Script Host (current user only) (default value);
 WindowsSandbox -Enable;Enable Windows Sandbox;
 WindowsSandbox -Disable;Disable Windows Sandbox (default value)

@@ -1,3 +1,7 @@
+<#systemprotection#>
+
+CreateRestorePoint
+
 <#privacy&telemetry#>
 
 TelemetryService -Disable,
@@ -54,7 +58,7 @@ AppsLanguageSwitch -Disable
 
 <#onedrive#>
 
-UninstallOneDrive
+OneDrive -Uninstall
 
 <#system#>
 
@@ -71,7 +75,7 @@ DeliveryOptimization -Disable,
 WaitNetworkStartup -Enable,
 WindowsManageDefaultPrinter -Disable,
 WindowsFeatures -Disable,
-WindowsCapabilities -Disable,
+WindowsCapabilities -Uninstall,
 UpdateMicrosoftProducts -Enable,
 BackgroundUWPApps -Disable,
 PowerManagementScheme -High,
@@ -99,7 +103,6 @@ RecentlyAddedApps -Hide,
 AppSuggestions -Hide,
 RunCMDShortcut -Elevated,
 UnpinAllStartTiles,
-syspin,
 PinControlPanel,
 PinDevicesPrinters,
 PinCommandPrompt
@@ -107,7 +110,7 @@ PinCommandPrompt
 <#uwp#>
 
 UninstallUWPApps,
-InstallHEVC,
+InstallHEIF,
 CortanaAutostart -Disable,
 CheckUWPAppsUpdates
 
