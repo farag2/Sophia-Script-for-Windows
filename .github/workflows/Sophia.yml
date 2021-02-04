@@ -1,4 +1,4 @@
-name: Archives uploaded to release
+name: Build and Release
 
 on:
   push:
