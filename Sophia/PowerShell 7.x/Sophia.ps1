@@ -2,9 +2,9 @@
 	.SYNOPSIS
 	Default preset file for "Windows 10 Sophia Script"
 
-	Version: v5.3.3
-	Date: 20.01.2021
-	Copyright (c) 2021 farag & oZ-Zo
+	Version: v5.4
+	Date: 04.02.2021
+	Copyright (c) 2015–2021 farag & oZ-Zo
 
 	Thanks to all https://forum.ru-board.com members involved
 
@@ -27,7 +27,7 @@
 	.NOTES
 	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
 	https://habr.com/post/521202/
-	https://forums.mydigitallife.net/threads/powershell-script-setup-windows-10.81675/
+	https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/
 	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
 
 	.LINK
@@ -47,7 +47,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.3.3 | ©️ farag & oz-zo, 2015–2021"
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.4 | ©️ farag & oz-zo, 2015–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Sophia.psd1 -PassThru -Force
@@ -60,14 +60,23 @@ Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia
 	Добавляет возможность запускать скрипт, указывая в качестве параметров функции модуля
 
 	.EXAMPLE
-	.\Sophia.ps1 -Functions "FunctionName1 -Parameter", "FunctionName2 -Parameter"
+	.\Sophia.ps1 -Functions "FunctionName1 -Parameter", "FunctionName2 -Parameter", FunctionName3
+
+	.NOTES
+	Regardless of the functions entered as an argument, the "Checkings" function will be executed first, and the "Refresh" and "Errors" functions will be executed at the end
+	Вне зависимости от введенных функций в качестве аргумента, сначала будет выполнена функция "Checkings", и в конце — "Refresh" и "Errors"
 #>
 if ($Functions)
 {
+	Invoke-Command -ScriptBlock {Checkings}
+
 	foreach ($Function in $Functions)
 	{
 		Invoke-Expression -Command $Function
 	}
+
+	Invoke-Command -ScriptBlock {Refresh; Errors}
+
 	exit
 }
 
@@ -487,11 +496,11 @@ AppsLanguageSwitch -Enable
 #region OneDrive
 # Uninstall OneDrive
 # Удалить OneDrive
-UninstallOneDrive
+OneDrive -Uninstall
 
 # Install OneDrive (current user only) (default value)
 # Установить OneDrive (только для текущего пользователя) (значение по умолчанию)
-# InstallOneDrive
+# OneDrive -Install
 #endregion OneDrive
 
 #region System
@@ -602,30 +611,30 @@ WindowsManageDefaultPrinter -Disable
 # WindowsManageDefaultPrinter -Enable
 
 <#
-	Disable the Windows features using the pop-up dialog box that enables the user to select features to remove
-	Отключить компоненты Windows, используя всплывающее диалоговое окно, позволяющее пользователю отметить компоненты на удаление
+	Disable the Windows features using the pop-up dialog box
+	Отключить компоненты Windows, используя всплывающее диалоговое окно
 
-	If you want to leave "Multimedia settings" in the advanced settings of Power Options do not uninstall this feature
-	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах электропитания, не удаляйте этот компонент
+	If you want to leave "Multimedia settings" element in the advanced settings of Power Options do not uninstall the "MediaPlayback" feature
+	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах электропитания, не удаляйте компонент "MediaPlayback"
 #>
 WindowsFeatures -Disable
 
-# Enable the Windows features using the pop-up dialog box that enables the user to select features to remove
-# Включить компоненты Windows, используя всплывающее диалоговое окно, позволяющее пользователю отметить компоненты на удаление
+# Enable the Windows features using the pop-up dialog box
+# Включить компоненты Windows, используя всплывающее диалоговое окно
 # WindowsFeatures -Enable
 
 <#
-	Disable Features On Demand v2 (FODv2) capabilities using the pop-up dialog box
-	Отключить компоненты "Функции по требованию" (FODv2), используя всплывающее диалоговое окно
+	Uninstall Features On Demand v2 (FODv2) capabilities using the pop-up dialog box
+	Удалить компоненты "Функции по требованию" (FODv2), используя всплывающее диалоговое окно
 
-	If you want to leave "Multimedia settings" in the advanced settings of Power Options do not uninstall this feature
-	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах электропитания, не удаляйте этот компонент
+	If you want to leave "Multimedia settings" element in the advanced settings of Power Options do not uninstall the "MediaPlayback" feature
+	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах электропитания, не удаляйте компонент "MediaPlayback"
 #>
-WindowsCapabilities -Disable
+WindowsCapabilities -Uninstall
 
-# Enable Feature On Demand v2 (FODv2) capabilities using the pop-up dialog box
-# Включить компоненты "Функции по требованию" (FODv2), используя всплывающее диалоговое окно
-# WindowsCapabilities -Enable
+# Install Features On Demand v2 (FODv2) capabilities using the pop-up dialog box
+# Установить компоненты "Функции по требованию" (FODv2), используя всплывающее диалоговое окно
+# WindowsCapabilities -Install
 
 # Opt-in to Microsoft Update service, so to receive updates for other Microsoft products
 # Подключаться к службе Microsoft Update так, чтобы при обновлении Windows получать обновления для других продуктов Майкрософт
@@ -826,13 +835,8 @@ DeviceRestartAfterUpdate -Enable
 #endregion System
 
 #region WSL
-<#
-	Install the Windows Subsystem for Linux (WSL)
-	Установить подсистему Windows для Linux (WSL)
-
-	https://github.com/farag2/Windows-10-Sophia-Script/issues/43
-	https://github.com/microsoft/WSL/issues/5437
-#>
+# Install the Windows Subsystem for Linux (WSL)
+# Установить подсистему Windows для Linux (WSL)
 # WSL -Enable
 
 # Uninstall the Windows Subsystem for Linux (WSL)
@@ -847,30 +851,8 @@ DeviceRestartAfterUpdate -Enable
 	Скачать и установить пакет обновления ядра Linux
 	Установить WSL 2 как версию по умолчанию при установке нового дистрибутива Linux
 	Выполните функцию только после установки WSL и перезагрузка ПК
-
-	https://github.com/microsoft/WSL/issues/5437
-	https://github.com/farag2/Windows-10-Sophia-Script/issues/43
 #>
 # EnableWSL2
-
-<#
-	Disable swap file in WSL
-	Use only if the %TEMP% environment variable path changed
-
-	Отключить файл подкачки в WSL
-	Используйте только в случае, если изменился путь переменной среды для %TEMP%
-
-	https://github.com/microsoft/WSL/issues/5437
-#>
-# WSLSwap -Disable
-
-<#
-	Enable swap file in WSL
-	Включить файл подкачки в WSL
-
-	https://github.com/microsoft/WSL/issues/5437
-#>
-# WSLSwap -Enable
 #endregion WSL
 
 #region Start menu
@@ -902,48 +884,37 @@ RunCMDShortcut -Elevated
 # Открепить все ярлыки от начального экрана
 UnpinAllStartTiles
 
-<#
-	Test if syspin.exe is in a folder. Unless download it
-	Проверить, находится ли файл syspin.exe в папке. Иначе скачать его
-
-	http://www.technosys.net/products/utils/pintotaskbar
-	SHA256: 07D6C3A19A8E3E243E9545A41DD30A9EE1E9AD79CDD6D446C229D689E5AB574A
-#>
-syspin
-
-# Pin the "Control Panel" shortcut to Start within syspin
+# Pin the "Control Panel" shortcut to Start within the syspin app
 # Закрепить ярлык "Панели управления" на начальном экране с помощью syspin
 PinControlPanel
 
-# Pin the old-style "Devices and Printers" shortcut to Start within syspin
+# Pin the old-style "Devices and Printers" shortcut to Start within the syspin app
 # Закрепить ярлык старого формата "Устройства и принтеры" на начальном экране с помощью syspin
 PinDevicesPrinters
 
-# Pin the Command Prompt" shortcut to Start within syspin
+# Pin the Command Prompt" shortcut to Start within the syspin app
 # Закрепить ярлык "Командная строка" на начальном экране с помощью syspin
 PinCommandPrompt
 #endregion Start menu
 
 #region UWP apps
 <#
-	Uninstall UWP apps using the pop-up dialog box that enables the user to select packages to remove
+	Uninstall UWP apps using the pop-up dialog box
 	App packages will not be installed for new users if "Uninstall for All Users" is checked
 
-	Удалить UWP-приложения, используя всплывающее диалоговое окно, позволяющее пользователю отметить пакеты на удаление
-	Приложения не будут установлены для новых пользователе, если отмечено "Удалять для всех пользователей"
+	Удалить UWP-приложения, используя всплывающее диалоговое окно
+	Приложения не будут установлены для новых пользователей, если отмечено "Удалять для всех пользователей"
 #>
 UninstallUWPApps
 
 <#
-	Open Microsoft Store "HEVC Video Extensions from Device Manufacturer" page
-	The extension can be installed without Microsoft account for free instead of $0.99
-	"Movies & TV" app required
+	Open Microsoft Store "HEVC Video Extensions from Device Manufacturer" page to install this extension manually to be able to open .heic and .heif image formats
+	The extension can be installed without Microsoft account
 
-	Открыть страницу "Расширения для видео HEVC от производителя устройства" в Microsoft Store
-	Расширение может быть установлено бесплатно без учетной записи Microsoft вместо 0,99 $
-	Для работы необходимо приложение "Кино и ТВ"
+	Открыть страницу "Расширения для видео HEVC от производителя устройства" в Microsoft Store, чтобы вручную установить расширение для открытия изображений в форматах .heic и .heif
+	Расширение может быть установлено бесплатно без учетной записи Microsoft
 #>
-InstallHEVC
+InstallHEIF
 
 # Disable Cortana autostarting
 # Выключить автозагрузку Кортана
@@ -1179,14 +1150,14 @@ SaveZoneInformation -Disable
 
 <#
 	Disable Windows Script Host (current user only)
-	It becomes impossible to run .js and .vbs files
+	Blocks WSH from executing .js and .vbs files
 
 	Отключить Windows Script Host (только для текущего пользователя)
-	Становится невозможным запустить файлы .js и .vbs
+	Блокирует запуск файлов .js и .vbs
 #>
 # WindowsScriptHost -Disable
 
-# Emable Windows Script Host (current user only) (default value)
+# Enable Windows Script Host (current user only) (default value)
 # Включить Windows Script Host (только для текущего пользователя) (значение по умолчанию)
 # WindowsScriptHost -Enable
 
