@@ -127,10 +127,11 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
   * "Music";
   * "Pictures"
   * "Videos.
-* Uninstall UWP apps from all accounts with exception apps list with pop-up form written in [WPF](#Screenshots);
-* Disable Windows features;
+* Uninstall UWP apps displaying friendly packages names with pop-up form written in [WPF](#Screenshots);
+  * Dynamically generated UWP apps list installed for all users
+* Disable Windows features displaying friendly packages names with pop-up form written in [WPF](#Screenshots);
+* Uninstall Windows capabilities displaying friendly packages names with pop-up form written in [WPF](#Screenshots);
 * Install and setup WSL
-* Remove Windows capabilities with pop-up form written in [WPF](#Screenshots);
 * Create a Windows cleaning up task in the Task Scheduler;
   * A toast notification will pop up a minute before the task [starts](#Screenshots)
 * Create tasks in the Task Scheduler to clear
@@ -167,9 +168,9 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 How to run the specific function(s) (example):
 
 ```powershell
-.\Sophia.ps1 -Functions CreateRestorePoint, "ScheduledTasks -Disable", "WindowsCapabilities -Disable", Refresh
+.\Sophia.ps1 -Functions CreateRestorePoint, "ScheduledTasks -Disable", "WindowsCapabilities -Uninstall"
 ```
-
+* Regardless of the functions entered as an argument the `Checkings` function will be executed first, and the `Refresh` and `Errors` functions will be executed at the end;
 * The quotation marks required.
 
 ## How to translate
