@@ -31,10 +31,9 @@ jobs:
           Write-Host $BUILD_DIR
           Write-Host $ZIP
 
-          Copy-Item -Path "Sophia\*" -Destination $BUILD_DIR -Recurse -Force
+          Copy-Item -Path "Sophia\PowerShell 5.1\*" -Destination $BUILD_DIR -Recurse -Force
           Copy-Item -Path "Start menu pinning\syspin.exe" -Destination $BUILD_DIR -Force
-          Remove-Item -Path "$BUILD_DIR\PowerShell 7.x" -Recurse -Force
-
+   
           Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP -Force
 
       - name: Build 7.x
@@ -57,18 +56,16 @@ jobs:
           Write-Host $BUILD_DIR
           Write-Host $ZIP
 
-          Copy-Item -Path "Sophia\*" -Destination $BUILD_DIR -Recurse -Force
-          Move-Item -Path "$BUILD_DIR/PowerShell 7.x\*" -Destination $BUILD_DIR -Force
-          Get-ChildItem -Path "$BUILD_DIR/PowerShell 7.x\*" -Recurse | Move-Item -Destination $BUILD_DIR -Force
+          Copy-Item -Path "Sophia\PowerShell 5.1\*" -Destination $BUILD_DIR -Recurse -Force
+          Copy-Item -Path "Sophia\PowerShell 7.x\*" -Destination $BUILD_DIR -Recurse -Force
           Copy-Item -Path "Start menu pinning\syspin.exe" -Destination $BUILD_DIR -Recurse -Force
-          Remove-Item -Path "$BUILD_DIR/PowerShell 7.x\" -Force
 
           Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP -Force
 
       - name: Build LTSC
         run: |
           $BUILD_DIR = "Sophia Script LTSC v"
-          $ModuleVersion = (Import-PowerShellDataFile -Path "LTSC\Sophia.psd1").ModuleVersion
+          $ModuleVersion = (Import-PowerShellDataFile -Path "Sophia\LTSC\Sophia.psd1").ModuleVersion
           Write-Host $ModuleVersion
           $BUILD_DIR += $ModuleVersion
 
@@ -79,7 +76,7 @@ jobs:
           Write-Host $BUILD_DIR
           Write-Host $ZIP
 
-          Copy-Item -Path "LTSC\*" -Destination $BUILD_DIR -Recurse -Force
+          Copy-Item -Path "Sophia\LTSC\*" -Destination $BUILD_DIR -Recurse -Force
 
           Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP -Force
 
@@ -104,5 +101,5 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
-          prerelease: true
+          prerelease: false
  
