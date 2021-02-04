@@ -1,10 +1,10 @@
-<#
+﻿<#
 	.SYNOPSIS
 	"Windows 10 Sophia Script" is a PowerShell module for Windows 10 fine-tuning and automating the routine tasks
 
-	Version: v5.3.3
-	Date: 20.01.2021
-	Copyright (c) 2021 farag & oZ-Zo
+	Version: v5.4
+	Date: 04.02.2021
+	Copyright (c) 2015–2021 farag & oZ-Zo
 
 	Thanks to all https://forum.ru-board.com members involved
 
@@ -23,7 +23,7 @@
 	.NOTES
 	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
 	https://habr.com/post/521202/
-	https://forums.mydigitallife.net/threads/powershell-script-setup-windows-10.81675/
+	https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/
 	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
 
 	.LINK
@@ -61,6 +61,31 @@ function Checkings
 		}
 	}
 
+	# Checking whether the current module version is the latest
+	# Проверка: используется ли последняя версия модуля
+	try
+	{
+		$LatestRelease = ((Invoke-RestMethod -Uri "https://api.github.com/repos/farag2/Windows-10-Sophia-Script/releases") | Where-Object -FilterScript {$_.prerelease -eq $false}).tag_name.Replace("v","")[0]
+		$CurrentRelease = (Get-Module -Name Sophia).Version.ToString()
+		switch ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)
+		{
+			$true
+			{
+				Write-Warning -Message $Localization.UnsupportedRelease
+
+				Start-Sleep -Seconds 5
+
+				Start-Process -FilePath "https://github.com/farag2/Windows-10-Sophia-Script/releases/latest"
+				exit
+			}
+		}
+	}
+	catch [System.Net.WebException]
+	{
+		Write-Warning -Message $Localization.NoInternetConnection
+		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+	}
+
 	# Unblock all files in the folder by removing the Zone.Identifier alternate data stream with a value of "3"
 	# Разблокировать все файлы в папке, удалив альтернативный потоки данных Zone.Identifier со значением "3"
 	Get-ChildItem -Path $PSScriptRoot -Recurse -Force | Unblock-File -Confirm:$false
@@ -84,29 +109,6 @@ function Checkings
 			$Script:ControlledFolderAccess = $false
 		}
 	}
-
-	# Checking whether the current module version is the latest
-	# Проверка: используется ли последняя версия модуля
-	try
-	{
-		$LatestRelease = ((Invoke-RestMethod -Uri "https://api.github.com/repos/farag2/Windows-10-Sophia-Script/releases") | Where-Object -FilterScript {$_.prerelease -eq $false}).tag_name.Replace("v","")[0]
-		$CurrentRelease = (Get-Module -Name Sophia).Version.ToString()
-		switch ([System.Version]$LatestRelease -ne [System.Version]$CurrentRelease)
-		{
-			$true
-			{
-				Write-Warning -Message $Localization.UnsupportedRelease
-
-				Start-Process -FilePath "https://github.com/farag2/Windows-10-Sophia-Script/releases/latest"
-				exit
-			}
-		}
-	}
-	catch [System.Net.WebException]
-	{
-		Write-Warning -Message $Localization.NoInternetConnection
-		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
-	}
 }
 #endregion Checkings
 
@@ -123,13 +125,22 @@ function Logging
 	Start-Transcript -Path $PSScriptRoot\$TrascriptFilename.txt -Force
 }
 
-# Create a restore point
-# Создать точку восстановления
+# Create a restore point for the system drive
+# Создать точку восстановления для системного диска
 function CreateRestorePoint
 {
-	if (-not (Get-ComputerRestorePoint))
+	$SystemDriveUniqueID = (Get-Volume | Where-Object {$_.DriveLetter -eq "$($env:SystemDrive[0])"}).UniqueID
+	$SystemProtection = ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SPP\Clients")."{09F7EDC5-294E-4180-AF6A-FB0E6A0E9513}") | Where-Object -FilterScript {$_ -match [regex]::Escape($SystemDriveUniqueID)}
+
+	$ComputerRestorePoint = $false
+
+	switch ($null -eq $SystemProtection)
 	{
-		Enable-ComputerRestore -Drive $env:SystemDrive
+		$true
+		{
+			$ComputerRestorePoint = $true
+			Enable-ComputerRestore -Drive $env:SystemDrive
+		}
 	}
 
 	# Never skip creating a restore point
@@ -141,6 +152,13 @@ function CreateRestorePoint
 	# Revert the System Restore checkpoint creation frequency to 1440 minutes
 	# Вернуть частоту создания точек восстановления на 1440 минут
 	New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 1440 -Force
+
+	# Turn off System Protection for the system drive if it was turned off without deleting existing restore points
+	# Отключить защиту системы для диска C:\, если был отключен, не удаляя точки восстановления
+	if ($ComputerRestorePoint)
+	{
+		Disable-ComputerRestore -Drive $env:SystemDrive
+	}
 }
 
 #region Privacy & Telemetry
@@ -440,17 +458,13 @@ function ScheduledTasks
 	Add-Type -AssemblyName PresentationCore, PresentationFramework
 
 	#region Variables
-	# Initialize an array list to store the scheduled tasks to remove
-	# Создать массив задач для удаления
-	$Tasks = New-Object -TypeName System.Collections.ArrayList($null)
+	# Initialize an array list to store the selected scheduled tasks
+	# Создать массив для выбранных задач
+	$SelectedTasks = New-Object -TypeName System.Collections.ArrayList($null)
 
 	# The following tasks will have their checkboxes checked
 	# Следующие задачи будут иметь чекбоксы отмеченными
-	$CheckedScheduledTasks = @(
-		# Collects program telemetry information if opted-in to the Microsoft Customer Experience Improvement Program
-		# Собирает телеметрические данные программы при участии в Программе улучшения качества программного обеспечения Майкрософт
-		"Microsoft Compatibility Appraiser",
-
+	[string[]]$CheckedScheduledTasks = @(
 		# Collects program telemetry information if opted-in to the Microsoft Customer Experience Improvement Program
 		# Сбор телеметрических данных программы при участии в программе улучшения качества ПО
 		"ProgramDataUpdater",
@@ -470,14 +484,6 @@ function ScheduledTasks
 		# The Windows Disk Diagnostic reports general disk and system information to Microsoft for users participating in the Customer Experience Program
 		# Для пользователей, участвующих в программе контроля качества программного обеспечения, служба диагностики дисков Windows предоставляет общие сведения о дисках и системе в корпорацию Майкрософт
 		"Microsoft-Windows-DiskDiagnosticDataCollector",
-
-		# Protects user files from accidental loss by copying them to a backup location when the system is unattended
-		# Защищает файлы пользователя от случайной потери за счет их копирования в резервное расположение, когда система находится в автоматическом режиме
-		"File History (maintenance mode)",
-
-		# Measures a system's performance and capabilities
-		# Измеряет быстродействие и возможности системы
-		"WinSAT",
 
 		# This task shows various Map related toasts
 		# Эта задача показывает различные тосты (всплывающие уведомления) приложения "Карты"
@@ -555,7 +561,7 @@ function ScheduledTasks
 	$Reader = (New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML)
 	$Form = [Windows.Markup.XamlReader]::Load($Reader)
 	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
-		Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name) -Scope Global
+		Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name)
 	}
 
 	#region Functions
@@ -572,16 +578,18 @@ function ScheduledTasks
 			$CheckBox
 		)
 
-		$Task = $CheckBox.Parent.Children[1].Text
+		$Task = $Tasks | Where-Object -FilterScript {$_.TaskName -eq $CheckBox.Parent.Children[1].Text}
+
 		if ($CheckBox.IsChecked)
 		{
-			[void]$Tasks.Add($Task)
+			[void]$SelectedTasks.Add($Task)
 		}
 		else
 		{
-			[void]$Tasks.Remove($Task)
+			[void]$SelectedTasks.Remove($Task)
 		}
-		if ($Tasks.Count -gt 0)
+		
+		if ($SelectedTasks.Count -gt 0)
 		{
 			$Button.IsEnabled = $true
 		}
@@ -593,18 +601,22 @@ function ScheduledTasks
 
 	function DisableButton
 	{
+		Write-Verbose -Message $Localization.Patient -Verbose
+
 		[void]$Window.Close()
-		$OFS = "|"
-		Get-ScheduledTask | Where-Object -FilterScript {$_.TaskName -cmatch $Tasks} | Disable-ScheduledTask
-		$OFS = " "
+
+		$SelectedTasks  | ForEach-Object -Process {Write-Verbose $_.TaskName -Verbose}
+		$SelectedTasks | Disable-ScheduledTask
 	}
 
 	function EnableButton
 	{
+		Write-Verbose -Message $Localization.Patient -Verbose
+
 		[void]$Window.Close()
-		$OFS = "|"
-		Get-ScheduledTask | Where-Object -FilterScript {$_.TaskName -cmatch $Tasks} | Enable-ScheduledTask
-		$OFS = " "
+
+		$SelectedTasks  | ForEach-Object -Process {Write-Verbose $_.TaskName -Verbose}
+		$SelectedTasks | Enable-ScheduledTask
 	}
 
 	function Add-TaskControl
@@ -617,30 +629,32 @@ function ScheduledTasks
 				ValueFromPipeline = $true
 			)]
 			[ValidateNotNull()]
-			[string]
 			$Task
 		)
 
-		$CheckBox = New-Object -TypeName System.Windows.Controls.CheckBox
-		$CheckBox.Add_Click({Get-CheckboxClicked -CheckBox $_.Source})
-
-		$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
-		$TextBlock.Text = $Task
-
-		$StackPanel = New-Object -TypeName System.Windows.Controls.StackPanel
-		[void]$StackPanel.Children.Add($CheckBox)
-		[void]$StackPanel.Children.Add($TextBlock)
-
-		[void]$PanelContainer.Children.Add($StackPanel)
-
-		$CheckBox.IsChecked = $false
-
-		# If task checked, add to the array list to remove
-		# Если задача выделена, то добавить в массив для удаления
-		if ($CheckedScheduledTasks | Where-Object -FilterScript {$Task -like $_})
+		process
 		{
-			$CheckBox.IsChecked = $true
-			[void]$Tasks.Add($Task)
+			$CheckBox = New-Object -TypeName System.Windows.Controls.CheckBox
+			$CheckBox.Add_Click({Get-CheckboxClicked -CheckBox $_.Source})
+
+			$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
+			$TextBlock.Text = $Task.TaskName
+
+			$StackPanel = New-Object -TypeName System.Windows.Controls.StackPanel
+			[void]$StackPanel.Children.Add($CheckBox)
+			[void]$StackPanel.Children.Add($TextBlock)
+			[void]$PanelContainer.Children.Add($StackPanel)
+
+			# If task checked add to the array list
+			# Если задача выделена, то добавить в массив
+			if ($CheckedScheduledTasks | Where-Object -FilterScript {$Task.TaskName -match $_})
+			{
+				[void]$SelectedTasks.Add($Task)
+			}
+			else
+			{
+				$CheckBox.IsChecked = $false
+			}
 		}
 	}
 	#endregion Functions
@@ -649,63 +663,36 @@ function ScheduledTasks
 	{
 		"Enable"
 		{
-			#region Events Handlers
-			$OptionalTasks = New-Object -TypeName System.Collections.ArrayList($null)
-			# Window Loaded Event
-			$Window.Add_Loaded({
-				$OFS = "|"
-				$OptionalTasks = @(Get-ScheduledTask | Where-Object -FilterScript {($_.State -eq "Disabled") -and ($_.TaskName -in $CheckedScheduledTasks)})
-				if ($OptionalTasks.Count -gt 0)
-				{
-					$OptionalTasks | ForEach-Object -Process {
-						Add-TaskControl -Task $_.TaskName
-					}
 
-					$Button.Content = $Localization.Enable
-				}
-				else
-				{
-					Write-Verbose -Message $Localization.NoData -Verbose
-					$Form.Close()
-				}
-				$OFS = " "
-			})
-
-			# Button Click Event
-			$Button.Add_Click({EnableButton})
-			#endregion Events Handlers
+			$State = "Disabled"
+			$ButtonContent = $Localization.Enable
+			$ButtonAdd_Click = {EnableButton}
 		}
 		"Disable"
 		{
-			#region Events Handlers
-			$OptionalTasks = New-Object System.Collections.ArrayList($null)
-			# Window Loaded Event
-			$Window.Add_Loaded({
-				$OFS = "|"
-				$OptionalTasks = @(Get-ScheduledTask | Where-Object -FilterScript {($_.State -eq "Ready") -and ($_.TaskName -in $CheckedScheduledTasks)})
-				if ($OptionalTasks.Count -gt 0)
-				{
-					$OptionalTasks | ForEach-Object -Process {
-						Add-TaskControl -Task $_.TaskName
-					}
-
-					$Button.Content = $Localization.Disable
-				}
-				else
-				{
-					Write-Verbose -Message $Localization.NoData -Verbose
-					$Form.Close()
-				}
-				$OFS = " "
-			})
-
-			# Button Click Event
-			$Button.Add_Click({DisableButton})
-			#endregion Events Handlers
+			$State = "Ready"
+			$ButtonContent = $Localization.Disable
+			$ButtonAdd_Click = {DisableButton}
 		}
 	}
 
+	Write-Verbose -Message $Localization.Patient -Verbose
+
+	# Получаем общий список задач, согласно условиям
+	# Getting a list of tasks according to the conditions
+	$Tasks = Get-ScheduledTask | Where-Object -FilterScript {($_.State -eq $State) -and ($_.TaskName -in $CheckedScheduledTasks)}
+
+	if (-not ($Tasks))
+	{
+		Write-Verbose -Message $Localization.NoData -Verbose
+		return
+	}
+
 	Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
+
+	$Window.Add_Loaded({$Tasks | Add-TaskControl})
+	$Button.Content = $ButtonContent
+	$Button.Add_Click({& $ButtonAdd_Click})
 
 	$Window.Title = $Localization.ScheduledTasks
 	$Form.ShowDialog() | Out-Null
@@ -3036,16 +3023,21 @@ function TaskManagerWindow
 	)
 
 	$Taskmgr = Get-Process -Name Taskmgr -ErrorAction Ignore
+
+	Start-Sleep -Seconds 1
+
 	if ($Taskmgr)
 	{
 		$Taskmgr.CloseMainWindow()
 	}
-	Start-Process -FilePath Taskmgr.exe -WindowStyle Hidden -PassThru
+	Start-Process -FilePath Taskmgr.exe -PassThru
+
+	Start-Sleep -Seconds 3
 
 	do
 	{
 		Start-Sleep -Milliseconds 100
-		$Preferences = Get-ItemPropertyValue -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -ErrorAction Ignore
+		$Preferences = Get-ItemPropertyValue -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences
 	}
 	until ($Preferences)
 
@@ -3292,139 +3284,176 @@ function AppsLanguageSwitch
 #endregion UI & Personalization
 
 #region OneDrive
-# Uninstall OneDrive
-# Удалить OneDrive
-function UninstallOneDrive
+<#
+	.SYNOPSIS
+	Uninstall/install OneDrive
+	Удалить/установить OneDrive
+
+	.PARAMETER Uninstall
+	Uninstall OneDrive
+	Удалить OneDrive
+
+	.PARAMETER Install
+	Install OneDrive
+	Установить OneDrive
+
+	.EXAMPLE
+	OneDrive -Uninstall
+
+	.EXAMPLE
+	OneDrive -Install
+#>
+function OneDrive
 {
-	[string]$UninstallString = Get-Package -Name "Microsoft OneDrive" -ProviderName Programs -ErrorAction Ignore | ForEach-Object -Process {$_.Meta.Attributes["UninstallString"]}
-	if ($UninstallString)
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Uninstall"
+		)]
+		[switch]
+		$Uninstall,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Install"
+		)]
+		[switch]
+		$Install
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
 	{
-		Write-Verbose -Message $Localization.OneDriveUninstalling -Verbose
-		Stop-Process -Name OneDrive -Force -ErrorAction Ignore
-		Stop-Process -Name OneDriveSetup -Force -ErrorAction Ignore
-		Stop-Process -Name FileCoAuth -Force -ErrorAction Ignore
-
-		# Getting link to the OneDriveSetup.exe and its' argument(s)
-		# Получаем ссылку на OneDriveSetup.exe и его аргумент(ы)
-		[string[]]$OneDriveSetup = ($UninstallString -Replace("\s*/",",/")).Split(",").Trim()
-		if ($OneDriveSetup.Count -eq 2)
+		"Uninstall"
 		{
-			Start-Process -FilePath $OneDriveSetup[0] -ArgumentList $OneDriveSetup[1..1] -Wait
-		}
-		else
-		{
-			Start-Process -FilePath $OneDriveSetup[0] -ArgumentList $OneDriveSetup[1..2] -Wait
-		}
-
-		# Getting the OneDrive user folder path
-		# Получаем путь до папки пользователя OneDrive
-		$OneDriveUserFolder = Get-ItemPropertyValue -Path HKCU:\Environment -Name OneDrive
-		if ((Get-ChildItem -Path $OneDriveUserFolder | Measure-Object).Count -eq 0)
-		{
-			Remove-Item -Path $OneDriveUserFolder -Recurse -Force
-		}
-		else
-		{
-			Write-Error -Message ($Localization.OneDriveNotEmptyFolder -f $OneDriveUserFolder) -ErrorAction SilentlyContinue
-
-			Invoke-Item -Path $OneDriveUserFolder
-		}
-
-		Remove-ItemProperty -Path HKCU:\Environment -Name OneDrive, OneDriveConsumer -Force -ErrorAction Ignore
-		Remove-Item -Path HKCU:\SOFTWARE\Microsoft\OneDrive -Recurse -Force -ErrorAction Ignore
-		Remove-Item -Path HKLM:\SOFTWARE\WOW6432Node\Microsoft\OneDrive -Recurse -Force -ErrorAction Ignore
-		Remove-Item -Path "$env:ProgramData\Microsoft OneDrive" -Recurse -Force -ErrorAction Ignore
-		Remove-Item -Path $env:SystemDrive\OneDriveTemp -Recurse -Force -ErrorAction Ignore
-		Unregister-ScheduledTask -TaskName *OneDrive* -Confirm:$false
-
-		# Getting the OneDrive folder path
-		# Получаем путь до папки OneDrive
-		$OneDriveFolder = Split-Path -Path (Split-Path -Path $OneDriveSetup[0] -Parent)
-
-		# Save all opened folders in order to restore them after File Explorer restarting
-		# Сохранить все открытые папки, чтобы восстановить их после перезапуска проводника
-		Clear-Variable -Name OpenedFolders -Force -ErrorAction Ignore
-		$OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
-
-		# Terminate File Explorer process
-		# Завершить процесс проводника
-		TASKKILL /F /IM explorer.exe
-
-		# Attempt to unregister FileSyncShell64.dll and remove
-		# Попытка разрегистрировать FileSyncShell64.dll и удалить
-		$FileSyncShell64dlls = Get-ChildItem -Path "$OneDriveFolder\*\amd64\FileSyncShell64.dll" -Force
-		foreach ($FileSyncShell64dll in $FileSyncShell64dlls.FullName)
-		{
-			Start-Process -FilePath regsvr32.exe -ArgumentList "/u /s $FileSyncShell64dll" -Wait
-			Remove-Item -Path $FileSyncShell64dll -Force -ErrorAction Ignore
-
-			if (Test-Path -Path $FileSyncShell64dll)
+			[string]$UninstallString = Get-Package -Name "Microsoft OneDrive" -ProviderName Programs -ErrorAction Ignore | ForEach-Object -Process {$_.Meta.Attributes["UninstallString"]}
+			if ($UninstallString)
 			{
-				Write-Error -Message ($Localization.OneDriveFileSyncShell64dllBlocked -f $FileSyncShell64dll) -ErrorAction SilentlyContinue
-			}
-		}
+				Write-Verbose -Message $Localization.OneDriveUninstalling -Verbose
+				Stop-Process -Name OneDrive -Force -ErrorAction Ignore
+				Stop-Process -Name OneDriveSetup -Force -ErrorAction Ignore
+				Stop-Process -Name FileCoAuth -Force -ErrorAction Ignore
 
-		# Restoring closed folders
-		# Восстановляем закрытые папки
-		Start-Process -FilePath explorer
-		foreach ($OpenedFolder in $OpenedFolders)
-		{
-			if (Test-Path -Path $OpenedFolder)
-			{
-				Invoke-Item -Path $OpenedFolder
-			}
-		}
-
-		Remove-Item -Path $OneDriveFolder -Recurse -Force -ErrorAction Ignore
-		Remove-Item -Path $env:LOCALAPPDATA\OneDrive -Recurse -Force -ErrorAction Ignore
-		Remove-Item -Path $env:LOCALAPPDATA\Microsoft\OneDrive -Recurse -Force -ErrorAction Ignore
-		Remove-Item -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\OneDrive.lnk" -Force -ErrorAction Ignore
-	}
-}
-
-# Install OneDrive (current user only)
-# Установить OneDrive (только для текущего пользователя)
-function InstallOneDrive
-{
-	$OneDrive = Get-Package -Name "Microsoft OneDrive" -ProviderName Programs -Force -ErrorAction Ignore
-	if (-not $OneDrive)
-	{
-		if (Test-Path -Path $env:SystemRoot\SysWOW64\OneDriveSetup.exe)
-		{
-			Write-Verbose -Message $Localization.OneDriveInstalling -Verbose
-			Start-Process -FilePath $env:SystemRoot\SysWOW64\OneDriveSetup.exe
-		}
-		else
-		{
-			# Downloading the latest OneDrive
-			# Скачивание последней версии OneDrive
-			try
-			{
-				if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
+				# Getting link to the OneDriveSetup.exe and its' argument(s)
+				# Получаем ссылку на OneDriveSetup.exe и его аргумент(ы)
+				[string[]]$OneDriveSetup = ($UninstallString -Replace("\s*/",",/")).Split(",").Trim()
+				if ($OneDriveSetup.Count -eq 2)
 				{
-					Write-Verbose -Message $Localization.OneDriveDownloading -Verbose
-
-					[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-					$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-					$Parameters = @{
-						Uri = "https://go.microsoft.com/fwlink/p/?LinkID=2121808"
-						OutFile = "$DownloadsFolder\OneDriveSetup.exe"
-						Verbose = [switch]::Present
-					}
-					Invoke-WebRequest @Parameters
-
-					Start-Process -FilePath "$DownloadsFolder\OneDriveSetup.exe"
+					Start-Process -FilePath $OneDriveSetup[0] -ArgumentList $OneDriveSetup[1..1] -Wait
 				}
-			}
-			catch [System.Net.WebException]
-			{
-				Write-Warning -Message $Localization.NoInternetConnection
-				Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
-				return
+				else
+				{
+					Start-Process -FilePath $OneDriveSetup[0] -ArgumentList $OneDriveSetup[1..2] -Wait
+				}
+
+				# Getting the OneDrive user folder path
+				# Получаем путь до папки пользователя OneDrive
+				$OneDriveUserFolder = Get-ItemPropertyValue -Path HKCU:\Environment -Name OneDrive
+				if ((Get-ChildItem -Path $OneDriveUserFolder | Measure-Object).Count -eq 0)
+				{
+					Remove-Item -Path $OneDriveUserFolder -Recurse -Force
+				}
+				else
+				{
+					Write-Error -Message ($Localization.OneDriveNotEmptyFolder -f $OneDriveUserFolder) -ErrorAction SilentlyContinue
+
+					Invoke-Item -Path $OneDriveUserFolder
+				}
+
+				Remove-ItemProperty -Path HKCU:\Environment -Name OneDrive, OneDriveConsumer -Force -ErrorAction Ignore
+				Remove-Item -Path HKCU:\SOFTWARE\Microsoft\OneDrive -Recurse -Force -ErrorAction Ignore
+				Remove-Item -Path HKLM:\SOFTWARE\WOW6432Node\Microsoft\OneDrive -Recurse -Force -ErrorAction Ignore
+				Remove-Item -Path "$env:ProgramData\Microsoft OneDrive" -Recurse -Force -ErrorAction Ignore
+				Remove-Item -Path $env:SystemDrive\OneDriveTemp -Recurse -Force -ErrorAction Ignore
+				Unregister-ScheduledTask -TaskName *OneDrive* -Confirm:$false
+
+				# Getting the OneDrive folder path
+				# Получаем путь до папки OneDrive
+				$OneDriveFolder = Split-Path -Path (Split-Path -Path $OneDriveSetup[0] -Parent)
+
+				# Save all opened folders in order to restore them after File Explorer restarting
+				# Сохранить все открытые папки, чтобы восстановить их после перезапуска проводника
+				Clear-Variable -Name OpenedFolders -Force -ErrorAction Ignore
+				$OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
+
+				# Terminate File Explorer process
+				# Завершить процесс проводника
+				TASKKILL /F /IM explorer.exe
+
+				# Attempt to unregister FileSyncShell64.dll and remove
+				# Попытка разрегистрировать FileSyncShell64.dll и удалить
+				$FileSyncShell64dlls = Get-ChildItem -Path "$OneDriveFolder\*\amd64\FileSyncShell64.dll" -Force
+				foreach ($FileSyncShell64dll in $FileSyncShell64dlls.FullName)
+				{
+					Start-Process -FilePath regsvr32.exe -ArgumentList "/u /s $FileSyncShell64dll" -Wait
+					Remove-Item -Path $FileSyncShell64dll -Force -ErrorAction Ignore
+
+					if (Test-Path -Path $FileSyncShell64dll)
+					{
+						Write-Error -Message ($Localization.OneDriveFileSyncShell64dllBlocked -f $FileSyncShell64dll) -ErrorAction SilentlyContinue
+					}
+				}
+
+				# Restoring closed folders
+				# Восстановляем закрытые папки
+				Start-Process -FilePath explorer
+				foreach ($OpenedFolder in $OpenedFolders)
+				{
+					if (Test-Path -Path $OpenedFolder)
+					{
+						Invoke-Item -Path $OpenedFolder
+					}
+				}
+
+				Remove-Item -Path $OneDriveFolder -Recurse -Force -ErrorAction Ignore
+				Remove-Item -Path $env:LOCALAPPDATA\OneDrive -Recurse -Force -ErrorAction Ignore
+				Remove-Item -Path $env:LOCALAPPDATA\Microsoft\OneDrive -Recurse -Force -ErrorAction Ignore
+				Remove-Item -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\OneDrive.lnk" -Force -ErrorAction Ignore
 			}
 		}
+		"Install"
+		{
+			$OneDrive = Get-Package -Name "Microsoft OneDrive" -ProviderName Programs -Force -ErrorAction Ignore
+			if (-not $OneDrive)
+			{
+				if (Test-Path -Path $env:SystemRoot\SysWOW64\OneDriveSetup.exe)
+				{
+					Write-Verbose -Message $Localization.OneDriveInstalling -Verbose
+					Start-Process -FilePath $env:SystemRoot\SysWOW64\OneDriveSetup.exe
+				}
+				else
+				{
+					# Downloading the latest OneDrive
+					# Скачивание последней версии OneDrive
+					try
+					{
+						if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
+						{
+							Write-Verbose -Message $Localization.OneDriveDownloading -Verbose
 
-		Get-ScheduledTask -TaskName "Onedrive* Update*" | Enable-ScheduledTask
+							[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+							$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+							$Parameters = @{
+								Uri = "https://go.microsoft.com/fwlink/p/?LinkID=2121808"
+								OutFile = "$DownloadsFolder\OneDriveSetup.exe"
+								Verbose = [switch]::Present
+							}
+							Invoke-WebRequest @Parameters
+
+							Start-Process -FilePath "$DownloadsFolder\OneDriveSetup.exe"
+						}
+					}
+					catch [System.Net.WebException]
+					{
+						Write-Warning -Message $Localization.NoInternetConnection
+						Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+						return
+					}
+				}
+
+				Get-ScheduledTask -TaskName "Onedrive* Update*" | Enable-ScheduledTask
+			}
+		}
 	}
 }
 #endregion OneDrive
@@ -4302,11 +4331,13 @@ function WindowsManageDefaultPrinter
 	WindowsFeatures -Enable
 
 	.NOTES
-	A pop-up dialog box enables the user to select features to remove
+	A pop-up dialog box enables the user to select features
 	Current user only
 
-	Используется всплывающее диалоговое окно, позволяющее пользователю отметить компоненты на удаление
+	Используется всплывающее диалоговое окно, позволяющее пользователю отмечать компоненты
 	Только для текущего пользователя
+
+	Made by https://github.com/oz-zo, iNNOKENTIY21
 #>
 function WindowsFeatures
 {
@@ -4330,13 +4361,13 @@ function WindowsFeatures
 	Add-Type -AssemblyName PresentationCore, PresentationFramework
 
 	#region Variables
-	# Initialize an array list to store the Windows Features items to remove
-	# Создать массив имен компонентов Windows для удаления
-	$Features = New-Object -TypeName System.Collections.ArrayList($null)
+	# Initialize an array list to store the selected Windows features
+	# Создать массив для выбранных компонентов Windows
+	$SelectedFeatures = New-Object -TypeName System.Collections.ArrayList($null)
 
-	# The following Windows Features are recommended the user to remove
-	# Следующие компоненты Windows рекомендуются к удалению
-	$WindowsFeatures = @(
+	# The following FODv2 items will have their checkboxes checked
+	# Следующие дополнительные компоненты будут иметь чекбоксы отмеченными
+	[string[]]$CheckedFeatures = @(
 		# Legacy Components
 		# Компоненты прежних версий
 		"LegacyComponents",
@@ -4411,7 +4442,7 @@ function WindowsFeatures
 	$Reader = (New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML)
 	$Form = [Windows.Markup.XamlReader]::Load($Reader)
 	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
-		Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name) -Scope Global
+		Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name)
 	}
 
 	#region Functions
@@ -4428,16 +4459,17 @@ function WindowsFeatures
 			$CheckBox
 		)
 
-		$Feature = $CheckBox.Parent.Children[1].Text
+		$Feature = $Features | Where-Object -FilterScript {$_.DisplayName -eq $CheckBox.Parent.Children[1].Text}
+
 		if ($CheckBox.IsChecked)
 		{
-			[void]$Features.Add($Feature)
+			[void]$SelectedFeatures.Add($Feature)
 		}
 		else
 		{
-			[void]$Features.Remove($Feature)
+			[void]$SelectedFeatures.Remove($Feature)
 		}
-		if ($Features.Count -gt 0)
+		if ($SelectedFeatures.Count -gt 0)
 		{
 			$Button.IsEnabled = $true
 		}
@@ -4449,14 +4481,22 @@ function WindowsFeatures
 
 	function DisableButton
 	{
+		Write-Verbose -Message $Localization.Patient -Verbose
+
 		[void]$Window.Close()
-		Disable-WindowsOptionalFeature -Online -FeatureName $Features -NoRestart
+
+		$SelectedFeatures | ForEach-Object -Process {Write-Verbose $_.DisplayName -Verbose}
+		$SelectedFeatures | Disable-WindowsOptionalFeature -Online -NoRestart
 	}
 
 	function EnableButton
 	{
+		Write-Verbose -Message $Localization.Patient -Verbose
+
 		[void]$Window.Close()
-		Enable-WindowsOptionalFeature -Online -FeatureName $Features -NoRestart
+
+		$SelectedFeatures | ForEach-Object -Process {Write-Verbose -Message $_.DisplayName -Verbose}
+		$SelectedFeatures | Enable-WindowsOptionalFeature -Online -NoRestart
 	}
 
 	function Add-FeatureControl
@@ -4469,30 +4509,32 @@ function WindowsFeatures
 				ValueFromPipeline = $true
 			)]
 			[ValidateNotNull()]
-			[string]
 			$Feature
 		)
 
-		$CheckBox = New-Object -TypeName System.Windows.Controls.CheckBox
-		$CheckBox.Add_Click({Get-CheckboxClicked -CheckBox $_.Source})
-
-		$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
-		$TextBlock.Text = $Feature
-
-		$StackPanel = New-Object -TypeName System.Windows.Controls.StackPanel
-		[void]$StackPanel.Children.Add($CheckBox)
-		[void]$StackPanel.Children.Add($TextBlock)
-
-		[void]$PanelContainer.Children.Add($StackPanel)
-
-		$CheckBox.IsChecked = $false
-
-		# If feature checked, add to the array list to remove
-		# Если компонент выделен, то добавить в массив для удаления
-		if ($WindowsFeatures | Where-Object -FilterScript {$Feature -like $_})
+		process
 		{
+			$CheckBox = New-Object -TypeName System.Windows.Controls.CheckBox
+			$CheckBox.Add_Click({Get-CheckboxClicked -CheckBox $_.Source})
+			$CheckBox.ToolTip = $Feature.Description
+
+			$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
+			$TextBlock.Text = $Feature.DisplayName
+			$TextBlock.ToolTip = $Feature.Description
+
+			$StackPanel = New-Object -TypeName System.Windows.Controls.StackPanel
+			[void]$StackPanel.Children.Add($CheckBox)
+			[void]$StackPanel.Children.Add($TextBlock)
+			[void]$PanelContainer.Children.Add($StackPanel)
+
 			$CheckBox.IsChecked = $true
-			[void]$Features.Add($Feature)
+
+			# If feature checked add to the array list
+			# Если компонент выделен, то добавить в массив
+			if ($CheckBox.IsChecked)
+			{
+				[void]$SelectedFeatures.Add($Feature)
+			}
 		}
 	}
 	#endregion Functions
@@ -4501,63 +4543,40 @@ function WindowsFeatures
 	{
 		"Enable"
 		{
-			#region Events Handlers
-			$OptionalFeatures = New-Object -TypeName System.Collections.ArrayList($null)
-			# Window Loaded Event
-			$Window.Add_Loaded({
-				$OFS = "|"
-				$OptionalFeatures = Get-WindowsOptionalFeature -Online | Where-Object -FilterScript {($_.State -eq "Disabled" -or $_.State -eq "DisablePending") -and ($_.FeatureName -in $WindowsFeatures)}
-				if ($OptionalFeatures.Count -gt 0)
-				{
-					$OptionalFeatures | ForEach-Object -Process {
-						Add-FeatureControl -Feature $_.FeatureName
-					}
 
-					$Button.Content = $Localization.Enable
-				}
-				else
-				{
-					Write-Verbose -Message $Localization.NoData -Verbose
-					$Form.Close()
-				}
-				$OFS = " "
-			})
-
-			# Button Click Event
-			$Button.Add_Click({EnableButton})
-			#endregion Events Handlers
+			$State = @("Disabled", "DisablePending")
+			$ButtonContent = $Localization.Enable
+			$ButtonAdd_Click = {EnableButton}
 		}
 		"Disable"
 		{
-			#region Events Handlers
-			$OptionalFeatures = New-Object -TypeName System.Collections.ArrayList($null)
-			# Window Loaded Event
-			$Window.Add_Loaded({
-				$OFS = "|"
-				$OptionalFeatures = Get-WindowsOptionalFeature -Online | Where-Object -FilterScript {($_.State -eq "Enabled" -or $_.State -eq "EnablePending") -and ($_.FeatureName -in $WindowsFeatures)}
-				if ($OptionalFeatures.Count -gt 0)
-				{
-					$OptionalFeatures | ForEach-Object -Process {
-						Add-FeatureControl -Feature $_.FeatureName
-					}
-
-					$Button.Content = $Localization.Disable
-				}
-				else
-				{
-					Write-Verbose -Message $Localization.NoData -Verbose
-					$Form.Close()
-				}
-				$OFS = " "
-			})
-
-			# Button Click Event
-			$Button.Add_Click({DisableButton})
-			#endregion Events Handlers
+			$State = @("Enabled", "EnablePending")
+			$ButtonContent = $Localization.Disable
+			$ButtonAdd_Click = {DisableButton}
 		}
 	}
 
+	Write-Verbose -Message $Localization.Patient -Verbose
+
+	# Получаем общий список дополнительных компонентов, согласно условиям
+	# Getting a list of features according to the conditions
+	$OFS = "|"
+	$Features = Get-WindowsOptionalFeature -Online | Where-Object -FilterScript {
+		($_.State -in $State) -and ($_.FeatureName -cmatch $CheckedFeatures)
+	} | ForEach-Object -Process {Get-WindowsOptionalFeature -FeatureName $_.FeatureName -Online}
+	$OFS = " "
+
+	if (-not ($Features))
+	{
+		Write-Verbose -Message $Localization.NoData -Verbose
+		return
+	}
+
 	Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
+
+	$Window.Add_Loaded({$Features | Add-FeatureControl})
+	$Button.Content = $ButtonContent
+	$Button.Add_Click({& $ButtonAdd_Click})
 
 	$Window.Title = $Localization.WindowsFeaturesWindowTitle
 	$Form.ShowDialog() | Out-Null
@@ -4565,22 +4584,22 @@ function WindowsFeatures
 
 <#
 	.SYNOPSIS
-	Disable/enable Features On Demand v2 (FODv2) capabilities
-	Отключить/включить компоненты "Функции по требованию" (FODv2)
+	Uninstall/install Features On Demand v2 (FODv2) capabilities
+	Удалить/установить компоненты "Функции по требованию" (FODv2)
 
-	.PARAMETER Disable
-	Disable Features On Demand v2 (FODv2) capabilities
-	Отключить компоненты "Функции по требованию" (FODv2)
+	.PARAMETER Uninstall
+	Uninstall Features On Demand v2 (FODv2) capabilities
+	Удалить компоненты "Функции по требованию" (FODv2)
 
-	.PARAMETER Enable
-	Enable Features On Demand v2 (FODv2) capabilities
-	Включить компоненты "Функции по требованию" (FODv2)
-
-	.EXAMPLE
-	WindowsCapabilities -Disable
+	.PARAMETER Install
+	Install Features On Demand v2 (FODv2) capabilities
+	Установить компоненты "Функции по требованию" (FODv2)
 
 	.EXAMPLE
-	WindowsCapabilities -Enable
+	WindowsCapabilities -Uninstall
+
+	.EXAMPLE
+	WindowsCapabilities -Install
 
 	.NOTES
 	A pop-up dialog box enables the user to select features
@@ -4589,7 +4608,7 @@ function WindowsFeatures
 	Используется всплывающее диалоговое окно, позволяющее пользователю отмечать компоненты
 	Только для текущего пользователя
 
-	Made by https://github.com/oz-zo
+	Made by https://github.com/oz-zo, iNNOKENTIY21
 #>
 function WindowsCapabilities
 {
@@ -4597,29 +4616,29 @@ function WindowsCapabilities
 	(
 		[Parameter(
 			Mandatory = $true,
-			ParameterSetName = "Enable"
+			ParameterSetName = "Install"
 		)]
 		[switch]
-		$Enable,
+		$Install,
 
 		[Parameter(
 			Mandatory = $true,
-			ParameterSetName = "Disable"
+			ParameterSetName = "Uninstall"
 		)]
 		[switch]
-		$Disable
+		$Uninstall
 	)
 
 	Add-Type -AssemblyName PresentationCore, PresentationFramework
 
 	#region Variables
-	# Initialize an array list to store the FODv2 items to disable
-	# Создать массив имен дополнительных компонентов для отключения
-	$Capabilities = New-Object -TypeName System.Collections.ArrayList($null)
+	# Initialize an array list to store the selected FODv2 items
+	# Создать массив дополнительных компонентов для выбранных элементов
+	$SelectedCapabilities = New-Object -TypeName System.Collections.ArrayList($null)
 
 	# The following FODv2 items will have their checkboxes checked
 	# Следующие дополнительные компоненты будут иметь чекбоксы отмеченными
-	$CheckedCapabilities = @(
+	[string[]]$CheckedCapabilities = @(
 		# Steps Recorder
 		# Средство записи действий
 		"App.StepsRecorder*",
@@ -4632,16 +4651,12 @@ function WindowsCapabilities
 		"Microsoft.Windows.MSPaint*",
 
 		# WordPad
-		"Microsoft.Windows.WordPad*",
-
-		# Integrated faxing and scanning application for Windows
-		# Факсы и сканирование Windows
-		"Print.Fax.Scan*"
+		"Microsoft.Windows.WordPad*"
 	)
 
 	# The following FODv2 items will have their checkboxes unchecked
 	# Следующие дополнительные компоненты будут иметь чекбоксы неотмеченными
-	$UncheckedCapabilities = @(
+	[string[]]$UncheckedCapabilities = @(
 		# Internet Explorer 11
 		"Browser.InternetExplorer*",
 
@@ -4658,14 +4673,14 @@ function WindowsCapabilities
 		#>
 		"Media.WindowsMediaPlayer*",
 
-		# Language components
-		# Языковые компоненты
+		# OpenSSH Client
+		# Клиент OpenSSH
 		"OpenSSH.Client*"
 	)
 
 	# The following FODv2 items will be excluded from the display
 	# Следующие дополнительные компоненты будут исключены из отображения
-	$ExcludedCapabilities = @(
+	[string[]]$ExcludedCapabilities = @(
 		# The DirectX Database to configure and optimize apps when multiple Graphics Adapters are present
 		# База данных DirectX для настройки и оптимизации приложений при наличии нескольких графических адаптеров
 		"DirectX.Configuration.Database*",
@@ -4743,10 +4758,24 @@ function WindowsCapabilities
 	$Reader = (New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML)
 	$Form = [Windows.Markup.XamlReader]::Load($Reader)
 	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
-		Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name) -Scope Global
+		Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name)
 	}
 
 	#region Functions
+	function InternetConnectionStatus
+	{
+		try
+		{
+			(Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription
+		}
+		catch [System.Net.WebException]
+		{
+			Write-Warning -Message $Localization.NoInternetConnection
+			Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+			return
+		}
+	}
+
 	function Get-CheckboxClicked
 	{
 		[CmdletBinding()]
@@ -4760,16 +4789,18 @@ function WindowsCapabilities
 			$CheckBox
 		)
 
-		$Capability = $CheckBox.Parent.Children[1].Text
+		$Capability = $Capabilities | Where-Object -FilterScript {$_.DisplayName -eq $CheckBox.Parent.Children[1].Text}
+
 		if ($CheckBox.IsChecked)
 		{
-			[void]$Capabilities.Add($Capability)
+			[void]$SelectedCapabilities.Add($Capability)
 		}
 		else
 		{
-			[void]$Capabilities.Remove($Capability)
+			[void]$SelectedCapabilities.Remove($Capability)
 		}
-		if ($Capabilities.Count -gt 0)
+
+		if ($SelectedCapabilities.Count -gt 0)
 		{
 			$Button.IsEnabled = $true
 		}
@@ -4779,27 +4810,31 @@ function WindowsCapabilities
 		}
 	}
 
-	function DisableButton
+	function UninstallButton
 	{
-		[void]$Window.Close()
-		$OFS = "|"
-		Get-WindowsCapability -Online | Where-Object -FilterScript {$_.Name -cmatch $Capabilities} | Remove-WindowsCapability -Online
-		$OFS = " "
+		Write-Verbose -Message $Localization.Patient -Verbose
 
-		if (([string]$Capabilities -cmatch "Print.Fax.Scan*") -or ([string]$Capabilities -cmatch "Browser.InternetExplorer*"))
+		[void]$Window.Close()
+
+		$SelectedCapabilities | ForEach-Object -Process {Write-Verbose -Message $_.DisplayName -Verbose}
+		$SelectedCapabilities | Where-Object -FilterScript {$_.Name -in (Get-WindowsCapability -Online).Name} | Remove-WindowsCapability -Online
+
+		if ([string]$SelectedCapabilities.Name -cmatch "Browser.InternetExplorer*")
 		{
 			Write-Warning -Message $Localization.RestartWarning
 		}
 	}
 
-	function EnableButton
+	function InstallButton
 	{
-		[void]$Window.Close()
-		$OFS = "|"
-		Get-WindowsCapability -Online | Where-Object -FilterScript {$_.Name -cmatch $Capabilities} | Add-WindowsCapability -Online
-		$OFS = " "
+		Write-Verbose -Message $Localization.Patient -Verbose
 
-		if (([string]$Capabilities -cmatch "Print.Fax.Scan*") -or ([string]$Capabilities -cmatch "Browser.InternetExplorer*"))
+		[void]$Window.Close()
+
+		$SelectedCapabilities | ForEach-Object -Process {Write-Verbose -Message $_.DisplayName -Verbose}
+		$SelectedCapabilities | Where-Object -FilterScript {$_.Name -in ((Get-WindowsCapability -Online).Name)} | Add-WindowsCapability -Online
+
+		if ([string]$SelectedCapabilities.Name -cmatch "Browser.InternetExplorer*")
 		{
 			Write-Warning -Message $Localization.RestartWarning
 		}
@@ -4815,110 +4850,80 @@ function WindowsCapabilities
 				ValueFromPipeline = $true
 			)]
 			[ValidateNotNull()]
-			[string]
 			$Capability
 		)
 
-		$CheckBox = New-Object -TypeName System.Windows.Controls.CheckBox
-		$CheckBox.Add_Click({Get-CheckboxClicked -CheckBox $_.Source})
-
-		$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
-		$TextBlock.Text = $Capability
-
-		$StackPanel = New-Object -TypeName System.Windows.Controls.StackPanel
-		[void]$StackPanel.Children.Add($CheckBox)
-		[void]$StackPanel.Children.Add($TextBlock)
-
-		[void]$PanelContainer.Children.Add($StackPanel)
-
-		# If capability checked, add to the array list to remove
-		# Если компонент выделен, то добавить в массив для удаления
-		if ($UnCheckedCapabilities | Where-Object -FilterScript {$Capability -like $_})
+		process
 		{
-			$CheckBox.IsChecked = $false
-			# Exit function, item is not checked
-			# Выход из функции, если элемент не выделен
-			return
-		}
+			$CheckBox = New-Object -TypeName System.Windows.Controls.CheckBox
+			$CheckBox.Add_Click({Get-CheckboxClicked -CheckBox $_.Source})
+			$CheckBox.ToolTip = $Capability.Description
 
-		# If capability checked, add to the array list to remove
-		# Если компонент выделен, то добавить в массив для удаления
-		[void]$Capabilities.Add($Capability)
+			$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
+			$TextBlock.Text = $Capability.DisplayName
+			$TextBlock.ToolTip = $Capability.Description
+
+			$StackPanel = New-Object -TypeName System.Windows.Controls.StackPanel
+			[void]$StackPanel.Children.Add($CheckBox)
+			[void]$StackPanel.Children.Add($TextBlock)
+			[void]$PanelContainer.Children.Add($StackPanel)
+
+			# If capability checked add to the array list
+			# Если компонент выделен, то добавить в массив
+			if ($UnCheckedCapabilities | Where-Object -FilterScript {$Capability.Name -like $_})
+			{
+				$CheckBox.IsChecked = $false
+				# Exit function if item is not checked
+				# Выход из функции, если элемент не выделен
+				return
+			}
+
+			# If capability checked add to the array list
+			# Если компонент выделен, то добавить в массив
+			[void]$SelectedCapabilities.Add($Capability)
+		}
 	}
 	#endregion Functions
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
-		"Enable"
+		"Install"
 		{
-			try
-			{
-				(Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription
-			}
-			catch [System.Net.WebException]
-			{
-				Write-Warning -Message $Localization.NoInternetConnection
-				Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
-				return
-			}
+			InternetConnectionStatus
 
-			#region Events Handlers
-			$OptionalCapabilities = New-Object -TypeName System.Collections.ArrayList($null)
-			# Window Loaded Event
-			$Window.Add_Loaded({
-				$OFS = "|"
-				$OptionalCapabilities = Get-WindowsCapability -Online | Where-Object -FilterScript {($_.State -eq "NotPresent") -and ($_.Name -cmatch $CheckedCapabilities) -($_.Name -cmatch $UncheckedCapabilities) -and ($_.Name -cnotmatch $ExcludedCapabilities)}
-				if ($OptionalCapabilities.Count -gt 0)
-				{
-					$OptionalCapabilities | ForEach-Object -Process {
-						Add-CapabilityControl -Capability $_.Name
-					}
-
-					$Button.Content = $Localization.Enable
-				}
-				else
-				{
-					Write-Verbose -Message $Localization.NoData -Verbose
-					$Form.Close()
-				}
-				$OFS = " "
-			})
-
-			# Button Click Event
-			$Button.Add_Click({EnableButton})
-			#endregion Events Handlers
+			$State = "NotPresent"
+			$ButtonContent = $Localization.Install
+			$ButtonAdd_Click = {InstallButton}
 		}
-		"Disable"
+		"Uninstall"
 		{
-			#region Events Handlers
-			$OptionalCapabilities = New-Object -TypeName System.Collections.ArrayList($null)
-			# Window Loaded Event
-			$Window.Add_Loaded({
-				$OFS = "|"
-				$OptionalCapabilities = Get-WindowsCapability -Online | Where-Object -FilterScript {($_.State -eq "Installed") -and ($_.Name -cnotmatch $ExcludedCapabilities)}
-				if ($OptionalCapabilities.Count -gt 0)
-				{
-					$OptionalCapabilities | ForEach-Object -Process {
-						Add-CapabilityControl -Capability $_.Name
-					}
-
-					$Button.Content = $Localization.Disable
-				}
-				else
-				{
-					Write-Verbose -Message $Localization.NoData -Verbose
-					$Form.Close()
-				}
-				$OFS = " "
-			})
-
-			# Button Click Event
-			$Button.Add_Click({DisableButton})
-			#endregion Events Handlers
+			$State = "Installed"
+			$ButtonContent = $Localization.Uninstall
+			$ButtonAdd_Click = {UninstallButton}
 		}
 	}
 
+	Write-Verbose -Message $Localization.Patient -Verbose
+
+	# Получаем общий список дополнительных компонентов, согласно условиям
+	# Getting a list of capabilities according to the conditions
+	$OFS = "|"
+	$Capabilities = Get-WindowsCapability -Online | Where-Object -FilterScript {
+		($_.State -eq $State) -and (($_.Name -cmatch $UncheckedCapabilities) -or ($_.Name -cmatch $CheckedCapabilities) -and ($_.Name -cnotmatch $ExcludedCapabilities))
+	} | ForEach-Object -Process {Get-WindowsCapability -Name $_.Name -Online}
+	$OFS = " "
+
+	if (-not ($Capabilities))
+	{
+		Write-Verbose -Message $Localization.NoData -Verbose
+		return
+	}
+
 	Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
+
+	$Window.Add_Loaded({$Capabilities | Add-CapabilityControl})
+	$Button.Content = $ButtonContent
+	$Button.Add_Click({& $ButtonAdd_Click})
 
 	$Window.Title = $Localization.FODWindowTitle
 	$Form.ShowDialog() | Out-Null
@@ -6996,16 +7001,13 @@ function DeviceRestartAfterUpdate
 	Install/uninstall the Windows Subsystem for Linux (WSL)
 	Установить/удалить подсистему Windows для Linux (WSL)
 
-	https://github.com/farag2/Windows-10-Sophia-Script/issues/43
-	https://github.com/microsoft/WSL/issues/5437
-
 	.PARAMETER Enable
-	Enable restarting this device as soon as possible when a restart is required to install an update
-	Включить перезапуск этого устройства как можно быстрее, если для установки обновления требуется перезагрузка
+	Install the Windows Subsystem for Linux (WSL)
+	Установить подсистему Windows для Linux (WSL)
 
 	.PARAMETER Disable
-	Disable restarting this device as soon as possible when a restart is required to install an update
-	Отключить перезапуск этого устройства как можно быстрее, если для установки обновления требуется перезагрузка
+	Uninstall the Windows Subsystem for Linux (WSL)
+	Удалить подсистему Windows для Linux (WSL)
 
 	.EXAMPLE
 	WSL -Enable
@@ -7056,6 +7058,8 @@ function WSL
 
 			Uninstall-Package -Name "Windows Subsystem for Linux Update" -Force -ErrorAction SilentlyContinue
 			Remove-Item -Path "$env:USERPROFILE\.wslconfig" -Force -ErrorAction Ignore
+
+			Write-Warning -Message $Localization.RestartWarning
 		}
 	}
 }
@@ -7065,168 +7069,64 @@ function WSL
 	Download, install the Linux kernel update package and set WSL 2 as the default version when installing a new Linux distribution
 	Скачать, установить пакет обновления ядра Linux и установить WSL 2 как версию по умолчанию при установке нового дистрибутива Linux
 
-	.PARAMETER Enable
-	Enable restarting this device as soon as possible when a restart is required to install an update
-	Включить перезапуск этого устройства как можно быстрее, если для установки обновления требуется перезагрузка
-
-	.PARAMETER Disable
-	Disable restarting this device as soon as possible when a restart is required to install an update
-	Отключить перезапуск этого устройства как можно быстрее, если для установки обновления требуется перезагрузка
-
 	.NOTES
-	Run the function only after WSL installed and PC restart
-	Выполните функцию только после установки WSL и перезагрузки ПК
-
-	https://github.com/microsoft/WSL/issues/5437
-	https://github.com/farag2/Windows-10-Sophia-Script/issues/43
+	To receive kernel updates, enable the Windows Update setting: "Receive updates for other Microsoft products when you update Windows"
+	Чтобы получать обновления ядра, включите параметр Центра обновления Windows: "Получение обновлений для других продуктов Майкрософт при обновлении Windows"
 #>
 function EnableWSL2
 {
-	if ((Get-Package -Name "Windows Subsystem for Linux Update" -ProviderName msi -Force -ErrorAction Ignore).Status -ne "Installed")
-	{
-		try
-		{
-			if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
-			{
-				Write-Verbose -Message $Localization.WSLUpdateDownloading -Verbose
+	$WSLFeatures = @(
+		# Windows Subsystem for Linux
+		# Подсистема Windows для Linux
+		"Microsoft-Windows-Subsystem-Linux",
 
-				[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-				$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-				$Parameters = @{
-					Uri = "https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi"
-					OutFile = "$DownloadsFolder\wsl_update_x64.msi"
-					Verbose = [switch]::Present
-				}
-				Invoke-WebRequest @Parameters
-
-				Write-Verbose -Message $Localization.WSLUpdateInstalling -Verbose
-				Start-Process -FilePath "$DownloadsFolder\wsl_update_x64.msi" -ArgumentList "/passive" -Wait
-
-				Remove-Item -Path "$DownloadsFolder\wsl_update_x64.msi" -Force
-
-				Write-Warning -Message $Localization.RestartWarning
-			}
-		}
-		catch [System.Net.WebException]
-		{
-			Write-Warning -Message $Localization.NoInternetConnection
-			Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
-			return
-		}
-	}
-
-	<#
-		Set WSL 2 as the default architecture when installing a new Linux distribution
-		To receive kernel updates, enable the Windows Update setting: "Receive updates for other Microsoft products when you update Windows"
-
-		Установить WSL 2 как архитектуру по умолчанию при установке нового дистрибутива Linux
-		Чтобы получать обновления ядра, включите параметр Центра обновления Windows: "Получение обновлений для других продуктов Майкрософт при обновлении Windows"
-	#>
-	if ((Get-Package -Name "Windows Subsystem for Linux Update" -ProviderName msi -Force -ErrorAction Ignore).Status -eq "Installed")
-	{
-		wsl --set-default-version 2
-	}
-}
-
-<#
-	.SYNOPSIS
-	Disable/enable swap file in WSL
-	Отключить/включить файл подкачки в WSL
-
-	Use only if the %TEMP% environment variable path changed
-	Используйте только в случае, если изменился путь переменной среды для %TEMP%
-
-	.PARAMETER Enable
-	Enable swap file in WSL
-	Включить файл подкачки в WSL
-
-	.PARAMETER Disable
-	Disable swap file in WSL
-	Отключить файл подкачки в WSL
-
-	.EXAMPLE
-	WSLSwap -Enable
-
-	.EXAMPLE
-	WSLSwap -Disable
-
-	.NOTES
-	https://github.com/farag2/Windows-10-Sophia-Script/issues/43
-	https://github.com/microsoft/WSL/issues/5437
-#>
-function WSLSwap
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable
+		# Virtual Machine Platform
+		# Поддержка платформы для виртуальных машин
+		"VirtualMachinePlatform"
 	)
+	$WSLFeaturesDisabled = Get-WindowsOptionalFeature -Online | Where-Object {($_.FeatureName -in $WSLFeatures) -and ($_.State -eq "Disabled")}
 
-	switch ($PSCmdlet.ParameterSetName)
+	if ($null -eq $WSLFeaturesDisabled)
 	{
-		"Enable"
+		if ((Get-Package -Name "Windows Subsystem for Linux Update" -ProviderName msi -Force -ErrorAction Ignore).Status -ne "Installed")
 		{
-			if (Test-Path -Path "$env:USERPROFILE\.wslconfig")
+			# Downloading and installing the Linux kernel update package
+			# Скачивание и установка пакета обновления ядра Linux
+			try
 			{
-				$String = Get-Content -Path "$env:USERPROFILE\.wslconfig" | Select-String -Pattern "swap=" -SimpleMatch
-				if ($String)
+				if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
 				{
-					(Get-Content -Path "$env:USERPROFILE\.wslconfig").Replace("swap=0", "swap=1") | Set-Content -Path "$env:USERPROFILE\.wslconfig" -Force
-				}
-				else
-				{
-					Add-Content -Path "$env:USERPROFILE\.wslconfig" -Value "`r`nswap=1" -Force
+					Write-Verbose -Message $Localization.WSLUpdateDownloading -Verbose
+
+					[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+					$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+					$Parameters = @{
+						Uri = "https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi"
+						OutFile = "$DownloadsFolder\wsl_update_x64.msi"
+						Verbose = [switch]::Present
+					}
+					Invoke-WebRequest @Parameters
+
+					Write-Verbose -Message $Localization.WSLUpdateInstalling -Verbose
+					Start-Process -FilePath "$DownloadsFolder\wsl_update_x64.msi" -ArgumentList "/passive" -Wait
+
+					Remove-Item -Path "$DownloadsFolder\wsl_update_x64.msi" -Force
+
+					Write-Warning -Message $Localization.RestartWarning
 				}
 			}
-			else
+			catch [System.Net.WebException]
 			{
-				$WSLConfig = @"
-[wsl2]
-swap=1
-"@
-				# Saving .wslconfig in UTF-8 encoding
-				# Сохраняем .wslconfig в кодировке UTF-8
-				Set-Content -Path "$env:USERPROFILE\.wslconfig" -Value $WSLConfig -Force
+				Write-Warning -Message $Localization.NoInternetConnection
+				Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+				return
 			}
 		}
-		"Disable"
+		else
 		{
-			if ((Get-ItemPropertyValue -Path HKCU:\Environment -Name TEMP) -ne "$env:LOCALAPPDATA\Temp")
-			{
-				if (Test-Path -Path "$env:USERPROFILE\.wslconfig")
-				{
-					$String = Get-Content -Path "$env:USERPROFILE\.wslconfig" | Select-String -Pattern "swap=" -SimpleMatch
-					if ($String)
-					{
-						(Get-Content -Path "$env:USERPROFILE\.wslconfig").Replace("swap=1", "swap=0") | Set-Content -Path "$env:USERPROFILE\.wslconfig" -Force
-					}
-					else
-					{
-						Add-Content -Path "$env:USERPROFILE\.wslconfig" -Value "`r`nswap=0" -Force
-					}
-				}
-				else
-				{
-					$WSLConfig = @"
-[wsl2]
-swap=0
-"@
-					# Saving .wslconfig in UTF-8 encoding
-					# Сохраняем .wslconfig в кодировке UTF-8
-					Set-Content -Path "$env:USERPROFILE\.wslconfig" -Value $WSLConfig -Force
-				}
-			}
+			# Set WSL 2 as the default architecture when installing a new Linux distribution
+			# Установить WSL 2 как архитектуру по умолчанию при установке нового дистрибутива Linux
+			wsl --set-default-version 2
 		}
 	}
 }
@@ -7435,49 +7335,15 @@ function UnpinAllStartTiles
 }
 
 <#
-	Test if syspin.exe is in a folder. Unless download it
-	Проверить, находится ли файл syspin.exe в папке. Иначе скачать его
+	.SYNOPSIS
+	Extract string from shell32.dll using its' number
+	Извлечь строку из shell32.dll, зная ее номер
 
-	http://www.technosys.net/products/utils/pintotaskbar
-	SHA256: 07D6C3A19A8E3E243E9545A41DD30A9EE1E9AD79CDD6D446C229D689E5AB574A
+	.EXAMPLE
+	[WinAPI.GetStr]::GetString(12712)
 #>
-function syspin
+function GetLocalizedString
 {
-	if (Test-Path -Path $PSScriptRoot\syspin.exe)
-	{
-		$Script:syspin = $true
-	}
-	else
-	{
-		try
-		{
-			# Downloading syspin
-			# Скачиваем syspin
-			if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
-			{
-				Write-Verbose -Message $Localization.syspinDownloading -Verbose
-
-				[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-				$Parameters = @{
-					Uri = "https://github.com/farag2/Windows-10-Sophia-Script/raw/master/Start%20menu%20pinning/syspin.exe"
-					OutFile = "$PSScriptRoot\syspin.exe"
-					Verbose = [switch]::Present
-				}
-				Invoke-WebRequest @Parameters
-
-				$Script:syspin = $true
-			}
-		}
-		catch [System.Net.WebException]
-		{
-			Write-Warning -Message $Localization.NoInternetConnection
-			Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
-			return
-		}
-	}
-
-	# Extract string from shell32.dll using its' number
-	# Извлечь строку из shell32.dll, зная ее номер
 	$Signature = @{
 		Namespace = "WinAPI"
 		Name = "GetStr"
@@ -7503,93 +7369,105 @@ public static string GetString(uint strId)
 	}
 }
 
-# Pin the "Control Panel" shortcut to Start within syspin
-# Закрепить ярлык "Панели управления" на начальном экране с помощью syspin
+<#
+	.SYNOPSIS
+	Pin the "Control Panel" shortcut to Start within syspin
+	Закрепить ярлык "Панели управления" на начальном экране с помощью syspin
+
+	.EXAMPLE
+	PinControlPanel
+#>
 function PinControlPanel
 {
-	if ($Script:syspin)
+	# Extract the "Control Panel" string from shell32.dll
+	# Извлечь строку "Панель управления" из shell32.dll
+	GetLocalizedString
+	$ControlPanel = [WinAPI.GetStr]::GetString(12712)
+
+	Write-Verbose -Message ($Localization.ShortcutPinning -f $ControlPanel) -Verbose
+
+	# Check whether the Control Panel shortcut was ever pinned
+	# Проверка: закреплялся ли когда-нибудь ярлык панели управления
+	if (Test-Path -Path "$env:APPDATA\Microsoft\Windows\Start menu\Programs\$ControlPanel.lnk")
 	{
-		# Extract the "Control Panel" string from shell32.dll
-		# Извлечь строку "Панель управления" из shell32.dll
-		$ControlPanel = [WinAPI.GetStr]::GetString(12712)
-
-		Write-Verbose -Message ($Localization.ShortcutPinning -f $ControlPanel) -Verbose
-
-		# Check whether the Control Panel shortcut was ever pinned
-		# Проверка: закреплялся ли когда-нибудь ярлык панели управления
-		if (Test-Path -Path "$env:APPDATA\Microsoft\Windows\Start menu\Programs\$ControlPanel.lnk")
-		{
-			$Arguments = @"
+		$Arguments = @"
 	"$env:APPDATA\Microsoft\Windows\Start menu\Programs\$ControlPanel.lnk" "51201"
 "@
-			Start-Process -FilePath $PSScriptRoot\syspin.exe -WindowStyle Hidden -ArgumentList $Arguments -Wait
-		}
-		else
-		{
-			# The "Pin" verb is not available on the control.exe file so the shortcut has to be created
-			# Глагол "Закрепить на начальном экране" недоступен для control.exe, поэтому необходимо создать ярлык
-			$Shell = New-Object -ComObject Wscript.Shell
-			$Shortcut = $Shell.CreateShortcut("$env:SystemRoot\System32\$ControlPanel.lnk")
-			$Shortcut.TargetPath = "control"
-			$Shortcut.Save()
-
-			$Arguments = @"
-	"$env:SystemRoot\System32\$ControlPanel.lnk" "51201"
-"@
-			Start-Process -FilePath $PSScriptRoot\syspin.exe -WindowStyle Hidden -ArgumentList $Arguments -Wait
-
-			Remove-Item -Path "$env:SystemRoot\System32\$ControlPanel.lnk" -Force -ErrorAction Ignore
-		}
+		Start-Process -FilePath $PSScriptRoot\syspin.exe -WindowStyle Hidden -ArgumentList $Arguments -Wait
 	}
-}
-
-# Pin the old-style "Devices and Printers" shortcut to Start within syspin
-# Закрепить ярлык старого формата "Устройства и принтеры" на начальном экране с помощью syspin
-function PinDevicesPrinters
-{
-	if ($Script:syspin)
+	else
 	{
-		# Extract the "Devices and Printers" string from shell32.dll
-		# Извлечь строку "Устройства и принтеры" из shell32.dll
-		$DevicesPrinters = [WinAPI.GetStr]::GetString(30493)
-
-		Write-Verbose -Message ($Localization.ShortcutPinning -f $DevicesPrinters) -Verbose
-
+		# The "Pin" verb is not available on the control.exe file so the shortcut has to be created
+		# Глагол "Закрепить на начальном экране" недоступен для control.exe, поэтому необходимо создать ярлык
 		$Shell = New-Object -ComObject Wscript.Shell
-		$Shortcut = $Shell.CreateShortcut("$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesPrinters.lnk")
+		$Shortcut = $Shell.CreateShortcut("$env:SystemRoot\System32\$ControlPanel.lnk")
 		$Shortcut.TargetPath = "control"
-		$Shortcut.Arguments = "printers"
-		$Shortcut.IconLocation = "$env:SystemRoot\system32\DeviceCenter.dll"
 		$Shortcut.Save()
 
-		# Pause for 3 sec, unless the "Devices and Printers" shortcut won't displayed in the Start menu
-		# Пауза на 3 с, иначе ярлык "Устройства и принтеры" не будет отображаться в меню "Пуск"
-		Start-Sleep -Seconds 3
-
 		$Arguments = @"
-	"$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesPrinters.lnk" "51201"
+	"$env:SystemRoot\System32\$ControlPanel.lnk" "51201"
 "@
 		Start-Process -FilePath $PSScriptRoot\syspin.exe -WindowStyle Hidden -ArgumentList $Arguments -Wait
+
+		Remove-Item -Path "$env:SystemRoot\System32\$ControlPanel.lnk" -Force -ErrorAction Ignore
 	}
 }
 
-# Pin the "Command Prompt" shortcut to Start within syspin
-# Закрепить ярлык "Командная строка" на начальном экране с помощью syspin
+<#
+	.SYNOPSIS
+	Pin the old-style "Devices and Printers" shortcut to Start within syspin
+	Закрепить ярлык старого формата "Устройства и принтеры" на начальном экране с помощью syspin
+
+	.EXAMPLE
+	PinDevicesPrinters
+#>
+function PinDevicesPrinters
+{
+	# Extract the "Devices and Printers" string from shell32.dll
+	# Извлечь строку "Устройства и принтеры" из shell32.dll
+	GetLocalizedString
+	$DevicesPrinters = [WinAPI.GetStr]::GetString(30493)
+
+	Write-Verbose -Message ($Localization.ShortcutPinning -f $DevicesPrinters) -Verbose
+
+	$Shell = New-Object -ComObject Wscript.Shell
+	$Shortcut = $Shell.CreateShortcut("$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesPrinters.lnk")
+	$Shortcut.TargetPath = "control"
+	$Shortcut.Arguments = "printers"
+	$Shortcut.IconLocation = "$env:SystemRoot\system32\DeviceCenter.dll"
+	$Shortcut.Save()
+
+	# Pause for 3 sec, unless the "Devices and Printers" shortcut won't displayed in the Start menu
+	# Пауза на 3 с, иначе ярлык "Устройства и принтеры" не будет отображаться в меню "Пуск"
+	Start-Sleep -Seconds 3
+
+	$Arguments = @"
+	"$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesPrinters.lnk" "51201"
+"@
+	Start-Process -FilePath $PSScriptRoot\syspin.exe -WindowStyle Hidden -ArgumentList $Arguments -Wait
+}
+
+<#
+	.SYNOPSIS
+	Pin the "Command Prompt" shortcut to Start within syspin
+	Закрепить ярлык "Командная строка" на начальном экране с помощью syspin
+
+	.EXAMPLE
+	PinCommandPrompt
+#>
 function PinCommandPrompt
 {
-	if ($Script:syspin)
-	{
-		# Extract the "Command Prompt" string from shell32.dll
-		# Извлечь строку "Командная строка" из shell32.dll
-		$CommandPrompt = [WinAPI.GetStr]::GetString(22022)
+	# Extract the "Command Prompt" string from shell32.dll
+	# Извлечь строку "Командная строка" из shell32.dll
+	GetLocalizedString
+	$CommandPrompt = [WinAPI.GetStr]::GetString(22022)
 
-		Write-Verbose -Message ($Localization.ShortcutPinning -f $CommandPrompt) -Verbose
+	Write-Verbose -Message ($Localization.ShortcutPinning -f $CommandPrompt) -Verbose
 
-		$Arguments = @"
+	$Arguments = @"
 	"$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" "51201"
 "@
-		Start-Process -FilePath $PSScriptRoot\syspin.exe -WindowStyle Hidden -ArgumentList $Arguments -Wait
-	}
+	Start-Process -FilePath $PSScriptRoot\syspin.exe -WindowStyle Hidden -ArgumentList $Arguments -Wait
 }
 #endregion Start menu
 
@@ -7623,10 +7501,6 @@ function UninstallUWPApps
 	Add-Type -AssemblyName PresentationCore, PresentationFramework
 
 	#region Variables
-	# ArrayList containing the UWP apps to remove
-	# Массив имен UWP-приложений для удаления
-	$AppxPackages = New-Object -TypeName System.Collections.ArrayList($null)
-
 	# List of UWP apps that won't be recommended for removal
 	# UWP-приложения, которые не будут отмечены на удаление по умолчанию
 	$UncheckedAppxPackages = @(
@@ -7717,21 +7591,29 @@ function UninstallUWPApps
 		MinHeight="450" MinWidth="400"
 		SizeToContent="Width" WindowStartupLocation="CenterScreen"
 		TextOptions.TextFormattingMode="Display" SnapsToDevicePixels="True"
-		FontFamily="Segoe UI" FontSize="12" ShowInTaskbar="False">
+		FontFamily="Candara" FontSize="16" ShowInTaskbar="False">
 		<Window.Resources>
 			<Style TargetType="StackPanel">
 				<Setter Property="Orientation" Value="Horizontal"/>
+				<Setter Property="Grid.Column" Value="1"/>
 			</Style>
 			<Style TargetType="CheckBox">
-				<Setter Property="Margin" Value="10, 10, 5, 10"/>
+				<Setter Property="Margin" Value="10, 13, 10, 10"/>
 				<Setter Property="IsChecked" Value="True"/>
 			</Style>
 			<Style TargetType="TextBlock">
-				<Setter Property="Margin" Value="5, 10, 10, 10"/>
+				<Setter Property="Margin" Value="0, 10, 10, 10"/>
+				<Setter Property="Margin" Value="0, 10, 10, 10"/>
 			</Style>
 			<Style TargetType="Button">
 				<Setter Property="Margin" Value="20"/>
 				<Setter Property="Padding" Value="10"/>
+				<Setter Property="IsEnabled" Value="True"/>
+			</Style>
+			<Style TargetType="ScrollViewer">
+			<Setter Property="Grid.Row" Value="1"/>
+			<Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+			<Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
 			</Style>
 		</Window.Resources>
 		<Grid>
@@ -7745,66 +7627,78 @@ function UninstallUWPApps
 					<ColumnDefinition Width="*"/>
 					<ColumnDefinition Width="Auto"/>
 				</Grid.ColumnDefinitions>
-				<StackPanel Grid.Column="1" Orientation="Horizontal">
-					<CheckBox Name="CheckboxRemoveAll" IsChecked="False"/>
-					<TextBlock Name="TextblockRemoveAll"/>
+				<StackPanel Name="PanelRemoveForAll">
+					<TextBlock Name="TextBlockRemoveForAll" Margin="0, 10, 0, 10"/>
+					<CheckBox Name="CheckBoxRemoveForAll" IsChecked="False"/>
 				</StackPanel>
 			</Grid>
-			<ScrollViewer Name="Scroll" Grid.Row="1"
-				HorizontalScrollBarVisibility="Disabled"
-				VerticalScrollBarVisibility="Auto">
+			<ScrollViewer>
 				<StackPanel Name="PanelContainer" Orientation="Vertical"/>
 			</ScrollViewer>
-			<Button Name="Button" Grid.Row="2"/>
+			<Button Name="ButtonUninstall" Grid.Row="2"/>
 		</Grid>
 	</Window>
 	'
 	#endregion XAML Markup
 
-	$Reader = (New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML)
-	$Form = [Windows.Markup.XamlReader]::Load($Reader)
-	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
-		Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name) -Scope Global
-	}
-
 	#region Functions
-	function Get-CheckboxClicked
+	function Get-AppxBundle
 	{
 		[CmdletBinding()]
 		param
 		(
 			[Parameter(
-				Mandatory = $true,
-				ValueFromPipeline = $true
+				Mandatory = $false,
+				ParameterSetName = "AllUsers",
+				Position = 0
 			)]
-			[ValidateNotNull()]
-			$CheckBox
+			[bool]
+			$AllUsers = $false
 		)
 
-		$AppxName = $CheckBox.Parent.Children[1].Text
-		if ($CheckBox.IsChecked)
-		{
-			[void]$AppxPackages.Add($AppxName)
-		}
-		else
-		{
-			[void]$AppxPackages.Remove($AppxName)
-		}
-		if ($AppxPackages.Count -gt 0)
-		{
-			$Button.IsEnabled = $true
-		}
-		else
-		{
-			$Button.IsEnabled = $false
-		}
+		Write-Verbose -Message $Localization.Patient -Verbose
+
+		[Windows.Management.Deployment.PackageManager, Windows.Web, ContentType = WindowsRuntime]::new().FindPackages() | Select-Object -ExpandProperty Id -Property DisplayName | Where-Object -FilterScript {
+			($_.Name -in (Get-AppxPackage -PackageTypeFilter Bundle -AllUsers:$AllUsers).Name) -and ($_.Name -notin $ExcludedAppxPackages) -and ($null -ne $_.DisplayName)} | ForEach-Object -Process {
+				$Properties = @{
+					[string]"DisplayName" = $_.DisplayName
+					[string]"FullName"    = $_.FullName
+					[string]"Name"        = $_.Name
+				}
+				return New-Object -TypeName PSObject -Property $Properties
+			}
 	}
 
-	function UninstallButton
+	function CheckBoxRemoveForAllClick
 	{
+		$PanelContainer.Children.RemoveRange(0, $PanelContainer.Children.Count)
+		Get-AppxBundle -AllUsers $CheckBoxRemoveForAll.IsChecked | Add-FormControls
+	}
+
+	function ButtonUninstallClick
+	{
+		$AppxPackages = New-Object -TypeName System.Collections.ArrayList($null)
+
+		for
+		(
+			$i = 0
+			$i -lt [System.Windows.Media.VisualTreeHelper]::GetChildrenCount($PanelContainer)
+			$i++
+		)
+		{
+			$CheckBox = [System.Windows.Media.VisualTreeHelper]::GetChild($PanelContainer, $i)
+
+			if ($CheckBox.Children[0].IsChecked)
+			{
+				[void]$AppxPackages.Add($CheckBox.Children[0].Tag)
+			}
+		}
+
 		[void]$Window.Close()
+
 		$OFS = "|"
-		if ($CheckboxRemoveAll.IsChecked)
+
+		if ($CheckboxRemoveForAll.IsChecked)
 		{
 			Get-AppxPackage -PackageTypeFilter Bundle -AllUsers | Where-Object -FilterScript {$_.Name -cmatch $AppxPackages} | Remove-AppxPackage -AllUsers -Verbose
 		}
@@ -7812,10 +7706,11 @@ function UninstallUWPApps
 		{
 			Get-AppxPackage -PackageTypeFilter Bundle | Where-Object -FilterScript {$_.Name -cmatch $AppxPackages} | Remove-AppxPackage -Verbose
 		}
+
 		$OFS = " "
 	}
 
-	function Add-AppxControl
+	function Add-FormControls
 	{
 		[CmdletBinding()]
 		param
@@ -7825,83 +7720,74 @@ function UninstallUWPApps
 				ValueFromPipeline = $true
 			)]
 			[ValidateNotNull()]
-			[string]
-			$AppxName
+			[PSCustomObject[]]
+			$Controls
 		)
 
-		$CheckBox = New-Object -TypeName System.Windows.Controls.CheckBox
-		$CheckBox.Add_Click({Get-CheckboxClicked -CheckBox $_.Source})
-
-		$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
-		$TextBlock.Text = $AppxName
-
-		$StackPanel = New-Object -TypeName System.Windows.Controls.StackPanel
-		[void]$StackPanel.Children.Add($CheckBox)
-		[void]$StackPanel.Children.Add($TextBlock)
-
-		[void]$PanelContainer.Children.Add($StackPanel)
-
-		if ($UncheckedAppxPackages.Contains($AppxName))
+		process
 		{
-			$CheckBox.IsChecked = $false
-			# Exit function, item is not checked
-			# Выход из функции, если элемент не выделен
-			return
-		}
+			foreach ($control in $Controls)
+			{
+				$CheckBox = New-Object -TypeName System.Windows.Controls.CheckBox
+				$CheckBox.Tag = $control.Name
 
-		# If package checked, add to the array list to uninstall
-		# Если пакет выделен, то добавить в массив для удаления
-		[void]$AppxPackages.Add($AppxName)
+				$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
+				$TextBlock.Text = $control.DisplayName
+
+				$StackPanel = New-Object -TypeName System.Windows.Controls.StackPanel
+				[void]$StackPanel.Children.Add($CheckBox)
+				[void]$StackPanel.Children.Add($TextBlock)
+				[void]$PanelContainer.Children.Add($StackPanel)
+
+				if ($UncheckedAppxPackages.Contains($control.Name))
+				{
+					$CheckBox.IsChecked = $false
+				}
+				else
+				{
+					$CheckBox.IsChecked = $true
+				}
+			}
+		}
 	}
 	#endregion Functions
 
-	#region Events Handlers
-	# Window Loaded Event
-	$Window.Add_Loaded({
-		$OFS = "|"
-		Get-AppxPackage -PackageTypeFilter Bundle -AllUsers | Where-Object -FilterScript {$_.Name -cnotmatch $ExcludedAppxPackages} | ForEach-Object -Process {
-			Add-AppxControl -AppxName $_.Name
-		}
-		$OFS = " "
-	})
+	Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
 
-	# Button Click Event
-	$Button.Add_Click({UninstallButton})
-	#endregion Events Handlers
+	$Reader = (New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML)
+	$Form = [Windows.Markup.XamlReader]::Load($Reader)
+	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
+		Set-Variable -Name ($_.Name)-Value $Form.FindName($_.Name)
+	}
 
-	if (Get-AppxPackage -PackageTypeFilter Bundle -AllUsers | Where-Object -FilterScript {$_.Name -cnotmatch ($ExcludedAppxPackages -join "|")})
+	Get-AppxBundle | Add-FormControls
+	$Window.Title = $Localization.UninstallUWPTitle
+	$ButtonUninstall.Content = $Localization.Uninstall
+	$ButtonUninstall.Add_Click({ButtonUninstallClick})
+	$CheckBoxRemoveForAll.Add_Click({CheckBoxRemoveForAllClick})
+	$TextBlockRemoveForAll.Text = $Localization.UninstallUWPForAll
+
+	if ($PanelContainer.Children.Count -eq 0)
 	{
-		Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
-
-		$TextblockRemoveAll.Text = $Localization.UninstallUWPForAll
-		$Window.Title = $Localization.UninstallUWPTitle
-		$Button.Content = $Localization.Uninstall
-
-		# Display the dialog box
-		# Отобразить диалоговое окно
-		$Form.ShowDialog() | Out-Null
+		[void]$Form.Close()
+		Write-Verbose -Message $Localization.NoData -Verbose
 	}
 	else
 	{
-		Write-Verbose -Message $Localization.NoData -Verbose
+		[void]$Form.ShowDialog()
 	}
 }
 
 <#
-	Open Microsoft Store "HEVC Video Extensions from Device Manufacturer" page
-	The extension can be installed without Microsoft account for free instead of $0.99
-	"Movies & TV" app required
+	Open Microsoft Store "HEVC Video Extensions from Device Manufacturer" page to install this extension manually to be able to open .heic and .heif image formats
+	The extension can be installed without Microsoft account
 
-	Открыть страницу "Расширения для видео HEVC от производителя устройства" в Microsoft Store
-	Расширение может быть установлено бесплатно без учетной записи Microsoft вместо 0,99 $
-	Для работы необходимо приложение "Кино и ТВ"
+	Открыть страницу "Расширения для видео HEVC от производителя устройства" в Microsoft Store, чтобы вручную установить расширение и открывать изображения в форматах .heic и .heif
+	Расширение может быть установлено бесплатно без учетной записи Microsoft
 #>
-function InstallHEVC
+function InstallHEIF
 {
-	if (Get-AppxPackage -Name Microsoft.ZuneVideo)
-	{
-		Start-Process -FilePath ms-windows-store://pdp/?ProductId=9n4wgh0z6vhq
-	}
+	Start-Process -FilePath ms-windows-store://pdp/?ProductId=9n4wgh0z6vhq
 }
 
 <#
@@ -7969,6 +7855,7 @@ function CortanaAutostart
 # Проверить обновления UWP-приложений
 function CheckUWPAppsUpdates
 {
+	Write-Verbose -Message $Localization.Patient -Verbose
 	Get-CimInstance -Namespace "Root\cimv2\mdm\dmmap" -ClassName "MDM_EnterpriseModernAppManagement_AppManagement01" | Invoke-CimMethod -MethodName UpdateScanMethod
 }
 #endregion UWP apps
@@ -9390,10 +9277,10 @@ function SaveZoneInformation
 
 	.NOTES
 	Current user only
-	It becomes impossible to run .js and .vbs files
+	Blocks WSH from executing .js and .vbs files
 
 	Только для текущего пользователя
-	Становится невозможным запустить файлы .js и .vbs
+	Блокирует запуск файлов .js и .vbs
 #>
 function WindowsScriptHost
 {
@@ -10321,7 +10208,19 @@ function BitmapImageNewContext
 			}
 			else
 			{
-				Get-WindowsCapability -Online -Name "Microsoft.Windows.MSPaint*" | Add-WindowsCapability -Online
+				try
+				{
+					if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
+					{
+						Get-WindowsCapability -Online -Name "Microsoft.Windows.MSPaint*" | Add-WindowsCapability -Online
+					}
+				}
+				catch [System.Net.WebException]
+				{
+					Write-Warning -Message $Localization.NoInternetConnection
+					Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+					return
+				}
 			}
 		}
 	}
@@ -10387,7 +10286,19 @@ function RichTextDocumentNewContext
 			}
 			else
 			{
-				Get-WindowsCapability -Online -Name "Microsoft.Windows.WordPad*" | Add-WindowsCapability -Online
+				try
+				{
+					if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
+					{
+						Get-WindowsCapability -Online -Name "Microsoft.Windows.WordPad*" | Add-WindowsCapability -Online
+					}
+				}
+				catch [System.Net.WebException]
+				{
+					Write-Warning -Message $Localization.NoInternetConnection
+					Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+					return
+				}
 			}
 		}
 	}

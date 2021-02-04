@@ -1,4 +1,4 @@
-ConvertFrom-StringData -StringData @'
+﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                   = Das Skript unterstützt nur Windows 10 x64
 UnsupportedOSBuild                     = Das Skript unterstützt Windows 10 2004 / 20H1-Versionen und höher
 UnsupportedRelease                     = Neue Version gefunden
@@ -88,4 +88,5 @@ Skip                                   = Überspringen
 Skipped                                = Übersprungen
 SymbolicSkipped                        = Das Erstellen eines symbolischen Links wurde übersprungen
 Uninstall                              = Deinstallieren
+Install                                = Installieren
 '@

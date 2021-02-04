@@ -88,4 +88,5 @@ Skip                                   = Salta
 Skipped                                = Saltato
 SymbolicSkipped                        = È stata saltata la creazione di un collegamento simbolico
 Uninstall                              = Rimuovi
+Install                                = Installare
 '@

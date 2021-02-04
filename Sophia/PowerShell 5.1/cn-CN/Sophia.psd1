@@ -1,4 +1,4 @@
-ConvertFrom-StringData -StringData @'
+﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                   = 该脚本仅支持Windows 10 x64
 UnsupportedOSBuild                     = 该脚本支持Windows 10版本2004 / 20H1和更高版本
 UnsupportedRelease                     = 找到新版本
@@ -88,4 +88,5 @@ Skip                                   = 跳过
 Skipped                                = 已跳过
 SymbolicSkipped                        = 跳过创建符号链接
 Uninstall                              = 卸载
+Install                                = 安装
 '@
