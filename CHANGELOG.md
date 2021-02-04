@@ -5,7 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.4 - 04.02.2021
 
+Diff from v5.3.3
+[5.3.3...5.4](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.3.3...5.4)
+
+* Now all archives are being created and uploaded to the release page via [GitHub Actions](https://github.com/farag2/Windows-10-Sophia-Script/blob/master/.github/workflows/Sophia.yml);
+  * Thnx to @inv2004
+* When running the script using ```.\Sophia.ps1 -Functions "FunctionName1 -Parameter"``` regardless of the functions entered as an argument, the ```Checkings``` function will be executed first, and the ```Refresh``` and ```Errors``` functions will be executed at the end;
+* Updated the ```CreateRestorePoint``` function
+  * Closed #124
+* Updated the ```EnableWSL2``` function
+* Code refactoring for the ```ScheduledTasks```, ```WindowsFeatures```, ```WindowsCapabilities``` & ```UninstallUWPApps```
+  * The ```WindowsFeatures``` function generates **friendly** Windows features names instead of packages names :rocket:
+  * The ```WindowsCapabilities``` function generates **friendly** Windows capabilities names instead of packages names :rocket:
+  * The ```UninstallUWPApps``` function generates **friendly** UWP apps names instead of packages names :rocket:
+    * Clicking on "Uninstall for all users" dynamically generates UWP apps list for all users and vice versa. Currently works only on PowerShell 5.1 :thinking:
+  * Thanks to [iNNOKENTIY21](https://forum.ru-board.com/profile.cgi?action=show&member=iNNOKENTIY21) & @oz-zo
+  * Closed #56
+* Removed unnecessary ```WSLSwap```, ```syspin``` functions;
+* Updated description;
+* Wrapper updated;
+* Minor changes. :feelsgood:
 
 ## 5.3.3 - 21.01.2021
 
