@@ -6,7 +6,7 @@
 
 **A PowerShell module for Windows 10 fine-tuning and automating the routine tasks** :trophy:
 
-[![Build](https://github.com/farag2/Windows-10-Sophia-Script/workflows/Build/badge.svg)](https://github.com/farag2/Windows-10-Sophia-Script/actions?query=workflow%3AArchives)
+![Build](https://github.com/farag2/Windows-10-Sophia-Script/workflows/Build/badge.svg)
 ![PowerShell](https://img.shields.io/badge/PowerShell%205.1%20&%207.1-Ready-blue.svg?color=5391FE&style=flat&logo=powershell)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/b1ce4ce852f148a88c47ea33ad172044)](https://www.codacy.com/gh/farag2/Windows-10-Sophia-Script)
 [![Github stats](https://img.shields.io/github/downloads/farag2/Windows-10-Setup-Script/total.svg?label=downloads%20%28since%20May%202020%29)](https://github.com/farag2/Windows-10-Sophia-Script/releases)
