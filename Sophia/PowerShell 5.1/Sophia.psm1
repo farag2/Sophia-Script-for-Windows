@@ -1,4 +1,4 @@
-﻿<#
+<#
 	.SYNOPSIS
 	"Windows 10 Sophia Script" is a PowerShell module for Windows 10 fine-tuning and automating the routine tasks
 
