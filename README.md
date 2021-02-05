@@ -6,13 +6,18 @@
 
 **A PowerShell module for Windows 10 fine-tuning and automating the routine tasks** :trophy:
 
-![Build](https://github.com/farag2/Windows-10-Sophia-Script/workflows/Build/badge.svg)
-![PowerShell](https://img.shields.io/badge/PowerShell%205.1%20&%207.1-Ready-blue.svg?color=5391FE&style=flat&logo=powershell)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/b1ce4ce852f148a88c47ea33ad172044)](https://www.codacy.com/gh/farag2/Windows-10-Sophia-Script)
-[![Github stats](https://img.shields.io/github/downloads/farag2/Windows-10-Setup-Script/total.svg?label=downloads%20%28since%20May%202020%29)](https://github.com/farag2/Windows-10-Sophia-Script/releases)
-[![latest version](https://img.shields.io/github/v/release/farag2/Windows-10-Sophia-Script)](https://github.com/farag2/Windows-10-Sophia-Script/releases)
-![Made with Love](https://img.shields.io/badge/Made%20with-%E2%9D%A4-red.svg?colorB=11a9f7)
-[![Twitter](https://img.shields.io/badge/Logo%20by-teahead-blue?style=flat&logo=Twitter)](https://twitter.com/tea_head_)
+<p align="center">
+  <img src="https://github.com/farag2/Windows-10-Sophia-Script/workflows/Build/badge.svg">
+  <img src="https://img.shields.io/badge/PowerShell%205.1%20&%207.1-Ready-blue.svg?color=5391FE&style=flat&logo=powershell">
+  <a href="https://www.codacy.com/gh/farag2/Windows-10-Sophia-Script"><img src="https://app.codacy.com/project/badge/Grade/b1ce4ce852f148a88c47ea33ad172044"></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/farag2/Windows-10-Sophia-Script/releases"><img src="https://img.shields.io/github/downloads/farag2/Windows-10-Setup-Script/total.svg?label=Downloads%20%28since%20May%202020%29"></a>
+  <a href="https://github.com/farag2/Windows-10-Sophia-Script/releases"><img src="https://img.shields.io/github/v/release/farag2/Windows-10-Sophia-Script"></a>
+  <img src="https://img.shields.io/badge/Made%20with-%E2%9D%A4-red.svg?colorB=11a9f7">
+  <a href="https://twitter.com/tea_head_"><img src="https://img.shields.io/badge/Logo%20by-teahead-blue?style=flat&logo=Twitter"></a>
+</p>
 
 Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag_of_the_United_Kingdom.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Flag_of_the_People's_Republic_of_China.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Flag_of_Germany.svg" height="11px"/>
 <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/0/03/Flag_of_Italy.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Russia.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Ukraine.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Flag_of_Turkey.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Spain.svg" height="11px"/>
