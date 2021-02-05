@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 5.4 - 04.02.2021
 
+## Windows 10 2004 (20H1)/20H2 (2009) | LTSC
+
 Diff from v5.3.3
 [5.3.3...5.4](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.3.3...5.4)
 
