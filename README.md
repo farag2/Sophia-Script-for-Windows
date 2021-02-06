@@ -195,6 +195,7 @@ How to run the specific function(s) (example):
 * [rutracker](https://rutracker.org/forum/viewtopic.php?t=5996011)
 * [My Digital Life](https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/)
 * [Reddit (archived)](https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/)
+  * PM [me](https://www.reddit.com/user/farag2/)
 
 ## SophiApp Community Edition (C# + WPF)
 
