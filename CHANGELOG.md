@@ -25,7 +25,7 @@ Diff from v5.3.3
     * Clicking on "Uninstall for all users" dynamically generates UWP apps list for all users and vice versa. Currently works only on PowerShell 5.1 :thinking:
   * Thanks to [iNNOKENTIY21](https://forum.ru-board.com/profile.cgi?action=show&member=iNNOKENTIY21) & @oz-zo
   * Closed #56
-* Removed unnecessary ```WSLSwap```, ```syspin``` functions;
+* Removed unnecessary ```WSLSwap``` & ```syspin``` functions;
 * Updated description;
 * Wrapper updated;
 * Minor changes. :feelsgood:
