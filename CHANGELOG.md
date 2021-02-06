@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.4.0.1 - 06.02.2021
+
+## Windows 10 2004 (20H1)/20H2 (2009) | LTSC
+
+Diff from v5.4
+[5.4...5.4.0.1](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.4...5.4.0.1)
+
+* Fixed UWP apps form not loading.
+
 ## 5.4 - 04.02.2021
 
 ## Windows 10 2004 (20H1)/20H2 (2009) | LTSC
