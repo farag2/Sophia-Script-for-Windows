@@ -66,7 +66,7 @@ function Checkings
 	try
 	{
 		$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-		Invoke-WebRequest -Uri "https://raw.githubusercontent.com/farag2/Windows-10-Sophia-Script/master/LTSC/Sophia.psd1" -OutFile $DownloadsFolder\Manifest.psd1 -UseBasicParsing
+		Invoke-WebRequest -Uri "https://raw.githubusercontent.com/farag2/Windows-10-Sophia-Script/master/Sophia/LTSC/Sophia.psd1" -OutFile $DownloadsFolder\Manifest.psd1 -UseBasicParsing
 		$LatestRelease = (Import-PowerShellDataFile -Path $DownloadsFolder\Manifest.psd1).ModuleVersion
 		$CurrentRelease = (Get-Module -Name Sophia).Version.ToString()
 		Remove-Item -Path $DownloadsFolder\Manifest.psd1 -Force
