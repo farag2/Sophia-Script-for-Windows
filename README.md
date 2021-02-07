@@ -168,6 +168,8 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 * Type `.\Sophia.ps1` to run the whole preset file;
 * Press <kbd>Enter</kbd>.
 
+***
+
 How to run the specific function(s) (example):
 
 ```powershell
@@ -197,4 +199,4 @@ How to run the specific function(s) (example):
 
 ## SophiApp Community Edition (C# + WPF)
 
-Internal build by [oz-zo](https://github.com/oz-zo) being compiled in the [SophiApp](https://github.com/farag2/SophiApp) repository every Saturday within Github Actions
+[SophiApp](https://github.com/farag2/SophiApp) written by [oz-zo](https://github.com/oz-zo) being compiled every Saturday within Github Actions for internal purposes only.
