@@ -93,8 +93,8 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 |Version|Code name|   Marketing name   |Build | Arch |      Editions     | Script version |
 |:-----:|:-------:|:------------------:|:----:|:----:|:-----------------:|:--------------:|
-| 2009  |  20H2   |October 2020 Update |19042 |  x64 |Home/Pro/Enterprise|[5.4](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
-| 2004  |  20H1   |   May 2020 Update  |19041 |  x64 |Home/Pro/Enterprise|[5.4](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 2009  |  20H2   |October 2020 Update |19042 |  x64 |Home/Pro/Enterprise|[5.4.0.1](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 2004  |  20H1   |   May 2020 Update  |19041 |  x64 |Home/Pro/Enterprise|[5.4.0.1](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
 | 1809  |         |LTSC Enterprise 2019|17763 |  x64 |   Enterprise      |[5.0.3](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
 
 ## Screenshots
