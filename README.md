@@ -21,7 +21,8 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Q5Q51QUJC)
 
-<hr>
+***
+
 <p align="center">
 	&bull;
 	<a href="https://github.com/farag2/Windows-10-Sophia-Script/releases"><b>DOWNLOAD</b></a>
@@ -40,7 +41,8 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 	&bull;
 	<a href="https://github.com/farag2/Windows-10-Sophia-Script/blob/master/CHANGELOG.md">Complete Changelog</a>
 </p>
-<hr>
+
+***
 
 <table>
 	<tr>
