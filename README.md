@@ -93,9 +93,9 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 |Version|    Marketing name   | Build | Arch |      Editions     | Script version |
 |:-----:|:-------------------:|:-----:|:----:|:-----------------:|:--------------:|
-| 20H2  | October 2020 Update | 19042 |  x64 |Home/Pro/Enterprise|[5.4.0.1](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
-| 2004  |   May 2020 Update   | 19041 |  x64 |Home/Pro/Enterprise|[5.4.0.1](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
-| 1809  | LTSC Enterprise 2019| 17763 |  x64 |   Enterprise      |[5.0.3](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 20H2  | October 2020 Update | 19042 |  x64 |Home/Pro/Enterprise|[5.5](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 2004  |   May 2020 Update   | 19041 |  x64 |Home/Pro/Enterprise|[5.5](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 1809  | LTSC Enterprise 2019| 17763 |  x64 |   Enterprise      |[5.0.4](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
 
 ## Screenshots
 
@@ -114,6 +114,8 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 [![YT](https://img.youtube.com/vi/8E6OT_QcHaU/1.jpg)](https://youtu.be/8E6OT_QcHaU?t=370)
 [![YT](https://img.youtube.com/vi/ZSwj8SrcVPg/1.jpg)](https://youtu.be/ZSwj8SrcVPg)
+[![YT](https://img.youtube.com/vi/f529ucAipI8/1.jpg)](https://youtu.be/f529ucAipI8)
+
 
 ## Core features
 
@@ -140,9 +142,9 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 * Create tasks in the Task Scheduler to clear
   * `%SystemRoot%\SoftwareDistribution\Download`
   * `%TEMP%`
+* Pin shortcuts to Start via pure PowerShell
+  * Three shortcuts are pre-configured to be pinned: Control Panel, "old style" Devices and Printers, and Windows PowerShell
 * Unpin all Start menu tiles;
-* Pin shortcuts to Start menu using [syspin.exe](http://www.technosys.net/products/utils/pintotaskbar)
-  * Three shortcuts are preconfigured to be pinned: Control Panel, "old style" Devices and Printers, and Command Prompt
 * Turn on Controlled folder access and add protected folders using dialog menu;
 * Add exclusion folder from Microsoft Defender Antivirus scanning using dialog menu;
 * Add exclusion file from Microsoft Defender Antivirus scanning using dialog menu;
