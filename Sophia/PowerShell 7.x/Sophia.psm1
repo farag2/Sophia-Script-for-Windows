@@ -2,29 +2,34 @@
 	.SYNOPSIS
 	"Windows 10 Sophia Script" is a PowerShell module for Windows 10 fine-tuning and automating the routine tasks
 
-	Version: v5.4
-	Date: 04.02.2021
+	Version: v5.5
+	Date: 20.02.2021
 	Copyright (c) 2015–2021 farag & oZ-Zo
+
+	https://github.com/farag2
+	https://github.com/oz-zo
 
 	Thanks to all https://forum.ru-board.com members involved
 
 	.DESCRIPTION
-	Supported Windows 10 versions: 2004 (20H1)/20H2 (2009), 19041/19042, Home/Pro/Enterprise, x64
-
 	Running the script is best done on a fresh install because running it on wrong tweaked system may result in errors occurring
-
-	PowerShell must be run with elevated privileges
-	Set execution policy to be able to run scripts only in the current PowerShell session:
-		Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
-
-	.EXAMPLE
-	PS C:\> .\Sophia.ps1
 
 	.NOTES
 	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
 	https://habr.com/post/521202/
 	https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/
 	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
+
+	.NOTES
+	Supported Windows 10 versions
+	Versions: 2004 (20H1)/20H2 (2009)
+	Builds: 19041/19042
+	Editions: Home/Pro/Enterprise
+	Architecture: x64
+
+	.NOTES
+	Set execution policy to be able to run scripts only in the current PowerShell session:
+		Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 
 	.LINK
 	https://github.com/farag2/Windows-10-Sophia-Script
@@ -36,11 +41,9 @@ function Checkings
 	Set-StrictMode -Version Latest
 
 	# Сlear the $Error variable
-	# Очистка переменной $Error
 	$Global:Error.Clear()
 
 	# Detect the OS bitness
-	# Определить разрядность ОС
 	switch ([System.Environment]::Is64BitOperatingSystem)
 	{
 		$false
@@ -51,7 +54,6 @@ function Checkings
 	}
 
 	# Detect the OS build version
-	# Определить номер билда ОС
 	switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber -ge 19041)
 	{
 		$false
@@ -62,7 +64,6 @@ function Checkings
 	}
 
 	# Checking whether the current module version is the latest
-	# Проверка: используется ли последняя версия модуля
 	try
 	{
 		$LatestRelease = ((Invoke-RestMethod -Uri "https://api.github.com/repos/farag2/Windows-10-Sophia-Script/releases") | Where-Object -FilterScript {$_.prerelease -eq $false}).tag_name.Replace("v","")[0]
@@ -75,7 +76,7 @@ function Checkings
 
 				Start-Sleep -Seconds 5
 
-				Start-Process -FilePath "https://github.com/farag2/Windows-10-Sophia-Script/releases"
+				Start-Process -FilePath "https://github.com/farag2/Windows-10-Sophia-Script/releases/latest"
 				exit
 			}
 		}
@@ -87,11 +88,9 @@ function Checkings
 	}
 
 	# Unblock all files in the folder by removing the Zone.Identifier alternate data stream with a value of "3"
-	# Разблокировать все файлы в папке, удалив альтернативный потоки данных Zone.Identifier со значением "3"
 	Get-ChildItem -Path $PSScriptRoot -Recurse -Force | Unblock-File -Confirm:$false
 
 	# Import PowerShell 5.1 modules
-	# Импорт модулей PowerShell 5.1
 	switch ($PSVersionTable.PSVersion.Major)
 	{
 		"7"
@@ -101,7 +100,6 @@ function Checkings
 	}
 
 	# Turn off Controlled folder access to let the script proceed
-	# Отключить контролируемый доступ к папкам
 	switch ((Get-MpPreference).EnableControlledFolderAccess)
 	{
 		"1"
@@ -111,7 +109,6 @@ function Checkings
 			Set-MpPreference -EnableControlledFolderAccess Disabled
 
 			# Open "Ransomware protection" page
-			# Открыть раздел "Защита от программ-шантажистов"
 			Start-Process -FilePath windowsdefender://RansomwareProtection
 		}
 		"0"
@@ -122,13 +119,8 @@ function Checkings
 }
 #endregion Checkings
 
-<#
-	Enable script logging. The log will be being recorded into the script folder
-	To stop logging just close the console or type "Stop-Transcript"
-
-	Включить логирование работы скрипта. Лог будет записываться в папку скрипта
-	Чтобы остановить логгирование, закройте консоль или наберите "Stop-Transcript"
-#>
+# Enable script logging. The log will be being recorded into the script folder
+# To stop logging just close the console or type "Stop-Transcript"
 function Logging
 {
 	$TrascriptFilename = "Log-$((Get-Date).ToString("dd.MM.yyyy-HH-mm"))"
@@ -136,7 +128,6 @@ function Logging
 }
 
 # Create a restore point for the system drive
-# Создать точку восстановления для системного диска
 function CreateRestorePoint
 {
 	$SystemDriveUniqueID = (Get-Volume | Where-Object {$_.DriveLetter -eq "$($env:SystemDrive[0])"}).UniqueID
@@ -154,17 +145,14 @@ function CreateRestorePoint
 	}
 
 	# Never skip creating a restore point
-	# Никогда не пропускать создание точек восстановления
 	New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 0 -Force
 
 	Checkpoint-Computer -Description "Windows 10 Sophia Script" -RestorePointType MODIFY_SETTINGS
 
 	# Revert the System Restore checkpoint creation frequency to 1440 minutes
-	# Вернуть частоту создания точек восстановления на 1440 минут
 	New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 1440 -Force
 
 	# Turn off System Protection for the system drive if it was turned off without deleting existing restore points
-	# Отключить защиту системы для диска C:\, если был отключен, не удаляя точки восстановления
 	if ($ComputerRestorePoint)
 	{
 		Disable-ComputerRestore -Drive $env:SystemDrive
@@ -174,16 +162,13 @@ function CreateRestorePoint
 #region Privacy & Telemetry
 <#
 	.SYNOPSIS
-	Disable/enable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and block connection
-	Отключить/включить службу DiagTrack, правила брандмауэра для исходящего трафик клиента единой телеметрии и заблокировать соединение
+	Configure the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and block connection
 
 	.PARAMETER Disable
 	Disable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and block connection
-	Отключить службу DiagTrack, правила брандмауэра для исходящего трафик клиента единой телеметрии и заблокировать соединение
 
 	.PARAMETER Enable
 	Enable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and allow connection
-	Включить службу DiagTrack, правила брандмауэра для исходящего трафик клиента единой телеметрии и разрешить соединение
 
 	.EXAMPLE
 	DiagTrackService -Disable
@@ -192,8 +177,7 @@ function CreateRestorePoint
 	DiagTrackService -Enable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function DiagTrackService
 {
@@ -222,7 +206,6 @@ function DiagTrackService
 			Get-Service -Name DiagTrack | Start-Service
 
 			# Enable firewall rule for Unified Telemetry Client Outbound Traffic and allow connection
-			# Включить правила брандмауэра для исходящего трафика клиента единой телеметрии и разрешить соединение
 			Get-NetFirewallRule -Group DiagTrack | Set-NetFirewallRule -Enabled True -Action Allow
 		}
 		"Disable"
@@ -231,7 +214,6 @@ function DiagTrackService
 			Get-Service -Name DiagTrack | Set-Service -StartupType Disabled
 
 			# Disable firewall rule for Unified Telemetry Client Outbound Traffic and block connection
-			# Отключить правила брандмауэра для исходящего трафик клиента единой телеметрии и заблокировать соединение
 			Get-NetFirewallRule -Group DiagTrack | Set-NetFirewallRule -Enabled False -Action Block
 		}
 	}
@@ -239,22 +221,22 @@ function DiagTrackService
 
 <#
 	.SYNOPSIS
-	Set the OS level of diagnostic data gathering to minimum/default
-	Установить уровень сбора диагностических сведений ОС на минимальный/по умолчанию
+	Configure the OS level of diagnostic data gathering
 
 	.PARAMETER Minimal
 	Set the OS level of diagnostic data gathering to minimum
-	Установить уровень сбора диагностических сведений ОС на минимальный
 
 	.PARAMETER Default
 	Set the OS level of diagnostic data gathering to minimum
-	Установить уровень сбора диагностических сведений ОС на минимальный
 
 	.EXAMPLE
 	DiagnosticDataLevel -Minimal
 
 	.EXAMPLE
 	DiagnosticDataLevel -Default
+
+	.NOTES
+	Machine-wide
 #>
 function DiagnosticDataLevel
 {
@@ -281,19 +263,18 @@ function DiagnosticDataLevel
 		{
 			if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -like "Enterprise*" -or $_.Edition -eq "Education"})
 			{
-				# Optional diagnostic data
-				# Необязательные диагностические данные
+				# Disable diagnostic data
 				New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 0 -Force
 			}
 			else
 			{
 				# Required diagnostic data
-				# Обязательные диагностические данные
 				New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 1 -Force
 			}
 		}
 		"Default"
 		{
+			# Optional diagnostic data
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 3 -Force
 		}
 	}
@@ -301,16 +282,13 @@ function DiagnosticDataLevel
 
 <#
 	.SYNOPSIS
-	Turn off/turn on Windows Error Reporting for the current user
-	Отключить/включить отчеты об ошибках Windows для текущего пользователя
+	Configure the Windows Error Reporting
 
 	.PARAMETER Disable
-	Turn off Windows Error Reporting for the current user
-	Отключить отчеты об ошибках Windows для текущего пользователя
+	Turn off Windows Error Reporting
 
 	.PARAMETER Enable
-	Turn on Windows Error Reporting for the current user
-	Включить отчеты об ошибках Windows для текущего пользователя
+	Turn on Windows Error Reporting
 
 	.EXAMPLE
 	ErrorReporting -Disable
@@ -319,8 +297,7 @@ function DiagnosticDataLevel
 	ErrorReporting -Enable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function ErrorReporting
 {
@@ -361,16 +338,13 @@ function ErrorReporting
 
 <#
 	.SYNOPSIS
-	Change Windows feedback frequency to "Never"/"Automatically" for the current user
-	Изменить частоту формирования отзывов на "Никогда"/"Автоматически" для текущего пользователя
+	Configure the Windows feedback frequency
 
 	.PARAMETER Disable
-	Change Windows feedback frequency to "Never" for the current user
-	Изменить частоту формирования отзывов на "Никогда" для текущего пользователя
+	Change Windows feedback frequency to "Never"
 
 	.PARAMETER Enable
-	Change Windows feedback frequency to "Automatically" for the current user
-	Изменить частоту формирования отзывов на "Автоматически" для текущего пользователя
+	Change Windows feedback frequency to "Automatically"
 
 	.EXAMPLE
 	WindowsFeedback -Disable
@@ -379,8 +353,7 @@ function ErrorReporting
 	WindowsFeedback -Enable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function WindowsFeedback
 {
@@ -420,16 +393,13 @@ function WindowsFeedback
 
 <#
 	.SYNOPSIS
-	Turn off/turn on diagnostics tracking scheduled tasks
-	Отключить/включить задачи диагностического отслеживания
+	Configure the diagnostics tracking scheduled tasks
 
 	.PARAMETER Disable
-	Turn off on diagnostics tracking scheduled tasks
-	Отключить задачи диагностического отслеживания
+	Turn off the diagnostics tracking scheduled tasks
 
 	.PARAMETER Enable
-	Turn on diagnostics tracking scheduled tasks
-	Включить задачи диагностического отслеживания
+	Turn on the diagnostics tracking scheduled tasks
 
 	.EXAMPLE
 	ScheduledTasks -Disable
@@ -439,12 +409,7 @@ function WindowsFeedback
 
 	.NOTES
 	A pop-up dialog box enables the user to select tasks
-	Current user only
-
-	Используется всплывающее диалоговое окно, позволяющее пользователю отмечать задачи
-	Только для текущего пользователя
-
-	Made by https://github.com/oz-zo
+	Current user
 #>
 function ScheduledTasks
 {
@@ -469,11 +434,9 @@ function ScheduledTasks
 
 	#region Variables
 	# Initialize an array list to store the selected scheduled tasks
-	# Создать массив для выбранных задач
 	$SelectedTasks = New-Object -TypeName System.Collections.ArrayList($null)
 
 	# The following tasks will have their checkboxes checked
-	# Следующие задачи будут иметь чекбоксы отмеченными
 	[string[]]$CheckedScheduledTasks = @(
 		# Collects program telemetry information if opted-in to the Microsoft Customer Experience Improvement Program
 		# Сбор телеметрических данных программы при участии в программе улучшения качества ПО
@@ -526,7 +489,6 @@ function ScheduledTasks
 
 	#region XAML Markup
 	# The section defines the design of the upcoming dialog box
-	# Раздел, определяющий форму диалогового окна
 	[xml]$XAML = '
 	<Window
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -656,7 +618,6 @@ function ScheduledTasks
 			[void]$PanelContainer.Children.Add($StackPanel)
 
 			# If task checked add to the array list
-			# Если задача выделена, то добавить в массив
 			if ($CheckedScheduledTasks | Where-Object -FilterScript {$Task.TaskName -match $_})
 			{
 				[void]$SelectedTasks.Add($Task)
@@ -688,8 +649,7 @@ function ScheduledTasks
 
 	Write-Verbose -Message $Localization.Patient -Verbose
 
-	# Получаем общий список задач, согласно условиям
-	# Getting a list of tasks according to the conditions
+	# Getting list of all scheduled tasks according to the conditions
 	$Tasks = Get-ScheduledTask | Where-Object -FilterScript {($_.State -eq $State) -and ($_.TaskName -in $CheckedScheduledTasks)}
 
 	if (-not ($Tasks))
@@ -710,16 +670,13 @@ function ScheduledTasks
 
 <#
 	.SYNOPSIS
-	Do not use/use sign-in info to automatically finish setting up device and reopen apps after an update or restart
-	Не использовать/использовать данные для входа для автоматического завершения настройки устройства и открытия приложений после перезапуска или обновления
+	Configure the sign-in info to automatically finish setting up device and reopen apps after an update or restart
 
 	.PARAMETER Disable
 	Do not use sign-in info to automatically finish setting up device and reopen apps after an update or restart
-	Не использовать данные для входа для автоматического завершения настройки устройства и открытия приложений после перезапуска или обновления
 
 	.PARAMETER Enable
 	Use sign-in info to automatically finish setting up device and reopen apps after an update or restart
-	Использовать данные для входа для автоматического завершения настройки устройства и открытия приложений после перезапуска или обновления
 
 	.EXAMPLE
 	SigninInfo -Disable
@@ -728,8 +685,7 @@ function ScheduledTasks
 	SigninInfo -Enable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function SigninInfo
 {
@@ -771,16 +727,13 @@ function SigninInfo
 
 <#
 	.SYNOPSIS
-	Do not let/let websites provide locally relevant content by accessing language list
-	Не позволять/позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков
+	Configure the provision to websites of locally relevant content by accessing language list
 
 	.PARAMETER Disable
 	Do not let websites provide locally relevant content by accessing language list
-	Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков
 
 	.PARAMETER Enable
 	Let websites provide locally relevant content by accessing language list
-	Позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков
 
 	.EXAMPLE
 	LanguageListAccess -Disable
@@ -789,8 +742,7 @@ function SigninInfo
 	LanguageListAccess -Enable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function LanguageListAccess
 {
@@ -826,16 +778,13 @@ function LanguageListAccess
 
 <#
 	.SYNOPSIS
-	Do not allow/allow apps to use advertising ID
-	Не разрешать/разрешать приложениям использовать идентификатор рекламы
+	Configure the permission for apps to use advertising ID
 
 	.PARAMETER Disable
 	Do not allow apps to use advertising ID
-	Не разрешать приложениям использовать идентификатор рекламы
 
 	.PARAMETER Enable
 	Do not allow apps to use advertising ID
-	Не разрешать приложениям использовать идентификатор рекламы
 
 	.EXAMPLE
 	AdvertisingID -Disable
@@ -844,8 +793,7 @@ function LanguageListAccess
 	AdvertisingID -Enable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function AdvertisingID
 {
@@ -885,16 +833,13 @@ function AdvertisingID
 
 <#
 	.SYNOPSIS
-	Do not let/let apps on other devices open and message apps on this device, and vice versa
-	Не разрешать/разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот
+	Configure the permission for apps on other devices open and message apps on this device, and vice versa
 
 	.PARAMETER Disable
 	Do not let apps on other devices open and message apps on this device, and vice versa
-	Не разрешать/разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот
 
 	.PARAMETER Enable
 	Let apps on other devices open and message apps on this device, and vice versa
-	разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот
 
 	.EXAMPLE
 	ShareAcrossDevices -Disable
@@ -903,8 +848,7 @@ function AdvertisingID
 	ShareAcrossDevices -Enable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function ShareAcrossDevices
 {
@@ -940,16 +884,13 @@ function ShareAcrossDevices
 
 <#
 	.SYNOPSIS
-	Hide/show the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested
-	Не показывать/показывать экран приветствия Windows после обновлений и иногда при входе, чтобы сообщить о новых функциях и предложениях
+	Configure the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested
 
 	.PARAMETER Hide
 	Hide the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested
-	Не показывать экран приветствия Windows после обновлений и иногда при входе, чтобы сообщить о новых функциях и предложениях
 
 	.PARAMETER Show
 	Show the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested
-	Показывать экран приветствия Windows после обновлений и иногда при входе, чтобы сообщить о новых функциях и предложениях
 
 	.EXAMPLE
 	WindowsWelcomeExperience -Hide
@@ -958,8 +899,7 @@ function ShareAcrossDevices
 	WindowsWelcomeExperience -Show
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function WindowsWelcomeExperience
 {
@@ -995,16 +935,13 @@ function WindowsWelcomeExperience
 
 <#
 	.SYNOPSIS
-	Get/do not get tip, trick, and suggestions as you use Windows
-	Получать/не получать советы, подсказки и рекомендации при использованию Windows
+	Configure getting tip, trick, and suggestions as you use Windows
 
 	.PARAMETER Disable
 	Do not get tip, trick, and suggestions as you use Windows
-	Не получать советы, подсказки и рекомендации при использованию Windows
 
 	.PARAMETER Enable
 	Get tip, trick, and suggestions as you use Windows
-	Получать советы, подсказки и рекомендации при использованию Windows
 
 	.EXAMPLE
 	WindowsTips -Disable
@@ -1013,8 +950,7 @@ function WindowsWelcomeExperience
 	WindowsTips -Enable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function WindowsTips
 {
@@ -1050,16 +986,13 @@ function WindowsTips
 
 <#
 	.SYNOPSIS
-	Hide/show suggested content in the Settings app
-	Скрывать/показывать рекомендуемое содержимое в приложении "Параметры"
+	Configure suggested content in the Settings app
 
 	.PARAMETER Hide
 	Hide suggested content in the Settings app
-	Скрывать рекомендуемое содержимое в приложении "Параметры"
 
 	.PARAMETER Show
 	Show suggested content in the Settings app
-	Показывать рекомендуемое содержимое в приложении "Параметры"
 
 	.EXAMPLE
 	SettingsSuggestedContent -Hide
@@ -1068,8 +1001,7 @@ function WindowsTips
 	SettingsSuggestedContent -Show
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function SettingsSuggestedContent
 {
@@ -1109,16 +1041,13 @@ function SettingsSuggestedContent
 
 <#
 	.SYNOPSIS
-	Turn off/turn on automatic installing suggested apps
-	Отключить/включить автоматическую установку рекомендованных приложений
+	Configure automatic installing suggested apps
 
 	.PARAMETER Disable
 	Turn off automatic installing suggested apps
-	Отключить автоматическую установку рекомендованных приложений
 
 	.PARAMETER Enable
 	Turn on automatic installing suggested apps
-	Включить автоматическую установку рекомендованных приложений
 
 	.EXAMPLE
 	AppsSilentInstalling -Disable
@@ -1127,8 +1056,7 @@ function SettingsSuggestedContent
 	AppsSilentInstalling -Enable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function AppsSilentInstalling
 {
@@ -1164,16 +1092,13 @@ function AppsSilentInstalling
 
 <#
 	.SYNOPSIS
-	Do not suggest/suggest ways I can finish setting up my device to get the most out of Windows
-	Не предлагать/предлагать способы завершения настройки устройства для максимально эффективного использования Windows
+	Configure ways I can finish setting up my device to get the most out of Windows
 
 	.PARAMETER Disable
 	Do not suggest ways I can finish setting up my device to get the most out of Windows
-	Не предлагать способы завершения настройки устройства для максимально эффективного использования Windows
 
 	.PARAMETER Enable
 	Suggest ways I can finish setting up my device to get the most out of Windows
-	Предлагать способы завершения настройки устройства для максимально эффективного использования Windows
 
 	.EXAMPLE
 	WhatsNewInWindows -Disable
@@ -1182,8 +1107,7 @@ function AppsSilentInstalling
 	WhatsNewInWindows -Enable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function WhatsNewInWindows
 {
@@ -1227,16 +1151,13 @@ function WhatsNewInWindows
 
 <#
 	.SYNOPSIS
-	Do not offer/offer tailored experiences based on the diagnostic data setting
-	Не предлагать/предлагать персонализированные возможности, основанные на выбранном параметре диагностических данных
+	Configure tailored experiences based on the diagnostic data setting
 
 	.PARAMETER Disable
 	Do not offer tailored experiences based on the diagnostic data setting
-	Не предлагать персонализированные возможности, основанные на выбранном параметре диагностических данных
 
 	.PARAMETER Enable
 	Offer tailored experiences based on the diagnostic data setting
-	Предлагать персонализированные возможности, основанные на выбранном параметре диагностических данных
 
 	.EXAMPLE
 	TailoredExperiences -Disable
@@ -1245,8 +1166,7 @@ function WhatsNewInWindows
 	TailoredExperiences -Enable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function TailoredExperiences
 {
@@ -1282,16 +1202,13 @@ function TailoredExperiences
 
 <#
 	.SYNOPSIS
-	Disable/enable Bing search in the Start Menu (for the USA only)
-	Отключить/включить поиск через Bing в меню "Пуск" (только для США)
+	Configure Bing search in the Start Menu (for the USA only)
 
 	.PARAMETER Disable
 	Disable Bing search in the Start Menu (for the USA only)
-	Отключить поиск через Bing в меню "Пуск" (только для США)
 
 	.PARAMETER Enable
 	Enable Bing search in the Start Menu (for the USA only)
-	Включить поиск через Bing в меню "Пуск" (только для США)
 
 	.EXAMPLE
 	BingSearch -Disable
@@ -1300,8 +1217,7 @@ function TailoredExperiences
 	BingSearch -Enable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function BingSearch
 {
@@ -1346,16 +1262,13 @@ function BingSearch
 #region UI & Personalization
 <#
 	.SYNOPSIS
-	Show/hide "This PC" on Desktop
-	Отображать/скрывать "Этот компьютер" на рабочем столе
+	Configure the "This PC" icon on Desktop
 
 	.PARAMETER Hide
-	Show "This PC" on Desktop
-	Отображать "Этот компьютер" на рабочем столе
+	Show the "This PC" icon on Desktop
 
 	.PARAMETER Show
-	Hide "This PC" on Desktop
-	Скрывать "Этот компьютер" на рабочем столе
+	Hide the "This PC" icon on Desktop
 
 	.EXAMPLE
 	ThisPC -Hide
@@ -1364,8 +1277,7 @@ function BingSearch
 	ThisPC -Show
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function ThisPC
 {
@@ -1401,16 +1313,13 @@ function ThisPC
 
 <#
 	.SYNOPSIS
-	Do not use/use check boxes to select items
-	Не использовать/использовать флажки для выбора элементов
+	Configure check boxes to select items
 
 	.PARAMETER Disable
 	Do not use check boxes to select items
-	Не использовать флажки для выбора элементов
 
 	.PARAMETER Enable
 	Use check boxes to select items
-	Использовать флажки для выбора элементов
 
 	.EXAMPLE
 	CheckBoxes -Disable
@@ -1419,8 +1328,7 @@ function ThisPC
 	CheckBoxes -Enable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function CheckBoxes
 {
@@ -1456,16 +1364,13 @@ function CheckBoxes
 
 <#
 	.SYNOPSIS
-	Show/do not show hidden files, folders, and drives
-	Отображать/не отображать скрытые файлы, папки и диски
+	Configure the display of hidden files, folders, and drives
 
 	.PARAMETER Enable
 	Show hidden files, folders, and drives
-	Отображать скрытые файлы, папки и диски
 
 	.PARAMETER Disable
 	Do not show hidden files, folders, and drives
-	Не отображать скрытые файлы, папки и диски
 
 	.EXAMPLE
 	HiddenItems -Enable
@@ -1474,8 +1379,7 @@ function CheckBoxes
 	HiddenItems -Disable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function HiddenItems
 {
@@ -1511,16 +1415,13 @@ function HiddenItems
 
 <#
 	.SYNOPSIS
-	Show/hide file name extensions
-	Отображать/скрывать расширения имён файлов
+	Configure the display of file name extensions
 
 	.PARAMETER Show
 	Show file name extensions
-	Отображать расширения имён файлов
 
 	.PARAMETER Hide
 	Hide file name extensions
-	Скрывать расширения имён файлов
 
 	.EXAMPLE
 	FileExtensions -Show
@@ -1529,8 +1430,7 @@ function HiddenItems
 	FileExtensions -Hide
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function FileExtensions
 {
@@ -1566,16 +1466,13 @@ function FileExtensions
 
 <#
 	.SYNOPSIS
-	Show/hide folder merge conflicts
-	Отображать/скрывать конфликт слияния папок
+	Configure folder merge conflicts
 
 	.PARAMETER Show
 	Show folder merge conflicts
-	Отображать конфликт слияния папок
 
 	.PARAMETER Hide
 	Hide folder merge conflicts
-	Скрывать конфликт слияния папок
 
 	.EXAMPLE
 	MergeConflicts -Show
@@ -1584,8 +1481,7 @@ function FileExtensions
 	MergeConflicts -Hide
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function MergeConflicts
 {
@@ -1621,16 +1517,13 @@ function MergeConflicts
 
 <#
 	.SYNOPSIS
-	Open File Explorer to "This PC" or "Quick access"
-	Открывать проводник для "Этот компьютер" или "Быстрый доступ"
+	Configure how to open File Explorer
 
 	.PARAMETER ThisPC
 	Open File Explorer to "This PC"
-	Открывать проводник для "Этот компьютер"
 
 	.PARAMETER QuickAccess
 	Open File Explorer to "Quick access"
-	Открывать проводник для "Быстрый доступ"
 
 	.EXAMPLE
 	OpenFileExplorerTo -ThisPC
@@ -1639,8 +1532,7 @@ function MergeConflicts
 	OpenFileExplorerTo -QuickAccess
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function OpenFileExplorerTo
 {
@@ -1676,16 +1568,13 @@ function OpenFileExplorerTo
 
 <#
 	.SYNOPSIS
-	Hide/show Cortana button on the taskbar
-	Скрывать/показать кнопку Кортаны на панели задач
+	Configure Cortana button on the taskbar
 
 	.PARAMETER Hide
 	Show Cortana button on the taskbar
-	Показать кнопку Кортаны на панели задач
 
 	.PARAMETER Show
 	Hide Cortana button on the taskbar
-	Скрывать кнопку Кортаны на панели задач
 
 	.EXAMPLE
 	CortanaButton -Hide
@@ -1694,8 +1583,7 @@ function OpenFileExplorerTo
 	CortanaButton -Show
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function CortanaButton
 {
@@ -1731,16 +1619,13 @@ function CortanaButton
 
 <#
 	.SYNOPSIS
-	Do not show/show sync provider notification within File Explorer
-	Не показывать/показывать уведомления поставщика синхронизации в проводнике
+	Configure sync provider notification within File Explorer
 
 	.PARAMETER Hide
 	Do not show sync provider notification within File Explorer
-	Не показывать уведомления поставщика синхронизации в проводнике
 
 	.PARAMETER Show
 	Show sync provider notification within File Explorer
-	Показывать уведомления поставщика синхронизации в проводнике
 
 	.EXAMPLE
 	OneDriveFileExplorerAd -Hide
@@ -1749,8 +1634,7 @@ function CortanaButton
 	OneDriveFileExplorerAd -Show
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function OneDriveFileExplorerAd
 {
@@ -1786,16 +1670,13 @@ function OneDriveFileExplorerAd
 
 <#
 	.SYNOPSIS
-	Hide Task View button on the taskbar
-	Скрыть кнопку Просмотра задач
+	Configure Task View button on the taskbar
 
 	.PARAMETER Hide
 	Show Task View button on the taskbar
-	Не показывать кнопку Просмотра задач
 
 	.PARAMETER Show
 	Do not show Task View button on the taskbar
-	Не показывать кнопку Просмотра задач
 
 	.EXAMPLE
 	TaskViewButton -Hide
@@ -1804,8 +1685,7 @@ function OneDriveFileExplorerAd
 	TaskViewButton -Show
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function TaskViewButton
 {
@@ -1841,16 +1721,13 @@ function TaskViewButton
 
 <#
 	.SYNOPSIS
-	Hide/show People button on the taskbar
-	Скрывать/показывать панель "Люди" на панели задач
+	Configure People button on the taskbar
 
 	.PARAMETER Hide
 	Hide People button on the taskbar
-	Скрывать панель "Люди" на панели задач
 
 	.PARAMETER Show
 	Show People button on the taskbar
-	Показывать панель "Люди" на панели задач
 
 	.EXAMPLE
 	PeopleTaskbar -Hide
@@ -1859,8 +1736,7 @@ function TaskViewButton
 	PeopleTaskbar -Show
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function PeopleTaskbar
 {
@@ -1904,16 +1780,13 @@ function PeopleTaskbar
 
 <#
 	.SYNOPSIS
-	Show/hide seconds on the taskbar clock
-	Отображать/скрывать секунды в системных часах на панели задач
+	Configure seconds on the taskbar clock
 
 	.PARAMETER Hide
 	Hide seconds on the taskbar clock
-	Скрывать секунды в системных часах на панели задач
 
 	.PARAMETER Show
 	Show seconds on the taskbar clock
-	Отображать секунды в системных часах на панели задач
 
 	.EXAMPLE
 	SecondsInSystemClock -Hide
@@ -1922,8 +1795,7 @@ function PeopleTaskbar
 	SecondsInSystemClock -Show
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function SecondsInSystemClock
 {
@@ -1959,16 +1831,13 @@ function SecondsInSystemClock
 
 <#
 	.SYNOPSIS
-	When I snap a window, do not show/show what I can snap next to it
-	При прикреплении окна не показывать/показывать, что можно прикрепить рядом с ним
+	Configure windows snapping
 
 	.PARAMETER Disable
 	When I snap a window, do not show what I can snap next to it
-	При прикреплении окна не показывать, что можно прикрепить рядом с ним
 
 	.PARAMETER Enable
 	When I snap a window, show what I can snap next to it
-	При прикреплении окна не показывать/показывать, что можно прикрепить рядом с ним
 
 	.EXAMPLE
 	SnapAssist -Disable
@@ -1977,8 +1846,7 @@ function SecondsInSystemClock
 	SnapAssist -Enable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function SnapAssist
 {
@@ -2014,16 +1882,13 @@ function SnapAssist
 
 <#
 	.SYNOPSIS
-	Always open the file transfer dialog box in the detailed/compact mode
-	Всегда открывать диалоговое окно передачи файлов в развернутом/свернутом виде
+	Configure the file transfer dialog box
 
 	.PARAMETER Detailed
 	Always open the file transfer dialog box in the detailed mode
-	Всегда открывать диалоговое окно передачи файлов в развернутом виде
 
 	.PARAMETER Compact
 	Always open the file transfer dialog box in the compact mode
-	Всегда открывать диалоговое окно передачи файлов в развернутом виде
 
 	.EXAMPLE
 	FileTransferDialog -Detailed
@@ -2032,8 +1897,7 @@ function SnapAssist
 	FileTransferDialog -Compact
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function FileTransferDialog
 {
@@ -2077,16 +1941,13 @@ function FileTransferDialog
 
 <#
 	.SYNOPSIS
-	Always expand/minimize the ribbon in the File Explorer
-	Всегда разворачивать/сворачивать ленту в проводнике
+	Configure the File Explorer ribbon
 
 	.PARAMETER Expanded
-	Always expand the ribbon in the File Explorer
-	Всегда разворачивать ленту в проводнике
+	Expand the File Explorer ribbon
 
 	.PARAMETER Minimized
-	Always minimize the ribbon in the File Explorer
-	Всегда разворачивать ленту в проводнике
+	Minimize the File Explorer ribbon
 
 	.EXAMPLE
 	FileExplorerRibbon -Expanded
@@ -2095,8 +1956,7 @@ function FileTransferDialog
 	FileExplorerRibbon -Minimized
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function FileExplorerRibbon
 {
@@ -2140,16 +2000,13 @@ function FileExplorerRibbon
 
 <#
 	.SYNOPSIS
-	Display/do not display recycle bin files delete confirmation
-	Запрашивать/не запрашивать подтверждение на удаление файлов в корзину
+	Configure the recycle bin files delete confirmation
 
 	.PARAMETER Disable
-	Display/do not display recycle bin files delete confirmation
-	Запрашивать/не запрашивать подтверждение на удаление файлов в корзину
+	Display/do not display the recycle bin files delete confirmation
 
 	.PARAMETER Enable
-	Display/do not display recycle bin files delete confirmation
-	Запрашивать/не запрашивать подтверждение на удаление файлов в корзину
+	Display/do not display the recycle bin files delete confirmation
 
 	.EXAMPLE
 	RecycleBinDeleteConfirmation -Disable
@@ -2158,8 +2015,7 @@ function FileExplorerRibbon
 	RecycleBinDeleteConfirmation -Enable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function RecycleBinDeleteConfirmation
 {
@@ -2188,7 +2044,6 @@ function RecycleBinDeleteConfirmation
 private static readonly IntPtr hWnd = new IntPtr(65535);
 private const int Msg = 273;
 // Virtual key ID of the F5 in File Explorer
-// Виртуальный код клавиши F5 в проводнике
 private static readonly UIntPtr UIntPtr = new UIntPtr(41504);
 
 [DllImport("user32.dll", SetLastError=true)]
@@ -2196,7 +2051,6 @@ public static extern int PostMessageW(IntPtr hWnd, uint Msg, UIntPtr wParam, Int
 public static void PostMessage()
 {
 	// F5 pressing simulation to refresh the desktop
-	// Симуляция нажатия F5 для обновления рабочего стола
 	PostMessageW(hWnd, Msg, UIntPtr, IntPtr.Zero);
 }
 "@
@@ -2223,22 +2077,18 @@ public static void PostMessage()
 	}
 
 	# Send F5 pressing simulation to refresh the desktop
-	# Симулировать нажатие F5 для обновления рабочего стола
 	[WinAPI.UpdateDesktop]::PostMessage()
 }
 
 <#
 	.SYNOPSIS
-	Hide/show the "3D Objects" folder in "This PC" and "Quick access"
-	Скрыть/отобразить папку "Объемные объекты" в "Этот компьютер" и панели быстрого доступа
+	Configure the "3D Objects" folder in "This PC" and "Quick access"
 
 	.PARAMETER Show
 	Show the "3D Objects" folder in "This PC" and "Quick access"
-	Отобразить папку "Объемные объекты" в "Этот компьютер" и панели быстрого доступа
 
 	.PARAMETER Hide
 	Hide the "3D Objects" folder in "This PC" and "Quick access"
-	Скрыть папку "Объемные объекты" в "Этот компьютер" и панели быстрого доступа
 
 	.EXAMPLE
 	3DObjects -Show
@@ -2247,8 +2097,7 @@ public static void PostMessage()
 	3DObjects -Hide
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function 3DObjects
 {
@@ -2286,16 +2135,13 @@ function 3DObjects
 	}
 
 	# Save all opened folders in order to restore them after File Explorer restart
-	# Сохранить все открытые папки, чтобы восстановить их после перезапуска проводника
 	Clear-Variable -Name OpenedFolders -Force -ErrorAction Ignore
 	$OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
 
 	# In order for the changes to take effect the File Explorer process has to be restarted
-	# Чтобы изменения вступили в силу, необходимо перезапустить процесс проводника
 	Stop-Process -Name explorer -Force
 
 	# Restoring closed folders
-	# Восстановить закрытые папки
 	foreach ($OpenedFolder in $OpenedFolders)
 	{
 		if (Test-Path -Path $OpenedFolder)
@@ -2307,16 +2153,13 @@ function 3DObjects
 
 <#
 	.SYNOPSIS
-	Hide/show frequently used folders in "Quick access"
-	Скрывать/показывать недавно используемые папки на панели быстрого доступа
+	Configure frequently used folders in "Quick access"
 
 	.PARAMETER Show
 	Show frequently used folders in "Quick access"
-	Показывать недавно используемые папки на панели быстрого доступа
 
 	.PARAMETER Hide
 	Hide frequently used folders in "Quick access"
-	Скрывать недавно используемые папки на панели быстрого доступа
 
 	.EXAMPLE
 	QuickAccessFrequentFolders -Show
@@ -2325,8 +2168,7 @@ function 3DObjects
 	QuickAccessFrequentFolders -Hide
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function QuickAccessFrequentFolders
 {
@@ -2362,16 +2204,13 @@ function QuickAccessFrequentFolders
 
 <#
 	.SYNOPSIS
-	Hide/show recently used files in Quick access
-	Скрывать/показывать недавно использовавшиеся файлы на панели быстрого доступа
+	Configure recently used files in Quick access
 
 	.PARAMETER Show
 	Show recently used files in Quick access
-	Показывать недавно использовавшиеся файлы на панели быстрого доступа
 
 	.PARAMETER Hide
 	Hide recently used files in Quick access
-	Скрывать недавно использовавшиеся файлы на панели быстрого доступа
 
 	.EXAMPLE
 	QuickAccessRecentFiles -Show
@@ -2380,8 +2219,7 @@ function QuickAccessFrequentFolders
 	QuickAccessRecentFiles -Hide
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function QuickAccessRecentFiles
 {
@@ -2417,20 +2255,16 @@ function QuickAccessRecentFiles
 
 <#
 	.SYNOPSIS
-	Hide/show the search box or search icon on the taskbar
-	Скрыть/показать поле или значок поиска на панели задач
+	Configure search on the taskbar
 
 	.PARAMETER SearchBox
 	Show the search box on the taskbar
-	Показать поле поиска на панели задач
 
 	.PARAMETER SearchIcon
 	Show the search icon on the taskbar
-	Показать значок поиска на панели задач
 
 	.PARAMETER Hide
-	Hide the search box on the taskbar
-	Скрывать поле поиска на панели задач
+	Hide the search on the taskbar
 
 	.EXAMPLE
 	TaskbarSearch -SearchBox
@@ -2442,8 +2276,7 @@ function QuickAccessRecentFiles
 	TaskbarSearch -Hide
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function TaskbarSearch
 {
@@ -2490,16 +2323,13 @@ function TaskbarSearch
 
 <#
 	.SYNOPSIS
-	Hide/show the "Windows Ink Workspace" button on the taskbar
-	Скрывать/показать кнопку Windows Ink Workspace на панели задач
+	Configure the "Windows Ink Workspace" button on the taskbar
 
 	.PARAMETER Show
-	Show recently used files in Quick access
-	Показывать недавно использовавшиеся файлы на панели быстрого доступа
+	Show the "Windows Ink Workspace" button on the taskbar
 
 	.PARAMETER Hide
-	Hide recently used files in Quick access
-	Скрывать недавно использовавшиеся файлы на панели быстрого доступа
+	Hide the "Windows Ink Workspace" button on the taskbar
 
 	.EXAMPLE
 	WindowsInkWorkspace -Show
@@ -2508,8 +2338,7 @@ function TaskbarSearch
 	WindowsInkWorkspace -Hide
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function WindowsInkWorkspace
 {
@@ -2545,16 +2374,13 @@ function WindowsInkWorkspace
 
 <#
 	.SYNOPSIS
-	Always show/hide all icons in the notification area
-	Всегда отображать/скрывать все значки в области уведомлений
+	Configure icons in the notification area
 
 	.PARAMETER Show
 	Always show all icons in the notification area
-	Всегда отображать все значки в области уведомлений
 
 	.PARAMETER Hide
 	Hide all icons in the notification area
-	Скрывать все значки в области уведомлений
 
 	.EXAMPLE
 	TrayIcons -Show
@@ -2563,8 +2389,7 @@ function WindowsInkWorkspace
 	TrayIcons -Hide
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function TrayIcons
 {
@@ -2601,11 +2426,9 @@ function TrayIcons
 <#
 	.SYNOPSIS
 	Unpin "Microsoft Edge" and "Microsoft Store" from the taskbar
-	Открепить Microsoft Edge и Microsoft Store от панели задач
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function UnpinTaskbarEdgeStore
 {
@@ -2634,41 +2457,53 @@ function UnpinTaskbarEdgeStore
 	}
 
 	# Extract the "Unpin from taskbar" string from shell32.dll
-	# Извлечь строку "Открепить от панели задач" из shell32.dll
 	$LocalizedString = [WinAPI.GetStr]::GetString(5387)
 
 	$Apps = (New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
-	[void]{$Apps | Where-Object -FilterScript {$_.Path -eq "MSEdge"} | ForEach-Object -Process {$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $LocalizedString} | ForEach-Object -Process {$_.DoIt()}}}
-	[void]{$Apps | Where-Object -FilterScript {$_.Name -eq "Microsoft Store"} | ForEach-Object -Process {$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $LocalizedString} | ForEach-Object -Process {$_.DoIt()}}}
+	[void]{$Apps | Where-Object -FilterScript {$_.Path -eq "MSEdge"} | ForEach-Object -Process {
+		$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $LocalizedString} | ForEach-Object -Process {$_.DoIt()}
+	}}
+	[void]{$Apps | Where-Object -FilterScript {$_.Name -eq "Microsoft Store"} | ForEach-Object -Process {
+		$_.Verbs() | Where-Object -FilterScript {$_.Name -eq $LocalizedString} | ForEach-Object -Process {$_.DoIt()}
+	}}
 }
 
 <#
 	.SYNOPSIS
-	View the Control Panel icons by: large icons/category
-	Просмотр иконок Панели управления как: крупные значки/категория
-
-	.PARAMETER LargeIcons
-	View the Control Panel icons by: large icons
-	Просмотр иконок Панели управления как: крупные значки
+	Configure the Control Panel icons view
 
 	.PARAMETER Category
 	View the Control Panel icons by: category
-	Просмотр иконок Панели управления как: категория
+
+	.PARAMETER LargeIcons
+	View the Control Panel icons by: large icons
+
+	.PARAMETER SmallIcons
+	View the Control Panel icons by: Small icons
+
+	.EXAMPLE
+	ControlPanelView -Category
 
 	.EXAMPLE
 	ControlPanelView -LargeIcons
 
 	.EXAMPLE
-	ControlPanelView -Category
+	ControlPanelView -SmallIcons
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function ControlPanelView
 {
 	param
 	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Category"
+		)]
+		[switch]
+		$Category,
+
 		[Parameter(
 			Mandatory = $true,
 			ParameterSetName = "LargeIcons"
@@ -2678,14 +2513,23 @@ function ControlPanelView
 
 		[Parameter(
 			Mandatory = $true,
-			ParameterSetName = "Category"
+			ParameterSetName = "SmallIcons"
 		)]
 		[switch]
-		$Category
+		$SmallIcons
 	)
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
+			"Category"
+		{
+			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
+			{
+				New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Force
+			}
+			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name AllItemsIconView -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name StartupPage -PropertyType DWord -Value 0 -Force
+		}
 		"LargeIcons"
 		{
 			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
@@ -2695,30 +2539,27 @@ function ControlPanelView
 			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name AllItemsIconView -PropertyType DWord -Value 0 -Force
 			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name StartupPage -PropertyType DWord -Value 1 -Force
 		}
-		"Category"
+		"SmallIcons"
 		{
 			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
 			{
 				New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Force
 			}
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name AllItemsIconView -PropertyType DWord -Value 0 -Force
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name StartupPage -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name AllItemsIconView -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name StartupPage -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
 
 <#
 	.SYNOPSIS
-	Set the Windows mode color scheme to the light/dark
-	Установить режим цвета для Windows на светлый/темный
+	Configure the Windows mode color scheme
 
 	.PARAMETER Light
 	Set the Windows mode color scheme to the light
-	Установить режим цвета для Windows на светлый
 
 	.PARAMETER Dark
 	Set the Windows mode color scheme to the dark
-	Установить режим цвета для Windows на темный
 
 	.EXAMPLE
 	WindowsColorScheme -Light
@@ -2727,8 +2568,7 @@ function ControlPanelView
 	WindowsColorScheme -Dark
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function WindowsColorScheme
 {
@@ -2764,16 +2604,13 @@ function WindowsColorScheme
 
 <#
 	.SYNOPSIS
-	Set the default app mode color scheme to the light/dark
-	Установить цвет режима приложений по умолчанию на светлый/темный
+	Configure the default app mode color scheme
 
 	.PARAMETER Light
 	Set the default app mode color scheme to the light
-	Установить цвет режима приложений по умолчанию на светлый
 
 	.PARAMETER Dark
 	Set the default app mode color scheme to the dark
-	Установить цвет режима приложений по умолчанию на темный
 
 	.EXAMPLE
 	AppMode -Light
@@ -2782,8 +2619,7 @@ function WindowsColorScheme
 	AppMode -Dark
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function AppMode
 {
@@ -2819,16 +2655,13 @@ function AppMode
 
 <#
 	.SYNOPSIS
-	Hide/show the "New App Installed" indicator
-	Скрывать/показывать уведомление "Установлено новое приложение"
+	Configure the "New App Installed" indicator
 
 	.PARAMETER Hide
 	Hide the "New App Installed" indicator
-	Скрывать уведомление "Установлено новое приложение"
 
 	.PARAMETER Show
 	Show the "New App Installed" indicator
-	Показывать уведомление "Установлено новое приложение"
 
 	.EXAMPLE
 	NewAppInstalledNotification -Hide
@@ -2837,8 +2670,7 @@ function AppMode
 	NewAppInstalledNotification -Show
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function NewAppInstalledNotification
 {
@@ -2882,16 +2714,13 @@ function NewAppInstalledNotification
 
 <#
 	.SYNOPSIS
-	Hide user/show first sign-in animation after the upgrade
-	Скрывать/показывать анимацию при первом входе в систему после обновления
+	Configure first sign-in animation after the upgrade
 
 	.PARAMETER Hide
-	Hide user/show first sign-in animation after the upgrade
-	Скрывать/показывать анимацию при первом входе в систему после обновления
+	Hide first sign-in animation after the upgrade
 
 	.PARAMETER Show
-	Hide user/show first sign-in animation after the upgrade
-	Скрывать/показывать анимацию при первом входе в систему после обновления
+	Show first sign-in animation after the upgrade
 
 	.EXAMPLE
 	FirstLogonAnimation -Disable
@@ -2900,8 +2729,7 @@ function NewAppInstalledNotification
 	FirstLogonAnimation -Enable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function FirstLogonAnimation
 {
@@ -2937,16 +2765,13 @@ function FirstLogonAnimation
 
 <#
 	.SYNOPSIS
-	Set the quality factor of the JPEG desktop wallpapers to maximum/default
-	Установить коэффициент качества обоев рабочего стола в формате JPEG на максимальный/по умолчанию
+	Configure the quality factor of the JPEG desktop wallpapers
 
 	.PARAMETER Max
 	Set the quality factor of the JPEG desktop wallpapers to maximum
-	Установить коэффициент качества обоев рабочего стола в формате JPEG на максимальный
 
 	.PARAMETER Default
 	Set the quality factor of the JPEG desktop wallpapers to default
-	Установить коэффициент качества обоев рабочего стола в формате JPEG на значение по умолчанию
 
 	.EXAMPLE
 	JPEGWallpapersQuality -Max
@@ -2955,8 +2780,7 @@ function FirstLogonAnimation
 	JPEGWallpapersQuality -Default
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function JPEGWallpapersQuality
 {
@@ -2992,16 +2816,13 @@ function JPEGWallpapersQuality
 
 <#
 	.SYNOPSIS
-	Start Task Manager in the expanded/compact mode
-	Запускать Диспетчера задач в развернутом/свернутом виде
+	Configure the Task Manager mode
 
 	.PARAMETER Expanded
 	Start Task Manager in the expanded mode
-	Запускать Диспетчера задач в развернутом виде
 
 	.PARAMETER Compact
 	Start Task Manager in the compact mode
-	Запускать Диспетчера задач в свернутом виде
 
 	.EXAMPLE
 	TaskManagerWindow -Expanded
@@ -3010,8 +2831,7 @@ function JPEGWallpapersQuality
 	TaskManagerWindow -Compact
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function TaskManagerWindow
 {
@@ -3070,16 +2890,13 @@ function TaskManagerWindow
 
 <#
 	.SYNOPSIS
-	Show/hide a notification when your PC requires a restart to finish updating
-	Показывать/скрывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления
+	Configure a notification when your PC requires a restart to finish updating
 
 	.PARAMETER Hide
 	Hide a notification when your PC requires a restart to finish updating
-	Скрывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления
 
 	.PARAMETER Show
 	Show a notification when your PC requires a restart to finish updating
-	Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления
 
 	.EXAMPLE
 	RestartNotification -Hide
@@ -3088,8 +2905,7 @@ function TaskManagerWindow
 	RestartNotification -Show
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function RestartNotification
 {
@@ -3125,16 +2941,13 @@ function RestartNotification
 
 <#
 	.SYNOPSIS
-	Do not add/add the "- Shortcut" suffix to the file name of created shortcuts
-	Нe дoбaвлять/добавлять "- яpлык" к имени coздaвaeмых яpлыков
+	Configure the "- Shortcut" suffix adding to the name of the created shortcuts
 
 	.PARAMETER Disable
 	Do not add the "- Shortcut" suffix to the file name of created shortcuts
-	Нe дoбaвлять "- яpлык" к имени coздaвaeмых яpлыков
 
 	.PARAMETER Enable
 	Add the "- Shortcut" suffix to the file name of created shortcuts
-	Добавлять "- яpлык" к имени coздaвaeмых яpлыков
 
 	.EXAMPLE
 	ShortcutsSuffix -Disable
@@ -3143,8 +2956,7 @@ function RestartNotification
 	ShortcutsSuffix -Enable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function ShortcutsSuffix
 {
@@ -3184,16 +2996,13 @@ function ShortcutsSuffix
 
 <#
 	.SYNOPSIS
-	Use/do not use the PrtScn button to open screen snipping
-	Использовать/не использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана
+	Configure the PrtScn button usage
 
 	.PARAMETER Disable
 	Use the PrtScn button to open screen snipping
-	Использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана
 
 	.PARAMETER Enable
 	Do not use the PrtScn button to open screen snipping
-	Не использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана
 
 	.EXAMPLE
 	PrtScnSnippingTool -Disable
@@ -3202,8 +3011,7 @@ function ShortcutsSuffix
 	PrtScnSnippingTool -Enable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function PrtScnSnippingTool
 {
@@ -3239,16 +3047,13 @@ function PrtScnSnippingTool
 
 <#
 	.SYNOPSIS
-	Let/do not let use a different input method for each app window
-	Позволить/не позволять выбирать метод ввода для каждого окна
+	Configure an input method for each app window
 
 	.PARAMETER Enable
 	Let use a different input method for each app window
-	Позволить выбирать метод ввода для каждого окна
 
 	.PARAMETER Disable
 	Do not let use a different input method for each app window
-	Не позволять выбирать метод ввода для каждого окна
 
 	.EXAMPLE
 	AppsLanguageSwitch -Disable
@@ -3257,8 +3062,7 @@ function PrtScnSnippingTool
 	AppsLanguageSwitch -Enable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function AppsLanguageSwitch
 {
@@ -3297,21 +3101,21 @@ function AppsLanguageSwitch
 <#
 	.SYNOPSIS
 	Uninstall/install OneDrive
-	Удалить/установить OneDrive
 
 	.PARAMETER Uninstall
 	Uninstall OneDrive
-	Удалить OneDrive
 
 	.PARAMETER Install
 	Install OneDrive
-	Установить OneDrive
 
 	.EXAMPLE
 	OneDrive -Uninstall
 
 	.EXAMPLE
 	OneDrive -Install
+
+	.NOTES
+	Machine-wide
 #>
 function OneDrive
 {
@@ -3336,16 +3140,18 @@ function OneDrive
 	{
 		"Uninstall"
 		{
-			[string]$UninstallString = Get-Package -Name "Microsoft OneDrive" -ProviderName Programs -ErrorAction Ignore | ForEach-Object -Process {$_.Meta.Attributes["UninstallString"]}
+			[xml]$Uninstall = Get-Package -Name "Microsoft OneDrive" -ProviderName Programs -ErrorAction Ignore | ForEach-Object -Process {$_.SwidTagText}
+			[xml]$Uninstall = $Uninstall.SoftwareIdentity.InnerXml
+			[string]$UninstallString = $Uninstall.Meta.UninstallString
 			if ($UninstallString)
 			{
 				Write-Verbose -Message $Localization.OneDriveUninstalling -Verbose
+
 				Stop-Process -Name OneDrive -Force -ErrorAction Ignore
 				Stop-Process -Name OneDriveSetup -Force -ErrorAction Ignore
 				Stop-Process -Name FileCoAuth -Force -ErrorAction Ignore
 
 				# Getting link to the OneDriveSetup.exe and its' argument(s)
-				# Получаем ссылку на OneDriveSetup.exe и его аргумент(ы)
 				[string[]]$OneDriveSetup = ($UninstallString -Replace("\s*/",",/")).Split(",").Trim()
 				if ($OneDriveSetup.Count -eq 2)
 				{
@@ -3357,7 +3163,6 @@ function OneDrive
 				}
 
 				# Getting the OneDrive user folder path
-				# Получаем путь до папки пользователя OneDrive
 				$OneDriveUserFolder = Get-ItemPropertyValue -Path HKCU:\Environment -Name OneDrive
 				if ((Get-ChildItem -Path $OneDriveUserFolder | Measure-Object).Count -eq 0)
 				{
@@ -3378,20 +3183,16 @@ function OneDrive
 				Unregister-ScheduledTask -TaskName *OneDrive* -Confirm:$false
 
 				# Getting the OneDrive folder path
-				# Получаем путь до папки OneDrive
 				$OneDriveFolder = Split-Path -Path (Split-Path -Path $OneDriveSetup[0] -Parent)
 
 				# Save all opened folders in order to restore them after File Explorer restarting
-				# Сохранить все открытые папки, чтобы восстановить их после перезапуска проводника
 				Clear-Variable -Name OpenedFolders -Force -ErrorAction Ignore
 				$OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
 
 				# Terminate File Explorer process
-				# Завершить процесс проводника
 				TASKKILL /F /IM explorer.exe
 
 				# Attempt to unregister FileSyncShell64.dll and remove
-				# Попытка разрегистрировать FileSyncShell64.dll и удалить
 				$FileSyncShell64dlls = Get-ChildItem -Path "$OneDriveFolder\*\amd64\FileSyncShell64.dll" -Force
 				foreach ($FileSyncShell64dll in $FileSyncShell64dlls.FullName)
 				{
@@ -3405,7 +3206,6 @@ function OneDrive
 				}
 
 				# Restoring closed folders
-				# Восстановляем закрытые папки
 				Start-Process -FilePath explorer
 				foreach ($OpenedFolder in $OpenedFolders)
 				{
@@ -3434,7 +3234,6 @@ function OneDrive
 				else
 				{
 					# Downloading the latest OneDrive
-					# Скачивание последней версии OneDrive
 					try
 					{
 						if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
@@ -3472,16 +3271,13 @@ function OneDrive
 #region StorageSense
 <#
 	.SYNOPSIS
-	Turn on/turn off Storage Sense
-	Включить/отключить Контроль памяти
+	Configure Storage Sense
 
 	.PARAMETER Disable
 	Turn off Storage Sense
-	Отключить Контроль памяти
 
 	.PARAMETER Enable
 	Turn on off Storage Sense
-	Включить Контроль памяти
 
 	.EXAMPLE
 	StorageSense -Disable
@@ -3490,8 +3286,7 @@ function OneDrive
 	StorageSense -Enable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function StorageSense
 {
@@ -3535,16 +3330,13 @@ function StorageSense
 
 <#
 	.SYNOPSIS
-	Run Storage Sense every month/during low free disk space
-	Запускать Контроль памяти каждый месяц/когда остается мало место на диске
+	Configure Storage Sense running
 
 	.PARAMETER Disable
 	Run Storage Sense every month/during low free disk space
-	Запускать Контроль памяти каждый месяц/когда остается мало место на диске
 
 	.PARAMETER Enable
 	Run Storage Sense every month/during low free disk space
-	Запускать Контроль памяти каждый месяц/когда остается мало место на диске
 
 	.EXAMPLE
 	StorageSenseFrequency -Month
@@ -3553,8 +3345,7 @@ function StorageSense
 	StorageSenseFrequency -Default
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function StorageSenseFrequency
 {
@@ -3596,16 +3387,13 @@ function StorageSenseFrequency
 
 <#
 	.SYNOPSIS
-	Delete/do not delete temporary files that apps aren't using
-	Удалять/не удалять временные файлы, не используемые в приложениях
+	Configure temporary files deletion
 
 	.PARAMETER Enable
 	Delete temporary files that apps aren't using
-	Удалять временные файлы, не используемые в приложениях
 
 	.PARAMETER Disable
 	Do not delete temporary files that apps aren't using
-	Не удалять временные файлы, не используемые в приложениях
 
 	.EXAMPLE
 	StorageSenseTempFiles -Enable
@@ -3614,8 +3402,7 @@ function StorageSenseFrequency
 	StorageSenseTempFiles -Disable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function StorageSenseTempFiles
 {
@@ -3657,16 +3444,13 @@ function StorageSenseTempFiles
 
 <#
 	.SYNOPSIS
-	Delete/do not delete files in recycle bin if they have been there for over 30 days
-	Удалять/не удалять файлы из корзины, если они находятся в корзине более 30 дней
+	Configure files in recycle bin deletion
 
 	.PARAMETER Disable
 	Delete files in recycle bin if they have been there for over 30 days
-	Удалять файлы из корзины, если они находятся в корзине более 30 дней
 
 	.PARAMETER Enable
 	Do not delete files in recycle bin if they have been there for over 30 days
-	Не удалять файлы из корзины, если они находятся в корзине более 30 дней
 
 	.EXAMPLE
 	StorageSenseRecycleBin -Enable
@@ -3675,8 +3459,7 @@ function StorageSenseTempFiles
 	StorageSenseRecycleBin -Disable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function StorageSenseRecycleBin
 {
@@ -3721,22 +3504,22 @@ function StorageSenseRecycleBin
 
 <#
 	.SYNOPSIS
-	Disable (if the device is not a laptop)/enable hibernation
-	Отключить (если устройство не является ноутбуком)/включить режим гибернации
+	Configure hibernation
 
 	.PARAMETER Disable
-	Disable hibernation if the device is not a laptop
-	Отключить режим гибернации, если устройство не является ноутбуком
+	Disable hibernation (if the device is not a laptop)
 
 	.PARAMETER Enable
 	Enable hibernation
-	Включить режим гибернации
 
 	.EXAMPLE
 	Hibernate -Enable
 
 	.EXAMPLE
 	Hibernate -Disable
+
+	.NOTES
+	Current user
 #>
 function Hibernate
 {
@@ -3775,16 +3558,13 @@ function Hibernate
 
 <#
 	.SYNOPSIS
-	Change the %TEMP% environment variable path to the "%SystemDrive%\Temp"/default value
-	Изменить путь переменной среды для %TEMP% на "%SystemDrive%\Temp"/по умолчанию
+	Configure the %TEMP% environment variable path
 
 	.PARAMETER SystemDrive
 	Change the %TEMP% environment variable path to "%SystemDrive%\Temp"
-	Изменить путь переменной среды для %TEMP% на "%SystemDrive%\Temp"
 
 	.PARAMETER Default
 	Change the %TEMP% environment variable path to "%LOCALAPPDATA%\Temp"
-	Изменить путь переменной среды для %TEMP% на "%LOCALAPPDATA%\Temp"
 
 	.EXAMPLE
 	TempFolder -SystemDrive
@@ -3794,7 +3574,6 @@ function Hibernate
 
 	.NOTES
 	Machine-wide
-	Для всех пользователей
 #>
 function TempFolder
 {
@@ -3820,9 +3599,9 @@ function TempFolder
 		"SystemDrive"
 		{
 			# Restart the Printer Spooler service (Spooler)
-			# Перезапустить службу "Диспетчер печати" (Spooler)
 			Restart-Service -Name Spooler -Force
 
+			# Stop OneDrive processes
 			Stop-Process -Name OneDrive -Force -ErrorAction Ignore
 			Stop-Process -Name FileCoAuth -Force -ErrorAction Ignore
 
@@ -3831,9 +3610,10 @@ function TempFolder
 				New-Item -Path $env:SystemDrive\Temp -ItemType Directory -Force
 			}
 
-			# Copy all imported module folders to the new temp folder. Only when using the function within PowerShell 7.x
-			# Скопировать все папки импортированных модулей в новое расположение временных файлов. Только при использовании функции в рамках PowerShell 7.x
-			Get-ChildItem -Path $env:LOCALAPPDATA\Temp -Force | Where-Object -FilterScript {$_.Name -like "*remoteIpMoProxy*"} | ForEach-Object -Process {Copy-Item $_.FullName -Destination $env:SystemDrive\Temp -Recurse -Force}
+			# Copy all imported module folders to the new %TEMP% folder. For PowerShell 7.x using only
+			Get-ChildItem -Path $env:LOCALAPPDATA\Temp -Force | Where-Object -FilterScript {$_.Name -like "*remoteIpMoProxy*"} | ForEach-Object -Process {
+				Copy-Item $_.FullName -Destination $env:SystemDrive\Temp -Recurse -Force
+			}
 
 			Remove-Item -Path $env:SystemRoot\Temp -Recurse -Force -ErrorAction Ignore
 			Get-Item -Path $env:LOCALAPPDATA\Temp -Force -ErrorAction Ignore | Where-Object -FilterScript {$_.LinkType -ne "SymbolicLink"} | Remove-Item -Recurse -Force -ErrorAction Ignore
@@ -3859,7 +3639,6 @@ function TempFolder
 							"0"
 							{
 								# Create a symbolic link to the %SystemDrive%\Temp folder
-								# Создать символическую ссылку к папке %SystemDrive%\Temp
 								try
 								{
 									Get-Item -Path $env:LOCALAPPDATA\Temp -Force | Where-Object -FilterScript {$_.LinkType -ne "SymbolicLink"} | Remove-Item -Recurse -Force -ErrorAction Ignore
@@ -3883,7 +3662,6 @@ function TempFolder
 			else
 			{
 				# Create a symbolic link to the %SystemDrive%\Temp folder
-				# Создать символическую ссылку к папке %SystemDrive%\Temp
 				New-Item -Path $env:LOCALAPPDATA\Temp -ItemType SymbolicLink -Value $env:SystemDrive\Temp -Force
 			}
 
@@ -3906,7 +3684,6 @@ function TempFolder
 		"Default"
 		{
 			# Remove a symbolic link to the %SystemDrive%\Temp folder
-			# Удалить символическую ссылку к папке %SystemDrive%\Temp
 			if (Get-Item -Path $env:LOCALAPPDATA\Temp -Force -ErrorAction Ignore | Where-Object -FilterScript {$_.LinkType -eq "SymbolicLink"})
 			{
 				(Get-Item -Path $env:LOCALAPPDATA\Temp -Force).Delete()
@@ -3922,9 +3699,9 @@ function TempFolder
 			}
 
 			# Restart the Printer Spooler service (Spooler)
-			# Перезапустить службу "Диспетчер печати" (Spooler)
 			Restart-Service -Name Spooler -Force
 
+			# Stop OneDrive processes
 			Stop-Process -Name OneDrive -Force -ErrorAction Ignore
 			Stop-Process -Name FileCoAuth -Force -ErrorAction Ignore
 
@@ -3955,22 +3732,22 @@ function TempFolder
 
 <#
 	.SYNOPSIS
-	Disable/enable Windows 260 character path limit
-	Отключить/включить ограничение Windows на 260 символов в пути
+	Configure the Windows 260 character path limit
 
 	.PARAMETER Disable
-	Disable Windows 260 character path limit
-	Включить ограничение Windows на 260 символов в пути
+	Disable the Windows 260 character path limit
 
 	.PARAMETER Enable
-	Enable Windows 260 character path limit
-	Включить ограничение Windows на 260 символов в пути
+	Enable the Windows 260 character path limit
 
 	.EXAMPLE
 	Win32LongPathLimit -Disable
 
 	.EXAMPLE
 	Win32LongPathLimit -Enable
+
+	.NOTES
+	Machine-wide
 #>
 function Win32LongPathLimit
 {
@@ -4006,22 +3783,22 @@ function Win32LongPathLimit
 
 <#
 	.SYNOPSIS
-	Display/do not dispaly the Stop error information on the BSoD
-	Отображать/не отображать Stop-ошибку при появлении BSoD
+	Configure the Stop error information display on the BSoD
 
 	.PARAMETER Disable
-	Disable Windows 260 characters path limit
-	Включить ограничение Windows на 260 символов в пути
+	Do not display the Stop error information on the BSoD
 
 	.PARAMETER Enable
-	Enable Windows 260 characters path limit
-	Включить ограничение Windows на 260 символов в пути
+	Display the Stop error information on the BSoD
 
 	.EXAMPLE
 	BSoDStopError -Disable
 
 	.EXAMPLE
 	BSoDStopError -Enable
+
+	.NOTES
+	Machine-wide
 #>
 function BSoDStopError
 {
@@ -4057,22 +3834,22 @@ function BSoDStopError
 
 <#
 	.SYNOPSIS
-	Change "Behavior of the elevation prompt for administrators in Admin Approval Mode" to "Elevate without prompting"/"Prompt for consent for non-Windows binaries"
-	Изменить "Поведение запроса на повышение прав для администраторов в режиме одобрения администратором" на "Повышение прав без запроса"/"Запрос согласия для исполняемых файлов, отличных от Windows"
+	Confgure UAC
 
 	.PARAMETER Disable
-	Change "Behavior of the elevation prompt for administrators in Admin Approval Mode" to "Elevate without prompting"
-	Изменить "Поведение запроса на повышение прав для администраторов в режиме одобрения администратором" на "Повышение прав без запроса"
+	Choose when to be notified about changes to your computer: never notify
 
 	.PARAMETER Enable
-	Change "Behavior of the elevation prompt for administrators in Admin Approval Mode" to "Prompt for consent for non-Windows binaries"
-	Изменить "Поведение запроса на повышение прав для администраторов в режиме одобрения администратором" на "Запрос согласия для исполняемых файлов, отличных от Windows"
+	Choose when to be notified about changes to your computer: notify me only when apps try to make changes to my computer
 
 	.EXAMPLE
 	AdminApprovalMode -Disable
 
 	.EXAMPLE
 	AdminApprovalMode -Enable
+
+	.NOTES
+	Machine-wide
 #>
 function AdminApprovalMode
 {
@@ -4108,22 +3885,22 @@ function AdminApprovalMode
 
 <#
 	.SYNOPSIS
-	Turn on/turn off access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled
-	Включить/отключить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами
+	Configure access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled
 
 	.PARAMETER Disable
 	Turn off access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled
-	Отключить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами
 
 	.PARAMETER Enable
 	Turn on access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled
-	Включить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами
 
 	.EXAMPLE
 	MappedDrivesAppElevatedAccess -Disable
 
 	.EXAMPLE
 	MappedDrivesAppElevatedAccess -Enable
+
+	.NOTES
+	Machine-wide
 #>
 function MappedDrivesAppElevatedAccess
 {
@@ -4159,22 +3936,22 @@ function MappedDrivesAppElevatedAccess
 
 <#
 	.SYNOPSIS
-	Opt-out of/opt-in to the Delivery Optimization-assisted updates downloading
-	Отключить/включить загрузку обновлений с помощью оптимизации доставки
+	Configure Delivery Optimization
 
 	.PARAMETER Disable
-	Opt-out of to the Delivery Optimization-assisted updates downloading
-	Отказаться от загрузки обновлений с помощью оптимизации доставки
+	Turn off Delivery Optimization
 
 	.PARAMETER Enable
-	Opt-in to the Delivery Optimization-assisted updates downloading
-	Включить загрузку обновлений с помощью оптимизации доставки
+	Turn on Delivery Optimization
 
 	.EXAMPLE
 	DeliveryOptimization -Disable
 
 	.EXAMPLE
 	DeliveryOptimization -Enable
+
+	.NOTES
+	Current user
 #>
 function DeliveryOptimization
 {
@@ -4211,22 +3988,22 @@ function DeliveryOptimization
 
 <#
 	.SYNOPSIS
-	Always/never wait for the network at computer startup and logon for workgroup networks
-	Всегда/никогда не ждать сеть при запуске и входе в систему для рабочих групп
+	Configure the Group Policy processing
 
 	.PARAMETER Disable
 	Never wait for the network at computer startup and logon for workgroup networks
-	Никогда не ждать сеть при запуске и входе в систему для рабочих групп
 
 	.PARAMETER Enable
 	Always wait for the network at computer startup and logon for workgroup networks
-	Всегда ждать сеть при запуске и входе в систему для рабочих групп
 
 	.EXAMPLE
 	WaitNetworkStartup -Disable
 
 	.EXAMPLE
 	WaitNetworkStartup -Enable
+
+	.NOTES
+	Machine-wide
 #>
 function WaitNetworkStartup
 {
@@ -4272,16 +4049,13 @@ function WaitNetworkStartup
 
 <#
 	.SYNOPSIS
-	Do not let/let Windows decide which printer should be the default one
-	Не разрешать/разрешать Windows решать, какой принтер должен использоваться по умолчанию
+	Configure whether Windows decide which printer should be the default one
 
 	.PARAMETER Disable
 	Do not let Windows decide which printer should be the default one
-	Не разрешать Windows решать, какой принтер должен использоваться по умолчанию
 
 	.PARAMETER Enable
 	Let Windows decide which printer should be the default one
-	Разрешать Windows решать, какой принтер должен использоваться по умолчанию
 
 	.EXAMPLE
 	WindowsManageDefaultPrinter -Disable
@@ -4290,8 +4064,7 @@ function WaitNetworkStartup
 	WindowsManageDefaultPrinter -Enable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function WindowsManageDefaultPrinter
 {
@@ -4327,16 +4100,13 @@ function WindowsManageDefaultPrinter
 
 <#
 	.SYNOPSIS
-	Disable/enable Windows features
-	Отключить/включить компоненты Windows
+	Configure Windows features
 
 	.PARAMETER Disable
 	Disable Windows features
-	Отключить компоненты Windows
 
 	.PARAMETER Enable
 	Enable Windows features
-	Включить компоненты Windows
 
 	.EXAMPLE
 	WindowsFeatures -Disable
@@ -4346,12 +4116,7 @@ function WindowsManageDefaultPrinter
 
 	.NOTES
 	A pop-up dialog box enables the user to select features
-	Current user only
-
-	Используется всплывающее диалоговое окно, позволяющее пользователю отмечать компоненты
-	Только для текущего пользователя
-
-	Made by https://github.com/oz-zo, iNNOKENTIY21
+	Current user
 #>
 function WindowsFeatures
 {
@@ -4376,11 +4141,9 @@ function WindowsFeatures
 
 	#region Variables
 	# Initialize an array list to store the selected Windows features
-	# Создать массив для выбранных компонентов Windows
 	$SelectedFeatures = New-Object -TypeName System.Collections.ArrayList($null)
 
 	# The following FODv2 items will have their checkboxes checked
-	# Следующие дополнительные компоненты будут иметь чекбоксы отмеченными
 	[string[]]$CheckedFeatures = @(
 		# Legacy Components
 		# Компоненты прежних версий
@@ -4390,8 +4153,8 @@ function WindowsFeatures
 			Media Features
 			Компоненты работы с мультимедиа
 
-			If you want to leave "Multimedia settings" in the advanced settings of Power Options do not uninstall this feature
-			Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах электропитания, не удаляйте этот компонент
+			If you want to leave "Multimedia settings" in the advanced settings of Power Options do not disable this feature
+			Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах электропитания, не отключайте этот компонент
 		#>
 		"MediaPlayback",
 
@@ -4411,7 +4174,6 @@ function WindowsFeatures
 
 	#region XAML Markup
 	# The section defines the design of the upcoming dialog box
-	# Раздел, определяющий форму диалогового окна
 	[xml]$XAML = '
 	<Window
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -4544,7 +4306,6 @@ function WindowsFeatures
 			$CheckBox.IsChecked = $true
 
 			# If feature checked add to the array list
-			# Если компонент выделен, то добавить в массив
 			if ($CheckBox.IsChecked)
 			{
 				[void]$SelectedFeatures.Add($Feature)
@@ -4572,8 +4333,7 @@ function WindowsFeatures
 
 	Write-Verbose -Message $Localization.Patient -Verbose
 
-	# Получаем общий список дополнительных компонентов, согласно условиям
-	# Getting a list of features according to the conditions
+	# Getting list of all optional features according to the conditions
 	$OFS = "|"
 	$Features = Get-WindowsOptionalFeature -Online | Where-Object -FilterScript {
 		($_.State -in $State) -and ($_.FeatureName -cmatch $CheckedFeatures)
@@ -4592,22 +4352,19 @@ function WindowsFeatures
 	$Button.Content = $ButtonContent
 	$Button.Add_Click({& $ButtonAdd_Click})
 
-	$Window.Title = $Localization.WindowsFeaturesWindowTitle
+	$Window.Title = $Localization.WindowsFeaturesTitle
 	$Form.ShowDialog() | Out-Null
 }
 
 <#
 	.SYNOPSIS
-	Uninstall/install Features On Demand v2 (FODv2) capabilities
-	Удалить/установить компоненты "Функции по требованию" (FODv2)
+	Configure optional features
 
 	.PARAMETER Uninstall
-	Uninstall Features On Demand v2 (FODv2) capabilities
-	Удалить компоненты "Функции по требованию" (FODv2)
+	Uninstall optional features
 
 	.PARAMETER Install
-	Install Features On Demand v2 (FODv2) capabilities
-	Установить компоненты "Функции по требованию" (FODv2)
+	Install optional features
 
 	.EXAMPLE
 	WindowsCapabilities -Uninstall
@@ -4617,12 +4374,7 @@ function WindowsFeatures
 
 	.NOTES
 	A pop-up dialog box enables the user to select features
-	Current user only
-
-	Используется всплывающее диалоговое окно, позволяющее пользователю отмечать компоненты
-	Только для текущего пользователя
-
-	Made by https://github.com/oz-zo, iNNOKENTIY21
+	Current user
 #>
 function WindowsCapabilities
 {
@@ -4647,11 +4399,9 @@ function WindowsCapabilities
 
 	#region Variables
 	# Initialize an array list to store the selected FODv2 items
-	# Создать массив дополнительных компонентов для выбранных элементов
 	$SelectedCapabilities = New-Object -TypeName System.Collections.ArrayList($null)
 
 	# The following FODv2 items will have their checkboxes checked
-	# Следующие дополнительные компоненты будут иметь чекбоксы отмеченными
 	[string[]]$CheckedCapabilities = @(
 		# Steps Recorder
 		# Средство записи действий
@@ -4693,7 +4443,6 @@ function WindowsCapabilities
 	)
 
 	# The following FODv2 items will be excluded from the display
-	# Следующие дополнительные компоненты будут исключены из отображения
 	[string[]]$ExcludedCapabilities = @(
 		# The DirectX Database to configure and optimize apps when multiple Graphics Adapters are present
 		# База данных DirectX для настройки и оптимизации приложений при наличии нескольких графических адаптеров
@@ -4727,7 +4476,6 @@ function WindowsCapabilities
 
 	#region XAML Markup
 	# The section defines the design of the upcoming dialog box
-	# Раздел, определяющий форму диалогового окна
 	[xml]$XAML = '
 	<Window
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -4883,17 +4631,14 @@ function WindowsCapabilities
 			[void]$PanelContainer.Children.Add($StackPanel)
 
 			# If capability checked add to the array list
-			# Если компонент выделен, то добавить в массив
 			if ($UnCheckedCapabilities | Where-Object -FilterScript {$Capability.Name -like $_})
 			{
 				$CheckBox.IsChecked = $false
 				# Exit function if item is not checked
-				# Выход из функции, если элемент не выделен
 				return
 			}
 
 			# If capability checked add to the array list
-			# Если компонент выделен, то добавить в массив
 			[void]$SelectedCapabilities.Add($Capability)
 		}
 	}
@@ -4919,8 +4664,7 @@ function WindowsCapabilities
 
 	Write-Verbose -Message $Localization.Patient -Verbose
 
-	# Получаем общий список дополнительных компонентов, согласно условиям
-	# Getting a list of capabilities according to the conditions
+	# Getting list of all capabilities according to the conditions
 	$OFS = "|"
 	$Capabilities = Get-WindowsCapability -Online | Where-Object -FilterScript {
 		($_.State -eq $State) -and (($_.Name -cmatch $UncheckedCapabilities) -or ($_.Name -cmatch $CheckedCapabilities) -and ($_.Name -cnotmatch $ExcludedCapabilities))
@@ -4939,22 +4683,19 @@ function WindowsCapabilities
 	$Button.Content = $ButtonContent
 	$Button.Add_Click({& $ButtonAdd_Click})
 
-	$Window.Title = $Localization.FODWindowTitle
+	$Window.Title = $Localization.OptionalFeaturesTitle
 	$Form.ShowDialog() | Out-Null
 }
 
 <#
 	.SYNOPSIS
-	Opt-in to/opt-out of Microsoft Update service, so to receive updates for other Microsoft products
-	Подключаться/не подключаться к службе Microsoft Update так, чтобы при обновлении Windows получать обновления для других продуктов Майкрософт
+	Configure receiving updates for other Microsoft products when you update Windows
 
 	.PARAMETER Disable
-	Opt-out of Microsoft Update service, so to receive updates for other Microsoft products
-	Не подключаться к службе Microsoft Update так, чтобы при обновлении Windows получать обновления для других продуктов Майкрософт
+	Do not receive updates for other Microsoft products when you update Windows
 
 	.PARAMETER Enable
-	Opt-in to Microsoft Update service, so to receive updates for other Microsoft products
-	Подключаться к службе Microsoft Update так, чтобы при обновлении Windows получать обновления для других продуктов Майкрософт
+	Receive updates for other Microsoft products when you update Windows
 
 	.EXAMPLE
 	UpdateMicrosoftProducts -Disable
@@ -4963,8 +4704,7 @@ function WindowsCapabilities
 	UpdateMicrosoftProducts -Enable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function UpdateMicrosoftProducts
 {
@@ -5003,16 +4743,13 @@ function UpdateMicrosoftProducts
 
 <#
 	.SYNOPSIS
-	Do not let/let UWP apps run in the background
-	Не разрешать/разрешать UWP-приложениям работать в фоновом режиме
+	Configure UWP apps running in the background
 
 	.PARAMETER Disable
-	Do not let UWP apps run in the background, except those are saved in $ExcludedBackgroundApps variable
-	Не разрешать UWP-приложениям работать в фоновом режиме, кроме тех, что сохранены в переменной $ExcludedBackgroundApps
+	Do not let UWP apps run in the background
 
 	.PARAMETER Enable
 	Let all UWP apps run in the background
-	Разрешать всем UWP-приложениям работать в фоновом режиме
 
 	.EXAMPLE
 	BackgroundUWPApps -Disable
@@ -5021,8 +4758,7 @@ function UpdateMicrosoftProducts
 	BackgroundUWPApps -Enable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function BackgroundUWPApps
 {
@@ -5089,7 +4825,6 @@ function BackgroundUWPApps
 			$OFS = " "
 
 			# Open "Background apps" page
-			# Открыть раздел "Фоновые приложения"
 			Start-Process -FilePath ms-settings:privacy-backgroundapps
 		}
 		"Enable"
@@ -5103,22 +4838,22 @@ function BackgroundUWPApps
 
 <#
 	.SYNOPSIS
-	Set the power management scheme on "High performance" (if device is a desktop)/"Balanced"
-	Установить схему управления питанием на "Высокая производительность" (если устройство является стационарным ПК)/"Сбалансированная"
+	Configure the power management scheme
 
 	.PARAMETER High
 	Set the power management scheme on "High performance" if device is a desktop
-	Установить схему управления питанием на "Высокая производительность"
 
 	.PARAMETER Balanced
 	Set the power management scheme on "Balanced"
-	Установить схему управления питанием на Сбалансированная"
 
 	.EXAMPLE
 	PowerManagementScheme -High
 
 	.EXAMPLE
 	PowerManagementScheme -Balanced
+
+	.NOTES
+	Current user
 #>
 function PowerManagementScheme
 {
@@ -5157,22 +4892,23 @@ function PowerManagementScheme
 
 <#
 	.SYNOPSIS
-	Use/do not use latest installed .NET runtime for all apps
+	Configure the latest installed .NET runtime for all apps usage
 	Использовать/не использовать последнюю установленную среду выполнения .NET для всех приложений
 
 	.PARAMETER Disable
 	Do not use latest installed .NET runtime for all apps
-	Не использовать последнюю установленную среду выполнения .NET для всех приложений
 
 	.PARAMETER Enable
 	Use use latest installed .NET runtime for all apps
-	Использовать последнюю установленную среду выполнения .NET для всех приложений
 
 	.EXAMPLE
 	LatestInstalled.NET -Disable
 
 	.EXAMPLE
 	LatestInstalled.NET -Enable
+
+	.NOTES
+	Machine-wide
 #>
 function LatestInstalled.NET
 {
@@ -5210,22 +4946,25 @@ function LatestInstalled.NET
 
 <#
 	.SYNOPSIS
-	Do not allow/allow the computer (if device is not a laptop) to turn off the network adapters to save power
-	Запретить/разрешить отключение всех сетевых адаптеров для экономии энергии (если устройство не является ноутбуком)
+	Configure all network adapters to be disabled to save power
 
 	.PARAMETER Disable
-	Do not allow the computer (if device is not a laptop) to turn off the network adapters to save power
-	Запретить отключение всех сетевых адаптеров для экономии энергии (если устройство не является ноутбуком)
+	Do not allow the computer to turn off the network adapters to save power
 
 	.PARAMETER Enable
-	Allow the computer (if device is not a laptop) to turn off the network adapters to save power
-	Разрешить отключение всех сетевых адаптеров для экономии энергии (если устройство не является ноутбуком)
+	Allow the computer to turn off the network adapters to save power
 
 	.EXAMPLE
 	PCTurnOffDevice -Disable
 
 	.EXAMPLE
 	PCTurnOffDevice -Enable
+
+	.NOTES
+	If device is not a laptop
+
+	.NOTES
+	Current user
 #>
 function PCTurnOffDevice
 {
@@ -5277,22 +5016,22 @@ function PCTurnOffDevice
 
 <#
 	.SYNOPSIS
-	Set/reset the default input method to the English language
-	Установить/сбросить метод ввода по умолчанию на английский язык
+	Configure override for default input method
 
 	.PARAMETER English
-	Set the default input method to the English language
-	Установить метод ввода по умолчанию на английский язык
+	Override for default input method: English
 
 	.PARAMETER Default
-	Reset the default input method to the English language
-	Сбросить метод ввода по умолчанию на английский язык
+	Override for default input method: use langiage list
 
 	.EXAMPLE
 	SetInputMethod -English
 
 	.EXAMPLE
 	SetInputMethod -Default
+
+	.NOTES
+	Current user
 #>
 function SetInputMethod
 {
@@ -5328,20 +5067,16 @@ function SetInputMethod
 
 <#
 	.SYNOPSIS
-	Change the location of the user folders to any disks root of your choice using the interactive menu
-	Изменить расположение пользовательских папок в корень любого диска на выбор с помощью интерактивного меню
+	Configure user folders location
 
 	.PARAMETER Root
-	Change the location of the user folders to any disks root of your choice using the interactive menu
-	Изменить расположение пользовательских папок в корень любого диска на выбор с помощью интерактивного меню
+	Move user folders location to the root of any drive using the interactive menu
 
 	.PARAMETER Custom
-	Select a folder for the location of the user folders manually using a folder browser dialog
-	Выбрать папку для расположения пользовательских папок вручную, используя диалог "Обзор папок"
+	Select folders for user folders location manually using a folder browser dialog
 
 	.PARAMETER Default
-	Change the location of the user folders to the default values
-	Изменить расположение пользовательских папок на значения по умолчанию
+	Change user folders location to the default values
 
 	.EXAMPLE
 	SetUserShellFolderLocation -Root
@@ -5354,10 +5089,7 @@ function SetInputMethod
 
 	.NOTES
 	User files or folders won't me moved to a new location
-	Current user only
-
-	Пользовательские файлы и папки не будут перемещены в новое расположение
-	Только для текущего пользователя
+	Current user
 #>
 function SetUserShellFolderLocation
 {
@@ -5389,18 +5121,15 @@ function SetUserShellFolderLocation
 	<#
 		.SYNOPSIS
 		Change the location of the each user folder using SHSetKnownFolderPath function
-		Изменить расположение каждой пользовательской папки, используя функцию "SHSetKnownFolderPath"
 
 		.PARAMETER RemoveDesktopINI
 		The RemoveDesktopINI argument removes desktop.ini in the old user shell folder
-		Аргумент "RemoveDesktopINI" удаляет файл desktop.ini из старой пользовательской папки
 
 		.EXAMPLE
 		UserShellFolder -UserFolder Desktop -FolderPath "$env:SystemDrive:\Desktop" -RemoveDesktopINI
 
 		.NOTES
 		User files or folders won't me moved to a new location
-		Пользовательские файлы не будут перенесены в новое расположение
 
 		https://docs.microsoft.com/en-us/windows/win32/api/shlobj_core/nf-shlobj_core-shgetknownfolderpath
 	#>
@@ -5423,8 +5152,6 @@ function SetUserShellFolderLocation
 			$RemoveDesktopINI
 		)
 
-		function KnownFolderPath
-		{
 		<#
 			.SYNOPSIS
 			Redirect user folders to a new location
@@ -5432,6 +5159,8 @@ function SetUserShellFolderLocation
 			.EXAMPLE
 			KnownFolderPath -KnownFolder Desktop -Path "$env:SystemDrive:\Desktop"
 		#>
+		function KnownFolderPath
+		{
 			[CmdletBinding()]
 			param
 			(
@@ -5494,7 +5223,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 		}
 
 		# Contents of the hidden desktop.ini file for each type of user folders
-		# Содержимое скрытого файла desktop.ini для каждого типа пользовательских папок
 		$DesktopINI = @{
 			"Desktop"	=	"",
 							"[.ShellClassInfo]",
@@ -5530,7 +5258,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 		}
 
 		# Determining the current user folder path
-		# Определяем текущее значение пути пользовательской папки
 		$UserShellFolderRegValue = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name $UserShellFoldersRegName[$UserFolder]
 		if ($UserShellFolderRegValue -ne $FolderPath)
 		{
@@ -5540,14 +5267,12 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			}
 
 			# Creating a new folder if there is no one
-			# Создаем новую папку, если таковая отсутствует
 			if (-not (Test-Path -Path $FolderPath))
 			{
 				New-Item -Path $FolderPath -ItemType Directory -Force
 			}
 
 			# Removing old desktop.ini
-			# Удаляем старый desktop.ini
 			if ($RemoveDesktopINI.IsPresent)
 			{
 				Remove-Item -Path "$UserShellFolderRegValue\desktop.ini" -Force
@@ -5564,16 +5289,12 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 	<#
 		.SYNOPSIS
-		The "Show menu" function using PowerShell with the up/down arrow keys and enter key to make a selection
-		Функция "Show menu" для перемещения с помощью стрелочек между объектами и Enter для выбора
+		The "Show menu" function with the up/down arrow keys and enter key to make a selection
 
 		.EXAMPLE
 		ShowMenu -Menu $ListOfItems -Default $DefaultChoice
 
 		.NOTES
-		Doesn't work in PowerShell ISE
-		Не работает в PowerShell ISE
-
 		https://qna.habr.com/user/MaxKozlov
 	#>
 	function ShowMenu
@@ -5647,12 +5368,10 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 		"Root"
 		{
 			# Store all drives letters to use them within ShowMenu function
-			# Сохранить все буквы диска, чтобы использовать их в функции ShowMenu
 			Write-Verbose -Message $Localization.RetrievingDrivesList -Verbose
 			$DriveLetters = @((Get-Disk | Where-Object -FilterScript {$_.BusType -ne "USB"} | Get-Partition | Get-Volume | Where-Object -FilterScript {$null -ne $_.DriveLetter}).DriveLetter | Sort-Object)
 
 			# If the number of disks is more than one, set the second drive in the list as default drive
-			# Если количество дисков больше одного, сделать второй диск в списке диском по умолчанию
 			if ($DriveLetters.Count -gt 1)
 			{
 				$Script:Default = 1
@@ -5663,7 +5382,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			}
 
 			# Desktop
-			# Рабочий стол
 			Write-Verbose -Message $Localization.DesktopDriveSelect -Verbose
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
@@ -5689,7 +5407,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			}
 
 			# Documents
-			# Документы
 			Write-Verbose -Message $Localization.DocumentsDriveSelect -Verbose
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
@@ -5715,7 +5432,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			}
 
 			# Downloads
-			# Загрузки
 			Write-Verbose -Message $Localization.DownloadsDriveSelect -Verbose
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
@@ -5741,7 +5457,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			}
 
 			# Music
-			# Музыка
 			Write-Verbose -Message $Localization.MusicDriveSelect -Verbose
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
@@ -5767,7 +5482,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			}
 
 			# Pictures
-			# Изображения
+
 			Write-Verbose -Message $Localization.PicturesDriveSelect -Verbose
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
@@ -5793,7 +5508,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			}
 
 			# Videos
-			# Видео
 			Write-Verbose -Message $Localization.VideosDriveSelect -Verbose
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
@@ -5821,7 +5535,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 		"Custom"
 		{
 			# Desktop
-			# Рабочий стол
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
@@ -5842,7 +5555,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					$FolderBrowserDialog.RootFolder = "MyComputer"
 
 					# Focus on open file dialog
-					# Перевести фокус на диалог открытия файла
 					$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
 					$FolderBrowserDialog.ShowDialog($Focus)
 
@@ -5859,7 +5571,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			}
 
 			# Documents
-			# Документы
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
@@ -5880,7 +5591,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					$FolderBrowserDialog.RootFolder = "MyComputer"
 
 					# Focus on open file dialog
-					# Перевести фокус на диалог открытия файла
 					$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
 					$FolderBrowserDialog.ShowDialog($Focus)
 
@@ -5897,7 +5607,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			}
 
 			# Downloads
-			# Загрузки
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
@@ -5918,7 +5627,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					$FolderBrowserDialog.RootFolder = "MyComputer"
 
 					# Focus on open file dialog
-					# Перевести фокус на диалог открытия файла
 					$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
 					$FolderBrowserDialog.ShowDialog($Focus)
 
@@ -5935,7 +5643,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			}
 
 			# Music
-			# Музыка
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
@@ -5956,7 +5663,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					$FolderBrowserDialog.RootFolder = "MyComputer"
 
 					# Focus on open file dialog
-					# Перевести фокус на диалог открытия файла
 					$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
 					$FolderBrowserDialog.ShowDialog($Focus)
 
@@ -5973,7 +5679,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			}
 
 			# Pictures
-			# Изображения
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
@@ -5994,7 +5699,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					$FolderBrowserDialog.RootFolder = "MyComputer"
 
 					# Focus on open file dialog
-					# Перевести фокус на диалог открытия файла
 					$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
 					$FolderBrowserDialog.ShowDialog($Focus)
 
@@ -6011,7 +5715,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			}
 
 			# Videos
-			# Видео
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
@@ -6032,7 +5735,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					$FolderBrowserDialog.RootFolder = "MyComputer"
 
 					# Focus on open file dialog
-					# Перевести фокус на диалог открытия файла
 					$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
 					$FolderBrowserDialog.ShowDialog($Focus)
 
@@ -6051,7 +5753,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 		"Default"
 		{
 			# Desktop
-			# Рабочий стол
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
@@ -6075,7 +5776,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			}
 
 			# Documents
-			# Документы
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
@@ -6099,7 +5799,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			}
 
 			# Downloads
-			# Загрузки
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
@@ -6123,7 +5822,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			}
 
 			# Music
-			# Музыка
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
@@ -6147,7 +5845,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			}
 
 			# Pictures
-			# Изображения
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
@@ -6171,7 +5868,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			}
 
 			# Videos
-			# Видео
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
@@ -6199,16 +5895,13 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 <#
 	.SYNOPSIS
-	Save screenshots by pressing Win+PrtScr to the Desktop/Pictures folder
-	Сохранять скриншоты по нажатию Win+PrtScr в папку "Рабочий стол"/"Изображения"
+	Choose where to save screenshots by pressing Win+PrtScr
 
 	.PARAMETER Desktop
-	Save screenshots by pressing Win+PrtScr to the Desktop folder
-	Сохранять скриншоты по нажатию Win+PrtScr в папку "Рабочий стол"
+	Save screenshots by pressing Win+PrtScr on the Desktop
 
 	.PARAMETER Default
-	Save screenshots by pressing Win+PrtScr to the Pictures folder
-	Сохранять скриншоты по нажатию Win+PrtScr в папку "Изображения"
+	Save screenshots by pressing Win+PrtScr in the Pictures folder
 
 	.EXAMPLE
 	WinPrtScrFolder -Desktop
@@ -6217,8 +5910,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 	WinPrtScrFolder -Default
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function WinPrtScrFolder
 {
@@ -6253,16 +5945,13 @@ function WinPrtScrFolder
 	}
 
 	# Save all opened folders in order to restore them after File Explorer restart
-	# Сохранить все открытые папки, чтобы восстановить их после перезапуска проводника
 	Clear-Variable -Name OpenedFolders -Force -ErrorAction Ignore
 	$OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
 
 	# In order for the changes to take effect the File Explorer process has to be restarted
-	# Чтобы изменения вступили в силу, необходимо перезапустить процесс проводника
 	Stop-Process -Name explorer -Force
 
 	# Restoring closed folders
-	# Восстановить закрытые папки
 	foreach ($OpenedFolder in $OpenedFolders)
 	{
 		if (Test-Path -Path $OpenedFolder)
@@ -6274,19 +5963,13 @@ function WinPrtScrFolder
 
 <#
 	.SYNOPSIS
-	Run troubleshooters automatically, then notify
-	Автоматически запускать средства устранения неполадок, а затем уведомлять
-
-	Ask me before running troubleshooters
-	Спрашивать перед запуском средств устранения неполадок
+	Configure recommended troubleshooting
 
 	.PARAMETER Automatic
 	Run troubleshooters automatically, then notify
-	Автоматически запускать средства устранения неполадок, а затем уведомлять
 
 	.PARAMETER Default
 	Ask me before running troubleshooters
-	Спрашивать перед запуском средств устранения неполадок
 
 	.EXAMPLE
 	RecommendedTroubleshooting -Automatic
@@ -6295,8 +5978,8 @@ function WinPrtScrFolder
 	RecommendedTroubleshooting -Default
 
 	.NOTES
+	Current user
 	In order this feature to work the OS level of diagnostic data gathering must be set to "Optional diagnostic data"
-	Необходимо установить уровень сбора диагностических сведений ОС на "Необязательные диагностические данные", чтобы работала данная функция
 #>
 function RecommendedTroubleshooting
 {
@@ -6338,22 +6021,18 @@ function RecommendedTroubleshooting
 	}
 
 	# Set the OS level of diagnostic data gathering to "Optional diagnostic data"
-	# Установить уровень сбора диагностических сведений ОС на "Необязательные диагностические данные"
 	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 3 -Force
 }
 
 <#
 	.SYNOPSIS
-	Launch/do not launch folder windows in a separate process
-	Запускать/не запускать окна с папками в отдельном процессе
+	Configure folder windows launching in a separate process
 
 	.PARAMETER Enable
 	Launch launch folder windows in a separate process
-	Запускать окна с папками в отдельном процессе
 
 	.PARAMETER Disable
 	Do not launch folder windows in a separate process
-	Не запускать окна с папками в отдельном процессе
 
 	.EXAMPLE
 	FoldersLaunchSeparateProcess -Enable
@@ -6362,8 +6041,7 @@ function RecommendedTroubleshooting
 	FoldersLaunchSeparateProcess -Disable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function FoldersLaunchSeparateProcess
 {
@@ -6399,22 +6077,22 @@ function FoldersLaunchSeparateProcess
 
 <#
 	.SYNOPSIS
-	Disable and delete/enable reserved storage after the next update installation
-	Отключить и удалить/включить зарезервированное хранилище после следующей установки обновлений
+	Configure reserved storage after the next update installation
 
 	.PARAMETER Enable
 	Enable reserved storage after the next update installation
-	Включить зарезервированное хранилище после следующей установки обновлений
 
 	.PARAMETER Disable
 	Disable and delete reserved storage after the next update installation
-	Отключить и удалить зарезервированное хранилище после следующей установки обновлений
 
 	.EXAMPLE
 	ReservedStorage -Enable
 
 	.EXAMPLE
 	ReservedStorage -Disable
+
+	.NOTES
+	Current user
 #>
 function ReservedStorage
 {
@@ -6457,16 +6135,13 @@ function ReservedStorage
 
 <#
 	.SYNOPSIS
-	Disable/enable help lookup via F1
-	Отключить/включить открытие справки по нажатию F1
+	Configure help look up via F1
 
 	.PARAMETER Enable
 	Enable help lookup via F1
-	Включить открытие справки по нажатию F1
 
 	.PARAMETER Disable
 	Disable help lookup via F1
-	Отключить открытие справки по нажатию F1
 
 	.EXAMPLE
 	F1HelpPage -Enable
@@ -6475,8 +6150,7 @@ function ReservedStorage
 	F1HelpPage -Disable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function F1HelpPage
 {
@@ -6516,16 +6190,13 @@ function F1HelpPage
 
 <#
 	.SYNOPSIS
-	Enable/disable Num Lock at startup
-	Включить/отключить Num Lock при загрузке
+	Configure Num Lock at startup
 
 	.PARAMETER Enable
 	Enable Num Lock at startup
-	Включить Num Lock при загрузке
 
 	.PARAMETER Disable
 	Disable Num Lock at startup
-	Отключить Num Lock при загрузке
 
 	.EXAMPLE
 	NumLock -Enable
@@ -6534,8 +6205,7 @@ function F1HelpPage
 	NumLock -Disable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function NumLock
 {
@@ -6571,22 +6241,22 @@ function NumLock
 
 <#
 	.SYNOPSIS
-	Enable/disable Caps Lock
-	Включить/отключить Num Lock
+	Configure Caps Lock
 
 	.PARAMETER Enable
 	Enable Capsm Lock
-	Включить Caps Lock
 
 	.PARAMETER Disable
 	Disable Caps Lock
-	Отключить Caps Lock
 
 	.EXAMPLE
 	CapsLock -Enable
 
 	.EXAMPLE
 	CapsLock -Disable
+
+	.NOTES
+	Machine-wide
 #>
 function CapsLock
 {
@@ -6622,16 +6292,13 @@ function CapsLock
 
 <#
 	.SYNOPSIS
-	Disable/enable StickyKey after tapping the Shift key 5 times
-	Отключить/включить залипание клавиши Shift после 5 нажатий
+	Configure Sticky Keys
 
 	.PARAMETER Enable
-	Enable StickyKey after tapping the Shift key 5 times
-	Включить залипание клавиши Shift после 5 нажатий
+	Enable Sticky Keys after tapping the Shift key 5 times
 
 	.PARAMETER Disable
-	Disable StickyKey after tapping the Shift key 5 times
-	Отключить залипание клавиши Shift после 5 нажатий
+	Disable Sticky Keys after tapping the Shift key 5 times
 
 	.EXAMPLE
 	StickyShift -Enable
@@ -6640,8 +6307,7 @@ function CapsLock
 	StickyShift -Disable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function StickyShift
 {
@@ -6677,16 +6343,13 @@ function StickyShift
 
 <#
 	.SYNOPSIS
-	Disable/enable AutoPlay for all media and devices
-	Отключить/включить автозапуск для всех носителей и устройств
+	Configure AutoPlay for all media and devices
 
 	.PARAMETER Enable
 	Disable/enable AutoPlay for all media and devices
-	Отключить/включить автозапуск для всех носителей и устройств
 
 	.PARAMETER Disable
 	Disable/enable AutoPlay for all media and devices
-	Отключить/включить автозапуск для всех носителей и устройств
 
 	.EXAMPLE
 	Autoplay -Enable
@@ -6695,8 +6358,7 @@ function StickyShift
 	Autoplay -Disable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function Autoplay
 {
@@ -6732,22 +6394,22 @@ function Autoplay
 
 <#
 	.SYNOPSIS
-	Disable/enable thumbnail cache removal
-	Отключить/включить удаление кэша миниатюр
+	Configure thumbnail cache removal
 
 	.PARAMETER Enable
 	Enable thumbnail cache removal
-	Включить удаление кэша миниатюр
 
 	.PARAMETER Disable
 	Disable thumbnail cache removal
-	Отключить удаление кэша миниатюр
 
 	.EXAMPLE
 	ThumbnailCacheRemoval -Enable
 
 	.EXAMPLE
 	ThumbnailCacheRemoval -Disable
+
+	.NOTES
+	Machine-wide
 #>
 function ThumbnailCacheRemoval
 {
@@ -6783,16 +6445,13 @@ function ThumbnailCacheRemoval
 
 <#
 	.SYNOPSIS
-	Enable/disable automatically saving my restartable apps when signing out and restart them after signing in
-	Включить/отключить автоматическое сохранение моих перезапускаемых приложений при выходе из системы и перезапускать их после выхода
+	Configure restartable apps when signing out and restart them after signing in
 
 	.PARAMETER Enable
 	Enable automatically saving my restartable apps when signing out and restart them after signing in
-	Включить автоматическое сохранение моих перезапускаемых приложений при выходе из системы и перезапускать их после выхода
 
 	.PARAMETER Disable
 	Disable automatically saving my restartable apps when signing out and restart them after signing in
-	Отключить автоматическое сохранение моих перезапускаемых приложений при выходе из системы и перезапускать их после выхода
 
 	.EXAMPLE
 	SaveRestartableApps -Enable
@@ -6801,8 +6460,7 @@ function ThumbnailCacheRemoval
 	SaveRestartableApps -Disable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function SaveRestartableApps
 {
@@ -6838,22 +6496,22 @@ function SaveRestartableApps
 
 <#
 	.SYNOPSIS
-	Enable/disable "Network Discovery" and "File and Printers Sharing" for workgroup networks
-	Включить/отключить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп
+	Configure "Network Discovery" and "File and Printers Sharing" for workgroup networks
 
 	.PARAMETER Enable
 	Enable "Network Discovery" and "File and Printers Sharing" for workgroup networks
-	Включить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп
 
 	.PARAMETER Disable
 	Disable "Network Discovery" and "File and Printers Sharing" for workgroup networks
-	Отключить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп
 
 	.EXAMPLE
 	NetworkDiscovery -Enable
 
 	.EXAMPLE
 	NetworkDiscovery -Disable
+
+	.NOTES
+	Current user
 #>
 function NetworkDiscovery
 {
@@ -6908,22 +6566,22 @@ function NetworkDiscovery
 
 <#
 	.SYNOPSIS
-	Enable/disable automatically adjusting active hours for me based on daily usage
-	Включить/отключить автоматическое изменение периода активности для этого устройства на основе действий
+	Configure automatically adjusting active hours for me based on daily usage
 
 	.PARAMETER Enable
 	Enable automatically adjusting active hours for me based on daily usage
-	Включить автоматическое изменение периода активности для этого устройства на основе действий
 
 	.PARAMETER Disable
 	Disable automatically adjusting active hours for me based on daily usage
-	Отключить автоматическое изменение периода активности для этого устройства на основе действий
 
 	.EXAMPLE
 	SmartActiveHours -Enable
 
 	.EXAMPLE
 	SmartActiveHours -Disable
+
+	.NOTES
+	Machine-wide
 #>
 function SmartActiveHours
 {
@@ -6959,22 +6617,22 @@ function SmartActiveHours
 
 <#
 	.SYNOPSIS
-	Enable/disable restarting this device as soon as possible when a restart is required to install an update
-	Включить/отключить перезапуск этого устройства как можно быстрее, если для установки обновления требуется перезагрузка
+	Configure restarting this device as soon as possible when a restart is required to install an update
 
 	.PARAMETER Enable
 	Enable restarting this device as soon as possible when a restart is required to install an update
-	Включить перезапуск этого устройства как можно быстрее, если для установки обновления требуется перезагрузка
 
 	.PARAMETER Disable
 	Disable restarting this device as soon as possible when a restart is required to install an update
-	Отключить перезапуск этого устройства как можно быстрее, если для установки обновления требуется перезагрузка
 
 	.EXAMPLE
 	DeviceRestartAfterUpdate -Enable
 
 	.EXAMPLE
 	DeviceRestartAfterUpdate -Disable
+
+	.NOTES
+	Machine-wide
 #>
 function DeviceRestartAfterUpdate
 {
@@ -7012,22 +6670,22 @@ function DeviceRestartAfterUpdate
 #region WSL
 <#
 	.SYNOPSIS
-	Install/uninstall the Windows Subsystem for Linux (WSL)
-	Установить/удалить подсистему Windows для Linux (WSL)
+	Configure Windows Subsystem for Linux (WSL)
 
 	.PARAMETER Enable
 	Install the Windows Subsystem for Linux (WSL)
-	Установить подсистему Windows для Linux (WSL)
 
 	.PARAMETER Disable
 	Uninstall the Windows Subsystem for Linux (WSL)
-	Удалить подсистему Windows для Linux (WSL)
 
 	.EXAMPLE
 	WSL -Enable
 
 	.EXAMPLE
 	WSL -Disable
+
+	.NOTES
+	Machine-wide
 #>
 function WSL
 {
@@ -7050,11 +6708,9 @@ function WSL
 
 	$WSLFeatures = @(
 		# Windows Subsystem for Linux
-		# Подсистема Windows для Linux
 		"Microsoft-Windows-Subsystem-Linux",
 
 		# Virtual Machine Platform
-		# Поддержка платформы для виртуальных машин
 		"VirtualMachinePlatform"
 	)
 
@@ -7081,21 +6737,18 @@ function WSL
 <#
 	.SYNOPSIS
 	Download, install the Linux kernel update package and set WSL 2 as the default version when installing a new Linux distribution
-	Скачать, установить пакет обновления ядра Linux и установить WSL 2 как версию по умолчанию при установке нового дистрибутива Linux
 
 	.NOTES
+	Machine-wide
 	To receive kernel updates, enable the Windows Update setting: "Receive updates for other Microsoft products when you update Windows"
-	Чтобы получать обновления ядра, включите параметр Центра обновления Windows: "Получение обновлений для других продуктов Майкрософт при обновлении Windows"
 #>
 function EnableWSL2
 {
 	$WSLFeatures = @(
 		# Windows Subsystem for Linux
-		# Подсистема Windows для Linux
 		"Microsoft-Windows-Subsystem-Linux",
 
 		# Virtual Machine Platform
-		# Поддержка платформы для виртуальных машин
 		"VirtualMachinePlatform"
 	)
 	$WSLFeaturesDisabled = Get-WindowsOptionalFeature -Online | Where-Object {($_.FeatureName -in $WSLFeatures) -and ($_.State -eq "Disabled")}
@@ -7105,7 +6758,6 @@ function EnableWSL2
 		if ((Get-Package -Name "Windows Subsystem for Linux Update" -ProviderName msi -Force -ErrorAction Ignore).Status -ne "Installed")
 		{
 			# Downloading and installing the Linux kernel update package
-			# Скачивание и установка пакета обновления ядра Linux
 			try
 			{
 				if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
@@ -7139,7 +6791,6 @@ function EnableWSL2
 		else
 		{
 			# Set WSL 2 as the default architecture when installing a new Linux distribution
-			# Установить WSL 2 как архитектуру по умолчанию при установке нового дистрибутива Linux
 			wsl --set-default-version 2
 		}
 	}
@@ -7149,22 +6800,22 @@ function EnableWSL2
 #region Start menu
 <#
 	.SYNOPSIS
-	Hide/show recently added apps in the Start menu
-	Скрывать/показывать недавно добавленные приложения в меню "Пуск"
+	Configure recently added apps in the Start menu
 
 	.PARAMETER Hide
 	Hide recently added apps in the Start menu
-	Скрывать недавно добавленные приложения в меню "Пуск"
 
 	.PARAMETER Show
 	Show recently added apps in the Start menu
-	Показывать недавно добавленные приложения в меню "Пуск"
 
 	.EXAMPLE
 	RecentlyAddedApps -Hide
 
 	.EXAMPLE
 	RecentlyAddedApps -Show
+
+	.NOTES
+	Machine-wide
 #>
 function RecentlyAddedApps
 {
@@ -7204,22 +6855,22 @@ function RecentlyAddedApps
 
 <#
 	.SYNOPSIS
-	Hide/show app suggestions in the Start menu
-	Скрывать/показывать рекомендации в меню "Пуск"
+	Configure app suggestions in the Start menu
 
 	.PARAMETER Hide
 	Hide app suggestions in the Start menu
-	Скрывать рекомендации в меню "Пуск"
 
 	.PARAMETER Show
 	Show app suggestions in the Start menu
-	Показывать рекомендации в меню "Пуск"
 
 	.EXAMPLE
 	AppSuggestions -Hide
 
 	.EXAMPLE
 	AppSuggestions -Show
+
+	.NOTES
+	Current user
 #>
 function AppSuggestions
 {
@@ -7255,24 +6906,24 @@ function AppSuggestions
 
 <#
 	.SYNOPSIS
-	Run the Command Prompt shortcut from the Start menu as Administrator/user
-	Запускать ярлык командной строки в меню "Пуск" от имени Администратора/пользователя
+	Configure how to run the Windows PowerShell shortcut
 
 	.PARAMETER Elevated
-	Run the Command Prompt shortcut from the Start menu as Administrator
-	Запускать ярлык командной строки в меню "Пуск" от имени Администратора
+	Run the Windows PowerShell shortcut from the Start menu as Administrator
 
 	.PARAMETER NonElevated
-	Run the Command Prompt shortcut from the Start menu as user
-	Запускать ярлык командной строки в меню "Пуск" от имени пользователя
+	Run the Windows PowerShell shortcut from the Start menu as user
 
 	.EXAMPLE
-	RunCMDShortcut -Elevated
+	RunPowerShellShortcut -Elevated
 
 	.EXAMPLE
-	RunCMDShortcut -NonElevated
+	RunPowerShellShortcut -NonElevated
+
+	.NOTES
+	Current user
 #>
-function RunCMDShortcut
+function RunPowerShellShortcut
 {
 	param
 	(
@@ -7295,75 +6946,67 @@ function RunCMDShortcut
 	{
 		"Elevated"
 		{
-			[byte[]]$bytes = Get-Content -Path "$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" -AsByteStream -Raw
+			[byte[]]$bytes = Get-Content -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Windows PowerShell\Windows PowerShell.lnk" -AsByteStream -Raw
 			$bytes[0x15] = $bytes[0x15] -bor 0x20
-			Set-Content -Path "$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" -Value $bytes -AsByteStream -Force
+			Set-Content -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Windows PowerShell\Windows PowerShell.lnk" -Value $bytes -AsByteStream -Force
 		}
 		"NonElevated"
 		{
-			[byte[]]$bytes = Get-Content -Path "$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" -AsByteStream -Raw
+			[byte[]]$bytes = Get-Content -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Windows PowerShell\Windows PowerShell.lnk" -AsByteStream -Raw
 			$bytes[0x15] = $bytes[0x15] -bxor 0x20
-			Set-Content -Path "$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" -Value $bytes -AsByteStream -Force
+			Set-Content -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Windows PowerShell\Windows PowerShell.lnk" -Value $bytes -AsByteStream -Force
 		}
 	}
-}
-
-# Unpin all the Start tiles
-# Открепить все ярлыки от начального экрана
-function UnpinAllStartTiles
-{
-	$StartMenuLayout = @"
-<LayoutModificationTemplate xmlns:defaultlayout="http://schemas.microsoft.com/Start/2014/FullDefaultLayout" xmlns:start="http://schemas.microsoft.com/Start/2014/StartLayout" Version="1" xmlns="http://schemas.microsoft.com/Start/2014/LayoutModification">
-<LayoutOptions StartTileGroupCellWidth="6" />
-	<DefaultLayoutOverride>
-		<StartLayoutCollection>
-			<defaultlayout:StartLayout GroupCellWidth="6" />
-		</StartLayoutCollection>
-	</DefaultLayoutOverride>
-</LayoutModificationTemplate>
-"@
-	$StartMenuLayoutPath = "$env:TEMP\StartMenuLayout.xml"
-	# Saving StartMenuLayout.xml in UTF-8 encoding
-	# Сохраняем StartMenuLayout.xml в кодировке UTF-8
-	Set-Content -Path $StartMenuLayoutPath -Value $StartMenuLayout -Encoding utf8 -Force
-
-	# Temporarily disable changing the Start menu layout
-	# Временно выключаем возможность редактировать начальный экран меню "Пуск"
-	if (-not (Test-Path -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
-	{
-		New-Item -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Force
-	}
-	New-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name LockedStartLayout -Value 1 -Force
-	New-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name StartLayoutFile -Value $StartMenuLayoutPath -Force
-
-	# Restart the Start menu
-	# Перезапустить меню "Пуск"
-	Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
-	Start-Sleep -Seconds 3
-
-	Remove-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name LockedStartLayout -Force -ErrorAction Ignore
-	Remove-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name StartLayoutFile -Force -ErrorAction Ignore
-
-	Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
-	Get-Item -Path $StartMenuLayoutPath | Remove-Item -Force -ErrorAction Ignore
 }
 
 <#
 	.SYNOPSIS
-	Extract string from shell32.dll using its' number
-	Извлечь строку из shell32.dll, зная ее номер
+	Configure tiles on Start
+
+	.PARAMETER ControlPanel
+	Pin the "Control Panel" shortcut to Start
+
+	.PARAMETER DevicesPrinters
+	Pin the "Devices & Printers" shortcut to Start
+
+	.PARAMETER PowerShell
+	Pin the "Windows PowerShell" shortcut to Start
+
+	.PARAMETER UnpinAll
+	Unpin all the Start tiles
 
 	.EXAMPLE
-	[WinAPI.GetStr]::GetString(12712)
+	PinToStart -Tiles ControlPanel, DevicesPrinters, PowerShell
+
+	.EXAMPLE
+	PinToStart -UnpinAll
+
+	.NOTES
+	Do not combine none of pinning and unpinning arguments
+	Current user
 #>
-function GetLocalizedString
+function PinToStart
 {
+	[CmdletBinding()]
+	param
+	(
+		[Parameter(Mandatory = $false)]
+		[ValidateSet("ControlPanel", "DevicesPrinters", "PowerShell")]
+		[string[]]
+		$Tiles,
+
+		[Parameter(Mandatory = $false)]
+		[switch]
+		$UnpinAll
+	)
+
+	# Extract string from shell32.dll using its' number
+	# https://github.com/Disassembler0/Win10-Initial-Setup-Script/issues/8#issue-227159084
 	$Signature = @{
 		Namespace = "WinAPI"
 		Name = "GetStr"
 		Language = "CSharp"
 		MemberDefinition = @"
-// https://github.com/Disassembler0/Win10-Initial-Setup-Script/issues/8#issue-227159084
 [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
 public static extern IntPtr GetModuleHandle(string lpModuleName);
 [DllImport("user32.dll", CharSet = CharSet.Auto)]
@@ -7376,74 +7019,16 @@ public static string GetString(uint strId)
 	return sb.ToString();
 }
 "@
-	}
+}
 	if (-not ("WinAPI.GetStr" -as [type]))
 	{
 		Add-Type @Signature -Using System.Text
 	}
-}
 
-<#
-	.SYNOPSIS
-	Pin the "Control Panel" shortcut to Start within syspin
-	Закрепить ярлык "Панели управления" на начальном экране с помощью syspin
-
-	.EXAMPLE
-	PinControlPanel
-#>
-function PinControlPanel
-{
-	# Extract the "Control Panel" string from shell32.dll
-	# Извлечь строку "Панель управления" из shell32.dll
-	GetLocalizedString
-	$ControlPanel = [WinAPI.GetStr]::GetString(12712)
-
-	Write-Verbose -Message ($Localization.ShortcutPinning -f $ControlPanel) -Verbose
-
-	# Check whether the Control Panel shortcut was ever pinned
-	# Проверка: закреплялся ли когда-нибудь ярлык панели управления
-	if (Test-Path -Path "$env:APPDATA\Microsoft\Windows\Start menu\Programs\$ControlPanel.lnk")
-	{
-		$Arguments = @"
-	"$env:APPDATA\Microsoft\Windows\Start menu\Programs\$ControlPanel.lnk" "51201"
-"@
-		Start-Process -FilePath $PSScriptRoot\syspin.exe -WindowStyle Hidden -ArgumentList $Arguments -Wait
-	}
-	else
-	{
-		# The "Pin" verb is not available on the control.exe file so the shortcut has to be created
-		# Глагол "Закрепить на начальном экране" недоступен для control.exe, поэтому необходимо создать ярлык
-		$Shell = New-Object -ComObject Wscript.Shell
-		$Shortcut = $Shell.CreateShortcut("$env:SystemRoot\System32\$ControlPanel.lnk")
-		$Shortcut.TargetPath = "control"
-		$Shortcut.Save()
-
-		$Arguments = @"
-	"$env:SystemRoot\System32\$ControlPanel.lnk" "51201"
-"@
-		Start-Process -FilePath $PSScriptRoot\syspin.exe -WindowStyle Hidden -ArgumentList $Arguments -Wait
-
-		Remove-Item -Path "$env:SystemRoot\System32\$ControlPanel.lnk" -Force -ErrorAction Ignore
-	}
-}
-
-<#
-	.SYNOPSIS
-	Pin the old-style "Devices and Printers" shortcut to Start within syspin
-	Закрепить ярлык старого формата "Устройства и принтеры" на начальном экране с помощью syspin
-
-	.EXAMPLE
-	PinDevicesPrinters
-#>
-function PinDevicesPrinters
-{
 	# Extract the "Devices and Printers" string from shell32.dll
-	# Извлечь строку "Устройства и принтеры" из shell32.dll
-	GetLocalizedString
 	$DevicesPrinters = [WinAPI.GetStr]::GetString(30493)
 
-	Write-Verbose -Message ($Localization.ShortcutPinning -f $DevicesPrinters) -Verbose
-
+	# Create the old-style "Devices and Printers" shortcut in the Start menu
 	$Shell = New-Object -ComObject Wscript.Shell
 	$Shortcut = $Shell.CreateShortcut("$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesPrinters.lnk")
 	$Shortcut.TargetPath = "control"
@@ -7451,37 +7036,169 @@ function PinDevicesPrinters
 	$Shortcut.IconLocation = "$env:SystemRoot\system32\DeviceCenter.dll"
 	$Shortcut.Save()
 
-	# Pause for 3 sec, unless the "Devices and Printers" shortcut won't displayed in the Start menu
-	# Пауза на 3 с, иначе ярлык "Устройства и принтеры" не будет отображаться в меню "Пуск"
 	Start-Sleep -Seconds 3
 
-	$Arguments = @"
-	"$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesPrinters.lnk" "51201"
-"@
-	Start-Process -FilePath $PSScriptRoot\syspin.exe -WindowStyle Hidden -ArgumentList $Arguments -Wait
-}
+	# Export the current Start layout
+	$StartLayout = "$PSScriptRoot\StartLayout.xml"
+	Export-StartLayout -Path $StartLayout -UseDesktopApplicationID
 
-<#
-	.SYNOPSIS
-	Pin the "Command Prompt" shortcut to Start within syspin
-	Закрепить ярлык "Командная строка" на начальном экране с помощью syspin
+	$Parameters = @(
+		# Control Panel hash table
+		@{
+			# Special name for Control Panel
+			Name = "ControlPanel"
+			Size = "2x2"
+			Column = 0
+			Row = 0
+			AppID = "Microsoft.Windows.ControlPanel"
+		},
+		# "Devices & Printers" hash table
+		@{
+			# Special name for "Devices & Printers"
+			Name = "DevicesPrinters"
+			Size   = "2x2"
+			Column = 2
+			Row    = 0
+			AppID  = "Microsoft.AutoGenerated.{7FF3FDB0-CFD9-F944-4722-A9E766EDE23F}"
+		},
+		# Windows PowerShell hash table
+		@{
+			# Special name for Windows PowerShell
+			Name = "PowerShell"
+			Size = "2x2"
+			Column = 4
+			Row = 0
+			AppID = "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\WindowsPowerShell\v1.0\powershell.exe"
+		}
+	)
 
-	.EXAMPLE
-	PinCommandPrompt
-#>
-function PinCommandPrompt
-{
-	# Extract the "Command Prompt" string from shell32.dll
-	# Извлечь строку "Командная строка" из shell32.dll
-	GetLocalizedString
-	$CommandPrompt = [WinAPI.GetStr]::GetString(22022)
+	# Valid columns to place tiles in
+	$ValidColumns = @(0, 2, 4)
+	[string]$StartLayoutNS = "http://schemas.microsoft.com/Start/2014/StartLayout"
 
-	Write-Verbose -Message ($Localization.ShortcutPinning -f $CommandPrompt) -Verbose
+	# Add pre-configured hastable to XML
+	function Add-Tile
+	{
+		param
+		(
+			[string]
+			$Size,
 
-	$Arguments = @"
-	"$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\Command Prompt.lnk" "51201"
-"@
-	Start-Process -FilePath $PSScriptRoot\syspin.exe -WindowStyle Hidden -ArgumentList $Arguments -Wait
+			[int]
+			$Column,
+
+			[int]
+			$Row,
+
+			[string]
+			$AppID
+		)
+
+		[string]$elementName = "start:DesktopApplicationTile"
+		[Xml.XmlElement]$Table = $xml.CreateElement($elementName, $StartLayoutNS)
+		$Table.SetAttribute("Size", $Size)
+		$Table.SetAttribute("Column", $Column)
+		$Table.SetAttribute("Row", $Row)
+		$Table.SetAttribute("DesktopApplicationID", $AppID)
+
+		$Table
+	}
+
+	[xml]$XML = Get-Content -Path $StartLayout -Encoding UTF8 -Force
+
+	foreach ($Tile in $Tiles)
+	{
+		switch ($Tile)
+		{
+			ControlPanel
+			{
+				$ControlPanel = [WinAPI.GetStr]::GetString(12712)
+				Write-Verbose -Message ($Localization.ShortcutPinning -f $ControlPanel) -Verbose
+			}
+			DevicesPrinters
+			{
+				$DevicesPrinters = [WinAPI.GetStr]::GetString(30493)
+				Write-Verbose -Message ($Localization.ShortcutPinning -f $DevicesPrinters) -Verbose
+			}
+			PowerShell
+			{
+				Write-Verbose -Message ($Localization.ShortcutPinning -f "Windows PowerShell") -Verbose
+			}
+		}
+
+		$Parameter = $Parameters | Where-Object -FilterScript {$_.Name -eq $Tile}
+		$Group = $XML.LayoutModificationTemplate.DefaultLayoutOverride.StartLayoutCollection.StartLayout.Group | Where-Object -FilterScript {$_.Name -eq "Sophia Script"}
+
+		# If "Sophia Script" group exists in Start
+		if ($Group)
+		{
+			$DesktopApplicationID = ($Parameters | Where-Object -FilterScript {$_.Name -eq $Tile}).AppID
+
+			if (-not ($Group.DesktopApplicationTile | Where-Object -FilterScript {$_.DesktopApplicationID -eq $DesktopApplicationID}))
+			{
+				# Calculate current filled columns
+				$CurrentColumns = @($Group.DesktopApplicationTile.Column)
+				# Calculate current free columns and take the first one
+				$Column = (Compare-Object -ReferenceObject $ValidColumns -DifferenceObject $CurrentColumns).InputObject | Select-Object -First 1
+				# If filled cells contain desired ones assign the first free cell
+				if ($CurrentColumns -contains $Parameter.Column)
+				{
+					$Parameter.Column = $Column
+				}
+				$Group.AppendChild((Add-Tile @Parameter)) | Out-Null
+			}
+		}
+		else
+		{
+			# Create the "Sophia Script" group
+			[Xml.XmlElement]$Group = $XML.CreateElement("start:Group", $StartLayoutNS)
+			$Group.SetAttribute("Name","Sophia Script")
+			$Group.AppendChild((Add-Tile @Parameter)) | Out-Null
+			$XML.LayoutModificationTemplate.DefaultLayoutOverride.StartLayoutCollection.StartLayout.AppendChild($Group) | Out-Null
+		}
+	}
+
+	$XML.Save($StartLayout)
+
+	# Unpin all the Start tiles
+	if ($UnpinAll)
+	{
+		[xml]$XML = Get-Content -Path $StartLayout -Encoding UTF8 -Force
+		$Groups = $XML.LayoutModificationTemplate.DefaultLayoutOverride.StartLayoutCollection.StartLayout.Group
+
+		foreach ($Group in $Groups)
+		{
+			# Removing all groups inside XML
+			$Group.ParentNode.RemoveChild($Group) | Out-Null
+		}
+
+		$XML.Save($StartLayout)
+	}
+
+	# Temporarily disable changing the Start menu layout
+	if (-not (Test-Path -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
+	{
+		New-Item -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Force
+	}
+	New-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name LockedStartLayout -Value 1 -Force
+	New-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name StartLayoutFile -Value $StartLayout -Force
+
+	Start-Sleep -Seconds 3
+
+	# Restart the Start menu
+	Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
+
+	Start-Sleep -Seconds 3
+
+	# Enable changing the Start menu layout
+	Remove-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name LockedStartLayout -Force -ErrorAction Ignore
+	Remove-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name StartLayoutFile -Force -ErrorAction Ignore
+
+	Remove-Item -Path $StartLayout -Force
+
+	Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
+
+	Start-Sleep -Seconds 3
 }
 #endregion Start menu
 
@@ -7489,26 +7206,15 @@ function PinCommandPrompt
 <#
 	.SYNOPSIS
 	Uninstall UWP apps
-	Удалить UWP-приложения
 
 	.DESCRIPTION
 	Add UWP apps packages names to the $UncheckedAppXPackages array list by retrieving their packages names using the following command:
 		(Get-AppxPackage -PackageTypeFilter Bundle -AllUsers).Name
-
-	Добавьте имена пакетов UWP-приложений в массив $UncheckedAppXPackages, получив названия их пакетов с помощью команды:
-		(Get-AppxPackage -PackageTypeFilter Bundle -AllUsers).Name
-
 	App packages will not be installed for new users if the "Uninstall for All Users" box is checked
-	Приложения не будут установлены для новых пользователе, если отмечено "Удалять для всех пользователей"
 
 	.NOTES
 	A pop-up dialog box enables the user to select packages
-	Используется всплывающее диалоговое окно, позволяющее пользователю отмечать пакеты
-
-	Current user only
-	Только для текущего пользователя
-
-	Made by https://github.com/oz-zo
+	Current user
 #>
 function UninstallUWPApps
 {
@@ -7516,11 +7222,9 @@ function UninstallUWPApps
 
 	#region Variables
 	# ArrayList containing the UWP apps to remove
-	# Массив имен UWP-приложений для удаления
 	$AppxPackages = New-Object -TypeName System.Collections.ArrayList($null)
 
 	# List of UWP apps that won't be recommended for removal
-	# UWP-приложения, которые не будут отмечены на удаление по умолчанию
 	$UncheckedAppxPackages = @(
 		# AMD Radeon UWP panel
 		# UWP-панель AMD Radeon
@@ -7552,12 +7256,11 @@ function UninstallUWPApps
 		# Поставщик удостоверений Xbox
 		"Microsoft.XboxIdentityProvider",
 
-		# Xbox
+		# Xbox Console Companion
 		# Компаньон консоли Xbox
 		"Microsoft.XboxApp",
 
-		# Xbox (beta version)
-		# Xbox (бета-версия)
+		# Xbox
 		"Microsoft.GamingApp",
 		"Microsoft.GamingServices",
 
@@ -7582,7 +7285,6 @@ function UninstallUWPApps
 	)
 
 	# The following UWP apps will be excluded from the display
-	# Следующие UWP-приложения будут исключены из отображения
 	$ExcludedAppxPackages = @(
 		# Microsoft Desktop App Installer
 		"Microsoft.DesktopAppInstaller",
@@ -7744,7 +7446,6 @@ function UninstallUWPApps
 		}
 
 		# If package checked, add to the array list to uninstall
-		# Если пакет выделен, то добавить в массив для удаления
 		[void]$AppxPackages.Add($AppxName)
 	}
 	#endregion Functions
@@ -7772,7 +7473,6 @@ function UninstallUWPApps
 		$Button.Content = $Localization.Uninstall
 
 		# Display the dialog box
-		# Отобразить диалоговое окно
 		$Form.ShowDialog() | Out-Null
 	}
 	else
@@ -7782,11 +7482,12 @@ function UninstallUWPApps
 }
 
 <#
+	.SYNOPSIS
 	Open Microsoft Store "HEVC Video Extensions from Device Manufacturer" page to install this extension manually to be able to open .heic and .heif image formats
-	The extension can be installed without Microsoft account
 
-	Открыть страницу "Расширения для видео HEVC от производителя устройства" в Microsoft Store, чтобы вручную установить расширение и открывать изображения в форматах .heic и .heif
-	Расширение может быть установлено бесплатно без учетной записи Microsoft
+	.NOTES
+	The extension can be installed without Microsoft account
+	Current user
 #>
 function InstallHEIF
 {
@@ -7795,22 +7496,22 @@ function InstallHEIF
 
 <#
 	.SYNOPSIS
-	Disable/enable Cortana autostarting
-	Отключить/включить автозагрузку Кортана
+	Configure Cortana autostarting
 
 	.PARAMETER Disable
 	Enable Cortana autostarting
-	Включить автозагрузку Кортана
 
 	.PARAMETER Enable
 	Disable Cortana autostarting
-	Отключить автозагрузку Кортана
 
 	.EXAMPLE
 	CortanaAutostart -Disable
 
 	.EXAMPLE
 	CortanaAutostart -Enable
+
+	.NOTES
+	Current user
 #>
 function CortanaAutostart
 {
@@ -7855,7 +7556,6 @@ function CortanaAutostart
 }
 
 # Check for UWP apps updates
-# Проверить обновления UWP-приложений
 function CheckUWPAppsUpdates
 {
 	Write-Verbose -Message $Localization.Patient -Verbose
@@ -7866,22 +7566,22 @@ function CheckUWPAppsUpdates
 #region Gaming
 <#
 	.SYNOPSIS
-	Disable/enable Xbox Game Bar
-	Отключить/включить Xbox Game Bar
+	Configure Xbox Game Bar
 
 	.PARAMETER Disable
 	Disable Xbox Game Bar
-	Отключить Xbox Game Bar
 
 	.PARAMETER Enable
 	Enable Xbox Game Bar
-	Включить Xbox Game Bar
 
 	.EXAMPLE
 	XboxGameBar -Disable
 
 	.EXAMPLE
 	XboxGameBar -Enable
+
+	.NOTES
+	Current user
 #>
 function XboxGameBar
 {
@@ -7925,22 +7625,22 @@ function XboxGameBar
 
 <#
 	.SYNOPSIS
-	Disable/enable Xbox Game Bar tips
-	Отключить/включить советы Xbox Game Bar
+	Configure Xbox Game Bar tips
 
 	.PARAMETER Disable
 	Disable Xbox Game Bar tips
-	Отключить советы Xbox Game Bar
 
 	.PARAMETER Enable
 	Enable Xbox Game Bar tips
-	Включить советы Xbox Game Bar
 
 	.EXAMPLE
 	XboxGameTips -Disable
 
 	.EXAMPLE
 	XboxGameTips -Enable
+
+	.NOTES
+	Current user
 #>
 function XboxGameTips
 {
@@ -7981,11 +7681,12 @@ function XboxGameTips
 }
 
 <#
-	Set "High performance" in graphics performance preference for an app
-	Only with a dedicated GPU
+	.SYNOPSIS
+	Choose an app to set "High performance" graphics preference
 
-	Установить параметры производительности графики для отдельных приложений на "Высокая производительность"
-	Только при наличии внешней видеокарты
+	.NOTES
+	Only with a dedicated GPU
+	Current user
 #>
 function SetAppGraphicsPerformance
 {
@@ -8012,7 +7713,6 @@ function SetAppGraphicsPerformance
 					$OpenFileDialog.Multiselect = $false
 
 					# Focus on open file dialog
-					# Перевести фокус на диалог открытия файла
 					$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
 					$OpenFileDialog.ShowDialog($Focus)
 
@@ -8038,16 +7738,13 @@ function SetAppGraphicsPerformance
 
 <#
 	.SYNOPSIS
-	Enable/disable hardware-accelerated GPU scheduling
-	Включить/отключить планирование графического процессора с аппаратным ускорением
+	Configure hardware-accelerated GPU scheduling
 
 	.PARAMETER Disable
 	Disable hardware-accelerated GPU scheduling
-	Отключить планирование графического процессора с аппаратным ускорением
 
 	.PARAMETER Enable
 	Enable hardware-accelerated GPU scheduling
-	Включить планирование графического процессора с аппаратным ускорением
 
 	.EXAMPLE
 	GPUScheduling -Disable
@@ -8057,10 +7754,8 @@ function SetAppGraphicsPerformance
 
 	.NOTES
 	Only with a dedicated GPU and WDDM verion is 2.7 or higher
+	Current user
 	Restart needed
-
-	Только при наличии внешней видеокарты и WDDM версии 2.7 и выше
-	Необходима перезагрузка
 #>
 function GPUScheduling
 {
@@ -8092,11 +7787,9 @@ function GPUScheduling
 			if ((Get-CimInstance -ClassName CIM_VideoController | Where-Object -FilterScript {$_.AdapterDACType -ne "Internal"}))
 			{
 				# Determining whether an OS is not installed on a virtual machine
-				# Проверяем, не установлена ли ОС на виртуальной машине
 				if ((Get-CimInstance -ClassName CIM_ComputerSystem).Model -notmatch "Virtual")
 				{
 					# Checking whether a WDDM verion is 2.7 or higher
-					# Проверка: имеет ли WDDM версию 2.7 или выше
 					$WddmVersion_Min = Get-ItemPropertyValue -Path HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\FeatureSetUsage -Name WddmVersion_Min
 					if ($WddmVersion_Min -ge 2700)
 					{
@@ -8112,16 +7805,13 @@ function GPUScheduling
 #region Scheduled tasks
 <#
 	.SYNOPSIS
-	Create/delete the "Windows Cleanup" task to clean up unused files and Windows updates in the Task Scheduler
-	Создать/удалить задачу "Windows Cleanup" в Планировщике задач по очистке неиспользуемых файлов и обновлений Windows
+	The "Windows Cleanup" scheduled task for cleaning up unused files and Windows updates
 
 	.PARAMETER Register
-	Create the "Windows Cleanup" task to clean up unused files and Windows updates in the Task Scheduler
-	Создать задачу "Windows Cleanup" в Планировщике задач по очистке неиспользуемых файлов и обновлений Windows
+	Create the "Windows Cleanup" scheduled task for cleaning up unused files and Windows updates
 
 	.PARAMETER Delete
-	Delete the "Windows Cleanup" task to clean up unused files and Windows updates from the Task Scheduler
-	Удалить задачу "Windows Cleanup" из Планировщика задач по очистке неиспользуемых файлов и обновлений Windows
+	Delete the "Windows Cleanup" scheduled task for cleaning up unused files and Windows updates
 
 	.EXAMPLE
 	CleanUpTask -Register
@@ -8131,10 +7821,8 @@ function GPUScheduling
 
 	.NOTES
 	A minute before the task starts, a warning in the Windows action center will appear
+	Current user
 	The task runs every 90 days
-
-	За минуту до выполнения задачи в Центре уведомлений Windows появится предупреждение
-	Задача выполняется каждые 90 дней
 #>
 function CleanUpTask
 {
@@ -8300,16 +7988,13 @@ while (`$true)
 
 <#
 	.SYNOPSIS
-	Create/delete the "SoftwareDistribution" task to clear the %SystemRoot%\SoftwareDistribution\Download folder in the Task Scheduler
-	Создать/удалить задачу "SoftwareDistribution" в Планировщике задач по очистке папки %SystemRoot%\SoftwareDistribution\Download
+	The "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
 
 	.PARAMETER Register
-	Create the "SoftwareDistribution" task to clear the %SystemRoot%\SoftwareDistribution\Download folder in the Task Scheduler
-	Создать задачу "SoftwareDistribution" в Планировщике задач по очистке папки %SystemRoot%\SoftwareDistribution\Download
+	Create the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
 
 	.PARAMETER Delete
-	Delete the "SoftwareDistribution" task to clear the %SystemRoot%\SoftwareDistribution\Download folder from the Task Scheduler
-	Удалить задачу "SoftwareDistribution" из Планировщика задач по очистке папки %SystemRoot%\SoftwareDistribution\Download
+	Delete the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
 
 	.EXAMPLE
 	SoftwareDistributionTask -Register
@@ -8319,7 +8004,7 @@ while (`$true)
 
 	.NOTES
 	The task runs on Thursdays every 4 weeks
-	Задача выполняется по четвергам каждую 4 неделю
+	Current user
 #>
 function SoftwareDistributionTask
 {
@@ -8373,16 +8058,13 @@ Get-ChildItem -Path $env:SystemRoot\SoftwareDistribution\Download -Recurse -Forc
 
 <#
 	.SYNOPSIS
-	Create the "Temp" task to clear the %TEMP% folder in the Task Scheduler
-	Создать задачу "Temp" в Планировщике задач по очистке папки %TEMP%
+	The "Temp" scheduled task for cleaning up the %TEMP% folder
 
 	.PARAMETER Register
-	Create the "Temp" to clear the %TEMP% folder in the Task Scheduler
-	Создать задачу "Temp" в Планировщике задач по очистке папки %TEMP%
+	Create the "Temp" scheduled task for cleaning up the %TEMP% folder
 
 	.PARAMETER Delete
-	Delete the "Temp" task to clear the %TEMP% folder from the Task Scheduler
-	Удалить задачу "Temp" из Планировщика задач по очистке папки %TEMP%
+	Delete the "Temp" scheduled task for cleaning up the %TEMP% folder
 
 	.EXAMPLE
 	TempTask -Register
@@ -8392,7 +8074,7 @@ Get-ChildItem -Path $env:SystemRoot\SoftwareDistribution\Download -Recurse -Forc
 
 	.NOTES
 	The task runs every 62 days
-	Задача выполняется каждые 62 дня
+	Current user
 #>
 function TempTask
 {
@@ -8444,7 +8126,6 @@ function TempTask
 
 #region Microsoft Defender & Security
 # Enable Controlled folder access and add protected folders
-# Включить контролируемый доступ к папкам и добавить защищенные папки
 function AddProtectedFolders
 {
 	$Title = $Localization.ControlledFolderAccess
@@ -8467,7 +8148,6 @@ function AddProtectedFolders
 				$FolderBrowserDialog.RootFolder = "MyComputer"
 
 				# Focus on open file dialog
-				# Перевести фокус на диалог открытия файла
 				$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
 				$FolderBrowserDialog.ShowDialog($Focus)
 
@@ -8488,7 +8168,6 @@ function AddProtectedFolders
 }
 
 # Remove all added protected folders
-# Удалить все добавленные защищенные папки
 function RemoveProtectedFolders
 {
 	if ($null -ne (Get-MpPreference).ControlledFolderAccessProtectedFolders)
@@ -8500,7 +8179,6 @@ function RemoveProtectedFolders
 }
 
 # Allow an app through Controlled folder access
-# Разрешить работу приложения через контролируемый доступ к папкам
 function AddAppControlledFolder
 {
 	$Title = $Localization.ControlledFolderAccess
@@ -8524,7 +8202,6 @@ function AddAppControlledFolder
 				$OpenFileDialog.Multiselect = $false
 
 				# Focus on open file dialog
-				# Перевести фокус на диалог открытия файла
 				$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
 				$OpenFileDialog.ShowDialog($Focus)
 
@@ -8544,7 +8221,6 @@ function AddAppControlledFolder
 }
 
 # Remove all allowed apps through Controlled folder access
-# Удалить все добавленные разрешенные приложение через контролируемый доступ к папкам
 function RemoveAllowedAppsControlledFolder
 {
 	if ($null -ne (Get-MpPreference).ControlledFolderAccessAllowedApplications)
@@ -8556,7 +8232,6 @@ function RemoveAllowedAppsControlledFolder
 }
 
 # Add a folder to the exclusion from Microsoft Defender scanning
-# Добавить папку в список исключений сканирования Microsoft Defender
 function AddDefenderExclusionFolder
 {
 	$Title = $Localization.DefenderTitle
@@ -8579,7 +8254,6 @@ function AddDefenderExclusionFolder
 				$FolderBrowserDialog.RootFolder = "MyComputer"
 
 				# Focus on open file dialog
-				# Перевести фокус на диалог открытия файла
 				$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
 				$FolderBrowserDialog.ShowDialog($Focus)
 
@@ -8599,7 +8273,6 @@ function AddDefenderExclusionFolder
 }
 
 # Remove all excluded folders from Microsoft Defender scanning
-# Удалить все папки из списка исключений сканирования Microsoft Defender
 function RemoveDefenderExclusionFolders
 {
 	if ($null -ne (Get-MpPreference).ExclusionPath)
@@ -8612,7 +8285,6 @@ function RemoveDefenderExclusionFolders
 }
 
 # Add a file to the exclusion from Microsoft Defender scanning
-# Добавить файл в список исключений сканирования Microsoft Defender
 function AddDefenderExclusionFile
 {
 	$Title = "Microsoft Defender"
@@ -8636,7 +8308,6 @@ function AddDefenderExclusionFile
 				$OpenFileDialog.Multiselect = $false
 
 				# Focus on open file dialog
-				# Перевести фокус на диалог открытия файла
 				$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
 				$OpenFileDialog.ShowDialog($Focus)
 
@@ -8656,7 +8327,6 @@ function AddDefenderExclusionFile
 }
 
 # Remove all excluded files from Microsoft Defender scanning
-# Удалить все файлы из списка исключений сканирования Microsoft Defender
 function RemoveDefenderExclusionFiles
 {
 	if ($null -ne (Get-MpPreference).ExclusionPath)
@@ -8670,22 +8340,20 @@ function RemoveDefenderExclusionFiles
 
 <#
 	.SYNOPSIS
-	Enable/disable Microsoft Defender Exploit Guard network protection
-	Включить/отключить защиту сети в Microsoft Defender Exploit Guard
+	Configure Microsoft Defender Exploit Guard network protection
 
 	.PARAMETER Disable
 	Disable Microsoft Defender Exploit Guard network protection
-	Отключить защиту сети в Microsoft Defender Exploit Guard
 
 	.PARAMETER Enable
 	Enable Microsoft Defender Exploit Guard network protection
-	Включить защиту сети в Microsoft Defender Exploit Guard
 
 	.EXAMPLE
 	NetworkProtection -Disable
 
 	.EXAMPLE
 	NetworkProtection -Enable
+	Current user
 #>
 function NetworkProtection
 {
@@ -8721,22 +8389,20 @@ function NetworkProtection
 
 <#
 	.SYNOPSIS
-	Enable/disable detection for potentially unwanted applications and block them
-	Включить/отключить обнаружение потенциально нежелательных приложений и блокировать их
+	Configure detection for potentially unwanted applications and block them
 
 	.PARAMETER Disable
 	Enable/disable detection for potentially unwanted applications and block them
-	Включить/отключить обнаружение потенциально нежелательных приложений и блокировать их
 
 	.PARAMETER Enable
 	Enable/disable detection for potentially unwanted applications and block them
-	Включить/отключить обнаружение потенциально нежелательных приложений и блокировать их
 
 	.EXAMPLE
 	PUAppsDetection -Disable
 
 	.EXAMPLE
 	PUAppsDetection -Enable
+	Current user
 #>
 function PUAppsDetection
 {
@@ -8772,16 +8438,13 @@ function PUAppsDetection
 
 <#
 	.SYNOPSIS
-	Enable/disable sandboxing for Microsoft Defender
-	Включить/отключить песочницу для Microsoft Defender
+	Configure sandboxing for Microsoft Defender
 
 	.PARAMETER Disable
 	Disable sandboxing for Microsoft Defender
-	Отключить песочницу для Microsoft Defender
 
 	.PARAMETER Enable
 	Enable sandboxing for Microsoft Defender
-	Включить песочницу для Microsoft Defender
 
 	.EXAMPLE
 	DefenderSandbox -Disable
@@ -8791,7 +8454,7 @@ function PUAppsDetection
 
 	.NOTES
 	There is a bug in KVM with QEMU: enabling this function causes VM to freeze up during the loading phase of Windows
-	В KVM с QEMU присутсвует баг: включение этой функции приводит ВМ к зависанию во время загрузки Windows
+	Current user
 #>
 function DefenderSandbox
 {
@@ -8826,14 +8489,12 @@ function DefenderSandbox
 }
 
 # Dismiss Microsoft Defender offer in the Windows Security about signing in Microsoft account
-# Отклонить предложение Microsoft Defender в "Безопасность Windows" о входе в аккаунт Microsoft
 function DismissMSAccount
 {
 	New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows Security Health\State" -Name AccountProtection_MicrosoftAccount_Disconnected -PropertyType DWord -Value 1 -Force
 }
 
 # Dismiss Microsoft Defender offer in the Windows Security about turning on the SmartScreen filter for Microsoft Edge
-# Отклонить предложение Microsoft Defender в "Безопасность Windows" включить фильтр SmartScreen для Microsoft Edge
 function DismissSmartScreenFilter
 {
 	New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows Security Health\State" -Name AppAndBrowser_EdgeSmartScreenOff -PropertyType DWord -Value 0 -Force
@@ -8841,22 +8502,20 @@ function DismissSmartScreenFilter
 
 <#
 	.SYNOPSIS
-	Enable/disable events auditing generated when a process is created or starts
-	Включить/отключить аудит событий, возникающих при создании или запуске процесса
+	Configure events auditing generated when a process is created or starts
 
 	.PARAMETER Disable
 	Disable events auditing generated when a process is created or starts
-	Отключить аудит событий, возникающих при создании или запуске процесса
 
 	.PARAMETER Enable
 	Enable events auditing generated when a process is created or starts
-	Включить аудит событий, возникающих при создании или запуске процесса
 
 	.EXAMPLE
 	AuditProcess -Disable
 
 	.EXAMPLE
 	AuditProcess -Enable
+	Machine-wide
 #>
 function AuditProcess
 {
@@ -8892,16 +8551,13 @@ function AuditProcess
 
 <#
 	.SYNOPSIS
-	Include/do not include command line in process creation events
-	Включать/не включать командную строку в событиях создания процесса
+	Configure command line in process creation events
 
 	.PARAMETER Disable
 	Do not include command line in process creation events
-	Не включать командную строку в событиях создания процесса
 
 	.PARAMETER Enable
 	Include command line in process creation events
-	Включать командную строку в событиях создания процесса
 
 	.EXAMPLE
 	AuditCommandLineProcess -Disable
@@ -8911,7 +8567,7 @@ function AuditProcess
 
 	.NOTES
 	In order this feature to work events auditing ("AuditProcess -Enable" function) will be enabled
-	Для того, чтобы работал данный функционал, будет включен аудит событий (функция "AuditProcess -Enable")
+	Machine-wide
 #>
 function AuditCommandLineProcess
 {
@@ -8941,7 +8597,6 @@ function AuditCommandLineProcess
 		"Enable"
 		{
 			# Enable events auditing generated when a process is created or starts
-			# Включить аудит событий, возникающих при создании или запуске процесса
 			auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:enable /failure:enable
 
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -PropertyType DWord -Value 1 -Force
@@ -8951,16 +8606,13 @@ function AuditCommandLineProcess
 
 <#
 	.SYNOPSIS
-	Create/remove "Process Creation" Event Viewer Custom View
-	Создать/удалить настаиваемое представление "Создание процесса" в Просмотре событий
+	Configure "Process Creation" Event Viewer Custom View
 
 	.PARAMETER Disable
 	Remove "Process Creation" Event Viewer Custom View
-	Удалить настаиваемое представление "Создание процесса" в Просмотре событий
 
 	.PARAMETER Enable
 	Create "Process Creation" Event Viewer Custom View
-	Создать настаиваемое представление "Создание процесса" в Просмотре событий
 
 	.EXAMPLE
 	EventViewerCustomView -Disable
@@ -8970,7 +8622,7 @@ function AuditCommandLineProcess
 
 	.NOTES
 	In order this feature to work events auditing ("AuditProcess -Enable" function) and command line in process creation events will be enabled
-	Для того, чтобы работал данный функционал, буден включен аудит событий (функция "AuditProcess -Enable") и командной строки в событиях создания процесса
+	Machine-wide
 #>
 function EventViewerCustomView
 {
@@ -9000,11 +8652,9 @@ function EventViewerCustomView
 		"Enable"
 		{
 			# Enable events auditing generated when a process is created or starts
-			# Включить аудит событий, возникающих при создании или запуске процесса
 			auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:enable /failure:enable
 
 			# Include command line in process creation events
-			# Включать командную строку в событиях создания процесса
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -PropertyType DWord -Value 1 -Force
 
 			$XML = @"
@@ -9031,30 +8681,27 @@ function EventViewerCustomView
 			}
 
 			# Saving ProcessCreation.xml in UTF-8 encoding
-			# Сохраняем ProcessCreation.xml в кодировке UTF-8
-			Set-Content -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Value $XML -Encoding utf8 -Force
+			Set-Content -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Value $XML -Encoding Default -Force
 		}
 	}
 }
 
 <#
 	.SYNOPSIS
-	Enable/disable logging for all Windows PowerShell modules
-	Включить/отключить ведение журнала для всех модулей Windows PowerShell
+	Configure logging for all Windows PowerShell modules
 
 	.PARAMETER Disable
 	Disable logging for all Windows PowerShell modules
-	Отключить ведение журнала для всех модулей Windows PowerShell
 
 	.PARAMETER Enable
 	Enable logging for all Windows PowerShell modules
-	Включить ведение журнала для всех модулей Windows PowerShell
 
 	.EXAMPLE
 	PowerShellModulesLogging -Disable
 
 	.EXAMPLE
 	PowerShellModulesLogging -Enable
+	Machine-wide
 #>
 function PowerShellModulesLogging
 {
@@ -9096,22 +8743,20 @@ function PowerShellModulesLogging
 
 <#
 	.SYNOPSIS
-	Enable/disable logging for all PowerShell scripts input to the Windows PowerShell event log
-	Включить/отключить ведение журнала для всех вводимых сценариев PowerShell в журнале событий Windows PowerShell
+	Configure logging for all PowerShell scripts input to the Windows PowerShell event log
 
 	.PARAMETER Disable
 	Disable logging for all PowerShell scripts input to the Windows PowerShell event log
-	Отключить ведение журнала для всех вводимых сценариев PowerShell в журнале событий Windows PowerShell
 
 	.PARAMETER Enable
 	Enable logging for all PowerShell scripts input to the Windows PowerShell event log
-	Включить ведение журнала для всех вводимых сценариев PowerShell в журнале событий Windows PowerShell
 
 	.EXAMPLE
 	PowerShellScriptsLogging -Disable
 
 	.EXAMPLE
 	PowerShellScriptsLogging -Enable
+	Machine-wide
 #>
 function PowerShellScriptsLogging
 {
@@ -9151,22 +8796,20 @@ function PowerShellScriptsLogging
 
 <#
 	.SYNOPSIS
-	Disable/enable apps and files checking within Microsofot Defender SmartScreen
-	Отключить/включить проверку приложений и файлов фильтром SmartScreen в Microsoft Defender
+	Configure apps and files checking within Microsofot Defender SmartScreen
 
 	.PARAMETER Disable
 	Disable apps and files checking within Microsofot Defender SmartScreen
-	Отключить проверку приложений и файлов фильтром SmartScreen в Microsoft Defender
 
 	.PARAMETER Enable
 	Enable apps and files checking within Microsofot Defender SmartScreen
-	Включить проверку приложений и файлов фильтром SmartScreen в Microsoft Defender
 
 	.EXAMPLE
 	AppsSmartScreen -Disable
 
 	.EXAMPLE
 	AppsSmartScreen -Enable
+	Machine-wide
 #>
 function AppsSmartScreen
 {
@@ -9202,16 +8845,13 @@ function AppsSmartScreen
 
 <#
 	.SYNOPSIS
-	Disable/enable the Attachment Manager marking files that have been downloaded from the Internet as unsafe
-	Отключить/включить проверку Диспетчером вложений файлов, скачанных из интернета как небезопасные
+	Configure the Attachment Manager marking files that have been downloaded from the Internet as unsafe
 
 	.PARAMETER Disable
 	Disable the Attachment Manager marking files that have been downloaded from the Internet as unsafe
-	Отключить проверку Диспетчером вложений файлов, скачанных из интернета как небезопасные
 
 	.PARAMETER Enable
 	Enable the Attachment Manager marking files that have been downloaded from the Internet as unsafe
-	Включить проверку Диспетчером вложений файлов, скачанных из интернета как небезопасные
 
 	.EXAMPLE
 	SaveZoneInformation -Disable
@@ -9220,8 +8860,7 @@ function AppsSmartScreen
 	SaveZoneInformation -Enable
 
 	.NOTES
-	Current user only
-	Только для текущего пользователя
+	Current user
 #>
 function SaveZoneInformation
 {
@@ -9261,16 +8900,13 @@ function SaveZoneInformation
 
 <#
 	.SYNOPSIS
-	Disable/enable Windows Script Host
-	Отключить/включить Windows Script Host
+	Configure Windows Script Host
 
 	.PARAMETER Disable
 	Disable Windows Script Host
-	Отключить Windows Script Host
 
 	.PARAMETER Enable
 	Enable Windows Script Host
-	Включить Windows Script Host
 
 	.EXAMPLE
 	WindowsScriptHost -Disable
@@ -9279,11 +8915,8 @@ function SaveZoneInformation
 	WindowsScriptHost -Enable
 
 	.NOTES
-	Current user only
 	Blocks WSH from executing .js and .vbs files
-
-	Только для текущего пользователя
-	Блокирует запуск файлов .js и .vbs
+	Current user
 #>
 function WindowsScriptHost
 {
@@ -9323,22 +8956,20 @@ function WindowsScriptHost
 
 <#
 	.SYNOPSIS
-	Disable/enable Windows Sandbox
-	Отключить/включить Windows Sandbox
+	Configure Windows Sandbox
 
 	.PARAMETER Disable
 	Disable Windows Sandbox
-	Отключить Windows Sandbox
 
 	.PARAMETER Enable
 	Enable Windows Sandbox
-	Включить Windows Sandbox
 
 	.EXAMPLE
 	WindowsSandbox -Disable
 
 	.EXAMPLE
 	WindowsSandbox -Enable
+	Current user
 #>
 function WindowsSandbox
 {
@@ -9366,7 +8997,6 @@ function WindowsSandbox
 			if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Professional" -or $_.Edition -like "Enterprise*"})
 			{
 				# Checking whether x86 virtualization is enabled in the firmware
-				# Проверка: включена ли в настройках UEFI аппаратная виртуализация x86
 				if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled -eq $true)
 				{
 					Disable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -Online -NoRestart
@@ -9376,7 +9006,6 @@ function WindowsSandbox
 					try
 					{
 						# Determining whether Hyper-V is enabled
-						# Проверка: включен ли Hyper-V
 						if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent -eq $true)
 						{
 							Disable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -Online -NoRestart
@@ -9394,7 +9023,6 @@ function WindowsSandbox
 			if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Professional" -or $_.Edition -like "Enterprise*"})
 			{
 				# Checking whether x86 virtualization is enabled in the firmware
-				# Проверка: включена ли в настройках UEFI аппаратная виртуализация x86
 				if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled -eq $true)
 				{
 					Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart
@@ -9404,7 +9032,6 @@ function WindowsSandbox
 					try
 					{
 						# Determining whether Hyper-V is enabled
-						# Проверка: включен ли Hyper-V
 						if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent -eq $true)
 						{
 							Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart
@@ -9424,22 +9051,20 @@ function WindowsSandbox
 #region Context menu
 <#
 	.SYNOPSIS
-	Add/remove the "Extract all" item to Windows Installer (.msi) context menu
-	Добавить/удалить пункт "Извлечь все" в контекстное меню Windows Installer (.msi)
+	Configure the "Extract all" item in Windows Installer (.msi) context menu
 
 	.PARAMETER Remove
 	Remove the "Extract all" item to Windows Installer (.msi) context menu
-	Удалить пункт "Извлечь все" в контекстное меню Windows Installer (.msi)
 
 	.PARAMETER Add
 	Add the "Extract all" item to Windows Installer (.msi) context menu
-	Добавить пункт "Извлечь все" в контекстное меню Windows Installer (.msi)
 
 	.EXAMPLE
 	MSIExtractContext -Remove
 
 	.EXAMPLE
 	MSIExtractContext -Add
+	Current user
 #>
 function MSIExtractContext
 {
@@ -9482,22 +9107,20 @@ function MSIExtractContext
 
 <#
 	.SYNOPSIS
-	Add/remove the "Install" item to the .cab archives context menu
-	Добавить/удалить пункт "Установить" в контекстное меню .cab архивов
+	Configure the "Install" item in the .cab archives context menu
 
 	.PARAMETER Remove
 	Remove the "Install" item to the .cab archives context menu
-	Удалить пункт "Установить" в контекстное меню .cab архивов
 
 	.PARAMETER Add
 	Add the "Install" item to the .cab archives context menu
-	Добавить пункт "Установить" в контекстное меню .cab архивов
 
 	.EXAMPLE
 	CABInstallContext -Remove
 
 	.EXAMPLE
 	CABInstallContext -Add
+	Current user
 #>
 function CABInstallContext
 {
@@ -9540,22 +9163,20 @@ function CABInstallContext
 
 <#
 	.SYNOPSIS
-	Add/remove the "Run as different user" item to the .exe files types context menu
-	Добавить/удалить пункт "Запуск от имени другого пользователя" в контекстное меню .exe файлов
+	Configure the "Run as different user" item in the .exe files types context menu
 
 	.PARAMETER Remove
 	Remove the "Run as different user" item to the .exe files types context menu
-	Удалить пункт "Запуск от имени другого пользователя" в контекстное меню .exe файлов
 
 	.PARAMETER Add
 	Add the "Run as different user" item to the .exe files types context menu
-	Добавить пункт "Запуск от имени другого пользователя" в контекстное меню .exe файлов
 
 	.EXAMPLE
 	RunAsDifferentUserContext -Remove
 
 	.EXAMPLE
 	RunAsDifferentUserContext -Add
+	Current user
 #>
 function RunAsDifferentUserContext
 {
@@ -9591,22 +9212,20 @@ function RunAsDifferentUserContext
 
 <#
 	.SYNOPSIS
-	Hide/show the "Cast to Device" item from the context menu
-	Отобразить/скрыть пункт "Передать на устройство" из контекстного меню
+	Configure the "Cast to Device" item in the context menu
 
 	.PARAMETER Hide
 	Hide the "Cast to Device" item from the context menu
-	Скрыть пункт "Передать на устройство" из контекстного меню
 
 	.PARAMETER Show
 	Show the "Cast to Device" item from the context menu
-	Отобразить пункт "Передать на устройство" из контекстного меню
 
 	.EXAMPLE
 	CastToDeviceContext -Hide
 
 	.EXAMPLE
 	CastToDeviceContext -Show
+	Current user
 #>
 function CastToDeviceContext
 {
@@ -9646,22 +9265,20 @@ function CastToDeviceContext
 
 <#
 	.SYNOPSIS
-	Hide/show the "Share" item from the context menu
-	Отобразить/скрыть пункт "Отправить" (поделиться) из контекстного меню
+	Configure the "Share" item in the context menu
 
 	.PARAMETER Hide
 	Hide the "Share" item from the context menu
-	Скрыть пункт "Отправить" (поделиться) из контекстного меню
 
 	.PARAMETER Show
-	Show the "Share" item from the context menu
-	Отобразить пункт "Отправить" (поделиться) из контекстного меню
+	Show the "Share" item in the context menu
 
 	.EXAMPLE
 	ShareContext -Hide
 
 	.EXAMPLE
 	ShareContext -Show
+	Current user
 #>
 function ShareContext
 {
@@ -9701,22 +9318,20 @@ function ShareContext
 
 <#
 	.SYNOPSIS
-	Hide/show the "Edit with Paint 3D" item from the context menu
-	Отобразить/скрыть пункт "Изменить с помощью Paint 3D" из контекстного меню
+	Configure the "Edit with Paint 3D" item in the context menu
 
 	.PARAMETER Hide
 	Hide the "Edit with Paint 3D" item from the context menu
-	Скрыть пункт "Изменить с помощью Paint 3D" из контекстного меню
 
 	.PARAMETER Show
-	Show the "Edit with Paint 3D" item from the context menu
-	Отобразить пункт "Изменить с помощью Paint 3D" из контекстного меню
+	Show the "Edit with Paint 3D" item in the context menu
 
 	.EXAMPLE
 	EditWithPaint3DContext -Hide
 
 	.EXAMPLE
 	EditWithPaint3DContext -Show
+	Current user
 #>
 function EditWithPaint3DContext
 {
@@ -9760,22 +9375,20 @@ function EditWithPaint3DContext
 
 <#
 	.SYNOPSIS
-	Hide/show the "Edit with Photos" item from the context menu
-	Отобразить/скрыть пункт "Изменить с помощью приложения "Фотографии"" из контекстного меню
+	Configure the "Edit with Photos" item in the context menu
 
 	.PARAMETER Hide
 	Hide the "Edit with Photos" item from the context menu
-	Скрыть пункт "Изменить с помощью приложения "Фотографии"" из контекстного меню
 
 	.PARAMETER Show
-	Show the "Edit with Photos" item from the context menu
-	Отобразить пункт "Изменить с помощью приложения "Фотографии"" из контекстного меню
+	Show the "Edit with Photos" item in the context menu
 
 	.EXAMPLE
 	EditWithPhotosContext -Hide
 
 	.EXAMPLE
 	EditWithPhotosContext -Show
+	Current user
 #>
 function EditWithPhotosContext
 {
@@ -9817,22 +9430,20 @@ function EditWithPhotosContext
 
 <#
 	.SYNOPSIS
-	Hide/show the "Create a new video" item from the context menu
-	Отобразить/скрыть пункт "Создать новое видео" из контекстного меню
+	Configure the "Create a new video" item in the context menu
 
 	.PARAMETER Hide
 	Hide the "Create a new video" item from the context menu
-	Скрыть пункт "Создать новое видео" из контекстного меню
 
 	.PARAMETER Show
-	Show the "Create a new video" item from the context menu
-	Отобразить пункт "Создать новое видео" из контекстного меню
+	Show the "Create a new video" item in the context menu
 
 	.EXAMPLE
 	CreateANewVideoContext -Hide
 
 	.EXAMPLE
 	CreateANewVideoContext -Show
+	Current user
 #>
 function CreateANewVideoContext
 {
@@ -9874,22 +9485,20 @@ function CreateANewVideoContext
 
 <#
 	.SYNOPSIS
-	Hide/show the "Edit" item from the images context menu
-	Отобразить/скрыть пункт "Изменить" из контекстного меню изображений
+	Configure the "Edit" item in the images context menu
 
 	.PARAMETER Hide
 	Hide the "Edit" item from the images context menu
-	Скрыть пункт "Изменить" из контекстного меню изображений
 
 	.PARAMETER Show
 	Show the "Edit" item from the images context menu
-	Отобразить пункт "Изменить" из контекстного меню изображений
 
 	.EXAMPLE
 	ImagesEditContext -Hide
 
 	.EXAMPLE
 	ImagesEditContext -Show
+	Current user
 #>
 function ImagesEditContext
 {
@@ -9931,22 +9540,20 @@ function ImagesEditContext
 
 <#
 	.SYNOPSIS
-	Hide/show the "Print" item from the .bat and .cmd context menu
-	Отобразить/скрыть пункт "Печать" из контекстного меню .bat и .cmd файлов
+	Configure the "Print" item in the .bat and .cmd context menu
 
 	.PARAMETER Hide
 	Hide the "Print" item from the .bat and .cmd context menu
-	Скрыть пункт "Печать" из контекстного меню .bat и .cmd файлов
 
 	.PARAMETER Show
-	Show the "Print" item from the .bat and .cmd context menu
-	Отобразить пункт "Печать" из контекстного меню .bat и .cmd файлов
+	Show the "Print" item in the .bat and .cmd context menu
 
 	.EXAMPLE
 	PrintCMDContext -Hide
 
 	.EXAMPLE
 	PrintCMDContext -Show
+	Current user
 #>
 function PrintCMDContext
 {
@@ -9984,22 +9591,20 @@ function PrintCMDContext
 
 <#
 	.SYNOPSIS
-	Hide/show the "Include in Library" item from the context menu
-	Отобразить/скрыть пункт "Добавить в библиотеку" из контекстного меню
+	Configure the "Include in Library" item in the context menu
 
 	.PARAMETER Hide
 	Hide the "Include in Library" item from the context menu
-	Скрыть пункт "Добавить в библиотеку" из контекстного меню
 
 	.PARAMETER Show
-	Show the "Include in Library" item from the context menu
-	Отобразить пункт "Добавить в библиотеку" из контекстного меню
+	Show the "Include in Library" item in the context menu
 
 	.EXAMPLE
 	IncludeInLibraryContext -Hide
 
 	.EXAMPLE
 	IncludeInLibraryContext -Show
+	Current user
 #>
 function IncludeInLibraryContext
 {
@@ -10035,22 +9640,20 @@ function IncludeInLibraryContext
 
 <#
 	.SYNOPSIS
-	Hide/show the "Send to" item from the folders context menu
-	Отобразить/скрыть пункт "Отправить" из контекстного меню папок
+	Configure the "Send to" item in the folders context menu
 
 	.PARAMETER Hide
 	Hide the "Send to" item from the folders context menu
-	Скрыть пункт "Отправить" из контекстного меню папок
 
 	.PARAMETER Show
-	Show the "Send to" item from the folders context menu
-	Отобразить пункт "Отправить" из контекстного меню папок
+	Show the "Send to" item in the folders context menu
 
 	.EXAMPLE
 	SendToContext -Hide
 
 	.EXAMPLE
 	SendToContext -Show
+	Current user
 #>
 function SendToContext
 {
@@ -10086,22 +9689,20 @@ function SendToContext
 
 <#
 	.SYNOPSIS
-	Hide/show the "Turn on BitLocker" item from the context menu
-	Отобразить/скрыть пункт "Включить BitLocker" из контекстного меню
+	Configure the "Turn on BitLocker" item in the context menu
 
 	.PARAMETER Hide
 	Hide the "Turn on BitLocker" item from the context menu
-	Скрыть пункт "Включить BitLocker" из контекстного меню
 
 	.PARAMETER Show
-	Show the "Turn on BitLocker" item from the context menu
-	Отобразить пункт "Включить BitLocker" из контекстного меню
+	Show the "Turn on BitLocker" item in the context menu
 
 	.EXAMPLE
 	BitLockerContext -Hide
 
 	.EXAMPLE
 	BitLockerContext -Show
+	Current user
 #>
 function BitLockerContext
 {
@@ -10153,22 +9754,20 @@ function BitLockerContext
 
 <#
 	.SYNOPSIS
-	Add/remove the "Bitmap image" item from the "New" context menu
-	Добавить/удалить пункт "Точечный рисунок" из контекстного меню "Создать"
+	Configure the "Bitmap image" item in the "New" context menu
 
 	.PARAMETER Remove
 	Remove the "Bitmap image" item from the "New" context menu
-	Удалить пункт "Точечный рисунок" из контекстного меню "Создать"
 
 	.PARAMETER Add
-	Add the "Bitmap image" item from the "New" context menu
-	Добавить пункт "Точечный рисунок" из контекстного меню "Создать"
+	Add the "Bitmap image" item to the "New" context menu
 
 	.EXAMPLE
 	BitmapImageNewContext -Remove
 
 	.EXAMPLE
 	BitmapImageNewContext -Add
+	Current user
 #>
 function BitmapImageNewContext
 {
@@ -10231,22 +9830,20 @@ function BitmapImageNewContext
 
 <#
 	.SYNOPSIS
-	Add/remove the "Rich Text Document" item from the "New" context menu
-	Добавить/удалить пункт "Документ в формате RTF" из контекстного меню "Создать"
+	Configure the "Rich Text Document" item in the "New" context menu
 
 	.PARAMETER Remove
 	Remove the "Rich Text Document" item from the "New" context menu
-	Удалить пункт "Документ в формате RTF" из контекстного меню "Создать"
 
 	.PARAMETER Add
-	Add the "Rich Text Document" item from the "New" context menu
-	Добавить пункт "Документ в формате RTF" из контекстного меню "Создать"
+	Add the "Rich Text Document" item to the "New" context menu
 
 	.EXAMPLE
 	RichTextDocumentNewContext -Remove
 
 	.EXAMPLE
 	RichTextDocumentNewContext -Add
+	Current user
 #>
 function RichTextDocumentNewContext
 {
@@ -10309,22 +9906,20 @@ function RichTextDocumentNewContext
 
 <#
 	.SYNOPSIS
-	Add/remove the "Compressed (zipped) Folder" item from the "New" context menu
-	Добавить/удалить пункт "Сжатая ZIP-папка" из контекстного меню "Создать"
+	Configure the "Compressed (zipped) Folder" item in the "New" context menu
 
 	.PARAMETER Remove
 	Remove the "Compressed (zipped) Folder" item from the "New" context menu
-	Удалить пункт "Сжатая ZIP-папка" из контекстного меню "Создать"
 
 	.PARAMETER Add
-	Add the "Compressed (zipped) Folder" item from the "New" context menu
-	Добавить пункт "Сжатая ZIP-папка" из контекстного меню "Создать"
+	Add the "Compressed (zipped) Folder" item to the "New" context menu
 
 	.EXAMPLE
 	CompressedFolderNewContext -Remove
 
 	.EXAMPLE
 	CompressedFolderNewContext -Add
+	Current user
 #>
 function CompressedFolderNewContext
 {
@@ -10365,22 +9960,20 @@ function CompressedFolderNewContext
 
 <#
 	.SYNOPSIS
-	Enable/disable the "Open", "Print", and "Edit" context menu items for more than 15 items selected
-	Включить/отключить элементы контекстного меню "Открыть", "Изменить" и "Печать" при выделении более 15 элементов
+	Configure the "Open", "Print", and "Edit" context menu items for more than 15 items selected
 
 	.PARAMETER Enable
 	Enable the "Open", "Print", and "Edit" context menu items for more than 15 items selected
-	Включить элементы контекстного меню "Открыть", "Изменить" и "Печать" при выделении более 15 элементов
 
 	.PARAMETER Disable
 	Disable the "Open", "Print", and "Edit" context menu items for more than 15 items selected
-	Отключить элементы контекстного меню "Открыть", "Изменить" и "Печать" при выделении более 15 элементов
 
 	.EXAMPLE
 	MultipleInvokeContext -Enable
 
 	.EXAMPLE
 	MultipleInvokeContext -Disable
+	Current user
 #>
 function MultipleInvokeContext
 {
@@ -10416,22 +10009,20 @@ function MultipleInvokeContext
 
 <#
 	.SYNOPSIS
-	Hide/show the "Look for an app in the Microsoft Store" item in the "Open with" dialog
-	Отобразить/скрыть пункт "Поиск приложения в Microsoft Store" в диалоге "Открыть с помощью"
+	Configure the "Look for an app in the Microsoft Store" item in the "Open with" dialog
 
 	.PARAMETER Hide
 	Hide the "Look for an app in the Microsoft Store" item in the "Open with" dialog
-	Скрыть пункт "Поиск приложения в Microsoft Store" в диалоге "Открыть с помощью"
 
 	.PARAMETER Show
 	Show the "Look for an app in the Microsoft Store" item in the "Open with" dialog
-	Отобразить пункт "Поиск приложения в Microsoft Store" в диалоге "Открыть с помощью"
 
 	.EXAMPLE
 	UseStoreOpenWith -Hide
 
 	.EXAMPLE
 	UseStoreOpenWith -Show
+	Current user
 #>
 function UseStoreOpenWith
 {
@@ -10471,22 +10062,20 @@ function UseStoreOpenWith
 
 <#
 	.SYNOPSIS
-	Hide/show the "Previous Versions" tab from files and folders context menu and also the "Restore previous versions" context menu item
-	Отобразить/скрыть вкладку "Предыдущие версии" в свойствах файлов и папок, а также пункт контекстного меню "Восстановить прежнюю версию"
+	Configure the "Previous Versions" tab in the files and folders context menu and the "Restore previous versions" context menu item
 
 	.PARAMETER Hide
-	Hide the "Previous Versions" tab from files and folders context menu and also the "Restore previous versions" context menu item
-	Скрыть вкладку "Предыдущие версии" в свойствах файлов и папок, а также пункт контекстного меню "Восстановить прежнюю версию"
+	Hide the "Previous Versions" tab from the files and folders context menu and the "Restore previous versions" context menu item
 
 	.PARAMETER Show
-	Show the "Previous Versions" tab from files and folders context menu and also the "Restore previous versions" context menu item
-	Отобразить вкладку "Предыдущие версии" в свойствах файлов и папок, а также пункт контекстного меню "Восстановить прежнюю версию"
+	Show the "Previous Versions" tab from the files and folders context menu and the "Restore previous versions" context menu item
 
 	.EXAMPLE
 	PreviousVersionsPage -Hide
 
 	.EXAMPLE
 	PreviousVersionsPage -Show
+	Current user
 #>
 function PreviousVersionsPage
 {
@@ -10542,22 +10131,18 @@ private static extern int SHChangeNotify(int eventId, int flags, IntPtr item1, I
 public static void Refresh()
 {
 	// Update desktop icons
-	// Обновить иконки рабочего стола
 	SHChangeNotify(0x8000000, 0x1000, IntPtr.Zero, IntPtr.Zero);
 
 	// Update environment variables
-	// Обновить переменные среды
 	SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, IntPtr.Zero, null, SMTO_ABORTIFHUNG, 100, IntPtr.Zero);
 
 	// Update taskbar
-	// Обновить панель задач
 	SendNotifyMessage(HWND_BROADCAST, WM_SETTINGCHANGE, IntPtr.Zero, "TraySettings");
 }
 
 private static readonly IntPtr hWnd = new IntPtr(65535);
 private const int Msg = 273;
 // Virtual key ID of the F5 in File Explorer
-// Виртуальный код клавиши F5 в проводнике
 private static readonly UIntPtr UIntPtr = new UIntPtr(41504);
 
 [DllImport("user32.dll", SetLastError=true)]
@@ -10565,7 +10150,6 @@ public static extern int PostMessageW(IntPtr hWnd, uint Msg, UIntPtr wParam, Int
 public static void PostMessage()
 {
 	// Simulate pressing F5 to refresh the desktop
-	// Симулировать нажатие F5 для обновления рабочего стола
 	PostMessageW(hWnd, Msg, UIntPtr, IntPtr.Zero);
 }
 "@
@@ -10576,19 +10160,15 @@ public static void PostMessage()
 	}
 
 	# Simulate pressing F5 to refresh the desktop
-	# Симулировать нажатие F5 для обновления рабочего стола
 	[WinAPI.UpdateExplorer]::PostMessage()
 
 	# Refresh desktop icons, environment variables, taskbar
-	# Обновить иконки рабочего стола, переменные среды, панель задач
 	[WinAPI.UpdateExplorer]::Refresh()
 
 	# Restart the Start menu
-	# Перезапустить меню "Пуск"
 	Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
 
-	# Turn on Controlled folder access if it was turned on
-	# Включить контролируемый доступ к папкам, если был включен
+	# Turn on Controlled folder access if it was turned off
 	if ($Script:ControlledFolderAccess)
 	{
 		Set-MpPreference -EnableControlledFolderAccess Enabled
@@ -10599,7 +10179,6 @@ public static void PostMessage()
 #endregion Refresh
 
 # Errors output
-# Вывод ошибок
 function Errors
 {
 	if ($Global:Error)
