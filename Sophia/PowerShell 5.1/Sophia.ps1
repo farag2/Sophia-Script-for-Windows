@@ -2,33 +2,43 @@
 	.SYNOPSIS
 	Default preset file for "Windows 10 Sophia Script"
 
-	Version: v5.4.0.1
-	Date: 06.02.2021
+	Version: v5.5
+	Date: 20.02.2021
 	Copyright (c) 2015–2021 farag & oZ-Zo
+
+	https://github.com/farag2
+	https://github.com/oz-zo
 
 	Thanks to all https://forum.ru-board.com members involved
 
 	.DESCRIPTION
-	Supported Windows 10 versions: 2004 (20H1)/20H2 (2009), 19041/19042, Home/Pro/Enterprise, x64
-
-	Due to the fact that the script includes more than 150 functions with different arguments, you must read the entire Sophia.ps1 carefully and
-	comment out/uncomment those functions that you do/do not want to be executed
+	Read carefully and configure the preset file before running
 	Every tweak in the preset file has its' corresponding function to restore the default settings
 
 	Running the script is best done on a fresh install because running it on wrong tweaked system may result in errors occurring
 
-	PowerShell must be run with elevated privileges
-	Set execution policy to be able to run scripts only in the current PowerShell session:
-		Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+	.EXAMPLE
+	.\Sophia.ps1
 
 	.EXAMPLE
-	PS C:\> .\Sophia.ps1
+	.\Sophia.ps1 -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", InstallHEIF
 
 	.NOTES
 	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
 	https://habr.com/post/521202/
 	https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/
 	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
+
+	.NOTES
+	Supported Windows 10 versions
+	Versions: 2004 (20H1)/20H2 (2009)
+	Builds: 19041/19042
+	Editions: Home/Pro/Enterprise
+	Architecture: x64
+
+	.NOTES
+	Set execution policy to be able to run scripts only in the current PowerShell session:
+		Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 
 	.LINK
 	https://github.com/farag2/Windows-10-Sophia-Script
@@ -47,7 +57,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.4.0.1 | ©️ farag & oz-zo, 2015–2021"
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.5 | $([char]0x00A9) farag & oz-zo, 2015–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Sophia.psd1 -PassThru -Force
@@ -60,7 +70,7 @@ Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia
 	Добавляет возможность запускать скрипт, указывая в качестве параметров функции модуля
 
 	.EXAMPLE
-	.\Sophia.ps1 -Functions "FunctionName1 -Parameter", "FunctionName2 -Parameter", FunctionName3
+	.\Sophia.ps1 -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", InstallHEIF
 
 	.NOTES
 	Regardless of the functions entered as an argument, the "Checkings" function will be executed first, and the "Refresh" and "Errors" functions will be executed at the end
@@ -80,8 +90,13 @@ if ($Functions)
 	exit
 }
 
-# Checkings
-# Проверки
+<#
+	Checkings
+	Please, do not touch this function
+
+	Проверки
+	Пожалуйста, не комментируйте данную функцию
+#>
 Checkings
 
 <#
@@ -114,104 +129,104 @@ DiagnosticDataLevel -Minimal
 # Установить уровень сбора диагностических сведений ОС по умолчанию
 # DiagnosticDataLevel -Default
 
-# Turn off Windows Error Reporting for the current user
-# Отключить отчеты об ошибках Windows для текущего пользователя
+# Turn off the Windows Error Reporting
+# Отключить отчеты об ошибках Windows
 ErrorReporting -Disable
 
-# Turn on Windows Error Reporting for the current user (default value)
-# Включить отчеты об ошибках Windows для текущего пользователя (значение по умолчанию)
+# Turn on the Windows Error Reporting (default value)
+# Включить отчеты об ошибках Windows (значение по умолчанию)
 # ErrorReporting -Enable
 
-# Change Windows feedback frequency to "Never" for the current user
-# Изменить частоту формирования отзывов на "Никогда" для текущего пользователя
+# Change the Windows feedback frequency to "Never"
+# Изменить частоту формирования отзывов на "Никогда"
 WindowsFeedback -Disable
 
-# Change Windows Feedback frequency to "Automatically" for the current user (default value)
-# Изменить частоту формирования отзывов на "Автоматически" для текущего пользователя (значение по умолчанию)
+# Change the Windows Feedback frequency to "Automatically" (default value)
+# Изменить частоту формирования отзывов на "Автоматически" (значение по умолчанию)
 # WindowsFeedback -Enable
 
-# Turn off diagnostics tracking scheduled tasks
+# Turn off the diagnostics tracking scheduled tasks
 # Отключить задачи диагностического отслеживания
 ScheduledTasks -Disable
 
-# Turn on diagnostics tracking scheduled tasks (default value)
+# Turn on the diagnostics tracking scheduled tasks (default value)
 # Включить задачи диагностического отслеживания (значение по умолчанию)
 # ScheduledTasks -Enable
 
-# Do not use sign-in info to automatically finish setting up device and reopen apps after an update or restart (current user only)
-# Не использовать данные для входа для автоматического завершения настройки устройства и открытия приложений после перезапуска или обновления (только для текущего пользователя)
+# Do not use sign-in info to automatically finish setting up device and reopen apps after an update or restart
+# Не использовать данные для входа для автоматического завершения настройки устройства и открытия приложений после перезапуска или обновления
 SigninInfo -Disable
 
-# Use sign-in info to automatically finish setting up device and reopen apps after an update or restart (current user only) (default value)
-# Использовать данные для входа для автоматического завершения настройки устройства и открытия приложений после перезапуска или обновления (только для текущего пользователя) (значение по умолчанию)
+# Use sign-in info to automatically finish setting up device and reopen apps after an update or restart (default value)
+# Использовать данные для входа для автоматического завершения настройки устройства и открытия приложений после перезапуска или обновления (значение по умолчанию)
 # SigninInfo -Enable
 
-# Do not let websites provide locally relevant content by accessing language list (current user only)
-# Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков (только для текущего пользователя)
+# Do not let websites provide locally relevant content by accessing language list
+# Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков
 LanguageListAccess -Disable
 
-# Let websites provide locally relevant content by accessing language list (current user only) (default value)
-# Позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков (только для текущего пользователя) (значение по умолчанию)
+# Let websites provide locally relevant content by accessing language list (default value)
+# Позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков (значение по умолчанию)
 # LanguageListAccess -Enable
 
-# Do not allow apps to use advertising ID (current user only)
-# Не разрешать приложениям использовать идентификатор рекламы (только для текущего пользователя)
+# Do not allow apps to use advertising ID
+# Не разрешать приложениям использовать идентификатор рекламы
 AdvertisingID -Disable
 
-# Allow apps to use advertising ID (current user only) (default value)
-# Разрешать приложениям использовать идентификатор рекламы (только для текущего пользователя) (значение по умолчанию)
+# Allow apps to use advertising ID (default value)
+# Разрешать приложениям использовать идентификатор рекламы (значение по умолчанию)
 # AdvertisingID -Enable
 
-# Do not let apps on other devices open and message apps on this device, and vice versa (current user only)
-# Не разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот (только для текущего пользователя)
+# Do not let apps on other devices open and message apps on this device, and vice versa
+# Не разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот
 ShareAcrossDevices -Disable
 
-# Let apps on other devices open and message apps on this device, and vice versa (current user only) (default value)
-# Разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот (только для текущего пользователя) (значение по умолчанию)
+# Let apps on other devices open and message apps on this device, and vice versa (default value)
+# Разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот (значение по умолчанию)
 # ShareAcrossDevices -Enable
 
-# Hide the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested (current user only)
-# Скрывать экран приветствия Windows после обновлений и иногда при входе, чтобы сообщить о новых функциях и предложениях (только для текущего пользователя)
+# Hide the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested
+# Скрывать экран приветствия Windows после обновлений и иногда при входе, чтобы сообщить о новых функциях и предложениях
 WindowsWelcomeExperience -Hide
 
-# Show the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested (current user only) (default value)
-# Показывать экран приветствия Windows после обновлений и иногда при входе, чтобы сообщить о новых функциях и предложениях (только для текущего пользователя) (значение по умолчанию)
+# Show the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested (default value)
+# Показывать экран приветствия Windows после обновлений и иногда при входе, чтобы сообщить о новых функциях и предложениях (значение по умолчанию)
 # WindowsWelcomeExperience -Show
 
-# Get tip, trick, and suggestions as you use Windows (current user only) (default value)
-# Получать советы, подсказки и рекомендации при использованию Windows (только для текущего пользователя) (значение по умолчанию)
+# Get tip, trick, and suggestions as you use Windows (default value)
+# Получать советы, подсказки и рекомендации при использованию Windows (значение по умолчанию)
 WindowsTips -Enable
 
-# Do not get tip, trick, and suggestions as you use Windows (current user only)
-# Не получать советы, подсказки и рекомендации при использованию Windows (только для текущего пользователя)
+# Do not get tip, trick, and suggestions as you use Windows
+# Не получать советы, подсказки и рекомендации при использованию Windows
 # WindowsTips -Disable
 
-# Hide suggested content in the Settings app (current user only)
-# Скрывать рекомендуемое содержимое в приложении "Параметры" (только для текущего пользователя)
+# Hide the suggested content in the Settings app
+# Скрывать рекомендуемое содержимое в приложении "Параметры"
 SettingsSuggestedContent -Hide
 
-# Show suggested content in the Settings app (current user only) (default value)
-# Показывать рекомендуемое содержимое в приложении "Параметры" (только для текущего пользователя) (значение по умолчанию)
+# Show the suggested content in the Settings app (default value)
+# Показывать рекомендуемое содержимое в приложении "Параметры" (значение по умолчанию)
 # SettingsSuggestedContent -Show
 
-# Turn off automatic installing suggested apps (current user only)
-# Отключить автоматическую установку рекомендованных приложений (только для текущего пользователя)
+# Turn off the automatic installing suggested apps
+# Отключить автоматическую установку рекомендованных приложений
 AppsSilentInstalling -Disable
 
-# Turn on automatic installing suggested apps (current user only) (default value)
-# Включить автоматическую установку рекомендованных приложений (только для текущего пользователя) (значение по умолчанию)
+# Turn on automatic installing suggested apps (default value)
+# Включить автоматическую установку рекомендованных приложений (значение по умолчанию)
 # AppsSilentInstalling -Enable
 
-# Do not suggest ways I can finish setting up my device to get the most out of Windows (current user only)
-# Не предлагать способы завершения настройки устройства для максимально эффективного использования Windows (только для текущего пользователя)
+# Do not suggest ways I can finish setting up my device to get the most out of Windows
+# Не предлагать способы завершения настройки устройства для максимально эффективного использования Windows
 WhatsNewInWindows -Disable
 
 # Suggest ways I can finish setting up my device to get the most out of Windows (default value)
 # Предлагать способы завершения настройки устройства для максимально эффективного использования Windows (значение по умолчанию)
 # WhatsNewInWindows -Enable
 
-# Do not offer tailored experiences based on the diagnostic data setting (current user only)
-# Не предлагать персонализированные возможности, основанные на выбранном параметре диагностических данных (только для текущего пользователя)
+# Do not offer tailored experiences based on the diagnostic data setting
+# Не предлагать персонализированные возможности, основанные на выбранном параметре диагностических данных
 TailoredExperiences -Disable
 
 # Offer tailored experiences based on the diagnostic data setting (default value)
@@ -222,210 +237,214 @@ TailoredExperiences -Disable
 # Отключить в меню "Пуск" поиск через Bing (только для США)
 BingSearch -Disable
 
-# Enable Bing search in the Start Menu (current user only) (default value)
-# Включить поиск через Bing в меню "Пуск" (только для текущего пользователя) (значение по умолчанию)
+# Enable Bing search in the Start Menu (default value)
+# Включить поиск через Bing в меню "Пуск" (значение по умолчанию)
 # BingSearch -Enable
 #endregion Privacy & Telemetry
 
 #region UI & Personalization
-# Show "This PC" on Desktop (current user only)
-# Отобразить "Этот компьютер" на рабочем столе (только для текущего пользователя)
+# Show the "This PC" icon on Desktop
+# Отобразить значок "Этот компьютер" на рабочем столе
 ThisPC -Show
 
-# Hide "This PC" on Desktop (current user only) (default value)
-# Скрывать "Этот компьютер" на рабочем столе (только для текущего пользователя) (значение по умолчанию)
+# Hide the "This PC" icon on Desktop (default value)
+# Скрывать "Этот компьютер" на рабочем столе (значение по умолчанию)
 # ThisPC -Hide
 
-# Do not use check boxes to select items (current user only)
-# Не использовать флажки для выбора элементов (только для текущего пользователя)
+# Do not use check boxes to select items
+# Не использовать флажки для выбора элементов
 CheckBoxes -Disable
 
-# Use check boxes to select items (current user only) (default value)
-# Использовать флажки для выбора элементов (только для текущего пользователя) (значение по умолчанию)
+# Use check boxes to select items (default value)
+# Использовать флажки для выбора элементов (значение по умолчанию)
 # CheckBoxes -Enable
 
-# Show hidden files, folders, and drives (current user only)
-# Отображать скрытые файлы, папки и диски (только для текущего пользователя)
+# Show hidden files, folders, and drives
+# Отображать скрытые файлы, папки и диски
 HiddenItems -Enable
 
-# Do not show hidden files, folders, and drives (current user only) (default value)
-# Не отображать скрытые файлы, папки и диски (только для текущего пользователя) (значение по умолчанию)
+# Do not show hidden files, folders, and drives (default value)
+# Не отображать скрытые файлы, папки и диски (значение по умолчанию)
 # HiddenItems -Disable
 
-# Show file name extensions (current user only)
-# Отображать расширения имён файлов (только для текущего пользователя)
+# Show file name extensions
+# Отображать расширения имён файлов
 FileExtensions -Show
 
-# Hide file name extensions (current user only) (default value)
-# Скрывать расширения имён файлов файлов (только для текущего пользователя) (значение по умолчанию)
+# Hide file name extensions (default value)
+# Скрывать расширения имён файлов файлов (значение по умолчанию)
 # FileExtensions -Hide
 
-# Do not hide folder merge conflicts (current user only)
-# Не скрывать конфликт слияния папок (только для текущего пользователя)
+# Do not hide folder merge conflicts
+# Не скрывать конфликт слияния папок
 MergeConflicts -Show
 
-# Hide folder merge conflicts (current user only) (default value)
-# Скрывать конфликт слияния папок (только для текущего пользователя) (значение по умолчанию)
+# Hide folder merge conflicts (default value)
+# Скрывать конфликт слияния папок (значение по умолчанию)
 # MergeConflicts -Hide
 
-# Open File Explorer to: "This PC" (current user only)
-# Открывать проводник для: "Этот компьютер" (только для текущего пользователя)
+# Open File Explorer to: "This PC"
+# Открывать проводник для: "Этот компьютер"
 OpenFileExplorerTo -ThisPC
 
-# Open File Explorer to: "Quick access" (current user only) (default value)
-# Открывать проводник для: "Быстрый доступ" (только для текущего пользователя) (значение по умолчанию)
+# Open File Explorer to: "Quick access" (default value)
+# Открывать проводник для: "Быстрый доступ" (значение по умолчанию)
 # OpenFileExplorerTo -QuickAccess
 
-# Hide Cortana button on the taskbar (current user only)
-# Скрывать кнопку Кортаны на панели задач (только для текущего пользователя)
+# Hide Cortana button on the taskbar
+# Скрывать кнопку Кортаны на панели задач
 CortanaButton -Hide
 
-# Show Cortana button on the taskbar (current user only) (default value)
-# Показать кнопку Кортаны на панели задач (только для текущего пользователя) (значение по умолчанию)
+# Show Cortana button on the taskbar (default value)
+# Показать кнопку Кортаны на панели задач (значение по умолчанию)
 # CortanaButton -Show
 
-# Do not show sync provider notification within File Explorer (current user only)
-# Не показывать уведомления поставщика синхронизации в проводнике (только для текущего пользователя)
+# Do not show sync provider notification within File Explorer
+# Не показывать уведомления поставщика синхронизации в проводнике
 OneDriveFileExplorerAd -Hide
 
-# Show sync provider notification within File Explorer (current user only) (default value)
-# Показывать уведомления поставщика синхронизации в проводнике (только для текущего пользователя) (значение по умолчанию)
+# Show sync provider notification within File Explorer (default value)
+# Показывать уведомления поставщика синхронизации в проводнике (значение по умолчанию)
 # OneDriveFileExplorerAd -Show
 
-# Hide Task View button on the taskbar (current user only)
-# Скрывать кнопку Просмотра задач (только для текущего пользователя)
+# Hide Task View button on the taskbar
+# Скрывать кнопку Просмотра задач
 TaskViewButton -Hide
 
-# Show Task View button on the taskbar (current user only) (default value)
-# Показывать кнопку Просмотра задач (только для текущего пользователя) (значение по умолчанию)
+# Show Task View button on the taskbar (default value)
+# Показывать кнопку Просмотра задач (значение по умолчанию)
 # TaskViewButton -Show
 
-# Hide People button on the taskbar (current user only)
-# Скрывать панель "Люди" на панели задач (только для текущего пользователя)
+# Hide People button on the taskbar
+# Скрывать панель "Люди" на панели задач
 PeopleTaskbar -Hide
 
-# Show People button on the taskbar (current user only) (default value)
-# Показывать панель "Люди" на панели задач (только для текущего пользователя) (значение по умолчанию)
+# Show People button on the taskbar (default value)
+# Показывать панель "Люди" на панели задач (значение по умолчанию)
 # PeopleTaskbar -Show
 
-# Show seconds on the taskbar clock (current user only)
-# Отображать секунды в системных часах на панели задач (только для текущего пользователя)
+# Show seconds on the taskbar clock
+# Отображать секунды в системных часах на панели задач
 SecondsInSystemClock -Show
 
-# Hide seconds on the taskbar clock (current user only) (default value)
-# Скрывать секунды в системных часах на панели задач (только для текущего пользователя) (значение по умолчанию)
+# Hide seconds on the taskbar clock (default value)
+# Скрывать секунды в системных часах на панели задач (значение по умолчанию)
 # SecondsInSystemClock -Hide
 
-# When I snap a window, do not show what I can snap next to it (current user only)
-# При прикреплении окна не показывать, что можно прикрепить рядом с ним (только для текущего пользователя)
+# When I snap a window, do not show what I can snap next to it
+# При прикреплении окна не показывать, что можно прикрепить рядом с ним
 SnapAssist -Disable
 
-# When I snap a window, show what I can snap next to it (current user only) (default value)
-# При прикреплении окна не показывать/показывать, что можно прикрепить рядом с ним (только для текущего пользователя) (значение по умолчанию)
+# When I snap a window, show what I can snap next to it (default value)
+# При прикреплении окна не показывать/показывать, что можно прикрепить рядом с ним (значение по умолчанию)
 # SnapAssist -Enable
 
-# Always open the file transfer dialog box in the detailed mode (current user only)
-# Всегда открывать диалоговое окно передачи файлов в развернутом виде (только для текущего пользователя)
+# Always open the file transfer dialog box in the detailed mode
+# Всегда открывать диалоговое окно передачи файлов в развернутом виде
 FileTransferDialog -Detailed
 
-# Always open the file transfer dialog box in the compact mode (current user only) (default value)
-# Всегда открывать диалоговое окно передачи файлов в свернутом виде (только для текущего пользователя) (значение по умолчанию)
+# Always open the file transfer dialog box in the compact mode (default value)
+# Всегда открывать диалоговое окно передачи файлов в свернутом виде (значение по умолчанию)
 # FileTransferDialog -Compact
 
-# Always expand the ribbon in the File Explorer (current user only)
-# Всегда разворачивать ленту в проводнике (только для текущего пользователя)
+# Expand the File Explorer ribbon
+# Развернуть ленут проводника
 FileExplorerRibbon -Expanded
 
-# Always minimize the ribbon in the File Explorer (current user only) (default value)
-# Не отображать ленту проводника в развернутом виде (только для текущего пользователя) (значение по умолчанию)
+# Minimize the File Explorer ribbon (default value)
+# Свернуть ленут проводника (значение по умолчанию)
 # FileExplorerRibbon -Minimized
 
-# Display recycle bin files delete confirmation
+# Display the recycle bin files delete confirmation
 # Запрашивать подтверждение на удаление файлов в корзину
 RecycleBinDeleteConfirmation -Enable
 
-# Do not display recycle bin files delete confirmation (default value)
+# Do not display the recycle bin files delete confirmation (default value)
 # Не запрашивать подтверждение на удаление файлов в корзину (значение по умолчанию)
 # RecycleBinDeleteConfirmation -Disable
 
-# Hide the "3D Objects" folder in "This PC" and "Quick access" (current user only)
-# Скрыть папку "Объемные объекты" в "Этот компьютер" и панели быстрого доступа (только для текущего пользователя)
+# Hide the "3D Objects" folder in "This PC" and "Quick access"
+# Скрыть папку "Объемные объекты" в "Этот компьютер" и панели быстрого доступа
 3DObjects -Hide
 
-# Show the "3D Objects" folder in "This PC" and "Quick access" (current user only) (default value)
-# Отобразить папку "Объемные объекты" в "Этот компьютер" и панели быстрого доступа (только для текущего пользователя) (значение по умолчанию)
+# Show the "3D Objects" folder in "This PC" and "Quick access" (default value)
+# Отобразить папку "Объемные объекты" в "Этот компьютер" и панели быстрого доступа (значение по умолчанию)
 # 3DObjects -Show
 
-# Hide frequently used folders in "Quick access" (current user only)
-# Скрыть недавно используемые папки на панели быстрого доступа (только для текущего пользователя)
+# Hide frequently used folders in "Quick access"
+# Скрыть недавно используемые папки на панели быстрого доступа
 QuickAccessFrequentFolders -Hide
 
-# Show frequently used folders in "Quick access" (current user only) (default value)
-# Показывать недавно используемые папки на панели быстрого доступа (только для текущего пользователя) (значение по умолчанию)
+# Show frequently used folders in "Quick access" (default value)
+# Показать недавно используемые папки на панели быстрого доступа (значение по умолчанию)
 # QuickAccessFrequentFolders -Show
 
-# Do not show recently used files in Quick access (current user only)
-# Не показывать недавно использовавшиеся файлы на панели быстрого доступа (только для текущего пользователя)
+# Do not show recently used files in Quick access
+# Не показывать недавно использовавшиеся файлы на панели быстрого доступа
 QuickAccessRecentFiles -Hide
 
-# Show recently used files in Quick access (current user only) (default value)
-# Показывать недавно использовавшиеся файлы на панели быстрого доступа (только для текущего пользователя) (значение по умолчанию)
+# Show recently used files in Quick access (default value)
+# Показать недавно использовавшиеся файлы на панели быстрого доступа (значение по умолчанию)
 # QuickAccessRecentFiles -Show
 
-# Hide the search box or the search icon from the taskbar (current user only)
-# Скрыть поле или значок поиска на панели задач (только для текущего пользователя)
+# Hide the search on the taskbar
+# Скрыть поле или значок поиска на панели задач
 TaskbarSearch -Hide
 
-# Show the search box on the taskbar (current user only)
-# Показать поле поиска на панели задач (только для текущего пользователя)
+# Show the search icon on the taskbar
+# Показать значок поиска на панели задач
 # TaskbarSearch -SearchIcon
 
-# Show the search icon on the taskbar (current user only) (default value)
-# Показать поле поиска на панели задач (только для текущего пользователя) (значение по умолчанию)
+# Show the search box on the taskbar (default value)
+# Показать поле поиска на панели задач (значение по умолчанию)
 # TaskbarSearch -SearchBox
 
-# Do not show the "Windows Ink Workspace" button on the taskbar (current user only)
-# Не показывать кнопку Windows Ink Workspace на панели задач (current user only)
+# Do not show the "Windows Ink Workspace" button on the taskbar
+# Не показывать кнопку Windows Ink Workspace на панели задач
 WindowsInkWorkspace -Hide
 
-# Show the "Windows Ink Workspace" button in taskbar (current user only) (default value)
-# Показывать кнопку Windows Ink Workspace на панели задач (current user only) (значение по умолчанию)
+# Show the "Windows Ink Workspace" button in taskbar (default value)
+# Показать кнопку Windows Ink Workspace на панели задач (значение по умолчанию)
 # WindowsInkWorkspace -Show
 
-# Always show all icons in the notification area (current user only)
-# Всегда отображать все значки в области уведомлений (только для текущего пользователя)
+# Always show all icons in the notification area
+# Всегда отображать все значки в области уведомлений
 TrayIcons -Show
 
-# Do not show all icons in the notification area (current user only) (default value)
-# Не отображать все значки в области уведомлений (только для текущего пользователя) (значение по умолчанию)
+# Do not show all icons in the notification area (default value)
+# Не отображать все значки в области уведомлений (значение по умолчанию)
 # TrayIcons -Hide
 
-# Unpin "Microsoft Edge" and "Microsoft Store" from the taskbar (current user only)
-# Открепить Microsoft Edge и Microsoft Store от панели задач (только для текущего пользователя)
+# Unpin "Microsoft Edge" and "Microsoft Store" from the taskbar
+# Открепить Microsoft Edge и Microsoft Store от панели задач
 UnpinTaskbarEdgeStore
 
-# View the Control Panel icons by: large icons (current user only)
-# Просмотр иконок Панели управления как: крупные значки (только для текущего пользователя)
+# View the Control Panel icons by: large icons
+# Просмотр иконок Панели управления как: крупные значки
 ControlPanelView -LargeIcons
 
-# View the Control Panel icons by: category (current user only) (default value)
-# Просмотр значки Панели управления как "категория" (только для текущего пользователя) (значение по умолчанию)
+# View the Control Panel icons by: small icons
+# Просмотр иконок Панели управления как: маленькие значки
+# ControlPanelView -SmallIcons
+
+# View the Control Panel icons by: category (default value)
+# Просмотр значки Панели управления как "категория" (значение по умолчанию)
 # ControlPanelView -Category
 
-# Set the Windows mode color scheme to the dark (current user only)
-# Установить цвет режима Windows по умолчанию на темный (только для текущего пользователя)
+# Set the Windows mode color scheme to the dark
+# Установить цвет режима Windows по умолчанию на темный
 WindowsColorScheme -Dark
 
-# Set the Windows mode color scheme to the light (current user only)
-# Установить режим цвета для Windows на светлый (только для текущего пользователя)
+# Set the Windows mode color scheme to the light
+# Установить режим цвета для Windows на светлый
 # WindowsColorScheme -Light
 
-# Set the default app mode color scheme to the dark (current user only)
-# Установить цвет режима приложений по умолчанию на темный (только для текущего пользователя)
+# Set the default app mode color scheme to the dark
+# Установить цвет режима приложений по умолчанию на темный
 AppMode -Dark
 
-# Set the default app mode color scheme to the light (current user only)
-# Установить цвет режима приложений по умолчанию на светлый (только для текущего пользователя)
+# Set the default app mode color scheme to the light
+# Установить цвет режима приложений по умолчанию на светлый
 # AppMode -Light
 
 # Do not show the "New App Installed" indicator
@@ -436,28 +455,28 @@ NewAppInstalledNotification -Hide
 # Показывать уведомление "Установлено новое приложение" (значение по умолчанию)
 # NewAppInstalledNotification -Show
 
-# Hide user first sign-in animation after the upgrade
+# Hide first sign-in animation after the upgrade
 # Скрывать анимацию при первом входе в систему после обновления
 FirstLogonAnimation -Disable
 
-# Show user first sign-in animation after the upgrade (default value)
+# Show first sign-in animation after the upgrade (default value)
 # Показывать анимацию при первом входе в систему после обновления (значение по умолчанию)
 # FirstLogonAnimation -Enable
 
-# Set the quality factor of the JPEG desktop wallpapers to maximum (current user only)
-# Установить коэффициент качества обоев рабочего стола в формате JPEG на максимальный (только для текущего пользователя)
+# Set the quality factor of the JPEG desktop wallpapers to maximum
+# Установить коэффициент качества обоев рабочего стола в формате JPEG на максимальный
 JPEGWallpapersQuality -Max
 
-# Set the quality factor of the JPEG desktop wallpapers to default (current user only)
-# Установить коэффициент качества обоев рабочего стола в формате JPEG по умолчанию (только для текущего пользователя)
+# Set the quality factor of the JPEG desktop wallpapers to default
+# Установить коэффициент качества обоев рабочего стола в формате JPEG по умолчанию
 # JPEGWallpapersQuality -Default
 
-# Start Task Manager in expanded mode (current user only)
-# Запускать Диспетчера задач в развернутом виде (только для текущего пользователя)
+# Start Task Manager in expanded mode
+# Запускать Диспетчера задач в развернутом виде
 TaskManagerWindow -Expanded
 
-# Start Task Manager in compact mode (current user only) (default value)
-# Запускать Диспетчера задач в свернутом виде (только для текущего пользователя) (значение по умолчанию)
+# Start Task Manager in compact mode (default value)
+# Запускать Диспетчера задач в свернутом виде (значение по умолчанию)
 # TaskManagerWindow -Compact
 
 # Show a notification when your PC requires a restart to finish updating
@@ -468,28 +487,28 @@ RestartNotification -Show
 # Не показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления (значение по умолчанию)
 # RestartNotification -Hide
 
-# Do not add the "- Shortcut" suffix to the file name of created shortcuts (current user only)
-# Нe дoбaвлять "- яpлык" к имени coздaвaeмых яpлыков (только для текущего пользователя)
+# Do not add the "- Shortcut" suffix to the file name of created shortcuts
+# Нe дoбaвлять "- яpлык" к имени coздaвaeмых яpлыков
 ShortcutsSuffix -Disable
 
-# Add the "- Shortcut" suffix to the file name of created shortcuts (current user only) (default value)
-# Дoбaвлять "- яpлык" к имени coздaвaeмых яpлыков (только для текущего пользователя) (значение по умолчанию)
+# Add the "- Shortcut" suffix to the file name of created shortcuts (default value)
+# Дoбaвлять "- яpлык" к имени coздaвaeмых яpлыков (значение по умолчанию)
 # ShortcutsSuffix -Enable
 
-# Use the PrtScn button to open screen snipping (current user only)
-# Использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана (только для текущего пользователя)
+# Use the PrtScn button to open screen snipping
+# Использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана
 PrtScnSnippingTool -Enable
 
-# Do not use the PrtScn button to open screen snipping (current user only) (default value)
-# Не использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана (только для текущего пользователя) (значение по умолчанию)
+# Do not use the PrtScn button to open screen snipping (default value)
+# Не использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана (значение по умолчанию)
 # PrtScnSnippingTool -Disable
 
-# Let me use a different input method for each app window (current user only)
-# Позволить выбирать метод ввода для каждого окна (только для текущего пользователя)
+# Let me use a different input method for each app window
+# Позволить выбирать метод ввода для каждого окна
 AppsLanguageSwitch -Enable
 
-# Do not let use a different input method for each app window (current user only) (default value)
-# Не позволять выбирать метод ввода для каждого окна (только для текущего пользователя) (значение по умолчанию)
+# Do not let use a different input method for each app window (default value)
+# Не позволять выбирать метод ввода для каждого окна (значение по умолчанию)
 # AppsLanguageSwitch -Disable
 #endregion UI & Personalization
 
@@ -498,43 +517,43 @@ AppsLanguageSwitch -Enable
 # Удалить OneDrive
 OneDrive -Uninstall
 
-# Install OneDrive (current user only) (default value)
-# Установить OneDrive (только для текущего пользователя) (значение по умолчанию)
+# Install OneDrive (default value)
+# Установить OneDrive (значение по умолчанию)
 # OneDrive -Install
 #endregion OneDrive
 
 #region System
 #region StorageSense
-# Turn on Storage Sense (current user only)
-# Включить Контроль памяти (только для текущего пользователя)
+# Turn on Storage Sense
+# Включить Контроль памяти
 StorageSense -Enable
 
-# Turn off Storage Sense (current user only) (default value)
-# Выключить Контроль памяти (только для текущего пользователя) (значение по умолчанию)
+# Turn off Storage Sense (default value)
+# Выключить Контроль памяти (значение по умолчанию)
 # StorageSense -Disable
 
-# Run Storage Sense every month (current user only)
-# Запускать Контроль памяти каждый месяц (только для текущего пользователя)
+# Run Storage Sense every month
+# Запускать Контроль памяти каждый месяц
 StorageSenseFrequency -Month
 
-# Run Storage Sense during low free disk space (default value) (current user only)
-# Запускать Контроль памяти, когда остается мало место на диске (значение по умолчанию) (только для текущего пользователя)
+# Run Storage Sense during low free disk space (default value)
+# Запускать Контроль памяти, когда остается мало место на диске (значение по умолчанию)
 # StorageSenseFrequency -Default
 
-# Delete temporary files that apps aren't using (current user only)
-# Удалять временные файлы, не используемые в приложениях (только для текущего пользователя)
+# Delete temporary files that apps aren't using
+# Удалять временные файлы, не используемые в приложениях
 StorageSenseTempFiles -Enable
 
-# Do not delete temporary files that apps aren't using (current user only)
-# Не удалять временные файлы, не используемые в приложениях (только для текущего пользователя)
+# Do not delete temporary files that apps aren't using
+# Не удалять временные файлы, не используемые в приложениях
 # StorageSenseTempFiles -Disable
 
-# Delete files in recycle bin if they have been there for over 30 days (current user only)
-# Удалять файлы из корзины, если они находятся в корзине более 30 дней (только для текущего пользователя)
+# Delete files in recycle bin if they have been there for over 30 days
+# Удалять файлы из корзины, если они находятся в корзине более 30 дней
 StorageSenseRecycleBin -Enable
 
-# Do not delete files in recycle bin if they have been there for over 30 days (current user only)
-# Не удалять файлы из корзины, если они находятся в корзине более 30 дней (только для текущего пользователя)
+# Do not delete files in recycle bin if they have been there for over 30 days
+# Не удалять файлы из корзины, если они находятся в корзине более 30 дней
 # StorageSenseRecycleBin -Disable
 #endregion StorageSense
 
@@ -546,19 +565,19 @@ Hibernate -Disable
 # Включить режим гибернации (значение по умолчанию)
 # Hibernate -Enable
 
-# Change the %TEMP% environment variable path to "%SystemDrive%\Temp" (both machine-wide, and for the current user)
-# Изменить путь переменной среды для %TEMP% на "%SystemDrive%\Temp" (для всех пользователей)
+# Change the %TEMP% environment variable path to "%SystemDrive%\Temp"
+# Изменить путь переменной среды для %TEMP% на "%SystemDrive%\Temp"
 # TempFolder -SystemDrive
 
-# Change %TEMP% environment variable path to "%LOCALAPPDATA%\Temp" (both machine-wide, and for the current user) (default value)
-# Изменить путь переменной среды для %TEMP% на "LOCALAPPDATA%\Temp" (для всех пользователей) (значение по умолчанию)
+# Change %TEMP% environment variable path to "%LOCALAPPDATA%\Temp" (default value)
+# Изменить путь переменной среды для %TEMP% на "LOCALAPPDATA%\Temp" (значение по умолчанию)
 # TempFolder -Default
 
-# Disable Windows 260 characters path limit
+# Disable the Windows 260 characters path limit
 # Отключить ограничение Windows на 260 символов в пути
 Win32LongPathLimit -Disable
 
-# Enable Windows 260 character path limit (default value)
+# Enable the Windows 260 character path limit (default value)
 # Включить ограничение Windows на 260 символов в пути (значение по умолчанию)
 # Win32LongPathLimit -Enable
 
@@ -570,12 +589,12 @@ BSoDStopError -Enable
 # Не отображать Stop-ошибку при появлении BSoD (значение по умолчанию)
 # BSoDStopError -Disable
 
-# Change "Behavior of the elevation prompt for administrators in Admin Approval Mode" to "Elevate without prompting"
-# Изменить "Поведение запроса на повышение прав для администраторов в режиме одобрения администратором" на "Повышение прав без запроса"
+# Choose when to be notified about changes to your computer: never notify
+# Настройка уведомления об изменении параметров компьютера: никогда не уведомлять
 AdminApprovalMode -Disable
 
-# Change "Behavior of the elevation prompt for administrators in Admin Approval Mode" to "Prompt for consent for non-Windows binaries" (default value)
-# Изменить "Поведение запроса на повышение прав для администраторов в режиме одобрения администратором" на "Запрос согласия для исполняемых файлов, отличных от Windows" (значение по умолчанию)
+# Choose when to be notified about changes to your computer: notify me only when apps try to make changes to my computer (default value)
+# Настройка уведомления об изменении параметров компьютера: уведомлять меня только при попытках приложений внести изменения в компьютер (значение по умолчанию)
 # AdminApprovalMode -Enable
 
 # Turn on access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled
@@ -586,12 +605,12 @@ MappedDrivesAppElevatedAccess -Enable
 # Выключить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами (значение по умолчанию)
 # MappedDrivesAppElevatedAccess -Disable
 
-# Opt out of the Delivery Optimization-assisted updates downloading
-# Отказаться от загрузки обновлений с помощью оптимизации доставки
+# Turn off Delivery Optimization
+# Выключить оптимизацию доставки
 DeliveryOptimization -Disable
 
-# Opt-in to the Delivery Optimization-assisted updates downloading (default value)
-# Включить загрузку обновлений с помощью оптимизации доставки (значение по умолчанию)
+# Turn on Delivery Optimization (default value)
+# Включить оптимизацию доставки (значение по умолчанию)
 # DeliveryOptimization -Enable
 
 # Always wait for the network at computer startup and logon for workgroup networks
@@ -602,20 +621,20 @@ WaitNetworkStartup -Enable
 # Никогда не ждать сеть при запуске и входе в систему для рабочих групп (значение по умолчанию)
 # WaitNetworkStartup -Disable
 
-# Do not let Windows decide which printer should be the default one (current user only)
-# Не разрешать Windows решать, какой принтер должен использоваться по умолчанию (только для текущего пользователя)
+# Do not let Windows decide which printer should be the default one
+# Не разрешать Windows решать, какой принтер должен использоваться по умолчанию
 WindowsManageDefaultPrinter -Disable
 
-# Let Windows decide which printer should be the default one (current user only) (default value)
-# Разрешать Windows решать, какой принтер должен использоваться по умолчанию (только для текущего пользователя) (значение по умолчанию)
+# Let Windows decide which printer should be the default one (default value)
+# Разрешать Windows решать, какой принтер должен использоваться по умолчанию (значение по умолчанию)
 # WindowsManageDefaultPrinter -Enable
 
 <#
 	Disable the Windows features using the pop-up dialog box
 	Отключить компоненты Windows, используя всплывающее диалоговое окно
 
-	If you want to leave "Multimedia settings" element in the advanced settings of Power Options do not uninstall the "MediaPlayback" feature
-	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах электропитания, не удаляйте компонент "MediaPlayback"
+	If you want to leave "Multimedia settings" element in the advanced settings of Power Options do not disable the "MediaPlayback" feature
+	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах электропитания, не удаляйте отключайте "MediaPlayback"
 #>
 WindowsFeatures -Disable
 
@@ -624,32 +643,32 @@ WindowsFeatures -Disable
 # WindowsFeatures -Enable
 
 <#
-	Uninstall Features On Demand v2 (FODv2) capabilities using the pop-up dialog box
-	Удалить компоненты "Функции по требованию" (FODv2), используя всплывающее диалоговое окно
+	Uninstall optional features using the pop-up dialog box
+	Удалить дополнительные компоненты, используя всплывающее диалоговое окно
 
 	If you want to leave "Multimedia settings" element in the advanced settings of Power Options do not uninstall the "MediaPlayback" feature
 	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах электропитания, не удаляйте компонент "MediaPlayback"
 #>
 WindowsCapabilities -Uninstall
 
-# Install Features On Demand v2 (FODv2) capabilities using the pop-up dialog box
-# Установить компоненты "Функции по требованию" (FODv2), используя всплывающее диалоговое окно
+# Install optional features using the pop-up dialog box
+# Установить дополнительные компоненты, используя всплывающее диалоговое окно
 # WindowsCapabilities -Install
 
-# Opt-in to Microsoft Update service, so to receive updates for other Microsoft products
-# Подключаться к службе Microsoft Update так, чтобы при обновлении Windows получать обновления для других продуктов Майкрософт
+# Receive updates for other Microsoft products when you update Windows
+# При обновлении Windows получать обновления для других продуктов Майкрософт
 UpdateMicrosoftProducts -Enable
 
-# Opt-out of Microsoft Update service, so not to receive updates for other Microsoft products (default value)
-# Не подключаться к службе Microsoft Update так, чтобы при обновлении Windows не получать обновления для других продуктов Майкрософт (значение по умолчанию)
+# Do not receive updates for other Microsoft products when you update Windows (default value)
+# При обновлении Windows не получать обновления для других продуктов Майкрософт (значение по умолчанию)
 # UpdateMicrosoftProducts -Disable
 
-# Do not let UWP apps run in the background (current user only)
-# Не разрешать UWP-приложениям работать в фоновом режиме (только для текущего пользователя)
+# Do not let UWP apps run in the background
+# Не разрешать UWP-приложениям работать в фоновом режиме
 BackgroundUWPApps -Disable
 
-# Let all UWP apps run in the background (current user only) (default value)
-# Разрешить всем UWP-приложениям работать в фоновом режиме (только для текущего пользователя) (значение по умолчанию)
+# Let all UWP apps run in the background (default value)
+# Разрешить всем UWP-приложениям работать в фоновом режиме (значение по умолчанию)
 # BackgroundUWPApps -Enable
 
 # Set the power management scheme on "High performance" if device is a desktop
@@ -676,47 +695,47 @@ PCTurnOffDevice -Disable
 # Разрешить отключение всех сетевых адаптеров для экономии энергии (значение по умолчанию)
 # PCTurnOffDevice -Enable
 
-# Set the default input method to the English language
-# Установить метод ввода по умолчанию на английский язык
+# Override for default input method: English
+# Переопределить метод ввода по умолчанию: английский
 SetInputMethod -English
 
-# Reset the default input method
-# Сбросить метод ввода по умолчанию
+# Override for default input method: use langiage list (default value)
+# Переопределить метод ввода по умолчанию: использовать список языков (значение по умолчанию)
 # SetInputMethod -Default
 
 <#
-	Change the location of the user folders to any disks root of your choice using the interactive menu (current user only)
+	Move user folders location to the root of any drive using the interactive menu
 	User files or folders won't me moved to a new location
 
-	Изменить расположение пользовательских папок в корень любого диска на выбор с помощью интерактивного меню (только для текущего пользователя)
+	Переместить пользовательские папки в корень любого диска на выбор с помощью интерактивного меню
 	Пользовательские файлы и папки не будут перемещены в новое расположение
 #>
 SetUserShellFolderLocation -Root
 
 <#
-	Select a folder for the location of the user folders manually using a folder browser dialog (current user only)
+	Select folders for user folders location manually using a folder browser dialog
 	User files or folders won't me moved to a new location
 
-	Выбрать папку для расположения пользовательских папок вручную, используя диалог "Обзор папок" (только для текущего пользователя)
+	Выбрать папки для расположения пользовательских папок вручную, используя диалог "Обзор папок"
 	Пользовательские файлы и папки не будут перемещены в новое расположение
 #>
 # SetUserShellFolderLocation -Custom
 
 <#
-	Change the location of the user folders to the default values (current user only)
+	Change user folders location to the default values
 	User files or folders won't me moved to the new location
 
-	Изменить расположение пользовательских папок на значения по умолчанию (только для текущего пользователя)
+	Изменить расположение пользовательских папок на значения по умолчанию
 	Пользовательские файлы и папки не будут перемещены в новое расположение
 #>
 # SetUserShellFolderLocation -Default
 
-# Save screenshots by pressing Win+PrtScr to the Desktop folder (current user only)
-# Сохранять скриншоты по нажатию Win+PrtScr в папку "рабочий стол" (только для текущего пользователя)
+# Save screenshots by pressing Win+PrtScr on the Desktop
+# Сохранять скриншоты по нажатию Win+PrtScr на рабочий столе
 WinPrtScrFolder -Desktop
 
-# Save screenshots by pressing Win+PrtScr to the Pictures folder (current user only) (default value)
-# Cохранять скриншоты по нажатию Win+PrtScr в папку "Изображения" (только для текущего пользователя) (значение по умолчанию)
+# Save screenshots by pressing Win+PrtScr on the Pictures folder (default value)
+# Cохранять скриншоты по нажатию Win+PrtScr в папку "Изображения" (значение по умолчанию)
 # WinPrtScrFolder -Default
 
 <#
@@ -737,12 +756,12 @@ RecommendedTroubleshooting -Automatic
 #>
 # RecommendedTroubleshooting -Default
 
-# Launch folder windows in a separate process (current user only)
-# Запускать окна с папками в отдельном процессе (только для текущего пользователя)
+# Launch folder windows in a separate process
+# Запускать окна с папками в отдельном процессе
 FoldersLaunchSeparateProcess -Enable
 
-# Do not launch folder windows in a separate process (current user only) (default value)
-# Не запускать окна с папками в отдельном процессе (только для текущего пользователя) (значение по умолчанию)
+# Do not launch folder windows in a separate process (default value)
+# Не запускать окна с папками в отдельном процессе (значение по умолчанию)
 # FoldersLaunchSeparateProcess -Disable
 
 # Disable and delete reserved storage after the next update installation
@@ -753,12 +772,12 @@ ReservedStorage -Disable
 # Включить зарезервированное хранилище (значение по умолчанию)
 # ReservedStorage -Enable
 
-# Disable help lookup via F1 (current user only)
-# Отключить открытие справки по нажатию F1 (только для текущего пользователя)
+# Disable help look up via F1
+# Отключить открытие справки по нажатию F1
 F1HelpPage -Disable
 
-# Enable help lookup via F1 (current user only) (default value)
-# Включить открытие справки по нажатию F1 (только для текущего пользователя) (значение по умолчанию)
+# Enable help look up via F1 (default value)
+# Включить открытие справки по нажатию F1 (значение по умолчанию)
 # F1HelpPage -Enable
 
 # Enable Num Lock at startup
@@ -777,20 +796,20 @@ NumLock -Enable
 # Выключить Caps Lock (значение по умолчанию)
 # CapsLock -Disable
 
-# Disable StickyKey after tapping the Shift key 5 times (current user only)
-# Выключить залипание клавиши Shift после 5 нажатий (только для текущего пользователя)
+# Disable StickyKey after tapping the Shift key 5 times
+# Выключить залипание клавиши Shift после 5 нажатий
 StickyShift -Disable
 
-# Enable StickyKey after tapping the Shift key 5 times (current user only) (default value)
-# Включить залипание клавиши Shift после 5 нажатий (только для текущего пользователя) (значение по умолчанию)
+# Enable StickyKey after tapping the Shift key 5 times (default value)
+# Включить залипание клавиши Shift после 5 нажатий (значение по умолчанию)
 # StickyShift -Enable
 
-# Disable AutoPlay for all media and devices (current user only)
-# Выключать автозапуск для всех носителей и устройств (только для текущего пользователя)
+# Disable AutoPlay for all media and devices
+# Выключать автозапуск для всех носителей и устройств
 Autoplay -Disable
 
-# Enable AutoPlay for all media and devices (current user only) (default value)
-# Включить автозапуск для всех носителей и устройств (только для текущего пользователя) (значение по умолчанию)
+# Enable AutoPlay for all media and devices (default value)
+# Включить автозапуск для всех носителей и устройств (значение по умолчанию)
 # Autoplay -Enable
 
 # Disable thumbnail cache removal
@@ -801,12 +820,12 @@ ThumbnailCacheRemoval -Disable
 # Включить удаление кэша миниатюр (значение по умолчанию)
 # ThumbnailCacheRemoval -Enable
 
-# Enable automatically saving my restartable apps when signing out and restart them after signing in (current user only)
-# Включить автоматическое сохранение моих перезапускаемых приложений при выходе из системы и перезапускать их после выхода (только для текущего пользователя)
+# Enable automatically saving my restartable apps when signing out and restart them after signing in
+# Включить автоматическое сохранение моих перезапускаемых приложений при выходе из системы и перезапускать их после выхода
 SaveRestartableApps -Enable
 
-# Disable automatically saving my restartable apps when signing out and restart them after signing in (current user only) (default value)
-# Выключить автоматическое сохранение моих перезапускаемых приложений при выходе из системы и перезапускать их после выхода (только для текущего пользователя) (значение по умолчанию)
+# Disable automatically saving my restartable apps when signing out and restart them after signing in (default value)
+# Выключить автоматическое сохранение моих перезапускаемых приложений при выходе из системы и перезапускать их после выхода (значение по умолчанию)
 # SaveRestartableApps -Disable
 
 # Enable "Network Discovery" and "File and Printers Sharing" for workgroup networks
@@ -872,29 +891,25 @@ AppSuggestions -Hide
 # Показывать рекомендации в меню "Пуск" (значение по умолчанию)
 # AppSuggestions -Show
 
-# Run the Command Prompt shortcut from the Start menu as Administrator
-# Запускать ярлык командной строки в меню "Пуск" от имени Администратора
-RunCMDShortcut -Elevated
+# Run the Windows PowerShell shortcut from the Start menu as Administrator
+# Запускать ярлык Windows PowerShell в меню "Пуск" от имени Администратора
+RunPowerShellShortcut -Elevated
 
-# Run the Command Prompt shortcut from the Start menu as user (default value)
-# Запускать ярлык командной строки в меню "Пуск" от имени пользователя (значение по умолчанию)
-# RunCMDShortcut -NonElevated
+# Run the Windows PowerShell shortcut from the Start menu as user (default value)
+# Запускать ярлык Windows PowerShell в меню "Пуск" от имени пользователя (значение по умолчанию)
+# RunPowerShellShortcut -NonElevated
+
+<#
+	Assign what shortcuts pin to Start
+	Valid values: ControlPanel, DevicesPrinters and PowerShell
+
+	Указать, какие ярлыки закрепить на начальном экране
+	PinToStart -Tiles ControlPanel, DevicesPrinters, PowerShell
+#>
 
 # Unpin all the Start tiles
 # Открепить все ярлыки от начального экрана
-UnpinAllStartTiles
-
-# Pin the "Control Panel" shortcut to Start within the syspin app
-# Закрепить ярлык "Панели управления" на начальном экране с помощью syspin
-PinControlPanel
-
-# Pin the old-style "Devices and Printers" shortcut to Start within the syspin app
-# Закрепить ярлык старого формата "Устройства и принтеры" на начальном экране с помощью syspin
-PinDevicesPrinters
-
-# Pin the Command Prompt" shortcut to Start within the syspin app
-# Закрепить ярлык "Командная строка" на начальном экране с помощью syspin
-PinCommandPrompt
+# PinToStart -UnpinAllStartTiles
 #endregion Start menu
 
 #region UWP apps
@@ -971,35 +986,35 @@ GPUScheduling -Enable
 
 #region Scheduled tasks
 <#
-	Create the "Windows Cleanup" task to clean up unused files and Windows updates in the Task Scheduler
+	Create the "Windows Cleanup" scheduled task for cleaning up unused files and Windows updates
 	A minute before the task starts, a warning in the Windows action center will appear
 	The task runs every 90 days
 
-	Создать задачу "Windows Cleanup" в Планировщике задач по очистке неиспользуемых файлов и обновлений Windows
+	Создать задачу "Windows Cleanup" по очистке неиспользуемых файлов и обновлений Windows в Планировщике задач
 	За минуту до выполнения задачи в Центре уведомлений Windows появится предупреждение
 	Задача выполняется каждые 90 дней
 #>
 CleanUpTask -Register
 
-# Delete the "Windows Cleanup" task to clean up unused files and Windows updates in the Task Scheduler
-# Удалить задачу "Windows Cleanup" в Планировщике задач по очистке неиспользуемых файлов и обновлений Windows
+# Delete the "Windows Cleanup" scheduled task for cleaning up unused files and Windows updates
+# Удалить задачу "Windows Cleanup" по очистке неиспользуемых файлов и обновлений Windows из Планировщика задач
 # CleanUpTask -Delete
 
 <#
-	Create the "SoftwareDistribution" task to clear the %SystemRoot%\SoftwareDistribution\Download folder in the Task Scheduler
+	Create the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
 	The task runs on Thursdays every 4 weeks
 
-	Создать задачу "SoftwareDistribution" в Планировщике задач по очистке папки %SystemRoot%\SoftwareDistribution\Download
+	Создать задачу "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download в Планировщике задач
 	Задача выполняется по четвергам каждую 4 неделю
 #>
 SoftwareDistributionTask -Register
 
-# Delete the "SoftwareDistribution" task to clear the %SystemRoot%\SoftwareDistribution\Download folder in the Task Scheduler
-# Удалить задачу "SoftwareDistributionp" в Планировщике задач по очистке папки %SystemRoot%\SoftwareDistribution\Download
+# Delete the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
+# Удалить задачу "SoftwareDistributionp" по очистке папки %SystemRoot%\SoftwareDistribution\Download из Планировщика задач
 # SoftwareDistributionTask -Delete
 
 <#
-	Create the "Temp" task to clear the %TEMP% folder in the Task Scheduler
+	Create the "Temp" scheduled task for cleaning up the %TEMP% folder
 	The task runs every 62 days
 
 	Создать задачу "Temp" в Планировщике задач по очистке папки %TEMP%
@@ -1007,8 +1022,8 @@ SoftwareDistributionTask -Register
 #>
 TempTask -Register
 
-# Delete a task to clear the %TEMP% folder in the Task Scheduler
-# Удалить задачу в Планировщике задач по очистке папки %TEMP%
+# Delete the "Temp" scheduled task for cleaning up the %TEMP% folder
+# Удалить задачу "Temp" по очистке папки %TEMP% из Планировщика задач
 # TempTask -Delete
 #endregion Scheduled tasks
 
@@ -1066,7 +1081,7 @@ PUAppsDetection -Enable
 	There is a bug in KVM with QEMU: enabling this function causes VM to freeze up during the loading phase of Windows
 
 	Включить песочницу для Microsoft Defender
-	В KVM с QEMU присутсвует баг: включение этой функции приводит ВМ к зависанию во время загрузки Windows
+	В KVM с QEMU присутствует баг: включение этой функции приводит ВМ к зависанию во время загрузки Windows
 #>
 DefenderSandbox -Enable
 
@@ -1140,25 +1155,25 @@ AppsSmartScreen -Disable
 # Включить проверку приложений и файлов фильтром SmartScreen в Microsoft Defender (значение по умолчанию)
 # AppsSmartScreen -Enable
 
-# Disable the Attachment Manager marking files that have been downloaded from the Internet as unsafe (current user only)
-# Выключить проверку Диспетчером вложений файлов, скачанных из интернета, как небезопасные (только для текущего пользователя)
+# Disable the Attachment Manager marking files that have been downloaded from the Internet as unsafe
+# Выключить проверку Диспетчером вложений файлов, скачанных из интернета, как небезопасные
 SaveZoneInformation -Disable
 
-# Enable the Attachment Manager marking files that have been downloaded from the Internet as unsafe (current user only) (default value)
-# Включить проверку Диспетчера вложений файлов, скачанных из интернета как небезопасные (только для текущего пользователя) (значение по умолчанию)
+# Enable the Attachment Manager marking files that have been downloaded from the Internet as unsafe (default value)
+# Включить проверку Диспетчера вложений файлов, скачанных из интернета как небезопасные (значение по умолчанию)
 # SaveZoneInformation -Enable
 
 <#
-	Disable Windows Script Host (current user only)
+	Disable Windows Script Host
 	Blocks WSH from executing .js and .vbs files
 
-	Отключить Windows Script Host (только для текущего пользователя)
+	Отключить Windows Script Host
 	Блокирует запуск файлов .js и .vbs
 #>
 # WindowsScriptHost -Disable
 
-# Enable Windows Script Host (current user only) (default value)
-# Включить Windows Script Host (только для текущего пользователя) (значение по умолчанию)
+# Enable Windows Script Host (default value)
+# Включить Windows Script Host (значение по умолчанию)
 # WindowsScriptHost -Enable
 
 # Enable Windows Sandbox
@@ -1279,7 +1294,7 @@ BitLockerContext -Hide
 # Удалить пункт "Точечный рисунок" из контекстного меню "Создать"
 BitmapImageNewContext -Remove
 
-# Add the "Bitmap image" item in the "New" context menu (default value)
+# Add the "Bitmap image" item to the "New" context menu (default value)
 # Восстановить пункт "Точечный рисунок" в контекстного меню "Создать" (значение по умолчанию)
 # BitmapImageNewContext -Add
 
@@ -1287,7 +1302,7 @@ BitmapImageNewContext -Remove
 # Удалить пункт "Документ в формате RTF" из контекстного меню "Создать"
 RichTextDocumentNewContext -Remove
 
-# Add the "Rich Text Document" item in the "New" context menu (default value)
+# Add the "Rich Text Document" item to the "New" context menu (default value)
 # Восстановить пункт "Документ в формате RTF" в контекстного меню "Создать" (значение по умолчанию)
 # RichTextDocumentNewContext -Add
 
@@ -1295,7 +1310,7 @@ RichTextDocumentNewContext -Remove
 # Удалить пункт "Сжатая ZIP-папка" из контекстного меню "Создать"
 CompressedFolderNewContext -Remove
 
-# Add the "Compressed (zipped) Folder" item from the "New" context menu (default value)
+# Add the "Compressed (zipped) Folder" item to the "New" context menu (default value)
 # Восстановить пункт "Сжатая ZIP-папка" в контекстном меню "Создать" (значение по умолчанию)
 # CompressedFolderNewContext -Add
 
@@ -1315,7 +1330,7 @@ UseStoreOpenWith -Hide
 # Отображать пункт "Поиск приложения в Microsoft Store" в диалоге "Открыть с помощью" (значение по умолчанию)
 # UseStoreOpenWith -Show
 
-# Hide the "Previous Versions" tab from files and folders context menu and also the "Restore previous versions" context menu item
+# Hide the "Previous Versions" tab from the files and folders context menu and the "Restore previous versions" context menu item
 # Скрыть вкладку "Предыдущие версии" в свойствах файлов и папок, а также пункт контекстного меню "Восстановить прежнюю версию"
 PreviousVersionsPage -Hide
 
@@ -1328,13 +1343,20 @@ PreviousVersionsPage -Hide
 	Simulate pressing F5 to refresh the desktop
 	Refresh desktop icons, environment variables, taskbar
 	Restart the Start menu
+	Please, do not touch this function
 
 	Симулировать нажатие F5 для обновления рабочего стола
 	Обновить иконки рабочего стола, переменные среды, панель задач
 	Перезапустить меню "Пуск"
+	Пожалуйста, не комментируйте данную функцию
 #>
 Refresh
 
-# Errors output
-# Вывод ошибок
+<#
+	Errors output
+	Please, do not touch this function
+
+	Вывод ошибок
+	Пожалуйста, не комментируйте данную функцию
+#>
 Errors
