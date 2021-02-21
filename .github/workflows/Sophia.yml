@@ -32,7 +32,6 @@ jobs:
           Write-Host $ZIP
 
           Copy-Item -Path "Sophia\PowerShell 5.1\*" -Destination $BUILD_DIR -Recurse -Force
-          Copy-Item -Path "syspin\syspin.exe" -Destination $BUILD_DIR -Force
    
           Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP -Force
 
@@ -58,7 +57,6 @@ jobs:
 
           Copy-Item -Path "Sophia\PowerShell 5.1\*" -Destination $BUILD_DIR -Recurse -Force
           Copy-Item -Path "Sophia\PowerShell 7.x\*" -Destination $BUILD_DIR -Recurse -Force
-          Copy-Item -Path "syspin\syspin.exe" -Destination $BUILD_DIR -Recurse -Force
 
           Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP -Force
 
