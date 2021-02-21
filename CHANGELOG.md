@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.5 - 20.02.2021
+
+## Windows 10 2004 (20H1)/20H2 (2009) | LTSC
+
+Diff from v5.4.0.1
+[5.4.0.1...5.5](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.4.0.1...5.5)
+
+* At last we created the video how to use Sophia Script!
+  * [![YT](https://img.youtube.com/vi/f529ucAipI8/1.jpg)](https://youtu.be/f529ucAipI8)
+* The `PinControlPanel`, `PinDevicesPrinters`, `PinCommandPrompt`, and `UnpinAllStartTiles` functions were rewritten into one, `PinToStart`
+  * Now it's possible to pin Control Panel, Device and Printers, and PowerShell shortcuts without using the `syspin` app — just pure PowerShell! syspin was removed.
+  * You can choose what to pin
+
+  ```powershell
+  PinToStart -Tiles ControlPanel, DevicesPrinters, PowerShell
+  ```
+
+  or unpin all tiles
+
+    ```powershell
+  PinToStart -UnpinAll
+  ```
+  * Thanks to [iNNOKENTIY21](https://forum.ru-board.com/profile.cgi?action=show&member=iNNOKENTIY21) for the tips.
+* Updated descriptions;
+* Fixed typos.
+
 ## 5.4.0.1 - 06.02.2021
 
 ## Windows 10 2004 (20H1)/20H2 (2009)
