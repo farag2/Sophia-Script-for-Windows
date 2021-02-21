@@ -33,7 +33,7 @@ FILES
 -----
 There needs to be 5 files for this program to run properly.
 
-►Sophia Script Wrapper.exe	:The GUI program.
+►Sophia Script Wrapper.exe :	The GUI program.
 ►data.txt : 			Contains the options (function names) to select from (usually only 2 options that 
 				something is Enable or Disable or ‘LeaveAlone’). Notice the sections ‘<#something#>’ 
 				and how a comma separate the function commands. The last command option in each 
