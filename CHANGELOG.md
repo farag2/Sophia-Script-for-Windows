@@ -13,7 +13,6 @@ Diff from v5.4.0.1
 [5.4.0.1...5.5](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.4.0.1...5.5)
 
 * At last we created the video how to use Sophia Script!
-  * [![YT](https://img.youtube.com/vi/f529ucAipI8/1.jpg)](https://youtu.be/f529ucAipI8)
 * The `PinControlPanel`, `PinDevicesPrinters`, `PinCommandPrompt`, and `UnpinAllStartTiles` functions were rewritten into one, `PinToStart`
   * Now it's possible to pin Control Panel, Device and Printers, and PowerShell shortcuts without using the `syspin` app — just pure PowerShell! syspin was removed.
   * You can choose what to pin
