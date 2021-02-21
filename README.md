@@ -112,10 +112,10 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ## Videos
 
+[![YT](https://img.youtube.com/vi/f529ucAipI8/0.jpg)](https://youtu.be/f529ucAipI8)
+
 [![YT](https://img.youtube.com/vi/8E6OT_QcHaU/1.jpg)](https://youtu.be/8E6OT_QcHaU?t=370)
 [![YT](https://img.youtube.com/vi/ZSwj8SrcVPg/1.jpg)](https://youtu.be/ZSwj8SrcVPg)
-[![YT](https://img.youtube.com/vi/f529ucAipI8/1.jpg)](https://youtu.be/f529ucAipI8)
-
 
 ## Core features
 
