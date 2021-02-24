@@ -851,6 +851,23 @@ DeviceRestartAfterUpdate -Enable
 # Do not restart this device as soon as possible when a restart is required to install an update (default value)
 # Не перезапуск этого устройства как можно быстрее, если для установки обновления требуется перезагрузка (значение по умолчанию)
 # DeviceRestartAfterUpdate -Disable
+
+# Enable Automatic Windows Update (default value)
+# Включить автоматическое обновление Windows (значение по умолчанию)
+# AutomaticWindowsUpdate -Enable
+
+# Disable Automatic Windows Update
+# Выключить автоматическое обновление Windows
+# AutomaticWindowsUpdate -Disable
+
+# Enable TCP/IPv6 across all Network Adapters (default value)
+# Включить TCP / IPv6 на всех сетевых адаптерах (значение по умолчанию)
+# TCPIPv6 -Enable
+
+# Disable TCP/IPv6 across all Network Adapters
+# Выключить TCP / IPv6 на всех сетевых адаптерах
+# TCPIPv6 -Disable
+
 #endregion System
 
 #region WSL

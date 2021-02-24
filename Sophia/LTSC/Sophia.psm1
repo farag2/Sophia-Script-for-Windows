@@ -5556,6 +5556,115 @@ function SmartActiveHours
 		}
 	}
 }
+
+<#
+	.SYNOPSIS
+	Configure automatic windows update that includes cummulative, security, feature etc...
+
+	.PARAMETER Enable
+	Enable Automatic Windows Update 
+
+	.PARAMETER Disable
+	Disable Automatic Windows Update permanently
+
+	.EXAMPLE
+	AutomaticWindowsUpdate -Enable
+
+	.EXAMPLE
+	AutomaticWindowsUpdate -Disable
+
+	.NOTES
+	Machine-wide
+	Use Disable option with caution and only under specific situations when no automatic updates are required.
+	Manual updates are still possible when disabled.
+#>
+function AutomaticWindowsUpdate
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Enable"
+		{
+			Remove-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Force -ErrorAction SilentlyContinue
+		}
+		"Disable"
+		{
+			if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU))
+			{
+				New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Force
+			}
+			New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Name NoAutoUpdate -PropertyType DWord -Value 1 -Force
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	Configure Internet Protocol version 6 - TCP/IPv6 Network Setting across all Network Adapters
+
+	.PARAMETER Enable
+	Enable TCP/IPv6 across all Network Adapters
+
+	.PARAMETER Disable
+	Disable TCP/IPv6 across all Network Adapters
+
+	.EXAMPLE
+	TCPIPv6 -Enable
+
+	.EXAMPLE
+	TCPIPv6 -Disable
+
+	.NOTES
+	Machine-wide
+#>
+function TCPIPv6
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Enable"
+		{
+			Remove-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters -Name DisabledComponents -Force -ErrorAction SilentlyContinue
+		}
+		"Disable"
+		{
+			New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters -Name DisabledComponents -PropertyType DWord -Value 255 -Force
+		}
+	}
+}
+
 #endregion System
 
 #region Start menu

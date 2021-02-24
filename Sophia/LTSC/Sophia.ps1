@@ -703,6 +703,23 @@ SmartActiveHours -Enable
 # Do not automatically adjust active hours for me based on daily usage (default value)
 # Не изменять автоматически период активности для этого устройства на основе действий (значение по умолчанию)
 # SmartActiveHours -Disable
+
+# Enable Automatic Windows Update (default value)
+# Включить автоматическое обновление Windows (значение по умолчанию)
+# AutomaticWindowsUpdate -Enable
+
+# Disable Automatic Windows Update
+# Выключить автоматическое обновление Windows
+# AutomaticWindowsUpdate -Disable
+
+# Enable TCP/IPv6 across all Network Adapters (default value)
+# Включить TCP / IPv6 на всех сетевых адаптерах (значение по умолчанию)
+# TCPIPv6 -Enable
+
+# Disable TCP/IPv6 across all Network Adapters
+# Выключить TCP / IPv6 на всех сетевых адаптерах
+# TCPIPv6 -Disable
+
 #endregion System
 
 #region Start menu
