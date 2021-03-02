@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	"Windows 10 Sophia Script" is a PowerShell module for Windows 10 fine-tuning and automating the routine tasks
 
-	Version: v5.5
-	Date: 20.02.2021
+	Version: v5.6
+	Date: 02.03.2021
 	Copyright (c) 2015–2021 farag & oZ-Zo
 
 	https://github.com/farag2
@@ -66,7 +66,7 @@ function Checkings
 	# Checking whether the current module version is the latest
 	try
 	{
-		$LatestRelease = ((Invoke-RestMethod -Uri "https://api.github.com/repos/farag2/Windows-10-Sophia-Script/releases") | Where-Object -FilterScript {$_.prerelease -eq $false}).tag_name.Replace("v","")[0]
+		$LatestRelease = (Invoke-RestMethod -Uri "https://api.github.com/repos/farag2/Windows-10-Sophia-Script/releases").tag_name | Select-Object -First 1
 		$CurrentRelease = (Get-Module -Name Sophia).Version.ToString()
 		switch ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)
 		{
@@ -88,7 +88,7 @@ function Checkings
 	}
 
 	# Unblock all files in the folder by removing the Zone.Identifier alternate data stream with a value of "3"
-	Get-ChildItem -Path $PSScriptRoot -Recurse -Force | Unblock-File -Confirm:$false
+	Get-ChildItem -Path $PSScriptRoot -Recurse -Force | Unblock-File
 
 	# Import PowerShell 5.1 modules
 	switch ($PSVersionTable.PSVersion.Major)
@@ -478,9 +478,9 @@ function ScheduledTasks
 		"XblGameSaveTask"
 	)
 
-	# If device is not a laptop disable FODCleanupTask too
-	# Если устройство не является ноутбуком, отключить также и FODCleanupTask
-	if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2)
+	# Check if device has a camera
+	$DeviceHasCamera = Get-CimInstance -ClassName Win32_PnPEntity | Where-Object -FilterScript {($_.PNPClass -eq "Camera") -or ($_.PNPClass -eq "Image")}
+	if (-not $DeviceHasCamera)
 	{
 		# Windows Hello
 		$CheckedScheduledTasks += "FODCleanupTask"
@@ -560,7 +560,7 @@ function ScheduledTasks
 		{
 			[void]$SelectedTasks.Remove($Task)
 		}
-		
+
 		if ($SelectedTasks.Count -gt 0)
 		{
 			$Button.IsEnabled = $true
@@ -2427,6 +2427,9 @@ function TrayIcons
 	.SYNOPSIS
 	Unpin "Microsoft Edge" and "Microsoft Store" from the taskbar
 
+	.LINK
+	https://github.com/Disassembler0/Win10-Initial-Setup-Script/issues/8#issue-227159084
+
 	.NOTES
 	Current user
 #>
@@ -2437,7 +2440,6 @@ function UnpinTaskbarEdgeStore
 		Name = "GetStr"
 		Language = "CSharp"
 		MemberDefinition = @"
-	// https://github.com/Disassembler0/Win10-Initial-Setup-Script/issues/8#issue-227159084
 	[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
 	public static extern IntPtr GetModuleHandle(string lpModuleName);
 	[DllImport("user32.dll", CharSet = CharSet.Auto)]
@@ -3241,6 +3243,7 @@ function OneDrive
 							Write-Verbose -Message $Localization.OneDriveDownloading -Verbose
 
 							[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 							$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 							$Parameters = @{
 								Uri = "https://go.microsoft.com/fwlink/p/?LinkID=2121808"
@@ -3507,7 +3510,7 @@ function StorageSenseRecycleBin
 	Configure hibernation
 
 	.PARAMETER Disable
-	Disable hibernation (if the device is not a laptop)
+	Disable hibernation
 
 	.PARAMETER Enable
 	Enable hibernation
@@ -3519,6 +3522,7 @@ function StorageSenseRecycleBin
 	Hibernate -Disable
 
 	.NOTES
+	Do not recommend turning it off on laptops
 	Current user
 #>
 function Hibernate
@@ -3548,10 +3552,7 @@ function Hibernate
 		}
 		"Disable"
 		{
-			if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2)
-			{
-				POWERCFG /HIBERNATE OFF
-			}
+			POWERCFG /HIBERNATE OFF
 		}
 	}
 }
@@ -4143,20 +4144,11 @@ function WindowsFeatures
 	# Initialize an array list to store the selected Windows features
 	$SelectedFeatures = New-Object -TypeName System.Collections.ArrayList($null)
 
-	# The following FODv2 items will have their checkboxes checked
+	# The following Windows features will have their checkboxes checked
 	[string[]]$CheckedFeatures = @(
 		# Legacy Components
 		# Компоненты прежних версий
 		"LegacyComponents",
-
-		<#
-			Media Features
-			Компоненты работы с мультимедиа
-
-			If you want to leave "Multimedia settings" in the advanced settings of Power Options do not disable this feature
-			Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах электропитания, не отключайте этот компонент
-		#>
-		"MediaPlayback",
 
 		# PowerShell 2.0
 		"MicrosoftWindowsPowerShellV2",
@@ -4169,6 +4161,18 @@ function WindowsFeatures
 		# Work Folders Client
 		# Клиент рабочих папок
 		"WorkFolders-Client"
+	)
+
+	# The following Windows features will have their checkboxes unchecked
+	[string[]]$UncheckedFeatures = @(
+		<#
+			Media Features
+			Компоненты работы с мультимедиа
+
+			If you want to leave "Multimedia settings" in the advanced settings of Power Options do not disable this feature
+			Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах электропитания, не отключайте этот компонент
+		#>
+		"MediaPlayback"
 	)
 	#endregion Variables
 
@@ -4306,10 +4310,15 @@ function WindowsFeatures
 			$CheckBox.IsChecked = $true
 
 			# If feature checked add to the array list
-			if ($CheckBox.IsChecked)
+			if ($UnCheckedFeatures | Where-Object -FilterScript {$Feature.FeatureName -like $_})
 			{
-				[void]$SelectedFeatures.Add($Feature)
+				$CheckBox.IsChecked = $false
+				# Exit function if item is not checked
+				return
 			}
+
+			# If feature checked add to the array list
+			[void]$SelectedFeatures.Add($Feature)
 		}
 	}
 	#endregion Functions
@@ -4336,7 +4345,7 @@ function WindowsFeatures
 	# Getting list of all optional features according to the conditions
 	$OFS = "|"
 	$Features = Get-WindowsOptionalFeature -Online | Where-Object -FilterScript {
-		($_.State -in $State) -and ($_.FeatureName -cmatch $CheckedFeatures)
+		($_.State -in $State) -and (($_.FeatureName -cmatch $UncheckedFeatures) -or ($_.FeatureName -cmatch $CheckedFeatures))
 	} | ForEach-Object -Process {Get-WindowsOptionalFeature -FeatureName $_.FeatureName -Online}
 	$OFS = " "
 
@@ -4398,10 +4407,10 @@ function WindowsCapabilities
 	Add-Type -AssemblyName PresentationCore, PresentationFramework
 
 	#region Variables
-	# Initialize an array list to store the selected FODv2 items
+	# Initialize an array list to store the selected optional features
 	$SelectedCapabilities = New-Object -TypeName System.Collections.ArrayList($null)
 
-	# The following FODv2 items will have their checkboxes checked
+	# The following optional features will have their checkboxes checked
 	[string[]]$CheckedCapabilities = @(
 		# Steps Recorder
 		# Средство записи действий
@@ -4418,8 +4427,7 @@ function WindowsCapabilities
 		"Microsoft.Windows.WordPad*"
 	)
 
-	# The following FODv2 items will have their checkboxes unchecked
-	# Следующие дополнительные компоненты будут иметь чекбоксы неотмеченными
+	# The following optional features will have their checkboxes unchecked
 	[string[]]$UncheckedCapabilities = @(
 		# Internet Explorer 11
 		"Browser.InternetExplorer*",
@@ -4442,7 +4450,7 @@ function WindowsCapabilities
 		"OpenSSH.Client*"
 	)
 
-	# The following FODv2 items will be excluded from the display
+	# The following optional features will be excluded from the display
 	[string[]]$ExcludedCapabilities = @(
 		# The DirectX Database to configure and optimize apps when multiple Graphics Adapters are present
 		# База данных DirectX для настройки и оптимизации приложений при наличии нескольких графических адаптеров
@@ -4729,7 +4737,7 @@ function UpdateMicrosoftProducts
 	{
 		"Disable"
 		{
-			if ((New-Object -ComObject Microsoft.Update.ServiceManager).Services | Where-Object {$_.ServiceID -eq "7971f918-a847-4430-9279-4a52d1efe18d"} )
+			if ((New-Object -ComObject Microsoft.Update.ServiceManager).Services | Where-Object {$_.ServiceID -eq "7971f918-a847-4430-9279-4a52d1efe18d"})
 			{
 				(New-Object -ComObject Microsoft.Update.ServiceManager).RemoveService("7971f918-a847-4430-9279-4a52d1efe18d")
 			}
@@ -4841,7 +4849,7 @@ function BackgroundUWPApps
 	Configure the power management scheme
 
 	.PARAMETER High
-	Set the power management scheme on "High performance" if device is a desktop
+	Set the power management scheme on "High performance"
 
 	.PARAMETER Balanced
 	Set the power management scheme on "Balanced"
@@ -4853,6 +4861,7 @@ function BackgroundUWPApps
 	PowerManagementScheme -Balanced
 
 	.NOTES
+	Do not recommend turning "High performance" scheme on on laptops
 	Current user
 #>
 function PowerManagementScheme
@@ -4878,10 +4887,7 @@ function PowerManagementScheme
 	{
 		"High"
 		{
-			if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -eq 1)
-			{
-				POWERCFG /SETACTIVE SCHEME_MIN
-			}
+			POWERCFG /SETACTIVE SCHEME_MIN
 		}
 		"Balanced"
 		{
@@ -4893,7 +4899,6 @@ function PowerManagementScheme
 <#
 	.SYNOPSIS
 	Configure the latest installed .NET runtime for all apps usage
-	Использовать/не использовать последнюю установленную среду выполнения .NET для всех приложений
 
 	.PARAMETER Disable
 	Do not use latest installed .NET runtime for all apps
@@ -4946,7 +4951,7 @@ function LatestInstalled.NET
 
 <#
 	.SYNOPSIS
-	Configure all network adapters to be disabled to save power
+	Configure network adapters to save power
 
 	.PARAMETER Disable
 	Do not allow the computer to turn off the network adapters to save power
@@ -4961,7 +4966,7 @@ function LatestInstalled.NET
 	PCTurnOffDevice -Enable
 
 	.NOTES
-	If device is not a laptop
+	Do not recommend turning it on on laptops
 
 	.NOTES
 	Current user
@@ -4991,24 +4996,18 @@ function PCTurnOffDevice
 	{
 		"Disable"
 		{
-			if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2)
+			foreach ($Adapter in $Adapters)
 			{
-				foreach ($Adapter in $Adapters)
-				{
-					$Adapter.AllowComputerToTurnOffDevice = "Disabled"
-					$Adapter | Set-NetAdapterPowerManagement
-				}
+				$Adapter.AllowComputerToTurnOffDevice = "Disabled"
+				$Adapter | Set-NetAdapterPowerManagement
 			}
 		}
 		"Enable"
 		{
-			if ((Get-CimInstance -ClassName Win32_ComputerSystem).PCSystemType -ne 2)
+			foreach ($Adapter in $Adapters)
 			{
-				foreach ($Adapter in $Adapters)
-				{
-					$Adapter.AllowComputerToTurnOffDevice = "Enabled"
-					$Adapter | Set-NetAdapterPowerManagement
-				}
+				$Adapter.AllowComputerToTurnOffDevice = "Enabled"
+				$Adapter | Set-NetAdapterPowerManagement
 			}
 		}
 	}
@@ -5128,10 +5127,11 @@ function SetUserShellFolderLocation
 		.EXAMPLE
 		UserShellFolder -UserFolder Desktop -FolderPath "$env:SystemDrive:\Desktop" -RemoveDesktopINI
 
+		.LINK
+		https://docs.microsoft.com/en-us/windows/win32/api/shlobj_core/nf-shlobj_core-shgetknownfolderpath
+
 		.NOTES
 		User files or folders won't me moved to a new location
-
-		https://docs.microsoft.com/en-us/windows/win32/api/shlobj_core/nf-shlobj_core-shgetknownfolderpath
 	#>
 	function UserShellFolder
 	{
@@ -5294,8 +5294,8 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 		.EXAMPLE
 		ShowMenu -Menu $ListOfItems -Default $DefaultChoice
 
-		.NOTES
-		https://qna.habr.com/user/MaxKozlov
+		.LINK
+		https://qna.habr.com/answer?answer_id=1522379
 	#>
 	function ShowMenu
 	{
@@ -6665,6 +6665,434 @@ function DeviceRestartAfterUpdate
 		}
 	}
 }
+
+<#
+	.SYNOPSIS
+	Register app, calculate hash, and set as default for specific extension without the "How do you want to open this" pop-up
+
+	.PARAMETER ProgramPath
+	Set path to the .exe
+
+	.PARAMETER Extension
+	Set extension type
+
+	.PARAMETER Icon
+	Set path to the icon
+
+	.EXAMPLE
+	Set-Association -ProgramPath "C:\SumatraPDF.exe" -Extension .pdf -Icon "shell32.dll,100"
+
+	.EXAMPLE
+	Set-Association -ProgramPath "C:\Program Files\Notepad++\notepad++.exe" -Extension .psm1 -Icon "C:\Program Files\Notepad++\notepad++.exe,0"
+
+	.LINK
+	https://github.com/DanysysTeam/PS-SFTA
+
+	.NOTES
+	The app must be installed
+	Do not use relative paths like "%Program Files%"
+	Current user
+#>
+function Set-Association
+{
+	[CmdletBinding()]
+	param
+	(
+		[Parameter(
+			Position = 0,
+			Mandatory = $true
+		)]
+		[ValidateScript({Test-Path -Path $_})]
+		[String]
+		$ProgramPath,
+
+		[Parameter(
+			Position = 1,
+			Mandatory = $true
+		)]
+		[String]
+		$Extension,
+
+		[Parameter(
+			Position = 3,
+			Mandatory = $false
+		)]
+		[String]
+		$Icon
+	)
+
+	$ProgId = "Applications\" + (Get-Item -Path $ProgramPath).BaseName + $Extension
+
+	if (-not (Test-Path -Path "HKCU:\SOFTWARE\Classes\$Extension\OpenWithProgids"))
+	{
+		New-Item -Path "HKCU:\SOFTWARE\Classes\$Extension\OpenWithProgids" -Force
+	}
+	New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\$Extension\OpenWithProgids" -Name $ProgId -PropertyType None -Value ([byte[]]@()) -Force
+
+	if (-not (Test-Path -Path "HKCU:\SOFTWARE\Classes\$ProgId\shell\open\command"))
+	{
+		New-Item -Path "HKCU:\SOFTWARE\Classes\$ProgId\shell\open\command" -Force
+	}
+	New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\$ProgId\shell\open\command" -Name "(Default)" -PropertyType String -Value "`"$ProgramPath`" `"%1`"" -Force
+
+	function Set-FTA
+	{
+		[CmdletBinding()]
+		param
+		(
+			[Parameter(Mandatory = $true)]
+			[String]
+			$ProgId,
+
+			[Parameter(Mandatory = $true)]
+			[String]
+			$Extension,
+
+			[String]
+			$Icon
+		)
+
+		function local:Set-Icon
+		{
+			param
+			(
+				[Parameter(
+					Position = 0,
+					Mandatory = $true
+				)]
+				[String]
+				$ProgId,
+
+				[Parameter(
+					Position = 1,
+					Mandatory = $true
+				)]
+				[String]
+				$Icon
+			)
+
+			if (-not (Test-Path -Path "HKCU:\SOFTWARE\Classes\$ProgId\DefaultIcon"))
+			{
+				New-Item -Path "HKCU:\SOFTWARE\Classes\$ProgId\DefaultIcon" -Force
+			}
+			New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\$ProgId\DefaultIcon" -Name "(Default)" -PropertyType String -Value $Icon -Force
+		}
+
+		function local:Write-ExtensionKeys
+		{
+			param
+			(
+				[Parameter(
+					Position = 0,
+					Mandatory = $true
+				)]
+				[String]
+				$ProgId,
+
+				[Parameter(
+					Position = 1,
+					Mandatory = $true
+				)]
+				[String]
+				$Extension,
+
+				[Parameter(
+					Position = 2,
+					Mandatory = $true
+				)]
+				[String]
+				$ProgHash
+			)
+
+			function local:Remove-UserChoiceKey
+			{
+				param
+				(
+					[Parameter(
+						Position = 0,
+						Mandatory = $true
+					)]
+					[String]
+					$Key
+				)
+
+				$Signature = @{
+					Namespace = "Registry"
+					Name = "Utils"
+					Language = "CSharp"
+					MemberDefinition = @"
+[DllImport("advapi32.dll", SetLastError = true)]
+private static extern int RegOpenKeyEx(UIntPtr hKey, string subKey, int ulOptions, int samDesired, out UIntPtr hkResult);
+
+[DllImport("advapi32.dll", SetLastError=true, CharSet = CharSet.Unicode)]
+private static extern uint RegDeleteKey(UIntPtr hKey, string subKey);
+
+public static void DeleteKey(string key)
+{
+	UIntPtr hKey = UIntPtr.Zero;
+	RegOpenKeyEx((UIntPtr)0x80000001u, key, 0, 0x20019, out hKey);
+	RegDeleteKey((UIntPtr)0x80000001u, key);
+}
+"@
+				}
+
+				if (-not ("Registry.Utils" -as [type]))
+				{
+					Add-Type @Signature
+				}
+
+				[Registry.Utils]::DeleteKey($Key)
+			}
+
+			Remove-UserChoiceKey -Key "Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice"
+
+			if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice"))
+			{
+				New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice" -Force
+			}
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice" -Name Hash -PropertyType String -Value $ProgHash -Force
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice" -Name ProgId -PropertyType String -Value $ProgId -Force
+		}
+
+		function local:Get-HexDateTime
+		{
+			[OutputType([string])]
+
+			$now = [DateTime]::Now
+			$dateTime = [DateTime]::New($now.Year, $now.Month, $now.Day, $now.Hour, $now.Minute, 0)
+			$fileTime = $dateTime.ToFileTime()
+			$hi = ($fileTime -shr 32)
+			$low = ($fileTime -band 0xFFFFFFFFL)
+			$dateTimeHex = ($hi.ToString("X8") + $low.ToString("X8")).ToLower()
+
+			return $dateTimeHex
+		}
+
+		function Get-Hash
+		{
+			[CmdletBinding()]
+			param
+			(
+				[Parameter(
+					Position = 0,
+					Mandatory = $true
+				)]
+				[string]
+				$BaseInfo
+			)
+
+			function local:Get-ShiftRight
+			{
+				[CmdletBinding()]
+				param
+				(
+					[Parameter(
+						Position = 0,
+						Mandatory = $true
+					)]
+					[long]
+					$iValue,
+
+					[Parameter(
+						Position = 1,
+						Mandatory = $true
+					)]
+					[int]
+					$iCount
+				)
+
+				if ($iValue -band 0x80000000)
+				{
+					return (($iValue -shr $iCount) -bxor 0xFFFF0000)
+				}
+				else
+				{
+					return ($iValue -shr $iCount)
+				}
+			}
+
+			function local:Get-Long
+			{
+				[CmdletBinding()]
+				param
+				(
+					[Parameter(
+						Position = 0,
+						Mandatory = $true
+					)]
+					[byte[]]
+					$Bytes,
+
+					[Parameter(Position = 1)]
+					[int]
+					$Index = 0
+				)
+
+				return ([BitConverter]::ToInt32($Bytes, $Index))
+			}
+
+			function local:Convert-Int32
+			{
+				param
+				(
+					[Parameter(
+						Position = 0,
+						Mandatory = $true
+					)]
+					$Value
+				)
+
+				[byte[]]$bytes = [BitConverter]::GetBytes($Value)
+				return [BitConverter]::ToInt32($bytes, 0)
+			}
+
+			[byte[]]$bytesBaseInfo = [System.Text.Encoding]::Unicode.GetBytes($baseInfo)
+			$bytesBaseInfo += 0x00, 0x00
+
+			$MD5 = New-Object -TypeName System.Security.Cryptography.MD5CryptoServiceProvider
+			[byte[]]$bytesMD5 = $MD5.ComputeHash($bytesBaseInfo)
+
+			$lengthBase = ($baseInfo.Length * 2) + 2
+			$length = (($lengthBase -band 4) -le 1) + (Get-ShiftRight -iValue $lengthBase -iCount 2) - 1
+			$base64Hash = ""
+
+			if ($length -gt 1)
+			{
+				$Map = @{
+					PDATA = 0
+					CACHE = 0
+					COUNTER = 0
+					INDEX = 0
+					MD51 = 0
+					MD52 = 0
+					OUTHASH1 = 0
+					OUTHASH2 = 0
+					R0 = 0
+					R1 = @(0, 0)
+					R2 = @(0, 0)
+					R3 = 0
+					R4 = @(0, 0)
+					R5 = @(0, 0)
+					R6 = @(0, 0)
+					R7 = @(0, 0)
+				}
+
+				$Map.CACHE = 0
+				$Map.OUTHASH1 = 0
+				$Map.PDATA = 0
+				$Map.MD51 = (((Get-Long -Bytes $bytesMD5) -bor 1) + 0x69FB0000L)
+				$Map.MD52 = ((Get-Long -Bytes $bytesMD5 -Index 4) -bor 1) + 0x13DB0000L
+				$Map.INDEX = Get-ShiftRight -iValue ($length - 2) -iCount 1
+				$Map.COUNTER = $Map.INDEX + 1
+
+				while ($Map.COUNTER)
+				{
+					$Map.R0 = Convert-Int32 -Value ((Get-Long -Bytes $bytesBaseInfo -Index $Map.PDATA) + [long]$Map.OUTHASH1)
+					$Map.R1[0] = Convert-Int32 -Value (Get-Long -Bytes $bytesBaseInfo -Index ($Map.PDATA + 4))
+					$Map.PDATA = $Map.PDATA + 8
+					$Map.R2[0] = Convert-Int32 -Value (($Map.R0 * ([long]$Map.MD51)) - (0x10FA9605L * ((Get-ShiftRight -iValue $Map.R0 -iCount 16))))
+					$Map.R2[1] = Convert-Int32 -Value ((0x79F8A395L * ([long]$Map.R2[0])) + (0x689B6B9FL * (Get-ShiftRight -iValue $Map.R2[0] -iCount 16)))
+					$Map.R3 = Convert-Int32 -Value ((0xEA970001L * $Map.R2[1]) - (0x3C101569L * (Get-ShiftRight -iValue $Map.R2[1] -iCount 16) ))
+					$Map.R4[0] = Convert-Int32 -Value ($Map.R3 + $Map.R1[0])
+					$Map.R5[0] = Convert-Int32 -Value ($Map.CACHE + $Map.R3)
+					$Map.R6[0] = Convert-Int32 -Value (($Map.R4[0] * [long]$Map.MD52) - (0x3CE8EC25L * (Get-ShiftRight -iValue $Map.R4[0] -iCount 16)))
+					$Map.R6[1] = Convert-Int32 -Value ((0x59C3AF2DL * $Map.R6[0]) - (0x2232E0F1L * (Get-ShiftRight -iValue $Map.R6[0] -iCount 16)))
+					$Map.OUTHASH1 = Convert-Int32 -Value ((0x1EC90001L * $Map.R6[1]) + (0x35BD1EC9L * (Get-ShiftRight -iValue $Map.R6[1] -iCount 16)))
+					$Map.OUTHASH2 = Convert-Int32 -Value ([long]$Map.R5[0] + [long]$Map.OUTHASH1)
+					$Map.CACHE = ([long]$Map.OUTHASH2)
+					$Map.COUNTER = $Map.COUNTER - 1
+				}
+
+				[byte[]] $outHash = @(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00)
+				[byte[]] $buffer = [BitConverter]::GetBytes($Map.OUTHASH1)
+				$buffer.CopyTo($outHash, 0)
+				$buffer = [BitConverter]::GetBytes($Map.OUTHASH2)
+				$buffer.CopyTo($outHash, 4)
+
+				$Map = @{
+					PDATA = 0
+					CACHE = 0
+					COUNTER = 0
+					INDEX = 0
+					MD51 = 0
+					MD52 = 0
+					OUTHASH1 = 0
+					OUTHASH2 = 0
+					R0 = 0
+					R1 = @(0, 0)
+					R2 = @(0, 0)
+					R3 = 0
+					R4 = @(0, 0)
+					R5 = @(0, 0)
+					R6 = @(0, 0)
+					R7 = @(0, 0)
+				}
+
+				$Map.CACHE = 0
+				$Map.OUTHASH1 = 0
+				$Map.PDATA = 0
+				$Map.MD51 = ((Get-Long -Bytes $bytesMD5) -bor 1)
+				$Map.MD52 = ((Get-Long -Bytes $bytesMD5 4) -bor 1)
+				$Map.INDEX = Get-ShiftRight -iValue ($length - 2) -iCount 1
+				$Map.COUNTER = $Map.INDEX + 1
+
+				while ($Map.COUNTER)
+				{
+					$Map.R0 = Convert-Int32 -Value ((Get-Long -Bytes $bytesBaseInfo -Index $Map.PDATA) + ([long]$Map.OUTHASH1))
+					$Map.PDATA = $Map.PDATA + 8
+					$Map.R1[0] = Convert-Int32 -Value ($Map.R0 * [long]$Map.MD51)
+					$Map.R1[1] = Convert-Int32 -Value ((0xB1110000L * $Map.R1[0]) - (0x30674EEFL * (Get-ShiftRight -iValue $Map.R1[0] -iCount 16)))
+					$Map.R2[0] = Convert-Int32 -Value ((0x5B9F0000L * $Map.R1[1]) - (0x78F7A461L * (Get-ShiftRight -iValue $Map.R1[1] -iCount 16)))
+					$Map.R2[1] = Convert-Int32 -Value ((0x12CEB96DL * (Get-ShiftRight -iValue $Map.R2[0] 16)) - (0x46930000L * $Map.R2[0]))
+					$Map.R3 = Convert-Int32 -Value ((0x1D830000L * $Map.R2[1]) + (0x257E1D83L * (Get-ShiftRight -iValue $Map.R2[1] -iCount 16)))
+					$Map.R4[0] = Convert-Int32 -Value ([long]$Map.MD52 * ([long]$Map.R3 + (Get-Long -Bytes $bytesBaseInfo -Index ($Map.PDATA - 4))))
+					$Map.R4[1] = Convert-Int32 -Value ((0x16F50000L * $Map.R4[0]) - (0x5D8BE90BL * (Get-ShiftRight -iValue $Map.R4[0] -iCount 16)))
+					$Map.R5[0] = Convert-Int32 -Value ((0x96FF0000L * $Map.R4[1]) - (0x2C7C6901L * (Get-ShiftRight -iValue $Map.R4[1] -iCount 16)))
+					$Map.R5[1] = Convert-Int32 -Value ((0x2B890000L * $Map.R5[0]) + (0x7C932B89L * (Get-ShiftRight -iValue $Map.R5[0] -iCount 16)))
+					$Map.OUTHASH1 = Convert-Int32 -Value ((0x9F690000L * $Map.R5[1]) - (0x405B6097L * (Get-ShiftRight -iValue ($Map.R5[1]) -iCount 16)))
+					$Map.OUTHASH2 = Convert-Int32 -Value ([long]$Map.OUTHASH1 + $Map.CACHE + $Map.R3)
+					$Map.CACHE = ([long]$Map.OUTHASH2)
+					$Map.COUNTER = $Map.COUNTER - 1
+				}
+
+				$buffer = [BitConverter]::GetBytes($Map.OUTHASH1)
+				$buffer.CopyTo($outHash, 8)
+				$buffer = [BitConverter]::GetBytes($Map.OUTHASH2)
+				$buffer.CopyTo($outHash, 12)
+
+				[byte[]]$outHashBase = @(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00)
+				$hashValue1 = ((Get-Long -Bytes $outHash -Index 8) -bxor (Get-Long -Bytes $outHash))
+				$hashValue2 = ((Get-Long -Bytes $outHash 12) -bxor (Get-Long -Bytes $outHash -Index 4))
+
+				$buffer = [BitConverter]::GetBytes($hashValue1)
+				$buffer.CopyTo($outHashBase, 0)
+				$buffer = [BitConverter]::GetBytes($hashValue2)
+				$buffer.CopyTo($outHashBase, 4)
+				$base64Hash = [Convert]::ToBase64String($outHashBase)
+			}
+
+			return $base64Hash
+		}
+
+		# Get current user SID
+		$userSid = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
+		# Secret static string stored in %SystemRoot%\SysWOW64\shell32.dll
+		$userExperience = "User Choice set via Windows User Experience {D18B6DD5-6124-4341-9318-804003BAFA0B}"
+		$userDateTime = Get-HexDateTime
+		$baseInfo = "$Extension$userSid$ProgId$userDateTime$userExperience".ToLower()
+		$ProgHash = Get-Hash -BaseInfo $baseInfo
+
+		# Handle Extension
+		Write-ExtensionKeys -ProgId $ProgId -Extension $Extension -ProgHash $ProgHash
+
+		if ($Icon)
+		{
+			Set-Icon -ProgId $ProgId -Icon $Icon
+		}
+	}
+
+	Set-FTA -ProgId $ProgId -Extension $Extension -Icon $Icon
+}
 #endregion System
 
 #region WSL
@@ -6765,6 +7193,7 @@ function EnableWSL2
 					Write-Verbose -Message $Localization.WSLUpdateDownloading -Verbose
 
 					[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 					$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 					$Parameters = @{
 						Uri = "https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi"
@@ -6981,8 +7410,17 @@ function RunPowerShellShortcut
 	.EXAMPLE
 	PinToStart -UnpinAll
 
+	.EXAMPLE
+	PinToStart -UnpinAll -Tiles ControlPanel, DevicesPrinters, PowerShell
+
+	.EXAMPLE
+	PinToStart -UnpinAll -Tiles ControlPanel
+
+	.EXAMPLE
+	PinToStart -Tiles ControlPanel -UnpinAll
+
 	.NOTES
-	Do not combine none of pinning and unpinning arguments
+	Separate arguments with comma
 	Current user
 #>
 function PinToStart
@@ -6990,23 +7428,54 @@ function PinToStart
 	[CmdletBinding()]
 	param
 	(
-		[Parameter(Mandatory = $false)]
+		[Parameter(
+			Mandatory = $false,
+			Position = 0
+		)]
+		[switch]
+		$UnpinAll,
+
+		[Parameter(
+			Mandatory = $false,
+			Position = 1
+		)]
 		[ValidateSet("ControlPanel", "DevicesPrinters", "PowerShell")]
 		[string[]]
 		$Tiles,
 
-		[Parameter(Mandatory = $false)]
-		[switch]
-		$UnpinAll
+		[string]
+		$StartLayout = "$PSScriptRoot\StartLayout.xml"
 	)
 
-	# Extract string from shell32.dll using its' number
-	# https://github.com/Disassembler0/Win10-Initial-Setup-Script/issues/8#issue-227159084
-	$Signature = @{
-		Namespace = "WinAPI"
-		Name = "GetStr"
-		Language = "CSharp"
-		MemberDefinition = @"
+	begin
+	{
+		# Unpin all the Start tiles
+		if ($UnpinAll)
+		{
+			Export-StartLayout -Path $StartLayout -UseDesktopApplicationID
+
+			[xml]$XML = Get-Content -Path $StartLayout -Encoding UTF8 -Force
+			$Groups = $XML.LayoutModificationTemplate.DefaultLayoutOverride.StartLayoutCollection.StartLayout.Group
+
+			foreach ($Group in $Groups)
+			{
+				# Removing all groups inside XML
+				$Group.ParentNode.RemoveChild($Group) | Out-Null
+			}
+
+			$XML.Save($StartLayout)
+		}
+	}
+
+	process
+	{
+		# Extract string from shell32.dll using its' number
+		# https://github.com/Disassembler0/Win10-Initial-Setup-Script/issues/8#issue-227159084
+		$Signature = @{
+			Namespace = "WinAPI"
+			Name = "GetStr"
+			Language = "CSharp"
+			MemberDefinition = @"
 [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
 public static extern IntPtr GetModuleHandle(string lpModuleName);
 [DllImport("user32.dll", CharSet = CharSet.Auto)]
@@ -7019,186 +7488,177 @@ public static string GetString(uint strId)
 	return sb.ToString();
 }
 "@
-}
-	if (-not ("WinAPI.GetStr" -as [type]))
-	{
-		Add-Type @Signature -Using System.Text
 	}
-
-	# Extract the "Devices and Printers" string from shell32.dll
-	$DevicesPrinters = [WinAPI.GetStr]::GetString(30493)
-
-	# Create the old-style "Devices and Printers" shortcut in the Start menu
-	$Shell = New-Object -ComObject Wscript.Shell
-	$Shortcut = $Shell.CreateShortcut("$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesPrinters.lnk")
-	$Shortcut.TargetPath = "control"
-	$Shortcut.Arguments = "printers"
-	$Shortcut.IconLocation = "$env:SystemRoot\system32\DeviceCenter.dll"
-	$Shortcut.Save()
-
-	Start-Sleep -Seconds 3
-
-	# Export the current Start layout
-	$StartLayout = "$PSScriptRoot\StartLayout.xml"
-	Export-StartLayout -Path $StartLayout -UseDesktopApplicationID
-
-	$Parameters = @(
-		# Control Panel hash table
-		@{
-			# Special name for Control Panel
-			Name = "ControlPanel"
-			Size = "2x2"
-			Column = 0
-			Row = 0
-			AppID = "Microsoft.Windows.ControlPanel"
-		},
-		# "Devices & Printers" hash table
-		@{
-			# Special name for "Devices & Printers"
-			Name = "DevicesPrinters"
-			Size   = "2x2"
-			Column = 2
-			Row    = 0
-			AppID  = "Microsoft.AutoGenerated.{7FF3FDB0-CFD9-F944-4722-A9E766EDE23F}"
-		},
-		# Windows PowerShell hash table
-		@{
-			# Special name for Windows PowerShell
-			Name = "PowerShell"
-			Size = "2x2"
-			Column = 4
-			Row = 0
-			AppID = "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\WindowsPowerShell\v1.0\powershell.exe"
+		if (-not ("WinAPI.GetStr" -as [type]))
+		{
+			Add-Type @Signature -Using System.Text
 		}
-	)
 
-	# Valid columns to place tiles in
-	$ValidColumns = @(0, 2, 4)
-	[string]$StartLayoutNS = "http://schemas.microsoft.com/Start/2014/StartLayout"
+		# Extract the "Devices and Printers" string from shell32.dll
+		$DevicesPrinters = [WinAPI.GetStr]::GetString(30493)
 
-	# Add pre-configured hastable to XML
-	function Add-Tile
-	{
-		param
-		(
-			[string]
-			$Size,
+		# Create the old-style "Devices and Printers" shortcut in the Start menu
+		$Shell = New-Object -ComObject Wscript.Shell
+		$Shortcut = $Shell.CreateShortcut("$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesPrinters.lnk")
+		$Shortcut.TargetPath = "control"
+		$Shortcut.Arguments = "printers"
+		$Shortcut.IconLocation = "$env:SystemRoot\system32\DeviceCenter.dll"
+		$Shortcut.Save()
 
-			[int]
-			$Column,
+		Start-Sleep -Seconds 3
 
-			[int]
-			$Row,
-
-			[string]
-			$AppID
+		$Parameters = @(
+			# Control Panel hash table
+			@{
+				# Special name for Control Panel
+				Name = "ControlPanel"
+				Size = "2x2"
+				Column = 0
+				Row = 0
+				AppID = "Microsoft.Windows.ControlPanel"
+			},
+			# "Devices & Printers" hash table
+			@{
+				# Special name for "Devices & Printers"
+				Name = "DevicesPrinters"
+				Size   = "2x2"
+				Column = 2
+				Row    = 0
+				AppID  = "Microsoft.AutoGenerated.{7FF3FDB0-CFD9-F944-4722-A9E766EDE23F}"
+			},
+			# Windows PowerShell hash table
+			@{
+				# Special name for Windows PowerShell
+				Name = "PowerShell"
+				Size = "2x2"
+				Column = 4
+				Row = 0
+				AppID = "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\WindowsPowerShell\v1.0\powershell.exe"
+			}
 		)
 
-		[string]$elementName = "start:DesktopApplicationTile"
-		[Xml.XmlElement]$Table = $xml.CreateElement($elementName, $StartLayoutNS)
-		$Table.SetAttribute("Size", $Size)
-		$Table.SetAttribute("Column", $Column)
-		$Table.SetAttribute("Row", $Row)
-		$Table.SetAttribute("DesktopApplicationID", $AppID)
+		# Valid columns to place tiles in
+		$ValidColumns = @(0, 2, 4)
+		[string]$StartLayoutNS = "http://schemas.microsoft.com/Start/2014/StartLayout"
 
-		$Table
-	}
-
-	[xml]$XML = Get-Content -Path $StartLayout -Encoding UTF8 -Force
-
-	foreach ($Tile in $Tiles)
-	{
-		switch ($Tile)
+		# Add pre-configured hastable to XML
+		function Add-Tile
 		{
-			ControlPanel
-			{
-				$ControlPanel = [WinAPI.GetStr]::GetString(12712)
-				Write-Verbose -Message ($Localization.ShortcutPinning -f $ControlPanel) -Verbose
-			}
-			DevicesPrinters
-			{
-				$DevicesPrinters = [WinAPI.GetStr]::GetString(30493)
-				Write-Verbose -Message ($Localization.ShortcutPinning -f $DevicesPrinters) -Verbose
-			}
-			PowerShell
-			{
-				Write-Verbose -Message ($Localization.ShortcutPinning -f "Windows PowerShell") -Verbose
-			}
+			param
+			(
+				[string]
+				$Size,
+
+				[int]
+				$Column,
+
+				[int]
+				$Row,
+
+				[string]
+				$AppID
+			)
+
+			[string]$elementName = "start:DesktopApplicationTile"
+			[Xml.XmlElement]$Table = $xml.CreateElement($elementName, $StartLayoutNS)
+			$Table.SetAttribute("Size", $Size)
+			$Table.SetAttribute("Column", $Column)
+			$Table.SetAttribute("Row", $Row)
+			$Table.SetAttribute("DesktopApplicationID", $AppID)
+
+			$Table
 		}
 
-		$Parameter = $Parameters | Where-Object -FilterScript {$_.Name -eq $Tile}
-		$Group = $XML.LayoutModificationTemplate.DefaultLayoutOverride.StartLayoutCollection.StartLayout.Group | Where-Object -FilterScript {$_.Name -eq "Sophia Script"}
-
-		# If "Sophia Script" group exists in Start
-		if ($Group)
+		if (-not (Test-Path -Path $StartLayout))
 		{
-			$DesktopApplicationID = ($Parameters | Where-Object -FilterScript {$_.Name -eq $Tile}).AppID
-
-			if (-not ($Group.DesktopApplicationTile | Where-Object -FilterScript {$_.DesktopApplicationID -eq $DesktopApplicationID}))
-			{
-				# Calculate current filled columns
-				$CurrentColumns = @($Group.DesktopApplicationTile.Column)
-				# Calculate current free columns and take the first one
-				$Column = (Compare-Object -ReferenceObject $ValidColumns -DifferenceObject $CurrentColumns).InputObject | Select-Object -First 1
-				# If filled cells contain desired ones assign the first free cell
-				if ($CurrentColumns -contains $Parameter.Column)
-				{
-					$Parameter.Column = $Column
-				}
-				$Group.AppendChild((Add-Tile @Parameter)) | Out-Null
-			}
+			# Export the current Start layout
+			Export-StartLayout -Path $StartLayout -UseDesktopApplicationID
 		}
-		else
-		{
-			# Create the "Sophia Script" group
-			[Xml.XmlElement]$Group = $XML.CreateElement("start:Group", $StartLayoutNS)
-			$Group.SetAttribute("Name","Sophia Script")
-			$Group.AppendChild((Add-Tile @Parameter)) | Out-Null
-			$XML.LayoutModificationTemplate.DefaultLayoutOverride.StartLayoutCollection.StartLayout.AppendChild($Group) | Out-Null
-		}
-	}
 
-	$XML.Save($StartLayout)
-
-	# Unpin all the Start tiles
-	if ($UnpinAll)
-	{
 		[xml]$XML = Get-Content -Path $StartLayout -Encoding UTF8 -Force
-		$Groups = $XML.LayoutModificationTemplate.DefaultLayoutOverride.StartLayoutCollection.StartLayout.Group
 
-		foreach ($Group in $Groups)
+		foreach ($Tile in $Tiles)
 		{
-			# Removing all groups inside XML
-			$Group.ParentNode.RemoveChild($Group) | Out-Null
+			switch ($Tile)
+			{
+				ControlPanel
+				{
+					$ControlPanel = [WinAPI.GetStr]::GetString(12712)
+					Write-Verbose -Message ($Localization.ShortcutPinning -f $ControlPanel) -Verbose
+				}
+				DevicesPrinters
+				{
+					$DevicesPrinters = [WinAPI.GetStr]::GetString(30493)
+					Write-Verbose -Message ($Localization.ShortcutPinning -f $DevicesPrinters) -Verbose
+				}
+				PowerShell
+				{
+					Write-Verbose -Message ($Localization.ShortcutPinning -f "Windows PowerShell") -Verbose
+				}
+			}
+
+			$Parameter = $Parameters | Where-Object -FilterScript {$_.Name -eq $Tile}
+			$Group = $XML.LayoutModificationTemplate.DefaultLayoutOverride.StartLayoutCollection.StartLayout.Group | Where-Object -FilterScript {$_.Name -eq "Sophia Script"}
+
+			# If "Sophia Script" group exists in Start
+			if ($Group)
+			{
+				$DesktopApplicationID = ($Parameters | Where-Object -FilterScript {$_.Name -eq $Tile}).AppID
+
+				if (-not ($Group.DesktopApplicationTile | Where-Object -FilterScript {$_.DesktopApplicationID -eq $DesktopApplicationID}))
+				{
+					# Calculate current filled columns
+					$CurrentColumns = @($Group.DesktopApplicationTile.Column)
+					# Calculate current free columns and take the first one
+					$Column = (Compare-Object -ReferenceObject $ValidColumns -DifferenceObject $CurrentColumns).InputObject | Select-Object -First 1
+					# If filled cells contain desired ones assign the first free column
+					if ($CurrentColumns -contains $Parameter.Column)
+					{
+						$Parameter.Column = $Column
+					}
+					$Group.AppendChild((Add-Tile @Parameter)) | Out-Null
+				}
+			}
+			else
+			{
+				# Create the "Sophia Script" group
+				[Xml.XmlElement]$Group = $XML.CreateElement("start:Group", $StartLayoutNS)
+				$Group.SetAttribute("Name","Sophia Script")
+				$Group.AppendChild((Add-Tile @Parameter)) | Out-Null
+				$XML.LayoutModificationTemplate.DefaultLayoutOverride.StartLayoutCollection.StartLayout.AppendChild($Group) | Out-Null
+			}
 		}
 
 		$XML.Save($StartLayout)
 	}
 
-	# Temporarily disable changing the Start menu layout
-	if (-not (Test-Path -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
+	end
 	{
-		New-Item -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Force
+		# Temporarily disable changing the Start menu layout
+		if (-not (Test-Path -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
+		{
+			New-Item -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Force
+		}
+		New-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name LockedStartLayout -Value 1 -Force
+		New-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name StartLayoutFile -Value $StartLayout -Force
+
+		Start-Sleep -Seconds 3
+
+		# Restart the Start menu
+		Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
+
+		Start-Sleep -Seconds 3
+
+		# Enable changing the Start menu layout
+		Remove-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name LockedStartLayout -Force -ErrorAction Ignore
+		Remove-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name StartLayoutFile -Force -ErrorAction Ignore
+
+		Remove-Item -Path $StartLayout -Force
+
+		Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
+
+		Start-Sleep -Seconds 3
 	}
-	New-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name LockedStartLayout -Value 1 -Force
-	New-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name StartLayoutFile -Value $StartLayout -Force
-
-	Start-Sleep -Seconds 3
-
-	# Restart the Start menu
-	Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
-
-	Start-Sleep -Seconds 3
-
-	# Enable changing the Start menu layout
-	Remove-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name LockedStartLayout -Force -ErrorAction Ignore
-	Remove-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name StartLayoutFile -Force -ErrorAction Ignore
-
-	Remove-Item -Path $StartLayout -Force
-
-	Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
-
-	Start-Sleep -Seconds 3
 }
 #endregion Start menu
 
@@ -7247,6 +7707,7 @@ function UninstallUWPApps
 		# Фотографии и Видеоредактор
 		"Microsoft.Windows.Photos",
 		"Microsoft.Photos.MediaEngineDLC",
+		"Microsoft.HEVCVideoExtension"
 
 		# Calculator
 		# Калькулятор
@@ -7303,6 +7764,7 @@ function UninstallUWPApps
 	#endregion Variables
 
 	#region XAML Markup
+	# The section defines the design of the upcoming dialog box
 	[xml]$XAML = '
 	<Window
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -7483,15 +7945,139 @@ function UninstallUWPApps
 
 <#
 	.SYNOPSIS
-	Open Microsoft Store "HEVC Video Extensions from Device Manufacturer" page to install this extension manually to be able to open .heic and .heif image formats
+	Install "HEVC Video Extensions from Device Manufacturer" to be able to open .heic and .heif formats
+
+	.PARAMETER Manual
+	Open Microsoft Store "HEVC Video Extensions from Device Manufacturer" page to install the extension manually
+
+	.PARAMETER Install
+	Download and install the "HEVC Video Extensions from Device Manufacturer" extension using the https://store.rg-adguard.net parser
+
+	.EXAMPLE
+	HEIF -Manual
+
+	.EXAMPLE
+	HEIF -Install
+
+	.LINK
+	https://www.microsoft.com/store/productId/9n4wgh0z6vhq
+	https://dev.to/kaiwalter/download-windows-store-apps-with-powershell-from-https-store-rg-adguard-net-155m
 
 	.NOTES
 	The extension can be installed without Microsoft account
 	Current user
 #>
-function InstallHEIF
+function HEIF
 {
-	Start-Process -FilePath ms-windows-store://pdp/?ProductId=9n4wgh0z6vhq
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Manual"
+		)]
+		[switch]
+		$Manual,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Install"
+		)]
+		[switch]
+		$Install
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Manual"
+		{
+			if (-not (Get-AppxPackage -Name Microsoft.HEVCVideoExtension))
+			{
+				try
+				{
+					if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
+					{
+						Start-Process -FilePath ms-windows-store://pdp/?ProductId=9n4wgh0z6vhq
+					}
+				}
+				catch [System.Net.WebException]
+				{
+					Write-Warning -Message $Localization.NoInternetConnection
+					Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+					return
+				}
+			}
+		}
+		"Install"
+		{
+			# Check whether the extension is already installed
+			if (-not (Get-AppxPackage -Name Microsoft.HEVCVideoExtension))
+			{
+				try
+				{
+					# Check the internet connection
+					if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
+					{
+						try
+						{
+							# Check whether the https://store.rg-adguard.net site is alive
+							if ((Invoke-WebRequest -Uri https://store.rg-adguard.net/api/GetFiles -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
+							{
+								$API = "https://store.rg-adguard.net/api/GetFiles"
+								# HEVC Video Extensions from Device Manufacturer
+								$ProductURL = "https://www.microsoft.com/store/productId/9n4wgh0z6vhq"
+
+								$Body = @{
+									"type" = "url"
+									"url"  = $ProductURL
+									"ring" = "Retail"
+									"lang" = "en-US"
+								}
+								$Raw = Invoke-RestMethod -Method Post -Uri $API -ContentType 'application/x-www-form-urlencoded' -Body $Body
+
+								# Parsing the page
+								$Raw | Select-String -Pattern '<tr style.*<a href=\"(?<url>.*)"\s.*>(?<text>.*)<\/a>' -AllMatches | ForEach-Object -Process {$_.Matches} | ForEach-Object -Process {
+									$TempURL = $_.Groups[1].Value
+									$Package = $_.Groups[2].Value
+
+									if ($Package -like "Microsoft.HEVCVideoExtension_*_x64__8wekyb3d8bbwe.appx")
+									{
+										Write-Verbose -Message $Localization.HEVCDownloading -Verbose
+
+										[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+										$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+										$Parameters = @{
+											Uri = $TempURL
+											OutFile = "$DownloadsFolder\$Package"
+											Verbose = [switch]::Present
+										}
+										Invoke-WebRequest @Parameters
+
+										# Installing "HEVC Video Extensions from Device Manufacturer"
+										Add-AppxPackage -Path "$DownloadsFolder\$Package" -Verbose
+
+										Remove-Item -Path "$DownloadsFolder\$Package" -Force
+									}
+								}
+							}
+						}
+						catch [System.Net.WebException]
+						{
+							Write-Warning -Message $Localization.NoResponse
+							Write-Error -Message $Localization.NoResponse -ErrorAction SilentlyContinue
+							return
+						}
+					}
+				}
+				catch [System.Net.WebException]
+				{
+					Write-Warning -Message $Localization.NoInternetConnection
+					Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+					return
+				}
+			}
+		}
+	}
 }
 
 <#
