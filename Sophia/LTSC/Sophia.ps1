@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Windows 10 Sophia Script" (LTSC version)
 
-	Version: v5.0.4
-	Date: 20.02.2021
+	Version: v5.0.5
+	Date: 02.03.2021
 	Copyright (c) 2021 farag & oZ-Zo
 
 	https://github.com/farag2
@@ -57,7 +57,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script for LTSC v5.0.4 | $([char]0x00A9) farag & oz-zo, 2015–2021"
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script for LTSC v5.0.5 | $([char]0x00A9) farag & oz-zo, 2015–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Sophia.psd1 -PassThru -Force
@@ -459,8 +459,8 @@ StorageSenseRecycleBin -Enable
 # StorageSenseRecycleBin -Disable
 #endregion StorageSense
 
-# Disable hibernation if the device is not a laptop
-# Отключить режим гибернации, если устройство не является ноутбуком
+# Disable hibernation
+# Отключить режим гибернации
 Hibernate -Disable
 
 # Enable hibernate (default value)
@@ -581,8 +581,8 @@ LatestInstalled.NET -Enable
 # Не использовать последнюю установленную версию .NET для всех приложений (значение по умолчанию)
 # LatestInstalled.NET -Disable
 
-# Do not allow the computer (if device is not a laptop) to turn off the network adapters to save power
-# Запретить отключение всех сетевых адаптеров для экономии энергии (если устройство не является ноутбуком)
+# Do not allow the computer to turn off the network adapters to save power
+# Запретить отключение всех сетевых адаптеров для экономии энергии
 PCTurnOffDevice -Disable
 
 # Allow the computer to turn off the network adapters to save power (default value)
@@ -703,6 +703,22 @@ SmartActiveHours -Enable
 # Do not automatically adjust active hours for me based on daily usage (default value)
 # Не изменять автоматически период активности для этого устройства на основе действий (значение по умолчанию)
 # SmartActiveHours -Disable
+<#
+	Register app, calculate hash, and set as default for specific extension without the "How do you want to open this?" pop-up
+	Зарегистрировать приложение, вычислить хэш и установить как приложение по умолчанию для конкретного расширения без всплывающего окошка "Каким образом вы хотите открыть этот файл?"
+
+	Examples:
+	Примеры:
+	Set-Association -ProgramPath "C:\SumatraPDF.exe" -Extension .pdf -Icon "shell32.dll,100"
+	Set-Association -ProgramPath "C:\Program Files\Notepad++\notepad++.exe" -Extension .psm1 -Icon "C:\Program Files\Notepad++\notepad++.exe,0"
+
+	The app must be installed
+	Приложение должно быть установлено
+
+	Do not use relative paths like "%Program Files%"
+	Не используйте относительные пути вида "%Program Files%"
+#>
+# Set-Association -ProgramPath "C:\Program Files\Notepad++\notepad++.exe" -Extension .psm1 -Icon "C:\Program Files\Notepad++\notepad++.exe,0"
 #endregion System
 
 #region Start menu
@@ -855,7 +871,7 @@ PUAppsDetection -Enable
 	There is a bug in KVM with QEMU: enabling this function causes VM to freeze up during the loading phase of Windows
 
 	Включить песочницу для Microsoft Defender
-	В KVM с QEMU присутсвует баг: включение этой функции приводит ВМ к зависанию во время загрузки Windows
+	В KVM с QEMU присутствует баг: включение этой функции приводит ВМ к зависанию во время загрузки Windows
 #>
 DefenderSandbox -Enable
 
