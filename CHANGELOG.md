@@ -26,6 +26,7 @@ Diff from v5.4.0.1
     ```powershell
   PinToStart -UnpinAll
   ```
+
   * Thanks to [iNNOKENTIY21](https://forum.ru-board.com/profile.cgi?action=show&member=iNNOKENTIY21) for the tips.
 * Updated descriptions;
 * Fixed typos.
