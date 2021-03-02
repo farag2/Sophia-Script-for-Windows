@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.6 - 02.03.2021
+
+## Windows 10 2004 (20H1)/20H2 (2009) | LTSC
+
+Diff from v5.5
+[5.5...5.6](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.5...5.6)
+
+* `PinToStart` function fixed & updated
+  * Now, wherever the `-UnpinAll` (unpin all tiles) argument is placed, it will always be executed first, to avoid the situation when the tiles were pinned and then all were unpinned;
+* The `HEIF` function huge update
+  * Now it's possible to open Microsoft Store extension page manually (`-Manual` argument) or download and install (`-Install` argument) appx package directly from Microsoft server using the <https://store.rg-adguard.net> parser;
+  * Built upon awesome @KaiWalter [function](https://dev.to/kaiwalter/download-windows-store-apps-with-powershell-from-https-store-rg-adguard-net-155m); :rocket:
+  * Thanks to [iNNOKENTIY21](https://forum.ru-board.com/profile.cgi?action=show&member=iNNOKENTIY21) for the tips.
+* Added the `Set-Association` function (`commented out by default`; see examples in the preset file)
+  * Now it's able to register an app, calculate special hash, and set as default for specific extension without the ["How do you want to open this"](https://filestore.community.support.microsoft.com/api/images/2383a021-b035-40b5-8d9b-b935cbb713e3) pop-up
+  * Built upon awesome @Danyfirex [function](https://github.com/DanysysTeam/PS-SFTA); :rocket:
+  * Learn more about the problem: <https://stackoverflow.com/a/49256437/8315671>;
+* Updated descriptions;
+* Fixed typos;
+* Minor changes. :feelsgood:
+
 ## 5.5 - 20.02.2021
 
 ## Windows 10 2004 (20H1)/20H2 (2009) | LTSC
