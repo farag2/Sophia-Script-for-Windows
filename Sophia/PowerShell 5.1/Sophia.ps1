@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Windows 10 Sophia Script"
 
-	Version: v5.5
-	Date: 20.02.2021
+	Version: v5.6
+	Date: 02.03.2021
 	Copyright (c) 2015–2021 farag & oZ-Zo
 
 	https://github.com/farag2
@@ -21,7 +21,7 @@
 	.\Sophia.ps1
 
 	.EXAMPLE
-	.\Sophia.ps1 -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", InstallHEIF
+	.\Sophia.ps1 -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
 
 	.NOTES
 	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
@@ -57,7 +57,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.5 | $([char]0x00A9) farag & oz-zo, 2015–2021"
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.6 | $([char]0x00A9) farag & oz-zo, 2015–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Sophia.psd1 -PassThru -Force
@@ -70,7 +70,7 @@ Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia
 	Добавляет возможность запускать скрипт, указывая в качестве параметров функции модуля
 
 	.EXAMPLE
-	.\Sophia.ps1 -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", InstallHEIF
+	.\Sophia.ps1 -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
 
 	.NOTES
 	Regardless of the functions entered as an argument, the "Checkings" function will be executed first, and the "Refresh" and "Errors" functions will be executed at the end
@@ -557,8 +557,8 @@ StorageSenseRecycleBin -Enable
 # StorageSenseRecycleBin -Disable
 #endregion StorageSense
 
-# Disable hibernation if the device is not a laptop
-# Отключить режим гибернации, если устройство не является ноутбуком
+# Disable hibernation
+# Отключить режим гибернации
 Hibernate -Disable
 
 # Enable hibernate (default value)
@@ -687,8 +687,8 @@ LatestInstalled.NET -Enable
 # Не использовать последнюю установленную версию .NET для всех приложений (значение по умолчанию)
 # LatestInstalled.NET -Disable
 
-# Do not allow the computer (if device is not a laptop) to turn off the network adapters to save power
-# Запретить отключение всех сетевых адаптеров для экономии энергии (если устройство не является ноутбуком)
+# Do not allow the computer to turn off the network adapters to save power
+# Запретить отключение всех сетевых адаптеров для экономии энергии
 PCTurnOffDevice -Disable
 
 # Allow the computer to turn off the network adapters to save power (default value)
@@ -849,8 +849,25 @@ SmartActiveHours -Enable
 DeviceRestartAfterUpdate -Enable
 
 # Do not restart this device as soon as possible when a restart is required to install an update (default value)
-# Не перезапуск этого устройства как можно быстрее, если для установки обновления требуется перезагрузка (значение по умолчанию)
+# Не перезапускать это устройство как можно быстрее, если для установки обновления требуется перезагрузка (значение по умолчанию)
 # DeviceRestartAfterUpdate -Disable
+
+<#
+	Register app, calculate hash, and set as default for specific extension without the "How do you want to open this?" pop-up
+	Зарегистрировать приложение, вычислить хэш и установить как приложение по умолчанию для конкретного расширения без всплывающего окошка "Каким образом вы хотите открыть этот файл?"
+
+	Examples:
+	Примеры:
+	Set-Association -ProgramPath "C:\SumatraPDF.exe" -Extension .pdf -Icon "shell32.dll,100"
+	Set-Association -ProgramPath "C:\Program Files\Notepad++\notepad++.exe" -Extension .psm1 -Icon "C:\Program Files\Notepad++\notepad++.exe,0"
+
+	The app must be installed
+	Приложение должно быть установлено
+
+	Do not use relative paths like "%Program Files%"
+	Не используйте относительные пути вида "%Program Files%"
+#>
+# Set-Association -ProgramPath "C:\Program Files\Notepad++\notepad++.exe" -Extension .psm1 -Icon "C:\Program Files\Notepad++\notepad++.exe,0"
 #endregion System
 
 #region WSL
@@ -900,16 +917,23 @@ RunPowerShellShortcut -Elevated
 # RunPowerShellShortcut -NonElevated
 
 <#
-	Assign what shortcuts pin to Start
-	Valid values: ControlPanel, DevicesPrinters and PowerShell
+	Assign what shortcuts to pin to Start
+	Valid shortcuts: ControlPanel, DevicesPrinters and PowerShell
 
 	Указать, какие ярлыки закрепить на начальном экране
-	PinToStart -Tiles ControlPanel, DevicesPrinters, PowerShell
+	Валидные ярлыки: ControlPanel, DevicesPrinters and PowerShell
 #>
+PinToStart -Tiles ControlPanel, DevicesPrinters, PowerShell
+
+<#
+	Unpin all tiles first and pin necessary ones
+	Открепить все ярлыки сначала и закрепить необходимые
+#>
+# PinToStart -UnpinAll -Tiles ControlPanel, DevicesPrinters, PowerShell
 
 # Unpin all the Start tiles
 # Открепить все ярлыки от начального экрана
-# PinToStart -UnpinAllStartTiles
+# PinToStart -UnpinAll
 #endregion Start menu
 
 #region UWP apps
@@ -923,13 +947,17 @@ RunPowerShellShortcut -Elevated
 UninstallUWPApps
 
 <#
-	Open Microsoft Store "HEVC Video Extensions from Device Manufacturer" page to install this extension manually to be able to open .heic and .heif image formats
+	Open Microsoft Store "HEVC Video Extensions from Device Manufacturer" page to install this extension manually to be able to open .heic and .heif formats
 	The extension can be installed without Microsoft account
 
-	Открыть страницу "Расширения для видео HEVC от производителя устройства" в Microsoft Store, чтобы вручную установить расширение для открытия изображений в форматах .heic и .heif
+	Открыть страницу "Расширения для видео HEVC от производителя устройства" в Microsoft Store, чтобы вручную установить расширение для открытия форматов .heic и .heif
 	Расширение может быть установлено бесплатно без учетной записи Microsoft
 #>
-InstallHEIF
+# HEIF -Manual
+
+# Download and install "HEVC Video Extensions from Device Manufacturer" to be able to open .heic and .heif formats
+# Скачать и установить "Расширения для видео HEVC от производителя устройства", чтобы иметь возможность открывать форматы .heic и .heif
+HEIF -Install
 
 # Disable Cortana autostarting
 # Выключить автозагрузку Кортана
