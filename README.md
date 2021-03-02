@@ -206,4 +206,4 @@ How to run the specific function(s) (example):
 
 ## SophiApp Community Edition (C# + WPF)
 
-[SophiApp](https://github.com/farag2/SophiApp) written by [oz-zo](https://github.com/oz-zo) being compiled every Saturday within Github Actions for internal purposes only.
+[SophiApp](https://github.com/farag2/SophiApp) is still in development.
