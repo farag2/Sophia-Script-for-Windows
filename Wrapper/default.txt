@@ -105,7 +105,7 @@ PinToStart -Tiles ControlPanel,DevicesPrinters,PowerShell
 <#uwp#>
 
 UninstallUWPApps;
-InstallHEIF;
+HEIF -Install
 CortanaAutostart -Disable;
 CheckUWPAppsUpdates
 

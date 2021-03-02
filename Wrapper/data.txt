@@ -114,7 +114,7 @@ PinToStart -UnpinAll;LeaveAlone
 <#uwp#>
 
 UninstallUWPApps;LeaveAlone;
-InstallHEIF;LeaveAlone;
+HEIF -Manual;HEIF -Install
 CortanaAutostart -Disable;CortanaAutostart -Enable;
 CheckUWPAppsUpdates;LeaveAlone
 
