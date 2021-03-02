@@ -95,9 +95,9 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 |Version|    Marketing name   | Build | Arch |      Editions     | Script version |
 |:-----:|:-------------------:|:-----:|:----:|:-----------------:|:--------------:|
-| 20H2  | October 2020 Update | 19042 |  x64 |Home/Pro/Enterprise|[5.5](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
-| 2004  |   May 2020 Update   | 19041 |  x64 |Home/Pro/Enterprise|[5.5](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
-| 1809  | LTSC Enterprise 2019| 17763 |  x64 |   Enterprise      |[5.0.4](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 20H2  | October 2020 Update | 19042 |  x64 |Home/Pro/Enterprise|[5.6](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 2004  |   May 2020 Update   | 19041 |  x64 |Home/Pro/Enterprise|[5.6](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 1809  | LTSC Enterprise 2019| 17763 |  x64 |   Enterprise      |[5.0.5](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
 
 ## Screenshots
 
@@ -138,6 +138,8 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
   * Dynamically generated UWP apps list installed for all users
 * Disable Windows features displaying friendly packages names with pop-up form written in [WPF](#Screenshots);
 * Uninstall Windows capabilities displaying friendly packages names with pop-up form written in [WPF](#Screenshots);
+* Download and install the [HEVC Video Extensions from Device Manufacturer](https://www.microsoft.com/p/hevc-video-extensions-from-device-manufacturer/9n4wgh0z6vhq) from Microsoft server using <https://store.rg-adguard.net> parser to be able to open .heic and .heif formats;
+* Register app, calculate hash, and set as default for specific extension without the "How do you want to open this" pop-up using special [function](https://github.com/DanysysTeam/PS-SFTA);
 * Install and setup WSL
 * Create a Windows cleaning up task in the Task Scheduler;
   * A toast notification will pop up a minute before the task [starts](#Screenshots)
