@@ -11,8 +11,8 @@
 
   <a href="https://github.com/farag2/Windows-10-Sophia-Script/releases"><img src="https://img.shields.io/github/downloads/farag2/Windows-10-Setup-Script/total.svg?label=downloads%20%28since%20May%202020%29"></a>
   <a href="https://github.com/farag2/Windows-10-Sophia-Script/releases"><img src="https://img.shields.io/github/v/release/farag2/Windows-10-Sophia-Script"></a>
-  <img src="https://img.shields.io/badge/Made%20with-%E2%9D%A4-red.svg?colorB=11a9f7">
   <a href="https://twitter.com/tea_head_"><img src="https://img.shields.io/badge/Logo%20by-teahead-blue?style=flat&logo=Twitter"></a>
+  <img src="https://img.shields.io/badge/Made%20with-%E2%9D%A4-red.svg?colorB=11a9f7">
 
   <a href="https://t.me/Sophia_News"><img src="https://img.shields.io/badge/Sophia%20News-Telegram-blue?style=flat&logo=Telegram"></a>
   <a href="https://t.me/Sophia_Chat"><img src="https://img.shields.io/badge/Sophia%20Chat-Telegram-blue?style=flat&logo=Telegram"></a>
