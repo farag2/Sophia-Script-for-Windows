@@ -18,10 +18,11 @@ Diff from v5.5
   * Now it's possible to open Microsoft Store extension page manually (`-Manual` argument) or download and install (`-Install` argument) appx package directly from Microsoft server using the <https://store.rg-adguard.net> parser;
   * Built upon awesome @KaiWalter [function](https://dev.to/kaiwalter/download-windows-store-apps-with-powershell-from-https-store-rg-adguard-net-155m); :rocket:
   * Thanks to [iNNOKENTIY21](https://forum.ru-board.com/profile.cgi?action=show&member=iNNOKENTIY21) for the tips.
-* Added the `Set-Association` function (`commented out by default`; see examples in the preset file)
+* Added the `Set-Association` function (`commented out by default`);
   * Now it's able to register an app, calculate special hash, and set as default for specific extension without the ["How do you want to open this"](https://filestore.community.support.microsoft.com/api/images/2383a021-b035-40b5-8d9b-b935cbb713e3) pop-up
   * Built upon awesome @Danyfirex [function](https://github.com/DanysysTeam/PS-SFTA); :rocket:
   * Learn more about the problem: <https://stackoverflow.com/a/49256437/8315671>;
+  * See examples in the preset file;
 * Updated descriptions;
 * Fixed typos;
 * Minor changes. :feelsgood:
