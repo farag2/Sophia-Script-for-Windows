@@ -6,8 +6,8 @@
 
 <p align="left">
   <img src="https://img.shields.io/github/workflow/status/farag2/Windows-10-Sophia-Script/Build?label=GitHub%20Actions&logo=GitHub">
-  <img src="https://img.shields.io/badge/PowerShell%205.1%20&%207.1-Ready-blue.svg?color=5391FE&style=flat&logo=powershell">
   <a href="https://www.codacy.com/gh/farag2/Windows-10-Sophia-Script"><img src="https://app.codacy.com/project/badge/Grade/a760e521a97949098be8aa257f6cce11"></a>
+  <img src="https://img.shields.io/badge/PowerShell%205.1%20&%207.1-Ready-blue.svg?color=5391FE&style=flat&logo=powershell">
 
   <a href="https://github.com/farag2/Windows-10-Sophia-Script/releases"><img src="https://img.shields.io/github/downloads/farag2/Windows-10-Setup-Script/total.svg?label=downloads%20%28since%20May%202020%29"></a>
   <a href="https://github.com/farag2/Windows-10-Sophia-Script/releases"><img src="https://img.shields.io/github/v/release/farag2/Windows-10-Sophia-Script"></a>
