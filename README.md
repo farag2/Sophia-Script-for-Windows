@@ -143,7 +143,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 * Register app, calculate hash, and set as default for specific extension without the "How do you want to open this" pop-up using special [function](https://github.com/DanysysTeam/PS-SFTA);
 * Install and setup WSL
 * Create a `Windows Cleanup` and `Windows Cleanup Notification` scheduled tasks for Windows cleaning up unused files and updates;
-  * A native toast notification will be displayed where you can choose to snooze, run the cleanup task or dismiss (#Screenshots)
+  * A native toast notification will be displayed where you can choose to snooze, run the cleanup task or [dismiss](#Screenshots)
 * Create tasks in the Task Scheduler to clear
   * `%SystemRoot%\SoftwareDistribution\Download`
   * `%TEMP%`
