@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Windows 10 Sophia Script" (LTSC version)
 
-	Version: v5.0.5
-	Date: 02.03.2021
+	Version: v5.1
+	Date: 05.03.2021
 	Copyright (c) 2021 farag & oZ-Zo
 
 	https://github.com/farag2
@@ -57,7 +57,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script for LTSC v5.0.5 | $([char]0x00A9) farag & oz-zo, 2015–2021"
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script for LTSC v5.1 | $([char]0x00A9) farag & oz-zo, 2015–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Sophia.psd1 -PassThru -Force
@@ -276,11 +276,11 @@ FileTransferDialog -Detailed
 # FileTransferDialog -Compact
 
 # Expand the File Explorer ribbon
-# Развернуть ленут проводника
+# Развернуть ленту проводника
 FileExplorerRibbon -Expanded
 
 # Minimize the File Explorer ribbon (default value)
-# Свернуть ленут проводника (значение по умолчанию)
+# Свернуть ленту проводника (значение по умолчанию)
 # FileExplorerRibbon -Minimized
 
 # Display the recycle bin files delete confirmation
@@ -776,44 +776,44 @@ SetAppGraphicsPerformance
 
 #region Scheduled tasks
 <#
-	Create the "Windows Cleanup" scheduled task for cleaning up unused files and Windows updates
-	A minute before the task starts, a warning in the Windows action center will appear
-	The task runs every 90 days
+	Create the "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates
+	A native interactive toast notification pops up every 30 days
+	The task runs every 30 days
 
-	Создать задачу "Windows Cleanup" по очистке неиспользуемых файлов и обновлений Windows в Планировщике задач
-	За минуту до выполнения задачи в Центре уведомлений Windows появится предупреждение
-	Задача выполняется каждые 90 дней
+	Создать задачу "Windows Cleanup" по очистке неиспользуемых файлов и обновлений Windows в Планировщике заданий
+	Нативный интерактивный тост всплывает каждые 30 дней
+	Задача выполняется каждые 30 дней
 #>
-CleanUpTask -Register
+CleanupTask -Register
 
-# Delete the "Windows Cleanup" scheduled task for cleaning up unused files and Windows updates
-# Удалить задачу "Windows Cleanup" по очистке неиспользуемых файлов и обновлений Windows из Планировщика задач
-# CleanUpTask -Delete
+# Delete the "Windows Cleanup" and "Windows Cleanup Notification" scheduled tasks for cleaning up Windows unused files and updates
+# Удалить задачу "Windows Cleanup" и "Windows Cleanup Notification" по очистке неиспользуемых файлов и обновлений Windows из Планировщика заданий
+# CleanupTask -Delete
 
 <#
 	Create the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
-	The task runs on Thursdays every 4 weeks
+	The task runs every 90 days
 
-	Создать задачу "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download в Планировщике задач
-	Задача выполняется по четвергам каждую 4 неделю
+	Создать задачу "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download в Планировщике заданий
+	Задача выполняется каждые 90 дней
 #>
 SoftwareDistributionTask -Register
 
 # Delete the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
-# Удалить задачу "SoftwareDistributionp" по очистке папки %SystemRoot%\SoftwareDistribution\Download из Планировщика задач
+# Удалить задачу "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download из Планировщика заданий
 # SoftwareDistributionTask -Delete
 
 <#
 	Create the "Temp" scheduled task for cleaning up the %TEMP% folder
-	The task runs every 62 days
+	The task runs every 60 days
 
-	Создать задачу "Temp" в Планировщике задач по очистке папки %TEMP%
-	Задача выполняется каждые 62 дня
+	Создать задачу "Temp" в Планировщике заданий по очистке папки %TEMP%
+	Задача выполняется каждые 60 дней
 #>
 TempTask -Register
 
 # Delete the "Temp" scheduled task for cleaning up the %TEMP% folder
-# Удалить задачу "Temp" по очистке папки %TEMP% из Планировщика задач
+# Удалить задачу "Temp" по очистке папки %TEMP% из Планировщика заданий
 # TempTask -Delete
 #endregion Scheduled tasks
 

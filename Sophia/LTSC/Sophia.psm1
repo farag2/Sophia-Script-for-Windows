@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	"Windows 10 Sophia Script" (LTSC version) is a PowerShell module for Windows 10 fine-tuning and automating the routine tasks
 
-	Version: v5.0.4
-	Date: 20.02.2021
+	Version: v5.1
+	Date: 05.03.2021
 	Copyright (c) 2015–2021 farag & oZ-Zo
 
 	https://github.com/farag2
@@ -4593,7 +4593,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			}
 
 			# Pictures
-
 			Write-Verbose -Message $Localization.PicturesDriveSelect -Verbose
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
@@ -6322,26 +6321,26 @@ function SetAppGraphicsPerformance
 #region Scheduled tasks
 <#
 	.SYNOPSIS
-	The "Windows Cleanup" scheduled task for cleaning up unused files and Windows updates
+	The "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates
 
 	.PARAMETER Register
-	Create the "Windows Cleanup" scheduled task for cleaning up unused files and Windows updates
+	Create the "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates
 
 	.PARAMETER Delete
-	Delete the "Windows Cleanup" scheduled task for cleaning up unused files and Windows updates
+	Delete the "Windows Cleanup" and "Windows Cleanup Notification" scheduled tasks for cleaning up Windows unused files and updates
 
 	.EXAMPLE
-	CleanUpTask -Register
+	CleanupTask -Register
 
 	.EXAMPLE
-	CleanUpTask -Delete
+	CleanupTask -Delete
 
 	.NOTES
-	A minute before the task starts, a warning in the Windows action center will appear
+	A native interactive toast notification pops up every 30 days
+	The task runs every 30 days
 	Current user
-	The task runs every 90 days
 #>
-function CleanUpTask
+function CleanupTask
 {
 	param
 	(
@@ -6401,22 +6400,8 @@ function CleanUpTask
 				New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\$VolumeCache" -Name StateFlags1337 -PropertyType DWord -Value 2 -Force
 			}
 
-			$TaskScript = @"
-`$cleanmgr = """{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\cleanmgr.exe"""
-
-[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime]
-`$Template = [Windows.UI.Notifications.ToastNotificationManager]::GetTemplateContent([Windows.UI.Notifications.ToastTemplateType]::ToastText01)
-
-`$ToastXML = [xml]`$Template.GetXml()
-`$ToastXML.GetElementsByTagName("""text""").AppendChild(`$ToastXML.CreateTextNode("""$($Localization.CleanUpTaskToast)"""))
-
-`$XML = New-Object -TypeName Windows.Data.Xml.Dom.XmlDocument
-`$XML.LoadXml(`$ToastXML.OuterXml)
-[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier(`$cleanmgr).Show(`$XML)
-
+			$CleanupTask = @"
 Get-Process -Name cleanmgr | Stop-Process -Force
-
-Start-Sleep -Seconds 60
 
 `$ProcessInfo = New-Object -TypeName System.Diagnostics.ProcessStartInfo
 `$ProcessInfo.FileName = """$env:SystemRoot\system32\cleanmgr.exe"""
@@ -6480,17 +6465,95 @@ while (`$true)
 `$Process.Start() | Out-Null
 "@
 
-			$Action = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $TaskScript"
-			$Trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 90 -At 9am
+			# Create the "Windows Cleanup" task
+			$Action = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $CleanupTask"
 			$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
 			$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
-			$Description = $Localization.CleanUpTaskDescription
 			$Parameters = @{
 				"TaskName"		= "Windows Cleanup"
 				"TaskPath"		= "Sophia Script"
 				"Principal"		= $Principal
 				"Action"		= $Action
-				"Description"	= $Description
+				"Description"	= $Localization.CleanupTaskDescription
+				"Settings"		= $Settings
+			}
+			Register-ScheduledTask @Parameters -Force
+
+			# Persist the Settings notifications to prevent to immediately disappear from Action Center
+			if (-not (Test-Path -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel"))
+			{
+				New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Force
+			}
+			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Name ShowInActionCenter -PropertyType DWORD -Value 1 -Force
+
+			# Register the "WindowsCleanup" protocol to be able to run the scheduled task upon clicking on the "Run" button
+			if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup))
+			{
+				New-Item -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Force
+			}
+			New-itemproperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name "(Default)" -PropertyType String -Value "url:WindowsCleanup" -Force
+			New-itemproperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name "URL Protocol" -Value "" -Force
+			New-itemproperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name EditFlags -PropertyType DWord -Value 2162688 -Force
+			if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\Shell\Open\command))
+			{
+				New-item -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup\Shell\Open\command -Force
+			}
+			# If "Run" clicked run the "Windows Cleanup" task
+			New-itemproperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup\Shell\Open\command -Name "(Default)" -PropertyType String -Value 'powershell.exe -Command "& {Start-ScheduledTask -TaskPath ''\Sophia Script\'' -TaskName ''Windows Cleanup''}"' -Force
+
+			$ToastNotification = @"
+[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime]
+[Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime]
+
+[xml]`$ToastTemplate = @"""
+<toast duration="""Long""" scenario="""reminder""">
+	<visual>
+		<binding template="""ToastGeneric""">
+			<text>$($Localization.CleanupTaskNotificationTitle)</text>
+			<group>
+				<subgroup>
+					<text hint-style="""title""" hint-wrap="""true""">$($Localization.CleanupTaskNotificationEventTitle)</text>
+				</subgroup>
+			</group>
+			<group>
+				<subgroup>
+					<text hint-style="""body""" hint-wrap="""true""">$($Localization.CleanupTaskNotificationEvent)</text>
+				</subgroup>
+			</group>
+		</binding>
+	</visual>
+	<audio src="""ms-winsoundevent:notification.default""" />
+	<actions>
+		<input id="""SnoozeTimer""" type="""selection""" title="""$($Localization.CleanupTaskNotificationSnoozeInterval)""" defaultInput="""1""">
+			<selection id="""1""" content="""$($Localization.Minute)""" />
+			<selection id="""30""" content="""$($Localization.HalfHour)""" />
+			<selection id="""240""" content="""$($Localization.FourHours)""" />
+		</input>
+		<action activationType="""system""" arguments="""snooze""" hint-inputId="""SnoozeTimer""" content="""$($Localization.Snooze)""" id="""test-snooze"""/>
+		<action arguments="""WindowsCleanup:""" content="""$($Localization.Run)""" activationType="""protocol"""/>
+		<action arguments="""dismiss""" content="""$($Localization.Dismiss)""" activationType="""system"""/>
+	</actions>
+</toast>
+"""@
+
+$`ToastXml = [Windows.Data.Xml.Dom.XmlDocument]::New()
+$`ToastXml.LoadXml($`ToastTemplate.OuterXml)
+
+$`ToastMessage = [Windows.UI.Notifications.ToastNotification]::New($`ToastXML)
+[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("""windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel""").Show($`ToastMessage)
+"@
+
+			# Create the "Windows Cleanup Notification" task
+			$Action = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $ToastNotification"
+			$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
+			$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
+			$Trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 30 -At 9pm
+			$Parameters = @{
+				"TaskName"		= "Windows Cleanup Notification"
+				"TaskPath"		= "Sophia Script"
+				"Principal"		= $Principal
+				"Action"		= $Action
+				"Description"	= $Localization.CleanupNotificationTaskDescription
 				"Settings"		= $Settings
 				"Trigger"		= $Trigger
 			}
@@ -6499,6 +6562,7 @@ while (`$true)
 		"Delete"
 		{
 			Unregister-ScheduledTask -TaskName "Windows Cleanup" -Confirm:$false
+			Unregister-ScheduledTask -TaskName "Windows Cleanup Notification" -Confirm:$false
 		}
 	}
 }
@@ -6520,7 +6584,7 @@ while (`$true)
 	SoftwareDistributionTask -Delete
 
 	.NOTES
-	The task runs on Thursdays every 4 weeks
+	The task runs every 90 days
 	Current user
 #>
 function SoftwareDistributionTask
@@ -6551,7 +6615,7 @@ function SoftwareDistributionTask
 Get-ChildItem -Path $env:SystemRoot\SoftwareDistribution\Download -Recurse -Force | Remove-Item -Recurse -Force
 "@
 			$Action = New-ScheduledTaskAction -Execute powershell.exe -Argument $Argument
-			$Trigger = New-JobTrigger -Weekly -WeeksInterval 4 -DaysOfWeek Thursday -At 9am
+			$Trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 90 -At 9pm
 			$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
 			$Principal = New-ScheduledTaskPrincipal -UserId "NT AUTHORITY\SYSTEM" -RunLevel Highest
 			$Description = $Localization.FolderTaskDescription -f "$env:SystemRoot\SoftwareDistribution\Download"
@@ -6590,7 +6654,7 @@ Get-ChildItem -Path $env:SystemRoot\SoftwareDistribution\Download -Recurse -Forc
 	TempTask -Delete
 
 	.NOTES
-	The task runs every 62 days
+	The task runs every 60 days
 	Current user
 #>
 function TempTask
@@ -6618,18 +6682,18 @@ function TempTask
 		{
 			$Argument = "Get-ChildItem -Path $env:TEMP -Force -Recurse | Remove-Item -Recurse -Force"
 			$Action = New-ScheduledTaskAction -Execute powershell.exe -Argument $Argument
-			$Trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 62 -At 9am
+			$Trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 60 -At 9pm
 			$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
 			$Principal = New-ScheduledTaskPrincipal -UserId "NT AUTHORITY\SYSTEM" -RunLevel Highest
 			$Description = $Localization.FolderTaskDescription
 			$Parameters = @{
-				"TaskName"		= "Temp"
-				"TaskPath"		= "Sophia Script"
-				"Principal"		= $Principal
-				"Action"		= $Action
-				"Description"	= $Description
-				"Settings"		= $Settings
-				"Trigger"		= $Trigger
+				"TaskName"    = "Temp"
+				"TaskPath"    = "Sophia Script"
+				"Principal"   = $Principal
+				"Action"      = $Action
+				"Description" = $Description
+				"Settings"    = $Settings
+				"Trigger"     = $Trigger
 			}
 			Register-ScheduledTask @Parameters -Force
 		}
@@ -6751,7 +6815,7 @@ function RemoveAllowedAppsControlledFolder
 # Add a folder to the exclusion from Windows Defender scanning
 function AddDefenderExclusionFolder
 {
-	$Title = $Localization.DefenderTitle
+	$Title = "Windows Defender"
 	$Message = $Localization.DefenderExclusionFolderRequest
 	$Add = $Localization.Add
 	$Skip = $Localization.Skip
