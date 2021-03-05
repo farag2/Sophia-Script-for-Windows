@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.7 - 05.03.2021
+
+## Windows 10 2004 (20H1)/20H2 (2009) | LTSC
+
+Diff from v5.6
+[5.6...5.7](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.6...5.7)
+
+<a href="https://t.me/Sophia_News"><img src="https://img.shields.io/badge/Sophia%20News-Telegram-blue?style=flat&logo=Telegram"></a>
+<a href="https://t.me/Sophia_Chat"><img src="https://img.shields.io/badge/Sophia%20Chat-Telegram-blue?style=flat&logo=Telegram"></a>
+
+* The `CleanupTask` function huge update;
+  * Splited into two functions: `Windows Cleanup` and `Windows Cleanup Notification`. `Windows Cleanup Notification` enables you the option to run the cleanup task or not. The `Windows Cleanup Notification` function runs once every month and displays native toast notification where you can choose to snooze (with drop down menu time reminder), run the cleanup task now or dismiss. You will be asked for this notification about Windows cleanup once a month.
+  ![Image](https://i.imgur.com/cZC40Fi.png)
+  * To update the existing `Windows Cleanup` function run (no need to restart)
+
+  ```powershell
+  .\Sophia.ps1 -Functions "CleanUpTask -Register"
+  ```
+
+* Added `MeetNow` function;
+  * Hide or show the `Meet Now` icon in the system tray;
+* Updated Sophia Script Wrapper
+  * Fixed `LeaveAlone` outputting to script when pressing `Output PowerShell`;
+  * Moved Tooltips `ControlPanelView` to `Other` section;
+* Fixed typos;
+* Minor changes. :feelsgood:
+
 ## 5.6 - 02.03.2021
 
 ## Windows 10 2004 (20H1)/20H2 (2009) | LTSC
