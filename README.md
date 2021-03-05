@@ -110,7 +110,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 ![Image](https://i.imgur.com/qZhFqr3.png)
 ![Image](https://i.imgur.com/2C3NOke.png)
 
-![Image](https://i.imgur.com/DpV0UJw.png)
+![Image](https://i.imgur.com/cZC40Fi.png)
 </details>
 
 ## Videos
