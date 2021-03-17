@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	"Windows 10 Sophia Script" (LTSC version) is a PowerShell module for Windows 10 fine-tuning and automating the routine tasks
 
-	Version: v5.1
-	Date: 05.03.2021
+	Version: v5.1.1
+	Date: 17.03.2021
 	Copyright (c) 2015–2021 farag & oZ-Zo
 
 	https://github.com/farag2
@@ -21,7 +21,7 @@
 	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
 
 	.NOTES
-	Supported Windows 10
+	Supported Windows 10 version
 	Version: 1809
 	Build: 17763
 	Edition: Enterprise LTSC
@@ -63,13 +63,20 @@ function Checkings
 		}
 	}
 
-	# Checking whether the current module version is the latest
+	# Checking if the current module version is the latest one
 	try
 	{
 		$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-		Invoke-WebRequest -Uri "https://raw.githubusercontent.com/farag2/Windows-10-Sophia-Script/master/Sophia/LTSC/Sophia.psd1" -OutFile $DownloadsFolder\Manifest.psd1 -UseBasicParsing
+		$Parameters = @{
+			Uri = "https://raw.githubusercontent.com/farag2/Windows-10-Sophia-Script/master/Sophia/LTSC/Sophia.psd1"
+			OutFile = "$DownloadsFolder\Manifest.psd1"
+			Verbose = [switch]::Present
+		}
+		Invoke-WebRequest @Parameters
+
 		$LatestRelease = (Import-PowerShellDataFile -Path $DownloadsFolder\Manifest.psd1).ModuleVersion
 		$CurrentRelease = (Get-Module -Name Sophia).Version.ToString()
+
 		Remove-Item -Path $DownloadsFolder\Manifest.psd1 -Force
 
 		switch ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)
@@ -92,7 +99,7 @@ function Checkings
 	}
 
 	# Unblock all files in the folder by removing the Zone.Identifier alternate data stream with a value of "3"
-	Get-ChildItem -Path $PSScriptRoot -Recurse -Force | Unblock-File -Confirm:$false
+	Get-ChildItem -Path $PSScriptRoot -Recurse -Force | Unblock-File
 
 	# Turn off Controlled folder access to let the script proceed
 	switch ((Get-MpPreference).EnableControlledFolderAccess)
@@ -100,6 +107,7 @@ function Checkings
 		"1"
 		{
 			Write-Warning -Message $Localization.ControlledFolderAccessDisabled
+
 			$Script:ControlledFolderAccess = $true
 			Set-MpPreference -EnableControlledFolderAccess Disabled
 
@@ -562,7 +570,7 @@ function ScheduledTasks
 
 		[void]$Window.Close()
 
-		$SelectedTasks  | ForEach-Object -Process {Write-Verbose $_.TaskName -Verbose}
+		$SelectedTasks | ForEach-Object -Process {Write-Verbose $_.TaskName -Verbose}
 		$SelectedTasks | Disable-ScheduledTask
 	}
 
@@ -572,7 +580,7 @@ function ScheduledTasks
 
 		[void]$Window.Close()
 
-		$SelectedTasks  | ForEach-Object -Process {Write-Verbose $_.TaskName -Verbose}
+		$SelectedTasks | ForEach-Object -Process {Write-Verbose $_.TaskName -Verbose}
 		$SelectedTasks | Enable-ScheduledTask
 	}
 
@@ -1181,7 +1189,7 @@ function OpenFileExplorerTo
 
 <#
 	.SYNOPSIS
-	Hide Task View button on the taskbar
+	Configure Task View button on the taskbar
 
 	.PARAMETER Hide
 	Show Task View button on the taskbar
@@ -2862,9 +2870,9 @@ function TempFolder
 					{
 						$Title = ""
 						$Message = $Localization.ClearFolder -f "$env:LOCALAPPDATA\Temp"
-						$Continue = $Localization.Continue
+						$Delete = $Localization.Delete
 						$Skip = $Localization.Skip
-						$Options = "&$Continue", "&$Skip"
+						$Options = "&$Delete", "&$Skip"
 						$DefaultChoice = 0
 
 						$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
@@ -3684,7 +3692,11 @@ function WindowsCapabilities
 
 		# Mail, contacts, and calendar sync component
 		# Компонент синхронизации почты, контактов и календаря
-		"OneCoreUAP.OneSync*"
+		"OneCoreUAP.OneSync*",
+
+		# Windows PowerShell Intergrated Scripting Enviroment
+		# Интегрированная среда сценариев Windows PowerShell
+		"Microsoft.Windows.PowerShell.ISE*"
 	)
 	#endregion Variables
 
@@ -4474,12 +4486,43 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 		while ($k.Key -notin ([ConsoleKey]::Escape, [ConsoleKey]::Enter))
 	}
 
+	$Signature = @{
+	Namespace = "WinAPI"
+	Name = "GetStr"
+	Language = "CSharp"
+	MemberDefinition = @"
+[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+public static extern IntPtr GetModuleHandle(string lpModuleName);
+[DllImport("user32.dll", CharSet = CharSet.Auto)]
+internal static extern int LoadString(IntPtr hInstance, uint uID, StringBuilder lpBuffer, int nBufferMax);
+public static string GetString(uint strId)
+{
+	IntPtr intPtr = GetModuleHandle("shell32.dll");
+	StringBuilder sb = new StringBuilder(255);
+	LoadString(intPtr, strId, sb, sb.Capacity);
+	return sb.ToString();
+}
+"@
+	}
+	if (-not ("WinAPI.GetStr" -as [type]))
+	{
+		Add-Type @Signature -Using System.Text
+	}
+
+	$DesktopLocalizedString = [WinAPI.GetStr]::GetString(21769)
+	$DocumentsLocalizedString = [WinAPI.GetStr]::GetString(21770)
+	$DownloadsLocalizedString = [WinAPI.GetStr]::GetString(21798)
+	$MusicLocalizedString = [WinAPI.GetStr]::GetString(21790)
+	$PicturesLocalizedString = [WinAPI.GetStr]::GetString(21779)
+	$VideosLocalizedString = [WinAPI.GetStr]::GetString(21791)
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Root"
 		{
-			# Store all drives letters to use them within ShowMenu function
 			Write-Verbose -Message $Localization.RetrievingDrivesList -Verbose
+
+			# Store all drives letters to use them within ShowMenu function
 			$DriveLetters = @((Get-Disk | Where-Object -FilterScript {$_.BusType -ne "USB"} | Get-Partition | Get-Volume | Where-Object -FilterScript {$null -ne $_.DriveLetter}).DriveLetter | Sort-Object)
 
 			# If the number of disks is more than one, set the second drive in the list as default drive
@@ -4493,11 +4536,11 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			}
 
 			# Desktop
-			Write-Verbose -Message $Localization.DesktopDriveSelect -Verbose
+			Write-Verbose -Message ($Localization.DriveSelect -f $DesktopLocalizedString) -Verbose
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
-			$Message = $Localization.DesktopRequest
+			$Message = $Localization.UserFolderRequest -f $DesktopLocalizedString
 			$Change = $Localization.Change
 			$Skip = $Localization.Skip
 			$Options = "&$Change", "&$Skip"
@@ -4508,7 +4551,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			{
 				"0"
 				{
-					$SelectedDrive = ShowMenu -Title $Localization.DesktopDriveSelect -Menu $DriveLetters -Default $Script:Default
+					$SelectedDrive = ShowMenu -Title ($Localization.DriveSelect -f $DesktopLocalizedString) -Menu $DriveLetters -Default $Script:Default
 					UserShellFolder -UserFolder Desktop -FolderPath "${SelectedDrive}:\Desktop" -RemoveDesktopINI
 				}
 				"1"
@@ -4518,11 +4561,11 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			}
 
 			# Documents
-			Write-Verbose -Message $Localization.DocumentsDriveSelect -Verbose
+			Write-Verbose -Message ($Localization.DriveSelect -f $DocumentsLocalizedString) -Verbose
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
-			$Message = $Localization.DocumentsRequest
+			$Message = $Localization.UserFolderRequest -f $DocumentsLocalizedString
 			$Change = $Localization.Change
 			$Skip = $Localization.Skip
 			$Options = "&$Change", "&$Skip"
@@ -4533,7 +4576,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			{
 				"0"
 				{
-					$SelectedDrive = ShowMenu -Title $Localization.DocumentsDriveSelect -Menu $DriveLetters -Default $Script:Default
+					$SelectedDrive = ShowMenu -Title ($Localization.DriveSelect -f $DocumentsLocalizedString) -Menu $DriveLetters -Default $Script:Default
 					UserShellFolder -UserFolder Documents -FolderPath "${SelectedDrive}:\Documents" -RemoveDesktopINI
 				}
 				"1"
@@ -4543,11 +4586,11 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			}
 
 			# Downloads
-			Write-Verbose -Message $Localization.DownloadsDriveSelect -Verbose
+			Write-Verbose -Message ($Localization.DriveSelect -f $DownloadsLocalizedString) -Verbose
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
-			$Message = $Localization.DownloadsRequest
+			$Message = $Localization.UserFolderRequest -f $DownloadsLocalizedString
 			$Change = $Localization.Change
 			$Skip = $Localization.Skip
 			$Options = "&$Change", "&$Skip"
@@ -4558,7 +4601,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			{
 				"0"
 				{
-					$SelectedDrive = ShowMenu -Title $Localization.DownloadsDriveSelect -Menu $DriveLetters -Default $Script:Default
+					$SelectedDrive = ShowMenu -Title ($Localization.DriveSelect -f $DownloadsLocalizedString) -Menu $DriveLetters -Default $Script:Default
 					UserShellFolder -UserFolder Downloads -FolderPath "${SelectedDrive}:\Downloads" -RemoveDesktopINI
 				}
 				"1"
@@ -4568,11 +4611,11 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			}
 
 			# Music
-			Write-Verbose -Message $Localization.MusicDriveSelect -Verbose
+			Write-Verbose -Message ($Localization.DriveSelect -f $MusicLocalizedString) -Verbose
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
-			$Message = $Localization.MusicRequest
+			$Message = $Localization.UserFolderRequest -f $MusicLocalizedString
 			$Change = $Localization.Change
 			$Skip = $Localization.Skip
 			$Options = "&$Change", "&$Skip"
@@ -4583,7 +4626,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			{
 				"0"
 				{
-					$SelectedDrive = ShowMenu -Title $Localization.MusicDriveSelect -Menu $DriveLetters -Default $Script:Default
+					$SelectedDrive = ShowMenu -Title ($Localization.DriveSelect -f $MusicLocalizedString) -Menu $DriveLetters -Default $Script:Default
 					UserShellFolder -UserFolder Music -FolderPath "${SelectedDrive}:\Music" -RemoveDesktopINI
 				}
 				"1"
@@ -4593,11 +4636,11 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			}
 
 			# Pictures
-			Write-Verbose -Message $Localization.PicturesDriveSelect -Verbose
+			Write-Verbose -Message ($Localization.DriveSelect -f $PicturesLocalizedString) -Verbose
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
-			$Message = $Localization.PicturesRequest
+			$Message = $Localization.UserFolderRequest -f $PicturesLocalizedString
 			$Change = $Localization.Change
 			$Skip = $Localization.Skip
 			$Options = "&$Change", "&$Skip"
@@ -4608,7 +4651,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			{
 				"0"
 				{
-					$SelectedDrive = ShowMenu -Title $Localization.PicturesDriveSelect -Menu $DriveLetters -Default $Script:Default
+					$SelectedDrive = ShowMenu -Title ($Localization.DriveSelect -f $PicturesLocalizedString) -Menu $DriveLetters -Default $Script:Default
 					UserShellFolder -UserFolder Pictures -FolderPath "${SelectedDrive}:\Pictures" -RemoveDesktopINI
 				}
 				"1"
@@ -4618,11 +4661,11 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			}
 
 			# Videos
-			Write-Verbose -Message $Localization.VideosDriveSelect -Verbose
+			Write-Verbose -Message ($Localization.DriveSelect -f $VideosLocalizedString) -Verbose
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
-			$Message = $Localization.VideosRequest
+			$Message = $Localization.UserFolderRequest -f $VideosLocalizedString
 			$Change = $Localization.Change
 			$Skip = $Localization.Skip
 			$Options = "&$Change", "&$Skip"
@@ -4633,7 +4676,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			{
 				"0"
 				{
-					$SelectedDrive = ShowMenu -Title $Localization.VideosDriveSelect -Menu $DriveLetters -Default $Script:Default
+					$SelectedDrive = ShowMenu -Title ($Localization.DriveSelect -f $VideosLocalizedString) -Menu $DriveLetters -Default $Script:Default
 					UserShellFolder -UserFolder Videos -FolderPath "${SelectedDrive}:\Videos" -RemoveDesktopINI
 				}
 				"1"
@@ -4648,7 +4691,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
-			$Message = $Localization.DesktopFolderSelect
+			$Message = $Localization.UserFolderSelect -f $DesktopLocalizedString
 			$Select = $Localization.Select
 			$Skip = $Localization.Skip
 			$Options = "&$Select", "&$Skip"
@@ -4684,7 +4727,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
-			$Message = $Localization.DocumentsFolderSelect
+			$Message = $Localization.UserFolderSelect -f $DocumentsLocalizedString
 			$Select = $Localization.Select
 			$Skip = $Localization.Skip
 			$Options = "&$Select", "&$Skip"
@@ -4720,7 +4763,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
-			$Message = $Localization.DownloadsFolderSelect
+			$Message = $Localization.UserFolderSelect -f $DownloadsLocalizedString
 			$Select = $Localization.Select
 			$Skip = $Localization.Skip
 			$Options = "&$Select", "&$Skip"
@@ -4756,7 +4799,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
-			$Message = $Localization.MusicFolderSelect
+			$Message = $Localization.UserFolderSelect -f $MusicLocalizedString
 			$Select = $Localization.Select
 			$Skip = $Localization.Skip
 			$Options = "&$Select", "&$Skip"
@@ -4792,7 +4835,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
-			$Message = $Localization.PicturesFolderSelect
+			$Message = $Localization.UserFolderSelect -f $PicturesLocalizedString
 			$Select = $Localization.Select
 			$Skip = $Localization.Skip
 			$Options = "&$Select", "&$Skip"
@@ -4828,7 +4871,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
-			$Message = $Localization.VideosFolderSelect
+			$Message = $Localization.UserFolderSelect -f $VideosLocalizedString
 			$Select = $Localization.Select
 			$Skip = $Localization.Skip
 			$Options = "&$Select", "&$Skip"
@@ -4866,7 +4909,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
-			$Message = $Localization.DesktopDefaultFolder
+			$Message = $Localization.UserDefaultFolder -f $DesktopLocalizedString
 			$Change = $Localization.Change
 			$Skip = $Localization.Skip
 			$Options = "&$Change", "&$Skip"
@@ -4889,7 +4932,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
-			$Message = $Localization.DocumentsDefaultFolder
+			$Message = $Localization.UserDefaultFolder -f $DocumentsLocalizedString
 			$Change = $Localization.Change
 			$Skip = $Localization.Skip
 			$Options = "&$Change", "&$Skip"
@@ -4912,7 +4955,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
-			$Message = $Localization.DownloadsDefaultFolder
+			$Message = $Localization.UserDefaultFolder -f $DownloadsLocalizedString
 			$Change = $Localization.Change
 			$Skip = $Localization.Skip
 			$Options = "&$Change", "&$Skip"
@@ -4935,7 +4978,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
-			$Message = $Localization.MusicDefaultFolder
+			$Message = $Localization.UserDefaultFolder -f $MusicLocalizedString
 			$Change = $Localization.Change
 			$Skip = $Localization.Skip
 			$Options = "&$Change", "&$Skip"
@@ -4958,7 +5001,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
-			$Message = $Localization.PicturesDefaultFolder
+			$Message = $Localization.UserDefaultFolder -f $PicturesLocalizedString
 			$Change = $Localization.Change
 			$Skip = $Localization.Skip
 			$Options = "&$Change", "&$Skip"
@@ -4981,7 +5024,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
-			$Message = $Localization.VideosDefaultFolder
+			$Message = $Localization.UserDefaultFolder -f $VideosLocalizedString
 			$Change = $Localization.Change
 			$Skip = $Localization.Skip
 			$Options = "&$Change", "&$Skip"
@@ -5172,7 +5215,7 @@ function F1HelpPage
 			{
 				New-Item -Path "HKCU:\SOFTWARE\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64" -Force
 			}
-			New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64" -Name "(Default)" -PropertyType String -Value "" -Force
+			New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64" -Name "(default)" -PropertyType String -Value "" -Force
 		}
 	}
 }
@@ -5557,427 +5600,601 @@ function SmartActiveHours
 	Register app, calculate hash, and set as default for specific extension without the "How do you want to open this" pop-up
 
 	.PARAMETER ProgramPath
-	Set path to the .exe
+	Set path to the program to be associate with
 
 	.PARAMETER Extension
-	Set extension type
+	Set the extension type
 
 	.PARAMETER Icon
-	Set path to the icon
+	Set the path to the icon
 
 	.EXAMPLE
 	Set-Association -ProgramPath "C:\SumatraPDF.exe" -Extension .pdf -Icon "shell32.dll,100"
 
 	.EXAMPLE
-	Set-Association -ProgramPath "C:\Program Files\Notepad++\notepad++.exe" -Extension .psm1 -Icon "C:\Program Files\Notepad++\notepad++.exe,0"
+	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .txt -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
 
 	.LINK
 	https://github.com/DanysysTeam/PS-SFTA
+	https://github.com/default-username-was-already-taken/set-fileassoc
+	https://forum.ru-board.com/profile.cgi?action=show&member=westlife
 
 	.NOTES
-	The app must be installed
-	Do not use relative paths like "%Program Files%"
-	Current user
+	Machine-wide
 #>
 function Set-Association
 {
 	[CmdletBinding()]
-	param
+	Param
 	(
 		[Parameter(
-			Position = 0,
-			Mandatory = $true
+			Mandatory = $false,
+			Position = 0
 		)]
-		[ValidateScript({Test-Path -Path $_})]
 		[String]
 		$ProgramPath,
 
 		[Parameter(
-			Position = 1,
-			Mandatory = $true
+			Mandatory = $true,
+			Position = 1
 		)]
 		[String]
 		$Extension,
 
-		[Parameter(
-			Position = 3,
-			Mandatory = $false
-		)]
+		[Parameter(Mandatory = $false)]
 		[String]
 		$Icon
 	)
 
-	$ProgId = "Applications\" + (Get-Item -Path $ProgramPath).BaseName + $Extension
+	$ProgramPath = [System.Environment]::ExpandEnvironmentVariables($ProgramPath)
 
-	if (-not (Test-Path -Path "HKCU:\SOFTWARE\Classes\$Extension\OpenWithProgids"))
+	if (Test-Path -Path $ProgramPath)
 	{
-		New-Item -Path "HKCU:\SOFTWARE\Classes\$Extension\OpenWithProgids" -Force
+		# Generate ProgId
+		$ProgId = (Get-Item -Path $ProgramPath).BaseName + $Extension.ToUpper()
 	}
-	New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\$Extension\OpenWithProgids" -Name $ProgId -PropertyType None -Value ([byte[]]@()) -Force
 
-	if (-not (Test-Path -Path "HKCU:\SOFTWARE\Classes\$ProgId\shell\open\command"))
+	#region functions
+	$RegistryUtils = @'
+using System;
+using System.Runtime.InteropServices;
+using System.Security.AccessControl;
+using System.Text;
+using Microsoft.Win32;
+using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
+
+namespace RegistryUtils
+{
+	public static class Action
 	{
-		New-Item -Path "HKCU:\SOFTWARE\Classes\$ProgId\shell\open\command" -Force
+		[DllImport("advapi32.dll", CharSet = CharSet.Auto)]
+		private static extern int RegOpenKeyEx(UIntPtr hKey, string subKey, int ulOptions, int samDesired, out UIntPtr hkResult);
+
+		[DllImport("advapi32.dll", EntryPoint = "RegQueryInfoKey", CallingConvention = CallingConvention.Winapi, SetLastError = true)]
+		private static extern int RegQueryInfoKey(UIntPtr hkey, out StringBuilder lpClass, ref uint lpcbClass, IntPtr lpReserved,
+			out uint lpcSubKeys, out uint lpcbMaxSubKeyLen, out uint lpcbMaxClassLen, out uint lpcValues, out uint lpcbMaxValueNameLen,
+			out uint lpcbMaxValueLen, out uint lpcbSecurityDescriptor, ref FILETIME lpftLastWriteTime);
+
+		[DllImport("advapi32.dll", SetLastError = true)]
+		private static extern int RegCloseKey(UIntPtr hKey);
+
+		[DllImport("advapi32.dll", SetLastError=true, CharSet = CharSet.Unicode)]
+		private static extern uint RegDeleteKey(UIntPtr hKey, string subKey);
+
+		public static void DeleteKey(RegistryHive registryHive, string subkey) {
+			UIntPtr hKey = UIntPtr.Zero;
+			var hive = new UIntPtr(unchecked((uint)registryHive));
+			RegOpenKeyEx(hive, subkey, 0, 0x20019, out hKey);
+			RegDeleteKey(hive, subkey);
+		}
+
+		private static DateTime ToDateTime(FILETIME ft)
+		{
+			IntPtr buf = IntPtr.Zero;
+			try
+			{
+				long[] longArray = new long[1];
+				int cb = Marshal.SizeOf(ft);
+				buf = Marshal.AllocHGlobal(cb);
+				Marshal.StructureToPtr(ft, buf, false);
+				Marshal.Copy(buf, longArray, 0, 1);
+				return DateTime.FromFileTime(longArray[0]);
+			}
+			finally
+			{
+				if (buf != IntPtr.Zero) Marshal.FreeHGlobal(buf);
+			}
+		}
+
+		public static DateTime? GetLastModified(RegistryHive registryHive, string subKey)
+		{
+			var lastModified = new FILETIME();
+			var lpcbClass = new uint();
+			var lpReserved = new IntPtr();
+			UIntPtr key = UIntPtr.Zero;
+
+			try
+			{
+				try
+				{
+					var hive = new UIntPtr(unchecked((uint)registryHive));
+					if (RegOpenKeyEx(hive, subKey, 0, (int)RegistryRights.ReadKey, out key) != 0)
+					{
+						return null;
+					}
+
+					uint lpcbSubKeys;
+					uint lpcbMaxKeyLen;
+					uint lpcbMaxClassLen;
+					uint lpcValues;
+					uint maxValueName;
+					uint maxValueLen;
+					uint securityDescriptor;
+					StringBuilder sb;
+
+					if (RegQueryInfoKey(key, out sb, ref lpcbClass, lpReserved, out lpcbSubKeys, out lpcbMaxKeyLen, out lpcbMaxClassLen, out lpcValues, out maxValueName, out maxValueLen, out securityDescriptor, ref lastModified) != 0)
+					{
+						return null;
+					}
+
+					var result = ToDateTime(lastModified);
+					return result;
+				}
+				finally
+				{
+					if (key != UIntPtr.Zero)
+					{
+						RegCloseKey(key);
+					}
+				}
+			}
+			catch (Exception)
+			{
+				return null;
+			}
+		}
 	}
-	New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\$ProgId\shell\open\command" -Name "(Default)" -PropertyType String -Value "`"$ProgramPath`" `"%1`"" -Force
+}
+'@
 
-	function Set-FTA
+	if (-not('RegistryUtils.Action' -as [type]))
 	{
-		[CmdletBinding()]
-		param
+		Add-Type -TypeDefinition $RegistryUtils
+	}
+
+	function Set-Icon
+	{
+		Param
 		(
-			[Parameter(Mandatory = $true)]
+			[Parameter(
+				Mandatory = $true,
+				Position = 0
+
+			)]
 			[String]
 			$ProgId,
 
-			[Parameter(Mandatory = $true)]
-			[String]
-			$Extension,
-
+			[Parameter(
+				Mandatory = $true,
+				Position = 1
+			)]
 			[String]
 			$Icon
 		)
 
-		function local:Set-Icon
+		if (-not (Test-Path -Path "HKCU:\SOFTWARE\Classes\$ProgId\DefaultIcon"))
 		{
-			param
-			(
-				[Parameter(
-					Position = 0,
-					Mandatory = $true
-				)]
-				[String]
-				$ProgId,
+			New-Item -Path "HKCU:\SOFTWARE\Classes\$ProgId\DefaultIcon" -Force
+		}
+		New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\$ProgId\DefaultIcon" -Name "(default)" -PropertyType String -Value $Icon -Force
+	}
 
-				[Parameter(
-					Position = 1,
-					Mandatory = $true
-				)]
-				[String]
-				$Icon
-			)
+	function Remove-UserChoiceKey
+	{
+		Param
+		(
+			[Parameter(
+				Mandatory = $true,
+				Position = 0
+			)]
+			[string]
+			$SubKey
+		)
 
-			if (-not (Test-Path -Path "HKCU:\SOFTWARE\Classes\$ProgId\DefaultIcon"))
+		[RegistryUtils.Action]::DeleteKey([Microsoft.Win32.RegistryHive]::CurrentUser,$SubKey)
+	}
+
+	function Set-UserAccessKey
+	{
+		Param
+		(
+			[Parameter(
+				Mandatory = $true,
+				Position = 0
+			)]
+			[string]
+			$SubKey
+		)
+
+		$OpenSubKey = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey($SubKey,'ReadWriteSubTree','TakeOwnership')
+
+		$Acl = [System.Security.AccessControl.RegistrySecurity]::new()
+		$UserSID = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
+		$Acl.SetSecurityDescriptorSddlForm("O:$UserSID`G:$UserSID`D:AI(D;;DC;;;$UserSID)")
+		$OpenSubKey.SetAccessControl($Acl)
+		$OpenSubKey.Close()
+	}
+
+	function Write-ExtensionKeys
+	{
+		Param
+		(
+			[Parameter(
+				Mandatory = $true,
+				Position = 0
+			)]
+			[string]
+			$ProgId,
+
+			[Parameter(
+				Mandatory = $true,
+				Position = 1
+			)]
+			[String]
+			$Extension
+		)
+
+		$OrigProgID = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Classes\$Extension" -Name "(default)" -ErrorAction Ignore)."(default)"
+
+		# If ProgId doesn't exist set the specified ProgId for the extansions
+		if (-not $OrigProgID)
+		{
+			if (-not (Test-Path -Path "HKCU:\SOFTWARE\Classes\$Extension"))
 			{
-				New-Item -Path "HKCU:\SOFTWARE\Classes\$ProgId\DefaultIcon" -Force
+				New-Item -Path "HKCU:\SOFTWARE\Classes\$Extension" -Force
 			}
-			New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\$ProgId\DefaultIcon" -Name "(Default)" -PropertyType String -Value $Icon -Force
+			New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\$Extension" -Name "(default)" -PropertyType String -Value $ProgId -Force
 		}
 
-		function local:Write-ExtensionKeys
+		# Set the specified ProgId в варианты возможных для назначения
+		if (-not (Test-Path -Path "HKCU:\SOFTWARE\Classes\$Extension\OpenWithProgids"))
 		{
-			param
-			(
-				[Parameter(
-					Position = 0,
-					Mandatory = $true
-				)]
-				[String]
-				$ProgId,
+			New-Item -Path "HKCU:\SOFTWARE\Classes\$Extension\OpenWithProgids" -Force
+		}
+		New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\$Extension\OpenWithProgids" -Name $ProgId -PropertyType None -Value ([byte[]]@()) -Force
 
-				[Parameter(
-					Position = 1,
-					Mandatory = $true
-				)]
-				[String]
-				$Extension,
-
-				[Parameter(
-					Position = 2,
-					Mandatory = $true
-				)]
-				[String]
-				$ProgHash
-			)
-
-			function local:Remove-UserChoiceKey
+		# Set the system ProgId to the extension parameters for the File Explorer to the possible options for the assignment, and if absent set the specified ProgId
+		if ($OrigProgID)
+		{
+			if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\OpenWithProgids"))
 			{
-				param
-				(
-					[Parameter(
-						Position = 0,
-						Mandatory = $true
-					)]
-					[String]
-					$Key
-				)
-
-				$Signature = @{
-					Namespace = "Registry"
-					Name = "Utils"
-					Language = "CSharp"
-					MemberDefinition = @"
-[DllImport("advapi32.dll", SetLastError = true)]
-private static extern int RegOpenKeyEx(UIntPtr hKey, string subKey, int ulOptions, int samDesired, out UIntPtr hkResult);
-
-[DllImport("advapi32.dll", SetLastError=true, CharSet = CharSet.Unicode)]
-private static extern uint RegDeleteKey(UIntPtr hKey, string subKey);
-
-public static void DeleteKey(string key)
-{
-	UIntPtr hKey = UIntPtr.Zero;
-	RegOpenKeyEx((UIntPtr)0x80000001u, key, 0, 0x20019, out hKey);
-	RegDeleteKey((UIntPtr)0x80000001u, key);
-}
-"@
-				}
-
-				if (-not ("Registry.Utils" -as [type]))
-				{
-					Add-Type @Signature
-				}
-
-				[Registry.Utils]::DeleteKey($Key)
+				New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\OpenWithProgids" -Force
 			}
-
-			Remove-UserChoiceKey -Key "Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice"
-
-			if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice"))
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\OpenWithProgids" -Name $OrigProgID -PropertyType None -Value ([byte[]]@()) -Force
+		}
+		else
+		{
+			if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\OpenWithProgids"))
 			{
-				New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice" -Force
+				New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\OpenWithProgids" -Force
 			}
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice" -Name Hash -PropertyType String -Value $ProgHash -Force
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice" -Name ProgId -PropertyType String -Value $ProgId -Force
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\OpenWithProgids" -Name $ProgID -PropertyType None -Value ([byte[]]@()) -Force
 		}
 
-		function local:Get-HexDateTime
+		# Removing the UserChoice key
+		Remove-UserChoiceKey -SubKey "Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice"
+
+		# Setting parameters in UserChoice. The key is being autocreated
+		if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice"))
 		{
-			[OutputType([string])]
+			New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice" -Force
+		}
+		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice" -Name ProgId -PropertyType String -Value $ProgID -Force
 
-			$now = [DateTime]::Now
-			$dateTime = [DateTime]::New($now.Year, $now.Month, $now.Day, $now.Hour, $now.Minute, 0)
-			$fileTime = $dateTime.ToFileTime()
-			$hi = ($fileTime -shr 32)
-			$low = ($fileTime -band 0xFFFFFFFFL)
-			$dateTimeHex = ($hi.ToString("X8") + $low.ToString("X8")).ToLower()
+		# Getting a hash based on the time of the section's last modification. After creating and setting the first parameter
+		$ProgHash = Get-Hash -ProgId $ProgId -Extension $Extension -SubKey "Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice"
 
-			return $dateTimeHex
+		if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice"))
+		{
+			New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice" -Force
+		}
+		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice" -Name Hash -PropertyType String -Value $ProgHash -Force
+
+		# Setting a ban on changing the UserChoice section
+		Set-UserAccessKey -SubKey "Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice"
+	}
+
+	function Write-AdditionalKeys
+	{
+		Param
+		(
+			[Parameter(
+				Mandatory = $true,
+				Position = 0
+			)]
+			[string]
+			$ProgId,
+
+			[Parameter(
+				Mandatory = $true,
+				Position = 1
+			)]
+			[string]
+			$Extension
+		)
+
+		# If there is the system extension ProgId, write it to the already configured by default
+		if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Classes\$Extension" -Name "(default)" -ErrorAction Ignore)."(default)")
+		{
+			if (-not (Test-Path -Path Registry::HKEY_USERS\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\FileAssociations\ProgIds))
+			{
+				New-Item -Path Registry::HKEY_USERS\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\FileAssociations\ProgIds -Force
+			}
+			New-ItemProperty -Path Registry::HKEY_USERS\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\FileAssociations\ProgIds -Name "_$Extension" -PropertyType DWord -Value 1 -Force
 		}
 
-		function Get-Hash
+		# Save possible ProgIds with extension
+		if (-not (Test-Path -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts"))
 		{
-			[CmdletBinding()]
-			param
-			(
-				[Parameter(
-					Position = 0,
-					Mandatory = $true
-				)]
-				[string]
-				$BaseInfo
-			)
+			New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Force
+		}
+		New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Name "$ProgId`_$Extension" -PropertyType String -Value 0 -Force
 
-			function local:Get-ShiftRight
+		# Setting 'NoOpenWith' for all registered the extension ProgIDs
+		[psobject]$OpenSubkey = Get-Item -Path "Registry::HKEY_CLASSES_ROOT\$Extension\OpenWithProgids" -ErrorAction Ignore | Select-Object -ExpandProperty Property
+
+		if ($OpenSubkey)
+		{
+			foreach ($AppxProgID in ($OpenSubkey | Where-Object -FilterScript {$_ -match "AppX"}))
 			{
-				[CmdletBinding()]
-				param
-				(
-					[Parameter(
-						Position = 0,
-						Mandatory = $true
-					)]
-					[long]
-					$iValue,
-
-					[Parameter(
-						Position = 1,
-						Mandatory = $true
-					)]
-					[int]
-					$iCount
-				)
-
-				if ($iValue -band 0x80000000)
+				# If an app is installed
+				if ((Get-ItemProperty -Path "HKCU:\SOFTWARE\Classes\$AppxProgID\Shell\open" -Name PackageId).PackageId)
 				{
-					return (($iValue -shr $iCount) -bxor 0xFFFF0000)
-				}
-				else
-				{
-					return ($iValue -shr $iCount)
+					New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\$AppxProgID" -Name NoOpenWith -PropertyType String -Value "" -Force
 				}
 			}
-
-			function local:Get-Long
-			{
-				[CmdletBinding()]
-				param
-				(
-					[Parameter(
-						Position = 0,
-						Mandatory = $true
-					)]
-					[byte[]]
-					$Bytes,
-
-					[Parameter(Position = 1)]
-					[int]
-					$Index = 0
-				)
-
-				return ([BitConverter]::ToInt32($Bytes, $Index))
-			}
-
-			function local:Convert-Int32
-			{
-				param
-				(
-					[Parameter(
-						Position = 0,
-						Mandatory = $true
-					)]
-					$Value
-				)
-
-				[byte[]]$bytes = [BitConverter]::GetBytes($Value)
-				return [BitConverter]::ToInt32($bytes, 0)
-			}
-
-			[byte[]]$bytesBaseInfo = [System.Text.Encoding]::Unicode.GetBytes($baseInfo)
-			$bytesBaseInfo += 0x00, 0x00
-
-			$MD5 = New-Object -TypeName System.Security.Cryptography.MD5CryptoServiceProvider
-			[byte[]]$bytesMD5 = $MD5.ComputeHash($bytesBaseInfo)
-
-			$lengthBase = ($baseInfo.Length * 2) + 2
-			$length = (($lengthBase -band 4) -le 1) + (Get-ShiftRight -iValue $lengthBase -iCount 2) - 1
-			$base64Hash = ""
-
-			if ($length -gt 1)
-			{
-				$Map = @{
-					PDATA = 0
-					CACHE = 0
-					COUNTER = 0
-					INDEX = 0
-					MD51 = 0
-					MD52 = 0
-					OUTHASH1 = 0
-					OUTHASH2 = 0
-					R0 = 0
-					R1 = @(0, 0)
-					R2 = @(0, 0)
-					R3 = 0
-					R4 = @(0, 0)
-					R5 = @(0, 0)
-					R6 = @(0, 0)
-					R7 = @(0, 0)
-				}
-
-				$Map.CACHE = 0
-				$Map.OUTHASH1 = 0
-				$Map.PDATA = 0
-				$Map.MD51 = (((Get-Long -Bytes $bytesMD5) -bor 1) + 0x69FB0000L)
-				$Map.MD52 = ((Get-Long -Bytes $bytesMD5 -Index 4) -bor 1) + 0x13DB0000L
-				$Map.INDEX = Get-ShiftRight -iValue ($length - 2) -iCount 1
-				$Map.COUNTER = $Map.INDEX + 1
-
-				while ($Map.COUNTER)
-				{
-					$Map.R0 = Convert-Int32 -Value ((Get-Long -Bytes $bytesBaseInfo -Index $Map.PDATA) + [long]$Map.OUTHASH1)
-					$Map.R1[0] = Convert-Int32 -Value (Get-Long -Bytes $bytesBaseInfo -Index ($Map.PDATA + 4))
-					$Map.PDATA = $Map.PDATA + 8
-					$Map.R2[0] = Convert-Int32 -Value (($Map.R0 * ([long]$Map.MD51)) - (0x10FA9605L * ((Get-ShiftRight -iValue $Map.R0 -iCount 16))))
-					$Map.R2[1] = Convert-Int32 -Value ((0x79F8A395L * ([long]$Map.R2[0])) + (0x689B6B9FL * (Get-ShiftRight -iValue $Map.R2[0] -iCount 16)))
-					$Map.R3 = Convert-Int32 -Value ((0xEA970001L * $Map.R2[1]) - (0x3C101569L * (Get-ShiftRight -iValue $Map.R2[1] -iCount 16) ))
-					$Map.R4[0] = Convert-Int32 -Value ($Map.R3 + $Map.R1[0])
-					$Map.R5[0] = Convert-Int32 -Value ($Map.CACHE + $Map.R3)
-					$Map.R6[0] = Convert-Int32 -Value (($Map.R4[0] * [long]$Map.MD52) - (0x3CE8EC25L * (Get-ShiftRight -iValue $Map.R4[0] -iCount 16)))
-					$Map.R6[1] = Convert-Int32 -Value ((0x59C3AF2DL * $Map.R6[0]) - (0x2232E0F1L * (Get-ShiftRight -iValue $Map.R6[0] -iCount 16)))
-					$Map.OUTHASH1 = Convert-Int32 -Value ((0x1EC90001L * $Map.R6[1]) + (0x35BD1EC9L * (Get-ShiftRight -iValue $Map.R6[1] -iCount 16)))
-					$Map.OUTHASH2 = Convert-Int32 -Value ([long]$Map.R5[0] + [long]$Map.OUTHASH1)
-					$Map.CACHE = ([long]$Map.OUTHASH2)
-					$Map.COUNTER = $Map.COUNTER - 1
-				}
-
-				[byte[]] $outHash = @(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00)
-				[byte[]] $buffer = [BitConverter]::GetBytes($Map.OUTHASH1)
-				$buffer.CopyTo($outHash, 0)
-				$buffer = [BitConverter]::GetBytes($Map.OUTHASH2)
-				$buffer.CopyTo($outHash, 4)
-
-				$Map = @{
-					PDATA = 0
-					CACHE = 0
-					COUNTER = 0
-					INDEX = 0
-					MD51 = 0
-					MD52 = 0
-					OUTHASH1 = 0
-					OUTHASH2 = 0
-					R0 = 0
-					R1 = @(0, 0)
-					R2 = @(0, 0)
-					R3 = 0
-					R4 = @(0, 0)
-					R5 = @(0, 0)
-					R6 = @(0, 0)
-					R7 = @(0, 0)
-				}
-
-				$Map.CACHE = 0
-				$Map.OUTHASH1 = 0
-				$Map.PDATA = 0
-				$Map.MD51 = ((Get-Long -Bytes $bytesMD5) -bor 1)
-				$Map.MD52 = ((Get-Long -Bytes $bytesMD5 4) -bor 1)
-				$Map.INDEX = Get-ShiftRight -iValue ($length - 2) -iCount 1
-				$Map.COUNTER = $Map.INDEX + 1
-
-				while ($Map.COUNTER)
-				{
-					$Map.R0 = Convert-Int32 -Value ((Get-Long -Bytes $bytesBaseInfo -Index $Map.PDATA) + ([long]$Map.OUTHASH1))
-					$Map.PDATA = $Map.PDATA + 8
-					$Map.R1[0] = Convert-Int32 -Value ($Map.R0 * [long]$Map.MD51)
-					$Map.R1[1] = Convert-Int32 -Value ((0xB1110000L * $Map.R1[0]) - (0x30674EEFL * (Get-ShiftRight -iValue $Map.R1[0] -iCount 16)))
-					$Map.R2[0] = Convert-Int32 -Value ((0x5B9F0000L * $Map.R1[1]) - (0x78F7A461L * (Get-ShiftRight -iValue $Map.R1[1] -iCount 16)))
-					$Map.R2[1] = Convert-Int32 -Value ((0x12CEB96DL * (Get-ShiftRight -iValue $Map.R2[0] 16)) - (0x46930000L * $Map.R2[0]))
-					$Map.R3 = Convert-Int32 -Value ((0x1D830000L * $Map.R2[1]) + (0x257E1D83L * (Get-ShiftRight -iValue $Map.R2[1] -iCount 16)))
-					$Map.R4[0] = Convert-Int32 -Value ([long]$Map.MD52 * ([long]$Map.R3 + (Get-Long -Bytes $bytesBaseInfo -Index ($Map.PDATA - 4))))
-					$Map.R4[1] = Convert-Int32 -Value ((0x16F50000L * $Map.R4[0]) - (0x5D8BE90BL * (Get-ShiftRight -iValue $Map.R4[0] -iCount 16)))
-					$Map.R5[0] = Convert-Int32 -Value ((0x96FF0000L * $Map.R4[1]) - (0x2C7C6901L * (Get-ShiftRight -iValue $Map.R4[1] -iCount 16)))
-					$Map.R5[1] = Convert-Int32 -Value ((0x2B890000L * $Map.R5[0]) + (0x7C932B89L * (Get-ShiftRight -iValue $Map.R5[0] -iCount 16)))
-					$Map.OUTHASH1 = Convert-Int32 -Value ((0x9F690000L * $Map.R5[1]) - (0x405B6097L * (Get-ShiftRight -iValue ($Map.R5[1]) -iCount 16)))
-					$Map.OUTHASH2 = Convert-Int32 -Value ([long]$Map.OUTHASH1 + $Map.CACHE + $Map.R3)
-					$Map.CACHE = ([long]$Map.OUTHASH2)
-					$Map.COUNTER = $Map.COUNTER - 1
-				}
-
-				$buffer = [BitConverter]::GetBytes($Map.OUTHASH1)
-				$buffer.CopyTo($outHash, 8)
-				$buffer = [BitConverter]::GetBytes($Map.OUTHASH2)
-				$buffer.CopyTo($outHash, 12)
-
-				[byte[]]$outHashBase = @(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00)
-				$hashValue1 = ((Get-Long -Bytes $outHash -Index 8) -bxor (Get-Long -Bytes $outHash))
-				$hashValue2 = ((Get-Long -Bytes $outHash 12) -bxor (Get-Long -Bytes $outHash -Index 4))
-
-				$buffer = [BitConverter]::GetBytes($hashValue1)
-				$buffer.CopyTo($outHashBase, 0)
-				$buffer = [BitConverter]::GetBytes($hashValue2)
-				$buffer.CopyTo($outHashBase, 4)
-				$base64Hash = [Convert]::ToBase64String($outHashBase)
-			}
-
-			return $base64Hash
 		}
 
-		# Get current user SID
-		$userSid = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
-		# Secret static string stored in %SystemRoot%\SysWOW64\shell32.dll
-		$userExperience = "User Choice set via Windows User Experience {D18B6DD5-6124-4341-9318-804003BAFA0B}"
-		$userDateTime = Get-HexDateTime
-		$baseInfo = "$Extension$userSid$ProgId$userDateTime$userExperience".ToLower()
-		$ProgHash = Get-Hash -BaseInfo $baseInfo
+		$picture = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\KindMap" -Name $Extension -ErrorAction Ignore).$Extension
+		$PBrush = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Classes\PBrush\CLSID" -Name "(default)"
 
-		# Handle Extension
-		Write-ExtensionKeys -ProgId $ProgId -Extension $Extension -ProgHash $ProgHash
-
-		if ($Icon)
+		if (($picture -eq "picture") -and $PBrush)
 		{
-			Set-Icon -ProgId $ProgId -Icon $Icon
+			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Name "PBrush_$Extension" -PropertyType DWord -Value 0 -Force
 		}
 	}
 
-	Set-FTA -ProgId $ProgId -Extension $Extension -Icon $Icon
+	function Get-Hash
+	{
+		[CmdletBinding()]
+		[OutputType([string])]
+		Param
+		(
+			[Parameter(
+				Mandatory = $true,
+				Position = 0
+			)]
+			[string]
+			$ProgId,
+
+			[Parameter(
+				Mandatory = $true,
+				Position = 1
+			)]
+			[string] $Extension,
+
+			[Parameter(
+				Mandatory = $true,
+				Position = 2
+			)]
+			[string]
+			$SubKey
+		)
+
+		$PatentHash = @'
+using System;
+
+namespace FileAssoc
+{
+	public static class PatentHash
+	{
+		public static uint[] WordSwap(byte[] a, int sz, byte[] md5)
+		{
+			if (sz < 2 || (sz & 1) == 1) {
+				throw new ArgumentException(String.Format("Invalid input size: {0}", sz), "sz");
+			}
+
+			unchecked {
+				uint o1 = 0;
+				uint o2 = 0;
+				int ta = 0;
+				int ts = sz;
+				int ti = ((sz - 2) >> 1) + 1;
+
+				uint c0 = (BitConverter.ToUInt32(md5, 0) | 1) + 0x69FB0000;
+				uint c1 = (BitConverter.ToUInt32(md5, 4) | 1) + 0x13DB0000;
+
+				for (uint i = (uint)ti; i > 0; i--) {
+					uint n = BitConverter.ToUInt32(a, ta) + o1;
+					ta += 8;
+					ts -= 2;
+
+					uint v1 = 0x79F8A395 * (n * c0 - 0x10FA9605 * (n >> 16)) + 0x689B6B9F * ((n * c0 - 0x10FA9605 * (n >> 16)) >> 16);
+					uint v2 = 0xEA970001 * v1 - 0x3C101569 * (v1 >> 16);
+					uint v3 = BitConverter.ToUInt32(a, ta - 4) + v2;
+					uint v4 = v3 * c1 - 0x3CE8EC25 * (v3 >> 16);
+					uint v5 = 0x59C3AF2D * v4 - 0x2232E0F1 * (v4 >> 16);
+
+					o1 = 0x1EC90001 * v5 + 0x35BD1EC9 * (v5 >> 16);
+					o2 += o1 + v2;
+				}
+
+				if (ts == 1) {
+					uint n = BitConverter.ToUInt32(a, ta) + o1;
+
+					uint v1 = n * c0 - 0x10FA9605 * (n >> 16);
+					uint v2 = 0xEA970001 * (0x79F8A395 * v1 + 0x689B6B9F * (v1 >> 16)) - 0x3C101569 * ((0x79F8A395 * v1 + 0x689B6B9F * (v1 >> 16)) >> 16);
+					uint v3 = v2 * c1 - 0x3CE8EC25 * (v2 >> 16);
+
+					o1 = 0x1EC90001 * (0x59C3AF2D * v3 - 0x2232E0F1 * (v3 >> 16)) + 0x35BD1EC9 * ((0x59C3AF2D * v3 - 0x2232E0F1 * (v3 >> 16)) >> 16);
+					o2 += o1 + v2;
+				}
+
+				uint[] ret = new uint[2];
+				ret[0] = o1;
+				ret[1] = o2;
+				return ret;
+			}
+		}
+
+		public static uint[] Reversible(byte[] a, int sz, byte[] md5)
+		{
+			if (sz < 2 || (sz & 1) == 1) {
+				throw new ArgumentException(String.Format("Invalid input size: {0}", sz), "sz");
+			}
+
+			unchecked {
+				uint o1 = 0;
+				uint o2 = 0;
+				int ta = 0;
+				int ts = sz;
+				int ti = ((sz - 2) >> 1) + 1;
+
+				uint c0 = BitConverter.ToUInt32(md5, 0) | 1;
+				uint c1 = BitConverter.ToUInt32(md5, 4) | 1;
+
+				for (uint i = (uint)ti; i > 0; i--) {
+					uint n = (BitConverter.ToUInt32(a, ta) + o1) * c0;
+					n = 0xB1110000 * n - 0x30674EEF * (n >> 16);
+					ta += 8;
+					ts -= 2;
+
+					uint v1 = 0x5B9F0000 * n - 0x78F7A461 * (n >> 16);
+					uint v2 = 0x1D830000 * (0x12CEB96D * (v1 >> 16) - 0x46930000 * v1) + 0x257E1D83 * ((0x12CEB96D * (v1 >> 16) - 0x46930000 * v1) >> 16);
+					uint v3 = BitConverter.ToUInt32(a, ta - 4) + v2;
+
+					uint v4 = 0x16F50000 * c1 * v3 - 0x5D8BE90B * (c1 * v3 >> 16);
+					uint v5 = 0x2B890000 * (0x96FF0000 * v4 - 0x2C7C6901 * (v4 >> 16)) + 0x7C932B89 * ((0x96FF0000 * v4 - 0x2C7C6901 * (v4 >> 16)) >> 16);
+
+					o1 = 0x9F690000 * v5 - 0x405B6097 * (v5 >> 16);
+					o2 += o1 + v2;
+				}
+
+				if (ts == 1) {
+					uint n = BitConverter.ToUInt32(a, ta) + o1;
+
+					uint v1 = 0xB1110000 * c0 * n - 0x30674EEF * ((c0 * n) >> 16);
+					uint v2 = 0x5B9F0000 * v1 - 0x78F7A461 * (v1 >> 16);
+					uint v3 = 0x1D830000 * (0x12CEB96D * (v2 >> 16) - 0x46930000 * v2) + 0x257E1D83 * ((0x12CEB96D * (v2 >> 16) - 0x46930000 * v2) >> 16);
+					uint v4 = 0x16F50000 * c1 * v3 - 0x5D8BE90B * ((c1 * v3) >> 16);
+					uint v5 = 0x96FF0000 * v4 - 0x2C7C6901 * (v4 >> 16);
+
+					o1 = 0x9F690000 * (0x2B890000 * v5 + 0x7C932B89 * (v5 >> 16)) - 0x405B6097 * ((0x2B890000 * v5 + 0x7C932B89 * (v5 >> 16)) >> 16);
+					o2 += o1 + v2;
+				}
+
+				uint[] ret = new uint[2];
+				ret[0] = o1;
+				ret[1] = o2;
+				return ret;
+			}
+		}
+
+		public static long MakeLong(uint left, uint right) {
+			return (long)left << 32 | (long)right;
+		}
+	}
+}
+'@
+
+		if ( -not ('FileAssoc.PatentHash' -as [type]))
+		{
+			Add-Type -TypeDefinition $PatentHash
+		}
+
+		function Get-KeyLastWriteTime ($SubKey)
+		{
+			$LM = [RegistryUtils.Action]::GetLastModified([Microsoft.Win32.RegistryHive]::CurrentUser,$SubKey)
+			$FT = ([DateTime]::New($LM.Year, $LM.Month, $LM.Day, $LM.Hour, $LM.Minute, 0, $LM.Kind)).ToFileTime()
+
+			return [string]::Format("{0:x8}{1:x8}", $FT -shr 32, $FT -band [uint32]::MaxValue)
+		}
+
+		function Get-DataArray
+		{
+			[OutputType([array])]
+
+			$userExperience        = "User Choice set via Windows User Experience {D18B6DD5-6124-4341-9318-804003BAFA0B}"
+			$userSid               = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
+			$KeyLastWriteTime      = Get-KeyLastWriteTime -SubKey $SubKey
+			$baseInfo              = ("{0}{1}{2}{3}{4}" -f $Extension, $userSid, $ProgId, $KeyLastWriteTime, $userExperience).ToLowerInvariant()
+			$StringToUTF16LEArray  = [System.Collections.ArrayList]@([System.Text.Encoding]::Unicode.GetBytes($baseInfo))
+			$StringToUTF16LEArray += (0,0)
+
+			return $StringToUTF16LEArray
+		}
+
+		function Get-PatentHash
+		{
+			[OutputType([string])]
+			param
+			(
+				[Parameter(Mandatory = $true)]
+				[byte[]]
+				$A,
+
+				[Parameter(Mandatory = $true)]
+				[byte[]]
+				$MD5
+			)
+
+			$Size = $A.Count
+			$ShiftedSize = ($Size -shr 2) - ($Size -shr 2 -band 1) * 1
+
+			[uint32[]]$A1 = [FileAssoc.PatentHash]::WordSwap($A, [int]$ShiftedSize, $MD5)
+			[uint32[]]$A2 = [FileAssoc.PatentHash]::Reversible($A, [int]$ShiftedSize, $MD5)
+
+			$Ret = [FileAssoc.PatentHash]::MakeLong($A1[1] -bxor $A2[1], $A1[0] -bxor $A2[0])
+
+			return [System.Convert]::ToBase64String([System.BitConverter]::GetBytes([Int64]$Ret))
+		}
+
+		$DataArray = Get-DataArray
+		$DataMD5   = [System.Security.Cryptography.HashAlgorithm]::Create("MD5").ComputeHash($DataArray)
+		$Hash      = Get-PatentHash -A $DataArray -MD5 $DataMD5
+
+		return $Hash
+	}
+	#endregion functions
+
+	if ($ProgramPath)
+	{
+		if (-not (Test-Path -Path "HKCU:\SOFTWARE\Classes\$ProgId\shell\open\command"))
+		{
+			New-Item -Path "HKCU:\SOFTWARE\Classes\$ProgId\shell\open\command" -Force
+		}
+		New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\$ProgId\shell\open\command" -Name "(Default)" -PropertyType String -Value "`"$ProgramPath`" `"%1`"" -Force
+
+		$FileNameEXE = (Get-Item -Path $ProgramPath).Name
+		if (-not (Test-Path -Path "HKCU:\SOFTWARE\Classes\Applications\$FileNameEXE\shell\open\command"))
+		{
+			New-Item -Path "HKCU:\SOFTWARE\Classes\Applications\$FileNameEXE\shell\open\command" -Force
+		}
+		New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Applications\$FileNameEXE\shell\open\command" -Name "(Default)" -PropertyType String -Value "`"$ProgramPath`" `"%1`"" -Force
+	}
+
+	if ($Icon)
+	{
+		Set-Icon -ProgId $ProgId -Icon $Icon
+	}
+
+	Write-Verbose -Message $Localization.Patient -Verbose
+
+	# Setting additional parameters to comply with the requirements before configuring the extension
+	Write-AdditionalKeys -ProgId $ProgId -Extension $Extension
+
+	# If the file extension specified configure the extension
+	Write-ExtensionKeys -ProgId $ProgId -Extension $Extension
 }
 #endregion System
 
@@ -6388,6 +6605,10 @@ function CleanupTask
 				# Временные файлы установки
 				"Temporary Setup Files",
 
+				# Windows Update Cleanup
+				# Очистка обновлений Windows
+				"Update Cleanup",
+
 				# Windows Defender
 				"Windows Defender",
 
@@ -6402,6 +6623,8 @@ function CleanupTask
 
 			$CleanupTask = @"
 Get-Process -Name cleanmgr | Stop-Process -Force
+Get-Process -Name Dism | Stop-Process -Force
+Get-Process -Name DismHost | Stop-Process -Force
 
 `$ProcessInfo = New-Object -TypeName System.Diagnostics.ProcessStartInfo
 `$ProcessInfo.FileName = """$env:SystemRoot\system32\cleanmgr.exe"""
@@ -6435,6 +6658,7 @@ function MinimizeWindow
 public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 '@
 	}
+
 	if (-not ("""WinAPI.Win32ShowWindowAsync""" -as [type]))
 	{
 		Add-Type @ShowWindowAsync
@@ -6484,26 +6708,26 @@ while (`$true)
 			{
 				New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Force
 			}
-			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Name ShowInActionCenter -PropertyType DWORD -Value 1 -Force
+			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Name ShowInActionCenter -PropertyType DWord -Value 1 -Force
 
 			# Register the "WindowsCleanup" protocol to be able to run the scheduled task upon clicking on the "Run" button
 			if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup))
 			{
 				New-Item -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Force
 			}
-			New-itemproperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name "(Default)" -PropertyType String -Value "url:WindowsCleanup" -Force
-			New-itemproperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name "URL Protocol" -Value "" -Force
-			New-itemproperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name EditFlags -PropertyType DWord -Value 2162688 -Force
-			if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\Shell\Open\command))
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name "(default)" -PropertyType String -Value "URL:WindowsCleanup" -Force
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name "URL Protocol" -Value "" -Force
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name EditFlags -PropertyType DWord -Value 2162688 -Force
+			if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\shell\open\command))
 			{
-				New-item -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup\Shell\Open\command -Force
+				New-item -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup\shell\open\command -Force
 			}
 			# If "Run" clicked run the "Windows Cleanup" task
-			New-itemproperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup\Shell\Open\command -Name "(Default)" -PropertyType String -Value 'powershell.exe -Command "& {Start-ScheduledTask -TaskPath ''\Sophia Script\'' -TaskName ''Windows Cleanup''}"' -Force
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup\shell\open\command -Name "(default)" -PropertyType String -Value 'powershell.exe -Command "& {Start-ScheduledTask -TaskPath ''\Sophia Script\'' -TaskName ''Windows Cleanup''}"' -Force
 
 			$ToastNotification = @"
-[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime]
-[Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime]
+[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
+[Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
 
 [xml]`$ToastTemplate = @"""
 <toast duration="""Long""" scenario="""reminder""">
@@ -6536,11 +6760,11 @@ while (`$true)
 </toast>
 """@
 
-$`ToastXml = [Windows.Data.Xml.Dom.XmlDocument]::New()
-$`ToastXml.LoadXml($`ToastTemplate.OuterXml)
+`$ToastXml = [Windows.Data.Xml.Dom.XmlDocument]::New()
+`$ToastXml.LoadXml(`$ToastTemplate.OuterXml)
 
-$`ToastMessage = [Windows.UI.Notifications.ToastNotification]::New($`ToastXML)
-[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("""windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel""").Show($`ToastMessage)
+`$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New(`$ToastXML)
+[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("""windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel""").Show(`$ToastMessage)
 "@
 
 			# Create the "Windows Cleanup Notification" task
@@ -6563,6 +6787,8 @@ $`ToastMessage = [Windows.UI.Notifications.ToastNotification]::New($`ToastXML)
 		{
 			Unregister-ScheduledTask -TaskName "Windows Cleanup" -Confirm:$false
 			Unregister-ScheduledTask -TaskName "Windows Cleanup Notification" -Confirm:$false
+
+			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Recurse -Force
 		}
 	}
 }
@@ -6584,6 +6810,7 @@ $`ToastMessage = [Windows.UI.Notifications.ToastNotification]::New($`ToastXML)
 	SoftwareDistributionTask -Delete
 
 	.NOTES
+	The task will wait until the Windows Updates service finishes running
 	The task runs every 90 days
 	Current user
 #>
@@ -6610,23 +6837,56 @@ function SoftwareDistributionTask
 	{
 		"Register"
 		{
-			$Argument = @"
+			# Persist the Settings notifications to prevent to immediately disappear from Action Center
+			if (-not (Test-Path -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel"))
+			{
+				New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Force
+			}
+			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Name ShowInActionCenter -PropertyType DWord -Value 1 -Force
+
+			$SoftwareDistributionTask = @"
 (Get-Service -Name wuauserv).WaitForStatus('Stopped', '01:00:00')
 Get-ChildItem -Path $env:SystemRoot\SoftwareDistribution\Download -Recurse -Force | Remove-Item -Recurse -Force
+
+[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
+[Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
+
+[xml]`$ToastTemplate = @"""
+<toast duration="""Long""">
+	<visual>
+		<binding template="""ToastGeneric""">
+			<text>$($Localization.TaskNotificationTitle)</text>
+			<group>
+				<subgroup>
+					<text hint-style="""body""" hint-wrap="""true""">$($Localization.SoftwareDistributionTaskNotificationEvent)</text>
+				</subgroup>
+			</group>
+		</binding>
+	</visual>
+	<audio src="""ms-winsoundevent:notification.default""" />
+</toast>
+"""@
+
+`$ToastXml = [Windows.Data.Xml.Dom.XmlDocument]::New()
+`$ToastXml.LoadXml(`$ToastTemplate.OuterXml)
+
+`$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New(`$ToastXML)
+[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("""windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel""").Show(`$ToastMessage)
 "@
-			$Action = New-ScheduledTaskAction -Execute powershell.exe -Argument $Argument
+
+			# Create the "SoftwareDistribution" task
+			$Action = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $SoftwareDistributionTask"
 			$Trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 90 -At 9pm
 			$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-			$Principal = New-ScheduledTaskPrincipal -UserId "NT AUTHORITY\SYSTEM" -RunLevel Highest
-			$Description = $Localization.FolderTaskDescription -f "$env:SystemRoot\SoftwareDistribution\Download"
+			$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
 			$Parameters = @{
-				"TaskName"		= "SoftwareDistribution"
-				"TaskPath"		= "Sophia Script"
-				"Principal"		= $Principal
-				"Action"		= $Action
-				"Description"	= $Description
-				"Settings"		= $Settings
-				"Trigger"		= $Trigger
+				"TaskName"    = "SoftwareDistribution"
+				"TaskPath"    = "Sophia Script"
+				"Principal"   = $Principal
+				"Action"      = $Action
+				"Description" = $Localization.FolderTaskDescription -f "%SystemRoot%\SoftwareDistribution\Download"
+				"Settings"    = $Settings
+				"Trigger"     = $Trigger
 			}
 			Register-ScheduledTask @Parameters -Force
 		}
@@ -6680,18 +6940,46 @@ function TempTask
 	{
 		"Register"
 		{
-			$Argument = "Get-ChildItem -Path $env:TEMP -Force -Recurse | Remove-Item -Recurse -Force"
-			$Action = New-ScheduledTaskAction -Execute powershell.exe -Argument $Argument
+			$TempTask = @"
+"Get-ChildItem -Path $env:TEMP -Force -Recurse | Remove-Item -Recurse -Force"
+
+[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
+[Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
+
+[xml]`$ToastTemplate = @"""
+<toast duration="""Long""">
+	<visual>
+		<binding template="""ToastGeneric""">
+			<text>$($Localization.TaskNotificationTitle)</text>
+			<group>
+				<subgroup>
+					<text hint-style="""body""" hint-wrap="""true""">$($Localization.TempTaskNotificationEvent)</text>
+				</subgroup>
+			</group>
+		</binding>
+	</visual>
+	<audio src="""ms-winsoundevent:notification.default""" />
+</toast>
+"""@
+
+`$ToastXml = [Windows.Data.Xml.Dom.XmlDocument]::New()
+`$ToastXml.LoadXml(`$ToastTemplate.OuterXml)
+
+`$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New(`$ToastXML)
+[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("""windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel""").Show(`$ToastMessage)
+"@
+
+			# Create the "Temp" task
+			$Action = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $TempTask"
 			$Trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 60 -At 9pm
 			$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-			$Principal = New-ScheduledTaskPrincipal -UserId "NT AUTHORITY\SYSTEM" -RunLevel Highest
-			$Description = $Localization.FolderTaskDescription
+			$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
 			$Parameters = @{
 				"TaskName"    = "Temp"
 				"TaskPath"    = "Sophia Script"
 				"Principal"   = $Principal
 				"Action"      = $Action
-				"Description" = $Description
+				"Description" = $Localization.FolderTaskDescription -f "%TEMP%"
 				"Settings"    = $Settings
 				"Trigger"     = $Trigger
 			}
@@ -7679,7 +7967,7 @@ function MSIExtractContext
 				New-Item -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract\Command -Force
 			}
 			$Value = "{0}" -f 'msiexec.exe /a "%1" /qb TARGETDIR="%1 extracted"'
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract\Command -Name "(Default)" -PropertyType String -Value $Value -Force
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract\Command -Name "(default)" -PropertyType String -Value $Value -Force
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract -Name MUIVerb -PropertyType String -Value "@shell32.dll,-37514" -Force
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract -Name Icon -PropertyType String -Value "shell32.dll,-16817" -Force
 		}
@@ -7735,7 +8023,7 @@ function CABInstallContext
 				New-Item -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command -Force
 			}
 			$Value = "{0}" -f "cmd /c DISM.exe /Online /Add-Package /PackagePath:`"%1`" /NoRestart & pause"
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command -Name "(Default)" -PropertyType String -Value $Value -Force
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command -Name "(default)" -PropertyType String -Value $Value -Force
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs -Name MUIVerb -PropertyType String -Value "@shell32.dll,-10210" -Force
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs -Name HasLUAShield -PropertyType String -Value "" -Force
 		}
@@ -8045,11 +8333,11 @@ function IncludeInLibraryContext
 	{
 		"Hide"
 		{
-			New-ItemProperty -Path "Registry::HKEY_CLASSES_ROOT\Folder\shellex\ContextMenuHandlers\Library Location" -Name "(Default)" -PropertyType String -Value "-{3dad6c5d-2167-4cae-9914-f99e41c12cfa}" -Force
+			New-ItemProperty -Path "Registry::HKEY_CLASSES_ROOT\Folder\shellex\ContextMenuHandlers\Library Location" -Name "(default)" -PropertyType String -Value "-{3dad6c5d-2167-4cae-9914-f99e41c12cfa}" -Force
 		}
 		"Show"
 		{
-			New-ItemProperty -Path "Registry::HKEY_CLASSES_ROOT\Folder\shellex\ContextMenuHandlers\Library Location" -Name "(Default)" -PropertyType String -Value "{3dad6c5d-2167-4cae-9914-f99e41c12cfa}" -Force
+			New-ItemProperty -Path "Registry::HKEY_CLASSES_ROOT\Folder\shellex\ContextMenuHandlers\Library Location" -Name "(default)" -PropertyType String -Value "{3dad6c5d-2167-4cae-9914-f99e41c12cfa}" -Force
 		}
 	}
 }
@@ -8094,11 +8382,11 @@ function SendToContext
 	{
 		"Hide"
 		{
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AllFilesystemObjects\shellex\ContextMenuHandlers\SendTo -Name "(Default)" -PropertyType String -Value "-{7BA4C740-9E81-11CF-99D3-00AA004AE837}" -Force
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AllFilesystemObjects\shellex\ContextMenuHandlers\SendTo -Name "(default)" -PropertyType String -Value "-{7BA4C740-9E81-11CF-99D3-00AA004AE837}" -Force
 		}
 		"Show"
 		{
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AllFilesystemObjects\shellex\ContextMenuHandlers\SendTo -Name "(Default)" -PropertyType String -Value "{7BA4C740-9E81-11CF-99D3-00AA004AE837}" -Force
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AllFilesystemObjects\shellex\ContextMenuHandlers\SendTo -Name "(default)" -PropertyType String -Value "{7BA4C740-9E81-11CF-99D3-00AA004AE837}" -Force
 		}
 	}
 }

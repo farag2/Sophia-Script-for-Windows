@@ -2,9 +2,9 @@
 	.SYNOPSIS
 	Default preset file for "Windows 10 Sophia Script" (LTSC version)
 
-	Version: v5.1
-	Date: 05.03.2021
-	Copyright (c) 2021 farag & oZ-Zo
+	Version: v5.1.1
+	Date: 17.03.2021
+	Copyright (c) 2015–2021 farag & oZ-Zo
 
 	https://github.com/farag2
 	https://github.com/oz-zo
@@ -30,10 +30,10 @@
 	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
 
 	.NOTES
-	Supported Windows 10
+	Supported Windows 10 version
 	Version: 1809
 	Build: 17763
-	Editions: Enterprise LTSC
+	Edition: Enterprise LTSC
 	Architecture: x64
 
 	.NOTES
@@ -57,7 +57,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script for LTSC v5.1 | $([char]0x00A9) farag & oz-zo, 2015–2021"
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script for LTSC v5.1.1 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & oz-zo, 2015–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Sophia.psd1 -PassThru -Force
@@ -705,20 +705,14 @@ SmartActiveHours -Enable
 # SmartActiveHours -Disable
 <#
 	Register app, calculate hash, and set as default for specific extension without the "How do you want to open this?" pop-up
-	Зарегистрировать приложение, вычислить хэш и установить как приложение по умолчанию для конкретного расширения без всплывающего окошка "Каким образом вы хотите открыть этот файл?"
+	Зарегистрировать приложение, вычислить хэш и установить как приложение по умолчанию для конкретного расширения без всплывающего окна "Каким образом вы хотите открыть этот файл?"
 
 	Examples:
 	Примеры:
 	Set-Association -ProgramPath "C:\SumatraPDF.exe" -Extension .pdf -Icon "shell32.dll,100"
-	Set-Association -ProgramPath "C:\Program Files\Notepad++\notepad++.exe" -Extension .psm1 -Icon "C:\Program Files\Notepad++\notepad++.exe,0"
-
-	The app must be installed
-	Приложение должно быть установлено
-
-	Do not use relative paths like "%Program Files%"
-	Не используйте относительные пути вида "%Program Files%"
+	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .txt -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
 #>
-# Set-Association -ProgramPath "C:\Program Files\Notepad++\notepad++.exe" -Extension .psm1 -Icon "C:\Program Files\Notepad++\notepad++.exe,0"
+# Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .txt -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
 #endregion System
 
 #region Start menu
@@ -787,14 +781,16 @@ SetAppGraphicsPerformance
 CleanupTask -Register
 
 # Delete the "Windows Cleanup" and "Windows Cleanup Notification" scheduled tasks for cleaning up Windows unused files and updates
-# Удалить задачу "Windows Cleanup" и "Windows Cleanup Notification" по очистке неиспользуемых файлов и обновлений Windows из Планировщика заданий
+# Удалить задачи "Windows Cleanup" и "Windows Cleanup Notification" по очистке неиспользуемых файлов и обновлений Windows из Планировщика заданий
 # CleanupTask -Delete
 
 <#
 	Create the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
+	The task will wait until the Windows Updates service finishes running
 	The task runs every 90 days
 
 	Создать задачу "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download в Планировщике заданий
+	Задача будет ждать, пока служба обновлений Windows не закончит работу
 	Задача выполняется каждые 90 дней
 #>
 SoftwareDistributionTask -Register
