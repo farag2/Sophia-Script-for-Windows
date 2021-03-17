@@ -93,8 +93,10 @@ jobs:
           }
           Expand-Archive @Parameters
 
-          Copy-Item -Path "$PSScriptRoot\sdk\lib\Microsoft.Windows.SDK.NET.dll" -Destination $BUILD_DIR -Recurse -Force
-          Copy-Item -Path "$PSScriptRoot\CsWinRT\lib\net5.0\WinRT.Runtime.dll" -Destination $BUILD_DIR -Recurse -Force
+          New-Item -Path $BUILD_DIR\Library -ItemType Directory -Force
+
+          Copy-Item -Path "$PSScriptRoot\sdk\lib\Microsoft.Windows.SDK.NET.dll" -Destination $BUILD_DIR\Library -Recurse -Force
+          Copy-Item -Path "$PSScriptRoot\CsWinRT\lib\net5.0\WinRT.Runtime.dll" -Destination $BUILD_DIR\Library -Recurse -Force
 
           Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP -Force
 
