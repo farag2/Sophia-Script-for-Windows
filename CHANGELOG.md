@@ -5,6 +5,53 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.8 - 17.03.2021
+
+## Windows 10 2004 (20H1)/20H2 (2009) | LTSC
+
+Diff from v5.7
+[5.7...5.8](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.7...5.7)
+
+<a href="https://t.me/Sophia_News"><img src="https://img.shields.io/badge/Sophia%20News-Telegram-blue?style=flat&logo=Telegram"></a>
+<a href="https://t.me/Sophia_Chat"><img src="https://img.shields.io/badge/Sophia%20Chat-Telegram-blue?style=flat&logo=Telegram"></a>
+
+* The `UninstallUWPApps` function huge update
+  * The `PowerShell 7.x` version now shares the same codebase as PowerShell 5.1;
+    * By loading the `WinRT.Runtime.dll` (289 KB) and `Microsoft.Windows.SDK.NET.dll` (25,4 MB) assemblies (both are being attached to the archive by GitHub Actions [config](https://github.com/farag2/Windows-10-Sophia-Script/blob/59a924ef84c4f809b8bbfc24e3e1b5988fbfdb00/.github/workflows/Sophia.yml#L61)) it becomes possible to get localized UWP apps packages names too;
+    * <https://github.com/microsoft/CsWinRT>;
+    * <https://www.nuget.org/packages/Microsoft.Windows.SDK.NET.Ref>;
+    * ![Image](https://i.imgur.com/J93PTcT.png)
+  * Added the `Select all` button;
+  * Fixed #141;
+  * Many fixes and improvements by @Inestic and [iNNOKENTIY21](https://forum.ru-board.com/profile.cgi?action=show&member=iNNOKENTIY21)
+* The `Set-Association` function huge update
+  * Fixed bug when PowerShell calculates the wrong hash;
+  * Now contains code from <https://github.com/DanysysTeam/PS-SFTA> and <https://github.com/default-username-was-already-taken/set-fileassoc>
+  * Fix by [westlife](https://forum.ru-board.com/profile.cgi?action=show&member=westlife) and @default-username-was-already-taken
+* Updated the `SoftwareDistributionTask` and the `TempTask` task
+  * Added pop-up notification after the successful task completion
+    * ![Image](https://i.imgur.com/fmFxnaA.png)
+    * ![Image](https://i.imgur.com/IbaYl3h.png)
+  * To update the existing `SoftwareDistributionTask` and `TempTask` functions run (no need to restart)
+
+  ```powershell
+  .\Sophia.ps1 -Functions "SoftwareDistributionTask -Register", "TempTask -Register"
+  ```
+
+  * Fixed #143
+* Fixed small bug in the `Windows Cleanup` function
+  * To update the existing `Windows Cleanup` function run (no need to restart)
+
+  ```powershell
+  .\Sophia.ps1 -Functions "CleanUpTask -Register"
+  ```
+
+* Added the Portuguese translation <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Flag_of_Portugal.svg" height="11px"/>
+  * Thanks to ZZ
+* Fixed typos;
+* Minor changes. :feelsgood:
+  * Thanks to @gtumanyan
+
 ## 5.7 - 05.03.2021
 
 ## Windows 10 2004 (20H1)/20H2 (2009) | LTSC
