@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Windows 10 Sophia Script"
 
-	Version: v5.7
-	Date: 05.03.2021
+	Version: v5.8
+	Date: 17.03.2021
 	Copyright (c) 2015–2021 farag & oZ-Zo
 
 	https://github.com/farag2
@@ -57,7 +57,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.7 | $([char]0x00A9) farag & oz-zo, 2015–2021"
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.8 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & oz-zo, 2015–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Sophia.psd1 -PassThru -Force
@@ -862,20 +862,14 @@ DeviceRestartAfterUpdate -Enable
 
 <#
 	Register app, calculate hash, and set as default for specific extension without the "How do you want to open this?" pop-up
-	Зарегистрировать приложение, вычислить хэш и установить как приложение по умолчанию для конкретного расширения без всплывающего окошка "Каким образом вы хотите открыть этот файл?"
+	Зарегистрировать приложение, вычислить хэш и установить как приложение по умолчанию для конкретного расширения без всплывающего окна "Каким образом вы хотите открыть этот файл?"
 
 	Examples:
 	Примеры:
 	Set-Association -ProgramPath "C:\SumatraPDF.exe" -Extension .pdf -Icon "shell32.dll,100"
-	Set-Association -ProgramPath "C:\Program Files\Notepad++\notepad++.exe" -Extension .psm1 -Icon "C:\Program Files\Notepad++\notepad++.exe,0"
-
-	The app must be installed
-	Приложение должно быть установлено
-
-	Do not use relative paths like "%Program Files%"
-	Не используйте относительные пути вида "%Program Files%"
+	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .txt -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
 #>
-# Set-Association -ProgramPath "C:\Program Files\Notepad++\notepad++.exe" -Extension .psm1 -Icon "C:\Program Files\Notepad++\notepad++.exe,0"
+# Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .txt -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
 #endregion System
 
 #region WSL
@@ -925,11 +919,11 @@ RunPowerShellShortcut -Elevated
 # RunPowerShellShortcut -NonElevated
 
 <#
-	Assign what shortcuts to pin to Start
-	Valid shortcuts: ControlPanel, DevicesPrinters and PowerShell
+	Pin to Start the following links: Control Panel, Devices and Printers, PowerShell
+	Valid shortcuts values: ControlPanel, DevicesPrinters and PowerShell
 
-	Указать, какие ярлыки закрепить на начальном экране
-	Валидные ярлыки: ControlPanel, DevicesPrinters and PowerShell
+	Закрепить на начальном экране следующие ярлыки: Панель управдения, Устройства и принтеры, PowerShell
+	Валидные значения ярлыков: ControlPanel, DevicesPrinters, PowerShell
 #>
 PinToStart -Tiles ControlPanel, DevicesPrinters, PowerShell
 
@@ -947,12 +941,25 @@ PinToStart -Tiles ControlPanel, DevicesPrinters, PowerShell
 #region UWP apps
 <#
 	Uninstall UWP apps using the pop-up dialog box
-	App packages will not be installed for new users if "Uninstall for All Users" is checked
+	If the "For All Users" is checked apps packages will not be installed for new users
+	The "For All Users" checkbox isn't checked by default
 
 	Удалить UWP-приложения, используя всплывающее диалоговое окно
-	Приложения не будут установлены для новых пользователей, если отмечено "Удалять для всех пользователей"
+	Пакеты приложений не будут установлены для новых пользователей, если отмечена галочка "Для всех пользователей"
+	Галочка "Для всех пользователей" не отмечена по умолчанию
 #>
 UninstallUWPApps
+
+<#
+	Uninstall UWP apps using the pop-up dialog box
+	If the "For All Users" is checked apps packages will not be installed for new users
+	The "For All Users" checkbox checked by default
+
+	Удалить UWP-приложения, используя всплывающее диалоговое окно
+	Пакеты приложений не будут установлены для новых пользователей, если отмечена галочка "Для всех пользователей"
+	Галочка "Для всех пользователей" отмечена по умолчанию
+#>
+# UninstallUWPApps -ForAllUsers
 
 <#
 	Open Microsoft Store "HEVC Video Extensions from Device Manufacturer" page to install this extension manually to be able to open .heic and .heif formats
@@ -1033,14 +1040,16 @@ GPUScheduling -Enable
 CleanupTask -Register
 
 # Delete the "Windows Cleanup" and "Windows Cleanup Notification" scheduled tasks for cleaning up Windows unused files and updates
-# Удалить задачу "Windows Cleanup" и "Windows Cleanup Notification" по очистке неиспользуемых файлов и обновлений Windows из Планировщика заданий
+# Удалить задачи "Windows Cleanup" и "Windows Cleanup Notification" по очистке неиспользуемых файлов и обновлений Windows из Планировщика заданий
 # CleanupTask -Delete
 
 <#
 	Create the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
+	The task will wait until the Windows Updates service finishes running
 	The task runs every 90 days
 
 	Создать задачу "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download в Планировщике заданий
+	Задача будет ждать, пока служба обновлений Windows не закончит работу
 	Задача выполняется каждые 90 дней
 #>
 SoftwareDistributionTask -Register
