@@ -12,9 +12,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Diff from v5.7
 [5.7...5.8](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.7...5.7)
 
-<a href="https://t.me/Sophia_News"><img src="https://img.shields.io/badge/Sophia%20News-Telegram-blue?style=flat&logo=Telegram"></a>
-<a href="https://t.me/Sophia_Chat"><img src="https://img.shields.io/badge/Sophia%20Chat-Telegram-blue?style=flat&logo=Telegram"></a>
-
 * The `UninstallUWPApps` function huge update
   * The `PowerShell 7.x` version now shares the same codebase as PowerShell 5.1;
     * By loading the `WinRT.Runtime.dll` (289 KB) and `Microsoft.Windows.SDK.NET.dll` (25,4 MB) assemblies (both are being attached to the archive by GitHub Actions [config](https://github.com/farag2/Windows-10-Sophia-Script/blob/59a924ef84c4f809b8bbfc24e3e1b5988fbfdb00/.github/workflows/Sophia.yml#L61)) it becomes possible to get localized UWP apps packages names too;
