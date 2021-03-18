@@ -14,7 +14,7 @@ Diff from v5.7
 
 * The `UninstallUWPApps` function huge update
   * The `PowerShell 7.x` version now shares the same codebase as PowerShell 5.1;
-    * By loading the `WinRT.Runtime.dll` (289 KB) and `Microsoft.Windows.SDK.NET.dll` (25,4 MB) assemblies (both are being attached to the archive by GitHub Actions [config](https://github.com/farag2/Windows-10-Sophia-Script/blob/59a924ef84c4f809b8bbfc24e3e1b5988fbfdb00/.github/workflows/Sophia.yml#L61)) it becomes possible to get localized UWP apps packages names too;
+    * By loading the `WinRT.Runtime.dll` (289 KB) and `Microsoft.Windows.SDK.NET.dll` (25,4 MB) assemblies (both are being downloaded and archived by GitHub Actions) it becomes possible to get localized UWP apps packages names too;
     * <https://github.com/microsoft/CsWinRT>;
     * <https://www.nuget.org/packages/Microsoft.Windows.SDK.NET.Ref>;
     * ![Image](https://i.imgur.com/J93PTcT.png)
