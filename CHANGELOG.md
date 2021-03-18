@@ -23,6 +23,8 @@ Diff from v5.7
   * Many fixes and improvements by @Inestic and [iNNOKENTIY21](https://forum.ru-board.com/profile.cgi?action=show&member=iNNOKENTIY21)
 * The `Set-Association` function huge update
   * Fixed bug when PowerShell calculates the wrong hash;
+* Now possible to associate extension using the relative paths
+  * `Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .txt -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"`
   * Now contains code from <https://github.com/DanysysTeam/PS-SFTA> and <https://github.com/default-username-was-already-taken/set-fileassoc>
   * Fix by [westlife](https://forum.ru-board.com/profile.cgi?action=show&member=westlife) and @default-username-was-already-taken
 * Updated the `SoftwareDistributionTask` and the `TempTask` task
