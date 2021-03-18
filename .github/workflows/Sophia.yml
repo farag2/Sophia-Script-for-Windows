@@ -58,26 +58,31 @@ jobs:
           Copy-Item -Path "Sophia\PowerShell 5.1\*" -Destination $BUILD_DIR -Recurse -Force
           Copy-Item -Path "Sophia\PowerShell 7.x\*" -Destination $BUILD_DIR -Recurse -Force
           
+          # Download Microsoft.Windows.SDK.NET.Ref
           $Parameters = @{
-            Uri = "https://www.nuget.org/api/v2/package/Microsoft.Windows.SDK.NET.Ref/10.0.19041.14"
+            Uri = "https://www.nuget.org/api/v2/package/Microsoft.Windows.SDK.NET.Ref"
             OutFile = "$PSScriptRoot\microsoft.windows.sdk.net.ref.nupkg"
             Verbose = [switch]::Present
           }
           Invoke-WebRequest @Parameters
 
-          Rename-Item -Path "$PSScriptRoot\microsoft.windows.sdk.net.ref.nupkg" -NewName "microsoft.windows.sdk.net.ref.zip"
+          Rename-Item -Path "$PSScriptRoot\Microsoft.Windows.SDK.NET.Ref.nupkg" -NewName "Microsoft.Windows.SDK.NET.Ref.zip"
 
           $Parameters = @{
-            Path = "$PSScriptRoot\microsoft.windows.sdk.net.ref.zip"
-            DestinationPath = "$PSScriptRoot\sdk"
+            Path = "$PSScriptRoot\Microsoft.Windows.SDK.NET.Ref.zip"
+            DestinationPath = "$PSScriptRoot\SDK"
             Force = [switch]::Present
             Verbose = [switch]::Present
           }
           Expand-Archive @Parameters
 
+          # Download CsWinRT
           $LatestRelease = (Invoke-RestMethod -Uri "https://api.github.com/repos/microsoft/CsWinRT/releases").tag_name | Select-Object -First 1
+          $Download = ((Invoke-RestMethod -Uri "https://api.github.com/repos/microsoft/CsWinRT/releases") | Where-Object -FilterScript {$_.tag_name -eq $LatestRelease}).assets | Where-Object -FilterScript {$_.browser_download_url -match "nupkg"}
+          $URL = $Download.browser_download_url
+          
           $Parameters = @{
-            Uri = "https://github.com/microsoft/CsWinRT/releases/download/$LatestRelease/Microsoft.Windows.CsWinRT.1.1.3.nupkg"
+            Uri = $URL
             OutFile = "$PSScriptRoot\Microsoft.Windows.CsWinRT.nupkg"
             Verbose = [switch]::Present
           }
@@ -93,15 +98,15 @@ jobs:
           }
           Expand-Archive @Parameters
 
-          New-Item -Path $BUILD_DIR\Library -ItemType Directory -Force
+          New-Item -Path $BUILD_DIR\Libraries -ItemType Directory -Force
 
-          Copy-Item -Path "$PSScriptRoot\sdk\lib\Microsoft.Windows.SDK.NET.dll" -Destination $BUILD_DIR\Library -Recurse -Force
-          Copy-Item -Path "$PSScriptRoot\CsWinRT\lib\net5.0\WinRT.Runtime.dll" -Destination $BUILD_DIR\Library -Recurse -Force
+          Copy-Item -Path "$PSScriptRoot\sdk\lib\Microsoft.Windows.SDK.NET.dll" -Destination $BUILD_DIR\Libraries -Recurse -Force
+          Copy-Item -Path "$PSScriptRoot\CsWinRT\lib\net5.0\WinRT.Runtime.dll" -Destination $BUILD_DIR\Libraries -Recurse -Force
 
           Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP -Force
 
           Remove-Item -Path "$PSScriptRoot\CsWinRT", "$PSScriptRoot\sdk" -Recurse -Force
-          Remove-Item -Path "$PSScriptRoot\Microsoft.Windows.CsWinRT.zip", "$PSScriptRoot\microsoft.windows.sdk.net.ref.zip" -Force
+          Remove-Item -Path "$PSScriptRoot\Microsoft.Windows.CsWinRT.zip", "$PSScriptRoot\Microsoft.Windows.SDK.NET.Ref.zip" -Force
 
       - name: Build LTSC
         run: |
