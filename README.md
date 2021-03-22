@@ -1,6 +1,6 @@
-<img src="./img/Sophia.png" alt="Sophia Script" width='350' align="right">
+# Windows 10 Sophia Script
 
-# Sophia Script
+<img src="./img/Sophia.png" alt="Sophia Script" width='350' align="right">
 
 **A PowerShell module for Windows 10 fine-tuning and automating the routine tasks** :trophy:
 
@@ -24,6 +24,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Q5Q51QUJC)
 
+[![DA](https://www.donationalerts.com/img/brand/donationalerts.svg)](https://www.donationalerts.com/r/SophiaScript)
 ***
 
 <p align="center">
