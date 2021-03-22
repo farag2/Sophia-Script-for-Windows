@@ -212,4 +212,4 @@ How to run the specific function(s) (example):
 
 ## SophiApp Community Edition (C# + WPF)
 
-[SophiApp](https://github.com/farag2/SophiApp) is still in development.
+[SophiApp](https://github.com/SophiaUI/SophiApp) is still in development.
