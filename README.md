@@ -24,8 +24,6 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Q5Q51QUJC)
 
-[![DA](https://www.donationalerts.com/img/brand/donationalerts.svg)](https://www.donationalerts.com/r/SophiaScript)
-
 ***
 
 <p align="center">
