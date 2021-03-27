@@ -74,6 +74,5 @@ SelectAll                                 = Wählen Sie Alle
 Skip                                      = Überspringen
 Skipped                                   = Übersprungen
 Snooze                                    = Verschieben
-SymbolicSkipped                           = Das Erstellen eines symbolischen Links wurde übersprungen
 Uninstall                                 = Deinstallieren
 '@
