@@ -64,6 +64,5 @@ SelectAll                                 = Seleccionar todo
 Skip                                      = Omitir
 Skipped                                   = Omitido
 Snooze                                    = Posponer
-SymbolicSkipped                           = Se omitió la creación de un enlace simbólico
 Uninstall                                 = Desinstalar
 '@

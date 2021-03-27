@@ -64,6 +64,5 @@ SelectAll                                 = Tout sélectionner
 Skip                                      = Passer
 Skipped                                   = Passé
 Snooze                                    = Reporter
-SymbolicSkipped                           = La création d'un lien symbolique a été ignorée
 Uninstall                                 = Désinstaller
 '@

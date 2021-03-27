@@ -64,6 +64,5 @@ SelectAll                                 = Hepsini seç
 Skip                                      = Atla
 Skipped                                   = Atlandı
 Snooze                                    = Ertelemek
-SymbolicSkipped                           = Sembolik bir bağlantı oluşturma atlandı
 Uninstall                                 = Kaldır
 '@

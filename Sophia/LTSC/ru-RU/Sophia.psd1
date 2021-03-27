@@ -64,6 +64,5 @@ SelectAll                                 = Выбрать всё
 Skip                                      = Пропустить
 Skipped                                   = Пропущено
 Snooze                                    = Отложить
-SymbolicSkipped                           = Пропущено создание символической ссылки
 Uninstall                                 = Удалить
 '@

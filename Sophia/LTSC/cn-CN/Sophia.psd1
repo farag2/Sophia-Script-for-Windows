@@ -64,6 +64,5 @@ SelectAll                                 = 全选
 Skip                                      = 跳过
 Skipped                                   = 已跳过
 Snooze                                    = 推迟
-SymbolicSkipped                           = 跳过创建符号链接
 Uninstall                                 = 卸载
 '@
