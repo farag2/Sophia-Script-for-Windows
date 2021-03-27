@@ -2,17 +2,16 @@
 	.SYNOPSIS
 	Default preset file for "Windows 10 Sophia Script" (LTSC version)
 
-	Version: v5.1.1
-	Date: 17.03.2021
+	Version: v5.1.2
+	Date: 27.03.2021
 	Copyright (c) 2015–2021 farag & oZ-Zo
-
-	https://github.com/farag2
-	https://github.com/oz-zo
 
 	Thanks to all https://forum.ru-board.com members involved
 
 	.DESCRIPTION
 	Read carefully and configure the preset file before running
+		Comment out function with the "#" char if you don't want it to be run
+		Uncomment function by removing the "#" char if you want it to be run
 	Every tweak in the preset file has its' corresponding function to restore the default settings
 
 	Running the script is best done on a fresh install because running it on wrong tweaked system may result in errors occurring
@@ -24,12 +23,6 @@
 	.\Sophia.ps1 -Functions CreateRestorePoint, "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal"
 
 	.NOTES
-	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
-	https://habr.com/post/521202/
-	https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/
-	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
-
-	.NOTES
 	Supported Windows 10 version
 	Version: 1809
 	Build: 17763
@@ -39,6 +32,20 @@
 	.NOTES
 	Set execution policy to be able to run scripts only in the current PowerShell session:
 		Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+
+	.NOTES
+	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
+	https://habr.com/post/521202/
+	https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/
+	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
+
+	.LINK
+	https://t.me/sophianews
+	https://t.me/sophia_chat
+
+	.LINK
+	https://github.com/farag2
+	https://github.com/Inestic
 
 	.LINK
 	https://github.com/farag2/Windows-10-Sophia-Script
@@ -57,7 +64,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script for LTSC v5.1.1 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & oz-zo, 2015–2021"
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script for LTSC v5.1.2 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & oz-zo, 2015–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Sophia.psd1 -PassThru -Force
@@ -593,7 +600,7 @@ PCTurnOffDevice -Disable
 # Переопределить метод ввода по умолчанию: английский
 SetInputMethod -English
 
-# Override for default input method: use langiage list (default value)
+# Override for default input method: use language list (default value)
 # Переопределить метод ввода по умолчанию: использовать список языков (значение по умолчанию)
 # SetInputMethod -Default
 
@@ -964,7 +971,7 @@ SaveZoneInformation -Disable
 
 # Enable Windows Sandbox
 # Включить Windows Sandbox
-WindowsSandbox -Enable
+# WindowsSandbox -Enable
 
 # Disable Windows Sandbox (default value)
 # Выключить Windows Sandbox (значение по умолчанию)

@@ -2,23 +2,14 @@
 	.SYNOPSIS
 	"Windows 10 Sophia Script" (LTSC version) is a PowerShell module for Windows 10 fine-tuning and automating the routine tasks
 
-	Version: v5.1.1
-	Date: 17.03.2021
+	Version: v5.1.2
+	Date: 27.03.2021
 	Copyright (c) 2015–2021 farag & oZ-Zo
-
-	https://github.com/farag2
-	https://github.com/oz-zo
 
 	Thanks to all https://forum.ru-board.com members involved
 
 	.DESCRIPTION
 	Running the script is best done on a fresh install because running it on wrong tweaked system may result in errors occurring
-
-	.NOTES
-	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
-	https://habr.com/post/521202/
-	https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/
-	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
 
 	.NOTES
 	Supported Windows 10 version
@@ -30,6 +21,20 @@
 	.NOTES
 	Set execution policy to be able to run scripts only in the current PowerShell session:
 		Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+
+	.NOTES
+	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
+	https://habr.com/post/521202/
+	https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/
+	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
+
+	.LINK Telegram channel & group
+	https://t.me/sophianews
+	https://t.me/sophia_chat
+
+	.LINK
+	https://github.com/farag2
+	https://github.com/Inestic
 
 	.LINK
 	https://github.com/farag2/Windows-10-Sophia-Script
@@ -155,7 +160,7 @@ function CreateRestorePoint
 	# Revert the System Restore checkpoint creation frequency to 1440 minutes
 	New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 1440 -Force
 
-	# Turn off System Protection for the system drive if it was turned off without deleting existing restore points
+	# Turn off System Protection for the system drive if it was turned off before without deleting the existing restore points
 	if ($ComputerRestorePoint)
 	{
 		Disable-ComputerRestore -Drive $env:SystemDrive
@@ -1660,6 +1665,8 @@ function 3DObjects
 	# In order for the changes to take effect the File Explorer process has to be restarted
 	Stop-Process -Name explorer -Force
 
+	Start-Sleep -Seconds 3
+
 	# Restoring closed folders
 	foreach ($OpenedFolder in $OpenedFolders)
 	{
@@ -2849,66 +2856,101 @@ function TempFolder
 	{
 		"SystemDrive"
 		{
-			# Restart the Printer Spooler service (Spooler)
-			Restart-Service -Name Spooler -Force
-
-			if (-not (Test-Path -Path $env:SystemDrive\Temp))
+			if ($env:TEMP -ne "$env:SystemDrive\Temp")
 			{
-				New-Item -Path $env:SystemDrive\Temp -ItemType Directory -Force
-			}
+				# Restart the Printer Spooler service (Spooler)
+				Restart-Service -Name Spooler -Force
 
-			Remove-Item -Path $env:SystemRoot\Temp -Recurse -Force -ErrorAction Ignore
-			Get-Item -Path $env:LOCALAPPDATA\Temp -Force -ErrorAction Ignore | Where-Object -FilterScript {$_.LinkType -ne "SymbolicLink"} | Remove-Item -Recurse -Force -ErrorAction Ignore
+				# Stop OneDrive processes
+				Stop-Process -Name OneDrive -Force -ErrorAction Ignore
+				Stop-Process -Name FileCoAuth -Force -ErrorAction Ignore
 
-			if (Test-Path -Path $env:LOCALAPPDATA\Temp -ErrorAction Ignore)
-			{
-				if ((Get-ChildItem -Path $env:LOCALAPPDATA\Temp -Force -ErrorAction Ignore | Measure-Object).Count -ne 0)
+				if (-not (Test-Path -Path $env:SystemDrive\Temp))
 				{
-					Invoke-Item -Path $env:LOCALAPPDATA\Temp
-
-					do
-					{
-						$Title = ""
-						$Message = $Localization.ClearFolder -f "$env:LOCALAPPDATA\Temp"
-						$Delete = $Localization.Delete
-						$Skip = $Localization.Skip
-						$Options = "&$Delete", "&$Skip"
-						$DefaultChoice = 0
-
-						$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
-						switch ($Result)
-						{
-							"0"
-							{
-								# Create a symbolic link to the %SystemDrive%\Temp folder
-								try
-								{
-									Get-Item -Path $env:LOCALAPPDATA\Temp -Force | Where-Object -FilterScript {$_.LinkType -ne "SymbolicLink"} | Remove-Item -Recurse -Force -ErrorAction Ignore
-									New-Item -Path $env:LOCALAPPDATA\Temp -ItemType SymbolicLink -Value $env:SystemDrive\Temp -Force -ErrorAction SilentlyContinue
-								}
-								catch [System.Exception]
-								{
-									Write-Verbose -Message $Localization.FilesBlocked -Verbose
-									Write-Verbose -Message ((Get-ChildItem -Path $env:LOCALAPPDATA\Temp -Force).FullName | Out-String) -Verbose
-								}
-							}
-							"1"
-							{
-								Write-Verbose -Message $Localization.SymbolicSkipped -Verbose
-							}
-						}
-					}
-					until (((Get-ChildItem -Path $env:LOCALAPPDATA\Temp -Force -ErrorAction Ignore | Measure-Object).Count -eq 0) -or ($Result -eq 1))
+					New-Item -Path $env:SystemDrive\Temp -ItemType Directory -Force
 				}
-			}
-			else
-			{
-				# Create a symbolic link to the %SystemDrive%\Temp folder
-				New-Item -Path $env:LOCALAPPDATA\Temp -ItemType SymbolicLink -Value $env:SystemDrive\Temp -Force
-			}
 
-			if (Get-Item -Path $env:LOCALAPPDATA\Temp -ErrorAction Ignore | Where-Object -FilterScript {$_.LinkType -eq "SymbolicLink"})
-			{
+				# Cleaning up folders
+				Remove-Item -Path $env:SystemRoot\Temp -Recurse -Force -ErrorAction Ignore
+				Get-Item -Path $env:TEMP -Force -ErrorAction Ignore | Where-Object -FilterScript {$_.LinkType -ne "SymbolicLink"} | Remove-Item -Recurse -Force -ErrorAction Ignore
+
+				if (-not (Test-Path -Path $env:LOCALAPPDATA\Temp))
+				{
+					New-Item -Path $env:LOCALAPPDATA\Temp -ItemType Directory -Force
+				}
+
+				# If there are some files or folders left in $env:LOCALAPPDATA\Temp
+				if ((Get-ChildItem -Path $env:TEMP -Force -ErrorAction Ignore | Measure-Object).Count -ne 0)
+				{
+					# https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexa
+					# The system does not move the file until the operating system is restarted
+					# The system moves the file immediately after AUTOCHK is executed, but before creating any paging files
+					$Signature = @{
+						Namespace = "WinAPI"
+						Name = "DeleteFiles"
+						Language = "CSharp"
+						MemberDefinition = @"
+public enum MoveFileFlags
+{
+	MOVEFILE_DELAY_UNTIL_REBOOT = 0x00000004
+}
+
+[DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+static extern bool MoveFileEx(string lpExistingFileName, string lpNewFileName, MoveFileFlags dwFlags);
+
+public static bool MarkFileDelete (string sourcefile)
+{
+	return MoveFileEx(sourcefile, null, MoveFileFlags.MOVEFILE_DELAY_UNTIL_REBOOT);
+}
+"@
+					}
+
+					if (-not ("WinAPI.DeleteFiles" -as [type]))
+					{
+						Add-Type @Signature
+					}
+
+					try
+					{
+						Get-ChildItem -Path $env:TEMP -Recurse -Force | Remove-Item -Recurse -Force -ErrorAction Stop
+					}
+					catch
+					{
+						# If files are in use remove them at the next boot
+						Get-ChildItem -Path $env:TEMP -Recurse -Force | ForEach-Object -Process {[WinAPI.DeleteFiles]::MarkFileDelete($_.FullName)}
+					}
+
+					$SymbolicLinkTask = @"
+Get-ChildItem -Path `$env:LOCALAPPDATA\Temp -Recurse -Force | Remove-Item -Recurse -Force
+
+Get-Item -Path `$env:LOCALAPPDATA\Temp -Force | Where-Object -FilterScript {`$_.LinkType -ne """SymbolicLink"""} | Remove-Item -Recurse -Force
+New-Item -Path `$env:LOCALAPPDATA\Temp -ItemType SymbolicLink -Value `$env:SystemDrive\Temp -Force
+
+Unregister-ScheduledTask -TaskName SymbolicLink -Confirm:`$false
+"@
+
+					# Create a temporary scheduled task to create a symbolic link to the %SystemDrive%\Temp folder
+					$Action = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $SymbolicLinkTask"
+					$Trigger = New-ScheduledTaskTrigger -AtLogon -User $env:USERNAME
+					$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8
+					$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
+					$Parameters = @{
+						"TaskName"  = "SymbolicLink"
+						"Principal" = $Principal
+						"Action"    = $Action
+						"Settings"  = $Settings
+						"Trigger"   = $Trigger
+					}
+					Register-ScheduledTask @Parameters -Force
+				}
+				else
+				{
+					# Create a symbolic link to the %SystemDrive%\Temp folder
+					New-Item -Path $env:LOCALAPPDATA\Temp -ItemType SymbolicLink -Value $env:SystemDrive\Temp -Force
+				}
+
+				#region main
+				# Change the %TEMP% environment variable path to "%LOCALAPPDATA%\Temp"
 				[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "User")
 				[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Machine")
 				[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Process")
@@ -2921,49 +2963,116 @@ function TempFolder
 
 				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TMP -PropertyType ExpandString -Value $env:SystemDrive\Temp -Force
 				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TEMP -PropertyType ExpandString -Value $env:SystemDrive\Temp -Force
+				# endregion main
 			}
 		}
 		"Default"
 		{
-			# Remove a symbolic link to the %SystemDrive%\Temp folder
-			if (Get-Item -Path $env:LOCALAPPDATA\Temp -Force -ErrorAction Ignore | Where-Object -FilterScript {$_.LinkType -eq "SymbolicLink"})
+			if ($env:TEMP -ne "$env:LOCALAPPDATA\Temp")
 			{
-				(Get-Item -Path $env:LOCALAPPDATA\Temp -Force).Delete()
+				# Restart the Printer Spooler service (Spooler)
+				Restart-Service -Name Spooler -Force
+
+				# Stop OneDrive processes
+				Stop-Process -Name OneDrive -Force -ErrorAction Ignore
+				Stop-Process -Name FileCoAuth -Force -ErrorAction Ignore
+
+				# Remove a symbolic link to the %SystemDrive%\Temp folder
+				if (Get-Item -Path $env:LOCALAPPDATA\Temp -Force -ErrorAction Ignore | Where-Object -FilterScript {$_.LinkType -eq "SymbolicLink"})
+				{
+					(Get-Item -Path $env:LOCALAPPDATA\Temp -Force).Delete()
+				}
+
+				if (-not (Test-Path -Path $env:SystemRoot\Temp))
+				{
+					New-Item -Path $env:SystemRoot\Temp -ItemType Directory -Force
+				}
+				if (-not (Test-Path -Path $env:LOCALAPPDATA\Temp))
+				{
+					New-Item -Path $env:LOCALAPPDATA\Temp -ItemType Directory -Force
+				}
+
+				# Removing folders
+				Remove-Item -Path $env:TEMP -Recurse -Force -ErrorAction Ignore
+
+				if ((Get-ChildItem -Path $env:TEMP -Force -ErrorAction Ignore | Measure-Object).Count -ne 0)
+				{
+					# https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexa
+					# The system does not move the file until the operating system is restarted
+					# The system moves the file immediately after AUTOCHK is executed, but before creating any paging files
+					$Signature = @{
+						Namespace = "WinAPI"
+						Name = "DeleteFiles"
+						Language = "CSharp"
+						MemberDefinition = @"
+public enum MoveFileFlags
+{
+	MOVEFILE_DELAY_UNTIL_REBOOT = 0x00000004
+}
+
+[DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+static extern bool MoveFileEx(string lpExistingFileName, string lpNewFileName, MoveFileFlags dwFlags);
+
+public static bool MarkFileDelete (string sourcefile)
+{
+	return MoveFileEx(sourcefile, null, MoveFileFlags.MOVEFILE_DELAY_UNTIL_REBOOT);
+}
+"@
+					}
+
+					if (-not ("WinAPI.DeleteFiles" -as [type]))
+					{
+						Add-Type @Signature
+					}
+
+					try
+					{
+						Remove-Item -Path $env:TEMP -Recurse -Force -ErrorAction Stop
+					}
+					catch
+					{
+						# If files are in use remove them at the next boot
+						Get-ChildItem -Path $env:TEMP -Recurse -Force -ErrorAction Ignore | ForEach-Object -Process {[WinAPI.DeleteFiles]::MarkFileDelete($_.FullName)}
+					}
+
+					$TempFolder = [System.Environment]::ExpandEnvironmentVariables($env:TEMP)
+					$TempFolderCleanupTask = @"
+Remove-Item -Path "$TempFolder" -Recurse -Force
+
+Unregister-ScheduledTask -TaskName TemporaryTask -Confirm:`$false
+"@
+
+					# Create a temporary scheduled task to clean up the temporary folder
+					$Action = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $TempFolderCleanupTask"
+					$Trigger = New-ScheduledTaskTrigger -AtLogon -User $env:USERNAME
+					$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8
+					$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
+					$Parameters = @{
+						"TaskName"  = "TemporaryTask"
+						"Principal" = $Principal
+						"Action"    = $Action
+						"Settings"  = $Settings
+						"Trigger"   = $Trigger
+					}
+					Register-ScheduledTask @Parameters -Force
+				}
+
+				#region main
+				# Change the %TEMP% environment variable path to "%LOCALAPPDATA%\Temp"
+				[Environment]::SetEnvironmentVariable("TMP", "$env:LOCALAPPDATA\Temp", "User")
+				[Environment]::SetEnvironmentVariable("TMP", "$env:SystemRoot\TEMP", "Machine")
+				[Environment]::SetEnvironmentVariable("TMP", "$env:LOCALAPPDATA\Temp", "Process")
+				New-ItemProperty -Path HKCU:\Environment -Name TMP -PropertyType ExpandString -Value "%USERPROFILE%\AppData\Local\Temp" -Force
+
+				[Environment]::SetEnvironmentVariable("TEMP", "$env:LOCALAPPDATA\Temp", "User")
+				[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemRoot\TEMP", "Machine")
+				[Environment]::SetEnvironmentVariable("TEMP", "$env:LOCALAPPDATA\Temp", "Process")
+				New-ItemProperty -Path HKCU:\Environment -Name TEMP -PropertyType ExpandString -Value "%USERPROFILE%\AppData\Local\Temp" -Force
+
+				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TMP -PropertyType ExpandString -Value "%SystemRoot%\TEMP" -Force
+				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TEMP -PropertyType ExpandString -Value "%SystemRoot%\TEMP" -Force
+				# endregion main
 			}
-
-			if (-not (Test-Path -Path $env:SystemRoot\Temp))
-			{
-				New-Item -Path $env:SystemRoot\Temp -ItemType Directory -Force
-			}
-			if (-not (Test-Path -Path $env:LOCALAPPDATA\Temp))
-			{
-				New-Item -Path $env:LOCALAPPDATA\Temp -ItemType Directory -Force
-			}
-
-			# Restart the Printer Spooler service (Spooler)
-			Restart-Service -Name Spooler -Force
-
-			if ((Get-ChildItem -Path $env:SystemDrive\Temp -Force -ErrorAction Ignore | Measure-Object).Count -eq 0)
-			{
-				Remove-Item -Path $env:SystemDrive\Temp -Recurse -Force
-			}
-			else
-			{
-				Write-Verbose -Message ($Localization.TempNotEmpty -f $env:TEMP) -Verbose
-			}
-
-			[Environment]::SetEnvironmentVariable("TMP", "$env:LOCALAPPDATA\Temp", "User")
-			[Environment]::SetEnvironmentVariable("TMP", "$env:SystemRoot\TEMP", "Machine")
-			[Environment]::SetEnvironmentVariable("TMP", "$env:LOCALAPPDATA\Temp", "Process")
-			New-ItemProperty -Path HKCU:\Environment -Name TMP -PropertyType ExpandString -Value $env:LOCALAPPDATA\Temp -Force
-
-			[Environment]::SetEnvironmentVariable("TEMP", "$env:LOCALAPPDATA\Temp", "User")
-			[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemRoot\TEMP", "Machine")
-			[Environment]::SetEnvironmentVariable("TEMP", "$env:LOCALAPPDATA\Temp", "Process")
-			New-ItemProperty -Path HKCU:\Environment -Name TEMP -PropertyType ExpandString -Value $env:LOCALAPPDATA\Temp -Force
-
-			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TMP -PropertyType ExpandString -Value $env:SystemRoot\TEMP -Force
-			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TEMP -PropertyType ExpandString -Value $env:SystemRoot\TEMP -Force
 		}
 	}
 }
@@ -5104,6 +5213,8 @@ function WinPrtScrFolder
 	# In order for the changes to take effect the File Explorer process has to be restarted
 	Stop-Process -Name explorer -Force
 
+	Start-Sleep -Seconds 3
+
 	# Restoring closed folders
 	foreach ($OpenedFolder in $OpenedFolders)
 	{
@@ -5628,7 +5739,7 @@ function Set-Association
 	Param
 	(
 		[Parameter(
-			Mandatory = $false,
+			Mandatory = $true,
 			Position = 0
 		)]
 		[String]
@@ -5647,6 +5758,7 @@ function Set-Association
 	)
 
 	$ProgramPath = [System.Environment]::ExpandEnvironmentVariables($ProgramPath)
+	$Icon = [System.Environment]::ExpandEnvironmentVariables($Icon)
 
 	if (Test-Path -Path $ProgramPath)
 	{
@@ -5819,6 +5931,7 @@ namespace RegistryUtils
 		$OpenSubKey = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey($SubKey,'ReadWriteSubTree','TakeOwnership')
 
 		$Acl = [System.Security.AccessControl.RegistrySecurity]::new()
+		# Get current user SID
 		$UserSID = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
 		$Acl.SetSecurityDescriptorSddlForm("O:$UserSID`G:$UserSID`D:AI(D;;DC;;;$UserSID)")
 		$OpenSubKey.SetAccessControl($Acl)
@@ -5846,6 +5959,20 @@ namespace RegistryUtils
 
 		$OrigProgID = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Classes\$Extension" -Name "(default)" -ErrorAction Ignore)."(default)"
 
+		if ($OrigProgID)
+		{
+			# Save possible ProgIds history with extension
+			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Name "$ProgID`_$Extension" -PropertyType String -Value 0 -Force
+		}
+
+		$Name = (Get-Item -Path $ProgramPath).Name + $Extension
+		New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Name $Name -PropertyType String -Value 0 -Force
+
+		if ("$ProgId`_$Extension" -ne $Name)
+		{
+			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Name "$ProgId`_$Extension" -PropertyType String -Value 0 -Force
+		}
+
 		# If ProgId doesn't exist set the specified ProgId for the extansions
 		if (-not $OrigProgID)
 		{
@@ -5856,7 +5983,7 @@ namespace RegistryUtils
 			New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\$Extension" -Name "(default)" -PropertyType String -Value $ProgId -Force
 		}
 
-		# Set the specified ProgId в варианты возможных для назначения
+		# Set the specified ProgId in the possible options for the assignment
 		if (-not (Test-Path -Path "HKCU:\SOFTWARE\Classes\$Extension\OpenWithProgids"))
 		{
 			New-Item -Path "HKCU:\SOFTWARE\Classes\$Extension\OpenWithProgids" -Force
@@ -5872,14 +5999,12 @@ namespace RegistryUtils
 			}
 			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\OpenWithProgids" -Name $OrigProgID -PropertyType None -Value ([byte[]]@()) -Force
 		}
-		else
+
+		if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\OpenWithProgids"))
 		{
-			if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\OpenWithProgids"))
-			{
-				New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\OpenWithProgids" -Force
-			}
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\OpenWithProgids" -Name $ProgID -PropertyType None -Value ([byte[]]@()) -Force
+			New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\OpenWithProgids" -Force
 		}
+		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\OpenWithProgids" -Name $ProgID -PropertyType None -Value ([byte[]]@()) -Force
 
 		# Removing the UserChoice key
 		Remove-UserChoiceKey -SubKey "Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice"
@@ -5932,13 +6057,6 @@ namespace RegistryUtils
 			}
 			New-ItemProperty -Path Registry::HKEY_USERS\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\FileAssociations\ProgIds -Name "_$Extension" -PropertyType DWord -Value 1 -Force
 		}
-
-		# Save possible ProgIds with extension
-		if (-not (Test-Path -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts"))
-		{
-			New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Force
-		}
-		New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Name "$ProgId`_$Extension" -PropertyType String -Value 0 -Force
 
 		# Setting 'NoOpenWith' for all registered the extension ProgIDs
 		[psobject]$OpenSubkey = Get-Item -Path "Registry::HKEY_CLASSES_ROOT\$Extension\OpenWithProgids" -ErrorAction Ignore | Select-Object -ExpandProperty Property
@@ -6124,7 +6242,9 @@ namespace FileAssoc
 		{
 			[OutputType([array])]
 
+	    		# Secret static string stored in %SystemRoot%\SysWOW64\shell32.dll
 			$userExperience        = "User Choice set via Windows User Experience {D18B6DD5-6124-4341-9318-804003BAFA0B}"
+			# Get user SID
 			$userSid               = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
 			$KeyLastWriteTime      = Get-KeyLastWriteTime -SubKey $SubKey
 			$baseInfo              = ("{0}{1}{2}{3}{4}" -f $Extension, $userSid, $ProgId, $KeyLastWriteTime, $userExperience).ToLowerInvariant()
@@ -6846,7 +6966,7 @@ function SoftwareDistributionTask
 
 			$SoftwareDistributionTask = @"
 (Get-Service -Name wuauserv).WaitForStatus('Stopped', '01:00:00')
-Get-ChildItem -Path $env:SystemRoot\SoftwareDistribution\Download -Recurse -Force | Remove-Item -Recurse -Force
+Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -Force | Remove-Item -Recurse -Force
 
 [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
 [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
@@ -6941,7 +7061,7 @@ function TempTask
 		"Register"
 		{
 			$TempTask = @"
-"Get-ChildItem -Path $env:TEMP -Force -Recurse | Remove-Item -Recurse -Force"
+Get-ChildItem -Path `$env:TEMP -Force -Recurse | Remove-Item -Recurse -Force
 
 [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
 [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
@@ -7384,6 +7504,8 @@ function DismissSmartScreenFilter
 
 	.EXAMPLE
 	AuditProcess -Enable
+
+	.NOTES
 	Machine-wide
 #>
 function AuditProcess
@@ -7436,6 +7558,8 @@ function AuditProcess
 
 	.NOTES
 	In order this feature to work events auditing ("AuditProcess -Enable" function) will be enabled
+
+	.NOTES
 	Machine-wide
 #>
 function AuditCommandLineProcess
@@ -7491,6 +7615,8 @@ function AuditCommandLineProcess
 
 	.NOTES
 	In order this feature to work events auditing ("AuditProcess -Enable" function) and command line in process creation events will be enabled
+
+	.NOTES
 	Machine-wide
 #>
 function EventViewerCustomView
@@ -7570,6 +7696,8 @@ function EventViewerCustomView
 
 	.EXAMPLE
 	PowerShellModulesLogging -Enable
+
+	.NOTES
 	Machine-wide
 #>
 function PowerShellModulesLogging
@@ -7625,6 +7753,8 @@ function PowerShellModulesLogging
 
 	.EXAMPLE
 	PowerShellScriptsLogging -Enable
+
+	.NOTES
 	Machine-wide
 #>
 function PowerShellScriptsLogging
@@ -7678,6 +7808,8 @@ function PowerShellScriptsLogging
 
 	.EXAMPLE
 	AppsSmartScreen -Enable
+
+	.NOTES
 	Machine-wide
 #>
 function AppsSmartScreen
@@ -7785,6 +7917,8 @@ function SaveZoneInformation
 
 	.NOTES
 	Blocks WSH from executing .js and .vbs files
+
+	.NOTES
 	Current user
 #>
 function WindowsScriptHost
@@ -7838,6 +7972,8 @@ function WindowsScriptHost
 
 	.EXAMPLE
 	WindowsSandbox -Enable
+
+	.NOTES
 	Current user
 #>
 function WindowsSandbox
@@ -7933,6 +8069,8 @@ function WindowsSandbox
 
 	.EXAMPLE
 	MSIExtractContext -Add
+
+	.NOTES
 	Current user
 #>
 function MSIExtractContext
@@ -7989,6 +8127,8 @@ function MSIExtractContext
 
 	.EXAMPLE
 	CABInstallContext -Add
+
+	.NOTES
 	Current user
 #>
 function CABInstallContext
@@ -8045,6 +8185,8 @@ function CABInstallContext
 
 	.EXAMPLE
 	RunAsDifferentUserContext -Add
+
+	.NOTES
 	Current user
 #>
 function RunAsDifferentUserContext
@@ -8094,6 +8236,8 @@ function RunAsDifferentUserContext
 
 	.EXAMPLE
 	CastToDeviceContext -Show
+
+	.NOTES
 	Current user
 #>
 function CastToDeviceContext
@@ -8147,6 +8291,8 @@ function CastToDeviceContext
 
 	.EXAMPLE
 	ShareContext -Show
+
+	.NOTES
 	Current user
 #>
 function ShareContext
@@ -8200,6 +8346,8 @@ function ShareContext
 
 	.EXAMPLE
 	EditWithPaint3DContext -Show
+
+	.NOTES
 	Current user
 #>
 function EditWithPaint3DContext
@@ -8257,6 +8405,8 @@ function EditWithPaint3DContext
 
 	.EXAMPLE
 	PrintCMDContext -Show
+
+	.NOTES
 	Current user
 #>
 function PrintCMDContext
@@ -8308,6 +8458,8 @@ function PrintCMDContext
 
 	.EXAMPLE
 	IncludeInLibraryContext -Show
+
+	.NOTES
 	Current user
 #>
 function IncludeInLibraryContext
@@ -8357,6 +8509,8 @@ function IncludeInLibraryContext
 
 	.EXAMPLE
 	SendToContext -Show
+
+	.NOTES
 	Current user
 #>
 function SendToContext
@@ -8406,6 +8560,8 @@ function SendToContext
 
 	.EXAMPLE
 	BitLockerContext -Show
+
+	.NOTES
 	Current user
 #>
 function BitLockerContext
@@ -8471,6 +8627,8 @@ function BitLockerContext
 
 	.EXAMPLE
 	BitmapImageNewContext -Add
+
+	.NOTES
 	Current user
 #>
 function BitmapImageNewContext
@@ -8547,6 +8705,8 @@ function BitmapImageNewContext
 
 	.EXAMPLE
 	RichTextDocumentNewContext -Add
+
+	.NOTES
 	Current user
 #>
 function RichTextDocumentNewContext
@@ -8623,6 +8783,8 @@ function RichTextDocumentNewContext
 
 	.EXAMPLE
 	CompressedFolderNewContext -Add
+
+	.NOTES
 	Current user
 #>
 function CompressedFolderNewContext
@@ -8677,6 +8839,8 @@ function CompressedFolderNewContext
 
 	.EXAMPLE
 	MultipleInvokeContext -Disable
+
+	.NOTES
 	Current user
 #>
 function MultipleInvokeContext
@@ -8726,6 +8890,8 @@ function MultipleInvokeContext
 
 	.EXAMPLE
 	UseStoreOpenWith -Show
+
+	.NOTES
 	Current user
 #>
 function UseStoreOpenWith
@@ -8779,6 +8945,8 @@ function UseStoreOpenWith
 
 	.EXAMPLE
 	PreviousVersionsPage -Show
+
+	.NOTES
 	Current user
 #>
 function PreviousVersionsPage
