@@ -74,6 +74,5 @@ SelectAll                                 = Selecionar tudo
 Skip                                      = Pular
 Skipped                                   = Ignorados
 Snooze                                    = Soneca
-SymbolicSkipped                           = Pulado criando um link simbólico
 Uninstall                                 = Desinstalar
 '@

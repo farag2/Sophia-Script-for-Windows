@@ -74,6 +74,5 @@ SelectAll                                 = Select all
 Skip                                      = Skip
 Skipped                                   = Skipped
 Snooze                                    = Snooze
-SymbolicSkipped                           = Skipped creating a symbolic link
 Uninstall                                 = Uninstall
 '@

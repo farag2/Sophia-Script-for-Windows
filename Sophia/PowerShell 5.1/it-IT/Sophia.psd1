@@ -74,6 +74,5 @@ SelectAll                                 = Seleziona tutto
 Skip                                      = Salta
 Skipped                                   = Saltato
 Snooze                                    = Sonnellino
-SymbolicSkipped                           = Saltato creando un link simbolico
 Uninstall                                 = Disinstallare
 '@
