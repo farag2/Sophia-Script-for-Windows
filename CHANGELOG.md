@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.9 - 27.03.2021
+
+## Windows 10 2004 (20H1)/20H2 (2009) | LTSC
+
+Diff from v5.9
+[5.8...5.9](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.8...5.9)
+
+* Для граждан СНГ добавил перевод пожертвований с помощью [ЮMoney](https://yoomoney.ru/to/4100116615568835), используя прямой перевод с карты;
+* Updated the `UnpinTaskbarEdgeStore` function again;
+  * Fixed bug when calling this function before `UninstallUWPApps` breaks the retrieval of the localized UWP apps packages names;
+  * Refixed #145
+* The `TempFolders` and the `OneDrive` functions update
+  * `TempFolders` totally rewritten using the `MoveFileExA` [function](https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexa)
+  * Now with the `MOVEFILE_DELAY_UNTIL_REBOOT` flag all unremovable files and folder will be removed after reboot (log off) automatically. After that the temporary scheduled task will create a symobolic link and remove itself;
+  * Thanks to @gtumanyan for the tip;
+<details>
+  <summary>More details</summary>
+
+```C#
+public enum MoveFileFlags
+{
+	MOVEFILE_DELAY_UNTIL_REBOOT = 0x00000004
+}
+
+[DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+static extern bool MoveFileEx(string lpExistingFileName, string lpNewFileName, MoveFileFlags dwFlags);
+
+public static bool MarkFileDelete (string sourcefile)
+{
+	return MoveFileEx(sourcefile, null, MoveFileFlags.MOVEFILE_DELAY_UNTIL_REBOOT);
+}
+```
+</details>
+
+* Fixed #152;
+* Minor changes. :feelsgood:
+
 ## 5.8 - 17.03.2021
 
 ## Windows 10 2004 (20H1)/20H2 (2009) | LTSC
