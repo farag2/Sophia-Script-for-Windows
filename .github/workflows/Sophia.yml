@@ -55,7 +55,6 @@ jobs:
           Write-Host $BUILD_DIR
           Write-Host $ZIP
 
-          Copy-Item -Path "Sophia\PowerShell 5.1\*" -Destination $BUILD_DIR -Recurse -Force
           Copy-Item -Path "Sophia\PowerShell 7.x\*" -Destination $BUILD_DIR -Recurse -Force
           
           # Download Microsoft.Windows.SDK.NET.Ref
@@ -105,7 +104,7 @@ jobs:
 
           Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP -Force
 
-          Remove-Item -Path "$PSScriptRoot\CsWinRT", "$PSScriptRoot\sdk" -Recurse -Force
+          Remove-Item -Path "$PSScriptRoot\CsWinRT", "$PSScriptRoot\SDK" -Recurse -Force
           Remove-Item -Path "$PSScriptRoot\Microsoft.Windows.CsWinRT.zip", "$PSScriptRoot\Microsoft.Windows.SDK.NET.Ref.zip" -Force
 
       - name: Build LTSC
