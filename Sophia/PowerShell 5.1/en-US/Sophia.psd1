@@ -1,17 +1,12 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = The script supports Windows 10 x64 only
 UnsupportedOSBuild                        = The script supports Windows 10 2004/20H1 versions and higher
-UnsupportedRelease                        = New version found
+UnsupportedRelease                        = A new version found
 ControlledFolderAccessDisabled            = Controlled folder access disabled
 ScheduledTasks                            = Scheduled tasks
 OneDriveUninstalling                      = Uninstalling OneDrive...
-OneDriveNotEmptyFolder                    = The "{0}" folder is not empty. Delete it manually
-OneDriveFileSyncShell64dllBlocked         = "{0}" is blocked. Delete it manually
 OneDriveInstalling                        = OneDrive is installing...
 OneDriveDownloading                       = Downloading OneDrive... ~33 MB
-ClearFolder                               = Delete all files in the "{0}" folder?
-FilesBlocked                              = The following files are being blocked by third-party party apps. Remove them manually and continue
-TempNotEmpty                              = The "{0}" folder is not empty. Clear it manually
 WindowsFeaturesTitle                      = Windows features
 OptionalFeaturesTitle                     = Optional features
 EnableHardwareVT                          = Enable Virtualization in UEFI
@@ -58,7 +53,6 @@ ErrorsMessage                             = Errors/Warnings
 Add                                       = Add
 AllFilesFilter                            = All Files (*.*)|*.*
 Change                                    = Change
-Delete                                    = Delete
 DialogBoxOpening                          = Displaying the dialog box...
 Disable                                   = Disable
 Dismiss                                   = Dismiss
