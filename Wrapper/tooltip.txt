@@ -80,6 +80,8 @@ WindowsInkWorkspace -Hide;Do not show the "Windows Ink Workspace" button on the 
 WindowsInkWorkspace -Show;Show the "Windows Ink Workspace" button in taskbar (default value);
 TrayIcons -Show;Always show all icons in the notification area;
 TrayIcons -Hide;Do not show all icons in the notification area (default value);
+MeetNow -Hide;Hide the Meet Now icon in the notification area;
+MeetNow -Show;Show the Meet Now icon in the notification area (default value);
 UnpinTaskbarEdgeStore;Unpin "Microsoft Edge" and "Microsoft Store" from the taskbar;
 ControlPanelView -Category;View the Control Panel icons by: category (default value);
 ControlPanelView -LargeIcons;View the Control Panel icons by: large icons;
@@ -144,8 +146,6 @@ WindowsCapabilities -Uninstall;	Uninstall optional features using the pop-up dia
 WindowsCapabilities -Install;Install optional features using the pop-up dialog box;
 UpdateMicrosoftProducts -Enable;Receive updates for other Microsoft products when you update Windows;
 UpdateMicrosoftProducts -Disable;Do not receive updates for other Microsoft products when you update Windows (default value);
-BackgroundUWPApps -Disable;Do not let all UWP apps run in the background;
-BackgroundUWPApps -Enable;Let all UWP apps run in the background (default value);
 PowerManagementScheme -High;Set the power management scheme on "High performance";
 PowerManagementScheme -Balanced;Set the power management scheme on "Balanced" (default value);
 LatestInstalled.NET -Enable;Use latest installed .NET runtime for all apps;
@@ -153,7 +153,7 @@ LatestInstalled.NET -Disable;Do not use latest installed .NET runtime for all ap
 PCTurnOffDevice -Disable;Do not allow the computer to turn off the network adapters to save power;
 PCTurnOffDevice -Enable;Allow the computer to turn off the network adapters to save power (default value);
 SetInputMethod -English;Override for default input method: English;
-SetInputMethod -Default;Override for default input method: use langiage list (default value);
+SetInputMethod -Default;Override for default input method: use language list (default value);
 WinPrtScrFolder -Desktop;Save screenshots by pressing Win+PrtScr on the Desktop;
 WinPrtScrFolder -Default;Save screenshots by pressing Win+PrtScr on the Pictures folder (default value);
 RecommendedTroubleshooting -Automatic;Run troubleshooters automatically, then notify. In order this feature to work the OS level of diagnostic data gathering must be set to "Optional diagnostic data";
@@ -194,7 +194,7 @@ AppSuggestions -Hide;Hide app suggestions in the Start menu;
 AppSuggestions -Show;Show app suggestions in the Start menu (default value);
 RunPowerShellShortcut -Elevated;Run the Windows PowerShell shortcut from the Start menu as Administrator;
 RunPowerShellShortcut -NonElevated;Run the Windows PowerShell shortcut from the Start menu as user (default value);
-PinToStart -Tiles ControlPanel,DevicesPrinters,PowerShell;Pin the Control Panel, "Devices & Printers", and Windows PowerShell shortcuts to Start;
+PinToStart -Tiles ControlPanel,DevicesPrinters,PowerShell;Pin to Start the following links: Control Panel, Devices and Printers, PowerShell;
 PinToStart -Tiles ControlPanel;Pin the Control Panel shortcut shortcut to Start;
 PinToStart -Tiles DevicesPrinters;Pin the "Devices & Printers" shortcut to Start;
 PinToStart -Tiles PowerShell;Pin the Windows PowerShell shortcut to Start;
@@ -202,10 +202,13 @@ PinToStart -UnpinAll;Unpin all the Start tiles;
 
 <#uwp#>
 
-UninstallUWPApps;Uninstall UWP apps using the pop-up dialog box. App packages will not be installed for new users if "Uninstall for All Users" is checked;
+UninstallUWPApps;Uninstall UWP apps using the pop-up dialog box. If the "For All Users" is checked apps packages will not be installed for new users. The "For All Users" checkbox isn't checked by default;
+UninstallUWPApps -ForAllUsers;Uninstall UWP apps using the pop-up dialog box. If the "For All Users" is checked apps packages will not be installed for new users. The "For All Users" checkbox checked by default;
 InstallHEIF;Open Microsoft Store "HEVC Video Extensions from Device Manufacturer" page to install this extension manually to be able to open .heic and .heif image formats. The extension can be installed without Microsoft account;
 CortanaAutostart -Disable;Disable Cortana autostarting;
 CortanaAutostart -Enable;Enable Cortana autostarting (default value);
+BackgroundUWPApps -Disable;Do not let all UWP apps run in the background;
+BackgroundUWPApps -Enable;Let all UWP apps run in the background (default value);
 CheckUWPAppsUpdates;Check for UWP apps updates
 
 <#gaming#>
@@ -307,6 +310,9 @@ PreviousVersionsPage -Show;Show the "Previous Versions" tab from files and folde
 
 <#other#>
 
+ControlPanelView -Category;View the Control Panel icons by: category (default value);
+ControlPanelView -LargeIcons;View the Control Panel icons by: large icons;
+ControlPanelView -SmallIcons;View the Control Panel icons by: small icons;
 TaskbarSearch -Hide;Hide the search box or the search icon from the taskbar;
 TaskbarSearch -SearchIcon;Show the search icon on the taskbar;
 TaskbarSearch -SearchBox;Show the search box on the taskbar (default value);

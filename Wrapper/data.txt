@@ -44,6 +44,7 @@ QuickAccessFrequentFolders -Hide;QuickAccessFrequentFolders -Show;
 QuickAccessRecentFiles -Hide;QuickAccessRecentFiles -Show;
 WindowsInkWorkspace -Hide;WindowsInkWorkspace -Show;
 TrayIcons -Show;TrayIcons -Hide;
+MeetNow -Hide;MeetNow -Show;
 UnpinTaskbarEdgeStore;LeaveAlone;
 WindowsColorScheme -Dark;WindowsColorScheme -Light;
 AppMode -Dark;AppMode -Light;
@@ -78,7 +79,6 @@ WindowsManageDefaultPrinter -Disable;WindowsManageDefaultPrinter -Enable;
 WindowsFeatures -Disable;WindowsFeatures -Enable;
 WindowsCapabilities -Uninstall;WindowsCapabilities -Install;
 UpdateMicrosoftProducts -Enable;UpdateMicrosoftProducts -Disable;
-BackgroundUWPApps -Disable;BackgroundUWPApps -Enable;
 PowerManagementScheme -High;PowerManagementScheme -Balanced;
 LatestInstalled.NET -Enable;LatestInstalled.NET -Disable;
 PCTurnOffDevice -Disable;PCTurnOffDevice -Enable;
@@ -113,9 +113,10 @@ PinToStart -UnpinAll;LeaveAlone
 
 <#uwp#>
 
-UninstallUWPApps;LeaveAlone;
-HEIF -Manual;HEIF -Install
+UninstallUWPApps;LeaveAlone;UninstallUWPApps -ForAllUsers;LeaveAlone;
+HEIF -Manual;HEIF -Install;
 CortanaAutostart -Disable;CortanaAutostart -Enable;
+BackgroundUWPApps -Disable;BackgroundUWPApps -Enable;
 CheckUWPAppsUpdates;LeaveAlone
 
 <#gaming#>

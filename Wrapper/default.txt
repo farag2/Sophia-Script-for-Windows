@@ -43,6 +43,7 @@ QuickAccessFrequentFolders -Hide;
 QuickAccessRecentFiles -Hide;
 WindowsInkWorkspace -Hide;
 TrayIcons -Show;
+MeetNow -Hide;
 UnpinTaskbarEdgeStore;
 WindowsColorScheme -Dark;
 AppMode -Dark;
@@ -76,7 +77,6 @@ WindowsManageDefaultPrinter -Disable;
 WindowsFeatures -Disable;
 WindowsCapabilities -Uninstall;
 UpdateMicrosoftProducts -Enable;
-BackgroundUWPApps -Disable;
 PowerManagementScheme -High;
 LatestInstalled.NET -Enable;
 PCTurnOffDevice -Disable;
@@ -100,13 +100,14 @@ DeviceRestartAfterUpdate -Enable
 RecentlyAddedApps -Hide;
 AppSuggestions -Hide;
 RunPowerShellShortcut -Elevated;
-PinToStart -Tiles ControlPanel,DevicesPrinters,PowerShell
+PinToStart -Tiles ControlPanel, DevicesPrinters, PowerShell
 
 <#uwp#>
 
 UninstallUWPApps;
-HEIF -Install
+HEIF -Install;
 CortanaAutostart -Disable;
+BackgroundUWPApps -Disable;
 CheckUWPAppsUpdates
 
 <#gaming#>
