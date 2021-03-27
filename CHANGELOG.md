@@ -15,7 +15,8 @@ Diff from v5.9
 * Для граждан СНГ добавил перевод пожертвований с помощью [ЮMoney](https://yoomoney.ru/to/4100116615568835), используя прямой перевод с карты;
 * Updated the `UnpinTaskbarEdgeStore` function again;
   * Fixed bug when calling this function before `UninstallUWPApps` breaks the retrieval of the localized UWP apps packages names;
-  * Refixed #145
+  * Refixed #145;
+  * Thanks to [iNNOKENTIY21](https://forum.ru-board.com/profile.cgi?action=show&member=iNNOKENTIY21)
 * The `TempFolders` and the `OneDrive` functions update
   * `TempFolders` totally rewritten using the `MoveFileExA` [function](https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexa)
   * Now with the `MOVEFILE_DELAY_UNTIL_REBOOT` flag all unremovable files and folder will be removed after reboot (log off) automatically. After that the temporary scheduled task will create a symobolic link and remove itself;
