@@ -12,7 +12,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@master
-      - name: Build 5.x
+      - name: Build 5.1
         run: |
           $BUILD_DIR = "Sophia Script v"
           if ($env:GITHUB_REF -eq "refs/heads/master")
@@ -35,7 +35,7 @@ jobs:
    
           Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP -Force
 
-      - name: Build 7.x
+      - name: Build 7
         run: |
           $BUILD_DIR = "Sophia Script v"
           if ($env:GITHUB_REF -eq "refs/heads/master")
@@ -46,7 +46,7 @@ jobs:
           {
             $BUILD_DIR += ${env:GITHUB_REF} -replace "refs/tags/", ""
           }
-          $BUILD_DIR += " PS7.x"
+          $BUILD_DIR += " PS 7"
 
           $ZIP = "$BUILD_DIR.zip"
 
@@ -55,7 +55,7 @@ jobs:
           Write-Host $BUILD_DIR
           Write-Host $ZIP
 
-          Copy-Item -Path "Sophia\PowerShell 7.x\*" -Destination $BUILD_DIR -Recurse -Force
+          Copy-Item -Path "Sophia\PowerShell 7\*" -Destination $BUILD_DIR -Recurse -Force
           
           # Download Microsoft.Windows.SDK.NET.Ref
           $Parameters = @{
