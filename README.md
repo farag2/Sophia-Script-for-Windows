@@ -107,9 +107,6 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ## Screenshots
 
-<details>
-  <summary>Screenshots</summary>
-
 ![Image](https://i.imgur.com/5up2HrJ.png)
 ![Image](https://i.imgur.com/Fuf4CaD.png)
 ![Image](https://i.imgur.com/9s7Noud.png)
@@ -120,7 +117,6 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ![Image](https://i.imgur.com/fmFxnaA.png)
 ![Image](https://i.imgur.com/IbaYl3h.png)
-</details>
 
 ## Videos
 
