@@ -100,10 +100,10 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 |Version|    Marketing name   | Build | Arch |      Editions     | Script version |
 |:-----:|:-------------------:|:-----:|:----:|:-----------------:|:--------------:|
-| 21H1  | Spring 2021 Update  | 19043 |  x64 |Home/Pro/Enterprise|[5.9](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
-| 20H2  | October 2020 Update | 19042 |  x64 |Home/Pro/Enterprise|[5.9](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
-| 2004  |   May 2020 Update   | 19041 |  x64 |Home/Pro/Enterprise|[5.9](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
-| 1809  | LTSC Enterprise 2019| 17763 |  x64 |   Enterprise      |[5.1.2](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 21H1  | Spring 2021 Update  | 19043 |  x64 |Home/Pro/Enterprise|[5.10](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 20H2  | October 2020 Update | 19042 |  x64 |Home/Pro/Enterprise|[5.10](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 2004  |   May 2020 Update   | 19041 |  x64 |Home/Pro/Enterprise|[5.10](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 1809  | LTSC Enterprise 2019| 17763 |  x64 |   Enterprise      |[5.2](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
 
 ## Screenshots
 
