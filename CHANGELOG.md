@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Diff from v5.10
 [5.9...5.10](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.9...5.10)
 
-* The function for calling the specific function was completely rewritten! :rocket:
+* Calling the specific function was completely rewritten! :rocket:
   * Now you're able to use the <kbd>Tab</kbd> completion for functions and their arguments by typing its' first letters
     ![Image](https://i.imgur.com/eMsn1aY.gif)
   * The code from moved to the `Functions.ps1` file;
