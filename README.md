@@ -112,6 +112,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ![Image](https://i.imgur.com/5up2HrJ.png)
 ![Image](https://i.imgur.com/Fuf4CaD.png)
+![Image](https://i.imgur.com/9s7Noud.png)
 ![Image](https://i.imgur.com/qZhFqr3.png)
 ![Image](https://i.imgur.com/2C3NOke.png)
 
@@ -145,6 +146,8 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
   * "Videos.
 * Uninstall UWP apps displaying friendly packages names with pop-up form written in [WPF](#Screenshots);
   * Dynamically generated UWP apps list installed for all users
+* Restore the default uninstalled UWP apps for current user displaying friendly packages names with pop-up form written in [WPF](#Screenshots);
+* The <kbd>Tab</kbd> completion for functions and their arguments by typing its' first letters
 * Disable Windows features displaying friendly packages names with pop-up form written in [WPF](#Screenshots);
 * Uninstall Windows capabilities displaying friendly packages names with pop-up form written in [WPF](#Screenshots);
 * Download and install the [HEVC Video Extensions from Device Manufacturer](https://www.microsoft.com/p/hevc-video-extensions-from-device-manufacturer/9n4wgh0z6vhq) from Microsoft server using <https://store.rg-adguard.net> parser to be able to open .heic and .heif formats;
@@ -185,10 +188,20 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ***
 
-How to run the specific function(s) (example):
+How to run the specific function(s) [dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-) the `Functions.ps1` first:
 
 ```powershell
-.\Sophia.ps1 -Functions CreateRestorePoint, "ScheduledTasks -Disable", "WindowsCapabilities -Uninstall"
+# With a dot at the beginning
+. .\Functions
+```
+
+* Now you can do like this
+
+```powershell
+Sophia -Functions <tab>
+Sophia -Functions temp<tab>
+Sophia -Functions unin<tab>
+Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
 ```
 
 * Regardless of the functions entered as an argument the `Checkings` function will be executed first, and the `Refresh` and `Errors` functions will be executed at the end;
@@ -207,6 +220,7 @@ How to run the specific function(s) (example):
 
 ## Ask a question on
 
+* [Telegram](https://t.me/sophia_chat)
 * [Ru-Board](http://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15)
 * [rutracker](https://rutracker.org/forum/viewtopic.php?t=5996011)
 * [My Digital Life](https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/)
