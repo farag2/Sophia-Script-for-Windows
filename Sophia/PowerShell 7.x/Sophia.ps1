@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Windows 10 Sophia Script"
 
-	Version: v5.9
-	Date: 27.03.2021
+	Version: v5.10
+	Date: 09.04.2021
 	Copyright (c) 2015–2021 farag & oZ-Zo
 
 	Thanks to all https://forum.ru-board.com members involved
@@ -16,16 +16,16 @@
 
 	Running the script is best done on a fresh install because running it on wrong tweaked system may result in errors occurring
 
-	.EXAMPLE
-	.\Sophia.ps1
+	To be able to call the specific function using autocompletion enter ". .\Functions.ps1" (with a dot at the beginning)
+	Read more in the Functions.ps1 file
 
-	.EXAMPLE
-	.\Sophia.ps1 -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
+	.EXAMPLE Run the whole script
+	.\Sophia.ps1
 
 	.NOTES
 	Supported Windows 10 versions
-	Versions: 2004 (20H1)/20H2 (2009)
-	Builds: 19041/19042
+	Versions: 2004 (20H1)/20H2 (2009)/21H1
+	Builds: 19041/19042/19043
 	Editions: Home/Pro/Enterprise
 	Architecture: x64
 
@@ -54,49 +54,16 @@
 #Requires -RunAsAdministrator
 #Requires -Version 7.1
 
-[CmdletBinding()]
-param
-(
-	[Parameter(Mandatory = $false)]
-	[string[]]
-	$Functions
-)
-
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.9 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & oz-zo, 2015–2021"
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.10 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & oz-zo, 2015–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Sophia.psd1 -PassThru -Force
 
 Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia
 
-<#
-	.SYNOPSIS
-	Adds the feature to run the script by specifying module functions as parameters
-	Добавляет возможность запускать скрипт, указывая в качестве параметров функции модуля
-
-	.EXAMPLE
-	.\Sophia.ps1 -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
-
-	.NOTES
-	Regardless of the functions entered as an argument, the "Checkings" function will be executed first, and the "Refresh" and "Errors" functions will be executed at the end
-	Вне зависимости от введенных функций в качестве аргумента, сначала будет выполнена функция "Checkings", и в конце — "Refresh" и "Errors"
-#>
-if ($Functions)
-{
-	Invoke-Command -ScriptBlock {Checkings}
-
-	foreach ($Function in $Functions)
-	{
-		Invoke-Expression -Command $Function
-	}
-
-	Invoke-Command -ScriptBlock {Refresh; Errors}
-
-	exit
-}
-
+#region Protection
 <#
 	Checkings
 	Please, do not touch this function
@@ -118,6 +85,7 @@ Checkings
 # Create a restore point
 # Создать точку восстановления
 CreateRestorePoint
+#endregion Protection
 
 #region Privacy & Telemetry
 # Disable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and block connection
@@ -957,6 +925,15 @@ UninstallUWPApps
 	Галочка "Для всех пользователей" отмечена по умолчанию
 #>
 # UninstallUWPApps -ForAllUsers
+
+<#
+	Restore the default UWP apps using the pop-up dialog box
+	UWP apps can be restored only if they were uninstalled only for the current user
+
+	Восстановить стандартные UWP-приложения, используя всплывающее диалоговое окно
+	UWP-приложения могут быть восстановлены, только если они были удалены для текущего пользователя
+#>
+# RestoreUWPApps
 
 <#
 	Open Microsoft Store "HEVC Video Extensions from Device Manufacturer" page to install this extension manually to be able to open .heic and .heif formats
