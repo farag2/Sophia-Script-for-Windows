@@ -182,9 +182,9 @@ SmartActiveHours -Enable;Automatically adjust active hours for me based on daily
 SmartActiveHours -Disable;Do not automatically adjust active hours for me based on daily usage (default value);
 DeviceRestartAfterUpdate -Enable;Restart this device as soon as possible when a restart is required to install an update;
 DeviceRestartAfterUpdate -Disable;Do not restart this device as soon as possible when a restart is required to install an update (default value);
-WSL -Enable;Install the Windows Subsystem for Linux (WSL). https://github.com/farag2/Windows-10-Sophia-Script/issues/43. https://github.com/microsoft/WSL/issues/5437;
+WSL -Enable;Install the Windows Subsystem for Linux (WSL);
 WSL -Disable;Uninstall the Windows Subsystem for Linux (WSL);
-EnableWSL2;Download and install the Linux kernel update package. Set WSL 2 as the default version when installing a new Linux distribution. Run the function only after WSL installed and PC restart. https://github.com/microsoft/WSL/issues/5437. https://github.com/farag2/Windows-10-Sophia-Script/issues/43;
+EnableWSL2;Download and install the Linux kernel update package. Set WSL 2 as the default version when installing a new Linux distribution. Run the function only after WSL installed and PC restart;
 
 <#start#>
 
@@ -198,12 +198,13 @@ PinToStart -Tiles ControlPanel,DevicesPrinters,PowerShell;Pin to Start the follo
 PinToStart -Tiles ControlPanel;Pin the Control Panel shortcut shortcut to Start;
 PinToStart -Tiles DevicesPrinters;Pin the "Devices & Printers" shortcut to Start;
 PinToStart -Tiles PowerShell;Pin the Windows PowerShell shortcut to Start;
-PinToStart -UnpinAll;Unpin all the Start tiles;
+PinToStart -UnpinAll;Unpin all the Start tiles
 
 <#uwp#>
 
 UninstallUWPApps;Uninstall UWP apps using the pop-up dialog box. If the "For All Users" is checked apps packages will not be installed for new users. The "For All Users" checkbox isn't checked by default;
 UninstallUWPApps -ForAllUsers;Uninstall UWP apps using the pop-up dialog box. If the "For All Users" is checked apps packages will not be installed for new users. The "For All Users" checkbox checked by default;
+RestoreUWPApps;Restore the default UWP apps using the pop-up dialog box. UWP apps can be restored only if they were uninstalled only for the current user;
 InstallHEIF;Open Microsoft Store "HEVC Video Extensions from Device Manufacturer" page to install this extension manually to be able to open .heic and .heif image formats. The extension can be installed without Microsoft account;
 CortanaAutostart -Disable;Disable Cortana autostarting;
 CortanaAutostart -Enable;Enable Cortana autostarting (default value);
@@ -219,7 +220,7 @@ XboxGameTips -Disable;Disable Xbox Game Bar tips;
 XboxGameTips -Enable;Enable Xbox Game Bar tips (default value);
 SetAppGraphicsPerformance;Set "High performance" in graphics performance preference for an app. Only with a dedicated GPU;
 GPUScheduling -Enable;Turn on hardware-accelerated GPU scheduling. Restart needed. Only with a dedicated GPU and WDDM verion is 2.7 or higher;
-GPUScheduling -Disable;Turn off hardware-accelerated GPU scheduling (default value). Restart needed
+GPUScheduling -Disable;Turn off hardware-accelerated GPU scheduling (default value). Restart needed;
 
 <#scheduled#>
 

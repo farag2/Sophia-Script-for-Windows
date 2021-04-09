@@ -114,6 +114,7 @@ PinToStart -UnpinAll;LeaveAlone
 <#uwp#>
 
 UninstallUWPApps;LeaveAlone;UninstallUWPApps -ForAllUsers;LeaveAlone;
+RestoreUWPApps;LeaveAlone;
 HEIF -Manual;HEIF -Install;
 CortanaAutostart -Disable;CortanaAutostart -Enable;
 BackgroundUWPApps -Disable;BackgroundUWPApps -Enable;
