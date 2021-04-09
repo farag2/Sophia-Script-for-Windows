@@ -57,12 +57,15 @@ Minute                                    = 1 хвилина
 NoData                                    = Відсутні дані
 NoInternetConnection                      = Відсутнє інтернет-з'єднання
 NoResponse                                = Не вдалося встановити зв’язок із https://store.rg-adguard.net
+Open                                      = Відкрити
 Patient                                   = Будь ласка, зачекайте...
+Restore                                   = Відновити
 Run                                       = Запустити
 Select                                    = Вибрати
 SelectAll                                 = Вибрати все
 Skip                                      = Пропустити
 Skipped                                   = Пропущено
 Snooze                                    = Відкласти
+TelegramTitle                             = Приєднуйтесь до нашої офіційної групи Telegram
 Uninstall                                 = Видалити
 '@

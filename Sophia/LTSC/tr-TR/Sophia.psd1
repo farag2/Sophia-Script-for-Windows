@@ -57,12 +57,15 @@ Minute                                    = 1 dakika
 NoData                                    = Görüntülenecek bir şey yok
 NoInternetConnection                      = İnternet bağlantısı yok
 NoResponse                                = https://store.rg-adguard.net ile bağlantı kurulamadı
+Open                                      = Açık
 Patient                                   = Lütfen bekleyin...
+Restore                                   = Onarmak
 Run                                       = Başlat
 Select                                    = Seç
 SelectAll                                 = Hepsini seç
 Skip                                      = Atla
 Skipped                                   = Atlandı
 Snooze                                    = Ertelemek
+TelegramTitle                             = Resmi Telegram kanalımıza katılın
 Uninstall                                 = Kaldır
 '@

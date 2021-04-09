@@ -57,12 +57,15 @@ Minute                                    = 1 minute
 NoData                                    = Rien à afficher
 NoInternetConnection                      = Pas de connexion Internet
 NoResponse                                = Une connexion n'a pas pu être établie avec https://store.rg-adguard.net
+Open                                      = Ouvert
 Patient                                   = Veuillez patienter...
+Restore                                   = Restaurer
 Run                                       = Démarrer
 Select                                    = Sélectionner
 SelectAll                                 = Tout sélectionner
 Skip                                      = Passer
 Skipped                                   = Passé
 Snooze                                    = Reporter
+TelegramTitle                             = Rejoignez notre chaîne Telegram officielle
 Uninstall                                 = Désinstaller
 '@

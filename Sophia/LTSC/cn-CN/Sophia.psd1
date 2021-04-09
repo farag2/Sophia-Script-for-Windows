@@ -57,12 +57,15 @@ Minute                                    = 1分钟
 NoData                                    = 无数据
 NoInternetConnection                      = 无网络连接
 NoResponse                                = 无法建立https://store.rg-adguard.net连接
+Open                                      = 打开
 Patient                                   = 请等待……
+Restore                                   = 恢复
 Run                                       = 运行
 Select                                    = 选择
 SelectAll                                 = 全选
 Skip                                      = 跳过
 Skipped                                   = 已跳过
 Snooze                                    = 推迟
+TelegramTitle                             = 加入我们的官方电报群组
 Uninstall                                 = 卸载
 '@
