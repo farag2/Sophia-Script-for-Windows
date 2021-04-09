@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	"Windows 10 Sophia Script" is a PowerShell module for Windows 10 fine-tuning and automating the routine tasks
 
-	Version: v5.9
-	Date: 27.03.2021
+	Version: v5.10
+	Date: 08.04.2021
 	Copyright (c) 2015–2021 farag & oZ-Zo
 
 	Thanks to all https://forum.ru-board.com members involved
@@ -13,8 +13,8 @@
 
 	.NOTES
 	Supported Windows 10 versions
-	Versions: 2004 (20H1)/20H2 (2009)
-	Builds: 19041/19042
+	Versions: 2004 (20H1)/20H2 (2009)/21H1
+	Builds: 19041/19042/19043
 	Editions: Home/Pro/Enterprise
 	Architecture: x64
 
@@ -116,6 +116,7 @@ function Checkings
 }
 #endregion Checkings
 
+#region Protection
 # Enable script logging. The log will be being recorded into the script folder
 # To stop logging just close the console or type "Stop-Transcript"
 function Logging
@@ -127,7 +128,7 @@ function Logging
 # Create a restore point for the system drive
 function CreateRestorePoint
 {
-	$SystemDriveUniqueID = (Get-Volume | Where-Object {$_.DriveLetter -eq "$($env:SystemDrive[0])"}).UniqueID
+	$SystemDriveUniqueID = (Get-Volume | Where-Object -FilterScript {$_.DriveLetter -eq "$($env:SystemDrive[0])"}).UniqueID
 	$SystemProtection = ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SPP\Clients")."{09F7EDC5-294E-4180-AF6A-FB0E6A0E9513}") | Where-Object -FilterScript {$_ -match [regex]::Escape($SystemDriveUniqueID)}
 
 	$ComputerRestorePoint = $false
@@ -155,6 +156,7 @@ function CreateRestorePoint
 		Disable-ComputerRestore -Drive $env:SystemDrive
 	}
 }
+#endregion Protection
 
 #region Privacy & Telemetry
 <#
@@ -260,18 +262,18 @@ function DiagnosticDataLevel
 		{
 			if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -like "Enterprise*" -or $_.Edition -eq "Education"})
 			{
-				# Disable diagnostic data
+				# Security level
 				New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 0 -Force
 			}
 			else
 			{
-				# Required diagnostic data
+				# Optional diagnostic data
 				New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 1 -Force
 			}
 		}
 		"Default"
 		{
-			# Optional diagnostic data
+			# Required diagnostic data
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 3 -Force
 		}
 	}
@@ -319,7 +321,7 @@ function ErrorReporting
 	{
 		"Disable"
 		{
-			if ((Get-WindowsEdition -Online).Edition -notmatch "Core*")
+			if ((Get-WindowsEdition -Online).Edition -notmatch "Core")
 			{
 				Get-ScheduledTask -TaskName QueueReporting | Disable-ScheduledTask
 				New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\Windows Error Reporting" -Name Disabled -PropertyType DWord -Value 1 -Force
@@ -815,7 +817,7 @@ function AdvertisingID
 	{
 		"Disable"
 		{
-			if (-not (Test-Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo))
+			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo))
 			{
 				New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo -Force
 			}
@@ -1129,7 +1131,7 @@ function WhatsNewInWindows
 	{
 		"Enable"
 		{
-			if (-not (Test-Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement))
+			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement))
 			{
 				New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement -Force
 			}
@@ -1137,7 +1139,7 @@ function WhatsNewInWindows
 		}
 		"Disable"
 		{
-			if (-not (Test-Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement))
+			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement))
 			{
 				New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement -Force
 			}
@@ -1246,7 +1248,7 @@ function BingSearch
 		}
 		"Disable"
 		{
-			if (-not (Test-Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
+			if (-not (Test-Path -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
 			{
 				New-Item -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Force
 			}
@@ -1758,7 +1760,7 @@ function PeopleTaskbar
 	{
 		"Hide"
 		{
-			if (-not (Test-Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People))
+			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People))
 			{
 				New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People -Force
 			}
@@ -1766,7 +1768,7 @@ function PeopleTaskbar
 		}
 		"Show"
 		{
-			if (-not (Test-Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People))
+			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People))
 			{
 				New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People -Force
 			}
@@ -2504,6 +2506,7 @@ function MeetNow
 #>
 function UnpinTaskbarEdgeStore
 {
+	# Extract strings from shell32.dll using its' number
 	# https://github.com/Disassembler0/Win10-Initial-Setup-Script/issues/8#issue-227159084
 	$Signature = @{
 		Namespace = "WinAPI"
@@ -2537,7 +2540,7 @@ public static string GetString(uint strId)
 		$Shell = New-Object -ComObject Shell.Application
 		$Folder = $Shell.NameSpace("$env:AppData\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar")
 		$Shortcut = $Folder.ParseName("Microsoft Edge.lnk")
-		$Shortcut.Verbs() | Where-Object {$_.Name -eq $LocalizedString} | ForEach-Object -Process {$_.DoIt()}
+		$Shortcut.Verbs() | Where-Object -FilterScript {$_.Name -eq $LocalizedString} | ForEach-Object -Process {$_.DoIt()}
 	}
 
 	# Start-Job is used due to that the calling this function before UninstallUWPApps breaks the retrieval of the localized UWP apps packages names
@@ -4551,7 +4554,7 @@ function WindowsFeatures
 	# Getting list of all optional features according to the conditions
 	$OFS = "|"
 	$Features = Get-WindowsOptionalFeature -Online | Where-Object -FilterScript {
-		($_.State -in $State) -and (($_.FeatureName -cmatch $UncheckedFeatures) -or ($_.FeatureName -cmatch $CheckedFeatures))
+		($_.State -in $State) -and (($_.FeatureName -match $UncheckedFeatures) -or ($_.FeatureName -match $CheckedFeatures))
 	} | ForEach-Object -Process {Get-WindowsOptionalFeature -FeatureName $_.FeatureName -Online}
 	$OFS = " "
 
@@ -4795,7 +4798,7 @@ function WindowsCapabilities
 		$SelectedCapabilities | ForEach-Object -Process {Write-Verbose -Message $_.DisplayName -Verbose}
 		$SelectedCapabilities | Where-Object -FilterScript {$_.Name -in (Get-WindowsCapability -Online).Name} | Remove-WindowsCapability -Online
 
-		if ([string]$SelectedCapabilities.Name -cmatch "Browser.InternetExplorer*")
+		if ([string]$SelectedCapabilities.Name -match "Browser.InternetExplorer")
 		{
 			Write-Warning -Message $Localization.RestartWarning
 		}
@@ -4810,7 +4813,7 @@ function WindowsCapabilities
 		$SelectedCapabilities | ForEach-Object -Process {Write-Verbose -Message $_.DisplayName -Verbose}
 		$SelectedCapabilities | Where-Object -FilterScript {$_.Name -in ((Get-WindowsCapability -Online).Name)} | Add-WindowsCapability -Online
 
-		if ([string]$SelectedCapabilities.Name -cmatch "Browser.InternetExplorer*")
+		if ([string]$SelectedCapabilities.Name -match "Browser.InternetExplorer")
 		{
 			Write-Warning -Message $Localization.RestartWarning
 		}
@@ -4881,7 +4884,7 @@ function WindowsCapabilities
 	# Getting list of all capabilities according to the conditions
 	$OFS = "|"
 	$Capabilities = Get-WindowsCapability -Online | Where-Object -FilterScript {
-		($_.State -eq $State) -and (($_.Name -cmatch $UncheckedCapabilities) -or ($_.Name -cmatch $CheckedCapabilities) -and ($_.Name -cnotmatch $ExcludedCapabilities))
+		($_.State -eq $State) -and (($_.Name -match $UncheckedCapabilities) -or ($_.Name -match $CheckedCapabilities) -and ($_.Name -notmatch $ExcludedCapabilities))
 	} | ForEach-Object -Process {Get-WindowsCapability -Name $_.Name -Online}
 	$OFS = " "
 
@@ -4943,7 +4946,7 @@ function UpdateMicrosoftProducts
 	{
 		"Disable"
 		{
-			if ((New-Object -ComObject Microsoft.Update.ServiceManager).Services | Where-Object {$_.ServiceID -eq "7971f918-a847-4430-9279-4a52d1efe18d"})
+			if ((New-Object -ComObject Microsoft.Update.ServiceManager).Services | Where-Object -FilterScript {$_.ServiceID -eq "7971f918-a847-4430-9279-4a52d1efe18d"})
 			{
 				(New-Object -ComObject Microsoft.Update.ServiceManager).RemoveService("7971f918-a847-4430-9279-4a52d1efe18d")
 			}
@@ -7505,7 +7508,7 @@ function EnableWSL2
 		# Virtual Machine Platform
 		"VirtualMachinePlatform"
 	)
-	$WSLFeaturesDisabled = Get-WindowsOptionalFeature -Online | Where-Object {($_.FeatureName -in $WSLFeatures) -and ($_.State -eq "Disabled")}
+	$WSLFeaturesDisabled = Get-WindowsOptionalFeature -Online | Where-Object -FilterScript {($_.FeatureName -in $WSLFeatures) -and ($_.State -eq "Disabled")}
 
 	if ($null -eq $WSLFeaturesDisabled)
 	{
@@ -7717,7 +7720,7 @@ function RunPowerShellShortcut
 
 <#
 	.SYNOPSIS
-	Configure tiles on Start
+	Configure the Start tiles
 
 	.PARAMETER ControlPanel
 	Pin the "Control Panel" shortcut to Start
@@ -7763,7 +7766,7 @@ function PinToStart
 		$UnpinAll,
 
 		[Parameter(
-			Mandatory = $false,
+			Mandatory = $true,
 			Position = 1
 		)]
 		[ValidateSet("ControlPanel", "DevicesPrinters", "PowerShell")]
@@ -7815,7 +7818,8 @@ public static string GetString(uint strId)
 	return sb.ToString();
 }
 "@
-	}
+		}
+
 		if (-not ("WinAPI.GetStr" -as [type]))
 		{
 			Add-Type @Signature -Using System.Text
@@ -7824,15 +7828,8 @@ public static string GetString(uint strId)
 		# Extract the localized "Devices and Printers" string from shell32.dll
 		$DevicesPrinters = [WinAPI.GetStr]::GetString(30493)
 
-		# Create the old-style "Devices and Printers" shortcut in the Start menu
-		$Shell = New-Object -ComObject Wscript.Shell
-		$Shortcut = $Shell.CreateShortcut("$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesPrinters.lnk")
-		$Shortcut.TargetPath = "control"
-		$Shortcut.Arguments = "printers"
-		$Shortcut.IconLocation = "$env:SystemRoot\system32\DeviceCenter.dll"
-		$Shortcut.Save()
-
-		Start-Sleep -Seconds 3
+		# Get the AppID because it's auto generated AppID for the "Devices and Printers" shortcut
+		$Script:DevicesPrintersAppID = (Get-StartApps | Where-Object -FilterScript {$_.Name -eq $DevicesPrinters}).AppID
 
 		$Parameters = @(
 			# Control Panel hash table
@@ -7851,7 +7848,7 @@ public static string GetString(uint strId)
 				Size   = "2x2"
 				Column = 2
 				Row    = 0
-				AppID  = "Microsoft.AutoGenerated.{7FF3FDB0-CFD9-F944-4722-A9E766EDE23F}"
+				AppID  = $Script:DevicesPrintersAppID
 			},
 			# Windows PowerShell hash table
 			@{
@@ -7915,8 +7912,17 @@ public static string GetString(uint strId)
 				}
 				DevicesPrinters
 				{
-					$DevicesPrinters = [WinAPI.GetStr]::GetString(30493)
 					Write-Verbose -Message ($Localization.ShortcutPinning -f $DevicesPrinters) -Verbose
+
+					# Create the old-style "Devices and Printers" shortcut in the Start menu
+					$Shell = New-Object -ComObject Wscript.Shell
+					$Shortcut = $Shell.CreateShortcut("$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesPrinters.lnk")
+					$Shortcut.TargetPath = "control"
+					$Shortcut.Arguments = "printers"
+					$Shortcut.IconLocation = "$env:SystemRoot\system32\DeviceCenter.dll"
+					$Shortcut.Save()
+
+					Start-Sleep -Seconds 3
 				}
 				PowerShell
 				{
@@ -8115,6 +8121,7 @@ function UninstallUWPApps
 		"Microsoft.WebMediaExtensions"
 	)
 
+	#region Variables
 	#region XAML Markup
 	# The section defines the design of the upcoming dialog box
 	[xml]$XAML = '
@@ -8129,7 +8136,7 @@ function UninstallUWPApps
 		<Window.Resources>
 			<Style TargetType="StackPanel">
 				<Setter Property="Orientation" Value="Horizontal"/>
-				<Setter Property="VerticalAlignment" Value="Center"/>
+				<Setter Property="VerticalAlignment" Value="Top"/>
 			</Style>
 			<Style TargetType="CheckBox">
 				<Setter Property="Margin" Value="10, 13, 10, 10"/>
@@ -8192,7 +8199,7 @@ function UninstallUWPApps
 		Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name)
 	}
 
-	$Window.Title               = $Localization.UninstallUWPTitle
+	$Window.Title               = $Localization.UWPAppsTitle
 	$ButtonUninstall.Content    = $Localization.Uninstall
 	$TextBlockRemoveForAll.Text = $Localization.UninstallUWPForAll
 	$TextBlockSelectAll.Text    = $Localization.SelectAll
@@ -8398,6 +8405,278 @@ function UninstallUWPApps
 		if ($PackagesToRemove.Count -gt 0)
 		{
 			$ButtonUninstall.IsEnabled = $true
+		}
+		$Form.ShowDialog() | Out-Null
+	}
+}
+
+<#
+	.SYNOPSIS
+	Restore the default UWP apps
+
+	.EXAMPLE
+	RestoreUWPAppsUWPApps
+
+	.NOTES
+	UWP apps can be restored only if they were uninstalled only for the current user
+
+	.NOTES
+	A pop-up dialog box enables the user to select packages
+	Current user
+#>
+function RestoreUWPApps
+{
+	Add-Type -AssemblyName PresentationCore, PresentationFramework
+
+	#region Variables
+	#region XAML Markup
+	# The section defines the design of the upcoming dialog box
+	[xml]$XAML = '
+	<Window
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		Name="Window"
+		MinHeight="400" MinWidth="410"
+		SizeToContent="Width" WindowStartupLocation="CenterScreen"
+		TextOptions.TextFormattingMode="Display" SnapsToDevicePixels="True"
+		FontFamily="Candara" FontSize="16" ShowInTaskbar="True">
+		<Window.Resources>
+			<Style TargetType="StackPanel">
+				<Setter Property="Orientation" Value="Horizontal"/>
+				<Setter Property="VerticalAlignment" Value="Top"/>
+			</Style>
+			<Style TargetType="CheckBox">
+				<Setter Property="Margin" Value="10, 13, 10, 10"/>
+				<Setter Property="IsChecked" Value="True"/>
+			</Style>
+			<Style TargetType="TextBlock">
+				<Setter Property="Margin" Value="0, 10, 10, 10"/>
+			</Style>
+			<Style TargetType="Button">
+				<Setter Property="Margin" Value="20"/>
+				<Setter Property="Padding" Value="10"/>
+				<Setter Property="IsEnabled" Value="False"/>
+			</Style>
+			<Style TargetType="Border">
+				<Setter Property="Grid.Row" Value="1"/>
+				<Setter Property="CornerRadius" Value="0"/>
+				<Setter Property="BorderThickness" Value="0, 1, 0, 1"/>
+				<Setter Property="BorderBrush" Value="#000000"/>
+			</Style>
+			<Style TargetType="ScrollViewer">
+				<Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+				<Setter Property="BorderBrush" Value="#000000"/>
+				<Setter Property="BorderThickness" Value="0, 1, 0, 1"/>
+			</Style>
+		</Window.Resources>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
+			<Grid Grid.Row="0">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<StackPanel Name="PanelSelectAll" Grid.Column="0" HorizontalAlignment="Left">
+					<CheckBox Name="CheckBoxSelectAll" IsChecked="False"/>
+					<TextBlock Name="TextBlockSelectAll" Margin="10,10, 0, 10"/>
+				</StackPanel>
+			</Grid>
+			<Border>
+				<ScrollViewer>
+					<StackPanel Name="PanelContainer" Orientation="Vertical"/>
+				</ScrollViewer>
+			</Border>
+			<Button Name="ButtonRestore" Grid.Row="2"/>
+		</Grid>
+	</Window>
+	'
+	#endregion XAML Markup
+
+	$Reader = (New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML)
+	$Form = [Windows.Markup.XamlReader]::Load($Reader)
+	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
+		Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name)
+	}
+
+	$Window.Title            = $Localization.UWPAppsTitle
+	$ButtonRestore.Content   = $Localization.Restore
+	$TextBlockSelectAll.Text = $Localization.SelectAll
+
+	$ButtonRestore.Add_Click({ButtonRestoreClick})
+	$CheckBoxSelectAll.Add_Click({CheckBoxSelectAllClick})
+	#endregion Variables
+
+	#region Functions
+	function Get-AppxManifest
+	{
+		Write-Verbose -Message "Patient" -Verbose
+
+		# Тут нельзя напрямую вписать -PackageTypeFilter Bundle, так как иначе не выдается нужное свойство InstallLocation. Только сравнивать с $Bundles
+		$Bundles = (Get-AppXPackage -PackageTypeFilter Bundle -AllUsers).Name
+		$AppxPackages = Get-AppxPackage -AllUsers | Where-Object -FilterScript {$_.PackageUserInformation -match "Staged"} | Where-Object -FilterScript {$_.Name -in $Bundles}
+		$PackagesIds = [Windows.Management.Deployment.PackageManager, Windows.Web, ContentType = WindowsRuntime]::new().FindPackages() | Select-Object -Property DisplayName -ExpandProperty Id | Select-Object -Property Name, DisplayName
+
+		foreach ($AppxPackage in $AppxPackages)
+		{
+			$PackageId = $PackagesIds | Where-Object -FilterScript {$_.Name -eq $AppxPackage.Name}
+
+			if (-not $PackageId)
+			{
+				continue
+			}
+
+			[PSCustomObject]@{
+				Name            = $AppxPackage.Name
+				PackageFullName = $AppxPackage.PackageFullName
+				DisplayName     = $PackageId.DisplayName
+				AppxManifest    = "$($AppxPackage.InstallLocation)\AppxManifest.xml"
+			}
+		}
+	}
+
+	function Add-Control
+	{
+		[CmdletBinding()]
+		param
+		(
+			[Parameter(
+				Mandatory = $true,
+				ValueFromPipeline = $true
+			)]
+			[ValidateNotNull()]
+			[PSCustomObject[]]
+			$Packages
+		)
+
+		process
+		{
+			foreach ($Package in $Packages)
+			{
+				$CheckBox = New-Object -TypeName System.Windows.Controls.CheckBox
+				$CheckBox.Tag = $Package.AppxManifest
+
+				$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
+
+				if ($Package.DisplayName)
+				{
+					$TextBlock.Text = $Package.DisplayName
+				}
+				else
+				{
+					$TextBlock.Text = $Package.Name
+				}
+
+				$StackPanel = New-Object -TypeName System.Windows.Controls.StackPanel
+				$StackPanel.Children.Add($CheckBox) | Out-Null
+				$StackPanel.Children.Add($TextBlock) | Out-Null
+
+				$PanelContainer.Children.Add($StackPanel) | Out-Null
+
+				$CheckBox.IsChecked = $true
+				$PackagesToRestore.Add($Package.AppxManifest)
+
+				$CheckBox.Add_Click({CheckBoxClick})
+			}
+		}
+	}
+
+	function ButtonRestoreClick
+	{
+		Write-Verbose -Message $Localization.Patient -Verbose
+
+		$Window.Close() | Out-Null
+
+		$Parameters = @{
+			Register                  = $true
+			ForceApplicationShutdown  = $true
+			ForceUpdateFromAnyVersion = $true
+			DisableDevelopmentMod     = $true
+			Verbose                   = [switch]::Present
+		}
+		$PackagesToRestore | Add-AppxPackage @Parameters
+	}
+
+	function CheckBoxClick
+	{
+		$CheckBox = $_.Source
+
+		if ($CheckBox.IsChecked)
+		{
+			$PackagesToRestore.Add($CheckBox.Tag) | Out-Null
+		}
+		else
+		{
+			$PackagesToRestore.Remove($CheckBox.Tag)
+		}
+
+		ButtonRestoreSetIsEnabled
+	}
+
+	function CheckBoxSelectAllClick
+	{
+		$CheckBox = $_.Source
+
+		if ($CheckBox.IsChecked)
+		{
+			$PackagesToRestore.Clear()
+
+			foreach ($Item in $PanelContainer.Children.Children)
+			{
+				if ($Item -is [System.Windows.Controls.CheckBox])
+				{
+					$Item.IsChecked = $true
+					$PackagesToRestore.Add($Item.Tag)
+				}
+			}
+		}
+		else
+		{
+			$PackagesToRestore.Clear()
+
+			foreach ($Item in $PanelContainer.Children.Children)
+			{
+				if ($Item -is [System.Windows.Controls.CheckBox])
+				{
+					$Item.IsChecked = $false
+				}
+			}
+		}
+
+		ButtonRestoreSetIsEnabled
+	}
+
+	function ButtonRestoreSetIsEnabled
+	{
+		if ($PackagesToRestore.Count -gt 0)
+		{
+			$ButtonRestore.IsEnabled = $true
+		}
+		else
+		{
+			$ButtonRestore.IsEnabled = $false
+		}
+	}
+	#endregion Functions
+
+	$PackagesToRestore = [Collections.Generic.List[string]]::new()
+	$AppXPackages = Get-AppxManifest
+	$AppXPackages | Add-Control
+
+	if ($AppxPackages.Count -eq 0)
+	{
+		Write-Verbose -Message $Localization.NoData -Verbose
+	}
+	else
+	{
+		Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
+
+		if ($PackagesToRestore.Count -gt 0)
+		{
+			$ButtonRestore.IsEnabled = $true
 		}
 		$Form.ShowDialog() | Out-Null
 	}
@@ -9349,7 +9628,7 @@ function TempTask
 		"Register"
 		{
 			$TempTask = @"
-Get-ChildItem -Path `$env:TEMP -Force -Recurse | Remove-Item -Recurse -Force
+Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object {`$_.CreationTime -lt (Get-Date).AddDays(-1)} | Remove-Item -Recurse -Force
 
 [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
 [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
@@ -11506,6 +11785,35 @@ public static void PostMessage()
 	}
 
 	Write-Warning -Message $Localization.RestartWarning
+
+	[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
+	[Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
+
+	[xml]$ToastTemplate = @"
+<toast duration="Long" scenario="reminder">
+	<visual>
+		<binding template="ToastGeneric">
+			<text>$($Localization.TelegramTitle)</text>
+			<group>
+				<subgroup>
+					<text hint-style="body" hint-wrap="true">https://t.me/sophia_chat</text>
+				</subgroup>
+			</group>
+		</binding>
+	</visual>
+	<audio src="ms-winsoundevent:notification.default" />
+	<actions>
+		<action arguments="https://t.me/sophia_chat" content="$($Localization.Open)" activationType="protocol"/>
+		<action arguments="dismiss" content="$($Localization.Dismiss)" activationType="system"/>
+	</actions>
+</toast>
+"@
+
+	$ToastXml = [Windows.Data.Xml.Dom.XmlDocument]::New()
+	$ToastXml.LoadXml($ToastTemplate.OuterXml)
+
+	$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New($ToastXML)
+	[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel").Show($ToastMessage)
 }
 #endregion Refresh
 
