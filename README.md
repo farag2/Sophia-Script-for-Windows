@@ -109,6 +109,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ![Image](https://i.imgur.com/5up2HrJ.png)
 ![Image](https://i.imgur.com/Fuf4CaD.png)
+![Image](https://i.imgur.com/JQh0oSh.png)
 ![Image](https://i.imgur.com/9s7Noud.png)
 ![Image](https://i.imgur.com/qZhFqr3.png)
 ![Image](https://i.imgur.com/2C3NOke.png)
@@ -184,7 +185,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ***
 
-How to run the specific function(s) [dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-) the `Functions.ps1` first:
+To run the specific function(s) [dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-) the `Functions.ps1` file first:
 
 ```powershell
 # With a dot at the beginning
