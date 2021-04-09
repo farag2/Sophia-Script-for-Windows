@@ -1,9 +1,9 @@
-<#systemprotection#>
+#region Protection
 
 Logging;Enable script logging. The log will be being recorded into the script folder.To stop logging just close the console or type "Stop-Transcript";
 CreateRestorePoint;Create a restore point
 
-<#privacy&telemetry#>
+#region Privacy & Telemetry
 
 DiagTrackService -Disable;Disable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and block connection;
 DiagTrackService -Enable;Enable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and allow connection (default value);
@@ -38,7 +38,7 @@ TailoredExperiences -Enable;Offer tailored experiences based on the diagnostic d
 BingSearch -Disable;Disable Bing search in the Start Menu (for the USA only);
 BingSearch -Enable;Enable Bing search in the Start Menu (default value)
 
-<#ui&personal#>
+#region UI & Personalization
 
 ThisPC -Show;Show the "This PC" icon on Desktop;
 ThisPC -Hide; Hide the "This PC" icon on Desktop (default value);
@@ -107,12 +107,12 @@ PrtScnSnippingTool -Disable;Do not use the PrtScn button to open screen snipping
 AppsLanguageSwitch -Disable;Let let use a different input method for each app window;
 AppsLanguageSwitch -Enable;Do not let use a different input method for each app window (default value)
 
-<#onedrive#>
+#region OneDrive
 
 OneDrive -Uninstall;Uninstall OneDrive;
 OneDrive -Install;Install OneDrive (default value)
 
-<#system#>
+#region System
 
 StorageSense -Enable;Turn on Storage Sense;
 StorageSense -Disable;Turn off Storage Sense (default value);
@@ -186,7 +186,7 @@ WSL -Enable;Install the Windows Subsystem for Linux (WSL);
 WSL -Disable;Uninstall the Windows Subsystem for Linux (WSL);
 EnableWSL2;Download and install the Linux kernel update package. Set WSL 2 as the default version when installing a new Linux distribution. Run the function only after WSL installed and PC restart;
 
-<#start#>
+#region Start menu
 
 RecentlyAddedApps -Hide;Hide recently added apps in the Start menu;
 RecentlyAddedApps -Show;Show recently added apps in the Start menu (default value);
@@ -200,7 +200,7 @@ PinToStart -Tiles DevicesPrinters;Pin the "Devices & Printers" shortcut to Start
 PinToStart -Tiles PowerShell;Pin the Windows PowerShell shortcut to Start;
 PinToStart -UnpinAll;Unpin all the Start tiles
 
-<#uwp#>
+#region UWP apps
 
 UninstallUWPApps;Uninstall UWP apps using the pop-up dialog box. If the "For All Users" is checked apps packages will not be installed for new users. The "For All Users" checkbox isn't checked by default;
 UninstallUWPApps -ForAllUsers;Uninstall UWP apps using the pop-up dialog box. If the "For All Users" is checked apps packages will not be installed for new users. The "For All Users" checkbox checked by default;
@@ -212,7 +212,7 @@ BackgroundUWPApps -Disable;Do not let all UWP apps run in the background;
 BackgroundUWPApps -Enable;Let all UWP apps run in the background (default value);
 CheckUWPAppsUpdates;Check for UWP apps updates
 
-<#gaming#>
+#region Gaming
 
 XboxGameBar -Disable;Disable Xbox Game Bar;
 XboxGameBar -Enable;Enable Xbox Game Bar (default value);
@@ -222,7 +222,7 @@ SetAppGraphicsPerformance;Set "High performance" in graphics performance prefere
 GPUScheduling -Enable;Turn on hardware-accelerated GPU scheduling. Restart needed. Only with a dedicated GPU and WDDM verion is 2.7 or higher;
 GPUScheduling -Disable;Turn off hardware-accelerated GPU scheduling (default value). Restart needed;
 
-<#scheduled#>
+#region Scheduled tasks
 
 CleanUpTask -Register;Create the "Windows Cleanup" scheduled task for cleaning up unused files and Windows updates;
 CleanUpTask -Delete;Delete the "Windows Cleanup" scheduled task for cleaning up unused files and Windows updates;
@@ -231,7 +231,7 @@ SoftwareDistributionTask -Delete;Delete the "SoftwareDistribution" scheduled tas
 TempTask -Register;Create the "Temp" scheduled task for cleaning up the %TEMP% folder;
 TempTask -Delete;Delete the "Temp" scheduled task for cleaning up the %TEMP% folder
 
-<#defender&security#>
+#region Microsoft Defender & Security
 
 AddProtectedFolders;Enable Controlled folder access and add protected folders;
 RemoveProtectedFolders;Remove all added protected folders;
@@ -268,7 +268,7 @@ WindowsScriptHost -Enable;Emable Windows Script Host (default value);
 WindowsSandbox -Enable;Enable Windows Sandbox;
 WindowsSandbox -Disable;Disable Windows Sandbox (default value)
 
-<#context#>
+#region Context menu
 
 MSIExtractContext -Add;Add the "Extract all" item to Windows Installer (.msi) context menu;
 MSIExtractContext -Remove;Remove the "Extract all" item from Windows Installer (.msi) context menu (default value);
@@ -309,7 +309,7 @@ UseStoreOpenWith -Show;Show the "Look for an app in the Microsoft Store" item in
 PreviousVersionsPage -Hide;Hide the "Previous Versions" tab from files and folders context menu and also the "Restore previous versions" context menu item;
 PreviousVersionsPage -Show;Show the "Previous Versions" tab from files and folders context menu and also the "Restore previous versions" context menu item (default value)
 
-<#other#>
+#region Other
 
 ControlPanelView -Category;View the Control Panel icons by: category (default value);
 ControlPanelView -LargeIcons;View the Control Panel icons by: large icons;

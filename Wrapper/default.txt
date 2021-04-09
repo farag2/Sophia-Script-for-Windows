@@ -1,8 +1,8 @@
-<#systemprotection#>
+#region Protection
 
 CreateRestorePoint
 
-<#privacy&telemetry#>
+#region Privacy & Telemetry
 
 TelemetryService -Disable;
 DiagnosticDataLevel -Minimal;
@@ -21,7 +21,7 @@ WhatsNewInWindows -Disable;
 TailoredExperiences -Disable;
 BingSearch -Disable
 
-<#ui&personal#>
+#region UI & Personalization
 
 ThisPC -Show;
 CheckBoxes -Disable;
@@ -56,11 +56,11 @@ ShortcutsSuffix -Disable;
 PrtScnSnippingTool -Enable;
 AppsLanguageSwitch -Disable
 
-<#onedrive#>
+#region OneDrive
 
 OneDrive -Uninstall
 
-<#system#>
+#region System
 
 StorageSense -Enable;
 StorageSenseFrequency -Month;
@@ -95,14 +95,14 @@ NetworkDiscovery -Enable;
 SmartActiveHours -Enable;
 DeviceRestartAfterUpdate -Enable
 
-<#start#>
+#region Start menu
 
 RecentlyAddedApps -Hide;
 AppSuggestions -Hide;
 RunPowerShellShortcut -Elevated;
 PinToStart -Tiles ControlPanel, DevicesPrinters, PowerShell
 
-<#uwp#>
+#region UWP apps
 
 UninstallUWPApps;
 HEIF -Install;
@@ -110,20 +110,20 @@ CortanaAutostart -Disable;
 BackgroundUWPApps -Disable;
 CheckUWPAppsUpdates
 
-<#gaming#>
+#region Gaming
 
 XboxGameBar -Disable;
 XboxGameTips -Disable;
 SetAppGraphicsPerformance;
 GPUScheduling -Enable
 
-<#scheduled#>
+#region Scheduled tasks
 
 CleanUpTask -Register;
 SoftwareDistributionTask -Register;
 TempTask -Register
 
-<#defender&security#>
+#region Microsoft Defender & Security
 
 AddProtectedFolders;
 AddAppControlledFolder;
@@ -144,7 +144,7 @@ SaveZoneInformation -Disable;
 WindowsScriptHost -Disable;
 WindowsSandbox -Enable
 
-<#context#>
+#region Context menu
 
 MSIExtractContext -Add;
 CABInstallContext -Add;
@@ -165,7 +165,8 @@ MultipleInvokeContext -Enable;
 UseStoreOpenWith -Hide;
 PreviousVersionsPage -Hide
 
-<#other#>
+#region Other
+
 ControlPanelView -LargeIcons;
 TaskbarSearch -Hide;
 SetUserShellFolderLocation -Root
