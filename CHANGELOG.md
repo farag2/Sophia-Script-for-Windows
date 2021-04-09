@@ -5,7 +5,50 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 5.9 - 27.03.2021
+## 5.10 — 09.04.2021
+
+## Windows 10 2004 (20H1)/20H2 (2009) | LTSC
+
+Diff from v5.10
+[5.9...5.10](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.9...5.10)
+
+* The function for calling the specific function was completely rewritten! :rocket:
+  * Now you're able to use the <kbd>Tab</kbd> completion for functions and their arguments by typing its' first letters
+    ![Image](https://i.imgur.com/eMsn1aY.gif)
+  * The code from moved to the `Functions.ps1` file;
+  * If you want to call the specific function you need to [dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-) the `Functions.ps1` first
+
+    ```powershell
+    # With a dot at the beginning
+    . .\Functions
+    ```
+
+    * Now you can do like this
+
+    ```powershell
+    Sophia -Functions <tab>
+    Sophia -Functions temp<tab>
+    Sophia -Functions unin<tab>
+    Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
+    ```
+
+  * The code isn't perfect but it works. Anyway it's better than recalling the functions' names. Hopefully I'll improve it in the next releases.
+* Added the `RestoreUWPApps` function;
+  ![Image](https://i.imgur.com/JQh0oSh.png)
+  * Now it's possible to restore the default UWP apps uninstalled for current user;
+  * Restorable packages will always be displayed in English in a pop form;
+  * If you uninstalled packages for all users they can be restored only by downloading from the Microsoft Store.
+* David updated his wrapper;
+  * Now you need to import Sophia.ps1 to configure it.
+* Fixed bug in the `PinToStart` function when it was unable to pin the "Devices and Printers" shortcut;
+* Fixed bug in the `UninstallUWPApps` function when packages names displayed in the center instead of the top;
+* Now the `TempTask` task removes only files and folders older than a day;
+* After script applying a pop-up will apper
+  ![Image](https://i.imgur.com/9s7Noud.png)
+* Formally added the `21H1, 19043` build support;
+* Minor changes. :feelsgood:
+
+## 5.9 — 27.03.2021
 
 ## Windows 10 2004 (20H1)/20H2 (2009) | LTSC
 
