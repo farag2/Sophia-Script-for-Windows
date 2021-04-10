@@ -32,21 +32,21 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 <p align="center">
 	&bull;
-	<a href="https://github.com/farag2/Windows-10-Sophia-Script/releases"><b>DOWNLOAD</b></a>
+	<a href="https://github.com/farag2/Windows-10-Sophia-Script/releases"><font size="6"><b>DOWNLOAD</b></font></a>
 	&bull;
 	<a href="#screenshots">Screenshots</a>
 	&bull;
-	<a href="#sophia-script-in-action">Video</a>
+	<a href="#sophia-script-in-action">Videos</a>
 	&bull;
 	<a href="#core-features">Core features</a>
 	&bull;
-	<a href="#usage">Usage</a>
+	<a href="#how-to-use">How to use</a>
 	&bull;
 	<a href="#how-to-translate">How to translate</a>
 	&bull;
 	<a href="#supported-windows-10-versions">Supported Windows 10 versions</a>
 	&bull;
-	<a href="https://github.com/farag2/Windows-10-Sophia-Script/blob/master/CHANGELOG.md">Complete Changelog</a>
+	<a href="https://github.com/farag2/Windows-10-Sophia-Script/blob/master/CHANGELOG.md">The complete changelog</a>
 </p>
 
 ***
