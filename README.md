@@ -107,8 +107,6 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ## Screenshots
 
-## Screenshots
-
 ![Image](https://i.imgur.com/5up2HrJ.png) ![Image](https://i.imgur.com/Fuf4CaD.png) ![Image](https://i.imgur.com/JQh0oSh.png) ![Image](https://i.imgur.com/qZhFqr3.png) ![Image](https://i.imgur.com/2C3NOke.png)
 ![Image](https://i.imgur.com/cZC40Fi.png)
 
@@ -164,7 +162,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 * Setup Windows 10 security;
 * Many more File Explorer and context menu "deep" tweaks.
 
-## Usage
+## How to use
 
 * Download [up-to-date version](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest);
 * Expand the archive;
@@ -198,6 +196,8 @@ Sophia -Functions <tab>
 Sophia -Functions temp<tab>
 Sophia -Functions unin<tab>
 Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
+
+UninstallUWPApps, "PinToStart -UnpinAll"
 ```
 
 * Regardless of the functions entered as an argument the `Checkings` function will be executed first, and the `Refresh` and `Errors` functions will be executed at the end;
