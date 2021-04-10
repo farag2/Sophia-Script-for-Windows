@@ -441,7 +441,7 @@ Diff from v5.0.0 (2004/2009)
 Diff from v4.5.7
 [4.5.7...4.6](https://github.com/farag2/Windows-10-Sophia-Script/compare/4.5.7...4.6)
 
-- **Fixed and improved translations and comments**. Closed <https://github.com/farag2/Windows-10-Setup-Script/pull/58> & <https://github.com/farag2/Windows-10-Setup-Script/pull/59>. Thanks a lot to @skycommand for the help with translation;
+- **Fixed and improved translations and comments**. Closed #58 & #59. Thanks a lot to @skycommand for the help with translation;
 - Removed the "Group svchost.exe processes" section;
   - To revert to the default changes rub
 
