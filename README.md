@@ -100,10 +100,10 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 |Version|    Marketing name   | Build | Arch |      Editions     | Script version |
 |:-----:|:-------------------:|:-----:|:----:|:-----------------:|:--------------:|
-| 21H1  | Spring 2021 Update  | 19043 |  x64 |Home/Pro/Enterprise|[5.10](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
-| 20H2  | October 2020 Update | 19042 |  x64 |Home/Pro/Enterprise|[5.10](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
-| 2004  |   May 2020 Update   | 19041 |  x64 |Home/Pro/Enterprise|[5.10](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
-| 1809  | LTSC Enterprise 2019| 17763 |  x64 |   Enterprise      |[5.2](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 21H1  | Spring 2021 Update  | 19043 |  x64 |Home/Pro/Enterprise|[5.10.1](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 20H2  | October 2020 Update | 19042 |  x64 |Home/Pro/Enterprise|[5.10.1](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 2004  |   May 2020 Update   | 19041 |  x64 |Home/Pro/Enterprise|[5.10.1](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 1809  | LTSC Enterprise 2019| 17763 |  x64 |   Enterprise      |[5.2.1](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
 
 ## Screenshots
 
@@ -196,6 +196,12 @@ Sophia -Functions unin<tab>
 Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
 
 UninstallUWPApps, "PinToStart -UnpinAll"
+```
+
+Or use an old-style format without the TAB functions autocomplete
+
+```powershell
+.\Sophia.ps1 -Functions CreateRestorePoint, "ScheduledTasks -Disable", "WindowsCapabilities -Uninstall"
 ```
 
 * Regardless of the functions entered as an argument the `Checkings` function will be executed first, and the `Refresh` and `Errors` functions will be executed at the end;
