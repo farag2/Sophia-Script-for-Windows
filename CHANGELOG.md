@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Windows 10 2004 (20H1)/20H2 (2009) | LTSC
 
-Diff from v5.10
+Diff from v5.9
 [5.9...5.10](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.9...5.10)
 
 * Calling the specific function was completely rewritten! :rocket:
