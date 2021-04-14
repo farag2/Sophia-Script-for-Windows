@@ -2,9 +2,11 @@
 	.SYNOPSIS
 	"Windows 10 Sophia Script" is a PowerShell module for Windows 10 fine-tuning and automating the routine tasks
 
-	Version: v5.10
-	Date: 09.04.2021
-	Copyright (c) 2015–2021 farag & oZ-Zo
+	Version: v5.10.1
+	Date: 14.04.2021
+
+	Copyright (c) 2014–2021 farag
+	Copyright (c) 2019–2021 farag & oZ-Zo
 
 	Thanks to all https://forum.ru-board.com members involved
 
@@ -13,7 +15,7 @@
 
 	.NOTES
 	Supported Windows 10 versions
-	Versions: 2004 (20H1)/20H2 (2009)/21H1
+	Versions: 2004/20H2/21H1
 	Builds: 19041/19042/19043
 	Editions: Home/Pro/Enterprise
 	Architecture: x64
@@ -164,13 +166,13 @@ function CreateRestorePoint
 #region Privacy & Telemetry
 <#
 	.SYNOPSIS
-	Configure the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and block connection
+	Configure the DiagTrack service, and connection for the Unified Telemetry Client Outbound Traffic
 
 	.PARAMETER Disable
-	Disable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and block connection
+	Disable the DiagTrack service, and block connection for the Unified Telemetry Client Outbound Traffic
 
 	.PARAMETER Enable
-	Enable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and allow connection
+	Enable the DiagTrack service, and allow connection for the Unified Telemetry Client Outbound Traffic
 
 	.EXAMPLE
 	DiagTrackService -Disable
@@ -207,7 +209,7 @@ function DiagTrackService
 			Get-Service -Name DiagTrack | Set-Service -StartupType Automatic
 			Get-Service -Name DiagTrack | Start-Service
 
-			# Enable firewall rule for Unified Telemetry Client Outbound Traffic and allow connection
+			# Allow connection for the Unified Telemetry Client Outbound Traffic
 			Get-NetFirewallRule -Group DiagTrack | Set-NetFirewallRule -Enabled True -Action Allow
 		}
 		"Disable"
@@ -215,7 +217,7 @@ function DiagTrackService
 			Get-Service -Name DiagTrack | Stop-Service -Force
 			Get-Service -Name DiagTrack | Set-Service -StartupType Disabled
 
-			# Disable firewall rule for Unified Telemetry Client Outbound Traffic and block connection
+			# Block connection for the Unified Telemetry Client Outbound Traffic
 			Get-NetFirewallRule -Group DiagTrack | Set-NetFirewallRule -Enabled False -Action Block
 		}
 	}
@@ -1525,7 +1527,7 @@ function MergeConflicts
 	Open File Explorer to "This PC"
 
 	.PARAMETER QuickAccess
-	Open File Explorer to "Quick access"
+	Open File Explorer to Quick access
 
 	.EXAMPLE
 	OpenFileExplorerTo -ThisPC
@@ -1884,13 +1886,13 @@ function SnapAssist
 
 <#
 	.SYNOPSIS
-	Configure the file transfer dialog box
+	Configure the file transfer dialog box mode
 
 	.PARAMETER Detailed
-	Always open the file transfer dialog box in the detailed mode
+	Show the file transfer dialog box in the detailed mode
 
 	.PARAMETER Compact
-	Always open the file transfer dialog box in the compact mode
+	Show the file transfer dialog box in the compact mode
 
 	.EXAMPLE
 	FileTransferDialog -Detailed
@@ -2002,13 +2004,13 @@ function FileExplorerRibbon
 
 <#
 	.SYNOPSIS
-	Configure the recycle bin files delete confirmation
+	Configure the recycle bin files delete confirmation dialog
 
 	.PARAMETER Disable
-	Display/do not display the recycle bin files delete confirmation
+	Display/do not display the recycle bin files delete confirmation dialog
 
 	.PARAMETER Enable
-	Display/do not display the recycle bin files delete confirmation
+	Display/do not display the recycle bin files delete confirmation dialog
 
 	.EXAMPLE
 	RecycleBinDeleteConfirmation -Disable
@@ -2084,13 +2086,13 @@ public static void PostMessage()
 
 <#
 	.SYNOPSIS
-	Configure the "3D Objects" folder in "This PC" and "Quick access"
+	Configure the "3D Objects" folder in "This PC" and Quick access
 
 	.PARAMETER Show
-	Show the "3D Objects" folder in "This PC" and "Quick access"
+	Show the "3D Objects" folder in "This PC" and Quick access
 
 	.PARAMETER Hide
-	Hide the "3D Objects" folder in "This PC" and "Quick access"
+	Hide the "3D Objects" folder in "This PC" and Quick access
 
 	.EXAMPLE
 	3DObjects -Show
@@ -2157,13 +2159,13 @@ function 3DObjects
 
 <#
 	.SYNOPSIS
-	Configure frequently used folders in "Quick access"
+	Configure frequently used folders in Quick access
 
 	.PARAMETER Show
-	Show frequently used folders in "Quick access"
+	Show frequently used folders in Quick access
 
 	.PARAMETER Hide
-	Hide frequently used folders in "Quick access"
+	Hide frequently used folders in Quick access
 
 	.EXAMPLE
 	QuickAccessFrequentFolders -Show
@@ -2327,13 +2329,13 @@ function TaskbarSearch
 
 <#
 	.SYNOPSIS
-	Configure the "Windows Ink Workspace" button on the taskbar
+	Configure the Windows Ink Workspace button on the taskbar
 
 	.PARAMETER Show
-	Show the "Windows Ink Workspace" button on the taskbar
+	Show the Windows Ink Workspace button on the taskbar
 
 	.PARAMETER Hide
-	Hide the "Windows Ink Workspace" button on the taskbar
+	Hide the Windows Ink Workspace button on the taskbar
 
 	.EXAMPLE
 	WindowsInkWorkspace -Show
@@ -2692,10 +2694,10 @@ function WindowsColorScheme
 	Configure the default app mode color scheme
 
 	.PARAMETER Light
-	Set the default app mode color scheme to the light
+	Set the app mode color scheme to the light
 
 	.PARAMETER Dark
-	Set the default app mode color scheme to the dark
+	Set the app mode color scheme to the dark
 
 	.EXAMPLE
 	AppMode -Light
@@ -3864,7 +3866,7 @@ Unregister-ScheduledTask -TaskName SymbolicLink -Confirm:`$false
 					New-Item -Path $env:LOCALAPPDATA\Temp -ItemType Directory -Force
 				}
 
-				# Copy all imported module folders to the new %TEMP% folder ###
+				# Copy all imported module folders to the new %TEMP% folder
 				Get-ChildItem -Path $env:TEMP -Force | Where-Object -FilterScript {$_.Name -like "*remoteIpMoProxy*"} | ForEach-Object -Process {
 					Copy-Item $_.FullName -Destination $env:LOCALAPPDATA\Temp -Recurse -Force
 				}
@@ -7779,25 +7781,24 @@ function PinToStart
 		$UnpinAll,
 
 		[Parameter(
-			Mandatory = $true,
+			Mandatory = $false,
 			Position = 1
 		)]
 		[ValidateSet("ControlPanel", "DevicesPrinters", "PowerShell")]
 		[string[]]
-		$Tiles,
-
-		[string]
-		$StartLayout = "$PSScriptRoot\StartLayout.xml"
+		$Tiles
 	)
 
 	begin
 	{
+		$Script:StartLayout = "$PSScriptRoot\StartLayout.xml"
+
 		# Unpin all the Start tiles
 		if ($UnpinAll)
 		{
-			Export-StartLayout -Path $StartLayout -UseDesktopApplicationID
+			Export-StartLayout -Path $Script:StartLayout -UseDesktopApplicationID
 
-			[xml]$XML = Get-Content -Path $StartLayout -Encoding UTF8 -Force
+			[xml]$XML = Get-Content -Path $Script:StartLayout -Encoding UTF8 -Force
 			$Groups = $XML.LayoutModificationTemplate.DefaultLayoutOverride.StartLayoutCollection.StartLayout.Group
 
 			foreach ($Group in $Groups)
@@ -7806,7 +7807,7 @@ function PinToStart
 				$Group.ParentNode.RemoveChild($Group) | Out-Null
 			}
 
-			$XML.Save($StartLayout)
+			$XML.Save($Script:StartLayout)
 		}
 	}
 
@@ -7841,8 +7842,22 @@ public static string GetString(uint strId)
 		# Extract the localized "Devices and Printers" string from shell32.dll
 		$DevicesPrinters = [WinAPI.GetStr]::GetString(30493)
 
+		# Check if an argument is "DevicesPrinters". The Devices and Printers's AppID attribute can be retrieved only if the shortcut was created
+		if (((Get-Command -Name PinToStart).Parametersets.Parameters | Where-Object -FilterScript {$null -eq $_.Attributes.AliasNames}).Attributes.ValidValues | Where-Object -FilterScript {$_ -match "DevicesPrinters"})
+		{
+			# Create the old-style "Devices and Printers" shortcut in the Start menu
+			$Shell = New-Object -ComObject Wscript.Shell
+			$Shortcut = $Shell.CreateShortcut("$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesPrinters.lnk")
+			$Shortcut.TargetPath = "control"
+			$Shortcut.Arguments = "printers"
+			$Shortcut.IconLocation = "$env:SystemRoot\system32\DeviceCenter.dll"
+			$Shortcut.Save()
+
+			Start-Sleep -Seconds 3
+		}
+
 		# Get the AppID because it's auto generated AppID for the "Devices and Printers" shortcut
-		$Script:DevicesPrintersAppID = (Get-StartApps | Where-Object -FilterScript {$_.Name -eq $DevicesPrinters}).AppID
+		$DevicesPrintersAppID = (Get-StartApps | Where-Object -FilterScript {$_.Name -eq $DevicesPrinters}).AppID
 
 		$Parameters = @(
 			# Control Panel hash table
@@ -7861,7 +7876,7 @@ public static string GetString(uint strId)
 				Size   = "2x2"
 				Column = 2
 				Row    = 0
-				AppID  = $Script:DevicesPrintersAppID
+				AppID  = $DevicesPrintersAppID
 			},
 			# Windows PowerShell hash table
 			@{
@@ -7906,13 +7921,13 @@ public static string GetString(uint strId)
 			$Table
 		}
 
-		if (-not (Test-Path -Path $StartLayout))
+		if (-not (Test-Path -Path $Script:StartLayout))
 		{
 			# Export the current Start layout
-			Export-StartLayout -Path $StartLayout -UseDesktopApplicationID
+			Export-StartLayout -Path $Script:StartLayout -UseDesktopApplicationID
 		}
 
-		[xml]$XML = Get-Content -Path $StartLayout -Encoding UTF8 -Force
+		[xml]$XML = Get-Content -Path $Script:StartLayout -Encoding UTF8 -Force
 
 		foreach ($Tile in $Tiles)
 		{
@@ -7926,16 +7941,6 @@ public static string GetString(uint strId)
 				DevicesPrinters
 				{
 					Write-Verbose -Message ($Localization.ShortcutPinning -f $DevicesPrinters) -Verbose
-
-					# Create the old-style "Devices and Printers" shortcut in the Start menu
-					$Shell = New-Object -ComObject Wscript.Shell
-					$Shortcut = $Shell.CreateShortcut("$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesPrinters.lnk")
-					$Shortcut.TargetPath = "control"
-					$Shortcut.Arguments = "printers"
-					$Shortcut.IconLocation = "$env:SystemRoot\system32\DeviceCenter.dll"
-					$Shortcut.Save()
-
-					Start-Sleep -Seconds 3
 				}
 				PowerShell
 				{
@@ -7975,7 +7980,7 @@ public static string GetString(uint strId)
 			}
 		}
 
-		$XML.Save($StartLayout)
+		$XML.Save($Script:StartLayout)
 	}
 
 	end
@@ -7986,7 +7991,7 @@ public static string GetString(uint strId)
 			New-Item -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Force
 		}
 		New-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name LockedStartLayout -Value 1 -Force
-		New-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name StartLayoutFile -Value $StartLayout -Force
+		New-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name StartLayoutFile -Value $Script:StartLayout -Force
 
 		Start-Sleep -Seconds 3
 
@@ -8005,7 +8010,7 @@ public static string GetString(uint strId)
 		Remove-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name LockedStartLayout -Force -ErrorAction Ignore
 		Remove-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name StartLayoutFile -Force -ErrorAction Ignore
 
-		Remove-Item -Path $StartLayout -Force
+		Remove-Item -Path $Script:StartLayout -Force
 
 		Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
 
@@ -8033,9 +8038,9 @@ public static string GetString(uint strId)
 	UninstallUWPApps -ForAllUsers
 
 	.NOTES
-	The WinRT.Runtime.dll and Microsoft.Windows.SDK.NET.dll assemblies are being loaded to the current session to be able to load localized UWP apps names
-	CsWinRT v1.1.4
-	Microsoft.Windows.SDK.NET 10.0.19041.15
+	Load The WinRT.Runtime.dll and Microsoft.Windows.SDK.NET.dll assemblies to the current session in order to get localized UWP apps names
+	CsWinRT v1.2.2
+	Microsoft.Windows.SDK.NET 10.0.19041.16
 
 	.LINK
 	https://github.com/microsoft/CsWinRT
@@ -8154,7 +8159,7 @@ function UninstallUWPApps
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		Name="Window"
-		MinHeight="400" MinWidth="410"
+		MinHeight="400" MinWidth="415"
 		SizeToContent="Width" WindowStartupLocation="CenterScreen"
 		TextOptions.TextFormattingMode="Display" SnapsToDevicePixels="True"
 		FontFamily="Candara" FontSize="16" ShowInTaskbar="True">
@@ -8446,6 +8451,15 @@ function UninstallUWPApps
 	UWP apps can be restored only if they were uninstalled only for the current user
 
 	.NOTES
+	Load The WinRT.Runtime.dll and Microsoft.Windows.SDK.NET.dll assemblies to the current session in order to get localized UWP apps names
+	CsWinRT v1.2.2
+	Microsoft.Windows.SDK.NET 10.0.19041.16
+
+	.LINK
+	https://github.com/microsoft/CsWinRT
+	https://www.nuget.org/packages/Microsoft.Windows.SDK.NET.Ref
+
+	.NOTES
 	A pop-up dialog box enables the user to select packages
 	Current user
 #>
@@ -8541,7 +8555,7 @@ function RestoreUWPApps
 	#region Functions
 	function Get-AppxManifest
 	{
-		Write-Verbose -Message "Patient" -Verbose
+		Write-Verbose -Message $Localization.Patient -Verbose
 
 		# Тут нельзя напрямую вписать -PackageTypeFilter Bundle, так как иначе не выдается нужное свойство InstallLocation. Только сравнивать с $Bundles
 		$Bundles = (Get-AppXPackage -PackageTypeFilter Bundle -AllUsers).Name
@@ -11812,6 +11826,15 @@ public static void PostMessage()
 	}
 
 	Write-Warning -Message $Localization.RestartWarning
+
+	.NOTES
+	Load The WinRT.Runtime.dll and Microsoft.Windows.SDK.NET.dll assemblies to the current session in order to get localized UWP apps names
+	CsWinRT v1.2.1
+	Microsoft.Windows.SDK.NET 10.0.19041.15
+
+	.LINK
+	https://github.com/microsoft/CsWinRT
+	https://www.nuget.org/packages/Microsoft.Windows.SDK.NET.Ref
 
 	Add-Type -AssemblyName "$PSScriptRoot\Libraries\WinRT.Runtime.dll"
 	Add-Type -AssemblyName "$PSScriptRoot\Libraries\Microsoft.Windows.SDK.NET.dll"
