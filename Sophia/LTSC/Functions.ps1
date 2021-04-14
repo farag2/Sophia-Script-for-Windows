@@ -2,9 +2,11 @@
 	.SYNOPSIS
 	Run the specific function, using the TAB completion
 
-	Version: v5.10
-	Date: 09.04.2021
-	Copyright (c) 2015–2021 farag & oZ-Zo
+	Version: v5.2.1
+	Date: 12.04.2021
+
+	Copyright (c) 2014–2021 farag
+	Copyright (c) 2019–2021 farag & oZ-Zo
 
 	Thanks to all https://forum.ru-board.com members involved
 
@@ -71,7 +73,7 @@ function Sophia
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.10 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & oz-zo, 2015–2021"
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.10.1 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & oz-zo, 2015–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Sophia.psd1 -PassThru -Force
@@ -95,25 +97,69 @@ $Parameters = @{
 		$Commands = (Get-Module -Name Sophia).ExportedCommands.Keys
 		foreach ($Command in $Commands)
 		{
-			$UnnecessaryParameters = @("Verbose", "Debug", "ErrorAction", "WarningAction", "InformationAction", "ErrorVariable", "WarningVariable", "InformationVariable", "OutVariable", "OutBuffer", "PipelineVariable")
-			$ParameterSets = ((Get-Command -Name $Command).Parameters | Where-Object -FilterScript {$_.Keys}).Keys | Where-Object -FilterScript {$_ -notin $UnnecessaryParameters}
-			foreach ($ParameterSet in $ParameterSets)
+			$ParameterSets = (Get-Command -Name $Command).Parametersets.Parameters | Where-Object -FilterScript {$null -eq $_.Attributes.AliasNames}
+
+			# If module command is PinToStart
+			if ($Command -eq "PinToStart")
 			{
-				# "Function -Argument" construction
-				$Command + " " + "-" + $ParameterSet | Where-Object -FilterScript {$_ -match $wordToComplete} | ForEach-Object -Process {"`"$_`""}
+				# Get all command arguments, excluding defaults
+				foreach ($ParameterSet in $ParameterSets.Name)
+				{
+					# If Argument is PinToStart
+					if ($ParameterSet -eq "Tiles")
+					{
+						$ValidValues =  ((Get-Command -Name PinToStart).Parametersets.Parameters | Where-Object -FilterScript {$null -eq $_.Attributes.AliasNames}).Attributes.ValidValues
+						foreach ($ValidValue in $ValidValues)
+						{
+							# "PinToStart -Tites ControlPanel" construction
+							# "PinToStart -Tites DevicesPrinters" construction
+							# "PinToStart -Tites PowerShell" construction
+							"PinToStart" + " " + "-" + $ParameterSet + " " + $ValidValue | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
+						}
+
+						# "PinToStart -Tites ControlPanel, DevicesPrinters, PowerShell" construction
+						"PinToStart" + " " + "-" + $ParameterSet + " " + ($ValidValues -join ", ") | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
+					}
+
+					continue
+				}
 			}
 
-			continue
-		}
+			# If module command is UninstallUWPApps
+			if ($Command -eq "UninstallUWPApps")
+			{
+				(Get-Command -Name $Command).Name | Where-Object -FilterScript {$_ -like "*$wordToComplete*"}
 
-		# Get functions list without arguments to complete
-		(Get-Command -Name @((Get-Module -Name Sophia).ExportedCommands.Keys)) | Where-Object -FilterScript {
-			$_.CmdletBinding -eq $false
-		} | Where-Object -FilterScript {$_.Name -match $wordToComplete}
+				# Get all command arguments, excluding defaults
+				foreach ($ParameterSet in $ParameterSets.Name)
+				{
+					# If Argument is ForAllUsers
+					if ($ParameterSet -eq "ForAllUsers")
+					{
+						# "UninstallUWPApps -ForAllUsers" construction
+						"UninstallUWPApps" + " " + "-" + $ParameterSet | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
+					}
+
+					continue
+				}
+			}
+
+			foreach ($ParameterSet in $ParameterSets.Name)
+			{
+				# "Function -Argument" construction
+				$Command + " " + "-" + $ParameterSet | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
+			}
+
+			# Get functions list without arguments to complete
+			Get-Command -Name $Command | Where-Object -FilterScript {$null -eq $_.Parametersets.Parameters} | Where-Object -FilterScript {$_.Name -like "*$wordToComplete*"}
+		}
 	}
 }
 Register-ArgumentCompleter @Parameters
 
+Write-Information -MessageData "`n" -InformationAction Continue
 Write-Verbose -Message "Sophia -Functions <tab>" -Verbose
 Write-Verbose -Message "Sophia -Functions temp<tab>" -Verbose
 Write-Verbose -Message "Sophia -Functions `"DiagTrackService -Disable`", `"DiagnosticDataLevel -Minimal`", UninstallUWPApps" -Verbose
+Write-Information -MessageData "`n" -InformationAction Continue
+Write-Verbose -Message "UninstallUWPApps, `"PinToStart -UnpinAll`"" -Verbose

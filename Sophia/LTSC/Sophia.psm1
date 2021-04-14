@@ -2,9 +2,11 @@
 	.SYNOPSIS
 	"Windows 10 Sophia Script" (LTSC version) is a PowerShell module for Windows 10 fine-tuning and automating the routine tasks
 
-	Version: v5.2
-	Date: 08.04.2021
-	Copyright (c) 2015–2021 farag & oZ-Zo
+	Version: v5.2.1
+	Date: 14.04.2021
+
+	Copyright (c) 2014–2021 farag
+	Copyright (c) 2019–2021 farag & oZ-Zo
 
 	Thanks to all https://forum.ru-board.com members involved
 
@@ -172,13 +174,13 @@ function CreateRestorePoint
 #region Privacy & Telemetry
 <#
 	.SYNOPSIS
-	Configure the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and block connection
+	Configure the DiagTrack service, and connection for the Unified Telemetry Client Outbound Traffic
 
 	.PARAMETER Disable
-	Disable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and block connection
+	Disable the DiagTrack service, and block connection for the Unified Telemetry Client Outbound Traffic
 
 	.PARAMETER Enable
-	Enable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and allow connection
+	Enable the DiagTrack service, and allow connection for the Unified Telemetry Client Outbound Traffic
 
 	.EXAMPLE
 	DiagTrackService -Disable
@@ -215,7 +217,7 @@ function DiagTrackService
 			Get-Service -Name DiagTrack | Set-Service -StartupType Automatic
 			Get-Service -Name DiagTrack | Start-Service
 
-			# Enable firewall rule for Unified Telemetry Client Outbound Traffic and allow connection
+			# Allow connection for the Unified Telemetry Client Outbound Traffic
 			Get-NetFirewallRule -Group DiagTrack | Set-NetFirewallRule -Enabled True -Action Allow
 		}
 		"Disable"
@@ -223,7 +225,7 @@ function DiagTrackService
 			Get-Service -Name DiagTrack | Stop-Service -Force
 			Get-Service -Name DiagTrack | Set-Service -StartupType Disabled
 
-			# Disable firewall rule for Unified Telemetry Client Outbound Traffic and block connection
+			# Block connection for the Unified Telemetry Client Outbound Traffic
 			Get-NetFirewallRule -Group DiagTrack | Set-NetFirewallRule -Enabled False -Action Block
 		}
 	}
@@ -1151,7 +1153,7 @@ function MergeConflicts
 	Open File Explorer to "This PC"
 
 	.PARAMETER QuickAccess
-	Open File Explorer to "Quick access"
+	Open File Explorer to Quick access
 
 	.EXAMPLE
 	OpenFileExplorerTo -ThisPC
@@ -1408,13 +1410,13 @@ function SnapAssist
 
 <#
 	.SYNOPSIS
-	Configure the file transfer dialog box
+	Configure the file transfer dialog box mode
 
 	.PARAMETER Detailed
-	Always open the file transfer dialog box in the detailed mode
+	Show the file transfer dialog box in the detailed mode
 
 	.PARAMETER Compact
-	Always open the file transfer dialog box in the compact mode
+	Show the file transfer dialog box in the compact mode
 
 	.EXAMPLE
 	FileTransferDialog -Detailed
@@ -1526,13 +1528,13 @@ function FileExplorerRibbon
 
 <#
 	.SYNOPSIS
-	Configure the recycle bin files delete confirmation
+	Configure the recycle bin files delete confirmation dialog
 
 	.PARAMETER Disable
-	Display/do not display the recycle bin files delete confirmation
+	Display/do not display the recycle bin files delete confirmation dialog
 
 	.PARAMETER Enable
-	Display/do not display the recycle bin files delete confirmation
+	Display/do not display the recycle bin files delete confirmation dialog
 
 	.EXAMPLE
 	RecycleBinDeleteConfirmation -Disable
@@ -1608,13 +1610,13 @@ public static void PostMessage()
 
 <#
 	.SYNOPSIS
-	Configure the "3D Objects" folder in "This PC" and "Quick access"
+	Configure the "3D Objects" folder in "This PC" and Quick access
 
 	.PARAMETER Show
-	Show the "3D Objects" folder in "This PC" and "Quick access"
+	Show the "3D Objects" folder in "This PC" and Quick access
 
 	.PARAMETER Hide
-	Hide the "3D Objects" folder in "This PC" and "Quick access"
+	Hide the "3D Objects" folder in "This PC" and Quick access
 
 	.EXAMPLE
 	3DObjects -Show
@@ -1681,13 +1683,13 @@ function 3DObjects
 
 <#
 	.SYNOPSIS
-	Configure frequently used folders in "Quick access"
+	Configure frequently used folders in Quick access
 
 	.PARAMETER Show
-	Show frequently used folders in "Quick access"
+	Show frequently used folders in Quick access
 
 	.PARAMETER Hide
-	Hide frequently used folders in "Quick access"
+	Hide frequently used folders in Quick access
 
 	.EXAMPLE
 	QuickAccessFrequentFolders -Show
@@ -2003,57 +2005,6 @@ function ControlPanelView
 	Current user
 #>
 function WindowsColorScheme
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Light"
-		)]
-		[switch]
-		$Light,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Dark"
-		)]
-		[switch]
-		$Dark
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Light"
-		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -PropertyType DWord -Value 1 -Force
-		}
-		"Dark"
-		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -PropertyType DWord -Value 0 -Force
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	Configure the default app mode color scheme
-
-	.PARAMETER Light
-	Set the default app mode color scheme to the light
-
-	.PARAMETER Dark
-	Set the default app mode color scheme to the dark
-
-	.EXAMPLE
-	AppMode -Light
-
-	.EXAMPLE
-	AppMode -Dark
-
-	.NOTES
-	Current user
-#>
-function AppMode
 {
 	param
 	(
