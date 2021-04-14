@@ -2,29 +2,34 @@
 	.SYNOPSIS
 	Default preset file for "Windows 10 Sophia Script"
 
-	Version: v5.10
-	Date: 09.04.2021
-	Copyright (c) 2015–2021 farag & oZ-Zo
+	Version: v5.10.1
+	Date: 14.04.2021
+
+	Copyright (c) 2014–2021 farag
+	Copyright (c) 2019–2021 farag & oZ-Zo
 
 	Thanks to all https://forum.ru-board.com members involved
 
 	.DESCRIPTION
 	Read carefully and configure the preset file before running
-		Comment out function with the "#" char if you don't want it to be run
-		Uncomment function by removing the "#" char if you want it to be run
+	Comment out function with the "#" char if you don't want it to be run
+	Uncomment function by removing the "#" char if you want it to be run
 	Every tweak in the preset file has its' corresponding function to restore the default settings
 
 	Running the script is best done on a fresh install because running it on wrong tweaked system may result in errors occurring
 
-	To be able to call the specific function using autocompletion enter ". .\Functions.ps1" (with a dot at the beginning)
-	Read more in the Functions.ps1 file
+	To be able to call the specific function using autocompletion invoke the Functions.ps1:
+		. .\Functions.ps1 (with a dot at the beginning). Read more in the Functions.ps1 file
 
 	.EXAMPLE Run the whole script
 	.\Sophia.ps1
 
+	.EXAMPLE Run the script by specifying the module functions as an argument
+	.\Sophia.ps1 -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
+
 	.NOTES
 	Supported Windows 10 versions
-	Versions: 2004 (20H1)/20H2 (2009)/21H1
+	Versions: 2004/20H2/21H1
 	Builds: 19041/19042/19043
 	Editions: Home/Pro/Enterprise
 	Architecture: x64
@@ -54,14 +59,49 @@
 #Requires -RunAsAdministrator
 #Requires -Version 5.1
 
+[CmdletBinding()]
+param
+(
+	[Parameter(Mandatory = $false)]
+	[string[]]
+	$Functions
+)
+
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.10 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & oz-zo, 2015–2021"
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.10.1 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & oz-zo, 2014–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Sophia.psd1 -PassThru -Force
 
 Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia
+
+<#
+	.SYNOPSIS
+	Run the script by specifying the module functions as an argument
+	Запустить скрипт, указав в качестве аргумента функции модуля
+
+	.EXAMPLE
+	.\Sophia.ps1 -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
+
+	.NOTES
+	Separate functions with a comma
+#>
+if ($Functions)
+{
+	# Regardless of the functions entered as an argument, the "Checkings" function will be executed first,
+	# and the "Refresh" and "Errors" functions will be executed at the end
+	Invoke-Command -ScriptBlock {Checkings}
+
+	foreach ($Function in $Functions)
+	{
+		Invoke-Expression -Command $Function
+	}
+
+	Invoke-Command -ScriptBlock {Refresh; Errors}
+
+	exit
+}
 
 #region Protection
 <#
@@ -88,12 +128,12 @@ CreateRestorePoint
 #endregion Protection
 
 #region Privacy & Telemetry
-# Disable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and block connection
-# Отключить службу DiagTrack, правила брандмауэра для исходящего трафик клиента единой телеметрии и заблокировать соединение
+# Disable the DiagTrack service, and block connection for the Unified Telemetry Client Outbound Traffic
+# Отключить службу DiagTrack и заблокировать соединение для исходящего трафик клиента единой телеметрии
 DiagTrackService -Disable
 
-# Enable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and allow connection
-# Включить службу DiagTrack, правила брандмауэра для исходящего трафик клиента единой телеметрии и разрешить соединение
+# Enable the DiagTrack service, and allow connection for the Unified Telemetry Client Outbound Traffic
+# Включить службу DiagTrack и разрешить соединение для исходящего трафик клиента единой телеметрии
 # DiagTrackService -Enable
 
 # Set the OS level of diagnostic data gathering to minimum
@@ -105,7 +145,7 @@ DiagnosticDataLevel -Minimal
 # DiagnosticDataLevel -Default
 
 # Turn off the Windows Error Reporting
-# Отключить отчеты об ошибках Windows
+# Отключить запись отчетов об ошибках Windows
 ErrorReporting -Disable
 
 # Turn on the Windows Error Reporting (default value)
@@ -262,7 +302,7 @@ MergeConflicts -Show
 # Открывать проводник для: "Этот компьютер"
 OpenFileExplorerTo -ThisPC
 
-# Open File Explorer to: "Quick access" (default value)
+# Open File Explorer to: Quick access (default value)
 # Открывать проводник для: "Быстрый доступ" (значение по умолчанию)
 # OpenFileExplorerTo -QuickAccess
 
@@ -311,15 +351,15 @@ SecondsInSystemClock -Show
 SnapAssist -Disable
 
 # When I snap a window, show what I can snap next to it (default value)
-# При прикреплении окна не показывать/показывать, что можно прикрепить рядом с ним (значение по умолчанию)
+# При прикреплении окна показывать, что можно прикрепить рядом с ним (значение по умолчанию)
 # SnapAssist -Enable
 
-# Always open the file transfer dialog box in the detailed mode
-# Всегда открывать диалоговое окно передачи файлов в развернутом виде
+# Show the file transfer dialog box in the detailed mode
+# Отображать диалоговое окно передачи файлов в развернутом виде
 FileTransferDialog -Detailed
 
-# Always open the file transfer dialog box in the compact mode (default value)
-# Всегда открывать диалоговое окно передачи файлов в свернутом виде (значение по умолчанию)
+# Show the file transfer dialog box in the compact mode (default value)
+# Отображать диалоговое окно передачи файлов в свернутом виде (значение по умолчанию)
 # FileTransferDialog -Compact
 
 # Expand the File Explorer ribbon
@@ -330,28 +370,28 @@ FileExplorerRibbon -Expanded
 # Свернуть ленту проводника (значение по умолчанию)
 # FileExplorerRibbon -Minimized
 
-# Display the recycle bin files delete confirmation
+# Display the recycle bin files delete confirmation dialog
 # Запрашивать подтверждение на удаление файлов в корзину
 RecycleBinDeleteConfirmation -Enable
 
-# Do not display the recycle bin files delete confirmation (default value)
+# Do not display the recycle bin files delete confirmation dialog (default value)
 # Не запрашивать подтверждение на удаление файлов в корзину (значение по умолчанию)
 # RecycleBinDeleteConfirmation -Disable
 
-# Hide the "3D Objects" folder in "This PC" and "Quick access"
+# Hide the "3D Objects" folder in "This PC" and Quick access
 # Скрыть папку "Объемные объекты" в "Этот компьютер" и панели быстрого доступа
 3DObjects -Hide
 
-# Show the "3D Objects" folder in "This PC" and "Quick access" (default value)
+# Show the "3D Objects" folder in "This PC" and Quick access (default value)
 # Отобразить папку "Объемные объекты" в "Этот компьютер" и панели быстрого доступа (значение по умолчанию)
 # 3DObjects -Show
 
-# Hide frequently used folders in "Quick access"
+# Hide frequently used folders in Quick access
 # Скрыть недавно используемые папки на панели быстрого доступа
 QuickAccessFrequentFolders -Hide
 
-# Show frequently used folders in "Quick access" (default value)
-# Показать недавно используемые папки на панели быстрого доступа (значение по умолчанию)
+# Show frequently used folders in Quick access (default value)
+# Показать часто используемые папки на панели быстрого доступа (значение по умолчанию)
 # QuickAccessFrequentFolders -Show
 
 # Do not show recently used files in Quick access
@@ -374,11 +414,11 @@ TaskbarSearch -Hide
 # Показать поле поиска на панели задач (значение по умолчанию)
 # TaskbarSearch -SearchBox
 
-# Do not show the "Windows Ink Workspace" button on the taskbar
+# Do not show the Windows Ink Workspace button on the taskbar
 # Не показывать кнопку Windows Ink Workspace на панели задач
 WindowsInkWorkspace -Hide
 
-# Show the "Windows Ink Workspace" button in taskbar (default value)
+# Show Windows Ink Workspace button on the taskbar (default value)
 # Показать кнопку Windows Ink Workspace на панели задач (значение по умолчанию)
 # WindowsInkWorkspace -Show
 
@@ -411,7 +451,7 @@ ControlPanelView -LargeIcons
 # ControlPanelView -SmallIcons
 
 # View the Control Panel icons by: category (default value)
-# Просмотр значки Панели управления как "категория" (значение по умолчанию)
+# Просмотр значки Панели управления как: категория (значение по умолчанию)
 # ControlPanelView -Category
 
 # Set the Windows mode color scheme to the dark
@@ -422,12 +462,12 @@ WindowsColorScheme -Dark
 # Установить режим цвета для Windows на светлый
 # WindowsColorScheme -Light
 
-# Set the default app mode color scheme to the dark
-# Установить цвет режима приложений по умолчанию на темный
+# Set the app mode color scheme to the dark
+# Установить цвет режима приложений на темный
 AppMode -Dark
 
-# Set the default app mode color scheme to the light
-# Установить цвет режима приложений по умолчанию на светлый
+# Set the app mode color scheme to the light
+# Установить цвет режима приложений на светлый
 # AppMode -Light
 
 # Do not show the "New App Installed" indicator
