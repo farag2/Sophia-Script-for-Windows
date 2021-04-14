@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.10.1 — 14.04.2021
+
+## Windows 10 2004 (20H1)/20H2 | LTSC
+
+Diff from v5.10
+[5.10...5.10.1](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.10...5.10.1)
+
+* Added the video of how the script scheduled tasks work
+  * [![YT](https://img.youtube.com/vi/MiQ85tVXQQA/0.jpg)](https://youtu.be/MiQ85tVXQQA)
+* The developmet focus shifted to [SophiApp](https://github.com/SophiaUI/SophiApp) :rocket:
+* The TAB automplete function improved;
+* Revert the feature to call functions from Sophia.ps1
+
+  ```powershell
+  .\Sophia.ps1 -Functions CreateRestorePoint, "ScheduledTasks -Disable", "WindowsCapabilities -Uninstall"
+  ```
+
+* Closed #158;
+* Remove the unnecessary `AppMode` function in LTSC version;
+* Sophia Script Wrapper' version bumped to 1.1: UI updated;
+  ![Image](https://i.imgur.com/chjWR8R.png)
+* Minor changes. :feelsgood:
+
+Learn more about David's [wrapper](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/Wrapper) from [benchtweakgaming.com](https://benchtweakgaming.com/2020/11/12/windows-10-debloat-tool/) and create your own preset file.
+
+[![YT](https://img.youtube.com/vi/f529ucAipI8/1.jpg)](https://www.youtube.com/watch?v=f529ucAipI8&t=946s)
+
 ## 5.10 — 09.04.2021
 
 ## Windows 10 2004 (20H1)/20H2 (2009) | LTSC
