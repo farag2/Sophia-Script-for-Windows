@@ -28,10 +28,6 @@ Diff from v5.10
   ![Image](https://i.imgur.com/chjWR8R.png)
 * Minor changes. :feelsgood:
 
-Learn more about David's [wrapper](https://github.com/farag2/Windows-10-Sophia-Script/tree/master/Wrapper) from [benchtweakgaming.com](https://benchtweakgaming.com/2020/11/12/windows-10-debloat-tool/) and create your own preset file.
-
-[![YT](https://img.youtube.com/vi/f529ucAipI8/1.jpg)](https://www.youtube.com/watch?v=f529ucAipI8&t=946s)
-
 ## 5.10 — 09.04.2021
 
 ## Windows 10 2004 (20H1)/20H2 (2009) | LTSC
