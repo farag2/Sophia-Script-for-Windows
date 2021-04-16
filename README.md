@@ -212,14 +212,9 @@ Or use an old-style format without the TAB functions autocomplete
 
 ## How to translate
 
-* Get your OS UI culture by
-
-   ```powershell
-   $PSUICulture
-   ```
-
+* Get your OS UI culture by `$PSUICulture`.
 * Create a folder with the UI culture name;
-* Place your localized Sophia.psd1 file into this folder
+* Place your localized Sophia.psd1 file into this folder.
 
 ## Ask a question on
 
