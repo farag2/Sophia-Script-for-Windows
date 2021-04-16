@@ -107,7 +107,10 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ## Screenshots
 
-![Image](./img/Autocomplete.gif) ![Image](https://i.imgur.com/AeOOJ3k.png) ![Image](https://i.imgur.com/Fuf4CaD.png) ![Image](https://i.imgur.com/JQh0oSh.png) ![Image](https://i.imgur.com/qZhFqr3.png) ![Image](https://i.imgur.com/2C3NOke.png)
+![Image](./img/Autocomplete.gif)
+![Image](https://i.imgur.com/xe0PgFL.png)
+![Image](https://i.imgur.com/xeiBbes.png) ![Image](https://i.imgur.com/0zj0h2S.png)
+![Image](https://i.imgur.com/uwJ2bqD.png) ![Image](https://i.imgur.com/ybdlLcf.png)
 ![Image](https://i.imgur.com/chjWR8R.png)
 ![Image](https://i.imgur.com/cZC40Fi.png)
 
