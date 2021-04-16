@@ -111,7 +111,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 ![Image](https://i.imgur.com/xe0PgFL.png)
 ![Image](https://i.imgur.com/xeiBbes.png) ![Image](https://i.imgur.com/0zj0h2S.png)
 ![Image](https://i.imgur.com/uwJ2bqD.png) ![Image](https://i.imgur.com/ybdlLcf.png)
-![Image](https://i.imgur.com/chjWR8R.png)
+![Image](https://i.imgur.com/GBN3UDM.png)
 ![Image](https://i.imgur.com/cZC40Fi.png)
 
 ![Image](https://i.imgur.com/fmFxnaA.png)
