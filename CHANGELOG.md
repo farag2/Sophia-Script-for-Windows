@@ -13,7 +13,9 @@ Diff from v5.10
 [5.10...5.10.1](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.10...5.10.1)
 
 * Added the video of how the script scheduled tasks work
+
   [![YT](https://img.youtube.com/vi/MiQ85tVXQQA/0.jpg)](https://youtu.be/MiQ85tVXQQA)
+
 * The developmet focus shifted to [SophiApp](https://github.com/SophiaUI/SophiApp) :rocket:
 * The TAB automplete function improved;
 * Revert the feature to call functions from Sophia.ps1
