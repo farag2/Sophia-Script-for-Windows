@@ -355,7 +355,7 @@ TrayIcons -Show
 ControlPanelView -LargeIcons
 
 # View the Control Panel icons by: category (default value)
-# Просмотр значки Панели управления как: категория (значение по умолчанию)
+# Просмотр иконок Панели управления как: категория (значение по умолчанию)
 # ControlPanelView -Category
 
 # Set the Windows mode color scheme to the dark
