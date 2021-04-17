@@ -59,7 +59,9 @@ Diff from v5.9
 
   * The code isn't perfect but it works. Anyway it's better than recalling the functions' names. Hopefully I'll improve it in the next releases.
 * Added the `RestoreUWPApps` function;
+
   ![Image](https://i.imgur.com/JQh0oSh.png)
+
   * Now it's possible to restore the default UWP apps uninstalled for current user;
   * Restorable packages will always be displayed in English in a pop form;
   * If you uninstalled packages for all users they can be restored only by downloading from the Microsoft Store.
