@@ -25,7 +25,7 @@ Diff from v5.10
 * Closed #158;
 * Remove the unnecessary `AppMode` function in LTSC version;
 * Sophia Script Wrapper' version bumped to 1.1: UI updated;
-  ![Image](https://i.imgur.com/chjWR8R.png)
+  ![Image](https://i.imgur.com/GBN3UDM.png)
 * Minor changes. :feelsgood:
 
 ## 5.10 — 09.04.2021
@@ -36,8 +36,8 @@ Diff from v5.9
 [5.9...5.10](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.9...5.10)
 
 * Calling the specific function was completely rewritten! :rocket:
-  * Now you're able to use the <kbd>Tab</kbd> completion for functions and their arguments by typing its' first letters
-    ![Image](https://i.imgur.com/eMsn1aY.gif)
+  * Added the <kbd>Tab</kbd> functions autocompletion by typing its' first letters
+    ![Image](./img/Autocomplete.gif)
   * The code from moved to the `Functions.ps1` file;
   * If you want to call the specific function you need to [dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-) the `Functions.ps1` first
 
