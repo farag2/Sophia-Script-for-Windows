@@ -71,7 +71,9 @@ Diff from v5.9
 * Fixed bug in the `UninstallUWPApps` function when packages names displayed in the center instead of the top;
 * Now the `TempTask` task removes only files and folders older than a day;
 * After script applying a pop-up will apper
+
   ![Image](https://i.imgur.com/9s7Noud.png)
+
 * Formally added the `21H1, 19043` build support;
 * Minor changes. :feelsgood:
 
