@@ -227,4 +227,4 @@ Or use an old-style format without the TAB functions autocomplete
 
 ## SophiApp Community Edition (C# + WPF)
 
-[SophiApp](https://github.com/SophiaUI/SophiApp) is still in development.
+[SophiApp](https://github.com/Sophia-Community/SophiApp) is in active development 🚀
