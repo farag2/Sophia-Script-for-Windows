@@ -165,12 +165,13 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ## How to use
 
+* Choose the right script version for your Windows 10;
 * Download [up-to-date version](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest);
 * Expand the archive;
 * Open folder with the expanded archive;
 * Look through the `Sophia.ps1` file to configure functions that you want to be run;
-  * Comment out function with the `#` char if you don't want it to be run;
-  * Uncomment function by removing the `#` char if you want it to be run.
+  * Place the "#" char before function if you don't want it to be run;
+  * Remove the "#" char before function if you want it to be run.
 * Click "File" in File Explorer, hover over "Open Windows PowerShell", and select "Open Windows PowerShell as Administrator" [(how-to with screenshots)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/);
 * Set execution policy to be able to run scripts only in the current PowerShell session
 
@@ -178,8 +179,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
   ```
 
-* Type `.\Sophia.ps1` to run the whole preset file;
-* Press <kbd>Enter</kbd>.
+* Type `.\Sophia.ps1` <kbd>Enter</kbd> to run the whole preset file.
 
 ***
 
@@ -190,25 +190,27 @@ To run the specific function(s) [dot source](https://docs.microsoft.com/ru-ru/po
 . .\Functions
 ```
 
-* Now you can do like this
+* Now you can do like this (the quotation marks required)
 
 ```powershell
 Sophia -Functions <tab>
 Sophia -Functions temp<tab>
 Sophia -Functions unin<tab>
+Sophia -Functions uwp<tab>
 Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
 
 UninstallUWPApps, "PinToStart -UnpinAll"
 ```
 
-Or use an old-style format without the TAB functions autocomplete
+Or use an old-style format without the TAB functions autocomplete (the quotation marks required)
 
 ```powershell
 .\Sophia.ps1 -Functions CreateRestorePoint, "ScheduledTasks -Disable", "WindowsCapabilities -Uninstall"
 ```
 
-* Regardless of the functions entered as an argument the `Checkings` function will be executed first, and the `Refresh` and `Errors` functions will be executed at the end;
-* The quotation marks required.
+***
+
+* Regardless of the functions entered as an argument the `Checkings` function will be executed first, and the `Refresh` and `Errors` functions will be executed at the end.
 
 ## How to translate
 
