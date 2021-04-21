@@ -9,7 +9,7 @@ Before submitting a bug report:
 
 * Make sure you are able to repro it on the latest released version;
 * [ ] Verify that this is not a Windows issue;
-* [ ] Check the [**Before running**](https://github.com/farag2/Windows-10-Sophia-Script#fire-before-running-fire) & [**Usage**](https://github.com/farag2/Windows-10-Sophia-Script#usage) sections
+* [ ] Check the [**Before running**](https://github.com/farag2/Windows-10-Sophia-Script#fire-before-running-fire) & [**Usage**](https://github.com/farag2/Windows-10-Sophia-Script#how-to-use) sections
 * [ ] If you issue concerns the Wrapper, please mention @BenchTweakGaming in issue
 
 **Steps to reproduce**
