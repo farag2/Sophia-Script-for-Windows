@@ -55,7 +55,6 @@ AllFilesFilter                            = Todos os arquivos (*.*)|*.*
 Change                                    = Mudar
 DialogBoxOpening                          = Exibindo a caixa de diálogo...
 Disable                                   = Desativar
-Dismiss                                   = Ignorar
 Enable                                    = Habilitar
 EXEFilesFilter                            = *.exe|*.exe| Todos os arquivos (*.*)|*.*
 FolderSelect                              = Escolha uma pasta
@@ -75,7 +74,6 @@ Select                                    = Selecione
 SelectAll                                 = Selecionar tudo
 Skip                                      = Pular
 Skipped                                   = Ignorados
-Snooze                                    = Soneca
 TelegramTitle                             = Entre no canal oficial do Telegram
 Uninstall                                 = Desinstalar
 '@
