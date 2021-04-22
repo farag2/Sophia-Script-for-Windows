@@ -45,7 +45,6 @@ AllFilesFilter                            = Все файлы (*.*)|*.*
 Change                                    = Изменить
 DialogBoxOpening                          = Диалоговое окно открывается...
 Disable                                   = Отключить
-Dismiss                                   = Отмена
 Enable                                    = Включить
 EXEFilesFilter                            = *.exe|*.exe|Все файлы (*.*)|*.*
 FolderSelect                              = Выберите папку
@@ -65,7 +64,6 @@ Select                                    = Выбрать
 SelectAll                                 = Выбрать всё
 Skip                                      = Пропустить
 Skipped                                   = Пропущено
-Snooze                                    = Отложить
 TelegramTitle                             = Присоединяйтесь к нашей официальной группе в Telegram
 Uninstall                                 = Удалить
 '@

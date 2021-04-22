@@ -2,15 +2,15 @@
 	.SYNOPSIS
 	"Windows 10 Sophia Script" (LTSC version) is a PowerShell module for Windows 10 fine-tuning and automating the routine tasks
 
-	Version: v5.2.1
-	Date: 14.04.2021
+	Version: v5.2.2
+	Date: 22.04.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & oZ-Zo
 
 	Thanks to all https://forum.ru-board.com members involved
 
-	.DESCRIPTION
+	.NOTES
 	Running the script is best done on a fresh install because running it on wrong tweaked system may result in errors occurring
 
 	.NOTES
@@ -273,10 +273,12 @@ function DiagnosticDataLevel
 	{
 		"Minimal"
 		{
+			# Basic level
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 0 -Force
 		}
 		"Default"
 		{
+			# Full level
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 3 -Force
 		}
 	}
@@ -2888,11 +2890,11 @@ Unregister-ScheduledTask -TaskName SymbolicLink -Confirm:`$false
 					$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8
 					$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
 					$Parameters = @{
-						"TaskName"  = "SymbolicLink"
-						"Principal" = $Principal
-						"Action"    = $Action
-						"Settings"  = $Settings
-						"Trigger"   = $Trigger
+						TaskName  = "SymbolicLink"
+						Principal = $Principal
+						Action    = $Action
+						Settings  = $Settings
+						Trigger   = $Trigger
 					}
 					Register-ScheduledTask @Parameters -Force
 				}
@@ -3001,11 +3003,11 @@ Unregister-ScheduledTask -TaskName TemporaryTask -Confirm:`$false
 					$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8
 					$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
 					$Parameters = @{
-						"TaskName"  = "TemporaryTask"
-						"Principal" = $Principal
-						"Action"    = $Action
-						"Settings"  = $Settings
-						"Trigger"   = $Trigger
+						TaskName  = "TemporaryTask"
+						Principal = $Principal
+						Action    = $Action
+						Settings  = $Settings
+						Trigger   = $Trigger
 					}
 					Register-ScheduledTask @Parameters -Force
 				}
@@ -6580,7 +6582,7 @@ function SetAppGraphicsPerformance
 					Add-Type -AssemblyName System.Windows.Forms
 					$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
 					$OpenFileDialog.Filter = $Localization.EXEFilesFilter
-					$OpenFileDialog.InitialDirectory = "${env:ProgramFiles(x86)}"
+					$OpenFileDialog.InitialDirectory = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
 					$OpenFileDialog.Multiselect = $false
 
 					# Focus on open file dialog
@@ -6767,12 +6769,12 @@ while (`$true)
 			$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
 			$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
 			$Parameters = @{
-				"TaskName"		= "Windows Cleanup"
-				"TaskPath"		= "Sophia Script"
-				"Principal"		= $Principal
-				"Action"		= $Action
-				"Description"	= $Localization.CleanupTaskDescription
-				"Settings"		= $Settings
+				TaskName    = "Windows Cleanup"
+				TaskPath    = "Sophia Script"
+				Principal   = $Principal
+				Action      = $Action
+				Description = $Localization.CleanupTaskDescription
+				Settings    = $Settings
 			}
 			Register-ScheduledTask @Parameters -Force
 
@@ -6826,9 +6828,9 @@ while (`$true)
 			<selection id="""30""" content="""$($Localization.HalfHour)""" />
 			<selection id="""240""" content="""$($Localization.FourHours)""" />
 		</input>
-		<action activationType="""system""" arguments="""snooze""" hint-inputId="""SnoozeTimer""" content="""$($Localization.Snooze)""" id="""test-snooze"""/>
+		<action activationType="""system""" arguments="""snooze""" hint-inputId="""SnoozeTimer""" content="" id="""test-snooze"""/>
 		<action arguments="""WindowsCleanup:""" content="""$($Localization.Run)""" activationType="""protocol"""/>
-		<action arguments="""dismiss""" content="""$($Localization.Dismiss)""" activationType="""system"""/>
+		<action arguments="""dismiss""" content="""""" activationType="""system"""/>
 	</actions>
 </toast>
 """@
@@ -6846,13 +6848,13 @@ while (`$true)
 			$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
 			$Trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 30 -At 9pm
 			$Parameters = @{
-				"TaskName"		= "Windows Cleanup Notification"
-				"TaskPath"		= "Sophia Script"
-				"Principal"		= $Principal
-				"Action"		= $Action
-				"Description"	= $Localization.CleanupNotificationTaskDescription
-				"Settings"		= $Settings
-				"Trigger"		= $Trigger
+				TaskName    = "Windows Cleanup Notification"
+				TaskPath    = "Sophia Script"
+				Principal   = $Principal
+				Action      = $Action
+				Description = $Localization.CleanupNotificationTaskDescription
+				Settings    = $Settings
+				Trigger     = $Trigger
 			}
 			Register-ScheduledTask @Parameters -Force
 		}
@@ -6953,13 +6955,13 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -For
 			$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
 			$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
 			$Parameters = @{
-				"TaskName"    = "SoftwareDistribution"
-				"TaskPath"    = "Sophia Script"
-				"Principal"   = $Principal
-				"Action"      = $Action
-				"Description" = $Localization.FolderTaskDescription -f "%SystemRoot%\SoftwareDistribution\Download"
-				"Settings"    = $Settings
-				"Trigger"     = $Trigger
+				TaskName    = "SoftwareDistribution"
+				TaskPath    = "Sophia Script"
+				Principa    = $Principal
+				Action      = $Action
+				Description = $Localization.FolderTaskDescription -f "%SystemRoot%\SoftwareDistribution\Download"
+				Settings    = $Settings
+				Trigger     = $Trigger
 			}
 			Register-ScheduledTask @Parameters -Force
 		}
@@ -7048,13 +7050,13 @@ Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object {`$_.CreationTime 
 			$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
 			$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
 			$Parameters = @{
-				"TaskName"    = "Temp"
-				"TaskPath"    = "Sophia Script"
-				"Principal"   = $Principal
-				"Action"      = $Action
-				"Description" = $Localization.FolderTaskDescription -f "%TEMP%"
-				"Settings"    = $Settings
-				"Trigger"     = $Trigger
+				TaskName    = "Temp"
+				TaskPath    = "Sophia Script"
+				Principal   = $Principal
+				Action      = $Action
+				Description = $Localization.FolderTaskDescription -f "%TEMP%"
+				Settings    = $Settings
+				Trigger     = $Trigger
 			}
 			Register-ScheduledTask @Parameters -Force
 		}
@@ -9019,7 +9021,7 @@ public static void PostMessage()
 	<audio src="ms-winsoundevent:notification.default" />
 	<actions>
 		<action arguments="https://t.me/sophia_chat" content="$($Localization.Open)" activationType="protocol"/>
-		<action arguments="dismiss" content="$($Localization.Dismiss)" activationType="system"/>
+		<action arguments="dismiss" content="" activationType="system"/>
 	</actions>
 </toast>
 "@

@@ -45,7 +45,6 @@ AllFilesFilter                            = All Files (*.*)|*.*
 Change                                    = Change
 DialogBoxOpening                          = Displaying the dialog box...
 Disable                                   = Disable
-Dismiss                                   = Dismiss
 Enable                                    = Enable
 EXEFilesFilter                            = *.exe|*.exe|All Files (*.*)|*.*
 FolderSelect                              = Select a folder
@@ -65,7 +64,6 @@ Select                                    = Select
 SelectAll                                 = Select all
 Skip                                      = Skip
 Skipped                                   = Skipped
-Snooze                                    = Snooze
 TelegramTitle                             = Join our official Telegram group
 Uninstall                                 = Uninstall
 '@

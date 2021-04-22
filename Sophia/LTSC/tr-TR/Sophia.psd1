@@ -45,7 +45,6 @@ AllFilesFilter                            = Tüm Dosyalar (*.*)|*.*
 Change                                    = Değiştir
 DialogBoxOpening                          = İletişim kutusu görüntüleniyor...
 Disable                                   = Devre dışı bırak
-Dismiss                                   = İptal
 Enable                                    = Aktif et
 EXEFilesFilter                            = *.exe|*.exe|Tüm Dosyalar (*.*)|*.*
 FolderSelect                              = Klasör seç
@@ -65,7 +64,6 @@ Select                                    = Seç
 SelectAll                                 = Hepsini seç
 Skip                                      = Atla
 Skipped                                   = Atlandı
-Snooze                                    = Ertelemek
 TelegramTitle                             = Resmi Telegram kanalımıza katılın
 Uninstall                                 = Kaldır
 '@

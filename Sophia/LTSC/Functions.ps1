@@ -1,9 +1,9 @@
 ﻿<#
 	.SYNOPSIS
-	Run the specific function, using the TAB completion
+	The TAB completion for functions and their arguments
 
-	Version: v5.2.1
-	Date: 14.04.2021
+	Version: v5.2.2
+	Date: 22.04.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & oZ-Zo
@@ -11,14 +11,10 @@
 	Thanks to all https://forum.ru-board.com members involved
 
 	.DESCRIPTION
-	To be able to call the specific function(s) enter ". .\Function.ps1" first (with a dot at the beginning)
-	Running this script will add the TAB completion for functions and their arguments by typing its' first letters
+	Dot source the script first: . .\Function.ps1 (with a dot at the beginning)
+	Start typing any characters contained in the function's name or its arguments, and press the TAB button
 
-	Чтобы иметь возможность вызывать конкретную функцию, введите сначала ". .\Functions.ps1" (с точкой в начале)
-	Запуск этого скрипта добавит, используя табуляцию, автопродление имен функций и их аргументов по введенным первым буквам
-
-	.EXAMPLE Run the specific function(s)
-	. .\Functions.ps1
+	.EXAMPLE
 	Sophia -Functions <tab>
 	Sophia -Functions temp<tab>
 	Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
@@ -57,10 +53,7 @@ function Sophia
 		$Functions
 	)
 
-	<#
-		Regardless of the functions entered as an argument, the "Checkings" function will be executed first,
-		and the "Refresh" and "Errors" functions will be executed at the end
-	#>
+	# Regardless of the functions entered as an argument, the "Checkings" function will be executed first, and the "Refresh" and "Errors" functions will be executed at the end
 	Invoke-Command -ScriptBlock {Checkings}
 
 	foreach ($Function in $Functions)
@@ -73,7 +66,7 @@ function Sophia
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.10.1 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & oz-zo, 2014–2021"
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.10.2 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & oz-zo, 2014–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Sophia.psd1 -PassThru -Force
@@ -99,25 +92,23 @@ $Parameters = @{
 		{
 			$ParameterSets = (Get-Command -Name $Command).Parametersets.Parameters | Where-Object -FilterScript {$null -eq $_.Attributes.AliasNames}
 
-			# If module command is PinToStart
+			# If a module command is PinToStart
 			if ($Command -eq "PinToStart")
 			{
 				# Get all command arguments, excluding defaults
 				foreach ($ParameterSet in $ParameterSets.Name)
 				{
-					# If Argument is PinToStart
+					# If an argument is Tiles
 					if ($ParameterSet -eq "Tiles")
 					{
-						$ValidValues =  ((Get-Command -Name PinToStart).Parametersets.Parameters | Where-Object -FilterScript {$null -eq $_.Attributes.AliasNames}).Attributes.ValidValues
+						$ValidValues = ((Get-Command -Name PinToStart).Parametersets.Parameters | Where-Object -FilterScript {$null -eq $_.Attributes.AliasNames}).Attributes.ValidValues
 						foreach ($ValidValue in $ValidValues)
 						{
-							# "PinToStart -Tites ControlPanel" construction
-							# "PinToStart -Tites DevicesPrinters" construction
-							# "PinToStart -Tites PowerShell" construction
+							# The "PinToStart -Tiles <function>" construction
 							"PinToStart" + " " + "-" + $ParameterSet + " " + $ValidValue | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
 						}
 
-						# "PinToStart -Tites ControlPanel, DevicesPrinters, PowerShell" construction
+						# "PinToStart -Tiles <functions>" construction
 						"PinToStart" + " " + "-" + $ParameterSet + " " + ($ValidValues -join ", ") | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
 					}
 
@@ -125,7 +116,7 @@ $Parameters = @{
 				}
 			}
 
-			# If module command is UninstallUWPApps
+			# If a module command is UninstallUWPApps
 			if ($Command -eq "UninstallUWPApps")
 			{
 				(Get-Command -Name $Command).Name | Where-Object -FilterScript {$_ -like "*$wordToComplete*"}
@@ -133,10 +124,10 @@ $Parameters = @{
 				# Get all command arguments, excluding defaults
 				foreach ($ParameterSet in $ParameterSets.Name)
 				{
-					# If Argument is ForAllUsers
+					# If an argument is ForAllUsers
 					if ($ParameterSet -eq "ForAllUsers")
 					{
-						# "UninstallUWPApps -ForAllUsers" construction
+						# The "UninstallUWPApps -ForAllUsers" construction
 						"UninstallUWPApps" + " " + "-" + $ParameterSet | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
 					}
 
@@ -146,12 +137,16 @@ $Parameters = @{
 
 			foreach ($ParameterSet in $ParameterSets.Name)
 			{
-				# "Function -Argument" construction
+				# The "Function -Argument" construction
 				$Command + " " + "-" + $ParameterSet | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
+
+				continue
 			}
 
 			# Get functions list without arguments to complete
 			Get-Command -Name $Command | Where-Object -FilterScript {$null -eq $_.Parametersets.Parameters} | Where-Object -FilterScript {$_.Name -like "*$wordToComplete*"}
+
+			continue
 		}
 	}
 }
