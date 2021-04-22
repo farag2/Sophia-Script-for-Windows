@@ -55,7 +55,6 @@ AllFilesFilter                            = 所有文件 (*.*)|*.*
 Change                                    = 更改
 DialogBoxOpening                          = 显示对话窗口……
 Disable                                   = 禁用
-Dismiss                                   = 解雇
 Enable                                    = 启用
 EXEFilesFilter                            = *.exe|*.exe|所有文件 (*.*)|*.*
 FolderSelect                              = 选择一个文件夹
@@ -75,7 +74,6 @@ Select                                    = 选择
 SelectAll                                 = 全选
 Skip                                      = 跳过
 Skipped                                   = 已跳过
-Snooze                                    = 推迟
 TelegramTitle                             = 加入我们的官方电报群组
 Uninstall                                 = 卸载
 '@

@@ -1,5 +1,5 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedOSBitness                      = Lo script supporta solo Windows 10 x 64
+UnsupportedOSBitness                      = Lo script supporta solo Windows 10 x64
 UnsupportedOSBuild                        = Lo script supporta Windows 10, 2004 / 20H1 versioni e superiori
 UnsupportedRelease                        = Nuova versione trovata
 ControlledFolderAccessDisabled            = l'accesso alle cartelle controllata disattivata
@@ -55,7 +55,6 @@ AllFilesFilter                            = Tutti i file (*.*)|*.*
 Change                                    = Modificare
 DialogBoxOpening                          = Visualizzazione della finestra di dialogo...
 Disable                                   = Disattivare
-Dismiss                                   = Ignorare
 Enable                                    = Abilitare
 EXEFilesFilter                            = *.exe|*.exe|Tutti i file (*.*)|*.*
 FolderSelect                              = Selezionare una cartella
@@ -75,7 +74,6 @@ Select                                    = Selezionare
 SelectAll                                 = Seleziona tutto
 Skip                                      = Salta
 Skipped                                   = Saltato
-Snooze                                    = Sonnellino
 TelegramTitle                             = Unisciti al nostro canale ufficiale di Telegram
 Uninstall                                 = Disinstallare
 '@
