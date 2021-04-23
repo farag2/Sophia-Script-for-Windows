@@ -15,6 +15,9 @@ Diff from v5.10.1
 * Updated the descriptions;
 * PowerShell 7 version;
   * CsWinRT updated up to 1.2.5.
+* Sophia Script Wrapper updated;
+  * Minor UI changes;
+  * Now you can just import the .ps1 preset file without the need to expand all files into the script folder.
 * Minor changes. :feelsgood:
 
 ## 5.10.1 — 14.04.2021
