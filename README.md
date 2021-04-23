@@ -187,7 +187,7 @@ To run the specific function(s) [dot source](https://docs.microsoft.com/ru-ru/po
 
 ```powershell
 # With a dot at the beginning
-. .\Functions
+. .\Functions.ps1
 ```
 
 * Now you can do like this (the quotation marks required)
