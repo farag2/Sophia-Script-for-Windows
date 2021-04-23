@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.10.2 — 23.04.2021
+
+## Windows 10 2004 (20H1)/20H2 | LTSC
+
+Diff from v5.10.1
+[5.10.1...5.10.2](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.10.1...5.10.2)
+
+* Updated the descriptions;
+* PowerShell 7 version;
+  * CsWinRT updated up to 1.2.5.
+* Minor changes. :feelsgood:
+
 ## 5.10.1 — 14.04.2021
 
 ## Windows 10 2004 (20H1)/20H2 | LTSC
