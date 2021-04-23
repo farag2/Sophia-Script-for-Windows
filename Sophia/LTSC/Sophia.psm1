@@ -6828,7 +6828,7 @@ while (`$true)
 			<selection id="""30""" content="""$($Localization.HalfHour)""" />
 			<selection id="""240""" content="""$($Localization.FourHours)""" />
 		</input>
-		<action activationType="""system""" arguments="""snooze""" hint-inputId="""SnoozeTimer""" content="" id="""test-snooze"""/>
+		<action activationType="""system""" arguments="""snooze""" hint-inputId="""SnoozeTimer""" content="""""" id="""test-snooze"""/>
 		<action arguments="""WindowsCleanup:""" content="""$($Localization.Run)""" activationType="""protocol"""/>
 		<action arguments="""dismiss""" content="""""" activationType="""system"""/>
 	</actions>
