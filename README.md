@@ -111,7 +111,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 ![Image](https://i.imgur.com/xe0PgFL.png)
 ![Image](https://i.imgur.com/xeiBbes.png) ![Image](https://i.imgur.com/0zj0h2S.png)
 ![Image](https://i.imgur.com/uwJ2bqD.png) ![Image](https://i.imgur.com/ybdlLcf.png)
-![Image](https://i.imgur.com/GBN3UDM.png)
+![Image](https://i.imgur.com/M6jti1d.png)
 ![Image](https://i.imgur.com/cZC40Fi.png)
 
 ![Image](https://i.imgur.com/fmFxnaA.png)
@@ -131,6 +131,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 * Set up UI & Personalization;
 * Uninstall OneDrive "correctly";
 * Interactive prompts;
+* The TAB completion for functions and their arguments (if using the Functions.ps1 file);
 * Change %TEMP% environment variable path to %SystemDrive%\Temp
 * Change location of the user folders programmatically (without moving user files) within interactive menu using arrows to select a drive
   * "Desktop";
