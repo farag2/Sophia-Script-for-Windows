@@ -79,7 +79,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 			</a>
 		</td>
 		<td>
-			<a href="https://habr.com/en/post/521202">
+			<a href="https://habr.com/company/skillfactory/blog/553800">
 				<img src="https://i.imgur.com/cXWLr4I.png">
 			</a>
 		</td>
