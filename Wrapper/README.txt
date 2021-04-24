@@ -64,6 +64,7 @@ The folders are localized language files for prompts during the PowerShell execu
 ►es-ES
 ►fr-FR
 ►it-IT
+►pt-BR
 ►ru-RU
 ►tr-TR
 ►uk-UA
