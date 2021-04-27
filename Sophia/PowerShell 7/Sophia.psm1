@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	"Windows 10 Sophia Script" is a PowerShell module for Windows 10 fine-tuning and automating the routine tasks
 
-	Version: v5.10.2
-	Date: 22.04.2021
+	Version: v5.10.3
+	Date: 27.04.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & oZ-Zo
@@ -231,7 +231,7 @@ function DiagTrackService
 	Set the OS level of diagnostic data gathering to minimum
 
 	.PARAMETER Default
-	Set the OS level of diagnostic data gathering to minimum
+	Set the OS level of diagnostic data gathering to default
 
 	.EXAMPLE
 	DiagnosticDataLevel -Minimal
@@ -272,14 +272,20 @@ function DiagnosticDataLevel
 			}
 			else
 			{
-				# Optional diagnostic data
+				# Required diagnostic data
 				New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 1 -Force
 			}
+			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name MaxTelemetryAllowed -PropertyType DWord -Value 1 -Force
+
+			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -PropertyType DWord -Value 1 -Force
 		}
 		"Default"
 		{
-			# Required diagnostic data
+			# Optional diagnostic data
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 3 -Force
+			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name MaxTelemetryAllowed -PropertyType DWord -Value 3 -Force
+
+			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -PropertyType DWord -Value 3 -Force
 		}
 	}
 }
@@ -331,11 +337,17 @@ function ErrorReporting
 				Get-ScheduledTask -TaskName QueueReporting | Disable-ScheduledTask
 				New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\Windows Error Reporting" -Name Disabled -PropertyType DWord -Value 1 -Force
 			}
+
+			Get-Service -Name WerSvc | Stop-Service -Force
+			Get-Service -Name WerSvc | Set-Service -StartupType Disabled
 		}
 		"Enable"
 		{
 			Get-ScheduledTask -TaskName QueueReporting | Enable-ScheduledTask
 			Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction SilentlyContinue
+
+			Get-Service -Name WerSvc | Set-Service -StartupType Manual
+			Get-Service -Name WerSvc | Start-Service
 		}
 	}
 }
@@ -6140,8 +6152,8 @@ function WinPrtScrFolder
 	RecommendedTroubleshooting -Default
 
 	.NOTES
-	Current user
-	In order this feature to work the OS level of diagnostic data gathering must be set to "Optional diagnostic data"
+	Machine-wide
+	In order this feature to work the OS level of diagnostic data gathering will be set to "Optional diagnostic data" and the error reporting feature will be turned on
 #>
 function RecommendedTroubleshooting
 {
@@ -6184,6 +6196,16 @@ function RecommendedTroubleshooting
 
 	# Set the OS level of diagnostic data gathering to "Optional diagnostic data"
 	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 3 -Force
+	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name MaxTelemetryAllowed -PropertyType DWord -Value 3 -Force
+
+	New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -PropertyType DWord -Value 3 -Force
+
+	# Turn on Windows Error Reporting
+	Get-ScheduledTask -TaskName QueueReporting | Enable-ScheduledTask
+	Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction SilentlyContinue
+
+	Get-Service -Name WerSvc | Set-Service -StartupType Manual
+	Get-Service -Name WerSvc | Start-Service
 }
 
 <#

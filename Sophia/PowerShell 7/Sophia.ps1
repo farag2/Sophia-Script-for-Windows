@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Windows 10 Sophia Script"
 
-	Version: v5.10.2
-	Date: 22.04.2021
+	Version: v5.10.3
+	Date: 27.04.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & oZ-Zo
@@ -71,7 +71,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.10.2 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & oz-zo, 2014–2021"
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.10.3 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & oz-zo, 2014–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Sophia.psd1 -PassThru -Force
@@ -757,19 +757,19 @@ WinPrtScrFolder -Desktop
 
 <#
 	Run troubleshooters automatically, then notify
-	In order this feature to work the OS level of diagnostic data gathering must be set to "Optional diagnostic data"
+	In order this feature to work the OS level of diagnostic data gathering will be set to "Optional diagnostic data", and the error reporting feature will be turned on
 
 	Автоматически запускать средства устранения неполадок, а затем уведомлять
-	Необходимо установить уровень сбора диагностических сведений ОС на "Необязательные диагностические данные", чтобы работала данная функция
+	Чтобы заработала данная функция, уровень сбора диагностических сведений ОС будет установлен на "Необязательные диагностические данные" и включится создание отчетов об ошибках Windows
 #>
 RecommendedTroubleshooting -Automatic
 
 <#
 	Ask me before running troubleshooters (default value)
-	In order this feature to work the OS level of diagnostic data gathering must be set to "Optional diagnostic data"
+	In order this feature to work the OS level of diagnostic data gathering will be set to "Optional diagnostic data"
 
 	Спрашивать перед запуском средств устранения неполадок (значение по умолчанию)
-	Необходимо установить уровень сбора диагностических сведений ОС на "Необязательные диагностические данные", чтобы работала данная функция
+	Чтобы заработала данная функция, уровень сбора диагностических сведений ОС будет установлен на "Необязательные диагностические данные" и включится создание отчетов об ошибках Windows
 #>
 # RecommendedTroubleshooting -Default
 
