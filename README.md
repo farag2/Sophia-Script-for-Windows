@@ -107,7 +107,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ## Screenshots
 
-### The TAB autocomplete
+### The TAB autocomplete. Read more [here](#how-to-use)
 
 ![Image](./img/Autocomplete.gif)
 
@@ -204,6 +204,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ***
 
+### How to run the specific function(s)
 To run the specific function(s) [dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-) the `Functions.ps1` file first:
 
 ```powershell
