@@ -107,16 +107,36 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ## Screenshots
 
+### The TAB autocomplete
+
 ![Image](./img/Autocomplete.gif)
+
+### Change user folders location programmatically using the interactive menu
+
 ![Image](https://i.imgur.com/xe0PgFL.png)
+
+### Localized UWP apps names
+
 ![Image](https://i.imgur.com/xeiBbes.png) ![Image](https://i.imgur.com/0zj0h2S.png)
+
+### Localized Windows features names
+
 ![Image](https://i.imgur.com/uwJ2bqD.png) ![Image](https://i.imgur.com/ybdlLcf.png)
+
+### David's Sophia Script Wrapper
+
 ![Image](https://i.imgur.com/M6jti1d.png)
+
+### Native interactive toasts for the "Windows Cleanup" scheduled task
+
 ![Image](https://i.imgur.com/cZC40Fi.png)
 
 ![Image](https://i.imgur.com/fmFxnaA.png)
+
 ![Image](https://i.imgur.com/IbaYl3h.png)
+
 ![Image](https://i.imgur.com/9s7Noud.png)
+
 
 ## Videos
 
