@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	"Windows 10 Sophia Script" (LTSC version) is a PowerShell module for Windows 10 fine-tuning and automating the routine tasks
 
-	Version: v5.2.2
-	Date: 22.04.2021
+	Version: v5.2.3
+	Date: 27.04.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & oZ-Zo
@@ -239,7 +239,7 @@ function DiagTrackService
 	Set the OS level of diagnostic data gathering to minimum
 
 	.PARAMETER Default
-	Set the OS level of diagnostic data gathering to minimum
+	Set the OS level of diagnostic data gathering to default
 
 	.EXAMPLE
 	DiagnosticDataLevel -Minimal
@@ -273,13 +273,19 @@ function DiagnosticDataLevel
 	{
 		"Minimal"
 		{
-			# Basic level
+			# Security level
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name MaxTelemetryAllowed -PropertyType DWord -Value 1 -Force
+
+			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -PropertyType DWord -Value 1 -Force
 		}
 		"Default"
 		{
 			# Full level
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 3 -Force
+			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name MaxTelemetryAllowed -PropertyType DWord -Value 3 -Force
+
+			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -PropertyType DWord -Value 3 -Force
 		}
 	}
 }
@@ -331,11 +337,17 @@ function ErrorReporting
 				Get-ScheduledTask -TaskName QueueReporting | Disable-ScheduledTask
 				New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\Windows Error Reporting" -Name Disabled -PropertyType DWord -Value 1 -Force
 			}
+
+			Get-Service -Name WerSvc | Stop-Service -Force
+			Get-Service -Name WerSvc | Set-Service -StartupType Disabled
 		}
 		"Enable"
 		{
 			Get-ScheduledTask -TaskName QueueReporting | Enable-ScheduledTask
 			Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction SilentlyContinue
+
+			Get-Service -Name WerSvc | Set-Service -StartupType Manual
+			Get-Service -Name WerSvc | Start-Service
 		}
 	}
 }

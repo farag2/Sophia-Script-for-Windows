@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Windows 10 Sophia Script" (LTSC version)
 
-	Version: v5.2.2
-	Date: 22.04.2021
+	Version: v5.2.3
+	Date: 27.04.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & oZ-Zo
@@ -71,7 +71,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script for LTSC v5.2.2 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & oz-zo, 2014–2021"
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script for LTSC v5.2.3 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & oz-zo, 2014–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Sophia.psd1 -PassThru -Force
