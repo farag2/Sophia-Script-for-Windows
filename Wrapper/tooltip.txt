@@ -156,8 +156,8 @@ SetInputMethod -English;Override for default input method: English;
 SetInputMethod -Default;Override for default input method: use language list (default value);
 WinPrtScrFolder -Desktop;Save screenshots by pressing Win+PrtScr on the Desktop;
 WinPrtScrFolder -Default;Save screenshots by pressing Win+PrtScr on the Pictures folder (default value);
-RecommendedTroubleshooting -Automatic;Run troubleshooters automatically, then notify. In order this feature to work the OS level of diagnostic data gathering must be set to "Optional diagnostic data";
-RecommendedTroubleshooting -Default;Ask me before running troubleshooters (default value). In order this feature to work the OS level of diagnostic data gathering must be set to "Optional diagnostic data";
+RecommendedTroubleshooting -Automatic;Run troubleshooters automatically, then notify. In order this feature to work the OS level of diagnostic data gathering will be set to "Optional diagnostic data" and the error reporting feature will be turned on;
+RecommendedTroubleshooting -Default;Ask me before running troubleshooters (default value). In order this feature to work the OS level of diagnostic data gathering will be set to "Optional diagnostic data" and the error reporting feature will be turned on;
 FoldersLaunchSeparateProcess -Enable;Launch folder windows in a separate process;
 FoldersLaunchSeparateProcess -Disable;Do not launch folder windows in a separate process (default value);
 ReservedStorage -Disable;Disable and delete reserved storage after the next update installation;
@@ -181,7 +181,10 @@ NetworkDiscovery -Disable;Disable "Network Discovery" and "File and Printers Sha
 SmartActiveHours -Enable;Automatically adjust active hours for me based on daily usage;
 SmartActiveHours -Disable;Do not automatically adjust active hours for me based on daily usage (default value);
 DeviceRestartAfterUpdate -Enable;Restart this device as soon as possible when a restart is required to install an update;
-DeviceRestartAfterUpdate -Disable;Do not restart this device as soon as possible when a restart is required to install an update (default value);
+DeviceRestartAfterUpdate -Disable;Do not restart this device as soon as possible when a restart is required to install an update (default value)
+
+#region WSL
+
 WSL -Enable;Install the Windows Subsystem for Linux (WSL);
 WSL -Disable;Uninstall the Windows Subsystem for Linux (WSL);
 EnableWSL2;Download and install the Linux kernel update package. Set WSL 2 as the default version when installing a new Linux distribution. Run the function only after WSL installed and PC restart;

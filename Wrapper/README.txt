@@ -27,34 +27,34 @@ the following commands.
 Launch PowerShell (Run as administrator) and navigate to where your script is.
 
 1. Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
-2. ./Sophia.ps1
+2. .\Sophia.ps1
 
 FILES
 -----
 There needs to be 5 files for this program to run properly.
 
-►Sophia Script Wrapper.exe :	The GUI program.
-►data.txt : 			Contains the options (function names) to select from (usually only 2 options that 
-				something is Enable or Disable or ‘LeaveAlone’). Notice the sections ‘#region Xxx’ 
-				and how a semi colon separate the function commands. The last command option in each 
-				section does not have a semi colon. Add or substract from the set.
-►default.txt : 			Contains Default preset to debloat. Click this preset from Option menu in program.
-►tooltip.txt :			Contains ToolTips for each radiobutton option. In English.
-►README.txt : 			This documentation.
+►Sophia Script Wrapper.exe: The GUI program.
+►data.txt: Contains the options (function names) to select from (usually only 2 options that something is Enable or Disable or "LeaveAlone").
+Notice the sections "#region Xxx" and how a semi colon separate the function commands. The last command option in each
+section does not have a semi colon. Add or substract from the set.
+►default.txt : Contains Default preset to debloat. Click this preset from Option menu in program.
+►tooltip.txt : Contains ToolTips for each radiobutton option. In English.
+►README.txt : This documentation.
 
-
-UNZIP the files and open the 'Sophia.ps1' file to import your preset and to get the path to run.
-If you do not open 'Sophia.ps1' then you can not run directly the PowerShell script you create and 
-must run manually via command line in console.
+INSTRUCTIONS
+------------
+UNZIP the files and open the 'Sophia.ps1' file to import your preset and to get the path for files to run.
+If you do not open 'Sophia.ps1' then you can not run directly the PowerShell script you create and must run 
+your script manually via PowerShell command line in console.
 
 ***********************************************************************************************************
 *** For the file 'Sophia.ps1', you should make a copy/backup of it as the wrapper overwrites this file. ***
 ***********************************************************************************************************
 
-►Sophia.ps1 :			farag2 Original Windows PowerShell Script. Make a copy of this file for backup.
-►Sophia.psd1 :			farag2 Windows PowerShell Data File
-►Sophia.psm1 :			farag2 Windows PowerShell Script Module
-►Functions.ps1 :		farag2 PS script to run functions with tab autocompletion
+►Sophia.ps1 : Original Windows PowerShell Script. Make a copy of this file for backup.
+►Sophia.psd1 : Windows PowerShell Data File
+►Sophia.psm1 : Windows PowerShell Script Module
+►Functions.ps1 : PS script to run functions with tab autocompletion
 
 The folders are localized language files for prompts during the PowerShell execution each with a PowerShell Data File 'Sophia.psd1'
 
@@ -64,7 +64,6 @@ The folders are localized language files for prompts during the PowerShell execu
 ►es-ES
 ►fr-FR
 ►it-IT
-►pt-BR
 ►ru-RU
 ►tr-TR
 ►uk-UA

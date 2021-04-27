@@ -95,6 +95,8 @@ NetworkDiscovery -Enable;
 SmartActiveHours -Enable;
 DeviceRestartAfterUpdate -Enable
 
+#region WSL
+
 #region Start menu
 
 RecentlyAddedApps -Hide;

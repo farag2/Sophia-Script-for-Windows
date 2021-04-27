@@ -96,7 +96,10 @@ ThumbnailCacheRemoval -Disable;ThumbnailCacheRemoval -Enable;
 SaveRestartableApps -Enable;SaveRestartableApps -Disable;
 NetworkDiscovery -Enable;NetworkDiscovery -Disable;
 SmartActiveHours -Enable;SmartActiveHours -Disable;
-DeviceRestartAfterUpdate -Enable;DeviceRestartAfterUpdate -Disable;
+DeviceRestartAfterUpdate -Enable;DeviceRestartAfterUpdate -Disable
+
+#region WSL
+
 WSL -Enable;WSL -Disable;
 EnableWSL2;LeaveAlone
 
