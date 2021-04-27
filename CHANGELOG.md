@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.10.3 — 27.04.2021
+
+## Windows 10 2004 (20H1)/20H2 (2009) | LTSC
+
+Diff from v5.10.2
+[5.10.2...5.10.3](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.10.2...5.10.3)
+
+* Closed #163;
+* The `DiagnosticDataLevel` function updated;
+  * You may re-run it: `DiagnosticDataLevel -Minimal` or `DiagnosticDataLevel -Default`;
+* The `ErrorReporting` & `RecommendedTroubleshooting` functions updated;
+* Sophia Script Wrapper updated;
+  * The version bumped to 1.1 build 4;
+  * Fixed inability to open preset file from the LTSC version.
+  ![wrapper](https://i.imgur.com/joOcKi5.png)
+* Minor changes. :feelsgood:
+
 ## 5.10.2 — 23.04.2021
 
 ## Windows 10 2004 (20H1)/20H2 | LTSC
