@@ -107,7 +107,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ## Screenshots
 
-### The TAB autocomplete. Read more [here](#how-to-use)
+### The TAB autocomplete. Read more [here](#how-to-run-the-specific-functions)
 
 ![Image](./img/Autocomplete.gif)
 
@@ -145,8 +145,8 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 * Turn off diagnostics tracking scheduled tasks with pop-up form written in [WPF](#Screenshots);
 * Set up UI & Personalization;
 * Uninstall OneDrive "correctly";
-* Interactive prompts;
-* The TAB completion for functions and their arguments (if using the Functions.ps1 file);
+* Interactive [prompts](#change-user-folders-location-programmatically-using-the-interactive-menu);
+* The [TAB](#the-tab-autocomplete-read-more-here) completion for functions and their arguments (if using the Functions.ps1 file);
 * Change %TEMP% environment variable path to %SystemDrive%\Temp
 * Change location of the user folders programmatically (without moving user files) within interactive menu using arrows to select a drive
   * "Desktop";
@@ -155,17 +155,17 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
   * "Music";
   * "Pictures"
   * "Videos.
-* Uninstall UWP apps displaying friendly packages names with pop-up form written in [WPF](#Screenshots);
-  * Dynamically generated UWP apps list installed for all users
-* Restore the default uninstalled UWP apps for current user displaying friendly packages names with pop-up form written in [WPF](#Screenshots);
-* The <kbd>Tab</kbd> completion for functions and their arguments by typing its' first letters
+* Uninstall UWP apps displaying  packages names;
+  * Generate installed UWP apps list dynamically
+* Restore the default uninstalled UWP apps for current user displaying [localized](#localized-uwp-apps-names) packages names;
+* The <kbd>TAB</kbd> [autocompletion](#the-tab-autocomplete-read-more-here) for function and its' arguments by typing first letters
 * Disable Windows features displaying friendly packages names with pop-up form written in [WPF](#Screenshots);
 * Uninstall Windows capabilities displaying friendly packages names with pop-up form written in [WPF](#Screenshots);
 * Download and install the [HEVC Video Extensions from Device Manufacturer](https://www.microsoft.com/p/hevc-video-extensions-from-device-manufacturer/9n4wgh0z6vhq) from Microsoft server using <https://store.rg-adguard.net> parser to be able to open .heic and .heif formats;
 * Register app, calculate hash, and set as default for specific extension without the "How do you want to open this" pop-up using special [function](https://github.com/DanysysTeam/PS-SFTA);
 * Install and setup WSL
 * Create a `Windows Cleanup` and `Windows Cleanup Notification` scheduled tasks for Windows cleaning up unused files and updates;
-  * A native toast notification will be displayed where you can choose to snooze, run the cleanup task or [dismiss](#Screenshots)
+  * A native toast notification will be displayed where you can choose to snooze, run the cleanup task or [dismiss](#native-interactive-toasts-for-the-windows-cleanup-scheduled-task)
 * Create tasks in the Task Scheduler to clear
   * `%SystemRoot%\SoftwareDistribution\Download`
   * `%TEMP%`
