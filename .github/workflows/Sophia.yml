@@ -154,6 +154,8 @@ jobs:
               "$($_.Name)  $((Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash)"
           } | Add-Content -Path SHA256SUM -Encoding Default -Force
 
+          Get-Content SHA256SUM
+
       - name: Upload archives to release
         uses: svenstaro/upload-release-action@master
         with:
