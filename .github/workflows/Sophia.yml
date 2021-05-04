@@ -32,8 +32,13 @@ jobs:
           Write-Host $ZIP
 
           Copy-Item -Path "Sophia\PowerShell 5.1\*" -Destination $BUILD_DIR -Recurse -Force
-   
+
           Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP -Force
+
+          # Calculate hash
+          Get-ChildItem -Path $ZIP -Force | ForEach-Object -Process {
+              "$($_.Name)  $((Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash)"
+          } | Add-Content -Path SHA256SUM -Encoding Default -Force
 
       - name: Build 7
         run: |
@@ -56,7 +61,7 @@ jobs:
           Write-Host $ZIP
 
           Copy-Item -Path "Sophia\PowerShell 7\*" -Destination $BUILD_DIR -Recurse -Force
-          
+
           # Download Microsoft.Windows.SDK.NET.Ref
           $Parameters = @{
             Uri = "https://www.nuget.org/api/v2/package/Microsoft.Windows.SDK.NET.Ref"
@@ -79,7 +84,7 @@ jobs:
           $LatestRelease = (Invoke-RestMethod -Uri "https://api.github.com/repos/microsoft/CsWinRT/releases").tag_name | Select-Object -First 1
           $Download = ((Invoke-RestMethod -Uri "https://api.github.com/repos/microsoft/CsWinRT/releases") | Where-Object -FilterScript {$_.tag_name -eq $LatestRelease}).assets | Where-Object -FilterScript {$_.browser_download_url -match "nupkg"}
           $URL = $Download.browser_download_url
-          
+
           $Parameters = @{
             Uri = $URL
             OutFile = "$PSScriptRoot\Microsoft.Windows.CsWinRT.nupkg"
@@ -106,6 +111,11 @@ jobs:
 
           Remove-Item -Path "$PSScriptRoot\CsWinRT", "$PSScriptRoot\SDK" -Recurse -Force
           Remove-Item -Path "$PSScriptRoot\Microsoft.Windows.CsWinRT.zip", "$PSScriptRoot\Microsoft.Windows.SDK.NET.Ref.zip" -Force
+
+          # Calculate hash
+          Get-ChildItem -Path $ZIP -Force | ForEach-Object -Process {
+              "$($_.Name)  $((Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash)"
+          } | Add-Content -Path SHA256SUM -Encoding Default -Force
 
       - name: Build LTSC
         run: |
@@ -136,19 +146,31 @@ jobs:
           Write-Host $ZIP
 
           Copy-Item -Path "Wrapper\*" -Destination $BUILD_DIR -Recurse -Force
+
           Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP -Force
 
-      - name: SHA256SUM
-        run: |
-          Get-ChildItem -Path "$PSScriptRoot" -Recurse -Force | fl *
+          # Calculate hash
+          Get-ChildItem -Path $ZIP -Force | ForEach-Object -Process {
+              "$($_.Name)  $((Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash)"
+          } | Add-Content -Path SHA256SUM -Encoding Default -Force
 
       - name: Upload archives to release
         uses: svenstaro/upload-release-action@master
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: Sophia*.zip
+          file: Sophia*.zip, SHA256SUM
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
           prerelease: true
- 
+
+      - name: Upload archives to release
+        uses: svenstaro/upload-release-action@master
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: SHA256SUM
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
+          prerelease: true
+
