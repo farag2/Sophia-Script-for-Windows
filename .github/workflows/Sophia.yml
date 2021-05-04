@@ -140,7 +140,7 @@ jobs:
 
       - name: SHA256SUM
         run: |
-          Get-ChildItem -Path "$PSScriptRoot\*.zip -Force" | fl *
+          Get-ChildItem -Path "$PSScriptRoot\*.zip" -Force | fl *
 
       - name: Upload archives to release
         uses: svenstaro/upload-release-action@master
