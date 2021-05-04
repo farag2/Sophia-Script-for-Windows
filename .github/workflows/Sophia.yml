@@ -164,13 +164,3 @@ jobs:
           file_glob: true
           prerelease: true
 
-      - name: Upload archives to release
-        uses: svenstaro/upload-release-action@master
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: SHA256SUM
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
-          prerelease: true
-
