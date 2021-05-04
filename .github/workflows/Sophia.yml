@@ -140,15 +140,13 @@ jobs:
 
       - name: SHA256SUM
         run: |
-          Get-ChildItem -Path "$PSScriptRoot\*.zip -Force" | ForEach-Object -Process {
-              "$($_.Name)  $((Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash)"
-          } | Set-Content -Path "$PSScriptRoot\SHA256SUM" -Encoding Default -Force
+          Get-ChildItem -Path "$PSScriptRoot\*.zip -Force" | fl *
 
       - name: Upload archives to release
         uses: svenstaro/upload-release-action@master
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: Sophia*.zip, SHA256SUM
+          file: Sophia*.zip
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
