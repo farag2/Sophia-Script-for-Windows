@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = 该脚本仅支持Windows 10 x64
-UnsupportedOSBuild                        = 该脚本支持Windows 10版本2004/20H1/20H2和更高版本
+UnsupportedOSBuild                        = 该脚本支持Windows 10版本2004/20H2/21H1和更高版本
 UnsupportedRelease                        = 找到新版本
 CustomizationWarning                      = \n在运行Sophia Script之前，您是否已自定义Sophia.ps1预设文件中的每个功能？
 ControlledFolderAccessDisabled            = “受控文件夹访问”禁用
