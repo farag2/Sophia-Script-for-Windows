@@ -1,5 +1,6 @@
 #region Protection
 
+Checkings -Warning;
 CreateRestorePoint
 
 #region Privacy & Telemetry

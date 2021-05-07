@@ -1,5 +1,7 @@
 #region Protection
 
+Checkings -Warning;Do the required checkings, and display a warning message about whether you've customized the preset file;
+Checkings;Do the required checkings;
 Logging;Enable script logging. The log will be being recorded into the script folder.To stop logging just close the console or type "Stop-Transcript";
 CreateRestorePoint;Create a restore point
 

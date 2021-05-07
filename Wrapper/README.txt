@@ -51,7 +51,7 @@ your script manually via PowerShell command line in console.
 *** For the file 'Sophia.ps1', you should make a copy/backup of it as the wrapper overwrites this file. ***
 ***********************************************************************************************************
 
-►Sophia.ps1 : Original Windows PowerShell Script. Make a copy of this file for backup.
+►Sophia.ps1 : Original Windows PowerShell Script
 ►Sophia.psd1 : Windows PowerShell Data File
 ►Sophia.psm1 : Windows PowerShell Script Module
 ►Functions.ps1 : PS script to run functions with tab autocompletion
@@ -63,6 +63,7 @@ The folders are localized language files for prompts during the PowerShell execu
 ►en-US
 ►es-ES
 ►fr-FR
+►hu-HU
 ►it-IT
 ►ru-RU
 ►tr-TR
