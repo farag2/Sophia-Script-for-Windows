@@ -124,7 +124,7 @@ function Checkings
 			}
 			"1"
 			{
-				return
+				continue
 			}
 		}
 	}
