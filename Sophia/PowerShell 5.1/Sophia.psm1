@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	"Windows 10 Sophia Script" is a PowerShell module for Windows 10 fine-tuning and automating the routine tasks
 
-	Version: v5.10.3
-	Date: 27.04.2021
+	Version: v5.10.4
+	Date: 07.05.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & oZ-Zo
@@ -45,6 +45,13 @@
 #region Checkings
 function Checkings
 {
+	param
+	(
+		[Parameter(Mandatory = $false)]
+		[switch]
+		$Warning
+	)
+
 	Set-StrictMode -Version Latest
 
 	# Сlear the $Error variable
@@ -73,7 +80,7 @@ function Checkings
 	# Checking if the current module version is the latest one
 	try
 	{
-		$LatestRelease = (Invoke-RestMethod -Uri "https://api.github.com/repos/farag2/Windows-10-Sophia-Script/releases").tag_name | Select-Object -First 1
+		$LatestRelease = (Invoke-RestMethod -Uri "https://api.github.com/repos/farag2/Windows-10-Sophia-Script/releases/latest").tag_name
 		$CurrentRelease = (Get-Module -Name Sophia).Version.ToString()
 		switch ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)
 		{
@@ -96,6 +103,31 @@ function Checkings
 
 	# Unblock all files in the folder by removing the Zone.Identifier alternate data stream with a value of "3"
 	Get-ChildItem -Path $PSScriptRoot -Recurse -Force | Unblock-File
+
+	# Display a warning message about whether a user has customized the preset file
+	if ($Warning)
+	{
+		$Title = ""
+		$Message = $Localization.CustomizationWarning
+		$Yes = $Localization.Yes
+		$No = $Localization.No
+		$Options = "&$No", "&$Yes"
+		$DefaultChoice = 0
+		$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+
+		switch ($Result)
+		{
+			"0"
+			{
+				Invoke-Item -Path $PSScriptRoot\Sophia.ps1
+				exit
+			}
+			"1"
+			{
+				return
+			}
+		}
+	}
 
 	# Turn off Controlled folder access to let the script proceed
 	switch ((Get-MpPreference).EnableControlledFolderAccess)
@@ -1315,6 +1347,10 @@ function ThisPC
 	{
 		"Show"
 		{
+			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel))
+			{
+				New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel -Force
+			}
 			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel -Name "{20D04FE0-3AEA-1069-A2D8-08002B30309D}" -PropertyType DWord -Value 0 -Force
 		}
 		"Hide"
@@ -5409,6 +5445,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			KnownFolderPath -KnownFolder $UserFolder -Path $FolderPath
 			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name $UserShellFoldersGUID[$UserFolder] -PropertyType ExpandString -Value $FolderPath -Force
 
+			# Save desktop.ini in the UTF-16 LE encoding
 			Set-Content -Path "$FolderPath\desktop.ini" -Value $DesktopINI[$UserFolder] -Encoding Unicode -Force
 			(Get-Item -Path "$FolderPath\desktop.ini" -Force).Attributes = "Hidden", "System", "Archive"
 			(Get-Item -Path "$FolderPath\desktop.ini" -Force).Refresh()
@@ -7372,7 +7409,7 @@ namespace FileAssoc
 		{
 			[OutputType([array])]
 
-	    		# Secret static string stored in %SystemRoot%\SysWOW64\shell32.dll
+			# Secret static string stored in %SystemRoot%\SysWOW64\shell32.dll
 			$userExperience        = "User Choice set via Windows User Experience {D18B6DD5-6124-4341-9318-804003BAFA0B}"
 			# Get user SID
 			$userSid               = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
@@ -8794,10 +8831,10 @@ function HEIF
 								$ProductURL = "https://www.microsoft.com/store/productId/9n4wgh0z6vhq"
 
 								$Body = @{
-									"type" = "url"
-									"url"  = $ProductURL
-									"ring" = "Retail"
-									"lang" = "en-US"
+									type = "url"
+									url  = $ProductURL
+									ring = "Retail"
+									lang = "en-US"
 								}
 								$Raw = Invoke-RestMethod -Method Post -Uri $API -ContentType 'application/x-www-form-urlencoded' -Body $Body
 
@@ -9500,10 +9537,16 @@ while (`$true)
 		}
 		"Delete"
 		{
+			Get-ChildItem -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches | ForEach-Object -Process {
+				Remove-ItemProperty -Path $_.PsPath -Name StateFlags1337 -Force -ErrorAction Ignore
+			}
+
+			Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Name ShowInActionCenter -Force -ErrorAction Ignore
+
 			Unregister-ScheduledTask -TaskName "Windows Cleanup" -Confirm:$false
 			Unregister-ScheduledTask -TaskName "Windows Cleanup Notification" -Confirm:$false
 
-			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Recurse -Force
+			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Recurse -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -10265,13 +10308,14 @@ function EventViewerCustomView
 	</QueryConfig>
 </ViewerConfig>
 "@
+
 			if (-not (Test-Path -Path "$env:ProgramData\Microsoft\Event Viewer\Views"))
 			{
 				New-Item -Path "$env:ProgramData\Microsoft\Event Viewer\Views" -ItemType Directory -Force
 			}
 
-			# Saving ProcessCreation.xml in UTF-8 encoding
-			Set-Content -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Value $XML -Encoding Default -Force
+			# Save ProcessCreation.xml in the UTF-8 with BOM encoding
+			Set-Content -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Value $XML -Encoding UTF8 -Force
 		}
 	}
 }
