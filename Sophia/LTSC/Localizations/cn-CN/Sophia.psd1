@@ -2,6 +2,7 @@
 UnsupportedOSBitness                      = 该脚本仅支持Windows 10 x64
 UnsupportedOSBuild                        = 该脚本支持Windows 10版本1809 Enterprise LTSC
 UnsupportedRelease                        = 找到新版本
+CustomizationWarning                      = \n在运行Sophia Script之前，您是否已自定义Sophia.ps1预设文件中的每个功能？
 ControlledFolderAccessDisabled            = “受控文件夹访问”禁用
 ScheduledTasks                            = 计划任务
 WindowsFeaturesTitle                      = Windows功能
@@ -56,6 +57,8 @@ Minute                                    = 1分钟
 NoData                                    = 无数据
 NoInternetConnection                      = 无网络连接
 NoResponse                                = 无法建立https://store.rg-adguard.net连接
+No                                        = 不
+Yes                                       = 是的
 Open                                      = 打开
 Patient                                   = 请等待……
 Restore                                   = 恢复

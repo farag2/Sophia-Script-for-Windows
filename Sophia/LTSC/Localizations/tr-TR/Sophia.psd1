@@ -2,6 +2,7 @@
 UnsupportedOSBitness                      = Bu betik sadece Windows 10 x64 destekliyor
 UnsupportedOSBuild                        = Bu betik sadece Windows 10 1809 Enterprise LTSC
 UnsupportedRelease                        = Yeni sürüm bulundu
+CustomizationWarning                      = \nSophia Script'i çalıştırmadan önce Sophia.ps1 ön ayar dosyasındaki her işlevi özelleştirdiniz mi?
 ControlledFolderAccessDisabled            = Kontrollü klasör erişimi devre dışı bırakıldı
 ScheduledTasks                            = Zamanlanan görevler
 WindowsFeaturesTitle                      = Windows özellikleri
@@ -56,6 +57,8 @@ Minute                                    = 1 Dakika
 NoData                                    = Görüntülenecek bir şey yok
 NoInternetConnection                      = İnternet bağlantısı yok
 NoResponse                                = https://store.rg-adguard.net ile bağlantı kurulamadı
+No                                        = Hayır
+Yes                                       = Evet
 Open                                      = Açık
 Patient                                   = Lütfen bekleyin...
 Restore                                   = Onar

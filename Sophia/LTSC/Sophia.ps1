@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Windows 10 Sophia Script" (LTSC version)
 
-	Version: v5.2.3
-	Date: 27.04.2021
+	Version: v5.2.4
+	Date: 07.05.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & oZ-Zo
@@ -11,8 +11,8 @@
 	Thanks to all https://forum.ru-board.com members involved
 
 	.DESCRIPTION
-	Place the "#" char before function if you don't want it to be run
-	Remove the "#" char before function if you want it to be run
+	Place the "#" char before function if you don't want to run it
+	Remove the "#" char before function if you want to run it
 	Every tweak in the preset file has its' corresponding function to restore the default settings
 
 	.EXAMPLE Run the whole script
@@ -71,12 +71,12 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script for LTSC v5.2.3 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & oz-zo, 2014–2021"
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script for LTSC v5.2.4 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & oz-zo, 2014–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Sophia.psd1 -PassThru -Force
 
-Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia
+Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia -BaseDirectory $PSScriptRoot\Localizations
 
 <#
 	.SYNOPSIS
@@ -91,7 +91,7 @@ Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia
 #>
 if ($Functions)
 {
-	# Regardless of the functions entered as an argument, the "Checkings" function will be executed first,
+	# Regardless of functions entered as an argument, the "Checkings" function will be executed first,
 	# and the "Refresh" and "Errors" functions will be executed at the end
 	Invoke-Command -ScriptBlock {Checkings}
 
@@ -107,17 +107,17 @@ if ($Functions)
 
 #region Protection
 <#
-	Checkings
-	Please, do not touch this function
+	Checkings. If you want disable a warning message about whether you've customized the preset file remove the Warning argument
+	Please, do not comment out this function
 
 	Проверки
 	Пожалуйста, не комментируйте данную функцию
 #>
-Checkings
+Checkings -Warning
 
 <#
-	Enable script logging. The log will be being recorded into the script folder
-	To stop logging just close the console or type "Stop-Transcript"
+	Enable script logging. Log will be recorded into the script folder
+	To stop logging just close console or type "Stop-Transcript"
 
 	Включить логирование работы скрипта. Лог будет записываться в папку скрипта
 	Чтобы остановить логгирование, закройте консоль или наберите "Stop-Transcript"
@@ -482,7 +482,7 @@ Hibernate -Disable
 
 # Change the %TEMP% environment variable path to "%SystemDrive%\Temp"
 # Изменить путь переменной среды для %TEMP% на "%SystemDrive%\Temp"
-# TempFolder -SystemDrive
+TempFolder -SystemDrive
 
 # Change %TEMP% environment variable path to "%LOCALAPPDATA%\Temp" (default value)
 # Изменить путь переменной среды для %TEMP% на "LOCALAPPDATA%\Temp" (значение по умолчанию)
@@ -612,28 +612,34 @@ SetInputMethod -English
 
 <#
 	Move user folders location to the root of any drive using the interactive menu
-	User files or folders won't me moved to a new location
+	User files or folders won't me moved to a new location. Move them manually
+	They're located in the %SystemDrive%\Users\%Username% folder by default
 
 	Переместить пользовательские папки в корень любого диска на выбор с помощью интерактивного меню
-	Пользовательские файлы и папки не будут перемещены в новое расположение
+	Пользовательские файлы и папки не будут перемещены в новое расположение. Переместите их вручную
+	По умолчанию они располагаются в папке %SystemDrive%\Users\%Username%
 #>
 SetUserShellFolderLocation -Root
 
 <#
 	Select folders for user folders location manually using a folder browser dialog
-	User files or folders won't me moved to a new location
+	User files or folders won't me moved to a new location. Move them manually
+	They're located in the %SystemDrive%\Users\%Username% folder by default
 
 	Выбрать папки для расположения пользовательских папок вручную, используя диалог "Обзор папок"
-	Пользовательские файлы и папки не будут перемещены в новое расположение
+	Пользовательские файлы и папки не будут перемещены в новое расположение. Переместите их вручную
+	По умолчанию они располагаются в папке %SystemDrive%\Users\%Username%
 #>
 # SetUserShellFolderLocation -Custom
 
 <#
 	Change user folders location to the default values
-	User files or folders won't me moved to the new location
+	User files or folders won't me moved to the new location. Move them manually
+	They're located in the %SystemDrive%\Users\%Username% folder by default
 
 	Изменить расположение пользовательских папок на значения по умолчанию
-	Пользовательские файлы и папки не будут перемещены в новое расположение
+	Пользовательские файлы и папки не будут перемещены в новое расположение. Переместите их вручную
+	По умолчанию они располагаются в папке %SystemDrive%\Users\%Username%
 #>
 # SetUserShellFolderLocation -Default
 
@@ -1118,7 +1124,7 @@ PreviousVersionsPage -Hide
 	Simulate pressing F5 to refresh the desktop
 	Refresh desktop icons, environment variables, taskbar
 	Restart the Start menu
-	Please, do not touch this function
+	Please, do not comment out this function
 
 	Симулировать нажатие F5 для обновления рабочего стола
 	Обновить иконки рабочего стола, переменные среды, панель задач
@@ -1129,7 +1135,7 @@ Refresh
 
 <#
 	Errors output
-	Please, do not touch this function
+	Please, do not comment out this function
 
 	Вывод ошибок
 	Пожалуйста, не комментируйте данную функцию

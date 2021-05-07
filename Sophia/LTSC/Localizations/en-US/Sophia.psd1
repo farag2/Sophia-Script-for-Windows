@@ -2,6 +2,7 @@
 UnsupportedOSBitness                      = The script supports Windows 10 x64 only
 UnsupportedOSBuild                        = The script supports Windows 10 1809 Enterprise LTSC
 UnsupportedRelease                        = A new version found
+CustomizationWarning                      = \nHave you customized every function in the Sophia.ps1 preset file before running Sophia Script?
 ControlledFolderAccessDisabled            = Controlled folder access disabled
 ScheduledTasks                            = Scheduled tasks
 WindowsFeaturesTitle                      = Windows features
@@ -56,6 +57,8 @@ Minute                                    = 1 Minute
 NoData                                    = Nothing to display
 NoInternetConnection                      = No Internet connection
 NoResponse                                = A connection could not be established with https://store.rg-adguard.net
+No                                        = No
+Yes                                       = Yes
 Open                                      = Open
 Patient                                   = Please wait...
 Restore                                   = Restore
