@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = The script supports Windows 10 x64 only
-UnsupportedOSBuild                        = The script supports Windows 10 2004/20H2/20H1 versions and higher
+UnsupportedOSBuild                        = The script supports Windows 10 2004/20H2/21H1 versions and higher
 UnsupportedRelease                        = A new version found
 CustomizationWarning                      = \nHave you customized every function in the Sophia.ps1 preset file before running Sophia Script?
 ControlledFolderAccessDisabled            = Controlled folder access disabled
