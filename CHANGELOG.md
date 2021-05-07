@@ -5,9 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.10.4 — 07.54.2021
+
+## Windows 10 2004/20H2/21H1 | LTSC
+
+Diff from v5.10.3
+[5.10.3...5.10.4](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.10.3...5.10.4)
+
+* Почитайте [лонгрид](https://habr.com/company/skillfactory/blog/553800) на Хабре, как происходила разработка скрипта последние полгода.
+* Added a warning message before the script running to be sure a user has customized the `Sophia.ps1` preset file;
+  * You may disable it by removing the `Warning` argument in the `Checkings` function in the preset file.
+![image](https://i.imgur.com/d3QUmIP.png)
+* Moved all localization files to the `Localizations` folder;
+![image](https://i.imgur.com/kQDktvj.png)
+* Fixed bug in the `EventViewerCustomView` function when the `ProcessCreation.xml` file was being created with a wrong encodings;
+  * You may invoke the function again: `EventViewerCustomView -Enable`.
+* Updated the GitHub Action [config](https://github.com/farag2/Windows-10-Sophia-Script/blob/master/.github/workflows/Sophia.yml) to automate the SHA256 file creation and uploading to the release page. As @aaronhatesregex wanted 😄 
+* Updated the Turkish translation. Thanks to @v30xy;
+* Added the Hungarian translation <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Flag_of_Hungary.svg" height="11px"/>. Thanks to @84stangman;
+* Updated Sophia Script Wrapper to 1.1 build 5;
+  * The read/edit button function can now edit all functions in 'Sophia.psm1' file;
+  * The wrapper now creates a 'Sophia_edited.ps1' file in Sophia Script folder to run instead of overwriting the existing one.
+
 ## 5.10.3 — 27.04.2021
 
-## Windows 10 2004/20H2 | LTSC
+## Windows 10 2004/20H2/21H1 | LTSC
 
 Diff from v5.10.2
 [5.10.2...5.10.3](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.10.2...5.10.3)
@@ -24,7 +46,7 @@ Diff from v5.10.2
 
 ## 5.10.2 — 23.04.2021
 
-## Windows 10 2004/20H2 | LTSC
+## Windows 10 2004/20H2/21H1 | LTSC
 
 Diff from v5.10.1
 [5.10.1...5.10.2](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.10.1...5.10.2)
@@ -39,7 +61,7 @@ Diff from v5.10.1
 
 ## 5.10.1 — 14.04.2021
 
-## Windows 10 2004/20H2 | LTSC
+## Windows 10 2004/20H2/21H1 | LTSC
 
 Diff from v5.10
 [5.10...5.10.1](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.10...5.10.1)
@@ -64,7 +86,7 @@ Diff from v5.10
 
 ## 5.10 — 09.04.2021
 
-## Windows 10 2004/20H2 | LTSC
+## Windows 10 2004/20H2/21H1 | LTSC
 
 Diff from v5.9
 [5.9...5.10](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.9...5.10)
