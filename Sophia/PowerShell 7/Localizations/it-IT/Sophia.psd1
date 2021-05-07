@@ -1,7 +1,8 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Lo script supporta solo Windows 10 x64
-UnsupportedOSBuild                        = Lo script supporta Windows 10, 2004 / 20H1 versioni e superiori
+UnsupportedOSBuild                        = Lo script supporta Windows 10, 2004/20H1/20H2 versioni e superiori
 UnsupportedRelease                        = Nuova versione trovata
+CustomizationWarning                      = \nSono state personalizzate tutte le funzioni nel file delle preimpostazioni Sophia.ps1 prima di eseguire Sophia Script?
 ControlledFolderAccessDisabled            = l'accesso alle cartelle controllata disattivata
 ScheduledTasks                            = Attività pianificate
 OneDriveUninstalling                      = Disinstalla OneDrive...
@@ -66,6 +67,8 @@ Minute                                    = 1 minuto
 NoData                                    = Niente da esposizione
 NoInternetConnection                      = Nessuna connessione Internet
 NoResponse                                = Non è stato possibile stabilire una connessione con https://store.rg-adguard.net
+No                                        = No
+Yes                                       = Sì
 Open                                      = Aperto
 Patient                                   = Attendere prego...
 Restore                                   = Ristabilire

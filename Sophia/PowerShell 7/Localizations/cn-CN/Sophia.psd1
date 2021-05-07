@@ -1,7 +1,8 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = 该脚本仅支持Windows 10 x64
-UnsupportedOSBuild                        = 该脚本支持Windows 10版本2004/20H1和更高版本
+UnsupportedOSBuild                        = 该脚本支持Windows 10版本2004/20H1/20H2和更高版本
 UnsupportedRelease                        = 找到新版本
+CustomizationWarning                      = \n在运行Sophia Script之前，您是否已自定义Sophia.ps1预设文件中的每个功能？
 ControlledFolderAccessDisabled            = “受控文件夹访问”禁用
 ScheduledTasks                            = 计划任务
 OneDriveUninstalling                      = 卸载OneDrive……
@@ -19,7 +20,7 @@ UserDefaultFolder                         = 您想将“{0}”文件夹的位置
 ReservedStorageIsInUse                    = 保留存储空间正在使用时不支持此操作。请等待所有服务操作完成后再重试
 ShortcutPinning                           = “{0}“快捷方式将被固定到开始菜单
 UninstallUWPForAll                        = 对于所有用户
-UninstallUWPTitle                         = UWP应用
+UWPAppsTitle                              = UWP应用
 WSLUpdateDownloading                      = Linux内核更新包下载中…… ~14 MB
 WSLUpdateInstalling                       = 安装Linux内核更新包……
 HEVCDownloading                           = Downloading 来自设备制造商的 HEVC 视频扩展... ~2,8 MB
@@ -66,6 +67,8 @@ Minute                                    = 1分钟
 NoData                                    = 无数据
 NoInternetConnection                      = 无网络连接
 NoResponse                                = 无法建立https://store.rg-adguard.net连接
+No                                        = 不
+Yes                                       = 是的
 Open                                      = 打开
 Patient                                   = 请等待……
 Restore                                   = 恢复
