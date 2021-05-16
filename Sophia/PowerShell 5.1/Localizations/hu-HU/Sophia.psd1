@@ -1,4 +1,4 @@
-ConvertFrom-StringData -StringData @'
+﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = A szkript csak a Windows 10 64 bites verziót támogatja
 UnsupportedOSBuild                        = A szkript a Windows 10 2004/20H2/21H1 és újabb kiadásokat támogatja
 UnsupportedRelease                        = Új verzió érhető el

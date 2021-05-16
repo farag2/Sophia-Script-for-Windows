@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	"Windows 10 Sophia Script" is a PowerShell module for Windows 10 fine-tuning and automating the routine tasks
 
-	Version: v5.10.4
-	Date: 07.05.2021
+	Version: v5.10.5
+	Date: 14.05.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & oZ-Zo
@@ -542,10 +542,11 @@ function ScheduledTasks
 		MinHeight="450" MinWidth="400"
 		SizeToContent="Width" WindowStartupLocation="CenterScreen"
 		TextOptions.TextFormattingMode="Display" SnapsToDevicePixels="True"
-		FontFamily="Segoe UI" FontSize="12" ShowInTaskbar="False">
+		FontFamily="Candara" FontSize="16" ShowInTaskbar="True">
 		<Window.Resources>
 			<Style TargetType="StackPanel">
 				<Setter Property="Orientation" Value="Horizontal"/>
+				<Setter Property="VerticalAlignment" Value="Top"/>
 			</Style>
 			<Style TargetType="CheckBox">
 				<Setter Property="Margin" Value="10, 10, 5, 10"/>
@@ -558,9 +559,21 @@ function ScheduledTasks
 				<Setter Property="Margin" Value="20"/>
 				<Setter Property="Padding" Value="10"/>
 			</Style>
+			<Style TargetType="Border">
+				<Setter Property="Grid.Row" Value="1"/>
+				<Setter Property="CornerRadius" Value="0"/>
+				<Setter Property="BorderThickness" Value="0, 1, 0, 1"/>
+				<Setter Property="BorderBrush" Value="#000000"/>
+			</Style>
+			<Style TargetType="ScrollViewer">
+				<Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+				<Setter Property="BorderBrush" Value="#000000"/>
+				<Setter Property="BorderThickness" Value="0, 1, 0, 1"/>
+			</Style>
 		</Window.Resources>
 		<Grid>
 			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="*"/>
 				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
@@ -569,7 +582,7 @@ function ScheduledTasks
 				VerticalScrollBarVisibility="Auto">
 				<StackPanel Name="PanelContainer" Orientation="Vertical"/>
 			</ScrollViewer>
-			<Button Name="Button" Grid.Row="1"/>
+			<Button Name="Button" Grid.Row="2"/>
 		</Grid>
 	</Window>
 	'
@@ -705,11 +718,55 @@ function ScheduledTasks
 
 	Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
 
+	#region Sendkey function
+	# Emulate the Backspace key sending to prevent the console window to freeze
+	Start-Sleep -Milliseconds 500
+
+	Add-Type -AssemblyName System.Windows.Forms
+
+	$SetForegroundWindow = @{
+		Namespace = "WinAPI"
+		Name = "ForegroundWindow"
+		Language = "CSharp"
+		MemberDefinition = @"
+[DllImport("user32.dll")]
+public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
+
+[DllImport("user32.dll")]
+[return: MarshalAs(UnmanagedType.Bool)]
+public static extern bool SetForegroundWindow(IntPtr hWnd);
+"@
+	}
+
+	if (-not ("WinAPI.ForegroundWindow" -as [type]))
+	{
+		Add-Type @SetForegroundWindow
+	}
+
+	Get-Process | Where-Object -FilterScript {$_.MainWindowTitle -like "Windows 10 Sophia Script*"} | ForEach-Object -Process {
+		# Show window, if minimized
+		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
+
+		Start-Sleep -Milliseconds 100
+
+		# Force move the console window to the foreground
+		[WinAPI.ForegroundWindow]::SetForegroundWindow($_.MainWindowHandle)
+
+		Start-Sleep -Milliseconds 100
+
+		# Emulate the Backspace key sending
+		[System.Windows.Forms.SendKeys]::SendWait("{BACKSPACE 1}")
+	}
+	#endregion Sendkey function
+
 	$Window.Add_Loaded({$Tasks | Add-TaskControl})
 	$Button.Content = $ButtonContent
 	$Button.Add_Click({& $ButtonAdd_Click})
 
 	$Window.Title = $Localization.ScheduledTasks
+
+	# Force move the WPF form to the foreground
+	$Window.Add_Loaded({$Window.Activate()})
 	$Form.ShowDialog() | Out-Null
 }
 
@@ -2565,8 +2622,10 @@ function UnpinTaskbarEdgeStore
 		MemberDefinition = @"
 [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
 public static extern IntPtr GetModuleHandle(string lpModuleName);
+
 [DllImport("user32.dll", CharSet = CharSet.Auto)]
 internal static extern int LoadString(IntPtr hInstance, uint uID, StringBuilder lpBuffer, int nBufferMax);
+
 public static string GetString(uint strId)
 {
 	IntPtr intPtr = GetModuleHandle("shell32.dll");
@@ -4445,10 +4504,11 @@ function WindowsFeatures
 		MinHeight="450" MinWidth="400"
 		SizeToContent="Width" WindowStartupLocation="CenterScreen"
 		TextOptions.TextFormattingMode="Display" SnapsToDevicePixels="True"
-		FontFamily="Segoe UI" FontSize="12" ShowInTaskbar="False">
+		FontFamily="Candara" FontSize="16" ShowInTaskbar="True">
 		<Window.Resources>
 			<Style TargetType="StackPanel">
 				<Setter Property="Orientation" Value="Horizontal"/>
+				<Setter Property="VerticalAlignment" Value="Top"/>
 			</Style>
 			<Style TargetType="CheckBox">
 				<Setter Property="Margin" Value="10, 10, 5, 10"/>
@@ -4461,9 +4521,21 @@ function WindowsFeatures
 				<Setter Property="Margin" Value="20"/>
 				<Setter Property="Padding" Value="10"/>
 			</Style>
+			<Style TargetType="Border">
+				<Setter Property="Grid.Row" Value="1"/>
+				<Setter Property="CornerRadius" Value="0"/>
+				<Setter Property="BorderThickness" Value="0, 1, 0, 1"/>
+				<Setter Property="BorderBrush" Value="#000000"/>
+			</Style>
+			<Style TargetType="ScrollViewer">
+				<Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+				<Setter Property="BorderBrush" Value="#000000"/>
+				<Setter Property="BorderThickness" Value="0, 1, 0, 1"/>
+			</Style>
 		</Window.Resources>
 		<Grid>
 			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="*"/>
 				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
@@ -4472,7 +4544,7 @@ function WindowsFeatures
 				VerticalScrollBarVisibility="Auto">
 				<StackPanel Name="PanelContainer" Orientation="Vertical"/>
 			</ScrollViewer>
-			<Button Name="Button" Grid.Row="1"/>
+			<Button Name="Button" Grid.Row="2"/>
 		</Grid>
 	</Window>
 	'
@@ -4616,11 +4688,55 @@ function WindowsFeatures
 
 	Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
 
+	#region Sendkey function
+	# Emulate the Backspace key sending to prevent the console window to freeze
+	Start-Sleep -Milliseconds 500
+
+	Add-Type -AssemblyName System.Windows.Forms
+
+	$SetForegroundWindow = @{
+		Namespace = "WinAPI"
+		Name = "ForegroundWindow"
+		Language = "CSharp"
+		MemberDefinition = @"
+[DllImport("user32.dll")]
+public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
+
+[DllImport("user32.dll")]
+[return: MarshalAs(UnmanagedType.Bool)]
+public static extern bool SetForegroundWindow(IntPtr hWnd);
+"@
+	}
+
+	if (-not ("WinAPI.ForegroundWindow" -as [type]))
+	{
+		Add-Type @SetForegroundWindow
+	}
+
+	Get-Process | Where-Object -FilterScript {$_.MainWindowTitle -like "Windows 10 Sophia Script*"} | ForEach-Object -Process {
+		# Show window, if minimized
+		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
+
+		Start-Sleep -Milliseconds 100
+
+		# Force move the console window to the foreground
+		[WinAPI.ForegroundWindow]::SetForegroundWindow($_.MainWindowHandle)
+
+		Start-Sleep -Milliseconds 100
+
+		# Emulate the Backspace key sending
+		[System.Windows.Forms.SendKeys]::SendWait("{BACKSPACE 1}")
+	}
+	#endregion Sendkey function
+
 	$Window.Add_Loaded({$Features | Add-FeatureControl})
 	$Button.Content = $ButtonContent
 	$Button.Add_Click({& $ButtonAdd_Click})
 
 	$Window.Title = $Localization.WindowsFeaturesTitle
+
+	# Force move the WPF form to the foreground
+	$Window.Add_Loaded({$Window.Activate()})
 	$Form.ShowDialog() | Out-Null
 }
 
@@ -4751,10 +4867,11 @@ function WindowsCapabilities
 		MinHeight="450" MinWidth="400"
 		SizeToContent="Width" WindowStartupLocation="CenterScreen"
 		TextOptions.TextFormattingMode="Display" SnapsToDevicePixels="True"
-		FontFamily="Segoe UI" FontSize="12" ShowInTaskbar="False">
+		FontFamily="Candara" FontSize="16" ShowInTaskbar="True">
 		<Window.Resources>
 			<Style TargetType="StackPanel">
 				<Setter Property="Orientation" Value="Horizontal"/>
+				<Setter Property="VerticalAlignment" Value="Top"/>
 			</Style>
 			<Style TargetType="CheckBox">
 				<Setter Property="Margin" Value="10, 10, 5, 10"/>
@@ -4767,9 +4884,21 @@ function WindowsCapabilities
 				<Setter Property="Margin" Value="20"/>
 				<Setter Property="Padding" Value="10"/>
 			</Style>
+			<Style TargetType="Border">
+				<Setter Property="Grid.Row" Value="1"/>
+				<Setter Property="CornerRadius" Value="0"/>
+				<Setter Property="BorderThickness" Value="0, 1, 0, 1"/>
+				<Setter Property="BorderBrush" Value="#000000"/>
+			</Style>
+			<Style TargetType="ScrollViewer">
+				<Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+				<Setter Property="BorderBrush" Value="#000000"/>
+				<Setter Property="BorderThickness" Value="0, 1, 0, 1"/>
+			</Style>
 		</Window.Resources>
 		<Grid>
 			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="*"/>
 				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
@@ -4778,7 +4907,7 @@ function WindowsCapabilities
 				VerticalScrollBarVisibility="Auto">
 				<StackPanel Name="PanelContainer" Orientation="Vertical"/>
 			</ScrollViewer>
-			<Button Name="Button" Grid.Row="1"/>
+			<Button Name="Button" Grid.Row="2"/>
 		</Grid>
 	</Window>
 	'
@@ -4946,11 +5075,55 @@ function WindowsCapabilities
 
 	Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
 
+	#region Sendkey function
+	# Emulate the Backspace key sending to prevent the console window to freeze
+	Start-Sleep -Milliseconds 500
+
+	Add-Type -AssemblyName System.Windows.Forms
+
+	$SetForegroundWindow = @{
+		Namespace = "WinAPI"
+		Name = "ForegroundWindow"
+		Language = "CSharp"
+		MemberDefinition = @"
+[DllImport("user32.dll")]
+public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
+
+[DllImport("user32.dll")]
+[return: MarshalAs(UnmanagedType.Bool)]
+public static extern bool SetForegroundWindow(IntPtr hWnd);
+"@
+	}
+
+	if (-not ("WinAPI.ForegroundWindow" -as [type]))
+	{
+		Add-Type @SetForegroundWindow
+	}
+
+	Get-Process | Where-Object -FilterScript {$_.MainWindowTitle -like "Windows 10 Sophia Script*"} | ForEach-Object -Process {
+		# Show window, if minimized
+		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
+
+		Start-Sleep -Milliseconds 100
+
+		# Force move the console window to the foreground
+		[WinAPI.ForegroundWindow]::SetForegroundWindow($_.MainWindowHandle)
+
+		Start-Sleep -Milliseconds 100
+
+		# Emulate the Backspace key sending
+		[System.Windows.Forms.SendKeys]::SendWait("{BACKSPACE 1}")
+	}
+	#endregion Sendkey function
+
 	$Window.Add_Loaded({$Capabilities | Add-CapabilityControl})
 	$Button.Content = $ButtonContent
 	$Button.Add_Click({& $ButtonAdd_Click})
 
 	$Window.Title = $Localization.OptionalFeaturesTitle
+
+	# Force move the WPF form to the foreground
+	$Window.Add_Loaded({$Window.Activate()})
 	$Form.ShowDialog() | Out-Null
 }
 
@@ -5535,8 +5708,10 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 	MemberDefinition = @"
 [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
 public static extern IntPtr GetModuleHandle(string lpModuleName);
+
 [DllImport("user32.dll", CharSet = CharSet.Auto)]
 internal static extern int LoadString(IntPtr hInstance, uint uID, StringBuilder lpBuffer, int nBufferMax);
+
 public static string GetString(uint strId)
 {
 	IntPtr intPtr = GetModuleHandle("shell32.dll");
@@ -5749,7 +5924,7 @@ public static string GetString(uint strId)
 					$FolderBrowserDialog.Description = $Localization.FolderSelect
 					$FolderBrowserDialog.RootFolder = "MyComputer"
 
-					# Focus on open file dialog
+					# Force move the open file dialog to the foreground
 					$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
 					$FolderBrowserDialog.ShowDialog($Focus)
 
@@ -5785,7 +5960,7 @@ public static string GetString(uint strId)
 					$FolderBrowserDialog.Description = $Localization.FolderSelect
 					$FolderBrowserDialog.RootFolder = "MyComputer"
 
-					# Focus on open file dialog
+					# Force move the open file dialog to the foreground
 					$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
 					$FolderBrowserDialog.ShowDialog($Focus)
 
@@ -5821,7 +5996,7 @@ public static string GetString(uint strId)
 					$FolderBrowserDialog.Description = $Localization.FolderSelect
 					$FolderBrowserDialog.RootFolder = "MyComputer"
 
-					# Focus on open file dialog
+					# Force move the open file dialog to the foreground
 					$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
 					$FolderBrowserDialog.ShowDialog($Focus)
 
@@ -5857,7 +6032,7 @@ public static string GetString(uint strId)
 					$FolderBrowserDialog.Description = $Localization.FolderSelect
 					$FolderBrowserDialog.RootFolder = "MyComputer"
 
-					# Focus on open file dialog
+					# Force move the open file dialog to the foreground
 					$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
 					$FolderBrowserDialog.ShowDialog($Focus)
 
@@ -5893,7 +6068,7 @@ public static string GetString(uint strId)
 					$FolderBrowserDialog.Description = $Localization.FolderSelect
 					$FolderBrowserDialog.RootFolder = "MyComputer"
 
-					# Focus on open file dialog
+					# Force move the open file dialog to the foreground
 					$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
 					$FolderBrowserDialog.ShowDialog($Focus)
 
@@ -5929,7 +6104,7 @@ public static string GetString(uint strId)
 					$FolderBrowserDialog.Description = $Localization.FolderSelect
 					$FolderBrowserDialog.RootFolder = "MyComputer"
 
-					# Focus on open file dialog
+					# Force move the open file dialog to the foreground
 					$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
 					$FolderBrowserDialog.ShowDialog($Focus)
 
@@ -7869,8 +8044,10 @@ function PinToStart
 			MemberDefinition = @"
 [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
 public static extern IntPtr GetModuleHandle(string lpModuleName);
+
 [DllImport("user32.dll", CharSet = CharSet.Auto)]
 internal static extern int LoadString(IntPtr hInstance, uint uID, StringBuilder lpBuffer, int nBufferMax);
+
 public static string GetString(uint strId)
 {
 	IntPtr intPtr = GetModuleHandle("shell32.dll");
@@ -8467,10 +8644,52 @@ function UninstallUWPApps
 	{
 		Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
 
+		#region Sendkey function
+		# Emulate the Backspace key sending to prevent the console window to freeze
+		Start-Sleep -Milliseconds 500
+
+		Add-Type -AssemblyName System.Windows.Forms
+
+		$SetForegroundWindow = @{
+			Namespace = "WinAPI"
+			Name = "ForegroundWindow"
+			Language = "CSharp"
+			MemberDefinition = @"
+[DllImport("user32.dll")]
+public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
+
+[DllImport("user32.dll")]
+[return: MarshalAs(UnmanagedType.Bool)]
+public static extern bool SetForegroundWindow(IntPtr hWnd);
+"@
+		}
+
+		if (-not ("WinAPI.ForegroundWindow" -as [type]))
+		{
+			Add-Type @SetForegroundWindow
+		}
+
+		Get-Process | Where-Object -FilterScript {$_.MainWindowTitle -like "Windows 10 Sophia Script*"} | ForEach-Object -Process {
+			# Show window, if minimized
+			[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
+
+			Start-Sleep -Milliseconds 100
+
+			# Force move the console window to the foreground
+			[WinAPI.ForegroundWindow]::SetForegroundWindow($_.MainWindowHandle)
+
+			Start-Sleep -Milliseconds 100
+
+			# Emulate the Backspace key sending to prevent the console window to freeze
+			[System.Windows.Forms.SendKeys]::SendWait("{BACKSPACE 1}")
+		}
+		#endregion Sendkey function
+
 		if ($PackagesToRemove.Count -gt 0)
 		{
 			$ButtonUninstall.IsEnabled = $true
 		}
+
 		$Form.ShowDialog() | Out-Null
 	}
 }
@@ -8580,7 +8799,7 @@ function RestoreUWPApps
 	{
 		Write-Verbose -Message $Localization.Patient -Verbose
 
-		# Тут нельзя напрямую вписать -PackageTypeFilter Bundle, так как иначе не выдается нужное свойство InstallLocation. Только сравнивать с $Bundles
+		# You cannot retrieve packages using -PackageTypeFilter Bundle, otherwise you won't get the InstallLocation attribute. It can be retrieved only by comparing with $Bundles
 		$Bundles = (Get-AppXPackage -PackageTypeFilter Bundle -AllUsers).Name
 		$AppxPackages = Get-AppxPackage -AllUsers | Where-Object -FilterScript {$_.PackageUserInformation -match "Staged"} | Where-Object -FilterScript {$_.Name -in $Bundles}
 		$PackagesIds = [Windows.Management.Deployment.PackageManager, Windows.Web, ContentType = WindowsRuntime]::new().FindPackages() | Select-Object -Property DisplayName -ExpandProperty Id | Select-Object -Property Name, DisplayName
@@ -8739,10 +8958,52 @@ function RestoreUWPApps
 	{
 		Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
 
+		# Emulate the Backspace key sending to prevent the console window to freeze
+		Start-Sleep -Milliseconds 500
+
+		Add-Type -AssemblyName System.Windows.Forms
+
+		$SetForegroundWindow = @{
+			Namespace = "WinAPI"
+			Name = "ForegroundWindow"
+			Language = "CSharp"
+			MemberDefinition = @"
+[DllImport("user32.dll")]
+public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
+
+[DllImport("user32.dll")]
+[return: MarshalAs(UnmanagedType.Bool)]
+public static extern bool SetForegroundWindow(IntPtr hWnd);
+"@
+		}
+
+		if (-not ("WinAPI.ForegroundWindow" -as [type]))
+		{
+			Add-Type @SetForegroundWindow
+		}
+
+		Get-Process | Where-Object -FilterScript {$_.MainWindowTitle -like "Windows 10 Sophia Script*"} | ForEach-Object -Process {
+			# Show window, if minimized
+			[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
+
+			Start-Sleep -Milliseconds 100
+
+			# Force move the console window to the foreground
+			[WinAPI.ForegroundWindow]::SetForegroundWindow($_.MainWindowHandle)
+
+			Start-Sleep -Milliseconds 100
+
+			# Emulate the Backspace key sending to prevent the console window to freeze
+			[System.Windows.Forms.SendKeys]::SendWait("{BACKSPACE 1}")
+		}
+
 		if ($PackagesToRestore.Count -gt 0)
 		{
 			$ButtonRestore.IsEnabled = $true
 		}
+
+		# Force move the WPF form to the foreground
+		$Window.Add_Loaded({$Window.Activate()})
 		$Form.ShowDialog() | Out-Null
 	}
 }
@@ -9197,7 +9458,7 @@ function SetAppGraphicsPerformance
 					$OpenFileDialog.InitialDirectory = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
 					$OpenFileDialog.Multiselect = $false
 
-					# Focus on open file dialog
+					# Force move the open file dialog to the foreground
 					$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
 					$OpenFileDialog.ShowDialog($Focus)
 
@@ -9462,19 +9723,16 @@ while (`$true)
 			}
 			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Name ShowInActionCenter -PropertyType DWord -Value 1 -Force
 
-			# Register the "WindowsCleanup" protocol to be able to run the scheduled task upon clicking on the "Run" button
-			if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup))
+			# Register the "WindowsCleanup" protocol to be able to run the scheduled task by clicking the "Run" button in a toast
+			if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup\shell\open\command))
 			{
-				New-Item -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Force
+				New-Item -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup\shell\open\command -Force
 			}
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name "(default)" -PropertyType String -Value "URL:WindowsCleanup" -Force
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name "URL Protocol" -Value "" -Force
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name EditFlags -PropertyType DWord -Value 2162688 -Force
-			if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\shell\open\command))
-			{
-				New-item -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup\shell\open\command -Force
-			}
-			# If "Run" clicked run the "Windows Cleanup" task
+
+			# Start the "Windows Cleanup" task if the "Run" button clicked
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup\shell\open\command -Name "(default)" -PropertyType String -Value 'powershell.exe -Command "& {Start-ScheduledTask -TaskPath ''\Sophia Script\'' -TaskName ''Windows Cleanup''}"' -Force
 
 			$ToastNotification = @"
@@ -9774,7 +10032,7 @@ function AddProtectedFolders
 				$FolderBrowserDialog.Description = $Localization.FolderSelect
 				$FolderBrowserDialog.RootFolder = "MyComputer"
 
-				# Focus on open file dialog
+				# Force move the open file dialog to the foreground
 				$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
 				$FolderBrowserDialog.ShowDialog($Focus)
 
@@ -9828,7 +10086,7 @@ function AddAppControlledFolder
 				$OpenFileDialog.InitialDirectory = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
 				$OpenFileDialog.Multiselect = $false
 
-				# Focus on open file dialog
+				# Force move the open file dialog to the foreground
 				$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
 				$OpenFileDialog.ShowDialog($Focus)
 
@@ -9880,7 +10138,7 @@ function AddDefenderExclusionFolder
 				$FolderBrowserDialog.Description = $Localization.FolderSelect
 				$FolderBrowserDialog.RootFolder = "MyComputer"
 
-				# Focus on open file dialog
+				# Force move the open file dialog to the foreground
 				$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
 				$FolderBrowserDialog.ShowDialog($Focus)
 
@@ -9934,7 +10192,7 @@ function AddDefenderExclusionFile
 				$OpenFileDialog.InitialDirectory = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
 				$OpenFileDialog.Multiselect = $false
 
-				# Focus on open file dialog
+				# Force move the open file dialog to the foreground
 				$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
 				$OpenFileDialog.ShowDialog($Focus)
 
@@ -11804,12 +12062,15 @@ private static readonly IntPtr HWND_BROADCAST = new IntPtr(0xffff);
 private const int WM_SETTINGCHANGE = 0x1a;
 private const int SMTO_ABORTIFHUNG = 0x0002;
 
-[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
-static extern bool SendNotifyMessage(IntPtr hWnd, uint Msg, IntPtr wParam, string lParam);
-[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
-private static extern IntPtr SendMessageTimeout(IntPtr hWnd, int Msg, IntPtr wParam, string lParam, int fuFlags, int uTimeout, IntPtr lpdwResult);
 [DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = false)]
 private static extern int SHChangeNotify(int eventId, int flags, IntPtr item1, IntPtr item2);
+
+[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
+private static extern IntPtr SendMessageTimeout(IntPtr hWnd, int Msg, IntPtr wParam, string lParam, int fuFlags, int uTimeout, IntPtr lpdwResult);
+
+[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
+static extern bool SendNotifyMessage(IntPtr hWnd, uint Msg, IntPtr wParam, string lParam);
+
 public static void Refresh()
 {
 	// Update desktop icons
@@ -11829,6 +12090,7 @@ private static readonly UIntPtr UIntPtr = new UIntPtr(41504);
 
 [DllImport("user32.dll", SetLastError=true)]
 public static extern int PostMessageW(IntPtr hWnd, uint Msg, UIntPtr wParam, IntPtr lParam);
+
 public static void PostMessage()
 {
 	// Simulate pressing F5 to refresh the desktop
