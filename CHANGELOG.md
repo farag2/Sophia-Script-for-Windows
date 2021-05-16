@@ -17,7 +17,7 @@ Diff from v5.10.4
   * Now window forms are opened in their own separate windows;
   * Fixed bug when opening window form freezed waiting for pressing any button;
   * Fixed bug when opened window form was in the background;
-* * PowerShell 7 version;
+* PowerShell 7 version;
   * CsWinRT updated up to 1.2.6;
   * Microsoft.Windows.SDK.NET.Ref updated up to 10.0.19041.17.
 * Minor changes. :feelsgood:
