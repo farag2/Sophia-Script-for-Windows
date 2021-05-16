@@ -1,9 +1,9 @@
-﻿<#
+<#
 	.SYNOPSIS
 	Default preset file for "Windows 10 Sophia Script"
 
-	Version: v5.10.4
-	Date: 07.05.2021
+	Version: v5.10.5
+	Date: 17.05.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & oZ-Zo
@@ -71,7 +71,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.10.4 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & oz-zo, 2014–2021"
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.10.5 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & oz-zo, 2014–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Sophia.psd1 -PassThru -Force
@@ -107,10 +107,10 @@ if ($Functions)
 
 #region Protection
 <#
-	Checkings. If you want disable a warning message about whether you've customized the preset file remove the Warning argument
+	Checkings. If you want to disable a warning message about whether you've customized the preset file remove the "-Warning" argument
 	Please, do not comment out this function
 
-	Проверки
+	Проверки. Чтобы выключить предупреждение о необходимости настройки пресет-файла, удалите аргумент "-Warning"
 	Пожалуйста, не комментируйте данную функцию
 #>
 Checkings -Warning

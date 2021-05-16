@@ -1,4 +1,4 @@
-﻿ConvertFrom-StringData -StringData @'
+ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Bu betik sadece Windows 10 x64 destekliyor
 UnsupportedOSBuild                        = Bu betik sadece Windows 10 2004/20H2/21H1 sürüm ve üstünü destekliyor
 UnsupportedRelease                        = Yeni sürüm bulundu
