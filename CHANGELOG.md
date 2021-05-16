@@ -5,7 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 5.10.4 — 07.54.2021
+## 5.10.5 — 14.05.2021
+
+## Windows 10 2004/20H2/21H1 | LTSC
+
+Diff from v5.10.4
+[5.10.4...5.10.5](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.10.4...5.10.5)
+
+* Updated all WPF forms;
+  * The WPF forms' appearance has been brought to the single design;
+  * Now window forms are opened in their own separate windows;
+  * Fixed bug when opening window form freezed waiting for pressing any button;
+  * Fixed bug when opened window form was in the background;
+* * PowerShell 7 version;
+  * CsWinRT updated up to 1.2.6;
+  * Microsoft.Windows.SDK.NET.Ref updated up to 10.0.19041.17.
+* Minor changes. :feelsgood:
+
+## 5.10.4 — 07.05.2021
 
 ## Windows 10 2004/20H2/21H1 | LTSC
 
