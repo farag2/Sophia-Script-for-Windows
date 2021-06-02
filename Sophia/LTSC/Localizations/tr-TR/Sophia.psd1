@@ -1,6 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Bu betik sadece Windows 10 x64 destekliyor
 UnsupportedOSBuild                        = Bu betik sadece Windows 10 1809 Enterprise LTSC
+UnsupportedISE                            = Komut dosyası, Windows PowerShell ISE üzerinden çalıştırmayı desteklemiyor
 UnsupportedRelease                        = Yeni sürüm bulundu
 CustomizationWarning                      = \nSophia Script'i çalıştırmadan önce Sophia.ps1 ön ayar dosyasındaki her işlevi özelleştirdiniz mi?
 ControlledFolderAccessDisabled            = Kontrollü klasör erişimi devre dışı bırakıldı

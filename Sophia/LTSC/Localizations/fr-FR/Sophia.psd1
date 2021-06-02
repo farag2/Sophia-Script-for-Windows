@@ -1,6 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Le script supporte uniquement Windows 10 x64
 UnsupportedOSBuild                        = Le script supporte le version Windows 10 1809 Enterprise LTSC
+UnsupportedISE                            = Le script ne supporte pas l'exécution via Windows PowerShell ISE
 UnsupportedRelease                        = Nouvelle version trouvée
 CustomizationWarning                      = \nAvez-vous personnalisé chaque fonction du fichier de préréglage Sophia.ps1 avant d'exécuter Sophia Script?
 ControlledFolderAccessDisabled            = Contrôle d'accès aux dossiers désactivé
@@ -10,13 +11,13 @@ OptionalFeaturesTitle                     = Fonctionnalités optionnelles
 EnableHardwareVT                          = Activer la virtualisation dans UEFI
 UserShellFolderNotEmpty                   = Certains fichiers laissés dans le dossier "{0}" \nDéplacer les manuellement vers un nouvel emplacement
 RetrievingDrivesList                      = Récupération de la liste des lecteurs...
-DriveSelect                               = Seleccione la unidad dentro de la raíz de la cual se creará la carpeta "{0}"
-UserFolderRequest                         = ¿Le gustaría cambiar la ubicación de la carpeta "{0}"?
-UserFolderSelect                          = Seleccione una carpeta para la carpeta "{0}"
-UserDefaultFolder                         = ¿Le gustaría cambiar la ubicación de la carpeta "{0}" al valor predeterminado?
+DriveSelect                               = Sélectionnez le disque à la racine dans lequel le dossier "{0}" sera créé.
+UserFolderRequest                         = Voulez vous changer où est placé le dossier "{0}" ?
+UserFolderSelect                          = Sélectionnez un dossier pour le dossier "{0}"
+UserDefaultFolder                         = Voulez vous changer où est placé le dossier "{0}" à sa valeur par défaut?
 GraphicsPerformanceTitle                  = Préférence de performances graphiques
 GraphicsPerformanceRequest                = Souhaitez-vous définir le paramètre de performances graphiques d'une application de votre choix sur "Haute performance"?
-TaskNotificationTitle                     = Notificación
+TaskNotificationTitle                     = Notificacion
 CleanupTaskNotificationTitle              = Une information important
 CleanupTaskDescription                    = Nettoyage des fichiers Windows inutilisés et des mises à jour à l'aide de l'application intégrée pour le nettoyage de disque
 CleanupTaskNotificationEventTitle         = Exécuter la tâche pour nettoyer les fichiers et les mises à jour inutilisés de Windows?
@@ -67,6 +68,6 @@ Select                                    = Sélectionner
 SelectAll                                 = Tout sélectionner
 Skip                                      = Passer
 Skipped                                   = Passé
-TelegramTitle                             = Rejoignez notre chaîne Telegram officielle
+TelegramTitle                             = Rejoignez notre canal Telegram officiel
 Uninstall                                 = Désinstaller
 '@

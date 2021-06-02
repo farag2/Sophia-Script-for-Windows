@@ -1,6 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Скрипт поддерживает только Windows 10 x64
 UnsupportedOSBuild                        = Скрипт поддерживает только Windows 10 1809 Enterprise LTSC
+UnsupportedISE                            = Скрипт не поддерживает работу через Windows PowerShell ISE
 UnsupportedRelease                        = Обнаружена новая версия
 CustomizationWarning                      = \nВы настроили все функции в пресет-файле Sophia.ps1 перед запуском Sophia Script?
 ControlledFolderAccessDisabled            = Контролируемый доступ к папкам выключен

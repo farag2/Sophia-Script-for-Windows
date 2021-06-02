@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	The TAB completion for functions and their arguments
 
-	Version: v5.2.5
-	Date: 17.05.2021
+	Version: v5.2.6
+	Date: 01.06.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & oZ-Zo
@@ -53,7 +53,7 @@ function Sophia
 		$Functions
 	)
 
-	# Regardless of the functions entered as an argument, the "Checkings" function will be executed first, and the "Refresh" and "Errors" functions will be executed at the end
+	# Regardless of the functions entered as an argument, the "Checkings" function will be executed first, and the "RefreshEnvironment" and "Errors" functions will be executed at the end
 	Invoke-Command -ScriptBlock {Checkings}
 
 	foreach ($Function in $Functions)
@@ -61,12 +61,12 @@ function Sophia
 		Invoke-Expression -Command $Function
 	}
 
-	Invoke-Command -ScriptBlock {Refresh; Errors}
+	Invoke-Command -ScriptBlock {RefreshEnvironment; Errors}
 }
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script for LTSC v5.2.5 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & oz-zo, 2014–2021"
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script for LTSC v5.2.6 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & oz-zo, 2014–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Sophia.psd1 -PassThru -Force

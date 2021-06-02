@@ -2,11 +2,11 @@
 	.SYNOPSIS
 	Default preset file for "Windows 10 Sophia Script" (LTSC version)
 
-	Version: v5.2.5
-	Date: 17.05.2021
+	Version: v5.2.6
+	Date: 01.06.2021
 
 	Copyright (c) 2014–2021 farag
-	Copyright (c) 2019–2021 farag & oZ-Zo
+	Copyright (c) 2019–2021 farag & Inestic
 
 	Thanks to all https://forum.ru-board.com members involved
 
@@ -40,22 +40,22 @@
 		. .\Function.ps1 (with a dot at the beginning)
 	Read more in the Functions.ps1 file
 
+	.LINK GitHub link
+	https://github.com/farag2/Windows-10-Sophia-Script
+
+	.LINK Telegram channel & group
+	https://t.me/sophianews
+	https://t.me/sophia_chat
+
 	.NOTES
 	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
 	https://habr.com/post/521202/
 	https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/
 	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
 
-	.LINK Telegram channel & group
-	https://t.me/sophianews
-	https://t.me/sophia_chat
-
-	.LINK
+	.LINK Authors
 	https://github.com/farag2
 	https://github.com/Inestic
-
-	.LINK
-	https://github.com/farag2/Windows-10-Sophia-Script
 #>
 
 #Requires -RunAsAdministrator
@@ -71,7 +71,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script for LTSC v5.2.5 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & oz-zo, 2014–2021"
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script for LTSC v5.2.6 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & oz-zo, 2014–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Sophia.psd1 -PassThru -Force
@@ -205,7 +205,7 @@ ShareAcrossDevices -Disable
 
 #region UI & Personalization
 # Show the "This PC" icon on Desktop
-# Отобразить значок "Этот компьютер" на рабочем столе
+# Отображать значок "Этот компьютер" на рабочем столе
 ThisPC -Show
 
 # Hide the "This PC" icon on Desktop (default value)
@@ -252,30 +252,6 @@ OpenFileExplorerTo -ThisPC
 # Открывать проводник для: "Быстрый доступ" (значение по умолчанию)
 # OpenFileExplorerTo -QuickAccess
 
-# Hide Task View button on the taskbar
-# Скрывать кнопку Просмотра задач
-TaskViewButton -Hide
-
-# Show Task View button on the taskbar (default value)
-# Показывать кнопку Просмотра задач (значение по умолчанию)
-# TaskViewButton -Show
-
-# Hide People button on the taskbar
-# Скрывать панель "Люди" на панели задач
-PeopleTaskbar -Hide
-
-# Show People button on the taskbar (default value)
-# Показывать панель "Люди" на панели задач (значение по умолчанию)
-# PeopleTaskbar -Show
-
-# Show seconds on the taskbar clock
-# Отображать секунды в системных часах на панели задач
-SecondsInSystemClock -Show
-
-# Hide seconds on the taskbar clock (default value)
-# Скрывать секунды в системных часах на панели задач (значение по умолчанию)
-# SecondsInSystemClock -Hide
-
 # When I snap a window, do not show what I can snap next to it
 # При прикреплении окна не показывать, что можно прикрепить рядом с ним
 SnapAssist -Disable
@@ -313,7 +289,7 @@ RecycleBinDeleteConfirmation -Enable
 3DObjects -Hide
 
 # Show the "3D Objects" folder in "This PC" and Quick access (default value)
-# Отобразить папку "Объемные объекты" в "Этот компьютер" и панели быстрого доступа (значение по умолчанию)
+# Отображать папку "Объемные объекты" в "Этот компьютер" и панели быстрого доступа (значение по умолчанию)
 # 3DObjects -Show
 
 # Hide frequently used folders in Quick access
@@ -331,6 +307,30 @@ QuickAccessRecentFiles -Hide
 # Show recently used files in Quick access (default value)
 # Показать недавно использовавшиеся файлы на панели быстрого доступа (значение по умолчанию)
 # QuickAccessRecentFiles -Show
+
+# Hide Task View button on the taskbar
+# Скрывать кнопку Просмотра задач
+TaskViewButton -Hide
+
+# Show Task View button on the taskbar (default value)
+# Показывать кнопку Просмотра задач (значение по умолчанию)
+# TaskViewButton -Show
+
+# Hide People button on the taskbar
+# Скрывать панель "Люди" на панели задач
+PeopleTaskbar -Hide
+
+# Show People button on the taskbar (default value)
+# Показывать панель "Люди" на панели задач (значение по умолчанию)
+# PeopleTaskbar -Show
+
+# Show seconds on the taskbar clock
+# Отображать секунды в системных часах на панели задач
+SecondsInSystemClock -Show
+
+# Hide seconds on the taskbar clock (default value)
+# Скрывать секунды в системных часах на панели задач (значение по умолчанию)
+# SecondsInSystemClock -Hide
 
 # Hide the search on the taskbar
 # Скрыть поле или значок поиска на панели задач
@@ -1131,7 +1131,7 @@ PreviousVersionsPage -Hide
 	Перезапустить меню "Пуск"
 	Пожалуйста, не комментируйте данную функцию
 #>
-Refresh
+RefreshEnvironment
 
 <#
 	Errors output

@@ -2,11 +2,11 @@
 	.SYNOPSIS
 	"Windows 10 Sophia Script" (LTSC version) is a PowerShell module for Windows 10 fine-tuning and automating the routine tasks
 
-	Version: v5.2.5
-	Date: 17.05.2021
+	Version: v5.2.6
+	Date: 01.06.2021
 
 	Copyright (c) 2014–2021 farag
-	Copyright (c) 2019–2021 farag & oZ-Zo
+	Copyright (c) 2019–2021 farag & Inestic
 
 	Thanks to all https://forum.ru-board.com members involved
 
@@ -24,22 +24,22 @@
 	Set execution policy to be able to run scripts only in the current PowerShell session:
 		Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 
-	.NOTES
-	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
-	https://habr.com/post/521202/
-	https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/
-	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
+	.LINK GitHub link
+	https://github.com/farag2/Windows-10-Sophia-Script
 
 	.LINK Telegram channel & group
 	https://t.me/sophianews
 	https://t.me/sophia_chat
 
-	.LINK
+	.LINK Authors
 	https://github.com/farag2
 	https://github.com/Inestic
 
-	.LINK
-	https://github.com/farag2/Windows-10-Sophia-Script
+	.NOTES
+	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
+	https://habr.com/post/521202/
+	https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/
+	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
 #>
 
 #region Checkings
@@ -75,6 +75,13 @@ function Checkings
 			Write-Warning -Message $Localization.UnsupportedOSBuild
 			exit
 		}
+	}
+
+	# Check whether the script has been run via PowerShell ISE
+	if ($Host.Name -match "ISE")
+	{
+		Write-Warning -Message $Localization.UnsupportedISE
+		exit
 	}
 
 	# Checking if the current module version is the latest one
@@ -931,6 +938,10 @@ function AdvertisingID
 		}
 		"Enable"
 		{
+			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo))
+			{
+				New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo -Force
+			}
 			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo -Name Enabled -PropertyType DWord -Value 1 -Force
 		}
 	}
@@ -1667,30 +1678,6 @@ function RecycleBinDeleteConfirmation
 		$Enable
 	)
 
-	$UpdateDesktop = @{
-		Namespace = "WinAPI"
-		Name = "UpdateDesktop"
-		Language = "CSharp"
-		MemberDefinition = @"
-private static readonly IntPtr hWnd = new IntPtr(65535);
-private const int Msg = 273;
-// Virtual key ID of the F5 in File Explorer
-private static readonly UIntPtr UIntPtr = new UIntPtr(41504);
-
-[DllImport("user32.dll", SetLastError=true)]
-public static extern int PostMessageW(IntPtr hWnd, uint Msg, UIntPtr wParam, IntPtr lParam);
-public static void PostMessage()
-{
-	// F5 pressing simulation to refresh the desktop
-	PostMessageW(hWnd, Msg, UIntPtr, IntPtr.Zero);
-}
-"@
-	}
-	if (-not ("WinAPI.UpdateDesktop" -as [type]))
-	{
-		Add-Type @UpdateDesktop
-	}
-
 	$ShellState = Get-ItemPropertyValue -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name ShellState
 
 	switch ($PSCmdlet.ParameterSetName)
@@ -1706,9 +1693,6 @@ public static void PostMessage()
 			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name ShellState -PropertyType Binary -Value $ShellState -Force
 		}
 	}
-
-	# Send F5 pressing simulation to refresh the desktop
-	[WinAPI.UpdateDesktop]::PostMessage()
 }
 
 <#
@@ -5938,6 +5922,10 @@ function Set-Association
 		# Generate ProgId
 		$ProgId = (Get-Item -Path $ProgramPath).BaseName + $Extension.ToUpper()
 	}
+	else
+	{
+		$ProgId = $ProgramPath
+	}
 
 	#region functions
 	$RegistryUtils = @'
@@ -6102,13 +6090,15 @@ namespace RegistryUtils
 		)
 
 		$OpenSubKey = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey($SubKey,'ReadWriteSubTree','TakeOwnership')
-
-		$Acl = [System.Security.AccessControl.RegistrySecurity]::new()
-		# Get current user SID
-		$UserSID = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
-		$Acl.SetSecurityDescriptorSddlForm("O:$UserSID`G:$UserSID`D:AI(D;;DC;;;$UserSID)")
-		$OpenSubKey.SetAccessControl($Acl)
-		$OpenSubKey.Close()
+		if ($OpenSubKey)
+		{
+			$Acl = [System.Security.AccessControl.RegistrySecurity]::new()
+			# Get current user SID
+			$UserSID = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
+			$Acl.SetSecurityDescriptorSddlForm("O:$UserSID`G:$UserSID`D:AI(D;;DC;;;$UserSID)")
+			$OpenSubKey.SetAccessControl($Acl)
+			$OpenSubKey.Close()
+		}
 	}
 
 	function Write-ExtensionKeys
@@ -6131,22 +6121,21 @@ namespace RegistryUtils
 		)
 
 		$OrigProgID = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Classes\$Extension" -Name "(default)" -ErrorAction Ignore)."(default)"
-
 		if ($OrigProgID)
 		{
 			# Save possible ProgIds history with extension
-			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Name "$ProgID`_$Extension" -PropertyType String -Value 0 -Force
+			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Name "$ProgID`_$Extension" -PropertyType DWord -Value 0 -Force
 		}
 
-		$Name = (Get-Item -Path $ProgramPath).Name + $Extension
-		New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Name $Name -PropertyType String -Value 0 -Force
+		$Name = "{0}_$Extension" -f (Split-Path -Path $ProgId -Leaf)
+		New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Name $Name -PropertyType DWord -Value 0 -Force
 
 		if ("$ProgId`_$Extension" -ne $Name)
 		{
-			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Name "$ProgId`_$Extension" -PropertyType String -Value 0 -Force
+			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Name "$ProgId`_$Extension" -PropertyType DWord -Value 0 -Force
 		}
 
-		# If ProgId doesn't exist set the specified ProgId for the extansions
+		# If ProgId doesn't exist set the specified ProgId for the extensions
 		if (-not $OrigProgID)
 		{
 			if (-not (Test-Path -Path "HKCU:\SOFTWARE\Classes\$Extension"))
@@ -6247,7 +6236,7 @@ namespace RegistryUtils
 		}
 
 		$picture = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\KindMap" -Name $Extension -ErrorAction Ignore).$Extension
-		$PBrush = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Classes\PBrush\CLSID" -Name "(default)"
+		$PBrush = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Classes\PBrush\CLSID" -Name "(default)" -ErrorAction Ignore)."(default)"
 
 		if (($picture -eq "picture") -and $PBrush)
 		{
@@ -6468,7 +6457,7 @@ namespace FileAssoc
 		}
 		New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\$ProgId\shell\open\command" -Name "(Default)" -PropertyType String -Value "`"$ProgramPath`" `"%1`"" -Force
 
-		$FileNameEXE = (Get-Item -Path $ProgramPath).Name
+		$FileNameEXE = Split-Path -Path $ProgramPath -Leaf
 		if (-not (Test-Path -Path "HKCU:\SOFTWARE\Classes\Applications\$FileNameEXE\shell\open\command"))
 		{
 			New-Item -Path "HKCU:\SOFTWARE\Classes\Applications\$FileNameEXE\shell\open\command" -Force
@@ -6488,6 +6477,29 @@ namespace FileAssoc
 
 	# If the file extension specified configure the extension
 	Write-ExtensionKeys -ProgId $ProgId -Extension $Extension
+
+	# Refresh the desktop icons
+	$UpdateExplorer = @{
+		Namespace = "WinAPI"
+		Name = "UpdateExplorer"
+		Language = "CSharp"
+		MemberDefinition = @"
+[DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = false)]
+private static extern int SHChangeNotify(int eventId, int flags, IntPtr item1, IntPtr item2);
+
+public static void Refresh()
+{
+	// Update desktop icons
+	SHChangeNotify(0x8000000, 0x1000, IntPtr.Zero, IntPtr.Zero);
+}
+"@
+	}
+	if (-not ("WinAPI.UpdateExplorer" -as [type]))
+	{
+		Add-Type @UpdateExplorer
+	}
+
+	[WinAPI.UpdateExplorer]::Refresh()
 }
 #endregion System
 
@@ -8306,6 +8318,10 @@ function MSIExtractContext
 	CABInstallContext -Add
 
 	.NOTES
+	If the .cab file extension type associated to open with a third party app by default, the "Install" context menu item won't be displayed,
+	so the default association for the .cab file type will be restored forcedly
+
+	.NOTES
 	Current user
 #>
 function CABInstallContext
@@ -8331,10 +8347,17 @@ function CABInstallContext
 	{
 		"Remove"
 		{
-			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command -Recurse -Force -ErrorAction SilentlyContinue
+			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs -Recurse -Force -ErrorAction SilentlyContinue
 		}
 		"Add"
 		{
+			# Checking whether the File Explorer is associated with the .cab files
+			if (-not ((Get-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.cab\UserChoice -Name ProgId -ErrorAction Ignore) -notmatch "cab"))
+			{
+				# The "Install" context menu item won't be visible unless the File Explorer was assosiated with the .cab files
+				Set-Association -ProgramPath CABFolder -Extension .cab -Icon "%SystemRoot%\system32\cabview.dll,0"
+			}
+
 			if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command))
 			{
 				New-Item -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command -Force
@@ -9159,12 +9182,12 @@ function PreviousVersionsPage
 }
 #endregion Context menu
 
-#region Refresh
-function Refresh
+#region Refresh Environment
+function RefreshEnvironment
 {
-	$UpdateExplorer = @{
+	$UpdateEnvironment = @{
 		Namespace = "WinAPI"
-		Name = "UpdateExplorer"
+		Name = "UpdateEnvironment"
 		Language = "CSharp"
 		MemberDefinition = @"
 private static readonly IntPtr HWND_BROADCAST = new IntPtr(0xffff);
@@ -9207,16 +9230,16 @@ public static void PostMessage()
 }
 "@
 	}
-	if (-not ("WinAPI.UpdateExplorer" -as [type]))
+	if (-not ("WinAPI.UpdateEnvironment" -as [type]))
 	{
-		Add-Type @UpdateExplorer
+		Add-Type @UpdateEnvironment
 	}
 
 	# Simulate pressing F5 to refresh the desktop
-	[WinAPI.UpdateExplorer]::PostMessage()
+	[WinAPI.UpdateEnvironment]::PostMessage()
 
 	# Refresh desktop icons, environment variables, taskbar
-	[WinAPI.UpdateExplorer]::Refresh()
+	[WinAPI.UpdateEnvironment]::Refresh()
 
 	# Restart the Start menu
 	Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
@@ -9258,7 +9281,7 @@ public static void PostMessage()
 	$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New($ToastXML)
 	[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel").Show($ToastMessage)
 }
-#endregion Refresh
+#endregion Refresh Environment
 
 # Errors output
 function Errors
