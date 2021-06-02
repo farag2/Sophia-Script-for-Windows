@@ -1,6 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = A szkript csak a Windows 10 64 bites verziót támogatja
 UnsupportedOSBuild                        = A szkript a Windows 10 2004/20H2/21H1 és újabb kiadásokat támogatja
+UnsupportedISE                            = A szkript nem támogatja a "Windows PowerShell ISE" futtatását
 UnsupportedRelease                        = Új verzió érhető el
 CustomizationWarning                      = \nSzemélyre szabott minden opciót a Sophia.ps1 preset fájlban, mielőtt futtatni kívánja a Sophia szkriptet?
 ControlledFolderAccessDisabled            = Vezérelt mappához való hozzáférés kikapcsolva
