@@ -125,7 +125,8 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ### David's Sophia Script Wrapper
 
-![Image](https://i.imgur.com/M6jti1d.png)
+![Wr](https://i.imgur.com/p76nAiN.png) ![Wr](https://i.imgur.com/yP1ykai.png)
+![Wr](https://i.imgur.com/4bdGLtk.png)
 
 ### Native interactive toasts for the "Windows Cleanup" scheduled task
 
