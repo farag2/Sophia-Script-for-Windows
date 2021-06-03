@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.10.6 — 01.06.2021
+
+## Windows 10 2004/20H2/21H1 | LTSC
+
+Diff from v5.10.5
+[5.10.5...5.10.6](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.10.5...5.10.6)
+
+* Added functions `NewsInterests -Hide` & `NewsInterests -Show` to configure "News and Interests" on the taskbar;
+  * #184 closed.
+* Updated the `CABInstallContext -Add` function;
+  * If the .cab file extension type associated to open with a third party app by default, the "Install" context menu item won't be displayed, so the default association for the .cab file type will be restored forcedly.
+* Updated the French translation;
+  * #181 closed. Thanks @couleurm.
+* Minor changes. :feelsgood:
+
+***
+
+* Sophia Script Wrapper was rewritten from the scratch;
+  * Redefined UI and UX;
+  * Many bugs fixed.
+  * Supports LTSC and the current supported Windows 10 editions;
+  * Dark and light themes;
+  * Just import the `Sophia.ps1` file and all functions will be set up automatically.
+
+![Wr](https://i.imgur.com/p76nAiN.png)
+![Wr](https://i.imgur.com/yP1ykai.png)
+![Wr](https://i.imgur.com/4bdGLtk.png)
+
 ## 5.10.5 — 17.05.2021
 
 ## Windows 10 2004/20H2/21H1 | LTSC
