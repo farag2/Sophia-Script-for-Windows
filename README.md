@@ -128,7 +128,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 ![Wr](https://i.imgur.com/p76nAiN.png) ![Wr](https://i.imgur.com/yP1ykai.png)
 ![Wr](https://i.imgur.com/4bdGLtk.png)
 
-### Native interactive toasts for the "Windows Cleanup" scheduled task
+### Native interactive toasts for the scheduled tasks
 
 ![Image](https://i.imgur.com/jornXGR.png)
 
