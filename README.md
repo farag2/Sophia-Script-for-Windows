@@ -121,7 +121,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ### Localized Windows features names
 
-![Image](https://i.imgur.com/bNmAuCW.png) ![Image](https://i.imgur.com/vmmDhhf.png)
+![Image](https://i.imgur.com/xlMR2mz.png) ![Image](https://i.imgur.com/yl9j9Vt.png)
 
 ### David's Sophia Script Wrapper 2.0
 
