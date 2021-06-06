@@ -84,7 +84,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 			</a>
 		</td>
 		<td>
-			<a href="https://www.deskmodder.de/blog/2020/09/25/windows-10-sophia-script-windows-10-feintuning-mit-powershell/">
+			<a href="https://www.deskmodder.de/blog/2021/06/06/windows-10-sophia-script-jetzt-mit-einem-wrapper-und-spaeter-als-sophiapp/">
 				<img src="https://i.imgur.com/6sAI2wZ.png">
 			</a>
 		</td>
