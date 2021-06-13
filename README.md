@@ -123,10 +123,10 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ![Image](https://i.imgur.com/xlMR2mz.png) ![Image](https://i.imgur.com/yl9j9Vt.png)
 
-### David's Sophia Script Wrapper 2.0
+### David's Sophia Script Wrapper 2.0.1
 
-![Wr](https://i.imgur.com/p76nAiN.png) ![Wr](https://i.imgur.com/yP1ykai.png)
-![Wr](https://i.imgur.com/4bdGLtk.png)
+![Wr](https://i.imgur.com/x0wlXyj.png) ![Wr](https://i.imgur.com/x0wlXyj.png)
+![Wr](https://i.imgur.com/P0s1Siz.png)
 
 ### Native interactive toasts for the scheduled tasks
 
