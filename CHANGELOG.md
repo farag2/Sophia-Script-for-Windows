@@ -17,7 +17,7 @@ Diff from v5.10.6
 
 ***
 
-* Sophia Script Wrapper
+* Sophia Script Wrapper 2.0.1
   * Added multi-languages support (only for the functions' descriptions);
   * Reverted back the `Opposite` function. Closes #186;
   * UI changes.
