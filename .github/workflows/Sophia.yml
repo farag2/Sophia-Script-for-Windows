@@ -120,7 +120,7 @@ jobs:
       - name: Build LTSC
         run: |
           $BUILD_DIR = "Sophia Script LTSC v"
-          $ModuleVersion = (Import-PowerShellDataFile -Path "Sophia\LTSC\Sophia.psd1").ModuleVersion
+          $ModuleVersion = (Import-PowerShellDataFile -Path "Sophia\LTSC\Manifest\Sophia.psd1").ModuleVersion
           Write-Host $ModuleVersion
           $BUILD_DIR += $ModuleVersion
 
