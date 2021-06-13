@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Windows 10 2004/20H2/21H1 | LTSC
+
+Diff from v5.10.6
+[5.10.6...5.10.7](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.10.6...5.10.7)
+
+* #190 closed;
+* The manifest file moved to the `Manifest` folder;
+* The module file moved to the `Module` folder;
+* Minor changes. :feelsgood:
+
+***
+
+* Sophia Script Wrapper
+  * Added multi-languages support (only for the functions' descriptions);
+  * Reverted back the `Opposite` function. Closes #186;
+  * UI changes.
+
 ## 5.10.6 — 01.06.2021
 
 ## Windows 10 2004/20H2/21H1 | LTSC
