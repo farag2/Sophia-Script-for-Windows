@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Windows 10 Sophia Script"
 
-	Version: v5.10.6
-	Date: 01.06.2021
+	Version: v5.10.7
+	Date: 13.06.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & Inestic
@@ -71,10 +71,10 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.10.6 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & oz-zo, 2014–2021"
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.10.7 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & oz-zo, 2014–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
-Import-Module -Name $PSScriptRoot\Sophia.psd1 -PassThru -Force
+Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
 
 Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia -BaseDirectory $PSScriptRoot\Localizations
 
@@ -107,10 +107,10 @@ if ($Functions)
 
 #region Protection
 <#
-	Checkings. If you want to disable a warning message about whether you've customized the preset file remove the "-Warning" argument
+	The necessary checkings. If you want to disable a warning message about whether you've customized the preset file remove the "-Warning" argument
 	Please, do not comment out this function
 
-	Проверки. Чтобы выключить предупреждение о необходимости настройки пресет-файла, удалите аргумент "-Warning"
+	Обязательные проверки. Чтобы выключить предупреждение о необходимости настройки пресет-файла, удалите аргумент "-Warning"
 	Пожалуйста, не комментируйте данную функцию
 #>
 Checkings -Warning
@@ -433,11 +433,11 @@ TrayIcons -Show
 # TrayIcons -Hide
 
 # Hide the Meet Now icon in the notification area
-# Скрыть иконку "Провести собрание" в трее
+# Скрыть иконку "Провести собрание" в области уведомлений
 MeetNow -Hide
 
 # Show the Meet Now icon in the notification area
-# Отображать иконку "Провести собрание" в трее
+# Отображать иконку "Провести собрание" в области уведомлений
 # MeetNow -Show
 
 # Hide "News and Interests" on the taskbar
@@ -1277,8 +1277,15 @@ MSIExtractContext -Add
 # Удалить пункт "Извлечь все" из контекстного меню Windows Installer (.msi) (значение по умолчанию)
 # MSIExtractContext -Remove
 
-# Add the "Install" item to the .cab archives context menu
-# Добавить пункт "Установить" в контекстное меню .cab архивов
+<#
+	Add the "Install" item to the .cab archives context menu
+	If the .cab file extension type associated to open with a third party app by default, the "Install" context menu item won't be displayed,
+	so the default association for the .cab file type will be restored forcedly
+
+	Добавить пункт "Установить" в контекстное меню .cab архивов
+	Если .cab файлы ассоциированы со сторонним приложением, пункт "Установить" в контекстное меню не будет отображаться,
+	поэтому принудительно будет восстановлена ассоциация по умолчанию
+#>
 CABInstallContext -Add
 
 # Remove the "Install" item from the .cab archives context menu (default value)
@@ -1433,7 +1440,7 @@ PreviousVersionsPage -Hide
 	Перезапустить меню "Пуск"
 	Пожалуйста, не комментируйте данную функцию
 #>
-Refresh
+RefreshEnvironment
 
 <#
 	Errors output

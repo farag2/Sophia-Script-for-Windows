@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	"Windows 10 Sophia Script" is a PowerShell module for Windows 10 fine-tuning and automating the routine tasks
 
-	Version: v5.10.6
-	Date: 01.06.2021
+	Version: v5.10.7
+	Date: 13.06.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & Inestic
@@ -126,7 +126,7 @@ function Checkings
 		{
 			"0"
 			{
-				Invoke-Item -Path $PSScriptRoot\Sophia.ps1
+				Invoke-Item -Path $PSScriptRoot\..\Sophia.ps1
 				exit
 			}
 			"1"
@@ -3608,11 +3608,11 @@ function StorageSense
 	.SYNOPSIS
 	Configure Storage Sense running
 
-	.PARAMETER Disable
-	Run Storage Sense every month/during low free disk space
+	.PARAMETER Month
+	Run Storage Sense every month
 
-	.PARAMETER Enable
-	Run Storage Sense every month/during low free disk space
+	.PARAMETER Default
+	Run Storage Sense during low free disk space
 
 	.EXAMPLE
 	StorageSenseFrequency -Month
@@ -5588,73 +5588,73 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				Add-Type @Signature
 			}
 
-			foreach ($guid in $KnownFolders[$KnownFolder])
+			foreach ($GUID in $KnownFolders[$KnownFolder])
 			{
-				[WinAPI.KnownFolders]::SHSetKnownFolderPath([ref]$guid, 0, 0, $Path)
+				[WinAPI.KnownFolders]::SHSetKnownFolderPath([ref]$GUID, 0, 0, $Path)
 			}
 			(Get-Item -Path $Path -Force).Attributes = "ReadOnly"
 		}
 
-		$UserShellFoldersRegName = @{
-			"Desktop"	=	"Desktop"
-			"Documents"	=	"Personal"
-			"Downloads"	=	"{374DE290-123F-4565-9164-39C4925E467B}"
-			"Music"		=	"My Music"
-			"Pictures"	=	"My Pictures"
-			"Videos"	=	"My Video"
+		$UserShellFoldersRegistryNames = @{
+			"Desktop"   = "Desktop"
+			"Documents" = "Personal"
+			"Downloads" = "{374DE290-123F-4565-9164-39C4925E467B}"
+			"Music"     = "My Music"
+			"Pictures"  = "My Pictures"
+			"Videos"    = "My Video"
 		}
 
-		$UserShellFoldersGUID = @{
-			"Desktop"	=	"{754AC886-DF64-4CBA-86B5-F7FBF4FBCEF5}"
-			"Documents"	=	"{F42EE2D3-909F-4907-8871-4C22FC0BF756}"
-			"Downloads"	=	"{7D83EE9B-2244-4E70-B1F5-5393042AF1E4}"
-			"Music"		=	"{A0C69A99-21C8-4671-8703-7934162FCF1D}"
-			"Pictures"	=	"{0DDD015D-B06C-45D5-8C4C-F59713854639}"
-			"Videos"	=	"{35286A68-3C57-41A1-BBB1-0EAE73D76C95}"
+		$UserShellFoldersGUIDs = @{
+			"Desktop"   = "{754AC886-DF64-4CBA-86B5-F7FBF4FBCEF5}"
+			"Documents" = "{F42EE2D3-909F-4907-8871-4C22FC0BF756}"
+			"Downloads" = "{7D83EE9B-2244-4E70-B1F5-5393042AF1E4}"
+			"Music"     = "{A0C69A99-21C8-4671-8703-7934162FCF1D}"
+			"Pictures"  = "{0DDD015D-B06C-45D5-8C4C-F59713854639}"
+			"Videos"    = "{35286A68-3C57-41A1-BBB1-0EAE73D76C95}"
 		}
 
 		# Contents of the hidden desktop.ini file for each type of user folders
 		$DesktopINI = @{
-			"Desktop"	=	"",
-							"[.ShellClassInfo]",
-							"LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21769",
-							"IconResource=%SystemRoot%\system32\imageres.dll,-183"
-			"Documents"	=	"",
-							"[.ShellClassInfo]",
-							"LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21770",
-							"IconResource=%SystemRoot%\system32\imageres.dll,-112",
-							"IconFile=%SystemRoot%\system32\shell32.dll",
-							"IconIndex=-235"
-			"Downloads"	=	"",
-							"[.ShellClassInfo]","LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21798",
-							"IconResource=%SystemRoot%\system32\imageres.dll,-184"
-			"Music"		=	"",
-							"[.ShellClassInfo]","LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21790",
-							"InfoTip=@%SystemRoot%\system32\shell32.dll,-12689",
-							"IconResource=%SystemRoot%\system32\imageres.dll,-108",
-							"IconFile=%SystemRoot%\system32\shell32.dll","IconIndex=-237"
-			"Pictures"	=	"",
-							"[.ShellClassInfo]",
-							"LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21779",
-							"InfoTip=@%SystemRoot%\system32\shell32.dll,-12688",
-							"IconResource=%SystemRoot%\system32\imageres.dll,-113",
-							"IconFile=%SystemRoot%\system32\shell32.dll",
-							"IconIndex=-236"
-			"Videos"	=	"",
-							"[.ShellClassInfo]",
-							"LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21791",
-							"InfoTip=@%SystemRoot%\system32\shell32.dll,-12690",
-							"IconResource=%SystemRoot%\system32\imageres.dll,-189",
-							"IconFile=%SystemRoot%\system32\shell32.dll","IconIndex=-238"
+			"Desktop"   = "",
+                          "[.ShellClassInfo]",
+                          "LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21769",
+                          "IconResource=%SystemRoot%\system32\imageres.dll,-183"
+			"Documents" = "",
+                          "[.ShellClassInfo]",
+                          "LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21770",
+                          "IconResource=%SystemRoot%\system32\imageres.dll,-112",
+                          "IconFile=%SystemRoot%\system32\shell32.dll",
+                          "IconIndex=-235"
+			"Downloads" = "",
+                          "[.ShellClassInfo]","LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21798",
+                          "IconResource=%SystemRoot%\system32\imageres.dll,-184"
+			"Music"     = "",
+                          "[.ShellClassInfo]","LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21790",
+                          "InfoTip=@%SystemRoot%\system32\shell32.dll,-12689",
+                          "IconResource=%SystemRoot%\system32\imageres.dll,-108",
+                          "IconFile=%SystemRoot%\system32\shell32.dll","IconIndex=-237"
+			"Pictures" = "",
+                          "[.ShellClassInfo]",
+                          "LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21779",
+                          "InfoTip=@%SystemRoot%\system32\shell32.dll,-12688",
+                          "IconResource=%SystemRoot%\system32\imageres.dll,-113",
+                          "IconFile=%SystemRoot%\system32\shell32.dll",
+                          "IconIndex=-236"
+			"Videos"   = "",
+                          "[.ShellClassInfo]",
+                          "LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21791",
+                          "InfoTip=@%SystemRoot%\system32\shell32.dll,-12690",
+                          "IconResource=%SystemRoot%\system32\imageres.dll,-189",
+                          "IconFile=%SystemRoot%\system32\shell32.dll","IconIndex=-238"
 		}
 
 		# Determining the current user folder path
-		$UserShellFolderRegValue = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name $UserShellFoldersRegName[$UserFolder]
-		if ($UserShellFolderRegValue -ne $FolderPath)
+		$UserShellFolderRegistryValue = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name $UserShellFoldersRegistryNames[$UserFolder]
+		if ($UserShellFolderRegistryValue -ne $FolderPath)
 		{
-			if ((Get-ChildItem -Path $UserShellFolderRegValue | Measure-Object).Count -ne 0)
+			if ((Get-ChildItem -Path $UserShellFolderRegistryValue | Measure-Object).Count -ne 0)
 			{
-				Write-Error -Message ($Localization.UserShellFolderNotEmpty -f $UserShellFolderRegValue) -ErrorAction SilentlyContinue
+				Write-Error -Message ($Localization.UserShellFolderNotEmpty -f $UserShellFolderRegistryValue) -ErrorAction SilentlyContinue
 			}
 
 			# Creating a new folder if there is no one
@@ -5666,11 +5666,11 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			# Removing old desktop.ini
 			if ($RemoveDesktopINI.IsPresent)
 			{
-				Remove-Item -Path "$UserShellFolderRegValue\desktop.ini" -Force
+				Remove-Item -Path "$UserShellFolderRegistryValue\desktop.ini" -Force
 			}
 
 			KnownFolderPath -KnownFolder $UserFolder -Path $FolderPath
-			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name $UserShellFoldersGUID[$UserFolder] -PropertyType ExpandString -Value $FolderPath -Force
+			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name $UserShellFoldersGUIDs[$UserFolder] -PropertyType ExpandString -Value $FolderPath -Force
 
 			# Save desktop.ini in the UTF-16 LE encoding
 			Set-Content -Path "$FolderPath\desktop.ini" -Value $DesktopINI[$UserFolder] -Encoding Unicode -Force
@@ -5963,9 +5963,9 @@ public static string GetString(uint strId)
 
 			$Title = ""
 			$Message = $Localization.UserFolderSelect -f $DesktopLocalizedString
-			$Select = $Localization.Select
+			$Select = $Localization.Browse
 			$Skip = $Localization.Skip
-			$Options = "&$Select", "&$Skip"
+			$Options = "&$Browse", "&$Skip"
 			$DefaultChoice = 1
 			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -5999,9 +5999,9 @@ public static string GetString(uint strId)
 
 			$Title = ""
 			$Message = $Localization.UserFolderSelect -f $DocumentsLocalizedString
-			$Select = $Localization.Select
+			$Select = $Localization.Browse
 			$Skip = $Localization.Skip
-			$Options = "&$Select", "&$Skip"
+			$Options = "&$Browse", "&$Skip"
 			$DefaultChoice = 1
 			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -6035,9 +6035,9 @@ public static string GetString(uint strId)
 
 			$Title = ""
 			$Message = $Localization.UserFolderSelect -f $DownloadsLocalizedString
-			$Select = $Localization.Select
+			$Select = $Localization.Browse
 			$Skip = $Localization.Skip
-			$Options = "&$Select", "&$Skip"
+			$Options = "&$Browse", "&$Skip"
 			$DefaultChoice = 1
 			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -6071,9 +6071,9 @@ public static string GetString(uint strId)
 
 			$Title = ""
 			$Message = $Localization.UserFolderSelect -f $MusicLocalizedString
-			$Select = $Localization.Select
+			$Select = $Localization.Browse
 			$Skip = $Localization.Skip
-			$Options = "&$Select", "&$Skip"
+			$Options = "&$Browse", "&$Skip"
 			$DefaultChoice = 1
 			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -6107,9 +6107,9 @@ public static string GetString(uint strId)
 
 			$Title = ""
 			$Message = $Localization.UserFolderSelect -f $PicturesLocalizedString
-			$Select = $Localization.Select
+			$Select = $Localization.Browse
 			$Skip = $Localization.Skip
-			$Options = "&$Select", "&$Skip"
+			$Options = "&$Browse", "&$Skip"
 			$DefaultChoice = 1
 			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -6143,9 +6143,9 @@ public static string GetString(uint strId)
 
 			$Title = ""
 			$Message = $Localization.UserFolderSelect -f $VideosLocalizedString
-			$Select = $Localization.Select
+			$Select = $Localization.Browse
 			$Skip = $Localization.Skip
-			$Options = "&$Select", "&$Skip"
+			$Options = "&$Browse", "&$Skip"
 			$DefaultChoice = 1
 			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
