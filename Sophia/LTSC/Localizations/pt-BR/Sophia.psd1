@@ -44,6 +44,7 @@ ErrorsFile                                = Arquivo
 ErrorsMessage                             = Erros/Avisos
 Add	                                  = Adicionar
 AllFilesFilter                            = Todos os arquivos (*.*)|*.*
+Browse                                    = Procurar
 Change                                    = Mudar
 DialogBoxOpening                          = Exibindo a caixa de diálogo...
 Disable                                   = Desativar
