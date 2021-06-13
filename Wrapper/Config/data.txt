@@ -1,5 +1,6 @@
 #region Protection
 
+2;2cmb;Checkings -Warning;Checkings;
 1;chk;Logging;
 1;chk;CreateRestorePoint
 
