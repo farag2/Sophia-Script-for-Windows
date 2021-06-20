@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Windows 10 2004/20H2/21H1 | LTSC
 
+Diff from v5.10.7
+[5.10.7...5.10.8](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.10.7...5.10.8)
+
+* The `UnpinTaskbarEdgeStore` function renamed into `UnpinTaskbarShortcuts`, and added feature to unpin the `Mail` shortcut
+  * `UnpinTaskbarShortcuts -Shortcuts Edge, Store, Mail`.
+* The `PowerManagementScheme` rename into `PowerPlan`;
+* #195, #196, #200 closed;
+* Updated the Chineese translation. Thanks to @flashercs;
+* Minor changes. :feelsgood:
+
+***
+
+* Sophia Script Wrapper 2.0.2
+  * Fixed runtime error;
+  * Fixed PowerShell 7.1 lauch (detects 5.1 or 7.1 and uses appropiate PowerShell to launch either);
+  * Added online check for the latest Wrapper version. If you are using old version it will exit;
+  * Added online check for the latest imported script version. If you are using old version it will disable directly running (run PowerShell button disabled);
+  * UI changes.
+  * 
+## Windows 10 2004/20H2/21H1 | LTSC
+
 Diff from v5.10.6
 [5.10.6...5.10.7](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.10.6...5.10.7)
 
