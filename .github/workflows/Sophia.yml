@@ -142,7 +142,8 @@ jobs:
 
       - name: Wrapper
         run: |
-          $WrapperVersion = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/farag2/Windows-10-Sophia-Script/master/Wrapper/latest.txt"
+          # The Trim.() is needed to trim the downloaded text version string
+          $WrapperVersion = (Invoke-RestMethod -Uri "https://raw.githubusercontent.com/farag2/Windows-10-Sophia-Script/master/Wrapper/latest.txt").Trim()
           Write-Host $WrapperVersion
           $BUILD_DIR = "Sophia Script Wrapper v$WrapperVersion"
           
