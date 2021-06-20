@@ -2,11 +2,11 @@
 	.SYNOPSIS
 	The TAB completion for functions and their arguments
 
-	Version: v5.10.7
-	Date: 13.06.2021
+	Version: v5.10.8
+	Date: 20.06.2021
 
 	Copyright (c) 2014–2021 farag
-	Copyright (c) 2019–2021 farag & oZ-Zo
+	Copyright (c) 2019–2021 farag & Inestic
 
 	Thanks to all https://forum.ru-board.com members involved
 
@@ -24,7 +24,7 @@
 		Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 
 	.NOTES
-	Separate functions with comma
+	Separate functions with a comma
 
 	.NOTES
 	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
@@ -66,7 +66,7 @@ function Sophia
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.10.7 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & oz-zo, 2014–2021"
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.10.8 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & Inestic, 2014–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -108,8 +108,32 @@ $Parameters = @{
 							"PinToStart" + " " + "-" + $ParameterSet + " " + $ValidValue | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
 						}
 
-						# "PinToStart -Tiles <functions>" construction
+						# The "PinToStart -Tiles <functions>" construction
 						"PinToStart" + " " + "-" + $ParameterSet + " " + ($ValidValues -join ", ") | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
+					}
+
+					continue
+				}
+			}
+
+			# If a module command is UnpinTaskbarShortcuts
+			if ($Command -eq "UnpinTaskbarShortcuts")
+			{
+				# Get all command arguments, excluding defaults
+				foreach ($ParameterSet in $ParameterSets.Name)
+				{
+					# If an argument is Shortcuts
+					if ($ParameterSet -eq "Shortcuts")
+					{
+						$ValidValues = ((Get-Command -Name UnpinTaskbarShortcuts).Parametersets.Parameters | Where-Object -FilterScript {$null -eq $_.Attributes.AliasNames}).Attributes.ValidValues
+						foreach ($ValidValue in $ValidValues)
+						{
+							# The "UnpinTaskbarShortcuts -Shortcuts <function>" construction
+							"UnpinTaskbarShortcuts" + " " + "-" + $ParameterSet + " " + $ValidValue | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
+						}
+
+						# The "UnpinTaskbarShortcuts -Shortcuts <functions>" construction
+						"UnpinTaskbarShortcuts" + " " + "-" + $ParameterSet + " " + ($ValidValues -join ", ") | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
 					}
 
 					continue
