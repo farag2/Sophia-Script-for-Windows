@@ -8415,8 +8415,8 @@ function UninstallUWPApps
 		$ForAllUsers
 	)
 
-	Add-Type -AssemblyName "$PSScriptRoot\Libraries\WinRT.Runtime.dll"
-	Add-Type -AssemblyName "$PSScriptRoot\Libraries\Microsoft.Windows.SDK.NET.dll"
+	Add-Type -AssemblyName "$PSScriptRoot\..\Libraries\WinRT.Runtime.dll"
+	Add-Type -AssemblyName "$PSScriptRoot\..\Libraries\Microsoft.Windows.SDK.NET.dll"
 
 	Add-Type -AssemblyName PresentationCore, PresentationFramework
 
@@ -8862,8 +8862,8 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 #>
 function RestoreUWPApps
 {
-	Add-Type -AssemblyName "$PSScriptRoot\Libraries\WinRT.Runtime.dll"
-	Add-Type -AssemblyName "$PSScriptRoot\Libraries\Microsoft.Windows.SDK.NET.dll"
+	Add-Type -AssemblyName "$PSScriptRoot\..\Libraries\WinRT.Runtime.dll"
+	Add-Type -AssemblyName "$PSScriptRoot\..\Libraries\Microsoft.Windows.SDK.NET.dll"
 
 	Add-Type -AssemblyName PresentationCore, PresentationFramework
 
@@ -12296,8 +12296,8 @@ public static void PostMessage()
 		https://www.nuget.org/packages/Microsoft.Windows.SDK.NET.Ref
 	#>
 
-	Add-Type -AssemblyName "$PSScriptRoot\Libraries\WinRT.Runtime.dll"
-	Add-Type -AssemblyName "$PSScriptRoot\Libraries\Microsoft.Windows.SDK.NET.dll"
+	Add-Type -AssemblyName "$PSScriptRoot\..\Libraries\WinRT.Runtime.dll"
+	Add-Type -AssemblyName "$PSScriptRoot\..\Libraries\Microsoft.Windows.SDK.NET.dll"
 
 	[xml]$ToastTemplate = @"
 <toast duration="Long" scenario="reminder">
