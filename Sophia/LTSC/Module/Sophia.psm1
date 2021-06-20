@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	"Windows 10 Sophia Script" (LTSC version) is a PowerShell module for Windows 10 fine-tuning and automating the routine tasks
 
-	Version: v5.2.7
-	Date: 13.06.2021
+	Version: v5.2.8
+	Date: 20.06.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & Inestic
@@ -463,7 +463,7 @@ function WindowsFeedback
 	ScheduledTasks -Enable
 
 	.NOTES
-	A pop-up dialog box enables the user to select tasks
+	A pop-up dialog box lets a user select tasks
 	Current user
 #>
 function ScheduledTasks
@@ -1908,7 +1908,7 @@ function TaskbarSearch
 
 		[Parameter(
 			Mandatory = $true,
-			ParameterSetName = "ShowIcon"
+			ParameterSetName = "SearchIcon"
 		)]
 		[switch]
 		$SearchIcon,
@@ -2901,10 +2901,6 @@ function TempFolder
 				# Restart the Printer Spooler service (Spooler)
 				Restart-Service -Name Spooler -Force
 
-				# Stop OneDrive processes
-				Stop-Process -Name OneDrive -Force -ErrorAction Ignore
-				Stop-Process -Name FileCoAuth -Force -ErrorAction Ignore
-
 				if (-not (Test-Path -Path $env:SystemDrive\Temp))
 				{
 					New-Item -Path $env:SystemDrive\Temp -ItemType Directory -Force
@@ -3012,10 +3008,6 @@ Unregister-ScheduledTask -TaskName SymbolicLink -Confirm:`$false
 			{
 				# Restart the Printer Spooler service (Spooler)
 				Restart-Service -Name Spooler -Force
-
-				# Stop OneDrive processes
-				Stop-Process -Name OneDrive -Force -ErrorAction Ignore
-				Stop-Process -Name FileCoAuth -Force -ErrorAction Ignore
 
 				# Remove a symbolic link to the %SystemDrive%\Temp folder
 				if (Get-Item -Path $env:LOCALAPPDATA\Temp -Force -ErrorAction Ignore | Where-Object -FilterScript {$_.LinkType -eq "SymbolicLink"})
@@ -3501,7 +3493,7 @@ function WindowsManageDefaultPrinter
 	WindowsFeatures -Enable
 
 	.NOTES
-	A pop-up dialog box enables the user to select features
+	A pop-up dialog box lets a user select features
 	Current user
 #>
 function WindowsFeatures
@@ -3552,9 +3544,9 @@ function WindowsFeatures
 	[string[]]$UncheckedFeatures = @(
 		<#
 			Media Features
-			Компоненты работы с мультимедиа
-
 			If you want to leave "Multimedia settings" in the advanced settings of Power Options do not disable this feature
+
+			Компоненты работы с мультимедиа
 			Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах электропитания, не отключайте этот компонент
 		#>
 		"MediaPlayback"
@@ -3824,7 +3816,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	WindowsCapabilities -Install
 
 	.NOTES
-	A pop-up dialog box enables the user to select features
+	A pop-up dialog box lets a user select features
 	Current user
 #>
 function WindowsCapabilities
@@ -4232,25 +4224,25 @@ function UpdateMicrosoftProducts
 
 <#
 	.SYNOPSIS
-	Configure the power management scheme
+	Configure a power plan
 
 	.PARAMETER High
-	Set the power management scheme on "High performance"
+	Set the power plan on "High performance"
 
 	.PARAMETER Balanced
-	Set the power management scheme on "Balanced"
+	Set the power plan on "Balanced"
 
 	.EXAMPLE
-	PowerManagementScheme -High
+	PowerPlan -High
 
 	.EXAMPLE
-	PowerManagementScheme -Balanced
+	PowerPlan -Balanced
 
 	.NOTES
-	Do not recommend turning "High performance" scheme on on laptops
+	It isn't recommended to turn on the "High performance" power plan on laptops
 	Current user
 #>
-function PowerManagementScheme
+function PowerPlan
 {
 	param
 	(
@@ -8352,7 +8344,7 @@ function CABInstallContext
 		"Add"
 		{
 			# Checking whether the File Explorer is associated with the .cab files
-			if (-not ((Get-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.cab\UserChoice -Name ProgId -ErrorAction Ignore) -notmatch "cab"))
+			if (-not ((Get-ItemPropertyValue -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.cab\UserChoice -Name ProgId) -eq "CABFolder"))
 			{
 				# The "Install" context menu item won't be visible unless the File Explorer was assosiated with the .cab files
 				Set-Association -ProgramPath CABFolder -Extension .cab -Icon "%SystemRoot%\system32\cabview.dll,0"
