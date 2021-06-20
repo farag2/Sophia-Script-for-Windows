@@ -142,7 +142,11 @@ jobs:
 
       - name: Wrapper
         run: |
-          $BUILD_DIR = "Sophia Script Wrapper"
+          $BUILD_DIR = "Sophia Script Wrapper v"
+          $WrapperVersion = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/farag2/Windows-10-Sophia-Script/master/Wrapper/latest.txt"
+          Write-Host $WrapperVersion
+          $BUILD_DIR += $WrapperVersion
+          
           $ZIP = "$BUILD_DIR.zip"
 
           New-Item -Path $BUILD_DIR -ItemType Directory -Force
