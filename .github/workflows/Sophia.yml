@@ -12,7 +12,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@master
-      - name: Build 5.1
+      - name: PowerShell 5.1
         run: |
           $BUILD_DIR = "Sophia Script v"
           if ($env:GITHUB_REF -eq "refs/heads/master")
@@ -40,7 +40,7 @@ jobs:
               "$($_.Name)  $((Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash)"
           } | Add-Content -Path SHA256SUM -Encoding Default -Force
 
-      - name: Build 7
+      - name: PowerShell 7
         run: |
           $BUILD_DIR = "Sophia Script v"
           if ($env:GITHUB_REF -eq "refs/heads/master")
