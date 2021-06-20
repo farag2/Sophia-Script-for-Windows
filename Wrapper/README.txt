@@ -16,7 +16,7 @@ Sophia script to share and open it up. There is a Opposite menu option to select
 There are ToolTips balloon message popups for detailed info for each item. There are different languages in menu.
 
 After choosing your options, you can directly run the PowerShell script from the program after creating your script. 
-To do so, open up 'Sophia.ps1' preset, as this also gets the path for files to run directly, then fill in your choices, 
+To do so, import preset 'Sophia.ps1', as this also gets the path for files to run directly, then fill in your choices, 
 click the ‘Refresh Console’ button and then click ‘Run Powershell’ button. The “Run PowerShell” button 
 creates a PowerShell script called ‘Sophia_edited.ps1’ in the same directory as 'Sophia.ps1' and runs it.
 
@@ -45,7 +45,7 @@ stored in 'Localizations' folder.
 
 INSTRUCTIONS
 ------------
-UNZIP all the files and open the 'Sophia.ps1' preset file to import and to get the path for files to run.
+UNZIP all the files and import the 'Sophia.ps1' preset file to import and to get the path for files to run.
 If you do not open 'Sophia.ps1' then you can not run directly the PowerShell script you create (Run PowerShell 
 button is disabled) and must run your script manually via PowerShell command line in console.
 
@@ -59,13 +59,14 @@ SOPHIA FILES
 The 'Localizations' folder contains folders that are localized language files for prompts during the PowerShell 
 execution each with a PowerShell Data File 'Sophia.psd1'.
 
-►cn-CN
 ►de-DE
 ►en-US
 ►es-ES
 ►fr-FR
 ►hu-HU
 ►it-IT
+►pt-BR
 ►ru-RU
 ►tr-TR
 ►uk-UA
+►zh-CN

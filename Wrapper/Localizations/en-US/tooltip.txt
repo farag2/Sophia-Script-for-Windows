@@ -1,6 +1,6 @@
 #region Protection
 
-Checkings -Warning;Checkings is required. "-Warning" argument displays warning message about whether you've customized the preset file;
+Checkings -Warning;Checkings is required. The "-Warning" argument displays warning message about whether you've customized the preset file;
 Checkings;Checkings is required. No arguement therefore no warning message about whether you've customized the preset file;
 Logging;Enable script logging. The log will be being recorded into the script folder.To stop logging just close the console or type "Stop-Transcript";
 CreateRestorePoint;Create a restore point
@@ -89,7 +89,10 @@ MeetNow -Hide;Hide the Meet Now icon in the notification area;
 MeetNow -Show;Show the Meet Now icon in the notification area (default value);
 NewsInterests -Hide;Hide "News and Interests" on the taskbar;
 NewsInterests -Show;Show "News and Interests" on the taskbar (default value);
-UnpinTaskbarEdgeStore;Unpin "Microsoft Edge" and "Microsoft Store" from the taskbar;
+UnpinTaskbarShortcuts -Shortcuts;Unpin the "Microsoft Edge", "Microsoft Store", or "Mail" shortcuts from the taskbar;
+UnpinTaskbarShortcuts -Shortcuts Edge;Unpin the "Microsoft Edge" shortcut from the taskbar;
+UnpinTaskbarShortcuts -Shortcuts Store;Unpin the "Microsoft Store" shortcut from the taskbar;
+UnpinTaskbarShortcuts -Shortcuts Mail;Unpin the "Mail" shortcut from the taskbar;
 ControlPanelView -Category;View the Control Panel icons by: category (default value);
 ControlPanelView -LargeIcons;View the Control Panel icons by: large icons;
 ControlPanelView -SmallIcons;View the Control Panel icons by: small icons;
@@ -116,7 +119,7 @@ AppsLanguageSwitch -Enable;Do not let use a different input method for each app 
 
 #region OneDrive
 
-OneDrive -Uninstall;Uninstall OneDrive;
+OneDrive -Uninstall;Uninstall OneDrive. The OneDrive user folder won't be removed;
 OneDrive -Install;Install OneDrive
 
 #region System
@@ -153,8 +156,8 @@ WindowsCapabilities -Uninstall;Uninstall optional features using the pop-up dial
 WindowsCapabilities -Install;Install optional features using the pop-up dialog box;
 UpdateMicrosoftProducts -Enable;Receive updates for other Microsoft products when you update Windows;
 UpdateMicrosoftProducts -Disable;Do not receive updates for other Microsoft products when you update Windows (default value);
-PowerManagementScheme -High;Set the power management scheme on "High performance". It is not recommended to turn on this scheme on laptops;
-PowerManagementScheme -Balanced;Set the power management scheme on "Balanced" (default value);
+PowerPlan -High;Set the power plan on "High performance". It isn't recommended to turn on the "High performance" power plan on laptops;
+PowerPlan -Balanced;Set the power plan on "Balanced" (default value);
 LatestInstalled.NET -Enable;Use latest installed .NET runtime for all apps;
 LatestInstalled.NET -Disable;Do not use latest installed .NET runtime for all apps (default value);
 PCTurnOffDevice -Disable;Do not allow the computer to turn off the network adapters to save power;
@@ -207,7 +210,7 @@ AppSuggestions -Hide;Hide app suggestions in the Start menu;
 AppSuggestions -Show;Show app suggestions in the Start menu (default value);
 RunPowerShellShortcut -Elevated;Run the Windows PowerShell shortcut from the Start menu as Administrator;
 RunPowerShellShortcut -NonElevated;Run the Windows PowerShell shortcut from the Start menu as user (default value);
-PinToStart -Tiles;Pin to Start the following links: Control Panel, Devices and Printers, PowerShell;
+PinToStart -Tiles;Pin to Start the following shortcuts: Control Panel, Devices and Printers, PowerShell;
 PinToStart -Tiles ControlPanel;Pin the Control Panel shortcut to Start;
 PinToStart -Tiles DevicesPrinters;Pin the "Devices & Printers" shortcut to Start;
 PinToStart -Tiles PowerShell;Pin the Windows PowerShell shortcut to Start;

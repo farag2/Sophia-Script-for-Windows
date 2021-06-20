@@ -48,7 +48,7 @@
 2;cmb;TrayIcons -Show;TrayIcons -Hide;
 2;cmb;MeetNow -Hide;MeetNow -Show;
 2;cmb;NewsInterests -Hide;NewsInterests -Show;
-1;chk;UnpinTaskbarEdgeStore;
+3;chk;UnpinTaskbarShortcuts -Shortcuts;Edge;Store;Mail;
 3;cmb;ControlPanelView -Category;ControlPanelView -LargeIcons;ControlPanelView -SmallIcons;
 2;cmb;WindowsColorScheme -Dark;WindowsColorScheme -Light;
 2;cmb;AppMode -Dark;AppMode -Light;
@@ -83,7 +83,7 @@
 2;cmb;WindowsFeatures -Disable;WindowsFeatures -Enable;
 2;cmb;WindowsCapabilities -Uninstall;WindowsCapabilities -Install;
 2;cmb;UpdateMicrosoftProducts -Enable;UpdateMicrosoftProducts -Disable;
-2;cmb;PowerManagementScheme -High;PowerManagementScheme -Balanced;
+2;cmb;PowerPlan -High;PowerPlan -Balanced;
 2;cmb;LatestInstalled.NET -Enable;LatestInstalled.NET -Disable;
 2;cmb;PCTurnOffDevice -Disable;PCTurnOffDevice -Enable;
 2;cmb;SetInputMethod -English;SetInputMethod -Default;
