@@ -142,10 +142,9 @@ jobs:
 
       - name: Wrapper
         run: |
-          $BUILD_DIR = "Sophia Script Wrapper v"
           $WrapperVersion = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/farag2/Windows-10-Sophia-Script/master/Wrapper/latest.txt"
           Write-Host $WrapperVersion
-          $BUILD_DIR += $WrapperVersion
+          $BUILD_DIR = "Sophia Script Wrapper v$WrapperVersion"
           
           $ZIP = "$BUILD_DIR.zip"
 
@@ -154,8 +153,7 @@ jobs:
           Write-Host $BUILD_DIR
           Write-Host $ZIP
 
-          Copy-Item -Path "Wrapper\*" -Destination $BUILD_DIR -Recurse -Force
-
+          Get-ChildItem -Path Wrapper -Recurse | Copy-Item -Destination $BUILD_DIR -Recurse -Force
           Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP -Force
 
           # Calculate hash
