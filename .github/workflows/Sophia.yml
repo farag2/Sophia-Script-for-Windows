@@ -31,8 +31,7 @@ jobs:
           Write-Host $BUILD_DIR
           Write-Host $ZIP
 
-          Copy-Item -Path "Sophia\PowerShell 5.1\*" -Destination $BUILD_DIR -Recurse -Force
-
+          Get-ChildItem -Path "Sophia\PowerShell 5.1" | Copy-Item -Destination $BUILD_DIR -Recurse -Force
           Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP -Force
 
           # Calculate hash
@@ -60,7 +59,7 @@ jobs:
           Write-Host $BUILD_DIR
           Write-Host $ZIP
 
-          Copy-Item -Path "Sophia\PowerShell 7\*" -Destination $BUILD_DIR -Recurse -Force
+          Get-ChildItem -Path "Sophia\PowerShell 7" | Copy-Item -Destination $BUILD_DIR -Recurse -Force
 
           # Download Microsoft.Windows.SDK.NET.Ref
           $Parameters = @{
@@ -119,11 +118,9 @@ jobs:
 
       - name: Build LTSC
         run: |
-          $BUILD_DIR = "Sophia Script LTSC v"
           $ModuleVersion = (Import-PowerShellDataFile -Path "Sophia\LTSC\Manifest\Sophia.psd1").ModuleVersion
           Write-Host $ModuleVersion
-          $BUILD_DIR += $ModuleVersion
-
+          $BUILD_DIR = "Sophia Script LTSC v$ModuleVersion"
           $ZIP = "$BUILD_DIR.zip"
 
           New-Item -Path $BUILD_DIR -ItemType Directory -Force
@@ -131,7 +128,7 @@ jobs:
           Write-Host $BUILD_DIR
           Write-Host $ZIP
 
-          Copy-Item -Path "Sophia\LTSC\*" -Destination $BUILD_DIR -Recurse -Force
+          Get-ChildItem -Path Sophia\LTSC | Copy-Item -Destination $BUILD_DIR -Recurse -Force
 
           Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP -Force
 
@@ -154,7 +151,7 @@ jobs:
           Write-Host $BUILD_DIR
           Write-Host $ZIP
 
-          Get-ChildItem -Path Wrapper -Recurse | Copy-Item -Destination $BUILD_DIR -Recurse -Force
+          Get-ChildItem -Path Wrapper | Copy-Item -Destination $BUILD_DIR -Recurse -Force
           Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP -Force
 
           # Calculate hash
