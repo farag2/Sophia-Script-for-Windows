@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Windows 10 Sophia Script"
 
-	Version: v5.10.7
-	Date: 13.06.2021
+	Version: v5.10.8
+	Date: 20.06.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & Inestic
@@ -71,7 +71,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.10.7 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & oz-zo, 2014–2021"
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.10.8 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & Inestic, 2014–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -92,7 +92,7 @@ Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia -Base
 if ($Functions)
 {
 	# Regardless of functions entered as an argument, the "Checkings" function will be executed first,
-	# and the "Refresh" and "Errors" functions will be executed at the end
+	# and the "RefreshEnvironment" and "Errors" functions will be executed at the end
 	Invoke-Command -ScriptBlock {Checkings}
 
 	foreach ($Function in $Functions)
@@ -100,14 +100,14 @@ if ($Functions)
 		Invoke-Expression -Command $Function
 	}
 
-	Invoke-Command -ScriptBlock {Refresh; Errors}
+	Invoke-Command -ScriptBlock {RefreshEnvironment; Errors}
 
 	exit
 }
 
 #region Protection
 <#
-	The necessary checkings. If you want to disable a warning message about whether you've customized the preset file remove the "-Warning" argument
+	The necessary checkings. If you want to disable a warning message about whether the preset file was customized, remove the "-Warning" argument
 	Please, do not comment out this function
 
 	Обязательные проверки. Чтобы выключить предупреждение о необходимости настройки пресет-файла, удалите аргумент "-Warning"
@@ -448,9 +448,9 @@ NewsInterests -Hide
 # Отображать "Новости и интересы" на панели задач (значение по умолчанию)
 # NewsInterests -Show
 
-# Unpin Microsoft Edge and Microsoft Store from the taskbar
-# Открепить Microsoft Edge и Microsoft Store от панели задач
-UnpinTaskbarEdgeStore
+# Unpin the "Microsoft Edge", "Microsoft Store", or "Mail" shortcuts from the taskbar
+# Открепить ярлыки "Microsoft Edge", "Microsoft Store" или "Почта" от панели задач
+UnpinTaskbarShortcuts -Shortcuts Edge, Store, Mail
 
 # View the Control Panel icons by: large icons
 # Просмотр иконок Панели управления как: крупные значки
@@ -546,8 +546,8 @@ AppsLanguageSwitch -Enable
 #endregion UI & Personalization
 
 #region OneDrive
-# Uninstall OneDrive
-# Удалить OneDrive
+# Uninstall OneDrive. The OneDrive user folder won't be removed
+# Удалить OneDrive. Папка пользователя OneDrive не будет удалена
 OneDrive -Uninstall
 
 # Install OneDrive (default value)
@@ -667,7 +667,7 @@ WindowsManageDefaultPrinter -Disable
 	Отключить компоненты Windows, используя всплывающее диалоговое окно
 
 	If you want to leave "Multimedia settings" element in the advanced settings of Power Options do not disable the "MediaPlayback" feature
-	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах электропитания, не удаляйте отключайте "MediaPlayback"
+	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах схемы управления питанием, не отключайте "MediaPlayback"
 #>
 WindowsFeatures -Disable
 
@@ -677,10 +677,10 @@ WindowsFeatures -Disable
 
 <#
 	Uninstall optional features using the pop-up dialog box
-	Удалить дополнительные компоненты, используя всплывающее диалоговое окно
-
 	If you want to leave "Multimedia settings" element in the advanced settings of Power Options do not uninstall the "MediaPlayback" feature
-	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах электропитания, не удаляйте компонент "MediaPlayback"
+
+	Удалить дополнительные компоненты, используя всплывающее диалоговое окно
+	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах схемы управления питанием, не удаляйте компонент "MediaPlayback"
 #>
 WindowsCapabilities -Uninstall
 
@@ -696,13 +696,18 @@ UpdateMicrosoftProducts -Enable
 # При обновлении Windows не получать обновления для других продуктов Майкрософт (значение по умолчанию)
 # UpdateMicrosoftProducts -Disable
 
-# Set the power management scheme on "High performance" if device is a desktop
-# Установить схему управления питанием на "Высокая производительность", если устройство является стационарным ПК
-PowerManagementScheme -High
+<#
+	Set the power plan on "High performance"
+	It isn't recommended to turn on the "High performance" power plan on laptops
 
-# Set the power management scheme on "Balanced" (default value)
+	Установить схему управления питанием на "Высокая производительность"
+	Не рекомендуется включать схему управления питанием "Высокая производительность" для ноутбуков
+#>
+PowerPlan -High
+
+# Set the power plan on "Balanced" (default value)
 # Установить схему управления питанием на "Сбалансированная" (значение по умолчанию)
-# PowerManagementScheme -Balanced
+# PowerPlan -Balanced
 
 # Use latest installed .NET runtime for all apps
 # Использовать последнюю установленную среду выполнения .NET для всех приложений
@@ -887,8 +892,6 @@ DeviceRestartAfterUpdate -Enable
 	Register app, calculate hash, and set as default for specific extension without the "How do you want to open this?" pop-up
 	Зарегистрировать приложение, вычислить хэш и установить как приложение по умолчанию для конкретного расширения без всплывающего окна "Каким образом вы хотите открыть этот файл?"
 
-	Examples:
-	Примеры:
 	Set-Association -ProgramPath "C:\SumatraPDF.exe" -Extension .pdf -Icon "shell32.dll,100"
 	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .txt -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
 #>
@@ -942,18 +945,16 @@ RunPowerShellShortcut -Elevated
 # RunPowerShellShortcut -NonElevated
 
 <#
-	Pin to Start the following links: Control Panel, Devices and Printers, PowerShell
+	Pin to Start the following shortcuts: Control Panel, Devices and Printers, PowerShell
 	Valid shortcuts values: ControlPanel, DevicesPrinters and PowerShell
 
-	Закрепить на начальном экране следующие ярлыки: Панель управдения, Устройства и принтеры, PowerShell
+	Закрепить на начальном экране следующие ярлыки: Панель управления, Устройства и принтеры, PowerShell
 	Валидные значения ярлыков: ControlPanel, DevicesPrinters, PowerShell
 #>
 PinToStart -Tiles ControlPanel, DevicesPrinters, PowerShell
 
-<#
-	Unpin all tiles first and pin necessary ones
-	Открепить все ярлыки сначала и закрепить необходимые
-#>
+# Unpin all tiles first and pin necessary ones
+# Открепить все ярлыки сначала и закрепить необходимые
 # PinToStart -UnpinAll -Tiles ControlPanel, DevicesPrinters, PowerShell
 
 # Unpin all the Start tiles

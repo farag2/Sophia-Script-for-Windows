@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	"Windows 10 Sophia Script" is a PowerShell module for Windows 10 fine-tuning and automating the routine tasks
 
-	Version: v5.10.7
-	Date: 13.06.2021
+	Version: v5.10.8
+	Date: 20.06.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & Inestic
@@ -463,7 +463,7 @@ function WindowsFeedback
 	ScheduledTasks -Enable
 
 	.NOTES
-	A pop-up dialog box enables the user to select tasks
+	A pop-up dialog box lets a user select tasks
 	Current user
 #>
 function ScheduledTasks
@@ -2389,7 +2389,7 @@ function TaskbarSearch
 
 		[Parameter(
 			Mandatory = $true,
-			ParameterSetName = "ShowIcon"
+			ParameterSetName = "SearchIcon"
 		)]
 		[switch]
 		$SearchIcon,
@@ -2647,7 +2647,19 @@ function NewsInterests
 
 <#
 	.SYNOPSIS
-	Unpin "Microsoft Edge" and "Microsoft Store" from the taskbar
+	Unpin shortcuts from the taskbar
+
+	.PARAMETER Edge
+	Unpin the "Microsoft Edge" shortcut from the taskbar
+
+	.PARAMETER Store
+	Unpin the "Microsoft Store" shortcut from the taskbar
+
+	.PARAMETER Mail
+	Unpin the "Mail" shortcut from the taskbar
+
+	.EXAMPLE
+	UnpinTaskbarShortcuts -Shortcuts Edge, Store, Mail
 
 	.NOTES
 	Current user
@@ -2655,8 +2667,17 @@ function NewsInterests
 	.LINK
 	https://github.com/Disassembler0/Win10-Initial-Setup-Script/issues/8#issue-227159084
 #>
-function UnpinTaskbarEdgeStore
+function UnpinTaskbarShortcuts
 {
+	[CmdletBinding()]
+	param
+	(
+		[Parameter(Mandatory = $true)]
+		[ValidateSet("Edge", "Store", "Mail")]
+		[string[]]
+		$Shortcuts
+	)
+
 	# Extract strings from shell32.dll using its' number
 	$Signature = @{
 		Namespace = "WinAPI"
@@ -2686,20 +2707,39 @@ public static string GetString(uint strId)
 	# Extract the localized "Unpin from taskbar" string from shell32.dll
 	$LocalizedString = [WinAPI.GetStr]::GetString(5387)
 
-	# Call the shortcut context menu item to unpin Microsoft Edge
-	if (Test-Path -Path "$env:AppData\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar\Microsoft Edge.lnk")
+	foreach ($Shortcut in $Shortcuts)
 	{
-		$Shell = New-Object -ComObject Shell.Application
-		$Folder = $Shell.NameSpace("$env:AppData\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar")
-		$Shortcut = $Folder.ParseName("Microsoft Edge.lnk")
-		$Shortcut.Verbs() | Where-Object -FilterScript {$_.Name -eq $LocalizedString} | ForEach-Object -Process {$_.DoIt()}
+		switch ($Shortcut)
+		{
+			Edge
+			{
+				if (Test-Path -Path "$env:AppData\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar\Microsoft Edge.lnk")
+				{
+					# Call the shortcut context menu item
+					$Shell = New-Object -ComObject Shell.Application
+					$Folder = $Shell.NameSpace("$env:AppData\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar")
+					$Shortcut = $Folder.ParseName("Microsoft Edge.lnk")
+					$Shortcut.Verbs() | Where-Object -FilterScript {$_.Name -eq $LocalizedString} | ForEach-Object -Process {$_.DoIt()}
+				}
+			}
+			Store
+			{
+				# Start-Job is used due to that the calling this function before UninstallUWPApps breaks the retrieval of the localized UWP apps packages names
+				Start-Job -ScriptBlock {
+					$Apps = (New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
+					($Apps | Where-Object -FilterScript {$_.Name -eq "Microsoft Store"}).Verbs() | Where-Object -FilterScript {$_.Name -eq $Using:LocalizedString} | ForEach-Object -Process {$_.DoIt()}
+				} | Receive-Job -Wait -AutoRemoveJob
+			}
+			Mail
+			{
+				# Start-Job is used due to that the calling this function before UninstallUWPApps breaks the retrieval of the localized UWP apps packages names
+				Start-Job -ScriptBlock {
+					$Apps = (New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
+					($Apps | Where-Object -FilterScript {$_.Path -eq "microsoft.windowscommunicationsapps_8wekyb3d8bbwe!microsoft.windowslive.mail"}).Verbs() | Where-Object -FilterScript {$_.Name -eq $Using:LocalizedString} | ForEach-Object -Process {$_.DoIt()}
+				} | Receive-Job -Wait -AutoRemoveJob
+			}
+		}
 	}
-
-	# Start-Job is used due to that the calling this function before UninstallUWPApps breaks the retrieval of the localized UWP apps packages names
-	Start-Job -ScriptBlock {
-		$Apps = (New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
-		($Apps | Where-Object -FilterScript {$_.Name -eq "Microsoft Store"}).Verbs() | Where-Object -FilterScript {$_.Name -eq $Using:LocalizedString} | ForEach-Object -Process {$_.DoIt()}
-	} | Receive-Job -Wait -AutoRemoveJob
 }
 
 <#
@@ -3349,6 +3389,9 @@ function AppsLanguageSwitch
 	OneDrive -Install
 
 	.NOTES
+	The OneDrive user folder won't be removed
+
+	.NOTES
 	Machine-wide
 #>
 function OneDrive
@@ -3396,9 +3439,16 @@ function OneDrive
 					Start-Process -FilePath $OneDriveSetup[0] -ArgumentList $OneDriveSetup[1..2] -Wait
 				}
 
-				# Getting the OneDrive user folder path and removing it
+				# Get the OneDrive user folder path and remove it if it doesn't contain any user filesS
 				$OneDriveUserFolder = Get-ItemPropertyValue -Path HKCU:\Environment -Name OneDrive
-				Remove-Item -Path $OneDriveUserFolder -Recurse -Force -ErrorAction Ignore
+				if ((Get-ChildItem -Path $OneDriveUserFolder -Force -ErrorAction Ignore | Measure-Object).Count -eq 0)
+				{
+					Remove-Item -Path $OneDriveUserFolder -Recurse -Force -ErrorAction Ignore
+				}
+				else
+				{
+					Invoke-Item -Path $OneDriveUserFolder
+				}
 
 				# https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexa
 				# The system does not move the file until the operating system is restarted
@@ -4488,7 +4538,7 @@ function WindowsManageDefaultPrinter
 	WindowsFeatures -Enable
 
 	.NOTES
-	A pop-up dialog box enables the user to select features
+	A pop-up dialog box lets a user select features
 	Current user
 #>
 function WindowsFeatures
@@ -4539,9 +4589,9 @@ function WindowsFeatures
 	[string[]]$UncheckedFeatures = @(
 		<#
 			Media Features
-			Компоненты работы с мультимедиа
-
 			If you want to leave "Multimedia settings" in the advanced settings of Power Options do not disable this feature
+
+			Компоненты работы с мультимедиа
 			Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах электропитания, не отключайте этот компонент
 		#>
 		"MediaPlayback"
@@ -4811,7 +4861,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	WindowsCapabilities -Install
 
 	.NOTES
-	A pop-up dialog box enables the user to select features
+	A pop-up dialog box lets a user select features
 	Current user
 #>
 function WindowsCapabilities
@@ -5237,25 +5287,25 @@ function UpdateMicrosoftProducts
 
 <#
 	.SYNOPSIS
-	Configure the power management scheme
+	Configure a power plan
 
 	.PARAMETER High
-	Set the power management scheme on "High performance"
+	Set the power plan on "High performance"
 
 	.PARAMETER Balanced
-	Set the power management scheme on "Balanced"
+	Set the power plan on "Balanced"
 
 	.EXAMPLE
-	PowerManagementScheme -High
+	PowerPlan -High
 
 	.EXAMPLE
-	PowerManagementScheme -Balanced
+	PowerPlan -Balanced
 
 	.NOTES
-	Do not recommend turning "High performance" scheme on on laptops
+	It isn't recommended to turn on the "High performance" power plan on laptops
 	Current user
 #>
-function PowerManagementScheme
+function PowerPlan
 {
 	param
 	(
@@ -8067,7 +8117,7 @@ function RunPowerShellShortcut
 	PinToStart -Tiles ControlPanel -UnpinAll
 
 	.NOTES
-	Separate arguments with comma
+	Separate arguments with a comma
 	Current user
 #>
 function PinToStart
@@ -8352,7 +8402,7 @@ public static string GetString(uint strId)
 	https://www.nuget.org/packages/Microsoft.Windows.SDK.NET.Ref
 
 	.NOTES
-	A pop-up dialog box enables the user to select packages
+	A pop-up dialog box lets a user select packages
 	Current user
 #>
 function UninstallUWPApps
@@ -8807,7 +8857,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	https://www.nuget.org/packages/Microsoft.Windows.SDK.NET.Ref
 
 	.NOTES
-	A pop-up dialog box enables the user to select packages
+	A pop-up dialog box lets a user select packages
 	Current user
 #>
 function RestoreUWPApps
@@ -11164,7 +11214,7 @@ function CABInstallContext
 		"Add"
 		{
 			# Checking whether the File Explorer is associated with the .cab files
-			if (-not ((Get-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.cab\UserChoice -Name ProgId -ErrorAction Ignore) -notmatch "cab"))
+			if (-not ((Get-ItemPropertyValue -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.cab\UserChoice -Name ProgId) -eq "CABFolder"))
 			{
 				# The "Install" context menu item won't be visible unless the File Explorer was assosiated with the .cab files
 				Set-Association -ProgramPath CABFolder -Extension .cab -Icon "%SystemRoot%\system32\cabview.dll,0"
