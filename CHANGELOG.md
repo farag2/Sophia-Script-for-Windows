@@ -25,7 +25,7 @@ Diff from v5.10.7
   * Added online check for the latest Wrapper version. If you are using old version it will exit;
   * Added online check for the latest imported script version. If you are using old version it will disable directly running (run PowerShell button disabled);
   * UI changes.
-  * 
+
 ## Windows 10 2004/20H2/21H1 | LTSC
 
 Diff from v5.10.6
