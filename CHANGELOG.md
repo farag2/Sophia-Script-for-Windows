@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.10.8 — 20.06.2021
+
 ## Windows 10 2004/20H2/21H1 | LTSC
 
 Diff from v5.10.7
@@ -25,6 +27,8 @@ Diff from v5.10.7
   * Added online check for the latest Wrapper version. If you are using old version it will exit;
   * Added online check for the latest imported script version. If you are using old version it will disable directly running (run PowerShell button disabled);
   * UI changes.
+  * 
+## 5.10.7 — 13.06.2021
 
 ## Windows 10 2004/20H2/21H1 | LTSC
 
