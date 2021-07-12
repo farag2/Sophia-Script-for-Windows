@@ -99,10 +99,10 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 |Version|    Marketing name   | Build | Arch |      Editions     | Script version |
 |:-----:|:-------------------:|:-----:|:----:|:-----------------:|:--------------:|
-| 21H1  | May 2021 Update     | 19043 |  x64 |Home/Pro/Enterprise|[5.10.8](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
-| 20H2  | October 2020 Update | 19042 |  x64 |Home/Pro/Enterprise|[5.10.8](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
-| 2004  | May 2020 Update     | 19041 |  x64 |Home/Pro/Enterprise|[5.10.8](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
-| 1809  | LTSC Enterprise 2019| 17763 |  x64 |   Enterprise      |[5.2.8](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 21H1  | May 2021 Update     | 19043 |  x64 |Home/Pro/Enterprise|[5.11](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 20H2  | October 2020 Update | 19042 |  x64 |Home/Pro/Enterprise|[5.11](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 2004  | May 2020 Update     | 19041 |  x64 |Home/Pro/Enterprise|[5.11](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 1809  | LTSC Enterprise 2019| 17763 |  x64 |   Enterprise      |[5.2.9](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
 
 ## Screenshots
 
@@ -122,10 +122,10 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ![Image](https://i.imgur.com/xlMR2mz.png) ![Image](https://i.imgur.com/yl9j9Vt.png)
 
-### David's Sophia Script Wrapper 2.0.2
+### David's Sophia Script Wrapper 2.1
 
-![Wr](https://i.imgur.com/HuYgIRg.png) ![Wr](https://i.imgur.com/YYpd16R.png)
-![Wr](https://i.imgur.com/4I7agQ7.png)
+![Wr](https://i.imgur.com/2Vkg60Z.png) ![Wr](https://i.imgur.com/yj5vOpo.png)
+![Wr](https://i.imgur.com/tB83cD8.png)
 
 ### Native interactive toasts for the scheduled tasks
 
