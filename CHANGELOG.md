@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.11 — 20.06.2021
+
+## Windows 10 2004/20H2/21H1 | LTSC
+
+Diff from v5.10.8
+[5.10.8...5.11](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.10.8...5.11)
+
+* Updated descriptions;
+* Expanded the `Checkings` funtion functionality;
+* Updated the `OneDrive` function;
+* Functions removed as not wanted
+  * `ShareAcrossDevices`
+  * `StorageSenseRecycleBin`
+  * `AddProtectedFolders`
+  * `RemoveProtectedFolders`
+  * `AddAppControlledFolder`
+  * `RemoveAllowedAppsControlledFolder`
+  * `AddDefenderExclusionFolder`
+  * `RemoveDefenderExclusionFolders`
+  * `AddDefenderExclusionFile`
+  * `RemoveDefenderExclusionFiles`
+  * `PreviousVersionsPage`
+* Some functions renamed;
+* Minor changes & minor bugs fixed. :feelsgood:
+* The development focus shifted to [SophiApp](https://github.com/Sophia-Community/SophiApp) :rocket:
+
+***
+
+* Sophia Script Wrapper 2.1
+  * Improved UX;
+  * All settings were moved to JSON (3 600 lines);
+  * UI changes.
+
 ## 5.10.8 — 20.06.2021
 
 ## Windows 10 2004/20H2/21H1 | LTSC
