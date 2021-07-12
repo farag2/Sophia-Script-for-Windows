@@ -151,7 +151,7 @@ jobs:
           Write-Host $BUILD_DIR
           Write-Host $ZIP
 
-          Get-ChildItem -Path Wrapper | Copy-Item -Destination $BUILD_DIR -Recurse -Force
+          Get-ChildItem -Path Wrapper -Exclude latest.txt | Copy-Item -Destination $BUILD_DIR -Recurse -Force
           Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP -Force
 
           # Calculate hash
