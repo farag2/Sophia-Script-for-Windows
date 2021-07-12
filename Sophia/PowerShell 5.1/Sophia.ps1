@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Windows 10 Sophia Script"
 
-	Version: v5.10.8
-	Date: 20.06.2021
+	Version: v5.11
+	Date: 12.07.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & Inestic
@@ -49,7 +49,7 @@
 
 	.NOTES
 	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
-	https://habr.com/post/521202/
+	https://habr.com/company/skillfactory/blog/553800/
 	https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/
 	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
 
@@ -71,7 +71,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.10.8 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & Inestic, 2014–2021"
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.11 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -80,19 +80,18 @@ Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia -Base
 
 <#
 	.SYNOPSIS
-	Run the script by specifying the module functions as an argument
-	Запустить скрипт, указав в качестве аргумента функции модуля
+	Run the script by specifying functions as an argument
+	Запустить скрипт, указав в качестве аргумента функции
 
 	.EXAMPLE
 	.\Sophia.ps1 -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
 
 	.NOTES
 	Separate functions with a comma
+	Разделяйте функции запятыми
 #>
 if ($Functions)
 {
-	# Regardless of functions entered as an argument, the "Checkings" function will be executed first,
-	# and the "RefreshEnvironment" and "Errors" functions will be executed at the end
 	Invoke-Command -ScriptBlock {Checkings}
 
 	foreach ($Function in $Functions)
@@ -100,6 +99,7 @@ if ($Functions)
 		Invoke-Expression -Command $Function
 	}
 
+	# The "RefreshEnvironment" and "Errors" functions will be executed at the end
 	Invoke-Command -ScriptBlock {RefreshEnvironment; Errors}
 
 	exit
@@ -130,20 +130,20 @@ CreateRestorePoint
 #endregion Protection
 
 #region Privacy & Telemetry
-# Disable the DiagTrack service, and block connection for the Unified Telemetry Client Outbound Traffic
-# Отключить службу DiagTrack и заблокировать соединение для исходящего трафик клиента единой телеметрии
+# Disable the "Connected User Experiences and Telemetry" service (DiagTrack), and block the connection for the Unified Telemetry Client Outbound Traffic
+# Отключить службу "Функциональные возможности для подключенных пользователей и телеметрия" (DiagTrack) и блокировать соединение для исходящего трафик клиента единой телеметрии
 DiagTrackService -Disable
 
-# Enable the DiagTrack service, and allow connection for the Unified Telemetry Client Outbound Traffic
-# Включить службу DiagTrack и разрешить соединение для исходящего трафик клиента единой телеметрии
+# Enable the "Connected User Experiences and Telemetry" service (DiagTrack), and allow the connection for the Unified Telemetry Client Outbound Traffic (default value)
+# Включить службу "Функциональные возможности для подключенных пользователей и телеметрия" (DiagTrack) и разрешить подключение для исходящего трафик клиента единой телеметрии  (значение по умолчанию)
 # DiagTrackService -Enable
 
-# Set the OS level of diagnostic data gathering to minimum
+# Set the diagnostic data collection to minimum
 # Установить уровень сбора диагностических сведений ОС на минимальный
 DiagnosticDataLevel -Minimal
 
-# Set the default OS level of diagnostic data gathering
-# Установить уровень сбора диагностических сведений ОС по умолчанию
+# Set the diagnostic data collection to default (default value)
+# Установить уровень сбора диагностических сведений ОС по умолчанию (значение по умолчанию)
 # DiagnosticDataLevel -Default
 
 # Turn off the Windows Error Reporting
@@ -154,13 +154,13 @@ ErrorReporting -Disable
 # Включить отчеты об ошибках Windows (значение по умолчанию)
 # ErrorReporting -Enable
 
-# Change the Windows feedback frequency to "Never"
+# Change the feedback frequency to "Never"
 # Изменить частоту формирования отзывов на "Никогда"
-WindowsFeedback -Disable
+FeedbackFrequency -Never
 
-# Change the Windows Feedback frequency to "Automatically" (default value)
+# Change the feedback frequency to "Automatically" (default value)
 # Изменить частоту формирования отзывов на "Автоматически" (значение по умолчанию)
-# WindowsFeedback -Enable
+# FeedbackFrequency -Automatically
 
 # Turn off the diagnostics tracking scheduled tasks
 # Отключить задачи диагностического отслеживания
@@ -186,21 +186,13 @@ LanguageListAccess -Disable
 # Позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков (значение по умолчанию)
 # LanguageListAccess -Enable
 
-# Do not allow apps to use advertising ID
+# Do not allow apps to use advertising ID to make ads more interresting to you based on your app usage 
 # Не разрешать приложениям использовать идентификатор рекламы
 AdvertisingID -Disable
 
-# Allow apps to use advertising ID (default value)
+# Let apps use advertising ID to make ads more interresting to you based on your app usage (default value)
 # Разрешать приложениям использовать идентификатор рекламы (значение по умолчанию)
 # AdvertisingID -Enable
-
-# Do not let apps on other devices open and message apps on this device, and vice versa
-# Не разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот
-ShareAcrossDevices -Disable
-
-# Let apps on other devices open and message apps on this device, and vice versa (default value)
-# Разрешать приложениям на других устройствах запускать приложения и отправлять сообщения на этом устройстве и наоборот (значение по умолчанию)
-# ShareAcrossDevices -Enable
 
 # Hide the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested
 # Скрывать экран приветствия Windows после обновлений и иногда при входе, чтобы сообщить о новых функциях и предложениях
@@ -218,15 +210,15 @@ WindowsTips -Enable
 # Не получать советы, подсказки и рекомендации при использованию Windows
 # WindowsTips -Disable
 
-# Hide the suggested content in the Settings app
+# Hide from me suggested content in the Settings app
 # Скрывать рекомендуемое содержимое в приложении "Параметры"
 SettingsSuggestedContent -Hide
 
-# Show the suggested content in the Settings app (default value)
+# Show me suggested content in the Settings app (default value)
 # Показывать рекомендуемое содержимое в приложении "Параметры" (значение по умолчанию)
 # SettingsSuggestedContent -Show
 
-# Turn off the automatic installing suggested apps
+# Turn off automatic installing suggested apps
 # Отключить автоматическую установку рекомендованных приложений
 AppsSilentInstalling -Disable
 
@@ -268,11 +260,11 @@ ThisPC -Show
 # Скрывать "Этот компьютер" на рабочем столе (значение по умолчанию)
 # ThisPC -Hide
 
-# Do not use check boxes to select items
+# Do not use item check boxes
 # Не использовать флажки для выбора элементов
 CheckBoxes -Disable
 
-# Use check boxes to select items (default value)
+# Use check item check boxes (default value)
 # Использовать флажки для выбора элементов (значение по умолчанию)
 # CheckBoxes -Enable
 
@@ -292,7 +284,7 @@ FileExtensions -Show
 # Скрывать расширения имён файлов файлов (значение по умолчанию)
 # FileExtensions -Hide
 
-# Do not hide folder merge conflicts
+# Show folder merge conflicts
 # Не скрывать конфликт слияния папок
 MergeConflicts -Show
 
@@ -300,12 +292,12 @@ MergeConflicts -Show
 # Скрывать конфликт слияния папок (значение по умолчанию)
 # MergeConflicts -Hide
 
-# Open File Explorer to: "This PC"
-# Открывать проводник для: "Этот компьютер"
+# Open File Explorer to "This PC"
+# Открывать проводник для "Этот компьютер"
 OpenFileExplorerTo -ThisPC
 
-# Open File Explorer to: Quick access (default value)
-# Открывать проводник для: "Быстрый доступ" (значение по умолчанию)
+# Open File Explorer to Quick access (default value)
+# Открывать проводник для "Быстрый доступ" (значение по умолчанию)
 # OpenFileExplorerTo -QuickAccess
 
 # Hide Cortana button on the taskbar
@@ -364,6 +356,14 @@ RecycleBinDeleteConfirmation -Enable
 # Отображать папку "Объемные объекты" в "Этот компьютер" и панели быстрого доступа (значение по умолчанию)
 # 3DObjects -Show
 
+# Hide recently used files in Quick access
+# Скрыть недавно использовавшиеся файлы на панели быстрого доступа
+QuickAccessRecentFiles -Hide
+
+# Show recently used files in Quick access (default value)
+# Показать недавно использовавшиеся файлы на панели быстрого доступа (значение по умолчанию)
+# QuickAccessRecentFiles -Show
+
 # Hide frequently used folders in Quick access
 # Скрыть недавно используемые папки на панели быстрого доступа
 QuickAccessFrequentFolders -Hide
@@ -372,19 +372,11 @@ QuickAccessFrequentFolders -Hide
 # Показать часто используемые папки на панели быстрого доступа (значение по умолчанию)
 # QuickAccessFrequentFolders -Show
 
-# Do not show recently used files in Quick access
-# Не показывать недавно использовавшиеся файлы на панели быстрого доступа
-QuickAccessRecentFiles -Hide
-
-# Show recently used files in Quick access (default value)
-# Показать недавно использовавшиеся файлы на панели быстрого доступа (значение по умолчанию)
-# QuickAccessRecentFiles -Show
-
-# Hide Task View button on the taskbar
+# Hide the Task View button on the taskbar
 # Скрывать кнопку Просмотра задач
 TaskViewButton -Hide
 
-# Show Task View button on the taskbar (default value)
+# Show the Task View button on the taskbar (default value)
 # Показывать кнопку Просмотра задач (значение по умолчанию)
 # TaskViewButton -Show
 
@@ -416,8 +408,8 @@ TaskbarSearch -Hide
 # Показать поле поиска на панели задач (значение по умолчанию)
 # TaskbarSearch -SearchBox
 
-# Do not show the Windows Ink Workspace button on the taskbar
-# Не показывать кнопку Windows Ink Workspace на панели задач
+# Hide the Windows Ink Workspace button on the taskbar
+# Скрыть кнопку Windows Ink Workspace на панели задач
 WindowsInkWorkspace -Hide
 
 # Show Windows Ink Workspace button on the taskbar (default value)
@@ -428,60 +420,60 @@ WindowsInkWorkspace -Hide
 # Всегда отображать все значки в области уведомлений
 TrayIcons -Show
 
-# Do not show all icons in the notification area (default value)
-# Не отображать все значки в области уведомлений (значение по умолчанию)
+# Hide all icons in the notification area (default value)
+# Скрыть все значки в области уведомлений (значение по умолчанию)
 # TrayIcons -Hide
 
 # Hide the Meet Now icon in the notification area
 # Скрыть иконку "Провести собрание" в области уведомлений
 MeetNow -Hide
 
-# Show the Meet Now icon in the notification area
-# Отображать иконку "Провести собрание" в области уведомлений
+# Show the Meet Now icon in the notification area (default value)
+# Отображать иконку "Провести собрание" в области уведомлений (значение по умолчанию)
 # MeetNow -Show
 
-# Hide "News and Interests" on the taskbar
-# Скрыть "Новости и интересы" на панели задач
-NewsInterests -Hide
+# Disable "News and Interests" on the taskbar
+# Отключить "Новости и интересы" на панели задач
+NewsInterests -Disable
 
-# Show "News and Interests" on the taskbar (default value)
-# Отображать "Новости и интересы" на панели задач (значение по умолчанию)
-# NewsInterests -Show
+# Enable "News and Interests" on the taskbar (default value)
+# Включить "Новости и интересы" на панели задач (значение по умолчанию)
+# NewsInterests -Enable
 
 # Unpin the "Microsoft Edge", "Microsoft Store", or "Mail" shortcuts from the taskbar
 # Открепить ярлыки "Microsoft Edge", "Microsoft Store" или "Почта" от панели задач
 UnpinTaskbarShortcuts -Shortcuts Edge, Store, Mail
 
-# View the Control Panel icons by: large icons
+# View the Control Panel icons by large icons
 # Просмотр иконок Панели управления как: крупные значки
 ControlPanelView -LargeIcons
 
-# View the Control Panel icons by: small icons
+# View the Control Panel icons by small icons
 # Просмотр иконок Панели управления как: маленькие значки
 # ControlPanelView -SmallIcons
 
-# View the Control Panel icons by: category (default value)
+# View the Control Panel icons by category (default value)
 # Просмотр иконок Панели управления как: категория (значение по умолчанию)
 # ControlPanelView -Category
 
-# Set the Windows mode color scheme to the dark
-# Установить цвет режима Windows по умолчанию на темный
-WindowsColorScheme -Dark
+# Set the default Windows mode to dark
+# Установить режим Windows по умолчанию на темный
+WindowsColorMode -Dark
 
-# Set the Windows mode color scheme to the light
-# Установить режим цвета для Windows на светлый
-# WindowsColorScheme -Light
+# Set the default Windows mode to light (default value)
+# Установить режим Windows по умолчанию на светлый (значение по умолчанию)
+# WindowsColorMode -Light
 
-# Set the app mode color scheme to the dark
-# Установить цвет режима приложений на темный
+# Set the default app mode to dark
+# Установить цвет режима приложения на темный
 AppMode -Dark
 
-# Set the app mode color scheme to the light
-# Установить цвет режима приложений на светлый
+# Set the default app mode to light (default value)
+# Установить цвет режима приложения на светлый (значение по умолчанию)
 # AppMode -Light
 
-# Do not show the "New App Installed" indicator
-# Не показывать уведомление "Установлено новое приложение"
+# Hide the "New App Installed" indicator
+# Скрыть уведомление "Установлено новое приложение"
 NewAppInstalledNotification -Hide
 
 # Show the "New App Installed" indicator (default value)
@@ -504,11 +496,11 @@ JPEGWallpapersQuality -Max
 # Установить коэффициент качества обоев рабочего стола в формате JPEG по умолчанию
 # JPEGWallpapersQuality -Default
 
-# Start Task Manager in expanded mode
+# Start Task Manager in the expanded mode
 # Запускать Диспетчера задач в развернутом виде
 TaskManagerWindow -Expanded
 
-# Start Task Manager in compact mode (default value)
+# Start Task Manager in the compact mode (default value)
 # Запускать Диспетчера задач в свернутом виде (значение по умолчанию)
 # TaskManagerWindow -Compact
 
@@ -528,11 +520,11 @@ ShortcutsSuffix -Disable
 # Дoбaвлять "- яpлык" к имени coздaвaeмых яpлыков (значение по умолчанию)
 # ShortcutsSuffix -Enable
 
-# Use the PrtScn button to open screen snipping
+# Use the Print screen button to open screen snipping
 # Использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана
 PrtScnSnippingTool -Enable
 
-# Do not use the PrtScn button to open screen snipping (default value)
+# Do not use the Print screen button to open screen snipping (default value)
 # Не использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана (значение по умолчанию)
 # PrtScnSnippingTool -Disable
 
@@ -540,8 +532,8 @@ PrtScnSnippingTool -Enable
 # Позволить выбирать метод ввода для каждого окна
 AppsLanguageSwitch -Enable
 
-# Do not let use a different input method for each app window (default value)
-# Не позволять выбирать метод ввода для каждого окна (значение по умолчанию)
+# Do not use a different input method for each app window (default value)
+# Не использовать метод ввода для каждого окна (значение по умолчанию)
 # AppsLanguageSwitch -Disable
 #endregion UI & Personalization
 
@@ -565,14 +557,6 @@ StorageSense -Enable
 # Выключить Контроль памяти (значение по умолчанию)
 # StorageSense -Disable
 
-# Run Storage Sense every month
-# Запускать Контроль памяти каждый месяц
-StorageSenseFrequency -Month
-
-# Run Storage Sense during low free disk space (default value)
-# Запускать Контроль памяти, когда остается мало место на диске (значение по умолчанию)
-# StorageSenseFrequency -Default
-
 # Delete temporary files that apps aren't using
 # Удалять временные файлы, не используемые в приложениях
 StorageSenseTempFiles -Enable
@@ -581,17 +565,17 @@ StorageSenseTempFiles -Enable
 # Не удалять временные файлы, не используемые в приложениях
 # StorageSenseTempFiles -Disable
 
-# Delete files in recycle bin if they have been there for over 30 days
-# Удалять файлы из корзины, если они находятся в корзине более 30 дней
-StorageSenseRecycleBin -Enable
+# Run Storage Sense every month
+# Запускать Контроль памяти каждый месяц
+StorageSenseFrequency -Month
 
-# Do not delete files in recycle bin if they have been there for over 30 days
-# Не удалять файлы из корзины, если они находятся в корзине более 30 дней
-# StorageSenseRecycleBin -Disable
+# Run Storage Sense during low free disk space (default value)
+# Запускать Контроль памяти, когда остается мало место на диске (значение по умолчанию)
+# StorageSenseFrequency -Default
 #endregion StorageSense
 
-# Disable hibernation
-# Отключить режим гибернации
+# Disable hibernation. Do not recommend turning it off on laptops
+# Отключить режим гибернации. Не рекомендуется выключать на ноутбуках
 Hibernate -Disable
 
 # Enable hibernate (default value)
@@ -600,7 +584,7 @@ Hibernate -Disable
 
 # Change the %TEMP% environment variable path to "%SystemDrive%\Temp"
 # Изменить путь переменной среды для %TEMP% на "%SystemDrive%\Temp"
-TempFolder -SystemDrive
+# TempFolder -SystemDrive
 
 # Change %TEMP% environment variable path to "%LOCALAPPDATA%\Temp" (default value)
 # Изменить путь переменной среды для %TEMP% на "LOCALAPPDATA%\Temp" (значение по умолчанию)
@@ -624,11 +608,11 @@ BSoDStopError -Enable
 
 # Choose when to be notified about changes to your computer: never notify
 # Настройка уведомления об изменении параметров компьютера: никогда не уведомлять
-AdminApprovalMode -Disable
+AdminApprovalMode -Never
 
 # Choose when to be notified about changes to your computer: notify me only when apps try to make changes to my computer (default value)
 # Настройка уведомления об изменении параметров компьютера: уведомлять меня только при попытках приложений внести изменения в компьютер (значение по умолчанию)
-# AdminApprovalMode -Enable
+# AdminApprovalMode -Default
 
 # Turn on access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled
 # Включить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами
@@ -654,20 +638,20 @@ WaitNetworkStartup -Enable
 # Никогда не ждать сеть при запуске и входе в систему для рабочих групп (значение по умолчанию)
 # WaitNetworkStartup -Disable
 
-# Do not let Windows decide which printer should be the default one
-# Не разрешать Windows решать, какой принтер должен использоваться по умолчанию
+# Do not let Windows manage my default printer
+# Не разрешать Windows управлять принтером, используемым по умолчанию
 WindowsManageDefaultPrinter -Disable
 
-# Let Windows decide which printer should be the default one (default value)
-# Разрешать Windows решать, какой принтер должен использоваться по умолчанию (значение по умолчанию)
+# Let Windows manage my default printer (default value)
+# Разрешать Windows управлять принтером, используемым по умолчанию (значение по умолчанию)
 # WindowsManageDefaultPrinter -Enable
 
 <#
 	Disable the Windows features using the pop-up dialog box
 	Отключить компоненты Windows, используя всплывающее диалоговое окно
 
-	If you want to leave "Multimedia settings" element in the advanced settings of Power Options do not disable the "MediaPlayback" feature
-	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах схемы управления питанием, не отключайте "MediaPlayback"
+	If you want to leave "Multimedia settings" element in the advanced settings of Power Options do not disable the "Media Features" feature
+	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах схемы управления питанием, не отключайте "Компоненты для работы с медиа"
 #>
 WindowsFeatures -Disable
 
@@ -677,10 +661,10 @@ WindowsFeatures -Disable
 
 <#
 	Uninstall optional features using the pop-up dialog box
-	If you want to leave "Multimedia settings" element in the advanced settings of Power Options do not uninstall the "MediaPlayback" feature
+	If you want to leave "Multimedia settings" element in the advanced settings of Power Options do not uninstall the "Media Features" feature
 
 	Удалить дополнительные компоненты, используя всплывающее диалоговое окно
-	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах схемы управления питанием, не удаляйте компонент "MediaPlayback"
+	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах схемы управления питанием, не удаляйте компонент "Компоненты для работы с медиа"
 #>
 WindowsCapabilities -Uninstall
 
@@ -697,7 +681,7 @@ UpdateMicrosoftProducts -Enable
 # UpdateMicrosoftProducts -Disable
 
 <#
-	Set the power plan on "High performance"
+	Set power plan on "High performance"
 	It isn't recommended to turn on the "High performance" power plan on laptops
 
 	Установить схему управления питанием на "Высокая производительность"
@@ -705,64 +689,64 @@ UpdateMicrosoftProducts -Enable
 #>
 PowerPlan -High
 
-# Set the power plan on "Balanced" (default value)
+# Set power plan on "Balanced" (default value)
 # Установить схему управления питанием на "Сбалансированная" (значение по умолчанию)
 # PowerPlan -Balanced
 
-# Use latest installed .NET runtime for all apps
+# Use the latest installed .NET runtime for all apps
 # Использовать последнюю установленную среду выполнения .NET для всех приложений
 LatestInstalled.NET -Enable
 
-# Do not use latest installed .NET runtime for all apps (default value)
+# Do not use the latest installed .NET runtime for all apps (default value)
 # Не использовать последнюю установленную версию .NET для всех приложений (значение по умолчанию)
 # LatestInstalled.NET -Disable
 
 # Do not allow the computer to turn off the network adapters to save power
 # Запретить отключение всех сетевых адаптеров для экономии энергии
-PCTurnOffDevice -Disable
+NetworkAdaptersSavePower -Disable
 
 # Allow the computer to turn off the network adapters to save power (default value)
 # Разрешить отключение всех сетевых адаптеров для экономии энергии (значение по умолчанию)
-# PCTurnOffDevice -Enable
+# NetworkAdaptersSavePower -Enable
 
 # Override for default input method: English
 # Переопределить метод ввода по умолчанию: английский
-SetInputMethod -English
+InputMethod -English
 
 # Override for default input method: use language list (default value)
 # Переопределить метод ввода по умолчанию: использовать список языков (значение по умолчанию)
-# SetInputMethod -Default
+# InputMethod -Default
 
 <#
 	Move user folders location to the root of any drive using the interactive menu
 	User files or folders won't me moved to a new location. Move them manually
-	They're located in the %SystemDrive%\Users\%Username% folder by default
+	They're located in the %USERPROFILE% folder by default
 
 	Переместить пользовательские папки в корень любого диска на выбор с помощью интерактивного меню
 	Пользовательские файлы и папки не будут перемещены в новое расположение. Переместите их вручную
-	По умолчанию они располагаются в папке %SystemDrive%\Users\%Username%
+	По умолчанию они располагаются в папке %USERPROFILE%
 #>
 SetUserShellFolderLocation -Root
 
 <#
 	Select folders for user folders location manually using a folder browser dialog
 	User files or folders won't me moved to a new location. Move them manually
-	They're located in the %SystemDrive%\Users\%Username% folder by default
+	They're located in the %USERPROFILE% folder by default
 
 	Выбрать папки для расположения пользовательских папок вручную, используя диалог "Обзор папок"
 	Пользовательские файлы и папки не будут перемещены в новое расположение. Переместите их вручную
-	По умолчанию они располагаются в папке %SystemDrive%\Users\%Username%
+	По умолчанию они располагаются в папке %USERPROFILE%
 #>
 # SetUserShellFolderLocation -Custom
 
 <#
 	Change user folders location to the default values
 	User files or folders won't me moved to the new location. Move them manually
-	They're located in the %SystemDrive%\Users\%Username% folder by default
+	They're located in the %USERPROFILE% folder by default
 
 	Изменить расположение пользовательских папок на значения по умолчанию
 	Пользовательские файлы и папки не будут перемещены в новое расположение. Переместите их вручную
-	По умолчанию они располагаются в папке %SystemDrive%\Users\%Username%
+	По умолчанию они располагаются в папке %%USERPROFILE%
 #>
 # SetUserShellFolderLocation -Default
 
@@ -775,7 +759,7 @@ WinPrtScrFolder -Desktop
 # WinPrtScrFolder -Default
 
 <#
-	Run troubleshooters automatically, then notify
+	Run troubleshooter automatically, then notify me
 	In order this feature to work the OS level of diagnostic data gathering will be set to "Optional diagnostic data", and the error reporting feature will be turned on
 
 	Автоматически запускать средства устранения неполадок, а затем уведомлять
@@ -784,7 +768,7 @@ WinPrtScrFolder -Desktop
 RecommendedTroubleshooting -Automatic
 
 <#
-	Ask me before running troubleshooters (default value)
+	Ask me before running troubleshooter (default value)
 	In order this feature to work the OS level of diagnostic data gathering will be set to "Optional diagnostic data"
 
 	Спрашивать перед запуском средств устранения неполадок (значение по умолчанию)
@@ -808,11 +792,11 @@ ReservedStorage -Disable
 # Включить зарезервированное хранилище (значение по умолчанию)
 # ReservedStorage -Enable
 
-# Disable help look up via F1
+# Disable help lookup via F1
 # Отключить открытие справки по нажатию F1
 F1HelpPage -Disable
 
-# Enable help look up via F1 (default value)
+# Enable help lookup via F1 (default value)
 # Включить открытие справки по нажатию F1 (значение по умолчанию)
 # F1HelpPage -Enable
 
@@ -832,20 +816,20 @@ NumLock -Enable
 # Выключить Caps Lock (значение по умолчанию)
 # CapsLock -Disable
 
-# Disable StickyKey after tapping the Shift key 5 times
+# Turn off pressing the Shift key 5 times to turn Sticky keys
 # Выключить залипание клавиши Shift после 5 нажатий
 StickyShift -Disable
 
-# Enable StickyKey after tapping the Shift key 5 times (default value)
+# Turn on pressing the Shift key 5 times to turn Sticky keys (default value)
 # Включить залипание клавиши Shift после 5 нажатий (значение по умолчанию)
 # StickyShift -Enable
 
-# Disable AutoPlay for all media and devices
-# Выключать автозапуск для всех носителей и устройств
+# Don't use AutoPlay for all media and devices
+# Не использовать автозапуск для всех носителей и устройств
 Autoplay -Disable
 
-# Enable AutoPlay for all media and devices (default value)
-# Включить автозапуск для всех носителей и устройств (значение по умолчанию)
+# Use AutoPlay for all media and devices (default value)
+# Использовать автозапуск для всех носителей и устройств (значение по умолчанию)
 # Autoplay -Enable
 
 # Disable thumbnail cache removal
@@ -856,11 +840,11 @@ ThumbnailCacheRemoval -Disable
 # Включить удаление кэша миниатюр (значение по умолчанию)
 # ThumbnailCacheRemoval -Enable
 
-# Enable automatically saving my restartable apps when signing out and restart them after signing in
-# Включить автоматическое сохранение моих перезапускаемых приложений при выходе из системы и перезапускать их после выхода
+# Automatically saving my restartable apps when signing out and restart them after signing in
+# Автоматически сохранять моих перезапускаемые приложения при выходе из системы и перезапускать их после выхода
 SaveRestartableApps -Enable
 
-# Disable automatically saving my restartable apps when signing out and restart them after signing in (default value)
+# Turn off automatically saving my restartable apps when signing out and restart them after signing in (default value)
 # Выключить автоматическое сохранение моих перезапускаемых приложений при выходе из системы и перезапускать их после выхода (значение по умолчанию)
 # SaveRestartableApps -Disable
 
@@ -874,23 +858,23 @@ NetworkDiscovery -Enable
 
 # Automatically adjust active hours for me based on daily usage
 # Автоматически изменять период активности для этого устройства на основе действий
-SmartActiveHours -Enable
+ActiveHours -Automatically
 
-# Do not automatically adjust active hours for me based on daily usage (default value)
-# Не изменять автоматически период активности для этого устройства на основе действий (значение по умолчанию)
-# SmartActiveHours -Disable
+# Manually adjust active hours for me based on daily usage (default value)
+# Вручную изменять период активности для этого устройства на основе действий (значение по умолчанию)
+# ActiveHours -Manually
 
 # Restart this device as soon as possible when a restart is required to install an update
 # Перезапускать это устройство как можно быстрее, если для установки обновления требуется перезагрузка
-DeviceRestartAfterUpdate -Enable
+RestartDeviceAfterUpdate -Enable
 
 # Do not restart this device as soon as possible when a restart is required to install an update (default value)
 # Не перезапускать это устройство как можно быстрее, если для установки обновления требуется перезагрузка (значение по умолчанию)
-# DeviceRestartAfterUpdate -Disable
+# RestartDeviceAfterUpdate -Disable
 
 <#
-	Register app, calculate hash, and set as default for specific extension without the "How do you want to open this?" pop-up
-	Зарегистрировать приложение, вычислить хэш и установить как приложение по умолчанию для конкретного расширения без всплывающего окна "Каким образом вы хотите открыть этот файл?"
+	Register app, calculate hash, and associate with an extension with the "How do you want to open this" pop-up hidden
+	Зарегистрировать приложение, вычислить хэш и ассоциировать его с расширением без всплывающего окна "Каким образом вы хотите открыть этот файл?"
 
 	Set-Association -ProgramPath "C:\SumatraPDF.exe" -Extension .pdf -Icon "shell32.dll,100"
 	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .txt -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
@@ -899,24 +883,13 @@ DeviceRestartAfterUpdate -Enable
 #endregion System
 
 #region WSL
-# Install the Windows Subsystem for Linux (WSL)
+# Install the Windows Subsystem for Linux (WSL) ###
 # Установить подсистему Windows для Linux (WSL)
 # WSL -Enable
 
 # Uninstall the Windows Subsystem for Linux (WSL)
 # Удалить подсистему Windows для Linux (WSL)
 # WSL -Disable
-
-<#
-	Download and install the Linux kernel update package
-	Set WSL 2 as the default version when installing a new Linux distribution
-	Run the function only after WSL installed and PC restart
-
-	Скачать и установить пакет обновления ядра Linux
-	Установить WSL 2 как версию по умолчанию при установке нового дистрибутива Linux
-	Выполните функцию только после установки WSL и перезагрузка ПК
-#>
-# EnableWSL2
 #endregion WSL
 
 #region Start menu
@@ -966,22 +939,13 @@ PinToStart -Tiles ControlPanel, DevicesPrinters, PowerShell
 <#
 	Uninstall UWP apps using the pop-up dialog box
 	If the "For All Users" is checked apps packages will not be installed for new users
+	The "ForAllUsers" argument sets a checkbox to unistall packages for all users
 
 	Удалить UWP-приложения, используя всплывающее диалоговое окно
 	Пакеты приложений не будут установлены для новых пользователей, если отмечена галочка "Для всех пользователей"
+	Аргумент "ForAllUsers" устанавливает галочку для удаления пакетов для всех пользователей
 #>
 UninstallUWPApps
-
-<#
-	Uninstall UWP apps using the pop-up dialog box
-	If the "For All Users" is checked apps packages will not be installed for new users
-	The "For All Users" checkbox checked by default
-
-	Удалить UWP-приложения, используя всплывающее диалоговое окно
-	Пакеты приложений не будут установлены для новых пользователей, если отмечена галочка "Для всех пользователей"
-	Галочка "Для всех пользователей" отмечена по умолчанию
-#>
-# UninstallUWPApps -ForAllUsers
 
 <#
 	Restore the default UWP apps using the pop-up dialog box
@@ -992,18 +956,18 @@ UninstallUWPApps
 #>
 # RestoreUWPApps
 
+# Download and install "HEVC Video Extensions from Device Manufacturer" to be able to open .heic and .heif formats
+# Скачать и установить "Расширения для видео HEVC от производителя устройства", чтобы иметь возможность открывать форматы .heic и .heif
+HEIF -Install
+
 <#
 	Open Microsoft Store "HEVC Video Extensions from Device Manufacturer" page to install this extension manually to be able to open .heic and .heif formats
-	The extension can be installed without Microsoft account
+	The extension can be installed without a Microsoft account
 
 	Открыть страницу "Расширения для видео HEVC от производителя устройства" в Microsoft Store, чтобы вручную установить расширение для открытия форматов .heic и .heif
 	Расширение может быть установлено бесплатно без учетной записи Microsoft
 #>
 # HEIF -Manual
-
-# Download and install "HEVC Video Extensions from Device Manufacturer" to be able to open .heic and .heif formats
-# Скачать и установить "Расширения для видео HEVC от производителя устройства", чтобы иметь возможность открывать форматы .heic и .heif
-HEIF -Install
 
 # Disable Cortana autostarting
 # Выключить автозагрузку Кортана
@@ -1044,10 +1008,10 @@ XboxGameTips -Disable
 # XboxGameTips -Enable
 
 <#
-	Set "High performance" in graphics performance preference for an app
+	Choose an app and set the "High performance" graphics performance for it
 	Only with a dedicated GPU
 
-	Установить параметры производительности графики для отдельных приложений на "Высокая производительность"
+	Выбрать приложение и установить параметры производительности графики на "Высокая производительность" для него
 	Только при наличии внешней видеокарты
 #>
 SetAppGraphicsPerformance
@@ -1112,38 +1076,6 @@ TempTask -Register
 #endregion Scheduled tasks
 
 #region Microsoft Defender & Security
-# Enable Controlled folder access and add protected folders
-# Включить контролируемый доступ к папкам и добавить защищенные папки
-AddProtectedFolders
-
-# Remove all added protected folders
-# Удалить все добавленные защищенные папки
-# RemoveProtectedFolders
-
-# Allow an app through Controlled folder access
-# Разрешить работу приложения через контролируемый доступ к папкам
-AddAppControlledFolder
-
-# Remove all allowed apps through Controlled folder access
-# Удалить все добавленные разрешенные приложение через контролируемый доступ к папкам
-# RemoveAllowedAppsControlledFolder
-
-# Add a folder to the exclusion from Microsoft Defender scanning
-# Добавить папку в список исключений сканирования Microsoft Defender
-AddDefenderExclusionFolder
-
-# Remove all excluded folders from Microsoft Defender scanning
-# Удалить все папки из списка исключений сканирования Microsoft Defender
-# RemoveDefenderExclusionFolders
-
-# Add a file to the exclusion from Microsoft Defender scanning
-# Добавить файл в список исключений сканирования Microsoft Defender
-AddDefenderExclusionFile
-
-# Remove all excluded files from Microsoft Defender scanning
-# Удалить все файлы из списка исключений сканирования Microsoft Defender
-# RemoveDefenderExclusionFiles
-
 # Enable Microsoft Defender Exploit Guard network protection
 # Включить защиту сети в Microsoft Defender Exploit Guard
 NetworkProtection -Enable
@@ -1181,33 +1113,33 @@ DismissMSAccount
 # Отклонить предложение Microsoft Defender в "Безопасность Windows" включить фильтр SmartScreen для Microsoft Edge
 DismissSmartScreenFilter
 
-# Enable events auditing generated when a process is created or starts
+# Enable events auditing generated when a process is created (starts)
 # Включить аудит событий, возникающих при создании или запуске процесса
 AuditProcess -Enable
 
-# Disable events auditing generated when a process is created or starts (default value)
+# Disable events auditing generated when a process is created (starts) (default value)
 # Выключить аудит событий, возникающих при создании или запуске процесса (значение по умолчанию)
 # AuditProcess -Disable
 
 <#
 	Include command line in process creation events
-	In order this feature to work events auditing will be enabled ("AuditProcess -Enable" function)
+	In order this feature to work events auditing (ProcessAudit -Enable) will be enabled
 
 	Включать командную строку в событиях создания процесса
-	Для того, чтобы работал данный функционал, будет включен аудит событий (функция "AuditProcess -Enable")
+	Для того, чтобы работал данный функционал, будет включен аудит событий (AuditProcess -Enable)
 #>
-AuditCommandLineProcess -Enable
+CommandLineProcessAudit -Enable
 
 # Do not include command line in process creation events (default value)
 # Не включать командную строку в событиях создания процесса (значение по умолчанию)
-# AuditCommandLineProcess -Disable
+# CommandLineProcessAudit -Disable
 
 <#
-	Create "Process Creation" Event Viewer Custom View
-	In order this feature to work events auditing ("AuditProcess -Enable" function) and command line in process creation events will be enabled
+	Create "Process Creation" Event Viewer сustom view
+	In order this feature to work events auditing (AuditProcess -Enable) and command line in process creation events will be enabled
 
 	Создать настаиваемое представление "Создание процесса" в Просмотре событий
-	Для того, чтобы работал данный функционал, буден включен аудит событий (функция "AuditProcess -Enable") и командной строки в событиях создания процесса
+	Для того, чтобы работал данный функционал, буден включен аудит событий (AuditProcess -Enable) и командной строки в событиях создания процесса
 #>
 EventViewerCustomView -Enable
 
@@ -1231,12 +1163,12 @@ PowerShellScriptsLogging -Enable
 # Выключить ведение журнала для всех вводимых сценариев PowerShell в журнале событий Windows PowerShell (значение по умолчанию)
 # PowerShellScriptsLogging -Disable
 
-# Disable apps and files checking within Microsofot Defender SmartScreen
-# Выключить проверку приложений и файлов фильтром SmartScreen в Microsoft Defender
+# Microsoft Defender SmartScreen doesn't marks downloaded files from the Internet as unsafe
+# Microsoft Defender SmartScreen не помечает скачанные файлы из интернета как небезопасные
 AppsSmartScreen -Disable
 
-# Enable apps and files checking within Microsofot Defender SmartScree (default value)
-# Включить проверку приложений и файлов фильтром SmartScreen в Microsoft Defender (значение по умолчанию)
+# Microsoft Defender SmartScreen marks downloaded files from the Internet as unsafe (default value)
+# Microsoft Defender SmartScreen помечает скачанные файлы из интернета как небезопасные (значение по умолчанию)
 # AppsSmartScreen -Enable
 
 # Disable the Attachment Manager marking files that have been downloaded from the Internet as unsafe
@@ -1270,43 +1202,36 @@ SaveZoneInformation -Disable
 #endregion Microsoft Defender & Security
 
 #region Context menu
-# Add the "Extract all" item to Windows Installer (.msi) context menu
-# Добавить пункт "Извлечь все" в контекстное меню Windows Installer (.msi)
-MSIExtractContext -Add
+# Show the "Extract all" item in the Windows Installer (.msi) context menu
+# Отобразить пункт "Извлечь все" в контекстное меню Windows Installer (.msi)
+MSIExtractContext -Show
 
-# Remove the "Extract all" item from Windows Installer (.msi) context menu (default value)
-# Удалить пункт "Извлечь все" из контекстного меню Windows Installer (.msi) (значение по умолчанию)
+# Hide the "Extract all" item from the Windows Installer (.msi) context menu (default value)
+# Скрыть пункт "Извлечь все" из контекстного меню Windows Installer (.msi) (значение по умолчанию)
 # MSIExtractContext -Remove
 
-<#
-	Add the "Install" item to the .cab archives context menu
-	If the .cab file extension type associated to open with a third party app by default, the "Install" context menu item won't be displayed,
-	so the default association for the .cab file type will be restored forcedly
+# Show the "Install" item in the Cabinet (.cab) filenames extensions context menu
+# Отобразить пункт "Установить" в контекстное меню .cab архивов
+CABInstallContext -Show
 
-	Добавить пункт "Установить" в контекстное меню .cab архивов
-	Если .cab файлы ассоциированы со сторонним приложением, пункт "Установить" в контекстное меню не будет отображаться,
-	поэтому принудительно будет восстановлена ассоциация по умолчанию
-#>
-CABInstallContext -Add
+# Hide the "Install" item from the Cabinet (.cab) filenames extensions context menu (default value)
+# Скрыть пункт "Установить" из контекстного меню .cab архивов (значение по умолчанию)
+# CABInstallContext -Hide
 
-# Remove the "Install" item from the .cab archives context menu (default value)
-# Удалить пункт "Установить" из контекстного меню .cab архивов (значение по умолчанию)
-# CABInstallContext -Remove
+# Show the "Run as different user" item to the .exe filename extensions context menu
+# Отобразить пункт "Запуск от имени другого пользователя" в контекстное меню .exe файлов
+RunAsDifferentUserContext -Show
 
-# Add the "Run as different user" item to the .exe files types context menu
-# Добавить пункт "Запуск от имени другого пользователя" в контекстного меню .exe файлов
-RunAsDifferentUserContext -Add
+# Hide the "Run as different user" item from the .exe filename extensions context menu (default value)
+# Скрыть пункт "Запуск от имени другого пользователя" из контекстное меню .exe файлов (значение по умолчанию)
+# RunAsDifferentUserContext -Hide
 
-# Remove the "Run as different user" item from the .exe files types context menu (default value)
-# Удалить пункт "Запуск от имени другого пользователя" из контекстное меню .exe файлов (значение по умолчанию)
-# RunAsDifferentUserContext -Remove
-
-# Hide the "Cast to Device" item from the context menu
-# Скрыть пункт "Передать на устройство" из контекстного меню
+# Hide the "Cast to Device" item from the media files and folders context menu
+# Скрыть пункт "Передать на устройство" из контекстного меню медиа-файлов и папок
 CastToDeviceContext -Hide
 
-# Show the "Cast to Device" item in the context menu (default value)
-# Показывать пункт "Передать на устройство" в контекстном меню (значение по умолчанию)
+# Show the "Cast to Device" item in the media files and folders context menu (default value)
+# Показывать пункт "Передать на устройство" в контекстном меню медиа-файлов и папок (значение по умолчанию)
 # CastToDeviceContext -Show
 
 # Hide the "Share" item from the context menu
@@ -1317,35 +1242,35 @@ ShareContext -Hide
 # Показывать пункт "Отправить" (поделиться) в контекстном меню (значение по умолчанию)
 # ShareContext -Show
 
-# Hide the "Edit with Paint 3D" item from the context menu
-# Скрыть пункт "Изменить с помощью Paint 3D" из контекстного меню
+# Hide the "Edit with Paint 3D" item from the media files context menu
+# Скрыть пункт "Изменить с помощью Paint 3D" из контекстного меню медиа-файлов
 EditWithPaint3DContext -Hide
 
-# Show the "Edit with Paint 3D" item in the context menu (default value)
-# Показывать пункт "Изменить с помощью Paint 3D" в контекстном меню (значение по умолчанию)
+# Show the "Edit with Paint 3D" item in the media files context menu (default value)
+# Показывать пункт "Изменить с помощью Paint 3D" в контекстном меню медиа-файлов (значение по умолчанию)
 # EditWithPaint3DContext -Show
 
-# Hide the "Edit with Photos" item from the context menu
-# Скрыть пункт "Изменить с помощью приложения "Фотографии"" из контекстного меню
+# Hide the "Edit with Photos" item from the media files context menu
+# Скрыть пункт "Изменить с помощью приложения "Фотографии"" из контекстного меню медиа-файлов
 EditWithPhotosContext -Hide
 
-# Show the "Edit with Photos" item in the context menu (default value)
-# Показывать пункт "Изменить с помощью приложения "Фотографии"" в контекстном меню (значение по умолчанию)
+# Show the "Edit with Photos" item in the media files context menu (default value)
+# Показывать пункт "Изменить с помощью приложения "Фотографии"" в контекстном меню медиа-файлов (значение по умолчанию)
 # EditWithPhotosContext -Show
 
-# Hide the "Create a new video" item from the context menu
-# Скрыть пункт "Создать новое видео" из контекстного меню
+# Hide the "Create a new video" item in the media files context menu
+# Скрыть пункт "Создать новое видео" из контекстного меню медиа-файлов
 CreateANewVideoContext -Hide
 
-# Show the "Create a new video" item in the context menu (default value)
-# Показывать пункт "Создать новое видео" в контекстном меню (значение по умолчанию)
+# Show the "Create a new video" item in the media files context menu (default value)
+# Показывать пункт "Создать новое видео" в контекстном меню медиа-файлов (значение по умолчанию)
 # CreateANewVideoContext -Show
 
 # Hide the "Edit" item from the images context menu
 # Скрыть пункт "Изменить" из контекстного меню изображений
 ImagesEditContext -Hide
 
-# Show the "Edit" item from in images context menu (default value)
+# Show the "Edit" item in images context menu (default value)
 # Показывать пункт "Изменить" в контекстном меню изображений (значение по умолчанию)
 # ImagesEditContext -Show
 
@@ -1357,12 +1282,12 @@ PrintCMDContext -Hide
 # Показывать пункт "Печать" в контекстном меню .bat и .cmd файлов (значение по умолчанию)
 # PrintCMDContext -Show
 
-# Hide the "Include in Library" item from the context menu
-# Скрыть пункт "Добавить в библиотеку" из контекстного меню
+# Hide the "Include in Library" item from the folders and drives context menu
+# Скрыть пункт "Добавить в библиотеку" из контекстного меню папок и дисков
 IncludeInLibraryContext -Hide
 
-# Show the "Include in Library" item in the context menu (default value)
-# Показывать пункт "Добавить в библиотеку" в контекстном меню (значение по умолчанию)
+# Show the "Include in Library" item in the folders and drives context menu (default value)
+# Показывать пункт "Добавить в библиотеку" в контекстном меню папок и дисков (значение по умолчанию)
 # IncludeInLibraryContext -Show
 
 # Hide the "Send to" item from the folders context menu
@@ -1373,37 +1298,37 @@ SendToContext -Hide
 # Показывать пункт "Отправить" в контекстном меню папок (значение по умолчанию)
 # SendToContext -Show
 
-# Hide the "Turn on BitLocker" item from the context menu
-# Скрыть пункт "Включить BitLocker" из контекстного меню
+# Hide the "Turn on BitLocker" item from the drives context menu
+# Скрыть пункт "Включить BitLocker" из контекстного меню дисков
 BitLockerContext -Hide
 
-# Show the "Turn on BitLocker" item in the context menu (default value)
-# Показывать пункт "Включить BitLocker" в контекстном меню (значение по умолчанию)
+# Show the "Turn on BitLocker" item in the drives context menu (default value)
+# Показывать пункт "Включить BitLocker" в контекстном меню дисков (значение по умолчанию)
 # BitLockerContext -Show
 
-# Remove the "Bitmap image" item from the "New" context menu
-# Удалить пункт "Точечный рисунок" из контекстного меню "Создать"
-BitmapImageNewContext -Remove
+# Hide the "Bitmap image" item from the "New" context menu
+# Скрыть пункт "Точечный рисунок" из контекстного меню "Создать"
+BitmapImageNewContext -Hide
 
-# Add the "Bitmap image" item to the "New" context menu (default value)
+# Show the "Bitmap image" item to the "New" context menu (default value)
 # Восстановить пункт "Точечный рисунок" в контекстного меню "Создать" (значение по умолчанию)
-# BitmapImageNewContext -Add
+# BitmapImageNewContext -Show
 
-# Remove the "Rich Text Document" item from the "New" context menu
-# Удалить пункт "Документ в формате RTF" из контекстного меню "Создать"
-RichTextDocumentNewContext -Remove
+# Hide the "Rich Text Document" item from the "New" context menu
+# Скрыть пункт "Документ в формате RTF" из контекстного меню "Создать"
+RichTextDocumentNewContext -Hide
 
-# Add the "Rich Text Document" item to the "New" context menu (default value)
+# Show the "Rich Text Document" item to the "New" context menu (default value)
 # Восстановить пункт "Документ в формате RTF" в контекстного меню "Создать" (значение по умолчанию)
-# RichTextDocumentNewContext -Add
+# RichTextDocumentNewContext -Show
 
-# Remove the "Compressed (zipped) Folder" item from the "New" context menu
-# Удалить пункт "Сжатая ZIP-папка" из контекстного меню "Создать"
-CompressedFolderNewContext -Remove
+# Hide the "Compressed (zipped) Folder" item from the "New" context menu
+# Скрыть пункт "Сжатая ZIP-папка" из контекстного меню "Создать"
+CompressedFolderNewContext -Hide
 
-# Add the "Compressed (zipped) Folder" item to the "New" context menu (default value)
+# Show the "Compressed (zipped) Folder" item to the "New" context menu (default value)
 # Восстановить пункт "Сжатая ZIP-папка" в контекстном меню "Создать" (значение по умолчанию)
-# CompressedFolderNewContext -Add
+# CompressedFolderNewContext -Show
 
 # Enable the "Open", "Print", and "Edit" context menu items for more than 15 items selected
 # Включить элементы контекстного меню "Открыть", "Изменить" и "Печать" при выделении более 15 элементов
@@ -1420,14 +1345,6 @@ UseStoreOpenWith -Hide
 # Show the "Look for an app in the Microsoft Store" item in the "Open with" dialog (default value)
 # Отображать пункт "Поиск приложения в Microsoft Store" в диалоге "Открыть с помощью" (значение по умолчанию)
 # UseStoreOpenWith -Show
-
-# Hide the "Previous Versions" tab from the files and folders context menu and the "Restore previous versions" context menu item
-# Скрыть вкладку "Предыдущие версии" в свойствах файлов и папок, а также пункт контекстного меню "Восстановить прежнюю версию"
-PreviousVersionsPage -Hide
-
-# Show the "Previous Versions" tab from files and folders context menu and also the "Restore previous versions" context menu item (default value)
-# Отображать вкладку "Предыдущие версии" в свойствах файлов и папок, а также пункт контекстного меню "Восстановить прежнюю версию" (значение по умолчанию)
-# PreviousVersionsPage -Show
 #endregion Context menu
 
 <#

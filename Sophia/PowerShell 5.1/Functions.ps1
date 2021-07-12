@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	The TAB completion for functions and their arguments
 
-	Version: v5.10.8
-	Date: 20.06.2021
+	Version: v5.11
+	Date: 12.07.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & Inestic
@@ -26,20 +26,6 @@
 	.NOTES
 	Separate functions with a comma
 
-	.NOTES
-	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
-	https://habr.com/post/521202/
-	https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/
-	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
-
-	.LINK
-	https://t.me/sophianews
-	https://t.me/sophia_chat
-
-	.LINK
-	https://github.com/farag2
-	https://github.com/Inestic
-
 	.LINK
 	https://github.com/farag2/Windows-10-Sophia-Script
 #>
@@ -53,7 +39,6 @@ function Sophia
 		$Functions
 	)
 
-	# Regardless of the functions entered as an argument, the "Checkings" function will be executed first, and the "RefreshEnvironment" and "Errors" functions will be executed at the end
 	Invoke-Command -ScriptBlock {Checkings}
 
 	foreach ($Function in $Functions)
@@ -61,12 +46,13 @@ function Sophia
 		Invoke-Expression -Command $Function
 	}
 
+	# The "RefreshEnvironment" and "Errors" functions will be executed at the end
 	Invoke-Command -ScriptBlock {RefreshEnvironment; Errors}
 }
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.10.8 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & Inestic, 2014–2021"
+$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.11 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -181,4 +167,5 @@ Write-Verbose -Message "Sophia -Functions <tab>" -Verbose
 Write-Verbose -Message "Sophia -Functions temp<tab>" -Verbose
 Write-Verbose -Message "Sophia -Functions `"DiagTrackService -Disable`", `"DiagnosticDataLevel -Minimal`", UninstallUWPApps" -Verbose
 Write-Information -MessageData "`n" -InformationAction Continue
-Write-Verbose -Message "UninstallUWPApps, `"PinToStart -UnpinAll`"" -Verbose
+Write-Verbose -Message "`nUninstallUWPApps, `"PinToStart -UnpinAll`"" -Verbose
+Write-Verbose -Message "`"Set-Association -ProgramPath ```"%ProgramFiles%\Notepad++\notepad++.exe```" -Extension .txt -Icon ```"%ProgramFiles%\Notepad++\notepad++.exe,0```"`"" -Verbose
