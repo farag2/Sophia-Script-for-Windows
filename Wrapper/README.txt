@@ -1,4 +1,4 @@
-File: README.TXT for 'Sophia Script Wrapper v2.0' created by https://benchtweakgaming.com/2020/10/10/windows-10-debloat-tool/
+File: README.TXT for 'Sophia Script Wrapper v2.1' created by https://benchtweakgaming.com/2020/10/10/windows-10-debloat-tool/
 Created for farag2 Windows 10 Sophia Script: https://github.com/farag2/Windows-10-Sophia-Script
 
 INTRODUCTION
@@ -26,22 +26,17 @@ and run it using the following commands.
 Launch PowerShell (Run as administrator) and navigate to where your script is.
 
 1. Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
-2. ./Sophia.ps1
+2. .\Sophia.ps1
 
 WRAPPER FILES
 -------------
-The '.txt' files are stored in a folder 'Config'. There are currently 2 languages for ToolTips: English and Russian 
-stored in 'Localizations' folder.
+The all settings are stored in JSON file stored in a folder 'Config'. There are currently 2 languages for ToolTips: 
+English and Russian in JSON. More will be added later. Please help with translations for everyone to use.
 
-►Sophia Script Wrapper.exe :	The GUI program.
-►data.txt : 			Contains the options (function names) to select from (usually only 2 options that 
-				something is Enable or Disable). Notice the sections ‘#region Xxx’ and how a semi
-				colon separate the function commands. The last command option in each section does 
-				not have a semi colon. Add or substract from the set.
-►dataltsc.txt :			LTSC version of data.txt
-►default.txt : 			Contains Default preset to debloat. Click this preset from Option menu in program.
-►tooltip.txt :			Contains ToolTips for each option.
-►README.txt : 			This documentation.
+►Sophia Script Wrapper.exe: The GUI program.
+►config.json:               JSON that contains the options (function names), Sophia preset and Windows Default preset.
+                            ToolTips in EN and RU. LTSC version.
+►README.txt:                This documentation.
 
 INSTRUCTIONS
 ------------
@@ -51,10 +46,10 @@ button is disabled) and must run your script manually via PowerShell command lin
 
 SOPHIA FILES
 ------------
-►Sophia.ps1 :			farag2 Original Windows PowerShell Script
-►Sophia.psd1 :			farag2 Windows PowerShell Data File
-►Sophia.psm1 :			farag2 Windows PowerShell Script Module
-►Functions.ps1 :		farag2 Windows PowerShell Script to run functions with tab autocompletion
+►Sophia.ps1:    farag2 Original Windows PowerShell Script
+►Sophia.psd1:   farag2 Windows PowerShell Data File
+►Sophia.psm1:   farag2 Windows PowerShell Script Module
+►Functions.ps1: farag2 Windows PowerShell Script to run functions with tab autocompletion
 
 The 'Localizations' folder contains folders that are localized language files for prompts during the PowerShell 
 execution each with a PowerShell Data File 'Sophia.psd1'.
@@ -65,7 +60,6 @@ execution each with a PowerShell Data File 'Sophia.psd1'.
 ►fr-FR
 ►hu-HU
 ►it-IT
-►pt-BR
 ►ru-RU
 ►tr-TR
 ►uk-UA

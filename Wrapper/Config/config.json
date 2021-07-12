@@ -1,0 +1,3634 @@
+﻿[
+    {
+        "Id":  100,
+        "Region":  "Protection",
+        "Control":  "cmb",
+        "Required":  "true",
+        "Function":  "Checkings",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Warning",
+                                 "ToolTip":  {
+                                                 "EN":  "The necessary checkings. If you want to disable a warning message about whether the preset file was customized, remove the \"-Warning\" argument",
+                                                 "RU":  "Обязательные проверки. Чтобы выключить предупреждение о необходимости настройки пресет-файла, удалите аргумент \"-Warning\""
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "",
+                                "ToolTip":  {
+                                                "EN":  "Checkings is required. No argument therefore no warning message about whether you've customized the preset file",
+                                                "RU":  "Проверки обязательны. Отсутствует предупреждающее сообщение о том, был ли настроек пресет-файл"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  101,
+        "Region":  "Protection",
+        "Control":  "chk",
+        "Required":  "false",
+        "Function":  "Logging",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  {
+                                                 "EN":  "Enable script logging. The log will be being recorded into the script folder. To stop logging just close the console or type \"Stop-Transcript\"",
+                                                 "RU":  "Включить логирование работы скрипта. Лог будет записываться в папку скрипта. Чтобы остановить логгирование, закройте консоль или наберите \"Stop-Transcript\""
+                                             }
+                             }
+                },
+        "Preset":  "",
+        "WindowsDefault":  "",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  102,
+        "Region":  "Protection",
+        "Control":  "chk",
+        "Required":  "false",
+        "Function":  "CreateRestorePoint",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  {
+                                                 "EN":  "Create a restore point",
+                                                 "RU":  "Создать точку восстановления"
+                                             }
+                             }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  200,
+        "Region":  "Privacy & Telemetry",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "DiagTrackService",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Disable the \"Connected User Experiences and Telemetry\" service (DiagTrack), and block the connection for the Unified Telemetry Client Outbound Traffic",
+                                                 "RU":  "Отключить службу \"Функциональные возможности для подключенных пользователей и телеметрия\" (DiagTrack) и блокировать соединение для исходящего трафик клиента единой телеметрии"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Enable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and allow connection (default value)",
+                                                "RU":  "Включить службу DiagTrack и разрешить соединение для исходящего трафик клиента единой телеметрии (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  201,
+        "Region":  "Privacy & Telemetry",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "DiagnosticDataLevel",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Minimal",
+                                 "ToolTip":  {
+                                                 "EN":  "Set the OS level of diagnostic data gathering to minimum",
+                                                 "RU":  "Установить уровень сбора диагностических сведений ОС на минимальный"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Default",
+                                "ToolTip":  {
+                                                "EN":  "Set the diagnostic data collection to default (default value)",
+                                                "RU":  "Установить уровень сбора диагностических сведений ОС по умолчанию (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  202,
+        "Region":  "Privacy & Telemetry",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "ErrorReporting",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Turn off the Windows Error Reporting",
+                                                 "RU":  "Отключить запись отчетов об ошибках Windows"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Turn on the Windows Error Reporting (default value)",
+                                                "RU":  "Включить отчеты об ошибках Windows (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  203,
+        "Region":  "Privacy & Telemetry",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "FeedbackFrequency",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Never",
+                                 "ToolTip":  {
+                                                 "EN":  "Change the feedback frequency to \"Never\"",
+                                                 "RU":  "Изменить частоту формирования отзывов на \"Никогда\""
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Automatically",
+                                "ToolTip":  {
+                                                "EN":  "Change the feedback frequency to \"Automatically\" (default value)",
+                                                "RU":  "Изменить частоту формирования отзывов на \"Автоматически\" (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  204,
+        "Region":  "Privacy & Telemetry",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "ScheduledTasks",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Turn off the diagnostics tracking scheduled tasks",
+                                                 "RU":  "Отключить задачи диагностического отслеживания"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Turn on the diagnostics tracking scheduled tasks (default value)",
+                                                "RU":  "Включить задачи диагностического отслеживания (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  205,
+        "Region":  "Privacy & Telemetry",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "SigninInfo",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Do not use sign-in info to automatically finish setting up device and reopen apps after an update or restart",
+                                                 "RU":  "Не использовать данные для входа для автоматического завершения настройки устройства и открытия приложений после перезапуска или обновления"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Use sign-in info to automatically finish setting up device and reopen apps after an update or restart (default value)",
+                                                "RU":  "Использовать данные для входа для автоматического завершения настройки устройства и открытия приложений после перезапуска или обновления (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  206,
+        "Region":  "Privacy & Telemetry",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "LanguageListAccess",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Do not let websites provide locally relevant content by accessing language list",
+                                                 "RU":  "Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Let websites provide locally relevant content by accessing language list (default value)",
+                                                "RU":  "Позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  207,
+        "Region":  "Privacy & Telemetry",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "AdvertisingID",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Do not allow apps to use advertising ID",
+                                                 "RU":  "Не разрешать приложениям использовать идентификатор рекламы"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Allow apps to use advertising ID (default value)",
+                                                "RU":  "Разрешать приложениям использовать идентификатор рекламы (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  208,
+        "Region":  "Privacy & Telemetry",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "WindowsWelcomeExperience",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested",
+                                                 "RU":  "Скрывать экран приветствия Windows после обновлений и иногда при входе, чтобы сообщить о новых функциях и предложениях"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  {
+                                                "EN":  "Show the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested (default value)",
+                                                "RU":  "Показывать экран приветствия Windows после обновлений и иногда при входе, чтобы сообщить о новых функциях и предложениях (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  209,
+        "Region":  "Privacy & Telemetry",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "WindowsTips",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Get tip, trick, and suggestions as you use Windows (default value)",
+                                                 "RU":  "Получать советы, подсказки и рекомендации при использованию Windows (значение по умолчанию)"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Do not get tip, trick, and suggestions as you use Windows",
+                                                "RU":  "Не получать советы, подсказки и рекомендации при использованию Windows"
+                                            }
+                            }
+                },
+        "Preset":  "One",
+        "WindowsDefault":  "One",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  210,
+        "Region":  "Privacy & Telemetry",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "SettingsSuggestedContent",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide from me suggested content in the Settings app",
+                                                 "RU":  "Скрывать рекомендуемое содержимое в приложении \"Параметры\""
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  {
+                                                "EN":  "Show me suggested content in the Settings app (default value)",
+                                                "RU":  "Показывать рекомендуемое содержимое в приложении \"Параметры\" (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  211,
+        "Region":  "Privacy & Telemetry",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "AppsSilentInstalling",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Turn off automatic installing suggested apps",
+                                                 "RU":  "Отключить автоматическую установку рекомендованных приложений"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Turn on automatic installing suggested apps (default value)",
+                                                "RU":  "Включить автоматическую установку рекомендованных приложений (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  212,
+        "Region":  "Privacy & Telemetry",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "WhatsNewInWindows",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Do not suggest ways I can finish setting up my device to get the most out of Windows",
+                                                 "RU":  "Не предлагать способы завершения настройки устройства для максимально эффективного использования Windows"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Suggest ways I can finish setting up my device to get the most out of Windows (default value)",
+                                                "RU":  "Предлагать способы завершения настройки устройства для максимально эффективного использования Windows (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  213,
+        "Region":  "Privacy & Telemetry",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "TailoredExperiences",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Do not offer tailored experiences based on the diagnostic data setting",
+                                                 "RU":  "Не предлагать персонализированные возможности, основанные на выбранном параметре диагностических данных"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Offer tailored experiences based on the diagnostic data setting (default value)",
+                                                "RU":  "Предлагать персонализированные возможности, основанные на выбранном параметре диагностических данных (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  214,
+        "Region":  "Privacy & Telemetry",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "BingSearch",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Disable Bing search in the Start Menu (for the USA only)",
+                                                 "RU":  "Отключить в меню \"Пуск\" поиск через Bing (только для США)"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Enable Bing search in the Start Menu (default value)",
+                                                "RU":  "Включить поиск через Bing в меню \"Пуск\" (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  300,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "ThisPC",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Show",
+                                 "ToolTip":  {
+                                                 "EN":  "Show the \"This PC\" icon on Desktop",
+                                                 "RU":  "Отображать значок \"Этот компьютер\" на рабочем столе"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Hide",
+                                "ToolTip":  {
+                                                "EN":  "Hide the \"This PC\" icon on Desktop (default value)",
+                                                "RU":  "Скрывать \"Этот компьютер\" на рабочем столе (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  301,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "CheckBoxes",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Do not use item check boxes",
+                                                 "RU":  "Не использовать флажки для выбора элементов"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Use check boxes to select items (default value)",
+                                                "RU":  "Использовать флажки для выбора элементов (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  302,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "HiddenItems",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Show hidden files, folders, and drives",
+                                                 "RU":  "Отображать скрытые файлы, папки и диски"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Do not show hidden files, folders, and drives (default value)",
+                                                "RU":  "Не отображать скрытые файлы, папки и диски (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  303,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "FileExtensions",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Show",
+                                 "ToolTip":  {
+                                                 "EN":  "Show file name extensions",
+                                                 "RU":  "Отображать расширения имён файлов"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Hide",
+                                "ToolTip":  {
+                                                "EN":  "Hide file name extensions (default value)",
+                                                "RU":  "Скрывать расширения имён файлов файлов (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  304,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "MergeConflicts",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Show",
+                                 "ToolTip":  {
+                                                 "EN":  "Show folder merge conflicts",
+                                                 "RU":  "Не скрывать конфликт слияния папок"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Hide",
+                                "ToolTip":  {
+                                                "EN":  "Hide folder merge conflicts (default value)",
+                                                "RU":  "Скрывать конфликт слияния папок (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  305,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "OpenFileExplorerTo",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "ThisPC",
+                                 "ToolTip":  {
+                                                 "EN":  "Open File Explorer to \"This PC\"",
+                                                 "RU":  "Открывать проводник для \"Этот компьютер\""
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "QuickAccess",
+                                "ToolTip":  {
+                                                "EN":  "Open File Explorer to Quick access (default value)",
+                                                "RU":  "Открывать проводник для \"Быстрый доступ\" (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  306,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "CortanaButton",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide Cortana button on the taskbar",
+                                                 "RU":  "Скрывать кнопку Кортаны на панели задач"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  {
+                                                "EN":  "Show Cortana button on the taskbar (default value)",
+                                                "RU":  "Показать кнопку Кортаны на панели задач (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  307,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "OneDriveFileExplorerAd",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Do not show sync provider notification within File Explorer",
+                                                 "RU":  "Не показывать уведомления поставщика синхронизации в проводнике"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  {
+                                                "EN":  "Show sync provider notification within File Explorer (default value)",
+                                                "RU":  "Показывать уведомления поставщика синхронизации в проводнике (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  308,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "SnapAssist",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "When I snap a window, do not show what I can snap next to it",
+                                                 "RU":  "При прикреплении окна не показывать, что можно прикрепить рядом с ним"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "When I snap a window, show what I can snap next to it (default value)",
+                                                "RU":  "При прикреплении окна показывать, что можно прикрепить рядом с ним (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  309,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "FileTransferDialog",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Detailed",
+                                 "ToolTip":  {
+                                                 "EN":  "Show the file transfer dialog box in the detailed mode",
+                                                 "RU":  "Отображать диалоговое окно передачи файлов в развернутом виде"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Compact",
+                                "ToolTip":  {
+                                                "EN":  "Show the file transfer dialog box in the compact mode (default value)",
+                                                "RU":  "Отображать диалоговое окно передачи файлов в свернутом виде (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  310,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "FileExplorerRibbon",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Expanded",
+                                 "ToolTip":  {
+                                                 "EN":  "Expand the File Explorer ribbon",
+                                                 "RU":  "Развернуть ленту проводника"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Minimized",
+                                "ToolTip":  {
+                                                "EN":  "Minimize the File Explorer ribbon (default value)",
+                                                "RU":  "Свернуть ленту проводника (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  311,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "RecycleBinDeleteConfirmation",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Display the recycle bin files delete confirmation",
+                                                 "RU":  "Запрашивать подтверждение на удаление файлов в корзину"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Do not display the recycle bin files delete confirmation (default value)",
+                                                "RU":  "Не запрашивать подтверждение на удаление файлов в корзину (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  312,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "3DObjects",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide the \"3D Objects\" folder in \"This PC\" and \"Quick access\"",
+                                                 "RU":  "Скрыть папку \"Объемные объекты\" в \"Этот компьютер\" и панели быстрого доступа"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  {
+                                                "EN":  "Show the \"3D Objects\" folder in \"This PC\" and \"Quick access\" (default value)",
+                                                "RU":  "Отображать папку \"Объемные объекты\" в \"Этот компьютер\" и панели быстрого доступа (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  313,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "QuickAccessRecentFiles",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide frequently used folders in Quick access",
+                                                 "RU":  "Скрыть недавно используемые папки на панели быстрого доступа"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  {
+                                                "EN":  "Show recently used files in Quick access (default value)",
+                                                "RU":  "Показать недавно использовавшиеся файлы на панели быстрого доступа (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  314,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "QuickAccessFrequentFolders",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide frequently used folders in Quick access",
+                                                 "RU":  "Скрыть недавно используемые папки на панели быстрого доступа"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  {
+                                                "EN":  "Show frequently used folders in Quick access (default value)",
+                                                "RU":  "Показать часто используемые папки на панели быстрого доступа (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  315,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "TaskViewButton",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide the Task View button on the taskbar",
+                                                 "RU":  "Скрывать кнопку Просмотра задач"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  {
+                                                "EN":  "Show the Task View button on the taskbar (default value)",
+                                                "RU":  "Показывать кнопку Просмотра задач (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  316,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "PeopleTaskbar",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide People button on the taskbar",
+                                                 "RU":  "Скрывать панель \"Люди\" на панели задач"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  {
+                                                "EN":  "Show People button on the taskbar (default value)",
+                                                "RU":  "Показывать панель \"Люди\" на панели задач (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  317,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "SecondsInSystemClock",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Show",
+                                 "ToolTip":  {
+                                                 "EN":  "Show seconds on the taskbar clock",
+                                                 "RU":  "Отображать секунды в системных часах на панели задач"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Hide",
+                                "ToolTip":  {
+                                                "EN":  "Hide seconds on the taskbar clock (default value)",
+                                                "RU":  "Скрывать секунды в системных часах на панели задач (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  318,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "TaskbarSearch",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide the search on the taskbar",
+                                                 "RU":  "Скрыть поле или значок поиска на панели задач"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "SearchIcon",
+                                "ToolTip":  {
+                                                "EN":  "Show the search icon on the taskbar",
+                                                "RU":  "Показать значок поиска на панели задач"
+                                            }
+                            },
+                    "Two":  {
+                                "Tag":  "SearchBox",
+                                "ToolTip":  {
+                                                "EN":  "Show the search box on the taskbar (default value)",
+                                                "RU":  "Показать поле поиска на панели задач (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "Two",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  319,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "WindowsInkWorkspace",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide the Windows Ink Workspace button on the taskbar",
+                                                 "RU":  "Не показывать кнопку Windows Ink Workspace на панели задач"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  {
+                                                "EN":  "Show the Windows Ink Workspace button in taskbar (default value)",
+                                                "RU":  "Показать кнопку Windows Ink Workspace на панели задач (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  320,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "TrayIcons",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Show",
+                                 "ToolTip":  {
+                                                 "EN":  "Always show all icons in the notification area",
+                                                 "RU":  "Всегда отображать все значки в области уведомлений"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Hide",
+                                "ToolTip":  {
+                                                "EN":  "Hide all icons in the notification area (default value)",
+                                                "RU":  "Скрыть все значки в области уведомлений (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  321,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "MeetNow",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide the Meet Now icon in the notification area",
+                                                 "RU":  "Скрыть иконку \"Провести собрание\" в области уведомлений"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  {
+                                                "EN":  "Show the Meet Now icon in the notification area (default value)",
+                                                "RU":  "Отображать иконку \"Провести собрание\" в трее (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  322,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "NewsInterests",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Disable \"News and Interests\" on the taskbar",
+                                                 "RU":  "Отключить \"Новости и интересы\" на панели задач"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Enable \"News and Interests\" on the taskbar (default value)",
+                                                "RU":  "Включить \"Новости и интересы\" на панели задач (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  323,
+        "Region":  "UI & Personalization",
+        "Control":  "chk",
+        "Required":  "false",
+        "Function":  "UnpinTaskbarShortcuts -Shortcuts",
+        "ToolTip":  {
+                        "EN":  "Unpin the \"Microsoft Edge\", \"Microsoft Store\", or \"Mail\" shortcuts from the taskbar",
+                        "RU":  "Открепить ярлыки \"Microsoft Edge\", \"Microsoft Store\" или \"Почта\" от панели задач"
+                    },
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Edge",
+                                 "ToolTip":  {
+                                                 "EN":  "Unpin the \"Microsoft Edge\" shortcut from the taskbar",
+                                                 "RU":  "Открепить ярлык \"Microsoft Edge\" от панели задач"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Store",
+                                "ToolTip":  {
+                                                "EN":  "Unpin the \"Microsoft Store\" shortcut from the taskbar",
+                                                "RU":  "Открепить ярлык \"Microsoft Store\" от панели задач"
+                                            }
+                            },
+                    "Two":  {
+                                "Tag":  "Mail",
+                                "ToolTip":  {
+                                                "EN":  "Unpin the \"Mail\" shortcut from the taskbar",
+                                                "RU":  "Открепить ярлык \"Почта\" от панели задач"
+                                            }
+                            }
+                },
+        "Preset":  "",
+        "WindowsDefault":  "",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  324,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "ControlPanelView",
+        "Arg":  {
+                    "Zero":  {
+                                "Tag":  "LargeIcons",
+                                "ToolTip":  {
+                                                "EN":  "View the Control Panel icons by large icons",
+                                                "RU":  "Просмотр иконок Панели управления как крупные значки"
+                                            }
+                            },
+                    "One":  {
+                                "Tag":  "SmallIcons",
+                                "ToolTip":  {
+                                                "EN":  "View the Control Panel icons by small icons",
+                                                "RU":  "Просмотр иконок Панели управления как маленькие значки"
+                                            }
+                            },
+                    "Two":  {
+                                 "Tag":  "Category",
+                                 "ToolTip":  {
+                                                 "EN":  "View the Control Panel icons by category (default value)",
+                                                 "RU":  "Просмотр иконок Панели управления как категория (значение по умолчанию)"
+                                             }
+                             }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "Two",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  325,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "WindowsColorMode",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Dark",
+                                 "ToolTip":  {
+                                                 "EN":  "Set the default Windows mode to dark",
+                                                 "RU":  "Установить режим Windows по умолчанию на темный"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Light",
+                                "ToolTip":  {
+                                                "EN":  "Set the default Windows mode to light (default value)",
+                                                "RU":  "Установить режим Windows по умолчанию на светлый (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  326,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "AppMode",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Dark",
+                                 "ToolTip":  {
+                                                 "EN":  "Set the default app mode dark",
+                                                 "RU":  "Установить цвет режима приложения на темный"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Light",
+                                "ToolTip":  {
+                                                "EN":  "Set the default app mode to light (default value)",
+                                                "RU":  "Установить цвет режима приложения на светлый (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  327,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "NewAppInstalledNotification",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide the \"New App Installed\" indicator",
+                                                 "RU":  "Скрыть уведомление \"Установлено новое приложение\""
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  {
+                                                "EN":  "Show the \"New App Installed\" indicator (default value)",
+                                                "RU":  "Показывать уведомление \"Установлено новое приложение\" (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  328,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "FirstLogonAnimation",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide user first sign-in animation after the upgrade",
+                                                 "RU":  "Скрывать анимацию при первом входе в систему после обновления"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Show user first sign-in animation after the upgrade (default value)",
+                                                "RU":  "Показывать анимацию при первом входе в систему после обновления (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  329,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "JPEGWallpapersQuality",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Max",
+                                 "ToolTip":  {
+                                                 "EN":  "Set the quality factor of the JPEG desktop wallpapers to maximum",
+                                                 "RU":  "Установить коэффициент качества обоев рабочего стола в формате JPEG на максимальный"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Default",
+                                "ToolTip":  {
+                                                "EN":  "Set the quality factor of the JPEG desktop wallpapers to default (default value)",
+                                                "RU":  "Установить коэффициент качества обоев рабочего стола в формате JPEG по умолчанию (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  330,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "TaskManagerWindow",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Expanded",
+                                 "ToolTip":  {
+                                                 "EN":  "Start Task Manager in the expanded mode",
+                                                 "RU":  "Запускать Диспетчера задач в развернутом виде"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Compact",
+                                "ToolTip":  {
+                                                "EN":  "Start Task Manager in the compact mode (default value)",
+                                                "RU":  "Запускать Диспетчера задач в свернутом виде (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  331,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "RestartNotification",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Show",
+                                 "ToolTip":  {
+                                                 "EN":  "Show a notification when your PC requires a restart to finish updating",
+                                                 "RU":  "Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Hide",
+                                "ToolTip":  {
+                                                "EN":  "Do not show a notification when your PC requires a restart to finish updating (default value)",
+                                                "RU":  "Не показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  332,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "ShortcutsSuffix",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Do not add the \"- Shortcut\" suffix to the file name of created shortcuts",
+                                                 "RU":  "Нe дoбaвлять \"- яpлык\" к имени coздaвaeмых яpлыков"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Add the \"- Shortcut\" suffix to the file name of created shortcuts (default value)",
+                                                "RU":  "Дoбaвлять \"- яpлык\" к имени coздaвaeмых яpлыков (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  333,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "PrtScnSnippingTool",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Use the Print screen button to open screen snipping",
+                                                 "RU":  "Использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Do not use the Print screen button to open screen snipping (default value)",
+                                                "RU":  "Не использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  334,
+        "Region":  "UI & Personalization",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "AppsLanguageSwitch",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Let me use a different input method for each app window",
+                                                 "RU":  "Позволить выбирать метод ввода для каждого окна"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Do not use a different input method for each app window (default value)",
+                                                "RU":  "Не использовать метод ввода для каждого окна (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  400,
+        "Region":  "OneDrive",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "OneDrive",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Uninstall",
+                                 "ToolTip":  {
+                                                 "EN":  "Uninstall OneDrive. The OneDrive user folder won't be removed",
+                                                 "RU":  "Удалить OneDrive. Папка пользователя OneDrive не будет удалена"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Install",
+                                "ToolTip":  {
+                                                "EN":  "Install OneDrive",
+                                                "RU":  "Установить OneDrive"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  500,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "StorageSense",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Turn on Storage Sense",
+                                                 "RU":  "Включить Контроль памяти"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Turn off Storage Sense (default value)",
+                                                "RU":  "Выключить Контроль памяти (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  501,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "StorageSenseTempFiles",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Delete temporary files that apps aren't using (default value)",
+                                                 "RU":  "Удалять временные файлы, не используемые в приложениях (значение по умолчанию)"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Do not delete temporary files that apps aren't using",
+                                                "RU":  "Не удалять временные файлы, не используемые в приложениях"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "Zero",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  502,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "StorageSenseFrequency",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Month",
+                                 "ToolTip":  {
+                                                 "EN":  "Run Storage Sense every month",
+                                                 "RU":  "Запускать Контроль памяти каждый месяц"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Default",
+                                "ToolTip":  {
+                                                "EN":  "Run Storage Sense during low free disk space (default value)",
+                                                "RU":  "Запускать Контроль памяти, когда остается мало место на диске (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  503,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "Hibernate",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Disable hibernation. Do not recommend turning it off on laptops",
+                                                 "RU":  "Отключить режим гибернации. Не рекомендуется выключать на ноутбуках"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Enable hibernate (default value)",
+                                                "RU":  "Включить режим гибернации (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  504,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "TempFolder",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "SystemDrive",
+                                 "ToolTip":  {
+                                                 "EN":  "Change the %TEMP% environment variable path to %SystemDrive%\\Temp",
+                                                 "RU":  "Отключить режим гибернации"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Default",
+                                "ToolTip":  {
+                                                "EN":  "Change %TEMP% environment variable path to %LOCALAPPDATA%\\Temp (default value)",
+                                                "RU":  "Изменить путь переменной среды для %TEMP% на %LOCALAPPDATA%\\Temp (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  505,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "Win32LongPathLimit",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Disable the Windows 260 characters path limit",
+                                                 "RU":  "Отключить ограничение Windows на 260 символов в пути"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Enable the Windows 260 character path limit (default value)",
+                                                "RU":  "Включить ограничение Windows на 260 символов в пути (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  506,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "BSoDStopError",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Display the Stop error information on the BSoD",
+                                                 "RU":  "Отображать Stop-ошибку при появлении BSoD"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Do not display the Stop error information on the BSoD (default value)",
+                                                "RU":  "Не отображать Stop-ошибку при появлении BSoD (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  507,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "AdminApprovalMode",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Never",
+                                 "ToolTip":  {
+                                                 "EN":  "Choose when to be notified about changes to your computer: never notify",
+                                                 "RU":  "Настройка уведомления об изменении параметров компьютера: никогда не уведомлять"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Default",
+                                "ToolTip":  {
+                                                "EN":  "Choose when to be notified about changes to your computer: notify me only when apps try to make changes to my computer (default value)",
+                                                "RU":  "Настройка уведомления об изменении параметров компьютера: уведомлять меня только при попытках приложений внести изменения в компьютер (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  508,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "MappedDrivesAppElevatedAccess",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Turn on access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled",
+                                                 "RU":  "Включить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Turn off access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled (default value)",
+                                                "RU":  "Выключить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  509,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "DeliveryOptimization",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Turn off Delivery Optimization",
+                                                 "RU":  "Выключить оптимизацию доставки"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Turn on Delivery Optimization (default value)",
+                                                "RU":  "Включить оптимизацию доставки (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  510,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "WaitNetworkStartup",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Always wait for the network at computer startup and logon for workgroup networks",
+                                                 "RU":  "Всегда ждать сеть при запуске и входе в систему для рабочих групп"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Never wait for the network at computer startup and logon for workgroup networks (default value)",
+                                                "RU":  "Никогда не ждать сеть при запуске и входе в систему для рабочих групп (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  511,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "WindowsManageDefaultPrinter",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Do not let Windows manage my default printer",
+                                                 "RU":  "Не разрешать Windows управлять принтером, используемым по умолчанию"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Let Windows manage my default printer (default value)",
+                                                "RU":  "Разрешать Windows управлять принтером, используемым по умолчанию (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  512,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "WindowsFeatures",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Disable the Windows features using the pop-up dialog box",
+                                                 "RU":  "Отключить компоненты Windows, используя всплывающее диалоговое окно. Если вы хотите оставить параметр \"Параметры мультимедиа\" в дополнительных параметрах схемы управления питанием, не отключайте \"Компоненты для работы с медиа\""
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Enable the Windows features using the pop-up dialog box (default value)",
+                                                "RU":  "Включить компоненты Windows, используя всплывающее диалоговое окно (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  513,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "WindowsCapabilities",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Uninstall",
+                                 "ToolTip":  {
+                                                 "EN":  "Uninstall optional features using the pop-up dialog box",
+                                                 "RU":  "Удалить дополнительные компоненты, используя всплывающее диалоговое окно. Если вы хотите оставить параметр \"Параметры мультимедиа\" в дополнительных параметрах схемы управления питанием, не удаляйте компонент \"Компоненты для работы с медиа\""
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Install",
+                                "ToolTip":  {
+                                                "EN":  "Install optional features using the pop-up dialog box (default value)",
+                                                "RU":  "Установить дополнительные компоненты, используя всплывающее диалоговое окно (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  514,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "UpdateMicrosoftProducts",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Receive updates for other Microsoft products when you update Windows",
+                                                 "RU":  "При обновлении Windows получать обновления для других продуктов Майкрософт"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Do not receive updates for other Microsoft products when you update Windows (default value)",
+                                                "RU":  "При обновлении Windows не получать обновления для других продуктов Майкрософт (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  515,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "PowerPlan",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "High",
+                                 "ToolTip":  {
+                                                 "EN":  "Set power plan on \"High performance\". It isn't recommended to turn on the \"High performance\" power plan on laptops",
+                                                 "RU":  "При обновлении Windows получать обновления для других продуктов Майкрософт"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Balanced",
+                                "ToolTip":  {
+                                                "EN":  "Установить схему управления питанием на \"Высокая производительность\". Не рекомендуется включать схему управления питанием \"Высокая производительность\" для ноутбуков",
+                                                "RU":  "При обновлении Windows не получать обновления для других продуктов Майкрософт (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  516,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "LatestInstalled.NET",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Use the latest installed .NET runtime for all apps",
+                                                 "RU":  "Использовать последнюю установленную среду выполнения .NET для всех приложений"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Do not use the latest installed .NET runtime for all apps (default value)",
+                                                "RU":  "Не использовать последнюю установленную версию .NET для всех приложений (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  517,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "NetworkAdaptersSavePower",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Do not allow the computer to turn off the network adapters to save power",
+                                                 "RU":  "Запретить отключение всех сетевых адаптеров для экономии энергии"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Allow the computer to turn off the network adapters to save power (default value)",
+                                                "RU":  "Разрешить отключение всех сетевых адаптеров для экономии энергии (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  518,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "InputMethod",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "English",
+                                 "ToolTip":  {
+                                                 "EN":  "Override for default input method: English",
+                                                 "RU":  "Переопределить метод ввода по умолчанию: английский"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Default",
+                                "ToolTip":  {
+                                                "EN":  "Override for default input method: use language list (default value)",
+                                                "RU":  "Переопределить метод ввода по умолчанию: использовать список языков (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  519,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "SetUserShellFolderLocation",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Root",
+                                 "ToolTip":  {
+                                                 "EN":  "Move user folders location to the root of any drive using the interactive menu. User files or folders won't me moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default",
+                                                 "RU":  "Переместить пользовательские папки в корень любого диска на выбор с помощью интерактивного меню. Пользовательские файлы и папки не будут перемещены в новое расположение. Переместите их вручную. По умолчанию они располагаются в папке %USERPROFILE%"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Custom",
+                                "ToolTip":  {
+                                                "EN":  "Select folders for user folders location manually using a folder browser dialog User files or folders won't me moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default",
+                                                "RU":  "Выбрать папки для расположения пользовательских папок вручную, используя диалог \"Обзор папок\". Пользовательские файлы и папки не будут перемещены в новое расположение. Переместите их вручную. По умолчанию они располагаются в папке %USERPROFILE%"
+                                            }
+                            },
+                    "Two":  {
+                                "Tag":  "Default",
+                                "ToolTip":  {
+                                                "EN":  "Change user folders location to the default values User files or folders won't me moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default (default value)",
+                                                "RU":  "Изменить расположение пользовательских папок на значения по умолчанию. Пользовательские файлы и папки не будут перемещены в новое расположение. Переместите их вручную. По умолчанию они располагаются в папке %USERPROFILE% (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "Two",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  520,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "WinPrtScrFolder",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Desktop",
+                                 "ToolTip":  {
+                                                 "EN":  "Save screenshots by pressing Win+PrtScr on the Desktop",
+                                                 "RU":  "Сохранять скриншоты по нажатию Win+PrtScr на рабочий столе"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Default",
+                                "ToolTip":  {
+                                                "EN":  "Save screenshots by pressing Win+PrtScr on the Pictures folder (default value)",
+                                                "RU":  "Cохранять скриншоты по нажатию Win+PrtScr в папку \"Изображения\" (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  521,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "RecommendedTroubleshooting",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Automatic",
+                                 "ToolTip":  {
+                                                 "EN":  "Run troubleshooter automatically, then notify. In order this feature to work the OS level of diagnostic data gathering will be set to \"Optional diagnostic data\" and the error reporting feature will be turned on",
+                                                 "RU":  "Автоматически запускать средства устранения неполадок, а затем уведомлять. Чтобы заработала данная функция, уровень сбора диагностических сведений ОС будет установлен на \"Необязательные диагностические данные\" и включится создание отчетов об ошибках Windows"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Default",
+                                "ToolTip":  {
+                                                "EN":  "Ask me before running troubleshooters. In order this feature to work the OS level of diagnostic data gathering will be set to \"Optional diagnostic data\" and the error reporting feature will be turned on (default value)",
+                                                "RU":  "Спрашивать перед запуском средств устранения неполадок. Чтобы заработала данная функция, уровень сбора диагностических сведений ОС будет установлен на \"Необязательные диагностические данные\" и включится создание отчетов об ошибках Windows (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  522,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "FoldersLaunchSeparateProcess",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Launch folder windows in a separate process",
+                                                 "RU":  "Запускать окна с папками в отдельном процессе"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Do not launch folder windows in a separate process (default value)",
+                                                "RU":  "Не запускать окна с папками в отдельном процессе (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  523,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "ReservedStorage",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Disable and delete reserved storage after the next update installation",
+                                                 "RU":  "Отключить и удалить зарезервированное хранилище после следующей установки обновлений"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Enable reserved storage (default value)",
+                                                "RU":  "Включить зарезервированное хранилище (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  524,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "F1HelpPage",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Disable help lookup via F1",
+                                                 "RU":  "Отключить открытие справки по нажатию F1"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Enable help lookup via F1 (default value)",
+                                                "RU":  "Включить открытие справки по нажатию F1 (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  525,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "NumLock",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Enable Num Lock at startup",
+                                                 "RU":  "Включить Num Lock при загрузке"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Disable Num Lock at startup (default value)",
+                                                "RU":  "Выключить Num Lock при загрузке (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  526,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "CapsLock",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Enable Caps Lock",
+                                                 "RU":  "Включить Caps Lock"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Disable Caps Lock (default value)",
+                                                "RU":  "Выключить Caps Lock (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "",
+        "WindowsDefault":  "",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  527,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "StickyShift",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Turn off pressing the Shift key 5 times to turn Sticky keys",
+                                                 "RU":  "Выключить залипание клавиши Shift после 5 нажатий"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Turn on pressing the Shift key 5 times to turn Sticky keys (default value)",
+                                                "RU":  "Включить залипание клавиши Shift после 5 нажатий (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  528,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "Autoplay",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Don't use AutoPlay for all media and devices",
+                                                 "RU":  "Включить залипание клавиши Shift после 5 нажатий (значение по умолчанию)"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Use AutoPlay for all media and devices (default value)",
+                                                "RU":  "Не использовать автозапуск для всех носителей и устройств"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  529,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "ThumbnailCacheRemoval",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Disable thumbnail cache removal",
+                                                 "RU":  "Отключить удаление кэша миниатюр"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Enable thumbnail cache removal (default value)",
+                                                "RU":  "Включить удаление кэша миниатюр (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  530,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "SaveRestartableApps",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Enable automatically saving my restartable apps when signing out and restart them after signing in",
+                                                 "RU":  "Включить автоматическое сохранение моих перезапускаемых приложений при выходе из системы и перезапускать их после выхода"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Disable automatically saving my restartable apps when signing out and restart them after signing in (default value)",
+                                                "RU":  "Выключить автоматическое сохранение моих перезапускаемых приложений при выходе из системы и перезапускать их после выхода (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  531,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "NetworkDiscovery",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Enable \"Network Discovery\" and \"File and Printers Sharing\" for workgroup networks",
+                                                 "RU":  "Включить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Disable \"Network Discovery\" and \"File and Printers Sharing\" for workgroup networks (default value)",
+                                                "RU":  "Выключить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  532,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "ActiveHours",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Automatically",
+                                 "ToolTip":  {
+                                                 "EN":  "Automatically adjust active hours for me based on daily usage",
+                                                 "RU":  "Автоматически изменять период активности для этого устройства на основе действий"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Manually",
+                                "ToolTip":  {
+                                                "EN":  "Manually adjust active hours for me based on daily usage (default value)",
+                                                "RU":  "Вручную изменять период активности для этого устройства на основе действий (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  533,
+        "Region":  "System",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "RestartDeviceAfterUpdate",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Restart this device as soon as possible when a restart is required to install an update",
+                                                 "RU":  "Перезапускать это устройство как можно быстрее, если для установки обновления требуется перезагрузка"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Do not restart this device as soon as possible when a restart is required to install an update (default value)",
+                                                "RU":  "Не перезапускать это устройство как можно быстрее, если для установки обновления требуется перезагрузка (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  600,
+        "Region":  "WSL",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "WSL",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Install the Windows Subsystem for Linux (WSL)",
+                                                 "RU":  "Установить подсистему Windows для Linux (WSL)"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Uninstall the Windows Subsystem for Linux (WSL)",
+                                                "RU":  "Удалить подсистему Windows для Linux (WSL)"
+                                            }
+                            }
+                },
+        "Preset":  "",
+        "WindowsDefault":  "",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  601,
+        "Region":  "WSL",
+        "Control":  "chk",
+        "Required":  "false",
+        "Function":  "EnableWSL2",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  {
+                                                 "EN":  "Download and install the Linux kernel update package. Set WSL 2 as the default version when installing a new Linux distribution. Run the function only after WSL installed and PC restart",
+                                                 "RU":  "Скачать и установить пакет обновления ядра Linux. Установить WSL 2 как версию по умолчанию при установке нового дистрибутива Linux. Выполните функцию только после установки WSL и перезагрузка ПК"
+                                             }
+                             }
+                },
+        "Preset":  "",
+        "WindowsDefault":  "",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  700,
+        "Region":  "Start menu",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "RecentlyAddedApps",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide recently added apps in the Start menu",
+                                                 "RU":  "Установить подсистему Windows для Linux (WSL)"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  {
+                                                "EN":  "Show recently added apps in the Start menu (default value)",
+                                                "RU":  "Удалить подсистему Windows для Linux (WSL)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  701,
+        "Region":  "Start menu",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "AppSuggestions",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide app suggestions in the Start menu",
+                                                 "RU":  "Скрывать рекомендации в меню \"Пуск\""
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  {
+                                                "EN":  "Show app suggestions in the Start menu (default value)",
+                                                "RU":  "Показывать рекомендации в меню \"Пуск\" (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  702,
+        "Region":  "Start menu",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "RunPowerShellShortcut",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Elevated",
+                                 "ToolTip":  {
+                                                 "EN":  "Run the Windows PowerShell shortcut from the Start menu as Administrator",
+                                                 "RU":  "Запускать ярлык Windows PowerShell в меню \"Пуск\" от имени Администратора"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "NonElevated",
+                                "ToolTip":  {
+                                                "EN":  "Run the Windows PowerShell shortcut from the Start menu as user (default value)",
+                                                "RU":  "Запускать ярлык Windows PowerShell в меню \"Пуск\" от имени пользователя (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  703,
+        "Region":  "Start menu",
+        "Control":  "chk",
+        "Required":  "false",
+        "Function":  "PinToStart -Tiles",
+        "ToolTip":  {
+                        "EN":  "Pin to Start the following shortcuts: Control Panel, Devices and Printers, PowerShell",
+                        "RU":  "Закрепить на начальном экране следующие ярлыки: Панель управления, Устройства и принтеры, PowerShell"
+                    },
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "ControlPanel",
+                                 "ToolTip":  {
+                                                 "EN":  "Pin the Control Panel shortcut to Start",
+                                                 "RU":  "Закрепить на начальном экране ярлык \"Панель управления\""
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "DevicesPrinters",
+                                "ToolTip":  {
+                                                "EN":  "Pin the \"Devices & Printers\" shortcut to Start",
+                                                "RU":  "Закрепить на начальном экране ярлык \"Устройства и принтеры\""
+                                            }
+                            },
+                    "Two":  {
+                                "Tag":  "PowerShell",
+                                "ToolTip":  {
+                                                "EN":  "Pin the Windows PowerShell shortcut to Start",
+                                                "RU":  "Закрепить на начальном экране ярлык \"PowerShell\""
+                                            }
+                            }
+                },
+        "Preset":  "012",
+        "WindowsDefault":  "",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  704,
+        "Region":  "Start menu",
+        "Control":  "chk",
+        "Required":  "false",
+        "Function":  "PinToStart -UnpinAll",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  {
+                                                 "EN":  "Unpin all the Start tiles",
+                                                 "RU":  "Открепить все ярлыки от начального экрана"
+                                             }
+                             }
+                },
+        "Preset":  "",
+        "WindowsDefault":  "",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  800,
+        "Region":  "UWP apps",
+        "Control":  "chk",
+        "Required":  "false",
+        "Function":  "UninstallUWPApps",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  {
+                                                 "EN":  "Uninstall UWP apps using the pop-up dialog box",
+                                                 "RU":  "Удалить UWP-приложения, используя всплывающее диалоговое окно. Пакеты приложений не будут установлены для новых пользователей, если отмечена галочка \"Для всех пользователей\""
+                                             }
+                             }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  801,
+        "Region":  "UWP apps",
+        "Control":  "chk",
+        "Required":  "false",
+        "Function":  "UninstallUWPApps -ForAllUsers",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  {
+                                                 "EN":  "Uninstall UWP apps using the pop-up dialog box. If the \"For All Users\" is checked apps packages will not be installed for new users. The \"ForAllUsers\" argument sets a checkbox to unistall packages for all users",
+                                                 "RU":  "Удалить UWP-приложения, используя всплывающее диалоговое окно. Пакеты приложений не будут установлены для новых пользователей, если отмечена галочка \"Для всех пользователей\". Аргумент \"ForAllUsers\" устанавливает галочку для удаления пакетов для всех пользователей"
+                                             }
+                             }
+                },
+        "Preset":  "",
+        "WindowsDefault":  "",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  802,
+        "Region":  "UWP apps",
+        "Control":  "chk",
+        "Required":  "false",
+        "Function":  "RestoreUWPApps",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  {
+                                                 "EN":  "Restore the default UWP apps using the pop-up dialog box. UWP apps can be restored only if they were uninstalled only for the current user",
+                                                 "RU":  "Восстановить стандартные UWP-приложения, используя всплывающее диалоговое окно. UWP-приложения могут быть восстановлены, только если они были удалены для текущего пользователя"
+                                             }
+                             }
+                },
+        "Preset":  "",
+        "WindowsDefault":  "",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  803,
+        "Region":  "UWP apps",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "HEIF",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Manual",
+                                 "ToolTip":  {
+                                                 "EN":  "Open Microsoft Store \"HEVC Video Extensions from Device Manufacturer\" page to install this extension manually to be able to open .heic and .heif image formats. The extension can be installed without a Microsoft account",
+                                                 "RU":  "Открыть страницу \"Расширения для видео HEVC от производителя устройства\" в Microsoft Store, чтобы вручную установить расширение для открытия форматов .heic и .heif. Расширение может быть установлено бесплатно без учетной записи Microsoft"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Install",
+                                "ToolTip":  {
+                                                "EN":  "Download and install \"HEVC Video Extensions from Device Manufacturer\" to be able to open .heic and .heif formats",
+                                                "RU":  "Скачать и установить \"Расширения для видео HEVC от производителя устройства\", чтобы иметь возможность открывать форматы .heic и .heif"
+                                            }
+                            }
+                },
+        "Preset":  "One",
+        "WindowsDefault":  "",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  804,
+        "Region":  "UWP apps",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "CortanaAutostart",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Disable Cortana autostarting",
+                                                 "RU":  "Выключить автозагрузку Кортана"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Enable Cortana autostarting (default value)",
+                                                "RU":  "Включить автозагрузку Кортана (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  805,
+        "Region":  "UWP apps",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "BackgroundUWPApps",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Do not let all UWP apps run in the background",
+                                                 "RU":  "Не разрешать UWP-приложениям работать в фоновом режиме"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Let all UWP apps run in the background (default value)",
+                                                "RU":  "Разрешить всем UWP-приложениям работать в фоновом режиме (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  806,
+        "Region":  "UWP apps",
+        "Control":  "chk",
+        "Required":  "false",
+        "Function":  "CheckUWPAppsUpdates",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  {
+                                                 "EN":  "Check for UWP apps updates",
+                                                 "RU":  "Проверить обновления UWP-приложений"
+                                             }
+                             }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  900,
+        "Region":  "Gaming",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "XboxGameBar",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Disable Xbox Game Bar",
+                                                 "RU":  "Отключить Xbox Game Bar"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Enable Xbox Game Bar (default value)",
+                                                "RU":  "Включить Xbox Game Bar (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  901,
+        "Region":  "Gaming",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "XboxGameTips",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Disable Xbox Game Bar tips",
+                                                 "RU":  "Отключить советы Xbox Game Bar"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Enable Xbox Game Bar tips (default value)",
+                                                "RU":  "Включить советы Xbox Game Bar (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  902,
+        "Region":  "Gaming",
+        "Control":  "chk",
+        "Required":  "false",
+        "Function":  "SetAppGraphicsPerformance",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  {
+                                                 "EN":  "Choose an app and set the \"High performance\" graphics performance for it. Only with a dedicated GPU",
+                                                 "RU":  "Выбрать приложение и установить параметры производительности графики на \"Высокая производительность\" для него. Только при наличии внешней видеокарты"
+                                             }
+                             }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  903,
+        "Region":  "Gaming",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "GPUScheduling",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Turn on hardware-accelerated GPU scheduling. Restart needed. Only with a dedicated GPU and WDDM verion is 2.7 or higher",
+                                                 "RU":  "Включить планирование графического процессора с аппаратным ускорением. Необходима перезагрузка. Только при наличии внешней видеокарты и WDDM версии 2.7 и выше"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Turn off hardware-accelerated GPU scheduling. Restart needed (default value)",
+                                                "RU":  "Выключить планирование графического процессора с аппаратным ускорением. Необходима перезагрузка (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  1000,
+        "Region":  "Scheduled tasks",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "CleanupTask",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Register",
+                                 "ToolTip":  {
+                                                 "EN":  "Create the \"Windows Cleanup\" scheduled task for cleaning up Windows unused files and updates. A native interactive toast notification pops up every 30 days. The task runs every 30 days",
+                                                 "RU":  "Создать задачу \"Windows Cleanup\" по очистке неиспользуемых файлов и обновлений Windows в Планировщике заданий. Нативный интерактивный тост всплывает каждые 30 дней. Задача выполняется каждые 30 дней"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Delete",
+                                "ToolTip":  {
+                                                "EN":  "Delete the \"Windows Cleanup\" and \"Windows Cleanup Notification\" scheduled tasks for cleaning up Windows unused files and updates",
+                                                "RU":  "Удалить задачи \"Windows Cleanup\" и \"Windows Cleanup Notification\" по очистке неиспользуемых файлов и обновлений Windows из Планировщика заданий"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1001,
+        "Region":  "Scheduled tasks",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "SoftwareDistributionTask",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Register",
+                                 "ToolTip":  {
+                                                 "EN":  "Create the \"SoftwareDistribution\" scheduled task for cleaning up the %SystemRoot%\\SoftwareDistribution\\Download folder. The task will wait until the Windows Updates service finishes running. The task runs every 90 days",
+                                                 "RU":  "Создать задачу \"SoftwareDistribution\" по очистке папки %SystemRoot%\\SoftwareDistribution\\Download в Планировщике заданий. Задача будет ждать, пока служба обновлений Windows не закончит работу. Задача выполняется каждые 90 дней"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Delete",
+                                "ToolTip":  {
+                                                "EN":  "Delete the \"SoftwareDistribution\" scheduled task for cleaning up the %SystemRoot%\\SoftwareDistribution\\Download folder",
+                                                "RU":  "Удалить задачу \"SoftwareDistribution\" по очистке папки %SystemRoot%\\SoftwareDistribution\\Download из Планировщика заданий"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1002,
+        "Region":  "Scheduled tasks",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "TempTask",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Register",
+                                 "ToolTip":  {
+                                                 "EN":  "Create the \"Temp\" scheduled task for cleaning up the %TEMP% folder. The task runs every 60 days",
+                                                 "RU":  "Создать задачу \"Temp\" в Планировщике заданий по очистке папки %TEMP%. Задача выполняется каждые 60 дней"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Delete",
+                                "ToolTip":  {
+                                                "EN":  "Delete the \"Temp\" scheduled task for cleaning up the %TEMP% folder",
+                                                "RU":  "Удалить задачу \"Temp\" по очистке папки %TEMP% из Планировщика заданий"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1100,
+        "Region":  "Microsoft Defender & Security",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "NetworkProtection",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Enable Microsoft Defender Exploit Guard network protection",
+                                                 "RU":  "Включить защиту сети в Microsoft Defender Exploit Guard"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Disable Microsoft Defender Exploit Guard network protection (default value)",
+                                                "RU":  "Выключить защиту сети в Microsoft Defender Exploit Guard (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1101,
+        "Region":  "Microsoft Defender & Security",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "PUAppsDetection",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Enable detection for potentially unwanted applications and block them",
+                                                 "RU":  "Включить обнаружение потенциально нежелательных приложений и блокировать их"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Disable detection for potentially unwanted applications and block them (default value)",
+                                                "RU":  "Выключить обнаружение потенциально нежелательных приложений и блокировать их (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1102,
+        "Region":  "Microsoft Defender & Security",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "DefenderSandbox",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Enable sandboxing for Microsoft Defender",
+                                                 "RU":  "Включить песочницу для Microsoft Defender"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Disable sandboxing for Microsoft Defender (default value)",
+                                                "RU":  "Выключить песочницу для Microsoft Defender (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1103,
+        "Region":  "Microsoft Defender & Security",
+        "Control":  "chk",
+        "Required":  "false",
+        "Function":  "DismissMSAccount",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  {
+                                                 "EN":  "Dismiss Microsoft Defender offer in the Windows Security about signing in Microsoft account",
+                                                 "RU":  "Отклонить предложение Microsoft Defender в \"Безопасность Windows\" о входе в аккаунт Microsoft"
+                                             }
+                             }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1104,
+        "Region":  "Microsoft Defender & Security",
+        "Control":  "chk",
+        "Required":  "false",
+        "Function":  "DismissSmartScreenFilter",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  {
+                                                 "EN":  "Dismiss Microsoft Defender offer in the Windows Security about turning on the SmartScreen filter for Microsoft Edge",
+                                                 "RU":  "Отклонить предложение Microsoft Defender в \"Безопасность Windows\" включить фильтр SmartScreen для Microsoft Edge"
+                                             }
+                             }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1105,
+        "Region":  "Microsoft Defender & Security",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "AuditProcess",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Enable events auditing generated when a process is created (starts)",
+                                                 "RU":  "Включить аудит событий, возникающих при создании или запуске процесса"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Disable events auditing generated when a process is created (starts) (default value)",
+                                                "RU":  "Выключить аудит событий, возникающих при создании или запуске процесса (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1106,
+        "Region":  "Microsoft Defender & Security",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "CommandLineProcessAudit",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Include command line in process creation events. In order this feature to work events auditing (ProcessAudit -Enable) will be enabled",
+                                                 "RU":  "Включать командную строку в событиях создания процесса. Для того, чтобы работал данный функционал, будет включен аудит событий (AuditProcess -Enable)"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Do not include command line in process creation events (default value)",
+                                                "RU":  "Не включать командную строку в событиях создания процесса (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1107,
+        "Region":  "Microsoft Defender & Security",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "EventViewerCustomView",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Create \"Process Creation\" Event Viewer custom view. In order this feature to work events auditing (AuditProcess -Enable) and command line in process creation events will be enabled",
+                                                 "RU":  "Создать настаиваемое представление \"Создание процесса\" в Просмотре событий. Для того, чтобы работал данный функционал, буден включен аудит событий (AuditProcess -Enable) и командной строки в событиях создания процесса"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Remove \"Process Creation\" Event Viewer custom view (default value)",
+                                                "RU":  "Удалить настаиваемое представление \"Создание процесса\" в Просмотре событий (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1108,
+        "Region":  "Microsoft Defender & Security",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "PowerShellModulesLogging",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Enable logging for all Windows PowerShell modules",
+                                                 "RU":  "Включить ведение журнала для всех модулей Windows PowerShell"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Disable logging for all Windows PowerShell modules (default value)",
+                                                "RU":  "Выключить ведение журнала для всех модулей Windows PowerShell (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1109,
+        "Region":  "Microsoft Defender & Security",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "PowerShellScriptsLogging",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Enable logging for all PowerShell scripts input to the Windows PowerShell event log",
+                                                 "RU":  "Включить ведение журнала для всех вводимых сценариев PowerShell в журнале событий Windows PowerShell"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Disable logging for all PowerShell scripts input to the Windows PowerShell event log (default value)",
+                                                "RU":  "Выключить ведение журнала для всех вводимых сценариев PowerShell в журнале событий Windows PowerShell (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1110,
+        "Region":  "Microsoft Defender & Security",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "AppsSmartScreen",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Microsoft Defender SmartScreen doesn't marks downloaded files from the Internet as unsafe",
+                                                 "RU":  "Microsoft Defender SmartScreen не помечает скачанные файлы из интернета как небезопасные"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Microsoft Defender SmartScreen marks downloaded files from the Internet as unsafe (default value)",
+                                                "RU":  "Microsoft Defender SmartScreen помечает скачанные файлы из интернета как небезопасные (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1111,
+        "Region":  "Microsoft Defender & Security",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "SaveZoneInformation",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Disable the Attachment Manager marking files that have been downloaded from the Internet as unsafe",
+                                                 "RU":  "Выключить проверку Диспетчером вложений файлов, скачанных из интернета, как небезопасные"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Enable the Attachment Manager marking files that have been downloaded from the Internet as unsafe (default value)",
+                                                "RU":  "Включить проверку Диспетчера вложений файлов, скачанных из интернета как небезопасные (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1112,
+        "Region":  "Microsoft Defender & Security",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "WindowsScriptHost",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  {
+                                                 "EN":  "Disable Windows Script Host. Blocks WSH from executing .js and .vbs files",
+                                                 "RU":  "Отключить Windows Script Host. Блокирует запуск файлов .js и .vbs"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  {
+                                                "EN":  "Enable Windows Script Host (default value)",
+                                                "RU":  "Включить Windows Script Host (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1113,
+        "Region":  "Microsoft Defender & Security",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "WindowsSandbox",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Enable Windows Sandbox",
+                                                 "RU":  "Включить Windows Sandbox"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Disable Windows Sandbox (default value)",
+                                                "RU":  "Выключить Windows Sandbox (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1200,
+        "Region":  "Context menu",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "MSIExtractContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Show",
+                                 "ToolTip":  {
+                                                 "EN":  "Show the \"Extract all\" item in the Windows Installer (.msi) context menu",
+                                                 "RU":  "Отобразить пункт \"Извлечь все\" в контекстное меню Windows Installer (.msi)"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Hide",
+                                "ToolTip":  {
+                                                "EN":  "Hide the \"Extract all\" item from the Windows Installer (.msi) context menu (default value)",
+                                                "RU":  "Скрыть пункт \"Извлечь все\" из контекстного меню Windows Installer (.msi) (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1201,
+        "Region":  "Context menu",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "CABInstallContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Show",
+                                 "ToolTip":  {
+                                                 "EN":  "Show the \"Install\" item in the Cabinet (.cab) filenames extensions context menu",
+                                                 "RU":  "Отобразить пункт \"Установить\" в контекстное меню .cab архивов"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Hide",
+                                "ToolTip":  {
+                                                "EN":  "Hide the \"Install\" item from the Cabinet (.cab) filenames extensions context menu (default value)",
+                                                "RU":  "Скрыть пункт \"Установить\" из контекстного меню .cab архивов (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1202,
+        "Region":  "Context menu",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "RunAsDifferentUserContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Show",
+                                 "ToolTip":  {
+                                                 "EN":  "Show the \"Run as different user\" item to the .exe filename extensions context menu",
+                                                 "RU":  "Отобразить пункт \"Запуск от имени другого пользователя\" в контекстное меню .exe файлов"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Hide",
+                                "ToolTip":  {
+                                                "EN":  "Hide the \"Run as different user\" item from the .exe filename extensions context menu (default value)",
+                                                "RU":  "Скрыть пункт \"Запуск от имени другого пользователя\" из контекстное меню .exe файлов (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1203,
+        "Region":  "Context menu",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "CastToDeviceContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide the \"Cast to Device\" item from the media files and folders context menu",
+                                                 "RU":  "Скрыть пункт \"Передать на устройство\" из контекстного меню медиа-файлов и папок"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  {
+                                                "EN":  "Show the \"Cast to Device\" item in the media files and folders context menu (default value)",
+                                                "RU":  "Показывать пункт \"Передать на устройство\" в контекстном меню медиа-файлов и папок (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1203,
+        "Region":  "Context menu",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "ShareContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide the \"Share\" item from the context menu",
+                                                 "RU":  "Скрыть пункт \"Отправить\" (поделиться) из контекстного меню"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  {
+                                                "EN":  "Show the \"Share\" item in the context menu (default value)",
+                                                "RU":  "Показывать пункт \"Отправить\" (поделиться) в контекстном меню (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1204,
+        "Region":  "Context menu",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "EditWithPaint3DContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide the \"Edit with Paint 3D\" item from the media files context menu",
+                                                 "RU":  "Скрыть пункт \"Изменить с помощью Paint 3D\" из контекстного меню медиа-файлов"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  {
+                                                "EN":  "Show the \"Edit with Paint 3D\" item in the media files context menu (default value))",
+                                                "RU":  "Показывать пункт \"Изменить с помощью Paint 3D\" в контекстном меню медиа-файлов (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1205,
+        "Region":  "Context menu",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "EditWithPhotosContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide the \"Edit with Photos\" item from the media files context menu",
+                                                 "RU":  "Скрыть пункт \"Изменить с помощью приложения \"Фотографии\"\" из контекстного меню медиа-файлов"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  {
+                                                "EN":  "Show the \"Edit with Photos\" item in the media files context menu (default value)",
+                                                "RU":  "Показывать пункт \"Изменить с помощью приложения \"Фотографии\"\" в контекстном меню медиа-файлов (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  1206,
+        "Region":  "Context menu",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "CreateANewVideoContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide the \"Create a new video\" item in the media files context menu",
+                                                 "RU":  "Скрыть пункт \"Создать новое видео\" из контекстного меню медиа-файлов"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  {
+                                                "EN":  "Show the \"Create a new video\" item in the media files context menu (default value)",
+                                                "RU":  "Показывать пункт \"Создать новое видео\" в контекстном меню медиа-файлов (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  1207,
+        "Region":  "Context menu",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "ImagesEditContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide the \"Edit\" item from the images context menu",
+                                                 "RU":  "Скрыть пункт \"Изменить\" из контекстного меню изображений"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  {
+                                                "EN":  "Show the \"Edit\" item in images context menu (default value)",
+                                                "RU":  "Показывать пункт \"Изменить\" в контекстном меню изображений (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "false"
+    },
+    {
+        "Id":  1208,
+        "Region":  "Context menu",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "PrintCMDContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide the \"Print\" item from the .bat and .cmd context menu",
+                                                 "RU":  "Скрыть пункт \"Печать\" из контекстного меню .bat и .cmd файлов"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  {
+                                                "EN":  "Show the \"Print\" item in the .bat and .cmd context menu (default value)",
+                                                "RU":  "Показывать пункт \"Печать\" в контекстном меню .bat и .cmd файлов (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1209,
+        "Region":  "Context menu",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "IncludeInLibraryContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide the \"Include in Library\" item from the folders and drives context menu",
+                                                 "RU":  "Скрыть пункт \"Добавить в библиотеку\" из контекстного меню папок и дисков"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  {
+                                                "EN":  "Show the \"Include in Library\" item in the folders and drives context menu (default value)",
+                                                "RU":  "Показывать пункт \"Добавить в библиотеку\" в контекстном меню папок и дисков (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1210,
+        "Region":  "Context menu",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "SendToContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide the \"Send to\" item from the folders context menu",
+                                                 "RU":  "Скрыть пункт \"Отправить\" из контекстного меню папок"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  {
+                                                "EN":  "Show the \"Send to\" item in the folders context menu (default value)",
+                                                "RU":  "Показывать пункт \"Отправить\" в контекстном меню папок (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1211,
+        "Region":  "Context menu",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "BitLockerContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide the \"Turn on BitLocker\" item from the drives context menu",
+                                                 "RU":  "Скрыть пункт \"Включить BitLocker\" из контекстного меню дисков"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  {
+                                                "EN":  "Show the \"Turn on BitLocker\" item in the drives context menu (default value)",
+                                                "RU":  "Показывать пункт \"Включить BitLocker\" в контекстном меню дисков (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1212,
+        "Region":  "Context menu",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "BitmapImageNewContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide the \"Bitmap image\" item from the \"New\" context menu",
+                                                 "RU":  "Скрыть пункт \"Точечный рисунок\" из контекстного меню \"Создать\""
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  {
+                                                "EN":  "Show the \"Bitmap image\" item to the \"New\" context menu (default value)",
+                                                "RU":  "Восстановить пункт \"Точечный рисунок\" в контекстного меню \"Создать\" (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1213,
+        "Region":  "Context menu",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "RichTextDocumentNewContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide the \"Rich Text Document\" item from the \"New\" context menu",
+                                                 "RU":  "Скрыть пункт \"Документ в формате RTF\" из контекстного меню \"Создать\""
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  {
+                                                "EN":  "Show the \"Rich Text Document\" item to the \"New\" context menu (default value)",
+                                                "RU":  "Восстановить пункт \"Документ в формате RTF\" в контекстного меню \"Создать\" (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1214,
+        "Region":  "Context menu",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "CompressedFolderNewContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide the \"Compressed (zipped) Folder\" item from the \"New\" context menu",
+                                                 "RU":  "Скрыть пункт \"Сжатая ZIP-папка\" из контекстного меню \"Создать\""
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  {
+                                                "EN":  "Show the \"Compressed (zipped) Folder\" item to the \"New\" context menu (default value)",
+                                                "RU":  "Восстановить пункт \"Сжатая ZIP-папка\" в контекстном меню \"Создать\" (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1215,
+        "Region":  "Context menu",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "MultipleInvokeContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  {
+                                                 "EN":  "Enable the \"Open\", \"Print\", and \"Edit\" context menu items for more than 15 items selected",
+                                                 "RU":  "Включить элементы контекстного меню \"Открыть\", \"Изменить\" и \"Печать\" при выделении более 15 элементов"
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  {
+                                                "EN":  "Disable the \"Open\", \"Print\", and \"Edit\" context menu items for more than 15 items selected (default value)",
+                                                "RU":  "Отключить элементы контекстного меню \"Открыть\", \"Изменить\" и \"Печать\" при выделении более 15 элементов (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    },
+    {
+        "Id":  1216,
+        "Region":  "Context menu",
+        "Control":  "cmb",
+        "Required":  "false",
+        "Function":  "UseStoreOpenWith",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  {
+                                                 "EN":  "Hide the \"Look for an app in the Microsoft Store\" item in the \"Open with\" dialog",
+                                                 "RU":  "Скрыть пункт \"Поиск приложения в Microsoft Store\" в диалоге \"Открыть с помощью\""
+                                             }
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  {
+                                                "EN":  "Show the \"Look for an app in the Microsoft Store\" item in the \"Open with\" dialog (default value)",
+                                                "RU":  "Отображать пункт \"Поиск приложения в Microsoft Store\" в диалоге \"Открыть с помощью\" (значение по умолчанию)"
+                                            }
+                            }
+                },
+        "Preset":  "Zero",
+        "WindowsDefault":  "One",
+        "LTSC":  "true"
+    }
+]
