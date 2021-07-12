@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	The TAB completion for functions and their arguments
 
-	Version: v5.2.8
-	Date: 20.06.2021
+	Version: v5.2.9
+	Date: 12.07.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & Inestic
@@ -26,20 +26,6 @@
 	.NOTES
 	Separate functions with a comma
 
-	.NOTES
-	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
-	https://habr.com/post/521202/
-	https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/
-	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
-
-	.LINK
-	https://t.me/sophianews
-	https://t.me/sophia_chat
-
-	.LINK
-	https://github.com/farag2
-	https://github.com/Inestic
-
 	.LINK
 	https://github.com/farag2/Windows-10-Sophia-Script
 #>
@@ -53,7 +39,6 @@ function Sophia
 		$Functions
 	)
 
-	# Regardless of the functions entered as an argument, the "Checkings" function will be executed first, and the "RefreshEnvironment" and "Errors" functions will be executed at the end
 	Invoke-Command -ScriptBlock {Checkings}
 
 	foreach ($Function in $Functions)
@@ -61,6 +46,7 @@ function Sophia
 		Invoke-Expression -Command $Function
 	}
 
+	# The "RefreshEnvironment" and "Errors" functions will be executed at the end
 	Invoke-Command -ScriptBlock {RefreshEnvironment; Errors}
 }
 
@@ -92,49 +78,6 @@ $Parameters = @{
 		{
 			$ParameterSets = (Get-Command -Name $Command).Parametersets.Parameters | Where-Object -FilterScript {$null -eq $_.Attributes.AliasNames}
 
-			# If a module command is PinToStart
-			if ($Command -eq "PinToStart")
-			{
-				# Get all command arguments, excluding defaults
-				foreach ($ParameterSet in $ParameterSets.Name)
-				{
-					# If an argument is Tiles
-					if ($ParameterSet -eq "Tiles")
-					{
-						$ValidValues = ((Get-Command -Name PinToStart).Parametersets.Parameters | Where-Object -FilterScript {$null -eq $_.Attributes.AliasNames}).Attributes.ValidValues
-						foreach ($ValidValue in $ValidValues)
-						{
-							# The "PinToStart -Tiles <function>" construction
-							"PinToStart" + " " + "-" + $ParameterSet + " " + $ValidValue | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
-						}
-
-						# The "PinToStart -Tiles <functions>" construction
-						"PinToStart" + " " + "-" + $ParameterSet + " " + ($ValidValues -join ", ") | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
-					}
-
-					continue
-				}
-			}
-
-			# If a module command is UninstallUWPApps
-			if ($Command -eq "UninstallUWPApps")
-			{
-				(Get-Command -Name $Command).Name | Where-Object -FilterScript {$_ -like "*$wordToComplete*"}
-
-				# Get all command arguments, excluding defaults
-				foreach ($ParameterSet in $ParameterSets.Name)
-				{
-					# If an argument is ForAllUsers
-					if ($ParameterSet -eq "ForAllUsers")
-					{
-						# The "UninstallUWPApps -ForAllUsers" construction
-						"UninstallUWPApps" + " " + "-" + $ParameterSet | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
-					}
-
-					continue
-				}
-			}
-
 			foreach ($ParameterSet in $ParameterSets.Name)
 			{
 				# The "Function -Argument" construction
@@ -157,4 +100,4 @@ Write-Verbose -Message "Sophia -Functions <tab>" -Verbose
 Write-Verbose -Message "Sophia -Functions temp<tab>" -Verbose
 Write-Verbose -Message "Sophia -Functions `"DiagTrackService -Disable`", `"DiagnosticDataLevel -Minimal`", UninstallUWPApps" -Verbose
 Write-Information -MessageData "`n" -InformationAction Continue
-Write-Verbose -Message "UninstallUWPApps, `"PinToStart -UnpinAll`"" -Verbose
+Write-Verbose -Message "`"Set-Association -ProgramPath ```"%ProgramFiles%\Notepad++\notepad++.exe```" -Extension .txt -Icon ```"%ProgramFiles%\Notepad++\notepad++.exe,0```"`"" -Verbose
