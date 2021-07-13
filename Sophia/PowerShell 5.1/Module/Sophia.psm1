@@ -95,9 +95,9 @@ function Checkings
 	$CurrentSessionId = (Get-Process -Id $PID -IncludeUserName).SessionId
 	$LoginUserName = (Get-Process -IncludeUserName -ErrorAction SilentlyContinue | Where-Object -FilterScript {($_.Name -eq "explorer") -and ($_.SessionId -eq $CurrentSessionId)}).UserName | Select-Object -Index 1 | Split-Path -Leaf
 
-	switch ($CurrentUserName -eq $LoginUserName)
+	switch ($CurrentUserName -ne $LoginUserName)
 	{
-		$false
+		$true
 		{
 			Write-Warning -Message $Localization.LoggedInUserNotAdmin
 			exit
