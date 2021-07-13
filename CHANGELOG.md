@@ -5,7 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 5.11 — 20.06.2021
+## 5.11.1 — 13.07.2021
+
+## Windows 10 2004/20H2/21H1 | LTSC
+
+Diff from v5.11
+[5.11...5.11.1](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.11...5.11.1)
+
+* Fixed #212;
+* Fixed typos.
+
+***
+
+* Sophia Script Wrapper 2.1
+  * Fixed typos.
+
+## 5.11 — 12.07.2021
 
 ## Windows 10 2004/20H2/21H1 | LTSC
 
