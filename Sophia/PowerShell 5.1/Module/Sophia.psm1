@@ -93,7 +93,7 @@ function Checkings
 	# Check whether the logged-in user is an admin
 	$CurrentUserName = (Get-Process -Id $PID -IncludeUserName).UserName | Split-Path -Leaf
 	$CurrentSessionId = (Get-Process -Id $PID -IncludeUserName).SessionId
-	$LoginUserName = (Get-Process -IncludeUserName -ErrorAction SilentlyContinue | Where-Object -FilterScript {($_.Name -eq "explorer") -and ($_.SessionId -eq $CurrentSessionId)}).UserName | Split-Path -Leaf
+	$LoginUserName = (Get-Process -IncludeUserName -ErrorAction SilentlyContinue | Where-Object -FilterScript {($_.Name -eq "explorer") -and ($_.SessionId -eq $CurrentSessionId)}).UserName | Select-Object -Index 1 | Split-Path -Leaf
 
 	switch ($CurrentUserName -eq $LoginUserName)
 	{
