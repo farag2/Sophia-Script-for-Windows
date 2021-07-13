@@ -1529,7 +1529,7 @@
                                  "Tag":  "SystemDrive",
                                  "ToolTip":  {
                                                  "EN":  "Change the %TEMP% environment variable path to %SystemDrive%\\Temp",
-                                                 "RU":  "Отключить режим гибернации"
+                                                 "RU":  "Изменить путь переменной среды для %TEMP% на %SystemDrive%\\Temp"
                                              }
                              },
                     "One":  {
@@ -2160,14 +2160,14 @@
                                  "Tag":  "Disable",
                                  "ToolTip":  {
                                                  "EN":  "Don't use AutoPlay for all media and devices",
-                                                 "RU":  "Включить залипание клавиши Shift после 5 нажатий (значение по умолчанию)"
+                                                 "RU":  "Не использовать автозапуск для всех носителей и устройств"
                                              }
                              },
                     "One":  {
                                 "Tag":  "Enable",
                                 "ToolTip":  {
                                                 "EN":  "Use AutoPlay for all media and devices (default value)",
-                                                "RU":  "Не использовать автозапуск для всех носителей и устройств"
+                                                "RU":  "Использовать автозапуск для всех носителей и устройств (значение по умолчанию)"
                                             }
                             }
                 },
@@ -2342,7 +2342,7 @@
                                  "Tag":  "",
                                  "ToolTip":  {
                                                  "EN":  "Download and install the Linux kernel update package. Set WSL 2 as the default version when installing a new Linux distribution. Run the function only after WSL installed and PC restart",
-                                                 "RU":  "Скачать и установить пакет обновления ядра Linux. Установить WSL 2 как версию по умолчанию при установке нового дистрибутива Linux. Выполните функцию только после установки WSL и перезагрузка ПК"
+                                                 "RU":  "Скачать и установить пакет обновления ядра Linux. Установить WSL 2 как версию по умолчанию при установке нового дистрибутива Linux. Выполните функцию только после установки WSL и перезагрузки ПК"
                                              }
                              }
                 },
@@ -2361,14 +2361,14 @@
                                  "Tag":  "Hide",
                                  "ToolTip":  {
                                                  "EN":  "Hide recently added apps in the Start menu",
-                                                 "RU":  "Установить подсистему Windows для Linux (WSL)"
+                                                 "RU":  "Скрывать недавно добавленные приложения в меню \"Пуск\""
                                              }
                              },
                     "One":  {
                                 "Tag":  "Show",
                                 "ToolTip":  {
                                                 "EN":  "Show recently added apps in the Start menu (default value)",
-                                                "RU":  "Удалить подсистему Windows для Linux (WSL)"
+                                                "RU":  "Показывать недавно добавленные приложения в меню \"Пуск\" (значение по умолчанию)"
                                             }
                             }
                 },
