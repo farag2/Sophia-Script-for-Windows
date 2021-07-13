@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 fine-tuning and automating the routine tasks
 
-	Version: v5.11
-	Date: 12.07.2021
+	Version: v5.11.1
+	Date: 13.07.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & Inestic
@@ -93,7 +93,7 @@ function Checkings
 	# Check whether the logged-in user is an admin
 	$CurrentUserName = (Get-Process -Id $PID -IncludeUserName).UserName | Split-Path -Leaf
 	$CurrentSessionId = (Get-Process -Id $PID -IncludeUserName).SessionId
-	$LoginUserName = (Get-Process -IncludeUserName -ErrorAction SilentlyContinue | Where-Object -FilterScript {($_.Name -eq "explorer") -and ($_.SessionId -eq $CurrentSessionId)}).UserName | Select-Object -Index 1 | Split-Path -Leaf
+	$LoginUserName = (Get-Process -IncludeUserName -ErrorAction SilentlyContinue | Where-Object -FilterScript {($_.ProcessName -eq "explorer") -and ($_.SessionId -eq $CurrentSessionId)}).UserName | Select-Object -First 1 | Split-Path -Leaf
 
 	switch ($CurrentUserName -ne $LoginUserName)
 	{
@@ -2888,10 +2888,10 @@ function WindowsColorMode
 	The default app mode
 
 	.PARAMETER Dark
-	Set the default app mode dark
+	Set the default app mode to dark
 
 	.PARAMETER Light
-	Set the default app mode light
+	Set the default app mode to light
 
 	.EXAMPLE
 	AppMode -Dark

@@ -883,13 +883,24 @@ RestartDeviceAfterUpdate -Enable
 #endregion System
 
 #region WSL
-# Install the Windows Subsystem for Linux (WSL) ###
+# Install the Windows Subsystem for Linux (WSL)
 # Установить подсистему Windows для Linux (WSL)
 # WSL -Enable
 
 # Uninstall the Windows Subsystem for Linux (WSL)
 # Удалить подсистему Windows для Linux (WSL)
 # WSL -Disable
+
+<#
+	Download and install the Linux kernel update package
+	Set WSL 2 as the default version when installing a new Linux distribution
+	Run the function only after WSL installed and PC restart
+
+	Скачать и установить пакет обновления ядра Linux
+	Установить WSL 2 как версию по умолчанию при установке нового дистрибутива Linux
+	Выполните функцию только после установки WSL и перезагрузки ПК
+#>
+# EnableWSL2
 #endregion WSL
 
 #region Start menu
