@@ -197,6 +197,13 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 * Type `.\Sophia.ps1` <kbd>Enter</kbd> to run the whole preset file.
 
+## How to use Wrapper
+
+* Download and expand the archive;
+* Run `Sophia Script Wrapper.exe` and import Sophia.ps1;
+* Configure every function;
+* Open the `Console Output` tab and press `Run PowerShell`.
+
 ***
 
 ### How to run the specific function(s)
