@@ -7017,7 +7017,7 @@ function NetworkDiscovery
 	.PARAMETER Automatically
 	Automatically adjust active hours for me based on daily usage
 
-	.PARAMETER Manual
+	.PARAMETER Manually
 	Manually adjust active hours for me based on daily usage
 
 	.EXAMPLE
