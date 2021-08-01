@@ -1,4 +1,5 @@
-README.md for 'Sophia Script Wrapper v2.1' created by [BenchTweakGaming.com](https://benchtweakgaming.com/2020/10/10/windows-10-debloat-tool/).
+README.md for 'Sophia Script Wrapper v2.2' created by [BenchTweakGaming.com](https://benchtweakgaming.com/2020/10/10/windows-10-debloat-tool/).
+
 Created for [farag2 Windows 10 Sophia Script](https://github.com/farag2/Windows-10-Sophia-Script).
 
 # INTRODUCTION
@@ -22,8 +23,9 @@ Launch PowerShell (Run as administrator) and navigate to where your script is.
 
 # WRAPPER FILES
 
-The all settings are stored in JSON file stored in a folder 'Config'. There are currently 2 languages for ToolTips: 
-English and Russian in JSON. More will be added later. Please help with translations for everyone to use.
+All of settings are stored in JSON file stored in a folder 'Config'. There are currently 8 languages in JSON in 'Localizations' folder.
+
+## Please help with translations for everyone to use or fix them and submit it to us.
 
 1. `Sophia Script Wrapper.exe`: The GUI program.
 2. `config.json`: JSON that contains the options (function names), Sophia preset and Windows Default preset. LTSC version.
