@@ -1,5 +1,4 @@
-README.md for 'Sophia Script Wrapper v2.2' created by [BenchTweakGaming.com](https://benchtweakgaming.com/2020/10/10/windows-10-debloat-tool/).
-
+README.md for 'Sophia Script Wrapper v2.2' created by [BenchTweakGaming.com](https://benchtweakgaming.com/2020/10/10/windows-10-debloat-tool/).  
 Created for [farag2 Windows 10 Sophia Script](https://github.com/farag2/Windows-10-Sophia-Script).
 
 # INTRODUCTION
@@ -35,4 +34,4 @@ All of settings are stored in JSON file stored in a folder 'Config'. There are c
 
 # INSTRUCTIONS
 
-UNZIP all the files and import the `Sophia.ps1` preset file to import and to get the path for files to run. If you do not open `Sophia.ps1` then you can not run directly the PowerShell script you create (Run PowerShell button is disabled) and must run your script manually via PowerShell command line in console.
+UNZIP all the files and import the `Sophia.ps1` preset file to import and to get the path for files to run. If you do not open `Sophia.ps1` then you can not run directly the PowerShell script you create (`Run PowerShell` button is disabled) and must run your script manually via PowerShell command line in console.
