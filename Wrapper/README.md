@@ -25,11 +25,11 @@ Launch PowerShell (Run as administrator) and navigate to where your script is.
 The all settings are stored in JSON file stored in a folder 'Config'. There are currently 2 languages for ToolTips: 
 English and Russian in JSON. More will be added later. Please help with translations for everyone to use.
 
-1.`Sophia Script Wrapper.exe`: The GUI program.
-2.`config.json`: JSON that contains the options (function names), Sophia preset and Windows Default preset. LTSC version.
-3.`tooltip.json`: ToolTips in JSON format. Currently 8 languages EN, RU, DE, ES, FR, PT, ZH and VI translations.
-4.`ui.json`: UI in JSON format. Currently 8 languages EN, RU, DE, ES, FR, PT, ZH and VI translations.
-5.`README.txt`: This documentation.
+1. `Sophia Script Wrapper.exe`: The GUI program.
+2. `config.json`: JSON that contains the options (function names), Sophia preset and Windows Default preset. LTSC version.
+3. `tooltip.json`: ToolTips in JSON format. Currently 8 languages EN, RU, DE, ES, FR, PT, ZH and VI translations.
+4. `ui.json`: UI in JSON format. Currently 8 languages EN, RU, DE, ES, FR, PT, ZH and VI translations.
+5. `README.txt`: This documentation.
 
 # INSTRUCTIONS
 
