@@ -7003,14 +7003,14 @@ function NetworkDiscovery
 	.PARAMETER Automatically
 	Automatically adjust active hours for me based on daily usage
 
-	.PARAMETER Manual
+	.PARAMETER Manually
 	Manually adjust active hours for me based on daily usage
 
 	.EXAMPLE
 	ActiveHours -Automatically
 
 	.EXAMPLE
-	ActiveHours -Manual
+	ActiveHours -Manually
 
 	.NOTES
 	Machine-wide
@@ -7028,10 +7028,10 @@ function ActiveHours
 
 		[Parameter(
 			Mandatory = $true,
-			ParameterSetName = "Manual"
+			ParameterSetName = "Manually"
 		)]
 		[switch]
-		$Manual
+		$Manually
 	)
 
 	switch ($PSCmdlet.ParameterSetName)
@@ -7040,7 +7040,7 @@ function ActiveHours
 		{
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name SmartActiveHoursState -PropertyType DWord -Value 1 -Force
 		}
-		"Manual"
+		"Manually"
 		{
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name SmartActiveHoursState -PropertyType DWord -Value 0 -Force
 		}
