@@ -1,13 +1,8 @@
-README.md for 'Sophia Script Wrapper v2.2' created by [BenchTweakGaming.com](https://benchtweakgaming.com/2020/10/10/windows-10-debloat-tool/).  
-Created for [farag2 Windows 10 Sophia Script](https://github.com/farag2/Windows-10-Sophia-Script).
+Sophia Script Wrapper v2.2 created by David from [BenchTweakGaming.com](https://benchtweakgaming.com/2020/10/10/windows-10-debloat-tool/).  
 
 # INTRODUCTION
 
-Please read this document to understand how to use this program.
-
-[BenchTweakGaming.com](https://benchtweakgaming.com) now works with the [farag2 team](https://github.com/farag2).
-
-This program create a PowerShell script file that you can run to tweak/'Debloat' Windows 10 based on farag2 Windows 10 Sophia Script. It serves as a front-end GUI for the Sophia Script. It is called a Wrapper.
+This program create a PowerShell script file that you can run to tweak/'Debloat' Windows 10 based on Windows 10 Sophia Script. It serves as a front-end GUI for the Sophia Script. It is called a Wrapper.
 
 The options are arranged in different tabs and there are 2 presets in the preset menu. The two presets: `Sophia`, `Windows Default`. `Sophia` is the recommended preset to use to debloat. Choose `Windows Default` to revert back to original Windows Default settings. You can also create your own Sophia script to share and open it up. There is a Opposite menu option to select the alternative selections. There are ToolTips balloon message popups for detailed info for each item. There are different languages in menu.
 
@@ -17,8 +12,8 @@ OR save the PowerShell script as `Sophia.ps1` with the farag2 Sophia files and r
 
 Launch PowerShell (Run as administrator) and navigate to where your script is.
 
-1. `Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force`
-2. `.\Sophia.ps1`
+* `Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force`
+* `.\Sophia.ps1`
 
 # WRAPPER FILES
 
@@ -26,10 +21,10 @@ All of settings are stored in JSON file stored in a folder 'Config'. There are c
 
 ## Please help with translations for everyone to use or fix them and submit it to us.
 
-1. `Sophia Script Wrapper.exe`: The GUI program.
-2. `config.json`: JSON that contains the options (function names), Sophia preset and Windows Default preset. LTSC version.
-3. `tooltip.json`: ToolTips in JSON format. Currently 8 languages EN, RU, DE, ES, FR, PT, ZH and VI translations.
-4. `ui.json`: UI in JSON format. Currently 8 languages EN, RU, DE, ES, FR, PT, ZH and VI translations.
+* `Sophia Script Wrapper.exe`: The GUI program.
+* `config.json`: JSON that contains the options (function names), Sophia preset and Windows Default preset. LTSC version.
+* `tooltip.json`: ToolTips in JSON format. Currently 8 languages EN, RU, DE, ES, FR, PT, ZH and VI translations.
+* `ui.json`: UI in JSON format. Currently 8 languages EN, RU, DE, ES, FR, PT, ZH and VI translations.
 
 # INSTRUCTIONS
 
