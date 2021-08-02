@@ -9,7 +9,7 @@ This program create a PowerShell script file that you can run to customize Windo
 * `tooltip.json`: ToolTips in JSON format. Currently 8 languages EN, RU, DE, ES, FR, PT, ZH and VI translations.
 * `ui.json`: UI in JSON format. Currently 8 languages EN, RU, DE, ES, FR, PT, ZH and VI translations.
 
-## Please help with UI and ToolTip translations for everyone to use or fix them and submit it to us.
+### Please help with UI and ToolTip translations for everyone to use or fix them and submit it to us.
 
 # INSTRUCTIONS
 
