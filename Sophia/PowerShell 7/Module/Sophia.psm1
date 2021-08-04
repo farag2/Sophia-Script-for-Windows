@@ -2322,6 +2322,52 @@ function TrayIcons {
 }
 <#
 	.SYNOPSIS
+	The Action Center in the notification area
+
+	.PARAMETER Hide
+	Hide the Action Center in the notification area
+
+	.PARAMETER Show
+	Show the Action Center in the notification area
+
+	.EXAMPLE
+	ActionCenter -Hide
+
+	.EXAMPLE
+	ActionCenter -Show
+
+	.NOTES
+	Current user only
+#>
+function ActionCenter {
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Hide"
+		)]
+		[switch]
+		$Hide,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Show"
+		)]
+		[switch]
+		$Show
+	)
+
+	switch ($PSCmdlet.ParameterSetName) {
+		"Hide" {
+			New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter Dword -Value 1 -Force
+		}
+		"Show" {
+			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Force -ErrorAction Ignore
+		}
+	}
+}
+<#
+	.SYNOPSIS
 	The Windows Security icon in the notification area
 
 	.PARAMETER Hide
@@ -2359,11 +2405,11 @@ function WindowsSecurity {
 
 	switch ($PSCmdlet.ParameterSetName) {
 		"Hide" {
-			New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Systray -Name HideSystray Dword -Value 1 -Force
+			New-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Systray' -Name HideSystray Dword -Value 1 -Force
 
 		}
 		"Show" {
-			New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Systray -Name HideSystray Dword -Value 0 -Force
+			New-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Systray' -Name HideSystray Dword -Value 0 -Force
 		}
 	}
 }
@@ -7231,7 +7277,7 @@ function WSL {
 
 			Write-Warning -Message $Localization.RestartWarning
 		}
-		"Disable" {
+		"Uninstall" {
 			Disable-WindowsOptionalFeature -Online -FeatureName $WSLFeatures -NoRestart
 
 			Uninstall-Package -Name "Windows Subsystem for Linux Update" -Force -ErrorAction SilentlyContinue
@@ -10206,7 +10252,7 @@ function RunAsDifferentUserContext {
 			ParameterSetName = "Hide"
 		)]
 		[switch]
-		$Remove
+		$Hide
 	)
 
 	switch ($PSCmdlet.ParameterSetName) {

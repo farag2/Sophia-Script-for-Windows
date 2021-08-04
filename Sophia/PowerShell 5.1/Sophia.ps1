@@ -422,6 +422,14 @@ TrayIcons -Show
 # Скрыть все значки в области уведомлений (значение по умолчанию)
 # TrayIcons -Hide
 
+# Hide the Action Center in the notification area
+# Скрыть Центр уведомлений в области уведомлений
+ActionCenter -Hide
+
+# Show the Action Center in the notification area (default value)
+# Показать Центр уведомлений в области уведомлений (значение по умолчанию)
+# ActionCenter -Show
+
 # Hide the Windows Security icon in the notification area
 # Скрыть значок безопасности Windows в области уведомлений
 WindowsSecurity -Hide
