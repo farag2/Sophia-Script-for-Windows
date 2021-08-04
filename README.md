@@ -244,7 +244,8 @@ Or use an old-style format without the TAB functions autocomplete (the quotation
 
 ## Ask a question on
 
-* [Telegram](https://t.me/sophia_chat)
+* [Telegram discussion group](https://t.me/sophia_chat)
+* [Telegram channel](https://t.me/sophianews)
 * [Ru-Board](http://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15)
 * [rutracker](https://rutracker.org/forum/viewtopic.php?t=5996011)
 * [My Digital Life](https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/)
