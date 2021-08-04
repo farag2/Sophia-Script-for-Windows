@@ -2359,7 +2359,7 @@ function ActionCenter {
 
 	switch ($PSCmdlet.ParameterSetName) {
 		"Hide" {
-			New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter DWord -Value 1 -Force
+			New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -PropertyType DWord -Value 1 -Force
 		}
 		"Show" {
 			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Force -ErrorAction Ignore
@@ -2405,11 +2405,11 @@ function WindowsSecurity {
 
 	switch ($PSCmdlet.ParameterSetName) {
 		"Hide" {
-			New-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Systray' -Name HideSystray DWord -Value 1 -Force
+			New-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Systray' -Name HideSystray -PropertyType DWord -Value 1 -Force
 
 		}
 		"Show" {
-			Remove-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Systray' -Name HideSystray Dword -Value 0 -Force
+			Remove-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Systray' -Name HideSystray -Force -ErrorAction Ignore
 		}
 	}
 }
