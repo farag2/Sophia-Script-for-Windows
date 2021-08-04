@@ -90,17 +90,15 @@ Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia -Base
 	Separate functions with a comma
 	Разделяйте функции запятыми
 #>
-if ($Functions)
-{
-	Invoke-Command -ScriptBlock {Checkings}
+if ($Functions) {
+	Invoke-Command -ScriptBlock { Checkings }
 
-	foreach ($Function in $Functions)
-	{
+	foreach ($Function in $Functions) {
 		Invoke-Expression -Command $Function
 	}
 
 	# The "RefreshEnvironment" and "Errors" functions will be executed at the end
-	Invoke-Command -ScriptBlock {RefreshEnvironment; Errors}
+	Invoke-Command -ScriptBlock { RefreshEnvironment; Errors }
 
 	exit
 }
@@ -423,6 +421,14 @@ TrayIcons -Show
 # Hide all icons in the notification area (default value)
 # Скрыть все значки в области уведомлений (значение по умолчанию)
 # TrayIcons -Hide
+
+# Hide the Windows Security icon in the notification area
+# Скрыть значок безопасности Windows в области уведомлений
+WindowsSecurity -Hide
+
+# Show the Windows Security icon in the notification area (default value)
+# Показать значок безопасности Windows в области уведомлений (значение по умолчанию)
+# WindowsSecurity -Show
 
 # Hide the Meet Now icon in the notification area
 # Скрыть иконку "Провести собрание" в области уведомлений
