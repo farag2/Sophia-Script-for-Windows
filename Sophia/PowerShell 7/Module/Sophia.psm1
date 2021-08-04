@@ -2405,11 +2405,11 @@ function WindowsSecurity {
 
 	switch ($PSCmdlet.ParameterSetName) {
 		"Hide" {
-			New-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Systray' -Name HideSystray -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Systray" -Name HideSystray -PropertyType DWord -Value 1 -Force
 
 		}
 		"Show" {
-			Remove-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Systray' -Name HideSystray -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Systray" -Name HideSystray -Force -ErrorAction Ignore
 		}
 	}
 }
