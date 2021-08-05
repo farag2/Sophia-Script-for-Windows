@@ -1643,8 +1643,23 @@
       }
     }
   },
-  {
+{
     "Id": 805,
+    "Region": "UWP apps",
+    "Function": "TeamsAutostart",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Выключить автозагрузку Microsoft Teams"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Включить автозагрузкуMicrosoft Teams (значение по умолчанию)"
+      }
+    }
+  },
+  {
+    "Id": 806,
     "Region": "UWP apps",
     "Function": "BackgroundUWPApps",
     "Arg": {
@@ -1659,7 +1674,7 @@
     }
   },
   {
-    "Id": 806,
+    "Id": 807,
     "Region": "UWP apps",
     "Function": "CheckUWPAppsUpdates",
     "Arg": {
