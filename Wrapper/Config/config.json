@@ -559,10 +559,10 @@
     "Function": "SnapAssistFlyout",
     "Arg": {
       "Zero": {
-        "Tag": "Disable"
+        "Tag": "Enable"
       },
       "One": {
-        "Tag": "Enable"
+        "Tag": "Disable"
       }
     },
     "Preset": "Zero",
