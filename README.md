@@ -1,8 +1,8 @@
-# Windows 10 Sophia Script
+# Sophia Script for Windows
 
 <img src="./img/Sophia.png" alt="Sophia Script" width='350' align="right">
 
-**A PowerShell module for Windows 10 fine-tuning and automating the routine tasks** :trophy:
+**A PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks** :trophy:
 
 <p align="left">
   <a href="https://github.com/farag2/Windows-10-Sophia-Script/actions"><img src="https://img.shields.io/github/workflow/status/farag2/Windows-10-Sophia-Script/Build?label=GitHub%20Actions&logo=GitHub"></a>
@@ -21,7 +21,7 @@
 Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag_of_the_United_Kingdom.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Flag_of_the_People's_Republic_of_China.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Flag_of_Germany.svg" height="11px"/>
 <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/0/03/Flag_of_Italy.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Russia.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Ukraine.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Flag_of_Turkey.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Spain.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Flag_of_Portugal.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Flag_of_Hungary.svg" height="11px"/>
 
-[![download](https://i.imgur.com/U8gicyY.png)](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)
+[![download](https://i.imgur.com/U8gicyY.png)](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)
 
 ***
 
@@ -95,14 +95,21 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 * Due to the fact that the script includes more than **150** functions with different arguments, you must read the entire **Sophia.ps1** carefully and **comment out/uncomment** those functions that you do/do not want to be executed. Every tweak in the preset file has its' corresponding function to **restore the default settings**.
 * Running the script is best done on a fresh install because running it on **wrong** tweaked system may result in errors occurring.
 
-## Supported Windows 10 versions
+## Supported Windows versions
+
+# Windows 11
 
 |Version|    Marketing name   | Build | Arch |      Editions     | Script version |
 |:-----:|:-------------------:|:-----:|:----:|:-----------------:|:--------------:|
-| 21H1  | May 2021 Update     | 19043 |  x64 |Home/Pro/Enterprise|[5.11.1](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
-| 20H2  | October 2020 Update | 19042 |  x64 |Home/Pro/Enterprise|[5.11.1](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
-| 2004  | May 2020 Update     | 19041 |  x64 |Home/Pro/Enterprise|[5.11.1](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
-| 1809  | LTSC Enterprise 2019| 17763 |  x64 |   Enterprise      |[5.2.10](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest)|
+| 21H2  | October 2021 Update | 22000 |  x64 |Home/Pro/Enterprise|[6.0.1](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+
+|Version|    Marketing name   | Build | Arch|      Editions     | Script version |
+|:-----:|:-------------------:|:-----:|:---:|:-----------------:|:--------------:|
+| 21H2  | October 2021 Update | 19044 | x64 |Home/Pro/Enterprise|[5.12](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H1  | May 2021 Update     | 19043 | x64 |Home/Pro/Enterprise|[5.12](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 20H2  | October 2020 Update | 19042 | x64 |Home/Pro/Enterprise|[5.12](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 2004  | May 2020 Update     | 19041 | x64 |Home/Pro/Enterprise|[5.12](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 1809  | LTSC Enterprise 2019| 17763 | x64 |   Enterprise      |[5.2.11](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 
 ## Screenshots
 
@@ -122,10 +129,9 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ![Image](https://i.imgur.com/xlMR2mz.png) ![Image](https://i.imgur.com/yl9j9Vt.png)
 
-### David's Sophia Script Wrapper 2.1
+### David's Sophia Script Wrapper
 
-![Wr](https://i.imgur.com/2Vkg60Z.png) ![Wr](https://i.imgur.com/yj5vOpo.png)
-![Wr](https://i.imgur.com/tB83cD8.png)
+![Wr](https://i.imgur.com/gGrb69J.png) ![Wr](https://i.imgur.com/yX4v6oW.png)
 
 ### Native interactive toasts for the scheduled tasks
 
@@ -182,7 +188,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 ## How to use
 
 * Choose the right script version for your Windows 10;
-* Download [up-to-date version](https://github.com/farag2/Windows-10-Sophia-Script/releases/latest);
+* Download [up-to-date version](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest);
 * Expand the archive;
 * Open folder with the expanded archive;
 * Look through the `Sophia.ps1` file to configure functions that you want to be run;
@@ -200,7 +206,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 ## How to use Wrapper
 
 * Download and expand the archive;
-* Run `Sophia Script Wrapper.exe` and import Sophia.ps1;
+* Run `SophiaScriptWrapper.exe` and import Sophia.ps1;
 * Configure every function;
 * Open the `Console Output` tab and press `Run PowerShell`.
 
