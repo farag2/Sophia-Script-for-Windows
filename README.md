@@ -103,6 +103,8 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 |:-----:|:-------------------:|:-----:|:----:|:-----------------:|:--------------:|
 | 21H2  | October 2021 Update | 22000 |  x64 |Home/Pro/Enterprise|[6.0.1](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 
+# Windows 10
+
 |Version|    Marketing name   | Build | Arch|      Editions     | Script version |
 |:-----:|:-------------------:|:-----:|:---:|:-----------------:|:--------------:|
 | 21H2  | October 2021 Update | 19044 | x64 |Home/Pro/Enterprise|[5.12](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
