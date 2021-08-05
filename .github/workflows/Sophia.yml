@@ -137,6 +137,27 @@ jobs:
               "$($_.Name)  $((Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash)"
           } | Add-Content -Path SHA256SUM -Encoding Default -Force
 
+      - name: Build Windows 11
+        run: |
+          $ModuleVersion = (Import-PowerShellDataFile -Path "Sophia\Windows 11\Manifest\Sophia.psd1").ModuleVersion
+          Write-Host $ModuleVersion
+          $BUILD_DIR = "Sophia Script Windows 11 v$ModuleVersion"
+          $ZIP = "$BUILD_DIR.zip"
+
+          New-Item -Path $BUILD_DIR -ItemType Directory -Force
+
+          Write-Host $BUILD_DIR
+          Write-Host $ZIP
+
+          Get-ChildItem -Path Sophia\Windows 11 | Copy-Item -Destination $BUILD_DIR -Recurse -Force
+
+          Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP -Force
+
+          # Calculate hash
+          Get-Item -Path $ZIP -Force | ForEach-Object -Process {
+              "$($_.Name)  $((Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash)"
+          } | Add-Content -Path SHA256SUM -Encoding Default -Force
+
       - name: Wrapper
         run: |
           # The Trim.() is needed to trim the downloaded text version string
