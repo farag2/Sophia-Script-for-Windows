@@ -2313,14 +2313,14 @@
         "Function":  "WSL",
         "Arg":  {
                     "Zero":  {
-                                 "Tag":  "Enable",
+                                 "Tag":  "Install",
                                  "ToolTip":  {
                                                  "EN":  "Install the Windows Subsystem for Linux (WSL)",
                                                  "RU":  "Установить подсистему Windows для Linux (WSL)"
                                              }
                              },
                     "One":  {
-                                "Tag":  "Disable",
+                                "Tag":  "Uninstall",
                                 "ToolTip":  {
                                                 "EN":  "Uninstall the Windows Subsystem for Linux (WSL)",
                                                 "RU":  "Удалить подсистему Windows для Linux (WSL)"
