@@ -131,15 +131,19 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ![Image](https://i.imgur.com/xlMR2mz.png) ![Image](https://i.imgur.com/yl9j9Vt.png)
 
-### David's Sophia Script Wrapper
+### Download and install any supported Linux distribution in automatic mode
 
-![Wr](https://i.imgur.com/gGrb69J.png) ![Wr](https://i.imgur.com/yX4v6oW.png)
-
+![Image](https://i.imgur.com/j2KLZm0.png)
+ 
 ### Native interactive toasts for the scheduled tasks
 
 ![Image](https://i.imgur.com/jornXGR.png)
 
 ![Image](https://i.imgur.com/9s7Noud.png)
+
+### David's Sophia Script Wrapper
+
+![Wr](https://i.imgur.com/gGrb69J.png) ![Wr](https://i.imgur.com/yX4v6oW.png)
 
 ## Videos
 
