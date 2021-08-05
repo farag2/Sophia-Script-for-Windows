@@ -963,11 +963,11 @@ CortanaAutostart -Disable
 
 # Disable Microsoft Teams autostarting
 # Выключить автозагрузку Microsoft Teams
-CortanaAutostart -Disable
+TeamsAutostart -Disable
 
 # Enable Microsoft Teams autostarting (default value)
 # Включить автозагрузкуMicrosoft Teams (значение по умолчанию)
-# CortanaAutostart -Enable
+# TeamsAutostart -Enable
 
 # Check for UWP apps updates
 # Проверить обновления UWP-приложений
