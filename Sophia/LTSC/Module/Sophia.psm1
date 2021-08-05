@@ -1,9 +1,9 @@
 ﻿<#
 	.SYNOPSIS
-	Sophia Script (LTSC version) is a PowerShell module for Windows 10 fine-tuning and automating the routine tasks
+	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.2.10
-	Date: 13.07.2021
+	Version: v5.2.11
+	Date: 05.08.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & Inestic
@@ -25,7 +25,7 @@
 		Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 
 	.LINK GitHub link
-	https://github.com/farag2/Windows-10-Sophia-Script
+	https://github.com/farag2/Sophia-Script-for-Windows
 
 	.LINK Telegram channel & group
 	https://t.me/sophianews
@@ -104,6 +104,13 @@ function Checkings
 		}
 	}
 
+	# Check whether the script was run via PowerShell 5.1
+	if ($PSVersionTable.PSVersion.Major -ne 5)
+	{
+		Write-Warning -Message ($Localization.UnsupportedPowerShell -f $PSVersionTable.PSVersion.Major)
+		exit
+	}
+
 	# Check whether the script was run via PowerShell ISE
 	if ($Host.Name -match "ISE")
 	{
@@ -122,12 +129,12 @@ function Checkings
 		exit
 	}
 
-	# Checking if the current module version is the latest one
+	# Check if the current module version is the latest one
 	try
 	{
 		$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 		$Parameters = @{
-			Uri = "https://raw.githubusercontent.com/farag2/Windows-10-Sophia-Script/master/Sophia/LTSC/Manifest/Sophia.psd1"
+			Uri = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/Sophia/LTSC/Manifest/Sophia.psd1"
 			OutFile = "$DownloadsFolder\Manifest.psd1"
 			Verbose = [switch]::Present
 		}
@@ -146,18 +153,18 @@ function Checkings
 
 				Start-Sleep -Seconds 5
 
-				Start-Process -FilePath "https://github.com/farag2/Windows-10-Sophia-Script/releases/latest"
+				Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"
 				exit
 			}
 		}
 	}
 	catch [System.Net.WebException]
 	{
-		Write-Warning -Message $Localization.NoInternetConnection
-		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+		Write-Warning -Message ($Localization.NoResponse -f "https://github.com/farag2/Sophia-Script-for-Windows")
+		Write-Error -Message ($Localization.NoResponse -f "https://github.com/farag2/Sophia-Script-for-Windows") -ErrorAction SilentlyContinue
 	}
 
-	# Unblock all files in the folder by removing the Zone.Identifier alternate data stream with a value of "3"
+	# Unblock all files in the script folder by removing the Zone.Identifier alternate data stream with a value of "3"
 	Get-ChildItem -Path $PSScriptRoot -Recurse -Force | Unblock-File
 
 	# Display a warning message about whether a user has customized the preset file
@@ -179,8 +186,7 @@ function Checkings
 
 				Start-Sleep -Seconds 5
 
-				Start-Process -FilePath "https://github.com/farag2/Windows-10-Sophia-Script#how-to-use"
-
+				Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows#how-to-use"
 				exit
 			}
 			"1"
@@ -597,9 +603,10 @@ function ScheduledTasks
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		Name="Window"
 		MinHeight="450" MinWidth="400"
-		SizeToContent="Width" WindowStartupLocation="CenterScreen"
+		SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
 		TextOptions.TextFormattingMode="Display" SnapsToDevicePixels="True"
-		FontFamily="Candara" FontSize="16" ShowInTaskbar="True">
+		FontFamily="Candara" FontSize="16" ShowInTaskbar="True"
+		Background="#F1F1F1" Foreground="#262626">
 		<Window.Resources>
 			<Style TargetType="StackPanel">
 				<Setter Property="Orientation" Value="Horizontal"/>
@@ -800,7 +807,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Add-Type @SetForegroundWindow
 	}
 
-	Get-Process | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script"} | ForEach-Object -Process {
+	Get-Process | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows 10 LTSC"} | ForEach-Object -Process {
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
@@ -886,13 +893,13 @@ function SigninInfo
 
 <#
 	.SYNOPSIS
-	The provision to websites a locally relevant content by accessing language list
+	The provision to websites a locally relevant content by accessing my language list
 
 	.PARAMETER Disable
-	Do not let websites provide locally relevant content by accessing language list
+	Do not let websites provide locally relevant content by accessing my language list
 
 	.PARAMETER Enable
-	Let websites provide locally relevant content by accessing language list
+	Let websites provide locally relevant content by accessing language my list
 
 	.EXAMPLE
 	LanguageListAccess -Disable
@@ -1000,17 +1007,17 @@ function AdvertisingID
 	.SYNOPSIS
 	The "This PC" icon on Desktop
 
-	.PARAMETER Hide
+	.PARAMETER Show
 	Show the "This PC" icon on Desktop
 
-	.PARAMETER Show
+	.PARAMETER Hide
 	Hide the "This PC" icon on Desktop
 
 	.EXAMPLE
-	ThisPC -Hide
+	ThisPC -Show
 
 	.EXAMPLE
-	ThisPC -Show
+	ThisPC -Hide
 
 	.NOTES
 	Current user
@@ -1945,45 +1952,64 @@ function TaskbarSearch
 	Hide all icons in the notification area
 
 	.EXAMPLE
-	TrayIcons -Show
+	NotificationAreaIcons -Show
 
 	.EXAMPLE
-	TrayIcons -Hide
+	NotificationAreaIcons -Hide
 
 	.NOTES
 	Current user
 #>
-function TrayIcons
+function NotificationAreaIcons
 {
 	param
 	(
 		[Parameter(
 			Mandatory = $true,
-			ParameterSetName = "Hide"
-		)]
-		[switch]
-		$Hide,
-
-		[Parameter(
-			Mandatory = $true,
 			ParameterSetName = "Show"
 		)]
 		[switch]
-		$Show
+		$Show,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Hide"
+		)]
+		[switch]
+		$Hide
 	)
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
-		"Hide"
-		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name EnableAutoTray -PropertyType DWord -Value 1 -Force
-		}
 		"Show"
 		{
 			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name EnableAutoTray -PropertyType DWord -Value 0 -Force
 		}
+		"Hide"
+		{
+			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name EnableAutoTray -PropertyType DWord -Value 1 -Force
+		}
+	}
+
+	# Save all opened folders in order to restore them after File Explorer restart
+	Clear-Variable -Name OpenedFolders -Force -ErrorAction Ignore
+	$OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
+
+	# In order for the changes to take effect the File Explorer process has to be restarted
+	Stop-Process -Name explorer -Force
+
+	Start-Sleep -Seconds 3
+
+	# Restoring closed folders
+	foreach ($OpenedFolder in $OpenedFolders)
+	{
+		if (Test-Path -Path $OpenedFolder)
+		{
+			Invoke-Item -Path $OpenedFolder
+		}
 	}
 }
+
 
 <#
 	.SYNOPSIS
@@ -2182,11 +2208,11 @@ function NewAppInstalledNotification
 	.SYNOPSIS
 	First sign-in animation after the upgrade
 
-	.PARAMETER Hide
-	Hide first sign-in animation after the upgrade
+	.PARAMETER Disable
+	Disable first sign-in animation after the upgrade
 
-	.PARAMETER Show
-	Show first sign-in animation after the upgrade
+	.PARAMETER Enable
+	Enable first sign-in animation after the upgrade
 
 	.EXAMPLE
 	FirstLogonAnimation -Disable
@@ -2750,10 +2776,10 @@ function StorageSenseFrequency
 	Enable hibernation
 
 	.EXAMPLE
-	Hibernate -Enable
+	Hibernation -Enable
 
 	.EXAMPLE
-	Hibernate -Disable
+	Hibernation -Disable
 
 	.NOTES
 	Do not recommend turning it off on laptops
@@ -2761,7 +2787,7 @@ function StorageSenseFrequency
 	.NOTES
 	Current user
 #>
-function Hibernate
+function Hibernation
 {
 	param
 	(
@@ -3497,9 +3523,10 @@ function WindowsFeatures
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		Name="Window"
 		MinHeight="450" MinWidth="400"
-		SizeToContent="Width" WindowStartupLocation="CenterScreen"
+		SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
 		TextOptions.TextFormattingMode="Display" SnapsToDevicePixels="True"
-		FontFamily="Candara" FontSize="16" ShowInTaskbar="True">
+		FontFamily="Candara" FontSize="16" ShowInTaskbar="True"
+		Background="#F1F1F1" Foreground="#262626">
 		<Window.Resources>
 			<Style TargetType="StackPanel">
 				<Setter Property="Orientation" Value="Horizontal"/>
@@ -3708,7 +3735,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Add-Type @SetForegroundWindow
 	}
 
-	Get-Process | Where-Object -FilterScript {$_.MainWindowTitle -like "Windows 10 Sophia Script*"} | ForEach-Object -Process {
+	Get-Process | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows 10 LTSC"} | ForEach-Object -Process {
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
@@ -3839,9 +3866,10 @@ function WindowsCapabilities
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		Name="Window"
 		MinHeight="450" MinWidth="400"
-		SizeToContent="Width" WindowStartupLocation="CenterScreen"
+		SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
 		TextOptions.TextFormattingMode="Display" SnapsToDevicePixels="True"
-		FontFamily="Candara" FontSize="16" ShowInTaskbar="True">
+		FontFamily="Candara" FontSize="16" ShowInTaskbar="True"
+		Background="#F1F1F1" Foreground="#262626">
 		<Window.Resources>
 			<Style TargetType="StackPanel">
 				<Setter Property="Orientation" Value="Horizontal"/>
@@ -3894,20 +3922,6 @@ function WindowsCapabilities
 	}
 
 	#region Functions
-	function InternetConnectionStatus
-	{
-		try
-		{
-			(Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription
-		}
-		catch [System.Net.WebException]
-		{
-			Write-Warning -Message $Localization.NoInternetConnection
-			Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
-			return
-		}
-	}
-
 	function Get-CheckboxClicked
 	{
 		[CmdletBinding()]
@@ -4018,7 +4032,20 @@ function WindowsCapabilities
 	{
 		"Install"
 		{
-			InternetConnectionStatus
+			# Check the internet connection
+			try
+			{
+				(Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription
+			}
+			catch [System.Net.WebException]
+			{
+				Write-Warning -Message $Localization.NoInternetConnection
+				Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+
+				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+
+				return
+			}
 
 			$State = "NotPresent"
 			$ButtonContent = $Localization.Install
@@ -4074,7 +4101,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Add-Type @SetForegroundWindow
 	}
 
-	Get-Process | Where-Object -FilterScript {$_.MainWindowTitle -like "Windows 10 Sophia Script*"} | ForEach-Object -Process {
+	Get-Process | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows 10 LTSC"} | ForEach-Object -Process {
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
@@ -4321,6 +4348,85 @@ function NetworkAdaptersSavePower
 			{
 				$Adapter.AllowComputerToTurnOffDevice = "Enabled"
 				$Adapter | Set-NetAdapterPowerManagement
+			}
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	Internet Protocol Version 6 (TCP/IPv6) component
+
+	.PARAMETER Disable
+	Disable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections
+
+	.PARAMETER Enable
+	Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections
+
+	.EXAMPLE
+	IPv6Component -Disable
+
+	.EXAMPLE
+	IPv6Component -Enable
+
+	.NOTES
+	Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipv6-test.com
+
+	.NOTES
+	Current user
+#>
+function IPv6Component
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable
+	)
+
+	# Check the internet connection
+	try
+	{
+		if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
+		{
+			# Check whether the ISP supports IPv6 protocol using https://ipv6-test.com
+			$IPv6Test = Invoke-RestMethod -Uri "https://v4v6.ipv6-test.com/api/myip.php?json" | Where-Object -FilterScript {$_.proto -eq "ipv6"}
+		}
+	}
+	catch [System.Net.WebException]
+	{
+		Write-Warning -Message $Localization.NoInternetConnection
+		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+
+		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+
+		return
+	}
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Disable"
+		{
+			if ($null -eq $IPv6Test)
+			{
+				Disable-NetAdapterBinding –Name * –ComponentID ms_tcpip6
+			}
+		}
+		"Enable"
+		{
+			if ($IPv6Test)
+			{
+				Enable-NetAdapterBinding –Name * –ComponentID ms_tcpip6
 			}
 		}
 	}
@@ -5284,7 +5390,7 @@ function WinPrtScrFolder
 		"Desktop"
 		{
 			$DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
-			Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -Type ExpandString -Value $DesktopFolder -Force
+			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -Type ExpandString -Value $DesktopFolder -Force
 		}
 		"Default"
 		{
@@ -6055,15 +6161,15 @@ namespace RegistryUtils
 		if ($OrigProgID)
 		{
 			# Save possible ProgIds history with extension
-			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Name "$ProgID`_$Extension" -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Name "$ProgID_$Extension" -PropertyType DWord -Value 0 -Force
 		}
 
 		$Name = "{0}_$Extension" -f (Split-Path -Path $ProgId -Leaf)
 		New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Name $Name -PropertyType DWord -Value 0 -Force
 
-		if ("$ProgId`_$Extension" -ne $Name)
+		if ("$ProgId_$Extension" -ne $Name)
 		{
-			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Name "$ProgId`_$Extension" -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Name "$ProgId_$Extension" -PropertyType DWord -Value 0 -Force
 		}
 
 		# If ProgId doesn't exist set the specified ProgId for the extensions
@@ -6902,18 +7008,18 @@ while (`$true)
 "@
 
 			# Create the "Windows Cleanup Notification" task
-			$Action = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $ToastNotification"
-			$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
+			$Action    = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $ToastNotification"
+			$Settings  = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
 			$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
-			$Trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 30 -At 9pm
+			$Trigger   = New-ScheduledTaskTrigger -Daily -DaysInterval 30 -At 9pm
 			$Parameters = @{
 				TaskName    = "Windows Cleanup Notification"
 				TaskPath    = "Sophia Script"
-				Principal   = $Principal
 				Action      = $Action
-				Description = $Localization.CleanupNotificationTaskDescription
 				Settings    = $Settings
+				Principal   = $Principal
 				Trigger     = $Trigger
+				Description = $Localization.CleanupNotificationTaskDescription
 			}
 			Register-ScheduledTask @Parameters -Force
 		}
@@ -7017,18 +7123,18 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -For
 "@
 
 			# Create the "SoftwareDistribution" task
-			$Action = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $SoftwareDistributionTask"
-			$Trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 90 -At 9pm
-			$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
+			$Action    = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $SoftwareDistributionTask"
+			$Settings  = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
 			$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
+			$Trigger   = New-ScheduledTaskTrigger -Daily -DaysInterval 90 -At 9pm
 			$Parameters = @{
 				TaskName    = "SoftwareDistribution"
 				TaskPath    = "Sophia Script"
-				Principa    = $Principal
 				Action      = $Action
-				Description = $Localization.FolderTaskDescription -f "%SystemRoot%\SoftwareDistribution\Download"
 				Settings    = $Settings
+				Principal   = $Principal
 				Trigger     = $Trigger
+				Description = $Localization.FolderTaskDescription -f "%SystemRoot%\SoftwareDistribution\Download"
 			}
 			Register-ScheduledTask @Parameters -Force
 		}
@@ -7114,18 +7220,18 @@ Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object {`$_.CreationTime 
 "@
 
 			# Create the "Temp" task
-			$Action = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $TempTask"
-			$Trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 60 -At 9pm
-			$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
+			$Action    = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $TempTask"
+			$Settings  = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
 			$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
+			$Trigger   = New-ScheduledTaskTrigger -Daily -DaysInterval 60 -At 9pm
 			$Parameters = @{
 				TaskName    = "Temp"
 				TaskPath    = "Sophia Script"
-				Principal   = $Principal
 				Action      = $Action
-				Description = $Localization.FolderTaskDescription -f "%TEMP%"
 				Settings    = $Settings
+				Principal   = $Principal
 				Trigger     = $Trigger
+				Description = $Localization.FolderTaskDescription -f "%TEMP%"
 			}
 			Register-ScheduledTask @Parameters -Force
 		}
@@ -7180,11 +7286,17 @@ function NetworkProtection
 	{
 		"Enable"
 		{
-			Set-MpPreference -EnableNetworkProtection Enabled
+			if ((Get-MpComputerStatus).AntivirusEnabled -eq $true)
+			{
+				Set-MpPreference -EnableNetworkProtection Enabled
+			}
 		}
 		"Disable"
 		{
-			Set-MpPreference -EnableNetworkProtection Disabled
+			if ((Get-MpComputerStatus).AntivirusEnabled -eq $true)
+			{
+				Set-MpPreference -EnableNetworkProtection Disabled
+			}
 		}
 	}
 }
@@ -7231,11 +7343,17 @@ function PUAppsDetection
 	{
 		"Enable"
 		{
-			Set-MpPreference -PUAProtection Enabled
+			if ((Get-MpComputerStatus).AntivirusEnabled -eq $true)
+			{
+				Set-MpPreference -PUAProtection Enabled
+			}
 		}
 		"Disable"
 		{
-			Set-MpPreference -PUAProtection Disabled
+			if ((Get-MpComputerStatus).AntivirusEnabled -eq $true)
+			{
+				Set-MpPreference -PUAProtection Disabled
+			}
 		}
 	}
 }
@@ -7285,11 +7403,17 @@ function DefenderSandbox
 	{
 		"Enable"
 		{
-			setx /M MP_FORCE_USE_SANDBOX 1
+			if ((Get-MpComputerStatus).AntivirusEnabled -eq $true)
+			{
+				setx /M MP_FORCE_USE_SANDBOX 1
+			}
 		}
 		"Disable"
 		{
-			setx /M MP_FORCE_USE_SANDBOX 0
+			if ((Get-MpComputerStatus).AntivirusEnabled -eq $true)
+			{
+				setx /M MP_FORCE_USE_SANDBOX 0
+			}
 		}
 	}
 }
@@ -8025,7 +8149,7 @@ function RunAsDifferentUserContext
 			ParameterSetName = "Hide"
 		)]
 		[switch]
-		$Hide
+		$Remove
 	)
 
 	switch ($PSCmdlet.ParameterSetName)
@@ -8496,6 +8620,9 @@ function BitmapImageNewContext
 				{
 					Write-Warning -Message $Localization.NoInternetConnection
 					Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+
+					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+
 					return
 				}
 			}
@@ -8574,6 +8701,9 @@ function RichTextDocumentNewContext
 				{
 					Write-Warning -Message $Localization.NoInternetConnection
 					Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+
+					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+
 					return
 				}
 			}
@@ -8817,11 +8947,12 @@ public static void PostMessage()
 	[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
 	[Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
 
+	# Telegram group
 	[xml]$ToastTemplate = @"
 <toast duration="Long" scenario="reminder">
 	<visual>
 		<binding template="ToastGeneric">
-			<text>$($Localization.TelegramTitle)</text>
+			<text>$($Localization.TelegramGroupTitle)</text>
 			<group>
 				<subgroup>
 					<text hint-style="body" hint-wrap="true">https://t.me/sophia_chat</text>
@@ -8832,6 +8963,33 @@ public static void PostMessage()
 	<audio src="ms-winsoundevent:notification.default" />
 	<actions>
 		<action arguments="https://t.me/sophia_chat" content="$($Localization.Open)" activationType="protocol"/>
+		<action arguments="dismiss" content="" activationType="system"/>
+	</actions>
+</toast>
+"@
+
+	$ToastXml = [Windows.Data.Xml.Dom.XmlDocument]::New()
+	$ToastXml.LoadXml($ToastTemplate.OuterXml)
+
+	$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New($ToastXML)
+	[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel").Show($ToastMessage)
+
+	# Telegram channel
+	[xml]$ToastTemplate = @"
+<toast duration="Long" scenario="reminder">
+	<visual>
+		<binding template="ToastGeneric">
+			<text>$($Localization.TelegramChannelTitle)</text>
+			<group>
+				<subgroup>
+					<text hint-style="body" hint-wrap="true">https://t.me/sophianews</text>
+				</subgroup>
+			</group>
+		</binding>
+	</visual>
+	<audio src="ms-winsoundevent:notification.default" />
+	<actions>
+		<action arguments="https://t.me/sophianews" content="$($Localization.Open)" activationType="protocol"/>
 		<action arguments="dismiss" content="" activationType="system"/>
 	</actions>
 </toast>

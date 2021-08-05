@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	The TAB completion for functions and their arguments
 
-	Version: v5.2.10
-	Date: 13.07.2021
+	Version: v5.2.11
+	Date: 04.08.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & Inestic
@@ -27,8 +27,12 @@
 	Separate functions with a comma
 
 	.LINK
-	https://github.com/farag2/Windows-10-Sophia-Script
+	https://github.com/farag2/Sophia-Script-for-Windows
 #>
+
+#Requires -RunAsAdministrator
+#Requires -Version 5.1
+
 function Sophia
 {
 	[CmdletBinding()]
@@ -38,8 +42,6 @@ function Sophia
 		[string[]]
 		$Functions
 	)
-
-	Invoke-Command -ScriptBlock {Checkings}
 
 	foreach ($Function in $Functions)
 	{
@@ -52,12 +54,16 @@ function Sophia
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script for LTSC v5.2.10 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & Inestic, 2014–2021"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC v5.2.11 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([char]0x00A9) farag & Inestic, 2014–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
 
 Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia -BaseDirectory $PSScriptRoot\Localizations
+
+# The mandatory checkings. Please, do not comment out this function
+# Обязательные проверки. Пожалуйста, не комментируйте данную функцию
+Checkings
 
 $Parameters = @{
 	CommandName   = "Sophia"
