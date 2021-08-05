@@ -2212,8 +2212,28 @@
     "Win10": "true",
     "Win11": "true"
   },
-  {
+{
     "Id": 805,
+    "Region": "UWP apps",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "TeamsAutostart",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "false",
+    "Win10": "false",
+    "Win11": "true"
+  },
+  {
+    "Id": 806,
     "Region": "UWP apps",
     "Control": "cmb",
     "Required": "false",
@@ -2233,7 +2253,7 @@
     "Win11": "false"
   },
   {
-    "Id": 806,
+    "Id": 807,
     "Region": "UWP apps",
     "Control": "chk",
     "Required": "false",
