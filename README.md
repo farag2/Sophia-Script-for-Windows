@@ -5,11 +5,11 @@
 **A PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks** :trophy:
 
 <p align="left">
-  <a href="https://github.com/farag2/Windows-10-Sophia-Script/actions"><img src="https://img.shields.io/github/workflow/status/farag2/Windows-10-Sophia-Script/Build?label=GitHub%20Actions&logo=GitHub"></a>
+  <a href="https://github.com/farag2/Sophia-Script-for-Windows/actions"><img src="https://img.shields.io/github/workflow/status/farag2/Sophia-Script-for-Windows/Build?label=GitHub%20Actions&logo=GitHub"></a>
   <img src="https://img.shields.io/badge/PowerShell%205.1%20&%207.1-Ready-blue.svg?color=5391FE&style=flat&logo=powershell">
 
-  <a href="https://github.com/farag2/Windows-10-Sophia-Script/releases"><img src="https://img.shields.io/github/downloads/farag2/Windows-10-Setup-Script/total.svg?label=downloads%20%28since%20May%202020%29"></a>
-  <a href="https://github.com/farag2/Windows-10-Sophia-Script/releases"><img src="https://img.shields.io/github/v/release/farag2/Windows-10-Sophia-Script"></a>
+  <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases"><img src="https://img.shields.io/github/downloads/farag2/Sophia-Script-for-Windows/total.svg?label=downloads%20%28since%20May%202020%29"></a>
+  <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases"><img src="https://img.shields.io/github/v/release/farag2/Sophia-Script-for-Windows"></a>
 
   <a href="https://twitter.com/tea_head_"><img src="https://img.shields.io/badge/Logo%20by-teahead-blue?style=flat&logo=Twitter"></a>
   <img src="https://img.shields.io/badge/Made%20with-%E2%9D%A4-149ce2.svg?color=149ce2">
@@ -43,9 +43,9 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 	&bull;
 	<a href="#how-to-translate">How to translate</a>
 	&bull;
-	<a href="#supported-windows-10-versions">Supported Windows 10 versions</a>
+	<a href="#supported-windows-versions">Supported Windows 10 versions</a>
 	&bull;
-	<a href="https://github.com/farag2/Windows-10-Sophia-Script/blob/master/CHANGELOG.md">Changelog</a>
+	<a href="https://github.com/farag2/Sophia-Script-for-Windowss/blob/master/CHANGELOG.md">Changelog</a>
 </p>
 
 ***
