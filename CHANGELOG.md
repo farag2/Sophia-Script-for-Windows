@@ -5,6 +5,117 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.12 | 6.0.1 — 05.08.2021
+
+## Windows 11 21H2 | Windows 10 2004/20H2/21H1 | LTSC
+
+Diff from v5.11.1
+[5.11.1...5.12](https://github.com/farag2/Sophia-Script-for-Windows/compare/5.11.1...5.12)
+
+<img src="https://i.imgur.com/kFHrRx1.png" height="200px"/>
+
+As you may see, the project name changed to `Sophia Script for Windows`, due to it now supports both `Windows and Windows 11` :trophy:. The project page is now <https://github.com/farag2/Sophia-Script-for-Windows>
+
+* Added the `IPv6Component -Enable`, `IPv6Component -Disable` functions;
+  * Disable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections. Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipv6-test.com
+* Added the `AeroShaking -Enable`, `AeroShaking -Disable` functions;
+  * When I grab a windows's title bar and shake it, minimize all other windows
+* @Inestic has re-writen the `WSL` functions into one with a `WPF form` with list of supported Linux distributions to install. Microsoft has allowed the supported Windows 10 versions to install Linux distributions with [one command](https://devblogs.microsoft.com/commandline/install-wsl-with-a-single-command-now-available-in-windows-10-version-2004-and-higher/) `wsl --install`;
+  * Windows 10 `19041.1151` (Windows 11) build is minimum needed;
+  * ![Image](https://i.imgur.com/j2KLZm0.png)
+* The `XboxGameBar` function removed;
+* Descriptions updated;
+* Fixed typos;
+* Minor changes.
+* The development focus shifted to [SophiApp](https://github.com/Sophia-Community/SophiApp) :rocket:
+
+***
+
+## Windows 11 21H2
+
+<details>
+  <summary>Features removed compared to Windows 10</summary>
+
+* Hide the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested
+  * `WindowsWelcomeExperience -Hide`
+* Hide Cortana button on the taskbar
+  * C`ortanaButton -Hide`
+* Hide the "3D Objects" folder in "This PC" and Quick access
+  * `3DObjects -Hide`
+* Hide People button on the taskbar
+  * `PeopleTaskbar -Hide`
+* Hide seconds on the taskbar clock
+  * `SecondsInSystemClock -Show`
+* Hide the search on the taskbar
+  * `TaskbarSearch -Hide`
+* Hide the Windows Ink Workspace button on the taskbar
+  * `WindowsInkWorkspace -Hide`
+* Hide all icons in the notification area
+  * `NotificationAreaIcons -Show`
+* Hide the Meet Now icon in the notification area
+  * `MeetNow -Hide`
+* Disable "News and Interests" on the taskbar
+  * `NewsInterests -Disable`
+* NewAppInstalledNotification
+  * `NewAppInstalledNotification -Hide`
+* Hide app suggestions in the Start menu
+  * `AppSuggestions -Hide`
+* Pin the shortcuts to Start
+  * `PinToStart -Tiles ControlPanel, DevicesPrinters, PowerShell`
+* Do not let UWP apps run in the background
+  * `BackgroundUWPApps -Disable`
+* Hide the "Edit with Paint 3D" item from the media files context menu
+  * `EditWithPaint3DContext -Hide`
+* Hide the "Bitmap image" item from the "New" context menu
+  * `BitmapImageNewContext -Hide`
+* Hide the "Edit" item from the images context menu
+  * `ImagesEditContext -Hide`
+* Hide the "Rich Text Document" item from the "New" context menu
+  * `RichTextDocumentNewContext -Hide`
+  
+</details>
+
+<details>
+  <summary>Features added for Windows 11 compared to Windows 10</summary>
+
+* Enable the Windows 10 File Explorer
+  * `Windows10FileExplorer` -Enable
+* Disable the File Explorer compact mode
+  * `FileExplorerCompactMode -Disable`
+* Show snap layouts when I hover over a windows's maximaze button
+  * `SnapAssistFlyout -Disable`
+* Set the taskbar alignment to the left
+  * `TaskbarAlignment -Left`
+* Hide the search button from the taskbar
+  * `TaskbarSearch -Hide`
+* Hide the widgets icon on the taskbar
+  * `TaskbarWidgets -Hide`
+* Hide the Chat icon (Microsoft Teams) on the taskbar
+  * `TaskbarChat -Hide`
+* Open the "Notification Area Icons" page in Control Panel to enable "Always show all icons in the notification area" settings manually
+  * `NotificationAreaIcons`
+* Make the taskbar size small
+  * `TaskbarSize -Small`
+* Set Windows Terminal Preview as default terminal app to host the user interface for command-line applications
+  * `DefaultTerminalApp -WindowsTerminal`
+* Enable DNS-over-HTTPS for IPv4. The preferred DNS server: 1.0.0.1, the alternate: 1.1.1.1
+  * `DNSoverHTTPS -Enable`
+* Hide the "Open in Windows Terminal" menu option in the folders context menu
+  * `WindowsTerminalContext -Hide`
+  
+</details>
+
+***
+
+## Sophia Script Wrapper 2.2
+
+* Now supports the UI translation. ToolTips and UI labels are created from JSON files `tooltip.json` and `ui.json`.
+  * Currently translated into English & русский languages stored in the JSON files in `Localizations` folder;
+* Fixed some `ToolTip` display errors;
+* Console is now autoupdated;
+* Minor UI changes;
+* Fixed typos.
+
 ## 5.11.1 — 13.07.2021
 
 ## Windows 10 2004/20H2/21H1 | LTSC
