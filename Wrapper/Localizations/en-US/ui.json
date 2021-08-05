@@ -1,0 +1,67 @@
+﻿[
+  {
+    "Id": "Menu",
+    "Options": {
+      "menuImportPreset": "Import Preset",
+      "menuPresets": "Presets",
+      "menuOpposite": "Opposite",
+      "menuClear": "Clear",
+      "menuTheme": "Theme",
+      "menuLanguage": "Language",
+      "menuAbout": "About"
+    }
+  },
+  {
+    "Id": "Tab",
+    "Options": {
+      "tabSystemProtection": "System Protection",
+      "tabPrivacyTelemetry": "Privacy & Telemetry",
+      "tabUIPersonalization": "UI & Personalization",
+      "tabOneDrive": "OneDrive",
+      "tabSystem": "System",
+      "tabWSL": "WSL",
+      "tabStartMenu": "Start Menu",
+      "tabUWP": "UWP Apps",
+      "tabGaming": "Gaming",
+      "tabScheduledTasks": "Scheduled Tasks",
+      "tabDefenderSecurity": "Defender & Security",
+      "tabContextMenu": "Context Menu",
+      "tabConsoleOutput": "Console Output"
+    }
+  },
+  {
+    "Id": "Button",
+    "Options": {
+      "btnRefreshConsole": "Refresh Console",
+      "btnSave": "Save",
+      "btnSaveAs": "Save As",
+      "btnRunPowerShell": "Run PowerShell"
+    }
+  },
+  {
+    "Id": "StatusBar",
+    "Options": {
+      "statusBarHover": "Hover your mouse cursor over the selection items to information about each option",
+      "statusBarPresetLoaded": "preset loaded!",
+      "statusBarPresetNotComp": "preset file is not compatible!",
+      "statusBarSophiaPreset": "Sophia preset loaded!",
+      "statusBarWindowsDefaultPreset": "Windows Default preset loaded!",
+      "statusBarPowerShellScriptCreatedFromSelections": "PowerShell Script created from your selections! You can run it or save it.",
+      "statusBarPowerShellSaveAs": "PowerShell script created!",
+      "statusBarPowerShellSave": "Changes saved to",
+      "statusBarOpposite": "Opposite selected!",
+      "statusBarClear": "Selections all cleared!"
+    }
+  },
+  {
+    "Id": "MessageBox",
+    "Options": {
+      "messageBoxNewWrapperFound": "A new version of 'Wrapper' found.\nOpen a GitHub latest release page?",
+      "messageBoxNewSophiaFound": "A new version Sophia Script found.\nOpen GitHub latest release page?",
+      "messageBoxDoesNotExist": "does not exist",
+      "messageBoxPresetNotComp": "preset file is not compatible!",
+      "messageBoxFilesMissingClose": "Files missing so Sophia Script Wrapper will close",
+      "messageBoxConsoleEmpty": "The console is empty.\nClick 'Refresh Console' button to create script with your selections"
+    }
+  }
+]
