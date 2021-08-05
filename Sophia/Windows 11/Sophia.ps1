@@ -317,11 +317,11 @@ OneDriveFileExplorerAd -Hide
 
 # Show snap layouts when I hover over a windows's maximaze button (default value)
 # Показывать макеты прикрепления, частью которых является приложение, при наведении указателя мыши на кнопки панели задач (значение по умолчанию)
-SnapAssistFlyout -Disable
+SnapAssistFlyout -Enable
 
 # Hide snap layouts when I hover over a windows's maximaze button
 # Не показывать макеты прикрепления, частью которых является приложение, при наведении указателя мыши на кнопки панели задач
-# SnapAssistFlyout -Enable
+# SnapAssistFlyout -Disable
 
 # When I snap a window, do not show what I can snap next to it
 # При прикреплении окна не показывать, что можно прикрепить рядом с ним
