@@ -149,7 +149,7 @@ jobs:
           Write-Host $BUILD_DIR
           Write-Host $ZIP
 
-          Get-ChildItem -Path Sophia\Windows 11 | Copy-Item -Destination $BUILD_DIR -Recurse -Force
+          Get-ChildItem -Path "Sophia\Windows 11" | Copy-Item -Destination $BUILD_DIR -Recurse -Force
 
           Compress-Archive -Path $BUILD_DIR -DestinationPath $ZIP -Force
 
