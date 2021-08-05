@@ -1,9 +1,9 @@
 <#
 	.SYNOPSIS
-	Default preset file for "Windows 10 Sophia Script"
+	Default preset file for "Sophia Script for Windows 10 (PowerShell 7)"
 
-	Version: v5.11.1
-	Date: 12.07.2021
+	Version: v5.12
+	Date: 05.08.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & Inestic
@@ -41,7 +41,7 @@
 	Read more in the Functions.ps1 file
 
 	.LINK GitHub link
-	https://github.com/farag2/Windows-10-Sophia-Script
+	https://github.com/farag2/Sophia-Script-for-Windows
 
 	.LINK Telegram channel & group
 	https://t.me/sophianews
@@ -71,7 +71,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Windows 10 Sophia Script v5.11.1 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014–2021"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.12 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -107,7 +107,7 @@ if ($Functions)
 
 #region Protection
 <#
-	The necessary checkings. If you want to disable a warning message about whether the preset file was customized, remove the "-Warning" argument
+	The mandatory checkings. If you want to disable a warning message about whether the preset file was customized, remove the "-Warning" argument
 	Please, do not comment out this function
 
 	Обязательные проверки. Чтобы выключить предупреждение о необходимости настройки пресет-файла, удалите аргумент "-Warning"
@@ -139,11 +139,11 @@ DiagTrackService -Disable
 # DiagTrackService -Enable
 
 # Set the diagnostic data collection to minimum
-# Установить уровень сбора диагностических сведений ОС на минимальный
+# Установить уровень сбора диагностических данных ОС на минимальный
 DiagnosticDataLevel -Minimal
 
 # Set the diagnostic data collection to default (default value)
-# Установить уровень сбора диагностических сведений ОС по умолчанию (значение по умолчанию)
+# Установить уровень сбора диагностических данных ОС по умолчанию (значение по умолчанию)
 # DiagnosticDataLevel -Default
 
 # Turn off the Windows Error Reporting
@@ -191,7 +191,7 @@ LanguageListAccess -Disable
 AdvertisingID -Disable
 
 # Let apps use advertising ID to make ads more interresting to you based on your app usage (default value)
-# Разрешать приложениям использовать идентификатор рекламы (значение по умолчанию)
+# Разрешить приложениям использовать идентификатор рекламы (значение по умолчанию)
 # AdvertisingID -Enable
 
 # Hide the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested
@@ -234,11 +234,11 @@ WhatsNewInWindows -Disable
 # Предлагать способы завершения настройки устройства для максимально эффективного использования Windows (значение по умолчанию)
 # WhatsNewInWindows -Enable
 
-# Do not offer tailored experiences based on the diagnostic data setting
+# Do not let Microsoft offer you tailored expereinces based on the diagnostic data setting you hava chosen
 # Не предлагать персонализированные возможности, основанные на выбранном параметре диагностических данных
 TailoredExperiences -Disable
 
-# Offer tailored experiences based on the diagnostic data setting (default value)
+# Let Microsoft offer you tailored expereinces based on the diagnostic data setting you hava chosen (default value)
 # Предлагать персонализированные возможности, основанные на выбранном параметре диагностических данных (значение по умолчанию)
 # TailoredExperiences -Enable
 
@@ -253,11 +253,11 @@ BingSearch -Disable
 
 #region UI & Personalization
 # Show the "This PC" icon on Desktop
-# Отображать значок "Этот компьютер" на рабочем столе
+# Отобразить значок "Этот компьютер" на рабочем столе
 ThisPC -Show
 
 # Hide the "This PC" icon on Desktop (default value)
-# Скрывать "Этот компьютер" на рабочем столе (значение по умолчанию)
+# Скрыть "Этот компьютер" на рабочем столе (значение по умолчанию)
 # ThisPC -Hide
 
 # Do not use item check boxes
@@ -269,15 +269,15 @@ CheckBoxes -Disable
 # CheckBoxes -Enable
 
 # Show hidden files, folders, and drives
-# Отображать скрытые файлы, папки и диски
+# Отобразить скрытые файлы, папки и диски
 HiddenItems -Enable
 
 # Do not show hidden files, folders, and drives (default value)
-# Не отображать скрытые файлы, папки и диски (значение по умолчанию)
+# Не показывать скрытые файлы, папки и диски (значение по умолчанию)
 # HiddenItems -Disable
 
 # Show file name extensions
-# Отображать расширения имён файлов
+# Отобразить расширения имён файлов
 FileExtensions -Show
 
 # Hide file name extensions (default value)
@@ -353,7 +353,7 @@ RecycleBinDeleteConfirmation -Enable
 3DObjects -Hide
 
 # Show the "3D Objects" folder in "This PC" and Quick access (default value)
-# Отображать папку "Объемные объекты" в "Этот компьютер" и панели быстрого доступа (значение по умолчанию)
+# Отобразить папку "Объемные объекты" в "Этот компьютер" и панели быстрого доступа (значение по умолчанию)
 # 3DObjects -Show
 
 # Hide recently used files in Quick access
@@ -373,27 +373,27 @@ QuickAccessFrequentFolders -Hide
 # QuickAccessFrequentFolders -Show
 
 # Hide the Task View button on the taskbar
-# Скрывать кнопку Просмотра задач
+# Скрыть кнопку Просмотра задач
 TaskViewButton -Hide
 
 # Show the Task View button on the taskbar (default value)
-# Показывать кнопку Просмотра задач (значение по умолчанию)
+# Отобразить кнопку Просмотра задач (значение по умолчанию)
 # TaskViewButton -Show
 
 # Hide People button on the taskbar
-# Скрывать панель "Люди" на панели задач
+# Скрыть панель "Люди" на панели задач
 PeopleTaskbar -Hide
 
 # Show People button on the taskbar (default value)
-# Показывать панель "Люди" на панели задач (значение по умолчанию)
+# Отобразить панель "Люди" на панели задач (значение по умолчанию)
 # PeopleTaskbar -Show
 
 # Show seconds on the taskbar clock
-# Отображать секунды в системных часах на панели задач
+# Отобразить секунды в системных часах на панели задач
 SecondsInSystemClock -Show
 
 # Hide seconds on the taskbar clock (default value)
-# Скрывать секунды в системных часах на панели задач (значение по умолчанию)
+# Скрыть секунды в системных часах на панели задач (значение по умолчанию)
 # SecondsInSystemClock -Hide
 
 # Hide the search on the taskbar
@@ -418,11 +418,11 @@ WindowsInkWorkspace -Hide
 
 # Always show all icons in the notification area
 # Всегда отображать все значки в области уведомлений
-TrayIcons -Show
+NotificationAreaIcons -Show
 
 # Hide all icons in the notification area (default value)
 # Скрыть все значки в области уведомлений (значение по умолчанию)
-# TrayIcons -Hide
+# NotificationAreaIcons -Hide
 
 # Hide the Meet Now icon in the notification area
 # Скрыть иконку "Провести собрание" в области уведомлений
@@ -466,11 +466,11 @@ WindowsColorMode -Dark
 
 # Set the default app mode to dark
 # Установить цвет режима приложения на темный
-AppMode -Dark
+AppColorMode -Dark
 
 # Set the default app mode to light (default value)
 # Установить цвет режима приложения на светлый (значение по умолчанию)
-# AppMode -Light
+# AppColorMode-Light
 
 # Hide the "New App Installed" indicator
 # Скрыть уведомление "Установлено новое приложение"
@@ -535,6 +535,14 @@ AppsLanguageSwitch -Enable
 # Do not use a different input method for each app window (default value)
 # Не использовать метод ввода для каждого окна (значение по умолчанию)
 # AppsLanguageSwitch -Disable
+
+# When I grab a windows's title bar and shake it, minimize all other windows
+# При захвате заголовка окна и встряхивании сворачивать все остальные окна
+AeroShaking -Enable
+
+# When I grab a windows's title bar and shake it, don't minimize all other windows (default value)
+# При захвате заголовка окна и встряхивании не сворачивать все остальные окна (значение по умолчанию)
+# AeroShaking -Disable
 #endregion UI & Personalization
 
 #region OneDrive
@@ -576,18 +584,18 @@ StorageSenseFrequency -Month
 
 # Disable hibernation. Do not recommend turning it off on laptops
 # Отключить режим гибернации. Не рекомендуется выключать на ноутбуках
-Hibernate -Disable
+Hibernation -Disable
 
 # Enable hibernate (default value)
 # Включить режим гибернации (значение по умолчанию)
-# Hibernate -Enable
+# Hibernation -Enable
 
-# Change the %TEMP% environment variable path to "%SystemDrive%\Temp"
-# Изменить путь переменной среды для %TEMP% на "%SystemDrive%\Temp"
+# Change the %TEMP% environment variable path to %SystemDrive%\Temp
+# Изменить путь переменной среды для %TEMP% на %SystemDrive%\Temp
 # TempFolder -SystemDrive
 
-# Change %TEMP% environment variable path to "%LOCALAPPDATA%\Temp" (default value)
-# Изменить путь переменной среды для %TEMP% на "LOCALAPPDATA%\Temp" (значение по умолчанию)
+# Change %TEMP% environment variable path to %LOCALAPPDATA%\Temp (default value)
+# Изменить путь переменной среды для %TEMP% на LOCALAPPDATA%\Temp (значение по умолчанию)
 # TempFolder -Default
 
 # Disable the Windows 260 characters path limit
@@ -709,6 +717,24 @@ NetworkAdaptersSavePower -Disable
 # Разрешить отключение всех сетевых адаптеров для экономии энергии (значение по умолчанию)
 # NetworkAdaptersSavePower -Enable
 
+<#
+	Disable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections
+	Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipv6-test.com
+
+	Выключить IP версии 6 (TCP/IPv6)
+	Перед выполнением функции будет провердена проверка: поддерживает ли ваш провайдер IPv6, используя ресурс https://ipv6-test.com
+#>
+IPv6Component -Disable
+
+<#
+	Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections (default value)
+	Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipv6-test.com
+
+	Включить IP версии 6 (TCP/IPv6) (значение по умолчанию)
+	Перед выполнением функции будет провердена проверка: поддерживает ли ваш провайдер IPv6, используя ресурс https://ipv6-test.com
+#>
+# IPv6Component -Enable
+
 # Override for default input method: English
 # Переопределить метод ввода по умолчанию: английский
 InputMethod -English
@@ -763,7 +789,7 @@ WinPrtScrFolder -Desktop
 	In order this feature to work the OS level of diagnostic data gathering will be set to "Optional diagnostic data", and the error reporting feature will be turned on
 
 	Автоматически запускать средства устранения неполадок, а затем уведомлять
-	Чтобы заработала данная функция, уровень сбора диагностических сведений ОС будет установлен на "Необязательные диагностические данные" и включится создание отчетов об ошибках Windows
+	Чтобы заработала данная функция, уровень сбора диагностических данных ОС будет установлен на "Необязательные диагностические данные" и включится создание отчетов об ошибках Windows
 #>
 RecommendedTroubleshooting -Automatic
 
@@ -772,7 +798,7 @@ RecommendedTroubleshooting -Automatic
 	In order this feature to work the OS level of diagnostic data gathering will be set to "Optional diagnostic data"
 
 	Спрашивать перед запуском средств устранения неполадок (значение по умолчанию)
-	Чтобы заработала данная функция, уровень сбора диагностических сведений ОС будет установлен на "Необязательные диагностические данные" и включится создание отчетов об ошибках Windows
+	Чтобы заработала данная функция, уровень сбора диагностических данных ОС будет установлен на "Необязательные диагностические данные" и включится создание отчетов об ошибках Windows
 #>
 # RecommendedTroubleshooting -Default
 
@@ -883,24 +909,9 @@ RestartDeviceAfterUpdate -Enable
 #endregion System
 
 #region WSL
-# Install the Windows Subsystem for Linux (WSL)
-# Установить подсистему Windows для Linux (WSL)
+# Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form
+# Установить подсистему Windows для Linux (WSL), последний пакет обновления ядра Linux и дистрибутив Linux, используя всплывающую форму
 # WSL -Enable
-
-# Uninstall the Windows Subsystem for Linux (WSL)
-# Удалить подсистему Windows для Linux (WSL)
-# WSL -Disable
-
-<#
-	Download and install the Linux kernel update package
-	Set WSL 2 as the default version when installing a new Linux distribution
-	Run the function only after WSL installed and PC restart
-
-	Скачать и установить пакет обновления ядра Linux
-	Установить WSL 2 как версию по умолчанию при установке нового дистрибутива Linux
-	Выполните функцию только после установки WSL и перезагрузки ПК
-#>
-# EnableWSL2
 #endregion WSL
 
 #region Start menu
@@ -1242,7 +1253,7 @@ RunAsDifferentUserContext -Show
 CastToDeviceContext -Hide
 
 # Show the "Cast to Device" item in the media files and folders context menu (default value)
-# Показывать пункт "Передать на устройство" в контекстном меню медиа-файлов и папок (значение по умолчанию)
+# Отобразить пункт "Передать на устройство" в контекстном меню медиа-файлов и папок (значение по умолчанию)
 # CastToDeviceContext -Show
 
 # Hide the "Share" item from the context menu
@@ -1250,7 +1261,7 @@ CastToDeviceContext -Hide
 ShareContext -Hide
 
 # Show the "Share" item in the context menu (default value)
-# Показывать пункт "Отправить" (поделиться) в контекстном меню (значение по умолчанию)
+# Отобразить пункт "Отправить" (поделиться) в контекстном меню (значение по умолчанию)
 # ShareContext -Show
 
 # Hide the "Edit with Paint 3D" item from the media files context menu
@@ -1258,7 +1269,7 @@ ShareContext -Hide
 EditWithPaint3DContext -Hide
 
 # Show the "Edit with Paint 3D" item in the media files context menu (default value)
-# Показывать пункт "Изменить с помощью Paint 3D" в контекстном меню медиа-файлов (значение по умолчанию)
+# Отобразить пункт "Изменить с помощью Paint 3D" в контекстном меню медиа-файлов (значение по умолчанию)
 # EditWithPaint3DContext -Show
 
 # Hide the "Edit with Photos" item from the media files context menu
@@ -1266,7 +1277,7 @@ EditWithPaint3DContext -Hide
 EditWithPhotosContext -Hide
 
 # Show the "Edit with Photos" item in the media files context menu (default value)
-# Показывать пункт "Изменить с помощью приложения "Фотографии"" в контекстном меню медиа-файлов (значение по умолчанию)
+# Отобразить пункт "Изменить с помощью приложения "Фотографии"" в контекстном меню медиа-файлов (значение по умолчанию)
 # EditWithPhotosContext -Show
 
 # Hide the "Create a new video" item in the media files context menu
@@ -1274,7 +1285,7 @@ EditWithPhotosContext -Hide
 CreateANewVideoContext -Hide
 
 # Show the "Create a new video" item in the media files context menu (default value)
-# Показывать пункт "Создать новое видео" в контекстном меню медиа-файлов (значение по умолчанию)
+# Отобразить пункт "Создать новое видео" в контекстном меню медиа-файлов (значение по умолчанию)
 # CreateANewVideoContext -Show
 
 # Hide the "Edit" item from the images context menu
@@ -1282,7 +1293,7 @@ CreateANewVideoContext -Hide
 ImagesEditContext -Hide
 
 # Show the "Edit" item in images context menu (default value)
-# Показывать пункт "Изменить" в контекстном меню изображений (значение по умолчанию)
+# Отобразить пункт "Изменить" в контекстном меню изображений (значение по умолчанию)
 # ImagesEditContext -Show
 
 # Hide the "Print" item from the .bat and .cmd context menu
@@ -1290,7 +1301,7 @@ ImagesEditContext -Hide
 PrintCMDContext -Hide
 
 # Show the "Print" item in the .bat and .cmd context menu (default value)
-# Показывать пункт "Печать" в контекстном меню .bat и .cmd файлов (значение по умолчанию)
+# Отобразить пункт "Печать" в контекстном меню .bat и .cmd файлов (значение по умолчанию)
 # PrintCMDContext -Show
 
 # Hide the "Include in Library" item from the folders and drives context menu
@@ -1298,7 +1309,7 @@ PrintCMDContext -Hide
 IncludeInLibraryContext -Hide
 
 # Show the "Include in Library" item in the folders and drives context menu (default value)
-# Показывать пункт "Добавить в библиотеку" в контекстном меню папок и дисков (значение по умолчанию)
+# Отобразить пункт "Добавить в библиотеку" в контекстном меню папок и дисков (значение по умолчанию)
 # IncludeInLibraryContext -Show
 
 # Hide the "Send to" item from the folders context menu
@@ -1306,7 +1317,7 @@ IncludeInLibraryContext -Hide
 SendToContext -Hide
 
 # Show the "Send to" item in the folders context menu (default value)
-# Показывать пункт "Отправить" в контекстном меню папок (значение по умолчанию)
+# Отобразить пункт "Отправить" в контекстном меню папок (значение по умолчанию)
 # SendToContext -Show
 
 # Hide the "Turn on BitLocker" item from the drives context menu
@@ -1314,7 +1325,7 @@ SendToContext -Hide
 BitLockerContext -Hide
 
 # Show the "Turn on BitLocker" item in the drives context menu (default value)
-# Показывать пункт "Включить BitLocker" в контекстном меню дисков (значение по умолчанию)
+# Отобразить пункт "Включить BitLocker" в контекстном меню дисков (значение по умолчанию)
 # BitLockerContext -Show
 
 # Hide the "Bitmap image" item from the "New" context menu
@@ -1322,7 +1333,7 @@ BitLockerContext -Hide
 BitmapImageNewContext -Hide
 
 # Show the "Bitmap image" item to the "New" context menu (default value)
-# Восстановить пункт "Точечный рисунок" в контекстного меню "Создать" (значение по умолчанию)
+# Отобразить пункт "Точечный рисунок" в контекстного меню "Создать" (значение по умолчанию)
 # BitmapImageNewContext -Show
 
 # Hide the "Rich Text Document" item from the "New" context menu
@@ -1330,7 +1341,7 @@ BitmapImageNewContext -Hide
 RichTextDocumentNewContext -Hide
 
 # Show the "Rich Text Document" item to the "New" context menu (default value)
-# Восстановить пункт "Документ в формате RTF" в контекстного меню "Создать" (значение по умолчанию)
+# Отобразить пункт "Документ в формате RTF" в контекстного меню "Создать" (значение по умолчанию)
 # RichTextDocumentNewContext -Show
 
 # Hide the "Compressed (zipped) Folder" item from the "New" context menu
@@ -1338,7 +1349,7 @@ RichTextDocumentNewContext -Hide
 CompressedFolderNewContext -Hide
 
 # Show the "Compressed (zipped) Folder" item to the "New" context menu (default value)
-# Восстановить пункт "Сжатая ZIP-папка" в контекстном меню "Создать" (значение по умолчанию)
+# Отобразить пункт "Сжатая ZIP-папка" в контекстном меню "Создать" (значение по умолчанию)
 # CompressedFolderNewContext -Show
 
 # Enable the "Open", "Print", and "Edit" context menu items for more than 15 items selected
@@ -1354,7 +1365,7 @@ MultipleInvokeContext -Enable
 UseStoreOpenWith -Hide
 
 # Show the "Look for an app in the Microsoft Store" item in the "Open with" dialog (default value)
-# Отображать пункт "Поиск приложения в Microsoft Store" в диалоге "Открыть с помощью" (значение по умолчанию)
+# Отобразить пункт "Поиск приложения в Microsoft Store" в диалоге "Открыть с помощью" (значение по умолчанию)
 # UseStoreOpenWith -Show
 #endregion Context menu
 
