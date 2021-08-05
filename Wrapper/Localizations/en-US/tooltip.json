@@ -417,11 +417,11 @@
     "Function": "SnapAssistFlyout",
     "Arg": {
       "Zero": {
-        "Tag": "Disable",
+        "Tag": "Enable",
         "ToolTip": "Show snap layouts when I hover over a windows's maximaze button (default value)"
       },
       "One": {
-        "Tag": "Enable",
+        "Tag": "Disable",
         "ToolTip": "Hide snap layouts when I hover over a windows's maximaze button"
       }
     }
