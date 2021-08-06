@@ -83,7 +83,7 @@ function Checkings
 		$false
 		{
 			$Version = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion"
-			$Version = $Version.CurrentMinorVersionNumber, $Version.CurrentBuild, $Version.UBR
+			$Version = $Version.CurrentBuild, $Version.UBR
 
 			Write-Warning -Message ($Localization.UpdateWarning -f $Version)
 
