@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Le script supporte uniquement Windows 10 x64
 UnsupportedOSBuild                        = Le script supporte les versions Windows 10 2004/20H2/21H1 et ultérieures
-UpdateWarning                             = Votre version de Windows 10 : {0}.{1}.{2}.{3}. Version prise en charge : 19041.1151 et ultérieures
+UpdateWarning                             = La mise à jour cumulative de Windows 10 est installée : {0}. La dernière mise à jour cumulative prise en charge : 1151 et plus. Veuillez exécuter Windows Update et réessayer
 UnsupportedLanguageMode                   = La session PowerShell s'exécute dans un mode de langue limité
 LoggedInUserNotAdmin                      = L'utilisateur connecté n'a pas de droits d'administrateur
 UnsupportedPowerShell                     = Vous essayez d'exécuter le script via PowerShell {0}. Exécutez le script dans la version appropriée de PowerShell
@@ -44,7 +44,7 @@ TempTaskNotificationEvent                 = Le dossier des fichiers temporaires 
 FolderTaskDescription                     = Nettoyage du dossier "{0}"
 EventViewerCustomViewName                 = Création du processus
 EventViewerCustomViewDescription          = Audit des événements de création du processus et de ligne de commande
-RestartWarning                            = \nAssurez-vous de redémarrer votre PC
+RestartWarning                            = Assurez-vous de redémarrer votre PC
 ErrorsLine                                = Ligne
 ErrorsFile                                = Fichier
 ErrorsMessage                             = Erreurs/Avertissements
