@@ -33,7 +33,7 @@ TempTaskNotificationEvent                 = The temp files folder successfully c
 FolderTaskDescription                     = The {0} folder cleanup
 EventViewerCustomViewName                 = Process Creation
 EventViewerCustomViewDescription          = Process creation and command-line auditing events
-RestartWarning                            = \nMake sure to restart your PC
+RestartWarning                            = Make sure to restart your PC
 ErrorsLine                                = Line
 ErrorsFile                                = File
 ErrorsMessage                             = Errors/Warnings
@@ -64,6 +64,7 @@ Run                                       = Run
 SelectAll                                 = Select all
 Skip                                      = Skip
 Skipped                                   = Skipped
-TelegramTitle                             = Join our official Telegram group
+TelegramGroupTitle                        = Join our official Telegram group
+TelegramChannelTitle                      = Join our official Telegram channel
 Uninstall                                 = Uninstall
 '@
