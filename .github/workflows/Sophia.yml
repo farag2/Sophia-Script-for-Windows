@@ -41,8 +41,7 @@ jobs:
 
       - name: PowerShell 7
         run: |
-          $BUILD_DIR = "Sophia Script PowerShell 7"
-          $BUILD_DIR += " v"
+          $BUILD_DIR = "Sophia Script v"
           if ($env:GITHUB_REF -eq "refs/heads/master")
           {
             $BUILD_DIR += "master"
@@ -51,6 +50,7 @@ jobs:
           {
             $BUILD_DIR += ${env:GITHUB_REF} -replace "refs/tags/", ""
           }
+          $BUILD_DIR += " PowerShell 7"
 
           $ZIP = "$BUILD_DIR.zip"
 
