@@ -101,17 +101,17 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 |Version|    Marketing name   | Build | Arch |      Editions     | Script version |
 |:-----:|:-------------------:|:-----:|:----:|:-----------------:|:--------------:|
-| 21H2  | October 2021 Update | 22000 |  x64 |Home/Pro/Enterprise|[6.0.1](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H2  | October 2021 Update | 22000 |  x64 |Home/Pro/Enterprise|[6.0.2](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 
 # Windows 10
 
 |Version|    Marketing name   | Build | Arch|      Editions     | Script version |
 |:-----:|:-------------------:|:-----:|:---:|:-----------------:|:--------------:|
-| 21H2  | October 2021 Update | 19044 | x64 |Home/Pro/Enterprise|[5.12](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 21H1  | May 2021 Update     | 19043 | x64 |Home/Pro/Enterprise|[5.12](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 20H2  | October 2020 Update | 19042 | x64 |Home/Pro/Enterprise|[5.12](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 2004  | May 2020 Update     | 19041 | x64 |Home/Pro/Enterprise|[5.12](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 1809  | LTSC Enterprise 2019| 17763 | x64 |   Enterprise      |[5.2.11](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H2  | October 2021 Update | 19044 | x64 |Home/Pro/Enterprise|[5.12.1](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H1  | May 2021 Update     | 19043 | x64 |Home/Pro/Enterprise|[5.12.1](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 20H2  | October 2020 Update | 19042 | x64 |Home/Pro/Enterprise|[5.12.1](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 2004  | May 2020 Update     | 19041 | x64 |Home/Pro/Enterprise|[5.12.1](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 1809  | LTSC Enterprise 2019| 17763 | x64 |   Enterprise      |[5.2.12](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 
 ## Screenshots
 
