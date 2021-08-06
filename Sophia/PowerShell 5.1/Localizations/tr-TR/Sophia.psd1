@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Bu betik sadece Windows 10 x64 destekliyor
 UnsupportedOSBuild                        = Bu betik sadece Windows 10 2004/20H2/21H1 sürüm ve üstünü destekliyor
-UpdateWarning                             = Windows 10 yapınız: {0}.{1}.{2}.{3}. Desteklenen yapı: 19041.1151 ve üstünü destekliyor
+UpdateWarning                             = Windows 10 toplu güncelleştirmesi yüklendi: {0}. Desteklenen en son toplu güncelleme: 1151 ve üstü. Lütfen Windows Update'i çalıştırın ve tekrar deneyin
 UnsupportedLanguageMode                   = Sınırlı bir dil modunda çalışan PowerShell oturumu
 LoggedInUserNotAdmin                      = Oturum açan kullanıcının yönetici hakları yok
 UnsupportedPowerShell                     = Komut dosyasını PowerShell 7 aracılığıyla çalıştırmaya çalışıyorsunuz. Komut dosyasını uygun PowerShell sürümünde çalıştırın.
@@ -44,7 +44,7 @@ TempTaskNotificationEvent                 = Geçici dosyalar klasörü başarıy
 FolderTaskDescription                     = "{0}" klasörü temizleniyor
 EventViewerCustomViewName                 = Süreç Oluşturma
 EventViewerCustomViewDescription          = Süreç oluşturma ve komut satırı denetleme olayları
-RestartWarning                            = \nBilgisayarınızı yeniden başlattığınızdan emin olun
+RestartWarning                            = Bilgisayarınızı yeniden başlattığınızdan emin olun
 ErrorsLine                                = Satır
 ErrorsFile                                = Dosya
 ErrorsMessage                             = Hatalar/Uyarılar
