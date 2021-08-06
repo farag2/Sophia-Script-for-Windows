@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedOSBitness                      = O script suporta somente Windows 10 x64
-UnsupportedOSBuild                        = O script suporta versões Windows 10 2004/20H2/21H1 e superior
-UpdateWarning                             = La tua build di Windows 10: {0}.{1}.{2}.{3}. Build supportata: 19041.1151 e successive
+UnsupportedOSBitness                      = O script suporta somente Windows 11 x64
+UnsupportedOSBuild                        = O script suporta versões Windows 11 2004/20H2/21H1 e superior
+UpdateWarning                             = La tua build di Windows 11: {0}.{1}. Build supportata: 22000.120 e successive
 UnsupportedLanguageMode                   = A sessão PowerShell em funcionamento em um modo de linguagem limitada
 LoggedInUserNotAdmin                      = O usuário logado não tem direitos de administrador
 UnsupportedPowerShell                     = Você está tentando executar o script via PowerShell {0}. Execute o script na versão apropriada do PowerShell
@@ -44,7 +44,7 @@ TempTaskNotificationEvent                 = Os arquivos da pasta Temp limpos com
 FolderTaskDescription                     = A limpeza da pasta "{0}"
 EventViewerCustomViewName                 = Criação de processo
 EventViewerCustomViewDescription          = Criação de processos e eventos de auditoria de linha de comando
-RestartWarning                            = \nCertifique-se de reiniciar o PC
+RestartWarning                            = Certifique-se de reiniciar o PC
 ErrorsLine                                = Linha
 ErrorsFile                                = Arquivo
 ErrorsMessage                             = Erros/Avisos

@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedOSBitness                      = Lo script supporta solo Windows 10 x64
-UnsupportedOSBuild                        = Lo script supporta Windows 10, 2004/20H2/21H1 versioni e superiori
-UpdateWarning                             = La tua build di Windows 10: {0}.{1}.{2}.{3}. Build supportata: 19041.1151 e successive
+UnsupportedOSBitness                      = Lo script supporta solo Windows 11 x64
+UnsupportedOSBuild                        = Lo script supporta Windows 11, 2004/20H2/21H1 versioni e superiori
+UpdateWarning                             = La tua build di Windows 11: {0}.{1}. Build supportata: 22000.120 e successive
 UnsupportedLanguageMode                   = La sessione PowerShell è in esecuzione in una modalità di lingua limitata
 LoggedInUserNotAdmin                      = L'utente connesso non ha i diritti di amministratore
 UnsupportedPowerShell                     = Stai cercando di eseguire lo script tramite PowerShell {0}. Esegui lo script nella versione di PowerShell appropriata
@@ -44,7 +44,7 @@ TempTaskNotificationEvent                 = I file cartella Temp puliti con succ
 FolderTaskDescription                     = La pulizia della cartella "{0}"
 EventViewerCustomViewName                 = Creazione di processo
 EventViewerCustomViewDescription          = Creazione di processi ed eventi di controllo della riga di comando
-RestartWarning                            = \nAssicurarsi di riavviare il PC
+RestartWarning                            = Assicurarsi di riavviare il PC
 ErrorsLine                                = Linea
 ErrorsFile                                = File
 ErrorsMessage                             = Errori/avvisi

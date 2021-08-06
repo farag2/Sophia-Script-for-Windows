@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedOSBitness                      = A szkript csak a Windows 10 64 bites verziót támogatja
-UnsupportedOSBuild                        = A szkript a Windows 10 2004/20H2/21H1 és újabb kiadásokat támogatja
-UpdateWarning                             = Az Ön Windows 10 építése: {0}.{1}.{2}.{3}. Támogatott build: 19041.1151 és magasabb verziószámok
+UnsupportedOSBitness                      = A szkript csak a Windows 11 64 bites verziót támogatja
+UnsupportedOSBuild                        = A szkript a Windows 11 2004/20H2/21H1 és újabb kiadásokat támogatja
+UpdateWarning                             = Az Ön Windows 11 építése: {0}.{1}. Támogatott build: 22000.120 és magasabb verziószámok
 UnsupportedLanguageMode                   = A PowerShell munkamenet korlátozott nyelvi üzemmódban fut
 LoggedInUserNotAdmin                      = A bejelentkezett felhasználó nem rendelkezik admin jogokkal
 UnsupportedPowerShell                     = A szkriptet a PowerShell 7 segítségével próbálja futtatni. Futtassa a szkriptet a megfelelő PowerShell verzióban
@@ -44,7 +44,7 @@ TempTaskNotificationEvent                 = Az ideiglenes fájlok tárolására 
 FolderTaskDescription                     = A {0} könyvtár tisztítása
 EventViewerCustomViewName                 = Folyamatok
 EventViewerCustomViewDescription          = Folyamatok létrehozása és parancssor ellenőrző események
-RestartWarning                            = \nKérem ne felejtse el újraindítani a számítógépét
+RestartWarning                            = Kérem ne felejtse el újraindítani a számítógépét
 ErrorsLine                                = Sor
 ErrorsFile                                = Fájl
 ErrorsMessage                             = Hibák/Figyelmeztetések

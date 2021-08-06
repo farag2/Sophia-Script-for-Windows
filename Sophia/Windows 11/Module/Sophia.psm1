@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v6.0.1
-	Date: 05.08.2021
+	Version: v6.0.2
+	Date: 06.08.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & Inestic
@@ -16,7 +16,7 @@
 	.NOTES
 	Supported Windows 11 version
 	Version: Sun Valley
-	Build: 22000
+	Build: 22000.120
 	Editions: Home/Pro/Enterprise
 
 	.NOTES
@@ -136,7 +136,7 @@ function Checkings
 	# Check whether the script was run via PowerShell 5.1
 	if ($PSVersionTable.PSVersion.Major -ne 5)
 	{
-		Write-Warning -Message ($Localization.UnsupportedPowerShell -f $PSVersionTable.PSVersion.Major)
+		Write-Warning -Message ($Localization.UnsupportedPowerShell -f $PSVersionTable.PSVersion.ToString())
 		exit
 	}
 
@@ -1440,6 +1440,9 @@ function ThisPC
 	Windows10FileExplorer -Disable
 
 	.NOTES
+	Enabling the Windows 10 File Explorer will block the "Share" item context menu
+
+	.NOTES
 	Current user
 #>
 function Windows10FileExplorer
@@ -1469,11 +1472,11 @@ function Windows10FileExplorer
 			{
 				New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Force
 			}
-			New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{e2bf9676-5f8f-435c-97eb-11607a5bedf7}" -PropertyType String -Value "" -Force
+			New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}" -PropertyType String -Value "" -Force
 		}
 		"Disable"
 		{
-			Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{e2bf9676-5f8f-435c-97eb-11607a5bedf7}" -Force
+			Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}" -Force
 		}
 	}
 
@@ -2431,11 +2434,17 @@ function TaskbarWidgets
 	{
 		"Hide"
 		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name TaskbarDa -PropertyType DWord -Value 0 -Force
+			if (Get-AppxPackage -Name MicrosoftWindows.Client.WebExperience)
+			{
+				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name TaskbarDa -PropertyType DWord -Value 0 -Force
+			}
 		}
 		"Show"
 		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name TaskbarDa -PropertyType DWord -Value 1 -Force
+			if (Get-AppxPackage -Name MicrosoftWindows.Client.WebExperience)
+			{
+				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name TaskbarDa -PropertyType DWord -Value 1 -Force
+			}
 		}
 	}
 }
@@ -8197,10 +8206,7 @@ function UninstallUWPApps
 		"Microsoft.WindowsTerminalPreview",
 
 		# Web Media Extensions
-		"Microsoft.WebMediaExtensions",
-
-		# Windows Web Experience Pack
-		"MicrosoftWindows.Client.WebExperience"
+		"Microsoft.WebMediaExtensions"
 	)
 
 	#region Variables
@@ -8212,7 +8218,7 @@ function UninstallUWPApps
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		Name="Window"
 		MinHeight="400" MinWidth="415"
-		SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
+		SizeToContent="Width" WindowStartupLocation="CenterScreen"
 		TextOptions.TextFormattingMode="Display" SnapsToDevicePixels="True"
 		FontFamily="Candara" FontSize="16" ShowInTaskbar="True"
 		Background="#F1F1F1" Foreground="#262626">
@@ -10872,6 +10878,9 @@ function CastToDeviceContext
 
 	.EXAMPLE
 	ShareContext -Show
+
+	.NOTES
+	Showing the "Share" item in the context menu will disable the Windows 10 File Explorer
 
 	.NOTES
 	Current user

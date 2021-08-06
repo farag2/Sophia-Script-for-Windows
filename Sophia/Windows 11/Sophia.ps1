@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 11"
 
-	Version: v6.0.1
-	Date: 05.08.2021
+	Version: v6.0.2
+	Date: 06.08.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & Inestic
@@ -70,7 +70,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.0 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014–2021"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.0.2 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -174,15 +174,15 @@ ScheduledTasks -Disable
 SigninInfo -Disable
 
 # Use sign-in info to automatically finish setting up device after an update (default value)
-# Использовать данные для входа для автоматического завершения настройки устройства и открытия приложений после перезапуска или обновления (значение по умолчанию)
+# Использовать данные для входа, чтобы автоматически завершить настройку после обновления (значение по умолчанию)
 # SigninInfo -Enable
 
 # Do not let websites provide locally relevant content by accessing language list
-# Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков
+# Не позволить веб-сайтам предоставлять местную информацию за счет доступа к списку языков
 LanguageListAccess -Disable
 
 # Let websites provide locally relevant content by accessing language list (default value)
-# Позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков (значение по умолчанию)
+# Позволить веб-сайтам предоставлять местную информацию за счет доступа к списку языков (значение по умолчанию)
 # LanguageListAccess -Enable
 
 # Do not let apps show me personalized ads by using my advertising ID
@@ -251,8 +251,13 @@ ThisPC -Show
 # Скрыть "Этот компьютер" на рабочем столе (значение по умолчанию)
 # ThisPC -Hide
 
-# Enable the Windows 10 File Explorer
-# Включить проводник из Windows 10
+<#
+	Enable the Windows 10 File Explorer
+	Enabling the Windows 10 File Explorer will block the "Share" item context menu
+
+	Включить проводник из Windows 10
+	Включение проводника из Windows 10 cкроет пункт "Отправить" (поделиться) из контекстного меню
+#>
 Windows10FileExplorer -Enable
 
 # Disable the Windows 10 File Explorer (default value)
@@ -299,12 +304,12 @@ OpenFileExplorerTo -ThisPC
 # Открывать проводник для "Быстрый доступ" (значение по умолчанию)
 # OpenFileExplorerTo -QuickAccess
 
-# Disable the File Explorer compact mode
-# Отключить компактный вид проводника
+# Disable the File Explorer compact mode (default value)
+# Отключить компактный вид проводника (значение по умолчанию)
 FileExplorerCompactMode -Disable
 
-# Enable the File Explorer compact mode (default value)
-# Включить компактный вид проводника (значение по умолчанию)
+# Enable the File Explorer compact mode
+# Включить компактный вид проводника
 # FileExplorerCompactMode -Enable
 
 # Do not show sync provider notification within File Explorer
@@ -317,11 +322,11 @@ OneDriveFileExplorerAd -Hide
 
 # Show snap layouts when I hover over a windows's maximaze button (default value)
 # Показывать макеты прикрепления, частью которых является приложение, при наведении указателя мыши на кнопки панели задач (значение по умолчанию)
-SnapAssistFlyout -Enable
+SnapAssistFlyout -Disable
 
 # Hide snap layouts when I hover over a windows's maximaze button
 # Не показывать макеты прикрепления, частью которых является приложение, при наведении указателя мыши на кнопки панели задач
-# SnapAssistFlyout -Disable
+# SnapAssistFlyout -Enable
 
 # When I snap a window, do not show what I can snap next to it
 # При прикреплении окна не показывать, что можно прикрепить рядом с ним
@@ -963,11 +968,11 @@ CortanaAutostart -Disable
 
 # Disable Microsoft Teams autostarting
 # Выключить автозагрузку Microsoft Teams
-TeamsAutostart -Disable
+CortanaAutostart -Disable
 
 # Enable Microsoft Teams autostarting (default value)
 # Включить автозагрузкуMicrosoft Teams (значение по умолчанию)
-# TeamsAutostart -Enable
+# CortanaAutostart -Enable
 
 # Check for UWP apps updates
 # Проверить обновления UWP-приложений
@@ -1223,8 +1228,13 @@ CastToDeviceContext -Hide
 # Отобразить пункт "Передать на устройство" в контекстном меню медиа-файлов и папок (значение по умолчанию)
 # CastToDeviceContext -Show
 
-# Hide the "Share" item from the context menu
-# Скрыть пункт "Отправить" (поделиться) из контекстного меню
+<#
+	Hide the "Share" item from the context menu
+	Showing the "Share" item in the context menu will disable the Windows 10 File Explorer
+
+	Скрыть пункт "Отправить" (поделиться) из контекстного меню
+	Отображение элемента «Поделиться» в контекстном меню приведет к отключению проводника Windows 10
+#>
 ShareContext -Hide
 
 # Show the "Share" item in the context menu (default value)

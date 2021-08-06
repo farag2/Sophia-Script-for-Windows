@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedOSBitness                      = Скрипт підтримує тільки Windows 10 x64
-UnsupportedOSBuild                        = Скрипт підтримує тільки Windows 10 версії 2004/20H2/21H1 та вище
-UpdateWarning                             = Ваш білд Windows 10: {0}. {1}. {2}. {3}. Підтримуваний білд: 19041.1151 та вище
+UnsupportedOSBitness                      = Скрипт підтримує тільки Windows 11 x64
+UnsupportedOSBuild                        = Скрипт підтримує тільки Windows 11 версії 2004/20H2/21H1 та вище
+UpdateWarning                             = Ваш білд Windows 11: {0}.{1}. Підтримуваний білд: 22000.120 та вище
 UnsupportedLanguageMode                   = Сесія PowerShell працює в обмеженому режимі
 LoggedInUserNotAdmin                      = Поточний увійшов користувач не володіє правами адміністратора
 UnsupportedPowerShell                     = Ви намагаєтеся запустити скрипт в PowerShell {0}. Запустіть скрипт у відповідній версії PowerShell
@@ -44,7 +44,7 @@ TempTaskNotificationEvent                 = Папка тимчасових фа
 FolderTaskDescription                     = Очищення папки "{0}"
 EventViewerCustomViewName                 = Створення процесу
 EventViewerCustomViewDescription          = Події створення нового процесу і аудит командного рядка
-RestartWarning                            = \nОбов'язково перезавантажте ваш ПК
+RestartWarning                            = Обов'язково перезавантажте ваш ПК
 ErrorsLine                                = Рядок
 ErrorsFile                                = Файл
 ErrorsMessage                             = Помилки/попередження

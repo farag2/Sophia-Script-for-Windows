@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedOSBitness                      = Das Skript unterstützt nur Windows 10 x64
-UnsupportedOSBuild                        = Das Skript unterstützt Windows 10 2004/20H2/21H1-Versionen und höher
-UpdateWarning                             = Ihr Windows 10-Build: {0}.{1}.{2}.{3}. Unterstützter Build: 19041.1151 und höher
+UnsupportedOSBitness                      = Das Skript unterstützt nur Windows 11 x64
+UnsupportedOSBuild                        = Das Skript unterstützt Windows 11 2004/20H2/21H1-Versionen und höher
+UpdateWarning                             = Ihr Windows 11-Build: {0}.{1}. Unterstützter Build: 22000.120 und höher
 UnsupportedLanguageMode                   = Die PowerShell-Sitzung wird in einem eingeschränkten Sprachmodus ausgeführt
 LoggedInUserNotAdmin                      = Der angemeldete Benutzer hat keine Administratorrechte
 UnsupportedPowerShell                     = Sie versuchen, ein Skript über PowerShell {0} auszuführen. Führen Sie das Skript in der entsprechenden PowerShell-Version aus
@@ -44,7 +44,7 @@ TempTaskNotificationEvent                 = Der Ordner mit den temporären Datei
 FolderTaskDescription                     = Die Bereinigung des Ordners "{0}"
 EventViewerCustomViewName                 = Prozess-Erstellung
 EventViewerCustomViewDescription          = Ereignisse zur Prozesserstellung und Befehlszeilen-Auditierung
-RestartWarning                            = \nAchten Sie darauf, Ihren PC neu zu starten
+RestartWarning                            = Achten Sie darauf, Ihren PC neu zu starten
 ErrorsLine                                = Zeile
 ErrorsFile                                = Datei
 ErrorsMessage                             = Fehler/Warnungen

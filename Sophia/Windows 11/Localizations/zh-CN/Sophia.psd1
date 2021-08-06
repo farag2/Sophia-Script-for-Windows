@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedOSBitness                      = 该脚本仅支持Windows 10 x64
-UnsupportedOSBuild                        = 该脚本支持Windows 10版本2004/20H2/21H1和更高版本
-UpdateWarning                             = 您的Windows 10构建。{0}.{1}.{2}.{3}。支持的构建。19041.1151和更高版本
+UnsupportedOSBitness                      = 该脚本仅支持Windows 11 x64
+UnsupportedOSBuild                        = 该脚本支持Windows 11版本2004/20H2/21H1和更高版本
+UpdateWarning                             = 您的Windows 11构建。{0}.{1}。支持的构建。22000.120和更高版本
 UnsupportedLanguageMode                   = PowerShell会话在有限的语言模式下运行
 LoggedInUserNotAdmin                      = 登录的用户没有管理员的权利
 UnsupportedPowerShell                     = 你想通过PowerShell {0}运行脚本。在适当的PowerShell版本中运行该脚本
@@ -44,7 +44,7 @@ TempTaskNotificationEvent                 = 临时文件文件夹已成功清理
 FolderTaskDescription                     = “{0}”文件夹清理
 EventViewerCustomViewName                 = 进程创建
 EventViewerCustomViewDescription          = 进程创建和命令行审核事件
-RestartWarning                            = \n确保重启电脑
+RestartWarning                            = 确保重启电脑
 ErrorsLine                                = 行
 ErrorsFile                                = 文件
 ErrorsMessage                             = 错误/警告
