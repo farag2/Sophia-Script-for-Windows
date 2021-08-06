@@ -76,13 +76,13 @@ function Checkings
 		}
 	}
 
-	# Check whether the OS minor build version is 100 minimum
-	switch ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -ge 100)
+	# Check whether the OS minor build version is 120 minimum
+	switch ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -ge 120)
 	{
 		$false
 		{
 			$Version = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion"
-			$Version = $Version.CurrentMinorVersionNumber, $Version.CurrentBuild, $Version.UBR
+			$Version = $Version.CurrentBuild, $Version.UBR
 
 			Write-Warning -Message ($Localization.UpdateWarning -f $Version)
 
