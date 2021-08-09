@@ -1,0 +1,67 @@
+[
+  {
+    "Id": "Menü",
+    "Options": {
+      "menuImportPreset": "Voreinstellung importieren",
+      "menuPresets": "Voreinstellungen",
+      "menuOpposite": "Gegenüber",
+      "menuClear": "Löschen",
+      "menuTheme": "Thema",
+      "menuLanguage": "Sprache",
+      "menuAbout": "Über"
+    }
+  },
+  {
+    "Id": "Tab",
+    "Options": {
+      "tabSystemProtection": "Systemschutz",
+      "tabPrivacyTelemetry": "Datenschutz & Telemetrie",
+      "tabUIPersonalization": "UI & Personalisierung",
+      "tabOneDrive": "OneDrive",
+      "tabSystem": "System",
+      "tabWSL": "WSL",
+      "tabStartMenu": "Startmenü",
+      "tabUWP": "UWP Apps",
+      "tabGaming": "Spielen",
+      "tabScheduledTasks": "Geplante Aufgaben",
+      "tabDefenderSecurity": "Defender & Sicherheit",
+      "tabContextMenu": "Kontextmenü",
+      "tabConsoleOutput": "Konsolenausgabe"
+    }
+  },
+  {
+    "Id": "Button",
+    "Options": {
+      "btnRefreshConsole": "Konsole aktualisieren",
+      "btnSave": "Speichern",
+      "btnSaveAs": "Speichern als",
+      "btnRunPowerShell": "PowerShell ausführen"
+    }
+  },
+  {
+    "Id": "StatusBar",
+    "Options": {
+      "statusBarHover": "Bewegen Sie den Mauszeiger über die Auswahlpunkte, um Informationen zu jeder Option zu erhalten",
+      "statusBarPresetLoaded": "Voreinstellung geladen!",
+      "statusBarPresetNotComp": "Voreinstellungsdatei ist nicht kompatibel!",
+      "statusBarSophiaPreset": "Sophia-Voreinstellung geladen!",
+      "statusBarWindowsDefaultPreset": "Windows-Standardvoreinstellung geladen!",
+      "statusBarPowerShellScriptCreatedFromSelections": "PowerShell-Skript, das anhand Ihrer Auswahl erstellt wurde! Sie können es ausführen oder speichern.",
+      "statusBarPowerShellSaveAs": "PowerShell-Skript erstellt!",
+      "statusBarPowerShellSave": "Änderungen gespeichert in",
+      "statusBarOpposite": "Gegenüber ausgewählt!",
+      "statusBarClear": "Alle Ausgewählten sind gelöscht!"
+    }
+  },
+  {
+    "Id": "MessageBox",
+    "Options": {
+      "messageBoxNewWrapperFound": "Neue Version von 'Wrapper' gefunden.\nGitHub-Seite für die neueste Version öffnen?",
+      "messageBoxNewSophiaFound": "Neue Version des Sophia-Skripts gefunden.\nGitHub-Seite der neuesten Version öffnen?",
+      "messageBoxDoesNotExist": "existiert nicht",
+      "messageBoxPresetNotComp": "Voreinstellungsdatei ist nicht kompatibel!",
+      "messageBoxFilesMissingClose": "Fehlende Dateien, damit Sophia Script Wrapper geschlossen wird",
+      "messageBoxConsoleEmpty": "Die Konsole ist leer.\nAuf die Schaltfläche 'Konsole aktualisieren' klicken, um ein Skript mit Ihrer Auswahl zu erstellen."
+    }
+  }
+]
