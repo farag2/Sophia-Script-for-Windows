@@ -21,7 +21,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Skriptprotokollierung aktivieren. Das Protokoll wird im Skriptordner aufgezeichnet. Um die Protokollierung zu beenden, schließen Sie die Konsole oder geben Sie \"Stop-Transcript\" ein."
+        "ToolTip": "Skriptprotokollierung aktivieren. Das Protokoll wird im Skriptordner aufgezeichnet. Um die Protokollierung zu beenden, schließen Sie die Konsole oder geben Sie \"Stopp-Transcript\" ein"
       }
     }
   },
@@ -47,7 +47,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "DiagTrack-Dienst aktivieren, die Firewall-Regel für ausgehenden Verkehr des Vereinheitlichter Telemetrie-Clients und die Verbindung (Standard) erlauben."
+        "ToolTip": "DiagTrack-Dienst aktivieren, die Firewall-Regel für ausgehenden Verkehr des Vereinheitlichter Telemetrie-Clients und die Verbindung erlauben (Standard)"
       }
     }
   },
@@ -62,7 +62,7 @@
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Diagnosedatenerfassung auf Standard (Standard) setzen"
+        "ToolTip": "Diagnosedatenerfassung auf Standard setzen"
       }
     }
   },
@@ -77,7 +77,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Windows-Fehlerberichterstattung (Standard)aktivieren"
+        "ToolTip": "Windows-Fehlerberichterstattung aktivieren (Standard)"
       }
     }
   },
@@ -92,7 +92,7 @@
       },
       "One": {
         "Tag": "Automatically",
-        "ToolTip": "Feedback-Frequenz auf \"Automatisch\" (Standard) ändern"
+        "ToolTip": "Feedback-Frequenz auf \"Automatisch\" ändern (Standard)"
       }
     }
   },
@@ -107,7 +107,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Geplante Aufgaben zur Diagnoseverfolgung (Standard) einschalten."
+        "ToolTip": "Geplante Aufgaben zur Diagnoseverfolgung einschalten (Standard)"
       }
     }
   },
@@ -118,7 +118,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Keine Anmeldeinformationen verwenden, um die Einrichtung des Geräts automatisch abzuschließen und Apps nach einer Aktualisierung oder einem Neustart erneut zu öffnen."
+        "ToolTip": "Keine Anmeldeinformationen verwenden, um die Einrichtung des Geräts automatisch abzuschließen und Apps nach einer Aktualisierung oder einem Neustart erneut zu öffnen"
       },
       "One": {
         "Tag": "Enable",
@@ -493,7 +493,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Den Ordner \"3D-Objekte\" in \"Dieser PC\" und \"Schnellzugriff\" ausblenden."
+        "ToolTip": "Den Ordner \"3D-Objekte\" in \"Dieser PC\" und \"Schnellzugriff\" ausblenden"
       },
       "One": {
         "Tag": "Show",
@@ -557,7 +557,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": " Suchschaltfläche in der Taskleiste anzeigen(Standart)"
+        "ToolTip": " Suchschaltfläche in der Taskleiste anzeigen(Standard)"
       }
     }
   },
@@ -572,7 +572,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Schaltfläche Aufgabenansicht in der Taskleiste anzeigen (Standart)"
+        "ToolTip": "Schaltfläche Aufgabenansicht in der Taskleiste anzeigen (Standard)"
       }
     }
   },
@@ -587,7 +587,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Widget-Symbol in der Taskleiste anzeigen (Standart)"
+        "ToolTip": "Widget-Symbol in der Taskleiste anzeigen (Standard)"
       }
     }
   },
@@ -602,7 +602,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Chat-Symbols (Microsoft Teams) in der Taskleiste anzeigen (Standart)"
+        "ToolTip": "Chat-Symbols (Microsoft Teams) in der Taskleiste anzeigen (Standard)"
       }
     }
   },
@@ -617,7 +617,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Schaltfläche \"Menschen\" in der Taskleiste anzeigen (Standart)"
+        "ToolTip": "Schaltfläche \"Menschen\" in der Taskleiste anzeigen (Standard)"
       }
     }
   },
@@ -632,7 +632,7 @@
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Sekunden auf der Taskleistenuhr ausblenden (Standart)"
+        "ToolTip": "Sekunden auf der Taskleistenuhr ausblenden (Standard)"
       }
     }
   },
@@ -666,7 +666,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Schaltfläche Windows-Ink-Arbeitsbereich in der Taskleiste anzeigen (Standart)"
+        "ToolTip": "Schaltfläche Windows-Ink-Arbeitsbereich in der Taskleiste anzeigen (Standard)"
       }
     }
   },
@@ -692,7 +692,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Jetzt Treffen-Symbol im Infobereich anzeigen (Standart)"
+        "ToolTip": "Jetzt Treffen-Symbol im Infobereich anzeigen (Standard)"
       }
     }
   },
@@ -707,7 +707,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "\"Nachrichten und Interessen\" in der Taskleiste aktivieren (Standart)"
+        "ToolTip": "\"Nachrichten und Interessen\" in der Taskleiste aktivieren (Standard)"
       }
     }
   },
@@ -715,7 +715,7 @@
     "Id": 330,
     "Region": "UI & Personalization",
     "Function": "UnpinTaskbarShortcuts -Shortcuts",
-    "ToolTip": "Die Verknüpfungen \"Microsoft Edge\", \"Microsoft Store\" oder \"Mail\" von der Taskleiste lösen.",
+    "ToolTip": "Die Verknüpfungen \"Microsoft Edge\", \"Microsoft Store\" oder \"Mail\" von der Taskleiste lösen"
     "Arg": {
       "Zero": {
         "Tag": "Edge",
@@ -780,7 +780,7 @@
       },
       "One": {
         "Tag": "Light",
-        "ToolTip": "Den Windows-Standardmodus auf hell einstellen(Standart)"
+        "ToolTip": "Den Windows-Standardmodus auf hell einstellen(Standard)"
       }
     }
   },
@@ -795,7 +795,7 @@
       },
       "One": {
         "Tag": "Light",
-        "ToolTip": "Den App-Standardmodus auf hell einstellen (Standart)"
+        "ToolTip": "Den App-Standardmodus auf hell einstellen (Standard)"
       }
     }
   },
@@ -810,7 +810,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Den Indikator \"Neu installierte App\" anzeigen (Standart)"
+        "ToolTip": "Den Indikator \"Neu installierte App\" anzeigen (Standard)"
       }
     }
   },
@@ -825,7 +825,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Animation zur Erstanmeldung nach dem Upgrade anzeigen (Standart)"
+        "ToolTip": "Animation zur Erstanmeldung nach dem Upgrade anzeigen (Standard)"
       }
     }
   },
@@ -975,7 +975,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Keine temporären Dateien löschen, die von Apps nicht verwendet werden."
+        "ToolTip": "Keine temporären Dateien löschen, die von Apps nicht verwendet werden"
       }
     }
   },
@@ -1001,7 +1001,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Hibernation/Ruhezustand deaktivieren. Es wird nicht empfohlen, ihn auf Laptops zu deaktivieren."
+        "ToolTip": "Hibernation/Ruhezustand deaktivieren. Es wird nicht empfohlen, ihn auf Laptops zu deaktivieren"
       },
       "One": {
         "Tag": "Enable",
