@@ -6,7 +6,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Warning",
-        "ToolTip": "Die obligatorischen Überprüfungen. Wenn Sie eine Warnmeldung darüber, ob die Voreinstellungsdatei angepasst wurde, deaktivieren möchten, entfernen Sie das Argument \"-Warnung\".
+        "ToolTip": "Die obligatorischen Überprüfungen. Wenn Sie eine Warnmeldung darüber, ob die Voreinstellungsdatei angepasst wurde, deaktivieren möchten, entfernen Sie das Argument \"-Warnung\""
       },
       "One": {
         "Tag": "",
