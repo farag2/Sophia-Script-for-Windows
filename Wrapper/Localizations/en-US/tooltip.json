@@ -508,7 +508,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide frequently used folders in Quick access"
+        "ToolTip": "Hide frequently used files in Quick access"
       },
       "One": {
         "Tag": "Show",
