@@ -215,7 +215,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 * Download and expand the archive;
 * Run `SophiaScriptWrapper.exe` and import Sophia.ps1;
-  * The Wrapper has a real time Ui rendering;
+  * The Wrapper has a real time UI rendering;
 * Configure every function;
 * Open the `Console Output` tab and press `Run PowerShell`.
 
