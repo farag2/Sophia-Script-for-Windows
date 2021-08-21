@@ -2,7 +2,7 @@
 
 <img src="./img/Sophia.png" alt="Sophia Script" width='350' align="right">
 
-**The most PowerShell module on `GitHub` for `Windows 10` & `Windows 11` fine-tuning and automating the routine tasks** :trophy:
+**The largest PowerShell module on `GitHub` for `Windows 10` & `Windows 11` fine-tuning and automating the routine tasks** :trophy:
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Windows_10_Logo.svg" height="30px"/> &emsp; <img src="https://upload.wikimedia.org/wikipedia/commons/e/e6/Windows_11_logo.svg" height="30px"/>
 
