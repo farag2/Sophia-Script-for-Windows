@@ -10792,7 +10792,7 @@ function RunAsDifferentUserContext
 			ParameterSetName = "Hide"
 		)]
 		[switch]
-		$Remove
+		$Hide
 	)
 
 	switch ($PSCmdlet.ParameterSetName)
