@@ -7,7 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 5.12 | 6.0.1 — 05.08.2021
 
-## Windows 11 21H2 | Windows 10 2004/20H2/21H1 | LTSC
+## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | LTSC
+
+Diff from v5.12
+[5.12...5.12.1](https://github.com/farag2/Sophia-Script-for-Windows/compare/5.12...5.12.1)
+
+* Fixed typo that prevets script from showing the error description;
+* Fixed typos in descriptions.
+
+## 5.12 | 6.0.1 — 05.08.2021
+
+## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | LTSC
 
 Diff from v5.11.1
 [5.11.1...5.12](https://github.com/farag2/Sophia-Script-for-Windows/compare/5.11.1...5.12)
