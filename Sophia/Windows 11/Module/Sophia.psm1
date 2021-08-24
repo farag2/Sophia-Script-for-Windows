@@ -11815,13 +11815,13 @@ function Errors
 {
 	if ($Global:Error)
 	{
-		# Some errors may have the Windows nature and don't have a path to any of the module's files
-		$ErrorInFile = if ($_.InvocationInfo.PSCommandPath)
-		{
-			Split-Path -Path $_.InvocationInfo.PSCommandPath -Leaf
-		}
-
 		($Global:Error | ForEach-Object -Process {
+			# Some errors may have the Windows nature and don't have a path to any of the module's files
+			$ErrorInFile = if ($_.InvocationInfo.PSCommandPath)
+			{
+				Split-Path -Path $_.InvocationInfo.PSCommandPath -Leaf
+			}
+
 			[PSCustomObject]@{
 				$Localization.ErrorsLine    = $_.InvocationInfo.ScriptLineNumber
 				$Localization.ErrorsFile    = $ErrorInFile
