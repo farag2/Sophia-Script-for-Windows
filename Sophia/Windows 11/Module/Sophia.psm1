@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v6.0.2
-	Date: 06.08.2021
+	Version: v6.0.3
+	Date: 25.08.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & Inestic
@@ -15,8 +15,8 @@
 
 	.NOTES
 	Supported Windows 11 version
-	Version: Sun Valley
-	Build: 22000.120
+	Version: 21H2
+	Build: 22000.160
 	Editions: Home/Pro/Enterprise
 
 	.NOTES
@@ -34,7 +34,7 @@
 	https://github.com/farag2
 	https://github.com/Inestic
 
-	.NOTES
+	.LINK
 	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
 	https://habr.com/company/skillfactory/blog/553800/
 	https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/
@@ -56,16 +56,6 @@ function Checkings
 	# Сlear the $Error variable
 	$Global:Error.Clear()
 
-	# Detect the OS bitness
-	switch ([System.Environment]::Is64BitOperatingSystem)
-	{
-		$false
-		{
-			Write-Warning -Message $Localization.UnsupportedOSBitness
-			exit
-		}
-	}
-
 	# Detect the OS build version
 	switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber -ge 22000)
 	{
@@ -76,15 +66,18 @@ function Checkings
 		}
 	}
 
-	# Check whether the OS minor build version is 120 minimum
-	switch ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -ge 120)
+	# Check whether the OS minor build version is 160 minimum
+	switch ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -ge 160)
 	{
 		$false
 		{
 			$Version = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion"
-			$Version = $Version.CurrentBuild, $Version.UBR
+			Write-Warning -Message ($Localization.UpdateWarning -f $Version.CurrentBuild, $Version.UBR)
 
-			Write-Warning -Message ($Localization.UpdateWarning -f $Version)
+			# Check for updates
+			Start-Process -FilePath "ms-settings:windowsupdate-action"
+			Start-Sleep -Seconds 3
+			Start-Process -FilePath "ms-settings:windowsupdate-optionalupdates"
 
 			exit
 		}
@@ -136,7 +129,7 @@ function Checkings
 	# Check whether the script was run via PowerShell 5.1
 	if ($PSVersionTable.PSVersion.Major -ne 5)
 	{
-		Write-Warning -Message ($Localization.UnsupportedPowerShell -f $PSVersionTable.PSVersion.ToString())
+		Write-Warning -Message ($Localization.UnsupportedPowerShell -f $PSVersionTable.PSVersion.Major, $PSVersionTable.PSVersion.Minor)
 		exit
 	}
 
@@ -161,19 +154,11 @@ function Checkings
 	# Check if the current module version is the latest one
 	try
 	{
-		$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-		$Parameters = @{
-			Uri = "https://raw.githubusercontent.com/farag2/Windows-10-Sophia-Script/master/Sophia/Windows%2011/Manifest/Sophia.psd1"
-			OutFile = "$DownloadsFolder\Manifest.psd1"
-			Verbose = [switch]::Present
-		}
-		Invoke-WebRequest @Parameters
+		[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-		$LatestRelease = (Import-PowerShellDataFile -Path $DownloadsFolder\Manifest.psd1).ModuleVersion
+		# https://github.com/farag2/Sophia-Script-for-Windows/blob/master/sophia_script_versions.json
+		$LatestRelease = (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json" | ConvertFrom-Json).Sophia_Script_Windows_11_PowerShell_5_1
 		$CurrentRelease = (Get-Module -Name Sophia).Version.ToString()
-
-		Remove-Item -Path $DownloadsFolder\Manifest.psd1 -Force
-
 		switch ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)
 		{
 			$true
@@ -732,6 +717,7 @@ function ScheduledTasks
 
 	function DisableButton
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message $Localization.Patient -Verbose
 
 		[void]$Window.Close()
@@ -742,6 +728,7 @@ function ScheduledTasks
 
 	function EnableButton
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message $Localization.Patient -Verbose
 
 		[void]$Window.Close()
@@ -806,6 +793,7 @@ function ScheduledTasks
 		}
 	}
 
+	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message $Localization.Patient -Verbose
 
 	# Getting list of all scheduled tasks according to the conditions
@@ -1040,13 +1028,64 @@ function AdvertisingID
 
 <#
 	.SYNOPSIS
-	Getting tip, trick, and suggestions when I use Windows
+	The Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested
+
+	.PARAMETER Hide
+	Hide the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested
+
+	.PARAMETER Show
+	Show the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested
+
+	.EXAMPLE
+	WindowsWelcomeExperience -Hide
+
+	.EXAMPLE
+	WindowsWelcomeExperience -Show
+
+	.NOTES
+	Current user
+#>
+function WindowsWelcomeExperience
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Show"
+		)]
+		[switch]
+		$Show,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Hide"
+		)]
+		[switch]
+		$Hide
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Show"
+		{
+			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-310093Enabled -PropertyType DWord -Value 1 -Force
+		}
+		"Hide"
+		{
+			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-310093Enabled -PropertyType DWord -Value 0 -Force
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	Getting tip and suggestions when I use Windows
 
 	.PARAMETER Enable
-	Get tip, trick, and suggestions when I use Windows
+	Get tip and suggestions when I use Windows
 
 	.PARAMETER Disable
-	Do not get tip, trick, and suggestions when I use Windows
+	Do not get tip and suggestions when I use Windows
 
 	.EXAMPLE
 	WindowsTips -Enable
@@ -1259,7 +1298,7 @@ function WhatsNewInWindows
 	Tailored experiences
 
 	.PARAMETER Disable
-	Don't let Microsoft use your diagnostic data for personalized tips, ads, and recommendations
+	Do not let Microsoft use your diagnostic data for personalized tips, ads, and recommendations
 
 	.PARAMETER Enable
 	Let Microsoft use your diagnostic data for personalized tips, ads, and recommendations
@@ -1440,7 +1479,7 @@ function ThisPC
 	Windows10FileExplorer -Disable
 
 	.NOTES
-	Enabling the Windows 10 File Explorer will block the "Share" item context menu
+	Enabling the Windows 10 File Explorer will hide the "Share" item context menu
 
 	.NOTES
 	Current user
@@ -1858,6 +1897,57 @@ function OneDriveFileExplorerAd
 
 <#
 	.SYNOPSIS
+	Windows snapping
+
+	.PARAMETER Disable
+	When I snap a window, do not show what I can snap next to it
+
+	.PARAMETER Enable
+	When I snap a window, show what I can snap next to it
+
+	.EXAMPLE
+	SnapAssist -Disable
+
+	.EXAMPLE
+	SnapAssist -Enable
+
+	.NOTES
+	Current user
+#>
+function SnapAssist
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Disable"
+		{
+			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SnapAssist -PropertyType DWord -Value 0 -Force
+		}
+		"Enable"
+		{
+			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SnapAssist -PropertyType DWord -Value 1 -Force
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
 	Snap layouts
 
 	.PARAMETER Enable
@@ -1907,56 +1997,6 @@ function SnapAssistFlyout
 	}
 }
 
-<#
-	.SYNOPSIS
-	Windows snapping
-
-	.PARAMETER Disable
-	When I snap a window, do not show what I can snap next to it
-
-	.PARAMETER Enable
-	When I snap a window, show what I can snap next to it
-
-	.EXAMPLE
-	SnapAssist -Disable
-
-	.EXAMPLE
-	SnapAssist -Enable
-
-	.NOTES
-	Current user
-#>
-function SnapAssist
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Disable"
-		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SnapAssist -PropertyType DWord -Value 0 -Force
-		}
-		"Enable"
-		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SnapAssist -PropertyType DWord -Value 1 -Force
-		}
-	}
-}
 
 <#
 	.SYNOPSIS
@@ -2505,7 +2545,7 @@ function TaskbarChat
 	Icons in the notification area
 
 	.NOTES
-	Open Notification Area Icons in Control Panel using its GUID
+	Open the "Notification Area Icons" page in Control Panel to enable "Always show all icons in the notification area" settings manually
 
 	.NOTES
 	Current user
@@ -3035,10 +3075,10 @@ function TaskManagerWindow
 	Notification when your PC requires a restart to finish updating
 
 	.PARAMETER Show
-	Show a notification when your PC requires a restart to finish updating
+	Notify me when a restart is required to finish updatingg
 
 	.PARAMETER Hide
-	Hide a notification when your PC requires a restart to finish updating
+	Do not notify me when a restart is required to finish updating
 
 	.EXAMPLE
 	RestartNotification -Show
@@ -4555,6 +4595,7 @@ function WindowsFeatures
 
 	function DisableButton
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message $Localization.Patient -Verbose
 
 		[void]$Window.Close()
@@ -4565,6 +4606,7 @@ function WindowsFeatures
 
 	function EnableButton
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message $Localization.Patient -Verbose
 
 		[void]$Window.Close()
@@ -5741,6 +5783,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 		while ($k.Key -notin ([ConsoleKey]::Escape, [ConsoleKey]::Enter))
 	}
 
+	# Get the localized user folders names
 	$Signature = @{
 	Namespace = "WinAPI"
 	Name = "GetStr"
@@ -5766,18 +5809,20 @@ public static string GetString(uint strId)
 		Add-Type @Signature -Using System.Text
 	}
 
-	$DesktopLocalizedString = [WinAPI.GetStr]::GetString(21769)
+	# The localized user folders names
+	$DesktopLocalizedString   = [WinAPI.GetStr]::GetString(21769)
 	$DocumentsLocalizedString = [WinAPI.GetStr]::GetString(21770)
 	$DownloadsLocalizedString = [WinAPI.GetStr]::GetString(21798)
-	$MusicLocalizedString = [WinAPI.GetStr]::GetString(21790)
-	$PicturesLocalizedString = [WinAPI.GetStr]::GetString(21779)
-	$VideosLocalizedString = [WinAPI.GetStr]::GetString(21791)
+	$MusicLocalizedString     = [WinAPI.GetStr]::GetString(21790)
+	$PicturesLocalizedString  = [WinAPI.GetStr]::GetString(21779)
+	$VideosLocalizedString    = [WinAPI.GetStr]::GetString(21791)
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Root"
 		{
 			Write-Verbose -Message $Localization.RetrievingDrivesList -Verbose
+			Write-Information -MessageData "" -InformationAction Continue
 
 			# Store all drives letters to use them within ShowMenu function
 			$DriveLetters = @((Get-Disk | Where-Object -FilterScript {$_.BusType -ne "USB"} | Get-Partition | Get-Volume | Where-Object -FilterScript {$null -ne $_.DriveLetter}).DriveLetter | Sort-Object)
@@ -5794,7 +5839,15 @@ public static string GetString(uint strId)
 
 			# Desktop
 			Write-Verbose -Message ($Localization.DriveSelect -f $DesktopLocalizedString) -Verbose
+
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DesktopLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserFolderRequest -f $DesktopLocalizedString
@@ -5814,12 +5867,21 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Documents
 			Write-Verbose -Message ($Localization.DriveSelect -f $DocumentsLocalizedString) -Verbose
+
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DocumentsLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserFolderRequest -f $DocumentsLocalizedString
@@ -5839,12 +5901,21 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Downloads
 			Write-Verbose -Message ($Localization.DriveSelect -f $DownloadsLocalizedString) -Verbose
+
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DownloadsLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserFolderRequest -f $DownloadsLocalizedString
@@ -5864,12 +5935,21 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Music
 			Write-Verbose -Message ($Localization.DriveSelect -f $MusicLocalizedString) -Verbose
+
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $MusicLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserFolderRequest -f $MusicLocalizedString
@@ -5889,12 +5969,20 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Pictures
 			Write-Verbose -Message ($Localization.DriveSelect -f $PicturesLocalizedString) -Verbose
+
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $PicturesLocalizedString, $CurrentUserFolderLocation) -Verbose
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserFolderRequest -f $PicturesLocalizedString
@@ -5914,12 +6002,21 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Videos
 			Write-Verbose -Message ($Localization.DriveSelect -f $VideosLocalizedString) -Verbose
+
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Video"
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $VideosLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserFolderRequest -f $VideosLocalizedString
@@ -5939,13 +6036,21 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 		}
 		"Custom"
 		{
 			# Desktop
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DesktopLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserFolderSelect -f $DesktopLocalizedString
@@ -5977,11 +6082,19 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Documents
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DocumentsLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserFolderSelect -f $DocumentsLocalizedString
@@ -6013,11 +6126,19 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Downloads
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DownloadsLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserFolderSelect -f $DownloadsLocalizedString
@@ -6049,11 +6170,19 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Music
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $MusicLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserFolderSelect -f $MusicLocalizedString
@@ -6085,11 +6214,19 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Pictures
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $PicturesLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserFolderSelect -f $PicturesLocalizedString
@@ -6121,11 +6258,19 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Videos
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Video"
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $VideosLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserFolderSelect -f $VideosLocalizedString
@@ -6157,13 +6302,21 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 		}
 		"Default"
 		{
 			# Desktop
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DesktopLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserDefaultFolder -f $DesktopLocalizedString
@@ -6182,11 +6335,19 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Documents
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DocumentsLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserDefaultFolder -f $DocumentsLocalizedString
@@ -6205,11 +6366,19 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Downloads
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DownloadsLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserDefaultFolder -f $DownloadsLocalizedString
@@ -6228,11 +6397,19 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Music
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $MusicLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserDefaultFolder -f $MusicLocalizedString
@@ -6251,11 +6428,19 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Pictures
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $PicturesLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserDefaultFolder -f $PicturesLocalizedString
@@ -6274,11 +6459,19 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Videos
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Video"
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $VideosLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserDefaultFolder -f $VideosLocalizedString
@@ -6297,6 +6490,7 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 		}
@@ -8313,7 +8507,12 @@ function UninstallUWPApps
 
 		Write-Verbose -Message $Localization.Patient -Verbose
 
-		$AppxPackages = Get-AppxPackage -PackageTypeFilter Bundle -AllUsers:$AllUsers | Where-Object -FilterScript {$_.Name -notin $ExcludedAppxPackages}
+		$AppxPackages = @(Get-AppxPackage -PackageTypeFilter Bundle -AllUsers:$AllUsers | Where-Object -FilterScript {$_.Name -notin $ExcludedAppxPackages})
+		# The Bundle packages contains no Microsoft Teams
+		if (Get-AppxPackage -Name MicrosoftTeams -AllUsers:$AllUsers)
+		{
+			$AppxPackages += Get-AppxPackage -Name MicrosoftTeams -AllUsers:$AllUsers
+		}
 		$PackagesIds = [Windows.Management.Deployment.PackageManager, Windows.Web, ContentType = WindowsRuntime]::new().FindPackages() | Select-Object -Property DisplayName -ExpandProperty Id | Select-Object -Property Name, DisplayName
 
 		foreach ($AppxPackage in $AppxPackages)
@@ -8326,9 +8525,9 @@ function UninstallUWPApps
 			}
 
 			[PSCustomObject]@{
-				Name = $AppxPackage.Name
+				Name            = $AppxPackage.Name
 				PackageFullName = $AppxPackage.PackageFullName
-				DisplayName = $PackageId.DisplayName
+				DisplayName     = $PackageId.DisplayName
 			}
 		}
 	}
@@ -8942,6 +9141,7 @@ function HEIF
 
 									if ($Package -like "Microsoft.HEVCVideoExtension_*_x64__8wekyb3d8bbwe.appx")
 									{
+										Write-Information -MessageData "" -InformationAction Continue
 										Write-Verbose -Message $Localization.HEVCDownloading -Verbose
 
 										[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -9139,6 +9339,7 @@ function TeamsAutostart
 # Check for UWP apps updates
 function CheckUWPAppsUpdates
 {
+	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message $Localization.Patient -Verbose
 	Get-CimInstance -Namespace "Root\cimv2\mdm\dmmap" -ClassName "MDM_EnterpriseModernAppManagement_AppManagement01" | Invoke-CimMethod -MethodName UpdateScanMethod
 }
@@ -9280,8 +9481,7 @@ function SetAppGraphicsPerformance
 	GPUScheduling -Disable
 
 	.NOTES
-	Only with a dedicated GPU and WDDM verion is 2.7 or higher
-	Restart needed
+	Only with a dedicated GPU and WDDM verion is 2.7 or higher. Restart needed
 
 	.NOTES
 	Current user
@@ -9350,7 +9550,6 @@ function GPUScheduling
 
 	.NOTES
 	A native interactive toast notification pops up every 30 days
-	The task runs every 30 days
 
 	.NOTES
 	Current user
@@ -9611,8 +9810,7 @@ while (`$true)
 	SoftwareDistributionTask -Delete
 
 	.NOTES
-	The task will wait until the Windows Updates service finishes running
-	The task runs every 90 days
+	The task will wait until the Windows Updates service finishes running. The task runs every 90 days
 
 	.NOTES
 	Current user
@@ -9717,7 +9915,7 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -For
 	TempTask -Delete
 
 	.NOTES
-	The task runs every 60 days
+	Only files older than one day will be deleted. The task runs every 60 days
 
 	.NOTES
 	Current user
@@ -10098,7 +10296,7 @@ function CommandLineProcessAudit
 	The "Process Creation" Event Viewer custom view
 
 	.PARAMETER Enable
-	Create the "Process Creation" Event Viewer custom view
+	Create the "Process Creation" Event Viewer сustom view to log the executed processes and their arguments
 
 	.PARAMETER Disable
 	Remove the "Process Creation" Event Viewer custom view
@@ -10110,7 +10308,7 @@ function CommandLineProcessAudit
 	EventViewerCustomView -Disable
 
 	.NOTES
-	In order this feature to work events auditing (ProcessAudit -Enable) and command line in process creation events will be enabled
+	In order this feature to work events auditing (ProcessAudit -Enable) and command line (CommandLineProcessAudit -Enable) in process creation events will be enabled
 
 	.NOTES
 	Machine-wide
@@ -10560,13 +10758,13 @@ function WindowsSandbox
 	Disable DNS-over-HTTPS for IPv4
 
 	.EXAMPLE
-	DNSoverHTTPS -Enable
+	DNSoverHTTPS -Enable -PrimaryDNS 1.0.0.1 -SecondaryDNS 1.1.1.1
 
 	.EXAMPLE
 	DNSoverHTTPS -Disable
 
 	.NOTES
-	The preferred DNS server will be set to 1.0.0.1, and the alternate one to 1.1.1.1
+	The valid IPv4 addresses: 1.0.0.1, 1.1.1.1, 149.112.112.112, 8.8.4.4, 8.8.8.8, 9.9.9.9
 
 	.NOTES
 	Machine-wide
@@ -10583,6 +10781,20 @@ function DNSoverHTTPS
 		[switch]
 		$Enable,
 
+		[Parameter(Mandatory = $true)]
+		[ValidateSet("1.0.0.1", "1.1.1.1", "149.112.112.112", "8.8.4.4", "8.8.8.8", "9.9.9.9")]
+		# Carve up the IPv4 addresses only
+		[ValidateScript({(@((Get-ChildItem -Path HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters\DohWellKnownServers).PSChildName) | Where-Object {$_ -notmatch ":"}) -contains $_})]
+		[string]
+		$PrimaryDNS,
+
+		[Parameter(Mandatory = $true)]
+		[ValidateSet("1.0.0.1", "1.1.1.1", "149.112.112.112", "8.8.4.4", "8.8.8.8", "9.9.9.9")]
+		# Carve up the IPv4 addresses only
+		[ValidateScript({(@((Get-ChildItem -Path HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters\DohWellKnownServers).PSChildName) | Where-Object {$_ -notmatch ":"}) -contains $_})]
+		[string]
+		$SecondaryDNS,
+
 		[Parameter(
 			Mandatory = $true,
 			ParameterSetName = "Disable"
@@ -10597,15 +10809,8 @@ function DNSoverHTTPS
 		{
 			if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain -eq $false)
 			{
-				# Get valid DNS over HTTPS servers from registry
-				$DohWellKnownServer = @((Get-ChildItem -Path HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters\DohWellKnownServers).PSChildName)
-				# 1.0.0.1
-				$PrimaryDNS = $DohWellKnownServer | Select-Object -Index 0
-				# 1.1.1.1
-				$SecondaryDNS = $DohWellKnownServer | Select-Object -Index 1
-
 				# Set the DNS servers
-				Get-NetAdapter -Physical | Get-NetIPConfiguration | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
+				Get-NetAdapter -Physical | Get-NetIPInterface -AddressFamily IPv4 | Get-NetIPConfiguration | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
 
 				$InterfaceGuid = (Get-NetAdapter -Physical).InterfaceGuid
 				if (-not (Test-Path -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS"))
@@ -11543,6 +11748,7 @@ public static void PostMessage()
 		Set-MpPreference -EnableControlledFolderAccess Enabled
 	}
 
+	Write-Information -MessageData "" -InformationAction Continue
 	Write-Warning -Message $Localization.RestartWarning
 
 	[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
@@ -11609,10 +11815,16 @@ function Errors
 {
 	if ($Global:Error)
 	{
+		# Some errors may have the Windows nature and don't have a path to any of the module's files
+		$ErrorInFile = if ($_.InvocationInfo.PSCommandPath)
+		{
+			Split-Path -Path $_.InvocationInfo.PSCommandPath -Leaf
+		}
+
 		($Global:Error | ForEach-Object -Process {
 			[PSCustomObject]@{
-				$Localization.ErrorsLine = $_.InvocationInfo.ScriptLineNumber
-				$Localization.ErrorsFile = Split-Path -Path $PSCommandPath -Leaf
+				$Localization.ErrorsLine    = $_.InvocationInfo.ScriptLineNumber
+				$Localization.ErrorsFile    = $ErrorInFile
 				$Localization.ErrorsMessage = $_.Exception.Message
 			}
 		} | Sort-Object -Property Line | Format-Table -AutoSize -Wrap | Out-String).Trim()

@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 11"
 
-	Version: v6.0.2
-	Date: 06.08.2021
+	Version: v6.0.3
+	Date: 25.08.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & Inestic
@@ -23,7 +23,7 @@
 
 	.NOTES
 	Supported Windows 11 version
-	Version: Sun Valley
+	Version: 21H2
 	Build: 22000
 	Editions: Home/Pro/Enterprise
 
@@ -70,7 +70,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.0.2 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014–2021"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.0.3 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -193,11 +193,19 @@ AdvertisingID -Disable
 # Разрешить приложениям показывать персонализированную рекламу с помощью моего идентификатора рекламы (значение по умолчанию)
 # AdvertisingID -Enable
 
-# Get tip, trick, and suggestions when I use Windows (default value)
+# Hide the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested
+# Скрывать экран приветствия Windows после обновлений и иногда при входе, чтобы сообщить о новых функциях и предложениях
+WindowsWelcomeExperience -Hide
+
+# Show the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested (default value)
+# Показывать экран приветствия Windows после обновлений и иногда при входе, чтобы сообщить о новых функциях и предложениях (значение по умолчанию)
+# WindowsWelcomeExperience -Show
+
+# Get tips and suggestions when I use Windows (default value)
 # Получать советы и предложения при использованию Windows (значение по умолчанию)
 WindowsTips -Enable
 
-# Do not get tip, trick, and suggestions when I use Windows
+# Do not get tips and suggestions when I use Windows
 # Не получать советы и предложения при использованию Windows
 # WindowsTips -Disable
 
@@ -221,8 +229,8 @@ AppsSilentInstalling -Disable
 # Не показывать предложения по настройке устройства
 WhatsNewInWindows -Disable
 
-# Offer suggestions on how I can set up my device (default value)
-# Показывать предложения по настройке устройства (значение по умолчанию)
+# Let Microsoft offer you tailored expereinces based on the diagnostic data setting you hava chosen (default value)
+# Разрешите корпорации Майкософт использовать ваши диагностические данные для улучшения вашей работы со службами Майкрософт с помощью персонализированных советов, рекламы и рекомендаций (значение по умолчанию)
 # WhatsNewInWindows -Enable
 
 # Don't let Microsoft use your diagnostic data for personalized tips, ads, and recommendations
@@ -230,7 +238,7 @@ WhatsNewInWindows -Disable
 TailoredExperiences -Disable
 
 # Let Microsoft use your diagnostic data for personalized tips, ads, and recommendations (default value)
-# Разрешить корпорации Майкрософт использовать диагностические данные для персонализированных советов, рекламы и рекомендаций
+# Разрешить корпорации Майкрософт использовать диагностические данные для персонализированных советов, рекламы и рекомендаций (значение по умолчанию)
 # TailoredExperiences -Enable
 
 # Disable Bing search in the Start Menu (for the USA only)
@@ -320,14 +328,6 @@ OneDriveFileExplorerAd -Hide
 # Показывать уведомления поставщика синхронизации в проводнике (значение по умолчанию)
 # OneDriveFileExplorerAd -Show
 
-# Show snap layouts when I hover over a windows's maximaze button (default value)
-# Показывать макеты прикрепления, частью которых является приложение, при наведении указателя мыши на кнопки панели задач (значение по умолчанию)
-SnapAssistFlyout -Disable
-
-# Hide snap layouts when I hover over a windows's maximaze button
-# Не показывать макеты прикрепления, частью которых является приложение, при наведении указателя мыши на кнопки панели задач
-# SnapAssistFlyout -Enable
-
 # When I snap a window, do not show what I can snap next to it
 # При прикреплении окна не показывать, что можно прикрепить рядом с ним
 SnapAssist -Disable
@@ -335,6 +335,14 @@ SnapAssist -Disable
 # When I snap a window, show what I can snap next to it (default value)
 # При прикреплении окна показывать, что можно прикрепить рядом с ним (значение по умолчанию)
 # SnapAssist -Enable
+
+# Show snap layouts when I hover over a windows's maximaze button (default value)
+# Показывать макеты прикрепления, частью которых является приложение, при наведении указателя мыши на кнопки панели задач (значение по умолчанию)
+SnapAssistFlyout -Disable
+
+# Hide snap layouts when I hover over a windows's maximaze button
+# Не показывать макеты прикрепления, частью которых является приложение, при наведении указателя мыши на кнопки панели задач
+# SnapAssistFlyout -Enable
 
 # Show the file transfer dialog box in the detailed mode
 # Отображать диалоговое окно передачи файлов в развернутом виде
@@ -488,12 +496,12 @@ TaskManagerWindow -Expanded
 # Запускать Диспетчера задач в свернутом виде (значение по умолчанию)
 # TaskManagerWindow -Compact
 
-# Show a notification when your PC requires a restart to finish updating
-# Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления
+# Notify me when a restart is required to finish updating
+# Уведомлять меня о необходимости перезагрузки для завершения обновления
 RestartNotification -Show
 
-# Do not show a notification when your PC requires a restart to finish updating (default value)
-# Не показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления (значение по умолчанию)
+# Do not notify me when a restart is required to finish updating (default value)
+# Не yведомлять меня о необходимости перезагрузки для завершения обновления (значение по умолчанию)
 # RestartNotification -Hide
 
 # Do not add the "- Shortcut" suffix to the file name of created shortcuts
@@ -640,10 +648,10 @@ WindowsManageDefaultPrinter -Disable
 
 <#
 	Disable the Windows features using the pop-up dialog box
-	Отключить компоненты Windows, используя всплывающее диалоговое окно
-
 	If you want to leave "Multimedia settings" element in the advanced settings of Power Options do not disable the "Media Features" feature
+
 	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах схемы управления питанием, не отключайте "Компоненты для работы с медиа"
+	Отключить компоненты Windows, используя всплывающее диалоговое окно
 #>
 WindowsFeatures -Disable
 
@@ -851,11 +859,11 @@ ThumbnailCacheRemoval -Disable
 # ThumbnailCacheRemoval -Enable
 
 # Automatically saving my restartable apps and restart them when I sign back in
-# Автоматически сохранять моих перезапускаемые приложения при выходе из системы и перезапускать их при повторном входе
+# Автоматически сохранять мои перезапускаемые приложения из системы и перезапускать их при повторном входе
 SaveRestartableApps -Enable
 
 # Turn off automatically saving my restartable apps and restart them when I sign back in (default value)
-# Выключить автоматическое сохранение моих перезапускаемых приложений при выходе из системы и перезапускать их при повторном входе (значение по умолчанию)
+# Выключить автоматическое сохранение моих перезапускаемых приложений из системы и перезапускать их при повторном входе (значение по умолчанию)
 # SaveRestartableApps -Disable
 
 # Enable "Network Discovery" and "File and Printers Sharing" for workgroup networks
@@ -901,8 +909,13 @@ DefaultTerminalApp -WindowsTerminal
 #endregion System
 
 #region WSL
-# Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form
-# Установить подсистему Windows для Linux (WSL), последний пакет обновления ядра Linux и дистрибутив Linux, используя всплывающую форму
+<#
+	Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form
+	To receive kernel updates, enable the Windows Update setting: "Receive updates for other Microsoft products"
+
+	Установить подсистему Windows для Linux (WSL), последний пакет обновления ядра Linux и дистрибутив Linux, используя всплывающую форму
+	Чтобы получать обновления ядра, включите параметр "При обновлении Windows поулчать обновления для других продуктов Майкрософт" в Центре обновлении Windows
+#>
 # WSL -Enable
 #endregion WSL
 
@@ -988,18 +1001,13 @@ XboxGameTips -Disable
 # Включить советы Xbox Game Bar (значение по умолчанию)
 # XboxGameTips -Enable
 
-<#
-	Choose an app and set the "High performance" graphics performance for it
-	Only with a dedicated GPU
-
-	Выбрать приложение и установить параметры производительности графики на "Высокая производительность" для него
-	Только при наличии внешней видеокарты
-#>
+# Choose an app and set the "High performance" graphics performance for it. Only if you have a dedicated GPU
+# Выбрать приложение и установить для него параметры производительности графики на "Высокая производительность". Только при наличии внешней видеокарты
 SetAppGraphicsPerformance
 
 <#
 	Turn on hardware-accelerated GPU scheduling. Restart needed
-	Only with a dedicated GPU and WDDM verion is 2.7 or higher
+	Only if you have a dedicated GPU and WDDM verion is 2.7 or higher
 
 	Включить планирование графического процессора с аппаратным ускорением. Необходима перезагрузка
 	Только при наличии внешней видеокарты и WDDM версии 2.7 и выше
@@ -1014,12 +1022,10 @@ GPUScheduling -Enable
 #region Scheduled tasks
 <#
 	Create the "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates
-	A native interactive toast notification pops up every 30 days
-	The task runs every 30 days
+	A native interactive toast notification pops up every 30 days. The task runs every 30 days
 
 	Создать задачу "Windows Cleanup" по очистке неиспользуемых файлов и обновлений Windows в Планировщике заданий
-	Нативный интерактивный тост всплывает каждые 30 дней
-	Задача выполняется каждые 30 дней
+	Нативный интерактивный тост всплывает каждые 30 дней. Задача выполняется каждые 30 дней
 #>
 CleanupTask -Register
 
@@ -1029,12 +1035,10 @@ CleanupTask -Register
 
 <#
 	Create the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
-	The task will wait until the Windows Updates service finishes running
-	The task runs every 90 days
+	The task will wait until the Windows Updates service finishes running. The task runs every 90 days
 
 	Создать задачу "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download в Планировщике заданий
-	Задача будет ждать, пока служба обновлений Windows не закончит работу
-	Задача выполняется каждые 90 дней
+	Задача будет ждать, пока служба обновлений Windows не закончит работу. Задача выполняется каждые 90 дней
 #>
 SoftwareDistributionTask -Register
 
@@ -1044,10 +1048,10 @@ SoftwareDistributionTask -Register
 
 <#
 	Create the "Temp" scheduled task for cleaning up the %TEMP% folder
-	The task runs every 60 days
+	Only files older than one day will be deleted. The task runs every 60 days
 
 	Создать задачу "Temp" в Планировщике заданий по очистке папки %TEMP%
-	Задача выполняется каждые 60 дней
+	Удаляться будут только файлы старше одного дня. Задача выполняется каждые 60 дней
 #>
 TempTask -Register
 
@@ -1116,16 +1120,16 @@ CommandLineProcessAudit -Enable
 # CommandLineProcessAudit -Disable
 
 <#
-	Create "Process Creation" Event Viewer сustom view
-	In order this feature to work events auditing (AuditProcess -Enable) and command line in process creation events will be enabled
+	Create the "Process Creation" Event Viewer сustom view to log the executed processes and their arguments
+	In order this feature to work events auditing (AuditProcess -Enable) and command line (CommandLineProcessAudit -Enable) in process creation events will be enabled
 
-	Создать настаиваемое представление "Создание процесса" в Просмотре событий
-	Для того, чтобы работал данный функционал, буден включен аудит событий (AuditProcess -Enable) и командной строки в событиях создания процесса
+	Создать настраиваемое представление "Создание процесса" в Просмотре событий для журналирования запускаемых процессов и их аргументов
+	Для того, чтобы работал данный функционал, буден включен аудит событий (AuditProcess -Enable) и командной строки (CommandLineProcessAudit -Enable) в событиях создания процесса
 #>
 EventViewerCustomView -Enable
 
-# Remove "Process Creation" Event Viewer Custom View (default value)
-# Удалить настаиваемое представление "Создание процесса" в Просмотре событий (значение по умолчанию)
+# Remove "Process Creation" Event Viewer сustom view to log the executed processes and their arguments (default value)
+# Удалить настаиваемое представление "Создание процесса" в Просмотре событий для журналирования запускаемых процессов и их аргументов (значение по умолчанию)
 # EventViewerCustomView -Disable
 
 # Enable logging for all Windows PowerShell modules
@@ -1183,12 +1187,12 @@ SaveZoneInformation -Disable
 
 <#
 	Enable DNS-over-HTTPS for IPv4
-	The preferred DNS server: 1.0.0.1, the alternate: 1.1.1.1
+	The valid IPv4 addresses: 1.0.0.1, 1.1.1.1, 149.112.112.112, 8.8.4.4, 8.8.8.8, 9.9.9.9
 
 	Включить DNS-over-HTTPS для IPv4
-	Предпочитаемый DNS-сервер: 1.0.0.1, альтернативный: 1.1.1.1
+	Действительные IPv4-адреса: 1.0.0.1, 1.1.1.1, 149.112.112.112, 8.8.4.4, 8.8.8.8, 9.9.9.9
 #>
-DNSoverHTTPS -Enable
+DNSoverHTTPS -Enable -PrimaryDNS 1.0.0.1 -SecondaryDNS 1.1.1.1
 
 # Disable DNS-over-HTTPS for IPv4 (default value)
 # Выключить DNS-over-HTTPS для IPv4 (значение по умолчанию)
@@ -1228,17 +1232,17 @@ CastToDeviceContext -Hide
 # Отобразить пункт "Передать на устройство" в контекстном меню медиа-файлов и папок (значение по умолчанию)
 # CastToDeviceContext -Show
 
-<#
-	Hide the "Share" item from the context menu
-	Showing the "Share" item in the context menu will disable the Windows 10 File Explorer
-
-	Скрыть пункт "Отправить" (поделиться) из контекстного меню
-	Отображение элемента «Поделиться» в контекстном меню приведет к отключению проводника Windows 10
-#>
+# Hide the "Share" item from the context menu
+# Скрыть пункт "Отправить" (поделиться) из контекстного меню
 ShareContext -Hide
 
-# Show the "Share" item in the context menu (default value)
-# Отобразить пункт "Отправить" (поделиться) в контекстном меню (значение по умолчанию)
+<#
+	Show the "Share" item in the context menu (default value)
+	Showing the "Share" item in the context menu will disable the Windows 10 File Explorer
+
+	Отобразить пункт "Отправить" (поделиться) в контекстном меню (значение по умолчанию)
+	Отображение элемента "Поделиться" в контекстном меню приведет к отключению проводника из Windows 10
+#>
 # ShareContext -Show
 
 # Hide the "Edit with Photos" item from the media files context menu
@@ -1288,14 +1292,6 @@ BitLockerContext -Hide
 # Show the "Turn on BitLocker" item in the drives context menu (default value)
 # Отобразить пункт "Включить BitLocker" в контекстном меню дисков (значение по умолчанию)
 # BitLockerContext -Show
-
-# Hide the "Bitmap image" item from the "New" context menu
-# Скрыть пункт "Точечный рисунок" из контекстного меню "Создать"
-BitmapImageNewContext -Hide
-
-# Show the "Bitmap image" item to the "New" context menu (default value)
-# Отобразить пункт "Точечный рисунок" в контекстного меню "Создать" (значение по умолчанию)
-# BitmapImageNewContext -Show
 
 # Hide the "Compressed (zipped) Folder" item from the "New" context menu
 # Скрыть пункт "Сжатая ZIP-папка" из контекстного меню "Создать"
