@@ -1,4 +1,4 @@
-﻿[
+[
   {
     "Id": "Menu",
     "Options": {
@@ -7,6 +7,8 @@
       "menuOpposite": "Наоборот",
       "menuClear": "Очистить",
       "menuTheme": "Тема",
+      "menuThemeDark": "Тёмная",
+      "menuThemeLight": "Светлая",
       "menuLanguage": "Язык",
       "menuAbout": "О программе"
     }

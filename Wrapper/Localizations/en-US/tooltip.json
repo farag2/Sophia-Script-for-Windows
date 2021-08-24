@@ -1,4 +1,4 @@
-﻿[
+[
   {
     "Id": 100,
     "Region": "Protection",
@@ -178,11 +178,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Get tip, trick, and suggestions as you use Windows (default value)"
+        "ToolTip": "Get tips and suggestions when I use Windows (default value)"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Do not get tip, trick, and suggestions as you use Windows"
+        "ToolTip": "Do not get tips and suggestions when I use Windows"
       }
     }
   },
@@ -1721,7 +1721,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Choose an app and set the \"High performance\" graphics performance for it. Only with a dedicated GPU"
+        "ToolTip": "Choose an app and set the \"High performance\" graphics performance for it. Only if you have a dedicated GPU"
       }
     }
   },
@@ -1732,7 +1732,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Turn on hardware-accelerated GPU scheduling. Restart needed. Only with a dedicated GPU and WDDM verion is 2.7 or higher"
+        "ToolTip": "Turn on hardware-accelerated GPU scheduling. Restart needed. Only if you have a dedicated GPU and WDDM verion is 2.7 or higher"
       },
       "One": {
         "Tag": "Disable",
@@ -1777,7 +1777,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Register",
-        "ToolTip": "Create the \"Temp\" scheduled task for cleaning up the %TEMP% folder. The task runs every 60 days"
+        "ToolTip": "Create the \"Temp\" scheduled task for cleaning up the %TEMP% folder. Only files older than one day will be deleted. The task runs every 60 days"
       },
       "One": {
         "Tag": "Delete",
@@ -1889,11 +1889,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Create \"Process Creation\" Event Viewer custom view. In order this feature to work events auditing (AuditProcess -Enable) and command line in process creation events will be enabled"
+        "ToolTip": "Create the \"Process Creation\" Event Viewer сustom view to log the executed processes and their arguments. In order this feature to work events auditing (AuditProcess -Enable) and command line (CommandLineProcessAudit -Enable) in process creation events will be enabled"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Remove \"Process Creation\" Event Viewer custom view (default value)"
+        "ToolTip": "Remove \"Process Creation\" Event Viewer сustom view to log the executed processes and their arguments (default value)"
       }
     }
   },
@@ -1994,7 +1994,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Enable DNS-over-HTTPS for IPv4. The preferred DNS server: 1.0.0.1, the alternate: 1.1.1.1"
+        "ToolTip": "Enable DNS-over-HTTPS for IPv4. The valid IPv4 addresses: 1.0.0.1, 1.1.1.1, 149.112.112.112, 8.8.4.4, 8.8.8.8, 9.9.9.9"
       },
       "One": {
         "Tag": "Disable",

@@ -7,6 +7,8 @@
       "menuOpposite": "Gegenteil",
       "menuClear": "Leeren",
       "menuTheme": "Thema",
+      "menuThemeDark": "Dunkel",
+      "menuThemeLight": "Hell",
       "menuLanguage": "Sprache",
       "menuAbout": "Über"
     }
@@ -22,7 +24,7 @@
       "tabWSL": "WSL",
       "tabStartMenu": "Startmenü",
       "tabUWP": "UWP Apps",
-      "tabGaming": "Spielen",
+      "tabGaming": "Spiele",
       "tabScheduledTasks": "Geplante Aufgaben",
       "tabDefenderSecurity": "Defender & Sicherheit",
       "tabContextMenu": "Kontextmenü",

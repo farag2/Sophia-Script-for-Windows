@@ -16,8 +16,7 @@
     "Preset": "Zero",
     "WindowsDefault": "",
     "LTSC": "true",
-    "Win10": "true",
-    "Win11": "true"
+    "Win10": "true"
   },
   {
     "Id": 101,
@@ -149,7 +148,9 @@
     },
     "Preset": "Zero",
     "WindowsDefault": "One",
-    "LTSC": "true"
+    "LTSC": "true",
+    "Win10": "true",
+    "Win11": "true"
   },
   {
     "Id": 205,

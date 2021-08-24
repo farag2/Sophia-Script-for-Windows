@@ -1,4 +1,4 @@
-﻿[
+[
   {
     "Id": "Menu",
     "Options": {
@@ -7,6 +7,8 @@
       "menuOpposite": "Opposite",
       "menuClear": "Clear",
       "menuTheme": "Theme",
+      "menuThemeDark": "Dark",
+      "menuThemeLight":  "Light",
       "menuLanguage": "Language",
       "menuAbout": "About"
     }
