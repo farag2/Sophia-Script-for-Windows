@@ -241,8 +241,8 @@ TailoredExperiences -Disable
 # Разрешить корпорации Майкрософт использовать диагностические данные для персонализированных советов, рекламы и рекомендаций (значение по умолчанию)
 # TailoredExperiences -Enable
 
-# Disable Bing search in the Start Menu (for the USA only)
-# Отключить в меню "Пуск" поиск через Bing (только для США)
+# Disable Bing search in the Start Menu
+# Отключить в меню "Пуск" поиск через Bing
 BingSearch -Disable
 
 # Enable Bing search in the Start Menu (default value)
