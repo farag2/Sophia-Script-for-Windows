@@ -6,6 +6,2297 @@
     "Arg": {
       "Zero": {
         "Tag": "Warning",
+        "ToolTip": "Die obligatorischen Prüfungen (z.B. verwendetes Betriebssystem, Architektur). Wenn Sie die Warnung, darüber ob die voreingestellte Datei angepasst wurde, deaktivieren möchten, entfernen Sie das \"-Warning\" Argument"
+      },
+      "One": {
+        "Tag": "",
+        "ToolTip": "Die obligatorischen Prüfungen (z.B. verwendetes Betriebssystem, Architektur). No argument therefore no warning message about whether you've customized the preset file"
+      }
+    }
+  },
+  {
+    "Id": 101,
+    "Region": "Protection",
+    "Function": "Logging",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Skript-Protokollierung aktivieren. Das Protokoll wird in den Skript-Ordner geschrieben. Um die Protokollierung anzuhalten, schließen Sie die Konsole oder geben \"Stop-Transcript\" ein"
+      }
+    }
+  },
+  {
+    "Id": 102,
+    "Region": "Protection",
+    "Function": "CreateRestorePoint",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Systemwiederherstellungspunkt erstellen"
+      }
+    }
+  },
+  {
+    "Id": 200,
+    "Region": "Privacy & Telemetry",
+    "Function": "DiagTrackService",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Deaktivieren des Dienstes \"DiagTrack\" (Benutzererfahrungen und Telemetrie im verbundenen Modus) und Verbindung blockieren in der zugehörigen Firewall-Regel"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Aktivieren des Dienstes \"DiagTrack\" (Benutzererfahrungen und Telemetrie im verbundenen Modus) und Verbindung zulassen in der zugehörigen Firewall-Regel (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 201,
+    "Region": "Privacy & Telemetry",
+    "Function": "DiagnosticDataLevel",
+    "Arg": {
+      "Zero": {
+        "Tag": "Minimal",
+        "ToolTip": "Diagnosedaten (Telemetrie) auf Minimal festlegen "
+      },
+      "One": {
+        "Tag": "Default",
+        "ToolTip": "Diagnosedaten (Telemetrie) auf Standard festlegen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 202,
+    "Region": "Privacy & Telemetry",
+    "Function": "ErrorReporting",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Windows-Fehlerberichterstattung ausschalten"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Windows-Fehlerberichterstattung einschalten (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 203,
+    "Region": "Privacy & Telemetry",
+    "Function": "FeedbackFrequency",
+    "Arg": {
+      "Zero": {
+        "Tag": "Never",
+        "ToolTip": "Feedbackhäufigkeit auf \"Nie\" ändern"
+      },
+      "One": {
+        "Tag": "Automatically",
+        "ToolTip": "Feedbackhäufigkeit auf \"Automatisch\" ändern (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 204,
+    "Region": "Privacy & Telemetry",
+    "Function": "ScheduledTasks",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Geplante Aufgaben für die Diagnoseverfolgung deaktivieren. Betroffene Tasks: ProgramDataUpdater, Proxy, Consolidator, UsbCeip, Microsoft-Windows-DiskDiagnosticDataCollector, MapsToastTask, MapsUpdateTask, FamilySafetyMonitor, FamilySafetyRefreshTask, XblGameSaveTask"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Geplante Aufgaben für die Diagnoseverfolgung aktivieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 205,
+    "Region": "Privacy & Telemetry",
+    "Function": "SigninInfo",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Meine Anmeldeinfos nicht verwenden, um die Geräteeinrichtung nach einem Update oder Neustart automatisch abzuschließen"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Meine Anmeldeinfos verwenden, um die Geräteeinrichtung nach einem Update oder Neustart automatisch abzuschließen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 206,
+    "Region": "Privacy & Telemetry",
+    "Function": "LanguageListAccess",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Websites den Zugriff auf die eigene Sprachliste nicht gestatten"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Websites den Zugriff auf die eigene Sprachliste gestatten, um die Anzeige lokal relevanter Inhalte zu ermöglichen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 207,
+    "Region": "Privacy & Telemetry",
+    "Function": "AdvertisingID",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Apps die Verwendung der Werbe-ID nicht ermöglichen"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Apps die Verwendung der Werbe-ID ermöglichen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 208,
+    "Region": "Privacy & Telemetry",
+    "Function": "WindowsWelcomeExperience",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Windows-Willkommensseite nach Updates ausblenden und nicht gelegentlich bei der Anmeldung anzeigen, um Neuigkeiten und Vorschläge zu lesen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Windows-Willkommensseite nach Updates und gelegentlich bei der Anmeldung anzeigen, um Neuigkeiten und Vorschläge zu lesen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 209,
+    "Region": "Privacy & Telemetry",
+    "Function": "WindowsTips",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Bei der Nutzung von Windows Tipps, Tricks und Vorschläge erhalten (Standardwert)"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Bei der Nutzung von Windows keine Tipps, Tricks und Vorschläge erhalten"
+      }
+    }
+  },
+  {
+    "Id": 210,
+    "Region": "Privacy & Telemetry",
+    "Function": "SettingsSuggestedContent",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Vorgeschlagene Inhalte nicht in der Einstellungs-App anzeigen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Vorgeschlagene Inhalte in der Einstellungs-App anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 211,
+    "Region": "Privacy & Telemetry",
+    "Function": "AppsSilentInstalling",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Vorgeschlagene Apps nicht automatisch installieren"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Vorgeschlagene Apps automatisch installieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 212,
+    "Region": "Privacy & Telemetry",
+    "Function": "WhatsNewInWindows",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Keine Möglichkeiten zum Abschließen der Einrichtung meines Geräts für die optimale Nutzung von Windows vorschlagen"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Möglichkeiten zum Abschließen der Einrichtung meines Geräts für die optimale Nutzung von Windows vorschlagen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 213,
+    "Region": "Privacy & Telemetry",
+    "Function": "TailoredExperiences",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Verwehren Sie Microsoft, Ihre Diagnosedaten zu verwenden, ausgenommen Informationen zu den von Ihnen besuchten Websites, um Ihnen personalisierte Tipps, Werbung und Empfehlungenzur Verbesserung ihrer Erfahrung mit Microsoft bereitzustellen"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Erlauben Sie Microsoft, Ihre Diagnosedaten zu verwenden, ausgenommen Informationen zu den von Ihnen besuchten Websites, um Ihnen personalisierte Tipps, Werbung und Empfehlungenzur Verbesserung ihrer Erfahrung mit Microsoft bereitzustellen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 214,
+    "Region": "Privacy & Telemetry",
+    "Function": "BingSearch",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Bing-Suche im Startmenü deaktivieren (nur für USA)"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Bing-Suche im Startmenü aktivieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 300,
+    "Region": "UI & Personalization",
+    "Function": "ThisPC",
+    "Arg": {
+      "Zero": {
+        "Tag": "Show",
+        "ToolTip": "\"Dieser PC\"-Symbol auf Desktop anzeigen"
+      },
+      "One": {
+        "Tag": "Hide",
+        "ToolTip": "\"Dieser PC\"-Symbol nicht auf Desktop anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 301,
+    "Region": "UI & Personalization",
+    "Function": "Windows10FileExplorer",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Windows 10 Datei-Explorer aktivieren"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Windows 10 Datei-Explorer deaktivieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 302,
+    "Region": "UI & Personalization",
+    "Function": "CheckBoxes",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Keine Kontrollkästchen zur Auswahl von Elementen verwenden"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Kontrollkästchen zur Auswahl von Elementen verwenden (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 303,
+    "Region": "UI & Personalization",
+    "Function": "HiddenItems",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Ausgeblendete Dateien, Ordner und Laufwerke anzeigen"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Ausgeblendete Dateien, Ordner und Laufwerke nicht anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 304,
+    "Region": "UI & Personalization",
+    "Function": "FileExtensions",
+    "Arg": {
+      "Zero": {
+        "Tag": "Show",
+        "ToolTip": "Erweiterungen bei bekannten Dateitypen anzeigen"
+      },
+      "One": {
+        "Tag": "Hide",
+        "ToolTip": "Erweiterungen bei bekannten Dateitypen ausblenden (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 305,
+    "Region": "UI & Personalization",
+    "Function": "MergeConflicts",
+    "Arg": {
+      "Zero": {
+        "Tag": "Show",
+        "ToolTip": "Konflikte bei der Ordnerzusammenführung anzeigen"
+      },
+      "One": {
+        "Tag": "Hide",
+        "ToolTip": "Konflikte bei der Ordnerzusammenführung ausblenden (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 306,
+    "Region": "UI & Personalization",
+    "Function": "OpenFileExplorerTo",
+    "Arg": {
+      "Zero": {
+        "Tag": "ThisPC",
+        "ToolTip": "Datei-Explorer öffnen für \"Dieser PC\""
+      },
+      "One": {
+        "Tag": "QuickAccess",
+        "ToolTip": "Datei-Explorer öffnen für \"Schnellzugriff\" (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 307,
+    "Region": "UI & Personalization",
+    "Function": "FileExplorerMode",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Kompaktmodus des Datei-Explorer deaktivieren"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Kompaktmodus des Datei-Explorer aktivieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 308,
+    "Region": "UI & Personalization",
+    "Function": "CortanaButton",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Cortana-Schaltfläche nicht auf der Taskleiste anzeigen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Cortana-Schaltfläche auf der Taskleiste anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 309,
+    "Region": "UI & Personalization",
+    "Function": "OneDriveFileExplorerAd",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Benachrichtigungen des Synchronisierungsanbieters ausblenden"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Benachrichtigungen des Synchronisierungsanbieters anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 310,
+    "Region": "UI & Personalization",
+    "Function": "SnapAssistFlyout",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Andock-Layouts anzeigen, wenn der Mauszeiger über die Schaltflächenbox zum Maximieren eines Fensters bewegt wird (Standardwert)"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Andock-Layouts nicht anzeigen, wenn der Mauszeiger über die Schaltflächenbox zum Maximieren eines Fensters bewegt wird"
+      }
+    }
+  },
+  {
+    "Id": 311,
+    "Region": "UI & Personalization",
+    "Function": "SnapAssist",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Beim Andocken eines Fensters nicht anzeigen, was daneben angedockt werden kann"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Beim Andocken eines Fensters anzeigen, was daneben angedockt werden kann (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 312,
+    "Region": "UI & Personalization",
+    "Function": "FileTransferDialog",
+    "Arg": {
+      "Zero": {
+        "Tag": "Detailed",
+        "ToolTip": "Dialog für Datei-Transfer im Detailmodus anzeigen"
+      },
+      "One": {
+        "Tag": "Compact",
+        "ToolTip": "Dialog für Datei-Transfer im Kompaktmodus anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 313,
+    "Region": "UI & Personalization",
+    "Function": "FileExplorerRibbon",
+    "Arg": {
+      "Zero": {
+        "Tag": "Expanded",
+        "ToolTip": "Menüband im Datei-Explorer erweitern"
+      },
+      "One": {
+        "Tag": "Minimized",
+        "ToolTip": "Menüband im Datei-Explorer minimieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 314,
+    "Region": "UI & Personalization",
+    "Function": "RecycleBinDeleteConfirmation",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Keinen Dialog zur Bestätigung des Löschvorgangs anzeigen"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Dialog zur Bestätigung des Löschvorgangs anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 315,
+    "Region": "UI & Personalization",
+    "Function": "3DObjects",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "\"3D Objekte\"-Ordner nicht unter \"Dieser PC\" und \"Schnellzugriff\" anzeigen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "\"3D Objekte\"-Ordner unter \"Dieser PC\" und \"Schnellzugriff\" anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 316,
+    "Region": "UI & Personalization",
+    "Function": "QuickAccessRecentFiles",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Zuletzt verwendete Dateien nicht im Schnellzugriff anzeigen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Zuletzt verwendete Dateien im Schnellzugriff anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 317,
+    "Region": "UI & Personalization",
+    "Function": "QuickAccessFrequentFolders",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Zuletzt verwendete Ordner nicht im Schnellzugriff anzeigen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Zuletzt verwendete Ordner im Schnellzugriff anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 318,
+    "Region": "UI & Personalization",
+    "Function": "TaskbarAlignment",
+    "Arg": {
+      "Zero": {
+        "Tag": "Left",
+        "ToolTip": "Taskleisten-Ausrichtung auf \"Links\" festlegen"
+      },
+      "One": {
+        "Tag": "Center",
+        "ToolTip": "Taskleisten-Ausrichtung auf \"Mittig\" festlegen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 319,
+    "Region": "UI & Personalization",
+    "Function": "TaskbarSearch",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Suchsymbol nicht auf der Taskleiste anzeigen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Suchsymbol auf der Taskleiste anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 320,
+    "Region": "UI & Personalization",
+    "Function": "TaskViewButton",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Taskansicht-Schaltfläche nicht auf der Taskleiste anzeigen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Taskansicht-Schaltfläche auf der Taskleiste anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 321,
+    "Region": "UI & Personalization",
+    "Function": "TaskbarWidgets",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Widgetsymbol nicht auf der Taskleiste anzeigen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Widgetsymbol auf der Taskleiste anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 322,
+    "Region": "UI & Personalization",
+    "Function": "TaskbarChat",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Chatsymbol (Microsoft Teams) nicht auf der Taskleiste anzeigen "
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Chatsymbol (Microsoft Teams) auf der Taskleiste anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 323,
+    "Region": "UI & Personalization",
+    "Function": "PeopleTaskbar",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Kontakte nicht auf der Taskleiste anzeigen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Kontakte auf der Taskleiste anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 324,
+    "Region": "UI & Personalization",
+    "Function": "SecondsInSystemClock",
+    "Arg": {
+      "Zero": {
+        "Tag": "Show",
+        "ToolTip": "Sekunden in der Taskleisten-Uhr anzeigen"
+      },
+      "One": {
+        "Tag": "Hide",
+        "ToolTip": "Sekunden nicht in der Taskleisten-Uhr anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 325,
+    "Region": "UI & Personalization",
+    "Function": "TaskbarSearch",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Suche nicht auf der Taskleiste anzeigen"
+      },
+      "One": {
+        "Tag": "SearchIcon",
+        "ToolTip": "Suchsymbol auf der Taskleiste anzeigen"
+      },
+      "Two": {
+        "Tag": "SearchBox",
+        "ToolTip": "Suchfeld auf der Taskleiste anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 326,
+    "Region": "UI & Personalization",
+    "Function": "WindowsInkWorkspace",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Windows Ink-Arbeitsbereich (Schaltfläche) nicht auf der Taskleiste anzeigen "
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Windows Ink-Arbeitsbereich (Schaltfläche) auf der Taskleiste anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 327,
+    "Region": "UI & Personalization",
+    "Function": "NotificationAreaIcons",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "\"Auswahl der Symbole für die Anzeige auf der Taskleiste\"-Seite in der Einstellungs-App öffnen, um die Einstellung \"Immer alle Symbole im Benachrichtigungsbereich anzeigen\" anzuschalten"
+      }
+    }
+  },
+  {
+    "Id": 328,
+    "Region": "UI & Personalization",
+    "Function": "MeetNow",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "\"Jetzt Besprechen\"-Symbol nicht im Benachrichtigungsbereich anzeigen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "\"Jetzt Besprechen\"-Symbol im Benachrichtigungsbereich anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 329,
+    "Region": "UI & Personalization",
+    "Function": "NewsInterests",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "\"Neuigkeiten und interessante Themen\" auf der Taskleiste deaktivieren"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "\"Neuigkeiten und interessante Themen\" auf der Taskleiste aktivieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 330,
+    "Region": "UI & Personalization",
+    "Function": "UnpinTaskbarShortcuts -Shortcuts",
+    "ToolTip": "Verknüpfungen für \"Microsoft Edge\", \"Microsoft Store\" oder \"Mail\" von der Taskleiste lösen",
+    "Arg": {
+      "Zero": {
+        "Tag": "Edge",
+        "ToolTip": "Verknüpfung für \"Microsoft Edge\" von der Taskleiste lösen"
+      },
+      "One": {
+        "Tag": "Store",
+        "ToolTip": "Verknüpfung für \"Microsoft Store\" von der Taskleiste lösen"
+      },
+      "Two": {
+        "Tag": "Mail",
+        "ToolTip": "Verknüpfung für \"Mail\" von der Taskleiste lösen"
+      }
+    }
+  },
+  {
+    "Id": 332,
+    "Region": "UI & Personalization",
+    "Function": "TaskbarSize",
+    "Arg": {
+      "Zero": {
+        "Tag": "Large",
+        "ToolTip": "Taskleiste auf \"Groß\" einstellen"
+      },
+      "One": {
+        "Tag": "Default",
+        "ToolTip": "Taskleiste auf \"Standard\" einstellen"
+      },
+      "Two": {
+        "Tag": "Small",
+        "ToolTip": "Taskleiste auf \"Klein\" einstellen"
+      }
+    }
+  },
+  {
+    "Id": 333,
+    "Region": "UI & Personalization",
+    "Function": "ControlPanelView",
+    "Arg": {
+      "Zero": {
+        "Tag": "LargeIcons",
+        "ToolTip": "Anzeige der Systemsteuerung nach \"Großen Symbolen\""
+      },
+      "One": {
+        "Tag": "SmallIcons",
+        "ToolTip": "Anzeige der Systemsteuerung nach \"Kleinen Symbolen\""
+      },
+      "Two": {
+        "Tag": "Category",
+        "ToolTip": "Anzeige der Systemsteuerung nach \"Kategorie\" (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 334,
+    "Region": "UI & Personalization",
+    "Function": "WindowsColorMode",
+    "Arg": {
+      "Zero": {
+        "Tag": "Dark",
+        "ToolTip": "Standardmäßigen Windows-Modus \"Dunkel\" auswählen"
+      },
+      "One": {
+        "Tag": "Light",
+        "ToolTip": "Standardmäßigen Windows-Modus \"Hell\" auswählen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 335,
+    "Region": "UI & Personalization",
+    "Function": "AppColorMode",
+    "Arg": {
+      "Zero": {
+        "Tag": "Dark",
+        "ToolTip": "Standard-App-Modus \"Dunkel\" auswählen"
+      },
+      "One": {
+        "Tag": "Light",
+        "ToolTip": "Standard-App-Modus \"Hell\" auswählen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 336,
+    "Region": "UI & Personalization",
+    "Function": "NewAppInstalledNotification",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Benachrichtigung für \"Neue Anwendung installiert\" nicht anzeigen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Benachrichtigung für \"Neue Anwendung installiert\" anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 337,
+    "Region": "UI & Personalization",
+    "Function": "FirstLogonAnimation",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Animation bei der ersten Anmeldung ausblenden"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Animation bei der ersten Anmeldung anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 338,
+    "Region": "UI & Personalization",
+    "Function": "JPEGWallpapersQuality",
+    "Arg": {
+      "Zero": {
+        "Tag": "Max",
+        "ToolTip": "Qualitätsstufe für JPEG-Desktop-Hintergründe auf Maximum festlegen"
+      },
+      "One": {
+        "Tag": "Default",
+        "ToolTip": "Qualitätsstufe für JPEG-Desktop-Hintergründe auf Standard festlegen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 339,
+    "Region": "UI & Personalization",
+    "Function": "TaskManagerWindow",
+    "Arg": {
+      "Zero": {
+        "Tag": "Expanded",
+        "ToolTip": "Task-Manager im Detailmodus starten"
+      },
+      "One": {
+        "Tag": "Compact",
+        "ToolTip": "Task-Manager im Kompaktmodus starten (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 340,
+    "Region": "UI & Personalization",
+    "Function": "RestartNotification",
+    "Arg": {
+      "Zero": {
+        "Tag": "Show",
+        "ToolTip": "Benachrichtigung anzeigen, wenn Ihr PC einen Neustart erfordert, um das Update abzuschließen"
+      },
+      "One": {
+        "Tag": "Hide",
+        "ToolTip": "Keine Benachrichtigung anzeigen, wenn Ihr PC einen Neustart erfordert, um das Update abzuschließen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 341,
+    "Region": "UI & Personalization",
+    "Function": "ShortcutsSuffix",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "\"- Vernküpfung\"-Suffix beim Erstellen einer Verknüpfung an den Dateinamen nicht hinzufügen"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "\"- Vernküpfung\"-Suffix beim Erstellen einer Verknüpfung an den Dateinamen hinzufügen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 342,
+    "Region": "UI & Personalization",
+    "Function": "PrtScnSnippingTool",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Verwenden der Druck-Taste zum Öffnen der Funktion für Bildschirmausschnitte ausschalten"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Verwenden der Druck-Taste zum Öffnen der Funktion für Bildschirmausschnitte einschalten (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 343,
+    "Region": "UI & Personalization",
+    "Function": "AppsLanguageSwitch",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Zulassen, dass für jedes App-Fenster eine andere Eingabemethode verwenden werden kann"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Nicht Zulassen, dass für jedes App-Fenster eine andere Eingabemethode verwenden werden kann (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 344,
+    "Region": "UI & Personalization",
+    "Function": "AeroShaking",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Aero-Shake-Mausbewgung zum Minimieren von Fenstern aktivieren"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Verhindern der Aero-Shake-Mausbewgung zum Minimieren von Fenstern (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 400,
+    "Region": "OneDrive",
+    "Function": "OneDrive",
+    "Arg": {
+      "Zero": {
+        "Tag": "Uninstall",
+        "ToolTip": "OneDrive deinstallieren. Das OneDrive-Benutzerverzeichnis wird nicht entfernt"
+      },
+      "One": {
+        "Tag": "Install",
+        "ToolTip": "OneDrive installieren"
+      }
+    }
+  },
+  {
+    "Id": 500,
+    "Region": "System",
+    "Function": "StorageSense",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Speicheroptimierung einschalten"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Speicheroptimierung ausschalten (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 501,
+    "Region": "System",
+    "Function": "StorageSenseTempFiles",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Temporäre Dateien löschen, die von meinen Apps nicht verwendet werden (Standardwert)"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Keine temporäre Dateien löschen, die von meinen Apps nicht verwendet werden"
+      }
+    }
+  },
+  {
+    "Id": 502,
+    "Region": "System",
+    "Function": "StorageSenseFrequency",
+    "Arg": {
+      "Zero": {
+        "Tag": "Month",
+        "ToolTip": "Speicheroptimierung \"Jeden Monat\" ausführen"
+      },
+      "One": {
+        "Tag": "Default",
+        "ToolTip": "Speicheroptimierung \"Bei wenig freiem Speicherplatz\" ausführen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 503,
+    "Region": "System",
+    "Function": "Hibernation",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Hybdriden Standbymodus deaktivieren. Nicht empfohlen für Laptops"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Hybdriden Standbymodus aktivieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 504,
+    "Region": "System",
+    "Function": "TempFolder",
+    "Arg": {
+      "Zero": {
+        "Tag": "SystemDrive",
+        "ToolTip": "%TEMP%-Umgebungsvariable auf den Pfad %SystemDrive%\\Temp ändern"
+      },
+      "One": {
+        "Tag": "Default",
+        "ToolTip": "%TEMP%-Umgebungsvariable auf den Pfad %LOCALAPPDATA%\\Temp ändern (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 505,
+    "Region": "System",
+    "Function": "Win32LongPathLimit",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Lange Win32-Pfade deaktivieren"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Lange Win32-Pfade für mehr als 260 Zeichen aktivieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 506,
+    "Region": "System",
+    "Function": "BSoDStopError",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Kein automatischer Neustart bei Systemfehler (BSoD)"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Automatischer Neustart bei Systemfehler (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 507,
+    "Region": "System",
+    "Function": "AdminApprovalMode",
+    "Arg": {
+      "Zero": {
+        "Tag": "Never",
+        "ToolTip": "Benachrichtigung über Änderungen am Computer: Nie benachrichtigen"
+      },
+      "One": {
+        "Tag": "Default",
+        "ToolTip": "Benachrichtigung über Änderungen am Computer: Nur benachrichtigen, wenn von Apps Änderungen am Computer vorgenommen werden (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 508,
+    "Region": "System",
+    "Function": "MappedDrivesAppElevatedAccess",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Zugriff für Apps, die mit adiminstrativen Berechtigungen mit aktivierter Benutzerkontensteuerung (UAC) ausgeführt werden, auf Netzwerklaufwerke erlauben"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Zugriff für Apps, die mit adiminstrativen Berechtigungen mit aktivierter Benutzerkontensteuerung (UAC) ausgeführt werden, auf Netzwerklaufwerke verweigern (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 509,
+    "Region": "System",
+    "Function": "DeliveryOptimization",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Übermittlungsoptimierung deaktivieren"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Übermittlungsoptimierung aktivieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 510,
+    "Region": "System",
+    "Function": "WaitNetworkStartup",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Bei Neustart des Computers und bei der Anmeldung immer auf das Netzwerk warten"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Bei Neustart des Computers und bei der Anmeldung nie auf das Netzwerk warten (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 511,
+    "Region": "System",
+    "Function": "WindowsManageDefaultPrinter",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Windows verwaltet nicht den Standarddrucker"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Windows verwaltet den Standarddrucker (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 512,
+    "Region": "System",
+    "Function": "WindowsFeatures",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Dialogfenster für \"Windows-Featuers aktivieren oder deaktivieren\" deaktivieren"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Dialogfenster für \"Windows-Featuers aktivieren oder deaktivieren\" aktivieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 513,
+    "Region": "System",
+    "Function": "WindowsCapabilities",
+    "Arg": {
+      "Zero": {
+        "Tag": "Uninstall",
+        "ToolTip": "Dialogfenster für die Deinstallation von \"Optionalen Features\" verwenden"
+      },
+      "One": {
+        "Tag": "Install",
+        "ToolTip": "Dialogfenster für die Installation von \"Optionalen Features\" verwenden (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 514,
+    "Region": "System",
+    "Function": "UpdateMicrosoftProducts",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Updates für andere Microsoft-Produkte erhalten, wenn Sie Windows aktualisieren"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Keine Updates für andere Microsoft-Produkte erhalten, wenn Sie Windows aktualisieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 515,
+    "Region": "System",
+    "Function": "PowerPlan",
+    "Arg": {
+      "Zero": {
+        "Tag": "High",
+        "ToolTip": "Energiesparplan \"Höchstleistung\" verwenden. Nicht empfohlen für Laptops"
+      },
+      "One": {
+        "Tag": "Balanced",
+        "ToolTip": "Energiesparplan \"Ausbalanciert\" verwenden (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 516,
+    "Region": "System",
+    "Function": "LatestInstalled.NET",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Zuletzt installierte .NET-Runtime für alle Apps verwenden"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Zuletzt installierte .NET-Runtime nicht für alle Apps verwenden (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 517,
+    "Region": "System",
+    "Function": "NetworkAdaptersSavePower",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Computer kann den Netzwerkadapter nicht ausschalten, um Energie zu sparen"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Computer kann den Netzwerkadapter ausschalten, um Energie zu sparen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 518,
+    "Region": "System",
+    "Function": "IPv6Component",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Internetprotokoll Version 6 (TCP/IPv6) deaktivieren. Vor der Deaktivierung sollten Sie sicherstellen, dass Ihr Internetanbieter kein IPv6 verwendet - https://ipv6-test.com"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Internetprotokoll Version 6 (TCP/IPv6) aktivieren (Standardwert)."
+      }
+    }
+  },
+  {
+    "Id": 519,
+    "Region": "System",
+    "Function": "InputMethod",
+    "Arg": {
+      "Zero": {
+        "Tag": "English",
+        "ToolTip": "Außerkraftsetzung für Standardeingabemethode: Englisch"
+      },
+      "One": {
+        "Tag": "Default",
+        "ToolTip": "Außerkraftsetzung für Standardeingabemethode: Sprachliste verwenden (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 520,
+    "Region": "System",
+    "Function": "SetUserShellFolderLocation",
+    "Arg": {
+      "Zero": {
+        "Tag": "Root",
+        "ToolTip": "Benutzerverzeichnisse mithilfe eines interaktiven Menüs auf die Hauptebene eines jeden Laufwerks verschrieben. Dateien und Ordner des Benutzers werden nicht an ihren neuen Ort verschoben. Verschieben Sie sie manuell. Sie befinden sich standardmäßig im Ordner %USERPROFILE%"
+      },
+      "One": {
+        "Tag": "Custom",
+        "ToolTip": "Wählen Sie über einen Datei-Explorer-Dialog manuell Ordner für die Benutzerverzeichnisse aus. Dateien und Ordner des Benutzers werden nicht an ihren neuen Ort verschoben. Verschieben Sie sie manuell. Sie befinden sich standardmäßig im Ordner %USERPROFILE%"
+      },
+      "Two": {
+        "Tag": "Default",
+        "ToolTip": "Benutzerverzeichnisse auf Werkseinstellung festlegen. Dateien und Ordner des Benutzers werden nicht an ihren neuen Ort verschoben. Verschieben Sie sie manuell. Sie befinden sich standardmäßig im Ordner %USERPROFILE% (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 521,
+    "Region": "System",
+    "Function": "WinPrtScrFolder",
+    "Arg": {
+      "Zero": {
+        "Tag": "Desktop",
+        "ToolTip": "Bildschirmausdrucke durch Drücken von Win+Drucken-Taste auf Desktop speichern"
+      },
+      "One": {
+        "Tag": "Default",
+        "ToolTip": "Bildschirmausdrucke durch Drücken von Win+Drucken-Taste im Bilder-Ordner speichern (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 522,
+    "Region": "System",
+    "Function": "RecommendedTroubleshooting",
+    "Arg": {
+      "Zero": {
+        "Tag": "Automatic",
+        "ToolTip": "Problembehandlungen automatisch ausführen, anschließend benachrichtigen. Damit dieses Merkmal Diagnosedaten des Betriebssystems abrufen kann, wird die Option \"Optionale Diagnosedaten\" aktiviert und die Fehlerberichterstattung eingeschalten"
+      },
+      "One": {
+        "Tag": "Default",
+        "ToolTip": "Vor dem Ausführen von Problembehandlungen nachfragen. Damit dieses Merkmal Diagnosedaten des Betriebssystems abrufen kann, wird die Option \"Optionale Diagnosedaten\" aktiviert und die Fehlerberichterstattung eingeschalten (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 523,
+    "Region": "System",
+    "Function": "FoldersLaunchSeparateProcess",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Ordnerfenster in einem eigenen Prozess starten"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Ordnerfenster nicht in einem eigenen Prozess starten (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 524,
+    "Region": "System",
+    "Function": "ReservedStorage",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Deaktivieren und Löschen des reservierten Speichers nach der nächsten Update-Installation"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Reservierten Speicher aktivieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 525,
+    "Region": "System",
+    "Function": "F1HelpPage",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Afruf der Hilfe über F1-Taste deaktivieren"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Afruf der Hilfe über F1-Taste aktivieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 526,
+    "Region": "System",
+    "Function": "NumLock",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Num-Lock beim Start aktivieren"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Num-Lock beim Start deaktivieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 527,
+    "Region": "System",
+    "Function": "CapsLock",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Feststelltaste aktivieren"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Feststelltaste deaktivieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 528,
+    "Region": "System",
+    "Function": "StickyShift",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Einrastfunktion nicht verwenden, wenn die Shift-Taste fünf Mal gedrückt wurde"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Einrastfunktion verwenden, wenn die Shift-Taste fünf Mal gedrückt wurde (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 529,
+    "Region": "System",
+    "Function": "Autoplay",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Automatische Wiedergabe nicht für alle Medien und Geräte verwenden"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Automatische Wiedergabe für alle Medien und Geräte verwenden (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 530,
+    "Region": "System",
+    "Function": "ThumbnailCacheRemoval",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Löschen des Miniaturansichten-Cache deaktivieren"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Löschen des Miniaturansichten-Cache aktivieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 531,
+    "Region": "System",
+    "Function": "SaveRestartableApps",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Apps, die neu gestartet werden können, beim Abmelden automatisch speichern und nach der Anmeldung neu starten"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Apps, die neu gestartet werden können, beim Abmelden nicht automatisch speichern und nach der Anmeldung nicht neu starten (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 532,
+    "Region": "System",
+    "Function": "NetworkDiscovery",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "\"Netzwerkerkennung\" und \"Datei- und Druckerfreigabe\" für Arbeitsgruppen-Netzwerke aktivieren"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "\"Netzwerkerkennung\" und \"Datei- und Druckerfreigabe\" für Arbeitsgruppen-Netzwerke deaktivieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 533,
+    "Region": "System",
+    "Function": "ActiveHours",
+    "Arg": {
+      "Zero": {
+        "Tag": "Automatically",
+        "ToolTip": "Nutzungszeit für dieses Gerät automatisch auf Grundlage der Aktivitäten anpassen"
+      },
+      "One": {
+        "Tag": "Manually",
+        "ToolTip": "Nutzungszeit für dieses Gerät manuell auf Grundlage der Aktivitäten anpassen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 534,
+    "Region": "System",
+    "Function": "RestartDeviceAfterUpdate",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Das Gerät so bald wie möglich neu starten, wenn zur Installtion eines Updates ein Neustart erforderlich"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Verhindern das das Gerät so bald wie möglich neu startet, wenn zur Installtion eines Updates ein Neustart erforderlich (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 535,
+    "Region": "System",
+    "Function": "DefaultTerminalApp",
+    "Arg": {
+      "Zero": {
+        "Tag": "WindowsTerminal",
+        "ToolTip": "Windows Terminal (Vorschau) als Standard Terminal-Anwendung festlegen"
+      },
+      "One": {
+        "Tag": "ConsoleHost",
+        "ToolTip": "Windows Console Host als Standard Terminal-Anwendung festlegen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 600,
+    "Region": "WSL",
+    "Function": "WSL",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Windows Subsystem für Linux (WSL) aktivieren, die aktuellste Version des WSL Linux-Kernel installieren und über einen Dialog eine Linux-Distribution auswählen"
+      }
+    }
+  },
+  {
+    "Id": 700,
+    "Region": "Start menu",
+    "Function": "RecentlyAddedApps",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Zuletzt hinzugefügte Apps nicht im Startmenü anzeigen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Zuletzt hinzugefügte Apps im Startmenü anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 701,
+    "Region": "Start menu",
+    "Function": "AppSuggestions",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Gelegentliche Vorschläge für Apps nicht im Startmenü anzeigen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Gelegentliche Vorschläge für Apps im Startmenü anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 702,
+    "Region": "Start menu",
+    "Function": "RunPowerShellShortcut",
+    "Arg": {
+      "Zero": {
+        "Tag": "Elevated",
+        "ToolTip": "Windows PowerShell aus dem Startmenü heraus als Administrator ausführen"
+      },
+      "One": {
+        "Tag": "NonElevated",
+        "ToolTip": "Windows PowerShell aus dem Startmenü heraus als Benutzer ausführen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 703,
+    "Region": "Start menu",
+    "Function": "PinToStart -Tiles",
+    "ToolTip": "Folgende Verknüpfungen an Start anheften: Systemsteuerung, Geräte und Drucker, PowerShell",
+    "Arg": {
+      "Zero": {
+        "Tag": "ControlPanel",
+        "ToolTip": "Verknüpfung zur Systemsteuerung an Start anheften"
+      },
+      "One": {
+        "Tag": "DevicesPrinters",
+        "ToolTip": "Verknüpfung zu \"Geräte & Drucker\" an Start anheften"
+      },
+      "Two": {
+        "Tag": "PowerShell",
+        "ToolTip": "Verknüpfung zur Windows PowerShell an Start anheften"
+      }
+    }
+  },
+  {
+    "Id": 704,
+    "Region": "Start menu",
+    "Function": "PinToStart -UnpinAll",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Alle Kacheln von Start lösen"
+      }
+    }
+  },
+  {
+    "Id": 800,
+    "Region": "UWP apps",
+    "Function": "UninstallUWPApps",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "UWP-Apps über ein Dialogfenster deinstallieren"
+      }
+    }
+  },
+  {
+    "Id": 801,
+    "Region": "UWP apps",
+    "Function": "UninstallUWPApps -ForAllUsers",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "UWP-Apps über ein Dialogfenster deinstallieren. Wenn \"Für alle Benutzer\" ausgewählt wurde, werden für neue Benutzer keine UWP-Apps mehr installiert. Das \"ForAllUsers\"-Argument aktiviert ein Kontrollkästchen damit die UWP-Apps für alle Benutzer deinstalliert werden"
+      }
+    }
+  },
+  {
+    "Id": 802,
+    "Region": "UWP apps",
+    "Function": "RestoreUWPApps",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Standard UWP-Apps über ein Dialogfenster wiederherstellen. UWP-Apps können nur wiederhergestellt werden, wenn sie nur für den aktuellen Benutzer deinstalliert wurden"
+      }
+    }
+  },
+  {
+    "Id": 803,
+    "Region": "UWP apps",
+    "Function": "HEIF",
+    "Arg": {
+      "Zero": {
+        "Tag": "Manual",
+        "ToolTip": "\"HEVC-Videoerweiterungen vom Gerätehersteller\"-Seite im Microsoft Store öffnen, um die Erweiterung manuell zu installieren, damit Sie Dateien den Formaten .heic und .heif öffnen können. Die Erweiterung kann ohne ein Microsoft Konto installiert werden"
+      },
+      "One": {
+        "Tag": "Install",
+        "ToolTip": "\"HEVC-Videoerweiterungen vom Gerätehersteller\" herunterladen und installieren, damit Sie Dateien den Formaten .heic und .heif öffnen können"
+      }
+    }
+  },
+  {
+    "Id": 804,
+    "Region": "UWP apps",
+    "Function": "CortanaAutostart",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Autostart von Cortana deaktivieren"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Autostart von Cortana aktivieren (Standardwert)"
+      }
+    }
+  },
+ {
+    "Id": 805,
+    "Region": "UWP apps",
+    "Function": "TeamsAutostart",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Autostart von Microsoft Teams deaktivieren"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Autostart von Microsoft Teams aktivieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 806,
+    "Region": "UWP apps",
+    "Function": "BackgroundUWPApps",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "UWP-Apps nicht im Hintergrund ausführen lassen"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "UWP-Apps im Hintergrund ausführen lassen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 807,
+    "Region": "UWP apps",
+    "Function": "CheckUWPAppsUpdates",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Auf Updates für UWP-Apps prüfen"
+      }
+    }
+  },
+  {
+    "Id": 900,
+    "Region": "Gaming",
+    "Function": "XboxGameBar",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Xbox Game Bar deaktivieren"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Xbox Game Bar aktivieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 901,
+    "Region": "Gaming",
+    "Function": "XboxGameTips",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Xbox Game Bar Tipps deaktivieren"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Xbox Game Bar Tipps aktivieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 902,
+    "Region": "Gaming",
+    "Function": "SetAppGraphicsPerformance",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Wählen Sie eine App aus um die Grafikleistungeinstellungen festzulegen. Nur mit dedizierter Grafikeinheit"
+      }
+    }
+  },
+  {
+    "Id": 903,
+    "Region": "Gaming",
+    "Function": "GPUScheduling",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Hardwarebeschleunigte GPU-Planung einschalten. Neustart erforderlich. Nur mit dedizierter Grafikeinheit und WDDM Version 2.7 oder höher"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Hardwarebeschleunigte GPU-Planung ausschalten. Neustart erforderlich (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1000,
+    "Region": "Scheduled tasks",
+    "Function": "CleanupTask",
+    "Arg": {
+      "Zero": {
+        "Tag": "Register",
+        "ToolTip": "Aufgabe \"Windows Cleanup\" und \"Windows Cleanup Notification\" für das Aufräumen von ungenutzten Dateien und Updates erstellen. Die Aufgabe wird alle 30 Tage ausgeführt und es erscheint eine Toast-Benachrichtigung"
+      },
+      "One": {
+        "Tag": "Delete",
+        "ToolTip": "Aufgabe \"Windows Cleanup\" und \"Windows Cleanup Notification\" für das Aufräumen von ungenutzten Dateien und Updates löschen"
+      }
+    }
+  },
+  {
+    "Id": 1001,
+    "Region": "Scheduled tasks",
+    "Function": "SoftwareDistributionTask",
+    "Arg": {
+      "Zero": {
+        "Tag": "Register",
+        "ToolTip": "Aufgabe \"SoftwareDistribution\" für das Aufräumen des %SystemRoot%\\SoftwareDistribution\\Download-Ordners erstellen. Die Aufgabe wartet bis der Windows-Update-Dienst vollständig durchlaufen ist. Die Aufgabe wird alle 90 Tage ausgeführt"
+      },
+      "One": {
+        "Tag": "Delete",
+        "ToolTip": "Aufgabe \"SoftwareDistribution\" für das Aufräumen des %SystemRoot%\\SoftwareDistribution\\Download-Ordners löschen"
+      }
+    }
+  },
+  {
+    "Id": 1002,
+    "Region": "Scheduled tasks",
+    "Function": "TempTask",
+    "Arg": {
+      "Zero": {
+        "Tag": "Register",
+        "ToolTip": "Aufgabe \"Temp\" für das Aufräumen des %TEMP%-Ordners erstellen. Die Aufgabe wird alle 60 Tage ausgeführt"
+      },
+      "One": {
+        "Tag": "Delete",
+        "ToolTip": "Aufgabe \"Temp\" für das Aufräumen des %TEMP%-Ordners löschen"
+      }
+    }
+  },
+  {
+    "Id": 1100,
+    "Region": "Microsoft Defender & Security",
+    "Function": "NetworkProtection",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Microsoft Defender Exploit Guard Netzwerkschutz deaktivieren"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Microsoft Defender Exploit Guard Netzwerkschutz aktivieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1101,
+    "Region": "Microsoft Defender & Security",
+    "Function": "PUAppsDetection",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Ihr Gerät nicht vor nicht vertrauenswürdigen Apps schützen, die ggfs. zu unerwartetem Verhalten führen"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Ihr Gerät vor nicht vertrauenswürdigen Apps schützen, die ggfs. zu unerwartetem Verhalten führen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1102,
+    "Region": "Microsoft Defender & Security",
+    "Function": "DefenderSandbox",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Microsoft Defender Sandbox-Modus aktivieren"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Microsoft Defender Sandbox-Modus deaktivieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1103,
+    "Region": "Microsoft Defender & Security",
+    "Function": "DismissMSAccount",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Angebot des Microsoft Defender ausschlagen, sich unter Windows-Sicherheit mit einem Microsoft-Konto anzumelden"
+      }
+    }
+  },
+  {
+    "Id": 1104,
+    "Region": "Microsoft Defender & Security",
+    "Function": "DismissSmartScreenFilter",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Angebot des Microsoft Defender ausschlagen, unter Windows-Sicherheit den SmartScreen-Filter für Microsoft Edge einzuschalten"
+      }
+    }
+  },
+  {
+    "Id": 1105,
+    "Region": "Microsoft Defender & Security",
+    "Function": "AuditProcess",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Überwachung der Prozessnachverfolgung für erstellte Prozesse aktivieren"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Überwachung der Prozessnachverfolgung für erstellte Prozesse deaktivieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1106,
+    "Region": "Microsoft Defender & Security",
+    "Function": "CommandLineProcessAudit",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Eingabeaufforderung in die Überwachung der Prozessnachverfolgung für erstellte Prozesse integrieren. Damit dieses Merkmal funktioniert, wird die Überwachung der Prozessnachverfolgung für erstellte Prozesse aktiviert"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Eingabeaufforderung nicht in die Überwachung der Prozessnachverfolgung für erstellte Prozesse integrieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1107,
+    "Region": "Microsoft Defender & Security",
+    "Function": "EventViewerCustomView",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Benutzerdefinierte Ansicht für die \"Prozessnachverfolgung\" in der Ereignisanzeige wird erstellt. Damit dieses Merkmal funktioniert, wird die Eingabeaufforderung in die Überwachung der Prozessnachverfolgung integriert"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Benutzerdefinierte Ansicht für die \"Prozessnachverfolgung\" in der Ereignisanzeige wird gelöscht (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1108,
+    "Region": "Microsoft Defender & Security",
+    "Function": "PowerShellModulesLogging",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Protokollierung für Windows PowerShell-Module deaktivieren"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Protokollierung für Windows PowerShell-Module aktivieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1109,
+    "Region": "Microsoft Defender & Security",
+    "Function": "PowerShellScriptsLogging",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Protokollierung aller PowerShell-Skripteingaben in das Ereignisprotokoll \"Microsoft-Windows-PowerShell/Operational\" deaktivieren"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Protokollierung aller PowerShell-Skripteingaben in das Ereignisprotokoll \"Microsoft-Windows-PowerShell/Operational\" aktivieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1110,
+    "Region": "Microsoft Defender & Security",
+    "Function": "AppsSmartScreen",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Microsoft Defender SmartScreen markiert aus dem Internet heruntergeladene Dateien nicht als unsicher"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Microsoft Defender SmartScreen markiert aus dem Internet heruntergeladene Dateien als unsicher (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1111,
+    "Region": "Microsoft Defender & Security",
+    "Function": "SaveZoneInformation",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Aus dem Internet heruntergeladene Dateien werden im Datei-Explorer nicht als unsicher markiert"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Aus dem Internet heruntergeladene Dateien werden im Datei-Explorer als unsicher markiert (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1112,
+    "Region": "Microsoft Defender & Security",
+    "Function": "WindowsScriptHost",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Windows Script Host deaktivieren. Blockiert die Ausführung von .js und .vbs Dateien im WSH"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Windows Script Host aktivieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1113,
+    "Region": "Microsoft Defender & Security",
+    "Function": "WindowsSandbox",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Windows-Sandbox aktivieren"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Windows-Sandbox deaktivieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1114,
+    "Region": "Microsoft Defender & Security",
+    "Function": "DNSoverHTTPS",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "DNS-over-HTTPS für IPv4 aktivieren. Bevorzugter DNS-Server: 1.0.0.1, Alternativ: 1.1.1.1"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "DNS-over-HTTPS für IPv4 deaktivieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1200,
+    "Region": "Context menu",
+    "Function": "MSIExtractContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Show",
+        "ToolTip": "\"Alle extrahieren\" im Kontextmenü von Windows Installer (.msi) anzeigen"
+      },
+      "One": {
+        "Tag": "Hide",
+        "ToolTip": "\"Alle extrahieren\" nicht im Kontextmenü von Windows Installer (.msi) anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1201,
+    "Region": "Context menu",
+    "Function": "CABInstallContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Show",
+        "ToolTip": "\"Installieren\" im Kontextmenü von Cabinet-Dateien (.cab) anzeigen"
+      },
+      "One": {
+        "Tag": "Hide",
+        "ToolTip": "\"Installieren\" nicht im Kontextmenü von Cabinet-Dateien (.cab) anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1202,
+    "Region": "Context menu",
+    "Function": "RunAsDifferentUserContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Show",
+        "ToolTip": "\"Als anderer Benutzer ausführen\" im Kontextmenü von .exe Dateien anzeigen"
+      },
+      "One": {
+        "Tag": "Hide",
+        "ToolTip": "\"Als anderer Benutzer ausführen\" nicht im Kontextmenü von .exe Dateien anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1203,
+    "Region": "Context menu",
+    "Function": "CastToDeviceContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "\"Wiedergabe auf Gerät\" nicht im Kontextmenü von Media-Dateien und Media-Ordnern anzeigen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "\"Wiedergabe auf Gerät\" im Kontextmenü von Media-Dateien und Media-Ordnern anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1204,
+    "Region": "Context menu",
+    "Function": "ShareContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "\"Freigabe\" nicht im Kontextmenü einer Datei anzeigen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "\"Freigabe\" im Kontextmenü einer Datei anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1205,
+    "Region": "Context menu",
+    "Function": "EditWithPaint3DContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "\"Mit Paint 3D bearbeiten\" nicht im Kontextmenü von Medien-Dateien anzeigen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "\"Mit Paint 3D bearbeiten\" im Kontextmenü von Medien-Dateien anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1206,
+    "Region": "Context menu",
+    "Function": "EditWithPhotosContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "\"Mit Fotos bearbeiten\" nicht im Kontextmenü von Medien-Dateien anzeigen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "\"Mit Fotos bearbeiten\" im Kontextmenü von Medien-Dateien anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1207,
+    "Region": "Context menu",
+    "Function": "CreateANewVideoContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "\"Neues Video erstellen\" nicht im Kontextmenü von Medien-Dateien anzeigen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "\"Neues Video erstellen\" im Kontextmenü von Medien-Dateien anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1208,
+    "Region": "Context menu",
+    "Function": "ImagesEditContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "\"Bearbeiten\" nicht im Kontextmenü eines Bildes anzeigen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "\"Bearbeiten\" im Kontextmenü eines Bildes anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1209,
+    "Region": "Context menu",
+    "Function": "PrintCMDContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "\"Drucken\" nicht im Kontextmenü von .bat und .cmd anzeigen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "\"Drucken\" im Kontextmenü von .bat und .cmd anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1210,
+    "Region": "Context menu",
+    "Function": "IncludeInLibraryContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "\"In Bibliothek aufnehmen\" nicht im Kontextmenü von Ordnern und Laufwerken anzeigen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "\"In Bibliothek aufnehmen\" im Kontextmenü von Ordnern und Laufwerken anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1211,
+    "Region": "Context menu",
+    "Function": "SendToContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "\"Senden an\" nicht im Kontextmenü eines Ordners anzeigen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "\"Senden an\" im Kontextmenü eines Ordners anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1212,
+    "Region": "Context menu",
+    "Function": "BitLockerContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "\"BitLocker aktivieren\" nicht im Kontextmenü eines Laufwerks anzeigen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "\"BitLocker aktivieren\" im Kontextmenü eines Laufwerks anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1213,
+    "Region": "Context menu",
+    "Function": "BitmapImageNewContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "\"Bitmapbild\" nicht im \"Neu\"-Kontextmenü anzeigen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "\"Bitmapbild\" im \"Neu\"-Kontextmenü anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1214,
+    "Region": "Context menu",
+    "Function": "RichTextDocumentNewContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "\"RTF-Dokument\" nicht im \"Neu\"-Kontextmenü anzeigen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "\"RTF-Dokument\" im \"Neu\"-Kontextmenü anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1215,
+    "Region": "Context menu",
+    "Function": "CompressedFolderNewContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "\"ZIP-komprimierter Ordner\" nicht im \"Neu\"-Kontextmenü anzeigen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "\"ZIP-komprimierter Ordner\" im \"Neu\"-Kontextmenü anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1216,
+    "Region": "Context menu",
+    "Function": "MultipleInvokeContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "\"Öffnen\", \"Drucken\", und \"Bearbeiten\" im Kontextmenü bei mehr als 15 ausgewählten Elementen aktivieren"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "\"Öffnen\", \"Drucken\", und \"Bearbeiten\" im Kontextmenü bei mehr als 15 ausgewählten Elementen deaktivieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1217,
+    "Region": "Context menu",
+    "Function": "UseStoreOpenWith",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "\"Suchen Sie nach einer App im Microsoft Store\" nicht im \"Öffnen mit\"-Dialog anzeigen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "\"Suchen Sie nach einer App im Microsoft Store\" im \"Öffnen mit\"-Dialog anzeigen (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1218,
+    "Region": "Context menu",
+    "Function": "WindowsTerminalContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "\"Mit Windows Terminal öffnen\" nicht im Kontextmenü eines Ordners anzeigen"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "\"Mit Windows Terminal öffnen\" im Kontextmenü eines Ordners anzeigen (Standardwert)"
+      }
+    }
+  }
+]
+=======
+[
+  {
+    "Id": 100,
+    "Region": "Protection",
+    "Function": "Checkings",
+    "Arg": {
+      "Zero": {
+        "Tag": "Warning",
         "ToolTip": "Die obligatorischen Überprüfungen. Wenn Sie eine Warnmeldung darüber, ob die Voreinstellungsdatei angepasst wurde, deaktivieren möchten, entfernen Sie das Argument \"-Warnung\""
       },
       "One": {
