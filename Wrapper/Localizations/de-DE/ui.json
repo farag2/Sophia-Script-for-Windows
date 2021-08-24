@@ -1,4 +1,4 @@
-﻿[
+[
   {
     "Id": "Menu",
     "Options": {
@@ -20,9 +20,9 @@
       "tabOneDrive": "OneDrive",
       "tabSystem": "System",
       "tabWSL": "WSL",
-      "tabStartMenu": "Starmenü",
+      "tabStartMenu": "Startmenü",
       "tabUWP": "UWP Apps",
-      "tabGaming": "Spiele",
+      "tabGaming": "Spielen",
       "tabScheduledTasks": "Geplante Aufgaben",
       "tabDefenderSecurity": "Defender & Sicherheit",
       "tabContextMenu": "Kontextmenü",

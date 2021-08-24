@@ -2,7 +2,9 @@
 
 <img src="./img/Sophia.png" alt="Sophia Script" width='350' align="right">
 
-**A PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks** :trophy:
+**The largest PowerShell module on `GitHub` for `Windows 10` & `Windows 11` fine-tuning and automating the routine tasks** :trophy:
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Windows_10_Logo.svg" height="30px"/> &emsp; <img src="https://upload.wikimedia.org/wikipedia/commons/e/e6/Windows_11_logo.svg" height="30px"/>
 
 <p align="left">
   <a href="https://github.com/farag2/Sophia-Script-for-Windows/actions"><img src="https://img.shields.io/github/workflow/status/farag2/Sophia-Script-for-Windows/Build?label=GitHub%20Actions&logo=GitHub"></a>
@@ -175,7 +177,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 * Uninstall Windows capabilities displaying friendly packages names with pop-up form written in [WPF](#Screenshots);
 * Download and install the [HEVC Video Extensions from Device Manufacturer](https://www.microsoft.com/p/hevc-video-extensions-from-device-manufacturer/9n4wgh0z6vhq) from Microsoft server using <https://store.rg-adguard.net> parser to be able to open .heic and .heif formats;
 * Register app, calculate hash, and set as default for specific extension without the "How do you want to open this" pop-up using special [function](https://github.com/DanysysTeam/PS-SFTA);
-* Install and setup WSL
+* Install any supported Linux distrobution for WSL displaying friendly distro names with pop-up form written in [WPF](#Screenshots);
 * Create a `Windows Cleanup` and `Windows Cleanup Notification` scheduled tasks for Windows cleaning up unused files and updates;
   * A native toast notification will be displayed where you can choose to snooze, run the cleanup task or [dismiss](#native-interactive-toasts-for-the-windows-cleanup-scheduled-task)
 * Create tasks in the Task Scheduler to clear
@@ -213,12 +215,14 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 * Download and expand the archive;
 * Run `SophiaScriptWrapper.exe` and import Sophia.ps1;
+  * The Wrapper has a real time UI rendering;
 * Configure every function;
 * Open the `Console Output` tab and press `Run PowerShell`.
 
 ***
 
 ### How to run the specific function(s)
+
 To run the specific function(s) [dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-) the `Functions.ps1` file first:
 
 ```powershell
@@ -246,11 +250,9 @@ Or use an old-style format without the TAB functions autocomplete (the quotation
 
 ***
 
-* Regardless of the functions entered as an argument the `Checkings` function will be executed first, and the `Refresh` and `Errors` functions will be executed at the end.
-
 ## How to translate
 
-* Get your OS UI culture by `$PSUICulture`.
+* Get your OS UI culture by `$PSUICulture`
 * Create a folder with the UI culture name;
 * Place your localized Sophia.psd1 file into this folder.
 
