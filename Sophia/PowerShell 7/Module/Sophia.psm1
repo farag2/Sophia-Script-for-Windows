@@ -152,7 +152,7 @@ function Checkings
 		[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 		# https://github.com/farag2/Sophia-Script-for-Windows/blob/master/sophia_script_versions.json
-		$LatestRelease = (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json" -UseBasicParsing | ConvertFrom-Json).Sophia_Script_Windows_10_PowerShell_7
+		$LatestRelease = (Invoke-RestMethod -Uri "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json" -UseBasicParsing).Sophia_Script_Windows_10_PowerShell_7
 		$CurrentRelease = (Get-Module -Name Sophia).Version.ToString()
 		switch ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)
 		{
