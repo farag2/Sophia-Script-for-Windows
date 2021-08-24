@@ -152,7 +152,7 @@ function Checkings
 		[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 		# https://github.com/farag2/Sophia-Script-for-Windows/blob/master/sophia_script_versions.json
-		$LatestRelease = (Invoke-RestMethod -Uri "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json" -UseBasicParsing).Sophia_Script_Windows_10_PowerShell_7
+		$LatestRelease = (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json" | ConvertFrom-Json).Sophia_Script_Windows_10_PowerShell_7
 		$CurrentRelease = (Get-Module -Name Sophia).Version.ToString()
 		switch ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)
 		{
@@ -1344,13 +1344,13 @@ function TailoredExperiences
 
 <#
 	.SYNOPSIS
-	Bing search in the Start Menu (for the USA only)
+	Bing search in the Start Menu
 
 	.PARAMETER Disable
-	Disable Bing search in the Start Menu (for the USA only)
+	Disable Bing search in the Start Menu
 
 	.PARAMETER Enable
-	Enable Bing search in the Start Menu (for the USA only)
+	Enable Bing search in the Start Menu
 
 	.EXAMPLE
 	BingSearch -Disable
@@ -1384,21 +1384,15 @@ function BingSearch
 	{
 		"Disable"
 		{
-			if ((Get-WinHomeLocation).GeoId -eq 244)
+			if (-not (Test-Path -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
 			{
-				if (-not (Test-Path -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
-				{
-					New-Item -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Force
-				}
-				New-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableSearchBoxSuggestions -PropertyType DWord -Value 1 -Force
+				New-Item -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Force
 			}
+			New-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableSearchBoxSuggestions -PropertyType DWord -Value 1 -Force
 		}
 		"Enable"
 		{
-			if ((Get-WinHomeLocation).GeoId -eq 244)
-			{
-				Remove-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableSearchBoxSuggestions -Force -ErrorAction Ignore
-			}
+			Remove-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableSearchBoxSuggestions -Force -ErrorAction Ignore
 		}
 	}
 }
