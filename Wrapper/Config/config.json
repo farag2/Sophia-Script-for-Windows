@@ -16,7 +16,8 @@
     "Preset": "Zero",
     "WindowsDefault": "",
     "LTSC": "true",
-    "Win10": "true"
+    "Win10": "true",
+    "Win11": "true"
   },
   {
     "Id": 101,
