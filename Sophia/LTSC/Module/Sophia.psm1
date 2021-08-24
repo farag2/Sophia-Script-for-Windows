@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.2.12
-	Date: 06.08.2021
+	Version: v5.2.13
+	Date: 25.08.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & Inestic
@@ -35,7 +35,7 @@
 	https://github.com/farag2
 	https://github.com/Inestic
 
-	.NOTES
+	.LINK
 	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
 	https://habr.com/company/skillfactory/blog/553800/
 	https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/
@@ -107,7 +107,7 @@ function Checkings
 	# Check whether the script was run via PowerShell 5.1
 	if ($PSVersionTable.PSVersion.Major -ne 5)
 	{
-		Write-Warning -Message ($Localization.UnsupportedPowerShell -f $PSVersionTable.PSVersion.Major)
+		Write-Warning -Message ($Localization.UnsupportedPowerShell -f $PSVersionTable.PSVersion.Major, $PSVersionTable.PSVersion.Minor)
 		exit
 	}
 
@@ -132,19 +132,11 @@ function Checkings
 	# Check if the current module version is the latest one
 	try
 	{
-		$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-		$Parameters = @{
-			Uri = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/Sophia/LTSC/Manifest/Sophia.psd1"
-			OutFile = "$DownloadsFolder\Manifest.psd1"
-			Verbose = [switch]::Present
-		}
-		Invoke-WebRequest @Parameters
+		[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-		$LatestRelease = (Import-PowerShellDataFile -Path $DownloadsFolder\Manifest.psd1).ModuleVersion
+		# https://github.com/farag2/Sophia-Script-for-Windows/blob/master/sophia_script_versions.json
+		$LatestRelease = (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json" | ConvertFrom-Json).Sophia_Script_Windows_10_LTSC
 		$CurrentRelease = (Get-Module -Name Sophia).Version.ToString()
-
-		Remove-Item -Path $DownloadsFolder\Manifest.psd1 -Force
-
 		switch ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)
 		{
 			$true
@@ -695,6 +687,7 @@ function ScheduledTasks
 
 	function DisableButton
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message $Localization.Patient -Verbose
 
 		[void]$Window.Close()
@@ -705,6 +698,7 @@ function ScheduledTasks
 
 	function EnableButton
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message $Localization.Patient -Verbose
 
 		[void]$Window.Close()
@@ -769,6 +763,7 @@ function ScheduledTasks
 		}
 	}
 
+	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message $Localization.Patient -Verbose
 
 	# Getting list of all scheduled tasks according to the conditions
@@ -3614,6 +3609,7 @@ function WindowsFeatures
 
 	function DisableButton
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message $Localization.Patient -Verbose
 
 		[void]$Window.Close()
@@ -3624,6 +3620,7 @@ function WindowsFeatures
 
 	function EnableButton
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message $Localization.Patient -Verbose
 
 		[void]$Window.Close()
@@ -4785,6 +4782,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 		while ($k.Key -notin ([ConsoleKey]::Escape, [ConsoleKey]::Enter))
 	}
 
+	# Get the localized user folders names
 	$Signature = @{
 	Namespace = "WinAPI"
 	Name = "GetStr"
@@ -4810,18 +4808,20 @@ public static string GetString(uint strId)
 		Add-Type @Signature -Using System.Text
 	}
 
-	$DesktopLocalizedString = [WinAPI.GetStr]::GetString(21769)
+	# The localized user folders names
+	$DesktopLocalizedString   = [WinAPI.GetStr]::GetString(21769)
 	$DocumentsLocalizedString = [WinAPI.GetStr]::GetString(21770)
 	$DownloadsLocalizedString = [WinAPI.GetStr]::GetString(21798)
-	$MusicLocalizedString = [WinAPI.GetStr]::GetString(21790)
-	$PicturesLocalizedString = [WinAPI.GetStr]::GetString(21779)
-	$VideosLocalizedString = [WinAPI.GetStr]::GetString(21791)
+	$MusicLocalizedString     = [WinAPI.GetStr]::GetString(21790)
+	$PicturesLocalizedString  = [WinAPI.GetStr]::GetString(21779)
+	$VideosLocalizedString    = [WinAPI.GetStr]::GetString(21791)
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Root"
 		{
 			Write-Verbose -Message $Localization.RetrievingDrivesList -Verbose
+			Write-Information -MessageData "" -InformationAction Continue
 
 			# Store all drives letters to use them within ShowMenu function
 			$DriveLetters = @((Get-Disk | Where-Object -FilterScript {$_.BusType -ne "USB"} | Get-Partition | Get-Volume | Where-Object -FilterScript {$null -ne $_.DriveLetter}).DriveLetter | Sort-Object)
@@ -4838,7 +4838,15 @@ public static string GetString(uint strId)
 
 			# Desktop
 			Write-Verbose -Message ($Localization.DriveSelect -f $DesktopLocalizedString) -Verbose
+
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DesktopLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserFolderRequest -f $DesktopLocalizedString
@@ -4858,12 +4866,21 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Documents
 			Write-Verbose -Message ($Localization.DriveSelect -f $DocumentsLocalizedString) -Verbose
+
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DocumentsLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserFolderRequest -f $DocumentsLocalizedString
@@ -4883,12 +4900,21 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Downloads
 			Write-Verbose -Message ($Localization.DriveSelect -f $DownloadsLocalizedString) -Verbose
+
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DownloadsLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserFolderRequest -f $DownloadsLocalizedString
@@ -4908,12 +4934,21 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Music
 			Write-Verbose -Message ($Localization.DriveSelect -f $MusicLocalizedString) -Verbose
+
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $MusicLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserFolderRequest -f $MusicLocalizedString
@@ -4933,12 +4968,20 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Pictures
 			Write-Verbose -Message ($Localization.DriveSelect -f $PicturesLocalizedString) -Verbose
+
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $PicturesLocalizedString, $CurrentUserFolderLocation) -Verbose
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserFolderRequest -f $PicturesLocalizedString
@@ -4958,12 +5001,21 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Videos
 			Write-Verbose -Message ($Localization.DriveSelect -f $VideosLocalizedString) -Verbose
+
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Video"
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $VideosLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserFolderRequest -f $VideosLocalizedString
@@ -4983,13 +5035,21 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 		}
 		"Custom"
 		{
 			# Desktop
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DesktopLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserFolderSelect -f $DesktopLocalizedString
@@ -5021,11 +5081,19 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Documents
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DocumentsLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserFolderSelect -f $DocumentsLocalizedString
@@ -5057,11 +5125,19 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Downloads
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DownloadsLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserFolderSelect -f $DownloadsLocalizedString
@@ -5093,11 +5169,19 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Music
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $MusicLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserFolderSelect -f $MusicLocalizedString
@@ -5129,11 +5213,19 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Pictures
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $PicturesLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserFolderSelect -f $PicturesLocalizedString
@@ -5165,11 +5257,19 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Videos
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Video"
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $VideosLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserFolderSelect -f $VideosLocalizedString
@@ -5201,13 +5301,21 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 		}
 		"Default"
 		{
 			# Desktop
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DesktopLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserDefaultFolder -f $DesktopLocalizedString
@@ -5226,11 +5334,19 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Documents
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DocumentsLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserDefaultFolder -f $DocumentsLocalizedString
@@ -5249,11 +5365,19 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Downloads
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DownloadsLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserDefaultFolder -f $DownloadsLocalizedString
@@ -5272,11 +5396,19 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Music
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $MusicLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserDefaultFolder -f $MusicLocalizedString
@@ -5295,11 +5427,19 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Pictures
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $PicturesLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserDefaultFolder -f $PicturesLocalizedString
@@ -5318,11 +5458,19 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Videos
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Video"
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $VideosLocalizedString, $CurrentUserFolderLocation) -Verbose
+
+			Write-Information -MessageData "" -InformationAction Continue
+
 			Write-Warning -Message $Localization.FilesWontBeMoved
+
+			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
 			$Message = $Localization.UserDefaultFolder -f $VideosLocalizedString
@@ -5341,6 +5489,7 @@ public static string GetString(uint strId)
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 		}
@@ -6795,7 +6944,6 @@ function SetAppGraphicsPerformance
 
 	.NOTES
 	A native interactive toast notification pops up every 30 days
-	The task runs every 30 days
 
 	.NOTES
 	Current user
@@ -7056,8 +7204,7 @@ while (`$true)
 	SoftwareDistributionTask -Delete
 
 	.NOTES
-	The task will wait until the Windows Updates service finishes running
-	The task runs every 90 days
+	The task will wait until the Windows Updates service finishes running. The task runs every 90 days
 
 	.NOTES
 	Current user
@@ -7162,7 +7309,7 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -For
 	TempTask -Delete
 
 	.NOTES
-	The task runs every 60 days
+	Only files older than one day will be deleted. The task runs every 60 days
 
 	.NOTES
 	Current user
@@ -7543,7 +7690,7 @@ function CommandLineProcessAudit
 	The "Process Creation" Event Viewer custom view
 
 	.PARAMETER Enable
-	Create the "Process Creation" Event Viewer custom view
+	Create the "Process Creation" Event Viewer сustom view to log the executed processes and their arguments
 
 	.PARAMETER Disable
 	Remove the "Process Creation" Event Viewer custom view
@@ -7555,7 +7702,7 @@ function CommandLineProcessAudit
 	EventViewerCustomView -Disable
 
 	.NOTES
-	In order this feature to work events auditing (ProcessAudit -Enable) and command line in process creation events will be enabled
+	In order this feature to work events auditing (ProcessAudit -Enable) and command line (CommandLineProcessAudit -Enable) in process creation events will be enabled
 
 	.NOTES
 	Machine-wide
@@ -8942,6 +9089,7 @@ public static void PostMessage()
 		Set-MpPreference -EnableControlledFolderAccess Enabled
 	}
 
+	Write-Information -MessageData "" -InformationAction Continue
 	Write-Warning -Message $Localization.RestartWarning
 
 	[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
@@ -9008,10 +9156,16 @@ function Errors
 {
 	if ($Global:Error)
 	{
+		# Some errors may have the Windows nature and don't have a path to any of the module's files
+		$ErrorInFile = if ($_.InvocationInfo.PSCommandPath)
+		{
+			Split-Path -Path $_.InvocationInfo.PSCommandPath -Leaf
+		}
+
 		($Global:Error | ForEach-Object -Process {
 			[PSCustomObject]@{
-				$Localization.ErrorsLine = $_.InvocationInfo.ScriptLineNumber
-				$Localization.ErrorsFile = Split-Path -Path $PSCommandPath -Leaf
+				$Localization.ErrorsLine    = $_.InvocationInfo.ScriptLineNumber
+				$Localization.ErrorsFile    = $ErrorInFile
 				$Localization.ErrorsMessage = $_.Exception.Message
 			}
 		} | Sort-Object -Property Line | Format-Table -AutoSize -Wrap | Out-String).Trim()

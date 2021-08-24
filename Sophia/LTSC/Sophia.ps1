@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10 LTSC"
 
-	Version: v5.2.12
-	Date: 06.08.2021
+	Version: v5.2.13
+	Date: 25.08.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & Inestic
@@ -71,7 +71,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC v5.2.12 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014–2021"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC v5.2.13 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -531,10 +531,10 @@ WindowsManageDefaultPrinter -Disable
 
 <#
 	Disable the Windows features using the pop-up dialog box
-	Отключить компоненты Windows, используя всплывающее диалоговое окно
-
 	If you want to leave "Multimedia settings" element in the advanced settings of Power Options do not disable the "Media Features" feature
+
 	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах схемы управления питанием, не отключайте "Компоненты для работы с медиа"
+	Отключить компоненты Windows, используя всплывающее диалоговое окно
 #>
 WindowsFeatures -Disable
 
@@ -767,25 +767,18 @@ RunPowerShellShortcut -Elevated
 #endregion Start menu
 
 #region Gaming
-<#
-	Choose an app and set the "High performance" graphics performance for it
-	Only with a dedicated GPU
-
-	Выбрать приложение и установить параметры производительности графики на "Высокая производительность" для него
-	Только при наличии внешней видеокарты
-#>
+# Choose an app and set the "High performance" graphics performance for it. Only if you have a dedicated GPU
+# Выбрать приложение и установить для него параметры производительности графики на "Высокая производительность". Только при наличии внешней видеокарты
 SetAppGraphicsPerformance
 #endregion Gaming
 
 #region Scheduled tasks
 <#
 	Create the "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates
-	A native interactive toast notification pops up every 30 days
-	The task runs every 30 days
+	A native interactive toast notification pops up every 30 days. The task runs every 30 days
 
 	Создать задачу "Windows Cleanup" по очистке неиспользуемых файлов и обновлений Windows в Планировщике заданий
-	Нативный интерактивный тост всплывает каждые 30 дней
-	Задача выполняется каждые 30 дней
+	Нативный интерактивный тост всплывает каждые 30 дней. Задача выполняется каждые 30 дней
 #>
 CleanupTask -Register
 
@@ -795,12 +788,10 @@ CleanupTask -Register
 
 <#
 	Create the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
-	The task will wait until the Windows Updates service finishes running
-	The task runs every 90 days
+	The task will wait until the Windows Updates service finishes running. The task runs every 90 days
 
 	Создать задачу "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download в Планировщике заданий
-	Задача будет ждать, пока служба обновлений Windows не закончит работу
-	Задача выполняется каждые 90 дней
+	Задача будет ждать, пока служба обновлений Windows не закончит работу. Задача выполняется каждые 90 дней
 #>
 SoftwareDistributionTask -Register
 
@@ -810,10 +801,10 @@ SoftwareDistributionTask -Register
 
 <#
 	Create the "Temp" scheduled task for cleaning up the %TEMP% folder
-	The task runs every 60 days
+	Only files older than one day will be deleted. The task runs every 60 days
 
 	Создать задачу "Temp" в Планировщике заданий по очистке папки %TEMP%
-	Задача выполняется каждые 60 дней
+	Удаляться будут только файлы старше одного дня. Задача выполняется каждые 60 дней
 #>
 TempTask -Register
 
@@ -882,16 +873,16 @@ CommandLineProcessAudit -Enable
 # CommandLineProcessAudit -Disable
 
 <#
-	Create "Process Creation" Event Viewer сustom view
-	In order this feature to work events auditing (AuditProcess -Enable) and command line in process creation events will be enabled
+	Create the "Process Creation" Event Viewer сustom view to log the executed processes and their arguments
+	In order this feature to work events auditing (AuditProcess -Enable) and command line (CommandLineProcessAudit -Enable) in process creation events will be enabled
 
-	Создать настаиваемое представление "Создание процесса" в Просмотре событий
-	Для того, чтобы работал данный функционал, буден включен аудит событий (AuditProcess -Enable) и командной строки в событиях создания процесса
+	Создать настраиваемое представление "Создание процесса" в Просмотре событий для журналирования запускаемых процессов и их аргументов
+	Для того, чтобы работал данный функционал, буден включен аудит событий (AuditProcess -Enable) и командной строки (CommandLineProcessAudit -Enable) в событиях создания процесса
 #>
 EventViewerCustomView -Enable
 
-# Remove "Process Creation" Event Viewer Custom View (default value)
-# Удалить настаиваемое представление "Создание процесса" в Просмотре событий (значение по умолчанию)
+# Remove "Process Creation" Event Viewer сustom view to log the executed processes and their arguments (default value)
+# Удалить настаиваемое представление "Создание процесса" в Просмотре событий для журналирования запускаемых процессов и их аргументов (значение по умолчанию)
 # EventViewerCustomView -Disable
 
 # Enable logging for all Windows PowerShell modules
