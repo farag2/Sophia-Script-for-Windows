@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10 (PowerShell 7)"
 
-	Version: v5.12.1
-	Date: 06.08.2021
+	Version: v5.12.2
+	Date: 25.08.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & Inestic
@@ -23,8 +23,8 @@
 
 	.NOTES
 	Supported Windows 10 versions
-	Versions: 2004/20H2/21H1
-	Builds: 19041/19042/19043
+	Versions: 2004/20H2/21H1/21H2
+	Builds: 19041/19042/19043/19044
 	Editions: Home/Pro/Enterprise
 	Architecture: x64
 
@@ -71,7 +71,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.12.1 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014–2021"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.12.2 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -235,11 +235,11 @@ WhatsNewInWindows -Disable
 # WhatsNewInWindows -Enable
 
 # Do not let Microsoft offer you tailored expereinces based on the diagnostic data setting you hava chosen
-# Не предлагать персонализированные возможности, основанные на выбранном параметре диагностических данных
+# Не разрешиать корпорации Майкософт использовать ваши диагностические данные для предоставления вам персонализированных советов, рекламы и рекомендаций, чтобы улучшить работу со службами Майкрософт
 TailoredExperiences -Disable
 
 # Let Microsoft offer you tailored expereinces based on the diagnostic data setting you hava chosen (default value)
-# Предлагать персонализированные возможности, основанные на выбранном параметре диагностических данных (значение по умолчанию)
+# Разрешите корпорации Майкософт использовать ваши диагностические данные для предоставления вам персонализированных советов, рекламы и рекомендаций, чтобы улучшить работу со службами Майкрософт (значение по умолчанию)
 # TailoredExperiences -Enable
 
 # Disable Bing search in the Start Menu (for the USA only)
@@ -470,7 +470,7 @@ AppColorMode -Dark
 
 # Set the default app mode to light (default value)
 # Установить цвет режима приложения на светлый (значение по умолчанию)
-# AppColorMode-Light
+# AppColorMode -Light
 
 # Hide the "New App Installed" indicator
 # Скрыть уведомление "Установлено новое приложение"
@@ -656,10 +656,10 @@ WindowsManageDefaultPrinter -Disable
 
 <#
 	Disable the Windows features using the pop-up dialog box
-	Отключить компоненты Windows, используя всплывающее диалоговое окно
-
 	If you want to leave "Multimedia settings" element in the advanced settings of Power Options do not disable the "Media Features" feature
+
 	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах схемы управления питанием, не отключайте "Компоненты для работы с медиа"
+	Отключить компоненты Windows, используя всплывающее диалоговое окно
 #>
 WindowsFeatures -Disable
 
@@ -867,7 +867,7 @@ ThumbnailCacheRemoval -Disable
 # ThumbnailCacheRemoval -Enable
 
 # Automatically saving my restartable apps when signing out and restart them after signing in
-# Автоматически сохранять моих перезапускаемые приложения при выходе из системы и перезапускать их после выхода
+# Автоматически сохранять мои перезапускаемые приложения из системы и перезапускать их при повторном входе
 SaveRestartableApps -Enable
 
 # Turn off automatically saving my restartable apps when signing out and restart them after signing in (default value)
@@ -1029,18 +1029,13 @@ XboxGameTips -Disable
 # Включить советы Xbox Game Bar (значение по умолчанию)
 # XboxGameTips -Enable
 
-<#
-	Choose an app and set the "High performance" graphics performance for it
-	Only with a dedicated GPU
-
-	Выбрать приложение и установить параметры производительности графики на "Высокая производительность" для него
-	Только при наличии внешней видеокарты
-#>
+# Choose an app and set the "High performance" graphics performance for it. Only if you have a dedicated GPU
+# Выбрать приложение и установить для него параметры производительности графики на "Высокая производительность". Только при наличии внешней видеокарты
 SetAppGraphicsPerformance
 
 <#
 	Turn on hardware-accelerated GPU scheduling. Restart needed
-	Only with a dedicated GPU and WDDM verion is 2.7 or higher
+	Only if you have a dedicated GPU and WDDM verion is 2.7 or higher
 
 	Включить планирование графического процессора с аппаратным ускорением. Необходима перезагрузка
 	Только при наличии внешней видеокарты и WDDM версии 2.7 и выше
@@ -1055,12 +1050,10 @@ GPUScheduling -Enable
 #region Scheduled tasks
 <#
 	Create the "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates
-	A native interactive toast notification pops up every 30 days
-	The task runs every 30 days
+	A native interactive toast notification pops up every 30 days. The task runs every 30 days
 
 	Создать задачу "Windows Cleanup" по очистке неиспользуемых файлов и обновлений Windows в Планировщике заданий
-	Нативный интерактивный тост всплывает каждые 30 дней
-	Задача выполняется каждые 30 дней
+	Нативный интерактивный тост всплывает каждые 30 дней. Задача выполняется каждые 30 дней
 #>
 CleanupTask -Register
 
@@ -1070,12 +1063,10 @@ CleanupTask -Register
 
 <#
 	Create the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
-	The task will wait until the Windows Updates service finishes running
-	The task runs every 90 days
+	The task will wait until the Windows Updates service finishes running. The task runs every 90 days
 
 	Создать задачу "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download в Планировщике заданий
-	Задача будет ждать, пока служба обновлений Windows не закончит работу
-	Задача выполняется каждые 90 дней
+	Задача будет ждать, пока служба обновлений Windows не закончит работу. Задача выполняется каждые 90 дней
 #>
 SoftwareDistributionTask -Register
 
@@ -1085,10 +1076,10 @@ SoftwareDistributionTask -Register
 
 <#
 	Create the "Temp" scheduled task for cleaning up the %TEMP% folder
-	The task runs every 60 days
+	Only files older than one day will be deleted. The task runs every 60 days
 
 	Создать задачу "Temp" в Планировщике заданий по очистке папки %TEMP%
-	Задача выполняется каждые 60 дней
+	Удаляться будут только файлы старше одного дня. Задача выполняется каждые 60 дней
 #>
 TempTask -Register
 
@@ -1157,16 +1148,16 @@ CommandLineProcessAudit -Enable
 # CommandLineProcessAudit -Disable
 
 <#
-	Create "Process Creation" Event Viewer сustom view
-	In order this feature to work events auditing (AuditProcess -Enable) and command line in process creation events will be enabled
+	Create the "Process Creation" Event Viewer сustom view to log the executed processes and their arguments
+	In order this feature to work events auditing (AuditProcess -Enable) and command line (CommandLineProcessAudit -Enable) in process creation events will be enabled
 
-	Создать настаиваемое представление "Создание процесса" в Просмотре событий
-	Для того, чтобы работал данный функционал, буден включен аудит событий (AuditProcess -Enable) и командной строки в событиях создания процесса
+	Создать настраиваемое представление "Создание процесса" в Просмотре событий для журналирования запускаемых процессов и их аргументов
+	Для того, чтобы работал данный функционал, буден включен аудит событий (AuditProcess -Enable) и командной строки (CommandLineProcessAudit -Enable) в событиях создания процесса
 #>
 EventViewerCustomView -Enable
 
-# Remove "Process Creation" Event Viewer Custom View (default value)
-# Удалить настаиваемое представление "Создание процесса" в Просмотре событий (значение по умолчанию)
+# Remove "Process Creation" Event Viewer сustom view to log the executed processes and their arguments (default value)
+# Удалить настаиваемое представление "Создание процесса" в Просмотре событий для журналирования запускаемых процессов и их аргументов (значение по умолчанию)
 # EventViewerCustomView -Disable
 
 # Enable logging for all Windows PowerShell modules
