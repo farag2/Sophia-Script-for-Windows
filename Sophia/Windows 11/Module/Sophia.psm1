@@ -1346,13 +1346,13 @@ function TailoredExperiences
 
 <#
 	.SYNOPSIS
-	Bing search in the Start Menu (for the USA only)
+	Bing search in the Start Menu
 
 	.PARAMETER Disable
-	Disable Bing search in the Start Menu (for the USA only)
+	Disable Bing search in the Start Menu
 
 	.PARAMETER Enable
-	Enable Bing search in the Start Menu (for the USA only)
+	Enable Bing search in the Start Menu
 
 	.EXAMPLE
 	BingSearch -Disable
@@ -1386,21 +1386,15 @@ function BingSearch
 	{
 		"Disable"
 		{
-			if ((Get-WinHomeLocation).GeoId -eq 244)
+			if (-not (Test-Path -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
 			{
-				if (-not (Test-Path -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
-				{
-					New-Item -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Force
-				}
-				New-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableSearchBoxSuggestions -PropertyType DWord -Value 1 -Force
+				New-Item -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Force
 			}
+			New-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableSearchBoxSuggestions -PropertyType DWord -Value 1 -Force
 		}
 		"Enable"
 		{
-			if ((Get-WinHomeLocation).GeoId -eq 244)
-			{
-				Remove-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableSearchBoxSuggestions -Force -ErrorAction Ignore
-			}
+			Remove-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableSearchBoxSuggestions -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -11815,13 +11809,13 @@ function Errors
 {
 	if ($Global:Error)
 	{
-		($Global:Error | ForEach-Object -Process {
-			# Some errors may have the Windows nature and don't have a path to any of the module's files
-			$ErrorInFile = if ($_.InvocationInfo.PSCommandPath)
-			{
-				Split-Path -Path $_.InvocationInfo.PSCommandPath -Leaf
-			}
+		# Some errors may have the Windows nature and don't have a path to any of the module's files
+		$ErrorInFile = if ($_.InvocationInfo.PSCommandPath)
+		{
+			Split-Path -Path $_.InvocationInfo.PSCommandPath -Leaf
+		}
 
+		($Global:Error | ForEach-Object -Process {
 			[PSCustomObject]@{
 				$Localization.ErrorsLine    = $_.InvocationInfo.ScriptLineNumber
 				$Localization.ErrorsFile    = $ErrorInFile
