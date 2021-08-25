@@ -5,12 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 5.12 | 6.0.1 — 05.08.2021
+## 5.12.2 | 6.0.3 — 25.08.2021
+
+## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | LTSC 1809
+
+* Fixed bug when the `Errors output` function couldn't get path to a file with an error;
+* Updated translations;
+* Closed #234, #235, and #236 as fixed;
+* Now script gets the latest version from [sophia_script_versions.json](https://github.com/farag2/Sophia-Script-for-Windows/blob/master/sophia_script_versions.json) to compare with;
+* Minor changes.
+* The development focus shifted to [SophiApp](https://github.com/Sophia-Community/SophiApp) :rocket:
+
+## Sophia Script Wrapper 2.3
+
+* Updated the German translation;
+  * Thanks to @Henry2o1o & @uDEV2019
+* Added icons to tabs;
+* Fixed numerous bugs;
+* UI changes;
+
+## 5.12.1 | 6.0.2 — 06.08.2021
 
 ## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | LTSC
-
-Diff from v5.12
-[5.12...5.12.1](https://github.com/farag2/Sophia-Script-for-Windows/compare/5.12...5.12.1)
 
 * Fixed typo that prevets script from showing the error description;
 * Fixed typos in descriptions.
@@ -18,13 +34,6 @@ Diff from v5.12
 ## 5.12 | 6.0.1 — 05.08.2021
 
 ## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | LTSC
-
-Diff from v5.11.1
-[5.11.1...5.12](https://github.com/farag2/Sophia-Script-for-Windows/compare/5.11.1...5.12)
-
-<img src="https://i.imgur.com/kFHrRx1.png" height="200px"/>
-
-As you may see, the project name changed to `Sophia Script for Windows`, due to it now supports both `Windows and Windows 11` :trophy:. The project page is now <https://github.com/farag2/Sophia-Script-for-Windows>
 
 * Added the `IPv6Component -Enable`, `IPv6Component -Disable` functions;
   * Disable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections. Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipv6-test.com
