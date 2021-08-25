@@ -103,17 +103,17 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 |Version|    Marketing name   | Build | Arch |      Editions     | Script version |
 |:-----:|:-------------------:|:-----:|:----:|:-----------------:|:--------------:|
-| 21H2  | October 2021 Update | 22000 |  x64 |Home/Pro/Enterprise|[6.0.2](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H2  | October 2021 Update | 22000 |  x64 |Home/Pro/Enterprise|[6.0.3](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 
 # Windows 10
 
 |Version|    Marketing name   | Build | Arch|      Editions     | Script version |
 |:-----:|:-------------------:|:-----:|:---:|:-----------------:|:--------------:|
-| 21H2  | October 2021 Update | 19044 | x64 |Home/Pro/Enterprise|[5.12.1](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 21H1  | May 2021 Update     | 19043 | x64 |Home/Pro/Enterprise|[5.12.1](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 20H2  | October 2020 Update | 19042 | x64 |Home/Pro/Enterprise|[5.12.1](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 2004  | May 2020 Update     | 19041 | x64 |Home/Pro/Enterprise|[5.12.1](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 1809  | LTSC Enterprise 2019| 17763 | x64 |   Enterprise      |[5.2.12](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H2  | October 2021 Update | 19044 | x64 |Home/Pro/Enterprise|[5.12.2](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H1  | May 2021 Update     | 19043 | x64 |Home/Pro/Enterprise|[5.12.2](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 20H2  | October 2020 Update | 19042 | x64 |Home/Pro/Enterprise|[5.12.2](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 2004  | May 2020 Update     | 19041 | x64 |Home/Pro/Enterprise|[5.12.2](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 1809  | LTSC Enterprise 2019| 17763 | x64 |   Enterprise      |[5.2.13](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 
 ## Screenshots
 
@@ -202,7 +202,13 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 * Look through the `Sophia.ps1` file to configure functions that you want to be run;
   * Place the "#" char before function if you don't want it to be run;
   * Remove the "#" char before function if you want it to be run.
-* Click "File" in File Explorer, hover over "Open Windows PowerShell", and select "Open Windows PowerShell as Administrator" [(how-to with screenshots)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/);
+* On `Windows 10` click `File` in File Explorer, hover over `Open Windows PowerShell`, and select `Open Windows PowerShell as Administrator` [(how-to with screenshots)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/);
+* On `Windows 11` right-click on the <kbd>Windows</kbd> icon and select `Windows Terminal (Admin)`. Then change the current location
+
+  ```powershell
+  Set-Location -Path "Path\To\Sophia\Folder"
+  ```
+
 * Set execution policy to be able to run scripts only in the current PowerShell session
 
   ```powershell
