@@ -123,9 +123,9 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ### Change user folders location programmatically using the interactive menu
 
-![Image](https://i.imgur.com/xe0PgFL.png)
+![Image](https://i.imgur.com/gJFAEOk.png)
 
-### Localized UWP apps names
+### Localized UWP packages names
 
 ![Image](https://i.imgur.com/xeiBbes.png) ![Image](https://i.imgur.com/0zj0h2S.png)
 
