@@ -25,7 +25,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 	{
 		$LatestStableVersion = (Invoke-RestMethod -Uri "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json" -UseBasicParsing).Sophia_Script_Windows_11_PowerShell_5_1
 		$Parameters = @{
-			Uri = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestRelease/Sophia.Script.v$LatestStableVersion.zip"
+			Uri = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestRelease/Sophia.Script.Windows.11.v$LatestStableVersion.zip"
 			OutFile = "$DownloadsFolder\Sophia.Script.zip"
 		}
 	}
