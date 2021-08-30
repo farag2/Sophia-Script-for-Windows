@@ -11,6 +11,8 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		$Parameters = @{
 			Uri     = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestRelease/Sophia.Script.LTSC.v$LatestStableVersion.zip"
 			OutFile = "$DownloadsFolder\Sophia.Script.zip"
+			UseBasicParsing = $true
+			Verbose         = $true
 		}
 	}
 	{($_ -ge 19041) -and ($_ -le 19044)}
