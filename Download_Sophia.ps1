@@ -9,24 +9,54 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 	{
 		$LatestStableVersion = (Invoke-RestMethod -Uri "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json" -UseBasicParsing).Sophia_Script_Windows_10_LTSC
 		$Parameters = @{
-			Uri = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestRelease/Sophia.Script.LTSC.v$LatestStableVersion.zip"
+			Uri     = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestRelease/Sophia.Script.LTSC.v$LatestStableVersion.zip"
 			OutFile = "$DownloadsFolder\Sophia.Script.zip"
 		}
 	}
 	{($_ -ge 19041) -and ($_ -le 19044)}
 	{
-		$LatestStableVersion = (Invoke-RestMethod -Uri "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json" -UseBasicParsing).Sophia_Script_Windows_10_PowerShell_5_1
-		$Parameters = @{
-			Uri = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestRelease/Sophia.Script.v$LatestStableVersion.zip"
-			OutFile = "$DownloadsFolder\Sophia.Script.zip"
+		if ($PSVersionTable.PSVersion.Major -eq 5)
+		{
+			$LatestStableVersion = (Invoke-RestMethod -Uri "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json" -UseBasicParsing).Sophia_Script_Windows_10_PowerShell_5_1
+			$Parameters = @{
+				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestRelease/Sophia.Script.v$LatestStableVersion.zip"
+				OutFile         = "$DownloadsFolder\Sophia.Script.zip"
+				UseBasicParsing = $true
+				Verbose         = $true
+			}
+		}
+		else
+		{
+			$LatestStableVersion = (Invoke-RestMethod -Uri "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json" -UseBasicParsing).Sophia_Script_Windows_10_PowerShell_7
+			$Parameters = @{
+				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestRelease/Sophia.Script.v$LatestRelease.PowerShell.7.zip"
+				OutFile         = "$DownloadsFolder\Sophia.Script.zip"
+				UseBasicParsing = $true
+				Verbose         = $true
+			}
 		}
 	}
 	"22000"
 	{
-		$LatestStableVersion = (Invoke-RestMethod -Uri "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json" -UseBasicParsing).Sophia_Script_Windows_11_PowerShell_5_1
-		$Parameters = @{
-			Uri = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestRelease/Sophia.Script.Windows.11.v$LatestStableVersion.zip"
-			OutFile = "$DownloadsFolder\Sophia.Script.zip"
+		if ($PSVersionTable.PSVersion.Major -eq 5)
+		{
+			$LatestStableVersion = (Invoke-RestMethod -Uri "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json" -UseBasicParsing).Sophia_Script_Windows_11_PowerShell_5_1
+			$Parameters = @{
+				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestRelease/Sophia.Script.Windows.11.v$LatestStableVersion.zip"
+				OutFile         = "$DownloadsFolder\Sophia.Script.zip"
+				UseBasicParsing = $true
+				Verbose         = $true
+			}
+		}
+		else
+		{
+			$LatestStableVersion = (Invoke-RestMethod -Uri "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json" -UseBasicParsing).Sophia_Script_Windows_11_PowerShell_7
+			$Parameters = @{
+				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestRelease/Sophia.Script.Windows.11.v$LatestRelease.PowerShell.7.zip"
+				OutFile         = "$DownloadsFolder\Sophia.Script.zip"
+				UseBasicParsing = $true
+				Verbose         = $true
+			}
 		}
 	}
 }
