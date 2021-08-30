@@ -1,7 +1,33 @@
+[CmdletBinding()]
+param
+(
+	[Parameter(Mandatory = $false)]
+	[switch]
+	$Wrapper
+)
+
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 $LatestRelease = (Invoke-RestMethod -Uri "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases/latest" -UseBasicParsing).tag_name
 $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+
+if ($Wrapper)
+{
+	$LatestStableVersion = (Invoke-RestMethod -Uri "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json" -UseBasicParsing).Sophia_Script_Wrapper
+	$Parameters = @{
+		Uri     = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestRelease/Sophia.Script.Wrapper.v$LatestStableVersion.zip"
+		OutFile = "$DownloadsFolder\Sophia.Script.Wrapper.zip"
+		UseBasicParsing = $true
+		Verbose         = $true
+	}
+
+	$Parameters = @{
+		Path            = "$DownloadsFolder\Sophia.Script.Wrapper.zip"
+		DestinationPath = "$DownloadsFolder"
+		Force           = $true
+	}
+	Expand-Archive @Parameters
+}
 
 switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 {
