@@ -20,6 +20,7 @@ if ($Wrapper)
 		UseBasicParsing = $true
 		Verbose         = $true
 	}
+	Invoke-WebRequest @Parameters
 
 	$Parameters = @{
 		Path            = "$DownloadsFolder\Sophia.Script.Wrapper.zip"
@@ -27,6 +28,14 @@ if ($Wrapper)
 		Force           = $true
 	}
 	Expand-Archive @Parameters
+
+	Remove-Item -Path "$DownloadsFolder\Sophia.Script.Wrapper.zip" -Force
+
+	Start-Sleep -Second 1
+
+	Invoke-Item -Path "$DownloadsFolder\Sophia Script Wrapper v$LatestStableVersion"
+
+	exit
 }
 
 switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
