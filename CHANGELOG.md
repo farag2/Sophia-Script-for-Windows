@@ -14,7 +14,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Closed #234, #235, and #236 as fixed;
 * Now script gets the latest version from [sophia_script_versions.json](https://github.com/farag2/Sophia-Script-for-Windows/blob/master/sophia_script_versions.json) to compare with;
 * Minor changes.
-* The development focus shifted to [SophiApp](https://github.com/Sophia-Community/SophiApp) :rocket:
 
 ## Sophia Script Wrapper 2.3
 
@@ -46,7 +45,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Descriptions updated;
 * Fixed typos;
 * Minor changes.
-* The development focus shifted to [SophiApp](https://github.com/Sophia-Community/SophiApp) :rocket:
 
 ***
 
@@ -174,7 +172,6 @@ Diff from v5.10.8
   * `PreviousVersionsPage`
 * Some functions renamed;
 * Minor changes & minor bugs fixed. :feelsgood:
-* The development focus shifted to [SophiApp](https://github.com/Sophia-Community/SophiApp) :rocket:
 
 ***
 
