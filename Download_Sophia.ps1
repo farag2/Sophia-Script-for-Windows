@@ -4,10 +4,10 @@
 	E.g.: if you start script on Windows 11 via PowerShell 5.1 you will start downloading Sophia Script for Windows 11 PowerShell 5.1
 
 	.EXAMPLE Download Sophia Script only
-	irm script.sophi.app -useb | iex
+	irm script.sophi.app | iex
 
 	.EXAMPLE Download Wrapper only
-	iex "& {$(irm git.io/JE1pt -useb)} -Wrapper"
+	iex "& {$(irm script.sophi.app)} -Wrapper"
 
 	.NOTES
 	Current user
