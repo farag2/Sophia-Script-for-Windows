@@ -13,4 +13,4 @@ This program create a PowerShell script file that you can run to customize Windo
 
 # INSTRUCTIONS
 
-UNZIP all the files and import the `Sophia.ps1` preset file to import and to get the path for files to run. If you do not import `Sophia.ps1` then you can not run directly the PowerShell script you create (Run `PowerShell` button is disabled) and must run your script manually via PowerShell command line in console.
+UNZIP all the files and import the `Sophia.ps1` preset file to import and to get the path for files to run. If you do not import `Sophia.ps1` then you can not run directly the PowerShell script you create (`Run PowerShell` button is disabled) and must run your script manually via PowerShell command line in console.
