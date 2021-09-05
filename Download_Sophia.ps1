@@ -29,8 +29,8 @@ if ($Wrapper)
 {
 	$LatestStableVersion = (Invoke-RestMethod -Uri "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json" -UseBasicParsing).Sophia_Script_Wrapper
 	$Parameters = @{
-		Uri     = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestRelease/Sophia.Script.Wrapper.v$LatestStableVersion.zip"
-		OutFile = "$DownloadsFolder\Sophia.Script.Wrapper.zip"
+		Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestRelease/Sophia.Script.Wrapper.v$LatestStableVersion.zip"
+		OutFile         = "$DownloadsFolder\Sophia.Script.Wrapper.zip"
 		UseBasicParsing = $true
 		Verbose         = $true
 	}
@@ -58,8 +58,8 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 	{
 		$LatestStableVersion = (Invoke-RestMethod -Uri "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json" -UseBasicParsing).Sophia_Script_Windows_10_LTSC
 		$Parameters = @{
-			Uri     = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestRelease/Sophia.Script.LTSC.v$LatestStableVersion.zip"
-			OutFile = "$DownloadsFolder\Sophia.Script.zip"
+			Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestRelease/Sophia.Script.LTSC.v$LatestStableVersion.zip"
+			OutFile         = "$DownloadsFolder\Sophia.Script.zip"
 			UseBasicParsing = $true
 			Verbose         = $true
 		}
