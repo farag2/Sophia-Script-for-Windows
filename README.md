@@ -47,7 +47,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 	&bull;
 	<a href="#supported-windows-versions">Supported Windows 10 versions</a>
 	&bull;
-	<a href="https://github.com/farag2/Sophia-Script-for-Windowss/blob/master/CHANGELOG.md">Changelog</a>
+	<a href="https://github.com/farag2/Sophia-Script-for-Windows/blob/master/CHANGELOG.md">Changelog</a>
 </p>
 
 ***
