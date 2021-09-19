@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 11"
 
-	Version: v6.0.3
-	Date: 25.08.2021
+	Version: v6.0.4
+	Date: 19.09.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & Inestic
@@ -21,18 +21,19 @@
 	.EXAMPLE Run the script by specifying the module functions as an argument
 	.\Sophia.ps1 -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
 
+	.EXAMPLE Download and expand the archive (without running) the latest Sophia Script according which Windows and PowerShell versions it is run on
+	irm script.sophi.app | iex
+	Invoke-RestMethod -Uri script.sophi.app | Invoke-Expression
+
 	.NOTES
 	Supported Windows 11 version
 	Version: 21H2
-	Build: 22000
+	Build: 22000.194
 	Editions: Home/Pro/Enterprise
 
 	.NOTES
 	Set execution policy to be able to run scripts only in the current PowerShell session:
 		Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
-
-	.NOTES
-	Running the script is best done on a fresh install because running it on wrong tweaked system may result in errors occurring
 
 	.NOTES
 	To use the TAB completion for functions and their arguments dot source the Function.ps1 script first:
@@ -70,7 +71,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.0.3 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014–2021"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.0.4 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -352,13 +353,23 @@ FileTransferDialog -Detailed
 # Отображать диалоговое окно передачи файлов в свернутом виде (значение по умолчанию)
 # FileTransferDialog -Compact
 
-# Expand the File Explorer ribbon
-# Развернуть ленту проводника
-FileExplorerRibbon -Expanded
+<#
+	Expand the Windows 10 File Explorer ribbon
+	In order this feature to work you need to enable the Windows 10 File Explorer (Windows10FileExplorer -Enable)
 
-# Minimize the File Explorer ribbon (default value)
-# Свернуть ленту проводника (значение по умолчанию)
-# FileExplorerRibbon -Minimized
+	Развернуть ленту проводника как в Windows 10
+	Для того, чтобы работал данный функционал, вам необходимо включить проводник из Windows 10 (Windows10FileExplorer -Enable)
+#>
+Windows10FileExplorerRibbon -Expanded
+
+<#
+	Minimize the Windows 10 File Explorer ribbon
+	In order this feature to work you need to enable the Windows 10 File Explorer (Windows10FileExplorer -Enable)
+
+	Свернуть ленту проводника как в Windows 10
+	Для того, чтобы работал данный функционал, вам необходимо включить проводник из Windows 10 (Windows10FileExplorer -Enable)
+#>
+# Windows10FileExplorerRibbon -Minimized
 
 # Display the recycle bin files delete confirmation dialog
 # Запрашивать подтверждение на удаление файлов в корзину
@@ -529,11 +540,11 @@ AppsLanguageSwitch -Enable
 # AppsLanguageSwitch -Disable
 
 # When I grab a windows's title bar and shake it, minimize all other windows
-# При захвате заголовка окна и встряхивании сворачивать все остальные окна
+# При захвате заголовка окна и встряхивании сворачиваются все остальные окна
 AeroShaking -Enable
 
 # When I grab a windows's title bar and shake it, don't minimize all other windows (default value)
-# При захвате заголовка окна и встряхивании не сворачивать все остальные окна (значение по умолчанию)
+# При захвате заголовка окна и встряхивании не сворачиваются все остальные окна (значение по умолчанию)
 # AeroShaking -Disable
 #endregion UI & Personalization
 
@@ -783,7 +794,7 @@ WinPrtScrFolder -Desktop
 	Автоматически запускать средства устранения неполадок, а затем уведомлять
 	Чтобы заработала данная функция, уровень сбора диагностических данных ОС будет установлен на "Необязательные диагностические данные" и включится создание отчетов об ошибках Windows
 #>
-RecommendedTroubleshooting -Automatic
+RecommendedTroubleshooting -Automatically
 
 <#
 	Ask me before running troubleshooter (default value)
@@ -969,7 +980,7 @@ HEIF -Install
 	Открыть страницу "Расширения для видео HEVC от производителя устройства" в Microsoft Store, чтобы вручную установить расширение для открытия форматов .heic и .heif
 	Расширение может быть установлено бесплатно без учетной записи Microsoft
 #>
-# HEIF -Manual
+# HEIF -Manually
 
 # Disable Cortana autostarting
 # Выключить автозагрузку Кортана
@@ -981,11 +992,11 @@ CortanaAutostart -Disable
 
 # Disable Microsoft Teams autostarting
 # Выключить автозагрузку Microsoft Teams
-CortanaAutostart -Disable
+TeamsAutostart -Disable
 
 # Enable Microsoft Teams autostarting (default value)
 # Включить автозагрузкуMicrosoft Teams (значение по умолчанию)
-# CortanaAutostart -Enable
+# TeamsAutostart -Enable
 
 # Check for UWP apps updates
 # Проверить обновления UWP-приложений
