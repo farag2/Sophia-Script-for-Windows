@@ -7,6 +7,7 @@ LoggedInUserNotAdmin                      = A bejelentkezett felhasználó nem r
 UnsupportedPowerShell                     = A PowerShell {0}.{1} segítségével próbálja futtatni a szkriptet. Futtassa a szkriptet a megfelelő PowerShell-verzióban
 UnsupportedISE                            = A szkript nem támogatja a Windows PowerShell ISE futtatását
 Win10TweakerWarning                       = Valószínűleg az operációs rendszerét a Win 10 Tweaker backdoor segítségével fertőzték meg
+PowerShellLibraries                       = A Libraries mappában nincsenek fájlok. Kérjük, töltse le újra az archívumot
 UnsupportedRelease                        = Új verzió érhető el
 CustomizationWarning                      = \nSzemélyre szabott minden opciót a Sophia.ps1 preset fájlban, mielőtt futtatni kívánja a Sophia szkriptet?
 ControlledFolderAccessDisabled            = Vezérelt mappához való hozzáférés kikapcsolva

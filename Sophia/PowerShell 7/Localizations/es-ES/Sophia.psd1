@@ -7,6 +7,7 @@ LoggedInUserNotAdmin                      = El usuario que inició sesión no ti
 UnsupportedPowerShell                     = Estás intentando ejecutar el script a través de PowerShell {0}.{1}. Ejecute el script en la versión apropiada de PowerShell
 UnsupportedISE                            = El script no es compatible con la ejecución a través de Windows PowerShell ISE
 Win10TweakerWarning                       = Probablemente su sistema operativo fue infectado a través del backdoor Win 10 Tweaker
+PowerShellLibraries                       = No hay archivos en la carpeta Bibliotecas. Por favor, vuelva a descargar el archivo
 UnsupportedRelease                        = Una nueva versión encontrada
 CustomizationWarning                      = \n¿Ha personalizado todas las funciones del archivo predeterminado Sophia.ps1 antes de ejecutar Sophia Script?
 ControlledFolderAccessDisabled            = Acceso a la carpeta controlada deshabilitado
