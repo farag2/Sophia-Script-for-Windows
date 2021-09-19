@@ -5,6 +5,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.12.4 | 6.0.5 — 19.09.2021
+
+## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | LTSC 1809
+
+* Now you can download the always latest Sophia Script archive by invoking (`not as administrator too`) in PowerShell console
+
+```powershell
+irm script.sophi.app | iex
+```
+
+or without using aliases
+
+```powershell
+Invoke-RestMethod -Uri script.sophi.app | Invoke-Expression
+```
+
+* The command will download and expand the archive (`without running`) the latest Sophia Script according which Windows and PowerShell versions it is run on. If you run it on Windows 11 via PowerShell 5.1, it will download Sophia Script for `Windows 11 PowerShell 5.1`.
+* Updated functions
+  * `FirstLogonAnimation`;
+  * `MappedDrivesAppElevatedAccess`;
+  * `BackgroundUWPApps`
+* `OneDrive -Install`
+  * Now the function parses the Microsoft official [XML](https://g.live.com/1rewlive5skydrive/OneDriveProduction) to get the link to the latest OneDrive installer
+* Closed #240, #241, and #246 as fixed;
+* Minor changes.
+
+## Sophia Script Wrapper 2.4
+
+* Updated the German translation again;
+  * Thanks to @Henry2o1o & @uDEV2019
+* You must import `Sophia.ps1` before using the Wrapper now. Disabled controls to do this;
+* UI changes (color to highlight important controls);
+* Special thanks to `usser_namme` for bug reporting;
+* Fixed some bugs.
+
 ## 5.12.2 | 6.0.3 — 25.08.2021
 
 ## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | LTSC 1809
