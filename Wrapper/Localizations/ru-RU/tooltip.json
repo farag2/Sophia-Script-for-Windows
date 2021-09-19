@@ -1,4 +1,4 @@
-[
+﻿[
   {
     "Id": 100,
     "Region": "Protection",
@@ -283,7 +283,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Включить проводник Windows 10"
+        "ToolTip": "Включить проводник Windows 10. Включение проводника из Windows 10 cкроет пункт \"Отправить\" (поделиться) из контекстного меню"
       },
       "One": {
         "Tag": "Disable",
@@ -474,6 +474,21 @@
   {
     "Id": 314,
     "Region": "UI & Personalization",
+    "Function": "Windows10FileExplorerRibbon",
+    "Arg": {
+      "Zero": {
+        "Tag": "Expanded",
+        "ToolTip": "Развернуть ленту проводника как в Windows 10. Для того, чтобы работал данный функционал, вам необходимо включить проводник из Windows 10 (Windows10FileExplorer -Enable)"
+      },
+      "One": {
+        "Tag": "Minimized",
+        "ToolTip": "Свернуть ленту проводника как в Windows 10. Для того, чтобы работал данный функционал, вам необходимо включить проводник из Windows 10 (Windows10FileExplorer -Enable)"
+      }
+    }
+  },
+  {
+    "Id": 315,
+    "Region": "UI & Personalization",
     "Function": "RecycleBinDeleteConfirmation",
     "Arg": {
       "Zero": {
@@ -487,7 +502,7 @@
     }
   },
   {
-    "Id": 315,
+    "Id": 316,
     "Region": "UI & Personalization",
     "Function": "3DObjects",
     "Arg": {
@@ -502,7 +517,7 @@
     }
   },
   {
-    "Id": 316,
+    "Id": 317,
     "Region": "UI & Personalization",
     "Function": "QuickAccessRecentFiles",
     "Arg": {
@@ -517,7 +532,7 @@
     }
   },
   {
-    "Id": 317,
+    "Id": 318,
     "Region": "UI & Personalization",
     "Function": "QuickAccessFrequentFolders",
     "Arg": {
@@ -532,7 +547,7 @@
     }
   },
   {
-    "Id": 318,
+    "Id": 319,
     "Region": "UI & Personalization",
     "Function": "TaskbarAlignment",
     "Arg": {
@@ -547,7 +562,7 @@
     }
   },
   {
-    "Id": 319,
+    "Id": 320,
     "Region": "UI & Personalization",
     "Function": "TaskbarSearch",
     "Arg": {
@@ -562,7 +577,7 @@
     }
   },
   {
-    "Id": 320,
+    "Id": 321,
     "Region": "UI & Personalization",
     "Function": "TaskViewButton",
     "Arg": {
@@ -577,7 +592,7 @@
     }
   },
   {
-    "Id": 321,
+    "Id": 322,
     "Region": "UI & Personalization",
     "Function": "TaskbarWidgets",
     "Arg": {
@@ -592,7 +607,7 @@
     }
   },
   {
-    "Id": 322,
+    "Id": 323,
     "Region": "UI & Personalization",
     "Function": "TaskbarChat",
     "Arg": {
@@ -607,7 +622,7 @@
     }
   },
   {
-    "Id": 323,
+    "Id": 324,
     "Region": "UI & Personalization",
     "Function": "PeopleTaskbar",
     "Arg": {
@@ -622,7 +637,7 @@
     }
   },
   {
-    "Id": 324,
+    "Id": 325,
     "Region": "UI & Personalization",
     "Function": "SecondsInSystemClock",
     "Arg": {
@@ -637,7 +652,7 @@
     }
   },
   {
-    "Id": 325,
+    "Id": 326,
     "Region": "UI & Personalization",
     "Function": "TaskbarSearch",
     "Arg": {
@@ -656,7 +671,7 @@
     }
   },
   {
-    "Id": 326,
+    "Id": 327,
     "Region": "UI & Personalization",
     "Function": "WindowsInkWorkspace",
     "Arg": {
@@ -671,7 +686,7 @@
     }
   },
   {
-    "Id": 327,
+    "Id": 328,
     "Region": "UI & Personalization",
     "Function": "NotificationAreaIcons",
     "Arg": {
@@ -682,7 +697,7 @@
     }
   },
   {
-    "Id": 328,
+    "Id": 329,
     "Region": "UI & Personalization",
     "Function": "MeetNow",
     "Arg": {
@@ -697,7 +712,7 @@
     }
   },
   {
-    "Id": 329,
+    "Id": 330,
     "Region": "UI & Personalization",
     "Function": "NewsInterests",
     "Arg": {
@@ -712,7 +727,7 @@
     }
   },
   {
-    "Id": 330,
+    "Id": 331,
     "Region": "UI & Personalization",
     "Function": "UnpinTaskbarShortcuts -Shortcuts",
     "ToolTip": "Открепить ярлыки \"Microsoft Edge\", \"Microsoft Store\" или \"Почта\" от панели задач",
@@ -925,12 +940,12 @@
     "Function": "AeroShaking",
     "Arg": {
       "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Когда я беру строку заголовка окна и встряхиваю ее, сворачиваю все остальные окна."
+        "Tag": "Enable",
+        "ToolTip": "При захвате заголовка окна и встряхивании сворачиваются все остальные окна"
       },
       "One": {
-        "Tag": "Enable",
-        "ToolTip": "Когда я беру строку заголовка окна и встряхиваю ее, не сворачивайте все остальные окна (значение по умолчанию)"
+        "Tag": "Disable",
+        "ToolTip": "Когда я беру строку заголовка окна и встряхиваю ее, сворачивайте все остальные окна (значение по умолчанию)"
       }
     }
   },
@@ -1289,7 +1304,7 @@
     "Function": "RecommendedTroubleshooting",
     "Arg": {
       "Zero": {
-        "Tag": "Automatic",
+        "Tag": "Automatically",
         "ToolTip": "Автоматически запускать средства устранения неполадок, а затем уведомлять. Чтобы заработала данная функция, уровень сбора диагностических данных ОС будет установлен на \"Необязательные диагностические данные\" и включится создание отчетов об ошибках Windows"
       },
       "One": {
@@ -1619,7 +1634,7 @@
     "Function": "HEIF",
     "Arg": {
       "Zero": {
-        "Tag": "Manual",
+        "Tag": "Manually",
         "ToolTip": "Открыть страницу \"Расширения для видео HEVC от производителя устройства\" в Microsoft Store, чтобы вручную установить расширение для открытия форматов .heic и .heif. Расширение может быть установлено бесплатно без учетной записи Microsoft"
       },
       "One": {
@@ -2073,7 +2088,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Показывать пункт \"Отправить\" (поделиться) в контекстном меню (значение по умолчанию)"
+        "ToolTip": "Показывать пункт \"Отправить\" (поделиться) в контекстном меню (значение по умолчанию). Отображение элемента \"Поделиться\" в контекстном меню приведет к отключению проводника из Windows 10"
       }
     }
   },
@@ -2277,7 +2292,7 @@
   {
     "Id": 1218,
     "Region": "Context menu",
-    "Function": "WindowsTerminalContext",
+    "Function": "OpenWindowsTerminalContext",
     "Arg": {
       "Zero": {
         "Tag": "Hide",

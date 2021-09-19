@@ -1,4 +1,4 @@
-[
+﻿[
   {
     "Id": 100,
     "Region": "Protection",
@@ -283,7 +283,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Enable the Windows 10 File Explorer"
+        "ToolTip": "Enable the Windows 10 File Explorer. Enabling the Windows 10 File Explorer will block the \"Share\" item context menu"
       },
       "One": {
         "Tag": "Disable",
@@ -474,6 +474,21 @@
   {
     "Id": 314,
     "Region": "UI & Personalization",
+    "Function": "Windows10FileExplorerRibbon",
+    "Arg": {
+      "Zero": {
+        "Tag": "Expanded",
+        "ToolTip": "Expand the File Explorer ribbon. In order this feature to work you need to enable the Windows 10 File Explorer (Windows10FileExplorer -Enable)"
+      },
+      "One": {
+        "Tag": "Minimized",
+        "ToolTip": "Minimize the File Explorer ribbon. In order this feature to work you need to enable the Windows 10 File Explorer (Windows10FileExplorer -Enable)"
+      }
+    }
+  },
+  {
+    "Id": 315,
+    "Region": "UI & Personalization",
     "Function": "RecycleBinDeleteConfirmation",
     "Arg": {
       "Zero": {
@@ -487,7 +502,7 @@
     }
   },
   {
-    "Id": 315,
+    "Id": 316,
     "Region": "UI & Personalization",
     "Function": "3DObjects",
     "Arg": {
@@ -502,7 +517,7 @@
     }
   },
   {
-    "Id": 316,
+    "Id": 317,
     "Region": "UI & Personalization",
     "Function": "QuickAccessRecentFiles",
     "Arg": {
@@ -517,7 +532,7 @@
     }
   },
   {
-    "Id": 317,
+    "Id": 318,
     "Region": "UI & Personalization",
     "Function": "QuickAccessFrequentFolders",
     "Arg": {
@@ -532,7 +547,7 @@
     }
   },
   {
-    "Id": 318,
+    "Id": 319,
     "Region": "UI & Personalization",
     "Function": "TaskbarAlignment",
     "Arg": {
@@ -547,7 +562,7 @@
     }
   },
   {
-    "Id": 319,
+    "Id": 320,
     "Region": "UI & Personalization",
     "Function": "TaskbarSearch",
     "Arg": {
@@ -562,7 +577,7 @@
     }
   },
   {
-    "Id": 320,
+    "Id": 321,
     "Region": "UI & Personalization",
     "Function": "TaskViewButton",
     "Arg": {
@@ -577,7 +592,7 @@
     }
   },
   {
-    "Id": 321,
+    "Id": 322,
     "Region": "UI & Personalization",
     "Function": "TaskbarWidgets",
     "Arg": {
@@ -592,7 +607,7 @@
     }
   },
   {
-    "Id": 322,
+    "Id": 323,
     "Region": "UI & Personalization",
     "Function": "TaskbarChat",
     "Arg": {
@@ -607,7 +622,7 @@
     }
   },
   {
-    "Id": 323,
+    "Id": 324,
     "Region": "UI & Personalization",
     "Function": "PeopleTaskbar",
     "Arg": {
@@ -622,7 +637,7 @@
     }
   },
   {
-    "Id": 324,
+    "Id": 325,
     "Region": "UI & Personalization",
     "Function": "SecondsInSystemClock",
     "Arg": {
@@ -637,7 +652,7 @@
     }
   },
   {
-    "Id": 325,
+    "Id": 326,
     "Region": "UI & Personalization",
     "Function": "TaskbarSearch",
     "Arg": {
@@ -656,7 +671,7 @@
     }
   },
   {
-    "Id": 326,
+    "Id": 327,
     "Region": "UI & Personalization",
     "Function": "WindowsInkWorkspace",
     "Arg": {
@@ -671,7 +686,7 @@
     }
   },
   {
-    "Id": 327,
+    "Id": 328,
     "Region": "UI & Personalization",
     "Function": "NotificationAreaIcons",
     "Arg": {
@@ -682,7 +697,7 @@
     }
   },
   {
-    "Id": 328,
+    "Id": 329,
     "Region": "UI & Personalization",
     "Function": "MeetNow",
     "Arg": {
@@ -697,7 +712,7 @@
     }
   },
   {
-    "Id": 329,
+    "Id": 330,
     "Region": "UI & Personalization",
     "Function": "NewsInterests",
     "Arg": {
@@ -712,7 +727,7 @@
     }
   },
   {
-    "Id": 330,
+    "Id": 331,
     "Region": "UI & Personalization",
     "Function": "UnpinTaskbarShortcuts -Shortcuts",
     "ToolTip": "Unpin the \"Microsoft Edge\", \"Microsoft Store\", or \"Mail\" shortcuts from the taskbar",
@@ -732,7 +747,7 @@
     }
   },
   {
-    "Id": 332,
+    "Id": 333,
     "Region": "UI & Personalization",
     "Function": "TaskbarSize",
     "Arg": {
@@ -751,7 +766,7 @@
     }
   },
   {
-    "Id": 333,
+    "Id": 334,
     "Region": "UI & Personalization",
     "Function": "ControlPanelView",
     "Arg": {
@@ -770,7 +785,7 @@
     }
   },
   {
-    "Id": 334,
+    "Id": 335,
     "Region": "UI & Personalization",
     "Function": "WindowsColorMode",
     "Arg": {
@@ -785,7 +800,7 @@
     }
   },
   {
-    "Id": 335,
+    "Id": 336,
     "Region": "UI & Personalization",
     "Function": "AppColorMode",
     "Arg": {
@@ -800,7 +815,7 @@
     }
   },
   {
-    "Id": 336,
+    "Id": 337,
     "Region": "UI & Personalization",
     "Function": "NewAppInstalledNotification",
     "Arg": {
@@ -815,7 +830,7 @@
     }
   },
   {
-    "Id": 337,
+    "Id": 338,
     "Region": "UI & Personalization",
     "Function": "FirstLogonAnimation",
     "Arg": {
@@ -830,7 +845,7 @@
     }
   },
   {
-    "Id": 338,
+    "Id": 339,
     "Region": "UI & Personalization",
     "Function": "JPEGWallpapersQuality",
     "Arg": {
@@ -845,7 +860,7 @@
     }
   },
   {
-    "Id": 339,
+    "Id": 340,
     "Region": "UI & Personalization",
     "Function": "TaskManagerWindow",
     "Arg": {
@@ -860,7 +875,7 @@
     }
   },
   {
-    "Id": 340,
+    "Id": 341,
     "Region": "UI & Personalization",
     "Function": "RestartNotification",
     "Arg": {
@@ -875,7 +890,7 @@
     }
   },
   {
-    "Id": 341,
+    "Id": 342,
     "Region": "UI & Personalization",
     "Function": "ShortcutsSuffix",
     "Arg": {
@@ -890,7 +905,7 @@
     }
   },
   {
-    "Id": 342,
+    "Id": 343,
     "Region": "UI & Personalization",
     "Function": "PrtScnSnippingTool",
     "Arg": {
@@ -905,7 +920,7 @@
     }
   },
   {
-    "Id": 343,
+    "Id": 344,
     "Region": "UI & Personalization",
     "Function": "AppsLanguageSwitch",
     "Arg": {
@@ -920,16 +935,16 @@
     }
   },
   {
-    "Id": 344,
+    "Id": 345,
     "Region": "UI & Personalization",
     "Function": "AeroShaking",
     "Arg": {
       "Zero": {
-        "Tag": "Disable",
+        "Tag": "Enable",
         "ToolTip": "When I grab a windows's title bar and shake it, minimize all other windows"
       },
       "One": {
-        "Tag": "Enable",
+        "Tag": "Disable",
         "ToolTip": "When I grab a windows's title bar and shake it, don't minimize all other windows (default value)"
       }
     }
@@ -1289,7 +1304,7 @@
     "Function": "RecommendedTroubleshooting",
     "Arg": {
       "Zero": {
-        "Tag": "Automatic",
+        "Tag": "Automatically",
         "ToolTip": "Run troubleshooter automatically, then notify. In order this feature to work the OS level of diagnostic data gathering will be set to \"Optional diagnostic data\" and the error reporting feature will be turned on"
       },
       "One": {
@@ -1619,7 +1634,7 @@
     "Function": "HEIF",
     "Arg": {
       "Zero": {
-        "Tag": "Manual",
+        "Tag": "Manually",
         "ToolTip": "Open Microsoft Store \"HEVC Video Extensions from Device Manufacturer\" page to install this extension manually to be able to open .heic and .heif image formats. The extension can be installed without a Microsoft account"
       },
       "One": {
@@ -1643,7 +1658,7 @@
       }
     }
   },
- {
+  {
     "Id": 805,
     "Region": "UWP apps",
     "Function": "TeamsAutostart",
@@ -2073,7 +2088,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show the \"Share\" item in the context menu (default value)"
+        "ToolTip": "Show the \"Share\" item in the context menu (default value). Showing the \"Share\" item in the context menu will disable the Windows 10 File Explorer"
       }
     }
   },
@@ -2275,7 +2290,7 @@
   {
     "Id": 1218,
     "Region": "Context menu",
-    "Function": "WindowsTerminalContext",
+    "Function": "OpenWindowsTerminalContext",
     "Arg": {
       "Zero": {
         "Tag": "Hide",

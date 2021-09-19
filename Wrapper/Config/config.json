@@ -48,7 +48,7 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "",
+    "WindowsDefault": "Zero",
     "LTSC": "true",
     "Win10": "true",
     "Win11": "true"
@@ -149,9 +149,7 @@
     },
     "Preset": "Zero",
     "WindowsDefault": "One",
-    "LTSC": "true",
-    "Win10": "true",
-    "Win11": "true"
+    "LTSC": "true"
   },
   {
     "Id": 205,
@@ -631,10 +629,30 @@
     "WindowsDefault": "One",
     "LTSC": "true",
     "Win10": "true",
-    "Win11": "true"
+    "Win11": "false"
   },
   {
     "Id": 314,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "Windows10FileExplorerRibbon",
+    "Arg": {
+      "Zero": {
+        "Tag": "Expanded"
+      },
+      "One": {
+        "Tag": "Minimized"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "false",
+    "Win10": "false",
+    "Win11": "true"
+  },
+  {
+    "Id": 315,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -654,7 +672,7 @@
     "Win11": "true"
   },
   {
-    "Id": 315,
+    "Id": 316,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -674,7 +692,7 @@
     "Win11": "false"
   },
   {
-    "Id": 316,
+    "Id": 317,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -694,7 +712,7 @@
     "Win11": "true"
   },
   {
-    "Id": 317,
+    "Id": 318,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -714,7 +732,7 @@
     "Win11": "true"
   },
   {
-    "Id": 318,
+    "Id": 319,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -734,7 +752,7 @@
     "Win11": "true"
   },
   {
-    "Id": 319,
+    "Id": 320,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -754,7 +772,7 @@
     "Win11": "true"
   },
   {
-    "Id": 320,
+    "Id": 321,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -774,7 +792,7 @@
     "Win11": "true"
   },
   {
-    "Id": 321,
+    "Id": 322,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -794,7 +812,7 @@
     "Win11": "true"
   },
   {
-    "Id": 322,
+    "Id": 323,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -814,7 +832,7 @@
     "Win11": "true"
   },
   {
-    "Id": 323,
+    "Id": 324,
     "Region": "UI & Personalization",
     "Control": "chk",
     "Required": "false",
@@ -831,7 +849,7 @@
     "Win11": "true"
   },
   {
-    "Id": 324,
+    "Id": 325,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -851,7 +869,7 @@
     "Win11": "false"
   },
   {
-    "Id": 325,
+    "Id": 326,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -871,7 +889,7 @@
     "Win11": "false"
   },
   {
-    "Id": 326,
+    "Id": 327,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -894,7 +912,7 @@
     "Win11": "false"
   },
   {
-    "Id": 327,
+    "Id": 328,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -915,7 +933,7 @@
   },
 
   {
-    "Id": 328,
+    "Id": 329,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -935,7 +953,7 @@
     "Win11": "false"
   },
   {
-    "Id": 329,
+    "Id": 330,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -955,7 +973,7 @@
     "Win11": "false"
   },
   {
-    "Id": 330,
+    "Id": 331,
     "Region": "UI & Personalization",
     "Control": "chk",
     "Required": "false",
@@ -978,7 +996,7 @@
     "Win11": "false"
   },
   {
-    "Id": 331,
+    "Id": 332,
     "Region": "UI & Personalization",
     "Control": "chk",
     "Required": "false",
@@ -998,7 +1016,7 @@
     "Win11": "true"
   },
   {
-    "Id": 332,
+    "Id": 333,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -1021,7 +1039,7 @@
     "Win11": "true"
   },
   {
-    "Id": 333,
+    "Id": 334,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -1044,7 +1062,7 @@
     "Win11": "true"
   },
   {
-    "Id": 334,
+    "Id": 335,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -1064,7 +1082,7 @@
     "Win11": "true"
   },
   {
-    "Id": 335,
+    "Id": 336,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -1084,7 +1102,7 @@
     "Win11": "true"
   },
   {
-    "Id": 336,
+    "Id": 337,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -1104,7 +1122,7 @@
     "Win11": "false"
   },
   {
-    "Id": 337,
+    "Id": 338,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -1124,7 +1142,7 @@
     "Win11": "true"
   },
   {
-    "Id": 338,
+    "Id": 339,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -1144,7 +1162,7 @@
     "Win11": "true"
   },
   {
-    "Id": 339,
+    "Id": 340,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -1164,7 +1182,7 @@
     "Win11": "true"
   },
   {
-    "Id": 340,
+    "Id": 341,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -1184,7 +1202,7 @@
     "Win11": "true"
   },
   {
-    "Id": 341,
+    "Id": 342,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -1204,7 +1222,7 @@
     "Win11": "true"
   },
   {
-    "Id": 342,
+    "Id": 343,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -1224,7 +1242,7 @@
     "Win11": "true"
   },
   {
-    "Id": 343,
+    "Id": 344,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -1244,21 +1262,21 @@
     "Win11": "true"
   },
   {
-    "Id": 344,
+    "Id": 345,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
     "Function": "AeroShaking",
     "Arg": {
       "Zero": {
-        "Tag": "Disable"
+        "Tag": "Enable"
       },
       "One": {
-        "Tag": "Enable"
+        "Tag": "Disable"
       }
     },
     "Preset": "One",
-    "WindowsDefault": "One",
+    "WindowsDefault": "Zero",
     "LTSC": "false",
     "Win10": "true",
     "Win11": "true"
@@ -1734,7 +1752,7 @@
     "Function": "RecommendedTroubleshooting",
     "Arg": {
       "Zero": {
-        "Tag": "Automatic"
+        "Tag": "Automatically"
       },
       "One": {
         "Tag": "Default"
@@ -2182,7 +2200,7 @@
     "Function": "HEIF",
     "Arg": {
       "Zero": {
-        "Tag": "Manual"
+        "Tag": "Manually"
       },
       "One": {
         "Tag": "Install"
