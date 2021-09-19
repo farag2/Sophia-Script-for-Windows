@@ -114,7 +114,7 @@ if ($Functions)
 	Обязательные проверки. Чтобы выключить предупреждение о необходимости настройки пресет-файла, удалите аргумент "-Warning"
 	Пожалуйста, не комментируйте данную функцию
 #>
-Checkings
+Checkings -Warning
 
 <#
 	Enable script logging. Log will be recorded into the script folder
@@ -127,7 +127,7 @@ Checkings
 
 # Create a restore point
 # Создать точку восстановления
-#CreateRestorePoint
+CreateRestorePoint
 #endregion Protection
 
 #region Privacy & Telemetry
