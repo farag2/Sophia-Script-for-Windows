@@ -6,11 +6,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Warning",
-        "ToolTip": "Die obligatorischen Prüfungen (z.B. verwendetes Betriebssystem, Architektur). Wenn Sie die Warnung, darüber ob die voreingestellte Datei angepasst wurde, deaktivieren möchten, entfernen Sie das \"-Warning\" Argument"
+        "ToolTip": "Die obligatorischen Prüfungen (z.B. verwendetes Betriebssystem, Architektur). Wenn Sie die Warnung, darüber ob die Datei mit den Voreinstellungen angepasst wurde, deaktivieren möchten, entfernen Sie das \"-Warning\" Argument"
       },
       "One": {
         "Tag": "",
-        "ToolTip": "Die obligatorischen Prüfungen (z.B. verwendetes Betriebssystem, Architektur). No argument therefore no warning message about whether you've customized the preset file"
+        "ToolTip": "Die obligatorischen Prüfungen (z.B. verwendetes Betriebssystem, Architektur). Kein Argument vorhanden, daher gibt es keine Warnung darüber, ob Sie die Datei mit Voreinstellungen angepasst haben oder nicht"
       }
     }
   },
