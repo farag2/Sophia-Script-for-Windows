@@ -114,9 +114,9 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 Invoke-WebRequest @Parameters
 
 $Parameters = @{
-	Path = "$DownloadsFolder\Sophia.Script.zip"
+	Path            = "$DownloadsFolder\Sophia.Script.zip"
 	DestinationPath = "$DownloadsFolder"
-	Force = [switch]::Present
+	Force           = $true
 }
 Expand-Archive @Parameters
 
@@ -124,12 +124,12 @@ Remove-Item -Path "$DownloadsFolder\Sophia.Script.zip" -Force
 
 Start-Sleep -Second 1
 
-Invoke-Item -Path "$DownloadsFolder\Sophia Script v$LatestRelease"
+Invoke-Item -Path "$DownloadsFolder\Sophia Script * v$LatestStableVersion"
 
 $SetForegroundWindow = @{
 	Namespace = "WinAPI"
-	Name = "ForegroundWindow"
-	Language = "CSharp"
+	Name      = "ForegroundWindow"
+	Language  = "CSharp"
 	MemberDefinition = @"
 		[DllImport("user32.dll")]
 		public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
