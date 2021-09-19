@@ -124,7 +124,7 @@ Remove-Item -Path "$DownloadsFolder\Sophia.Script.zip" -Force
 
 Start-Sleep -Second 1
 
-Invoke-Item -Path "$DownloadsFolder\Sophia Script * v$LatestStableVersion"
+Invoke-Item -Path "$DownloadsFolder\Sophia Script *"
 
 $SetForegroundWindow = @{
 	Namespace = "WinAPI"
