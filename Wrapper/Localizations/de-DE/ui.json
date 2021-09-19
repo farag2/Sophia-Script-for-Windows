@@ -4,7 +4,7 @@
     "Options": {
       "menuImportPreset": "Voreinstellung importieren",
       "menuPresets": "Voreinstellungen",
-      "menuOpposite": "Gegenteil",
+      "menuOpposite": "Umgekehrt",
       "menuClear": "Leeren",
       "menuTheme": "Thema",
       "menuThemeDark": "Dunkel",
@@ -48,11 +48,11 @@
       "statusBarPresetNotComp": "Datei mit Voreinstellungen ist nicht kompatibel!",
       "statusBarSophiaPreset": "Sophia-Voreinstellung geladen!",
       "statusBarWindowsDefaultPreset": "Standard-Voreinstellung von Windows geladen!",
-      "statusBarPowerShellScriptCreatedFromSelections": "PowerShell-Skript aus Ihren Auswahlen erstellt! Sie können es ausführen oder speichern.",
+      "statusBarPowerShellScriptCreatedFromSelections": "PowerShell-Skript aus Ihren ausgewählten Optionen erstellt! Sie können es ausführen oder speichern.",
       "statusBarPowerShellSaveAs": "PowerShell-Skript erstellt!",
       "statusBarPowerShellSave": "Änderungen gespeichert unter",
-      "statusBarOpposite": "Gegenteil ausgewählt!",
-      "statusBarClear": "Alle Auswahlen geleert!"
+      "statusBarOpposite": "Umgekehrt ausgewählt!",
+      "statusBarClear": "Alle ausgewählten Optionen geleert!"
     }
   },
   {
@@ -63,7 +63,7 @@
       "messageBoxDoesNotExist": "existiert nicht",
       "messageBoxPresetNotComp": "Datei mit Voreinstellungen ist nicht kompatibel!",
       "messageBoxFilesMissingClose": "Sophia Script Wrapper wird geschlossen, da Dateien fehlen",
-      "messageBoxConsoleEmpty": "Die Konsole ist leer.\nKlicken Sie auf 'Konsole aktualisieren' um ein Skript mit Ihren Auswahlen zu erstellen"
+      "messageBoxConsoleEmpty": "Die Konsole ist leer.\nKlicken Sie auf 'Konsole aktualisieren' um ein Skript mit Ihren ausgewählten Optionen zu erstellen"
     }
   }
 ]
