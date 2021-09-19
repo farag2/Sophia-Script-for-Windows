@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.2.13
-	Date: 25.08.2021
+	Version: v5.2.14
+	Date: 19.09.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & Inestic
@@ -31,15 +31,15 @@
 	https://t.me/sophianews
 	https://t.me/sophia_chat
 
-	.LINK Authors
-	https://github.com/farag2
-	https://github.com/Inestic
-
-	.LINK
+	.NOTES
 	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
 	https://habr.com/company/skillfactory/blog/553800/
 	https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/
 	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
+
+	.LINK Authors
+	https://github.com/farag2
+	https://github.com/Inestic
 #>
 
 #region Checkings
@@ -157,7 +157,7 @@ function Checkings
 	}
 
 	# Unblock all files in the script folder by removing the Zone.Identifier alternate data stream with a value of "3"
-	Get-ChildItem -Path $PSScriptRoot -Recurse -Force | Unblock-File
+	Get-ChildItem -Path $PSScriptRoot\..\ -File -Recurse -Force | Unblock-File
 
 	# Display a warning message about whether a user has customized the preset file
 	if ($Warning)
@@ -210,12 +210,12 @@ function Checkings
 #endregion Checkings
 
 #region Protection
-# Enable script logging. The log will be being recorded into the script folder
+# Enable script logging. The log will be being recorded into the script root folder
 # To stop logging just close the console or type "Stop-Transcript"
 function Logging
 {
 	$TrascriptFilename = "Log-$((Get-Date).ToString("dd.MM.yyyy-HH-mm"))"
-	Start-Transcript -Path $PSScriptRoot\$TrascriptFilename.txt -Force
+	Start-Transcript -Path $PSScriptRoot\..\$TrascriptFilename.txt -Force
 }
 
 # Create a restore point for the system drive
@@ -771,10 +771,13 @@ function ScheduledTasks
 
 	if (-not ($Tasks))
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message $Localization.NoData -Verbose
+
 		return
 	}
 
+	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
 
 	#region Sendkey function
@@ -784,9 +787,9 @@ function ScheduledTasks
 	Add-Type -AssemblyName System.Windows.Forms
 
 	$SetForegroundWindow = @{
-		Namespace = "WinAPI"
-		Name = "ForegroundWindow"
-		Language = "CSharp"
+		Namespace        = "WinAPI"
+		Name             = "ForegroundWindow"
+		Language         = "CSharp"
 		MemberDefinition = @"
 [DllImport("user32.dll")]
 public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
@@ -1582,7 +1585,7 @@ function 3DObjects
 		}
 		"Show"
 		{
-			Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Name ThisPCPolicy -Force -ErrorAction SilentlyContinue
+			Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Name ThisPCPolicy -Force -ErrorAction Ignore
 		}
 	}
 
@@ -2059,7 +2062,7 @@ function ControlPanelView
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
-			"Category"
+		"Category"
 		{
 			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
 			{
@@ -2190,11 +2193,7 @@ function NewAppInstalledNotification
 		}
 		"Show"
 		{
-			if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
-			{
-				New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Force
-			}
-			New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoNewAppAlert -PropertyType DWord -Value 0 -Force
+			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoNewAppAlert -Force
 		}
 	}
 }
@@ -2241,11 +2240,11 @@ function FirstLogonAnimation
 	{
 		"Disable"
 		{
-			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableFirstLogonAnimation -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name EnableFirstLogonAnimation -PropertyType DWord -Value 0 -Force
 		}
 		"Enable"
 		{
-			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableFirstLogonAnimation -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name EnableFirstLogonAnimation -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -2819,10 +2818,10 @@ function Hibernation
 	The %TEMP% environment variable path
 
 	.PARAMETER SystemDrive
-	Change the %TEMP% environment variable path to "%SystemDrive%\Temp"
+	Change the %TEMP% environment variable path to %SystemDrive%\Temp
 
 	.PARAMETER Default
-	Change the %TEMP% environment variable path to "%LOCALAPPDATA%\Temp"
+	Change the %TEMP% environment variable path to %LOCALAPPDATA%\Temp
 
 	.EXAMPLE
 	TempFolder -SystemDrive
@@ -2882,9 +2881,9 @@ function TempFolder
 					# The system does not move the file until the operating system is restarted
 					# The system moves the file immediately after AUTOCHK is executed, but before creating any paging files
 					$Signature = @{
-						Namespace = "WinAPI"
-						Name = "DeleteFiles"
-						Language = "CSharp"
+						Namespace        = "WinAPI"
+						Name             = "DeleteFiles"
+						Language         = "CSharp"
 						MemberDefinition = @"
 public enum MoveFileFlags
 {
@@ -2926,10 +2925,10 @@ Unregister-ScheduledTask -TaskName SymbolicLink -Confirm:`$false
 "@
 
 					# Create a temporary scheduled task to create a symbolic link to the %SystemDrive%\Temp folder
-					$Action = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $SymbolicLinkTask"
-					$Trigger = New-ScheduledTaskTrigger -AtLogon -User $env:USERNAME
-					$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8
-					$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
+					$Action     = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $SymbolicLinkTask"
+					$Trigger    = New-ScheduledTaskTrigger -AtLogon -User $env:USERNAME
+					$Settings   = New-ScheduledTaskSettingsSet -Compatibility Win8
+					$Principal  = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
 					$Parameters = @{
 						TaskName  = "SymbolicLink"
 						Principal = $Principal
@@ -2946,7 +2945,7 @@ Unregister-ScheduledTask -TaskName SymbolicLink -Confirm:`$false
 				}
 
 				#region main
-				# Change the %TEMP% environment variable path to "%LOCALAPPDATA%\Temp"
+				# Change the %TEMP% environment variable path to %LOCALAPPDATA%\Temp
 				[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "User")
 				[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Machine")
 				[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Process")
@@ -2993,9 +2992,9 @@ Unregister-ScheduledTask -TaskName SymbolicLink -Confirm:`$false
 					# The system does not move the file until the operating system is restarted
 					# The system moves the file immediately after AUTOCHK is executed, but before creating any paging files
 					$Signature = @{
-						Namespace = "WinAPI"
-						Name = "DeleteFiles"
-						Language = "CSharp"
+						Namespace        = "WinAPI"
+						Name             = "DeleteFiles"
+						Language         = "CSharp"
 						MemberDefinition = @"
 public enum MoveFileFlags
 {
@@ -3035,10 +3034,10 @@ Unregister-ScheduledTask -TaskName TemporaryTask -Confirm:`$false
 "@
 
 					# Create a temporary scheduled task to clean up the temporary folder
-					$Action = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $TempFolderCleanupTask"
-					$Trigger = New-ScheduledTaskTrigger -AtLogon -User $env:USERNAME
-					$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8
-					$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
+					$Action     = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $TempFolderCleanupTask"
+					$Trigger    = New-ScheduledTaskTrigger -AtLogon -User $env:USERNAME
+					$Settings   = New-ScheduledTaskSettingsSet -Compatibility Win8
+					$Principal  = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
 					$Parameters = @{
 						TaskName  = "TemporaryTask"
 						Principal = $Principal
@@ -3050,7 +3049,7 @@ Unregister-ScheduledTask -TaskName TemporaryTask -Confirm:`$false
 				}
 
 				#region main
-				# Change the %TEMP% environment variable path to "%LOCALAPPDATA%\Temp"
+				# Change the %TEMP% environment variable path to %LOCALAPPDATA%\Temp
 				[Environment]::SetEnvironmentVariable("TMP", "$env:LOCALAPPDATA\Temp", "User")
 				[Environment]::SetEnvironmentVariable("TMP", "$env:SystemRoot\TEMP", "Machine")
 				[Environment]::SetEnvironmentVariable("TMP", "$env:LOCALAPPDATA\Temp", "Process")
@@ -3268,7 +3267,7 @@ function MappedDrivesAppElevatedAccess
 		}
 		"Disable"
 		{
-			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableLinkedConnections -PropertyType DWord -Value 0 -Force
+			Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableLinkedConnections -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -3690,6 +3689,7 @@ function WindowsFeatures
 		}
 	}
 
+	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message $Localization.Patient -Verbose
 
 	# Getting list of all optional features according to the conditions
@@ -3701,10 +3701,13 @@ function WindowsFeatures
 
 	if (-not ($Features))
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message $Localization.NoData -Verbose
+
 		return
 	}
 
+	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
 
 	#region Sendkey function
@@ -3714,9 +3717,9 @@ function WindowsFeatures
 	Add-Type -AssemblyName System.Windows.Forms
 
 	$SetForegroundWindow = @{
-		Namespace = "WinAPI"
-		Name = "ForegroundWindow"
-		Language = "CSharp"
+		Namespace        = "WinAPI"
+		Name             = "ForegroundWindow"
+		Language         = "CSharp"
 		MemberDefinition = @"
 [DllImport("user32.dll")]
 public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
@@ -3955,6 +3958,7 @@ function WindowsCapabilities
 
 	function UninstallButton
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message $Localization.Patient -Verbose
 
 		[void]$Window.Close()
@@ -3964,12 +3968,14 @@ function WindowsCapabilities
 
 		if ([string]$SelectedCapabilities.Name -match "Browser.InternetExplorer")
 		{
+			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.RestartWarning
 		}
 	}
 
 	function InstallButton
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message $Localization.Patient -Verbose
 
 		[void]$Window.Close()
@@ -3979,6 +3985,7 @@ function WindowsCapabilities
 
 		if ([string]$SelectedCapabilities.Name -match "Browser.InternetExplorer")
 		{
+			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.RestartWarning
 		}
 	}
@@ -4056,6 +4063,7 @@ function WindowsCapabilities
 		}
 	}
 
+	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message $Localization.Patient -Verbose
 
 	# Getting list of all capabilities according to the conditions
@@ -4067,10 +4075,13 @@ function WindowsCapabilities
 
 	if (-not ($Capabilities))
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message $Localization.NoData -Verbose
+
 		return
 	}
 
+	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
 
 	#region Sendkey function
@@ -4080,9 +4091,9 @@ function WindowsCapabilities
 	Add-Type -AssemblyName System.Windows.Forms
 
 	$SetForegroundWindow = @{
-		Namespace = "WinAPI"
-		Name = "ForegroundWindow"
-		Language = "CSharp"
+		Namespace        = "WinAPI"
+		Name             = "ForegroundWindow"
+		Language         = "CSharp"
 		MemberDefinition = @"
 [DllImport("user32.dll")]
 public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
@@ -4593,18 +4604,18 @@ function SetUserShellFolderLocation
 			)
 
 			$KnownFolders = @{
-				"Desktop"	= @("B4BFCC3A-DB2C-424C-B029-7FE99A87C641");
-				"Documents"	= @("FDD39AD0-238F-46AF-ADB4-6C85480369C7", "f42ee2d3-909f-4907-8871-4c22fc0bf756");
-				"Downloads"	= @("374DE290-123F-4565-9164-39C4925E467B", "7d83ee9b-2244-4e70-b1f5-5393042af1e4");
-				"Music"		= @("4BD8D571-6D19-48D3-BE97-422220080E43", "a0c69a99-21c8-4671-8703-7934162fcf1d");
-				"Pictures"	= @("33E28130-4E1E-4676-835A-98395C3BC3BB", "0ddd015d-b06c-45d5-8c4c-f59713854639");
-				"Videos"	= @("18989B1D-99B5-455B-841C-AB7C74E4DDFC", "35286a68-3c57-41a1-bbb1-0eae73d76c95");
+				"Desktop"   = @("B4BFCC3A-DB2C-424C-B029-7FE99A87C641");
+				"Documents" = @("FDD39AD0-238F-46AF-ADB4-6C85480369C7", "f42ee2d3-909f-4907-8871-4c22fc0bf756");
+				"Downloads" = @("374DE290-123F-4565-9164-39C4925E467B", "7d83ee9b-2244-4e70-b1f5-5393042af1e4");
+				"Music"     = @("4BD8D571-6D19-48D3-BE97-422220080E43", "a0c69a99-21c8-4671-8703-7934162fcf1d");
+				"Pictures"  = @("33E28130-4E1E-4676-835A-98395C3BC3BB", "0ddd015d-b06c-45d5-8c4c-f59713854639");
+				"Videos"    = @("18989B1D-99B5-455B-841C-AB7C74E4DDFC", "35286a68-3c57-41a1-bbb1-0eae73d76c95");
 			}
 
 			$Signature = @{
-				Namespace = "WinAPI"
-				Name = "KnownFolders"
-				Language = "CSharp"
+				Namespace        = "WinAPI"
+				Name             = "KnownFolders"
+				Language         = "CSharp"
 				MemberDefinition = @"
 [DllImport("shell32.dll")]
 public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, IntPtr token, [MarshalAs(UnmanagedType.LPWStr)] string path);
@@ -4784,9 +4795,9 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 	# Get the localized user folders names
 	$Signature = @{
-	Namespace = "WinAPI"
-	Name = "GetStr"
-	Language = "CSharp"
+	Namespace        = "WinAPI"
+	Name             = "GetStr"
+	Language         = "CSharp"
 	MemberDefinition = @"
 [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
 public static extern IntPtr GetModuleHandle(string lpModuleName);
@@ -4820,6 +4831,7 @@ public static string GetString(uint strId)
 	{
 		"Root"
 		{
+			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message $Localization.RetrievingDrivesList -Verbose
 			Write-Information -MessageData "" -InformationAction Continue
 
@@ -4843,7 +4855,6 @@ public static string GetString(uint strId)
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DesktopLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
-
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -4877,7 +4888,6 @@ public static string GetString(uint strId)
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DocumentsLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
-
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -4911,7 +4921,6 @@ public static string GetString(uint strId)
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DownloadsLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
-
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -4945,7 +4954,6 @@ public static string GetString(uint strId)
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $MusicLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
-
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -4977,8 +4985,8 @@ public static string GetString(uint strId)
 
 			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $PicturesLocalizedString, $CurrentUserFolderLocation) -Verbose
-			Write-Information -MessageData "" -InformationAction Continue
 
+			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -5012,7 +5020,6 @@ public static string GetString(uint strId)
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $VideosLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
-
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -5046,7 +5053,6 @@ public static string GetString(uint strId)
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DesktopLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
-
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -5090,7 +5096,6 @@ public static string GetString(uint strId)
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DocumentsLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
-
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -5134,7 +5139,6 @@ public static string GetString(uint strId)
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DownloadsLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
-
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -5178,7 +5182,6 @@ public static string GetString(uint strId)
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $MusicLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
-
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -5222,7 +5225,6 @@ public static string GetString(uint strId)
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $PicturesLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
-
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -5266,7 +5268,6 @@ public static string GetString(uint strId)
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $VideosLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
-
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -5312,7 +5313,6 @@ public static string GetString(uint strId)
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DesktopLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
-
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -5343,7 +5343,6 @@ public static string GetString(uint strId)
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DocumentsLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
-
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -5374,7 +5373,6 @@ public static string GetString(uint strId)
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DownloadsLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
-
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -5405,7 +5403,6 @@ public static string GetString(uint strId)
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $MusicLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
-
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -5436,7 +5433,6 @@ public static string GetString(uint strId)
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $PicturesLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
-
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -5467,7 +5463,6 @@ public static string GetString(uint strId)
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $VideosLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
-
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -5667,7 +5662,7 @@ function F1HelpPage
 		}
 		"Enable"
 		{
-			Remove-Item -Path "HKCU:\SOFTWARE\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}" -Recurse -Force -ErrorAction SilentlyContinue
+			Remove-Item -Path "HKCU:\SOFTWARE\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}" -Recurse -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -5769,7 +5764,7 @@ function CapsLock
 		}
 		"Enable"
 		{
-			Remove-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" -Name "Scancode Map" -Force
+			Remove-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" -Name "Scancode Map" -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -6666,6 +6661,7 @@ namespace FileAssoc
 		Set-Icon -ProgId $ProgId -Icon $Icon
 	}
 
+	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message $Localization.Patient -Verbose
 
 	# Setting additional parameters to comply with the requirements before configuring the extension
@@ -6676,9 +6672,9 @@ namespace FileAssoc
 
 	# Refresh the desktop icons
 	$UpdateExplorer = @{
-		Namespace = "WinAPI"
-		Name = "UpdateExplorer"
-		Language = "CSharp"
+		Namespace        = "WinAPI"
+		Name             = "UpdateExplorer"
+		Language         = "CSharp"
 		MemberDefinition = @"
 [DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = false)]
 private static extern int SHChangeNotify(int eventId, int flags, IntPtr item1, IntPtr item2);
@@ -7081,9 +7077,9 @@ while (`$true)
 "@
 
 			# Create the "Windows Cleanup" task
-			$Action = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $CleanupTask"
-			$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-			$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
+			$Action     = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $CleanupTask"
+			$Settings   = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
+			$Principal  = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
 			$Parameters = @{
 				TaskName    = "Windows Cleanup"
 				TaskPath    = "Sophia Script"
@@ -7765,7 +7761,7 @@ function EventViewerCustomView
 		}
 		"Disable"
 		{
-			Remove-Item -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Force -ErrorAction SilentlyContinue
+			Remove-Item -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -8189,16 +8185,15 @@ function MSIExtractContext
 			{
 				New-Item -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract\Command -Force
 			}
-			$Value = "{0}" -f 'msiexec.exe /a "%1" /qb TARGETDIR="%1 extracted"'
+			$Value = "{0}" -f "msiexec.exe /a `"%1`" /qb TARGETDIR=`"%1 extracted`""
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract\Command -Name "(default)" -PropertyType String -Value $Value -Force
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract -Name MUIVerb -PropertyType String -Value "@shell32.dll,-37514" -Force
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract -Name Icon -PropertyType String -Value "shell32.dll,-16817" -Force
 		}
 		"Hide"
 		{
-			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract -Recurse -Force -ErrorAction SilentlyContinue
+			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract -Recurse -Force -ErrorAction Ignore
 		}
-
 	}
 }
 
@@ -8255,9 +8250,8 @@ function CABInstallContext
 		}
 		"Hide"
 		{
-			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs -Recurse -Force -ErrorAction SilentlyContinue
+			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs -Recurse -Force -ErrorAction Ignore
 		}
-
 	}
 }
 
@@ -8740,7 +8734,7 @@ function BitmapImageNewContext
 		{
 			if ((Get-WindowsCapability -Online -Name "Microsoft.Windows.MSPaint*").State -eq "Installed")
 			{
-				Remove-Item -Path Registry::HKEY_CLASSES_ROOT\.bmp\ShellNew -Force -ErrorAction SilentlyContinue
+				Remove-Item -Path Registry::HKEY_CLASSES_ROOT\.bmp\ShellNew -Force -ErrorAction Ignore
 			}
 		}
 		"Show"
@@ -9025,9 +9019,9 @@ function UseStoreOpenWith
 function RefreshEnvironment
 {
 	$UpdateEnvironment = @{
-		Namespace = "WinAPI"
-		Name = "UpdateEnvironment"
-		Language = "CSharp"
+		Namespace        = "WinAPI"
+		Name             = "UpdateEnvironment"
+		Language         = "CSharp"
 		MemberDefinition = @"
 private static readonly IntPtr HWND_BROADCAST = new IntPtr(0xffff);
 private const int WM_SETTINGCHANGE = 0x1a;
