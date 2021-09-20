@@ -256,6 +256,22 @@ Or use an old-style format without the TAB functions autocomplete (the quotation
 
 ***
 
+## How to download Sophia Script via PowerShell
+
+* Download the always latest Sophia Script archive by invoking (`not as administrator too`) in PowerShell console
+
+```powershell
+irm script.sophi.app | iex
+```
+
+or without using aliases
+
+```powershell
+Invoke-RestMethod -Uri script.sophi.app | Invoke-Expression
+```
+
+* The command will download and expand the archive (`without running`) the latest Sophia Script according which Windows and PowerShell versions it is run on. For example, ff you run it on Windows 11 via PowerShell 5.1, it will download Sophia Script for `Windows 11 PowerShell 5.1`.
+
 ## How to translate
 
 * Get your OS UI culture by `$PSUICulture`
