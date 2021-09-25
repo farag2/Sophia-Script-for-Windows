@@ -124,7 +124,7 @@ Remove-Item -Path "$DownloadsFolder\Sophia.Script.zip" -Force
 
 Start-Sleep -Second 1
 
-Invoke-Item -Path "$DownloadsFolder\Sophia Script v$LatestStableVersion"
+Invoke-Item -Path "$DownloadsFolder\Sophia Script v*"
 
 $SetForegroundWindow = @{
 	Namespace = "WinAPI"
@@ -143,7 +143,7 @@ if (-not ("WinAPI.ForegroundWindow" -as [type]))
 	Add-Type @SetForegroundWindow
 }
 
-Get-Process | Where-Object -FilterScript {$_.MainWindowTitle -eq "Sophia Script v$LatestStableVersion"} | ForEach-Object -Process {
+Get-Process | Where-Object -FilterScript {$_.MainWindowTitle -eq "Sophia Script v*"} | ForEach-Object -Process {
 	# Show window, if minimized
 	[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 5)
 
