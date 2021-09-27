@@ -100,7 +100,7 @@ jobs:
 
           $Parameters = @{
             Path            = @("$PSScriptRoot\sdk\lib\Microsoft.Windows.SDK.NET.dll", "$PSScriptRoot\CsWinRT\lib\net5.0\WinRT.Runtime.dll")
-            DestinationPath = "Sophia Script for Windows 10 v$LatestRelease PowerShell 7\Libraries"
+            Destination     = "Sophia Script for Windows 10 v$LatestRelease PowerShell 7\Libraries"
             Recurse         = $true
             Force           = $true
           }
