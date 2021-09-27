@@ -193,7 +193,7 @@ jobs:
           Write-Verbose -Message "Sophia Script for Windows 11 v$LatestRelease PowerShell 7" -Verbose
           Write-Verbose -Message "Sophia.Script.for.Windows.11.v$LatestRelease.PowerShell.7.zip" -Verbose
 
-          Get-ChildItem -Path "Sophia Script for Windows 11 PowerShell 7" -Recurse -Force | Copy-Item -Destination "Sophia Script for Windows 11 v$LatestRelease PowerShell 7" -Recurse -Force
+          Get-ChildItem -Path "Sophia Script\Sophia Script for Windows 11 PowerShell 7" -Recurse -Force | Copy-Item -Destination "Sophia Script for Windows 11 v$LatestRelease PowerShell 7" -Recurse -Force
 
           $Parameters = @{
             Path            = "Sophia Script for Windows 11 v$LatestRelease PowerShell 7"
