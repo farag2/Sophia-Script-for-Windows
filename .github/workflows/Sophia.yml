@@ -25,7 +25,7 @@ jobs:
           Write-Verbose -Message "Sophia Script for Windows 10 v$LatestRelease" -Verbose
           Write-Verbose -Message "Sophia.Script.for.Windows.10.v$LatestRelease.zip" -Verbose
 
-          Get-ChildItem -Path "Sophia Script for Windows 10" -Force | Copy-Item -Destination "Sophia Script for Windows 10 v$LatestRelease" -Recurse -Force
+          Get-ChildItem -Path "Sophia Script\Sophia Script for Windows 10" -Recurse -Force | Copy-Item -Destination "Sophia Script for Windows 10 v$LatestRelease" -Recurse -Force
 
           $Parameters = @{
             Path             = "Sophia Script for Windows 10 v$LatestRelease"
@@ -53,7 +53,7 @@ jobs:
           Write-Verbose -Message "Sophia Script for Windows 10 v$LatestRelease PowerShell 7" -Verbose
           Write-Verbose -Message "Sophia.Script.for.Windows.10.v$LatestRelease.PowerShell.7zip" -Verbose
 
-          Get-ChildItem -Path "Sophia Script for Windows 10 PowerShell 7" -Recurse | Copy-Item -Destination "Sophia Script for Windows 10 v$LatestRelease PowerShell 7" -Recurse -Force
+          Get-ChildItem -Path "Sophia Script\Sophia Script for Windows 10 PowerShell 7" -Recurse | Copy-Item -Destination "Sophia Script for Windows 10 v$LatestRelease PowerShell 7" -Recurse -Force
 
           # Download Microsoft.Windows.SDK.NET.Ref
           $Parameters = @{
@@ -139,7 +139,7 @@ jobs:
           Write-Verbose -Message "Sophia Script for Windows 10 LTSC v$LatestRelease" -Verbose
           Write-Verbose -Message "Sophia.Script.for.Windows.10.LTSC.v$LatestRelease.zip" -Verbose
 
-          Get-ChildItem -Path "Sophia Script for Windows 10 LTSC" -Recurse -Force | Copy-Item -Destination "Sophia Script for Windows 10 LTSC v$LatestRelease" -Recurse -Force
+          Get-ChildItem -Path "Sophia Script\Sophia Script for Windows 10 LTSC" -Recurse -Force | Copy-Item -Destination "Sophia Script for Windows 10 LTSC v$LatestRelease" -Recurse -Force
 
           $Parameters = @{
             Path            = "Sophia Script for Windows 10 LTSC v$LatestRelease"
@@ -166,7 +166,7 @@ jobs:
           Write-Verbose -Message "Sophia Script for Windows 11 v$LatestRelease" -Verbose
           Write-Verbose -Message "Sophia.Script.for.Windows.11.v$LatestRelease.zip" -Verbose
 
-          Get-ChildItem -Path "Sophia Script for Windows 11" -Recurse -Force | Copy-Item -Destination "Sophia Script for Windows 11 v$LatestRelease" -Recurse -Force
+          Get-ChildItem -Path "Sophia Script\Sophia Script for Windows 11" -Recurse -Force | Copy-Item -Destination "Sophia Script for Windows 11 v$LatestRelease" -Recurse -Force
 
           $Parameters = @{
             Path            = "Sophia Script for Windows 11 v$LatestRelease"
