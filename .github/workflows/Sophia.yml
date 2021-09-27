@@ -51,7 +51,7 @@ jobs:
           New-Item -Path "Sophia Script for Windows 10 v$LatestRelease PowerShell 7" -ItemType Directory -Force
 
           Write-Verbose -Message "Sophia Script for Windows 10 v$LatestRelease PowerShell 7" -Verbose
-          Write-Verbose -Message "Sophia.Script.for.Windows.10.v$LatestRelease.PowerShell.7zip" -Verbose
+          Write-Verbose -Message "Sophia.Script.for.Windows.10.v$LatestRelease.PowerShell.7.zip" -Verbose
 
           Get-ChildItem -Path "Sophia Script\Sophia Script for Windows 10 PowerShell 7" -Recurse | Copy-Item -Destination "Sophia Script for Windows 10 v$LatestRelease PowerShell 7" -Recurse -Force
 
