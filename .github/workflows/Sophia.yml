@@ -16,7 +16,7 @@ jobs:
         run: |
           # https://github.com/farag2/Sophia-Script-for-Windows/blob/master/sophia_script_versions.json
           $Parameters = @{
-            Uri = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
+            Uri = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/irm/sophia_script_versions.json"
           }
           $LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_PowerShell_5_1
 
@@ -43,7 +43,7 @@ jobs:
         run: |
           # https://github.com/farag2/Sophia-Script-for-Windows/blob/master/sophia_script_versions.json
           $Parameters = @{
-            Uri = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
+            Uri = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/irm/sophia_script_versions.json"
           }
           $LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_PowerShell_7
 
@@ -127,7 +127,7 @@ jobs:
         run: |
           # https://github.com/farag2/Sophia-Script-for-Windows/blob/master/sophia_script_versions.json
           $Parameters = @{
-            Uri = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
+            Uri = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/irm/sophia_script_versions.json"
           }
           $LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_LTSC
 
@@ -153,7 +153,7 @@ jobs:
         run: |
           # https://github.com/farag2/Sophia-Script-for-Windows/blob/master/sophia_script_versions.json
           $Parameters = @{
-            Uri = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
+            Uri = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/irm/sophia_script_versions.json"
           }
           $LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_5_1
 
@@ -179,7 +179,7 @@ jobs:
         run: |
           # https://github.com/farag2/Sophia-Script-for-Windows/blob/master/sophia_script_versions.json
           $Parameters = @{
-            Uri = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
+            Uri = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/irm/sophia_script_versions.json"
           }
           $LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_7
 
@@ -205,7 +205,7 @@ jobs:
         run: |
           # https://github.com/farag2/Sophia-Script-for-Windows/blob/master/sophia_script_versions.json
           $Parameters = @{
-            Uri = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
+            Uri = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/irm/sophia_script_versions.json"
           }
           $LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Wrapper
 
