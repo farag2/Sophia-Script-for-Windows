@@ -77,7 +77,7 @@ jobs:
           $Parameters = @{
             Uri = "https://api.github.com/repos/microsoft/CsWinRT/releases/latest"
           }
-          $URL = (Invoke-RestMethod @Parameters).assets | Where-Object -FilterScript {$_.browser_download_url -match "nupkg"}).browser_download_url
+          $URL = ((Invoke-RestMethod @Parameters).assets | Where-Object -FilterScript {$_.browser_download_url -match "nupkg"}).browser_download_url
 
           $Parameters = @{
             Uri     = $URL
