@@ -20,17 +20,18 @@ jobs:
           }
           $LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_PowerShell_5_1
 
-          New-Item -Path "Sophia Script for Windows 10 v$LatestRelease" -ItemType Directory
+          New-Item -Path "Sophia Script for Windows 10 v$LatestRelease" -ItemType Directory -Force
 
           Write-Verbose -Message "Sophia Script for Windows 10 v$LatestRelease" -Verbose
           Write-Verbose -Message "Sophia.Script.for.Windows.10.v$LatestRelease.zip" -Verbose
 
-          Get-ChildItem -Path "Sophia Script for Windows 10" -Recurse | Copy-Item -Destination "Sophia Script for Windows 10 v$LatestRelease" -Recurse
+          Get-ChildItem -Path "Sophia Script for Windows 10" -Recurse -Force | Copy-Item -Destination "Sophia Script for Windows 10 v$LatestRelease" -Recurse -Force
 
           $Parameters = @{
             Path             = "Sophia Script for Windows 10 v$LatestRelease"
             DestinationPath  = "Sophia.Script.for.Windows.10.v$LatestRelease.zip"
             CompressionLevel = "Fastest"
+            Force            = $true
           }
           Compress-Archive @Parameters
 
@@ -47,12 +48,12 @@ jobs:
           }
           $LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_PowerShell_7
 
-          New-Item -Path "Sophia Script for Windows 10 v$LatestRelease PowerShell 7" -ItemType Directory
+          New-Item -Path "Sophia Script for Windows 10 v$LatestRelease PowerShell 7" -ItemType Directory -Force
 
           Write-Verbose -Message "Sophia Script for Windows 10 v$LatestRelease PowerShell 7" -Verbose
           Write-Verbose -Message "Sophia.Script.for.Windows.10.v$LatestRelease.PowerShell.7zip" -Verbose
 
-          Get-ChildItem -Path "Sophia Script for Windows 10 PowerShell 7" -Recurse | Copy-Item -Destination "Sophia Script for Windows 10 v$LatestRelease PowerShell 7" -Recurse
+          Get-ChildItem -Path "Sophia Script for Windows 10 PowerShell 7" -Recurse | Copy-Item -Destination "Sophia Script for Windows 10 v$LatestRelease PowerShell 7" -Recurse -Force
 
           # Download Microsoft.Windows.SDK.NET.Ref
           $Parameters = @{
@@ -101,12 +102,14 @@ jobs:
             Path            = "$PSScriptRoot\sdk\lib\Microsoft.Windows.SDK.NET.dll", "$PSScriptRoot\CsWinRT\lib\net5.0\WinRT.Runtime.dll"
             DestinationPath = "Sophia Script for Windows 10 v$LatestRelease PowerShell 7\Libraries"
             Recurse         = $true
+            Force           = $true
           }
           Copy-Item @Parameters
 
           $Parameters = @{
             Path            = "Sophia Script for Windows 10 v$LatestRelease PowerShell 7"
             DestinationPath = "Sophia.Script.for.Windows.10.v$LatestRelease.PowerShell.7.zip"
+            Force           = $true
           }
           Compress-Archive @Parameters
 
@@ -136,11 +139,12 @@ jobs:
           Write-Verbose -Message "Sophia Script for Windows 10 LTSC v$LatestRelease" -Verbose
           Write-Verbose -Message "Sophia.Script.for.Windows.10.LTSC.v$LatestRelease.zip" -Verbose
 
-          Get-ChildItem -Path "Sophia Script for Windows 10 LTSC" -Recurse | Copy-Item -Destination "Sophia Script for Windows 10 LTSC v$LatestRelease" -Recurse
+          Get-ChildItem -Path "Sophia Script for Windows 10 LTSC" -Recurse -Force | Copy-Item -Destination "Sophia Script for Windows 10 LTSC v$LatestRelease" -Recurse -Force
 
           $Parameters = @{
             Path            = "Sophia Script for Windows 10 LTSC v$LatestRelease"
             DestinationPath = "Sophia.Script.for.Windows.10.LTSC.v$LatestRelease.zip"
+            Force           = $true
           }
           Compress-Archive @Parameters
 
@@ -162,11 +166,12 @@ jobs:
           Write-Verbose -Message "Sophia Script for Windows 11 v$LatestRelease" -Verbose
           Write-Verbose -Message "Sophia.Script.for.Windows.11.v$LatestRelease.zip" -Verbose
 
-          Get-ChildItem -Path "Sophia Script for Windows 11" -Recurse | Copy-Item -Destination "Sophia Script for Windows 11 v$LatestRelease" -Recurse
+          Get-ChildItem -Path "Sophia Script for Windows 11" -Recurse -Force | Copy-Item -Destination "Sophia Script for Windows 11 v$LatestRelease" -Recurse -Force
 
           $Parameters = @{
             Path            = "Sophia Script for Windows 11 v$LatestRelease"
             DestinationPath = "Sophia.Script.for.Windows.11.v$LatestRelease.zip"
+            Force           = $true
           }
           Compress-Archive @Parameters
 
@@ -188,7 +193,7 @@ jobs:
           Write-Verbose -Message "Sophia Script for Windows 11 v$LatestRelease PowerShell 7" -Verbose
           Write-Verbose -Message "Sophia.Script.for.Windows.11.v$LatestRelease.PowerShell.7.zip" -Verbose
 
-          Get-ChildItem -Path "Sophia Script for Windows 11 PowerShell 7" -Recurse | Copy-Item -Destination "Sophia Script for Windows 11 v$LatestRelease PowerShell 7" -Recurse
+          Get-ChildItem -Path "Sophia Script for Windows 11 PowerShell 7" -Recurse -Force | Copy-Item -Destination "Sophia Script for Windows 11 v$LatestRelease PowerShell 7" -Recurse -Force
 
           $Parameters = @{
             Path            = "Sophia Script for Windows 11 v$LatestRelease PowerShell 7"
@@ -214,11 +219,12 @@ jobs:
           Write-Verbose -Message "Sophia Script Wrapper v$LatestRelease" -Verbose
           Write-Verbose -Message "Sophia.Script.Wrapper.v$LatestRelease.zip" -Verbose
 
-          Get-ChildItem -Path Wrapper -Exclude README.md -Recurse | Copy-Item -Destination "Sophia Script Wrapper v$LatestRelease" -Recurse -Force
+          Get-ChildItem -Path Wrapper -Exclude README.md -Recurse -Force | Copy-Item -Destination "Sophia Script Wrapper v$LatestRelease" -Recurse -Force
 
           $Parameters = @{
             Path            = "Sophia Script Wrapper v$LatestRelease"
             DestinationPath = "Sophia.Script.Wrapper.v$LatestRelease.zip"
+            Force           = $true
           }
           Compress-Archive @Parameters
 
