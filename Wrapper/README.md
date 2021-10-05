@@ -5,8 +5,9 @@ This program create a PowerShell script file that you can run to customize Windo
 # WRAPPER FILES
 
 * `Sophia Script Wrapper.exe`: The GUI program.
-* `config.json`: JSON that contains the options (function names), Sophia preset and Windows Default preset. Win 10/11, LTSC version.
-* `tooltip.json`: ToolTips in JSON format. Currently just 3 languages EN, RU and DE translations.
+* `config_Windows_1x.json`: JSON that contains the options (function names), Sophia preset and Windows Default preset, LTSC version.
+* `tooltip_Windows_1x.json`: ToolTips in JSON format. Currently just 3 languages EN, RU and DE translations.
+* `tag.json`: tags in JSON format. Currently just 3 languages EN, RU and DE translations.
 * `ui.json`: UI in JSON format. Currently just 3 languages EN, RU and DE translations.
 
 ### Please help with translations for UI and ToolTips for the community to use. Currently in JSON format.
