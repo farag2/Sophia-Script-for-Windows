@@ -1,4 +1,4 @@
-Sophia Script Wrapper v2.4 created by David from [BenchTweakGaming.com](https://benchtweakgaming.com/2020/10/10/windows-10-debloat-tool/).  
+Sophia Script Wrapper created by David from [BenchTweakGaming.com](https://benchtweakgaming.com/2020/10/10/windows-10-debloat-tool/).  
 
 This program create a PowerShell script file that you can run to customize Windows based on Sophia Script. It serves as a front-end GUI for the Sophia Script. It is called a Wrapper.
 
