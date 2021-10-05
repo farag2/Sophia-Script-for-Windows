@@ -337,7 +337,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 302,
+    "Id": 301,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -355,7 +355,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 303,
+    "Id": 302,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -373,7 +373,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 304,
+    "Id": 303,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -391,7 +391,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 305,
+    "Id": 304,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -409,7 +409,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 306,
+    "Id": 305,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -427,7 +427,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 308,
+    "Id": 307,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -446,7 +446,7 @@
     "Win11": "false"
   },
   {
-    "Id": 309,
+    "Id": 308,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -464,7 +464,7 @@
     "LTSC": "false"
   },
   {
-    "Id": 311,
+    "Id": 309,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -482,7 +482,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 312,
+    "Id": 310,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -500,7 +500,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 313,
+    "Id": 311,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -520,7 +520,7 @@
   },
 
   {
-    "Id": 315,
+    "Id": 312,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -538,7 +538,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 316,
+    "Id": 313,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -557,7 +557,7 @@
     "Win11": "false"
   },
   {
-    "Id": 317,
+    "Id": 314,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -575,7 +575,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 318,
+    "Id": 315,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -593,7 +593,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 321,
+    "Id": 316,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -611,7 +611,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 325,
+    "Id": 317,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -630,7 +630,7 @@
     "Win11": "false"
   },
   {
-    "Id": 326,
+    "Id": 318,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -649,7 +649,7 @@
     "Win11": "false"
   },
   {
-    "Id": 327,
+    "Id": 319,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -671,7 +671,7 @@
     "Win11": "false"
   },
   {
-    "Id": 328,
+    "Id": 320,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -689,9 +689,27 @@
     "LTSC": "false",
     "Win11": "false"
   },
-
   {
-    "Id": 329,
+    "Id": 321,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "NotificationAreaIcons",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "false",
+    "Win11": "true"
+  },
+  {
+    "Id": 322,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -710,7 +728,7 @@
     "Win11": "false"
   },
   {
-    "Id": 330,
+    "Id": 323,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -729,7 +747,7 @@
     "Win11": "false"
   },
   {
-    "Id": 331,
+    "Id": 324,
     "Region": "UI & Personalization",
     "Control": "chk",
     "Required": "false",
@@ -751,7 +769,7 @@
     "Win11": "false"
   },
   {
-    "Id": 334,
+    "Id": 325,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -772,7 +790,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 335,
+    "Id": 326,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -790,7 +808,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 336,
+    "Id": 327,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -808,7 +826,7 @@
     "LTSC": "false"
   },
   {
-    "Id": 337,
+    "Id": 328,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -827,7 +845,7 @@
     "Win11": "false"
   },
   {
-    "Id": 338,
+    "Id": 329,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -845,7 +863,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 339,
+    "Id": 330,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -863,7 +881,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 340,
+    "Id": 331,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -881,7 +899,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 341,
+    "Id": 332,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -899,7 +917,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 342,
+    "Id": 333,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -917,7 +935,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 343,
+    "Id": 334,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -935,7 +953,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 344,
+    "Id": 335,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -953,7 +971,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 345,
+    "Id": 336,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",

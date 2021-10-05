@@ -283,7 +283,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Enable the Windows 10 File Explorer. Enabling the Windows 10 File Explorer will block the \"Share\" item context menu"
+        "ToolTip": "Enable the Windows 10 File Explorer"
       },
       "One": {
         "Tag": "Disable",
@@ -369,7 +369,7 @@
   {
     "Id": 307,
     "Region": "UI & Personalization",
-    "Function": "FileExplorerMode",
+    "Function": "FileExplorerCompactMode",
     "Arg": {
       "Zero": {
         "Tag": "Disable",

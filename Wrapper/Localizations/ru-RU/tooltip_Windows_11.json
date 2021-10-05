@@ -1643,7 +1643,7 @@
       }
     }
   },
-{
+  {
     "Id": 805,
     "Region": "UWP apps",
     "Function": "TeamsAutostart",

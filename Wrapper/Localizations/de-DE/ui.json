@@ -2,7 +2,7 @@
   {
     "Id": "Menu",
     "Options": {
-      "menuImportExportPreset": Importieren/Exportieren",
+      "menuImportExportPreset": "Importieren/Exportieren",
       "menuImportPreset": "Voreinstellung importieren",
       "menuExportPreset": "Voreinstellung exportieren",
       "menuPresets": "Voreinstellungen",

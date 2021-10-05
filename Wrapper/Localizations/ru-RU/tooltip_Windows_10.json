@@ -279,21 +279,6 @@
   {
     "Id": 301,
     "Region": "UI & Personalization",
-    "Function": "Windows10FileExplorer",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Включить проводник Windows 10. Включение проводника из Windows 10 cкроет пункт \"Отправить\" (поделиться) из контекстного меню"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Отключить проводник Windows 10 (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 302,
-    "Region": "UI & Personalization",
     "Function": "CheckBoxes",
     "Arg": {
       "Zero": {
@@ -307,7 +292,7 @@
     }
   },
   {
-    "Id": 303,
+    "Id": 302,
     "Region": "UI & Personalization",
     "Function": "HiddenItems",
     "Arg": {
@@ -322,7 +307,7 @@
     }
   },
   {
-    "Id": 304,
+    "Id": 303,
     "Region": "UI & Personalization",
     "Function": "FileExtensions",
     "Arg": {
@@ -337,7 +322,7 @@
     }
   },
   {
-    "Id": 305,
+    "Id": 304,
     "Region": "UI & Personalization",
     "Function": "MergeConflicts",
     "Arg": {
@@ -352,7 +337,7 @@
     }
   },
   {
-    "Id": 306,
+    "Id": 305,
     "Region": "UI & Personalization",
     "Function": "OpenFileExplorerTo",
     "Arg": {
@@ -367,7 +352,7 @@
     }
   },
   {
-    "Id": 307,
+    "Id": 306,
     "Region": "UI & Personalization",
     "Function": "FileExplorerMode",
     "Arg": {
@@ -382,7 +367,7 @@
     }
   },
   {
-    "Id": 308,
+    "Id": 307,
     "Region": "UI & Personalization",
     "Function": "CortanaButton",
     "Arg": {
@@ -397,7 +382,7 @@
     }
   },
   {
-    "Id": 309,
+    "Id": 308,
     "Region": "UI & Personalization",
     "Function": "OneDriveFileExplorerAd",
     "Arg": {
@@ -412,22 +397,7 @@
     }
   },
   {
-    "Id": 310,
-    "Region": "UI & Personalization",
-    "Function": "SnapAssistFlyout",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Показывать макеты привязки при наведении указателя мыши на кнопку развертывания окна (значение по умолчанию)"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Скрыть макеты привязки при наведении указателя мыши на кнопку развертывания окна"
-      }
-    }
-  },
-  {
-    "Id": 311,
+    "Id": 309,
     "Region": "UI & Personalization",
     "Function": "SnapAssist",
     "Arg": {
@@ -442,7 +412,7 @@
     }
   },
   {
-    "Id": 312,
+    "Id": 310,
     "Region": "UI & Personalization",
     "Function": "FileTransferDialog",
     "Arg": {
@@ -457,7 +427,7 @@
     }
   },
   {
-    "Id": 313,
+    "Id": 311,
     "Region": "UI & Personalization",
     "Function": "FileExplorerRibbon",
     "Arg": {
@@ -472,22 +442,7 @@
     }
   },
   {
-    "Id": 314,
-    "Region": "UI & Personalization",
-    "Function": "Windows10FileExplorerRibbon",
-    "Arg": {
-      "Zero": {
-        "Tag": "Expanded",
-        "ToolTip": "Развернуть ленту проводника как в Windows 10. Для того, чтобы работал данный функционал, вам необходимо включить проводник из Windows 10 (Windows10FileExplorer -Enable)"
-      },
-      "One": {
-        "Tag": "Minimized",
-        "ToolTip": "Свернуть ленту проводника как в Windows 10. Для того, чтобы работал данный функционал, вам необходимо включить проводник из Windows 10 (Windows10FileExplorer -Enable)"
-      }
-    }
-  },
-  {
-    "Id": 315,
+    "Id": 312,
     "Region": "UI & Personalization",
     "Function": "RecycleBinDeleteConfirmation",
     "Arg": {
@@ -502,7 +457,7 @@
     }
   },
   {
-    "Id": 316,
+    "Id": 313,
     "Region": "UI & Personalization",
     "Function": "3DObjects",
     "Arg": {
@@ -517,7 +472,7 @@
     }
   },
   {
-    "Id": 317,
+    "Id": 314,
     "Region": "UI & Personalization",
     "Function": "QuickAccessRecentFiles",
     "Arg": {
@@ -532,7 +487,7 @@
     }
   },
   {
-    "Id": 318,
+    "Id": 315,
     "Region": "UI & Personalization",
     "Function": "QuickAccessFrequentFolders",
     "Arg": {
@@ -547,37 +502,7 @@
     }
   },
   {
-    "Id": 319,
-    "Region": "UI & Personalization",
-    "Function": "TaskbarAlignment",
-    "Arg": {
-      "Zero": {
-        "Tag": "Left",
-        "ToolTip": "Установить выравнивание панели задач по левому краю"
-      },
-      "One": {
-        "Tag": "Center",
-        "ToolTip": "Установить выравнивание панели задач по центру (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 320,
-    "Region": "UI & Personalization",
-    "Function": "TaskbarSearch",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть кнопку поиска на панели задач"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показывать значок поиска на панели задач (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 321,
+    "Id": 316,
     "Region": "UI & Personalization",
     "Function": "TaskViewButton",
     "Arg": {
@@ -592,37 +517,7 @@
     }
   },
   {
-    "Id": 322,
-    "Region": "UI & Personalization",
-    "Function": "TaskbarWidgets",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть кнопку виджетов на панели задач"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показывать кнопку виджетов на панели задач (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 323,
-    "Region": "UI & Personalization",
-    "Function": "TaskbarChat",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть кнопку чата (Microsoft Teams) на панели задач"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показывать кнопку чата (Microsoft Teams) на панели задач (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 324,
+    "Id": 317,
     "Region": "UI & Personalization",
     "Function": "PeopleTaskbar",
     "Arg": {
@@ -637,7 +532,7 @@
     }
   },
   {
-    "Id": 325,
+    "Id": 318,
     "Region": "UI & Personalization",
     "Function": "SecondsInSystemClock",
     "Arg": {
@@ -652,7 +547,7 @@
     }
   },
   {
-    "Id": 326,
+    "Id": 319,
     "Region": "UI & Personalization",
     "Function": "TaskbarSearch",
     "Arg": {
@@ -671,7 +566,7 @@
     }
   },
   {
-    "Id": 327,
+    "Id": 320,
     "Region": "UI & Personalization",
     "Function": "WindowsInkWorkspace",
     "Arg": {
@@ -686,18 +581,22 @@
     }
   },
   {
-    "Id": 328,
+    "Id": 321,
     "Region": "UI & Personalization",
     "Function": "NotificationAreaIcons",
     "Arg": {
       "Zero": {
-        "Tag": "",
-        "ToolTip": "Откройте страницу \"Значки области уведомлений\" на панели управления, чтобы вручную включить параметр \"Всегда показывать все значки в области уведомлений\""
+        "Tag": "Show",
+        "ToolTip": "Всегда отображать все значки в области уведомлений"
+      },
+      "One": {
+        "Tag": "Hide",
+        "ToolTip": "Скрыть все значки в области уведомлений (значение по умолчанию)"
       }
     }
   },
   {
-    "Id": 329,
+    "Id": 322,
     "Region": "UI & Personalization",
     "Function": "MeetNow",
     "Arg": {
@@ -712,7 +611,7 @@
     }
   },
   {
-    "Id": 330,
+    "Id": 323,
     "Region": "UI & Personalization",
     "Function": "NewsInterests",
     "Arg": {
@@ -727,7 +626,7 @@
     }
   },
   {
-    "Id": 331,
+    "Id": 324,
     "Region": "UI & Personalization",
     "Function": "UnpinTaskbarShortcuts -Shortcuts",
     "ToolTip": "Открепить ярлыки \"Microsoft Edge\", \"Microsoft Store\" или \"Почта\" от панели задач",
@@ -747,26 +646,7 @@
     }
   },
   {
-    "Id": 332,
-    "Region": "UI & Personalization",
-    "Function": "TaskbarSize",
-    "Arg": {
-      "Zero": {
-        "Tag": "Large",
-        "ToolTip": "Сделать панели задач большой"
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Сделать размер панели задач по умолчанию"
-      },
-      "Two": {
-        "Tag": "Small",
-        "ToolTip": "Сделать размер панели задач маленькой"
-      }
-    }
-  },
-  {
-    "Id": 333,
+    "Id": 325,
     "Region": "UI & Personalization",
     "Function": "ControlPanelView",
     "Arg": {
@@ -785,7 +665,7 @@
     }
   },
   {
-    "Id": 334,
+    "Id": 326,
     "Region": "UI & Personalization",
     "Function": "WindowsColorMode",
     "Arg": {
@@ -800,7 +680,7 @@
     }
   },
   {
-    "Id": 335,
+    "Id": 327,
     "Region": "UI & Personalization",
     "Function": "AppColorMode",
     "Arg": {
@@ -815,7 +695,7 @@
     }
   },
   {
-    "Id": 336,
+    "Id": 328,
     "Region": "UI & Personalization",
     "Function": "NewAppInstalledNotification",
     "Arg": {
@@ -830,7 +710,7 @@
     }
   },
   {
-    "Id": 337,
+    "Id": 329,
     "Region": "UI & Personalization",
     "Function": "FirstLogonAnimation",
     "Arg": {
@@ -845,7 +725,7 @@
     }
   },
   {
-    "Id": 338,
+    "Id": 330,
     "Region": "UI & Personalization",
     "Function": "JPEGWallpapersQuality",
     "Arg": {
@@ -860,7 +740,7 @@
     }
   },
   {
-    "Id": 339,
+    "Id": 331,
     "Region": "UI & Personalization",
     "Function": "TaskManagerWindow",
     "Arg": {
@@ -875,7 +755,7 @@
     }
   },
   {
-    "Id": 340,
+    "Id": 332,
     "Region": "UI & Personalization",
     "Function": "RestartNotification",
     "Arg": {
@@ -890,7 +770,7 @@
     }
   },
   {
-    "Id": 341,
+    "Id": 333,
     "Region": "UI & Personalization",
     "Function": "ShortcutsSuffix",
     "Arg": {
@@ -905,7 +785,7 @@
     }
   },
   {
-    "Id": 342,
+    "Id": 334,
     "Region": "UI & Personalization",
     "Function": "PrtScnSnippingTool",
     "Arg": {
@@ -920,7 +800,7 @@
     }
   },
   {
-    "Id": 343,
+    "Id": 335,
     "Region": "UI & Personalization",
     "Function": "AppsLanguageSwitch",
     "Arg": {
@@ -935,7 +815,7 @@
     }
   },
   {
-    "Id": 344,
+    "Id": 336,
     "Region": "UI & Personalization",
     "Function": "AeroShaking",
     "Arg": {
@@ -1658,7 +1538,7 @@
       }
     }
   },
-{
+  {
     "Id": 805,
     "Region": "UWP apps",
     "Function": "TeamsAutostart",
