@@ -145,7 +145,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ### David's Sophia Script Wrapper
 
-![Wr](https://i.imgur.com/32vFxDo.png)
+![Wr](https://i.imgur.com/z3F56Mj.png)
 
 ## Videos
 
