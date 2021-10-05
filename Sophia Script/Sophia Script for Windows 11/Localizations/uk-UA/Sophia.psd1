@@ -16,6 +16,7 @@ OneDriveDownloading                       = Завантажується OneDriv
 WindowsFeaturesTitle                      = Компоненти Windows
 OptionalFeaturesTitle                     = Додаткові компоненти
 EnableHardwareVT                          = Увімкніть віртуалізацію в UEFI
+OpenInWindowsTerminalAdmin                = Відкрити в Windows Terminal (адміністратор)
 UserShellFolderNotEmpty                   = У папці "{0}" залишились файли. Перемістіть їх вручну у нове розташування
 RetrievingDrivesList                      = Отримання списку дисків...
 DriveSelect                               = Виберіть диск, в корні якого буде створена папка для "{0}"
@@ -73,7 +74,8 @@ Run                                       = Запустити
 SelectAll                                 = Вибрати все
 Skip                                      = Пропустити
 Skipped                                   = Пропущено
-TelegramGroupTitle                        = Приєднуйтесь до нашої офіційної групи Telegram
+FileExplorerRestartPrompt                 = Іноді для того, щоб зміни вступили в силу, процес провідника необхідно перезапустити
+TelegramGroupTitle                        = Приєднуйтесь до нашої офіційної групи в Telegram
 TelegramChannelTitle                      = Приєднуйтесь до нашого офіційного каналу в Telegram
 Uninstall                                 = Видалити
 '@

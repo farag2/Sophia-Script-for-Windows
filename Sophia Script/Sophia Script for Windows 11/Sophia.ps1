@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 11"
 
-	Version: v6.0.4
-	Date: 19.09.2021
+	Version: v6.0.5
+	Date: 05.10.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & Inestic
@@ -21,7 +21,7 @@
 	.EXAMPLE Run the script by specifying the module functions as an argument
 	.\Sophia.ps1 -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
 
-	.EXAMPLE Download and expand the archive (without running) the latest Sophia Script according which Windows and PowerShell versions it is run on
+	.EXAMPLE Download and expand the latest Sophia Script version archive (without running) according which Windows and PowerShell versions it is run on
 	irm script.sophi.app | iex
 	Invoke-RestMethod -Uri script.sophi.app | Invoke-Expression
 
@@ -71,7 +71,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.0.4 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014–2021"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.0.5 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -230,7 +230,7 @@ AppsSilentInstalling -Disable
 # Не показывать предложения по настройке устройства
 WhatsNewInWindows -Disable
 
-# Let Microsoft offer you tailored expereinces based on the diagnostic data setting you hava chosen (default value)
+# Let Microsoft offer you tailored expereinces based on the diagnostic data setting you have chosen (default value)
 # Разрешите корпорации Майкософт использовать ваши диагностические данные для улучшения вашей работы со службами Майкрософт с помощью персонализированных советов, рекламы и рекомендаций (значение по умолчанию)
 # WhatsNewInWindows -Enable
 
@@ -352,24 +352,6 @@ FileTransferDialog -Detailed
 # Show the file transfer dialog box in the compact mode (default value)
 # Отображать диалоговое окно передачи файлов в свернутом виде (значение по умолчанию)
 # FileTransferDialog -Compact
-
-<#
-	Expand the Windows 10 File Explorer ribbon
-	In order this feature to work you need to enable the Windows 10 File Explorer (Windows10FileExplorer -Enable)
-
-	Развернуть ленту проводника как в Windows 10
-	Для того, чтобы работал данный функционал, вам необходимо включить проводник из Windows 10 (Windows10FileExplorer -Enable)
-#>
-Windows10FileExplorerRibbon -Expanded
-
-<#
-	Minimize the Windows 10 File Explorer ribbon
-	In order this feature to work you need to enable the Windows 10 File Explorer (Windows10FileExplorer -Enable)
-
-	Свернуть ленту проводника как в Windows 10
-	Для того, чтобы работал данный функционал, вам необходимо включить проводник из Windows 10 (Windows10FileExplorer -Enable)
-#>
-# Windows10FileExplorerRibbon -Minimized
 
 # Display the recycle bin files delete confirmation dialog
 # Запрашивать подтверждение на удаление файлов в корзину
@@ -553,8 +535,8 @@ AeroShaking -Enable
 # Удалить OneDrive. Папка пользователя OneDrive не будет удалена
 OneDrive -Uninstall
 
-# Install OneDrive (default value)
-# Установить OneDrive (значение по умолчанию)
+# Install OneDrive 64-bit (default value)
+# Установить OneDrive 64-бит (значение по умолчанию)
 # OneDrive -Install
 #endregion OneDrive
 
@@ -1328,13 +1310,21 @@ UseStoreOpenWith -Hide
 # Отобразить пункт "Поиск приложения в Microsoft Store" в диалоге "Открыть с помощью" (значение по умолчанию)
 # UseStoreOpenWith -Show
 
-# Hide the "Open in Windows Terminal" menu option in the folders context menu
+# Hide the "Open in Windows Terminal" item in the folders context menu
 # Скрыть пункт "Открыть в Терминале Windows" в контекстном меню папок
 OpenWindowsTerminalContext -Hide
 
-# Show the "Open in Windows Terminal" menu option in the folders context menu (default value)
+# Show the "Open in Windows Terminal" item in the folders context menu (default value)
 # Отобразить пункт "Открыть в Терминале Windows" в контекстном меню папок (значение по умолчанию)
 # OpenWindowsTerminalContext -Show
+
+# Show the "Open in Windows Terminal (Admin)" item in the Desktop and folders context menu
+# Отобразить пункт "Открыть в Терминале Windows (Администратор)" в контекстном меню Рабочего стола и папок (значение по умолчанию)
+OpenWindowsTerminalAdminContext -Show
+
+# Hide the "Open in Windows Terminal (Admin)" item from the Desktop and folders context menu (default value)
+# Скрыть пункт "Открыть в Терминале Windows (Администратор)" в контекстном меню Рабочего стола и папок (значение по умолчанию)
+# OpenWindowsTerminalAdminContext -Hide
 #endregion Context menu
 
 <#
