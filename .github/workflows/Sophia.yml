@@ -203,6 +203,57 @@ jobs:
           # There is no need in -Recurse for the Get-ChildItem cmdlet
           Get-ChildItem -Path "Sophia Script\Sophia Script for Windows 11 PowerShell 7" -Force | Copy-Item -Destination "Sophia Script for Windows 11 v$LatestRelease PowerShell 7" -Recurse -Force
 
+          # Download Microsoft.Windows.SDK.NET.Ref
+          $Parameters = @{
+            Uri     = "https://www.nuget.org/api/v2/package/Microsoft.Windows.SDK.NET.Ref"
+            OutFile = "$PSScriptRoot\microsoft.windows.sdk.net.ref.nupkg"
+            Verbose = $true
+          }
+          Invoke-WebRequest @Parameters
+
+          Rename-Item -Path "$PSScriptRoot\Microsoft.Windows.SDK.NET.Ref.nupkg" -NewName "Microsoft.Windows.SDK.NET.Ref.zip"
+
+          $Parameters = @{
+            Path            = "$PSScriptRoot\Microsoft.Windows.SDK.NET.Ref.zip"
+            DestinationPath = "$PSScriptRoot\SDK"
+            Force           = $true
+            Verbose         = $true
+          }
+          Expand-Archive @Parameters
+
+          # Download CsWinRT
+          $Parameters = @{
+            Uri = "https://api.github.com/repos/microsoft/CsWinRT/releases/latest"
+          }
+          $URL = ((Invoke-RestMethod @Parameters).assets | Where-Object -FilterScript {$_.browser_download_url -match "nupkg"}).browser_download_url
+
+          $Parameters = @{
+            Uri     = $URL
+            OutFile = "$PSScriptRoot\Microsoft.Windows.CsWinRT.nupkg"
+            Verbose = $true
+          }
+          Invoke-WebRequest @Parameters
+
+          Rename-Item -Path "$PSScriptRoot\Microsoft.Windows.CsWinRT.nupkg" -NewName "Microsoft.Windows.CsWinRT.zip" -Force
+
+          $Parameters = @{
+            Path            = "$PSScriptRoot\Microsoft.Windows.CsWinRT.zip"
+            DestinationPath = "$PSScriptRoot\CsWinRT"
+            Force           = $true
+            Verbose         = $true
+          }
+          Expand-Archive @Parameters
+
+          New-Item -Path "Sophia Script for Windows 11 v$LatestRelease PowerShell 7\Libraries" -ItemType Directory -Force
+
+          $Parameters = @{
+            Path            = @("$PSScriptRoot\sdk\lib\Microsoft.Windows.SDK.NET.dll", "$PSScriptRoot\CsWinRT\lib\net5.0\WinRT.Runtime.dll")
+            Destination     = "Sophia Script for Windows 11 v$LatestRelease PowerShell 7\Libraries"
+            Recurse         = $true
+            Force           = $true
+          }
+          Copy-Item @Parameters
+
           $Parameters = @{
             Path             = "Sophia Script for Windows 11 v$LatestRelease PowerShell 7"
             DestinationPath  = "Sophia.Script.for.Windows.11.v$LatestRelease.PowerShell.7.zip"
@@ -210,6 +261,14 @@ jobs:
             Force            = $true
           }
           Compress-Archive @Parameters
+
+          $Items = @(
+            "$PSScriptRoot\CsWinRT",
+            "$PSScriptRoot\SDK",
+            "$PSScriptRoot\Microsoft.Windows.CsWinRT.zip",
+            "$PSScriptRoot\Microsoft.Windows.SDK.NET.Ref.zip"
+          )
+          Remove-Item -Path $Items -Recurse -Force
 
           # Calculate hash
           Get-Item -Path "Sophia.Script.for.Windows.11.v$LatestRelease.PowerShell.7.zip" -Force | ForEach-Object -Process {
