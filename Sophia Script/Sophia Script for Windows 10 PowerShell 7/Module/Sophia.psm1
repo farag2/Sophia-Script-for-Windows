@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.12.3
-	Date: 19.09.2021
+	Version: v5.12.4
+	Date: 05.10.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & Inestic
@@ -170,10 +170,13 @@ function Checkings
 	# Check if the current module version is the latest one
 	try
 	{
-		[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-
 		# https://github.com/farag2/Sophia-Script-for-Windows/blob/master/sophia_script_versions.json
-		$LatestRelease = (Invoke-RestMethod -Uri "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json" -UseBasicParsing).Sophia_Script_Windows_10_PowerShell_7
+		$Parameters = @{
+			Uri              = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
+			SslProtocol      = "Tls13"
+			UseBasicParsing  = $true
+		}
+		$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_PowerShell_7
 		$CurrentRelease = (Get-Module -Name Sophia).Version.ToString()
 		switch ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)
 		{
@@ -201,12 +204,12 @@ function Checkings
 	if ($Warning)
 	{
 		$Title = ""
-		$Message = $Localization.CustomizationWarning
-		$Yes = $Localization.Yes
-		$No = $Localization.No
-		$Options = "&$No", "&$Yes"
+		$Message       = $Localization.CustomizationWarning
+		$Yes           = $Localization.Yes
+		$No            = $Localization.No
+		$Options       = "&$No", "&$Yes"
 		$DefaultChoice = 0
-		$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+		$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
 		switch ($Result)
 		{
@@ -247,6 +250,9 @@ function Checkings
 			$Script:ControlledFolderAccess = $false
 		}
 	}
+
+	# Save all opened folders in order to restore them after File Explorer restart
+	$Script:OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
 }
 #endregion Checkings
 
@@ -858,12 +864,12 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
-		Start-Sleep -Milliseconds 100
+		Start-Sleep -Seconds 1
 
 		# Force move the console window to the foreground
 		[WinAPI.ForegroundWindow]::SetForegroundWindow($_.MainWindowHandle)
 
-		Start-Sleep -Milliseconds 100
+		Start-Sleep -Seconds 1
 
 		# Emulate the Backspace key sending
 		[System.Windows.Forms.SendKeys]::SendWait("{BACKSPACE 1}")
@@ -1320,10 +1326,10 @@ function WhatsNewInWindows
 	Tailored experiences
 
 	.PARAMETER Disable
-	Do not let Microsoft offer you tailored expereinces based on the diagnostic data setting you hava chosen
+	Do not let Microsoft offer you tailored expereinces based on the diagnostic data setting you have chosen
 
 	.PARAMETER Enable
-	Let Microsoft offer you tailored expereinces based on the diagnostic data setting you hava chosen
+	Let Microsoft offer you tailored expereinces based on the diagnostic data setting you have chosen
 
 	.EXAMPLE
 	TailoredExperiences -Disable
@@ -1673,11 +1679,11 @@ function MergeConflicts
 	{
 		"Show"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideMergeConflicts -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideMergeConflicts -PropertyType DWord -Value 0 -Force
 		}
 		"Hide"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideMergeConflicts -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideMergeConflicts -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -1775,11 +1781,17 @@ function CortanaButton
 	{
 		"Hide"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowCortanaButton -PropertyType DWord -Value 0 -Force
+			if (Get-AppxPackage -Name Microsoft.549981C3F5F10)
+			{
+				New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowCortanaButton -PropertyType DWord -Value 0 -Force
+			}
 		}
 		"Show"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowCortanaButton -PropertyType DWord -Value 1 -Force
+			if (Get-AppxPackage -Name Microsoft.549981C3F5F10)
+			{
+				New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowCortanaButton -PropertyType DWord -Value 1 -Force
+			}
 		}
 	}
 }
@@ -2110,24 +2122,6 @@ function 3DObjects
 		"Show"
 		{
 			Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Name ThisPCPolicy -Force -ErrorAction Ignore
-		}
-	}
-
-	# Save all opened folders in order to restore them after File Explorer restart
-	Clear-Variable -Name OpenedFolders -Force -ErrorAction Ignore
-	$OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
-
-	# In order for the changes to take effect the File Explorer process has to be restarted
-	Stop-Process -Name explorer -Force
-
-	Start-Sleep -Seconds 3
-
-	# Restoring closed folders
-	foreach ($OpenedFolder in $OpenedFolders)
-	{
-		if (Test-Path -Path $OpenedFolder)
-		{
-			Invoke-Item -Path $OpenedFolder
 		}
 	}
 }
@@ -2563,24 +2557,6 @@ function NotificationAreaIcons
 			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name EnableAutoTray -PropertyType DWord -Value 1 -Force
 		}
 	}
-
-	# Save all opened folders in order to restore them after File Explorer restart
-	Clear-Variable -Name OpenedFolders -Force -ErrorAction Ignore
-	$OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
-
-	# In order for the changes to take effect the File Explorer process has to be restarted
-	Stop-Process -Name explorer -Force
-
-	Start-Sleep -Seconds 3
-
-	# Restoring closed folders
-	foreach ($OpenedFolder in $OpenedFolders)
-	{
-		if (Test-Path -Path $OpenedFolder)
-		{
-			Invoke-Item -Path $OpenedFolder
-		}
-	}
 }
 
 <#
@@ -2634,24 +2610,6 @@ function MeetNow
 			$Settings = Get-ItemPropertyValue -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\StuckRects3 -Name Settings -ErrorAction Ignore
 			$Settings[9] = 0
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\StuckRects3 -Name Settings -PropertyType Binary -Value $Settings -Force
-		}
-	}
-
-	# Save all opened folders in order to restore them after File Explorer restart
-	Clear-Variable -Name OpenedFolders -Force -ErrorAction Ignore
-	$OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
-
-	# In order for the changes to take effect the File Explorer process has to be restarted
-	Stop-Process -Name explorer -Force
-
-	Start-Sleep -Seconds 3
-
-	# Restoring closed folders
-	foreach ($OpenedFolder in $OpenedFolders)
-	{
-		if (Test-Path -Path $OpenedFolder)
-		{
-			Invoke-Item -Path $OpenedFolder
 		}
 	}
 }
@@ -3491,7 +3449,7 @@ function AeroShaking
 	Uninstall OneDrive
 
 	.PARAMETER Install
-	Install OneDrive
+	Install OneDrive 64-bit
 
 	.EXAMPLE
 	OneDrive -Uninstall
@@ -3619,11 +3577,22 @@ public static bool MarkFileDelete (string sourcefile)
 
 				# Save all opened folders in order to restore them after File Explorer restarting
 				Clear-Variable -Name OpenedFolders -Force -ErrorAction Ignore
-				$OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
+				$Script:OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
 
 				# Terminate the File Explorer process
 				New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoRestartShell -Value 0 -Force
 				Stop-Process -Name explorer -Force
+
+				Start-Sleep -Seconds 3
+
+				# Restoring closed folders
+				foreach ($Script:OpenedFolder in $Script:OpenedFolders)
+				{
+					if (Test-Path -Path $Script:OpenedFolder)
+					{
+						Invoke-Item -Path $Script:OpenedFolder
+					}
+				}
 				New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoRestartShell -Value 1 -Force
 
 				# Attempt to unregister FileSyncShell64.dll and remove
@@ -3675,42 +3644,57 @@ public static bool MarkFileDelete (string sourcefile)
 				{
 					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message $Localization.OneDriveInstalling -Verbose
+
 					Start-Process -FilePath $env:SystemRoot\SysWOW64\OneDriveSetup.exe
 				}
 				else
 				{
 					try
 					{
-						# Downloading the latest OneDrive installer x64
-						if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
-						{
-							Write-Information -MessageData "" -InformationAction Continue
-							Write-Verbose -Message $Localization.OneDriveDownloading -Verbose
-
-							# Parse XML to get the URL
-							# https://go.microsoft.com/fwlink/p/?LinkID=844652
-							$Parameters = @{
-								Uri             = "https://g.live.com/1rewlive5skydrive/OneDriveProduction"
-								UseBasicParsing = $true
-								Verbose         = $true
-							}
-							$Content = Invoke-RestMethod @Parameters
-
-							# Remove invalid chars
-							[xml]$OneDriveXML = $Content -replace "ï»¿", ""
-
-							$OneDriveURL = ($OneDriveXML).root.update.amd64binary.url[-1]
-							$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-							$Parameters = @{
-								Uri         = $OneDriveURL
-								OutFile     = "$DownloadsFolder\OneDriveSetup.exe"
-								SslProtocol = "Tls12"
-								Verbose     = $true
-							}
-							Invoke-WebRequest @Parameters
-
-							Start-Process -FilePath "$DownloadsFolder\OneDriveSetup.exe"
+						# Check the internet connection
+						$Parameters = @{
+							Uri              = "https://www.google.com"
+							Method           = "Head"
+							SslProtocol      = "Tls13"
+							DisableKeepAlive = $true
+							UseBasicParsing  = $true
 						}
+						if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+						{
+							return
+						}
+
+						# Downloading the latest OneDrive installer 64-bit
+						Write-Information -MessageData "" -InformationAction Continue
+						Write-Verbose -Message $Localization.OneDriveDownloading -Verbose
+
+						# Parse XML to get the URL
+						# https://go.microsoft.com/fwlink/p/?LinkID=844652
+						$Parameters = @{
+							Uri             = "https://g.live.com/1rewlive5skydrive/OneDriveProduction"
+							SslProtocol     = "Tls13"
+							UseBasicParsing = $true
+							Verbose         = $true
+						}
+						$Content = Invoke-RestMethod @Parameters
+
+						# Remove invalid chars
+						[xml]$OneDriveXML = $Content -replace "ï»¿", ""
+
+						$OneDriveURL = ($OneDriveXML).root.update.amd64binary.url[-1]
+						$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+						$Parameters = @{
+							Uri             = $OneDriveURL
+							OutFile         = "$DownloadsFolder\OneDriveSetup.exe"
+							SslProtocol     = "Tls13"
+							UseBasicParsing = $true
+							Verbose         = $true
+						}
+						Invoke-WebRequest @Parameters
+
+						Start-Process -FilePath "$DownloadsFolder\OneDriveSetup.exe" -Wait
+
+						Remove-Item -Path "$DownloadsFolder\OneDriveSetup.exe" -Force
 					}
 					catch [System.Net.WebException]
 					{
@@ -3718,12 +3702,11 @@ public static bool MarkFileDelete (string sourcefile)
 						Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 
 						Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
-
-						return
 					}
 				}
 
 				Get-ScheduledTask -TaskName "Onedrive* Update*" | Enable-ScheduledTask
+				Get-ScheduledTask -TaskName "Onedrive* Update*" | Start-ScheduledTask
 			}
 		}
 	}
@@ -4905,12 +4888,12 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
-		Start-Sleep -Milliseconds 100
+		Start-Sleep -Seconds 1
 
 		# Force move the console window to the foreground
 		[WinAPI.ForegroundWindow]::SetForegroundWindow($_.MainWindowHandle)
 
-		Start-Sleep -Milliseconds 100
+		Start-Sleep -Seconds 1
 
 		# Emulate the Backspace key sending
 		[System.Windows.Forms.SendKeys]::SendWait("{BACKSPACE 1}")
@@ -5220,10 +5203,24 @@ function WindowsCapabilities
 	{
 		"Install"
 		{
-			# Check the internet connection
 			try
 			{
-				(Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription
+				# Check the internet connection
+				$Parameters = @{
+					Uri              = "https://www.google.com"
+					Method           = "Head"
+					SslProtocol      = "Tls13"
+					DisableKeepAlive = $true
+					UseBasicParsing  = $true
+				}
+				if (-not (Invoke-RestMethod @Parameters).StatusDescription)
+				{
+					return
+				}
+
+				$State = "NotPresent"
+				$ButtonContent = $Localization.Install
+				$ButtonAdd_Click = {InstallButton}
 			}
 			catch [System.Net.WebException]
 			{
@@ -5231,13 +5228,7 @@ function WindowsCapabilities
 				Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 
 				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
-
-				return
 			}
-
-			$State = "NotPresent"
-			$ButtonContent = $Localization.Install
-			$ButtonAdd_Click = {InstallButton}
 		}
 		"Uninstall"
 		{
@@ -5297,12 +5288,12 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
-		Start-Sleep -Milliseconds 100
+		Start-Sleep -Seconds 1
 
 		# Force move the console window to the foreground
 		[WinAPI.ForegroundWindow]::SetForegroundWindow($_.MainWindowHandle)
 
-		Start-Sleep -Milliseconds 100
+		Start-Sleep -Seconds 1
 
 		# Emulate the Backspace key sending
 		[System.Windows.Forms.SendKeys]::SendWait("{BACKSPACE 1}")
@@ -5586,14 +5577,28 @@ function IPv6Component
 		$Enable
 	)
 
-	# Check the internet connection
 	try
 	{
-		if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
-		{
-			# Check whether the ISP supports IPv6 protocol using https://ipv6-test.com
-			$IPv6Test = Invoke-RestMethod -Uri "https://v4v6.ipv6-test.com/api/myip.php?json" | Where-Object -FilterScript {$_.proto -eq "ipv6"}
+		# Check the internet connection
+		$Parameters = @{
+			Uri              = "https://www.google.com"
+			Method           = "Head"
+			SslProtocol      = "Tls13"
+			DisableKeepAlive = $true
+			UseBasicParsing  = $true
 		}
+		if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+		{
+			return
+		}
+
+		# Check whether the ISP supports IPv6 protocol using https://ipv6-test.com
+		$Parameters = @{
+			Uri             = "https://v4v6.ipv6-test.com/api/myip.php?json"
+			SslProtocol     = "Tls13"
+			UseBasicParsing = $true
+		}
+		$IPv6Test = Invoke-RestMethod @Parameters | Where-Object -FilterScript {$_.proto -eq "ipv6"}
 	}
 	catch [System.Net.WebException]
 	{
@@ -5601,8 +5606,6 @@ function IPv6Component
 		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 
 		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
-
-		return
 	}
 
 	switch ($PSCmdlet.ParameterSetName)
@@ -6044,12 +6047,12 @@ public static string GetString(uint strId)
 			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title = ""
-			$Message = $Localization.UserFolderRequest -f $DesktopLocalizedString
-			$Change = $Localization.Change
-			$Skip = $Localization.Skip
-			$Options = "&$Change", "&$Skip"
+			$Message       = $Localization.UserFolderRequest -f $DesktopLocalizedString
+			$Change        = $Localization.Change
+			$Skip          = $Localization.Skip
+			$Options       = "&$Change", "&$Skip"
 			$DefaultChoice = 1
-			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
 			switch ($Result)
 			{
@@ -6076,13 +6079,13 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 
-			$Title = ""
-			$Message = $Localization.UserFolderRequest -f $DocumentsLocalizedString
-			$Change = $Localization.Change
-			$Skip = $Localization.Skip
-			$Options = "&$Change", "&$Skip"
+			$Title         = ""
+			$Message       = $Localization.UserFolderRequest -f $DocumentsLocalizedString
+			$Change        = $Localization.Change
+			$Skip          = $Localization.Skip
+			$Options       = "&$Change", "&$Skip"
 			$DefaultChoice = 1
-			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
 			switch ($Result)
 			{
@@ -6109,13 +6112,13 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 
-			$Title = ""
-			$Message = $Localization.UserFolderRequest -f $DownloadsLocalizedString
-			$Change = $Localization.Change
-			$Skip = $Localization.Skip
-			$Options = "&$Change", "&$Skip"
+			$Title         = ""
+			$Message       = $Localization.UserFolderRequest -f $DownloadsLocalizedString
+			$Change        = $Localization.Change
+			$Skip          = $Localization.Skip
+			$Options       = "&$Change", "&$Skip"
 			$DefaultChoice = 1
-			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
 			switch ($Result)
 			{
@@ -6142,13 +6145,13 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 
-			$Title = ""
-			$Message = $Localization.UserFolderRequest -f $MusicLocalizedString
-			$Change = $Localization.Change
-			$Skip = $Localization.Skip
-			$Options = "&$Change", "&$Skip"
+			$Title         = ""
+			$Message       = $Localization.UserFolderRequest -f $MusicLocalizedString
+			$Change        = $Localization.Change
+			$Skip          = $Localization.Skip
+			$Options       = "&$Change", "&$Skip"
 			$DefaultChoice = 1
-			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
 			switch ($Result)
 			{
@@ -6175,13 +6178,13 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 
-			$Title = ""
-			$Message = $Localization.UserFolderRequest -f $PicturesLocalizedString
-			$Change = $Localization.Change
-			$Skip = $Localization.Skip
-			$Options = "&$Change", "&$Skip"
+			$Title         = ""
+			$Message       = $Localization.UserFolderRequest -f $PicturesLocalizedString
+			$Change        = $Localization.Change
+			$Skip          = $Localization.Skip
+			$Options       = "&$Change", "&$Skip"
 			$DefaultChoice = 1
-			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
 			switch ($Result)
 			{
@@ -6208,13 +6211,13 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 
-			$Title = ""
-			$Message = $Localization.UserFolderRequest -f $VideosLocalizedString
-			$Change = $Localization.Change
-			$Skip = $Localization.Skip
-			$Options = "&$Change", "&$Skip"
+			$Title         = ""
+			$Message       = $Localization.UserFolderRequest -f $VideosLocalizedString
+			$Change        = $Localization.Change
+			$Skip          = $Localization.Skip
+			$Options       = "&$Change", "&$Skip"
 			$DefaultChoice = 1
-			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
 			switch ($Result)
 			{
@@ -6241,13 +6244,13 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 
-			$Title = ""
-			$Message = $Localization.UserFolderSelect -f $DesktopLocalizedString
-			$Browse = $Localization.Browse
-			$Skip = $Localization.Skip
-			$Options = "&$Browse", "&$Skip"
+			$Title         = ""
+			$Message       = $Localization.UserFolderSelect -f $DesktopLocalizedString
+			$Browse        = $Localization.Browse
+			$Skip          = $Localization.Skip
+			$Options       = "&$Browse", "&$Skip"
 			$DefaultChoice = 1
-			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
 			switch ($Result)
 			{
@@ -6284,13 +6287,13 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 
-			$Title = ""
-			$Message = $Localization.UserFolderSelect -f $DocumentsLocalizedString
-			$Browse = $Localization.Browse
-			$Skip = $Localization.Skip
-			$Options = "&$Browse", "&$Skip"
+			$Title         = ""
+			$Message       = $Localization.UserFolderSelect -f $DocumentsLocalizedString
+			$Browse        = $Localization.Browse
+			$Skip          = $Localization.Skip
+			$Options       = "&$Browse", "&$Skip"
 			$DefaultChoice = 1
-			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
 			switch ($Result)
 			{
@@ -6327,13 +6330,13 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 
-			$Title = ""
-			$Message = $Localization.UserFolderSelect -f $DownloadsLocalizedString
-			$Browse = $Localization.Browse
-			$Skip = $Localization.Skip
-			$Options = "&$Browse", "&$Skip"
+			$Title         = ""
+			$Message       = $Localization.UserFolderSelect -f $DownloadsLocalizedString
+			$Browse        = $Localization.Browse
+			$Skip          = $Localization.Skip
+			$Options       = "&$Browse", "&$Skip"
 			$DefaultChoice = 1
-			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
 			switch ($Result)
 			{
@@ -6370,13 +6373,13 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 
-			$Title = ""
-			$Message = $Localization.UserFolderSelect -f $MusicLocalizedString
-			$Browse = $Localization.Browse
-			$Skip = $Localization.Skip
-			$Options = "&$Browse", "&$Skip"
+			$Title         = ""
+			$Message       = $Localization.UserFolderSelect -f $MusicLocalizedString
+			$Browse        = $Localization.Browse
+			$Skip          = $Localization.Skip
+			$Options       = "&$Browse", "&$Skip"
 			$DefaultChoice = 1
-			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
 			switch ($Result)
 			{
@@ -6413,13 +6416,13 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 
-			$Title = ""
-			$Message = $Localization.UserFolderSelect -f $PicturesLocalizedString
-			$Browse = $Localization.Browse
-			$Skip = $Localization.Skip
-			$Options = "&$Browse", "&$Skip"
+			$Title         = ""
+			$Message       = $Localization.UserFolderSelect -f $PicturesLocalizedString
+			$Browse        = $Localization.Browse
+			$Skip          = $Localization.Skip
+			$Options       = "&$Browse", "&$Skip"
 			$DefaultChoice = 1
-			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
 			switch ($Result)
 			{
@@ -6456,13 +6459,13 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 
-			$Title = ""
-			$Message = $Localization.UserFolderSelect -f $VideosLocalizedString
-			$Browse = $Localization.Browse
-			$Skip = $Localization.Skip
-			$Options = "&$Browse", "&$Skip"
+			$Title         = ""
+			$Message       = $Localization.UserFolderSelect -f $VideosLocalizedString
+			$Browse        = $Localization.Browse
+			$Skip          = $Localization.Skip
+			$Options       = "&$Browse", "&$Skip"
 			$DefaultChoice = 1
-			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
 			switch ($Result)
 			{
@@ -6501,13 +6504,13 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 
-			$Title = ""
-			$Message = $Localization.UserDefaultFolder -f $DesktopLocalizedString
-			$Change = $Localization.Change
-			$Skip = $Localization.Skip
-			$Options = "&$Change", "&$Skip"
+			$Title         = ""
+			$Message       = $Localization.UserDefaultFolder -f $DesktopLocalizedString
+			$Change        = $Localization.Change
+			$Skip          = $Localization.Skip
+			$Options       = "&$Change", "&$Skip"
 			$DefaultChoice = 1
-			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
 			switch ($Result)
 			{
@@ -6531,13 +6534,13 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 
-			$Title = ""
-			$Message = $Localization.UserDefaultFolder -f $DocumentsLocalizedString
-			$Change = $Localization.Change
-			$Skip = $Localization.Skip
-			$Options = "&$Change", "&$Skip"
+			$Title         = ""
+			$Message       = $Localization.UserDefaultFolder -f $DocumentsLocalizedString
+			$Change        = $Localization.Change
+			$Skip          = $Localization.Skip
+			$Options       = "&$Change", "&$Skip"
 			$DefaultChoice = 1
-			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
 			switch ($Result)
 			{
@@ -6561,13 +6564,13 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 
-			$Title = ""
-			$Message = $Localization.UserDefaultFolder -f $DownloadsLocalizedString
-			$Change = $Localization.Change
-			$Skip = $Localization.Skip
-			$Options = "&$Change", "&$Skip"
+			$Title         = ""
+			$Message       = $Localization.UserDefaultFolder -f $DownloadsLocalizedString
+			$Change        = $Localization.Change
+			$Skip          = $Localization.Skip
+			$Options       = "&$Change", "&$Skip"
 			$DefaultChoice = 1
-			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
 			switch ($Result)
 			{
@@ -6591,13 +6594,13 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 
-			$Title = ""
-			$Message = $Localization.UserDefaultFolder -f $MusicLocalizedString
-			$Change = $Localization.Change
-			$Skip = $Localization.Skip
-			$Options = "&$Change", "&$Skip"
+			$Title         = ""
+			$Message       = $Localization.UserDefaultFolder -f $MusicLocalizedString
+			$Change        = $Localization.Change
+			$Skip          = $Localization.Skip
+			$Options       = "&$Change", "&$Skip"
 			$DefaultChoice = 1
-			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
 			switch ($Result)
 			{
@@ -6621,13 +6624,13 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 
-			$Title = ""
-			$Message = $Localization.UserDefaultFolder -f $PicturesLocalizedString
-			$Change = $Localization.Change
-			$Skip = $Localization.Skip
-			$Options = "&$Change", "&$Skip"
+			$Title         = ""
+			$Message       = $Localization.UserDefaultFolder -f $PicturesLocalizedString
+			$Change        = $Localization.Change
+			$Skip          = $Localization.Skip
+			$Options       = "&$Change", "&$Skip"
 			$DefaultChoice = 1
-			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
 			switch ($Result)
 			{
@@ -6651,13 +6654,13 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 
-			$Title = ""
-			$Message = $Localization.UserDefaultFolder -f $VideosLocalizedString
-			$Change = $Localization.Change
-			$Skip = $Localization.Skip
-			$Options = "&$Change", "&$Skip"
+			$Title         = ""
+			$Message       = $Localization.UserDefaultFolder -f $VideosLocalizedString
+			$Change        = $Localization.Change
+			$Skip          = $Localization.Skip
+			$Options       = "&$Change", "&$Skip"
 			$DefaultChoice = 1
-			$Result = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
 			switch ($Result)
 			{
@@ -6723,24 +6726,6 @@ function WinPrtScrFolder
 		"Default"
 		{
 			Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -Force -ErrorAction Ignore
-		}
-	}
-
-	# Save all opened folders in order to restore them after File Explorer restart
-	Clear-Variable -Name OpenedFolders -Force -ErrorAction Ignore
-	$OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
-
-	# In order for the changes to take effect the File Explorer process has to be restarted
-	Stop-Process -Name explorer -Force
-
-	Start-Sleep -Seconds 3
-
-	# Restoring closed folders
-	foreach ($OpenedFolder in $OpenedFolders)
-	{
-		if (Test-Path -Path $OpenedFolder)
-		{
-			Invoke-Item -Path $OpenedFolder
 		}
 	}
 }
@@ -8280,12 +8265,12 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
-		Start-Sleep -Milliseconds 100
+		Start-Sleep -Seconds 1
 
 		# Force move the console window to the foreground
 		[WinAPI.ForegroundWindow]::SetForegroundWindow($_.MainWindowHandle)
 
-		Start-Sleep -Milliseconds 100
+		Start-Sleep -Seconds 1
 
 		# Emulate the Backspace key sending
 		[System.Windows.Forms.SendKeys]::SendWait("{BACKSPACE 1}")
@@ -9186,12 +9171,12 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			# Show window, if minimized
 			[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
-			Start-Sleep -Milliseconds 100
+			Start-Sleep -Seconds 1
 
 			# Force move the console window to the foreground
 			[WinAPI.ForegroundWindow]::SetForegroundWindow($_.MainWindowHandle)
 
-			Start-Sleep -Milliseconds 100
+			Start-Sleep -Seconds 1
 
 			# Emulate the Backspace key sending to prevent the console window to freeze
 			[System.Windows.Forms.SendKeys]::SendWait("{BACKSPACE 1}")
@@ -9516,12 +9501,12 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			# Show window, if minimized
 			[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
-			Start-Sleep -Milliseconds 100
+			Start-Sleep -Seconds 1
 
 			# Force move the console window to the foreground
 			[WinAPI.ForegroundWindow]::SetForegroundWindow($_.MainWindowHandle)
 
-			Start-Sleep -Milliseconds 100
+			Start-Sleep -Seconds 1
 
 			# Emulate the Backspace key sending to prevent the console window to freeze
 			[System.Windows.Forms.SendKeys]::SendWait("{BACKSPACE 1}")
@@ -9596,58 +9581,82 @@ function HEIF
 				try
 				{
 					# Check the internet connection
-					if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
+					$Parameters = @{
+						Uri              = "https://www.google.com"
+						Method           = "Head"
+						SslProtocol      = "Tls13"
+						DisableKeepAlive = $true
+						UseBasicParsing  = $true
+					}
+					if (-not (Invoke-WebRequest @Parameters).StatusDescription)
 					{
-						try
-						{
-							# Check whether the https://store.rg-adguard.net site is alive
-							if ((Invoke-WebRequest -Uri https://store.rg-adguard.net/api/GetFiles -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
-							{
-								$API = "https://store.rg-adguard.net/api/GetFiles"
-								# HEVC Video Extensions from Device Manufacturer
-								$ProductURL = "https://www.microsoft.com/store/productId/9n4wgh0z6vhq"
+						return
+					}
 
-								$Body = @{
-									type = "url"
-									url  = $ProductURL
-									ring = "Retail"
-									lang = "en-US"
-								}
-								$Raw = Invoke-RestMethod -Method Post -Uri $API -ContentType 'application/x-www-form-urlencoded' -Body $Body
-
-								# Parsing the page
-								$Raw | Select-String -Pattern '<tr style.*<a href=\"(?<url>.*)"\s.*>(?<text>.*)<\/a>' -AllMatches | ForEach-Object -Process {$_.Matches} | ForEach-Object -Process {
-									$TempURL = $_.Groups[1].Value
-									$Package = $_.Groups[2].Value
-
-									if ($Package -like "Microsoft.HEVCVideoExtension_*_x64__8wekyb3d8bbwe.appx")
-									{
-										Write-Information -MessageData "" -InformationAction Continue
-										Write-Verbose -Message $Localization.HEVCDownloading -Verbose
-
-										$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-										$Parameters = @{
-											Uri         = $TempURL
-											OutFile     = "$DownloadsFolder\$Package"
-											SslProtocol = "Tls12"
-											Verbose     = $true
-										}
-										Invoke-WebRequest @Parameters
-
-										# Installing "HEVC Video Extensions from Device Manufacturer"
-										Add-AppxPackage -Path "$DownloadsFolder\$Package" -Verbose
-
-										Remove-Item -Path "$DownloadsFolder\$Package" -Force
-									}
-								}
-							}
+					try
+					{
+						# Check whether the https://store.rg-adguard.net site is alive
+						$Parameters = @{
+							Uri              = "https://store.rg-adguard.net/api/GetFiles"
+							Method           = "Head"
+							SslProtocol      = "Tls13"
+							DisableKeepAlive = $true
+							UseBasicParsing  = $true
 						}
-						catch [System.Net.WebException]
+						if (-not (Invoke-RestMethod @Parameters).StatusDescription)
 						{
-							Write-Warning -Message ($Localization.NoResponse -f "https://store.rg-adguard.net")
-							Write-Error -Message ($Localization.NoResponse -f "https://store.rg-adguard.net") -ErrorAction SilentlyContinue
 							return
 						}
+
+						$Parameters = @{
+							Method      = "Post"
+							Uri         = "https://store.rg-adguard.net/api/GetFiles"
+							ContentType = "application/x-www-form-urlencoded"
+							Body        = @{
+								type = "url"
+								# HEVC Video Extensions from Device Manufacturer
+								url  = "https://www.microsoft.com/store/productId/9n4wgh0z6vhq"
+								ring = "Retail"
+								lang = "en-US"
+							}
+							UseBasicParsing = $true
+							SslProtocol     = "Tls13"
+						}
+						$Raw = Invoke-WebRequest @Parameters
+
+						# Parsing the page
+						$Raw | Select-String -Pattern '<tr style.*<a href=\"(?<url>.*)"\s.*>(?<text>.*)<\/a>' -AllMatches | ForEach-Object -Process {$_.Matches} | ForEach-Object -Process {
+							$TempURL = $_.Groups[1].Value
+							$Package = $_.Groups[2].Value
+
+							if ($Package -like "Microsoft.HEVCVideoExtension_*_x64__8wekyb3d8bbwe.appx")
+							{
+								Write-Information -MessageData "" -InformationAction Continue
+								Write-Verbose -Message $Localization.HEVCDownloading -Verbose
+
+								$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+								$Parameters = @{
+									Uri             = $TempURL
+									OutFile         = "$DownloadsFolder\$Package"
+									SslProtocol     = "Tls13"
+									UseBasicParsing = $true
+									Verbose         = $true
+								}
+								Invoke-WebRequest @Parameters
+
+								# Installing "HEVC Video Extensions from Device Manufacturer"
+								Add-AppxPackage -Path "$DownloadsFolder\$Package" -Verbose
+
+								Remove-Item -Path "$DownloadsFolder\$Package" -Force
+							}
+						}
+					}
+					catch [System.Net.WebException]
+					{
+						Write-Warning -Message ($Localization.NoResponse -f "https://store.rg-adguard.net")
+						Write-Error -Message ($Localization.NoResponse -f "https://store.rg-adguard.net") -ErrorAction SilentlyContinue
+
+						Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
 					}
 				}
 				catch [System.Net.WebException]
@@ -9656,8 +9665,6 @@ function HEIF
 					Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 
 					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
-
-					return
 				}
 			}
 		}
@@ -9667,10 +9674,20 @@ function HEIF
 			{
 				try
 				{
-					if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
-					{
-						Start-Process -FilePath ms-windows-store://pdp/?ProductId=9n4wgh0z6vhq
+					# Check the internet connection
+					$Parameters = @{
+						Uri              = "https://www.google.com"
+						Method           = "Head"
+						SslProtocol      = "Tls13"
+						DisableKeepAlive = $true
+						UseBasicParsing  = $true
 					}
+					if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+					{
+						return
+					}
+
+					Start-Process -FilePath ms-windows-store://pdp/?ProductId=9n4wgh0z6vhq
 				}
 				catch [System.Net.WebException]
 				{
@@ -9678,8 +9695,6 @@ function HEIF
 					Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 
 					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
-
-					return
 				}
 			}
 		}
@@ -9969,11 +9984,11 @@ function SetAppGraphicsPerformance
 {
 	if (Get-CimInstance -ClassName Win32_VideoController | Where-Object -FilterScript {($_.AdapterDACType -ne "Internal") -and ($null -ne $_.AdapterDACType)})
 	{
-		$Title = $Localization.GraphicsPerformanceTitle
-		$Message = $Localization.GraphicsPerformanceRequest
-		$Add = $Localization.Add
-		$Skip = $Localization.Skip
-		$Options = "&$Add", "&$Skip"
+		$Title         = $Localization.GraphicsPerformanceTitle
+		$Message       = $Localization.GraphicsPerformanceRequest
+		$Add           = $Localization.Add
+		$Skip          = $Localization.Skip
+		$Options       = "&$Add", "&$Skip"
 		$DefaultChoice = 1
 
 		do
@@ -12089,10 +12104,23 @@ function BitmapImageNewContext
 			{
 				try
 				{
-					if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
-					{
-						Get-WindowsCapability -Online -Name "Microsoft.Windows.MSPaint*" | Add-WindowsCapability -Online
+					# Check the internet connection
+					$Parameters = @{
+						Uri              = "https://www.google.com"
+						Method           = "Head"
+						SslProtocol      = "Tls13"
+						DisableKeepAlive = $true
+						UseBasicParsing  = $true
 					}
+					if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+					{
+						return
+					}
+
+					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message $Localization.Patient -Verbose
+
+					Get-WindowsCapability -Online -Name "Microsoft.Windows.MSPaint*" | Add-WindowsCapability -Online
 				}
 				catch [System.Net.WebException]
 				{
@@ -12100,8 +12128,6 @@ function BitmapImageNewContext
 					Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 
 					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
-
-					return
 				}
 			}
 		}
@@ -12170,10 +12196,23 @@ function RichTextDocumentNewContext
 			{
 				try
 				{
-					if ((Invoke-WebRequest -Uri https://www.google.com -UseBasicParsing -DisableKeepAlive -Method Head).StatusDescription)
-					{
-						Get-WindowsCapability -Online -Name "Microsoft.Windows.WordPad*" | Add-WindowsCapability -Online
+					# Check the internet connection
+					$Parameters = @{
+						Uri              = "https://www.google.com"
+						Method           = "Head"
+						SslProtocol      = "Tls13"
+						DisableKeepAlive = $true
+						UseBasicParsing  = $true
 					}
+					if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+					{
+						return
+					}
+
+					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message $Localization.Patient -Verbose
+
+					Get-WindowsCapability -Online -Name "Microsoft.Windows.WordPad*" | Add-WindowsCapability -Online
 				}
 				catch [System.Net.WebException]
 				{
@@ -12181,8 +12220,6 @@ function RichTextDocumentNewContext
 					Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 
 					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
-
-					return
 				}
 			}
 		}
@@ -12418,6 +12455,38 @@ public static void PostMessage()
 	if ($Script:ControlledFolderAccess)
 	{
 		Set-MpPreference -EnableControlledFolderAccess Enabled
+	}
+
+	# In order for the changes to take effect the File Explorer process has to be restarted
+	$Title = ""
+	$Message       = $Localization.FileExplorerRestartPrompt
+	$Yes           = $Localization.Yes
+	$No            = $Localization.No
+	$Options       = "&$No", "&$Yes"
+	$DefaultChoice = 1
+	$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+
+	switch ($Result)
+	{
+		"0"
+		{
+			continue
+		}
+		"1"
+		{
+			Stop-Process -Name explorer -Force
+
+			Start-Sleep -Seconds 3
+
+			# Restoring closed folders
+			foreach ($Script:OpenedFolder in $Script:OpenedFolders)
+			{
+				if (Test-Path -Path $Script:OpenedFolder)
+				{
+					Invoke-Item -Path $Script:OpenedFolder
+				}
+			}
+		}
 	}
 
 	Write-Information -MessageData "" -InformationAction Continue

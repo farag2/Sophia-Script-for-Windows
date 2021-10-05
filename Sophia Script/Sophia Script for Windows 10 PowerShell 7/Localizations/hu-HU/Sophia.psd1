@@ -75,6 +75,7 @@ Run                                       = Futtatás
 SelectAll                                 = Összes kijelölése
 Skip                                      = Átugrás
 Skipped                                   = Átugorva
+FileExplorerRestartPrompt                 = Néha ahhoz, hogy a módosítások hatályba lépjenek, a File Explorer folyamatot újra kell indítani
 TelegramGroupTitle                        = Pridružite se našoj službenoj grupi Telegram
 TelegramChannelTitle                      = Pridružite se našem službenom kanalu Telegram
 Uninstall                                 = Eltávolít

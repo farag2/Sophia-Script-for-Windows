@@ -75,6 +75,7 @@ Run                                       = Run
 SelectAll                                 = Select all
 Skip                                      = Skip
 Skipped                                   = Skipped
+FileExplorerRestartPrompt                 = Sometimes in order for the changes to take effect the File Explorer process has to be restarted
 TelegramGroupTitle                        = Join our official Telegram group
 TelegramChannelTitle                      = Join our official Telegram channel
 Uninstall                                 = Uninstall

@@ -75,7 +75,8 @@ Run                                       = Запустити
 SelectAll                                 = Вибрати все
 Skip                                      = Пропустити
 Skipped                                   = Пропущено
-TelegramGroupTitle                        = Приєднуйтесь до нашої офіційної групи Telegram
+FileExplorerRestartPrompt                 = Іноді для того, щоб зміни вступили в силу, процес провідника необхідно перезапустити
+TelegramGroupTitle                        = Приєднуйтесь до нашої офіційної групи в Telegram
 TelegramChannelTitle                      = Приєднуйтесь до нашого офіційного каналу в Telegram
 Uninstall                                 = Видалити
 '@
