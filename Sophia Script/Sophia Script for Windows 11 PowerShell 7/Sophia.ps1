@@ -3,7 +3,7 @@
 	Default preset file for "Sophia Script for Windows 11"
 
 	Version: v6.0.5
-	Date: 23.09.2021
+	Date: 05.10.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & Inestic
@@ -352,24 +352,6 @@ FileTransferDialog -Detailed
 # Show the file transfer dialog box in the compact mode (default value)
 # Отображать диалоговое окно передачи файлов в свернутом виде (значение по умолчанию)
 # FileTransferDialog -Compact
-
-<#
-	Expand the Windows 10 File Explorer ribbon
-	In order this feature to work you need to enable the Windows 10 File Explorer (Windows10FileExplorer -Enable)
-
-	Развернуть ленту проводника как в Windows 10
-	Для того, чтобы работал данный функционал, вам необходимо включить проводник из Windows 10 (Windows10FileExplorer -Enable)
-#>
-Windows10FileExplorerRibbon -Expanded
-
-<#
-	Minimize the Windows 10 File Explorer ribbon
-	In order this feature to work you need to enable the Windows 10 File Explorer (Windows10FileExplorer -Enable)
-
-	Свернуть ленту проводника как в Windows 10
-	Для того, чтобы работал данный функционал, вам необходимо включить проводник из Windows 10 (Windows10FileExplorer -Enable)
-#>
-# Windows10FileExplorerRibbon -Minimized
 
 # Display the recycle bin files delete confirmation dialog
 # Запрашивать подтверждение на удаление файлов в корзину
@@ -1338,7 +1320,7 @@ OpenWindowsTerminalContext -Hide
 
 # Show the "Open in Windows Terminal (Admin)" item in the Desktop and folders context menu
 # Отобразить пункт "Открыть в Терминале Windows (Администратор)" в контекстном меню Рабочего стола и папок (значение по умолчанию)
-OpenWindowsTerminalAdminContext -Show ### wrapper
+OpenWindowsTerminalAdminContext -Show
 
 # Hide the "Open in Windows Terminal (Admin)" item from the Desktop and folders context menu (default value)
 # Скрыть пункт "Открыть в Терминале Windows (Администратор)" в контекстном меню Рабочего стола и папок (значение по умолчанию)

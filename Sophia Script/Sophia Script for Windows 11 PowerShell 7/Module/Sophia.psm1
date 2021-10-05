@@ -3,7 +3,7 @@
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
 	Version: v6.0.5
-	Date: 25.09.2021
+	Date: 05.10.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & Inestic
@@ -868,12 +868,12 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
-		Start-Sleep -Milliseconds 100
+		Start-Sleep -Seconds 1
 
 		# Force move the console window to the foreground
 		[WinAPI.ForegroundWindow]::SetForegroundWindow($_.MainWindowHandle)
 
-		Start-Sleep -Milliseconds 100
+		Start-Sleep -Seconds 1
 
 		# Emulate the Backspace key sending
 		[System.Windows.Forms.SendKeys]::SendWait("{BACKSPACE 1}")
@@ -1544,24 +1544,6 @@ function Windows10FileExplorer
 			Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}" -Force -ErrorAction Ignore
 		}
 	}
-
-	# Save all opened folders in order to restore them after File Explorer restart
-	Clear-Variable -Name OpenedFolders -Force -ErrorAction Ignore
-	$OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
-
-	# In order for the changes to take effect the File Explorer process has to be restarted
-	Stop-Process -Name explorer -Force
-
-	Start-Sleep -Seconds 3
-
-	# Restoring closed folders
-	foreach ($OpenedFolder in $OpenedFolders)
-	{
-		if (Test-Path -Path $OpenedFolder)
-		{
-			Invoke-Item -Path $OpenedFolder
-		}
-	}
 }
 
 <#
@@ -2079,74 +2061,6 @@ function FileTransferDialog
 				New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager -Force
 			}
 			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager -Name EnthusiastMode -PropertyType DWord -Value 0 -Force
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	The Windows 10 File Explorer ribbon
-
-	.PARAMETER Expanded
-	Expand the Windows 10 File Explorer ribbon
-
-	.PARAMETER Minimized
-	Minimize the Windows 10 File Explorer ribbon
-
-	.EXAMPLE
-	Windows10FileExplorerRibbon -Expanded
-
-	.EXAMPLE
-	Windows10FileExplorerRibbon -Minimized
-
-	.NOTES
-	In order this feature to work you need to enable the Windows 10 File Explorer (Windows10FileExplorer -Enable)
-
-	.NOTES
-	Current user
-#>
-function Windows10FileExplorerRibbon
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Expanded"
-		)]
-		[switch]
-		$Expanded,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Minimized"
-		)]
-		[switch]
-		$Minimized
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Expanded"
-		{
-			if (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{e2bf9676-5f8f-435c-97eb-11607a5bedf7}" -ErrorAction Ignore)
-			{
-				if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Ribbon))
-				{
-					New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Ribbon -Force
-				}
-				New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Ribbon -Name MinimizedStateTabletModeOff -PropertyType DWord -Value 0 -Force
-			}
-		}
-		"Minimized"
-		{
-			if (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{e2bf9676-5f8f-435c-97eb-11607a5bedf7}" -ErrorAction Ignore)
-			{
-				if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Ribbon))
-				{
-					New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Ribbon -Force
-				}
-				New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Ribbon -Name MinimizedStateTabletModeOff -PropertyType DWord -Value 1 -Force
-			}
 		}
 	}
 }
@@ -3488,18 +3402,30 @@ public static bool MarkFileDelete (string sourcefile)
 				Remove-Item -Path HKLM:\SOFTWARE\WOW6432Node\Microsoft\OneDrive -Recurse -Force -ErrorAction Ignore
 				Remove-Item -Path "$env:ProgramData\Microsoft OneDrive" -Recurse -Force -ErrorAction Ignore
 				Remove-Item -Path $env:SystemDrive\OneDriveTemp -Recurse -Force -ErrorAction Ignore
-				Unregister-ScheduledTask -TaskName *OneDrive* -Confirm:$false
+				Unregister-ScheduledTask -TaskName *OneDrive* -Confirm:$false -ErrorAction Ignore
 
 				# Getting the OneDrive folder path
 				$OneDriveFolder = Split-Path -Path (Split-Path -Path $OneDriveSetup[0] -Parent)
 
 				# Save all opened folders in order to restore them after File Explorer restarting
 				Clear-Variable -Name OpenedFolders -Force -ErrorAction Ignore
-				$OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
+				$Script:OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
 
 				# Terminate the File Explorer process
 				New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoRestartShell -Value 0 -Force
 				Stop-Process -Name explorer -Force
+
+				Start-Sleep -Seconds 3
+
+				# Restoring closed folders
+				foreach ($Script:OpenedFolder in $Script:OpenedFolders)
+				{
+					if (Test-Path -Path $Script:OpenedFolder)
+					{
+						Invoke-Item -Path $Script:OpenedFolder
+					}
+				}
+
 				New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoRestartShell -Value 1 -Force
 
 				# Attempt to unregister FileSyncShell64.dll and remove
@@ -4795,12 +4721,12 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
-		Start-Sleep -Milliseconds 100
+		Start-Sleep -Seconds 1
 
 		# Force move the console window to the foreground
 		[WinAPI.ForegroundWindow]::SetForegroundWindow($_.MainWindowHandle)
 
-		Start-Sleep -Milliseconds 100
+		Start-Sleep -Seconds 1
 
 		# Emulate the Backspace key sending
 		[System.Windows.Forms.SendKeys]::SendWait("{BACKSPACE 1}")
@@ -5113,8 +5039,8 @@ function WindowsCapabilities
 				$Parameters = @{
 					Uri              = "https://www.google.com"
 					Method           = "Head"
-					DisableKeepAlive = $true
 					SslProtocol      = "Tls13"
+					DisableKeepAlive = $true
 					UseBasicParsing  = $true
 				}
 				if (-not (Invoke-RestMethod @Parameters).StatusDescription)
@@ -5192,12 +5118,12 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
-		Start-Sleep -Milliseconds 100
+		Start-Sleep -Seconds 1
 
 		# Force move the console window to the foreground
 		[WinAPI.ForegroundWindow]::SetForegroundWindow($_.MainWindowHandle)
 
-		Start-Sleep -Milliseconds 100
+		Start-Sleep -Seconds 1
 
 		# Emulate the Backspace key sending
 		[System.Windows.Forms.SendKeys]::SendWait("{BACKSPACE 1}")
@@ -5487,11 +5413,10 @@ function IPv6Component
 		$Parameters = @{
 			Uri              = "https://www.google.com"
 			Method           = "Head"
-			DisableKeepAlive = $true
 			SslProtocol      = "Tls13"
+			DisableKeepAlive = $true
 			UseBasicParsing  = $true
 		}
-
 		if (-not (Invoke-WebRequest @Parameters).StatusDescription)
 		{
 			return
@@ -6631,24 +6556,6 @@ function WinPrtScrFolder
 		"Default"
 		{
 			Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -Force -ErrorAction Ignore
-		}
-	}
-
-	# Save all opened folders in order to restore them after File Explorer restart
-	Clear-Variable -Name OpenedFolders -Force -ErrorAction Ignore
-	$OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
-
-	# In order for the changes to take effect the File Explorer process has to be restarted
-	Stop-Process -Name explorer -Force
-
-	Start-Sleep -Seconds 3
-
-	# Restoring closed folders
-	foreach ($OpenedFolder in $OpenedFolders)
-	{
-		if (Test-Path -Path $OpenedFolder)
-		{
-			Start-Process -FilePath explorer -ArgumentList $OpenedFolder
 		}
 	}
 }
@@ -8244,12 +8151,12 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
-		Start-Sleep -Milliseconds 100
+		Start-Sleep -Seconds 1
 
 		# Force move the console window to the foreground
 		[WinAPI.ForegroundWindow]::SetForegroundWindow($_.MainWindowHandle)
 
-		Start-Sleep -Milliseconds 100
+		Start-Sleep -Seconds 1
 
 		# Emulate the Backspace key sending
 		[System.Windows.Forms.SendKeys]::SendWait("{BACKSPACE 1}")
@@ -8820,12 +8727,12 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			# Show window, if minimized
 			[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
-			Start-Sleep -Milliseconds 100
+			Start-Sleep -Seconds 1
 
 			# Force move the console window to the foreground
 			[WinAPI.ForegroundWindow]::SetForegroundWindow($_.MainWindowHandle)
 
-			Start-Sleep -Milliseconds 100
+			Start-Sleep -Seconds 1
 
 			# Emulate the Backspace key sending to prevent the console window to freeze
 			[System.Windows.Forms.SendKeys]::SendWait("{BACKSPACE 1}")
@@ -9157,12 +9064,12 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			# Show window, if minimized
 			[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
-			Start-Sleep -Milliseconds 100
+			Start-Sleep -Seconds 1
 
 			# Force move the console window to the foreground
 			[WinAPI.ForegroundWindow]::SetForegroundWindow($_.MainWindowHandle)
 
-			Start-Sleep -Milliseconds 100
+			Start-Sleep -Seconds 1
 
 			# Emulate the Backspace key sending to prevent the console window to freeze
 			[System.Windows.Forms.SendKeys]::SendWait("{BACKSPACE 1}")
@@ -9244,7 +9151,6 @@ function HEIF
 						SslProtocol      = "Tls13"
 						UseBasicParsing  = $true
 					}
-
 					if (-not (Invoke-WebRequest @Parameters).StatusDescription)
 					{
 						return
@@ -9938,8 +9844,8 @@ while (`$true)
 
 			Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Name ShowInActionCenter -Force -ErrorAction Ignore
 
-			Unregister-ScheduledTask -TaskName "Windows Cleanup" -Confirm:$false
-			Unregister-ScheduledTask -TaskName "Windows Cleanup Notification" -Confirm:$false
+			Unregister-ScheduledTask -TaskName "Windows Cleanup" -Confirm:$false -ErrorAction Ignore
+			Unregister-ScheduledTask -TaskName "Windows Cleanup Notification" -Confirm:$false -ErrorAction Ignore
 
 			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Recurse -Force -ErrorAction Ignore
 		}
@@ -10046,7 +9952,7 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -For
 		}
 		"Delete"
 		{
-			Unregister-ScheduledTask -TaskName SoftwareDistribution -Confirm:$false
+			Unregister-ScheduledTask -TaskName SoftwareDistribution -Confirm:$false -ErrorAction Ignore
 		}
 	}
 }
@@ -10143,7 +10049,7 @@ Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object {`$_.CreationTime 
 		}
 		"Delete"
 		{
-			Unregister-ScheduledTask -TaskName Temp -Confirm:$false
+			Unregister-ScheduledTask -TaskName Temp -Confirm:$false -ErrorAction Ignore
 		}
 	}
 }
@@ -11849,7 +11755,7 @@ function OpenWindowsTerminalContext
 	.NOTES
 	Current user
 #>
-function OpenWindowsTerminalAdminContext ###
+function OpenWindowsTerminalAdminContext
 {
 	param
 	(
@@ -11877,7 +11783,14 @@ function OpenWindowsTerminalAdminContext ###
 				try
 				{
 					# Check the internet connection
-					if (-not (Invoke-WebRequest -Uri https://www.google.com -Method Head -UseBasicParsing -DisableKeepAlive).StatusDescription)
+					$Parameters = @{
+						Uri              = "https://www.google.com"
+						Method           = "Head"
+						SslProtocol      = "Tls13"
+						DisableKeepAlive = $true
+						UseBasicParsing  = $true
+					}
+					if (-not (Invoke-WebRequest @Parameters).StatusDescription)
 					{
 						return
 					}
@@ -11903,7 +11816,7 @@ function OpenWindowsTerminalAdminContext ###
 				{
 					New-Item -Path HKLM:\SOFTWARE\Classes\Directory\Background\shell\OpenWTHereAsAdmin\command -ItemType Directory -Force
 				}
-				New-ItemProperty -Path HKLM:\SOFTWARE\Classes\Directory\Background\shell\OpenWTHereAsAdmin -Name "(default)" -PropertyType String -Value "$Localization.OpenInWindowsTerminalAdmin" -Force ###
+				New-ItemProperty -Path HKLM:\SOFTWARE\Classes\Directory\Background\shell\OpenWTHereAsAdmin -Name "(default)" -PropertyType String -Value $Localization.OpenInWindowsTerminalAdmin -Force
 				if (Test-Path -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\terminal.ico")
 				{
 					New-ItemProperty -Path HKLM:\SOFTWARE\Classes\Directory\Background\shell\OpenWTHereAsAdmin -Name Icon -PropertyType String -Value "%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\terminal.ico" -Force
@@ -11917,7 +11830,7 @@ function OpenWindowsTerminalAdminContext ###
 				{
 					New-Item -Path HKLM:\SOFTWARE\Classes\Directory\shell\OpenWTHereAsAdmin\command -ItemType Directory -Force
 				}
-				New-ItemProperty -Path HKLM:\SOFTWARE\Classes\Directory\shell\OpenWTHereAsAdmin -Name "(default)" -PropertyType String -Value "Open in Windows Terminal (Admin)" -Force
+				New-ItemProperty -Path HKLM:\SOFTWARE\Classes\Directory\shell\OpenWTHereAsAdmin -Name "(default)" -PropertyType String -Value $Localization.OpenInWindowsTerminalAdmin -Force
 				if (Test-Path -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\terminal.ico")
 				{
 					New-ItemProperty -Path HKLM:\SOFTWARE\Classes\Directory\shell\OpenWTHereAsAdmin -Name Icon -PropertyType String -Value "%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\terminal.ico" -Force
