@@ -2,13 +2,15 @@
   {
     "Id": "Menu",
     "Options": {
+      "menuImportExportPreset": "Import/Export",
       "menuImportPreset": "Import Preset",
+      "menuExportPreset": "Export Preset",
       "menuPresets": "Presets",
       "menuOpposite": "Opposite",
       "menuClear": "Clear",
       "menuTheme": "Theme",
       "menuThemeDark": "Dark",
-      "menuThemeLight":  "Light",
+      "menuThemeLight": "Light",
       "menuLanguage": "Language",
       "menuAbout": "About"
     }

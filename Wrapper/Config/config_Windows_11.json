@@ -1,0 +1,2404 @@
+﻿[
+  {
+    "Id": 100,
+    "Region": "Protection",
+    "Control": "cmb",
+    "Required": "true",
+    "Function": "Checkings",
+    "Arg": {
+      "Zero": {
+        "Tag": "Warning"
+      },
+      "One": {
+        "Tag": ""
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "",
+    "LTSC": "true"
+  },
+  {
+    "Id": 101,
+    "Region": "Protection",
+    "Control": "chk",
+    "Required": "false",
+    "Function": "Logging",
+    "Arg": {
+      "Zero": {
+        "Tag": ""
+      }
+    },
+    "Preset": "",
+    "WindowsDefault": "",
+    "LTSC": "true"
+  },
+  {
+    "Id": 102,
+    "Region": "Protection",
+    "Control": "chk",
+    "Required": "false",
+    "Function": "CreateRestorePoint",
+    "Arg": {
+      "Zero": {
+        "Tag": ""
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "Zero",
+    "LTSC": "true"
+  },
+  {
+    "Id": 200,
+    "Region": "Privacy & Telemetry",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "DiagTrackService",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 201,
+    "Region": "Privacy & Telemetry",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "DiagnosticDataLevel",
+    "Arg": {
+      "Zero": {
+        "Tag": "Minimal"
+      },
+      "One": {
+        "Tag": "Default"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 202,
+    "Region": "Privacy & Telemetry",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "ErrorReporting",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 203,
+    "Region": "Privacy & Telemetry",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "FeedbackFrequency",
+    "Arg": {
+      "Zero": {
+        "Tag": "Never"
+      },
+      "One": {
+        "Tag": "Automatically"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 204,
+    "Region": "Privacy & Telemetry",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "ScheduledTasks",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 205,
+    "Region": "Privacy & Telemetry",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "SigninInfo",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 206,
+    "Region": "Privacy & Telemetry",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "LanguageListAccess",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 207,
+    "Region": "Privacy & Telemetry",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "AdvertisingID",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 209,
+    "Region": "Privacy & Telemetry",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "WindowsTips",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "One",
+    "WindowsDefault": "One",
+    "LTSC": "false"
+  },
+  {
+    "Id": 210,
+    "Region": "Privacy & Telemetry",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "SettingsSuggestedContent",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "false"
+  },
+  {
+    "Id": 211,
+    "Region": "Privacy & Telemetry",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "AppsSilentInstalling",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "false"
+  },
+  {
+    "Id": 212,
+    "Region": "Privacy & Telemetry",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "WhatsNewInWindows",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "false"
+  },
+  {
+    "Id": 213,
+    "Region": "Privacy & Telemetry",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "TailoredExperiences",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "false"
+  },
+  {
+    "Id": 214,
+    "Region": "Privacy & Telemetry",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "BingSearch",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "false"
+  },
+  {
+    "Id": 300,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "ThisPC",
+    "Arg": {
+      "Zero": {
+        "Tag": "Show"
+      },
+      "One": {
+        "Tag": "Hide"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 301,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "Windows10FileExplorer",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "false",
+    "Win10": "false"
+  },
+  {
+    "Id": 302,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "CheckBoxes",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 303,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "HiddenItems",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 304,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "FileExtensions",
+    "Arg": {
+      "Zero": {
+        "Tag": "Show"
+      },
+      "One": {
+        "Tag": "Hide"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 305,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "MergeConflicts",
+    "Arg": {
+      "Zero": {
+        "Tag": "Show"
+      },
+      "One": {
+        "Tag": "Hide"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 306,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "OpenFileExplorerTo",
+    "Arg": {
+      "Zero": {
+        "Tag": "ThisPC"
+      },
+      "One": {
+        "Tag": "QuickAccess"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 307,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "FileExplorerCompactMode",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "false",
+    "Win10": "false"
+  },
+  {
+    "Id": 309,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "OneDriveFileExplorerAd",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "false"
+  },
+  {
+    "Id": 310,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "SnapAssistFlyout",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "Zero",
+    "LTSC": "false",
+    "Win10": "false"
+  },
+  {
+    "Id": 311,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "SnapAssist",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 312,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "FileTransferDialog",
+    "Arg": {
+      "Zero": {
+        "Tag": "Detailed"
+      },
+      "One": {
+        "Tag": "Compact"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 313,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "RecycleBinDeleteConfirmation",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 314,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "QuickAccessRecentFiles",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 315,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "QuickAccessFrequentFolders",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 316,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "TaskbarAlignment",
+    "Arg": {
+      "Zero": {
+        "Tag": "Left"
+      },
+      "One": {
+        "Tag": "Center"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "false",
+    "Win10": "false"
+  },
+  {
+    "Id": 317,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "TaskbarSearch",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "false",
+    "Win10": "false"
+  },
+  {
+    "Id": 318,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "TaskViewButton",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 319,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "TaskbarWidgets",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "false",
+    "Win10": "false"
+  },
+  {
+    "Id": 320,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "TaskbarChat",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "false",
+    "Win10": "false"
+  },
+  {
+    "Id": 321,
+    "Region": "UI & Personalization",
+    "Control": "chk",
+    "Required": "false",
+    "Function": "NotificationAreaIcons",
+    "Arg": {
+      "Zero": {
+        "Tag": ""
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "",
+    "LTSC": "true",
+    "Win10": "false"
+  },
+  {
+    "Id": 322,
+    "Region": "UI & Personalization",
+    "Control": "chk",
+    "Required": "false",
+    "Function": "UnpinTaskbarShortcuts -Shortcuts",
+    "Arg": {
+      "Zero": {
+        "Tag": "Edge"
+      },
+      "One": {
+        "Tag": "Store"
+      }
+    },
+    "Preset": "",
+    "WindowsDefault": "",
+    "LTSC": "false",
+    "Win10": "false"
+  },
+  {
+    "Id": 323,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "TaskbarSize",
+    "Arg": {
+      "Zero": {
+        "Tag": "Large"
+      },
+      "One": {
+        "Tag": "Default"
+      },
+      "Two": {
+        "Tag": "Small"
+      }
+    },
+    "Preset": "One",
+    "WindowsDefault": "One",
+    "LTSC": "false",
+    "Win10": "false"
+  },
+  {
+    "Id": 324,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "ControlPanelView",
+    "Arg": {
+      "Zero": {
+        "Tag": "LargeIcons"
+      },
+      "One": {
+        "Tag": "SmallIcons"
+      },
+      "Two": {
+        "Tag": "Category"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "Two",
+    "LTSC": "true"
+  },
+  {
+    "Id": 325,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "WindowsColorMode",
+    "Arg": {
+      "Zero": {
+        "Tag": "Dark"
+      },
+      "One": {
+        "Tag": "Light"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 326,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "AppColorMode",
+    "Arg": {
+      "Zero": {
+        "Tag": "Dark"
+      },
+      "One": {
+        "Tag": "Light"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "false"
+  },
+  {
+    "Id": 327,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "FirstLogonAnimation",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 328,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "JPEGWallpapersQuality",
+    "Arg": {
+      "Zero": {
+        "Tag": "Max"
+      },
+      "One": {
+        "Tag": "Default"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 329,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "TaskManagerWindow",
+    "Arg": {
+      "Zero": {
+        "Tag": "Expanded"
+      },
+      "One": {
+        "Tag": "Compact"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 330,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "RestartNotification",
+    "Arg": {
+      "Zero": {
+        "Tag": "Show"
+      },
+      "One": {
+        "Tag": "Hide"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 331,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "ShortcutsSuffix",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 332,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "PrtScnSnippingTool",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 333,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "AppsLanguageSwitch",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 334,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "AeroShaking",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "One",
+    "WindowsDefault": "One",
+    "LTSC": "false"
+  },
+  {
+    "Id": 400,
+    "Region": "OneDrive",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "OneDrive",
+    "Arg": {
+      "Zero": {
+        "Tag": "Uninstall"
+      },
+      "One": {
+        "Tag": "Install"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "",
+    "LTSC": "false"
+  },
+  {
+    "Id": 500,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "StorageSense",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "",
+    "LTSC": "true"
+  },
+  {
+    "Id": 501,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "StorageSenseTempFiles",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "Zero",
+    "LTSC": "true"
+  },
+  {
+    "Id": 502,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "StorageSenseFrequency",
+    "Arg": {
+      "Zero": {
+        "Tag": "Month"
+      },
+      "One": {
+        "Tag": "Default"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "",
+    "LTSC": "true"
+  },
+  {
+    "Id": 503,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "Hibernation",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 504,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "TempFolder",
+    "Arg": {
+      "Zero": {
+        "Tag": "SystemDrive"
+      },
+      "One": {
+        "Tag": "Default"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 505,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "Win32LongPathLimit",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 506,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "BSoDStopError",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 507,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "AdminApprovalMode",
+    "Arg": {
+      "Zero": {
+        "Tag": "Never"
+      },
+      "One": {
+        "Tag": "Default"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 508,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "MappedDrivesAppElevatedAccess",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 509,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "DeliveryOptimization",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 510,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "WaitNetworkStartup",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 511,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "WindowsManageDefaultPrinter",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 512,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "WindowsFeatures",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 513,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "WindowsCapabilities",
+    "Arg": {
+      "Zero": {
+        "Tag": "Uninstall"
+      },
+      "One": {
+        "Tag": "Install"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 514,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "UpdateMicrosoftProducts",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 515,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "PowerPlan",
+    "Arg": {
+      "Zero": {
+        "Tag": "High"
+      },
+      "One": {
+        "Tag": "Balanced"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 516,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "LatestInstalled.NET",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 517,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "NetworkAdaptersSavePower",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 518,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "IPv6Component",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "One",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 519,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "InputMethod",
+    "Arg": {
+      "Zero": {
+        "Tag": "English"
+      },
+      "One": {
+        "Tag": "Default"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 520,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "SetUserShellFolderLocation",
+    "Arg": {
+      "Zero": {
+        "Tag": "Root"
+      },
+      "One": {
+        "Tag": "Custom"
+      },
+      "Two": {
+        "Tag": "Default"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "Two",
+    "LTSC": "true"
+  },
+  {
+    "Id": 521,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "WinPrtScrFolder",
+    "Arg": {
+      "Zero": {
+        "Tag": "Desktop"
+      },
+      "One": {
+        "Tag": "Default"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 522,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "RecommendedTroubleshooting",
+    "Arg": {
+      "Zero": {
+        "Tag": "Automatically"
+      },
+      "One": {
+        "Tag": "Default"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "false"
+  },
+  {
+    "Id": 523,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "FoldersLaunchSeparateProcess",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 524,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "ReservedStorage",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "false"
+  },
+  {
+    "Id": 525,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "F1HelpPage",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 526,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "NumLock",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 527,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "CapsLock",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "",
+    "WindowsDefault": "",
+    "LTSC": "true"
+  },
+  {
+    "Id": 528,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "StickyShift",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 529,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "Autoplay",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 530,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "ThumbnailCacheRemoval",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 531,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "SaveRestartableApps",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "false"
+  },
+  {
+    "Id": 532,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "NetworkDiscovery",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 533,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "ActiveHours",
+    "Arg": {
+      "Zero": {
+        "Tag": "Automatically"
+      },
+      "One": {
+        "Tag": "Manually"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 534,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "RestartDeviceAfterUpdate",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "false"
+  },
+  {
+    "Id": 535,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "DefaultTerminalApp",
+    "Arg": {
+      "Zero": {
+        "Tag": "WindowsTerminal"
+      },
+      "One": {
+        "Tag": "ConsoleHost"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "false",
+    "Win10": "false"
+  },
+  {
+    "Id": 600,
+    "Region": "WSL",
+    "Control": "chk",
+    "Required": "false",
+    "Function": "WSL",
+    "Arg": {
+      "Zero": {
+        "Tag": ""
+      }
+    },
+    "Preset": "",
+    "WindowsDefault": "",
+    "LTSC": "false"
+  },
+  {
+    "Id": 700,
+    "Region": "Start menu",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "RecentlyAddedApps",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 702,
+    "Region": "Start menu",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "RunPowerShellShortcut",
+    "Arg": {
+      "Zero": {
+        "Tag": "Elevated"
+      },
+      "One": {
+        "Tag": "NonElevated"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 800,
+    "Region": "UWP apps",
+    "Control": "chk",
+    "Required": "false",
+    "Function": "UninstallUWPApps",
+    "Arg": {
+      "Zero": {
+        "Tag": ""
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "",
+    "LTSC": "false"
+  },
+  {
+    "Id": 801,
+    "Region": "UWP apps",
+    "Control": "chk",
+    "Required": "false",
+    "Function": "UninstallUWPApps -ForAllUsers",
+    "Arg": {
+      "Zero": {
+        "Tag": ""
+      }
+    },
+    "Preset": "",
+    "WindowsDefault": "",
+    "LTSC": "false"
+  },
+  {
+    "Id": 802,
+    "Region": "UWP apps",
+    "Control": "chk",
+    "Required": "false",
+    "Function": "RestoreUWPApps",
+    "Arg": {
+      "Zero": {
+        "Tag": ""
+      }
+    },
+    "Preset": "",
+    "WindowsDefault": "",
+    "LTSC": "false"
+  },
+  {
+    "Id": 803,
+    "Region": "UWP apps",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "HEIF",
+    "Arg": {
+      "Zero": {
+        "Tag": "Manually"
+      },
+      "One": {
+        "Tag": "Install"
+      }
+    },
+    "Preset": "One",
+    "WindowsDefault": "",
+    "LTSC": "false"
+  },
+  {
+    "Id": 804,
+    "Region": "UWP apps",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "CortanaAutostart",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "false"
+  },
+{
+    "Id": 805,
+    "Region": "UWP apps",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "TeamsAutostart",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "false",
+    "Win10": "false"
+  },
+  {
+    "Id": 807,
+    "Region": "UWP apps",
+    "Control": "chk",
+    "Required": "false",
+    "Function": "CheckUWPAppsUpdates",
+    "Arg": {
+      "Zero": {
+        "Tag": ""
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "",
+    "LTSC": "false"
+  },
+  {
+    "Id": 901,
+    "Region": "Gaming",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "XboxGameTips",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 902,
+    "Region": "Gaming",
+    "Control": "chk",
+    "Required": "false",
+    "Function": "SetAppGraphicsPerformance",
+    "Arg": {
+      "Zero": {
+        "Tag": ""
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "",
+    "LTSC": "true"
+  },
+  {
+    "Id": 903,
+    "Region": "Gaming",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "GPUScheduling",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "false"
+  },
+  {
+    "Id": 1000,
+    "Region": "Scheduled tasks",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "CleanupTask",
+    "Arg": {
+      "Zero": {
+        "Tag": "Register"
+      },
+      "One": {
+        "Tag": "Delete"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1001,
+    "Region": "Scheduled tasks",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "SoftwareDistributionTask",
+    "Arg": {
+      "Zero": {
+        "Tag": "Register"
+      },
+      "One": {
+        "Tag": "Delete"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1002,
+    "Region": "Scheduled tasks",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "TempTask",
+    "Arg": {
+      "Zero": {
+        "Tag": "Register"
+      },
+      "One": {
+        "Tag": "Delete"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1100,
+    "Region": "Microsoft Defender & Security",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "NetworkProtection",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1101,
+    "Region": "Microsoft Defender & Security",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "PUAppsDetection",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1102,
+    "Region": "Microsoft Defender & Security",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "DefenderSandbox",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1103,
+    "Region": "Microsoft Defender & Security",
+    "Control": "chk",
+    "Required": "false",
+    "Function": "DismissMSAccount",
+    "Arg": {
+      "Zero": {
+        "Tag": ""
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1104,
+    "Region": "Microsoft Defender & Security",
+    "Control": "chk",
+    "Required": "false",
+    "Function": "DismissSmartScreenFilter",
+    "Arg": {
+      "Zero": {
+        "Tag": ""
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1105,
+    "Region": "Microsoft Defender & Security",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "AuditProcess",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1106,
+    "Region": "Microsoft Defender & Security",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "CommandLineProcessAudit",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1107,
+    "Region": "Microsoft Defender & Security",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "EventViewerCustomView",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1108,
+    "Region": "Microsoft Defender & Security",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "PowerShellModulesLogging",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1109,
+    "Region": "Microsoft Defender & Security",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "PowerShellScriptsLogging",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1110,
+    "Region": "Microsoft Defender & Security",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "AppsSmartScreen",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1111,
+    "Region": "Microsoft Defender & Security",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "SaveZoneInformation",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1112,
+    "Region": "Microsoft Defender & Security",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "WindowsScriptHost",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1113,
+    "Region": "Microsoft Defender & Security",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "WindowsSandbox",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1114,
+    "Region": "Microsoft Defender & Security",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "DNSoverHTTPS",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "",
+    "WindowsDefault": "One",
+    "LTSC": "false",
+    "Win10": "false"
+  },
+  {
+    "Id": 1200,
+    "Region": "Context menu",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "MSIExtractContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Show"
+      },
+      "One": {
+        "Tag": "Hide"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1201,
+    "Region": "Context menu",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "CABInstallContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Show"
+      },
+      "One": {
+        "Tag": "Hide"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1202,
+    "Region": "Context menu",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "RunAsDifferentUserContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Show"
+      },
+      "One": {
+        "Tag": "Hide"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1203,
+    "Region": "Context menu",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "CastToDeviceContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1204,
+    "Region": "Context menu",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "ShareContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1206,
+    "Region": "Context menu",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "EditWithPhotosContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "false"
+  },
+  {
+    "Id": 1207,
+    "Region": "Context menu",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "CreateANewVideoContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "false"
+  },
+  {
+    "Id": 1209,
+    "Region": "Context menu",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "PrintCMDContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1210,
+    "Region": "Context menu",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "IncludeInLibraryContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1211,
+    "Region": "Context menu",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "SendToContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1212,
+    "Region": "Context menu",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "BitLockerContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1215,
+    "Region": "Context menu",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "CompressedFolderNewContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1216,
+    "Region": "Context menu",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "MultipleInvokeContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1217,
+    "Region": "Context menu",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "UseStoreOpenWith",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "true"
+  },
+  {
+    "Id": 1218,
+    "Region": "Context menu",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "OpenWindowsTerminalContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "false",
+    "Win10": "false"
+  }
+]

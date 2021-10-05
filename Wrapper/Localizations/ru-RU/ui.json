@@ -2,9 +2,11 @@
   {
     "Id": "Menu",
     "Options": {
+      "menuImportExportPreset": "Импорт/экспорт",
       "menuImportPreset": "Импортировать пресет",
+      "menuExportPreset": "Экспортировать пресет",
       "menuPresets": "Пресеты",
-      "menuOpposite": "Наоборот",
+      "menuOpposite": "Противоположные значения",
       "menuClear": "Очистить",
       "menuTheme": "Тема",
       "menuThemeDark": "Тёмная",
@@ -17,7 +19,7 @@
     "Id": "Tab",
     "Options": {
       "tabSystemProtection": "Защита",
-      "tabPrivacyTelemetry": "Конфидениальность & телеметрия",
+      "tabPrivacyTelemetry": "Конфиденциальность & телеметрия",
       "tabUIPersonalization": "UI & персонализация",
       "tabOneDrive": "OneDrive",
       "tabSystem": "Система",
