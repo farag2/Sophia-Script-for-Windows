@@ -10768,7 +10768,7 @@ function WindowsSandbox
 	.NOTES
 	Machine-wide
 #>
-function DNSoverHTTPS
+function DNSoverHTTPS ###
 {
 	[CmdletBinding()]
 	param
@@ -10809,7 +10809,7 @@ function DNSoverHTTPS
 			if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain -eq $false)
 			{
 				# Set the DNS servers
-				Get-NetAdapter -Physical | Get-NetIPInterface -AddressFamily IPv4 | Get-NetIPConfiguration | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
+				Get-NetAdapter -Physical | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
 
 				$InterfaceGuid = (Get-NetAdapter -Physical).InterfaceGuid
 				if (-not (Test-Path -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS"))
@@ -11080,9 +11080,6 @@ function CastToDeviceContext
 
 	.EXAMPLE
 	ShareContext -Show
-
-	.NOTES
-	Showing the "Share" item in the context menu will disable the Windows 10 File Explorer
 
 	.NOTES
 	Current user
