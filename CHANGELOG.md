@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | LTSC 1809
+
+Diff from v5.12.3
+[5.12.3...5.12.4](https://github.com/farag2/Sophia-Script-for-Windows/compare/5.12.3...5.12.4)
+
+* Added `Sophia Script for Windows 11 (PowerShell 7)`
+* Fixed typo in the `MergeConflicts` function: the values were switched places by mistake;
+
+  ```powershell
+  # Hide
+  New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideMergeConflicts -PropertyType DWord -Value 1 -Force
+  # Show
+  New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideMergeConflicts -PropertyType DWord -Value 0 -Force
+  ```
+
+* Fixed some bugs in the `script.sophi.app` downloader;
+  * Now it supports Windows 11 PowerShell 7 too.
+* Minor changes.
+* Check out the 3rd [SophiApp](https://github.com/Sophia-Community/SophiApp) public alpha build :rocket:
+
+## Sophia Script Wrapper 2.5
+
+* You must import `Sophia.ps1` before using the Wrapper now. Disabled controls to do this;
+* Closed #252 (thnx to @Henry2o1o);
+* More JSONs. Split up Windows 10 and Windows 11 config and tooltip JSONs files;
+* Console Textbox is now resizable
+* Moved "Save As" button to ‘Export Preset’ in ‘Import/Export Preset’ menu
+* UI color changes
+* Fixed some bugs.
+
 ## 5.12.4 | 6.0.5 — 19.09.2021
 
 ## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | LTSC 1809
