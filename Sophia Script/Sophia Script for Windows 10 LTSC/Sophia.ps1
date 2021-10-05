@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10 LTSC"
 
-	Version: v5.2.14
-	Date: 19.09.2021
+	Version: v5.2.15
+	Date: 05.10.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & Inestic
@@ -21,7 +21,7 @@
 	.EXAMPLE Run the script by specifying the module functions as an argument
 	.\Sophia.ps1 -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
 
-	.EXAMPLE Download and expand the archive (without running) the latest Sophia Script according which Windows and PowerShell versions it is run on
+	.EXAMPLE Download and expand the latest Sophia Script version archive (without running) according which Windows and PowerShell versions it is run on
 	irm script.sophi.app | iex
 	Invoke-RestMethod -Uri script.sophi.app | Invoke-Expression
 
@@ -72,7 +72,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC v5.2.14 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014–2021"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC v5.2.15 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
