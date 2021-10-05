@@ -260,13 +260,8 @@ ThisPC -Show
 # Скрыть "Этот компьютер" на рабочем столе (значение по умолчанию)
 # ThisPC -Hide
 
-<#
-	Enable the Windows 10 File Explorer
-	Enabling the Windows 10 File Explorer will block the "Share" item context menu
-
-	Включить проводник из Windows 10
-	Включение проводника из Windows 10 cкроет пункт "Отправить" (поделиться) из контекстного меню
-#>
+# Enable the Windows 10 File Explorer
+# Включить проводник из Windows 10
 Windows10FileExplorer -Enable
 
 # Disable the Windows 10 File Explorer (default value)

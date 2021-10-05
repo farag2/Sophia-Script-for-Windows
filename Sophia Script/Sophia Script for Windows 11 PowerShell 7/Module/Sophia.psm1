@@ -1505,9 +1505,6 @@ function ThisPC
 	Windows10FileExplorer -Disable
 
 	.NOTES
-	Enabling the Windows 10 File Explorer will hide the "Share" item context menu
-
-	.NOTES
 	Current user
 #>
 function Windows10FileExplorer
@@ -1533,15 +1530,15 @@ function Windows10FileExplorer
 	{
 		"Enable"
 		{
-			if (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"))
+			if (-not (Test-Path -Path "HKCU:\Software\Classes\CLSID\{d93ed569-3b3e-4bff-8355-3c44f6a52bb5}\InprocServer32"))
 			{
-				New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Force
+				New-Item -Path "HKCU:\Software\Classes\CLSID\{d93ed569-3b3e-4bff-8355-3c44f6a52bb5}\InprocServer32" -Force
 			}
-			New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}" -PropertyType String -Value "" -Force
+			New-ItemProperty -Path "HKCU:\Software\Classes\CLSID\{d93ed569-3b3e-4bff-8355-3c44f6a52bb5}\InprocServer32" -Name "(default)" -PropertyType String -Value "" -Force
 		}
 		"Disable"
 		{
-			Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}" -Force -ErrorAction Ignore
+			Remove-Item -Path "HKCU:\Software\Classes\CLSID\{d93ed569-3b3e-4bff-8355-3c44f6a52bb5}" -Recurse -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -10869,7 +10866,7 @@ function DNSoverHTTPS
 			if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain -eq $false)
 			{
 				# Set the DNS servers
-				Get-NetAdapter -Physical | Get-NetIPInterface -AddressFamily IPv4 | Get-NetIPConfiguration | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
+				Get-NetAdapter -Physical | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
 
 				$InterfaceGuid = (Get-NetAdapter -Physical).InterfaceGuid
 				if (-not (Test-Path -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS"))
