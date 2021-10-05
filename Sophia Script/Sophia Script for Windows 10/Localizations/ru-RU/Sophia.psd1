@@ -74,6 +74,7 @@ Run                                       = Запустить
 SelectAll                                 = Выбрать всё
 Skip                                      = Пропустить
 Skipped                                   = Пропущено
+FileExplorerRestartPrompt                 = Иногда для того, чтобы изменения вступили в силу, процесс проводника необходимо перезапустить
 TelegramGroupTitle                        = Присоединяйтесь к нашей официальной группе в Telegram
 TelegramChannelTitle                      = Присоединяйтесь к нашему официальному каналу в Telegram
 Uninstall                                 = Удалить

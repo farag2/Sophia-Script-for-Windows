@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10"
 
-	Version: v5.12.3
-	Date: 19.09.2021
+	Version: v5.12.4
+	Date: 05.10.2021
 
 	Copyright (c) 2014–2021 farag
 	Copyright (c) 2019–2021 farag & Inestic
@@ -21,7 +21,7 @@
 	.EXAMPLE Run the script by specifying the module functions as an argument
 	.\Sophia.ps1 -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
 
-	.EXAMPLE Download and expand the archive (without running) the latest Sophia Script according which Windows and PowerShell versions it is run on
+	.EXAMPLE Download and expand the latest Sophia Script version archive (without running) according which Windows and PowerShell versions it is run on
 	irm script.sophi.app | iex
 	Invoke-RestMethod -Uri script.sophi.app | Invoke-Expression
 
@@ -72,7 +72,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.12.3 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014–2021"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.12.4 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014–2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -235,11 +235,11 @@ WhatsNewInWindows -Disable
 # Предлагать способы завершения настройки устройства для максимально эффективного использования Windows (значение по умолчанию)
 # WhatsNewInWindows -Enable
 
-# Do not let Microsoft offer you tailored expereinces based on the diagnostic data setting you hava chosen
+# Do not let Microsoft offer you tailored expereinces based on the diagnostic data setting you have chosen
 # Не разрешиать корпорации Майкософт использовать ваши диагностические данные для предоставления вам персонализированных советов, рекламы и рекомендаций, чтобы улучшить работу со службами Майкрософт
 TailoredExperiences -Disable
 
-# Let Microsoft offer you tailored expereinces based on the diagnostic data setting you hava chosen (default value)
+# Let Microsoft offer you tailored expereinces based on the diagnostic data setting you have chosen (default value)
 # Разрешите корпорации Майкософт использовать ваши диагностические данные для предоставления вам персонализированных советов, рекламы и рекомендаций, чтобы улучшить работу со службами Майкрософт (значение по умолчанию)
 # TailoredExperiences -Enable
 
@@ -537,12 +537,12 @@ AppsLanguageSwitch -Enable
 # Не использовать метод ввода для каждого окна (значение по умолчанию)
 # AppsLanguageSwitch -Disable
 
-# When I grab a windows's title bar and shake it, minimize all other windows
-# При захвате заголовка окна и встряхивании сворачиваются все остальные окна
+# When I grab a windows's title bar and shake it, minimize all other windows (default value)
+# При захвате заголовка окна и встряхивании сворачиваются все остальные окна (значение по умолчанию)
 AeroShaking -Enable
 
-# When I grab a windows's title bar and shake it, don't minimize all other windows (default value)
-# При захвате заголовка окна и встряхивании не сворачиваются все остальные окна (значение по умолчанию)
+# When I grab a windows's title bar and shake it, don't minimize all other windows
+# При захвате заголовка окна и встряхивании не сворачиваются все остальные окна
 # AeroShaking -Disable
 #endregion UI & Personalization
 
@@ -551,8 +551,8 @@ AeroShaking -Enable
 # Удалить OneDrive. Папка пользователя OneDrive не будет удалена
 OneDrive -Uninstall
 
-# Install OneDrive (default value)
-# Установить OneDrive (значение по умолчанию)
+# Install OneDrive 64-bit (default value)
+# Установить OneDrive 64-бит (значение по умолчанию)
 # OneDrive -Install
 #endregion OneDrive
 
@@ -910,8 +910,13 @@ RestartDeviceAfterUpdate -Enable
 #endregion System
 
 #region WSL
-# Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form
-# Установить подсистему Windows для Linux (WSL), последний пакет обновления ядра Linux и дистрибутив Linux, используя всплывающую форму
+<#
+	Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form
+	To receive kernel updates, enable the Windows Update setting: "Receive updates for other Microsoft products"
+
+	Установить подсистему Windows для Linux (WSL), последний пакет обновления ядра Linux и дистрибутив Linux, используя всплывающую форму
+	Чтобы получать обновления ядра, включите параметр "При обновлении Windows поулчать обновления для других продуктов Майкрософт" в Центре обновлении Windows
+#>
 # WSL -Enable
 #endregion WSL
 

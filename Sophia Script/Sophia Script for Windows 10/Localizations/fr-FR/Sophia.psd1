@@ -74,6 +74,7 @@ Run                                       = Démarrer
 SelectAll                                 = Tout sélectionner
 Skip                                      = Passer
 Skipped                                   = Passé
+FileExplorerRestartPrompt                 = Parfois, pour que les modifications soient prises en compte, il faut redémarrer l'Explorateur de fichiers
 TelegramGroupTitle                        = Rejoignez notre groupe Telegram officiel
 TelegramChannelTitle                      = Rejoignez notre canal Telegram officiel
 Uninstall                                 = Désinstaller

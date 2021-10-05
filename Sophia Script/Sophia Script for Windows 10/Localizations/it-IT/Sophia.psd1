@@ -74,6 +74,7 @@ Run                                       = Eseguire
 SelectAll                                 = Seleziona tutto
 Skip                                      = Salta
 Skipped                                   = Saltato
+FileExplorerRestartPrompt                 = A volte, affinché le modifiche abbiano effetto, il processo di File Explorer deve essere riavviato
 TelegramGroupTitle                        = Unisciti al nostro gruppo ufficiale Telegram
 TelegramChannelTitle                      = Unisciti al nostro canale ufficiale di Telegram
 Uninstall                                 = Disinstallare

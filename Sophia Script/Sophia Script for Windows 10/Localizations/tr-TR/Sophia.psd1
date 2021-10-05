@@ -74,6 +74,7 @@ Run                                       = Başlat
 SelectAll                                 = Hepsini seç
 Skip                                      = Atla
 Skipped                                   = Atlandı
+FileExplorerRestartPrompt                 = Bazen değişikliklerin geçerli olması için Dosya Gezgini işleminin yeniden başlatılması gerekir
 TelegramGroupTitle                        = Resmi Telegram grubumuza katılın
 TelegramChannelTitle                      = Resmi Telegram kanalımıza katılın
 Uninstall                                 = Kaldır
