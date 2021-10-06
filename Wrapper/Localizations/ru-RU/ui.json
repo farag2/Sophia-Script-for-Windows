@@ -54,7 +54,8 @@
       "statusBarPowerShellSaveAs": "Скрипт для PowerShell создан!",
       "statusBarPowerShellSave": "Изменения сохранены в файл",
       "statusBarOpposite": "Выбраны обратные настройки!",
-      "statusBarClear": "Выбранные элементы очищены!"
+      "statusBarClear": "Выбранные элементы очищены!",
+      "statusBarDisabled": "Вы должны сначала «Импортировать пресет», чтобы использовать Wrapper. Импортируйте, чтобы включить элементы управления."
     }
   },
   {
