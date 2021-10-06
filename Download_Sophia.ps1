@@ -57,9 +57,7 @@ if ($Wrapper)
 
 	Start-Sleep -Second 1
 
-	Invoke-Item -Path "$DownloadsFolder\Sophia Script Wrapper v$LatestGitHubRelease"
-
-	exit
+	Invoke-Item -Path "$DownloadsFolder\Sophia Script Wrapper v$LatestRelease"
 }
 
 switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
