@@ -333,8 +333,7 @@
     },
     "Preset": "Zero",
     "WindowsDefault": "One",
-    "LTSC": "false",
-    "Win10": "false"
+    "LTSC": "false"
   },
   {
     "Id": 302,
@@ -442,8 +441,7 @@
     },
     "Preset": "Zero",
     "WindowsDefault": "One",
-    "LTSC": "false",
-    "Win10": "false"
+    "LTSC": "false"
   },
   {
     "Id": 308,
@@ -479,8 +477,7 @@
     },
     "Preset": "Zero",
     "WindowsDefault": "Zero",
-    "LTSC": "false",
-    "Win10": "false"
+    "LTSC": "false"
   },
   {
     "Id": 310,
@@ -588,8 +585,7 @@
     },
     "Preset": "Zero",
     "WindowsDefault": "One",
-    "LTSC": "false",
-    "Win10": "false"
+    "LTSC": "false"
   },
   {
     "Id": 316,
@@ -607,8 +603,7 @@
     },
     "Preset": "Zero",
     "WindowsDefault": "One",
-    "LTSC": "false",
-    "Win10": "false"
+    "LTSC": "false"
   },
   {
     "Id": 317,
@@ -644,8 +639,7 @@
     },
     "Preset": "Zero",
     "WindowsDefault": "One",
-    "LTSC": "false",
-    "Win10": "false"
+    "LTSC": "false"
   },
   {
     "Id": 319,
@@ -663,8 +657,7 @@
     },
     "Preset": "Zero",
     "WindowsDefault": "One",
-    "LTSC": "false",
-    "Win10": "false"
+    "LTSC": "false"
   },
   {
     "Id": 320,
@@ -679,8 +672,7 @@
     },
     "Preset": "Zero",
     "WindowsDefault": "",
-    "LTSC": "true",
-    "Win10": "false"
+    "LTSC": "true"
   },
   {
     "Id": 321,
@@ -698,8 +690,7 @@
     },
     "Preset": "",
     "WindowsDefault": "",
-    "LTSC": "false",
-    "Win10": "false"
+    "LTSC": "false"
   },
   {
     "Id": 322,
@@ -720,8 +711,7 @@
     },
     "Preset": "One",
     "WindowsDefault": "One",
-    "LTSC": "false",
-    "Win10": "false"
+    "LTSC": "false"
   },
   {
     "Id": 323,
@@ -1591,8 +1581,7 @@
     },
     "Preset": "Zero",
     "WindowsDefault": "One",
-    "LTSC": "false",
-    "Win10": "false"
+    "LTSC": "false"
   },
   {
     "Id": 600,
@@ -1742,8 +1731,7 @@
     },
     "Preset": "Zero",
     "WindowsDefault": "One",
-    "LTSC": "false",
-    "Win10": "false"
+    "LTSC": "false"
   },
   {
     "Id": 807,
@@ -2127,8 +2115,7 @@
     },
     "Preset": "",
     "WindowsDefault": "One",
-    "LTSC": "false",
-    "Win10": "false"
+    "LTSC": "false"
   },
   {
     "Id": 1200,
@@ -2398,7 +2385,6 @@
     },
     "Preset": "Zero",
     "WindowsDefault": "One",
-    "LTSC": "false",
-    "Win10": "false"
+    "LTSC": "false"
   }
 ]
