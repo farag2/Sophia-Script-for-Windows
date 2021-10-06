@@ -31,7 +31,7 @@ Invoke-RestMethod -Uri script.sophi.app | Invoke-Expression
   Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}" -Force -ErrorAction Ignore
   ```
   * And then invoke a new `Windows10FileExplorer` [(how-to)](https://github.com/farag2/Sophia-Script-for-Windows#how-to-run-the-specific-functions);
- * Remove `Windows10FileExplorerRibbon` because I "feel" the classic Windows 10 File Explorer day is near and the code will be removed sooner or later in the next Windows 11 builds;
+ * Remove `Windows10FileExplorerRibbon` because I "feel" the classic Windows 10 File Explorer days are near and the code will be removed sooner or later in the next Windows 11 builds;
 * Fixed typo in the `MergeConflicts` function: the values were switched places by mistake;
 
   ```powershell
@@ -41,6 +41,7 @@ Invoke-RestMethod -Uri script.sophi.app | Invoke-Expression
   New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideMergeConflicts -PropertyType DWord -Value 0 -Force
   ```
 
+* Add the `OpenWindowsTerminalAdminContext -Show` function for Windows 11 only to allow opening `Windows Terminal` as admin in the Desktop and folders context menu;
 * Fixed some bugs in the `script.sophi.app` downloader;
   * Now it supports Windows 11 PowerShell 7 too.
 * Minor changes.
