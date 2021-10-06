@@ -49,7 +49,7 @@ Invoke-RestMethod -Uri script.sophi.app | Invoke-Expression
 ## Sophia Script Wrapper 2.5
 
 * You must import `Sophia.ps1` before using the Wrapper now. Disabled controls to do this;
-* Closed #252 (thnx to @Henry2o1o);
+* Closed #252, #253 (thnx to @Henry2o1o);
 * More JSONs. Split up Windows 10 and Windows 11 config and tooltip JSONs files;
 * Console Textbox is now resizable
 * Moved "Save As" button to ‘Export Preset’ in ‘Import/Export Preset’ menu
