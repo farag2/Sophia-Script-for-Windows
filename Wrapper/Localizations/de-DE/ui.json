@@ -54,7 +54,8 @@
       "statusBarPowerShellSaveAs": "PowerShell Skript erstellt!",
       "statusBarPowerShellSave": "Änderungen gespeichert in",
       "statusBarOpposite": "Umgekehrte Einstellungen ausgewählt!",
-      "statusBarClear": "Auswahlen alle gelöscht!"
+      "statusBarClear": "Auswahlen alle gelöscht!",
+      "statusBarDisabled": "Sie müssen zuerst 'Voreinstellung importieren', um die Verwendung von Wrapper zu aktivieren. Importieren, um Steuerelemente zu aktivieren."
     }
   },
   {
