@@ -10,7 +10,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Diff from v5.12.3
 [5.12.3...5.12.4](https://github.com/farag2/Sophia-Script-for-Windows/compare/5.12.3...5.12.4)
 
+* Now you can download the always latest Sophia Script archive by invoking (`not as administrator too`) in PowerShell console
+
+```powershell
+irm script.sophi.app | iex
+```
+
+or without using aliases
+
+```powershell
+Invoke-RestMethod -Uri script.sophi.app | Invoke-Expression
+```
+
+* The command will download and expand the archive (`without running`) the latest Sophia Script according which Windows and PowerShell versions it is run on. If you run it on Windows 11 via PowerShell 5.1, it will download Sophia Script for `Windows 11 PowerShell 5.1`.
 * Added `Sophia Script for Windows 11 (PowerShell 7)`
+* Updated the `Windows10FileExplorer` function for Windows 11;
+  * Invoke to revert changes
+
+  ```powershell
+  Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}" -Force -ErrorAction Ignore
+  ```
+  * And then invoke a new `Windows10FileExplorer` [(how-to)](https://github.com/farag2/Sophia-Script-for-Windows#how-to-run-the-specific-functions);
+ * Remove `Windows10FileExplorerRibbon` because I "feel" the classic Windows 10 File Explorer day is near and the code will be removed sooner or later in the next Windows 11 builds;
 * Fixed typo in the `MergeConflicts` function: the values were switched places by mistake;
 
   ```powershell
