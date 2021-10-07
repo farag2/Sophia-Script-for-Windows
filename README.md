@@ -270,7 +270,16 @@ or without using aliases
 Invoke-RestMethod -Uri script.sophi.app | Invoke-Expression
 ```
 
-* The command will download and expand the archive (`without running`) the latest Sophia Script according which Windows and PowerShell versions it is run on. For example, ff you run it on Windows 11 via PowerShell 5.1, it will download Sophia Script for `Windows 11 PowerShell 5.1`.
+* The command will download and expand the archive (`without running`) the latest Sophia Script according which Windows and PowerShell versions it is run on. For example, if you run it on Windows 11 via PowerShell 5.1, it will download Sophia Script for `Windows 11 PowerShell 5.1`.
+
+# Supported variations to launch the command on
+
+* Windows 10
+  * PowerShell 5.1;
+  * PowerShell 7.1;
+* Windows 11
+  * PowerShell 5.1;
+  * PowerShell 7.1;
 
 ## How to translate
 
