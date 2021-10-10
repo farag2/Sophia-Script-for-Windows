@@ -14,7 +14,7 @@
   <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases"><img src="https://img.shields.io/github/v/release/farag2/Sophia-Script-for-Windows"></a>
 
   <a href="https://twitter.com/tea_head_"><img src="https://img.shields.io/badge/Logo%20by-teahead-blue?style=flat&logo=Twitter"></a>
-  <img src="https://img.shields.io/badge/Made%20with-%E2%9D%A4-149ce2.svg?color=149ce2">
+  <img src="https://img.shields.io/badge/Made%20with-149ce2.svg?color=149ce2"><img src="https://github.com/websemantics/bragit/blob/master/demo/img/heart.svg" height="17px"/>
 
   <a href="https://t.me/SophiaNews"><img src="https://img.shields.io/badge/Sophia%20News-Telegram-blue?style=flat&logo=Telegram"></a>
   <a href="https://t.me/Sophia_Chat"><img src="https://img.shields.io/badge/Sophia%20Chat-Telegram-blue?style=flat&logo=Telegram"></a>
