@@ -24,10 +24,3 @@ body:
       Paste your Sophia Script preset
   validations:
     required: true
-- type: dropdown
-  attributes:
-    label: How many rooms in your house are dedicated to cats?
-    options:
-    - 1
-    - 2
-    - All of them
