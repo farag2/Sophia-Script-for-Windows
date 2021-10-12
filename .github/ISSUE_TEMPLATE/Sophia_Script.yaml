@@ -1,0 +1,17 @@
+---
+name: Sophia Script 🐛
+description: Report errors or unexpected behavior 🤔
+body:
+- type: textarea
+  attributes:
+    label: Your favorite cat
+    placeholder: "Examples: Garfield, Maru, Mr. Mistoffolees"
+  validations:
+    required: true
+- type: dropdown
+  attributes:
+    label: How many rooms in your house are dedicated to cats?
+    options:
+    - 1
+    - 2
+    - All of them
