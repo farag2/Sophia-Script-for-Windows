@@ -101,19 +101,19 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 # Windows 11
 
-|Version|    Marketing name   |  Build    |      Editions     | Script version |
-|:-----:|:-------------------:|:---------:|:-----------------:|:--------------:|
-| 21H2  | October 2021 Update | 22000.194 |Home/Pro/Enterprise|[6.0.5](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+|Version|   Build   |      Editions     | Script version |
+|:-----:|:---------:|:-----------------:|:--------------:|
+| 21H2  | 22000.194 |Home/Pro/Enterprise|[6.0.5](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 
 # Windows 10
 
-|Version|    Marketing name   | Build | Arch|      Editions     | Script version |
-|:-----:|:-------------------:|:-----:|:---:|:-----------------:|:--------------:|
+|Version|    Marketing name   | Build | Arch|      Editions          | Script version |
+|:-----:|:-------------------:|:----------:|:---:|:----------------------:|:--------------:|
 | 21H2  | October 2021 Update | 19044.1151 | x64 |Home/Pro/Enterprise|[5.12.4](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 | 21H1  | May 2021 Update     | 19043.1151 | x64 |Home/Pro/Enterprise|[5.12.4](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 | 20H2  | October 2020 Update | 19042.1151 | x64 |Home/Pro/Enterprise|[5.12.4](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 | 2004  | May 2020 Update     | 19041.1151 | x64 |Home/Pro/Enterprise|[5.12.4](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 1809  | LTSC Enterprise 2019| 17763 | x64 |   Enterprise      |[5.2.15](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 1809  | Enterprise LTSC 2019| 17763      | x64 |   Enterprise      |[5.2.15](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 
 ## Screenshots
 
