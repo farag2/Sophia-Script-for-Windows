@@ -195,7 +195,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ## How to use
 
-* Choose the right script version for your Windows 10;
+* Choose the right script version for your `Windows`;
 * Download [up-to-date version](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest);
 * Expand the archive;
 * Open folder with the expanded archive;
