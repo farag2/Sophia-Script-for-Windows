@@ -30,8 +30,9 @@ Invoke-RestMethod -Uri script.sophi.app | Invoke-Expression
   ```powershell
   Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}" -Force -ErrorAction Ignore
   ```
+
   * And then invoke a new `Windows10FileExplorer` [(how-to)](https://github.com/farag2/Sophia-Script-for-Windows#how-to-run-the-specific-functions);
- * Remove `Windows10FileExplorerRibbon` because I "feel" the classic Windows 10 File Explorer days are near and the code will be removed sooner or later in the next Windows 11 builds;
+* Removed `Windows10FileExplorerRibbon` because I "feel" the classic Windows 10 File Explorer days are near and the code will be removed sooner or later in the next Windows 11 builds;
 * Fixed typo in the `MergeConflicts` function: the values were switched places by mistake;
 
   ```powershell
