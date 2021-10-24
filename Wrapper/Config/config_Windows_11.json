@@ -192,6 +192,24 @@
     "LTSC": "true"
   },
   {
+    "Id": 208,
+    "Region": "Privacy & Telemetry",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "WindowsWelcomeExperience",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "One",
+    "WindowsDefault": "One",
+    "LTSC": "false"
+  },
+  {
     "Id": 209,
     "Region": "Privacy & Telemetry",
     "Control": "cmb",
@@ -664,21 +682,6 @@
     "Region": "UI & Personalization",
     "Control": "chk",
     "Required": "false",
-    "Function": "NotificationAreaIcons",
-    "Arg": {
-      "Zero": {
-        "Tag": ""
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "",
-    "LTSC": "true"
-  },
-  {
-    "Id": 321,
-    "Region": "UI & Personalization",
-    "Control": "chk",
-    "Required": "false",
     "Function": "UnpinTaskbarShortcuts -Shortcuts",
     "Arg": {
       "Zero": {
@@ -693,28 +696,7 @@
     "LTSC": "false"
   },
   {
-    "Id": 322,
-    "Region": "UI & Personalization",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "TaskbarSize",
-    "Arg": {
-      "Zero": {
-        "Tag": "Large"
-      },
-      "One": {
-        "Tag": "Default"
-      },
-      "Two": {
-        "Tag": "Small"
-      }
-    },
-    "Preset": "One",
-    "WindowsDefault": "One",
-    "LTSC": "false"
-  },
-  {
-    "Id": 323,
+    "Id": 321,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -735,7 +717,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 324,
+    "Id": 322,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -753,7 +735,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 325,
+    "Id": 323,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -771,7 +753,7 @@
     "LTSC": "false"
   },
   {
-    "Id": 326,
+    "Id": 324,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -789,7 +771,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 327,
+    "Id": 325,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -807,7 +789,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 328,
+    "Id": 326,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -825,7 +807,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 329,
+    "Id": 327,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -843,7 +825,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 330,
+    "Id": 328,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -861,7 +843,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 331,
+    "Id": 329,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -879,7 +861,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 332,
+    "Id": 330,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -897,7 +879,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 333,
+    "Id": 331,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -955,24 +937,6 @@
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
-    "Function": "StorageSenseTempFiles",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable"
-      },
-      "One": {
-        "Tag": "Disable"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "Zero",
-    "LTSC": "true"
-  },
-  {
-    "Id": 502,
-    "Region": "System",
-    "Control": "cmb",
-    "Required": "false",
     "Function": "StorageSenseFrequency",
     "Arg": {
       "Zero": {
@@ -984,6 +948,24 @@
     },
     "Preset": "Zero",
     "WindowsDefault": "",
+    "LTSC": "true"
+  },
+  {
+    "Id": 502,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "StorageSenseTempFiles",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "Zero",
     "LTSC": "true"
   },
   {
@@ -1429,14 +1411,14 @@
     "Function": "CapsLock",
     "Arg": {
       "Zero": {
-        "Tag": "Enable"
+        "Tag": "Disable"
       },
       "One": {
-        "Tag": "Disable"
+        "Tag": "Enable"
       }
     },
     "Preset": "",
-    "WindowsDefault": "",
+    "WindowsDefault": "One",
     "LTSC": "true"
   },
   {
@@ -1603,24 +1585,6 @@
     "Region": "Start menu",
     "Control": "cmb",
     "Required": "false",
-    "Function": "RecentlyAddedApps",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide"
-      },
-      "One": {
-        "Tag": "Show"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One",
-    "LTSC": "true"
-  },
-  {
-    "Id": 702,
-    "Region": "Start menu",
-    "Control": "cmb",
-    "Required": "false",
     "Function": "RunPowerShellShortcut",
     "Arg": {
       "Zero": {
@@ -1715,7 +1679,7 @@
     "WindowsDefault": "One",
     "LTSC": "false"
   },
-{
+  {
     "Id": 805,
     "Region": "UWP apps",
     "Control": "cmb",
@@ -1734,7 +1698,7 @@
     "LTSC": "false"
   },
   {
-    "Id": 807,
+    "Id": 806,
     "Region": "UWP apps",
     "Control": "chk",
     "Required": "false",
@@ -1749,7 +1713,7 @@
     "LTSC": "false"
   },
   {
-    "Id": 901,
+    "Id": 900,
     "Region": "Gaming",
     "Control": "cmb",
     "Required": "false",
@@ -1767,7 +1731,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 902,
+    "Id": 901,
     "Region": "Gaming",
     "Control": "chk",
     "Required": "false",
@@ -1782,7 +1746,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 903,
+    "Id": 902,
     "Region": "Gaming",
     "Control": "cmb",
     "Required": "false",
@@ -2208,7 +2172,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 1206,
+    "Id": 1205,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2226,7 +2190,7 @@
     "LTSC": "false"
   },
   {
-    "Id": 1207,
+    "Id": 1206,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2244,7 +2208,7 @@
     "LTSC": "false"
   },
   {
-    "Id": 1209,
+    "Id": 1207,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2262,7 +2226,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 1210,
+    "Id": 1208,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2280,7 +2244,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 1211,
+    "Id": 1209,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2298,7 +2262,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 1212,
+    "Id": 1210,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2316,7 +2280,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 1215,
+    "Id": 1211,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2334,7 +2298,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 1216,
+    "Id": 1212,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2352,7 +2316,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 1217,
+    "Id": 1213,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2370,7 +2334,7 @@
     "LTSC": "true"
   },
   {
-    "Id": 1218,
+    "Id": 1214,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2385,6 +2349,42 @@
     },
     "Preset": "Zero",
     "WindowsDefault": "One",
+    "LTSC": "false"
+  },
+  {
+    "Id": 1215,
+    "Region": "Context menu",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "OpenWindowsTerminalAdminContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Show"
+      },
+      "One": {
+        "Tag": "Hide"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC": "false"
+  },
+  {
+    "Id": 1216,
+    "Region": "Context menu",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "Windows10ContextMenu",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "Zero",
     "LTSC": "false"
   }
 ]

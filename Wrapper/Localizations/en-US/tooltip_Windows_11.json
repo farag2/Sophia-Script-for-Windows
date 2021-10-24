@@ -384,21 +384,6 @@
   {
     "Id": 308,
     "Region": "UI & Personalization",
-    "Function": "CortanaButton",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide Cortana button on the taskbar"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show Cortana button on the taskbar (default value)"
-      }
-    }
-  },
-  {
-    "Id": 309,
-    "Region": "UI & Personalization",
     "Function": "OneDriveFileExplorerAd",
     "Arg": {
       "Zero": {
@@ -412,7 +397,7 @@
     }
   },
   {
-    "Id": 310,
+    "Id": 309,
     "Region": "UI & Personalization",
     "Function": "SnapAssistFlyout",
     "Arg": {
@@ -427,7 +412,7 @@
     }
   },
   {
-    "Id": 311,
+    "Id": 310,
     "Region": "UI & Personalization",
     "Function": "SnapAssist",
     "Arg": {
@@ -442,7 +427,7 @@
     }
   },
   {
-    "Id": 312,
+    "Id": 311,
     "Region": "UI & Personalization",
     "Function": "FileTransferDialog",
     "Arg": {
@@ -457,22 +442,7 @@
     }
   },
   {
-    "Id": 313,
-    "Region": "UI & Personalization",
-    "Function": "FileExplorerRibbon",
-    "Arg": {
-      "Zero": {
-        "Tag": "Expanded",
-        "ToolTip": "Expand the File Explorer ribbon"
-      },
-      "One": {
-        "Tag": "Minimized",
-        "ToolTip": "Minimize the File Explorer ribbon (default value)"
-      }
-    }
-  },
-  {
-    "Id": 314,
+    "Id": 312,
     "Region": "UI & Personalization",
     "Function": "RecycleBinDeleteConfirmation",
     "Arg": {
@@ -487,22 +457,7 @@
     }
   },
   {
-    "Id": 315,
-    "Region": "UI & Personalization",
-    "Function": "3DObjects",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"3D Objects\" folder in \"This PC\" and \"Quick access\""
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show the \"3D Objects\" folder in \"This PC\" and \"Quick access\" (default value)"
-      }
-    }
-  },
-  {
-    "Id": 316,
+    "Id": 313,
     "Region": "UI & Personalization",
     "Function": "QuickAccessRecentFiles",
     "Arg": {
@@ -517,7 +472,7 @@
     }
   },
   {
-    "Id": 317,
+    "Id": 314,
     "Region": "UI & Personalization",
     "Function": "QuickAccessFrequentFolders",
     "Arg": {
@@ -532,7 +487,7 @@
     }
   },
   {
-    "Id": 318,
+    "Id": 315,
     "Region": "UI & Personalization",
     "Function": "TaskbarAlignment",
     "Arg": {
@@ -547,7 +502,7 @@
     }
   },
   {
-    "Id": 319,
+    "Id": 316,
     "Region": "UI & Personalization",
     "Function": "TaskbarSearch",
     "Arg": {
@@ -562,7 +517,7 @@
     }
   },
   {
-    "Id": 320,
+    "Id": 317,
     "Region": "UI & Personalization",
     "Function": "TaskViewButton",
     "Arg": {
@@ -577,7 +532,7 @@
     }
   },
   {
-    "Id": 321,
+    "Id": 318,
     "Region": "UI & Personalization",
     "Function": "TaskbarWidgets",
     "Arg": {
@@ -592,7 +547,7 @@
     }
   },
   {
-    "Id": 322,
+    "Id": 319,
     "Region": "UI & Personalization",
     "Function": "TaskbarChat",
     "Arg": {
@@ -607,115 +562,10 @@
     }
   },
   {
-    "Id": 323,
-    "Region": "UI & Personalization",
-    "Function": "PeopleTaskbar",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide People button on the taskbar"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show People button on the taskbar (default value)"
-      }
-    }
-  },
-  {
-    "Id": 324,
-    "Region": "UI & Personalization",
-    "Function": "SecondsInSystemClock",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Show seconds on the taskbar clock"
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Hide seconds on the taskbar clock (default value)"
-      }
-    }
-  },
-  {
-    "Id": 325,
-    "Region": "UI & Personalization",
-    "Function": "TaskbarSearch",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the search on the taskbar"
-      },
-      "One": {
-        "Tag": "SearchIcon",
-        "ToolTip": "Show the search icon on the taskbar"
-      },
-      "Two": {
-        "Tag": "SearchBox",
-        "ToolTip": "Show the search box on the taskbar (default value)"
-      }
-    }
-  },
-  {
-    "Id": 326,
-    "Region": "UI & Personalization",
-    "Function": "WindowsInkWorkspace",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the Windows Ink Workspace button on the taskbar"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show the Windows Ink Workspace button in taskbar (default value)"
-      }
-    }
-  },
-  {
-    "Id": 327,
-    "Region": "UI & Personalization",
-    "Function": "NotificationAreaIcons",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Open the \"Notification Area Icons\" page in Control Panel to enable \"Always show all icons in the notification area\" settings manually"
-      }
-    }
-  },
-  {
-    "Id": 328,
-    "Region": "UI & Personalization",
-    "Function": "MeetNow",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the Meet Now icon in the notification area"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show the Meet Now icon in the notification area (default value)"
-      }
-    }
-  },
-  {
-    "Id": 329,
-    "Region": "UI & Personalization",
-    "Function": "NewsInterests",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Disable \"News and Interests\" on the taskbar"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Enable \"News and Interests\" on the taskbar (default value)"
-      }
-    }
-  },
-  {
-    "Id": 330,
+    "Id": 320,
     "Region": "UI & Personalization",
     "Function": "UnpinTaskbarShortcuts -Shortcuts",
-    "ToolTip": "Unpin the \"Microsoft Edge\", \"Microsoft Store\", or \"Mail\" shortcuts from the taskbar",
+    "ToolTip": "Unpin the \"Microsoft Edge\" and \"Microsoft Store\" shortcuts from the taskbar",
     "Arg": {
       "Zero": {
         "Tag": "Edge",
@@ -724,34 +574,11 @@
       "One": {
         "Tag": "Store",
         "ToolTip": "Unpin the \"Microsoft Store\" shortcut from the taskbar"
-      },
-      "Two": {
-        "Tag": "Mail",
-        "ToolTip": "Unpin the \"Mail\" shortcut from the taskbar"
       }
     }
   },
   {
-    "Id": 331,
-    "Region": "UI & Personalization",
-    "Function": "TaskbarSize",
-    "Arg": {
-      "Zero": {
-        "Tag": "Large",
-        "ToolTip": "Make the taskbar size large"
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Make the taskbar size default"
-      },
-      "Two": {
-        "Tag": "Small",
-        "ToolTip": "Make the taskbar size small"
-      }
-    }
-  },
-  {
-    "Id": 332,
+    "Id": 321,
     "Region": "UI & Personalization",
     "Function": "ControlPanelView",
     "Arg": {
@@ -770,7 +597,7 @@
     }
   },
   {
-    "Id": 333,
+    "Id": 322,
     "Region": "UI & Personalization",
     "Function": "WindowsColorMode",
     "Arg": {
@@ -785,7 +612,7 @@
     }
   },
   {
-    "Id": 334,
+    "Id": 323,
     "Region": "UI & Personalization",
     "Function": "AppColorMode",
     "Arg": {
@@ -800,22 +627,7 @@
     }
   },
   {
-    "Id": 335,
-    "Region": "UI & Personalization",
-    "Function": "NewAppInstalledNotification",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"New App Installed\" indicator"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show the \"New App Installed\" indicator (default value)"
-      }
-    }
-  },
-  {
-    "Id": 336,
+    "Id": 324,
     "Region": "UI & Personalization",
     "Function": "FirstLogonAnimation",
     "Arg": {
@@ -830,7 +642,7 @@
     }
   },
   {
-    "Id": 337,
+    "Id": 325,
     "Region": "UI & Personalization",
     "Function": "JPEGWallpapersQuality",
     "Arg": {
@@ -845,7 +657,7 @@
     }
   },
   {
-    "Id": 338,
+    "Id": 326,
     "Region": "UI & Personalization",
     "Function": "TaskManagerWindow",
     "Arg": {
@@ -860,7 +672,7 @@
     }
   },
   {
-    "Id": 339,
+    "Id": 327,
     "Region": "UI & Personalization",
     "Function": "RestartNotification",
     "Arg": {
@@ -875,7 +687,7 @@
     }
   },
   {
-    "Id": 340,
+    "Id": 328,
     "Region": "UI & Personalization",
     "Function": "ShortcutsSuffix",
     "Arg": {
@@ -890,7 +702,7 @@
     }
   },
   {
-    "Id": 341,
+    "Id": 329,
     "Region": "UI & Personalization",
     "Function": "PrtScnSnippingTool",
     "Arg": {
@@ -905,7 +717,7 @@
     }
   },
   {
-    "Id": 342,
+    "Id": 330,
     "Region": "UI & Personalization",
     "Function": "AppsLanguageSwitch",
     "Arg": {
@@ -920,7 +732,7 @@
     }
   },
   {
-    "Id": 343,
+    "Id": 331,
     "Region": "UI & Personalization",
     "Function": "AeroShaking",
     "Arg": {
@@ -945,7 +757,7 @@
       },
       "One": {
         "Tag": "Install",
-        "ToolTip": "Install OneDrive"
+        "ToolTip": "Install OneDrive 64-bit"
       }
     }
   },
@@ -967,21 +779,6 @@
   {
     "Id": 501,
     "Region": "System",
-    "Function": "StorageSenseTempFiles",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Delete temporary files that apps aren't using (default value)"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Do not delete temporary files that apps aren't using"
-      }
-    }
-  },
-  {
-    "Id": 502,
-    "Region": "System",
     "Function": "StorageSenseFrequency",
     "Arg": {
       "Zero": {
@@ -991,6 +788,21 @@
       "One": {
         "Tag": "Default",
         "ToolTip": "Run Storage Sense during low free disk space (default value)"
+      }
+    }
+  },
+  {
+    "Id": 502,
+    "Region": "System",
+    "Function": "StorageSenseTempFiles",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Delete temporary files that apps aren't using (default value)"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Do not delete temporary files that apps aren't using"
       }
     }
   },
@@ -1275,11 +1087,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Desktop",
-        "ToolTip": "Save screenshots by pressing Win+PrtScr on the Desktop"
+        "ToolTip": "Save screenshots by pressing Win+PrtScr on the Desktop. The function will be applied only if the preset is configured to remove OneDrive. Otherwise the backup functionality for the \"Desktop\" and \"Pictures\" folders in OneDrive breaks"
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Save screenshots by pressing Win+PrtScr on the Pictures folder (default value)"
+        "ToolTip": "Save screenshots by pressing Win+PrtScr in the Pictures folder (default value)"
       }
     }
   },
@@ -1364,12 +1176,12 @@
     "Function": "CapsLock",
     "Arg": {
       "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Enable Caps Lock"
+        "Tag": "Disable",
+        "ToolTip": "Disable Caps Lock"
       },
       "One": {
-        "Tag": "Disable",
-        "ToolTip": "Disable Caps Lock (default value)"
+        "Tag": "Enable",
+        "ToolTip": "Enable Caps Lock (default value)"
       }
     }
   },
@@ -1485,7 +1297,7 @@
     "Arg": {
       "Zero": {
         "Tag": "WindowsTerminal",
-        "ToolTip": "Set Windows Terminal Preview as default terminal app to host the user interface for command-line applications"
+        "ToolTip": "Set Windows Terminal as default terminal app to host the user interface for command-line applications"
       },
       "One": {
         "Tag": "ConsoleHost",
@@ -1500,42 +1312,12 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form"
+        "ToolTip": "Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form. To receive kernel updates, enable the Windows Update setting: \"Receive updates for other Microsoft products\""
       }
     }
   },
   {
     "Id": 700,
-    "Region": "Start menu",
-    "Function": "RecentlyAddedApps",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide recently added apps in the Start menu"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show recently added apps in the Start menu (default value)"
-      }
-    }
-  },
-  {
-    "Id": 701,
-    "Region": "Start menu",
-    "Function": "AppSuggestions",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide app suggestions in the Start menu"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show app suggestions in the Start menu (default value)"
-      }
-    }
-  },
-  {
-    "Id": 702,
     "Region": "Start menu",
     "Function": "RunPowerShellShortcut",
     "Arg": {
@@ -1546,37 +1328,6 @@
       "One": {
         "Tag": "NonElevated",
         "ToolTip": "Run the Windows PowerShell shortcut from the Start menu as user (default value)"
-      }
-    }
-  },
-  {
-    "Id": 703,
-    "Region": "Start menu",
-    "Function": "PinToStart -Tiles",
-    "ToolTip": "Pin to Start the following shortcuts: Control Panel, Devices and Printers, PowerShell",
-    "Arg": {
-      "Zero": {
-        "Tag": "ControlPanel",
-        "ToolTip": "Pin the Control Panel shortcut to Start"
-      },
-      "One": {
-        "Tag": "DevicesPrinters",
-        "ToolTip": "Pin the \"Devices & Printers\" shortcut to Start"
-      },
-      "Two": {
-        "Tag": "PowerShell",
-        "ToolTip": "Pin the Windows PowerShell shortcut to Start"
-      }
-    }
-  },
-  {
-    "Id": 704,
-    "Region": "Start menu",
-    "Function": "PinToStart -UnpinAll",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Unpin all the Start tiles"
       }
     }
   },
@@ -1661,21 +1412,6 @@
   {
     "Id": 806,
     "Region": "UWP apps",
-    "Function": "BackgroundUWPApps",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Do not let all UWP apps run in the background"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Let all UWP apps run in the background (default value)"
-      }
-    }
-  },
-  {
-    "Id": 807,
-    "Region": "UWP apps",
     "Function": "CheckUWPAppsUpdates",
     "Arg": {
       "Zero": {
@@ -1686,21 +1422,6 @@
   },
   {
     "Id": 900,
-    "Region": "Gaming",
-    "Function": "XboxGameBar",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Disable Xbox Game Bar"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Enable Xbox Game Bar (default value)"
-      }
-    }
-  },
-  {
-    "Id": 901,
     "Region": "Gaming",
     "Function": "XboxGameTips",
     "Arg": {
@@ -1715,7 +1436,7 @@
     }
   },
   {
-    "Id": 902,
+    "Id": 901,
     "Region": "Gaming",
     "Function": "SetAppGraphicsPerformance",
     "Arg": {
@@ -1726,7 +1447,7 @@
     }
   },
   {
-    "Id": 903,
+    "Id": 902,
     "Region": "Gaming",
     "Function": "GPUScheduling",
     "Arg": {
@@ -2073,27 +1794,12 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show the \"Share\" item in the context menu (default value). Showing the \"Share\" item in the context menu will disable the Windows 10 File Explorer"
+        "ToolTip": "Show the \"Share\" item in the context menu (default value)"
       }
     }
   },
   {
     "Id": 1205,
-    "Region": "Context menu",
-    "Function": "EditWithPaint3DContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"Edit with Paint 3D\" item from the media files context menu"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show the \"Edit with Paint 3D\" item in the media files context menu (default value)"
-      }
-    }
-  },
-  {
-    "Id": 1206,
     "Region": "Context menu",
     "Function": "EditWithPhotosContext",
     "Arg": {
@@ -2108,7 +1814,7 @@
     }
   },
   {
-    "Id": 1207,
+    "Id": 1206,
     "Region": "Context menu",
     "Function": "CreateANewVideoContext",
     "Arg": {
@@ -2123,22 +1829,7 @@
     }
   },
   {
-    "Id": 1208,
-    "Region": "Context menu",
-    "Function": "ImagesEditContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"Edit\" item from the images context menu"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show the \"Edit\" item in images context menu (default value)"
-      }
-    }
-  },
-  {
-    "Id": 1209,
+    "Id": 1207,
     "Region": "Context menu",
     "Function": "PrintCMDContext",
     "Arg": {
@@ -2153,7 +1844,7 @@
     }
   },
   {
-    "Id": 1210,
+    "Id": 1208,
     "Region": "Context menu",
     "Function": "IncludeInLibraryContext",
     "Arg": {
@@ -2168,7 +1859,7 @@
     }
   },
   {
-    "Id": 1211,
+    "Id": 1209,
     "Region": "Context menu",
     "Function": "SendToContext",
     "Arg": {
@@ -2183,7 +1874,7 @@
     }
   },
   {
-    "Id": 1212,
+    "Id": 1210,
     "Region": "Context menu",
     "Function": "BitLockerContext",
     "Arg": {
@@ -2198,37 +1889,7 @@
     }
   },
   {
-    "Id": 1213,
-    "Region": "Context menu",
-    "Function": "BitmapImageNewContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"Bitmap image\" item from the \"New\" context menu"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show the \"Bitmap image\" item to the \"New\" context menu (default value)"
-      }
-    }
-  },
-  {
-    "Id": 1214,
-    "Region": "Context menu",
-    "Function": "RichTextDocumentNewContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"Rich Text Document\" item from the \"New\" context menu"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show the \"Rich Text Document\" item to the \"New\" context menu (default value)"
-      }
-    }
-  },
-  {
-    "Id": 1215,
+    "Id": 1211,
     "Region": "Context menu",
     "Function": "CompressedFolderNewContext",
     "Arg": {
@@ -2243,7 +1904,7 @@
     }
   },
   {
-    "Id": 1216,
+    "Id": 1212,
     "Region": "Context menu",
     "Function": "MultipleInvokeContext",
     "Arg": {
@@ -2258,7 +1919,7 @@
     }
   },
   {
-    "Id": 1217,
+    "Id": 1213,
     "Region": "Context menu",
     "Function": "UseStoreOpenWith",
     "Arg": {
@@ -2273,7 +1934,7 @@
     }
   },
   {
-    "Id": 1218,
+    "Id": 1214,
     "Region": "Context menu",
     "Function": "OpenWindowsTerminalContext",
     "Arg": {
@@ -2288,9 +1949,9 @@
     }
   },
   {
-    "Id": 1219,
+    "Id": 1215,
     "Region": "Context menu",
-    "Function": "OpenWindowsTerminalContext",
+    "Function": "OpenWindowsTerminalAdminContext",
     "Arg": {
       "Zero": {
         "Tag": "Show",
@@ -2299,6 +1960,21 @@
       "One": {
         "Tag": "Hide",
         "ToolTip": "Hide the \"Open in Windows Terminal (Admin)\" item from the Desktop and folders context menu (default value)"
+      }
+    }
+  },
+  {
+    "Id": 1216,
+    "Region": "Context menu",
+    "Function": "Windows10ContextMenu",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Disable the Windows 10 context menu style (default value)"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Enable the Windows 10 context menu style"
       }
     }
   }

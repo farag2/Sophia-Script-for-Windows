@@ -369,7 +369,7 @@
   {
     "Id": 307,
     "Region": "UI & Personalization",
-    "Function": "FileExplorerMode",
+    "Function": "FileExplorerCompactMode",
     "Arg": {
       "Zero": {
         "Tag": "Disable",
@@ -384,21 +384,6 @@
   {
     "Id": 308,
     "Region": "UI & Personalization",
-    "Function": "CortanaButton",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Ausblenden der Cortana-Schaltfläche in der Taskleiste"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Cortana-Schaltfläche in der Taskleiste anzeigen (Standardeinstellung)"
-      }
-    }
-  },
-  {
-    "Id": 309,
-    "Region": "UI & Personalization",
     "Function": "OneDriveFileExplorerAd",
     "Arg": {
       "Zero": {
@@ -412,7 +397,7 @@
     }
   },
   {
-    "Id": 310,
+    "Id": 309,
     "Region": "UI & Personalization",
     "Function": "SnapAssistFlyout",
     "Arg": {
@@ -427,7 +412,7 @@
     }
   },
   {
-    "Id": 311,
+    "Id": 310,
     "Region": "UI & Personalization",
     "Function": "SnapAssist",
     "Arg": {
@@ -442,7 +427,7 @@
     }
   },
   {
-    "Id": 312,
+    "Id": 311,
     "Region": "UI & Personalization",
     "Function": "FileTransferDialog",
     "Arg": {
@@ -457,22 +442,7 @@
     }
   },
   {
-    "Id": 313,
-    "Region": "UI & Personalization",
-    "Function": "FileExplorerRibbon",
-    "Arg": {
-      "Zero": {
-        "Tag": "Expanded",
-        "ToolTip": "Erweitert die Multifunktionsleiste des Datei-Explorers"
-      },
-      "One": {
-        "Tag": "Minimized",
-        "ToolTip": "Minimiert die Multifunktionsleiste des Datei-Explorers (Standardeinstellung)"
-      }
-    }
-  },
-  {
-    "Id": 314,
+    "Id": 312,
     "Region": "UI & Personalization",
     "Function": "RecycleBinDeleteConfirmation",
     "Arg": {
@@ -487,22 +457,7 @@
     }
   },
   {
-    "Id": 315,
-    "Region": "UI & Personalization",
-    "Function": "3DObjects",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Ausblenden des Ordners \"3D-Objekte\" in \"Dieser PC\" und \"Schnellzugriff\"."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Den Ordner \"3D-Objekte\" in \"Dieser PC\" und \"Schnellzugriff\" anzeigen (Standardeinstellung)"
-      }
-    }
-  },
-  {
-    "Id": 316,
+    "Id": 313,
     "Region": "UI & Personalization",
     "Function": "QuickAccessRecentFiles",
     "Arg": {
@@ -517,7 +472,7 @@
     }
   },
   {
-    "Id": 317,
+    "Id": 314,
     "Region": "UI & Personalization",
     "Function": "QuickAccessFrequentFolders",
     "Arg": {
@@ -532,7 +487,7 @@
     }
   },
   {
-    "Id": 318,
+    "Id": 315,
     "Region": "UI & Personalization",
     "Function": "TaskbarAlignment",
     "Arg": {
@@ -547,7 +502,7 @@
     }
   },
   {
-    "Id": 319,
+    "Id": 316,
     "Region": "UI & Personalization",
     "Function": "TaskbarSearch",
     "Arg": {
@@ -562,7 +517,7 @@
     }
   },
   {
-    "Id": 320,
+    "Id": 317,
     "Region": "UI & Personalization",
     "Function": "TaskViewButton",
     "Arg": {
@@ -577,7 +532,7 @@
     }
   },
   {
-    "Id": 321,
+    "Id": 318,
     "Region": "UI & Personalization",
     "Function": "TaskbarWidgets",
     "Arg": {
@@ -592,7 +547,7 @@
     }
   },
   {
-    "Id": 322,
+    "Id": 319,
     "Region": "UI & Personalization",
     "Function": "TaskbarChat",
     "Arg": {
@@ -607,115 +562,10 @@
     }
   },
   {
-    "Id": 323,
-    "Region": "UI & Personalization",
-    "Function": "PeopleTaskbar",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Schaltfläche Personen ausblenden in der Taskleiste"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Schaltfläche Personen in der Taskleiste anzeigen (Standardeinstellung)"
-      }
-    }
-  },
-  {
-    "Id": 324,
-    "Region": "UI & Personalization",
-    "Function": "SecondsInSystemClock",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Sekunden auf der Taskleistenuhr anzeigen"
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Sekunden auf der Taskleistenuhr ausblenden (Standardeinstellung)"
-      }
-    }
-  },
-  {
-    "Id": 325,
-    "Region": "UI & Personalization",
-    "Function": "TaskbarSearch",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Ausblenden der Suche in der Taskleiste"
-      },
-      "One": {
-        "Tag": "SearchIcon",
-        "ToolTip": "Das Suchsymbol in der Taskleiste anzeigen"
-      },
-      "Two": {
-        "Tag": "SearchBox",
-        "ToolTip": "Das Suchfeld in der Taskleiste anzeigen (Standardeinstellung)"
-      }
-    }
-  },
-  {
-    "Id": 326,
-    "Region": "UI & Personalization",
-    "Function": "WindowsInkWorkspace",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Ausblenden der Schaltfläche Windows-Ink-Arbeitsbereich in der Taskleiste"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Die Schaltfläche Windows-Ink-Arbeitsbereich in der Taskleiste anzeigen (Standardeinstellung)"
-      }
-    }
-  },
-  {
-    "Id": 327,
-    "Region": "UI & Personalization",
-    "Function": "NotificationAreaIcons",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Öffnen der Seite \"Symbole für den Infobereich\" in der Systemsteuerung, um die Einstellung \"Immer alle Symbole im Infobereich anzeigen\" manuell zu aktivieren"
-      }
-    }
-  },
-  {
-    "Id": 328,
-    "Region": "UI & Personalization",
-    "Function": "MeetNow",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Ausblenden des Meet-Now-Symbols im Infobereich"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Das Symbol Meet Now im Infobereich anzeigen (Standardeinstellung)"
-      }
-    }
-  },
-  {
-    "Id": 329,
-    "Region": "UI & Personalization",
-    "Function": "NewsInterests",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Deaktivieren von \"Nachrichten und Interessen\" in der Taskleiste"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Aktiviert \"Nachrichten und Interessen\" auf der Taskleiste (Standardeinstellung)"
-      }
-    }
-  },
-  {
-    "Id": 330,
+    "Id": 320,
     "Region": "UI & Personalization",
     "Function": "UnpinTaskbarShortcuts -Shortcuts",
-    "ToolTip": "Die Verknüpfungen \"Microsoft Edge\", \"Microsoft Store\" oder \"Mail\" von der Taskleiste lösen.",
+    "ToolTip": "Die Verknüpfungen \"Microsoft Edge\" oder \"Microsoft Store\" von der Taskleiste lösen",
     "Arg": {
       "Zero": {
         "Tag": "Edge",
@@ -724,34 +574,11 @@
       "One": {
         "Tag": "Store",
         "ToolTip": "Die Verknüpfung \"Microsoft Store\" von der Taskleiste lösen"
-      },
-      "Two": {
-        "Tag": "Mail",
-        "ToolTip": "Die Verknüpfung \"Mail\" von der Taskleiste lösen"
       }
     }
   },
   {
-    "Id": 331,
-    "Region": "UI & Personalization",
-    "Function": "TaskbarSize",
-    "Arg": {
-      "Zero": {
-        "Tag": "Large",
-        "ToolTip": "Die Taskleiste groß machen"
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Die Größe der Taskleiste auf Standard zurück setzen"
-      },
-      "Two": {
-        "Tag": "Small",
-        "ToolTip": "Verkleinern der Taskleiste"
-      }
-    }
-  },
-  {
-    "Id": 332,
+    "Id": 321,
     "Region": "UI & Personalization",
     "Function": "ControlPanelView",
     "Arg": {
@@ -770,7 +597,7 @@
     }
   },
   {
-    "Id": 333,
+    "Id": 322,
     "Region": "UI & Personalization",
     "Function": "WindowsColorMode",
     "Arg": {
@@ -785,7 +612,7 @@
     }
   },
   {
-    "Id": 334,
+    "Id": 323,
     "Region": "UI & Personalization",
     "Function": "AppColorMode",
     "Arg": {
@@ -800,7 +627,7 @@
     }
   },
   {
-    "Id": 335,
+    "Id": 323,
     "Region": "UI & Personalization",
     "Function": "NewAppInstalledNotification",
     "Arg": {
@@ -815,7 +642,7 @@
     }
   },
   {
-    "Id": 336,
+    "Id": 324,
     "Region": "UI & Personalization",
     "Function": "FirstLogonAnimation",
     "Arg": {
@@ -830,7 +657,7 @@
     }
   },
   {
-    "Id": 337,
+    "Id": 325,
     "Region": "UI & Personalization",
     "Function": "JPEGWallpapersQuality",
     "Arg": {
@@ -845,7 +672,7 @@
     }
   },
   {
-    "Id": 338,
+    "Id": 326,
     "Region": "UI & Personalization",
     "Function": "TaskManagerWindow",
     "Arg": {
@@ -860,7 +687,7 @@
     }
   },
   {
-    "Id": 339,
+    "Id": 327,
     "Region": "UI & Personalization",
     "Function": "RestartNotification",
     "Arg": {
@@ -875,7 +702,7 @@
     }
   },
   {
-    "Id": 340,
+    "Id": 328,
     "Region": "UI & Personalization",
     "Function": "ShortcutsSuffix",
     "Arg": {
@@ -890,7 +717,7 @@
     }
   },
   {
-    "Id": 341,
+    "Id": 329,
     "Region": "UI & Personalization",
     "Function": "PrtScnSnippingTool",
     "Arg": {
@@ -905,7 +732,7 @@
     }
   },
   {
-    "Id": 342,
+    "Id": 330,
     "Region": "UI & Personalization",
     "Function": "AppsLanguageSwitch",
     "Arg": {
@@ -920,7 +747,7 @@
     }
   },
   {
-    "Id": 343,
+    "Id": 331,
     "Region": "UI & Personalization",
     "Function": "AeroShaking",
     "Arg": {
@@ -945,7 +772,7 @@
       },
       "One": {
         "Tag": "Install",
-        "ToolTip": "OneDrive installieren"
+        "ToolTip": "OneDrive 64-bit installieren"
       }
     }
   },
@@ -967,21 +794,6 @@
   {
     "Id": 501,
     "Region": "System",
-    "Function": "StorageSenseTempFiles",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Temporäre Dateien löschen, die von Anwendungen nicht verwendet werden (Standardeinstellung)"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Löscht keine temporären Dateien, die von Anwendungen nicht verwendet werden."
-      }
-    }
-  },
-  {
-    "Id": 502,
-    "Region": "System",
     "Function": "StorageSenseFrequency",
     "Arg": {
       "Zero": {
@@ -991,6 +803,21 @@
       "One": {
         "Tag": "Default",
         "ToolTip": "Speicheroptimierung bei geringem freien Speicherplatz ausführen (Standardeinstellung)"
+      }
+    }
+  },
+  {
+    "Id": 502,
+    "Region": "System",
+    "Function": "StorageSenseTempFiles",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Temporäre Dateien löschen, die von Anwendungen nicht verwendet werden (Standardeinstellung)"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Löscht keine temporären Dateien, die von Anwendungen nicht verwendet werden."
       }
     }
   },
@@ -1275,7 +1102,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Desktop",
-        "ToolTip": "Speichern von Screenshots durch Drücken von Win+PrtScr auf dem Desktop"
+        "ToolTip": "Speichern von Screenshots durch Drücken von Win+PrtScr auf dem Desktop. Funktion wird nur angewendet, wenn die Voreinstellung zum Entfernen von OneDrive konfiguriert ist. Andernfalls wird die Sicherungsfunktion für die Ordner \"Desktop\" und \"Bilder\" in OneDrive unterbrochen"
       },
       "One": {
         "Tag": "Default",
@@ -1364,12 +1191,12 @@
     "Function": "CapsLock",
     "Arg": {
       "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Feststelltaste einschalten"
-      },
-      "One": {
         "Tag": "Disable",
         "ToolTip": "Feststelltaste deaktivieren (Standardeinstellung)"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Feststelltaste einschalten"
       }
     }
   },
@@ -1507,36 +1334,6 @@
   {
     "Id": 700,
     "Region": "Start menu",
-    "Function": "RecentlyAddedApps",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Zuletzt hinzugefügte Anwendungen im Startmenü ausblenden"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Zuletzt hinzugefügte Anwendungen im Startmenü anzeigen (Standardeinstellung)"
-      }
-    }
-  },
-  {
-    "Id": 701,
-    "Region": "Start menu",
-    "Function": "AppSuggestions",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Anwendungsvorschläge im Startmenü ausblenden"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Anwendungsvorschläge im Startmenü anzeigen (Standardeinstellung)"
-      }
-    }
-  },
-  {
-    "Id": 702,
-    "Region": "Start menu",
     "Function": "RunPowerShellShortcut",
     "Arg": {
       "Zero": {
@@ -1546,37 +1343,6 @@
       "One": {
         "Tag": "NonElevated",
         "ToolTip": "Führt die Windows PowerShell-Verknüpfung über das Startmenü als Benutzer aus (Standardeinstellung)"
-      }
-    }
-  },
-  {
-    "Id": 703,
-    "Region": "Start menu",
-    "Function": "PinToStart -Tiles",
-    "ToolTip": "Folgendene Verknüpfungen: Systemsteuerung, Geräte und Drucker, PowerShell an das Startmenü anheften",
-    "Arg": {
-      "Zero": {
-        "Tag": "ControlPanel",
-        "ToolTip": "Die Verknüpfung \"Systemsteuerung\" an Start anheften"
-      },
-      "One": {
-        "Tag": "DevicesPrinters",
-        "ToolTip": "Die Verknüpfung \"Geräte & Drucker\" an Start anheften"
-      },
-      "Two": {
-        "Tag": "PowerShell",
-        "ToolTip": "Die Verknüpfung \"Windows PowerShell\" an Start anheften"
-      }
-    }
-  },
-  {
-    "Id": 704,
-    "Region": "Start menu",
-    "Function": "PinToStart -UnpinAll",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Alle Start-Kacheln abheften"
       }
     }
   },
@@ -2290,15 +2056,30 @@
   {
     "Id": 1219,
     "Region": "Context menu",
-    "Function": "OpenWindowsTerminalContext",
+    "Function": "OpenWindowsTerminalAdminContext",
     "Arg": {
       "Zero": {
         "Tag": "Show",
-        "ToolTip": "Show the \"Open in Windows Terminal (Admin)\" item in the Desktop and folders context menu"
+        "ToolTip": "Element \"In Windows Terminal (Admin) öffnen\" im Kontextmenü von Desktop und Ordnern anzeigen"
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Hide the \"Open in Windows Terminal (Admin)\" item from the Desktop and folders context menu (default value)"
+        "ToolTip": "Element \"In Windows-Terminal (Admin) öffnen\" im Kontextmenü von Desktop und Ordnern ausblenden (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 1220,
+    "Region": "Context menu",
+    "Function": "Windows10ContextMenu",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Windows 10-Kontextmenüstils deaktivieren (Standardwert)"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Windows 10-Kontextmenüstils aktivieren"
       }
     }
   }

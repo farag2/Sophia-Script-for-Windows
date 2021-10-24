@@ -1,0 +1,72 @@
+﻿[
+  {
+    "Id": "Menu",
+    "Options": {
+      "menuImportExportPreset": "Importar/Exportar",
+      "menuImportPreset": "Importar preajuste",
+      "menuExportPreset": "Exportar preajuste",
+      "menuPresets": "Preajustes",
+      "menuOpposite": "Opuesto",
+      "menuClear": "Claro",
+      "menuTheme": "Tema",
+      "menuThemeDark": "Oscuro",
+      "menuThemeLight": "Ligero",
+      "menuLanguage": "Idioma",
+      "menuAbout": "Sobre"
+    }
+  },
+  {
+    "Id": "Tab",
+    "Options": {
+      "tabSystemProtection": "Proteccion del sistema",
+      "tabPrivacyTelemetry": "Intimidad & Telemetría",
+      "tabUIPersonalization": "UI & Personalización",
+      "tabOneDrive": "OneDrive",
+      "tabSystem": "Sistema",
+      "tabWSL": "WSL",
+      "tabStartMenu": "Menu de inicio",
+      "tabUWP": "UWP Apps",
+      "tabGaming": "Juego de azar",
+      "tabScheduledTasks": "Tareas programadas",
+      "tabDefenderSecurity": "Defensor & Seguridad",
+      "tabContextMenu": "Menú de contexto",
+      "tabConsoleOutput": "Salida de consola"
+    }
+  },
+  {
+    "Id": "Button",
+    "Options": {
+      "btnRefreshConsole": "Actualizar consola",
+      "btnSave": "Ahorrar",
+      "btnSaveAs": "Guardar como",
+      "btnRunPowerShell": "Correr PowerShell"
+    }
+  },
+  {
+    "Id": "StatusBar",
+    "Options": {
+      "statusBarHover": "Pase el cursor del mouse sobre los elementos de selección para obtener información sobre cada opción",
+      "statusBarPresetLoaded": "preestablecido cargado!",
+      "statusBarPresetNotComp": "el archivo predeterminado no es compatible!",
+      "statusBarSophiaPreset": "Sophia preestablecido cargado!",
+      "statusBarWindowsDefaultPreset": "Windows Preset predeterminado cargado!",
+      "statusBarPowerShellScriptCreatedFromSelections": "PowerShell ¡Secuencia de comandos creada a partir de sus selecciones! Puede ejecutarlo o guardarlo.",
+      "statusBarPowerShellSaveAs": "PowerShell script creado!",
+      "statusBarPowerShellSave": "Cambios guardados en",
+      "statusBarOpposite": "Opuesto seleccionado!",
+      "statusBarClear": "Selecciones todas borradas!",
+      "statusBarDisabled": "Primero debe 'Importar preajuste' para habilitar el uso de Wrapper. Importar para habilitar controles."
+    }
+  },
+  {
+    "Id": "MessageBox",
+    "Options": {
+      "messageBoxNewWrapperFound": "Se encontró una nueva versión de 'Wrapper'.\nAbrir una página de la última versión de GitHub?",
+      "messageBoxNewSophiaFound": "Se encontró una nueva versión de Sophia Script.\nAbre la página de la última versión de GitHub?",
+      "messageBoxDoesNotExist": "no existe",
+      "messageBoxPresetNotComp": "¡El archivo predeterminado no es compatible!",
+      "messageBoxFilesMissingClose": "Faltan archivos, por lo que Sophia Script Wrapper se cerrará",
+      "messageBoxConsoleEmpty": "La consola está vacía.\nHaga clic en el botón 'Actualizar consola' para crear un script con sus selecciones"
+    }
+  }
+]

@@ -205,7 +205,7 @@
         "Tag": "Show"
       }
     },
-    "Preset": "Zero",
+    "Preset": "One",
     "WindowsDefault": "One",
     "LTSC": "false"
   },
@@ -1016,24 +1016,6 @@
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
-    "Function": "StorageSenseTempFiles",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable"
-      },
-      "One": {
-        "Tag": "Disable"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "Zero",
-    "LTSC": "true"
-  },
-  {
-    "Id": 502,
-    "Region": "System",
-    "Control": "cmb",
-    "Required": "false",
     "Function": "StorageSenseFrequency",
     "Arg": {
       "Zero": {
@@ -1045,6 +1027,24 @@
     },
     "Preset": "Zero",
     "WindowsDefault": "",
+    "LTSC": "true"
+  },
+  {
+    "Id": 502,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "StorageSenseTempFiles",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "Zero",
     "LTSC": "true"
   },
   {
@@ -1490,14 +1490,14 @@
     "Function": "CapsLock",
     "Arg": {
       "Zero": {
-        "Tag": "Enable"
+        "Tag": "Disable"
       },
       "One": {
-        "Tag": "Disable"
+        "Tag": "Enable"
       }
     },
     "Preset": "",
-    "WindowsDefault": "",
+    "WindowsDefault": "One",
     "LTSC": "true"
   },
   {

@@ -840,7 +840,7 @@
       },
       "One": {
         "Tag": "Install",
-        "ToolTip": "OneDrive installieren"
+        "ToolTip": "OneDrive 64-bit installieren"
       }
     }
   },
@@ -862,21 +862,6 @@
   {
     "Id": 501,
     "Region": "System",
-    "Function": "StorageSenseTempFiles",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Temporäre Dateien löschen, die von Anwendungen nicht verwendet werden (Standardeinstellung)"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Löscht keine temporären Dateien, die von Anwendungen nicht verwendet werden."
-      }
-    }
-  },
-  {
-    "Id": 502,
-    "Region": "System",
     "Function": "StorageSenseFrequency",
     "Arg": {
       "Zero": {
@@ -886,6 +871,21 @@
       "One": {
         "Tag": "Default",
         "ToolTip": "Speicheroptimierung bei geringem freien Speicherplatz ausführen (Standardeinstellung)"
+      }
+    }
+  },
+  {
+    "Id": 502,
+    "Region": "System",
+    "Function": "StorageSenseTempFiles",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Temporäre Dateien löschen, die von Anwendungen nicht verwendet werden (Standardeinstellung)"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Löscht keine temporären Dateien, die von Anwendungen nicht verwendet werden."
       }
     }
   },
@@ -1259,12 +1259,12 @@
     "Function": "CapsLock",
     "Arg": {
       "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Feststelltaste einschalten"
+        "Tag": "Disable",
+        "ToolTip": "Feststelltaste deaktivieren"
       },
       "One": {
-        "Tag": "Disable",
-        "ToolTip": "Feststelltaste deaktivieren (Standardeinstellung)"
+        "Tag": "Enable",
+        "ToolTip": "Feststelltaste einschalten (Standardeinstellung)"
       }
     }
   },

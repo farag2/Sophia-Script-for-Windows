@@ -840,7 +840,7 @@
       },
       "One": {
         "Tag": "Install",
-        "ToolTip": "Install OneDrive"
+        "ToolTip": "Install OneDrive 64-bit"
       }
     }
   },
@@ -862,21 +862,6 @@
   {
     "Id": 501,
     "Region": "System",
-    "Function": "StorageSenseTempFiles",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Delete temporary files that apps aren't using (default value)"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Do not delete temporary files that apps aren't using"
-      }
-    }
-  },
-  {
-    "Id": 502,
-    "Region": "System",
     "Function": "StorageSenseFrequency",
     "Arg": {
       "Zero": {
@@ -886,6 +871,21 @@
       "One": {
         "Tag": "Default",
         "ToolTip": "Run Storage Sense during low free disk space (default value)"
+      }
+    }
+  },
+  {
+    "Id": 502,
+    "Region": "System",
+    "Function": "StorageSenseTempFiles",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Delete temporary files that apps aren't using (default value)"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Do not delete temporary files that apps aren't using"
       }
     }
   },
@@ -1170,11 +1170,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Desktop",
-        "ToolTip": "Save screenshots by pressing Win+PrtScr on the Desktop"
+        "ToolTip": "Save screenshots by pressing Win+PrtScr on the Desktop. The function will be applied only if the preset is configured to remove OneDrive. Otherwise the backup functionality for the \"Desktop\" and \"Pictures\" folders in OneDrive breaks"
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Save screenshots by pressing Win+PrtScr on the Pictures folder (default value)"
+        "ToolTip": "Save screenshots by pressing Win+PrtScr in the Pictures folder (default value)"
       }
     }
   },
@@ -1259,12 +1259,12 @@
     "Function": "CapsLock",
     "Arg": {
       "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Enable Caps Lock"
+        "Tag": "Disable",
+        "ToolTip": "Disable Caps Lock"
       },
       "One": {
-        "Tag": "Disable",
-        "ToolTip": "Disable Caps Lock (default value)"
+        "Tag": "Enable",
+        "ToolTip": "Enable Caps Lock (default value)"
       }
     }
   },
@@ -1380,7 +1380,7 @@
     "Arg": {
       "Zero": {
         "Tag": "WindowsTerminal",
-        "ToolTip": "Set Windows Terminal Preview as default terminal app to host the user interface for command-line applications"
+        "ToolTip": "Set Windows Terminal as default terminal app to host the user interface for command-line applications"
       },
       "One": {
         "Tag": "ConsoleHost",
@@ -1395,7 +1395,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form"
+        "ToolTip": "Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form. To receive kernel updates, enable the Windows Update setting: \"Receive updates for other Microsoft products\""
       }
     }
   },
@@ -1968,7 +1968,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show the \"Share\" item in the context menu (default value). Showing the \"Share\" item in the context menu will disable the Windows 10 File Explorer"
+        "ToolTip": "Show the \"Share\" item in the context menu (default value)"
       }
     }
   },

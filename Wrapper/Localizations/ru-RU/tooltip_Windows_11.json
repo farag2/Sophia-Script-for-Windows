@@ -369,7 +369,7 @@
   {
     "Id": 307,
     "Region": "UI & Personalization",
-    "Function": "FileExplorerMode",
+    "Function": "FileExplorerCompactMode",
     "Arg": {
       "Zero": {
         "Tag": "Disable",
@@ -384,21 +384,6 @@
   {
     "Id": 308,
     "Region": "UI & Personalization",
-    "Function": "CortanaButton",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрывать кнопку Кортаны на панели задач"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показать кнопку Кортаны на панели задач (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 309,
-    "Region": "UI & Personalization",
     "Function": "OneDriveFileExplorerAd",
     "Arg": {
       "Zero": {
@@ -412,22 +397,22 @@
     }
   },
   {
-    "Id": 310,
+    "Id": 309,
     "Region": "UI & Personalization",
     "Function": "SnapAssistFlyout",
     "Arg": {
       "Zero": {
-        "Tag": "Disable",
+        "Tag": "Enable",
         "ToolTip": "Показывать макеты привязки при наведении указателя мыши на кнопку развертывания окна (значение по умолчанию)"
       },
       "One": {
-        "Tag": "Enable",
+        "Tag": "Disable",
         "ToolTip": "Скрыть макеты привязки при наведении указателя мыши на кнопку развертывания окна"
       }
     }
   },
   {
-    "Id": 311,
+    "Id": 310,
     "Region": "UI & Personalization",
     "Function": "SnapAssist",
     "Arg": {
@@ -442,7 +427,7 @@
     }
   },
   {
-    "Id": 312,
+    "Id": 311,
     "Region": "UI & Personalization",
     "Function": "FileTransferDialog",
     "Arg": {
@@ -457,22 +442,7 @@
     }
   },
   {
-    "Id": 313,
-    "Region": "UI & Personalization",
-    "Function": "FileExplorerRibbon",
-    "Arg": {
-      "Zero": {
-        "Tag": "Expanded",
-        "ToolTip": "Развернуть ленту проводника"
-      },
-      "One": {
-        "Tag": "Minimized",
-        "ToolTip": "Свернуть ленту проводника (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 314,
+    "Id": 312,
     "Region": "UI & Personalization",
     "Function": "RecycleBinDeleteConfirmation",
     "Arg": {
@@ -487,22 +457,7 @@
     }
   },
   {
-    "Id": 315,
-    "Region": "UI & Personalization",
-    "Function": "3DObjects",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть папку \"Объемные объекты\" в \"Этот компьютер\" и панели быстрого доступа"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Отображать папку \"Объемные объекты\" в \"Этот компьютер\" и панели быстрого доступа (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 316,
+    "Id": 313,
     "Region": "UI & Personalization",
     "Function": "QuickAccessRecentFiles",
     "Arg": {
@@ -517,7 +472,7 @@
     }
   },
   {
-    "Id": 317,
+    "Id": 314,
     "Region": "UI & Personalization",
     "Function": "QuickAccessFrequentFolders",
     "Arg": {
@@ -532,7 +487,7 @@
     }
   },
   {
-    "Id": 318,
+    "Id": 315,
     "Region": "UI & Personalization",
     "Function": "TaskbarAlignment",
     "Arg": {
@@ -547,7 +502,7 @@
     }
   },
   {
-    "Id": 319,
+    "Id": 316,
     "Region": "UI & Personalization",
     "Function": "TaskbarSearch",
     "Arg": {
@@ -562,7 +517,7 @@
     }
   },
   {
-    "Id": 320,
+    "Id": 317,
     "Region": "UI & Personalization",
     "Function": "TaskViewButton",
     "Arg": {
@@ -577,7 +532,7 @@
     }
   },
   {
-    "Id": 321,
+    "Id": 318,
     "Region": "UI & Personalization",
     "Function": "TaskbarWidgets",
     "Arg": {
@@ -592,7 +547,7 @@
     }
   },
   {
-    "Id": 322,
+    "Id": 319,
     "Region": "UI & Personalization",
     "Function": "TaskbarChat",
     "Arg": {
@@ -607,115 +562,10 @@
     }
   },
   {
-    "Id": 323,
-    "Region": "UI & Personalization",
-    "Function": "PeopleTaskbar",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрывать панель \"Люди\" на панели задач"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показывать панель \"Люди\" на панели задач (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 324,
-    "Region": "UI & Personalization",
-    "Function": "SecondsInSystemClock",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Отображать секунды в системных часах на панели задач"
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Скрывать секунды в системных часах на панели задач (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 325,
-    "Region": "UI & Personalization",
-    "Function": "TaskbarSearch",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть поле или значок поиска на панели задач"
-      },
-      "One": {
-        "Tag": "SearchIcon",
-        "ToolTip": "Показать значок поиска на панели задач"
-      },
-      "Two": {
-        "Tag": "SearchBox",
-        "ToolTip": "Показать поле поиска на панели задач (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 326,
-    "Region": "UI & Personalization",
-    "Function": "WindowsInkWorkspace",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Не показывать кнопку Windows Ink Workspace на панели задач"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показать кнопку Windows Ink Workspace на панели задач (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 327,
-    "Region": "UI & Personalization",
-    "Function": "NotificationAreaIcons",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Откройте страницу \"Значки области уведомлений\" на панели управления, чтобы вручную включить параметр \"Всегда показывать все значки в области уведомлений\""
-      }
-    }
-  },
-  {
-    "Id": 328,
-    "Region": "UI & Personalization",
-    "Function": "MeetNow",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть иконку \"Провести собрание\" в области уведомлений"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Отображать иконку \"Провести собрание\" в трее (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 329,
-    "Region": "UI & Personalization",
-    "Function": "NewsInterests",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Отключить \"Новости и интересы\" на панели задач"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Включить \"Новости и интересы\" на панели задач (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 330,
+    "Id": 320,
     "Region": "UI & Personalization",
     "Function": "UnpinTaskbarShortcuts -Shortcuts",
-    "ToolTip": "Открепить ярлыки \"Microsoft Edge\", \"Microsoft Store\" или \"Почта\" от панели задач",
+    "ToolTip": "Открепить ярлыки \"Microsoft Edge\", \"Microsoft Store\" от панели задач",
     "Arg": {
       "Zero": {
         "Tag": "Edge",
@@ -724,34 +574,11 @@
       "One": {
         "Tag": "Store",
         "ToolTip": "Открепить ярлык \"Microsoft Store\" от панели задач"
-      },
-      "Two": {
-        "Tag": "Mail",
-        "ToolTip": "Открепить ярлык \"Почта\" от панели задач"
       }
     }
   },
   {
-    "Id": 331,
-    "Region": "UI & Personalization",
-    "Function": "TaskbarSize",
-    "Arg": {
-      "Zero": {
-        "Tag": "Large",
-        "ToolTip": "Сделать панели задач большой"
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Сделать размер панели задач по умолчанию"
-      },
-      "Two": {
-        "Tag": "Small",
-        "ToolTip": "Сделать размер панели задач маленькой"
-      }
-    }
-  },
-  {
-    "Id": 332,
+    "Id": 321,
     "Region": "UI & Personalization",
     "Function": "ControlPanelView",
     "Arg": {
@@ -770,7 +597,7 @@
     }
   },
   {
-    "Id": 333,
+    "Id": 322,
     "Region": "UI & Personalization",
     "Function": "WindowsColorMode",
     "Arg": {
@@ -785,7 +612,7 @@
     }
   },
   {
-    "Id": 334,
+    "Id": 323,
     "Region": "UI & Personalization",
     "Function": "AppColorMode",
     "Arg": {
@@ -800,22 +627,7 @@
     }
   },
   {
-    "Id": 335,
-    "Region": "UI & Personalization",
-    "Function": "NewAppInstalledNotification",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть уведомление \"Установлено новое приложение\""
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показывать уведомление \"Установлено новое приложение\" (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 336,
+    "Id": 324,
     "Region": "UI & Personalization",
     "Function": "FirstLogonAnimation",
     "Arg": {
@@ -830,7 +642,7 @@
     }
   },
   {
-    "Id": 337,
+    "Id": 325,
     "Region": "UI & Personalization",
     "Function": "JPEGWallpapersQuality",
     "Arg": {
@@ -845,7 +657,7 @@
     }
   },
   {
-    "Id": 338,
+    "Id": 326,
     "Region": "UI & Personalization",
     "Function": "TaskManagerWindow",
     "Arg": {
@@ -860,7 +672,7 @@
     }
   },
   {
-    "Id": 339,
+    "Id": 327,
     "Region": "UI & Personalization",
     "Function": "RestartNotification",
     "Arg": {
@@ -875,7 +687,7 @@
     }
   },
   {
-    "Id": 340,
+    "Id": 328,
     "Region": "UI & Personalization",
     "Function": "ShortcutsSuffix",
     "Arg": {
@@ -890,7 +702,7 @@
     }
   },
   {
-    "Id": 341,
+    "Id": 329,
     "Region": "UI & Personalization",
     "Function": "PrtScnSnippingTool",
     "Arg": {
@@ -905,7 +717,7 @@
     }
   },
   {
-    "Id": 342,
+    "Id": 330,
     "Region": "UI & Personalization",
     "Function": "AppsLanguageSwitch",
     "Arg": {
@@ -920,7 +732,7 @@
     }
   },
   {
-    "Id": 343,
+    "Id": 331,
     "Region": "UI & Personalization",
     "Function": "AeroShaking",
     "Arg": {
@@ -945,7 +757,7 @@
       },
       "One": {
         "Tag": "Install",
-        "ToolTip": "Установить OneDrive"
+        "ToolTip": "Установить OneDrive 64-бит"
       }
     }
   },
@@ -967,21 +779,6 @@
   {
     "Id": 501,
     "Region": "System",
-    "Function": "StorageSenseTempFiles",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Удалять временные файлы, не используемые в приложениях (значение по умолчанию)"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Не удалять временные файлы, не используемые в приложениях"
-      }
-    }
-  },
-  {
-    "Id": 502,
-    "Region": "System",
     "Function": "StorageSenseFrequency",
     "Arg": {
       "Zero": {
@@ -991,6 +788,21 @@
       "One": {
         "Tag": "Default",
         "ToolTip": "Запускать Контроль памяти, когда остается мало место на диске (значение по умолчанию)"
+      }
+    }
+  },
+  {
+    "Id": 502,
+    "Region": "System",
+    "Function": "StorageSenseTempFiles",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Удалять временные файлы, не используемые в приложениях (значение по умолчанию)"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Не удалять временные файлы, не используемые в приложениях"
       }
     }
   },
@@ -1181,11 +993,11 @@
     "Arg": {
       "Zero": {
         "Tag": "High",
-        "ToolTip": "При обновлении Windows получать обновления для других продуктов Майкрософт"
+        "ToolTip": "Установить схему управления питанием на \"Высокая производительность\". Не рекомендуется включать схему управления питанием \"Высокая производительность\" для ноутбуков"
       },
       "One": {
         "Tag": "Balanced",
-        "ToolTip": "При обновлении Windows не получать обновления для других продуктов Майкрософт (значение по умолчанию)"
+        "ToolTip": "Установить схему управления питанием на \"Сбалансированная\" (значение по умолчанию)"
       }
     }
   },
@@ -1275,7 +1087,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Desktop",
-        "ToolTip": "Сохранять скриншоты по нажатию Win+PrtScr на рабочий столе"
+        "ToolTip": "Сохранять скриншоты по нажатию Win+PrtScr на рабочий столе. Функция будет применена только в случае, если в пресете настроено удаление приложения OneDrive, иначе ломается функционал резервного копирования для папок \"Рабочий стол\" и \"Изображения\" в OneDrive"
       },
       "One": {
         "Tag": "Default",
@@ -1364,12 +1176,12 @@
     "Function": "CapsLock",
     "Arg": {
       "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Включить Caps Lock"
-      },
-      "One": {
         "Tag": "Disable",
         "ToolTip": "Выключить Caps Lock (значение по умолчанию)"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Включить Caps Lock"
       }
     }
   },
@@ -1485,7 +1297,7 @@
     "Arg": {
       "Zero": {
         "Tag": "WindowsTerminal",
-        "ToolTip": "Установить Windows Terminal Preview в качестве терминального приложения по умолчанию для размещения пользовательского интерфейса для приложений командной строки."
+        "ToolTip": "Установить Windows Terminal в качестве терминального приложения по умолчанию для размещения пользовательского интерфейса для приложений командной строки."
       },
       "One": {
         "Tag": "ConsoleHost",
@@ -1500,42 +1312,12 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Установить подсистему Windows для Linux (WSL), последний пакет обновления ядра Linux и дистрибутив Linux, используя всплывающую форму"
+        "ToolTip": "Установить подсистему Windows для Linux (WSL), последний пакет обновления ядра Linux и дистрибутив Linux, используя всплывающую форму. Чтобы получать обновления ядра, включите параметр \"При обновлении Windows поулчать обновления для других продуктов Майкрософт\" в Центре обновлении Windows"
       }
     }
   },
   {
     "Id": 700,
-    "Region": "Start menu",
-    "Function": "RecentlyAddedApps",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрывать недавно добавленные приложения в меню \"Пуск\""
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показывать недавно добавленные приложения в меню \"Пуск\" (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 701,
-    "Region": "Start menu",
-    "Function": "AppSuggestions",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрывать рекомендации в меню \"Пуск\""
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показывать рекомендации в меню \"Пуск\" (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 702,
     "Region": "Start menu",
     "Function": "RunPowerShellShortcut",
     "Arg": {
@@ -1546,37 +1328,6 @@
       "One": {
         "Tag": "NonElevated",
         "ToolTip": "Запускать ярлык Windows PowerShell в меню \"Пуск\" от имени пользователя (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 703,
-    "Region": "Start menu",
-    "Function": "PinToStart -Tiles",
-    "ToolTip": "Закрепить на начальном экране следующие ярлыки: Панель управления, Устройства и принтеры, PowerShell",
-    "Arg": {
-      "Zero": {
-        "Tag": "ControlPanel",
-        "ToolTip": "Закрепить на начальном экране ярлык \"Панель управления\""
-      },
-      "One": {
-        "Tag": "DevicesPrinters",
-        "ToolTip": "Закрепить на начальном экране ярлык \"Устройства и принтеры\""
-      },
-      "Two": {
-        "Tag": "PowerShell",
-        "ToolTip": "Закрепить на начальном экране ярлык \"PowerShell\""
-      }
-    }
-  },
-  {
-    "Id": 704,
-    "Region": "Start menu",
-    "Function": "PinToStart -UnpinAll",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Открепить все ярлыки от начального экрана"
       }
     }
   },
@@ -1661,21 +1412,6 @@
   {
     "Id": 806,
     "Region": "UWP apps",
-    "Function": "BackgroundUWPApps",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Не разрешать UWP-приложениям работать в фоновом режиме"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Разрешить всем UWP-приложениям работать в фоновом режиме (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 807,
-    "Region": "UWP apps",
     "Function": "CheckUWPAppsUpdates",
     "Arg": {
       "Zero": {
@@ -1686,21 +1422,6 @@
   },
   {
     "Id": 900,
-    "Region": "Gaming",
-    "Function": "XboxGameBar",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Отключить Xbox Game Bar"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Включить Xbox Game Bar (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 901,
     "Region": "Gaming",
     "Function": "XboxGameTips",
     "Arg": {
@@ -1715,7 +1436,7 @@
     }
   },
   {
-    "Id": 902,
+    "Id": 901,
     "Region": "Gaming",
     "Function": "SetAppGraphicsPerformance",
     "Arg": {
@@ -1726,7 +1447,7 @@
     }
   },
   {
-    "Id": 903,
+    "Id": 902,
     "Region": "Gaming",
     "Function": "GPUScheduling",
     "Arg": {
@@ -2080,23 +1801,6 @@
   {
     "Id": 1205,
     "Region": "Context menu",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "EditWithPaint3DContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть пункт \"Изменить с помощью Paint 3D\" из контекстного меню медиа-файлов"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показывать пункт \"Изменить с помощью Paint 3D\" в контекстном меню медиа-файлов (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1206,
-    "Region": "Context menu",
     "Function": "EditWithPhotosContext",
     "Arg": {
       "Zero": {
@@ -2110,7 +1814,7 @@
     }
   },
   {
-    "Id": 1207,
+    "Id": 1206,
     "Region": "Context menu",
     "Function": "CreateANewVideoContext",
     "Arg": {
@@ -2125,22 +1829,7 @@
     }
   },
   {
-    "Id": 1208,
-    "Region": "Context menu",
-    "Function": "ImagesEditContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть пункт \"Изменить\" из контекстного меню изображений"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показывать пункт \"Изменить\" в контекстном меню изображений (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1209,
+    "Id": 1207,
     "Region": "Context menu",
     "Function": "PrintCMDContext",
     "Arg": {
@@ -2155,7 +1844,7 @@
     }
   },
   {
-    "Id": 1210,
+    "Id": 1208,
     "Region": "Context menu",
     "Function": "IncludeInLibraryContext",
     "Arg": {
@@ -2170,7 +1859,7 @@
     }
   },
   {
-    "Id": 1211,
+    "Id": 1209,
     "Region": "Context menu",
     "Function": "SendToContext",
     "Arg": {
@@ -2185,7 +1874,7 @@
     }
   },
   {
-    "Id": 1212,
+    "Id": 1210,
     "Region": "Context menu",
     "Function": "BitLockerContext",
     "Arg": {
@@ -2200,37 +1889,7 @@
     }
   },
   {
-    "Id": 1213,
-    "Region": "Context menu",
-    "Function": "BitmapImageNewContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть пункт \"Точечный рисунок\" из контекстного меню \"Создать\""
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Восстановить пункт \"Точечный рисунок\" в контекстного меню \"Создать\" (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1214,
-    "Region": "Context menu",
-    "Function": "RichTextDocumentNewContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть пункт \"Документ в формате RTF\" из контекстного меню \"Создать\""
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Восстановить пункт \"Документ в формате RTF\" в контекстного меню \"Создать\" (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1215,
+    "Id": 1211,
     "Region": "Context menu",
     "Function": "CompressedFolderNewContext",
     "Arg": {
@@ -2245,7 +1904,7 @@
     }
   },
   {
-    "Id": 1216,
+    "Id": 1212,
     "Region": "Context menu",
     "Function": "MultipleInvokeContext",
     "Arg": {
@@ -2260,7 +1919,7 @@
     }
   },
   {
-    "Id": 1217,
+    "Id": 1213,
     "Region": "Context menu",
     "Function": "UseStoreOpenWith",
     "Arg": {
@@ -2275,7 +1934,7 @@
     }
   },
   {
-    "Id": 1218,
+    "Id": 1214,
     "Region": "Context menu",
     "Function": "OpenWindowsTerminalContext",
     "Arg": {
@@ -2290,9 +1949,9 @@
     }
   },
   {
-    "Id": 1219,
+    "Id": 1215,
     "Region": "Context menu",
-    "Function": "OpenWindowsTerminalContext",
+    "Function": "OpenWindowsTerminalAdminContext",
     "Arg": {
       "Zero": {
         "Tag": "Show",
@@ -2301,6 +1960,21 @@
       "One": {
         "Tag": "Hide",
         "ToolTip": "Скрыть пункт \"Открыть в Терминале Windows (Администратор)\" в контекстном меню Рабочего стола и папок (значение по умолчанию)"
+      }
+    }
+  },
+  {
+    "Id": 1216,
+    "Region": "Context menu",
+    "Function": "Windows10ContextMenu",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Отключить стиль контекстного меню из Windows 10 (значение по умолчанию)"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Включить стиль контекстного меню из Windows 10"
       }
     }
   }
