@@ -2,11 +2,11 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10 LTSC"
 
-	Version: v5.2.15
-	Date: 05.10.2021
+	Version: v5.2.16
+	Date: 24.10.2021
 
-	Copyright (c) 2014–2021 farag
-	Copyright (c) 2019–2021 farag & Inestic
+	Copyright (c) 2014—2021 farag
+	Copyright (c) 2019—2021 farag & Inestic
 
 	Thanks to all https://forum.ru-board.com members involved
 
@@ -72,7 +72,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC v5.2.15 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014–2021"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC v5.2.16 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -656,7 +656,7 @@ SetUserShellFolderLocation -Root
 # Сохранять скриншоты по нажатию Win+PrtScr на рабочий столе
 WinPrtScrFolder -Desktop
 
-# Save screenshots by pressing Win+PrtScr on the Pictures folder (default value)
+# Save screenshots by pressing Win+PrtScr in the Pictures folder (default value)
 # Cохранять скриншоты по нажатию Win+PrtScr в папку "Изображения" (значение по умолчанию)
 # WinPrtScrFolder -Default
 
@@ -684,13 +684,13 @@ NumLock -Enable
 # Выключить Num Lock при загрузке (значение по умолчанию)
 # NumLock -Disable
 
-# Enable Caps Lock
-# Включить Caps Lock
-# CapsLock -Enable
-
-# Disable Caps Lock (default value)
-# Выключить Caps Lock (значение по умолчанию)
+# Disable Caps Lock
+# Выключить Caps Lock
 # CapsLock -Disable
+
+# Enable Caps Lock (default value)
+# Включить Caps Lock (значение по умолчанию)
+# CapsLock -Enable
 
 # Turn off pressing the Shift key 5 times to turn Sticky keys
 # Выключить залипание клавиши Shift после 5 нажатий

@@ -2,11 +2,11 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.2.15
-	Date: 05.10.2021
+	Version: v5.2.16
+	Date: 24.10.2021
 
-	Copyright (c) 2014–2021 farag
-	Copyright (c) 2019–2021 farag & Inestic
+	Copyright (c) 2014—2021 farag
+	Copyright (c) 2019—2021 farag & Inestic
 
 	Thanks to all https://forum.ru-board.com members involved
 
@@ -546,39 +546,30 @@ function ScheduledTasks
 	# The following tasks will have their checkboxes checked
 	[string[]]$CheckedScheduledTasks = @(
 		# Collects program telemetry information if opted-in to the Microsoft Customer Experience Improvement Program
-		# Сбор телеметрических данных программы при участии в программе улучшения качества ПО
 		"ProgramDataUpdater",
 
 		# This task collects and uploads autochk SQM data if opted-in to the Microsoft Customer Experience Improvement Program
-		# Эта задача собирает и загружает данные SQM при участии в программе улучшения качества программного обеспечения
 		"Proxy",
 
 		# If the user has consented to participate in the Windows Customer Experience Improvement Program, this job collects and sends usage data to Microsoft
-		# Если пользователь изъявил желание участвовать в программе по улучшению качества программного обеспечения Windows, эта задача будет собирать и отправлять сведения о работе программного обеспечения в Майкрософт
 		"Consolidator",
 
 		# The USB CEIP (Customer Experience Improvement Program) task collects Universal Serial Bus related statistics and information about your machine and sends it to the Windows Device Connectivity engineering group at Microsoft
-		# При выполнении задачи программы улучшения качества ПО шины USB (USB CEIP) осуществляется сбор статистических данных об использовании универсальной последовательной шины USB и с ведений о компьютере, которые направляются инженерной группе Майкрософт по вопросам подключения устройств в Windows
 		"UsbCeip",
 
 		# The Windows Disk Diagnostic reports general disk and system information to Microsoft for users participating in the Customer Experience Program
-		# Для пользователей, участвующих в программе контроля качества программного обеспечения, служба диагностики дисков Windows предоставляет общие сведения о дисках и системе в корпорацию Майкрософт
 		"Microsoft-Windows-DiskDiagnosticDataCollector",
 
 		# This task shows various Map related toasts
-		# Эта задача показывает различные тосты (всплывающие уведомления) приложения "Карты"
 		"MapsToastTask",
 
 		# This task checks for updates to maps which you have downloaded for offline use
-		# Эта задача проверяет наличие обновлений для карт, загруженных для автономного использования
 		"MapsUpdateTask",
 
 		# Initializes Family Safety monitoring and enforcement
-		# Инициализация контроля и применения правил семейной безопасности
 		"FamilySafetyMonitor",
 
 		# Synchronizes the latest settings with the Microsoft family features service
-		# Синхронизирует последние параметры со службой функций семьи учетных записей Майкрософт
 		"FamilySafetyRefreshTask",
 
 		# XblGameSave Standby Task
@@ -812,7 +803,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Add-Type @SetForegroundWindow
 	}
 
-	Get-Process | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows 10 LTSC"} | ForEach-Object -Process {
+	Get-Process | Where-Object -FilterScript {($_.ProcessName -eq "powershell") -and ($_.MainWindowTitle -match "Sophia Script for Windows 10 LTSC")} | ForEach-Object -Process {
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
@@ -2917,6 +2908,7 @@ Unregister-ScheduledTask -TaskName SymbolicLink -Confirm:`$false
 
 				#region main
 				# Change the %TEMP% environment variable path to %LOCALAPPDATA%\Temp
+				# The additional registry key creating are needed to fix the property type of the keys: SetEnvironmentVariable creates them with the "String" type instead of "ExpandString" as by default
 				[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "User")
 				[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Machine")
 				[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Process")
@@ -3456,7 +3448,6 @@ function WindowsFeatures
 	# The following Windows features will have their checkboxes checked
 	[string[]]$CheckedFeatures = @(
 		# Legacy Components
-		# Компоненты прежних версий
 		"LegacyComponents",
 
 		# PowerShell 2.0
@@ -3464,11 +3455,9 @@ function WindowsFeatures
 		"MicrosoftWindowsPowershellV2Root",
 
 		# Microsoft XPS Document Writer
-		# Средство записи XPS-документов (Microsoft)
 		"Printing-XPSServices-Features",
 
 		# Work Folders Client
-		# Клиент рабочих папок
 		"WorkFolders-Client"
 	)
 
@@ -3706,7 +3695,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Add-Type @SetForegroundWindow
 	}
 
-	Get-Process | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows 10 LTSC"} | ForEach-Object -Process {
+	Get-Process | Where-Object -FilterScript {($_.ProcessName -eq "powershell") -and ($_.MainWindowTitle -match "Sophia Script for Windows 10 LTSC")} | ForEach-Object -Process {
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
@@ -3783,7 +3772,6 @@ function WindowsCapabilities
 	# The following optional features will have their checkboxes checked
 	[string[]]$CheckedCapabilities = @(
 		# Microsoft Quick Assist
-		# Быстрая поддержка (Майкрософт)
 		"App.Support.QuickAssist*"
 	)
 
@@ -3793,7 +3781,6 @@ function WindowsCapabilities
 		"Browser.InternetExplorer*",
 
 		# Math Recognizer
-		# Распознаватель математических знаков
 		"MathRecognizer*",
 
 		# Windows Media Player
@@ -3801,30 +3788,24 @@ function WindowsCapabilities
 		"Media.WindowsMediaPlayer*",
 
 		# OpenSSH Client
-		# Клиент OpenSSH
 		"OpenSSH.Client*"
 	)
 
 	# The following optional features will be excluded from the display
 	[string[]]$ExcludedCapabilities = @(
 		# The DirectX Database to configure and optimize apps when multiple Graphics Adapters are present
-		# База данных DirectX для настройки и оптимизации приложений при наличии нескольких графических адаптеров
 		"DirectX.Configuration.Database*",
 
 		# Language components
-		# Языковые компоненты
 		"Language.*",
 
 		# Notepad
-		# Блокнот
 		"Microsoft.Windows.Notepad*",
 
 		# Mail, contacts, and calendar sync component
-		# Компонент синхронизации почты, контактов и календаря
 		"OneCoreUAP.OneSync*",
 
 		# Windows PowerShell Intergrated Scripting Enviroment
-		# Интегрированная среда сценариев Windows PowerShell
 		"Microsoft.Windows.PowerShell.ISE*"
 	)
 	#endregion Variables
@@ -4087,7 +4068,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Add-Type @SetForegroundWindow
 	}
 
-	Get-Process | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows 10 LTSC"} | ForEach-Object -Process {
+	Get-Process | Where-Object -FilterScript {($_.ProcessName -eq "powershell") -and ($_.MainWindowTitle -match "Sophia Script for Windows 10 LTSC")} | ForEach-Object -Process {
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
@@ -4160,7 +4141,7 @@ function UpdateMicrosoftProducts
 		}
 		"Disable"
 		{
-			if ((New-Object -ComObject Microsoft.Update.ServiceManager).Services | Where-Object -FilterScript {$_.ServiceID -eq "7971f918-a847-4430-9279-4a52d1efe18d"})
+			if (((New-Object -ComObject Microsoft.Update.ServiceManager).Services | Where-Object -FilterScript {$_.ServiceID -eq "7971f918-a847-4430-9279-4a52d1efe18d"}).IsDefaultAUService -eq $true)
 			{
 				(New-Object -ComObject Microsoft.Update.ServiceManager).RemoveService("7971f918-a847-4430-9279-4a52d1efe18d")
 			}
@@ -4415,14 +4396,14 @@ function IPv6Component
 		{
 			if ($null -eq $IPv6Test)
 			{
-				Disable-NetAdapterBinding –Name * –ComponentID ms_tcpip6
+				Disable-NetAdapterBinding -Name * -ComponentID ms_tcpip6
 			}
 		}
 		"Enable"
 		{
 			if ($IPv6Test)
 			{
-				Enable-NetAdapterBinding –Name * –ComponentID ms_tcpip6
+				Enable-NetAdapterBinding -Name * -ComponentID ms_tcpip6
 			}
 		}
 	}
@@ -6882,6 +6863,7 @@ function SetAppGraphicsPerformance
 				}
 				"1"
 				{
+					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
@@ -7253,7 +7235,7 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -For
 		}
 		"Delete"
 		{
-			Unregister-ScheduledTask -TaskName SoftwareDistribution -Confirm:$false
+			Unregister-ScheduledTask -TaskName SoftwareDistribution -Confirm:$false -ErrorAction Ignore
 		}
 	}
 }
@@ -7350,7 +7332,7 @@ Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object {`$_.CreationTime 
 		}
 		"Delete"
 		{
-			Unregister-ScheduledTask -TaskName Temp -Confirm:$false
+			Unregister-ScheduledTask -TaskName Temp -Confirm:$false -ErrorAction Ignore
 		}
 	}
 }
