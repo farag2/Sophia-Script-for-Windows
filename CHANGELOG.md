@@ -5,10 +5,62 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.12.5 | 6.0.6 — 24.10.2021
+
 ## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | LTSC 1809
 
-Diff from v5.12.3
-[5.12.3...5.12.4](https://github.com/farag2/Sophia-Script-for-Windows/compare/5.12.3...5.12.4)
+* The `NotificationAreaIcons`, `TaskbarSize`, `RecentlyAddedAppsAdded` funtions were removed due to lack of necessity;
+* Fixed typo in `FileExplorerCompactMode`;
+  * The values for `Disable` and `Enable` were switched places by mistake;
+* Fixed bug in `UpdateMicrosoftProducts`;
+* Fixed bug in `IPv6Component`;
+  * The parameter uses `U+2013` instead of `U+2010` character (hyphen)
+* Fixed major in `WinPrtScrFolder` (closes #260);
+  * It turned out that it has an influence on the OneDrive behavoir. Now the function will be applied only if the preset is configured to remove OneDrive, otherwise the backup functionality for the "Desktop" and "Pictures" folders in OneDrive breaks;
+* Merged #264;
+* Added `Spotify` for removing to `UninstallUWPApps`;
+* `ShareContext` now uses another method that doesn't have an influence on `Windows10FileExplorer`
+  * To revert changes invoke
+
+  ```powershell
+  Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}" -Force -ErrorAction Ignore
+  ```
+
+  * And then invoke a new `ShareContext` [(how-to)](https://github.com/farag2/Sophia-Script-for-Windows#how-to-run-the-specific-functions);
+* `OpenWindowsTerminalAdminContext` rewritten and now uses a native UAC icon and added to the top-level context menu
+  * To revert changes invoke
+
+  ```powershell
+  $Items = @(
+    "Registry::HKEY_CLASSES_ROOT\Directory\Background\shell\OpenWTHereAsAdmin",
+    "Registry::HKEY_CLASSES_ROOT\Directory\shell\OpenWTHereAsAdmin",
+    "HKLM:\SOFTWARE\Classes\Directory\shell\OpenWTHereAsAdmin\command",
+    "HKLM:\SOFTWARE\Classes\Directory\Background\shell\OpenWTHereAsAdmin\command",
+    "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\terminal.ico"
+  )
+  Remove-Item -Path $Items -Recurse -Force -ErrorAction Ignore
+  ```
+
+  ![Context](https://i.imgur.com/3xUXRQJ.png)
+
+  * And then invoke a new `OpenWindowsTerminalAdminContext` [(how-to)](https://github.com/farag2/Sophia-Script-for-Windows#how-to-run-the-specific-functions);
+* Added function to set the Windows 10 style context menu (closes #267);
+* Minor changes.
+* Check out the 3rd [SophiApp](https://github.com/Sophia-Community/SophiApp) public alpha build :rocket:
+  * The 4th alpha version 0.0.0.5x will be released soon
+
+![SophiApp](https://hsto.org/r/w780/getpro/habr/upload_files/be9/060/0b6/be90600b648639aa85d755fe10677cb2.jpg)
+
+## Sophia Script Wrapper 2.5.1
+
+* Cleaned up code: EXE should be now smaller;
+* Fixed typos in JSONs;
+* Added Spanish (es-ES);
+* Fixed UI.
+
+## 5.12.4 | 6.0.5 — 06.10.2021
+
+## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | LTSC 1809
 
 * Now you can download the always latest Sophia Script archive by invoking (`not as administrator too`) in PowerShell console
 
@@ -58,7 +110,7 @@ Invoke-RestMethod -Uri script.sophi.app | Invoke-Expression
 * UI color changes
 * Fixed some bugs.
 
-## 5.12.4 | 6.0.5 — 19.09.2021
+## 5.12.3 | 6.0.4 — 19.09.2021
 
 ## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | LTSC 1809
 
