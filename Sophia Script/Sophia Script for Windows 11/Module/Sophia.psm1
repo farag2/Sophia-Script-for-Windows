@@ -2,11 +2,11 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v6.0.5
-	Date: 05.10.2021
+	Version: v6.0.6
+	Date: 24.10.2021
 
-	Copyright (c) 2014–2021 farag
-	Copyright (c) 2019–2021 farag & Inestic
+	Copyright (c) 2014—2021 farag
+	Copyright (c) 2019—2021 farag & Inestic
 
 	Thanks to all https://forum.ru-board.com members involved
 
@@ -16,7 +16,7 @@
 	.NOTES
 	Supported Windows 11 version
 	Version: 21H2
-	Build: 22000.194
+	Build: 22000.258
 	Editions: Home/Pro/Enterprise
 
 	.NOTES
@@ -66,8 +66,8 @@ function Checkings
 		}
 	}
 
-	# Check whether the OS minor build version is 194 minimum
-	switch ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -ge 194)
+	# Check whether the OS minor build version is 258 minimum
+	switch ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -ge 258)
 	{
 		$false
 		{
@@ -90,22 +90,6 @@ function Checkings
 			exit
 		}
 	}
-
-	<# Check whether fTPM 2.0 supported
-	$CurrentVersion = (Get-CimInstance -Namespace root/cimv2/Security/MicrosoftTpm -ClassName Win32_Tpm).SpecVersion.Split(",").Trim() | Select-Object -First 1
-	switch ([System.Version]$CurrentVersion -lt [System.Version]"2.0")
-	{
-		$true
-		{
-			Write-Warning -Message $Localization.UnsupportedTPM
-
-			Start-Sleep -Seconds 5
-
-			Start-Process -FilePath "https://docs.microsoft.com/windows/whats-new/windows-11-requirements"
-			exit
-		}
-	}
-	#>
 
 	# Check the language mode
 	switch ($ExecutionContext.SessionState.LanguageMode -ne "FullLanguage")
@@ -584,39 +568,30 @@ function ScheduledTasks
 	# The following tasks will have their checkboxes checked
 	[string[]]$CheckedScheduledTasks = @(
 		# Collects program telemetry information if opted-in to the Microsoft Customer Experience Improvement Program
-		# Сбор телеметрических данных программы при участии в программе улучшения качества ПО
 		"ProgramDataUpdater",
 
 		# This task collects and uploads autochk SQM data if opted-in to the Microsoft Customer Experience Improvement Program
-		# Эта задача собирает и загружает данные SQM при участии в программе улучшения качества программного обеспечения
 		"Proxy",
 
 		# If the user has consented to participate in the Windows Customer Experience Improvement Program, this job collects and sends usage data to Microsoft
-		# Если пользователь изъявил желание участвовать в программе по улучшению качества программного обеспечения Windows, эта задача будет собирать и отправлять сведения о работе программного обеспечения в Майкрософт
 		"Consolidator",
 
 		# The USB CEIP (Customer Experience Improvement Program) task collects Universal Serial Bus related statistics and information about your machine and sends it to the Windows Device Connectivity engineering group at Microsoft
-		# При выполнении задачи программы улучшения качества ПО шины USB (USB CEIP) осуществляется сбор статистических данных об использовании универсальной последовательной шины USB и с ведений о компьютере, которые направляются инженерной группе Майкрософт по вопросам подключения устройств в Windows
 		"UsbCeip",
 
 		# The Windows Disk Diagnostic reports general disk and system information to Microsoft for users participating in the Customer Experience Program
-		# Для пользователей, участвующих в программе контроля качества программного обеспечения, служба диагностики дисков Windows предоставляет общие сведения о дисках и системе в корпорацию Майкрософт
 		"Microsoft-Windows-DiskDiagnosticDataCollector",
 
 		# This task shows various Map related toasts
-		# Эта задача показывает различные тосты (всплывающие уведомления) приложения "Карты"
 		"MapsToastTask",
 
 		# This task checks for updates to maps which you have downloaded for offline use
-		# Эта задача проверяет наличие обновлений для карт, загруженных для автономного использования
 		"MapsUpdateTask",
 
 		# Initializes Family Safety monitoring and enforcement
-		# Инициализация контроля и применения правил семейной безопасности
 		"FamilySafetyMonitor",
 
 		# Synchronizes the latest settings with the Microsoft family features service
-		# Синхронизирует последние параметры со службой функций семьи учетных записей Майкрософт
 		"FamilySafetyRefreshTask",
 
 		# XblGameSave Standby Task
@@ -850,7 +825,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Add-Type @SetForegroundWindow
 	}
 
-	Get-Process | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows 11"} | ForEach-Object -Process {
+	Get-Process | Where-Object -FilterScript {(($_.ProcessName -eq "powershell") -or ($_.ProcessName -eq "WindowsTerminal")) -and ($_.MainWindowTitle -match "Sophia Script for Windows 11")} | ForEach-Object -Process {
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
@@ -1826,11 +1801,11 @@ function FileExplorerCompactMode
 	{
 		"Disable"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name UseCompactMode -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name UseCompactMode -PropertyType DWord -Value 0 -Force
 		}
 		"Enable"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name UseCompactMode -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name UseCompactMode -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -2468,21 +2443,6 @@ function TaskbarChat
 
 <#
 	.SYNOPSIS
-	Icons in the notification area
-
-	.NOTES
-	Open the "Notification Area Icons" page in Control Panel to enable "Always show all icons in the notification area" settings manually
-
-	.NOTES
-	Current user
-#>
-function NotificationAreaIcons
-{
-	Start-Process -FilePath "shell:::{05d7b0f4-2121-4eff-bf6b-ed3f69b894d9}"
-}
-
-<#
-	.SYNOPSIS
 	Unpin shortcuts from the taskbar
 
 	.PARAMETER Edge
@@ -2562,74 +2522,6 @@ public static string GetString(uint strId)
 					($Apps | Where-Object -FilterScript {$_.Name -eq "Microsoft Store"}).Verbs() | Where-Object -FilterScript {$_.Name -eq $Using:LocalizedString} | ForEach-Object -Process {$_.DoIt()}
 				} | Receive-Job -Wait -AutoRemoveJob
 			}
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	The taskbar size
-
-	.PARAMETER Large
-	Make the taskbar size large
-
-	.PARAMETER Default
-	Make the taskbar size default
-
-	.PARAMETER Small
-	Make the taskbar size small
-
-	.EXAMPLE
-	TaskbarSize -Large
-
-	.EXAMPLE
-	TaskbarSize -Default
-
-	.EXAMPLE
-	TaskbarSize -Small
-
-	.NOTES
-	Current user
-#>
-function TaskbarSize
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Large"
-		)]
-		[switch]
-		$Large,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Default"
-		)]
-		[switch]
-		$Default,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Small"
-		)]
-		[switch]
-		$Small
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Large"
-		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name TaskbarSi -PropertyType DWord -Value 2 -Force
-		}
-		"Default"
-		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name TaskbarSi -PropertyType DWord -Value 1 -Force
-		}
-		"Small"
-		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name TaskbarSi -PropertyType DWord -Value 0 -Force
 		}
 	}
 }
@@ -3352,7 +3244,7 @@ public static bool MarkFileDelete (string sourcefile)
 "@
 						}
 
-						# If there are some files or folders left in %LOCALAPPDATA\Temp%
+						# If there are some files or folders left in %LOCALAPPDATA%\Temp
 						if ((Get-ChildItem -Path $env:OneDrive -ErrorAction Ignore | Measure-Object).Count -ne 0)
 						{
 							if (-not ("WinAPI.DeleteFiles" -as [type]))
@@ -3515,6 +3407,9 @@ public static bool MarkFileDelete (string sourcefile)
 						Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
 					}
 				}
+
+				# Save screenshots by pressing Win+PrtScr in the Pictures folder
+				Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -Force -ErrorAction Ignore
 
 				Get-ScheduledTask -TaskName "Onedrive* Update*" | Enable-ScheduledTask
 				Get-ScheduledTask -TaskName "Onedrive* Update*" | Start-ScheduledTask
@@ -3891,6 +3786,7 @@ Unregister-ScheduledTask -TaskName SymbolicLink -Confirm:`$false
 
 				#region main
 				# Change the %TEMP% environment variable path to %LOCALAPPDATA%\Temp
+				# The additional registry key creating are needed to fix the property type of the keys: SetEnvironmentVariable creates them with the "String" type instead of "ExpandString" as by default
 				[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "User")
 				[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Machine")
 				[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Process")
@@ -4435,7 +4331,6 @@ function WindowsFeatures
 	# The following Windows features will have their checkboxes checked
 	[string[]]$CheckedFeatures = @(
 		# Legacy Components
-		# Компоненты прежних версий
 		"LegacyComponents",
 
 		# PowerShell 2.0
@@ -4443,11 +4338,9 @@ function WindowsFeatures
 		"MicrosoftWindowsPowershellV2Root",
 
 		# Microsoft XPS Document Writer
-		# Средство записи XPS-документов (Microsoft)
 		"Printing-XPSServices-Features",
 
 		# Work Folders Client
-		# Клиент рабочих папок
 		"WorkFolders-Client"
 	)
 
@@ -4685,7 +4578,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Add-Type @SetForegroundWindow
 	}
 
-	Get-Process | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows 11"} | ForEach-Object -Process {
+	Get-Process | Where-Object -FilterScript {(($_.ProcessName -eq "powershell") -or ($_.ProcessName -eq "WindowsTerminal")) -and ($_.MainWindowTitle -match "Sophia Script for Windows 11")} | ForEach-Object -Process {
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
@@ -4762,11 +4655,9 @@ function WindowsCapabilities
 	# The following optional features will have their checkboxes checked
 	[string[]]$CheckedCapabilities = @(
 		# Steps Recorder
-		# Средство записи действий
 		"App.StepsRecorder*",
 
 		# Microsoft Quick Assist
-		# Быстрая поддержка (Майкрософт)
 		"App.Support.QuickAssist*",
 
 		# WordPad
@@ -4779,7 +4670,6 @@ function WindowsCapabilities
 		"Browser.InternetExplorer*",
 
 		# Math Recognizer
-		# Распознаватель математических знаков
 		"MathRecognizer*",
 
 		# Windows Media Player
@@ -4787,38 +4677,30 @@ function WindowsCapabilities
 		"Media.WindowsMediaPlayer*",
 
 		# OpenSSH Client
-		# Клиент OpenSSH
 		"OpenSSH.Client*"
 	)
 
 	# The following optional features will be excluded from the display
 	[string[]]$ExcludedCapabilities = @(
 		# The DirectX Database to configure and optimize apps when multiple Graphics Adapters are present
-		# База данных DirectX для настройки и оптимизации приложений при наличии нескольких графических адаптеров
 		"DirectX.Configuration.Database*",
 
 		# Language components
-		# Языковые компоненты
 		"Language.*",
 
 		# Notepad
-		# Блокнот
 		"Microsoft.Windows.Notepad*",
 
 		# Mail, contacts, and calendar sync component
-		# Компонент синхронизации почты, контактов и календаря
 		"OneCoreUAP.OneSync*",
 
 		# Windows PowerShell Intergrated Scripting Enviroment
-		# Интегрированная среда сценариев Windows PowerShell
 		"Microsoft.Windows.PowerShell.ISE*",
 
 		# Management of printers, printer drivers, and printer servers
-		# Управление принтерами, драйверами принтеров и принт-серверами
 		"Print.Management.Console*",
 
 		# Features critical to Windows functionality
-		# Компоненты, критичные для работоспособности Windows
 		"Windows.Client.ShellComponents*"
 	)
 	#endregion Variables
@@ -5081,7 +4963,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Add-Type @SetForegroundWindow
 	}
 
-	Get-Process | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows 11"} | ForEach-Object -Process {
+	Get-Process | Where-Object -FilterScript {(($_.ProcessName -eq "powershell") -or ($_.ProcessName -eq "WindowsTerminal")) -and ($_.MainWindowTitle -match "Sophia Script for Windows 11")} | ForEach-Object -Process {
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
@@ -5154,7 +5036,7 @@ function UpdateMicrosoftProducts
 		}
 		"Disable"
 		{
-			if ((New-Object -ComObject Microsoft.Update.ServiceManager).Services | Where-Object -FilterScript {$_.ServiceID -eq "7971f918-a847-4430-9279-4a52d1efe18d"})
+			if (((New-Object -ComObject Microsoft.Update.ServiceManager).Services | Where-Object -FilterScript {$_.ServiceID -eq "7971f918-a847-4430-9279-4a52d1efe18d"}).IsDefaultAUService -eq $true)
 			{
 				(New-Object -ComObject Microsoft.Update.ServiceManager).RemoveService("7971f918-a847-4430-9279-4a52d1efe18d")
 			}
@@ -5409,14 +5291,14 @@ function IPv6Component
 		{
 			if ($null -eq $IPv6Test)
 			{
-				Disable-NetAdapterBinding –Name * –ComponentID ms_tcpip6
+				Disable-NetAdapterBinding -Name * -ComponentID ms_tcpip6
 			}
 		}
 		"Enable"
 		{
 			if ($IPv6Test)
 			{
-				Enable-NetAdapterBinding –Name * –ComponentID ms_tcpip6
+				Enable-NetAdapterBinding -Name * -ComponentID ms_tcpip6
 			}
 		}
 	}
@@ -6490,6 +6372,10 @@ public static string GetString(uint strId)
 	WinPrtScrFolder -Default
 
 	.NOTES
+	The function will be applied only if the preset is configured to remove OneDrive,
+	otherwise the backup functionality for the "Desktop" and "Pictures" folders in OneDrive breaks
+
+	.NOTES
 	Current user
 #>
 function WinPrtScrFolder
@@ -6515,8 +6401,16 @@ function WinPrtScrFolder
 	{
 		"Desktop"
 		{
-			$DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
-			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -Type ExpandString -Value $DesktopFolder -Force
+			if ((Get-Content -Path $PSScriptRoot\..\Sophia.ps1 -Encoding UTF8 -Force | Select-String -SimpleMatch "OneDrive -Uninstall").Line.StartsWith("#") -eq $false)
+			{
+				$DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
+				New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -Type ExpandString -Value $DesktopFolder -Force
+			}
+			else
+			{
+				Write-Warning -Message ($Localization.OneDriveWarning -f $MyInvocation.Line)
+				Write-Error -Message ($Localization.OneDriveWarning -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+			}
 		}
 		"Default"
 		{
@@ -7897,7 +7791,7 @@ public static void Refresh()
 	Default terminal app
 
 	.PARAMETER WindowsTerminal
-	Set Windows Terminal Preview as default terminal app to host the user interface for command-line applications
+	Set Windows Terminal as default terminal app to host the user interface for command-line applications
 
 	.PARAMETER ConsoleHost
 	Set Windows Console Host as default terminal app to host the user interface for command-line applications
@@ -7934,12 +7828,15 @@ function DefaultTerminalApp
 	{
 		"WindowsTerminal"
 		{
-			if (-not (Test-Path -Path HKCU:\Console\%%Startup))
+			if (Get-AppxPackage -Name Microsoft.WindowsTerminal)
 			{
-				New-Item -Path HKCU:\Console\%%Startup -Force
+				if (-not (Test-Path -Path HKCU:\Console\%%Startup))
+				{
+					New-Item -Path HKCU:\Console\%%Startup -Force
+				}
+				New-ItemProperty -Path HKCU:\Console\%%Startup -Name DelegationConsole -PropertyType String -Value "{06EC847C-C0A5-46B8-92CB-7C92F6E35CD5}" -Force
+				New-ItemProperty -Path HKCU:\Console\%%Startup -Name DelegationTerminal -PropertyType String -Value "{86633F1F-6454-40EC-89CE-DA4EBA977EE2}" -Force
 			}
-			New-ItemProperty -Path HKCU:\Console\%%Startup -Name DelegationConsole -PropertyType String -Value "{06EC847C-C0A5-46B8-92CB-7C92F6E35CD5}" -Force
-			New-ItemProperty -Path HKCU:\Console\%%Startup -Name DelegationTerminal -PropertyType String -Value "{86633F1F-6454-40EC-89CE-DA4EBA977EE2}" -Force
 		}
 		"ConsoleHost"
 		{
@@ -8112,7 +8009,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Add-Type @SetForegroundWindow
 	}
 
-	Get-Process | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows 11"} | ForEach-Object -Process {
+	Get-Process | Where-Object -FilterScript {(($_.ProcessName -eq "powershell") -or ($_.ProcessName -eq "WindowsTerminal")) -and ($_.MainWindowTitle -match "Sophia Script for Windows 11")} | ForEach-Object -Process {
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
@@ -8135,61 +8032,6 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 #endregion WSL
 
 #region Start menu
-<#
-	.SYNOPSIS
-	Recently added apps in the Start menu
-
-	.PARAMETER Hide
-	Hide recently added apps in the Start menu
-
-	.PARAMETER Show
-	Show recently added apps in the Start menu
-
-	.EXAMPLE
-	RecentlyAddedApps -Hide
-
-	.EXAMPLE
-	RecentlyAddedApps -Show
-
-	.NOTES
-	Machine-wide
-#>
-function RecentlyAddedApps
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Hide"
-		)]
-		[switch]
-		$Hide,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Show"
-		)]
-		[switch]
-		$Show
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Hide"
-		{
-			if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
-			{
-				New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Force
-			}
-			New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -PropertyType DWord -Value 1 -Force
-		}
-		"Show"
-		{
-			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Force -ErrorAction Ignore
-		}
-	}
-}
-
 <#
 	.SYNOPSIS
 	How to run the Windows PowerShell shortcut
@@ -8468,12 +8310,21 @@ function UninstallUWPApps
 		Write-Verbose -Message $Localization.Patient -Verbose
 
 		$AppxPackages = @(Get-AppxPackage -PackageTypeFilter Bundle -AllUsers:$AllUsers | Where-Object -FilterScript {$_.Name -notin $ExcludedAppxPackages})
+
 		# The Bundle packages contains no Microsoft Teams
 		if (Get-AppxPackage -Name MicrosoftTeams -AllUsers:$AllUsers)
 		{
 			# Temporarily hack: due to the fact that there are actually two Microsoft Teams packages, we need to choose the first one to display
 			$AppxPackages += Get-AppxPackage -Name MicrosoftTeams -AllUsers:$AllUsers | Select-Object -Index 0
 		}
+
+		# The Bundle packages contains no Spotify
+		if (Get-AppxPackage -Name SpotifyAB.SpotifyMusic -AllUsers:$AllUsers)
+		{
+			# Temporarily hack: due to the fact that there are actually two Microsoft Teams packages, we need to choose the first one to display
+			$AppxPackages += Get-AppxPackage -Name SpotifyAB.SpotifyMusic -AllUsers:$AllUsers | Select-Object -Index 0
+		}
+
 		$PackagesIds = [Windows.Management.Deployment.PackageManager, Windows.Web, ContentType = WindowsRuntime]::new().FindPackages() | Select-Object -Property DisplayName -ExpandProperty Id | Select-Object -Property Name, DisplayName
 
 		foreach ($AppxPackage in $AppxPackages)
@@ -8679,7 +8530,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			Add-Type @SetForegroundWindow
 		}
 
-		Get-Process | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows 11"} | ForEach-Object -Process {
+		Get-Process | Where-Object -FilterScript {(($_.ProcessName -eq "powershell") -or ($_.ProcessName -eq "WindowsTerminal")) -and ($_.MainWindowTitle -match "Sophia Script for Windows 11")} | ForEach-Object -Process {
 			# Show window, if minimized
 			[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
@@ -8815,12 +8666,21 @@ function RestoreUWPApps
 		# You cannot retrieve packages using -PackageTypeFilter Bundle, otherwise you won't get the InstallLocation attribute. It can be retrieved only by comparing with $Bundles
 		$Bundles = (Get-AppXPackage -PackageTypeFilter Bundle -AllUsers).Name
 		$AppxPackages = @(Get-AppxPackage -AllUsers | Where-Object -FilterScript {$_.PackageUserInformation -match "Staged"} | Where-Object -FilterScript {$_.Name -in $Bundles})
+
 		# The Bundle packages contains no Microsoft Teams
 		if (Get-AppxPackage -Name MicrosoftTeams -AllUsers)
 		{
 			# Temporarily hack: due to the fact that there are actually two Microsoft Teams packages, we need to choose the first one to display
 			$AppxPackages += Get-AppxPackage -Name MicrosoftTeams -AllUsers | Where-Object -FilterScript {$_.PackageUserInformation -match "Staged"} | Select-Object -Index 0
 		}
+
+		# The Bundle packages contains no Microsoft Teams
+		if (Get-AppxPackage -Name SpotifyAB.SpotifyMusic -AllUsers)
+		{
+			# Temporarily hack: due to the fact that there are actually two Spotify packages, we need to choose the first one to display
+			$AppxPackages += Get-AppxPackage -Name SpotifyAB.SpotifyMusic -AllUsers | Where-Object -FilterScript {$_.PackageUserInformation -match "Staged"} | Select-Object -Index 0
+		}
+
 		$PackagesIds = [Windows.Management.Deployment.PackageManager, Windows.Web, ContentType = WindowsRuntime]::new().FindPackages() | Select-Object -Property DisplayName -ExpandProperty Id | Select-Object -Property Name, DisplayName
 
 		foreach ($AppxPackage in $AppxPackages)
@@ -9005,7 +8865,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			Add-Type @SetForegroundWindow
 		}
 
-		Get-Process | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows 11"} | ForEach-Object -Process {
+		Get-Process | Where-Object -FilterScript {(($_.ProcessName -eq "powershell") -or ($_.ProcessName -eq "WindowsTerminal")) -and ($_.MainWindowTitle -match "Sophia Script for Windows 11")} | ForEach-Object -Process {
 			# Show window, if minimized
 			[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
@@ -9989,7 +9849,7 @@ Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object {`$_.CreationTime 
 		}
 		"Delete"
 		{
-			Unregister-ScheduledTask -TaskName Temp2 -Confirm:$false -ErrorAction Ignore
+			Unregister-ScheduledTask -TaskName Temp -Confirm:$false -ErrorAction Ignore
 		}
 	}
 }
@@ -10768,7 +10628,7 @@ function WindowsSandbox
 	.NOTES
 	Machine-wide
 #>
-function DNSoverHTTPS ###
+function DNSoverHTTPS
 {
 	[CmdletBinding()]
 	param
@@ -10943,18 +10803,18 @@ function CABInstallContext
 	{
 		"Show"
 		{
-			if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command))
+			if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas\Command))
 			{
-				New-Item -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command -Force
+				New-Item -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas\Command -Force
 			}
 			$Value = "{0}" -f "cmd /c DISM.exe /Online /Add-Package /PackagePath:`"%1`" /NoRestart & pause"
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command -Name "(default)" -PropertyType String -Value $Value -Force
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs -Name MUIVerb -PropertyType String -Value "@shell32.dll,-10210" -Force
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs -Name HasLUAShield -PropertyType String -Value "" -Force
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas\Command -Name "(default)" -PropertyType String -Value $Value -Force
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas -Name MUIVerb -PropertyType String -Value "@shell32.dll,-10210" -Force
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas -Name HasLUAShield -PropertyType String -Value "" -Force
 		}
 		"Hide"
 		{
-			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs -Recurse -Force -ErrorAction Ignore
+			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas -Recurse -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -11107,19 +10967,18 @@ function ShareContext
 	{
 		"Hide"
 		{
-			if (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"))
+			if (-not (Test-Path -Path "Registry::HKEY_CLASSES_ROOT\AllFilesystemObjects\shellex\ContextMenuHandlers\ModernSharing"))
 			{
-				New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Force
+				New-Item -Path "Registry::HKEY_CLASSES_ROOT\AllFilesystemObjects\shellex\ContextMenuHandlers\ModernSharing" -Force
 			}
-			New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}" -PropertyType String -Value "" -Force
+			New-ItemProperty -Path "Registry::HKEY_CLASSES_ROOT\AllFilesystemObjects\shellex\ContextMenuHandlers\ModernSharing" -Name "(default)" -PropertyType String -Value "{e2bf9676-5f8f-435c-97eb-11607a5bedf7}" -Force
 		}
 		"Show"
 		{
-			Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}" -Force -ErrorAction Ignore
+			Remove-Item -Path "Registry::HKEY_CLASSES_ROOT\AllFilesystemObjects\shellex\ContextMenuHandlers\ModernSharing" -Recurse -Force -ErrorAction Ignore
 		}
 	}
 }
-
 
 <#
 	.SYNOPSIS
@@ -11717,74 +11576,89 @@ function OpenWindowsTerminalAdminContext
 		{
 			if (Get-AppxPackage -Name Microsoft.WindowsTerminal)
 			{
-				try
-				{
-					# Check the internet connection
-					$Parameters = @{
-						Uri              = "https://www.google.com"
-						Method           = "Head"
-						DisableKeepAlive = $true
-						UseBasicParsing  = $true
-					}
-					if (-not (Invoke-WebRequest @Parameters).StatusDescription)
-					{
-						return
-					}
-
-					$Parameters = @{
-						Uri             = "https://raw.githubusercontent.com/microsoft/terminal/master/res/terminal.ico"
-						OutFile         = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\terminal.ico"
-						UseBasicParsing = $true
-						Verbose         = $true
-					}
-					Invoke-WebRequest @Parameters
-				}
-				catch [System.Net.WebException]
-				{
-					Write-Warning -Message $Localization.NoInternetConnection
-					Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
-
-					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
-				}
-
 				# Show the option in the Desktop context menu
-				if (-not (Test-Path -Path HKLM:\SOFTWARE\Classes\Directory\Background\shell\OpenWTHereAsAdmin\command))
+				if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\Directory\Background\shell\runas\command))
 				{
-					New-Item -Path HKLM:\SOFTWARE\Classes\Directory\Background\shell\OpenWTHereAsAdmin\command -ItemType Directory -Force
+					New-Item -Path Registry::HKEY_CLASSES_ROOT\Directory\Background\shell\runas\command -ItemType Directory -Force
 				}
-				New-ItemProperty -Path HKLM:\SOFTWARE\Classes\Directory\Background\shell\OpenWTHereAsAdmin -Name "(default)" -PropertyType String -Value $Localization.OpenInWindowsTerminalAdmin -Force
-				if (Test-Path -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\terminal.ico")
-				{
-					New-ItemProperty -Path HKLM:\SOFTWARE\Classes\Directory\Background\shell\OpenWTHereAsAdmin -Name Icon -PropertyType String -Value "%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\terminal.ico" -Force
-				}
-				New-ItemProperty -Path HKLM:\SOFTWARE\Classes\Directory\Background\shell\OpenWTHereAsAdmin -Name NoWorkingDirectory -PropertyType String -Value "" -Force
-				$Value = "powershell.exe Start-Process -FilePath wt.exe -ArgumentList '-d `"`"`"%V`"`"`"' -Verb RunAs"
-				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Directory\Background\shell\OpenWTHereAsAdmin\command -Name "(default)" -PropertyType String -Value $Value -Force
+				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Directory\Background\shell\runas -Name "(default)" -PropertyType String -Value $Localization.OpenInWindowsTerminalAdmin -Force
+				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Directory\Background\shell\runas -Name Icon -PropertyType String -Value "imageres.dll,73" -Force
+				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Directory\Background\shell\runas -Name NoWorkingDirectory -PropertyType String -Value "" -Force
+				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Directory\Background\shell\runas\command -Name "(default)" -PropertyType String -Value "wt.exe -d ""%V""" -Force
 
 				# Show the option in the folders context menu
-				if (-not (Test-Path -Path HKLM:\SOFTWARE\Classes\Directory\shell\OpenWTHereAsAdmin\command))
+				if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\Directory\shell\runas\command))
 				{
-					New-Item -Path HKLM:\SOFTWARE\Classes\Directory\shell\OpenWTHereAsAdmin\command -ItemType Directory -Force
+					New-Item -Path Registry::HKEY_CLASSES_ROOT\Directory\shell\runas\command -ItemType Directory -Force
 				}
-				New-ItemProperty -Path HKLM:\SOFTWARE\Classes\Directory\shell\OpenWTHereAsAdmin -Name "(default)" -PropertyType String -Value $Localization.OpenInWindowsTerminalAdmin -Force
-				if (Test-Path -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\terminal.ico")
-				{
-					New-ItemProperty -Path HKLM:\SOFTWARE\Classes\Directory\shell\OpenWTHereAsAdmin -Name Icon -PropertyType String -Value "%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\terminal.ico" -Force
-				}
-				New-ItemProperty -Path HKLM:\SOFTWARE\Classes\Directory\shell\OpenWTHereAsAdmin -Name NoWorkingDirectory -PropertyType String -Value "" -Force
-				$Value = "powershell.exe Start-Process -FilePath wt.exe -ArgumentList '-d `"`"`"%1`"`"`"' -Verb RunAs"
-				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Directory\shell\OpenWTHereAsAdmin\command -Name "(default)" -PropertyType String -Value $Value -Force
+				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Directory\shell\runas -Name "(default)" -PropertyType String -Value $Localization.OpenInWindowsTerminalAdmin -Force
+				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Directory\shell\runas -Name Icon -PropertyType String -Value "imageres.dll,73" -Force
+				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Directory\shell\runas -Name NoWorkingDirectory -PropertyType String -Value "" -Force
+				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Directory\shell\runas\command -Name "(default)" -PropertyType String -Value "wt.exe -d ""%1""" -Force
 			}
 		}
 		"Hide"
 		{
-			if (Get-AppxPackage -Name Microsoft.WindowsTerminal)
-			{
-				Remove-Item -Path Registry::HKEY_CLASSES_ROOT\Directory\Background\shell\OpenWTHereAsAdmin -Recurse -Force -ErrorAction Ignore
-				Remove-Item -Path Registry::HKEY_CLASSES_ROOT\Directory\shell\OpenWTHereAsAdmin -Recurse -Force -ErrorAction Ignore
+			$Items = @(
+				"Registry::HKEY_CLASSES_ROOT\Directory\Background\shell\runas",
+				"Registry::HKEY_CLASSES_ROOT\Directory\shell\runas"
+			)
+			Remove-Item -Path $Items -Recurse -Force -ErrorAction Ignore
+		}
+	}
+}
 
-				Remove-Item -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\terminal.ico" -Force -ErrorAction Ignore
+<#
+	.SYNOPSIS
+	The "Show more options" in the context menu
+
+	.PARAMETER Enable
+	Enable the Windows 10 context menu style
+
+	.PARAMETER Disable
+	Disable the Windows 10 context menu style
+
+	.EXAMPLE
+	Windows10ContextMenu -Enable
+
+	.EXAMPLE
+	Windows10ContextMenu -Disable
+
+	.NOTES
+	Current user
+#>
+function Windows10ContextMenu
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Enable"
+		{
+			Remove-Item -Path "HKCU:\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}" -Recurse -Force -ErrorAction Ignore
+		}
+		"Disable"
+		{
+			if (-not (Test-Path -Path "HKCU:\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32"))
+			{
+				New-Item -Path "HKCU:\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" -ItemType Directory -Force
 			}
+			New-ItemProperty -Path "HKCU:\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" -Name "(default)" -PropertyType String -Value "" -Force
 		}
 	}
 }

@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = Lo script supporta Windows 11, 21H2 versioni e superiori
-UpdateWarning                             = La tua build di Windows 11: {0}.{1}. Build supportata: 22000.194 e successive
+UpdateWarning                             = La tua build di Windows 11: {0}.{1}. Build supportata: 22000.282 e successive
 UnsupportedLanguageMode                   = La sessione PowerShell è in esecuzione in una modalità di lingua limitata
 LoggedInUserNotAdmin                      = L'utente connesso non ha i diritti di amministratore
 UnsupportedPowerShell                     = Stai cercando di eseguire lo script tramite PowerShell {0}.{1}. Esegui lo script nella versione di PowerShell appropriata
@@ -14,6 +14,7 @@ ScheduledTasks                            = Attività pianificate
 OneDriveUninstalling                      = Disinstalla OneDrive...
 OneDriveInstalling                        = Installazione di OneDrive...
 OneDriveDownloading                       = Download di OneDrive... ~33 MB
+OneDriveWarning                           = La funzione "{0}" sarà applicata solo se il preset è configurato per rimuovere OneDrive, altrimenti la funzionalità di backup per le cartelle "Desktop" e "Pictures" in OneDrive si interrompe
 WindowsFeaturesTitle                      = Funzionalità di Windows
 OptionalFeaturesTitle                     = Caratteristiche opzionali
 EnableHardwareVT                          = Abilita virtualizzazione in UEFI
@@ -75,7 +76,7 @@ Run                                       = Eseguire
 SelectAll                                 = Seleziona tutto
 Skip                                      = Salta
 Skipped                                   = Saltato
-FileExplorerRestartPrompt                 = A volte, affinché le modifiche abbiano effetto, il processo di File Explorer deve essere riavviato
+FileExplorerRestartPrompt                 = \nA volte, affinché le modifiche abbiano effetto, il processo di File Explorer deve essere riavviato
 TelegramGroupTitle                        = Unisciti al nostro gruppo ufficiale Telegram
 TelegramChannelTitle                      = Unisciti al nostro canale ufficiale di Telegram
 Uninstall                                 = Disinstallare

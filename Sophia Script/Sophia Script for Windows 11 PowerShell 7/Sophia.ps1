@@ -2,11 +2,11 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 11"
 
-	Version: v6.0.5
-	Date: 05.10.2021
+	Version: v6.0.6
+	Date: 24.10.2021
 
-	Copyright (c) 2014–2021 farag
-	Copyright (c) 2019–2021 farag & Inestic
+	Copyright (c) 2014—2021 farag
+	Copyright (c) 2019—2021 farag & Inestic
 
 	Thanks to all https://forum.ru-board.com members involved
 
@@ -28,7 +28,7 @@
 	.NOTES
 	Supported Windows 11 version
 	Version: 21H2
-	Build: 22000.194
+	Build: 22000.282
 	Editions: Home/Pro/Enterprise
 
 	.NOTES
@@ -71,7 +71,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.0.5 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014–2021"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.0.6 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -334,11 +334,11 @@ SnapAssist -Disable
 
 # Show snap layouts when I hover over a windows's maximaze button (default value)
 # Показывать макеты прикрепления, частью которых является приложение, при наведении указателя мыши на кнопки панели задач (значение по умолчанию)
-SnapAssistFlyout -Disable
+SnapAssistFlyout -Enable
 
 # Hide snap layouts when I hover over a windows's maximaze button
 # Не показывать макеты прикрепления, частью которых является приложение, при наведении указателя мыши на кнопки панели задач
-# SnapAssistFlyout -Enable
+# SnapAssistFlyout -Disable
 
 # Show the file transfer dialog box in the detailed mode
 # Отображать диалоговое окно передачи файлов в развернутом виде
@@ -412,25 +412,9 @@ TaskbarChat -Hide
 # Отобразить кнопку чата (Microsoft Teams) на панели задач (значение по умолчанию)
 # TaskbarChat -Show
 
-# Open the "Notification Area Icons" page in Control Panel to enable "Always show all icons in the notification area" settings manually
-# Открыть страницу "Значки области уведомлений" в Панели управления, чтобы вручную активировать настройку "Всегда отображать все значки и уведомления на панели задач"
-NotificationAreaIcons
-
 # Unpin the "Microsoft Edge", "Microsoft Store" shortcuts from the taskbar
 # Открепить ярлыки "Microsoft Edge", "Microsoft Store" или "Почта" от панели задач
 UnpinTaskbarShortcuts -Shortcuts Edge, Store
-
-# Make the taskbar size large
-# Сделать панели задач большой
-# TaskbarSize -Large
-
-# Make the taskbar size default
-# Сделать панели задач по умолчанию
-TaskbarSize -Default
-
-# Make the taskbar size small
-# Сделать панели задач маленькой
-# TaskbarSize -Small
 
 # View the Control Panel icons by large icons
 # Просмотр иконок Панели управления как: крупные значки
@@ -545,14 +529,6 @@ StorageSense -Enable
 # Выключить Контроль памяти (значение по умолчанию)
 # StorageSense -Disable
 
-# Turn on automatic cleaning up temporary system and app files
-# Автоматически очищать временные файлы системы и приложений
-StorageSenseTempFiles -Enable
-
-# Turn off automatic cleaning up temporary system and app files
-# Не очищать временные файлы системы и приложений
-# StorageSenseTempFiles -Disable
-
 # Run Storage Sense every month
 # Запускать Контроль памяти каждый месяц
 StorageSenseFrequency -Month
@@ -560,6 +536,14 @@ StorageSenseFrequency -Month
 # Run Storage Sense during low free disk space (default value)
 # Запускать Контроль памяти, когда остается мало место на диске (значение по умолчанию)
 # StorageSenseFrequency -Default
+
+# Turn on automatic cleaning up temporary system and app files
+# Автоматически очищать временные файлы системы и приложений
+StorageSenseTempFiles -Enable
+
+# Turn off automatic cleaning up temporary system and app files
+# Не очищать временные файлы системы и приложений
+# StorageSenseTempFiles -Disable
 #endregion StorageSense
 
 # Disable hibernation. Do not recommend turning it off on laptops
@@ -756,11 +740,18 @@ SetUserShellFolderLocation -Root
 #>
 # SetUserShellFolderLocation -Default
 
-# Save screenshots by pressing Win+PrtScr on the Desktop
-# Сохранять скриншоты по нажатию Win+PrtScr на рабочий столе
+<#
+	Save screenshots by pressing Win+PrtScr on the Desktop
+	The function will be applied only if the preset is configured to remove the OneDrive application
+	Otherwise the backup functionality for the "Desktop" and "Pictures" folders in OneDrive breaks
+
+	Сохранять скриншоты по нажатию Win+PrtScr на рабочий столе
+	Функция будет применена только в случае, если в пресете настроено удаление приложения OneDrive,
+	иначе ломается функционал резервного копирования для папок "Рабочий стол" и "Изображения" в OneDrive
+#>
 WinPrtScrFolder -Desktop
 
-# Save screenshots by pressing Win+PrtScr on the Pictures folder (default value)
+# Save screenshots by pressing Win+PrtScr in the Pictures folder (default value)
 # Cохранять скриншоты по нажатию Win+PrtScr в папку "Изображения" (значение по умолчанию)
 # WinPrtScrFolder -Default
 
@@ -814,13 +805,13 @@ NumLock -Enable
 # Выключить Num Lock при загрузке (значение по умолчанию)
 # NumLock -Disable
 
-# Enable Caps Lock
-# Включить Caps Lock
-# CapsLock -Enable
-
-# Disable Caps Lock (default value)
-# Выключить Caps Lock (значение по умолчанию)
+# Disable Caps Lock
+# Выключить Caps Lock
 # CapsLock -Disable
+
+# Enable Caps Lock (default value)
+# Включить Caps Lock (значение по умолчанию)
+# CapsLock -Enable
 
 # Turn off pressing the Shift key 5 times to turn Sticky keys
 # Выключить залипание клавиши Shift после 5 нажатий
@@ -887,8 +878,8 @@ RestartDeviceAfterUpdate -Enable
 #>
 # Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .txt -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
 
-# Set Windows Terminal Preview as default terminal app to host the user interface for command-line applications
-# Установить Windows Terminal Preview как приложение терминала по умолчанию для размещения пользовательского интерфейса для приложений командной строки
+# Set Windows Terminal as default terminal app to host the user interface for command-line applications
+# Установить Windows Terminal как приложение терминала по умолчанию для размещения пользовательского интерфейса для приложений командной строки
 DefaultTerminalApp -WindowsTerminal
 
 # Set Windows Console Host as default terminal app to host the user interface for command-line applications (default value)
@@ -908,14 +899,6 @@ DefaultTerminalApp -WindowsTerminal
 #endregion WSL
 
 #region Start menu
-# Hide recently added apps in the Start menu
-# Скрывать недавно добавленные приложения в меню "Пуск"
-RecentlyAddedApps -Hide
-
-# Show recently added apps in the Start menu (default value)
-# Показывать недавно добавленные приложения в меню "Пуск" (значение по умолчанию)
-# RecentlyAddedApps -Show
-
 # Run the Windows PowerShell shortcut from the Start menu as Administrator
 # Запускать ярлык Windows PowerShell в меню "Пуск" от имени Администратора
 RunPowerShellShortcut -Elevated
@@ -1224,13 +1207,8 @@ CastToDeviceContext -Hide
 # Скрыть пункт "Отправить" (поделиться) из контекстного меню
 ShareContext -Hide
 
-<#
-	Show the "Share" item in the context menu (default value)
-	Showing the "Share" item in the context menu will disable the Windows 10 File Explorer
-
-	Отобразить пункт "Отправить" (поделиться) в контекстном меню (значение по умолчанию)
-	Отображение элемента "Поделиться" в контекстном меню приведет к отключению проводника из Windows 10
-#>
+# Show the "Share" item in the context menu (default value)
+# Отобразить пункт "Отправить" (поделиться) в контекстном меню (значение по умолчанию)
 # ShareContext -Show
 
 # Hide the "Edit with Photos" item from the media files context menu
@@ -1314,12 +1292,20 @@ OpenWindowsTerminalContext -Hide
 # OpenWindowsTerminalContext -Show
 
 # Show the "Open in Windows Terminal (Admin)" item in the Desktop and folders context menu
-# Отобразить пункт "Открыть в Терминале Windows (Администратор)" в контекстном меню Рабочего стола и папок (значение по умолчанию)
+# Отобразить пункт "Открыть в Терминале Windows (Администратор)" в контекстном меню Рабочего стола и папок
 OpenWindowsTerminalAdminContext -Show
 
 # Hide the "Open in Windows Terminal (Admin)" item from the Desktop and folders context menu (default value)
 # Скрыть пункт "Открыть в Терминале Windows (Администратор)" в контекстном меню Рабочего стола и папок (значение по умолчанию)
 # OpenWindowsTerminalAdminContext -Hide
+
+# Disable the Windows 10 context menu style (default value)
+# Отключить стиль контекстного меню из Windows 10 (значение по умолчанию)
+Windows10ContextMenu -Disable
+
+# Enable the Windows 10 context menu style
+# Включить стиль контекстного меню из Windows 10
+# Windows10ContextMenu -Enable
 #endregion Context menu
 
 <#
