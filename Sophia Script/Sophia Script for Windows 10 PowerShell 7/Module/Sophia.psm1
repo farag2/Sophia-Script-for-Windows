@@ -2,11 +2,11 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.12.4
-	Date: 05.10.2021
+	Version: v5.12.5
+	Date: 24.10.2021
 
-	Copyright (c) 2014–2021 farag
-	Copyright (c) 2019–2021 farag & Inestic
+	Copyright (c) 2014—2021 farag
+	Copyright (c) 2019—2021 farag & Inestic
 
 	Thanks to all https://forum.ru-board.com members involved
 
@@ -594,39 +594,30 @@ function ScheduledTasks
 	# The following tasks will have their checkboxes checked
 	[string[]]$CheckedScheduledTasks = @(
 		# Collects program telemetry information if opted-in to the Microsoft Customer Experience Improvement Program
-		# Сбор телеметрических данных программы при участии в программе улучшения качества ПО
 		"ProgramDataUpdater",
 
 		# This task collects and uploads autochk SQM data if opted-in to the Microsoft Customer Experience Improvement Program
-		# Эта задача собирает и загружает данные SQM при участии в программе улучшения качества программного обеспечения
 		"Proxy",
 
 		# If the user has consented to participate in the Windows Customer Experience Improvement Program, this job collects and sends usage data to Microsoft
-		# Если пользователь изъявил желание участвовать в программе по улучшению качества программного обеспечения Windows, эта задача будет собирать и отправлять сведения о работе программного обеспечения в Майкрософт
 		"Consolidator",
 
 		# The USB CEIP (Customer Experience Improvement Program) task collects Universal Serial Bus related statistics and information about your machine and sends it to the Windows Device Connectivity engineering group at Microsoft
-		# При выполнении задачи программы улучшения качества ПО шины USB (USB CEIP) осуществляется сбор статистических данных об использовании универсальной последовательной шины USB и с ведений о компьютере, которые направляются инженерной группе Майкрософт по вопросам подключения устройств в Windows
 		"UsbCeip",
 
 		# The Windows Disk Diagnostic reports general disk and system information to Microsoft for users participating in the Customer Experience Program
-		# Для пользователей, участвующих в программе контроля качества программного обеспечения, служба диагностики дисков Windows предоставляет общие сведения о дисках и системе в корпорацию Майкрософт
 		"Microsoft-Windows-DiskDiagnosticDataCollector",
 
 		# This task shows various Map related toasts
-		# Эта задача показывает различные тосты (всплывающие уведомления) приложения "Карты"
 		"MapsToastTask",
 
 		# This task checks for updates to maps which you have downloaded for offline use
-		# Эта задача проверяет наличие обновлений для карт, загруженных для автономного использования
 		"MapsUpdateTask",
 
 		# Initializes Family Safety monitoring and enforcement
-		# Инициализация контроля и применения правил семейной безопасности
 		"FamilySafetyMonitor",
 
 		# Synchronizes the latest settings with the Microsoft family features service
-		# Синхронизирует последние параметры со службой функций семьи учетных записей Майкрософт
 		"FamilySafetyRefreshTask",
 
 		# XblGameSave Standby Task
@@ -860,7 +851,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Add-Type @SetForegroundWindow
 	}
 
-	Get-Process | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows 10"} | ForEach-Object -Process {
+	Get-Process | Where-Object -FilterScript {(($_.ProcessName -eq "powershell") -or ($_.ProcessName -eq "WindowsTerminal")) -and ($_.MainWindowTitle -match "Sophia Script for Windows 10")} | ForEach-Object -Process {
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
@@ -3539,7 +3530,7 @@ public static bool MarkFileDelete (string sourcefile)
 "@
 						}
 
-						# If there are some files or folders left in %LOCALAPPDATA\Temp%
+						# If there are some files or folders left in %LOCALAPPDATA%\Temp
 						if ((Get-ChildItem -Path $env:OneDrive -ErrorAction Ignore | Measure-Object).Count -ne 0)
 						{
 							if (-not ("WinAPI.DeleteFiles" -as [type]))
@@ -3570,7 +3561,7 @@ public static bool MarkFileDelete (string sourcefile)
 				Remove-Item -Path HKLM:\SOFTWARE\WOW6432Node\Microsoft\OneDrive -Recurse -Force -ErrorAction Ignore
 				Remove-Item -Path "$env:ProgramData\Microsoft OneDrive" -Recurse -Force -ErrorAction Ignore
 				Remove-Item -Path $env:SystemDrive\OneDriveTemp -Recurse -Force -ErrorAction Ignore
-				Unregister-ScheduledTask -TaskName *OneDrive* -Confirm:$false
+				Unregister-ScheduledTask -TaskName *OneDrive* -Confirm:$false -ErrorAction Ignore
 
 				# Getting the OneDrive folder path
 				$OneDriveFolder = Split-Path -Path (Split-Path -Path $OneDriveSetup[0] -Parent)
@@ -3593,6 +3584,7 @@ public static bool MarkFileDelete (string sourcefile)
 						Invoke-Item -Path $Script:OpenedFolder
 					}
 				}
+
 				New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoRestartShell -Value 1 -Force
 
 				# Attempt to unregister FileSyncShell64.dll and remove
@@ -3705,6 +3697,9 @@ public static bool MarkFileDelete (string sourcefile)
 					}
 				}
 
+				# Save screenshots by pressing Win+PrtScr in the Pictures folder
+				Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -Force -ErrorAction Ignore
+
 				Get-ScheduledTask -TaskName "Onedrive* Update*" | Enable-ScheduledTask
 				Get-ScheduledTask -TaskName "Onedrive* Update*" | Start-ScheduledTask
 			}
@@ -3776,63 +3771,6 @@ function StorageSense
 
 <#
 	.SYNOPSIS
-	Clean up of temporary files
-
-	.PARAMETER Enable
-	Delete temporary files that apps aren't using
-
-	.PARAMETER Disable
-	Do not delete temporary files that apps aren't using
-
-	.EXAMPLE
-	StorageSenseTempFiles -Enable
-
-	.EXAMPLE
-	StorageSenseTempFiles -Disable
-
-	.NOTES
-	Current user
-#>
-function StorageSenseTempFiles
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Enable"
-		{
-			if ((Get-ItemPropertyValue -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01) -eq "1")
-			{
-				New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 04 -PropertyType DWord -Value 1 -Force
-			}
-		}
-		"Disable"
-		{
-			if ((Get-ItemPropertyValue -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01) -eq "1")
-			{
-				New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 04 -PropertyType DWord -Value 0 -Force
-			}
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
 	Storage Sense running frequency
 
 	.PARAMETER Month
@@ -3883,6 +3821,63 @@ function StorageSenseFrequency
 			if ((Get-ItemPropertyValue -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01) -eq "1")
 			{
 				New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 2048 -PropertyType DWord -Value 0 -Force
+			}
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	Clean up of temporary files
+
+	.PARAMETER Enable
+	Delete temporary files that apps aren't using
+
+	.PARAMETER Disable
+	Do not delete temporary files that apps aren't using
+
+	.EXAMPLE
+	StorageSenseTempFiles -Enable
+
+	.EXAMPLE
+	StorageSenseTempFiles -Disable
+
+	.NOTES
+	Current user
+#>
+function StorageSenseTempFiles
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Enable"
+		{
+			if ((Get-ItemPropertyValue -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01) -eq "1")
+			{
+				New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 04 -PropertyType DWord -Value 1 -Force
+			}
+		}
+		"Disable"
+		{
+			if ((Get-ItemPropertyValue -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01) -eq "1")
+			{
+				New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 04 -PropertyType DWord -Value 0 -Force
 			}
 		}
 	}
@@ -4085,6 +4080,7 @@ Unregister-ScheduledTask -TaskName SymbolicLink -Confirm:`$false
 
 				#region main
 				# Change the %TEMP% environment variable path to %LOCALAPPDATA%\Temp
+				# The additional registry key creating are needed to fix the property type of the keys: SetEnvironmentVariable creates them with the "String" type instead of "ExpandString" as by default
 				[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "User")
 				[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Machine")
 				[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Process")
@@ -4634,7 +4630,6 @@ function WindowsFeatures
 	# The following Windows features will have their checkboxes checked
 	[string[]]$CheckedFeatures = @(
 		# Legacy Components
-		# Компоненты прежних версий
 		"LegacyComponents",
 
 		# PowerShell 2.0
@@ -4642,11 +4637,9 @@ function WindowsFeatures
 		"MicrosoftWindowsPowershellV2Root",
 
 		# Microsoft XPS Document Writer
-		# Средство записи XPS-документов (Microsoft)
 		"Printing-XPSServices-Features",
 
 		# Work Folders Client
-		# Клиент рабочих папок
 		"WorkFolders-Client"
 	)
 
@@ -4884,7 +4877,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Add-Type @SetForegroundWindow
 	}
 
-	Get-Process | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows 10"} | ForEach-Object -Process {
+	Get-Process | Where-Object -FilterScript {(($_.ProcessName -eq "powershell") -or ($_.ProcessName -eq "WindowsTerminal")) -and ($_.MainWindowTitle -match "Sophia Script for Windows 10")} | ForEach-Object -Process {
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
@@ -4961,11 +4954,9 @@ function WindowsCapabilities
 	# The following optional features will have their checkboxes checked
 	[string[]]$CheckedCapabilities = @(
 		# Steps Recorder
-		# Средство записи действий
 		"App.StepsRecorder*",
 
 		# Microsoft Quick Assist
-		# Быстрая поддержка (Майкрософт)
 		"App.Support.QuickAssist*",
 
 		# Microsoft Paint
@@ -4981,7 +4972,6 @@ function WindowsCapabilities
 		"Browser.InternetExplorer*",
 
 		# Math Recognizer
-		# Распознаватель математических знаков
 		"MathRecognizer*",
 
 		# Windows Media Player
@@ -4989,38 +4979,30 @@ function WindowsCapabilities
 		"Media.WindowsMediaPlayer*",
 
 		# OpenSSH Client
-		# Клиент OpenSSH
 		"OpenSSH.Client*"
 	)
 
 	# The following optional features will be excluded from the display
 	[string[]]$ExcludedCapabilities = @(
 		# The DirectX Database to configure and optimize apps when multiple Graphics Adapters are present
-		# База данных DirectX для настройки и оптимизации приложений при наличии нескольких графических адаптеров
 		"DirectX.Configuration.Database*",
 
 		# Language components
-		# Языковые компоненты
 		"Language.*",
 
 		# Notepad
-		# Блокнот
 		"Microsoft.Windows.Notepad*",
 
 		# Mail, contacts, and calendar sync component
-		# Компонент синхронизации почты, контактов и календаря
 		"OneCoreUAP.OneSync*",
 
 		# Windows PowerShell Intergrated Scripting Enviroment
-		# Интегрированная среда сценариев Windows PowerShell
 		"Microsoft.Windows.PowerShell.ISE*",
 
 		# Management of printers, printer drivers, and printer servers
-		# Управление принтерами, драйверами принтеров и принт-серверами
 		"Print.Management.Console*",
 
 		# Features critical to Windows functionality
-		# Компоненты, критичные для работоспособности Windows
 		"Windows.Client.ShellComponents*"
 	)
 	#endregion Variables
@@ -5284,7 +5266,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Add-Type @SetForegroundWindow
 	}
 
-	Get-Process | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows 10"} | ForEach-Object -Process {
+	Get-Process | Where-Object -FilterScript {(($_.ProcessName -eq "powershell") -or ($_.ProcessName -eq "WindowsTerminal")) -and ($_.MainWindowTitle -match "Sophia Script for Windows 10")} | ForEach-Object -Process {
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
@@ -5357,7 +5339,7 @@ function UpdateMicrosoftProducts
 		}
 		"Disable"
 		{
-			if ((New-Object -ComObject Microsoft.Update.ServiceManager).Services | Where-Object -FilterScript {$_.ServiceID -eq "7971f918-a847-4430-9279-4a52d1efe18d"})
+			if (((New-Object -ComObject Microsoft.Update.ServiceManager).Services | Where-Object -FilterScript {$_.ServiceID -eq "7971f918-a847-4430-9279-4a52d1efe18d"}).IsDefaultAUService -eq $true)
 			{
 				(New-Object -ComObject Microsoft.Update.ServiceManager).RemoveService("7971f918-a847-4430-9279-4a52d1efe18d")
 			}
@@ -5614,14 +5596,14 @@ function IPv6Component
 		{
 			if ($null -eq $IPv6Test)
 			{
-				Disable-NetAdapterBinding –Name * –ComponentID ms_tcpip6
+				Disable-NetAdapterBinding -Name * -ComponentID ms_tcpip6
 			}
 		}
 		"Enable"
 		{
 			if ($IPv6Test)
 			{
-				Enable-NetAdapterBinding –Name * –ComponentID ms_tcpip6
+				Enable-NetAdapterBinding -Name * -ComponentID ms_tcpip6
 			}
 		}
 	}
@@ -6695,6 +6677,10 @@ public static string GetString(uint strId)
 	WinPrtScrFolder -Default
 
 	.NOTES
+	The function will be applied only if the preset is configured to remove OneDrive,
+	otherwise the backup functionality for the "Desktop" and "Pictures" folders in OneDrive breaks
+
+	.NOTES
 	Current user
 #>
 function WinPrtScrFolder
@@ -6720,8 +6706,16 @@ function WinPrtScrFolder
 	{
 		"Desktop"
 		{
-			$DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
-			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -Type ExpandString -Value $DesktopFolder -Force
+			if ((Get-Content -Path $PSScriptRoot\..\Sophia.ps1 -Encoding UTF8 -Force | Select-String -SimpleMatch "OneDrive -Uninstall").Line.StartsWith("#") -eq $false)
+			{
+				$DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
+				New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -Type ExpandString -Value $DesktopFolder -Force
+			}
+			else
+			{
+				Write-Warning -Message ($Localization.OneDriveWarning -f $MyInvocation.Line)
+				Write-Error -Message ($Localization.OneDriveWarning -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+			}
 		}
 		"Default"
 		{
@@ -8261,7 +8255,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Add-Type @SetForegroundWindow
 	}
 
-	Get-Process | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows 11"} | ForEach-Object -Process {
+	Get-Process | Where-Object -FilterScript {(($_.ProcessName -eq "powershell") -or ($_.ProcessName -eq "WindowsTerminal")) -and ($_.MainWindowTitle -match "Sophia Script for Windows 10")} | ForEach-Object -Process {
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
@@ -9167,7 +9161,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			Add-Type @SetForegroundWindow
 		}
 
-		Get-Process | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows 10"} | ForEach-Object -Process {
+		Get-Process | Where-Object -FilterScript {(($_.ProcessName -eq "powershell") -or ($_.ProcessName -eq "WindowsTerminal")) -and ($_.MainWindowTitle -match "Sophia Script for Windows 10")} | ForEach-Object -Process {
 			# Show window, if minimized
 			[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
@@ -9497,7 +9491,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			Add-Type @SetForegroundWindow
 		}
 
-		Get-Process | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows 10"} | ForEach-Object -Process {
+		Get-Process | Where-Object -FilterScript {(($_.ProcessName -eq "powershell") -or ($_.ProcessName -eq "WindowsTerminal")) -and ($_.MainWindowTitle -match "Sophia Script for Windows 10")} | ForEach-Object -Process {
 			# Show window, if minimized
 			[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
@@ -10350,8 +10344,8 @@ while (`$true)
 
 			Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Name ShowInActionCenter -Force -ErrorAction Ignore
 
-			Unregister-ScheduledTask -TaskName "Windows Cleanup" -Confirm:$false
-			Unregister-ScheduledTask -TaskName "Windows Cleanup Notification" -Confirm:$false
+			Unregister-ScheduledTask -TaskName "Windows Cleanup" -Confirm:$false -ErrorAction Ignore
+			Unregister-ScheduledTask -TaskName "Windows Cleanup Notification" -Confirm:$false -ErrorAction Ignore
 
 			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Recurse -Force -ErrorAction Ignore
 		}
@@ -10458,7 +10452,7 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -For
 		}
 		"Delete"
 		{
-			Unregister-ScheduledTask -TaskName SoftwareDistribution -Confirm:$false
+			Unregister-ScheduledTask -TaskName SoftwareDistribution -Confirm:$false -ErrorAction Ignore
 		}
 	}
 }
@@ -10555,7 +10549,7 @@ Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object {`$_.CreationTime 
 		}
 		"Delete"
 		{
-			Unregister-ScheduledTask -TaskName Temp -Confirm:$false
+			Unregister-ScheduledTask -TaskName Temp -Confirm:$false -ErrorAction Ignore
 		}
 	}
 }
@@ -11414,18 +11408,18 @@ function CABInstallContext
 	{
 		"Show"
 		{
-			if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command))
+			if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas\Command))
 			{
-				New-Item -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command -Force
+				New-Item -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas\Command -Force
 			}
 			$Value = "{0}" -f "cmd /c DISM.exe /Online /Add-Package /PackagePath:`"%1`" /NoRestart & pause"
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command -Name "(default)" -PropertyType String -Value $Value -Force
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs -Name MUIVerb -PropertyType String -Value "@shell32.dll,-10210" -Force
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs -Name HasLUAShield -PropertyType String -Value "" -Force
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas\Command -Name "(default)" -PropertyType String -Value $Value -Force
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas -Name MUIVerb -PropertyType String -Value "@shell32.dll,-10210" -Force
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas -Name HasLUAShield -PropertyType String -Value "" -Force
 		}
 		"Hide"
 		{
-			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs -Recurse -Force -ErrorAction Ignore
+			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas -Recurse -Force -ErrorAction Ignore
 		}
 	}
 }

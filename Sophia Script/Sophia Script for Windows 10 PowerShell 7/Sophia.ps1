@@ -2,11 +2,11 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10 (PowerShell 7)"
 
-	Version: v5.12.3
-	Date: 19.09.2021
+	Version: v5.12.5
+	Date: 24.10.2021
 
-	Copyright (c) 2014–2021 farag
-	Copyright (c) 2019–2021 farag & Inestic
+	Copyright (c) 2014—2021 farag
+	Copyright (c) 2019—2021 farag & Inestic
 
 	Thanks to all https://forum.ru-board.com members involved
 
@@ -21,7 +21,7 @@
 	.EXAMPLE Run the script by specifying the module functions as an argument
 	.\Sophia.ps1 -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
 
-	.EXAMPLE Download and expand the archive (without running) the latest Sophia Script according which Windows and PowerShell versions it is run on
+	.EXAMPLE Download and expand the latest Sophia Script version archive (without running) according which Windows and PowerShell versions it is run on
 	irm script.sophi.app | iex
 	Invoke-RestMethod -Uri script.sophi.app | Invoke-Expression
 
@@ -72,7 +72,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.12.3 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014–2021"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.12.5 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -537,12 +537,12 @@ AppsLanguageSwitch -Enable
 # Не использовать метод ввода для каждого окна (значение по умолчанию)
 # AppsLanguageSwitch -Disable
 
-# When I grab a windows's title bar and shake it, minimize all other windows
-# При захвате заголовка окна и встряхивании сворачиваются все остальные окна
+# When I grab a windows's title bar and shake it, minimize all other windows (default value)
+# При захвате заголовка окна и встряхивании сворачиваются все остальные окна (значение по умолчанию)
 AeroShaking -Enable
 
-# When I grab a windows's title bar and shake it, don't minimize all other windows (default value)
-# При захвате заголовка окна и встряхивании не сворачиваются все остальные окна (значение по умолчанию)
+# When I grab a windows's title bar and shake it, don't minimize all other windows
+# При захвате заголовка окна и встряхивании не сворачиваются все остальные окна
 # AeroShaking -Disable
 #endregion UI & Personalization
 
@@ -551,8 +551,8 @@ AeroShaking -Enable
 # Удалить OneDrive. Папка пользователя OneDrive не будет удалена
 OneDrive -Uninstall
 
-# Install OneDrive (default value)
-# Установить OneDrive (значение по умолчанию)
+# Install OneDrive 64-bit (default value)
+# Установить OneDrive 64-бит (значение по умолчанию)
 # OneDrive -Install
 #endregion OneDrive
 
@@ -566,14 +566,6 @@ StorageSense -Enable
 # Выключить Контроль памяти (значение по умолчанию)
 # StorageSense -Disable
 
-# Delete temporary files that apps aren't using
-# Удалять временные файлы, не используемые в приложениях
-StorageSenseTempFiles -Enable
-
-# Do not delete temporary files that apps aren't using
-# Не удалять временные файлы, не используемые в приложениях
-# StorageSenseTempFiles -Disable
-
 # Run Storage Sense every month
 # Запускать Контроль памяти каждый месяц
 StorageSenseFrequency -Month
@@ -581,6 +573,14 @@ StorageSenseFrequency -Month
 # Run Storage Sense during low free disk space (default value)
 # Запускать Контроль памяти, когда остается мало место на диске (значение по умолчанию)
 # StorageSenseFrequency -Default
+
+# Delete temporary files that apps aren't using
+# Удалять временные файлы, не используемые в приложениях
+StorageSenseTempFiles -Enable
+
+# Do not delete temporary files that apps aren't using
+# Не удалять временные файлы, не используемые в приложениях
+# StorageSenseTempFiles -Disable
 #endregion StorageSense
 
 # Disable hibernation. Do not recommend turning it off on laptops
@@ -777,11 +777,18 @@ SetUserShellFolderLocation -Root
 #>
 # SetUserShellFolderLocation -Default
 
-# Save screenshots by pressing Win+PrtScr on the Desktop
-# Сохранять скриншоты по нажатию Win+PrtScr на рабочий столе
+<#
+	Save screenshots by pressing Win+PrtScr on the Desktop
+	The function will be applied only if the preset is configured to remove the OneDrive application
+	Otherwise the backup functionality for the "Desktop" and "Pictures" folders in OneDrive breaks
+
+	Сохранять скриншоты по нажатию Win+PrtScr на рабочий столе
+	Функция будет применена только в случае, если в пресете настроено удаление приложения OneDrive,
+	иначе ломается функционал резервного копирования для папок "Рабочий стол" и "Изображения" в OneDrive
+#>
 WinPrtScrFolder -Desktop
 
-# Save screenshots by pressing Win+PrtScr on the Pictures folder (default value)
+# Save screenshots by pressing Win+PrtScr in the Pictures folder (default value)
 # Cохранять скриншоты по нажатию Win+PrtScr в папку "Изображения" (значение по умолчанию)
 # WinPrtScrFolder -Default
 
@@ -835,13 +842,13 @@ NumLock -Enable
 # Выключить Num Lock при загрузке (значение по умолчанию)
 # NumLock -Disable
 
-# Enable Caps Lock
-# Включить Caps Lock
-# CapsLock -Enable
-
-# Disable Caps Lock (default value)
-# Выключить Caps Lock (значение по умолчанию)
+# Disable Caps Lock
+# Выключить Caps Lock
 # CapsLock -Disable
+
+# Enable Caps Lock (default value)
+# Включить Caps Lock (значение по умолчанию)
+# CapsLock -Enable
 
 # Turn off pressing the Shift key 5 times to turn Sticky keys
 # Выключить залипание клавиши Shift после 5 нажатий
@@ -910,8 +917,13 @@ RestartDeviceAfterUpdate -Enable
 #endregion System
 
 #region WSL
-# Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form
-# Установить подсистему Windows для Linux (WSL), последний пакет обновления ядра Linux и дистрибутив Linux, используя всплывающую форму
+<#
+	Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form
+	To receive kernel updates, enable the Windows Update setting: "Receive updates for other Microsoft products"
+
+	Установить подсистему Windows для Linux (WSL), последний пакет обновления ядра Linux и дистрибутив Linux, используя всплывающую форму
+	Чтобы получать обновления ядра, включите параметр "При обновлении Windows поулчать обновления для других продуктов Майкрософт" в Центре обновлении Windows
+#>
 # WSL -Enable
 #endregion WSL
 
