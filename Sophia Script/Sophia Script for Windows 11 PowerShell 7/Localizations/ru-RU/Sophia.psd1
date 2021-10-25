@@ -1,4 +1,4 @@
-﻿ConvertFrom-StringData -StringData @'
+ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = Скрипт поддерживает только Windows 11 21H2 и выше
 UpdateWarning                             = Ваш билд Windows 11: {0}.{1}. Поддерживаемый билд: 22000.282 и выше
 UnsupportedLanguageMode                   = Сессия PowerShell работает в ограниченном режиме
