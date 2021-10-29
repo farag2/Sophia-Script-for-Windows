@@ -190,7 +190,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 * Add exclusion folder from Microsoft Defender Antivirus scanning using dialog menu;
 * Add exclusion file from Microsoft Defender Antivirus scanning using dialog menu;
 * Refresh desktop icons, environment variables and taskbar without restarting File Explorer;
-* Setup Windows 10 security;
+* Configure the Windows security;
 * Many more File Explorer and context menu "deep" tweaks.
 
 ## How to use
