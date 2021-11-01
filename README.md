@@ -94,7 +94,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ## :fire: Before running :fire:
 
-* Due to the fact that the script includes more than **150** functions with different arguments, you must read the entire **Sophia.ps1** carefully and **comment out/uncomment** those functions that you do/do not want to be executed. Every tweak in the preset file has its' corresponding function to **restore the default settings**.
+* Due to the fact that the script includes more than **150** functions with different arguments, you must read the entire **Sophia.ps1** carefully and **comment out/uncomment** those functions that you do/do not want to be executed (without need to edit the code), or use [Wrapper](https://github.com/farag2/Sophia-Script-for-Windows#davids-sophia-script-wrapper). Every tweak in the preset file has its' corresponding function to **restore the default settings**.
 * Running the script is best done on a fresh install because running it on **wrong** tweaked system may result in errors occurring.
 
 ## Minimum supported Windows versions
