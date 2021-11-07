@@ -1,4 +1,4 @@
-﻿ConvertFrom-StringData -StringData @'
+ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Скрипт підтримує тільки Windows 10 x64
 UnsupportedOSBuild                        = Скрипт підтримує тільки Windows 10 версії 2004/20H2/21H1/21H2
 UpdateWarning                             = Встановлений зведене оновлення Windows 10: {0}. Підтримуваний накопичувальний пакет оновлення: 1151 і вище

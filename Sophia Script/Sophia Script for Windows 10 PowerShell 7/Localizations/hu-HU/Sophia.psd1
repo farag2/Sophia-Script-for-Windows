@@ -1,4 +1,4 @@
-﻿ConvertFrom-StringData -StringData @'
+ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = A szkript csak a Windows 10 64 bites verziót támogatja
 UnsupportedOSBuild                        = A szkript támogatja a Windows 10 2004/20H2/21H1/21H2 verziókat
 UpdateWarning                             = A Windows 10 összesített frissítése telepítve: {0}. Támogatott kumulatív frissítés: 1151 és magasabb verziószámok

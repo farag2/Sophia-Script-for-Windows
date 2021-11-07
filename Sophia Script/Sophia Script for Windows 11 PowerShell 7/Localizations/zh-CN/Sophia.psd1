@@ -1,4 +1,4 @@
-﻿ConvertFrom-StringData -StringData @'
+ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = 该脚本支持Windows 11版本21H2和更高版本
 UpdateWarning                             = 您的Windows 11构建。{0}.{1}。支持的构建。22000.282和更高版本
 UnsupportedLanguageMode                   = PowerShell会话在有限的语言模式下运行

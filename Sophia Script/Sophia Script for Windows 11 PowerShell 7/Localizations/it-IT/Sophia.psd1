@@ -1,4 +1,4 @@
-﻿ConvertFrom-StringData -StringData @'
+ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = Lo script supporta Windows 11, 21H2 versioni e superiori
 UpdateWarning                             = La tua build di Windows 11: {0}.{1}. Build supportata: 22000.282 e successive
 UnsupportedLanguageMode                   = La sessione PowerShell è in esecuzione in una modalità di lingua limitata

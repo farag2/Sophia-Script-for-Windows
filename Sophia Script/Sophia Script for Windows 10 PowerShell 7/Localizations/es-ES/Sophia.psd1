@@ -1,4 +1,4 @@
-﻿ConvertFrom-StringData -StringData @'
+ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = El script sólo es compatible con Windows 10 x64
 UnsupportedOSBuild                        = El script es compatible con versión Windows 10 2004/20H2/21H1/21H2
 UpdateWarning                             = Actualización acumulativa de Windows 10 instalada: {0}. Actualización acumulativa soportada: 1151 y superior

@@ -1,4 +1,4 @@
-﻿ConvertFrom-StringData -StringData @'
+ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Le script supporte uniquement Windows 10 x64
 UnsupportedOSBuild                        = Le script supporte les versions Windows 10 2004/20H2/21H1/21H2
 UpdateWarning                             = La mise à jour cumulative de Windows 10 est installée : {0}. Mise à jour cumulative prise en charge : 1151 et plus
@@ -33,11 +33,11 @@ UWPAppsTitle                              = Applications UWP
 HEVCDownloading                           = Téléchargement de Extensions vidéo HEVC du fabricant de l'appareil... ~2,8 MB
 GraphicsPerformanceTitle                  = Préférence de performances graphiques
 GraphicsPerformanceRequest                = Souhaitez-vous définir le paramètre de performances graphiques d'une application de votre choix sur "Haute performance"?
-TaskNotificationTitle                     = Notificacion
-CleanupTaskNotificationTitle              = Une information important
+TaskNotificationTitle                     = Notification
+CleanupTaskNotificationTitle              = Une information importante
 CleanupTaskDescription                    = Nettoyage des fichiers Windows inutilisés et des mises à jour à l'aide de l'application intégrée pour le nettoyage de disque
 CleanupTaskNotificationEventTitle         = Exécuter la tâche pour nettoyer les fichiers et les mises à jour inutilisés de Windows?
-CleanupTaskNotificationEvent              = Le nettoyage de Windows ne prendra pas longtemps. La prochaine fois que la notification apparaîtra dans 30 jours
+CleanupTaskNotificationEvent              = Le nettoyage de Windows ne prendra pas longtemps. Cette notification apparaîtra à nouveau dans 30 jours
 CleanupTaskNotificationSnoozeInterval     = Sélectionnez un intervalle de rappel
 CleanupNotificationTaskDescription        = Rappel de notification contextuelle sur le nettoyage des fichiers et des mises à jour inutilisés de Windows
 SoftwareDistributionTaskNotificationEvent = Le cache de mise à jour Windows a bien été supprimé
