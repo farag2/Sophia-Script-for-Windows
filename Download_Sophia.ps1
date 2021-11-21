@@ -3,7 +3,7 @@
 	Download the latest Sophia Script version, depending on what Windows or PowerShell versions are used to
 	E.g., if you start script on Windows 11 via PowerShell 5.1 you will start downloading Sophia Script for Windows 11 PowerShell 5.1
 
-	.EXAMPLE Download and the Sophia Script archive
+	.EXAMPLE Download and expand the Sophia Script archive
 	irm script.sophi.app | iex
 
 	.EXAMPLE Download and expand the Wrapper archive
