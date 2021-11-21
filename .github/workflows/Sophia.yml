@@ -129,32 +129,61 @@ jobs:
               "$($_.Name)  $((Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash)"
           } | Add-Content -Path SHA256SUM -Encoding Default -Force
 
-      - name: Sophia Script for Windows 10 LTSC
+      - name: Sophia Script for Windows 10 LTSC 2019
         run: |
           # https://github.com/farag2/Sophia-Script-for-Windows/blob/master/sophia_script_versions.json
           $Parameters = @{
             Uri = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
           }
-          $LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_LTSC
+          $LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_LTSC2019
 
-          New-Item -Path "Sophia Script for Windows 10 LTSC v$LatestRelease" -ItemType Directory -Force
+          New-Item -Path "Sophia Script for Windows 10 LTSC 2019 v$LatestRelease" -ItemType Directory -Force
 
-          Write-Verbose -Message "Sophia Script for Windows 10 LTSC v$LatestRelease" -Verbose
-          Write-Verbose -Message "Sophia.Script.for.Windows.10.LTSC.v$LatestRelease.zip" -Verbose
+          Write-Verbose -Message "Sophia Script for Windows 10 LTSC 2019 v$LatestRelease" -Verbose
+          Write-Verbose -Message "Sophia.Script.for.Windows.10.LTSC.2019.v$LatestRelease.zip" -Verbose
 
           # There is no need in -Recurse for the Get-ChildItem cmdlet
-          Get-ChildItem -Path "Sophia Script\Sophia Script for Windows 10 LTSC" -Force | Copy-Item -Destination "Sophia Script for Windows 10 LTSC v$LatestRelease" -Recurse -Force
+          Get-ChildItem -Path "Sophia Script\Sophia Script for Windows 10 LTSC 2019" -Force | Copy-Item -Destination "Sophia Script for Windows 10 LTSC 2019 v$LatestRelease" -Recurse -Force
 
           $Parameters = @{
-            Path             = "Sophia Script for Windows 10 LTSC v$LatestRelease"
-            DestinationPath  = "Sophia.Script.for.Windows.10.LTSC.v$LatestRelease.zip"
+            Path             = "Sophia Script for Windows 10 LTSC 2019 v$LatestRelease"
+            DestinationPath  = "Sophia.Script.for.Windows.10.LTSC.2019.v$LatestRelease.zip"
             CompressionLevel = "Fastest"
             Force            = $true
           }
           Compress-Archive @Parameters
 
           # Calculate hash
-          Get-Item -Path "Sophia.Script.for.Windows.10.LTSC.v$LatestRelease.zip" -Force | ForEach-Object -Process {
+          Get-Item -Path "Sophia.Script.for.Windows.10.LTSC.2019.v$LatestRelease.zip" -Force | ForEach-Object -Process {
+              "$($_.Name)  $((Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash)"
+          } | Add-Content -Path SHA256SUM -Encoding Default -Force
+
+      - name: Sophia Script for Windows 10 LTSC 2021
+        run: |
+          # https://github.com/farag2/Sophia-Script-for-Windows/blob/master/sophia_script_versions.json
+          $Parameters = @{
+            Uri = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
+          }
+          $LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_LTSC2021
+
+          New-Item -Path "Sophia Script for Windows 10 LTSC 2021 v$LatestRelease" -ItemType Directory -Force
+
+          Write-Verbose -Message "Sophia Script for Windows 10 LTSC 2021 v$LatestRelease" -Verbose
+          Write-Verbose -Message "Sophia.Script.for.Windows.10.LTSC.2021.v$LatestRelease.zip" -Verbose
+
+          # There is no need in -Recurse for the Get-ChildItem cmdlet
+          Get-ChildItem -Path "Sophia Script\Sophia Script for Windows 10 LTSC 2021" -Force | Copy-Item -Destination "Sophia Script for Windows 10 LTSC 2021 v$LatestRelease" -Recurse -Force
+
+          $Parameters = @{
+            Path             = "Sophia Script for Windows 10 LTSC 2021 v$LatestRelease"
+            DestinationPath  = "Sophia.Script.for.Windows.10.LTSC.2021.v$LatestRelease.zip"
+            CompressionLevel = "Fastest"
+            Force            = $true
+          }
+          Compress-Archive @Parameters
+
+          # Calculate hash
+          Get-Item -Path "Sophia.Script.for.Windows.10.LTSC.2021.v$LatestRelease.zip" -Force | ForEach-Object -Process {
               "$($_.Name)  $((Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash)"
           } | Add-Content -Path SHA256SUM -Encoding Default -Force
 
