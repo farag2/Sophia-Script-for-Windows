@@ -7,6 +7,7 @@ LoggedInUserNotAdmin                      = Oturum açan kullanıcının yöneti
 UnsupportedPowerShell                     = Komut dosyasını PowerShell {0}.{1} aracılığıyla çalıştırmaya çalışıyorsunuz. Komut dosyasını uygun PowerShell sürümünde çalıştırın
 UnsupportedISE                            = Komut dosyası, Windows PowerShell ISE üzerinden çalıştırmayı desteklemiyor
 Win10TweakerWarning                       = Muhtemelen işletim sisteminize Win 10 Tweaker arka kapısı yoluyla bulaştı
+Windows10DebloaterWarning                 = Windows işletim sistemi kararlılığı, Sycnex'in Windows10Debloater PowerShell betiği kullanılarak tehlikeye atılmış olabilir. Önleyici olarak, tüm işletim sistemini yeniden yükleyin
 UnsupportedRelease                        = Yeni sürüm bulundu
 CustomizationWarning                      = \nSophia Script'i çalıştırmadan önce Sophia.ps1 ön ayar dosyasındaki her işlevi özelleştirdiniz mi?
 ControlledFolderAccessDisabled            = Kontrollü klasör erişimi devre dışı bırakıldı

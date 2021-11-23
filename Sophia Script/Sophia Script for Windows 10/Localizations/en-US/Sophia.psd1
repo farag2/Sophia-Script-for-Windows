@@ -7,6 +7,7 @@ LoggedInUserNotAdmin                      = The logged-on user doesn't have admi
 UnsupportedPowerShell                     = You're trying to run script via PowerShell {0}.{1}. Run the script in the appropriate PowerShell version
 UnsupportedISE                            = The script doesn't support running via Windows PowerShell ISE
 Win10TweakerWarning                       = Probably your OS was infected via the Win 10 Tweaker backdoor
+Windows10DebloaterWarning                 = The Windows OS stability may have been compromised by using Sycnex's Windows10Debloater PowerShell script. Preventively, reinstall the entire OS
 UnsupportedRelease                        = A new version found
 CustomizationWarning                      = \nHave you customized every function in the Sophia.ps1 preset file before running Sophia Script?
 ControlledFolderAccessDisabled            = Controlled folder access disabled

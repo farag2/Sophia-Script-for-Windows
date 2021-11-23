@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.12.5
-	Date: 24.10.2021
+	Version: v5.12.6
+	Date: 23.11.2021
 
 	Copyright (c) 2014—2021 farag
 	Copyright (c) 2019—2021 farag & Inestic
@@ -118,7 +118,7 @@ function Checkings
 	# Check whether the logged-in user is an admin
 	$CurrentUserName = (Get-Process -Id $PID -IncludeUserName).UserName | Split-Path -Leaf
 	$CurrentSessionId = (Get-Process -Id $PID -IncludeUserName).SessionId
-	$LoginUserName = (Get-Process -IncludeUserName -ErrorAction SilentlyContinue | Where-Object -FilterScript {($_.ProcessName -eq "explorer") -and ($_.SessionId -eq $CurrentSessionId)}).UserName | Select-Object -First 1 | Split-Path -Leaf
+	$LoginUserName = (Get-Process -IncludeUserName | Where-Object -FilterScript {($_.ProcessName -eq "explorer") -and ($_.SessionId -eq $CurrentSessionId)}).UserName | Select-Object -First 1 | Split-Path -Leaf
 
 	switch ($CurrentUserName -ne $LoginUserName)
 	{
@@ -143,7 +143,8 @@ function Checkings
 		exit
 	}
 
-	# Check whether the OS was infected by Win 10 Tweaker
+	# Check whether the OS was infected by Win 10 Tweaker's trojan
+	# https://win10tweaker.ru
 	if (Test-Path -Path "HKCU:\Software\Win 10 Tweaker")
 	{
 		Write-Warning -Message $Localization.Win10TweakerWarning
@@ -151,6 +152,14 @@ function Checkings
 		Start-Process -FilePath "https://youtu.be/na93MS-1EkM"
 		Start-Process -FilePath "https://pikabu.ru/story/byekdor_v_win_10_tweaker_ili_sovremennyie_metodyi_borbyi_s_piratstvom_8227558"
 
+		exit
+	}
+
+	# Check whether the OS was destroyed by Sycnex's Windows10Debloater script
+	# https://github.com/Sycnex/Windows10Debloater
+	if (Test-Path -Path $env:SystemDrive\Temp\Windows10Debloater)
+	{
+		Write-Warning -Message $Localization.Windows10DebloaterWarning
 		exit
 	}
 
@@ -254,7 +263,7 @@ function Logging
 function CreateRestorePoint
 {
 	$SystemDriveUniqueID = (Get-Volume | Where-Object -FilterScript {$_.DriveLetter -eq "$($env:SystemDrive[0])"}).UniqueID
-	$SystemProtection = ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SPP\Clients")."{09F7EDC5-294E-4180-AF6A-FB0E6A0E9513}") | Where-Object -FilterScript {$_ -match [regex]::Escape($SystemDriveUniqueID)}
+	$SystemProtection = ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SPP\Clients" -ErrorAction Ignore)."{09F7EDC5-294E-4180-AF6A-FB0E6A0E9513}") | Where-Object -FilterScript {$_ -match [regex]::Escape($SystemDriveUniqueID)}
 
 	$ComputerRestorePoint = $false
 
@@ -3554,7 +3563,7 @@ public static bool MarkFileDelete (string sourcefile)
 				$Script:OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
 
 				# Terminate the File Explorer process
-				New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoRestartShell -Value 0 -Force
+				New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoRestartShell -PropertyType DWord -Value 0 -Force
 				Stop-Process -Name explorer -Force
 
 				Start-Sleep -Seconds 3
@@ -3568,7 +3577,7 @@ public static bool MarkFileDelete (string sourcefile)
 					}
 				}
 
-				New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoRestartShell -Value 1 -Force
+				New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoRestartShell -PropertyType DWord -Value 1 -Force
 
 				# Attempt to unregister FileSyncShell64.dll and remove
 				$FileSyncShell64dlls = Get-ChildItem -Path "$OneDriveFolder\*\amd64\FileSyncShell64.dll" -Force
@@ -4788,7 +4797,6 @@ function WindowsFeatures
 	{
 		"Enable"
 		{
-
 			$State = @("Disabled", "DisablePending")
 			$ButtonContent = $Localization.Enable
 			$ButtonAdd_Click = {EnableButton}
@@ -6676,7 +6684,7 @@ function WinPrtScrFolder
 			if ((Get-Content -Path $PSScriptRoot\..\Sophia.ps1 -Encoding UTF8 -Force | Select-String -SimpleMatch "OneDrive -Uninstall").Line.StartsWith("#") -eq $false)
 			{
 				$DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
-				New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -Type ExpandString -Value $DesktopFolder -Force
+				New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -PropertyType ExpandString -Value $DesktopFolder -Force
 			}
 			else
 			{
@@ -7227,11 +7235,11 @@ function SaveRestartableApps
 	{
 		"Enable"
 		{
-			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name RestartApps -Value 1 -Force
+			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name RestartApps -PropertyType DWord -Value 1 -Force
 		}
 		"Disable"
 		{
-			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name RestartApps -Value 0 -Force
+			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name RestartApps -PropertyType DWord -Value 0 -Force
 		}
 	}
 }
@@ -7276,11 +7284,9 @@ function NetworkDiscovery
 
 	$FirewallRules = @(
 		# File and printer sharing
-		# Общий доступ к файлам и принтерам
 		"@FirewallAPI.dll,-32752",
 
 		# Network discovery
-		# Сетевое обнаружение
 		"@FirewallAPI.dll,-28502"
 	)
 
@@ -8057,6 +8063,67 @@ public static void Refresh()
 
 	[WinAPI.UpdateExplorer]::Refresh()
 }
+
+<#
+	.SYNOPSIS
+	Uninstall the "PC Health Check" app
+
+	.EXAMPLE
+	UninstallPCHealthCheck
+
+	.LINK
+	https://support.microsoft.com/en-us/topic/kb5005463-pc-health-check-application-e33cf4e2-49e2-4727-b913-f3c5b1ee0e56
+
+	.NOTES
+	This application is installed with the KB5005463 update to check if PC meets the system requirements of Windows 11
+
+	.NOTES
+	Machine-wide
+#>
+function UninstallPCHealthCheck
+{
+	$Folder = (New-Object -ComObject Shell.Application).NameSpace("$env:SystemRoot\Installer")
+	# Find the necessary .msi with the Subject property equal to "Windows PC Health Check"
+	foreach ($MSI in @(Get-ChildItem -Path "$env:SystemRoot\Installer" -Filter *.msi -File -Force))
+	{
+		$File = $Folder.Items() | Where-Object -FilterScript {$_.Name -eq $MSI.Name}
+		# "22" is the "Subject" property for a file
+		if ($Folder.GetDetailsOf($File, 22) -eq "Windows PC Health Check")
+		{
+			Start-Process -FilePath msiexec.exe -ArgumentList "/uninstall $($MSI.FullName) /quiet /norestart" -Wait
+			break
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	Install the latest supported Microsoft Visual C++ Redistributable 2015—2022 x64
+
+	.EXAMPLE
+	VCRedistx64
+
+	.LINK
+	https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist
+
+	.NOTES
+	Machine-wide
+#>
+function InstallVCRedistx64
+{
+	$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+	$Parameters = @{
+		Uri             = "https://aka.ms/vs/16/release/vc_redist.x64.exe"
+		OutFile         = "$DownloadsFolder\vc_redist.x64.exe"
+		UseBasicParsing = $true
+		Verbose         = $true
+	}
+	Invoke-WebRequest @Parameters
+
+	Start-Process -FilePath "$DownloadsFolder\vc_redist.x64.exe" -ArgumentList "/install /passive /norestart" -Wait
+
+	Remove-Item -Path "$DownloadsFolder\vc_redist.x64.exe", "$env:TEMP\dd_vcredist_amd64_*.log" -Force -ErrorAction Ignore
+}
 #endregion System
 
 #region WSL
@@ -8714,8 +8781,6 @@ public static string GetString(uint strId)
 	UninstallUWPApps -ForAllUsers
 
 	.NOTES
-
-	.NOTES
 	Current user
 #>
 function UninstallUWPApps
@@ -8763,7 +8828,6 @@ function UninstallUWPApps
 		"Microsoft.XboxIdentityProvider",
 
 		# Xbox Console Companion
-		# Компаньон консоли Xbox
 		"Microsoft.XboxApp",
 
 		# Xbox
@@ -8795,7 +8859,6 @@ function UninstallUWPApps
 		"Microsoft.DesktopAppInstaller",
 
 		# Store Experience Host
-		# Узел для покупок Microsoft Store
 		"Microsoft.StorePurchaseApp",
 
 		# Microsoft Store
@@ -9831,19 +9894,13 @@ function XboxGameBar
 	{
 		"Disable"
 		{
-			if ((Get-AppxPackage -Name Microsoft.XboxGamingOverlay) -or (Get-AppxPackage -Name Microsoft.GamingApp))
-			{
-				New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR -Name AppCaptureEnabled -PropertyType DWord -Value 0 -Force
-				New-ItemProperty -Path HKCU:\System\GameConfigStore -Name GameDVR_Enabled -PropertyType DWord -Value 0 -Force
-			}
+			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR -Name AppCaptureEnabled -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\System\GameConfigStore -Name GameDVR_Enabled -PropertyType DWord -Value 0 -Force
 		}
 		"Enable"
 		{
-			if ((Get-AppxPackage -Name Microsoft.XboxGamingOverlay) -or (Get-AppxPackage -Name Microsoft.GamingApp))
-			{
-				New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR -Name AppCaptureEnabled -PropertyType DWord -Value 1 -Force
-				New-ItemProperty -Path HKCU:\System\GameConfigStore -Name GameDVR_Enabled -PropertyType DWord -Value 1 -Force
-			}
+			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR -Name AppCaptureEnabled -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\System\GameConfigStore -Name GameDVR_Enabled -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -10086,34 +10143,27 @@ function CleanupTask
 
 			$VolumeCaches = @(
 				# Delivery Optimization Files
-				# Файлы оптимизации доставки
 				"Delivery Optimization Files",
 
 				# Device driver packages
-				# Пакеты драйверов устройств
 				"Device Driver Packages",
 
 				# Previous Windows Installation(s)
-				# Предыдущие установки Windows
 				"Previous Installations",
 
 				# Setup log files
-				# Файлы журнала установки
 				"Setup Log Files",
 
 				# Temporary Setup Files
-				# Временные файлы установки
 				"Temporary Setup Files",
 
 				# Windows Update Cleanup
-				# Очистка обновлений Windows
 				"Update Cleanup",
 
 				# Microsoft Defender
 				"Windows Defender",
 
 				# Windows upgrade log files
-				# Файлы журнала обновления Windows
 				"Windows Upgrade Log Files"
 			)
 			foreach ($VolumeCache in $VolumeCaches)
@@ -10216,7 +10266,7 @@ while (`$true)
 				New-Item -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup\shell\open\command -Force
 			}
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name "(default)" -PropertyType String -Value "URL:WindowsCleanup" -Force
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name "URL Protocol" -Value "" -Force
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name "URL Protocol" -PropertyType String -Value "" -Force
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name EditFlags -PropertyType DWord -Value 2162688 -Force
 
 			# Start the "Windows Cleanup" task if the "Run" button clicked

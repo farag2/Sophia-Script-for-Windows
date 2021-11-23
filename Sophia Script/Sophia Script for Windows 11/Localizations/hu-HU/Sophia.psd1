@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = A szkript a Windows 11 21H2 és újabb kiadásokat támogatja
-UpdateWarning                             = Az Ön Windows 11 építése: {0}.{1}. Támogatott build: 22000.282 és magasabb verziószámok
+UpdateWarning                             = Az Ön Windows 11 építése: {0}.{1}. Támogatott build: 22000.318 és magasabb verziószámok
 UnsupportedLanguageMode                   = A PowerShell munkamenet korlátozott nyelvi üzemmódban fut
 LoggedInUserNotAdmin                      = A bejelentkezett felhasználó nem rendelkezik admin jogokkal
 UnsupportedPowerShell                     = A PowerShell {0}.{1} segítségével próbálja futtatni a szkriptet. Futtassa a szkriptet a megfelelő PowerShell-verzióban

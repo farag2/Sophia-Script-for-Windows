@@ -1,4 +1,4 @@
-ConvertFrom-StringData -StringData @'
+﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = 该脚本仅支持Windows 10 x64
 UnsupportedOSBuild                        = 该脚本支持Windows 10版本2004/20H2/21H1/21H2和更高版本
 UpdateWarning                             = 安装了Windows 10累积更新：{0}. 支持的累积更新：1151及以上

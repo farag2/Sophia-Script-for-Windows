@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10 (PowerShell 7)"
 
-	Version: v5.12.5
-	Date: 24.10.2021
+	Version: v5.12.6
+	Date: 23.11.2021
 
 	Copyright (c) 2014—2021 farag
 	Copyright (c) 2019—2021 farag & Inestic
@@ -60,7 +60,7 @@
 #>
 
 #Requires -RunAsAdministrator
-#Requires -Version 7.1
+#Requires -Version 7.2
 
 [CmdletBinding()]
 param
@@ -72,7 +72,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.12.5 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2021"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.12.6 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -914,6 +914,33 @@ RestartDeviceAfterUpdate -Enable
 	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .txt -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
 #>
 # Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .txt -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+
+<#
+	Uninstall the KB5005463 update and block it from the further intalling
+	The KB5005463 update installs the PC Health Check app to check if PC meets the system requirements of Windows 11
+
+	Удалить обновление KB5005463 и заблокировать его от дальнейшей установки
+	Обновление KB5005463 устанавливает приложение PC Health Check для проверки соответствия компьютера системным требованиям Windows 11
+
+	https://support.microsoft.com/en-us/topic/kb5005463-pc-health-check-application-e33cf4e2-49e2-4727-b913-f3c5b1ee0e56
+#>
+PCHealthCheck -Block
+
+<#
+	Unblock the KB5005463 update for the further intalling (default value)
+	Разблокировать обновление KB5005463 для дальнейшей установки (значение по умолчанию)
+
+	https://support.microsoft.com/en-us/topic/kb5005463-pc-health-check-application-e33cf4e2-49e2-4727-b913-f3c5b1ee0e56
+#>
+# PCHealthCheck -Unblock
+
+<#
+	Install the latest supported Microsoft Visual C++ Redistributable 2015—2022 x64
+	Установить последнюю поддерживаемую версию Microsoft Visual C++ Redistributable 2015-2022 x64
+
+	https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist
+#>
+VCRedistx64
 #endregion System
 
 #region WSL
@@ -924,7 +951,7 @@ RestartDeviceAfterUpdate -Enable
 	Установить подсистему Windows для Linux (WSL), последний пакет обновления ядра Linux и дистрибутив Linux, используя всплывающую форму
 	Чтобы получать обновления ядра, включите параметр "При обновлении Windows поулчать обновления для других продуктов Майкрософт" в Центре обновлении Windows
 #>
-# WSL -Enable
+# WSL
 #endregion WSL
 
 #region Start menu

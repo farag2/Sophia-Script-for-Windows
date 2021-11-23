@@ -1,9 +1,9 @@
 ﻿<#
 	.SYNOPSIS
-	Default preset file for "Sophia Script for Windows 10"
+	Default preset file for "Sophia Script for Windows 10 LTSC 2021"
 
 	Version: v5.12.6
-	Date: 21.11.2021
+	Date: 23.11.2021
 
 	Copyright (c) 2014—2021 farag
 	Copyright (c) 2019—2021 farag & Inestic
@@ -27,9 +27,9 @@
 
 	.NOTES
 	Supported Windows 10 versions
-	Versions: 2004/20H2/21H1/21H2
-	Builds: 19041/19042/19043/19044
-	Editions: Home/Pro/Enterprise
+	Version: 21H2
+	Build: 19044
+	Edition: Enterprise LTSC 2021
 	Architecture: x64
 
 	.NOTES

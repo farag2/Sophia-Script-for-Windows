@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 11"
 
-	Version: v6.0.6
-	Date: 24.10.2021
+	Version: v6.0.7
+	Date: 23.11.2021
 
 	Copyright (c) 2014—2021 farag
 	Copyright (c) 2019—2021 farag & Inestic
@@ -59,7 +59,7 @@
 #>
 
 #Requires -RunAsAdministrator
-#Requires -Version 5.1
+#Requires -Version 7.2
 
 [CmdletBinding()]
 param
@@ -71,7 +71,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.0.6 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2021"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.0.7 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -885,6 +885,33 @@ DefaultTerminalApp -WindowsTerminal
 # Set Windows Console Host as default terminal app to host the user interface for command-line applications (default value)
 # Установить Windows Console Host как приложение терминала по умолчанию для размещения пользовательского интерфейса для приложений командной строки (значение по умолчанию)
 # DefaultTerminalApp -ConsoleHost
+
+<#
+	Uninstall the KB5005463 update and block it from the further intalling
+	The KB5005463 update installs the PC Health Check app to check if PC meets the system requirements of Windows 11
+
+	Удалить обновление KB5005463 и заблокировать его от дальнейшей установки
+	Обновление KB5005463 устанавливает приложение PC Health Check для проверки соответствия компьютера системным требованиям Windows 11
+
+	https://support.microsoft.com/en-us/topic/kb5005463-pc-health-check-application-e33cf4e2-49e2-4727-b913-f3c5b1ee0e56
+#>
+PCHealthCheck -Block
+
+<#
+	Unblock the KB5005463 update for the further intalling (default value)
+	Разблокировать обновление KB5005463 для дальнейшей установки (значение по умолчанию)
+
+	https://support.microsoft.com/en-us/topic/kb5005463-pc-health-check-application-e33cf4e2-49e2-4727-b913-f3c5b1ee0e56
+#>
+# PCHealthCheck -Unblock
+
+<#
+	Install the latest supported Microsoft Visual C++ Redistributable 2015—2022 x64
+	Установить последнюю поддерживаемую версию Microsoft Visual C++ Redistributable 2015-2022 x64
+
+	https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist
+#>
+VCRedistx64
 #endregion System
 
 #region WSL
@@ -895,10 +922,14 @@ DefaultTerminalApp -WindowsTerminal
 	Установить подсистему Windows для Linux (WSL), последний пакет обновления ядра Linux и дистрибутив Linux, используя всплывающую форму
 	Чтобы получать обновления ядра, включите параметр "При обновлении Windows поулчать обновления для других продуктов Майкрософт" в Центре обновлении Windows
 #>
-# WSL -Enable
+# WSL
 #endregion WSL
 
 #region Start menu
+# Unpin all Start apps
+# Открепить все приложения от начального экрана
+# UnpinAllStartApps
+
 # Run the Windows PowerShell shortcut from the Start menu as Administrator
 # Запускать ярлык Windows PowerShell в меню "Пуск" от имени Администратора
 RunPowerShellShortcut -Elevated
@@ -964,6 +995,14 @@ CheckUWPAppsUpdates
 #endregion UWP apps
 
 #region Gaming
+# Disable Xbox Game Bar
+# Отключить Xbox Game Bar
+XboxGameBar -Disable
+
+# Enable Xbox Game Bar (default value)
+# Включить Xbox Game Bar (значение по умолчанию)
+# XboxGameBar -Enable
+
 # Disable Xbox Game Bar tips
 # Отключить советы Xbox Game Bar
 XboxGameTips -Disable

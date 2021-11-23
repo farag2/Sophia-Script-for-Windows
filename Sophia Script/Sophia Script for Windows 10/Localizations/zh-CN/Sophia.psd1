@@ -7,6 +7,7 @@ LoggedInUserNotAdmin                      = 登录的用户没有管理员的权
 UnsupportedPowerShell                     = 你想通过PowerShell {0}.{1}运行脚本。在适当的PowerShell版本中运行该脚本
 UnsupportedISE                            = 该脚本不支持通过Windows PowerShell ISE运行
 Win10TweakerWarning                       = 可能你的操作系统是通过“Win 10 Tweaker”后门感染的
+Windows10DebloaterWarning                 = 使用Sycnex的Windows10Debloater PowerShell脚本，Windows操作系统的稳定性可能已经受到影响。预防性地，重新安装整个操作系统
 UnsupportedRelease                        = 找到新版本
 CustomizationWarning                      = \n在运行Sophia Script之前，您是否已自定义Sophia.ps1预设文件中的每个函数？
 ControlledFolderAccessDisabled            = “受控文件夹访问”已禁用

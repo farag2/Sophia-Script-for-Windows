@@ -1,9 +1,9 @@
 ﻿<#
 	.SYNOPSIS
-	Default preset file for "Sophia Script for Windows 10 LTSC"
+	Default preset file for "Sophia Script for Windows 10 LTSC 2019"
 
-	Version: v5.2.16
-	Date: 24.10.2021
+	Version: v5.2.17
+	Date: 23.11.2021
 
 	Copyright (c) 2014—2021 farag
 	Copyright (c) 2019—2021 farag & Inestic
@@ -29,7 +29,7 @@
 	Supported Windows 10 version
 	Version: 1809
 	Build: 17763
-	Edition: Enterprise LTSC
+	Edition: Enterprise LTSC 2019
 	Architecture: x64
 
 	.NOTES
@@ -72,7 +72,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC v5.2.16 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2021"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC v5.2.17 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -739,6 +739,14 @@ ActiveHours -Automatically
 	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .txt -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
 #>
 # Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .txt -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+
+<#
+	Install the latest supported Microsoft Visual C++ Redistributable 2015—2022 x64
+	Установить последнюю поддерживаемую версию Microsoft Visual C++ Redistributable 2015-2022 x64
+
+	https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist
+#>
+VCRedistx64
 #endregion System
 
 #region Start menu
