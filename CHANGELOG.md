@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.12.6 | 6.0.7 — 23.11.2021
+
+Diff from v6.0.6
+[6.0.6...6.0.7](https://github.com/farag2/Sophia-Script-for-Windows/compare/5.12.4...5.12.5)
+* Added support for Windows 10 Enterprise LTSC 2021;
+* Added the `UninstallPCHealthCheck` funtion;
+  * This application is installed with the [KB5005463](https://support.microsoft.com/en-us/topic/kb5005463-pc-health-check-application-e33cf4e2-49e2-4727-b913-f3c5b1ee0e56) update to check if PC meets the system requirements of Windows 11;
+  * For Windows 10 only.
+* Added the `InstallVCRedistx64` funtion;
+  * Install the latest supported Microsoft Visual C++ Redistributable 2015—2022 x64;
+  * <https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist>;
+* Added the `UnpinAllStartApps` function to provide a feature to unpin all Start apps;
+* Minor changes.
+* [Check out](https://t.me/SophiaNews/396) the 4th [SophiApp](https://github.com/Sophia-Community/SophiApp) 0.0.0.70 public alpha build :rocket:
+
+![SophiApp](https://hsto.org/r/w780/getpro/habr/upload_files/be9/060/0b6/be90600b648639aa85d755fe10677cb2.jpg)
+
+## Sophia Script Wrapper 2.5.2
+
+* Cleaned up JSONs;
+* Cleaned up code;
+* Added Portuguese-Brazil (pt-BR);
+* JSON validation checker in wrapper: messagebox will popup telling you location of JSON error;
+* Added support for LTSC 2021.
+
+![Wrapper](https://i.imgur.com/yS0eESG.png)
+
 ## 5.12.5 | 6.0.6 — 24.10.2021
 
 ## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | LTSC 1809
