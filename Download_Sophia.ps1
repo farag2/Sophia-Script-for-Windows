@@ -3,7 +3,7 @@
 	Download the latest Sophia Script version, depending on what Windows or PowerShell versions are used to
 	E.g., if you start script on Windows 11 via PowerShell 5.1 you will start downloading Sophia Script for Windows 11 PowerShell 5.1
 
-	.EXAMPLE Download and expand the Sophia Script archive
+	.EXAMPLE Download and the Sophia Script archive
 	irm script.sophi.app | iex
 
 	.EXAMPLE Download and expand the Wrapper archive
@@ -68,33 +68,55 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 			Uri              = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
 			UseBasicParsing  = $true
 		}
-		$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_LTSC
+		$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_LTSC2019
 		$Parameters = @{
-			Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.LTSC.v$LatestRelease.zip"
+			Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.LTSC.2019.v$LatestRelease.zip"
 			OutFile         = "$DownloadsFolder\Sophia.Script.zip"
 			UseBasicParsing = $true
 			Verbose         = $true
 		}
 
-		$Version = "LTSC"
+		$Version = "LTSC2019"
+
+		break
 	}
 	{($_ -ge 19041) -and ($_ -le 19044)}
 	{
 		if ($PSVersionTable.PSVersion.Major -eq 5)
 		{
-			$Parameters = @{
-				Uri              = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
-				UseBasicParsing  = $true
-			}
-			$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_PowerShell_5_1
-			$Parameters = @{
-				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.v$LatestRelease.zip"
-				OutFile         = "$DownloadsFolder\Sophia.Script.zip"
-				UseBasicParsing = $true
-				Verbose         = $true
-			}
+			# Check if Windows 10 is an LTSC 2021
+			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName) -eq "Windows 10 Enterprise LTSC 2021")
+			{
+				$Parameters = @{
+					Uri              = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
+					UseBasicParsing  = $true
+				}
+				$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_LTSC2021
+				$Parameters = @{
+					Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.LTSC.2021.v$LatestRelease.zip"
+					OutFile         = "$DownloadsFolder\Sophia.Script.zip"
+					UseBasicParsing = $true
+					Verbose         = $true
+				}
 
-			$Version = "Windows_10_PowerShell_5.1"
+				$Version = "LTSC2021"
+			}
+			else
+			{
+				$Parameters = @{
+					Uri              = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
+					UseBasicParsing  = $true
+				}
+				$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_PowerShell_5_1
+				$Parameters = @{
+					Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.v$LatestRelease.zip"
+					OutFile         = "$DownloadsFolder\Sophia.Script.zip"
+					UseBasicParsing = $true
+					Verbose         = $true
+				}
+
+				$Version = "Windows_10_PowerShell_5.1"
+			}
 		}
 		else
 		{
@@ -112,6 +134,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 
 			$Version = "Windows_10_PowerShell_7"
 		}
+
 	}
 	"22000"
 	{
@@ -168,9 +191,13 @@ switch ($Version)
 	{
 		Invoke-Item -Path "$DownloadsFolder\Sophia Script Wrapper v$LatestRelease"
 	}
-	"LTSC"
+	"LTSC2019"
 	{
-		Invoke-Item -Path "$DownloadsFolder\Sophia Script for Windows 10 LTSC v$LatestRelease"
+		Invoke-Item -Path "$DownloadsFolder\Sophia Script for Windows 10 LTSC 2019 v$LatestRelease"
+	}
+	"LTSC2021"
+	{
+		Invoke-Item -Path "$DownloadsFolder\Sophia Script for Windows 10 LTSC 2021 v$LatestRelease"
 	}
 	"Windows_10_PowerShell_5.1"
 	{
