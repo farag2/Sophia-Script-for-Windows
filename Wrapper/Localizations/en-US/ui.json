@@ -2,7 +2,7 @@
   {
     "Id": "Menu",
     "Options": {
-      "menuImportExportPreset": "Import/Export",
+      "menuImportExportPreset": "Import | Export",
       "menuImportPreset": "Import Preset",
       "menuExportPreset": "Export Preset",
       "menuPresets": "Presets",
@@ -37,8 +37,6 @@
     "Id": "Button",
     "Options": {
       "btnRefreshConsole": "Refresh Console",
-      "btnSave": "Save",
-      "btnSaveAs": "Save As",
       "btnRunPowerShell": "Run PowerShell"
     }
   },
@@ -51,8 +49,7 @@
       "statusBarSophiaPreset": "Sophia preset loaded!",
       "statusBarWindowsDefaultPreset": "Windows Default preset loaded!",
       "statusBarPowerShellScriptCreatedFromSelections": "PowerShell Script created from your selections! You can run it or save it.",
-      "statusBarPowerShellSaveAs": "PowerShell script created!",
-      "statusBarPowerShellSave": "Changes saved to",
+      "statusBarPowerShellExport": "PowerShell script created!",
       "statusBarOpposite": "Opposite selected!",
       "statusBarClear": "Selections all cleared!",
       "statusBarDisabled": "You must 'Import Preset' first to enable use of Wrapper. Import to enable controls."

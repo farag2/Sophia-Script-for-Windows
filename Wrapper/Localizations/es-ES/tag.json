@@ -42,9 +42,6 @@
   "Left": "Izquierdo",
   "Center": "Centrar",
   "WindowsTerminal": "Terminal de Windows",
-  "ConsoleHost": "Host de la consola",
-  "Large": "Grande",
-  "Standard": "Estándar",
-  "Small": "Pequeño"
+  "ConsoleHost": "Host de la consola"
 }
  

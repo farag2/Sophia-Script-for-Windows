@@ -42,9 +42,6 @@
   "Left": "Links",
   "Center": "Zentriert",
   "WindowsTerminal": "Windows-Terminal",
-  "ConsoleHost": "Konsolenhost",
-  "Large": "Groß",
-  "Standard": "Standard",
-  "Small": "Klein"
+  "ConsoleHost": "Konsolenhost"
 }
  

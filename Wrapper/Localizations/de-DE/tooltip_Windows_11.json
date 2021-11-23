@@ -1321,6 +1321,32 @@
     }
   },
   {
+    "Id": 536,
+    "Region": "System",
+    "Function": "PCHealthCheck",
+    "Arg": {
+      "Zero": {
+        "Tag": "Block",
+        "ToolTip": "Deinstallieren Sie das Update KB5005463 und blockieren Sie es für die weitere Installation. Das Update KB5005463 installiert die App PC Health Check, um zu prüfen, ob der PC die Systemanforderungen von Windows 11 erfüllt"
+      },
+      "One": {
+        "Tag": "Unblock",
+        "ToolTip": "Freigabe des KB5005463-Updates für die weitere Installation (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 537,
+    "Region": "System",
+    "Function": "VCRedistx64",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Installieren Sie die neueste unterstützte Microsoft Visual C++ Redistributable 2015-2022 x64"
+      }
+    }
+  },
+  {
     "Id": 600,
     "Region": "WSL",
     "Function": "WSL",
@@ -1447,6 +1473,21 @@
       "Zero": {
         "Tag": "",
         "ToolTip": "Nach UWP-Apps-Updates suchen"
+      }
+    }
+  },
+  {
+    "Id": 900,
+    "Region": "Gaming",
+    "Function": "XboxGameBar",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Xbox Game Bar deaktivieren"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Xbox Game Bar aktivieren (Standardeinstellung)"
       }
     }
   },

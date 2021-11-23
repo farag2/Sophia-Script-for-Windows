@@ -6,11 +6,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Warning",
-        "ToolTip": "The mandatory checkings. If you want to disable a warning message about whether the preset file was customized, remove the \"-Warning\" argument"
+        "ToolTip": "As verificações necessárias. Se você deseja desativar uma mensagem de aviso sobre se o arquivo predefinido foi personalizado, remova o argumento \"- Warning\""
       },
       "One": {
         "Tag": "",
-        "ToolTip": "The mandatory checkings. No argument therefore no warning message about whether you've customized the preset file"
+        "ToolTip": "É necessário fazer verificações. Nenhum argumento, portanto, nenhuma mensagem de aviso sobre se você personalizou o arquivo predefinido"
       }
     }
   },
@@ -21,7 +21,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Enable script logging. The log will be being recorded into the script folder. To stop logging just close the console or type \"Stop-Transcript\""
+        "ToolTip": "Habilite o registro de script. O log será gravado na pasta do script. Para interromper o registro, feche o console ou digite \"Stop-Transcript\""
       }
     }
   },
@@ -32,7 +32,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Create a restore point"
+        "ToolTip": "Crie um ponto de restauração"
       }
     }
   },
@@ -43,11 +43,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Disable the \"Connected User Experiences and Telemetry\" service (DiagTrack), and block the connection for the Unified Telemetry Client Outbound Traffic"
+        "ToolTip": "Desative o serviço \"Experiências e telemetria do usuário conectado\" (DiagTrack) e bloqueie a conexão para o tráfego de saída do cliente de telemetria unificada"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Enable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and allow connection (default value)"
+        "ToolTip": "Habilite o serviço DiagTrack, regra de firewall para tráfego de saída do cliente de telemetria unificada e permita a conexão (valor padrão)"
       }
     }
   },
@@ -58,11 +58,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Minimal",
-        "ToolTip": "Set the OS level of diagnostic data gathering to minimum"
+        "ToolTip": "Defina o nível do sistema operacional de coleta de dados de diagnóstico para o mínimo"
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Set the diagnostic data collection to default (default value)"
+        "ToolTip": "Defina a coleta de dados de diagnóstico para o padrão (valor padrão)"
       }
     }
   },
@@ -73,11 +73,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Turn off the Windows Error Reporting"
+        "ToolTip": "Desative o Relatório de Erros do Windows"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Turn on the Windows Error Reporting (default value)"
+        "ToolTip": "Ative o Relatório de Erros do Windows (valor padrão)"
       }
     }
   },
@@ -88,11 +88,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Never",
-        "ToolTip": "Change the feedback frequency to \"Never\""
+        "ToolTip": "Altere a frequência de feedback para \"Nunca\""
       },
       "One": {
         "Tag": "Automatically",
-        "ToolTip": "Change the feedback frequency to \"Automatically\" (default value)"
+        "ToolTip": "Altere a frequência de feedback para \"Automaticamente\" (valor padrão)"
       }
     }
   },
@@ -103,11 +103,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Turn off the diagnostics tracking scheduled tasks"
+        "ToolTip": "Desligue o diagnóstico de rastreamento de tarefas agendadas"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Turn on the diagnostics tracking scheduled tasks (default value)"
+        "ToolTip": "Ative o diagnóstico de rastreamento de tarefas agendadas (valor padrão)"
       }
     }
   },
@@ -118,11 +118,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Do not use sign-in info to automatically finish setting up device and reopen apps after an update or restart"
+        "ToolTip": "Não use as informações de login para concluir automaticamente a configuração do dispositivo e reabrir os aplicativos após uma atualização ou reinicialização"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Use sign-in info to automatically finish setting up device and reopen apps after an update or restart (default value)"
+        "ToolTip": "Use as informações de login para concluir automaticamente a configuração do dispositivo e reabrir os aplicativos após uma atualização ou reinicialização (valor padrão)"
       }
     }
   },
@@ -133,11 +133,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Do not let websites provide locally relevant content by accessing language list"
+        "ToolTip": "Não deixe os sites fornecerem conteúdo localmente relevante acessando a lista de idiomas"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Let websites provide locally relevant content by accessing language list (default value)"
+        "ToolTip": "Permitir que os sites forneçam conteúdo localmente relevante acessando a lista de idiomas (valor padrão)"
       }
     }
   },
@@ -148,11 +148,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Do not allow apps to use advertising ID"
+        "ToolTip": "Não permitir que aplicativos usem ID de publicidade"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Allow apps to use advertising ID (default value)"
+        "ToolTip": "Permitir que aplicativos usem ID de publicidade (valor padrão)"
       }
     }
   },
@@ -163,11 +163,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested"
+        "ToolTip": "Oculte as experiências de boas-vindas do Windows após as atualizações e ocasionalmente quando eu entrar para destacar o que há de novo e sugerido"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested (default value)"
+        "ToolTip": "Mostre as experiências de boas-vindas do Windows após as atualizações e ocasionalmente quando eu entrar para destacar o que há de novo e sugerido (valor padrão)"
       }
     }
   },
@@ -178,11 +178,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Get tips and suggestions when I use Windows (default value)"
+        "ToolTip": "Obtenha dicas, truques e sugestões ao usar o Windows (valor padrão)"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Do not get tips and suggestions when I use Windows"
+        "ToolTip": "Não receba dicas, truques e sugestões ao usar o Windows"
       }
     }
   },
@@ -193,11 +193,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide from me suggested content in the Settings app"
+        "ToolTip": "Ocultar de mim conteúdo sugerido no aplicativo Configurações"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show me suggested content in the Settings app (default value)"
+        "ToolTip": "Mostre-me o conteúdo sugerido no aplicativo Configurações (valor padrão)"
       }
     }
   },
@@ -208,11 +208,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Turn off automatic installing suggested apps"
+        "ToolTip": "Desative a instalação automática de aplicativos sugeridos"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Turn on automatic installing suggested apps (default value)"
+        "ToolTip": "Ative a instalação automática de aplicativos sugeridos (valor padrão)"
       }
     }
   },
@@ -223,11 +223,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Do not suggest ways I can finish setting up my device to get the most out of Windows"
+        "ToolTip": "Não sugira maneiras de terminar de configurar meu dispositivo para aproveitar ao máximo o Windows"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Suggest ways I can finish setting up my device to get the most out of Windows (default value)"
+        "ToolTip": "Sugerir maneiras de terminar de configurar meu dispositivo para aproveitar ao máximo o Windows (valor padrão)"
       }
     }
   },
@@ -238,11 +238,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Do not let Microsoft offer you tailored expereinces based on the diagnostic data setting you hava chosen"
+        "ToolTip": "Não ofereça experiências personalizadas com base na configuração de dados de diagnóstico"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Let Microsoft offer you tailored expereinces based on the diagnostic data setting you hava chosen (default value)"
+        "ToolTip": "Ofereça experiências personalizadas com base na configuração de dados de diagnóstico (valor padrão)"
       }
     }
   },
@@ -253,11 +253,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Disable Bing search in the Start Menu (for the USA only)"
+        "ToolTip": "Desative a pesquisa do Bing no menu Iniciar (apenas para os EUA)"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Enable Bing search in the Start Menu (default value)"
+        "ToolTip": "Habilite a pesquisa do Bing no menu Iniciar (valor padrão)"
       }
     }
   },
@@ -268,11 +268,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Show",
-        "ToolTip": "Show the \"This PC\" icon on Desktop"
+        "ToolTip": "Mostre o ícone \"Este PC\" na Área de Trabalho"
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Hide the \"This PC\" icon on Desktop (default value)"
+        "ToolTip": "Ocultar o ícone \"Este PC\" na Área de Trabalho (valor padrão)"
       }
     }
   },
@@ -283,11 +283,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Do not use item check boxes"
+        "ToolTip": "Não use as caixas de seleção do item"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Use check boxes to select items (default value)"
+        "ToolTip": "Use as caixas de seleção para selecionar os itens (valor padrão)"
       }
     }
   },
@@ -298,11 +298,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Show hidden files, folders, and drives"
+        "ToolTip": "Mostrar arquivos, pastas e drives ocultos"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Do not show hidden files, folders, and drives (default value)"
+        "ToolTip": "Não mostrar arquivos, pastas e unidades ocultas (valor padrão)"
       }
     }
   },
@@ -313,11 +313,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Show",
-        "ToolTip": "Show file name extensions"
+        "ToolTip": "Mostrar extensões de nome de arquivo"
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Hide file name extensions (default value)"
+        "ToolTip": "Ocultar extensões de nome de arquivo (valor padrão)"
       }
     }
   },
@@ -328,11 +328,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Show",
-        "ToolTip": "Show folder merge conflicts"
+        "ToolTip": "Mostrar conflitos de mesclagem de pastas"
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Hide folder merge conflicts (default value)"
+        "ToolTip": "Ocultar conflitos de mesclagem de pastas (valor padrão)"
       }
     }
   },
@@ -343,41 +343,41 @@
     "Arg": {
       "Zero": {
         "Tag": "ThisPC",
-        "ToolTip": "Open File Explorer to \"This PC\""
+        "ToolTip": "Abra o Explorador de Arquivos em \"Este PC\""
       },
       "One": {
         "Tag": "QuickAccess",
-        "ToolTip": "Open File Explorer to Quick access (default value)"
+        "ToolTip": "Abra o File Explorer para acesso rápido (valor padrão)"
       }
     }
   },
   {
     "Id": 306,
     "Region": "UI & Personalization",
-    "Function": "FileExplorerMode",
+"Function": "FileExplorerMode",
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Disable the File Explorer compact mode"
+        "ToolTip": "Desative o modo compacto do Explorador de Arquivos"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Enable the File Explorer compact mode (default value)"
+        "ToolTip": "Habilite o modo compacto do File Explorer (valor padrão)"
       }
     }
   },
   {
     "Id": 307,
-    "Region": "UI & Personalization",
+    "Region": "UI & Personalization",							 
     "Function": "CortanaButton",
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide Cortana button on the taskbar"
+        "ToolTip": "Ocultar botão Cortana na barra de tarefas"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show Cortana button on the taskbar (default value)"
+        "ToolTip": "Mostrar botão Cortana na barra de tarefas (valor padrão)"
       }
     }
   },
@@ -388,11 +388,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Do not show sync provider notification within File Explorer"
+        "ToolTip": "Não mostrar notificação do provedor de sincronização no File Explorer"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show sync provider notification within File Explorer (default value)"
+        "ToolTip": "Mostrar notificação do provedor de sincronização no File Explorer (valor padrão)"
       }
     }
   },
@@ -403,11 +403,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "When I snap a window, do not show what I can snap next to it"
+        "ToolTip": "Quando eu abro uma janela, não mostra o que posso encaixar ao lado dela"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "When I snap a window, show what I can snap next to it (default value)"
+        "ToolTip": "Quando eu tiro uma janela, mostra o que posso ajustar ao lado dela (valor padrão)"
       }
     }
   },
@@ -418,11 +418,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Detailed",
-        "ToolTip": "Show the file transfer dialog box in the detailed mode"
+        "ToolTip": "Mostra a caixa de diálogo de transferência de arquivos no modo detalhado"
       },
       "One": {
         "Tag": "Compact",
-        "ToolTip": "Show the file transfer dialog box in the compact mode (default value)"
+        "ToolTip": "Mostra a caixa de diálogo de transferência de arquivos no modo compacto (valor padrão)"
       }
     }
   },
@@ -433,11 +433,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Expanded",
-        "ToolTip": "Expand the File Explorer ribbon"
+        "ToolTip": "Expanda a faixa do File Explorer"
       },
       "One": {
         "Tag": "Minimized",
-        "ToolTip": "Minimize the File Explorer ribbon (default value)"
+        "ToolTip": "Minimize a faixa do File Explorer (valor padrão)"
       }
     }
   },
@@ -448,11 +448,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Display the recycle bin files delete confirmation"
+        "ToolTip": "Exibe a confirmação de exclusão dos arquivos da lixeira"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Do not display the recycle bin files delete confirmation (default value)"
+        "ToolTip": "Não exibir a confirmação de exclusão de arquivos da lixeira (valor padrão)"
       }
     }
   },
@@ -463,11 +463,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide the \"3D Objects\" folder in \"This PC\" and \"Quick access\""
+        "ToolTip": "Oculte a pasta \"Objetos 3D\" em \"Este PC\" e \"Acesso rápido\""
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show the \"3D Objects\" folder in \"This PC\" and \"Quick access\" (default value)"
+        "ToolTip": "Mostrar a pasta \"Objetos 3D\" em \"Este PC\" e \"Acesso rápido\" (valor padrão)"
       }
     }
   },
@@ -478,14 +478,15 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide frequently used files in Quick access"
+        "ToolTip": "Oculte as pastas usadas com frequência no acesso rápido"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show recently used files in Quick access (default value)"
+        "ToolTip": "Mostrar arquivos usados recentemente em Acesso rápido (valor padrão)"
       }
     }
   },
+
   {
     "Id": 315,
     "Region": "UI & Personalization",
@@ -493,11 +494,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide frequently used folders in Quick access"
+        "ToolTip": "Oculte as pastas usadas com frequência no acesso rápido"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show frequently used folders in Quick access (default value)"
+        "ToolTip": "Mostrar pastas usadas com frequência em Acesso rápido (valor padrão)"
       }
     }
   },
@@ -508,11 +509,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide the Task View button on the taskbar"
+        "ToolTip": "Oculte o botão Visualização de Tarefas na barra de tarefas"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show the Task View button on the taskbar (default value)"
+        "ToolTip": "Mostrar o botão Visualização da Tarefa na barra de tarefas (valor padrão)"
       }
     }
   },
@@ -523,11 +524,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide People button on the taskbar"
+        "ToolTip": "Botão Ocultar Pessoas na barra de tarefas"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show People button on the taskbar (default value)"
+        "ToolTip": "Mostrar botão Pessoas na barra de tarefas (valor padrão)"
       }
     }
   },
@@ -538,11 +539,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Show",
-        "ToolTip": "Show seconds on the taskbar clock"
+        "ToolTip": "Mostrar segundos no relógio da barra de tarefas"
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Hide seconds on the taskbar clock (default value)"
+        "ToolTip": "Ocultar segundos no relógio da barra de tarefas (valor padrão)"
       }
     }
   },
@@ -553,15 +554,15 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide the search on the taskbar"
+        "ToolTip": "Esconder a pesquisa na barra de tarefas"
       },
       "One": {
         "Tag": "SearchIcon",
-        "ToolTip": "Show the search icon on the taskbar"
+        "ToolTip": "Mostra o ícone de pesquisa na barra de tarefas"
       },
       "Two": {
         "Tag": "SearchBox",
-        "ToolTip": "Show the search box on the taskbar (default value)"
+        "ToolTip": "Mostra a caixa de pesquisa na barra de tarefas (valor padrão)"
       }
     }
   },
@@ -572,26 +573,26 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide the Windows Ink Workspace button on the taskbar"
+        "ToolTip": "Oculte o botão do Windows Ink Workspace na barra de tarefas"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show the Windows Ink Workspace button in taskbar (default value)"
+        "ToolTip": "Mostrar o botão do Windows Ink Workspace na barra de tarefas (valor padrão)"
       }
     }
   },
   {
     "Id": 321,
     "Region": "UI & Personalization",
-    "Function": "NotificationAreaIcons",
+    "Function": "TrayIcons",
     "Arg": {
       "Zero": {
         "Tag": "Show",
-        "ToolTip": "Always show all icons in the notification area"
+        "ToolTip": "Sempre mostrar todos os ícones na área de notificação"
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Hide all icons in the notification area (default value)"
+        "ToolTip": "Ocultar todos os ícones na área de notificação (valor padrão)"
       }
     }
   },
@@ -602,11 +603,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide the Meet Now icon in the notification area"
+        "ToolTip": "Oculte o ícone Meet Now na área de notificação"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show the Meet Now icon in the notification area (default value)"
+        "ToolTip": "Mostrar o ícone Meet Now na área de notificação (valor padrão)"
       }
     }
   },
@@ -617,11 +618,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Disable \"News and Interests\" on the taskbar"
+        "ToolTip": "Desative \"Notícias e interesses\" na barra de tarefas"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Enable \"News and Interests\" on the taskbar (default value)"
+        "ToolTip": "Ative \"Notícias e interesses\" na barra de tarefas (valor padrão)"
       }
     }
   },
@@ -629,19 +630,19 @@
     "Id": 324,
     "Region": "UI & Personalization",
     "Function": "UnpinTaskbarShortcuts -Shortcuts",
-    "ToolTip": "Unpin the \"Microsoft Edge\", \"Microsoft Store\", or \"Mail\" shortcuts from the taskbar",
+    "ToolTip": "Solte os atalhos \"Microsoft Edge\", \"Microsoft Store\" ou \"Mail\" da barra de tarefas",
     "Arg": {
       "Zero": {
         "Tag": "Edge",
-        "ToolTip": "Unpin the \"Microsoft Edge\" shortcut from the taskbar"
+        "ToolTip": "Solte o atalho \"Microsoft Edge\" da barra de tarefas"
       },
       "One": {
         "Tag": "Store",
-        "ToolTip": "Unpin the \"Microsoft Store\" shortcut from the taskbar"
+        "ToolTip": "Solte o atalho \"Microsoft Store\" da barra de tarefas"
       },
       "Two": {
         "Tag": "Mail",
-        "ToolTip": "Unpin the \"Mail\" shortcut from the taskbar"
+        "ToolTip": "Solte o atalho \"Mail\" da barra de tarefas"
       }
     }
   },
@@ -652,15 +653,15 @@
     "Arg": {
       "Zero": {
         "Tag": "LargeIcons",
-        "ToolTip": "View the Control Panel icons by large icons"
+        "ToolTip": "Veja os ícones do Painel de Controle por ícones grandes"
       },
       "One": {
         "Tag": "SmallIcons",
-        "ToolTip": "View the Control Panel icons by small icons"
+        "ToolTip": "Veja os ícones do Painel de Controle por pequenos ícones"
       },
       "Two": {
         "Tag": "Category",
-        "ToolTip": "View the Control Panel icons by category (default value)"
+        "ToolTip": "Visualize os ícones do Painel de Controle por categoria (valor padrão)"
       }
     }
   },
@@ -671,26 +672,26 @@
     "Arg": {
       "Zero": {
         "Tag": "Dark",
-        "ToolTip": "Set the default Windows mode to dark"
+        "ToolTip": "Defina o modo padrão do Windows como escuro"
       },
       "One": {
         "Tag": "Light",
-        "ToolTip": "Set the default Windows mode to light (default value)"
+        "ToolTip": "Defina o modo padrão do Windows para claro (valor padrão)"
       }
     }
   },
   {
     "Id": 327,
     "Region": "UI & Personalization",
-    "Function": "AppColorMode",
+    "Function": "AppMode",
     "Arg": {
       "Zero": {
         "Tag": "Dark",
-        "ToolTip": "Set the default app mode to dark"
+        "ToolTip": "Defina o modo de aplicativo padrão para escuro"
       },
       "One": {
         "Tag": "Light",
-        "ToolTip": "Set the default app mode to light (default value)"
+        "ToolTip": "Defina o modo de aplicativo padrão para claro (valor padrão)"
       }
     }
   },
@@ -701,11 +702,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide the \"New App Installed\" indicator"
+        "ToolTip": "Ocultar o indicador \"Novo aplicativo instalado\""
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show the \"New App Installed\" indicator (default value)"
+        "ToolTip": "Mostra o indicador \"Novo aplicativo instalado\" (valor padrão)"
       }
     }
   },
@@ -716,11 +717,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Hide user first sign-in animation after the upgrade"
+        "ToolTip": "Ocultar animação de primeiro login do usuário após a atualização"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Show user first sign-in animation after the upgrade (default value)"
+        "ToolTip": "Mostrar animação de primeiro login do usuário após a atualização (valor padrão)"
       }
     }
   },
@@ -731,11 +732,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Max",
-        "ToolTip": "Set the quality factor of the JPEG desktop wallpapers to maximum"
+        "ToolTip": "Defina o fator de qualidade dos papéis de parede JPEG da área de trabalho para o máximo"
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Set the quality factor of the JPEG desktop wallpapers to default (default value)"
+        "ToolTip": "Defina o fator de qualidade dos papéis de parede JPEG da área de trabalho para o padrão (valor padrão)"
       }
     }
   },
@@ -746,11 +747,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Expanded",
-        "ToolTip": "Start Task Manager in the expanded mode"
+        "ToolTip": "Inicie o Gerenciador de Tarefas no modo expandido"
       },
       "One": {
         "Tag": "Compact",
-        "ToolTip": "Start Task Manager in the compact mode (default value)"
+        "ToolTip": "Inicie o Gerenciador de Tarefas no modo compacto (valor padrão)"
       }
     }
   },
@@ -761,11 +762,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Show",
-        "ToolTip": "Show a notification when your PC requires a restart to finish updating"
+        "ToolTip": "Mostra uma notificação quando o seu PC requer uma reinicialização para concluir a atualização"
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Do not show a notification when your PC requires a restart to finish updating (default value)"
+        "ToolTip": "Não mostrar uma notificação quando o seu PC exigir uma reinicialização para concluir a atualização (valor padrão)"
       }
     }
   },
@@ -776,11 +777,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Do not add the \"- Shortcut\" suffix to the file name of created shortcuts"
+        "ToolTip": "Não adicione o sufixo \"- Atalho\" ao nome do arquivo de atalhos criados"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Add the \"- Shortcut\" suffix to the file name of created shortcuts (default value)"
+        "ToolTip": "Adicione o sufixo \"- Atalho\" ao nome do arquivo de atalhos criados (valor padrão)"
       }
     }
   },
@@ -791,11 +792,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Use the Print screen button to open screen snipping"
+        "ToolTip": "Use o botão Imprimir tela para abrir o recorte de tela"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Do not use the Print screen button to open screen snipping (default value)"
+        "ToolTip": "Não use o botão Imprimir tela para abrir o recorte de tela (valor padrão)"
       }
     }
   },
@@ -806,26 +807,26 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Let me use a different input method for each app window"
+        "ToolTip": "Deixe-me usar um método de entrada diferente para cada janela do aplicativo"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Do not use a different input method for each app window (default value)"
+        "ToolTip": "Não use um método de entrada diferente para cada janela do aplicativo (valor padrão)"
       }
     }
   },
   {
-    "Id": 336,
+	"Id": 336,
     "Region": "UI & Personalization",
     "Function": "AeroShaking",
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "When I grab a windows's title bar and shake it, don't minimize all other windows (default value)"
+        "ToolTip": "Quando pego a barra de título de uma janela e a sacudo, não minimize todas as outras janelas (valor padrão)"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "When I grab a windows's title bar and shake it, minimize all other windows"
+        "ToolTip": "Quando pego a barra de título de uma janela e a agito, minimizo todas as outras janelas"
       }
     }
   },
@@ -836,11 +837,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Uninstall",
-        "ToolTip": "Uninstall OneDrive. The OneDrive user folder won't be removed"
+        "ToolTip": "Desinstale o OneDrive. A pasta de usuário do OneDrive não será removida"
       },
       "One": {
         "Tag": "Install",
-        "ToolTip": "Install OneDrive 64-bit"
+        "ToolTip": "Instale o OneDrive 64-bit"
       }
     }
   },
@@ -851,41 +852,41 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Turn on Storage Sense"
+        "ToolTip": "Ligue o Storage Sense"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Turn off Storage Sense (default value)"
+        "ToolTip": "Desligue o Storage Sense (valor padrão)"
       }
     }
   },
   {
     "Id": 501,
     "Region": "System",
-    "Function": "StorageSenseFrequency",
+    "Function": "StorageSenseTempFiles",
     "Arg": {
       "Zero": {
-        "Tag": "Month",
-        "ToolTip": "Run Storage Sense every month"
+        "Tag": "Enable",
+        "ToolTip": "Exclua arquivos temporários que os aplicativos não estão usando (valor padrão)"
       },
       "One": {
-        "Tag": "Default",
-        "ToolTip": "Run Storage Sense during low free disk space (default value)"
+        "Tag": "Disable",
+        "ToolTip": "Não exclua arquivos temporários que os aplicativos não estão usando"
       }
     }
   },
   {
     "Id": 502,
     "Region": "System",
-    "Function": "StorageSenseTempFiles",
+    "Function": "StorageSenseFrequency",
     "Arg": {
       "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Delete temporary files that apps aren't using (default value)"
+        "Tag": "Month",
+        "ToolTip": "Execute o Storage Sense todos os meses"
       },
       "One": {
-        "Tag": "Disable",
-        "ToolTip": "Do not delete temporary files that apps aren't using"
+        "Tag": "Default",
+        "ToolTip": "Execute o Storage Sense durante pouco espaço livre em disco (valor padrão)"
       }
     }
   },
@@ -896,11 +897,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Disable hibernation. Do not recommend turning it off on laptops"
+        "ToolTip": "Desative a hibernação. Não recomendo desligá-lo em laptops"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Enable hibernate (default value)"
+        "ToolTip": "Habilitar hibernação (valor padrão)"
       }
     }
   },
@@ -911,11 +912,11 @@
     "Arg": {
       "Zero": {
         "Tag": "SystemDrive",
-        "ToolTip": "Change the %TEMP% environment variable path to %SystemDrive%\\Temp"
+        "ToolTip": "Altere o caminho da variável de ambiente% TEMP% para %SystemDrive%\\Temp"
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Change %TEMP% environment variable path to %LOCALAPPDATA%\\Temp (default value)"
+        "ToolTip": "Altere o caminho da variável de ambiente% TEMP% para %LOCALAPPDATA%\\Temp (valor padrão)"
       }
     }
   },
@@ -926,11 +927,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Disable the Windows 260 characters path limit"
+        "ToolTip": "Desative o limite de caminho de 260 caracteres do Windows"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Enable the Windows 260 character path limit (default value)"
+        "ToolTip": "Ative o limite de caminho de 260 caracteres do Windows (valor padrão)"
       }
     }
   },
@@ -941,11 +942,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Display the Stop error information on the BSoD"
+        "ToolTip": "Exibir as informações de erro de parada no BSoD"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Do not display the Stop error information on the BSoD (default value)"
+        "ToolTip": "Não exibe as informações de erro de parada no BSoD (valor padrão)"
       }
     }
   },
@@ -956,11 +957,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Never",
-        "ToolTip": "Choose when to be notified about changes to your computer: never notify"
+        "ToolTip": "Escolha quando ser notificado sobre alterações em seu computador: nunca notificar"
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Choose when to be notified about changes to your computer: notify me only when apps try to make changes to my computer (default value)"
+        "ToolTip": "Escolha quando ser notificado sobre alterações em seu computador: notifique-me apenas quando aplicativos tentarem fazer alterações em meu computador (valor padrão)"
       }
     }
   },
@@ -971,11 +972,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Turn on access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled"
+        "ToolTip": "Ative o acesso às unidades mapeadas do aplicativo em execução com permissões elevadas com o Modo de aprovação de administrador habilitado"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Turn off access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled (default value)"
+        "ToolTip": "Desative o acesso às unidades mapeadas do aplicativo em execução com permissões elevadas com o Modo de aprovação de administrador habilitado (valor padrão)"
       }
     }
   },
@@ -986,11 +987,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Turn off Delivery Optimization"
+        "ToolTip": "Desative a otimização de entrega"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Turn on Delivery Optimization (default value)"
+        "ToolTip": "Ative a Otimização de entrega (valor padrão)"
       }
     }
   },
@@ -1001,11 +1002,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Always wait for the network at computer startup and logon for workgroup networks"
+        "ToolTip": "Sempre espere pela rede na inicialização do computador e faça logon em redes de grupo de trabalho"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Never wait for the network at computer startup and logon for workgroup networks (default value)"
+        "ToolTip": "Nunca espere pela rede na inicialização do computador e logon para redes de grupo de trabalho (valor padrão)"
       }
     }
   },
@@ -1016,11 +1017,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Do not let Windows manage my default printer"
+        "ToolTip": "Não deixe o Windows gerenciar minha impressora padrão"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Let Windows manage my default printer (default value)"
+        "ToolTip": "Permitir que o Windows gerencie minha impressora padrão (valor padrão)"
       }
     }
   },
@@ -1031,11 +1032,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Disable the Windows features using the pop-up dialog box"
+        "ToolTip": "Desative os recursos do Windows usando a caixa de diálogo pop-up"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Enable the Windows features using the pop-up dialog box (default value)"
+        "ToolTip": "Habilite os recursos do Windows usando a caixa de diálogo pop-up (valor padrão)"
       }
     }
   },
@@ -1046,11 +1047,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Uninstall",
-        "ToolTip": "Uninstall optional features using the pop-up dialog box"
+        "ToolTip": "Desinstale recursos opcionais usando a caixa de diálogo pop-up"
       },
       "One": {
         "Tag": "Install",
-        "ToolTip": "Install optional features using the pop-up dialog box (default value)"
+        "ToolTip": "Instale recursos opcionais usando a caixa de diálogo pop-up (valor padrão)"
       }
     }
   },
@@ -1061,11 +1062,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Receive updates for other Microsoft products when you update Windows"
+        "ToolTip": "Receba atualizações para outros produtos da Microsoft ao atualizar o Windows"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Do not receive updates for other Microsoft products when you update Windows (default value)"
+        "ToolTip": "Não receber atualizações para outros produtos da Microsoft ao atualizar o Windows (valor padrão)"
       }
     }
   },
@@ -1076,11 +1077,11 @@
     "Arg": {
       "Zero": {
         "Tag": "High",
-        "ToolTip": "Set power plan on \"High performance\". It isn't recommended to turn on the \"High performance\" power plan on laptops"
+        "ToolTip": "Defina o plano de energia como \"Alto desempenho\". Não é recomendado ativar o plano de energia de \"Alto desempenho\" em laptops"
       },
       "One": {
         "Tag": "Balanced",
-        "ToolTip": "Set the power plan on \"Balanced\" (default value)"
+        "ToolTip": "Defina o plano de energia como \"Equilibrado\" (valor padrão)"
       }
     }
   },
@@ -1091,11 +1092,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Use the latest installed .NET runtime for all apps"
+        "ToolTip": "Use o tempo de execução .NET mais recente instalado para todos os aplicativos"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Do not use the latest installed .NET runtime for all apps (default value)"
+        "ToolTip": "Não use o tempo de execução .NET mais recente instalado para todos os aplicativos (valor padrão)"
       }
     }
   },
@@ -1106,26 +1107,26 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Do not allow the computer to turn off the network adapters to save power"
+        "ToolTip": "Não permita que o computador desligue os adaptadores de rede para economizar energia"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Allow the computer to turn off the network adapters to save power (default value)"
+        "ToolTip": "Permitir que o computador desligue os adaptadores de rede para economizar energia (valor padrão)"
       }
     }
   },
   {
     "Id": 518,
     "Region": "System",
-    "Function": "IPv6Component",
+	"Function": "IPv6Component",
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Disable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections. Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipv6-test.com"
+        "ToolTip": "Desative o componente Internet Protocol Versão 6 (TCP / IPv6) para todas as conexões de rede. Antes de invocar a função, uma verificação será executada se o seu ISP suporta o protocolo IPv6 usando https://ipv6-test.com"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections (default value). Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipv6-test.com"
+        "ToolTip": "Ative o componente Protocolo da Internet Versão 6 (TCP / IPv6) para todas as conexões de rede (valor padrão). Antes de invocar a função, uma verificação será executada se o seu ISP suporta o protocolo IPv6 usando https://ipv6-test.com"
       }
     }
   },
@@ -1136,11 +1137,11 @@
     "Arg": {
       "Zero": {
         "Tag": "English",
-        "ToolTip": "Override for default input method: English"
+        "ToolTip": "Substituir pelo método de entrada padrão: Inglês"
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Override for default input method: use language list (default value)"
+        "ToolTip": "Substituir pelo método de entrada padrão: usar lista de idiomas (valor padrão)"
       }
     }
   },
@@ -1151,15 +1152,15 @@
     "Arg": {
       "Zero": {
         "Tag": "Root",
-        "ToolTip": "Move user folders location to the root of any drive using the interactive menu. User files or folders won't me moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default"
+        "ToolTip": "Mova a localização das pastas do usuário para a raiz de qualquer unidade usando o menu interativo. Os arquivos ou pastas do usuário não serão movidos para um novo local. Mova-os manualmente. Eles estão localizados na pasta %USERPROFILE% por padrão"
       },
       "One": {
         "Tag": "Custom",
-        "ToolTip": "Select folders for user folders location manually using a folder browser dialog. User files or folders won't me moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default"
+        "ToolTip": "Selecione as pastas para o local das pastas do usuário manualmente usando uma caixa de diálogo do navegador de pastas Os arquivos ou pastas do usuário não serão movidos para um novo local. Mova-os manualmente. Eles estão localizados na pasta %USERPROFILE% por padrão"
       },
       "Two": {
         "Tag": "Default",
-        "ToolTip": "Change user folders location to the default values. User files or folders won't me moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default (default value)"
+        "ToolTip": "Altere a localização das pastas do usuário para os valores padrão Os arquivos ou pastas do usuário não serão movidos para um novo local. Mova-os manualmente. Eles estão localizados na pasta %USERPROFILE% por padrão (valor padrão)"
       }
     }
   },
@@ -1170,11 +1171,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Desktop",
-        "ToolTip": "Save screenshots by pressing Win+PrtScr on the Desktop. The function will be applied only if the preset is configured to remove OneDrive. Otherwise the backup functionality for the \"Desktop\" and \"Pictures\" folders in OneDrive breaks"
+        "ToolTip": "Salve as capturas de tela pressionando Win + PrtScr na área de trabalho"
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Save screenshots by pressing Win+PrtScr in the Pictures folder (default value)"
+        "ToolTip": "Salve as capturas de tela pressionando Win + PrtScr na pasta Imagens (valor padrão)"
       }
     }
   },
@@ -1185,11 +1186,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Automatically",
-        "ToolTip": "Run troubleshooter automatically, then notify. In order this feature to work the OS level of diagnostic data gathering will be set to \"Optional diagnostic data\" and the error reporting feature will be turned on"
+        "ToolTip": "Execute o solucionador de problemas automaticamente e notifique. Para que este recurso funcione, o nível do sistema operacional de coleta de dados de diagnóstico será definido como \"Dados de diagnóstico opcionais\" e o recurso de relatório de erros será ativado"
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Ask me before running troubleshooters. In order this feature to work the OS level of diagnostic data gathering will be set to \"Optional diagnostic data\" and the error reporting feature will be turned on (default value)"
+        "ToolTip": "Pergunte-me antes de executar os solucionadores de problemas. Para que este recurso funcione, o nível do sistema operacional de coleta de dados de diagnóstico será definido como \"Dados de diagnóstico opcionais\" e o recurso de relatório de erros será ativado (valor padrão)"
       }
     }
   },
@@ -1200,11 +1201,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Launch folder windows in a separate process"
+        "ToolTip": "Lançar janelas de pasta em um processo separado"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Do not launch folder windows in a separate process (default value)"
+        "ToolTip": "Não inicie janelas de pasta em um processo separado (valor padrão)"
       }
     }
   },
@@ -1215,11 +1216,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Disable and delete reserved storage after the next update installation"
+        "ToolTip": "Desative e exclua o armazenamento reservado após a próxima instalação de atualização"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Enable reserved storage (default value)"
+        "ToolTip": "Habilitar armazenamento reservado (valor padrão)"
       }
     }
   },
@@ -1230,11 +1231,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Disable help lookup via F1"
+        "ToolTip": "Desativar busca de ajuda via F1"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Enable help lookup via F1 (default value)"
+        "ToolTip": "Habilite a busca de ajuda via F1 (valor padrão)"
       }
     }
   },
@@ -1245,11 +1246,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Enable Num Lock at startup"
+        "ToolTip": "Habilitar Num Lock na inicialização"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Disable Num Lock at startup (default value)"
+        "ToolTip": "Desativar Num Lock na inicialização (valor padrão)"
       }
     }
   },
@@ -1259,12 +1260,12 @@
     "Function": "CapsLock",
     "Arg": {
       "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Disable Caps Lock"
+        "Tag": "Enable",
+        "ToolTip": "Ative o Caps lock"
       },
       "One": {
-        "Tag": "Enable",
-        "ToolTip": "Enable Caps Lock (default value)"
+        "Tag": "Disable",
+        "ToolTip": "Desativar Caps Lock (valor padrão)"
       }
     }
   },
@@ -1275,11 +1276,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Turn off pressing the Shift key 5 times to turn Sticky keys"
+        "ToolTip": "Desligue pressionando a tecla Shift 5 vezes para girar as teclas de aderência"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Turn on pressing the Shift key 5 times to turn Sticky keys (default value)"
+        "ToolTip": "Ative pressionando a tecla Shift 5 vezes para girar as teclas de aderência (valor padrão)"
       }
     }
   },
@@ -1290,11 +1291,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Don't use AutoPlay for all media and devices"
+        "ToolTip": "Não use a reprodução automática para todas as mídias e dispositivos"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Use AutoPlay for all media and devices (default value)"
+        "ToolTip": "Use a reprodução automática para todas as mídias e dispositivos (valor padrão)"
       }
     }
   },
@@ -1305,11 +1306,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Disable thumbnail cache removal"
+        "ToolTip": "Desativar remoção de cache de miniaturas"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Enable thumbnail cache removal (default value)"
+        "ToolTip": "Habilitar remoção de cache de miniaturas (valor padrão)"
       }
     }
   },
@@ -1320,11 +1321,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Enable automatically saving my restartable apps when signing out and restart them after signing in"
+        "ToolTip": "Ative o salvamento automático de meus aplicativos reinicializáveis ao sair e reinicie-os após o login"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Disable automatically saving my restartable apps when signing out and restart them after signing in (default value)"
+        "ToolTip": "Desative o salvamento automático de meus aplicativos reinicializáveis ao sair e reinicie-os após o login (valor padrão)"
       }
     }
   },
@@ -1335,11 +1336,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Enable \"Network Discovery\" and \"File and Printers Sharing\" for workgroup networks"
+        "ToolTip": "Habilite \"Descoberta de rede\" e \"Compartilhamento de arquivos e impressoras\" para redes de grupo de trabalho"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Disable \"Network Discovery\" and \"File and Printers Sharing\" for workgroup networks (default value)"
+        "ToolTip": "Desative \"Descoberta de rede\" e \"Compartilhamento de arquivos e impressoras\" para redes de grupo de trabalho (valor padrão)"
       }
     }
   },
@@ -1350,11 +1351,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Automatically",
-        "ToolTip": "Automatically adjust active hours for me based on daily usage"
+        "ToolTip": "Ajuste automaticamente o horário ativo para mim com base no uso diário"
       },
       "One": {
         "Tag": "Manually",
-        "ToolTip": "Manually adjust active hours for me based on daily usage (default value)"
+        "ToolTip": "Ajuste manualmente as horas ativas para mim com base no uso diário (valor padrão)"
       }
     }
   },
@@ -1365,11 +1366,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Restart this device as soon as possible when a restart is required to install an update"
+        "ToolTip": "Reinicie este dispositivo o mais rápido possível quando for necessário reiniciar para instalar uma atualização"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Do not restart this device as soon as possible when a restart is required to install an update (default value)"
+        "ToolTip": "Não reinicie este dispositivo o mais rápido possível quando for necessário reiniciar para instalar uma atualização (valor padrão)"
       }
     }
   },
@@ -1380,11 +1381,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Block",
-        "ToolTip": "Uninstall the KB5005463 update and block it from the further intalling. The KB5005463 update installs the PC Health Check app to check if PC meets the system requirements of Windows 11"
+        "ToolTip": "Desinstale a atualização KB5005463 e bloqueie-a de outras instalações. A atualização KB5005463 instala o aplicativo PC Health Check para verificar se o PC atende aos requisitos de sistema do Windows 11"
       },
       "One": {
         "Tag": "Unblock",
-        "ToolTip": "Unblock the KB5005463 update for the further intalling (default value)"
+        "ToolTip": "Desbloqueie a atualização KB5005463 para instalação posterior (valor padrão)"
       }
     }
   },
@@ -1395,7 +1396,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Install the latest supported Microsoft Visual C++ Redistributable 2015—2022 x64"
+        "ToolTip": "Instale o Microsoft Visual C ++ Redistributable 2015—2022 x64 mais recente compatível"
       }
     }
   },
@@ -1406,7 +1407,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form. To receive kernel updates, enable the Windows Update setting: \"Receive updates for other Microsoft products\""
+        "ToolTip": "Habilite o subsistema Windows para Linux (WSL), instale a versão mais recente do kernel WSL Linux e uma distribuição Linux usando um formulário pop-up. Para receber atualizações do kernel, habilite a configuração do Windows Update: \"Receber atualizações para outros produtos Microsoft\""
       }
     }
   },
@@ -1417,11 +1418,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide recently added apps in the Start menu"
+        "ToolTip": "Ocultar aplicativos adicionados recentemente no menu Iniciar"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show recently added apps in the Start menu (default value)"
+        "ToolTip": "Mostrar aplicativos adicionados recentemente no menu Iniciar (valor padrão)"
       }
     }
   },
@@ -1432,11 +1433,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide app suggestions in the Start menu"
+        "ToolTip": "Ocultar sugestões de aplicativos no menu Iniciar"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show app suggestions in the Start menu (default value)"
+        "ToolTip": "Mostrar sugestões de aplicativos no menu Iniciar (valor padrão)"
       }
     }
   },
@@ -1447,11 +1448,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Elevated",
-        "ToolTip": "Run the Windows PowerShell shortcut from the Start menu as Administrator"
+        "ToolTip": "Execute o atalho do Windows PowerShell no menu Iniciar como Administrador"
       },
       "One": {
         "Tag": "NonElevated",
-        "ToolTip": "Run the Windows PowerShell shortcut from the Start menu as user (default value)"
+        "ToolTip": "Execute o atalho do Windows PowerShell no menu Iniciar como usuário (valor padrão)"
       }
     }
   },
@@ -1459,19 +1460,19 @@
     "Id": 703,
     "Region": "Start menu",
     "Function": "PinToStart -Tiles",
-    "ToolTip": "Pin to Start the following shortcuts: Control Panel, Devices and Printers, PowerShell",
+    "ToolTip": "Fixar para iniciar os seguintes atalhos: Painel de Controle, Dispositivos e Impressoras, PowerShell",
     "Arg": {
       "Zero": {
         "Tag": "ControlPanel",
-        "ToolTip": "Pin the Control Panel shortcut to Start"
+        "ToolTip": "Fixe o atalho do Painel de Controle em Iniciar"
       },
       "One": {
         "Tag": "DevicesPrinters",
-        "ToolTip": "Pin the \"Devices & Printers\" shortcut to Start"
+        "ToolTip": "Fixe o atalho \"Dispositivos e impressoras\" para iniciar"
       },
       "Two": {
         "Tag": "PowerShell",
-        "ToolTip": "Pin the Windows PowerShell shortcut to Start"
+        "ToolTip": "Fixe o atalho do Windows PowerShell em Iniciar"
       }
     }
   },
@@ -1482,7 +1483,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Unpin all the Start tiles"
+        "ToolTip": "Solte todos os blocos iniciais"
       }
     }
   },
@@ -1493,7 +1494,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Uninstall UWP apps using the pop-up dialog box"
+        "ToolTip": "Desinstalar aplicativos UWP usando a caixa de diálogo pop-up"
       }
     }
   },
@@ -1504,7 +1505,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Uninstall UWP apps using the pop-up dialog box. If the \"For all users\" is checked apps packages will not be installed for new users. The \"ForAllUsers\" argument sets a checkbox to unistall packages for all users"
+        "ToolTip": "Desinstale aplicativos UWP usando a caixa de diálogo pop-up. Se a opção \"Para todos os usuários\" estiver marcada, os pacotes de aplicativos não serão instalados para novos usuários. O argumento \"ForAllUsers\" marca uma caixa de seleção para desinstalar pacotes para todos os usuários"
       }
     }
   },
@@ -1515,7 +1516,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Restore the default UWP apps using the pop-up dialog box. UWP apps can be restored only if they were uninstalled only for the current user"
+        "ToolTip": "Restaure os aplicativos UWP padrão usando a caixa de diálogo pop-up. Os aplicativos UWP podem ser restaurados apenas se foram desinstalados apenas para o usuário atual"
       }
     }
   },
@@ -1526,11 +1527,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Manually",
-        "ToolTip": "Open Microsoft Store \"HEVC Video Extensions from Device Manufacturer\" page to install this extension manually to be able to open .heic and .heif image formats. The extension can be installed without a Microsoft account"
+        "ToolTip": "Abra a página \"Extensões de vídeo HEVC do fabricante do dispositivo\" da Microsoft Store para instalar essa extensão manualmente para poder abrir os formatos de imagem .heic e .heif. A extensão pode ser instalada sem uma conta da Microsoft"
       },
       "One": {
         "Tag": "Install",
-        "ToolTip": "Download and install \"HEVC Video Extensions from Device Manufacturer\" to be able to open .heic and .heif formats"
+        "ToolTip": "Baixe e instale \"Extensões de vídeo HEVC do fabricante do dispositivo\" para poder abrir os formatos .heic e .heif"
       }
     }
   },
@@ -1541,41 +1542,41 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Disable Cortana autostarting"
+        "ToolTip": "Desativar inicialização automática do Cortana"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Enable Cortana autostarting (default value)"
+        "ToolTip": "Habilitar inicialização automática da Cortana (valor padrão)"
       }
     }
   },
   {
     "Id": 805,
     "Region": "UWP apps",
-    "Function": "TeamsAutostart",
+    "Function": "BackgroundUWPApps",
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Disable Microsoft Teams autostarting"
+        "ToolTip": "Não deixe todos os aplicativos UWP serem executados em segundo plano"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Enable Microsoft Teams autostarting (default value)"
+        "ToolTip": "Permitir que todos os aplicativos UWP sejam executados em segundo plano (valor padrão)"
       }
     }
   },
   {
     "Id": 806,
     "Region": "UWP apps",
-    "Function": "BackgroundUWPApps",
+"Function": "BackgroundUWPApps",
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Do not let all UWP apps run in the background"
+        "ToolTip": "Não deixe todos os aplicativos UWP serem executados em segundo plano"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Let all UWP apps run in the background (default value)"
+        "ToolTip": "Permitir que todos os aplicativos UWP sejam executados em segundo plano (valor padrão)"
       }
     }
   },
@@ -1586,7 +1587,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Check for UWP apps updates"
+        "ToolTip": "Verifique se há atualizações de aplicativos UWP"
       }
     }
   },
@@ -1597,11 +1598,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Disable Xbox Game Bar"
+        "ToolTip": "Desativar Xbox Game Bar"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Enable Xbox Game Bar (default value)"
+        "ToolTip": "Habilitar Barra de Jogo Xbox (valor padrão)"
       }
     }
   },
@@ -1612,11 +1613,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Disable Xbox Game Bar tips"
+        "ToolTip": "Desativar dicas da barra de jogos do Xbox"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Enable Xbox Game Bar tips (default value)"
+        "ToolTip": "Habilitar dicas da barra de jogos do Xbox (valor padrão)"
       }
     }
   },
@@ -1627,7 +1628,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Choose an app and set the \"High performance\" graphics performance for it. Only if you have a dedicated GPU"
+        "ToolTip": "Escolha um aplicativo e defina o desempenho gráfico de \"Alto desempenho\" para ele. Apenas com uma GPU dedicada"
       }
     }
   },
@@ -1638,11 +1639,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Turn on hardware-accelerated GPU scheduling. Restart needed. Only if you have a dedicated GPU and WDDM verion is 2.7 or higher"
+        "ToolTip": "Ative o agendamento de GPU acelerado por hardware. É necessário reiniciar. Apenas com uma GPU dedicada e a versão WDDM é 2.7 ou superior"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Turn off hardware-accelerated GPU scheduling. Restart needed (default value)"
+        "ToolTip": "Desative o agendamento de GPU acelerado por hardware. Reinicialização necessária (valor padrão)"
       }
     }
   },
@@ -1653,11 +1654,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Register",
-        "ToolTip": "Create the \"Windows Cleanup\" scheduled task for cleaning up Windows unused files and updates. A native interactive toast notification pops up every 30 days. The task runs every 30 days"
+        "ToolTip": "Crie a tarefa agendada \"Limpeza do Windows\" para limpar arquivos e atualizações não utilizados do Windows. Uma notificação do sistema interativa nativa aparece a cada 30 dias. A tarefa é executada a cada 30 dias"
       },
       "One": {
         "Tag": "Delete",
-        "ToolTip": "Delete the \"Windows Cleanup\" and \"Windows Cleanup Notification\" scheduled tasks for cleaning up Windows unused files and updates"
+        "ToolTip": "Exclua as tarefas agendadas \"Windows Cleanup\" e \"Windows Cleanup Notification\" para limpar arquivos e atualizações não utilizados do Windows"
       }
     }
   },
@@ -1668,11 +1669,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Register",
-        "ToolTip": "Create the \"SoftwareDistribution\" scheduled task for cleaning up the %SystemRoot%\\SoftwareDistribution\\Download folder. The task will wait until the Windows Updates service finishes running. The task runs every 90 days"
+        "ToolTip": "Crie a tarefa agendada \"SoftwareDistribution\" para limpar a pasta %SystemRoot%\\SoftwareDistribution\\Download. A tarefa aguardará até que o serviço de atualizações do Windows termine de ser executado. A tarefa é executada a cada 90 dias"
       },
       "One": {
         "Tag": "Delete",
-        "ToolTip": "Delete the \"SoftwareDistribution\" scheduled task for cleaning up the %SystemRoot%\\SoftwareDistribution\\Download folder"
+        "ToolTip": "Exclua a tarefa agendada \"SoftwareDistribution\" para limpar a pasta %SystemRoot%\\SoftwareDistribution\\Download"
       }
     }
   },
@@ -1683,11 +1684,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Register",
-        "ToolTip": "Create the \"Temp\" scheduled task for cleaning up the %TEMP% folder. Only files older than one day will be deleted. The task runs every 60 days"
+        "ToolTip": "Crie a tarefa agendada \"Temp\" para limpar a pasta %TEMP%. A tarefa é executada a cada 60 dias"
       },
       "One": {
         "Tag": "Delete",
-        "ToolTip": "Delete the \"Temp\" scheduled task for cleaning up the %TEMP% folder"
+        "ToolTip": "Exclua a tarefa agendada \"Temp\" para limpar a pasta %TEMP%"
       }
     }
   },
@@ -1698,11 +1699,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Enable Microsoft Defender Exploit Guard network protection"
+        "ToolTip": "Ativar proteção de rede Microsoft Defender Exploit Guard"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Disable Microsoft Defender Exploit Guard network protection (default value)"
+        "ToolTip": "Desativar proteção de rede do Microsoft Defender Exploit Guard (valor padrão)"
       }
     }
   },
@@ -1713,11 +1714,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Enable detection for potentially unwanted applications and block them"
+        "ToolTip": "Habilite a detecção de aplicativos potencialmente indesejados e bloqueie-os"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Disable detection for potentially unwanted applications and block them (default value)"
+        "ToolTip": "Desative a detecção de aplicativos potencialmente indesejados e bloqueie-os (valor padrão)"
       }
     }
   },
@@ -1728,11 +1729,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Enable sandboxing for Microsoft Defender"
+        "ToolTip": "Habilitar sandbox para Microsoft Defender"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Disable sandboxing for Microsoft Defender (default value)"
+        "ToolTip": "Desativar sandbox para Microsoft Defender (valor padrão)"
       }
     }
   },
@@ -1743,7 +1744,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Dismiss Microsoft Defender offer in the Windows Security about signing in Microsoft account"
+        "ToolTip": "Dispensar oferta do Microsoft Defender na Segurança do Windows sobre como entrar na conta da Microsoft"
       }
     }
   },
@@ -1754,7 +1755,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Dismiss Microsoft Defender offer in the Windows Security about turning on the SmartScreen filter for Microsoft Edge"
+        "ToolTip": "Dispensar a oferta do Microsoft Defender na Segurança do Windows sobre a ativação do filtro SmartScreen para o Microsoft Edge"
       }
     }
   },
@@ -1765,11 +1766,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Enable events auditing generated when a process is created (starts)"
+        "ToolTip": "Habilitar auditoria de eventos gerados quando um processo é criado (inicia)"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Disable events auditing generated when a process is created (starts) (default value)"
+        "ToolTip": "Desabilita a auditoria de eventos gerados quando um processo é criado (inicia) (valor padrão)"
       }
     }
   },
@@ -1780,11 +1781,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Include command line in process creation events. In order this feature to work events auditing (ProcessAudit -Enable) will be enabled"
+        "ToolTip": "Inclui linha de comando em eventos de criação de processo. Para que este recurso funcione, a auditoria de eventos (ProcessAudit -Enable) será habilitada"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Do not include command line in process creation events (default value)"
+        "ToolTip": "Não inclua a linha de comando em eventos de criação de processo (valor padrão)"
       }
     }
   },
@@ -1795,11 +1796,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Create the \"Process Creation\" Event Viewer сustom view to log the executed processes and their arguments. In order this feature to work events auditing (AuditProcess -Enable) and command line (CommandLineProcessAudit -Enable) in process creation events will be enabled"
+        "ToolTip": "Crie a exibição personalizada do Visualizador de Eventos \"Criação de Processo\". Para que este recurso funcione, auditoria de eventos (AuditProcess -Enable) e linha de comando em eventos de criação de processos serão habilitados"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Remove \"Process Creation\" Event Viewer сustom view to log the executed processes and their arguments (default value)"
+        "ToolTip": "Remover exibição personalizada do Visualizador de Eventos \"Criação de Processo\" (valor padrão)"
       }
     }
   },
@@ -1810,11 +1811,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Enable logging for all Windows PowerShell modules"
+        "ToolTip": "Habilite o registro em log para todos os módulos do Windows PowerShell"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Disable logging for all Windows PowerShell modules (default value)"
+        "ToolTip": "Desative o registro em log para todos os módulos do Windows PowerShell (valor padrão)"
       }
     }
   },
@@ -1825,11 +1826,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Enable logging for all PowerShell scripts input to the Windows PowerShell event log"
+        "ToolTip": "Habilite o registro de entrada de todos os scripts do PowerShell no log de eventos do Windows PowerShell"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Disable logging for all PowerShell scripts input to the Windows PowerShell event log (default value)"
+        "ToolTip": "Desabilite o log de entrada de todos os scripts do PowerShell no log de eventos do Windows PowerShell (valor padrão)"
       }
     }
   },
@@ -1840,11 +1841,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Microsoft Defender SmartScreen doesn't marks downloaded files from the Internet as unsafe"
+        "ToolTip": "O Microsoft Defender SmartScreen não marca os arquivos baixados da Internet como inseguros"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Microsoft Defender SmartScreen marks downloaded files from the Internet as unsafe (default value)"
+        "ToolTip": "O Microsoft Defender SmartScreen marca os arquivos baixados da Internet como inseguros (valor padrão)"
       }
     }
   },
@@ -1855,11 +1856,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Disable the Attachment Manager marking files that have been downloaded from the Internet as unsafe"
+        "ToolTip": "Desative o Gerenciador de anexos marcando arquivos que foram baixados da Internet como inseguros"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Enable the Attachment Manager marking files that have been downloaded from the Internet as unsafe (default value)"
+        "ToolTip": "Habilite o Gerenciador de anexos marcando arquivos que foram baixados da Internet como não seguros (valor padrão)"
       }
     }
   },
@@ -1870,11 +1871,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Disable Windows Script Host. Blocks WSH from executing .js and .vbs files"
+        "ToolTip": "Desative o Windows Script Host. Impede que o WSH execute arquivos .js e .vbs"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Enable Windows Script Host (default value)"
+        "ToolTip": "Habilitar Windows Script Host (valor padrão)"
       }
     }
   },
@@ -1885,11 +1886,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Enable Windows Sandbox"
+        "ToolTip": "Habilitar Windows Sandbox"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Disable Windows Sandbox (default value)"
+        "ToolTip": "Desativar Windows Sandbox (valor padrão)"
       }
     }
   },
@@ -1900,11 +1901,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Enable DNS-over-HTTPS for IPv4. The valid IPv4 addresses: 1.0.0.1, 1.1.1.1, 149.112.112.112, 8.8.4.4, 8.8.8.8, 9.9.9.9"
+        "ToolTip": "Habilite DNS-over-HTTPS para IPv4. Os endereços IPv4 válidos: 1.0.0.1, 1.1.1.1, 149.112.112.112, 8.8.4.4, 8.8.8.8, 9.9.9.9"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Disable DNS-over-HTTPS for IPv4 (default value)"
+        "ToolTip": "Desative DNS-over-HTTPS para IPv4 (valor padrão)"
       }
     }
   },
@@ -1915,11 +1916,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Show",
-        "ToolTip": "Show the \"Extract all\" item in the Windows Installer (.msi) context menu"
+        "ToolTip": "Mostre o item \"Extrair tudo\" no menu de contexto do Windows Installer (.msi)"
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Hide the \"Extract all\" item from the Windows Installer (.msi) context menu (default value)"
+        "ToolTip": "Oculte o item \"Extrair tudo\" do menu de contexto do Windows Installer (.msi) (valor padrão)"
       }
     }
   },
@@ -1930,11 +1931,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Show",
-        "ToolTip": "Show the \"Install\" item in the Cabinet (.cab) filenames extensions context menu"
+        "ToolTip": "Mostra o item \"Instalar\" no menu de contexto das extensões de nomes de arquivos do Gabinete (.cab)"
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Hide the \"Install\" item from the Cabinet (.cab) filenames extensions context menu (default value)"
+        "ToolTip": "Oculte o item \"Instalar\" do menu de contexto das extensões de nomes de arquivos do Gabinete (.cab) (valor padrão)"
       }
     }
   },
@@ -1945,11 +1946,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Show",
-        "ToolTip": "Show the \"Run as different user\" item to the .exe filename extensions context menu"
+        "ToolTip": "Mostrar o item \"Executar como usuário diferente\" no menu de contexto das extensões de nome de arquivo .exe"
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Hide the \"Run as different user\" item from the .exe filename extensions context menu (default value)"
+        "ToolTip": "Oculte o item \"Executar como usuário diferente\" do menu de contexto das extensões de nome de arquivo .exe (valor padrão)"
       }
     }
   },
@@ -1960,11 +1961,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide the \"Cast to Device\" item from the media files and folders context menu"
+        "ToolTip": "Oculte o item \"Transmitir para dispositivo\" do menu de contexto de arquivos e pastas de mídia"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show the \"Cast to Device\" item in the media files and folders context menu (default value)"
+        "ToolTip": "Mostrar o item \"Transmitir para dispositivo\" no menu de contexto de arquivos e pastas de mídia (valor padrão)"
       }
     }
   },
@@ -1975,11 +1976,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide the \"Share\" item from the context menu"
+        "ToolTip": "Oculte o item \"Compartilhar\" do menu de contexto"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show the \"Share\" item in the context menu (default value)"
+        "ToolTip": "Mostra o item \"Compartilhar\" no menu de contexto (valor padrão)"
       }
     }
   },
@@ -1990,11 +1991,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide the \"Edit with Paint 3D\" item from the media files context menu"
+        "ToolTip": "Oculte o item \"Editar com Paint 3D\" do menu de contexto dos arquivos de mídia"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show the \"Edit with Paint 3D\" item in the media files context menu (default value)"
+        "ToolTip": "Mostrar o item \"Editar com Paint 3D\" no menu de contexto dos arquivos de mídia (valor padrão)"
       }
     }
   },
@@ -2005,11 +2006,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide the \"Edit with Photos\" item from the media files context menu"
+        "ToolTip": "Oculte o item \"Editar com Fotos\" do menu de contexto dos arquivos de mídia"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show the \"Edit with Photos\" item in the media files context menu (default value)"
+        "ToolTip": "Mostrar o item \"Editar com fotos\" no menu de contexto dos arquivos de mídia (valor padrão)"
       }
     }
   },
@@ -2020,11 +2021,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide the \"Create a new video\" item in the media files context menu"
+        "ToolTip": "Oculte o item \"Criar um novo vídeo\" no menu de contexto dos arquivos de mídia"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show the \"Create a new video\" item in the media files context menu (default value)"
+        "ToolTip": "Mostre o item \"Criar um novo vídeo\" no menu de contexto dos arquivos de mídia (valor padrão)"
       }
     }
   },
@@ -2035,11 +2036,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide the \"Edit\" item from the images context menu"
+        "ToolTip": "Oculte o item \"Editar\" do menu de contexto das imagens"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show the \"Edit\" item in images context menu (default value)"
+        "ToolTip": "Mostrar o item \"Editar\" no menu de contexto de imagens (valor padrão)"
       }
     }
   },
@@ -2050,11 +2051,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide the \"Print\" item from the .bat and .cmd context menu"
+        "ToolTip": "Oculte o item \"Imprimir\" do menu de contexto .bat e .cmd"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show the \"Print\" item in the .bat and .cmd context menu (default value)"
+        "ToolTip": "Mostre o item \"Imprimir\" no menu de contexto .bat e .cmd (valor padrão)"
       }
     }
   },
@@ -2065,11 +2066,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide the \"Include in Library\" item from the folders and drives context menu"
+        "ToolTip": "Oculte o item \"Incluir na Biblioteca\" do menu de contexto de pastas e unidades"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show the \"Include in Library\" item in the folders and drives context menu (default value)"
+        "ToolTip": "Mostrar o item \"Incluir na Biblioteca\" nas pastas e no menu de contexto das unidades (valor padrão)"
       }
     }
   },
@@ -2080,11 +2081,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide the \"Send to\" item from the folders context menu"
+        "ToolTip": "Oculte o item \"Enviar para\" do menu de contexto das pastas"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show the \"Send to\" item in the folders context menu (default value)"
+        "ToolTip": "Mostrar o item \"Enviar para\" no menu de contexto das pastas (valor padrão)"
       }
     }
   },
@@ -2095,11 +2096,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide the \"Turn on BitLocker\" item from the drives context menu"
+        "ToolTip": "Oculte o item \"Ativar BitLocker\" no menu de contexto das unidades"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show the \"Turn on BitLocker\" item in the drives context menu (default value)"
+        "ToolTip": "Mostre o item \"Ativar BitLocker\" no menu de contexto das unidades (valor padrão)"
       }
     }
   },
@@ -2110,11 +2111,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide the \"Bitmap image\" item from the \"New\" context menu"
+        "ToolTip": "Oculte o item \"Imagem bitmap\" do menu de contexto \"Novo\""
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show the \"Bitmap image\" item to the \"New\" context menu (default value)"
+        "ToolTip": "Mostrar o item \"Imagem bitmap\" no menu de contexto \"Novo\" (valor padrão)"
       }
     }
   },
@@ -2125,11 +2126,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide the \"Rich Text Document\" item from the \"New\" context menu"
+        "ToolTip": "Oculte o item \"Documento Rich Text\" do menu de contexto \"Novo\""
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show the \"Rich Text Document\" item to the \"New\" context menu (default value)"
+        "ToolTip": "Mostre o item \"Documento Rich Text\" no menu de contexto \"Novo\" (valor padrão)"
       }
     }
   },
@@ -2140,11 +2141,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide the \"Compressed (zipped) Folder\" item from the \"New\" context menu"
+        "ToolTip": "Oculte o item \"Pasta compactada (zipada)\" do menu de contexto \"Novo\""
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show the \"Compressed (zipped) Folder\" item to the \"New\" context menu (default value)"
+        "ToolTip": "Mostre o item \"Pasta compactada (zipada)\" no menu de contexto \"Novo\" (valor padrão)"
       }
     }
   },
@@ -2155,11 +2156,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Enable the \"Open\", \"Print\", and \"Edit\" context menu items for more than 15 items selected"
+        "ToolTip": "Habilite os itens de menu de contexto \"Abrir\", \"Imprimir\" e \"Editar\" para mais de 15 itens selecionados"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Disable the \"Open\", \"Print\", and \"Edit\" context menu items for more than 15 items selected (default value)"
+        "ToolTip": "Desative os itens do menu de contexto \"Abrir\", \"Imprimir\" e \"Editar\" para mais de 15 itens selecionados (valor padrão)"
       }
     }
   },
@@ -2170,11 +2171,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide the \"Look for an app in the Microsoft Store\" item in the \"Open with\" dialog"
+        "ToolTip": "Oculte o item \"Procurar um aplicativo na Microsoft Store\" na caixa de diálogo \"Abrir com\""
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show the \"Look for an app in the Microsoft Store\" item in the \"Open with\" dialog (default value)"
+        "ToolTip": "Mostre o item \"Procurar um aplicativo na Microsoft Store\" na caixa de diálogo \"Abrir com\" (valor padrão)"		
       }
     }
   },
@@ -2185,11 +2186,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide the \"Open in Windows Terminal\" menu option in the folders context menu"
+        "ToolTip": "Oculte a opção de menu \"Abrir no Windows Terminal\" no menu de contexto de pastas"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show the \"Open in Windows Terminal\" menu option in the folders context menu (default value)"
+        "ToolTip": "Mostrar a opção de menu \"Abrir no Windows Terminal\" no menu de contexto das pastas (valor padrão)"
       }
     }
   }

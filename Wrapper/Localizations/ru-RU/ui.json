@@ -2,7 +2,7 @@
   {
     "Id": "Menu",
     "Options": {
-      "menuImportExportPreset": "Импорт/экспорт",
+      "menuImportExportPreset": "Импорт | экспорт",
       "menuImportPreset": "Импортировать пресет",
       "menuExportPreset": "Экспортировать пресет",
       "menuPresets": "Пресеты",
@@ -37,8 +37,6 @@
     "Id": "Button",
     "Options": {
       "btnRefreshConsole": "Обновить консоль",
-      "btnSave": "Сохранить",
-      "btnSaveAs": "Сохранить как",
       "btnRunPowerShell": "Запустить PowerShell"
     }
   },
@@ -51,8 +49,7 @@
       "statusBarSophiaPreset": "Загружен пресет Sophia!",
       "statusBarWindowsDefaultPreset": "Загружен пресет по умолчанию!",
       "statusBarPowerShellScriptCreatedFromSelections": "Скрипт для PowerShell создан из ваших выбранных элементов. Можете запустить и сохранить его",
-      "statusBarPowerShellSaveAs": "Скрипт для PowerShell создан!",
-      "statusBarPowerShellSave": "Изменения сохранены в файл",
+      "statusBarPowerShellExport": "Скрипт для PowerShell создан!",
       "statusBarOpposite": "Выбраны обратные настройки!",
       "statusBarClear": "Выбранные элементы очищены!",
       "statusBarDisabled": "Вы должны сначала \"Импортировать пресет\", чтобы использовать Wrapper. Импортируйте, чтобы включить элементы управления."

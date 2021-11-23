@@ -1376,15 +1376,26 @@
   {
     "Id": 535,
     "Region": "System",
-    "Function": "DefaultTerminalApp",
+    "Function": "PCHealthCheck",
     "Arg": {
       "Zero": {
-        "Tag": "WindowsTerminal",
-        "ToolTip": "Windows Terminalvorschau als Standard-Terminalanwendung festlegen, um die Benutzeroberfläche für Befehlszeilenanwendungen bereitzustellen"
+        "Tag": "Block",
+        "ToolTip": "Deinstallieren Sie das Update KB5005463 und blockieren Sie es für die weitere Installation. Das Update KB5005463 installiert die App PC Health Check, um zu prüfen, ob der PC die Systemanforderungen von Windows 11 erfüllt"
       },
       "One": {
-        "Tag": "ConsoleHost",
-        "ToolTip": "Windows Console Host als Standardterminalanwendung festlegen, um die Benutzeroberfläche für Befehlszeilenanwendungen zu hosten (Standardeinstellung)"
+        "Tag": "Unblock",
+        "ToolTip": "Freigabe des KB5005463-Updates für die weitere Installation (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 536,
+    "Region": "System",
+    "Function": "VCRedistx64",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Installieren Sie die neueste unterstützte Microsoft Visual C++ Redistributable 2015-2022 x64"
       }
     }
   },

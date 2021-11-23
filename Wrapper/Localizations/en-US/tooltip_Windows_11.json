@@ -1423,6 +1423,21 @@
   {
     "Id": 900,
     "Region": "Gaming",
+    "Function": "XboxGameBar",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Disable Xbox Game Bar"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Enable Xbox Game Bar (default value)"
+      }
+    }
+  },
+  {
+    "Id": 901,
+    "Region": "Gaming",
     "Function": "XboxGameTips",
     "Arg": {
       "Zero": {
@@ -1436,7 +1451,7 @@
     }
   },
   {
-    "Id": 901,
+    "Id": 902,
     "Region": "Gaming",
     "Function": "SetAppGraphicsPerformance",
     "Arg": {
@@ -1447,7 +1462,7 @@
     }
   },
   {
-    "Id": 902,
+    "Id": 903,
     "Region": "Gaming",
     "Function": "GPUScheduling",
     "Arg": {

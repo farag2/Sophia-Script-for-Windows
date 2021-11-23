@@ -3,7 +3,7 @@
   "Checkings": "Проверки",
   "Disable": "Выключить",
   "Enable": "Включить",
-  "None": "Пропуск",
+  "None": "Пропустить",
   "Minimal": "Минимальный",
   "Default": "По умолчанию",
   "Never": "Никогда",
@@ -42,8 +42,5 @@
   "Left": "Слева",
   "Center": "По центру",
   "WindowsTerminal": "Windows Терминал",
-  "ConsoleHost": "Узел консоли Windows",
-  "Large": "Большой",
-  "Standard": "Стандарт",
-  "Small": "Небольшой"
+  "ConsoleHost": "Узел консоли Windows"
 }

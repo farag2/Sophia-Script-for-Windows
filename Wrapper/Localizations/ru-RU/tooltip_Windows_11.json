@@ -1306,6 +1306,32 @@
     }
   },
   {
+    "Id": 536,
+    "Region": "System",
+    "Function": "PCHealthCheck",
+    "Arg": {
+      "Zero": {
+        "Tag": "Block",
+        "ToolTip": "Удалить обновление KB5005463 и заблокировать его от дальнейшей установки. Обновление KB5005463 устанавливает приложение PC Health Check для проверки соответствия компьютера системным требованиям Windows 11"
+      },
+      "One": {
+        "Tag": "Unblock",
+        "ToolTip": "Разблокировать обновление KB5005463 для дальнейшей установки (значение по умолчанию)"
+      }
+    }
+  },
+  {
+    "Id": 537,
+    "Region": "System",
+    "Function": "VCRedistx64",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Установить последнюю поддерживаемую версию Microsoft Visual C++ Redistributable 2015-2022 x64"
+      }
+    }
+  },
+  {
     "Id": 600,
     "Region": "WSL",
     "Function": "WSL",
@@ -1423,6 +1449,21 @@
   {
     "Id": 900,
     "Region": "Gaming",
+    "Function": "XboxGameBar",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Отключить Xbox Game Bar"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Включить Xbox Game Bar (значение по умолчанию)"
+      }
+    }
+  },
+  {
+    "Id": 901,
+    "Region": "Gaming",
     "Function": "XboxGameTips",
     "Arg": {
       "Zero": {
@@ -1436,7 +1477,7 @@
     }
   },
   {
-    "Id": 901,
+    "Id": 902,
     "Region": "Gaming",
     "Function": "SetAppGraphicsPerformance",
     "Arg": {
@@ -1447,7 +1488,7 @@
     }
   },
   {
-    "Id": 902,
+    "Id": 903,
     "Region": "Gaming",
     "Function": "GPUScheduling",
     "Arg": {
