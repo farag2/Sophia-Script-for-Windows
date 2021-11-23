@@ -97,23 +97,24 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 * Due to the fact that the script includes more than **150** functions with different arguments, you must read the entire **Sophia.ps1** carefully and **comment out/uncomment** those functions that you do/do not want to be executed (without need to edit the code), or use [Wrapper](https://github.com/farag2/Sophia-Script-for-Windows#davids-sophia-script-wrapper). Every tweak in the preset file has its' corresponding function to **restore the default settings**.
 * Running the script is best done on a fresh install because running it on **wrong** tweaked system may result in errors occurring.
 
-## Minimum supported Windows versions
+## Minimum supported Windows versions and builds
 
 # Windows 11
 
 |Version|   Build   |      Editions     | Script version |
 |:-----:|:---------:|:-----------------:|:--------------:|
-| 21H2  | 22000.282 |Home/Pro/Enterprise|[6.0.6](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H2  | 22000.318 |Home/Pro/Enterprise|[6.0.7](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 
 # Windows 10
 
 |Version|    Marketing name   | Build | Arch|      Editions          | Script version |
 |:-----:|:-------------------:|:----------:|:---:|:----------------------:|:--------------:|
-| 21H2  | October 2021 Update | 19044.1151 | x64 |Home/Pro/Enterprise|[5.12.5](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 21H1  | May 2021 Update     | 19043.1151 | x64 |Home/Pro/Enterprise|[5.12.5](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 20H2  | October 2020 Update | 19042.1151 | x64 |Home/Pro/Enterprise|[5.12.5](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 2004  | May 2020 Update     | 19041.1151 | x64 |Home/Pro/Enterprise|[5.12.5](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 1809  | Enterprise LTSC 2019| 17763      | x64 |   Enterprise      |[5.2.16](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H2  | October 2021 Update | 19044.1151 | x64 |Home/Pro/Enterprise|[5.12.6](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H2  | Enterprise LTSC 2021| 19044.1348 | x64 |   Enterprise      |[5.12.6](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H1  | May 2021 Update     | 19043.1151 | x64 |Home/Pro/Enterprise|[5.12.6](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 20H2  | October 2020 Update | 19042.1151 | x64 |Home/Pro/Enterprise|[5.12.6](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 2004  | May 2020 Update     | 19041.1151 | x64 |Home/Pro/Enterprise|[5.12.6](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 1809  | Enterprise LTSC 2019| 17763      | x64 |   Enterprise      |[5.2.17](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 
 ## Screenshots
 
@@ -145,7 +146,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ### David's Sophia Script Wrapper
 
-![Wrapper](https://i.imgur.com/DRRQPJh.png)
+![Wrapper](https://i.imgur.com/yS0eESG.png)
 
 ## Videos
 
