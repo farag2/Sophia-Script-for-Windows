@@ -1391,7 +1391,7 @@
   {
     "Id": 536,
     "Region": "System",
-    "Function": "VCRedistx64",
+    "Function": "InstallVCRedistx64",
     "Arg": {
       "Zero": {
         "Tag": "",

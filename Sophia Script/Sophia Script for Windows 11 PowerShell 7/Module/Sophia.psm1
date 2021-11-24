@@ -7889,7 +7889,7 @@ function DefaultTerminalApp
 	Install the latest supported Microsoft Visual C++ Redistributable 2015—2022 x64
 
 	.EXAMPLE
-	VCRedistx64
+	InstallVCRedistx64
 
 	.LINK
 	https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist
@@ -9075,7 +9075,7 @@ function HEIF
 							SslProtocol      = "Tls13"
 							UseBasicParsing  = $true
 						}
-						if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+						if (-not (Invoke-RestMethod @Parameters).StatusDescription)
 						{
 							return
 						}

@@ -6655,7 +6655,7 @@ public static void Refresh()
 	Install the latest supported Microsoft Visual C++ Redistributable 2015—2022 x64
 
 	.EXAMPLE
-	VCRedistx64
+	InstallVCRedistx64
 
 	.LINK
 	https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist

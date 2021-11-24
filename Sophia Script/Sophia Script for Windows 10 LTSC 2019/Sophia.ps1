@@ -746,7 +746,7 @@ ActiveHours -Automatically
 
 	https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist
 #>
-VCRedistx64
+InstallVCRedistx64
 #endregion System
 
 #region Start menu
