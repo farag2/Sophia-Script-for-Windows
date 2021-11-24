@@ -4004,7 +4004,7 @@ function WindowsCapabilities
 					DisableKeepAlive = $true
 					UseBasicParsing  = $true
 				}
-				if (-not (Invoke-RestMethod @Parameters).StatusDescription)
+				if (-not (Invoke-WebRequest @Parameters).StatusDescription)
 				{
 					return
 				}
