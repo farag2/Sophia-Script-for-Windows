@@ -896,17 +896,6 @@ DefaultTerminalApp -WindowsTerminal
 # Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .txt -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
 
 <#
-	Uninstall the "PC Health Check" app
-	This application is installed with the KB5005463 update to check if PC meets the system requirements of Windows 11
-
-	Удалить приложение "Проверка работоспособности ПК WIndows"
-	Данное приложение устанавливается обновлением KB5005463 для проверки соответствия компьютера системным требованиям Windows 11
-
-	https://support.microsoft.com/en-us/topic/kb5005463-pc-health-check-application-e33cf4e2-49e2-4727-b913-f3c5b1ee0e56
-#>
-UninstallPCHealthCheck
-
-<#
 	Install the latest supported Microsoft Visual C++ Redistributable 2015—2022 x64
 	Установить последнюю поддерживаемую версию Microsoft Visual C++ Redistributable 2015-2022 x64
 
