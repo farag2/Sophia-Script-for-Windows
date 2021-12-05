@@ -85,8 +85,13 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 			</a>
 		</td>
 		<td>
-			<a href="https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10//">
+			<a href="https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10/">
 				<img src="https://i.imgur.com/6sAI2wZ.png">
+			</a>
+		</td>
+		<td>
+			<a href="https://www.pcsoleil.fr/successeur-de-win10-initial-setup-script-sophia-script-comment-lutiliser/">
+				<img src="https://i.imgur.com/xBHWMkU.png">
 			</a>
 		</td>
 	</tr>
