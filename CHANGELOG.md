@@ -5,7 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.12.7 | 6.0.8 — 05.12.2021
+
+## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
+
+Diff from v6.0.7
+[6.0.7...6.0.8](https://github.com/farag2/Sophia-Script-for-Windows/compare/6.0.7...6.0.8)
+
+* Fixed small bug in the `OneDrive` function that prevents a folder to be removed;
+* Fixed small bug in the `OneDrive` function that prevents OneDrive to be downloaded (Microsoft changed the cloud XML silently);
+* The `WinPrtScrFolder` function was improved;
+  * Now it doesn't matter how your preset was named: the fucntion will parse the preset that was loaded into session to find whether the `OneDrive -Uninstall` function was commented out or not;
+* Minor changes.
+* [Check out](https://t.me/SophiaNews/396) the 4th [SophiApp](https://github.com/Sophia-Community/SophiApp) 0.0.0.70 public alpha build :rocket:
+
+![SophiApp](https://hsto.org/r/w780/getpro/habr/upload_files/be9/060/0b6/be90600b648639aa85d755fe10677cb2.jpg)
+
+## Sophia Script Wrapper 2.5.3
+
+* More validation for JSON added;
+* Backup of `Sophia.ps1` to `Sophia-original.ps1` if using import ps1 file called `Sophia.ps1`;
+  * Otherwise if importing `x.ps1`, the file will be overwritten if the `Run PowerShell` button is used.
+
 ## 5.12.6 | 6.0.7 — 23.11.2021
+
+## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
 
 Diff from v6.0.6
 [6.0.6...6.0.7](https://github.com/farag2/Sophia-Script-for-Windows/compare/5.12.4...5.12.5)
@@ -20,8 +44,6 @@ Diff from v6.0.6
 * Minor changes.
 * [Check out](https://t.me/SophiaNews/396) the 4th [SophiApp](https://github.com/Sophia-Community/SophiApp) 0.0.0.70 public alpha build :rocket:
 
-![SophiApp](https://hsto.org/r/w780/getpro/habr/upload_files/be9/060/0b6/be90600b648639aa85d755fe10677cb2.jpg)
-
 ## Sophia Script Wrapper 2.5.2
 
 * Cleaned up JSONs;
@@ -34,7 +56,7 @@ Diff from v6.0.6
 
 ## 5.12.5 | 6.0.6 — 24.10.2021
 
-## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | LTSC 1809
+## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2019
 
 * The `NotificationAreaIcons`, `TaskbarSize`, `RecentlyAddedAppsAdded` funtions were removed due to lack of necessity;
 * Fixed typo in `FileExplorerCompactMode`;
@@ -87,7 +109,7 @@ Diff from v6.0.6
 
 ## 5.12.4 | 6.0.5 — 06.10.2021
 
-## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | LTSC 1809
+## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2019
 
 * Now you can download the always latest Sophia Script archive by invoking (`not as administrator too`) in PowerShell console
 
@@ -139,7 +161,7 @@ Invoke-RestMethod -Uri script.sophi.app | Invoke-Expression
 
 ## 5.12.3 | 6.0.4 — 19.09.2021
 
-## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | LTSC 1809
+## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2019
 
 * Now you can download the always latest Sophia Script archive by invoking (`not as administrator too`) in PowerShell console
 
@@ -174,7 +196,7 @@ Invoke-RestMethod -Uri script.sophi.app | Invoke-Expression
 
 ## 5.12.2 | 6.0.3 — 25.08.2021
 
-## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | LTSC 1809
+## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2019
 
 * Fixed bug when the `Errors output` function couldn't get path to a file with an error;
 * Updated translations;
@@ -192,14 +214,14 @@ Invoke-RestMethod -Uri script.sophi.app | Invoke-Expression
 
 ## 5.12.1 | 6.0.2 — 06.08.2021
 
-## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | LTSC
+## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2019
 
 * Fixed typo that prevets script from showing the error description;
 * Fixed typos in descriptions.
 
 ## 5.12 | 6.0.1 — 05.08.2021
 
-## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | LTSC
+## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2019
 
 * Added the `IPv6Component -Enable`, `IPv6Component -Disable` functions;
   * Disable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections. Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipv6-test.com
@@ -302,7 +324,7 @@ Invoke-RestMethod -Uri script.sophi.app | Invoke-Expression
 
 ## 5.11.1 — 13.07.2021
 
-## Windows 10 2004/20H2/21H1 | LTSC
+## Windows 10 2004/20H2/21H1 | Enterprise LTSC 2019
 
 Diff from v5.11
 [5.11...5.11.1](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.11...5.11.1)
