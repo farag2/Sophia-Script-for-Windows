@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.12.6
-	Date: 23.11.2021
+	Version: v5.12.7
+	Date: 05.12.2021
 
 	Copyright (c) 2014—2021 farag
 	Copyright (c) 2019—2021 farag & Inestic
@@ -3482,7 +3482,7 @@ function OneDrive
 				Stop-Process -Name FileCoAuth -Force -ErrorAction Ignore
 
 				# Getting link to the OneDriveSetup.exe and its' argument(s)
-				[string[]]$OneDriveSetup = ($UninstallString -Replace("\s*/",",/")).Split(",").Trim()
+				[string[]]$OneDriveSetup = ($UninstallString -Replace("\s*/", ",/")).Split(",").Trim()
 				if ($OneDriveSetup.Count -eq 2)
 				{
 					Start-Process -FilePath $OneDriveSetup[0] -ArgumentList $OneDriveSetup[1..1] -Wait
@@ -3522,7 +3522,7 @@ public static bool MarkFileDelete (string sourcefile)
 "@
 						}
 
-						# If there are some files or folders left in %LOCALAPPDATA%\Temp
+						# If there are some files or folders left in %OneDrive%
 						if ((Get-ChildItem -Path $env:OneDrive -ErrorAction Ignore | Measure-Object).Count -ne 0)
 						{
 							if (-not ("WinAPI.DeleteFiles" -as [type]))
@@ -3543,7 +3543,6 @@ public static bool MarkFileDelete (string sourcefile)
 					}
 					else
 					{
-						# Invoke-Item doesn't work
 						Start-Process -FilePath explorer -ArgumentList $env:OneDrive
 					}
 				}
@@ -3565,22 +3564,11 @@ public static bool MarkFileDelete (string sourcefile)
 				# Terminate the File Explorer process
 				New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoRestartShell -PropertyType DWord -Value 0 -Force
 				Stop-Process -Name explorer -Force
-
 				Start-Sleep -Seconds 3
-
-				# Restoring closed folders
-				foreach ($Script:OpenedFolder in $Script:OpenedFolders)
-				{
-					if (Test-Path -Path $Script:OpenedFolder)
-					{
-						Invoke-Item -Path $Script:OpenedFolder
-					}
-				}
-
 				New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoRestartShell -PropertyType DWord -Value 1 -Force
 
 				# Attempt to unregister FileSyncShell64.dll and remove
-				$FileSyncShell64dlls = Get-ChildItem -Path "$OneDriveFolder\*\amd64\FileSyncShell64.dll" -Force
+				$FileSyncShell64dlls = Get-ChildItem -Path "$OneDriveFolder\*\FileSyncShell64.dll" -Force
 				foreach ($FileSyncShell64dll in $FileSyncShell64dlls.FullName)
 				{
 					Start-Process -FilePath regsvr32.exe -ArgumentList "/u /s $FileSyncShell64dll" -Wait
@@ -3608,7 +3596,6 @@ public static bool MarkFileDelete (string sourcefile)
 				{
 					if (Test-Path -Path $OpenedFolder)
 					{
-						# Invoke-Item doesn't work
 						Start-Process -FilePath explorer -ArgumentList $OpenedFolder
 					}
 				}
@@ -3663,7 +3650,7 @@ public static bool MarkFileDelete (string sourcefile)
 						# Remove invalid chars
 						[xml]$OneDriveXML = $Content -replace "ï»¿", ""
 
-						$OneDriveURL = ($OneDriveXML).root.update.amd64binary.url[-1]
+						$OneDriveURL = ($OneDriveXML).root.update.amd64binary.url
 						$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 						$Parameters = @{
 							Uri             = $OneDriveURL
@@ -3992,7 +3979,7 @@ function TempFolder
 					New-Item -Path $env:LOCALAPPDATA\Temp -ItemType Directory -Force
 				}
 
-				# If there are some files or folders left in $env:LOCALAPPDATA\Temp
+				# If there are some files or folders left in %LOCALAPPDATA\Temp%
 				if ((Get-ChildItem -Path $env:TEMP -Force -ErrorAction Ignore | Measure-Object).Count -ne 0)
 				{
 					# https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexa
@@ -6652,7 +6639,7 @@ public static string GetString(uint strId)
 	WinPrtScrFolder -Default
 
 	.NOTES
-	The function will be applied only if the preset is configured to remove OneDrive,
+	The function will be applied only if the preset is configured to remove the OneDrive application, or the app was already uninstalled
 	otherwise the backup functionality for the "Desktop" and "Pictures" folders in OneDrive breaks
 
 	.NOTES
@@ -6681,7 +6668,12 @@ function WinPrtScrFolder
 	{
 		"Desktop"
 		{
-			if ((Get-Content -Path $PSScriptRoot\..\Sophia.ps1 -Encoding UTF8 -Force | Select-String -SimpleMatch "OneDrive -Uninstall").Line.StartsWith("#") -eq $false)
+			# Get the name of a preset (e.g Sophia.ps1) regardless it was named
+			$PresetName = Split-Path -Path ((Get-PSCallStack).Position | Where-Object -FilterScript {$_.Text -eq "WinPrtScrFolder -Desktop"}).File -Leaf
+			# Check whether a preset contains the "OneDrive -Uninstall" string uncommented out
+			$OneDriveUninstallFunctionUncommented = (Get-Content -Path $PSScriptRoot\..\$PresetName -Encoding UTF8 -Force | Select-String -SimpleMatch "OneDrive -Uninstall").Line.StartsWith("#") -eq $false
+			$OneDriveInstalled = Get-Package -Name "Microsoft OneDrive" -ProviderName Programs -Force -ErrorAction Ignore
+			if ($OneDriveUninstallFunctionUncommented -or (-not $OneDriveInstalled))
 			{
 				$DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
 				New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -PropertyType ExpandString -Value $DesktopFolder -Force
@@ -8138,7 +8130,7 @@ function InstallVCRedistx64
 	WSL
 
 	.NOTES
-	To receive kernel updates, enable the Windows Update setting: "Receive updates for other Microsoft products"
+	The "Receive updates for other Microsoft products" setting will enabled automatically to receive kernel updates
 
 	.NOTES
 	Machine-wide
@@ -8308,6 +8300,9 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	# Force move the WPF form to the foreground
 	$Window.Add_Loaded({$Window.Activate()})
 	$Form.ShowDialog() | Out-Null
+
+	# Receive updates for other Microsoft products when you update Windows
+	(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
 }
 #endregion WSL
 
@@ -8798,8 +8793,8 @@ function UninstallUWPApps
 	#region Variables
 	# The following UWP apps will have their checkboxes unchecked
 	$UncheckedAppxPackages = @(
-		# AMD Radeon UWP panel
-		"AdvancedMicroDevicesInc*",
+		# AMD Radeon Software
+		"AdvancedMicroDevicesInc-2.AMDRadeonSoftware",
 
 		# Intel Graphics Control Center
 		"AppUp.IntelGraphicsControlPanel",
@@ -12469,7 +12464,7 @@ public static void PostMessage()
 			{
 				if (Test-Path -Path $Script:OpenedFolder)
 				{
-					Invoke-Item -Path $Script:OpenedFolder
+					Start-Process -FilePath explorer -ArgumentList $Script:OpenedFolder
 				}
 			}
 		}

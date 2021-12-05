@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10 LTSC 2021"
 
-	Version: v5.12.6
-	Date: 23.11.2021
+	Version: v5.12.7
+	Date: 05.12.2021
 
 	Copyright (c) 2014—2021 farag
 	Copyright (c) 2019—2021 farag & Inestic
@@ -23,7 +23,6 @@
 
 	.EXAMPLE Download and expand the latest Sophia Script version archive (without running) according which Windows and PowerShell versions it is run on
 	irm script.sophi.app | iex
-	Invoke-RestMethod -Uri script.sophi.app | Invoke-Expression
 
 	.NOTES
 	Supported Windows 10 versions
@@ -72,7 +71,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.12.6 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2021"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.12.7 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2021"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -695,19 +694,12 @@ SetUserShellFolderLocation -Root
 
 	Изменить расположение пользовательских папок на значения по умолчанию
 	Пользовательские файлы и папки не будут перемещены в новое расположение. Переместите их вручную
-	По умолчанию они располагаются в папке %%USERPROFILE%
+	По умолчанию они располагаются в папке %USERPROFILE%
 #>
 # SetUserShellFolderLocation -Default
 
-<#
-	Save screenshots by pressing Win+PrtScr on the Desktop
-	The function will be applied only if the preset is configured to remove the OneDrive application
-	Otherwise the backup functionality for the "Desktop" and "Pictures" folders in OneDrive breaks
-
-	Сохранять скриншоты по нажатию Win+PrtScr на рабочий столе
-	Функция будет применена только в случае, если в пресете настроено удаление приложения OneDrive,
-	иначе ломается функционал резервного копирования для папок "Рабочий стол" и "Изображения" в OneDrive
-#>
+# Save screenshots by pressing Win+PrtScr on the Desktop
+# Сохранять скриншоты по нажатию Win+PrtScr на рабочий столе
 WinPrtScrFolder -Desktop
 
 # Save screenshots by pressing Win+PrtScr in the Pictures folder (default value)
@@ -849,10 +841,10 @@ InstallVCRedistx64
 #region WSL
 <#
 	Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form
-	To receive kernel updates, enable the Windows Update setting: "Receive updates for other Microsoft products"
+	The "Receive updates for other Microsoft products" setting will enabled automatically to receive kernel updates
 
 	Установить подсистему Windows для Linux (WSL), последний пакет обновления ядра Linux и дистрибутив Linux, используя всплывающую форму
-	Чтобы получать обновления ядра, включите параметр "При обновлении Windows поулчать обновления для других продуктов Майкрософт" в Центре обновлении Windows
+	Параметр "При обновлении Windows получать обновления для других продуктов Майкрософт" будет включен автоматически в Центре обновлении Windows, чтобы получать обновления ядра
 #>
 # WSL
 #endregion WSL

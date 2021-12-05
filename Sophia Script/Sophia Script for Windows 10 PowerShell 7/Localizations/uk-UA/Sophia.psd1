@@ -7,6 +7,7 @@ LoggedInUserNotAdmin                      = Поточний увійшов ко
 UnsupportedPowerShell                     = Ви намагаєтеся запустити скрипт в PowerShell {0}.{1}. Запустіть скрипт у відповідній версії PowerShell
 UnsupportedISE                            = Скрипт не підтримує роботу через Windows PowerShell ISE
 Win10TweakerWarning                       = Ваша ОС, можливо, через бекдор в Win 10 Tweaker заражена трояном
+Windows10DebloaterWarning                 = Стабільність вашої ОС могла бути порушена використанням скрипту Windows10Debloater від Sycnex. З метою профілактики перевстановіть ОС
 PowerShellLibraries                       = У папці «Бібліотеки» немає файлів. Будь ласка, повторно завантажте архів
 UnsupportedRelease                        = Виявлено нову версію
 CustomizationWarning                      = \nВи налаштували всі функції в пресет-файлі Sophia.ps1 перед запуском Sophia Script?

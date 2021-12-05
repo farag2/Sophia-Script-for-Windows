@@ -1340,7 +1340,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Habilite o subsistema Windows para Linux (WSL), instale a versão mais recente do kernel WSL Linux e uma distribuição Linux usando um formulário pop-up. Para receber atualizações do kernel, habilite a configuração do Windows Update: \"Receber atualizações para outros produtos Microsoft\""
+        "ToolTip": "Habilite o subsistema Windows para Linux (WSL), instale a versão mais recente do kernel WSL Linux e uma distribuição Linux usando um formulário pop-up. A configuração \"Receber atualizações para outros produtos Microsoft\" permitirá receber automaticamente as atualizações do kernel"
       }
     }
   },

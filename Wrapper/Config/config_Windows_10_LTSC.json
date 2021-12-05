@@ -16,7 +16,7 @@
     "Preset": "Zero",
     "WindowsDefault": "",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 101,
@@ -32,7 +32,7 @@
     "Preset": "",
     "WindowsDefault": "",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 102,
@@ -48,7 +48,7 @@
     "Preset": "Zero",
     "WindowsDefault": "Zero",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 200,
@@ -67,7 +67,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 201,
@@ -86,7 +86,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 202,
@@ -105,7 +105,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 203,
@@ -124,7 +124,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 204,
@@ -143,7 +143,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 205,
@@ -162,7 +162,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 206,
@@ -181,7 +181,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 207,
@@ -200,7 +200,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 208,
@@ -219,7 +219,7 @@
     "Preset": "One",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "false"
   },
   {
     "Id": 209,
@@ -238,7 +238,7 @@
     "Preset": "One",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "false"
   },
   {
     "Id": 210,
@@ -257,7 +257,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "false"
   },
   {
     "Id": 211,
@@ -276,7 +276,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "false"
   },
   {
     "Id": 212,
@@ -295,7 +295,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "false"
   },
   {
     "Id": 213,
@@ -314,7 +314,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "false"
   },
   {
     "Id": 214,
@@ -333,7 +333,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "false"
   },
   {
     "Id": 300,
@@ -352,7 +352,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 301,
@@ -371,7 +371,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 302,
@@ -390,7 +390,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 303,
@@ -409,7 +409,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 304,
@@ -428,7 +428,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 305,
@@ -447,7 +447,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 307,
@@ -466,7 +466,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "false"
   },
   {
     "Id": 308,
@@ -485,7 +485,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "false"
   },
   {
     "Id": 309,
@@ -504,7 +504,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 310,
@@ -523,7 +523,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 311,
@@ -542,7 +542,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
 
   {
@@ -562,7 +562,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 313,
@@ -581,7 +581,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 314,
@@ -600,7 +600,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 315,
@@ -619,7 +619,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 316,
@@ -638,7 +638,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 317,
@@ -657,7 +657,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 318,
@@ -676,7 +676,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 319,
@@ -698,7 +698,7 @@
     "Preset": "Zero",
     "WindowsDefault": "Two",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 320,
@@ -717,7 +717,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "true"
   },
   {
     "Id": 321,
@@ -736,7 +736,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "false"
   },
   {
     "Id": 322,
@@ -755,7 +755,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "false"
   },
   {
     "Id": 323,
@@ -774,7 +774,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "false"
   },
   {
     "Id": 324,
@@ -796,7 +796,7 @@
     "Preset": "",
     "WindowsDefault": "",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "false"
   },
   {
     "Id": 325,
@@ -818,7 +818,7 @@
     "Preset": "Zero",
     "WindowsDefault": "Two",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 326,
@@ -837,7 +837,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 327,
@@ -856,7 +856,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "true"
   },
   {
     "Id": 328,
@@ -875,7 +875,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 329,
@@ -894,7 +894,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 330,
@@ -913,7 +913,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 331,
@@ -932,7 +932,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 332,
@@ -951,7 +951,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 333,
@@ -970,7 +970,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 334,
@@ -989,7 +989,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 335,
@@ -1008,7 +1008,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 336,
@@ -1027,7 +1027,7 @@
     "Preset": "One",
     "WindowsDefault": "Zero",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "true"
   },
   {
     "Id": 400,
@@ -1046,7 +1046,7 @@
     "Preset": "Zero",
     "WindowsDefault": "",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "false"
   },
   {
     "Id": 500,
@@ -1065,7 +1065,7 @@
     "Preset": "Zero",
     "WindowsDefault": "",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 501,
@@ -1084,7 +1084,7 @@
     "Preset": "Zero",
     "WindowsDefault": "",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 502,
@@ -1103,7 +1103,7 @@
     "Preset": "Zero",
     "WindowsDefault": "Zero",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 503,
@@ -1122,7 +1122,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 504,
@@ -1141,7 +1141,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 505,
@@ -1160,7 +1160,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 506,
@@ -1179,7 +1179,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 507,
@@ -1198,7 +1198,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 508,
@@ -1217,7 +1217,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 509,
@@ -1236,7 +1236,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 510,
@@ -1255,7 +1255,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 511,
@@ -1274,7 +1274,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 512,
@@ -1293,7 +1293,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 513,
@@ -1312,7 +1312,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 514,
@@ -1331,7 +1331,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 515,
@@ -1350,7 +1350,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 516,
@@ -1369,7 +1369,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 517,
@@ -1388,7 +1388,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 518,
@@ -1407,7 +1407,7 @@
     "Preset": "One",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 519,
@@ -1426,7 +1426,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 520,
@@ -1448,7 +1448,7 @@
     "Preset": "Zero",
     "WindowsDefault": "Two",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 521,
@@ -1467,7 +1467,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 522,
@@ -1486,7 +1486,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "true"
   },
   {
     "Id": 523,
@@ -1505,7 +1505,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 524,
@@ -1524,7 +1524,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "true"
   },
   {
     "Id": 525,
@@ -1543,7 +1543,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 526,
@@ -1562,7 +1562,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 527,
@@ -1581,7 +1581,7 @@
     "Preset": "",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 528,
@@ -1600,7 +1600,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 529,
@@ -1619,7 +1619,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 530,
@@ -1638,7 +1638,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 531,
@@ -1657,7 +1657,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "true"
   },
   {
     "Id": 532,
@@ -1676,7 +1676,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 533,
@@ -1695,7 +1695,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 534,
@@ -1714,26 +1714,10 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "false"
   },
   {
     "Id": 535,
-    "Region": "System",
-    "Control": "chk",
-    "Required": "false",
-    "Function": "UninstallPCHealthCheck",
-    "Arg": {
-      "Zero": {
-        "Tag": ""
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One",
-    "LTSC2019": "false",
-	"LTSC2021": "false"
-  },
-  {
-    "Id": 536,
     "Region": "System",
     "Control": "chk",
     "Required": "false",
@@ -1746,7 +1730,7 @@
     "Preset": "",
     "WindowsDefault": "",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 600,
@@ -1762,7 +1746,7 @@
     "Preset": "",
     "WindowsDefault": "",
     "LTSC2019": "false",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 700,
@@ -1781,7 +1765,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 701,
@@ -1800,7 +1784,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 702,
@@ -1819,7 +1803,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 703,
@@ -1841,7 +1825,7 @@
     "Preset": "012",
     "WindowsDefault": "",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "true"
   },
   {
     "Id": 704,
@@ -1857,7 +1841,7 @@
     "Preset": "",
     "WindowsDefault": "",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "true"
   },
   {
     "Id": 800,
@@ -1873,7 +1857,7 @@
     "Preset": "Zero",
     "WindowsDefault": "",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "false"
   },
   {
     "Id": 801,
@@ -1889,7 +1873,7 @@
     "Preset": "",
     "WindowsDefault": "",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "false"
   },
   {
     "Id": 802,
@@ -1905,7 +1889,7 @@
     "Preset": "",
     "WindowsDefault": "",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "false"
   },
   {
     "Id": 803,
@@ -1924,7 +1908,7 @@
     "Preset": "One",
     "WindowsDefault": "",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "false"
   },
   {
     "Id": 804,
@@ -1943,7 +1927,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "false"
   },
   {
     "Id": 806,
@@ -1962,7 +1946,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "true"
   },
   {
     "Id": 807,
@@ -1978,7 +1962,7 @@
     "Preset": "Zero",
     "WindowsDefault": "",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "false"
   },
   {
     "Id": 900,
@@ -1997,7 +1981,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "false"
+    "LTSC2021": "false"
   },
   {
     "Id": 901,
@@ -2016,7 +2000,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "false"
+    "LTSC2021": "false"
   },
   {
     "Id": 902,
@@ -2032,7 +2016,7 @@
     "Preset": "Zero",
     "WindowsDefault": "",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 903,
@@ -2051,7 +2035,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "true"
   },
   {
     "Id": 1000,
@@ -2070,7 +2054,7 @@
     "Preset": "Zero",
     "WindowsDefault": "",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1001,
@@ -2089,7 +2073,7 @@
     "Preset": "Zero",
     "WindowsDefault": "",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1002,
@@ -2108,7 +2092,7 @@
     "Preset": "Zero",
     "WindowsDefault": "",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1100,
@@ -2127,7 +2111,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1101,
@@ -2146,7 +2130,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1102,
@@ -2165,7 +2149,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1103,
@@ -2181,7 +2165,7 @@
     "Preset": "Zero",
     "WindowsDefault": "",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1104,
@@ -2197,7 +2181,7 @@
     "Preset": "Zero",
     "WindowsDefault": "",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1105,
@@ -2216,7 +2200,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1106,
@@ -2235,7 +2219,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1107,
@@ -2254,7 +2238,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1108,
@@ -2273,7 +2257,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1109,
@@ -2292,7 +2276,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1110,
@@ -2311,7 +2295,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1111,
@@ -2330,7 +2314,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1112,
@@ -2349,7 +2333,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1113,
@@ -2368,7 +2352,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1200,
@@ -2387,7 +2371,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1201,
@@ -2406,7 +2390,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1202,
@@ -2425,7 +2409,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1203,
@@ -2444,7 +2428,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1204,
@@ -2463,7 +2447,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1205,
@@ -2482,7 +2466,7 @@
     "Preset": "",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1206,
@@ -2501,7 +2485,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "false"
   },
   {
     "Id": 1207,
@@ -2520,7 +2504,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "false"
   },
   {
     "Id": 1208,
@@ -2539,7 +2523,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-	"LTSC2021": "false"
+    "LTSC2021": "false"
   },
   {
     "Id": 1209,
@@ -2558,7 +2542,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1210,
@@ -2577,7 +2561,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1211,
@@ -2596,7 +2580,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1212,
@@ -2615,7 +2599,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1213,
@@ -2634,7 +2618,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1214,
@@ -2653,7 +2637,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1215,
@@ -2672,7 +2656,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1216,
@@ -2691,7 +2675,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "true"
+    "LTSC2021": "true"
   },
   {
     "Id": 1217,
@@ -2710,6 +2694,6 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-	"LTSC2021": "false"
+    "LTSC2021": "false"
   }
 ]

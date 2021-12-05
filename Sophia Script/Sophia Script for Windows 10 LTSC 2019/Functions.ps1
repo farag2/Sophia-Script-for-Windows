@@ -3,7 +3,7 @@
 	The TAB completion for functions and their arguments
 
 	Version: v5.2.17
-	Date: 23.11.2021
+	Date: 05.12.2021
 
 	Copyright (c) 2014—2021 farag
 	Copyright (c) 2019—2021 farag & Inestic
@@ -17,7 +17,7 @@
 	.EXAMPLE
 	Sophia -Functions <tab>
 	Sophia -Functions temp<tab>
-	Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
+	Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal"
 
 	.NOTES
 	Set execution policy to be able to run scripts only in the current PowerShell session:

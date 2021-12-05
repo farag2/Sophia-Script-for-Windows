@@ -1,17 +1,18 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Bu betik sadece Windows 10 x64 destekliyor
-UnsupportedOSBuild                        = Bu betik sadece Windows 10 1809 Enterprise LTSC
+UnsupportedOSBuild                        = Bu betik sadece Windows 10 Enterprise LTSC 2019
 UnsupportedLanguageMode                   = Sınırlı bir dil modunda çalışan PowerShell oturumu
 LoggedInUserNotAdmin                      = Oturum açan kullanıcının yönetici hakları yok
 UnsupportedPowerShell                     = Komut dosyasını PowerShell {0}.{1} aracılığıyla çalıştırmaya çalışıyorsunuz. Komut dosyasını uygun PowerShell sürümünde çalıştırın
 UnsupportedISE                            = Komut dosyası, Windows PowerShell ISE üzerinden çalıştırmayı desteklemiyor
 Win10TweakerWarning                       = Muhtemelen işletim sisteminize Win 10 Tweaker arka kapısı yoluyla bulaştı
+Windows10DebloaterWarning                 = Windows işletim sistemi kararlılığı, Sycnex'in Windows10Debloater PowerShell betiği kullanılarak tehlikeye atılmış olabilir. Önleyici olarak, tüm işletim sistemini yeniden yükleyin
 UnsupportedRelease                        = Yeni sürüm bulundu
 CustomizationWarning                      = \nSophia Script'i çalıştırmadan önce Sophia.ps1 ön ayar dosyasındaki her işlevi özelleştirdiniz mi?
 ControlledFolderAccessDisabled            = Kontrollü klasör erişimi devre dışı bırakıldı
 ScheduledTasks                            = Zamanlanan görevler
-WindowsFeaturesTitle                      = Windows özellikleri
-OptionalFeaturesTitle                     = İsteğe bağlı özellikler
+WindowsFeaturesTitle                      = Características do Windows
+OptionalFeaturesTitle                     = Opsiyonel özellikler
 EnableHardwareVT                          = UEFI'dan sanallaştırmayı aktifleştirin
 UserShellFolderNotEmpty                   = "{0}" klasöründe bazı dosyalar kaldı. \nKendiniz yeni konuma taşıyın
 RetrievingDrivesList                      = Sürücü listesi alınıyor...

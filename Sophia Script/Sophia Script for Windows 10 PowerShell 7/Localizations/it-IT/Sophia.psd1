@@ -7,6 +7,7 @@ LoggedInUserNotAdmin                      = L'utente connesso non ha i diritti d
 UnsupportedPowerShell                     = Stai cercando di eseguire lo script tramite PowerShell {0}.{1}. Esegui lo script nella versione di PowerShell appropriata
 UnsupportedISE                            = Lo script non supporta l'esecuzione tramite Windows PowerShell ISE
 Win10TweakerWarning                       = Probabilmente il tuo sistema operativo è stato infettato tramite la backdoor Win 10 Tweaker
+Windows10DebloaterWarning                 = La stabilità del sistema operativo Windows potrebbe essere stata compromessa dall'utilizzo dello script PowerShell Windows10Debloater di Sycnex. Preventivamente, reinstallare l'intero sistema operativo
 PowerShellLibraries                       = Non ci sono file nella cartella Libraries. Per favore, scarica di nuovo l'archivio
 UnsupportedRelease                        = Nuova versione trovata
 CustomizationWarning                      = \nSono state personalizzate tutte le funzioni nel file delle preimpostazioni Sophia.ps1 prima di eseguire Sophia Script?

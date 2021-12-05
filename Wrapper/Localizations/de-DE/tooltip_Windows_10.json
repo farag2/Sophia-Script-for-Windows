@@ -1406,7 +1406,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Aktiviert das Windows Subsystem für Linux (WSL), installiert die neueste Version des WSL-Linux-Kernels und eine Linux-Distribution über ein Popup-Formular"
+        "ToolTip": "Aktiviert das Windows Subsystem für Linux (WSL), installiert die neueste Version des WSL-Linux-Kernels und eine Linux-Distribution über ein Popup-Formular. Die Einstellung \"Updates für andere Microsoft-Produkte empfangen\" wird automatisch aktiviert, um Kernel-Updates zu erhalten"
       }
     }
   },

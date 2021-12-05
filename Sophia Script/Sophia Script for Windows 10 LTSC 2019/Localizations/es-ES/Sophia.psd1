@@ -1,11 +1,12 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = El script sólo es compatible con Windows 10 x64
-UnsupportedOSBuild                        = El script es compatible con versión Windows 10 1809 Enterprise LTSC
+UnsupportedOSBuild                        = El script es compatible con versión Windows 10 Enterprise LTSC 2019
 UnsupportedLanguageMode                   = Sesión de PowerShell ejecutada en modo de lenguaje limitado
 LoggedInUserNotAdmin                      = El usuario que inició sesión no tiene derechos de administrador
 UnsupportedPowerShell                     = Estás intentando ejecutar el script a través de PowerShell {0}.{1}. Ejecute el script en la versión apropiada de PowerShell
 UnsupportedISE                            = El script no es compatible con la ejecución a través de Windows PowerShell ISE
 Win10TweakerWarning                       = Probablemente su sistema operativo fue infectado a través del backdoor Win 10 Tweaker
+Windows10DebloaterWarning                 = La estabilidad del sistema operativo Windows puede haberse visto comprometida al utilizar el script PowerShell Windows10Debloater de Sycnex. De forma preventiva, reinstale todo el sistema operativo
 UnsupportedRelease                        = Una nueva versión encontrada
 CustomizationWarning                      = \n¿Ha personalizado todas las funciones del archivo predeterminado Sophia.ps1 antes de ejecutar Sophia Script?
 ControlledFolderAccessDisabled            = Acceso a la carpeta controlada deshabilitado

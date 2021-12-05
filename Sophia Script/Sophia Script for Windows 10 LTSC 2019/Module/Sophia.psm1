@@ -3,7 +3,7 @@
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
 	Version: v5.2.17
-	Date: 23.11.2021
+	Date: 05.12.2021
 
 	Copyright (c) 2014—2021 farag
 	Copyright (c) 2019—2021 farag & Inestic
@@ -2844,7 +2844,7 @@ function TempFolder
 					New-Item -Path $env:LOCALAPPDATA\Temp -ItemType Directory -Force
 				}
 
-				# If there are some files or folders left in $env:LOCALAPPDATA\Temp
+				# If there are some files or folders left in %LOCALAPPDATA\Temp%
 				if ((Get-ChildItem -Path $env:TEMP -Force -ErrorAction Ignore | Measure-Object).Count -ne 0)
 				{
 					# https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexa
@@ -9108,7 +9108,7 @@ public static void PostMessage()
 			{
 				if (Test-Path -Path $Script:OpenedFolder)
 				{
-					Invoke-Item -Path $Script:OpenedFolder
+					Start-Process -FilePath explorer -ArgumentList $Script:OpenedFolder
 				}
 			}
 		}

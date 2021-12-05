@@ -1406,7 +1406,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form. To receive kernel updates, enable the Windows Update setting: \"Receive updates for other Microsoft products\""
+        "ToolTip": "Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form. The \"Receive updates for other Microsoft products\" setting will enabled automatically to receive kernel updates"
       }
     }
   },

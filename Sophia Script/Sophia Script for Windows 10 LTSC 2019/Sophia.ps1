@@ -3,7 +3,7 @@
 	Default preset file for "Sophia Script for Windows 10 LTSC 2019"
 
 	Version: v5.2.17
-	Date: 23.11.2021
+	Date: 05.12.2021
 
 	Copyright (c) 2014—2021 farag
 	Copyright (c) 2019—2021 farag & Inestic
@@ -19,11 +19,10 @@
 	.\Sophia.ps1
 
 	.EXAMPLE Run the script by specifying the module functions as an argument
-	.\Sophia.ps1 -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
+	.\Sophia.ps1 -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal"
 
 	.EXAMPLE Download and expand the latest Sophia Script version archive (without running) according which Windows and PowerShell versions it is run on
 	irm script.sophi.app | iex
-	Invoke-RestMethod -Uri script.sophi.app | Invoke-Expression
 
 	.NOTES
 	Supported Windows 10 version
@@ -648,7 +647,7 @@ SetUserShellFolderLocation -Root
 
 	Изменить расположение пользовательских папок на значения по умолчанию
 	Пользовательские файлы и папки не будут перемещены в новое расположение. Переместите их вручную
-	По умолчанию они располагаются в папке %%USERPROFILE%
+	По умолчанию они располагаются в папке %USERPROFILE%
 #>
 # SetUserShellFolderLocation -Default
 

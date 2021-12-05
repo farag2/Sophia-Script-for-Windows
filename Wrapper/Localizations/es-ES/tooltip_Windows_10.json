@@ -1406,7 +1406,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Habilite el Subsistema de Windows para Linux (WSL), instale la última versión del kernel de WSL Linux y una distribución de Linux mediante un formulario emergente"
+        "ToolTip": "Habilite el Subsistema de Windows para Linux (WSL), instale la última versión del kernel de WSL Linux y una distribución de Linux mediante un formulario emergente. El ajuste \"Recibir actualizaciones para otros productos de Microsoft\" se activará automáticamente para recibir las actualizaciones del kernel"
       }
     }
   },
