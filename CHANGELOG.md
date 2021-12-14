@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.12.8 | 6.0.9 — 14.12.2021
+
+## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
+
+Diff from v6.0.8
+[6.0.8...6.0.9](https://github.com/farag2/Sophia-Script-for-Windows/compare/6.0.8...6.0.9)
+
+* Fixed a typo in the `DefaultTerminalApp -WindowsTerminal` function that prevents the function to get the Windows Terminal `PackageFullName` variable value;
+* The `WinPrtScrFolder -Desktop` function was improved;
+* The `Windows 10 Enterprise LTSC 2019` version is now deprecated and won't be supported. Please, if you an ortodox who likes outdated and abandoned Windows, switch to `Windows 3.11` back, or at least `Windows 10 Enterprise LTSC 2021`;
+* Minor changes.
+
 ## 5.12.7 | 6.0.8 — 05.12.2021
 
 ## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
