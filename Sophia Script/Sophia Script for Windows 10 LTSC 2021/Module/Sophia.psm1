@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.12.7
-	Date: 05.12.2021
+	Version: v5.12.8
+	Date: 14.12.2021
 
 	Copyright (c) 2014—2021 farag
 	Copyright (c) 2019—2021 farag & Inestic
@@ -200,8 +200,11 @@ function Checkings
 	# Display a warning message about whether a user has customized the preset file
 	if ($Warning)
 	{
+		# Get the name of a preset (e.g Sophia.ps1) regardless it was named
+		$PresetName = Split-Path -Path ((Get-PSCallStack).Position | Where-Object -FilterScript {$null -eq $_.File}).Text -Leaf
+
 		$Title = ""
-		$Message       = $Localization.CustomizationWarning
+		$Message       = $Localization.CustomizationWarning -f $PresetName
 		$Yes           = $Localization.Yes
 		$No            = $Localization.No
 		$Options       = "&$No", "&$Yes"
@@ -212,7 +215,7 @@ function Checkings
 		{
 			"0"
 			{
-				Invoke-Item -Path $PSScriptRoot\..\Sophia.ps1
+				Invoke-Item -Path $PSScriptRoot\..\$PresetName.ps1
 
 				Start-Sleep -Seconds 5
 
@@ -7281,7 +7284,7 @@ function InstallVCRedistx64
 	WSL
 
 	.NOTES
-	The "Receive updates for other Microsoft products" setting will enabled automatically to receive kernel updates
+	The "Receive updates for other Microsoft products" setting will be enabled automatically to receive kernel updates
 
 	.NOTES
 	Machine-wide

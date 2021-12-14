@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.12.7
-	Date: 05.12.2021
+	Version: v5.12.8
+	Date: 14.12.2021
 
 	Copyright (c) 2014—2021 farag
 	Copyright (c) 2019—2021 farag & Inestic
@@ -212,8 +212,11 @@ function Checkings
 	# Display a warning message about whether a user has customized the preset file
 	if ($Warning)
 	{
+		# Get the name of a preset (e.g Sophia.ps1) regardless it was named
+		$PresetName = Split-Path -Path ((Get-PSCallStack).Position | Where-Object -FilterScript {$null -eq $_.File}).Text -Leaf
+
 		$Title = ""
-		$Message       = $Localization.CustomizationWarning
+		$Message       = $Localization.CustomizationWarning -f $PresetName
 		$Yes           = $Localization.Yes
 		$No            = $Localization.No
 		$Options       = "&$No", "&$Yes"
@@ -224,7 +227,7 @@ function Checkings
 		{
 			"0"
 			{
-				Invoke-Item -Path $PSScriptRoot\..\Sophia.ps1
+				Invoke-Item -Path $PSScriptRoot\..\$PresetName.ps1
 
 				Start-Sleep -Seconds 5
 
@@ -6701,20 +6704,41 @@ function WinPrtScrFolder
 	{
 		"Desktop"
 		{
-			# Get the name of a preset (e.g Sophia.ps1) regardless it was named
-			$PresetName = Split-Path -Path ((Get-PSCallStack).Position | Where-Object -FilterScript {$_.Text -eq "WinPrtScrFolder -Desktop"}).File -Leaf
-			# Check whether a preset contains the "OneDrive -Uninstall" string uncommented out
-			$OneDriveUninstallFunctionUncommented = (Get-Content -Path $PSScriptRoot\..\$PresetName -Encoding UTF8 -Force | Select-String -SimpleMatch "OneDrive -Uninstall").Line.StartsWith("#") -eq $false
-			$OneDriveInstalled = Get-Package -Name "Microsoft OneDrive" -ProviderName Programs -Force -ErrorAction Ignore
-			if ($OneDriveUninstallFunctionUncommented -or (-not $OneDriveInstalled))
+			# Check how the script was invoked: via a preset or Function.ps1
+			$PresetName = (Get-PSCallStack).Position | Where-Object -FilterScript {
+				(($_.File -match ".ps1") -and ($_.File -notmatch "Functions.ps1")) -and (($_.Text -eq "WinPrtScrFolder -Desktop") -or ($_.Text -match "Invoke-Expression"))
+			}
+			if ($null -ne $PresetName)
 			{
-				$DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
-				New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -PropertyType ExpandString -Value $DesktopFolder -Force
+				# Get the name of a preset (e.g Sophia.ps1) regardless it was named
+				$PresetName = Split-Path -Path $PresetName.File -Leaf
+				# Check whether a preset contains the "OneDrive -Uninstall" string uncommented out
+				$OneDriveUninstallFunctionUncommented = (Get-Content -Path $PSScriptRoot\..\$PresetName -Encoding UTF8 -Force | Select-String -SimpleMatch "OneDrive -Uninstall").Line.StartsWith("#") -eq $false
+				$OneDriveInstalled = Get-Package -Name "Microsoft OneDrive" -ProviderName Programs -Force -ErrorAction Ignore
+				if ($OneDriveUninstallFunctionUncommented -or (-not $OneDriveInstalled))
+				{
+					$DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
+					New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -PropertyType ExpandString -Value $DesktopFolder -Force
+				}
+				else
+				{
+					Write-Warning -Message ($Localization.OneDriveWarning -f $MyInvocation.Line)
+					Write-Error -Message ($Localization.OneDriveWarning -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+				}
 			}
 			else
 			{
-				Write-Warning -Message ($Localization.OneDriveWarning -f $MyInvocation.Line)
-				Write-Error -Message ($Localization.OneDriveWarning -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+				# A preset file isn't taking a part so we ignore it and check only whether OneDrive was already uninstalled
+				if (-not (Get-Package -Name "Microsoft OneDrive" -ProviderName Programs -Force -ErrorAction Ignore))
+				{
+					$DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
+					New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -PropertyType ExpandString -Value $DesktopFolder -Force
+				}
+				else
+				{
+					Write-Warning -Message ($Localization.OneDriveWarning -f $MyInvocation.Line)
+					Write-Error -Message ($Localization.OneDriveWarning -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+				}
 			}
 		}
 		"Default"
@@ -8112,7 +8136,7 @@ function UninstallPCHealthCheck
 	foreach ($MSI in @(Get-ChildItem -Path "$env:SystemRoot\Installer" -Filter *.msi -File -Force))
 	{
 		$File = $Folder.Items() | Where-Object -FilterScript {$_.Name -eq $MSI.Name}
-		# "22" is the "Subject" property for a file
+		# "22" is the "Subject" file property
 		if ($Folder.GetDetailsOf($File, 22) -eq "Windows PC Health Check")
 		{
 			Start-Process -FilePath msiexec.exe -ArgumentList "/uninstall $($MSI.FullName) /quiet /norestart" -Wait
@@ -8163,7 +8187,7 @@ function InstallVCRedistx64
 	WSL
 
 	.NOTES
-	The "Receive updates for other Microsoft products" setting will enabled automatically to receive kernel updates
+	The "Receive updates for other Microsoft products" setting will be enabled automatically to receive kernel updates
 
 	.NOTES
 	Machine-wide
@@ -8837,7 +8861,7 @@ function UninstallUWPApps
 	# The following UWP apps will have their checkboxes unchecked
 	$UncheckedAppxPackages = @(
 		# AMD Radeon Software
-		"AdvancedMicroDevicesInc*",
+		"AdvancedMicroDevicesInc-2.AMDRadeonSoftware",
 
 		# Intel Graphics Control Center
 		"AppUp.IntelGraphicsControlPanel",

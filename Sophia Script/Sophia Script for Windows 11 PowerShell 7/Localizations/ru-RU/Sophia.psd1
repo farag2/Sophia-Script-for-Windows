@@ -1,20 +1,21 @@
 ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = Скрипт поддерживает только Windows 11 21H2 и выше
-UpdateWarning                             = Ваш билд Windows 11: {0}.{1}. Поддерживаемый билд: 22000.318 и выше
+UpdateWarning                             = Ваш билд Windows 11: {0}.{1}. Поддерживаемый билд: 22000.376 и выше
 UnsupportedLanguageMode                   = Сессия PowerShell работает в ограниченном режиме
 LoggedInUserNotAdmin                      = Текущий вошедший пользователь не обладает правами администратора
 UnsupportedPowerShell                     = Вы пытаетесь запустить скрипт в PowerShell {0}.{1}. Запустите скрипт в соответствующей версии PowerShell
 UnsupportedISE                            = Скрипт не поддерживает работу через Windows PowerShell ISE
 Win10TweakerWarning                       = Ваша ОС, возможно, через бэкдор в Win 10 Tweaker была заражена трояном
+Windows10DebloaterWarning                 = Стабильность Вашей ОС могла быть нарушена использованием скрипта Windows10Debloater от Sycnex. В целях профилактики переустановите ОС
 PowerShellLibraries                       = В папке Libraries отсутствутствуют файлы. Пожалуйста, перекачайте архив
 UnsupportedRelease                        = Обнаружена новая версия
-CustomizationWarning                      = \nВы настроили все функции в пресет-файле Sophia.ps1 перед запуском Sophia Script?
+CustomizationWarning                      = \nВы настроили все функции в пресет-файле {0} перед запуском Sophia Script?
 ControlledFolderAccessDisabled            = Контролируемый доступ к папкам выключен
 ScheduledTasks                            = Запланированные задания
 OneDriveUninstalling                      = Удаление OneDrive...
 OneDriveInstalling                        = OneDrive устанавливается...
 OneDriveDownloading                       = Скачивается OneDrive... ~33 МБ
-OneDriveWarning                           = Функция "{0}" будет применена только в случае, если в пресете настроено удаление приложения OneDrive, иначе ломается функционал резервного копирования для папок "Рабочий стол" и "Изображения" в OneDrive
+OneDriveWarning                           = Функция "{0}" будет применена только в случае, если в пресете настроено удаление OneDrive (или приложение уже удалено), иначе ломается функционал резервного копирования для папок "Рабочий стол" и "Изображения" в OneDrive
 WindowsFeaturesTitle                      = Компоненты Windows
 OptionalFeaturesTitle                     = Дополнительные компоненты
 EnableHardwareVT                          = Включите виртуализацию в UEFI

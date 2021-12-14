@@ -1,20 +1,21 @@
 ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = Das Skript unterstützt Windows 11 2004/20H2/21H1-Versionen und höher
-UpdateWarning                             = Ihr Windows 11-Build: {0}.{1}. Unterstützter Build: 22000.318 und höher
+UpdateWarning                             = Ihr Windows 11-Build: {0}.{1}. Unterstützter Build: 22000.376 und höher
 UnsupportedLanguageMode                   = Die PowerShell-Sitzung wird in einem eingeschränkten Sprachmodus ausgeführt
 LoggedInUserNotAdmin                      = Der angemeldete Benutzer hat keine Administratorrechte
 UnsupportedPowerShell                     = Sie versuchen ein Skript über PowerShell {0}.{1} auszuführen. Das Skript in der entsprechenden PowerShell-Version ausführen
 UnsupportedISE                            = Das Skript unterstützt nicht die Ausführung über Windows PowerShell ISE
 Win10TweakerWarning                       = Wahrscheinlich wurde Ihr Betriebssystem über die Win 10 Tweaker-Hintertür infiziert
-PowerShellLibraries                       = Im Ordner "Libraries" befinden sich keine Dateien. Bitte das Archiv erneut herunterladen
+Windows10DebloaterWarning                 = Die Stabilität des Windows-Betriebssystems kann durch die Verwendung des Windows10Debloater PowerShell-Skripts von Sycnex beeinträchtigt worden sein. Installieren Sie vorsorglich das gesamte Betriebssystem neu
+PowerShellLibraries                       = Im Ordner Libraries befinden sich keine Dateien. Bitte das Archiv erneut herunterladen
 UnsupportedRelease                        = Neue Version gefunden
-CustomizationWarning                      = \nHaben Sie alle Funktionen in der voreingestellten Datei Sophia.ps1 angepasst, bevor Sie Sophia Script ausführen?
+CustomizationWarning                      = \nHaben Sie alle Funktionen in der voreingestellten Datei {0} angepasst, bevor Sie Sophia Script ausführen?
 ControlledFolderAccessDisabled            = Kontrollierter Ordnerzugriff deaktiviert
 ScheduledTasks                            = Geplante Aufgaben
 OneDriveUninstalling                      = OneDrive deinstallieren…
 OneDriveInstalling                        = OneDrive installieren…
 OneDriveDownloading                       = OneDrive herunterladen… ~33 MB
-OneDriveWarning                           = Die "{0}"-Funktion wird nur angewendet, wenn die Voreinstellung so konfiguriert ist, dass OneDrive entfernt wird, andernfalls wird die Backup-Funktionalität für die Ordner "Desktop" und "Bilder" in OneDrive unterbrochen
+OneDriveWarning                           = Die "{0}"-Funktion wird nur angewendet, wenn die Voreinstellung so konfiguriert ist, dass OneDrive entfernt wird (oder die App bereits entfernt wurde), andernfalls wird die Backup-Funktionalität für die Ordner "Desktop" und "Bilder" in OneDrive unterbrochen
 WindowsFeaturesTitle                      = Windows-Features
 OptionalFeaturesTitle                     = Optionale Features
 EnableHardwareVT                          = Virtualisierung in UEFI aktivieren

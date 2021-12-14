@@ -52,7 +52,8 @@
       "statusBarPowerShellExport": "PowerShell script creado!",
       "statusBarOpposite": "Opuesto seleccionado!",
       "statusBarClear": "Selecciones todas borradas!",
-      "statusBarDisabled": "Primero debe 'Importar preajuste' para habilitar el uso de Wrapper. Importar para habilitar controles."
+      "statusBarDisabled": "Primero debe 'Importar preajuste' para habilitar el uso de Wrapper. Importar para habilitar controles.",
+      "statusBarCurrentOS": "OS Actual"
     }
   },
   {

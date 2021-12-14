@@ -1,19 +1,20 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = O script suporta versões Windows 11 21H2 e superior
-UpdateWarning                             = La tua build di Windows 11: {0}.{1}. Build supportata: 22000.318 e successive
+UpdateWarning                             = La tua build di Windows 11: {0}.{1}. Build supportata: 22000.376 e successive
 UnsupportedLanguageMode                   = A sessão PowerShell em funcionamento em um modo de linguagem limitada
 LoggedInUserNotAdmin                      = O usuário logado não tem direitos de administrador
 UnsupportedPowerShell                     = Você está tentando executar o script via PowerShell {0}.{1}. Execute o script na versão apropriada do PowerShell
 UnsupportedISE                            = O guião não suporta a execução através do Windows PowerShell ISE
 Win10TweakerWarning                       = Probabilmente il tuo sistema operativo è stato infettato tramite la backdoor Win 10 Tweaker
+Windows10DebloaterWarning                 = A estabilidade do sistema operacional Windows pode ter sido comprometida pela utilização do script Windows10Debloater PowerShell da Sycnex. Preventivamente, reinstale todo o sistema operacional
 UnsupportedRelease                        = Nova versão encontrada
-CustomizationWarning                      = \nVocê personalizou todas as funções no arquivo de predefinição Sophia.ps1 antes de executar o Sophia Script?
+CustomizationWarning                      = \nVocê personalizou todas as funções no arquivo de predefinição {0} antes de executar o Sophia Script?
 ControlledFolderAccessDisabled            = Acesso controlado a pasta desativada
 ScheduledTasks                            = Tarefas agendadas
 OneDriveUninstalling                      = Desinstalar OneDrive...
 OneDriveInstalling                        = Instalar o OneDrive...
 OneDriveDownloading                       = Baixando OneDrive... ~33 MB
-OneDriveWarning                           = A função "{0}" será aplicada somente se a predefinição for configurada para remover o OneDrive, caso contrário a funcionalidade de backup para as pastas "Desktop" e "Pictures" no OneDrive quebra
+OneDriveWarning                           = A função "{0}" será aplicada somente se a predefinição for configurada para remover o OneDrive (ou a aplicação já foi removida), caso contrário a funcionalidade de backup para as pastas "Desktop" e "Pictures" no OneDrive quebra
 WindowsFeaturesTitle                      = Recursos do Windows
 OptionalFeaturesTitle                     = Recursos opcionais
 EnableHardwareVT                          = Habilitar virtualização em UEFI

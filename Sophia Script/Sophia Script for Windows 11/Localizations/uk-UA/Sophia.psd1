@@ -1,19 +1,20 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = Скрипт підтримує тільки Windows 11 версії 21H2 та вище
-UpdateWarning                             = Ваш білд Windows 11: {0}.{1}. Підтримуваний білд: 22000.318 та вище
+UpdateWarning                             = Ваш білд Windows 11: {0}.{1}. Підтримуваний білд: 22000.376 та вище
 UnsupportedLanguageMode                   = Сесія PowerShell працює в обмеженому режимі
 LoggedInUserNotAdmin                      = Поточний увійшов користувач не володіє правами адміністратора
 UnsupportedPowerShell                     = Ви намагаєтеся запустити скрипт в PowerShell {0}.{1}. Запустіть скрипт у відповідній версії PowerShell
 UnsupportedISE                            = Скрипт не підтримує роботу через Windows PowerShell ISE
 Win10TweakerWarning                       = Ваша ОС, можливо, через бекдор в Win 10 Tweaker заражена трояном
+Windows10DebloaterWarning                 = Стабільність вашої ОС могла бути порушена використанням скрипту Windows10Debloater від Sycnex. З метою профілактики перевстановіть ОС
 UnsupportedRelease                        = Виявлено нову версію
-CustomizationWarning                      = \nВи налаштували всі функції в пресет-файлі Sophia.ps1 перед запуском Sophia Script?
+CustomizationWarning                      = \nВи налаштували всі функції в пресет-файлі {0} перед запуском Sophia Script?
 ControlledFolderAccessDisabled            = Контрольований доступ до папок вимкнений
 ScheduledTasks                            = Заплановані задачі
 OneDriveUninstalling                      = Видалення OneDrive...
 OneDriveInstalling                        = OneDrive встановлюється...
 OneDriveDownloading                       = Завантажується OneDrive... ~33 МБ
-OneDriveWarning                           = Функція "{0}" буде застосована тільки в разі, якщо в пресете налаштоване щоб видалити програму OneDrive, інакше ламається функціонал резервного копіювання для папок "Робочий стіл" і "Зображення" в OneDrive
+OneDriveWarning                           = Функція "{0}" буде застосована тільки в разі, якщо в пресете налаштоване щоб видалити програму OneDrive (або програму вже видалено), інакше ламається функціонал резервного копіювання для папок "Робочий стіл" і "Зображення" в OneDrive
 WindowsFeaturesTitle                      = Компоненти Windows
 OptionalFeaturesTitle                     = Додаткові компоненти
 EnableHardwareVT                          = Увімкніть віртуалізацію в UEFI

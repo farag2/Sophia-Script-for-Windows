@@ -1,20 +1,21 @@
 ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = Bu betik sadece Windows 11 21H2 sürüm ve üstünü destekliyor
-UpdateWarning                             = Windows 11 yapınız: {0}.{1}. Desteklenen yapı: 22000.318 ve üstünü destekliyor
+UpdateWarning                             = Windows 11 yapınız: {0}.{1}. Desteklenen yapı: 22000.376 ve üstünü destekliyor
 UnsupportedLanguageMode                   = Sınırlı bir dil modunda çalışan PowerShell oturumu
 LoggedInUserNotAdmin                      = Oturum açan kullanıcının yönetici hakları yok
 UnsupportedPowerShell                     = Komut dosyasını PowerShell {0}.{1} aracılığıyla çalıştırmaya çalışıyorsunuz. Komut dosyasını uygun PowerShell sürümünde çalıştırın
 UnsupportedISE                            = Komut dosyası, Windows PowerShell ISE üzerinden çalıştırmayı desteklemiyor
 Win10TweakerWarning                       = Muhtemelen işletim sisteminize Win 10 Tweaker arka kapısı yoluyla bulaştı
-PowerShellLibraries                       = Kitaplıklar klasöründe dosya yok. Lütfen arşivi yeniden indirin
+Windows10DebloaterWarning                 = Windows işletim sistemi kararlılığı, Sycnex'in Windows10Debloater PowerShell betiği kullanılarak tehlikeye atılmış olabilir. Önleyici olarak, tüm işletim sistemini yeniden yükleyin
+PowerShellLibraries                       = Libraries klasöründe dosya yok. Lütfen arşivi yeniden indirin
 UnsupportedRelease                        = Yeni sürüm bulundu
-CustomizationWarning                      = \nSophia Script'i çalıştırmadan önce Sophia.ps1 ön ayar dosyasındaki her işlevi özelleştirdiniz mi?
+CustomizationWarning                      = \nSophia Script'i çalıştırmadan önce {0} ön ayar dosyasındaki her işlevi özelleştirdiniz mi?
 ControlledFolderAccessDisabled            = Kontrollü klasör erişimi devre dışı bırakıldı
 ScheduledTasks                            = Zamanlanan görevler
 OneDriveUninstalling                      = OneDrive kaldırılıyor...
 OneDriveInstalling                        = OneDrive kuruluyor...
 OneDriveDownloading                       = OneDrive indiriliyor... ~33 MB
-OneDriveWarning                           = "{0}" işlevi yalnızca ön ayar OneDrive'ı kaldıracak şekilde yapılandırılırsa uygulanır, aksi takdirde OneDrive'daki "Masaüstü" ve "Resimler" klasörleri için yedekleme işlevi bozulur
+OneDriveWarning                           = "{0}" işlevi yalnızca ön ayar OneDrive'ı kaldıracak şekilde yapılandırılırsa uygulanır (veya uygulama zaten kaldırılmışsa), aksi takdirde OneDrive'daki "Masaüstü" ve "Resimler" klasörleri için yedekleme işlevi bozulur
 WindowsFeaturesTitle                      = Características do Windows
 OptionalFeaturesTitle                     = Opsiyonel özellikler
 EnableHardwareVT                          = UEFI'dan sanallaştırmayı aktifleştirin

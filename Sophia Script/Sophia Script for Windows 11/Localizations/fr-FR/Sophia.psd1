@@ -1,19 +1,20 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = Le script supporte les versions Windows 11 21H2 et ultérieures
-UpdateWarning                             = Votre version de Windows 11 : {0}.{1}. Version prise en charge : 22000.318 et ultérieures
+UpdateWarning                             = Votre version de Windows 11 : {0}.{1}. Version prise en charge : 22000.376 et ultérieures
 UnsupportedLanguageMode                   = La session PowerShell s'exécute dans un mode de langue limité
 LoggedInUserNotAdmin                      = L'utilisateur connecté n'a pas de droits d'administrateur
 UnsupportedPowerShell                     = Vous essayez d'exécuter le script via PowerShell {0}.{1}. Exécutez le script dans la version appropriée de PowerShell
 UnsupportedISE                            = Le script ne supporte pas l'exécution via Windows PowerShell ISE
 Win10TweakerWarning                       = Votre système d'exploitation a probablement été infecté par la porte dérobée Win 10 Tweaker
+Windows10DebloaterWarning                 = La stabilité de l'OS Windows peut avoir été compromise par l'utilisation du script PowerShell Windows10Debloater de Sycnex. De manière préventive, réinstallez l'ensemble de l'OS
 UnsupportedRelease                        = Nouvelle version trouvée
-CustomizationWarning                      = \nAvez-vous personnalisé chaque fonction du fichier de préréglage Sophia.ps1 avant d'exécuter Sophia Script?
+CustomizationWarning                      = \nAvez-vous personnalisé chaque fonction du fichier de préréglage {0} avant d'exécuter Sophia Script?
 ControlledFolderAccessDisabled            = Contrôle d'accès aux dossiers désactivé
 ScheduledTasks                            = Tâches planifiées
 OneDriveUninstalling                      = Désinstalltion de OneDrive...
 OneDriveInstalling                        = Installation de OneDrive...
 OneDriveDownloading                       = Téléchargement de OneDrive... ~33 Mo
-OneDriveWarning                           = La fonction "{0}" sera appliquée uniquement si le préréglage est configuré pour supprimer OneDrive, sinon la fonctionnalité de sauvegarde des dossiers "Desktop" et "Pictures" dans OneDrive s'interrompt.
+OneDriveWarning                           = La fonction "{0}" sera appliquée uniquement si le préréglage est configuré pour supprimer OneDrive (ou si l'application a déjà été supprimée), sinon la fonctionnalité de sauvegarde des dossiers "Desktop" et "Pictures" dans OneDrive s'interrompt.
 WindowsFeaturesTitle                      = Fonctionnalités
 OptionalFeaturesTitle                     = Fonctionnalités optionnelles
 OpenInWindowsTerminalAdmin                = Ouvrir dans le Windows Terminal

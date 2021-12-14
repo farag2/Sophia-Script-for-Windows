@@ -52,7 +52,8 @@
       "statusBarPowerShellExport": "PowerShell script created!",
       "statusBarOpposite": "Opposite selected!",
       "statusBarClear": "Selections all cleared!",
-      "statusBarDisabled": "You must 'Import Preset' first to enable use of Wrapper. Import to enable controls."
+      "statusBarDisabled": "You must 'Import Preset' first to enable use of Wrapper. Import to enable controls.",
+      "statusBarCurrentOS": "Current OS"
     }
   },
   {
