@@ -8,7 +8,7 @@
 
 <p align="left">
   <a href="https://github.com/farag2/Sophia-Script-for-Windows/actions"><img src="https://img.shields.io/github/workflow/status/farag2/Sophia-Script-for-Windows/Build?label=GitHub%20Actions&logo=GitHub"></a>
-  <img src="https://img.shields.io/badge/PowerShell%205.1%20&%207.1-Ready-blue.svg?color=5391FE&style=flat&logo=powershell">
+  <img src="https://img.shields.io/badge/PowerShell%205.1%20&%207.2-Ready-blue.svg?color=5391FE&style=flat&logo=powershell">
 
   <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases"><img src="https://img.shields.io/github/downloads/farag2/Sophia-Script-for-Windows/total?label=downloads%20%28since%20May%202020%29"></a>
   <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases"><img src="https://img.shields.io/github/v/release/farag2/Sophia-Script-for-Windows"></a>
@@ -23,7 +23,7 @@
 Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag_of_the_United_Kingdom.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Flag_of_the_People's_Republic_of_China.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Flag_of_Germany.svg" height="11px"/>
 <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/0/03/Flag_of_Italy.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Russia.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Ukraine.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Flag_of_Turkey.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Spain.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Flag_of_Portugal.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Flag_of_Hungary.svg" height="11px"/>
 
-<a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://i.imgur.com/B8KGCa7.jpeg" width=220px height=55px></a>
+<a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/SSdownloadbutton.svg" width=220px height=55px></a>
 
 ***
 
@@ -45,7 +45,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 	&bull;
 	<a href="#how-to-translate">How to translate</a>
 	&bull;
-	<a href="#supported-windows-versions">Supported Windows 10 & 11 versions</a>
+	<a href="#minimum-supported-windows-versions-and-builds">Supported Windows 10 & 11 versions</a>
 	&bull;
 	<a href="https://github.com/farag2/Sophia-Script-for-Windows/blob/master/CHANGELOG.md">Changelog</a>
 </p>
@@ -85,8 +85,13 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 			</a>
 		</td>
 		<td>
-			<a href="https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10//">
+			<a href="https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10/">
 				<img src="https://i.imgur.com/6sAI2wZ.png">
+			</a>
+		</td>
+		<td>
+			<a href="https://www.pcsoleil.fr/successeur-de-win10-initial-setup-script-sophia-script-comment-lutiliser/">
+				<img src="https://i.imgur.com/xBHWMkU.png">
 			</a>
 		</td>
 	</tr>
@@ -103,17 +108,17 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 |Version|   Build   |      Editions     | Script version |
 |:-----:|:---------:|:-----------------:|:--------------:|
-| 21H2  | 22000.318 |Home/Pro/Enterprise|[6.0.7](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H2  | 22000.318 |Home/Pro/Enterprise|[6.0.8](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 
 # Windows 10
 
 |Version|    Marketing name   | Build | Arch|      Editions          | Script version |
 |:-----:|:-------------------:|:----------:|:---:|:----------------------:|:--------------:|
-| 21H2  | October 2021 Update | 19044.1151 | x64 |Home/Pro/Enterprise|[5.12.6](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 21H2  | Enterprise LTSC 2021| 19044.1348 | x64 |   Enterprise      |[5.12.6](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 21H1  | May 2021 Update     | 19043.1151 | x64 |Home/Pro/Enterprise|[5.12.6](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 20H2  | October 2020 Update | 19042.1151 | x64 |Home/Pro/Enterprise|[5.12.6](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 2004  | May 2020 Update     | 19041.1151 | x64 |Home/Pro/Enterprise|[5.12.6](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H2  | October 2021 Update | 19044.1151 | x64 |Home/Pro/Enterprise|[5.12.7](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H2  | Enterprise LTSC 2021| 19044.1348 | x64 |   Enterprise      |[5.12.7](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H1  | May 2021 Update     | 19043.1151 | x64 |Home/Pro/Enterprise|[5.12.7](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 20H2  | October 2020 Update | 19042.1151 | x64 |Home/Pro/Enterprise|[5.12.7](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 2004  | May 2020 Update     | 19041.1151 | x64 |Home/Pro/Enterprise|[5.12.7](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 | 1809  | Enterprise LTSC 2019| 17763      | x64 |   Enterprise      |[5.2.17](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 
 ## Screenshots
@@ -265,7 +270,7 @@ Or use an old-style format without the TAB functions autocomplete (the quotation
 irm script.sophi.app | iex
 ```
 
-* The command will download and expand the archive (`without running`) the latest Sophia Script according which Windows and PowerShell versions it is run on. For example, if you run it on Windows 11 via PowerShell 5.1, it will download Sophia Script for `Windows 11 PowerShell 5.1`.
+* The command will download and expand the latest Sophia Script archive (`without running`) according which Windows and PowerShell versions it is run on. If you run it on, e.g., Windows 11 via PowerShell 5.1, it will download Sophia Script for `Windows 11 PowerShell 5.1`.
 
 # Supported variations to launch the command on
 
