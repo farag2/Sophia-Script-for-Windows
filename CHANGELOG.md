@@ -7,9 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 5.12.9 | 6.0.10 — 15.12.2021
 
-Diff from v6.0.9
-[6.0.9...6.0.10](https://github.com/farag2/Sophia-Script-for-Windows/compare/6.0.9...6.0.10)
-
 * Fixed a bug thats prevented getting the current preset name loaded into session;
   * Closes #312.
 
@@ -29,9 +26,6 @@ Diff from v6.0.8
 
 ## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
 
-Diff from v6.0.7
-[6.0.7...6.0.8](https://github.com/farag2/Sophia-Script-for-Windows/compare/6.0.7...6.0.8)
-
 * Fixed small bug in the `OneDrive` function that prevents a folder to be removed;
 * Fixed small bug in the `OneDrive` function that prevents OneDrive to be downloaded (Microsoft changed the cloud XML silently);
 * The `WinPrtScrFolder` function was improved;
@@ -48,8 +42,6 @@ Diff from v6.0.7
 
 ## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
 
-Diff from v6.0.6
-[6.0.6...6.0.7](https://github.com/farag2/Sophia-Script-for-Windows/compare/5.12.4...5.12.5)
 * Added support for Windows 10 Enterprise LTSC 2021;
 * Added the `UninstallPCHealthCheck` funtion;
   * This application is installed with the [KB5005463](https://support.microsoft.com/en-us/topic/kb5005463-pc-health-check-application-e33cf4e2-49e2-4727-b913-f3c5b1ee0e56) update to check if PC meets the system requirements of Windows 11;
