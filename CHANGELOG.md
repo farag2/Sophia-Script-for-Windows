@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.12.9 | 6.0.10 — 15.12.2021
+
+Diff from v6.0.9
+[6.0.9...6.0.10](https://github.com/farag2/Sophia-Script-for-Windows/compare/6.0.9...6.0.10)
+
+* Fixed a bug thats prevented getting the current preset name loaded into session;
+  * Closes #312.
+
 ## 5.12.8 | 6.0.9 — 14.12.2021
 
 ## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
@@ -29,9 +37,6 @@ Diff from v6.0.7
 * The `WinPrtScrFolder` function was improved;
   * Now it doesn't matter how your preset was named: the fucntion will parse the preset that was loaded into session to find whether the `OneDrive -Uninstall` function was commented out or not;
 * Minor changes.
-* [Check out](https://t.me/SophiaNews/396) the 4th [SophiApp](https://github.com/Sophia-Community/SophiApp) 0.0.0.70 public alpha build :rocket:
-
-![SophiApp](https://hsto.org/r/w780/getpro/habr/upload_files/be9/060/0b6/be90600b648639aa85d755fe10677cb2.jpg)
 
 ## Sophia Script Wrapper 2.5.3
 
@@ -54,7 +59,6 @@ Diff from v6.0.6
   * <https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist>;
 * Added the `UnpinAllStartApps` function to provide a feature to unpin all Start apps;
 * Minor changes.
-* [Check out](https://t.me/SophiaNews/396) the 4th [SophiApp](https://github.com/Sophia-Community/SophiApp) 0.0.0.70 public alpha build :rocket:
 
 ## Sophia Script Wrapper 2.5.2
 
