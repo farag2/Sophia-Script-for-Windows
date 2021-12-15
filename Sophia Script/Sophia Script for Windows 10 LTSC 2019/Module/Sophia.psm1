@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.2.18
-	Date: 14.12.2021
+	Version: v5.2.19
+	Date: 15.12.2021
 
 	Copyright (c) 2014—2021 farag
 	Copyright (c) 2019—2021 farag & Inestic
@@ -176,7 +176,7 @@ function Checkings
 	if ($Warning)
 	{
 		# Get the name of a preset (e.g Sophia.ps1) regardless it was named
-		$PresetName = Split-Path -Path ((Get-PSCallStack).Position | Where-Object -FilterScript {$null -eq $_.File}).Text -Leaf
+		$PresetName = Split-Path -Path ((Get-PSCallStack).Position | Where-Object -FilterScript {$_.File -match ".ps1"}).File -Leaf
 
 		$Title = ""
 		$Message       = $Localization.CustomizationWarning -f $PresetName
@@ -190,7 +190,7 @@ function Checkings
 		{
 			"0"
 			{
-				Invoke-Item -Path $PSScriptRoot\..\$PresetName.ps1
+				Invoke-Item -Path $PSScriptRoot\..\$PresetName
 
 				Start-Sleep -Seconds 5
 
