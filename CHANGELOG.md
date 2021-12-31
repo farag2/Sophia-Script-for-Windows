@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.12.10 | 6.0.11 — 31.12.2021
+
+* Check out our new [how-to video](https://www.youtube.com/watch?v=q_weQifFM58) about Sophia Script and the Wrapper;
+* The `NewsInterests` function now uses the policy due to Microsoft has blocked the ability to turn off the widget via registry;
+* Improved and fixed `DNSoverHTTPS`;
+  * Now the function can be applied if Hyper-V is enabled when a virtual net switch is being created.
+* [Finally](https://t.me/SophiaNews/559), we released [SophiApp](https://github.com/Sophia-Community/SophiApp) 1.0.0 beta 1 :rocket:
+* Happy New year! ![ruboard](https://forum.ru-board.com/board/s/deds.gif)
+
+![SophiApp](https://i.imgur.com/6KBMwsG.png)
+![SophiApp](https://i.imgur.com/AssAQ35.jpg)
+
 ## 5.12.9 | 6.0.10 — 15.12.2021
 
 * Fixed a bug thats prevented getting the current preset name loaded into session;
@@ -13,9 +25,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## 5.12.8 | 6.0.9 — 14.12.2021
 
 ## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
-
-Diff from v6.0.8
-[6.0.8...6.0.9](https://github.com/farag2/Sophia-Script-for-Windows/compare/6.0.8...6.0.9)
 
 * Fixed a typo in the `DefaultTerminalApp -WindowsTerminal` function that prevents the function to get the Windows Terminal `PackageFullName` variable value;
 * The `WinPrtScrFolder -Desktop` function was improved;
