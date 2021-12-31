@@ -109,17 +109,17 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 |Version|   Build   |      Editions     | Script version |
 |:-----:|:---------:|:-----------------:|:--------------:|
-| 21H2  | 22000.376 |Home/Pro/Enterprise|[6.0.10](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H2  | 22000.376 |Home/Pro/Enterprise|[6.0.11](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 
 # Windows 10
 
 |Version|    Marketing name   | Build | Arch|      Editions          | Script version |
 |:-----:|:-------------------:|:----------:|:---:|:----------------------:|:--------------:|
-| 21H2  | October 2021 Update | 19044.1151 | x64 |Home/Pro/Enterprise|[5.12.9](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H2  | October 2021 Update | 19044.1151 | x64 |Home/Pro/Enterprise|[5.12.10](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 | 21H2  | Enterprise LTSC 2021| 19044.1348 | x64 |   Enterprise      |[5.12.9](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 21H1  | May 2021 Update     | 19043.1151 | x64 |Home/Pro/Enterprise|[5.12.9](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 20H2  | October 2020 Update | 19042.1151 | x64 |Home/Pro/Enterprise|[5.12.9](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 2004  | May 2020 Update     | 19041.1151 | x64 |Home/Pro/Enterprise|[5.12.9](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H1  | May 2021 Update     | 19043.1151 | x64 |Home/Pro/Enterprise|[5.12.10](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 20H2  | October 2020 Update | 19042.1151 | x64 |Home/Pro/Enterprise|[5.12.10](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 2004  | May 2020 Update     | 19041.1151 | x64 |Home/Pro/Enterprise|[5.12.10](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 | 1809  | Enterprise LTSC 2019| 17763      | x64 |   Enterprise      |[5.2.19](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 
 ## Screenshots
@@ -156,7 +156,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ## Videos
 
-[![YT](https://img.youtube.com/vi/f529ucAipI8/0.jpg)](https://youtu.be/f529ucAipI8) [![YT](https://img.youtube.com/vi/MiQ85tVXQQA/0.jpg)](https://youtu.be/MiQ85tVXQQA)
+[![YT](https://img.youtube.com/vi/q_weQifFM58/0.jpg)](https://www.youtube.com/watch?v=q_weQifFM58)
 
 [![YT](https://img.youtube.com/vi/8E6OT_QcHaU/1.jpg)](https://youtu.be/8E6OT_QcHaU?t=370) [![YT](https://img.youtube.com/vi/091SOihvx0k/1.jpg)](https://youtu.be/091SOihvx0k?t=490)
 
