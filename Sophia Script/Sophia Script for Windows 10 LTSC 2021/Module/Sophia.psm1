@@ -3,10 +3,10 @@
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
 	Version: v5.12.9
-	Date: 15.12.2021
+	Date: 31.12.2021
 
-	Copyright (c) 2014—2021 farag
-	Copyright (c) 2019—2021 farag & Inestic
+	Copyright (c) 2014—2022 farag
+	Copyright (c) 2019—2022 farag & Inestic
 
 	Thanks to all https://forum.ru-board.com members involved
 
@@ -3679,7 +3679,7 @@ function WaitNetworkStartup
 	{
 		"Enable"
 		{
-			if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain -eq $true)
+			if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain)
 			{
 				if (-not (Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon"))
 				{
@@ -3690,7 +3690,7 @@ function WaitNetworkStartup
 		}
 		"Disable"
 		{
-			if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain -eq $true)
+			if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain)
 			{
 				Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name SyncForegroundPolicy -Force -ErrorAction Ignore
 			}
@@ -4506,7 +4506,7 @@ function UpdateMicrosoftProducts
 		}
 		"Disable"
 		{
-			if (((New-Object -ComObject Microsoft.Update.ServiceManager).Services | Where-Object -FilterScript {$_.ServiceID -eq "7971f918-a847-4430-9279-4a52d1efe18d"}).IsDefaultAUService -eq $true)
+			if (((New-Object -ComObject Microsoft.Update.ServiceManager).Services | Where-Object -FilterScript {$_.ServiceID -eq "7971f918-a847-4430-9279-4a52d1efe18d"}).IsDefaultAUService)
 			{
 				(New-Object -ComObject Microsoft.Update.ServiceManager).RemoveService("7971f918-a847-4430-9279-4a52d1efe18d")
 			}
@@ -6472,7 +6472,7 @@ function NetworkDiscovery
 	{
 		"Enable"
 		{
-			if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain -eq $false)
+			if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain)
 			{
 				Set-NetFirewallRule -Group $FirewallRules -Profile Private -Enabled True
 
@@ -6482,7 +6482,7 @@ function NetworkDiscovery
 		}
 		"Disable"
 		{
-			if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain -eq $false)
+			if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain)
 			{
 				Set-NetFirewallRule -Group $FirewallRules -Profile Private -Enabled False
 			}
@@ -7387,7 +7387,7 @@ function WSL
 	function RadioButtonChecked
 	{
 		$Global:CommandTag = $_.OriginalSource.Tag
-		if ($ButtonInstall.IsEnabled -eq $false)
+		if (-not $ButtonInstall.IsEnabled)
 		{
 			$ButtonInstall.IsEnabled = $true
 		}
@@ -8546,14 +8546,14 @@ function NetworkProtection
 	{
 		"Enable"
 		{
-			if ((Get-MpComputerStatus).AntivirusEnabled -eq $true)
+			if ((Get-MpComputerStatus).AntivirusEnabled)
 			{
 				Set-MpPreference -EnableNetworkProtection Enabled
 			}
 		}
 		"Disable"
 		{
-			if ((Get-MpComputerStatus).AntivirusEnabled -eq $true)
+			if ((Get-MpComputerStatus).AntivirusEnabled)
 			{
 				Set-MpPreference -EnableNetworkProtection Disabled
 			}
@@ -8603,14 +8603,14 @@ function PUAppsDetection
 	{
 		"Enable"
 		{
-			if ((Get-MpComputerStatus).AntivirusEnabled -eq $true)
+			if ((Get-MpComputerStatus).AntivirusEnabled)
 			{
 				Set-MpPreference -PUAProtection Enabled
 			}
 		}
 		"Disable"
 		{
-			if ((Get-MpComputerStatus).AntivirusEnabled -eq $true)
+			if ((Get-MpComputerStatus).AntivirusEnabled)
 			{
 				Set-MpPreference -PUAProtection Disabled
 			}
@@ -8663,14 +8663,14 @@ function DefenderSandbox
 	{
 		"Enable"
 		{
-			if ((Get-MpComputerStatus).AntivirusEnabled -eq $true)
+			if ((Get-MpComputerStatus).AntivirusEnabled)
 			{
 				setx /M MP_FORCE_USE_SANDBOX 1
 			}
 		}
 		"Disable"
 		{
-			if ((Get-MpComputerStatus).AntivirusEnabled -eq $true)
+			if ((Get-MpComputerStatus).AntivirusEnabled)
 			{
 				setx /M MP_FORCE_USE_SANDBOX 0
 			}
@@ -9201,10 +9201,10 @@ function WindowsSandbox
 	{
 		"Disable"
 		{
-			if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Professional" -or $_.Edition -like "Enterprise*"})
+			if (Get-WindowsEdition -Online | Where-Object -FilterScript {($_.Edition -eq "Professional") -or ($_.Edition -like "Enterprise*")})
 			{
 				# Checking whether x86 virtualization is enabled in the firmware
-				if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled -eq $true)
+				if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled)
 				{
 					Disable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -Online -NoRestart
 				}
@@ -9213,7 +9213,7 @@ function WindowsSandbox
 					try
 					{
 						# Determining whether Hyper-V is enabled
-						if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent -eq $true)
+						if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
 						{
 							Disable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -Online -NoRestart
 						}
@@ -9227,10 +9227,10 @@ function WindowsSandbox
 		}
 		"Enable"
 		{
-			if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Professional" -or $_.Edition -like "Enterprise*"})
+			if (Get-WindowsEdition -Online | Where-Object -FilterScript {($_.Edition -eq "Professional") -or ($_.Edition -like "Enterprise*")})
 			{
 				# Checking whether x86 virtualization is enabled in the firmware
-				if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled -eq $true)
+				if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled)
 				{
 					Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart
 				}
@@ -9239,7 +9239,7 @@ function WindowsSandbox
 					try
 					{
 						# Determining whether Hyper-V is enabled
-						if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent -eq $true)
+						if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
 						{
 							Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart
 						}

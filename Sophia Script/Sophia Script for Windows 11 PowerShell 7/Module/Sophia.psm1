@@ -2,11 +2,11 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v6.0.10
-	Date: 15.12.2021
+	Version: v6.0.11
+	Date: 31.12.2021
 
-	Copyright (c) 2014—2021 farag
-	Copyright (c) 2019—2021 farag & Inestic
+	Copyright (c) 2014—2022 farag
+	Copyright (c) 2019—2022 farag & Inestic
 
 	Thanks to all https://forum.ru-board.com members involved
 
@@ -4240,7 +4240,7 @@ function WaitNetworkStartup
 	{
 		"Enable"
 		{
-			if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain -eq $true)
+			if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain)
 			{
 				if (-not (Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon"))
 				{
@@ -4251,7 +4251,7 @@ function WaitNetworkStartup
 		}
 		"Disable"
 		{
-			if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain -eq $true)
+			if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain)
 			{
 				Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name SyncForegroundPolicy -Force -ErrorAction Ignore
 			}
@@ -5065,7 +5065,7 @@ function UpdateMicrosoftProducts
 		}
 		"Disable"
 		{
-			if (((New-Object -ComObject Microsoft.Update.ServiceManager).Services | Where-Object -FilterScript {$_.ServiceID -eq "7971f918-a847-4430-9279-4a52d1efe18d"}).IsDefaultAUService -eq $true)
+			if (((New-Object -ComObject Microsoft.Update.ServiceManager).Services | Where-Object -FilterScript {$_.ServiceID -eq "7971f918-a847-4430-9279-4a52d1efe18d"}).IsDefaultAUService)
 			{
 				(New-Object -ComObject Microsoft.Update.ServiceManager).RemoveService("7971f918-a847-4430-9279-4a52d1efe18d")
 			}
@@ -7071,7 +7071,7 @@ function NetworkDiscovery
 	{
 		"Enable"
 		{
-			if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain -eq $false)
+			if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain)
 			{
 				Set-NetFirewallRule -Group $FirewallRules -Profile Private -Enabled True
 
@@ -7081,7 +7081,7 @@ function NetworkDiscovery
 		}
 		"Disable"
 		{
-			if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain -eq $false)
+			if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain)
 			{
 				Set-NetFirewallRule -Group $FirewallRules -Profile Private -Enabled False
 			}
@@ -8058,7 +8058,7 @@ function WSL
 	function RadioButtonChecked
 	{
 		$Global:CommandTag = $_.OriginalSource.Tag
-		if ($ButtonInstall.IsEnabled -eq $false)
+		if (-not $ButtonInstall.IsEnabled)
 		{
 			$ButtonInstall.IsEnabled = $true
 		}
@@ -9387,13 +9387,19 @@ function XboxGameBar
 	{
 		"Disable"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR -Name AppCaptureEnabled -PropertyType DWord -Value 0 -Force
-			New-ItemProperty -Path HKCU:\System\GameConfigStore -Name GameDVR_Enabled -PropertyType DWord -Value 0 -Force
+			if ((Get-AppxPackage -Name Microsoft.XboxGamingOverlay) -or (Get-AppxPackage -Name Microsoft.GamingApp))
+			{
+				New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR -Name AppCaptureEnabled -PropertyType DWord -Value 0 -Force
+				New-ItemProperty -Path HKCU:\System\GameConfigStore -Name GameDVR_Enabled -PropertyType DWord -Value 0 -Force
+			}
 		}
 		"Enable"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR -Name AppCaptureEnabled -PropertyType DWord -Value 1 -Force
-			New-ItemProperty -Path HKCU:\System\GameConfigStore -Name GameDVR_Enabled -PropertyType DWord -Value 1 -Force
+			if ((Get-AppxPackage -Name Microsoft.XboxGamingOverlay) -or (Get-AppxPackage -Name Microsoft.GamingApp))
+			{
+				New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR -Name AppCaptureEnabled -PropertyType DWord -Value 1 -Force
+				New-ItemProperty -Path HKCU:\System\GameConfigStore -Name GameDVR_Enabled -PropertyType DWord -Value 1 -Force
+			}
 		}
 	}
 }
@@ -10085,14 +10091,14 @@ function NetworkProtection
 	{
 		"Enable"
 		{
-			if ((Get-MpComputerStatus).AntivirusEnabled -eq $true)
+			if ((Get-MpComputerStatus).AntivirusEnabled)
 			{
 				Set-MpPreference -EnableNetworkProtection Enabled
 			}
 		}
 		"Disable"
 		{
-			if ((Get-MpComputerStatus).AntivirusEnabled -eq $true)
+			if ((Get-MpComputerStatus).AntivirusEnabled)
 			{
 				Set-MpPreference -EnableNetworkProtection Disabled
 			}
@@ -10142,14 +10148,14 @@ function PUAppsDetection
 	{
 		"Enable"
 		{
-			if ((Get-MpComputerStatus).AntivirusEnabled -eq $true)
+			if ((Get-MpComputerStatus).AntivirusEnabled)
 			{
 				Set-MpPreference -PUAProtection Enabled
 			}
 		}
 		"Disable"
 		{
-			if ((Get-MpComputerStatus).AntivirusEnabled -eq $true)
+			if ((Get-MpComputerStatus).AntivirusEnabled)
 			{
 				Set-MpPreference -PUAProtection Disabled
 			}
@@ -10202,14 +10208,14 @@ function DefenderSandbox
 	{
 		"Enable"
 		{
-			if ((Get-MpComputerStatus).AntivirusEnabled -eq $true)
+			if ((Get-MpComputerStatus).AntivirusEnabled)
 			{
 				setx /M MP_FORCE_USE_SANDBOX 1
 			}
 		}
 		"Disable"
 		{
-			if ((Get-MpComputerStatus).AntivirusEnabled -eq $true)
+			if ((Get-MpComputerStatus).AntivirusEnabled)
 			{
 				setx /M MP_FORCE_USE_SANDBOX 0
 			}
@@ -10740,10 +10746,10 @@ function WindowsSandbox
 	{
 		"Disable"
 		{
-			if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Professional" -or $_.Edition -like "Enterprise*"})
+			if (Get-WindowsEdition -Online | Where-Object -FilterScript {($_.Edition -eq "Professional") -or ($_.Edition -like "Enterprise*")})
 			{
 				# Checking whether x86 virtualization is enabled in the firmware
-				if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled -eq $true)
+				if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled)
 				{
 					Disable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -Online -NoRestart
 				}
@@ -10752,7 +10758,7 @@ function WindowsSandbox
 					try
 					{
 						# Determining whether Hyper-V is enabled
-						if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent -eq $true)
+						if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
 						{
 							Disable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -Online -NoRestart
 						}
@@ -10766,10 +10772,10 @@ function WindowsSandbox
 		}
 		"Enable"
 		{
-			if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Professional" -or $_.Edition -like "Enterprise*"})
+			if (Get-WindowsEdition -Online | Where-Object -FilterScript {($_.Edition -eq "Professional") -or ($_.Edition -like "Enterprise*")})
 			{
 				# Checking whether x86 virtualization is enabled in the firmware
-				if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled -eq $true)
+				if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled)
 				{
 					Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart
 				}
@@ -10778,7 +10784,7 @@ function WindowsSandbox
 					try
 					{
 						# Determining whether Hyper-V is enabled
-						if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent -eq $true)
+						if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
 						{
 							Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart
 						}
@@ -10830,16 +10836,16 @@ function DNSoverHTTPS
 		[switch]
 		$Enable,
 
-		[Parameter(Mandatory = $true)]
+		[Parameter(Mandatory = $false)]
 		[ValidateSet("1.0.0.1", "1.1.1.1", "149.112.112.112", "8.8.4.4", "8.8.8.8", "9.9.9.9")]
-		# Carve up the IPv4 addresses only
+		# Isolate the IPv4 addresses only
 		[ValidateScript({(@((Get-ChildItem -Path HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters\DohWellKnownServers).PSChildName) | Where-Object {$_ -notmatch ":"}) -contains $_})]
 		[string]
 		$PrimaryDNS,
 
-		[Parameter(Mandatory = $true)]
+		[Parameter(Mandatory = $false)]
 		[ValidateSet("1.0.0.1", "1.1.1.1", "149.112.112.112", "8.8.4.4", "8.8.8.8", "9.9.9.9")]
-		# Carve up the IPv4 addresses only
+		# Isolate the IPv4 addresses only
 		[ValidateScript({(@((Get-ChildItem -Path HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters\DohWellKnownServers).PSChildName) | Where-Object {$_ -notmatch ":"}) -contains $_})]
 		[string]
 		$SecondaryDNS,
@@ -10856,12 +10862,24 @@ function DNSoverHTTPS
 	{
 		"Enable"
 		{
-			if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain -eq $false)
+			if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain)
 			{
-				# Set the DNS servers
-				Get-NetAdapter -Physical | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
+				# Determining whether Hyper-V is enabled
+				# After enabling Hyper-V feature a virtual switch breing created, so we need to use different method to isolate the proper adapter
+				if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
+				{
+					# Set a primary and secondary DNS servers
+					Get-NetAdapter -Physical | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
+					$InterfaceGuid = (Get-NetAdapter -Physical).InterfaceGuid
+				}
+				else
+				{
+					# Set a primary and secondary DNS servers
+					Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
+					$InterfaceGuid = (Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter).InterfaceGuid
+				}
 
-				$InterfaceGuid = (Get-NetAdapter -Physical).InterfaceGuid
+				# Set the DNS servers
 				if (-not (Test-Path -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS"))
 				{
 					New-Item -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Force
@@ -10877,10 +10895,19 @@ function DNSoverHTTPS
 		}
 		"Disable"
 		{
-			if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain -eq $false)
+			if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain)
 			{
-				# Configure the DNS servers automatically
-				Get-NetAdapter -Physical | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ResetServerAddresses
+				# Determining whether Hyper-V is enabled
+				if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
+				{
+					# Configure DNS servers automatically
+					Get-NetAdapter -Physical | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ResetServerAddresses
+				}
+				else
+				{
+					# Configure DNS servers automatically
+					Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ResetServerAddresses
+				}
 
 				Remove-Item -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\*" -Recurse -Force -ErrorAction Ignore
 			}

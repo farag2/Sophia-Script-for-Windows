@@ -2,11 +2,11 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10 (PowerShell 7)"
 
-	Version: v5.12.9
-	Date: 15.12.2021
+	Version: v5.12.10
+	Date: 31.12.2021
 
-	Copyright (c) 2014—2021 farag
-	Copyright (c) 2019—2021 farag & Inestic
+	Copyright (c) 2014—2022 farag
+	Copyright (c) 2019—2022 farag & Inestic
 
 	Thanks to all https://forum.ru-board.com members involved
 
@@ -71,7 +71,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.12.9 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2021"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.12.10 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2022"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
