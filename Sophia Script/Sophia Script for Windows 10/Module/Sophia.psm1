@@ -1731,10 +1731,10 @@ function OpenFileExplorerTo
 	.SYNOPSIS
 	Cortana button on the taskbar
 
-	.PARAMETER Show
+	.PARAMETER Hide
 	Hide Cortana button on the taskbar
 
-	.PARAMETER Hide
+	.PARAMETER Show
 	Show Cortana button on the taskbar
 
 	.EXAMPLE
