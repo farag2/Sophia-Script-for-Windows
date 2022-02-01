@@ -34,11 +34,22 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ***
 
+<a href="https://rutracker.org/forum/viewtopic.php?t=5996011"><img src="https://static.t-ru.org/logo/logo-3.svg" width=130px></a>
+<a href="https://4sysops.com/archives/windows-10-sophia-script-powershell-functions-for-windows-10-fine-tuning-and-automating-routine-configuration-tasks/"><img src="https://i.imgur.com/cZ32Hkt.png" width=70px></a>
+<a href="https://www.ghacks.net/2020/09/27/windows-10-setup-script-has-a-new-name-and-is-now-easier-to-use/"><img src="https://i.imgur.com/K4f8VBo.png" width=120px></a>
+<a href="https://www.neowin.net/news/this-windows-10-setup-script-lets-you-fine-tune-around-150-functions-for-new-installs"><img src="https://i.imgur.com/5fILFqz.png" width=100px></a>
+<a href="https://www.comss.ru/page.php?id=8019"><img src="https://cdn.comss.net/img/logo51.png" width=30px></a>
+<a href="https://habr.com/company/skillfactory/blog/553800"><img src="https://i.imgur.com/cXWLr4I.png" width=40px></a>
+<a href="https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10/"><img src="https://i.imgur.com/6sAI2wZ.png" width=110px></a>
+<a href="https://www.pcsoleil.fr/successeur-de-win10-initial-setup-script-sophia-script-comment-lutiliser/"><img src="https://i.imgur.com/xBHWMkU.png" width=160px></a>
+
+***
+
 <p align="center">
 	&bull;
 	<a href="#screenshots">Screenshots</a>
 	&bull;
-	<a href="#sophia-script-in-action">Videos</a>
+	<a href="#videos">Videos</a>
 	&bull;
 	<a href="#core-features">Core features</a>
 	&bull;
@@ -50,53 +61,6 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 	&bull;
 	<a href="https://github.com/farag2/Sophia-Script-for-Windows/blob/master/CHANGELOG.md">Changelog</a>
 </p>
-
-***
-
-<table>
-	<tr>
-		<td>
-			<a href="https://rutracker.org/forum/viewtopic.php?t=5996011">
-				<img src="https://static.t-ru.org/logo/logo-3.svg" height="100px">
-			</a>
-		</td>
-		<td>
-			<a href="https://4sysops.com/archives/windows-10-sophia-script-powershell-functions-for-windows-10-fine-tuning-and-automating-routine-configuration-tasks/">
-				<img src="https://i.imgur.com/cZ32Hkt.png">
-			</a>
-		</td>
-		<td>
-			<a href="https://www.ghacks.net/2020/09/27/windows-10-setup-script-has-a-new-name-and-is-now-easier-to-use/">
-				<img src="https://i.imgur.com/K4f8VBo.png">
-			</a>
-		</td>
-		<td>
-			<a href="https://www.neowin.net/news/this-windows-10-setup-script-lets-you-fine-tune-around-150-functions-for-new-installs">
-				<img src="https://i.imgur.com/5fILFqz.png">
-			</a>
-		</td>
-		<td>
-			<a href="https://www.comss.ru/page.php?id=8019">
-				<img src="https://cdn.comss.net/img/logo51.png">
-			</a>
-		</td>
-		<td>
-			<a href="https://habr.com/company/skillfactory/blog/553800">
-				<img src="https://i.imgur.com/cXWLr4I.png">
-			</a>
-		</td>
-		<td>
-			<a href="https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10/">
-				<img src="https://i.imgur.com/6sAI2wZ.png">
-			</a>
-		</td>
-		<td>
-			<a href="https://www.pcsoleil.fr/successeur-de-win10-initial-setup-script-sophia-script-comment-lutiliser/">
-				<img src="https://i.imgur.com/xBHWMkU.png">
-			</a>
-		</td>
-	</tr>
-</table>
 
 ## :fire: Before running :fire:
 
