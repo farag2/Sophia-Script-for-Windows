@@ -302,4 +302,5 @@ irm script.sophi.app | iex
 
 [SophiApp](https://github.com/Sophia-Community/SophiApp) is in active development 🚀
 
-<img src="https://i.imgur.com/ixqsK7B.png)" height="300px"/> <img src="https://i.imgur.com/Z0Ytf4C.png" height="300px"/>
+![Image](https://github.com/Sophia-Community/SophiApp/raw/master/img/1.png)
+![Image](https://github.com/Sophia-Community/SophiApp/raw/master/img/12.gif)
