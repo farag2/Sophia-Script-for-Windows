@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 5.12.10 | 6.0.11 — 31.12.2021
 
+## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
+
+* Merged #315 & #326;
+* Updated descriptions.
+* Check out [SophiApp](https://github.com/Sophia-Community/SophiApp) 1.0.0.13 beta 2 :rocket:
+
+## 5.12.10 | 6.0.11 — 31.12.2021
+
+## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
+
 * Check out our new [how-to video](https://www.youtube.com/watch?v=q_weQifFM58) about Sophia Script and the Wrapper;
 * The `NewsInterests` function now uses the policy due to Microsoft has blocked the ability to turn off the widget via registry;
 * Improved and fixed `DNSoverHTTPS`;
@@ -18,6 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ![SophiApp](https://i.imgur.com/AssAQ35.jpg)
 
 ## 5.12.9 | 6.0.10 — 15.12.2021
+
+## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
 
 * Fixed a bug thats prevented getting the current preset name loaded into session;
   * Closes #312.
