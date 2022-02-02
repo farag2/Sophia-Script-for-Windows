@@ -504,6 +504,25 @@
   {
     "Id": 316,
     "Region": "UI & Personalization",
+    "Function": "TaskbarSearch",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Ausblenden der Suche in der Taskleiste"
+      },
+      "One": {
+        "Tag": "SearchIcon",
+        "ToolTip": "Das Suchsymbol in der Taskleiste anzeigen"
+      },
+      "Two": {
+        "Tag": "SearchBox",
+        "ToolTip": "Das Suchfeld in der Taskleiste anzeigen (Standardeinstellung)"
+      }
+    }
+  },
+  {
+    "Id": 317,
+    "Region": "UI & Personalization",
     "Function": "TaskViewButton",
     "Arg": {
       "Zero": {
@@ -517,7 +536,7 @@
     }
   },
   {
-    "Id": 317,
+    "Id": 318,
     "Region": "UI & Personalization",
     "Function": "PeopleTaskbar",
     "Arg": {
@@ -532,7 +551,7 @@
     }
   },
   {
-    "Id": 318,
+    "Id": 319,
     "Region": "UI & Personalization",
     "Function": "SecondsInSystemClock",
     "Arg": {
@@ -543,25 +562,6 @@
       "One": {
         "Tag": "Hide",
         "ToolTip": "Sekunden auf der Taskleistenuhr ausblenden (Standardeinstellung)"
-      }
-    }
-  },
-  {
-    "Id": 319,
-    "Region": "UI & Personalization",
-    "Function": "TaskbarSearch",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Ausblenden der Suche in der Taskleiste"
-      },
-      "One": {
-        "Tag": "SearchIcon",
-        "ToolTip": "Das Suchsymbol in der Taskleiste anzeigen"
-      },
-      "Two": {
-        "Tag": "SearchBox",
-        "ToolTip": "Das Suchfeld in der Taskleiste anzeigen (Standardeinstellung)"
       }
     }
   },

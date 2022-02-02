@@ -505,6 +505,25 @@
   {
     "Id": 316,
     "Region": "UI & Personalization",
+    "Function": "TaskbarSearch",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Esconder a pesquisa na barra de tarefas"
+      },
+      "One": {
+        "Tag": "SearchIcon",
+        "ToolTip": "Mostra o ícone de pesquisa na barra de tarefas"
+      },
+      "Two": {
+        "Tag": "SearchBox",
+        "ToolTip": "Mostra a caixa de pesquisa na barra de tarefas (valor padrão)"
+      }
+    }
+  },
+  {
+    "Id": 317,
+    "Region": "UI & Personalization",
     "Function": "TaskViewButton",
     "Arg": {
       "Zero": {
@@ -518,7 +537,7 @@
     }
   },
   {
-    "Id": 317,
+    "Id": 318,
     "Region": "UI & Personalization",
     "Function": "PeopleTaskbar",
     "Arg": {
@@ -533,7 +552,7 @@
     }
   },
   {
-    "Id": 318,
+    "Id": 319,
     "Region": "UI & Personalization",
     "Function": "SecondsInSystemClock",
     "Arg": {
@@ -544,25 +563,6 @@
       "One": {
         "Tag": "Hide",
         "ToolTip": "Ocultar segundos no relógio da barra de tarefas (valor padrão)"
-      }
-    }
-  },
-  {
-    "Id": 319,
-    "Region": "UI & Personalization",
-    "Function": "TaskbarSearch",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Esconder a pesquisa na barra de tarefas"
-      },
-      "One": {
-        "Tag": "SearchIcon",
-        "ToolTip": "Mostra o ícone de pesquisa na barra de tarefas"
-      },
-      "Two": {
-        "Tag": "SearchBox",
-        "ToolTip": "Mostra a caixa de pesquisa na barra de tarefas (valor padrão)"
       }
     }
   },

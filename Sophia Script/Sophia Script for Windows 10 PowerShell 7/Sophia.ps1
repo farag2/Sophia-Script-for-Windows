@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10 (PowerShell 7)"
 
-	Version: v5.12.10
-	Date: 31.12.2021
+	Version: v5.12.11
+	Date: 02.02.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -71,7 +71,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.12.10 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2022"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.12.11 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2022"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -87,7 +87,7 @@ Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia -Base
 	.\Sophia.ps1 -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
 
 	.NOTES
-	Separate functions with a comma
+	Use commas to separate funtions
 	Разделяйте функции запятыми
 #>
 if ($Functions)
@@ -202,11 +202,11 @@ WindowsWelcomeExperience -Hide
 # Показывать экран приветствия Windows после обновлений и иногда при входе, чтобы сообщить о новых функциях и предложениях (значение по умолчанию)
 # WindowsWelcomeExperience -Show
 
-# Get tip, trick, and suggestions as you use Windows (default value)
+# Get tips, tricks, and suggestions as you use Windows (default value)
 # Получать советы, подсказки и рекомендации при использованию Windows (значение по умолчанию)
 WindowsTips -Enable
 
-# Do not get tip, trick, and suggestions as you use Windows
+# Do not get tips, tricks, and suggestions as you use Windows
 # Не получать советы, подсказки и рекомендации при использовании Windows
 # WindowsTips -Disable
 
@@ -372,6 +372,18 @@ QuickAccessFrequentFolders -Hide
 # Показать часто используемые папки на панели быстрого доступа (значение по умолчанию)
 # QuickAccessFrequentFolders -Show
 
+# Hide the search on the taskbar
+# Скрыть поле или значок поиска на панели задач
+TaskbarSearch -Hide
+
+# Show the search icon on the taskbar
+# Показать значок поиска на панели задач
+# TaskbarSearch -SearchIcon
+
+# Show the search box on the taskbar (default value)
+# Показать поле поиска на панели задач (значение по умолчанию)
+# TaskbarSearch -SearchBox
+
 # Hide the Task View button on the taskbar
 # Скрыть кнопку Просмотра задач
 TaskViewButton -Hide
@@ -395,18 +407,6 @@ SecondsInSystemClock -Show
 # Hide seconds on the taskbar clock (default value)
 # Скрыть секунды в системных часах на панели задач (значение по умолчанию)
 # SecondsInSystemClock -Hide
-
-# Hide the search on the taskbar
-# Скрыть поле или значок поиска на панели задач
-TaskbarSearch -Hide
-
-# Show the search icon on the taskbar
-# Показать значок поиска на панели задач
-# TaskbarSearch -SearchIcon
-
-# Show the search box on the taskbar (default value)
-# Показать поле поиска на панели задач (значение по умолчанию)
-# TaskbarSearch -SearchBox
 
 # Hide the Windows Ink Workspace button on the taskbar
 # Скрыть кнопку Windows Ink Workspace на панели задач
@@ -1179,7 +1179,7 @@ CommandLineProcessAudit -Enable
 # CommandLineProcessAudit -Disable
 
 <#
-	Create the "Process Creation" Event Viewer сustom view to log the executed processes and their arguments
+	Create the "Process Creation" сustom view in the Event Viewer to log executed processes and their arguments
 	In order this feature to work events auditing (AuditProcess -Enable) and command line (CommandLineProcessAudit -Enable) in process creation events will be enabled
 
 	Создать настраиваемое представление "Создание процесса" в Просмотре событий для журналирования запускаемых процессов и их аргументов
@@ -1187,7 +1187,7 @@ CommandLineProcessAudit -Enable
 #>
 EventViewerCustomView -Enable
 
-# Remove "Process Creation" Event Viewer сustom view to log the executed processes and their arguments (default value)
+# Remove the "Process Creation" custom view in the Event Viewer to log executed processes and their arguments (default value)
 # Удалить настаиваемое представление "Создание процесса" в Просмотре событий для журналирования запускаемых процессов и их аргументов (значение по умолчанию)
 # EventViewerCustomView -Disable
 
@@ -1252,7 +1252,7 @@ MSIExtractContext -Show
 
 # Hide the "Extract all" item from the Windows Installer (.msi) context menu (default value)
 # Скрыть пункт "Извлечь все" из контекстного меню Windows Installer (.msi) (значение по умолчанию)
-# MSIExtractContext -Remove
+# MSIExtractContext -Hide
 
 # Show the "Install" item in the Cabinet (.cab) filenames extensions context menu
 # Отобразить пункт "Установить" в контекстное меню .cab архивов

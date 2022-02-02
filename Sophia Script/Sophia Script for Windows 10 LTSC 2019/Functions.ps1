@@ -3,7 +3,7 @@
 	The TAB completion for functions and their arguments
 
 	Version: v5.2.19
-	Date: 31.12.2021
+	Date: 02.02.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -24,7 +24,7 @@
 		Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 
 	.NOTES
-	Separate functions with a comma
+	Use commas to separate funtions
 
 	.LINK
 	https://github.com/farag2/Sophia-Script-for-Windows
@@ -62,7 +62,6 @@ Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
 Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia -BaseDirectory $PSScriptRoot\Localizations
 
 # The mandatory checkings. Please, do not comment out this function
-# Обязательные проверки. Пожалуйста, не комментируйте данную функцию
 Checkings
 
 $Parameters = @{

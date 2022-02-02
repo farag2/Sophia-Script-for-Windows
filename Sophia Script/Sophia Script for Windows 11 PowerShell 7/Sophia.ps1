@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 11"
 
-	Version: v6.0.11
-	Date: 31.12.2021
+	Version: v6.0.12
+	Date: 02.02.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -27,7 +27,7 @@
 	.NOTES
 	Supported Windows 11 version
 	Version: 21H2
-	Build: 22000.376
+	Build: 22000.438
 	Editions: Home/Pro/Enterprise
 
 	.NOTES
@@ -70,7 +70,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.0.11 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2022"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.0.12 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2022"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -86,7 +86,7 @@ Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia -Base
 	.\Sophia.ps1 -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
 
 	.NOTES
-	Separate functions with a comma
+	Use commas to separate funtions
 	Разделяйте функции запятыми
 #>
 if ($Functions)
@@ -178,7 +178,7 @@ SigninInfo -Disable
 # SigninInfo -Enable
 
 # Do not let websites provide locally relevant content by accessing language list
-# Не позволить веб-сайтам предоставлять местную информацию за счет доступа к списку языков
+# Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков
 LanguageListAccess -Disable
 
 # Let websites provide locally relevant content by accessing language list (default value)
@@ -1110,7 +1110,7 @@ CommandLineProcessAudit -Enable
 # CommandLineProcessAudit -Disable
 
 <#
-	Create the "Process Creation" Event Viewer сustom view to log the executed processes and their arguments
+	Create the "Process Creation" сustom view in the Event Viewer to log executed processes and their arguments
 	In order this feature to work events auditing (AuditProcess -Enable) and command line (CommandLineProcessAudit -Enable) in process creation events will be enabled
 
 	Создать настраиваемое представление "Создание процесса" в Просмотре событий для журналирования запускаемых процессов и их аргументов
@@ -1118,7 +1118,7 @@ CommandLineProcessAudit -Enable
 #>
 EventViewerCustomView -Enable
 
-# Remove "Process Creation" Event Viewer сustom view to log the executed processes and their arguments (default value)
+# Remove the "Process Creation" custom view in the Event Viewer to log executed processes and their arguments (default value)
 # Удалить настаиваемое представление "Создание процесса" в Просмотре событий для журналирования запускаемых процессов и их аргументов (значение по умолчанию)
 # EventViewerCustomView -Disable
 
@@ -1196,7 +1196,7 @@ MSIExtractContext -Show
 
 # Hide the "Extract all" item from the Windows Installer (.msi) context menu (default value)
 # Скрыть пункт "Извлечь все" из контекстного меню Windows Installer (.msi) (значение по умолчанию)
-# MSIExtractContext -Remove
+# MSIExtractContext -Hide
 
 # Show the "Install" item in the Cabinet (.cab) filenames extensions context menu
 # Отобразить пункт "Установить" в контекстное меню .cab архивов

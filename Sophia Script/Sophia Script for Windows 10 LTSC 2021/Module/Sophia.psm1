@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.12.9
-	Date: 31.12.2021
+	Version: v5.12.10
+	Date: 02.02.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -7654,7 +7654,7 @@ function RunPowerShellShortcut
 	PinToStart -Tiles ControlPanel -UnpinAll
 
 	.NOTES
-	Separate arguments with a comma
+	Use commas to separate arguments
 	Current user
 #>
 function PinToStart
@@ -8803,7 +8803,7 @@ function CommandLineProcessAudit
 	The "Process Creation" Event Viewer custom view
 
 	.PARAMETER Enable
-	Create the "Process Creation" Event Viewer сustom view to log the executed processes and their arguments
+	Create the "Process Creation" Event Viewer сustom view to log executed processes and their arguments
 
 	.PARAMETER Disable
 	Remove the "Process Creation" Event Viewer custom view

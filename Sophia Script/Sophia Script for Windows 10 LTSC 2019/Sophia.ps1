@@ -3,7 +3,7 @@
 	Default preset file for "Sophia Script for Windows 10 LTSC 2019"
 
 	Version: v5.2.19
-	Date: 31.12.2021
+	Date: 02.02.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -87,7 +87,7 @@ Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia -Base
 	.\Sophia.ps1 -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
 
 	.NOTES
-	Separate functions with a comma
+	Use commas to separate funtions
 	Разделяйте функции запятыми
 #>
 if ($Functions)
@@ -881,7 +881,7 @@ CommandLineProcessAudit -Enable
 # CommandLineProcessAudit -Disable
 
 <#
-	Create the "Process Creation" Event Viewer сustom view to log the executed processes and their arguments
+	Create the "Process Creation" Event Viewer сustom view to log executed processes and their arguments
 	In order this feature to work events auditing (AuditProcess -Enable) and command line (CommandLineProcessAudit -Enable) in process creation events will be enabled
 
 	Создать настраиваемое представление "Создание процесса" в Просмотре событий для журналирования запускаемых процессов и их аргументов
@@ -889,7 +889,7 @@ CommandLineProcessAudit -Enable
 #>
 EventViewerCustomView -Enable
 
-# Remove "Process Creation" Event Viewer сustom view to log the executed processes and their arguments (default value)
+# Remove "Process Creation" Event Viewer сustom view to log executed processes and their arguments (default value)
 # Удалить настаиваемое представление "Создание процесса" в Просмотре событий для журналирования запускаемых процессов и их аргументов (значение по умолчанию)
 # EventViewerCustomView -Disable
 

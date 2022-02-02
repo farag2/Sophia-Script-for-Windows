@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v6.0.11
-	Date: 31.12.2021
+	Version: v6.0.12
+	Date: 02.02.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -16,7 +16,7 @@
 	.NOTES
 	Supported Windows 11 version
 	Version: 21H2
-	Build: 22000.376
+	Build: 22000.438
 	Editions: Home/Pro/Enterprise
 
 	.NOTES
@@ -66,8 +66,8 @@ function Checkings
 		}
 	}
 
-	# Check whether the OS minor build version is 376 minimum
-	switch ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -ge 376)
+	# Check whether the OS minor build version is 438 minimum
+	switch ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -ge 438)
 	{
 		$false
 		{
@@ -10183,7 +10183,7 @@ function PUAppsDetection
 	There is a bug in KVM with QEMU: enabling this function causes VM to freeze up during the loading phase of Windows
 
 	.NOTES
-	Current user
+	Machine-wide
 #>
 function DefenderSandbox
 {
@@ -10348,10 +10348,10 @@ function CommandLineProcessAudit
 	The "Process Creation" Event Viewer custom view
 
 	.PARAMETER Enable
-	Create the "Process Creation" Event Viewer сustom view to log the executed processes and their arguments
+	Create the "Process Creation" сustom view in the Event Viewer to log executed processes and their arguments
 
 	.PARAMETER Disable
-	Remove the "Process Creation" Event Viewer custom view
+	Remove the "Process Creation" custom view in the Event Viewer
 
 	.EXAMPLE
 	EventViewerCustomView -Enable

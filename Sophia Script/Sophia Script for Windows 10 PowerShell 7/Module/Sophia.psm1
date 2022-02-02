@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.12.10
-	Date: 31.12.2021
+	Version: v5.12.11
+	Date: 02.02.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -2227,6 +2227,74 @@ function QuickAccessFrequentFolders
 		"Show"
 		{
 			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name ShowFrequent -PropertyType DWord -Value 1 -Force
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	Search on the taskbar
+
+	.PARAMETER Hide
+	Hide the search on the taskbar
+
+	.PARAMETER SearchIcon
+	Show the search icon on the taskbar
+
+	.PARAMETER SearchBox
+	Show the search box on the taskbar
+
+	.EXAMPLE
+	TaskbarSearch -SearchBox
+
+	.EXAMPLE
+	TaskbarSearch -SearchIcon
+
+	.EXAMPLE
+	TaskbarSearch -Hide
+
+	.NOTES
+	Current user
+#>
+function TaskbarSearch
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Hide"
+		)]
+		[switch]
+		$Hide,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "SearchIcon"
+		)]
+		[switch]
+		$SearchIcon,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "SearchBox"
+		)]
+		[switch]
+		$SearchBox
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Hide"
+		{
+			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -PropertyType DWord -Value 0 -Force
+		}
+		"SearchIcon"
+		{
+			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -PropertyType DWord -Value 1 -Force
+		}
+		"SearchBox"
+		{
+			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -PropertyType DWord -Value 2 -Force
 		}
 	}
 }
@@ -8561,7 +8629,7 @@ function RunPowerShellShortcut
 	PinToStart -Tiles ControlPanel -UnpinAll
 
 	.NOTES
-	Separate arguments with a comma
+	Use commas to separate arguments
 	Current user
 #>
 function PinToStart
@@ -10771,7 +10839,7 @@ function PUAppsDetection
 	There is a bug in KVM with QEMU: enabling this function causes VM to freeze up during the loading phase of Windows
 
 	.NOTES
-	Current user
+	Machine-wide
 #>
 function DefenderSandbox
 {
@@ -10936,10 +11004,10 @@ function CommandLineProcessAudit
 	The "Process Creation" Event Viewer custom view
 
 	.PARAMETER Enable
-	Create the "Process Creation" Event Viewer сustom view to log the executed processes and their arguments
+	Create the "Process Creation" сustom view in the Event Viewer to log executed processes and their arguments
 
 	.PARAMETER Disable
-	Remove the "Process Creation" Event Viewer custom view
+	Remove the "Process Creation" custom view in the Event Viewer
 
 	.EXAMPLE
 	EventViewerCustomView -Enable

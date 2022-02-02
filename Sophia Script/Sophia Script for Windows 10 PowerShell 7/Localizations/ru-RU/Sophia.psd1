@@ -6,7 +6,7 @@ UnsupportedLanguageMode                   = Сессия PowerShell работа
 LoggedInUserNotAdmin                      = Текущий вошедший пользователь не обладает правами администратора
 UnsupportedPowerShell                     = Вы пытаетесь запустить скрипт в PowerShell {0}.{1}. Запустите скрипт в соответствующей версии PowerShell
 UnsupportedISE                            = Скрипт не поддерживает работу через Windows PowerShell ISE
-Win10TweakerWarning                       = Ваша ОС, возможно, через бэкдор в Win 10 Tweaker была заражена трояном
+Win10TweakerWarning                       = Ваша ОС, возможно, через бэкдор в Win 10 Tweaker была заражена трояном. Подробнее: https://itnan.ru/post.php?c=1&p=557388
 Windows10DebloaterWarning                 = Стабильность Вашей ОС могла быть нарушена использованием скрипта Windows10Debloater от Sycnex. В целях профилактики переустановите ОС
 PowerShellLibraries                       = В папке Libraries отсутствутствуют файлы. Пожалуйста, перекачайте архив
 UnsupportedRelease                        = Обнаружена новая версия

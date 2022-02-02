@@ -178,11 +178,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Get tips and suggestions when I use Windows (default value)"
+        "ToolTip": "Get tips, tricks, and suggestions as you use Windows (default value)"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Do not get tips and suggestions when I use Windows"
+        "ToolTip": "Do not get tips, tricks, and suggestions as you use Windows"
       }
     }
   },
@@ -504,6 +504,25 @@
   {
     "Id": 316,
     "Region": "UI & Personalization",
+    "Function": "TaskbarSearch",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Hide the search on the taskbar"
+      },
+      "One": {
+        "Tag": "SearchIcon",
+        "ToolTip": "Show the search icon on the taskbar"
+      },
+      "Two": {
+        "Tag": "SearchBox",
+        "ToolTip": "Show the search box on the taskbar (default value)"
+      }
+    }
+  },
+  {
+    "Id": 317,
+    "Region": "UI & Personalization",
     "Function": "TaskViewButton",
     "Arg": {
       "Zero": {
@@ -517,7 +536,7 @@
     }
   },
   {
-    "Id": 317,
+    "Id": 318,
     "Region": "UI & Personalization",
     "Function": "PeopleTaskbar",
     "Arg": {
@@ -532,7 +551,7 @@
     }
   },
   {
-    "Id": 318,
+    "Id": 319,
     "Region": "UI & Personalization",
     "Function": "SecondsInSystemClock",
     "Arg": {
@@ -543,25 +562,6 @@
       "One": {
         "Tag": "Hide",
         "ToolTip": "Hide seconds on the taskbar clock (default value)"
-      }
-    }
-  },
-  {
-    "Id": 319,
-    "Region": "UI & Personalization",
-    "Function": "TaskbarSearch",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the search on the taskbar"
-      },
-      "One": {
-        "Tag": "SearchIcon",
-        "ToolTip": "Show the search icon on the taskbar"
-      },
-      "Two": {
-        "Tag": "SearchBox",
-        "ToolTip": "Show the search box on the taskbar (default value)"
       }
     }
   },
@@ -1795,11 +1795,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Create the \"Process Creation\" Event Viewer сustom view to log the executed processes and their arguments. In order this feature to work events auditing (AuditProcess -Enable) and command line (CommandLineProcessAudit -Enable) in process creation events will be enabled"
+        "ToolTip": "Create the \"Process Creation\" сustom view in the Event Viewer to log the executed processes and their arguments. In order this feature to work events auditing (AuditProcess -Enable) and command line (CommandLineProcessAudit -Enable) in process creation events will be enabled"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Remove \"Process Creation\" Event Viewer сustom view to log the executed processes and their arguments (default value)"
+        "ToolTip": "Remove the \"Process Creation\" custom view in the Event Viewer to log the executed processes and their arguments (default value)"
       }
     }
   },
