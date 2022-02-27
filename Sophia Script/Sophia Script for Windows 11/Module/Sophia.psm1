@@ -9313,7 +9313,7 @@ function CheckUWPAppsUpdates
 	XboxGameBar -Enable
 
 	.NOTES
-	Even if you uninstalled Xbox Game Bar app and want to disable it, you need to create these reg keys anyway to prevent popping up the "You'll need a new app to open this ms-gamingoverlay" warning
+	To prevent popping up the "You'll need a new app to open this `ms-gamingoverlay`" warning, you need to disable the `Xbox Game Bar` app, even if you uninstalled it before.
 
 	.NOTES
 	Current user
