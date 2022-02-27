@@ -313,11 +313,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Show",
-        "ToolTip": "Show file name extensions"
+        "ToolTip": "Show the file name extensions"
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Hide file name extensions (default value)"
+        "ToolTip": "Hide the file name extensions (default value)"
       }
     }
   },
@@ -941,11 +941,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Display the Stop error information on the BSoD"
+        "ToolTip": "Display Stop error code when BSoD occurs"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Do not display the Stop error information on the BSoD (default value)"
+        "ToolTip": "Do not Stop error code when BSoD occurs (default value)"
       }
     }
   },
@@ -1395,7 +1395,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Install the latest supported Microsoft Visual C++ Redistributable 2015—2022 x64"
+        "ToolTip": "Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 x64"
       }
     }
   },
@@ -1795,11 +1795,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Create the \"Process Creation\" сustom view in the Event Viewer to log the executed processes and their arguments. In order this feature to work events auditing (AuditProcess -Enable) and command line (CommandLineProcessAudit -Enable) in process creation events will be enabled"
+        "ToolTip": "Create the \"Process Creation\" сustom view in the Event Viewer to log executed processes and their arguments. In order this feature to work events auditing (AuditProcess -Enable) and command line (CommandLineProcessAudit -Enable) in process creation events will be enabled"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Remove the \"Process Creation\" custom view in the Event Viewer to log the executed processes and their arguments (default value)"
+        "ToolTip": "Remove the \"Process Creation\" custom view in the Event Viewer to log executed processes and their arguments (default value)"
       }
     }
   },

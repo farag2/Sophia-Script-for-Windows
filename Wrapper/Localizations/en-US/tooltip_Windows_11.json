@@ -328,11 +328,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Show",
-        "ToolTip": "Show file name extensions"
+        "ToolTip": "Show the file name extensions"
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Hide file name extensions (default value)"
+        "ToolTip": "Hide the file name extensions (default value)"
       }
     }
   },
@@ -858,11 +858,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Display the Stop error information on the BSoD"
+        "ToolTip": "Display Stop error code when BSoD occurs"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Do not display the Stop error information on the BSoD (default value)"
+        "ToolTip": "Do not Stop error code when BSoD occurs (default value)"
       }
     }
   },
@@ -1306,6 +1306,17 @@
     }
   },
   {
+    "Id": 536,
+    "Region": "System",
+    "Function": "InstallVCRedistx64",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 x64"
+      }
+    }
+  },
+  {
     "Id": 600,
     "Region": "WSL",
     "Function": "WSL",
@@ -1625,11 +1636,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Create the \"Process Creation\" Event Viewer сustom view to log the executed processes and their arguments. In order this feature to work events auditing (AuditProcess -Enable) and command line (CommandLineProcessAudit -Enable) in process creation events will be enabled"
+        "ToolTip": "Create the \"Process Creation\" Event Viewer сustom view to log executed processes and their arguments. In order this feature to work events auditing (AuditProcess -Enable) and command line (CommandLineProcessAudit -Enable) in process creation events will be enabled"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Remove \"Process Creation\" Event Viewer сustom view to log the executed processes and their arguments (default value)"
+        "ToolTip": "Remove \"Process Creation\" Event Viewer сustom view to log executed processes and their arguments (default value)"
       }
     }
   },
@@ -1970,11 +1981,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Show",
-        "ToolTip": "Show the \"Open in Windows Terminal (Admin)\" item in the Desktop and folders context menu"
+        "ToolTip": "Show the \"Open in Windows Terminal\" (Admin) item in the Desktop and folders context menu"
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Hide the \"Open in Windows Terminal (Admin)\" item from the Desktop and folders context menu (default value)"
+        "ToolTip": "Hide the \"Open in Windows Terminal\" (Admin) item from the Desktop and folders context menu (default value)"
       }
     }
   },

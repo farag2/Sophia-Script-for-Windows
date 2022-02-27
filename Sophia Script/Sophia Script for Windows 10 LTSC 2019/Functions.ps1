@@ -3,7 +3,7 @@
 	The TAB completion for functions and their arguments
 
 	Version: v5.2.19
-	Date: 02.02.2022
+	Date: 27.02.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic

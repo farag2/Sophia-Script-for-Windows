@@ -1983,11 +1983,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Oculte a opção de menu \"Abrir no Windows Terminal\" no menu de contexto de pastas"
+        "ToolTip": "Oculte a opção de menu \"Abrir em Windows Terminal\" no menu de contexto de pastas"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Mostrar a opção de menu \"Abrir no Windows Terminal\" no menu de contexto das pastas (valor padrão)"
+        "ToolTip": "Mostrar a opção de menu \"Abrir em Windows Terminal\" no menu de contexto das pastas (valor padrão)"
       }
     }	
   },
@@ -1998,11 +1998,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Show",
-        "ToolTip": "Mostrar o item \"Abrir no Windows Terminal (Admin)\" no menu de contexto da área de trabalho e pastas"
+        "ToolTip": "Mostrar o item \"Abrir em Terminal do Windows\" (administrador) no menu de contexto do Desktop e pastas"
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Oculte o item \"Abrir no Windows Terminal (Admin)\" do menu de contexto da área de trabalho e pastas (valor padrão)"
+        "ToolTip": "Esconder o item \"Abrir em Terminal Windows\" (administrador) no menu de contexto do Desktop e pastas. (valor padrão)"
       }
     }
   },

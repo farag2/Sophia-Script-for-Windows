@@ -3,7 +3,7 @@
 	Default preset file for "Sophia Script for Windows 10 LTSC 2019"
 
 	Version: v5.2.19
-	Date: 02.02.2022
+	Date: 27.02.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -221,11 +221,11 @@ HiddenItems -Enable
 # Не показывать скрытые файлы, папки и диски (значение по умолчанию)
 # HiddenItems -Disable
 
-# Show file name extensions
+# Show the file name extensions
 # Отобразить расширения имён файлов
 FileExtensions -Show
 
-# Hide file name extensions (default value)
+# Hide the file name extensions (default value)
 # Скрывать расширения имён файлов файлов (значение по умолчанию)
 # FileExtensions -Hide
 
@@ -481,12 +481,12 @@ Win32LongPathLimit -Disable
 # Включить ограничение Windows на 260 символов в пути (значение по умолчанию)
 # Win32LongPathLimit -Enable
 
-# Display the Stop error information on the BSoD
-# Отображать Stop-ошибку при появлении BSoD
+# Display Stop error code when BSoD occurs
+# Отображать код Stop-ошибки при появлении BSoD
 BSoDStopError -Enable
 
-# Do not display the Stop error information on the BSoD (default value)
-# Не отображать Stop-ошибку при появлении BSoD (значение по умолчанию)
+# Do not Stop error code when BSoD occurs (default value)
+# Не отображать код Stop-ошибки при появлении BSoD (значение по умолчанию)
 # BSoDStopError -Disable
 
 # Choose when to be notified about changes to your computer: never notify
@@ -740,8 +740,8 @@ ActiveHours -Automatically
 # Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .txt -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
 
 <#
-	Install the latest supported Microsoft Visual C++ Redistributable 2015—2022 x64
-	Установить последнюю поддерживаемую версию Microsoft Visual C++ Redistributable 2015-2022 x64
+	Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 x64
+	Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2022 x64
 
 	https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist
 #>

@@ -1996,11 +1996,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Show",
-        "ToolTip": "Mostrar el elemento \"Abrir en la terminal de Windows (administrador)\" en el menú contextual del escritorio y las carpetas"
+        "ToolTip": "Mostrar el elemento \"Abrir en Windows Terminal\" (administrador) en el menú contextual del escritorio y las carpetas"
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Ocultar el elemento \"Abrir en la terminal de Windows (administrador)\" del menú contextual del escritorio y las carpetas (valor predeterminado)"
+        "ToolTip": "Ocultar el elemento \"Abrir en Windows Terminal\" (administrador) del menú contextual del escritorio y las carpetas (valor predeterminado)"
       }
     }
   },

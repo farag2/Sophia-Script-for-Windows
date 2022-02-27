@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 11"
 
-	Version: v6.0.12
-	Date: 02.02.2022
+	Version: v6.0.13
+	Date: 27.02.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -70,7 +70,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.0.12 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2022"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.0.13 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2022"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -283,11 +283,11 @@ HiddenItems -Enable
 # Не показывать скрытые файлы, папки и диски (значение по умолчанию)
 # HiddenItems -Disable
 
-# Show file name extensions
+# Show the file name extensions
 # Отобразить расширения имён файлов
 FileExtensions -Show
 
-# Hide file name extensions (default value)
+# Hide the file name extensions (default value)
 # Скрывать расширения имён файлов файлов (значение по умолчанию)
 # FileExtensions -Hide
 
@@ -886,8 +886,8 @@ DefaultTerminalApp -WindowsTerminal
 # DefaultTerminalApp -ConsoleHost
 
 <#
-	Install the latest supported Microsoft Visual C++ Redistributable 2015—2022 x64
-	Установить последнюю поддерживаемую версию Microsoft Visual C++ Redistributable 2015-2022 x64
+	Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 x64
+	Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2022 x64
 
 	https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist
 #>
@@ -1310,8 +1310,8 @@ OpenWindowsTerminalContext -Hide
 # Отобразить пункт "Открыть в Терминале Windows" в контекстном меню папок (значение по умолчанию)
 # OpenWindowsTerminalContext -Show
 
-# Show the "Open in Windows Terminal (Admin)" item in the Desktop and folders context menu
-# Отобразить пункт "Открыть в Терминале Windows (Администратор)" в контекстном меню Рабочего стола и папок
+# Show the "Open in Windows Terminal" (Admin) item in the Desktop and folders context menu
+# Отобразить пункт "Открыть в Терминале Windows" (Администратор) в контекстном меню Рабочего стола и папок
 OpenWindowsTerminalAdminContext -Show
 
 # Hide the "Open in Windows Terminal (Admin)" item from the Desktop and folders context menu (default value)

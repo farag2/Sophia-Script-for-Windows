@@ -2101,11 +2101,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Show",
-        "ToolTip": "Element \"In Windows Terminal (Admin) öffnen\" im Kontextmenü von Desktop und Ordnern anzeigen"
+        "ToolTip": "Zeigen Sie das Element \"In Windows Terminal öffnen\" (Admin) im Kontextmenü von Desktop und Ordnern an "
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Element \"In Windows-Terminal (Admin) öffnen\" im Kontextmenü von Desktop und Ordnern ausblenden (Standardwert)"
+        "ToolTip": "Blenden Sie das Element \"Im Windows-Terminal öffnen (Admin)\" aus dem Kontextmenü des Desktops und der Ordner aus (Standardwert)"
       }
     }
   },

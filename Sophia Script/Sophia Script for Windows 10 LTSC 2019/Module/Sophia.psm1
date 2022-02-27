@@ -3,7 +3,7 @@
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
 	Version: v5.2.19
-	Date: 02.02.2022
+	Date: 27.02.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -205,21 +205,30 @@ function Checkings
 	}
 
 	# Turn off Controlled folder access to let the script proceed
-	switch ((Get-MpPreference).EnableControlledFolderAccess)
+	# Checking whether Defender wasn't disabled first
+	$productState = (Get-CimInstance -Namespace root/SecurityCenter2 -ClassName Antivirusproduct | Where-Object -FilterScript {$_.instanceGuid -eq "{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}"}).productState
+	$DefenderState = ('0x{0:x}' -f $productState).Substring(3, 2)
+	if ($DefenderState -notmatch "00|01")
 	{
-		"1"
-		{
-			Write-Warning -Message $Localization.ControlledFolderAccessDisabled
+		# Defender is enabled
+		$Script:DefenderState = $true
 
-			$Script:ControlledFolderAccess = $true
-			Set-MpPreference -EnableControlledFolderAccess Disabled
-
-			# Open "Ransomware protection" page
-			Start-Process -FilePath windowsdefender://RansomwareProtection
-		}
-		"0"
+		switch ((Get-MpPreference).EnableControlledFolderAccess)
 		{
-			$Script:ControlledFolderAccess = $false
+			"1"
+			{
+				Write-Warning -Message $Localization.ControlledFolderAccessDisabled
+
+				$Script:ControlledFolderAccess = $true
+				Set-MpPreference -EnableControlledFolderAccess Disabled
+
+				# Open "Ransomware protection" page
+				Start-Process -FilePath windowsdefender://RansomwareProtection
+			}
+			"0"
+			{
+				$Script:ControlledFolderAccess = $false
+			}
 		}
 	}
 
@@ -1173,10 +1182,10 @@ function HiddenItems
 	File name extensions
 
 	.PARAMETER Show
-	Show file name extensions
+	Show the file name extensions
 
 	.PARAMETER Hide
-	Hide file name extensions
+	Hide the file name extensions
 
 	.EXAMPLE
 	FileExtensions -Show
@@ -2166,7 +2175,7 @@ function NewAppInstalledNotification
 		}
 		"Show"
 		{
-			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoNewAppAlert -Force
+			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoNewAppAlert -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -3095,13 +3104,13 @@ function Win32LongPathLimit
 
 <#
 	.SYNOPSIS
-	The Stop error information display on the BSoD
+	Stop error code when BSoD occurs
 
 	.PARAMETER Enable
-	Display the Stop error information on the BSoD
+	Display Stop error code when BSoD occurs
 
 	.PARAMETER Disable
-	Do not display the Stop error information on the BSoD
+	Do not Stop error code when BSoD occurs
 
 	.EXAMPLE
 	BSoDStopError -Enable
@@ -6655,7 +6664,7 @@ public static void Refresh()
 
 <#
 	.SYNOPSIS
-	Install the latest supported Microsoft Visual C++ Redistributable 2015—2022 x64
+	Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 x64
 
 	.EXAMPLE
 	InstallVCRedistx64
@@ -9080,9 +9089,12 @@ public static void PostMessage()
 	Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
 
 	# Turn on Controlled folder access if it was turned off
-	if ($Script:ControlledFolderAccess)
+	if ($Script:DefenderState)
 	{
-		Set-MpPreference -EnableControlledFolderAccess Enabled
+		if ($Script:ControlledFolderAccess)
+		{
+			Set-MpPreference -EnableControlledFolderAccess Enabled
+		}
 	}
 
 	# In order for the changes to take effect the File Explorer process has to be restarted

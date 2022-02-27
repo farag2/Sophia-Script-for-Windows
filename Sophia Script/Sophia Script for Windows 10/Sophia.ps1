@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10"
 
-	Version: v5.12.11
-	Date: 02.02.2022
+	Version: v5.12.12
+	Date: 27.02.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -71,7 +71,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.12.11 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2022"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.12.12 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2022"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -87,7 +87,7 @@ Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia -Base
 	.\Sophia.ps1 -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
 
 	.NOTES
-	Separate functions with a comma
+	Use commas to separate funtions
 	Разделяйте функции запятыми
 #>
 if ($Functions)
@@ -926,8 +926,8 @@ RestartDeviceAfterUpdate -Enable
 UninstallPCHealthCheck
 
 <#
-	Install the latest supported Microsoft Visual C++ Redistributable 2015—2022 x64
-	Установить последнюю поддерживаемую версию Microsoft Visual C++ Redistributable 2015-2022 x64
+	Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 x64
+	Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2022 x64
 
 	https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist
 #>
