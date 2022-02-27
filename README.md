@@ -73,17 +73,17 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 |Version|   Build   |      Editions     | Script version |
 |:-----:|:---------:|:-----------------:|:--------------:|
-| 21H2  | 22000.376 |Home/Pro/Enterprise|[6.0.11](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H2  | 22000.438 |Home/Pro/Enterprise|[6.0.12](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 
 # Windows 10
 
 |Version|    Marketing name   | Build | Arch|      Editions          | Script version |
 |:-----:|:-------------------:|:----------:|:---:|:----------------------:|:--------------:|
-| 21H2  | October 2021 Update | 19044.1151 | x64 |Home/Pro/Enterprise|[5.12.10](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 21H2  | Enterprise LTSC 2021| 19044.1348 | x64 |   Enterprise      |[5.12.9](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 21H1  | May 2021 Update     | 19043.1151 | x64 |Home/Pro/Enterprise|[5.12.10](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 20H2  | October 2020 Update | 19042.1151 | x64 |Home/Pro/Enterprise|[5.12.10](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 2004  | May 2020 Update     | 19041.1151 | x64 |Home/Pro/Enterprise|[5.12.10](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H2  | October 2021 Update | 19044.1151 | x64 |Home/Pro/Enterprise|[5.12.11](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H2  | Enterprise LTSC 2021| 19044.1348 | x64 |   Enterprise      |[5.12.10](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H1  | May 2021 Update     | 19043.1151 | x64 |Home/Pro/Enterprise|[5.12.11](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 20H2  | October 2020 Update | 19042.1151 | x64 |Home/Pro/Enterprise|[5.12.11](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 2004  | May 2020 Update     | 19041.1151 | x64 |Home/Pro/Enterprise|[5.12.11](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 | 1809  | Enterprise LTSC 2019| 17763      | x64 |   Enterprise      |[5.2.19](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 
 ## Screenshots
@@ -116,7 +116,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ### David's Sophia Script Wrapper
 
-![Wrapper](https://i.imgur.com/yS0eESG.png)
+![Wrapper](https://i.imgur.com/x0W7zqm.png)
 
 ## Videos
 
@@ -237,7 +237,7 @@ irm script.sophi.app | iex
 
 * The command will download and expand the latest Sophia Script archive (`without running`) according which Windows and PowerShell versions it is run on. If you run it on, e.g., Windows 11 via PowerShell 5.1, it will download Sophia Script for `Windows 11 PowerShell 5.1`.
 
-# Supported variations to launch the command on
+### Supported variations to launch the command on
 
 * Windows 10
   * PowerShell 5.1;
