@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.12.12 | 6.0.13 — 27.02.2021
+
+## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
+
+* Added the checking whether Defender wasn't disabled;
+* Fixed `XboxGameBar`;
+  * To prevent popping up the "You'll need a new app to open this `ms-gamingoverlay`" warning, you need to disable the `Xbox Game Bar` app, even if you uninstalled it before.
+* Updated descriptions.
+* Check out [SophiApp](https://github.com/Sophia-Community/SophiApp) 1.0.0.23 beta 3 :rocket:
+
+## 5.12.11 | 6.0.12 — 02.02.2021
+
+## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
+
+* Merged #315 & #326;
+* Updated descriptions.
+* Check out [SophiApp](https://github.com/Sophia-Community/SophiApp) 1.0.0.13 beta 2 :rocket:
+
 ## 5.12.10 | 6.0.11 — 31.12.2021
 
 ## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
