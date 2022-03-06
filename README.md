@@ -73,17 +73,17 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 |Version|   Build   |      Editions     | Script version |
 |:-----:|:---------:|:-----------------:|:--------------:|
-| 21H2  | 22000.438 |Home/Pro/Enterprise|[6.0.12](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H2  | 22000.438 |Home/Pro/Enterprise|[6.0.13](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 
 # Windows 10
 
 |Version|    Marketing name   | Build | Arch|      Editions          | Script version |
 |:-----:|:-------------------:|:----------:|:---:|:----------------------:|:--------------:|
-| 21H2  | October 2021 Update | 19044.1151 | x64 |Home/Pro/Enterprise|[5.12.11](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 21H2  | Enterprise LTSC 2021| 19044.1348 | x64 |   Enterprise      |[5.12.10](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 21H1  | May 2021 Update     | 19043.1151 | x64 |Home/Pro/Enterprise|[5.12.11](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 20H2  | October 2020 Update | 19042.1151 | x64 |Home/Pro/Enterprise|[5.12.11](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 2004  | May 2020 Update     | 19041.1151 | x64 |Home/Pro/Enterprise|[5.12.11](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H2  | October 2021 Update | 19044.1151 | x64 |Home/Pro/Enterprise|[5.12.12](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H2  | Enterprise LTSC 2021| 19044.1348 | x64 |   Enterprise      |[5.12.11](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H1  | May 2021 Update     | 19043.1151 | x64 |Home/Pro/Enterprise|[5.12.12](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 20H2  | October 2020 Update | 19042.1151 | x64 |Home/Pro/Enterprise|[5.12.12](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 2004  | May 2020 Update     | 19041.1151 | x64 |Home/Pro/Enterprise|[5.12.12](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 | 1809  | Enterprise LTSC 2019| 17763      | x64 |   Enterprise      |[5.2.19](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 
 ## Screenshots
