@@ -17,8 +17,13 @@
   <a href="https://twitter.com/tea_head_"><img src="https://img.shields.io/badge/Logo%20by-teahead-blue?style=flat&logo=Twitter"></a>
   <img src="https://img.shields.io/badge/Made%20with-149ce2.svg?color=149ce2"><img src="https://github.com/websemantics/bragit/blob/master/demo/img/heart.svg" height="17px"/>
 
-  <a href="https://t.me/SophiaNews"><img src="https://img.shields.io/badge/Sophia%20News-Telegram-blue?style=flat&logo=Telegram"></a>
-  <a href="https://t.me/Sophia_Chat"><img src="https://img.shields.io/badge/Sophia%20Chat-Telegram-blue?style=flat&logo=Telegram"></a>
+  [telegram-news-badge]: https://img.shields.io/badge/Sophia%20News-Telegram-blue?style=flat&logo=Telegram
+  [telegram-news]: https://t.me/sophianews
+  [telegram-group]: https://t.me/sophia_chat
+  [telegram-group-badge]: https://img.shields.io/badge/Sophia%20Chat-Telegram-blue?style=flat&logo=Telegram
+
+  [![Telegram][telegram-news-badge]][telegram-news]
+  [![Telegram][telegram-group-badge]][telegram-group]
 </p>
 
 Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag_of_the_United_Kingdom.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Flag_of_the_People's_Republic_of_China.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Flag_of_Germany.svg" height="11px"/>
