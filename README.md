@@ -2,8 +2,6 @@
 
 <img src="./img/Sophia.png" alt="Sophia Script" width='350' align="right">
 
-**The largest PowerShell module on `GitHub` for `Windows 10` & `Windows 11` fine-tuning and automating the routine tasks** :trophy:
-
 <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Windows_10_Logo.svg" height="30px"/> &emsp; <img src="https://upload.wikimedia.org/wikipedia/commons/e/e6/Windows_11_logo.svg" height="30px"/>
 
 <p align="left">
@@ -64,8 +62,14 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 	&bull;
 	<a href="#minimum-supported-windows-versions-and-builds">Supported Windows 10 & 11 versions</a>
 	&bull;
+	<a href="#sophiapp-community-edition-c--wpf">SophiApp</a>
+	&bull;
 	<a href="https://github.com/farag2/Sophia-Script-for-Windows/blob/master/CHANGELOG.md">Changelog</a>
 </p>
+
+## About Sophia Script for Windows :trophy:
+
+Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Windows 10` & `Windows 11` fine-tuning and automating the routine tasks
 
 ## :fire: Before running :fire:
 
