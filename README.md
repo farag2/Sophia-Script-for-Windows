@@ -119,9 +119,7 @@ Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Wind
  
 ### Native interactive toasts for the scheduled tasks
 
-![Image](https://i.imgur.com/jornXGR.png)
-
-![Image](https://i.imgur.com/9s7Noud.png)
+![Image](https://i.imgur.com/h17EpTG.png)
 
 ### David's Sophia Script Wrapper
 
