@@ -8,6 +8,7 @@ UnsupportedPowerShell                     = Sie versuchen ein Skript über Power
 UnsupportedISE                            = Das Skript unterstützt nicht die Ausführung über Windows PowerShell ISE
 Win10TweakerWarning                       = Wahrscheinlich wurde Ihr Betriebssystem über die Win 10 Tweaker-Hintertür infiziert
 Windows10DebloaterWarning                 = Die Stabilität des Windows-Betriebssystems kann durch die Verwendung des Windows10Debloater PowerShell-Skripts von Sycnex beeinträchtigt worden sein. Installieren Sie vorsorglich das gesamte Betriebssystem neu
+RebootPending                             = Der PC wartet darauf, neu gestartet zu werden
 UnsupportedRelease                        = Neue Version gefunden
 CustomizationWarning                      = \nHaben Sie alle Funktionen in der voreingestellten Datei {0} angepasst, bevor Sie Sophia Script ausführen?
 ControlledFolderAccessDisabled            = Kontrollierter Ordnerzugriff deaktiviert

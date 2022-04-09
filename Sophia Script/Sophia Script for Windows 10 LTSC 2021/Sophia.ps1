@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10 LTSC 2021"
 
-	Version: v5.12.11
-	Date: 27.02.2022
+	Version: v5.12.12
+	Date: 09.04.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -71,7 +71,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.12.11 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2022"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.12.12 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2022"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -332,11 +332,11 @@ TaskViewButton -Hide
 # Отобразить кнопку Просмотра задач (значение по умолчанию)
 # TaskViewButton -Show
 
-# Hide People button on the taskbar
+# Hide People on the taskbar
 # Скрыть панель "Люди" на панели задач
 PeopleTaskbar -Hide
 
-# Show People button on the taskbar (default value)
+# Show People on the taskbar (default value)
 # Отобразить панель "Люди" на панели задач (значение по умолчанию)
 # PeopleTaskbar -Show
 
@@ -764,12 +764,12 @@ NumLock -Enable
 # Включить Caps Lock (значение по умолчанию)
 # CapsLock -Enable
 
-# Turn off pressing the Shift key 5 times to turn Sticky keys
-# Выключить залипание клавиши Shift после 5 нажатий
+# Do not allow the shortcut key to Start Sticky Keys by pressing the the Shift key 5 times
+# Не разрешать включения залипания клавиши Shift после 5 нажатий
 StickyShift -Disable
 
-# Turn on pressing the Shift key 5 times to turn Sticky keys (default value)
-# Включить залипание клавиши Shift после 5 нажатий (значение по умолчанию)
+# Allow the shortcut key to Start Sticky Keys by pressing the the Shift key 5 times (default value)
+# Разрешать включения залипания клавиши Shift после 5 нажатий (значение по умолчанию)
 # StickyShift -Enable
 
 # Don't use AutoPlay for all media and devices
@@ -1012,7 +1012,7 @@ CommandLineProcessAudit -Enable
 # CommandLineProcessAudit -Disable
 
 <#
-	Create the "Process Creation" Event Viewer сustom view to log executed processes and their arguments
+	Create the "Process Creation" сustom view in the Event Viewer to log executed processes and their arguments
 	In order this feature to work events auditing (AuditProcess -Enable) and command line (CommandLineProcessAudit -Enable) in process creation events will be enabled
 
 	Создать настраиваемое представление "Создание процесса" в Просмотре событий для журналирования запускаемых процессов и их аргументов
@@ -1020,7 +1020,7 @@ CommandLineProcessAudit -Enable
 #>
 EventViewerCustomView -Enable
 
-# Remove "Process Creation" Event Viewer сustom view to log executed processes and their arguments (default value)
+# Remove the "Process Creation" custom view in the Event Viewer to log executed processes and their arguments (default value)
 # Удалить настаиваемое представление "Создание процесса" в Просмотре событий для журналирования запускаемых процессов и их аргументов (значение по умолчанию)
 # EventViewerCustomView -Disable
 
@@ -1085,7 +1085,7 @@ MSIExtractContext -Show
 
 # Hide the "Extract all" item from the Windows Installer (.msi) context menu (default value)
 # Скрыть пункт "Извлечь все" из контекстного меню Windows Installer (.msi) (значение по умолчанию)
-# MSIExtractContext -Remove
+# MSIExtractContext -Hide
 
 # Show the "Install" item in the Cabinet (.cab) filenames extensions context menu
 # Отобразить пункт "Установить" в контекстное меню .cab архивов

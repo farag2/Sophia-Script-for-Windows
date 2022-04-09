@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10 (PowerShell 7)"
 
-	Version: v5.12.12
-	Date: 27.02.2022
+	Version: v5.12.14
+	Date: 09.04.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -25,9 +25,9 @@
 	irm script.sophi.app | iex
 
 	.NOTES
-	Supported Windows 10 versions
+	Minimum Supported Windows 10 versions
 	Versions: 2004/20H2/21H1/21H2
-	Builds: 19041/19042/19043/19044
+	Build: 1904x.1151
 	Editions: Home/Pro/Enterprise
 	Architecture: x64
 
@@ -71,7 +71,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.12.12 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2022"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.12.14 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2022"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -392,11 +392,11 @@ TaskViewButton -Hide
 # Отобразить кнопку Просмотра задач (значение по умолчанию)
 # TaskViewButton -Show
 
-# Hide People button on the taskbar
+# Hide People on the taskbar
 # Скрыть панель "Люди" на панели задач
 PeopleTaskbar -Hide
 
-# Show People button on the taskbar (default value)
+# Show People on the taskbar (default value)
 # Отобразить панель "Люди" на панели задач (значение по умолчанию)
 # PeopleTaskbar -Show
 
@@ -548,7 +548,7 @@ AeroShaking -Enable
 #region OneDrive
 # Uninstall OneDrive. The OneDrive user folder won't be removed
 # Удалить OneDrive. Папка пользователя OneDrive не будет удалена
-OneDrive -Uninstall
+# OneDrive -Uninstall
 
 # Install OneDrive 64-bit (default value)
 # Установить OneDrive 64-бит (значение по умолчанию)
@@ -606,12 +606,12 @@ Win32LongPathLimit -Disable
 # Включить ограничение Windows на 260 символов в пути (значение по умолчанию)
 # Win32LongPathLimit -Enable
 
-# Display Stop error code when BSoD occurs
-# Отображать код Stop-ошибки при появлении BSoD
+# Display the Stop error information on the BSoD
+# Отображать Stop-ошибку при появлении BSoD
 BSoDStopError -Enable
 
-# Do not Stop error code when BSoD occurs (default value)
-# Не отображать код Stop-ошибки при появлении BSoD (значение по умолчанию)
+# Do not display the Stop error information on the BSoD (default value)
+# Не отображать Stop-ошибку при появлении BSoD (значение по умолчанию)
 # BSoDStopError -Disable
 
 # Choose when to be notified about changes to your computer: never notify
@@ -849,12 +849,12 @@ NumLock -Enable
 # Включить Caps Lock (значение по умолчанию)
 # CapsLock -Enable
 
-# Turn off pressing the Shift key 5 times to turn Sticky keys
-# Выключить залипание клавиши Shift после 5 нажатий
+# Do not allow the shortcut key to Start Sticky Keys by pressing the the Shift key 5 times
+# Не разрешать включения залипания клавиши Shift после 5 нажатий
 StickyShift -Disable
 
-# Turn on pressing the Shift key 5 times to turn Sticky keys (default value)
-# Включить залипание клавиши Shift после 5 нажатий (значение по умолчанию)
+# Allow the shortcut key to Start Sticky Keys by pressing the the Shift key 5 times (default value)
+# Разрешать включения залипания клавиши Shift после 5 нажатий (значение по умолчанию)
 # StickyShift -Enable
 
 # Don't use AutoPlay for all media and devices
@@ -915,10 +915,10 @@ RestartDeviceAfterUpdate -Enable
 # Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .txt -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
 
 <#
-	Uninstall the "PC Health Check" app
+	Uninstall the "PC Health Check" app and prevent it from installing in the future
 	This application is installed with the KB5005463 update to check if PC meets the system requirements of Windows 11
 
-	Удалить приложение "Проверка работоспособности ПК WIndows"
+	Удалить приложение "Проверка работоспособности ПК Windows" и заблокировать его установку в будущем
 	Данное приложение устанавливается обновлением KB5005463 для проверки соответствия компьютера системным требованиям Windows 11
 
 	https://support.microsoft.com/en-us/topic/kb5005463-pc-health-check-application-e33cf4e2-49e2-4727-b913-f3c5b1ee0e56

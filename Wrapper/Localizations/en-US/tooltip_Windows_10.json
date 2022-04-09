@@ -542,11 +542,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide People button on the taskbar"
+        "ToolTip": "Hide People on the taskbar"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show People button on the taskbar (default value)"
+        "ToolTip": "Show People on the taskbar (default value)"
       }
     }
   },
@@ -1275,11 +1275,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Turn off pressing the Shift key 5 times to turn Sticky keys"
+        "ToolTip": "Do not allow the shortcut key to Start Sticky Keys by pressing the the Shift key 5 times to turn Sticky keys off"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Turn on pressing the Shift key 5 times to turn Sticky keys (default value)"
+        "ToolTip": "Allow the shortcut key to Start Sticky Keys by pressing the the Shift key 5 times to turn Sticky keys on (default value)"
       }
     }
   },
@@ -1376,15 +1376,11 @@
   {
     "Id": 535,
     "Region": "System",
-    "Function": "PCHealthCheck",
+    "Function": "UninstallPCHealthCheck",
     "Arg": {
       "Zero": {
-        "Tag": "Block",
-        "ToolTip": "Uninstall the KB5005463 update and block it from the further intalling. The KB5005463 update installs the PC Health Check app to check if PC meets the system requirements of Windows 11"
-      },
-      "One": {
-        "Tag": "Unblock",
-        "ToolTip": "Unblock the KB5005463 update for the further intalling (default value)"
+        "Tag": "",
+        "ToolTip": "Uninstall the \"PC Health Check\" app and prevent it from installing in the future. The KB5005463 update installs the PC Health Check app to check if PC meets the system requirements of Windows 11"
       }
     }
   },

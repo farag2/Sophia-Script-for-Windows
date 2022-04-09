@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.2.19
-	Date: 27.02.2022
+	Version: v5.2.20
+	Date: 09.04.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -73,6 +73,23 @@ function Checkings
 		$false
 		{
 			Write-Warning -Message $Localization.UnsupportedOSBuild
+
+			# Enable receiving updates for other Microsoft products when you update Windows
+			(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
+
+			Start-Sleep -Seconds 1
+
+			# Open the "Windows Update" page
+			Start-Process -FilePath "ms-settings:windowsupdate-action"
+
+			Start-Sleep -Seconds 1
+
+			# Trigger Windows Update for detecting new updates
+			(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
+
+			exit
+		}
+	}
 			exit
 		}
 	}
@@ -118,7 +135,7 @@ function Checkings
 		exit
 	}
 
-	# Check whether the OS was infected by Win 10 Tweaker's trojan
+	# Check whether the OS was infected by the Win 10 Tweaker's trojan
 	# https://win10tweaker.ru
 	if (Test-Path -Path "HKCU:\Software\Win 10 Tweaker")
 	{
@@ -135,6 +152,22 @@ function Checkings
 	if (Test-Path -Path $env:SystemDrive\Temp\Windows10Debloater)
 	{
 		Write-Warning -Message $Localization.Windows10DebloaterWarning
+		exit
+	}
+
+	# Check for a pending reboot
+	$PendingActions = @(
+		# CBS pending
+		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootPending",
+		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootInProgress",
+		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\PackagesPending",
+		# Windows Update pending
+		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\PostRebootReporting",
+		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired"
+	)
+	if ($null -ne (Get-Item -Path $PendingActions -Force -ErrorAction Ignore))
+	{
+		Write-Warning -Message $Localization.RebootPending
 		exit
 	}
 
@@ -1764,13 +1797,13 @@ function TaskViewButton
 
 <#
 	.SYNOPSIS
-	People button on the taskbar
+	People on the taskbar
 
 	.PARAMETER Hide
-	Hide People button on the taskbar
+	Hide People on the taskbar
 
 	.PARAMETER Show
-	Show People button on the taskbar
+	Show People on the taskbar
 
 	.EXAMPLE
 	PeopleTaskbar -Hide
@@ -3348,7 +3381,7 @@ function WaitNetworkStartup
 	{
 		"Enable"
 		{
-			if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain -eq $true)
+			if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain)
 			{
 				if (-not (Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon"))
 				{
@@ -3359,7 +3392,7 @@ function WaitNetworkStartup
 		}
 		"Disable"
 		{
-			if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain -eq $true)
+			if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain)
 			{
 				Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name SyncForegroundPolicy -Force -ErrorAction Ignore
 			}
@@ -4160,7 +4193,7 @@ function UpdateMicrosoftProducts
 		}
 		"Disable"
 		{
-			if (((New-Object -ComObject Microsoft.Update.ServiceManager).Services | Where-Object -FilterScript {$_.ServiceID -eq "7971f918-a847-4430-9279-4a52d1efe18d"}).IsDefaultAUService -eq $true)
+			if (((New-Object -ComObject Microsoft.Update.ServiceManager).Services | Where-Object -FilterScript {$_.ServiceID -eq "7971f918-a847-4430-9279-4a52d1efe18d"}).IsDefaultAUService)
 			{
 				(New-Object -ComObject Microsoft.Update.ServiceManager).RemoveService("7971f918-a847-4430-9279-4a52d1efe18d")
 			}
@@ -5741,13 +5774,13 @@ function CapsLock
 
 <#
 	.SYNOPSIS
-	The keyboard schortcut for Stick keys
+	The shortcut to start Sticky Keys
 
 	.PARAMETER Disable
-	Turn off pressing the Shift key 5 times to turn Sticky keys
+	Do not allow the shortcut key to Start Sticky Keys by pressing the the Shift key 5 times
 
 	.PARAMETER Enable
-	Turn on pressing the Shift key 5 times to turn Sticky keys
+	Allow the shortcut key to Start Sticky Keys by pressing the the Shift key 5 times
 
 	.EXAMPLE
 	StickyShift -Disable
@@ -5943,7 +5976,7 @@ function NetworkDiscovery
 	{
 		"Enable"
 		{
-			if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain -eq $false)
+			if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain)
 			{
 				Set-NetFirewallRule -Group $FirewallRules -Profile Private -Enabled True
 
@@ -5953,7 +5986,7 @@ function NetworkDiscovery
 		}
 		"Disable"
 		{
-			if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain -eq $false)
+			if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain)
 			{
 				Set-NetFirewallRule -Group $FirewallRules -Profile Private -Enabled False
 			}
@@ -6679,16 +6712,25 @@ function InstallVCRedistx64
 {
 	$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 	$Parameters = @{
-		Uri             = "https://aka.ms/vs/16/release/vc_redist.x64.exe"
-		OutFile         = "$DownloadsFolder\vc_redist.x64.exe"
+		Uri             = "https://aka.ms/vs/17/release/VC_redist.x64.exe"
+		OutFile         = "$DownloadsFolder\VC_redist.x64.exe"
 		UseBasicParsing = $true
 		Verbose         = $true
 	}
 	Invoke-WebRequest @Parameters
 
-	Start-Process -FilePath "$DownloadsFolder\vc_redist.x64.exe" -ArgumentList "/install /passive /norestart" -Wait
+	Start-Process -FilePath "$DownloadsFolder\VC_redist.x64.exe" -ArgumentList "/install /passive /norestart" -Wait
 
-	Remove-Item -Path "$DownloadsFolder\vc_redist.x64.exe", "$env:TEMP\dd_vcredist_amd64_*.log" -Force -ErrorAction Ignore
+	<#
+		PowerShell 5.1 (7.2 too) interprets the 8.3 file name literally, if an environment variable contains a non-latin word,
+		so you won't be able to remove "$env:TEMP\dd_vcredist_amd64_*.log" file explicitly
+
+		Another ways to get normal path to %TEMP%
+		[Environment]::GetEnvironmentVariable("TEMP", "User")
+		(Get-ItemProperty -Path HKCU:\Environment -Name TEMP).TEMP
+		[System.IO.Path]::GetTempPath()
+	#>
+	Get-ChildItem -Path "$DownloadsFolder\VC_redist.x64.exe", "$env:TEMP\dd_vcredist_amd64_*.log" -Force | Remove-Item -Recurse -Force -ErrorAction Ignore
 }
 #endregion System
 
@@ -6965,41 +7007,43 @@ function CleanupTask
 	{
 		"Register"
 		{
-			Get-ChildItem -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches | ForEach-Object -Process {
-				Remove-ItemProperty -Path $_.PsPath -Name StateFlags1337 -Force -ErrorAction Ignore
-			}
-
-			$VolumeCaches = @(
-				# Delivery Optimization Files
-				"Delivery Optimization Files",
-
-				# Device driver packages
-				"Device Driver Packages",
-
-				# Previous Windows Installation(s)
-				"Previous Installations",
-
-				# Setup log files
-				"Setup Log Files",
-
-				# Temporary Setup Files
-				"Temporary Setup Files",
-
-				# Windows Update Cleanup
-				"Update Cleanup",
-
-				# Windows Defender
-				"Windows Defender",
-
-				# Windows upgrade log files
-				"Windows Upgrade Log Files"
-			)
-			foreach ($VolumeCache in $VolumeCaches)
+			if (-not (Get-ScheduledTask -TaskPath "\SophiApp\" -TaskName "Windows Cleanup" -ErrorAction Ignore))
 			{
-				New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\$VolumeCache" -Name StateFlags1337 -PropertyType DWord -Value 2 -Force
-			}
+				Get-ChildItem -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches | ForEach-Object -Process {
+					Remove-ItemProperty -Path $_.PsPath -Name StateFlags1337 -Force -ErrorAction Ignore
+				}
 
-			$CleanupTask = @"
+				$VolumeCaches = @(
+					# Delivery Optimization Files
+					"Delivery Optimization Files",
+
+					# Device driver packages
+					"Device Driver Packages",
+
+					# Previous Windows Installation(s)
+					"Previous Installations",
+
+					# Setup log files
+					"Setup Log Files",
+
+					# Temporary Setup Files
+					"Temporary Setup Files",
+
+					# Windows Update Cleanup
+					"Update Cleanup",
+
+					# Microsoft Defender
+					"Windows Defender",
+
+					# Windows upgrade log files
+					"Windows Upgrade Log Files"
+				)
+				foreach ($VolumeCache in $VolumeCaches)
+				{
+					New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\$VolumeCache" -Name StateFlags1337 -PropertyType DWord -Value 2 -Force
+				}
+
+				$CleanupTask = @"
 Get-Process -Name cleanmgr | Stop-Process -Force
 Get-Process -Name Dism | Stop-Process -Force
 Get-Process -Name DismHost | Stop-Process -Force
@@ -7067,40 +7111,40 @@ while (`$true)
 `$Process.Start() | Out-Null
 "@
 
-			# Create the "Windows Cleanup" task
-			$Action     = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $CleanupTask"
-			$Settings   = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-			$Principal  = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
-			$Parameters = @{
-				TaskName    = "Windows Cleanup"
-				TaskPath    = "Sophia Script"
-				Principal   = $Principal
-				Action      = $Action
-				Description = $Localization.CleanupTaskDescription
-				Settings    = $Settings
-			}
-			Register-ScheduledTask @Parameters -Force
+				# Create the "Windows Cleanup" task
+				$Action     = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $CleanupTask"
+				$Settings   = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
+				$Principal  = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
+				$Parameters = @{
+					TaskName    = "Windows Cleanup"
+					TaskPath    = "Sophia Script"
+					Principal   = $Principal
+					Action      = $Action
+					Description = $Localization.CleanupTaskDescription
+					Settings    = $Settings
+				}
+				Register-ScheduledTask @Parameters -Force
 
-			# Persist the Settings notifications to prevent to immediately disappear from Action Center
-			if (-not (Test-Path -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel"))
-			{
-				New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Force
-			}
-			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Name ShowInActionCenter -PropertyType DWord -Value 1 -Force
+				# Persist the Settings notifications to prevent to immediately disappear from Action Center
+				if (-not (Test-Path -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel"))
+				{
+					New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Force
+				}
+				New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Name ShowInActionCenter -PropertyType DWord -Value 1 -Force
 
-			# Register the "WindowsCleanup" protocol to be able to run the scheduled task by clicking the "Run" button in a toast
-			if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup\shell\open\command))
-			{
-				New-Item -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup\shell\open\command -Force
-			}
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name "(default)" -PropertyType String -Value "URL:WindowsCleanup" -Force
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name "URL Protocol" -PropertyType String -Value "" -Force
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name EditFlags -PropertyType DWord -Value 2162688 -Force
+				# Register the "WindowsCleanup" protocol to be able to run the scheduled task by clicking the "Run" button in a toast
+				if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup\shell\open\command))
+				{
+					New-Item -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup\shell\open\command -Force
+				}
+				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name "(default)" -PropertyType String -Value "URL:WindowsCleanup" -Force
+				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name "URL Protocol" -PropertyType String -Value "" -Force
+				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name EditFlags -PropertyType DWord -Value 2162688 -Force
 
-			# Start the "Windows Cleanup" task if the "Run" button clicked
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup\shell\open\command -Name "(default)" -PropertyType String -Value 'powershell.exe -Command "& {Start-ScheduledTask -TaskPath ''\Sophia Script\'' -TaskName ''Windows Cleanup''}"' -Force
+				# Start the "Windows Cleanup" task if the "Run" button clicked
+				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup\shell\open\command -Name "(default)" -PropertyType String -Value 'powershell.exe -Command "& {Start-ScheduledTask -TaskPath ''\Sophia Script\'' -TaskName ''Windows Cleanup''}"' -Force
 
-			$ToastNotification = @"
+				$ToastNotification = @"
 [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
 [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
 
@@ -7142,21 +7186,22 @@ while (`$true)
 [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("""windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel""").Show(`$ToastMessage)
 "@
 
-			# Create the "Windows Cleanup Notification" task
-			$Action    = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $ToastNotification"
-			$Settings  = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-			$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
-			$Trigger   = New-ScheduledTaskTrigger -Daily -DaysInterval 30 -At 9pm
-			$Parameters = @{
-				TaskName    = "Windows Cleanup Notification"
-				TaskPath    = "Sophia Script"
-				Action      = $Action
-				Settings    = $Settings
-				Principal   = $Principal
-				Trigger     = $Trigger
-				Description = $Localization.CleanupNotificationTaskDescription
+				# Create the "Windows Cleanup Notification" task
+				$Action    = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $ToastNotification"
+				$Settings  = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
+				$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
+				$Trigger   = New-ScheduledTaskTrigger -Daily -DaysInterval 30 -At 9pm
+				$Parameters = @{
+					TaskName    = "Windows Cleanup Notification"
+					TaskPath    = "Sophia Script"
+					Action      = $Action
+					Settings    = $Settings
+					Principal   = $Principal
+					Trigger     = $Trigger
+					Description = $Localization.CleanupNotificationTaskDescription
+				}
+				Register-ScheduledTask @Parameters -Force
 			}
-			Register-ScheduledTask @Parameters -Force
 		}
 		"Delete"
 		{
@@ -7166,8 +7211,7 @@ while (`$true)
 
 			Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Name ShowInActionCenter -Force -ErrorAction Ignore
 
-			Unregister-ScheduledTask -TaskName "Windows Cleanup" -Confirm:$false -ErrorAction Ignore
-			Unregister-ScheduledTask -TaskName "Windows Cleanup Notification" -Confirm:$false -ErrorAction Ignore
+			Unregister-ScheduledTask -TaskPath "\Sophia Script\" -TaskName "Windows Cleanup", "Windows Cleanup Notification" -Confirm:$false -ErrorAction Ignore
 
 			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Recurse -Force -ErrorAction Ignore
 		}
@@ -7219,14 +7263,16 @@ function SoftwareDistributionTask
 	{
 		"Register"
 		{
-			# Persist the Settings notifications to prevent to immediately disappear from Action Center
-			if (-not (Test-Path -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel"))
+			if (-not (Get-ScheduledTask -TaskPath "\SophiApp\" -TaskName "SoftwareDistribution" -ErrorAction Ignore))
 			{
-				New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Force
-			}
-			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Name ShowInActionCenter -PropertyType DWord -Value 1 -Force
+				# Persist the Settings notifications to prevent to immediately disappear from Action Center
+				if (-not (Test-Path -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel"))
+				{
+					New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Force
+				}
+				New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Name ShowInActionCenter -PropertyType DWord -Value 1 -Force
 
-			$SoftwareDistributionTask = @"
+				$SoftwareDistributionTask = @"
 (Get-Service -Name wuauserv).WaitForStatus('Stopped', '01:00:00')
 Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -Force | Remove-Item -Recurse -Force
 
@@ -7256,25 +7302,26 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -For
 [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("""windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel""").Show(`$ToastMessage)
 "@
 
-			# Create the "SoftwareDistribution" task
-			$Action    = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $SoftwareDistributionTask"
-			$Settings  = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-			$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
-			$Trigger   = New-ScheduledTaskTrigger -Daily -DaysInterval 90 -At 9pm
-			$Parameters = @{
-				TaskName    = "SoftwareDistribution"
-				TaskPath    = "Sophia Script"
-				Action      = $Action
-				Settings    = $Settings
-				Principal   = $Principal
-				Trigger     = $Trigger
-				Description = $Localization.FolderTaskDescription -f "%SystemRoot%\SoftwareDistribution\Download"
+				# Create the "SoftwareDistribution" task
+				$Action    = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $SoftwareDistributionTask"
+				$Settings  = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
+				$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
+				$Trigger   = New-ScheduledTaskTrigger -Daily -DaysInterval 90 -At 9pm
+				$Parameters = @{
+					TaskName    = "SoftwareDistribution"
+					TaskPath    = "Sophia Script"
+					Action      = $Action
+					Settings    = $Settings
+					Principal   = $Principal
+					Trigger     = $Trigger
+					Description = $Localization.FolderTaskDescription -f "%SystemRoot%\SoftwareDistribution\Download"
+				}
+				Register-ScheduledTask @Parameters -Force
 			}
-			Register-ScheduledTask @Parameters -Force
 		}
 		"Delete"
 		{
-			Unregister-ScheduledTask -TaskName SoftwareDistribution -Confirm:$false -ErrorAction Ignore
+			Unregister-ScheduledTask -TaskPath "\Sophia Script\" -TaskName SoftwareDistribution -Confirm:$false -ErrorAction Ignore
 		}
 	}
 }
@@ -7324,7 +7371,9 @@ function TempTask
 	{
 		"Register"
 		{
-			$TempTask = @"
+			if (-not (Get-ScheduledTask -TaskPath "\SophiApp\" -TaskName "Temp" -ErrorAction Ignore))
+			{
+				$TempTask = @"
 Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object {`$_.CreationTime -lt (Get-Date).AddDays(-1)} | Remove-Item -Recurse -Force
 
 [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
@@ -7353,25 +7402,26 @@ Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object {`$_.CreationTime 
 [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("""windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel""").Show(`$ToastMessage)
 "@
 
-			# Create the "Temp" task
-			$Action    = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $TempTask"
-			$Settings  = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-			$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
-			$Trigger   = New-ScheduledTaskTrigger -Daily -DaysInterval 60 -At 9pm
-			$Parameters = @{
-				TaskName    = "Temp"
-				TaskPath    = "Sophia Script"
-				Action      = $Action
-				Settings    = $Settings
-				Principal   = $Principal
-				Trigger     = $Trigger
-				Description = $Localization.FolderTaskDescription -f "%TEMP%"
+				# Create the "Temp" task
+				$Action    = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $TempTask"
+				$Settings  = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
+				$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
+				$Trigger   = New-ScheduledTaskTrigger -Daily -DaysInterval 60 -At 9pm
+				$Parameters = @{
+					TaskName    = "Temp"
+					TaskPath    = "Sophia Script"
+					Action      = $Action
+					Settings    = $Settings
+					Principal   = $Principal
+					Trigger     = $Trigger
+					Description = $Localization.FolderTaskDescription -f "%TEMP%"
+				}
+				Register-ScheduledTask @Parameters -Force
 			}
-			Register-ScheduledTask @Parameters -Force
 		}
 		"Delete"
 		{
-			Unregister-ScheduledTask -TaskName Temp -Confirm:$false -ErrorAction Ignore
+			Unregister-ScheduledTask -TaskPath "\Sophia Script\" -TaskName Temp -Confirm:$false -ErrorAction Ignore
 		}
 	}
 }
@@ -7420,14 +7470,14 @@ function NetworkProtection
 	{
 		"Enable"
 		{
-			if ((Get-MpComputerStatus).AntivirusEnabled -eq $true)
+			if ((Get-MpComputerStatus).AntivirusEnabled)
 			{
 				Set-MpPreference -EnableNetworkProtection Enabled
 			}
 		}
 		"Disable"
 		{
-			if ((Get-MpComputerStatus).AntivirusEnabled -eq $true)
+			if ((Get-MpComputerStatus).AntivirusEnabled)
 			{
 				Set-MpPreference -EnableNetworkProtection Disabled
 			}
@@ -7477,14 +7527,14 @@ function PUAppsDetection
 	{
 		"Enable"
 		{
-			if ((Get-MpComputerStatus).AntivirusEnabled -eq $true)
+			if ((Get-MpComputerStatus).AntivirusEnabled)
 			{
 				Set-MpPreference -PUAProtection Enabled
 			}
 		}
 		"Disable"
 		{
-			if ((Get-MpComputerStatus).AntivirusEnabled -eq $true)
+			if ((Get-MpComputerStatus).AntivirusEnabled)
 			{
 				Set-MpPreference -PUAProtection Disabled
 			}
@@ -7512,7 +7562,7 @@ function PUAppsDetection
 	There is a bug in KVM with QEMU: enabling this function causes VM to freeze up during the loading phase of Windows
 
 	.NOTES
-	Current user
+	Machine-wide
 #>
 function DefenderSandbox
 {
@@ -7537,14 +7587,14 @@ function DefenderSandbox
 	{
 		"Enable"
 		{
-			if ((Get-MpComputerStatus).AntivirusEnabled -eq $true)
+			if ((Get-MpComputerStatus).AntivirusEnabled)
 			{
 				setx /M MP_FORCE_USE_SANDBOX 1
 			}
 		}
 		"Disable"
 		{
-			if ((Get-MpComputerStatus).AntivirusEnabled -eq $true)
+			if ((Get-MpComputerStatus).AntivirusEnabled)
 			{
 				setx /M MP_FORCE_USE_SANDBOX 0
 			}
@@ -7677,10 +7727,10 @@ function CommandLineProcessAudit
 	The "Process Creation" Event Viewer custom view
 
 	.PARAMETER Enable
-	Create the "Process Creation" Event Viewer сustom view to log executed processes and their arguments
+	Create the "Process Creation" сustom view in the Event Viewer to log executed processes and their arguments
 
 	.PARAMETER Disable
-	Remove the "Process Creation" Event Viewer custom view
+	Remove the "Process Creation" custom view in the Event Viewer
 
 	.EXAMPLE
 	EventViewerCustomView -Enable
@@ -8075,10 +8125,10 @@ function WindowsSandbox
 	{
 		"Disable"
 		{
-			if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Professional" -or $_.Edition -like "Enterprise*"})
+			if (Get-WindowsEdition -Online | Where-Object -FilterScript {($_.Edition -eq "Professional") -or ($_.Edition -like "Enterprise*")})
 			{
 				# Checking whether x86 virtualization is enabled in the firmware
-				if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled -eq $true)
+				if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled)
 				{
 					Disable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -Online -NoRestart
 				}
@@ -8087,7 +8137,7 @@ function WindowsSandbox
 					try
 					{
 						# Determining whether Hyper-V is enabled
-						if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent -eq $true)
+						if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
 						{
 							Disable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -Online -NoRestart
 						}
@@ -8101,10 +8151,10 @@ function WindowsSandbox
 		}
 		"Enable"
 		{
-			if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Professional" -or $_.Edition -like "Enterprise*"})
+			if (Get-WindowsEdition -Online | Where-Object -FilterScript {($_.Edition -eq "Professional") -or ($_.Edition -like "Enterprise*")})
 			{
 				# Checking whether x86 virtualization is enabled in the firmware
-				if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled -eq $true)
+				if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled)
 				{
 					Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart
 				}
@@ -8113,7 +8163,7 @@ function WindowsSandbox
 					try
 					{
 						# Determining whether Hyper-V is enabled
-						if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent -eq $true)
+						if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
 						{
 							Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart
 						}
@@ -8966,61 +9016,6 @@ function MultipleInvokeContext
 		"Disable"
 		{
 			Remove-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name MultipleInvokePromptMinimum -Force -ErrorAction Ignore
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	The "Look for an app in the Microsoft Store" item in the "Open with" dialog
-
-	.PARAMETER Hide
-	Hide the "Look for an app in the Microsoft Store" item in the "Open with" dialog
-
-	.PARAMETER Show
-	Show the "Look for an app in the Microsoft Store" item in the "Open with" dialog
-
-	.EXAMPLE
-	UseStoreOpenWith -Hide
-
-	.EXAMPLE
-	UseStoreOpenWith -Show
-
-	.NOTES
-	Current user
-#>
-function UseStoreOpenWith
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Hide"
-		)]
-		[switch]
-		$Hide,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Show"
-		)]
-		[switch]
-		$Show
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Hide"
-		{
-			if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
-			{
-				New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Force
-			}
-			New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -PropertyType DWord -Value 1 -Force
-		}
-		"Show"
-		{
-			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Force -ErrorAction Ignore
 		}
 	}
 }

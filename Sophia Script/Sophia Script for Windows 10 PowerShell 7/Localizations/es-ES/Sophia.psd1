@@ -9,6 +9,7 @@ UnsupportedISE                            = El script no es compatible con la ej
 Win10TweakerWarning                       = Probablemente su sistema operativo fue infectado a través del backdoor Win 10 Tweaker
 Windows10DebloaterWarning                 = La estabilidad del sistema operativo Windows puede haberse visto comprometida al utilizar el script PowerShell Windows10Debloater de Sycnex. De forma preventiva, reinstale todo el sistema operativo
 PowerShellLibraries                       = No hay archivos en la carpeta Libraries. Por favor, vuelva a descargar el archivo
+RebootPending                             = El PC está esperando a ser reiniciado
 UnsupportedRelease                        = Una nueva versión encontrada
 CustomizationWarning                      = \n¿Ha personalizado todas las funciones del archivo predeterminado {0} antes de ejecutar Sophia Script?
 ControlledFolderAccessDisabled            = Acceso a la carpeta controlada deshabilitado

@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 11"
 
-	Version: v6.0.13
-	Date: 27.02.2022
+	Version: v6.0.14
+	Date: 09.04.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -25,9 +25,9 @@
 	irm script.sophi.app | iex
 
 	.NOTES
-	Supported Windows 11 version
+	Minimum Supported Windows 11 version
 	Version: 21H2
-	Build: 22000.438
+	Build: 22000.556, 22509
 	Editions: Home/Pro/Enterprise
 
 	.NOTES
@@ -70,7 +70,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.0.13 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2022"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.0.14 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2022"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -261,7 +261,7 @@ ThisPC -Show
 
 # Enable the Windows 10 File Explorer
 # Включить проводник из Windows 10
-Windows10FileExplorer -Enable
+# Windows10FileExplorer -Enable
 
 # Disable the Windows 10 File Explorer (default value)
 # Выключить проводник из Windows 10 (значение по умолчанию)
@@ -387,7 +387,7 @@ TaskbarSearch -Hide
 # Отобразить кнопку поиска на панели задач
 # TaskbarSearch -Show
 
-# Hide the Task view button on the taskbar
+# Hide the Task view button from the taskbar
 # Скрыть кнопку "Представление задач" с панели задач
 TaskViewButton -Hide
 
@@ -511,7 +511,7 @@ AeroShaking -Enable
 #region OneDrive
 # Uninstall OneDrive. The OneDrive user folder won't be removed
 # Удалить OneDrive. Папка пользователя OneDrive не будет удалена
-OneDrive -Uninstall
+# OneDrive -Uninstall
 
 # Install OneDrive 64-bit (default value)
 # Установить OneDrive 64-бит (значение по умолчанию)
@@ -917,6 +917,18 @@ RunPowerShellShortcut -Elevated
 # Run the Windows PowerShell shortcut from the Start menu as user (default value)
 # Запускать ярлык Windows PowerShell в меню "Пуск" от имени пользователя (значение по умолчанию)
 # RunPowerShellShortcut -NonElevated
+
+# Show default Start layout (for 22509+ build only) (default value)
+# Отображать стандартный макет начального экрана (только для сборки 22509+) (значение по умолчанию)
+# StartLayout -Default
+
+# Show more pins on Start (for 22509+ build only)
+# Отображать больше закреплений на начальном экране (только для сборки 22509+)
+StartLayout -ShowMorePins
+
+# Show more recommendations on Start (for 22509+ build only)
+# Отображать больше рекомендаций на начальном экране (только для сборки 22509+)
+StartLayout -ShowMoreRecommendations
 #endregion Start menu
 
 #region UWP apps
@@ -966,7 +978,7 @@ CortanaAutostart -Disable
 TeamsAutostart -Disable
 
 # Enable Microsoft Teams autostarting (default value)
-# Включить автозагрузкуMicrosoft Teams (значение по умолчанию)
+# Включить автозагрузку Microsoft Teams (значение по умолчанию)
 # TeamsAutostart -Enable
 
 # Check for UWP apps updates
@@ -1066,19 +1078,6 @@ PUAppsDetection -Enable
 # Disable detection for potentially unwanted applications and block them (default value)
 # Выключить обнаружение потенциально нежелательных приложений и блокировать их (значение по умолчанию)
 # PUAppsDetection -Disable
-
-<#
-	Enable sandboxing for Microsoft Defender
-	There is a bug in KVM with QEMU: enabling this function causes VM to freeze up during the loading phase of Windows
-
-	Включить песочницу для Microsoft Defender
-	В KVM с QEMU присутствует баг: включение этой функции приводит ВМ к зависанию во время загрузки Windows
-#>
-DefenderSandbox -Enable
-
-# Disable sandboxing for Microsoft Defender (default value)
-# Выключить песочницу для Microsoft Defender (значение по умолчанию)
-# DefenderSandbox -Disable
 
 # Dismiss Microsoft Defender offer in the Windows Security about signing in Microsoft account
 # Отклонить предложение Microsoft Defender в "Безопасность Windows" о входе в аккаунт Microsoft

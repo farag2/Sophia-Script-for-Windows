@@ -1,6 +1,6 @@
 ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = The script supports Windows 11 21H2 version and higher
-UpdateWarning                             = Your Windows 11 build: {0}.{1}. Supported build: 22000.438 and higher
+UpdateWarning                             = Your Windows 11 build: {0}.{1}. Supported builds: 22000.556, 22509 and higher
 UnsupportedLanguageMode                   = The PowerShell session in running in a limited language mode
 LoggedInUserNotAdmin                      = The logged-on user doesn't have admin rights
 UnsupportedPowerShell                     = You're trying to run script via PowerShell {0}.{1}. Run the script in the appropriate PowerShell version
@@ -8,6 +8,7 @@ UnsupportedISE                            = The script doesn't support running v
 Win10TweakerWarning                       = Probably your OS was infected via the Win 10 Tweaker backdoor
 Windows10DebloaterWarning                 = The Windows OS stability may have been compromised by using Sycnex's Windows10Debloater PowerShell script. Preventively, reinstall the entire OS
 PowerShellLibraries                       = There are no files in the Libraries folder. Please, re-download the archive
+RebootPending                             = The PC is waiting to be restarted
 UnsupportedRelease                        = A new version found
 CustomizationWarning                      = \nHave you customized every function in the {0} preset file before running Sophia Script?
 ControlledFolderAccessDisabled            = Controlled folder access disabled

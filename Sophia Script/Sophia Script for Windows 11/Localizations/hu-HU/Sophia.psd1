@@ -1,12 +1,13 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = A szkript a Windows 11 21H2 és újabb kiadásokat támogatja
-UpdateWarning                             = Az Ön Windows 11 építése: {0}.{1}. Támogatott build: 22000.438 és magasabb verziószámok
+UpdateWarning                             = Az Ön Windows 11 építése: {0}.{1}. Támogatott buildek: 22000.556, 22509 és magasabb verziószámok
 UnsupportedLanguageMode                   = A PowerShell munkamenet korlátozott nyelvi üzemmódban fut
 LoggedInUserNotAdmin                      = A bejelentkezett felhasználó nem rendelkezik admin jogokkal
 UnsupportedPowerShell                     = A PowerShell {0}.{1} segítségével próbálja futtatni a szkriptet. Futtassa a szkriptet a megfelelő PowerShell-verzióban
 UnsupportedISE                            = A szkript nem támogatja a Windows PowerShell ISE futtatását
 Win10TweakerWarning                       = Valószínűleg az operációs rendszerét a Win 10 Tweaker backdoor segítségével fertőzték meg
 Windows10DebloaterWarning                 = A Windows operációs rendszer stabilitását veszélyeztethette a Sycnex Windows10Debloater PowerShell szkriptje. Megelőzésképpen telepítse újra a teljes operációs rendszert
+RebootPending                             = A számítógép újraindításra vár
 UnsupportedRelease                        = Új verzió érhető el
 CustomizationWarning                      = \nSzemélyre szabott minden opciót a {0} preset fájlban, mielőtt futtatni kívánja a Sophia szkriptet?
 ControlledFolderAccessDisabled            = Vezérelt mappához való hozzáférés kikapcsolva

@@ -1,6 +1,6 @@
 ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = Bu betik sadece Windows 11 21H2 sürüm ve üstünü destekliyor
-UpdateWarning                             = Windows 11 yapınız: {0}.{1}. Desteklenen yapı: 22000.438 ve üstünü destekliyor
+UpdateWarning                             = Windows 11 yapınız: {0}.{1}. Desteklenen yapılar: 22000.556, 22509 ve üstünü destekliyor
 UnsupportedLanguageMode                   = Sınırlı bir dil modunda çalışan PowerShell oturumu
 LoggedInUserNotAdmin                      = Oturum açan kullanıcının yönetici hakları yok
 UnsupportedPowerShell                     = Komut dosyasını PowerShell {0}.{1} aracılığıyla çalıştırmaya çalışıyorsunuz. Komut dosyasını uygun PowerShell sürümünde çalıştırın
@@ -8,6 +8,7 @@ UnsupportedISE                            = Komut dosyası, Windows PowerShell I
 Win10TweakerWarning                       = Muhtemelen işletim sisteminize Win 10 Tweaker arka kapısı yoluyla bulaştı
 Windows10DebloaterWarning                 = Windows işletim sistemi kararlılığı, Sycnex'in Windows10Debloater PowerShell betiği kullanılarak tehlikeye atılmış olabilir. Önleyici olarak, tüm işletim sistemini yeniden yükleyin
 PowerShellLibraries                       = Libraries klasöründe dosya yok. Lütfen arşivi yeniden indirin
+RebootPending                             = PC yeniden başlatılmayı bekliyor
 UnsupportedRelease                        = Yeni sürüm bulundu
 CustomizationWarning                      = \nSophia Script'i çalıştırmadan önce {0} ön ayar dosyasındaki her işlevi özelleştirdiniz mi?
 ControlledFolderAccessDisabled            = Kontrollü klasör erişimi devre dışı bırakıldı

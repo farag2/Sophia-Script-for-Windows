@@ -1381,11 +1381,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Block",
-        "ToolTip": "Desinstale a atualização KB5005463 e bloqueie-a de outras instalações. A atualização KB5005463 instala o aplicativo PC Health Check para verificar se o PC atende aos requisitos de sistema do Windows 11"
-      },
-      "One": {
-        "Tag": "Unblock",
-        "ToolTip": "Desbloqueie a atualização KB5005463 para instalação posterior (valor padrão)"
+        "ToolTip": "Desinstale o aplicativo \"PC Health Check\" e impeça a sua instalação no futuro. A atualização do KB5005463 instala o aplicativo \"PC Health Check\" para verificar se o PC atende aos requisitos de sistema do Windows 11"
       }
     }
   },

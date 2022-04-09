@@ -9,6 +9,7 @@ UnsupportedISE                            = 该脚本不支持通过Windows Powe
 Win10TweakerWarning                       = 可能你的操作系统是通过“Win 10 Tweaker”后门感染的
 Windows10DebloaterWarning                 = 使用Sycnex的Windows10Debloater PowerShell脚本，Windows操作系统的稳定性可能已经受到影响。预防性地，重新安装整个操作系统
 PowerShellLibraries                       = Libraries文件夹中没有文件。请重新下载该档案
+RebootPending                             = 计算机正在等待重新启动
 UnsupportedRelease                        = 找到新版本
 CustomizationWarning                      = \n在运行Sophia Script之前，您是否已自定义{0}预设文件中的每个函数？
 ControlledFolderAccessDisabled            = “受控文件夹访问”已禁用

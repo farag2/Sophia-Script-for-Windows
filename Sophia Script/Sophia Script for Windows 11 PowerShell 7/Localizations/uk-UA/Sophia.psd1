@@ -1,6 +1,6 @@
 ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = Скрипт підтримує тільки Windows 11 версії 21H2 та вище
-UpdateWarning                             = Ваш білд Windows 11: {0}.{1}. Підтримуваний білд: 22000.438 та вище
+UpdateWarning                             = Ваш білд Windows 11: {0}.{1}. Підтримуваний збірки: 22000.556, 22509 та вище
 UnsupportedLanguageMode                   = Сесія PowerShell працює в обмеженому режимі
 LoggedInUserNotAdmin                      = Поточний увійшов користувач не володіє правами адміністратора
 UnsupportedPowerShell                     = Ви намагаєтеся запустити скрипт в PowerShell {0}.{1}. Запустіть скрипт у відповідній версії PowerShell
@@ -8,6 +8,7 @@ UnsupportedISE                            = Скрипт не підтримує
 Win10TweakerWarning                       = Ваша ОС, можливо, через бекдор в Win 10 Tweaker заражена трояном. Детальніше: https://itnan.ru/post.php?c=1&p=557388
 Windows10DebloaterWarning                 = Стабільність вашої ОС могла бути порушена використанням скрипту Windows10Debloater від Sycnex. З метою профілактики перевстановіть ОС
 PowerShellLibraries                       = У папці Libraries немає файлів. Будь ласка, повторно завантажте архів
+RebootPending                             = Комп'ютер очікує на перезавантаження
 UnsupportedRelease                        = Виявлено нову версію
 CustomizationWarning                      = \nВи налаштували всі функції в пресет-файлі {0} перед запуском Sophia Script?
 ControlledFolderAccessDisabled            = Контрольований доступ до папок вимкнений

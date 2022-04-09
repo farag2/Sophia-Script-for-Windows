@@ -7,6 +7,7 @@ UnsupportedPowerShell                     = A PowerShell {0}.{1} segítségével
 UnsupportedISE                            = A szkript nem támogatja a Windows PowerShell ISE futtatását
 Win10TweakerWarning                       = Valószínűleg az operációs rendszerét a Win 10 Tweaker backdoor segítségével fertőzték meg
 Windows10DebloaterWarning                 = A Windows operációs rendszer stabilitását veszélyeztethette a Sycnex Windows10Debloater PowerShell szkriptje. Megelőzésképpen telepítse újra a teljes operációs rendszert
+RebootPending                             = A számítógép újraindításra vár
 UnsupportedRelease                        = Új verzió érhető el
 CustomizationWarning                      = \nSzemélyre szabott minden opciót a {0} preset fájlban, mielőtt futtatni kívánja a Sophia szkriptet?
 ControlledFolderAccessDisabled            = Vezérelt mappához való hozzáférés kikapcsolva
