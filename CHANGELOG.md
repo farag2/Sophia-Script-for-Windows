@@ -5,7 +5,47 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 5.12.12 | 6.0.13 — 27.02.2021
+## 5.12.14 | 6.0.14 — 09.04.2022
+
+## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
+
+* Added checking that triggers Windows updating and Microsoft Store apps in the background if the build the app is laucnhed ins't supported;
+
+  ```powershell
+  # Enable receiving updates for other Microsoft products when you update Windows
+  (New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
+
+  # Check for UWP apps updates
+  Get-CimInstance -Namespace "Root\cimv2\mdm\dmmap" -ClassName "MDM_EnterpriseModernAppManagement_AppManagement01" | Invoke-CimMethod -MethodName UpdateScanMethod
+
+  # Open the "Windows Update" page
+  Start-Process -FilePath "ms-settings:windowsupdate-action"
+
+  # Trigger Windows Update for detecting new updates
+  (New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
+  ```
+
+* Added Windows 11 Insider Support. Requires 22509 build. Closes #336;
+* Added `StartLayout` function (for Windows 11 Insider 22509 build only
+  * Adds ability to configure Start Layout
+
+    ```powershell
+    StartLayout -Default
+    StartLayout -ShowMorePins
+    StartLayout -ShowMoreRecommendations
+    ```
+
+* Added checking that checks whether OS is waiting to be rebooted;
+* Improved the `DefaultTerminalApp` function;
+* Fixed the `InstallVCRedistx64` function;
+  * Now it downloads the right package. Closes #335.
+* Removed the `DefenderSandbox` function for Windows 11;
+  * Windows 11 has already Sandbox for Defender enabled.
+* Minor changes;
+* Updated descriptions;
+* Check out [SophiApp](https://github.com/Sophia-Community/SophiApp) 1.0.0.50 :rocket:
+
+## 5.12.12 | 6.0.13 — 27.02.2022
 
 ## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
 
@@ -15,7 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Updated descriptions.
 * Check out [SophiApp](https://github.com/Sophia-Community/SophiApp) 1.0.0.23 beta 3 :rocket:
 
-## 5.12.11 | 6.0.12 — 02.02.2021
+## 5.12.11 | 6.0.12 — 02.02.2022
 
 ## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
 
@@ -23,7 +63,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Updated descriptions.
 * Check out [SophiApp](https://github.com/Sophia-Community/SophiApp) 1.0.0.13 beta 2 :rocket:
 
-## 5.12.10 | 6.0.11 — 31.12.2021
+## 5.12.10 | 6.0.11 — 31.12.2022
 
 ## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
 
