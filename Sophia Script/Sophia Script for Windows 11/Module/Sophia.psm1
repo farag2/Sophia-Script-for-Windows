@@ -8263,8 +8263,6 @@ function RunPowerShellShortcut
 
 	.NOTES
 	Current user
-	
-
 #>
 function StartLayout
 {
