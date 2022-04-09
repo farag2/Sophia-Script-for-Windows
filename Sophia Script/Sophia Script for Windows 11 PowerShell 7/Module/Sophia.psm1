@@ -8283,13 +8283,13 @@ function RunPowerShellShortcut
 	Show more recommendations on Start
 
 	.EXAMPLE
-	RunPowerShellShortcut -Default
+	StartLayout -Default
 
 	.EXAMPLE
-	RunPowerShellShortcut -ShowMorePins
+	StartLayout -ShowMorePins
 
 	.EXAMPLE
-	RunPowerShellShortcut -ShowMoreRecommendations
+	StartLayout -ShowMoreRecommendations
 
 	.NOTES
 	For Windows 11 Insider Preview 22509+ build only
