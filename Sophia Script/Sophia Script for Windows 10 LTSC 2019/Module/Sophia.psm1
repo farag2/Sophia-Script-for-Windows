@@ -90,9 +90,6 @@ function Checkings
 			exit
 		}
 	}
-			exit
-		}
-	}
 
 	# Check the language mode
 	switch ($ExecutionContext.SessionState.LanguageMode -ne "FullLanguage")
