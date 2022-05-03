@@ -1,6 +1,14 @@
 <#
 	.SYNOPSIS
 	Download the latest Sophia Script version, depending on what Windows or PowerShell versions are used to
+
+	.SYNOPSIS
+
+	Download the latest Sophia Script version, depending on what Windows or PowerShell versions are used to
+
+	E.g., if you start script on Windows 11 via PowerShell 5.1 you will start downloading Sophia Script for Windows 11 PowerShell 5.1
+
+
 	E.g., if you start script on Windows 11 via PowerShell 5.1 you will start downloading Sophia Script for Windows 11 PowerShell 5.1
 
 	.EXAMPLE Download and the Sophia Script archive
@@ -136,7 +144,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		}
 
 	}
-	"22000"
+	{$_ -ge 22000}
 	{
 		if ($PSVersionTable.PSVersion.Major -eq 5)
 		{
