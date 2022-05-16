@@ -7,10 +7,10 @@
 	E.g., if you start script on Windows 11 via PowerShell 5.1 you will start downloading Sophia Script for Windows 11 PowerShell 5.1
 
 	.EXAMPLE Download and expand Sophia Script archive
-	irm script.sophi.app | iex
+	irm script.sophi.app -useb | iex
 
 	.EXAMPLE Download and expand Wrapper archive
-	iex "& {$(irm script.sophi.app)} -Wrapper"
+	iex "& {$(irm script.sophi.app -useb)} -Wrapper"
 
 	.NOTES
 	Current user
