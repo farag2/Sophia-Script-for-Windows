@@ -2278,6 +2278,57 @@ function QuickAccessFrequentFolders
 
 <#
 	.SYNOPSIS
+	Recently used items in Jump Lists on the taskbar 
+
+	.PARAMETER Hide
+	Hide recently used items in Jump Lists on the taskbar 
+
+	.PARAMETER Show
+	Show recently used items in Jump Lists on the taskbar 
+
+	.EXAMPLE
+	JumpListsRecentItems -Hide
+
+	.EXAMPLE
+	JumpListsRecentItems -Show
+
+	.NOTES
+	Current user
+#>
+function JumpListsRecentItems
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Hide"
+		)]
+		[switch]
+		$Hide,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Show"
+		)]
+		[switch]
+		$Show
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Hide"
+		{
+			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_TrackDocs -PropertyType DWord -Value 0 -Force
+		}
+		"Show"
+		{
+			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_TrackDocs -PropertyType DWord -Value 1 -Force
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
 	Search on the taskbar
 
 	.PARAMETER Hide
