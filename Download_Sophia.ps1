@@ -237,12 +237,12 @@ if (-not ("WinAPI.ForegroundWindow" -as [type]))
 	Add-Type @SetForegroundWindow
 }
 
+Start-Sleep -Seconds 1
+	
 Get-Process -Name explorer | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows $([System.Environment]::OSVersion.Version.Major)"} | ForEach-Object -Process {
 	# Show window, if minimized
 	[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 5)
 
-	Start-Sleep -Seconds 3
-
 	# Force move the console window to the foreground
 	[WinAPI.ForegroundWindow]::SetForegroundWindow($_.MainWindowHandle)
-}
+} | Out-Null
