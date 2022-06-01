@@ -243,7 +243,7 @@ Or use an old-style format without the TAB functions autocomplete (the quotation
 * Download the always latest Sophia Script archive by invoking (`not as administrator too`) in PowerShell
 
 ```powershell
-irm script.sophi.app | iex
+irm script.sophi.app -useb | iex
 ```
 
 * The command will download and expand the latest Sophia Script archive (`without running`) according which Windows and PowerShell versions it is run on. If you run it on, e.g., Windows 11 via PowerShell 5.1, it will download Sophia Script for `Windows 11 PowerShell 5.1`.

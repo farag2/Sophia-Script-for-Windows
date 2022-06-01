@@ -1,13 +1,16 @@
 <#
 	.SYNOPSIS
 	Download the latest Sophia Script version, depending on what Windows or PowerShell versions are used to
+
+	.SYNOPSIS
+	Download the latest Sophia Script version, depending on what Windows or PowerShell versions are used to
 	E.g., if you start script on Windows 11 via PowerShell 5.1 you will start downloading Sophia Script for Windows 11 PowerShell 5.1
 
-	.EXAMPLE Download and the Sophia Script archive
-	irm script.sophi.app | iex
+	.EXAMPLE Download and expand Sophia Script archive
+	irm script.sophi.app -useb | iex
 
-	.EXAMPLE Download and expand the Wrapper archive
-	iex "& {$(irm script.sophi.app)} -Wrapper"
+	.EXAMPLE Download and expand Wrapper archive
+	iex "& {$(irm script.sophi.app -useb)} -Wrapper"
 
 	.NOTES
 	Current user
@@ -136,7 +139,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		}
 
 	}
-	"22000"
+	{$_ -ge 22000}
 	{
 		if ($PSVersionTable.PSVersion.Major -eq 5)
 		{
@@ -234,12 +237,12 @@ if (-not ("WinAPI.ForegroundWindow" -as [type]))
 	Add-Type @SetForegroundWindow
 }
 
+Start-Sleep -Seconds 1
+	
 Get-Process -Name explorer | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows $([System.Environment]::OSVersion.Version.Major)"} | ForEach-Object -Process {
 	# Show window, if minimized
 	[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 5)
 
-	Start-Sleep -Seconds 3
-
 	# Force move the console window to the foreground
 	[WinAPI.ForegroundWindow]::SetForegroundWindow($_.MainWindowHandle)
-}
+} | Out-Null
