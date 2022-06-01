@@ -1,0 +1,70 @@
+﻿[
+  {
+    "Id": "Menu",
+    "Options": {
+      "menuImportExportPreset": "Importa | Esporta",
+      "menuImportPreset": "Importa Preset",
+      "menuExportPreset": "Esporta Preset",
+      "menuPresets": "Preset",
+      "menuOpposite": "Inverti inpostazioni",
+      "menuClear": "Reimposta",
+      "menuTheme": "Tema",
+      "menuThemeDark": "Scuro",
+      "menuThemeLight": "Chiaro",
+      "menuLanguage": "Lingua",
+      "menuAbout": "Informazioni"
+    }
+  },
+  {
+    "Id": "Tab",
+    "Options": {
+      "tabSystemProtection": "Protezione del sistema",
+      "tabPrivacyTelemetry": "Privacy & Telemetria",
+      "tabUIPersonalization": "Interfaccia & Personalizzazione",
+      "tabOneDrive": "OneDrive",
+      "tabSystem": "Sistema",
+      "tabWSL": "WSL",
+      "tabStartMenu": "Menu Start",
+      "tabUWP": "App UWP",
+      "tabGaming": "Gaming",
+      "tabScheduledTasks": "Operazioni pianificate",
+      "tabDefenderSecurity": "Windows Defender & Sicurezza",
+      "tabContextMenu": "Menu contestuale",
+      "tabConsoleOutput": "Output della console"
+    }
+  },
+  {
+    "Id": "Button",
+    "Options": {
+      "btnRefreshConsole": "Riarica la console",
+      "btnRunPowerShell": "Esegui PowerShell"
+    }
+  },
+  {
+    "Id": "StatusBar",
+    "Options": {
+      "statusBarHover": "Passa il cursore del mouse sugli elemento selezionatozione per mostrare informazioni su esso",
+      "statusBarPresetLoaded": "preset caricato!",
+      "statusBarPresetNotComp": "il file preset file non è compatibile!",
+      "statusBarSophiaPreset": "Sophia preset caricato!",
+      "statusBarWindowsDefaultPreset": "Preset di Windows predefinito caricato!",
+      "statusBarPowerShellScriptCreatedFromSelections": "Script PowerShell creato in base alle tue selezioni!Ora puoi eseguirlo o salvarlo.",
+      "statusBarPowerShellExport": "Script PowerShell creato!",
+      "statusBarOpposite": "Le opzioni selezionate sono state invertite!",
+      "statusBarClear": "Le opzioni selezionate sono state annullate",
+      "statusBarDisabled": "Devi 'Importare un preset' per l'uso di Wrapper. Importalo per abilitare le opzioni.",
+      "statusBarCurrentOS": "Current OS"
+    }
+  },
+  {
+    "Id": "MessageBox",
+    "Options": {
+      "messageBoxNewWrapperFound": "Una nuova versione di 'Wrapper' è stata trovata.\n Aprire la pagina pagina dei rilasci di GitHub?",
+      "messageBoxNewSophiaFound": "Una nuova versione di 'Sophi Script' è stata trovata.\n Aprire la pagina pagina dei rilasci di GitHub?",
+      "messageBoxDoesNotExist": "Non esiste",
+      "messageBoxPresetNotComp": "Il file preset non è compatibile! ",
+      "messageBoxFilesMissingClose": "Mancano alcuni file. Il wrapper si chiuderà",
+      "messageBoxConsoleEmpty": "La console è vuota.\n Fare clic sul pulsante 'Aggiorna console' per creare lo script con le selezioni"
+    }
+  }
+]
