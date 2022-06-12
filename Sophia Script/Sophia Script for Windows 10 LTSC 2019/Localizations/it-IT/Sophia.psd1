@@ -1,4 +1,4 @@
-﻿ConvertFrom-StringData -StringData @'
+ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Lo script supporta solo Windows 10 Enterprise LTSC 2019
 UnsupportedOSBuild                        = Lo script supporta Windows 10 Enterprise LTSC 2019
 UnsupportedLanguageMode                   = La sessione PowerShell è in esecuzione in modalità lingua limitata
@@ -6,16 +6,16 @@ LoggedInUserNotAdmin                      = L'utente in suo non ha i diritti di 
 UnsupportedPowerShell                     = Stai cercando di eseguire lo script tramite PowerShell {0}.{1}. Esegui lo script nella versione di PowerShell appropriata
 UnsupportedISE                            = Lo script non supporta l'esecuzione tramite Windows PowerShell ISE
 Win10TweakerWarning                       = Probabilmente il tuo sistema operativo è stato infettato tramite una backdoor in Win 10 Tweaker
+Windows10DebloaterWarning                 = La stabilità del sistema operativo Windows potrebbe essere stata compromessa dall'utilizzo dello script PowerShell Windows10Debloater di Sycnex. È consigliato reinstallare il sistema operativo
 RebootPending                             = Il PC è in attesa di essere riavviato
 UnsupportedRelease                        = Nuova versione trovata
 CustomizationWarning                      = Sono state personalizzate tutte le funzioni nel file di configurazione {0} prima di eseguire Sophia Script?
-Windows10DebloaterWarning                 = La stabilità del sistema operativo Windows potrebbe essere stata compromessa dall'utilizzo dello script PowerShell Windows10Debloater di Sycnex. È consigliato reinstallare il sistema operativo
 ControlledFolderAccessDisabled            = l'accesso alle cartelle controllata disattivata
 ScheduledTasks                            = Attività pianificate
 WindowsFeaturesTitle                      = Funzionalità di Windows
 OptionalFeaturesTitle                     = Caratteristiche opzionali
 EnableHardwareVT                          = Abilita virtualizzazione in UEFI
-UserShellFolderNotEmpty                   = Alcuni file rimasti nella cartella "{0}".Spostali manualmente in una nuova posizione
+UserShellFolderNotEmpty                   = Alcuni file rimasti nella cartella "{0}". Spostali manualmente in una nuova posizione
 RetrievingDrivesList                      = Recupero lista unità...
 DriveSelect                               = Selezionare l'unità all'interno della radice del quale verrà creato la cartella "{0}" 
 CurrentUserFolderLocation                 = La posizione attuale della cartella "{0}": "{1}"
@@ -67,7 +67,7 @@ Run                                       = Eseguire
 SelectAll                                 = Seleziona tutto
 Skip                                      = Salta
 Skipped                                   = Saltato
-FileExplorerRestartPrompt                 = A volte, affinché le modifiche abbiano effetto, il processo di File Explorer deve essere riavviato
+FileExplorerRestartPrompt                 = \nA volte, affinché le modifiche abbiano effetto, il processo di File Explorer deve essere riavviato
 TelegramGroupTitle                        = Unisciti al nostro gruppo ufficiale Telegram
 TelegramChannelTitle                      = Unisciti al nostro canale ufficiale di Telegram
 Uninstall                                 = Disinstallare
