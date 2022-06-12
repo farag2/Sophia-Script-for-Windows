@@ -1,12 +1,12 @@
-﻿[
+[
   {
     "Id": 100,
     "Region": "Protection",
-    "Function": "Controlli",
+    "Function": "Checkings",
     "Arg": {
       "Zero": {
         "Tag": "Warning",
-        "ToolTip": "I controlli obbligatori. Se si desidera disabilitare un messaggio di avviso sul fatto che il file preimpostato sia stato personalizzato, rimuovere l'argomento \"-Warning \""
+        "ToolTip": "I controlli obbligatori. Se si desidera Disablere un messaggio di avviso sul fatto che il file preimpostato sia stato personalizzato, rimuovere l'argomento \"-Warning \""
       },
       "One": {
         "Tag": "",
@@ -21,7 +21,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Abilita il logging dello script. Il log verrà registrato nella cartella dello script. Per interrompere la registrazione basta chiudere la console o il digitare \"Stop-Transcript\""
+        "ToolTip": "Enable il logging dello script. Il log verrà registrato nella cartella dello script. Per interrompere la registrazione basta chiudere la console o il digitare \"Stop-Transcript\""
       }
     }
   },
@@ -39,15 +39,15 @@
   {
     "Id": 200,
     "Region": "Privacy & Telemetry",
-    "Function": "Servizio DiagTrack",
+    "Function": "DiagTrackService",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
-        "ToolTip": "Disabilita il servizio \"Esperienze utente connesse e telemetria\" (DiagTrack) e bloccare la connessione per il traffico in uscita del client di telemetria unificata"
+        "Tag": "Disable",
+        "ToolTip": "Disable il servizio \"Esperienze utente connesse e telemetria\" (DiagTrack) e bloccare la connessione per il traffico in uscita del client di telemetria unificata"
       },
       "One": {
-        "Tag": "Abilita",
-        "ToolTip": "Abilita il servizio Diagtrack, regola del firewall per il traffico in uscita client unificato e consentine la connessione (Impostazione predefinita)"
+        "Tag": "Enable",
+        "ToolTip": "Enable il servizio Diagtrack, regola del firewall per il traffico in uscita client unificato e consentine la connessione (Impostazione predefinita)"
       }
     }
   },
@@ -57,7 +57,7 @@
     "Function": "DiagnosticDataLevel",
     "Arg": {
       "Zero": {
-        "Tag": "Minimo",
+        "Tag": "Minimal",
         "ToolTip": "Imposta il livello della raccolta dei dati diagnostici del sistema operativo al minimo"
       },
       "One": {
@@ -69,25 +69,25 @@
   {
     "Id": 202,
     "Region": "Privacy & Telemetry",
-    "Function": "Segnalazione errori",
+    "Function": "ErrorReporting",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disattiva il reporting degli errori di Windows"
       },
       "One": {
-        "Tag": "Abilita",
-        "ToolTip": "Abilita il report di errore di Windows (Impostazione predefinita)"
+        "Tag": "Enable",
+        "ToolTip": "Enable il report di errore di Windows (Impostazione predefinita)"
       }
     }
   },
   {
     "Id": 203,
     "Region": "Privacy & Telemetry",
-    "Function": "Frequenza richiesta feedback",
+    "Function": "FeedbackFrequency",
     "Arg": {
       "Zero": {
-        "Tag": "Mai",
+        "Tag": "Never",
         "ToolTip": "Imposta la frequenza di richiesta feedback in \"mai \""
       },
       "One": {
@@ -99,15 +99,15 @@
   {
     "Id": 204,
     "Region": "Privacy & Telemetry",
-    "Function": "Operazioni pianificate",
+    "Function": "ScheduledTasks",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disattiva le operazioni pianificate di tracciamento diagnostico"
       },
       "One": {
-        "Tag": "Abilita",
-        "ToolTip": "Abilita le operazioni pianificate per il monitoraggio diagnostico (Impostazione predefinita)"
+        "Tag": "Enable",
+        "ToolTip": "Enable le operazioni pianificate per il monitoraggio diagnostico (Impostazione predefinita)"
       }
     }
   },
@@ -117,11 +117,11 @@
     "Function": "SigninInfo",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Non utilizzare le informazioni di accesso per ultimare automaticamente l'aggiornamento del dispositivo e riaprire le app dopo un aggiornamento o riavvio"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Utilizza le informazioni di accesso per ultimare automaticamente l'aggiornamento del dispositivo e riaprire le app dopo un aggiornamento o riavvio (Impostazio predefinita)"
       }
     }
@@ -132,11 +132,11 @@
     "Function": "LanguageListAccess",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Non consentire ai siti Web di fornire contenuti localmente pertinenti accedendo all'elenco delle lingue"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Permetti ai siti Web di fornire contenuti localmente pertinenti accedendo all'elenco delle lingue (Impostazio predefinita)"
       }
     }
@@ -147,11 +147,11 @@
     "Function": "AdvertisingID",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Non consentire alle app di utilizzare l'ID pubblicitario"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "consenti alle app di utilizzare l'ID pubblicitario (Impostazione predefinita)"
       }
     }
@@ -174,14 +174,14 @@
   {
     "Id": 209,
     "Region": "Privacy & Telemetry",
-    "Function": "Suggerimenti di Windows",
+    "Function": "WindowsTips",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Ottieni suggerimenti, trucchi e suggerimenti mentre usi Windows (Impostazione predefinita)"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Non ricevere suggerimenti, trucchi e suggerimenti mentre usi Windows"
       }
     }
@@ -207,12 +207,12 @@
     "Function": "AppsSilentInstalling",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disattiva automatic installing suggested apps"
       },
       "One": {
-        "Tag": "Abilita",
-        "ToolTip": "Abilita automatic installing suggested apps (Impostazione predefinita)"
+        "Tag": "Enable",
+        "ToolTip": "Enable automatic installing suggested apps (Impostazione predefinita)"
       }
     }
   },
@@ -222,11 +222,11 @@
     "Function": "WhatsNewInWindows",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Do not suggest ways I can finish setting up my device to get the most out of Windows"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Suggest ways I can finish setting up my device to get the most out of Windows (Impostazione predefinita)"
       }
     }
@@ -237,11 +237,11 @@
     "Function": "TailoredExperiences",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Do not let Microsoft offer you tailored expereinces based on the diagnostic data setting you hava chosen"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Let Microsoft offer you tailored expereinces based on the diagnostic data setting you hava chosen (Impostazione predefinita)"
       }
     }
@@ -252,11 +252,11 @@
     "Function": "BingSearch",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable Bing search in the Start Menu (for the USA only)"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable Bing search in the Start Menu (Impostazione predefinita)"
       }
     }
@@ -282,11 +282,11 @@
     "Function": "CheckBoxes",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Do not use item check boxes"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Use check boxes to select items (Impostazione predefinita)"
       }
     }
@@ -297,11 +297,11 @@
     "Function": "HiddenItems",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Show hidden files, folders, and drives"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Do not show hidden files, folders, and drives (Impostazione predefinita)"
       }
     }
@@ -357,11 +357,11 @@
     "Function": "FileExplorerMode",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable the File Explorer compact mode"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable the File Explorer compact mode (Impostazione predefinita)"
       }
     }
@@ -402,11 +402,11 @@
     "Function": "SnapAssist",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "When I snap a window, do not show what I can snap next to it"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "When I snap a window, show what I can snap next to it (Impostazione predefinita)"
       }
     }
@@ -447,11 +447,11 @@
     "Function": "RecycleBinDeleteConfirmation",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Display the recycle bin files delete confirmation"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Do not display the recycle bin files delete confirmation (Impostazione predefinita)"
       }
     }
@@ -616,11 +616,11 @@
     "Function": "NewsInterests",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable \"News and Interests\" on the taskbar"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable \"News and Interests\" on the taskbar (Impostazione predefinita)"
       }
     }
@@ -715,11 +715,11 @@
     "Function": "FirstLogonAnimation",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Hide user first sign-in animation after the upgrade"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Show user first sign-in animation after the upgrade (Impostazione predefinita)"
       }
     }
@@ -775,11 +775,11 @@
     "Function": "ShortcutsSuffix",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Do not add the \"- Shortcut\" suffix to the file name of created shortcuts"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Add the \"- Shortcut\" suffix to the file name of created shortcuts (Impostazione predefinita)"
       }
     }
@@ -790,11 +790,11 @@
     "Function": "PrtScnSnippingTool",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Use the Print screen button to open screen snipping"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Do not use the Print screen button to open screen snipping (Impostazione predefinita)"
       }
     }
@@ -805,11 +805,11 @@
     "Function": "AppsLanguageSwitch",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Let me use a different input method for each app window"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Do not use a different input method for each app window (Impostazione predefinita)"
       }
     }
@@ -820,11 +820,11 @@
     "Function": "AeroShaking",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "When I grab a windows's title bar and shake it, don't minimize all other windows (Impostazione predefinita)"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "When I grab a windows's title bar and shake it, minimize all other windows"
       }
     }
@@ -850,11 +850,11 @@
     "Function": "StorageSense",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
-        "ToolTip": "Abilita Storage Sense"
+        "Tag": "Enable",
+        "ToolTip": "Enable Storage Sense"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disattiva Storage Sense (Impostazione predefinita)"
       }
     }
@@ -880,11 +880,11 @@
     "Function": "StorageSenseTempFiles",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Delete temporary files that apps aren't using (Impostazione predefinita)"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Do not delete temporary files that apps aren't using"
       }
     }
@@ -895,11 +895,11 @@
     "Function": "Hibernation",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable hibernation. Do not recommend turning it off on laptops"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable hibernate (Impostazione predefinita)"
       }
     }
@@ -925,11 +925,11 @@
     "Function": "Win32LongPathLimit",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable the Windows 260 characters path limit"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable the Windows 260 character path limit (Impostazione predefinita)"
       }
     }
@@ -940,11 +940,11 @@
     "Function": "BSoDStopError",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Display Stop error code when BSoD occurs"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Do not Stop error code when BSoD occurs (Impostazione predefinita)"
       }
     }
@@ -955,7 +955,7 @@
     "Function": "AdminApprovalMode",
     "Arg": {
       "Zero": {
-        "Tag": "Mai",
+        "Tag": "Never",
         "ToolTip": "Choose when to be notified about changes to your computer: never notify"
       },
       "One": {
@@ -970,11 +970,11 @@
     "Function": "MappedDrivesAppElevatedAccess",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
-        "ToolTip": "Abilita access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled"
+        "Tag": "Enable",
+        "ToolTip": "Enable access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disattiva access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled (Impostazione predefinita)"
       }
     }
@@ -985,12 +985,12 @@
     "Function": "DeliveryOptimization",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disattiva Delivery Optimization"
       },
       "One": {
-        "Tag": "Abilita",
-        "ToolTip": "Abilita Delivery Optimization (Impostazione predefinita)"
+        "Tag": "Enable",
+        "ToolTip": "Enable Delivery Optimization (Impostazione predefinita)"
       }
     }
   },
@@ -1000,11 +1000,11 @@
     "Function": "WaitNetworkStartup",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Always wait for the network at computer startup and logon for workgroup networks"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Never wait for the network at computer startup and logon for workgroup networks (Impostazione predefinita)"
       }
     }
@@ -1015,11 +1015,11 @@
     "Function": "WindowsManageDefaultPrinter",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Do not let Windows manage my default printer"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Let Windows manage my default printer (Impostazione predefinita)"
       }
     }
@@ -1030,11 +1030,11 @@
     "Function": "WindowsFeatures",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable the Windows features using the pop-up dialog box"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable the Windows features using the pop-up dialog box (Impostazione predefinita)"
       }
     }
@@ -1060,11 +1060,11 @@
     "Function": "UpdateMicrosoftProducts",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Receive updates for other Microsoft products when you update Windows"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Do not receive updates for other Microsoft products when you update Windows (Impostazione predefinita)"
       }
     }
@@ -1090,11 +1090,11 @@
     "Function": "LatestInstalled.NET",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Use the latest installed .NET runtime for all apps"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Do not use the latest installed .NET runtime for all apps (Impostazione predefinita)"
       }
     }
@@ -1105,11 +1105,11 @@
     "Function": "NetworkAdaptersSavePower",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Do not allow the computer to turn off the network adapters to save power"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Allow the computer to turn off the network adapters to save power (Impostazione predefinita)"
       }
     }
@@ -1120,11 +1120,11 @@
     "Function": "IPv6Component",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections. Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipv6-test.com"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections (Impostazione predefinita). Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipv6-test.com"
       }
     }
@@ -1199,11 +1199,11 @@
     "Function": "FoldersLaunchSeparateProcess",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Launch folder windows in a separate process"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Do not launch folder windows in a separate process (Impostazione predefinita)"
       }
     }
@@ -1214,11 +1214,11 @@
     "Function": "ReservedStorage",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable and delete reserved storage after the next update installation"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable reserved storage (Impostazione predefinita)"
       }
     }
@@ -1229,11 +1229,11 @@
     "Function": "F1HelpPage",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable help lookup via F1"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable help lookup via F1 (Impostazione predefinita)"
       }
     }
@@ -1244,11 +1244,11 @@
     "Function": "NumLock",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable Num Lock at startup"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable Num Lock at startup (Impostazione predefinita)"
       }
     }
@@ -1259,11 +1259,11 @@
     "Function": "CapsLock",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable Caps Lock"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable Caps Lock (Impostazione predefinita)"
       }
     }
@@ -1274,11 +1274,11 @@
     "Function": "StickyShift",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Do not allow the shortcut key to Start Sticky Keys by pressing the the Shift key 5 times to turn Sticky keys off"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Allow the shortcut key to Start Sticky Keys by pressing the the Shift key 5 times to turn Sticky keys on (Impostazione predefinita)"
       }
     }
@@ -1289,11 +1289,11 @@
     "Function": "Autoplay",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Don't use AutoPlay for all media and devices"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Use AutoPlay for all media and devices (Impostazione predefinita)"
       }
     }
@@ -1304,11 +1304,11 @@
     "Function": "ThumbnailCacheRemoval",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable thumbnail cache removal"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable thumbnail cache removal (Impostazione predefinita)"
       }
     }
@@ -1319,11 +1319,11 @@
     "Function": "SaveRestartableApps",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable automatically saving my restartable apps when signing out and restart them after signing in"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable automatically saving my restartable apps when signing out and restart them after signing in (Impostazione predefinita)"
       }
     }
@@ -1334,11 +1334,11 @@
     "Function": "NetworkDiscovery",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable \"Network Discovery\" and \"File and Printers Sharing\" for workgroup networks"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable \"Network Discovery\" and \"File and Printers Sharing\" for workgroup networks (Impostazione predefinita)"
       }
     }
@@ -1364,11 +1364,11 @@
     "Function": "RestartDeviceAfterUpdate",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Restart this device as soon as possible when a restart is required to install an update"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Do not restart this device as soon as possible when a restart is required to install an update (Impostazione predefinita)"
       }
     }
@@ -1536,11 +1536,11 @@
     "Function": "CortanaAutostart",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable Cortana autostarting"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable Cortana autostarting (Impostazione predefinita)"
       }
     }
@@ -1551,11 +1551,11 @@
     "Function": "TeamsAutostart",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable Microsoft Teams autostarting"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable Microsoft Teams autostarting (Impostazione predefinita)"
       }
     }
@@ -1566,11 +1566,11 @@
     "Function": "BackgroundUWPApps",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Do not let all UWP apps run in the background"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Let all UWP apps run in the background (Impostazione predefinita)"
       }
     }
@@ -1592,11 +1592,11 @@
     "Function": "XboxGameBar",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable Xbox Game Bar"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable Xbox Game Bar (Impostazione predefinita)"
       }
     }
@@ -1607,11 +1607,11 @@
     "Function": "XboxGameTips",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable Xbox Game Bar tips"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable Xbox Game Bar tips (Impostazione predefinita)"
       }
     }
@@ -1633,11 +1633,11 @@
     "Function": "GPUScheduling",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
-        "ToolTip": "Abilita hardware-accelerated GPU scheduling. Restart needed. Only if you have a dedicated GPU and WDDM verion is 2.7 or higher"
+        "Tag": "Enable",
+        "ToolTip": "Enable hardware-accelerated GPU scheduling. Restart needed. Only if you have a dedicated GPU and WDDM verion is 2.7 or higher"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disattiva hardware-accelerated GPU scheduling. Restart needed (Impostazione predefinita)"
       }
     }
@@ -1693,11 +1693,11 @@
     "Function": "NetworkProtection",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable Microsoft Defender Exploit Guard network protection"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable Microsoft Defender Exploit Guard network protection (Impostazione predefinita)"
       }
     }
@@ -1708,11 +1708,11 @@
     "Function": "PUAppsDetection",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable detection for potentially unwanted applications and block them"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable detection for potentially unwanted applications and block them (Impostazione predefinita)"
       }
     }
@@ -1723,11 +1723,11 @@
     "Function": "DefenderSandbox",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable sandboxing for Microsoft Defender"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable sandboxing for Microsoft Defender (Impostazione predefinita)"
       }
     }
@@ -1760,11 +1760,11 @@
     "Function": "AuditProcess",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable events auditing generated when a process is created (starts)"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable events auditing generated when a process is created (starts) (Impostazione predefinita)"
       }
     }
@@ -1775,11 +1775,11 @@
     "Function": "CommandLineProcessAudit",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Include command line in process creation events. In order this feature to work events auditing (ProcessAudit -Enable) will be enabled"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Do not include command line in process creation events (Impostazione predefinita)"
       }
     }
@@ -1790,11 +1790,11 @@
     "Function": "EventViewerCustomView",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Create the \"Process Creation\" сustom view in the Event Viewer to log executed processes and their arguments. In order this feature to work events auditing (AuditProcess -Enable) and command line (CommandLineProcessAudit -Enable) in process creation events will be enabled"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Remove the \"Process Creation\" custom view in the Event Viewer to log executed processes and their arguments (Impostazione predefinita)"
       }
     }
@@ -1805,11 +1805,11 @@
     "Function": "PowerShellModulesLogging",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable logging for all Windows PowerShell modules"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable logging for all Windows PowerShell modules (Impostazione predefinita)"
       }
     }
@@ -1820,11 +1820,11 @@
     "Function": "PowerShellScriptsLogging",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable logging for all PowerShell scripts input to the Windows PowerShell event log"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable logging for all PowerShell scripts input to the Windows PowerShell event log (Impostazione predefinita)"
       }
     }
@@ -1835,11 +1835,11 @@
     "Function": "AppsSmartScreen",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Microsoft Defender SmartScreen doesn't marks downloaded files from the Internet as unsafe"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Microsoft Defender SmartScreen marks downloaded files from the Internet as unsafe (Impostazione predefinita)"
       }
     }
@@ -1850,11 +1850,11 @@
     "Function": "SaveZoneInformation",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable the Attachment Manager marking files that have been downloaded from the Internet as unsafe"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable the Attachment Manager marking files that have been downloaded from the Internet as unsafe (Impostazione predefinita)"
       }
     }
@@ -1865,11 +1865,11 @@
     "Function": "WindowsScriptHost",
     "Arg": {
       "Zero": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable Windows Script Host. Blocks WSH from executing .js and .vbs files"
       },
       "One": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable Windows Script Host (Impostazione predefinita)"
       }
     }
@@ -1880,11 +1880,11 @@
     "Function": "WindowsSandbox",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable Windows Sandbox"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable Windows Sandbox (Impostazione predefinita)"
       }
     }
@@ -1895,11 +1895,11 @@
     "Function": "DNSoverHTTPS",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable DNS-over-HTTPS for IPv4. The valid IPv4 addresses: 1.0.0.1, 1.1.1.1, 149.112.112.112, 8.8.4.4, 8.8.8.8, 9.9.9.9"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable DNS-over-HTTPS for IPv4 (Impostazione predefinita)"
       }
     }
@@ -2091,11 +2091,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide the \"Abilita BitLocker\" item from the drives context menu"
+        "ToolTip": "Hide the \"Enable BitLocker\" item from the drives context menu"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show the \"Abilita BitLocker\" item in the drives context menu (Impostazione predefinita)"
+        "ToolTip": "Show the \"Enable BitLocker\" item in the drives context menu (Impostazione predefinita)"
       }
     }
   },
@@ -2150,11 +2150,11 @@
     "Function": "MultipleInvokeContext",
     "Arg": {
       "Zero": {
-        "Tag": "Abilita",
+        "Tag": "Enable",
         "ToolTip": "Enable the \"Open\", \"Print\", and \"Edit\" context menu items for more than 15 items selected"
       },
       "One": {
-        "Tag": "Disabilita",
+        "Tag": "Disable",
         "ToolTip": "Disable the \"Open\", \"Print\", and \"Edit\" context menu items for more than 15 items selected (Impostazione predefinita)"
       }
     }
