@@ -644,7 +644,7 @@ NetworkAdaptersSavePower -Disable
 	Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipv6-test.com
 
 	Выключить IP версии 6 (TCP/IPv6)
-	Перед выполнением функции будет провердена проверка: поддерживает ли ваш провайдер IPv6, используя ресурс https://ipv6-test.com
+	Перед выполнением функции будет проведена проверка: поддерживает ли ваш провайдер IPv6, используя ресурс https://ipv6-test.com
 #>
 IPv6Component -Disable
 
@@ -653,7 +653,7 @@ IPv6Component -Disable
 	Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipv6-test.com
 
 	Включить IP версии 6 (TCP/IPv6) (значение по умолчанию)
-	Перед выполнением функции будет провердена проверка: поддерживает ли ваш провайдер IPv6, используя ресурс https://ipv6-test.com
+	Перед выполнением функции будет проведена проверка: поддерживает ли ваш провайдер IPv6, используя ресурс https://ipv6-test.com
 #>
 # IPv6Component -Enable
 
