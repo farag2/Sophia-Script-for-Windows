@@ -1371,7 +1371,7 @@
       },
       "One": {
         "Tag": "Install",
-        "ToolTip": "Download and install \"HEVC Video Extensions from Device Manufacturer\" to be able to open .heic and .heif formats"
+        "ToolTip": "Download and install \"HEVC Video Extensions from Device Manufacturer\" to be able to open .heic and .heif formats. HEVC Video Extension is already installed in Windows 11 22H2 by default."
       }
     }
   },
