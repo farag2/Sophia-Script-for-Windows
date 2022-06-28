@@ -1,6 +1,6 @@
 ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = Lo script supporta Windows 11 21H2 e versioni successive
-UpdateWarning                             = La tua build di Windows 11 {0}.{1} non è supportata. Build supportate: 22000.556, 22509 e successive
+UpdateWarning                             = La tua build di Windows 11 {0}.{1} non è supportata. Build supportate: 22000.739, 22509 e successive
 UnsupportedLanguageMode                   = La sessione PowerShell è in esecuzione in modalità lingua limitata
 LoggedInUserNotAdmin                      = L'utente in suo non ha i diritti di amministratore
 UnsupportedPowerShell                     = Stai cercando di eseguire lo script tramite PowerShell {0}.{1}. Esegui lo script nella versione di PowerShell appropriata
@@ -53,7 +53,6 @@ ErrorsMessage                             = Errori/avvisi
 Add                                       = Inserisci
 AllFilesFilter                            = Tutti i file (*.*)|*.*
 Browse                                    = Sfogliare
-Change                                    = Modifica
 DialogBoxOpening                          = Visualizzazione della finestra di dialogo...
 Disable                                   = Disattivare
 Enable                                    = Abilitare
@@ -75,7 +74,6 @@ Patient                                   = Attendere prego...
 Restore                                   = Ristabilire
 Run                                       = Eseguire
 SelectAll                                 = Seleziona tutto
-Skip                                      = Salta
 Skipped                                   = Saltato
 FileExplorerRestartPrompt                 = \nA volte, affinché le modifiche abbiano effetto, il processo di File Explorer deve essere riavviato
 TelegramGroupTitle                        = Unisciti al nostro gruppo ufficiale Telegram
