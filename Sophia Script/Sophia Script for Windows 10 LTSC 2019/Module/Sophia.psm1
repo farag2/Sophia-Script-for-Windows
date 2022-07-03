@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.2.20
-	Date: 09.04.2022
+	Version: v5.3.0
+	Date: 03.07.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -24,7 +24,7 @@
 	Set execution policy to be able to run scripts only in the current PowerShell session:
 		Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 
-	.LINK GitHub link
+	.LINK GitHub
 	https://github.com/farag2/Sophia-Script-for-Windows
 
 	.LINK Telegram channel & group
@@ -152,6 +152,25 @@ function Checkings
 		exit
 	}
 
+	# Check whether libraries exist in the bin folder
+	$Libraries = @(
+		"$PSScriptRoot\..\bin\PolicyFileEdit\Commands.ps1",
+		"$PSScriptRoot\..\bin\PolicyFileEdit\Common.ps1",
+		"$PSScriptRoot\..\bin\PolicyFileEdit\PolFileEditor.dll",
+		"$PSScriptRoot\..\bin\PolicyFileEdit\PolicyFileEditor.psd1",
+		"$PSScriptRoot\..\bin\PolicyFileEdit\PolicyFileEditor.psm1"
+	)
+	if (($Libraries | Test-Path) -contains $false)
+	{
+		Write-Warning -Message $Localization.Bin
+
+		Start-Sleep -Seconds 5
+
+		Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"
+
+		exit
+	}
+
 	# Check for a pending reboot
 	$PendingActions = @(
 		# CBS pending
@@ -162,7 +181,7 @@ function Checkings
 		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\PostRebootReporting",
 		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired"
 	)
-	if ($null -ne (Get-Item -Path $PendingActions -Force -ErrorAction Ignore))
+	if (($PendingActions | Test-Path) -contains $true)
 	{
 		Write-Warning -Message $Localization.RebootPending
 		exit
@@ -173,30 +192,54 @@ function Checkings
 	{
 		[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-		# https://github.com/farag2/Sophia-Script-for-Windows/blob/master/sophia_script_versions.json
+		# Check the internet connection
 		$Parameters = @{
-			Uri              = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
+			Uri              = "https://www.google.com"
+			Method           = "Head"
+			DisableKeepAlive = $true
 			UseBasicParsing  = $true
 		}
-		$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_LTSC2019
-		$CurrentRelease = (Get-Module -Name Sophia).Version.ToString()
-		switch ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)
+		if (-not (Invoke-WebRequest @Parameters).StatusDescription)
 		{
-			$true
-			{
-				Write-Warning -Message $Localization.UnsupportedRelease
+			return
+		}
 
-				Start-Sleep -Seconds 5
-
-				Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"
-				exit
+		try
+		{
+			# https://github.com/farag2/Sophia-Script-for-Windows/blob/master/sophia_script_versions.json
+			$Parameters = @{
+				Uri              = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
+				UseBasicParsing  = $true
 			}
+			$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_PowerShell_5_1
+			$CurrentRelease = (Get-Module -Name Sophia).Version.ToString()
+			switch ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)
+			{
+				$true
+				{
+					Write-Warning -Message $Localization.UnsupportedRelease
+
+					Start-Sleep -Seconds 5
+
+					Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"
+					exit
+				}
+			}
+		}
+		catch [System.Net.WebException]
+		{
+			Write-Warning -Message ($Localization.NoResponse -f "https://github.com")
+			Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
+
+			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
 		}
 	}
 	catch [System.Net.WebException]
 	{
-		Write-Warning -Message ($Localization.NoResponse -f "https://github.com/farag2/Sophia-Script-for-Windows")
-		Write-Error -Message ($Localization.NoResponse -f "https://github.com/farag2/Sophia-Script-for-Windows") -ErrorAction SilentlyContinue
+		Write-Warning -Message $Localization.NoInternetConnection
+		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+
+		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
 	}
 
 	# Unblock all files in the script folder by removing the Zone.Identifier alternate data stream with a value of "3"
@@ -414,7 +457,7 @@ function DiagnosticDataLevel
 		"Minimal"
 		{
 			# Security level
-			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 0 -Force
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name MaxTelemetryAllowed -PropertyType DWord -Value 1 -Force
 
 			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -PropertyType DWord -Value 1 -Force
@@ -422,7 +465,7 @@ function DiagnosticDataLevel
 		"Default"
 		{
 			# Full level
-			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 3 -Force
+			New-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 3 -Force
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name MaxTelemetryAllowed -PropertyType DWord -Value 3 -Force
 
 			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -PropertyType DWord -Value 3 -Force
@@ -2658,63 +2701,6 @@ function StorageSense
 
 <#
 	.SYNOPSIS
-	Clean up of temporary files
-
-	.PARAMETER Enable
-	Delete temporary files that apps aren't using
-
-	.PARAMETER Disable
-	Do not delete temporary files that apps aren't using
-
-	.EXAMPLE
-	StorageSenseTempFiles -Enable
-
-	.EXAMPLE
-	StorageSenseTempFiles -Disable
-
-	.NOTES
-	Current user
-#>
-function StorageSenseTempFiles
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Enable"
-		{
-			if ((Get-ItemPropertyValue -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01) -eq "1")
-			{
-				New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 04 -PropertyType DWord -Value 1 -Force
-			}
-		}
-		"Disable"
-		{
-			if ((Get-ItemPropertyValue -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01) -eq "1")
-			{
-				New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 04 -PropertyType DWord -Value 0 -Force
-			}
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
 	Storage Sense running frequency
 
 	.PARAMETER Month
@@ -2765,6 +2751,63 @@ function StorageSenseFrequency
 			if ((Get-ItemPropertyValue -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01) -eq "1")
 			{
 				New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 2048 -PropertyType DWord -Value 0 -Force
+			}
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	Clean up of temporary files
+
+	.PARAMETER Enable
+	Delete temporary files that apps aren't using
+
+	.PARAMETER Disable
+	Do not delete temporary files that apps aren't using
+
+	.EXAMPLE
+	StorageSenseTempFiles -Enable
+
+	.EXAMPLE
+	StorageSenseTempFiles -Disable
+
+	.NOTES
+	Current user
+#>
+function StorageSenseTempFiles
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Enable"
+		{
+			if ((Get-ItemPropertyValue -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01) -eq "1")
+			{
+				New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 04 -PropertyType DWord -Value 1 -Force
+			}
+		}
+		"Disable"
+		{
+			if ((Get-ItemPropertyValue -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01) -eq "1")
+			{
+				New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 04 -PropertyType DWord -Value 0 -Force
 			}
 		}
 	}
@@ -4367,6 +4410,16 @@ function NetworkAdaptersSavePower
 			}
 		}
 	}
+
+	# All network adapters are turned into "Disconnected" for few seconds, so we need to wait a bit to let them up.
+	# Otherwise functions below will indicate that there is not the Internet connection.
+	while
+	(
+		Get-NetAdapter -Physical | ForEach-Object -Process {$_.Status -eq "Disconnected"}
+	)
+	{
+		Start-Sleep -Milliseconds 100
+	}
 }
 
 <#
@@ -4374,10 +4427,10 @@ function NetworkAdaptersSavePower
 	Internet Protocol Version 6 (TCP/IPv6) component
 
 	.PARAMETER Disable
-	Disable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections
+	Disable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections if your ISP doesn't support it
 
 	.PARAMETER Enable
-	Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections
+	Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections if your ISP supports it
 
 	.EXAMPLE
 	IPv6Component -Disable
@@ -4424,12 +4477,34 @@ function IPv6Component
 			return
 		}
 
-		# Check whether the ISP supports IPv6 protocol using https://ipv6-test.com
-		$Parameters = @{
-			Uri             = "https://v4v6.ipv6-test.com/api/myip.php?json"
-			UseBasicParsing = $true
+		try
+		{
+			# Check whether the https://ipv6-test.com site is alive
+			$Parameters = @{
+				Uri              = "https://ipv6-test.com"
+				Method           = "Head"
+				DisableKeepAlive = $true
+				UseBasicParsing  = $true
+			}
+			if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+			{
+				return
+			}
+
+			# Check whether the ISP supports IPv6 protocol using https://ipv6-test.com
+			$Parameters = @{
+				Uri             = "https://v4v6.ipv6-test.com/api/myip.php?json"
+				UseBasicParsing = $true
+			}
+			$IPVersion = (Invoke-RestMethod @Parameters).proto
 		}
-		$IPv6Test = Invoke-RestMethod @Parameters | Where-Object -FilterScript {$_.proto -eq "ipv6"}
+		catch [System.Net.WebException]
+		{
+			Write-Warning -Message ($Localization.NoResponse -f "https://store.rg-adguard.net")
+			Write-Error -Message ($Localization.NoResponse -f "https://store.rg-adguard.net") -ErrorAction SilentlyContinue
+
+			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+		}
 	}
 	catch [System.Net.WebException]
 	{
@@ -4443,14 +4518,14 @@ function IPv6Component
 	{
 		"Disable"
 		{
-			if ($null -eq $IPv6Test)
+			if ($IPVersion -ne "ipv6")
 			{
 				Disable-NetAdapterBinding -Name * -ComponentID ms_tcpip6
 			}
 		}
 		"Enable"
 		{
-			if ($IPv6Test)
+			if ($IPVersion -eq "ipv6")
 			{
 				Enable-NetAdapterBinding -Name * -ComponentID ms_tcpip6
 			}
@@ -4813,10 +4888,10 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 	# Get the localized user folders names
 	$Signature = @{
-	Namespace        = "WinAPI"
-	Name             = "GetStr"
-	Language         = "CSharp"
-	MemberDefinition = @"
+		Namespace        = "WinAPI"
+		Name             = "GetStr"
+		Language         = "CSharp"
+		MemberDefinition = @"
 [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
 public static extern IntPtr GetModuleHandle(string lpModuleName);
 
@@ -4879,9 +4954,9 @@ public static string GetString(uint strId)
 
 			$Title = ""
 			$Message       = $Localization.UserFolderRequest -f $DesktopLocalizedString
-			$Change        = $Localization.Change
-			$Skip          = $Localization.Skip
-			$Options       = "&$Change", "&$Skip"
+			$No            = $Localization.No
+			$Yes           = $Localization.Yes
+			$Options       = "&$Yes", "&$No"
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -4912,9 +4987,9 @@ public static string GetString(uint strId)
 
 			$Title         = ""
 			$Message       = $Localization.UserFolderRequest -f $DocumentsLocalizedString
-			$Change        = $Localization.Change
-			$Skip          = $Localization.Skip
-			$Options       = "&$Change", "&$Skip"
+			$No            = $Localization.No
+			$Yes           = $Localization.Yes
+			$Options       = "&$Yes", "&$No"
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -4945,9 +5020,9 @@ public static string GetString(uint strId)
 
 			$Title         = ""
 			$Message       = $Localization.UserFolderRequest -f $DownloadsLocalizedString
-			$Change        = $Localization.Change
-			$Skip          = $Localization.Skip
-			$Options       = "&$Change", "&$Skip"
+			$No            = $Localization.No
+			$Yes           = $Localization.Yes
+			$Options       = "&$Yes", "&$No"
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -4978,9 +5053,9 @@ public static string GetString(uint strId)
 
 			$Title         = ""
 			$Message       = $Localization.UserFolderRequest -f $MusicLocalizedString
-			$Change        = $Localization.Change
-			$Skip          = $Localization.Skip
-			$Options       = "&$Change", "&$Skip"
+			$No            = $Localization.No
+			$Yes           = $Localization.Yes
+			$Options       = "&$Yes", "&$No"
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -5011,9 +5086,9 @@ public static string GetString(uint strId)
 
 			$Title         = ""
 			$Message       = $Localization.UserFolderRequest -f $PicturesLocalizedString
-			$Change        = $Localization.Change
-			$Skip          = $Localization.Skip
-			$Options       = "&$Change", "&$Skip"
+			$No            = $Localization.No
+			$Yes           = $Localization.Yes
+			$Options       = "&$Yes", "&$No"
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -5044,9 +5119,9 @@ public static string GetString(uint strId)
 
 			$Title         = ""
 			$Message       = $Localization.UserFolderRequest -f $VideosLocalizedString
-			$Change        = $Localization.Change
-			$Skip          = $Localization.Skip
-			$Options       = "&$Change", "&$Skip"
+			$No            = $Localization.No
+			$Yes           = $Localization.Yes
+			$Options       = "&$Yes", "&$No"
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -5078,8 +5153,8 @@ public static string GetString(uint strId)
 			$Title         = ""
 			$Message       = $Localization.UserFolderSelect -f $DesktopLocalizedString
 			$Browse        = $Localization.Browse
-			$Skip          = $Localization.Skip
-			$Options       = "&$Browse", "&$Skip"
+			$No            = $Localization.No
+			$Options       = "&$Browse", "&$No"
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -5121,8 +5196,8 @@ public static string GetString(uint strId)
 			$Title         = ""
 			$Message       = $Localization.UserFolderSelect -f $DocumentsLocalizedString
 			$Browse        = $Localization.Browse
-			$Skip          = $Localization.Skip
-			$Options       = "&$Browse", "&$Skip"
+			$No            = $Localization.No
+			$Options       = "&$Browse", "&$No"
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -5164,8 +5239,8 @@ public static string GetString(uint strId)
 			$Title         = ""
 			$Message       = $Localization.UserFolderSelect -f $DownloadsLocalizedString
 			$Browse        = $Localization.Browse
-			$Skip          = $Localization.Skip
-			$Options       = "&$Browse", "&$Skip"
+			$No            = $Localization.No
+			$Options       = "&$Browse", "&$No"
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -5207,8 +5282,8 @@ public static string GetString(uint strId)
 			$Title         = ""
 			$Message       = $Localization.UserFolderSelect -f $MusicLocalizedString
 			$Browse        = $Localization.Browse
-			$Skip          = $Localization.Skip
-			$Options       = "&$Browse", "&$Skip"
+			$No            = $Localization.No
+			$Options       = "&$Browse", "&$No"
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -5250,8 +5325,8 @@ public static string GetString(uint strId)
 			$Title         = ""
 			$Message       = $Localization.UserFolderSelect -f $PicturesLocalizedString
 			$Browse        = $Localization.Browse
-			$Skip          = $Localization.Skip
-			$Options       = "&$Browse", "&$Skip"
+			$No            = $Localization.No
+			$Options       = "&$Browse", "&$No"
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -5293,8 +5368,8 @@ public static string GetString(uint strId)
 			$Title         = ""
 			$Message       = $Localization.UserFolderSelect -f $VideosLocalizedString
 			$Browse        = $Localization.Browse
-			$Skip          = $Localization.Skip
-			$Options       = "&$Browse", "&$Skip"
+			$No            = $Localization.No
+			$Options       = "&$Browse", "&$No"
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -5337,9 +5412,9 @@ public static string GetString(uint strId)
 
 			$Title         = ""
 			$Message       = $Localization.UserDefaultFolder -f $DesktopLocalizedString
-			$Change        = $Localization.Change
-			$Skip          = $Localization.Skip
-			$Options       = "&$Change", "&$Skip"
+			$Yes           = $Localization.Yes
+			$No            = $Localization.No
+			$Options       = "&$Yes", "&$No"
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -5367,9 +5442,9 @@ public static string GetString(uint strId)
 
 			$Title         = ""
 			$Message       = $Localization.UserDefaultFolder -f $DocumentsLocalizedString
-			$Change        = $Localization.Change
-			$Skip          = $Localization.Skip
-			$Options       = "&$Change", "&$Skip"
+			$Yes           = $Localization.Yes
+			$No            = $Localization.No
+			$Options       = "&$Yes", "&$No"
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -5397,9 +5472,9 @@ public static string GetString(uint strId)
 
 			$Title         = ""
 			$Message       = $Localization.UserDefaultFolder -f $DownloadsLocalizedString
-			$Change        = $Localization.Change
-			$Skip          = $Localization.Skip
-			$Options       = "&$Change", "&$Skip"
+			$Yes           = $Localization.Yes
+			$No            = $Localization.No
+			$Options       = "&$Yes", "&$No"
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -5427,9 +5502,9 @@ public static string GetString(uint strId)
 
 			$Title         = ""
 			$Message       = $Localization.UserDefaultFolder -f $MusicLocalizedString
-			$Change        = $Localization.Change
-			$Skip          = $Localization.Skip
-			$Options       = "&$Change", "&$Skip"
+			$Yes           = $Localization.Yes
+			$No            = $Localization.No
+			$Options       = "&$Yes", "&$No"
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -5457,9 +5532,9 @@ public static string GetString(uint strId)
 
 			$Title         = ""
 			$Message       = $Localization.UserDefaultFolder -f $PicturesLocalizedString
-			$Change        = $Localization.Change
-			$Skip          = $Localization.Skip
-			$Options       = "&$Change", "&$Skip"
+			$Yes           = $Localization.Yes
+			$No            = $Localization.No
+			$Options       = "&$Yes", "&$No"
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -5487,9 +5562,9 @@ public static string GetString(uint strId)
 
 			$Title         = ""
 			$Message       = $Localization.UserDefaultFolder -f $VideosLocalizedString
-			$Change        = $Localization.Change
-			$Skip          = $Localization.Skip
-			$Options       = "&$Change", "&$Skip"
+			$Yes           = $Localization.Yes
+			$No            = $Localization.No
+			$Options       = "&$Yes", "&$No"
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -6707,27 +6782,138 @@ public static void Refresh()
 #>
 function InstallVCRedistx64
 {
-	$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-	$Parameters = @{
-		Uri             = "https://aka.ms/vs/17/release/VC_redist.x64.exe"
-		OutFile         = "$DownloadsFolder\VC_redist.x64.exe"
-		UseBasicParsing = $true
-		Verbose         = $true
+	try
+	{
+		# Check the internet connection
+		$Parameters = @{
+			Uri              = "https://www.google.com"
+			Method           = "Head"
+			DisableKeepAlive = $true
+			UseBasicParsing  = $true
+		}
+		if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+		{
+			return
+		}
+
+		$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+		$Parameters = @{
+			Uri             = "https://aka.ms/vs/17/release/VC_redist.x64.exe"
+			OutFile         = "$DownloadsFolder\VC_redist.x64.exe"
+			UseBasicParsing = $true
+			Verbose         = $true
+		}
+		Invoke-WebRequest @Parameters
+
+		Start-Process -FilePath "$DownloadsFolder\VC_redist.x64.exe" -ArgumentList "/install /passive /norestart" -Wait
+
+		<#
+			PowerShell 5.1 (7.2 too) interprets the 8.3 file name literally, if an environment variable contains a non-latin word,
+			so you won't be able to remove "$env:TEMP\dd_vcredist_amd64_*.log" file explicitly
+
+			Another ways to get normal path to %TEMP%
+			[Environment]::GetEnvironmentVariable("TEMP", "User")
+			(Get-ItemProperty -Path HKCU:\Environment -Name TEMP).TEMP
+			[System.IO.Path]::GetTempPath()
+		#>
+		Get-ChildItem -Path "$DownloadsFolder\VC_redist.x64.exe", "$env:TEMP\dd_vcredist_amd64_*.log" -Force | Remove-Item -Recurse -Force -ErrorAction Ignore
 	}
-	Invoke-WebRequest @Parameters
+	catch [System.Net.WebException]
+	{
+		Write-Warning -Message $Localization.NoInternetConnection
+		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 
-	Start-Process -FilePath "$DownloadsFolder\VC_redist.x64.exe" -ArgumentList "/install /passive /norestart" -Wait
+		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+	}
+}
 
-	<#
-		PowerShell 5.1 (7.2 too) interprets the 8.3 file name literally, if an environment variable contains a non-latin word,
-		so you won't be able to remove "$env:TEMP\dd_vcredist_amd64_*.log" file explicitly
+<#
+	.SYNOPSIS
+	Install the latest .NET Desktop Runtime 6 (x86/x64)
 
-		Another ways to get normal path to %TEMP%
-		[Environment]::GetEnvironmentVariable("TEMP", "User")
-		(Get-ItemProperty -Path HKCU:\Environment -Name TEMP).TEMP
-		[System.IO.Path]::GetTempPath()
-	#>
-	Get-ChildItem -Path "$DownloadsFolder\VC_redist.x64.exe", "$env:TEMP\dd_vcredist_amd64_*.log" -Force | Remove-Item -Recurse -Force -ErrorAction Ignore
+	.EXAMPLE
+	InstallDotNetRuntime6
+
+	.LINK
+	https://docs.microsoft.com/en-us/dotnet/core/install/windows?tabs=net60
+
+	.NOTES
+	Machine-wide
+#>
+function InstallDotNetRuntime6
+{
+	try
+	{
+		# Check the internet connection
+		$Parameters = @{
+			Uri              = "https://www.google.com"
+			Method           = "Head"
+			DisableKeepAlive = $true
+			UseBasicParsing  = $true
+		}
+		if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+		{
+			return
+		}
+
+		if (Get-AppxPackage -Name Microsoft.DesktopAppInstaller)
+		{
+			# .NET Desktop Runtime x86
+			winget install --id=Microsoft.DotNet.DesktopRuntime.6 --architecture x86 --exact --accept-source-agreements
+			# .NET Desktop Runtime x64
+			winget install --id=Microsoft.DotNet.DesktopRuntime.6 --architecture x64 --exact --accept-source-agreements
+		}
+		else
+		{
+			# https://github.com/dotnet/core/blob/main/release-notes/releases-index.json
+			$Parameters = @{
+				Uri              = "https://raw.githubusercontent.com/dotnet/core/main/release-notes/releases-index.json"
+				UseBasicParsing  = $true
+			}
+			$LatestRelease = ((Invoke-RestMethod @Parameters)."releases-index" | Where-Object -FilterScript {$_."channel-version" -eq "6.0"})."latest-release"
+			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+
+			# .NET Desktop Runtime x86
+			$Parameters = @{
+				Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$LatestRelease/dotnet-runtime-$LatestRelease-win-x64.exe"
+				OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe"
+				UseBasicParsing = $true
+				Verbose         = $true
+			}
+			Invoke-WebRequest @Parameters
+
+			Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe" -ArgumentList "/install /passive /norestart" -Wait
+
+			# .NET Desktop Runtime x64
+			$Parameters = @{
+				Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$LatestRelease/dotnet-runtime-$LatestRelease-win-x86.exe"
+				OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe"
+				UseBasicParsing = $true
+				Verbose         = $true
+			}
+			Invoke-WebRequest @Parameters
+
+			Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
+
+			<#
+				PowerShell 5.1 (7.2 too) interprets the 8.3 file name literally, if an environment variable contains a non-latin word,
+				so you won't be able to remove "$env:TEMP\Microsoft_Windows_Desktop_Runtime*.log" file explicitly
+
+				Another ways to get normal path to %TEMP%
+				[Environment]::GetEnvironmentVariable("TEMP", "User")
+				(Get-ItemProperty -Path HKCU:\Environment -Name TEMP).TEMP
+				[System.IO.Path]::GetTempPath()
+			#>
+			Get-ChildItem -Path "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe", "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe", "$env:TEMP\Microsoft_.NET_Runtime_*.log" -Force | Remove-Item -Recurse -Force -ErrorAction Ignore
+		}
+	}
+	catch [System.Net.WebException]
+	{
+		Write-Warning -Message $Localization.NoInternetConnection
+		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+
+		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+	}
 }
 #endregion System
 
@@ -6914,9 +7100,9 @@ function SetAppGraphicsPerformance
 	{
 		$Title         = $Localization.GraphicsPerformanceTitle
 		$Message       = $Localization.GraphicsPerformanceRequest
-		$Add           = $Localization.Add
-		$Skip          = $Localization.Skip
-		$Options       = "&$Add", "&$Skip"
+		$Yes           = $Localization.Yes
+		$No            = $Localization.No
+		$Options       = "&$Yes", "&$No"
 		$DefaultChoice = 1
 
 		do
@@ -7011,28 +7197,18 @@ function CleanupTask
 				}
 
 				$VolumeCaches = @(
-					# Delivery Optimization Files
 					"Delivery Optimization Files",
-
-					# Device driver packages
+					"BranchCache",
 					"Device Driver Packages",
-
-					# Previous Windows Installation(s)
+					"Language Pack",
 					"Previous Installations",
-
-					# Setup log files
 					"Setup Log Files",
-
-					# Temporary Setup Files
+					"System error memory dump files",
+					"System error minidump files",
 					"Temporary Setup Files",
-
-					# Windows Update Cleanup
 					"Update Cleanup",
-
-					# Microsoft Defender
 					"Windows Defender",
-
-					# Windows upgrade log files
+					"Windows ESD installation files",
 					"Windows Upgrade Log Files"
 				)
 				foreach ($VolumeCache in $VolumeCaches)
@@ -7371,7 +7547,7 @@ function TempTask
 			if (-not (Get-ScheduledTask -TaskPath "\SophiApp\" -TaskName "Temp" -ErrorAction Ignore))
 			{
 				$TempTask = @"
-Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object {`$_.CreationTime -lt (Get-Date).AddDays(-1)} | Remove-Item -Recurse -Force
+Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_.CreationTime -lt (Get-Date).AddDays(-1)} | Remove-Item -Recurse -Force
 
 [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
 [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
@@ -9018,6 +9194,134 @@ function MultipleInvokeContext
 }
 #endregion Context menu
 
+#region Update LGPE policies
+<#
+	.SYNOPSIS
+	Update Local Group Policy Editor (gpedit.msc) to make all manually created policy keys in the registry visible in the snap-in
+
+	.EXAMPLE
+	UpdateLGPEPolicies
+
+	.NOTES
+	Uses PolicyFileEditor module created by Dave Wyatt
+
+	.LINK
+	https://www.powershellgallery.com/packages/PolicyFileEditor
+
+	.LINK
+	https://github.com/dlwyatt/PolicyFileEditor
+
+	.NOTES
+	Machine-wide user
+#>
+function UpdateLGPEPolicies
+{
+	Write-Information -MessageData "" -InformationAction Continue
+	Write-Verbose -Message $Localization.Patient -Verbose
+
+	# Local Machine policies paths to scan recursively
+	$LM_Paths = @(
+		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies",
+		"HKLM:\SOFTWARE\Policies\Microsoft\Windows"
+	)
+	foreach ($Path in (@(Get-ChildItem -Path $LM_Paths -Recurse -Force)))
+	{
+		foreach ($Item in $Path.Property)
+		{
+			# Check if property isn't equal to "(default)" and exists
+			if (($null -ne $Item) -and ($Item -ne "(default)"))
+			{
+				# Where all ADMX templates are located to compare with
+				foreach ($admx in @(Get-ChildItem -Path "$env:SystemRoot\PolicyDefinitions" -File -Force))
+				{
+					# Parse every ADMX template searching if it contains full path and registry key simultaneously
+					[xml]$config = Get-Content -Path $admx.FullName -Encoding UTF8
+					$SplitPath = Split-Path -Path $Path.Name.Replace("HKEY_LOCAL_MACHINE\", "HKLM:") -NoQualifier
+
+					if ($config.policyDefinitions.policies.policy | Where-Object -FilterScript {
+						($_.key -eq $SplitPath) -and ($_.valueName -eq $Item) -or (($_.key -eq $SplitPath) -and ($_.Name -eq $Item))
+					})
+					{
+						try
+						{
+							Write-Verbose -Message $Item.Replace("{}", "") -Verbose
+
+							$Parameters = @{
+								Path           = "$env:SystemRoot\System32\GroupPolicy\Machine\Registry.pol"
+								# e.g. SOFTWARE\Microsoft\Windows\CurrentVersion\Policies
+								Key            = Split-Path -Path $Path.Name.Replace("HKEY_LOCAL_MACHINE\", "HKLM:") -NoQualifier
+								ValueName      = $Item.Replace("{}", "")
+								Data           = Get-ItemPropertyValue -Path $Path.PSPath -Name $Item
+								# DWord, String, etc.
+								Type           = (Get-Item -Path $Path.PSPath).GetValueKind($Item)
+								# Do not update the policy DB every time
+								NoGptIniUpdate = $true
+							}
+							Set-PolicyFileEntry @Parameters
+						}
+						catch
+						{}
+					}
+				}
+			}
+		}
+	}
+
+	# Current User policies paths to scan recursively
+	$CU_Paths = @(
+		"HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies",
+		"HKCU:\SOFTWARE\Policies\Microsoft\Windows"
+	)
+	foreach ($Path in (@(Get-ChildItem -Path $CU_Paths -Recurse -Force)))
+	{
+		foreach ($Item in $Path.Property)
+		{
+			# Check if property isn't equal to "(default)" and exists
+			if (($null -ne $Item) -and ($Item -ne "(default)"))
+			{
+				# Where all ADMX templates are located to compare with
+				foreach ($admx in @(Get-ChildItem -Path "$env:SystemRoot\PolicyDefinitions" -File -Force))
+				{
+					# Parse every ADMX template searching if it contains full path and registry key simultaneously
+					[xml]$config = Get-Content -Path $admx.FullName -Encoding UTF8
+					$SplitPath = Split-Path -Path $Path.Name.Replace("HKEY_CURRENT_USER\", "HKCU:") -NoQualifier
+
+					if ($config.policyDefinitions.policies.policy | Where-Object -FilterScript {
+						($_.key -eq $SplitPath) -and ($_.valueName -eq $Item) -or (($_.key -eq $SplitPath) -and ($_.Name -eq $Item))
+					})
+					{
+						try
+						{
+							Write-Verbose -Message $Item.Replace("{}", "") -Verbose
+
+							$Parameters = @{
+								Path           = "$env:SystemRoot\System32\GroupPolicy\User\Registry.pol"
+								# e.g. SOFTWARE\Microsoft\Windows\CurrentVersion\Policies
+								Key            = Split-Path -Path $Path.Name.Replace("HKEY_CURRENT_USER\", "HKCU:") -NoQualifier
+								ValueName      = $Item.Replace("{}", "")
+								Data           = Get-ItemPropertyValue -Path $Path.PSPath -Name $Item
+								# DWord, String, etc.
+								Type           = (Get-Item -Path $Path.PSPath).GetValueKind($Item)
+								# Do not update the policy DB every time
+								NoGptIniUpdate = $true
+							}
+							Set-PolicyFileEntry @Parameters
+						}
+						catch
+						{}
+					}
+				}
+			}
+		}
+	}
+
+	Update-GptIniVersion -Path $env:SystemRoot\System32\GroupPolicy\GPT.ini -PolicyType Machine, User
+
+	# Apply the new policy immediately
+	gpupdate.exe /force
+}
+#endregion Update LGPE policies
+
 #region Refresh Environment
 function RefreshEnvironment
 {
@@ -9203,3 +9507,155 @@ function Errors
 		} | Sort-Object -Property Line | Format-Table -AutoSize -Wrap | Out-String).Trim()
 	}
 }
+
+# SIG # Begin signature block
+# MIIbvwYJKoZIhvcNAQcCoIIbsDCCG6wCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
+# gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUWfIAKVl0q4HU3AscqMxAVym/
+# 1SqgghY3MIIDAjCCAeqgAwIBAgIQTAKXY9arCY5B5sFCEY9uhTANBgkqhkiG9w0B
+# AQsFADAZMRcwFQYDVQQDDA5Tb3BoaWEgUHJvamVjdDAeFw0yMjA3MDMxODEzMzha
+# Fw0yNDA3MDMxODIzMzhaMBkxFzAVBgNVBAMMDlNvcGhpYSBQcm9qZWN0MIIBIjAN
+# BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAr4TTInWlmoGtza2HunTKTaqQy2Yx
+# 9LIXKqdOe+DMMuE09ApzK6IZh2iuX+37R0DuvmBo/cjnAJDIWJmCQKQ+kUYRpzF0
+# 3WUOWURe/kw+VlxTq0L+V1U58tKQNHdnDLEeVlfT7Ix1imGS2JARyQM3wVr/aHKl
+# Ll9fv34Gp1SJqQXFbqCfONjRU2vjFHHgved/Mlw+Mw0Q48WCnvMY5egSN+34Q70l
+# +2Jtgmf6iR8aTj1Z8JgP0xsrsIbtacP2ewvVP5U6K4fCEfy+rMt4VGD3KghJLSvH
+# q0tHjzeHa3AumZTvWzmNglx0OKk4wn2q6SODVNXVwl3HegcH9ngxWwSQsQIDAQAB
+# o0YwRDAOBgNVHQ8BAf8EBAMCB4AwEwYDVR0lBAwwCgYIKwYBBQUHAwMwHQYDVR0O
+# BBYEFAQ5j+ZXlCTmPOT9dejE0leAZRO+MA0GCSqGSIb3DQEBCwUAA4IBAQB7XklM
+# bEs+Q3rwzE43GB97a5I6jZafKTc+6kk7vgd1AsNyipeLU+t/6klRtaoVgN/+eBSl
+# cEuPM7InwzJXT+xlaDQ83x+4QAoojb4Er4yh/R/kRNnKrPXPpw0SgqAa7eZ+Yw1z
+# z3K/8TTt9h7igEJajs1/3S3BqrwUQ3LWLoM3DQ1fFDxFSvum5dwSeVU6KUPJXdLS
+# ZZSeyKflVTxwi/mUxnU3eUouxnubTayCV6adwaig/W1aHrbkpJwX7s7juhp4kmSO
+# e6QDJe/d0y75QBZq5F35gskUqTkiXc11KAhxpgG1LrRQAa+DmseWsS/ZdsiRqX9w
+# +U7avAaGnv/YN0p4MIIFsTCCBJmgAwIBAgIQASQK+x44C4oW8UtxnfTTwDANBgkq
+# hkiG9w0BAQwFADBlMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5j
+# MRkwFwYDVQQLExB3d3cuZGlnaWNlcnQuY29tMSQwIgYDVQQDExtEaWdpQ2VydCBB
+# c3N1cmVkIElEIFJvb3QgQ0EwHhcNMjIwNjA5MDAwMDAwWhcNMzExMTA5MjM1OTU5
+# WjBiMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQL
+# ExB3d3cuZGlnaWNlcnQuY29tMSEwHwYDVQQDExhEaWdpQ2VydCBUcnVzdGVkIFJv
+# b3QgRzQwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQC/5pBzaN675F1K
+# PDAiMGkz7MKnJS7JIT3yithZwuEppz1Yq3aaza57G4QNxDAf8xukOBbrVsaXbR2r
+# snnyyhHS5F/WBTxSD1Ifxp4VpX6+n6lXFllVcq9ok3DCsrp1mWpzMpTREEQQLt+C
+# 8weE5nQ7bXHiLQwb7iDVySAdYyktzuxeTsiT+CFhmzTrBcZe7FsavOvJz82sNEBf
+# sXpm7nfISKhmV1efVFiODCu3T6cw2Vbuyntd463JT17lNecxy9qTXtyOj4DatpGY
+# QJB5w3jHtrHEtWoYOAMQjdjUN6QuBX2I9YI+EJFwq1WCQTLX2wRzKm6RAXwhTNS8
+# rhsDdV14Ztk6MUSaM0C/CNdaSaTC5qmgZ92kJ7yhTzm1EVgX9yRcRo9k98FpiHaY
+# dj1ZXUJ2h4mXaXpI8OCiEhtmmnTK3kse5w5jrubU75KSOp493ADkRSWJtppEGSt+
+# wJS00mFt6zPZxd9LBADMfRyVw4/3IbKyEbe7f/LVjHAsQWCqsWMYRJUadmJ+9oCw
+# ++hkpjPRiQfhvbfmQ6QYuKZ3AeEPlAwhHbJUKSWJbOUOUlFHdL4mrLZBdd56rF+N
+# P8m800ERElvlEFDrMcXKchYiCd98THU/Y+whX8QgUWtvsauGi0/C1kVfnSD8oR7F
+# wI+isX4KJpn15GkvmB0t9dmpsh3lGwIDAQABo4IBXjCCAVowDwYDVR0TAQH/BAUw
+# AwEB/zAdBgNVHQ4EFgQU7NfjgtJxXWRM3y5nP+e6mK4cD08wHwYDVR0jBBgwFoAU
+# Reuir/SSy4IxLVGLp6chnfNtyA8wDgYDVR0PAQH/BAQDAgGGMBMGA1UdJQQMMAoG
+# CCsGAQUFBwMIMHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29j
+# c3AuZGlnaWNlcnQuY29tMEMGCCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdp
+# Y2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURSb290Q0EuY3J0MEUGA1UdHwQ+MDww
+# OqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJ
+# RFJvb3RDQS5jcmwwIAYDVR0gBBkwFzAIBgZngQwBBAIwCwYJYIZIAYb9bAcBMA0G
+# CSqGSIb3DQEBDAUAA4IBAQCaFgKlAe+B+w20WLJ4ragjGdlzN9pgnlHXy/gvQLmj
+# H3xATjM+kDzniQF1hehiex1W4HG63l7GN7x5XGIATfhJelFNBjLzxdIAKicg6oku
+# FTngLD74dXwsgkFhNQ8j0O01ldKIlSlDy+CmWBB8U46fRckgNxTA7Rm6fnc50lSW
+# x6YR3zQz9nVSQkscnY2W1ZVsRxIUJF8mQfoaRr3esOWRRwOsGAjLy9tmiX8rnGW/
+# vjdOvi3znUrDzMxHXsiVla3Ry7sqBiD5P3LqNutFcpJ6KXsUAzz7TdZIcXoQEYoI
+# dM1sGwRc0oqVA3ZRUFPWLvdKRsOuECxxTLCHtic3RGBEMIIGrjCCBJagAwIBAgIQ
+# BzY3tyRUfNhHrP0oZipeWzANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEV
+# MBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3d3cuZGlnaWNlcnQuY29t
+# MSEwHwYDVQQDExhEaWdpQ2VydCBUcnVzdGVkIFJvb3QgRzQwHhcNMjIwMzIzMDAw
+# MDAwWhcNMzcwMzIyMjM1OTU5WjBjMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
+# aUNlcnQsIEluYy4xOzA5BgNVBAMTMkRpZ2lDZXJ0IFRydXN0ZWQgRzQgUlNBNDA5
+# NiBTSEEyNTYgVGltZVN0YW1waW5nIENBMIICIjANBgkqhkiG9w0BAQEFAAOCAg8A
+# MIICCgKCAgEAxoY1BkmzwT1ySVFVxyUDxPKRN6mXUaHW0oPRnkyibaCwzIP5WvYR
+# oUQVQl+kiPNo+n3znIkLf50fng8zH1ATCyZzlm34V6gCff1DtITaEfFzsbPuK4CE
+# iiIY3+vaPcQXf6sZKz5C3GeO6lE98NZW1OcoLevTsbV15x8GZY2UKdPZ7Gnf2ZCH
+# RgB720RBidx8ald68Dd5n12sy+iEZLRS8nZH92GDGd1ftFQLIWhuNyG7QKxfst5K
+# fc71ORJn7w6lY2zkpsUdzTYNXNXmG6jBZHRAp8ByxbpOH7G1WE15/tePc5OsLDni
+# pUjW8LAxE6lXKZYnLvWHpo9OdhVVJnCYJn+gGkcgQ+NDY4B7dW4nJZCYOjgRs/b2
+# nuY7W+yB3iIU2YIqx5K/oN7jPqJz+ucfWmyU8lKVEStYdEAoq3NDzt9KoRxrOMUp
+# 88qqlnNCaJ+2RrOdOqPVA+C/8KI8ykLcGEh/FDTP0kyr75s9/g64ZCr6dSgkQe1C
+# vwWcZklSUPRR8zZJTYsg0ixXNXkrqPNFYLwjjVj33GHek/45wPmyMKVM1+mYSlg+
+# 0wOI/rOP015LdhJRk8mMDDtbiiKowSYI+RQQEgN9XyO7ZONj4KbhPvbCdLI/Hgl2
+# 7KtdRnXiYKNYCQEoAA6EVO7O6V3IXjASvUaetdN2udIOa5kM0jO0zbECAwEAAaOC
+# AV0wggFZMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFLoW2W1NhS9zKXaa
+# L3WMaiCPnshvMB8GA1UdIwQYMBaAFOzX44LScV1kTN8uZz/nupiuHA9PMA4GA1Ud
+# DwEB/wQEAwIBhjATBgNVHSUEDDAKBggrBgEFBQcDCDB3BggrBgEFBQcBAQRrMGkw
+# JAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBBBggrBgEFBQcw
+# AoY1aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0VHJ1c3RlZFJv
+# b3RHNC5jcnQwQwYDVR0fBDwwOjA4oDagNIYyaHR0cDovL2NybDMuZGlnaWNlcnQu
+# Y29tL0RpZ2lDZXJ0VHJ1c3RlZFJvb3RHNC5jcmwwIAYDVR0gBBkwFzAIBgZngQwB
+# BAIwCwYJYIZIAYb9bAcBMA0GCSqGSIb3DQEBCwUAA4ICAQB9WY7Ak7ZvmKlEIgF+
+# ZtbYIULhsBguEE0TzzBTzr8Y+8dQXeJLKftwig2qKWn8acHPHQfpPmDI2AvlXFvX
+# bYf6hCAlNDFnzbYSlm/EUExiHQwIgqgWvalWzxVzjQEiJc6VaT9Hd/tydBTX/6tP
+# iix6q4XNQ1/tYLaqT5Fmniye4Iqs5f2MvGQmh2ySvZ180HAKfO+ovHVPulr3qRCy
+# Xen/KFSJ8NWKcXZl2szwcqMj+sAngkSumScbqyQeJsG33irr9p6xeZmBo1aGqwpF
+# yd/EjaDnmPv7pp1yr8THwcFqcdnGE4AJxLafzYeHJLtPo0m5d2aR8XKc6UsCUqc3
+# fpNTrDsdCEkPlM05et3/JWOZJyw9P2un8WbDQc1PtkCbISFA0LcTJM3cHXg65J6t
+# 5TRxktcma+Q4c6umAU+9Pzt4rUyt+8SVe+0KXzM5h0F4ejjpnOHdI/0dKNPH+ejx
+# mF/7K9h+8kaddSweJywm228Vex4Ziza4k9Tm8heZWcpw8De/mADfIBZPJ/tgZxah
+# ZrrdVcA6KYawmKAr7ZVBtzrVFZgxtGIJDwq9gdkT/r+k0fNX2bwE+oLeMt8EifAA
+# zV3C+dAjfwAL5HYCJtnwZXZCpimHCUcr5n8apIUP/JiW9lVUKx+A+sDyDivl1vup
+# L0QVSucTDh3bNzgaoSv27dZ8/DCCBsYwggSuoAMCAQICEAp6SoieyZlCkAZjOE2G
+# l50wDQYJKoZIhvcNAQELBQAwYzELMAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lD
+# ZXJ0LCBJbmMuMTswOQYDVQQDEzJEaWdpQ2VydCBUcnVzdGVkIEc0IFJTQTQwOTYg
+# U0hBMjU2IFRpbWVTdGFtcGluZyBDQTAeFw0yMjAzMjkwMDAwMDBaFw0zMzAzMTQy
+# MzU5NTlaMEwxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjEk
+# MCIGA1UEAxMbRGlnaUNlcnQgVGltZXN0YW1wIDIwMjIgLSAyMIICIjANBgkqhkiG
+# 9w0BAQEFAAOCAg8AMIICCgKCAgEAuSqWI6ZcvF/WSfAVghj0M+7MXGzj4CUu0jHk
+# PECu+6vE43hdflw26vUljUOjges4Y/k8iGnePNIwUQ0xB7pGbumjS0joiUF/DbLW
+# +YTxmD4LvwqEEnFsoWImAdPOw2z9rDt+3Cocqb0wxhbY2rzrsvGD0Z/NCcW5QWpF
+# QiNBWvhg02UsPn5evZan8Pyx9PQoz0J5HzvHkwdoaOVENFJfD1De1FksRHTAMkcZ
+# W+KYLo/Qyj//xmfPPJOVToTpdhiYmREUxSsMoDPbTSSF6IKU4S8D7n+FAsmG4dUY
+# FLcERfPgOL2ivXpxmOwV5/0u7NKbAIqsHY07gGj+0FmYJs7g7a5/KC7CnuALS8gI
+# 0TK7g/ojPNn/0oy790Mj3+fDWgVifnAs5SuyPWPqyK6BIGtDich+X7Aa3Rm9n3RB
+# Cq+5jgnTdKEvsFR2wZBPlOyGYf/bES+SAzDOMLeLD11Es0MdI1DNkdcvnfv8zbHB
+# p8QOxO9APhk6AtQxqWmgSfl14ZvoaORqDI/r5LEhe4ZnWH5/H+gr5BSyFtaBocra
+# MJBr7m91wLA2JrIIO/+9vn9sExjfxm2keUmti39hhwVo99Rw40KV6J67m0uy4rZB
+# Peevpxooya1hsKBBGBlO7UebYZXtPgthWuo+epiSUc0/yUTngIspQnL3ebLdhOon
+# 7v59emsCAwEAAaOCAYswggGHMA4GA1UdDwEB/wQEAwIHgDAMBgNVHRMBAf8EAjAA
+# MBYGA1UdJQEB/wQMMAoGCCsGAQUFBwMIMCAGA1UdIAQZMBcwCAYGZ4EMAQQCMAsG
+# CWCGSAGG/WwHATAfBgNVHSMEGDAWgBS6FtltTYUvcyl2mi91jGogj57IbzAdBgNV
+# HQ4EFgQUjWS3iSH+VlhEhGGn6m8cNo/drw0wWgYDVR0fBFMwUTBPoE2gS4ZJaHR0
+# cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0VHJ1c3RlZEc0UlNBNDA5NlNI
+# QTI1NlRpbWVTdGFtcGluZ0NBLmNybDCBkAYIKwYBBQUHAQEEgYMwgYAwJAYIKwYB
+# BQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBYBggrBgEFBQcwAoZMaHR0
+# cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0VHJ1c3RlZEc0UlNBNDA5
+# NlNIQTI1NlRpbWVTdGFtcGluZ0NBLmNydDANBgkqhkiG9w0BAQsFAAOCAgEADS0j
+# dKbR9fjqS5k/AeT2DOSvFp3Zs4yXgimcQ28BLas4tXARv4QZiz9d5YZPvpM63io5
+# WjlO2IRZpbwbmKrobO/RSGkZOFvPiTkdcHDZTt8jImzV3/ZZy6HC6kx2yqHcoSuW
+# uJtVqRprfdH1AglPgtalc4jEmIDf7kmVt7PMxafuDuHvHjiKn+8RyTFKWLbfOHzL
+# +lz35FO/bgp8ftfemNUpZYkPopzAZfQBImXH6l50pls1klB89Bemh2RPPkaJFmMg
+# a8vye9A140pwSKm25x1gvQQiFSVwBnKpRDtpRxHT7unHoD5PELkwNuTzqmkJqIt+
+# ZKJllBH7bjLx9bs4rc3AkxHVMnhKSzcqTPNc3LaFwLtwMFV41pj+VG1/calIGnjd
+# RncuG3rAM4r4SiiMEqhzzy350yPynhngDZQooOvbGlGglYKOKGukzp123qlzqkhq
+# WUOuX+r4DwZCnd8GaJb+KqB0W2Nm3mssuHiqTXBt8CzxBxV+NbTmtQyimaXXFWs1
+# DoXW4CzM4AwkuHxSCx6ZfO/IyMWMWGmvqz3hz8x9Fa4Uv4px38qXsdhH6hyF4EVO
+# EhwUKVjMb9N/y77BDkpvIJyu2XMyWQjnLZKhGhH+MpimXSuX4IvTnMxttQ2uR2M4
+# RxdbbxPaahBuH0m3RFu0CAqHWlkEdhGhp3cCExwxggTyMIIE7gIBATAtMBkxFzAV
+# BgNVBAMMDlNvcGhpYSBQcm9qZWN0AhBMApdj1qsJjkHmwUIRj26FMAkGBSsOAwIa
+# BQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgor
+# BgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3
+# DQEJBDEWBBRhYJXAn4rlZub5NplOBMAPcFZofjANBgkqhkiG9w0BAQEFAASCAQAB
+# nl30t+5aljp3SZugH5rS/OYYA4ceWukwi0jE/vhd7MrxxPBORN2j7X5QQ0cBRHoE
+# IH/hwxZQan0XfqFuUSd2tw5Bszgj+fF2fGPNqbMv8qB6vsNRJzUvEg6hhKz9JS+0
+# L6hQSApclQnEvlY+/7942C4LR5la6xTcy/Ah2I1Rr5zHc6zuburvfmOWg3M5tUJF
+# HzAdA2BOduFfkam+sSw2FfoYrWLUBe17x6ljTUoqmui2CBIJi2TcnnzBxYYSk06E
+# HA7TbJ31QjrgEOHcRfbwqrlJSbDxmheO7GG1V5zDmdM/rDLUfTtXoT38Q9CHQd2u
+# WxY62CwDyUc0CyZCQ/LloYIDIDCCAxwGCSqGSIb3DQEJBjGCAw0wggMJAgEBMHcw
+# YzELMAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMTswOQYDVQQD
+# EzJEaWdpQ2VydCBUcnVzdGVkIEc0IFJTQTQwOTYgU0hBMjU2IFRpbWVTdGFtcGlu
+# ZyBDQQIQCnpKiJ7JmUKQBmM4TYaXnTANBglghkgBZQMEAgEFAKBpMBgGCSqGSIb3
+# DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTIyMDcwMzE4MjM0MFow
+# LwYJKoZIhvcNAQkEMSIEIBlozS83veZ2D7GMRhY54oH/hfPo9rz2YeQlSyDiFWem
+# MA0GCSqGSIb3DQEBAQUABIICAFYtaHDBSn6AD/1c49aNWwcNlZ2UxfYIYBHlKNRi
+# aBbl2LlGSsnpdF6xv4mCyk8h2tCp0nR6sWMrcDHoU531LGeW1DBLkAAmV604MQ0w
+# 4jK8+glhDRq2t+vz+nCramR1IXsXkOI10Z18zESBHkRa/feNtCdssomdHTUbt63S
+# +vOcsfC4YuxyCpOneTaWPWhbiQa8IHGnkUvVwSpaZaxV8/Dy5CfssHpHvsZgC3OS
+# wfZH6YoqiHZ8JvmHvflPspE1ON/mFO5o9odGVAkSYxyS9jn5XbLGq/U0C+igfFlo
+# j+oJvFjenUHTmp/ihbSrceliMt1jlRgkVwtqkqgu8VORBoT501Nko6HJEiTPKL/z
+# BV2grmOVGqrtdZ/eHx5KeCz7dgwcSh2rI31886lckQGzsa3ciBC5/S+Wn6+Z2F59
+# YL8P+RGEQgDwKPwirWFnL33zsnA3qWValsvc0W2e1M4fw2FXka4DIgt+x4DL2cQ/
+# rmvHwmIDCAdW9vTRXoY8O89GLK//HIwyDTyCYDEUQHVNVgQIIAYlx4HhBH/uhDpz
+# Y/+COCyjyJb9S7PEJ+UajL2eTLEq8mhPBC6b47J0e4H5yioXQy2yu1gt2E0MQanO
+# +eBlhDPsO7zHAB66gpQFEh996u2th8VSfYwnjRQrAZQvMPZZETAOynkXLxGqffi9
+# +RHb
+# SIG # End signature block

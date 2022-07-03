@@ -43,7 +43,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Desative o serviço \"Experiências e telemetria do usuário conectado\" (DiagTrack) e bloqueie a conexão para o tráfego de saída do cliente de telemetria unificada"
+        "ToolTip": "Desative o serviço \"Experiências e telemetria do usuário conectado\" (DiagTrack) e bloqueie a conexão para o tráfego de saída do cliente de telemetria unificada. Desativar o serviço \"Experiências de usuário conectadas e telemetria\" (DiagTrack) pode fazer com que você não consiga mais obter conquistas do Xbox"
       },
       "One": {
         "Tag": "Enable",
@@ -279,21 +279,6 @@
   {
     "Id": 301,
     "Region": "UI & Personalization",
-    "Function": "Windows10FileExplorer",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Ative o Explorador de Arquivos do Windows 10"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Desative o Explorador de Arquivos do Windows 10 (valor padrão)"
-      }
-    }
-  },
-  {
-    "Id": 302,
-    "Region": "UI & Personalization",
     "Function": "CheckBoxes",
     "Arg": {
       "Zero": {
@@ -307,7 +292,7 @@
     }
   },
   {
-    "Id": 303,
+    "Id": 302,
     "Region": "UI & Personalization",
     "Function": "HiddenItems",
     "Arg": {
@@ -322,7 +307,7 @@
     }
   },
   {
-    "Id": 304,
+    "Id": 303,
     "Region": "UI & Personalization",
     "Function": "FileExtensions",
     "Arg": {
@@ -337,7 +322,7 @@
     }
   },
   {
-    "Id": 305,
+    "Id": 304,
     "Region": "UI & Personalization",
     "Function": "MergeConflicts",
     "Arg": {
@@ -352,7 +337,7 @@
     }
   },
   {
-    "Id": 306,
+    "Id": 305,
     "Region": "UI & Personalization",
     "Function": "OpenFileExplorerTo",
     "Arg": {
@@ -367,7 +352,7 @@
     }
   },
   {
-    "Id": 307,
+    "Id": 306,
     "Region": "UI & Personalization",
     "Function": "FileExplorerCompactMode",
     "Arg": {
@@ -382,7 +367,7 @@
     }
   },
   {
-    "Id": 308,
+    "Id": 307,
     "Region": "UI & Personalization",
     "Function": "OneDriveFileExplorerAd",
     "Arg": {
@@ -397,7 +382,7 @@
     }
   },
   {
-    "Id": 309,
+    "Id": 308,
     "Region": "UI & Personalization",
     "Function": "SnapAssistFlyout",
     "Arg": {
@@ -412,7 +397,7 @@
     }
   },
   {
-    "Id": 310,
+    "Id": 309,
     "Region": "UI & Personalization",
     "Function": "SnapAssist",
     "Arg": {
@@ -427,7 +412,7 @@
     }
   },
   {
-    "Id": 311,
+    "Id": 310,
     "Region": "UI & Personalization",
     "Function": "FileTransferDialog",
     "Arg": {
@@ -442,7 +427,7 @@
     }
   },
   {
-    "Id": 312,
+    "Id": 311,
     "Region": "UI & Personalization",
     "Function": "RecycleBinDeleteConfirmation",
     "Arg": {
@@ -457,7 +442,7 @@
     }
   },
   {
-    "Id": 313,
+    "Id": 312,
     "Region": "UI & Personalization",
     "Function": "QuickAccessRecentFiles",
     "Arg": {
@@ -471,9 +456,8 @@
       }
     }
   },
-
   {
-    "Id": 314,
+    "Id": 313,
     "Region": "UI & Personalization",
     "Function": "QuickAccessFrequentFolders",
     "Arg": {
@@ -488,7 +472,7 @@
     }
   },
   {
-    "Id": 315,
+    "Id": 314,
     "Region": "UI & Personalization",
     "Function": "TaskbarAlignment",
     "Arg": {
@@ -503,7 +487,7 @@
     }
   },
   {
-    "Id": 316,
+    "Id": 315,
     "Region": "UI & Personalization",
     "Function": "TaskbarSearch",
     "Arg": {
@@ -518,7 +502,7 @@
     }
   },
   {
-    "Id": 317,
+    "Id": 316,
     "Region": "UI & Personalization",
     "Function": "TaskViewButton",
     "Arg": {
@@ -533,7 +517,7 @@
     }
   },
   {
-    "Id": 318,
+    "Id": 317,
     "Region": "UI & Personalization",
     "Function": "TaskbarWidgets",
     "Arg": {
@@ -548,7 +532,7 @@
     }
   },
   {
-    "Id": 319,
+    "Id": 318,
     "Region": "UI & Personalization",
     "Function": "TaskbarChat",
     "Arg": {
@@ -563,7 +547,7 @@
     }
   },
   {
-    "Id": 320,
+    "Id": 319,
     "Region": "UI & Personalization",
     "Function": "UnpinTaskbarShortcuts -Shortcuts",
     "ToolTip": "Solte os atalhos \"Microsoft Edge\" e \"Microsoft Store\" da barra de tarefas",
@@ -579,7 +563,7 @@
     }
   },
   {
-    "Id": 321,
+    "Id": 320,
     "Region": "UI & Personalization",
     "Function": "ControlPanelView",
     "Arg": {
@@ -598,7 +582,7 @@
     }
   },
   {
-    "Id": 322,
+    "Id": 321,
     "Region": "UI & Personalization",
     "Function": "WindowsColorMode",
     "Arg": {
@@ -613,7 +597,7 @@
     }
   },
   {
-    "Id": 323,
+    "Id": 322,
     "Region": "UI & Personalization",
     "Function": "AppMode",
     "Arg": {
@@ -628,7 +612,7 @@
     }
   },
   {
-    "Id": 324,
+    "Id": 323,
     "Region": "UI & Personalization",
     "Function": "FirstLogonAnimation",
     "Arg": {
@@ -643,7 +627,7 @@
     }
   },
   {
-    "Id": 325,
+    "Id": 324,
     "Region": "UI & Personalization",
     "Function": "JPEGWallpapersQuality",
     "Arg": {
@@ -658,7 +642,7 @@
     }
   },
   {
-    "Id": 326,
+    "Id": 325,
     "Region": "UI & Personalization",
     "Function": "TaskManagerWindow",
     "Arg": {
@@ -673,7 +657,7 @@
     }
   },
   {
-    "Id": 327,
+    "Id": 326,
     "Region": "UI & Personalization",
     "Function": "RestartNotification",
     "Arg": {
@@ -688,7 +672,7 @@
     }
   },
   {
-    "Id": 328,
+    "Id": 327,
     "Region": "UI & Personalization",
     "Function": "ShortcutsSuffix",
     "Arg": {
@@ -703,7 +687,7 @@
     }
   },
   {
-    "Id": 329,
+    "Id": 328,
     "Region": "UI & Personalization",
     "Function": "PrtScnSnippingTool",
     "Arg": {
@@ -718,7 +702,7 @@
     }
   },
   {
-    "Id": 330,
+    "Id": 329,
     "Region": "UI & Personalization",
     "Function": "AppsLanguageSwitch",
     "Arg": {
@@ -733,7 +717,7 @@
     }
   },
   {
-    "Id": 331,
+    "Id": 330,
     "Region": "UI & Personalization",
     "Function": "AeroShaking",
     "Arg": {
@@ -1177,12 +1161,12 @@
     "Function": "CapsLock",
     "Arg": {
       "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Ative o Caps lock"
-      },
-      "One": {
         "Tag": "Disable",
         "ToolTip": "Desativar Caps Lock (valor padrão)"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Ative o Caps lock"
       }
     }
   },
@@ -1303,33 +1287,28 @@
       "One": {
         "Tag": "ConsoleHost",
         "ToolTip": "Definir o Windows Console Host como aplicativo de terminal padrão para hospedar a interface do usuário para aplicativos de linha de comando (valor padrão)"
-
-      }
-    }
-  },
- {
-    "Id": 536,
-    "Region": "System",
-    "Function": "PCHealthCheck",
-    "Arg": {
-      "Zero": {
-        "Tag": "Block",
-        "ToolTip": "Desinstale a atualização KB5005463 e bloqueie-a de outras instalações. A atualização KB5005463 instala o aplicativo PC Health Check para verificar se o PC atende aos requisitos de sistema do Windows 11"
-      },
-      "One": {
-        "Tag": "Unblock",
-        "ToolTip": "Desbloqueie a atualização KB5005463 para instalação posterior (valor padrão)"
       }
     }
   },
   {
-    "Id": 537,
+    "Id": 536,
     "Region": "System",
     "Function": "InstallVCRedistx64",
     "Arg": {
       "Zero": {
         "Tag": "",
         "ToolTip": "Instale o Microsoft Visual C ++ Redistributable 2015—2022 x64 mais recente compatível"
+      }
+    }
+  },
+  {
+    "Id": 537,
+    "Region": "System",
+    "Function": "InstallDotNetRuntime6",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Instale o .NET Desktop Runtime 6 mais recente (x86/x64)"
       }
     }
   },
@@ -1403,7 +1382,7 @@
       },
       "One": {
         "Tag": "Install",
-        "ToolTip": "Baixe e instale \"Extensões de vídeo HEVC do fabricante do dispositivo\" para poder abrir os formatos .heic e .heif"
+        "ToolTip": "Baixe e instale \"Extensões de vídeo HEVC do fabricante do dispositivo\" para poder abrir os formatos .heic e .heif. A extensão de vídeo HEVC já está instalada no Windows 11 22H2 por padrão."
       }
     }
   },
@@ -1455,7 +1434,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Desativar Xbox Game Bar"
+        "ToolTip": "Desativar Xbox Game Bar. Para evitar que aparezca el aviso \"Necesitarás una nueva aplicación para abrir este ms-gamingoverlay\", debes desactivar la aplicación Xbox Game Bar, aunque la hayas desinstalado antes."
       },
       "One": {
         "Tag": "Enable",
@@ -1989,9 +1968,9 @@
         "Tag": "Show",
         "ToolTip": "Mostrar a opção de menu \"Abrir em Windows Terminal\" no menu de contexto das pastas (valor padrão)"
       }
-    }	
+    }
   },
-   {
+  {
     "Id": 1215,
     "Region": "Context menu",
     "Function": "OpenWindowsTerminalAdminContext",
@@ -2018,6 +1997,17 @@
       "One": {
         "Tag": "Enable",
         "ToolTip": "Habilite o estilo de menu de contexto do Windows 10"
+      }
+    }
+  },
+  {
+    "Id": 1300,
+    "Region": "LGPEPolicies",
+    "Function": "UpdateLGPEPolicies",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Atualize o Editor de Diretiva de Grupo Local (gpedit.msc) para tornar todas as chaves de diretiva criadas manualmente no registro visíveis no snap-in"
       }
     }
   }

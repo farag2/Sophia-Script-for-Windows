@@ -43,7 +43,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Deshabilite el servicio \"Telemetría y experiencias de usuario conectado\" (DiagTrack) y bloquee la conexión para el tráfico saliente del cliente de telemetría unificada"
+        "ToolTip": "Deshabilite el servicio \"Telemetría y experiencias de usuario conectado\" (DiagTrack) y bloquee la conexión para el tráfico saliente del cliente de telemetría unificada. Deshabilitar el servicio \"Experiencias de usuario conectado y telemetría\" (DiagTrack) puede hacer que ya no puedas obtener los logros de Xbox"
       },
       "One": {
         "Tag": "Enable",
@@ -538,6 +538,21 @@
   {
     "Id": 318,
     "Region": "UI & Personalization",
+    "Function": "SearchHighlights",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Ocultar destacados de búsqueda"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Mostrar destacados de búsqueda (valor predeterminado)"
+      }
+    }
+  },
+  {
+    "Id": 319,
+    "Region": "UI & Personalization",
     "Function": "PeopleTaskbar",
     "Arg": {
       "Zero": {
@@ -551,7 +566,7 @@
     }
   },
   {
-    "Id": 319,
+    "Id": 320,
     "Region": "UI & Personalization",
     "Function": "SecondsInSystemClock",
     "Arg": {
@@ -566,7 +581,7 @@
     }
   },
   {
-    "Id": 320,
+    "Id": 321,
     "Region": "UI & Personalization",
     "Function": "WindowsInkWorkspace",
     "Arg": {
@@ -581,7 +596,7 @@
     }
   },
   {
-    "Id": 321,
+    "Id": 322,
     "Region": "UI & Personalization",
     "Function": "NotificationAreaIcons",
     "Arg": {
@@ -596,7 +611,7 @@
     }
   },
   {
-    "Id": 322,
+    "Id": 323,
     "Region": "UI & Personalization",
     "Function": "MeetNow",
     "Arg": {
@@ -611,7 +626,7 @@
     }
   },
   {
-    "Id": 323,
+    "Id": 324,
     "Region": "UI & Personalization",
     "Function": "NewsInterests",
     "Arg": {
@@ -626,7 +641,7 @@
     }
   },
   {
-    "Id": 324,
+    "Id": 325,
     "Region": "UI & Personalization",
     "Function": "UnpinTaskbarShortcuts -Shortcuts",
     "ToolTip": "Desanclar los accesos directos de \"Microsoft Edge\", \"Microsoft Store\" o \"Mail\" de la barra de tareas",
@@ -646,7 +661,7 @@
     }
   },
   {
-    "Id": 325,
+    "Id": 326,
     "Region": "UI & Personalization",
     "Function": "ControlPanelView",
     "Arg": {
@@ -665,7 +680,7 @@
     }
   },
   {
-    "Id": 326,
+    "Id": 327,
     "Region": "UI & Personalization",
     "Function": "WindowsColorMode",
     "Arg": {
@@ -680,7 +695,7 @@
     }
   },
   {
-    "Id": 327,
+    "Id": 328,
     "Region": "UI & Personalization",
     "Function": "AppColorMode",
     "Arg": {
@@ -695,7 +710,7 @@
     }
   },
   {
-    "Id": 328,
+    "Id": 329,
     "Region": "UI & Personalization",
     "Function": "NewAppInstalledNotification",
     "Arg": {
@@ -710,7 +725,7 @@
     }
   },
   {
-    "Id": 329,
+    "Id": 330,
     "Region": "UI & Personalization",
     "Function": "FirstLogonAnimation",
     "Arg": {
@@ -725,7 +740,7 @@
     }
   },
   {
-    "Id": 330,
+    "Id": 331,
     "Region": "UI & Personalization",
     "Function": "JPEGWallpapersQuality",
     "Arg": {
@@ -740,7 +755,7 @@
     }
   },
   {
-    "Id": 331,
+    "Id": 332,
     "Region": "UI & Personalization",
     "Function": "TaskManagerWindow",
     "Arg": {
@@ -755,7 +770,7 @@
     }
   },
   {
-    "Id": 332,
+    "Id": 333,
     "Region": "UI & Personalization",
     "Function": "RestartNotification",
     "Arg": {
@@ -770,7 +785,7 @@
     }
   },
   {
-    "Id": 333,
+    "Id": 334,
     "Region": "UI & Personalization",
     "Function": "ShortcutsSuffix",
     "Arg": {
@@ -785,7 +800,7 @@
     }
   },
   {
-    "Id": 334,
+    "Id": 335,
     "Region": "UI & Personalization",
     "Function": "PrtScnSnippingTool",
     "Arg": {
@@ -800,7 +815,7 @@
     }
   },
   {
-    "Id": 335,
+    "Id": 336,
     "Region": "UI & Personalization",
     "Function": "AppsLanguageSwitch",
     "Arg": {
@@ -811,11 +826,11 @@
       "One": {
         "Tag": "Enable",
         "ToolTip": "No utilice un método de entrada diferente para cada ventana de la aplicación (valor predeterminado)"
-     }
+      }
     }
   },
   {
-    "Id": 336,
+    "Id": 337,
     "Region": "UI & Personalization",
     "Function": "AeroShaking",
     "Arg": {
@@ -1392,6 +1407,17 @@
       "Zero": {
         "Tag": "",
         "ToolTip": "Instale la última versión compatible de Microsoft Visual C++ Redistributable 2015-2022 x64"
+      }
+    }
+  },
+  {
+    "Id": 537,
+    "Region": "System",
+    "Function": "InstallDotNetRuntime6",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Instale el último .NET Desktop Runtime 6 (x86/x64)"
       }
     }
   },
@@ -2186,6 +2212,17 @@
       "One": {
         "Tag": "Show",
         "ToolTip": "Mostrar la opción de menú \"Abrir en Windows Terminal\" en el menú contextual de carpetas (valor predeterminado)"
+      }
+    }
+  },
+  {
+    "Id": 1300,
+    "Region": "LGPEPolicies",
+    "Function": "UpdateLGPEPolicies",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Actualice el Editor de políticas de grupo local (gpedit.msc) para que todas las claves de política creadas manualmente en el registro sean visibles en el complemento"
       }
     }
   }

@@ -577,7 +577,7 @@
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
-    "Function": "PeopleTaskbar",
+    "Function": "SearchHighlights",
     "Arg": {
       "Zero": {
         "Tag": "Hide"
@@ -594,6 +594,23 @@
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
+    "Function": "PeopleTaskbar",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One"
+  },
+  {
+    "Id": 319,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
     "Function": "SecondsInSystemClock",
     "Arg": {
       "Zero": {
@@ -607,7 +624,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 319,
+    "Id": 320,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -627,7 +644,7 @@
     "WindowsDefault": "Two"
   },
   {
-    "Id": 320,
+    "Id": 321,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -644,7 +661,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 321,
+    "Id": 322,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -661,7 +678,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 322,
+    "Id": 323,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -678,7 +695,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 323,
+    "Id": 324,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -695,7 +712,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 324,
+    "Id": 325,
     "Region": "UI & Personalization",
     "Control": "chk",
     "Required": "false",
@@ -715,7 +732,7 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 325,
+    "Id": 326,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -735,7 +752,7 @@
     "WindowsDefault": "Two"
   },
   {
-    "Id": 326,
+    "Id": 327,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -752,7 +769,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 327,
+    "Id": 328,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -769,7 +786,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 328,
+    "Id": 329,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -786,7 +803,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 329,
+    "Id": 330,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -803,7 +820,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 330,
+    "Id": 331,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -820,7 +837,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 331,
+    "Id": 332,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -837,7 +854,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 332,
+    "Id": 333,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -854,7 +871,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 333,
+    "Id": 334,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -871,7 +888,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 334,
+    "Id": 335,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -888,7 +905,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 335,
+    "Id": 336,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -905,7 +922,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 336,
+    "Id": 337,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -1556,6 +1573,20 @@
     "Control": "chk",
     "Required": "false",
     "Function": "InstallVCRedistx64",
+    "Arg": {
+      "Zero": {
+        "Tag": ""
+      }
+    },
+    "Preset": "",
+    "WindowsDefault": ""
+  },
+  {
+    "Id": 537,
+    "Region": "System",
+    "Control": "chk",
+    "Required": "false",
+    "Function": "InstallDotNetRuntime6",
     "Arg": {
       "Zero": {
         "Tag": ""
@@ -2423,5 +2454,19 @@
     },
     "Preset": "Zero",
     "WindowsDefault": "One"
+  },
+  {
+    "Id": 1300,
+    "Region": "",
+    "Control": "chk",
+    "Required": "false",
+    "Function": "UpdateLGPEPolicies",
+    "Arg": {
+      "Zero": {
+        "Tag": ""
+      }
+    },
+    "Preset": "",
+    "WindowsDefault": ""
   }
 ]

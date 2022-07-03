@@ -43,7 +43,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Deaktiviert den Dienst \"Connected User Experiences and Telemetry\" (DiagTrack), und blockiert die Verbindung für den ausgehenden Verkehr des Unified Telemetry Client"
+        "ToolTip": "Deaktiviert den Dienst \"Connected User Experiences and Telemetry\" (DiagTrack), und blockiert die Verbindung für den ausgehenden Verkehr des Unified Telemetry Client. Das Deaktivieren des Dienstes \"Benutzererfahrungen und Telemetrie im verbundenen Modus\" (DiagTrack) kann dazu führen, dass Sie keine Xbox-Erfolge mehr erhalten können"
       },
       "One": {
         "Tag": "Enable",
@@ -279,21 +279,6 @@
   {
     "Id": 301,
     "Region": "UI & Personalization",
-    "Function": "Windows10FileExplorer",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Aktiviert den Windows 10 Datei-Explorer"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Deaktiviert den Windows 10 Datei-Explorer (Standardeinstellung)"
-      }
-    }
-  },
-  {
-    "Id": 302,
-    "Region": "UI & Personalization",
     "Function": "CheckBoxes",
     "Arg": {
       "Zero": {
@@ -307,7 +292,7 @@
     }
   },
   {
-    "Id": 303,
+    "Id": 302,
     "Region": "UI & Personalization",
     "Function": "HiddenItems",
     "Arg": {
@@ -322,7 +307,7 @@
     }
   },
   {
-    "Id": 304,
+    "Id": 303,
     "Region": "UI & Personalization",
     "Function": "FileExtensions",
     "Arg": {
@@ -337,7 +322,7 @@
     }
   },
   {
-    "Id": 305,
+    "Id": 304,
     "Region": "UI & Personalization",
     "Function": "MergeConflicts",
     "Arg": {
@@ -352,7 +337,7 @@
     }
   },
   {
-    "Id": 306,
+    "Id": 305,
     "Region": "UI & Personalization",
     "Function": "OpenFileExplorerTo",
     "Arg": {
@@ -367,7 +352,7 @@
     }
   },
   {
-    "Id": 307,
+    "Id": 306,
     "Region": "UI & Personalization",
     "Function": "FileExplorerCompactMode",
     "Arg": {
@@ -382,7 +367,7 @@
     }
   },
   {
-    "Id": 308,
+    "Id": 307,
     "Region": "UI & Personalization",
     "Function": "OneDriveFileExplorerAd",
     "Arg": {
@@ -397,7 +382,7 @@
     }
   },
   {
-    "Id": 309,
+    "Id": 308,
     "Region": "UI & Personalization",
     "Function": "SnapAssistFlyout",
     "Arg": {
@@ -412,7 +397,7 @@
     }
   },
   {
-    "Id": 310,
+    "Id": 309,
     "Region": "UI & Personalization",
     "Function": "SnapAssist",
     "Arg": {
@@ -427,7 +412,7 @@
     }
   },
   {
-    "Id": 311,
+    "Id": 310,
     "Region": "UI & Personalization",
     "Function": "FileTransferDialog",
     "Arg": {
@@ -442,7 +427,7 @@
     }
   },
   {
-    "Id": 312,
+    "Id": 311,
     "Region": "UI & Personalization",
     "Function": "RecycleBinDeleteConfirmation",
     "Arg": {
@@ -457,7 +442,7 @@
     }
   },
   {
-    "Id": 313,
+    "Id": 312,
     "Region": "UI & Personalization",
     "Function": "QuickAccessRecentFiles",
     "Arg": {
@@ -472,7 +457,7 @@
     }
   },
   {
-    "Id": 314,
+    "Id": 313,
     "Region": "UI & Personalization",
     "Function": "QuickAccessFrequentFolders",
     "Arg": {
@@ -487,7 +472,7 @@
     }
   },
   {
-    "Id": 315,
+    "Id": 314,
     "Region": "UI & Personalization",
     "Function": "TaskbarAlignment",
     "Arg": {
@@ -502,7 +487,7 @@
     }
   },
   {
-    "Id": 316,
+    "Id": 315,
     "Region": "UI & Personalization",
     "Function": "TaskbarSearch",
     "Arg": {
@@ -517,7 +502,7 @@
     }
   },
   {
-    "Id": 317,
+    "Id": 316,
     "Region": "UI & Personalization",
     "Function": "TaskViewButton",
     "Arg": {
@@ -532,7 +517,7 @@
     }
   },
   {
-    "Id": 318,
+    "Id": 317,
     "Region": "UI & Personalization",
     "Function": "TaskbarWidgets",
     "Arg": {
@@ -547,7 +532,7 @@
     }
   },
   {
-    "Id": 319,
+    "Id": 318,
     "Region": "UI & Personalization",
     "Function": "TaskbarChat",
     "Arg": {
@@ -562,7 +547,7 @@
     }
   },
   {
-    "Id": 320,
+    "Id": 319,
     "Region": "UI & Personalization",
     "Function": "UnpinTaskbarShortcuts -Shortcuts",
     "ToolTip": "Die Verknüpfungen \"Microsoft Edge\" oder \"Microsoft Store\" von der Taskleiste lösen",
@@ -578,7 +563,7 @@
     }
   },
   {
-    "Id": 321,
+    "Id": 320,
     "Region": "UI & Personalization",
     "Function": "ControlPanelView",
     "Arg": {
@@ -597,7 +582,7 @@
     }
   },
   {
-    "Id": 322,
+    "Id": 321,
     "Region": "UI & Personalization",
     "Function": "WindowsColorMode",
     "Arg": {
@@ -612,7 +597,7 @@
     }
   },
   {
-    "Id": 323,
+    "Id": 322,
     "Region": "UI & Personalization",
     "Function": "AppColorMode",
     "Arg": {
@@ -629,21 +614,6 @@
   {
     "Id": 323,
     "Region": "UI & Personalization",
-    "Function": "NewAppInstalledNotification",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Die Anzeige \"Neue App installiert\" ausblenden"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Den Indikator \"Neue App installiert\" anzeigen (Standardeinstellung)"
-      }
-    }
-  },
-  {
-    "Id": 324,
-    "Region": "UI & Personalization",
     "Function": "FirstLogonAnimation",
     "Arg": {
       "Zero": {
@@ -657,7 +627,7 @@
     }
   },
   {
-    "Id": 325,
+    "Id": 324,
     "Region": "UI & Personalization",
     "Function": "JPEGWallpapersQuality",
     "Arg": {
@@ -672,7 +642,7 @@
     }
   },
   {
-    "Id": 326,
+    "Id": 325,
     "Region": "UI & Personalization",
     "Function": "TaskManagerWindow",
     "Arg": {
@@ -687,7 +657,7 @@
     }
   },
   {
-    "Id": 327,
+    "Id": 326,
     "Region": "UI & Personalization",
     "Function": "RestartNotification",
     "Arg": {
@@ -702,7 +672,7 @@
     }
   },
   {
-    "Id": 328,
+    "Id": 327,
     "Region": "UI & Personalization",
     "Function": "ShortcutsSuffix",
     "Arg": {
@@ -717,7 +687,7 @@
     }
   },
   {
-    "Id": 329,
+    "Id": 328,
     "Region": "UI & Personalization",
     "Function": "PrtScnSnippingTool",
     "Arg": {
@@ -732,7 +702,7 @@
     }
   },
   {
-    "Id": 330,
+    "Id": 329,
     "Region": "UI & Personalization",
     "Function": "AppsLanguageSwitch",
     "Arg": {
@@ -747,7 +717,7 @@
     }
   },
   {
-    "Id": 331,
+    "Id": 330,
     "Region": "UI & Personalization",
     "Function": "AeroShaking",
     "Arg": {
@@ -1057,7 +1027,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Aktiviert die Komponente Internet Protocol Version 6 (TCP/IPv6) für alle Netzwerkverbindungen (Standardeinstellung).  Bevor die Funktion aufgerufen wird, wird geprüft, ob Ihr ISP das IPv6-Protokoll unterstützt. https://ipv6-test.com"
+        "ToolTip": "Aktiviert die Komponente Internet Protocol Version 6 (TCP/IPv6) für alle Netzwerkverbindungen (Standardeinstellung). Bevor die Funktion aufgerufen wird, wird geprüft, ob Ihr ISP das IPv6-Protokoll unterstützt. https://ipv6-test.com"
       }
     }
   },
@@ -1323,26 +1293,22 @@
   {
     "Id": 536,
     "Region": "System",
-    "Function": "PCHealthCheck",
+    "Function": "InstallVCRedistx64",
     "Arg": {
       "Zero": {
-        "Tag": "Block",
-        "ToolTip": "Deinstallieren Sie das Update KB5005463 und blockieren Sie es für die weitere Installation. Das Update KB5005463 installiert die App PC Health Check, um zu prüfen, ob der PC die Systemanforderungen von Windows 11 erfüllt"
-      },
-      "One": {
-        "Tag": "Unblock",
-        "ToolTip": "Freigabe des KB5005463-Updates für die weitere Installation (Standardwert)"
+        "Tag": "",
+        "ToolTip": "Installieren Sie die neueste unterstützte Microsoft Visual C++ Redistributable 2015-2022 x64"
       }
     }
   },
   {
     "Id": 537,
     "Region": "System",
-    "Function": "InstallVCRedistx64",
+    "Function": "InstallDotNetRuntime6",
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Installieren Sie die neueste unterstützte Microsoft Visual C++ Redistributable 2015-2022 x64"
+        "ToolTip": "Установить последнюю версию .NET Desktop Runtime 6 (x86/x64)"
       }
     }
   },
@@ -1416,7 +1382,7 @@
       },
       "One": {
         "Tag": "Install",
-        "ToolTip": "Lädt die \"HEVC Video Extensions from Device Manufacturer\" herunter und installiert es, um die Formate .heic und .heif öffnen zu können."
+        "ToolTip": "Lädt die \"HEVC Video Extensions from Device Manufacturer\" herunter und installiert es, um die Formate .heic und .heif öffnen zu können. Die HEVC-Videoerweiterung ist standardmäßig bereits in Windows 11 22H2 installiert."
       }
     }
   },
@@ -1453,21 +1419,6 @@
   {
     "Id": 806,
     "Region": "UWP apps",
-    "Function": "BackgroundUWPApps",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Nicht alle UWP-Anwendungen im Hintergrund laufen lassen"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Alle UWP-Anwendungen im Hintergrund ausführen lassen (Standardeinstellung)"
-      }
-    }
-  },
-  {
-    "Id": 807,
-    "Region": "UWP apps",
     "Function": "CheckUWPAppsUpdates",
     "Arg": {
       "Zero": {
@@ -1483,22 +1434,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Xbox Game Bar deaktivieren"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Xbox Game Bar aktivieren (Standardeinstellung)"
-      }
-    }
-  },
-  {
-    "Id": 900,
-    "Region": "Gaming",
-    "Function": "XboxGameBar",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Xbox Game Bar deaktivieren"
+        "ToolTip": "Xbox Game Bar deaktivieren. Um zu verhindern, dass die Warnung \"Sie benötigen eine neue App, um dieses ms-gamingoverlay zu öffnen\" angezeigt wird, müssen Sie die Xbox Game Bar App deaktivieren, auch wenn Sie sie zuvor deinstalliert haben."
       },
       "One": {
         "Tag": "Enable",
@@ -1887,21 +1823,6 @@
   {
     "Id": 1205,
     "Region": "Context menu",
-    "Function": "EditWithPaint3DContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Ausblenden des Eintrags \"Bearbeiten mit Paint 3D\" im Kontextmenü von Mediendateien"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Den Eintrag \"Mit Paint 3D bearbeiten\" im Kontextmenü der Mediendateien anzeigen (Standardeinstellung)."
-      }
-    }
-  },
-  {
-    "Id": 1206,
-    "Region": "Context menu",
     "Function": "EditWithPhotosContext",
     "Arg": {
       "Zero": {
@@ -1915,7 +1836,7 @@
     }
   },
   {
-    "Id": 1207,
+    "Id": 1206,
     "Region": "Context menu",
     "Function": "CreateANewVideoContext",
     "Arg": {
@@ -1930,22 +1851,7 @@
     }
   },
   {
-    "Id": 1208,
-    "Region": "Context menu",
-    "Function": "ImagesEditContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Ausblenden des Eintrags \"Bearbeiten\" im Kontextmenü der Bilder"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Den Eintrag \"Bearbeiten\" im Kontextmenü von Bildern anzeigen (Standardeinstellung)."
-      }
-    }
-  },
-  {
-    "Id": 1209,
+    "Id": 1207,
     "Region": "Context menu",
     "Function": "PrintCMDContext",
     "Arg": {
@@ -1960,7 +1866,7 @@
     }
   },
   {
-    "Id": 1210,
+    "Id": 1208,
     "Region": "Context menu",
     "Function": "IncludeInLibraryContext",
     "Arg": {
@@ -1975,7 +1881,7 @@
     }
   },
   {
-    "Id": 1211,
+    "Id": 1209,
     "Region": "Context menu",
     "Function": "SendToContext",
     "Arg": {
@@ -1990,7 +1896,7 @@
     }
   },
   {
-    "Id": 1212,
+    "Id": 1210,
     "Region": "Context menu",
     "Function": "BitLockerContext",
     "Arg": {
@@ -2005,37 +1911,7 @@
     }
   },
   {
-    "Id": 1213,
-    "Region": "Context menu",
-    "Function": "BitmapImageNewContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Ausblenden des Eintrags \"Bitmap-Bild\" im Kontextmenü \"Neu\"."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Den Eintrag \"Bitmap-Bild\" im Kontextmenü \"Neu\" anzeigen (Standardeinstellung)."
-      }
-    }
-  },
-  {
-    "Id": 1214,
-    "Region": "Context menu",
-    "Function": "RichTextDocumentNewContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Den Eintrag \"Rich Text Document\" \"Neu\" im Kontextmenü ausblenden."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Den Eintrag \"Rich Text Document\" \"Neu\" im Kontextmenü anzeigen (Standardeinstellung)."
-      }
-    }
-  },
-  {
-    "Id": 1215,
+    "Id": 1211,
     "Region": "Context menu",
     "Function": "CompressedFolderNewContext",
     "Arg": {
@@ -2050,7 +1926,7 @@
     }
   },
   {
-    "Id": 1216,
+    "Id": 1212,
     "Region": "Context menu",
     "Function": "MultipleInvokeContext",
     "Arg": {
@@ -2065,7 +1941,7 @@
     }
   },
   {
-    "Id": 1217,
+    "Id": 1213,
     "Region": "Context menu",
     "Function": "UseStoreOpenWith",
     "Arg": {
@@ -2080,7 +1956,7 @@
     }
   },
   {
-    "Id": 1218,
+    "Id": 1214,
     "Region": "Context menu",
     "Function": "OpenWindowsTerminalContext",
     "Arg": {
@@ -2095,7 +1971,7 @@
     }
   },
   {
-    "Id": 1219,
+    "Id": 1215,
     "Region": "Context menu",
     "Function": "OpenWindowsTerminalAdminContext",
     "Arg": {
@@ -2110,7 +1986,7 @@
     }
   },
   {
-    "Id": 1220,
+    "Id": 1216,
     "Region": "Context menu",
     "Function": "Windows10ContextMenu",
     "Arg": {
@@ -2121,6 +1997,17 @@
       "One": {
         "Tag": "Enable",
         "ToolTip": "Windows 10-Kontextmenüstils aktivieren"
+      }
+    }
+  },
+  {
+    "Id": 1300,
+    "Region": "LGPEPolicies",
+    "Function": "UpdateLGPEPolicies",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Aktualisieren Sie den lokalen Gruppenrichtlinien-Editor (gpedit.msc), um alle manuell erstellten Richtlinienschlüssel in der Registrierung im Snap-In sichtbar zu machen"
       }
     }
   }

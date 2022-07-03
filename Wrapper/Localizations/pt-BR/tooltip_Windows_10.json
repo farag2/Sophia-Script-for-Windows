@@ -43,7 +43,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Desative o serviço \"Experiências e telemetria do usuário conectado\" (DiagTrack) e bloqueie a conexão para o tráfego de saída do cliente de telemetria unificada"
+        "ToolTip": "Desative o serviço \"Experiências e telemetria do usuário conectado\" (DiagTrack) e bloqueie a conexão para o tráfego de saída do cliente de telemetria unificada. Desativar o serviço \"Experiências de usuário conectadas e telemetria\" (DiagTrack) pode fazer com que você não consiga mais obter conquistas do Xbox"
       },
       "One": {
         "Tag": "Enable",
@@ -354,7 +354,7 @@
   {
     "Id": 306,
     "Region": "UI & Personalization",
-"Function": "FileExplorerMode",
+    "Function": "FileExplorerMode",
     "Arg": {
       "Zero": {
         "Tag": "Disable",
@@ -368,7 +368,7 @@
   },
   {
     "Id": 307,
-    "Region": "UI & Personalization",							 
+    "Region": "UI & Personalization",
     "Function": "CortanaButton",
     "Arg": {
       "Zero": {
@@ -486,7 +486,6 @@
       }
     }
   },
-
   {
     "Id": 315,
     "Region": "UI & Personalization",
@@ -539,6 +538,21 @@
   {
     "Id": 318,
     "Region": "UI & Personalization",
+    "Function": "SearchHighlights",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Ocultar destaques da pesquisa"
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Mostrar destaques da pesquisa (valor padrão)"
+      }
+    }
+  },
+  {
+    "Id": 319,
+    "Region": "UI & Personalization",
     "Function": "PeopleTaskbar",
     "Arg": {
       "Zero": {
@@ -552,7 +566,7 @@
     }
   },
   {
-    "Id": 319,
+    "Id": 320,
     "Region": "UI & Personalization",
     "Function": "SecondsInSystemClock",
     "Arg": {
@@ -567,7 +581,7 @@
     }
   },
   {
-    "Id": 320,
+    "Id": 321,
     "Region": "UI & Personalization",
     "Function": "WindowsInkWorkspace",
     "Arg": {
@@ -582,7 +596,7 @@
     }
   },
   {
-    "Id": 321,
+    "Id": 322,
     "Region": "UI & Personalization",
     "Function": "TrayIcons",
     "Arg": {
@@ -597,7 +611,7 @@
     }
   },
   {
-    "Id": 322,
+    "Id": 323,
     "Region": "UI & Personalization",
     "Function": "MeetNow",
     "Arg": {
@@ -612,7 +626,7 @@
     }
   },
   {
-    "Id": 323,
+    "Id": 324,
     "Region": "UI & Personalization",
     "Function": "NewsInterests",
     "Arg": {
@@ -627,7 +641,7 @@
     }
   },
   {
-    "Id": 324,
+    "Id": 325,
     "Region": "UI & Personalization",
     "Function": "UnpinTaskbarShortcuts -Shortcuts",
     "ToolTip": "Solte os atalhos \"Microsoft Edge\", \"Microsoft Store\" ou \"Mail\" da barra de tarefas",
@@ -647,7 +661,7 @@
     }
   },
   {
-    "Id": 325,
+    "Id": 326,
     "Region": "UI & Personalization",
     "Function": "ControlPanelView",
     "Arg": {
@@ -666,7 +680,7 @@
     }
   },
   {
-    "Id": 326,
+    "Id": 327,
     "Region": "UI & Personalization",
     "Function": "WindowsColorMode",
     "Arg": {
@@ -681,7 +695,7 @@
     }
   },
   {
-    "Id": 327,
+    "Id": 328,
     "Region": "UI & Personalization",
     "Function": "AppMode",
     "Arg": {
@@ -696,7 +710,7 @@
     }
   },
   {
-    "Id": 328,
+    "Id": 329,
     "Region": "UI & Personalization",
     "Function": "NewAppInstalledNotification",
     "Arg": {
@@ -711,7 +725,7 @@
     }
   },
   {
-    "Id": 329,
+    "Id": 330,
     "Region": "UI & Personalization",
     "Function": "FirstLogonAnimation",
     "Arg": {
@@ -726,7 +740,7 @@
     }
   },
   {
-    "Id": 330,
+    "Id": 331,
     "Region": "UI & Personalization",
     "Function": "JPEGWallpapersQuality",
     "Arg": {
@@ -741,7 +755,7 @@
     }
   },
   {
-    "Id": 331,
+    "Id": 332,
     "Region": "UI & Personalization",
     "Function": "TaskManagerWindow",
     "Arg": {
@@ -756,7 +770,7 @@
     }
   },
   {
-    "Id": 332,
+    "Id": 333,
     "Region": "UI & Personalization",
     "Function": "RestartNotification",
     "Arg": {
@@ -771,7 +785,7 @@
     }
   },
   {
-    "Id": 333,
+    "Id": 334,
     "Region": "UI & Personalization",
     "Function": "ShortcutsSuffix",
     "Arg": {
@@ -786,7 +800,7 @@
     }
   },
   {
-    "Id": 334,
+    "Id": 335,
     "Region": "UI & Personalization",
     "Function": "PrtScnSnippingTool",
     "Arg": {
@@ -801,7 +815,7 @@
     }
   },
   {
-    "Id": 335,
+    "Id": 336,
     "Region": "UI & Personalization",
     "Function": "AppsLanguageSwitch",
     "Arg": {
@@ -816,7 +830,7 @@
     }
   },
   {
-	"Id": 336,
+    "Id": 337,
     "Region": "UI & Personalization",
     "Function": "AeroShaking",
     "Arg": {
@@ -1118,7 +1132,7 @@
   {
     "Id": 518,
     "Region": "System",
-	"Function": "IPv6Component",
+    "Function": "IPv6Component",
     "Arg": {
       "Zero": {
         "Tag": "Disable",
@@ -1397,6 +1411,17 @@
     }
   },
   {
+    "Id": 537,
+    "Region": "System",
+    "Function": "InstallDotNetRuntime6",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Instale o .NET Desktop Runtime 6 mais recente (x86/x64)"
+      }
+    }
+  },
+  {
     "Id": 600,
     "Region": "WSL",
     "Function": "WSL",
@@ -1564,7 +1589,7 @@
   {
     "Id": 806,
     "Region": "UWP apps",
-"Function": "BackgroundUWPApps",
+    "Function": "BackgroundUWPApps",
     "Arg": {
       "Zero": {
         "Tag": "Disable",
@@ -2187,6 +2212,17 @@
       "One": {
         "Tag": "Show",
         "ToolTip": "Mostrar a opção de menu \"Abrir no Windows Terminal\" no menu de contexto das pastas (valor padrão)"
+      }
+    }
+  },
+  {
+    "Id": 1300,
+    "Region": "LGPEPolicies",
+    "Function": "UpdateLGPEPolicies",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Atualize o Editor de Diretiva de Grupo Local (gpedit.msc) para tornar todas as chaves de diretiva criadas manualmente no registro visíveis no snap-in"
       }
     }
   }

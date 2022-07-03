@@ -43,7 +43,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Disable the \"Connected User Experiences and Telemetry\" service (DiagTrack), and block the connection for the Unified Telemetry Client Outbound Traffic"
+        "ToolTip": "Disable the \"Connected User Experiences and Telemetry\" service (DiagTrack), and block the connection for the Unified Telemetry Client Outbound Traffic. Disabling the \"Connected User Experiences and Telemetry\" service (DiagTrack) can cause you not being able to get Xbox achievements anymore"
       },
       "One": {
         "Tag": "Enable",
@@ -279,21 +279,6 @@
   {
     "Id": 301,
     "Region": "UI & Personalization",
-    "Function": "Windows10FileExplorer",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Enable the Windows 10 File Explorer"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Disable the Windows 10 File Explorer (default value)"
-      }
-    }
-  },
-  {
-    "Id": 302,
-    "Region": "UI & Personalization",
     "Function": "CheckBoxes",
     "Arg": {
       "Zero": {
@@ -307,7 +292,7 @@
     }
   },
   {
-    "Id": 303,
+    "Id": 302,
     "Region": "UI & Personalization",
     "Function": "HiddenItems",
     "Arg": {
@@ -322,7 +307,7 @@
     }
   },
   {
-    "Id": 304,
+    "Id": 303,
     "Region": "UI & Personalization",
     "Function": "FileExtensions",
     "Arg": {
@@ -337,7 +322,7 @@
     }
   },
   {
-    "Id": 305,
+    "Id": 304,
     "Region": "UI & Personalization",
     "Function": "MergeConflicts",
     "Arg": {
@@ -352,7 +337,7 @@
     }
   },
   {
-    "Id": 306,
+    "Id": 305,
     "Region": "UI & Personalization",
     "Function": "OpenFileExplorerTo",
     "Arg": {
@@ -367,7 +352,7 @@
     }
   },
   {
-    "Id": 307,
+    "Id": 306,
     "Region": "UI & Personalization",
     "Function": "FileExplorerCompactMode",
     "Arg": {
@@ -382,7 +367,7 @@
     }
   },
   {
-    "Id": 308,
+    "Id": 307,
     "Region": "UI & Personalization",
     "Function": "OneDriveFileExplorerAd",
     "Arg": {
@@ -397,7 +382,7 @@
     }
   },
   {
-    "Id": 309,
+    "Id": 308,
     "Region": "UI & Personalization",
     "Function": "SnapAssistFlyout",
     "Arg": {
@@ -412,7 +397,7 @@
     }
   },
   {
-    "Id": 310,
+    "Id": 309,
     "Region": "UI & Personalization",
     "Function": "SnapAssist",
     "Arg": {
@@ -427,7 +412,7 @@
     }
   },
   {
-    "Id": 311,
+    "Id": 310,
     "Region": "UI & Personalization",
     "Function": "FileTransferDialog",
     "Arg": {
@@ -442,7 +427,7 @@
     }
   },
   {
-    "Id": 312,
+    "Id": 311,
     "Region": "UI & Personalization",
     "Function": "RecycleBinDeleteConfirmation",
     "Arg": {
@@ -457,7 +442,7 @@
     }
   },
   {
-    "Id": 313,
+    "Id": 312,
     "Region": "UI & Personalization",
     "Function": "QuickAccessRecentFiles",
     "Arg": {
@@ -472,7 +457,7 @@
     }
   },
   {
-    "Id": 314,
+    "Id": 313,
     "Region": "UI & Personalization",
     "Function": "QuickAccessFrequentFolders",
     "Arg": {
@@ -487,7 +472,7 @@
     }
   },
   {
-    "Id": 315,
+    "Id": 314,
     "Region": "UI & Personalization",
     "Function": "TaskbarAlignment",
     "Arg": {
@@ -502,7 +487,7 @@
     }
   },
   {
-    "Id": 316,
+    "Id": 315,
     "Region": "UI & Personalization",
     "Function": "TaskbarSearch",
     "Arg": {
@@ -517,7 +502,7 @@
     }
   },
   {
-    "Id": 317,
+    "Id": 316,
     "Region": "UI & Personalization",
     "Function": "TaskViewButton",
     "Arg": {
@@ -532,7 +517,7 @@
     }
   },
   {
-    "Id": 318,
+    "Id": 317,
     "Region": "UI & Personalization",
     "Function": "TaskbarWidgets",
     "Arg": {
@@ -547,7 +532,7 @@
     }
   },
   {
-    "Id": 319,
+    "Id": 318,
     "Region": "UI & Personalization",
     "Function": "TaskbarChat",
     "Arg": {
@@ -562,7 +547,7 @@
     }
   },
   {
-    "Id": 320,
+    "Id": 319,
     "Region": "UI & Personalization",
     "Function": "UnpinTaskbarShortcuts -Shortcuts",
     "ToolTip": "Unpin the \"Microsoft Edge\" and \"Microsoft Store\" shortcuts from the taskbar",
@@ -578,7 +563,7 @@
     }
   },
   {
-    "Id": 321,
+    "Id": 320,
     "Region": "UI & Personalization",
     "Function": "ControlPanelView",
     "Arg": {
@@ -597,7 +582,7 @@
     }
   },
   {
-    "Id": 322,
+    "Id": 321,
     "Region": "UI & Personalization",
     "Function": "WindowsColorMode",
     "Arg": {
@@ -612,7 +597,7 @@
     }
   },
   {
-    "Id": 323,
+    "Id": 322,
     "Region": "UI & Personalization",
     "Function": "AppColorMode",
     "Arg": {
@@ -627,7 +612,7 @@
     }
   },
   {
-    "Id": 324,
+    "Id": 323,
     "Region": "UI & Personalization",
     "Function": "FirstLogonAnimation",
     "Arg": {
@@ -642,7 +627,7 @@
     }
   },
   {
-    "Id": 325,
+    "Id": 324,
     "Region": "UI & Personalization",
     "Function": "JPEGWallpapersQuality",
     "Arg": {
@@ -657,7 +642,7 @@
     }
   },
   {
-    "Id": 326,
+    "Id": 325,
     "Region": "UI & Personalization",
     "Function": "TaskManagerWindow",
     "Arg": {
@@ -672,7 +657,7 @@
     }
   },
   {
-    "Id": 327,
+    "Id": 326,
     "Region": "UI & Personalization",
     "Function": "RestartNotification",
     "Arg": {
@@ -687,7 +672,7 @@
     }
   },
   {
-    "Id": 328,
+    "Id": 327,
     "Region": "UI & Personalization",
     "Function": "ShortcutsSuffix",
     "Arg": {
@@ -702,7 +687,7 @@
     }
   },
   {
-    "Id": 329,
+    "Id": 328,
     "Region": "UI & Personalization",
     "Function": "PrtScnSnippingTool",
     "Arg": {
@@ -717,7 +702,7 @@
     }
   },
   {
-    "Id": 330,
+    "Id": 329,
     "Region": "UI & Personalization",
     "Function": "AppsLanguageSwitch",
     "Arg": {
@@ -732,7 +717,7 @@
     }
   },
   {
-    "Id": 331,
+    "Id": 330,
     "Region": "UI & Personalization",
     "Function": "AeroShaking",
     "Arg": {
@@ -1317,6 +1302,17 @@
     }
   },
   {
+    "Id": 537,
+    "Region": "System",
+    "Function": "InstallDotNetRuntime6",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Install the latest .NET Desktop Runtime 6 (x86/x64)"
+      }
+    }
+  },
+  {
     "Id": 600,
     "Region": "WSL",
     "Function": "WSL",
@@ -1386,7 +1382,7 @@
       },
       "One": {
         "Tag": "Install",
-        "ToolTip": "Download and install \"HEVC Video Extensions from Device Manufacturer\" to be able to open .heic and .heif formats"
+        "ToolTip": "Download and install \"HEVC Video Extensions from Device Manufacturer\" to be able to open .heic and .heif formats. HEVC Video Extension is already installed in Windows 11 22H2 by default."
       }
     }
   },
@@ -1438,7 +1434,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Disable Xbox Game Bar"
+        "ToolTip": "Disable Xbox Game Bar. To prevent popping up the \"You'll need a new app to open this ms-gamingoverlay\" warning, you need to disable the Xbox Game Bar app, even if you uninstalled it before"
       },
       "One": {
         "Tag": "Enable",
@@ -2001,6 +1997,17 @@
       "One": {
         "Tag": "Enable",
         "ToolTip": "Enable the Windows 10 context menu style"
+      }
+    }
+  },
+  {
+    "Id": 1300,
+    "Region": "LGPEPolicies",
+    "Function": "UpdateLGPEPolicies",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Update Local Group Policy Editor (gpedit.msc) to make all manually created policy keys in the registry visible in the snap-in"
       }
     }
   }

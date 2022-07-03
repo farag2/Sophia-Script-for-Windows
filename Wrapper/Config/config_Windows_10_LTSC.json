@@ -645,6 +645,25 @@
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
+    "Function": "SearchHighlights",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC2019": "false",
+    "LTSC2021": "true"
+  },
+  {
+    "Id": 318,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
     "Function": "PeopleTaskbar",
     "Arg": {
       "Zero": {
@@ -660,7 +679,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 318,
+    "Id": 319,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -679,7 +698,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 319,
+    "Id": 320,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -701,7 +720,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 320,
+    "Id": 321,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -720,7 +739,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 321,
+    "Id": 322,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -739,7 +758,7 @@
     "LTSC2021": "false"
   },
   {
-    "Id": 322,
+    "Id": 323,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -758,7 +777,7 @@
     "LTSC2021": "false"
   },
   {
-    "Id": 323,
+    "Id": 324,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -777,7 +796,7 @@
     "LTSC2021": "false"
   },
   {
-    "Id": 324,
+    "Id": 325,
     "Region": "UI & Personalization",
     "Control": "chk",
     "Required": "false",
@@ -799,7 +818,7 @@
     "LTSC2021": "false"
   },
   {
-    "Id": 325,
+    "Id": 326,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -821,7 +840,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 326,
+    "Id": 327,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -840,7 +859,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 327,
+    "Id": 328,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -859,7 +878,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 328,
+    "Id": 329,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -878,7 +897,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 329,
+    "Id": 330,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -897,7 +916,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 330,
+    "Id": 331,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -916,7 +935,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 331,
+    "Id": 332,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -935,7 +954,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 332,
+    "Id": 333,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -954,7 +973,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 333,
+    "Id": 334,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -973,7 +992,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 334,
+    "Id": 335,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -992,7 +1011,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 335,
+    "Id": 336,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -1011,7 +1030,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 336,
+    "Id": 337,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -1722,6 +1741,22 @@
     "Control": "chk",
     "Required": "false",
     "Function": "InstallVCRedistx64",
+    "Arg": {
+      "Zero": {
+        "Tag": ""
+      }
+    },
+    "Preset": "",
+    "WindowsDefault": "",
+    "LTSC2019": "true",
+    "LTSC2021": "true"
+  },
+  {
+    "Id": 536,
+    "Region": "System",
+    "Control": "chk",
+    "Required": "false",
+    "Function": "InstallDotNetRuntime6",
     "Arg": {
       "Zero": {
         "Tag": ""
@@ -2695,5 +2730,19 @@
     "WindowsDefault": "One",
     "LTSC2019": "true",
     "LTSC2021": "false"
+  },
+  {
+    "Id": 1300,
+    "Region": "",
+    "Control": "chk",
+    "Required": "false",
+    "Function": "UpdateLGPEPolicies",
+    "Arg": {
+      "Zero": {
+        "Tag": ""
+      }
+    },
+    "Preset": "",
+    "WindowsDefault": ""
   }
 ]
