@@ -2457,7 +2457,7 @@
   },
   {
     "Id": 1300,
-    "Region": "",
+    "Region": "Update Policies",
     "Control": "chk",
     "Required": "false",
     "Function": "UpdateLGPEPolicies",

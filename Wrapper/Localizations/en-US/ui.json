@@ -30,6 +30,7 @@
       "tabScheduledTasks": "Scheduled Tasks",
       "tabDefenderSecurity": "Defender & Security",
       "tabContextMenu": "Context Menu",
+      "tabUpdatePolicies": "Update Policies",
       "tabConsoleOutput": "Console Output"
     }
   },

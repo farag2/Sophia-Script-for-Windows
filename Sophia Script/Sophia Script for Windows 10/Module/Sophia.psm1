@@ -3,7 +3,7 @@
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
 	Version: v5.13.0
-	Date: 03.07.2022
+	Date: 04.07.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -508,7 +508,7 @@ function DiagnosticDataLevel
 		"Default"
 		{
 			# Optional diagnostic data
-			New-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 3 -Force
+			Remove-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Force
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name MaxTelemetryAllowed -PropertyType DWord -Value 3 -Force
 
 			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -PropertyType DWord -Value 3 -Force
@@ -12783,7 +12783,7 @@ function UseStoreOpenWith
 }
 #endregion Context menu
 
-#region Update LGPE policies
+#region Update Policies
 <#
 	.SYNOPSIS
 	Update Local Group Policy Editor (gpedit.msc) to make all manually created policy keys in the registry visible in the snap-in
@@ -12833,6 +12833,7 @@ function UpdateLGPEPolicies
 					{
 						try
 						{
+							Write-Information -MessageData "" -InformationAction Continue
 							Write-Verbose -Message $Item.Replace("{}", "") -Verbose
 
 							$Parameters = @{
@@ -12881,6 +12882,7 @@ function UpdateLGPEPolicies
 					{
 						try
 						{
+							Write-Information -MessageData "" -InformationAction Continue
 							Write-Verbose -Message $Item.Replace("{}", "") -Verbose
 
 							$Parameters = @{
@@ -12909,7 +12911,7 @@ function UpdateLGPEPolicies
 	# Apply the new policy immediately
 	gpupdate.exe /force
 }
-#endregion Update LGPE policies
+#endregion Update Policies
 
 #region Refresh Environment
 function RefreshEnvironment
@@ -13100,24 +13102,24 @@ function Errors
 # SIG # Begin signature block
 # MIIbvwYJKoZIhvcNAQcCoIIbsDCCG6wCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUvfMHi3qW4uqdW8D0M5Q9PqeQ
-# zlugghY3MIIDAjCCAeqgAwIBAgIQTAKXY9arCY5B5sFCEY9uhTANBgkqhkiG9w0B
-# AQsFADAZMRcwFQYDVQQDDA5Tb3BoaWEgUHJvamVjdDAeFw0yMjA3MDMxODEzMzha
-# Fw0yNDA3MDMxODIzMzhaMBkxFzAVBgNVBAMMDlNvcGhpYSBQcm9qZWN0MIIBIjAN
-# BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAr4TTInWlmoGtza2HunTKTaqQy2Yx
-# 9LIXKqdOe+DMMuE09ApzK6IZh2iuX+37R0DuvmBo/cjnAJDIWJmCQKQ+kUYRpzF0
-# 3WUOWURe/kw+VlxTq0L+V1U58tKQNHdnDLEeVlfT7Ix1imGS2JARyQM3wVr/aHKl
-# Ll9fv34Gp1SJqQXFbqCfONjRU2vjFHHgved/Mlw+Mw0Q48WCnvMY5egSN+34Q70l
-# +2Jtgmf6iR8aTj1Z8JgP0xsrsIbtacP2ewvVP5U6K4fCEfy+rMt4VGD3KghJLSvH
-# q0tHjzeHa3AumZTvWzmNglx0OKk4wn2q6SODVNXVwl3HegcH9ngxWwSQsQIDAQAB
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUYRbQ5Or5icuhM9pcoXfZEfgx
+# anOgghY3MIIDAjCCAeqgAwIBAgIQHBJEoeFlZo5BtFhY0lY32zANBgkqhkiG9w0B
+# AQsFADAZMRcwFQYDVQQDDA5Tb3BoaWEgUHJvamVjdDAeFw0yMjA3MDMyMTE5MTha
+# Fw0yNDA3MDMyMTI5MThaMBkxFzAVBgNVBAMMDlNvcGhpYSBQcm9qZWN0MIIBIjAN
+# BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwGxQ5ya4aq2QIhrHY7iWfsgJablN
+# ti3loiPnXdaV0zTf9Ksba98/Cbo54lI1PaM4zy2gUqLOGy88dKvtr+T7NkkiApns
+# pIrPbp50QrBoUWx5WEDJ144nPj5FjTAnsYfFcaN3F+fKylPBHb0Pc0/B1F+dEZu/
+# Z9BShmzDgL98JbjgafXWlGE6vJTjqy02SWSqovcEFfwAKcN1diK5mSnbC2RfyHvK
+# /9ohG8XrubRZ4znHCin+mq96rOG0Mvz+3DLkodx4AsP+melPWfXOjWHiY5SHbEnb
+# YL/ViesUNbvHP7VKLFA8Crap5DyMXpFfU96SuvzF9G4TBQy601MjcZ9U1QIDAQAB
 # o0YwRDAOBgNVHQ8BAf8EBAMCB4AwEwYDVR0lBAwwCgYIKwYBBQUHAwMwHQYDVR0O
-# BBYEFAQ5j+ZXlCTmPOT9dejE0leAZRO+MA0GCSqGSIb3DQEBCwUAA4IBAQB7XklM
-# bEs+Q3rwzE43GB97a5I6jZafKTc+6kk7vgd1AsNyipeLU+t/6klRtaoVgN/+eBSl
-# cEuPM7InwzJXT+xlaDQ83x+4QAoojb4Er4yh/R/kRNnKrPXPpw0SgqAa7eZ+Yw1z
-# z3K/8TTt9h7igEJajs1/3S3BqrwUQ3LWLoM3DQ1fFDxFSvum5dwSeVU6KUPJXdLS
-# ZZSeyKflVTxwi/mUxnU3eUouxnubTayCV6adwaig/W1aHrbkpJwX7s7juhp4kmSO
-# e6QDJe/d0y75QBZq5F35gskUqTkiXc11KAhxpgG1LrRQAa+DmseWsS/ZdsiRqX9w
-# +U7avAaGnv/YN0p4MIIFsTCCBJmgAwIBAgIQASQK+x44C4oW8UtxnfTTwDANBgkq
+# BBYEFDZjgZi39aNu04e2Uoa8OPtzEiR1MA0GCSqGSIb3DQEBCwUAA4IBAQBh6dld
+# oQH2U5YQ1Vzgn3F+OCtBVdwu2mIiYNddlbu6GmM7trnhKk0TzaYe49LdsJg7He5F
+# bIMuv6u2gueTDxR2ZHm1cZMX50Fu3vlllk03R/wXElJhE1Li5ZIOQ6xYtDwWyYgG
+# Uts3P1KudCttmZxFTGTl/JzPK3Ai1J3v6IoGsTS3lE+QolyEB5R9Khke/+ulkfyd
+# IismxMfZKzLmwcp9jRUmrbRjj+cC2mh3Yhch4BRmyqPeIqAL6rMXhV8fuKVhMhP8
+# UF5CtrCcRgO4NKLDnC7RJ6v7v/vYVl9aquLaj3utZWZ+L40yFQtvQKL56+LIckXG
+# 0tmmFS0RnPnJmx48MIIFsTCCBJmgAwIBAgIQASQK+x44C4oW8UtxnfTTwDANBgkq
 # hkiG9w0BAQwFADBlMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5j
 # MRkwFwYDVQQLExB3d3cuZGlnaWNlcnQuY29tMSQwIgYDVQQDExtEaWdpQ2VydCBB
 # c3N1cmVkIElEIFJvb3QgQ0EwHhcNMjIwNjA5MDAwMDAwWhcNMzExMTA5MjM1OTU5
@@ -13220,31 +13222,31 @@ function Errors
 # DoXW4CzM4AwkuHxSCx6ZfO/IyMWMWGmvqz3hz8x9Fa4Uv4px38qXsdhH6hyF4EVO
 # EhwUKVjMb9N/y77BDkpvIJyu2XMyWQjnLZKhGhH+MpimXSuX4IvTnMxttQ2uR2M4
 # RxdbbxPaahBuH0m3RFu0CAqHWlkEdhGhp3cCExwxggTyMIIE7gIBATAtMBkxFzAV
-# BgNVBAMMDlNvcGhpYSBQcm9qZWN0AhBMApdj1qsJjkHmwUIRj26FMAkGBSsOAwIa
+# BgNVBAMMDlNvcGhpYSBQcm9qZWN0AhAcEkSh4WVmjkG0WFjSVjfbMAkGBSsOAwIa
 # BQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgor
 # BgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3
-# DQEJBDEWBBSMqTIiwxk2qt8BWXPjhJOICWKgEDANBgkqhkiG9w0BAQEFAASCAQCJ
-# UX+IRrgT7OgwMR9XdILvehaXrW3rLWyauOrn0d1GsSY0cLtev0RibEfLl/KnA/M7
-# g+Mf4l/AytzuGZHs2sINaK9TbHCRLUloviVfBEPtKu0zzxixOgl1mZSyLwVUFsc0
-# S6Ien2kGge+zgrnM6CHCRnTHDugHFU6PKGKCf7j/IcGJsw7hyyjyXA7f2pucjEvd
-# mZloxUIIVkzvVvVGs8DKLEaN3L6TMw0Nplj23/Jfr03DHGijkzqlqa5OaKYzTaWS
-# bPRLlPOR3lKAbV/IggYxAd/4r4CjdPLoo8CG172yOdUDlI3lpMRInPWpn6seIZ1g
-# VrovfxuwPOgCphlDMO76oYIDIDCCAxwGCSqGSIb3DQEJBjGCAw0wggMJAgEBMHcw
+# DQEJBDEWBBTP/t9poDB9luPp/tYCR04uPK3OtzANBgkqhkiG9w0BAQEFAASCAQAL
+# 9c3CRnyCN4853Mrsvw9XswJMfrvC86CAywdUS8oCit6mLR3P9qH1rf74pDVE2CPG
+# 9LbqanhIhArcMBXDrfuzR/xuQFF2NsDdFxyLzlblN5gl0Sj9O+XXXTabYGDJACIJ
+# aO+paDu4VIBruKB+Eza86ZfKNShRDNTjslUin569YEmp/H5YpOzsF5R8DQUsYm2C
+# hKOhtUu3FSH4SEE36Io6o6e/M3bE4YV1U0HIjm44i23YEBOadk5fewTv0+xJ3eLO
+# rCvluznqOZbDbRMza1aoyLoulsIgHQ9b418SLcnPXIIyvkQyGQfYfFaZ9tEZPE8i
+# tYiljkFpBz8rxAqgGuWLoYIDIDCCAxwGCSqGSIb3DQEJBjGCAw0wggMJAgEBMHcw
 # YzELMAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMTswOQYDVQQD
 # EzJEaWdpQ2VydCBUcnVzdGVkIEc0IFJTQTQwOTYgU0hBMjU2IFRpbWVTdGFtcGlu
 # ZyBDQQIQCnpKiJ7JmUKQBmM4TYaXnTANBglghkgBZQMEAgEFAKBpMBgGCSqGSIb3
-# DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTIyMDcwMzE4MjMzNVow
-# LwYJKoZIhvcNAQkEMSIEIAC4vmi6wMcSgLe0W8dUZMWRYCqdgQGBeuPxJrG3zSKL
-# MA0GCSqGSIb3DQEBAQUABIICAK1UoXeJDprq1eZ7QLRf+bkgw0c2GFuCk7/cVMQe
-# 0FaCcZcDubGBsMKZItRgHe1swrvl6OwV1Eac1+J61qkPJILbzI0UF6oqipUDWhBB
-# NfXJQQ3Osrk5Uv2XFDLUGJji5ylPIMeuxLbKIolZAy/HvkkoH4sXy/eiyP6Gp0gM
-# iOdY8+7Nz1hnd1gg6zn6k141eq4K3LUlixUCdCq9Ti5bVmTU4kNqVHd4GH465pNN
-# cmkoGn/GoUCvKtrS91UDFIxKZDiqkPTafFaJoTvpNZYepxeGVDMBCCdDDUOgNw4F
-# +d2bCVTsYyPGzznTpwZTpQPKYrGKlc4kG2uSlLK8k+nzHt58ef1jNFmViiJDrwhM
-# D56aBt1olLeSZgaqhSbOgm45gZQUdC11ILnl9hOi00kmzA9vMHuwMCiE2KDQs7FY
-# SufCGm2ybLi1jF/D3gLcuOmrymvJ+/NfoEE/mYDZiDtjvmz/3KHXE9U/TV4nQZv2
-# DuNRaNn5NjxiS2oAXgjRnBRGKciQpc/3NbYtJ7U4iUzhOUa7TXMryjKNXEHhYt6c
-# oUVph84ovLdwrr/lYjqnm3/pPBneV0YnkR33c19tDGW8VnmCmrTRw8dPTUq2hYPp
-# h7Tf77UrH5EUnZT1m2htuD2vs20rVYJvIdr5F30JV0FvRiob1cN1+XB94Wg2JAFl
-# lzJV
+# DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTIyMDcwMzIxMjkxNlow
+# LwYJKoZIhvcNAQkEMSIEIBqWGF5BZrUlWlqZCEe0SX53BD9fpP1Pzgd4iWvdaBCf
+# MA0GCSqGSIb3DQEBAQUABIICAJWRZsI4aDgsJZJx6V3VMhS5IXrCNk/MtG3cYCYW
+# QdUf7A6qeOc+4aannAtDt/fZxwL/F2pSbzAAHxGarhJmvRB5VFKbwxYZMmnXZM1q
+# J1Ua3V+FJloLyH1RveJaT6h2oph3hbZI8JjROOlVQJjllwsTlpSEopScB6mklQy9
+# g6X4JxbeqdIfasmT0+wxihvDf5V9Tm6YrpBiU/iy8qOhxq5Oa6VE85Q2KOXNnCMb
+# R2tVfB9RclULlyT9VHyCuz0Jil4KkknkIAIWXjhExPUa9ZQDZB85LF46wsJpm9Sj
+# EsPRBuUQduyVUBtTxxPtOwksK2tL0iyXXGLUzjvNcwDki4R1VoIdGYBc135ivX3p
+# i7qu+muahw5YX1eYabEALP/eNS5ixJr2hdSM5imar3LP9LA4xbpPl/qA91UH25l2
+# ppKFUcE+VF4cWsvXw4GRZJZ864S+XjbaYlVztjjeFhwkYQgcOOyimVxK7qs+aDtM
+# HRX6/Yzue8lRmcTVgpueSsNIwoNUD8pIx+m50HlEA4rPVTa/hed2v85blr2m1z7i
+# 6MSc+d9eGMHmYwBOoD6/N1wkVtsmdb8W6QU1e8YZVKDxIwSAimr+613fIBgOqBU/
+# tkO/5woJm4Wz8qQtlTVsz4SLE969Dyomnc+ketJQGYQKNGL/EoYWFNeasIpMNcjl
+# Rye5
 # SIG # End signature block

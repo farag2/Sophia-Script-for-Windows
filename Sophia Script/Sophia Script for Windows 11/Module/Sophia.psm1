@@ -3,7 +3,7 @@
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
 	Version: v6.1.0
-	Date: 03.07.2022
+	Date: 04.07.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -484,7 +484,7 @@ function DiagnosticDataLevel
 	{
 		"Minimal"
 		{
-			if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -like "Enterprise*" -or $_.Edition -eq "Education"})
+			if (Get-WindowsEdition -Online | Where-Object -FilterScript {($_.Edition -like "Enterprise*") -or ($_.Edition -eq "Education")})
 			{
 				# Diagnostic data off
 				if (-not (Test-Path -Path HKLM:\Software\Policies\Microsoft\Windows\DataCollection))
@@ -508,8 +508,7 @@ function DiagnosticDataLevel
 		}
 		"Default"
 		{
-			# Optional diagnostic data
-			New-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 3 -Force
+			Remove-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Force
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name MaxTelemetryAllowed -PropertyType DWord -Value 3 -Force
 
 			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -PropertyType DWord -Value 3 -Force
@@ -12003,7 +12002,7 @@ function OpenWindowsTerminalAdminContext
 				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Directory\Background\shell\runas -Name "(default)" -PropertyType String -Value $Localization.OpenInWindowsTerminalAdmin -Force
 				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Directory\Background\shell\runas -Name Icon -PropertyType String -Value "imageres.dll,73" -Force
 				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Directory\Background\shell\runas -Name NoWorkingDirectory -PropertyType String -Value "" -Force
-				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Directory\Background\shell\runas\command -Name "(default)" -PropertyType String -Value "wt.exe -d ""%V""" -Force
+				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Directory\Background\shell\runas\command -Name "(default)" -PropertyType String -Value "wt.exe -d ""%V\.""" -Force
 
 				# Show the option in the folders context menu
 				if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\Directory\shell\runas\command))
@@ -12083,7 +12082,7 @@ function Windows10ContextMenu
 }
 #endregion Context menu
 
-#region Update LGPE policies
+#region Update Policies
 <#
 	.SYNOPSIS
 	Update Local Group Policy Editor (gpedit.msc) to make all manually created policy keys in the registry visible in the snap-in
@@ -12133,6 +12132,7 @@ function UpdateLGPEPolicies
 					{
 						try
 						{
+							Write-Information -MessageData "" -InformationAction Continue
 							Write-Verbose -Message $Item.Replace("{}", "") -Verbose
 
 							$Parameters = @{
@@ -12181,6 +12181,7 @@ function UpdateLGPEPolicies
 					{
 						try
 						{
+							Write-Information -MessageData "" -InformationAction Continue
 							Write-Verbose -Message $Item.Replace("{}", "") -Verbose
 
 							$Parameters = @{
@@ -12209,7 +12210,7 @@ function UpdateLGPEPolicies
 	# Apply the new policy immediately
 	gpupdate.exe /force
 }
-#endregion Update LGPE policies
+#endregion Update Policies
 
 #region Refresh Environment
 function RefreshEnvironment
@@ -12400,24 +12401,24 @@ function Errors
 # SIG # Begin signature block
 # MIIbvwYJKoZIhvcNAQcCoIIbsDCCG6wCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUrDdkDDSPNFnwkM14qb2uFnST
-# OtmgghY3MIIDAjCCAeqgAwIBAgIQTAKXY9arCY5B5sFCEY9uhTANBgkqhkiG9w0B
-# AQsFADAZMRcwFQYDVQQDDA5Tb3BoaWEgUHJvamVjdDAeFw0yMjA3MDMxODEzMzha
-# Fw0yNDA3MDMxODIzMzhaMBkxFzAVBgNVBAMMDlNvcGhpYSBQcm9qZWN0MIIBIjAN
-# BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAr4TTInWlmoGtza2HunTKTaqQy2Yx
-# 9LIXKqdOe+DMMuE09ApzK6IZh2iuX+37R0DuvmBo/cjnAJDIWJmCQKQ+kUYRpzF0
-# 3WUOWURe/kw+VlxTq0L+V1U58tKQNHdnDLEeVlfT7Ix1imGS2JARyQM3wVr/aHKl
-# Ll9fv34Gp1SJqQXFbqCfONjRU2vjFHHgved/Mlw+Mw0Q48WCnvMY5egSN+34Q70l
-# +2Jtgmf6iR8aTj1Z8JgP0xsrsIbtacP2ewvVP5U6K4fCEfy+rMt4VGD3KghJLSvH
-# q0tHjzeHa3AumZTvWzmNglx0OKk4wn2q6SODVNXVwl3HegcH9ngxWwSQsQIDAQAB
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUNn+1ne38AK0653eL5A9vVVG6
+# FwygghY3MIIDAjCCAeqgAwIBAgIQHBJEoeFlZo5BtFhY0lY32zANBgkqhkiG9w0B
+# AQsFADAZMRcwFQYDVQQDDA5Tb3BoaWEgUHJvamVjdDAeFw0yMjA3MDMyMTE5MTha
+# Fw0yNDA3MDMyMTI5MThaMBkxFzAVBgNVBAMMDlNvcGhpYSBQcm9qZWN0MIIBIjAN
+# BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwGxQ5ya4aq2QIhrHY7iWfsgJablN
+# ti3loiPnXdaV0zTf9Ksba98/Cbo54lI1PaM4zy2gUqLOGy88dKvtr+T7NkkiApns
+# pIrPbp50QrBoUWx5WEDJ144nPj5FjTAnsYfFcaN3F+fKylPBHb0Pc0/B1F+dEZu/
+# Z9BShmzDgL98JbjgafXWlGE6vJTjqy02SWSqovcEFfwAKcN1diK5mSnbC2RfyHvK
+# /9ohG8XrubRZ4znHCin+mq96rOG0Mvz+3DLkodx4AsP+melPWfXOjWHiY5SHbEnb
+# YL/ViesUNbvHP7VKLFA8Crap5DyMXpFfU96SuvzF9G4TBQy601MjcZ9U1QIDAQAB
 # o0YwRDAOBgNVHQ8BAf8EBAMCB4AwEwYDVR0lBAwwCgYIKwYBBQUHAwMwHQYDVR0O
-# BBYEFAQ5j+ZXlCTmPOT9dejE0leAZRO+MA0GCSqGSIb3DQEBCwUAA4IBAQB7XklM
-# bEs+Q3rwzE43GB97a5I6jZafKTc+6kk7vgd1AsNyipeLU+t/6klRtaoVgN/+eBSl
-# cEuPM7InwzJXT+xlaDQ83x+4QAoojb4Er4yh/R/kRNnKrPXPpw0SgqAa7eZ+Yw1z
-# z3K/8TTt9h7igEJajs1/3S3BqrwUQ3LWLoM3DQ1fFDxFSvum5dwSeVU6KUPJXdLS
-# ZZSeyKflVTxwi/mUxnU3eUouxnubTayCV6adwaig/W1aHrbkpJwX7s7juhp4kmSO
-# e6QDJe/d0y75QBZq5F35gskUqTkiXc11KAhxpgG1LrRQAa+DmseWsS/ZdsiRqX9w
-# +U7avAaGnv/YN0p4MIIFsTCCBJmgAwIBAgIQASQK+x44C4oW8UtxnfTTwDANBgkq
+# BBYEFDZjgZi39aNu04e2Uoa8OPtzEiR1MA0GCSqGSIb3DQEBCwUAA4IBAQBh6dld
+# oQH2U5YQ1Vzgn3F+OCtBVdwu2mIiYNddlbu6GmM7trnhKk0TzaYe49LdsJg7He5F
+# bIMuv6u2gueTDxR2ZHm1cZMX50Fu3vlllk03R/wXElJhE1Li5ZIOQ6xYtDwWyYgG
+# Uts3P1KudCttmZxFTGTl/JzPK3Ai1J3v6IoGsTS3lE+QolyEB5R9Khke/+ulkfyd
+# IismxMfZKzLmwcp9jRUmrbRjj+cC2mh3Yhch4BRmyqPeIqAL6rMXhV8fuKVhMhP8
+# UF5CtrCcRgO4NKLDnC7RJ6v7v/vYVl9aquLaj3utZWZ+L40yFQtvQKL56+LIckXG
+# 0tmmFS0RnPnJmx48MIIFsTCCBJmgAwIBAgIQASQK+x44C4oW8UtxnfTTwDANBgkq
 # hkiG9w0BAQwFADBlMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5j
 # MRkwFwYDVQQLExB3d3cuZGlnaWNlcnQuY29tMSQwIgYDVQQDExtEaWdpQ2VydCBB
 # c3N1cmVkIElEIFJvb3QgQ0EwHhcNMjIwNjA5MDAwMDAwWhcNMzExMTA5MjM1OTU5
@@ -12520,31 +12521,31 @@ function Errors
 # DoXW4CzM4AwkuHxSCx6ZfO/IyMWMWGmvqz3hz8x9Fa4Uv4px38qXsdhH6hyF4EVO
 # EhwUKVjMb9N/y77BDkpvIJyu2XMyWQjnLZKhGhH+MpimXSuX4IvTnMxttQ2uR2M4
 # RxdbbxPaahBuH0m3RFu0CAqHWlkEdhGhp3cCExwxggTyMIIE7gIBATAtMBkxFzAV
-# BgNVBAMMDlNvcGhpYSBQcm9qZWN0AhBMApdj1qsJjkHmwUIRj26FMAkGBSsOAwIa
+# BgNVBAMMDlNvcGhpYSBQcm9qZWN0AhAcEkSh4WVmjkG0WFjSVjfbMAkGBSsOAwIa
 # BQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgor
 # BgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3
-# DQEJBDEWBBR9Mkm9F737lt1qSppGLclN39syJTANBgkqhkiG9w0BAQEFAASCAQCt
-# BNjbVtUbADQ7OKDCajymhVScOEXGc5Ffnpo9t9FeE+hfz3KDHE5EV+TG+NHZTtmb
-# S5dtGpZV+OEkUe8YtO4aV3w6Mccato8DzxGTPMYtpkcZDaPNXUfzSDLFvjIMaDM6
-# DYp8v0luxaJez6bx50BlSaMLpVj/kwDH25uyklv7m6332Ke3lQiuExKjoLIB3PES
-# riccUCSWHEaMYrKt+M6cGH+Vl5QQAvxA9D9Zkr2ttm2Xu9A3rIMI4qBuL8yJ3ir4
-# kFYJ/3+wAX4IqxV91Wk9uZ+CyZsuDKhqCqfS+2rqxsGmKbGSsBrKiqHbWU43VO6q
-# H+EC5m7E32i9COtwEb0FoYIDIDCCAxwGCSqGSIb3DQEJBjGCAw0wggMJAgEBMHcw
+# DQEJBDEWBBQ/ZEqlzYYHU+bAWvB30ElBnQVLAzANBgkqhkiG9w0BAQEFAASCAQAR
+# BgRJkGvrIt0Kuq9+YjaZzPm5gVBQeHAHtFf2mV6bHzayBGGLn0mFRlPCRLnW0wia
+# MKSDIgnYi3SovO6X62iypbJW69qcBDUzd5NJg/iFJQCPK6SNzGwAjViVrH0SUI62
+# g46WMNQ6CHhBybqeJ0v0uE1yJN+vlPLCwnitvrT9d8kI82AxHsG13xhF9wZOmzgl
+# RGXiITmriWdtJsIl5N48e36ejeLmyd2vQ5geT1uOmHXdr298alQ8oNeOUi8oHo1M
+# WRpObSzYnmFHY4nWBIUko45WjjhhG45yG0lj7EDtWf/Mw3WsnKxuw9UdhUgxycU4
+# zM4n+gl12BLgNNbMx72moYIDIDCCAxwGCSqGSIb3DQEJBjGCAw0wggMJAgEBMHcw
 # YzELMAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMTswOQYDVQQD
 # EzJEaWdpQ2VydCBUcnVzdGVkIEc0IFJTQTQwOTYgU0hBMjU2IFRpbWVTdGFtcGlu
 # ZyBDQQIQCnpKiJ7JmUKQBmM4TYaXnTANBglghkgBZQMEAgEFAKBpMBgGCSqGSIb3
-# DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTIyMDcwMzE4MjM1Mlow
-# LwYJKoZIhvcNAQkEMSIEICUAFOvifoctrQy3mWpWVIK85EePSePM6MFpLRxIT/lv
-# MA0GCSqGSIb3DQEBAQUABIICAAh7aXtwWxZkg5Lnmea1liFxt0cIih85XVF07X+q
-# MhBW9mMcx8hhk6vC4p+s3Vuk6WsLXn71AYmuyuAQ5w+BYu+81RX77Sw2UdAhKh2u
-# JtLWidlzFTFvkzyUkuUgd0LGHvgPUCb9oOR6xip8Zp5rQtQVIjzPX5cZBRfU9uH9
-# g5o8BNGRsFMih8wgpPGA+b1312LauNAFs6jPscFkEVcyTS4pPUJEJPlFoLx8JXUl
-# ueS+0yk0WblqpwBDarkxv29gPqTY3VNrQLVTo/HlHblFzLHmwWMCnv/AgM+XnVTs
-# 8iyQHWaIVdR4DvqnJELSlVTV4udzKzhpivpNum6reirHzRL1nWhre4UyJ4+STgxD
-# hQijZgblQjf2IkmsogJuJ5crrhGZlfTmJhs1pc0HZHamimxPbxuN6FUsfv6J9IEP
-# FO8Ogr5hB9P8YlpancB6pk2Q8cojR0Vg8YTJG6wqXEpD11W4JTcGpzr/L6UJH9mz
-# +Az5d8uk/H2bzlaPJylgzw7+c0vn5Bt29XlKwuKG7nHznVLyFqb+gmkymYDJAxm2
-# iDLY/u2U7uo3nqhFKLDruVC8uK3T4JPR4/bpNNiK8Skz6kd+zWcov0J4tM2onBkn
-# xf8SaOYtouIyP9mh16QqHeSFDuSIXvPLD90/2xqRPS9f8HSaP8FCIvxIuRenupA1
-# UN2+
+# DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTIyMDcwMzIxMjkzMlow
+# LwYJKoZIhvcNAQkEMSIEICjVfOQRRwWbykrQSvPrtv6pTWMEfac0WjJDz8zYTL3Y
+# MA0GCSqGSIb3DQEBAQUABIICAFI33uA+pWzu+y6tco5DKg7HhgIKiy16+BYM2yVs
+# w8nRqHBfAGMuDS9QGAuASLjRuZfU122Wa/M5ATyKLRfph/bGPkHlPRAoskO/LVMs
+# P/vAMToMtZMO4RyYBSc2wrVlBXvySt6te0T83jc5vEXeGgQYw6cd8mvHgYkRx954
+# rpqGwwqCvLyaDx6L10Fw0uFGZAzdumFJrBqeqg+xs0EvftlRtnbI09gl/8OCNCeE
+# z/NUfc+B7ISyMj+QpQjkmtaQagCSwsbP70HsUsSRX4HY4E9uTAjMFbU5saM/qYBm
+# nhsBWFlLWnQ562590z18x3wiz37i8BeH+d7nVakeQmxcIga/CupLtnc2NJjZ7x21
+# z8f++rsjkJY9rLAx0+SAwMlrgGEpQjlJZySOKnhb6BebJtxsv89kXqZLh/SyXtGo
+# 38s3V153rdTMiKGb7hjjvNqsB2BO8iJbtJgESogLARRT4hYgCwNDhzA8xMWkdZjL
+# E/2qLhsPxc/UrBhmSWg/xGbopnYHLaO2cS+CqAbzuSIeCczdemryANuwH50/wv5G
+# xVvko5DIOX8hGTF1pyEaPRl2Un5IYBHeFOd6nKbe5bfo43AZXgk88NRV9+4ZJ+HK
+# 3VML2USJyvfk+qGtrcJjhYzj0xX0IjcGs+ZsklZnGeZbEsyXGJi9qtzd+xWf1MsM
+# gvwY
 # SIG # End signature block

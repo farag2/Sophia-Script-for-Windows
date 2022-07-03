@@ -3,7 +3,7 @@
 	Default preset file for "Sophia Script for Windows 11"
 
 	Version: v6.1.0
-	Date: 03.07.2022
+	Date: 04.07.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -373,13 +373,13 @@ QuickAccessFrequentFolders -Hide
 # Показать часто используемые папки на панели быстрого доступа (значение по умолчанию)
 # QuickAccessFrequentFolders -Show
 
-# Set the taskbar alignment to the left
-# Установить выравнивание панели задач по левому краю
-TaskbarAlignment -Left
-
 # Set the taskbar alignment to the center (default value)
 # Установить выравнивание панели задач по центру (значение по умолчанию)
-# TaskbarAlignment -Center
+TaskbarAlignment -Center
+
+# Set the taskbar alignment to the left
+# Установить выравнивание панели задач по левому краю
+# TaskbarAlignment -Left
 
 # Hide the search button from the taskbar
 # Скрыть кнопку поиска с панели задач
@@ -1356,11 +1356,11 @@ Windows10ContextMenu -Disable
 # Windows10ContextMenu -Enable
 #endregion Context menu
 
-#region Update LGPE policies
+#region Update Policies
 # Update Local Group Policy Editor (gpedit.msc) to make all manually created policy keys in the registry visible in the snap-in
 # Обновить Редактор локальной групповой политики (gpedit.msc) так, чтобы оснастка отображала все созданные вручную политики в реестре
 UpdateLGPEPolicies
-#endregion Update LGPE policies
+#endregion Update Policies
 
 <#
 	Simulate pressing F5 to refresh the desktop
@@ -1387,24 +1387,24 @@ Errors
 # SIG # Begin signature block
 # MIIbvwYJKoZIhvcNAQcCoIIbsDCCG6wCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU8Sz1vFRKBN9usHLvzWIS2ORI
-# 1yGgghY3MIIDAjCCAeqgAwIBAgIQTAKXY9arCY5B5sFCEY9uhTANBgkqhkiG9w0B
-# AQsFADAZMRcwFQYDVQQDDA5Tb3BoaWEgUHJvamVjdDAeFw0yMjA3MDMxODEzMzha
-# Fw0yNDA3MDMxODIzMzhaMBkxFzAVBgNVBAMMDlNvcGhpYSBQcm9qZWN0MIIBIjAN
-# BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAr4TTInWlmoGtza2HunTKTaqQy2Yx
-# 9LIXKqdOe+DMMuE09ApzK6IZh2iuX+37R0DuvmBo/cjnAJDIWJmCQKQ+kUYRpzF0
-# 3WUOWURe/kw+VlxTq0L+V1U58tKQNHdnDLEeVlfT7Ix1imGS2JARyQM3wVr/aHKl
-# Ll9fv34Gp1SJqQXFbqCfONjRU2vjFHHgved/Mlw+Mw0Q48WCnvMY5egSN+34Q70l
-# +2Jtgmf6iR8aTj1Z8JgP0xsrsIbtacP2ewvVP5U6K4fCEfy+rMt4VGD3KghJLSvH
-# q0tHjzeHa3AumZTvWzmNglx0OKk4wn2q6SODVNXVwl3HegcH9ngxWwSQsQIDAQAB
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUpY2nqj7zqBWHj4Irf1/9Rupe
+# LRCgghY3MIIDAjCCAeqgAwIBAgIQHBJEoeFlZo5BtFhY0lY32zANBgkqhkiG9w0B
+# AQsFADAZMRcwFQYDVQQDDA5Tb3BoaWEgUHJvamVjdDAeFw0yMjA3MDMyMTE5MTha
+# Fw0yNDA3MDMyMTI5MThaMBkxFzAVBgNVBAMMDlNvcGhpYSBQcm9qZWN0MIIBIjAN
+# BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwGxQ5ya4aq2QIhrHY7iWfsgJablN
+# ti3loiPnXdaV0zTf9Ksba98/Cbo54lI1PaM4zy2gUqLOGy88dKvtr+T7NkkiApns
+# pIrPbp50QrBoUWx5WEDJ144nPj5FjTAnsYfFcaN3F+fKylPBHb0Pc0/B1F+dEZu/
+# Z9BShmzDgL98JbjgafXWlGE6vJTjqy02SWSqovcEFfwAKcN1diK5mSnbC2RfyHvK
+# /9ohG8XrubRZ4znHCin+mq96rOG0Mvz+3DLkodx4AsP+melPWfXOjWHiY5SHbEnb
+# YL/ViesUNbvHP7VKLFA8Crap5DyMXpFfU96SuvzF9G4TBQy601MjcZ9U1QIDAQAB
 # o0YwRDAOBgNVHQ8BAf8EBAMCB4AwEwYDVR0lBAwwCgYIKwYBBQUHAwMwHQYDVR0O
-# BBYEFAQ5j+ZXlCTmPOT9dejE0leAZRO+MA0GCSqGSIb3DQEBCwUAA4IBAQB7XklM
-# bEs+Q3rwzE43GB97a5I6jZafKTc+6kk7vgd1AsNyipeLU+t/6klRtaoVgN/+eBSl
-# cEuPM7InwzJXT+xlaDQ83x+4QAoojb4Er4yh/R/kRNnKrPXPpw0SgqAa7eZ+Yw1z
-# z3K/8TTt9h7igEJajs1/3S3BqrwUQ3LWLoM3DQ1fFDxFSvum5dwSeVU6KUPJXdLS
-# ZZSeyKflVTxwi/mUxnU3eUouxnubTayCV6adwaig/W1aHrbkpJwX7s7juhp4kmSO
-# e6QDJe/d0y75QBZq5F35gskUqTkiXc11KAhxpgG1LrRQAa+DmseWsS/ZdsiRqX9w
-# +U7avAaGnv/YN0p4MIIFsTCCBJmgAwIBAgIQASQK+x44C4oW8UtxnfTTwDANBgkq
+# BBYEFDZjgZi39aNu04e2Uoa8OPtzEiR1MA0GCSqGSIb3DQEBCwUAA4IBAQBh6dld
+# oQH2U5YQ1Vzgn3F+OCtBVdwu2mIiYNddlbu6GmM7trnhKk0TzaYe49LdsJg7He5F
+# bIMuv6u2gueTDxR2ZHm1cZMX50Fu3vlllk03R/wXElJhE1Li5ZIOQ6xYtDwWyYgG
+# Uts3P1KudCttmZxFTGTl/JzPK3Ai1J3v6IoGsTS3lE+QolyEB5R9Khke/+ulkfyd
+# IismxMfZKzLmwcp9jRUmrbRjj+cC2mh3Yhch4BRmyqPeIqAL6rMXhV8fuKVhMhP8
+# UF5CtrCcRgO4NKLDnC7RJ6v7v/vYVl9aquLaj3utZWZ+L40yFQtvQKL56+LIckXG
+# 0tmmFS0RnPnJmx48MIIFsTCCBJmgAwIBAgIQASQK+x44C4oW8UtxnfTTwDANBgkq
 # hkiG9w0BAQwFADBlMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5j
 # MRkwFwYDVQQLExB3d3cuZGlnaWNlcnQuY29tMSQwIgYDVQQDExtEaWdpQ2VydCBB
 # c3N1cmVkIElEIFJvb3QgQ0EwHhcNMjIwNjA5MDAwMDAwWhcNMzExMTA5MjM1OTU5
@@ -1507,31 +1507,31 @@ Errors
 # DoXW4CzM4AwkuHxSCx6ZfO/IyMWMWGmvqz3hz8x9Fa4Uv4px38qXsdhH6hyF4EVO
 # EhwUKVjMb9N/y77BDkpvIJyu2XMyWQjnLZKhGhH+MpimXSuX4IvTnMxttQ2uR2M4
 # RxdbbxPaahBuH0m3RFu0CAqHWlkEdhGhp3cCExwxggTyMIIE7gIBATAtMBkxFzAV
-# BgNVBAMMDlNvcGhpYSBQcm9qZWN0AhBMApdj1qsJjkHmwUIRj26FMAkGBSsOAwIa
+# BgNVBAMMDlNvcGhpYSBQcm9qZWN0AhAcEkSh4WVmjkG0WFjSVjfbMAkGBSsOAwIa
 # BQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgor
 # BgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3
-# DQEJBDEWBBTkgCznUmArtlN6RoJhu+bmS+E+izANBgkqhkiG9w0BAQEFAASCAQBz
-# bSZk0ZdX4nNX2cDLm1hOLn3s+BPFzzLVJKAvKKAqn3+wNsmIZGOkF9jF5Q7843qO
-# r7zEUgKlrGhDNy2CMiUCsjGXObxWeGIRxDSu9nF8BGNn2b73PI8U0vfLcv4rTKmz
-# X7VeXShSF3lKY27z/WiGFXP3sL6CGOyFGxV3zH26xzxVvGY701Q0dezddd5qLQNY
-# oKt6w4nFWiCfOrOWZj/Gfg9MHa4FyCdSFoos2ao6C56a1zbW74WnJZ4NdCJOiKnO
-# /B8OjwhfTVFeiQMR5yezl9f+cneG9nJXli3zQuMZdd57K3QcEbU1Ye+cIX+54/co
-# NSkzKHpIYOv3wucxlcRvoYIDIDCCAxwGCSqGSIb3DQEJBjGCAw0wggMJAgEBMHcw
+# DQEJBDEWBBRPYX3amkaYT77EiKuS0eF90GT+HjANBgkqhkiG9w0BAQEFAASCAQB9
+# fFWGiYw2V+YtffqzK2q+3bLXJt3t1oQthfziuNSP9PjbDgVPAZFwBJHpIRoarJsC
+# rpZ5uvJmrJQjY4gvfIfrktZkYf5X+dmpVzGRejocFYpXvs6b5KtQIhhBeURiA63D
+# q7PaM1D+bn/qTP2DH2vx7jhX0bvFmoSLZ4fyoOyeODn65vrdUYdpS+P55BYOba/r
+# FAakiRhrJoO8Z1V4iHqz/c9Deb4LxAdJ7MYkzqWdL41qe7DQP0KdbnDVl7/FtJ2/
+# kWsn+Af2GhO7ArAe0U8FmajNCqzXuJgQigDe4OLOzADu6r1s6NiztxB935fYUlzK
+# fbXIOnfJaGpouzG/t2TAoYIDIDCCAxwGCSqGSIb3DQEJBjGCAw0wggMJAgEBMHcw
 # YzELMAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMTswOQYDVQQD
 # EzJEaWdpQ2VydCBUcnVzdGVkIEc0IFJTQTQwOTYgU0hBMjU2IFRpbWVTdGFtcGlu
 # ZyBDQQIQCnpKiJ7JmUKQBmM4TYaXnTANBglghkgBZQMEAgEFAKBpMBgGCSqGSIb3
-# DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTIyMDcwMzE4MjM1Mlow
-# LwYJKoZIhvcNAQkEMSIEIHumvk0SrLTMThTsCfWEPCb2IcK3sZU3Zs9+WjvRhEQk
-# MA0GCSqGSIb3DQEBAQUABIICAKlkQHKcF+RkDRYFxcNp0DgE/MtcLY5oRd+afEDY
-# 4lqB0uAQ/YagGXIvR60Inhf3VjZUxHocDcs5avDo7PyXjTMxnEcz/A1AG9Br5pB8
-# pAg6rd71HEk/vzZyViLdNaXEfUf6lV6kXDKi87nBQIwhDnEzxIUoXXa6hRmMAyi9
-# yo2ncPXVIpF7V0zeTKziXyBdIKBhL5du0TK8UFqJDkzt/+fHABMAQrrppGmUWITt
-# lpsz46Z9WzKZgMHSUPFPIRjRJCu5u56WZc51wUxUv4LhUXbju1d1/CdW8Pbe+zNb
-# mvB6CB01UXEo2uQs0dE52VtnQRScb+vdReJGpHA672D73zurtzYRo/R976hqpSK5
-# in+lKvzbBDH5+iX2owWI90Ar4muHLvecebQ9lzpTGzZI1tvjvskdsEaNPKZRJLln
-# gOI6eMH6NV1SPmPnH5sy+dYFPIMC0s0iHUEIuWWEpfXRlRegqKi/m7MHRidXe4Uk
-# GgWcD2l/kldZv663VudqTJPq0JEu6aidg2dwmerwk76e/kPIgEwwPW3g+c21LeJ4
-# 9UUskSfGqUpzDdO/OSWkqTvjWZcQk3Pxiq2znllxMmGtfjmPecHhAJVuXSECIMIm
-# pySh7vl2cbF8b5NwjFYzSuxaiMrSzVTw+JfAor1SPjwHIVsZIj+2MmV56+v564+B
-# TniP
+# DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTIyMDcwMzIxMjkzMlow
+# LwYJKoZIhvcNAQkEMSIEINUTmb8NCh4h3R+ipL/LrV9oMyKbowksFUA0yPVNJg8d
+# MA0GCSqGSIb3DQEBAQUABIICABsVTwAA51sDcRzsOkKP9q8MuRiOA5ZBR2mUu7ZY
+# qwQVnW3m53ASWFogEnfBZBZchbJkyy0y/NJuDcZ/tyAoL0G4BbfVaEzcbHj5DZMS
+# lG4B/xuxr3EbQvJsdXRFk6+k9IbizDv4y22CCmfliebu/AjTtifC07oj0FfbPmBb
+# WRckLcKDLidIrkZbNMAO8p9/z4vRuQi1DXBv8+vlZjEmBSLAXhJ4+rOrn3qDJrHB
+# zWz2QCOU7KnKc9PRCBC/RcICWgbrgaLzmHIUFkYwCEgMMjK3fMIrBcUEMJ0L8svg
+# A8/dXJicDpF/SbeRN+kYSbG3dBfIV4K6zQddKHx6PAZ9JwZkN9+MQwyaBs2/QPDb
+# /ag08LpJz/2bjsaWbJK9+P+DVFl3usI9On0E9Uj4V5SiwQ0F5lfR+qmMdOwyGAYg
+# RGydTFhTfxp/1NmClxW6b4XBjX/Yxm+u/ZZrgm4taIcksT8H2XsIueK3NrDEZINP
+# zpNff2+3/3skaQDsfHkPjPY+zXgYIT1gBkDh+Bp3XRVM7yNrUZLCfBLWnpxu5zoR
+# n+tV0xRuZ0QdQ9P0pYT3xAACfErpNufp9Mv5wYPMr+bFO4xB8zUUNy81KTPVfEVd
+# MkrE/kRgBiBu78ZC145YT+f2Sy2WnppSvY4xEBpg93zo/k5VIL8TDFJ6X7Ur8zwi
+# Wx0u
 # SIG # End signature block

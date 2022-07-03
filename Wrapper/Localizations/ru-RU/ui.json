@@ -30,6 +30,7 @@
       "tabScheduledTasks": "Планировщик заданий",
       "tabDefenderSecurity": "Defender и защита",
       "tabContextMenu": "Контекстное меню",
+      "tabUpdatePolicies": "Обновление политик",
       "tabConsoleOutput": "Вывод консоли"
     }
   },

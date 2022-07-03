@@ -2733,7 +2733,7 @@
   },
   {
     "Id": 1300,
-    "Region": "",
+    "Region": "Update Policies",
     "Control": "chk",
     "Required": "false",
     "Function": "UpdateLGPEPolicies",
@@ -2743,6 +2743,8 @@
       }
     },
     "Preset": "",
-    "WindowsDefault": ""
+    "WindowsDefault": "",
+    "LTSC2019": "true",
+    "LTSC2021": "true"
   }
 ]

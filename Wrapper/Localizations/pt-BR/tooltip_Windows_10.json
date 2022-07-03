@@ -2217,7 +2217,7 @@
   },
   {
     "Id": 1300,
-    "Region": "LGPEPolicies",
+    "Region": "Update Policies",
     "Function": "UpdateLGPEPolicies",
     "Arg": {
       "Zero": {
