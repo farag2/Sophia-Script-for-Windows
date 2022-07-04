@@ -5,6 +5,45 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.13.0 | 6.1.0 — 04.07.2022
+
+* Added awesome `UpdateLGPEPolicies` function :ghost:
+  * It's common known, that the `gpedit.msc` snap-in doesn't read settings from the Windows registry keys if they were made manually, bypassing the snap-in. This new function lets you update gpedit.msc to make all your policies created manually displayed regardless when registry keys were created. There is no need to run the whole `Sophia Script` — just call `UpdateLGPEPolicies` function. By default this function will be invoked at very end of script running to make all policies registry keys used in the script displayed.
+  * To check all policies applied to your OS (if they have a record in `gpedit.msc`) after invoking `UpdateLGPEPolicies`, open `gpedit.msc` and navigate to:
+    * `Computer Configuration` — `Administrative Templates` — `All Settings`;
+    * `User Configuration` — `Administrative Templates` — `All Settings`.
+  * Uses [PolicyFileEditor](https://github.com/dlwyatt/PolicyFileEditor) module created by [Dave Wyatt](https://github.com/dlwyatt)
+* Added `InstallDotNetRuntime6` function to let user install the latest .NET Desktop Runtime 6 (x86/x64);
+  * Closes #347.
+* Fixed bug in `NetworkAdaptersSavePower` function that caused an error that there is no internet connection even if it was so;
+* Formaly added Windows 10 22H2 support;
+* Updated startup checkings;
+* Fixed `DiagnosticDataLevel` function;
+  * Now it uses `gpedit.msc` path: `HKLM:\Software\Policies\Microsoft\Windows\DataCollection` instead of `HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection`;
+  * To updated registry keys run `DiagnosticDataLevel -Minimal`.
+* Added `SearchHighlights` function to hide search highlights for Windows 10;
+* Fixed `UnpinAllStartApps` function;
+  * Now it's working for Windows 11 22H2 Insider Preview too.
+* Removed `Windows10FileExplorer` to enabled `Windows 10 File Explorer` in Windows 11;
+* Updated `TaskManagerWindow` function to make it not to be run on Windows 11 22H2;
+  * Closes #348.
+* Fixed a bug in `OpenWindowsTerminalAdminContext` function when you cannot open Windows Terminal as admin in a path ends in a backslash `\`;
+  * Closes #340. Read more [here](https://github.com/microsoft/terminal/issues/4571).
+* Signed all PowerShell files by a self-signed certificates;
+  * ![image](https://i.imgur.com/9JX5Tvn.png)
+* #345 closed;
+* Minor changes;
+* Updated descriptions;
+  * Thanks to @THEBOSSMAGNUS
+
+### Sophia Script Wrapper 2.5.4
+
+* Updated translations;
+* Works with the latest Sophia Script preset files;
+* Minor changes;
+
+
+
 ## 5.12.14 | 6.0.14 — 09.04.2022
 
 ## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
