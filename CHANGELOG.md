@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     * `User Configuration` — `Administrative Templates` — `All Settings`.
   * Uses [PolicyFileEditor](https://github.com/dlwyatt/PolicyFileEditor) module created by [Dave Wyatt](https://github.com/dlwyatt)
 * Added `InstallDotNetRuntime6` function to let user install the latest .NET Desktop Runtime 6 (x86/x64);
+  * The Internet access required;
   * Closes #347.
 * Fixed bug in `NetworkAdaptersSavePower` function that caused an error that there is no internet connection even if it was so;
 * Formaly added Windows 10 22H2 support;
