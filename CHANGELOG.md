@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 5.13.0 | 6.1.0 — 04.07.2022
 
+## Windows 11 21H2/22H2 | Windows 10 2004/20H2/21H1/21H2/22H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
+
 * Added awesome `UpdateLGPEPolicies` function :ghost:
   * It's common known, that the `gpedit.msc` snap-in doesn't read settings from the Windows registry keys if they were made manually, bypassing the snap-in. This new function lets you update gpedit.msc to make all your policies created manually displayed regardless when registry keys were created. There is no need to run the whole `Sophia Script` — just call `UpdateLGPEPolicies` function. By default this function will be invoked at very end of script running to make all policies registry keys used in the script displayed.
   * To check all policies applied to your OS (if they have a record in `gpedit.msc`) after invoking `UpdateLGPEPolicies`, open `gpedit.msc` and navigate to:
@@ -41,8 +43,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Updated translations;
 * Works with the latest Sophia Script preset files;
 * Minor changes;
-
-
 
 ## 5.12.14 | 6.0.14 — 09.04.2022
 
