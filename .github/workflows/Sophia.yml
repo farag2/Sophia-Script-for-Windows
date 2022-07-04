@@ -98,11 +98,11 @@ jobs:
           }
           Expand-Archive @Parameters
 
-          New-Item -Path "Sophia Script for Windows 10 v$LatestRelease PowerShell 7\Libraries" -ItemType Directory -Force
+          New-Item -Path "Sophia Script for Windows 10 v$LatestRelease PowerShell 7\bin" -ItemType Directory -Force
 
           $Parameters = @{
             Path            = @("$PSScriptRoot\sdk\lib\Microsoft.Windows.SDK.NET.dll", "$PSScriptRoot\CsWinRT\lib\net5.0\WinRT.Runtime.dll")
-            Destination     = "Sophia Script for Windows 10 v$LatestRelease PowerShell 7\Libraries"
+            Destination     = "Sophia Script for Windows 10 v$LatestRelease PowerShell 7\bin"
             Recurse         = $true
             Force           = $true
           }
@@ -273,11 +273,11 @@ jobs:
           }
           Expand-Archive @Parameters
 
-          New-Item -Path "Sophia Script for Windows 11 v$LatestRelease PowerShell 7\Libraries" -ItemType Directory -Force
+          New-Item -Path "Sophia Script for Windows 11 v$LatestRelease PowerShell 7\bin" -ItemType Directory -Force
 
           $Parameters = @{
             Path            = @("$PSScriptRoot\sdk\lib\Microsoft.Windows.SDK.NET.dll", "$PSScriptRoot\CsWinRT\lib\net5.0\WinRT.Runtime.dll")
-            Destination     = "Sophia Script for Windows 11 v$LatestRelease PowerShell 7\Libraries"
+            Destination     = "Sophia Script for Windows 11 v$LatestRelease PowerShell 7\bin"
             Recurse         = $true
             Force           = $true
           }
