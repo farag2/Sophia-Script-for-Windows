@@ -86,7 +86,7 @@ Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Wind
 
 |Version|   Build   |      Editions     | Script version |
 |:-----:|:---------:|:-----------------:|:--------------:|
-| 21H2  | 22000.556 |Home/Pro/Enterprise|[6.1.0](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H2  | 22000.739 |Home/Pro/Enterprise|[6.1.0](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 
 # Windows 10
 
