@@ -123,7 +123,7 @@ jobs:
               Force           = $true
           }
           Copy-Item @Parameters
-          Get-ChildItem -Path "Sophia Script\Sophia Script for Windows 10 PowerShell 7" -Force | Copy-Item -Destination "Sophia Script for Windows 10 PowerShell 7 v$LatestRelease" -Recurse -Force
+          Get-ChildItem -Path "Sophia Script\Sophia Script for Windows 10 PowerShell 7" -Recurse -Force | Copy-Item -Destination "Sophia Script for Windows 10 PowerShell 7 v$LatestRelease" -Recurse -Force
 
           $Parameters = @{
               Path             = "Sophia Script for Windows 10 PowerShell 7 v$LatestRelease"
@@ -156,13 +156,13 @@ jobs:
               Force           = $true
           }
           Copy-Item @Parameters
-          Get-ChildItem -Path "Sophia Script\Sophia Script for Windows 10 LTSC 2019" -Force | Copy-Item -Destination "Sophia Script for Windows 10 LTSC 2019 v$LatestRelease" -Recurse -Force
+          Get-ChildItem -Path "Sophia Script\Sophia Script for Windows 10 LTSC 2019" -Recurse -Force | Copy-Item -Destination "Sophia Script for Windows 10 LTSC 2019 v$LatestRelease" -Recurse -Force
 
           $Parameters = @{
-             Path             = "Sophia Script for Windows 10 LTSC 2019 v$LatestRelease"
-             DestinationPath  = "Sophia.Script.for.Windows.10.LTSC.2019.v$LatestRelease.zip"
-             CompressionLevel = "Fastest"
-             Force            = $true
+              Path             = "Sophia Script for Windows 10 LTSC 2019 v$LatestRelease"
+              DestinationPath  = "Sophia.Script.for.Windows.10.LTSC.2019.v$LatestRelease.zip"
+              CompressionLevel = "Fastest"
+              Force            = $true
           }
           Compress-Archive @Parameters
 
@@ -189,13 +189,13 @@ jobs:
               Force           = $true
           }
           Copy-Item @Parameters
-          Get-ChildItem -Path "Sophia Script\Sophia Script for Windows 10 LTSC 2021" -Force | Copy-Item -Destination "Sophia Script for Windows 10 LTSC 2021 v$LatestRelease" -Recurse -Force
+          Get-ChildItem -Path "Sophia Script\Sophia Script for Windows 10 LTSC 2021" -Recurse -Force | Copy-Item -Destination "Sophia Script for Windows 10 LTSC 2021 v$LatestRelease" -Recurse -Force
 
           $Parameters = @{
-            Path             = "Sophia Script for Windows 10 LTSC 2021 v$LatestRelease"
-            DestinationPath  = "Sophia.Script.for.Windows.10.LTSC.2021.v$LatestRelease.zip"
-            CompressionLevel = "Fastest"
-            Force            = $true
+              Path             = "Sophia Script for Windows 10 LTSC 2021 v$LatestRelease"
+              DestinationPath  = "Sophia.Script.for.Windows.10.LTSC.2021.v$LatestRelease.zip"
+              CompressionLevel = "Fastest"
+              Force            = $true
           }
           Compress-Archive @Parameters
 
@@ -255,7 +255,7 @@ jobs:
               Force           = $true
           }
           Copy-Item @Parameters
-          Get-ChildItem -Path "Sophia Script\Sophia Script for Windows 11 PowerShell 7" -Force | Copy-Item -Destination "Sophia Script for Windows 11 PowerShell 7 v$LatestRelease" -Recurse -Force
+          Get-ChildItem -Path "Sophia Script\Sophia Script for Windows 11 PowerShell 7" -Recurse -Force | Copy-Item -Destination "Sophia Script for Windows 11 PowerShell 7 v$LatestRelease" -Recurse -Force
 
           $Parameters = @{
               Path             = "Sophia Script for Windows 11 PowerShell 7 v$LatestRelease"
@@ -281,8 +281,7 @@ jobs:
           Write-Verbose -Message "Sophia.Script.Wrapper.v$LatestRelease.zip" -Verbose
 
           New-Item -Path "Sophia Script Wrapper v$LatestRelease" -ItemType Directory -Force
-          # There is no need in -Recurse for the Get-ChildItem cmdlet
-          Get-ChildItem -Path Wrapper -Exclude README.md -Force | Copy-Item -Destination "Sophia Script Wrapper v$LatestRelease" -Recurse -Force
+          Get-ChildItem -Path Wrapper -Exclude README.md -Recurse -Force | Copy-Item -Destination "Sophia Script Wrapper v$LatestRelease" -Recurse -Force
 
           $Parameters = @{
               Path             = "Sophia Script Wrapper v$LatestRelease"
