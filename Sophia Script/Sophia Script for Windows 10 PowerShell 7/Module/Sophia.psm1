@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.13.0
-	Date: 04.07.2022
+	Version: v5.13.1
+	Date: 05.07.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -216,7 +216,7 @@ function Checkings
 	)
 	if (($PendingActions | Test-Path) -contains $true)
 	{
-		Write-Warning -Message "`n$($Localization.RebootPending)"
+		Write-Warning -Message $Localization.RebootPending
 		exit
 	}
 
@@ -244,7 +244,7 @@ function Checkings
 				Uri              = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
 				UseBasicParsing  = $true
 			}
-			$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_PowerShell_5_1
+			$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_PowerShell_7
 			$CurrentRelease = (Get-Module -Name Sophia).Version.ToString()
 			switch ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)
 			{
@@ -499,11 +499,19 @@ function DiagnosticDataLevel
 			if (Get-WindowsEdition -Online | Where-Object -FilterScript {($_.Edition -like "Enterprise*") -or ($_.Edition -eq "Education")})
 			{
 				# Security level
+				if (-not (Test-Path -Path HKLM:\Software\Policies\Microsoft\Windows\DataCollection))
+				{
+					New-Item -Path HKLM:\Software\Policies\Microsoft\Windows\DataCollection -Force
+				}
 				New-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 0 -Force
 			}
 			else
 			{
 				# Required diagnostic data
+				if (-not (Test-Path -Path HKLM:\Software\Policies\Microsoft\Windows\DataCollection))
+				{
+					New-Item -Path HKLM:\Software\Policies\Microsoft\Windows\DataCollection -Force
+				}
 				New-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 1 -Force
 			}
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name MaxTelemetryAllowed -PropertyType DWord -Value 1 -Force
@@ -5700,6 +5708,11 @@ function NetworkAdaptersSavePower
 		$Enable
 	)
 
+	if (Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"})
+	{
+		$PhysicalAdaptersStatusUp = @((Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"}).Name)
+	}
+
 	$Adapters = Get-NetAdapter -Physical | Get-NetAdapterPowerManagement | Where-Object -FilterScript {$_.AllowComputerToTurnOffDevice -ne "Unsupported"}
 
 	switch ($PSCmdlet.ParameterSetName)
@@ -5722,14 +5735,17 @@ function NetworkAdaptersSavePower
 		}
 	}
 
-	# All network adapters are turned into "Disconnected" for few seconds, so we need to wait a bit to let them up.
-	# Otherwise functions below will indicate that there is not the Internet connection.
-	while
-	(
-		Get-NetAdapter -Physical | ForEach-Object -Process {$_.Status -eq "Disconnected"}
-	)
+	# All network adapters are turned into "Disconnected" for few seconds, so we need to wait a bit to let them up
+	# Otherwise functions below will indicate that there is no the Internet connection
+	if ($PhysicalAdaptersStatusUp)
 	{
-		Start-Sleep -Milliseconds 100
+		while
+		(
+			Get-NetAdapter -Physical -Name $PhysicalAdaptersStatusUp | ForEach-Object -Process {$_.Status -eq "Disconnected"}
+		)
+		{
+			Start-Sleep -Seconds 2
+		}
 	}
 }
 
@@ -8498,10 +8514,10 @@ function InstallDotNetRuntime6
 		{
 			# https://github.com/dotnet/core/blob/main/release-notes/releases-index.json
 			$Parameters = @{
-				Uri              = "https://raw.githubusercontent.com/dotnet/core/main/release-notes/releases-index.json"
-				UseBasicParsing  = $true
+				Uri             = "https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/6.0/releases.json"
+				UseBasicParsing = $true
 			}
-			$LatestRelease = ((Invoke-RestMethod @Parameters)."releases-index" | Where-Object -FilterScript {$_."channel-version" -eq "6.0"})."latest-release"
+			$LatestRelease = (Invoke-RestMethod @Parameters)."latest-release"
 			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 
 			# .NET Desktop Runtime x86
@@ -9249,6 +9265,7 @@ function UninstallUWPApps
 		# Photos (and Video Editor)
 		"Microsoft.Windows.Photos",
 		"Microsoft.Photos.MediaEngineDLC",
+		"Microsoft.RawImageExtension"
 
 		# Calculator
 		"Microsoft.WindowsCalculator",
@@ -9416,7 +9433,7 @@ function UninstallUWPApps
 		Write-Verbose -Message $Localization.Patient -Verbose
 
 		$AppxPackages = Get-AppxPackage -PackageTypeFilter Bundle -AllUsers:$AllUsers | Where-Object -FilterScript {$_.Name -notin $ExcludedAppxPackages}
-		$PackagesIds = [Windows.Management.Deployment.PackageManager]::new().FindPackages().AdditionalTypeData[[Collections.IEnumerable].TypeHandle] | Select-Object -Property DisplayName -ExpandProperty Id | Select-Object -Property Name, DisplayName
+		$PackagesIds = [Windows.Management.Deployment.PackageManager]::new().FindPackages() | Select-Object -Property DisplayName -ExpandProperty Id | Select-Object -Property Name, DisplayName
 
 		foreach ($AppxPackage in $AppxPackages)
 		{
@@ -9767,7 +9784,7 @@ function RestoreUWPApps
 		# You cannot retrieve packages using -PackageTypeFilter Bundle, otherwise you won't get the InstallLocation attribute. It can be retrieved only by comparing with $Bundles
 		$Bundles = (Get-AppXPackage -PackageTypeFilter Bundle -AllUsers).Name
 		$AppxPackages = Get-AppxPackage -AllUsers | Where-Object -FilterScript {$_.PackageUserInformation -match "Staged"} | Where-Object -FilterScript {$_.Name -in $Bundles}
-		$PackagesIds = [Windows.Management.Deployment.PackageManager]::new().FindPackages().AdditionalTypeData[[Collections.IEnumerable].TypeHandle] | Select-Object -Property DisplayName -ExpandProperty Id | Select-Object -Property Name, DisplayName
+		$PackagesIds = [Windows.Management.Deployment.PackageManager]::new().FindPackages() | Select-Object -Property DisplayName -ExpandProperty Id | Select-Object -Property Name, DisplayName
 
 		foreach ($AppxPackage in $AppxPackages)
 		{
@@ -12853,8 +12870,8 @@ function UseStoreOpenWith
 #>
 function UpdateLGPEPolicies
 {
-	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message $Localization.Patient -Verbose
+	Write-Information -MessageData "" -InformationAction Continue
 
 	# Local Machine policies paths to scan recursively
 	$LM_Paths = @(
@@ -12881,7 +12898,6 @@ function UpdateLGPEPolicies
 					{
 						try
 						{
-							Write-Information -MessageData "" -InformationAction Continue
 							Write-Verbose -Message $Item.Replace("{}", "") -Verbose
 
 							$Parameters = @{
@@ -12930,7 +12946,6 @@ function UpdateLGPEPolicies
 					{
 						try
 						{
-							Write-Information -MessageData "" -InformationAction Continue
 							Write-Verbose -Message $Item.Replace("{}", "") -Verbose
 
 							$Parameters = @{
@@ -12952,6 +12967,19 @@ function UpdateLGPEPolicies
 				}
 			}
 		}
+	}
+
+	# Re-build GPT.ini if it doesn't exist
+	if (-not (Test-Path -Path $env:SystemRoot\System32\GroupPolicy\GPT.ini))
+	{
+		Start-Process -FilePath gpedit.msc
+		Start-Sleep -Seconds 2
+
+		# Get mmc.exe's Id with its' argument (gpedit.msc) to close
+		$gpedit_Process_ID = (Get-CimInstance -ClassName CIM_Process | Where-Object -FilterScript {
+			$_.Name -eq "mmc.exe"
+		} | Where-Object -FilterScript {$_.CommandLine -match "GPEDIT.MSC"}).Handle
+		Get-Process -Id $gpedit_Process_ID | Stop-Process -Force
 	}
 
 	Update-GptIniVersion -Path $env:SystemRoot\System32\GroupPolicy\GPT.ini -PolicyType Machine, User
