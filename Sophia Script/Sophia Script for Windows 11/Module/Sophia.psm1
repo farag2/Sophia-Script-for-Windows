@@ -178,11 +178,11 @@ function Checkings
 	# Check whether libraries exist in the bin folder
 	$Libraries = @(
 		"$PSScriptRoot\..\bin\Start_Layout\start.bin",
-		"$PSScriptRoot\..\bin\PolicyFileEdit\Commands.ps1",
-		"$PSScriptRoot\..\bin\PolicyFileEdit\Common.ps1",
-		"$PSScriptRoot\..\bin\PolicyFileEdit\PolFileEditor.dll",
-		"$PSScriptRoot\..\bin\PolicyFileEdit\PolicyFileEditor.psd1",
-		"$PSScriptRoot\..\bin\PolicyFileEdit\PolicyFileEditor.psm1"
+		"$PSScriptRoot\..\bin\PolicyFileEditor\Commands.ps1",
+		"$PSScriptRoot\..\bin\PolicyFileEditor\Common.ps1",
+		"$PSScriptRoot\..\bin\PolicyFileEditor\PolFileEditor.dll",
+		"$PSScriptRoot\..\bin\PolicyFileEditor\PolicyFileEditor.psd1",
+		"$PSScriptRoot\..\bin\PolicyFileEditor\PolicyFileEditor.psm1"
 	)
 	if (($Libraries | Test-Path) -contains $false)
 	{

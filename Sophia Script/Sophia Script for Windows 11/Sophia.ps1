@@ -78,7 +78,7 @@ Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
 # Import module for modifying registry.pol files (Administrative Templates) of local GPOs
 # https://www.powershellgallery.com/packages/PolicyFileEditor
 Remove-Module -Name PolicyFileEditor -Force -ErrorAction Ignore
-Import-Module -Name $PSScriptRoot\bin\PolicyFileEditor\PolicyFileEditor.psd1 -PassThru -Force
+Import-Module -Name $PSScriptRoot\bin\PolicyFileEditoror\PolicyFileEditor.psd1 -PassThru -Force
 
 Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia -BaseDirectory $PSScriptRoot\Localizations
 
