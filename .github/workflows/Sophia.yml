@@ -123,7 +123,7 @@ jobs:
               Force           = $true
           }
           Copy-Item @Parameters
-		  test-path -path "Sophia Script for Windows 10 PowerShell 7 v$LatestRelease\bin\WinRT.Runtime.dll", "Sophia Script for Windows 10 PowerShell 7 v$LatestRelease\bin\Microsoft.Windows.SDK.NET.dll"
+          test-path -path "Sophia Script for Windows 10 PowerShell 7 v$LatestRelease\bin\WinRT.Runtime.dll", "Sophia Script for Windows 10 PowerShell 7 v$LatestRelease\bin\Microsoft.Windows.SDK.NET.dll"
           Get-ChildItem -Path "Sophia Script\Sophia Script for Windows 10 PowerShell 7" -Force | Copy-Item -Destination "Sophia Script for Windows 10 PowerShell 7 v$LatestRelease" -Recurse -Force
 
           $Parameters = @{
