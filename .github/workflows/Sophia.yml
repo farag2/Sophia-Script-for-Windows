@@ -112,7 +112,7 @@ jobs:
           }
           $LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_PowerShell_7
 
-          Write-Verbose -Message "Sophia.Script.for.Windows.10.v$LatestRelease.PowerShell.7.zip" -Verbose
+          Write-Verbose -Message "Sophia.Script.for.Windows.10.PowerShell.7.v$LatestRelease.zip" -Verbose
 
           New-Item -Path "Sophia Script for Windows 10 v$LatestRelease PowerShell 7\bin" -ItemType Directory -Force
 
@@ -245,7 +245,7 @@ jobs:
           }
           $LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_7
 
-          Write-Verbose -Message "Sophia.Script.for.Windows.11.v$LatestRelease.PowerShell.7.zip" -Verbose
+          Write-Verbose -Message "Sophia.Script.for.Windows.11.PowerShell.7.v$LatestRelease.zip" -Verbose
 
           New-Item -Path "Sophia Script for Windows 11 v$LatestRelease PowerShell 7\bin" -ItemType Directory -Force
           $Parameters = @{
