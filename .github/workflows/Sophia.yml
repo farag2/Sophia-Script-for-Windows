@@ -308,7 +308,7 @@ jobs:
           file_glob: true
           prerelease: true
 
-      - name: Upload archives to release
+      - name: Upload SHA256SUM to release
         uses: svenstaro/upload-release-action@master
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
