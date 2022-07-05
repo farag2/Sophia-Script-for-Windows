@@ -123,7 +123,7 @@ jobs:
               Force           = $true
           }
           Copy-Item @Parameters
-          test-path -path "Sophia Script for Windows 10 PowerShell 7 v$LatestRelease\bin\WinRT.Runtime.dll", "Sophia Script for Windows 10 PowerShell 7 v$LatestRelease\bin\Microsoft.Windows.SDK.NET.dll"
+
           Get-ChildItem -Path "Sophia Script\Sophia Script for Windows 10 PowerShell 7" -Force | Copy-Item -Destination "Sophia Script for Windows 10 PowerShell 7 v$LatestRelease" -Recurse -Force
 
           $Parameters = @{
@@ -224,7 +224,7 @@ jobs:
           }
           Copy-Item @Parameters
           Get-ChildItem -Path "Sophia Script\Sophia Script for Windows 11" -Force | Copy-Item -Destination "Sophia Script for Windows 11 v$LatestRelease" -Recurse -Force
-
+          test-path -path "Sophia Script for Windows 10 PowerShell 7 v$LatestRelease\bin\PolicyFileEditor" "Sophia Script for Windows 10 PowerShell 7 v$LatestRelease\bin\WinRT.Runtime.dll", "Sophia Script for Windows 10 PowerShell 7 v$LatestRelease\bin\Microsoft.Windows.SDK.NET.dll"
           $Parameters = @{
               Path             = "Sophia Script for Windows 11 v$LatestRelease"
               DestinationPath  = "Sophia.Script.for.Windows.11.v$LatestRelease.zip"
@@ -251,12 +251,13 @@ jobs:
           New-Item -Path "Sophia Script for Windows 11 PowerShell 7 v$LatestRelease\bin" -ItemType Directory -Force
           $Parameters = @{
               Path            = @("$PSScriptRoot\PolicyFileEditor", "$PSScriptRoot\WinRT.Runtime.dll", "$PSScriptRoot\Microsoft.Windows.SDK.NET.dll")
-              Destination     = "Sophia Script for Windows 10 PowerShell 7 v$LatestRelease\bin"
+              Destination     = "Sophia Script for Windows 11 PowerShell 7 v$LatestRelease\bin"
               Recurse         = $true
               Force           = $true
           }
           Copy-Item @Parameters
-          Get-ChildItem -Path "Sophia Script\Sophia Script for Windows 11 PowerShell 7" -Force | Copy-Item -Destination "Sophia Script for Windows 11 PowerShell 7 v$LatestRelease" -Recurse -Force
+
+          Get-ChildItem -Path "Sophia Script\Sophia Script for Windows 10 PowerShell 7" -Force | Copy-Item -Destination "Sophia Script for Windows 10 PowerShell 7 v$LatestRelease" -Recurse -Force
 
           $Parameters = @{
               Path             = "Sophia Script for Windows 11 PowerShell 7 v$LatestRelease"
