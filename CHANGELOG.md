@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.13.1 | 6.1.1 — 04.07.2022
+
+## Windows 11 21H2/22H2 | Windows 10 2004/20H2/21H1/21H2/22H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
+
+* Now the repo doesn't keep any 3rd party libraries, and all scripts are built using an updated GitHub Action [config](https://github.com/farag2/Sophia-Script-for-Windows/blob/master/.github/workflows/Sophia.yml);
+  * 3rd party tools that are downloaded and used;
+    * [PolicyFileEditor](https://github.com/dlwyatt/PolicyFileEditor) made by @dlwyatt;
+    * [Microsoft.Windows.SDK.NET.Ref](https://www.nuget.org/packages/Microsoft.Windows.SDK.NET.Ref/);
+    * [CsWinRT](https://github.com/microsoft/CsWinRT).
+* Fixed bug in `NetworkAdaptersSavePower` function when script hung if one network adapter was disabled;
+  * Reported by @poohart.
+* Fixed bug in `UninstallUWPApps` function for PowerShell 7 based scripts when a WPF form didn't render at all;
+  * Reported by @poohart.
+* Improved `UpdateLGPEPolicies` function;
+  * Now it creates `GPT.ini` file automatically if it doesn't exist.
+* Minor changes;
+* Fixed numerous typos.
+
+### Sophia Script Wrapper 2.5.5
+
+* @BenchTweakGaming fixed bug when the app crashed if a PowerShell 7 preset was imported;
+* Minor changes;
+
 ## 5.13.0 | 6.1.0 — 04.07.2022
 
 ## Windows 11 21H2/22H2 | Windows 10 2004/20H2/21H1/21H2/22H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
