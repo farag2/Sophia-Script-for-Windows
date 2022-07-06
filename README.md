@@ -80,25 +80,25 @@ Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Wind
 
 |Version|   Build   |      Editions     | Script version |
 |:-----:|:---------:|:-----------------:|:--------------:|
-| 21H2  | 22509     |Home/Pro/Enterprise|[6.1.0](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H2  | 22509     |Home/Pro/Enterprise|[6.1.1](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 
 # Windows 11
 
 |Version|   Build   |      Editions     | Script version |
 |:-----:|:---------:|:-----------------:|:--------------:|
-| 21H2  | 22000.739 |Home/Pro/Enterprise|[6.1.0](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H2  | 22000.739 |Home/Pro/Enterprise|[6.1.1](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 
 # Windows 10
 
 |Version|    Marketing name   | Build | Arch|      Editions          | Script version |
 |:-----:|:-------------------:|:----------:|:---:|:----------------------:|:--------------:|
-| 22H2  | October 2022 Update | 19045.1151 | x64 |Home/Pro/Enterprise|[5.13.0](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 21H2  | October 2021 Update | 19044.1151 | x64 |Home/Pro/Enterprise|[5.13.0](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 21H2  | Enterprise LTSC 2021| 19044.1348 | x64 |   Enterprise      |[5.13.0](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 21H1  | May 2021 Update     | 19043.1151 | x64 |Home/Pro/Enterprise|[5.13.0](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 20H2  | October 2020 Update | 19042.1151 | x64 |Home/Pro/Enterprise|[5.13.0](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 2004  | May 2020 Update     | 19041.1151 | x64 |Home/Pro/Enterprise|[5.13.0](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 1809  | Enterprise LTSC 2019| 17763      | x64 |   Enterprise      |[5.3.0](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 22H2  | October 2022 Update | 19045.1151 | x64 |Home/Pro/Enterprise|[5.13.1](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H2  | October 2021 Update | 19044.1151 | x64 |Home/Pro/Enterprise|[5.13.1](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H2  | Enterprise LTSC 2021| 19044.1348 | x64 |   Enterprise      |[5.13.1](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H1  | May 2021 Update     | 19043.1151 | x64 |Home/Pro/Enterprise|[5.13.1](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 20H2  | October 2020 Update | 19042.1151 | x64 |Home/Pro/Enterprise|[5.13.1](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 2004  | May 2020 Update     | 19041.1151 | x64 |Home/Pro/Enterprise|[5.13.1](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 1809  | Enterprise LTSC 2019| 17763      | x64 |   Enterprise      |[5.3.1](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 
 ## Screenshots
 
