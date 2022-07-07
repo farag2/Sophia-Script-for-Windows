@@ -208,7 +208,7 @@ switch ($Version)
 	}
 	"Windows_10_PowerShell_7"
 	{
-		Invoke-Item -Path "$DownloadsFolder\Sophia Script for Windows 10 v$LatestRelease PowerShell 7"
+		Invoke-Item -Path "$DownloadsFolder\Sophia Script for Windows 10  PowerShell 7 v$LatestRelease"
 	}
 	"Windows_11_PowerShell_5.1"
 	{
@@ -216,7 +216,7 @@ switch ($Version)
 	}
 	"Windows_11_PowerShell_7"
 	{
-		Invoke-Item -Path "$DownloadsFolder\Sophia Script for Windows 11 v$LatestRelease PowerShell 7"
+		Invoke-Item -Path "$DownloadsFolder\Sophia Script for Windows 11 PowerShell 7 v$LatestRelease"
 	}
 }
 
@@ -238,7 +238,7 @@ if (-not ("WinAPI.ForegroundWindow" -as [type]))
 }
 
 Start-Sleep -Seconds 1
-	
+
 Get-Process -Name explorer | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows $([System.Environment]::OSVersion.Version.Major)"} | ForEach-Object -Process {
 	# Show window, if minimized
 	[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 5)
