@@ -83,7 +83,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 
 		break
 	}
-	{($_ -ge 19041) -and ($_ -le 19044)}
+	{($_ -ge 19041) -and ($_ -le 19048)}
 	{
 		if ($PSVersionTable.PSVersion.Major -eq 5)
 		{
@@ -129,7 +129,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 			}
 			$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_PowerShell_7
 			$Parameters = @{
-				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.v$LatestRelease.PowerShell.7.zip"
+				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.PowerShell.7.v$LatestRelease.zip"
 				OutFile         = "$DownloadsFolder\Sophia.Script.zip"
 				UseBasicParsing = $true
 				Verbose         = $true
@@ -165,7 +165,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 			}
 			$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_7
 			$Parameters = @{
-				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.v$LatestRelease.PowerShell.7.zip"
+				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.PowerShell.7.v$LatestRelease.zip"
 				OutFile         = "$DownloadsFolder\Sophia.Script.zip"
 				UseBasicParsing = $true
 				Verbose         = $true
