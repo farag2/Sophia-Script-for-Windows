@@ -25,8 +25,8 @@ jobs:
           $LatestPolicyFileEditorVersion = (Invoke-RestMethod @Parameters).tag_name
 
           $Parameters = @{
-              Uri             = "https://github.com/dlwyatt/PolicyFileEditor/archive/refs/tags/3.0.1.zip"
-              OutFile         = "$PSScriptRoot\3.0.1.zip"
+              Uri             = "https://github.com/dlwyatt/PolicyFileEditor/archive/refs/tags/$LatestPolicyFileEditorVersion.zip"
+              OutFile         = "$PSScriptRoot\$LatestPolicyFileEditorVersion.zip"
               UseBasicParsing = $true
               Verbose         = $true
           }
@@ -34,7 +34,7 @@ jobs:
 
           # Expand zip archive
           $Parameters = @{
-              Path            = "$PSScriptRoot\3.0.1.zip"
+              Path            = "$PSScriptRoot\$LatestPolicyFileEditorVersion.zip"
               DestinationPath = "$PSScriptRoot"
               Force           = $true
               Verbose         = $true
@@ -42,16 +42,16 @@ jobs:
           Expand-Archive @Parameters
 
           $Path = @(
-              "$PSScriptRoot\PolicyFileEditor-3.0.1\DscResources",
-              "$PSScriptRoot\PolicyFileEditor-3.0.1\en-US",
-              "$PSScriptRoot\PolicyFileEditor-3.0.1\build.psake.ps1",
-              "$PSScriptRoot\PolicyFileEditor-3.0.1\LICENSE",
-              "$PSScriptRoot\PolicyFileEditor-3.0.1\PolicyFileEditor.Tests.ps1",
-              "$PSScriptRoot\PolicyFileEditor-3.0.1\README.md"
+              "$PSScriptRoot\PolicyFileEditor-$LatestPolicyFileEditorVersion\DscResources",
+              "$PSScriptRoot\PolicyFileEditor-$LatestPolicyFileEditorVersion\en-US",
+              "$PSScriptRoot\PolicyFileEditor-$LatestPolicyFileEditorVersion\build.psake.ps1",
+              "$PSScriptRoot\PolicyFileEditor-$LatestPolicyFileEditorVersion\LICENSE",
+              "$PSScriptRoot\PolicyFileEditor-$LatestPolicyFileEditorVersion\PolicyFileEditor.Tests.ps1",
+              "$PSScriptRoot\PolicyFileEditor-$LatestPolicyFileEditorVersion\README.md"
           )
           Remove-Item -Path $Path -Recurse -Force
 
-          Rename-Item -Path "$PSScriptRoot\PolicyFileEditor-3.0.1" -NewName "$PSScriptRoot\PolicyFileEditor" -Force
+          Rename-Item -Path "$PSScriptRoot\PolicyFileEditor-$LatestPolicyFileEditorVersion" -NewName "$PSScriptRoot\PolicyFileEditor" -Force
 
           # Download Microsoft.Windows.SDK.NET.dll & WinRT.Runtime.dll
           $Parameters = @{
