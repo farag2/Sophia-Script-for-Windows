@@ -46,6 +46,10 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 <p align="center">
 	&bull;
+	<a href="#donations">Donations</a>
+	&bull;
+	<a href="#minimum-supported-windows-versions-and-builds">Supported Windows 10 & 11 versions</a>
+	&bull;
 	<a href="#screenshots">Screenshots</a>
 	&bull;
 	<a href="#videos">Videos</a>
@@ -55,8 +59,6 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 	<a href="#how-to-use">How to use</a>
 	&bull;
 	<a href="#how-to-translate">How to translate</a>
-	&bull;
-	<a href="#minimum-supported-windows-versions-and-builds">Supported Windows 10 & 11 versions</a>
 	&bull;
 	<a href="#sophiapp-community-edition-c--wpf">SophiApp</a>
 	&bull;
