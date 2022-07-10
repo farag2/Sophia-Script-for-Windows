@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Скрипт поддерживает только Windows 10 x64
 UnsupportedOSBuild                        = Скрипт поддерживает только Windows 10 версии 2004/20H2/21H1/21H2
-UpdateWarning                             = Установленный накопительный пакет обновления Windows 10: {0}. Поддерживаемый накопительный пакет обновления: 1151 и выше
+UpdateWarning                             = Установленный накопительный пакет обновления Windows 10: {0}. Поддерживаемый накопительный пакет обновления: 1766 и выше
 UnsupportedLanguageMode                   = Сессия PowerShell работает в ограниченном режиме
 LoggedInUserNotAdmin                      = Текущий вошедший пользователь не обладает правами администратора
 UnsupportedPowerShell                     = Вы пытаетесь запустить скрипт в PowerShell {0}.{1}. Запустите скрипт в соответствующей версии PowerShell

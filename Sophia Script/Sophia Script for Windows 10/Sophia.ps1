@@ -25,9 +25,9 @@
 	irm script.sophi.app -useb | iex
 
 	.NOTES
-	Minimum Supported Windows 10 versions
+	Supported Windows 10 versions
 	Versions: 2004/20H2/21H1/21H2
-	Build: 1904x.1151
+	Build: 1904x.1766+
 	Editions: Home/Pro/Enterprise
 	Architecture: x64
 
@@ -959,6 +959,16 @@ InstallVCRedistx64
 	https://docs.microsoft.com/en-us/dotnet/core/install/windows?tabs=net60
 #>
 InstallDotNetRuntime6
+
+# Enable proxying only blocked sites from the unified registry of Roskomnadzor
+# Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора
+# https://antizapret.prostovpn.org
+RKNBypass -Enable
+
+# Disable proxying only blocked sites from the unified registry of Roskomnadzor (default value)
+# Выключить проксирование только заблокированных сайтов из единого реестра Роскомнадзора (значение по умолчанию)
+# https://antizapret.prostovpn.org
+# RKNBypass -Disable
 #endregion System
 
 #region WSL

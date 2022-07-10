@@ -30,6 +30,7 @@ UserFolderSelect                          = Wählen Sie einen Ordner für den Or
 UserDefaultFolder                         = Möchten Sie den Speicherort des Ordners "{0}" auf den Standardwert ändern?
 ReservedStorageIsInUse                    = Dieser Vorgang wird nicht unterstützt, wenn reservierter Speicher verwendet wird\nBitte führen Sie die Funktion "{0}" nach dem PC-Neustart erneut aus
 ShortcutPinning                           = Die Verknüpfung "{0}" wird an Start angeheftet…
+SSDRequired                               = Um Windows Subsystem für Android™ auf Ihrem Gerät zu verwenden, muss auf Ihrem PC ein Solid State Drive (SSD) installiert sein
 UninstallUWPForAll                        = Für alle Benutzer
 UWPAppsTitle                              = UWP-Apps
 HEVCDownloading                           = HEVC-Videoerweiterungen vom Gerätehersteller herunterladen… ~2,8 MB

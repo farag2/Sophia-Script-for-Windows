@@ -84,11 +84,13 @@ function Checkings
 	}
 
 	# Check whether the OS minor build version is 739 minimum
+	# https://docs.microsoft.com/en-us/windows/release-health/windows11-release-information
+	# https://support.microsoft.com/en-us/topic/june-14-2022-kb5014697-os-build-22000-739-cd3aaa0b-a8da-44a0-a778-dfb6f1d9ea11
 	switch ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -ge 739)
 	{
 		$false
 		{
-			if ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber -lt 22509)
+			if ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber -eq 22000)
 			{
 				$Version = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion"
 				Write-Warning -Message ($Localization.UpdateWarning -f $Version.CurrentBuild, $Version.UBR)
@@ -5383,8 +5385,8 @@ function IPv6Component
 		}
 		catch [System.Net.WebException]
 		{
-			Write-Warning -Message ($Localization.NoResponse -f "https://store.rg-adguard.net")
-			Write-Error -Message ($Localization.NoResponse -f "https://store.rg-adguard.net") -ErrorAction SilentlyContinue
+			Write-Warning -Message ($Localization.NoResponse -f "https://ipv6-test.com")
+			Write-Error -Message ($Localization.NoResponse -f "https://ipv6-test.com") -ErrorAction SilentlyContinue
 
 			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
 		}
@@ -8143,7 +8145,12 @@ function InstallDotNetRuntime6
 				(Get-ItemProperty -Path HKCU:\Environment -Name TEMP).TEMP
 				[System.IO.Path]::GetTempPath()
 			#>
-			Get-ChildItem -Path "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe", "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe", "$env:TEMP\Microsoft_.NET_Runtime_*.log" -Force | Remove-Item -Recurse -Force -ErrorAction Ignore
+			$Paths = @(
+				"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe",
+				"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe",
+				"$env:TEMP\Microsoft_Windows_Desktop_Runtime*.log"
+			)
+			Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 		}
 	}
 	catch [System.Net.WebException]
@@ -8152,6 +8159,187 @@ function InstallDotNetRuntime6
 		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 
 		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+	}
+}
+
+<#
+	.SYNOPSIS
+	Bypass RKN restrictins using antizapret.prostovpn.org proxies
+
+	.PARAMETER Enable
+	Enable proxying only blocked sites from the unified registry of Roskomnadzor using antizapret.prostovpn.org servers
+
+	.PARAMETER Disable
+	Disable proxying only blocked sites from the unified registry of Roskomnadzor using antizapret.prostovpn.org servers
+
+	.EXAMPLE
+	RKNBypass -Enable
+
+	.EXAMPLE
+	RKNBypass -Disable
+
+	.LINK
+	https://antizapret.prostovpn.org
+
+	.NOTES
+	Current user
+#>
+function RKNBypass
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Enable"
+		{
+			# If current region is Russia
+			if (((Get-WinHomeLocation).GeoId -eq "203"))
+			{
+				New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name AutoConfigURL -PropertyType String -Value "https://antizapret.prostovpn.org/proxy.pac" -Force
+			}
+		}
+		"Disable"
+		{
+			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name AutoConfigURL -Force
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	Enable the latest Windows Subsystem for Android™ with Amazon Appstore
+
+	.EXAMPLE Enable all necessary dependencies (reboot may require) and open Microsoft Store WSA page to install it manually
+	WSA -Enable
+
+	.EXAMPLE Disable all necessary dependencies (reboot may require) and uninstall Windows Subsystem for Android™ with Amazon Appstore
+	WSA -Disable
+
+	.LINK
+	https://support.microsoft.com/en-us/windows/install-mobile-apps-and-the-amazon-appstore-f8d0abb5-44ad-47d8-b9fb-ad6b1459ff6c
+
+	.LINK
+	https://docs.microsoft.com/en-us/windows/android/wsa/
+
+	.LINK
+	https://www.microsoft.com/store/productId/9P3395VX91NR
+
+	.NOTES
+	Machine-wide
+#>
+function WSA
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Enable"
+		{
+			# Check if Windows 11 is installed on an SSD
+			$DiskNumber = (Get-Disk | Where-Object -FilterScript {$_.Isboot -and $_.IsSystem -and ($_.OperationalStatus -eq "Online")}).Number
+			if (Get-PhysicalDisk -DeviceNumber $DiskNumber | Where-Object -FilterScript {$_.MediaType -ne "SSD"})
+			{
+				Write-Warning -Message $Localization.SSDRequired ###
+
+				return
+			}
+
+			# Enable Windows Subsystem for Android (WSA)
+			if ((Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux).State -eq "Disabled")
+			{
+				Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -NoRestart
+
+				Write-Warning -Message $Localization.RestartWarning
+				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+
+				return
+			}
+
+			# Enable Virtual Machine Platform
+			if ((Get-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform).State -eq "Disabled")
+			{
+				Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -NoRestart
+
+				Write-Warning -Message $Localization.RestartWarning
+				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+
+				return
+			}
+
+			if (Get-AppxPackage -Name MicrosoftCorporationII.WindowsSubsystemForAndroid)
+			{
+				return
+			}
+
+			try
+			{
+				# Check the internet connection
+				$Parameters = @{
+					Uri              = "https://www.google.com"
+					Method           = "Head"
+					DisableKeepAlive = $true
+					UseBasicParsing  = $true
+				}
+				if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+				{
+					return
+				}
+
+				if (((Get-WinHomeLocation).GeoId -ne "244"))
+				{
+					# Set Windows region to USA
+					$Script:Region = (Get-WinHomeLocation).GeoId
+					Set-WinHomeLocation -GeoId 244
+
+					$Script:RegionChanged = $true
+				}
+
+				# Open Misrosoft Store WSA page to install it manually
+				Start-Process -FilePath ms-windows-store://pdp/?ProductId=9P3395VX91NR
+			}
+			catch [System.Net.WebException]
+			{
+				Write-Warning -Message $Localization.NoInternetConnection
+				Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+
+				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+			}
+		}
+		"Disable"
+		{
+			Disable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -NoRestart
+			Get-AppxPackage -Name MicrosoftCorporationII.WindowsSubsystemForAndroid | Remove-AppxPackage
+		}
 	}
 }
 #endregion System
@@ -9351,7 +9539,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	Install "HEVC Video Extensions from Device Manufacturer" to be able to open .heic and .heif formats
 
 	.PARAMETER Install
-	Download and install the "HEVC Video Extensions from Device Manufacturer" extension using the https://store.rg-adguard.net parser
+	Download and install the "HEVC Video Extensions from Device Manufacturer" extension
 
 	.PARAMETER Manually
 	Open Microsoft Store "HEVC Video Extensions from Device Manufacturer" page to install the extension manually
@@ -9364,9 +9552,6 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 
 	.LINK
 	https://www.microsoft.com/store/productId/9n4wgh0z6vhq
-
-	.LINK
-	https://dev.to/kaiwalter/download-windows-store-apps-with-powershell-from-https-store-rg-adguard-net-155m
 
 	.NOTES
 	The extension can be installed without Microsoft account
@@ -9401,17 +9586,32 @@ function HEIF
 		"Install"
 		{
 			# Check whether the extension is already installed
-			# HEVC Video Extension is already installed in Windows 11 22H2 by default
-			if ((-not (Get-AppxPackage -Name Microsoft.HEVCVideoExtension)) -and (Get-AppxPackage -Name Microsoft.Windows.Photos))
+			if ((Get-AppxPackage -Name Microsoft.HEVCVideoExtension) -and (Get-AppxPackage -Name Microsoft.Windows.Photos))
 			{
+				return
+			}
+
+			try
+			{
+				# Check the internet connection
+				$Parameters = @{
+					Uri              = "https://www.google.com"
+					Method           = "Head"
+					DisableKeepAlive = $true
+					UseBasicParsing  = $true
+				}
+				if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+				{
+					return
+				}
+
 				try
 				{
-					# Check the internet connection
+					# Check whether https://github.com is alive
 					$Parameters = @{
-						Uri              = "https://www.google.com"
+						Uri              = "https://github.com"
 						Method           = "Head"
 						DisableKeepAlive = $true
-						SslProtocol      = "Tls13"
 						UseBasicParsing  = $true
 					}
 					if (-not (Invoke-WebRequest @Parameters).StatusDescription)
@@ -9419,79 +9619,35 @@ function HEIF
 						return
 					}
 
-					try
-					{
-						# Check whether the https://store.rg-adguard.net site is alive
-						$Parameters = @{
-							Uri              = "https://store.rg-adguard.net/api/GetFiles"
-							Method           = "Head"
-							DisableKeepAlive = $true
-							SslProtocol      = "Tls13"
-							UseBasicParsing  = $true
-						}
-						if (-not (Invoke-WebRequest @Parameters).StatusDescription)
-						{
-							return
-						}
-
-						$Parameters = @{
-							Method      = "Post"
-							Uri         = "https://store.rg-adguard.net/api/GetFiles"
-							ContentType = "application/x-www-form-urlencoded"
-							Body        = @{
-								type = "url"
-								# HEVC Video Extensions from Device Manufacturer
-								url  = "https://www.microsoft.com/store/productId/9n4wgh0z6vhq"
-								ring = "Retail"
-								lang = "en-US"
-							}
-							UseBasicParsing = $true
-							SslProtocol     = "Tls13"
-						}
-						$Raw = Invoke-WebRequest @Parameters
-
-						# Parsing the page
-						$Raw | Select-String -Pattern '<tr style.*<a href=\"(?<url>.*)"\s.*>(?<text>.*)<\/a>' -AllMatches | ForEach-Object -Process {$_.Matches} | ForEach-Object -Process {
-							$TempURL = $_.Groups[1].Value
-							$Package = $_.Groups[2].Value
-
-							if ($Package -like "Microsoft.HEVCVideoExtension_*_x64__8wekyb3d8bbwe.appx")
-							{
-								Write-Information -MessageData "" -InformationAction Continue
-								Write-Verbose -Message $Localization.HEVCDownloading -Verbose
-
-								$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-								$Parameters = @{
-									Uri             = $TempURL
-									OutFile         = "$DownloadsFolder\$Package"
-									SslProtocol     = "Tls13"
-									UseBasicParsing = $true
-									Verbose         = $true
-								}
-								Invoke-WebRequest @Parameters
-
-								# Installing "HEVC Video Extensions from Device Manufacturer"
-								Add-AppxPackage -Path "$DownloadsFolder\$Package" -Verbose
-
-								Remove-Item -Path "$DownloadsFolder\$Package" -Force
-							}
-						}
+					# https://github.com/Sophia-Community/SophiApp/tree/master/AppX
+					$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+					$Parameters = @{
+						Uri             = "https://github.com/Sophia-Community/SophiApp/raw/master/AppX/Microsoft.HEVCVideoExtension_2.0.51121.0_x64__8wekyb3d8bbwe.Appx"
+						OutFile         = "$DownloadsFolder\Microsoft.HEVCVideoExtension_2.0.51121.0_x64__8wekyb3d8bbwe.Appx"
+						UseBasicParsing = $true
+						Verbose         = $true
 					}
-					catch [System.Net.WebException]
-					{
-						Write-Warning -Message ($Localization.NoResponse -f "https://store.rg-adguard.net")
-						Write-Error -Message ($Localization.NoResponse -f "https://store.rg-adguard.net") -ErrorAction SilentlyContinue
+					Invoke-WebRequest @Parameters
 
-						Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
-					}
+					# Installing "HEVC Video Extensions from Device Manufacturer"
+					Add-AppxPackage -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_2.0.51121.0_x64__8wekyb3d8bbwe.Appx" -Verbose
+
+					Remove-Item -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_2.0.51121.0_x64__8wekyb3d8bbwe.Appx" -Force
 				}
 				catch [System.Net.WebException]
 				{
-					Write-Warning -Message $Localization.NoInternetConnection
-					Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+					Write-Warning -Message ($Localization.NoResponse -f "https://github.com")
+					Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
 
 					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
 				}
+			}
+			catch [System.Net.WebException]
+			{
+				Write-Warning -Message $Localization.NoInternetConnection
+				Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+
+				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
 			}
 		}
 		"Manually"
@@ -9505,7 +9661,6 @@ function HEIF
 						Uri              = "https://www.google.com"
 						Method           = "Head"
 						DisableKeepAlive = $true
-						SslProtocol      = "Tls13"
 						UseBasicParsing  = $true
 					}
 					if (-not (Invoke-WebRequest @Parameters).StatusDescription)
@@ -12160,6 +12315,13 @@ function Windows10ContextMenu
 #>
 function UpdateLGPEPolicies
 {
+	if (-not (Get-WindowsEdition -Online | Where-Object -FilterScript {
+		($_.Edition -eq "Professional") -or ($_.Edition -like "Enterprise*") -or ($_.Edition -eq "Education")
+	}))
+	{
+		return
+	}
+
 	Write-Verbose -Message $Localization.Patient -Verbose
 	Write-Information -MessageData "" -InformationAction Continue
 
@@ -12348,6 +12510,12 @@ public static void PostMessage()
 		{
 			Set-MpPreference -EnableControlledFolderAccess Enabled
 		}
+	}
+
+	if ($Script:RegionChanged)
+	{
+		# Set the original region ID
+		Set-WinHomeLocation -GeoId $Script:Region
 	}
 
 	# In order for the changes to take effect the File Explorer process has to be restarted

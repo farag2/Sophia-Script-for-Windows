@@ -30,6 +30,7 @@ UserFolderSelect                          = "{0}" klasörü için bir klasör se
 UserDefaultFolder                         = "{0}" klasörünün konumunu varsayılan değerle değiştirmek ister misiniz?
 ReservedStorageIsInUse                    = Ayrılmış depolama kullanımdayken bu işlem desteklenmez\nBilgisayar yeniden başlatıldıktan sonra lütfen "{0}" işlevini yeniden çalıştırın
 ShortcutPinning                           = "{0}" kısayolu Başlangıç sekmesine sabitlendi...
+SSDRequired                               = Android™ için Windows Alt Sistemi'ni cihazınızda kullanmak için bilgisayarınızda Katı Hal Sürücüsü (SSD) yüklü olmalıdır
 UninstallUWPForAll                        = Bütün kullanıcılar için
 UWPAppsTitle                              = UWP Uygulamaları
 HEVCDownloading                           = "Cihaz Üreticisinden HEVC Video Uzantıları" İndiriliyor... ~2,8 MB

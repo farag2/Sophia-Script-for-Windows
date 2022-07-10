@@ -30,6 +30,7 @@ UserFolderSelect                          = Seleccione una carpeta para la carpe
 UserDefaultFolder                         = ¿Le gustaría cambiar la ubicación de la carpeta "{0}" para el valor por defecto?
 ReservedStorageIsInUse                    = Esta operación no es compatible cuando el almacenamiento reservada está en uso\nPor favor, vuelva a ejecutar la función "{0}" después de reiniciar el PC
 ShortcutPinning                           = El acceso directo "{0}" está siendo clavado en Start...
+SSDRequired                               = Para utilizar Windows Subsystem for Android™ en su dispositivo, su PC debe tener instalada una unidad de estado sólido (SSD)
 UninstallUWPForAll                        = Para todos los usuarios
 UWPAppsTitle                              = Aplicaciones UWP
 HEVCDownloading                           = Descargando HEVC Vídeo Extensiones del Fabricante del dispositivo... ~2,8 MB

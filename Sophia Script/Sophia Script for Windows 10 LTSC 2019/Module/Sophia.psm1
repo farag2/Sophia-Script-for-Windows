@@ -16,7 +16,7 @@
 	.NOTES
 	Supported Windows 10 version
 	Version: 1809
-	Build: 17763
+	Build: 17763.3046+
 	Edition: Enterprise LTSC
 	Architecture: x64
 
@@ -73,6 +73,33 @@ function Checkings
 		$false
 		{
 			Write-Warning -Message $Localization.UnsupportedOSBuild
+
+			# Enable receiving updates for other Microsoft products when you update Windows
+			(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
+
+			Start-Sleep -Seconds 1
+
+			# Open the "Windows Update" page
+			Start-Process -FilePath "ms-settings:windowsupdate-action"
+
+			Start-Sleep -Seconds 1
+
+			# Trigger Windows Update for detecting new updates
+			(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
+
+			exit
+		}
+	}
+
+	# Check whether the OS minor build version is 3046 minimum
+	# https://docs.microsoft.com/en-us/windows/release-health/release-information
+	# https://support.microsoft.com/en-us/topic/windows-10-and-windows-server-2019-update-history-725fc2e1-4443-6831-a5ca-51ff5cbcb059
+	switch ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -ge 3046)
+	{
+		$false
+		{
+			$Version = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
+			Write-Warning -Message ($Localization.UpdateWarning -f $Version)
 
 			# Enable receiving updates for other Microsoft products when you update Windows
 			(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
@@ -6916,7 +6943,12 @@ function InstallDotNetRuntime6
 				(Get-ItemProperty -Path HKCU:\Environment -Name TEMP).TEMP
 				[System.IO.Path]::GetTempPath()
 			#>
-			Get-ChildItem -Path "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe", "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe", "$env:TEMP\Microsoft_Windows_Desktop_Runtime*.log" -Force | Remove-Item -Recurse -Force -ErrorAction Ignore
+			$Paths = @(
+				"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe",
+				"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe",
+				"$env:TEMP\Microsoft_Windows_Desktop_Runtime*.log"
+			)
+			Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 		}
 	}
 	catch [System.Net.WebException]
@@ -6925,6 +6957,64 @@ function InstallDotNetRuntime6
 		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 
 		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+	}
+}
+
+<#
+	.SYNOPSIS
+	Bypass RKN restrictins using antizapret.prostovpn.org proxies
+
+	.PARAMETER Enable
+	Enable proxying only blocked sites from the unified registry of Roskomnadzor using antizapret.prostovpn.org servers
+
+	.PARAMETER Disable
+	Disable proxying only blocked sites from the unified registry of Roskomnadzor using antizapret.prostovpn.org servers
+
+	.EXAMPLE
+	RKNBypass -Enable
+
+	.EXAMPLE
+	RKNBypass -Disable
+
+	.LINK
+	https://antizapret.prostovpn.org
+
+	.NOTES
+	Current user
+#>
+function RKNBypass
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Enable"
+		{
+			# If current region is Russia
+			if (((Get-WinHomeLocation).GeoId -eq "203"))
+			{
+				New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name AutoConfigURL -PropertyType String -Value "https://antizapret.prostovpn.org/proxy.pac" -Force
+			}
+		}
+		"Disable"
+		{
+			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name AutoConfigURL -Force
+		}
 	}
 }
 #endregion System
@@ -9228,6 +9318,13 @@ function MultipleInvokeContext
 #>
 function UpdateLGPEPolicies
 {
+	if (-not (Get-WindowsEdition -Online | Where-Object -FilterScript {
+		($_.Edition -eq "Professional") -or ($_.Edition -like "Enterprise*") -or ($_.Edition -eq "Education")
+	}))
+	{
+		return
+	}
+
 	Write-Verbose -Message $Localization.Patient -Verbose
 	Write-Information -MessageData "" -InformationAction Continue
 

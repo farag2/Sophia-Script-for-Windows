@@ -76,6 +76,7 @@ Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
 
 # Import module for modifying registry.pol files (Administrative Templates) of local GPOs
+# Used for UpdateLGPEPolicies function
 # https://www.powershellgallery.com/packages/PolicyFileEditor
 Remove-Module -Name PolicyFileEditor -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\bin\PolicyFileEditor\PolicyFileEditor.psd1 -PassThru -Force
@@ -912,6 +913,24 @@ InstallVCRedistx64
 	https://docs.microsoft.com/en-us/dotnet/core/install/windows?tabs=net60
 #>
 InstallDotNetRuntime6
+
+# Enable proxying only blocked sites from the unified registry of Roskomnadzor
+# Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора
+# https://antizapret.prostovpn.org
+RKNBypass -Enable
+
+# Disable proxying only blocked sites from the unified registry of Roskomnadzor (default value)
+# Выключить проксирование только заблокированных сайтов из единого реестра Роскомнадзора (значение по умолчанию)
+# https://antizapret.prostovpn.org
+# RKNBypass -Disable
+
+# Enable all necessary dependencies (reboot may require) and open Microsoft Store WSA page to install Windows Subsystem for Android™ with Amazon Appstore manually
+# Включить все необходимые зависимости (может потребоваться перезагрузка) и открыть страницу WSA в Microsoft Store, чтобы вручную установить Windows Subsystem for Android™ with Amazon Appstore
+# WSA -Enable
+
+# Disable all necessary dependencies (reboot may require) and uninstall Windows Subsystem for Android™ with Amazon Appstore (default value)
+# Выключить все необходимые зависимости и удалить Windows Subsystem for Android™ with Amazon Appstore (значение по умолчанию)
+# WSA -Disable
 #endregion System
 
 #region WSL

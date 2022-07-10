@@ -30,6 +30,7 @@ UserFolderSelect                          = Sélectionnez un dossier pour le dos
 UserDefaultFolder                         = Voulez vous changer où est placé le dossier "{0}" à sa valeur par défaut?
 ReservedStorageIsInUse                    = Cette opération n'est pas suppportée le stockage réservé est en cours d'utilisation\nVeuillez réexécuter la fonction "{0}" après le redémarrage du PC
 ShortcutPinning                           = Le raccourci "{0}" est épinglé sur Démarrer...
+SSDRequired                               = Pour utiliser le sous-système Windows pour Android™ sur votre appareil, votre PC doit être équipé d'un lecteur à état solide (SSD).
 UninstallUWPForAll                        = Pour tous les utilisateurs
 UWPAppsTitle                              = Applications UWP
 HEVCDownloading                           = Téléchargement de Extensions vidéo HEVC du fabricant de l'appareil... ~2,8 MB

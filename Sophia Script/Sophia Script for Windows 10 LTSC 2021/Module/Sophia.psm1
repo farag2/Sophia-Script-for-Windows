@@ -16,7 +16,7 @@
 	.NOTES
 	Supported Windows 10 version
 	Versions: 21H2
-	Builds: 19044
+	Builds: 19044.1766+
 	Editions: Enterprise LTSC 2021
 	Architecture: x64
 
@@ -79,9 +79,6 @@ function Checkings
 
 			Start-Sleep -Seconds 1
 
-			# Check for UWP apps updates
-			Get-CimInstance -Namespace "Root\cimv2\mdm\dmmap" -ClassName "MDM_EnterpriseModernAppManagement_AppManagement01" | Invoke-CimMethod -MethodName UpdateScanMethod
-
 			# Open the "Windows Update" page
 			Start-Process -FilePath "ms-settings:windowsupdate-action"
 
@@ -94,8 +91,10 @@ function Checkings
 		}
 	}
 
-	# Check whether the OS minor build version is 1151 minimum
-	switch ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -ge 1348)
+	# Check whether the OS minor build version is 1766 minimum
+	# https://docs.microsoft.com/en-us/windows/release-health/release-information
+	# https://support.microsoft.com/en-us/topic/june-14-2022-kb5014699-os-builds-19042-1766-19043-1766-and-19044-1766-5c81d49d-0b6e-4808-9485-1f54e5d1bb15
+	switch ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -ge 1766)
 	{
 		$false
 		{
@@ -7499,7 +7498,12 @@ function InstallDotNetRuntime6
 			(Get-ItemProperty -Path HKCU:\Environment -Name TEMP).TEMP
 			[System.IO.Path]::GetTempPath()
 		#>
-		Get-ChildItem -Path "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe", "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe", "$env:TEMP\Microsoft_Windows_Desktop_Runtime*.log" -Force | Remove-Item -Recurse -Force -ErrorAction Ignore
+		$Paths = @(
+			"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe",
+			"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe",
+			"$env:TEMP\Microsoft_Windows_Desktop_Runtime*.log"
+		)
+		Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 	}
 	catch [System.Net.WebException]
 	{
@@ -7507,6 +7511,64 @@ function InstallDotNetRuntime6
 		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 
 		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+	}
+}
+
+<#
+	.SYNOPSIS
+	Bypass RKN restrictins using antizapret.prostovpn.org proxies
+
+	.PARAMETER Enable
+	Enable proxying only blocked sites from the unified registry of Roskomnadzor using antizapret.prostovpn.org servers
+
+	.PARAMETER Disable
+	Disable proxying only blocked sites from the unified registry of Roskomnadzor using antizapret.prostovpn.org servers
+
+	.EXAMPLE
+	RKNBypass -Enable
+
+	.EXAMPLE
+	RKNBypass -Disable
+
+	.LINK
+	https://antizapret.prostovpn.org
+
+	.NOTES
+	Current user
+#>
+function RKNBypass
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Enable"
+		{
+			# If current region is Russia
+			if (((Get-WinHomeLocation).GeoId -eq "203"))
+			{
+				New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name AutoConfigURL -PropertyType String -Value "https://antizapret.prostovpn.org/proxy.pac" -Force
+			}
+		}
+		"Disable"
+		{
+			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name AutoConfigURL -Force
+		}
 	}
 }
 #endregion System
@@ -10413,6 +10475,13 @@ function MultipleInvokeContext
 #>
 function UpdateLGPEPolicies
 {
+	if (-not (Get-WindowsEdition -Online | Where-Object -FilterScript {
+		($_.Edition -eq "Professional") -or ($_.Edition -like "Enterprise*") -or ($_.Edition -eq "Education")
+	}))
+	{
+		return
+	}
+
 	Write-Verbose -Message $Localization.Patient -Verbose
 	Write-Information -MessageData "" -InformationAction Continue
 

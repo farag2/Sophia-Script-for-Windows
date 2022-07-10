@@ -27,7 +27,7 @@
 	.NOTES
 	Supported Windows 10 version
 	Version: 1809
-	Build: 17763
+	Build: 17763.3046+
 	Edition: Enterprise LTSC 2019
 	Architecture: x64
 
@@ -77,6 +77,7 @@ Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
 
 # Import module for modifying registry.pol files (Administrative Templates) of local GPOs
+# Used for UpdateLGPEPolicies function
 # https://www.powershellgallery.com/packages/PolicyFileEditor
 Remove-Module -Name PolicyFileEditor -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\bin\PolicyFileEditor\PolicyFileEditor.psd1 -PassThru -Force
@@ -759,6 +760,16 @@ InstallVCRedistx64
 	https://docs.microsoft.com/en-us/dotnet/core/install/windows?tabs=net60
 #>
 InstallDotNetRuntime6
+
+# Enable proxying only blocked sites from the unified registry of Roskomnadzor
+# Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора
+# https://antizapret.prostovpn.org
+RKNBypass -Enable
+
+# Disable proxying only blocked sites from the unified registry of Roskomnadzor (default value)
+# Выключить проксирование только заблокированных сайтов из единого реестра Роскомнадзора (значение по умолчанию)
+# https://antizapret.prostovpn.org
+# RKNBypass -Disable
 #endregion System
 
 #region Start menu

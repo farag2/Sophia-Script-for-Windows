@@ -16,7 +16,7 @@
 	.NOTES
 	Supported Windows 10 versions
 	Versions: 2004/20H2/21H1/21H2
-	Build: 1904x.1151+
+	Build: 1904x.1766+
 	Editions: Home/Pro/Enterprise
 	Architecture: x64
 
@@ -94,8 +94,10 @@ function Checkings
 		}
 	}
 
-	# Check whether the OS minor build version is 1151 minimum
-	switch ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -ge 1151)
+	# Check whether the OS minor build version is 1766 minimum
+	# https://docs.microsoft.com/en-us/windows/release-health/release-information
+	# https://support.microsoft.com/en-us/topic/june-14-2022-kb5014699-os-builds-19042-1766-19043-1766-and-19044-1766-5c81d49d-0b6e-4808-9485-1f54e5d1bb15
+	switch ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -ge 1766)
 	{
 		$false
 		{
@@ -8551,7 +8553,12 @@ function InstallDotNetRuntime6
 				(Get-ItemProperty -Path HKCU:\Environment -Name TEMP).TEMP
 				[System.IO.Path]::GetTempPath()
 			#>
-			Get-ChildItem -Path "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe", "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe", "$env:TEMP\Microsoft_Windows_Desktop_Runtime*.log" -Force | Remove-Item -Recurse -Force -ErrorAction Ignore
+			$Paths = @(
+				"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe",
+				"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe",
+				"$env:TEMP\Microsoft_Windows_Desktop_Runtime*.log"
+			)
+			Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 		}
 	}
 	catch [System.Net.WebException]
@@ -8560,6 +8567,64 @@ function InstallDotNetRuntime6
 		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 
 		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+	}
+}
+
+<#
+	.SYNOPSIS
+	Bypass RKN restrictins using antizapret.prostovpn.org proxies
+
+	.PARAMETER Enable
+	Enable proxying only blocked sites from the unified registry of Roskomnadzor using antizapret.prostovpn.org servers
+
+	.PARAMETER Disable
+	Disable proxying only blocked sites from the unified registry of Roskomnadzor using antizapret.prostovpn.org servers
+
+	.EXAMPLE
+	RKNBypass -Enable
+
+	.EXAMPLE
+	RKNBypass -Disable
+
+	.LINK
+	https://antizapret.prostovpn.org
+
+	.NOTES
+	Current user
+#>
+function RKNBypass
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Enable"
+		{
+			# If current region is Russia
+			if (((Get-WinHomeLocation).GeoId -eq "203"))
+			{
+				New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name AutoConfigURL -PropertyType String -Value "https://antizapret.prostovpn.org/proxy.pac" -Force
+			}
+		}
+		"Disable"
+		{
+			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name AutoConfigURL -Force
+		}
 	}
 }
 #endregion System
@@ -10000,7 +10065,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	Install "HEVC Video Extensions from Device Manufacturer" to be able to open .heic and .heif formats
 
 	.PARAMETER Install
-	Download and install the "HEVC Video Extensions from Device Manufacturer" extension using the https://store.rg-adguard.net parser
+	Download and install the "HEVC Video Extensions from Device Manufacturer" extension
 
 	.PARAMETER Manually
 	Open Microsoft Store "HEVC Video Extensions from Device Manufacturer" page to install the extension manually
@@ -10014,11 +10079,11 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	.LINK
 	https://www.microsoft.com/store/productId/9n4wgh0z6vhq
 
-	.LINK
-	https://dev.to/kaiwalter/download-windows-store-apps-with-powershell-from-https-store-rg-adguard-net-155m
-
 	.NOTES
 	The extension can be installed without Microsoft account
+
+	.NOTES
+	HEVC Video Extension is already installed in Windows 11 22H2 by default
 
 	.NOTES
 	Current user
@@ -10047,15 +10112,31 @@ function HEIF
 		"Install"
 		{
 			# Check whether the extension is already installed
-			if ((-not (Get-AppxPackage -Name Microsoft.HEVCVideoExtension)) -and (Get-AppxPackage -Name Microsoft.Windows.Photos))
+			if ((Get-AppxPackage -Name Microsoft.HEVCVideoExtension) -and (Get-AppxPackage -Name Microsoft.Windows.Photos))
 			{
+				return
+			}
+
+			try
+			{
+				# Check the internet connection
+				$Parameters = @{
+					Uri              = "https://www.google.com"
+					Method           = "Head"
+					DisableKeepAlive = $true
+					UseBasicParsing  = $true
+				}
+				if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+				{
+					return
+				}
+
 				try
 				{
-					# Check the internet connection
+					# Check whether https://github.com is alive
 					$Parameters = @{
-						Uri              = "https://www.google.com"
+						Uri              = "https://github.com"
 						Method           = "Head"
-						SslProtocol      = "Tls12"
 						DisableKeepAlive = $true
 						UseBasicParsing  = $true
 					}
@@ -10064,79 +10145,35 @@ function HEIF
 						return
 					}
 
-					try
-					{
-						# Check whether the https://store.rg-adguard.net site is alive
-						$Parameters = @{
-							Uri              = "https://store.rg-adguard.net/api/GetFiles"
-							Method           = "Head"
-							SslProtocol      = "Tls12"
-							DisableKeepAlive = $true
-							UseBasicParsing  = $true
-						}
-						if (-not (Invoke-WebRequest @Parameters).StatusDescription)
-						{
-							return
-						}
-
-						$Parameters = @{
-							Method      = "Post"
-							Uri         = "https://store.rg-adguard.net/api/GetFiles"
-							ContentType = "application/x-www-form-urlencoded"
-							Body        = @{
-								type = "url"
-								# HEVC Video Extensions from Device Manufacturer
-								url  = "https://www.microsoft.com/store/productId/9n4wgh0z6vhq"
-								ring = "Retail"
-								lang = "en-US"
-							}
-							UseBasicParsing = $true
-							SslProtocol     = "Tls12"
-						}
-						$Raw = Invoke-WebRequest @Parameters
-
-						# Parsing the page
-						$Raw | Select-String -Pattern '<tr style.*<a href=\"(?<url>.*)"\s.*>(?<text>.*)<\/a>' -AllMatches | ForEach-Object -Process {$_.Matches} | ForEach-Object -Process {
-							$TempURL = $_.Groups[1].Value
-							$Package = $_.Groups[2].Value
-
-							if ($Package -like "Microsoft.HEVCVideoExtension_*_x64__8wekyb3d8bbwe.appx")
-							{
-								Write-Information -MessageData "" -InformationAction Continue
-								Write-Verbose -Message $Localization.HEVCDownloading -Verbose
-
-								$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-								$Parameters = @{
-									Uri             = $TempURL
-									OutFile         = "$DownloadsFolder\$Package"
-									SslProtocol     = "Tls12"
-									UseBasicParsing = $true
-									Verbose         = $true
-								}
-								Invoke-WebRequest @Parameters
-
-								# Installing "HEVC Video Extensions from Device Manufacturer"
-								Add-AppxPackage -Path "$DownloadsFolder\$Package" -Verbose
-
-								Remove-Item -Path "$DownloadsFolder\$Package" -Force
-							}
-						}
+					# https://github.com/Sophia-Community/SophiApp/tree/master/AppX
+					$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+					$Parameters = @{
+						Uri             = "https://github.com/Sophia-Community/SophiApp/raw/master/AppX/Microsoft.HEVCVideoExtension_2.0.51121.0_x64__8wekyb3d8bbwe.Appx"
+						OutFile         = "$DownloadsFolder\Microsoft.HEVCVideoExtension_2.0.51121.0_x64__8wekyb3d8bbwe.Appx"
+						UseBasicParsing = $true
+						Verbose         = $true
 					}
-					catch [System.Net.WebException]
-					{
-						Write-Warning -Message ($Localization.NoResponse -f "https://store.rg-adguard.net")
-						Write-Error -Message ($Localization.NoResponse -f "https://store.rg-adguard.net") -ErrorAction SilentlyContinue
+					Invoke-WebRequest @Parameters
 
-						Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
-					}
+					# Installing "HEVC Video Extensions from Device Manufacturer"
+					Add-AppxPackage -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_2.0.51121.0_x64__8wekyb3d8bbwe.Appx" -Verbose
+
+					Remove-Item -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_2.0.51121.0_x64__8wekyb3d8bbwe.Appx" -Force
 				}
 				catch [System.Net.WebException]
 				{
-					Write-Warning -Message $Localization.NoInternetConnection
-					Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+					Write-Warning -Message ($Localization.NoResponse -f "https://github.com")
+					Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
 
 					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
 				}
+			}
+			catch [System.Net.WebException]
+			{
+				Write-Warning -Message $Localization.NoInternetConnection
+				Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+
+				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
 			}
 		}
 		"Manually"
@@ -10149,7 +10186,6 @@ function HEIF
 					$Parameters = @{
 						Uri              = "https://www.google.com"
 						Method           = "Head"
-						SslProtocol      = "Tls12"
 						DisableKeepAlive = $true
 						UseBasicParsing  = $true
 					}
@@ -12870,6 +12906,13 @@ function UseStoreOpenWith
 #>
 function UpdateLGPEPolicies
 {
+	if (-not (Get-WindowsEdition -Online | Where-Object -FilterScript {
+		($_.Edition -eq "Professional") -or ($_.Edition -like "Enterprise*") -or ($_.Edition -eq "Education")
+	}))
+	{
+		return
+	}
+
 	Write-Verbose -Message $Localization.Patient -Verbose
 	Write-Information -MessageData "" -InformationAction Continue
 

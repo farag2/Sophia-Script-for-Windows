@@ -30,6 +30,7 @@ UserFolderSelect                          = 为“{0}”文件夹选择一个文
 UserDefaultFolder                         = 您想将“{0}”文件夹的位置更改为默认值吗？
 ReservedStorageIsInUse                    = 保留存储空间正在使用时不支持此操作\n请在电脑重启后重新运行"{0}"功能
 ShortcutPinning                           = “{0}“快捷方式将被固定到开始菜单……
+SSDRequired                               = 要在您的设备上使用Windows Subsystem for Android™，您的电脑需要安装固态驱动器（SSD）
 UninstallUWPForAll                        = 对于所有用户
 UWPAppsTitle                              = UWP应用
 HEVCDownloading                           = 下载”HEVC Video Extensions from Device Manufacturer”…… ~2,8 MB

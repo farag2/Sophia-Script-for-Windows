@@ -30,6 +30,7 @@ UserFolderSelect                          = Selezionare una posizione per la car
 UserDefaultFolder                         = Volete cambiare la posizione della cartella "{0}" al valore di default?
 ReservedStorageIsInUse                    = Questa operazione non è supportata quando spazio riservato è in uso Si prega di eseguire nuovamente la funzione "{0}" dopo il riavvio del PC
 ShortcutPinning                           = Il collegamento "{0}" è stato bloccato...
+SSDRequired                               = Per utilizzare Windows Subsystem for Android™ sul proprio dispositivo, è necessario che sul PC sia installata un'unità a stato solido (SSD)
 UninstallUWPForAll                        = Per tutti gli utenti
 UWPAppsTitle                              = UWP Apps
 HEVCDownloading                           = Download del codec video HEVC Video estenxion dal produttore... ~ Circa 2,8 MB

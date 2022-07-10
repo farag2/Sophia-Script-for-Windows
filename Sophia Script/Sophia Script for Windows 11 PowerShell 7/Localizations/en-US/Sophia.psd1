@@ -30,6 +30,7 @@ UserFolderSelect                          = Select a folder for the "{0}" folder
 UserDefaultFolder                         = Would you like to change the location of the "{0}" folder to the default value?
 ReservedStorageIsInUse                    = This operation is not supported when reserved storage is in use\nPlease re-run the "{0}" function again after PC restart
 ShortcutPinning                           = The "{0}" shortcut is being pinned to Start...
+SSDRequired                               = To use Windows Subsystem for Android™ on your device, your PC needs to have Solid State Drive (SSD) installed
 UninstallUWPForAll                        = For all users
 UWPAppsTitle                              = UWP apps
 HEVCDownloading                           = Downloading HEVC Video Extensions from Device Manufacturer... ~2,8 MB

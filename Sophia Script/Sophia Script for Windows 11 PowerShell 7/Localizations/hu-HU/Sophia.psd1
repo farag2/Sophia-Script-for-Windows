@@ -30,6 +30,7 @@ UserFolderSelect                          = Válasszon ki egy könyvtárat a "{0
 UserDefaultFolder                         = Szeretné visszaállítani a "{0}" könyvtár helyét a gyári értékekre?
 ReservedStorageIsInUse                    = Ez a művelet nem hajtható végre, amíg a fenntartott tárhely használatban van\nPonovno pokrenite funkciju "{0}" nakon ponovnog pokretanja računala
 ShortcutPinning                           = A gyorsindító ikon "{0}" Startmenüre helyezése...
+SSDRequired                               = A Windows Subsystem for Android™ használatához a készüléken a számítógépen szilárdtest-meghajtónak (SSD) kell telepítve lennie
 UninstallUWPForAll                        = Az összes felhasználó számára
 UWPAppsTitle                              = UWP Alkalmazások
 HEVCDownloading                           = A HEVC Videobővítmények letöltése a gyártói oldalról... ~2,8 MB
