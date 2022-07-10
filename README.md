@@ -80,7 +80,7 @@ Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Wind
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/farag)
 
-[![ko-fi](https://storage.ko-fi.com/cdn/useruploads/Q5Q51QUJC/qrcode.png)
+![ko-fi](https://storage.ko-fi.com/cdn/useruploads/Q5Q51QUJC/qrcode.png)
 
 ## ⠀⠀⠀BTC⠀⠀⠀⠀⠀USDT⠀⠀⠀⠀⠀ETH
 
