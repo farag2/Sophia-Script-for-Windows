@@ -1535,6 +1535,26 @@
     "WindowsDefault": "One"
   },
   {
+    "Id": 702,
+    "Region": "Start menu",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "StartLayout",
+    "Arg": {
+      "Zero": {
+        "Tag": "Default"
+      },
+      "One": {
+        "Tag": "ShowMorePins"
+      },
+      "Two": {
+        "Tag": "ShowMoreRecommendations"
+      }
+    },
+    "Preset": "One",
+    "WindowsDefault": "Zero"
+  },
+  {
     "Id": 800,
     "Region": "UWP apps",
     "Control": "chk",
@@ -1794,23 +1814,6 @@
   {
     "Id": 1102,
     "Region": "Microsoft Defender & Security",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "DefenderSandbox",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable"
-      },
-      "One": {
-        "Tag": "Disable"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
-    "Id": 1103,
-    "Region": "Microsoft Defender & Security",
     "Control": "chk",
     "Required": "false",
     "Function": "DismissMSAccount",
@@ -1823,7 +1826,7 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 1104,
+    "Id": 1103,
     "Region": "Microsoft Defender & Security",
     "Control": "chk",
     "Required": "false",
@@ -1837,7 +1840,7 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 1105,
+    "Id": 1104,
     "Region": "Microsoft Defender & Security",
     "Control": "cmb",
     "Required": "false",
@@ -1854,7 +1857,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 1106,
+    "Id": 1105,
     "Region": "Microsoft Defender & Security",
     "Control": "cmb",
     "Required": "false",
@@ -1871,7 +1874,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 1107,
+    "Id": 1106,
     "Region": "Microsoft Defender & Security",
     "Control": "cmb",
     "Required": "false",
@@ -1888,7 +1891,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 1108,
+    "Id": 1107,
     "Region": "Microsoft Defender & Security",
     "Control": "cmb",
     "Required": "false",
@@ -1905,7 +1908,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 1109,
+    "Id": 1108,
     "Region": "Microsoft Defender & Security",
     "Control": "cmb",
     "Required": "false",
@@ -1922,7 +1925,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 1110,
+    "Id": 1109,
     "Region": "Microsoft Defender & Security",
     "Control": "cmb",
     "Required": "false",
@@ -1939,7 +1942,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 1111,
+    "Id": 1110,
     "Region": "Microsoft Defender & Security",
     "Control": "cmb",
     "Required": "false",
@@ -1956,7 +1959,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 1112,
+    "Id": 1111,
     "Region": "Microsoft Defender & Security",
     "Control": "cmb",
     "Required": "false",
@@ -1973,7 +1976,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 1113,
+    "Id": 1112,
     "Region": "Microsoft Defender & Security",
     "Control": "cmb",
     "Required": "false",
@@ -1990,7 +1993,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 1114,
+    "Id": 1113,
     "Region": "Microsoft Defender & Security",
     "Control": "cmb",
     "Required": "false",

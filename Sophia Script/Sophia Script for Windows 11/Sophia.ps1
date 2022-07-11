@@ -958,16 +958,16 @@ RunPowerShellShortcut -Elevated
 # RunPowerShellShortcut -NonElevated
 
 # Show default Start layout (for 22509+ build only) (default value)
-# Отображать стандартный макет начального экрана (только для сборки 22509+) (значение по умолчанию)
+# Отображать стандартный макет начального экрана (только для сборок 22509+) (значение по умолчанию)
 # StartLayout -Default
 
 # Show more pins on Start (for 22509+ build only)
-# Отображать больше закреплений на начальном экране (только для сборки 22509+)
+# Отображать больше закреплений на начальном экране (только для сборок 22509+)
 StartLayout -ShowMorePins
 
 # Show more recommendations on Start (for 22509+ build only)
-# Отображать больше рекомендаций на начальном экране (только для сборки 22509+)
-StartLayout -ShowMoreRecommendations
+# Отображать больше рекомендаций на начальном экране (только для сборок 22509+)
+# StartLayout -ShowMoreRecommendations
 #endregion Start menu
 
 #region UWP apps

@@ -877,21 +877,6 @@
   {
     "Id": 501,
     "Region": "System",
-    "Function": "StorageSenseTempFiles",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Exclua arquivos temporários que os aplicativos não estão usando (valor padrão)"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Não exclua arquivos temporários que os aplicativos não estão usando"
-      }
-    }
-  },
-  {
-    "Id": 502,
-    "Region": "System",
     "Function": "StorageSenseFrequency",
     "Arg": {
       "Zero": {
@@ -901,6 +886,21 @@
       "One": {
         "Tag": "Default",
         "ToolTip": "Execute o Storage Sense durante pouco espaço livre em disco (valor padrão)"
+      }
+    }
+  },
+  {
+    "Id": 502,
+    "Region": "System",
+    "Function": "StorageSenseTempFiles",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Exclua arquivos temporários que os aplicativos não estão usando (valor padrão)"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Não exclua arquivos temporários que os aplicativos não estão usando"
       }
     }
   },
@@ -1274,12 +1274,12 @@
     "Function": "CapsLock",
     "Arg": {
       "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Ative o Caps lock"
+        "Tag": "Disable",
+        "ToolTip": "Desativar Caps Lock"
       },
       "One": {
-        "Tag": "Disable",
-        "ToolTip": "Desativar Caps Lock (valor padrão)"
+        "Tag": "Enable",
+        "ToolTip": "Ative o Caps lock (valor padrão)"
       }
     }
   },
@@ -1391,7 +1391,7 @@
   {
     "Id": 535,
     "Region": "System",
-    "Function": "PCHealthCheck",
+    "Function": "UninstallPCHealthCheck",
     "Arg": {
       "Zero": {
         "Tag": "Block",
@@ -1588,21 +1588,6 @@
   },
   {
     "Id": 806,
-    "Region": "UWP apps",
-    "Function": "BackgroundUWPApps",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Não deixe todos os aplicativos UWP serem executados em segundo plano"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Permitir que todos os aplicativos UWP sejam executados em segundo plano (valor padrão)"
-      }
-    }
-  },
-  {
-    "Id": 807,
     "Region": "UWP apps",
     "Function": "CheckUWPAppsUpdates",
     "Arg": {
@@ -1916,21 +1901,6 @@
     }
   },
   {
-    "Id": 1114,
-    "Region": "Microsoft Defender & Security",
-    "Function": "DNSoverHTTPS",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Habilite DNS-over-HTTPS para IPv4. Os endereços IPv4 válidos: 1.0.0.1, 1.1.1.1, 149.112.112.112, 8.8.4.4, 8.8.8.8, 9.9.9.9"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Desative DNS-over-HTTPS para IPv4 (valor padrão)"
-      }
-    }
-  },
-  {
     "Id": 1200,
     "Region": "Context menu",
     "Function": "MSIExtractContext",
@@ -2197,21 +2167,6 @@
       "One": {
         "Tag": "Show",
         "ToolTip": "Mostre o item \"Procurar um aplicativo na Microsoft Store\" na caixa de diálogo \"Abrir com\" (valor padrão)"		
-      }
-    }
-  },
-  {
-    "Id": 1218,
-    "Region": "Context menu",
-    "Function": "OpenWindowsTerminalContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Oculte a opção de menu \"Abrir no Windows Terminal\" no menu de contexto de pastas"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Mostrar a opção de menu \"Abrir no Windows Terminal\" no menu de contexto das pastas (valor padrão)"
       }
     }
   },

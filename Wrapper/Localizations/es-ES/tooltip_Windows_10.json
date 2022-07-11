@@ -1274,12 +1274,12 @@
     "Function": "CapsLock",
     "Arg": {
       "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Permitir la tecla Caps Lock"
+        "Tag": "Disable",
+        "ToolTip": "Desactivar el bloqueo de mayúsculas"
       },
       "One": {
-        "Tag": "Disable",
-        "ToolTip": "Desactivar el bloqueo de mayúsculas (valor predeterminado)"
+        "Tag": "Enable",
+        "ToolTip": "Permitir la tecla Caps Lock (valor predeterminado)"
       }
     }
   },
@@ -1391,7 +1391,7 @@
   {
     "Id": 535,
     "Region": "System",
-    "Function": "PCHealthCheck",
+    "Function": "UninstallPCHealthCheck",
     "Arg": {
       "Zero": {
         "Tag": "Block",
@@ -1588,21 +1588,6 @@
   },
   {
     "Id": 806,
-    "Region": "UWP apps",
-    "Function": "BackgroundUWPApps",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "No dejes que todas las aplicaciones para UWP se ejecuten en segundo plano"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Deje que todas las aplicaciones para UWP se ejecuten en segundo plano (valor predeterminado)"
-      }
-    }
-  },
-  {
-    "Id": 807,
     "Region": "UWP apps",
     "Function": "CheckUWPAppsUpdates",
     "Arg": {
@@ -1916,21 +1901,6 @@
     }
   },
   {
-    "Id": 1114,
-    "Region": "Microsoft Defender & Security",
-    "Function": "DNSoverHTTPS",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Habilite DNS sobre HTTPS para IPv4. Las direcciones IPv4 válidas: 1.0.0.1, 1.1.1.1, 149.112.112.112, 8.8.4.4, 8.8.8.8, 9.9.9.9"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Deshabilitar DNS sobre HTTPS para IPv4 (valor predeterminado)"
-      }
-    }
-  },
-  {
     "Id": 1200,
     "Region": "Context menu",
     "Function": "MSIExtractContext",
@@ -2197,21 +2167,6 @@
       "One": {
         "Tag": "Show",
         "ToolTip": "Mostrar el elemento \"Buscar una aplicación en Microsoft Store\" en el cuadro de diálogo \"Abrir con\" (valor predeterminado)"
-      }
-    }
-  },
-  {
-    "Id": 1218,
-    "Region": "Context menu",
-    "Function": "OpenWindowsTerminalContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Ocultar la opción de menú \"Abrir en Windows Terminal\" en el menú contextual de carpetas"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Mostrar la opción de menú \"Abrir en Windows Terminal\" en el menú contextual de carpetas (valor predeterminado)"
       }
     }
   },

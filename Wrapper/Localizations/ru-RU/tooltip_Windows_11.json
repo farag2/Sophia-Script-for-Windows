@@ -1326,6 +1326,17 @@
   {
     "Id": 700,
     "Region": "Start menu",
+    "Function": "UnpinAllStartApps",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Открепить все приложения от начального экрана"
+      }
+    }
+  },
+  {
+    "Id": 701,
+    "Region": "Start menu",
     "Function": "RunPowerShellShortcut",
     "Arg": {
       "Zero": {
@@ -1335,6 +1346,25 @@
       "One": {
         "Tag": "NonElevated",
         "ToolTip": "Запускать ярлык Windows PowerShell в меню \"Пуск\" от имени пользователя (значение по умолчанию)"
+      }
+    }
+  },
+  {
+    "Id": 702,
+    "Region": "Start menu",
+    "Function": "StartLayout",
+    "Arg": {
+      "Zero": {
+        "Tag": "Default",
+        "ToolTip": "Отображать стандартный макет начального экрана (только для сборок 22509+) (значение по умолчанию)"
+      },
+      "One": {
+        "Tag": "ShowMorePins",
+        "ToolTip": "Отображать больше закреплений на начальном экране (только для сборки 22509+)"
+      },
+      "Two": {
+        "Tag": "ShowMoreRecommendations",
+        "ToolTip": "Отображать больше рекомендаций на начальном экране (только для сборок 22509+)"
       }
     }
   },
@@ -1561,21 +1591,6 @@
   {
     "Id": 1102,
     "Region": "Microsoft Defender & Security",
-    "Function": "DefenderSandbox",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Включить песочницу для Microsoft Defender"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Выключить песочницу для Microsoft Defender (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1103,
-    "Region": "Microsoft Defender & Security",
     "Function": "DismissMSAccount",
     "Arg": {
       "Zero": {
@@ -1585,7 +1600,7 @@
     }
   },
   {
-    "Id": 1104,
+    "Id": 1103,
     "Region": "Microsoft Defender & Security",
     "Function": "DismissSmartScreenFilter",
     "Arg": {
@@ -1596,7 +1611,7 @@
     }
   },
   {
-    "Id": 1105,
+    "Id": 1104,
     "Region": "Microsoft Defender & Security",
     "Function": "AuditProcess",
     "Arg": {
@@ -1611,7 +1626,7 @@
     }
   },
   {
-    "Id": 1106,
+    "Id": 1105,
     "Region": "Microsoft Defender & Security",
     "Function": "CommandLineProcessAudit",
     "Arg": {
@@ -1626,7 +1641,7 @@
     }
   },
   {
-    "Id": 1107,
+    "Id": 1106,
     "Region": "Microsoft Defender & Security",
     "Function": "EventViewerCustomView",
     "Arg": {
@@ -1641,7 +1656,7 @@
     }
   },
   {
-    "Id": 1108,
+    "Id": 1107,
     "Region": "Microsoft Defender & Security",
     "Function": "PowerShellModulesLogging",
     "Arg": {
@@ -1656,7 +1671,7 @@
     }
   },
   {
-    "Id": 1109,
+    "Id": 1108,
     "Region": "Microsoft Defender & Security",
     "Function": "PowerShellScriptsLogging",
     "Arg": {
@@ -1671,7 +1686,7 @@
     }
   },
   {
-    "Id": 1110,
+    "Id": 1109,
     "Region": "Microsoft Defender & Security",
     "Function": "AppsSmartScreen",
     "Arg": {
@@ -1686,7 +1701,7 @@
     }
   },
   {
-    "Id": 1111,
+    "Id": 1110,
     "Region": "Microsoft Defender & Security",
     "Function": "SaveZoneInformation",
     "Arg": {
@@ -1701,7 +1716,7 @@
     }
   },
   {
-    "Id": 1112,
+    "Id": 1111,
     "Region": "Microsoft Defender & Security",
     "Function": "WindowsScriptHost",
     "Arg": {
@@ -1716,7 +1731,7 @@
     }
   },
   {
-    "Id": 1113,
+    "Id": 1112,
     "Region": "Microsoft Defender & Security",
     "Function": "WindowsSandbox",
     "Arg": {
@@ -1731,7 +1746,7 @@
     }
   },
   {
-    "Id": 1114,
+    "Id": 1113,
     "Region": "Microsoft Defender & Security",
     "Function": "DNSoverHTTPS",
     "Arg": {

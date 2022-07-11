@@ -1391,7 +1391,7 @@
   {
     "Id": 535,
     "Region": "System",
-    "Function": "PCHealthCheck",
+    "Function": "UninstallPCHealthCheck",
     "Arg": {
       "Zero": {
         "Tag": "Block",
@@ -1574,21 +1574,6 @@
   {
     "Id": 805,
     "Region": "UWP apps",
-    "Function": "TeamsAutostart",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Autostart von Microsoft Teams deaktivieren"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Aktiviert den Autostart von Microsoft Teams (Standardeinstellung)"
-      }
-    }
-  },
-  {
-    "Id": 806,
-    "Region": "UWP apps",
     "Function": "BackgroundUWPApps",
     "Arg": {
       "Zero": {
@@ -1602,7 +1587,7 @@
     }
   },
   {
-    "Id": 807,
+    "Id": 806,
     "Region": "UWP apps",
     "Function": "CheckUWPAppsUpdates",
     "Arg": {
@@ -1916,21 +1901,6 @@
     }
   },
   {
-    "Id": 1114,
-    "Region": "Microsoft Defender & Security",
-    "Function": "DNSoverHTTPS",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Aktiviert den DNS-over-HTTPS für IPv4. Bevorzugter DNS-Server: 1.0.0.1, alternativ: 1.1.1.1"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "DNS-over-HTTPS für IPv4 deaktivieren ( Standardeinstellung)."
-      }
-    }
-  },
-  {
     "Id": 1200,
     "Region": "Context menu",
     "Function": "MSIExtractContext",
@@ -2197,21 +2167,6 @@
       "One": {
         "Tag": "Show",
         "ToolTip": "Den Punkt \"Nach einer App im Microsoft Store suchen\" im Dialogfeld \"Öffnen mit\" anzeigen (Standardeinstellung)"
-      }
-    }
-  },
-  {
-    "Id": 1218,
-    "Region": "Context menu",
-    "Function": "OpenWindowsTerminalContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Ausblenden der Menüoption \"In Windows Terminal öffnen\" im Kontextmenü von Ordnern"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Menüoption \"In Windows Terminal öffnen\" im Kontextmenü der Ordner anzeigen (Standardeinstellung)"
       }
     }
   },

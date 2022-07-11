@@ -1391,7 +1391,7 @@
   {
     "Id": 535,
     "Region": "System",
-    "Function": "PCHealthCheck",
+    "Function": "UninstallPCHealthCheck",
     "Arg": {
       "Zero": {
         "Tag": "Block",
@@ -1574,21 +1574,6 @@
   {
     "Id": 805,
     "Region": "UWP apps",
-    "Function": "TeamsAutostart",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Выключить автозагрузку Microsoft Teams"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Включить автозагрузкуMicrosoft Teams (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 806,
-    "Region": "UWP apps",
     "Function": "BackgroundUWPApps",
     "Arg": {
       "Zero": {
@@ -1602,7 +1587,7 @@
     }
   },
   {
-    "Id": 807,
+    "Id": 806,
     "Region": "UWP apps",
     "Function": "CheckUWPAppsUpdates",
     "Arg": {
@@ -1916,21 +1901,6 @@
     }
   },
   {
-    "Id": 1114,
-    "Region": "Microsoft Defender & Security",
-    "Function": "DNSoverHTTPS",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Включить DNS-over-HTTPS для IPv4. Действительные IPv4-адреса: 1.0.0.1, 1.1.1.1, 149.112.112.112, 8.8.4.4, 8.8.8.8, 9.9.9.9"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Выключить DNS-over-HTTPS для IPv4 (значение по умолчанию)"
-      }
-    }
-  },
-  {
     "Id": 1200,
     "Region": "Context menu",
     "Function": "MSIExtractContext",
@@ -2197,21 +2167,6 @@
       "One": {
         "Tag": "Show",
         "ToolTip": "Отображать пункт \"Поиск приложения в Microsoft Store\" в диалоге \"Открыть с помощью\" (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1218,
-    "Region": "Context menu",
-    "Function": "OpenWindowsTerminalContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть пункт меню \"Открыть в Терминале Windows\" в контекстном меню папок"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показать пункт меню \"Открыть в Windows Terminal\" в контекстном меню папок (значение по умолчанию)"
       }
     }
   },

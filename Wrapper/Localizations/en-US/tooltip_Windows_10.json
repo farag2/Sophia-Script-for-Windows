@@ -1394,7 +1394,7 @@
     "Function": "UninstallPCHealthCheck",
     "Arg": {
       "Zero": {
-        "Tag": "",
+        "Tag": "Block",
         "ToolTip": "Uninstall the \"PC Health Check\" app and prevent it from installing in the future. The KB5005463 update installs the PC Health Check app to check if PC meets the system requirements of Windows 11"
       }
     }
@@ -1574,21 +1574,6 @@
   {
     "Id": 805,
     "Region": "UWP apps",
-    "Function": "TeamsAutostart",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Disable Microsoft Teams autostarting"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Enable Microsoft Teams autostarting (default value)"
-      }
-    }
-  },
-  {
-    "Id": 806,
-    "Region": "UWP apps",
     "Function": "BackgroundUWPApps",
     "Arg": {
       "Zero": {
@@ -1602,7 +1587,7 @@
     }
   },
   {
-    "Id": 807,
+    "Id": 806,
     "Region": "UWP apps",
     "Function": "CheckUWPAppsUpdates",
     "Arg": {
@@ -1916,21 +1901,6 @@
     }
   },
   {
-    "Id": 1114,
-    "Region": "Microsoft Defender & Security",
-    "Function": "DNSoverHTTPS",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Enable DNS-over-HTTPS for IPv4. The valid IPv4 addresses: 1.0.0.1, 1.1.1.1, 149.112.112.112, 8.8.4.4, 8.8.8.8, 9.9.9.9"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Disable DNS-over-HTTPS for IPv4 (default value)"
-      }
-    }
-  },
-  {
     "Id": 1200,
     "Region": "Context menu",
     "Function": "MSIExtractContext",
@@ -2197,21 +2167,6 @@
       "One": {
         "Tag": "Show",
         "ToolTip": "Show the \"Look for an app in the Microsoft Store\" item in the \"Open with\" dialog (default value)"
-      }
-    }
-  },
-  {
-    "Id": 1218,
-    "Region": "Context menu",
-    "Function": "OpenWindowsTerminalContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"Open in Windows Terminal\" menu option in the folders context menu"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show the \"Open in Windows Terminal\" menu option in the folders context menu (default value)"
       }
     }
   },
