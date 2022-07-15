@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.3.1
-	Date: 05.07.2022
+	Version: v5.3.2
+	Date: 16.07.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -304,11 +304,62 @@ function Checkings
 		}
 	}
 
+	#region Defender Checkings
 	# Turn off Controlled folder access to let the script proceed
 	# Checking whether Defender wasn't disabled first
 	$productState = (Get-CimInstance -Namespace root/SecurityCenter2 -ClassName Antivirusproduct | Where-Object -FilterScript {$_.instanceGuid -eq "{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}"}).productState
 	$DefenderState = ('0x{0:x}' -f $productState).Substring(3, 2)
 	if ($DefenderState -notmatch "00|01")
+	{
+		$Script:DefenderproductState = $true
+	}
+	else
+	{
+		$Script:DefenderproductState = $false
+	}
+
+	# Checking services
+	Get-Service -Name Windefend, SecurityHealthService, wscsvc -ErrorAction Ignore | ForEach-Object -Process {
+		if (($null -ne $_.Name) -and ($_.Status -eq "running"))
+		{
+			$Script:DefenderServices = $true
+		}
+		else
+		{
+			$Script:DefenderServices = $false
+		}
+	}
+
+	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).AntispywareEnabled)
+	{
+		$Script:DefenderAntispywareEnabled = $true
+	}
+	else
+	{
+		$Script:DefenderAntispywareEnabled = $false
+	}
+
+	# https://docs.microsoft.com/en-us/graph/api/resources/intune-devices-windowsdefenderproductstatus?view=graph-rest-beta
+	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).ProductStatus -eq 1)
+	{
+		$Script:DefenderProductStatus = $false
+	}
+	else
+	{
+		$Script:DefenderProductStatus = $true
+	}
+
+	# https://docs.microsoft.com/en-us/graph/api/resources/intune-devices-windowsdefenderproductstatus?view=graph-rest-beta
+	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).AMEngineVersion -eq 0.0.0.0)
+	{
+		$Script:DefenderAMEngineVersion = $false
+	}
+	else
+	{
+		$Script:DefenderAMEngineVersion = $true
+	}
+
+	if ($Script:DefenderproductState -and $Script:DefenderServices -and $Script:DefenderAntispywareEnabled -and $Script:DefenderProductStatus -and $Script:DefenderAMEngineVersion)
 	{
 		# Defender is enabled
 		$Script:DefenderState = $true
@@ -331,6 +382,7 @@ function Checkings
 			}
 		}
 	}
+	#endregion Defender Checkings
 
 	# Save all opened folders in order to restore them after File Explorer restart
 	$Script:OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()

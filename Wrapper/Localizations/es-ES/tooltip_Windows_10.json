@@ -1422,6 +1422,21 @@
     }
   },
   {
+    "Id": 538,
+    "Region": "System",
+    "Function": "RKNBypass",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Habilitar el proxy sólo sitios bloqueados desde el registro unificado de Roskomnadzor. La función se aplicará sólo si la región en Windows se establece en \"Rusia\""
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Desactivar el proxy sólo de los sitios bloqueados del registro unificado de Roskomnadzor (valor predeterminado)"
+      }
+    }
+  },
+  {
     "Id": 600,
     "Region": "WSL",
     "Function": "WSL",

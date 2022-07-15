@@ -1313,6 +1313,36 @@
     }
   },
   {
+    "Id": 538,
+    "Region": "System",
+    "Function": "RKNBypass",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Activar a proxying apenas bloqueia sites do registo unificado de Roskomnadzor. A função só será aplicada se a região no Windows estiver definida para \"Rússia\""
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Desactivar a proxy apenas bloqueou sites do registo unificado de Roskomnadzor (valor padrão)"
+      }
+    }
+  },
+  {
+    "Id": 539,
+    "Region": "System",
+    "Function": "WSA",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Activar todas as dependências necessárias (reiniciar pode ser necessário) e abrir a página WSA do Microsoft Store para instalar manualmente o Subsistema Windows para Android™ com a Amazon Appstore"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Desactivar todas as dependências necessárias (pode ser necessário reiniciar) e desinstalar o subsistema Windows para Android™ com Amazon Appstore (valor padrão)"
+      }
+    }
+  },
+  {
     "Id": 600,
     "Region": "WSL",
     "Function": "WSL",

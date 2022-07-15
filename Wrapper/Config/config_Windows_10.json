@@ -1596,6 +1596,23 @@
     "WindowsDefault": ""
   },
   {
+    "Id": 538,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "RKNBypass",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One"
+  },
+  {
     "Id": 600,
     "Region": "WSL",
     "Control": "chk",

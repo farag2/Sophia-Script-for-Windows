@@ -148,11 +148,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Do not allow apps to use advertising ID"
+        "ToolTip": "Erlauben Sie Anwendungen nicht, eine Werbe-ID zu verwenden"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Allow apps to use advertising ID (default value)"
+        "ToolTip": "Erlauben Sie Anwendungen die Verwendung einer Werbe-ID (Standardeinstellung)"
       }
     }
   },
@@ -1309,6 +1309,36 @@
       "Zero": {
         "Tag": "",
         "ToolTip": "Установить последнюю версию .NET Desktop Runtime 6 (x86/x64)"
+      }
+    }
+  },
+  {
+    "Id": 538,
+    "Region": "System",
+    "Function": "RKNBypass",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Aktivieren Sie das Proxying nur für gesperrte Websites aus der einheitlichen Registrierung von Roskomnadzor. Die Funktion wird nur angewendet, wenn die Region in Windows auf \"Russland\" eingestellt ist."
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Deaktivieren Sie das Proxying nur für gesperrte Websites aus dem einheitlichen Register von Roskomnadzor (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 539,
+    "Region": "System",
+    "Function": "WSA",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Aktivieren Sie alle erforderlichen Abhängigkeiten (ein Neustart kann erforderlich sein) und öffnen Sie die Microsoft Store WSA-Seite, um Windows Subsystem for Android™ mit Amazon Appstore manuell zu installieren"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Deaktivieren Sie alle erforderlichen Abhängigkeiten (ein Neustart kann erforderlich sein) und deinstallieren Sie Windows Subsystem for Android™ with Amazon Appstore (Standardwert)"
       }
     }
   },

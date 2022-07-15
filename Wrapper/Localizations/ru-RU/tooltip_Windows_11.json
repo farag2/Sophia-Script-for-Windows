@@ -1313,6 +1313,36 @@
     }
   },
   {
+    "Id": 538,
+    "Region": "System",
+    "Function": "RKNBypass",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора. Функция будет применена, только если в Windows установлен регион \"Россия\""
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Выключить проксирование только заблокированных сайтов из единого реестра Роскомнадзора (значение по умолчанию)"
+      }
+    }
+  },
+  {
+    "Id": 539,
+    "Region": "System",
+    "Function": "WSA",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Включить все необходимые зависимости (может потребоваться перезагрузка) и открыть страницу WSA в Microsoft Store, чтобы вручную установить Windows Subsystem for Android™ with Amazon Appstore"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Выключить все необходимые зависимости и удалить Windows Subsystem for Android™ with Amazon Appstore (значение по умолчанию)"
+      }
+    }
+  },
+  {
     "Id": 600,
     "Region": "WSL",
     "Function": "WSL",

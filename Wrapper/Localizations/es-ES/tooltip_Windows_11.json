@@ -1313,6 +1313,36 @@
     }
   },
   {
+    "Id": 538,
+    "Region": "System",
+    "Function": "RKNBypass",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Habilitar el proxy sólo sitios bloqueados desde el registro unificado de Roskomnadzor. La función se aplicará sólo si la región en Windows se establece en \"Rusia\""
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Desactivar el proxy sólo de los sitios bloqueados del registro unificado de Roskomnadzor (valor predeterminado)"
+      }
+    }
+  },
+  {
+    "Id": 539,
+    "Region": "System",
+    "Function": "WSA",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Habilita todas las dependencias necesarias (puede ser necesario reiniciar) y abre la página de la WSA de Microsoft Store para instalar manualmente Windows Subsystem for Android™ con Amazon Appstore"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Desactivar todas las dependencias necesarias (puede ser necesario reiniciar) y desinstalar Windows Subsystem for Android™ con Amazon Appstore (valor predeterminado)"
+      }
+    }
+  },
+  {
     "Id": 600,
     "Region": "WSL",
     "Function": "WSL",

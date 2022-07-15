@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 11 (PowerShell 7)"
 
-	Version: v6.1.1
-	Date: 05.07.2022
+	Version: v6.1.2
+	Date: 16.07.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -26,8 +26,8 @@
 
 	.NOTES
 	Supported Windows 11 versions
-	Version: 21H2/22H2
-	Build: 22000.739+, 22509+
+	Versions: 21H2/22H2
+	Builds: 22000.739+, 22509+
 	Editions: Home/Pro/Enterprise
 
 	.NOTES
@@ -70,7 +70,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.1.1 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2022"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.1.2 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2022"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -914,8 +914,8 @@ InstallVCRedistx64
 #>
 InstallDotNetRuntime6
 
-# Enable proxying only blocked sites from the unified registry of Roskomnadzor
-# Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора
+# Enable proxying only blocked sites from the unified registry of Roskomnadzor. The function will be applied only if the region in Windows is set to "Russia"
+# Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора. Функция будет применена, только если в Windows установлен регион "Россия"
 # https://antizapret.prostovpn.org
 RKNBypass -Enable
 

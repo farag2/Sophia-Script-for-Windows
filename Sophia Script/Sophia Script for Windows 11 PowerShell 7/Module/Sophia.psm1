@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v6.1.1
-	Date: 05.07.2022
+	Version: v6.1.2
+	Date: 16.07.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -15,8 +15,8 @@
 
 	.NOTES
 	Supported Windows 11 versions
-	Version: 21H2/22H2
-	Build: 22000.739+, 22509+
+	Versions: 21H2/22H2
+	Builds: 22000.739+, 22509+
 	Editions: Home/Pro/Enterprise
 
 	.NOTES
@@ -314,6 +314,56 @@ function Checkings
 	$DefenderState = ('0x{0:x}' -f $productState).Substring(3, 2)
 	if ($DefenderState -notmatch "00|01")
 	{
+		$Script:DefenderproductState = $true
+	}
+	else
+	{
+		$Script:DefenderproductState = $false
+	}
+
+	# Checking services
+	Get-Service -Name Windefend, SecurityHealthService, wscsvc -ErrorAction Ignore | ForEach-Object -Process {
+		if (($null -ne $_.Name) -and ($_.Status -eq "running"))
+		{
+			$Script:DefenderServices = $true
+		}
+		else
+		{
+			$Script:DefenderServices = $false
+		}
+	}
+
+	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).AntispywareEnabled)
+	{
+		$Script:DefenderAntispywareEnabled = $true
+	}
+	else
+	{
+		$Script:DefenderAntispywareEnabled = $false
+	}
+
+	# https://docs.microsoft.com/en-us/graph/api/resources/intune-devices-windowsdefenderproductstatus?view=graph-rest-beta
+	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).ProductStatus -eq 1)
+	{
+		$Script:DefenderProductStatus = $false
+	}
+	else
+	{
+		$Script:DefenderProductStatus = $true
+	}
+
+	# https://docs.microsoft.com/en-us/graph/api/resources/intune-devices-windowsdefenderproductstatus?view=graph-rest-beta
+	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).AMEngineVersion -eq 0.0.0.0)
+	{
+		$Script:DefenderAMEngineVersion = $false
+	}
+	else
+	{
+		$Script:DefenderAMEngineVersion = $true
+	}
+
+	if ($Script:DefenderproductState -and $Script:DefenderServices -and $Script:DefenderAntispywareEnabled -and $Script:DefenderProductStatus -and $Script:DefenderAMEngineVersion)
+	{
 		# Defender is enabled
 		$Script:DefenderState = $true
 
@@ -335,6 +385,7 @@ function Checkings
 			}
 		}
 	}
+	#endregion Defender Checkings
 
 	# Save all opened folders in order to restore them after File Explorer restart
 	$Script:OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
@@ -8269,7 +8320,7 @@ function WSA
 			$DiskNumber = (Get-Disk | Where-Object -FilterScript {$_.Isboot -and $_.IsSystem -and ($_.OperationalStatus -eq "Online")}).Number
 			if (Get-PhysicalDisk -DeviceNumber $DiskNumber | Where-Object -FilterScript {$_.MediaType -ne "SSD"})
 			{
-				Write-Warning -Message $Localization.SSDRequired ###
+				Write-Warning -Message $Localization.SSDRequired
 
 				return
 			}

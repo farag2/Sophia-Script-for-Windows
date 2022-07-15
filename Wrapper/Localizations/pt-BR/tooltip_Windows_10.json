@@ -1422,6 +1422,21 @@
     }
   },
   {
+    "Id": 538,
+    "Region": "System",
+    "Function": "RKNBypass",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Activar a proxying apenas bloqueia sites do registo unificado de Roskomnadzor. A função só será aplicada se a região no Windows estiver definida para \"Rússia\""
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Desactivar a proxy apenas bloqueou sites do registo unificado de Roskomnadzor (valor padrão)"
+      }
+    }
+  },
+  {
     "Id": 600,
     "Region": "WSL",
     "Function": "WSL",
