@@ -11,6 +11,7 @@ bin                                       = bin文件夹中没有文件。请重
 RebootPending                             = 计算机正在等待重新启动
 UnsupportedRelease                        = 找到新版本
 CustomizationWarning                      = \n在运行Sophia Script之前，您是否已自定义{0}预设文件中的每个函数？
+DefenderBroken                            = \n微软卫士被破坏或从操作系统中删除
 ControlledFolderAccessDisabled            = “受控文件夹访问”已禁用
 ScheduledTasks                            = 计划任务
 OneDriveUninstalling                      = 卸载OneDrive……

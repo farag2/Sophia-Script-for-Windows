@@ -1,6 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = A szkript csak a Windows 10 64 bites verziót támogatja
 UnsupportedOSBuild                        = A szkript támogatja a Windows 10 Enterprise LTSC 2019 kiadást
+UpdateWarning                             = A Windows 10 összesített frissítése telepítve: {0}. Támogatott kumulatív frissítés: 3046 és magasabb verziószámok
 UnsupportedLanguageMode                   = A PowerShell munkamenet korlátozott nyelvi üzemmódban fut
 LoggedInUserNotAdmin                      = A bejelentkezett felhasználó nem rendelkezik admin jogokkal
 UnsupportedPowerShell                     = A PowerShell {0}.{1} segítségével próbálja futtatni a szkriptet. Futtassa a szkriptet a megfelelő PowerShell-verzióban
@@ -11,6 +12,7 @@ bin                                       = A bin mappában nincsenek fájlok. K
 RebootPending                             = A számítógép újraindításra vár
 UnsupportedRelease                        = Új verzió érhető el
 CustomizationWarning                      = \nSzemélyre szabott minden opciót a {0} preset fájlban, mielőtt futtatni kívánja a Sophia szkriptet?
+DefenderBroken                            = \nA Microsoft Defender elromlott vagy eltávolították az operációs rendszerből
 ControlledFolderAccessDisabled            = Vezérelt mappához való hozzáférés kikapcsolva
 ScheduledTasks                            = Ütemezett feladatok
 WindowsFeaturesTitle                      = Windows szolgáltatások

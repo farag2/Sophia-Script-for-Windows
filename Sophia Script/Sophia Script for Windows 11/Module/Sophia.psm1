@@ -271,38 +271,6 @@ function Checkings
 	# Unblock all files in the script folder by removing the Zone.Identifier alternate data stream with a value of "3"
 	Get-ChildItem -Path $PSScriptRoot\..\ -File -Recurse -Force | Unblock-File
 
-	# Display a warning message about whether a user has customized the preset file
-	if ($Warning)
-	{
-		# Get the name of a preset (e.g Sophia.ps1) regardless it was named
-		$PresetName = Split-Path -Path ((Get-PSCallStack).Position | Where-Object -FilterScript {$_.File -match ".ps1"}).File -Leaf
-
-		$Title = ""
-		$Message       = $Localization.CustomizationWarning -f $PresetName
-		$Yes           = $Localization.Yes
-		$No            = $Localization.No
-		$Options       = "&$No", "&$Yes"
-		$DefaultChoice = 0
-		$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
-
-		switch ($Result)
-		{
-			"0"
-			{
-				Invoke-Item -Path $PSScriptRoot\..\$PresetName
-
-				Start-Sleep -Seconds 5
-
-				Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows#how-to-use"
-				exit
-			}
-			"1"
-			{
-				continue
-			}
-		}
-	}
-
 	#region Defender Checkings
 	# Turn off Controlled folder access to let the script proceed
 	# Checking whether Defender wasn't disabled first
@@ -318,14 +286,22 @@ function Checkings
 	}
 
 	# Checking services
-	Get-Service -Name Windefend, SecurityHealthService, wscsvc -ErrorAction Ignore | ForEach-Object -Process {
-		if (($null -ne $_.Name) -and ($_.Status -eq "running"))
+	@("Windefend", "SecurityHealthService", "wscsvc") | ForEach-Object -Process {
+		if ($null -eq (Get-Service -Name $_ -ErrorAction Ignore))
 		{
-			$Script:DefenderServices = $true
+			$Localization.DefenderBroken
+			exit
 		}
 		else
 		{
-			$Script:DefenderServices = $false
+			if ((Get-Service -Name $_ -ErrorAction Ignore).Status -eq "running")
+			{
+				$Script:DefenderServices = $true
+			}
+			else
+			{
+				$Script:DefenderServices = $false
+			}
 		}
 	}
 
@@ -349,7 +325,7 @@ function Checkings
 	}
 
 	# https://docs.microsoft.com/en-us/graph/api/resources/intune-devices-windowsdefenderproductstatus?view=graph-rest-beta
-	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).AMEngineVersion -eq 0.0.0.0)
+	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).AMEngineVersion -eq "0.0.0.0")
 	{
 		$Script:DefenderAMEngineVersion = $false
 	}
@@ -382,6 +358,38 @@ function Checkings
 		}
 	}
 	#endregion Defender Checkings
+
+	# Display a warning message about whether a user has customized the preset file
+	if ($Warning)
+	{
+		# Get the name of a preset (e.g Sophia.ps1) regardless it was named
+		$PresetName = Split-Path -Path ((Get-PSCallStack).Position | Where-Object -FilterScript {$_.File -match ".ps1"}).File -Leaf
+
+		$Title = ""
+		$Message       = $Localization.CustomizationWarning -f $PresetName
+		$Yes           = $Localization.Yes
+		$No            = $Localization.No
+		$Options       = "&$No", "&$Yes"
+		$DefaultChoice = 0
+		$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+
+		switch ($Result)
+		{
+			"0"
+			{
+				Invoke-Item -Path $PSScriptRoot\..\$PresetName
+
+				Start-Sleep -Seconds 5
+
+				Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows#how-to-use"
+				exit
+			}
+			"1"
+			{
+				continue
+			}
+		}
+	}
 
 	# Save all opened folders in order to restore them after File Explorer restart
 	$Script:OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
@@ -11298,8 +11306,8 @@ function DNSoverHTTPS
 				else
 				{
 					# Set a primary and secondary DNS servers
-					Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
-					$InterfaceGuid = (Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter).InterfaceGuid
+					Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq ""0.0.0.0"/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
+					$InterfaceGuid = (Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq ""0.0.0.0"/0"} | Get-NetAdapter).InterfaceGuid
 				}
 
 				# Set the DNS servers
@@ -11329,7 +11337,7 @@ function DNSoverHTTPS
 				else
 				{
 					# Configure DNS servers automatically
-					Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ResetServerAddresses
+					Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq ""0.0.0.0"/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ResetServerAddresses
 				}
 
 				Remove-Item -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\*" -Recurse -Force -ErrorAction Ignore

@@ -273,6 +273,93 @@ function Checkings
 	# Unblock all files in the script folder by removing the Zone.Identifier alternate data stream with a value of "3"
 	Get-ChildItem -Path $PSScriptRoot\..\ -File -Recurse -Force | Unblock-File
 
+	# Turn off Controlled folder access to let the script proceed
+	# Checking whether Defender wasn't disabled first
+	$productState = (Get-CimInstance -Namespace root/SecurityCenter2 -ClassName Antivirusproduct | Where-Object -FilterScript {$_.instanceGuid -eq "{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}"}).productState
+	$DefenderState = ('0x{0:x}' -f $productState).Substring(3, 2)
+	if ($DefenderState -notmatch "00|01")
+	{
+		$Script:DefenderproductState = $true
+	}
+	else
+	{
+		$Script:DefenderproductState = $false
+	}
+
+	# Checking services
+	@("Windefend", "SecurityHealthService", "wscsvc") | ForEach-Object -Process {
+		if ($null -eq (Get-Service -Name $_ -ErrorAction Ignore))
+		{
+			$Localization.DefenderBroken
+			exit
+		}
+		else
+		{
+			if ((Get-Service -Name $_ -ErrorAction Ignore).Status -eq "running")
+			{
+				$Script:DefenderServices = $true
+			}
+			else
+			{
+				$Script:DefenderServices = $false
+			}
+		}
+	}
+
+	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).AntispywareEnabled)
+	{
+		$Script:DefenderAntispywareEnabled = $true
+	}
+	else
+	{
+		$Script:DefenderAntispywareEnabled = $false
+	}
+
+	# https://docs.microsoft.com/en-us/graph/api/resources/intune-devices-windowsdefenderproductstatus?view=graph-rest-beta
+	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).ProductStatus -eq 1)
+	{
+		$Script:DefenderProductStatus = $false
+	}
+	else
+	{
+		$Script:DefenderProductStatus = $true
+	}
+
+	# https://docs.microsoft.com/en-us/graph/api/resources/intune-devices-windowsdefenderproductstatus?view=graph-rest-beta
+	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).AMEngineVersion -eq "0.0.0.0")
+	{
+		$Script:DefenderAMEngineVersion = $false
+	}
+	else
+	{
+		$Script:DefenderAMEngineVersion = $true
+	}
+
+	if ($Script:DefenderproductState -and $Script:DefenderServices -and $Script:DefenderAntispywareEnabled -and $Script:DefenderProductStatus -and $Script:DefenderAMEngineVersion)
+	{
+		# Defender is enabled
+		$Script:DefenderState = $true
+
+		switch ((Get-MpPreference).EnableControlledFolderAccess)
+		{
+			"1"
+			{
+				Write-Warning -Message $Localization.ControlledFolderAccessDisabled
+
+				$Script:ControlledFolderAccess = $true
+				Set-MpPreference -EnableControlledFolderAccess Disabled
+
+				# Open "Ransomware protection" page
+				Start-Process -FilePath windowsdefender://RansomwareProtection
+			}
+			"0"
+			{
+				$Script:ControlledFolderAccess = $false
+			}
+		}
+	}
+	#endregion Defender Checkings
+
 	# Display a warning message about whether a user has customized the preset file
 	if ($Warning)
 	{
@@ -307,85 +394,6 @@ function Checkings
 
 	# Import PowerShell 5.1 modules
 	Import-Module -Name Microsoft.PowerShell.Management, PackageManagement, Appx -UseWindowsPowerShell
-
-	# Turn off Controlled folder access to let the script proceed
-	# Checking whether Defender wasn't disabled first
-	$productState = (Get-CimInstance -Namespace root/SecurityCenter2 -ClassName Antivirusproduct | Where-Object -FilterScript {$_.instanceGuid -eq "{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}"}).productState
-	$DefenderState = ('0x{0:x}' -f $productState).Substring(3, 2)
-	if ($DefenderState -notmatch "00|01")
-	{
-		$Script:DefenderproductState = $true
-	}
-	else
-	{
-		$Script:DefenderproductState = $false
-	}
-
-	# Checking services
-	Get-Service -Name Windefend, SecurityHealthService, wscsvc -ErrorAction Ignore | ForEach-Object -Process {
-		if (($null -ne $_.Name) -and ($_.Status -eq "running"))
-		{
-			$Script:DefenderServices = $true
-		}
-		else
-		{
-			$Script:DefenderServices = $false
-		}
-	}
-
-	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).AntispywareEnabled)
-	{
-		$Script:DefenderAntispywareEnabled = $true
-	}
-	else
-	{
-		$Script:DefenderAntispywareEnabled = $false
-	}
-
-	# https://docs.microsoft.com/en-us/graph/api/resources/intune-devices-windowsdefenderproductstatus?view=graph-rest-beta
-	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).ProductStatus -eq 1)
-	{
-		$Script:DefenderProductStatus = $false
-	}
-	else
-	{
-		$Script:DefenderProductStatus = $true
-	}
-
-	# https://docs.microsoft.com/en-us/graph/api/resources/intune-devices-windowsdefenderproductstatus?view=graph-rest-beta
-	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).AMEngineVersion -eq 0.0.0.0)
-	{
-		$Script:DefenderAMEngineVersion = $false
-	}
-	else
-	{
-		$Script:DefenderAMEngineVersion = $true
-	}
-
-	if ($Script:DefenderproductState -and $Script:DefenderServices -and $Script:DefenderAntispywareEnabled -and $Script:DefenderProductStatus -and $Script:DefenderAMEngineVersion)
-	{
-		# Defender is enabled
-		$Script:DefenderState = $true
-
-		switch ((Get-MpPreference).EnableControlledFolderAccess)
-		{
-			"1"
-			{
-				Write-Warning -Message $Localization.ControlledFolderAccessDisabled
-
-				$Script:ControlledFolderAccess = $true
-				Set-MpPreference -EnableControlledFolderAccess Disabled
-
-				# Open "Ransomware protection" page
-				Start-Process -FilePath windowsdefender://RansomwareProtection
-			}
-			"0"
-			{
-				$Script:ControlledFolderAccess = $false
-			}
-		}
-	}
-	#endregion Defender Checkings
 
 	# Save all opened folders in order to restore them after File Explorer restart
 	$Script:OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
@@ -11338,8 +11346,8 @@ function DNSoverHTTPS
 				else
 				{
 					# Set a primary and secondary DNS servers
-					Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
-					$InterfaceGuid = (Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter).InterfaceGuid
+					Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq ""0.0.0.0"/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
+					$InterfaceGuid = (Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq ""0.0.0.0"/0"} | Get-NetAdapter).InterfaceGuid
 				}
 
 				# Set the DNS servers
@@ -11369,7 +11377,7 @@ function DNSoverHTTPS
 				else
 				{
 					# Configure DNS servers automatically
-					Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ResetServerAddresses
+					Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq ""0.0.0.0"/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ResetServerAddresses
 				}
 
 				Remove-Item -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\*" -Recurse -Force -ErrorAction Ignore

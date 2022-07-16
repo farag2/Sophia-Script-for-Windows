@@ -12,6 +12,7 @@ bin                                       = There are no files in the bin folder
 RebootPending                             = The PC is waiting to be restarted
 UnsupportedRelease                        = A new version found
 CustomizationWarning                      = \nHave you customized every function in the {0} preset file before running Sophia Script?
+DefenderBroken                            = \nMicrosoft Defender broken or removed from the OS
 ControlledFolderAccessDisabled            = Controlled folder access disabled
 ScheduledTasks                            = Scheduled tasks
 OneDriveUninstalling                      = Uninstalling OneDrive...

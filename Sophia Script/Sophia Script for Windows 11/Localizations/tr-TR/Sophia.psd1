@@ -11,6 +11,7 @@ bin                                       = bin klasöründe dosya yok. Lütfen 
 RebootPending                             = PC yeniden başlatılmayı bekliyor
 UnsupportedRelease                        = Yeni sürüm bulundu
 CustomizationWarning                      = \nSophia Script'i çalıştırmadan önce {0} ön ayar dosyasındaki her işlevi özelleştirdiniz mi?
+DefenderBroken                            = \nMicrosoft Defender bozuk veya işletim sisteminden kaldırıldı
 ControlledFolderAccessDisabled            = Kontrollü klasör erişimi devre dışı bırakıldı
 ScheduledTasks                            = Zamanlanan görevler
 OneDriveUninstalling                      = OneDrive kaldırılıyor...

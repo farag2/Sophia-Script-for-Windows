@@ -1,6 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Bu betik sadece Windows 10 x64 destekliyor
 UnsupportedOSBuild                        = Bu betik sadece Windows 10 Enterprise LTSC 2019
+UpdateWarning                             = Windows 10 toplu güncelleştirmesi yüklendi: {0}. Desteklenen toplu güncelleme: 3046 ve üstü
 UnsupportedLanguageMode                   = Sınırlı bir dil modunda çalışan PowerShell oturumu
 LoggedInUserNotAdmin                      = Oturum açan kullanıcının yönetici hakları yok
 UnsupportedPowerShell                     = Komut dosyasını PowerShell {0}.{1} aracılığıyla çalıştırmaya çalışıyorsunuz. Komut dosyasını uygun PowerShell sürümünde çalıştırın
@@ -11,6 +12,7 @@ bin                                       = bin klasöründe dosya yok. Lütfen 
 RebootPending                             = PC yeniden başlatılmayı bekliyor
 UnsupportedRelease                        = Yeni sürüm bulundu
 CustomizationWarning                      = \nSophia Script'i çalıştırmadan önce {0} ön ayar dosyasındaki her işlevi özelleştirdiniz mi?
+DefenderBroken                            = \nMicrosoft Defender bozuk veya işletim sisteminden kaldırıldı
 ControlledFolderAccessDisabled            = Kontrollü klasör erişimi devre dışı bırakıldı
 ScheduledTasks                            = Zamanlanan görevler
 WindowsFeaturesTitle                      = Características do Windows

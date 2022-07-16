@@ -11,6 +11,7 @@ bin                                       = A bin mappában nincsenek fájlok. K
 RebootPending                             = A számítógép újraindításra vár
 UnsupportedRelease                        = Új verzió érhető el
 CustomizationWarning                      = \nSzemélyre szabott minden opciót a {0} preset fájlban, mielőtt futtatni kívánja a Sophia szkriptet?
+DefenderBroken                            = \nA Microsoft Defender elromlott vagy eltávolították az operációs rendszerből
 ControlledFolderAccessDisabled            = Vezérelt mappához való hozzáférés kikapcsolva
 ScheduledTasks                            = Ütemezett feladatok
 OneDriveUninstalling                      = OneDrive eltávolítása...

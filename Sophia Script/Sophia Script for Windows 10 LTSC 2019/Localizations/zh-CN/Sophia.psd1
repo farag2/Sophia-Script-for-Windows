@@ -1,6 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = 该脚本仅支持Windows 10 x64
 UnsupportedOSBuild                        = 该脚本支持Windows 10版本Enterprise LTSC 2019
+UpdateWarning                             = 安装了Windows 10累积更新：{0}. 支持的累积更新：3046及以上
 UnsupportedLanguageMode                   = PowerShell会话在有限的语言模式下运行
 LoggedInUserNotAdmin                      = 登录的用户没有管理员的权利
 UnsupportedPowerShell                     = 你想通过PowerShell {0}.{1}运行脚本。在适当的PowerShell版本中运行该脚本
@@ -11,6 +12,7 @@ bin                                       = bin文件夹中没有文件。请重
 RebootPending                             = 计算机正在等待重新启动
 UnsupportedRelease                        = 找到新版本
 CustomizationWarning                      = \n在运行Sophia Script之前，您是否已自定义{0}预设文件中的每个函数？
+DefenderBroken                            = \n微软卫士被破坏或从操作系统中删除
 ControlledFolderAccessDisabled            = “受控文件夹访问”已禁用
 ScheduledTasks                            = 计划任务
 WindowsFeaturesTitle                      = Windows功能

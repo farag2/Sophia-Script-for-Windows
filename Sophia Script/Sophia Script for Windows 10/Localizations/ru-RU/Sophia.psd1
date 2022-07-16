@@ -12,6 +12,7 @@ bin                                       = В папке bin отсутству
 RebootPending                             = Компьютер ожидает перезагрузки
 UnsupportedRelease                        = Обнаружена новая версия
 CustomizationWarning                      = \nВы настроили все функции в пресет-файле {0} перед запуском Sophia Script?
+DefenderBroken                            = \nMicrosoft Defender сломан или удален из ОС
 ControlledFolderAccessDisabled            = Контролируемый доступ к папкам выключен
 ScheduledTasks                            = Запланированные задания
 OneDriveUninstalling                      = Удаление OneDrive...

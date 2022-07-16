@@ -12,6 +12,7 @@ bin                                       = Non ci sono file nella cartella bin.
 RebootPending                             = Il PC è in attesa di essere riavviato
 UnsupportedRelease                        = Nuova versione trovata
 CustomizationWarning                      = \nSono state personalizzate tutte le funzioni nel file di configurazione {0} prima di eseguire Sophia Script?
+DefenderBroken                            = \nMicrosoft Defender rimosso dal sistema
 ControlledFolderAccessDisabled            = l'accesso alle cartelle controllata disattivata
 ScheduledTasks                            = Attività pianificate
 WindowsFeaturesTitle                      = Funzionalità di Windows
