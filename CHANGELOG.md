@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.13.2 | 6.1.2 — 16.07.2022
+
+## Windows 11 21H2/22H2 | Windows 10 2004/20H2/21H1/21H2/22H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
+
+## Anniversary build of Sophia Script!💯⭐
+
+* Improved startup checkings, especially regarding Microsoft Defender whether it wasn't removed or destroyed by malicious tweakers;
+* Added `RKNBypass` function to enable proxying only blocked sites from the unified registry of Roskomnadzor;
+  * The function will be applied only if the region in Windows is set to "Russia";
+  * Based on <https://antizapret.prostovpn.org> proxy.
+* Added `WSA` function to enable the latest Windows Subsystem for Android™ with Amazon Appstore;
+  * All necessary dependencies will enabled (reboot may require) and the Microsoft Store WSA page will be opened to install it manually;
+  * To use Windows Subsystem for Android™ on your device, your PC needs to have Solid State Drive (SSD) installed.
+* #365 closed
+* Minor changes;
+* Fixed numerous typos.
+
+### Sophia Script Wrapper 2.5.6
+
+* @BenchTweakGaming fixed minor UI bug;
+* Resized width of window for Russian and fixes scrolling per tab.
+
 ## 5.13.1 | 6.1.1 — 04.07.2022
 
 ## Windows 11 21H2/22H2 | Windows 10 2004/20H2/21H1/21H2/22H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
