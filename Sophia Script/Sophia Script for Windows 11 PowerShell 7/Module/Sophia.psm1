@@ -11346,8 +11346,8 @@ function DNSoverHTTPS
 				else
 				{
 					# Set a primary and secondary DNS servers
-					Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq ""0.0.0.0"/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
-					$InterfaceGuid = (Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq ""0.0.0.0"/0"} | Get-NetAdapter).InterfaceGuid
+					Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0"} | Get-NetAdapter | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
+					$InterfaceGuid = (Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0"} | Get-NetAdapter).InterfaceGuid
 				}
 
 				# Set the DNS servers
@@ -11377,7 +11377,7 @@ function DNSoverHTTPS
 				else
 				{
 					# Configure DNS servers automatically
-					Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq ""0.0.0.0"/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ResetServerAddresses
+					Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0"} | Get-NetAdapter | Set-DnsClientServerAddress -ResetServerAddresses
 				}
 
 				Remove-Item -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\*" -Recurse -Force -ErrorAction Ignore
