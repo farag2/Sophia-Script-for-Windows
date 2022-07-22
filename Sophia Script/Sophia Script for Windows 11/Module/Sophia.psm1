@@ -79,6 +79,8 @@ function Checkings
 			# Trigger Windows Update for detecting new updates
 			(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
 
+			Start-Process -FilePath "https://t.me/sophia_chat"
+
 			exit
 		}
 	}
@@ -111,6 +113,8 @@ function Checkings
 				# Trigger Windows Update for detecting new updates
 				(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
 
+				Start-Process -FilePath "https://t.me/sophia_chat"
+
 				exit
 			}
 		}
@@ -124,6 +128,7 @@ function Checkings
 			Write-Warning -Message $Localization.UnsupportedLanguageMode
 
 			Start-Process -FilePath "https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_language_modes"
+			Start-Process -FilePath "https://t.me/sophia_chat"
 
 			exit
 		}
@@ -139,6 +144,7 @@ function Checkings
 		$true
 		{
 			Write-Warning -Message $Localization.LoggedInUserNotAdmin
+			Start-Process -FilePath "https://t.me/sophia_chat"
 			exit
 		}
 	}
@@ -147,6 +153,7 @@ function Checkings
 	if ($PSVersionTable.PSVersion.Major -ne 5)
 	{
 		Write-Warning -Message ($Localization.UnsupportedPowerShell -f $PSVersionTable.PSVersion.Major, $PSVersionTable.PSVersion.Minor)
+		Start-Process -FilePath "https://t.me/sophia_chat"
 		exit
 	}
 
@@ -154,6 +161,7 @@ function Checkings
 	if ($Host.Name -match "ISE")
 	{
 		Write-Warning -Message $Localization.UnsupportedISE
+		Start-Process -FilePath "https://t.me/sophia_chat"
 		exit
 	}
 
@@ -165,6 +173,7 @@ function Checkings
 
 		Start-Process -FilePath "https://youtu.be/na93MS-1EkM"
 		Start-Process -FilePath "https://pikabu.ru/story/byekdor_v_win_10_tweaker_ili_sovremennyie_metodyi_borbyi_s_piratstvom_8227558"
+		Start-Process -FilePath "https://t.me/sophia_chat"
 
 		exit
 	}
@@ -193,6 +202,7 @@ function Checkings
 		Start-Sleep -Seconds 5
 
 		Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"
+		Start-Process -FilePath "https://t.me/sophia_chat"
 
 		exit
 	}
@@ -248,6 +258,7 @@ function Checkings
 					Start-Sleep -Seconds 5
 
 					Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"
+					Start-Process -FilePath "https://t.me/sophia_chat"
 					exit
 				}
 			}
@@ -272,8 +283,21 @@ function Checkings
 	Get-ChildItem -Path $PSScriptRoot\..\ -File -Recurse -Force | Unblock-File
 
 	#region Defender Checkings
-	# Turn off Controlled folder access to let the script proceed
-	# Checking whether Defender wasn't disabled first
+	# Checking whether WMI is corrupted
+	try
+	{
+		Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender -ErrorAction Stop | Out-Null
+	}
+	catch [Microsoft.Management.Infrastructure.CimException]
+	{
+		# Provider Load Failure exception
+		$Global:Error.Exception[-1]
+		Start-Process -FilePath "https://t.me/sophia_chat"
+
+		exit
+	}
+
+	# Check Microsoft Defender state
 	$productState = (Get-CimInstance -Namespace root/SecurityCenter2 -ClassName Antivirusproduct | Where-Object -FilterScript {$_.instanceGuid -eq "{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}"}).productState
 	$DefenderState = ('0x{0:x}' -f $productState).Substring(3, 2)
 	if ($DefenderState -notmatch "00|01")
@@ -334,10 +358,56 @@ function Checkings
 		$Script:DefenderAMEngineVersion = $true
 	}
 
-	if ($Script:DefenderproductState -and $Script:DefenderServices -and $Script:DefenderAntispywareEnabled -and $Script:DefenderProductStatus -and $Script:DefenderAMEngineVersion)
+	# Check whether Microsoft Defender was turned off
+	# Due to "Set-StrictMode -Version Latest" we have to use try/catch & GetValue()
+	try
+	{
+		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender", "DisableAntiSpyware", $false) -eq 1)
+		{
+			$Script:DisableAntiSpyware = $true
+		}
+		else
+		{
+			$Script:DisableAntiSpyware = $false
+		}
+	}
+	catch {}
+
+	# Check whether real-time protection prompts for known malware detection
+	# Due to "Set-StrictMode -Version Latest" we have to use try/catch & GetValue()
+	try
+	{
+		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection", "DisableRealtimeMonitoring", $false) -eq 1)
+		{
+			$Script:DisableRealtimeMonitoring = $true
+		}
+		else
+		{
+			$Script:DisableRealtimeMonitoring = $false
+		}
+	}
+	catch {}
+
+	# Check whether behavior monitoring was disabled
+	# Due to "Set-StrictMode -Version Latest" we have to use try/catch & GetValue()
+	try
+	{
+		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection", "DisableBehaviorMonitoring", $false) -eq 1)
+		{
+			$Script:DisableBehaviorMonitoring = $true
+		}
+		else
+		{
+			$Script:DisableBehaviorMonitoring = $false
+		}
+	}
+	catch {}
+
+	if ($Script:DefenderproductState -and $Script:DefenderServices -and $Script:DefenderAntispywareEnabled -and $Script:DefenderProductStatus -and
+	$Script:DefenderAMEngineVersion -and (-not $Script:DisableAntiSpyware) -and (-not $Script:DisableRealtimeMonitoring) -and (-not $Script:DisableBehaviorMonitoring))
 	{
 		# Defender is enabled
-		$Script:DefenderState = $true
+		$Script:DefenderEnabled = $true
 
 		switch ((Get-MpPreference).EnableControlledFolderAccess)
 		{
@@ -345,6 +415,7 @@ function Checkings
 			{
 				Write-Warning -Message $Localization.ControlledFolderAccessDisabled
 
+				# Turn off Controlled folder access to let the script proceed
 				$Script:ControlledFolderAccess = $true
 				Set-MpPreference -EnableControlledFolderAccess Disabled
 
@@ -10586,14 +10657,14 @@ function NetworkProtection
 	{
 		"Enable"
 		{
-			if ((Get-MpComputerStatus).AntivirusEnabled)
+			if ($Script:DefenderEnabled)
 			{
 				Set-MpPreference -EnableNetworkProtection Enabled
 			}
 		}
 		"Disable"
 		{
-			if ((Get-MpComputerStatus).AntivirusEnabled)
+			if ($Script:DefenderEnabled)
 			{
 				Set-MpPreference -EnableNetworkProtection Disabled
 			}
@@ -10643,14 +10714,14 @@ function PUAppsDetection
 	{
 		"Enable"
 		{
-			if ((Get-MpComputerStatus).AntivirusEnabled)
+			if ($Script:DefenderEnabled)
 			{
 				Set-MpPreference -PUAProtection Enabled
 			}
 		}
 		"Disable"
 		{
-			if ((Get-MpComputerStatus).AntivirusEnabled)
+			if ($Script:DefenderEnabled)
 			{
 				Set-MpPreference -PUAProtection Disabled
 			}
@@ -11274,7 +11345,9 @@ function DNSoverHTTPS
 		[Parameter(Mandatory = $false)]
 		[ValidateSet("1.0.0.1", "1.1.1.1", "149.112.112.112", "8.8.4.4", "8.8.8.8", "9.9.9.9")]
 		# Isolate the IPv4 addresses only
-		[ValidateScript({(@((Get-ChildItem -Path HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters\DohWellKnownServers).PSChildName) | Where-Object {$_ -notmatch ":"}) -contains $_})]
+		[ValidateScript({
+			(@((Get-ChildItem -Path HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters\DohWellKnownServers).PSChildName) | Where-Object {$_ -notmatch ":"}) -contains $_
+		})]
 		[string]
 		$PrimaryDNS,
 
@@ -11293,39 +11366,47 @@ function DNSoverHTTPS
 		$Disable
 	)
 
+	# Determining whether Hyper-V is enabled
+	# After enabling Hyper-V feature a virtual switch breing created, so we need to use different method to isolate the proper adapter
+	if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
+	{
+		$InterfaceGuids = @((Get-NetAdapter -Physical).InterfaceGuid)
+	}
+	else
+	{
+		$InterfaceGuids = @((Get-NetRoute -AddressFamily IPv4 | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter).InterfaceGuid)
+	}
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Enable"
 		{
 			if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain)
 			{
-				# Determining whether Hyper-V is enabled
-				# After enabling Hyper-V feature a virtual switch breing created, so we need to use different method to isolate the proper adapter
+				# Set a primary and secondary DNS servers
 				if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
 				{
-					# Set a primary and secondary DNS servers
 					Get-NetAdapter -Physical | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
-					$InterfaceGuid = (Get-NetAdapter -Physical).InterfaceGuid
 				}
 				else
 				{
-					# Set a primary and secondary DNS servers
-					Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0"} | Get-NetAdapter | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
-					$InterfaceGuid = (Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0"} | Get-NetAdapter).InterfaceGuid
+					Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
 				}
 
-				# Set the DNS servers
-				if (-not (Test-Path -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS"))
+				foreach ($InterfaceGuid in $InterfaceGuids)
 				{
-					New-Item -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Force
+					if (-not (Test-Path -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS"))
+					{
+						New-Item -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Force
+					}
+					if (-not (Test-Path -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS"))
+					{
+						New-Item -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS" -Force
+					}
+					# Encrypted preffered, unencrypted allowed
+					New-ItemProperty -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Name DohFlags -PropertyType QWord -Value 5 -Force
+					New-ItemProperty -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS" -Name DohFlags -PropertyType QWord -Value 5 -Force
 				}
-				if (-not (Test-Path -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS"))
-				{
-					New-Item -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS" -Force
-				}
-				# Encrypted preffered, unencrypted allowed
-				New-ItemProperty -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Name DohFlags -PropertyType QWord -Value 5 -Force
-				New-ItemProperty -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS" -Name DohFlags -PropertyType QWord -Value 5 -Force
 			}
 		}
 		"Disable"
@@ -11341,10 +11422,13 @@ function DNSoverHTTPS
 				else
 				{
 					# Configure DNS servers automatically
-					Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0"} | Get-NetAdapter | Set-DnsClientServerAddress -ResetServerAddresses
+					Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ResetServerAddresses
 				}
 
-				Remove-Item -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\*" -Recurse -Force -ErrorAction Ignore
+				foreach ($InterfaceGuid in $InterfaceGuids)
+				{
+					Remove-Item -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh" -Recurse -Force -ErrorAction Ignore
+				}
 			}
 		}
 	}
@@ -12527,7 +12611,7 @@ public static void PostMessage()
 	Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
 
 	# Turn on Controlled folder access if it was turned off
-	if ($Script:DefenderState)
+	if ($Script:DefenderEnabled)
 	{
 		if ($Script:ControlledFolderAccess)
 		{
