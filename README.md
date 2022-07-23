@@ -108,12 +108,12 @@ Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Wind
 
 |Version|    Marketing name   | Build | Arch|      Editions          | Script version |
 |:-----:|:-------------------:|:----------:|:---:|:----------------------:|:--------------:|
-| 22H2  | October 2022 Update | 19045.1151 | x64 |Home/Pro/Enterprise|[5.13.2](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 21H2  | October 2021 Update | 19044.1151 | x64 |Home/Pro/Enterprise|[5.13.2](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 21H2  | Enterprise LTSC 2021| 19044.1348 | x64 |   Enterprise      |[5.13.2](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 21H1  | May 2021 Update     | 19043.1151 | x64 |Home/Pro/Enterprise|[5.13.2](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 20H2  | October 2020 Update | 19042.1151 | x64 |Home/Pro/Enterprise|[5.13.2](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 2004  | May 2020 Update     | 19041.1151 | x64 |Home/Pro/Enterprise|[5.13.2](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 22H2  | October 2022 Update | 19045.1766 | x64 |Home/Pro/Enterprise|[5.13.2](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H2  | October 2021 Update | 19044.1766 | x64 |Home/Pro/Enterprise|[5.13.2](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H2  | Enterprise LTSC 2021| 19044.1766 | x64 |   Enterprise      |[5.13.2](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 21H1  | May 2021 Update     | 19043.1766 | x64 |Home/Pro/Enterprise|[5.13.2](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 20H2  | October 2020 Update | 19042.1766 | x64 |Home/Pro/Enterprise|[5.13.2](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+| 2004  | May 2020 Update     | 19041.1766 | x64 |Home/Pro/Enterprise|[5.13.2](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 | 1809  | Enterprise LTSC 2019| 17763      | x64 |   Enterprise      |[5.3.2](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 
 ## Screenshots
