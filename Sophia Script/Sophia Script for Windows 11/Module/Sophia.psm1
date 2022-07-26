@@ -59,6 +59,40 @@ function Checkings
 	# Detect the OS build version
 	switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber -ge 22000)
 	{
+		$true
+		{
+			if ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber -eq 22000)###
+			{
+				# Check whether the OS minor build version is 739 minimum
+				# https://docs.microsoft.com/en-us/windows/release-health/windows11-release-information
+				# https://support.microsoft.com/en-us/topic/june-14-2022-kb5014697-os-build-22000-739-cd3aaa0b-a8da-44a0-a778-dfb6f1d9ea11
+				if (-not ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -ge 739))
+				{
+					$Version = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion"
+					Write-Warning -Message ($Localization.UpdateWarning -f $Version.CurrentBuild, $Version.UBR)
+
+					Start-Process -FilePath "https://t.me/sophia_chat"
+
+					# Enable receiving updates for other Microsoft products when you update Windows
+					(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
+
+					Start-Sleep -Seconds 1
+
+					# Check for UWP apps updates
+					Get-CimInstance -Namespace "Root\cimv2\mdm\dmmap" -ClassName "MDM_EnterpriseModernAppManagement_AppManagement01" | Invoke-CimMethod -MethodName UpdateScanMethod
+
+					# Open the "Windows Update" page
+					Start-Process -FilePath "ms-settings:windowsupdate-action"
+
+					Start-Sleep -Seconds 1
+
+					# Trigger Windows Update for detecting new updates
+					(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
+
+					exit
+				}
+			}
+		}
 		$false
 		{
 			Write-Warning -Message $Localization.UnsupportedOSBuild
@@ -66,37 +100,6 @@ function Checkings
 			Start-Process -FilePath "https://t.me/sophia_chat"
 
 			exit
-		}
-		$true
-		{
-			# Check whether the OS minor build version is 739 minimum
-			# https://docs.microsoft.com/en-us/windows/release-health/windows11-release-information
-			# https://support.microsoft.com/en-us/topic/june-14-2022-kb5014697-os-build-22000-739-cd3aaa0b-a8da-44a0-a778-dfb6f1d9ea11
-			if (-not ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -ge 739))
-			{
-				$Version = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion"
-				Write-Warning -Message ($Localization.UpdateWarning -f $Version.CurrentBuild, $Version.UBR)
-
-				Start-Process -FilePath "https://t.me/sophia_chat"
-
-				# Enable receiving updates for other Microsoft products when you update Windows
-				(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
-
-				Start-Sleep -Seconds 1
-
-				# Check for UWP apps updates
-				Get-CimInstance -Namespace "Root\cimv2\mdm\dmmap" -ClassName "MDM_EnterpriseModernAppManagement_AppManagement01" | Invoke-CimMethod -MethodName UpdateScanMethod
-
-				# Open the "Windows Update" page
-				Start-Process -FilePath "ms-settings:windowsupdate-action"
-
-				Start-Sleep -Seconds 1
-
-				# Trigger Windows Update for detecting new updates
-				(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
-
-				exit
-			}
 		}
 	}
 
@@ -12728,24 +12731,24 @@ function Errors
 # SIG # Begin signature block
 # MIIbvwYJKoZIhvcNAQcCoIIbsDCCG6wCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUf1jTmGGjSC+KdppJDHzCpj5i
-# 2r+gghY3MIIDAjCCAeqgAwIBAgIQbPiUYMntEr9PH9C5Mau3xTANBgkqhkiG9w0B
-# AQsFADAZMRcwFQYDVQQDDA5Tb3BoaWEgUHJvamVjdDAeFw0yMjA3MTYxNDM2MDda
-# Fw0yNDA3MTYxNDQ2MDdaMBkxFzAVBgNVBAMMDlNvcGhpYSBQcm9qZWN0MIIBIjAN
-# BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtFM5b/hNUQPcNCKlWVisE5zIERdC
-# TZWdsnkliCg98qv0qkPH08AAuZ5LOgdctfaocVX4RbygcWCLyaphktSC29aMHmP/
-# T/JPBSYnLmWIJ6NbNVBn4BqqCZusjmYRj1LH+Ega9Kv4gFfF4lyCE8OnebDkWPu1
-# Y+5VAoZ6BaVvHEw5rtrHcH8/W15mE1Z+uuYIKNVPg3MMGNGQ5MiLUduuCu5l+J4K
-# yU/nLvx7tI3tIx8wJY2S2SYDNPf/bMOeeb0jlcD1/bVh5TNn3Z4wIXQ3r4yNxllO
-# dBPidPT3Ck4+aDTzP/Y8vrFeIMLKSCYGY+cOCankPZmUCVFJxABvW5EKDQIDAQAB
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUVngTt4899wmG6qmXj5kwmdoo
+# XkOgghY3MIIDAjCCAeqgAwIBAgIQGSBH1ceugJNJQBs2CFGB8jANBgkqhkiG9w0B
+# AQsFADAZMRcwFQYDVQQDDA5Tb3BoaWEgUHJvamVjdDAeFw0yMjA3MjYxOTQ1MjRa
+# Fw0yNDA3MjYxOTU1MjRaMBkxFzAVBgNVBAMMDlNvcGhpYSBQcm9qZWN0MIIBIjAN
+# BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1cjscVGXKEfNl8m0K75jJnd0Z0jQ
+# T4OWo1g+C4USBBtzOvYaj9t6oQgRwoT627OjU5y0bJBP0e+mgxKn/RYXn5ZVm3dB
+# ooqCGC9iEu2ak1pNdyffY7BZjJ3aVl9TLVaUA1joJgEpDFN1yrLt3be2eYcp61PS
+# ARCiTH6+EFtX5pkhfhsBfwO8HvmOb5WFcZk1ugZ1MnPf+of8A9OB0I3ZTomUCgOr
+# Ou6gDb2TEpjZE1Y7bRt+h3Ocadv3D8wvCvohveRRaAZyswxwe0LvIjGiCxIfeOGC
+# 7+Y9WgYqoUcg7sb8eTw88jdNdX1eCgSB3rUJRXgR7JZ076m9idPlySJ5/QIDAQAB
 # o0YwRDAOBgNVHQ8BAf8EBAMCB4AwEwYDVR0lBAwwCgYIKwYBBQUHAwMwHQYDVR0O
-# BBYEFMJrBhADhZmuEvA18MvGfrBsUpDhMA0GCSqGSIb3DQEBCwUAA4IBAQCzuSeY
-# YdiLsJYFPUW21r2QjSbIi7oOAa58Y2C7KM+QvAm7R6W7l3y6Zz58mBZmSCt+u6au
-# HHYYxo71eCKcH6Lx/2BAeg3GBfZClCZ480nxH1+T4fobdWuT/f4Iw8ZalqcnqJQQ
-# xXhK2U8sMS6oIlb8VZhzosiP68gSZwNgcBbO8P1nAVa7WXyhdmo5CTpa1CihfOT2
-# a3x7runLfgPHmgDcTQpJYAl4xA1JgM+5adlGo33uDXNDgN+6MPZKCuD89wFIYbXw
-# WM6i+SHOBvqACWvM5goBCiVuIq2aI/6r6jeW8UiN51L0/IIniY+P0e7ZibjiadZR
-# DuMQLs5d3GLELtT3MIIFsTCCBJmgAwIBAgIQASQK+x44C4oW8UtxnfTTwDANBgkq
+# BBYEFN9xgFEiCFjTYHqxP+s5D4Wr6l/+MA0GCSqGSIb3DQEBCwUAA4IBAQAtEBEG
+# 3g7vYiCDNM+rar1LMFDit2/wL72ROHc95uEWPnwCfaESh2mERwlvNSCH4xqWzxU9
+# px1mpuNzaydnmTXHWC5F11jCX/JxXarI6g4FltKPj6KhPdSsWdeTzcCS3g3KCZIq
+# OjA9bGATppUGcb3xYvCbgBta9cGP1NpyHuHkI2ajKs4BFaPq6T7UN1IqhVHAntAG
+# SkfxKPt4lMY+MCHQWJgQCVx7D/nDenyCG+8D6HMYwsVH1PI4L7EkulsNuCDEvNB6
+# EMmwPCsdGTdc7W+Xef/Fd6Ma4ZRmr3VR5Cf/wMOsXwmFG7f4rjAyNfWNQEybNj8I
+# K0WSXnOEAqNTDTfgMIIFsTCCBJmgAwIBAgIQASQK+x44C4oW8UtxnfTTwDANBgkq
 # hkiG9w0BAQwFADBlMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5j
 # MRkwFwYDVQQLExB3d3cuZGlnaWNlcnQuY29tMSQwIgYDVQQDExtEaWdpQ2VydCBB
 # c3N1cmVkIElEIFJvb3QgQ0EwHhcNMjIwNjA5MDAwMDAwWhcNMzExMTA5MjM1OTU5
@@ -12848,31 +12851,31 @@ function Errors
 # DoXW4CzM4AwkuHxSCx6ZfO/IyMWMWGmvqz3hz8x9Fa4Uv4px38qXsdhH6hyF4EVO
 # EhwUKVjMb9N/y77BDkpvIJyu2XMyWQjnLZKhGhH+MpimXSuX4IvTnMxttQ2uR2M4
 # RxdbbxPaahBuH0m3RFu0CAqHWlkEdhGhp3cCExwxggTyMIIE7gIBATAtMBkxFzAV
-# BgNVBAMMDlNvcGhpYSBQcm9qZWN0AhBs+JRgye0Sv08f0Lkxq7fFMAkGBSsOAwIa
+# BgNVBAMMDlNvcGhpYSBQcm9qZWN0AhAZIEfVx66Ak0lAGzYIUYHyMAkGBSsOAwIa
 # BQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgor
 # BgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3
-# DQEJBDEWBBQL1uSSPwEQ3eKWisyh56mLW4iNuDANBgkqhkiG9w0BAQEFAASCAQBA
-# D2tYhaG9doHMa5VD/X2MHyJnf+Fd0JnYS0t58cMhsScONsbxlCK+fy7ktqhCEk4e
-# leL34XsbraUv0Bsg7JA6QX2y8oloVurgb+acl+Kj9hPuLxwSPAC2PPoTLjbHL2mN
-# R//qB5khNW3l7BEzySRHBwy7ftGjI4xBTwoJkyabV/vnrF1vai1gCh9++A/0gHzj
-# SO/mqCgQGJ7yzn/uL0YWtn6/CZCB84rsS9jdKsHMzcG1utA12ISQYvRmjmClMU44
-# mmOMsoiQygXI6xnitEDhwhuxqyKv+kSB9Olfizo3Ua/A2CCTmmbCozmiUM5UCi7R
-# yar7vCLrDyE1o3lsJQzAoYIDIDCCAxwGCSqGSIb3DQEJBjGCAw0wggMJAgEBMHcw
+# DQEJBDEWBBQ6mjqNk5pxyO+7UnZ6S034/FZqVTANBgkqhkiG9w0BAQEFAASCAQAo
+# Xh3gx9fg41QLKbDDdWfc+SIIQC5L4frgqqtOWapj58ml2eeTmVV7CUV+sstsBYWk
+# 47r3pKs6dIhiIoQo2RiuINbidc/pOs6Kkipf9JMPs7BgnVYEkr+aaKqWziMRacmt
+# 5AITSSNU44V9Zw3uFUKVShzmft70UxjurEzdXRN8766devHFCt+JmaGSNQW2T3Bp
+# kJTPt+bav2cI2y9XRuxyfM+qcxK9MkThiCm20JWAxjL6Z1IPXxA557NjixVDU79V
+# lA4wSfVqyBLVatycYAXdQ6nXHsMYr2usMItyMjybdlTJQEAwbfVztI4uih+M1SG6
+# 1ra79Wt+5z9HTQGw4C++oYIDIDCCAxwGCSqGSIb3DQEJBjGCAw0wggMJAgEBMHcw
 # YzELMAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMTswOQYDVQQD
 # EzJEaWdpQ2VydCBUcnVzdGVkIEc0IFJTQTQwOTYgU0hBMjU2IFRpbWVTdGFtcGlu
 # ZyBDQQIQCnpKiJ7JmUKQBmM4TYaXnTANBglghkgBZQMEAgEFAKBpMBgGCSqGSIb3
-# DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTIyMDcxNjE0NDYyMVow
-# LwYJKoZIhvcNAQkEMSIEIGUTNxvTh5CoUSsfNpw4NXpD3aSWlmQWLWGyzD/KFhg7
-# MA0GCSqGSIb3DQEBAQUABIICADNrnSyFO59nhGv0VRq/JhWUNKaKUhnZjXbdrMZh
-# DY+NLhqDqbkkJK+nwZw8g2jI+B/L0NAf3e1TkTbYuDSg0miPesUcnzUPUvY508Sq
-# R3U0C6vxF12GxJC8P9MjmIJLk08tIZHVlXGTiOFFg7ygXSNa9cBmP6J1C6tbWeoZ
-# iBBXIy+JRSyUENM2GhpvqMPVwociL6UW5vaMOJEje/LnYVGorsDcEzs0xzW/i2Zp
-# ZmLBSMvIJlVY9IMEVLkximjP0rR9WhV98OrAe8Aho89yFSbaHU4AMtxMumssQcd8
-# 1EhyqNeT4jv/J5Q9j4/3RA+T4fV66R3KQQOkke53fbXtv9R7eWW6YVNLsPI7B5HF
-# JIWdgClGmrz6dr7HUmaYlNoxpxBxvUnwKGMK9yh8raihRPl78AqIymUztLSwm/vc
-# re9mdMci086xqL406JQ4hu5DOVkAuynICIbPCnHIz19Egx3qOM4Htn1dGe/YeF/x
-# 5N/dHqLTPLiT2XoFfCH6b9jSBElhulUYFd7aQTOAbBUgHUiK2JFuxgfgSwcN7lqx
-# v5SMNX5H626XIFYKc4uyr4f+fuhhl9VPYAx0xMQwJwDBGmuqwqYKj6D3JGuKK2h+
-# TM7O7J5Vfzw9+YeQGDueSCD6hsK3TV5/enxa8v4zpPobj7jcSo+QpGilnUqmEM5V
-# CGZl
+# DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTIyMDcyNjE5NTU0NFow
+# LwYJKoZIhvcNAQkEMSIEIC9pGh2lrqU/Yrf6DxRERSjfL/emMqFutmvDhjGIK1CO
+# MA0GCSqGSIb3DQEBAQUABIICAKIjvFvT2/2SBevPn5kgVtEG9cfmzgyOERQ227YJ
+# KSauXDjftZ67wG9dtaW/C9KG2MvOf5+nm8WXZRHQ4XRUW8SzHAYaBsEFbJQD8Y1I
+# eQnxxRQuJ51lDwX3p+juX4jbN3GmzVPyq6TwdQuWZMxE21RAbtkaAZ5SACTHAjNH
+# IdC5NfeD8scBCKYLdLhu/xPnXOzDyXcDwJZWoL4HsAf0vI19Ind28YzdHM5+34Ft
+# LhhD6JXKpvJZeAuA922kMJl1QguQg0vTG9IbBg6udsqSWSg1G2OoBU+4xtp6BAhB
+# UksOGns+ebyuHy/eTM8CTXHe+LhjYhXjO1yfkSH2ryswvTxv4NOIGPu7yP3pDhOT
+# yZ2dLBZsH4PMrMiMlzFSMBWPCDPXK5RnTQo9DFINmyGotLHa2IMD/4Z6kf+4z4qe
+# XI5/9El3Qh5acWaBHQPj/uj9tf3w4C1nGBQ1ed4Ifp1FDiHm7uKbihDTFcbwt551
+# nn6y9NUPq6LecWvvB5rZPkQaYQsB0jDKqcR73+eu7QfO3y02r4mTQFZCeXomca+Y
+# Q4nvBpW2dZtadUGYTOyhVQfPhBOUJSi+nme3fN4hceAnhAoRXSkpybXB2Voa8Qe+
+# tmaYdKlEuLAdhm94zhZsu68D4irnQ8RSC7EYKCc1R4hUMr6O0Nd7qesLk/HFPdw9
+# bMNs
 # SIG # End signature block
