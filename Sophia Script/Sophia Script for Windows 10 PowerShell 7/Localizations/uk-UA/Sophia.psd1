@@ -1,9 +1,9 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Скрипт підтримує тільки Windows 10 x64
 UnsupportedOSBuild                        = Скрипт підтримує тільки Windows 10 версії 2004/20H2/21H1/21H2
-UpdateWarning                             = Встановлений зведене оновлення Windows 10: {0}. Підтримуваний накопичувальний пакет оновлення: 1766 і вище
+UpdateWarning                             = Встановлений накопичувальний пакет оновлення Windows 10: {0}. Підтримуваний накопичувальний пакет оновлення: 1766 і вище
 UnsupportedLanguageMode                   = Сесія PowerShell працює в обмеженому режимі
-LoggedInUserNotAdmin                      = Поточний увійшов користувач не володіє правами адміністратора
+LoggedInUserNotAdmin                      = Поточний користувач, що увійшов до системи, не має прав адміністратора
 UnsupportedPowerShell                     = Ви намагаєтеся запустити скрипт в PowerShell {0}.{1}. Запустіть скрипт у відповідній версії PowerShell
 UnsupportedISE                            = Скрипт не підтримує роботу через Windows PowerShell ISE
 Win10TweakerWarning                       = Ваша ОС, можливо, через бекдор в Win 10 Tweaker заражена трояном. Детальніше: https://itnan.ru/post.php?c=1&p=557388
