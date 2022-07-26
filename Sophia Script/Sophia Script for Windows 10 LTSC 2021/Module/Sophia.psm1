@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.13.2
-	Date: 16.07.2022
+	Version: v5.13.3
+	Date: 26.07.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -74,51 +74,40 @@ function Checkings
 		{
 			Write-Warning -Message $Localization.UnsupportedOSBuild
 
-			# Enable receiving updates for other Microsoft products when you update Windows
-			(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
-
-			Start-Sleep -Seconds 1
-
-			# Open the "Windows Update" page
-			Start-Process -FilePath "ms-settings:windowsupdate-action"
-
-			Start-Sleep -Seconds 1
-
-			# Trigger Windows Update for detecting new updates
-			(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
-
 			Start-Process -FilePath "https://t.me/sophia_chat"
 
 			exit
 		}
-	}
-
-	# Check whether the OS minor build version is 1766 minimum
-	# https://docs.microsoft.com/en-us/windows/release-health/release-information
-	# https://support.microsoft.com/en-us/topic/june-14-2022-kb5014699-os-builds-19042-1766-19043-1766-and-19044-1766-5c81d49d-0b6e-4808-9485-1f54e5d1bb15
-	switch ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -ge 1766)
-	{
-		$false
+		$true
 		{
-			$Version = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
-			Write-Warning -Message ($Localization.UpdateWarning -f $Version)
+			# Check whether the OS minor build version is 1766 minimum
+			# https://docs.microsoft.com/en-us/windows/release-health/release-information
+			# https://support.microsoft.com/en-us/topic/june-14-2022-kb5014699-os-builds-19042-1766-19043-1766-and-19044-1766-5c81d49d-0b6e-4808-9485-1f54e5d1bb15
+			if (-not ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -ge 1766))
+			{
+				$Version = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
+				Write-Warning -Message ($Localization.UpdateWarning -f $Version)
 
-			# Enable receiving updates for other Microsoft products when you update Windows
-			(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
+				Start-Process -FilePath "https://t.me/sophia_chat"
 
-			Start-Sleep -Seconds 1
+				# Enable receiving updates for other Microsoft products when you update Windows
+				(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
 
-			# Open the "Windows Update" page
-			Start-Process -FilePath "ms-settings:windowsupdate-action"
+				Start-Sleep -Seconds 1
 
-			Start-Sleep -Seconds 1
+				# Check for UWP apps updates
+				Get-CimInstance -Namespace "Root\cimv2\mdm\dmmap" -ClassName "MDM_EnterpriseModernAppManagement_AppManagement01" | Invoke-CimMethod -MethodName UpdateScanMethod
 
-			# Trigger Windows Update for detecting new updates
-			(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
+				# Open the "Windows Update" page
+				Start-Process -FilePath "ms-settings:windowsupdate-action"
 
-			Start-Process -FilePath "https://t.me/sophia_chat"
+				Start-Sleep -Seconds 1
 
-			exit
+				# Trigger Windows Update for detecting new updates
+				(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
+
+				exit
+			}
 		}
 	}
 
@@ -292,6 +281,7 @@ function Checkings
 	catch [Microsoft.Management.Infrastructure.CimException]
 	{
 		# Provider Load Failure exception
+		$Localization.DefenderBroken
 		$Global:Error.Exception[-1]
 		Start-Process -FilePath "https://t.me/sophia_chat"
 
@@ -319,7 +309,7 @@ function Checkings
 		}
 		else
 		{
-			if ((Get-Service -Name $_ -ErrorAction Ignore).Status -eq "running")
+			if ((Get-Service -Name $_).Status -eq "running")
 			{
 				$Script:DefenderServices = $true
 			}
@@ -8980,14 +8970,14 @@ function NetworkProtection
 	{
 		"Enable"
 		{
-			if ((Get-MpComputerStatus).AntivirusEnabled)
+			if ($Script:DefenderEnabled)
 			{
 				Set-MpPreference -EnableNetworkProtection Enabled
 			}
 		}
 		"Disable"
 		{
-			if ((Get-MpComputerStatus).AntivirusEnabled)
+			if ($Script:DefenderEnabled)
 			{
 				Set-MpPreference -EnableNetworkProtection Disabled
 			}
@@ -10610,9 +10600,7 @@ function MultipleInvokeContext
 #>
 function UpdateLGPEPolicies
 {
-	if (-not (Get-WindowsEdition -Online | Where-Object -FilterScript {
-		($_.Edition -eq "Professional") -or ($_.Edition -like "Enterprise*") -or ($_.Edition -eq "Education")
-	}))
+	if (-not (Test-Path -Path "$env:SystemRoot\System32\gpedit.msc"))
 	{
 		return
 	}
@@ -10639,9 +10627,12 @@ function UpdateLGPEPolicies
 					[xml]$config = Get-Content -Path $admx.FullName -Encoding UTF8
 					$SplitPath = Split-Path -Path $Path.Name.Replace("HKEY_LOCAL_MACHINE\", "HKLM:") -NoQualifier
 
-					if ($config.policyDefinitions.policies.policy | Where-Object -FilterScript {
+					if (($config.policyDefinitions.policies.policy | Where-Object -FilterScript {
 						($_.key -eq $SplitPath) -and ($_.valueName -eq $Item) -or (($_.key -eq $SplitPath) -and ($_.Name -eq $Item))
-					})
+					}) -or
+					($config.policyDefinitions.policies.policy | Where-Object -FilterScript {
+						($_.key -eq $SplitPath)
+					} | Where-Object -FilterScript {$_.elements.enum.valueName -eq $Item}))
 					{
 						try
 						{
@@ -10687,9 +10678,12 @@ function UpdateLGPEPolicies
 					[xml]$config = Get-Content -Path $admx.FullName -Encoding UTF8
 					$SplitPath = Split-Path -Path $Path.Name.Replace("HKEY_CURRENT_USER\", "HKCU:") -NoQualifier
 
-					if ($config.policyDefinitions.policies.policy | Where-Object -FilterScript {
+					if (($config.policyDefinitions.policies.policy | Where-Object -FilterScript {
 						($_.key -eq $SplitPath) -and ($_.valueName -eq $Item) -or (($_.key -eq $SplitPath) -and ($_.Name -eq $Item))
-					})
+					}) -or
+					($config.policyDefinitions.policies.policy | Where-Object -FilterScript {
+						($_.key -eq $SplitPath)
+					} | Where-Object -FilterScript {$_.elements.enum.valueName -eq $Item}))
 					{
 						try
 						{
