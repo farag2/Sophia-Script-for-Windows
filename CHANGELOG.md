@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.13.3 | 6.1.3 — 26.07.2022
+
+## Windows 11 21H2/22H2 | Windows 10 2004/20H2/21H1/21H2/22H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
+
+* Strengthen the Defender checking whether it was destroyed by 3rd party apps;
+* Improved and fixed bug when `DNSoverHTTPS` function didn't enable DNS-over-HTTPS feature;
+  * Please check if it's enabled for you in the Settings;
+  * #374 closed.
+* Improved the Ukranian 🇺🇦 : translation.
+  * #375 merged.
+* Minor changes.
+
+### Sophia Script Wrapper 2.5.7
+
+* Output PowerShell: Refresh Console before Export
+* Output `DNSoverHTTPS` for other languages other than English
+
 ## 5.13.2 | 6.1.2 — 16.07.2022
 
 ## Windows 11 21H2/22H2 | Windows 10 2004/20H2/21H1/21H2/22H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
