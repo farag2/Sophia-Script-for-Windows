@@ -1,12 +1,12 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Скрипт підтримує тільки Windows 10 x64
 UnsupportedOSBuild                        = Скрипт підтримує тільки Windows 10 Enterprise LTSC 2019
-UpdateWarning                             = Встановлений зведене оновлення Windows 10: {0}. Підтримуваний накопичувальний пакет оновлення: 3046 і вище
+UpdateWarning                             = Встановлений накопичувальний пакет оновлення Windows 10: {0}. Підтримуваний накопичувальний пакет оновлення: 3046 і вище
 UnsupportedLanguageMode                   = Сесія PowerShell працює в обмеженому режимі
-LoggedInUserNotAdmin                      = Поточний увійшов користувач не володіє правами адміністратора
+LoggedInUserNotAdmin                      = Поточний користувач, що увійшов до системи, не має прав адміністратора
 UnsupportedPowerShell                     = Ви намагаєтеся запустити скрипт в PowerShell {0}.{1}. Запустіть скрипт у відповідній версії PowerShell
 UnsupportedISE                            = Скрипт не підтримує роботу через Windows PowerShell ISE
-Win10TweakerWarning                       = Ваша ОС, можливо, через бекдор в Win 10 Tweaker заражена трояном. Детальніше: https://itnan.ru/post.php?c=1&p=557388
+Win10TweakerWarning                       = Ваша ОС, можливо, через бекдор в Win 10 Tweaker інфікована трояном. Детальніше: https://itnan.ru/post.php?c=1&p=557388
 Windows10DebloaterWarning                 = Стабільність вашої ОС могла бути порушена використанням скрипту Windows10Debloater від Sycnex. З метою профілактики перевстановіть ОС
 bin                                       = У папці bin немає файлів. Будь ласка, повторно завантажте архів
 RebootPending                             = Комп'ютер очікує на перезавантаження
@@ -60,7 +60,7 @@ NoData                                    = Відсутні дані
 NoInternetConnection                      = Відсутнє інтернет-з'єднання
 RestartFunction                           = Будь ласка, повторно запустіть функцію "{0}"
 NoResponse                                = Не вдалося встановити зв’язок із {0}
-No                                        = Немає
+No                                        = Ні
 Yes                                       = Так
 Open                                      = Відкрити
 Patient                                   = Будь ласка, зачекайте...
