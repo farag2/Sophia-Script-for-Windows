@@ -61,7 +61,7 @@ function Checkings
 	{
 		$true
 		{
-			if ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber -eq 22000)###
+			if ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber -eq 22000)
 			{
 				# Check whether the OS minor build version is 739 minimum
 				# https://docs.microsoft.com/en-us/windows/release-health/windows11-release-information
