@@ -1,8 +1,18 @@
 # Sign all scripts in folder recursively by a self-signed certificate
 $CertName             = "Sophia Project"
-$FolderPath           = "$PSScriptRoot\Sophia Script"
+$FolderPath           = "Sophia Script"
 $ExtensionsToSearchIn = @(".ps1", ".psm1", ".psd1")
-Get-ChildItem -Path Cert:\LocalMachine\My, Cert:\CurrentUser\My | Where-Object -FilterScript {$_.Subject -eq "CN=$CertName"} | Remove-Item
+# Get-ChildItem -Path Cert:\LocalMachine\My, Cert:\CurrentUser\My | Where-Object -FilterScript {$_.Subject -eq "CN=$CertName"} | Remove-Item
+
+if (Test-Path -Path "$PSScriptRoot\Sophia Script")
+{
+	Get-ChildItem -Path "Sophia Script" -Recurse -File
+}
+else
+{
+	Write-Verbose -Message "No path" -Verbose
+	Test-Path -Path $PSScriptRoot
+}
 
 # Generate a self-signed Authenticode certificate in the local computer's personal certificate store
 $Parameters = @{
@@ -39,19 +49,6 @@ $codeCertificate = Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object -Fil
 # TimeStampServer specifies the trusted timestamp server that adds a timestamp to script's digital signature
 # Adding a timestamp ensures that your code will not expire when the signing certificate expires
 # -Include *.ps1, *.psm1, *.psd1 is obvious, but it's slow
-
-$Items = Get-ChildItem -Path "$PSScriptRoot\Sophia Script" -Recurse -File | Where-Object -FilterScript {$_.Extension -in $ExtensionsToSearchIn}
-foreach ($Item in $Items)
-{
-    if (Test-Path -Path $_.FullName)
-    {
-        Write-Verbose -Message $_.FullName -Verbose
-    }
-    else
-    {
-        Write-Verbose -Message "No $_.FullName" -Verbose
-    }
-}
 
 Get-ChildItem -Path $FolderPath -Recurse -File | Where-Object -FilterScript {$_.Extension -in $ExtensionsToSearchIn} | ForEach-Object -Process {
 	$Parameters = @{
