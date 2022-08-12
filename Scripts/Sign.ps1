@@ -1,4 +1,3 @@
-cls
 # Sign all scripts in folder recursively by a self-signed certificate
 $CertName             = "Sophia Project"
 $FolderPath           = "$PSScriptRoot\Sophia Script"
