@@ -13,8 +13,6 @@ $Parameters = @{
 }
 $authenticode = New-SelfSignedCertificate @Parameters
 
-Get-ChildItem -Path Cert:\LocalMachine\My
-
 # Add the self-signed Authenticode certificate to the computer's root certificate store
 # Create an object to represent the LocalMachine\Root certificate store
 $rootStore = [System.Security.Cryptography.X509Certificates.X509Store]::new("Root","LocalMachine")
@@ -42,7 +40,18 @@ $codeCertificate = Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object -Fil
 # Adding a timestamp ensures that your code will not expire when the signing certificate expires
 # -Include *.ps1, *.psm1, *.psd1 is obvious, but it's slow
 
-(Get-ChildItem -Path $FolderPath -Recurse -File | Where-Object -FilterScript {$_.Extension -in $ExtensionsToSearchIn}).FullName
+$Items = Get-ChildItem -Path "$PSScriptRoot\Sophia Script" -Recurse -File | Where-Object -FilterScript {$_.Extension -in $ExtensionsToSearchIn}
+foreach ($Item in $Items)
+{
+    if (Test-Path -Path $_.FullName)
+    {
+        Write-Verbose -Message $_.FullName -Verbose
+    }
+    else
+    {
+        Write-Verbose -Message "No $_.FullName" -Verbose
+    }
+}
 
 Get-ChildItem -Path $FolderPath -Recurse -File | Where-Object -FilterScript {$_.Extension -in $ExtensionsToSearchIn} | ForEach-Object -Process {
 	$Parameters = @{
