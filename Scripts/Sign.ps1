@@ -13,6 +13,8 @@ $Parameters = @{
 }
 $authenticode = New-SelfSignedCertificate @Parameters
 
+Get-ChildItem -Path Cert:\LocalMachine\My
+
 # Add the self-signed Authenticode certificate to the computer's root certificate store
 # Create an object to represent the LocalMachine\Root certificate store
 $rootStore = [System.Security.Cryptography.X509Certificates.X509Store]::new("Root","LocalMachine")
