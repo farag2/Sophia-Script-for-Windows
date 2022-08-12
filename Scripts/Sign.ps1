@@ -1,7 +1,7 @@
 cls
 # Sign all scripts in folder recursively by a self-signed certificate
 $CertName             = "Sophia Project"
-$FolderPath           = "D:\Sophia-Script-for-Windows\Sophia Script"
+$FolderPath           = "$PSSCriptRoot\Sophia Script"
 $ExtensionsToSearchIn = @(".ps1", ".psm1", ".psd1")
 Get-ChildItem -Path Cert:\LocalMachine\My, Cert:\CurrentUser\My | Where-Object -FilterScript {$_.Subject -eq "CN=$CertName"} | Remove-Item
 
