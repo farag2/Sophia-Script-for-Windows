@@ -12,6 +12,10 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@master
+      - name: Signing all .ps1, .psm1, .psd1 files
+        run: |
+          . Scripts\Sign.ps1
+
       - name: Dependencies
         run: |
           Write-Verbose -Message Dependencies -Verbose
