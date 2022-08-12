@@ -2218,7 +2218,7 @@
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
-    "Function": "BitLockerContext",
+    "Function": "CompressedFolderNewContext",
     "Arg": {
       "Zero": {
         "Tag": "Hide"
@@ -2235,23 +2235,6 @@
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
-    "Function": "CompressedFolderNewContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide"
-      },
-      "One": {
-        "Tag": "Show"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
-    "Id": 1212,
-    "Region": "Context menu",
-    "Control": "cmb",
-    "Required": "false",
     "Function": "MultipleInvokeContext",
     "Arg": {
       "Zero": {
@@ -2265,7 +2248,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 1213,
+    "Id": 1212,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2282,17 +2265,34 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 1214,
+    "Id": 1213,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
     "Function": "OpenWindowsTerminalContext",
     "Arg": {
       "Zero": {
-        "Tag": "Hide"
+        "Tag": "Show"
       },
       "One": {
-        "Tag": "Show"
+        "Tag": "Hide"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "Show"
+  },
+  {
+    "Id": 1214,
+    "Region": "Context menu",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "OpenWindowsTerminalAdminContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
       }
     },
     "Preset": "Zero",
@@ -2300,23 +2300,6 @@
   },
   {
     "Id": 1215,
-    "Region": "Context menu",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "OpenWindowsTerminalAdminContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show"
-      },
-      "One": {
-        "Tag": "Hide"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
-    "Id": 1216,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",

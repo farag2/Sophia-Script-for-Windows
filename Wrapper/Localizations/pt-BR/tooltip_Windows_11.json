@@ -1943,21 +1943,6 @@
   {
     "Id": 1210,
     "Region": "Context menu",
-    "Function": "BitLockerContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Oculte o item \"Ativar BitLocker\" no menu de contexto das unidades"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Mostre o item \"Ativar BitLocker\" no menu de contexto das unidades (valor padrão)"
-      }
-    }
-  },
-  {
-    "Id": 1211,
-    "Region": "Context menu",
     "Function": "CompressedFolderNewContext",
     "Arg": {
       "Zero": {
@@ -1971,7 +1956,7 @@
     }
   },
   {
-    "Id": 1212,
+    "Id": 1211,
     "Region": "Context menu",
     "Function": "MultipleInvokeContext",
     "Arg": {
@@ -1986,7 +1971,7 @@
     }
   },
   {
-    "Id": 1213,
+    "Id": 1212,
     "Region": "Context menu",
     "Function": "UseStoreOpenWith",
     "Arg": {
@@ -2001,7 +1986,7 @@
     }
   },
   {
-    "Id": 1214,
+    "Id": 1213,
     "Region": "Context menu",
     "Function": "OpenWindowsTerminalContext",
     "Arg": {
@@ -2016,22 +2001,22 @@
     }
   },
   {
-    "Id": 1215,
+    "Id": 1214,
     "Region": "Context menu",
     "Function": "OpenWindowsTerminalAdminContext",
     "Arg": {
       "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Mostrar o item \"Abrir em Terminal do Windows\" (administrador) no menu de contexto do Desktop e pastas"
+        "Tag": "Enable",
+        "ToolTip": "Abrir o Terminal Windows a partir do menu de contexto como administrador por defeito"
       },
       "One": {
-        "Tag": "Hide",
-        "ToolTip": "Esconder o item \"Abrir em Terminal Windows\" (administrador) no menu de contexto do Desktop e pastas. (valor padrão)"
+        "Tag": "Disable",
+        "ToolTip": "Não abrir o Terminal do Windows a partir do menu de contexto como administrador por defeito (valor padrão)"
       }
     }
   },
   {
-    "Id": 1216,
+    "Id": 1215,
     "Region": "Context menu",
     "Function": "Windows10ContextMenu",
     "Arg": {

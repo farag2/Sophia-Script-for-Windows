@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.13.3
-	Date: 26.07.2022
+	Version: v5.13.4
+	Date: 12.08.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -15,7 +15,7 @@
 
 	.NOTES
 	Supported Windows 10 versions
-	Versions: 2004/20H2/21H1/21H2
+	Versions: 2004/20H2/21H1/21H2/22H2
 	Builds: 1904x.1766+
 	Editions: Home/Pro/Enterprise
 	Architecture: x64
@@ -70,17 +70,9 @@ function Checkings
 	# Detect the OS build version
 	switch (((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber -ge 19041) -and ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber -le 19048))
 	{
-		$false
-		{
-			Write-Warning -Message $Localization.UnsupportedOSBuild
-
-			Start-Process -FilePath "https://t.me/sophia_chat"
-
-			exit
-		}
 		$true
 		{
-			if (-not ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -ge 1766))
+			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 1766)
 			{
 				# Check whether the OS minor build version is 1766 minimum
 				# https://docs.microsoft.com/en-us/windows/release-health/release-information
@@ -108,6 +100,14 @@ function Checkings
 
 				exit
 			}
+		}
+		$false
+		{
+			Write-Warning -Message $Localization.UnsupportedOSBuild
+
+			Start-Process -FilePath "https://t.me/sophia_chat"
+
+			exit
 		}
 	}
 
@@ -275,27 +275,38 @@ function Checkings
 	Get-ChildItem -Path $PSScriptRoot\..\ -File -Recurse -Force | Unblock-File
 
 	#region Defender Checkings
-	# Checking whether WMI is corrupted
-	try
+	# The Enterprise G edition doesn't has a built-in Defender
+	if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name EditionID) -ne "EnterpriseG")
 	{
-		Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender -ErrorAction Stop | Out-Null
-	}
-	catch [Microsoft.Management.Infrastructure.CimException]
-	{
-		# Provider Load Failure exception
-		$Localization.DefenderBroken
-		$Global:Error.Exception[-1]
-		Start-Process -FilePath "https://t.me/sophia_chat"
+		# Checking whether WMI is corrupted
+		try
+		{
+			Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender -ErrorAction Stop | Out-Null
+		}
+		catch [Microsoft.Management.Infrastructure.CimException]
+		{
+			# Provider Load Failure exception
+			$Localization.DefenderBroken
+			$Global:Error.Exception.Message | Select-Object -First 1
+			Start-Process -FilePath "https://t.me/sophia_chat"
 
-		exit
+			exit
+		}
 	}
 
 	# Check Microsoft Defender state
-	$productState = (Get-CimInstance -Namespace root/SecurityCenter2 -ClassName Antivirusproduct | Where-Object -FilterScript {$_.instanceGuid -eq "{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}"}).productState
-	$DefenderState = ('0x{0:x}' -f $productState).Substring(3, 2)
-	if ($DefenderState -notmatch "00|01")
+	if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name EditionID) -ne "EnterpriseG")
 	{
-		$Script:DefenderproductState = $true
+		$productState = (Get-CimInstance -Namespace root/SecurityCenter2 -ClassName Antivirusproduct | Where-Object -FilterScript {$_.instanceGuid -eq "{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}"}).productState
+		$DefenderState = ('0x{0:x}' -f $productState).Substring(3, 2)
+		if ($DefenderState -notmatch "00|01")
+		{
+			$Script:DefenderproductState = $true
+		}
+		else
+		{
+			$Script:DefenderproductState = $false
+		}
 	}
 	else
 	{
@@ -322,9 +333,17 @@ function Checkings
 		}
 	}
 
-	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).AntispywareEnabled)
+	# Specifies whether Antispyware protection is enabled
+	if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name EditionID) -ne "EnterpriseG")
 	{
-		$Script:DefenderAntispywareEnabled = $true
+		if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).AntispywareEnabled)
+		{
+			$Script:DefenderAntispywareEnabled = $true
+		}
+		else
+		{
+			$Script:DefenderAntispywareEnabled = $false
+		}
 	}
 	else
 	{
@@ -332,23 +351,37 @@ function Checkings
 	}
 
 	# https://docs.microsoft.com/en-us/graph/api/resources/intune-devices-windowsdefenderproductstatus?view=graph-rest-beta
-	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).ProductStatus -eq 1)
+	if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name EditionID) -ne "EnterpriseG")
+	{
+		if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).ProductStatus -eq 1)
+		{
+			$Script:DefenderProductStatus = $false
+		}
+		else
+		{
+			$Script:DefenderProductStatus = $true
+		}
+	}
+	else
 	{
 		$Script:DefenderProductStatus = $false
 	}
-	else
-	{
-		$Script:DefenderProductStatus = $true
-	}
 
 	# https://docs.microsoft.com/en-us/graph/api/resources/intune-devices-windowsdefenderproductstatus?view=graph-rest-beta
-	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).AMEngineVersion -eq "0.0.0.0")
+	if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name EditionID) -ne "EnterpriseG")
 	{
-		$Script:DefenderAMEngineVersion = $false
+		if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).AMEngineVersion -eq "0.0.0.0")
+		{
+			$Script:DefenderAMEngineVersion = $false
+		}
+		else
+		{
+			$Script:DefenderAMEngineVersion = $true
+		}
 	}
 	else
 	{
-		$Script:DefenderAMEngineVersion = $true
+		$Script:DefenderAMEngineVersion = $false
 	}
 
 	# Check whether Microsoft Defender was turned off
@@ -3075,10 +3108,13 @@ public static string GetString(uint strId)
 			Store
 			{
 				# Start-Job is used due to that the calling this function before UninstallUWPApps breaks the retrieval of the localized UWP apps packages names
-				Start-Job -ScriptBlock {
-					$Apps = (New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
-					($Apps | Where-Object -FilterScript {$_.Name -eq "Microsoft Store"}).Verbs() | Where-Object -FilterScript {$_.Name -eq $Using:LocalizedString} | ForEach-Object -Process {$_.DoIt()}
-				} | Receive-Job -Wait -AutoRemoveJob
+				if ((New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items() | Where-Object -FilterScript {$_.Path -eq "Microsoft.WindowsStore_8wekyb3d8bbwe!App"})
+				{
+					Start-Job -ScriptBlock {
+						$Apps = (New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
+						($Apps | Where-Object -FilterScript {$_.Name -eq "Microsoft Store"}).Verbs() | Where-Object -FilterScript {$_.Name -eq $Using:LocalizedString} | ForEach-Object -Process {$_.DoIt()}
+					} | Receive-Job -Wait -AutoRemoveJob
+				}
 			}
 			Mail
 			{
@@ -5940,8 +5976,8 @@ function IPv6Component
 		}
 		catch [System.Net.WebException]
 		{
-			Write-Warning -Message ($Localization.NoResponse -f "https://store.rg-adguard.net")
-			Write-Error -Message ($Localization.NoResponse -f "https://store.rg-adguard.net") -ErrorAction SilentlyContinue
+			Write-Warning -Message ($Localization.NoResponse -f "https://ipv6-test.com")
+			Write-Error -Message ($Localization.NoResponse -f "https://ipv6-test.com") -ErrorAction SilentlyContinue
 
 			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
 		}
@@ -10486,7 +10522,7 @@ function CheckUWPAppsUpdates
 	XboxGameBar -Enable
 
 	.NOTES
-	To prevent popping up the "You'll need a new app to open this ms-gamingoverlay" warning, you need to disable the `Xbox Game Bar` app, even if you uninstalled it before.
+	To prevent popping up the "You'll need a new app to open this ms-gamingoverlay" warning, you need to disable the Xbox Game Bar app, even if you uninstalled it before
 
 	.NOTES
 	Current user
@@ -11210,18 +11246,15 @@ function NetworkProtection
 		$Disable
 	)
 
-	switch ($PSCmdlet.ParameterSetName)
+	if ($Script:DefenderEnabled)
 	{
-		"Enable"
+		switch ($PSCmdlet.ParameterSetName)
 		{
-			if ($Script:DefenderEnabled)
+			"Enable"
 			{
 				Set-MpPreference -EnableNetworkProtection Enabled
 			}
-		}
-		"Disable"
-		{
-			if ($Script:DefenderEnabled)
+			"Disable"
 			{
 				Set-MpPreference -EnableNetworkProtection Disabled
 			}
@@ -11267,18 +11300,15 @@ function PUAppsDetection
 		$Disable
 	)
 
-	switch ($PSCmdlet.ParameterSetName)
+	if ($Script:DefenderEnabled)
 	{
-		"Enable"
+		switch ($PSCmdlet.ParameterSetName)
 		{
-			if ($Script:DefenderEnabled)
+			"Enable"
 			{
 				Set-MpPreference -PUAProtection Enabled
 			}
-		}
-		"Disable"
-		{
-			if ($Script:DefenderEnabled)
+			"Disable"
 			{
 				Set-MpPreference -PUAProtection Disabled
 			}
@@ -11327,18 +11357,15 @@ function DefenderSandbox
 		$Disable
 	)
 
-	switch ($PSCmdlet.ParameterSetName)
+	if ($Script:DefenderEnabled)
 	{
-		"Enable"
+		switch ($PSCmdlet.ParameterSetName)
 		{
-			if ($Script:DefenderEnabled)
+			"Enable"
 			{
 				setx /M MP_FORCE_USE_SANDBOX 1
 			}
-		}
-		"Disable"
-		{
-			if ($Script:DefenderEnabled)
+			"Disable"
 			{
 				setx /M MP_FORCE_USE_SANDBOX 0
 			}
@@ -11349,13 +11376,19 @@ function DefenderSandbox
 # Dismiss Microsoft Defender offer in the Windows Security about signing in Microsoft account
 function DismissMSAccount
 {
-	New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows Security Health\State" -Name AccountProtection_MicrosoftAccount_Disconnected -PropertyType DWord -Value 1 -Force
+	if ($Script:DefenderEnabled)
+	{
+		New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows Security Health\State" -Name AccountProtection_MicrosoftAccount_Disconnected -PropertyType DWord -Value 1 -Force
+	}
 }
 
 # Dismiss Microsoft Defender offer in the Windows Security about turning on the SmartScreen filter for Microsoft Edge
 function DismissSmartScreenFilter
 {
-	New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows Security Health\State" -Name AppAndBrowser_EdgeSmartScreenOff -PropertyType DWord -Value 0 -Force
+	if ($Script:DefenderEnabled)
+	{
+		New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows Security Health\State" -Name AppAndBrowser_EdgeSmartScreenOff -PropertyType DWord -Value 0 -Force
+	}
 }
 
 <#
@@ -11542,7 +11575,7 @@ function EventViewerCustomView
 			}
 
 			# Save ProcessCreation.xml in the UTF-8 with BOM encoding
-			Set-Content -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Value $XML -Encoding UTF8 -Force
+			Set-Content -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Value $XML -Encoding utf8BOM -Force
 		}
 		"Disable"
 		{
@@ -11701,15 +11734,18 @@ function AppsSmartScreen
 		$Enable
 	)
 
-	switch ($PSCmdlet.ParameterSetName)
+	if ($Script:DefenderEnabled)
 	{
-		"Disable"
+		switch ($PSCmdlet.ParameterSetName)
 		{
-			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name SmartScreenEnabled -PropertyType String -Value Off -Force
-		}
-		"Enable"
-		{
-			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name SmartScreenEnabled -PropertyType String -Value Warn -Force
+			"Disable"
+			{
+				New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name SmartScreenEnabled -PropertyType String -Value Off -Force
+			}
+			"Enable"
+			{
+				New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name SmartScreenEnabled -PropertyType String -Value Warn -Force
+			}
 		}
 	}
 }
@@ -12239,11 +12275,11 @@ function EditWithPaint3DContext
 		$Show
 	)
 
-	switch ($PSCmdlet.ParameterSetName)
+	if (Get-AppxPackage -Name Microsoft.MSPaint)
 	{
-		"Hide"
+		switch ($PSCmdlet.ParameterSetName)
 		{
-			if (Get-AppxPackage -Name Microsoft.MSPaint)
+			"Hide"
 			{
 				$Extensions = @(".bmp", ".gif", ".jpe", ".jpeg", ".jpg", ".png", ".tif", ".tiff")
 				foreach ($Extension in $Extensions)
@@ -12251,10 +12287,7 @@ function EditWithPaint3DContext
 					New-ItemProperty -Path "Registry::HKEY_CLASSES_ROOT\SystemFileAssociations\$Extension\Shell\3D Edit" -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
 				}
 			}
-		}
-		"Show"
-		{
-			if (Get-AppxPackage -Name Microsoft.MSPaint)
+			"Show"
 			{
 				$Extensions = @(".bmp", ".gif", ".jpe", ".jpeg", ".jpg", ".png", ".tif", ".tiff")
 				foreach ($Extension in $Extensions)
@@ -12304,18 +12337,15 @@ function EditWithPhotosContext
 		$Show
 	)
 
-	switch ($PSCmdlet.ParameterSetName)
+	if (Get-AppxPackage -Name Microsoft.Windows.Photos)
 	{
-		"Hide"
+		switch ($PSCmdlet.ParameterSetName)
 		{
-			if (Get-AppxPackage -Name Microsoft.Windows.Photos)
+			"Hide"
 			{
 				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppX43hnxtbyyps62jhe9sqpdzxn1790zetc\Shell\ShellEdit -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
 			}
-		}
-		"Show"
-		{
-			if (Get-AppxPackage -Name Microsoft.Windows.Photos)
+			"Show"
 			{
 				Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppX43hnxtbyyps62jhe9sqpdzxn1790zetc\Shell\ShellEdit -Name ProgrammaticAccessOnly -Force -ErrorAction Ignore
 			}
@@ -12361,18 +12391,15 @@ function CreateANewVideoContext
 		$Show
 	)
 
-	switch ($PSCmdlet.ParameterSetName)
+	if (Get-AppxPackage -Name Microsoft.Windows.Photos)
 	{
-		"Hide"
+		switch ($PSCmdlet.ParameterSetName)
 		{
-			if (Get-AppxPackage -Name Microsoft.Windows.Photos)
+			"Hide"
 			{
 				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppX43hnxtbyyps62jhe9sqpdzxn1790zetc\Shell\ShellCreateVideo -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
 			}
-		}
-		"Show"
-		{
-			if (Get-AppxPackage -Name Microsoft.Windows.Photos)
+			"Show"
 			{
 				Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppX43hnxtbyyps62jhe9sqpdzxn1790zetc\Shell\ShellCreateVideo -Name ProgrammaticAccessOnly -Force -ErrorAction Ignore
 			}
@@ -12418,18 +12445,15 @@ function ImagesEditContext
 		$Show
 	)
 
-	switch ($PSCmdlet.ParameterSetName)
+	if ((Get-WindowsCapability -Online -Name "Microsoft.Windows.MSPaint*").State -eq "Installed")
 	{
-		"Hide"
+		switch ($PSCmdlet.ParameterSetName)
 		{
-			if ((Get-WindowsCapability -Online -Name "Microsoft.Windows.MSPaint*").State -eq "Installed")
+			"Hide"
 			{
 				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\SystemFileAssociations\image\shell\edit -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
 			}
-		}
-		"Show"
-		{
-			if ((Get-WindowsCapability -Online -Name "Microsoft.Windows.MSPaint*").State -eq "Installed")
+			"Show"
 			{
 				Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\SystemFileAssociations\image\shell\edit -Name ProgrammaticAccessOnly -Force -ErrorAction Ignore
 			}
@@ -12588,66 +12612,6 @@ function SendToContext
 		"Show"
 		{
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AllFilesystemObjects\shellex\ContextMenuHandlers\SendTo -Name "(default)" -PropertyType String -Value "{7BA4C740-9E81-11CF-99D3-00AA004AE837}" -Force
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	The "Turn on BitLocker" item in the drives context menu
-
-	.PARAMETER Hide
-	Hide the "Turn on BitLocker" item from the drives context menu
-
-	.PARAMETER Show
-	Show the "Turn on BitLocker" item in the drives context menu
-
-	.EXAMPLE
-	BitLockerContext -Hide
-
-	.EXAMPLE
-	BitLockerContext -Show
-
-	.NOTES
-	Current user
-#>
-function BitLockerContext
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Hide"
-		)]
-		[switch]
-		$Hide,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Show"
-		)]
-		[switch]
-		$Show
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Hide"
-		{
-			if (Get-WindowsEdition -Online | Where-Object -FilterScript {($_.Edition -eq "Professional") -or ($_.Edition -like "Enterprise*")})
-			{
-				if ((Get-BitLockerVolume).ProtectionStatus -eq "Off")
-				{
-					New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\encrypt-bde-elev -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
-				}
-			}
-		}
-		"Show"
-		{
-			if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Professional" -or $_.Edition -like "Enterprise*"})
-			{
-				Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\encrypt-bde-elev -Name ProgrammaticAccessOnly -Force -ErrorAction Ignore
-			}
 		}
 	}
 }
@@ -13032,7 +12996,7 @@ function UpdateLGPEPolicies
 	# Local Machine policies paths to scan recursively
 	$LM_Paths = @(
 		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies",
-		"HKLM:\SOFTWARE\Policies\Microsoft\Windows"
+		"HKLM:\SOFTWARE\Policies\Microsoft"
 	)
 	foreach ($Path in (@(Get-ChildItem -Path $LM_Paths -Recurse -Force)))
 	{
@@ -13046,14 +13010,10 @@ function UpdateLGPEPolicies
 				{
 					# Parse every ADMX template searching if it contains full path and registry key simultaneously
 					[xml]$config = Get-Content -Path $admx.FullName -Encoding UTF8
+					$config.SelectNodes("//@*") | ForEach-Object {$_.value = $_.value.ToLower()}
 					$SplitPath = Split-Path -Path $Path.Name.Replace("HKEY_LOCAL_MACHINE\", "HKLM:") -NoQualifier
 
-					if (($config.policyDefinitions.policies.policy | Where-Object -FilterScript {
-						($_.key -eq $SplitPath) -and ($_.valueName -eq $Item) -or (($_.key -eq $SplitPath) -and ($_.Name -eq $Item))
-					}) -or
-					($config.policyDefinitions.policies.policy | Where-Object -FilterScript {
-						($_.key -eq $SplitPath)
-					} | Where-Object -FilterScript {$_.elements.enum.valueName -eq $Item}))
+					if ($config.SelectSingleNode("//*[local-name()='policy' and @key='$($SplitPath.ToLower())' and (@valueName='$($Item.ToLower())' or @Name='$($Item.ToLower())' or .//*[local-name()='enum' and @valueName='$($Item.ToLower())'])]"))
 					{
 						try
 						{
@@ -13083,7 +13043,7 @@ function UpdateLGPEPolicies
 	# Current User policies paths to scan recursively
 	$CU_Paths = @(
 		"HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies",
-		"HKCU:\SOFTWARE\Policies\Microsoft\Windows"
+		"HKCU:\SOFTWARE\Policies\Microsoft"
 	)
 	foreach ($Path in (@(Get-ChildItem -Path $CU_Paths -Recurse -Force)))
 	{
@@ -13097,14 +13057,10 @@ function UpdateLGPEPolicies
 				{
 					# Parse every ADMX template searching if it contains full path and registry key simultaneously
 					[xml]$config = Get-Content -Path $admx.FullName -Encoding UTF8
-					$SplitPath = Split-Path -Path $Path.Name.Replace("HKEY_CURRENT_USER\", "HKCU:") -NoQualifier
+					$config.SelectNodes("//@*") | ForEach-Object {$_.value = $_.value.ToLower()}
+					$SplitPath = Split-Path -Path $Path.Name.Replace("HKEY_LOCAL_MACHINE\", "HKLM:") -NoQualifier
 
-					if (($config.policyDefinitions.policies.policy | Where-Object -FilterScript {
-						($_.key -eq $SplitPath) -and ($_.valueName -eq $Item) -or (($_.key -eq $SplitPath) -and ($_.Name -eq $Item))
-					}) -or
-					($config.policyDefinitions.policies.policy | Where-Object -FilterScript {
-						($_.key -eq $SplitPath)
-					} | Where-Object -FilterScript {$_.elements.enum.valueName -eq $Item}))
+					if ($config.SelectSingleNode("//*[local-name()='policy' and @key='$($SplitPath.ToLower())' and (@valueName='$($Item.ToLower())' or @Name='$($Item.ToLower())' or .//*[local-name()='enum' and @valueName='$($Item.ToLower())'])]"))
 					{
 						try
 						{
@@ -13150,6 +13106,27 @@ function UpdateLGPEPolicies
 	gpupdate.exe /force
 }
 #endregion Update Policies
+
+# Errors output
+function Errors
+{
+	if ($Global:Error)
+	{
+		($Global:Error | ForEach-Object -Process {
+			# Some errors may have the Windows nature and don't have a path to any of the module's files
+			$ErrorInFile = if ($_.InvocationInfo.PSCommandPath)
+			{
+				Split-Path -Path $_.InvocationInfo.PSCommandPath -Leaf
+			}
+
+			[PSCustomObject]@{
+				$Localization.ErrorsLine    = $_.InvocationInfo.ScriptLineNumber
+				$Localization.ErrorsFile    = $ErrorInFile
+				$Localization.ErrorsMessage = $_.Exception.Message
+			}
+		} | Sort-Object -Property Line | Format-Table -AutoSize -Wrap | Out-String).Trim()
+	}
+}
 
 #region Refresh Environment
 function RefreshEnvironment
@@ -13222,38 +13199,6 @@ public static void PostMessage()
 		}
 	}
 
-	# In order for the changes to take effect the File Explorer process has to be restarted
-	$Title = ""
-	$Message       = $Localization.FileExplorerRestartPrompt
-	$Yes           = $Localization.Yes
-	$No            = $Localization.No
-	$Options       = "&$No", "&$Yes"
-	$DefaultChoice = 1
-	$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
-
-	switch ($Result)
-	{
-		"0"
-		{
-			continue
-		}
-		"1"
-		{
-			Stop-Process -Name explorer -Force
-
-			Start-Sleep -Seconds 3
-
-			# Restoring closed folders
-			foreach ($Script:OpenedFolder in $Script:OpenedFolders)
-			{
-				if (Test-Path -Path $Script:OpenedFolder)
-				{
-					Start-Process -FilePath explorer -ArgumentList $Script:OpenedFolder
-				}
-			}
-		}
-	}
-
 	Write-Information -MessageData "" -InformationAction Continue
 	Write-Warning -Message $Localization.RestartWarning
 
@@ -13322,54 +13267,65 @@ public static void PostMessage()
 
 	$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New($ToastXML)
 	[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel").Show($ToastMessage)
+
+	# In order for the changes to take effect the File Explorer process has to be restarted
+	$Title = ""
+	$Message       = $Localization.FileExplorerRestartPrompt
+	$Yes           = $Localization.Yes
+	$No            = $Localization.No
+	$Options       = "&$No", "&$Yes"
+	$DefaultChoice = 1
+	$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+
+	switch ($Result)
+	{
+		"0"
+		{
+			continue
+		}
+		"1"
+		{
+			Stop-Process -Name explorer -Force
+
+			Start-Sleep -Seconds 3
+
+			# Restoring closed folders
+			foreach ($Script:OpenedFolder in $Script:OpenedFolders)
+			{
+				if (Test-Path -Path $Script:OpenedFolder)
+				{
+					Start-Process -FilePath explorer -ArgumentList $Script:OpenedFolder
+				}
+			}
+		}
+	}
 }
 #endregion Refresh Environment
 
-# Errors output
-function Errors
-{
-	if ($Global:Error)
-	{
-		($Global:Error | ForEach-Object -Process {
-			# Some errors may have the Windows nature and don't have a path to any of the module's files
-			$ErrorInFile = if ($_.InvocationInfo.PSCommandPath)
-			{
-				Split-Path -Path $_.InvocationInfo.PSCommandPath -Leaf
-			}
-
-			[PSCustomObject]@{
-				$Localization.ErrorsLine    = $_.InvocationInfo.ScriptLineNumber
-				$Localization.ErrorsFile    = $ErrorInFile
-				$Localization.ErrorsMessage = $_.Exception.Message
-			}
-		} | Sort-Object -Property Line | Format-Table -AutoSize -Wrap | Out-String).Trim()
-	}
-}
-
 # SIG # Begin signature block
-# MIIbvwYJKoZIhvcNAQcCoIIbsDCCG6wCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
+# MIIbmwYJKoZIhvcNAQcCoIIbjDCCG4gCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUqCz5RS3ONzLM41bWuG0ehGR7
-# vfmgghY3MIIDAjCCAeqgAwIBAgIQGSBH1ceugJNJQBs2CFGB8jANBgkqhkiG9w0B
-# AQsFADAZMRcwFQYDVQQDDA5Tb3BoaWEgUHJvamVjdDAeFw0yMjA3MjYxOTQ1MjRa
-# Fw0yNDA3MjYxOTU1MjRaMBkxFzAVBgNVBAMMDlNvcGhpYSBQcm9qZWN0MIIBIjAN
-# BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1cjscVGXKEfNl8m0K75jJnd0Z0jQ
-# T4OWo1g+C4USBBtzOvYaj9t6oQgRwoT627OjU5y0bJBP0e+mgxKn/RYXn5ZVm3dB
-# ooqCGC9iEu2ak1pNdyffY7BZjJ3aVl9TLVaUA1joJgEpDFN1yrLt3be2eYcp61PS
-# ARCiTH6+EFtX5pkhfhsBfwO8HvmOb5WFcZk1ugZ1MnPf+of8A9OB0I3ZTomUCgOr
-# Ou6gDb2TEpjZE1Y7bRt+h3Ocadv3D8wvCvohveRRaAZyswxwe0LvIjGiCxIfeOGC
-# 7+Y9WgYqoUcg7sb8eTw88jdNdX1eCgSB3rUJRXgR7JZ076m9idPlySJ5/QIDAQAB
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUwZupwPULW1D1zlPaiw7XBURB
+# D3ugghYTMIIDAjCCAeqgAwIBAgIQTi4881vPeZpMOBarbc4BIjANBgkqhkiG9w0B
+# AQsFADAZMRcwFQYDVQQDDA5Tb3BoaWEgUHJvamVjdDAeFw0yMjA4MTIxODU5NTJa
+# Fw0yNDA4MTIxOTA5NTNaMBkxFzAVBgNVBAMMDlNvcGhpYSBQcm9qZWN0MIIBIjAN
+# BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuoX0mQe9LtGb04hBzYBwIcIzWInz
+# bWUnwEut02rPmZMKEbAab3l71s+dMstqFIb4R68kIKVvI6B0evG/r3ptzZRlshf+
+# wc2i3FLNkandkrVhG8Dr9Su6xEeONMkFLwt9Ubob5KVh9Y0UnGhJJnQnBEWqqo4b
+# 4wHaVRO5nJtVRPI0pRHqfSwXovmcuHhf4P/2aV2GR2YWyO8aAUs8Ktfat7Cebiu1
+# iYwrob9ZZzKMN7r3kd2WiXpMxxr/KBYwHJP2M9TBb7ce3dJofffqo0eoRtu+AICM
+# eoprAiHz8HzYdej7yT2/wF+qMNHq0xthF7YKmulC1dubxMMCisQ13EihVQIDAQAB
 # o0YwRDAOBgNVHQ8BAf8EBAMCB4AwEwYDVR0lBAwwCgYIKwYBBQUHAwMwHQYDVR0O
-# BBYEFN9xgFEiCFjTYHqxP+s5D4Wr6l/+MA0GCSqGSIb3DQEBCwUAA4IBAQAtEBEG
-# 3g7vYiCDNM+rar1LMFDit2/wL72ROHc95uEWPnwCfaESh2mERwlvNSCH4xqWzxU9
-# px1mpuNzaydnmTXHWC5F11jCX/JxXarI6g4FltKPj6KhPdSsWdeTzcCS3g3KCZIq
-# OjA9bGATppUGcb3xYvCbgBta9cGP1NpyHuHkI2ajKs4BFaPq6T7UN1IqhVHAntAG
-# SkfxKPt4lMY+MCHQWJgQCVx7D/nDenyCG+8D6HMYwsVH1PI4L7EkulsNuCDEvNB6
-# EMmwPCsdGTdc7W+Xef/Fd6Ma4ZRmr3VR5Cf/wMOsXwmFG7f4rjAyNfWNQEybNj8I
-# K0WSXnOEAqNTDTfgMIIFsTCCBJmgAwIBAgIQASQK+x44C4oW8UtxnfTTwDANBgkq
+# BBYEFHwRFeDU2hgDQAQEC8oRBaS+IBUxMA0GCSqGSIb3DQEBCwUAA4IBAQBZYQhx
+# 99tegt8LTt4fW4alMRExbNzRUdEaVYgkzaGJgW4OQ/zLEuDp5mEmfEgpzxBwQiqo
+# 6Taoca8P7x4d45VpAGy0KoLynd+kd/0wyboCqxCyvX/4LA5eAOt9+nnvNDVLaZkb
+# 8WeIwwo+opCMcuyVOMRKSGhh3b2EgMiF83pE6NoNg0ayQST7HvP1Jgglet14nfhk
+# 51fo6UKQ9mU4/vL/EtB8FI/ste8U+rYSlsSm0hq45lvKwzL8Q8M6zD29a/DsPknt
+# JOXk8//QwWmEmvDB1A0TJCeM9uKa1lMiaou/fKwF/SEky6i5kixuZInlFilrGElU
+# x2Hp3M2OnBQWOBfOMIIFjTCCBHWgAwIBAgIQDpsYjvnQLefv21DiCEAYWjANBgkq
 # hkiG9w0BAQwFADBlMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5j
 # MRkwFwYDVQQLExB3d3cuZGlnaWNlcnQuY29tMSQwIgYDVQQDExtEaWdpQ2VydCBB
-# c3N1cmVkIElEIFJvb3QgQ0EwHhcNMjIwNjA5MDAwMDAwWhcNMzExMTA5MjM1OTU5
+# c3N1cmVkIElEIFJvb3QgQ0EwHhcNMjIwODAxMDAwMDAwWhcNMzExMTA5MjM1OTU5
 # WjBiMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQL
 # ExB3d3cuZGlnaWNlcnQuY29tMSEwHwYDVQQDExhEaWdpQ2VydCBUcnVzdGVkIFJv
 # b3QgRzQwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQC/5pBzaN675F1K
@@ -13383,117 +13339,116 @@ function Errors
 # wJS00mFt6zPZxd9LBADMfRyVw4/3IbKyEbe7f/LVjHAsQWCqsWMYRJUadmJ+9oCw
 # ++hkpjPRiQfhvbfmQ6QYuKZ3AeEPlAwhHbJUKSWJbOUOUlFHdL4mrLZBdd56rF+N
 # P8m800ERElvlEFDrMcXKchYiCd98THU/Y+whX8QgUWtvsauGi0/C1kVfnSD8oR7F
-# wI+isX4KJpn15GkvmB0t9dmpsh3lGwIDAQABo4IBXjCCAVowDwYDVR0TAQH/BAUw
+# wI+isX4KJpn15GkvmB0t9dmpsh3lGwIDAQABo4IBOjCCATYwDwYDVR0TAQH/BAUw
 # AwEB/zAdBgNVHQ4EFgQU7NfjgtJxXWRM3y5nP+e6mK4cD08wHwYDVR0jBBgwFoAU
-# Reuir/SSy4IxLVGLp6chnfNtyA8wDgYDVR0PAQH/BAQDAgGGMBMGA1UdJQQMMAoG
-# CCsGAQUFBwMIMHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29j
-# c3AuZGlnaWNlcnQuY29tMEMGCCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdp
-# Y2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURSb290Q0EuY3J0MEUGA1UdHwQ+MDww
-# OqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJ
-# RFJvb3RDQS5jcmwwIAYDVR0gBBkwFzAIBgZngQwBBAIwCwYJYIZIAYb9bAcBMA0G
-# CSqGSIb3DQEBDAUAA4IBAQCaFgKlAe+B+w20WLJ4ragjGdlzN9pgnlHXy/gvQLmj
-# H3xATjM+kDzniQF1hehiex1W4HG63l7GN7x5XGIATfhJelFNBjLzxdIAKicg6oku
-# FTngLD74dXwsgkFhNQ8j0O01ldKIlSlDy+CmWBB8U46fRckgNxTA7Rm6fnc50lSW
-# x6YR3zQz9nVSQkscnY2W1ZVsRxIUJF8mQfoaRr3esOWRRwOsGAjLy9tmiX8rnGW/
-# vjdOvi3znUrDzMxHXsiVla3Ry7sqBiD5P3LqNutFcpJ6KXsUAzz7TdZIcXoQEYoI
-# dM1sGwRc0oqVA3ZRUFPWLvdKRsOuECxxTLCHtic3RGBEMIIGrjCCBJagAwIBAgIQ
-# BzY3tyRUfNhHrP0oZipeWzANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEV
-# MBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3d3cuZGlnaWNlcnQuY29t
-# MSEwHwYDVQQDExhEaWdpQ2VydCBUcnVzdGVkIFJvb3QgRzQwHhcNMjIwMzIzMDAw
-# MDAwWhcNMzcwMzIyMjM1OTU5WjBjMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
-# aUNlcnQsIEluYy4xOzA5BgNVBAMTMkRpZ2lDZXJ0IFRydXN0ZWQgRzQgUlNBNDA5
-# NiBTSEEyNTYgVGltZVN0YW1waW5nIENBMIICIjANBgkqhkiG9w0BAQEFAAOCAg8A
-# MIICCgKCAgEAxoY1BkmzwT1ySVFVxyUDxPKRN6mXUaHW0oPRnkyibaCwzIP5WvYR
-# oUQVQl+kiPNo+n3znIkLf50fng8zH1ATCyZzlm34V6gCff1DtITaEfFzsbPuK4CE
-# iiIY3+vaPcQXf6sZKz5C3GeO6lE98NZW1OcoLevTsbV15x8GZY2UKdPZ7Gnf2ZCH
-# RgB720RBidx8ald68Dd5n12sy+iEZLRS8nZH92GDGd1ftFQLIWhuNyG7QKxfst5K
-# fc71ORJn7w6lY2zkpsUdzTYNXNXmG6jBZHRAp8ByxbpOH7G1WE15/tePc5OsLDni
-# pUjW8LAxE6lXKZYnLvWHpo9OdhVVJnCYJn+gGkcgQ+NDY4B7dW4nJZCYOjgRs/b2
-# nuY7W+yB3iIU2YIqx5K/oN7jPqJz+ucfWmyU8lKVEStYdEAoq3NDzt9KoRxrOMUp
-# 88qqlnNCaJ+2RrOdOqPVA+C/8KI8ykLcGEh/FDTP0kyr75s9/g64ZCr6dSgkQe1C
-# vwWcZklSUPRR8zZJTYsg0ixXNXkrqPNFYLwjjVj33GHek/45wPmyMKVM1+mYSlg+
-# 0wOI/rOP015LdhJRk8mMDDtbiiKowSYI+RQQEgN9XyO7ZONj4KbhPvbCdLI/Hgl2
-# 7KtdRnXiYKNYCQEoAA6EVO7O6V3IXjASvUaetdN2udIOa5kM0jO0zbECAwEAAaOC
-# AV0wggFZMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFLoW2W1NhS9zKXaa
-# L3WMaiCPnshvMB8GA1UdIwQYMBaAFOzX44LScV1kTN8uZz/nupiuHA9PMA4GA1Ud
-# DwEB/wQEAwIBhjATBgNVHSUEDDAKBggrBgEFBQcDCDB3BggrBgEFBQcBAQRrMGkw
-# JAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBBBggrBgEFBQcw
-# AoY1aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0VHJ1c3RlZFJv
-# b3RHNC5jcnQwQwYDVR0fBDwwOjA4oDagNIYyaHR0cDovL2NybDMuZGlnaWNlcnQu
-# Y29tL0RpZ2lDZXJ0VHJ1c3RlZFJvb3RHNC5jcmwwIAYDVR0gBBkwFzAIBgZngQwB
-# BAIwCwYJYIZIAYb9bAcBMA0GCSqGSIb3DQEBCwUAA4ICAQB9WY7Ak7ZvmKlEIgF+
-# ZtbYIULhsBguEE0TzzBTzr8Y+8dQXeJLKftwig2qKWn8acHPHQfpPmDI2AvlXFvX
-# bYf6hCAlNDFnzbYSlm/EUExiHQwIgqgWvalWzxVzjQEiJc6VaT9Hd/tydBTX/6tP
-# iix6q4XNQ1/tYLaqT5Fmniye4Iqs5f2MvGQmh2ySvZ180HAKfO+ovHVPulr3qRCy
-# Xen/KFSJ8NWKcXZl2szwcqMj+sAngkSumScbqyQeJsG33irr9p6xeZmBo1aGqwpF
-# yd/EjaDnmPv7pp1yr8THwcFqcdnGE4AJxLafzYeHJLtPo0m5d2aR8XKc6UsCUqc3
-# fpNTrDsdCEkPlM05et3/JWOZJyw9P2un8WbDQc1PtkCbISFA0LcTJM3cHXg65J6t
-# 5TRxktcma+Q4c6umAU+9Pzt4rUyt+8SVe+0KXzM5h0F4ejjpnOHdI/0dKNPH+ejx
-# mF/7K9h+8kaddSweJywm228Vex4Ziza4k9Tm8heZWcpw8De/mADfIBZPJ/tgZxah
-# ZrrdVcA6KYawmKAr7ZVBtzrVFZgxtGIJDwq9gdkT/r+k0fNX2bwE+oLeMt8EifAA
-# zV3C+dAjfwAL5HYCJtnwZXZCpimHCUcr5n8apIUP/JiW9lVUKx+A+sDyDivl1vup
-# L0QVSucTDh3bNzgaoSv27dZ8/DCCBsYwggSuoAMCAQICEAp6SoieyZlCkAZjOE2G
-# l50wDQYJKoZIhvcNAQELBQAwYzELMAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lD
-# ZXJ0LCBJbmMuMTswOQYDVQQDEzJEaWdpQ2VydCBUcnVzdGVkIEc0IFJTQTQwOTYg
-# U0hBMjU2IFRpbWVTdGFtcGluZyBDQTAeFw0yMjAzMjkwMDAwMDBaFw0zMzAzMTQy
-# MzU5NTlaMEwxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjEk
-# MCIGA1UEAxMbRGlnaUNlcnQgVGltZXN0YW1wIDIwMjIgLSAyMIICIjANBgkqhkiG
-# 9w0BAQEFAAOCAg8AMIICCgKCAgEAuSqWI6ZcvF/WSfAVghj0M+7MXGzj4CUu0jHk
-# PECu+6vE43hdflw26vUljUOjges4Y/k8iGnePNIwUQ0xB7pGbumjS0joiUF/DbLW
-# +YTxmD4LvwqEEnFsoWImAdPOw2z9rDt+3Cocqb0wxhbY2rzrsvGD0Z/NCcW5QWpF
-# QiNBWvhg02UsPn5evZan8Pyx9PQoz0J5HzvHkwdoaOVENFJfD1De1FksRHTAMkcZ
-# W+KYLo/Qyj//xmfPPJOVToTpdhiYmREUxSsMoDPbTSSF6IKU4S8D7n+FAsmG4dUY
-# FLcERfPgOL2ivXpxmOwV5/0u7NKbAIqsHY07gGj+0FmYJs7g7a5/KC7CnuALS8gI
-# 0TK7g/ojPNn/0oy790Mj3+fDWgVifnAs5SuyPWPqyK6BIGtDich+X7Aa3Rm9n3RB
-# Cq+5jgnTdKEvsFR2wZBPlOyGYf/bES+SAzDOMLeLD11Es0MdI1DNkdcvnfv8zbHB
-# p8QOxO9APhk6AtQxqWmgSfl14ZvoaORqDI/r5LEhe4ZnWH5/H+gr5BSyFtaBocra
-# MJBr7m91wLA2JrIIO/+9vn9sExjfxm2keUmti39hhwVo99Rw40KV6J67m0uy4rZB
-# Peevpxooya1hsKBBGBlO7UebYZXtPgthWuo+epiSUc0/yUTngIspQnL3ebLdhOon
-# 7v59emsCAwEAAaOCAYswggGHMA4GA1UdDwEB/wQEAwIHgDAMBgNVHRMBAf8EAjAA
-# MBYGA1UdJQEB/wQMMAoGCCsGAQUFBwMIMCAGA1UdIAQZMBcwCAYGZ4EMAQQCMAsG
-# CWCGSAGG/WwHATAfBgNVHSMEGDAWgBS6FtltTYUvcyl2mi91jGogj57IbzAdBgNV
-# HQ4EFgQUjWS3iSH+VlhEhGGn6m8cNo/drw0wWgYDVR0fBFMwUTBPoE2gS4ZJaHR0
-# cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0VHJ1c3RlZEc0UlNBNDA5NlNI
-# QTI1NlRpbWVTdGFtcGluZ0NBLmNybDCBkAYIKwYBBQUHAQEEgYMwgYAwJAYIKwYB
-# BQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBYBggrBgEFBQcwAoZMaHR0
-# cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0VHJ1c3RlZEc0UlNBNDA5
-# NlNIQTI1NlRpbWVTdGFtcGluZ0NBLmNydDANBgkqhkiG9w0BAQsFAAOCAgEADS0j
-# dKbR9fjqS5k/AeT2DOSvFp3Zs4yXgimcQ28BLas4tXARv4QZiz9d5YZPvpM63io5
-# WjlO2IRZpbwbmKrobO/RSGkZOFvPiTkdcHDZTt8jImzV3/ZZy6HC6kx2yqHcoSuW
-# uJtVqRprfdH1AglPgtalc4jEmIDf7kmVt7PMxafuDuHvHjiKn+8RyTFKWLbfOHzL
-# +lz35FO/bgp8ftfemNUpZYkPopzAZfQBImXH6l50pls1klB89Bemh2RPPkaJFmMg
-# a8vye9A140pwSKm25x1gvQQiFSVwBnKpRDtpRxHT7unHoD5PELkwNuTzqmkJqIt+
-# ZKJllBH7bjLx9bs4rc3AkxHVMnhKSzcqTPNc3LaFwLtwMFV41pj+VG1/calIGnjd
-# RncuG3rAM4r4SiiMEqhzzy350yPynhngDZQooOvbGlGglYKOKGukzp123qlzqkhq
-# WUOuX+r4DwZCnd8GaJb+KqB0W2Nm3mssuHiqTXBt8CzxBxV+NbTmtQyimaXXFWs1
-# DoXW4CzM4AwkuHxSCx6ZfO/IyMWMWGmvqz3hz8x9Fa4Uv4px38qXsdhH6hyF4EVO
-# EhwUKVjMb9N/y77BDkpvIJyu2XMyWQjnLZKhGhH+MpimXSuX4IvTnMxttQ2uR2M4
-# RxdbbxPaahBuH0m3RFu0CAqHWlkEdhGhp3cCExwxggTyMIIE7gIBATAtMBkxFzAV
-# BgNVBAMMDlNvcGhpYSBQcm9qZWN0AhAZIEfVx66Ak0lAGzYIUYHyMAkGBSsOAwIa
-# BQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgor
-# BgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3
-# DQEJBDEWBBROZK1ees4YV4YU1a7tsodkz5Zn6TANBgkqhkiG9w0BAQEFAASCAQAk
-# lOzX6bsN2a97apR1XLjZNntjklq6yD1xlkQLpohsMG4JA9lZLAwEO8Bq5tYpWPvO
-# Ur3y9/Q0ouML8l8rCoVtYGGQfcObyAHgl/q9PUgoN/qBf4xOF8j9sVXIvBeqsMUF
-# xdXSLvxHJLyNavFis03u9NABe9ix2VVNtL36bt01+AAqUfVstscgHs6R4j4uZMsB
-# 9Q+gNbx8/jAiZCb/fSDZ8nUEqBJDpT5BVFi4Ky1j5bywB1LSAEhM7onTWTVRcd9W
-# SonzSXQdC4WoO5Qpkzlv8LauZLCAe8mFl0ziL8Ucu6VtguBzqcaTlWO39gGvvze5
-# aATNUVJOj8QLfIuksaXaoYIDIDCCAxwGCSqGSIb3DQEJBjGCAw0wggMJAgEBMHcw
-# YzELMAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMTswOQYDVQQD
-# EzJEaWdpQ2VydCBUcnVzdGVkIEc0IFJTQTQwOTYgU0hBMjU2IFRpbWVTdGFtcGlu
-# ZyBDQQIQCnpKiJ7JmUKQBmM4TYaXnTANBglghkgBZQMEAgEFAKBpMBgGCSqGSIb3
-# DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTIyMDcyNjE5NTU0MVow
-# LwYJKoZIhvcNAQkEMSIEIDurCoBP0qmOzylG93gPGJv8bRPhPkFCaQDjvYs6mKSr
-# MA0GCSqGSIb3DQEBAQUABIICAE2+sXubXw4c6TMBe89pYmYKUivHInouUvn0Proi
-# 1su6CxTQc5QlaGSbJHtHwGKFqH+YkQ+EJseAnJpytIyQIk/7IUEpisrjAaTiI7L3
-# LCNZXgjJAal9YHTiQQDLXRo72bJM1qzQ4t1imuNvDeMXMGpsxjoWYyR5Z6xBv2gu
-# mS4RGS27GpURIosaGLhOB+Tpktak6ImrAcSsqVgIbtmrBj45PgMSTwN58yftxDWw
-# tfGdYDmkIbvbImxL0V+aMsOeiEuhXydPqTVi949QWghw3teDMeDoIF1LUavvqtBz
-# psmbSQNOGeq4n05LwhEOqxD1WcW0GJK3aEG5frJY/sOF7U9QyXu17Kvfa81P6BiR
-# 4A7W9gS+ccFZRGjLn2tM/1nhqFRwSPJ9x52Xs5iAetELdVLTeJP8tgKige4DzNHj
-# fRsuz37Do03Kh7eaqUnoqAA78dxd6zZs5unxjHcm7oTl34740MnN56SRc9ihLSan
-# PgBp5fVrd+lW6x6Hu1BR3mI2ulEuzrE4q7BxqGrsYCFwsNndaVMSQEaWTwpWtUeJ
-# umo68J+6+YNrKhGprfNmHg2QKJv6za0KLV8B8XXQOy2y2OXZ3AIPHnYNnCYJza1F
-# uK+A0Mfka4teG8HGLEHhb+/OZFcHm1lh7M+xHl8lD9vjoYnyUnUx7l4DNQWCATQO
-# JzYs
+# Reuir/SSy4IxLVGLp6chnfNtyA8wDgYDVR0PAQH/BAQDAgGGMHkGCCsGAQUFBwEB
+# BG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMGCCsG
+# AQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1
+# cmVkSURSb290Q0EuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRp
+# Z2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RDQS5jcmwwEQYDVR0gBAow
+# CDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUAA4IBAQBwoL9DXFXnOF+go3QbPbYW1/e/
+# Vwe9mqyhhyzshV6pGrsi+IcaaVQi7aSId229GhT0E0p6Ly23OO/0/4C5+KH38nLe
+# JLxSA8hO0Cre+i1Wz/n096wwepqLsl7Uz9FDRJtDIeuWcqFItJnLnU+nBgMTdydE
+# 1Od/6Fmo8L8vC6bp8jQ87PcDx4eo0kxAGTVGamlUsLihVo7spNU96LHc/RzY9Hda
+# XFSMb++hUD38dglohJ9vytsgjTVgHAIDyyCwrFigDkBjxZgiwbJZ9VVrzyerbHbO
+# byMt9H5xaiNrIv8SuFQtJ37YOtnwtoeW/VvRXKwYw02fc7cBqZ9Xql4o4rmUMIIG
+# rjCCBJagAwIBAgIQBzY3tyRUfNhHrP0oZipeWzANBgkqhkiG9w0BAQsFADBiMQsw
+# CQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3d3cu
+# ZGlnaWNlcnQuY29tMSEwHwYDVQQDExhEaWdpQ2VydCBUcnVzdGVkIFJvb3QgRzQw
+# HhcNMjIwMzIzMDAwMDAwWhcNMzcwMzIyMjM1OTU5WjBjMQswCQYDVQQGEwJVUzEX
+# MBUGA1UEChMORGlnaUNlcnQsIEluYy4xOzA5BgNVBAMTMkRpZ2lDZXJ0IFRydXN0
+# ZWQgRzQgUlNBNDA5NiBTSEEyNTYgVGltZVN0YW1waW5nIENBMIICIjANBgkqhkiG
+# 9w0BAQEFAAOCAg8AMIICCgKCAgEAxoY1BkmzwT1ySVFVxyUDxPKRN6mXUaHW0oPR
+# nkyibaCwzIP5WvYRoUQVQl+kiPNo+n3znIkLf50fng8zH1ATCyZzlm34V6gCff1D
+# tITaEfFzsbPuK4CEiiIY3+vaPcQXf6sZKz5C3GeO6lE98NZW1OcoLevTsbV15x8G
+# ZY2UKdPZ7Gnf2ZCHRgB720RBidx8ald68Dd5n12sy+iEZLRS8nZH92GDGd1ftFQL
+# IWhuNyG7QKxfst5Kfc71ORJn7w6lY2zkpsUdzTYNXNXmG6jBZHRAp8ByxbpOH7G1
+# WE15/tePc5OsLDnipUjW8LAxE6lXKZYnLvWHpo9OdhVVJnCYJn+gGkcgQ+NDY4B7
+# dW4nJZCYOjgRs/b2nuY7W+yB3iIU2YIqx5K/oN7jPqJz+ucfWmyU8lKVEStYdEAo
+# q3NDzt9KoRxrOMUp88qqlnNCaJ+2RrOdOqPVA+C/8KI8ykLcGEh/FDTP0kyr75s9
+# /g64ZCr6dSgkQe1CvwWcZklSUPRR8zZJTYsg0ixXNXkrqPNFYLwjjVj33GHek/45
+# wPmyMKVM1+mYSlg+0wOI/rOP015LdhJRk8mMDDtbiiKowSYI+RQQEgN9XyO7ZONj
+# 4KbhPvbCdLI/Hgl27KtdRnXiYKNYCQEoAA6EVO7O6V3IXjASvUaetdN2udIOa5kM
+# 0jO0zbECAwEAAaOCAV0wggFZMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYE
+# FLoW2W1NhS9zKXaaL3WMaiCPnshvMB8GA1UdIwQYMBaAFOzX44LScV1kTN8uZz/n
+# upiuHA9PMA4GA1UdDwEB/wQEAwIBhjATBgNVHSUEDDAKBggrBgEFBQcDCDB3Bggr
+# BgEFBQcBAQRrMGkwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNv
+# bTBBBggrBgEFBQcwAoY1aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL0RpZ2lD
+# ZXJ0VHJ1c3RlZFJvb3RHNC5jcnQwQwYDVR0fBDwwOjA4oDagNIYyaHR0cDovL2Ny
+# bDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0VHJ1c3RlZFJvb3RHNC5jcmwwIAYDVR0g
+# BBkwFzAIBgZngQwBBAIwCwYJYIZIAYb9bAcBMA0GCSqGSIb3DQEBCwUAA4ICAQB9
+# WY7Ak7ZvmKlEIgF+ZtbYIULhsBguEE0TzzBTzr8Y+8dQXeJLKftwig2qKWn8acHP
+# HQfpPmDI2AvlXFvXbYf6hCAlNDFnzbYSlm/EUExiHQwIgqgWvalWzxVzjQEiJc6V
+# aT9Hd/tydBTX/6tPiix6q4XNQ1/tYLaqT5Fmniye4Iqs5f2MvGQmh2ySvZ180HAK
+# fO+ovHVPulr3qRCyXen/KFSJ8NWKcXZl2szwcqMj+sAngkSumScbqyQeJsG33irr
+# 9p6xeZmBo1aGqwpFyd/EjaDnmPv7pp1yr8THwcFqcdnGE4AJxLafzYeHJLtPo0m5
+# d2aR8XKc6UsCUqc3fpNTrDsdCEkPlM05et3/JWOZJyw9P2un8WbDQc1PtkCbISFA
+# 0LcTJM3cHXg65J6t5TRxktcma+Q4c6umAU+9Pzt4rUyt+8SVe+0KXzM5h0F4ejjp
+# nOHdI/0dKNPH+ejxmF/7K9h+8kaddSweJywm228Vex4Ziza4k9Tm8heZWcpw8De/
+# mADfIBZPJ/tgZxahZrrdVcA6KYawmKAr7ZVBtzrVFZgxtGIJDwq9gdkT/r+k0fNX
+# 2bwE+oLeMt8EifAAzV3C+dAjfwAL5HYCJtnwZXZCpimHCUcr5n8apIUP/JiW9lVU
+# Kx+A+sDyDivl1vupL0QVSucTDh3bNzgaoSv27dZ8/DCCBsYwggSuoAMCAQICEAp6
+# SoieyZlCkAZjOE2Gl50wDQYJKoZIhvcNAQELBQAwYzELMAkGA1UEBhMCVVMxFzAV
+# BgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMTswOQYDVQQDEzJEaWdpQ2VydCBUcnVzdGVk
+# IEc0IFJTQTQwOTYgU0hBMjU2IFRpbWVTdGFtcGluZyBDQTAeFw0yMjAzMjkwMDAw
+# MDBaFw0zMzAzMTQyMzU5NTlaMEwxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdp
+# Q2VydCwgSW5jLjEkMCIGA1UEAxMbRGlnaUNlcnQgVGltZXN0YW1wIDIwMjIgLSAy
+# MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAuSqWI6ZcvF/WSfAVghj0
+# M+7MXGzj4CUu0jHkPECu+6vE43hdflw26vUljUOjges4Y/k8iGnePNIwUQ0xB7pG
+# bumjS0joiUF/DbLW+YTxmD4LvwqEEnFsoWImAdPOw2z9rDt+3Cocqb0wxhbY2rzr
+# svGD0Z/NCcW5QWpFQiNBWvhg02UsPn5evZan8Pyx9PQoz0J5HzvHkwdoaOVENFJf
+# D1De1FksRHTAMkcZW+KYLo/Qyj//xmfPPJOVToTpdhiYmREUxSsMoDPbTSSF6IKU
+# 4S8D7n+FAsmG4dUYFLcERfPgOL2ivXpxmOwV5/0u7NKbAIqsHY07gGj+0FmYJs7g
+# 7a5/KC7CnuALS8gI0TK7g/ojPNn/0oy790Mj3+fDWgVifnAs5SuyPWPqyK6BIGtD
+# ich+X7Aa3Rm9n3RBCq+5jgnTdKEvsFR2wZBPlOyGYf/bES+SAzDOMLeLD11Es0Md
+# I1DNkdcvnfv8zbHBp8QOxO9APhk6AtQxqWmgSfl14ZvoaORqDI/r5LEhe4ZnWH5/
+# H+gr5BSyFtaBocraMJBr7m91wLA2JrIIO/+9vn9sExjfxm2keUmti39hhwVo99Rw
+# 40KV6J67m0uy4rZBPeevpxooya1hsKBBGBlO7UebYZXtPgthWuo+epiSUc0/yUTn
+# gIspQnL3ebLdhOon7v59emsCAwEAAaOCAYswggGHMA4GA1UdDwEB/wQEAwIHgDAM
+# BgNVHRMBAf8EAjAAMBYGA1UdJQEB/wQMMAoGCCsGAQUFBwMIMCAGA1UdIAQZMBcw
+# CAYGZ4EMAQQCMAsGCWCGSAGG/WwHATAfBgNVHSMEGDAWgBS6FtltTYUvcyl2mi91
+# jGogj57IbzAdBgNVHQ4EFgQUjWS3iSH+VlhEhGGn6m8cNo/drw0wWgYDVR0fBFMw
+# UTBPoE2gS4ZJaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0VHJ1c3Rl
+# ZEc0UlNBNDA5NlNIQTI1NlRpbWVTdGFtcGluZ0NBLmNybDCBkAYIKwYBBQUHAQEE
+# gYMwgYAwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBYBggr
+# BgEFBQcwAoZMaHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0VHJ1
+# c3RlZEc0UlNBNDA5NlNIQTI1NlRpbWVTdGFtcGluZ0NBLmNydDANBgkqhkiG9w0B
+# AQsFAAOCAgEADS0jdKbR9fjqS5k/AeT2DOSvFp3Zs4yXgimcQ28BLas4tXARv4QZ
+# iz9d5YZPvpM63io5WjlO2IRZpbwbmKrobO/RSGkZOFvPiTkdcHDZTt8jImzV3/ZZ
+# y6HC6kx2yqHcoSuWuJtVqRprfdH1AglPgtalc4jEmIDf7kmVt7PMxafuDuHvHjiK
+# n+8RyTFKWLbfOHzL+lz35FO/bgp8ftfemNUpZYkPopzAZfQBImXH6l50pls1klB8
+# 9Bemh2RPPkaJFmMga8vye9A140pwSKm25x1gvQQiFSVwBnKpRDtpRxHT7unHoD5P
+# ELkwNuTzqmkJqIt+ZKJllBH7bjLx9bs4rc3AkxHVMnhKSzcqTPNc3LaFwLtwMFV4
+# 1pj+VG1/calIGnjdRncuG3rAM4r4SiiMEqhzzy350yPynhngDZQooOvbGlGglYKO
+# KGukzp123qlzqkhqWUOuX+r4DwZCnd8GaJb+KqB0W2Nm3mssuHiqTXBt8CzxBxV+
+# NbTmtQyimaXXFWs1DoXW4CzM4AwkuHxSCx6ZfO/IyMWMWGmvqz3hz8x9Fa4Uv4px
+# 38qXsdhH6hyF4EVOEhwUKVjMb9N/y77BDkpvIJyu2XMyWQjnLZKhGhH+MpimXSuX
+# 4IvTnMxttQ2uR2M4RxdbbxPaahBuH0m3RFu0CAqHWlkEdhGhp3cCExwxggTyMIIE
+# 7gIBATAtMBkxFzAVBgNVBAMMDlNvcGhpYSBQcm9qZWN0AhBOLjzzW895mkw4Fqtt
+# zgEiMAkGBSsOAwIaBQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqG
+# SIb3DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3
+# AgEVMCMGCSqGSIb3DQEJBDEWBBSmmpswfSPSk5W4TOEyNzkR9T0HwDANBgkqhkiG
+# 9w0BAQEFAASCAQAORO40Q2JfumgWYmlkwCme6WpbYpUkkI0hG+ytIZZQNEIQXfN+
+# s3J1ts8TEJgCHQkJiohd63ALjnBA03ev1nYlF0rJFLuSCFeiaplZa0OltbTeyV+C
+# s0pPrsHQv+AWJt3M7XBGr5bgFR4Wq9XM23vQvqGSlz1670Lnwm5Hc2G+YdBXA18a
+# QswUcdw4cu5sptw9lywv5S0+QEDbKSyFyzJhz/gHN0wFm25s75SVe5ekgU6HDIcb
+# b6BWyedaym2UEKrWpcyZ02g9S9dS4nAS8p7dX5dEvMkgQLWhqaQCdRDQJCWRuFbi
+# kP56XQ9HRYN5F8RX8ihu400f/jGkehLRy+EGoYIDIDCCAxwGCSqGSIb3DQEJBjGC
+# Aw0wggMJAgEBMHcwYzELMAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lDZXJ0LCBJ
+# bmMuMTswOQYDVQQDEzJEaWdpQ2VydCBUcnVzdGVkIEc0IFJTQTQwOTYgU0hBMjU2
+# IFRpbWVTdGFtcGluZyBDQQIQCnpKiJ7JmUKQBmM4TYaXnTANBglghkgBZQMEAgEF
+# AKBpMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTIy
+# MDgxMjE5MTAwNVowLwYJKoZIhvcNAQkEMSIEIFphMplSbo2MIz3bB1KJ7pePZKb8
+# A9kQ+kGn/QLQzmwUMA0GCSqGSIb3DQEBAQUABIICAA8DVyKzQ5fXFKm369VIXdaK
+# vFKdC0dnB5pzkEqF5aLZ3jOWfV9zn2gjRTihgBbK4qBZ0wFyyxkqzhyDas6WWrBo
+# MvXv2sHyj6Ly2Fe88+1LvkQS+a/9+8pAdI5kW7TnNAi9ToJGnF7R5fYXe4h5VC/8
+# pNvT5eo0V11gr4v/iRhQOGyEyS+fIRpQLcgXzDpDE+VwK/OBmq4hnOeSYxs+rx7s
+# /QOE3EtD+X8g66L7SZfKILprBm7kZoBYdq2qfnFGiemFmQk1tCrUCbHmjA1j/Moe
+# 8wCTTUUho6PNUXEMjdWp64MEO2Lq/xT0vqsJu94hiqSXA3b21havtihuP5tqeF20
+# B5vP6qEG4nvdk6PNpO7ZTZngenEPMQhAlM2qADmZLnzMlYzEdkZN1YY/itAOX95s
+# s7aBzmTecCopIS4sjVG+MeC/y3P5v9gU025launZlGGn56JXldKg62cBtJVWSmrO
+# paK+KUlJdLV22NgabmMIv0iDpi14tVLDCp7bulnLk+iu9AtvtNdZ2iVKlu8RG2rV
+# tQlzCeIfZL+tUKA9pnBvvnkUWy5aco4L/cXH+J92l5Vop/gdpePL9klqaLwptlAo
+# QomzMTrMpczSPXRf9VlpGUsZaisJTqs1MnwpsXMeAXgRTfc0MVwbd2aa4kUMRKrk
+# fW100uwR9eBzTTG9AVuG
 # SIG # End signature block

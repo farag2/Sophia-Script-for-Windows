@@ -1943,21 +1943,6 @@
   {
     "Id": 1210,
     "Region": "Context menu",
-    "Function": "BitLockerContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Ausblenden des Eintrags \"BitLocker einschalten\" im Kontextmenü der Laufwerke"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Anzeigen des Elements \"BitLocker einschalten\" im Kontextmenü der Laufwerke (Standardeinstellung)."
-      }
-    }
-  },
-  {
-    "Id": 1211,
-    "Region": "Context menu",
     "Function": "CompressedFolderNewContext",
     "Arg": {
       "Zero": {
@@ -1971,7 +1956,7 @@
     }
   },
   {
-    "Id": 1212,
+    "Id": 1211,
     "Region": "Context menu",
     "Function": "MultipleInvokeContext",
     "Arg": {
@@ -1986,7 +1971,7 @@
     }
   },
   {
-    "Id": 1213,
+    "Id": 1212,
     "Region": "Context menu",
     "Function": "UseStoreOpenWith",
     "Arg": {
@@ -2001,7 +1986,7 @@
     }
   },
   {
-    "Id": 1214,
+    "Id": 1213,
     "Region": "Context menu",
     "Function": "OpenWindowsTerminalContext",
     "Arg": {
@@ -2016,22 +2001,22 @@
     }
   },
   {
-    "Id": 1215,
+    "Id": 1214,
     "Region": "Context menu",
     "Function": "OpenWindowsTerminalAdminContext",
     "Arg": {
       "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Zeigen Sie das Element \"In Windows Terminal öffnen\" (Admin) im Kontextmenü von Desktop und Ordnern an "
+        "Tag": "Enable",
+        "ToolTip": "Öffnen Sie Windows Terminal über das Kontextmenü als Administrator"
       },
       "One": {
-        "Tag": "Hide",
-        "ToolTip": "Blenden Sie das Element \"Im Windows-Terminal öffnen (Admin)\" aus dem Kontextmenü des Desktops und der Ordner aus (Standardwert)"
+        "Tag": "Disable",
+        "ToolTip": "Öffnen Sie Windows Terminal nicht standardmäßig als Administrator über das Kontextmenü (Standardwert)"
       }
     }
   },
   {
-    "Id": 1216,
+    "Id": 1215,
     "Region": "Context menu",
     "Function": "Windows10ContextMenu",
     "Arg": {

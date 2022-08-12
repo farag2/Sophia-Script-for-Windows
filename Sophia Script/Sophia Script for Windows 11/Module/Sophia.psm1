@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v6.1.3
-	Date: 26.07.2022
+	Version: v6.1.4
+	Date: 12.08.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -66,7 +66,7 @@ function Checkings
 				# Check whether the OS minor build version is 739 minimum
 				# https://docs.microsoft.com/en-us/windows/release-health/windows11-release-information
 				# https://support.microsoft.com/en-us/topic/june-14-2022-kb5014697-os-build-22000-739-cd3aaa0b-a8da-44a0-a778-dfb6f1d9ea11
-				if (-not ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -ge 739))
+				if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 739)
 				{
 					$Version = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion"
 					Write-Warning -Message ($Localization.UpdateWarning -f $Version.CurrentBuild, $Version.UBR)
@@ -275,7 +275,7 @@ function Checkings
 	{
 		# Provider Load Failure exception
 		$Localization.DefenderBroken
-		$Global:Error.Exception[-1]
+		$Global:Error.Exception.Message | Select-Object -First 1
 		Start-Process -FilePath "https://t.me/sophia_chat"
 
 		exit
@@ -313,6 +313,7 @@ function Checkings
 		}
 	}
 
+	# Specifies whether Antispyware protection is enabled
 	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).AntispywareEnabled)
 	{
 		$Script:DefenderAntispywareEnabled = $true
@@ -2695,10 +2696,13 @@ public static string GetString(uint strId)
 			Store
 			{
 				# Start-Job is used due to that the calling this function before UninstallUWPApps breaks the retrieval of the localized UWP apps packages names
-				Start-Job -ScriptBlock {
-					$Apps = (New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
-					($Apps | Where-Object -FilterScript {$_.Name -eq "Microsoft Store"}).Verbs() | Where-Object -FilterScript {$_.Name -eq $Using:LocalizedString} | ForEach-Object -Process {$_.DoIt()}
-				} | Receive-Job -Wait -AutoRemoveJob
+				if ((New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items() | Where-Object -FilterScript {$_.Path -eq "Microsoft.WindowsStore_8wekyb3d8bbwe!App"})
+				{
+					Start-Job -ScriptBlock {
+						$Apps = (New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
+						($Apps | Where-Object -FilterScript {$_.Name -eq "Microsoft Store"}).Verbs() | Where-Object -FilterScript {$_.Name -eq $Using:LocalizedString} | ForEach-Object -Process {$_.DoIt()}
+					} | Receive-Job -Wait -AutoRemoveJob
+				}
 			}
 		}
 	}
@@ -8210,7 +8214,7 @@ function InstallDotNetRuntime6
 
 			# .NET Desktop Runtime x86
 			$Parameters = @{
-				Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$LatestRelease/dotnet-runtime-$LatestRelease-win-x64.exe"
+				Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$LatestRelease/dotnet-runtime-$LatestRelease-win-x86.exe"
 				OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe"
 				UseBasicParsing = $true
 				Verbose         = $true
@@ -8221,7 +8225,7 @@ function InstallDotNetRuntime6
 
 			# .NET Desktop Runtime x64
 			$Parameters = @{
-				Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$LatestRelease/dotnet-runtime-$LatestRelease-win-x86.exe"
+				Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$LatestRelease/dotnet-runtime-$LatestRelease-win-x64.exe"
 				OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe"
 				UseBasicParsing = $true
 				Verbose         = $true
@@ -9859,11 +9863,11 @@ function TeamsAutostart
 		$Enable
 	)
 
-	switch ($PSCmdlet.ParameterSetName)
+	if (Get-AppxPackage -Name MicrosoftTeams)
 	{
-		"Disable"
+		switch ($PSCmdlet.ParameterSetName)
 		{
-			if (Get-AppxPackage -Name MicrosoftTeams)
+			"Disable"
 			{
 				if (-not (Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData\MicrosoftTeams_8wekyb3d8bbwe\TeamsStartupTask"))
 				{
@@ -9871,10 +9875,7 @@ function TeamsAutostart
 				}
 				New-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData\MicrosoftTeams_8wekyb3d8bbwe\TeamsStartupTask" -Name State -PropertyType DWord -Value 1 -Force
 			}
-		}
-		"Enable"
-		{
-			if (Get-AppxPackage -Name MicrosoftTeams)
+			"Enable"
 			{
 				if (-not (Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData\MicrosoftTeams_8wekyb3d8bbwe\TeamsStartupTask"))
 				{
@@ -10637,18 +10638,15 @@ function NetworkProtection
 		$Disable
 	)
 
-	switch ($PSCmdlet.ParameterSetName)
+	if ($Script:DefenderEnabled)
 	{
-		"Enable"
+		switch ($PSCmdlet.ParameterSetName)
 		{
-			if ($Script:DefenderEnabled)
+			"Enable"
 			{
 				Set-MpPreference -EnableNetworkProtection Enabled
 			}
-		}
-		"Disable"
-		{
-			if ($Script:DefenderEnabled)
+			"Disable"
 			{
 				Set-MpPreference -EnableNetworkProtection Disabled
 			}
@@ -10694,18 +10692,15 @@ function PUAppsDetection
 		$Disable
 	)
 
-	switch ($PSCmdlet.ParameterSetName)
+	if ($Script:DefenderEnabled)
 	{
-		"Enable"
+		switch ($PSCmdlet.ParameterSetName)
 		{
-			if ($Script:DefenderEnabled)
+			"Enable"
 			{
 				Set-MpPreference -PUAProtection Enabled
 			}
-		}
-		"Disable"
-		{
-			if ($Script:DefenderEnabled)
+			"Disable"
 			{
 				Set-MpPreference -PUAProtection Disabled
 			}
@@ -10716,13 +10711,19 @@ function PUAppsDetection
 # Dismiss Microsoft Defender offer in the Windows Security about signing in Microsoft account
 function DismissMSAccount
 {
-	New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows Security Health\State" -Name AccountProtection_MicrosoftAccount_Disconnected -PropertyType DWord -Value 1 -Force
+	if ($Script:DefenderEnabled)
+	{
+		New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows Security Health\State" -Name AccountProtection_MicrosoftAccount_Disconnected -PropertyType DWord -Value 1 -Force
+	}
 }
 
 # Dismiss Microsoft Defender offer in the Windows Security about turning on the SmartScreen filter for Microsoft Edge
 function DismissSmartScreenFilter
 {
-	New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows Security Health\State" -Name AppAndBrowser_EdgeSmartScreenOff -PropertyType DWord -Value 0 -Force
+	if ($Script:DefenderEnabled)
+	{
+		New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows Security Health\State" -Name AppAndBrowser_EdgeSmartScreenOff -PropertyType DWord -Value 0 -Force
+	}
 }
 
 <#
@@ -11068,15 +11069,18 @@ function AppsSmartScreen
 		$Enable
 	)
 
-	switch ($PSCmdlet.ParameterSetName)
+	if ($Script:DefenderEnabled)
 	{
-		"Disable"
+		switch ($PSCmdlet.ParameterSetName)
 		{
-			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name SmartScreenEnabled -PropertyType String -Value Off -Force
-		}
-		"Enable"
-		{
-			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name SmartScreenEnabled -PropertyType String -Value Warn -Force
+			"Disable"
+			{
+				New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name SmartScreenEnabled -PropertyType String -Value Off -Force
+			}
+			"Enable"
+			{
+				New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name SmartScreenEnabled -PropertyType String -Value Warn -Force
+			}
 		}
 	}
 }
@@ -11338,7 +11342,9 @@ function DNSoverHTTPS
 		[Parameter(Mandatory = $false)]
 		[ValidateSet("1.0.0.1", "1.1.1.1", "149.112.112.112", "8.8.4.4", "8.8.8.8", "9.9.9.9")]
 		# Isolate the IPv4 addresses only
-		[ValidateScript({(@((Get-ChildItem -Path HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters\DohWellKnownServers).PSChildName) | Where-Object {$_ -notmatch ":"}) -contains $_})]
+		[ValidateScript({
+			(@((Get-ChildItem -Path HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters\DohWellKnownServers).PSChildName) | Where-Object {$_ -notmatch ":"}) -contains $_
+		})]
 		[string]
 		$SecondaryDNS,
 
@@ -11738,18 +11744,15 @@ function EditWithPhotosContext
 		$Show
 	)
 
-	switch ($PSCmdlet.ParameterSetName)
+	if (Get-AppxPackage -Name Microsoft.Windows.Photos)
 	{
-		"Hide"
+		switch ($PSCmdlet.ParameterSetName)
 		{
-			if (Get-AppxPackage -Name Microsoft.Windows.Photos)
+			"Hide"
 			{
 				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppX43hnxtbyyps62jhe9sqpdzxn1790zetc\Shell\ShellEdit -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
 			}
-		}
-		"Show"
-		{
-			if (Get-AppxPackage -Name Microsoft.Windows.Photos)
+			"Show"
 			{
 				Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppX43hnxtbyyps62jhe9sqpdzxn1790zetc\Shell\ShellEdit -Name ProgrammaticAccessOnly -Force -ErrorAction Ignore
 			}
@@ -11795,18 +11798,15 @@ function CreateANewVideoContext
 		$Show
 	)
 
-	switch ($PSCmdlet.ParameterSetName)
+	if (Get-AppxPackage -Name Microsoft.Windows.Photos)
 	{
-		"Hide"
+		switch ($PSCmdlet.ParameterSetName)
 		{
-			if (Get-AppxPackage -Name Microsoft.Windows.Photos)
+			"Hide"
 			{
 				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppX43hnxtbyyps62jhe9sqpdzxn1790zetc\Shell\ShellCreateVideo -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
 			}
-		}
-		"Show"
-		{
-			if (Get-AppxPackage -Name Microsoft.Windows.Photos)
+			"Show"
 			{
 				Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppX43hnxtbyyps62jhe9sqpdzxn1790zetc\Shell\ShellCreateVideo -Name ProgrammaticAccessOnly -Force -ErrorAction Ignore
 			}
@@ -11965,66 +11965,6 @@ function SendToContext
 		"Show"
 		{
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AllFilesystemObjects\shellex\ContextMenuHandlers\SendTo -Name "(default)" -PropertyType String -Value "{7BA4C740-9E81-11CF-99D3-00AA004AE837}" -Force
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	The "Turn on BitLocker" item in the drives context menu
-
-	.PARAMETER Hide
-	Hide the "Turn on BitLocker" item from the drives context menu
-
-	.PARAMETER Show
-	Show the "Turn on BitLocker" item in the drives context menu
-
-	.EXAMPLE
-	BitLockerContext -Hide
-
-	.EXAMPLE
-	BitLockerContext -Show
-
-	.NOTES
-	Current user
-#>
-function BitLockerContext
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Hide"
-		)]
-		[switch]
-		$Hide,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Show"
-		)]
-		[switch]
-		$Show
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Hide"
-		{
-			if (Get-WindowsEdition -Online | Where-Object -FilterScript {($_.Edition -eq "Professional") -or ($_.Edition -like "Enterprise*")})
-			{
-				if ((Get-BitLockerVolume).ProtectionStatus -eq "Off")
-				{
-					New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\encrypt-bde-elev -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
-				}
-			}
-		}
-		"Show"
-		{
-			if (Get-WindowsEdition -Online | Where-Object -FilterScript {$_.Edition -eq "Professional" -or $_.Edition -like "Enterprise*"})
-			{
-				Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Drive\shell\encrypt-bde-elev -Name ProgrammaticAccessOnly -Force -ErrorAction Ignore
-			}
 		}
 	}
 }
@@ -12202,76 +12142,15 @@ function UseStoreOpenWith
 	Show the "Open in Windows Terminal" item in the folders context menu
 
 	.EXAMPLE
-	OpenWindowsTerminalContext -Hide
+	OpenWindowsTerminalContext -Show
 
 	.EXAMPLE
-	OpenWindowsTerminalContext -Show
+	OpenWindowsTerminalContext -Hide
 
 	.NOTES
 	Current user
 #>
 function OpenWindowsTerminalContext
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Hide"
-		)]
-		[switch]
-		$Hide,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Show"
-		)]
-		[switch]
-		$Show
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Hide"
-		{
-			if (Get-AppxPackage -Name Microsoft.WindowsTerminal)
-			{
-				if (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"))
-				{
-					New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Force
-				}
-				New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{9F156763-7844-4DC4-B2B1-901F640F5155}" -PropertyType String -Value "WindowsTerminal" -Force
-			}
-		}
-		"Show"
-		{
-			if (Get-AppxPackage -Name Microsoft.WindowsTerminal)
-			{
-				Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{9F156763-7844-4DC4-B2B1-901F640F5155}" -Force -ErrorAction Ignore
-			}
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	The "Open in Windows Terminal" (Admin) item in the Desktop and folders context menu
-
-	.PARAMETER Show
-	Show the "Open in Windows Terminal" (Admin) item in the Desktop and folders context menu
-
-	.PARAMETER Hide
-	Hide the "Open in Windows Terminal" (Admin) item from the Desktop and folders context menu
-
-	.EXAMPLE
-	OpenWindowsTerminalAdminContext -Show
-
-	.EXAMPLE
-	OpenWindowsTerminalAdminContext -Hide
-
-	.NOTES
-	Current user
-#>
-function OpenWindowsTerminalAdminContext
 {
 	param
 	(
@@ -12290,41 +12169,127 @@ function OpenWindowsTerminalAdminContext
 		$Hide
 	)
 
-	switch ($PSCmdlet.ParameterSetName)
+	if (Get-AppxPackage -Name Microsoft.WindowsTerminal)
 	{
-		"Show"
+		switch ($PSCmdlet.ParameterSetName)
 		{
-			if (Get-AppxPackage -Name Microsoft.WindowsTerminal)
+			"Show"
 			{
-				# Show the option in the Desktop context menu
-				if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\Directory\Background\shell\runas\command))
+				Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{9F156763-7844-4DC4-B2B1-901F640F5155}" -Force -ErrorAction Ignore
+			}
+			"Hide"
+			{
+				if (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"))
 				{
-					New-Item -Path Registry::HKEY_CLASSES_ROOT\Directory\Background\shell\runas\command -ItemType Directory -Force
+					New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Force
 				}
-				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Directory\Background\shell\runas -Name "(default)" -PropertyType String -Value $Localization.OpenInWindowsTerminalAdmin -Force
-				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Directory\Background\shell\runas -Name Icon -PropertyType String -Value "imageres.dll,73" -Force
-				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Directory\Background\shell\runas -Name NoWorkingDirectory -PropertyType String -Value "" -Force
-				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Directory\Background\shell\runas\command -Name "(default)" -PropertyType String -Value "wt.exe -d ""%V\.""" -Force
-
-				# Show the option in the folders context menu
-				if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\Directory\shell\runas\command))
-				{
-					New-Item -Path Registry::HKEY_CLASSES_ROOT\Directory\shell\runas\command -ItemType Directory -Force
-				}
-				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Directory\shell\runas -Name "(default)" -PropertyType String -Value $Localization.OpenInWindowsTerminalAdmin -Force
-				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Directory\shell\runas -Name Icon -PropertyType String -Value "imageres.dll,73" -Force
-				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Directory\shell\runas -Name NoWorkingDirectory -PropertyType String -Value "" -Force
-				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Directory\shell\runas\command -Name "(default)" -PropertyType String -Value "wt.exe -d ""%1""" -Force
+				New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{9F156763-7844-4DC4-B2B1-901F640F5155}" -PropertyType String -Value "WindowsTerminal" -Force
 			}
 		}
-		"Hide"
+	}
+}
+
+<#
+	.SYNOPSIS
+	Open Windows Terminal in context menu as administrator
+
+	.PARAMETER Enable
+	Open Windows Terminal in context menu as administrator by default
+
+	.PARAMETER Disable
+	Do not open Windows Terminal in context menu as administrator by default
+
+	.EXAMPLE
+	OpenWindowsTerminalAdminContext -Enable
+
+	.EXAMPLE
+	OpenWindowsTerminalAdminContext -Disable
+
+	.NOTES
+	Current user
+#>
+function OpenWindowsTerminalAdminContext
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable
+	)
+
+	if
+	(
+		# Check if it is not blocked by policy
+		(-not (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{9F156763-7844-4DC4-B2B1-901F640F5155}" -ErrorAction Ignore)) -and
+		# Check if the package installed
+		(Get-AppxPackage -Name Microsoft.WindowsTerminal) -and
+		# Check if Windows Terminal version is greater or equal than 1.11
+		([System.Version](Get-AppxPackage -Name Microsoft.WindowsTerminal).Version -ge [System.Version]"1.11")
+	)
+	{
+		if (-not (Test-Path -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"))
 		{
-			$Items = @(
-				"Registry::HKEY_CLASSES_ROOT\Directory\Background\shell\runas",
-				"Registry::HKEY_CLASSES_ROOT\Directory\shell\runas"
-			)
-			Remove-Item -Path $Items -Recurse -Force -ErrorAction Ignore
+			Start-Process -FilePath wt -PassThru
+			Start-Sleep -Seconds 2
+			Stop-Process -Name WindowsTerminal -Force -PassThru
 		}
+
+		$settings = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
+
+		try
+		{
+			$Terminal = Get-Content -Path $settings -Encoding UTF8 -Force | ConvertFrom-Json
+		}
+		catch [System.ArgumentException]
+		{
+			Write-Error -Message ($Global:Error.Exception.Message | Select-Object -First 1) -ErrorAction SilentlyContinue
+
+			Invoke-Item -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState"
+
+			return
+		}
+
+		$Terminal = Get-Content -Path $settings -Encoding UTF8 -Force | ConvertFrom-Json
+
+		switch ($PSCmdlet.ParameterSetName)
+		{
+			"Enable"
+			{
+				if ($Terminal.profiles.defaults.elevate)
+				{
+					$Terminal.profiles.defaults.elevate = $true
+				}
+				else
+				{
+					$Terminal.profiles.defaults | Add-Member -MemberType NoteProperty -Name elevate -Value $true -Force
+				}
+			}
+			"Disable"
+			{
+				if ($Terminal.profiles.defaults.elevate)
+				{
+					$Terminal.profiles.defaults.elevate = $false
+				}
+				else
+				{
+					$Terminal.profiles.defaults | Add-Member -MemberType NoteProperty -Name elevate -Value $false -Force
+				}
+			}
+		}
+
+		ConvertTo-Json -InputObject $Terminal -Depth 4 | Set-Content -Path $settings -Encoding UTF8 -Force
+		# Re-save in the UTF-8 without BOM encoding due to JSON must not has the BOM: https://datatracker.ietf.org/doc/html/rfc8259#section-8.1
+		Set-Content -Value (New-Object -TypeName System.Text.UTF8Encoding -ArgumentList $false).GetBytes($(Get-Content -Path $settings -Raw)) -Encoding Byte -Path $settings -Force
 	}
 }
 
@@ -12353,17 +12318,17 @@ function Windows10ContextMenu
 	(
 		[Parameter(
 			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable,
-
-		[Parameter(
-			Mandatory = $true,
 			ParameterSetName = "Disable"
 		)]
 		[switch]
-		$Disable
+		$Disable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable
 	)
 
 	switch ($PSCmdlet.ParameterSetName)
@@ -12417,7 +12382,7 @@ function UpdateLGPEPolicies
 	# Local Machine policies paths to scan recursively
 	$LM_Paths = @(
 		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies",
-		"HKLM:\SOFTWARE\Policies\Microsoft\Windows"
+		"HKLM:\SOFTWARE\Policies\Microsoft"
 	)
 	foreach ($Path in (@(Get-ChildItem -Path $LM_Paths -Recurse -Force)))
 	{
@@ -12431,14 +12396,10 @@ function UpdateLGPEPolicies
 				{
 					# Parse every ADMX template searching if it contains full path and registry key simultaneously
 					[xml]$config = Get-Content -Path $admx.FullName -Encoding UTF8
+					$config.SelectNodes("//@*") | ForEach-Object {$_.value = $_.value.ToLower()}
 					$SplitPath = Split-Path -Path $Path.Name.Replace("HKEY_LOCAL_MACHINE\", "HKLM:") -NoQualifier
 
-					if (($config.policyDefinitions.policies.policy | Where-Object -FilterScript {
-						($_.key -eq $SplitPath) -and ($_.valueName -eq $Item) -or (($_.key -eq $SplitPath) -and ($_.Name -eq $Item))
-					}) -or
-					($config.policyDefinitions.policies.policy | Where-Object -FilterScript {
-						($_.key -eq $SplitPath)
-					} | Where-Object -FilterScript {$_.elements.enum.valueName -eq $Item}))
+					if ($config.SelectSingleNode("//*[local-name()='policy' and @key='$($SplitPath.ToLower())' and (@valueName='$($Item.ToLower())' or @Name='$($Item.ToLower())' or .//*[local-name()='enum' and @valueName='$($Item.ToLower())'])]"))
 					{
 						try
 						{
@@ -12468,7 +12429,7 @@ function UpdateLGPEPolicies
 	# Current User policies paths to scan recursively
 	$CU_Paths = @(
 		"HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies",
-		"HKCU:\SOFTWARE\Policies\Microsoft\Windows"
+		"HKCU:\SOFTWARE\Policies\Microsoft"
 	)
 	foreach ($Path in (@(Get-ChildItem -Path $CU_Paths -Recurse -Force)))
 	{
@@ -12482,14 +12443,10 @@ function UpdateLGPEPolicies
 				{
 					# Parse every ADMX template searching if it contains full path and registry key simultaneously
 					[xml]$config = Get-Content -Path $admx.FullName -Encoding UTF8
-					$SplitPath = Split-Path -Path $Path.Name.Replace("HKEY_CURRENT_USER\", "HKCU:") -NoQualifier
+					$config.SelectNodes("//@*") | ForEach-Object {$_.value = $_.value.ToLower()}
+					$SplitPath = Split-Path -Path $Path.Name.Replace("HKEY_LOCAL_MACHINE\", "HKLM:") -NoQualifier
 
-					if (($config.policyDefinitions.policies.policy | Where-Object -FilterScript {
-						($_.key -eq $SplitPath) -and ($_.valueName -eq $Item) -or (($_.key -eq $SplitPath) -and ($_.Name -eq $Item))
-					}) -or
-					($config.policyDefinitions.policies.policy | Where-Object -FilterScript {
-						($_.key -eq $SplitPath)
-					} | Where-Object -FilterScript {$_.elements.enum.valueName -eq $Item}))
+					if ($config.SelectSingleNode("//*[local-name()='policy' and @key='$($SplitPath.ToLower())' and (@valueName='$($Item.ToLower())' or @Name='$($Item.ToLower())' or .//*[local-name()='enum' and @valueName='$($Item.ToLower())'])]"))
 					{
 						try
 						{
@@ -12535,6 +12492,27 @@ function UpdateLGPEPolicies
 	gpupdate.exe /force
 }
 #endregion Update Policies
+
+# Errors output
+function Errors
+{
+	if ($Global:Error)
+	{
+		($Global:Error | ForEach-Object -Process {
+			# Some errors may have the Windows nature and don't have a path to any of the module's files
+			$ErrorInFile = if ($_.InvocationInfo.PSCommandPath)
+			{
+				Split-Path -Path $_.InvocationInfo.PSCommandPath -Leaf
+			}
+
+			[PSCustomObject]@{
+				$Localization.ErrorsLine    = $_.InvocationInfo.ScriptLineNumber
+				$Localization.ErrorsFile    = $ErrorInFile
+				$Localization.ErrorsMessage = $_.Exception.Message
+			}
+		} | Sort-Object -Property Line | Format-Table -AutoSize -Wrap | Out-String).Trim()
+	}
+}
 
 #region Refresh Environment
 function RefreshEnvironment
@@ -12613,38 +12591,6 @@ public static void PostMessage()
 		Set-WinHomeLocation -GeoId $Script:Region
 	}
 
-	# In order for the changes to take effect the File Explorer process has to be restarted
-	$Title = ""
-	$Message       = $Localization.FileExplorerRestartPrompt
-	$Yes           = $Localization.Yes
-	$No            = $Localization.No
-	$Options       = "&$No", "&$Yes"
-	$DefaultChoice = 1
-	$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
-
-	switch ($Result)
-	{
-		"0"
-		{
-			continue
-		}
-		"1"
-		{
-			Stop-Process -Name explorer -Force
-
-			Start-Sleep -Seconds 3
-
-			# Restoring closed folders
-			foreach ($Script:OpenedFolder in $Script:OpenedFolders)
-			{
-				if (Test-Path -Path $Script:OpenedFolder)
-				{
-					Start-Process -FilePath explorer -ArgumentList $Script:OpenedFolder
-				}
-			}
-		}
-	}
-
 	Write-Information -MessageData "" -InformationAction Continue
 	Write-Warning -Message $Localization.RestartWarning
 
@@ -12704,54 +12650,65 @@ public static void PostMessage()
 
 	$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New($ToastXML)
 	[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel").Show($ToastMessage)
+
+	# In order for the changes to take effect the File Explorer process has to be restarted
+	$Title = ""
+	$Message       = $Localization.FileExplorerRestartPrompt
+	$Yes           = $Localization.Yes
+	$No            = $Localization.No
+	$Options       = "&$No", "&$Yes"
+	$DefaultChoice = 1
+	$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+
+	switch ($Result)
+	{
+		"0"
+		{
+			continue
+		}
+		"1"
+		{
+			Stop-Process -Name explorer -Force
+
+			Start-Sleep -Seconds 3
+
+			# Restoring closed folders
+			foreach ($Script:OpenedFolder in $Script:OpenedFolders)
+			{
+				if (Test-Path -Path $Script:OpenedFolder)
+				{
+					Start-Process -FilePath explorer -ArgumentList $Script:OpenedFolder
+				}
+			}
+		}
+	}
 }
 #endregion Refresh Environment
 
-# Errors output
-function Errors
-{
-	if ($Global:Error)
-	{
-		($Global:Error | ForEach-Object -Process {
-			# Some errors may have the Windows nature and don't have a path to any of the module's files
-			$ErrorInFile = if ($_.InvocationInfo.PSCommandPath)
-			{
-				Split-Path -Path $_.InvocationInfo.PSCommandPath -Leaf
-			}
-
-			[PSCustomObject]@{
-				$Localization.ErrorsLine    = $_.InvocationInfo.ScriptLineNumber
-				$Localization.ErrorsFile    = $ErrorInFile
-				$Localization.ErrorsMessage = $_.Exception.Message
-			}
-		} | Sort-Object -Property Line | Format-Table -AutoSize -Wrap | Out-String).Trim()
-	}
-}
-
 # SIG # Begin signature block
-# MIIbvwYJKoZIhvcNAQcCoIIbsDCCG6wCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
+# MIIbmwYJKoZIhvcNAQcCoIIbjDCCG4gCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUVngTt4899wmG6qmXj5kwmdoo
-# XkOgghY3MIIDAjCCAeqgAwIBAgIQGSBH1ceugJNJQBs2CFGB8jANBgkqhkiG9w0B
-# AQsFADAZMRcwFQYDVQQDDA5Tb3BoaWEgUHJvamVjdDAeFw0yMjA3MjYxOTQ1MjRa
-# Fw0yNDA3MjYxOTU1MjRaMBkxFzAVBgNVBAMMDlNvcGhpYSBQcm9qZWN0MIIBIjAN
-# BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1cjscVGXKEfNl8m0K75jJnd0Z0jQ
-# T4OWo1g+C4USBBtzOvYaj9t6oQgRwoT627OjU5y0bJBP0e+mgxKn/RYXn5ZVm3dB
-# ooqCGC9iEu2ak1pNdyffY7BZjJ3aVl9TLVaUA1joJgEpDFN1yrLt3be2eYcp61PS
-# ARCiTH6+EFtX5pkhfhsBfwO8HvmOb5WFcZk1ugZ1MnPf+of8A9OB0I3ZTomUCgOr
-# Ou6gDb2TEpjZE1Y7bRt+h3Ocadv3D8wvCvohveRRaAZyswxwe0LvIjGiCxIfeOGC
-# 7+Y9WgYqoUcg7sb8eTw88jdNdX1eCgSB3rUJRXgR7JZ076m9idPlySJ5/QIDAQAB
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUcsq8p22aLyW+m2VB2BDXOC3x
+# 2y2gghYTMIIDAjCCAeqgAwIBAgIQTi4881vPeZpMOBarbc4BIjANBgkqhkiG9w0B
+# AQsFADAZMRcwFQYDVQQDDA5Tb3BoaWEgUHJvamVjdDAeFw0yMjA4MTIxODU5NTJa
+# Fw0yNDA4MTIxOTA5NTNaMBkxFzAVBgNVBAMMDlNvcGhpYSBQcm9qZWN0MIIBIjAN
+# BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuoX0mQe9LtGb04hBzYBwIcIzWInz
+# bWUnwEut02rPmZMKEbAab3l71s+dMstqFIb4R68kIKVvI6B0evG/r3ptzZRlshf+
+# wc2i3FLNkandkrVhG8Dr9Su6xEeONMkFLwt9Ubob5KVh9Y0UnGhJJnQnBEWqqo4b
+# 4wHaVRO5nJtVRPI0pRHqfSwXovmcuHhf4P/2aV2GR2YWyO8aAUs8Ktfat7Cebiu1
+# iYwrob9ZZzKMN7r3kd2WiXpMxxr/KBYwHJP2M9TBb7ce3dJofffqo0eoRtu+AICM
+# eoprAiHz8HzYdej7yT2/wF+qMNHq0xthF7YKmulC1dubxMMCisQ13EihVQIDAQAB
 # o0YwRDAOBgNVHQ8BAf8EBAMCB4AwEwYDVR0lBAwwCgYIKwYBBQUHAwMwHQYDVR0O
-# BBYEFN9xgFEiCFjTYHqxP+s5D4Wr6l/+MA0GCSqGSIb3DQEBCwUAA4IBAQAtEBEG
-# 3g7vYiCDNM+rar1LMFDit2/wL72ROHc95uEWPnwCfaESh2mERwlvNSCH4xqWzxU9
-# px1mpuNzaydnmTXHWC5F11jCX/JxXarI6g4FltKPj6KhPdSsWdeTzcCS3g3KCZIq
-# OjA9bGATppUGcb3xYvCbgBta9cGP1NpyHuHkI2ajKs4BFaPq6T7UN1IqhVHAntAG
-# SkfxKPt4lMY+MCHQWJgQCVx7D/nDenyCG+8D6HMYwsVH1PI4L7EkulsNuCDEvNB6
-# EMmwPCsdGTdc7W+Xef/Fd6Ma4ZRmr3VR5Cf/wMOsXwmFG7f4rjAyNfWNQEybNj8I
-# K0WSXnOEAqNTDTfgMIIFsTCCBJmgAwIBAgIQASQK+x44C4oW8UtxnfTTwDANBgkq
+# BBYEFHwRFeDU2hgDQAQEC8oRBaS+IBUxMA0GCSqGSIb3DQEBCwUAA4IBAQBZYQhx
+# 99tegt8LTt4fW4alMRExbNzRUdEaVYgkzaGJgW4OQ/zLEuDp5mEmfEgpzxBwQiqo
+# 6Taoca8P7x4d45VpAGy0KoLynd+kd/0wyboCqxCyvX/4LA5eAOt9+nnvNDVLaZkb
+# 8WeIwwo+opCMcuyVOMRKSGhh3b2EgMiF83pE6NoNg0ayQST7HvP1Jgglet14nfhk
+# 51fo6UKQ9mU4/vL/EtB8FI/ste8U+rYSlsSm0hq45lvKwzL8Q8M6zD29a/DsPknt
+# JOXk8//QwWmEmvDB1A0TJCeM9uKa1lMiaou/fKwF/SEky6i5kixuZInlFilrGElU
+# x2Hp3M2OnBQWOBfOMIIFjTCCBHWgAwIBAgIQDpsYjvnQLefv21DiCEAYWjANBgkq
 # hkiG9w0BAQwFADBlMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5j
 # MRkwFwYDVQQLExB3d3cuZGlnaWNlcnQuY29tMSQwIgYDVQQDExtEaWdpQ2VydCBB
-# c3N1cmVkIElEIFJvb3QgQ0EwHhcNMjIwNjA5MDAwMDAwWhcNMzExMTA5MjM1OTU5
+# c3N1cmVkIElEIFJvb3QgQ0EwHhcNMjIwODAxMDAwMDAwWhcNMzExMTA5MjM1OTU5
 # WjBiMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQL
 # ExB3d3cuZGlnaWNlcnQuY29tMSEwHwYDVQQDExhEaWdpQ2VydCBUcnVzdGVkIFJv
 # b3QgRzQwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQC/5pBzaN675F1K
@@ -12765,117 +12722,116 @@ function Errors
 # wJS00mFt6zPZxd9LBADMfRyVw4/3IbKyEbe7f/LVjHAsQWCqsWMYRJUadmJ+9oCw
 # ++hkpjPRiQfhvbfmQ6QYuKZ3AeEPlAwhHbJUKSWJbOUOUlFHdL4mrLZBdd56rF+N
 # P8m800ERElvlEFDrMcXKchYiCd98THU/Y+whX8QgUWtvsauGi0/C1kVfnSD8oR7F
-# wI+isX4KJpn15GkvmB0t9dmpsh3lGwIDAQABo4IBXjCCAVowDwYDVR0TAQH/BAUw
+# wI+isX4KJpn15GkvmB0t9dmpsh3lGwIDAQABo4IBOjCCATYwDwYDVR0TAQH/BAUw
 # AwEB/zAdBgNVHQ4EFgQU7NfjgtJxXWRM3y5nP+e6mK4cD08wHwYDVR0jBBgwFoAU
-# Reuir/SSy4IxLVGLp6chnfNtyA8wDgYDVR0PAQH/BAQDAgGGMBMGA1UdJQQMMAoG
-# CCsGAQUFBwMIMHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29j
-# c3AuZGlnaWNlcnQuY29tMEMGCCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdp
-# Y2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURSb290Q0EuY3J0MEUGA1UdHwQ+MDww
-# OqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJ
-# RFJvb3RDQS5jcmwwIAYDVR0gBBkwFzAIBgZngQwBBAIwCwYJYIZIAYb9bAcBMA0G
-# CSqGSIb3DQEBDAUAA4IBAQCaFgKlAe+B+w20WLJ4ragjGdlzN9pgnlHXy/gvQLmj
-# H3xATjM+kDzniQF1hehiex1W4HG63l7GN7x5XGIATfhJelFNBjLzxdIAKicg6oku
-# FTngLD74dXwsgkFhNQ8j0O01ldKIlSlDy+CmWBB8U46fRckgNxTA7Rm6fnc50lSW
-# x6YR3zQz9nVSQkscnY2W1ZVsRxIUJF8mQfoaRr3esOWRRwOsGAjLy9tmiX8rnGW/
-# vjdOvi3znUrDzMxHXsiVla3Ry7sqBiD5P3LqNutFcpJ6KXsUAzz7TdZIcXoQEYoI
-# dM1sGwRc0oqVA3ZRUFPWLvdKRsOuECxxTLCHtic3RGBEMIIGrjCCBJagAwIBAgIQ
-# BzY3tyRUfNhHrP0oZipeWzANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEV
-# MBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3d3cuZGlnaWNlcnQuY29t
-# MSEwHwYDVQQDExhEaWdpQ2VydCBUcnVzdGVkIFJvb3QgRzQwHhcNMjIwMzIzMDAw
-# MDAwWhcNMzcwMzIyMjM1OTU5WjBjMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
-# aUNlcnQsIEluYy4xOzA5BgNVBAMTMkRpZ2lDZXJ0IFRydXN0ZWQgRzQgUlNBNDA5
-# NiBTSEEyNTYgVGltZVN0YW1waW5nIENBMIICIjANBgkqhkiG9w0BAQEFAAOCAg8A
-# MIICCgKCAgEAxoY1BkmzwT1ySVFVxyUDxPKRN6mXUaHW0oPRnkyibaCwzIP5WvYR
-# oUQVQl+kiPNo+n3znIkLf50fng8zH1ATCyZzlm34V6gCff1DtITaEfFzsbPuK4CE
-# iiIY3+vaPcQXf6sZKz5C3GeO6lE98NZW1OcoLevTsbV15x8GZY2UKdPZ7Gnf2ZCH
-# RgB720RBidx8ald68Dd5n12sy+iEZLRS8nZH92GDGd1ftFQLIWhuNyG7QKxfst5K
-# fc71ORJn7w6lY2zkpsUdzTYNXNXmG6jBZHRAp8ByxbpOH7G1WE15/tePc5OsLDni
-# pUjW8LAxE6lXKZYnLvWHpo9OdhVVJnCYJn+gGkcgQ+NDY4B7dW4nJZCYOjgRs/b2
-# nuY7W+yB3iIU2YIqx5K/oN7jPqJz+ucfWmyU8lKVEStYdEAoq3NDzt9KoRxrOMUp
-# 88qqlnNCaJ+2RrOdOqPVA+C/8KI8ykLcGEh/FDTP0kyr75s9/g64ZCr6dSgkQe1C
-# vwWcZklSUPRR8zZJTYsg0ixXNXkrqPNFYLwjjVj33GHek/45wPmyMKVM1+mYSlg+
-# 0wOI/rOP015LdhJRk8mMDDtbiiKowSYI+RQQEgN9XyO7ZONj4KbhPvbCdLI/Hgl2
-# 7KtdRnXiYKNYCQEoAA6EVO7O6V3IXjASvUaetdN2udIOa5kM0jO0zbECAwEAAaOC
-# AV0wggFZMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFLoW2W1NhS9zKXaa
-# L3WMaiCPnshvMB8GA1UdIwQYMBaAFOzX44LScV1kTN8uZz/nupiuHA9PMA4GA1Ud
-# DwEB/wQEAwIBhjATBgNVHSUEDDAKBggrBgEFBQcDCDB3BggrBgEFBQcBAQRrMGkw
-# JAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBBBggrBgEFBQcw
-# AoY1aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0VHJ1c3RlZFJv
-# b3RHNC5jcnQwQwYDVR0fBDwwOjA4oDagNIYyaHR0cDovL2NybDMuZGlnaWNlcnQu
-# Y29tL0RpZ2lDZXJ0VHJ1c3RlZFJvb3RHNC5jcmwwIAYDVR0gBBkwFzAIBgZngQwB
-# BAIwCwYJYIZIAYb9bAcBMA0GCSqGSIb3DQEBCwUAA4ICAQB9WY7Ak7ZvmKlEIgF+
-# ZtbYIULhsBguEE0TzzBTzr8Y+8dQXeJLKftwig2qKWn8acHPHQfpPmDI2AvlXFvX
-# bYf6hCAlNDFnzbYSlm/EUExiHQwIgqgWvalWzxVzjQEiJc6VaT9Hd/tydBTX/6tP
-# iix6q4XNQ1/tYLaqT5Fmniye4Iqs5f2MvGQmh2ySvZ180HAKfO+ovHVPulr3qRCy
-# Xen/KFSJ8NWKcXZl2szwcqMj+sAngkSumScbqyQeJsG33irr9p6xeZmBo1aGqwpF
-# yd/EjaDnmPv7pp1yr8THwcFqcdnGE4AJxLafzYeHJLtPo0m5d2aR8XKc6UsCUqc3
-# fpNTrDsdCEkPlM05et3/JWOZJyw9P2un8WbDQc1PtkCbISFA0LcTJM3cHXg65J6t
-# 5TRxktcma+Q4c6umAU+9Pzt4rUyt+8SVe+0KXzM5h0F4ejjpnOHdI/0dKNPH+ejx
-# mF/7K9h+8kaddSweJywm228Vex4Ziza4k9Tm8heZWcpw8De/mADfIBZPJ/tgZxah
-# ZrrdVcA6KYawmKAr7ZVBtzrVFZgxtGIJDwq9gdkT/r+k0fNX2bwE+oLeMt8EifAA
-# zV3C+dAjfwAL5HYCJtnwZXZCpimHCUcr5n8apIUP/JiW9lVUKx+A+sDyDivl1vup
-# L0QVSucTDh3bNzgaoSv27dZ8/DCCBsYwggSuoAMCAQICEAp6SoieyZlCkAZjOE2G
-# l50wDQYJKoZIhvcNAQELBQAwYzELMAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lD
-# ZXJ0LCBJbmMuMTswOQYDVQQDEzJEaWdpQ2VydCBUcnVzdGVkIEc0IFJTQTQwOTYg
-# U0hBMjU2IFRpbWVTdGFtcGluZyBDQTAeFw0yMjAzMjkwMDAwMDBaFw0zMzAzMTQy
-# MzU5NTlaMEwxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjEk
-# MCIGA1UEAxMbRGlnaUNlcnQgVGltZXN0YW1wIDIwMjIgLSAyMIICIjANBgkqhkiG
-# 9w0BAQEFAAOCAg8AMIICCgKCAgEAuSqWI6ZcvF/WSfAVghj0M+7MXGzj4CUu0jHk
-# PECu+6vE43hdflw26vUljUOjges4Y/k8iGnePNIwUQ0xB7pGbumjS0joiUF/DbLW
-# +YTxmD4LvwqEEnFsoWImAdPOw2z9rDt+3Cocqb0wxhbY2rzrsvGD0Z/NCcW5QWpF
-# QiNBWvhg02UsPn5evZan8Pyx9PQoz0J5HzvHkwdoaOVENFJfD1De1FksRHTAMkcZ
-# W+KYLo/Qyj//xmfPPJOVToTpdhiYmREUxSsMoDPbTSSF6IKU4S8D7n+FAsmG4dUY
-# FLcERfPgOL2ivXpxmOwV5/0u7NKbAIqsHY07gGj+0FmYJs7g7a5/KC7CnuALS8gI
-# 0TK7g/ojPNn/0oy790Mj3+fDWgVifnAs5SuyPWPqyK6BIGtDich+X7Aa3Rm9n3RB
-# Cq+5jgnTdKEvsFR2wZBPlOyGYf/bES+SAzDOMLeLD11Es0MdI1DNkdcvnfv8zbHB
-# p8QOxO9APhk6AtQxqWmgSfl14ZvoaORqDI/r5LEhe4ZnWH5/H+gr5BSyFtaBocra
-# MJBr7m91wLA2JrIIO/+9vn9sExjfxm2keUmti39hhwVo99Rw40KV6J67m0uy4rZB
-# Peevpxooya1hsKBBGBlO7UebYZXtPgthWuo+epiSUc0/yUTngIspQnL3ebLdhOon
-# 7v59emsCAwEAAaOCAYswggGHMA4GA1UdDwEB/wQEAwIHgDAMBgNVHRMBAf8EAjAA
-# MBYGA1UdJQEB/wQMMAoGCCsGAQUFBwMIMCAGA1UdIAQZMBcwCAYGZ4EMAQQCMAsG
-# CWCGSAGG/WwHATAfBgNVHSMEGDAWgBS6FtltTYUvcyl2mi91jGogj57IbzAdBgNV
-# HQ4EFgQUjWS3iSH+VlhEhGGn6m8cNo/drw0wWgYDVR0fBFMwUTBPoE2gS4ZJaHR0
-# cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0VHJ1c3RlZEc0UlNBNDA5NlNI
-# QTI1NlRpbWVTdGFtcGluZ0NBLmNybDCBkAYIKwYBBQUHAQEEgYMwgYAwJAYIKwYB
-# BQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBYBggrBgEFBQcwAoZMaHR0
-# cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0VHJ1c3RlZEc0UlNBNDA5
-# NlNIQTI1NlRpbWVTdGFtcGluZ0NBLmNydDANBgkqhkiG9w0BAQsFAAOCAgEADS0j
-# dKbR9fjqS5k/AeT2DOSvFp3Zs4yXgimcQ28BLas4tXARv4QZiz9d5YZPvpM63io5
-# WjlO2IRZpbwbmKrobO/RSGkZOFvPiTkdcHDZTt8jImzV3/ZZy6HC6kx2yqHcoSuW
-# uJtVqRprfdH1AglPgtalc4jEmIDf7kmVt7PMxafuDuHvHjiKn+8RyTFKWLbfOHzL
-# +lz35FO/bgp8ftfemNUpZYkPopzAZfQBImXH6l50pls1klB89Bemh2RPPkaJFmMg
-# a8vye9A140pwSKm25x1gvQQiFSVwBnKpRDtpRxHT7unHoD5PELkwNuTzqmkJqIt+
-# ZKJllBH7bjLx9bs4rc3AkxHVMnhKSzcqTPNc3LaFwLtwMFV41pj+VG1/calIGnjd
-# RncuG3rAM4r4SiiMEqhzzy350yPynhngDZQooOvbGlGglYKOKGukzp123qlzqkhq
-# WUOuX+r4DwZCnd8GaJb+KqB0W2Nm3mssuHiqTXBt8CzxBxV+NbTmtQyimaXXFWs1
-# DoXW4CzM4AwkuHxSCx6ZfO/IyMWMWGmvqz3hz8x9Fa4Uv4px38qXsdhH6hyF4EVO
-# EhwUKVjMb9N/y77BDkpvIJyu2XMyWQjnLZKhGhH+MpimXSuX4IvTnMxttQ2uR2M4
-# RxdbbxPaahBuH0m3RFu0CAqHWlkEdhGhp3cCExwxggTyMIIE7gIBATAtMBkxFzAV
-# BgNVBAMMDlNvcGhpYSBQcm9qZWN0AhAZIEfVx66Ak0lAGzYIUYHyMAkGBSsOAwIa
-# BQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgor
-# BgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3
-# DQEJBDEWBBQ6mjqNk5pxyO+7UnZ6S034/FZqVTANBgkqhkiG9w0BAQEFAASCAQAo
-# Xh3gx9fg41QLKbDDdWfc+SIIQC5L4frgqqtOWapj58ml2eeTmVV7CUV+sstsBYWk
-# 47r3pKs6dIhiIoQo2RiuINbidc/pOs6Kkipf9JMPs7BgnVYEkr+aaKqWziMRacmt
-# 5AITSSNU44V9Zw3uFUKVShzmft70UxjurEzdXRN8766devHFCt+JmaGSNQW2T3Bp
-# kJTPt+bav2cI2y9XRuxyfM+qcxK9MkThiCm20JWAxjL6Z1IPXxA557NjixVDU79V
-# lA4wSfVqyBLVatycYAXdQ6nXHsMYr2usMItyMjybdlTJQEAwbfVztI4uih+M1SG6
-# 1ra79Wt+5z9HTQGw4C++oYIDIDCCAxwGCSqGSIb3DQEJBjGCAw0wggMJAgEBMHcw
-# YzELMAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMTswOQYDVQQD
-# EzJEaWdpQ2VydCBUcnVzdGVkIEc0IFJTQTQwOTYgU0hBMjU2IFRpbWVTdGFtcGlu
-# ZyBDQQIQCnpKiJ7JmUKQBmM4TYaXnTANBglghkgBZQMEAgEFAKBpMBgGCSqGSIb3
-# DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTIyMDcyNjE5NTU0NFow
-# LwYJKoZIhvcNAQkEMSIEIC9pGh2lrqU/Yrf6DxRERSjfL/emMqFutmvDhjGIK1CO
-# MA0GCSqGSIb3DQEBAQUABIICAKIjvFvT2/2SBevPn5kgVtEG9cfmzgyOERQ227YJ
-# KSauXDjftZ67wG9dtaW/C9KG2MvOf5+nm8WXZRHQ4XRUW8SzHAYaBsEFbJQD8Y1I
-# eQnxxRQuJ51lDwX3p+juX4jbN3GmzVPyq6TwdQuWZMxE21RAbtkaAZ5SACTHAjNH
-# IdC5NfeD8scBCKYLdLhu/xPnXOzDyXcDwJZWoL4HsAf0vI19Ind28YzdHM5+34Ft
-# LhhD6JXKpvJZeAuA922kMJl1QguQg0vTG9IbBg6udsqSWSg1G2OoBU+4xtp6BAhB
-# UksOGns+ebyuHy/eTM8CTXHe+LhjYhXjO1yfkSH2ryswvTxv4NOIGPu7yP3pDhOT
-# yZ2dLBZsH4PMrMiMlzFSMBWPCDPXK5RnTQo9DFINmyGotLHa2IMD/4Z6kf+4z4qe
-# XI5/9El3Qh5acWaBHQPj/uj9tf3w4C1nGBQ1ed4Ifp1FDiHm7uKbihDTFcbwt551
-# nn6y9NUPq6LecWvvB5rZPkQaYQsB0jDKqcR73+eu7QfO3y02r4mTQFZCeXomca+Y
-# Q4nvBpW2dZtadUGYTOyhVQfPhBOUJSi+nme3fN4hceAnhAoRXSkpybXB2Voa8Qe+
-# tmaYdKlEuLAdhm94zhZsu68D4irnQ8RSC7EYKCc1R4hUMr6O0Nd7qesLk/HFPdw9
-# bMNs
+# Reuir/SSy4IxLVGLp6chnfNtyA8wDgYDVR0PAQH/BAQDAgGGMHkGCCsGAQUFBwEB
+# BG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMGCCsG
+# AQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1
+# cmVkSURSb290Q0EuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRp
+# Z2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RDQS5jcmwwEQYDVR0gBAow
+# CDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUAA4IBAQBwoL9DXFXnOF+go3QbPbYW1/e/
+# Vwe9mqyhhyzshV6pGrsi+IcaaVQi7aSId229GhT0E0p6Ly23OO/0/4C5+KH38nLe
+# JLxSA8hO0Cre+i1Wz/n096wwepqLsl7Uz9FDRJtDIeuWcqFItJnLnU+nBgMTdydE
+# 1Od/6Fmo8L8vC6bp8jQ87PcDx4eo0kxAGTVGamlUsLihVo7spNU96LHc/RzY9Hda
+# XFSMb++hUD38dglohJ9vytsgjTVgHAIDyyCwrFigDkBjxZgiwbJZ9VVrzyerbHbO
+# byMt9H5xaiNrIv8SuFQtJ37YOtnwtoeW/VvRXKwYw02fc7cBqZ9Xql4o4rmUMIIG
+# rjCCBJagAwIBAgIQBzY3tyRUfNhHrP0oZipeWzANBgkqhkiG9w0BAQsFADBiMQsw
+# CQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3d3cu
+# ZGlnaWNlcnQuY29tMSEwHwYDVQQDExhEaWdpQ2VydCBUcnVzdGVkIFJvb3QgRzQw
+# HhcNMjIwMzIzMDAwMDAwWhcNMzcwMzIyMjM1OTU5WjBjMQswCQYDVQQGEwJVUzEX
+# MBUGA1UEChMORGlnaUNlcnQsIEluYy4xOzA5BgNVBAMTMkRpZ2lDZXJ0IFRydXN0
+# ZWQgRzQgUlNBNDA5NiBTSEEyNTYgVGltZVN0YW1waW5nIENBMIICIjANBgkqhkiG
+# 9w0BAQEFAAOCAg8AMIICCgKCAgEAxoY1BkmzwT1ySVFVxyUDxPKRN6mXUaHW0oPR
+# nkyibaCwzIP5WvYRoUQVQl+kiPNo+n3znIkLf50fng8zH1ATCyZzlm34V6gCff1D
+# tITaEfFzsbPuK4CEiiIY3+vaPcQXf6sZKz5C3GeO6lE98NZW1OcoLevTsbV15x8G
+# ZY2UKdPZ7Gnf2ZCHRgB720RBidx8ald68Dd5n12sy+iEZLRS8nZH92GDGd1ftFQL
+# IWhuNyG7QKxfst5Kfc71ORJn7w6lY2zkpsUdzTYNXNXmG6jBZHRAp8ByxbpOH7G1
+# WE15/tePc5OsLDnipUjW8LAxE6lXKZYnLvWHpo9OdhVVJnCYJn+gGkcgQ+NDY4B7
+# dW4nJZCYOjgRs/b2nuY7W+yB3iIU2YIqx5K/oN7jPqJz+ucfWmyU8lKVEStYdEAo
+# q3NDzt9KoRxrOMUp88qqlnNCaJ+2RrOdOqPVA+C/8KI8ykLcGEh/FDTP0kyr75s9
+# /g64ZCr6dSgkQe1CvwWcZklSUPRR8zZJTYsg0ixXNXkrqPNFYLwjjVj33GHek/45
+# wPmyMKVM1+mYSlg+0wOI/rOP015LdhJRk8mMDDtbiiKowSYI+RQQEgN9XyO7ZONj
+# 4KbhPvbCdLI/Hgl27KtdRnXiYKNYCQEoAA6EVO7O6V3IXjASvUaetdN2udIOa5kM
+# 0jO0zbECAwEAAaOCAV0wggFZMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYE
+# FLoW2W1NhS9zKXaaL3WMaiCPnshvMB8GA1UdIwQYMBaAFOzX44LScV1kTN8uZz/n
+# upiuHA9PMA4GA1UdDwEB/wQEAwIBhjATBgNVHSUEDDAKBggrBgEFBQcDCDB3Bggr
+# BgEFBQcBAQRrMGkwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNv
+# bTBBBggrBgEFBQcwAoY1aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL0RpZ2lD
+# ZXJ0VHJ1c3RlZFJvb3RHNC5jcnQwQwYDVR0fBDwwOjA4oDagNIYyaHR0cDovL2Ny
+# bDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0VHJ1c3RlZFJvb3RHNC5jcmwwIAYDVR0g
+# BBkwFzAIBgZngQwBBAIwCwYJYIZIAYb9bAcBMA0GCSqGSIb3DQEBCwUAA4ICAQB9
+# WY7Ak7ZvmKlEIgF+ZtbYIULhsBguEE0TzzBTzr8Y+8dQXeJLKftwig2qKWn8acHP
+# HQfpPmDI2AvlXFvXbYf6hCAlNDFnzbYSlm/EUExiHQwIgqgWvalWzxVzjQEiJc6V
+# aT9Hd/tydBTX/6tPiix6q4XNQ1/tYLaqT5Fmniye4Iqs5f2MvGQmh2ySvZ180HAK
+# fO+ovHVPulr3qRCyXen/KFSJ8NWKcXZl2szwcqMj+sAngkSumScbqyQeJsG33irr
+# 9p6xeZmBo1aGqwpFyd/EjaDnmPv7pp1yr8THwcFqcdnGE4AJxLafzYeHJLtPo0m5
+# d2aR8XKc6UsCUqc3fpNTrDsdCEkPlM05et3/JWOZJyw9P2un8WbDQc1PtkCbISFA
+# 0LcTJM3cHXg65J6t5TRxktcma+Q4c6umAU+9Pzt4rUyt+8SVe+0KXzM5h0F4ejjp
+# nOHdI/0dKNPH+ejxmF/7K9h+8kaddSweJywm228Vex4Ziza4k9Tm8heZWcpw8De/
+# mADfIBZPJ/tgZxahZrrdVcA6KYawmKAr7ZVBtzrVFZgxtGIJDwq9gdkT/r+k0fNX
+# 2bwE+oLeMt8EifAAzV3C+dAjfwAL5HYCJtnwZXZCpimHCUcr5n8apIUP/JiW9lVU
+# Kx+A+sDyDivl1vupL0QVSucTDh3bNzgaoSv27dZ8/DCCBsYwggSuoAMCAQICEAp6
+# SoieyZlCkAZjOE2Gl50wDQYJKoZIhvcNAQELBQAwYzELMAkGA1UEBhMCVVMxFzAV
+# BgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMTswOQYDVQQDEzJEaWdpQ2VydCBUcnVzdGVk
+# IEc0IFJTQTQwOTYgU0hBMjU2IFRpbWVTdGFtcGluZyBDQTAeFw0yMjAzMjkwMDAw
+# MDBaFw0zMzAzMTQyMzU5NTlaMEwxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdp
+# Q2VydCwgSW5jLjEkMCIGA1UEAxMbRGlnaUNlcnQgVGltZXN0YW1wIDIwMjIgLSAy
+# MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAuSqWI6ZcvF/WSfAVghj0
+# M+7MXGzj4CUu0jHkPECu+6vE43hdflw26vUljUOjges4Y/k8iGnePNIwUQ0xB7pG
+# bumjS0joiUF/DbLW+YTxmD4LvwqEEnFsoWImAdPOw2z9rDt+3Cocqb0wxhbY2rzr
+# svGD0Z/NCcW5QWpFQiNBWvhg02UsPn5evZan8Pyx9PQoz0J5HzvHkwdoaOVENFJf
+# D1De1FksRHTAMkcZW+KYLo/Qyj//xmfPPJOVToTpdhiYmREUxSsMoDPbTSSF6IKU
+# 4S8D7n+FAsmG4dUYFLcERfPgOL2ivXpxmOwV5/0u7NKbAIqsHY07gGj+0FmYJs7g
+# 7a5/KC7CnuALS8gI0TK7g/ojPNn/0oy790Mj3+fDWgVifnAs5SuyPWPqyK6BIGtD
+# ich+X7Aa3Rm9n3RBCq+5jgnTdKEvsFR2wZBPlOyGYf/bES+SAzDOMLeLD11Es0Md
+# I1DNkdcvnfv8zbHBp8QOxO9APhk6AtQxqWmgSfl14ZvoaORqDI/r5LEhe4ZnWH5/
+# H+gr5BSyFtaBocraMJBr7m91wLA2JrIIO/+9vn9sExjfxm2keUmti39hhwVo99Rw
+# 40KV6J67m0uy4rZBPeevpxooya1hsKBBGBlO7UebYZXtPgthWuo+epiSUc0/yUTn
+# gIspQnL3ebLdhOon7v59emsCAwEAAaOCAYswggGHMA4GA1UdDwEB/wQEAwIHgDAM
+# BgNVHRMBAf8EAjAAMBYGA1UdJQEB/wQMMAoGCCsGAQUFBwMIMCAGA1UdIAQZMBcw
+# CAYGZ4EMAQQCMAsGCWCGSAGG/WwHATAfBgNVHSMEGDAWgBS6FtltTYUvcyl2mi91
+# jGogj57IbzAdBgNVHQ4EFgQUjWS3iSH+VlhEhGGn6m8cNo/drw0wWgYDVR0fBFMw
+# UTBPoE2gS4ZJaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0VHJ1c3Rl
+# ZEc0UlNBNDA5NlNIQTI1NlRpbWVTdGFtcGluZ0NBLmNybDCBkAYIKwYBBQUHAQEE
+# gYMwgYAwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBYBggr
+# BgEFBQcwAoZMaHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0VHJ1
+# c3RlZEc0UlNBNDA5NlNIQTI1NlRpbWVTdGFtcGluZ0NBLmNydDANBgkqhkiG9w0B
+# AQsFAAOCAgEADS0jdKbR9fjqS5k/AeT2DOSvFp3Zs4yXgimcQ28BLas4tXARv4QZ
+# iz9d5YZPvpM63io5WjlO2IRZpbwbmKrobO/RSGkZOFvPiTkdcHDZTt8jImzV3/ZZ
+# y6HC6kx2yqHcoSuWuJtVqRprfdH1AglPgtalc4jEmIDf7kmVt7PMxafuDuHvHjiK
+# n+8RyTFKWLbfOHzL+lz35FO/bgp8ftfemNUpZYkPopzAZfQBImXH6l50pls1klB8
+# 9Bemh2RPPkaJFmMga8vye9A140pwSKm25x1gvQQiFSVwBnKpRDtpRxHT7unHoD5P
+# ELkwNuTzqmkJqIt+ZKJllBH7bjLx9bs4rc3AkxHVMnhKSzcqTPNc3LaFwLtwMFV4
+# 1pj+VG1/calIGnjdRncuG3rAM4r4SiiMEqhzzy350yPynhngDZQooOvbGlGglYKO
+# KGukzp123qlzqkhqWUOuX+r4DwZCnd8GaJb+KqB0W2Nm3mssuHiqTXBt8CzxBxV+
+# NbTmtQyimaXXFWs1DoXW4CzM4AwkuHxSCx6ZfO/IyMWMWGmvqz3hz8x9Fa4Uv4px
+# 38qXsdhH6hyF4EVOEhwUKVjMb9N/y77BDkpvIJyu2XMyWQjnLZKhGhH+MpimXSuX
+# 4IvTnMxttQ2uR2M4RxdbbxPaahBuH0m3RFu0CAqHWlkEdhGhp3cCExwxggTyMIIE
+# 7gIBATAtMBkxFzAVBgNVBAMMDlNvcGhpYSBQcm9qZWN0AhBOLjzzW895mkw4Fqtt
+# zgEiMAkGBSsOAwIaBQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqG
+# SIb3DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3
+# AgEVMCMGCSqGSIb3DQEJBDEWBBRVBTUNFYz+sww2FYH8UmFyS80+AjANBgkqhkiG
+# 9w0BAQEFAASCAQCRCQptPWP0V+6I2qHrfzewvRwdqqltKBrKL7BNsp1aF3YV3IDC
+# inoTB3MDzrwB31shizPOG1fG0/qZ1YUYKHG9V2BaisLtHrY6kpDg+fLYlu/ENl8y
+# l864Kfu9RbY+AneJWwTEO0Ijpomwj80t9W2AhYHg3XXgQC69LKCZLEsjPHb1gb6C
+# 7jzE+Z9vMS5FVbym/4a1MAWYFUwam7/ekp8B0guIadQkoUjxvE5iWIG85U1JQVj0
+# CIE+crJNHD9/HcpE+ubBYg5EJZqXn55yYQABDLfSe4vlSiV/NET5pQMjUuaDlHV2
+# HwCRbVfvxR0tTm+J3Zu75tXIo4NXONHBAROToYIDIDCCAxwGCSqGSIb3DQEJBjGC
+# Aw0wggMJAgEBMHcwYzELMAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lDZXJ0LCBJ
+# bmMuMTswOQYDVQQDEzJEaWdpQ2VydCBUcnVzdGVkIEc0IFJTQTQwOTYgU0hBMjU2
+# IFRpbWVTdGFtcGluZyBDQQIQCnpKiJ7JmUKQBmM4TYaXnTANBglghkgBZQMEAgEF
+# AKBpMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTIy
+# MDgxMjE5MTAxMlowLwYJKoZIhvcNAQkEMSIEIHUnl1hQsM4j5UPZa37wlLbhIpmT
+# OaKRGjNmKycouoJBMA0GCSqGSIb3DQEBAQUABIICAA5pgPZ9D8fwcFBPTDgt0bS2
+# 302HMQlshRF8NvoEzcITSop4t8gZW1Hw0SXAGtKJXzelscbTPJOEfgikPLXTJMu7
+# gJNInpxNBBrrHhrgdT2kLDXdlT5jhaUujBH3n9SqcI5xaWOJTNIr+F/mMgy5HRv0
+# QASsGHvCID0y1Ftn164o4KsjW99r1XWgxrzt2/XRg4i+J6l/8Tr+YKb2eLm4L1wp
+# ie2la87V4hN1AgYwBR4Tzge5Jymtxkx8W0w1YAAj0TA+CcfNecKXb9YQk2NEDB+9
+# CRSWXTjWchV5y2abU++fv4N8ztA7rZ+rN6GZBktLEvxdDbSQZZr8S2J71NaSXaaG
+# Q8djBgdJx/wF1+vGG3K3kxBqN5yaxcfy+Kfh056KuY40jAddwFsKd64WYmWU4h9u
+# LO/9hD+3ZMNT8vIS0QCL7P4rvJSSr7bHRzBsVxGfqAWtDIm3T89ducnZ9mAXhSk4
+# tepmxfg/X+G2zjzm5PEZBsDrQu5ecGdfq6KENjUsPjd5wpFjK+zna/wt+h72Z8Xi
+# HxvgFJetUP6yuwkBSiGM9OImwj61kqogyEdAmBGsj5eXLhzoZxcLANLVZDNIPkxP
+# v13MwxdyhnVeE9bl5gweh14I+GApn/EBDr3gyilcXttItSP62/Jit0+gNnye0514
+# kodyKYWJCWS272lnbv/x
 # SIG # End signature block

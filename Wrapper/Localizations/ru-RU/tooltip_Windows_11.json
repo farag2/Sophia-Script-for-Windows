@@ -1943,21 +1943,6 @@
   {
     "Id": 1210,
     "Region": "Context menu",
-    "Function": "BitLockerContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть пункт \"Включить BitLocker\" из контекстного меню дисков"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показывать пункт \"Включить BitLocker\" в контекстном меню дисков (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1211,
-    "Region": "Context menu",
     "Function": "CompressedFolderNewContext",
     "Arg": {
       "Zero": {
@@ -1971,7 +1956,7 @@
     }
   },
   {
-    "Id": 1212,
+    "Id": 1211,
     "Region": "Context menu",
     "Function": "MultipleInvokeContext",
     "Arg": {
@@ -1986,7 +1971,7 @@
     }
   },
   {
-    "Id": 1213,
+    "Id": 1212,
     "Region": "Context menu",
     "Function": "UseStoreOpenWith",
     "Arg": {
@@ -2001,7 +1986,7 @@
     }
   },
   {
-    "Id": 1214,
+    "Id": 1213,
     "Region": "Context menu",
     "Function": "OpenWindowsTerminalContext",
     "Arg": {
@@ -2016,22 +2001,22 @@
     }
   },
   {
-    "Id": 1215,
+    "Id": 1214,
     "Region": "Context menu",
     "Function": "OpenWindowsTerminalAdminContext",
     "Arg": {
       "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Отобразить пункт \"Открыть в Терминале Windows\" (Администратор) в контекстном меню Рабочего стола и папок"
+        "Tag": "Enable",
+        "ToolTip": "Открывать Windows Terminal из контекстного меню от имени администратора по умолчанию"
       },
       "One": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть пункт \"Открыть в Терминале Windows (Администратор)\" в контекстном меню Рабочего стола и папок (значение по умолчанию)"
+        "Tag": "Disable",
+        "ToolTip": "Не открывать Windows Terminal из контекстного меню от имени администратора по умолчанию (значение по умолчанию)"
       }
     }
   },
   {
-    "Id": 1216,
+    "Id": 1215,
     "Region": "Context menu",
     "Function": "Windows10ContextMenu",
     "Arg": {

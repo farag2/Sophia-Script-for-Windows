@@ -2375,7 +2375,7 @@
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
-    "Function": "BitLockerContext",
+    "Function": "BitmapImageNewContext",
     "Arg": {
       "Zero": {
         "Tag": "Hide"
@@ -2392,7 +2392,7 @@
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
-    "Function": "BitmapImageNewContext",
+    "Function": "RichTextDocumentNewContext",
     "Arg": {
       "Zero": {
         "Tag": "Hide"
@@ -2409,7 +2409,7 @@
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
-    "Function": "RichTextDocumentNewContext",
+    "Function": "CompressedFolderNewContext",
     "Arg": {
       "Zero": {
         "Tag": "Hide"
@@ -2426,23 +2426,6 @@
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
-    "Function": "CompressedFolderNewContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide"
-      },
-      "One": {
-        "Tag": "Show"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
-    "Id": 1216,
-    "Region": "Context menu",
-    "Control": "cmb",
-    "Required": "false",
     "Function": "MultipleInvokeContext",
     "Arg": {
       "Zero": {
@@ -2456,7 +2439,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 1217,
+    "Id": 1216,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",

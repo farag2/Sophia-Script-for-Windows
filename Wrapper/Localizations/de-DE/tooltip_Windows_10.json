@@ -2098,21 +2098,6 @@
   {
     "Id": 1212,
     "Region": "Context menu",
-    "Function": "BitLockerContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Ausblenden des Eintrags \"BitLocker einschalten\" im Kontextmenü der Laufwerke"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Anzeigen des Elements \"BitLocker einschalten\" im Kontextmenü der Laufwerke (Standardeinstellung)."
-      }
-    }
-  },
-  {
-    "Id": 1213,
-    "Region": "Context menu",
     "Function": "BitmapImageNewContext",
     "Arg": {
       "Zero": {
@@ -2126,7 +2111,7 @@
     }
   },
   {
-    "Id": 1214,
+    "Id": 1213,
     "Region": "Context menu",
     "Function": "RichTextDocumentNewContext",
     "Arg": {
@@ -2141,7 +2126,7 @@
     }
   },
   {
-    "Id": 1215,
+    "Id": 1214,
     "Region": "Context menu",
     "Function": "CompressedFolderNewContext",
     "Arg": {
@@ -2156,7 +2141,7 @@
     }
   },
   {
-    "Id": 1216,
+    "Id": 1215,
     "Region": "Context menu",
     "Function": "MultipleInvokeContext",
     "Arg": {
@@ -2171,7 +2156,7 @@
     }
   },
   {
-    "Id": 1217,
+    "Id": 1216,
     "Region": "Context menu",
     "Function": "UseStoreOpenWith",
     "Arg": {
