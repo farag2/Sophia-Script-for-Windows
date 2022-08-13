@@ -220,7 +220,7 @@ switch ($Version)
 	}
 	"Windows_10_PowerShell_7"
 	{
-		Invoke-Item -Path "$DownloadsFolder\Sophia Script for Windows 10  PowerShell 7 v$LatestRelease"
+		Invoke-Item -Path "$DownloadsFolder\Sophia Script for Windows 10 PowerShell 7 v$LatestRelease"
 	}
 	"Windows_11_PowerShell_5.1"
 	{
