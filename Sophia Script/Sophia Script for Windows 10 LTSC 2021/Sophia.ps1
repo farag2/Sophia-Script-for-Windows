@@ -82,7 +82,7 @@ Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
 Remove-Module -Name PolicyFileEditor -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\bin\PolicyFileEditor\PolicyFileEditor.psd1 -PassThru -Force
 
-Import-LocalizedData -BindingVariable Global:Localization -UICulture en-US -BaseDirectory $PSScriptRoot\Localizations -FileName Sophia
+Import-LocalizedData -BindingVariable Global:Localization -BaseDirectory $PSScriptRoot\Localizations -FileName Sophia
 
 <#
 	.SYNOPSIS
