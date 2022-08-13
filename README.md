@@ -96,21 +96,21 @@ Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Wind
 
 # System Requirements
 
-## Minimum supported Windows versions and builds
+### Minimum supported Windows versions and builds
 
-## Windows 11 Insider Preview
+### Windows 11 Insider Preview
 
 |Version|   Build   |      Editions     | Script version |
 |:-----:|:---------:|:-----------------:|:--------------:|
 | 22H2  | 22509     |Home/Pro/Enterprise|[download](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 
-# Windows 11
+### Windows 11
 
 |Version|   Build   |      Editions     | Script version |
 |:-----:|:---------:|:-----------------:|:--------------:|
 | 21H2  | 22000.739 |Home/Pro/Enterprise|[download](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
 
-# Windows 10
+### Windows 10
 
 |Version|    Marketing name   | Build | Arch|      Editions          | Script version |
 |:-----:|:-------------------:|:----------:|:---:|:----------------------:|:--------------:|
