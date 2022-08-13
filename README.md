@@ -52,7 +52,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 	&bull;
 	<a href="#donations">Donations</a>
 	&bull;
-	<a href="#minimum-supported-windows-versions-and-builds">Supported Windows 10 & 11 versions</a>
+	<a href="#system-requirements">System Requirements</a>
 	&bull;
 	<a href="#screenshots">Screenshots</a>
 	&bull;
