@@ -34,8 +34,8 @@ Diff from v6.1.3
   $Items = @(
     "Registry::HKEY_CLASSES_ROOT\Directory\Background\shell\runas",
     "Registry::HKEY_CLASSES_ROOT\Directory\shell\runas"
-    )
-    Remove-Item -Path $Items -Recurse -Force -ErrorAction Ignore
+  )
+  Remove-Item -Path $Items -Recurse -Force -ErrorAction Ignore
   ```
 
   And make Windows Terminal context menu item visible if you hid it before.
