@@ -6,14 +6,14 @@ body:
   attributes:
     value: >
       Make sure you are able to repro it on the latest released version. Please open a [new discussion](https://github.com/farag2/Sophia-Script-for-Windows/discussions/new) if you have an idea.
-      If you prefer Telegram, you may visit out [chat](https://t.me/sophia_chat). Languages allowed: English & русский.
+      If you prefer Telegram, you may visit out [chat](https://t.me/sophia_chat), or [Discord](https://discord.gg/sSryhaEv79). Languages allowed: English & русский.
 - type: checkboxes
   attributes:
     label: Prerequisites
     options:
     - label: Verify that this is not a Windows issue;
-    - label: Refer to the [**Before running**](https://github.com/farag2/Sophia-Script-for-Windows#fire-before-running-fire).
-    - label: Refer to the [**How to use**](https://github.com/farag2/Sophia-Script-for-Windows#how-to-use).
+    - label: Refer to the [Before running](https://github.com/farag2/Sophia-Script-for-Windows#fire-before-running-fire).
+    - label: Refer to the [How to use](https://github.com/farag2/Sophia-Script-for-Windows#how-to-use).
     - label: If you issue concerns the Wrapper, please mention @BenchTweakGaming in issue
 - type: textarea
   attributes:
