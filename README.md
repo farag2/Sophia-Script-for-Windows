@@ -94,9 +94,11 @@ Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Wind
 * USDT (TRC20): `TQtMjdocUWbKAeg1kLtB4ApjAVHt1v8Rtf`
 * ETH: `0x089f05c00e2f75e9b0cd939f21c207b1afe5b2f6`
 
+# System Requirements
+
 ## Minimum supported Windows versions and builds
 
-# Windows 11 Insider Preview
+## Windows 11 Insider Preview
 
 |Version|   Build   |      Editions     | Script version |
 |:-----:|:---------:|:-----------------:|:--------------:|
