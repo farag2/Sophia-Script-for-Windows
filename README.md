@@ -22,6 +22,10 @@
 
   [![Telegram][telegram-news-badge]][telegram-news]
   [![Telegram][telegram-group-badge]][telegram-group]
+
+  [discord-news-badge]: https://discordapp.com/api/guilds/1006179075263561779/widget.png?style=shield
+  [discord-link]: https://discord.gg/sSryhaEv79
+  [![Discord][discord-news-badge]][discord-link]
 </p>
 
 Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag_of_the_United_Kingdom.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Flag_of_the_People's_Republic_of_China.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Flag_of_Germany.svg" height="11px"/>
