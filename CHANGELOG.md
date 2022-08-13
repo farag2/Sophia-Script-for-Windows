@@ -5,6 +5,50 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.13.4 | 6.1.4 — 13.08.2022
+
+## Windows 11 21H2/22H2 | Windows 10 2004/20H2/21H1/21H2/22H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
+
+Diff from v6.1.3
+[6.1.3...6.1.4](https://github.com/farag2/Sophia-Script-for-Windows/compare/6.1.3...6.1.4)
+
+* We opened our official [Discord](https://discord.gg/sSryhaEv79) channel! Feel free to chat and talk! [![Discord](https://discordapp.com/api/guilds/1006179075263561779/widget.png?style=shield)](https://discord.gg/sSryhaEv79)
+* Improved Defender checkings;
+  * Now they're skipped for `Windows 10 Enteprise G`;
+  * Closes #379.
+* Now all all `.ps1, .psm1, .psd1` files are signed in cloud via GitHub Actions by a self-issued certificates;
+  * <https://github.com/farag2/Sophia-Script-for-Windows/blob/master/Scripts/Sign.ps1>
+  * <https://github.com/farag2/Sophia-Script-for-Windows/blob/63de3f5896fba014d7f6bb0493d4934b221fe1ef/.github/workflows/Sophia.yml#L17>
+* Removed unnecessary `BitLockerContext` function;
+* Improved `UpdateLGPEPolicies` function;
+  * Now it covers more GPOs to find in AMDX templates;
+  * Thanks `Alex_Piggy` for the code snippet.
+* Fixed bug when user couldn't launch PowerShell 7 based script if there is no localization for user's system;
+  * Closes #377.
+* `OpenWindowsTerminalAdminContext` function was re-written;
+  * `OpenWindowsTerminalAdminContext -Enable`, `OpenWindowsTerminalAdminContext -Disable`;
+  * Now it uses officially documented feature to make Windows Terminal to launch as administrator by default by editing `%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json` file.
+  To remove old context menu item, run
+
+  ```powershell
+  $Items = @(
+    "Registry::HKEY_CLASSES_ROOT\Directory\Background\shell\runas",
+    "Registry::HKEY_CLASSES_ROOT\Directory\shell\runas"
+  )
+  Remove-Item -Path $Items -Recurse -Force -ErrorAction Ignore
+  ```
+
+  And make Windows Terminal context menu item visible if you hid it before.
+
+    ```powershell
+    Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{9F156763-7844-4DC4-B2B1-901F640F5155}" -Force -ErrorAction Ignore
+  ```
+
+* Improved the Ukranian 🇺🇦: translation.
+  * Thanks to @lowl1f3;
+  * #378 merged.
+* Minor changes.
+
 ## 5.13.3 | 6.1.3 — 26.07.2022
 
 ## Windows 11 21H2/22H2 | Windows 10 2004/20H2/21H1/21H2/22H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
