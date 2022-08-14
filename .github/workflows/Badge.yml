@@ -1,0 +1,31 @@
+name: Badges
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  update-badges:
+    name: Update Badges
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@main
+      - name: Download cloc
+        run: sudo apt-get update -y && sudo apt-get install -y cloc
+      - name: Get the Numbers
+        run: |
+          chmod +x Scripts/cloc.sh
+          echo "CODE_LINES=$(Scripts/cloc.sh --loc)" >> $GITHUB_ENV
+          echo "COMMENT_PERCENTAGE=$(Scripts/cloc.sh --percentage)" >> $GITHUB_ENV
+      - name: Create Lines-of-Code-Badge
+        uses: schneegans/dynamic-badges-action@master
+        with:
+          auth: ${{ secrets.GIST_SophiaScript }}
+          gistID: 9852d6b9569a91bf69ceba8a94cc97f4
+          filename: SophiaScript.json
+          label: Lines of Code
+          message: ${{ env.CODE_LINES }}
+          namedLogo: PowerShell
+          color: brightgreen
