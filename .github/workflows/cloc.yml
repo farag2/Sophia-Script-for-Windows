@@ -2,8 +2,8 @@ name: Badges
 
 on:
   push:
-    branches:
-      - '*'
+    tags:
+      - '*.*.*'
 
 jobs:
   update-badges:
