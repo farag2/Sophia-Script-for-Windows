@@ -8,9 +8,10 @@
   <a href="https://github.com/farag2/Sophia-Script-for-Windows/actions"><img src="https://img.shields.io/github/workflow/status/farag2/Sophia-Script-for-Windows/Build?label=GitHub%20Actions&logo=GitHub"></a>
   <img src="https://img.shields.io/badge/PowerShell%205.1%20&%207.2-Ready-blue.svg?color=5391FE&style=flat&logo=powershell">
 
+  <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases"><img src="https://img.shields.io/github/v/release/farag2/Sophia-Script-for-Windows">
+  </a><a href="https://github.com/farag2/Sophia-Script-for-Windows"><img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/farag2/9852d6b9569a91bf69ceba8a94cc97f4/raw/0ab9790ab7ca11c7598ea469edf36cda05a1e7b1/SophiaScript.json"></a>
+
   <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases"><img src="https://img.shields.io/github/downloads/farag2/Sophia-Script-for-Windows/total?label=downloads%20%28since%20May%202020%29"></a>
-  <img src="https://img.shields.io/tokei/lines/github/farag2/Sophia-Script-for-Windows">
-  <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases"><img src="https://img.shields.io/github/v/release/farag2/Sophia-Script-for-Windows"></a>
 
   <a href="https://twitter.com/tea_head_"><img src="https://img.shields.io/badge/Logo%20by-teahead-blue?style=flat&logo=Twitter"></a>
   <img src="https://img.shields.io/badge/Made%20with-149ce2.svg?color=149ce2"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/heart.svg" height="17px"/>
@@ -288,6 +289,7 @@ irm script.sophi.app -useb | iex
 
 ## Ask a question on
 
+* [![Discord](https://discordapp.com/api/guilds/1006179075263561779/widget.png?style=shield)](https://discord.gg/sSryhaEv79)
 * [Telegram discussion group](https://t.me/sophia_chat)
 * [Telegram channel](https://t.me/sophianews)
 * [Ru-Board](https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15)
