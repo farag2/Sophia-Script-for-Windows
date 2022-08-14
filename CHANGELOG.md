@@ -44,7 +44,7 @@ Diff from v6.1.3
     Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{9F156763-7844-4DC4-B2B1-901F640F5155}" -Force -ErrorAction Ignore
   ```
 
-* Improved the Ukranian 🇺🇦: translation.
+* Improved the Ukrainian 🇺🇦: translation.
   * Thanks to @lowl1f3;
   * #378 merged.
 * Minor changes.
@@ -57,7 +57,7 @@ Diff from v6.1.3
 * Improved and fixed bug when `DNSoverHTTPS` function didn't enable DNS-over-HTTPS feature;
   * Please check if it's enabled for you in the Settings;
   * #374 closed.
-* Improved the Ukranian 🇺🇦 : translation.
+* Improved the Ukrainian 🇺🇦 : translation.
   * #375 merged.
 * Minor changes.
 
@@ -1119,7 +1119,7 @@ TelemetryService -Enable
   * Italian (#80). Thanks to @garf02;
   * Turkish (#82). Thanks to @v30xy;
   * French. Thanks to [coleoptere2007](https://forums.mydigitallife.net/members/coleoptere2007.26684);
-  * Ukranian. Thanks to **lowlif3**;
+  * Ukrainian. Thanks to **lowlif3**;
   * Now available in: Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag_of_the_United_Kingdom.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Flag_of_the_People's_Republic_of_China.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Flag_of_Germany.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/0/03/Flag_of_Italy.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Russia.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Ukraine.svg" height="11px"/> <img src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Flag_of_Turkey.svg" height="11px"/>
 * Updated localizations;
 * Closed #81, #83, #84, #85, #86, #87
