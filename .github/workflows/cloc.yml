@@ -39,7 +39,7 @@ jobs:
 
           echo "CODE_LINES=$Summary" >> $env:GITHUB_ENV
 
-      - name: Create Lines-of-Code-Badge
+      - name: Writing to Gist
         uses: schneegans/dynamic-badges-action@master
         with:
           auth: ${{ secrets.GIST_SophiaScript }}
