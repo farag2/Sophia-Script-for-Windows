@@ -1,0 +1,51 @@
+name: Badges
+
+on:
+  push:
+    tags:
+      - '*.*.*'
+
+jobs:
+  update-badges:
+    name: Update Badges
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@main
+      - name: Download cloc
+        run: |
+          $Parameters = @{
+              Uri             = "https://api.github.com/repos/AlDanial/cloc/releases/latest"
+              UseBasicParsing = $true
+              Verbose         = $true
+          }
+          $Tag = (Invoke-RestMethod @Parameters).tag_name.replace("v", "")
+
+          $Parameters = @{
+              Uri             = "https://github.com/AlDanial/cloc/releases/download/v$Tag/cloc-$Tag.exe"
+              OutFile         = "$PSScriptRoot\cloc.exe"
+              UseBasicParsing = $true
+              Verbose         = $true
+          }
+          Invoke-WebRequest @Parameters
+
+      - name: Get the Numbers
+        run: |
+          $JSON    = & "$PSScriptRoot\cloc.exe" "Sophia Script\Sophia Script for Windows 11\Module\Sophia.psm1" --json | ConvertFrom-Json
+          $blank   = $JSON.SUM.blank
+          $comment = $JSON.SUM.comment
+          $code    = $JSON.SUM.code
+          $Summary = "$(($($blank + $comment + $code)/1000).ToString("#.#").replace(",", "."))k"
+
+          echo "CODE_LINES=$Summary" >> $env:GITHUB_ENV
+
+      - name: Create Lines-of-Code-Badge
+        uses: schneegans/dynamic-badges-action@master
+        with:
+          auth: ${{ secrets.GIST_SophiaScript }}
+          gistID: 9852d6b9569a91bf69ceba8a94cc97f4
+          filename: SophiaScript.json
+          label: Lines of Code
+          message: ${{ env.CODE_LINES }}
+          namedLogo: PowerShell
+          color: brightgreen
