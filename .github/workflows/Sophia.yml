@@ -4,14 +4,13 @@ on:
   push:
     tags:
       - '*.*.*'
-      - '*.*'
 
 jobs:
   patch:
     runs-on: windows-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@main
       - name: Signing all .ps1, .psm1, .psd1 files
         run: |
           . Scripts\Sign.ps1
