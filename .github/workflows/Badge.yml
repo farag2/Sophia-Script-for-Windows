@@ -38,9 +38,10 @@ jobs:
           $blank   = $JSON.SUM.blank
           $comment = $JSON.SUM.comment
           $code    = $JSON.SUM.code
-          write-host $($blank + $comment + $code)
           # "$((($blank + $comment + $code)/1000).ToString("#.#").replace(",", "."))k"
           $Summary = ("{0:N1}k" -f (($blank + $comment + $code)/1000)).replace(",", ".")
+
+          Write-Verbose -Message ($blank + $comment + $code) -Verbose
 
           echo "CODE_LINES=$Summary" >> $env:GITHUB_ENV
 
