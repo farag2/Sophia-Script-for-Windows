@@ -38,7 +38,7 @@ jobs:
           $blank   = $JSON.SUM.blank
           $comment = $JSON.SUM.comment
           $code    = $JSON.SUM.code
-          $Summary = ("{0:N2}k" -f $($blank + $comment + $code)).replace(",", ".")
+          $Summary = "{0:N0}k" -f ($blank + $comment + $code)
 
           echo "CODE_LINES=$Summary" >> $env:GITHUB_ENV
 
