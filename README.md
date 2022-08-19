@@ -43,7 +43,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 <a href="https://www.ghacks.net/2020/09/27/windows-10-setup-script-has-a-new-name-and-is-now-easier-to-use/"><img src="https://i.imgur.com/K4f8VBo.png" width=120px></a>
 <a href="https://www.neowin.net/news/this-windows-10-setup-script-lets-you-fine-tune-around-150-functions-for-new-installs"><img src="https://i.imgur.com/5fILFqz.png" width=100px></a>
 <a href="https://www.comss.ru/page.php?id=8019"><img src="https://cdn.comss.net/img/logo51.png" width=30px></a>
-<a href="https://habr.com/company/skillfactory/blog/553800"><img src="https://i.imgur.com/cXWLr4I.png" width=40px></a>
+<a href="https://habr.com/company/skillfactory/blog/553800"><img src="https://hsto.org/getpro/moikrug/uploads/company/901/244/761/logo/medium_c35efb293cd85320d66e74304d3a8076.jpg" width=40px></a>
 <a href="https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10/"><img src="https://i.imgur.com/6sAI2wZ.png" width=110px></a>
 <a href="https://www.pcsoleil.fr/successeur-de-win10-initial-setup-script-sophia-script-comment-lutiliser/"><img src="https://i.imgur.com/xBHWMkU.png" width=160px></a>
 
