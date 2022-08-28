@@ -66,8 +66,8 @@ Import-Module -Name $PSScriptRoot\bin\PolicyFileEditor\PolicyFileEditor.psd1 -Pa
 
 Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia -BaseDirectory $PSScriptRoot\Localizations
 
-# The mandatory checkings. Please, do not comment out this function
-Checkings
+# The mandatory checks. Please, do not comment out this function
+Checks
 
 $Parameters = @{
 	CommandName   = "Sophia"

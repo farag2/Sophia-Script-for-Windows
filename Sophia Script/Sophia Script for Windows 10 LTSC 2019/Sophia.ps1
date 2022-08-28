@@ -98,7 +98,7 @@ Import-LocalizedData -BindingVariable Global:Localization -BaseDirectory $PSScri
 #>
 if ($Functions)
 {
-	Invoke-Command -ScriptBlock {Checkings}
+	Invoke-Command -ScriptBlock {Checks}
 
 	foreach ($Function in $Functions)
 	{
@@ -113,13 +113,13 @@ if ($Functions)
 
 #region Protection
 <#
-	The mandatory checkings. If you want to disable a warning message about whether the preset file was customized, remove the "-Warning" argument
+	The mandatory checks. If you want to disable a warning message about whether the preset file was customized, remove the "-Warning" argument
 	Please, do not comment out this function
 
 	Обязательные проверки. Чтобы выключить предупреждение о необходимости настройки пресет-файла, удалите аргумент "-Warning"
 	Пожалуйста, не комментируйте данную функцию
 #>
-Checkings -Warning
+Checks -Warning
 
 <#
 	Enable script logging. Log will be recorded into the script folder

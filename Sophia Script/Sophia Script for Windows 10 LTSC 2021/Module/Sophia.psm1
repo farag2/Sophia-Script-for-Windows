@@ -42,8 +42,8 @@
 	https://github.com/Inestic
 #>
 
-#region Checkings
-function Checkings
+#region Checks
+function Checks
 {
 	param
 	(
@@ -272,7 +272,7 @@ function Checkings
 	# Unblock all files in the script folder by removing the Zone.Identifier alternate data stream with a value of "3"
 	Get-ChildItem -Path $PSScriptRoot\..\ -File -Recurse -Force | Unblock-File
 
-	#region Defender Checkings
+	#region Defender checks
 	# Checking whether WMI is corrupted
 	try
 	{
@@ -420,7 +420,7 @@ function Checkings
 			}
 		}
 	}
-	#endregion Defender Checkings
+	#endregion Defender checks
 
 	# Display a warning message about whether a user has customized the preset file
 	if ($Warning)
@@ -457,7 +457,7 @@ function Checkings
 	# Save all opened folders in order to restore them after File Explorer restart
 	$Script:OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
 }
-#endregion Checkings
+#endregion Checks
 
 #region Protection
 # Enable script logging. The log will be being recorded into the script root folder

@@ -4,7 +4,7 @@
     "Region": "Protection",
     "Control": "cmb",
     "Required": "true",
-    "Function": "Checkings",
+    "Function": "Checks",
     "Arg": {
       "Zero": {
         "Tag": "Warning"

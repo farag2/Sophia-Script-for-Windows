@@ -13,7 +13,7 @@ Diff from v6.1.3
 [6.1.3...6.1.4](https://github.com/farag2/Sophia-Script-for-Windows/compare/6.1.3...6.1.4)
 
 * We opened our official [Discord](https://discord.gg/sSryhaEv79) channel! Feel free to chat and talk! [![Discord](https://discordapp.com/api/guilds/1006179075263561779/widget.png?style=shield)](https://discord.gg/sSryhaEv79)
-* Improved Defender checkings;
+* Improved Defender checks;
   * Now they're skipped for `Windows 10 Enteprise G`;
   * Closes #379.
 * Now all all `.ps1, .psm1, .psd1` files are signed in cloud via GitHub Actions by a self-issued certificates;
@@ -72,7 +72,7 @@ Diff from v6.1.3
 
 ## Anniversary build of Sophia Script!💯⭐
 
-* Improved startup checkings, especially regarding Microsoft Defender whether it wasn't removed or destroyed by malicious tweakers;
+* Improved startup checks, especially regarding Microsoft Defender whether it wasn't removed or destroyed by malicious tweakers;
 * Added `RKNBypass` function to enable proxying only blocked sites from the unified registry of Roskomnadzor;
   * The function will be applied only if the region in Windows is set to "Russia";
   * Based on <https://antizapret.prostovpn.org> proxy.
@@ -126,7 +126,7 @@ Diff from v6.1.3
   * Closes #347.
 * Fixed bug in `NetworkAdaptersSavePower` function that caused an error that there is no internet connection even if it was so;
 * Formaly added Windows 10 22H2 support;
-* Updated startup checkings;
+* Updated startup checks;
 * Fixed `DiagnosticDataLevel` function;
   * Now it uses `gpedit.msc` path: `HKLM:\Software\Policies\Microsoft\Windows\DataCollection` instead of `HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection`;
   * To updated registry keys run `DiagnosticDataLevel -Minimal`.
@@ -578,7 +578,7 @@ Diff from v5.10.8
 [5.10.8...5.11](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.10.8...5.11)
 
 * Updated descriptions;
-* Expanded the `Checkings` funtion functionality;
+* Expanded the `Checks` funtion functionality;
 * Updated the `OneDrive` function;
 * Functions removed as not wanted
   * `ShareAcrossDevices`
@@ -698,7 +698,7 @@ Diff from v5.10.3
 
 * Почитайте [лонгрид](https://habr.com/company/skillfactory/blog/553800) на Хабре, как происходила разработка скрипта последние полгода.
 * Added a warning message before the script running to be sure a user has customized the `Sophia.ps1` preset file;
-  * You may disable it by removing the `Warning` argument in the `Checkings` function in the preset file.
+  * You may disable it by removing the `Warning` argument in the `Checks` function in the preset file.
 ![image](https://i.imgur.com/d3QUmIP.png)
 * Moved all localization files to the `Localizations` folder;
 ![image](https://i.imgur.com/kQDktvj.png)
@@ -994,7 +994,7 @@ Diff from v5.3.3
 
 * Now all archives are being created and uploaded to the release page via [GitHub Actions](https://github.com/farag2/Windows-10-Sophia-Script/blob/master/.github/workflows/Sophia.yml);
   * Thnx to @inv2004
-* When running the script using ```.\Sophia.ps1 -Functions "FunctionName1 -Parameter"``` regardless of the functions entered as an argument, the ```Checkings``` function will be executed first, and the ```Refresh``` and ```Errors``` functions will be executed at the end;
+* When running the script using ```.\Sophia.ps1 -Functions "FunctionName1 -Parameter"``` regardless of the functions entered as an argument, the `Checks` function will be executed first, and the ```Refresh``` and ```Errors``` functions will be executed at the end;
 * Updated the ```CreateRestorePoint``` function
   * Closed #124
 * Updated the ```EnableWSL2``` function

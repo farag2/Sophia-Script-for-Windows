@@ -2,7 +2,7 @@
   {
     "Id": 100,
     "Region": "Protection",
-    "Function": "Checkings",
+    "Function": "Checks",
     "Arg": {
       "Zero": {
         "Tag": "Warning",
