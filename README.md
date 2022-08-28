@@ -38,36 +38,25 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
 
 ***
 
-<a href="https://rutracker.org/forum/viewtopic.php?t=5996011"><img src="https://static.t-ru.org/logo/logo-3.svg" width=130px></a>
-<a href="https://4sysops.com/archives/windows-10-sophia-script-powershell-functions-for-windows-10-fine-tuning-and-automating-routine-configuration-tasks/"><img src="https://i.imgur.com/cZ32Hkt.png" width=70px></a>
-<a href="https://www.ghacks.net/2020/09/27/windows-10-setup-script-has-a-new-name-and-is-now-easier-to-use/"><img src="https://i.imgur.com/K4f8VBo.png" width=120px></a>
-<a href="https://www.neowin.net/news/this-windows-10-setup-script-lets-you-fine-tune-around-150-functions-for-new-installs"><img src="https://i.imgur.com/5fILFqz.png" width=100px></a>
-<a href="https://www.comss.ru/page.php?id=8019"><img src="https://cdn.comss.net/img/logo51.png" width=30px></a>
-<a href="https://habr.com/company/skillfactory/blog/553800"><img src="https://hsto.org/getpro/moikrug/uploads/company/901/244/761/logo/medium_c35efb293cd85320d66e74304d3a8076.jpg" width=40px></a>
-<a href="https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10/"><img src="https://i.imgur.com/6sAI2wZ.png" width=110px></a>
-<a href="https://www.pcsoleil.fr/successeur-de-win10-initial-setup-script-sophia-script-comment-lutiliser/"><img src="https://i.imgur.com/xBHWMkU.png" width=160px></a>
-
-***
-
 <p align="center">
-	&bull;
-	<a href="#donations">Donations</a>
-	&bull;
-	<a href="#system-requirements">System Requirements</a>
-	&bull;
-	<a href="#screenshots">Screenshots</a>
-	&bull;
-	<a href="#videos">Videos</a>
-	&bull;
-	<a href="#core-features">Core features</a>
-	&bull;
-	<a href="#how-to-use">How to use</a>
-	&bull;
-	<a href="#how-to-translate">How to translate</a>
-	&bull;
-	<a href="#sophiapp-community-edition-c--wpf">SophiApp</a>
-	&bull;
-	<a href="https://github.com/farag2/Sophia-Script-for-Windows/blob/master/CHANGELOG.md">Changelog</a>
+ &bull;
+ <a href="#donations">Donations</a>
+ &bull;
+ <a href="#system-requirements">System Requirements</a>
+ &bull;
+ <a href="#screenshots">Screenshots</a>
+ &bull;
+ <a href="#videos">Videos</a>
+ &bull;
+ <a href="#core-features">Core features</a>
+ &bull;
+ <a href="#how-to-use">How to use</a>
+ &bull;
+ <a href="#how-to-translate">How to translate</a>
+ &bull;
+ <a href="#sophiapp-community-edition-c--wpf">SophiApp</a>
+ &bull;
+ <a href="https://github.com/farag2/Sophia-Script-for-Windows/blob/master/CHANGELOG.md">Changelog</a>
 </p>
 
 ## About Sophia Script for Windows :trophy:
@@ -77,7 +66,6 @@ Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Wind
 ## Before running
 
 > **Note**: Due to the fact that the script includes more than **150** functions with different arguments, you must read the entire **Sophia.ps1** carefully and **comment out/uncomment** those functions that you do/do not want to be executed (without need to edit the code), or use [Wrapper](https://github.com/farag2/Sophia-Script-for-Windows#davids-sophia-script-wrapper). Every tweak in the preset file has its' corresponding function to **restore the default settings**.
-> 
 > Running the script is best done on a fresh install because running it on **wrong** tweaked system may result in errors occurring.
 
 ## Donations
@@ -93,7 +81,7 @@ Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Wind
 |<img src="./img/BTC.png" width=130px>|<img src="./img/USDT.png" width=130px>|<img src="./img/ETH.png" width=130px>       |
 |`13QVRYxgGjZtKQgfb6VPRZyyUmnqeaTm1n` |`TQtMjdocUWbKAeg1kLtB4ApjAVHt1v8Rtf`  |`0x089f05c00e2f75e9b0cd939f21c207b1afe5b2f6`|
 
-# System Requirements
+## System Requirements
 
 ### Minimum supported Windows versions and builds
 
@@ -160,7 +148,7 @@ Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Wind
 ## Core features
 
 * Set up Privacy & Telemetry;
-* Turn off diagnostics tracking scheduled tasks with pop-up form written in [WPF](#Screenshots);
+* Turn off diagnostics tracking scheduled tasks with pop-up form written in [WPF](#screenshots);
 * Set up UI & Personalization;
 * Uninstall OneDrive "correctly";
 * Interactive [prompts](#change-user-folders-location-programmatically-using-the-interactive-menu);
@@ -175,15 +163,15 @@ Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Wind
   * "Videos.
 * Uninstall UWP apps displaying  packages names;
   * Generate installed UWP apps list dynamically
-* Restore the default uninstalled UWP apps for current user displaying [localized](#localized-uwp-apps-names) packages names;
+* Restore the default uninstalled UWP apps for current user displaying [localized](#localized-uwp-packages-names) packages names;
 * The <kbd>TAB</kbd> [autocompletion](#the-tab-autocomplete-read-more-here) for function and its' arguments by typing first letters
-* Disable Windows features displaying friendly packages names with pop-up form written in [WPF](#Screenshots);
-* Uninstall Windows capabilities displaying friendly packages names with pop-up form written in [WPF](#Screenshots);
-* Download and install the [HEVC Video Extensions from Device Manufacturer](https://www.microsoft.com/p/hevc-video-extensions-from-device-manufacturer/9n4wgh0z6vhq) from Microsoft server using <https://store.rg-adguard.net> parser to be able to open .heic and .heif formats;
+* Disable Windows features displaying friendly packages names with pop-up form written in [WPF](#screenshots);
+* Uninstall Windows capabilities displaying friendly packages names with pop-up form written in [WPF](#screenshots);
+* Download and install the [HEVC Video Extensions from Device Manufacturer](https://www.microsoft.com/p/hevc-video-extensions-from-device-manufacturer/9n4wgh0z6vhq) to be able to open .heic and .heif formats;
 * Register app, calculate hash, and set as default for specific extension without the "How do you want to open this" pop-up using special [function](https://github.com/DanysysTeam/PS-SFTA);
-* Install any supported Linux distrobution for WSL displaying friendly distro names with pop-up form written in [WPF](#Screenshots);
+* Install any supported Linux distrobution for WSL displaying friendly distro names with pop-up form written in [WPF](#screenshots);
 * Create a `Windows Cleanup` and `Windows Cleanup Notification` scheduled tasks for Windows cleaning up unused files and updates;
-  * A native toast notification will be displayed where you can choose to snooze, run the cleanup task or [dismiss](#native-interactive-toasts-for-the-windows-cleanup-scheduled-task)
+  * A native toast notification will be displayed where you can choose to snooze, run the cleanup task or [dismiss](#native-interactive-toasts-for-the-scheduled-tasks)
 * Create tasks in the Task Scheduler to clear
   * `%SystemRoot%\SoftwareDistribution\Download`
   * `%TEMP%`
@@ -281,11 +269,11 @@ irm script.sophi.app -useb | iex
 
 ## How to translate
 
-* Get your OS UI culture by `$PSUICulture`
+* Get your OS UI culture by invoking `$PSUICulture` in PowerShell;
 * Create a folder with the UI culture name;
 * Place your localized Sophia.psd1 file into this folder.
 
-## Ask a question on
+## Media
 
 * [![Discord](https://discordapp.com/api/guilds/1006179075263561779/widget.png?style=shield)](https://discord.gg/sSryhaEv79)
 * [Telegram discussion group](https://t.me/sophia_chat)
@@ -293,8 +281,17 @@ irm script.sophi.app -useb | iex
 * [Ru-Board](https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15)
 * [rutracker](https://rutracker.org/forum/viewtopic.php?t=5996011)
 * [My Digital Life](https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/)
+* [4sysops](https://4sysops.com/archives/windows-10-sophia-script-powershell-functions-for-windows-10-fine-tuning-and-automating-routine-configuration-tasks/)
+* [gHacks Technology News](https://www.ghacks.net/2020/09/27/windows-10-setup-script-has-a-new-name-and-is-now-easier-to-use/)
+* [Neowin: Tech News, Reviews & Betas(https://www.neowin.net/news/this-windows-10-setup-script-lets-you-fine-tune-around-150-functions-for-new-installs)
+* [Comss.ru](https://www.comss.ru/page.php?id=8019)
+* [Habr](https://habr.com/company/skillfactory/blog/553800)
+* [Deskmodder.d](https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10/)
+* [PCsoleil Informatique](https://www.pcsoleil.fr/successeur-de-win10-initial-setup-script-sophia-script-comment-lutiliser/)
 * [Reddit (archived)](https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/)
   * PM [me](https://www.reddit.com/user/farag2/)
+
+***
 
 ## SophiApp Community Edition (C# + WPF)
 
