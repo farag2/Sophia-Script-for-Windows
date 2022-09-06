@@ -81,33 +81,16 @@ Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Wind
 |<img src="./img/BTC.png" width=130px>|<img src="./img/USDT.png" width=130px>|<img src="./img/ETH.png" width=130px>       |
 |`13QVRYxgGjZtKQgfb6VPRZyyUmnqeaTm1n` |`TQtMjdocUWbKAeg1kLtB4ApjAVHt1v8Rtf`  |`0x089f05c00e2f75e9b0cd939f21c207b1afe5b2f6`|
 
-## System Requirements
+## Minimum System Requirements
 
-### Minimum supported Windows versions and builds
-
-### Windows 11 Insider Preview
-
-|Version|   Build   |      Editions     | Script version |
-|:-----:|:---------:|:-----------------:|:--------------:|
-| 22H2  | 22509     |Home/Pro/Enterprise|[download](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-
-### Windows 11
-
-|Version|   Build   |      Editions     | Script version |
-|:-----:|:---------:|:-----------------:|:--------------:|
-| 21H2  | 22000.739 |Home/Pro/Enterprise|[download](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-
-### Windows 10
-
-|Version|    Marketing name   | Build | Arch|      Editions          | Script version |
-|:-----:|:-------------------:|:----------:|:---:|:----------------------:|:--------------:|
-| 22H2  | October 2022 Update | 19045.1766 | x64 |Home/Pro/Enterprise|[download](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 21H2  | October 2021 Update | 19044.1766 | x64 |Home/Pro/Enterprise|[download](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 21H2  | Enterprise LTSC 2021| 19044.1766 | x64 |   Enterprise      |[download](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 21H1  | May 2021 Update     | 19043.1766 | x64 |Home/Pro/Enterprise|[download](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 20H2  | October 2020 Update | 19042.1766 | x64 |Home/Pro/Enterprise|[download](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 2004  | May 2020 Update     | 19041.1766 | x64 |Home/Pro/Enterprise|[download](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
-| 1809  | Enterprise LTSC 2019| 17763      | x64 |   Enterprise      |[download](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)|
+|            Version              |    Marketing name       |    Build   | Arch |        Editions          |
+|:--------------------------------|------------------------:|:----------:|:----:|:------------------------:|
+| Windows 11 Insider Preview 23H2 | 2023 Update             | 22509      |      | Home/Pro/Enterprise      |
+| Windows 11 21H2                 | 2022 Update             | 22000.739  |      | Home/Pro/Enterprise      |
+| Windows 10 21H2                 | October 2021 Update     | 19044.1706 | x64  | Home/Pro/Enterprise/LTSC |
+| Windows 10 21H2                 | Enterprise LTSC 2021    | 19044.1706 | x64  | Enterprise               |
+| Windows 10 2004                 | May 2020 Update         | 19041.1706 | x64  | Home/Pro/Enterprise      |
+| Windows 10 1809                 | Enterprise LTSC 2019    | 17763.3046 | x64  | Enterprise               |
 
 ## Screenshots
 
@@ -145,7 +128,7 @@ Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Wind
 
 [![YT](https://img.youtube.com/vi/8E6OT_QcHaU/1.jpg)](https://youtu.be/8E6OT_QcHaU?t=370) [![YT](https://img.youtube.com/vi/091SOihvx0k/1.jpg)](https://youtu.be/091SOihvx0k?t=490)
 
-## Core features
+## Key features
 
 * Set up Privacy & Telemetry;
 * Turn off diagnostics tracking scheduled tasks with pop-up form written in [WPF](#screenshots);
