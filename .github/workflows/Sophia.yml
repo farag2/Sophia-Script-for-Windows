@@ -65,7 +65,7 @@ jobs:
           Invoke-RestMethod @Parameters
 
           # Rename archive to able to expand it
-          Rename-Item -Path "Scripts\microsoft.windows.sdk.net.ref.nupkg" -NewName "$PSScriptRoot\microsoft.windows.sdk.net.ref.zip" -Force
+          Rename-Item -Path "Scripts\microsoft.windows.sdk.net.ref.nupkg" -NewName "microsoft.windows.sdk.net.ref.zip" -Force
 
           # Extract Microsoft.Windows.SDK.NET.dll & WinRT.Runtime.dll from archive
           Add-Type -Assembly System.IO.Compression.FileSystem
