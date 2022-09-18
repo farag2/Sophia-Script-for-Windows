@@ -255,7 +255,7 @@ WhatsNewInWindows -Disable
 # WhatsNewInWindows -Enable
 
 # Do not let Microsoft offer you tailored expereinces based on the diagnostic data setting you have chosen
-# Не разрешиать корпорации Майкософт использовать ваши диагностические данные для предоставления вам персонализированных советов, рекламы и рекомендаций, чтобы улучшить работу со службами Майкрософт
+# Не разрешать корпорации Майкософт использовать ваши диагностические данные для предоставления вам персонализированных советов, рекламы и рекомендаций, чтобы улучшить работу со службами Майкрософт
 TailoredExperiences -Disable
 
 # Let Microsoft offer you tailored expereinces based on the diagnostic data setting you have chosen (default value)
