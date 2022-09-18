@@ -54,7 +54,7 @@ jobs:
           )
           Remove-Item -Path $Path -Recurse -Force
 
-          Rename-Item -Path "Scripts\PolicyFileEditor-$LatestPolicyFileEditorVersion" -NewName "Scripts\PolicyFileEditor" -Force
+          Rename-Item -Path "Scripts\PolicyFileEditor-$LatestPolicyFileEditorVersion" -NewName "PolicyFileEditor" -Force
 
           # Download Microsoft.Windows.SDK.NET.dll & WinRT.Runtime.dll
           $Parameters = @{
