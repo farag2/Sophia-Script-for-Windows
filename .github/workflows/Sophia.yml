@@ -59,18 +59,15 @@ jobs:
           # Download Microsoft.Windows.SDK.NET.dll & WinRT.Runtime.dll
           $Parameters = @{
               Uri             = "https://www.nuget.org/api/v2/package/Microsoft.Windows.SDK.NET.Ref"
-              OutFile         = "Scripts\microsoft.windows.sdk.net.ref.nupkg"
+              OutFile         = "Scripts\microsoft.windows.sdk.net.ref.zip"
               UseBasicParsing = $true
           }
           Invoke-RestMethod @Parameters
 
-          # Rename archive to able to expand it
-          Rename-Item -Path "Scripts\microsoft.windows.sdk.net.ref.nupkg" -NewName "microsoft.windows.sdk.net.ref.zip" -Force
-
           # Extract Microsoft.Windows.SDK.NET.dll & WinRT.Runtime.dll from archive
           Add-Type -Assembly System.IO.Compression.FileSystem
           $ZIP = [IO.Compression.ZipFile]::OpenRead("Scripts\microsoft.windows.sdk.net.ref.zip")
-          $Entries = $ZIP.Entries | Where-Object -FilterScript {($_.FullName -eq "lib/Microsoft.Windows.SDK.NET.dll") -or ($_.FullName -eq "lib/WinRT.Runtime.dll")}
+          $Entries = $ZIP.Entries | Where-Object -FilterScript {($_.FullName -eq "lib/net6.0/Microsoft.Windows.SDK.NET.dll") -or ($_.FullName -eq "lib/net6.0/WinRT.Runtime.dll")}
           $Entries | ForEach-Object -Process {[IO.Compression.ZipFileExtensions]::ExtractToFile($_, "Scripts\$($_.Name)", $true)}
           $ZIP.Dispose()
 
@@ -186,6 +183,7 @@ jobs:
           Write-Verbose -Message "Sophia.Script.for.Windows.10.LTSC.2021.v$LatestRelease.zip" -Verbose
 
           New-Item -Path "Sophia Script for Windows 10 LTSC 2021 v$LatestRelease\bin" -ItemType Directory -Force
+
           $Parameters = @{
               Path            = @("Scripts\PolicyFileEditor")
               Destination     = "Sophia Script for Windows 10 LTSC 2021 v$LatestRelease\bin"
