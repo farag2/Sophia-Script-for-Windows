@@ -3,7 +3,7 @@ name: Build
 on:
   push:
     tags:
-      - '*.*.*'
+      - "*.*"
 
 jobs:
   patch:
@@ -29,7 +29,7 @@ jobs:
 
           $Parameters = @{
               Uri             = "https://github.com/dlwyatt/PolicyFileEditor/archive/refs/tags/$LatestPolicyFileEditorVersion.zip"
-              OutFile         = "$PSScriptRoot\$LatestPolicyFileEditorVersion.zip"
+              OutFile         = "Scripts\$LatestPolicyFileEditorVersion.zip"
               UseBasicParsing = $true
               Verbose         = $true
           }
@@ -37,41 +37,38 @@ jobs:
 
           # Expand zip archive
           $Parameters = @{
-              Path            = "$PSScriptRoot\$LatestPolicyFileEditorVersion.zip"
-              DestinationPath = "$PSScriptRoot"
+              Path            = "Scripts\$LatestPolicyFileEditorVersion.zip"
+              DestinationPath = "Scripts"
               Force           = $true
               Verbose         = $true
           }
           Expand-Archive @Parameters
 
           $Path = @(
-              "$PSScriptRoot\PolicyFileEditor-$LatestPolicyFileEditorVersion\DscResources",
-              "$PSScriptRoot\PolicyFileEditor-$LatestPolicyFileEditorVersion\en-US",
-              "$PSScriptRoot\PolicyFileEditor-$LatestPolicyFileEditorVersion\build.psake.ps1",
-              "$PSScriptRoot\PolicyFileEditor-$LatestPolicyFileEditorVersion\LICENSE",
-              "$PSScriptRoot\PolicyFileEditor-$LatestPolicyFileEditorVersion\PolicyFileEditor.Tests.ps1",
-              "$PSScriptRoot\PolicyFileEditor-$LatestPolicyFileEditorVersion\README.md"
+              "Scripts\PolicyFileEditor-$LatestPolicyFileEditorVersion\DscResources",
+              "Scripts\PolicyFileEditor-$LatestPolicyFileEditorVersion\en-US",
+              "Scripts\PolicyFileEditor-$LatestPolicyFileEditorVersion\build.psake.ps1",
+              "Scripts\PolicyFileEditor-$LatestPolicyFileEditorVersion\LICENSE",
+              "Scripts\PolicyFileEditor-$LatestPolicyFileEditorVersion\PolicyFileEditor.Tests.ps1",
+              "Scripts\PolicyFileEditor-$LatestPolicyFileEditorVersion\README.md"
           )
           Remove-Item -Path $Path -Recurse -Force
 
-          Rename-Item -Path "$PSScriptRoot\PolicyFileEditor-$LatestPolicyFileEditorVersion" -NewName "$PSScriptRoot\PolicyFileEditor" -Force
+          Rename-Item -Path "Scripts\PolicyFileEditor-$LatestPolicyFileEditorVersion" -NewName "PolicyFileEditor" -Force
 
           # Download Microsoft.Windows.SDK.NET.dll & WinRT.Runtime.dll
           $Parameters = @{
               Uri             = "https://www.nuget.org/api/v2/package/Microsoft.Windows.SDK.NET.Ref"
-              OutFile         = "$PSScriptRoot\microsoft.windows.sdk.net.ref.nupkg"
+              OutFile         = "Scripts\microsoft.windows.sdk.net.ref.zip"
               UseBasicParsing = $true
           }
           Invoke-RestMethod @Parameters
 
-          # Rename archive to able to expand it
-          Rename-Item -Path "$PSScriptRoot\microsoft.windows.sdk.net.ref.nupkg" -NewName "$PSScriptRoot\microsoft.windows.sdk.net.ref.zip" -Force
-
           # Extract Microsoft.Windows.SDK.NET.dll & WinRT.Runtime.dll from archive
           Add-Type -Assembly System.IO.Compression.FileSystem
-          $ZIP = [IO.Compression.ZipFile]::OpenRead("$PSScriptRoot\microsoft.windows.sdk.net.ref.zip")
-          $Entries = $ZIP.Entries | Where-Object -FilterScript {($_.FullName -eq "lib/Microsoft.Windows.SDK.NET.dll") -or ($_.FullName -eq "lib/WinRT.Runtime.dll")}
-          $Entries | ForEach-Object -Process {[IO.Compression.ZipFileExtensions]::ExtractToFile($_, "$PSScriptRoot\$($_.Name)", $true)}
+          $ZIP = [IO.Compression.ZipFile]::OpenRead("Scripts\microsoft.windows.sdk.net.ref.zip")
+          $Entries = $ZIP.Entries | Where-Object -FilterScript {($_.FullName -eq "lib/net6.0/Microsoft.Windows.SDK.NET.dll") -or ($_.FullName -eq "lib/net6.0/WinRT.Runtime.dll")}
+          $Entries | ForEach-Object -Process {[IO.Compression.ZipFileExtensions]::ExtractToFile($_, "Scripts\$($_.Name)", $true)}
           $ZIP.Dispose()
 
       - name: Sophia Script for Windows 10
@@ -86,7 +83,7 @@ jobs:
 
           New-Item -Path "Sophia Script for Windows 10 v$LatestRelease\bin" -ItemType Directory -Force
           $Parameters = @{
-              Path            = @("$PSScriptRoot\PolicyFileEditor")
+              Path            = @("Scripts\PolicyFileEditor")
               Destination     = "Sophia Script for Windows 10 v$LatestRelease\bin"
               Recurse         = $true
               Force           = $true
@@ -120,7 +117,7 @@ jobs:
           New-Item -Path "Sophia Script for Windows 10 PowerShell 7 v$LatestRelease\bin" -ItemType Directory -Force
 
           $Parameters = @{
-              Path            = @("$PSScriptRoot\PolicyFileEditor", "$PSScriptRoot\WinRT.Runtime.dll", "$PSScriptRoot\Microsoft.Windows.SDK.NET.dll")
+              Path            = @("Scripts\PolicyFileEditor", "Scripts\WinRT.Runtime.dll", "Scripts\Microsoft.Windows.SDK.NET.dll")
               Destination     = "Sophia Script for Windows 10 PowerShell 7 v$LatestRelease\bin"
               Recurse         = $true
               Force           = $true
@@ -154,7 +151,7 @@ jobs:
 
           New-Item -Path "Sophia Script for Windows 10 LTSC 2019 v$LatestRelease\bin" -ItemType Directory -Force
           $Parameters = @{
-              Path            = @("$PSScriptRoot\PolicyFileEditor")
+              Path            = @("Scripts\PolicyFileEditor")
               Destination     = "Sophia Script for Windows 10 LTSC 2019 v$LatestRelease\bin"
               Recurse         = $true
               Force           = $true
@@ -186,8 +183,9 @@ jobs:
           Write-Verbose -Message "Sophia.Script.for.Windows.10.LTSC.2021.v$LatestRelease.zip" -Verbose
 
           New-Item -Path "Sophia Script for Windows 10 LTSC 2021 v$LatestRelease\bin" -ItemType Directory -Force
+
           $Parameters = @{
-              Path            = @("$PSScriptRoot\PolicyFileEditor")
+              Path            = @("Scripts\PolicyFileEditor")
               Destination     = "Sophia Script for Windows 10 LTSC 2021 v$LatestRelease\bin"
               Recurse         = $true
               Force           = $true
@@ -220,7 +218,7 @@ jobs:
 
           New-Item -Path "Sophia Script for Windows 11 v$LatestRelease\bin" -ItemType Directory -Force
           $Parameters = @{
-              Path            = @("$PSScriptRoot\PolicyFileEditor")
+              Path            = @("Scripts\PolicyFileEditor")
               Destination     = "Sophia Script for Windows 11 v$LatestRelease\bin"
               Recurse         = $true
               Force           = $true
@@ -253,7 +251,7 @@ jobs:
 
           New-Item -Path "Sophia Script for Windows 11 PowerShell 7 v$LatestRelease\bin" -ItemType Directory -Force
           $Parameters = @{
-              Path            = @("$PSScriptRoot\PolicyFileEditor", "$PSScriptRoot\WinRT.Runtime.dll", "$PSScriptRoot\Microsoft.Windows.SDK.NET.dll")
+              Path            = @("Scripts\PolicyFileEditor", "Scripts\WinRT.Runtime.dll", "Scripts\Microsoft.Windows.SDK.NET.dll")
               Destination     = "Sophia Script for Windows 11 PowerShell 7 v$LatestRelease\bin"
               Recurse         = $true
               Force           = $true
@@ -301,22 +299,30 @@ jobs:
               "$($_.Name)  $((Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash)"
           } | Add-Content -Path SHA256SUM -Encoding Default -Force
 
-      - name: Upload archives to release
-        uses: svenstaro/upload-release-action@master
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: Sophia*.zip
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
-          prerelease: true
+      - name: ReleaseNotesTemplate
+        id: read_release
+        run: |
+          $Parameters = @{
+              Uri             = "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases"
+              UseBasicParsing = $true
+              Verbose         = $true
+          }
+          $Penultimate = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 1
 
-      - name: Upload archives to release
-        uses: svenstaro/upload-release-action@master
+          # https://en.wikipedia.org/wiki/Percent-encoding
+          $Release = (Get-Content -Path ReleaseNotesTemplate.md -Encoding utf8 -Raw).replace("%", "%25").replace("`n", "%0A").replace("`r", "%0D").replace("NewVersion", "${{ github.ref_name }}").replace("OldVersion", $Penultimate)
+
+          # https://trstringer.com/github-actions-multiline-strings/
+          echo "::set-output name=RELEASE_BODY::$Release"
+          $ReleaseName = Get-Date -f "dd.MM.yyyy"
+          echo "RELEASE_NAME=$ReleaseName" >> $env:GITHUB_ENV
+
+      - name: Uploading
+        uses: softprops/action-gh-release@master
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: SHA256SUM
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
-          prerelease: true
+          name: ${{ env.RELEASE_NAME }}
+          token: ${{ github.token }}
+          files: |
+            Sophia*.zip
+            SHA256SUM
+          body: ${{ steps.read_release.outputs.RELEASE_BODY }}
