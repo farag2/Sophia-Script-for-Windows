@@ -821,11 +821,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Lassen Sie mich für jedes Anwendungsfenster eine andere Eingabemethode verwenden"
+        "ToolTip": "Nicht für jedes Anwendungsfenster eine andere Eingabemethode verwenden (Standardeinstellung)"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Nicht für jedes Anwendungsfenster eine andere Eingabemethode verwenden (Standardeinstellung)"
+        "ToolTip": "Lassen Sie mich für jedes Anwendungsfenster eine andere Eingabemethode verwenden"
       }
     }
   },

@@ -821,11 +821,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Deixe-me usar um método de entrada diferente para cada janela do aplicativo"
+        "ToolTip": "Não use um método de entrada diferente para cada janela do aplicativo (valor padrão)"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Não use um método de entrada diferente para cada janela do aplicativo (valor padrão)"
+        "ToolTip": "Deixe-me usar um método de entrada diferente para cada janela do aplicativo"
       }
     }
   },
