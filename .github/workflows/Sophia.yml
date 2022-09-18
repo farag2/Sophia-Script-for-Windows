@@ -301,22 +301,30 @@ jobs:
               "$($_.Name)  $((Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash)"
           } | Add-Content -Path SHA256SUM -Encoding Default -Force
 
-      - name: Upload archives to release
-        uses: svenstaro/upload-release-action@master
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: Sophia*.zip
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
-          prerelease: true
+      - name: ReleaseNotesTemplate
+        id: read_release
+        run: |
+          $Parameters = @{
+              Uri             = "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases"
+              UseBasicParsing = $true
+              Verbose         = $true
+          }
+          $Penultimate = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 1
 
-      - name: Upload archives to release
-        uses: svenstaro/upload-release-action@master
+          # https://en.wikipedia.org/wiki/Percent-encoding
+          $Release = (Get-Content -Path ReleaseNotesTemplate.md -Encoding utf8 -Raw).replace("%", "%25").replace("`n", "%0A").replace("`r", "%0D").replace("NewVersion", "${{ github.ref_name }}").replace("OldVersion", $Penultimate)
+
+          # https://trstringer.com/github-actions-multiline-strings/
+          echo "::set-output name=RELEASE_BODY::$Release"
+          $ReleaseName = Get-Date -f "dd.MM.yyyy"
+          echo "RELEASE_NAME=$ReleaseName" >> $env:GITHUB_ENV
+
+      - name: Uploading
+        uses: softprops/action-gh-release@master
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: SHA256SUM
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
-          prerelease: true
+          name: ${{ env.RELEASE_NAME }}
+          token: ${{ github.token }}
+          files: |
+            Sophia*.zip
+            SHA256SUM
+          body: ${{ steps.read_release.outputs.RELEASE_BODY }}
