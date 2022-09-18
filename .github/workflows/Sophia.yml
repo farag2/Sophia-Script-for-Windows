@@ -29,7 +29,7 @@ jobs:
 
           $Parameters = @{
               Uri             = "https://github.com/dlwyatt/PolicyFileEditor/archive/refs/tags/$LatestPolicyFileEditorVersion.zip"
-              OutFile         = "$PSScriptRoot\$LatestPolicyFileEditorVersion.zip"
+              OutFile         = "Scripts\$LatestPolicyFileEditorVersion.zip"
               UseBasicParsing = $true
               Verbose         = $true
           }
@@ -38,19 +38,19 @@ jobs:
           # Expand zip archive
           $Parameters = @{
               Path            = "$PSScriptRoot\$LatestPolicyFileEditorVersion.zip"
-              DestinationPath = "$PSScriptRoot"
+              DestinationPath = "Scripts"
               Force           = $true
               Verbose         = $true
           }
           Expand-Archive @Parameters
 
           $Path = @(
-              "$PSScriptRoot\PolicyFileEditor-$LatestPolicyFileEditorVersion\DscResources",
-              "$PSScriptRoot\PolicyFileEditor-$LatestPolicyFileEditorVersion\en-US",
-              "$PSScriptRoot\PolicyFileEditor-$LatestPolicyFileEditorVersion\build.psake.ps1",
-              "$PSScriptRoot\PolicyFileEditor-$LatestPolicyFileEditorVersion\LICENSE",
-              "$PSScriptRoot\PolicyFileEditor-$LatestPolicyFileEditorVersion\PolicyFileEditor.Tests.ps1",
-              "$PSScriptRoot\PolicyFileEditor-$LatestPolicyFileEditorVersion\README.md"
+              "Scripts\PolicyFileEditor-$LatestPolicyFileEditorVersion\DscResources",
+              "Scripts\PolicyFileEditor-$LatestPolicyFileEditorVersion\en-US",
+              "Scripts\PolicyFileEditor-$LatestPolicyFileEditorVersion\build.psake.ps1",
+              "Scripts\PolicyFileEditor-$LatestPolicyFileEditorVersion\LICENSE",
+              "Scripts\PolicyFileEditor-$LatestPolicyFileEditorVersion\PolicyFileEditor.Tests.ps1",
+              "Scripts\PolicyFileEditor-$LatestPolicyFileEditorVersion\README.md"
           )
           Remove-Item -Path $Path -Recurse -Force
 
@@ -59,19 +59,19 @@ jobs:
           # Download Microsoft.Windows.SDK.NET.dll & WinRT.Runtime.dll
           $Parameters = @{
               Uri             = "https://www.nuget.org/api/v2/package/Microsoft.Windows.SDK.NET.Ref"
-              OutFile         = "$PSScriptRoot\microsoft.windows.sdk.net.ref.nupkg"
+              OutFile         = "Scripts\microsoft.windows.sdk.net.ref.nupkg"
               UseBasicParsing = $true
           }
           Invoke-RestMethod @Parameters
 
           # Rename archive to able to expand it
-          Rename-Item -Path "$PSScriptRoot\microsoft.windows.sdk.net.ref.nupkg" -NewName "$PSScriptRoot\microsoft.windows.sdk.net.ref.zip" -Force
+          Rename-Item -Path "Scripts\microsoft.windows.sdk.net.ref.nupkg" -NewName "$PSScriptRoot\microsoft.windows.sdk.net.ref.zip" -Force
 
           # Extract Microsoft.Windows.SDK.NET.dll & WinRT.Runtime.dll from archive
           Add-Type -Assembly System.IO.Compression.FileSystem
-          $ZIP = [IO.Compression.ZipFile]::OpenRead("$PSScriptRoot\microsoft.windows.sdk.net.ref.zip")
+          $ZIP = [IO.Compression.ZipFile]::OpenRead("Scripts\microsoft.windows.sdk.net.ref.zip")
           $Entries = $ZIP.Entries | Where-Object -FilterScript {($_.FullName -eq "lib/Microsoft.Windows.SDK.NET.dll") -or ($_.FullName -eq "lib/WinRT.Runtime.dll")}
-          $Entries | ForEach-Object -Process {[IO.Compression.ZipFileExtensions]::ExtractToFile($_, "$PSScriptRoot\$($_.Name)", $true)}
+          $Entries | ForEach-Object -Process {[IO.Compression.ZipFileExtensions]::ExtractToFile($_, "Scripts\$($_.Name)", $true)}
           $ZIP.Dispose()
 
       - name: Sophia Script for Windows 10
@@ -120,7 +120,7 @@ jobs:
           New-Item -Path "Sophia Script for Windows 10 PowerShell 7 v$LatestRelease\bin" -ItemType Directory -Force
 
           $Parameters = @{
-              Path            = @("$PSScriptRoot\PolicyFileEditor", "$PSScriptRoot\WinRT.Runtime.dll", "$PSScriptRoot\Microsoft.Windows.SDK.NET.dll")
+              Path            = @("Scripts\PolicyFileEditor", "Scripts\WinRT.Runtime.dll", "Scripts\Microsoft.Windows.SDK.NET.dll")
               Destination     = "Sophia Script for Windows 10 PowerShell 7 v$LatestRelease\bin"
               Recurse         = $true
               Force           = $true
@@ -253,7 +253,7 @@ jobs:
 
           New-Item -Path "Sophia Script for Windows 11 PowerShell 7 v$LatestRelease\bin" -ItemType Directory -Force
           $Parameters = @{
-              Path            = @("$PSScriptRoot\PolicyFileEditor", "$PSScriptRoot\WinRT.Runtime.dll", "$PSScriptRoot\Microsoft.Windows.SDK.NET.dll")
+              Path            = @("Scripts\PolicyFileEditor", "Scripts\WinRT.Runtime.dll", "Scripts\Microsoft.Windows.SDK.NET.dll")
               Destination     = "Sophia Script for Windows 11 PowerShell 7 v$LatestRelease\bin"
               Recurse         = $true
               Force           = $true
