@@ -821,11 +821,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Let me use a different input method for each app window"
+        "ToolTip": "Do not use a different input method for each app window (default value)"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Do not use a different input method for each app window (default value)"
+        "ToolTip": "Let me use a different input method for each app window"
       }
     }
   },
