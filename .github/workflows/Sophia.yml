@@ -86,7 +86,7 @@ jobs:
 
           New-Item -Path "Sophia Script for Windows 10 v$LatestRelease\bin" -ItemType Directory -Force
           $Parameters = @{
-              Path            = @("$PSScriptRoot\PolicyFileEditor")
+              Path            = @("Scripts\PolicyFileEditor")
               Destination     = "Sophia Script for Windows 10 v$LatestRelease\bin"
               Recurse         = $true
               Force           = $true
@@ -154,7 +154,7 @@ jobs:
 
           New-Item -Path "Sophia Script for Windows 10 LTSC 2019 v$LatestRelease\bin" -ItemType Directory -Force
           $Parameters = @{
-              Path            = @("$PSScriptRoot\PolicyFileEditor")
+              Path            = @("Scripts\PolicyFileEditor")
               Destination     = "Sophia Script for Windows 10 LTSC 2019 v$LatestRelease\bin"
               Recurse         = $true
               Force           = $true
@@ -187,7 +187,7 @@ jobs:
 
           New-Item -Path "Sophia Script for Windows 10 LTSC 2021 v$LatestRelease\bin" -ItemType Directory -Force
           $Parameters = @{
-              Path            = @("$PSScriptRoot\PolicyFileEditor")
+              Path            = @("Scripts\PolicyFileEditor")
               Destination     = "Sophia Script for Windows 10 LTSC 2021 v$LatestRelease\bin"
               Recurse         = $true
               Force           = $true
@@ -220,7 +220,7 @@ jobs:
 
           New-Item -Path "Sophia Script for Windows 11 v$LatestRelease\bin" -ItemType Directory -Force
           $Parameters = @{
-              Path            = @("$PSScriptRoot\PolicyFileEditor")
+              Path            = @("Scripts\PolicyFileEditor")
               Destination     = "Sophia Script for Windows 11 v$LatestRelease\bin"
               Recurse         = $true
               Force           = $true
