@@ -37,7 +37,7 @@ jobs:
 
           # Expand zip archive
           $Parameters = @{
-              Path            = "$PSScriptRoot\$LatestPolicyFileEditorVersion.zip"
+              Path            = "Scripts\$LatestPolicyFileEditorVersion.zip"
               DestinationPath = "Scripts"
               Force           = $true
               Verbose         = $true
@@ -54,7 +54,7 @@ jobs:
           )
           Remove-Item -Path $Path -Recurse -Force
 
-          Rename-Item -Path "$PSScriptRoot\PolicyFileEditor-$LatestPolicyFileEditorVersion" -NewName "$PSScriptRoot\PolicyFileEditor" -Force
+          Rename-Item -Path "Scripts\PolicyFileEditor-$LatestPolicyFileEditorVersion" -NewName "Scripts\PolicyFileEditor" -Force
 
           # Download Microsoft.Windows.SDK.NET.dll & WinRT.Runtime.dll
           $Parameters = @{
