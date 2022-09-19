@@ -19,10 +19,10 @@ Copy-Item @Parameters
 Get-ChildItem -Path "Sophia Script\Sophia Script for Windows 10 LTSC 2021" -Force | Copy-Item -Destination "Sophia Script for Windows 10 LTSC 2021 v$LatestRelease" -Recurse -Force
 
 $Parameters = @{
-    Path   = "Sophia Script for Windows 10 LTSC 2021 v$LatestRelease"
+    Path             = "Sophia Script for Windows 10 LTSC 2021 v$LatestRelease"
     DestinationPath  = "Sophia.Script.for.Windows.10.LTSC.2021.v$LatestRelease.zip"
     CompressionLevel = "Fastest"
-    Force  = $true
+    Force            = $true
 }
 Compress-Archive @Parameters
 
