@@ -17,35 +17,35 @@ jobs:
 
       - name: Dependencies
         run: |
-          . "SophiApp\Scripts\Dependencies.ps1"
+          . "Scripts\Dependencies.ps1"
 
       - name: Sophia Script for Windows 10
         run: |
-          . "SophiApp\Scripts\Windows_10.ps1"
+          . "Scripts\Windows_10.ps1"
 
       - name: Sophia Script for Windows 10 PowerShell 7
         run: |
-          . "SophiApp\Scripts\Windows_10_PS_7.ps1"
+          . "Scripts\Windows_10_PS_7.ps1"
 
       - name: Sophia Script for Windows 10 LTSC 2019
         run: |
-          . "SophiApp\Scripts\Windows_10_LTSC_2019.ps1"
+          . "Scripts\Windows_10_LTSC_2019.ps1"
 
       - name: Sophia Script for Windows 10 LTSC 2021
         run: |
-          . "SophiApp\Scripts\Windows_10_LTSC_2021.ps1"
+          . "Scripts\Windows_10_LTSC_2021.ps1"
 
       - name: Sophia Script for Windows 11
         run: |
-          . "SophiApp\Scripts\Windows_10.ps1"
+          . "Scripts\Windows_10.ps1"
 
       - name: Sophia Script for Windows 11 PowerShell 7
         run: |
-          . "SophiApp\Scripts\Windows_10_PS_7.ps1"
+          . "Scripts\Windows_10_PS_7.ps1"
 
       - name: Sophia Script Wrapper
         run: |
-          . "SophiApp\Scripts\Wrapper.ps1"
+          . "Scripts\Wrapper.ps1"
 
       - name: ReleaseNotesTemplate
         id: read_release
