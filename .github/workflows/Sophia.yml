@@ -37,11 +37,11 @@ jobs:
 
       - name: Sophia Script for Windows 11
         run: |
-          . "Scripts\Windows_10.ps1"
+          . "Scripts\Windows_11.ps1"
 
       - name: Sophia Script for Windows 11 PowerShell 7
         run: |
-          . "Scripts\Windows_10_PS_7.ps1"
+          . "Scripts\Windows_11_PS_7.ps1"
 
       - name: Sophia Script Wrapper
         run: |
