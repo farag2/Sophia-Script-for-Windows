@@ -83,14 +83,13 @@ Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Wind
 
 ## System Requirements
 
-|            Version              |    Marketing name       |    Build   | Arch |        Editions          |
-|:--------------------------------|------------------------:|:----------:|:----:|:------------------------:|
-| Windows 11 Insider Preview 23H2 | 2023 Update             | 22509      |      | Home/Pro/Enterprise      |
-| Windows 11 21H2                 | 2022 Update             | 22000.739  |      | Home/Pro/Enterprise      |
-| Windows 10 21H2                 | October 2021 Update     | 19044.1706 | x64  | Home/Pro/Enterprise/LTSC |
-| Windows 10 21H2                 | Enterprise LTSC 2021    | 19044.1706 | x64  | Enterprise               |
-| Windows 10 2004                 | May 2020 Update         | 19041.1706 | x64  | Home/Pro/Enterprise      |
-| Windows 10 1809                 | Enterprise LTSC 2019    | 17763.3046 | x64  | Enterprise               |
+|            Version                   |    Marketing name   |   Build     | Arch |        Editions          |
+|:-------------------------------------|--------------------:|:-----------:|:----:|:------------------------:|
+| Windows 11 Insider Preview 23H2      | 2023 Update         | 22509+      |      | Home/Pro/Enterprise      |
+| Windows 11 21H2                      | 2022 Update         | 22000.739+  |      | Home/Pro/Enterprise      |
+| Windows 10 21H2                      | October 2021 Update | 19044.1706+ | x64  | Home/Pro/Enterprise/LTSC |
+| Windows 10 21H2 Enterprise LTSC 2021 | October 2021 Update | 19044.1706+ | x64  | Enterprise               |
+| Windows 10 1809 Enterprise LTSC 2019 | October 2018 Update | 17763.3046+ | x64  | Enterprise               |
 
 ## Screenshots
 
