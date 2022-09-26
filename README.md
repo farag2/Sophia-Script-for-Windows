@@ -48,7 +48,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
  &bull;
  <a href="#videos">Videos</a>
  &bull;
- <a href="#core-features">Core features</a>
+ <a href="#key-features">Key features</a>
  &bull;
  <a href="#how-to-use">How to use</a>
  &bull;
@@ -59,7 +59,7 @@ Available in: <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag
  <a href="https://github.com/farag2/Sophia-Script-for-Windows/blob/master/CHANGELOG.md">Changelog</a>
 </p>
 
-## About Sophia Script for Windows :trophy:
+## About Sophia Script for Windows :godmode:
 
 Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Windows 10` & `Windows 11` fine-tuning and automating the routine tasks
 
