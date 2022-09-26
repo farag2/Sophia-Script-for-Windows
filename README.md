@@ -81,7 +81,7 @@ Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Wind
 |<img src="./img/BTC.png" width=130px>|<img src="./img/USDT.png" width=130px>|<img src="./img/ETH.png" width=130px>       |
 |`13QVRYxgGjZtKQgfb6VPRZyyUmnqeaTm1n` |`TQtMjdocUWbKAeg1kLtB4ApjAVHt1v8Rtf`  |`0x089f05c00e2f75e9b0cd939f21c207b1afe5b2f6`|
 
-## Minimum System Requirements
+## System Requirements
 
 |            Version              |    Marketing name       |    Build   | Arch |        Editions          |
 |:--------------------------------|------------------------:|:----------:|:----:|:------------------------:|
