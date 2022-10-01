@@ -1,4 +1,4 @@
-# Sophia Script for Windows
+F# Sophia Script for Windows
 
 <img src="./img/Sophia.png" alt="Sophia Script" width='350' align="right">
 
@@ -117,7 +117,7 @@ Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Wind
 
 ![Image](https://i.imgur.com/h17EpTG.png)
 
-### @BenchTweakGaming's Sophia Script Wrapper
+### @BenchTweakGaming Sophia Script Wrapper
 
 ![Wrapper](https://i.imgur.com/x0W7zqm.png)
 
