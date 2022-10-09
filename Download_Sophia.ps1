@@ -95,7 +95,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 
 		break
 	}
-	{($_ -ge 19041) -and ($_ -le 19048)}
+	{($_ -ge 19044) -and ($_ -le 19048)}
 	{
 		if ($PSVersionTable.PSVersion.Major -eq 5)
 		{
