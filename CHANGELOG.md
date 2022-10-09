@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.13.5 | 6.1.5 — 09.10.2022
+
+* Added a temp workaround to check whether `PolFileEditor.dll` assembly was loaded due to even it was unblocked for SmartScreen before, it's blocked for loading into PowerShell session;
+  * Fixes bug when script couldn't load `PolFileEditor.dll` into session and broke the functionality that relies on it. Now if script detects that `PolFileEditor.dll` wasn't loaded, offer to restart powershell.exe session.
+  * Will be obsolete with the 6.2.0 release.
+* Fixed `winget` not installing Visual C++ Redistributable 2015–2022;
+  * Microsoft [changed](https://github.com/microsoft/winget-pkgs/blob/master/manifests/m/Microsoft/VCRedist/2015%2B/x64/14.34.31823.3/Microsoft.VCRedist.2015%2B.x64.installer.yaml#L4) package identifier.
+* Minor changes.
+
 ## 5.13.4 | 6.1.4 — 13.08.2022
 
 ## Windows 11 21H2/22H2 | Windows 10 2004/20H2/21H1/21H2/22H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
