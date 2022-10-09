@@ -9736,7 +9736,7 @@ public static void PostMessage()
 <toast duration="Long" scenario="reminder">
 	<visual>
 		<binding template="ToastGeneric">
-			<text>$($Localization.DiscordGroupTitle)</text>
+			<text>$($Localization.DiscordChannelTitle)</text>
 			<group>
 				<subgroup>
 					<text hint-style="body" hint-wrap="true">https://discord.gg/sSryhaEv79</text>
