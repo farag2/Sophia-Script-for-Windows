@@ -16,7 +16,7 @@ $Parameters = @{
 }
 Copy-Item @Parameters
 
-Get-ChildItem -Path "src\Sophia Script_for_Windows_10_PowerShell_7" -Force | Copy-Item -Destination "Sophia_Script_for_Windows_10_PowerShell_7_v$LatestRelease" -Recurse -Force
+Get-ChildItem -Path "src\Sophia_Script_for_Windows_10_PowerShell_7" -Force | Copy-Item -Destination "Sophia_Script_for_Windows_10_PowerShell_7_v$LatestRelease" -Recurse -Force
 
 $Parameters = @{
     Path             = "Sophia_Script_for_Windows_10_PowerShell_7_v$LatestRelease"
