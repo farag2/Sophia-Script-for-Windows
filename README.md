@@ -1,4 +1,4 @@
-F# Sophia Script for Windows
+# Sophia Script for Windows
 
 <img src="./img/Sophia.png" alt="Sophia Script" width='350' align="right">
 
