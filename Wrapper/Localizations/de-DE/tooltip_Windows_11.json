@@ -1386,15 +1386,15 @@
     "Arg": {
       "Zero": {
         "Tag": "Default",
-        "ToolTip": "Standard-Startlayout anzeigen (nur für 22509+ Build) (Standardeinstellung)"
+        "ToolTip": "Standard-Startlayout anzeigen (nur für 22621+ Build) (Standardeinstellung)"
       },
       "One": {
         "Tag": "ShowMorePins",
-        "ToolTip": "Mehr Pins auf Start anzeigen (nur für 22509+ Build)"
+        "ToolTip": "Mehr Pins auf Start anzeigen (nur für 22621+ Build)"
       },
       "Two": {
         "Tag": "ShowMoreRecommendations",
-        "ToolTip": "Weitere Empfehlungen auf Start anzeigen (nur für 22509+ Build)"
+        "ToolTip": "Weitere Empfehlungen auf Start anzeigen (nur für 22621+ Build)"
       }
     }
   },

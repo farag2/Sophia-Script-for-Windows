@@ -1386,15 +1386,15 @@
     "Arg": {
       "Zero": {
         "Tag": "Default",
-        "ToolTip": "Mostrar el diseño de inicio por defecto (sólo para la versión 22509+) (valor predeterminado)"
+        "ToolTip": "Mostrar el diseño de inicio por defecto (sólo para la versión 22621+) (valor predeterminado)"
       },
       "One": {
         "Tag": "ShowMorePins",
-        "ToolTip": "Mostrar más pines en Inicio (sólo para la versión 22509+)"
+        "ToolTip": "Mostrar más pines en Inicio (sólo para la versión 22621+)"
       },
       "Two": {
         "Tag": "ShowMoreRecommendations",
-        "ToolTip": "Mostrar más recomendaciones en Inicio (sólo para la versión 22509+)"
+        "ToolTip": "Mostrar más recomendaciones en Inicio (sólo para la versión 22621+)"
       }
     }
   },

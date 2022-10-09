@@ -6,20 +6,20 @@ $LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_LTSC20
 
 Write-Verbose -Message "Sophia.Script.for.Windows.10.LTSC.2021.v$LatestRelease.zip" -Verbose
 
-New-Item -Path "Sophia Script for Windows 10 LTSC 2021 v$LatestRelease\bin" -ItemType Directory -Force
+New-Item -Path "Sophia_Script_for_Windows_10_LTSC_2021_v$LatestRelease\bin" -ItemType Directory -Force
 
 $Parameters = @{
     Path        = @("Scripts\PolicyFileEditor")
-    Destination = "Sophia Script for Windows 10 LTSC 2021 v$LatestRelease\bin"
+    Destination = "Sophia_Script_for_Windows_10_LTSC_2021_v$LatestRelease\bin"
     Recurse     = $true
     Force       = $true
 }
 Copy-Item @Parameters
 
-Get-ChildItem -Path "Sophia Script\Sophia Script for Windows 10 LTSC 2021" -Force | Copy-Item -Destination "Sophia Script for Windows 10 LTSC 2021 v$LatestRelease" -Recurse -Force
+Get-ChildItem -Path "src\Sophia_Script_for_Windows_10_LTSC_2021" -Force | Copy-Item -Destination "Sophia_Script_for_Windows_10_LTSC_2021_v$LatestRelease" -Recurse -Force
 
 $Parameters = @{
-    Path             = "Sophia Script for Windows 10 LTSC 2021 v$LatestRelease"
+    Path             = "Sophia_Script_for_Windows_10_LTSC_2021_v$LatestRelease"
     DestinationPath  = "Sophia.Script.for.Windows.10.LTSC.2021.v$LatestRelease.zip"
     CompressionLevel = "Fastest"
     Force            = $true

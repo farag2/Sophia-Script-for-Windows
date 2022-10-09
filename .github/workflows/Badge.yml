@@ -36,7 +36,7 @@ jobs:
 
       - name: Get the Numbers
         run: |
-          $JSON    = & "$PSScriptRoot\cloc.exe" "Sophia Script\Sophia Script for Windows 11\Module\Sophia.psm1" --json | ConvertFrom-Json
+          $JSON    = & "$PSScriptRoot\cloc.exe" "src\Sophia_Script_for_Windows_11\Module\Sophia.psm1" --json | ConvertFrom-Json
           $blank   = $JSON.SUM.blank
           $comment = $JSON.SUM.comment
           $code    = $JSON.SUM.code

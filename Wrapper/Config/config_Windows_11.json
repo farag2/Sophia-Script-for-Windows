@@ -732,23 +732,6 @@
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
-    "Function": "TaskManagerWindow",
-    "Arg": {
-      "Zero": {
-        "Tag": "Expanded"
-      },
-      "One": {
-        "Tag": "Compact"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
-    "Id": 326,
-    "Region": "UI & Personalization",
-    "Control": "cmb",
-    "Required": "false",
     "Function": "RestartNotification",
     "Arg": {
       "Zero": {
@@ -762,7 +745,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 327,
+    "Id": 326,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -779,7 +762,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 328,
+    "Id": 327,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -796,7 +779,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 329,
+    "Id": 328,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -813,7 +796,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 330,
+    "Id": 329,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",

@@ -1386,15 +1386,15 @@
     "Arg": {
       "Zero": {
         "Tag": "Default",
-        "ToolTip": "Show default Start layout (for 22509+ build only) (default value)"
+        "ToolTip": "Show default Start layout (for 22621+ build only) (default value)"
       },
       "One": {
         "Tag": "ShowMorePins",
-        "ToolTip": "Show more pins on Start (for 22509+ build only)"
+        "ToolTip": "Show more pins on Start (for 22621+ build only)"
       },
       "Two": {
         "Tag": "ShowMoreRecommendations",
-        "ToolTip": "Show more recommendations on Start (for 22509+ build only)"
+        "ToolTip": "Show more recommendations on Start (for 22621+ build only)"
       }
     }
   },

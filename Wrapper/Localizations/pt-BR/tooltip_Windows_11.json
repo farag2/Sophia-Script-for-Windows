@@ -1386,15 +1386,15 @@
     "Arg": {
       "Zero": {
         "Tag": "Default",
-        "ToolTip": "Mostrar o layout inicial por defeito (apenas para 22509+ build) (valor padrão)"
+        "ToolTip": "Mostrar o layout inicial por defeito (apenas para 22621+ build) (valor padrão)"
       },
       "One": {
         "Tag": "ShowMorePins",
-        "ToolTip": "Mostrar mais pinos no Start (apenas para 22509+ build)"
+        "ToolTip": "Mostrar mais pinos no Start (apenas para 22621+ build)"
       },
       "Two": {
         "Tag": "ShowMoreRecommendations",
-        "ToolTip": "Mostrar mais recomendações no Start (apenas para 22509+ build)"
+        "ToolTip": "Mostrar mais recomendações no Start (apenas para 22621+ build)"
       }
     }
   },

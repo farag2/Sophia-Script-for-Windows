@@ -7,11 +7,11 @@ $LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Wrapper
 
 Write-Verbose -Message "Sophia.Script.Wrapper.v$LatestRelease.zip" -Verbose
 
-New-Item -Path "Sophia Script Wrapper v$LatestRelease" -ItemType Directory -Force
+New-Item -Path "Sophia_Script_Wrapper_v$LatestRelease" -ItemType Directory -Force
 
-Get-ChildItem -Path Wrapper -Exclude README.md -Force | Copy-Item -Destination "Sophia Script Wrapper v$LatestRelease" -Recurse -Force
+Get-ChildItem -Path Wrapper -Exclude README.md -Force | Copy-Item -Destination "Sophia_Script_Wrapper_v$LatestRelease" -Recurse -Force
 $Parameters = @{
-    Path             = "Sophia Script Wrapper v$LatestRelease"
+    Path             = "Sophia_Script_Wrapper_v$LatestRelease"
     DestinationPath  = "Sophia.Script.Wrapper.v$LatestRelease.zip"
     CompressionLevel = "Fastest"
     Force            = $true
