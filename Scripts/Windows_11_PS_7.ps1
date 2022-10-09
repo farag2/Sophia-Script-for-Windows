@@ -19,7 +19,7 @@ Copy-Item @Parameters
 Get-ChildItem -Path "src\Sophia_Script_for_Windows_11_PowerShell_7" -Force | Copy-Item -Destination "Sophia_Script_for_Windows_11_PowerShell_7_v$LatestRelease" -Recurse -Force
 
 $Parameters = @{
-    Path             = "Sophia_Script_for_Windows_11_PowerShell 7 v$LatestRelease"
+    Path             = "Sophia_Script_for_Windows_11_PowerShell_7_v$LatestRelease"
     DestinationPath  = "Sophia.Script.for.Windows.11.PowerShell.7.v$LatestRelease.zip"
     CompressionLevel = "Fastest"
     Force            = $true
