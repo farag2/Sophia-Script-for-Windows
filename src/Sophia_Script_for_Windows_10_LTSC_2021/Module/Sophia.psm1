@@ -72,7 +72,7 @@ function Checks
 	{
 		$true
 		{
-			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 2006))
+			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 2006)
 			{
 				# Check whether the OS minor build version is 2006 minimum
 				# https://docs.microsoft.com/en-us/windows/release-health/release-information
