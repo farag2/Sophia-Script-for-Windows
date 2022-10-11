@@ -72,7 +72,7 @@ if ($Wrapper)
 
 	Start-Sleep -Second 1
 
-	Invoke-Item -Path "$DownloadsFolder\Sophia Script Wrapper v$LatestRelease"
+	Invoke-Item -Path "$DownloadsFolder\Sophia_Script_Wrapper_v$LatestRelease"
 }
 
 switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
@@ -204,38 +204,38 @@ switch ($Version)
 {
 	"Wrapper"
 	{
-		Invoke-Item -Path "$DownloadsFolder\Sophia Script Wrapper v$LatestRelease"
+		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_Wrapper_v$LatestRelease"
 	}
 	"LTSC2019"
 	{
-		Invoke-Item -Path "$DownloadsFolder\Sophia Script for Windows 10 LTSC 2019 v$LatestRelease"
+		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_LTSC_2019_v$LatestRelease"
 	}
 	"LTSC2021"
 	{
-		Invoke-Item -Path "$DownloadsFolder\Sophia Script for Windows 10 LTSC 2021 v$LatestRelease"
+		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_LTSC_2021_v$LatestRelease"
 	}
 	"Windows_10_PowerShell_5.1"
 	{
-		Invoke-Item -Path "$DownloadsFolder\Sophia Script for Windows 10 v$LatestRelease"
+		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_v$LatestRelease"
 	}
 	"Windows_10_PowerShell_7"
 	{
-		Invoke-Item -Path "$DownloadsFolder\Sophia Script for Windows 10 PowerShell 7 v$LatestRelease"
+		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_PowerShell_7_v$LatestRelease"
 	}
 	"Windows_11_PowerShell_5.1"
 	{
-		Invoke-Item -Path "$DownloadsFolder\Sophia Script for Windows 11 v$LatestRelease"
+		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_v$LatestRelease"
 	}
 	"Windows_11_PowerShell_7"
 	{
-		Invoke-Item -Path "$DownloadsFolder\Sophia Script for Windows 11 PowerShell 7 v$LatestRelease"
+		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_PowerShell_7_v$LatestRelease"
 	}
 }
 
 $SetForegroundWindow = @{
-	Namespace = "WinAPI"
-	Name      = "ForegroundWindow"
-	Language  = "CSharp"
+	Namespace        = "WinAPI"
+	Name             = "ForegroundWindow"
+	Language         = "CSharp"
 	MemberDefinition = @"
 [DllImport("user32.dll")]
 public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
@@ -251,7 +251,7 @@ if (-not ("WinAPI.ForegroundWindow" -as [type]))
 
 Start-Sleep -Seconds 1
 
-Get-Process -Name explorer | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows $([System.Environment]::OSVersion.Version.Major)"} | ForEach-Object -Process {
+Get-Process -Name explorer | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia_Script_for_Windows_$([System.Environment]::OSVersion.Version.Major)"} | ForEach-Object -Process {
 	# Show window, if minimized
 	[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 5)
 
