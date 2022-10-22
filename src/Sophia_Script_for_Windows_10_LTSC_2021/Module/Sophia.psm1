@@ -3340,50 +3340,50 @@ function Cursors
 					Remove-Item -Path "$DownloadsFolder\Cursors.zip" -Force
 
 					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursors Dark HD v2.2 by Jepri Creations" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\working.ani" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Arrow -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\pointer.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\working.ani" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Arrow -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\pointer.cur" -Force
 					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name ContactVisualization -PropertyType DWord -Value 1 -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Crosshair -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\precision.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Crosshair -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\precision.cur" -Force
 					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name CursorBaseSize -PropertyType DWord -Value 32 -Force
 					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name GestureVisualization -PropertyType DWord -Value 31 -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Hand -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\link.cur" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Help -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\help.cur" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name IBeam -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\beam.cur" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name No -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\unavailable.cur" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name NWPen -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\handwriting.cur" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Person -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\pin.cur" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Pin -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\person.cur" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name precisionhair -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\precision.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Hand -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\link.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Help -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\help.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name IBeam -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\beam.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name No -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\unavailable.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name NWPen -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\handwriting.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Person -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\pin.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Pin -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\person.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name precisionhair -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\precision.cur" -Force
 					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "Scheme Source" -PropertyType DWord -Value 1 -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeAll -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\move.cur" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNESW -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\dgn2.cur" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNS -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\vert.cur" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNWSE -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\dgn1.cur" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeWE -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\horz.cur" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name UpArrow -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\alternate.cur" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Wait -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\busy.ani" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeAll -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\move.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNESW -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\dgn2.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNS -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\vert.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNWSE -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\dgn1.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeWE -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\horz.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name UpArrow -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\alternate.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Wait -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\busy.ani" -Force
 					if (-not (Test-Path -Path "HKCU:\Control Panel\Cursors\Schemes"))
 					{
 						New-Item -Path "HKCU:\Control Panel\Cursors\Schemes" -Force
 					}
 					[string[]]$Schemes = (
-						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\working.ani",
-						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\pointer.cur",
-						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\precision.cur",
-						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\link.cur",
-						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\help.cur",
-						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\beam.cur",
-						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\unavailable.cur",
-						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\handwriting.cur",
-						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\pin.cur",
-						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\person.cur",
-						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\move.cur",
-						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\dgn2.cur",
-						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\vert.cur",
-						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\dgn1.cur",
-						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\horz.cur",
-						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\alternate.cur",
-						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\busy.ani"
+						"%SystemRoot%\Cursors\W11_dark_v2.2\working.ani",
+						"%SystemRoot%\Cursors\W11_dark_v2.2\pointer.cur",
+						"%SystemRoot%\Cursors\W11_dark_v2.2\precision.cur",
+						"%SystemRoot%\Cursors\W11_dark_v2.2\link.cur",
+						"%SystemRoot%\Cursors\W11_dark_v2.2\help.cur",
+						"%SystemRoot%\Cursors\W11_dark_v2.2\beam.cur",
+						"%SystemRoot%\Cursors\W11_dark_v2.2\unavailable.cur",
+						"%SystemRoot%\Cursors\W11_dark_v2.2\handwriting.cur",
+						"%SystemRoot%\Cursors\W11_dark_v2.2\pin.cur",
+						"%SystemRoot%\Cursors\W11_dark_v2.2\person.cur",
+						"%SystemRoot%\Cursors\W11_dark_v2.2\move.cur",
+						"%SystemRoot%\Cursors\W11_dark_v2.2\dgn2.cur",
+						"%SystemRoot%\Cursors\W11_dark_v2.2\vert.cur",
+						"%SystemRoot%\Cursors\W11_dark_v2.2\dgn1.cur",
+						"%SystemRoot%\Cursors\W11_dark_v2.2\horz.cur",
+						"%SystemRoot%\Cursors\W11_dark_v2.2\alternate.cur",
+						"%SystemRoot%\Cursors\W11_dark_v2.2\busy.ani"
 					) -join ","
 					New-ItemProperty -Path "HKCU:\Control Panel\Cursors\Schemes" -Name "W11 Cursors Dark HD v2.2 by Jepri Creations" -PropertyType String -Value $Schemes -Force
 				}
@@ -3457,50 +3457,50 @@ function Cursors
 					Remove-Item -Path "$DownloadsFolder\Cursors.zip" -Force
 
 					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursor Light HD v2.2 by Jepri Creations" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\working.ani" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Arrow -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\pointer.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\working.ani" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Arrow -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\pointer.cur" -Force
 					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name ContactVisualization -PropertyType DWord -Value 1 -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Crosshair -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\precision.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Crosshair -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\precision.cur" -Force
 					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name CursorBaseSize -PropertyType DWord -Value 32 -Force
 					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name GestureVisualization -PropertyType DWord -Value 31 -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Hand -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\link.cur" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Help -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\help.cur" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name IBeam -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\beam.cur" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name No -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\unavailable.cur" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name NWPen -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\handwriting.cur" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Person -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\pin.cur" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Pin -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\person.cur" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name precisionhair -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\precision.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Hand -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\link.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Help -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\help.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name IBeam -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\beam.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name No -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\unavailable.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name NWPen -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\handwriting.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Person -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\pin.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Pin -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\person.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name precisionhair -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\precision.cur" -Force
 					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "Scheme Source" -PropertyType DWord -Value 1 -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeAll -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\move.cur" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNESW -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\dgn2.cur" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNS -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\vert.cur" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNWSE -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\dgn1.cur" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeWE -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\horz.cur" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name UpArrow -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\alternate.cur" -Force
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Wait -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\busy.ani" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeAll -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\move.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNESW -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\dgn2.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNS -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\vert.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNWSE -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\dgn1.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeWE -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\horz.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name UpArrow -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\alternate.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Wait -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\busy.ani" -Force
 					if (-not (Test-Path -Path "HKCU:\Control Panel\Cursors\Schemes"))
 					{
 						New-Item -Path "HKCU:\Control Panel\Cursors\Schemes" -Force
 					}
 					[string[]]$Schemes = (
-						"%SYSTEMROOT%\Cursors\W11_light_v2.2\working.ani",
-						"%SYSTEMROOT%\Cursors\W11_light_v2.2\pointer.cur",
-						"%SYSTEMROOT%\Cursors\W11_light_v2.2\precision.cur",
-						"%SYSTEMROOT%\Cursors\W11_light_v2.2\link.cur",
-						"%SYSTEMROOT%\Cursors\W11_light_v2.2\help.cur",
-						"%SYSTEMROOT%\Cursors\W11_light_v2.2\beam.cur",
-						"%SYSTEMROOT%\Cursors\W11_light_v2.2\unavailable.cur",
-						"%SYSTEMROOT%\Cursors\W11_light_v2.2\handwriting.cur",
-						"%SYSTEMROOT%\Cursors\W11_light_v2.2\pin.cur",
-						"%SYSTEMROOT%\Cursors\W11_light_v2.2\person.cur",
-						"%SYSTEMROOT%\Cursors\W11_light_v2.2\move.cur",
-						"%SYSTEMROOT%\Cursors\W11_light_v2.2\dgn2.cur",
-						"%SYSTEMROOT%\Cursors\W11_light_v2.2\vert.cur",
-						"%SYSTEMROOT%\Cursors\W11_light_v2.2\dgn1.cur",
-						"%SYSTEMROOT%\Cursors\W11_light_v2.2\horz.cur",
-						"%SYSTEMROOT%\Cursors\W11_light_v2.2\alternate.cur",
-						"%SYSTEMROOT%\Cursors\W11_light_v2.2\busy.ani"
+						"%SystemRoot%\Cursors\W11_light_v2.2\working.ani",
+						"%SystemRoot%\Cursors\W11_light_v2.2\pointer.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\precision.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\link.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\help.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\beam.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\unavailable.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\handwriting.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\pin.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\person.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\move.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\dgn2.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\vert.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\dgn1.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\horz.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\alternate.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\busy.ani"
 					) -join ","
 					New-ItemProperty -Path "HKCU:\Control Panel\Cursors\Schemes" -Name "W11 Cursor Light HD v2.2 by Jepri Creations" -PropertyType String -Value $Schemes -Force
 				}
@@ -3522,16 +3522,29 @@ function Cursors
 		}
 		"Default"
 		{
-			(Get-Item -Path "HKCU:\Control Panel\Cursors").Property.Split([System.Environment]::NewLine) | ForEach-Object -Process {
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name $_ -Value "" -Force
-			}
-
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursors Dark HD v2.2 by Jepri Creations" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\cursors\aero_working.ani" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Arrow -PropertyType ExpandString -Value "%SystemRoot%\cursors\aero_arrow.cur" -Force
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name ContactVisualization -PropertyType DWord -Value 1 -Force
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Crosshair -PropertyType ExpandString -Value "" -Force
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name CursorBaseSize -PropertyType DWord -Value 32 -Force
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name GestureVisualization -PropertyType DWord -Value 31 -Force
-			Remove-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name precisionhair -Force -ErrorAction Ignore
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "Scheme Source" -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Hand -PropertyType ExpandString -Value "%SystemRoot%\cursors\aero_link.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Help -PropertyType ExpandString -Value "%SystemRoot%\cursors\aero_helpsel.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name IBeam -PropertyType ExpandString -Value "" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name No -PropertyType ExpandString -Value "%SystemRoot%\cursors\aero_unavail.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name NWPen -PropertyType ExpandString -Value "%SystemRoot%\cursors\aero_pen.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Person -PropertyType ExpandString -Value "%SystemRoot%\cursors\aero_person.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Pin -PropertyType ExpandString -Value "%SystemRoot%\cursors\aero_pin.cur" -Force
+			Remove-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name precisionhair -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "Scheme Source" -PropertyType DWord -Value 2 -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeAll -PropertyType ExpandString -Value "%SystemRoot%\cursors\aero_move.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNESW -PropertyType ExpandString -Value "%SystemRoot%\cursors\aero_nesw.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNS -PropertyType ExpandString -Value "%SystemRoot%\cursors\aero_ns.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNWSE -PropertyType ExpandString -Value "%SystemRoot%\cursors\aero_nwse.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeWE -PropertyType ExpandString -Value "%SystemRoot%\cursors\aero_ew.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name UpArrow -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\alternate.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Wait -PropertyType ExpandString -Value "%SystemRoot%\cursors\aero_up.cur" -Force
 		}
 	}
 
