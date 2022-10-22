@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.14.0 | 6.2.0 — 09.10.2022
+
+* Moved from `PolFileEditor.dll` to [LGPO.exe](https://techcommunity.microsoft.com/t5/microsoft-security-baselines/lgpo-exe-local-group-policy-object-utility-v1-0/ba-p/701045) from Microsoft;
+  * It lets manually created policies keys in registry be visible in gpedit.msc snap-in by re-building policy cache by official way;
+  * So all functions that rely on policy will be visible in the snap-in for you;
+  * The `UpdateLGPEPolicies` was edited to be suitable for a new method based on LGPO.exe;
+    * Commented out be default now.
+* Added a new function `Cursors`
+
+  ![img](https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/i/1d4615ed-fd22-417b-970a-753c792ac85b/densjkc-0b04ea68-6347-456b-ab8a-3e6dc03ebc02.jpg)
+
+  * Lets you to install free (light and dark) "Windows 11 Cursors Concept v2" cursors from [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) on-the-fly;
+  * Default option is `Dark`.
+* The `InstallVCRedist` function now installs both x86 and x64 `Visual C++ Redistributable 2015–2022` packages;
+* Fixed bug in the `Windows Cleanup` scheduled task for cleaning Windows. If you applied this function in 6.1.5 release, re-apply in again using this release, unless the task won't run at all.
+  * [How-to](https://github.com/farag2/Sophia-Script-for-Windows#how-to-run-the-specific-functions) call specific function
+
+  ```powershell
+  Sophia -Functions "CleanupTask -Register"
+  ```
+
+* Minor changes.
+
 ## 5.13.5 | 6.1.5 — 09.10.2022
 
 * Added a temp workaround to check whether `PolFileEditor.dll` assembly was loaded due to even it was unblocked for SmartScreen before, it's blocked for loading into PowerShell session;
