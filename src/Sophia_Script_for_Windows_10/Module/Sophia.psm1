@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.13.6
-	Date: 09.10.2022
+	Version: v5.14.0
+	Date: 22.10.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -27,9 +27,12 @@
 	.LINK GitHub
 	https://github.com/farag2/Sophia-Script-for-Windows
 
-	.LINK Telegram channel & group
+	.LINK Telegram
 	https://t.me/sophianews
 	https://t.me/sophia_chat
+
+	.LINK Discord
+	https://discord.gg/sSryhaEv79
 
 	.NOTES
 	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
@@ -165,28 +168,13 @@ function Checks
 		exit
 	}
 
-	# Check whether libraries exist in the bin folder
-	$Libraries = @(
-		"$PSScriptRoot\..\bin\PolicyFileEditor\Commands.ps1",
-		"$PSScriptRoot\..\bin\PolicyFileEditor\Common.ps1",
-		"$PSScriptRoot\..\bin\PolicyFileEditor\PolFileEditor.dll",
-		"$PSScriptRoot\..\bin\PolicyFileEditor\PolicyFileEditor.psd1",
-		"$PSScriptRoot\..\bin\PolicyFileEditor\PolicyFileEditor.psm1"
-	)
-	if (($Libraries | Test-Path) -contains $false)
+	# Check whether LGPO.exe exists in the bin folder
+	if (-not (Test-Path -Path "$PSScriptRoot\..\bin\LGPO.exe"))
 	{
 		Write-Warning -Message $Localization.Bin
 		Start-Sleep -Seconds 5
 		Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"
 		Start-Process -FilePath "https://t.me/sophia_chat"
-		exit
-	}
-
-	# A temp workaround to check whether PolFileEditor.dl assembly was loaded due to even it was unblocked it's blocked loading into PowerShell session
-	$PolFileEditor = (Resolve-Path -Path "$PSScriptRoot\..\bin\PolicyFileEditor\PolFileEditor.dll").Path
-	if ([System.AppDomain]::CurrentDomain.GetAssemblies().Location -notcontains $PolFileEditor)
-	{
-		Write-Verbose -Message "You must close powershell.exe and re-run script" -Verbose
 		exit
 	}
 
@@ -482,6 +470,8 @@ function Checks
 		}
 	}
 
+	Remove-Item -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore
+
 	# Save all opened folders in order to restore them after File Explorer restart
 	$Script:OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
 }
@@ -502,7 +492,7 @@ function CreateRestorePoint
 	$SystemDriveUniqueID = (Get-Volume | Where-Object -FilterScript {$_.DriveLetter -eq "$($env:SystemDrive[0])"}).UniqueID
 	$SystemProtection = ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SPP\Clients" -ErrorAction Ignore)."{09F7EDC5-294E-4180-AF6A-FB0E6A0E9513}") | Where-Object -FilterScript {$_ -match [regex]::Escape($SystemDriveUniqueID)}
 
-	$ComputerRestorePoint = $false
+	$Script:ComputerRestorePoint = $false
 
 	if ($null -eq $SystemProtection)
 	{
@@ -525,6 +515,97 @@ function CreateRestorePoint
 	}
 }
 #endregion Protection
+
+#region Set GPO
+<#
+	.SYNOPSIS
+	Create pre-configured text files for LGPO.exe tool
+
+	.EXAMPLE
+	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Type DWORD -Value 0
+
+	.NOTES
+	https://techcommunity.microsoft.com/t5/microsoft-security-baselines/lgpo-exe-local-group-policy-object-utility-v1-0/ba-p/701045
+
+	.NOTES
+	Machine-wide user
+#>
+function script:Set-Policy
+{
+	[CmdletBinding()]
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			Position = 1
+		)]
+		[string]
+		[ValidateSet("Computer", "User")]
+		$Scope,
+
+		[Parameter(
+			Mandatory = $true,
+			Position = 2
+		)]
+		[string]
+		$Path,
+
+		[Parameter(
+			Mandatory = $true,
+			Position = 3
+		)]
+		[string]
+		$Name,
+
+		[Parameter(
+			Mandatory = $true,
+			Position = 4
+		)]
+		[ValidateSet("DWORD", "SZ", "EXSZ", "CLEAR")]
+		[string]
+		$Type,
+
+		[Parameter(
+			Mandatory = $false,
+			Position = 5
+		)]
+		$Value
+	)
+
+	switch ($Type)
+	{
+		"CLEAR"
+		{
+			$Policy = @"
+$Scope
+$($Path)
+$($Name)
+$($Type)`n
+"@
+		}
+		default
+		{
+			$Policy = @"
+$Scope
+$($Path)
+$($Name)
+$($Type):$($Value)`n
+"@
+		}
+	}
+
+	if ($Scope -eq "Computer")
+	{
+		$Path = "$env:TEMP\Computer.txt"
+	}
+	else
+	{
+		$Path = "$env:TEMP\User.txt"
+	}
+
+	Add-Content -Path $Path -Value $Policy -Encoding Default -Force
+}
+#endregion Set GPO
 
 #region Privacy & Telemetry
 <#
@@ -637,32 +718,33 @@ function DiagnosticDataLevel
 			if (Get-WindowsEdition -Online | Where-Object -FilterScript {($_.Edition -like "Enterprise*") -or ($_.Edition -eq "Education")})
 			{
 				# Security level
-				if (-not (Test-Path -Path HKLM:\Software\Policies\Microsoft\Windows\DataCollection))
+				if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection))
 				{
-					New-Item -Path HKLM:\Software\Policies\Microsoft\Windows\DataCollection -Force
+					New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Force
 				}
-				New-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 0 -Force
+				New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 0 -Force
+				Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Type DWORD -Value 0
 			}
 			else
 			{
 				# Required diagnostic data
-				if (-not (Test-Path -Path HKLM:\Software\Policies\Microsoft\Windows\DataCollection))
+				if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection))
 				{
-					New-Item -Path HKLM:\Software\Policies\Microsoft\Windows\DataCollection -Force
+					New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Force
 				}
-				New-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 1 -Force
+				New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 1 -Force
+				Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Type DWORD -Value 1
 			}
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name MaxTelemetryAllowed -PropertyType DWord -Value 1 -Force
-
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -PropertyType DWord -Value 1 -Force
 		}
 		"Default"
 		{
 			# Optional diagnostic data
-			Remove-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Force
+			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Force
+			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Type CLEAR
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name MaxTelemetryAllowed -PropertyType DWord -Value 3 -Force
-
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -PropertyType DWord -Value 3 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -PropertyType DWord -Value 3 -Force
 		}
 	}
 }
@@ -712,7 +794,7 @@ function ErrorReporting
 			if ((Get-WindowsEdition -Online).Edition -notmatch "Core")
 			{
 				Get-ScheduledTask -TaskName QueueReporting | Disable-ScheduledTask
-				New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\Windows Error Reporting" -Name Disabled -PropertyType DWord -Value 1 -Force
+				New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\Windows Error Reporting" -Name Disabled -PropertyType DWord -Value 1 -Force
 			}
 
 			Get-Service -Name WerSvc | Stop-Service -Force
@@ -721,7 +803,7 @@ function ErrorReporting
 		"Enable"
 		{
 			Get-ScheduledTask -TaskName QueueReporting | Enable-ScheduledTask
-			Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction Ignore
 
 			Get-Service -Name WerSvc | Set-Service -StartupType Manual
 			Get-Service -Name WerSvc | Start-Service
@@ -771,15 +853,15 @@ function FeedbackFrequency
 	{
 		"Never"
 		{
-			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Siuf\Rules))
+			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Siuf\Rules))
 			{
-				New-Item -Path HKCU:\SOFTWARE\Microsoft\Siuf\Rules -Force
+				New-Item -Path HKCU:\Software\Microsoft\Siuf\Rules -Force
 			}
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Siuf\Rules -Name NumberOfSIUFInPeriod -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Siuf\Rules -Name NumberOfSIUFInPeriod -PropertyType DWord -Value 0 -Force
 		}
 		"Automatically"
 		{
-			Remove-Item -Path HKCU:\SOFTWARE\Microsoft\Siuf\Rules -Force -ErrorAction Ignore
+			Remove-Item -Path HKCU:\Software\Microsoft\Siuf\Rules -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -1268,19 +1350,19 @@ function AdvertisingID
 	{
 		"Disable"
 		{
-			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo))
+			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo))
 			{
-				New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo -Force
+				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo -Force
 			}
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo -Name Enabled -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo -Name Enabled -PropertyType DWord -Value 0 -Force
 		}
 		"Enable"
 		{
-			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo))
+			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo))
 			{
-				New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo -Force
+				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo -Force
 			}
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo -Name Enabled -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo -Name Enabled -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -1327,11 +1409,11 @@ function WindowsWelcomeExperience
 	{
 		"Show"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-310093Enabled -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-310093Enabled -PropertyType DWord -Value 1 -Force
 		}
 		"Hide"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-310093Enabled -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-310093Enabled -PropertyType DWord -Value 0 -Force
 		}
 	}
 }
@@ -1378,11 +1460,11 @@ function WindowsTips
 	{
 		"Enable"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338389Enabled -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338389Enabled -PropertyType DWord -Value 1 -Force
 		}
 		"Disable"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338389Enabled -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338389Enabled -PropertyType DWord -Value 0 -Force
 		}
 	}
 }
@@ -1429,15 +1511,15 @@ function SettingsSuggestedContent
 	{
 		"Hide"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338393Enabled -PropertyType DWord -Value 0 -Force
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-353694Enabled -PropertyType DWord -Value 0 -Force
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-353696Enabled -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338393Enabled -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-353694Enabled -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-353696Enabled -PropertyType DWord -Value 0 -Force
 		}
 		"Show"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338393Enabled -PropertyType DWord -Value 1 -Force
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-353694Enabled -PropertyType DWord -Value 1 -Force
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-353696Enabled -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338393Enabled -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-353694Enabled -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-353696Enabled -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -1484,11 +1566,11 @@ function AppsSilentInstalling
 	{
 		"Disable"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SilentInstalledAppsEnabled -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SilentInstalledAppsEnabled -PropertyType DWord -Value 0 -Force
 		}
 		"Enable"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SilentInstalledAppsEnabled -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SilentInstalledAppsEnabled -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -1535,19 +1617,19 @@ function WhatsNewInWindows
 	{
 		"Disable"
 		{
-			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement))
+			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement))
 			{
-				New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement -Force
+				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement -Force
 			}
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement -Name ScoobeSystemSettingEnabled -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement -Name ScoobeSystemSettingEnabled -PropertyType DWord -Value 0 -Force
 		}
 		"Enable"
 		{
-			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement))
+			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement))
 			{
-				New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement -Force
+				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement -Force
 			}
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement -Name ScoobeSystemSettingEnabled -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement -Name ScoobeSystemSettingEnabled -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -1594,11 +1676,11 @@ function TailoredExperiences
 	{
 		"Disable"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Privacy -Name TailoredExperiencesWithDiagnosticDataEnabled -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Privacy -Name TailoredExperiencesWithDiagnosticDataEnabled -PropertyType DWord -Value 0 -Force
 		}
 		"Enable"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Privacy -Name TailoredExperiencesWithDiagnosticDataEnabled -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Privacy -Name TailoredExperiencesWithDiagnosticDataEnabled -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -1645,15 +1727,17 @@ function BingSearch
 	{
 		"Disable"
 		{
-			if (-not (Test-Path -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
+			if (-not (Test-Path -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer))
 			{
-				New-Item -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Force
+				New-Item -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Force
 			}
-			New-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableSearchBoxSuggestions -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name DisableSearchBoxSuggestions -PropertyType DWord -Value 1 -Force
+			Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name DisableSearchBoxSuggestions -Type DWORD -Value 1
 		}
 		"Enable"
 		{
-			Remove-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableSearchBoxSuggestions -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name DisableSearchBoxSuggestions -Force -ErrorAction Ignore
+			Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name DisableSearchBoxSuggestions -Type CLEAR
 		}
 	}
 }
@@ -1702,15 +1786,15 @@ function ThisPC
 	{
 		"Show"
 		{
-			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel))
+			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel))
 			{
-				New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel -Force
+				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel -Force
 			}
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel -Name "{20D04FE0-3AEA-1069-A2D8-08002B30309D}" -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel -Name "{20D04FE0-3AEA-1069-A2D8-08002B30309D}" -PropertyType DWord -Value 0 -Force
 		}
 		"Hide"
 		{
-			Remove-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel -Name "{20D04FE0-3AEA-1069-A2D8-08002B30309D}" -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel -Name "{20D04FE0-3AEA-1069-A2D8-08002B30309D}" -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -1757,11 +1841,11 @@ function CheckBoxes
 	{
 		"Enable"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name AutoCheckSelect -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name AutoCheckSelect -PropertyType DWord -Value 1 -Force
 		}
 		"Disable"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name AutoCheckSelect -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name AutoCheckSelect -PropertyType DWord -Value 0 -Force
 		}
 	}
 }
@@ -1808,11 +1892,11 @@ function HiddenItems
 	{
 		"Enable"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Hidden -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Hidden -PropertyType DWord -Value 1 -Force
 		}
 		"Disable"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Hidden -PropertyType DWord -Value 2 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Hidden -PropertyType DWord -Value 2 -Force
 		}
 	}
 }
@@ -1859,11 +1943,11 @@ function FileExtensions
 	{
 		"Show"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -PropertyType DWord -Value 0 -Force
 		}
 		"Hide"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -1910,11 +1994,11 @@ function MergeConflicts
 	{
 		"Show"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideMergeConflicts -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideMergeConflicts -PropertyType DWord -Value 0 -Force
 		}
 		"Hide"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideMergeConflicts -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideMergeConflicts -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -1961,11 +2045,11 @@ function OpenFileExplorerTo
 	{
 		"ThisPC"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name LaunchTo -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name LaunchTo -PropertyType DWord -Value 1 -Force
 		}
 		"QuickAccess"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name LaunchTo -PropertyType DWord -Value 2 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name LaunchTo -PropertyType DWord -Value 2 -Force
 		}
 	}
 }
@@ -2014,14 +2098,14 @@ function CortanaButton
 		{
 			if (Get-AppxPackage -Name Microsoft.549981C3F5F10)
 			{
-				New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowCortanaButton -PropertyType DWord -Value 0 -Force
+				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowCortanaButton -PropertyType DWord -Value 0 -Force
 			}
 		}
 		"Show"
 		{
 			if (Get-AppxPackage -Name Microsoft.549981C3F5F10)
 			{
-				New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowCortanaButton -PropertyType DWord -Value 1 -Force
+				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowCortanaButton -PropertyType DWord -Value 1 -Force
 			}
 		}
 	}
@@ -2069,11 +2153,11 @@ function OneDriveFileExplorerAd
 	{
 		"Hide"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowSyncProviderNotifications -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowSyncProviderNotifications -PropertyType DWord -Value 0 -Force
 		}
 		"Show"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowSyncProviderNotifications -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowSyncProviderNotifications -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -2120,11 +2204,11 @@ function SnapAssist
 	{
 		"Disable"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SnapAssist -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SnapAssist -PropertyType DWord -Value 0 -Force
 		}
 		"Enable"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SnapAssist -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SnapAssist -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -2171,19 +2255,19 @@ function FileTransferDialog
 	{
 		"Detailed"
 		{
-			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager))
+			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager))
 			{
-				New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager -Force
+				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager -Force
 			}
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager -Name EnthusiastMode -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager -Name EnthusiastMode -PropertyType DWord -Value 1 -Force
 		}
 		"Compact"
 		{
-			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager))
+			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager))
 			{
-				New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager -Force
+				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager -Force
 			}
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager -Name EnthusiastMode -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager -Name EnthusiastMode -PropertyType DWord -Value 0 -Force
 		}
 	}
 }
@@ -2230,19 +2314,19 @@ function FileExplorerRibbon
 	{
 		"Expanded"
 		{
-			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Ribbon))
+			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Ribbon))
 			{
-				New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Ribbon -Force
+				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Ribbon -Force
 			}
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Ribbon -Name MinimizedStateTabletModeOff -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Ribbon -Name MinimizedStateTabletModeOff -PropertyType DWord -Value 0 -Force
 		}
 		"Minimized"
 		{
-			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Ribbon))
+			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Ribbon))
 			{
-				New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Ribbon -Force
+				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Ribbon -Force
 			}
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Ribbon -Name MinimizedStateTabletModeOff -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Ribbon -Name MinimizedStateTabletModeOff -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -2285,19 +2369,19 @@ function RecycleBinDeleteConfirmation
 		$Disable
 	)
 
-	$ShellState = Get-ItemPropertyValue -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name ShellState
+	$ShellState = Get-ItemPropertyValue -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name ShellState
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Enable"
 		{
 			$ShellState[4] = 51
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name ShellState -PropertyType Binary -Value $ShellState -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name ShellState -PropertyType Binary -Value $ShellState -Force
 		}
 		"Disable"
 		{
 			$ShellState[4] = 55
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name ShellState -PropertyType Binary -Value $ShellState -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name ShellState -PropertyType Binary -Value $ShellState -Force
 		}
 	}
 }
@@ -2399,11 +2483,11 @@ function QuickAccessRecentFiles
 	{
 		"Hide"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name ShowRecent -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name ShowRecent -PropertyType DWord -Value 0 -Force
 		}
 		"Show"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name ShowRecent -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name ShowRecent -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -2450,11 +2534,11 @@ function QuickAccessFrequentFolders
 	{
 		"Hide"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name ShowFrequent -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name ShowFrequent -PropertyType DWord -Value 0 -Force
 		}
 		"Show"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name ShowFrequent -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name ShowFrequent -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -2514,15 +2598,15 @@ function TaskbarSearch
 	{
 		"Hide"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -PropertyType DWord -Value 0 -Force
 		}
 		"SearchIcon"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -PropertyType DWord -Value 1 -Force
 		}
 		"SearchBox"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -PropertyType DWord -Value 2 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -PropertyType DWord -Value 2 -Force
 		}
 	}
 }
@@ -2569,13 +2653,13 @@ function SearchHighlights
 	{
 		"Hide"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds\DSB -Name ShowDynamicContent -PropertyType DWord -Value 0 -Force
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\SearchSettings -Name IsDynamicSearchBoxEnabled -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Feeds\DSB -Name ShowDynamicContent -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\SearchSettings -Name IsDynamicSearchBoxEnabled -PropertyType DWord -Value 0 -Force
 		}
 		"Show"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds\DSB -Name ShowDynamicContent -PropertyType DWord -Value 1 -Force
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\SearchSettings -Name IsDynamicSearchBoxEnabled -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Feeds\DSB -Name ShowDynamicContent -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\SearchSettings -Name IsDynamicSearchBoxEnabled -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -2622,11 +2706,11 @@ function TaskViewButton
 	{
 		"Hide"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowTaskViewButton -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowTaskViewButton -PropertyType DWord -Value 0 -Force
 		}
 		"Show"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowTaskViewButton -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowTaskViewButton -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -2673,19 +2757,19 @@ function PeopleTaskbar
 	{
 		"Hide"
 		{
-			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People))
+			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People))
 			{
-				New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People -Force
+				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People -Force
 			}
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People -Name PeopleBand -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People -Name PeopleBand -PropertyType DWord -Value 0 -Force
 		}
 		"Show"
 		{
-			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People))
+			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People))
 			{
-				New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People -Force
+				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People -Force
 			}
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People -Name PeopleBand -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People -Name PeopleBand -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -2732,11 +2816,11 @@ function SecondsInSystemClock
 	{
 		"Hide"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowSecondsInSystemClock -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowSecondsInSystemClock -PropertyType DWord -Value 0 -Force
 		}
 		"Show"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowSecondsInSystemClock -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowSecondsInSystemClock -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -2796,15 +2880,15 @@ function TaskbarSearch
 	{
 		"Hide"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -PropertyType DWord -Value 0 -Force
 		}
 		"SearchIcon"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -PropertyType DWord -Value 1 -Force
 		}
 		"SearchBox"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -PropertyType DWord -Value 2 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -PropertyType DWord -Value 2 -Force
 		}
 	}
 }
@@ -2851,11 +2935,11 @@ function WindowsInkWorkspace
 	{
 		"Hide"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\PenWorkspace -Name PenWorkspaceButtonDesiredVisibility -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\PenWorkspace -Name PenWorkspaceButtonDesiredVisibility -PropertyType DWord -Value 0 -Force
 		}
 		"Show"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\PenWorkspace -Name PenWorkspaceButtonDesiredVisibility -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\PenWorkspace -Name PenWorkspaceButtonDesiredVisibility -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -2902,11 +2986,11 @@ function NotificationAreaIcons
 	{
 		"Show"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name EnableAutoTray -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name EnableAutoTray -PropertyType DWord -Value 0 -Force
 		}
 		"Hide"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name EnableAutoTray -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name EnableAutoTray -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -3178,30 +3262,30 @@ function ControlPanelView
 	{
 		"Category"
 		{
-			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
+			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
 			{
-				New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Force
+				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Force
 			}
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name AllItemsIconView -PropertyType DWord -Value 0 -Force
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name StartupPage -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name AllItemsIconView -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name StartupPage -PropertyType DWord -Value 0 -Force
 		}
 		"LargeIcons"
 		{
-			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
+			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
 			{
-				New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Force
+				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Force
 			}
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name AllItemsIconView -PropertyType DWord -Value 0 -Force
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name StartupPage -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name AllItemsIconView -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name StartupPage -PropertyType DWord -Value 1 -Force
 		}
 		"SmallIcons"
 		{
-			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
+			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
 			{
-				New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Force
+				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Force
 			}
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name AllItemsIconView -PropertyType DWord -Value 1 -Force
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name StartupPage -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name AllItemsIconView -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name StartupPage -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -3248,11 +3332,11 @@ function WindowsColorMode
 	{
 		"Dark"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -PropertyType DWord -Value 0 -Force
 		}
 		"Light"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -3299,11 +3383,11 @@ function AppColorMode
 	{
 		"Dark"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -PropertyType DWord -Value 0 -Force
 		}
 		"Light"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -3518,7 +3602,7 @@ function TaskManagerWindow
 	do
 	{
 		Start-Sleep -Milliseconds 100
-		$Preferences = Get-ItemPropertyValue -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences
+		$Preferences = Get-ItemPropertyValue -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences
 	}
 	until ($Preferences)
 
@@ -3529,12 +3613,12 @@ function TaskManagerWindow
 		"Expanded"
 		{
 			$Preferences[28] = 0
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -PropertyType Binary -Value $Preferences -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -PropertyType Binary -Value $Preferences -Force
 		}
 		"Compact"
 		{
 			$Preferences[28] = 1
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -PropertyType Binary -Value $Preferences -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager -Name Preferences -PropertyType Binary -Value $Preferences -Force
 		}
 	}
 }
@@ -3632,15 +3716,15 @@ function ShortcutsSuffix
 	{
 		"Disable"
 		{
-			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\NamingTemplates))
+			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\NamingTemplates))
 			{
-				New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\NamingTemplates -Force
+				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\NamingTemplates -Force
 			}
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\NamingTemplates -Name ShortcutNameTemplate -PropertyType String -Value "%s.lnk" -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\NamingTemplates -Name ShortcutNameTemplate -PropertyType String -Value "%s.lnk" -Force
 		}
 		"Enable"
 		{
-			Remove-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\NamingTemplates -Name ShortcutNameTemplate -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\NamingTemplates -Name ShortcutNameTemplate -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -3797,6 +3881,333 @@ function AeroShaking
 		}
 	}
 }
+
+<#
+	.SYNOPSIS
+	Free "Windows 11 Cursors Concept v2" cursors from Jepri Creations
+
+	.PARAMETER Dark
+	Download and install free dark "Windows 11 Cursors Concept v2" cursors from Jepri Creations
+
+	.PARAMETER Light
+	Download and install free light "Windows 11 Cursors Concept v2" cursors from Jepri Creations
+
+	.PARAMETER Default
+	Set default cursors
+
+	.EXAMPLE
+	Cursors -Dark
+
+	.EXAMPLE
+	Cursors -Light
+
+	.EXAMPLE
+	Cursors -Default
+
+	.LINK
+	https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356
+
+	.NOTES
+	The 09/09/22 version
+
+	.NOTES
+	Current user
+#>
+function Cursors
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Dark"
+		)]
+		[switch]
+		$Dark,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Light"
+		)]
+		[switch]
+		$Light,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Default"
+		)]
+		[switch]
+		$Default
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Dark"
+		{
+			try
+			{
+				# Check the internet connection
+				$Parameters = @{
+					Uri              = "https://www.google.com"
+					Method           = "Head"
+					DisableKeepAlive = $true
+					UseBasicParsing  = $true
+				}
+				if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+				{
+					return
+				}
+
+				try
+				{
+					# Check whether https://github.com is alive
+					$Parameters = @{
+						Uri              = "https://github.com"
+						Method           = "Head"
+						DisableKeepAlive = $true
+						UseBasicParsing  = $true
+					}
+					if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+					{
+						return
+					}
+
+					$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+					$Parameters = @{
+						Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/Cursors.zip"
+						OutFile         = "$DownloadsFolder\Cursors.zip"
+						UseBasicParsing = $true
+						Verbose         = $true
+					}
+					Invoke-WebRequest @Parameters
+
+					if (-not (Test-Path -Path "$env:SystemRoot\Cursors\W11_dark_v2.2"))
+					{
+						New-Item -Path "$env:SystemRoot\Cursors\W11_dark_v2.2" -ItemType Directory -Force
+					}
+
+					$Parameters = @{
+						Path            = "$DownloadsFolder\Cursors.zip"
+						DestinationPath = "$env:SystemRoot\Cursors\W11_dark_v2.2"
+						Force           = $true
+						Verbose         = $true
+					}
+					Expand-Archive @Parameters
+
+					Remove-Item -Path "$DownloadsFolder\Cursors.zip" -Force
+
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursors Dark HD v2.2 by Jepri Creations" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\working.ani" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Arrow -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\pointer.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name ContactVisualization -PropertyType DWord -Value 1 -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Crosshair -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\precision.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name CursorBaseSize -PropertyType DWord -Value 32 -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name GestureVisualization -PropertyType DWord -Value 31 -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Hand -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\link.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Help -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\help.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name IBeam -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\beam.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name No -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\unavailable.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name NWPen -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\handwriting.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Person -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\pin.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Pin -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\person.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name precisionhair -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\precision.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "Scheme Source" -PropertyType DWord -Value 1 -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeAll -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\move.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNESW -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\dgn2.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNS -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\vert.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNWSE -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\dgn1.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeWE -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\horz.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name UpArrow -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\alternate.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Wait -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_dark_v2.2\busy.ani" -Force
+					if (-not (Test-Path -Path "HKCU:\Control Panel\Cursors\Schemes"))
+					{
+						New-Item -Path "HKCU:\Control Panel\Cursors\Schemes" -Force
+					}
+					[string[]]$Schemes = (
+						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\working.ani",
+						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\pointer.cur",
+						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\precision.cur",
+						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\link.cur",
+						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\help.cur",
+						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\beam.cur",
+						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\unavailable.cur",
+						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\handwriting.cur",
+						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\pin.cur",
+						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\person.cur",
+						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\move.cur",
+						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\dgn2.cur",
+						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\vert.cur",
+						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\dgn1.cur",
+						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\horz.cur",
+						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\alternate.cur",
+						"%SYSTEMROOT%\Cursors\W11_dark_v2.2\busy.ani"
+					) -join ","
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors\Schemes" -Name "W11 Cursors Dark HD v2.2 by Jepri Creations" -PropertyType String -Value $Schemes -Force
+				}
+				catch [System.Net.WebException]
+				{
+					Write-Warning -Message ($Localization.NoResponse -f "https://github.com")
+					Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
+
+					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+				}
+			}
+			catch [System.Net.WebException]
+			{
+				Write-Warning -Message $Localization.NoInternetConnection
+				Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+
+				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+			}
+		}
+		"Light"
+		{
+			try
+			{
+				# Check the internet connection
+				$Parameters = @{
+					Uri              = "https://www.google.com"
+					Method           = "Head"
+					DisableKeepAlive = $true
+					UseBasicParsing  = $true
+				}
+				if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+				{
+					return
+				}
+
+				try
+				{
+					# Check whether https://github.com is alive
+					$Parameters = @{
+						Uri              = "https://github.com"
+						Method           = "Head"
+						DisableKeepAlive = $true
+						UseBasicParsing  = $true
+					}
+					if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+					{
+						return
+					}
+
+					$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+					$Parameters = @{
+						Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/Cursors.zip"
+						OutFile         = "$DownloadsFolder\Cursors.zip"
+						UseBasicParsing = $true
+						Verbose         = $true
+					}
+					Invoke-WebRequest @Parameters
+
+					if (-not (Test-Path -Path "$env:SystemRoot\Cursors\W11_light_v2.2"))
+					{
+						New-Item -Path "$env:SystemRoot\Cursors\W11_light_v2.2" -ItemType Directory -Force
+					}
+
+					$Parameters = @{
+						Path            = "$DownloadsFolder\Cursors.zip"
+						DestinationPath = "$env:SystemRoot\Cursors\W11_light_v2.2"
+						Force           = $true
+						Verbose         = $true
+					}
+					Expand-Archive @Parameters
+
+					Remove-Item -Path "$DownloadsFolder\Cursors.zip" -Force
+
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursor Light HD v2.2 by Jepri Creations" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\working.ani" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Arrow -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\pointer.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name ContactVisualization -PropertyType DWord -Value 1 -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Crosshair -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\precision.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name CursorBaseSize -PropertyType DWord -Value 32 -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name GestureVisualization -PropertyType DWord -Value 31 -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Hand -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\link.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Help -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\help.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name IBeam -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\beam.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name No -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\unavailable.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name NWPen -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\handwriting.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Person -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\pin.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Pin -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\person.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name precisionhair -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\precision.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "Scheme Source" -PropertyType DWord -Value 1 -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeAll -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\move.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNESW -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\dgn2.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNS -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\vert.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNWSE -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\dgn1.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeWE -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\horz.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name UpArrow -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\alternate.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Wait -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\W11_light_v2.2\busy.ani" -Force
+					if (-not (Test-Path -Path "HKCU:\Control Panel\Cursors\Schemes"))
+					{
+						New-Item -Path "HKCU:\Control Panel\Cursors\Schemes" -Force
+					}
+					[string[]]$Schemes = (
+						"%SYSTEMROOT%\Cursors\W11_light_v2.2\working.ani",
+						"%SYSTEMROOT%\Cursors\W11_light_v2.2\pointer.cur",
+						"%SYSTEMROOT%\Cursors\W11_light_v2.2\precision.cur",
+						"%SYSTEMROOT%\Cursors\W11_light_v2.2\link.cur",
+						"%SYSTEMROOT%\Cursors\W11_light_v2.2\help.cur",
+						"%SYSTEMROOT%\Cursors\W11_light_v2.2\beam.cur",
+						"%SYSTEMROOT%\Cursors\W11_light_v2.2\unavailable.cur",
+						"%SYSTEMROOT%\Cursors\W11_light_v2.2\handwriting.cur",
+						"%SYSTEMROOT%\Cursors\W11_light_v2.2\pin.cur",
+						"%SYSTEMROOT%\Cursors\W11_light_v2.2\person.cur",
+						"%SYSTEMROOT%\Cursors\W11_light_v2.2\move.cur",
+						"%SYSTEMROOT%\Cursors\W11_light_v2.2\dgn2.cur",
+						"%SYSTEMROOT%\Cursors\W11_light_v2.2\vert.cur",
+						"%SYSTEMROOT%\Cursors\W11_light_v2.2\dgn1.cur",
+						"%SYSTEMROOT%\Cursors\W11_light_v2.2\horz.cur",
+						"%SYSTEMROOT%\Cursors\W11_light_v2.2\alternate.cur",
+						"%SYSTEMROOT%\Cursors\W11_light_v2.2\busy.ani"
+					) -join ","
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors\Schemes" -Name "W11 Cursor Light HD v2.2 by Jepri Creations" -PropertyType String -Value $Schemes -Force
+				}
+				catch [System.Net.WebException]
+				{
+					Write-Warning -Message ($Localization.NoResponse -f "https://github.com")
+					Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
+
+					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+				}
+			}
+			catch [System.Net.WebException]
+			{
+				Write-Warning -Message $Localization.NoInternetConnection
+				Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+
+				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+			}
+		}
+		"Default"
+		{
+			(Get-Item -Path "HKCU:\Control Panel\Cursors").Property.Split([System.Environment]::NewLine) | ForEach-Object -Process {
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name $_ -Value "" -Force
+			}
+
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name ContactVisualization -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Crosshair -PropertyType ExpandString -Value "" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name CursorBaseSize -PropertyType DWord -Value 32 -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name GestureVisualization -PropertyType DWord -Value 31 -Force
+			Remove-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name precisionhair -Force -ErrorAction Ignore
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "Scheme Source" -PropertyType DWord -Value 0 -Force
+		}
+	}
+
+	# Reload cursor on-the-fly
+	$Signature = @{
+		Namespace        = "WinAPI"
+		Name             = "SystemParamInfo"
+		Language         = "CSharp"
+		MemberDefinition = @"
+[DllImport("user32.dll", EntryPoint = "SystemParametersInfo")]
+public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, uint pvParam, uint fWinIni);
+"@
+	}
+	if (-not ("WinAPI.SystemParamInfo" -as [type]))
+	{
+		Add-Type @Signature
+	}
+	[WinAPI.SystemParamInfo]::SystemParametersInfo(0x0057, 0, $null, 0)
+}
 #endregion UI & Personalization
 
 #region OneDrive
@@ -3922,7 +4333,7 @@ public static bool MarkFileDelete (string sourcefile)
 				}
 
 				Remove-ItemProperty -Path HKCU:\Environment -Name OneDrive, OneDriveConsumer -Force -ErrorAction Ignore
-				Remove-Item -Path HKCU:\SOFTWARE\Microsoft\OneDrive -Recurse -Force -ErrorAction Ignore
+				Remove-Item -Path HKCU:\Software\Microsoft\OneDrive -Recurse -Force -ErrorAction Ignore
 				Remove-Item -Path HKLM:\SOFTWARE\WOW6432Node\Microsoft\OneDrive -Recurse -Force -ErrorAction Ignore
 				Remove-Item -Path "$env:ProgramData\Microsoft OneDrive" -Recurse -Force -ErrorAction Ignore
 				Remove-Item -Path $env:SystemDrive\OneDriveTemp -Recurse -Force -ErrorAction Ignore
@@ -4025,7 +4436,7 @@ public static bool MarkFileDelete (string sourcefile)
 						[xml]$OneDriveXML = $Content -replace "ï»¿", ""
 
 						$OneDriveURL = ($OneDriveXML).root.update.amd64binary.url
-						$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+						$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 						$Parameters = @{
 							Uri             = $OneDriveURL
 							OutFile         = "$DownloadsFolder\OneDriveSetup.exe"
@@ -4048,7 +4459,7 @@ public static bool MarkFileDelete (string sourcefile)
 				}
 
 				# Save screenshots by pressing Win+PrtScr in the Pictures folder
-				Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -Force -ErrorAction Ignore
+				Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -Force -ErrorAction Ignore
 
 				Get-ScheduledTask -TaskName "Onedrive* Update*" | Enable-ScheduledTask
 				Get-ScheduledTask -TaskName "Onedrive* Update*" | Start-ScheduledTask
@@ -4102,19 +4513,19 @@ function StorageSense
 	{
 		"Enable"
 		{
-			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy))
+			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy))
 			{
-				New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -ItemType Directory -Force
+				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -ItemType Directory -Force
 			}
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01 -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01 -PropertyType DWord -Value 1 -Force
 		}
 		"Disable"
 		{
-			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy))
+			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy))
 			{
-				New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -ItemType Directory -Force
+				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -ItemType Directory -Force
 			}
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01 -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01 -PropertyType DWord -Value 0 -Force
 		}
 	}
 }
@@ -4161,16 +4572,16 @@ function StorageSenseTempFiles
 	{
 		"Enable"
 		{
-			if ((Get-ItemPropertyValue -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01) -eq "1")
+			if ((Get-ItemPropertyValue -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01) -eq "1")
 			{
-				New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 04 -PropertyType DWord -Value 1 -Force
+				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 04 -PropertyType DWord -Value 1 -Force
 			}
 		}
 		"Disable"
 		{
-			if ((Get-ItemPropertyValue -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01) -eq "1")
+			if ((Get-ItemPropertyValue -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01) -eq "1")
 			{
-				New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 04 -PropertyType DWord -Value 0 -Force
+				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 04 -PropertyType DWord -Value 0 -Force
 			}
 		}
 	}
@@ -4218,16 +4629,16 @@ function StorageSenseFrequency
 	{
 		"Month"
 		{
-			if ((Get-ItemPropertyValue -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01) -eq "1")
+			if ((Get-ItemPropertyValue -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01) -eq "1")
 			{
-				New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 2048 -PropertyType DWord -Value 30 -Force
+				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 2048 -PropertyType DWord -Value 30 -Force
 			}
 		}
 		"Default"
 		{
-			if ((Get-ItemPropertyValue -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01) -eq "1")
+			if ((Get-ItemPropertyValue -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01) -eq "1")
 			{
-				New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 2048 -PropertyType DWord -Value 0 -Force
+				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 2048 -PropertyType DWord -Value 0 -Force
 			}
 		}
 	}
@@ -4858,6 +5269,7 @@ function WaitNetworkStartup
 					New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon" -Force
 				}
 				New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name SyncForegroundPolicy -PropertyType DWord -Value 1 -Force
+				Set-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name SyncForegroundPolicy -Type DWORD -Value 1
 			}
 		}
 		"Disable"
@@ -4865,6 +5277,7 @@ function WaitNetworkStartup
 			if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain)
 			{
 				Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name SyncForegroundPolicy -Force -ErrorAction Ignore
+				Set-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name SyncForegroundPolicy -Type CLEAR
 			}
 		}
 	}
@@ -4912,11 +5325,11 @@ function WindowsManageDefaultPrinter
 	{
 		"Disable"
 		{
-			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows" -Name LegacyDefaultPrinterMode -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Windows" -Name LegacyDefaultPrinterMode -PropertyType DWord -Value 1 -Force
 		}
 		"Enable"
 		{
-			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows" -Name LegacyDefaultPrinterMode -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Windows" -Name LegacyDefaultPrinterMode -PropertyType DWord -Value 0 -Force
 		}
 	}
 }
@@ -6233,7 +6646,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 		}
 
 		# Determining the current user folder path
-		$CurrentUserFolderPath = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name $UserShellFoldersRegistryNames[$UserFolder]
+		$CurrentUserFolderPath = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name $UserShellFoldersRegistryNames[$UserFolder]
 		if ($CurrentUserFolder -ne $FolderPath)
 		{
 			if ((Get-ChildItem -Path $CurrentUserFolderPath | Measure-Object).Count -ne 0)
@@ -6254,7 +6667,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			}
 
 			KnownFolderPath -KnownFolder $UserFolder -Path $FolderPath
-			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name $UserShellFoldersGUIDs[$UserFolder] -PropertyType ExpandString -Value $FolderPath -Force
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name $UserShellFoldersGUIDs[$UserFolder] -PropertyType ExpandString -Value $FolderPath -Force
 
 			# Save desktop.ini in the UTF-16 LE encoding
 			Set-Content -Path "$FolderPath\desktop.ini" -Value $DesktopINI[$UserFolder] -Encoding Unicode -Force
@@ -6397,7 +6810,7 @@ public static string GetString(uint strId)
 			# Desktop
 			Write-Verbose -Message ($Localization.DriveSelect -f $DesktopLocalizedString) -Verbose
 
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DesktopLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -6430,7 +6843,7 @@ public static string GetString(uint strId)
 			# Documents
 			Write-Verbose -Message ($Localization.DriveSelect -f $DocumentsLocalizedString) -Verbose
 
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DocumentsLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -6463,7 +6876,7 @@ public static string GetString(uint strId)
 			# Downloads
 			Write-Verbose -Message ($Localization.DriveSelect -f $DownloadsLocalizedString) -Verbose
 
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DownloadsLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -6496,7 +6909,7 @@ public static string GetString(uint strId)
 			# Music
 			Write-Verbose -Message ($Localization.DriveSelect -f $MusicLocalizedString) -Verbose
 
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $MusicLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -6529,7 +6942,7 @@ public static string GetString(uint strId)
 			# Pictures
 			Write-Verbose -Message ($Localization.DriveSelect -f $PicturesLocalizedString) -Verbose
 
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $PicturesLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -6562,7 +6975,7 @@ public static string GetString(uint strId)
 			# Videos
 			Write-Verbose -Message ($Localization.DriveSelect -f $VideosLocalizedString) -Verbose
 
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Video"
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Video"
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $VideosLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -6595,7 +7008,7 @@ public static string GetString(uint strId)
 		"Custom"
 		{
 			# Desktop
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DesktopLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -6638,7 +7051,7 @@ public static string GetString(uint strId)
 			}
 
 			# Documents
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DocumentsLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -6681,7 +7094,7 @@ public static string GetString(uint strId)
 			}
 
 			# Downloads
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DownloadsLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -6724,7 +7137,7 @@ public static string GetString(uint strId)
 			}
 
 			# Music
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $MusicLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -6767,7 +7180,7 @@ public static string GetString(uint strId)
 			}
 
 			# Pictures
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $PicturesLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -6810,7 +7223,7 @@ public static string GetString(uint strId)
 			}
 
 			# Videos
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Video"
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Video"
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $VideosLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -6855,7 +7268,7 @@ public static string GetString(uint strId)
 		"Default"
 		{
 			# Desktop
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DesktopLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -6885,7 +7298,7 @@ public static string GetString(uint strId)
 			}
 
 			# Documents
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DocumentsLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -6915,7 +7328,7 @@ public static string GetString(uint strId)
 			}
 
 			# Downloads
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DownloadsLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -6945,7 +7358,7 @@ public static string GetString(uint strId)
 			}
 
 			# Music
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $MusicLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -6975,7 +7388,7 @@ public static string GetString(uint strId)
 			}
 
 			# Pictures
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $PicturesLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -7005,7 +7418,7 @@ public static string GetString(uint strId)
 			}
 
 			# Videos
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Video"
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Video"
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $VideosLocalizedString, $CurrentUserFolderLocation) -Verbose
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -7096,8 +7509,8 @@ function WinPrtScrFolder
 				$OneDriveInstalled = Get-Package -Name "Microsoft OneDrive" -ProviderName Programs -Force -ErrorAction Ignore
 				if ($OneDriveUninstallFunctionUncommented -or (-not $OneDriveInstalled))
 				{
-					$DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
-					New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -PropertyType ExpandString -Value $DesktopFolder -Force
+					$DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
+					New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -PropertyType ExpandString -Value $DesktopFolder -Force
 				}
 				else
 				{
@@ -7110,8 +7523,8 @@ function WinPrtScrFolder
 				# A preset file isn't taking a part so we ignore it and check only whether OneDrive was already uninstalled
 				if (-not (Get-Package -Name "Microsoft OneDrive" -ProviderName Programs -Force -ErrorAction Ignore))
 				{
-					$DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
-					New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -PropertyType ExpandString -Value $DesktopFolder -Force
+					$DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
+					New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -PropertyType ExpandString -Value $DesktopFolder -Force
 				}
 				else
 				{
@@ -7122,7 +7535,7 @@ function WinPrtScrFolder
 		}
 		"Default"
 		{
-			Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -7189,14 +7602,14 @@ function RecommendedTroubleshooting
 	}
 
 	# Set the OS level of diagnostic data gathering to "Optional diagnostic data"
-	New-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 3 -Force
+	New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 3 -Force
 	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name MaxTelemetryAllowed -PropertyType DWord -Value 3 -Force
-
-	New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -PropertyType DWord -Value 3 -Force
+	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -PropertyType DWord -Value 3 -Force
+	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Type DWORD -Value 1
 
 	# Turn on Windows Error Reporting
 	Get-ScheduledTask -TaskName QueueReporting | Enable-ScheduledTask
-	Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction Ignore
+	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction Ignore
 
 	Get-Service -Name WerSvc | Set-Service -StartupType Manual
 	Get-Service -Name WerSvc | Start-Service
@@ -7244,11 +7657,11 @@ function FoldersLaunchSeparateProcess
 	{
 		"Enable"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SeparateProcess -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SeparateProcess -PropertyType DWord -Value 1 -Force
 		}
 		"Disable"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SeparateProcess -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SeparateProcess -PropertyType DWord -Value 0 -Force
 		}
 	}
 }
@@ -7353,15 +7766,15 @@ function F1HelpPage
 	{
 		"Disable"
 		{
-			if (-not (Test-Path -Path "HKCU:\SOFTWARE\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64"))
+			if (-not (Test-Path -Path "HKCU:\Software\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64"))
 			{
-				New-Item -Path "HKCU:\SOFTWARE\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64" -Force
+				New-Item -Path "HKCU:\Software\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64" -Force
 			}
-			New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64" -Name "(default)" -PropertyType String -Value "" -Force
+			New-ItemProperty -Path "HKCU:\Software\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64" -Name "(default)" -PropertyType String -Value "" -Force
 		}
 		"Enable"
 		{
-			Remove-Item -Path "HKCU:\SOFTWARE\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}" -Recurse -Force -ErrorAction Ignore
+			Remove-Item -Path "HKCU:\Software\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}" -Recurse -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -7561,11 +7974,11 @@ function Autoplay
 	{
 		"Disable"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers -Name DisableAutoplay -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers -Name DisableAutoplay -PropertyType DWord -Value 1 -Force
 		}
 		"Enable"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers -Name DisableAutoplay -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers -Name DisableAutoplay -PropertyType DWord -Value 0 -Force
 		}
 	}
 }
@@ -7663,11 +8076,11 @@ function SaveRestartableApps
 	{
 		"Enable"
 		{
-			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name RestartApps -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name RestartApps -PropertyType DWord -Value 1 -Force
 		}
 		"Disable"
 		{
-			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name RestartApps -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name RestartApps -PropertyType DWord -Value 0 -Force
 		}
 	}
 }
@@ -8125,11 +8538,11 @@ namespace RegistryUtils
 			$Icon
 		)
 
-		if (-not (Test-Path -Path "HKCU:\SOFTWARE\Classes\$ProgId\DefaultIcon"))
+		if (-not (Test-Path -Path "HKCU:\Software\Classes\$ProgId\DefaultIcon"))
 		{
-			New-Item -Path "HKCU:\SOFTWARE\Classes\$ProgId\DefaultIcon" -Force
+			New-Item -Path "HKCU:\Software\Classes\$ProgId\DefaultIcon" -Force
 		}
-		New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\$ProgId\DefaultIcon" -Name "(default)" -PropertyType String -Value $Icon -Force
+		New-ItemProperty -Path "HKCU:\Software\Classes\$ProgId\DefaultIcon" -Name "(default)" -PropertyType String -Value $Icon -Force
 	}
 
 	function Remove-UserChoiceKey
@@ -8194,33 +8607,33 @@ namespace RegistryUtils
 		if ($OrigProgID)
 		{
 			# Save possible ProgIds history with extension
-			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Name "$ProgID_$Extension" -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Name "$ProgID_$Extension" -PropertyType DWord -Value 0 -Force
 		}
 
 		$Name = "{0}_$Extension" -f (Split-Path -Path $ProgId -Leaf)
-		New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Name $Name -PropertyType DWord -Value 0 -Force
+		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Name $Name -PropertyType DWord -Value 0 -Force
 
 		if ("$ProgId_$Extension" -ne $Name)
 		{
-			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Name "$ProgId_$Extension" -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Name "$ProgId_$Extension" -PropertyType DWord -Value 0 -Force
 		}
 
 		# If ProgId doesn't exist set the specified ProgId for the extensions
 		if (-not $OrigProgID)
 		{
-			if (-not (Test-Path -Path "HKCU:\SOFTWARE\Classes\$Extension"))
+			if (-not (Test-Path -Path "HKCU:\Software\Classes\$Extension"))
 			{
-				New-Item -Path "HKCU:\SOFTWARE\Classes\$Extension" -Force
+				New-Item -Path "HKCU:\Software\Classes\$Extension" -Force
 			}
-			New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\$Extension" -Name "(default)" -PropertyType String -Value $ProgId -Force
+			New-ItemProperty -Path "HKCU:\Software\Classes\$Extension" -Name "(default)" -PropertyType String -Value $ProgId -Force
 		}
 
 		# Set the specified ProgId in the possible options for the assignment
-		if (-not (Test-Path -Path "HKCU:\SOFTWARE\Classes\$Extension\OpenWithProgids"))
+		if (-not (Test-Path -Path "HKCU:\Software\Classes\$Extension\OpenWithProgids"))
 		{
-			New-Item -Path "HKCU:\SOFTWARE\Classes\$Extension\OpenWithProgids" -Force
+			New-Item -Path "HKCU:\Software\Classes\$Extension\OpenWithProgids" -Force
 		}
-		New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\$Extension\OpenWithProgids" -Name $ProgId -PropertyType None -Value ([byte[]]@()) -Force
+		New-ItemProperty -Path "HKCU:\Software\Classes\$Extension\OpenWithProgids" -Name $ProgId -PropertyType None -Value ([byte[]]@()) -Force
 
 		# Set the system ProgId to the extension parameters for the File Explorer to the possible options for the assignment, and if absent set the specified ProgId
 		if ($OrigProgID)
@@ -8298,18 +8711,18 @@ namespace RegistryUtils
 			foreach ($AppxProgID in ($OpenSubkey | Where-Object -FilterScript {$_ -match "AppX"}))
 			{
 				# If an app is installed
-				if (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Classes\$AppxProgID\Shell\open" -Name PackageId)
+				if (Get-ItemPropertyValue -Path "HKCU:\Software\Classes\$AppxProgID\Shell\open" -Name PackageId)
 				{
 					# If the specified ProgId is equal to UWP installed ProgId
 					if ($ProgId -eq $AppxProgID)
 					{
 						# Remove association limitations for this UWP apps
-						Remove-ItemProperty -Path "HKCU:\SOFTWARE\Classes\$AppxProgID" -Name NoOpenWith -Force -ErrorAction Ignore
-						Remove-ItemProperty -Path "HKCU:\SOFTWARE\Classes\$AppxProgID" -Name NoStaticDefaultVerb -Force -ErrorAction Ignore
+						Remove-ItemProperty -Path "HKCU:\Software\Classes\$AppxProgID" -Name NoOpenWith -Force -ErrorAction Ignore
+						Remove-ItemProperty -Path "HKCU:\Software\Classes\$AppxProgID" -Name NoStaticDefaultVerb -Force -ErrorAction Ignore
 					}
 					else
 					{
-						New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\$AppxProgID" -Name NoOpenWith -PropertyType String -Value "" -Force
+						New-ItemProperty -Path "HKCU:\Software\Classes\$AppxProgID" -Name NoOpenWith -PropertyType String -Value "" -Force
 					}
 				}
 			}
@@ -8320,7 +8733,7 @@ namespace RegistryUtils
 
 		if (($picture -eq "picture") -and $PBrush)
 		{
-			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Name "PBrush_$Extension" -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Name "PBrush_$Extension" -PropertyType DWord -Value 0 -Force
 		}
 	}
 
@@ -8531,18 +8944,18 @@ namespace FileAssoc
 
 	if ($ProgramPath)
 	{
-		if (-not (Test-Path -Path "HKCU:\SOFTWARE\Classes\$ProgId\shell\open\command"))
+		if (-not (Test-Path -Path "HKCU:\Software\Classes\$ProgId\shell\open\command"))
 		{
-			New-Item -Path "HKCU:\SOFTWARE\Classes\$ProgId\shell\open\command" -Force
+			New-Item -Path "HKCU:\Software\Classes\$ProgId\shell\open\command" -Force
 		}
-		New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\$ProgId\shell\open\command" -Name "(Default)" -PropertyType String -Value "`"$ProgramPath`" `"%1`"" -Force
+		New-ItemProperty -Path "HKCU:\Software\Classes\$ProgId\shell\open\command" -Name "(Default)" -PropertyType String -Value "`"$ProgramPath`" `"%1`"" -Force
 
 		$FileNameEXE = Split-Path -Path $ProgramPath -Leaf
-		if (-not (Test-Path -Path "HKCU:\SOFTWARE\Classes\Applications\$FileNameEXE\shell\open\command"))
+		if (-not (Test-Path -Path "HKCU:\Software\Classes\Applications\$FileNameEXE\shell\open\command"))
 		{
-			New-Item -Path "HKCU:\SOFTWARE\Classes\Applications\$FileNameEXE\shell\open\command" -Force
+			New-Item -Path "HKCU:\Software\Classes\Applications\$FileNameEXE\shell\open\command" -Force
 		}
-		New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Applications\$FileNameEXE\shell\open\command" -Name "(Default)" -PropertyType String -Value "`"$ProgramPath`" `"%1`"" -Force
+		New-ItemProperty -Path "HKCU:\Software\Classes\Applications\$FileNameEXE\shell\open\command" -Name "(Default)" -PropertyType String -Value "`"$ProgramPath`" `"%1`"" -Force
 	}
 
 	if ($Icon)
@@ -8625,10 +9038,10 @@ function UninstallPCHealthCheck
 
 <#
 	.SYNOPSIS
-	Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 x64
+	Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 (x86/x64)
 
 	.EXAMPLE
-	InstallVCRedistx64
+	InstallVCRedist
 
 	.LINK
 	https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist
@@ -8636,7 +9049,7 @@ function UninstallPCHealthCheck
 	.NOTES
 	Machine-wide
 #>
-function InstallVCRedistx64
+function InstallVCRedist
 {
 	try
 	{
@@ -8654,11 +9067,22 @@ function InstallVCRedistx64
 
 		if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller).Version -ge [System.Version]"1.17")
 		{
+			winget install --id=Microsoft.VCRedist.2015+.x86 --exact --accept-source-agreements
 			winget install --id=Microsoft.VCRedist.2015+.x64 --exact --accept-source-agreements
 		}
 		else
 		{
-			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+			$Parameters = @{
+				Uri             = "https://aka.ms/vs/17/release/VC_redist.x86.exe"
+				OutFile         = "$DownloadsFolder\VC_redist.x86.exe"
+				UseBasicParsing = $true
+				Verbose         = $true
+			}
+			Invoke-WebRequest @Parameters
+
+			Start-Process -FilePath "$DownloadsFolder\VC_redist.x86.exe" -ArgumentList "/install /passive /norestart" -Wait
+
 			$Parameters = @{
 				Uri             = "https://aka.ms/vs/17/release/VC_redist.x64.exe"
 				OutFile         = "$DownloadsFolder\VC_redist.x64.exe"
@@ -8678,7 +9102,7 @@ function InstallVCRedistx64
 				(Get-ItemProperty -Path HKCU:\Environment -Name TEMP).TEMP
 				[System.IO.Path]::GetTempPath()
 			#>
-			Get-ChildItem -Path "$DownloadsFolder\VC_redist.x64.exe", "$env:TEMP\dd_vcredist_amd64_*.log" -Force | Remove-Item -Recurse -Force -ErrorAction Ignore
+			Get-ChildItem -Path "$DownloadsFolder\VC_redist.x86.exe", "$DownloadsFolder\VC_redist.x64.exe", "$env:TEMP\dd_vcredist_amdx86_*.log", "$env:TEMP\dd_vcredist_amd64_*.log" -Force | Remove-Item -Recurse -Force -ErrorAction Ignore
 		}
 	}
 	catch [System.Net.WebException]
@@ -8734,7 +9158,7 @@ function InstallDotNetRuntime6
 				UseBasicParsing = $true
 			}
 			$LatestRelease = (Invoke-RestMethod @Parameters)."latest-release"
-			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 
 			# .NET Desktop Runtime x86
 			$Parameters = @{
@@ -9129,11 +9553,11 @@ function AppSuggestions
 	{
 		"Hide"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338388Enabled -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338388Enabled -PropertyType DWord -Value 0 -Force
 		}
 		"Show"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338388Enabled -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338388Enabled -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -9449,12 +9873,12 @@ public static string GetString(uint strId)
 	end
 	{
 		# Temporarily disable changing the Start menu layout
-		if (-not (Test-Path -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
+		if (-not (Test-Path -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer))
 		{
-			New-Item -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Force
+			New-Item -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Force
 		}
-		New-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name LockedStartLayout -PropertyType DWord -Value 1 -Force
-		New-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name StartLayoutFile -PropertyType ExpandString -Value $Script:StartLayout -Force
+		New-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name LockedStartLayout -PropertyType DWord -Value 1 -Force
+		New-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name StartLayoutFile -PropertyType ExpandString -Value $Script:StartLayout -Force
 
 		Start-Sleep -Seconds 3
 
@@ -9470,8 +9894,8 @@ public static string GetString(uint strId)
 		Start-Sleep -Seconds 3
 
 		# Enable changing the Start menu layout
-		Remove-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name LockedStartLayout -Force -ErrorAction Ignore
-		Remove-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name StartLayoutFile -Force -ErrorAction Ignore
+		Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name LockedStartLayout -Force -ErrorAction Ignore
+		Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name StartLayoutFile -Force -ErrorAction Ignore
 
 		Remove-Item -Path $Script:StartLayout -Force
 
@@ -10339,10 +10763,10 @@ function HEIF
 						return
 					}
 
-					# https://github.com/Sophia-Community/SophiApp/tree/master/AppX
-					$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+					# https://github.com/farag2/Sophia-Script-for-Windows/tree/master/AppX
+					$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 					$Parameters = @{
-						Uri             = "https://github.com/Sophia-Community/SophiApp/raw/master/AppX/Microsoft.HEVCVideoExtension_2.0.51121.0_x64__8wekyb3d8bbwe.Appx"
+						Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/AppX/Microsoft.HEVCVideoExtension_2.0.51121.0_x64__8wekyb3d8bbwe.Appx"
 						OutFile         = "$DownloadsFolder\Microsoft.HEVCVideoExtension_2.0.51121.0_x64__8wekyb3d8bbwe.Appx"
 						UseBasicParsing = $true
 						Verbose         = $true
@@ -10510,12 +10934,12 @@ function BackgroundUWPApps
 		"Disable"
 		{
 			# Remove all excluded apps running in the background
-			Get-ChildItem -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications | ForEach-Object -Process {
+			Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications | ForEach-Object -Process {
 				Remove-ItemProperty -Path $_.PsPath -Name * -Force
 			}
 
 			# Exclude apps from the Bundle only
-			$BackgroundAccessApplications = @((Get-ChildItem -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications).PSChildName)
+			$BackgroundAccessApplications = @((Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications).PSChildName)
 			$ExcludedBackgroundAccessApplications = @()
 			foreach ($BackgroundAccessApplication in $BackgroundAccessApplications)
 			{
@@ -10525,7 +10949,7 @@ function BackgroundUWPApps
 				}
 			}
 
-			Get-ChildItem -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications | Where-Object -FilterScript {$_.PSChildName -in $ExcludedBackgroundAccessApplications} | ForEach-Object -Process {
+			Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications | Where-Object -FilterScript {$_.PSChildName -in $ExcludedBackgroundAccessApplications} | ForEach-Object -Process {
 				New-ItemProperty -Path $_.PsPath -Name Disabled -PropertyType DWord -Value 1 -Force
 				New-ItemProperty -Path $_.PsPath -Name DisabledByUser -PropertyType DWord -Value 1 -Force
 			}
@@ -10535,7 +10959,7 @@ function BackgroundUWPApps
 		}
 		"Enable"
 		{
-			Get-ChildItem -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications | ForEach-Object -Process {
+			Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications | ForEach-Object -Process {
 				Remove-ItemProperty -Path $_.PsPath -Name * -Force
 			}
 		}
@@ -10597,12 +11021,12 @@ function XboxGameBar
 	{
 		"Disable"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR -Name AppCaptureEnabled -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\GameDVR -Name AppCaptureEnabled -PropertyType DWord -Value 0 -Force
 			New-ItemProperty -Path HKCU:\System\GameConfigStore -Name GameDVR_Enabled -PropertyType DWord -Value 0 -Force
 		}
 		"Enable"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR -Name AppCaptureEnabled -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\GameDVR -Name AppCaptureEnabled -PropertyType DWord -Value 1 -Force
 			New-ItemProperty -Path HKCU:\System\GameConfigStore -Name GameDVR_Enabled -PropertyType DWord -Value 1 -Force
 		}
 	}
@@ -10652,14 +11076,14 @@ function XboxGameTips
 		{
 			if ((Get-AppxPackage -Name Microsoft.XboxGamingOverlay) -or (Get-AppxPackage -Name Microsoft.GamingApp))
 			{
-				New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\GameBar -Name ShowStartupPanel -PropertyType DWord -Value 0 -Force
+				New-ItemProperty -Path HKCU:\Software\Microsoft\GameBar -Name ShowStartupPanel -PropertyType DWord -Value 0 -Force
 			}
 		}
 		"Enable"
 		{
 			if ((Get-AppxPackage -Name Microsoft.XboxGamingOverlay) -or (Get-AppxPackage -Name Microsoft.GamingApp))
 			{
-				New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\GameBar -Name ShowStartupPanel -PropertyType DWord -Value 1 -Force
+				New-ItemProperty -Path HKCU:\Software\Microsoft\GameBar -Name ShowStartupPanel -PropertyType DWord -Value 1 -Force
 			}
 		}
 	}
@@ -10708,11 +11132,11 @@ function SetAppGraphicsPerformance
 
 					if ($OpenFileDialog.FileName)
 					{
-						if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\DirectX\UserGpuPreferences))
+						if (-not (Test-Path -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences))
 						{
-							New-Item -Path HKCU:\SOFTWARE\Microsoft\DirectX\UserGpuPreferences -Force
+							New-Item -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Force
 						}
-						New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\DirectX\UserGpuPreferences -Name $OpenFileDialog.FileName -PropertyType String -Value "GpuPreference=2;" -Force
+						New-ItemProperty -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Name $OpenFileDialog.FileName -PropertyType String -Value "GpuPreference=2;" -Force
 						Write-Verbose -Message ("{0}" -f $OpenFileDialog.FileName) -Verbose
 					}
 				}
@@ -10841,6 +11265,13 @@ function CleanupTask
 		"Register"
 		{
 			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -TaskName "Windows Cleanup", "Windows Cleanup Notification" -Confirm:$false -ErrorAction Ignore
+			$Items = @(
+				"$env:SystemRoot\System32\Tasks\SophiApp",
+				"$env:SystemRoot\System32\Tasks\Sophia Script",
+				"HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\SophiApp",
+				"HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia Script"
+			)
+			Remove-Item -Path $Items -Recurse -ErrorAction Ignore
 
 			Get-ChildItem -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches | ForEach-Object -Process {
 				Remove-ItemProperty -Path $_.PsPath -Name StateFlags1337 -Force -ErrorAction Ignore
@@ -10953,11 +11384,11 @@ while (`$true)
 			Register-ScheduledTask @Parameters -Force
 
 			# Persist the Settings notifications to prevent to immediately disappear from Action Center
-			if (-not (Test-Path -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel"))
+			if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel"))
 			{
-				New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Force
+				New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Force
 			}
-			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Name ShowInActionCenter -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Name ShowInActionCenter -PropertyType DWord -Value 1 -Force
 
 			# Register the "WindowsCleanup" protocol to be able to run the scheduled task by clicking the "Run" button in a toast
 			if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup\shell\open\command))
@@ -10969,7 +11400,7 @@ while (`$true)
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name EditFlags -PropertyType DWord -Value 2162688 -Force
 
 			# Start the "Windows Cleanup" task if the "Run" button clicked
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup\shell\open\command -Name "(default)" -PropertyType String -Value 'powershell.exe -Command "& {Start-ScheduledTask -TaskPath ''\Sophia Script\'' -TaskName ''Windows Cleanup''}"' -Force
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup\shell\open\command -Name "(default)" -PropertyType String -Value 'powershell.exe -Command "& {Start-ScheduledTask -TaskPath ''\Sophia\'' -TaskName ''Windows Cleanup''}"' -Force
 
 			$ToastNotification = @"
 [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
@@ -11035,7 +11466,7 @@ while (`$true)
 				Remove-ItemProperty -Path $_.PsPath -Name StateFlags1337 -Force -ErrorAction Ignore
 			}
 
-			Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Name ShowInActionCenter -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Name ShowInActionCenter -Force -ErrorAction Ignore
 
 			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\", "\Sophia\" -TaskName "Windows Cleanup", "Windows Cleanup Notification" -Confirm:$false -ErrorAction Ignore
 
@@ -11089,14 +11520,21 @@ function SoftwareDistributionTask
 	{
 		"Register"
 		{
-			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\", "\Sophia\" -TaskName SoftwareDistribution -Confirm:$false -ErrorAction Ignore
+			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -TaskName SoftwareDistribution -Confirm:$false -ErrorAction Ignore
+			$Items = @(
+				"$env:SystemRoot\System32\Tasks\SophiApp",
+				"$env:SystemRoot\System32\Tasks\Sophia Script",
+				"HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\SophiApp",
+				"HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia Script"
+			)
+			Remove-Item -Path $Items -Recurse -ErrorAction Ignore
 
 			# Persist the Settings notifications to prevent to immediately disappear from Action Center
-			if (-not (Test-Path -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel"))
+			if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel"))
 			{
-				New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Force
+				New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Force
 			}
-			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Name ShowInActionCenter -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Name ShowInActionCenter -PropertyType DWord -Value 1 -Force
 
 			$SoftwareDistributionTask = @"
 (Get-Service -Name wuauserv).WaitForStatus('Stopped', '01:00:00')
@@ -11196,7 +11634,14 @@ function TempTask
 	{
 		"Register"
 		{
-			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\", "\Sophia\" -TaskName Temp -Confirm:$false -ErrorAction Ignore
+			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -TaskName Temp -Confirm:$false -ErrorAction Ignore
+			$Items = @(
+				"$env:SystemRoot\System32\Tasks\SophiApp",
+				"$env:SystemRoot\System32\Tasks\Sophia Script",
+				"HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\SophiApp",
+				"HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia Script"
+			)
+			Remove-Item -Path $Items -Recurse -ErrorAction Ignore
 
 			$TempTask = @"
 Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_.CreationTime -lt (Get-Date).AddDays(-1)} | Remove-Item -Recurse -Force
@@ -11422,7 +11867,7 @@ function DismissMSAccount
 {
 	if ($Script:DefenderEnabled)
 	{
-		New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows Security Health\State" -Name AccountProtection_MicrosoftAccount_Disconnected -PropertyType DWord -Value 1 -Force
+		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AccountProtection_MicrosoftAccount_Disconnected -PropertyType DWord -Value 1 -Force
 	}
 }
 
@@ -11431,7 +11876,7 @@ function DismissSmartScreenFilter
 {
 	if ($Script:DefenderEnabled)
 	{
-		New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows Security Health\State" -Name AppAndBrowser_EdgeSmartScreenOff -PropertyType DWord -Value 0 -Force
+		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AppAndBrowser_EdgeSmartScreenOff -PropertyType DWord -Value 0 -Force
 	}
 }
 
@@ -11535,10 +11980,12 @@ function CommandLineProcessAudit
 			auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:enable /failure:enable
 
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -PropertyType DWord -Value 1 -Force
+			Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -Type DWORD -Value 1
 		}
 		"Disable"
 		{
 			Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -Force -ErrorAction Ignore
+			Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -Type CLEAR
 		}
 	}
 }
@@ -11593,6 +12040,7 @@ function EventViewerCustomView
 
 			# Include command line in process creation events
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -PropertyType DWord -Value 1 -Force
+			Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -Type DWORD -Value 1
 
 			$XML = @"
 <ViewerConfig>
@@ -11676,11 +12124,14 @@ function PowerShellModulesLogging
 			}
 			New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging -Name EnableModuleLogging -PropertyType DWord -Value 1 -Force
 			New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging\ModuleNames -Name * -PropertyType String -Value * -Force
+			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging -Name EnableModuleLogging -Type DWORD -Value 1
+			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging\ModuleNames -Name * -Type SZ -Value *
 		}
 		"Disable"
 		{
 			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging -Name EnableModuleLogging -Force -ErrorAction Ignore
 			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging\ModuleNames -Name * -Force -ErrorAction Ignore
+			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging -Name EnableModuleLogging -Type CLEAR
 		}
 	}
 }
@@ -11732,10 +12183,12 @@ function PowerShellScriptsLogging
 				New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging -Force
 			}
 			New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging -Name EnableScriptBlockLogging -PropertyType DWord -Value 1 -Force
+			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging -Name EnableScriptBlockLogging -Type DWORD -Value 1
 		}
 		"Disable"
 		{
 			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging -Name EnableScriptBlockLogging -Force -ErrorAction Ignore
+			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging -Name EnableScriptBlockLogging -Type CLEAR
 		}
 	}
 }
@@ -11836,15 +12289,17 @@ function SaveZoneInformation
 	{
 		"Disable"
 		{
-			if (-not (Test-Path -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Attachments))
+			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Attachments))
 			{
-				New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Attachments -Force
+				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Attachments -Force
 			}
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Attachments -Name SaveZoneInformation -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Attachments -Name SaveZoneInformation -PropertyType DWord -Value 1 -Force
+			Set-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Attachments -Name SaveZoneInformation -Type DWORD -Value 1
 		}
 		"Enable"
 		{
-			Remove-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Attachments -Name SaveZoneInformation -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Attachments -Name SaveZoneInformation -Force -ErrorAction Ignore
+			Set-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Attachments -Name SaveZoneInformation -Type CLEAR
 		}
 	}
 }
@@ -11894,15 +12349,15 @@ function WindowsScriptHost
 	{
 		"Disable"
 		{
-			if (-not (Test-Path -Path "HKCU:\SOFTWARE\Microsoft\Windows Script Host\Settings"))
+			if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows Script Host\Settings"))
 			{
-				New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows Script Host\Settings" -Force
+				New-Item -Path "HKCU:\Software\Microsoft\Windows Script Host\Settings" -Force
 			}
-			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows Script Host\Settings" -Name Enabled -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Script Host\Settings" -Name Enabled -PropertyType DWord -Value 0 -Force
 		}
 		"Enable"
 		{
-			Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows Script Host\Settings" -Name Enabled -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Script Host\Settings" -Name Enabled -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -12940,11 +13395,11 @@ function MultipleInvokeContext
 	{
 		"Enable"
 		{
-			New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name MultipleInvokePromptMinimum -PropertyType DWord -Value 300 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name MultipleInvokePromptMinimum -PropertyType DWord -Value 300 -Force
 		}
 		"Disable"
 		{
-			Remove-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name MultipleInvokePromptMinimum -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name MultipleInvokePromptMinimum -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -12991,15 +13446,17 @@ function UseStoreOpenWith
 	{
 		"Hide"
 		{
-			if (-not (Test-Path -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
+			if (-not (Test-Path -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer))
 			{
-				New-Item -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Force
+				New-Item -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Force
 			}
-			New-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -PropertyType DWord -Value 1 -Force
+			Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Type DWORD -Value 1
 		}
 		"Show"
 		{
-			Remove-ItemProperty -Path HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Force -ErrorAction Ignore
+			Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Type CLEAR
 		}
 	}
 }
@@ -13014,13 +13471,7 @@ function UseStoreOpenWith
 	UpdateLGPEPolicies
 
 	.NOTES
-	Uses PolicyFileEditor module created by Dave Wyatt
-
-	.LINK
-	https://www.powershellgallery.com/packages/PolicyFileEditor
-
-	.LINK
-	https://github.com/dlwyatt/PolicyFileEditor
+	https://techcommunity.microsoft.com/t5/microsoft-security-baselines/lgpo-exe-local-group-policy-object-utility-v1-0/ba-p/701045
 
 	.NOTES
 	Machine-wide user
@@ -13053,29 +13504,37 @@ function UpdateLGPEPolicies
 					# Parse every ADMX template searching if it contains full path and registry key simultaneously
 					[xml]$config = Get-Content -Path $admx.FullName -Encoding UTF8
 					$config.SelectNodes("//@*") | ForEach-Object {$_.value = $_.value.ToLower()}
-					$SplitPath = Split-Path -Path $Path.Name.Replace("HKEY_LOCAL_MACHINE\", "HKLM:") -NoQualifier
+					$SplitPath = $Path.Name.Replace("HKEY_LOCAL_MACHINE\", "")
 
 					if ($config.SelectSingleNode("//*[local-name()='policy' and @key='$($SplitPath.ToLower())' and (@valueName='$($Item.ToLower())' or @Name='$($Item.ToLower())' or .//*[local-name()='enum' and @valueName='$($Item.ToLower())'])]"))
 					{
-						try
-						{
-							Write-Verbose -Message $Item.Replace("{}", "") -Verbose
+						Write-Verbose -Message $Item.Replace("{}", "") -Verbose
 
-							$Parameters = @{
-								Path           = "$env:SystemRoot\System32\GroupPolicy\Machine\Registry.pol"
-								# e.g. SOFTWARE\Microsoft\Windows\CurrentVersion\Policies
-								Key            = Split-Path -Path $Path.Name.Replace("HKEY_LOCAL_MACHINE\", "HKLM:") -NoQualifier
-								ValueName      = $Item.Replace("{}", "")
-								Data           = Get-ItemPropertyValue -Path $Path.PSPath -Name $Item
-								# DWord, String, etc.
-								Type           = (Get-Item -Path $Path.PSPath).GetValueKind($Item)
-								# Do not update the policy DB every time
-								NoGptIniUpdate = $true
+						$Type = switch ((Get-Item -Path $Path.PSPath).GetValueKind($Item))
+						{
+							"DWord"
+							{
+								(Get-Item -Path $Path.PSPath).GetValueKind($Item).ToString().ToUpper()
 							}
-							Set-PolicyFileEntry @Parameters
+							"ExpandString"
+							{
+								"EXSZ"
+							}
+							"String"
+							{
+								"SZ"
+							}
 						}
-						catch
-						{}
+
+						$Parameters = @{
+							Scope = "Computer"
+							# e.g. SOFTWARE\Microsoft\Windows\CurrentVersion\Policies
+							Path  = $Path.Name.Replace("HKEY_LOCAL_MACHINE\", "")
+							Name  = $Item.Replace("{}", "")
+							Type  = $Type
+							Value = Get-ItemPropertyValue -Path $Path.PSPath -Name $Item
+						}
+						Set-Policy @Parameters
 					}
 				}
 			}
@@ -13084,8 +13543,8 @@ function UpdateLGPEPolicies
 
 	# Current User policies paths to scan recursively
 	$CU_Paths = @(
-		"HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies",
-		"HKCU:\SOFTWARE\Policies\Microsoft"
+		"HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies",
+		"HKCU:\Software\Policies\Microsoft"
 	)
 	foreach ($Path in (@(Get-ChildItem -Path $CU_Paths -Recurse -Force)))
 	{
@@ -13104,71 +13563,42 @@ function UpdateLGPEPolicies
 
 					if ($config.SelectSingleNode("//*[local-name()='policy' and @key='$($SplitPath.ToLower())' and (@valueName='$($Item.ToLower())' or @Name='$($Item.ToLower())' or .//*[local-name()='enum' and @valueName='$($Item.ToLower())'])]"))
 					{
-						try
-						{
-							Write-Verbose -Message $Item.Replace("{}", "") -Verbose
+						Write-Verbose -Message $Item.Replace("{}", "") -Verbose
 
-							$Parameters = @{
-								Path           = "$env:SystemRoot\System32\GroupPolicy\User\Registry.pol"
-								# e.g. SOFTWARE\Microsoft\Windows\CurrentVersion\Policies
-								Key            = Split-Path -Path $Path.Name.Replace("HKEY_CURRENT_USER\", "HKCU:") -NoQualifier
-								ValueName      = $Item.Replace("{}", "")
-								Data           = Get-ItemPropertyValue -Path $Path.PSPath -Name $Item
-								# DWord, String, etc.
-								Type           = (Get-Item -Path $Path.PSPath).GetValueKind($Item)
-								# Do not update the policy DB every time
-								NoGptIniUpdate = $true
+						$Type = switch ((Get-Item -Path $Path.PSPath).GetValueKind($Item))
+						{
+							"DWord"
+							{
+								(Get-Item -Path $Path.PSPath).GetValueKind($Item).ToString().ToUpper()
 							}
-							Set-PolicyFileEntry @Parameters
+							"ExpandString"
+							{
+								"EXSZ"
+							}
+							"String"
+							{
+								"SZ"
+							}
 						}
-						catch
-						{}
+
+						$Parameters = @{
+							Scope = "Computer"
+							# e.g. SOFTWARE\Microsoft\Windows\CurrentVersion\Policies
+							Path  = $Path.Name.Replace("HKEY_CURRENT_USER\", "")
+							Name  = $Item.Replace("{}", "")
+							Type  = $Type
+							Value = Get-ItemPropertyValue -Path $Path.PSPath -Name $Item
+						}
+						Set-Policy @Parameters
 					}
 				}
 			}
 		}
 	}
 
-	# Re-build GPT.ini if it doesn't exist
-	if (-not (Test-Path -Path $env:SystemRoot\System32\GroupPolicy\GPT.ini))
-	{
-		Start-Process -FilePath gpedit.msc
-		Start-Sleep -Seconds 2
-
-		# Get mmc.exe's Id with its' argument (gpedit.msc) to close
-		$gpedit_Process_ID = (Get-CimInstance -ClassName CIM_Process | Where-Object -FilterScript {
-			$_.Name -eq "mmc.exe"
-		} | Where-Object -FilterScript {$_.CommandLine -match "GPEDIT.MSC"}).Handle
-		Get-Process -Id $gpedit_Process_ID | Stop-Process -Force
-	}
-
-	Update-GptIniVersion -Path $env:SystemRoot\System32\GroupPolicy\GPT.ini -PolicyType Machine, User
-
-	# Apply the new policy immediately
 	gpupdate.exe /force
 }
 #endregion Update Policies
-
-# Errors output
-function Errors
-{
-	if ($Global:Error)
-	{
-		($Global:Error | ForEach-Object -Process {
-			# Some errors may have the Windows nature and don't have a path to any of the module's files
-			$ErrorInFile = if ($_.InvocationInfo.PSCommandPath)
-			{
-				Split-Path -Path $_.InvocationInfo.PSCommandPath -Leaf
-			}
-
-			[PSCustomObject]@{
-				$Localization.ErrorsLine    = $_.InvocationInfo.ScriptLineNumber
-				$Localization.ErrorsFile    = $ErrorInFile
-				$Localization.ErrorsMessage = $_.Exception.Message
-			}
-		} | Sort-Object -Property Line | Format-Table -AutoSize -Wrap | Out-String).Trim()
-	}
-}
 
 #region Refresh Environment
 function RefreshEnvironment
@@ -13328,8 +13758,23 @@ public static void PostMessage()
 	$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New($ToastXML)
 	[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel").Show($ToastMessage)
 
-	Stop-Process -Name explorer -Force
+	if ((Test-Path -Path "$env:TEMP\Computer.txt") -or (Test-Path -Path "$env:TEMP\User.txt"))
+	{
+		if (Test-Path -Path "$env:TEMP\Computer.txt")
+		{
+			& "$PSScriptRoot\..\bin\LGPO.exe" /t "$env:TEMP\Computer.txt"
+		}
+		if (Test-Path -Path "$env:TEMP\User.txt")
+		{
+			& "$PSScriptRoot\..\bin\LGPO.exe" /t "$env:TEMP\User.txt"
+		}
 
+		gpupdate /force
+	}
+
+	Remove-Item -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore
+
+	Stop-Process -Name explorer -Force
 	Start-Sleep -Seconds 3
 
 	# Restoring closed folders
@@ -13339,6 +13784,26 @@ public static void PostMessage()
 		{
 			Start-Process -FilePath explorer -ArgumentList $Script:OpenedFolder
 		}
+	}
+}
+
+function Errors
+{
+	if ($Global:Error)
+	{
+		($Global:Error | ForEach-Object -Process {
+			# Some errors may have the Windows nature and don't have a path to any of the module's files
+			$ErrorInFile = if ($_.InvocationInfo.PSCommandPath)
+			{
+				Split-Path -Path $_.InvocationInfo.PSCommandPath -Leaf
+			}
+
+			[PSCustomObject]@{
+				$Localization.ErrorsLine    = $_.InvocationInfo.ScriptLineNumber
+				$Localization.ErrorsFile    = $ErrorInFile
+				$Localization.ErrorsMessage = $_.Exception.Message
+			}
+		} | Sort-Object -Property Line | Format-Table -AutoSize -Wrap | Out-String).Trim()
 	}
 }
 #endregion Refresh Environment

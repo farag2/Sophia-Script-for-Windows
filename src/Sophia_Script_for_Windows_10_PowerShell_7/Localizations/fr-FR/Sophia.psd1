@@ -77,8 +77,9 @@ Restore                                   = Restaurer
 Run                                       = Démarrer
 SelectAll                                 = Tout sélectionner
 Skipped                                   = Passé
+GPOUpdate                                 = Mise à jour de la GPO...
 TelegramGroupTitle                        = Rejoignez notre groupe Telegram officiel
 TelegramChannelTitle                      = Rejoignez notre canal Telegram officiel
-DiscordChannelTitle                       = Rejoignez notre canal Discord channel
+DiscordChannelTitle                       = Rejoignez notre canal Discord officiel
 Uninstall                                 = Désinstaller
 '@

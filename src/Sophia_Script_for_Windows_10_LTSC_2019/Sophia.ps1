@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10 LTSC 2019"
 
-	Version: v5.3.5
-	Date: 09.10.2022
+	Version: v5.4.0
+	Date: 22.10.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -40,12 +40,15 @@
 		. .\Function.ps1 (with a dot at the beginning)
 	Read more in the Functions.ps1 file
 
-	.LINK GitHub link
+	.LINK GitHub
 	https://github.com/farag2/Sophia-Script-for-Windows
 
-	.LINK Telegram channel & group
+	.LINK Telegram
 	https://t.me/sophianews
 	https://t.me/sophia_chat
+
+	.LINK Discord
+	https://discord.gg/sSryhaEv79
 
 	.NOTES
 	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
@@ -71,16 +74,10 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC 2019 v5.3.5 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2022"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC 2019 v5.4.0 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2022"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
-
-# Import module for modifying registry.pol files (Administrative Templates) of local GPOs
-# Used for UpdateLGPEPolicies function
-# https://www.powershellgallery.com/packages/PolicyFileEditor
-Remove-Module -Name PolicyFileEditor -Force -ErrorAction Ignore
-Import-Module -Name $PSScriptRoot\bin\PolicyFileEditor\PolicyFileEditor.psd1 -PassThru -Force
 
 Import-LocalizedData -BindingVariable Global:Localization -BaseDirectory $PSScriptRoot\Localizations -FileName Sophia
 
@@ -106,7 +103,7 @@ if ($Functions)
 	}
 
 	# The "RefreshEnvironment" and "Errors" functions will be executed at the end
-	Invoke-Command -ScriptBlock {Errors; RefreshEnvironment}
+	Invoke-Command -ScriptBlock {RefreshEnvironment; Errors}
 
 	exit
 }
@@ -434,6 +431,18 @@ AppsLanguageSwitch -Enable
 # Do not use a different input method for each app window (default value)
 # Не использовать метод ввода для каждого окна (значение по умолчанию)
 # AppsLanguageSwitch -Disable
+
+# Download and install free dark "Windows 11 Cursors Concept v2" cursors from Jepri Creations
+# Скачать и установить бесплатные темные курсоры "Windows 11 Cursors Concept v2" от Jepri Creations
+Cursors -Dark
+
+# Download and install free light "Windows 11 Cursors Concept v2" cursors from Jepri Creations
+# Скачать и установить бесплатные светлые курсоры "Windows 11 Cursors Concept v2" от Jepri Creations
+# Cursors -Light
+
+# Set default cursors (default value)
+# Установить курсоры по умолчанию (значение по умолчанию)
+# Cursors -Default
 #endregion UI & Personalization
 
 #region System
@@ -446,14 +455,6 @@ StorageSense -Enable
 # Выключить Контроль памяти (значение по умолчанию)
 # StorageSense -Disable
 
-# Delete temporary files that apps aren't using
-# Удалять временные файлы, не используемые в приложениях
-StorageSenseTempFiles -Enable
-
-# Do not delete temporary files that apps aren't using
-# Не удалять временные файлы, не используемые в приложениях
-# StorageSenseTempFiles -Disable
-
 # Run Storage Sense every month
 # Запускать Контроль памяти каждый месяц
 StorageSenseFrequency -Month
@@ -461,6 +462,14 @@ StorageSenseFrequency -Month
 # Run Storage Sense during low free disk space (default value)
 # Запускать Контроль памяти, когда остается мало место на диске (значение по умолчанию)
 # StorageSenseFrequency -Default
+
+# Delete temporary files that apps aren't using
+# Удалять временные файлы, не используемые в приложениях
+StorageSenseTempFiles -Enable
+
+# Do not delete temporary files that apps aren't using
+# Не удалять временные файлы, не используемые в приложениях
+# StorageSenseTempFiles -Disable
 #endregion StorageSense
 
 # Disable hibernation. Do not recommend turning it off on laptops
@@ -487,12 +496,12 @@ Win32LongPathLimit -Disable
 # Включить ограничение Windows на 260 символов в пути (значение по умолчанию)
 # Win32LongPathLimit -Enable
 
-# Display the Stop error information on the BSoD
-# Отображать Stop-ошибку при появлении BSoD
+# Display Stop error code when BSoD occurs
+# Отображать код Stop-ошибки при появлении BSoD
 BSoDStopError -Enable
 
-# Do not display the Stop error information on the BSoD (default value)
-# Не отображать Stop-ошибку при появлении BSoD (значение по умолчанию)
+# Do not Stop error code when BSoD occurs (default value)
+# Не отображать код Stop-ошибки при появлении BSoD (значение по умолчанию)
 # BSoDStopError -Disable
 
 # Choose when to be notified about changes to your computer: never notify
@@ -746,12 +755,12 @@ ActiveHours -Automatically
 # Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .txt -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
 
 <#
-	Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 x64
-	Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2022 x64
+	Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 (x86/x64)
+	Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2022 (x86/x64)
 
 	https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist
 #>
-InstallVCRedistx64
+InstallVCRedist
 
 <#
 	Install the latest .NET Desktop Runtime 6 (x86/x64)
@@ -761,8 +770,8 @@ InstallVCRedistx64
 #>
 InstallDotNetRuntime6
 
-# Enable proxying only blocked sites from the unified registry of Roskomnadzor
-# Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора
+# Enable proxying only blocked sites from the unified registry of Roskomnadzor. The function is applicable for Russia only
+# Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора. Функция применима только для России
 # https://antizapret.prostovpn.org
 RKNBypass -Enable
 
@@ -1080,17 +1089,8 @@ MultipleInvokeContext -Enable
 #region Update Policies
 # Update Local Group Policy Editor (gpedit.msc) to make all manually created policy keys in the registry visible in the snap-in
 # Обновить Редактор локальной групповой политики (gpedit.msc) так, чтобы оснастка отображала все созданные вручную политики в реестре
-UpdateLGPEPolicies
+# UpdateLGPEPolicies
 #endregion Update Policies
-
-<#
-	Errors output
-	Please, do not comment out this function
-
-	Вывод ошибок
-	Пожалуйста, не комментируйте данную функцию
-#>
-Errors
 
 <#
 	Simulate pressing F5 to refresh the desktop
@@ -1104,3 +1104,12 @@ Errors
 	Пожалуйста, не комментируйте данную функцию
 #>
 RefreshEnvironment
+
+<#
+	Errors output
+	Please, do not comment out this function
+
+	Вывод ошибок
+	Пожалуйста, не комментируйте данную функцию
+#>
+Errors

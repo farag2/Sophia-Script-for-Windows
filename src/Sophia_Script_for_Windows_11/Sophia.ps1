@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 11"
 
-	Version: v6.1.5
-	Date: 09.10.2022
+	Version: v6.2.0
+	Date: 22.10.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -39,12 +39,15 @@
 		. .\Function.ps1 (with a dot at the beginning)
 	Read more in the Functions.ps1 file
 
-	.LINK GitHub link
+	.LINK GitHub
 	https://github.com/farag2/Sophia-Script-for-Windows
 
-	.LINK Telegram channel & group
+	.LINK Telegram
 	https://t.me/sophianews
 	https://t.me/sophia_chat
+
+	.LINK Discord
+	https://discord.gg/sSryhaEv79
 
 	.NOTES
 	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
@@ -70,16 +73,10 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.1.5 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2022"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.2.0 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2022"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
-
-# Import module for modifying registry.pol files (Administrative Templates) of local GPOs
-# Used for UpdateLGPEPolicies function
-# https://www.powershellgallery.com/packages/PolicyFileEditor
-Remove-Module -Name PolicyFileEditor -Force -ErrorAction Ignore
-Import-Module -Name $PSScriptRoot\bin\PolicyFileEditor\PolicyFileEditor.psd1 -PassThru -Force
 
 Import-LocalizedData -BindingVariable Global:Localization -BaseDirectory $PSScriptRoot\Localizations -FileName Sophia
 
@@ -105,7 +102,7 @@ if ($Functions)
 	}
 
 	# The "RefreshEnvironment" and "Errors" functions will be executed at the end
-	Invoke-Command -ScriptBlock {Errors; RefreshEnvironment}
+	Invoke-Command -ScriptBlock {RefreshEnvironment; Errors}
 
 	exit
 }
@@ -286,11 +283,11 @@ HiddenItems -Enable
 # Не показывать скрытые файлы, папки и диски (значение по умолчанию)
 # HiddenItems -Disable
 
-# Show the file name extensions
+# Show file name extensions
 # Отобразить расширения имён файлов
 FileExtensions -Show
 
-# Hide the file name extensions (default value)
+# Hide file name extensions (default value)
 # Скрывать расширения имён файлов файлов (значение по умолчанию)
 # FileExtensions -Hide
 
@@ -462,24 +459,6 @@ JPEGWallpapersQuality -Max
 # Установить коэффициент качества обоев рабочего стола в формате JPEG по умолчанию
 # JPEGWallpapersQuality -Default
 
-<#
-	Start Task Manager in the expanded mode
-	Function works only on 22000 build due to Windows 11 22H2 has a new Task Manager with the new UI
-
-	Запускать Диспетчера задач в развернутом виде
-	Функция работает только на 22000 билде, так как Windows 11 22H2 идет с обновленным диспетчером задач
-#>
-TaskManagerWindow -Expanded
-
-<#
-	Start Task Manager in the compact mode (default value)
-	Function works only on 22000 build due to Windows 11 22H2 has a new Task Manager with the new UI
-
-	Запускать Диспетчера задач в свернутом виде (значение по умолчанию)
-	Функция работает только на 22000 билде, так как Windows 11 22H2 идет с обновленным диспетчером задач
-#>
-# TaskManagerWindow -Compact
-
 # Notify me when a restart is required to finish updating
 # Уведомлять меня о необходимости перезагрузки для завершения обновления
 RestartNotification -Show
@@ -519,6 +498,18 @@ AeroShaking -Enable
 # When I grab a windows's title bar and shake it, don't minimize all other windows (default value)
 # При захвате заголовка окна и встряхивании не сворачиваются все остальные окна (значение по умолчанию)
 # AeroShaking -Disable
+
+# Download and install free dark "Windows 11 Cursors Concept v2" cursors from Jepri Creations
+# Скачать и установить бесплатные темные курсоры "Windows 11 Cursors Concept v2" от Jepri Creations
+Cursors -Dark
+
+# Download and install free light "Windows 11 Cursors Concept v2" cursors from Jepri Creations
+# Скачать и установить бесплатные светлые курсоры "Windows 11 Cursors Concept v2" от Jepri Creations
+# Cursors -Light
+
+# Set default cursors (default value)
+# Установить курсоры по умолчанию (значение по умолчанию)
+# Cursors -Default
 #endregion UI & Personalization
 
 #region OneDrive
@@ -582,12 +573,12 @@ Win32LongPathLimit -Disable
 # Включить ограничение Windows на 260 символов в пути (значение по умолчанию)
 # Win32LongPathLimit -Enable
 
-# Display the Stop error information on the BSoD
-# Отображать Stop-ошибку при появлении BSoD
+# Display Stop error code when BSoD occurs
+# Отображать код Stop-ошибки при появлении BSoD
 BSoDStopError -Enable
 
-# Do not display the Stop error information on the BSoD (default value)
-# Не отображать Stop-ошибку при появлении BSoD (значение по умолчанию)
+# Do not Stop error code when BSoD occurs (default value)
+# Не отображать код Stop-ошибки при появлении BSoD (значение по умолчанию)
 # BSoDStopError -Disable
 
 # Choose when to be notified about changes to your computer: never notify
@@ -899,12 +890,12 @@ DefaultTerminalApp -WindowsTerminal
 # DefaultTerminalApp -ConsoleHost
 
 <#
-	Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 x64
-	Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2022 x64
+	Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 (x86/x64)
+	Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2022 (x86/x64)
 
 	https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist
 #>
-InstallVCRedistx64
+InstallVCRedist
 
 <#
 	Install the latest .NET Desktop Runtime 6 (x86/x64)
@@ -914,8 +905,8 @@ InstallVCRedistx64
 #>
 InstallDotNetRuntime6
 
-# Enable proxying only blocked sites from the unified registry of Roskomnadzor. The function will be applied only if the region in Windows is set to "Russia"
-# Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора. Функция будет применена, только если в Windows установлен регион "Россия"
+# Enable proxying only blocked sites from the unified registry of Roskomnadzor. The function is applicable for Russia only
+# Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора. Функция применима только для России
 # https://antizapret.prostovpn.org
 RKNBypass -Enable
 
@@ -1370,17 +1361,8 @@ Windows10ContextMenu -Disable
 #region Update Policies
 # Update Local Group Policy Editor (gpedit.msc) to make all manually created policy keys in the registry visible in the snap-in
 # Обновить Редактор локальной групповой политики (gpedit.msc) так, чтобы оснастка отображала все созданные вручную политики в реестре
-UpdateLGPEPolicies
+# UpdateLGPEPolicies
 #endregion Update Policies
-
-<#
-	Errors output
-	Please, do not comment out this function
-
-	Вывод ошибок
-	Пожалуйста, не комментируйте данную функцию
-#>
-Errors
 
 <#
 	Simulate pressing F5 to refresh the desktop
@@ -1394,3 +1376,12 @@ Errors
 	Пожалуйста, не комментируйте данную функцию
 #>
 RefreshEnvironment
+
+<#
+	Errors output
+	Please, do not comment out this function
+
+	Вывод ошибок
+	Пожалуйста, не комментируйте данную функцию
+#>
+Errors

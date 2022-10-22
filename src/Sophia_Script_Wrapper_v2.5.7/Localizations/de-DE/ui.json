@@ -1,0 +1,71 @@
+[
+  {
+    "Id": "Menu",
+    "Options": {
+      "menuImportExportPreset": "Importieren | Exportieren",
+      "menuImportPreset": "Voreinstellung importieren",
+      "menuExportPreset": "Voreinstellung exportieren",
+      "menuPresets": "Voreinstellungen",
+      "menuOpposite": "Alle umkehren",
+      "menuClear": "Löschen",
+      "menuTheme": "Thema",
+      "menuThemeDark": "Dunkel",
+      "menuThemeLight": "Hell",
+      "menuLanguage": "Sprache",
+      "menuAbout": "Über"
+    }
+  },
+  {
+    "Id": "Tab",
+    "Options": {
+      "tabSystemProtection": "Systemschutz",
+      "tabPrivacyTelemetry": "Datenschutz und Telemetrie",
+      "tabUIPersonalization": "UI & Personalisierung",
+      "tabOneDrive": "OneDrive",
+      "tabSystem": "System",
+      "tabWSL": "WSL",
+      "tabStartMenu": "Startmenü",
+      "tabUWP": "UWP Apps",
+      "tabGaming": "Gaming",
+      "tabScheduledTasks": "Geplante Aufgaben",
+      "tabDefenderSecurity": "Defender & Security",
+      "tabContextMenu": "Kontextmenü",
+      "tabUpdatePolicies": "Aktualisieren Sie die Richtlinien",
+      "tabConsoleOutput": "Konsolenausgabe"
+    }
+  },
+  {
+    "Id": "Button",
+    "Options": {
+      "btnRefreshConsole": "Konsole aktualisieren",
+      "btnRunPowerShell": "PowerShell ausführen"
+    }
+  },
+  {
+    "Id": "StatusBar",
+    "Options": {
+      "statusBarHover": "Bewegen Sie den Mauszeiger über die Auswahlpunkte, um Informationen zu jeder Option zu erhalten",
+      "statusBarPresetLoaded": "Voreinstellung geladen!",
+      "statusBarPresetNotComp": "Voreinstellungsdatei ist nicht kompatibel!",
+      "statusBarSophiaPreset": "Sophia Voreinstellung geladen!",
+      "statusBarWindowsDefaultPreset": "Windows Standardvoreinstellung geladen!",
+      "statusBarPowerShellScriptCreatedFromSelections": "PowerShell Skript, das anhand Ihrer Auswahlen erstellt wurde! Sie können es ausführen oder speichern.",
+      "statusBarPowerShellExport": "PowerShell Skript erstellt!",
+      "statusBarOpposite": "Umgekehrte Einstellungen ausgewählt!",
+      "statusBarClear": "Auswahlen alle gelöscht!",
+      "statusBarDisabled": "Sie müssen zuerst 'Voreinstellung importieren', um die Verwendung von Wrapper zu aktivieren. Importieren, um Steuerelemente zu aktivieren.",
+      "statusBarCurrentOS": "Aktuelles OS"
+    }
+  },
+  {
+    "Id": "MessageBox",
+    "Options": {
+      "messageBoxNewWrapperFound": "Eine neue Version von 'Wrapper' wurde entdeckt.\nGitHub-Seite öffnen?",
+      "messageBoxNewSophiaFound": "Eine neue Version von 'Sophia Script' wurde entdeckt.\nGitHub-Seite öffnen?",
+      "messageBoxDoesNotExist": "existiert nicht",
+      "messageBoxPresetNotComp": "Voreinstellung ist nicht kompatibel!",
+      "messageBoxFilesMissingClose": "Die erforderlichen Sophia Script Wrapper-Dateien fehlen. Das Programm wird geschlossen",
+      "messageBoxConsoleEmpty": "Die Konsole ist leer.\n Drücken Sie die Schaltfläche Konsole aktualisieren, um ein Skript entsprechend Ihrer Auswahl zu erstellen"
+    }
+  }
+]

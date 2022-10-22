@@ -1,0 +1,71 @@
+[
+  {
+    "Id": "Menu",
+    "Options": {
+      "menuImportExportPreset": "Импорт | экспорт",
+      "menuImportPreset": "Импортировать пресет",
+      "menuExportPreset": "Экспортировать пресет",
+      "menuPresets": "Пресеты",
+      "menuOpposite": "Противоположные значения",
+      "menuClear": "Очистить",
+      "menuTheme": "Тема",
+      "menuThemeDark": "Тёмная",
+      "menuThemeLight": "Светлая",
+      "menuLanguage": "Язык",
+      "menuAbout": "О программе"
+    }
+  },
+  {
+    "Id": "Tab",
+    "Options": {
+      "tabSystemProtection": "Защита",
+      "tabPrivacyTelemetry": "Конфиденциальность & телеметрия",
+      "tabUIPersonalization": "UI & персонализация",
+      "tabOneDrive": "OneDrive",
+      "tabSystem": "Система",
+      "tabWSL": "WSL",
+      "tabStartMenu": "Меню \"Пуск\"",
+      "tabUWP": "UWP-приложения",
+      "tabGaming": "Игры",
+      "tabScheduledTasks": "Планировщик заданий",
+      "tabDefenderSecurity": "Defender и защита",
+      "tabContextMenu": "Контекстное меню",
+      "tabUpdatePolicies": "Обновление политик",
+      "tabConsoleOutput": "Вывод консоли"
+    }
+  },
+  {
+    "Id": "Button",
+    "Options": {
+      "btnRefreshConsole": "Обновить консоль",
+      "btnRunPowerShell": "Запустить PowerShell"
+    }
+  },
+  {
+    "Id": "StatusBar",
+    "Options": {
+      "statusBarHover": "Наведите курсором на функции, чтобы увидеть подсказки по каждой опции",
+      "statusBarPresetLoaded": "Модуль загружен!",
+      "statusBarPresetNotComp": "Пресет не совместим!",
+      "statusBarSophiaPreset": "Загружен пресет Sophia!",
+      "statusBarWindowsDefaultPreset": "Загружен пресет по умолчанию!",
+      "statusBarPowerShellScriptCreatedFromSelections": "Скрипт для PowerShell создан из ваших выбранных элементов. Можете запустить и сохранить его.",
+      "statusBarPowerShellExport": "Скрипт для PowerShell создан!",
+      "statusBarOpposite": "Выбраны обратные настройки!",
+      "statusBarClear": "Выбранные элементы очищены!",
+      "statusBarDisabled": "Вы должны сначала \"Импортировать пресет\", чтобы использовать Wrapper. Импортируйте, чтобы включить элементы управления.",
+      "statusBarCurrentOS": "Текущая ОС"
+    }
+  },
+  {
+    "Id": "MessageBox",
+    "Options": {
+      "messageBoxNewWrapperFound": "Обнаружена новая версия Wrapper.\nОткрыть страницу GitHub?",
+      "messageBoxNewSophiaFound": "Обнаружена новая версия Sophia Script.\nОткрыть страницу GitHub?",
+      "messageBoxDoesNotExist": "не существует",
+      "messageBoxPresetNotComp": "Пресет не совместим!",
+      "messageBoxFilesMissingClose": "Отсутствуют необходимые файлы Sophia Script Wrapper. Программа будет закрыта",
+      "messageBoxConsoleEmpty": "Консоль пуста.\nНажмите кнопку \"Обновить консоль\", чтобы создать скрипт, согласно вышим выборам"
+    }
+  }
+]

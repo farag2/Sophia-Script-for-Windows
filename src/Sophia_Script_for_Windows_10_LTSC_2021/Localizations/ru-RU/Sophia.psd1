@@ -70,6 +70,7 @@ Restore                                   = Восстановить
 Run                                       = Запустить
 SelectAll                                 = Выбрать всё
 Skipped                                   = Пропущено
+GPOUpdate                                 = Обновление GPO...
 TelegramGroupTitle                        = Присоединяйтесь к нашей официальной группе в Telegram
 TelegramChannelTitle                      = Присоединяйтесь к нашему официальному каналу в Telegram
 DiscordChannelTitle                       = Присоединяйтесь к нашему официальному каналу в Discord

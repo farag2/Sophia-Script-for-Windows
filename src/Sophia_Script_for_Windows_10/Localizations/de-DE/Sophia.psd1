@@ -77,6 +77,7 @@ Restore                                   = Wiederherstellen
 Run                                       = Starten
 SelectAll                                 = Alle auswählen
 Skipped                                   = Übersprungen
+GPOUpdate                                 = GPO-Aktualisierung...
 TelegramGroupTitle                        = Treten Sie unserer offiziellen Telegram-Gruppe bei
 TelegramChannelTitle                      = Treten Sie unserem offiziellen Telegram-Kanal bei
 DiscordChannelTitle                       = Treten Sie unserem offiziellen Discord-Kanal bei

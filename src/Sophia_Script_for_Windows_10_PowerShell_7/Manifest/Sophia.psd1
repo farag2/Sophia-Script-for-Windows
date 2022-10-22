@@ -1,6 +1,6 @@
 @{
 	RootModule            = '..\Module\Sophia.psm1'
-	ModuleVersion         = '5.13.6'
+	ModuleVersion         = '5.14.0'
 	GUID                  = 'aa0b47a7-1770-4b5d-8c9f-cc6c505bcc7a'
 	Author                = 'Dmitry "farag" Nefedov'
 	Copyright             = '(c) 2014—2022 farag & Inestic. All rights reserved'

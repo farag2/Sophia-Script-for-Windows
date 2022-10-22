@@ -68,6 +68,7 @@ Restore                                   = Onar
 Run                                       = Başlat
 SelectAll                                 = Hepsini seç
 Skipped                                   = Atlandı
+GPOUpdate                                 = GPO Güncelleniyor...
 TelegramGroupTitle                        = Resmi Telegram grubumuza katılın
 TelegramChannelTitle                      = Resmi Telegram kanalımıza katılın
 DiscordChannelTitle                       = Resmi Discord kanalımıza katılın

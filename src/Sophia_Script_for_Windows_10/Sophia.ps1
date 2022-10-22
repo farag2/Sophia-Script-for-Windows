@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10"
 
-	Version: v5.13.6
-	Date: 09.10.2022
+	Version: v5.14.0
+	Date: 22.10.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -40,12 +40,15 @@
 		. .\Function.ps1 (with a dot at the beginning)
 	Read more in the Functions.ps1 file
 
-	.LINK GitHub link
+	.LINK GitHub
 	https://github.com/farag2/Sophia-Script-for-Windows
 
-	.LINK Telegram channel & group
+	.LINK Telegram
 	https://t.me/sophianews
 	https://t.me/sophia_chat
+
+	.LINK Discord
+	https://discord.gg/sSryhaEv79
 
 	.NOTES
 	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
@@ -71,16 +74,10 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.13.6 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2022"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.14.0 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2022"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
-
-# Import module for modifying registry.pol files (Administrative Templates) of local GPOs
-# Used for UpdateLGPEPolicies function
-# https://www.powershellgallery.com/packages/PolicyFileEditor
-Remove-Module -Name PolicyFileEditor -Force -ErrorAction Ignore
-Import-Module -Name $PSScriptRoot\bin\PolicyFileEditor\PolicyFileEditor.psd1 -PassThru -Force
 
 Import-LocalizedData -BindingVariable Global:Localization -BaseDirectory $PSScriptRoot\Localizations -FileName Sophia
 
@@ -106,7 +103,7 @@ if ($Functions)
 	}
 
 	# The "RefreshEnvironment" and "Errors" functions will be executed at the end
-	Invoke-Command -ScriptBlock {Errors; RefreshEnvironment}
+	Invoke-Command -ScriptBlock {RefreshEnvironment; Errors}
 
 	exit
 }
@@ -287,11 +284,11 @@ HiddenItems -Enable
 # Не показывать скрытые файлы, папки и диски (значение по умолчанию)
 # HiddenItems -Disable
 
-# Show the file name extensions
+# Show file name extensions
 # Отобразить расширения имён файлов
 FileExtensions -Show
 
-# Hide the file name extensions (default value)
+# Hide file name extensions (default value)
 # Скрывать расширения имён файлов файлов (значение по умолчанию)
 # FileExtensions -Hide
 
@@ -562,6 +559,18 @@ AeroShaking -Enable
 # When I grab a windows's title bar and shake it, don't minimize all other windows
 # При захвате заголовка окна и встряхивании не сворачиваются все остальные окна
 # AeroShaking -Disable
+
+# Download and install free dark "Windows 11 Cursors Concept v2" cursors from Jepri Creations
+# Скачать и установить бесплатные темные курсоры "Windows 11 Cursors Concept v2" от Jepri Creations
+Cursors -Dark
+
+# Download and install free light "Windows 11 Cursors Concept v2" cursors from Jepri Creations
+# Скачать и установить бесплатные светлые курсоры "Windows 11 Cursors Concept v2" от Jepri Creations
+# Cursors -Light
+
+# Set default cursors (default value)
+# Установить курсоры по умолчанию (значение по умолчанию)
+# Cursors -Default
 #endregion UI & Personalization
 
 #region OneDrive
@@ -625,12 +634,12 @@ Win32LongPathLimit -Disable
 # Включить ограничение Windows на 260 символов в пути (значение по умолчанию)
 # Win32LongPathLimit -Enable
 
-# Display the Stop error information on the BSoD
-# Отображать Stop-ошибку при появлении BSoD
+# Display Stop error code when BSoD occurs
+# Отображать код Stop-ошибки при появлении BSoD
 BSoDStopError -Enable
 
-# Do not display the Stop error information on the BSoD (default value)
-# Не отображать Stop-ошибку при появлении BSoD (значение по умолчанию)
+# Do not Stop error code when BSoD occurs (default value)
+# Не отображать код Stop-ошибки при появлении BSoD (значение по умолчанию)
 # BSoDStopError -Disable
 
 # Choose when to be notified about changes to your computer: never notify
@@ -893,7 +902,7 @@ ThumbnailCacheRemoval -Disable
 # ThumbnailCacheRemoval -Enable
 
 # Automatically saving my restartable apps when signing out and restart them after signing in
-# Автоматически сохранять мои перезапускаемые приложения из системы и перезапускать их при повторном входе
+# Автоматически сохранять мои перезапускаемые приложения при выходе из системы и перезапускать их при повторном входе
 SaveRestartableApps -Enable
 
 # Turn off automatically saving my restartable apps when signing out and restart them after signing in (default value)
@@ -945,12 +954,12 @@ RestartDeviceAfterUpdate -Enable
 UninstallPCHealthCheck
 
 <#
-	Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 x64
-	Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2022 x64
+	Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 (x86/x64)
+	Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2022 (x86/x64)
 
 	https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist
 #>
-InstallVCRedistx64
+InstallVCRedist
 
 <#
 	Install the latest .NET Desktop Runtime 6 (x86/x64)
@@ -960,8 +969,8 @@ InstallVCRedistx64
 #>
 InstallDotNetRuntime6
 
-# Enable proxying only blocked sites from the unified registry of Roskomnadzor
-# Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора
+# Enable proxying only blocked sites from the unified registry of Roskomnadzor. The function is applicable for Russia only
+# Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора. Функция применима только для России
 # https://antizapret.prostovpn.org
 RKNBypass -Enable
 
@@ -1428,17 +1437,8 @@ UseStoreOpenWith -Hide
 #region Update Policies
 # Update Local Group Policy Editor (gpedit.msc) to make all manually created policy keys in the registry visible in the snap-in
 # Обновить Редактор локальной групповой политики (gpedit.msc) так, чтобы оснастка отображала все созданные вручную политики в реестре
-UpdateLGPEPolicies
+# UpdateLGPEPolicies
 #endregion Update Policies
-
-<#
-	Errors output
-	Please, do not comment out this function
-
-	Вывод ошибок
-	Пожалуйста, не комментируйте данную функцию
-#>
-Errors
 
 <#
 	Simulate pressing F5 to refresh the desktop
@@ -1452,3 +1452,12 @@ Errors
 	Пожалуйста, не комментируйте данную функцию
 #>
 RefreshEnvironment
+
+<#
+	Errors output
+	Please, do not comment out this function
+
+	Вывод ошибок
+	Пожалуйста, не комментируйте данную функцию
+#>
+Errors

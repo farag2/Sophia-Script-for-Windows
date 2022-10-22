@@ -77,6 +77,7 @@ Restore                                   = Restaurar
 Run                                       = Executar
 SelectAll                                 = Selecionar tudo
 Skipped                                   = Ignorados
+GPOUpdate                                 = Actualização do GPO...
 TelegramGroupTitle                        = Entre no grupo oficial do Telegram
 TelegramChannelTitle                      = Entre no canal oficial do Telegram
 DiscordChannelTitle                       = Entre no canal oficial do Discord

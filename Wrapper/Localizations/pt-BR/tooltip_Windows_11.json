@@ -644,21 +644,6 @@
   {
     "Id": 325,
     "Region": "UI & Personalization",
-    "Function": "TaskManagerWindow",
-    "Arg": {
-      "Zero": {
-        "Tag": "Expanded",
-        "ToolTip": "Inicie o Gerenciador de Tarefas no modo expandido"
-      },
-      "One": {
-        "Tag": "Compact",
-        "ToolTip": "Inicie o Gerenciador de Tarefas no modo compacto (valor padrão)"
-      }
-    }
-  },
-  {
-    "Id": 326,
-    "Region": "UI & Personalization",
     "Function": "RestartNotification",
     "Arg": {
       "Zero": {
@@ -672,7 +657,7 @@
     }
   },
   {
-    "Id": 327,
+    "Id": 326,
     "Region": "UI & Personalization",
     "Function": "ShortcutsSuffix",
     "Arg": {
@@ -687,7 +672,7 @@
     }
   },
   {
-    "Id": 328,
+    "Id": 327,
     "Region": "UI & Personalization",
     "Function": "PrtScnSnippingTool",
     "Arg": {
@@ -702,7 +687,7 @@
     }
   },
   {
-    "Id": 329,
+    "Id": 328,
     "Region": "UI & Personalization",
     "Function": "AppsLanguageSwitch",
     "Arg": {
@@ -717,7 +702,7 @@
     }
   },
   {
-    "Id": 330,
+    "Id": 329,
     "Region": "UI & Personalization",
     "Function": "AeroShaking",
     "Arg": {
