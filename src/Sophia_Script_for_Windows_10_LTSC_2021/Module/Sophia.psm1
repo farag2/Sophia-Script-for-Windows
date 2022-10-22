@@ -3330,13 +3330,12 @@ function Cursors
 						New-Item -Path "$env:SystemRoot\Cursors\W11_dark_v2.2" -ItemType Directory -Force
 					}
 
-					$Parameters = @{
-						Path            = "$DownloadsFolder\Cursors.zip"
-						DestinationPath = "$env:SystemRoot\Cursors\W11_dark_v2.2"
-						Force           = $true
-						Verbose         = $true
+					Add-Type -Assembly System.IO.Compression.FileSystem
+					$ZIP = [IO.Compression.ZipFile]::OpenRead("$DownloadsFolder\Cursors.zip")
+					$ZIP.Entries | Where-Object -FilterScript {$_.FullName -like "dark/*.*"} | ForEach-Object -Process {
+						[IO.Compression.ZipFileExtensions]::ExtractToFile($_, "$env:SystemRoot\Cursors\W11_dark_v2.2\$($_.Name)", $true)
 					}
-					Expand-Archive @Parameters
+					$ZIP.Dispose()
 
 					Remove-Item -Path "$DownloadsFolder\Cursors.zip" -Force
 
@@ -3448,13 +3447,12 @@ function Cursors
 						New-Item -Path "$env:SystemRoot\Cursors\W11_light_v2.2" -ItemType Directory -Force
 					}
 
-					$Parameters = @{
-						Path            = "$DownloadsFolder\Cursors.zip"
-						DestinationPath = "$env:SystemRoot\Cursors\W11_light_v2.2"
-						Force           = $true
-						Verbose         = $true
+					Add-Type -Assembly System.IO.Compression.FileSystem
+					$ZIP = [IO.Compression.ZipFile]::OpenRead("$DownloadsFolder\Cursors.zip")
+					$ZIP.Entries | Where-Object -FilterScript {$_.FullName -like "light/*.*"} | ForEach-Object -Process {
+						[IO.Compression.ZipFileExtensions]::ExtractToFile($_, "$env:SystemRoot\Cursors\W11_light_v2.2\$($_.Name)", $true)
 					}
-					Expand-Archive @Parameters
+					$ZIP.Dispose()
 
 					Remove-Item -Path "$DownloadsFolder\Cursors.zip" -Force
 

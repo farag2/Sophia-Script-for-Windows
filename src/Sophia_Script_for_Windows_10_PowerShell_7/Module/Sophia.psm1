@@ -3987,13 +3987,12 @@ function Cursors
 						New-Item -Path "$env:SystemRoot\Cursors\W11_dark_v2.2" -ItemType Directory -Force
 					}
 
-					$Parameters = @{
-						Path            = "$DownloadsFolder\Cursors.zip"
-						DestinationPath = "$env:SystemRoot\Cursors\W11_dark_v2.2"
-						Force           = $true
-						Verbose         = $true
+					Add-Type -Assembly System.IO.Compression.FileSystem
+					$ZIP = [IO.Compression.ZipFile]::OpenRead("$DownloadsFolder\Cursors.zip")
+					$ZIP.Entries | Where-Object -FilterScript {$_.FullName -like "dark/*.*"} | ForEach-Object -Process {
+						[IO.Compression.ZipFileExtensions]::ExtractToFile($_, "$env:SystemRoot\Cursors\W11_dark_v2.2\$($_.Name)", $true)
 					}
-					Expand-Archive @Parameters
+					$ZIP.Dispose()
 
 					Remove-Item -Path "$DownloadsFolder\Cursors.zip" -Force
 
@@ -4105,13 +4104,13 @@ function Cursors
 						New-Item -Path "$env:SystemRoot\Cursors\W11_light_v2.2" -ItemType Directory -Force
 					}
 
-					$Parameters = @{
-						Path            = "$DownloadsFolder\Cursors.zip"
-						DestinationPath = "$env:SystemRoot\Cursors\W11_light_v2.2"
-						Force           = $true
-						Verbose         = $true
+					Add-Type -Assembly System.IO.Compression.FileSystem
+					$ZIP = [IO.Compression.ZipFile]::OpenRead("$DownloadsFolder\Cursors.zip")
+					$ZIP.Entries | Where-Object -FilterScript {$_.FullName -like "light/*.*"} | ForEach-Object -Process {
+						[IO.Compression.ZipFileExtensions]::ExtractToFile($_, "$env:SystemRoot\Cursors\W11_light_v2.2\$($_.Name)", $true)
 					}
-					Expand-Archive @Parameters
+					$ZIP.Dispose()
+
 
 					Remove-Item -Path "$DownloadsFolder\Cursors.zip" -Force
 
@@ -10801,10 +10800,10 @@ function HEIF
 						return
 					}
 
-					# https://github.com/farag2/Sophia-Script-for-Windows/tree/master/AppX
+					# https://github.com/farag2/Sophia-Script-for-Windows/tree/master/Misc
 					$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 					$Parameters = @{
-						Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/AppX/Microsoft.HEVCVideoExtension_2.0.51121.0_x64__8wekyb3d8bbwe.Appx"
+						Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/Microsoft.HEVCVideoExtension_2.0.51121.0_x64__8wekyb3d8bbwe.Appx"
 						OutFile         = "$DownloadsFolder\Microsoft.HEVCVideoExtension_2.0.51121.0_x64__8wekyb3d8bbwe.Appx"
 						UseBasicParsing = $true
 						Verbose         = $true
