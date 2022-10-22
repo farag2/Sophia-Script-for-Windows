@@ -21,7 +21,7 @@ Expand-Archive @Parameters
 
 $Parameters = @{
 	Path        = "Scripts\LGPO_30\LGPO.exe"
-	Destination = Scripts
+	Destination = "Scripts"
 	Force       = $true
 }
 Move-Item @Parameters
