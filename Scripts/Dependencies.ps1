@@ -1,42 +1,38 @@
 Write-Verbose -Message Dependencies -Verbose
 
-# Download PolicyFileEditor
-# https://github.com/dlwyatt/PolicyFileEditor
+# Download LGPO
+# https://techcommunity.microsoft.com/t5/microsoft-security-baselines/lgpo-exe-local-group-policy-object-utility-v1-0/ba-p/701045
 $Parameters = @{
-    Uri             = "https://api.github.com/repos/dlwyatt/PolicyFileEditor/releases/latest"
-    UseBasicParsing = $true
-}
-$LatestPolicyFileEditorVersion = (Invoke-RestMethod @Parameters).tag_name
-$Parameters = @{
-    Uri             = "https://github.com/dlwyatt/PolicyFileEditor/archive/refs/tags/$LatestPolicyFileEditorVersion.zip"
-    OutFile         = "Scripts\$LatestPolicyFileEditorVersion.zip"
-    UseBasicParsing = $true
-    Verbose         = $true
+	Uri             = "https://download.microsoft.com/download/8/5/C/85C25433-A1B0-4FFA-9429-7E023E7DA8D8/LGPO.zip"
+	OutFile         = "Scripts\LGPO.zip"
+	UseBasicParsing = $true
+	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
+
 # Expand zip archive
 $Parameters = @{
-    Path            = "Scripts\$LatestPolicyFileEditorVersion.zip"
-    DestinationPath = "Scripts"
-    Force           = $true
-    Verbose         = $true
+	Path            = "Scripts\LGPO.zip"
+	DestinationPath = "Scripts"
+	Force           = $true
+	Verbose         = $true
 }
 Expand-Archive @Parameters
-$Path = @(
-    "Scripts\PolicyFileEditor-$LatestPolicyFileEditorVersion\DscResources",
-    "Scripts\PolicyFileEditor-$LatestPolicyFileEditorVersion\en-US",
-    "Scripts\PolicyFileEditor-$LatestPolicyFileEditorVersion\build.psake.ps1",
-    "Scripts\PolicyFileEditor-$LatestPolicyFileEditorVersion\LICENSE",
-    "Scripts\PolicyFileEditor-$LatestPolicyFileEditorVersion\PolicyFileEditor.Tests.ps1",
-    "Scripts\PolicyFileEditor-$LatestPolicyFileEditorVersion\README.md"
-)
-Remove-Item -Path $Path -Recurse -Force
-Rename-Item -Path "Scripts\PolicyFileEditor-$LatestPolicyFileEditorVersion" -NewName "PolicyFileEditor" -Force
+
+$Parameters = @{
+	Path        = "Scripts\LGPO_30\LGPO.exe"
+	Destination = Scripts
+	Force       = $true
+}
+Move-Item @Parameters
+
+Remove-Item -Path "Scripts\LGPO_30", "Scripts\LGPO.zip"  -Recurse -Force
+
 # Download Microsoft.Windows.SDK.NET.dll & WinRT.Runtime.dll
 $Parameters = @{
-    Uri             = "https://www.nuget.org/api/v2/package/Microsoft.Windows.SDK.NET.Ref"
-    OutFile         = "Scripts\microsoft.windows.sdk.net.ref.zip"
-    UseBasicParsing = $true
+	Uri             = "https://www.nuget.org/api/v2/package/Microsoft.Windows.SDK.NET.Ref"
+	OutFile         = "Scripts\microsoft.windows.sdk.net.ref.zip"
+	UseBasicParsing = $true
 }
 Invoke-RestMethod @Parameters
 # Extract Microsoft.Windows.SDK.NET.dll & WinRT.Runtime.dll from archive
