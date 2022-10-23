@@ -5,4 +5,4 @@
 ## Enterprise LTSC 2019 | Enterprise LTSC 2021 | Windows 10 21H2/22H2 | Windows 11 21H2/22H2
 
 Diff from vOldVersion
-[OldVersion...NewVersion](https://github.com/Sophia-Community/SophiApp/compare/OldVersion...NewVersion)
+[OldVersion...NewVersion](https://github.com/farag2/Sophia-Script-for-Windows/compare/OldVersion...NewVersion)
