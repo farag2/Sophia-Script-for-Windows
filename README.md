@@ -130,6 +130,7 @@ Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Wind
 ## Key features
 
 * Set up Privacy & Telemetry;
+* Enable DNS-over-HTTPS for IPv4
 * Turn off diagnostics tracking scheduled tasks with pop-up form written in [WPF](#screenshots);
 * Set up UI & Personalization;
 * Uninstall OneDrive "correctly";
