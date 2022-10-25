@@ -143,6 +143,7 @@ Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Wind
   * "Music";
   * "Pictures"
   * "Videos.
+* Install free (light and dark) "Windows 11 Cursors Concept v2" cursors from [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) on-the-fly;
 * Uninstall UWP apps displaying  packages names;
   * Generate installed UWP apps list dynamically
 * Restore the default uninstalled UWP apps for current user displaying [localized](#localized-uwp-packages-names) packages names;
