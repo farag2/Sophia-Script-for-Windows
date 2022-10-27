@@ -952,7 +952,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Windows-Funktionen über das Popup-Dialogfeld deaktivieren
+        "ToolTip": "Windows-Funktionen über das Popup-Dialogfeld deaktivieren"
       },
       "One": {
         "Tag": "Enable",
