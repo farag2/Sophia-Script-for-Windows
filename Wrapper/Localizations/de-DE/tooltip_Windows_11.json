@@ -628,7 +628,7 @@
   },
   {
     "Id": 324,
-    "Region": "UI & Personalisierung",
+    "Region": "Region": "UI & Personalization",
     "Function": "JPEGWallpapersQuality",
     "Arg": {
       "Zero": {
