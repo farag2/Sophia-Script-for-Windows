@@ -13840,7 +13840,7 @@ public static void PostMessage()
 	{
 		MeetNow -Show
 	}
-	else
+	elseif ($Script:MeetNow -eq $false)
 	{
 		MeetNow -Hide
 	}
