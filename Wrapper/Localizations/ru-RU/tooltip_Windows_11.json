@@ -644,6 +644,21 @@
   {
     "Id": 325,
     "Region": "UI & Personalization",
+    "Function": "TaskManagerWindow",
+    "Arg": {
+      "Zero": {
+        "Tag": "Expanded",
+        "ToolTip": "Запускать Диспетчера задач в развернутом виде"
+      },
+      "One": {
+        "Tag": "Compact",
+        "ToolTip": "Запускать Диспетчера задач в свернутом виде (значение по умолчанию)"
+      }
+    }
+  },
+  {
+    "Id": 326,
+    "Region": "UI & Personalization",
     "Function": "RestartNotification",
     "Arg": {
       "Zero": {
@@ -657,7 +672,7 @@
     }
   },
   {
-    "Id": 326,
+    "Id": 327,
     "Region": "UI & Personalization",
     "Function": "ShortcutsSuffix",
     "Arg": {
@@ -672,7 +687,7 @@
     }
   },
   {
-    "Id": 327,
+    "Id": 328,
     "Region": "UI & Personalization",
     "Function": "PrtScnSnippingTool",
     "Arg": {
@@ -687,7 +702,7 @@
     }
   },
   {
-    "Id": 328,
+    "Id": 329,
     "Region": "UI & Personalization",
     "Function": "AppsLanguageSwitch",
     "Arg": {
@@ -702,7 +717,7 @@
     }
   },
   {
-    "Id": 329,
+    "Id": 330,
     "Region": "UI & Personalization",
     "Function": "AeroShaking",
     "Arg": {
@@ -713,6 +728,25 @@
       "One": {
         "Tag": "Disable",
         "ToolTip": "Когда я беру строку заголовка окна и встряхиваю ее, сворачивайте все остальные окна (значение по умолчанию)"
+      }
+    }
+  },
+  {
+    "Id": 331,
+    "Region": "UI & Personalization",
+    "Function": "Cursors",
+    "Arg": {
+      "Zero": {
+        "Tag": "Default",
+        "ToolTip": "Установить курсоры по умолчанию"
+      },
+      "One": {
+        "Tag": "Light",
+        "ToolTip": "Скачать и установить бесплатные светлые курсоры \"Windows 11 Cursors Concept v2\" от Jepri Creations"
+      },
+      "Two": {
+        "Tag": "Dark",
+        "ToolTip": "Скачать и установить бесплатные темные курсоры \"Windows 11 Cursors Concept v2\" от Jepri Creations"
       }
     }
   },
@@ -1278,11 +1312,11 @@
   {
     "Id": 536,
     "Region": "System",
-    "Function": "InstallVCRedistx64",
+    "Function": "InstallVCRedist",
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2022 x64"
+        "ToolTip": "Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2022 (x86/x64)"
       }
     }
   },
@@ -1304,7 +1338,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора. Функция будет применена, только если в Windows установлен регион \"Россия\""
+        "ToolTip": "Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора. Функция применима только для России."
       },
       "One": {
         "Tag": "Disable",

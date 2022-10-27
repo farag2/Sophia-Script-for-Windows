@@ -845,6 +845,25 @@
     }
   },
   {
+    "Id": 338,
+    "Region": "UI & Personalization",
+    "Function": "Cursors",
+    "Arg": {
+      "Zero": {
+        "Tag": "Default",
+        "ToolTip": "Standard-Cursor einstellen"
+      },
+      "One": {
+        "Tag": "Light",
+        "ToolTip": "Downloaden und installieren Sie die kostenlosen leichte \"Windows 11 Cursors Concept v2\" Cursors von Jepri Creations"
+      },
+      "Two": {
+        "Tag": "Dark",
+        "ToolTip": "Downloaden und installieren Sie die kostenlosen dunklen \"Windows 11 Cursors Concept v2\" Cursors von Jepri Creations"
+      }
+    }
+  },
+  {
     "Id": 400,
     "Region": "OneDrive",
     "Function": "OneDrive",
@@ -1402,7 +1421,7 @@
   {
     "Id": 536,
     "Region": "System",
-    "Function": "InstallVCRedistx64",
+    "Function": "InstallVCRedist",
     "Arg": {
       "Zero": {
         "Tag": "",
@@ -1428,7 +1447,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Aktivieren Sie das Proxying nur für gesperrte Websites aus der einheitlichen Registrierung von Roskomnadzor. Die Funktion wird nur angewendet, wenn die Region in Windows auf \"Russland\" eingestellt ist."
+        "ToolTip": "Aktivieren Sie das Proxying nur für gesperrte Websites aus der einheitlichen Registrierung von Roskomnadzor. Die Funktion ist nur für Russland anwendbar."
       },
       "One": {
         "Tag": "Disable",

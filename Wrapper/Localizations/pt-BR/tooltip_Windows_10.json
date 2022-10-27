@@ -845,6 +845,25 @@
     }
   },
   {
+    "Id": 338,
+    "Region": "UI & Personalization",
+    "Function": "Cursors",
+    "Arg": {
+      "Zero": {
+        "Tag": "Default",
+        "ToolTip": "Definir cursores por defeito"
+      },
+      "One": {
+        "Tag": "Light",
+        "ToolTip": "Descarregar e instalar gratuitamente os cursores \"Windows 11 Cursors Concept v2\" da Jepri Creations"
+      },
+      "Two": {
+        "Tag": "Dark",
+        "ToolTip": "Descarregar e instalar os cursores \"Windows 11 Cursors Concept v2\" de Jepri Creations"
+      }
+    }
+  },
+  {
     "Id": 400,
     "Region": "OneDrive",
     "Function": "OneDrive",
@@ -1402,7 +1421,7 @@
   {
     "Id": 536,
     "Region": "System",
-    "Function": "InstallVCRedistx64",
+    "Function": "InstallVCRedist",
     "Arg": {
       "Zero": {
         "Tag": "",
@@ -1428,7 +1447,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Activar a proxying apenas bloqueia sites do registo unificado de Roskomnadzor. A função só será aplicada se a região no Windows estiver definida para \"Rússia\""
+        "ToolTip": "Activar a proxying apenas bloqueia sites do registo unificado de Roskomnadzor. A função é aplicável apenas para a Rússia."
       },
       "One": {
         "Tag": "Disable",

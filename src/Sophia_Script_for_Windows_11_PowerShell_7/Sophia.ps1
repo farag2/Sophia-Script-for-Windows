@@ -247,7 +247,7 @@ AppsSilentInstalling -Disable
 # Не показывать предложения по настройке устройства
 WhatsNewInWindows -Disable
 
-# Let Microsoft offer you tailored expereinces based on the diagnostic data setting you have chosen (default value)
+# Let Microsoft offer you tailored experiences based on the diagnostic data setting you have chosen (default value)
 # Разрешите корпорации Майкософт использовать ваши диагностические данные для улучшения вашей работы со службами Майкрософт с помощью персонализированных советов, рекламы и рекомендаций (значение по умолчанию)
 # WhatsNewInWindows -Enable
 
@@ -422,7 +422,7 @@ TaskbarChat -Hide
 # TaskbarChat -Show
 
 # Unpin the "Microsoft Edge", "Microsoft Store" shortcuts from the taskbar
-# Открепить ярлыки "Microsoft Edge", "Microsoft Store" или "Почта" от панели задач
+# Открепить ярлыки "Microsoft Edge", "Microsoft Store" от панели задач
 UnpinTaskbarShortcuts -Shortcuts Edge, Store
 
 # View the Control Panel icons by large icons

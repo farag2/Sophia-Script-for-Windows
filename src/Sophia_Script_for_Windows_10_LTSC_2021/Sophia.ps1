@@ -205,11 +205,11 @@ WhatsNewInWindows -Disable
 # Предлагать способы завершения настройки устройства для максимально эффективного использования Windows (значение по умолчанию)
 # WhatsNewInWindows -Enable
 
-# Do not let Microsoft offer you tailored expereinces based on the diagnostic data setting you have chosen
+# Do not let Microsoft offer you tailored experiences based on the diagnostic data setting you have chosen
 # Не разрешать корпорации Майкософт использовать ваши диагностические данные для предоставления вам персонализированных советов, рекламы и рекомендаций, чтобы улучшить работу со службами Майкрософт
 TailoredExperiences -Disable
 
-# Let Microsoft offer you tailored expereinces based on the diagnostic data setting you have chosen (default value)
+# Let Microsoft offer you tailored experiences based on the diagnostic data setting you have chosen (default value)
 # Разрешите корпорации Майкософт использовать ваши диагностические данные для предоставления вам персонализированных советов, рекламы и рекомендаций, чтобы улучшить работу со службами Майкрософт (значение по умолчанию)
 # TailoredExperiences -Enable
 

@@ -238,11 +238,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Do not let Microsoft offer you tailored expereinces based on the diagnostic data setting you hava chosen"
+        "ToolTip": "Do not let Microsoft offer you tailored experiences based on the diagnostic data setting you hava chosen"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Let Microsoft offer you tailored expereinces based on the diagnostic data setting you hava chosen (default value)"
+        "ToolTip": "Let Microsoft offer you tailored experiences based on the diagnostic data setting you hava chosen (default value)"
       }
     }
   },
@@ -644,6 +644,21 @@
   {
     "Id": 325,
     "Region": "UI & Personalization",
+    "Function": "TaskManagerWindow",
+    "Arg": {
+      "Zero": {
+        "Tag": "Expanded",
+        "ToolTip": "Start Task Manager in the expanded mode"
+      },
+      "One": {
+        "Tag": "Compact",
+        "ToolTip": "Start Task Manager in the compact mode (default value)"
+      }
+    }
+  },
+  {
+    "Id": 326,
+    "Region": "UI & Personalization",
     "Function": "RestartNotification",
     "Arg": {
       "Zero": {
@@ -657,7 +672,7 @@
     }
   },
   {
-    "Id": 326,
+    "Id": 327,
     "Region": "UI & Personalization",
     "Function": "ShortcutsSuffix",
     "Arg": {
@@ -672,7 +687,7 @@
     }
   },
   {
-    "Id": 327,
+    "Id": 328,
     "Region": "UI & Personalization",
     "Function": "PrtScnSnippingTool",
     "Arg": {
@@ -687,7 +702,7 @@
     }
   },
   {
-    "Id": 328,
+    "Id": 329,
     "Region": "UI & Personalization",
     "Function": "AppsLanguageSwitch",
     "Arg": {
@@ -702,7 +717,7 @@
     }
   },
   {
-    "Id": 329,
+    "Id": 330,
     "Region": "UI & Personalization",
     "Function": "AeroShaking",
     "Arg": {
@@ -713,6 +728,25 @@
       "One": {
         "Tag": "Disable",
         "ToolTip": "When I grab a windows's title bar and shake it, don't minimize all other windows (default value)"
+      }
+    }
+  },
+  {
+    "Id": 331,
+    "Region": "UI & Personalization",
+    "Function": "Cursors",
+    "Arg": {
+      "Zero": {
+        "Tag": "Default",
+        "ToolTip": "Set default cursors"
+      },
+      "One": {
+        "Tag": "Light",
+        "ToolTip": "Download and install free light \"Windows 11 Cursors Concept v2\" cursors from Jepri Creations"
+      },
+      "Two": {
+        "Tag": "Dark",
+        "ToolTip": "Download and install free dark \"Windows 11 Cursors Concept v2\" cursors from Jepri Creations"
       }
     }
   },
@@ -1278,11 +1312,11 @@
   {
     "Id": 536,
     "Region": "System",
-    "Function": "InstallVCRedistx64",
+    "Function": "InstallVCRedist",
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 x64"
+        "ToolTip": "Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 (x86/x64)"
       }
     }
   },
@@ -1304,7 +1338,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Enable proxying only blocked sites from the unified registry of Roskomnadzor. The function will be applied only if the region in Windows is set to \"Russia\""
+        "ToolTip": "Enable proxying only blocked sites from the unified registry of Roskomnadzor. The function is applicable for Russia only"
       },
       "One": {
         "Tag": "Disable",

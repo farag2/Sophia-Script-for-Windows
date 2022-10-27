@@ -1374,10 +1374,10 @@ function WhatsNewInWindows
 	Tailored experiences
 
 	.PARAMETER Disable
-	Do not let Microsoft offer you tailored expereinces based on the diagnostic data setting you have chosen
+	Do not let Microsoft offer you tailored experiences based on the diagnostic data setting you have chosen
 
 	.PARAMETER Enable
-	Let Microsoft offer you tailored expereinces based on the diagnostic data setting you have chosen
+	Let Microsoft offer you tailored experiences based on the diagnostic data setting you have chosen
 
 	.EXAMPLE
 	TailoredExperiences -Disable
@@ -5372,6 +5372,8 @@ function NetworkAdaptersSavePower
 			Get-NetAdapter -Physical -Name $PhysicalAdaptersStatusUp | ForEach-Object -Process {$_.Status -eq "Disconnected"}
 		)
 		{
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Verbose -Message $Localization.Patient -Verbose
 			Start-Sleep -Seconds 2
 		}
 	}

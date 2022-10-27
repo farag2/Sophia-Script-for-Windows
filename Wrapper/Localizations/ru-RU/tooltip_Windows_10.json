@@ -845,6 +845,25 @@
     }
   },
   {
+    "Id": 338,
+    "Region": "UI & Personalization",
+    "Function": "Cursors",
+    "Arg": {
+      "Zero": {
+        "Tag": "Default",
+        "ToolTip": "Установить курсоры по умолчанию"
+      },
+      "One": {
+        "Tag": "Light",
+        "ToolTip": "Скачать и установить бесплатные светлые курсоры \"Windows 11 Cursors Concept v2\" от Jepri Creations"
+      },
+      "Two": {
+        "Tag": "Dark",
+        "ToolTip": "Скачать и установить бесплатные темные курсоры \"Windows 11 Cursors Concept v2\" от Jepri Creations"
+      }
+    }
+  },
+  {
     "Id": 400,
     "Region": "OneDrive",
     "Function": "OneDrive",
@@ -1402,11 +1421,11 @@
   {
     "Id": 536,
     "Region": "System",
-    "Function": "InstallVCRedistx64",
+    "Function": "InstallVCRedist",
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2022 x64"
+        "ToolTip": "Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2022 (x86/x64)"
       }
     }
   },
@@ -1428,7 +1447,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора. Функция будет применена, только если в Windows установлен регион \"Россия\""
+        "ToolTip": "Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора. Функция применима только для России."
       },
       "One": {
         "Tag": "Disable",

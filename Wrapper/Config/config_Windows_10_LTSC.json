@@ -1049,6 +1049,26 @@
     "LTSC2021": "true"
   },
   {
+    "Id": 338,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "Cursors",
+    "Arg": {
+      "Zero": {
+        "Tag": "Default"
+      },
+      "One": {
+        "Tag": "Dark"
+      },
+      "Two": {
+        "Tag": "Light"
+      }
+    },
+    "Preset": "One",
+    "WindowsDefault": "Zero"
+  },
+  {
     "Id": 400,
     "Region": "OneDrive",
     "Control": "cmb",
@@ -1740,7 +1760,7 @@
     "Region": "System",
     "Control": "chk",
     "Required": "false",
-    "Function": "InstallVCRedistx64",
+    "Function": "InstallVCRedist",
     "Arg": {
       "Zero": {
         "Tag": ""

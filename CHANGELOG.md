@@ -303,7 +303,7 @@ Diff from v6.1.3
 * Added the `UninstallPCHealthCheck` funtion;
   * This application is installed with the [KB5005463](https://support.microsoft.com/en-us/topic/kb5005463-pc-health-check-application-e33cf4e2-49e2-4727-b913-f3c5b1ee0e56) update to check if PC meets the system requirements of Windows 11;
   * For Windows 10 only.
-* Added the `InstallVCRedistx64` funtion;
+* Added the `InstallVCRedist` funtion;
   * Install the latest supported Microsoft Visual C++ Redistributable 2015—2022 x64;
   * <https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist>;
 * Added the `UnpinAllStartApps` function to provide a feature to unpin all Start apps;
@@ -420,7 +420,7 @@ Invoke-RestMethod -Uri script.sophi.app | Invoke-Expression
 * Closed #252, #253 (thnx to @Henry2o1o);
 * More JSONs. Split up Windows 10 and Windows 11 config and tooltip JSONs files;
 * Console Textbox is now resizable
-* Moved "Save As" button to ‘Export Preset’ in ‘Import/Export Preset’ menu
+* Moved "Save As" button to `Export Preset` in `Import/Export Preset` menu
 * UI color changes
 * Fixed some bugs.
 
@@ -489,7 +489,7 @@ Invoke-RestMethod -Uri script.sophi.app | Invoke-Expression
 ## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2019
 
 * Added the `IPv6Component -Enable`, `IPv6Component -Disable` functions;
-  * Disable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections. Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipv6-test.com
+  * Disable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections. Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using <https://ipv6-test.com>
 * Added the `AeroShaking -Enable`, `AeroShaking -Disable` functions;
   * When I grab a windows's title bar and shake it, minimize all other windows
 * @Inestic has re-writen the `WSL` functions into one with a `WPF form` with list of supported Linux distributions to install. Microsoft has allowed the supported Windows 10 versions to install Linux distributions with [one command](https://devblogs.microsoft.com/commandline/install-wsl-with-a-single-command-now-available-in-windows-10-version-2004-and-higher/) `wsl --install`;
@@ -656,7 +656,7 @@ Diff from v5.10.7
   * Added online check for the latest Wrapper version. If you are using old version it will exit;
   * Added online check for the latest imported script version. If you are using old version it will disable directly running (run PowerShell button disabled);
   * UI changes.
-  * 
+
 ## 5.10.7 — 13.06.2021
 
 ## Windows 10 2004/20H2/21H1 | LTSC
@@ -736,7 +736,7 @@ Diff from v5.10.3
 ![image](https://i.imgur.com/kQDktvj.png)
 * Fixed bug in the `EventViewerCustomView` function when the `ProcessCreation.xml` file was being created with a wrong encodings;
   * You may invoke the function again: `EventViewerCustomView -Enable`.
-* Updated the GitHub Action [config](https://github.com/farag2/Windows-10-Sophia-Script/blob/master/.github/workflows/Sophia.yml) to automate the SHA256 file creation and uploading to the release page. As @aaronhatesregex wanted 😄 
+* Updated the GitHub Action [config](https://github.com/farag2/Windows-10-Sophia-Script/blob/master/.github/workflows/Sophia.yml) to automate the SHA256 file creation and uploading to the release page. As @aaronhatesregex wanted 😄
 * Updated the Turkish translation. Thanks to @v30xy;
 * Added the Hungarian translation <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Flag_of_Hungary.svg" height="11px"/>. Thanks to @84stangman;
 * Updated Sophia Script Wrapper to 1.1 build 5;

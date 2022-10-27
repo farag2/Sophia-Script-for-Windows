@@ -644,6 +644,21 @@
   {
     "Id": 325,
     "Region": "UI & Personalization",
+    "Function": "TaskManagerWindow",
+    "Arg": {
+      "Zero": {
+        "Tag": "Expanded",
+        "ToolTip": "Inicie el Administrador de tareas en el modo expandido"
+      },
+      "One": {
+        "Tag": "Compact",
+        "ToolTip": "Inicie el Administrador de tareas en el modo compacto (valor predeterminado)"
+      }
+    }
+  },
+  {
+    "Id": 326,
+    "Region": "UI & Personalization",
     "Function": "RestartNotification",
     "Arg": {
       "Zero": {
@@ -657,7 +672,7 @@
     }
   },
   {
-    "Id": 326,
+    "Id": 327,
     "Region": "UI & Personalization",
     "Function": "ShortcutsSuffix",
     "Arg": {
@@ -672,7 +687,7 @@
     }
   },
   {
-    "Id": 327,
+    "Id": 328,
     "Region": "UI & Personalization",
     "Function": "PrtScnSnippingTool",
     "Arg": {
@@ -687,7 +702,7 @@
     }
   },
   {
-    "Id": 328,
+    "Id": 329,
     "Region": "UI & Personalization",
     "Function": "AppsLanguageSwitch",
     "Arg": {
@@ -702,7 +717,7 @@
     }
   },
   {
-    "Id": 320,
+    "Id": 330,
     "Region": "UI & Personalization",
     "Function": "AeroShaking",
     "Arg": {
@@ -713,6 +728,25 @@
       "One": {
         "Tag": "Disable",
         "ToolTip": "Cuando agarro la barra de título de una ventana y la agito, no minimizo todas las demás ventanas (valor predeterminado)"
+      }
+    }
+  },
+  {
+    "Id": 331,
+    "Region": "UI & Personalization",
+    "Function": "Cursors",
+    "Arg": {
+      "Zero": {
+        "Tag": "Default",
+        "ToolTip": "Establecer los cursores por defecto"
+      },
+      "One": {
+        "Tag": "Light",
+        "ToolTip": "Descarga e instala gratis los cursores ligeros \"Windows 11 Cursors Concept v2\" de Jepri Creations"
+      },
+      "Two": {
+        "Tag": "Dark",
+        "ToolTip": "Descargue e instale gratis los cursores oscuros \"Windows 11 Cursors Concept v2\" de Jepri Creations"
       }
     }
   },
@@ -1278,7 +1312,7 @@
   {
     "Id": 536,
     "Region": "System",
-    "Function": "InstallVCRedistx64",
+    "Function": "InstallVCRedist",
     "Arg": {
       "Zero": {
         "Tag": "",
@@ -1304,7 +1338,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Habilitar el proxy sólo sitios bloqueados desde el registro unificado de Roskomnadzor. La función se aplicará sólo si la región en Windows se establece en \"Rusia\""
+        "ToolTip": "Habilitar el proxy sólo sitios bloqueados desde el registro unificado de Roskomnadzor. La función es aplicable solo para Rusia."
       },
       "One": {
         "Tag": "Disable",

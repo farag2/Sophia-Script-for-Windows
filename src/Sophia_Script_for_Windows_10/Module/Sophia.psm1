@@ -1639,10 +1639,10 @@ function WhatsNewInWindows
 	Tailored experiences
 
 	.PARAMETER Disable
-	Do not let Microsoft offer you tailored expereinces based on the diagnostic data setting you have chosen
+	Do not let Microsoft offer you tailored experiences based on the diagnostic data setting you have chosen
 
 	.PARAMETER Enable
-	Let Microsoft offer you tailored expereinces based on the diagnostic data setting you have chosen
+	Let Microsoft offer you tailored experiences based on the diagnostic data setting you have chosen
 
 	.EXAMPLE
 	TailoredExperiences -Disable
@@ -3037,12 +3037,14 @@ function MeetNow
 	{
 		"Hide"
 		{
+			$Script:MeetNow = $false
 			$Settings = Get-ItemPropertyValue -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\StuckRects3 -Name Settings -ErrorAction Ignore
 			$Settings[9] = 128
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\StuckRects3 -Name Settings -PropertyType Binary -Value $Settings -Force
 		}
 		"Show"
 		{
+			$Script:MeetNow = $true
 			$Settings = Get-ItemPropertyValue -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\StuckRects3 -Name Settings -ErrorAction Ignore
 			$Settings[9] = 0
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\StuckRects3 -Name Settings -PropertyType Binary -Value $Settings -Force
@@ -6294,6 +6296,8 @@ function NetworkAdaptersSavePower
 			Get-NetAdapter -Physical -Name $PhysicalAdaptersStatusUp | ForEach-Object -Process {$_.Status -eq "Disconnected"}
 		)
 		{
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Verbose -Message $Localization.Patient -Verbose
 			Start-Sleep -Seconds 2
 		}
 	}
@@ -13781,6 +13785,16 @@ public static void PostMessage()
 		}
 
 		gpupdate /force
+	}
+
+	# [WinAPI.UpdateEnvironment]::Refresh() makes so that Meet Now icon returns even if was hid before, so we need to check which function was called previously
+	if ($Script:MeetNow)
+	{
+		MeetNow -Show
+	}
+	else
+	{
+		MeetNow -Hide
 	}
 
 	Remove-Item -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore

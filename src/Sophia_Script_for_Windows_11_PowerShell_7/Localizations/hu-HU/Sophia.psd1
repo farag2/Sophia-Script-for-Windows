@@ -77,6 +77,7 @@ Restore                                   = Visszaállítás
 Run                                       = Futtatás
 SelectAll                                 = Összes kijelölése
 Skipped                                   = Átugorva
+GPOUpdate                                 = GPO frissítése...
 TelegramGroupTitle                        = Pridružite se našoj službenoj grupi Telegram
 TelegramChannelTitle                      = Pridružite se našem službenom kanalu Telegram
 DiscordChannelTitle                       = Pridružite se našem službenom kanalu Discord

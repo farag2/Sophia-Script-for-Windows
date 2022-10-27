@@ -77,6 +77,7 @@ Restore                                   = 恢复
 Run                                       = 运行
 SelectAll                                 = 全选
 Skipped                                   = 已跳过
+GPOUpdate                                 = GPO更新……
 TelegramGroupTitle                        = 加入我们的官方Telegram 群
 TelegramChannelTitle                      = 加入我们的官方Telegram 频道
 DiscordChannelTitle                       = 加入我们的官方Discord 频道

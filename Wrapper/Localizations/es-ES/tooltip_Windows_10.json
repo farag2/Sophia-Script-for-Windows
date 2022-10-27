@@ -845,6 +845,25 @@
     }
   },
   {
+    "Id": 338,
+    "Region": "UI & Personalization",
+    "Function": "Cursors",
+    "Arg": {
+      "Zero": {
+        "Tag": "Default",
+        "ToolTip": "Establecer los cursores por defecto"
+      },
+      "One": {
+        "Tag": "Light",
+        "ToolTip": "Descarga e instala gratis los cursores ligeros \"Windows 11 Cursors Concept v2\" de Jepri Creations"
+      },
+      "Two": {
+        "Tag": "Dark",
+        "ToolTip": "Descargue e instale gratis los cursores oscuros \"Windows 11 Cursors Concept v2\" de Jepri Creations"
+      }
+    }
+  },
+  {
     "Id": 400,
     "Region": "OneDrive",
     "Function": "OneDrive",
@@ -1402,7 +1421,7 @@
   {
     "Id": 536,
     "Region": "System",
-    "Function": "InstallVCRedistx64",
+    "Function": "InstallVCRedist",
     "Arg": {
       "Zero": {
         "Tag": "",
@@ -1428,7 +1447,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Habilitar el proxy sólo sitios bloqueados desde el registro unificado de Roskomnadzor. La función se aplicará sólo si la región en Windows se establece en \"Rusia\""
+        "ToolTip": "Habilitar el proxy sólo sitios bloqueados desde el registro unificado de Roskomnadzor. La función es aplicable solo para Rusia."
       },
       "One": {
         "Tag": "Disable",

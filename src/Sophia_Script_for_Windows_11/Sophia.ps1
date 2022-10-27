@@ -233,12 +233,12 @@ AppsSilentInstalling -Disable
 # Включить автоматическую установку рекомендованных приложений (значение по умолчанию)
 # AppsSilentInstalling -Enable
 
-# Disable suggestions on how I can set up my device
-# Не показывать предложения по настройке устройства
+# Do not suggest ways to get the most out of Windows and finish setting up this device
+# Не предлагать способы завершения настройки этого устройства для наиболее эффективного использования Windows
 WhatsNewInWindows -Disable
 
-# Let Microsoft offer you tailored expereinces based on the diagnostic data setting you have chosen (default value)
-# Разрешите корпорации Майкософт использовать ваши диагностические данные для улучшения вашей работы со службами Майкрософт с помощью персонализированных советов, рекламы и рекомендаций (значение по умолчанию)
+# Suggest ways to get the most out of Windows and finish setting up this device
+# Предложить способы завершения настройки этого устройства для наиболее эффективного использования Windows
 # WhatsNewInWindows -Enable
 
 # Don't let Microsoft use your diagnostic data for personalized tips, ads, and recommendations
@@ -412,7 +412,7 @@ TaskbarChat -Hide
 # TaskbarChat -Show
 
 # Unpin the "Microsoft Edge", "Microsoft Store" shortcuts from the taskbar
-# Открепить ярлыки "Microsoft Edge", "Microsoft Store" или "Почта" от панели задач
+# Открепить ярлыки "Microsoft Edge", "Microsoft Store" от панели задач
 UnpinTaskbarShortcuts -Shortcuts Edge, Store
 
 # View the Control Panel icons by large icons

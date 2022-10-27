@@ -644,6 +644,21 @@
   {
     "Id": 325,
     "Region": "UI & Personalization",
+    "Function": "TaskManagerWindow",
+    "Arg": {
+      "Zero": {
+        "Tag": "Expanded",
+        "ToolTip": "Startet den Task-Manager im erweiterten Modus"
+      },
+      "One": {
+        "Tag": "Compact",
+        "ToolTip": "Task-Manager im kompakten Modus starten (Standardeinstellung)"
+      }
+    }
+  },
+  {
+    "Id": 326,
+    "Region": "UI & Personalization",
     "Function": "RestartNotification",
     "Arg": {
       "Zero": {
@@ -657,7 +672,7 @@
     }
   },
   {
-    "Id": 326,
+    "Id": 327,
     "Region": "UI & Personalization",
     "Function": "ShortcutsSuffix",
     "Arg": {
@@ -672,7 +687,7 @@
     }
   },
   {
-    "Id": 327,
+    "Id": 328,
     "Region": "UI & Personalization",
     "Function": "PrtScnSnippingTool",
     "Arg": {
@@ -687,7 +702,7 @@
     }
   },
   {
-    "Id": 328,
+    "Id": 329,
     "Region": "UI & Personalization",
     "Function": "AppsLanguageSwitch",
     "Arg": {
@@ -702,7 +717,7 @@
     }
   },
   {
-    "Id": 329,
+    "Id": 330,
     "Region": "UI & Personalization",
     "Function": "AeroShaking",
     "Arg": {
@@ -713,6 +728,25 @@
       "One": {
         "Tag": "Disable",
         "ToolTip": "Wenn ich die Titelleiste eines Fensters greife und schüttle, werden nicht alle anderen Fenster minimiert (Standardeinstellung)"
+      }
+    }
+  },
+  {
+    "Id": 331,
+    "Region": "UI & Personalization",
+    "Function": "Cursors",
+    "Arg": {
+      "Zero": {
+        "Tag": "Default",
+        "ToolTip": "Standard-Cursor einstellen"
+      },
+      "One": {
+        "Tag": "Light",
+        "ToolTip": "Downloaden und installieren Sie die kostenlosen leichte \"Windows 11 Cursors Concept v2\" Cursors von Jepri Creations"
+      },
+      "Two": {
+        "Tag": "Dark",
+        "ToolTip": "Downloaden und installieren Sie die kostenlosen dunklen \"Windows 11 Cursors Concept v2\" Cursors von Jepri Creations"
       }
     }
   },
@@ -1278,7 +1312,7 @@
   {
     "Id": 536,
     "Region": "System",
-    "Function": "InstallVCRedistx64",
+    "Function": "InstallVCRedist",
     "Arg": {
       "Zero": {
         "Tag": "",
@@ -1304,7 +1338,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Aktivieren Sie das Proxying nur für gesperrte Websites aus der einheitlichen Registrierung von Roskomnadzor. Die Funktion wird nur angewendet, wenn die Region in Windows auf \"Russland\" eingestellt ist."
+        "ToolTip": "Aktivieren Sie das Proxying nur für gesperrte Websites aus der einheitlichen Registrierung von Roskomnadzor. Die Funktion ist nur für Russland anwendbar."
       },
       "One": {
         "Tag": "Disable",

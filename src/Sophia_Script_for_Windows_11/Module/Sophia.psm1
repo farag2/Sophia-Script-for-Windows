@@ -1569,13 +1569,13 @@ function AppsSilentInstalling
 
 <#
 	.SYNOPSIS
-	Suggestions on how I can set up my device
+	Ways to get the most out of Windows and finish setting up this device
 
 	.PARAMETER Disable
-	Disable suggestions on how I can set up my device
+	Do not suggest ways to get the most out of Windows and finish setting up this device
 
 	.PARAMETER Enable
-	Offer suggestions on how I can set up my device
+	Suggest ways to get the most out of Windows and finish setting up this device
 
 	.EXAMPLE
 	WhatsNewInWindows -Disable
@@ -5771,6 +5771,8 @@ function NetworkAdaptersSavePower
 			Get-NetAdapter -Physical -Name $PhysicalAdaptersStatusUp | ForEach-Object -Process {$_.Status -eq "Disconnected"}
 		)
 		{
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Verbose -Message $Localization.Patient -Verbose
 			Start-Sleep -Seconds 2
 		}
 	}
