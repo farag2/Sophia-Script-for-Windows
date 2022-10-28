@@ -94,7 +94,7 @@ Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Wind
 
 ## Screenshots
 
-### The TAB autocomplete. Read more [here](#how-to-run-the-specific-functions)
+### The <kbd>TAB</kbd> autocomplete. Read more [here](#how-to-run-the-specific-functions)
 
 ![Image](./img/Autocomplete.gif)
 
@@ -136,7 +136,7 @@ Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Wind
 * Set up UI & Personalization;
 * Uninstall OneDrive "correctly";
 * Interactive [prompts](#change-user-folders-location-programmatically-using-the-interactive-menu);
-* The [TAB](#the-tab-autocomplete-read-more-here) completion for functions and their arguments (if using the Functions.ps1 file);
+* The <kbd>TAB</kbd> [completion](#the-tab-autocomplete-read-more-here) for functions and their arguments (if using the Functions.ps1 file);
 * Change %TEMP% environment variable path to %SystemDrive%\Temp
 * Change location of the user folders programmatically (without moving user files) within interactive menu using arrows to select a drive
   * "Desktop";
@@ -216,10 +216,10 @@ To run the specific function(s) [dot source](https://docs.microsoft.com/ru-ru/po
 * Now you can do like this (the quotation marks required)
 
 ```powershell
-Sophia -Functions <tab>
-Sophia -Functions temp<tab>
-Sophia -Functions unin<tab>
-Sophia -Functions uwp<tab>
+Sophia -Functions<kbd>TAB</kbd>
+Sophia -Functions temp<kbd>TAB</kbd>
+Sophia -Functions unin<kbd>TAB</kbd>
+Sophia -Functions uwp<kbd>TAB</kbd>
 Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
 
 UninstallUWPApps, "PinToStart -UnpinAll"

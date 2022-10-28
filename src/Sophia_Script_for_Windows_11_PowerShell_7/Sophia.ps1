@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 11 (PowerShell 7)"
 
-	Version: v6.2.0
-	Date: 22.10.2022
+	Version: v6.2.1
+	Date: 29.10.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -73,7 +73,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.2.0 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2022"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.2.1 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2022"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -88,7 +88,6 @@ catch
 {
 	Import-LocalizedData -BindingVariable Global:Localization -UICulture en-US -BaseDirectory $PSScriptRoot\Localizations -FileName Sophia
 }
-
 
 <#
 	.SYNOPSIS
@@ -243,12 +242,12 @@ AppsSilentInstalling -Disable
 # Включить автоматическую установку рекомендованных приложений (значение по умолчанию)
 # AppsSilentInstalling -Enable
 
-# Disable suggestions on how I can set up my device
-# Не показывать предложения по настройке устройства
+# Do not suggest ways to get the most out of Windows and finish setting up this device
+# Не предлагать способы завершения настройки этого устройства для наиболее эффективного использования Windows
 WhatsNewInWindows -Disable
 
-# Let Microsoft offer you tailored experiences based on the diagnostic data setting you have chosen (default value)
-# Разрешите корпорации Майкософт использовать ваши диагностические данные для улучшения вашей работы со службами Майкрософт с помощью персонализированных советов, рекламы и рекомендаций (значение по умолчанию)
+# Suggest ways to get the most out of Windows and finish setting up this device
+# Предложить способы завершения настройки этого устройства для наиболее эффективного использования Windows
 # WhatsNewInWindows -Enable
 
 # Don't let Microsoft use your diagnostic data for personalized tips, ads, and recommendations

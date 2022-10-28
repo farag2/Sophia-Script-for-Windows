@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v6.2.0
-	Date: 22.10.2022
+	Version: v6.2.1
+	Date: 29.10.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -10662,14 +10662,19 @@ function CleanupTask
 	{
 		"Register"
 		{
-			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -TaskName "Windows Cleanup", "Windows Cleanup Notification" -Confirm:$false -ErrorAction Ignore
-			$Items = @(
-				"$env:SystemRoot\System32\Tasks\SophiApp",
-				"$env:SystemRoot\System32\Tasks\Sophia Script",
-				"HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\SophiApp",
-				"HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia Script"
-			)
-			Remove-Item -Path $Items -Recurse -ErrorAction Ignore
+			# Remove all old tasks
+			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -TaskName "Windows Cleanup", "Windows Cleanup Notification", SoftwareDistribution, Temp -Confirm:$false -ErrorAction Ignore
+			# Remove folders in Task Scheduler. We cannot remove all old folders explicitly and not get errors if any of folder do not exist
+			$ScheduleService = New-Object -ComObject Schedule.Service
+			$ScheduleService.Connect()
+			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia Script")
+			{
+				$ScheduleService.GetFolder("\").DeleteFolder("Sophia Script", $null)
+			}
+			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\SophiApp")
+			{
+				$ScheduleService.GetFolder("\").DeleteFolder("SophiApp", $null)
+			}
 
 			Get-ChildItem -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches | ForEach-Object -Process {
 				Remove-ItemProperty -Path $_.PsPath -Name StateFlags1337 -Force -ErrorAction Ignore
@@ -10860,15 +10865,37 @@ while (`$true)
 		}
 		"Delete"
 		{
+			# Remove all old tasks
+			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -TaskName "Windows Cleanup", "Windows Cleanup Notification", SoftwareDistribution, Temp -Confirm:$false -ErrorAction Ignore
+			# Remove folder in Task Scheduler if there is no tasks left there. We cannot remove all old folders explicitly and not get errors if any of folder do not exist
+			$ScheduleService = New-Object -ComObject Schedule.Service
+			$ScheduleService.Connect()
+			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia Script")
+			{
+				$ScheduleService.GetFolder("\").DeleteFolder("Sophia Script", $null)
+			}
+			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\SophiApp")
+			{
+				$ScheduleService.GetFolder("\").DeleteFolder("SophiApp", $null)
+			}
+
+			# Removing current task
+			Unregister-ScheduledTask -TaskPath "\Sophia\" -TaskName "Windows Cleanup", "Windows Cleanup Notification" -Confirm:$false -ErrorAction Ignore
+
 			Get-ChildItem -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches | ForEach-Object -Process {
 				Remove-ItemProperty -Path $_.PsPath -Name StateFlags1337 -Force -ErrorAction Ignore
 			}
-
 			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Name ShowInActionCenter -Force -ErrorAction Ignore
-
-			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\", "\Sophia\" -TaskName "Windows Cleanup", "Windows Cleanup Notification" -Confirm:$false -ErrorAction Ignore
-
 			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Recurse -Force -ErrorAction Ignore
+
+			# Remove folder in Task Scheduler if there is no tasks left there
+			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia")
+			{
+				if (($ScheduleService.GetFolder("Sophia").GetTasks(0) | Select-Object -Property Name).Name.Count -eq 0)
+				{
+					$ScheduleService.GetFolder("\").DeleteFolder("Sophia", $null)
+				}
+			}
 		}
 	}
 }
@@ -10918,14 +10945,19 @@ function SoftwareDistributionTask
 	{
 		"Register"
 		{
-			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -TaskName SoftwareDistribution -Confirm:$false -ErrorAction Ignore
-			$Items = @(
-				"$env:SystemRoot\System32\Tasks\SophiApp",
-				"$env:SystemRoot\System32\Tasks\Sophia Script",
-				"HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\SophiApp",
-				"HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia Script"
-			)
-			Remove-Item -Path $Items -Recurse -ErrorAction Ignore
+			# Remove all old tasks
+			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -TaskName "Windows Cleanup", "Windows Cleanup Notification", SoftwareDistribution, Temp -Confirm:$false -ErrorAction Ignore
+			# Remove folders in Task Scheduler. We cannot remove all old folders explicitly and not get errors if any of folder do not exist
+			$ScheduleService = New-Object -ComObject Schedule.Service
+			$ScheduleService.Connect()
+			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia Script")
+			{
+				$ScheduleService.GetFolder("\").DeleteFolder("Sophia Script", $null)
+			}
+			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\SophiApp")
+			{
+				$ScheduleService.GetFolder("\").DeleteFolder("SophiApp", $null)
+			}
 
 			# Persist the Settings notifications to prevent to immediately disappear from Action Center
 			if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel"))
@@ -10982,7 +11014,31 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -For
 		}
 		"Delete"
 		{
-			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\", "\Sophia\" -TaskName SoftwareDistribution -Confirm:$false -ErrorAction Ignore
+			# Remove all old tasks
+			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -TaskName "Windows Cleanup", "Windows Cleanup Notification", SoftwareDistribution, Temp -Confirm:$false -ErrorAction Ignore
+			# Remove folder in Task Scheduler if there is no tasks left there. We cannot remove all old folders explicitly and not get errors if any of folder do not exist
+			$ScheduleService = New-Object -ComObject Schedule.Service
+			$ScheduleService.Connect()
+			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia Script")
+			{
+				$ScheduleService.GetFolder("\").DeleteFolder("Sophia Script", $null)
+			}
+			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\SophiApp")
+			{
+				$ScheduleService.GetFolder("\").DeleteFolder("SophiApp", $null)
+			}
+
+			# Removing current task
+			Unregister-ScheduledTask -TaskPath "\Sophia\" -TaskName SoftwareDistribution -Confirm:$false -ErrorAction Ignore
+
+			# Remove folder in Task Scheduler if there is no tasks left there
+			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia")
+			{
+				if (($ScheduleService.GetFolder("Sophia").GetTasks(0) | Select-Object -Property Name).Name.Count -eq 0)
+				{
+					$ScheduleService.GetFolder("\").DeleteFolder("Sophia", $null)
+				}
+			}
 		}
 	}
 }
@@ -11032,14 +11088,19 @@ function TempTask
 	{
 		"Register"
 		{
-			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -TaskName Temp -Confirm:$false -ErrorAction Ignore
-			$Items = @(
-				"$env:SystemRoot\System32\Tasks\SophiApp",
-				"$env:SystemRoot\System32\Tasks\Sophia Script",
-				"HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\SophiApp",
-				"HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia Script"
-			)
-			Remove-Item -Path $Items -Recurse -ErrorAction Ignore
+			# Remove all old tasks
+			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -TaskName "Windows Cleanup", "Windows Cleanup Notification", SoftwareDistribution, Temp -Confirm:$false -ErrorAction Ignore
+			# Remove folders in Task Scheduler. We cannot remove all old folders explicitly and not get errors if any of folder do not exist
+			$ScheduleService = New-Object -ComObject Schedule.Service
+			$ScheduleService.Connect()
+			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia Script")
+			{
+				$ScheduleService.GetFolder("\").DeleteFolder("Sophia Script", $null)
+			}
+			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\SophiApp")
+			{
+				$ScheduleService.GetFolder("\").DeleteFolder("SophiApp", $null)
+			}
 
 			$TempTask = @"
 Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_.CreationTime -lt (Get-Date).AddDays(-1)} | Remove-Item -Recurse -Force
@@ -11088,7 +11149,31 @@ Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_
 		}
 		"Delete"
 		{
-			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\", "\Sophia\" -TaskName Temp -Confirm:$false -ErrorAction Ignore
+			# Remove all old tasks
+			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -TaskName "Windows Cleanup", "Windows Cleanup Notification", SoftwareDistribution, Temp -Confirm:$false -ErrorAction Ignore
+			# Remove folder in Task Scheduler if there is no tasks left there. We cannot remove all old folders explicitly and not get errors if any of folder do not exist
+			$ScheduleService = New-Object -ComObject Schedule.Service
+			$ScheduleService.Connect()
+			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia Script")
+			{
+				$ScheduleService.GetFolder("\").DeleteFolder("Sophia Script", $null)
+			}
+			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\SophiApp")
+			{
+				$ScheduleService.GetFolder("\").DeleteFolder("SophiApp", $null)
+			}
+
+			# Removing current task
+			Unregister-ScheduledTask -TaskPath "\Sophia\" -TaskName Temp -Confirm:$false -ErrorAction Ignore
+
+			# Remove folder in Task Scheduler if there is no tasks left there
+			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia")
+			{
+				if (($ScheduleService.GetFolder("Sophia").GetTasks(0) | Select-Object -Property Name).Name.Count -eq 0)
+				{
+					$ScheduleService.GetFolder("\").DeleteFolder("Sophia", $null)
+				}
+			}
 		}
 	}
 }
