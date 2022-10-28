@@ -1528,7 +1528,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Xbox Game Bar-Tipps deaktivieren
+        "ToolTip": "Xbox Game Bar-Tipps deaktivieren"
       },
       "One": {
         "Tag": "Enable",
