@@ -242,7 +242,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Microsoft kann Ihnen auf der Grundlage der von Ihnen gewählten Einstellung für Diagnosedaten maßgeschneiderte Erlebnisse bieten (Standardeinstellung)"
+        "ToolTip": "Microsoft kann Ihnen auf der Grundlage der von Ihnen gewählten Einstellung für Diagnosedaten maßgeschneiderte Erlebnisse anbieten (Standardeinstellung)"
       }
     }
   },
@@ -343,7 +343,7 @@
     "Arg": {
       "Zero": {
         "Tag": "ThisPC",
-        "ToolTip": "Datei-Explorer mit \"Dieser PC\""
+        "ToolTip": "Datei-Explorer mit \"Dieser PC\" öffnen"
       },
       "One": {
         "Tag": "QuickAccess",
