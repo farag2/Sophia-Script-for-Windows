@@ -118,7 +118,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Verwende keine Anmeldedaten, um das Gerät automatisch einzurichten und Anwendungen nach einem Neustart oder einer Aktualisierung zu öffnen."
+        "ToolTip": "Keine Anmeldedaten verwenden, um das Gerät automatisch einzurichten und Anwendungen nach einem Neustart oder einer Aktualisierung zu öffnen."
       },
       "One": {
         "Tag": "Enable",
@@ -133,11 +133,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Erlauben Sie nicht, dass Websites lokale Informationen auf Kosten des Zugangs zur Sprachenliste anbieten"
+        "ToolTip": "Nicht zulassen, dass Webseiten lokal relevante Inhalte durch Zugriff auf die Sprachliste bereitstellen"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Websites erlauben, lokale Informationen durch Zugriff auf die Sprachliste bereitzustellen (Standardeinstellung)"
+        "ToolTip": "Webseiten erlauben, lokale Informationen durch Zugriff auf die Sprachliste bereitzustellen (Standardeinstellung)"
       }
     }
   },
@@ -148,11 +148,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Erlauben Sie Anwendungen nicht, eine Werbe-ID zu verwenden"
+        "ToolTip": "Apps die Verwendung von Werbe-IDs nicht erlauben"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Erlauben Sie Anwendungen die Verwendung einer Werbe-ID (Standardeinstellung)"
+        "ToolTip": "Apps die Verwendung von Werbe-IDs erlauben (Standardeinstellung)"
       }
     }
   },
@@ -163,11 +163,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Anwendungen nicht erlauben, den Werbe-Identifikator zu verwenden"
+        "ToolTip": "Windows-Willkommenserfahrungen nach Updates und gelegentlich bei der Anmeldung ausblenden, um die neuen und vorgeschlagenen Funktionen hervorzuheben"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Anwendungen die Verwendung des Werbekennzeichens erlauben (Standardeinstellung)"
+        "ToolTip": "Windows-Willkommenserfahrungen nach Updates und gelegentlich bei der Anmeldung anzeigen, um hervorzuheben, was neu ist und vorgeschlagen wird (Standardeinstellung)"
       }
     }
   },
@@ -208,11 +208,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Automatische Installation der empfohlenen Anwendungen deaktivieren"
+        "ToolTip": "Automatische Installation der empfohlenen Apps deaktivieren"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Automatische Installation der empfohlenen Anwendungen aktivieren (Standardeinstellung)"
+        "ToolTip": "Automatische Installation der empfohlenen Apps aktivieren (Standardeinstellung)"
       }
     }
   },
@@ -238,11 +238,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Lassen Sie nicht zu, dass Microsoft Ihnen maßgeschneiderte Erfahrungen auf der Grundlage der von Ihnen gewählten Einstellung für Diagnosedaten anbietet"
+        "ToolTip": "Nicht zulassen, dass Microsoft Ihnen auf der Grundlage der von Ihnen gewählten Einstellung für Diagnosedaten maßgeschneiderte Erfahrungen anbietet"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Microsoft bietet Ihnen auf der Grundlage der von Ihnen gewählten Einstellung für Diagnosedaten maßgeschneiderte Erfahrungen an (Standardeinstellung)"
+        "ToolTip": "Microsoft kann Ihnen auf der Grundlage der von Ihnen gewählten Einstellung für Diagnosedaten maßgeschneiderte Erlebnisse bieten (Standardeinstellung)"
       }
     }
   },
@@ -257,7 +257,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Aktivieren der Bing-Suche im Startmenü (Standardeinstellung)"
+        "ToolTip": "Bing-Suche im Startmenü aktivieren (Standardeinstellung)"
       }
     }
   },
@@ -283,11 +283,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Verwende keine Kontrollkästchen zur Auswahl von Elementen"
+        "ToolTip": "Keine Kontrollkästchen für Elemente verwenden"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Verwende Kontrollkästchen, um Elemente auszuwählen (Standardeinstellung)"
+        "ToolTip": "Kontrollkästchen für Elemente verwenden (Standardeinstellung)"
       }
     }
   },
@@ -343,11 +343,11 @@
     "Arg": {
       "Zero": {
         "Tag": "ThisPC",
-        "ToolTip": "Öffnet den Datei-Explorer zu \"Dieser PC\""
+        "ToolTip": "Datei-Explorer mit \"Dieser PC\""
       },
       "One": {
         "Tag": "QuickAccess",
-        "ToolTip": "Datei-Explorer für Schnellzugriff öffnen (Standardeinstellung)"
+        "ToolTip": "Datei-Explorer mit Schnellzugriff öffnen (Standardeinstellung)"
       }
     }
   },
@@ -358,11 +358,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Deaktiviert den Kompaktmodus des Datei-Explorers"
+        "ToolTip": "Kompaktmodus des Datei-Explorers deaktivieren"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Aktivieret den Kompaktmodus des Datei-Explorers (Standardeinstellung)"
+        "ToolTip": "Kompaktmodus des Datei-Explorers aktivieren (Standardeinstellung)"
       }
     }
   },
@@ -418,11 +418,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Detailed",
-        "ToolTip": "Das Dialogfeld für die Dateiübertragung im detaillierten Modus anzeigen"
+        "ToolTip": "Dialogfeld für die Dateiübertragung im detaillierten Modus anzeigen"
       },
       "One": {
         "Tag": "Compact",
-        "ToolTip": "Das Dialogfeld für die Dateiübertragung im Kompaktmodus anzeigen (Standardeinstellung)"
+        "ToolTip": "Dialogfeld für die Dateiübertragung im Kompaktmodus anzeigen (Standardeinstellung)"
       }
     }
   },
@@ -433,11 +433,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Anzeige der Bestätigung des Löschens von Papierkorbdateien"
+        "ToolTip": "Bestätigung des Löschens von Papierkorbdateien anzeigen"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Die Bestätigung zum Löschen von Papierkorbdateien nicht anzeigen (Standardeinstellung)"
+        "ToolTip": "Bestätigung zum Löschen von Papierkorbdateien nicht anzeigen (Standardeinstellung)"
       }
     }
   },
@@ -493,11 +493,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Ausblenden der Suchschaltfläche in der Taskleiste"
+        "ToolTip": "Suchschaltfläche in der Taskleiste ausblenden"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Das Suchsymbol in der Taskleiste anzeigen (Standardeinstellung)"
+        "ToolTip": "Suchsymbol in der Taskleiste anzeigen (Standardeinstellung)"
       }
     }
   },
@@ -508,11 +508,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Ausblenden der Schaltfläche Aufgabenansicht in der Taskleiste"
+        "ToolTip": "Schaltfläche Aufgabenansicht in der Taskleiste ausblenden"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Die Schaltfläche Aufgabenansicht in der Taskleiste anzeigen (Standardeinstellung)"
+        "ToolTip": "Schaltfläche Aufgabenansicht in der Taskleiste anzeigen (Standardeinstellung)"
       }
     }
   },
@@ -523,11 +523,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Ausblenden des Widgetsymbols in der Taskleiste"
+        "ToolTip": "Widgetsymbols in der Taskleiste ausblenden"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Das Widgetsymbol in der Taskleiste anzeigen (Standardeinstellung)"
+        "ToolTip": "Widgetsymbol in der Taskleiste anzeigen (Standardeinstellung)"
       }
     }
   },
@@ -538,11 +538,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Ausblenden des Chat-Symbols (Microsoft Teams) in der Taskleiste"
+        "ToolTip": "Chat-Symbols (Microsoft Teams) in der Taskleiste ausblenden"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Das Chat-Symbol (Microsoft Teams) in der Taskleiste anzeigen (Standardeinstellung)"
+        "ToolTip": "Chat-Symbol (Microsoft Teams) in der Taskleiste anzeigen (Standardeinstellung)"
       }
     }
   },
@@ -550,15 +550,15 @@
     "Id": 319,
     "Region": "UI & Personalization",
     "Function": "UnpinTaskbarShortcuts -Shortcuts",
-    "ToolTip": "Die Verknüpfungen \"Microsoft Edge\" oder \"Microsoft Store\" von der Taskleiste lösen",
+    "ToolTip": "Verknüpfungen \"Microsoft Edge\" oder \"Microsoft Store\" von der Taskleiste lösen",
     "Arg": {
       "Zero": {
         "Tag": "Edge",
-        "ToolTip": "Die Verknüpfung \"Microsoft Edge\" von der Taskleiste lösen."
+        "ToolTip": "Verknüpfung \"Microsoft Edge\" von der Taskleiste lösen."
       },
       "One": {
         "Tag": "Store",
-        "ToolTip": "Die Verknüpfung \"Microsoft Store\" von der Taskleiste lösen"
+        "ToolTip": "Verknüpfung \"Microsoft Store\" von der Taskleiste lösen"
       }
     }
   },
@@ -569,15 +569,15 @@
     "Arg": {
       "Zero": {
         "Tag": "LargeIcons",
-        "ToolTip": "Anzeigen der Symbole der Systemsteuerung durch große Symbole"
+        "ToolTip": "Große Symbole in der Systemsteuerung anzeigen"
       },
       "One": {
         "Tag": "SmallIcons",
-        "ToolTip": "Anzeige der Symbole der Systemsteuerung durch kleine Symbole"
+        "ToolTip": "Kleine Symbole in der Systemsteuerung anzeigen"
       },
       "Two": {
         "Tag": "Category",
-        "ToolTip": "Anzeigen der Symbole der Systemsteuerung nach Kategorie (Standardeinstellung)"
+        "ToolTip": "Symbole der Systemsteuerung nach Kategorie anzeigen (Standardeinstellung)"
       }
     }
   },
@@ -588,11 +588,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Dark",
-        "ToolTip": "Den Windows-Standardmodus auf dunkel einstellen"
+        "ToolTip": "Windows-Standardmodus auf dunkel einstellen"
       },
       "One": {
         "Tag": "Light",
-        "ToolTip": "Den Windows-Standardmodus auf hell setzen (Standardeinstellung)"
+        "ToolTip": "Windows-Standardmodus auf hell einstellen (Standardeinstellung)"
       }
     }
   },
@@ -603,11 +603,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Dark",
-        "ToolTip": "Den Standardmodus der Anwendung auf dunkel einstellen"
+        "ToolTip": "Standardmodus der App auf dunkel einstellen"
       },
       "One": {
         "Tag": "Light",
-        "ToolTip": "Den Standard-Anwendungsmodus auf Hell setzen (Standardeinstellung)"
+        "ToolTip": "Standardmodus der App auf hell einstellen (Standardeinstellung)"
       }
     }
   },
@@ -622,7 +622,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Animation zur ersten Anmeldung des Benutzers nach dem Upgrade anzeigen (Standardeinstellung)"
+        "ToolTip": "Animation zur Erstanmeldung nach dem Upgrade anzeigen (Standardeinstellung)"
       }
     }
   },
@@ -633,11 +633,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Max",
-        "ToolTip": "Setzt den Qualitätsfaktor der JPEG-Desktop-Hintergründe auf Maximum"
+        "ToolTip": "Qualitätsfaktor der JPEG-Desktop-Hintergründe auf Maximum einstellen"
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Setzt den Qualitätsfaktor der JPEG-Desktop-Hintergründe auf Standard (Standardeinstellung)"
+        "ToolTip": "Qualitätsfaktor der JPEG-Desktop-Hintergründe auf Standard einstellen (Standardeinstellung)"
       }
     }
   },
@@ -648,7 +648,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Expanded",
-        "ToolTip": "Startet den Task-Manager im erweiterten Modus"
+        "ToolTip": "Task-Manager im erweiterten Modus starten"
       },
       "One": {
         "Tag": "Compact",
@@ -663,7 +663,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Show",
-        "ToolTip": "Eine Benachrichtigung anzeigen, wenn Ihr PC neu gestartet werden muss, um die Aktualisierung abzuschließen"
+        "ToolTip": "Benachrichtigung anzeigen, wenn Ihr PC neu gestartet werden muss, um die Aktualisierung abzuschließen"
       },
       "One": {
         "Tag": "Hide",
@@ -678,11 +678,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Das Suffix \"-Verknüpfung\" nicht an den Dateinamen der erstellten Verknüpfungen anhängen."
+        "ToolTip": "Suffix \"-Verknüpfung\" nicht an den Dateinamen der erstellten Verknüpfungen anfügen"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Das Suffix \"-Verknüpfung\" an den Dateinamen der erstellten Verknüpfungen anhängen (Standardeinstellung)"
+        "ToolTip": "Suffix \"-Verknüpfung\" an den Dateinamen der erstellten Verknüpfungen anfügen (Standardeinstellung)"
       }
     }
   },
@@ -693,11 +693,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Verwenden der Schaltfläche Bildschirm drucken, um den Bildschirmausschnitt zu öffnen."
+        "ToolTip": "Schaltfläche Bildschirm drucken verwenden, um den Bildschirmausschnitt zu öffnen"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Die Schaltfläche Bildschirm drucken nicht zum Öffnen von Bildschirmausschnitten verwenden (Standardeinstellung)"
+        "ToolTip": "Schaltfläche Bildschirm drucken nicht verwenden, um den Bildschirmausschnitt zu öffnen (Standardeinstellung)"
       }
     }
   },
@@ -708,11 +708,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Nicht für jedes Anwendungsfenster eine andere Eingabemethode verwenden (Standardeinstellung)"
+        "ToolTip": "Nicht für jedes App-Fenster eine andere Eingabemethode verwenden (Standardeinstellung)"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Lassen Sie mich für jedes Anwendungsfenster eine andere Eingabemethode verwenden"
+        "ToolTip": "Für jedes App-Fenster eine andere Eingabemethode verwenden"
       }
     }
   },
@@ -742,11 +742,11 @@
       },
       "One": {
         "Tag": "Light",
-        "ToolTip": "Downloaden und installieren Sie die kostenlosen leichte \"Windows 11 Cursors Concept v2\" Cursors von Jepri Creations"
+        "ToolTip": "Kostenlos helle \"Windows 11 Cursors Concept v2\" Cursor von Jepri Creations herunterladen und installieren"
       },
       "Two": {
         "Tag": "Dark",
-        "ToolTip": "Downloaden und installieren Sie die kostenlosen dunklen \"Windows 11 Cursors Concept v2\" Cursors von Jepri Creations"
+        "ToolTip": "Kostenlos dunkle \"Windows 11 Cursors Concept v2\" Cursors von Jepri Creations herunterladen und installieren"
       }
     }
   },
@@ -802,11 +802,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Temporäre Dateien löschen, die von Anwendungen nicht verwendet werden (Standardeinstellung)"
+        "ToolTip": "Temporäre Dateien löschen, die von Apps nicht verwendet werden (Standardeinstellung)"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Löscht keine temporären Dateien, die von Anwendungen nicht verwendet werden."
+        "ToolTip": "Keine temporären Dateien löschen, die von Apps nicht verwendet werden."
       }
     }
   },
@@ -817,11 +817,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Deaktiviert den Ruhezustand. Es wird nicht empfohlen, ihn auf Laptops zu deaktivieren."
+        "ToolTip": "Ruhezustand deaktivieren. Es wird nicht empfohlen, ihn auf Laptops zu deaktivieren."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Ruhezustand einschalten (Standardeinstellung)"
+        "ToolTip": "Ruhezustand aktivieren (Standardeinstellung)"
       }
     }
   },
@@ -862,11 +862,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Anzeige der Stop-Fehlerinformationen auf dem BSoD"
+        "ToolTip": "Stop-Fehlercodes beim Auftreten von BSoD anzeigen"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Keine Anzeige der Stop-Fehler-Informationen in der BSoD (Standardeinstellung)"
+        "ToolTip": "Stop-Fehlercodes beim Auftreten von BSoD nicht anzeigen (Standardeinstellung)"
       }
     }
   },
@@ -941,7 +941,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Windows meinen Standarddrucker verwalten lassen (Standardeinstellung)"
+        "ToolTip": "Standarddrucker von Windows verwalten lassen (Standardeinstellung)"
       }
     }
   },
@@ -952,11 +952,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Deaktivieren Sie die Windows-Funktionen über das Popup-Dialogfeld"
+        "ToolTip": "Windows-Funktionen über das Popup-Dialogfeld deaktivieren"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Aktivieren Sie die Windows-Funktionen über das Popup-Dialogfeld (Standardeinstellung)"
+        "ToolTip": "Windows-Funktionen über das Popup-Dialogfeld aktivieren (Standardeinstellung)"
       }
     }
   },
@@ -967,7 +967,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Uninstall",
-        "ToolTip": "Deinstalliert optionale Funktionen über das Pop-up-Dialogfeld"
+        "ToolTip": "Optionale Funktionen über das Pop-up-Dialogfeld deinstallieren"
       },
       "One": {
         "Tag": "Install",
@@ -997,11 +997,11 @@
     "Arg": {
       "Zero": {
         "Tag": "High",
-        "ToolTip": "Stellt den Energiesparplan auf \"Hohe Leistung\" ein. Es wird nicht empfohlen, den Energiesparplan \"Hohe Leistung\" auf Laptops zu aktivieren."
+        "ToolTip": "Energiesparplan auf \"Hohe Leistung\" einstellen. Es wird nicht empfohlen, den Energiesparplan \"Hohe Leistung\" auf Laptops zu aktivieren."
       },
       "One": {
         "Tag": "Balanced",
-        "ToolTip": "Einstellen des Energiesparplans auf \"Ausgeglichen\" (Standardeinstellung)"
+        "ToolTip": "Energiesparplan auf \"Ausgeglichen\" einstellen (Standardeinstellung)"
       }
     }
   },
@@ -1012,11 +1012,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Verwenden Sie die neueste installierte .NET-Laufzeitumgebung für alle Anwendungen"
+        "ToolTip": "Neueste installierte .NET-Laufzeitumgebung für alle Apps verwenden"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Die zuletzt installierte .NET-Laufzeitumgebung nicht für alle Anwendungen verwenden (Standardeinstellung)"
+        "ToolTip": "Neueste installierte .NET-Laufzeitumgebung nicht für alle Apps verwenden (Standardeinstellung)"
       }
     }
   },
@@ -1027,11 +1027,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Erlauben Sie dem Computer nicht, die Netzwerkadapter auszuschalten, um Strom zu sparen."
+        "ToolTip": "Computer nicht erlauben, die Netzwerkadapter auszuschalten, um Strom zu sparen."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Dem Computer erlauben, die Netzwerkadapter auszuschalten, um Strom zu sparen (Standardeinstellung)"
+        "ToolTip": "Computer erlauben, die Netzwerkadapter auszuschalten, um Strom zu sparen (Standardeinstellung)"
       }
     }
   },
@@ -1057,11 +1057,11 @@
     "Arg": {
       "Zero": {
         "Tag": "English",
-        "ToolTip": "Überschreiben Sie die Standard-Eingabemethode: Englisch"
+        "ToolTip": "Standard-Eingabemethode überschreiben: Englisch"
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Überschreibung für Standard-Eingabemethode: Sprachliste verwenden (Standardeinstellung)"
+        "ToolTip": "Standard-Eingabemethode: Sprachliste verwenden (Standardeinstellung)"
       }
     }
   },
@@ -1338,11 +1338,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Aktivieren Sie das Proxying nur für gesperrte Websites aus der einheitlichen Registrierung von Roskomnadzor. Die Funktion ist nur für Russland anwendbar."
+        "ToolTip": "Proxying nur für gesperrte Webseiten aus dem einheitlichen Register von Roskomnadzor aktivieren. Die Funktion ist nur für Russland anwendbar."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Deaktivieren Sie das Proxying nur für gesperrte Websites aus dem einheitlichen Register von Roskomnadzor (Standardwert)"
+        "ToolTip": "Proxying nur für gesperrte Webseiten aus dem einheitlichen Register von Roskomnadzor (Standardwert) deaktivieren"
       }
     }
   },
