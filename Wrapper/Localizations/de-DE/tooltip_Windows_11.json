@@ -1584,7 +1584,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Register",
-        "ToolTip": "Erstellt eine geplante Aufgabe \"SoftwareDistribution\", um den Ordner \"%SystemRoot%\\SoftwareDistribution\\Download\ zu bereinigen". Die Aufgabe wartet, bis der Windows-Update-Dienst seine Ausführung beendet hat. Die Aufgabe wird alle 90 Tage ausgeführt"
+        "ToolTip": "Erstellt eine geplante Aufgabe \"SoftwareDistribution\", um den Ordner \"%SystemRoot%\\SoftwareDistribution\\Download\" zu bereinigen. Die Aufgabe wartet, bis der Windows-Update-Dienst seine Ausführung beendet hat. Die Aufgabe wird alle 90 Tage ausgeführt"
       },
       "One": {
         "Tag": "Delete",
