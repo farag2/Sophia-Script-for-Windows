@@ -88,7 +88,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Never",
-        "ToolTip": "Ändert die Feedbackfrequenz auf \"Nie\"."
+        "ToolTip": "Ändert die Feedbackfrequenz auf \"Nie\""
       },
       "One": {
         "Tag": "Automatically",
@@ -107,7 +107,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Aktiviert die Diagnoseverfolgung für geplante Aufgaben (Standardeinstellung)."
+        "ToolTip": "Aktiviert die Diagnoseverfolgung für geplante Aufgaben (Standardeinstellung)"
       }
     }
   },
@@ -554,7 +554,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Edge",
-        "ToolTip": "Verknüpfung \"Microsoft Edge\" von der Taskleiste lösen."
+        "ToolTip": "Verknüpfung \"Microsoft Edge\" von der Taskleiste lösen"
       },
       "One": {
         "Tag": "Store",
@@ -806,7 +806,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Keine temporären Dateien löschen, die von Apps nicht verwendet werden."
+        "ToolTip": "Keine temporären Dateien löschen, die von Apps nicht verwendet werden"
       }
     }
   },
@@ -817,7 +817,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Ruhezustand deaktivieren. Es wird nicht empfohlen, ihn auf Laptops zu deaktivieren."
+        "ToolTip": "Ruhezustand deaktivieren. Es wird nicht empfohlen, ihn auf Laptops zu deaktivieren"
       },
       "One": {
         "Tag": "Enable",
@@ -892,7 +892,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Aktiviert den Zugriff auf zugeordnete Laufwerke von einer Anwendung, die mit erweiterten Berechtigungen und aktiviertem Admin-Genehmigungsmodus ausgeführt wird."
+        "ToolTip": "Aktiviert den Zugriff auf zugeordnete Laufwerke von einer Anwendung, die mit erweiterten Berechtigungen und aktiviertem Admin-Genehmigungsmodus ausgeführt wird"
       },
       "One": {
         "Tag": "Disable",
@@ -997,7 +997,7 @@
     "Arg": {
       "Zero": {
         "Tag": "High",
-        "ToolTip": "Energiesparplan auf \"Hohe Leistung\" einstellen. Es wird nicht empfohlen, den Energiesparplan \"Hohe Leistung\" auf Laptops zu aktivieren."
+        "ToolTip": "Energiesparplan auf \"Hohe Leistung\" einstellen. Es wird nicht empfohlen, den Energiesparplan \"Hohe Leistung\" auf Laptops zu aktivieren"
       },
       "One": {
         "Tag": "Balanced",
@@ -1027,7 +1027,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Computer nicht erlauben, die Netzwerkadapter auszuschalten, um Strom zu sparen."
+        "ToolTip": "Computer nicht erlauben, die Netzwerkadapter auszuschalten, um Strom zu sparen"
       },
       "One": {
         "Tag": "Enable",
@@ -1072,11 +1072,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Root",
-        "ToolTip": "Verschieben Sie Benutzerordner über das interaktive Menü in das Stammverzeichnis eines beliebigen Laufwerks. Benutzerdateien oder -ordner können nicht an einen neuen Speicherort verschoben werden. Verschieben Sie sie manuell. Sie befinden sich standardmäßig in dem Ordner %USERPROFILE%."
+        "ToolTip": "Verschieben Sie Benutzerordner über das interaktive Menü in das Stammverzeichnis eines beliebigen Laufwerks. Benutzerdateien oder -ordner können nicht an einen neuen Speicherort verschoben werden. Verschieben Sie sie manuell. Sie befinden sich standardmäßig in dem Ordner %USERPROFILE%"
       },
       "One": {
         "Tag": "Custom",
-        "ToolTip": "Wählen Sie Ordner für Benutzerordner manuell über einen Ordner-Browser-Dialog aus. Benutzerdateien oder -ordner werden nicht an einen neuen Speicherort verschoben. Verschieben Sie sie manuell. Sie befinden sich standardmäßig in dem Ordner %USERPROFILE%."
+        "ToolTip": "Wählen Sie Ordner für Benutzerordner manuell über einen Ordner-Browser-Dialog aus. Benutzerdateien oder -ordner werden nicht an einen neuen Speicherort verschoben. Verschieben Sie sie manuell. Sie befinden sich standardmäßig in dem Ordner %USERPROFILE%"
       },
       "Two": {
         "Tag": "Default",
@@ -1241,7 +1241,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Aktivieren Sie die automatische Speicherung meiner neu zu startenden Anwendungen beim Abmelden und starten Sie sie nach dem Anmelden neu."
+        "ToolTip": "Aktivieren Sie die automatische Speicherung meiner neu zu startenden Anwendungen beim Abmelden und starten Sie sie nach dem Anmelden neu"
       },
       "One": {
         "Tag": "Disable",
@@ -1256,7 +1256,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Aktiviert die \"Netzwerkerkennung\" und \"Datei- und Druckerfreigabe\" für Arbeitsgruppennetzwerke."
+        "ToolTip": "Aktiviert die \"Netzwerkerkennung\" und \"Datei- und Druckerfreigabe\" für Arbeitsgruppennetzwerke"
       },
       "One": {
         "Tag": "Disable",
@@ -1286,7 +1286,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Starten Sie das Gerät so bald wie möglich neu, wenn ein Neustart erforderlich ist, um ein Update zu installieren."
+        "ToolTip": "Starten Sie das Gerät so bald wie möglich neu, wenn ein Neustart erforderlich ist, um ein Update zu installieren"
       },
       "One": {
         "Tag": "Disable",
@@ -1338,7 +1338,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Proxying nur für gesperrte Webseiten aus dem einheitlichen Register von Roskomnadzor aktivieren. Die Funktion ist nur für Russland anwendbar."
+        "ToolTip": "Proxying nur für gesperrte Webseiten aus dem einheitlichen Register von Roskomnadzor aktivieren. Die Funktion ist nur für Russland anwendbar"
       },
       "One": {
         "Tag": "Disable",
@@ -1353,11 +1353,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Aktivieren Sie alle erforderlichen Abhängigkeiten (ein Neustart kann erforderlich sein) und öffnen Sie die Microsoft Store WSA-Seite, um Windows Subsystem for Android™ mit Amazon Appstore manuell zu installieren"
+        "ToolTip": "Alle erforderlichen Abhängigkeiten aktivieren (ein Neustart kann erforderlich sein) und die Microsoft Store WSA-Seite öffnen, um Windows Subsystem for Android™ mit Amazon-Appstore manuell zu installieren"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Deaktivieren Sie alle erforderlichen Abhängigkeiten (ein Neustart kann erforderlich sein) und deinstallieren Sie Windows Subsystem for Android™ with Amazon Appstore (Standardwert)"
+        "ToolTip": "Alle erforderlichen Abhängigkeiten deaktivieren (ein Neustart kann erforderlich sein) und Windows Subsystem for Android™ mith Amazon-Appstore deinstallieren (Standardwert)"
       }
     }
   },
@@ -1424,7 +1424,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Deinstallation von UWP-Anwendungen über das Pop-up-Dialogfeld"
+        "ToolTip": "UWP-Anwendungen über das Pop-up-Dialogfeld deinstallieren"
       }
     }
   },
@@ -1435,7 +1435,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Deinstalliert UWP-Anwendungen über das Popup-Dialogfeld. Wenn das Argument \"Für alle Benutzer\" aktiviert ist, werden die Anwendungspakete für neue Benutzer nicht installiert. Das Argument \"Für alle Benutzer\" setzt ein Kontrollkästchen, um Pakete für alle Benutzer zu deinstallieren"
+        "ToolTip": "UWP-Anwendungen über das Popup-Dialogfeld deinstallieren. Wenn das Argument \"Für alle Benutzer\" aktiviert ist, werden die App-pakete für neue Benutzer nicht installiert. Das Argument \"Für alle Benutzer\" setzt ein Kontrollkästchen, um Pakete für alle Benutzer zu deinstallieren"
       }
     }
   },
@@ -1457,11 +1457,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Manually",
-        "ToolTip": "Öffnet die Seite Microsoft Store \"HEVC Video Extensions from Device Manufacturer\", um diese Erweiterung manuell zu installieren und die Bildformate .heic und .heif öffnen zu können. Die Erweiterung kann ohne ein Microsoft-Konto installiert werden"
+        "ToolTip": "Die Seite Microsoft Store \"HEVC Video Extensions from Device Manufacturer\" öffnen, um diese Erweiterung manuell zu installieren und die Bildformate .heic und .heif öffnen zu können. Die Erweiterung kann ohne ein Microsoft-Konto installiert werden"
       },
       "One": {
         "Tag": "Install",
-        "ToolTip": "Lädt die \"HEVC Video Extensions from Device Manufacturer\" herunter und installiert es, um die Formate .heic und .heif öffnen zu können. Die HEVC-Videoerweiterung ist standardmäßig bereits in Windows 11 22H2 installiert."
+        "ToolTip": "\"HEVC Video Extensions from Device Manufacturer\" herunterladen und installieren, um die Formate .heic und .heif öffnen zu können. Die HEVC-Videoerweiterung ist bereits standardmäßig in Windows 11 22H2 installiert"
       }
     }
   },
@@ -1472,11 +1472,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Autostart von Cortana deaktivieren"
+        "ToolTip": "Cortana-Autostart deaktivieren"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Autostart von Cortana aktivieren (Standardeinstellung)"
+        "ToolTip": "Cortana-Autostart aktivieren (Standardeinstellung)"
       }
     }
   },
@@ -1487,11 +1487,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Autostart von Microsoft Teams deaktivieren"
+        "ToolTip": "Microsoft Teams-Autostart deaktivieren"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Aktiviert den Autostart von Microsoft Teams (Standardeinstellung)"
+        "ToolTip": "Microsoft Teams-Autostart aktivieren (Standardeinstellung)"
       }
     }
   },
@@ -1513,7 +1513,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Xbox Game Bar deaktivieren. Um zu verhindern, dass die Warnung \"Sie benötigen eine neue App, um dieses ms-gamingoverlay zu öffnen\" angezeigt wird, müssen Sie die Xbox Game Bar App deaktivieren, auch wenn Sie sie zuvor deinstalliert haben."
+        "ToolTip": "Xbox Game Bar deaktivieren. Um zu verhindern, dass die Warnung \"Sie benötigen eine neue App, um dieses ms-gamingoverlay zu öffnen\" angezeigt wird, müssen Sie die Xbox Game Bar App deaktivieren, auch wenn Sie sie zuvor deinstalliert haben"
       },
       "One": {
         "Tag": "Enable",
@@ -1528,7 +1528,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Deaktivieren der Xbox Game Bar Tipps"
+        "ToolTip": "Xbox Game Bar-Tipps deaktivieren
       },
       "One": {
         "Tag": "Enable",
@@ -1543,7 +1543,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Wählen Sie eine Anwendung aus und stellen Sie für diese die \"Hohe Leistung\" für die Grafikleistung ein. Nur mit einer dedizierten GPU"
+        "ToolTip": "App auswählen und diese \"Hohe Leistung\" für die Grafik einstellen. Nur mit einer dedizierten GPU"
       }
     }
   },
@@ -1554,11 +1554,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Aktiviert die hardwarebeschleunigte GPU-Planung. Neustart erforderlich. Nur mit einem dedizierten Grafikprozessor und einer WDDM-Version von 2.7 oder höher"
+        "ToolTip": "Aktiviert die Hardwarebeschleunigte GPU-Planung. Neustart erforderlich. Nur mit einem dedizierten Grafikprozessor und einer WDDM-Version von 2.7 oder höher"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Deaktiviert die hardwarebeschleunigte GPU-Planung. Neustart erforderlich (Standardeinstellung)"
+        "ToolTip": "Deaktiviert die Hardwarebeschleunigte GPU-Planung. Neustart erforderlich (Standardeinstellung)"
       }
     }
   },
@@ -1569,11 +1569,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Register",
-        "ToolTip": "Erstellt  eine geplante Aufgabe \"Windows Cleanup\" zum Bereinigen von nicht verwendeten Windows-Dateien und Updates. Alle 30 Tage wird eine interaktive Toast-Benachrichtigung angezeigt. Die Aufgabe wird alle 30 Tage ausgeführt"
+        "ToolTip": "Erstellt eine geplante Aufgabe \"Windows Cleanup\", um nicht verwendete Windows-Dateien und Updates zu bereinigen. Alle 30 Tage wird eine interaktive Toast-Benachrichtigung angezeigt. Die Aufgabe wird alle 30 Tage ausgeführt"
       },
       "One": {
         "Tag": "Delete",
-        "ToolTip": "Löscht die geplanten Aufgaben \"Windows-Bereinigung\" und \"Windows-Bereinigungsbenachrichtigung\" zum Bereinigen von nicht verwendeten Windows-Dateien und Updates."
+        "ToolTip": "Löscht geplante Aufgaben \"Windows-Bereinigung\" und \"Windows-Bereinigungsbenachrichtigung\", um nicht verwendeten Windows-Dateien und Updates zu bereinigen"
       }
     }
   },
@@ -1584,11 +1584,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Register",
-        "ToolTip": "Erstellt eine geplante Aufgabe \"SoftwareDistribution\" zum Bereinigen des Ordners \"%SystemRoot%\\SoftwareDistribution\\Download\".Die Aufgabe wartet, bis der Windows-Update-Dienst seine Ausführung beendet hat. Die Aufgabe wird alle 90 Tage ausgeführt."
+        "ToolTip": "Erstellt eine geplante Aufgabe \"SoftwareDistribution\", um den Ordner \"%SystemRoot%\\SoftwareDistribution\\Download\ zu bereinigen". Die Aufgabe wartet, bis der Windows-Update-Dienst seine Ausführung beendet hat. Die Aufgabe wird alle 90 Tage ausgeführt"
       },
       "One": {
         "Tag": "Delete",
-        "ToolTip": "Löscht die geplante Aufgabe \"SoftwareDistribution\" zum Bereinigen des Ordners \"%SystemRoot%\\SoftwareDistribution\\Download\"."
+        "ToolTip": "Löscht die geplante Aufgabe \"SoftwareDistribution\", um den Ordner \"%SystemRoot%\\SoftwareDistribution\\Download\" zu bereinigen"
       }
     }
   },
@@ -1599,11 +1599,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Register",
-        "ToolTip": "Erstellt eine geplante Aufgabe \"Temp\" zum Bereinigen des Ordners %TEMP%. Die Aufgabe wird alle 60 Tage ausgeführt"
+        "ToolTip": "Erstellt eine geplante Aufgabe \"Temp\", um den Ordner %TEMP% zu bereinigen. Die Aufgabe wird alle 60 Tage ausgeführt"
       },
       "One": {
         "Tag": "Delete",
-        "ToolTip": "Löscht die geplante Aufgabe \"Temp\" zum Bereinigen des Ordners %TEMP%."
+        "ToolTip": "Löscht die geplante Aufgabe \"Temp\", um den Ordner %TEMP% zu bereinigen"
       }
     }
   },
@@ -1614,11 +1614,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Aktiviert den Microsoft Defender Exploit Guard Netzwerkschutz"
+        "ToolTip": "Netzwerkschutz von Microsoft Defender Exploit Guard aktivieren"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Deaktiviert den Microsoft Defender Exploit Guard-Netzwerkschutz (Standardeinstellung)"
+        "ToolTip": "Netzwerkschutz von Microsoft Defender Exploit Guard deaktivieren (Standardeinstellung)"
       }
     }
   },
@@ -1629,11 +1629,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Erkennung von potenziell unerwünschten Anwendungen aktivieren und diese blockieren"
+        "ToolTip": "Erkennung potenziell unerwünschter Apps aktivieren und diese blockieren"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Erkennung von potenziell unerwünschten Anwendungen deaktivieren und diese blockieren (Standardeinstellung)"
+        "ToolTip": "Erkennung potenziell unerwünschter Apps deaktivieren und diese blockieren (Standardeinstellung)"
       }
     }
   },
@@ -1644,7 +1644,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Das Angebot von Microsoft Defender ablehnen, sich bei Ihrem Microsoft-Konto anzumelden."
+        "ToolTip": "Microsoft Defender-Angebot in der Windows-Sicherheit über die Anmeldung im Microsoft-Konto ablehnen"
       }
     }
   },
@@ -1655,7 +1655,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Ablehnen des Vorschlags von Microsoft Defender in \"Windows Security\", den SmartScreen-Filter für Microsoft Edge zu aktivieren"
+        "ToolTip": "Microsoft Defender-Angebot in der Windows-Sicherheit über die Aktivierung des SmartScreen-Filters für Microsoft Edge ablehnen"
       }
     }
   },
@@ -1666,11 +1666,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Aktiviert die Ereignisüberwachung, die beim Erstellen (Starten) eines Prozesses erzeugt werden."
+        "ToolTip": "Aktiviert das Überwachen von Ereignissen, die beim Erstellen (Starten) eines Prozesses erzeugt werden"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Deaktiviert die Ereignisüberwachung, die beim Erstellen (Starten) eines Prozesses erzeugt wird (Standardeinstellung)."
+        "ToolTip": "Deaktiviert das Überwachen von Ereignissen, die beim Erstellen (Starten) eines Prozesses erzeugt werden"
       }
     }
   },
@@ -1685,7 +1685,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Befehlszeile nicht in Prozesserzeugungsereignisse aufnehmen (Standardeinstellung)"
+        "ToolTip": "Keine Einbeziehung der Befehlszeile in Ereignisse der Prozesserstellung (Standardwert)"
       }
     }
   },
@@ -1696,11 +1696,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Erstellt eine dauerhafte Ansicht \"Prozesserstellung\" in der Ereignisanzeige. Damit dies funktioniert, müssen Auditing-Ereignisse (AuditProcess -Enable) und Kommandozeilenereignisse bei der Prozesserstellung aktiviert sein"
+        "ToolTip": "Erstellt eine benutzerdefinierte Ansicht \"Prozesserstellung\", um ausgeführte Prozesse und ihre Argumente zu protokollieren. Damit diese Funktion funktioniert, müssen die Ereignisprüfung (AuditProcess -Enable) und die Befehlszeile (CommandLineProcessAudit -Enable) in Ereignissen zur Prozesserstellung aktiviert werden"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Benutzerdefinierte Ansicht \"Prozesserstellung\" der Ereignisanzeige entfernen (Standardeinstellung)"
+        "ToolTip": "Entfernt die Ereignisanzeige \"Prozesserstellung\", um ausgeführte Prozesse und ihre Argumente zu protokollieren (Standardwert)"
       }
     }
   },
@@ -1726,11 +1726,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Aktivieren der Protokollierung für alle PowerShell-Skripte, die in das Windows PowerShell-Ereignisprotokoll eingegeben werden"
+        "ToolTip": "Aktiviert die Protokollierung für alle PowerShell-Skripte, die in das Windows PowerShell-Ereignisprotokoll eingegeben werden"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Deaktivieren der Protokollierung für alle PowerShell-Skripte, die in das Windows PowerShell-Ereignisprotokoll eingegeben werden (Standardeinstellung)"
+        "ToolTip": "Deaktiviert die Protokollierung für alle PowerShell-Skripte, die in das Windows PowerShell-Ereignisprotokoll eingegeben werden (Standardeinstellung)"
       }
     }
   },
@@ -1756,11 +1756,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Deaktiviert die Überprüfung von aus dem Internet heruntergeladenen Dateien durch den Dateianlagen-Manager als unsicher"
+        "ToolTip": "Deaktiviert den Attachment Manager, der Dateien, die aus dem Internet heruntergeladen wurden, als unsicher markiert"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Aktiviert den Dateianhangsmanager, um aus dem Internet heruntergeladene Dateien als unsicher zu prüfen (Standardeinstellung)"
+        "ToolTip": "Aktiviert den Attachment Manager, der Dateien, die aus dem Internet heruntergeladen wurden, als unsicher markiert (Standardwert"
       }
     }
   },
@@ -1775,7 +1775,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Windows Script Host aktivieren (Standardeinstellung)."
+        "ToolTip": "Windows Script Host aktivieren (Standardeinstellung)"
       }
     }
   },
@@ -1790,7 +1790,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Windows-Sandbox deaktivieren (Standardeinstellung)."
+        "ToolTip": "Windows-Sandbox deaktivieren (Standardeinstellung)"
       }
     }
   },
@@ -1801,11 +1801,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Aktiviert den DNS-over-HTTPS für IPv4. Bevorzugter DNS-Server: 1.0.0.1, alternativ: 1.1.1.1"
+        "ToolTip": "Aktiviert DNS-over-HTTPS für IPv4. Gültige IPv4-Adressen: 1.0.0.1, 1.1.1.1, 149.112.112.112, 8.8.4.4, 8.8.8.8, 9.9.9.91"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "DNS-over-HTTPS für IPv4 deaktivieren ( Standardeinstellung)."
+        "ToolTip": "Deaktiviert DNS-over-HTTPS für IPv4 ( Standardeinstellung)"
       }
     }
   },
@@ -1816,11 +1816,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Show",
-        "ToolTip": "Anzeigen der Option \"Alle extrahieren\" im Kontextmenü des Windows-Installationsprogramms (.msi)"
+        "ToolTip": "Zeigt den Eintrag \"Alle extrahieren\" im Kontextmenü des Windows-Installationsprogramms (.msi) an"
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Ausblenden der Option \"Alle extrahieren\" im Kontextmenü des Windows Installers (.msi) ( Standardeinstellung)."
+        "ToolTip": "Zeigt den Eintrag \"Alle extrahieren\" im Kontextmenü des Windows-Installationsprogramms (.msi) nicht an"
       }
     }
   },
@@ -1831,11 +1831,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Show",
-        "ToolTip": "\"Installieren\" im Kontextmenü der .cab-Archive anzeigen"
+        "ToolTip": "Eintrag \"Installieren\" im Kontextmenü der Cabinet (.cab)-Dateinamenerweiterungen anzeigen"
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Ausblenden der Option \"Installieren\" im Kontextmenü der .cab-Archive (Standardeinstellung)"
+        "ToolTip": "Eintrag \"Installieren\" im Kontextmenü der Cabinet (.cab)-Dateinamenerweiterungen ausblenden (Standardeinstellung)"
       }
     }
   },
@@ -1846,11 +1846,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Show",
-        "ToolTip": "Anzeige von \"Als anderer Benutzer ausführen\" im Kontextmenü der .exe-Dateien"
+        "ToolTip": "\"Als anderer Benutzer ausführen\" im Kontextmenü der .exe-Dateien anzeigen"
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Die Option \"Als anderer Benutzer ausführen\" im Kontextmenü der .exe-Dateien ausblenden (Standardeinstellung)"
+        "ToolTip": "\"Als anderer Benutzer ausführen\" im Kontextmenü der .exe-Dateien ausblenden (Standardeinstellung)"
       }
     }
   },
@@ -1861,11 +1861,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Ausblenden der Option \"Auf Gerät übertragen\" im Kontextmenü von Mediendateien und Ordnern"
+        "ToolTip": "Eintrag \"Auf Gerät übertragen\" im Kontextmenü von Mediendateien und Ordnern ausblenden"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Übertragen auf \"Gerät\" im Kontextmenü von Mediendateien und Ordnern anzeigen (Standardeinstellung)"
+        "ToolTip": "Eintrag \"Auf Gerät übertragen\" im Kontextmenü von Mediendateien und Ordnern anzeigen (Standardeinstellung)"
       }
     }
   },
@@ -1876,11 +1876,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Ausblenden des Eintrags \"Senden (Teilen)\" im Kontextmenü"
+        "ToolTip": "Eintrag \"Teilen\" im Kontextmenü ausblenden"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Den Eintrag \"Senden (Teilen)\" im Kontextmenü anzeigen (Standardeinstellung)."
+        "ToolTip": "Eintrag \"Teilen\" im Kontextmenü anzeigen (Standardeinstellung)"
       }
     }
   },
@@ -1891,11 +1891,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Ausblenden des Eintrags \"Mit Fotos bearbeiten\" im Kontextmenü von Mediendateien"
+        "ToolTip": "Eintrag \"Mit Fotos bearbeiten\" im Kontextmenü von Mediendateien ausblenden"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Den Eintrag \"Mit Fotos bearbeiten\" im Kontextmenü der Mediendateien anzeigen (Standardeinstellung)."
+        "ToolTip": "Eintrag \"Mit Fotos bearbeiten\" im Kontextmenü von Mediendateien aunzeigen (Standardeinstellung)"
       }
     }
   },
@@ -1906,11 +1906,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Ausblenden des Eintrags \"Neues Video erstellen\" im Kontextmenü der Mediendateien"
+        "ToolTip": "Eintrag \"Neues Video erstellen\" im Kontextmenü der Mediendateien ausblenden"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Den Eintrag \"Ein neues Video erstellen\" im Kontextmenü der Mediendateien anzeigen (Standardeinstellung)."
+        "ToolTip": "Eintrag \"Neues Video erstellen\" im Kontextmenü der Mediendateien aunzeigen (Standardeinstellung)"
       }
     }
   },
@@ -1921,11 +1921,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Ausblenden des Eintrags \"Drucken\" im Kontextmenü von .bat und .cmd"
+        "ToolTip": "Eintrag \"Drucken\" im Kontextmenü von .bat und .cmd ausblenden"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Den Eintrag \"Drucken\" im Kontextmenü von .bat und .cmd anzeigen (Standardeinstellung)."
+        "ToolTip": "Eintrag \"Drucken\" im Kontextmenü von .bat und .cmd anzeigen (Standardeinstellung)"
       }
     }
   },
@@ -1936,11 +1936,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Ausblenden des Eintrags \"In Bibliothek einbeziehen\" im Kontextmenü von Ordnern und Laufwerken"
+        "ToolTip": "Eintrag \"In Bibliothek einbeziehen\" im Kontextmenü von Ordnern und Laufwerken ausblenden"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Den Eintrag \"In Bibliothek einbeziehen\" im Kontextmenü von Ordnern und Laufwerken anzeigen (Standardeinstellung)."
+        "ToolTip": "Eintrag \"In Bibliothek einbeziehen\" im Kontextmenü von Ordnern und Laufwerken anzeigen (Standardeinstellung)"
       }
     }
   },
@@ -1951,11 +1951,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Ausblenden des Eintrags \"Senden an\" aus dem Ordner-Kontextmenü"
+        "ToolTip": "Eintrag \"Senden an\" aus dem Ordner-Kontextmenü ausblenden"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Den Eintrag \"Senden an\" im Kontextmenü der Ordner anzeigen (Standardeinstellung)."
+        "ToolTip": "Eintrag \"Senden an\" aus dem Ordner-Kontextmenü anzeigen (Standardeinstellung)"
       }
     }
   },
@@ -1966,11 +1966,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Den Eintrag \"Komprimierter ZIP-Ordner\" \"Erstellen\" im Kontextmenü ausblenden"
+        "ToolTip": "Eintrag \"Komprimierter (gezippter) Ordner\" \"Erstellen\" im Kontextmenü ausblenden"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Den Eintrag \"Komprimierte (zip) Ordner\" \"Neu\"im Kontextmenü anzeigen (Standardeinstellung)."
+        "ToolTip": "Eintrag \"Komprimierter (gezippter) Ordner\" \"Neu\"im Kontextmenü anzeigen (Standardeinstellung)"
       }
     }
   },
@@ -2011,7 +2011,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Ausblenden der Menüoption \"In Windows Terminal öffnen\" im Kontextmenü von Ordnern"
+        "ToolTip": "Menüoption \"In Windows Terminal öffnen\" im Kontextmenü von Ordnern ausblenden"
       },
       "One": {
         "Tag": "Show",
@@ -2026,11 +2026,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Öffnen Sie Windows Terminal über das Kontextmenü als Administrator"
+        "ToolTip": "Windows-Terminal im Kontextmenü standardmäßig als Administrator öffnen"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Öffnen Sie Windows Terminal nicht standardmäßig als Administrator über das Kontextmenü (Standardwert)"
+        "ToolTip": "Windows-Terminal im Kontextmenü standardmäßig als Administrator nicht öffnen (Standardwert)"
       }
     }
   },
@@ -2041,11 +2041,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Windows 10-Kontextmenüstils deaktivieren (Standardwert)"
+        "ToolTip": "Windows 10-Kontextmenüstil deaktivieren (Standardwert)"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Windows 10-Kontextmenüstils aktivieren"
+        "ToolTip": "Windows 10-Kontextmenüstil aktivieren"
       }
     }
   },
@@ -2056,7 +2056,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Aktualisieren Sie den lokalen Gruppenrichtlinien-Editor (gpedit.msc), um alle manuell erstellten Richtlinienschlüssel in der Registrierung im Snap-In sichtbar zu machen"
+        "ToolTip": "Editor für lokale Gruppenrichtlinien (gpedit.msc) aktualisieren, damit alle manuell erstellten Richtlinienschlüssel in der Registrierung im Snap-In sichtbar werden"
       }
     }
   }
