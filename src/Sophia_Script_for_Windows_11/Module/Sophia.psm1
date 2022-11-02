@@ -12358,17 +12358,20 @@ function EditWithPhotosContext
 		$Show
 	)
 
-	if (Get-AppxPackage -Name Microsoft.Windows.Photos)
+	if ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber -le 22623)
 	{
-		switch ($PSCmdlet.ParameterSetName)
+		if (Get-AppxPackage -Name Microsoft.Windows.Photos)
 		{
-			"Hide"
+			switch ($PSCmdlet.ParameterSetName)
 			{
-				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppX43hnxtbyyps62jhe9sqpdzxn1790zetc\Shell\ShellEdit -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
-			}
-			"Show"
-			{
-				Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppX43hnxtbyyps62jhe9sqpdzxn1790zetc\Shell\ShellEdit -Name ProgrammaticAccessOnly -Force -ErrorAction Ignore
+				"Hide"
+				{
+					New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppX43hnxtbyyps62jhe9sqpdzxn1790zetc\Shell\ShellEdit -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
+				}
+				"Show"
+				{
+					Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppX43hnxtbyyps62jhe9sqpdzxn1790zetc\Shell\ShellEdit -Name ProgrammaticAccessOnly -Force -ErrorAction Ignore
+				}
 			}
 		}
 	}
