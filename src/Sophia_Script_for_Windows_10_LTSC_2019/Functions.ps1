@@ -3,7 +3,7 @@
 	The TAB completion for functions and their arguments
 
 	Version: v5.4.2
-	Date: 29.10.2022
+	Date: 03.11.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -18,10 +18,6 @@
 	Sophia -Functions <tab>
 	Sophia -Functions temp<tab>
 	Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal"
-
-	.NOTES
-	Set execution policy to be able to run scripts only in the current PowerShell session:
-		Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 
 	.NOTES
 	Use commas to separate funtions

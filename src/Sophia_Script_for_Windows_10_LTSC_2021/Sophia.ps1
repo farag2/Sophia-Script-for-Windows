@@ -3,7 +3,7 @@
 	Default preset file for "Sophia Script for Windows 10 LTSC 2021"
 
 	Version: v5.14.2
-	Date: 29.10.2022
+	Date: 03.11.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -30,10 +30,6 @@
 	Build: 19044.2006+
 	Edition: Enterprise LTSC 2021
 	Architecture: x64
-
-	.NOTES
-	Set execution policy to be able to run scripts only in the current PowerShell session:
-		Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 
 	.NOTES
 	To use the TAB completion for functions and their arguments dot source the Function.ps1 script first:
