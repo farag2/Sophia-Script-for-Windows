@@ -2,7 +2,7 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.4.1
+	Version: v5.4.2
 	Date: 29.10.2022
 
 	Copyright (c) 2014—2022 farag
@@ -11,18 +11,11 @@
 	Thanks to all https://forum.ru-board.com members involved
 
 	.NOTES
-	Running the script is best done on a fresh install because running it on wrong tweaked system may result in errors occurring
-
-	.NOTES
 	Supported Windows 10 version
 	Version: 1809
 	Build: 17763.3406+
 	Edition: Enterprise LTSC
 	Architecture: x64
-
-	.NOTES
-	Set execution policy to be able to run scripts only in the current PowerShell session:
-		Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 
 	.LINK GitHub
 	https://github.com/farag2/Sophia-Script-for-Windows
@@ -532,6 +525,11 @@ function script:Set-Policy
 		)]
 		$Value
 	)
+
+	if (-not (Test-Path -Path "$env:SystemRoot\System32\gpedit.msc"))
+	{
+		return
+	}
 
 	switch ($Type)
 	{
@@ -4948,6 +4946,8 @@ function NetworkAdaptersSavePower
 		[switch]
 		$Enable
 	)
+
+	Write-Verbose -Message $Localization.Patient -Verbose
 
 	if (Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"})
 	{

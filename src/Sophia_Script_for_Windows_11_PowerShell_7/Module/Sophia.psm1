@@ -2,7 +2,7 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v6.2.1
+	Version: v6.2.2
 	Date: 29.10.2022
 
 	Copyright (c) 2014—2022 farag
@@ -11,17 +11,10 @@
 	Thanks to all https://forum.ru-board.com members involved
 
 	.NOTES
-	Running the script is best done on a fresh install because running it on wrong tweaked system may result in errors occurring
-
-	.NOTES
 	Supported Windows 11 versions
 	Versions: 21H2/22H2/23H2+
 	Builds: 22000.739+, 22621+
 	Editions: Home/Pro/Enterprise
-
-	.NOTES
-	Set execution policy to be able to run scripts only in the current PowerShell session:
-		Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 
 	.LINK GitHub
 	https://github.com/farag2/Sophia-Script-for-Windows
@@ -565,6 +558,11 @@ function script:Set-Policy
 		)]
 		$Value
 	)
+
+	if (-not (Test-Path -Path "$env:SystemRoot\System32\gpedit.msc"))
+	{
+		return
+	}
 
 	switch ($Type)
 	{
@@ -5753,6 +5751,8 @@ function NetworkAdaptersSavePower
 		$Enable
 	)
 
+	Write-Verbose -Message $Localization.Patient -Verbose
+
 	if (Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"})
 	{
 		$PhysicalAdaptersStatusUp = @((Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"}).Name)
@@ -10129,7 +10129,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 
 <#
 	.SYNOPSIS
-	Install "HEVC Video Extensions from Device Manufacturer" to be able to open .heic and .heif formats
+	"HEVC Video Extensions from Device Manufacturer" extension
 
 	.PARAMETER Install
 	Download and install the "HEVC Video Extensions from Device Manufacturer" extension
@@ -10179,7 +10179,7 @@ function HEIF
 		"Install"
 		{
 			# Check whether the extension is already installed
-			if ((Get-AppxPackage -Name Microsoft.HEVCVideoExtension) -and (Get-AppxPackage -Name Microsoft.Windows.Photos))
+			if (-not ((Get-AppxPackage -Name Microsoft.HEVCVideoExtension) -and (Get-AppxPackage -Name Microsoft.Windows.Photos)))
 			{
 				return
 			}
@@ -10200,9 +10200,9 @@ function HEIF
 
 				try
 				{
-					# Check whether https://github.com is alive
+					# Check whether https://store.rg-adguard.net is alive
 					$Parameters = @{
-						Uri              = "https://github.com"
+						Uri              = "https://store.rg-adguard.net/api/GetFiles"
 						Method           = "Head"
 						DisableKeepAlive = $true
 						UseBasicParsing  = $true
@@ -10212,20 +10212,44 @@ function HEIF
 						return
 					}
 
-					# https://github.com/farag2/Sophia-Script-for-Windows/tree/master/Misc
-					$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-					$Parameters = @{
-						Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/Microsoft.HEVCVideoExtension_2.0.51121.0_x64__8wekyb3d8bbwe.Appx"
-						OutFile         = "$DownloadsFolder\Microsoft.HEVCVideoExtension_2.0.51121.0_x64__8wekyb3d8bbwe.Appx"
-						UseBasicParsing = $true
-						Verbose         = $true
+					$Body = @{
+						type = "url"
+						url  = "https://www.microsoft.com/store/productId/9n4wgh0z6vhq"
+						ring = "Retail"
+						lang = "en-US"
 					}
-					Invoke-WebRequest @Parameters
+					$Parameters = @{
+						Uri         = "https://store.rg-adguard.net/api/GetFiles"
+						Method      = "Post"
+						ContentType = "application/x-www-form-urlencoded"
+						Body        = $Body
+						Verbose     = $true
+					}
+					$Raw = Invoke-WebRequest @Parameters
+
+					# Parsing the page
+					$Raw | Select-String -Pattern '<tr style.*<a href=\"(?<url>.*)"\s.*>(?<text>.*)<\/a>' -AllMatches | ForEach-Object -Process {$_.Matches} | Where-Object -FilterScript {$_.Value -like "*x64*.appx*"} | ForEach-Object -Process {
+						$TempURL = ($_.Groups | Select-Object -Index 1).Value
+						$HEVCPackageName = ($_.Groups | Select-Object -Index 2).Value.Split("_") | Select-Object -Index 1
+					}
 
 					# Installing "HEVC Video Extensions from Device Manufacturer"
-					Add-AppxPackage -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_2.0.51121.0_x64__8wekyb3d8bbwe.Appx" -Verbose
+					if ([System.Version]$HEVCPackageName -gt [System.Version](Get-AppxPackage -Name Microsoft.HEVCVideoExtension).Version)
+					{
+						Write-Verbose -Message $Localization.Patient -Verbose
+						Write-Verbose -Message $Localization.HEVCDownloading -Verbose
 
-					Remove-Item -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_2.0.51121.0_x64__8wekyb3d8bbwe.Appx" -Force
+						$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+						$Parameters = @{
+							Uri     = $TempURL
+							OutFile = "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx"
+							Verbose = $true
+						}
+						Invoke-WebRequest @Parameters
+
+						Add-AppxPackage -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx" -Verbose
+						Remove-Item -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx" -Force
+					}
 				}
 				catch [System.Net.WebException]
 				{
