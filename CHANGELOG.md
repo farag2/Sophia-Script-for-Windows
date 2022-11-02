@@ -5,7 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 5.14.0 | 6.2.0 — 09.10.2022
+## 5.14.2 | 6.2.2 — 02.11.2022
+
+* `HEIF` function was re-written;
+  * Now it downloads the latest HEVC codec package using the <https://store.rg-adguard.net> parser again;
+  * Now it checks version of installed package before installing;
+  * #406 closed.
+* Minor changes.
+
+## 5.14.1 | 6.2.1 — 31.10.2022
+
+* Fixed old bug in Meet Now function when it didn't save registry key value;
+* Improved all scheduled tasks creation;
+  * Unified tasks with [SophiApp](https://github.com/Sophia-Community/SophiApp): they are created now in `Sophia` folder;
+  * When you remove all tasks in the `Task Scheduler`, folder will be removed too;
+* Added missed strings in the Wrapper configs;
+* Improved Wrapper German translation;
+  * Thanks to @Henry2o1o.
+* Minor changes.
+
+## 5.14.0 | 6.2.0 — 23.10.2022
 
 * Moved from `PolFileEditor.dll` to [LGPO.exe](https://techcommunity.microsoft.com/t5/microsoft-security-baselines/lgpo-exe-local-group-policy-object-utility-v1-0/ba-p/701045) from Microsoft;
   * It lets manually created policies keys in registry be visible in gpedit.msc snap-in by re-building policy cache by official way;
