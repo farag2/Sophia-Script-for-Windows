@@ -183,12 +183,8 @@ function Checks
 		exit
 	}
 
-	# Check whether necessary files exist in the bin folder
-	$Files = @(
-		"$PSScriptRoot\..\bin\LGPO.exe",
-		"$PSScriptRoot\..\bin\Start_Layout\start.bin"
-	)
-	if (($Files | Test-Path) -contains $false)
+	# Check whether LGPO.exe exists in the bin folder
+	if (-not (Test-Path -Path "$PSScriptRoot\..\bin\LGPO.exe")
 	{
 		Write-Warning -Message $Localization.Bin
 		Start-Sleep -Seconds 5
