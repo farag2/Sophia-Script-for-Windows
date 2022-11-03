@@ -9178,7 +9178,7 @@ BDEE24B1E5E4ED6CC9D5A337908BE5303E477736C8A75051A8FBD4E3CB6360D8F0A992A48F333434
 	(
 		$i = 0
 		$i -lt $HexString.Length
-		$i+ = 2
+		$i+= 2
 	)
 	{
 		$Bytes[$i/2] = [System.Convert]::ToByte($HexString.Substring($i, 2), 16)
