@@ -10835,24 +10835,24 @@ function HEIF
 					$Raw | Select-String -Pattern '<tr style.*<a href=\"(?<url>.*)"\s.*>(?<text>.*)<\/a>' -AllMatches | ForEach-Object -Process {$_.Matches} | Where-Object -FilterScript {$_.Value -like "*x64*.appx*"} | ForEach-Object -Process {
 						$TempURL = ($_.Groups | Select-Object -Index 1).Value
 						$HEVCPackageName = ($_.Groups | Select-Object -Index 2).Value.Split("_") | Select-Object -Index 1
-					}
 
-					# Installing "HEVC Video Extensions from Device Manufacturer"
-					if ([System.Version]$HEVCPackageName -gt [System.Version](Get-AppxPackage -Name Microsoft.HEVCVideoExtension).Version)
-					{
-						Write-Verbose -Message $Localization.Patient -Verbose
-						Write-Verbose -Message $Localization.HEVCDownloading -Verbose
+						# Installing "HEVC Video Extensions from Device Manufacturer"
+						if ([System.Version]$HEVCPackageName -gt [System.Version](Get-AppxPackage -Name Microsoft.HEVCVideoExtension).Version)
+						{
+							Write-Verbose -Message $Localization.Patient -Verbose
+							Write-Verbose -Message $Localization.HEVCDownloading -Verbose
 
-						$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-						$Parameters = @{
-							Uri     = $TempURL
-							OutFile = "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx"
-							Verbose = $true
+							$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+							$Parameters = @{
+								Uri     = $TempURL
+								OutFile = "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx"
+								Verbose = $true
+							}
+							Invoke-WebRequest @Parameters
+
+							Add-AppxPackage -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx" -Verbose
+							Remove-Item -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx" -Force
 						}
-						Invoke-WebRequest @Parameters
-
-						Add-AppxPackage -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx" -Verbose
-						Remove-Item -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx" -Force
 					}
 				}
 				catch [System.Net.WebException]
