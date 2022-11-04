@@ -10159,21 +10159,44 @@ function HEIF
 		$Manually
 	)
 
+	# Check whether the extension is already installed
+	if (-not (Get-AppxPackage -Name Microsoft.Windows.Photos))
+	{
+		return
+	}
+
+	try
+	{
+		# Check the internet connection
+		$Parameters = @{
+			Uri              = "https://www.google.com"
+			Method           = "Head"
+			DisableKeepAlive = $true
+			UseBasicParsing  = $true
+		}
+		if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+		{
+			return
+		}
+	}
+	catch [System.Net.WebException]
+	{
+		Write-Warning -Message $Localization.NoInternetConnection
+		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+
+		return
+	}
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Install"
 		{
-			# Check whether the extension is already installed
-			if (-not ((Get-AppxPackage -Name Microsoft.HEVCVideoExtension) -and (Get-AppxPackage -Name Microsoft.Windows.Photos)))
-			{
-				return
-			}
-
 			try
 			{
-				# Check the internet connection
+				# Check whether https://store.rg-adguard.net is alive
 				$Parameters = @{
-					Uri              = "https://www.google.com"
+					Uri              = "https://store.rg-adguard.net/api/GetFiles"
 					Method           = "Head"
 					DisableKeepAlive = $true
 					UseBasicParsing  = $true
@@ -10183,103 +10206,58 @@ function HEIF
 					return
 				}
 
-				try
-				{
-					# Check whether https://store.rg-adguard.net is alive
-					$Parameters = @{
-						Uri              = "https://store.rg-adguard.net/api/GetFiles"
-						Method           = "Head"
-						DisableKeepAlive = $true
-						UseBasicParsing  = $true
-					}
-					if (-not (Invoke-WebRequest @Parameters).StatusDescription)
-					{
-						return
-					}
-
-					$Body = @{
-						type = "url"
-						url  = "https://www.microsoft.com/store/productId/9n4wgh0z6vhq"
-						ring = "Retail"
-						lang = "en-US"
-					}
-					$Parameters = @{
-						Uri         = "https://store.rg-adguard.net/api/GetFiles"
-						Method      = "Post"
-						ContentType = "application/x-www-form-urlencoded"
-						Body        = $Body
-						Verbose     = $true
-					}
-					$Raw = Invoke-WebRequest @Parameters
-
-					# Parsing the page
-					$Raw | Select-String -Pattern '<tr style.*<a href=\"(?<url>.*)"\s.*>(?<text>.*)<\/a>' -AllMatches | ForEach-Object -Process {$_.Matches} | Where-Object -FilterScript {$_.Value -like "*x64*.appx*"} | ForEach-Object -Process {
-						$TempURL = ($_.Groups | Select-Object -Index 1).Value
-						$HEVCPackageName = ($_.Groups | Select-Object -Index 2).Value.Split("_") | Select-Object -Index 1
-
-						# Installing "HEVC Video Extensions from Device Manufacturer"
-						if ([System.Version]$HEVCPackageName -gt [System.Version](Get-AppxPackage -Name Microsoft.HEVCVideoExtension).Version)
-						{
-							Write-Verbose -Message $Localization.Patient -Verbose
-							Write-Verbose -Message $Localization.HEVCDownloading -Verbose
-
-							$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-							$Parameters = @{
-								Uri     = $TempURL
-								OutFile = "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx"
-								Verbose = $true
-							}
-							Invoke-WebRequest @Parameters
-
-							Add-AppxPackage -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx" -Verbose
-							Remove-Item -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx" -Force
-						}
-					}
+				$Body = @{
+					type = "url"
+					url  = "https://www.microsoft.com/store/productId/9n4wgh0z6vhq"
+					ring = "Retail"
+					lang = "en-US"
 				}
-				catch [System.Net.WebException]
-				{
-					Write-Warning -Message ($Localization.NoResponse -f "https://github.com")
-					Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
+				$Parameters = @{
+					Uri             = "https://store.rg-adguard.net/api/GetFiles"
+					Method          = "Post"
+					ContentType     = "application/x-www-form-urlencoded"
+					Body            = $Body
+					UseBasicParsing = $true
+					Verbose         = $true
+				}
+				$Raw = Invoke-WebRequest @Parameters
 
-					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+				# Parsing the page
+				$Raw | Select-String -Pattern '<tr style.*<a href=\"(?<url>.*)"\s.*>(?<text>.*)<\/a>' -AllMatches | ForEach-Object -Process {$_.Matches} | Where-Object -FilterScript {$_.Value -like "*x64*.appx*"} | ForEach-Object -Process {
+					$TempURL = ($_.Groups | Select-Object -Index 1).Value
+					$HEVCPackageName = ($_.Groups | Select-Object -Index 2).Value.Split("_") | Select-Object -Index 1
+
+					# Installing "HEVC Video Extensions from Device Manufacturer"
+					if ([System.Version]$HEVCPackageName -gt [System.Version](Get-AppxPackage -Name Microsoft.HEVCVideoExtension).Version)
+					{
+						Write-Verbose -Message $Localization.Patient -Verbose
+						Write-Verbose -Message $Localization.HEVCDownloading -Verbose
+
+						$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+						$Parameters = @{
+							Uri             = $TempURL
+							OutFile         = "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx"
+							UseBasicParsing = $true
+							Verbose         = $true
+						}
+						Invoke-WebRequest @Parameters
+
+						Add-AppxPackage -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx" -Verbose
+						Remove-Item -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx" -Force
+					}
 				}
 			}
 			catch [System.Net.WebException]
 			{
-				Write-Warning -Message $Localization.NoInternetConnection
-				Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+				Write-Warning -Message ($Localization.NoResponse -f "https://store.rg-adguard.net/api/GetFiles")
+				Write-Error -Message ($Localization.NoResponse -f "https://store.rg-adguard.net/api/GetFiles") -ErrorAction SilentlyContinue
 
 				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
 			}
 		}
 		"Manually"
 		{
-			if ((-not (Get-AppxPackage -Name Microsoft.HEVCVideoExtension)) -and (Get-AppxPackage -Name Microsoft.Windows.Photos))
-			{
-				try
-				{
-					# Check the internet connection
-					$Parameters = @{
-						Uri              = "https://www.google.com"
-						Method           = "Head"
-						DisableKeepAlive = $true
-						UseBasicParsing  = $true
-					}
-					if (-not (Invoke-WebRequest @Parameters).StatusDescription)
-					{
-						return
-					}
-
-					Start-Process -FilePath ms-windows-store://pdp/?ProductId=9n4wgh0z6vhq
-				}
-				catch [System.Net.WebException]
-				{
-					Write-Warning -Message $Localization.NoInternetConnection
-					Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
-
-					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
-				}
-			}
+			Start-Process -FilePath ms-windows-store://pdp/?ProductId=9n4wgh0z6vhq
 		}
 	}
 }
@@ -12994,7 +12972,7 @@ function Windows10ContextMenu
 #region Update Policies
 <#
 	.SYNOPSIS
-	Update Local Group Policy Editor (gpedit.msc) to make all manually created policy keys in the registry visible in the snap-in
+	Display all policy registry keys (even manually created ones) in the Local Group Policy Editor snap-in (gpedit.msc)
 
 	.EXAMPLE
 	UpdateLGPEPolicies
@@ -13004,6 +12982,7 @@ function Windows10ContextMenu
 
 	.NOTES
 	Machine-wide user
+	Current user
 #>
 function UpdateLGPEPolicies
 {

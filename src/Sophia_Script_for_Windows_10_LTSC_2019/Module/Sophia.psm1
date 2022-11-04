@@ -9977,7 +9977,7 @@ function MultipleInvokeContext
 #region Update Policies
 <#
 	.SYNOPSIS
-	Update Local Group Policy Editor (gpedit.msc) to make all manually created policy keys in the registry visible in the snap-in
+	Display all policy registry keys (even manually created ones) in the Local Group Policy Editor snap-in (gpedit.msc)
 
 	.EXAMPLE
 	UpdateLGPEPolicies
@@ -9987,6 +9987,7 @@ function MultipleInvokeContext
 
 	.NOTES
 	Machine-wide user
+	Current user
 #>
 function UpdateLGPEPolicies
 {
