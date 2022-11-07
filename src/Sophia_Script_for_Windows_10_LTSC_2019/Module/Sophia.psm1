@@ -10073,7 +10073,7 @@ function UpdateLGPEPolicies
 					# Parse every ADMX template searching if it contains full path and registry key simultaneously
 					[xml]$config = Get-Content -Path $admx.FullName -Encoding UTF8
 					$config.SelectNodes("//@*") | ForEach-Object {$_.value = $_.value.ToLower()}
-					$SplitPath = Split-Path -Path $Path.Name.Replace("HKEY_LOCAL_MACHINE\", "HKLM:") -NoQualifier
+					$SplitPath = $Path.Name.Replace("HKEY_CURRENT_USER\", "")
 
 					if ($config.SelectSingleNode("//*[local-name()='policy' and @key='$($SplitPath.ToLower())' and (@valueName='$($Item.ToLower())' or @Name='$($Item.ToLower())' or .//*[local-name()='enum' and @valueName='$($Item.ToLower())'])]"))
 					{
@@ -10096,7 +10096,7 @@ function UpdateLGPEPolicies
 						}
 
 						$Parameters = @{
-							Scope = "Computer"
+							Scope = "User"
 							# e.g. SOFTWARE\Microsoft\Windows\CurrentVersion\Policies
 							Path  = $Path.Name.Replace("HKEY_CURRENT_USER\", "")
 							Name  = $Item.Replace("{}", "")
