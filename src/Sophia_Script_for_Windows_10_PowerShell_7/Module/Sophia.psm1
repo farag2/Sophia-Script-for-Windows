@@ -11321,7 +11321,7 @@ function CleanupTask
 		{
 			# Remove all old tasks
 			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -TaskName "Windows Cleanup", "Windows Cleanup Notification", SoftwareDistribution, Temp -Confirm:$false -ErrorAction Ignore
-			# Remove folders in Task Scheduler. We cannot remove all old folders explicitly and not get errors if any of folder do not exist
+			# Remove folders in Task Scheduler. We cannot remove all old folders explicitly and not get errors if any of folders do not exist
 			$ScheduleService = New-Object -ComObject Schedule.Service
 			$ScheduleService.Connect()
 			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia Script")
@@ -11360,6 +11360,34 @@ function CleanupTask
 				}
 				New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\$VolumeCache" -Name StateFlags1337 -PropertyType DWord -Value 2 -Force
 			}
+
+			# Persist Sophia notifications to prevent to immediately disappear from Action Center
+			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia))
+			{
+				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia -Force
+			}
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia -Name ShowInActionCenter -PropertyType DWord -Value 1 -Force
+
+			if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia))
+			{
+				New-Item -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Force
+			}
+			# Register app
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Name DisplayName -Value Sophia -PropertyType String -Force
+			# Determines whether the app can be seen in Settings where the user can turn notifications on or off
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Name ShowInSettings -Value 0 -PropertyType DWord -Force
+
+			# Register the "WindowsCleanup" protocol to be able to run the scheduled task by clicking the "Run" button in a toast
+			if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup\shell\open\command))
+			{
+				New-Item -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup\shell\open\command -Force
+			}
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name "(default)" -PropertyType String -Value "URL:WindowsCleanup" -Force
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name "URL Protocol" -PropertyType String -Value "" -Force
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name EditFlags -PropertyType DWord -Value 2162688 -Force
+
+			# Start the "Windows Cleanup" task if the "Run" button clicked
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup\shell\open\command -Name "(default)" -PropertyType String -Value 'powershell.exe -Command "& {Start-ScheduledTask -TaskPath ''\Sophia\'' -TaskName ''Windows Cleanup''}"' -Force
 
 			$CleanupTask = @"
 Get-Process -Name cleanmgr | Stop-Process -Force
@@ -11443,25 +11471,6 @@ while (`$true)
 			}
 			Register-ScheduledTask @Parameters -Force
 
-			# Persist the Settings notifications to prevent to immediately disappear from Action Center
-			if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel"))
-			{
-				New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Force
-			}
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Name ShowInActionCenter -PropertyType DWord -Value 1 -Force
-
-			# Register the "WindowsCleanup" protocol to be able to run the scheduled task by clicking the "Run" button in a toast
-			if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup\shell\open\command))
-			{
-				New-Item -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup\shell\open\command -Force
-			}
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name "(default)" -PropertyType String -Value "URL:WindowsCleanup" -Force
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name "URL Protocol" -PropertyType String -Value "" -Force
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name EditFlags -PropertyType DWord -Value 2162688 -Force
-
-			# Start the "Windows Cleanup" task if the "Run" button clicked
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup\shell\open\command -Name "(default)" -PropertyType String -Value 'powershell.exe -Command "& {Start-ScheduledTask -TaskPath ''\Sophia\'' -TaskName ''Windows Cleanup''}"' -Force
-
 			$ToastNotification = @"
 [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
 [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
@@ -11501,7 +11510,7 @@ while (`$true)
 `$ToastXml.LoadXml(`$ToastTemplate.OuterXml)
 
 `$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New(`$ToastXML)
-[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("""windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel""").Show(`$ToastMessage)
+[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("""Sophia""").Show(`$ToastMessage)
 "@
 
 			# Create the "Windows Cleanup Notification" task
@@ -11524,7 +11533,8 @@ while (`$true)
 		{
 			# Remove all old tasks
 			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -TaskName "Windows Cleanup", "Windows Cleanup Notification", SoftwareDistribution, Temp -Confirm:$false -ErrorAction Ignore
-			# Remove folder in Task Scheduler if there is no tasks left there. We cannot remove all old folders explicitly and not get errors if any of folder do not exist
+
+			# Remove folder in Task Scheduler if there is no tasks left there. We cannot remove all old folders explicitly and not get errors if any of folders do not exist
 			$ScheduleService = New-Object -ComObject Schedule.Service
 			$ScheduleService.Connect()
 			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia Script")
@@ -11542,8 +11552,9 @@ while (`$true)
 			Get-ChildItem -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches | ForEach-Object -Process {
 				Remove-ItemProperty -Path $_.PsPath -Name StateFlags1337 -Force -ErrorAction Ignore
 			}
-			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Name ShowInActionCenter -Force -ErrorAction Ignore
 			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Recurse -Force -ErrorAction Ignore
+			Remove-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia -Recurse -Force -ErrorAction Ignore
+			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Force -ErrorAction Ignore
 
 			# Remove folder in Task Scheduler if there is no tasks left there
 			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia")
@@ -11604,7 +11615,8 @@ function SoftwareDistributionTask
 		{
 			# Remove all old tasks
 			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -TaskName "Windows Cleanup", "Windows Cleanup Notification", SoftwareDistribution, Temp -Confirm:$false -ErrorAction Ignore
-			# Remove folders in Task Scheduler. We cannot remove all old folders explicitly and not get errors if any of folder do not exist
+
+			# Remove folders in Task Scheduler. We cannot remove all old folders explicitly and not get errors if any of folders do not exist
 			$ScheduleService = New-Object -ComObject Schedule.Service
 			$ScheduleService.Connect()
 			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia Script")
@@ -11616,12 +11628,21 @@ function SoftwareDistributionTask
 				$ScheduleService.GetFolder("\").DeleteFolder("SophiApp", $null)
 			}
 
-			# Persist the Settings notifications to prevent to immediately disappear from Action Center
-			if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel"))
+			# Persist Sophia notifications to prevent to immediately disappear from Action Center
+			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia))
 			{
-				New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Force
+				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia -Force
 			}
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel" -Name ShowInActionCenter -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia -Name ShowInActionCenter -PropertyType DWord -Value 1 -Force
+
+			if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia))
+			{
+				New-Item -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Force
+			}
+			# Register app
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Name DisplayName -Value Sophia -PropertyType String -Force
+			# Determines whether the app can be seen in Settings where the user can turn notifications on or off
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Name ShowInSettings -Value 0 -PropertyType DWord -Force
 
 			$SoftwareDistributionTask = @"
 (Get-Service -Name wuauserv).WaitForStatus('Stopped', '01:00:00')
@@ -11650,7 +11671,7 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -For
 `$ToastXml.LoadXml(`$ToastTemplate.OuterXml)
 
 `$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New(`$ToastXML)
-[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("""windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel""").Show(`$ToastMessage)
+[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("""Sophia""").Show(`$ToastMessage)
 "@
 
 			# Create the "SoftwareDistribution" task
@@ -11671,9 +11692,13 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -For
 		}
 		"Delete"
 		{
+			Remove-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia -Recurse -Force -ErrorAction Ignore
+			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Force -ErrorAction Ignore
+
 			# Remove all old tasks
 			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -TaskName "Windows Cleanup", "Windows Cleanup Notification", SoftwareDistribution, Temp -Confirm:$false -ErrorAction Ignore
-			# Remove folder in Task Scheduler if there is no tasks left there. We cannot remove all old folders explicitly and not get errors if any of folder do not exist
+
+			# Remove folder in Task Scheduler if there is no tasks left there. We cannot remove all old folders explicitly and not get errors if any of folders do not exist
 			$ScheduleService = New-Object -ComObject Schedule.Service
 			$ScheduleService.Connect()
 			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia Script")
@@ -11747,7 +11772,8 @@ function TempTask
 		{
 			# Remove all old tasks
 			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -TaskName "Windows Cleanup", "Windows Cleanup Notification", SoftwareDistribution, Temp -Confirm:$false -ErrorAction Ignore
-			# Remove folders in Task Scheduler. We cannot remove all old folders explicitly and not get errors if any of folder do not exist
+
+			# Remove folders in Task Scheduler. We cannot remove all old folders explicitly and not get errors if any of folders do not exist
 			$ScheduleService = New-Object -ComObject Schedule.Service
 			$ScheduleService.Connect()
 			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia Script")
@@ -11758,6 +11784,22 @@ function TempTask
 			{
 				$ScheduleService.GetFolder("\").DeleteFolder("SophiApp", $null)
 			}
+
+			# Persist Sophia notifications to prevent to immediately disappear from Action Center
+			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia))
+			{
+				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia -Force
+			}
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia -Name ShowInActionCenter -PropertyType DWord -Value 1 -Force
+
+			if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia))
+			{
+				New-Item -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Force
+			}
+			# Register app
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Name DisplayName -Value Sophia -PropertyType String -Force
+			# Determines whether the app can be seen in Settings where the user can turn notifications on or off
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Name ShowInSettings -Value 0 -PropertyType DWord -Force
 
 			$TempTask = @"
 Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_.CreationTime -lt (Get-Date).AddDays(-1)} | Remove-Item -Recurse -Force
@@ -11785,7 +11827,7 @@ Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_
 `$ToastXml.LoadXml(`$ToastTemplate.OuterXml)
 
 `$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New(`$ToastXML)
-[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("""windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel""").Show(`$ToastMessage)
+[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("""Sophia""").Show(`$ToastMessage)
 "@
 
 			# Create the "Temp" task
@@ -11806,9 +11848,13 @@ Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_
 		}
 		"Delete"
 		{
+			Remove-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia -Recurse -Force -ErrorAction Ignore
+			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Force -ErrorAction Ignore
+
 			# Remove all old tasks
 			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -TaskName "Windows Cleanup", "Windows Cleanup Notification", SoftwareDistribution, Temp -Confirm:$false -ErrorAction Ignore
-			# Remove folder in Task Scheduler if there is no tasks left there. We cannot remove all old folders explicitly and not get errors if any of folder do not exist
+
+			# Remove folder in Task Scheduler if there is no tasks left there. We cannot remove all old folders explicitly and not get errors if any of folders do not exist
 			$ScheduleService = New-Object -ComObject Schedule.Service
 			$ScheduleService.Connect()
 			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia Script")
@@ -13818,16 +13864,24 @@ public static void PostMessage()
 	Write-Information -MessageData "" -InformationAction Continue
 	Write-Warning -Message $Localization.RestartWarning
 
-	<#
-		.NOTES
-		Load the WinRT.Runtime.dll and Microsoft.Windows.SDK.NET.dll assemblies in the current session in order to get localized UWP apps names
+	# Persist Sophia notifications to prevent to immediately disappear from Action Center
+	if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia))
+	{
+		New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia -Force
+	}
+	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia -Name ShowInActionCenter -PropertyType DWord -Value 1 -Force
 
-		.LINK
-		https://github.com/microsoft/CsWinRT
-		https://www.nuget.org/packages/Microsoft.Windows.SDK.NET.Ref
-	#>
-	Add-Type -AssemblyName "$PSScriptRoot\..\bin\WinRT.Runtime.dll"
-	Add-Type -AssemblyName "$PSScriptRoot\..\bin\Microsoft.Windows.SDK.NET.dll"
+	if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia))
+	{
+		New-Item -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Force
+	}
+	# Register app
+	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Name DisplayName -Value Sophia -PropertyType String -Force
+	# Determines whether the app can be seen in Settings where the user can turn notifications on or off
+	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Name ShowInSettings -Value 0 -PropertyType DWord -Force
+
+	[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
+	[Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
 
 	# Telegram group
 	[xml]$ToastTemplate = @"
@@ -13854,7 +13908,7 @@ public static void PostMessage()
 	$ToastXml.LoadXml($ToastTemplate.OuterXml)
 
 	$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New($ToastXML)
-	[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel").Show($ToastMessage)
+	[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("Sophia").Show($ToastMessage)
 
 	# Telegram channel
 	[xml]$ToastTemplate = @"
@@ -13881,7 +13935,7 @@ public static void PostMessage()
 	$ToastXml.LoadXml($ToastTemplate.OuterXml)
 
 	$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New($ToastXML)
-	[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel").Show($ToastMessage)
+	[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("Sophia").Show($ToastMessage)
 
 	# Discord group
 	[xml]$ToastTemplate = @"
@@ -13908,7 +13962,7 @@ public static void PostMessage()
 	$ToastXml.LoadXml($ToastTemplate.OuterXml)
 
 	$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New($ToastXML)
-	[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel").Show($ToastMessage)
+	[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("Sophia").Show($ToastMessage)
 
 	if ((Test-Path -Path "$env:TEMP\Computer.txt") -or (Test-Path -Path "$env:TEMP\User.txt"))
 	{
