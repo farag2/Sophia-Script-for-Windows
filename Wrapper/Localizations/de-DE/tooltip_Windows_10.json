@@ -2196,7 +2196,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Aktualisieren Sie den lokalen Gruppenrichtlinien-Editor (gpedit.msc), um alle manuell erstellten Richtlinienschlüssel in der Registrierung im Snap-In sichtbar zu machen"
+        "ToolTip": "Zeigen Sie alle Richtlinien-Registrierungsschlüssel (auch manuell erstellte) im Snap-In Lokaler Gruppenrichtlinien-Editor (gpedit.msc) an. Dies kann bis zu 30 Minuten dauern, abhängig von der Anzahl der in der Registrierung erstellten Richtlinien und Ihren Systemressourcen."
       }
     }
   }

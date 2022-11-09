@@ -27,7 +27,7 @@
 #>
 
 #Requires -RunAsAdministrator
-#Requires -Version 7.2
+#Requires -Version 7.3
 
 function Sophia
 {

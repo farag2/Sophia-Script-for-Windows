@@ -1431,8 +1431,13 @@ UseStoreOpenWith -Hide
 #endregion Context menu
 
 #region Update Policies
-# Update Local Group Policy Editor (gpedit.msc) to make all manually created policy keys in the registry visible in the snap-in
-# Обновить Редактор локальной групповой политики (gpedit.msc) так, чтобы оснастка отображала все созданные вручную политики в реестре
+<#
+	Display all policy registry keys (even manually created ones) in the Local Group Policy Editor snap-in (gpedit.msc)
+	This can take up to 30 minutes, depending on on the number of policies created in the registry and your system resources
+
+	Отобразить все политики реестра (даже созданные вручную) в оснастке Редактора локальной групповой политики (gpedit.msc)
+	Это может занять до 30 минут в зависимости от количества политик, созданных в реестре, и мощности вашей системы
+#>
 # UpdateLGPEPolicies
 #endregion Update Policies
 

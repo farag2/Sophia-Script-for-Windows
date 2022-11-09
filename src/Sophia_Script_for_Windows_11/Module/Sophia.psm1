@@ -13019,6 +13019,7 @@ function Windows10ContextMenu
 <#
 	.SYNOPSIS
 	Display all policy registry keys (even manually created ones) in the Local Group Policy Editor snap-in (gpedit.msc)
+	This can take up to 30 minutes, depending on on the number of policies created in the registry and your system resources
 
 	.EXAMPLE
 	UpdateLGPEPolicies
