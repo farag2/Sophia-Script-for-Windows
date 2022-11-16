@@ -64,7 +64,7 @@ function Checks
 	}
 
 	# Detect the OS build version
-	switch (((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber -eq 19044) -and ((Get-WindowsEdition -Online).Edition -match "EnterpriseS"))
+	switch (((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber -eq 19044) -and ((Get-WindowsEdition -Online).Edition -match "EnterpriseS"))
 	{
 		$true
 		{

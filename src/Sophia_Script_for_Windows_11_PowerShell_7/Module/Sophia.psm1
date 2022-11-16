@@ -56,7 +56,7 @@ function Checks
 	Get-ChildItem -Path $PSScriptRoot\..\ -File -Recurse -Force | Unblock-File
 
 	# Detect the OS build version
-	switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
+	switch ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber)
 	{
 		{$_ -eq 22000}
 		{
@@ -9296,7 +9296,7 @@ function StartLayout
 		$ShowMoreRecommendations
 	)
 
-	if ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber -ge 22621)
+	if ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber -ge 22621)
 	{
 		switch ($PSCmdlet.ParameterSetName)
 		{
@@ -12443,7 +12443,7 @@ function EditWithPhotosContext
 		$Show
 	)
 
-	if ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber -le 22623)
+	if ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber -le 22623)
 	{
 		if (Get-AppxPackage -Name Microsoft.Windows.Photos)
 		{

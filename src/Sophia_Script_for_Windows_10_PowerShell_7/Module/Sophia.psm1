@@ -64,7 +64,7 @@ function Checks
 	}
 
 	# Detect the OS build version
-	switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
+	switch ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber)
 	{
 		{($_ -ge 19044) -and ($_ -le 19048)}
 		{
