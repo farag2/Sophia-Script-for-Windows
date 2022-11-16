@@ -3911,7 +3911,7 @@ public static bool MarkFileDelete (string sourcefile)
 						# Parse XML to get the URL
 						# https://go.microsoft.com/fwlink/p/?LinkID=844652
 						$Parameters = @{
-							Uri             = "https://g.live.com/1rewlive5skydrive/OneDriveProduction"
+							Uri             = "https://g.live.com/1rewlive5skydrive/OneDriveProductionV2"
 							UseBasicParsing = $true
 							Verbose         = $true
 						}
