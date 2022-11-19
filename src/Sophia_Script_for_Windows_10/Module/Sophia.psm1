@@ -463,7 +463,8 @@ function Checks
 		}
 	}
 
-	Remove-Item -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore
+	# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+	Get-ChildItem -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 
 	# Save all opened folders in order to restore them after File Explorer restart
 	$Script:OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
@@ -4273,9 +4274,7 @@ function OneDrive
 				Write-Information -MessageData "" -InformationAction Continue
 				Write-Verbose -Message $Localization.OneDriveUninstalling -Verbose
 
-				Stop-Process -Name OneDrive -Force -ErrorAction Ignore
-				Stop-Process -Name OneDriveSetup -Force -ErrorAction Ignore
-				Stop-Process -Name FileCoAuth -Force -ErrorAction Ignore
+				Stop-Process -Name OneDrive, OneDriveSetup, FileCoAuth -Force -ErrorAction Ignore
 
 				# Getting link to the OneDriveSetup.exe and its' argument(s)
 				[string[]]$OneDriveSetup = ($UninstallString -Replace("\s*/", ",/")).Split(",").Trim()
@@ -4344,10 +4343,7 @@ public static bool MarkFileDelete (string sourcefile)
 				}
 
 				Remove-ItemProperty -Path HKCU:\Environment -Name OneDrive, OneDriveConsumer -Force -ErrorAction Ignore
-				Remove-Item -Path HKCU:\Software\Microsoft\OneDrive -Recurse -Force -ErrorAction Ignore
-				Remove-Item -Path HKLM:\SOFTWARE\WOW6432Node\Microsoft\OneDrive -Recurse -Force -ErrorAction Ignore
-				Remove-Item -Path "$env:ProgramData\Microsoft OneDrive" -Recurse -Force -ErrorAction Ignore
-				Remove-Item -Path $env:SystemDrive\OneDriveTemp -Recurse -Force -ErrorAction Ignore
+				Remove-Item -Path HKCU:\Software\Microsoft\OneDrive, HKLM:\SOFTWARE\WOW6432Node\Microsoft\OneDrive, "$env:ProgramData\Microsoft OneDrive", $env:SystemDrive\OneDriveTemp -Recurse -Force -ErrorAction Ignore
 				Unregister-ScheduledTask -TaskName *OneDrive* -Confirm:$false -ErrorAction Ignore
 
 				# Getting the OneDrive folder path
@@ -4396,10 +4392,7 @@ public static bool MarkFileDelete (string sourcefile)
 					}
 				}
 
-				Remove-Item -Path $OneDriveFolder -Recurse -Force -ErrorAction Ignore
-				Remove-Item -Path $env:LOCALAPPDATA\OneDrive -Recurse -Force -ErrorAction Ignore
-				Remove-Item -Path $env:LOCALAPPDATA\Microsoft\OneDrive -Recurse -Force -ErrorAction Ignore
-				Remove-Item -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\OneDrive.lnk" -Force -ErrorAction Ignore
+				Remove-Item -Path $OneDriveFolder, $env:LOCALAPPDATA\OneDrive, $env:LOCALAPPDATA\Microsoft\OneDrive, "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\OneDrive.lnk" -Recurse -Force -ErrorAction Ignore
 			}
 		}
 		"Install"
@@ -4753,40 +4746,43 @@ function TempFolder
 	{
 		"SystemDrive"
 		{
-			if ($env:TEMP -ne "$env:SystemDrive\Temp")
+			# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+			if ((Get-Item -Path $env:TEMP).FullName -eq "$env:SystemDrive\Temp")
 			{
-				# Restart the Printer Spooler service (Spooler)
-				Restart-Service -Name Spooler -Force
+				return
+			}
 
-				# Stop OneDrive processes
-				Stop-Process -Name OneDrive -Force -ErrorAction Ignore
-				Stop-Process -Name FileCoAuth -Force -ErrorAction Ignore
+			# Restart the Printer Spooler service (Spooler)
+			Restart-Service -Name Spooler -Force
 
-				if (-not (Test-Path -Path $env:SystemDrive\Temp))
-				{
-					New-Item -Path $env:SystemDrive\Temp -ItemType Directory -Force
-				}
+			# Stop OneDrive processes
+			Stop-Process -Name OneDrive, FileCoAuth -Force -ErrorAction Ignore
 
-				# Cleaning up folders
-				Remove-Item -Path $env:SystemRoot\Temp -Recurse -Force -ErrorAction Ignore
-				Get-Item -Path $env:TEMP -Force -ErrorAction Ignore | Where-Object -FilterScript {$_.LinkType -ne "SymbolicLink"} | Remove-Item -Recurse -Force -ErrorAction Ignore
+			if (-not (Test-Path -Path $env:SystemDrive\Temp))
+			{
+				New-Item -Path $env:SystemDrive\Temp -ItemType Directory -Force
+			}
 
-				if (-not (Test-Path -Path $env:LOCALAPPDATA\Temp))
-				{
-					New-Item -Path $env:LOCALAPPDATA\Temp -ItemType Directory -Force
-				}
+			# Cleaning up folders
+			Remove-Item -Path $env:SystemRoot\Temp -Recurse -Force -ErrorAction Ignore
+			Get-Item -Path $env:TEMP -Force -ErrorAction Ignore | Where-Object -FilterScript {$_.LinkType -ne "SymbolicLink"} | Remove-Item -Recurse -Force -ErrorAction Ignore
 
-				# If there are some files or folders left in %LOCALAPPDATA\Temp%
-				if ((Get-ChildItem -Path $env:TEMP -Force -ErrorAction Ignore | Measure-Object).Count -ne 0)
-				{
-					# https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexa
-					# The system does not move the file until the operating system is restarted
-					# The system moves the file immediately after AUTOCHK is executed, but before creating any paging files
-					$Signature = @{
-						Namespace        = "WinAPI"
-						Name             = "DeleteFiles"
-						Language         = "CSharp"
-						MemberDefinition = @"
+			if (-not (Test-Path -Path $env:LOCALAPPDATA\Temp))
+			{
+				New-Item -Path $env:LOCALAPPDATA\Temp -ItemType Directory -Force
+			}
+
+			# If there are some files or folders left in %LOCALAPPDATA\Temp%
+			if ((Get-ChildItem -Path $env:TEMP -Force -ErrorAction Ignore | Measure-Object).Count -ne 0)
+			{
+				# https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexa
+				# The system does not move the file until the operating system is restarted
+				# The system moves the file immediately after AUTOCHK is executed, but before creating any paging files
+				$Signature = @{
+					Namespace        = "WinAPI"
+					Name             = "DeleteFiles"
+					Language         = "CSharp"
+					MemberDefinition = @"
 public enum MoveFileFlags
 {
 	MOVEFILE_DELAY_UNTIL_REBOOT = 0x00000004
@@ -4800,24 +4796,24 @@ public static bool MarkFileDelete (string sourcefile)
 	return MoveFileEx(sourcefile, null, MoveFileFlags.MOVEFILE_DELAY_UNTIL_REBOOT);
 }
 "@
-					}
+				}
 
-					if (-not ("WinAPI.DeleteFiles" -as [type]))
-					{
-						Add-Type @Signature
-					}
+				if (-not ("WinAPI.DeleteFiles" -as [type]))
+				{
+					Add-Type @Signature
+				}
 
-					try
-					{
-						Get-ChildItem -Path $env:TEMP -Recurse -Force | Remove-Item -Recurse -Force -ErrorAction Stop
-					}
-					catch
-					{
-						# If files are in use remove them at the next boot
-						Get-ChildItem -Path $env:TEMP -Recurse -Force | ForEach-Object -Process {[WinAPI.DeleteFiles]::MarkFileDelete($_.FullName)}
-					}
+				try
+				{
+					Get-ChildItem -Path $env:TEMP -Recurse -Force | Remove-Item -Recurse -Force -ErrorAction Stop
+				}
+				catch
+				{
+					# If files are in use remove them at the next boot
+					Get-ChildItem -Path $env:TEMP -Recurse -Force | ForEach-Object -Process {[WinAPI.DeleteFiles]::MarkFileDelete($_.FullName)}
+				}
 
-					$SymbolicLinkTask = @"
+				$SymbolicLinkTask = @"
 Get-ChildItem -Path `$env:LOCALAPPDATA\Temp -Recurse -Force | Remove-Item -Recurse -Force
 
 Get-Item -Path `$env:LOCALAPPDATA\Temp -Force | Where-Object -FilterScript {`$_.LinkType -ne """SymbolicLink"""} | Remove-Item -Recurse -Force
@@ -4826,83 +4822,83 @@ New-Item -Path `$env:LOCALAPPDATA\Temp -ItemType SymbolicLink -Value `$env:Syste
 Unregister-ScheduledTask -TaskName SymbolicLink -Confirm:`$false
 "@
 
-					# Create a temporary scheduled task to create a symbolic link to the %SystemDrive%\Temp folder
-					$Action     = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $SymbolicLinkTask"
-					$Trigger    = New-ScheduledTaskTrigger -AtLogon -User $env:USERNAME
-					$Settings   = New-ScheduledTaskSettingsSet -Compatibility Win8
-					$Principal  = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
-					$Parameters = @{
-						TaskName  = "SymbolicLink"
-						Principal = $Principal
-						Action    = $Action
-						Settings  = $Settings
-						Trigger   = $Trigger
-					}
-					Register-ScheduledTask @Parameters -Force
+				# Create a temporary scheduled task to create a symbolic link to the %SystemDrive%\Temp folder
+				$Action     = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $SymbolicLinkTask"
+				$Trigger    = New-ScheduledTaskTrigger -AtLogon -User $env:USERNAME
+				$Settings   = New-ScheduledTaskSettingsSet -Compatibility Win8
+				$Principal  = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
+				$Parameters = @{
+					TaskName  = "SymbolicLink"
+					Principal = $Principal
+					Action    = $Action
+					Settings  = $Settings
+					Trigger   = $Trigger
 				}
-				else
-				{
-					# Create a symbolic link to the %SystemDrive%\Temp folder
-					New-Item -Path $env:LOCALAPPDATA\Temp -ItemType SymbolicLink -Value $env:SystemDrive\Temp -Force
-				}
-
-				#region main
-				# Change the %TEMP% environment variable path to %LOCALAPPDATA%\Temp
-				# The additional registry key creating are needed to fix the property type of the keys: SetEnvironmentVariable creates them with the "String" type instead of "ExpandString" as by default
-				[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "User")
-				[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Machine")
-				[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Process")
-				New-ItemProperty -Path HKCU:\Environment -Name TMP -PropertyType ExpandString -Value $env:SystemDrive\Temp -Force
-
-				[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "User")
-				[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Machine")
-				[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Process")
-				New-ItemProperty -Path HKCU:\Environment -Name TEMP -PropertyType ExpandString -Value $env:SystemDrive\Temp -Force
-
-				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TMP -PropertyType ExpandString -Value $env:SystemDrive\Temp -Force
-				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TEMP -PropertyType ExpandString -Value $env:SystemDrive\Temp -Force
-				# endregion main
+				Register-ScheduledTask @Parameters -Force
 			}
+			else
+			{
+				# Create a symbolic link to the %SystemDrive%\Temp folder
+				New-Item -Path $env:LOCALAPPDATA\Temp -ItemType SymbolicLink -Value $env:SystemDrive\Temp -Force
+			}
+
+			# Change the %TEMP% environment variable path to %LOCALAPPDATA%\Temp
+			# The additional registry key creating are needed to fix the property type of the keys: SetEnvironmentVariable creates them with the "String" type instead of "ExpandString" as by default
+			[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "User")
+			[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Machine")
+			[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Process")
+			New-ItemProperty -Path HKCU:\Environment -Name TMP -PropertyType ExpandString -Value $env:SystemDrive\Temp -Force
+
+			[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "User")
+			[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Machine")
+			[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Process")
+			New-ItemProperty -Path HKCU:\Environment -Name TEMP -PropertyType ExpandString -Value $env:SystemDrive\Temp -Force
+
+			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TMP -PropertyType ExpandString -Value $env:SystemDrive\Temp -Force
 		}
 		"Default"
 		{
-			if ($env:TEMP -ne "$env:LOCALAPPDATA\Temp")
+			# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+			if ((Get-Item -Path $env:TEMP).FullName -eq "$env:LOCALAPPDATA\Temp")
 			{
-				# Restart the Printer Spooler service (Spooler)
-				Restart-Service -Name Spooler -Force
+				return
+			}
 
-				# Stop OneDrive processes
-				Stop-Process -Name OneDrive -Force -ErrorAction Ignore
-				Stop-Process -Name FileCoAuth -Force -ErrorAction Ignore
+			# Restart the Printer Spooler service (Spooler)
+			Restart-Service -Name Spooler -Force
 
-				# Remove a symbolic link to the %SystemDrive%\Temp folder
-				if (Get-Item -Path $env:LOCALAPPDATA\Temp -Force -ErrorAction Ignore | Where-Object -FilterScript {$_.LinkType -eq "SymbolicLink"})
-				{
-					(Get-Item -Path $env:LOCALAPPDATA\Temp -Force).Delete()
-				}
+			# Stop OneDrive processes
+			Stop-Process -Name OneDrive, FileCoAuth -Force -ErrorAction Ignore
 
-				if (-not (Test-Path -Path $env:SystemRoot\Temp))
-				{
-					New-Item -Path $env:SystemRoot\Temp -ItemType Directory -Force
-				}
-				if (-not (Test-Path -Path $env:LOCALAPPDATA\Temp))
-				{
-					New-Item -Path $env:LOCALAPPDATA\Temp -ItemType Directory -Force
-				}
+			# Remove a symbolic link to the %SystemDrive%\Temp folder
+			if (Get-Item -Path $env:LOCALAPPDATA\Temp -Force -ErrorAction Ignore | Where-Object -FilterScript {$_.LinkType -eq "SymbolicLink"})
+			{
+				(Get-Item -Path $env:LOCALAPPDATA\Temp -Force).Delete()
+			}
 
-				# Removing folders
-				Remove-Item -Path $env:TEMP -Recurse -Force -ErrorAction Ignore
+			if (-not (Test-Path -Path $env:SystemRoot\Temp))
+			{
+				New-Item -Path $env:SystemRoot\Temp -ItemType Directory -Force
+			}
+			if (-not (Test-Path -Path $env:LOCALAPPDATA\Temp))
+			{
+				New-Item -Path $env:LOCALAPPDATA\Temp -ItemType Directory -Force
+			}
 
-				if ((Get-ChildItem -Path $env:TEMP -Force -ErrorAction Ignore | Measure-Object).Count -ne 0)
-				{
-					# https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexa
-					# The system does not move the file until the operating system is restarted
-					# The system moves the file immediately after AUTOCHK is executed, but before creating any paging files
-					$Signature = @{
-						Namespace        = "WinAPI"
-						Name             = "DeleteFiles"
-						Language         = "CSharp"
-						MemberDefinition = @"
+			# Removing folders
+			# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+			Remove-Item -Path $((Get-Item -Path $env:TEMP).FullName) -Recurse -Force -ErrorAction Ignore
+
+			if ((Get-ChildItem -Path $env:TEMP -Force -ErrorAction Ignore | Measure-Object).Count -ne 0)
+			{
+				# https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexa
+				# The system does not move the file until the operating system is restarted
+				# The system moves the file immediately after AUTOCHK is executed, but before creating any paging files
+				$Signature = @{
+					Namespace        = "WinAPI"
+					Name             = "DeleteFiles"
+					Language         = "CSharp"
+					MemberDefinition = @"
 public enum MoveFileFlags
 {
 	MOVEFILE_DELAY_UNTIL_REBOOT = 0x00000004
@@ -4916,61 +4912,59 @@ public static bool MarkFileDelete (string sourcefile)
 	return MoveFileEx(sourcefile, null, MoveFileFlags.MOVEFILE_DELAY_UNTIL_REBOOT);
 }
 "@
-					}
+				}
 
-					if (-not ("WinAPI.DeleteFiles" -as [type]))
-					{
-						Add-Type @Signature
-					}
+				if (-not ("WinAPI.DeleteFiles" -as [type]))
+				{
+					Add-Type @Signature
+				}
 
-					try
-					{
-						Remove-Item -Path $env:TEMP -Recurse -Force -ErrorAction Stop
-					}
-					catch
-					{
-						# If files are in use remove them at the next boot
-						Get-ChildItem -Path $env:TEMP -Recurse -Force -ErrorAction Ignore | ForEach-Object -Process {[WinAPI.DeleteFiles]::MarkFileDelete($_.FullName)}
-					}
+				try
+				{
+					# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+					Remove-Item -Path $((Get-Item -Path $env:TEMP).FullName) -Recurse -Force -ErrorAction Stop
+				}
+				catch
+				{
+					# If files are in use remove them at the next boot
+					Get-ChildItem -Path $env:TEMP -Recurse -Force -ErrorAction Ignore | ForEach-Object -Process {[WinAPI.DeleteFiles]::MarkFileDelete($_.FullName)}
+				}
 
-					$TempFolder = [System.Environment]::ExpandEnvironmentVariables($env:TEMP)
-					$TempFolderCleanupTask = @"
+				# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+				$TempFolder = (Get-Item -Path $env:TEMP).FullName
+				$TempFolderCleanupTask = @"
 Remove-Item -Path "$TempFolder" -Recurse -Force
-
 Unregister-ScheduledTask -TaskName TemporaryTask -Confirm:`$false
 "@
 
-					# Create a temporary scheduled task to clean up the temporary folder
-					$Action     = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $TempFolderCleanupTask"
-					$Trigger    = New-ScheduledTaskTrigger -AtLogon -User $env:USERNAME
-					$Settings   = New-ScheduledTaskSettingsSet -Compatibility Win8
-					$Principal  = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
-					$Parameters = @{
-						TaskName  = "TemporaryTask"
-						Principal = $Principal
-						Action    = $Action
-						Settings  = $Settings
-						Trigger   = $Trigger
-					}
-					Register-ScheduledTask @Parameters -Force
+				# Create a temporary scheduled task to clean up the temporary folder
+				$Action     = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $TempFolderCleanupTask"
+				$Trigger    = New-ScheduledTaskTrigger -AtLogon -User $env:USERNAME
+				$Settings   = New-ScheduledTaskSettingsSet -Compatibility Win8
+				$Principal  = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
+				$Parameters = @{
+					TaskName  = "TemporaryTask"
+					Principal = $Principal
+					Action    = $Action
+					Settings  = $Settings
+					Trigger   = $Trigger
 				}
-
-				#region main
-				# Change the %TEMP% environment variable path to %LOCALAPPDATA%\Temp
-				[Environment]::SetEnvironmentVariable("TMP", "$env:LOCALAPPDATA\Temp", "User")
-				[Environment]::SetEnvironmentVariable("TMP", "$env:SystemRoot\TEMP", "Machine")
-				[Environment]::SetEnvironmentVariable("TMP", "$env:LOCALAPPDATA\Temp", "Process")
-				New-ItemProperty -Path HKCU:\Environment -Name TMP -PropertyType ExpandString -Value "%USERPROFILE%\AppData\Local\Temp" -Force
-
-				[Environment]::SetEnvironmentVariable("TEMP", "$env:LOCALAPPDATA\Temp", "User")
-				[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemRoot\TEMP", "Machine")
-				[Environment]::SetEnvironmentVariable("TEMP", "$env:LOCALAPPDATA\Temp", "Process")
-				New-ItemProperty -Path HKCU:\Environment -Name TEMP -PropertyType ExpandString -Value "%USERPROFILE%\AppData\Local\Temp" -Force
-
-				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TMP -PropertyType ExpandString -Value "%SystemRoot%\TEMP" -Force
-				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TEMP -PropertyType ExpandString -Value "%SystemRoot%\TEMP" -Force
-				# endregion main
+				Register-ScheduledTask @Parameters -Force
 			}
+
+			# Change the %TEMP% environment variable path to %LOCALAPPDATA%\Temp
+			[Environment]::SetEnvironmentVariable("TMP", "$env:LOCALAPPDATA\Temp", "User")
+			[Environment]::SetEnvironmentVariable("TMP", "$env:SystemRoot\TEMP", "Machine")
+			[Environment]::SetEnvironmentVariable("TMP", "$env:LOCALAPPDATA\Temp", "Process")
+			New-ItemProperty -Path HKCU:\Environment -Name TMP -PropertyType ExpandString -Value "%USERPROFILE%\AppData\Local\Temp" -Force
+
+			[Environment]::SetEnvironmentVariable("TEMP", "$env:LOCALAPPDATA\Temp", "User")
+			[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemRoot\TEMP", "Machine")
+			[Environment]::SetEnvironmentVariable("TEMP", "$env:LOCALAPPDATA\Temp", "Process")
+			New-ItemProperty -Path HKCU:\Environment -Name TEMP -PropertyType ExpandString -Value "%USERPROFILE%\AppData\Local\Temp" -Force
+
+			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TMP -PropertyType ExpandString -Value "%SystemRoot%\TEMP" -Force
+			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TEMP -PropertyType ExpandString -Value "%SystemRoot%\TEMP" -Force
 		}
 	}
 }
@@ -9108,15 +9102,7 @@ function InstallVCRedist
 
 			Start-Process -FilePath "$DownloadsFolder\VC_redist.x64.exe" -ArgumentList "/install /passive /norestart" -Wait
 
-			<#
-				PowerShell 5.1 (7.2 too) interprets the 8.3 file name literally, if an environment variable contains a non-latin word,
-				so you won't be able to remove "$env:TEMP\dd_vcredist_amd64_*.log" file explicitly
-
-				Another ways to get normal path to %TEMP%
-				[Environment]::GetEnvironmentVariable("TEMP", "User")
-				(Get-ItemProperty -Path HKCU:\Environment -Name TEMP).TEMP
-				[System.IO.Path]::GetTempPath()
-			#>
+			# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
 			Get-ChildItem -Path "$DownloadsFolder\VC_redist.x86.exe", "$DownloadsFolder\VC_redist.x64.exe", "$env:TEMP\dd_vcredist_amdx86_*.log", "$env:TEMP\dd_vcredist_amd64_*.log" -Force | Remove-Item -Recurse -Force -ErrorAction Ignore
 		}
 	}
@@ -11352,9 +11338,7 @@ function CleanupTask
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup\shell\open\command -Name "(default)" -PropertyType String -Value 'powershell.exe -Command "& {Start-ScheduledTask -TaskPath ''\Sophia\'' -TaskName ''Windows Cleanup''}"' -Force
 
 			$CleanupTask = @"
-Get-Process -Name cleanmgr | Stop-Process -Force
-Get-Process -Name Dism | Stop-Process -Force
-Get-Process -Name DismHost | Stop-Process -Force
+Get-Process -Name cleanmgr, Dism, DismHost | Stop-Process -Force
 
 `$ProcessInfo = New-Object -TypeName System.Diagnostics.ProcessStartInfo
 `$ProcessInfo.FileName = """$env:SystemRoot\system32\cleanmgr.exe"""
@@ -11515,8 +11499,6 @@ while (`$true)
 				Remove-ItemProperty -Path $_.PsPath -Name StateFlags1337 -Force -ErrorAction Ignore
 			}
 			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Recurse -Force -ErrorAction Ignore
-			Remove-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia -Recurse -Force -ErrorAction Ignore
-			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Force -ErrorAction Ignore
 
 			# Remove folder in Task Scheduler if there is no tasks left there
 			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia")
@@ -11525,6 +11507,8 @@ while (`$true)
 				{
 					$ScheduleService.GetFolder("\").DeleteFolder("Sophia", $null)
 				}
+
+				Remove-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia, Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Recurse -Force -ErrorAction Ignore
 			}
 		}
 	}
@@ -11654,9 +11638,6 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -For
 		}
 		"Delete"
 		{
-			Remove-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia -Recurse -Force -ErrorAction Ignore
-			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Force -ErrorAction Ignore
-
 			# Remove all old tasks
 			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -TaskName "Windows Cleanup", "Windows Cleanup Notification", SoftwareDistribution, Temp -Confirm:$false -ErrorAction Ignore
 
@@ -11682,6 +11663,8 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -For
 				{
 					$ScheduleService.GetFolder("\").DeleteFolder("Sophia", $null)
 				}
+
+				Remove-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia, Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Recurse -Force -ErrorAction Ignore
 			}
 		}
 	}
@@ -11810,9 +11793,6 @@ Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_
 		}
 		"Delete"
 		{
-			Remove-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia -Recurse -Force -ErrorAction Ignore
-			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Force -ErrorAction Ignore
-
 			# Remove all old tasks
 			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -TaskName "Windows Cleanup", "Windows Cleanup Notification", SoftwareDistribution, Temp -Confirm:$false -ErrorAction Ignore
 
@@ -11838,6 +11818,8 @@ Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_
 				{
 					$ScheduleService.GetFolder("\").DeleteFolder("Sophia", $null)
 				}
+
+				Remove-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia, Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Recurse -Force -ErrorAction Ignore
 			}
 		}
 	}
