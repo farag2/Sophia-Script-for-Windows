@@ -3792,7 +3792,7 @@ public static bool MarkFileDelete (string sourcefile)
 						}
 
 						# If there are some files or folders left in %OneDrive%
-						if ((Get-ChildItem -Path $env:OneDrive -ErrorAction Ignore | Measure-Object).Count -ne 0)
+						if ((Get-ChildItem -Path $env:OneDrive -Force | Measure-Object).Count -ne 0)
 						{
 							if (-not ("WinAPI.DeleteFiles" -as [type]))
 							{
@@ -4223,7 +4223,7 @@ function TempFolder
 			# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
 			if ((Get-Item -Path $env:TEMP).FullName -eq "$env:SystemDrive\Temp")
 			{
-				return ###
+				return
 			}
 
 			# Restart the Printer Spooler service (Spooler)
@@ -4239,7 +4239,7 @@ function TempFolder
 
 			# Cleaning up folders
 			Remove-Item -Path $env:SystemRoot\Temp -Recurse -Force -ErrorAction Ignore
-			Get-Item -Path $env:TEMP -Force -ErrorAction Ignore | Where-Object -FilterScript {$_.LinkType -ne "SymbolicLink"} | Remove-Item -Recurse -Force -ErrorAction Ignore
+			Get-Item -Path $env:TEMP -Force | Where-Object -FilterScript {$_.LinkType -ne "SymbolicLink"} | Remove-Item -Recurse -Force -ErrorAction Ignore
 
 			if (-not (Test-Path -Path $env:LOCALAPPDATA\Temp))
 			{
@@ -4247,7 +4247,7 @@ function TempFolder
 			}
 
 			# If there are some files or folders left in %LOCALAPPDATA\Temp%
-			if ((Get-ChildItem -Path $env:TEMP -Force -ErrorAction Ignore | Measure-Object).Count -ne 0)
+			if ((Get-ChildItem -Path $env:TEMP -Force | Measure-Object).Count -ne 0)
 			{
 				# https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexa
 				# The system does not move the file until the operating system is restarted
@@ -4279,12 +4279,12 @@ public static bool MarkFileDelete (string sourcefile)
 
 				try
 				{
-					Get-ChildItem -Path $env:TEMP -Recurse -Force | Remove-Item -Recurse -Force -ErrorAction Stop
+					Get-ChildItem -Path $env:TEMP -Recurse -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Stop
 				}
 				catch
 				{
 					# If files are in use remove them at the next boot
-					Get-ChildItem -Path $env:TEMP -Recurse -Force | ForEach-Object -Process {[WinAPI.DeleteFiles]::MarkFileDelete($_.FullName)}
+					Get-ChildItem -Path $env:TEMP -Recurse -Force -ErrorAction Ignore | ForEach-Object -Process {[WinAPI.DeleteFiles]::MarkFileDelete($_.FullName)}
 				}
 
 				$SymbolicLinkTask = @"
@@ -4363,7 +4363,7 @@ Unregister-ScheduledTask -TaskName SymbolicLink -Confirm:`$false
 			# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
 			Remove-Item -Path $((Get-Item -Path $env:TEMP).FullName) -Recurse -Force -ErrorAction Ignore
 
-			if ((Get-ChildItem -Path $env:TEMP -Force -ErrorAction Ignore | Measure-Object).Count -ne 0)
+			if ((Get-ChildItem -Path $env:TEMP -Force | Measure-Object).Count -ne 0)
 			{
 				# https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexa
 				# The system does not move the file until the operating system is restarted
@@ -4401,7 +4401,7 @@ public static bool MarkFileDelete (string sourcefile)
 				catch
 				{
 					# If files are in use remove them at the next boot
-					Get-ChildItem -Path $env:TEMP -Recurse -Force -ErrorAction Ignore | ForEach-Object -Process {[WinAPI.DeleteFiles]::MarkFileDelete($_.FullName)}
+					Get-ChildItem -Path $env:TEMP -Recurse -Force | ForEach-Object -Process {[WinAPI.DeleteFiles]::MarkFileDelete($_.FullName)}
 				}
 
 				# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
@@ -8690,15 +8690,7 @@ function InstallDotNetRuntime6
 
 			Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
 
-			<#
-				PowerShell 5.1 (7.2 too) interprets the 8.3 file name literally, if an environment variable contains a non-latin word,
-				so you won't be able to remove "$env:TEMP\Microsoft_Windows_Desktop_Runtime*.log" file explicitly
-
-				Another ways to get normal path to %TEMP%
-				[Environment]::GetEnvironmentVariable("TEMP", "User")
-				(Get-ItemProperty -Path HKCU:\Environment -Name TEMP).TEMP
-				[System.IO.Path]::GetTempPath()
-			#>
+			# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
 			$Paths = @(
 				"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe",
 				"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe",
@@ -10913,8 +10905,6 @@ while (`$true)
 				{
 					$ScheduleService.GetFolder("\").DeleteFolder("Sophia", $null)
 				}
-
-				Remove-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia, Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Recurse -Force -ErrorAction Ignore
 			}
 		}
 	}
@@ -11069,8 +11059,6 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -For
 				{
 					$ScheduleService.GetFolder("\").DeleteFolder("Sophia", $null)
 				}
-
-				Remove-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia, Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Recurse -Force -ErrorAction Ignore
 			}
 		}
 	}
@@ -11224,8 +11212,6 @@ Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_
 				{
 					$ScheduleService.GetFolder("\").DeleteFolder("Sophia", $null)
 				}
-
-				Remove-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia, Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Recurse -Force -ErrorAction Ignore
 			}
 		}
 	}
@@ -13212,9 +13198,6 @@ public static void PostMessage()
 		}
 	}
 
-	Write-Information -MessageData "" -InformationAction Continue
-	Write-Warning -Message $Localization.RestartWarning
-
 	# Persist Sophia notifications to prevent to immediately disappear from Action Center
 	if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia))
 	{
@@ -13340,7 +13323,7 @@ public static void PostMessage()
 	}
 
 	# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
-	Get-ChildItem -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force | Remove-Item -Recurse -Force -ErrorAction Ignore
+	Get-ChildItem -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 
 	Stop-Process -Name explorer -Force
 	Start-Sleep -Seconds 3
@@ -13373,5 +13356,8 @@ function Errors
 			}
 		} | Sort-Object -Property Line | Format-Table -AutoSize -Wrap | Out-String).Trim()
 	}
+
+	Write-Information -MessageData "" -InformationAction Continue
+	Write-Warning -Message $Localization.RestartWarning
 }
 #endregion Refresh Environment
