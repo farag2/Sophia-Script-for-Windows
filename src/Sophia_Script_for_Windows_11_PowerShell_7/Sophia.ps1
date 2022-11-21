@@ -3,7 +3,7 @@
 	Default preset file for "Sophia Script for Windows 11 (PowerShell 7)"
 
 	Version: v6.2.3
-	Date: 04.11.2022
+	Date: 21.11.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic

@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.14.3
-	Date: 04.11.2022
+	Version: v5.14.4
+	Date: 21.11.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -6260,8 +6260,6 @@ function NetworkAdaptersSavePower
 		$Enable
 	)
 
-	Write-Verbose -Message $Localization.Patient -Verbose
-
 	if (Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"})
 	{
 		$PhysicalAdaptersStatusUp = @((Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"}).Name)
@@ -6295,10 +6293,9 @@ function NetworkAdaptersSavePower
 	{
 		while
 		(
-			Get-NetAdapter -Physical -Name $PhysicalAdaptersStatusUp | ForEach-Object -Process {$_.Status -eq "Disconnected"}
+			Get-NetAdapter -Physical -Name $PhysicalAdaptersStatusUp | Where-Object -FilterScript {$_.Status -eq "Disconnected"}
 		)
 		{
-			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message $Localization.Patient -Verbose
 			Start-Sleep -Seconds 2
 		}

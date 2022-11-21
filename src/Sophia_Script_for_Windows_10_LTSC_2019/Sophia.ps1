@@ -3,7 +3,7 @@
 	Default preset file for "Sophia Script for Windows 10 LTSC 2019"
 
 	Version: v5.4.3
-	Date: 04.11.2022
+	Date: 21.11.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic

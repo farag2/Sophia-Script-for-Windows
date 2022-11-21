@@ -3,7 +3,7 @@
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
 	Version: v6.2.3
-	Date: 04.11.2022
+	Date: 21.11.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -5731,8 +5731,6 @@ function NetworkAdaptersSavePower
 		$Enable
 	)
 
-	Write-Verbose -Message $Localization.Patient -Verbose
-
 	if (Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"})
 	{
 		$PhysicalAdaptersStatusUp = @((Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"}).Name)
@@ -5766,10 +5764,9 @@ function NetworkAdaptersSavePower
 	{
 		while
 		(
-			Get-NetAdapter -Physical -Name $PhysicalAdaptersStatusUp | ForEach-Object -Process {$_.Status -eq "Disconnected"}
+			Get-NetAdapter -Physical -Name $PhysicalAdaptersStatusUp | Where-Object -FilterScript {$_.Status -eq "Disconnected"}
 		)
 		{
-			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message $Localization.Patient -Verbose
 			Start-Sleep -Seconds 2
 		}
@@ -12401,7 +12398,7 @@ function EditWithPhotosContext
 		$Show
 	)
 
-	if ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber -lt 22621)
+	if ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber -eq 22000)
 	{
 		if (Get-AppxPackage -Name Microsoft.Windows.Photos)
 		{

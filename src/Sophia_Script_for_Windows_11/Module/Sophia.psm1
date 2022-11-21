@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v6.2.3
-	Date: 04.11.2022
+	Version: v6.2.4
+	Date: 21.11.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -5723,8 +5723,6 @@ function NetworkAdaptersSavePower
 		$Enable
 	)
 
-	Write-Verbose -Message $Localization.Patient -Verbose
-
 	if (Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"})
 	{
 		$PhysicalAdaptersStatusUp = @((Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"}).Name)
@@ -5758,10 +5756,9 @@ function NetworkAdaptersSavePower
 	{
 		while
 		(
-			Get-NetAdapter -Physical -Name $PhysicalAdaptersStatusUp | ForEach-Object -Process {$_.Status -eq "Disconnected"}
+			Get-NetAdapter -Physical -Name $PhysicalAdaptersStatusUp | Where-Object -FilterScript {$_.Status -eq "Disconnected"}
 		)
 		{
-			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message $Localization.Patient -Verbose
 			Start-Sleep -Seconds 2
 		}
@@ -12373,7 +12370,7 @@ function EditWithPhotosContext ###
 		$Show
 	)
 
-	if ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber -lt 22621)
+	if ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber -eq 22000)
 	{
 		if (Get-AppxPackage -Name Microsoft.Windows.Photos)
 		{
@@ -12430,7 +12427,7 @@ function CreateANewVideoContext ###
 		$Show
 	)
 
-	if ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber -lt 22621)
+	if ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber -eq 22000)
 	{
 		if (Get-AppxPackage -Name Microsoft.Windows.Photos)
 		{
@@ -13030,12 +13027,12 @@ function UpdateLGPEPolicies
 				{
 					# Parse every ADMX template searching if it contains full path and registry key simultaneously
 					[xml]$config = Get-Content -Path $admx.FullName -Encoding UTF8
-					$config.SelectNodes("//@*") | ForEach-Object {$_.value = $_.value.ToLower()}
+					$config.SelectNodes("//@*") | ForEach-Object -Process {$_.value = $_.value.ToLower()}
 					$SplitPath = $Path.Name.Replace("HKEY_LOCAL_MACHINE\", "")
 
 					if ($config.SelectSingleNode("//*[local-name()='policy' and @key='$($SplitPath.ToLower())' and (@valueName='$($Item.ToLower())' or @Name='$($Item.ToLower())' or .//*[local-name()='enum' and @valueName='$($Item.ToLower())'])]"))
 					{
-						Write-Verbose -Message $Item.Replace("{}", "") -Verbose
+						Write-Verbose -Message ([string](($SplitPath, "|", $Item.Replace("{}", "")))) -Verbose
 
 						$Type = switch ((Get-Item -Path $Path.PSPath).GetValueKind($Item))
 						{
@@ -13085,12 +13082,12 @@ function UpdateLGPEPolicies
 				{
 					# Parse every ADMX template searching if it contains full path and registry key simultaneously
 					[xml]$config = Get-Content -Path $admx.FullName -Encoding UTF8
-					$config.SelectNodes("//@*") | ForEach-Object {$_.value = $_.value.ToLower()}
+					$config.SelectNodes("//@*") | ForEach-Object -Process {$_.value = $_.value.ToLower()}
 					$SplitPath = $Path.Name.Replace("HKEY_CURRENT_USER\", "")
 
 					if ($config.SelectSingleNode("//*[local-name()='policy' and @key='$($SplitPath.ToLower())' and (@valueName='$($Item.ToLower())' or @Name='$($Item.ToLower())' or .//*[local-name()='enum' and @valueName='$($Item.ToLower())'])]"))
 					{
-						Write-Verbose -Message $Item.Replace("{}", "") -Verbose
+						Write-Verbose -Message ([string](($SplitPath, "|", $Item.Replace("{}", "")))) -Verbose
 
 						$Type = switch ((Get-Item -Path $Path.PSPath).GetValueKind($Item))
 						{
