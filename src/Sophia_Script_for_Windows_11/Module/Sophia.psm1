@@ -10749,41 +10749,31 @@ Start-Sleep -Seconds 3
 
 [int]`$SourceMainWindowHandle = (Get-Process -Name cleanmgr | Where-Object -FilterScript {`$_.PriorityClass -eq """BelowNormal"""}).MainWindowHandle
 
-function MinimizeWindow
-{
-	[CmdletBinding()]
-	param
-	(
-		[Parameter(Mandatory = `$true)]
-		`$Process
-	)
-
-	`$ShowWindowAsync = @{
-		Namespace = """WinAPI"""
-		Name = """Win32ShowWindowAsync"""
-		Language = """CSharp"""
-		MemberDefinition = @'
-[DllImport("""user32.dll""")]
-public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
-'@
-	}
-
-	if (-not ("""WinAPI.Win32ShowWindowAsync""" -as [type]))
-	{
-		Add-Type @ShowWindowAsync
-	}
-	`$MainWindowHandle = (Get-Process -Name `$Process | Where-Object -FilterScript {`$_.PriorityClass -eq """BelowNormal"""}).MainWindowHandle
-	[WinAPI.Win32ShowWindowAsync]::ShowWindowAsync(`$MainWindowHandle, 2)
-}
-
 while (`$true)
 {
 	[int]`$CurrentMainWindowHandle = (Get-Process -Name cleanmgr | Where-Object -FilterScript {`$_.PriorityClass -eq """BelowNormal"""}).MainWindowHandle
 	if (`$SourceMainWindowHandle -ne `$CurrentMainWindowHandle)
 	{
-		MinimizeWindow -Process cleanmgr
+		`$ShowWindowAsync = @{
+			Namespace = """WinAPI"""
+			Name = """Win32ShowWindowAsync"""
+			Language = """CSharp"""
+			MemberDefinition = @'
+[DllImport("""user32.dll""")]
+public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
+'@
+	}
+
+		if (-not ("""WinAPI.Win32ShowWindowAsync""" -as [type]))
+		{
+			Add-Type @ShowWindowAsync
+		}
+		`$MainWindowHandle = (Get-Process -Name cleanmgr | Where-Object -FilterScript {`$_.PriorityClass -eq """BelowNormal"""}).MainWindowHandle
+		[WinAPI.Win32ShowWindowAsync]::ShowWindowAsync(`$MainWindowHandle, 2)
+
 		break
 	}
+
 	Start-Sleep -Milliseconds 5
 }
 
@@ -10817,15 +10807,10 @@ while (`$true)
 [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
 
 [xml]`$ToastTemplate = @"""
-<toast duration="""Long""" scenario="""reminder""">
+<toast duration="""Long""">
 	<visual>
 		<binding template="""ToastGeneric""">
 			<text>$($Localization.CleanupTaskNotificationTitle)</text>
-			<group>
-				<subgroup>
-					<text hint-style="""title""" hint-wrap="""true""">$($Localization.CleanupTaskNotificationEventTitle)</text>
-				</subgroup>
-			</group>
 			<group>
 				<subgroup>
 					<text hint-style="""body""" hint-wrap="""true""">$($Localization.CleanupTaskNotificationEvent)</text>
@@ -10835,14 +10820,8 @@ while (`$true)
 	</visual>
 	<audio src="""ms-winsoundevent:notification.default""" />
 	<actions>
-		<input id="""SnoozeTimer""" type="""selection""" title="""$($Localization.CleanupTaskNotificationSnoozeInterval)""" defaultInput="""1""">
-			<selection id="""1""" content="""$($Localization.Minute)""" />
-			<selection id="""30""" content="""$($Localization.HalfHour)""" />
-			<selection id="""240""" content="""$($Localization.FourHours)""" />
-		</input>
-		<action activationType="""system""" arguments="""snooze""" hint-inputId="""SnoozeTimer""" content="""""" id="""test-snooze"""/>
-		<action arguments="""WindowsCleanup:""" content="""$($Localization.Run)""" activationType="""protocol"""/>
-		<action arguments="""dismiss""" content="""""" activationType="""system"""/>
+		<action content="""$($Localization.Run)""" arguments="""WindowsCleanup:""" activationType="""protocol"""/>
+		<action content="""""" arguments="""dismiss""" activationType="""system"""/>
 	</actions>
 </toast>
 """@
@@ -12328,120 +12307,6 @@ function ShareContext
 				New-Item -Path "Registry::HKEY_CLASSES_ROOT\AllFilesystemObjects\shellex\ContextMenuHandlers\ModernSharing" -Force
 			}
 			New-ItemProperty -Path "Registry::HKEY_CLASSES_ROOT\AllFilesystemObjects\shellex\ContextMenuHandlers\ModernSharing" -Name "(default)" -PropertyType String -Value "{e2bf9676-5f8f-435c-97eb-11607a5bedf7}" -Force
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	The "Edit with Photos" item in the media files context menu
-
-	.PARAMETER Hide
-	Hide the "Edit with Photos" item from the media files context menu
-
-	.PARAMETER Show
-	Show the "Edit with Photos" item in the media files context menu
-
-	.EXAMPLE
-	EditWithPhotosContext -Hide
-
-	.EXAMPLE
-	EditWithPhotosContext -Show
-
-	.NOTES
-	Current user
-#>
-function EditWithPhotosContext ###
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Hide"
-		)]
-		[switch]
-		$Hide,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Show"
-		)]
-		[switch]
-		$Show
-	)
-
-	if ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber -eq 22000)
-	{
-		if (Get-AppxPackage -Name Microsoft.Windows.Photos)
-		{
-			switch ($PSCmdlet.ParameterSetName)
-			{
-				"Hide"
-				{
-					New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppX43hnxtbyyps62jhe9sqpdzxn1790zetc\Shell\ShellEdit -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
-				}
-				"Show"
-				{
-					Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppX43hnxtbyyps62jhe9sqpdzxn1790zetc\Shell\ShellEdit -Name ProgrammaticAccessOnly -Force -ErrorAction Ignore
-				}
-			}
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	The "Create a new video" item in the media files context menu
-
-	.PARAMETER Hide
-	Hide the "Create a new video" item from the media files context menu
-
-	.PARAMETER Show
-	Show the "Create a new video" item in the media files context menu
-
-	.EXAMPLE
-	CreateANewVideoContext -Hide
-
-	.EXAMPLE
-	CreateANewVideoContext -Show
-
-	.NOTES
-	Current user
-#>
-function CreateANewVideoContext ###
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Hide"
-		)]
-		[switch]
-		$Hide,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Show"
-		)]
-		[switch]
-		$Show
-	)
-
-	if ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber -eq 22000)
-	{
-		if (Get-AppxPackage -Name Microsoft.Windows.Photos)
-		{
-			switch ($PSCmdlet.ParameterSetName)
-			{
-				"Hide"
-				{
-					New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppX43hnxtbyyps62jhe9sqpdzxn1790zetc\Shell\ShellCreateVideo -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
-				}
-				"Show"
-				{
-					Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppX43hnxtbyyps62jhe9sqpdzxn1790zetc\Shell\ShellCreateVideo -Name ProgrammaticAccessOnly -Force -ErrorAction Ignore
-				}
-			}
 		}
 	}
 }

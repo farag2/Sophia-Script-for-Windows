@@ -1274,22 +1274,6 @@ ShareContext -Hide
 # Отобразить пункт "Отправить" (поделиться) в контекстном меню (значение по умолчанию)
 # ShareContext -Show
 
-# Hide the "Edit with Photos" item from the media files context menu
-# Скрыть пункт "Изменить с помощью приложения "Фотографии"" из контекстного меню медиа-файлов
-EditWithPhotosContext -Hide
-
-# Show the "Edit with Photos" item in the media files context menu (default value)
-# Отобразить пункт "Изменить с помощью приложения "Фотографии"" в контекстном меню медиа-файлов (значение по умолчанию)
-# EditWithPhotosContext -Show
-
-# Hide the "Create a new video" item in the media files context menu
-# Скрыть пункт "Создать новое видео" из контекстного меню медиа-файлов
-CreateANewVideoContext -Hide
-
-# Show the "Create a new video" item in the media files context menu (default value)
-# Отобразить пункт "Создать новое видео" в контекстном меню медиа-файлов (значение по умолчанию)
-# CreateANewVideoContext -Show
-
 # Hide the "Print" item from the .bat and .cmd context menu
 # Скрыть пункт "Печать" из контекстного меню .bat и .cmd файлов
 PrintCMDContext -Hide
