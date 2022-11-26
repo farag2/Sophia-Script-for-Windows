@@ -3,7 +3,7 @@
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
 	Version: v6.2.4
-	Date: 21.11.2022
+	Date: 26.11.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -3792,7 +3792,7 @@ public static bool MarkFileDelete (string sourcefile)
 						}
 
 						# If there are some files or folders left in %OneDrive%
-						if ((Get-ChildItem -Path $env:OneDrive -Force | Measure-Object).Count -ne 0)
+						if ((Get-ChildItem -Path $env:OneDrive -ErrorAction Ignore | Measure-Object).Count -ne 0)
 						{
 							if (-not ("WinAPI.DeleteFiles" -as [type]))
 							{
@@ -4247,7 +4247,7 @@ function TempFolder
 			}
 
 			# If there are some files or folders left in %LOCALAPPDATA\Temp%
-			if ((Get-ChildItem -Path $env:TEMP -Force | Measure-Object).Count -ne 0)
+			if ((Get-ChildItem -Path $env:TEMP -Force -ErrorAction Ignore | Measure-Object).Count -ne 0)
 			{
 				# https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexa
 				# The system does not move the file until the operating system is restarted
@@ -4363,7 +4363,7 @@ Unregister-ScheduledTask -TaskName SymbolicLink -Confirm:`$false
 			# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
 			Remove-Item -Path $((Get-Item -Path $env:TEMP).FullName) -Recurse -Force -ErrorAction Ignore
 
-			if ((Get-ChildItem -Path $env:TEMP -Force | Measure-Object).Count -ne 0)
+			if ((Get-ChildItem -Path $env:TEMP -Force -ErrorAction Ignore | Measure-Object).Count -ne 0)
 			{
 				# https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexa
 				# The system does not move the file until the operating system is restarted
@@ -10662,6 +10662,16 @@ function CleanupTask
 	{
 		"Register"
 		{
+			# Checking if notifications and Action Center are disabled
+			if
+			(
+				((Get-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -ErrorAction Ignore).DisableNotificationCenter -eq 1) -or
+				((Get-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -ErrorAction Ignore).DisableNotificationCenter -eq 1)
+			)
+			{
+				return
+			}
+
 			# Remove all old tasks
 			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -TaskName "Windows Cleanup", "Windows Cleanup Notification", SoftwareDistribution, Temp -Confirm:$false -ErrorAction Ignore
 			# Remove folders in Task Scheduler. We cannot remove all old folders explicitly and not get errors if any of folders do not exist
@@ -10973,12 +10983,7 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -For
 <toast duration="""Long""">
 	<visual>
 		<binding template="""ToastGeneric""">
-			<text>$($Localization.TaskNotificationTitle)</text>
-			<group>
-				<subgroup>
-					<text hint-style="""body""" hint-wrap="""true""">$($Localization.SoftwareDistributionTaskNotificationEvent)</text>
-				</subgroup>
-			</group>
+			<text>$($Localization.SoftwareDistributionTaskNotificationEvent)</text>
 		</binding>
 	</visual>
 	<audio src="""ms-winsoundevent:notification.default""" />
@@ -11126,12 +11131,7 @@ Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_
 <toast duration="""Long""">
 	<visual>
 		<binding template="""ToastGeneric""">
-			<text>$($Localization.TaskNotificationTitle)</text>
-			<group>
-				<subgroup>
-					<text hint-style="""body""" hint-wrap="""true""">$($Localization.TempTaskNotificationEvent)</text>
-				</subgroup>
-			</group>
+			<text>$($Localization.TempTaskNotificationEvent)</text>
 		</binding>
 	</visual>
 	<audio src="""ms-winsoundevent:notification.default""" />
@@ -12313,6 +12313,64 @@ function ShareContext
 
 <#
 	.SYNOPSIS
+	The "Edit with Clipchamp" item in the media files context menu
+
+	.PARAMETER Hide
+	Hide the "Edit with Clipchamp" item from the media files context menu
+
+	.PARAMETER Show
+	Show the "Edit with Clipchamp" item in the media files context menu
+
+	.EXAMPLE
+	EditWithClipchampContext -Hide
+
+	.EXAMPLE
+	EditWithClipchampContext -Show
+
+	.NOTES
+	Current user
+#>
+function EditWithClipchampContext
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Hide"
+		)]
+		[switch]
+		$Hide,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Show"
+		)]
+		[switch]
+		$Show
+	)
+
+	if (((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber -ge 22621) -and (Get-AppxPackage -Name Clipchamp.Clipchamp))
+	{
+		switch ($PSCmdlet.ParameterSetName)
+		{
+			"Hide"
+			{
+				if (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"))
+				{
+					New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Force
+				}
+				New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{8AB635F8-9A67-4698-AB99-784AD929F3B4}" -PropertyType String -Value "Play to menu" -Force
+			}
+			"Show"
+			{
+				Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{8AB635F8-9A67-4698-AB99-784AD929F3B4}" -Force -ErrorAction Ignore
+			}
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
 	The "Print" item in the .bat and .cmd context menu
 
 	.PARAMETER Hide
@@ -13060,6 +13118,12 @@ public static void PostMessage()
 		}
 	}
 
+	if ($Script:RegionChanged)
+	{
+		# Set the original region ID
+		Set-WinHomeLocation -GeoId $Script:Region
+	}
+
 	# Persist Sophia notifications to prevent to immediately disappear from Action Center
 	if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia))
 	{
@@ -13172,16 +13236,6 @@ public static void PostMessage()
 		}
 
 		gpupdate /force
-	}
-
-	# [WinAPI.UpdateEnvironment]::Refresh() makes so that Meet Now icon returns even if was hid before, so we need to check which function was called previously
-	if ($Script:MeetNow)
-	{
-		MeetNow -Show
-	}
-	elseif ($Script:MeetNow -eq $false)
-	{
-		MeetNow -Hide
 	}
 
 	# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word

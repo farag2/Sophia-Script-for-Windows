@@ -11284,6 +11284,16 @@ function CleanupTask
 	{
 		"Register"
 		{
+			# Checking if notifications and Action Center are disabled
+			if
+			(
+				((Get-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -ErrorAction Ignore).DisableNotificationCenter -eq 1) -or
+				((Get-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -ErrorAction Ignore).DisableNotificationCenter -eq 1)
+			)
+			{
+				return
+			}
+
 			# Remove all old tasks
 			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -TaskName "Windows Cleanup", "Windows Cleanup Notification", SoftwareDistribution, Temp -Confirm:$false -ErrorAction Ignore
 			# Remove folders in Task Scheduler. We cannot remove all old folders explicitly and not get errors if any of folders do not exist
@@ -11595,12 +11605,7 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -For
 <toast duration="""Long""">
 	<visual>
 		<binding template="""ToastGeneric""">
-			<text>$($Localization.TaskNotificationTitle)</text>
-			<group>
-				<subgroup>
-					<text hint-style="""body""" hint-wrap="""true""">$($Localization.SoftwareDistributionTaskNotificationEvent)</text>
-				</subgroup>
-			</group>
+			<text>$($Localization.SoftwareDistributionTaskNotificationEvent)</text>
 		</binding>
 	</visual>
 	<audio src="""ms-winsoundevent:notification.default""" />
@@ -11748,12 +11753,7 @@ Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_
 <toast duration="""Long""">
 	<visual>
 		<binding template="""ToastGeneric""">
-			<text>$($Localization.TaskNotificationTitle)</text>
-			<group>
-				<subgroup>
-					<text hint-style="""body""" hint-wrap="""true""">$($Localization.TempTaskNotificationEvent)</text>
-				</subgroup>
-			</group>
+			<text>$($Localization.TempTaskNotificationEvent)</text>
 		</binding>
 	</visual>
 	<audio src="""ms-winsoundevent:notification.default""" />

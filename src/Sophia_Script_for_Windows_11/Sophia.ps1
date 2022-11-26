@@ -1265,6 +1265,14 @@ ShareContext -Hide
 # Отобразить пункт "Отправить" (поделиться) в контекстном меню (значение по умолчанию)
 # ShareContext -Show
 
+# Hide the "Edit with Clipchamp" item from the media files context menu
+# Скрыть пункт "Редактировать в Climpchamp" из контекстного меню
+EditWithClipchampContext -Hide
+
+# Show the "Edit with Clipchamp" item in the media files context menu (default value)
+# Отобразить пункт "Редактировать в Climpchamp" в контекстном меню (значение по умолчанию)
+# EditWithClipchampContext -Show
+
 # Hide the "Print" item from the .bat and .cmd context menu
 # Скрыть пункт "Печать" из контекстного меню .bat и .cmd файлов
 PrintCMDContext -Hide

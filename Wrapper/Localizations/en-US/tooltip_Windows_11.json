@@ -1887,35 +1887,20 @@
   {
     "Id": 1205,
     "Region": "Context menu",
-    "Function": "EditWithPhotosContext",
+    "Function": "EditWithClipchampContext",
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide the \"Edit with Photos\" item from the media files context menu"
+        "ToolTip": "Hide the \"Edit with Clipchamp\" item from the media files context menu"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show the \"Edit with Photos\" item in the media files context menu (default value)"
+        "ToolTip": "Show the \"Edit with Clipchamp\" item in the media files context menu (default value)"
       }
     }
   },
   {
     "Id": 1206,
-    "Region": "Context menu",
-    "Function": "CreateANewVideoContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"Create a new video\" item in the media files context menu"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show the \"Create a new video\" item in the media files context menu (default value)"
-      }
-    }
-  },
-  {
-    "Id": 1207,
     "Region": "Context menu",
     "Function": "PrintCMDContext",
     "Arg": {
@@ -1930,7 +1915,7 @@
     }
   },
   {
-    "Id": 1208,
+    "Id": 1207,
     "Region": "Context menu",
     "Function": "IncludeInLibraryContext",
     "Arg": {
@@ -1945,7 +1930,7 @@
     }
   },
   {
-    "Id": 1209,
+    "Id": 1208,
     "Region": "Context menu",
     "Function": "SendToContext",
     "Arg": {
@@ -1960,7 +1945,7 @@
     }
   },
   {
-    "Id": 1210,
+    "Id": 1209,
     "Region": "Context menu",
     "Function": "CompressedFolderNewContext",
     "Arg": {
@@ -1975,7 +1960,7 @@
     }
   },
   {
-    "Id": 1211,
+    "Id": 1210,
     "Region": "Context menu",
     "Function": "MultipleInvokeContext",
     "Arg": {
@@ -1990,7 +1975,7 @@
     }
   },
   {
-    "Id": 1212,
+    "Id": 1211,
     "Region": "Context menu",
     "Function": "UseStoreOpenWith",
     "Arg": {
@@ -2005,7 +1990,7 @@
     }
   },
   {
-    "Id": 1213,
+    "Id": 1212,
     "Region": "Context menu",
     "Function": "OpenWindowsTerminalContext",
     "Arg": {
@@ -2020,7 +2005,7 @@
     }
   },
   {
-    "Id": 1214,
+    "Id": 1213,
     "Region": "Context menu",
     "Function": "OpenWindowsTerminalAdminContext",
     "Arg": {
@@ -2035,7 +2020,7 @@
     }
   },
   {
-    "Id": 1215,
+    "Id": 1214,
     "Region": "Context menu",
     "Function": "Windows10ContextMenu",
     "Arg": {

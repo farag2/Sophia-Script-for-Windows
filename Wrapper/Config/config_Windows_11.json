@@ -2136,7 +2136,7 @@
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
-    "Function": "PrintCMDContext",
+    "Function": "EditWithClipchampContext",
     "Arg": {
       "Zero": {
         "Tag": "Hide"
@@ -2153,7 +2153,7 @@
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
-    "Function": "IncludeInLibraryContext",
+    "Function": "PrintCMDContext",
     "Arg": {
       "Zero": {
         "Tag": "Hide"
@@ -2170,7 +2170,7 @@
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
-    "Function": "SendToContext",
+    "Function": "IncludeInLibraryContext",
     "Arg": {
       "Zero": {
         "Tag": "Hide"
@@ -2187,7 +2187,7 @@
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
-    "Function": "CompressedFolderNewContext",
+    "Function": "SendToContext",
     "Arg": {
       "Zero": {
         "Tag": "Hide"
@@ -2204,6 +2204,23 @@
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
+    "Function": "CompressedFolderNewContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One"
+  },
+  {
+    "Id": 1210,
+    "Region": "Context menu",
+    "Control": "cmb",
+    "Required": "false",
     "Function": "MultipleInvokeContext",
     "Arg": {
       "Zero": {
@@ -2217,7 +2234,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 1210,
+    "Id": 1211,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2234,7 +2251,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 1211,
+    "Id": 1212,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2251,7 +2268,7 @@
     "WindowsDefault": "Show"
   },
   {
-    "Id": 1212,
+    "Id": 1213,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2268,7 +2285,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 1213,
+    "Id": 1214,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
