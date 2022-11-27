@@ -683,7 +683,7 @@ function DiagnosticDataLevel
 		"Default"
 		{
 			# Full level
-			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Force
+			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Force -ErrorAction Ignore
 			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Type CLEAR
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name MaxTelemetryAllowed -PropertyType DWord -Value 3 -Force
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -PropertyType DWord -Value 3 -Force
@@ -10029,7 +10029,7 @@ function UpdateLGPEPolicies
 
 					if ($config.SelectSingleNode("//*[local-name()='policy' and @key='$($SplitPath.ToLower())' and (@valueName='$($Item.ToLower())' or @Name='$($Item.ToLower())' or .//*[local-name()='enum' and @valueName='$($Item.ToLower())'])]"))
 					{
-						Write-Verbose -Message $Item.Replace("{}", "") -Verbose
+						Write-Verbose -Message ([string]($SplitPath, "|", $Item.Replace("{}", ""))) -Verbose
 
 						$Type = switch ((Get-Item -Path $Path.PSPath).GetValueKind($Item))
 						{
@@ -10062,6 +10062,10 @@ function UpdateLGPEPolicies
 		}
 	}
 
+	Write-Verbose -Message $Localization.Patient -Verbose
+	Write-Verbose -Message $Localization.GPOUpdate -Verbose
+	Write-Information -MessageData "" -InformationAction Continue
+
 	# Current User policies paths to scan recursively
 	$CU_Paths = @(
 		"HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies",
@@ -10084,7 +10088,7 @@ function UpdateLGPEPolicies
 
 					if ($config.SelectSingleNode("//*[local-name()='policy' and @key='$($SplitPath.ToLower())' and (@valueName='$($Item.ToLower())' or @Name='$($Item.ToLower())' or .//*[local-name()='enum' and @valueName='$($Item.ToLower())'])]"))
 					{
-						Write-Verbose -Message $Item.Replace("{}", "") -Verbose
+						Write-Verbose -Message ([string]($SplitPath, "|", $Item.Replace("{}", ""))) -Verbose
 
 						$Type = switch ((Get-Item -Path $Path.PSPath).GetValueKind($Item))
 						{
