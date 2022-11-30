@@ -75,10 +75,10 @@ Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Wind
 
 ![ko-fi](https://storage.ko-fi.com/cdn/useruploads/Q5Q51QUJC/qrcode.png)
 
-|                 BTC                 |            USDT (TRC20)              |                    ETH                     |
-|:-----------------------------------:|:------------------------------------:|:------------------------------------------:|
-|<img src="./img/BTC.png" width=130px>|<img src="./img/USDT.png" width=130px>|<img src="./img/ETH.png" width=130px>       |
-|`13QVRYxgGjZtKQgfb6VPRZyyUmnqeaTm1n` |`TQtMjdocUWbKAeg1kLtB4ApjAVHt1v8Rtf`  |`0x089f05c00e2f75e9b0cd939f21c207b1afe5b2f6`|
+| ![ko-fi](https://img.shields.io/badge/tether-168363?style=for-the-badge&logo=tether&logoColor=white) |
+|:----------------------------------------------------------------------------------------------------:|
+|                                         USDT (TRC20)                                                 |
+|                             `TQtMjdocUWbKAeg1kLtB4ApjAVHt1v8Rtf`                                     |
 
 ## System Requirements
 
