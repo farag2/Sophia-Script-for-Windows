@@ -6,7 +6,7 @@
 
 <p align="left">
   <a href="https://github.com/farag2/Sophia-Script-for-Windows/actions"><img src="https://img.shields.io/github/workflow/status/farag2/Sophia-Script-for-Windows/Build?label=GitHub%20Actions&logo=GitHub"></a>
-  <img src="https://img.shields.io/badge/PowerShell%205.1%20&%207.2-Ready-blue.svg?color=5391FE&style=flat&logo=powershell">
+  <img src="https://img.shields.io/badge/PowerShell%205.1%20&%207.3-Ready-blue.svg?color=5391FE&style=flat&logo=powershell">
 
   <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases"><img src="https://img.shields.io/github/v/release/farag2/Sophia-Script-for-Windows">
   </a><a href="https://github.com/farag2/Sophia-Script-for-Windows"><img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/farag2/9852d6b9569a91bf69ceba8a94cc97f4/raw/0ab9790ab7ca11c7598ea469edf36cda05a1e7b1/SophiaScript.json"></a>
