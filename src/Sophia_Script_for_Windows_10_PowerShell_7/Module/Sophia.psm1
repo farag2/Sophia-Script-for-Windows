@@ -9033,7 +9033,7 @@ function UninstallPCHealthCheck
 	{
 		$File = $Folder.Items() | Where-Object -FilterScript {$_.Name -eq $MSI.Name}
 
-		# https://docs.microsoft.com/en-us/previous-versions/tn-archive/ee200615(v=technet.10)
+		# # https://learn.microsoft.com/en-us/previous-versions/tn-archive/ee176615(v=technet.10)
 		# "22" is the "Subject" file property
 		if ($Folder.GetDetailsOf($File, 22) -eq "Windows PC Health Check")
 		{
