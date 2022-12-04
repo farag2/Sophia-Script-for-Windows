@@ -35,6 +35,7 @@ $Parameters = @{
 	UseBasicParsing = $true
 }
 Invoke-RestMethod @Parameters
+
 # Extract Microsoft.Windows.SDK.NET.dll & WinRT.Runtime.dll from archive
 Add-Type -Assembly System.IO.Compression.FileSystem
 $ZIP = [IO.Compression.ZipFile]::OpenRead("Scripts\microsoft.windows.sdk.net.ref.zip")
