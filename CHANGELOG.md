@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.14.4 | 6.2.4 — 04.12.2022
+
+* Updated the Scheduled tasks notification toasts UI;
+  ![Image](https://github.com/Sophia-Community/SophiApp/raw/master/img/Toasts.png)
+  * Call `Sophia -Functions "CleanupTask -Register", "SoftwareDistributionTask -Register", "TempTask -Register"` to update existing Scheduled tasks to have a new toasts UI;
+  * [Read](https://github.com/farag2/Sophia-Script-for-Windows#how-to-run-the-specific-functions) how to call specific function from Sophia Script for Windows.
+* Fixed bug for `TempFolder` function to make it work without errors on systems with non-latin characters in username;
+* Fixed small bug in `NetworkAdaptersSavePower`;
+  * Now it doesn't hang script in rare cases.
+* `EditWithPhotosContext` and `CreateANewVideoContext` function were removed for Windows 11 only due to they do not work for this Windows;
+* Added `EditWithClipchampContext` for Windows only to let remove `Edit with Clipchamp` from the media files context menu;
+* Fixed typos in `UpdateLGPEPolicies` function
+  * Run this function again if you want to make all manually created policies visible in gpedit.msc snap-in.
+* #411 merged;
+* Fixed #406;
+* Minor changes.
+
+Wrapper version bumped to 2.5.8
+  * Minor changes and added link to Discord channel;
+  * Wrapper 3.0 is on the way.
+
 ## 5.14.3 | 6.2.3 — 04.11.2022
 
 * Hot fix for `HEIF` function;
