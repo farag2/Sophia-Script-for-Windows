@@ -3,7 +3,7 @@
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
 	Version: v5.14.4
-	Date: 21.11.2022
+	Date: 04.12.2022
 
 	Copyright (c) 2014—2022 farag
 	Copyright (c) 2019—2022 farag & Inestic
@@ -9025,7 +9025,7 @@ function UninstallPCHealthCheck
 	{
 		$File = $Folder.Items() | Where-Object -FilterScript {$_.Name -eq $MSI.Name}
 
-		# https://docs.microsoft.com/en-us/previous-versions/tn-archive/ee200615(v=technet.10)
+		# https://learn.microsoft.com/en-us/previous-versions/tn-archive/ee176615(v=technet.10) ###
 		# "22" is the "Subject" file property
 		if ($Folder.GetDetailsOf($File, 22) -eq "Windows PC Health Check")
 		{
