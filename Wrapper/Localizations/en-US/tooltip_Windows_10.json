@@ -1432,7 +1432,7 @@
   {
     "Id": 537,
     "Region": "System",
-    "Function": "InstallDotNetRuntime6",
+    "Function": "InstallDotNetRuntime7",
     "Arg": {
       "Zero": {
         "Tag": "",

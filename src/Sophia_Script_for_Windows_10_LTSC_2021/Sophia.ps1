@@ -857,12 +857,12 @@ RestartDeviceAfterUpdate -Enable
 InstallVCRedist
 
 <#
-	Install the latest .NET Desktop Runtime 6 (x86/x64)
+	Install the latest .NET Desktop Runtime 7 (x86/x64)
 	Установить последнюю версию .NET Desktop Runtime 6 (x86/x64)
 
-	https://docs.microsoft.com/en-us/dotnet/core/install/windows?tabs=net60
+	https://dotnet.microsoft.com/en-us/download/dotnet
 #>
-InstallDotNetRuntime6
+InstallDotNetRuntime7
 
 # Enable proxying only blocked sites from the unified registry of Roskomnadzor. The function is applicable for Russia only
 # Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора. Функция применима только для России

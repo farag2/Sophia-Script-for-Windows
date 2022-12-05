@@ -1483,7 +1483,7 @@
     "Region": "System",
     "Control": "chk",
     "Required": "false",
-    "Function": "InstallDotNetRuntime6",
+    "Function": "InstallDotNetRuntime7",
     "Arg": {
       "Zero": {
         "Tag": ""
