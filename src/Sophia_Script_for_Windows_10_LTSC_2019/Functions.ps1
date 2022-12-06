@@ -79,6 +79,12 @@ $Parameters = @{
 		{
 			$ParameterSets = (Get-Command -Name $Command).Parametersets.Parameters | Where-Object -FilterScript {$null -eq $_.Attributes.AliasNames}
 
+			# If a module command is Set-Policy
+			if ($Command -eq "Set-Policy")
+			{
+				continue
+			}
+
 			foreach ($ParameterSet in $ParameterSets.Name)
 			{
 				# The "Function -Argument" construction

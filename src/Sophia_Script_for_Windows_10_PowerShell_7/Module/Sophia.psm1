@@ -11295,7 +11295,11 @@ function CleanupTask
 			}
 
 			# Remove all old tasks
-			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -TaskName "Windows Cleanup", "Windows Cleanup Notification", SoftwareDistribution, Temp -Confirm:$false -ErrorAction Ignore
+			# We have to use -ErrorAction Ignore in both cases, unless we get an error
+			Get-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -ErrorAction Ignore | ForEach-Object -Process {
+				Unregister-ScheduledTask -TaskName $_.TaskName -Confirm:$false -ErrorAction Ignore
+			}
+
 			# Remove folders in Task Scheduler. We cannot remove all old folders explicitly and not get errors if any of folders do not exist
 			$ScheduleService = New-Object -ComObject Schedule.Service
 			$ScheduleService.Connect()
@@ -11484,7 +11488,10 @@ public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 		"Delete"
 		{
 			# Remove all old tasks
-			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -TaskName "Windows Cleanup", "Windows Cleanup Notification", SoftwareDistribution, Temp -Confirm:$false -ErrorAction Ignore
+			# We have to use -ErrorAction Ignore in both cases, unless we get an error
+			Get-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -ErrorAction Ignore | ForEach-Object -Process {
+				Unregister-ScheduledTask -TaskName $_.TaskName -Confirm:$false -ErrorAction Ignore
+			}
 
 			# Remove folder in Task Scheduler if there is no tasks left there. We cannot remove all old folders explicitly and not get errors if any of folders do not exist
 			$ScheduleService = New-Object -ComObject Schedule.Service
@@ -11564,7 +11571,10 @@ function SoftwareDistributionTask
 		"Register"
 		{
 			# Remove all old tasks
-			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -TaskName "Windows Cleanup", "Windows Cleanup Notification", SoftwareDistribution, Temp -Confirm:$false -ErrorAction Ignore
+			# We have to use -ErrorAction Ignore in both cases, unless we get an error
+			Get-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -ErrorAction Ignore | ForEach-Object -Process {
+				Unregister-ScheduledTask -TaskName $_.TaskName -Confirm:$false -ErrorAction Ignore
+			}
 
 			# Remove folders in Task Scheduler. We cannot remove all old folders explicitly and not get errors if any of folders do not exist
 			$ScheduleService = New-Object -ComObject Schedule.Service
@@ -11638,7 +11648,10 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -For
 		"Delete"
 		{
 			# Remove all old tasks
-			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -TaskName "Windows Cleanup", "Windows Cleanup Notification", SoftwareDistribution, Temp -Confirm:$false -ErrorAction Ignore
+			# We have to use -ErrorAction Ignore in both cases, unless we get an error
+			Get-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -ErrorAction Ignore | ForEach-Object -Process {
+				Unregister-ScheduledTask -TaskName $_.TaskName -Confirm:$false -ErrorAction Ignore
+			}
 
 			# Remove folder in Task Scheduler if there is no tasks left there. We cannot remove all old folders explicitly and not get errors if any of folders do not exist
 			$ScheduleService = New-Object -ComObject Schedule.Service
@@ -11713,7 +11726,10 @@ function TempTask
 		"Register"
 		{
 			# Remove all old tasks
-			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -TaskName "Windows Cleanup", "Windows Cleanup Notification", SoftwareDistribution, Temp -Confirm:$false -ErrorAction Ignore
+			# We have to use -ErrorAction Ignore in both cases, unless we get an error
+			Get-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -ErrorAction Ignore | ForEach-Object -Process {
+				Unregister-ScheduledTask -TaskName $_.TaskName -Confirm:$false -ErrorAction Ignore
+			}
 
 			# Remove folders in Task Scheduler. We cannot remove all old folders explicitly and not get errors if any of folders do not exist
 			$ScheduleService = New-Object -ComObject Schedule.Service
@@ -11786,7 +11802,10 @@ Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_
 		"Delete"
 		{
 			# Remove all old tasks
-			Unregister-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -TaskName "Windows Cleanup", "Windows Cleanup Notification", SoftwareDistribution, Temp -Confirm:$false -ErrorAction Ignore
+			# We have to use -ErrorAction Ignore in both cases, unless we get an error
+			Get-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -ErrorAction Ignore | ForEach-Object -Process {
+				Unregister-ScheduledTask -TaskName $_.TaskName -Confirm:$false -ErrorAction Ignore
+			}
 
 			# Remove folder in Task Scheduler if there is no tasks left there. We cannot remove all old folders explicitly and not get errors if any of folders do not exist
 			$ScheduleService = New-Object -ComObject Schedule.Service

@@ -58,7 +58,7 @@ Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
 Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia -BaseDirectory $PSScriptRoot\Localizations
 
 # The mandatory checks. Please, do not comment out this function
-Checks
+#Checks
 
 $Parameters = @{
 	CommandName   = "Sophia"
@@ -139,6 +139,12 @@ $Parameters = @{
 						"DNSoverHTTPS -Enable -PrimaryDNS $ValidValue -SecondaryDNS $ValidValueDescending" | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
 					}
 				}
+			}
+
+			# If a module command is Set-Policy
+			if ($Command -eq "Set-Policy")
+			{
+				continue
 			}
 
 			foreach ($ParameterSet in $ParameterSets.Name)

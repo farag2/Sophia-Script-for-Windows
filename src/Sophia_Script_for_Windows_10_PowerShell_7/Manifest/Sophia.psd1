@@ -5,7 +5,7 @@
 	Author                = 'Dmitry "farag" Nefedov'
 	Copyright             = '(c) 2014—2022 farag & Inestic. All rights reserved'
 	Description           = 'Module for Windows fine-tuning and automating the routine tasks'
-	PowerShellVersion     = '7.2'
+	PowerShellVersion     = '7.3'
 	ProcessorArchitecture = 'AMD64'
 	FunctionsToExport     = '*'
 

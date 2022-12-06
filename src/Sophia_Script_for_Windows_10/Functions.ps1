@@ -146,6 +146,12 @@ $Parameters = @{
 				}
 			}
 
+			# If a module command is Set-Policy
+			if ($Command -eq "Set-Policy")
+			{
+				continue
+			}
+
 			foreach ($ParameterSet in $ParameterSets.Name)
 			{
 				# The "Function -Argument" construction
