@@ -51,8 +51,6 @@
   <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Flag_of_Portugal.svg" height="20px"/>
   &nbsp;
   <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Flag_of_Hungary.svg" height="20px"/>
-  &nbsp;
-  <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Spain.svg" height="20px"/>
 </p>
 
 ***
