@@ -5,8 +5,8 @@
 	Version: v5.14.4
 	Date: 04.12.2022
 
-	Copyright (c) 2014—2022 farag
-	Copyright (c) 2019—2022 farag & Inestic
+	Copyright (c) 2014—2023 farag
+	Copyright (c) 2019—2023 farag & Inestic
 
 	Thanks to all https://forum.ru-board.com members involved
 
@@ -70,7 +70,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.14.4 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2022"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.14.4 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2023"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force

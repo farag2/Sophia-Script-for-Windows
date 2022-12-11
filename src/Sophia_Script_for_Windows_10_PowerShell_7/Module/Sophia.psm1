@@ -5,8 +5,8 @@
 	Version: v5.14.4
 	Date: 04.12.2022
 
-	Copyright (c) 2014—2022 farag
-	Copyright (c) 2019—2022 farag & Inestic
+	Copyright (c) 2014—2023 farag
+	Copyright (c) 2019—2023 farag & Inestic
 
 	Thanks to all https://forum.ru-board.com members involved
 
@@ -9033,7 +9033,7 @@ function UninstallPCHealthCheck
 	{
 		$File = $Folder.Items() | Where-Object -FilterScript {$_.Name -eq $MSI.Name}
 
-		# # https://learn.microsoft.com/en-us/previous-versions/tn-archive/ee176615(v=technet.10)
+		# https://learn.microsoft.com/en-us/previous-versions/tn-archive/ee176615(v=technet.10)
 		# "22" is the "Subject" file property
 		if ($Folder.GetDetailsOf($File, 22) -eq "Windows PC Health Check")
 		{
@@ -10025,7 +10025,10 @@ function UninstallUWPApps
 		"Microsoft.AV1VideoExtension",
 
 		# HEVC Video Extensions from Device Manufacturer
-		"Microsoft.HEVCVideoExtension"
+		"Microsoft.HEVCVideoExtension",
+
+		# HEIF Image Extensions
+		"Microsoft.HEIFImageExtension"
 	)
 
 	#region Variables

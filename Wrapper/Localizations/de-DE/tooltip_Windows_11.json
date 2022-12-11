@@ -1327,7 +1327,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Установить последнюю версию .NET Desktop Runtime 6 (x86/x64)"
+        "ToolTip": "Установить последнюю версию .NET Desktop Runtime 7 (x86/x64)"
       }
     }
   },

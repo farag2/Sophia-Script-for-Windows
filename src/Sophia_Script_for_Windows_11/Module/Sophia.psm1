@@ -5,8 +5,8 @@
 	Version: v6.2.4
 	Date: 04.12.2022
 
-	Copyright (c) 2014—2022 farag
-	Copyright (c) 2019—2022 farag & Inestic
+	Copyright (c) 2014—2023 farag
+	Copyright (c) 2019—2023 farag & Inestic
 
 	Thanks to all https://forum.ru-board.com members involved
 
@@ -9325,10 +9325,6 @@ function UninstallUWPApps
 		# Photos (and Video Editor)
 		"Microsoft.Windows.Photos",
 		"Microsoft.Photos.MediaEngineDLC",
-		"Microsoft.RawImageExtension"
-
-		# HEVC Video Extensions from Device Manufacturer
-		"Microsoft.HEVCVideoExtension",
 
 		# Calculator
 		"Microsoft.WindowsCalculator",
@@ -9396,7 +9392,10 @@ function UninstallUWPApps
 		"Microsoft.HEVCVideoExtension",
 
 		# Raw Image Extension
-		"Microsoft.RawImageExtension"
+		"Microsoft.RawImageExtension",
+
+		# HEIF Image Extensions
+		"Microsoft.HEIFImageExtension"
 	)
 
 	#region Variables
@@ -12368,7 +12367,7 @@ function EditWithClipchampContext
 		$Show
 	)
 
-	if (((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber -ge 22621) -and (Get-AppxPackage -Name Clipchamp.Clipchamp))
+	if (((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber -ge 22621) -and (Get-AppxPackage -Name Clipchamp.Clipchamp))
 	{
 		switch ($PSCmdlet.ParameterSetName)
 		{

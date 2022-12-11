@@ -5,8 +5,8 @@
 	Version: v5.14.4
 	Date: 04.12.2022
 
-	Copyright (c) 2014—2022 farag
-	Copyright (c) 2019—2022 farag & Inestic
+	Copyright (c) 2014—2023 farag
+	Copyright (c) 2019—2023 farag & Inestic
 
 	Thanks to all https://forum.ru-board.com members involved
 

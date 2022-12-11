@@ -5,8 +5,8 @@
 	Version: v5.14.4
 	Date: 04.12.2022
 
-	Copyright (c) 2014—2022 farag
-	Copyright (c) 2019—2022 farag & Inestic
+	Copyright (c) 2014—2023 farag
+	Copyright (c) 2019—2023 farag & Inestic
 
 	Thanks to all https://forum.ru-board.com members involved
 
@@ -64,7 +64,7 @@ function Checks
 	}
 
 	# Detect the OS build version
-	switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
+	switch ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber)
 	{
 		{($_ -ge 19044) -and ($_ -le 19048)}
 		{
@@ -10007,7 +10007,10 @@ function UninstallUWPApps
 		"Microsoft.AV1VideoExtension",
 
 		# HEVC Video Extensions from Device Manufacturer
-		"Microsoft.HEVCVideoExtension"
+		"Microsoft.HEVCVideoExtension",
+
+		# HEIF Image Extensions
+		"Microsoft.HEIFImageExtension"
 	)
 
 	#region Variables

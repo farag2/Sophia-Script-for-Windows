@@ -1436,7 +1436,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Installieren Sie die neueste .NET Desktop Runtime 6 (x86/x64)"
+        "ToolTip": "Installieren Sie die neueste .NET Desktop Runtime 7 (x86/x64)"
       }
     }
   },
