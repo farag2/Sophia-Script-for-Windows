@@ -23,8 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Minor changes.
 
 Wrapper version bumped to 2.5.8
-  * Minor changes and added link to Discord channel;
-  * Wrapper 3.0 is on the way.
+* Minor changes and added link to Discord channel;
+* Wrapper 3.0 is on the way.
 
 ## 5.14.3 | 6.2.3 — 04.11.2022
 
