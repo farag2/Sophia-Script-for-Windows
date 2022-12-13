@@ -59,7 +59,6 @@ EXEFilesFilter                            = *.exe|*.exe|Tous les Fichiers (*.*)|
 FolderSelect                              = Sélectionner un dossier
 FilesWontBeMoved                          = Les fichiers ne seront pas déplacés
 Install                                   = Installer
-Minute                                    = 1 minute
 NoData                                    = Rien à afficher
 NoInternetConnection                      = Pas de connexion Internet
 RestartFunction                           = Veuillez redémarrer la fonction "{0}"
