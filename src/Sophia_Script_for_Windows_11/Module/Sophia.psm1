@@ -5723,12 +5723,12 @@ function NetworkAdaptersSavePower
 		$Enable
 	)
 
-	if (Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"})
+	if (Get-NetAdapter -Physical | Where-Object -FilterScript {($_.Status -eq "Up") -and $_.MacAddress})
 	{
-		$PhysicalAdaptersStatusUp = @((Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"}).Name)
+		$PhysicalAdaptersStatusUp = @((Get-NetAdapter -Physical | Where-Object -FilterScript {($_.Status -eq "Up") -and $_.MacAddress}).Name)
 	}
 
-	$Adapters = Get-NetAdapter -Physical | Get-NetAdapterPowerManagement | Where-Object -FilterScript {$_.AllowComputerToTurnOffDevice -ne "Unsupported"}
+	$Adapters = Get-NetAdapter -Physical | Where-Object -FilterScript {$_.MacAddress} | Get-NetAdapterPowerManagement | Where-Object -FilterScript {$_.AllowComputerToTurnOffDevice -ne "Unsupported"}
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
@@ -5756,7 +5756,7 @@ function NetworkAdaptersSavePower
 	{
 		while
 		(
-			Get-NetAdapter -Physical -Name $PhysicalAdaptersStatusUp | Where-Object -FilterScript {$_.Status -eq "Disconnected"}
+			Get-NetAdapter -Physical -Name $PhysicalAdaptersStatusUp | Where-Object -FilterScript {($_.Status -eq "Disconnected") -and $_.MacAddress}
 		)
 		{
 			Write-Verbose -Message $Localization.Patient -Verbose
