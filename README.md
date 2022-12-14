@@ -1,3 +1,8 @@
+<div align="right">
+  This page also in:
+  <a title="Українська" href="README_uk-ua.md"><img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Ukraine.svg" height="11px"/></a>
+</div>
+
 # Sophia Script for Windows
 
 <img src="./img/Sophia.png" alt="Sophia Script" width='350' align="right">
@@ -102,7 +107,7 @@ Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Wind
 
 ## System Requirements
 
-|            Version                   |    Marketing name   |   Build     | Arch |        Editions     |
+|               Version                |    Marketing name   |    Build    | Arch |      Editions       |
 |:-------------------------------------|--------------------:|:-----------:|:----:|:-------------------:|
 | Windows 11 Insider Preview 23H2      | 2023 Update         | 22509+      |      | Home/Pro/Enterprise |
 | Windows 11 22H2                      | 2022 Update         | 22621       |      | Home/Pro/Enterprise |
@@ -151,25 +156,25 @@ Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Wind
 ## Key features
 
 * Set up Privacy & Telemetry;
-* Enable DNS-over-HTTPS for IPv4
+* Enable DNS-over-HTTPS for IPv4;
 * Turn off diagnostics tracking scheduled tasks with pop-up form written in [WPF](#screenshots);
 * Set up UI & Personalization;
 * Uninstall OneDrive "correctly";
 * Interactive [prompts](#change-user-folders-location-programmatically-using-the-interactive-menu);
 * The <kbd>TAB</kbd> [completion](#the-tab-autocomplete-read-more-here) for functions and their arguments (if using the Functions.ps1 file);
-* Change %TEMP% environment variable path to %SystemDrive%\Temp
+* Change %TEMP% environment variable path to %SystemDrive%\Temp;
 * Change location of the user folders programmatically (without moving user files) within interactive menu using arrows to select a drive
-  * "Desktop";
-  * "Documents";
-  * "Downloads";
-  * "Music";
+  * "Desktop"
+  * "Documents"
+  * "Downloads"
+  * "Music"
   * "Pictures"
-  * "Videos.
+  * "Videos"
 * Install free (light and dark) "Windows 11 Cursors Concept v2" cursors from [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) on-the-fly;
 * Uninstall UWP apps displaying  packages names;
   * Generate installed UWP apps list dynamically
 * Restore the default uninstalled UWP apps for current user displaying [localized](#localized-uwp-packages-names) packages names;
-* The <kbd>TAB</kbd> [autocompletion](#the-tab-autocomplete-read-more-here) for function and its' arguments by typing first letters
+* The <kbd>TAB</kbd> [autocompletion](#the-tab-autocomplete-read-more-here) for function and its' arguments by typing first letters;
 * Disable Windows features displaying friendly packages names with pop-up form written in [WPF](#screenshots);
 * Uninstall Windows capabilities displaying friendly packages names with pop-up form written in [WPF](#screenshots);
 * Download and install the [HEVC Video Extensions from Device Manufacturer](https://www.microsoft.com/p/hevc-video-extensions-from-device-manufacturer/9n4wgh0z6vhq) to be able to open .heic and .heif formats;
@@ -197,9 +202,9 @@ Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Wind
 * Expand the archive;
 * Open folder with the expanded archive;
 * Look through the `Sophia.ps1` file to configure functions that you want to be run;
-  * Place the "#" char before function if you don't want it to be run;
+  * Place the "#" char before function if you don't want it to be run.
   * Remove the "#" char before function if you want it to be run.
-* On `Windows 10` click `File` in File Explorer, hover over `Open Windows PowerShell`, and select `Open Windows PowerShell as Administrator` [(how-to with screenshots)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/);
+* On `Windows 10` click `File` in File Explorer, hover over `Open Windows PowerShell`, and select `Open Windows PowerShell as Administrator` [(how-to with screenshots)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/)
 * On `Windows 11` right-click on the <kbd>Windows</kbd> icon and select `Windows Terminal (Admin)`. Then change the current location
 
   ```powershell
@@ -226,7 +231,7 @@ Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Wind
 
 ### How to run the specific function(s)
 
-To run the specific function(s) [dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-) the `Functions.ps1` file first:
+To run the specific function(s) [dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator) the `Functions.ps1` file first:
 
 ```powershell
 # With a dot at the beginning
