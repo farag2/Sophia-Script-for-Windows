@@ -84,7 +84,7 @@
  &bull;
  <a href="#sophiapp-community-edition-c--wpf">SophiApp</a>
  &bull;
- <a href="https://github.com/farag2/Sophia-Script-for-Windows/blob/master/CHANGELOG.md">Changelog</a>
+ <a href="https://github.com/farag2/Sophia-Script-for-Windows/blob/master/CHANGELOG.md">Список змін</a>
 </p>
 
 ## Про Sophia Script
@@ -105,7 +105,7 @@ Sophia Script для Windows - найбільший модуль PowerShell на
 |                                         USDT (TRC20)                                                 |
 |                             `TQtMjdocUWbKAeg1kLtB4ApjAVHt1v8Rtf`                                     |
 
-## System Requirements
+## Системні вимоги
 
 |                Версія                | Маркетингова назва  |   Збіркa    | Архітектура |       Видання       |
 |:-------------------------------------|--------------------:|:-----------:|:-----------:|:-------------------:|
@@ -290,7 +290,7 @@ irm script.sophi.app -useb | iex
 * [Habr](https://habr.com/company/skillfactory/blog/553800)
 * [Deskmodder.d](https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10/)
 * [PCsoleil Informatique](https://www.pcsoleil.fr/successeur-de-win10-initial-setup-script-sophia-script-comment-lutiliser/)
-* [Reddit (archived)](https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/)
+* [Reddit (архівовано)](https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/)
   * Написати в [особисті](https://www.reddit.com/user/farag2/)
 
 ***
