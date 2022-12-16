@@ -12947,6 +12947,10 @@ function UpdateLGPEPolicies
 		return
 	}
 
+	Get-Partition | Where-Object -FilterScript{$_. DriveLetter -eq "C"} | Get-Disk | Get-PhysicalDisk | ForEach-Object -Process {
+		Write-Verbose -Message ([string]($_.FriendlyName, '|', $_.MediaType, '|' ,$_.BusType)) -Verbose
+	}
+
 	Write-Verbose -Message $Localization.Patient -Verbose
 	Write-Verbose -Message $Localization.GPOUpdate -Verbose
 	Write-Verbose -Message HKLM -Verbose
