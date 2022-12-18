@@ -9020,10 +9020,13 @@ public static void Refresh()
 function UninstallPCHealthCheck
 {
 	$Folder = (New-Object -ComObject Shell.Application).NameSpace("$env:SystemRoot\Installer")
+	$Files = [hashtable]::new()
+	$Folder.Items() | ForEach-Object -Process {$Files.Add($_.Name, $_)} | Out-Null
 	# Find the necessary .msi with the Subject property equal to "Windows PC Health Check"
 	foreach ($MSI in @(Get-ChildItem -Path "$env:SystemRoot\Installer" -Filter *.msi -File -Force))
 	{
-		$File = $Folder.Items() | Where-Object -FilterScript {$_.Name -eq $MSI.Name}
+		$Name = $Files.Keys | Where-Object -FilterScript {$_ -eq $MSI.Name}
+		$File = $Files[$Name]
 
 		# https://learn.microsoft.com/en-us/previous-versions/tn-archive/ee176615(v=technet.10)
 		# "22" is the "Subject" file property
