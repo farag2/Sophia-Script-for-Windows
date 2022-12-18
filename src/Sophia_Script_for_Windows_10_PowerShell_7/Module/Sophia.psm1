@@ -10136,7 +10136,7 @@ function UninstallUWPApps
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message $Localization.Patient -Verbose
 
-		$AppxPackages = Get-AppxPackage -PackageTypeFilter Bundle -AllUsers:$AllUsers | Where-Object -FilterScript {$_.Name -notin $ExcludedAppxPackages}
+		$AppxPackages = @(Get-AppxPackage -PackageTypeFilter Bundle -AllUsers:$AllUsers | Where-Object -FilterScript {$_.Name -notin $ExcludedAppxPackages})
 		$PackagesIds = [Windows.Management.Deployment.PackageManager]::new().FindPackages() | Select-Object -Property DisplayName -ExpandProperty Id | Select-Object -Property Name, DisplayName
 
 		foreach ($AppxPackage in $AppxPackages)
@@ -10487,7 +10487,7 @@ function RestoreUWPApps
 
 		# You cannot retrieve packages using -PackageTypeFilter Bundle, otherwise you won't get the InstallLocation attribute. It can be retrieved only by comparing with $Bundles
 		$Bundles = (Get-AppXPackage -PackageTypeFilter Bundle -AllUsers).Name
-		$AppxPackages = Get-AppxPackage -AllUsers | Where-Object -FilterScript {$_.PackageUserInformation -match "Staged"} | Where-Object -FilterScript {$_.Name -in $Bundles}
+		$AppxPackages = @(Get-AppxPackage -AllUsers | Where-Object -FilterScript {$_.PackageUserInformation -match "Staged"} | Where-Object -FilterScript {$_.Name -in $Bundles})
 		$PackagesIds = [Windows.Management.Deployment.PackageManager]::new().FindPackages() | Select-Object -Property DisplayName -ExpandProperty Id | Select-Object -Property Name, DisplayName
 
 		foreach ($AppxPackage in $AppxPackages)
@@ -13842,8 +13842,8 @@ public static void PostMessage()
 	# Determines whether the app can be seen in Settings where the user can turn notifications on or off
 	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Name ShowInSettings -Value 0 -PropertyType DWord -Force
 
-	[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
-	[Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
+	Add-Type -AssemblyName "$PSScriptRoot\..\bin\WinRT.Runtime.dll"
+	Add-Type -AssemblyName "$PSScriptRoot\..\bin\Microsoft.Windows.SDK.NET.dll"
 
 	# Telegram group
 	[xml]$ToastTemplate = @"

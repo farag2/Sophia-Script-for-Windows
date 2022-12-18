@@ -9537,7 +9537,7 @@ function UninstallUWPApps
 			$AppxPackages += Get-AppxPackage -Name SpotifyAB.SpotifyMusic -AllUsers:$AllUsers | Select-Object -Index 0
 		}
 
-		$PackagesIds = [Windows.Management.Deployment.PackageManager, Windows.Web, ContentType = WindowsRuntime]::new().FindPackages() | Select-Object -Property DisplayName -ExpandProperty Id | Select-Object -Property Name, DisplayName
+		$PackagesIds = [Windows.Management.Deployment.PackageManager]::new().FindPackages() | Select-Object -Property DisplayName -ExpandProperty Id | Select-Object -Property Name, DisplayName
 
 		foreach ($AppxPackage in $AppxPackages)
 		{
@@ -13193,8 +13193,8 @@ public static void PostMessage()
 	# Determines whether the app can be seen in Settings where the user can turn notifications on or off
 	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Name ShowInSettings -Value 0 -PropertyType DWord -Force
 
-	[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
-	[Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
+	Add-Type -AssemblyName "$PSScriptRoot\..\bin\WinRT.Runtime.dll"
+	Add-Type -AssemblyName "$PSScriptRoot\..\bin\Microsoft.Windows.SDK.NET.dll"
 
 	# Telegram group
 	[xml]$ToastTemplate = @"
