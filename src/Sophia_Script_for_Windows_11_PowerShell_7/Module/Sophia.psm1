@@ -298,24 +298,17 @@ function Checks
 	}
 
 	# Checking services
-	@("Windefend", "SecurityHealthService", "wscsvc") | ForEach-Object -Process {
-		if ($null -eq (Get-Service -Name $_ -ErrorAction Ignore))
-		{
-			$Localization.WindowsBroken
-			exit
-		}
-		else
-		{
-			if ((Get-Service -Name $_).Status -eq "running")
-			{
-				$Script:DefenderServices = $true
-			}
-			else
-			{
-				$Script:DefenderServices = $false
-			}
-		}
+	try
+	{
+		$Services = Get-Service -Name Windefend, SecurityHealthService, wscsvc -ErrorAction Stop
 	}
+	catch [Microsoft.PowerShell.Commands.ServiceCommandException]
+	{
+		$Localization.WindowsBroken
+		exit
+	}
+	[array]$notRunning = $Services | Where-Object -FilterScript {$_.Status -ne "running"}
+	$Script:DefenderServices = $notRunning.Count -eq 0
 
 	# Specifies whether Antispyware protection is enabled
 	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).AntispywareEnabled)
@@ -7923,7 +7916,7 @@ namespace RegistryUtils
 					uint maxValueLen;
 					uint securityDescriptor;
 					StringBuilder sb;
-					
+
 					if (RegQueryInfoKey(hKey, out sb, ref lpcbClass, lpReserved, out lpcbSubKeys, out lpcbMaxKeyLen, out lpcbMaxClassLen,
 						out lpcValues, out maxValueName, out maxValueLen, out securityDescriptor, ref lastModified) != 0)
 					{
