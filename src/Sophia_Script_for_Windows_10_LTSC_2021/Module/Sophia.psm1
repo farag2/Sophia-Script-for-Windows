@@ -273,13 +273,14 @@ function Checks
 	# Checking services
 	try
 	{
-		$services = Get-Service -Name Windefend, SecurityHealthService, wscsvc -ErrorAction Stop
+		$Services = Get-Service -Name Windefend, SecurityHealthService, wscsvc -ErrorAction Stop
 	}
-	catch [Microsoft.PowerShell.Commands.ServiceCommandException] {
+	catch [Microsoft.PowerShell.Commands.ServiceCommandException]
+	{
 		$Localization.WindowsBroken
 		exit
 	}
-	[array]$notRunning = $services | Where-Object -FilterScript {$_.Status -ne "running"}
+	[array]$notRunning = $Services | Where-Object -FilterScript {$_.Status -ne "running"}
 	$Script:DefenderServices = $notRunning.Count -eq 0
 
 	# Specifies whether Antispyware protection is enabled
