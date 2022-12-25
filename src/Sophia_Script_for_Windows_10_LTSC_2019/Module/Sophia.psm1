@@ -68,10 +68,9 @@ function Checks
 	{
 		$true
 		{
-			# Check whether the OS minor build version is 3406 minimum
+			# Check whether the OS minor build version is 3770 minimum
 			# https://docs.microsoft.com/en-us/windows/release-health/release-information
-			# https://support.microsoft.com/en-us/topic/windows-10-and-windows-server-2019-update-history-725fc2e1-4443-6831-a5ca-51ff5cbcb059
-			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 3406)
+			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 3770)
 			{
 				$Version = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
 				Write-Warning -Message ($Localization.UpdateWarning -f $Version)
@@ -150,11 +149,21 @@ function Checks
 		exit
 	}
 
-	# Check whether the OS was destroyed by Sycnex's Windows10Debloater script
+	# Check whether Windows was destroyed by Windows10Debloater
 	# https://github.com/Sycnex/Windows10Debloater
 	if (Test-Path -Path $env:SystemDrive\Temp\Windows10Debloater)
 	{
-		Write-Warning -Message $Localization.Windows10DebloaterWarning
+		Write-Warning -Message $Localization.SycnexWarning
+		Start-Process -FilePath "https://t.me/sophia_chat"
+		exit
+	}
+
+	# Check whether Windows was destroyed by Win10BloatRemover
+	# https://github.com/Fs00/Win10BloatRemover
+	if (Test-Path -Path $env:TEMP\.net\Win10BloatRemover)
+	{
+		Write-Warning -Message $Localization.Fs00Warning
+		Start-Process -FilePath "https://t.me/sophia_chat"
 		exit
 	}
 
@@ -280,8 +289,7 @@ function Checks
 		$Localization.WindowsBroken
 		exit
 	}
-	[array]$notRunning = $Services | Where-Object -FilterScript {$_.Status -ne "running"}
-	$Script:DefenderServices = $notRunning.Count -eq 0
+	$Script:DefenderServices = ($Services | Where-Object -FilterScript {$_.Status -ne "running"} | Measure-Object).Count -lt $Services.Count
 
 	# Specifies whether Antispyware protection is enabled
 	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).AntispywareEnabled)
@@ -3184,6 +3192,68 @@ public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, uint
 		Add-Type @Signature
 	}
 	[WinAPI.SystemParamInfo]::SystemParametersInfo(0x0057, 0, $null, 0)
+}
+
+<#
+	.SYNOPSIS
+	Files and folders grouping
+
+	.PARAMETER None
+	Do not group files and folder
+
+	.PARAMETER Default
+	Group files and folder by date modified (default value)
+
+	.EXAMPLE
+	FolderGroupBy -None
+
+	.EXAMPLE
+	FolderGroupBy -Default
+
+	.NOTES
+	Current user
+#>
+function FolderGroupBy
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "None"
+		)]
+		[switch]
+		$None,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Default"
+		)]
+		[switch]
+		$Default
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"None"
+		{
+			# Clear any Common Dialog views
+			Get-ChildItem -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\Bags\*\Shell" -Recurse | Where-Object -FilterScript {$_.PSChildName -eq "{885A186E-A440-4ADA-812B-DB871B942259}"} | Remove-Item -Force
+
+			if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}"))
+			{
+				New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Force
+			}
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name ColumnList -PropertyType String -Value "prop:0(34)System.ItemNameDisplay;0System.DateModified;0System.ItemTypeText;0System.Size;1System.DateCreated;1System.Author;1System.Category;1System.Keywords;1System.Title" -Force
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name LogicalViewMode -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name Name -PropertyType String -Value NoName -Force
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name Order -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name SortByList -PropertyType String -Value "prop:System.ItemNameDisplay" -Force
+		}
+		"Default"
+		{
+			Remove-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Force -ErrorAction Ignore
+		}
+	}
 }
 #endregion UI & Personalization
 
@@ -7491,10 +7561,10 @@ function InstallVCRedist
 
 <#
 	.SYNOPSIS
-	Install the latest .NET Desktop Runtime 7 (x86/x64)
+	Install the latest .NET Desktop Runtime 6, 7 (x86/x64)
 
 	.EXAMPLE
-	InstallDotNetRuntime7
+	InstallDotNetRuntimes
 
 	.LINK
 	https://dotnet.microsoft.com/en-us/download/dotnet
@@ -7502,7 +7572,7 @@ function InstallVCRedist
 	.NOTES
 	Machine-wide
 #>
-function InstallDotNetRuntime7
+function InstallDotNetRuntimes
 {
 	try
 	{
@@ -7518,43 +7588,98 @@ function InstallDotNetRuntime7
 			return
 		}
 
-		# https://github.com/dotnet/core/blob/main/release-notes/releases-index.json
-		$Parameters = @{
-			Uri             = "https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/7.0/releases.json"
-			UseBasicParsing = $true
+		if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller).Version -ge [System.Version]"1.17")
+		{
+			# .NET Desktop Runtime 6 x86
+			winget install --id=Microsoft.DotNet.DesktopRuntime.6 --architecture x86 --exact --accept-source-agreements
+			# .NET Desktop Runtime 7 x64
+			winget install --id=Microsoft.DotNet.DesktopRuntime.6 --architecture x64 --exact --accept-source-agreements
+
+			# .NET Desktop Runtime 7 x86
+			winget install --id=Microsoft.DotNet.DesktopRuntime.7 --architecture x86 --exact --accept-source-agreements
+			# .NET Desktop Runtime 7 x64
+			winget install --id=Microsoft.DotNet.DesktopRuntime.7 --architecture x64 --exact --accept-source-agreements
 		}
-		$LatestRelease = (Invoke-RestMethod @Parameters)."latest-release"
-		$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+		else
+		{
+			# Install .NET Desktop Runtime 6
+			# https://github.com/dotnet/core/blob/main/release-notes/releases-index.json
+			$Parameters = @{
+				Uri             = "https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/6.0/releases.json"
+				UseBasicParsing = $true
+			}
+			$LatestRelease = (Invoke-RestMethod @Parameters)."latest-release"
+			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 
-		# .NET Desktop Runtime x86
-		$Parameters = @{
-			Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$LatestRelease/dotnet-runtime-$LatestRelease-win-x86.exe"
-			OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe"
-			UseBasicParsing = $true
-			Verbose         = $true
+			# .NET Desktop Runtime 6 x86
+			$Parameters = @{
+				Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$LatestRelease/dotnet-runtime-$LatestRelease-win-x86.exe"
+				OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe"
+				UseBasicParsing = $true
+				Verbose         = $true
+			}
+			Invoke-WebRequest @Parameters
+
+			Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe" -ArgumentList "/install /passive /norestart" -Wait
+
+			# .NET Desktop Runtime 6 x64
+			$Parameters = @{
+				Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$LatestRelease/dotnet-runtime-$LatestRelease-win-x64.exe"
+				OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe"
+				UseBasicParsing = $true
+				Verbose         = $true
+			}
+			Invoke-WebRequest @Parameters
+
+			Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
+
+			# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+			$Paths = @(
+				"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe",
+				"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe",
+				"$env:TEMP\Microsoft_.NET_Runtime*.log"
+			)
+			Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
+
+			# .NET Desktop Runtime 7
+			# https://github.com/dotnet/core/blob/main/release-notes/releases-index.json
+			$Parameters = @{
+				Uri             = "https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/7.0/releases.json"
+				UseBasicParsing = $true
+			}
+			$LatestRelease = (Invoke-RestMethod @Parameters)."latest-release"
+			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+
+			# .NET Desktop Runtime 7 x86
+			$Parameters = @{
+				Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$LatestRelease/dotnet-runtime-$LatestRelease-win-x86.exe"
+				OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe"
+				UseBasicParsing = $true
+				Verbose         = $true
+			}
+			Invoke-WebRequest @Parameters
+
+			Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe" -ArgumentList "/install /passive /norestart" -Wait
+
+			# .NET Desktop Runtime 7 x64
+			$Parameters = @{
+				Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$LatestRelease/dotnet-runtime-$LatestRelease-win-x64.exe"
+				OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe"
+				UseBasicParsing = $true
+				Verbose         = $true
+			}
+			Invoke-WebRequest @Parameters
+
+			Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
+
+			# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+			$Paths = @(
+				"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe",
+				"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe",
+				"$env:TEMP\Microsoft_.NET_Runtime*.log"
+			)
+			Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 		}
-		Invoke-WebRequest @Parameters
-
-		Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe" -ArgumentList "/install /passive /norestart" -Wait
-
-		# .NET Desktop Runtime x64
-		$Parameters = @{
-			Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$LatestRelease/dotnet-runtime-$LatestRelease-win-x64.exe"
-			OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe"
-			UseBasicParsing = $true
-			Verbose         = $true
-		}
-		Invoke-WebRequest @Parameters
-
-		Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
-
-		# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
-		$Paths = @(
-			"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe",
-			"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe",
-			"$env:TEMP\Microsoft_Windows_Desktop_Runtime*.log"
-		)
-		Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 	}
 	catch [System.Net.WebException]
 	{

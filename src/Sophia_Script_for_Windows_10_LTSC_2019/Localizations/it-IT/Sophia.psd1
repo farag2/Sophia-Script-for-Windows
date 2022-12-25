@@ -1,13 +1,14 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Lo script supporta solo Windows 10 x64
 UnsupportedOSBuild                        = Lo script supporta Windows 10 Enterprise LTSC 2019
-UpdateWarning                             = Windows 10 cumulative update installato: {0}. È necessario l'aggiornamento cumulativo 3046 o superiori
+UpdateWarning                             = Windows 10 cumulative update installato: {0}. È necessario l'aggiornamento cumulativo 3770 o superiori
 UnsupportedLanguageMode                   = La sessione PowerShell è in esecuzione in modalità lingua limitata
 LoggedInUserNotAdmin                      = L'utente in suo non ha i diritti di amministratore
 UnsupportedPowerShell                     = Stai cercando di eseguire lo script tramite PowerShell {0}.{1}. Esegui lo script nella versione di PowerShell appropriata
 UnsupportedISE                            = Lo script non supporta l'esecuzione tramite Windows PowerShell ISE
 Win10TweakerWarning                       = Probabilmente il tuo sistema operativo è stato infettato tramite una backdoor in Win 10 Tweaker
-Windows10DebloaterWarning                 = La stabilità del sistema operativo Windows potrebbe essere stata compromessa dall'utilizzo dello script PowerShell Windows10Debloater di Sycnex. È consigliato reinstallare il sistema operativo
+SycnexWarning                             = La stabilità del sistema operativo Windows potrebbe essere stata compromessa dall'utilizzo dello script PowerShell Windows10Debloater di Sycnex. È consigliato reinstallare il Windows
+Fs00Warning                               = La stabilità del sistema operativo Windows potrebbe essere stata compromessa dall'utilizzo dello "Windows 10 Bloat Remover and Tweaker". È consigliato reinstallare il Windows
 bin                                       = Non ci sono file nella cartella bin. Per favore, scarica di nuovo l'archivio
 RebootPending                             = Il PC è in attesa di essere riavviato
 UnsupportedRelease                        = Nuova versione trovata

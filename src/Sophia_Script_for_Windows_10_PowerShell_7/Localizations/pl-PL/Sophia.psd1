@@ -1,13 +1,14 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Skrypt obsługuje tylko system Windows 10 x64
 UnsupportedOSBuild                        = Skrypt obsługuje system Windows 10 21H2/22H2+
-UpdateWarning                             = Zainstalowano zbiorczą aktualizację systemu Windows 10: {0}. Obsługiwane aktualizacje zbiorcze: 2006 i nowsze
+UpdateWarning                             = Zainstalowano zbiorczą aktualizację systemu Windows 10: {0}. Obsługiwane aktualizacje zbiorcze: 2364 i nowsze
 UnsupportedLanguageMode                   = Sesja PowerShell działa w trybie ograniczonego języka
 LoggedInUserNotAdmin                      = Zalogowany użytkownik nie posiada uprawnień administratora
 UnsupportedPowerShell                     = Próbujesz uruchomić skrypt przy użyciu PowerShell {0}.{1}. Uruchom skrypt używając odpowiedniej wersji PowerShell
 UnsupportedISE                            = Skrypt nie może być uruchamiany w Windows PowerShell ISE
 Win10TweakerWarning                       = Prawdopodobnie twój system operacyjny został zainfekowany przez backdoora pochodzącego z Win 10 Tweaker
-Windows10DebloaterWarning                 = Stabilność systemu Windows mogła zostać naruszona przez użycie skryptu Windows10Debloater od Sycnex. Zapobiegawczo zainstaluj ponownie system operacyjny
+SycnexWarning                             = Stabilność systemu Windows mogła zostać naruszona przez użycie skryptu Windows10Debloater od Sycnex. Zapobiegawczo zainstaluj ponownie Windows
+Fs00Warning                               = Stabilność systemu Windows mogła zostać naruszona przez użycie "Windows 10 Bloat Remover and Tweaker". Zapobiegawczo zainstaluj ponownie Windows
 bin                                       = W folderze bin nie ma żadnych plików. Proszę pobrać archiwum ponownie
 RebootPending                             = Komputer oczekuje na ponowne uruchomienie
 UnsupportedRelease                        = Znaleziono nową wersję

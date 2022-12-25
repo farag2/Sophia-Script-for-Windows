@@ -1,13 +1,14 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = The script supports Windows 10 x64 only
 UnsupportedOSBuild                        = The script supports Windows 10 Enterprise LTSC 2021
-UpdateWarning                             = Windows 10 cumulative update installed: {0}. Supported cumulative update: 2006 and higher
+UpdateWarning                             = Windows 10 cumulative update installed: {0}. Supported cumulative update: 2364 and higher
 UnsupportedLanguageMode                   = The PowerShell session in running in a limited language mode
 LoggedInUserNotAdmin                      = The logged-on user doesn't have admin rights
 UnsupportedPowerShell                     = You're trying to run script via PowerShell {0}.{1}. Run the script in the appropriate PowerShell version
 UnsupportedISE                            = The script doesn't support running via Windows PowerShell ISE
 Win10TweakerWarning                       = Probably your OS was infected via the Win 10 Tweaker backdoor
-Windows10DebloaterWarning                 = The Windows stability may have been compromised by using Sycnex's Windows10Debloater PowerShell script. Preventively, reinstall the entire OS
+SycnexWarning                             = The Windows stability may have been compromised by using Windows10Debloater script. Preventively, reinstall Windows
+Fs00Warning                               = The Windows stability may have been compromised by using "Windows 10 Bloat Remover and Tweaker". Preventively, reinstall Windows
 bin                                       = There are no files in the bin folder. Please, re-download the archive
 RebootPending                             = The PC is waiting to be restarted
 UnsupportedRelease                        = A new version found

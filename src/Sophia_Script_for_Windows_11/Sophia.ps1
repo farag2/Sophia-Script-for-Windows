@@ -27,7 +27,7 @@
 	.NOTES
 	Supported Windows 11 versions
 	Versions: 21H2/22H2
-	Builds: 22000.739+, 22621+
+	Builds: 22000.1335+, 22621+
 	Editions: Home/Pro/Enterprise
 
 	.NOTES
@@ -506,6 +506,14 @@ Cursors -Dark
 # Set default cursors (default value)
 # Установить курсоры по умолчанию (значение по умолчанию)
 # Cursors -Default
+
+# Do not group files and folder
+# Не группировать файлы и папки
+# FolderGroupBy -None
+
+# Group files and folder by date modified (default value)
+# Группировать файлы и папки по дате изменения (значение по умолчанию)
+# FolderGroupBy -Default
 #endregion UI & Personalization
 
 #region OneDrive
@@ -899,7 +907,7 @@ InstallVCRedist
 
 	https://dotnet.microsoft.com/en-us/download/dotnet
 #>
-InstallDotNetRuntime7
+InstallDotNetRuntimes
 
 # Enable proxying only blocked sites from the unified registry of Roskomnadzor. The function is applicable for Russia only
 # Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора. Функция применима только для России

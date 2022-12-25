@@ -1,13 +1,14 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = 该脚本仅支持Windows 10 x64
 UnsupportedOSBuild                        = 该脚本支持Windows 10版本21H2/22H2+和更高版本
-UpdateWarning                             = 安装了Windows 10累积更新：{0}. 支持的累积更新：2006及以上
+UpdateWarning                             = 安装了Windows 10累积更新：{0}. 支持的累积更新：2364及以上
 UnsupportedLanguageMode                   = PowerShell会话在有限的语言模式下运行
 LoggedInUserNotAdmin                      = 登录的用户没有管理员的权利
 UnsupportedPowerShell                     = 你想通过PowerShell {0}.{1}运行脚本。在适当的PowerShell版本中运行该脚本
 UnsupportedISE                            = 该脚本不支持通过Windows PowerShell ISE运行
 Win10TweakerWarning                       = 可能你的操作系统是通过“Win 10 Tweaker”后门感染的
-Windows10DebloaterWarning                 = 使用Sycnex的Windows10Debloater PowerShell脚本，Windows操作系统的稳定性可能已经受到影响。预防性地，重新安装整个操作系统
+SycnexWarning                             = 使用Sycnex的Windows10Debloater PowerShell脚本，Windows操作系统的稳定性可能已经受到影响。预防性地，重新安装整个操作系统
+Fs00Warning                               = 使用“Windows 10 Bloat Remover and Tweaker”可能会影响 Windows 稳定性。 预防性地，重新安装 Windows
 bin                                       = bin文件夹中没有文件。请重新下载该档案
 RebootPending                             = 计算机正在等待重新启动
 UnsupportedRelease                        = 找到新版本

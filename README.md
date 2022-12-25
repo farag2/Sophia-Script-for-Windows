@@ -87,9 +87,11 @@
  <a href="https://github.com/farag2/Sophia-Script-for-Windows/blob/master/CHANGELOG.md">Changelog</a>
 </p>
 
-## About
+## About Sophia Script
 
-Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Windows 10` & `Windows 11` fine-tuning and automating the routine tasks
+![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Fira+Code&size30&pause=1000&width=435&lines=Made+with+%E2%9D%A4%EF%B8%8F+of+Windows%C2%AE)
+
+> **Note**: Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Windows 10` & `Windows 11` fine-tuning and automating the routine tasks. It offers more than 150 unique tweaks, and shows how Windows can be configured without making any harm to it.
 
 ## Before running
 
@@ -117,41 +119,10 @@ Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Wind
 | Windows 10 21H2 Enterprise LTSC 2021 | October 2021 Update | 19044.1706+ | x64  | Enterprise          |
 | Windows 10 1809 Enterprise LTSC 2019 | October 2018 Update | 17763.3046+ | x64  | Enterprise          |
 
-## Screenshots
+### Warning
 
-### The <kbd>TAB</kbd> autocomplete. Read more [here](#how-to-run-the-specific-functions)
-
-![Image](./img/Autocomplete.gif)
-
-### Change user folders location programmatically using the interactive menu
-
-![Image](https://i.imgur.com/gJFAEOk.png)
-
-### Localized UWP packages names
-
-![Image](https://i.imgur.com/xeiBbes.png) ![Image](https://i.imgur.com/0zj0h2S.png)
-
-### Localized Windows features names
-
-![Image](https://i.imgur.com/xlMR2mz.png) ![Image](https://i.imgur.com/yl9j9Vt.png)
-
-### Download and install any supported Linux distribution in automatic mode
-
-![Image](https://i.imgur.com/j2KLZm0.png)
-
-### Native interactive toasts for the scheduled tasks
-
-![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/master/img/Toasts.png)
-
-### @BenchTweakGaming Sophia Script Wrapper
-
-![Wrapper](https://i.imgur.com/x0W7zqm.png)
-
-## Videos
-
-[![YT](https://img.youtube.com/vi/q_weQifFM58/0.jpg)](https://www.youtube.com/watch?v=q_weQifFM58)
-
-[![YT](https://img.youtube.com/vi/8E6OT_QcHaU/1.jpg)](https://youtu.be/8E6OT_QcHaU?t=370) [![YT](https://img.youtube.com/vi/091SOihvx0k/1.jpg)](https://youtu.be/091SOihvx0k?t=490)
+* It's allowed to be logged in as one admin user only during application startup.
+* 🔥🔥🔥`Sophia Script for Windows` may not work on a homebrew Windows. Especially, if the homebrew image was created by OS makers being all thumbs who break Microsoft Defender and disable OS telemetry by purposely uprooting system components
 
 ## Key features
 
@@ -194,6 +165,42 @@ Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Wind
 * Refresh desktop icons, environment variables and taskbar without restarting File Explorer;
 * Configure the Windows security;
 * Many more File Explorer and context menu "deep" tweaks.
+
+## Screenshots
+
+### The <kbd>TAB</kbd> autocomplete. Read more [here](#how-to-run-the-specific-functions)
+
+![Image](./img/Autocomplete.gif)
+
+### Change user folders location programmatically using the interactive menu
+
+![Image](https://i.imgur.com/gJFAEOk.png)
+
+### Localized UWP packages names
+
+![Image](https://i.imgur.com/xeiBbes.png) ![Image](https://i.imgur.com/0zj0h2S.png)
+
+### Localized Windows features names
+
+![Image](https://i.imgur.com/xlMR2mz.png) ![Image](https://i.imgur.com/yl9j9Vt.png)
+
+### Download and install any supported Linux distribution in automatic mode
+
+![Image](https://i.imgur.com/j2KLZm0.png)
+
+### Native interactive toasts for the scheduled tasks
+
+![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/master/img/Toasts.png)
+
+### @BenchTweakGaming Sophia Script Wrapper
+
+![Wrapper](https://i.imgur.com/x0W7zqm.png)
+
+## Videos
+
+[![YT](https://img.youtube.com/vi/q_weQifFM58/0.jpg)](https://www.youtube.com/watch?v=q_weQifFM58)
+
+[![YT](https://img.youtube.com/vi/8E6OT_QcHaU/1.jpg)](https://youtu.be/8E6OT_QcHaU?t=370) [![YT](https://img.youtube.com/vi/091SOihvx0k/1.jpg)](https://youtu.be/091SOihvx0k?t=490)
 
 ## How to use
 

@@ -27,7 +27,7 @@
 	.NOTES
 	Supported Windows 10 version
 	Version: 21H2
-	Build: 19044.2006+
+	Build: 19044.2364+
 	Edition: Enterprise LTSC 2021
 	Architecture: x64
 
@@ -862,7 +862,7 @@ InstallVCRedist
 
 	https://dotnet.microsoft.com/en-us/download/dotnet
 #>
-InstallDotNetRuntime7
+InstallDotNetRuntimes
 
 # Enable proxying only blocked sites from the unified registry of Roskomnadzor. The function is applicable for Russia only
 # Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора. Функция применима только для России

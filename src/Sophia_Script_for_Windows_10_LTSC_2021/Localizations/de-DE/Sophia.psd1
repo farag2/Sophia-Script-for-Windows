@@ -1,13 +1,14 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Das Skript unterstützt nur Windows 10 x64
 UnsupportedOSBuild                        = Das Skript unterstützt Windows 10 Enterprise LTSC 2021
-UpdateWarning                             = Das kumulative Windows 10-Update wurde installiert: {0}. Unterstütztes kumulatives Update: 2006 und höher
+UpdateWarning                             = Das kumulative Windows 10-Update wurde installiert: {0}. Unterstütztes kumulatives Update: 2364 und höher
 UnsupportedLanguageMode                   = Die PowerShell-Sitzung wird in einem eingeschränkten Sprachmodus ausgeführt
 LoggedInUserNotAdmin                      = Der angemeldete Benutzer hat keine Administratorrechte
 UnsupportedPowerShell                     = Sie versuchen ein Skript über PowerShell {0}.{1} auszuführen. Das Skript in der entsprechenden PowerShell-Version ausführen
 UnsupportedISE                            = Das Skript unterstützt nicht die Ausführung über Windows PowerShell ISE
 Win10TweakerWarning                       = Wahrscheinlich wurde Ihr Betriebssystem über die Win 10 Tweaker-Hintertür infiziert
-Windows10DebloaterWarning                 = Die Stabilität des Windows-Betriebssystems kann durch die Verwendung des Windows10Debloater PowerShell-Skripts von Sycnex beeinträchtigt worden sein. Installieren Sie vorsorglich das gesamte Betriebssystem neu
+SycnexWarning                             = Die Stabilität des Windows-Betriebssystems kann durch die Verwendung des Windows10Debloater-Skripts beeinträchtigt worden sein. Installieren Sie Windows zur Vorbeugung neu.
+Fs00Warning                               = Die Stabilität des Windows-Betriebssystems kann durch die Verwendung des "Windows 10 Bloat Remover and Tweaker" beeinträchtigt worden sein. Installieren Sie Windows zur Vorbeugung neu.
 bin                                       = Im Ordner "bin" befinden sich keine Dateien. Bitte das Archiv erneut herunterladen
 RebootPending                             = Der PC wartet darauf, neu gestartet zu werden
 UnsupportedRelease                        = Neue Version gefunden

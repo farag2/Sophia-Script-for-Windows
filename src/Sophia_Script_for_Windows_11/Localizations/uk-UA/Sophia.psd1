@@ -1,12 +1,13 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = Скрипт підтримує тільки Windows 11 21H2 та вище
-UpdateWarning                             = Ваш білд Windows 11: {0}.{1}. Підтримувані збірки: 22000.739, 22621 та вище
+UpdateWarning                             = Ваш білд Windows 11: {0}.{1}. Підтримувані збірки: 22000.1335, 22621 та вище
 UnsupportedLanguageMode                   = Сесія PowerShell працює в обмеженому режимі
 LoggedInUserNotAdmin                      = Поточний користувач, що увійшов, не має прав адміністратора
 UnsupportedPowerShell                     = Ви намагаєтеся запустити скрипт в PowerShell {0}.{1}. Запустіть скрипт у відповідній версії PowerShell
 UnsupportedISE                            = Скрипт не підтримує роботу через Windows PowerShell ISE
 Win10TweakerWarning                       = Ваша ОС, можливо, через бекдор в Win 10 Tweaker інфікована трояном. Детальніше: https://itnan.ru/post.php?c=1&p=557388
-Windows10DebloaterWarning                 = Стабільність вашої ОС могла бути порушена використанням скрипту Windows10Debloater від Sycnex. З метою профілактики перевстановіть ОС
+SycnexWarning                             = Стабільність вашої ОС могла бути порушена використанням скрипту Windows10Debloater від Sycnex. З метою профілактики перевстановіть Windows
+Fs00Warning                               = Стабільність вашої ОС могла бути порушена використанням "Windows 10 Bloat Remover and Tweaker". З метою профілактики перевстановіть Windows
 bin                                       = У папці bin відсутні файли. Будь ласка, повторно завантажте архів
 RebootPending                             = Комп'ютер очікує на перезавантаження
 UnsupportedRelease                        = Виявлено нову версію

@@ -13,7 +13,7 @@
 	.NOTES
 	Supported Windows 10 versions
 	Versions: 21H2/22H2+
-	Builds: 19044.2006+
+	Builds: 19044.2364+
 	Editions: Home/Pro/Enterprise
 	Architecture: x64
 
@@ -68,11 +68,10 @@ function Checks
 	{
 		{($_ -ge 19044) -and ($_ -le 19048)}
 		{
-			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 2006)
+			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 2364)
 			{
-				# Check whether the OS minor build version is 2006 minimum
+				# Check whether the OS minor build version is 2364 minimum
 				# https://docs.microsoft.com/en-us/windows/release-health/release-information
-				# https://support.microsoft.com/en-us/topic/september-13-2022-kb5017308-os-builds-19042-2006-19043-2006-and-19044-2006-e4ea187e-28e8-4d4b-808b-2794babdce4c
 				$Version = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
 				Write-Warning -Message ($Localization.UpdateWarning -f $Version)
 
@@ -153,11 +152,21 @@ function Checks
 		exit
 	}
 
-	# Check whether the OS was destroyed by Sycnex's Windows10Debloater script
+	# Check whether Windows was destroyed by Windows10Debloater
 	# https://github.com/Sycnex/Windows10Debloater
 	if (Test-Path -Path $env:SystemDrive\Temp\Windows10Debloater)
 	{
-		Write-Warning -Message $Localization.Windows10DebloaterWarning
+		Write-Warning -Message $Localization.SycnexWarning
+		Start-Process -FilePath "https://t.me/sophia_chat"
+		exit
+	}
+
+	# Check whether Windows was destroyed by Win10BloatRemover
+	# https://github.com/Fs00/Win10BloatRemover
+	if (Test-Path -Path $env:TEMP\.net\Win10BloatRemover)
+	{
+		Write-Warning -Message $Localization.Fs00Warning
+		Start-Process -FilePath "https://t.me/sophia_chat"
 		exit
 	}
 
@@ -298,8 +307,7 @@ function Checks
 		$Localization.WindowsBroken
 		exit
 	}
-	[array]$notRunning = $Services | Where-Object -FilterScript {$_.Status -ne "running"}
-	$Script:DefenderServices = $notRunning.Count -eq 0
+	$Script:DefenderServices = ($Services | Where-Object -FilterScript {$_.Status -ne "running"} | Measure-Object).Count -lt $Services.Count
 
 	# Specifies whether Antispyware protection is enabled
 	if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name EditionID) -ne "EnterpriseG")
@@ -9118,10 +9126,10 @@ function InstallVCRedist
 
 <#
 	.SYNOPSIS
-	Install the latest .NET Desktop Runtime 7 (x86/x64)
+	Install the latest .NET Desktop Runtime 6, 7 (x86/x64)
 
 	.EXAMPLE
-	InstallDotNetRuntime7
+	InstallDotNetRuntimes
 
 	.LINK
 	https://dotnet.microsoft.com/en-us/download/dotnet
@@ -9129,7 +9137,7 @@ function InstallVCRedist
 	.NOTES
 	Machine-wide
 #>
-function InstallDotNetRuntime7
+function InstallDotNetRuntimes
 {
 	try
 	{
@@ -9147,22 +9155,28 @@ function InstallDotNetRuntime7
 
 		if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller).Version -ge [System.Version]"1.17")
 		{
-			# .NET Desktop Runtime x86
+			# .NET Desktop Runtime 6 x86
+			winget install --id=Microsoft.DotNet.DesktopRuntime.6 --architecture x86 --exact --accept-source-agreements
+			# .NET Desktop Runtime 7 x64
+			winget install --id=Microsoft.DotNet.DesktopRuntime.6 --architecture x64 --exact --accept-source-agreements
+
+			# .NET Desktop Runtime 7 x86
 			winget install --id=Microsoft.DotNet.DesktopRuntime.7 --architecture x86 --exact --accept-source-agreements
-			# .NET Desktop Runtime x64
+			# .NET Desktop Runtime 7 x64
 			winget install --id=Microsoft.DotNet.DesktopRuntime.7 --architecture x64 --exact --accept-source-agreements
 		}
 		else
 		{
+			# Install .NET Desktop Runtime 6
 			# https://github.com/dotnet/core/blob/main/release-notes/releases-index.json
 			$Parameters = @{
-				Uri             = "https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/7.0/releases.json"
+				Uri             = "https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/6.0/releases.json"
 				UseBasicParsing = $true
 			}
 			$LatestRelease = (Invoke-RestMethod @Parameters)."latest-release"
 			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 
-			# .NET Desktop Runtime x86
+			# .NET Desktop Runtime 6 x86
 			$Parameters = @{
 				Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$LatestRelease/dotnet-runtime-$LatestRelease-win-x86.exe"
 				OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe"
@@ -9173,7 +9187,7 @@ function InstallDotNetRuntime7
 
 			Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe" -ArgumentList "/install /passive /norestart" -Wait
 
-			# .NET Desktop Runtime x64
+			# .NET Desktop Runtime 6 x64
 			$Parameters = @{
 				Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$LatestRelease/dotnet-runtime-$LatestRelease-win-x64.exe"
 				OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe"
@@ -9188,7 +9202,46 @@ function InstallDotNetRuntime7
 			$Paths = @(
 				"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe",
 				"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe",
-				"$env:TEMP\Microsoft_Windows_Desktop_Runtime*.log"
+				"$env:TEMP\Microsoft_.NET_Runtime*.log"
+			)
+			Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
+
+			# .NET Desktop Runtime 7
+			# https://github.com/dotnet/core/blob/main/release-notes/releases-index.json
+			$Parameters = @{
+				Uri             = "https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/7.0/releases.json"
+				UseBasicParsing = $true
+			}
+			$LatestRelease = (Invoke-RestMethod @Parameters)."latest-release"
+			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+
+			# .NET Desktop Runtime 7 x86
+			$Parameters = @{
+				Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$LatestRelease/dotnet-runtime-$LatestRelease-win-x86.exe"
+				OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe"
+				UseBasicParsing = $true
+				Verbose         = $true
+			}
+			Invoke-WebRequest @Parameters
+
+			Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe" -ArgumentList "/install /passive /norestart" -Wait
+
+			# .NET Desktop Runtime 7 x64
+			$Parameters = @{
+				Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$LatestRelease/dotnet-runtime-$LatestRelease-win-x64.exe"
+				OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe"
+				UseBasicParsing = $true
+				Verbose         = $true
+			}
+			Invoke-WebRequest @Parameters
+
+			Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
+
+			# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+			$Paths = @(
+				"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe",
+				"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe",
+				"$env:TEMP\Microsoft_.NET_Runtime*.log"
 			)
 			Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 		}

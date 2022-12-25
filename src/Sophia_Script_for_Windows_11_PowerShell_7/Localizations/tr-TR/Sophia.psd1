@@ -1,12 +1,13 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = Bu betik sadece Windows 11 21H2 sürüm ve üstünü destekliyor
-UpdateWarning                             = Windows 11 yapınız: {0}.{1}. Desteklenen yapılar: 22000.739, 22621 ve üstünü destekliyor
+UpdateWarning                             = Windows 11 yapınız: {0}.{1}. Desteklenen yapılar: 22000.1335, 22621 ve üstünü destekliyor
 UnsupportedLanguageMode                   = Sınırlı bir dil modunda çalışan PowerShell oturumu
 LoggedInUserNotAdmin                      = Oturum açan kullanıcının yönetici hakları yok
 UnsupportedPowerShell                     = Komut dosyasını PowerShell {0}.{1} aracılığıyla çalıştırmaya çalışıyorsunuz. Komut dosyasını uygun PowerShell sürümünde çalıştırın
 UnsupportedISE                            = Komut dosyası, Windows PowerShell ISE üzerinden çalıştırmayı desteklemiyor
 Win10TweakerWarning                       = Muhtemelen işletim sisteminize Win 10 Tweaker arka kapısı yoluyla bulaştı
-Windows10DebloaterWarning                 = Windows işletim sistemi kararlılığı, Sycnex'in Windows10Debloater PowerShell betiği kullanılarak tehlikeye atılmış olabilir. Önleyici olarak, tüm işletim sistemini yeniden yükleyin
+SycnexWarning                             = Windows işletim sistemi kararlılığı, Sycnex'in Windows10Debloater PowerShell betiği kullanılarak tehlikeye atılmış olabilir. Önleyici olarak, Windows'u yeniden yükleyin
+Fs00Warning                               = Windows işletim sistemi kararlılığı, "Windows 10 Bloat Remover and Tweaker" betiği kullanılarak tehlikeye atılmış olabilir. Önleyici olarak, Windows'u yeniden yükleyin
 bin                                       = bin klasöründe dosya yok. Lütfen arşivi yeniden indirin
 RebootPending                             = PC yeniden başlatılmayı bekliyor
 UnsupportedRelease                        = Yeni sürüm bulundu

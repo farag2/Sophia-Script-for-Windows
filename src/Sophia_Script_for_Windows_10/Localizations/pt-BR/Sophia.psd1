@@ -1,13 +1,14 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = O script suporta somente Windows 10 x64
 UnsupportedOSBuild                        = O script suporta versões Windows 10 21H2/22H2+
-UpdateWarning                             = Atualização cumulativa do Windows 10 instalado: {0}. Actualização acumulada suportada: 2006 e superior
+UpdateWarning                             = Atualização cumulativa do Windows 10 instalado: {0}. Actualização acumulada suportada: 2364 e superior
 UnsupportedLanguageMode                   = A sessão PowerShell em funcionamento em um modo de linguagem limitada
 LoggedInUserNotAdmin                      = O usuário logado não tem direitos de administrador
 UnsupportedPowerShell                     = Você está tentando executar o script via PowerShell {0}.{1}. Execute o script na versão apropriada do PowerShell
 UnsupportedISE                            = O guião não suporta a execução através do Windows PowerShell ISE
 Win10TweakerWarning                       = Probabilmente il tuo sistema operativo è stato infettato tramite la backdoor Win 10 Tweaker
-Windows10DebloaterWarning                 = A estabilidade do sistema operacional Windows pode ter sido comprometida pela utilização do script Windows10Debloater PowerShell da Sycnex. Preventivamente, reinstale todo o sistema operacional
+SycnexWarning                             = A estabilidade do sistema operacional Windows pode ter sido comprometida pela utilização do script Windows10Debloater PowerShell da Sycnex. Preventivamente, reinstale todo o Windows
+Fs00Warning                               = A estabilidade do sistema operacional Windows pode ter sido comprometida pela utilização do "Windows 10 Bloat Remover and Tweaker". Preventivamente, reinstale todo o Windows
 bin                                       = Não existem ficheiros na pasta bin. Por favor, volte a descarregar o arquivo
 RebootPending                             = O PC está esperando para ser reiniciado
 UnsupportedRelease                        = Nova versão encontrada
@@ -59,7 +60,7 @@ EXEFilesFilter                            = *.exe|*.exe| Todos os arquivos (*.*)
 FolderSelect                              = Escolha uma pasta
 FilesWontBeMoved                          = Os arquivos não serão transferidos
 Install                                   = Instalar
-NoData        	                          = Nada à exibir
+NoData                                    = Nada à exibir
 NoInternetConnection                      = Sem conexão à Internet
 RestartFunction                           = Favor reiniciar a função "{0}"
 NoResponse                                = Uma conexão não pôde ser estabelecida com {0}
