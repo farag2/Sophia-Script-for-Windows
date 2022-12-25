@@ -2,7 +2,7 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10 LTSC 2021"
 
-	Version: v5.14.5
+	Version: v5.14.6
 	Date: 04.12.2022
 
 	Copyright (c) 2014—2023 farag
@@ -70,7 +70,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC 2021 v5.14.5 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2023"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC 2021 v5.14.6 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2023"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -494,6 +494,14 @@ Cursors -Dark
 # Set default cursors (default value)
 # Установить курсоры по умолчанию (значение по умолчанию)
 # Cursors -Default
+
+# Do not group files and folder
+# Не группировать файлы и папки
+# FolderGroupBy -None
+
+# Group files and folder by date modified (default value)
+# Группировать файлы и папки по дате изменения (значение по умолчанию)
+# FolderGroupBy -Default
 #endregion UI & Personalization
 
 #region System
