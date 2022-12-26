@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.14.6 | 6.2.6 — 26.12.2022
+
+* Improved Defender startup checks;
+  * Thanks to @alan-null.
+* Improved `UninstallPCHealthCheck` function to ininstall the "PC Health Check" app (Windows 10 only);
+  * Thanks to @alan-null.
+* Renamed `InstallDotNetRuntime7` into `InstallDotNetRuntimes` to let users install .NET Desktop Runtime 6 along side with the 7th version;
+* Added `FolderGroupBy` function to let users do not group files and folder in the File Explorer;
+* Minor changes.
+
+* With best wishes for a happy New Year from `Sophia Team` ![img](https://forum.ru-board.com/board/s/deds.gif)
+
 ## 5.14.5 | 6.2.5 — 11.12.2022
 
 * Switched .NET Desktop Runtime 6 to the 7th version;
