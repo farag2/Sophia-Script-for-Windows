@@ -62,7 +62,7 @@ function Checks
 		{
 			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 1335)
 			{
-				# Check whether the OS minor build version is 1335 minimum
+				# Check whether the OS minor build version is 963 minimum
 				# https://docs.microsoft.com/en-us/windows/release-health/windows11-release-information
 				$Version = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion"
 				Write-Warning -Message ($Localization.UpdateWarning -f $Version.CurrentBuild, $Version.UBR)
@@ -90,9 +90,9 @@ function Checks
 		}
 		{$_ -ge 22621}
 		{
-			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 1335)
+			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 963)
 			{
-				# Check whether the OS minor build version is 1335 minimum
+				# Check whether the OS minor build version is 963 minimum
 				# https://docs.microsoft.com/en-us/windows/release-health/windows11-release-information
 				$Version = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion"
 				Write-Warning -Message ($Localization.UpdateWarning -f $Version.CurrentBuild, $Version.UBR)
