@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Improved Defender startup checks;
   * Thanks to @alan-null.
-* Improved `UninstallPCHealthCheck` function to ininstall the "PC Health Check" app (Windows 10 only);
+* Improved `UninstallPCHealthCheck` function to install the "PC Health Check" app (Windows 10 only);
   * Thanks to @alan-null.
 * Renamed `InstallDotNetRuntime7` into `InstallDotNetRuntimes` to let users install .NET Desktop Runtime 6 along side with the 7th version;
 * Added `FolderGroupBy` function to let users do not group files and folder in the File Explorer;
