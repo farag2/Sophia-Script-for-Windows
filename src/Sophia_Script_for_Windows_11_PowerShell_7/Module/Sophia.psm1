@@ -487,6 +487,8 @@ function Checks
 				Start-Sleep -Seconds 5
 
 				Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows#how-to-use"
+				Start-Process -FilePath "https://t.me/sophia_chat"
+
 				exit
 			}
 			"1"

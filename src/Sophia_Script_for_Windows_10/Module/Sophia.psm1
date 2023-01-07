@@ -275,7 +275,6 @@ function Checks
 		}
 	}
 
-
 	# Checking services
 	try
 	{
@@ -317,7 +316,7 @@ function Checks
 		$Script:DefenderproductState = $false
 	}
 
-	# Specifies whether Antispyware protection is enabled
+	# Specify whether Antispyware protection is enabled
 	if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name EditionID) -ne "EnterpriseG")
 	{
 		if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).AntispywareEnabled)

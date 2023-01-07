@@ -69,10 +69,10 @@ function Checks
 	{
 		$true
 		{
-			# Check whether the OS minor build version is 3770 minimum
-			# https://docs.microsoft.com/en-us/windows/release-health/release-information
 			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 3770)
 			{
+				# Check whether the OS minor build version is 3770 minimum
+				# https://docs.microsoft.com/en-us/windows/release-health/release-information
 				$Version = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
 				Write-Warning -Message ($Localization.UpdateWarning -f $Version)
 
@@ -258,14 +258,9 @@ function Checks
 		# Provider Load Failure exception
 		Write-Warning -Message $Global:Error.Exception.Message | Select-Object -First 1
 		Write-Warning -Message $Localization.WindowsBroken
-		Start-Process -FilePath "https://t.me/sophia_chat"
-		exit
-	}
 
-	if ($null -eq (Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction Ignore))
-	{
-		$Localization.WindowsBroken
 		Start-Process -FilePath "https://t.me/sophia_chat"
+
 		exit
 	}
 
@@ -282,6 +277,13 @@ function Checks
 	}
 	$Script:DefenderServices = ($Services | Where-Object -FilterScript {$_.Status -ne "running"} | Measure-Object).Count -lt $Services.Count
 
+	if ($null -eq (Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction Ignore))
+	{
+		$Localization.WindowsBroken
+		Start-Process -FilePath "https://t.me/sophia_chat"
+		exit
+	}
+
 	# Check Microsoft Defender state
 	$productState = (Get-CimInstance -Namespace root/SecurityCenter2 -ClassName Antivirusproduct | Where-Object -FilterScript {$_.instanceGuid -eq "{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}"}).productState
 	$DefenderState = ('0x{0:x}' -f $productState).Substring(3, 2)
@@ -294,7 +296,7 @@ function Checks
 		$Script:DefenderproductState = $false
 	}
 
-	# Specifies whether Antispyware protection is enabled
+	# Specify whether Antispyware protection is enabled
 	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).AntispywareEnabled)
 	{
 		$Script:DefenderAntispywareEnabled = $true
@@ -10114,6 +10116,7 @@ function UpdateLGPEPolicies
 	{
 		return
 	}
+
 	Get-Partition | Where-Object -FilterScript{$_. DriveLetter -eq "C"} | Get-Disk | Get-PhysicalDisk | ForEach-Object -Process {
 		Write-Verbose -Message ([string]($_.FriendlyName, '|', $_.MediaType, '|', $_.BusType)) -Verbose
 	}

@@ -87,6 +87,9 @@ function Checks
 				Get-CimInstance -Namespace "Root\cimv2\mdm\dmmap" -ClassName "MDM_EnterpriseModernAppManagement_AppManagement01" | Invoke-CimMethod -MethodName UpdateScanMethod
 
 				# Open the "Windows Update" page
+				Start-Process -FilePath "ms-settings:windowsupdate"
+
+				# Check for updates
 				Start-Process -FilePath "ms-settings:windowsupdate-action"
 
 				Start-Sleep -Seconds 1
@@ -272,6 +275,19 @@ function Checks
 		}
 	}
 
+	# Checking services
+	try
+	{
+		$Services = Get-Service -Name Windefend, SecurityHealthService, wscsvc -ErrorAction Stop
+	}
+	catch [Microsoft.PowerShell.Commands.ServiceCommandException]
+	{
+		$Localization.WindowsBroken
+		Start-Process -FilePath "https://t.me/sophia_chat"
+		exit
+	}
+	$Script:DefenderServices = ($Services | Where-Object -FilterScript {$_.Status -ne "running"} | Measure-Object).Count -lt $Services.Count
+
 	# Check Microsoft Defender state
 	# The Enterprise G edition doesn't has a built-in Defender
 	if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name EditionID) -ne "EnterpriseG")
@@ -300,20 +316,7 @@ function Checks
 		$Script:DefenderproductState = $false
 	}
 
-	# Checking services
-	try
-	{
-		$Services = Get-Service -Name Windefend, SecurityHealthService, wscsvc -ErrorAction Stop
-	}
-	catch [Microsoft.PowerShell.Commands.ServiceCommandException]
-	{
-		$Localization.WindowsBroken
-		Start-Process -FilePath "https://t.me/sophia_chat"
-		exit
-	}
-	$Script:DefenderServices = ($Services | Where-Object -FilterScript {$_.Status -ne "running"} | Measure-Object).Count -lt $Services.Count
-
-	# Specifies whether Antispyware protection is enabled
+	# Specify whether Antispyware protection is enabled
 	if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name EditionID) -ne "EnterpriseG")
 	{
 		if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).AntispywareEnabled)

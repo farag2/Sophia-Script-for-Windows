@@ -295,6 +295,7 @@ function Checks
 		exit
 	}
 
+	# Check Microsoft Defender state
 	if ($null -eq (Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction Ignore))
 	{
 		$Localization.WindowsBroken
