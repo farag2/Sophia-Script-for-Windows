@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.4.6
-	Date: 04.12.2022
+	Version: v5.4.7
+	Date: 07.01.2023
 
 	Copyright (c) 2014—2023 farag
 	Copyright (c) 2019—2023 farag & Inestic
@@ -60,6 +60,7 @@ function Checks
 	if (-not [System.Environment]::Is64BitOperatingSystem)
 	{
 		Write-Warning -Message $Localization.UnsupportedOSBitness
+		Start-Process -FilePath "https://t.me/sophia_chat"
 		exit
 	}
 
@@ -261,22 +262,11 @@ function Checks
 		exit
 	}
 
-	# Check Microsoft Defender state
 	if ($null -eq (Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction Ignore))
 	{
 		$Localization.WindowsBroken
+		Start-Process -FilePath "https://t.me/sophia_chat"
 		exit
-	}
-
-	$productState = (Get-CimInstance -Namespace root/SecurityCenter2 -ClassName Antivirusproduct | Where-Object -FilterScript {$_.instanceGuid -eq "{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}"}).productState
-	$DefenderState = ('0x{0:x}' -f $productState).Substring(3, 2)
-	if ($DefenderState -notmatch "00|01")
-	{
-		$Script:DefenderproductState = $true
-	}
-	else
-	{
-		$Script:DefenderproductState = $false
 	}
 
 	# Checking services
@@ -287,9 +277,22 @@ function Checks
 	catch [Microsoft.PowerShell.Commands.ServiceCommandException]
 	{
 		$Localization.WindowsBroken
+		Start-Process -FilePath "https://t.me/sophia_chat"
 		exit
 	}
 	$Script:DefenderServices = ($Services | Where-Object -FilterScript {$_.Status -ne "running"} | Measure-Object).Count -lt $Services.Count
+
+	# Check Microsoft Defender state
+	$productState = (Get-CimInstance -Namespace root/SecurityCenter2 -ClassName Antivirusproduct | Where-Object -FilterScript {$_.instanceGuid -eq "{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}"}).productState
+	$DefenderState = ('0x{0:x}' -f $productState).Substring(3, 2)
+	if ($DefenderState -notmatch "00|01")
+	{
+		$Script:DefenderproductState = $true
+	}
+	else
+	{
+		$Script:DefenderproductState = $false
+	}
 
 	# Specifies whether Antispyware protection is enabled
 	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).AntispywareEnabled)
@@ -302,13 +305,47 @@ function Checks
 	}
 
 	# https://docs.microsoft.com/en-us/graph/api/resources/intune-devices-windowsdefenderproductstatus?view=graph-rest-beta
-	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).ProductStatus -eq 1)
+	try
 	{
-		$Script:DefenderProductStatus = $false
+		if ($Script:DefenderproductState)
+		{
+			if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).ProductStatus -eq 1)
+			{
+				$Script:DefenderProductStatus = $false
+			}
+			else
+			{
+				$Script:DefenderProductStatus = $true
+			}
+		}
+		else
+		{
+			$Script:DefenderProductStatus = $false
+		}
 	}
-	else
+	catch [System.Management.Automation.PropertyNotFoundException]
 	{
-		$Script:DefenderProductStatus = $true
+		$Localization.UpdateDefender ###
+
+		Start-Process -FilePath "https://t.me/sophia_chat"
+
+		# Enable receiving updates for other Microsoft products when you update Windows
+		(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
+
+		Start-Sleep -Seconds 1
+
+		# Open the "Windows Update" page
+		Start-Process -FilePath "ms-settings:windowsupdate"
+
+		# Check for updates
+		Start-Process -FilePath "ms-settings:windowsupdate-action"
+
+		Start-Sleep -Seconds 1
+
+		# Trigger Windows Update for detecting new updates
+		(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
+
+		exit
 	}
 
 	# https://docs.microsoft.com/en-us/graph/api/resources/intune-devices-windowsdefenderproductstatus?view=graph-rest-beta
@@ -3192,68 +3229,6 @@ public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, uint
 		Add-Type @Signature
 	}
 	[WinAPI.SystemParamInfo]::SystemParametersInfo(0x0057, 0, $null, 0)
-}
-
-<#
-	.SYNOPSIS
-	Files and folders grouping
-
-	.PARAMETER None
-	Do not group files and folder
-
-	.PARAMETER Default
-	Group files and folder by date modified (default value)
-
-	.EXAMPLE
-	FolderGroupBy -None
-
-	.EXAMPLE
-	FolderGroupBy -Default
-
-	.NOTES
-	Current user
-#>
-function FolderGroupBy
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "None"
-		)]
-		[switch]
-		$None,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Default"
-		)]
-		[switch]
-		$Default
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"None"
-		{
-			# Clear any Common Dialog views
-			Get-ChildItem -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\Bags\*\Shell" -Recurse | Where-Object -FilterScript {$_.PSChildName -eq "{885A186E-A440-4ADA-812B-DB871B942259}"} | Remove-Item -Force
-
-			if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}"))
-			{
-				New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Force
-			}
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name ColumnList -PropertyType String -Value "prop:0(34)System.ItemNameDisplay;0System.DateModified;0System.ItemTypeText;0System.Size;1System.DateCreated;1System.Author;1System.Category;1System.Keywords;1System.Title" -Force
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name LogicalViewMode -PropertyType DWord -Value 1 -Force
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name Name -PropertyType String -Value NoName -Force
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name Order -PropertyType DWord -Value 0 -Force
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name SortByList -PropertyType String -Value "prop:System.ItemNameDisplay" -Force
-		}
-		"Default"
-		{
-			Remove-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}" -Recurse -Force -ErrorAction Ignore
-		}
-	}
 }
 #endregion UI & Personalization
 

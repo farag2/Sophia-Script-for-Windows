@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v6.2.6
-	Date: 04.12.2022
+	Version: v6.2.7
+	Date: 07.01.2023
 
 	Copyright (c) 2014—2023 farag
 	Copyright (c) 2019—2023 farag & Inestic
@@ -78,6 +78,9 @@ function Checks
 				Get-CimInstance -Namespace "Root\cimv2\mdm\dmmap" -ClassName "MDM_EnterpriseModernAppManagement_AppManagement01" | Invoke-CimMethod -MethodName UpdateScanMethod
 
 				# Open the "Windows Update" page
+				Start-Process -FilePath "ms-settings:windowsupdate"
+
+				# Check for updates
 				Start-Process -FilePath "ms-settings:windowsupdate-action"
 
 				Start-Sleep -Seconds 1
@@ -108,6 +111,9 @@ function Checks
 				Get-CimInstance -Namespace "Root\cimv2\mdm\dmmap" -ClassName "MDM_EnterpriseModernAppManagement_AppManagement01" | Invoke-CimMethod -MethodName UpdateScanMethod
 
 				# Open the "Windows Update" page
+				Start-Process -FilePath "ms-settings:windowsupdate"
+
+				# Check for updates
 				Start-Process -FilePath "ms-settings:windowsupdate-action"
 
 				Start-Sleep -Seconds 1
@@ -215,6 +221,7 @@ function Checks
 	if (($PendingActions | Test-Path) -contains $true)
 	{
 		Write-Warning -Message $Localization.RebootPending
+		Start-Process -FilePath "https://t.me/sophia_chat"
 		exit
 	}
 
@@ -288,13 +295,27 @@ function Checks
 		exit
 	}
 
-	# Check Microsoft Defender state
 	if ($null -eq (Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction Ignore))
 	{
 		$Localization.WindowsBroken
+		Start-Process -FilePath "https://t.me/sophia_chat"
 		exit
 	}
 
+	# Checking services
+	try
+	{
+		$Services = Get-Service -Name Windefend, SecurityHealthService, wscsvc -ErrorAction Stop
+	}
+	catch [Microsoft.PowerShell.Commands.ServiceCommandException]
+	{
+		$Localization.WindowsBroken
+		Start-Process -FilePath "https://t.me/sophia_chat"
+		exit
+	}
+	$Script:DefenderServices = ($Services | Where-Object -FilterScript {$_.Status -ne "running"} | Measure-Object).Count -lt $Services.Count
+
+	# Check Microsoft Defender state
 	$productState = (Get-CimInstance -Namespace root/SecurityCenter2 -ClassName Antivirusproduct | Where-Object -FilterScript {$_.instanceGuid -eq "{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}"}).productState
 	$DefenderState = ('0x{0:x}' -f $productState).Substring(3, 2)
 	if ($DefenderState -notmatch "00|01")
@@ -306,19 +327,7 @@ function Checks
 		$Script:DefenderproductState = $false
 	}
 
-	# Checking services
-	try
-	{
-		$Services = Get-Service -Name Windefend, SecurityHealthService, wscsvc -ErrorAction Stop
-	}
-	catch [Microsoft.PowerShell.Commands.ServiceCommandException]
-	{
-		$Localization.WindowsBroken
-		exit
-	}
-	$Script:DefenderServices = ($Services | Where-Object -FilterScript {$_.Status -ne "running"} | Measure-Object).Count -lt $Services.Count
-
-	# Specifies whether Antispyware protection is enabled
+	# Specify whether Antispyware protection is enabled
 	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).AntispywareEnabled)
 	{
 		$Script:DefenderAntispywareEnabled = $true
@@ -329,13 +338,47 @@ function Checks
 	}
 
 	# https://docs.microsoft.com/en-us/graph/api/resources/intune-devices-windowsdefenderproductstatus?view=graph-rest-beta
-	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).ProductStatus -eq 1)
+	try
 	{
-		$Script:DefenderProductStatus = $false
+		if ($Script:DefenderproductState)
+		{
+			if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).ProductStatus -eq 1)
+			{
+				$Script:DefenderProductStatus = $false
+			}
+			else
+			{
+				$Script:DefenderProductStatus = $true
+			}
+		}
+		else
+		{
+			$Script:DefenderProductStatus = $false
+		}
 	}
-	else
+	catch [System.Management.Automation.PropertyNotFoundException]
 	{
-		$Script:DefenderProductStatus = $true
+		$Localization.UpdateDefender ###
+
+		Start-Process -FilePath "https://t.me/sophia_chat"
+
+		# Enable receiving updates for other Microsoft products when you update Windows
+		(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
+
+		Start-Sleep -Seconds 1
+
+		# Open the "Windows Update" page
+		Start-Process -FilePath "ms-settings:windowsupdate"
+
+		# Check for updates
+		Start-Process -FilePath "ms-settings:windowsupdate-action"
+
+		Start-Sleep -Seconds 1
+
+		# Trigger Windows Update for detecting new updates
+		(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
+
+		exit
 	}
 
 	# https://docs.microsoft.com/en-us/graph/api/resources/intune-devices-windowsdefenderproductstatus?view=graph-rest-beta
@@ -443,6 +486,8 @@ function Checks
 				Start-Sleep -Seconds 5
 
 				Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows#how-to-use"
+				Start-Process -FilePath "https://t.me/sophia_chat"
+
 				exit
 			}
 			"1"
@@ -9503,7 +9548,10 @@ function UninstallUWPApps
 		"Microsoft.RawImageExtension",
 
 		# HEIF Image Extensions
-		"Microsoft.HEIFImageExtension"
+		"Microsoft.HEIFImageExtension",
+
+		# MPEG-2 Video Extension
+		"Microsoft.MPEG2VideoExtension"
 	)
 
 	#region Variables

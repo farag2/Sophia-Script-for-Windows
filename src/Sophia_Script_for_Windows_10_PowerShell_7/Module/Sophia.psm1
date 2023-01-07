@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.14.6
-	Date: 04.12.2022
+	Version: v5.14.7
+	Date: 07.01.2023
 
 	Copyright (c) 2014—2023 farag
 	Copyright (c) 2019—2023 farag & Inestic
@@ -60,6 +60,7 @@ function Checks
 	if (-not [System.Environment]::Is64BitOperatingSystem)
 	{
 		Write-Warning -Message $Localization.UnsupportedOSBitness
+		Start-Process -FilePath "https://t.me/sophia_chat"
 		exit
 	}
 
@@ -193,6 +194,7 @@ function Checks
 	if (($PendingActions | Test-Path) -contains $true)
 	{
 		Write-Warning -Message $Localization.RebootPending
+		Start-Process -FilePath "https://t.me/sophia_chat"
 		exit
 	}
 
@@ -278,6 +280,7 @@ function Checks
 		if ($null -eq (Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction Ignore))
 		{
 			$Localization.WindowsBroken
+			Start-Process -FilePath "https://t.me/sophia_chat"
 			exit
 		}
 
@@ -305,6 +308,7 @@ function Checks
 	catch [Microsoft.PowerShell.Commands.ServiceCommandException]
 	{
 		$Localization.WindowsBroken
+		Start-Process -FilePath "https://t.me/sophia_chat"
 		exit
 	}
 	$Script:DefenderServices = ($Services | Where-Object -FilterScript {$_.Status -ne "running"} | Measure-Object).Count -lt $Services.Count
@@ -329,13 +333,47 @@ function Checks
 	# https://docs.microsoft.com/en-us/graph/api/resources/intune-devices-windowsdefenderproductstatus?view=graph-rest-beta
 	if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name EditionID) -ne "EnterpriseG")
 	{
-		if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).ProductStatus -eq 1)
+		try
 		{
-			$Script:DefenderProductStatus = $false
+			if ($Script:DefenderproductState)
+			{
+				if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).ProductStatus -eq 1)
+				{
+					$Script:DefenderProductStatus = $false
+				}
+				else
+				{
+					$Script:DefenderProductStatus = $true
+				}
+			}
+			else
+			{
+				$Script:DefenderProductStatus = $false
+			}
 		}
-		else
+		catch [System.Management.Automation.PropertyNotFoundException]
 		{
-			$Script:DefenderProductStatus = $true
+			$Localization.UpdateDefender ###
+
+			Start-Process -FilePath "https://t.me/sophia_chat"
+
+			# Enable receiving updates for other Microsoft products when you update Windows
+			(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
+
+			Start-Sleep -Seconds 1
+
+			# Open the "Windows Update" page
+			Start-Process -FilePath "ms-settings:windowsupdate"
+
+			# Check for updates
+			Start-Process -FilePath "ms-settings:windowsupdate-action"
+
+			Start-Sleep -Seconds 1
+
+			# Trigger Windows Update for detecting new updates
+			(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
+
+			exit
 		}
 	}
 	else
@@ -10077,7 +10115,10 @@ function UninstallUWPApps
 		"Microsoft.HEVCVideoExtension",
 
 		# HEIF Image Extensions
-		"Microsoft.HEIFImageExtension"
+		"Microsoft.HEIFImageExtension",
+
+		# MPEG-2 Video Extension
+		"Microsoft.MPEG2VideoExtension"
 	)
 
 	#region Variables

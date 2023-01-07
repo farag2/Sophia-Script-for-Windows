@@ -13,6 +13,7 @@ RebootPending                             = The PC is waiting to be restarted
 UnsupportedRelease                        = A new version found
 CustomizationWarning                      = \nHave you customized every function in the {0} preset file before running Sophia Script?
 WindowsBroken                             = Some Windows components may have been broken
+UpdateDefender                            = Microsoft Defender definitions are out-of-date. Run Windows Update
 ControlledFolderAccessDisabled            = Controlled folder access disabled
 ScheduledTasks                            = Scheduled tasks
 OneDriveUninstalling                      = Uninstalling OneDrive...
