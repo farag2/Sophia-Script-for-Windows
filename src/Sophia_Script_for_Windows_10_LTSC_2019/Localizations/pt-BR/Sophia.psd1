@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = O script suporta somente Windows 10 x64
 UnsupportedOSBuild                        = O script suporta versões Windows 10 Enterprise LTSC 2019
-UpdateWarning                             = Atualização cumulativa do Windows 10 instalado: {0}. Actualização acumulada suportada: 3770 e superior
+UpdateWarning                             = Atualização cumulativa do Windows 10 instalado: {0}. Actualização acumulada suportada: 3770 e superior. Execute o Windows Update e tente novamente
 UnsupportedLanguageMode                   = A sessão PowerShell em funcionamento em um modo de linguagem limitada
 LoggedInUserNotAdmin                      = O usuário logado não tem direitos de administrador
 UnsupportedPowerShell                     = Você está tentando executar o script via PowerShell {0}.{1}. Execute o script na versão apropriada do PowerShell
@@ -14,6 +14,7 @@ RebootPending                             = O PC está esperando para ser reinic
 UnsupportedRelease                        = Nova versão encontrada
 CustomizationWarning                      = \nVocê personalizou todas as funções no arquivo de predefinição {0} antes de executar o Sophia Script?
 WindowsBroken                             = Alguns componentes do Windows podem ter sido quebrados
+UpdateDefender                            = As definições do Microsoft Defender estão desatualizadas. Execute o Windows Update e tente novamente
 ControlledFolderAccessDisabled            = Acesso controlado a pasta desativada
 ScheduledTasks                            = Tarefas agendadas
 WindowsFeaturesTitle                      = Recursos do Windows

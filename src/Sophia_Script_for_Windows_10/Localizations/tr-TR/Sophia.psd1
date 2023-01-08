@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Bu betik sadece Windows 10 x64 destekliyor
 UnsupportedOSBuild                        = Komut dosyası, Windows 10 21H2/22H2+ sürümlerini destekler
-UpdateWarning                             = Windows 10 toplu güncelleştirmesi yüklendi: {0}. Desteklenen toplu güncelleme: 2364 ve üstü
+UpdateWarning                             = Windows 10 toplu güncelleştirmesi yüklendi: {0}. Desteklenen toplu güncelleme: 2364 ve üstü. Windows Update'i çalıştırın ve tekrar deneyin
 UnsupportedLanguageMode                   = Sınırlı bir dil modunda çalışan PowerShell oturumu
 LoggedInUserNotAdmin                      = Oturum açan kullanıcının yönetici hakları yok
 UnsupportedPowerShell                     = Komut dosyasını PowerShell {0}.{1} aracılığıyla çalıştırmaya çalışıyorsunuz. Komut dosyasını uygun PowerShell sürümünde çalıştırın
@@ -14,6 +14,7 @@ RebootPending                             = PC yeniden başlatılmayı bekliyor
 UnsupportedRelease                        = Yeni sürüm bulundu
 CustomizationWarning                      = \nSophia Script'i çalıştırmadan önce {0} ön ayar dosyasındaki her işlevi özelleştirdiniz mi?
 WindowsBroken                             = Bazı Windows bileşenleri bozulmuş olabilir
+UpdateDefender                            = Microsoft Defender tanımları güncel değil. Windows Update'i çalıştırın ve tekrar deneyin
 ControlledFolderAccessDisabled            = Kontrollü klasör erişimi devre dışı bırakıldı
 ScheduledTasks                            = Zamanlanan görevler
 OneDriveUninstalling                      = OneDrive kaldırılıyor...

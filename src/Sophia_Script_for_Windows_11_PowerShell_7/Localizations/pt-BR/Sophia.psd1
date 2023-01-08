@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = O script suporta versões Windows 11 21H2 e superior
-UpdateWarning                             = La tua build di Windows 11: {0}.{1}. Build suportadas: 22000.1335, 22621.963 e successive
+UpdateWarning                             = La tua build di Windows 11: {0}.{1}. Build suportadas: 22000.1335, 22621.963 e successive. Execute o Windows Update e tente novamente
 UnsupportedLanguageMode                   = A sessão PowerShell em funcionamento em um modo de linguagem limitada
 LoggedInUserNotAdmin                      = O usuário logado não tem direitos de administrador
 UnsupportedPowerShell                     = Você está tentando executar o script via PowerShell {0}.{1}. Execute o script na versão apropriada do PowerShell
@@ -13,6 +13,7 @@ RebootPending                             = O PC está esperando para ser reinic
 UnsupportedRelease                        = Nova versão encontrada
 CustomizationWarning                      = \nVocê personalizou todas as funções no arquivo de predefinição {0} antes de executar o Sophia Script?
 WindowsBroken                             = Alguns componentes do Windows podem ter sido quebrados
+UpdateDefender                            = As definições do Microsoft Defender estão desatualizadas. Execute o Windows Update e tente novamente
 ControlledFolderAccessDisabled            = Acesso controlado a pasta desativada
 ScheduledTasks                            = Tarefas agendadas
 OneDriveUninstalling                      = Desinstalar OneDrive...

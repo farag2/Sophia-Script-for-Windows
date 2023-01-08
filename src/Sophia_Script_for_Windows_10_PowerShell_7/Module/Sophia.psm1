@@ -100,7 +100,7 @@ function Checks
 				exit
 			}
 		}
-		{$_ -lt 19044}
+		{($_ -lt 19044) -or ($_ -gt 19048)}
 		{
 			Write-Warning -Message $Localization.UnsupportedOSBuild
 			Start-Process -FilePath "https://t.me/sophia_chat"
@@ -356,7 +356,7 @@ function Checks
 		}
 		catch [System.Management.Automation.PropertyNotFoundException]
 		{
-			$Localization.UpdateDefender ###
+			$Localization.UpdateDefender
 
 			Start-Process -FilePath "https://t.me/sophia_chat"
 

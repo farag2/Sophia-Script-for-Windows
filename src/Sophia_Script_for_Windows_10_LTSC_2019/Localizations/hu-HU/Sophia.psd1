@@ -1,18 +1,20 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = A szkript csak a Windows 10 64 bites verziót támogatja
 UnsupportedOSBuild                        = A szkript támogatja a Windows 10 Enterprise LTSC 2019 kiadást
-UpdateWarning                             = A Windows 10 összesített frissítése telepítve: {0}. Támogatott kumulatív frissítés: 3770 és magasabb verziószámok
+UpdateWarning                             = A Windows 10 összesített frissítése telepítve: {0}. Támogatott kumulatív frissítés: 3770 és magasabb verziószámok. Futtassa a Windows Update programot, és próbálja meg újra
 UnsupportedLanguageMode                   = A PowerShell munkamenet korlátozott nyelvi üzemmódban fut
 LoggedInUserNotAdmin                      = A bejelentkezett felhasználó nem rendelkezik admin jogokkal
 UnsupportedPowerShell                     = A PowerShell {0}.{1} segítségével próbálja futtatni a szkriptet. Futtassa a szkriptet a megfelelő PowerShell-verzióban
 UnsupportedISE                            = A szkript nem támogatja a Windows PowerShell ISE futtatását
 Win10TweakerWarning                       = Valószínűleg az operációs rendszerét a Win 10 Tweaker backdoor segítségével fertőzték meg
 SycnexWarning                             = A Windows operációs rendszer stabilitását veszélyeztethette a Sycnex Windows10Debloater PowerShell szkriptje. Megelőzésképpen telepítse újra a Windows
+Fs00Warning                               = A Windows operációs rendszer stabilitását veszélyeztethette a "Windows 10 Bloat Remover and Tweaker". Preventively, reinstall Windows
 bin                                       = A bin mappában nincsenek fájlok. Kérjük, töltse le újra az archívumot
 RebootPending                             = A számítógép újraindításra vár
 UnsupportedRelease                        = Új verzió érhető el
 CustomizationWarning                      = \nSzemélyre szabott minden opciót a {0} preset fájlban, mielőtt futtatni kívánja a Sophia szkriptet?
 WindowsBroken                             = Előfordulhat, hogy a Windows egyes összetevői elromoltak
+UpdateDefender                            = A Microsoft Defender definíciói elavultak. Futtassa a Windows Update programot, és próbálja meg újra
 ControlledFolderAccessDisabled            = Vezérelt mappához való hozzáférés kikapcsolva
 ScheduledTasks                            = Ütemezett feladatok
 WindowsFeaturesTitle                      = Windows szolgáltatások

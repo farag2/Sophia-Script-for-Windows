@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = Скрипт підтримує тільки Windows 11 21H2 та вище
-UpdateWarning                             = Ваш білд Windows 11: {0}.{1}. Підтримувані збірки: 22000.1335, 22621.963 та вище
+UpdateWarning                             = Ваш білд Windows 11: {0}.{1}. Підтримувані збірки: 22000.1335, 22621.963 та вище. Запустіть Windows Update і повторіть спробу
 UnsupportedLanguageMode                   = Сесія PowerShell працює в обмеженому режимі
 LoggedInUserNotAdmin                      = Поточний користувач, що увійшов, не має прав адміністратора
 UnsupportedPowerShell                     = Ви намагаєтеся запустити скрипт в PowerShell {0}.{1}. Запустіть скрипт у відповідній версії PowerShell
@@ -13,6 +13,7 @@ RebootPending                             = Комп'ютер очікує на 
 UnsupportedRelease                        = Виявлено нову версію
 CustomizationWarning                      = \nВи налаштували всі функції в пресет-файлі {0} перед запуском Sophia Script?
 WindowsBroken                             = Деякі компоненти Windows могли бути пошкоджені
+UpdateDefender                            = Визначення Microsoft Defender застаріли. Запустіть Windows Update і повторіть спробу
 ControlledFolderAccessDisabled            = Контрольований доступ до папок вимкнений
 ScheduledTasks                            = Заплановані задачі
 OneDriveUninstalling                      = Видалення OneDrive...

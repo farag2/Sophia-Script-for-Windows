@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Skrypt obsługuje tylko system Windows 10 x64
 UnsupportedOSBuild                        = Skrypt obsługuje system Windows 10 Enterprise LTSC 2021
-UpdateWarning                             = Zainstalowano zbiorczą aktualizację systemu Windows 10: {0}. Obsługiwane aktualizacje zbiorcze: 2364 i nowsze
+UpdateWarning                             = Zainstalowano zbiorczą aktualizację systemu Windows 10: {0}. Obsługiwane aktualizacje zbiorcze: 2364 i nowsze. Uruchom aktualizację systemu Windows i spróbuj ponownie
 UnsupportedLanguageMode                   = Sesja PowerShell działa w trybie ograniczonego języka
 LoggedInUserNotAdmin                      = Zalogowany użytkownik nie posiada uprawnień administratora
 UnsupportedPowerShell                     = Próbujesz uruchomić skrypt przy użyciu PowerShell {0}.{1}. Uruchom skrypt używając odpowiedniej wersji PowerShell
@@ -14,6 +14,7 @@ RebootPending                             = Komputer oczekuje na ponowne uruchom
 UnsupportedRelease                        = Znaleziono nową wersję
 CustomizationWarning                      = \nCzy dostosowałeś funkcje w predefiniowanym pliku {0} przed uruchomieniem Sophia Script?
 WindowsBroken                             = Niektóre składniki systemu Windows mogły zostać uszkodzone
+UpdateDefender                            = Definicje programu Microsoft Defender są nieaktualne. Uruchom aktualizację systemu Windows i spróbuj ponownie.
 ControlledFolderAccessDisabled            = Kontrolowany dostęp do folderów został wyłączony
 ScheduledTasks                            = Zaplanowane zadania
 WindowsFeaturesTitle                      = Funkcje Windows

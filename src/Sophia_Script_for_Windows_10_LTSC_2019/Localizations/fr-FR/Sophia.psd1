@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Le script supporte uniquement Windows 10 x64
 UnsupportedOSBuild                        = Le script supporte le version Windows 10 Enterprise LTSC 2019
-UpdateWarning                             = La mise à jour cumulative de Windows 10 est installée : {0}. Mise à jour cumulative prise en charge : 3770 et plus
+UpdateWarning                             = La mise à jour cumulative de Windows 10 est installée : {0}. Mise à jour cumulative prise en charge: 3770 et plus. Exécutez Windows Update et réessayez
 UnsupportedLanguageMode                   = La session PowerShell s'exécute dans un mode de langue limité
 LoggedInUserNotAdmin                      = L'utilisateur connecté n'a pas de droits d'administrateur
 UnsupportedPowerShell                     = Vous essayez d'exécuter le script via PowerShell {0}.{1}. Exécutez le script dans la version appropriée de PowerShell
@@ -14,6 +14,7 @@ RebootPending                             = Le PC attend d'être redémarré
 UnsupportedRelease                        = Nouvelle version trouvée
 CustomizationWarning                      = \nAvez-vous personnalisé chaque fonction du fichier de préréglage {0} avant d'exécuter Sophia Script?
 WindowsBroken                             = Certains composants Windows peuvent avoir été endommagés
+UpdateDefender                            = Les définitions de Microsoft Defender ne sont pas à jour. Exécutez Windows Update et réessayez
 ControlledFolderAccessDisabled            = Contrôle d'accès aux dossiers désactivé
 ScheduledTasks                            = Tâches planifiées
 WindowsFeaturesTitle                      = Fonctionnalités
