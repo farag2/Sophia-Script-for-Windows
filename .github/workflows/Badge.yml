@@ -22,20 +22,7 @@ jobs:
 
       - name: Download cloc
         run: |
-          $Parameters = @{
-              Uri             = "https://api.github.com/repos/AlDanial/cloc/releases/latest"
-              UseBasicParsing = $true
-              Verbose         = $true
-          }
-          $Tag = (Invoke-RestMethod @Parameters).tag_name.replace("v", "")
-
-          $Parameters = @{
-              Uri             = "https://github.com/AlDanial/cloc/releases/download/v$Tag/cloc-$Tag.exe"
-              OutFile         = "$PSScriptRoot\cloc.exe"
-              UseBasicParsing = $true
-              Verbose         = $true
-          }
-          Invoke-WebRequest @Parameters
+          . Scripts\cloc.ps1
 
       - name: Get the Numbers
         run: |
