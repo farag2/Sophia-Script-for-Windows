@@ -1,11 +1,9 @@
 # Download cloc
 # https://github.com/AlDanial/cloc
 
-$Token = ConvertTo-SecureString '${{ secrets.GITHUB_TOKEN }}' -AsPlainText
 $Parameters = @{
 	Uri             = "https://api.github.com/repos/AlDanial/cloc/releases/latest"
-	Token           = $Token
-	Authentication  = "Bearer"
+	Authentication  = "Bearer ${{ secrets.GITHUB_TOKEN }}"
 	UseBasicParsing = $true
 	Verbose         = $true
 }
