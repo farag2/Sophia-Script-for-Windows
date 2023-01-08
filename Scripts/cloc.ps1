@@ -3,7 +3,7 @@
 
 $Parameters = @{
 	Uri             = "https://api.github.com/repos/AlDanial/cloc/releases/latest"
-	Authentication  = "Bearer ${{ secrets.GITHUB_TOKEN }}"
+	Authentication  = "Bearer `${{ secrets.GITHUB_TOKEN }}"
 	UseBasicParsing = $true
 	Verbose         = $true
 }
