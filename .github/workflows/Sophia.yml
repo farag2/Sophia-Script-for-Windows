@@ -51,8 +51,14 @@ jobs:
         id: read_release
         run: |
           # Get a penultimate build tag
+          $Token = "${{ secrets.GITHUB_TOKEN }}"
+          $Headers = @{
+              Accept        = "application/json"
+              Authorization = "Bearer $Token"
+          }
           $Parameters = @{
               Uri             = "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases"
+              Headers         = $Headers
               UseBasicParsing = $true
               Verbose         = $true
           }
