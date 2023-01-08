@@ -17,8 +17,6 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@main
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Download cloc
         run: |
