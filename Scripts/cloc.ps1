@@ -1,9 +1,14 @@
 # Download cloc
 # https://github.com/AlDanial/cloc
 
+$Token = "${{ secrets.GITHUB_TOKEN }}"
+$Headers = @{
+	Accept        = "application/json"
+	Authorization = "Bearer $Token"
+}
 $Parameters = @{
 	Uri             = "https://api.github.com/repos/AlDanial/cloc/releases/latest"
-	Authentication  = "Bearer `${{ secrets.GITHUB_TOKEN }}"
+	Headers         = $Headers
 	UseBasicParsing = $true
 	Verbose         = $true
 }
