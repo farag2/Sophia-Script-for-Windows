@@ -17,6 +17,7 @@
   <a href="https://github.com/farag2/Sophia-Script-for-Windows"><img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/farag2/9852d6b9569a91bf69ceba8a94cc97f4/raw/4060982030d6fa6191793d495fcce64e7079e110/SophiaScript.json"></a>
 
   <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases"><img src="https://img.shields.io/github/downloads/farag2/Sophia-Script-for-Windows/total?label=downloads%20%28since%20May%202020%29"></a>
+  <a href="https://community.chocolatey.org/packages/sophia"><img src="https://img.shields.io/chocolatey/dt/sophia?color=blue&label=chocolatey%20package"></a>
 
   <a href="https://twitter.com/tea_head_"><img src="https://img.shields.io/badge/Logo%20by-teahead-blue?style=flat&logo=Twitter"></a>
   <img src="https://img.shields.io/badge/Made%20with-149ce2.svg?color=149ce2"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/heart.svg" height="17px"/>
@@ -112,12 +113,12 @@
 |               Version                |    Marketing name   |    Build    | Arch |      Editions       |
 |:-------------------------------------|--------------------:|:-----------:|:----:|:-------------------:|
 | Windows 11 Insider Preview 23H2      | 2023 Update         | 22509+      |      | Home/Pro/Enterprise |
-| Windows 11 22H2                      | 2022 Update         | 22621       |      | Home/Pro/Enterprise |
-| Windows 11 21H2                      |                     | 22000.739+  |      | Home/Pro/Enterprise |
-| Windows 10 22H2                      | 2022 Update         | 19045.2006+ | x64  | Home/Pro/Enterprise |
-| Windows 10 21H2                      | October 2021 Update | 19044.1706+ | x64  | Home/Pro/Enterprise |
-| Windows 10 21H2 Enterprise LTSC 2021 | October 2021 Update | 19044.1706+ | x64  | Enterprise          |
-| Windows 10 1809 Enterprise LTSC 2019 | October 2018 Update | 17763.3046+ | x64  | Enterprise          |
+| Windows 11 22H2                      | 2022 Update         | 22621.963+  |      | Home/Pro/Enterprise |
+| Windows 11 21H2                      |                     | 22000.1335+ |      | Home/Pro/Enterprise |
+| Windows 10 22H2                      | 2022 Update         | 19045.2364+ | x64  | Home/Pro/Enterprise |
+| Windows 10 21H2                      | October 2021 Update | 19044.2364+ | x64  | Home/Pro/Enterprise |
+| Windows 10 21H2 Enterprise LTSC 2021 | October 2021 Update | 19044.2364+ | x64  | Enterprise          |
+| Windows 10 1809 Enterprise LTSC 2019 | October 2018 Update | 17763.3770+ | x64  | Enterprise          |
 
 ### Warning
 
