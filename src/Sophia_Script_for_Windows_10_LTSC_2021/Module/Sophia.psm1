@@ -716,6 +716,10 @@ function DiagnosticDataLevel
 			{
 				New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Force
 			}
+			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack))
+			{
+				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Force
+			}
 			New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 0 -Force
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name MaxTelemetryAllowed -PropertyType DWord -Value 1 -Force
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -PropertyType DWord -Value 1 -Force
@@ -723,6 +727,10 @@ function DiagnosticDataLevel
 		"Default"
 		{
 			# Optional diagnostic data
+			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack))
+			{
+				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Force
+			}
 			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Force -ErrorAction Ignore
 			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Type CLEAR
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name MaxTelemetryAllowed -PropertyType DWord -Value 3 -Force
@@ -5292,59 +5300,6 @@ function PowerPlan
 
 <#
 	.SYNOPSIS
-	The the latest installed .NET runtime for all apps usage
-
-	.PARAMETER Enable
-	Use the latest installed .NET runtime for all apps
-
-	.PARAMETER Disable
-	Do not use the latest installed .NET runtime for all apps
-
-	.EXAMPLE
-	LatestInstalled.NET -Enable
-
-	.EXAMPLE
-	LatestInstalled.NET -Disable
-
-	.NOTES
-	Machine-wide
-#>
-function LatestInstalled.NET
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Enable"
-		{
-			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\.NETFramework -Name OnlyUseLatestCLR -PropertyType DWord -Value 1 -Force
-			New-ItemProperty -Path HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework -Name OnlyUseLatestCLR -PropertyType DWord -Value 1 -Force
-		}
-		"Disable"
-		{
-			Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\.NETFramework -Name OnlyUseLatestCLR -Force -ErrorAction Ignore
-			Remove-ItemProperty -Path HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework -Name OnlyUseLatestCLR -Force -ErrorAction Ignore
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
 	Network adapters power management
 
 	.PARAMETER Disable
@@ -5464,28 +5419,23 @@ function IPv6Component
 			ParameterSetName = "Enable"
 		)]
 		[switch]
-		$Enable
+		$Enable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "PreferIPv4overIPv6"
+		)]
+		[switch]
+		$PreferIPv4overIPv6
 	)
 
-	try
+	function IPv6SupportByISP
 	{
-		# Check the internet connection
-		$Parameters = @{
-			Uri              = "https://www.google.com"
-			Method           = "Head"
-			DisableKeepAlive = $true
-			UseBasicParsing  = $true
-		}
-		if (-not (Invoke-WebRequest @Parameters).StatusDescription)
-		{
-			return
-		}
-
 		try
 		{
-			# Check whether the https://ipv6-test.com site is alive
+			# Check the internet connection
 			$Parameters = @{
-				Uri              = "https://ipv6-test.com"
+				Uri              = "https://www.google.com"
 				Method           = "Head"
 				DisableKeepAlive = $true
 				UseBasicParsing  = $true
@@ -5495,33 +5445,50 @@ function IPv6Component
 				return
 			}
 
-			# Check whether the ISP supports IPv6 protocol using https://ipv6-test.com
-			$Parameters = @{
-				Uri             = "https://v4v6.ipv6-test.com/api/myip.php?json"
-				UseBasicParsing = $true
+			try
+			{
+				# Check whether the https://ipv6-test.com site is alive
+				$Parameters = @{
+					Uri              = "https://ipv6-test.com"
+					Method           = "Head"
+					DisableKeepAlive = $true
+					UseBasicParsing  = $true
+				}
+				if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+				{
+					return
+				}
+
+				# Check whether the ISP supports IPv6 protocol using https://ipv6-test.com
+				$Parameters = @{
+					Uri             = "https://v4v6.ipv6-test.com/api/myip.php?json"
+					UseBasicParsing = $true
+				}
+				$IPVersion = (Invoke-RestMethod @Parameters).proto
 			}
-			$IPVersion = (Invoke-RestMethod @Parameters).proto
+			catch [System.Net.WebException]
+			{
+				Write-Warning -Message ($Localization.NoResponse -f "https://ipv6-test.com")
+				Write-Error -Message ($Localization.NoResponse -f "https://ipv6-test.com") -ErrorAction SilentlyContinue
+
+				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+			}
 		}
 		catch [System.Net.WebException]
 		{
-			Write-Warning -Message ($Localization.NoResponse -f "https://ipv6-test.com")
-			Write-Error -Message ($Localization.NoResponse -f "https://ipv6-test.com") -ErrorAction SilentlyContinue
+			Write-Warning -Message $Localization.NoInternetConnection
+			Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 
 			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
 		}
-	}
-	catch [System.Net.WebException]
-	{
-		Write-Warning -Message $Localization.NoInternetConnection
-		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
-
-		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
 	}
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Disable"
 		{
+			IPv6SupportByISP
+
 			if ($IPVersion -ne "ipv6")
 			{
 				Disable-NetAdapterBinding -Name * -ComponentID ms_tcpip6
@@ -5529,10 +5496,16 @@ function IPv6Component
 		}
 		"Enable"
 		{
+			IPv6SupportByISP
+
 			if ($IPVersion -eq "ipv6")
 			{
 				Enable-NetAdapterBinding -Name * -ComponentID ms_tcpip6
 			}
+		}
+		"PreferIPv4overIPv6"
+		{
+			New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters -Name DisabledComponents -PropertyType DWord -Value 32 -Force
 		}
 	}
 }
@@ -6590,6 +6563,59 @@ public static string GetString(uint strId)
 
 <#
 	.SYNOPSIS
+	The the latest installed .NET runtime for all apps usage
+
+	.PARAMETER Enable
+	Use the latest installed .NET runtime for all apps
+
+	.PARAMETER Disable
+	Do not use the latest installed .NET runtime for all apps
+
+	.EXAMPLE
+	LatestInstalled.NET -Enable
+
+	.EXAMPLE
+	LatestInstalled.NET -Disable
+
+	.NOTES
+	Machine-wide
+#>
+function LatestInstalled.NET
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Enable"
+		{
+			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\.NETFramework -Name OnlyUseLatestCLR -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework -Name OnlyUseLatestCLR -PropertyType DWord -Value 1 -Force
+		}
+		"Disable"
+		{
+			Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\.NETFramework -Name OnlyUseLatestCLR -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework -Name OnlyUseLatestCLR -Force -ErrorAction Ignore
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
 	The location to save screenshots by pressing Win+PrtScr
 
 	.PARAMETER Desktop
@@ -6702,6 +6728,10 @@ function RecommendedTroubleshooting
 	}
 
 	# Set the OS level of diagnostic data gathering to "Optional diagnostic data"
+	if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack))
+	{
+		New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Force
+	}
 	New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 3 -Force
 	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name MaxTelemetryAllowed -PropertyType DWord -Value 3 -Force
 	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -PropertyType DWord -Value 3 -Force
@@ -9039,7 +9069,7 @@ function SetAppGraphicsPerformance
 							New-Item -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Force
 						}
 						New-ItemProperty -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Name $OpenFileDialog.FileName -PropertyType String -Value "GpuPreference=2;" -Force
-						Write-Verbose -Message ("{0}" -f $OpenFileDialog.FileName) -Verbose
+						Write-Verbose -Message $OpenFileDialog.FileName -Verbose
 					}
 				}
 				"1"

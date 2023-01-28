@@ -642,14 +642,6 @@ PowerPlan -High
 # Установить схему управления питанием на "Сбалансированная" (значение по умолчанию)
 # PowerPlan -Balanced
 
-# Use the latest installed .NET runtime for all apps
-# Использовать последнюю установленную среду выполнения .NET для всех приложений
-LatestInstalled.NET -Enable
-
-# Do not use the latest installed .NET runtime for all apps (default value)
-# Не использовать последнюю установленную версию .NET для всех приложений (значение по умолчанию)
-# LatestInstalled.NET -Disable
-
 # Do not allow the computer to turn off the network adapters to save power
 # Запретить отключение всех сетевых адаптеров для экономии энергии
 NetworkAdaptersSavePower -Disable
@@ -716,6 +708,14 @@ SetUserShellFolderLocation -Root
 	По умолчанию они располагаются в папке %USERPROFILE%
 #>
 # SetUserShellFolderLocation -Default
+
+# Use the latest installed .NET runtime for all apps
+# Использовать последнюю установленную среду выполнения .NET для всех приложений
+LatestInstalled.NET -Enable
+
+# Do not use the latest installed .NET runtime for all apps (default value)
+# Не использовать последнюю установленную версию .NET для всех приложений (значение по умолчанию)
+# LatestInstalled.NET -Disable
 
 # Save screenshots by pressing Win+PrtScr on the Desktop
 # Сохранять скриншоты по нажатию Win+PrtScr на рабочий столе
@@ -951,12 +951,12 @@ GPUScheduling -Enable
 #region Scheduled tasks
 <#
 	Create the "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates
-	A native interactive toast notification pops up every 30 days. The task runs every 30 days
+	A native interactive toast notification pops up every 30 days. The "Period" parameter specifies how often the task is run, in days
 
 	Создать задачу "Windows Cleanup" по очистке неиспользуемых файлов и обновлений Windows в Планировщике заданий
-	Нативный интерактивный тост всплывает каждые 30 дней. Задача выполняется каждые 30 дней
+	Нативный интерактивный тост всплывает каждые 30 дней. Параметр "Period" указывает на частоту запуска задания в днях
 #>
-CleanupTask -Register
+CleanupTask -Register -Period 30
 
 # Delete the "Windows Cleanup" and "Windows Cleanup Notification" scheduled tasks for cleaning up Windows unused files and updates
 # Удалить задачи "Windows Cleanup" и "Windows Cleanup Notification" по очистке неиспользуемых файлов и обновлений Windows из Планировщика заданий
@@ -964,12 +964,12 @@ CleanupTask -Register
 
 <#
 	Create the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
-	The task will wait until the Windows Updates service finishes running. The task runs every 90 days
+	The task will wait until the Windows Updates service finishes running. The "Period" parameter specifies how often the task is run, in days. The task runs every 90 days by default
 
 	Создать задачу "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download в Планировщике заданий
-	Задача будет ждать, пока служба обновлений Windows не закончит работу. Задача выполняется каждые 90 дней
+	Задача будет ждать, пока служба обновлений Windows не закончит работу. Параметр "Period" указывает на частоту запуска задания в днях. По умолчанию задача выполняется каждые 90 дней.
 #>
-SoftwareDistributionTask -Register
+SoftwareDistributionTask -Register -Period 90
 
 # Delete the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
 # Удалить задачу "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download из Планировщика заданий
@@ -977,12 +977,12 @@ SoftwareDistributionTask -Register
 
 <#
 	Create the "Temp" scheduled task for cleaning up the %TEMP% folder
-	Only files older than one day will be deleted. The task runs every 60 days
+	Only files older than one day will be deleted. The "Period" parameter specifies how often the task is run, in days. The task runs every 60 days by default
 
 	Создать задачу "Temp" в Планировщике заданий по очистке папки %TEMP%
-	Удаляться будут только файлы старше одного дня. Задача выполняется каждые 60 дней
+	Удаляться будут только файлы старше одного дня. Параметр "Period" указывает на частоту запуска задания в днях. По умолчанию задача выполняется каждые 60 дней.
 #>
-TempTask -Register
+TempTask -Register -Period 60
 
 # Delete the "Temp" scheduled task for cleaning up the %TEMP% folder
 # Удалить задачу "Temp" по очистке папки %TEMP% из Планировщика заданий
