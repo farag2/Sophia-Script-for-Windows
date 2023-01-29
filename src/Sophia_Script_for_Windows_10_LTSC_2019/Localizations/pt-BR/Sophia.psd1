@@ -29,6 +29,7 @@ UserFolderSelect                          = Selecione uma pasta para a pasta "{0
 UserDefaultFolder                         = Gostaria de alterar a localização da pasta "{0}" para o valor padrão?
 GraphicsPerformanceTitle                  = Preferência de desempenho gráfico
 GraphicsPerformanceRequest                = Gostaria de definir a configuração de performance gráfica de um app de sua escolha para "alta performance"?
+ScheduledTaskPresented                    = A função "{0}" já foi criada como "{1}"
 CleanupTaskNotificationTitle              = Limpeza do Windows
 CleanupTaskNotificationEvent              = Executar tarefa para limpar arquivos e atualizações não utilizados do Windows?
 CleanupTaskDescription                    = Limpando o Windows arquivos não utilizados e atualizações usando o aplicativo de limpeza aplicativo de limpeza embutido no disco

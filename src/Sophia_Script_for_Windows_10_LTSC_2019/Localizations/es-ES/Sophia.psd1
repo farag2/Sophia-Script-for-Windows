@@ -29,6 +29,7 @@ UserFolderSelect                          = Seleccione una carpeta para la carpe
 UserDefaultFolder                         = ¿Le gustaría cambiar la ubicación de la carpeta "{0}" para el valor por defecto?
 GraphicsPerformanceTitle                  = Preferencia de rendimiento gráfico
 GraphicsPerformanceRequest                = ¿Le gustaría establecer la configuración de rendimiento gráfico de una aplicación de su elección a "alto rendimiento"?
+ScheduledTaskPresented                    = La función "{0}" ya fue creada como "{1}"
 CleanupTaskNotificationTitle              = Limpieza de Windows
 CleanupTaskNotificationEvent              = ¿Ejecutar la tarea de limpiar los archivos no utilizados y actualizaciones de Windows?
 CleanupTaskDescription                    = La limpieza de Windows los archivos no utilizados y actualizaciones utilizando una función de aplicación de limpieza de discos

@@ -43,7 +43,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Disable the \"Connected User Experiences and Telemetry\" service (DiagTrack), and block the connection for the Unified Telemetry Client Outbound Traffic. Disabling the \"Connected User Experiences and Telemetry\" service (DiagTrack) can cause you not being able to get Xbox achievements anymore"
+        "ToolTip": "Disable the \"Connected User Experiences and Telemetry\" service (DiagTrack), and block the connection for the Unified Telemetry Client Outbound Traffic. Disabling the \"Connected User Experiences and Telemetry\" service (DiagTrack) can cause you not being able to get Xbox achievements anymore and affects Feedback Hub"
       },
       "One": {
         "Tag": "Enable",
@@ -1047,6 +1047,10 @@
       "One": {
         "Tag": "Enable",
         "ToolTip": "Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections (default value). Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipv6-test.com"
+      },
+      "Two": {
+        "Tag": "PreferIPv4overIPv6",
+        "ToolTip": "Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections. Prefer IPv4 over IPv6. Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipv6-test.com"
       }
     }
   },
@@ -1358,6 +1362,21 @@
       "One": {
         "Tag": "Disable",
         "ToolTip": "Disable all necessary dependencies (reboot may require) and uninstall Windows Subsystem for Android™ with Amazon Appstore (default value)"
+      }
+    }
+  },
+  {
+    "Id": 540,
+    "Region": "System",
+    "Function": "PreventEdgeShortcutCreation",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "List Microsoft Edge channels to prevent desktop shortcut creation upon its' update"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Do not prevent desktop shortcut creation upon Microsoft Edge update (default value)"
       }
     }
   },

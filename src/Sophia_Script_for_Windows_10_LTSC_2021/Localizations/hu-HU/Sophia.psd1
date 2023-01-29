@@ -31,6 +31,7 @@ ReservedStorageIsInUse                    = Ez a művelet nem hajtható végre, 
 ShortcutPinning                           = A gyorsindító ikon "{0}" Startmenüre helyezése...
 GraphicsPerformanceTitle                  = Grafikus teljesítmény tulajdonság
 GraphicsPerformanceRequest                = Szeretné megváltoztatni a grafikus teljesítmény beállítást az ön által kiválasztott alkalmazásban "Nagy teljesítményre"?
+ScheduledTaskPresented                    = A "{0}" funkciót már létrehoztuk "{1}" néven
 CleanupTaskNotificationTitle              = Windows tisztítása
 CleanupTaskNotificationEvent              = Szeretné a nem használt fájlokat es frissitéseket eltávolítani?
 CleanupTaskDescription                    = A nem használt Windows fájlok és frissítések eltávolítása a beépített lemezkarbantartó alkalmazással

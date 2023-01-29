@@ -1441,12 +1441,13 @@
       },
       "One": {
         "Tag": "Enable"
+      },
+      "Two": {
+        "Tag": "PreferIPv4overIPv6"
       }
     },
     "Preset": "One",
-    "WindowsDefault": "One",
-    "LTSC2019": "true",
-    "LTSC2021": "true"
+    "WindowsDefault": "One"
   },
   {
     "Id": 519,
@@ -1796,6 +1797,23 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One"
+  },
+  {
+    "Id": 538,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "PreventEdgeShortcutCreation",
+    "Arg": {
+      "Zero": {
+        "Tag": ""
       },
       "One": {
         "Tag": "Disable"

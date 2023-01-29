@@ -29,6 +29,7 @@ UserFolderSelect                          = Виберіть папку для "
 UserDefaultFolder                         = Бажаєте змінити розташування папки "{0}" на значення за замовчуванням?
 GraphicsPerformanceTitle                  = Налаштування продуктивності графіки
 GraphicsPerformanceRequest                = Встановити для будь-якої програми за вашим вибором налаштування продуктивності графіки на "Висока продуктивність"?
+ScheduledTaskPresented                    = Функцію "{0}" уже було створено від імені "{1}"
 CleanupTaskNotificationTitle              = Очищення Windows
 CleanupTaskNotificationEvent              = Запустити завдання з очищення невикористовуваних файлів і оновлень Windows?
 CleanupTaskDescription                    = Очищення невикористовуваних файлів і оновлень Windows, використовуючи вбудовану програму Очищення диска

@@ -38,6 +38,7 @@ UWPAppsTitle                              = Aplikacje UWP
 HEVCDownloading                           = Pobieranie rozszerzeń wideo HEVC od producenta urządzenia... ~2,8 MB
 GraphicsPerformanceTitle                  = Preferencje dotyczące wydajności grafiki
 GraphicsPerformanceRequest                = Czy chcesz ustawić wydajność grafiki wybranej aplikacji na "Wysoka wydajność"?
+ScheduledTaskPresented                    = Funkcja "{0}" została już utworzona jako "{1}"
 CleanupTaskNotificationTitle              = Oczyszczanie system Windows
 CleanupTaskNotificationEvent              = Uruchomić zadanie w celu usunięcia nieużywanych plików i aktualizacji systemu Windows?
 CleanupTaskDescription                    = Czyszczenie nieużywanych plików i aktualizacji systemu Windows za pomocą wbudowanej aplikacji do czyszczenia dysku

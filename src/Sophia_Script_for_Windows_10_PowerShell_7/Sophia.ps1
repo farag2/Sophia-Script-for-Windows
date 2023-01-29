@@ -760,6 +760,15 @@ IPv6Component -Disable
 #>
 # IPv6Component -Enable
 
+<#
+	Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections. Prefer IPv4 over IPv6
+	Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipv6-test.com
+
+	Включить IP версии 6 (TCP/IPv6) и предпочитать. Предпочтение IPv4 перед IPv6
+	Перед выполнением функции будет проведена проверка: поддерживает ли ваш провайдер IPv6, используя ресурс https://ipv6-test.com
+#>
+# IPv6Component -PreferIPv4overIPv6
+
 # Override for default input method: English
 # Переопределить метод ввода по умолчанию: английский
 InputMethod -English
@@ -983,6 +992,14 @@ RKNBypass -Enable
 # Выключить проксирование только заблокированных сайтов из единого реестра Роскомнадзора (значение по умолчанию)
 # https://antizapret.prostovpn.org
 # RKNBypass -Disable
+
+# List Microsoft Edge channels to prevent desktop shortcut creation upon its' update
+# Перечислите каналы Microsoft Edge для предотвращения создания ярлыков на рабочем столе после его обновления
+PreventEdgeShortcutCreation -Channels Stable, Beta, Dev, Canary
+
+# Do not prevent desktop shortcut creation upon Microsoft Edge update (default value)
+# Не предотвращать создание ярлыков на рабочем столе при обновлении Microsoft Edge (значение по умолчанию)
+# PreventEdgeShortcutCreation -Disable
 #endregion System
 
 #region WSL
@@ -1137,12 +1154,12 @@ GPUScheduling -Enable
 #region Scheduled tasks
 <#
 	Create the "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates
-	A native interactive toast notification pops up every 30 days. The "Period" parameter specifies how often the task is run, in days
+	A native interactive toast notification pops up every 30 days. The task runs every 30 days
 
 	Создать задачу "Windows Cleanup" по очистке неиспользуемых файлов и обновлений Windows в Планировщике заданий
-	Нативный интерактивный тост всплывает каждые 30 дней. Параметр "Period" указывает на частоту запуска задания в днях
+	Нативный интерактивный тост всплывает каждые 30 дней. Задача выполняется каждые 30 дней
 #>
-CleanupTask -Register -Period 30
+CleanupTask -Register
 
 # Delete the "Windows Cleanup" and "Windows Cleanup Notification" scheduled tasks for cleaning up Windows unused files and updates
 # Удалить задачи "Windows Cleanup" и "Windows Cleanup Notification" по очистке неиспользуемых файлов и обновлений Windows из Планировщика заданий
@@ -1150,12 +1167,12 @@ CleanupTask -Register -Period 30
 
 <#
 	Create the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
-	The task will wait until the Windows Updates service finishes running. The "Period" parameter specifies how often the task is run, in days. The task runs every 90 days by default
+	The task will wait until the Windows Updates service finishes running. The task runs every 90 days
 
 	Создать задачу "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download в Планировщике заданий
-	Задача будет ждать, пока служба обновлений Windows не закончит работу. Параметр "Period" указывает на частоту запуска задания в днях. По умолчанию задача выполняется каждые 90 дней.
+	Задача будет ждать, пока служба обновлений Windows не закончит работу. Задача выполняется каждые 90 дней
 #>
-SoftwareDistributionTask -Register -Period 90
+SoftwareDistributionTask -Register
 
 # Delete the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
 # Удалить задачу "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download из Планировщика заданий
@@ -1163,12 +1180,12 @@ SoftwareDistributionTask -Register -Period 90
 
 <#
 	Create the "Temp" scheduled task for cleaning up the %TEMP% folder
-	Only files older than one day will be deleted. The "Period" parameter specifies how often the task is run, in days. The task runs every 60 days by default
+	Only files older than one day will be deleted. The task runs every 60 days
 
 	Создать задачу "Temp" в Планировщике заданий по очистке папки %TEMP%
-	Удаляться будут только файлы старше одного дня. Параметр "Period" указывает на частоту запуска задания в днях. По умолчанию задача выполняется каждые 60 дней.
+	Удаляться будут только файлы старше одного дня. Задача выполняется каждые 60 дней
 #>
-TempTask -Register -Period 60
+TempTask -Register
 
 # Delete the "Temp" scheduled task for cleaning up the %TEMP% folder
 # Удалить задачу "Temp" по очистке папки %TEMP% из Планировщика заданий

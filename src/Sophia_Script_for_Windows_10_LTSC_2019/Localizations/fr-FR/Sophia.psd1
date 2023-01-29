@@ -29,6 +29,7 @@ UserFolderSelect                          = Sélectionnez un dossier pour le dos
 UserDefaultFolder                         = Voulez vous changer où est placé le dossier "{0}" à sa valeur par défaut?
 GraphicsPerformanceTitle                  = Préférence de performances graphiques
 GraphicsPerformanceRequest                = Souhaitez-vous définir le paramètre de performances graphiques d'une application de votre choix sur "Haute performance"?
+ScheduledTaskPresented                    = La fonction "{0}" a déjà été créée en tant que "{1}"
 CleanupTaskNotificationTitle              = Nettoyer Windows
 CleanupTaskNotificationEvent              = Exécuter la tâche pour nettoyer les fichiers et les mises à jour inutilisés de Windows?
 CleanupTaskDescription                    = Nettoyage des fichiers Windows inutilisés et des mises à jour à l'aide de l'application intégrée pour le nettoyage de disque

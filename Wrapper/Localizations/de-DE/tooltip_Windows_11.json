@@ -43,7 +43,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Deaktiviert den Dienst \"Connected User Experiences and Telemetry\" (DiagTrack), und blockiert die Verbindung für den ausgehenden Verkehr des Unified Telemetry Client. Das Deaktivieren des Dienstes \"Benutzererfahrungen und Telemetrie im verbundenen Modus\" (DiagTrack) kann dazu führen, dass Sie keine Xbox-Erfolge mehr erhalten können"
+        "ToolTip": "Deaktiviert den Dienst \"Connected User Experiences and Telemetry\" (DiagTrack), und blockiert die Verbindung für den ausgehenden Verkehr des Unified Telemetry Client. Das Deaktivieren des Dienstes \"Benutzererfahrungen und Telemetrie im verbundenen Modus\" (DiagTrack) kann dazu führen, dass Sie keine Xbox-Erfolge mehr erhalten können, wirkt sich auf Feedback Hub aus"
       },
       "One": {
         "Tag": "Enable",
@@ -1047,6 +1047,10 @@
       "One": {
         "Tag": "Enable",
         "ToolTip": "Aktiviert die Komponente Internet Protocol Version 6 (TCP/IPv6) für alle Netzwerkverbindungen (Standardeinstellung). Bevor die Funktion aufgerufen wird, wird geprüft, ob Ihr ISP das IPv6-Protokoll unterstützt. https://ipv6-test.com"
+      },
+      "Two": {
+        "Tag": "PreferIPv4overIPv6",
+        "ToolTip": "Aktiviert die Komponente Internet Protocol Version 6 (TCP/IPv6) für alle Netzwerkverbindungen. IPv4 gegenüber IPv6 bevorzugen. Bevor die Funktion aufgerufen wird, wird geprüft, ob Ihr ISP das IPv6-Protokoll unterstützt. https://ipv6-test.com"
       }
     }
   },
@@ -1358,6 +1362,21 @@
       "One": {
         "Tag": "Disable",
         "ToolTip": "Alle erforderlichen Abhängigkeiten deaktivieren (ein Neustart kann erforderlich sein) und Windows Subsystem for Android™ mith Amazon-Appstore deinstallieren (Standardwert)"
+      }
+    }
+  },
+  {
+    "Id": 540,
+    "Region": "System",
+    "Function": "PreventEdgeShortcutCreation",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Microsoft Edge-Kanäle auflisten, um die Erstellung von Desktop-Verknüpfungen bei der Aktualisierung zu verhindern"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Verhindern Sie nicht die Erstellung von Desktop-Verknüpfungen beim Update von Microsoft Edge (Standardwert)"
       }
     }
   },

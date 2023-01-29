@@ -38,6 +38,7 @@ UWPAppsTitle                              = UWP Apps
 HEVCDownloading                           = Downloading HEVC Video Extensions from Device Manufacturer... ~2,8 MB
 GraphicsPerformanceTitle                  = Graphics performance preference
 GraphicsPerformanceRequest                = Would you like to set the graphics performance setting of an app of your choice to "High performance"?
+ScheduledTaskPresented                    = The "{0}" function was already created as "{1}"
 CleanupTaskNotificationTitle              = Windows clean up
 CleanupTaskNotificationEvent              = Run task to clean up Windows unused files and updates?
 CleanupTaskDescription                    = Cleaning up Windows unused files and updates using built-in Disk cleanup app

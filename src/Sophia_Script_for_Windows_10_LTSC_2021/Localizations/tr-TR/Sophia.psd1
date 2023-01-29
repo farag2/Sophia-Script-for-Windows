@@ -31,6 +31,7 @@ ReservedStorageIsInUse                    = Ayrılmış depolama kullanımdayken
 ShortcutPinning                           = "{0}" kısayolu Başlangıç sekmesine sabitlendi...
 GraphicsPerformanceTitle                  = Grafik performans tercihi
 GraphicsPerformanceRequest                = Seçtiğiniz bir uygulamanın grafik performansı ayarını "Yüksek performans" olarak belirlemek ister misiniz?
+ScheduledTaskPresented                    = "{0}" işlevi zaten "{1}" olarak oluşturulmuştu
 CleanupTaskNotificationTitle              = Windows temizliği
 CleanupTaskNotificationEvent              = Windows kullanılmayan dosyaları ve güncellemeleri temizlemek için görev çalıştırılsın mı?
 CleanupTaskDescription                    = Kullanılmayan Windows dosyaları ve güncellemeleri yerleşik Disk Temizleme uygulaması ile temizleniyor

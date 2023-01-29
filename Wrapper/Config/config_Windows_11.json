@@ -1167,6 +1167,9 @@
       },
       "One": {
         "Tag": "Enable"
+      },
+      "Two": {
+        "Tag": "PreferIPv4overIPv6"
       }
     },
     "Preset": "One",
@@ -1518,6 +1521,23 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One"
+  },
+  {
+    "Id": 540,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "PreventEdgeShortcutCreation",
+    "Arg": {
+      "Zero": {
+        "Tag": ""
       },
       "One": {
         "Tag": "Disable"

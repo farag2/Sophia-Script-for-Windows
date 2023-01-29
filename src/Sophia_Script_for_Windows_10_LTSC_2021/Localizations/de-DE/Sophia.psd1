@@ -31,6 +31,7 @@ ReservedStorageIsInUse                    = Dieser Vorgang wird nicht unterstüt
 ShortcutPinning                           = Die Verknüpfung "{0}" wird an Start angeheftet…
 GraphicsPerformanceTitle                  = Bevorzugte Grafikleistung
 GraphicsPerformanceRequest                = Möchten Sie die Einstellung der Grafikleistung einer App Ihrer Wahl auf "Hohe Leistung" einstellen?
+ScheduledTaskPresented                    = Die Funktion "{0}" wurde bereits als "{1}" angelegt
 CleanupTaskNotificationTitle              = Windows aufräumen
 CleanupTaskNotificationEvent              = Aufgabe zum Bereinigen nicht verwendeter Windows-Dateien und -Updates ausführen?
 CleanupTaskDescription                    = Bereinigung von nicht verwendeten Windows-Dateien und Updates mit der integrierten Festplattenbereinigung

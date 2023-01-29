@@ -29,6 +29,7 @@ UserFolderSelect                          = 为"{0}"文件夹选择一个文件�
 UserDefaultFolder                         = 您想将"{0}"文件夹的位置更改为默认值吗？
 GraphicsPerformanceTitle                  = 图形性能偏好
 GraphicsPerformanceRequest                = 是否将所选应用程序的图形性能设置设为"高性能"？
+ScheduledTaskPresented                    = "{0}"函数已经被创建为"{1}"
 CleanupTaskNotificationTitle              = Windows清理
 CleanupTaskNotificationEvent              = 运行任务以清理Windows未使用的文件和更新？
 CleanupTaskDescription                    = 使用内置磁盘清理工具清理未使用的Windows文件和更新

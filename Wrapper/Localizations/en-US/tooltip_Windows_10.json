@@ -1160,6 +1160,10 @@
       "One": {
         "Tag": "Enable",
         "ToolTip": "Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections (default value). Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipv6-test.com"
+      },
+      "Two": {
+        "Tag": "PreferIPv4overIPv6",
+        "ToolTip": "Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections. Prefer IPv4 over IPv6. Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipv6-test.com"
       }
     }
   },
@@ -1452,6 +1456,21 @@
       "One": {
         "Tag": "Disable",
         "ToolTip": "Disable proxying only blocked sites from the unified registry of Roskomnadzor (default value)"
+      }
+    }
+  },
+  {
+    "Id": 539,
+    "Region": "System",
+    "Function": "PreventEdgeShortcutCreation",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "List Microsoft Edge channels to prevent desktop shortcut creation upon its' update"
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Do not prevent desktop shortcut creation upon Microsoft Edge update (default value)"
       }
     }
   },

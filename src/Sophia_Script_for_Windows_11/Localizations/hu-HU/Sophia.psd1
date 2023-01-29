@@ -38,6 +38,7 @@ UWPAppsTitle                              = UWP Alkalmazások
 HEVCDownloading                           = A HEVC Videobővítmények letöltése a gyártói oldalról... ~2,8 MB
 GraphicsPerformanceTitle                  = Grafikus teljesítmény tulajdonság
 GraphicsPerformanceRequest                = Szeretné megváltoztatni a grafikus teljesítmény beállítást az ön által kiválasztott alkalmazásban "Nagy teljesítményre"?
+ScheduledTaskPresented                    = A "{0}" funkciót már létrehoztuk "{1}" néven
 CleanupTaskNotificationTitle              = Windows tisztítása
 CleanupTaskNotificationEvent              = Szeretné a nem használt fájlokat es frissitéseket eltávolítani?
 CleanupTaskDescription                    = A nem használt Windows fájlok és frissítések eltávolítása a beépített lemezkarbantartó alkalmazással

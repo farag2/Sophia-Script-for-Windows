@@ -31,6 +31,7 @@ ReservedStorageIsInUse                    = Операция не поддерж
 ShortcutPinning                           = Ярлык "{0}" закрепляется на начальном экране...
 GraphicsPerformanceTitle                  = Настройка производительности графики
 GraphicsPerformanceRequest                = Установить для любого приложения по вашему выбору настройки производительности графики на "Высокая производительность"?
+ScheduledTaskPresented                    = Функция "{0}" уже была создана от имени "{1}"
 CleanupTaskNotificationTitle              = Очистка Windows
 CleanupTaskNotificationEvent              = Запустить задание по очистке неиспользуемых файлов и обновлений Windows?
 CleanupTaskDescription                    = Очистка неиспользуемых файлов и обновлений Windows, используя встроенную программу Очистка диска

@@ -191,6 +191,7 @@ function Checks
 	if (($PendingActions | Test-Path) -contains $true)
 	{
 		Write-Warning -Message $Localization.RebootPending
+		Start-Process -FilePath "https://t.me/sophia_chat"
 		exit
 	}
 
@@ -5004,11 +5005,17 @@ function NetworkAdaptersSavePower
 	.PARAMETER Enable
 	Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections if your ISP supports it
 
+	.PARAMETER PreferIPv4overIPv6
+	Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections if your ISP supports it. Prefer IPv4 over IPv6
+
 	.EXAMPLE
 	IPv6Component -Disable
 
 	.EXAMPLE
 	IPv6Component -Enable
+
+	.EXAMPLE
+	IPv6Component -PreferIPv4overIPv6
 
 	.NOTES
 	Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipv6-test.com
@@ -5042,13 +5049,25 @@ function IPv6Component
 		$PreferIPv4overIPv6
 	)
 
-	function IPv6SupportByISP
+	try
 	{
+		# Check the internet connection
+		$Parameters = @{
+			Uri              = "https://www.google.com"
+			Method           = "Head"
+			DisableKeepAlive = $true
+			UseBasicParsing  = $true
+		}
+		if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+		{
+			return
+		}
+
 		try
 		{
-			# Check the internet connection
+			# Check whether the https://ipv6-test.com site is alive
 			$Parameters = @{
-				Uri              = "https://www.google.com"
+				Uri              = "https://ipv6-test.com"
 				Method           = "Head"
 				DisableKeepAlive = $true
 				UseBasicParsing  = $true
@@ -5058,49 +5077,33 @@ function IPv6Component
 				return
 			}
 
-			try
-			{
-				# Check whether the https://ipv6-test.com site is alive
-				$Parameters = @{
-					Uri              = "https://ipv6-test.com"
-					Method           = "Head"
-					DisableKeepAlive = $true
-					UseBasicParsing  = $true
-				}
-				if (-not (Invoke-WebRequest @Parameters).StatusDescription)
-				{
-					return
-				}
-
-				# Check whether the ISP supports IPv6 protocol using https://ipv6-test.com
-				$Parameters = @{
-					Uri             = "https://v4v6.ipv6-test.com/api/myip.php?json"
-					UseBasicParsing = $true
-				}
-				$IPVersion = (Invoke-RestMethod @Parameters).proto
+			# Check whether the ISP supports IPv6 protocol using https://ipv6-test.com
+			$Parameters = @{
+				Uri             = "https://v4v6.ipv6-test.com/api/myip.php?json"
+				UseBasicParsing = $true
 			}
-			catch [System.Net.WebException]
-			{
-				Write-Warning -Message ($Localization.NoResponse -f "https://ipv6-test.com")
-				Write-Error -Message ($Localization.NoResponse -f "https://ipv6-test.com") -ErrorAction SilentlyContinue
-
-				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
-			}
+			$IPVersion = (Invoke-RestMethod @Parameters).proto
 		}
 		catch [System.Net.WebException]
 		{
-			Write-Warning -Message $Localization.NoInternetConnection
-			Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+			Write-Warning -Message ($Localization.NoResponse -f "https://ipv6-test.com")
+			Write-Error -Message ($Localization.NoResponse -f "https://ipv6-test.com") -ErrorAction SilentlyContinue
 
 			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
 		}
+	}
+	catch [System.Net.WebException]
+	{
+		Write-Warning -Message $Localization.NoInternetConnection
+		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+
+		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
 	}
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Disable"
 		{
-			IPv6SupportByISP
 
 			if ($IPVersion -ne "ipv6")
 			{
@@ -5109,8 +5112,6 @@ function IPv6Component
 		}
 		"Enable"
 		{
-			IPv6SupportByISP
-
 			if ($IPVersion -eq "ipv6")
 			{
 				Enable-NetAdapterBinding -Name * -ComponentID ms_tcpip6
@@ -5118,7 +5119,11 @@ function IPv6Component
 		}
 		"PreferIPv4overIPv6"
 		{
-			New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters -Name DisabledComponents -PropertyType DWord -Value 32 -Force
+			if ($IPVersion -eq "ipv6")
+			{
+				Enable-NetAdapterBinding -Name * -ComponentID ms_tcpip6
+				New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters -Name DisabledComponents -PropertyType DWord -Value 32 -Force
+			}
 		}
 	}
 }
@@ -7551,7 +7556,13 @@ function InstallVCRedist
 		Start-Process -FilePath "$DownloadsFolder\VC_redist.x64.exe" -ArgumentList "/install /passive /norestart" -Wait
 
 		# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
-		Get-ChildItem -Path "$DownloadsFolder\VC_redist.x86.exe", "$DownloadsFolder\VC_redist.x64.exe", "$env:TEMP\dd_vcredist_amdx86_*.log", "$env:TEMP\dd_vcredist_amd64_*.log" -Force | Remove-Item -Recurse -Force -ErrorAction Ignore
+		$Paths = @(
+			"$DownloadsFolder\VC_redist.x86.exe",
+			"$DownloadsFolder\VC_redist.x64.exe",
+			"$env:TEMP\dd_vcredist_x86_*.log",
+			"$env:TEMP\dd_vcredist_amd64_*.log"
+		)
+		Get-ChildItem -Path $Paths -Recurse -Force | Remove-Item -Recurse -Force -ErrorAction Ignore
 	}
 	catch [System.Net.WebException]
 	{
@@ -7591,7 +7602,7 @@ function InstallDotNetRuntimes
 			return
 		}
 
-		if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller).Version -ge [System.Version]"1.17")
+		if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
 		{
 			# .NET Desktop Runtime 6 x86
 			winget install --id=Microsoft.DotNet.DesktopRuntime.6 --architecture x86 --exact --accept-source-agreements
@@ -7748,6 +7759,116 @@ function RKNBypass
 		{
 			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name AutoConfigURL -Force
 		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	Desktop shortcut creation upon Microsoft Edge update
+
+	.PARAMETER Channels
+	List Microsoft Edge channels to prevent desktop shortcut creation upon its' update
+
+	.PARAMETER Disable
+	Do not prevent desktop shortcut creation upon Microsoft Edge update
+
+	.EXAMPLE
+	PreventEdgeShortcutCreation -Channels Stable, Beta, Dev, Canary
+
+	.EXAMPLE
+	PreventEdgeShortcutCreation -Disable
+
+	.NOTES
+	Machine-wide
+#>
+function PreventEdgeShortcutCreation
+{
+	[CmdletBinding()]
+	param
+	(
+		[Parameter(
+			Mandatory = $false,
+			ParameterSetName = "Channels"
+		)]
+		[ValidateSet("Stable", "Beta", "Dev", "Canary")]
+		[string[]]
+		$Channels,
+
+		[Parameter(
+			Mandatory = $false,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable
+	)
+
+	if (($null -eq (Get-Package -Name "Microsoft Edge Update" -ProviderName Programs -ErrorAction Ignore)) -or ([System.Version](Get-Package -Name "Microsoft Edge Update" -ProviderName Programs).Version -lt [System.Version]"1.3.128.0"))
+	{
+		(Get-Package -Name "Microsoft Edge Update" -ProviderName Programs -ErrorAction Ignore).Version
+
+		return
+	}
+
+	foreach ($Channel in $Channels)
+	{
+		switch ($Channel)
+		{
+			Stable
+			{
+				if (Get-Package -Name "Microsoft Edge" -ProviderName Programs -ErrorAction Ignore)
+				{
+					if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate))
+					{
+						New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Force
+					}
+					New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}" -PropertyType DWord -Value 0 -Force
+				}
+			}
+			Beta
+			{
+				if (Get-Package -Name "Microsoft Edge Beta" -ProviderName Programs -ErrorAction Ignore)
+				{
+					if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate))
+					{
+						New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Force
+					}
+					New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{2CD8A007-E189-409D-A2C8-9AF4EF3C72AA}" -PropertyType DWord -Value 0 -Force
+				}
+			}
+			Dev
+			{
+				if (Get-Package -Name "Microsoft Edge Dev" -ProviderName Programs -ErrorAction Ignore)
+				{
+					if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate))
+					{
+						New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Force
+					}
+					New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{0D50BFEC-CD6A-4F9A-964C-C7416E3ACB10}" -PropertyType DWord -Value 0 -Force
+				}
+			}
+			Canary
+			{
+				if (Get-Package -Name "Microsoft Edge Canary" -ProviderName Programs -ErrorAction Ignore)
+				{
+					if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate))
+					{
+						New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Force
+					}
+					New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{65C35B14-6C1D-4122-AC46-7148CC9D6497}" -PropertyType DWord -Value 0 -Force
+				}
+			}
+		}
+	}
+
+	if ($Disable)
+	{
+		$Names = @(
+			"CreateDesktopShortcut{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}",
+			"CreateDesktopShortcut{2CD8A007-E189-409D-A2C8-9AF4EF3C72AA}",
+			"CreateDesktopShortcut{0D50BFEC-CD6A-4F9A-964C-C7416E3ACB10}",
+			"CreateDesktopShortcut{65C35B14-6C1D-4122-AC46-7148CC9D6497}"
+		)
+		Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Name $Names -Force -ErrorAction Ignore
 	}
 }
 #endregion System
@@ -8035,6 +8156,30 @@ function CleanupTask
 				return
 			}
 
+			# Checking if we're trying to create the task when it was already created as another user
+			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName "Windows Cleanup" -ErrorAction Ignore)
+			{
+				# Also we can parse "$env:SystemRoot\System32\Tasks\Sophia\Windows Cleanup" to check if the task was created
+				$ScheduleService = New-Object -ComObject Schedule.Service
+				$ScheduleService.Connect()
+				$ScheduleService.GetFolder("\Sophia").GetTasks(0) | Where-Object -FilterScript {$_.Name -eq "Windows Cleanup"} | Foreach-Object {
+					# Get user's SID the task was created as
+					$Script:SID = ([xml]$_.xml).Task.Principals.Principal.UserID
+				}
+
+				# Convert SID to username
+				$TaskUserAccount = (New-Object System.Security.Principal.SecurityIdentifier($SID)).Translate([System.Security.Principal.NTAccount]).Value -split "\\" | Select-Object -Last 1
+
+				if ($TaskUserAccount -ne $env:USERNAME)
+				{
+					Write-Verbose -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line, $TaskUserAccount) -Verbose
+					Write-Error -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line, $TaskUserAccount) -ErrorAction SilentlyContinue
+					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+
+					return
+				}
+			}
+
 			# Remove all old tasks
 			# We have to use -ErrorAction Ignore in both cases, unless we get an error
 			Get-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -ErrorAction Ignore | ForEach-Object -Process {
@@ -8311,6 +8456,29 @@ function SoftwareDistributionTask
 	{
 		"Register"
 		{
+			# Checking if we're trying to create the task when it was already created as another user
+			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName SoftwareDistribution)
+			{
+				# Also we can parse $env:SystemRoot\System32\Tasks\Sophia\SoftwareDistribution to check if the task was created
+				$ScheduleService = New-Object -ComObject Schedule.Service
+				$ScheduleService.Connect()
+				$ScheduleService.GetFolder("\Sophia").GetTasks(0) | Where-Object -FilterScript {$_.Name -eq "SoftwareDistribution"} | Foreach-Object {
+					# Get user's SID the task was created as
+					$Script:SID = ([xml]$_.xml).Task.Principals.Principal.UserID
+				}
+				# Convert SID to username
+				$TaskUserAccount = (New-Object System.Security.Principal.SecurityIdentifier($SID)).Translate([System.Security.Principal.NTAccount]).Value -split "\\" | Select-Object -Last 1
+
+				if ($TaskUserAccount -ne $env:USERNAME)
+				{
+					Write-Verbose -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line, $TaskUserAccount) -Verbose
+					Write-Error -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line, $TaskUserAccount) -ErrorAction SilentlyContinue
+					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+
+					return
+				}
+			}
+
 			# Remove all old tasks
 			# We have to use -ErrorAction Ignore in both cases, unless we get an error
 			Get-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -ErrorAction Ignore | ForEach-Object -Process {
@@ -8466,6 +8634,30 @@ function TempTask
 	{
 		"Register"
 		{
+			# Checking if we're trying to create the task when it was already created as another user
+			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName Temp)
+			{
+				# Also we can parse $env:SystemRoot\System32\Tasks\Sophia\Temp to check if the task was created
+				$ScheduleService = New-Object -ComObject Schedule.Service
+				$ScheduleService.Connect()
+				$ScheduleService.GetFolder("\Sophia").GetTasks(0) | Where-Object -FilterScript {$_.Name -eq "Temp"} | Foreach-Object {
+					# Get user's SID the task was created as
+					$Script:SID = ([xml]$_.xml).Task.Principals.Principal.UserID
+				}
+
+				# Convert SID to username
+				$TaskUserAccount = (New-Object System.Security.Principal.SecurityIdentifier($SID)).Translate([System.Security.Principal.NTAccount]).Value -split "\\" | Select-Object -Last 1
+
+				if ($TaskUserAccount -ne $env:USERNAME)
+				{
+					Write-Verbose -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line, $TaskUserAccount) -Verbose
+					Write-Error -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line, $TaskUserAccount) -ErrorAction SilentlyContinue
+					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+
+					return
+				}
+			}
+
 			# Remove all old tasks
 			# We have to use -ErrorAction Ignore in both cases, unless we get an error
 			Get-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -ErrorAction Ignore | ForEach-Object -Process {
@@ -10477,6 +10669,17 @@ public static void PostMessage()
 		{
 			Start-Process -FilePath explorer -ArgumentList $Script:OpenedFolder
 		}
+	}
+
+	# Check if any of scheduled tasks were created. Unless open Task Scheduler
+	# Check how the script was invoked: via a preset or Function.ps1
+	$PresetName = (Get-PSCallStack).Position | Where-Object -FilterScript {
+		(($_.File -match ".ps1") -and ($_.File -notmatch "Functions.ps1")) -and (($_.Text -eq "CleanupTask -Register") -or ($_.Text -eq "CleanupTask -Register") -or ($_.Text -eq "TempTask -Register")) -or ($_.Text -match "Invoke-Expression")
+	}
+	if ($PresetName)
+	{
+		# Open Task Scheduler
+		Start-Process -FilePath taskschd.msc
 	}
 }
 

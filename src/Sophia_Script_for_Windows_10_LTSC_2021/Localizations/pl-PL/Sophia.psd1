@@ -31,6 +31,7 @@ ReservedStorageIsInUse                    = Ta operacja nie jest obsługiwana, g
 ShortcutPinning                           = Skrót "{0}" jest przypinany do Start...
 GraphicsPerformanceTitle                  = Preferencje dotyczące wydajności grafiki
 GraphicsPerformanceRequest                = Czy chcesz ustawić wydajność grafiki wybranej aplikacji na "Wysoka wydajność"?
+ScheduledTaskPresented                    = Funkcja "{0}" została już utworzona jako "{1}"
 CleanupTaskNotificationTitle              = Oczyszczanie system Windows
 CleanupTaskNotificationEvent              = Uruchomić zadanie w celu usunięcia nieużywanych plików i aktualizacji systemu Windows?
 CleanupTaskDescription                    = Czyszczenie nieużywanych plików i aktualizacji systemu Windows za pomocą wbudowanej aplikacji do czyszczenia dysku
