@@ -1465,7 +1465,7 @@
     "Function": "PreventEdgeShortcutCreation",
     "Arg": {
       "Zero": {
-        "Tag": "Enable",
+        "Tag": "Channels",
         "ToolTip": "Microsoft Edge-Kanäle auflisten, um die Erstellung von Desktop-Verknüpfungen bei der Aktualisierung zu verhindern"
       },
       "One": {

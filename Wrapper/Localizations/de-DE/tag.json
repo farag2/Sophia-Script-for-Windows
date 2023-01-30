@@ -42,5 +42,6 @@
   "Left": "Links",
   "Center": "Zentriert",
   "WindowsTerminal": "Windows-Terminal",
-  "ConsoleHost": "Konsolenhost"
+  "ConsoleHost": "Konsolenhost",
+  "Channels": "Kanäle"
 }

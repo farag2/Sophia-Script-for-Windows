@@ -42,5 +42,6 @@
   "Left": "Слева",
   "Center": "По центру",
   "WindowsTerminal": "Windows Терминал",
-  "ConsoleHost": "Узел консоли Windows"
+  "ConsoleHost": "Узел консоли Windows",
+  "Channels": "Каналы"
 }

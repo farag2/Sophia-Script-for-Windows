@@ -1465,7 +1465,7 @@
     "Function": "PreventEdgeShortcutCreation",
     "Arg": {
       "Zero": {
-        "Tag": "Enable",
+        "Tag": "Channels",
         "ToolTip": "List Microsoft Edge channels to prevent desktop shortcut creation upon its' update"
       },
       "One": {

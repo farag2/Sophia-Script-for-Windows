@@ -1813,7 +1813,7 @@
     "Function": "PreventEdgeShortcutCreation",
     "Arg": {
       "Zero": {
-        "Tag": ""
+        "Tag": "Channels"
       },
       "One": {
         "Tag": "Disable"

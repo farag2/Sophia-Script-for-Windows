@@ -1371,7 +1371,7 @@
     "Function": "PreventEdgeShortcutCreation",
     "Arg": {
       "Zero": {
-        "Tag": "Enable",
+        "Tag": "Channels",
         "ToolTip": "Перечислите каналы Microsoft Edge для предотвращения создания ярлыков на рабочем столе после его обновления"
       },
       "One": {
