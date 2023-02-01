@@ -3754,13 +3754,13 @@ public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, uint
 
 <#
 	.SYNOPSIS
-	Files and folders grouping
+	Files and folders grouping in the Downloads folder
 
 	.PARAMETER None
-	Do not group files and folder
+	Do not group files and folder in the Downloads folder
 
 	.PARAMETER Default
-	Group files and folder by date modified (default value)
+	Group files and folder by date modified in the Downloads folder (default value)
 
 	.EXAMPLE
 	FolderGroupBy -None
@@ -3797,19 +3797,73 @@ function FolderGroupBy
 			# Clear any Common Dialog views
 			Get-ChildItem -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\Bags\*\Shell" -Recurse | Where-Object -FilterScript {$_.PSChildName -eq "{885A186E-A440-4ADA-812B-DB871B942259}"} | Remove-Item -Force
 
+			# https://learn.microsoft.com/en-us/windows/win32/properties/props-system-null
 			if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}"))
 			{
 				New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Force
 			}
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name ColumnList -PropertyType String -Value "prop:0(34)System.ItemNameDisplay;0System.DateModified;0System.ItemTypeText;0System.Size;1System.DateCreated;1System.Author;1System.Category;1System.Keywords;1System.Title" -Force
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name ColumnList -PropertyType String -Value "System.Null" -Force
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name GroupBy -PropertyType String -Value "System.Null" -Force
 			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name LogicalViewMode -PropertyType DWord -Value 1 -Force
 			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name Name -PropertyType String -Value NoName -Force
 			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name Order -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name PrimaryProperty -PropertyType String -Value "System.ItemNameDisplay" -Force
 			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name SortByList -PropertyType String -Value "prop:System.ItemNameDisplay" -Force
 		}
 		"Default"
 		{
 			Remove-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}" -Recurse -Force -ErrorAction Ignore
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	Expand to current folder in navigation pane
+
+	.PARAMETER Disable
+	Do not expand to open folder on navigation pane (default value)
+
+	.PARAMETER Enable
+	Expand to open folder on navigation pane
+
+	.EXAMPLE
+	NavigationPaneExpand -Disable
+
+	.EXAMPLE
+	NavigationPaneExpand -Enable
+
+	.NOTES
+	Current user
+#>
+function NavigationPaneExpand
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Disable"
+		{
+			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name NavPaneExpandToCurrentFolder -Force -ErrorAction Ignore
+		}
+		"Enable"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name NavPaneExpandToCurrentFolder -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -11283,7 +11337,7 @@ function SoftwareDistributionTask
 		"Register"
 		{
 			# Checking if we're trying to create the task when it was already created as another user
-			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName SoftwareDistribution)
+			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName SoftwareDistribution -ErrorAction Ignore)
 			{
 				# Also we can parse $env:SystemRoot\System32\Tasks\Sophia\SoftwareDistribution to check if the task was created
 				$ScheduleService = New-Object -ComObject Schedule.Service
@@ -11461,7 +11515,7 @@ function TempTask
 		"Register"
 		{
 			# Checking if we're trying to create the task when it was already created as another user
-			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName Temp)
+			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName Temp -ErrorAction Ignore)
 			{
 				# Also we can parse $env:SystemRoot\System32\Tasks\Sophia\Temp to check if the task was created
 				$ScheduleService = New-Object -ComObject Schedule.Service
@@ -13455,9 +13509,10 @@ function UpdateLGPEPolicies
 }
 #endregion Update Policies
 
-#region Refresh Environment
-function RefreshEnvironment
+#region Post Actions
+function PostActions
 {
+	#region Refresh Environment
 	$UpdateEnvironment = @{
 		Namespace        = "WinAPI"
 		Name             = "UpdateEnvironment"
@@ -13516,7 +13571,9 @@ public static void PostMessage()
 
 	# Restart the Start menu
 	Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
+	#endregion Refresh Environment
 
+	#region Other actions
 	# Turn on Controlled folder access if it was turned off
 	if ($Script:DefenderEnabled)
 	{
@@ -13551,6 +13608,49 @@ public static void PostMessage()
 	[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
 	[Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
 
+	# Apply policies found in registry to re-build database database due to gpedit.msc relies in its' own database
+	if ((Test-Path -Path "$env:TEMP\Computer.txt") -or (Test-Path -Path "$env:TEMP\User.txt"))
+	{
+		if (Test-Path -Path "$env:TEMP\Computer.txt")
+		{
+			& "$PSScriptRoot\..\bin\LGPO.exe" /t "$env:TEMP\Computer.txt"
+		}
+		if (Test-Path -Path "$env:TEMP\User.txt")
+		{
+			& "$PSScriptRoot\..\bin\LGPO.exe" /t "$env:TEMP\User.txt"
+		}
+
+		gpupdate /force
+	}
+
+	# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+	Get-ChildItem -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
+
+	Stop-Process -Name explorer -Force
+	Start-Sleep -Seconds 3
+
+	# Restoring closed folders
+	foreach ($Script:OpenedFolder in $Script:OpenedFolders)
+	{
+		if (Test-Path -Path $Script:OpenedFolder)
+		{
+			Start-Process -FilePath explorer -ArgumentList $Script:OpenedFolder
+		}
+	}
+
+	# Check if any of scheduled tasks were created. Unless open Task Scheduler
+	# Check how the script was invoked: via a preset or Function.ps1
+	$PresetName = (Get-PSCallStack).Position | Where-Object -FilterScript {
+		(($_.File -match ".ps1") -and ($_.File -notmatch "Functions.ps1")) -and (($_.Text -eq "CleanupTask -Register") -or ($_.Text -eq "CleanupTask -Register") -or ($_.Text -eq "TempTask -Register")) -or ($_.Text -match "Invoke-Expression")
+	}
+	if ($PresetName)
+	{
+		# Open Task Scheduler
+		Start-Process -FilePath taskschd.msc
+	}
+	#endregion Other actions
+
+	#region Toast notifications
 	# Telegram group
 	[xml]$ToastTemplate = @"
 <toast duration="Long" scenario="reminder">
@@ -13631,48 +13731,11 @@ public static void PostMessage()
 
 	$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New($ToastXML)
 	[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("Sophia").Show($ToastMessage)
-
-	if ((Test-Path -Path "$env:TEMP\Computer.txt") -or (Test-Path -Path "$env:TEMP\User.txt"))
-	{
-		if (Test-Path -Path "$env:TEMP\Computer.txt")
-		{
-			& "$PSScriptRoot\..\bin\LGPO.exe" /t "$env:TEMP\Computer.txt"
-		}
-		if (Test-Path -Path "$env:TEMP\User.txt")
-		{
-			& "$PSScriptRoot\..\bin\LGPO.exe" /t "$env:TEMP\User.txt"
-		}
-
-		gpupdate /force
-	}
-
-	# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
-	Get-ChildItem -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
-
-	Stop-Process -Name explorer -Force
-	Start-Sleep -Seconds 3
-
-	# Restoring closed folders
-	foreach ($Script:OpenedFolder in $Script:OpenedFolders)
-	{
-		if (Test-Path -Path $Script:OpenedFolder)
-		{
-			Start-Process -FilePath explorer -ArgumentList $Script:OpenedFolder
-		}
-	}
-
-	# Check if any of scheduled tasks were created. Unless open Task Scheduler
-	# Check how the script was invoked: via a preset or Function.ps1
-	$PresetName = (Get-PSCallStack).Position | Where-Object -FilterScript {
-		(($_.File -match ".ps1") -and ($_.File -notmatch "Functions.ps1")) -and (($_.Text -eq "CleanupTask -Register") -or ($_.Text -eq "CleanupTask -Register") -or ($_.Text -eq "TempTask -Register")) -or ($_.Text -match "Invoke-Expression")
-	}
-	if ($PresetName)
-	{
-		# Open Task Scheduler
-		Start-Process -FilePath taskschd.msc
-	}
+	#endregion Toast notifications
 }
+#endregion Post Actions
 
+#region Errors
 function Errors
 {
 	if ($Global:Error)
@@ -13695,4 +13758,4 @@ function Errors
 	Write-Information -MessageData "" -InformationAction Continue
 	Write-Warning -Message $Localization.RestartWarning
 }
-#endregion Refresh Environment
+#endregion Errors

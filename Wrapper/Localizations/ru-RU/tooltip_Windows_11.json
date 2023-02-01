@@ -751,6 +751,36 @@
     }
   },
   {
+    "Id": 332,
+    "Region": "UI & Personalization",
+    "Function": "FolderGroupBy",
+    "Arg": {
+      "Zero": {
+        "Tag": "None",
+        "ToolTip": "Не группировать файлы и папки в папке Загрузки"
+      },
+      "One": {
+        "Tag": "Default",
+        "ToolTip": "Группировать файлы и папки по дате изменения (значение по умолчанию)"
+      }
+    }
+  },
+  {
+    "Id": 333,
+    "Region": "UI & Personalization",
+    "Function": "NavigationPaneExpand",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Не разворачивать до открытой папки область навигации (значение по умолчанию)"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Развернуть до открытой папки область навигации"
+      }
+    }
+  },
+  {
     "Id": 400,
     "Region": "OneDrive",
     "Function": "OneDrive",

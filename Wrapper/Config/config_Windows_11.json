@@ -833,6 +833,40 @@
     "WindowsDefault": "Zero"
   },
   {
+    "Id": 331,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "FolderGroupBy",
+    "Arg": {
+      "Zero": {
+        "Tag": "None"
+      },
+      "One": {
+        "Tag": "Default"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One"
+  },
+  {
+    "Id": 332,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "NavigationPaneExpand",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "Zero"
+  },
+  {
     "Id": 400,
     "Region": "OneDrive",
     "Control": "cmb",

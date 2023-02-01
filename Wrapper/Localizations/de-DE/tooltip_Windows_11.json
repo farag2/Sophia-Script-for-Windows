@@ -751,6 +751,36 @@
     }
   },
   {
+    "Id": 332,
+    "Region": "UI & Personalization",
+    "Function": "FolderGroupBy",
+    "Arg": {
+      "Zero": {
+        "Tag": "None",
+        "ToolTip": "Gruppieren Sie keine Dateien und Ordner im Ordner \"Downloads\""
+      },
+      "One": {
+        "Tag": "Default",
+        "ToolTip": "Gruppieren Sie Dateien und Ordner im Ordner \"Downloads\" nach Änderungsdatum"
+      }
+    }
+  },
+  {
+    "Id": 333,
+    "Region": "UI & Personalization",
+    "Function": "NavigationPaneExpand",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Erweitern Sie nicht, um den Ordner im Navigationsbereich zu öffnen (Standardeinstellung)"
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Erweitern, um den Ordner im Navigationsbereich zu öffnen"
+      }
+    }
+  },
+  {
     "Id": 400,
     "Region": "OneDrive",
     "Function": "OneDrive",

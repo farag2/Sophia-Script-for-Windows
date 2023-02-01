@@ -516,13 +516,21 @@ Cursors -Dark
 # Установить курсоры по умолчанию (значение по умолчанию)
 # Cursors -Default
 
-# Do not group files and folder
-# Не группировать файлы и папки
-# FolderGroupBy -None
+# Do not group files and folder in the Downloads folder
+# Не группировать файлы и папки в папке Загрузки
+FolderGroupBy -None
 
-# Group files and folder by date modified (default value)
+# Group files and folder by date modified in the Downloads folder (default value)
 # Группировать файлы и папки по дате изменения (значение по умолчанию)
 # FolderGroupBy -Default
+
+# Do not expand to open folder on navigation pane (default value)
+# Не разворачивать до открытой папки область навигации (значение по умолчанию)
+NavigationPaneExpand -Disable
+
+# Expand to open folder on navigation pane
+# Развернуть до открытой папки область навигации
+# NavigationPaneExpand -Enable
 #endregion UI & Personalization
 
 #region OneDrive
