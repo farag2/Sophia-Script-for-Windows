@@ -105,13 +105,8 @@ if ($Functions)
 }
 
 #region Protection
-<#
-	The mandatory checks. If you want to disable a warning message about whether the preset file was customized, remove the "-Warning" argument
-	Please, do not comment out this function
-
-	Обязательные проверки. Чтобы выключить предупреждение о необходимости настройки пресет-файла, удалите аргумент "-Warning"
-	Пожалуйста, не комментируйте данную функцию
-#>
+# The mandatory checks. If you want to disable a warning message about whether the preset file was customized, remove the "-Warning" argument
+# Обязательные проверки. Чтобы выключить предупреждение о необходимости настройки пресет-файла, удалите аргумент "-Warning"
 Checks -Warning
 
 <#
@@ -1474,24 +1469,10 @@ UseStoreOpenWith -Hide
 # UpdateLGPEPolicies
 #endregion Update Policies
 
-<#
-	Simulate pressing F5 to refresh the desktop
-	Refresh desktop icons, environment variables, taskbar
-	Restart the Start menu
-	Please, do not comment out this function
-
-	Симулировать нажатие F5 для обновления рабочего стола
-	Обновить иконки рабочего стола, переменные среды, панель задач
-	Перезапустить меню "Пуск"
-	Пожалуйста, не комментируйте данную функцию
-#>
+# Environment refresh and other neccessary post actions
+# Обновление окружения и прочие необходимые действия после выполнения основных функций
 PostActions
 
-<#
-	Errors output
-	Please, do not comment out this function
-
-	Вывод ошибок
-	Пожалуйста, не комментируйте данную функцию
-#>
+# Errors output
+# Вывод ошибок
 Errors
