@@ -2,7 +2,7 @@
 	.SYNOPSIS
 	The TAB completion for functions and their arguments
 
-	Version: v5.15.0
+	Version: v5.15.1
 	Date: 30.01.2023
 
 	Copyright (c) 2014—2023 farag
@@ -44,13 +44,13 @@ function Sophia
 		Invoke-Expression -Command $Function
 	}
 
-	# The "RefreshEnvironment" and "Errors" functions will be executed at the end
-	Invoke-Command -ScriptBlock {RefreshEnvironment; Errors}
+	# The "PostActions" and "Errors" functions will be executed at the end
+	Invoke-Command -ScriptBlock {PostActions; Errors}
 }
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC 2021 v5.15.0 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2023"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC 2021 v5.15.1 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2023"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force

@@ -2,7 +2,7 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v6.3.0
+	Version: v6.3.1
 	Date: 30.01.2023
 
 	Copyright (c) 2014—2023 farag
@@ -3916,39 +3916,56 @@ function OneDrive
 		"Uninstall"
 		{
 			[string]$UninstallString = Get-Package -Name "Microsoft OneDrive" -ProviderName Programs -ErrorAction Ignore | ForEach-Object -Process {$_.Meta.Attributes["UninstallString"]}
-			if ($UninstallString)
+			if (-not $UninstallString)
 			{
-				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message $Localization.OneDriveUninstalling -Verbose
+				# OneDrive is not installed
+				return
+			}
 
-				Stop-Process -Name OneDrive, OneDriveSetup, FileCoAuth -Force -ErrorAction Ignore
+			# Check if script was launched from OneDrive folder and preset file has function to uninstall OneDrive
+			# Check how the script was invoked: via a preset or Function.ps1
+			$PresetName = (Get-PSCallStack).Position | Where-Object -FilterScript {
+				(($_.File -match ".ps1") -and ($_.File -notmatch "Functions.ps1")) -and ($_.Text -eq "OneDrive -Uninstall") -or ($_.Text -match "Invoke-Expression")
+			}
+			# Check if user is logged into OneDrive account (Microsoft account)
+			$UserEmail = Get-ItemProperty -Path HKCU:\Software\Microsoft\OneDrive\Accounts\Personal -Name UserEmail -ErrorAction Ignore
+			if ($PresetName -and $UserEmail)
+			{
+				# Exit if user accidentelly set function in preset to uninstall but he's logged into the app
+				return
+			}
 
-				# Getting link to the OneDriveSetup.exe and its' argument(s)
-				[string[]]$OneDriveSetup = ($UninstallString -Replace("\s*/", ",/")).Split(",").Trim()
-				if ($OneDriveSetup.Count -eq 2)
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Verbose -Message $Localization.OneDriveUninstalling -Verbose
+
+			Stop-Process -Name OneDrive, OneDriveSetup, FileCoAuth -Force -ErrorAction Ignore
+
+			# Getting link to the OneDriveSetup.exe and its' argument(s)
+			[string[]]$OneDriveSetup = ($UninstallString -Replace("\s*/", ",/")).Split(",").Trim()
+			if ($OneDriveSetup.Count -eq 2)
+			{
+				Start-Process -FilePath $OneDriveSetup[0] -ArgumentList $OneDriveSetup[1..1] -Wait
+			}
+			else
+			{
+				Start-Process -FilePath $OneDriveSetup[0] -ArgumentList $OneDriveSetup[1..2] -Wait
+			}
+
+			# Get the OneDrive user folder path and remove it if it doesn't contain any user files
+			if (Test-Path -Path $env:OneDrive)
+			{
+				if ((Get-ChildItem -Path $env:OneDrive -ErrorAction Ignore | Measure-Object).Count -eq 0)
 				{
-					Start-Process -FilePath $OneDriveSetup[0] -ArgumentList $OneDriveSetup[1..1] -Wait
-				}
-				else
-				{
-					Start-Process -FilePath $OneDriveSetup[0] -ArgumentList $OneDriveSetup[1..2] -Wait
-				}
+					Remove-Item -Path $env:OneDrive -Recurse -Force -ErrorAction Ignore
 
-				# Get the OneDrive user folder path and remove it if it doesn't contain any user files
-				if (Test-Path -Path $env:OneDrive)
-				{
-					if ((Get-ChildItem -Path $env:OneDrive -ErrorAction Ignore | Measure-Object).Count -eq 0)
-					{
-						Remove-Item -Path $env:OneDrive -Recurse -Force -ErrorAction Ignore
-
-						# https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexa
-						# The system does not move the file until the operating system is restarted
-						# The system moves the file immediately after AUTOCHK is executed, but before creating any paging files
-						$Signature = @{
-							Namespace        = "WinAPI"
-							Name             = "DeleteFiles"
-							Language         = "CSharp"
-							MemberDefinition = @"
+					# https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexa
+					# The system does not move the file until the operating system is restarted
+					# The system moves the file immediately after AUTOCHK is executed, but before creating any paging files
+					$Signature = @{
+						Namespace        = "WinAPI"
+						Name             = "DeleteFiles"
+						Language         = "CSharp"
+						MemberDefinition = @"
 public enum MoveFileFlags
 {
 	MOVEFILE_DELAY_UNTIL_REBOOT = 0x00000004
@@ -3962,159 +3979,153 @@ public static bool MarkFileDelete (string sourcefile)
 	return MoveFileEx(sourcefile, null, MoveFileFlags.MOVEFILE_DELAY_UNTIL_REBOOT);
 }
 "@
-						}
-
-						# If there are some files or folders left in %OneDrive%
-						if ((Get-ChildItem -Path $env:OneDrive -ErrorAction Ignore | Measure-Object).Count -ne 0)
-						{
-							if (-not ("WinAPI.DeleteFiles" -as [type]))
-							{
-								Add-Type @Signature
-							}
-
-							try
-							{
-								Remove-Item -Path $env:OneDrive -Recurse -Force -ErrorAction Stop
-							}
-							catch
-							{
-								# If files are in use remove them at the next boot
-								Get-ChildItem -Path $env:OneDrive -Recurse -Force | ForEach-Object -Process {[WinAPI.DeleteFiles]::MarkFileDelete($_.FullName)}
-							}
-						}
 					}
-					else
-					{
-						Start-Process -FilePath explorer -ArgumentList $env:OneDrive
-					}
-				}
 
-				Remove-ItemProperty -Path HKCU:\Environment -Name OneDrive, OneDriveConsumer -Force -ErrorAction Ignore
-				Remove-Item -Path HKCU:\Software\Microsoft\OneDrive, HKLM:\SOFTWARE\WOW6432Node\Microsoft\OneDrive, "$env:ProgramData\Microsoft OneDrive", $env:SystemDrive\OneDriveTemp -Recurse -Force -ErrorAction Ignore
-				Unregister-ScheduledTask -TaskName *OneDrive* -Confirm:$false -ErrorAction Ignore
-
-				# Getting the OneDrive folder path
-				$OneDriveFolder = Split-Path -Path (Split-Path -Path $OneDriveSetup[0] -Parent)
-
-				# Save all opened folders in order to restore them after File Explorer restarting
-				Clear-Variable -Name OpenedFolders -Force -ErrorAction Ignore
-				$Script:OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
-
-				# Terminate the File Explorer process
-				New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoRestartShell -PropertyType DWord -Value 0 -Force
-				Stop-Process -Name explorer -Force
-				Start-Sleep -Seconds 3
-				New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoRestartShell -PropertyType DWord -Value 1 -Force
-
-				# Attempt to unregister FileSyncShell64.dll and remove
-				$FileSyncShell64dlls = Get-ChildItem -Path "$OneDriveFolder\*\FileSyncShell64.dll" -Force
-				foreach ($FileSyncShell64dll in $FileSyncShell64dlls.FullName)
-				{
-					Start-Process -FilePath regsvr32.exe -ArgumentList "/u /s $FileSyncShell64dll" -Wait
-					Remove-Item -Path $FileSyncShell64dll -Force -ErrorAction Ignore
-
-					if (Test-Path -Path $FileSyncShell64dll)
+					# If there are some files or folders left in %OneDrive%
+					if ((Get-ChildItem -Path $env:OneDrive -ErrorAction Ignore | Measure-Object).Count -ne 0)
 					{
 						if (-not ("WinAPI.DeleteFiles" -as [type]))
 						{
 							Add-Type @Signature
 						}
 
-						# If files are in use remove them at the next boot
-						Get-ChildItem -Path $FileSyncShell64dll -Recurse -Force | ForEach-Object -Process {[WinAPI.DeleteFiles]::MarkFileDelete($_.FullName)}
+						try
+						{
+							Remove-Item -Path $env:OneDrive -Recurse -Force -ErrorAction Stop
+						}
+						catch
+						{
+							# If files are in use remove them at the next boot
+							Get-ChildItem -Path $env:OneDrive -Recurse -Force | ForEach-Object -Process {[WinAPI.DeleteFiles]::MarkFileDelete($_.FullName)}
+						}
 					}
 				}
-
-				Start-Sleep -Seconds 1
-
-				# Start the File Explorer process
-				Start-Process -FilePath explorer
-
-				# Restoring closed folders
-				foreach ($OpenedFolder in $OpenedFolders)
+				else
 				{
-					if (Test-Path -Path $OpenedFolder)
-					{
-						Start-Process -FilePath explorer -ArgumentList $OpenedFolder
-					}
+					Start-Process -FilePath explorer -ArgumentList $env:OneDrive
 				}
-
-				Remove-Item -Path $OneDriveFolder, $env:LOCALAPPDATA\OneDrive, $env:LOCALAPPDATA\Microsoft\OneDrive, "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\OneDrive.lnk" -Recurse -Force -ErrorAction Ignore
 			}
+
+			Remove-ItemProperty -Path HKCU:\Environment -Name OneDrive, OneDriveConsumer -Force -ErrorAction Ignore
+			Remove-Item -Path HKCU:\Software\Microsoft\OneDrive, HKLM:\SOFTWARE\WOW6432Node\Microsoft\OneDrive, "$env:ProgramData\Microsoft OneDrive", $env:SystemDrive\OneDriveTemp -Recurse -Force -ErrorAction Ignore
+			Unregister-ScheduledTask -TaskName *OneDrive* -Confirm:$false -ErrorAction Ignore
+
+			# Getting the OneDrive folder path
+			$OneDriveFolder = Split-Path -Path (Split-Path -Path $OneDriveSetup[0] -Parent)
+
+			# Terminate the File Explorer process
+			New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoRestartShell -PropertyType DWord -Value 0 -Force
+			Stop-Process -Name explorer -Force
+			Start-Sleep -Seconds 3
+			New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoRestartShell -PropertyType DWord -Value 1 -Force
+
+			# Attempt to unregister FileSyncShell64.dll and remove
+			$FileSyncShell64dlls = Get-ChildItem -Path "$OneDriveFolder\*\FileSyncShell64.dll" -Force
+			foreach ($FileSyncShell64dll in $FileSyncShell64dlls.FullName)
+			{
+				Start-Process -FilePath regsvr32.exe -ArgumentList "/u /s $FileSyncShell64dll" -Wait
+				Remove-Item -Path $FileSyncShell64dll -Force -ErrorAction Ignore
+
+				if (Test-Path -Path $FileSyncShell64dll)
+				{
+					if (-not ("WinAPI.DeleteFiles" -as [type]))
+					{
+						Add-Type @Signature
+					}
+
+					# If files are in use remove them at the next boot
+					Get-ChildItem -Path $FileSyncShell64dll -Recurse -Force | ForEach-Object -Process {[WinAPI.DeleteFiles]::MarkFileDelete($_.FullName)}
+				}
+			}
+
+			Start-Sleep -Seconds 1
+
+			# Start the File Explorer process
+			Start-Process -FilePath explorer
+
+			$Path = @(
+				$OneDriveFolder,
+				"$env:LOCALAPPDATA\OneDrive",
+				"$env:LOCALAPPDATA\Microsoft\OneDrive",
+				"$env:APPDATA\Microsoft\Windows\Start Menu\Programs\OneDrive.lnk"
+			)
+			Remove-Item -Path $Path -Recurse -Force -ErrorAction Ignore
 		}
 		"Install"
 		{
 			$OneDrive = Get-Package -Name "Microsoft OneDrive" -ProviderName Programs -Force -ErrorAction Ignore
-			if (-not $OneDrive)
+			if ($OneDrive)
 			{
-				if (Test-Path -Path $env:SystemRoot\SysWOW64\OneDriveSetup.exe)
-				{
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message $Localization.OneDriveInstalling -Verbose
-
-					Start-Process -FilePath $env:SystemRoot\SysWOW64\OneDriveSetup.exe
-				}
-				else
-				{
-					try
-					{
-						# Check the internet connection
-						$Parameters = @{
-							Uri              = "https://www.google.com"
-							Method           = "Head"
-							DisableKeepAlive = $true
-							UseBasicParsing  = $true
-						}
-						if (-not (Invoke-WebRequest @Parameters).StatusDescription)
-						{
-							return
-						}
-
-						# Downloading the latest OneDrive installer 64-bit
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message $Localization.OneDriveDownloading -Verbose
-
-						# Parse XML to get the URL
-						# https://go.microsoft.com/fwlink/p/?LinkID=844652
-						$Parameters = @{
-							Uri             = "https://g.live.com/1rewlive5skydrive/OneDriveProductionV2"
-							UseBasicParsing = $true
-							Verbose         = $true
-						}
-						$Content = Invoke-RestMethod @Parameters
-
-						# Remove invalid chars
-						[xml]$OneDriveXML = $Content -replace "ï»¿", ""
-
-						$OneDriveURL = ($OneDriveXML).root.update.amd64binary.url
-						$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-						$Parameters = @{
-							Uri             = $OneDriveURL
-							OutFile         = "$DownloadsFolder\OneDriveSetup.exe"
-							UseBasicParsing = $true
-							Verbose         = $true
-						}
-						Invoke-WebRequest @Parameters
-
-						Start-Process -FilePath "$DownloadsFolder\OneDriveSetup.exe" -Wait
-
-						Remove-Item -Path "$DownloadsFolder\OneDriveSetup.exe" -Force
-					}
-					catch [System.Net.WebException]
-					{
-						Write-Warning -Message $Localization.NoInternetConnection
-						Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
-
-						Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
-					}
-				}
-
-				# Save screenshots by pressing Win+PrtScr in the Pictures folder
-				Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -Force -ErrorAction Ignore
-
-				Get-ScheduledTask -TaskName "Onedrive* Update*" | Enable-ScheduledTask
-				Get-ScheduledTask -TaskName "Onedrive* Update*" | Start-ScheduledTask
+				return
 			}
+
+			if (Test-Path -Path $env:SystemRoot\SysWOW64\OneDriveSetup.exe)
+			{
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Verbose -Message $Localization.OneDriveInstalling -Verbose
+
+				Start-Process -FilePath $env:SystemRoot\SysWOW64\OneDriveSetup.exe
+			}
+			else
+			{
+				try
+				{
+					# Check the internet connection
+					$Parameters = @{
+						Uri              = "https://www.google.com"
+						Method           = "Head"
+						DisableKeepAlive = $true
+						UseBasicParsing  = $true
+					}
+					if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+					{
+						return
+					}
+
+					# Downloading the latest OneDrive installer 64-bit
+					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message $Localization.OneDriveDownloading -Verbose
+
+					# Parse XML to get the URL
+					# https://go.microsoft.com/fwlink/p/?LinkID=844652
+					$Parameters = @{
+						Uri             = "https://g.live.com/1rewlive5skydrive/OneDriveProductionV2"
+						UseBasicParsing = $true
+						Verbose         = $true
+					}
+					$Content = Invoke-RestMethod @Parameters
+
+					# Remove invalid chars
+					[xml]$OneDriveXML = $Content -replace "ï»¿", ""
+
+					$OneDriveURL = ($OneDriveXML).root.update.amd64binary.url
+					$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+					$Parameters = @{
+						Uri             = $OneDriveURL
+						OutFile         = "$DownloadsFolder\OneDriveSetup.exe"
+						UseBasicParsing = $true
+						Verbose         = $true
+					}
+					Invoke-WebRequest @Parameters
+
+					Start-Process -FilePath "$DownloadsFolder\OneDriveSetup.exe" -Wait
+
+					Remove-Item -Path "$DownloadsFolder\OneDriveSetup.exe" -Force
+				}
+				catch [System.Net.WebException]
+				{
+					Write-Warning -Message $Localization.NoInternetConnection
+					Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+
+					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+				}
+			}
+
+			# Save screenshots by pressing Win+PrtScr in the Pictures folder
+			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -Force -ErrorAction Ignore
+
+			Get-ScheduledTask -TaskName "Onedrive* Update*" | Enable-ScheduledTask
+			Get-ScheduledTask -TaskName "Onedrive* Update*" | Start-ScheduledTask
 		}
 	}
 }
