@@ -956,7 +956,7 @@ PreventEdgeShortcutCreation -Channels Stable, Beta, Dev, Canary
 	Установить подсистему Windows для Linux (WSL), последний пакет обновления ядра Linux и дистрибутив Linux, используя всплывающую форму
 	Параметр "При обновлении Windows получать обновления для других продуктов Майкрософт" будет включен автоматически в Центре обновлении Windows, чтобы получать обновления ядра
 #>
-# WSL
+# Install-WSL
 #endregion WSL
 
 #region Start menu
@@ -1013,7 +1013,7 @@ UninstallUWPApps
 	Скачать и установить "Расширения для видео HEVC от производителя устройства", чтобы иметь возможность открывать форматы .heic и .heif
 	Расширение уже установлено в Windows 11 22H2 по умолчанию
 #>
-HEIF -Install
+HEVC -Install
 
 <#
 	Open Microsoft Store "HEVC Video Extensions from Device Manufacturer" page to install this extension manually to be able to open .heic and .heif formats
@@ -1022,7 +1022,7 @@ HEIF -Install
 	Открыть страницу "Расширения для видео HEVC от производителя устройства" в Microsoft Store, чтобы вручную установить расширение для открытия форматов .heic и .heif
 	Расширение может быть установлено бесплатно без учетной записи Microsoft
 #>
-# HEIF -Manually
+# HEVC -Manually
 
 # Disable Cortana autostarting
 # Выключить автозагрузку Кортана

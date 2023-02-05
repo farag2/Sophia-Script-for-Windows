@@ -8563,7 +8563,7 @@ function PreventEdgeShortcutCreation
 	Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form
 
 	.EXAMPLE
-	WSL
+	Install-WSL
 
 	.NOTES
 	The "Receive updates for other Microsoft products" setting will be enabled automatically to receive kernel updates
@@ -8571,7 +8571,7 @@ function PreventEdgeShortcutCreation
 	.NOTES
 	Machine-wide
 #>
-function WSL
+function Install-WSL
 {
 	Add-Type -AssemblyName PresentationCore, PresentationFramework
 

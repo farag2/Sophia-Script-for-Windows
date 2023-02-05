@@ -27,7 +27,7 @@
 	.NOTES
 	Supported Windows 10 versions
 	Versions: 21H2/22H2
-	Builds: 1904x.2364+
+	Builds: 19044.2364+
 	Editions: Home/Pro/Enterprise
 	Architecture: x64
 
@@ -1012,7 +1012,7 @@ PreventEdgeShortcutCreation -Channels Stable, Beta, Dev, Canary
 	Установить подсистему Windows для Linux (WSL), последний пакет обновления ядра Linux и дистрибутив Linux, используя всплывающую форму
 	Параметр "При обновлении Windows получать обновления для других продуктов Майкрософт" будет включен автоматически в Центре обновлении Windows, чтобы получать обновления ядра
 #>
-# WSL
+# Install-WSL
 #endregion WSL
 
 #region Start menu
@@ -1081,7 +1081,7 @@ UninstallUWPApps
 
 # Download and install "HEVC Video Extensions from Device Manufacturer" to be able to open .heic and .heif formats
 # Скачать и установить "Расширения для видео HEVC от производителя устройства", чтобы иметь возможность открывать форматы .heic и .heif
-HEIF -Install
+HEVC -Install
 
 <#
 	Open Microsoft Store "HEVC Video Extensions from Device Manufacturer" page to install this extension manually to be able to open .heic and .heif formats
@@ -1090,7 +1090,7 @@ HEIF -Install
 	Открыть страницу "Расширения для видео HEVC от производителя устройства" в Microsoft Store, чтобы вручную установить расширение для открытия форматов .heic и .heif
 	Расширение может быть установлено бесплатно без учетной записи Microsoft
 #>
-# HEIF -Manually
+# HEVC -Manually
 
 # Disable Cortana autostarting
 # Выключить автозагрузку Кортана

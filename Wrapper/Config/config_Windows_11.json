@@ -1692,7 +1692,7 @@
     "Region": "UWP apps",
     "Control": "cmb",
     "Required": "false",
-    "Function": "HEIF",
+    "Function": "HEVC",
     "Arg": {
       "Zero": {
         "Tag": "Manually"

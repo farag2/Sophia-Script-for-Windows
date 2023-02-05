@@ -1502,7 +1502,7 @@
   {
     "Id": 803,
     "Region": "UWP apps",
-    "Function": "HEIF",
+    "Function": "HEVC",
     "Arg": {
       "Zero": {
         "Tag": "Manually",

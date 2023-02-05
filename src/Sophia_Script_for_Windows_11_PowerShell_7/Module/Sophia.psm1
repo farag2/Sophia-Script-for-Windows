@@ -3935,7 +3935,7 @@ function OneDrive
 			$UserEmail = Get-ItemProperty -Path HKCU:\Software\Microsoft\OneDrive\Accounts\Personal -Name UserEmail -ErrorAction Ignore
 			if ($PresetName -and $UserEmail)
 			{
-				# Exit if user accidentelly set function in preset to uninstall but he's logged into the app
+				# Exit if user accidentally set function in preset to uninstall but he's logged into the app
 				return
 			}
 
@@ -8798,8 +8798,12 @@ function InstallVCRedist
 
 		if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
 		{
+			# https://github.com/microsoft/winget-pkgs/tree/master/manifests/m/Microsoft/VCRedist/2015%2B
 			winget install --id=Microsoft.VCRedist.2015+.x86 --exact --accept-source-agreements
 			winget install --id=Microsoft.VCRedist.2015+.x64 --exact --accept-source-agreements
+
+			# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+			Get-ChildItem -Path "$env:TEMP\WinGet" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 		}
 		else
 		{
@@ -8829,8 +8833,7 @@ function InstallVCRedist
 				"$DownloadsFolder\VC_redist.x86.exe",
 				"$DownloadsFolder\VC_redist.x64.exe",
 				"$env:TEMP\dd_vcredist_x86_*.log",
-				"$env:TEMP\dd_vcredist_amd64_*.log",
-				"$env:TEMP\WinGet"
+				"$env:TEMP\dd_vcredist_amd64_*.log"
 			)
 			Get-ChildItem -Path $Paths -Recurse -Force | Remove-Item -Recurse -Force -ErrorAction Ignore
 		}
@@ -8875,15 +8878,20 @@ function InstallDotNetRuntimes
 
 		if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
 		{
+			# https://github.com/microsoft/winget-pkgs/tree/master/manifests/m/Microsoft/DotNet/DesktopRuntime/6
 			# .NET Desktop Runtime 6 x86
 			winget install --id=Microsoft.DotNet.DesktopRuntime.6 --architecture x86 --exact --accept-source-agreements
 			# .NET Desktop Runtime 6 x64
 			winget install --id=Microsoft.DotNet.DesktopRuntime.6 --architecture x64 --exact --accept-source-agreements
 
+			# https://github.com/microsoft/winget-pkgs/tree/master/manifests/m/Microsoft/DotNet/DesktopRuntime/7
 			# .NET Desktop Runtime 7 x86
 			winget install --id=Microsoft.DotNet.DesktopRuntime.7 --architecture x86 --exact --accept-source-agreements
 			# .NET Desktop Runtime 7 x64
 			winget install --id=Microsoft.DotNet.DesktopRuntime.7 --architecture x64 --exact --accept-source-agreements
+
+			# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+			Get-ChildItem -Path "$env:TEMP\WinGet" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 		}
 		else
 		{
@@ -8961,8 +8969,7 @@ function InstallDotNetRuntimes
 			$Paths = @(
 				"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe",
 				"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe",
-				"$env:TEMP\Microsoft_.NET_Runtime*.log",
-				"$env:TEMP\WinGet"
+				"$env:TEMP\Microsoft_.NET_Runtime*.log"
 			)
 			Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 		}
@@ -9273,11 +9280,11 @@ function PreventEdgeShortcutCreation
 	.SYNOPSIS
 	Windows Subsystem for Linux (WSL)
 
-	.PARAMETER Install
+	.PARAMETER
 	Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form
 
 	.EXAMPLE
-	WSL
+	Install-WSL
 
 	.NOTES
 	The "Receive updates for other Microsoft products" setting will be enabled automatically to receive kernel updates
@@ -9285,8 +9292,17 @@ function PreventEdgeShortcutCreation
 	.NOTES
 	Machine-wide
 #>
-function WSL
+function Install-WSL
 {
+	[System.Console]::OutputEncoding = [System.Text.Encoding]::Unicode
+
+	$Distros = (wsl --list --online | Select-Object -Skip 8).Replace("  ", "").Replace("* ", "") | ForEach-Object -Process {
+		[PSCustomObject]@{
+			"Distro" = $_ -split " ", 2 | Select-Object -Last 1
+			"Alias"  = $_ -split " ", 2 | Select-Object -First 1
+		}
+	}
+
 	Add-Type -AssemblyName PresentationCore, PresentationFramework
 
 	#region Variables
@@ -9300,19 +9316,12 @@ function WSL
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		Name="Window"
 		Title="WSL"
-		MinHeight="400" MinWidth="350"
+		MinHeight="460" MinWidth="350"
 		SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
 		TextOptions.TextFormattingMode="Display" SnapsToDevicePixels="True"
 		FontFamily="Candara" FontSize="16" ShowInTaskbar="True"
 		Background="#F1F1F1" Foreground="#262626">
 		<Window.Resources>
-			<Style TargetType="StackPanel" x:Key="PanelContainerStyle">
-				<Setter Property="Grid.Row" Value="0"/>
-				<Setter Property="Orientation" Value="Vertical"/>
-			</Style>
-			<Style TargetType="StackPanel" x:Key="PanelElementStyle">
-				<Setter Property="Orientation" Value="Horizontal"/>
-			</Style>
 			<Style TargetType="RadioButton">
 				<Setter Property="VerticalAlignment" Value="Center"/>
 				<Setter Property="Margin" Value="10"/>
@@ -9332,47 +9341,7 @@ function WSL
 				<RowDefinition Height="*"/>
 				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
-			<StackPanel Name="PanelContainer" Style="{StaticResource PanelContainerStyle}">
-				<StackPanel Style="{StaticResource PanelElementStyle}">
-					<RadioButton Name="RadioButtonUbuntu" GroupName="NixNames" Tag="Ubuntu"/>
-					<TextBlock Text="Ubuntu"/>
-				</StackPanel>
-
-				<StackPanel Style="{StaticResource PanelElementStyle}">
-					<RadioButton Name="RadioButtonDebian" GroupName="NixNames" Tag="Debian"/>
-					<TextBlock Text="Debian GNU/Linux"/>
-				</StackPanel>
-
-				<StackPanel Style="{StaticResource PanelElementStyle}">
-					<RadioButton Name="RadioButtonKali" GroupName="NixNames" Tag="kali-linux"/>
-					<TextBlock Text="Kali Linux Rolling"/>
-				</StackPanel>
-
-				<StackPanel Style="{StaticResource PanelElementStyle}">
-					<RadioButton Name="RadioButtonOpenSuse" GroupName="NixNames" Tag="openSUSE-42"/>
-					<TextBlock Text="openSUSE Leap 42"/>
-				</StackPanel>
-
-				<StackPanel Style="{StaticResource PanelElementStyle}">
-					<RadioButton Name="RadioButtonSuse" GroupName="NixNames" Tag="SLES-12"/>
-					<TextBlock Text="SUSE Linux Enterprise Server v12"/>
-				</StackPanel>
-
-				<StackPanel Style="{StaticResource PanelElementStyle}">
-					<RadioButton Name="RadioButtonUbuntu16" GroupName="NixNames" Tag="Ubuntu-16.04"/>
-					<TextBlock Text="Ubuntu 16.04 LTS"/>
-				</StackPanel>
-
-				<StackPanel Style="{StaticResource PanelElementStyle}">
-					<RadioButton Name="RadioButtonUbuntu18" GroupName="NixNames" Tag="Ubuntu-18.04"/>
-					<TextBlock Text="Ubuntu 18.04 LTS"/>
-				</StackPanel>
-
-				<StackPanel Style="{StaticResource PanelElementStyle}">
-					<RadioButton Name="RadioButtonUbuntu20" GroupName="NixNames" Tag="Ubuntu-20.04"/>
-					<TextBlock Text="Ubuntu 20.04 LTS"/>
-				</StackPanel>
-			</StackPanel>
+			<StackPanel Name="PanelContainer" Grid.Row="0"/>
 			<Button Name="ButtonInstall" Content="Install" Grid.Row="2"/>
 		</Grid>
 	</Window>
@@ -9391,7 +9360,11 @@ function WSL
 
 	function ButtonInstallClicked
 	{
+		Write-Warning -Message $Script:CommandTag
+
 		Start-Process -FilePath wsl.exe -ArgumentList "--install --distribution $Script:CommandTag" -Wait
+
+		$Form.Close()
 	}
 	#endregion
 
@@ -9399,11 +9372,23 @@ function WSL
 	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
 		$control = $Form.FindName($_.Name)
 		Set-Variable -Name ($_.Name) -Value $control
-		if ($Control.Template.TargetType.Name -eq "RadioButton")
-		{
-			$Control.add_Checked({RadioButtonChecked})
-		}
 	}
+
+	foreach ($Distro in $Distros)
+	{
+		$Panel = New-Object -TypeName System.Windows.Controls.StackPanel
+		$RadioButton = New-Object -TypeName System.Windows.Controls.RadioButton
+		$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
+		$Panel.Orientation = "Horizontal"        
+		$RadioButton.GroupName = "WslDistro"
+		$RadioButton.Tag = $Distro.Alias
+		$RadioButton.add_Checked({RadioButtonChecked})
+		$TextBlock.Text = $Distro.Distro
+		$Panel.Children.Add($RadioButton) | Out-Null
+		$Panel.Children.Add($TextBlock) | Out-Null
+		$PanelContainer.Children.Add($Panel) | Out-Null
+	}
+
 	$ButtonInstall.add_Click({ButtonInstallClicked})
 
 	#region Sendkey function
@@ -9453,6 +9438,9 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 
 	# Receive updates for other Microsoft products when you update Windows
 	(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
+
+	# Trigger Windows Update for detecting new updates
+	(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
 }
 #endregion WSL
 
@@ -9785,7 +9773,7 @@ function UninstallUWPApps
 		# Raw Image Extension
 		"Microsoft.RawImageExtension",
 
-		# HEIF Image Extensions
+		# HEVC Image Extensions
 		"Microsoft.HEIFImageExtension",
 
 		# MPEG-2 Video Extension
@@ -10501,10 +10489,10 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	Open Microsoft Store "HEVC Video Extensions from Device Manufacturer" page to install the extension manually
 
 	.EXAMPLE
-	HEIF -Install
+	HEVC -Install
 
 	.EXAMPLE
-	HEIF -Manually
+	HEVC -Manually
 
 	.LINK
 	https://www.microsoft.com/store/productId/9n4wgh0z6vhq
@@ -10518,7 +10506,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	.NOTES
 	Current user
 #>
-function HEIF
+function HEVC
 {
 	param
 	(

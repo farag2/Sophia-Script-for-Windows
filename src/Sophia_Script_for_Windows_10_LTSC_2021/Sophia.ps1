@@ -911,7 +911,7 @@ PreventEdgeShortcutCreation -Channels Stable, Beta, Dev, Canary
 	Установить подсистему Windows для Linux (WSL), последний пакет обновления ядра Linux и дистрибутив Linux, используя всплывающую форму
 	Параметр "При обновлении Windows получать обновления для других продуктов Майкрософт" будет включен автоматически в Центре обновлении Windows, чтобы получать обновления ядра
 #>
-# WSL
+# Install-WSL
 #endregion WSL
 
 #region Start menu
