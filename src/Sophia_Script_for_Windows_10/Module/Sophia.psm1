@@ -3,7 +3,7 @@
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
 	Version: v5.15.1
-	Date: 30.01.2023
+	Date: 06.02.2023
 
 	Copyright (c) 2014—2023 farag
 	Copyright (c) 2019—2023 farag & Inestic
@@ -9738,17 +9738,17 @@ function Install-WSL
 		$Panel = New-Object -TypeName System.Windows.Controls.StackPanel
 		$RadioButton = New-Object -TypeName System.Windows.Controls.RadioButton
 		$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
-		$Panel.Orientation = "Horizontal"        
+		$Panel.Orientation = "Horizontal"
 		$RadioButton.GroupName = "WslDistro"
 		$RadioButton.Tag = $Distro.Alias
-		$RadioButton.add_Checked({RadioButtonChecked})
+		$RadioButton.Add_Checked({RadioButtonChecked})
 		$TextBlock.Text = $Distro.Distro
 		$Panel.Children.Add($RadioButton) | Out-Null
 		$Panel.Children.Add($TextBlock) | Out-Null
 		$PanelContainer.Children.Add($Panel) | Out-Null
 	}
 
-	$ButtonInstall.add_Click({ButtonInstallClicked})
+	$ButtonInstall.Add_Click({ButtonInstallClicked})
 
 	#region Sendkey function
 	# Emulate the Backspace key sending to prevent the console window to freeze

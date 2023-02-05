@@ -3,7 +3,7 @@
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
 	Version: v5.15.1
-	Date: 30.01.2023
+	Date: 06.02.2023
 
 	Copyright (c) 2014—2023 farag
 	Copyright (c) 2019—2023 farag & Inestic
@@ -8687,10 +8687,10 @@ function Install-WSL
 		Set-Variable -Name ($_.Name) -Value $control
 		if ($Control.Template.TargetType.Name -eq "RadioButton")
 		{
-			$Control.add_Checked({RadioButtonChecked})
+			$Control.Add_Checked({RadioButtonChecked})
 		}
 	}
-	$ButtonInstall.add_Click({ButtonInstallClicked})
+	$ButtonInstall.Add_Click({ButtonInstallClicked})
 
 	#region Sendkey function
 	# Emulate the Backspace key sending to prevent the console window to freeze

@@ -1413,7 +1413,7 @@
   {
     "Id": 600,
     "Region": "WSL",
-    "Function": "WSL",
+    "Function": "Install-WSL",
     "Arg": {
       "Zero": {
         "Tag": "",

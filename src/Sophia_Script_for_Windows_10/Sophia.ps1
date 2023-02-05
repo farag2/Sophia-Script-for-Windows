@@ -3,7 +3,7 @@
 	Default preset file for "Sophia Script for Windows 10"
 
 	Version: v5.15.1
-	Date: 30.01.2023
+	Date: 06.02.2023
 
 	Copyright (c) 2014—2023 farag
 	Copyright (c) 2019—2023 farag & Inestic

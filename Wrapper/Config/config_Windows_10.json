@@ -1691,7 +1691,7 @@
     "Region": "WSL",
     "Control": "chk",
     "Required": "false",
-    "Function": "WSL",
+    "Function": "Install-WSL",
     "Arg": {
       "Zero": {
         "Tag": ""

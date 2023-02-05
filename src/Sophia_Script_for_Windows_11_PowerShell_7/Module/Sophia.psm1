@@ -3,7 +3,7 @@
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
 	Version: v6.3.1
-	Date: 30.01.2023
+	Date: 06.02.2023
 
 	Copyright (c) 2014—2023 farag
 	Copyright (c) 2019—2023 farag & Inestic
@@ -13,7 +13,7 @@
 	.NOTES
 	Supported Windows 11 versions
 	Versions: 21H2/22H2/23H2+
-	Builds: 22000.1335+, 22621+
+	Builds: 22000.1335+, 22621.963+
 	Editions: Home/Pro/Enterprise
 
 	.LINK GitHub
@@ -9379,17 +9379,17 @@ function Install-WSL
 		$Panel = New-Object -TypeName System.Windows.Controls.StackPanel
 		$RadioButton = New-Object -TypeName System.Windows.Controls.RadioButton
 		$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
-		$Panel.Orientation = "Horizontal"        
+		$Panel.Orientation = "Horizontal"
 		$RadioButton.GroupName = "WslDistro"
 		$RadioButton.Tag = $Distro.Alias
-		$RadioButton.add_Checked({RadioButtonChecked})
+		$RadioButton.Add_Checked({RadioButtonChecked})
 		$TextBlock.Text = $Distro.Distro
 		$Panel.Children.Add($RadioButton) | Out-Null
 		$Panel.Children.Add($TextBlock) | Out-Null
 		$PanelContainer.Children.Add($Panel) | Out-Null
 	}
 
-	$ButtonInstall.add_Click({ButtonInstallClicked})
+	$ButtonInstall.Add_Click({ButtonInstallClicked})
 
 	#region Sendkey function
 	# Emulate the Backspace key sending to prevent the console window to freeze
@@ -9459,7 +9459,7 @@ function UnpinAllStartApps
 {
 	Remove-Item "$env:LOCALAPPDATA\Packages\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\LocalState\start*.bin" -Force -ErrorAction Ignore
 
-	# https://gist.github.com/radtkedev
+	# https://gist.github.com/rad1ke
 	$HexString = "E27AE14B01FC4D1B9C00810BDE6E51854E5A5F47005BB1498A5C92AF9084F95E9BDB91E2EEDDD701300B000067DEFA31529529B3D32D8092A6EB66C8D5EADB19CF9B13518AAB9
 3275D9CEEF37E62C3574C036F327D1110AB0977996D67A2F8FA897D7207BEE85586B8CE6AD4F9736AA2154E3DCC9D082996984B76F1C73067F124F92A41F2B2CA83EF35436670979556FAE85AB10EA1
 6C932C3AECE1D45DA06D64BC42F4565AD0FCB8C63CDE7F6BB97ACE300198C3EACA3E1C974F547B1A7CF5B9C6A912448AB38A3BE2D6F0230A4A9AACC710C3E75088754CC2FB054B55B1D6ED7AD41EB8B
