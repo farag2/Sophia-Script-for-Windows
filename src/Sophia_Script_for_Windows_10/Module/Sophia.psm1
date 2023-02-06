@@ -9650,7 +9650,7 @@ function Install-WSL
 {
 	[System.Console]::OutputEncoding = [System.Text.Encoding]::Unicode
 
-	$Distros = (wsl --list --online | Select-Object -Skip 8).Replace("  ", "").Replace("* ", "") | ForEach-Object -Process {
+	$Distros = (wsl --list --online | Select-Object -Skip 4).Replace("  ", "").Replace("* ", "") | ForEach-Object -Process {
 		[PSCustomObject]@{
 			"Distro" = $_ -split " ", 2 | Select-Object -Last 1
 			"Alias"  = $_ -split " ", 2 | Select-Object -First 1
