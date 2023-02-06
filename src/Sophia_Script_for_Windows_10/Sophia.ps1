@@ -979,7 +979,7 @@ InstallVCRedist
 
 <#
 	Install the latest .NET Desktop Runtime 6, 7 (x86/x64)
-	Установить последнюю версию .NET Desktop Runtime 6 (x86/x64)
+	Установить последнюю версию .NET Desktop Runtime 6, 7 (x86/x64)
 
 	https://dotnet.microsoft.com/en-us/download/dotnet
 #>

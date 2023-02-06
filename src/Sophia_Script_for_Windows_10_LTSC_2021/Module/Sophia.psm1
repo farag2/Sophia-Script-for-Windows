@@ -8297,7 +8297,13 @@ function InstallVCRedist
 		Start-Process -FilePath "$DownloadsFolder\VC_redist.x64.exe" -ArgumentList "/install /passive /norestart" -Wait
 
 		# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
-		Get-ChildItem -Path "$DownloadsFolder\VC_redist.x86.exe", "$DownloadsFolder\VC_redist.x64.exe", "$env:TEMP\dd_vcredist_amdx86_*.log", "$env:TEMP\dd_vcredist_amd64_*.log" -Force | Remove-Item -Recurse -Force -ErrorAction Ignore
+		$Paths = @(
+			"$DownloadsFolder\VC_redist.x86.exe",
+			"$DownloadsFolder\VC_redist.x64.exe",
+			"$env:TEMP\dd_vcredist_x86_*.log",
+			"$env:TEMP\dd_vcredist_amd64_*.log"
+		)
+		Get-ChildItem -Path $Paths -Recurse -Force | Remove-Item -Recurse -Force -ErrorAction Ignore
 	}
 	catch [System.Net.WebException]
 	{
@@ -8321,7 +8327,7 @@ function InstallVCRedist
 	.NOTES
 	Machine-wide
 #>
-function InstallVCRedist
+function InstallDotNetRuntimes
 {
 	try
 	{
@@ -8339,41 +8345,95 @@ function InstallVCRedist
 
 		if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
 		{
-			winget install --id=Microsoft.VCRedist.2015+.x86 --exact --accept-source-agreements
-			winget install --id=Microsoft.VCRedist.2015+.x64 --exact --accept-source-agreements
+			# .NET Desktop Runtime 6 x86
+			winget install --id=Microsoft.DotNet.DesktopRuntime.6 --architecture x86 --exact --accept-source-agreements
+			# .NET Desktop Runtime 7 x64
+			winget install --id=Microsoft.DotNet.DesktopRuntime.6 --architecture x64 --exact --accept-source-agreements
+
+			# .NET Desktop Runtime 7 x86
+			winget install --id=Microsoft.DotNet.DesktopRuntime.7 --architecture x86 --exact --accept-source-agreements
+			# .NET Desktop Runtime 7 x64
+			winget install --id=Microsoft.DotNet.DesktopRuntime.7 --architecture x64 --exact --accept-source-agreements
 		}
 		else
 		{
+			# Install .NET Desktop Runtime 6
+			# https://github.com/dotnet/core/blob/main/release-notes/releases-index.json
+			$Parameters = @{
+				Uri             = "https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/6.0/releases.json"
+				UseBasicParsing = $true
+			}
+			$LatestRelease = (Invoke-RestMethod @Parameters)."latest-release"
 			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+
+			# .NET Desktop Runtime 6 x86
 			$Parameters = @{
-				Uri             = "https://aka.ms/vs/17/release/VC_redist.x86.exe"
-				OutFile         = "$DownloadsFolder\VC_redist.x86.exe"
+				Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$LatestRelease/dotnet-runtime-$LatestRelease-win-x86.exe"
+				OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe"
 				UseBasicParsing = $true
 				Verbose         = $true
 			}
 			Invoke-WebRequest @Parameters
 
-			Start-Process -FilePath "$DownloadsFolder\VC_redist.x86.exe" -ArgumentList "/install /passive /norestart" -Wait
+			Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe" -ArgumentList "/install /passive /norestart" -Wait
 
+			# .NET Desktop Runtime 6 x64
 			$Parameters = @{
-				Uri             = "https://aka.ms/vs/17/release/VC_redist.x64.exe"
-				OutFile         = "$DownloadsFolder\VC_redist.x64.exe"
+				Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$LatestRelease/dotnet-runtime-$LatestRelease-win-x64.exe"
+				OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe"
 				UseBasicParsing = $true
 				Verbose         = $true
 			}
 			Invoke-WebRequest @Parameters
 
-			Start-Process -FilePath "$DownloadsFolder\VC_redist.x64.exe" -ArgumentList "/install /passive /norestart" -Wait
+			Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
 
 			# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
 			$Paths = @(
-				"$DownloadsFolder\VC_redist.x86.exe",
-				"$DownloadsFolder\VC_redist.x64.exe",
-				"$env:TEMP\dd_vcredist_x86_*.log",
-				"$env:TEMP\dd_vcredist_amd64_*.log",
-				"$env:TEMP\WinGet"
+				"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe",
+				"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe",
+				"$env:TEMP\Microsoft_.NET_Runtime*.log"
 			)
-			Get-ChildItem -Path $Paths -Recurse -Force | Remove-Item -Recurse -Force -ErrorAction Ignore
+			Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
+
+			# .NET Desktop Runtime 7
+			# https://github.com/dotnet/core/blob/main/release-notes/releases-index.json
+			$Parameters = @{
+				Uri             = "https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/7.0/releases.json"
+				UseBasicParsing = $true
+			}
+			$LatestRelease = (Invoke-RestMethod @Parameters)."latest-release"
+			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+
+			# .NET Desktop Runtime 7 x86
+			$Parameters = @{
+				Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$LatestRelease/dotnet-runtime-$LatestRelease-win-x86.exe"
+				OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe"
+				UseBasicParsing = $true
+				Verbose         = $true
+			}
+			Invoke-WebRequest @Parameters
+
+			Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe" -ArgumentList "/install /passive /norestart" -Wait
+
+			# .NET Desktop Runtime 7 x64
+			$Parameters = @{
+				Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$LatestRelease/dotnet-runtime-$LatestRelease-win-x64.exe"
+				OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe"
+				UseBasicParsing = $true
+				Verbose         = $true
+			}
+			Invoke-WebRequest @Parameters
+
+			Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
+
+			# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+			$Paths = @(
+				"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe",
+				"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe",
+				"$env:TEMP\Microsoft_.NET_Runtime*.log"
+			)
+			Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 		}
 	}
 	catch [System.Net.WebException]
@@ -8559,7 +8619,7 @@ function PreventEdgeShortcutCreation
 	.SYNOPSIS
 	Windows Subsystem for Linux (WSL)
 
-	.PARAMETER Install
+	.PARAMETER
 	Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form
 
 	.EXAMPLE
@@ -8573,6 +8633,15 @@ function PreventEdgeShortcutCreation
 #>
 function Install-WSL
 {
+	[System.Console]::OutputEncoding = [System.Text.Encoding]::Unicode
+
+	$Distros = (wsl --list --online | Select-Object -Skip 8).Replace("  ", "").Replace("* ", "") | ForEach-Object -Process {
+		[PSCustomObject]@{
+			"Distro" = $_ -split " ", 2 | Select-Object -Last 1
+			"Alias"  = $_ -split " ", 2 | Select-Object -First 1
+		}
+	}
+
 	Add-Type -AssemblyName PresentationCore, PresentationFramework
 
 	#region Variables
@@ -8586,19 +8655,12 @@ function Install-WSL
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		Name="Window"
 		Title="WSL"
-		MinHeight="400" MinWidth="350"
+		MinHeight="460" MinWidth="350"
 		SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
 		TextOptions.TextFormattingMode="Display" SnapsToDevicePixels="True"
 		FontFamily="Candara" FontSize="16" ShowInTaskbar="True"
 		Background="#F1F1F1" Foreground="#262626">
 		<Window.Resources>
-			<Style TargetType="StackPanel" x:Key="PanelContainerStyle">
-				<Setter Property="Grid.Row" Value="0"/>
-				<Setter Property="Orientation" Value="Vertical"/>
-			</Style>
-			<Style TargetType="StackPanel" x:Key="PanelElementStyle">
-				<Setter Property="Orientation" Value="Horizontal"/>
-			</Style>
 			<Style TargetType="RadioButton">
 				<Setter Property="VerticalAlignment" Value="Center"/>
 				<Setter Property="Margin" Value="10"/>
@@ -8618,47 +8680,7 @@ function Install-WSL
 				<RowDefinition Height="*"/>
 				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
-			<StackPanel Name="PanelContainer" Style="{StaticResource PanelContainerStyle}">
-				<StackPanel Style="{StaticResource PanelElementStyle}">
-					<RadioButton Name="RadioButtonUbuntu" GroupName="NixNames" Tag="Ubuntu"/>
-					<TextBlock Text="Ubuntu"/>
-				</StackPanel>
-
-				<StackPanel Style="{StaticResource PanelElementStyle}">
-					<RadioButton Name="RadioButtonDebian" GroupName="NixNames" Tag="Debian"/>
-					<TextBlock Text="Debian GNU/Linux"/>
-				</StackPanel>
-
-				<StackPanel Style="{StaticResource PanelElementStyle}">
-					<RadioButton Name="RadioButtonKali" GroupName="NixNames" Tag="kali-linux"/>
-					<TextBlock Text="Kali Linux Rolling"/>
-				</StackPanel>
-
-				<StackPanel Style="{StaticResource PanelElementStyle}">
-					<RadioButton Name="RadioButtonOpenSuse" GroupName="NixNames" Tag="openSUSE-42"/>
-					<TextBlock Text="openSUSE Leap 42"/>
-				</StackPanel>
-
-				<StackPanel Style="{StaticResource PanelElementStyle}">
-					<RadioButton Name="RadioButtonSuse" GroupName="NixNames" Tag="SLES-12"/>
-					<TextBlock Text="SUSE Linux Enterprise Server v12"/>
-				</StackPanel>
-
-				<StackPanel Style="{StaticResource PanelElementStyle}">
-					<RadioButton Name="RadioButtonUbuntu16" GroupName="NixNames" Tag="Ubuntu-16.04"/>
-					<TextBlock Text="Ubuntu 16.04 LTS"/>
-				</StackPanel>
-
-				<StackPanel Style="{StaticResource PanelElementStyle}">
-					<RadioButton Name="RadioButtonUbuntu18" GroupName="NixNames" Tag="Ubuntu-18.04"/>
-					<TextBlock Text="Ubuntu 18.04 LTS"/>
-				</StackPanel>
-
-				<StackPanel Style="{StaticResource PanelElementStyle}">
-					<RadioButton Name="RadioButtonUbuntu20" GroupName="NixNames" Tag="Ubuntu-20.04"/>
-					<TextBlock Text="Ubuntu 20.04 LTS"/>
-				</StackPanel>
-			</StackPanel>
+			<StackPanel Name="PanelContainer" Grid.Row="0"/>
 			<Button Name="ButtonInstall" Content="Install" Grid.Row="2"/>
 		</Grid>
 	</Window>
@@ -8677,7 +8699,11 @@ function Install-WSL
 
 	function ButtonInstallClicked
 	{
+		Write-Warning -Message $Script:CommandTag
+
 		Start-Process -FilePath wsl.exe -ArgumentList "--install --distribution $Script:CommandTag" -Wait
+
+		$Form.Close()
 	}
 	#endregion
 
@@ -8685,11 +8711,23 @@ function Install-WSL
 	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
 		$control = $Form.FindName($_.Name)
 		Set-Variable -Name ($_.Name) -Value $control
-		if ($Control.Template.TargetType.Name -eq "RadioButton")
-		{
-			$Control.Add_Checked({RadioButtonChecked})
-		}
 	}
+
+	foreach ($Distro in $Distros)
+	{
+		$Panel = New-Object -TypeName System.Windows.Controls.StackPanel
+		$RadioButton = New-Object -TypeName System.Windows.Controls.RadioButton
+		$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
+		$Panel.Orientation = "Horizontal"
+		$RadioButton.GroupName = "WslDistro"
+		$RadioButton.Tag = $Distro.Alias
+		$RadioButton.Add_Checked({RadioButtonChecked})
+		$TextBlock.Text = $Distro.Distro
+		$Panel.Children.Add($RadioButton) | Out-Null
+		$Panel.Children.Add($TextBlock) | Out-Null
+		$PanelContainer.Children.Add($Panel) | Out-Null
+	}
+
 	$ButtonInstall.Add_Click({ButtonInstallClicked})
 
 	#region Sendkey function
@@ -8717,7 +8755,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Add-Type @SetForegroundWindow
 	}
 
-	Get-Process | Where-Object -FilterScript {(($_.ProcessName -eq "powershell") -or ($_.ProcessName -eq "WindowsTerminal")) -and ($_.MainWindowTitle -match "Sophia Script for Windows 10")} | ForEach-Object -Process {
+	Get-Process | Where-Object -FilterScript {(($_.ProcessName -eq "powershell") -or ($_.ProcessName -eq "WindowsTerminal")) -and ($_.MainWindowTitle -match "Sophia Script for Windows 11")} | ForEach-Object -Process {
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
@@ -8739,6 +8777,9 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 
 	# Receive updates for other Microsoft products when you update Windows
 	(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
+
+	# Trigger Windows Update for detecting new updates
+	(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
 }
 #endregion WSL
 
@@ -9597,6 +9638,8 @@ public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 				Description = $Localization.CleanupNotificationTaskDescription
 			}
 			Register-ScheduledTask @Parameters -Force
+
+			$Script:ScheduledTasks = $true
 		}
 		"Delete"
 		{
@@ -9780,6 +9823,8 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -For
 				Description = $Localization.FolderTaskDescription -f "%SystemRoot%\SoftwareDistribution\Download"
 			}
 			Register-ScheduledTask @Parameters -Force
+
+			$Script:ScheduledTasks = $true
 		}
 		"Delete"
 		{
@@ -9958,6 +10003,8 @@ Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_
 				Description = $Localization.FolderTaskDescription -f "%TEMP%"
 			}
 			Register-ScheduledTask @Parameters -Force
+
+			$Script:ScheduledTasks = $true
 		}
 		"Delete"
 		{
@@ -11872,11 +11919,7 @@ public static void PostMessage()
 	}
 
 	# Check if any of scheduled tasks were created. Unless open Task Scheduler
-	# Check how the script was invoked: via a preset or Function.ps1
-	$PresetName = (Get-PSCallStack).Position | Where-Object -FilterScript {
-		(($_.File -match ".ps1") -and ($_.File -notmatch "Functions.ps1")) -and (($_.Text -eq "CleanupTask -Register") -or ($_.Text -eq "CleanupTask -Register") -or ($_.Text -eq "TempTask -Register")) -or ($_.Text -match "Invoke-Expression")
-	}
-	if ($PresetName)
+	if ($Script:ScheduledTasks)
 	{
 		# Open Task Scheduler
 		Start-Process -FilePath taskschd.msc

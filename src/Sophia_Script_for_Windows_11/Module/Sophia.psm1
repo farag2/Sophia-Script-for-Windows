@@ -7177,6 +7177,7 @@ function WinPrtScrFolder
 			$PresetName = (Get-PSCallStack).Position | Where-Object -FilterScript {
 				(($_.File -match ".ps1") -and ($_.File -notmatch "Functions.ps1")) -and (($_.Text -eq "WinPrtScrFolder -Desktop") -or ($_.Text -match "Invoke-Expression"))
 			}
+
 			if ($PresetName)
 			{
 				# Get the name of a preset (e.g Sophia.ps1) regardless it was named
@@ -9351,6 +9352,12 @@ function Install-WSL
 		Start-Process -FilePath wsl.exe -ArgumentList "--install --distribution $Script:CommandTag" -Wait
 
 		$Form.Close()
+
+		# Receive updates for other Microsoft products when you update Windows
+		(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
+
+		# Trigger Windows Update for detecting new updates
+		(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
 	}
 	#endregion
 
@@ -9421,12 +9428,6 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	# Force move the WPF form to the foreground
 	$Window.Add_Loaded({$Window.Activate()})
 	$Form.ShowDialog() | Out-Null
-
-	# Receive updates for other Microsoft products when you update Windows
-	(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
-
-	# Trigger Windows Update for detecting new updates
-	(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
 }
 #endregion WSL
 
@@ -11243,6 +11244,8 @@ public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 				Description = $Localization.CleanupNotificationTaskDescription
 			}
 			Register-ScheduledTask @Parameters -Force
+
+			$Script:ScheduledTasks = $true
 		}
 		"Delete"
 		{
@@ -11426,6 +11429,8 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -For
 				Description = $Localization.FolderTaskDescription -f "%SystemRoot%\SoftwareDistribution\Download"
 			}
 			Register-ScheduledTask @Parameters -Force
+
+			$Script:ScheduledTasks = $true
 		}
 		"Delete"
 		{
@@ -11604,6 +11609,8 @@ Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_
 				Description = $Localization.FolderTaskDescription -f "%TEMP%"
 			}
 			Register-ScheduledTask @Parameters -Force
+
+			$Script:ScheduledTasks = $true
 		}
 		"Delete"
 		{
@@ -13632,11 +13639,7 @@ public static void PostMessage()
 	}
 
 	# Check if any of scheduled tasks were created. Unless open Task Scheduler
-	# Check how the script was invoked: via a preset or Function.ps1
-	$PresetName = (Get-PSCallStack).Position | Where-Object -FilterScript {
-		(($_.File -match ".ps1") -and ($_.File -notmatch "Functions.ps1")) -and (($_.Text -eq "CleanupTask -Register") -or ($_.Text -eq "CleanupTask -Register") -or ($_.Text -eq "TempTask -Register")) -or ($_.Text -match "Invoke-Expression")
-	}
-	if ($PresetName)
+	if ($Script:ScheduledTasks)
 	{
 		# Open Task Scheduler
 		Start-Process -FilePath taskschd.msc

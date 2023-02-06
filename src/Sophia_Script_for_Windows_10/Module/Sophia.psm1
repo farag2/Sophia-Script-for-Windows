@@ -4442,16 +4442,10 @@ function OneDrive
 				return
 			}
 
-			# Check if script was launched from OneDrive folder and preset file has function to uninstall OneDrive
-			# Check how the script was invoked: via a preset or Function.ps1
-			$PresetName = (Get-PSCallStack).Position | Where-Object -FilterScript {
-				(($_.File -match ".ps1") -and ($_.File -notmatch "Functions.ps1")) -and ($_.Text -eq "OneDrive -Uninstall") -or ($_.Text -match "Invoke-Expression")
-			}
 			# Check if user is logged into OneDrive account (Microsoft account)
 			$UserEmail = Get-ItemProperty -Path HKCU:\Software\Microsoft\OneDrive\Accounts\Personal -Name UserEmail -ErrorAction Ignore
-			if ($PresetName -and $UserEmail)
+			if ($UserEmail)
 			{
-				# Exit if user accidentally set function in preset to uninstall but he's logged into the app
 				return
 			}
 
@@ -7706,6 +7700,7 @@ function WinPrtScrFolder
 			$PresetName = (Get-PSCallStack).Position | Where-Object -FilterScript {
 				(($_.File -match ".ps1") -and ($_.File -notmatch "Functions.ps1")) -and (($_.Text -eq "WinPrtScrFolder -Desktop") -or ($_.Text -match "Invoke-Expression"))
 			}
+
 			if ($PresetName)
 			{
 				# Get the name of a preset (e.g Sophia.ps1) regardless it was named
@@ -11844,6 +11839,8 @@ public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 				Description = $Localization.CleanupNotificationTaskDescription
 			}
 			Register-ScheduledTask @Parameters -Force
+
+			$Script:ScheduledTasks = $true
 		}
 		"Delete"
 		{
@@ -12027,6 +12024,8 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -For
 				Description = $Localization.FolderTaskDescription -f "%SystemRoot%\SoftwareDistribution\Download"
 			}
 			Register-ScheduledTask @Parameters -Force
+
+			$Script:ScheduledTasks = $true
 		}
 		"Delete"
 		{
@@ -12205,6 +12204,8 @@ Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_
 				Description = $Localization.FolderTaskDescription -f "%TEMP%"
 			}
 			Register-ScheduledTask @Parameters -Force
+
+			$Script:ScheduledTasks = $true
 		}
 		"Delete"
 		{
@@ -14287,11 +14288,7 @@ public static void PostMessage()
 	}
 
 	# Check if any of scheduled tasks were created. Unless open Task Scheduler
-	# Check how the script was invoked: via a preset or Function.ps1
-	$PresetName = (Get-PSCallStack).Position | Where-Object -FilterScript {
-		(($_.File -match ".ps1") -and ($_.File -notmatch "Functions.ps1")) -and (($_.Text -eq "CleanupTask -Register") -or ($_.Text -eq "CleanupTask -Register") -or ($_.Text -eq "TempTask -Register")) -or ($_.Text -match "Invoke-Expression")
-	}
-	if ($PresetName)
+	if ($Script:ScheduledTasks)
 	{
 		# Open Task Scheduler
 		Start-Process -FilePath taskschd.msc
