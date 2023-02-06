@@ -187,7 +187,7 @@
 
 ### Download and install any supported Linux distribution in automatic mode
 
-![Image](https://i.imgur.com/j2KLZm0.png)
+![Image](https://i.imgur.com/Xn5SqxE.png)
 
 ### Native interactive toasts for the scheduled tasks
 
