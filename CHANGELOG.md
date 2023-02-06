@@ -5,7 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 5.15.1 | 6.3.1 — 30.01.2023
+## 5.15.1 | 6.3.1 — 06.02.2023
+
+* `WSL` function re-written and renamed into `WSL-Install`
+  * Now it generates always actual distros supported list by parsing the `wsl --list --online` output;
+  * ![img](https://i.imgur.com/Xn5SqxE.png)
+  * Thanks to @Inestic, the main [SophiApp](https://github.com/Sophia-Community/SophiApp) developer.
+* Improved `OneDrive` function;
+* Added `NavigationPaneExpand` function to expand navigation pane to open folder
+  * Closes #444.
+* Renamed `HEIF` function to `HEVC`;
+* Minor changes.
+
+* Wrapper 2.6.2
+  * Minor changes.
+
+## 5.15.0 | 6.3.0 — 30.01.2023
 
 * Added new function to prevent Microsoft Edge desktop shortcut creation upon its' update;
   * By default it prevents for all Microsofot Edge channels (with checks if any of them is installed): `PreventEdgeShortcutCreation -Channels Stable, Beta, Dev, Canary`.
