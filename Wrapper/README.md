@@ -7,6 +7,7 @@ This program creates a PowerShell script file that you can run to customize Wind
 
 * `Sophia Script Wrapper.exe`: The GUI program.
 * `config_Windows_1x.json`: JSON that contains the options (function names), Sophia preset and Windows Default preset, LTSC version.
+* `before_after.json`: JSON that contains the options (function names) for before and after the user selections for PowerShell script output.
 * `tooltip_Windows_1x.json`: ToolTips in JSON format.
 * `tag.json`: tags in JSON format.
 * `ui.json`: UI in JSON format.
