@@ -304,7 +304,7 @@ irm script.sophi.app -useb | iex
 
 ## SophiApp Community Edition (C# + WPF)
 
-[SophiApp](https://github.com/Sophia-Community/SophiApp) is in active development 🚀
+[SophiApp](https://github.com/Sophia-Community/SophiApp) is ready for use and in ongoing improvements 🚀
 
 ![Image](https://github.com/Sophia-Community/SophiApp/raw/master/img/0.gif)
 ![Image](https://github.com/Sophia-Community/SophiApp/raw/master/img/1.png)
