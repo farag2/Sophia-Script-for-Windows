@@ -1,6 +1,6 @@
 <div align="right">
   This page also in:
-  <a title="English" href="README.md"><img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag_of_the_United_Kingdom.svg" height="11px"/></a>
+  <a title="English" href="README.md"><img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag_of_the_United_Kingdom.svg_(1-2)" height="11px"/></a>
 </div>
 
 # Sophia Script для Windows
@@ -36,7 +36,7 @@
 </p>
 
 <p align="left">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag_of_the_United_Kingdom.svg" height="20px"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag_of_the_United_Kingdom.svg_(1-2)" height="20px"/>
   &nbsp;
   <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Flag_of_the_People's_Republic_of_China.svg" height="20px"/>
   &nbsp;
