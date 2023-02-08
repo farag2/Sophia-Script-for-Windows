@@ -328,7 +328,7 @@ function Checks
 	}
 	catch [System.Management.Automation.PropertyNotFoundException]
 	{
-		$Localization.UpdateDefender
+		Write-Warning -Message $Localization.UpdateDefender
 
 		Start-Process -FilePath "https://t.me/sophia_chat"
 

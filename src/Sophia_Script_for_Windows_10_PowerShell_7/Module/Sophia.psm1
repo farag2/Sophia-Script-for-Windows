@@ -356,7 +356,7 @@ function Checks
 		}
 		catch [System.Management.Automation.PropertyNotFoundException]
 		{
-			$Localization.UpdateDefender
+			Write-Warning -Message $Localization.UpdateDefender
 
 			Start-Process -FilePath "https://t.me/sophia_chat"
 
@@ -10380,7 +10380,7 @@ function UninstallUWPApps
 		# HEVC Video Extensions from Device Manufacturer
 		"Microsoft.HEVCVideoExtension",
 
-		# HEVC Image Extensions
+		# HEIF Image Extensions
 		"Microsoft.HEIFImageExtension",
 
 		# MPEG-2 Video Extension

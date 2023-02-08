@@ -359,7 +359,7 @@ function Checks
 	}
 	catch [System.Management.Automation.PropertyNotFoundException]
 	{
-		$Localization.UpdateDefender
+		Write-Warning -Message $Localization.UpdateDefender
 
 		Start-Process -FilePath "https://t.me/sophia_chat"
 
@@ -9291,7 +9291,11 @@ function Install-WSL
 {
 	[System.Console]::OutputEncoding = [System.Text.Encoding]::Unicode
 
-	$Distros = (wsl --list --online | Select-Object -Skip 4).Replace("  ", "").Replace("* ", "") | ForEach-Object -Process {
+	$wsl = wsl --list --online
+	# We need to calculate the string where the "FRIENDLY NAME" header begins to truncate all other unnecessary strings in the beginning
+	$MinimumLineNumber = (@(($wsl | Select-String -Pattern "FRIENDLY NAME" -CaseSensitive).LineNumber) | Measure-Object -Minimum).Minimum
+	# Remove first strings in output from the first to the $MinimumLineNumber
+	$Distros = ($wsl).Replace("  ", "").Replace("* ", "")[($MinimumLineNumber)..(($wsl).Count)] | ForEach-Object -Process {
 		[PSCustomObject]@{
 			"Distro" = $_ -split " ", 2 | Select-Object -Last 1
 			"Alias"  = $_ -split " ", 2 | Select-Object -First 1
@@ -9768,7 +9772,7 @@ function UninstallUWPApps
 		# Raw Image Extension
 		"Microsoft.RawImageExtension",
 
-		# HEVC Image Extensions
+		# HEIF Image Extensions
 		"Microsoft.HEIFImageExtension",
 
 		# MPEG-2 Video Extension

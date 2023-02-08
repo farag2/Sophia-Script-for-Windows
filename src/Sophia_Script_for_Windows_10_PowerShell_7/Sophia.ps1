@@ -118,13 +118,8 @@ if ($Functions)
 # Обязательные проверки. Чтобы выключить предупреждение о необходимости настройки пресет-файла, удалите аргумент "-Warning"
 Checks -Warning
 
-<#
-	Enable script logging. Log will be recorded into the script folder
-	To stop logging just close console or type "Stop-Transcript"
-
-	Включить логирование работы скрипта. Лог будет записываться в папку скрипта
-	Чтобы остановить логгирование, закройте консоль или наберите "Stop-Transcript"
-#>
+# Enable script logging. Log will be recorded into the script folder. To stop logging just close console or type "Stop-Transcript"
+# Включить логирование работы скрипта. Лог будет записываться в папку скрипта. Чтобы остановить логгирование, закройте консоль или наберите "Stop-Transcript"
 # Logging
 
 # Create a restore point
