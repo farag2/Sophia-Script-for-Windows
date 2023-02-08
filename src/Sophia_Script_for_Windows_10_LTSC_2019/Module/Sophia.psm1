@@ -272,7 +272,7 @@ function Checks
 	}
 	catch [Microsoft.PowerShell.Commands.ServiceCommandException]
 	{
-		$Localization.WindowsBroken
+		Write-Warning -Message $Localization.WindowsBroken
 		Start-Process -FilePath "https://t.me/sophia_chat"
 		exit
 	}
@@ -280,7 +280,7 @@ function Checks
 
 	if ($null -eq (Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction Ignore))
 	{
-		$Localization.WindowsBroken
+		Write-Warning -Message $Localization.WindowsBroken
 		Start-Process -FilePath "https://t.me/sophia_chat"
 		exit
 	}
