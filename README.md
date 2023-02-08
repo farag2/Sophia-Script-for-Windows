@@ -92,7 +92,7 @@
 
 ![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Fira+Code&size30&pause=1000&width=435&lines=Made+with+%E2%9D%A4%EF%B8%8F+of+Windows%C2%AE)
 
-> **Note**: Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Windows 10` & `Windows 11` fine-tuning and automating the routine tasks. It offers more than 150 unique tweaks, and shows how Windows can be configured without making any harm to it.
+> **Note**: Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Windows 10` & `Windows 11` for fine-tuning and automating the routine tasks. It offers more than 150 unique tweaks, and shows how Windows can be configured without making any harm to it.
 
 ## Before running
 
@@ -230,7 +230,7 @@
 ## How to use Wrapper
 
 * Download and expand the archive;
-* Run `SophiaScriptWrapper.exe` and import Sophia.ps1;
+* Run `SophiaScriptWrapper.exe` and import `Sophia.ps1`;
   * The Wrapper has a real time UI rendering;
 * Configure every function;
 * Open the `Console Output` tab and press `Run PowerShell`.
@@ -304,7 +304,7 @@ irm script.sophi.app -useb | iex
 
 ## SophiApp Community Edition (C# + WPF)
 
-[SophiApp](https://github.com/Sophia-Community/SophiApp) is ready for use and in ongoing improvements 🚀
+[SophiApp](https://github.com/Sophia-Community/SophiApp) is the full GUI version of `Sophia Script for Windows` and ready for use. It is in ongoing improvements with version 2.0 in the works 🚀
 
 ![Image](https://github.com/Sophia-Community/SophiApp/raw/master/img/0.gif)
 ![Image](https://github.com/Sophia-Community/SophiApp/raw/master/img/1.png)
