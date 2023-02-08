@@ -9292,8 +9292,8 @@ function Install-WSL
 	[System.Console]::OutputEncoding = [System.Text.Encoding]::Unicode
 
 	$wsl = wsl --list --online
-	# We need to calculate the string where the "FRIENDLY NAME" header begins to truncate all other unnecessary strings in the beginning
-	$MinimumLineNumber = (@(($wsl | Select-String -Pattern "FRIENDLY NAME" -CaseSensitive).LineNumber) | Measure-Object -Minimum).Minimum
+	# We need to get the string number where the "FRIENDLY NAME" header begins to truncate all other unnecessary strings in the beginning
+	$LineNumber = ($wsl | Select-String -Pattern "FRIENDLY NAME" -CaseSensitive).LineNumber
 	# Remove first strings in output from the first to the $MinimumLineNumber
 	$Distros = ($wsl).Replace("  ", "").Replace("* ", "")[($MinimumLineNumber)..(($wsl).Count)] | ForEach-Object -Process {
 		[PSCustomObject]@{
