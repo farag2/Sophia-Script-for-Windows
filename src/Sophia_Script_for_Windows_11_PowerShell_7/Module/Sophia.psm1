@@ -64,8 +64,10 @@ function Checks
 			{
 				# Check whether the OS minor build version is 1335 minimum
 				# https://docs.microsoft.com/en-us/windows/release-health/windows11-release-information
-				$Version = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
-				Write-Warning -Message ($Localization.UpdateWarning -f $Version.CurrentBuild, $Version)
+				$CurrentBuild = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
+				$UBR = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
+
+				Write-Warning -Message ($Localization.UpdateWarning -f $CurrentBuild.CurrentBuild, $UBR.UBR)
 
 				Start-Process -FilePath "https://t.me/sophia_chat"
 
@@ -97,8 +99,10 @@ function Checks
 			{
 				# Check whether the OS minor build version is 1335 minimum
 				# https://docs.microsoft.com/en-us/windows/release-health/windows11-release-information
-				$Version = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
-				Write-Warning -Message ($Localization.UpdateWarning -f $Version.CurrentBuild, $Version)
+				$CurrentBuild = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
+				$UBR = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
+
+				Write-Warning -Message ($Localization.UpdateWarning -f $CurrentBuild.CurrentBuild, $UBR.UBR)
 
 				Start-Process -FilePath "https://t.me/sophia_chat"
 
