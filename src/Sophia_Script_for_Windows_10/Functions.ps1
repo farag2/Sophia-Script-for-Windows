@@ -79,6 +79,25 @@ $Parameters = @{
 		{
 			$ParameterSets = (Get-Command -Name $Command).Parametersets.Parameters | Where-Object -FilterScript {$null -eq $_.Attributes.AliasNames}
 
+			# If a module command is OneDrive
+			if ($Command -eq "OneDrive")
+			{
+				(Get-Command -Name $Command).Name | Where-Object -FilterScript {$_ -like "*$wordToComplete*"}
+
+				# Get all command arguments, excluding defaults
+				foreach ($ParameterSet in $ParameterSets.Name)
+				{
+					# If an argument is AllUsers
+					if ($ParameterSet -eq "AllUsers")
+					{
+						# The "OneDrive -Install -AllUsers" construction
+						"OneDrive" + " " + "-Install" + " " + "-" + $ParameterSet | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
+					}
+
+					continue
+				}
+			}
+
 			# If a module command is PinToStart
 			if ($Command -eq "PinToStart")
 			{

@@ -3878,13 +3878,19 @@ function NavigationPaneExpand
 	Uninstall OneDrive
 
 	.PARAMETER Install
-	Install OneDrive 64-bit
+	Install OneDrive 64-bit depending which installer is triggered
+
+	.PARAMETER Install -AllUsers
+	Install OneDrive 64-bit for all users to %ProgramFiles% depending which installer is triggered
 
 	.EXAMPLE
 	OneDrive -Uninstall
 
 	.EXAMPLE
 	OneDrive -Install
+
+	.EXAMPLE
+	OneDrive -Install -AllUsers
 
 	.NOTES
 	The OneDrive user folder won't be removed
@@ -3908,7 +3914,14 @@ function OneDrive
 			ParameterSetName = "Install"
 		)]
 		[switch]
-		$Install
+		$Install,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Install"
+		)]
+		[switch]
+		$AllUsers
 	)
 
 	switch ($PSCmdlet.ParameterSetName)
@@ -4001,7 +4014,12 @@ public static bool MarkFileDelete (string sourcefile)
 			}
 
 			Remove-ItemProperty -Path HKCU:\Environment -Name OneDrive, OneDriveConsumer -Force -ErrorAction Ignore
-			Remove-Item -Path HKCU:\Software\Microsoft\OneDrive, HKLM:\SOFTWARE\WOW6432Node\Microsoft\OneDrive, "$env:ProgramData\Microsoft OneDrive", $env:SystemDrive\OneDriveTemp -Recurse -Force -ErrorAction Ignore
+			$Path = @(
+				"HKCU:\Software\Microsoft\OneDrive",
+				"$env:ProgramData\Microsoft OneDrive",
+				"$env:SystemDrive\OneDriveTemp"
+			)
+			Remove-Item -Path $Path -Recurse -Force -ErrorAction Ignore
 			Unregister-ScheduledTask -TaskName *OneDrive* -Confirm:$false -ErrorAction Ignore
 
 			# Getting the OneDrive folder path
@@ -4053,12 +4071,20 @@ public static bool MarkFileDelete (string sourcefile)
 				return
 			}
 
-			if (Test-Path -Path $env:SystemRoot\SysWOW64\OneDriveSetup.exe)
+			if (Test-Path -Path $env:SystemRoot\System32\OneDriveSetup.exe)
 			{
 				Write-Information -MessageData "" -InformationAction Continue
 				Write-Verbose -Message $Localization.OneDriveInstalling -Verbose
 
-				Start-Process -FilePath $env:SystemRoot\SysWOW64\OneDriveSetup.exe
+				if ($AllUsers)
+				{
+					# Install OneDrive for all users
+					Start-Process -FilePath $env:SystemRoot\System32\OneDriveSetup.exe -ArgumentList "/allusers" -Wait
+				}
+				else
+				{
+					Start-Process -FilePath $env:SystemRoot\System32\OneDriveSetup.exe -Wait
+				}
 			}
 			else
 			{
@@ -4102,7 +4128,15 @@ public static bool MarkFileDelete (string sourcefile)
 					}
 					Invoke-WebRequest @Parameters
 
-					Start-Process -FilePath "$DownloadsFolder\OneDriveSetup.exe" -Wait
+					if ($AllUsers)
+					{
+						# Install OneDrive for all users to %ProgramFiles%
+						Start-Process -FilePath $env:SystemRoot\SysWOW64\OneDriveSetup.exe -ArgumentList "/allusers" -Wait
+					}
+					else
+					{
+						Start-Process -FilePath $env:SystemRoot\SysWOW64\OneDriveSetup.exe
+					}
 
 					Remove-Item -Path "$DownloadsFolder\OneDriveSetup.exe" -Force
 				}
@@ -5884,6 +5918,7 @@ function NetworkAdaptersSavePower
 			Get-NetAdapter -Physical -Name $PhysicalAdaptersStatusUp | Where-Object -FilterScript {($_.Status -eq "Disconnected") -and $_.MacAddress}
 		)
 		{
+			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message $Localization.Patient -Verbose
 			Start-Sleep -Seconds 2
 		}
@@ -6416,7 +6451,6 @@ public static string GetString(uint strId)
 		{
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message $Localization.RetrievingDrivesList -Verbose
-			Write-Information -MessageData "" -InformationAction Continue
 
 			# Store all drives letters to use them within ShowMenu function
 			$DriveLetters = @((Get-Disk | Where-Object -FilterScript {$_.BusType -ne "USB"} | Get-Partition | Get-Volume | Where-Object -FilterScript {$null -ne $_.DriveLetter}).DriveLetter | Sort-Object)
@@ -6440,8 +6474,6 @@ public static string GetString(uint strId)
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
-			Write-Information -MessageData "" -InformationAction Continue
-
 			$Title = ""
 			$Message       = $Localization.UserFolderRequest -f $DesktopLocalizedString
 			$No            = $Localization.No
@@ -6459,8 +6491,8 @@ public static string GetString(uint strId)
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.Skipped -Verbose
 					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
@@ -6472,8 +6504,6 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title         = ""
 			$Message       = $Localization.UserFolderRequest -f $DocumentsLocalizedString
@@ -6492,8 +6522,8 @@ public static string GetString(uint strId)
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.Skipped -Verbose
 					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
@@ -6505,8 +6535,6 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title         = ""
 			$Message       = $Localization.UserFolderRequest -f $DownloadsLocalizedString
@@ -6525,8 +6553,8 @@ public static string GetString(uint strId)
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.Skipped -Verbose
 					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
@@ -6538,8 +6566,6 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title         = ""
 			$Message       = $Localization.UserFolderRequest -f $MusicLocalizedString
@@ -6558,8 +6584,8 @@ public static string GetString(uint strId)
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.Skipped -Verbose
 					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
@@ -6571,8 +6597,6 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title         = ""
 			$Message       = $Localization.UserFolderRequest -f $PicturesLocalizedString
@@ -6591,8 +6615,8 @@ public static string GetString(uint strId)
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.Skipped -Verbose
 					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
@@ -6604,8 +6628,6 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title         = ""
 			$Message       = $Localization.UserFolderRequest -f $VideosLocalizedString
@@ -6624,8 +6646,8 @@ public static string GetString(uint strId)
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.Skipped -Verbose
 					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 		}
@@ -6637,8 +6659,6 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title         = ""
 			$Message       = $Localization.UserFolderSelect -f $DesktopLocalizedString
@@ -6669,8 +6689,8 @@ public static string GetString(uint strId)
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.Skipped -Verbose
 					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
@@ -6680,8 +6700,6 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title         = ""
 			$Message       = $Localization.UserFolderSelect -f $DocumentsLocalizedString
@@ -6712,8 +6730,8 @@ public static string GetString(uint strId)
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.Skipped -Verbose
 					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
@@ -6723,8 +6741,6 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title         = ""
 			$Message       = $Localization.UserFolderSelect -f $DownloadsLocalizedString
@@ -6755,8 +6771,8 @@ public static string GetString(uint strId)
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.Skipped -Verbose
 					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
@@ -6766,8 +6782,6 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title         = ""
 			$Message       = $Localization.UserFolderSelect -f $MusicLocalizedString
@@ -6798,8 +6812,8 @@ public static string GetString(uint strId)
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.Skipped -Verbose
 					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
@@ -6809,8 +6823,6 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title         = ""
 			$Message       = $Localization.UserFolderSelect -f $PicturesLocalizedString
@@ -6841,8 +6853,8 @@ public static string GetString(uint strId)
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.Skipped -Verbose
 					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
@@ -6852,8 +6864,6 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title         = ""
 			$Message       = $Localization.UserFolderSelect -f $VideosLocalizedString
@@ -6884,8 +6894,8 @@ public static string GetString(uint strId)
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.Skipped -Verbose
 					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 		}
@@ -6897,8 +6907,6 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title         = ""
 			$Message       = $Localization.UserDefaultFolder -f $DesktopLocalizedString
@@ -6916,8 +6924,8 @@ public static string GetString(uint strId)
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.Skipped -Verbose
 					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
@@ -6927,8 +6935,6 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title         = ""
 			$Message       = $Localization.UserDefaultFolder -f $DocumentsLocalizedString
@@ -6946,8 +6952,8 @@ public static string GetString(uint strId)
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.Skipped -Verbose
 					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
@@ -6957,8 +6963,6 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title         = ""
 			$Message       = $Localization.UserDefaultFolder -f $DownloadsLocalizedString
@@ -6988,8 +6992,6 @@ public static string GetString(uint strId)
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
-			Write-Information -MessageData "" -InformationAction Continue
-
 			$Title         = ""
 			$Message       = $Localization.UserDefaultFolder -f $MusicLocalizedString
 			$Yes           = $Localization.Yes
@@ -7006,8 +7008,8 @@ public static string GetString(uint strId)
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.Skipped -Verbose
 					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
@@ -7017,8 +7019,6 @@ public static string GetString(uint strId)
 
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title         = ""
 			$Message       = $Localization.UserDefaultFolder -f $PicturesLocalizedString
@@ -7036,8 +7036,8 @@ public static string GetString(uint strId)
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.Skipped -Verbose
 					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
@@ -7066,8 +7066,8 @@ public static string GetString(uint strId)
 				}
 				"1"
 				{
-					Write-Verbose -Message $Localization.Skipped -Verbose
 					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 		}
@@ -10567,6 +10567,7 @@ function HEVC
 					# Installing "HEVC Video Extensions from Device Manufacturer"
 					if ([System.Version]$HEVCPackageName -gt [System.Version](Get-AppxPackage -Name Microsoft.HEVCVideoExtension).Version)
 					{
+						Write-Information -MessageData "" -InformationAction Continue
 						Write-Verbose -Message $Localization.Patient -Verbose
 						Write-Verbose -Message $Localization.HEVCDownloading -Verbose
 
@@ -13391,6 +13392,7 @@ function UpdateLGPEPolicies
 		Write-Verbose -Message ([string]($_.FriendlyName, '|', $_.MediaType, '|', $_.BusType)) -Verbose
 	}
 
+	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message $Localization.Patient -Verbose
 	Write-Verbose -Message $Localization.GPOUpdate -Verbose
 	Write-Verbose -Message HKLM -Verbose
