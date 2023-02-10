@@ -802,7 +802,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Installieren Sie OneDrive für alle Benutzer"
+        "ToolTip": "OneDrive für alle Benutzer installieren"
       }
     }
   },
