@@ -9292,8 +9292,8 @@ function Install-WSL
 	$wsl = wsl --list --online
 	# We need to get the string number where the "FRIENDLY NAME" header begins to truncate all other unnecessary strings in the beginning
 	$LineNumber = ($wsl | Select-String -Pattern "FRIENDLY NAME" -CaseSensitive).LineNumber
-	# Remove first strings in output from the first to the $MinimumLineNumber
-	$Distros = ($wsl).Replace("  ", "").Replace("* ", "")[($MinimumLineNumber)..(($wsl).Count)] | ForEach-Object -Process {
+	# Remove first strings in output from the first to the $LineNumber
+	$Distros = ($wsl).Replace("  ", "").Replace("* ", "")[($LineNumber)..(($wsl).Count)] | ForEach-Object -Process {
 		[PSCustomObject]@{
 			"Distro" = $_ -split " ", 2 | Select-Object -Last 1
 			"Alias"  = $_ -split " ", 2 | Select-Object -First 1
