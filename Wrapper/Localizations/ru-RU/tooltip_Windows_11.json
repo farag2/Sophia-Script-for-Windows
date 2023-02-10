@@ -796,6 +796,17 @@
     }
   },
   {
+    "Id": 401,
+    "Region": "OneDrive",
+    "Function": "OneDrive -AllUsers",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Установите OneDrive для всех пользователей"
+      }
+    }
+  },
+  {
     "Id": 500,
     "Region": "System",
     "Function": "StorageSense",

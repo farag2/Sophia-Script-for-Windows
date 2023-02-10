@@ -592,6 +592,10 @@ NavigationPaneExpand -Disable
 # Install OneDrive 64-bit (default value)
 # Установить OneDrive 64-бит (значение по умолчанию)
 # OneDrive -Install
+
+# Install OneDrive 64-bit all users to %ProgramFiles% depending which installer is triggered
+# Установить OneDrive 64-бит для всех пользователей в %ProgramFiles% в зависимости от от того, как запускается инсталлятор
+# OneDrive -Install -AllUsers
 #endregion OneDrive
 
 #region System

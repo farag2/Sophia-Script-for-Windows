@@ -1009,6 +1009,20 @@
     "Preset": "Zero",
     "WindowsDefault": ""
   },
+   {
+    "Id": 401,
+    "Region": "OneDrive",
+    "Control": "chk",
+    "Required": "false",
+    "Function": "OneDrive -AllUsers",
+    "Arg": {
+      "Zero": {
+        "Tag": ""
+      }
+    },
+    "Preset": "",
+    "WindowsDefault": ""
+  },
   {
     "Id": 500,
     "Region": "System",

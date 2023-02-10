@@ -2,21 +2,21 @@
   {
     "Id": 100,
     "Region": "before",
-    "Function": "",
+    "Function": ""    
   },
   {
     "Id": 101,
     "Region": "before",
-    "Function": "",
+    "Function": ""    
   },
   {
     "Id": 200,
     "Region": "after",
-    "Function": "PostActions",
+    "Function": "PostActions"
   },  
   {
     "Id": 201,
     "Region": "after",
-    "Function": "Errors",
+    "Function": "Errors"
   }
 ]
