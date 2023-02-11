@@ -3974,7 +3974,7 @@ function OneDrive
 					# https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexa
 					# The system does not move the file until the operating system is restarted
 					# The system moves the file immediately after AUTOCHK is executed, but before creating any paging files
-					$Signature = @{
+					$Script:Signature = @{
 						Namespace        = "WinAPI"
 						Name             = "DeleteFiles"
 						Language         = "CSharp"
