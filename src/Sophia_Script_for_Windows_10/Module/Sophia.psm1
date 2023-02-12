@@ -84,7 +84,7 @@ function Checks
 				Start-Sleep -Seconds 1
 
 				# Check for UWP apps updates
-				Get-CimInstance -Namespace root\cimv2\mdm\dmmap -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 | Invoke-CimMethod -MethodName UpdateScanMethod
+				Get-CimInstance -Namespace root/CIMV2/mdm/dmmap -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 | Invoke-CimMethod -MethodName UpdateScanMethod
 
 				# Open the "Windows Update" page
 				Start-Process -FilePath "ms-settings:windowsupdate"
@@ -261,13 +261,13 @@ function Checks
 		# Checking whether WMI is corrupted
 		try
 		{
-			Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender -ErrorAction Stop | Out-Null
+			Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/Microsoft/Windows/Defender -ErrorAction Stop | Out-Null
 		}
 		catch [Microsoft.Management.Infrastructure.CimException]
 		{
 			# Provider Load Failure exception
 			Write-Warning -Message $Global:Error.Exception.Message | Select-Object -First 1
-			Write-Warning -Message $Localization.WindowsBroken
+			Write-Warning -Message $Localization.DefenderBroken
 
 			Start-Process -FilePath "https://t.me/sophia_chat"
 
@@ -282,7 +282,7 @@ function Checks
 	}
 	catch [Microsoft.PowerShell.Commands.ServiceCommandException]
 	{
-		Write-Warning -Message $Localization.WindowsBroken
+		Write-Warning -Message $Localization.DefenderBroken
 		Start-Process -FilePath "https://t.me/sophia_chat"
 		exit
 	}
@@ -295,11 +295,12 @@ function Checks
 		# Check Microsoft Defender state
 		if ($null -eq (Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction Ignore))
 		{
-			Write-Warning -Message $Localization.WindowsBroken
+			Write-Warning -Message $Localization.DefenderBroken
 			Start-Process -FilePath "https://t.me/sophia_chat"
 			exit
 		}
 
+		# Check Microsoft Defender state
 		$productState = (Get-CimInstance -Namespace root/SecurityCenter2 -ClassName Antivirusproduct | Where-Object -FilterScript {$_.instanceGuid -eq "{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}"}).productState
 		$DefenderState = ('0x{0:x}' -f $productState).Substring(3, 2)
 		if ($DefenderState -notmatch "00|01")
@@ -319,7 +320,7 @@ function Checks
 	# Specify whether Antispyware protection is enabled
 	if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name EditionID) -ne "EnterpriseG")
 	{
-		if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).AntispywareEnabled)
+		if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/Microsoft/Windows/Defender).AntispywareEnabled)
 		{
 			$Script:DefenderAntispywareEnabled = $true
 		}
@@ -340,7 +341,7 @@ function Checks
 		{
 			if ($Script:DefenderproductState)
 			{
-				if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).ProductStatus -eq 1)
+				if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/Microsoft/Windows/Defender).ProductStatus -eq 1)
 				{
 					$Script:DefenderProductStatus = $false
 				}
@@ -387,7 +388,7 @@ function Checks
 	# https://docs.microsoft.com/en-us/graph/api/resources/intune-devices-windowsdefenderproductstatus?view=graph-rest-beta
 	if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name EditionID) -ne "EnterpriseG")
 	{
-		if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).AMEngineVersion -eq "0.0.0.0")
+		if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/Microsoft/Windows/Defender).AMEngineVersion -eq "0.0.0.0")
 		{
 			$Script:DefenderAMEngineVersion = $false
 		}
@@ -4509,7 +4510,7 @@ public static bool MarkFileDelete (string sourcefile)
 					}
 
 					# If there are some files or folders left in %OneDrive%
-					if ((Get-ChildItem -Path $env:OneDrive -ErrorAction Ignore | Measure-Object).Count -ne 0)
+					if ((Get-ChildItem -Path $env:OneDrive -Force -ErrorAction Ignore | Measure-Object).Count -ne 0)
 					{
 						if (-not ("WinAPI.DeleteFiles" -as [type]))
 						{
@@ -11317,7 +11318,7 @@ function CheckUWPAppsUpdates
 {
 	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message $Localization.Patient -Verbose
-	Get-CimInstance -Namespace root\cimv2\mdm\dmmap -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 | Invoke-CimMethod -MethodName UpdateScanMethod
+	Get-CimInstance -Namespace root/CIMV2/mdm/dmmap -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 | Invoke-CimMethod -MethodName UpdateScanMethod
 }
 #endregion UWP apps
 

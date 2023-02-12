@@ -77,7 +77,7 @@ function Checks
 				Start-Sleep -Seconds 1
 
 				# Check for UWP apps updates
-				Get-CimInstance -Namespace root\cimv2\mdm\dmmap -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 | Invoke-CimMethod -MethodName UpdateScanMethod
+				Get-CimInstance -Namespace root/CIMV2/mdm/dmmap -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 | Invoke-CimMethod -MethodName UpdateScanMethod
 
 				# Open the "Windows Update" page
 				Start-Process -FilePath "ms-settings:windowsupdate"
@@ -112,7 +112,7 @@ function Checks
 				Start-Sleep -Seconds 1
 
 				# Check for UWP apps updates
-				Get-CimInstance -Namespace root\cimv2\mdm\dmmap -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 | Invoke-CimMethod -MethodName UpdateScanMethod
+				Get-CimInstance -Namespace root/CIMV2/mdm/dmmap -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 | Invoke-CimMethod -MethodName UpdateScanMethod
 
 				# Open the "Windows Update" page
 				Start-Process -FilePath "ms-settings:windowsupdate"
@@ -286,13 +286,13 @@ function Checks
 	# Checking whether WMI is corrupted
 	try
 	{
-		Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender -ErrorAction Stop | Out-Null
+		Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/Microsoft/Windows/Defender -ErrorAction Stop | Out-Null
 	}
 	catch [Microsoft.Management.Infrastructure.CimException]
 	{
 		# Provider Load Failure exception
 		Write-Warning -Message $Global:Error.Exception.Message | Select-Object -First 1
-		Write-Warning -Message $Localization.WindowsBroken
+		Write-Warning -Message $Localization.DefenderBroken
 
 		Start-Process -FilePath "https://t.me/sophia_chat"
 
@@ -302,7 +302,7 @@ function Checks
 	# Check Microsoft Defender state
 	if ($null -eq (Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction Ignore))
 	{
-		Write-Warning -Message $Localization.WindowsBroken
+		Write-Warning -Message $Localization.DefenderBroken
 		Start-Process -FilePath "https://t.me/sophia_chat"
 		exit
 	}
@@ -314,7 +314,7 @@ function Checks
 	}
 	catch [Microsoft.PowerShell.Commands.ServiceCommandException]
 	{
-		Write-Warning -Message $Localization.WindowsBroken
+		Write-Warning -Message $Localization.DefenderBroken
 		Start-Process -FilePath "https://t.me/sophia_chat"
 		exit
 	}
@@ -333,7 +333,7 @@ function Checks
 	}
 
 	# Specify whether Antispyware protection is enabled
-	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).AntispywareEnabled)
+	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/Microsoft/Windows/Defender).AntispywareEnabled)
 	{
 		$Script:DefenderAntispywareEnabled = $true
 	}
@@ -347,7 +347,7 @@ function Checks
 	{
 		if ($Script:DefenderproductState)
 		{
-			if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).ProductStatus -eq 1)
+			if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/Microsoft/Windows/Defender).ProductStatus -eq 1)
 			{
 				$Script:DefenderProductStatus = $false
 			}
@@ -387,7 +387,7 @@ function Checks
 	}
 
 	# https://docs.microsoft.com/en-us/graph/api/resources/intune-devices-windowsdefenderproductstatus?view=graph-rest-beta
-	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).AMEngineVersion -eq "0.0.0.0")
+	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/Microsoft/Windows/Defender).AMEngineVersion -eq "0.0.0.0")
 	{
 		$Script:DefenderAMEngineVersion = $false
 	}
@@ -3995,7 +3995,7 @@ public static bool MarkFileDelete (string sourcefile)
 					}
 
 					# If there are some files or folders left in %OneDrive%
-					if ((Get-ChildItem -Path $env:OneDrive -ErrorAction Ignore | Measure-Object).Count -ne 0)
+					if ((Get-ChildItem -Path $env:OneDrive -Force -ErrorAction Ignore | Measure-Object).Count -ne 0)
 					{
 						if (-not ("WinAPI.DeleteFiles" -as [type]))
 						{
@@ -5925,6 +5925,7 @@ function NetworkAdaptersSavePower
 			Get-NetAdapter -Physical -Name $PhysicalAdaptersStatusUp | Where-Object -FilterScript {($_.Status -eq "Disconnected") -and $_.MacAddress}
 		)
 		{
+			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message $Localization.Patient -Verbose
 			Start-Sleep -Seconds 2
 		}
@@ -10593,6 +10594,7 @@ function HEVC
 					# Installing "HEVC Video Extensions from Device Manufacturer"
 					if ([System.Version]$HEVCPackageName -gt [System.Version](Get-AppxPackage -Name Microsoft.HEVCVideoExtension).Version)
 					{
+						Write-Information -MessageData "" -InformationAction Continue
 						Write-Verbose -Message $Localization.Patient -Verbose
 						Write-Verbose -Message $Localization.HEVCDownloading -Verbose
 
@@ -10757,7 +10759,7 @@ function CheckUWPAppsUpdates
 {
 	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message $Localization.Patient -Verbose
-	Get-CimInstance -Namespace root\cimv2\mdm\dmmap -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 | Invoke-CimMethod -MethodName UpdateScanMethod
+	Get-CimInstance -Namespace root/CIMV2/mdm/dmmap -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 | Invoke-CimMethod -MethodName UpdateScanMethod
 }
 #endregion UWP apps
 
@@ -13416,6 +13418,7 @@ function UpdateLGPEPolicies
 		Write-Verbose -Message ([string]($_.FriendlyName, '|', $_.MediaType, '|', $_.BusType)) -Verbose
 	}
 
+	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message $Localization.Patient -Verbose
 	Write-Verbose -Message $Localization.GPOUpdate -Verbose
 	Write-Verbose -Message HKLM -Verbose

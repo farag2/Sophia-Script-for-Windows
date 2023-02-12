@@ -252,13 +252,13 @@ function Checks
 	# Checking whether WMI is corrupted
 	try
 	{
-		Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender -ErrorAction Stop | Out-Null
+		Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/Microsoft/Windows/Defender -ErrorAction Stop | Out-Null
 	}
 	catch [Microsoft.Management.Infrastructure.CimException]
 	{
 		# Provider Load Failure exception
 		Write-Warning -Message $Global:Error.Exception.Message | Select-Object -First 1
-		Write-Warning -Message $Localization.WindowsBroken
+		Write-Warning -Message $Localization.DefenderBroken
 
 		Start-Process -FilePath "https://t.me/sophia_chat"
 
@@ -272,15 +272,16 @@ function Checks
 	}
 	catch [Microsoft.PowerShell.Commands.ServiceCommandException]
 	{
-		Write-Warning -Message $Localization.WindowsBroken
+		Write-Warning -Message $Localization.DefenderBroken
 		Start-Process -FilePath "https://t.me/sophia_chat"
 		exit
 	}
 	$Script:DefenderServices = ($Services | Where-Object -FilterScript {$_.Status -ne "running"} | Measure-Object).Count -lt $Services.Count
 
+	# Check Microsoft Defender state
 	if ($null -eq (Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction Ignore))
 	{
-		Write-Warning -Message $Localization.WindowsBroken
+		Write-Warning -Message $Localization.DefenderBroken
 		Start-Process -FilePath "https://t.me/sophia_chat"
 		exit
 	}
@@ -298,7 +299,7 @@ function Checks
 	}
 
 	# Specify whether Antispyware protection is enabled
-	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).AntispywareEnabled)
+	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/Microsoft/Windows/Defender).AntispywareEnabled)
 	{
 		$Script:DefenderAntispywareEnabled = $true
 	}
@@ -312,7 +313,7 @@ function Checks
 	{
 		if ($Script:DefenderproductState)
 		{
-			if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).ProductStatus -eq 1)
+			if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/Microsoft/Windows/Defender).ProductStatus -eq 1)
 			{
 				$Script:DefenderProductStatus = $false
 			}
@@ -352,7 +353,7 @@ function Checks
 	}
 
 	# https://docs.microsoft.com/en-us/graph/api/resources/intune-devices-windowsdefenderproductstatus?view=graph-rest-beta
-	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/microsoft/windows/defender).AMEngineVersion -eq "0.0.0.0")
+	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/Microsoft/Windows/Defender).AMEngineVersion -eq "0.0.0.0")
 	{
 		$Script:DefenderAMEngineVersion = $false
 	}
@@ -7616,35 +7617,47 @@ function InstallVCRedist
 			return
 		}
 
-		$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-		$Parameters = @{
-			Uri             = "https://aka.ms/vs/17/release/VC_redist.x86.exe"
-			OutFile         = "$DownloadsFolder\VC_redist.x86.exe"
-			UseBasicParsing = $true
-			Verbose         = $true
+		if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
+		{
+			# https://github.com/microsoft/winget-pkgs/tree/master/manifests/m/Microsoft/VCRedist/2015%2B
+			winget install --id=Microsoft.VCRedist.2015+.x86 --exact --accept-source-agreements
+			winget install --id=Microsoft.VCRedist.2015+.x64 --exact --accept-source-agreements
+
+			# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+			Get-ChildItem -Path "$env:TEMP\WinGet" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 		}
-		Invoke-WebRequest @Parameters
+		else
+		{
+			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+			$Parameters = @{
+				Uri             = "https://aka.ms/vs/17/release/VC_redist.x86.exe"
+				OutFile         = "$DownloadsFolder\VC_redist.x86.exe"
+				UseBasicParsing = $true
+				Verbose         = $true
+			}
+			Invoke-WebRequest @Parameters
 
-		Start-Process -FilePath "$DownloadsFolder\VC_redist.x86.exe" -ArgumentList "/install /passive /norestart" -Wait
+			Start-Process -FilePath "$DownloadsFolder\VC_redist.x86.exe" -ArgumentList "/install /passive /norestart" -Wait
 
-		$Parameters = @{
-			Uri             = "https://aka.ms/vs/17/release/VC_redist.x64.exe"
-			OutFile         = "$DownloadsFolder\VC_redist.x64.exe"
-			UseBasicParsing = $true
-			Verbose         = $true
+			$Parameters = @{
+				Uri             = "https://aka.ms/vs/17/release/VC_redist.x64.exe"
+				OutFile         = "$DownloadsFolder\VC_redist.x64.exe"
+				UseBasicParsing = $true
+				Verbose         = $true
+			}
+			Invoke-WebRequest @Parameters
+
+			Start-Process -FilePath "$DownloadsFolder\VC_redist.x64.exe" -ArgumentList "/install /passive /norestart" -Wait
+
+			# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+			$Paths = @(
+				"$DownloadsFolder\VC_redist.x86.exe",
+				"$DownloadsFolder\VC_redist.x64.exe",
+				"$env:TEMP\dd_vcredist_x86_*.log",
+				"$env:TEMP\dd_vcredist_amd64_*.log"
+			)
+			Get-ChildItem -Path $Paths -Recurse -Force | Remove-Item -Recurse -Force -ErrorAction Ignore
 		}
-		Invoke-WebRequest @Parameters
-
-		Start-Process -FilePath "$DownloadsFolder\VC_redist.x64.exe" -ArgumentList "/install /passive /norestart" -Wait
-
-		# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
-		$Paths = @(
-			"$DownloadsFolder\VC_redist.x86.exe",
-			"$DownloadsFolder\VC_redist.x64.exe",
-			"$env:TEMP\dd_vcredist_x86_*.log",
-			"$env:TEMP\dd_vcredist_amd64_*.log"
-		)
-		Get-ChildItem -Path $Paths -Recurse -Force | Remove-Item -Recurse -Force -ErrorAction Ignore
 	}
 	catch [System.Net.WebException]
 	{
@@ -7686,15 +7699,20 @@ function InstallDotNetRuntimes
 
 		if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
 		{
+			# https://github.com/microsoft/winget-pkgs/tree/master/manifests/m/Microsoft/DotNet/DesktopRuntime/6
 			# .NET Desktop Runtime 6 x86
 			winget install --id=Microsoft.DotNet.DesktopRuntime.6 --architecture x86 --exact --accept-source-agreements
-			# .NET Desktop Runtime 7 x64
+			# .NET Desktop Runtime 6 x64
 			winget install --id=Microsoft.DotNet.DesktopRuntime.6 --architecture x64 --exact --accept-source-agreements
 
+			# https://github.com/microsoft/winget-pkgs/tree/master/manifests/m/Microsoft/DotNet/DesktopRuntime/7
 			# .NET Desktop Runtime 7 x86
 			winget install --id=Microsoft.DotNet.DesktopRuntime.7 --architecture x86 --exact --accept-source-agreements
 			# .NET Desktop Runtime 7 x64
 			winget install --id=Microsoft.DotNet.DesktopRuntime.7 --architecture x64 --exact --accept-source-agreements
+
+			# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+			Get-ChildItem -Path "$env:TEMP\WinGet" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 		}
 		else
 		{
