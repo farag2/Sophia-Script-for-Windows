@@ -90,7 +90,7 @@ Import-LocalizedData -BindingVariable Global:Localization -BaseDirectory $PSScri
 #>
 if ($Functions)
 {
-	#Invoke-Command -ScriptBlock {Checks}
+	Invoke-Command -ScriptBlock {Checks}
 
 	foreach ($Function in $Functions)
 	{
