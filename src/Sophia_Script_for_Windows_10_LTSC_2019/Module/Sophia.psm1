@@ -13,7 +13,7 @@
 	.NOTES
 	Supported Windows 10 version
 	Version: 1809
-	Build: 17763.3406+
+	Builds: 17763.3406+
 	Edition: Enterprise LTSC
 	Architecture: x64
 

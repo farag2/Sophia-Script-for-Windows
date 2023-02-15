@@ -13,7 +13,7 @@
 	.NOTES
 	Supported Windows 11 versions
 	Versions: 21H2/22H2/23H2+
-	Builds: 22000.1335+, 22621.963+
+	Builds: 22621.963+
 	Editions: Home/Pro/Enterprise
 
 	.LINK GitHub
@@ -60,38 +60,64 @@ function Checks
 	{
 		{$_ -eq 22000}
 		{
-			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 1335)
-			{
-				# Check whether the OS minor build version is 1335 minimum
-				# https://docs.microsoft.com/en-us/windows/release-health/windows11-release-information
-				$CurrentBuild = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
-				$UBR = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
-
-				Write-Warning -Message ($Localization.UpdateWarning -f $CurrentBuild.CurrentBuild, $UBR.UBR)
-
-				Start-Process -FilePath "https://t.me/sophia_chat"
-
-				# Enable receiving updates for other Microsoft products when you update Windows
-				(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
-
-				Start-Sleep -Seconds 1
-
-				# Check for UWP apps updates
-				Get-CimInstance -Namespace root/CIMV2/mdm/dmmap -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 | Invoke-CimMethod -MethodName UpdateScanMethod
-
-				# Open the "Windows Update" page
-				Start-Process -FilePath "ms-settings:windowsupdate"
-
-				# Check for updates
-				Start-Process -FilePath "ms-settings:windowsupdate-action"
-
-				Start-Sleep -Seconds 1
-
-				# Trigger Windows Update for detecting new updates
-				(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
-
-				exit
+			# Download PC Health Check app
+			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+			$Parameters = @{
+				Uri             = "https://aka.ms/GetPCHealthCheckApp"
+				OutFile         = "$DownloadsFolder\WindowsPCHealthCheckSetup.msi"
+				UseBasicParsing = $true
+				Verbose         = $true
 			}
+			Invoke-WebRequest @Parameters
+
+			# Extract WindowsPCHealthCheckSetup.msi without installing
+			$Arguments = @(
+				"/a `"$DownloadsFolder\WindowsPCHealthCheckSetup.msi`"",
+				"TARGETDIR=`"$DownloadsFolder\WindowsPCHealthCheckSetup`"",
+				"/qb"
+			)
+			Start-Process -FilePath "msiexec" -ArgumentList $Arguments -Wait
+			Remove-Item -Path "$DownloadsFolder\WindowsPCHealthCheckSetup.msi" -Force
+			Start-Process -FilePath "$DownloadsFolder\WindowsPCHealthCheckSetup\PCHealthCheck\PCHealthCheck.exe"
+
+			# Download Windows 11 Installation Assistant
+			# https://www.microsoft.com/software-download/windows11
+			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+			$Parameters = @{
+				Uri             = "https://go.microsoft.com/fwlink/?linkid=2171764"
+				OutFile         = "$DownloadsFolder\Windows11InstallationAssistant.exe"
+				UseBasicParsing = $true
+				Verbose         = $true
+			}
+			Invoke-WebRequest @Parameters
+			Start-Process -FilePath "$DownloadsFolder\Windows11InstallationAssistant.exe" -ArgumentList "/SkipEULA"
+
+			$CurrentBuild = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
+			$UBR = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
+			Write-Warning -Message ($Localization.UpdateWarning -f $CurrentBuild.CurrentBuild, $UBR.UBR)
+
+			Start-Process -FilePath "https://t.me/sophia_chat"
+
+			# Enable receiving updates for other Microsoft products when you update Windows
+			(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
+
+			Start-Sleep -Seconds 1
+
+			# Check for UWP apps updates
+			Get-CimInstance -Namespace root/CIMV2/mdm/dmmap -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 | Invoke-CimMethod -MethodName UpdateScanMethod
+
+			# Open the "Windows Update" page
+			Start-Process -FilePath "ms-settings:windowsupdate"
+
+			# Check for updates
+			Start-Process -FilePath "ms-settings:windowsupdate-action"
+
+			Start-Sleep -Seconds 1
+
+			# Trigger Windows Update for detecting new updates
+			(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
+
+			exit
 		}
 		{$_ -ge 22621}
 		{
@@ -101,7 +127,6 @@ function Checks
 				# https://docs.microsoft.com/en-us/windows/release-health/windows11-release-information
 				$CurrentBuild = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
 				$UBR = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
-
 				Write-Warning -Message ($Localization.UpdateWarning -f $CurrentBuild.CurrentBuild, $UBR.UBR)
 
 				Start-Process -FilePath "https://t.me/sophia_chat"
