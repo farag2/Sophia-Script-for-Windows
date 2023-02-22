@@ -9681,10 +9681,14 @@ function Install-WSL
 {
 	[System.Console]::OutputEncoding = [System.Text.Encoding]::Unicode
 
-	$Distros = (wsl --list --online | Select-Object -Skip 4).Replace("  ", "").Replace("* ", "") | ForEach-Object -Process {
+	$wsl = wsl --list --online
+	# We need to get the string number where the "FRIENDLY NAME" header begins to truncate all other unnecessary strings in the beginning
+	$LineNumber = ($wsl | Select-String -Pattern "FRIENDLY NAME" -CaseSensitive).LineNumber
+	# Remove first strings in output from the first to the $LineNumber
+	$Distros = ($wsl).Replace("* ", "")[($LineNumber)..(($wsl).Count)] | ForEach-Object -Process {
 		[PSCustomObject]@{
-			"Distro" = $_ -split " ", 2 | Select-Object -Last 1
-			"Alias"  = $_ -split " ", 2 | Select-Object -First 1
+			"Distro" = ($_ -split " ", 2 | Select-Object -Last 1).Trim()
+			"Alias"  = ($_ -split " ", 2 | Select-Object -First 1).Trim()
 		}
 	}
 
