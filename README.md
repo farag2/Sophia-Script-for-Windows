@@ -149,7 +149,7 @@
 * The <kbd>TAB</kbd> [autocompletion](#the-tab-autocomplete-read-more-here) for function and its' arguments by typing first letters;
 * Disable Windows features displaying friendly packages names with pop-up form written in [WPF](#screenshots);
 * Uninstall Windows capabilities displaying friendly packages names with pop-up form written in [WPF](#screenshots);
-* Download and install the [HEVC Video Extensions from Device Manufacturer](https://www.microsoft.com/p/hevc-video-extensions-from-device-manufacturer/9n4wgh0z6vhq) to be able to open .heic and .heif formats;
+* Download and install the [HEVC Video Extensions from Device Manufacturer](https://www.microsoft.com/p/hevc-video-extensions-from-device-manufacturer/9n4wgh0z6vhq) to be able to open [HEVC](https://en.wikipedia.org/wiki/H.265) format;
 * Register app, calculate hash, and set as default for specific extension without the "How do you want to open this" pop-up using special [function](https://github.com/DanysysTeam/PS-SFTA);
 * Install any supported Linux distrobution for WSL displaying friendly distro names with pop-up form written in [WPF](#screenshots);
 * Create a `Windows Cleanup` and `Windows Cleanup Notification` scheduled tasks for Windows cleaning up unused files and updates;
@@ -212,20 +212,23 @@
 * Look through the `Sophia.ps1` file to configure functions that you want to be run;
   * Place the "#" char before function if you don't want it to be run.
   * Remove the "#" char before function if you want it to be run.
-* On `Windows 10` click `File` in File Explorer, hover over `Open Windows PowerShell`, and select `Open Windows PowerShell as Administrator` [(how-to with screenshots)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/)
-* On `Windows 11` right-click on the <kbd>Windows</kbd> icon and select `Windows Terminal (Admin)`. Then change the current location
+* Copy the whole path to `Sophia.ps1`
+  * On `Windows 10` press and hold the <kbd>Shift</kbd> key, right click on `Sophia.ps1`, and click on `Copy as path`;
+  * On `Windows 11` right click on `Sophia.ps1` and click on `Copy as path`.
+* Open `Windows PowerShell`
+  * On `Windows 10` click `File` in the File Explorer, hover over `Open Windows PowerShell`, and select `Open Windows PowerShell as Administrator` [(how-to with screenshots)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/)
+  * On `Windows 11` right-click on the <kbd>Windows</kbd> icon and open `Windows Terminal (Admin)`;
+* Set execution policy to be able to run scripts only in the current PowerShell session;
 
-  ```powershell
-  Set-Location -Path "Path\To\Sophia\Folder"
-  ```
-
-* Set execution policy to be able to run scripts only in the current PowerShell session
-
-  ```powershell
+```powershell
   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
-  ```
+```
 
-* Type `.\Sophia.ps1` <kbd>Enter</kbd> to run the whole preset file.
+* Paste copied path to `Sophia.ps1` from the previous step (with [&](https://en.wikipedia.org/wiki/Ampersand));
+
+```powershell
+  & <path_from_buffer>
+```
 
 ## How to use Wrapper
 
@@ -249,10 +252,10 @@ To run the specific function(s) [dot source](https://docs.microsoft.com/ru-ru/po
 * Now you can do like this (the quotation marks required)
 
 ```powershell
-Sophia -Functions<kbd>TAB</kbd>
-Sophia -Functions temp<kbd>TAB</kbd>
-Sophia -Functions unin<kbd>TAB</kbd>
-Sophia -Functions uwp<kbd>TAB</kbd>
+Sophia -FunctionsTAB
+Sophia -Functions temp<TAB>
+Sophia -Functions unin<TAB>
+Sophia -Functions uwp<TAB>
 Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
 
 UninstallUWPApps, "PinToStart -UnpinAll"

@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 11 (PowerShell 7)"
 
-	Version: v6.3.2
-	Date: 11.02.2023
+	Version: v6.3.3
+	Date: 07.03.2023
 
 	Copyright (c) 2014—2023 farag
 	Copyright (c) 2019—2023 farag & Inestic
@@ -27,7 +27,7 @@
 	.NOTES
 	Supported Windows 11 versions
 	Versions: 22H2
-	Builds: 22621.963+
+	Builds: 22621.1344+
 	Editions: Home/Pro/Enterprise
 
 	.NOTES
@@ -69,7 +69,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.3.2 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2023"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.3.3 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2023"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -374,13 +374,21 @@ TaskbarAlignment -Center
 # Установить выравнивание панели задач по левому краю
 # TaskbarAlignment -Left
 
-# Hide the search button from the taskbar
-# Скрыть кнопку поиска с панели задач
+# Hide the search on the taskbar
+# Скрыть поле или значок поиска на панели задач
 TaskbarSearch -Hide
 
 # Show the search icon on the taskbar
-# Отобразить кнопку поиска на панели задач
-# TaskbarSearch -Show
+# Показать значок поиска на панели задач
+# TaskbarSearch -SearchIcon
+
+# Show the search icon and label on the taskbar
+# Показать значок и метку поиска на панели задач
+# TaskbarSearch -SearchIconLabel
+
+# Show the search box on the taskbar (default value)
+# Показать поле поиска на панели задач (значение по умолчанию)
+# TaskbarSearch -SearchBox
 
 # Hide the Task view button from the taskbar
 # Скрыть кнопку "Представление задач" с панели задач
@@ -941,11 +949,7 @@ RKNBypass -Enable
 
 # Enable all necessary dependencies (reboot may require) and open Microsoft Store WSA page to install Windows Subsystem for Android™ with Amazon Appstore manually
 # Включить все необходимые зависимости (может потребоваться перезагрузка) и открыть страницу WSA в Microsoft Store, чтобы вручную установить Windows Subsystem for Android™ with Amazon Appstore
-# WSA -Enable
-
-# Disable all necessary dependencies (reboot may require) and uninstall Windows Subsystem for Android™ with Amazon Appstore (default value)
-# Выключить все необходимые зависимости и удалить Windows Subsystem for Android™ with Amazon Appstore (значение по умолчанию)
-# WSA -Disable
+# Install-WSA
 
 # List Microsoft Edge channels to prevent desktop shortcut creation upon its' update
 # Перечислите каналы Microsoft Edge для предотвращения создания ярлыков на рабочем столе после его обновления
@@ -954,6 +958,14 @@ PreventEdgeShortcutCreation -Channels Stable, Beta, Dev, Canary
 # Do not prevent desktop shortcut creation upon Microsoft Edge update (default value)
 # Не предотвращать создание ярлыков на рабочем столе при обновлении Microsoft Edge (значение по умолчанию)
 # PreventEdgeShortcutCreation -Disable
+
+# Prevent all internal SATA drives from showing up as removable media in the taskbar notification area
+# Запретить отображать все внутренние SATA-диски как съемные носители в области уведомлений на панели задач
+SATADrivesRemovableMedia -Disable
+
+# Show up all internal SATA drives as removeable media in the taskbar notification area (default value)
+# Отображать все внутренние SATA-диски как съемные носители в области уведомлений на панели задач (значение по умолчанию)
+# SATADrivesRemovableMedia -Default
 #endregion System
 
 #region WSL
@@ -972,24 +984,16 @@ PreventEdgeShortcutCreation -Channels Stable, Beta, Dev, Canary
 # Открепить все приложения от начального экрана
 # UnpinAllStartApps
 
-# Run the Windows PowerShell shortcut from the Start menu as Administrator
-# Запускать ярлык Windows PowerShell в меню "Пуск" от имени Администратора
-RunPowerShellShortcut -Elevated
-
-# Run the Windows PowerShell shortcut from the Start menu as user (default value)
-# Запускать ярлык Windows PowerShell в меню "Пуск" от имени пользователя (значение по умолчанию)
-# RunPowerShellShortcut -NonElevated
-
-# Show default Start layout (for 22621+ build only) (default value)
-# Отображать стандартный макет начального экрана (только для сборок 22621+) (значение по умолчанию)
+# Show default Start layout (default value)
+# Отображать стандартный макет начального экрана (значение по умолчанию)
 # StartLayout -Default
 
-# Show more pins on Start (for 22621+ build only)
-# Отображать больше закреплений на начальном экране (только для сборок 22621+)
+# Show more pins on Start
+# Отображать больше закреплений на начальном экране
 StartLayout -ShowMorePins
 
-# Show more recommendations on Start (for 22621+ build only)
-# Отображать больше рекомендаций на начальном экране (только для сборок 22621+)
+# Show more recommendations on Start
+# Отображать больше рекомендаций на начальном экране
 # StartLayout -ShowMoreRecommendations
 #endregion Start menu
 

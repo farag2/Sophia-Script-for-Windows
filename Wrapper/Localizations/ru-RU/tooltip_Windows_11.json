@@ -502,6 +502,29 @@
     }
   },
   {
+    "Id": 315,
+    "Region": "UI & Personalization",
+    "Function": "TaskbarSearch",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Скрыть кнопку поиска на панели задач"
+      },
+      "One": {
+        "Tag": "SearchIcon",
+        "ToolTip": "Показать значок поиска на панели задач"
+      },
+      "Two": {
+        "Tag": "SearchIconLabel",
+        "ToolTip": "Показать значок и метку поиска на панели задач"
+      },
+      "Three": {
+        "Tag": "SearchBox",
+        "ToolTip": "Показывать значок поиска на панели задач (значение по умолчанию)"
+      }
+    }
+  },
+  {
     "Id": 316,
     "Region": "UI & Personalization",
     "Function": "TaskViewButton",
@@ -1394,15 +1417,11 @@
   {
     "Id": 539,
     "Region": "System",
-    "Function": "WSA",
+    "Function": "Install-WSA",
     "Arg": {
       "Zero": {
-        "Tag": "Enable",
+        "Tag": "",
         "ToolTip": "Включить все необходимые зависимости (может потребоваться перезагрузка) и открыть страницу WSA в Microsoft Store, чтобы вручную установить Windows Subsystem for Android™ with Amazon Appstore"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Выключить все необходимые зависимости и удалить Windows Subsystem for Android™ with Amazon Appstore (значение по умолчанию)"
       }
     }
   },
@@ -1445,21 +1464,6 @@
   },
   {
     "Id": 701,
-    "Region": "Start menu",
-    "Function": "RunPowerShellShortcut",
-    "Arg": {
-      "Zero": {
-        "Tag": "Elevated",
-        "ToolTip": "Запускать ярлык Windows PowerShell в меню \"Пуск\" от имени Администратора"
-      },
-      "One": {
-        "Tag": "NonElevated",
-        "ToolTip": "Запускать ярлык Windows PowerShell в меню \"Пуск\" от имени пользователя (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 702,
     "Region": "Start menu",
     "Function": "StartLayout",
     "Arg": {

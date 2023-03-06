@@ -1559,21 +1559,6 @@
   {
     "Id": 702,
     "Region": "Start menu",
-    "Function": "RunPowerShellShortcut",
-    "Arg": {
-      "Zero": {
-        "Tag": "Elevated",
-        "ToolTip": "Führt die Windows PowerShell-Verknüpfung über das Startmenü als Administrator aus"
-      },
-      "One": {
-        "Tag": "NonElevated",
-        "ToolTip": "Führt die Windows PowerShell-Verknüpfung über das Startmenü als Benutzer aus (Standardeinstellung)"
-      }
-    }
-  },
-  {
-    "Id": 703,
-    "Region": "Start menu",
     "Function": "PinToStart -Tiles",
     "ToolTip": "Folgendene Verknüpfungen: Systemsteuerung, Geräte und Drucker, PowerShell an das Startmenü anheften",
     "Arg": {
@@ -1592,7 +1577,7 @@
     }
   },
   {
-    "Id": 704,
+    "Id": 703,
     "Region": "Start menu",
     "Function": "PinToStart -UnpinAll",
     "Arg": {

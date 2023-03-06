@@ -1559,21 +1559,6 @@
   {
     "Id": 702,
     "Region": "Start menu",
-    "Function": "RunPowerShellShortcut",
-    "Arg": {
-      "Zero": {
-        "Tag": "Elevated",
-        "ToolTip": "Run the Windows PowerShell shortcut from the Start menu as Administrator"
-      },
-      "One": {
-        "Tag": "NonElevated",
-        "ToolTip": "Run the Windows PowerShell shortcut from the Start menu as user (default value)"
-      }
-    }
-  },
-  {
-    "Id": 703,
-    "Region": "Start menu",
     "Function": "PinToStart -Tiles",
     "ToolTip": "Pin to Start the following shortcuts: Control Panel, Devices and Printers, PowerShell",
     "Arg": {
@@ -1592,7 +1577,7 @@
     }
   },
   {
-    "Id": 704,
+    "Id": 703,
     "Region": "Start menu",
     "Function": "PinToStart -UnpinAll",
     "Arg": {

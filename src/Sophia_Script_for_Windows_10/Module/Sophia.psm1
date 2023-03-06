@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.15.2
-	Date: 11.02.2023
+	Version: v5.15.3
+	Date: 07.03.2023
 
 	Copyright (c) 2014—2023 farag
 	Copyright (c) 2019—2023 farag & Inestic
@@ -13,7 +13,7 @@
 	.NOTES
 	Supported Windows 10 versions
 	Versions: 21H2/22H2+
-	Builds: 19044.2364+
+	Builds: 19045.2604+
 	Editions: Home/Pro/Enterprise
 	Architecture: x64
 
@@ -67,11 +67,11 @@ function Checks
 	# Detect the OS build version
 	switch ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber)
 	{
-		{($_ -ge 19044) -and ($_ -le 19048)}
+		{($_ -ge 19045) -and ($_ -le 19048)}
 		{
-			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 2364)
+			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 2604)
 			{
-				# Check whether the OS minor build version is 2364 minimum
+				# Check whether the OS minor build version is 2604 minimum
 				# https://docs.microsoft.com/en-us/windows/release-health/release-information
 				$Version = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
 				Write-Warning -Message ($Localization.UpdateWarning -f $Version)
@@ -100,7 +100,7 @@ function Checks
 				exit
 			}
 		}
-		{($_ -lt 19044) -or ($_ -gt 19048)}
+		{($_ -lt 19045) -or ($_ -gt 19048)}
 		{
 			Write-Warning -Message $Localization.UnsupportedOSBuild
 			Start-Process -FilePath "https://t.me/sophia_chat"
@@ -6846,7 +6846,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			# Removing old desktop.ini
 			if ($RemoveDesktopINI.IsPresent)
 			{
-				Remove-Item -Path "$CurrentUserFolderPath\desktop.ini" -Force
+				Remove-Item -Path "$CurrentUserFolderPath\desktop.ini" -Force -ErrorAction Ignore
 			}
 
 			KnownFolderPath -KnownFolder $UserFolder -Path $FolderPath
@@ -8728,7 +8728,7 @@ namespace RegistryUtils
 }
 '@
 
-	if (-not('RegistryUtils.Action' -as [type]))
+	if (-not ('RegistryUtils.Action' -as [type]))
 	{
 		Add-Type -TypeDefinition $RegistryUtils
 	}
@@ -9216,6 +9216,7 @@ namespace FileAssoc
 		MemberDefinition = @"
 [DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = false)]
 private static extern int SHChangeNotify(int eventId, int flags, IntPtr item1, IntPtr item2);
+
 public static void Refresh()
 {
 	// Update desktop icons
@@ -9589,10 +9590,8 @@ function PreventEdgeShortcutCreation
 		$Disable
 	)
 
-	if (($null -eq (Get-Package -Name "Microsoft Edge Update" -ProviderName Programs -ErrorAction Ignore)) -or ([System.Version](Get-Package -Name "Microsoft Edge Update" -ProviderName Programs).Version -lt [System.Version]"1.3.128.0"))
+	if (($null -eq (Get-Package -Name "Microsoft Edge Update" -ProviderName Programs -ErrorAction Ignore)) -or ([System.Version](Get-Package -Name "Microsoft Edge Update" -ProviderName Programs -ErrorAction Ignore).Version -lt [System.Version]"1.3.128.0"))
 	{
-		(Get-Package -Name "Microsoft Edge Update" -ProviderName Programs -ErrorAction Ignore).Version
-
 		return
 	}
 
@@ -9656,6 +9655,60 @@ function PreventEdgeShortcutCreation
 			"CreateDesktopShortcut{65C35B14-6C1D-4122-AC46-7148CC9D6497}"
 		)
 		Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Name $Names -Force -ErrorAction Ignore
+	}
+}
+
+<#
+	.SYNOPSIS
+	Internal SATA drives up as removeable media in the taskbar notification area
+
+	.PARAMETER Disable
+	Prevent all internal SATA drives from showing up as removable media in the taskbar notification area ###
+
+	.PARAMETER Default
+	Show up all internal SATA drives as removeable media in the taskbar notification area
+
+	.PARAMETER Show
+	Show more recommendations on Start
+
+	.EXAMPLE
+	SATADrivesRemovableMedia -Disable
+
+	.EXAMPLE
+	SATADrivesRemovableMedia -Default
+
+	.NOTES
+	Machine-wide
+#>
+function SATADrivesRemovableMedia ###
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Default"
+		)]
+		[switch]
+		$Default
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Disable"
+		{
+			New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\storahci\Parameters\Device -Name TreatAsInternalPort -Value @(0, 1, 2, 3, 4, 5) -Type MultiString -Force
+		}
+		"Default"
+		{
+			Remove-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\storahci\Parameters\Device -Name TreatAsInternalPort -Force -ErrorAction Ignore
+		}
 	}
 }
 #endregion System
@@ -9936,61 +9989,6 @@ function AppSuggestions
 		"Show"
 		{
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338388Enabled -PropertyType DWord -Value 1 -Force
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	How to run the Windows PowerShell shortcut
-
-	.PARAMETER Elevated
-	Run the Windows PowerShell shortcut from the Start menu as Administrator
-
-	.PARAMETER NonElevated
-	Run the Windows PowerShell shortcut from the Start menu as user
-
-	.EXAMPLE
-	RunPowerShellShortcut -Elevated
-
-	.EXAMPLE
-	RunPowerShellShortcut -NonElevated
-
-	.NOTES
-	Current user
-#>
-function RunPowerShellShortcut
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Elevated"
-		)]
-		[switch]
-		$Elevated,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "NonElevated"
-		)]
-		[switch]
-		$NonElevated
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Elevated"
-		{
-			[byte[]]$bytes = Get-Content -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Windows PowerShell\Windows PowerShell.lnk" -Encoding Byte -Raw
-			$bytes[0x15] = $bytes[0x15] -bor 0x20
-			Set-Content -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Windows PowerShell\Windows PowerShell.lnk" -Value $bytes -Encoding Byte -Force
-		}
-		"NonElevated"
-		{
-			[byte[]]$bytes = Get-Content -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Windows PowerShell\Windows PowerShell.lnk" -Encoding Byte -Raw
-			$bytes[0x15] = $bytes[0x15] -bxor 0x20
-			Set-Content -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Windows PowerShell\Windows PowerShell.lnk" -Value $bytes -Encoding Byte -Force
 		}
 	}
 }
@@ -11110,7 +11108,7 @@ function HEVC
 	)
 
 	# Check whether the extension is already installed
-	if (-not (Get-AppxPackage -Name Microsoft.Windows.Photos))
+	if ((-not (Get-AppxPackage -Name Microsoft.Windows.Photos)) -or (Get-AppxPackage -Name Microsoft.HEVCVideoExtension))
 	{
 		return
 	}

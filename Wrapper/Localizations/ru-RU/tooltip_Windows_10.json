@@ -1559,21 +1559,6 @@
   {
     "Id": 702,
     "Region": "Start menu",
-    "Function": "RunPowerShellShortcut",
-    "Arg": {
-      "Zero": {
-        "Tag": "Elevated",
-        "ToolTip": "Запускать ярлык Windows PowerShell в меню \"Пуск\" от имени Администратора"
-      },
-      "One": {
-        "Tag": "NonElevated",
-        "ToolTip": "Запускать ярлык Windows PowerShell в меню \"Пуск\" от имени пользователя (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 703,
-    "Region": "Start menu",
     "Function": "PinToStart -Tiles",
     "ToolTip": "Закрепить на начальном экране следующие ярлыки: Панель управления, Устройства и принтеры, PowerShell",
     "Arg": {
@@ -1592,7 +1577,7 @@
     }
   },
   {
-    "Id": 704,
+    "Id": 703,
     "Region": "Start menu",
     "Function": "PinToStart -UnpinAll",
     "Arg": {

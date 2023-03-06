@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v6.3.2
-	Date: 11.02.2023
+	Version: v6.3.3
+	Date: 07.03.2023
 
 	Copyright (c) 2014—2023 farag
 	Copyright (c) 2019—2023 farag & Inestic
@@ -13,7 +13,7 @@
 	.NOTES
 	Supported Windows 11 versions
 	Versions: 22H2/23H2+
-	Builds: 22621.963+
+	Builds: 22621.1344+
 	Editions: Home/Pro/Enterprise
 
 	.LINK GitHub
@@ -121,9 +121,9 @@ function Checks
 		}
 		{$_ -ge 22621}
 		{
-			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 963)
+			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 1344)
 			{
-				# Check whether the OS minor build version is 1335 minimum
+				# Check whether the OS minor build version is 1344 minimum
 				# https://docs.microsoft.com/en-us/windows/release-health/windows11-release-information
 				$CurrentBuild = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
 				$UBR = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
@@ -2603,19 +2603,28 @@ function TaskbarAlignment
 
 <#
 	.SYNOPSIS
-	The search icon on the taskbar
+	Search on the taskbar
 
 	.PARAMETER Hide
-	Hide the search icon on the taskbar
+	Hide the search on the taskbar
 
-	.PARAMETER Show
+	.PARAMETER SearchIcon
 	Show the search icon on the taskbar
+
+	.PARAMETER SearchBox
+	Show the search box on the taskbar
 
 	.EXAMPLE
 	TaskbarSearch -Hide
 
 	.EXAMPLE
-	TaskbarSearch -Show
+	TaskbarSearch -SearchIcon
+
+	.EXAMPLE
+	TaskbarSearch -SearchIconLabel
+
+	.EXAMPLE
+	TaskbarSearch -SearchBox
 
 	.NOTES
 	Current user
@@ -2633,10 +2642,24 @@ function TaskbarSearch
 
 		[Parameter(
 			Mandatory = $true,
-			ParameterSetName = "Show"
+			ParameterSetName = "SearchIcon"
 		)]
 		[switch]
-		$Show
+		$SearchIcon,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "SearchIconLabel"
+		)]
+		[switch]
+		$SearchIconLabel,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "SearchBox"
+		)]
+		[switch]
+		$SearchBox
 	)
 
 	switch ($PSCmdlet.ParameterSetName)
@@ -2645,9 +2668,17 @@ function TaskbarSearch
 		{
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -PropertyType DWord -Value 0 -Force
 		}
-		"Show"
+		"SearchIcon"
 		{
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -PropertyType DWord -Value 1 -Force
+		}
+		"SearchIconLabel"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -PropertyType DWord -Value 3 -Force
+		}
+		"SearchBox"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name SearchboxTaskbarMode -PropertyType DWord -Value 2 -Force
 		}
 	}
 }
@@ -6354,7 +6385,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			# Removing old desktop.ini
 			if ($RemoveDesktopINI.IsPresent)
 			{
-				Remove-Item -Path "$CurrentUserFolderPath\desktop.ini" -Force
+				Remove-Item -Path "$CurrentUserFolderPath\desktop.ini" -Force -ErrorAction Ignore
 			}
 
 			KnownFolderPath -KnownFolder $UserFolder -Path $FolderPath
@@ -8236,7 +8267,7 @@ namespace RegistryUtils
 }
 '@
 
-	if (-not('RegistryUtils.Action' -as [type]))
+	if (-not ('RegistryUtils.Action' -as [type]))
 	{
 		Add-Type -TypeDefinition $RegistryUtils
 	}
@@ -8724,6 +8755,7 @@ namespace FileAssoc
 		MemberDefinition = @"
 [DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = false)]
 private static extern int SHChangeNotify(int eventId, int flags, IntPtr item1, IntPtr item2);
+
 public static void Refresh()
 {
 	// Update desktop icons
@@ -9092,13 +9124,7 @@ function RKNBypass
 
 <#
 	.SYNOPSIS
-	Enable the latest Windows Subsystem for Android™ with Amazon Appstore
-
-	.EXAMPLE Enable all necessary dependencies (reboot may require) and open Microsoft Store WSA page to install it manually
-	WSA -Enable
-
-	.EXAMPLE Disable all necessary dependencies (reboot may require) and uninstall Windows Subsystem for Android™ with Amazon Appstore
-	WSA -Disable
+	Enable all necessary dependencies (reboot may require) and open Microsoft Store WSA page to install it manually
 
 	.LINK
 	https://support.microsoft.com/en-us/windows/install-mobile-apps-and-the-amazon-appstore-f8d0abb5-44ad-47d8-b9fb-ad6b1459ff6c
@@ -9107,109 +9133,70 @@ function RKNBypass
 	https://docs.microsoft.com/en-us/windows/android/wsa/
 
 	.LINK
-	https://www.microsoft.com/store/productId/9P3395VX91NR
+	https://apps.microsoft.com/store/detail/windows-subsystem-for-android™-with-amazon-appstore/9P3395VX91NR
 
 	.NOTES
 	Machine-wide
 #>
-function WSA
+function Install-WSA
 {
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
+	# Enable Virtual Machine Platform
+	if ((Get-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform).State -eq "Disabled")
 	{
-		"Enable"
-		{
-			# Check if Windows 11 is installed on an SSD
-			$DiskNumber = (Get-Disk | Where-Object -FilterScript {$_.Isboot -and $_.IsSystem -and ($_.OperationalStatus -eq "Online")}).Number
-			if (Get-PhysicalDisk -DeviceNumber $DiskNumber | Where-Object -FilterScript {$_.MediaType -ne "SSD"})
-			{
-				Write-Warning -Message $Localization.SSDRequired
+		Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -NoRestart
 
-				return
-			}
+		Write-Warning -Message $Localization.RestartWarning
+		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
 
-			# Enable Windows Subsystem for Android (WSA)
-			if ((Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux).State -eq "Disabled")
-			{
-				Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -NoRestart
+		return
+	}
 
-				Write-Warning -Message $Localization.RestartWarning
-				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+	if (Get-AppxPackage -Name MicrosoftCorporationII.WindowsSubsystemForAndroid)
+	{
+		return
+	}
 
-				return
-			}
+	# Check if Windows 11 is installed on an SSD
+	$DiskNumber = (Get-Disk | Where-Object -FilterScript {$_.Isboot -and $_.IsSystem -and ($_.OperationalStatus -eq "Online")}).Number
+	if (Get-PhysicalDisk -DeviceNumber $DiskNumber | Where-Object -FilterScript {$_.MediaType -ne "SSD"})
+	{
+		Write-Warning -Message $Localization.SSDRequired
 
-			# Enable Virtual Machine Platform
-			if ((Get-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform).State -eq "Disabled")
-			{
-				Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -NoRestart
+		return
+	}
 
-				Write-Warning -Message $Localization.RestartWarning
-				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
-
-				return
-			}
-
-			if (Get-AppxPackage -Name MicrosoftCorporationII.WindowsSubsystemForAndroid)
-			{
-				return
-			}
-
-			try
-			{
-				# Check the internet connection
-				$Parameters = @{
-					Uri              = "https://www.google.com"
-					Method           = "Head"
-					DisableKeepAlive = $true
-					UseBasicParsing  = $true
-				}
-				if (-not (Invoke-WebRequest @Parameters).StatusDescription)
-				{
-					return
-				}
-
-				if (((Get-WinHomeLocation).GeoId -ne "244"))
-				{
-					# Set Windows region to USA
-					$Script:Region = (Get-WinHomeLocation).GeoId
-					Set-WinHomeLocation -GeoId 244
-
-					$Script:RegionChanged = $true
-				}
-
-				# Open Misrosoft Store WSA page to install it manually
-				Start-Process -FilePath ms-windows-store://pdp/?ProductId=9P3395VX91NR
-			}
-			catch [System.Net.WebException]
-			{
-				Write-Warning -Message $Localization.NoInternetConnection
-				Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
-
-				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
-			}
+	try
+	{
+		# Check the internet connection
+		$Parameters = @{
+			Uri              = "https://www.google.com"
+			Method           = "Head"
+			DisableKeepAlive = $true
+			UseBasicParsing  = $true
 		}
-		"Disable"
+		if (-not (Invoke-WebRequest @Parameters).StatusDescription)
 		{
-			Disable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -NoRestart
-			Get-AppxPackage -Name MicrosoftCorporationII.WindowsSubsystemForAndroid | Remove-AppxPackage
+			return
 		}
+
+		if (((Get-WinHomeLocation).GeoId -ne "244"))
+		{
+			# Set Windows region to USA
+			$Script:Region = (Get-WinHomeLocation).GeoId
+			Set-WinHomeLocation -GeoId 244
+
+			$Script:RegionChanged = $true
+		}
+
+		# Open Misrosoft Store WSA page to install it manually
+		Start-Process -FilePath ms-windows-store://pdp/?ProductId=9P3395VX91NR
+	}
+	catch [System.Net.WebException]
+	{
+		Write-Warning -Message $Localization.NoInternetConnection
+		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+
+		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
 	}
 }
 
@@ -9253,10 +9240,8 @@ function PreventEdgeShortcutCreation
 		$Disable
 	)
 
-	if (($null -eq (Get-Package -Name "Microsoft Edge Update" -ProviderName Programs -ErrorAction Ignore)) -or ([System.Version](Get-Package -Name "Microsoft Edge Update" -ProviderName Programs).Version -lt [System.Version]"1.3.128.0"))
+	if (($null -eq (Get-Package -Name "Microsoft Edge Update" -ProviderName Programs -ErrorAction Ignore)) -or ([System.Version](Get-Package -Name "Microsoft Edge Update" -ProviderName Programs -ErrorAction Ignore).Version -lt [System.Version]"1.3.128.0"))
 	{
-		(Get-Package -Name "Microsoft Edge Update" -ProviderName Programs -ErrorAction Ignore).Version
-
 		return
 	}
 
@@ -9320,6 +9305,60 @@ function PreventEdgeShortcutCreation
 			"CreateDesktopShortcut{65C35B14-6C1D-4122-AC46-7148CC9D6497}"
 		)
 		Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Name $Names -Force -ErrorAction Ignore
+	}
+}
+
+<#
+	.SYNOPSIS
+	Internal SATA drives up as removeable media in the taskbar notification area
+
+	.PARAMETER Disable
+	Prevent all internal SATA drives from showing up as removable media in the taskbar notification area ###
+
+	.PARAMETER Default
+	Show up all internal SATA drives as removeable media in the taskbar notification area
+
+	.PARAMETER Show
+	Show more recommendations on Start
+
+	.EXAMPLE
+	SATADrivesRemovableMedia -Disable
+
+	.EXAMPLE
+	SATADrivesRemovableMedia -Default
+
+	.NOTES
+	Machine-wide
+#>
+function SATADrivesRemovableMedia
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Default"
+		)]
+		[switch]
+		$Default
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Disable"
+		{
+			New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\storahci\Parameters\Device -Name TreatAsInternalPort -Value @(0, 1, 2, 3, 4, 5) -Type MultiString -Force
+		}
+		"Default"
+		{
+			Remove-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\storahci\Parameters\Device -Name TreatAsInternalPort -Force -ErrorAction Ignore
+		}
 	}
 }
 #endregion System
@@ -9568,61 +9607,6 @@ BDEE24B1E5E4ED6CC9D5A337908BE5303E477736C8A75051A8FBD4E3CB6360D8F0A992A48F333434
 
 <#
 	.SYNOPSIS
-	How to run the Windows PowerShell shortcut
-
-	.PARAMETER Elevated
-	Run the Windows PowerShell shortcut from the Start menu as Administrator
-
-	.PARAMETER NonElevated
-	Run the Windows PowerShell shortcut from the Start menu as user
-
-	.EXAMPLE
-	RunPowerShellShortcut -Elevated
-
-	.EXAMPLE
-	RunPowerShellShortcut -NonElevated
-
-	.NOTES
-	Current user
-#>
-function RunPowerShellShortcut
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Elevated"
-		)]
-		[switch]
-		$Elevated,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "NonElevated"
-		)]
-		[switch]
-		$NonElevated
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Elevated"
-		{
-			[byte[]]$bytes = Get-Content -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Windows PowerShell\Windows PowerShell.lnk" -AsByteStream -Raw
-			$bytes[0x15] = $bytes[0x15] -bor 0x20
-			Set-Content -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Windows PowerShell\Windows PowerShell.lnk" -Value $bytes -AsByteStream -Force
-		}
-		"NonElevated"
-		{
-			[byte[]]$bytes = Get-Content -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Windows PowerShell\Windows PowerShell.lnk" -AsByteStream -Raw
-			$bytes[0x15] = $bytes[0x15] -bxor 0x20
-			Set-Content -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Windows PowerShell\Windows PowerShell.lnk" -Value $bytes -AsByteStream -Force
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
 	Configure Start layout
 
 	.PARAMETER Default
@@ -9642,9 +9626,6 @@ function RunPowerShellShortcut
 
 	.EXAMPLE
 	StartLayout -ShowMoreRecommendations
-
-	.NOTES
-	For Windows 11 22H2+
 
 	.NOTES
 	Current user
@@ -9675,25 +9656,22 @@ function StartLayout
 		$ShowMoreRecommendations
 	)
 
-	if ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber -ge 22621)
+	switch ($PSCmdlet.ParameterSetName)
 	{
-		switch ($PSCmdlet.ParameterSetName)
+		"Default"
 		{
-			"Default"
-			{
-				# Default
-				New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name Start_Layout -PropertyType DWord -Value 0 -Force
-			}
-			"ShowMorePins"
-			{
-				# Show More Pins
-				New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name Start_Layout -PropertyType DWord -Value 1 -Force
-			}
-			"ShowMoreRecommendations"
-			{
-				# Show More Recommendations
-				New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name Start_Layout -PropertyType DWord -Value 2 -Force
-			}
+			# Default
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name Start_Layout -PropertyType DWord -Value 0 -Force
+		}
+		"ShowMorePins"
+		{
+			# Show More Pins
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name Start_Layout -PropertyType DWord -Value 1 -Force
+		}
+		"ShowMoreRecommendations"
+		{
+			# Show More Recommendations
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name Start_Layout -PropertyType DWord -Value 2 -Force
 		}
 	}
 }
@@ -10579,7 +10557,7 @@ function HEVC
 	)
 
 	# Check whether the extension is already installed
-	if (-not (Get-AppxPackage -Name Microsoft.Windows.Photos))
+	if ((-not (Get-AppxPackage -Name Microsoft.Windows.Photos)) -or (Get-AppxPackage -Name Microsoft.HEVCVideoExtension))
 	{
 		return
 	}
@@ -12531,17 +12509,17 @@ function DNSoverHTTPS
 
 				foreach ($InterfaceGuid in $InterfaceGuids)
 				{
-					if (-not (Test-Path -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS"))
+					if (-not (Test-Path -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS"))
 					{
-						New-Item -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Force
+						New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Force
 					}
-					if (-not (Test-Path -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS"))
+					if (-not (Test-Path -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS"))
 					{
-						New-Item -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS" -Force
+						New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS" -Force
 					}
 					# Encrypted preffered, unencrypted allowed
-					New-ItemProperty -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Name DohFlags -PropertyType QWord -Value 5 -Force
-					New-ItemProperty -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS" -Name DohFlags -PropertyType QWord -Value 5 -Force
+					New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Name DohFlags -PropertyType QWord -Value 5 -Force
+					New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS" -Name DohFlags -PropertyType QWord -Value 5 -Force
 				}
 			}
 		}
@@ -12563,7 +12541,7 @@ function DNSoverHTTPS
 
 				foreach ($InterfaceGuid in $InterfaceGuids)
 				{
-					Remove-Item -Path "HKLM:\SYSTEM\ControlSet001\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh" -Recurse -Force -ErrorAction Ignore
+					Remove-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh" -Recurse -Force -ErrorAction Ignore
 				}
 			}
 		}
@@ -12890,7 +12868,7 @@ function EditWithClipchampContext
 		$Show
 	)
 
-	if (((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber -ge 22621) -and (Get-AppxPackage -Name Clipchamp.Clipchamp))
+	if (Get-AppxPackage -Name Clipchamp.Clipchamp)
 	{
 		switch ($PSCmdlet.ParameterSetName)
 		{

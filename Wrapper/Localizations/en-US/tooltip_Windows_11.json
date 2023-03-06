@@ -496,8 +496,16 @@
         "ToolTip": "Hide the search button from the taskbar"
       },
       "One": {
-        "Tag": "Show",
-        "ToolTip": "Show the search icon on the taskbar (default value)"
+        "Tag": "SearchIcon",
+        "ToolTip": "Show the search icon on the taskbar"
+      },
+      "Two": {
+        "Tag": "SearchIconLabel",
+        "ToolTip": "Show the search icon and label on the taskbar"
+      },
+      "Three": {
+        "Tag": "SearchBox",
+        "ToolTip": "Show the search box on the taskbar (default value)"
       }
     }
   },
@@ -1394,15 +1402,11 @@
   {
     "Id": 539,
     "Region": "System",
-    "Function": "WSA",
+    "Function": "Install-WSA",
     "Arg": {
       "Zero": {
-        "Tag": "Enable",
+        "Tag": "",
         "ToolTip": "Enable all necessary dependencies (reboot may require) and open Microsoft Store WSA page to install Windows Subsystem for Android™ with Amazon Appstore manually"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Disable all necessary dependencies (reboot may require) and uninstall Windows Subsystem for Android™ with Amazon Appstore (default value)"
       }
     }
   },
@@ -1445,21 +1449,6 @@
   },
   {
     "Id": 701,
-    "Region": "Start menu",
-    "Function": "RunPowerShellShortcut",
-    "Arg": {
-      "Zero": {
-        "Tag": "Elevated",
-        "ToolTip": "Run the Windows PowerShell shortcut from the Start menu as Administrator"
-      },
-      "One": {
-        "Tag": "NonElevated",
-        "ToolTip": "Run the Windows PowerShell shortcut from the Start menu as user (default value)"
-      }
-    }
-  },
-  {
-    "Id": 702,
     "Region": "Start menu",
     "Function": "StartLayout",
     "Arg": {

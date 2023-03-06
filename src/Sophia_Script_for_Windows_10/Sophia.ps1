@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10"
 
-	Version: v5.15.2
-	Date: 11.02.2023
+	Version: v5.15.3
+	Date: 07.03.2023
 
 	Copyright (c) 2014—2023 farag
 	Copyright (c) 2019—2023 farag & Inestic
@@ -27,7 +27,7 @@
 	.NOTES
 	Supported Windows 10 versions
 	Versions: 21H2/22H2
-	Builds: 19044.2364+
+	Builds: 19045.2604+
 	Editions: Home/Pro/Enterprise
 	Architecture: x64
 
@@ -70,7 +70,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.15.2 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2023"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.15.3 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2023"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -1001,6 +1001,14 @@ PreventEdgeShortcutCreation -Channels Stable, Beta, Dev, Canary
 # Do not prevent desktop shortcut creation upon Microsoft Edge update (default value)
 # Не предотвращать создание ярлыков на рабочем столе при обновлении Microsoft Edge (значение по умолчанию)
 # PreventEdgeShortcutCreation -Disable
+
+# Prevent all internal SATA drives from showing up as removable media in the taskbar notification area
+# Запретить отображать все внутренние SATA-диски как съемные носители в области уведомлений на панели задач
+SATADrivesRemovableMedia -Disable
+
+# Show up all internal SATA drives as removeable media in the taskbar notification area (default value)
+# Отображать все внутренние SATA-диски как съемные носители в области уведомлений на панели задач (значение по умолчанию)
+# SATADrivesRemovableMedia -Default
 #endregion System
 
 #region WSL
@@ -1030,14 +1038,6 @@ AppSuggestions -Hide
 # Show app suggestions in the Start menu (default value)
 # Показывать рекомендации в меню "Пуск" (значение по умолчанию)
 # AppSuggestions -Show
-
-# Run the Windows PowerShell shortcut from the Start menu as Administrator
-# Запускать ярлык Windows PowerShell в меню "Пуск" от имени Администратора
-RunPowerShellShortcut -Elevated
-
-# Run the Windows PowerShell shortcut from the Start menu as user (default value)
-# Запускать ярлык Windows PowerShell в меню "Пуск" от имени пользователя (значение по умолчанию)
-# RunPowerShellShortcut -NonElevated
 
 <#
 	Pin to Start the following shortcuts: Control Panel, Devices and Printers, PowerShell

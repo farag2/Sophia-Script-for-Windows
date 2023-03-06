@@ -1913,25 +1913,6 @@
   {
     "Id": 702,
     "Region": "Start menu",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "RunPowerShellShortcut",
-    "Arg": {
-      "Zero": {
-        "Tag": "Elevated"
-      },
-      "One": {
-        "Tag": "NonElevated"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One",
-    "LTSC2019": "true",
-    "LTSC2021": "true"
-  },
-  {
-    "Id": 703,
-    "Region": "Start menu",
     "Control": "chk",
     "Required": "false",
     "Function": "PinToStart -Tiles",
@@ -1952,7 +1933,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 704,
+    "Id": 703,
     "Region": "Start menu",
     "Control": "chk",
     "Required": "false",

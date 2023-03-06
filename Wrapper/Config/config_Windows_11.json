@@ -565,11 +565,17 @@
         "Tag": "Hide"
       },
       "One": {
-        "Tag": "Show"
+        "Tag": "SearchIcon"
+      },
+      "Two": {
+        "Tag": "SearchIconLabel"
+      },
+      "Three": {
+        "Tag": "SearchBox"
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "Three"
   },
   {
     "Id": 316,
@@ -1565,17 +1571,14 @@
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
-    "Function": "WSA",
+    "Function": "Install-WSA",
     "Arg": {
       "Zero": {
-        "Tag": "Enable"
-      },
-      "One": {
-        "Tag": "Disable"
+        "Tag": ""
       }
     },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
+    "Preset": "",
+    "WindowsDefault": ""
   },
   {
     "Id": 540,
@@ -1624,23 +1627,6 @@
   },
   {
     "Id": 701,
-    "Region": "Start menu",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "RunPowerShellShortcut",
-    "Arg": {
-      "Zero": {
-        "Tag": "Elevated"
-      },
-      "One": {
-        "Tag": "NonElevated"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
-    "Id": 702,
     "Region": "Start menu",
     "Control": "cmb",
     "Required": "false",

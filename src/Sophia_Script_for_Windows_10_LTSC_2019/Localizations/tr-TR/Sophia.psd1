@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Bu betik sadece Windows 10 x64 destekliyor
 UnsupportedOSBuild                        = Bu betik sadece Windows 10 Enterprise LTSC 2019
-UpdateWarning                             = Windows 10 toplu güncelleştirmesi yüklendi: {0}. Desteklenen toplu güncelleme: 3770 ve üstü. Windows Update'i çalıştırın ve tekrar deneyin
+UpdateWarning                             = Windows 10 toplu güncelleştirmesi yüklendi: {0}. Desteklenen toplu güncelleme: 4010 ve üstü. Windows Update'i çalıştırın ve tekrar deneyin
 UnsupportedLanguageMode                   = Sınırlı bir dil modunda çalışan PowerShell oturumu
 LoggedInUserNotAdmin                      = Oturum açan kullanıcının yönetici hakları yok
 UnsupportedPowerShell                     = Komut dosyasını PowerShell {0}.{1} aracılığıyla çalıştırmaya çalışıyorsunuz. Komut dosyasını uygun PowerShell sürümünde çalıştırın

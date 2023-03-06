@@ -1751,23 +1751,6 @@
   {
     "Id": 702,
     "Region": "Start menu",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "RunPowerShellShortcut",
-    "Arg": {
-      "Zero": {
-        "Tag": "Elevated"
-      },
-      "One": {
-        "Tag": "NonElevated"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
-    "Id": 703,
-    "Region": "Start menu",
     "Control": "chk",
     "Required": "false",
     "Function": "PinToStart -Tiles",
@@ -1786,7 +1769,7 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 704,
+    "Id": 703,
     "Region": "Start menu",
     "Control": "chk",
     "Required": "false",
