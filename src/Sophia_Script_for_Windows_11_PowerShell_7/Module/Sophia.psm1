@@ -11392,7 +11392,7 @@ while ([WinAPI.Focus]::GetFocusAssistState() -ne "OFF")
 			# Save script to be able to call them from VBS file
 			if (-not (Test-Path -Path $env:SystemRoot\System32\Tasks\Sophia))
 			{
-				New-Item -Path $env:SystemRoot\System32\Tasks\Sophia -Force
+				New-Item -Path $env:SystemRoot\System32\Tasks\Sophia -ItemType Directory -Force
 			}
 			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1" -Value $ToastNotification -Encoding Default -Force
 			# Replace here-string double quotes with single ones
@@ -11685,7 +11685,7 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -For
 			# Save script to be able to call them from VBS file
 			if (-not (Test-Path -Path $env:SystemRoot\System32\Tasks\Sophia))
 			{
-				New-Item -Path $env:SystemRoot\System32\Tasks\Sophia -Force
+				New-Item -Path $env:SystemRoot\System32\Tasks\Sophia -ItemType Directory -Force
 			}
 			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Value $SoftwareDistributionTask -Encoding Default -Force
 			# Replace here-string double quotes with single ones
@@ -11971,7 +11971,7 @@ Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_
 			# Save script to be able to call them from VBS file
 			if (-not (Test-Path -Path $env:SystemRoot\System32\Tasks\Sophia))
 			{
-				New-Item -Path $env:SystemRoot\System32\Tasks\Sophia -Force
+				New-Item -Path $env:SystemRoot\System32\Tasks\Sophia -ItemType Directory -Force
 			}
 			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Value $TempTask -Encoding Default -Force
 			# Replace here-string double quotes with single ones
