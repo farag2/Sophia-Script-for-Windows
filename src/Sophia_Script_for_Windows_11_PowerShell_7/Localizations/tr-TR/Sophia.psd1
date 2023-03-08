@@ -1,5 +1,5 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedOSBuild                        = Bu betik sadece Windows 11 21H2 sürüm ve üstünü destekliyor
+UnsupportedOSBuild                        = Bu betik sadece Windows 11 22H2 sürüm ve üstünü destekliyor
 UpdateWarning                             = Windows 11 yapınız: {0}.{1}. Desteklenen yapılar: 22621.1344 ve üstünü destekliyor. Windows Update'i çalıştırın ve tekrar deneyin
 UnsupportedLanguageMode                   = Sınırlı bir dil modunda çalışan PowerShell oturumu
 LoggedInUserNotAdmin                      = Oturum açan kullanıcının yönetici hakları yok

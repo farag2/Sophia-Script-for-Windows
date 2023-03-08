@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Skrypt obsługuje tylko system Windows 10 x64
-UnsupportedOSBuild                        = Skrypt obsługuje system Windows 10 21H2/22H2+
+UnsupportedOSBuild                        = Skrypt obsługuje system Windows 10 22H2+
 UpdateWarning                             = Zainstalowano zbiorczą aktualizację systemu Windows 10: {0}. Obsługiwane aktualizacje zbiorcze: 2604 i nowsze. Uruchom aktualizację systemu Windows i spróbuj ponownie.
 UnsupportedLanguageMode                   = Sesja PowerShell działa w trybie ograniczonego języka
 LoggedInUserNotAdmin                      = Zalogowany użytkownik nie posiada uprawnień administratora

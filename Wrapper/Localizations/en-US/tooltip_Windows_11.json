@@ -1426,6 +1426,21 @@
     }
   },
   {
+    "Id": 541,
+    "Region": "System",
+    "Function": "SATADrivesRemovableMedia",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Prevent all internal SATA drives from showing up as removable media in the taskbar notification area"
+      },
+      "One": {
+        "Tag": "Default",
+        "ToolTip": "Show up all internal SATA drives as removeable media in the taskbar notification area (default value)"
+      }
+    }
+  },
+  {
     "Id": 600,
     "Region": "WSL",
     "Function": "Install-WSL",

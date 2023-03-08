@@ -1516,6 +1516,21 @@
     }
   },
   {
+    "Id": 540,
+    "Region": "System",
+    "Function": "SATADrivesRemovableMedia",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Verhindern, dass alle internen SATA-Laufwerke im Infobereich der Taskleiste als Wechselmedien angezeigt werden"
+      },
+      "One": {
+        "Tag": "Default",
+        "ToolTip": "Anzeige aller internen SATA-Laufwerke als entfernbare Medien im Infobereich der Taskleiste (Standardwert)"
+      }
+    }
+  },
+  {
     "Id": 600,
     "Region": "WSL",
     "Function": "Install-WSL",

@@ -2,7 +2,7 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v6.3.3
+	Version: v6.4.0
 	Date: 07.03.2023
 
 	Copyright (c) 2014—2023 farag
@@ -527,6 +527,15 @@ function Checks
 		}
 	}
 
+	# Enable back the SysMain service if it was disabled by harmful tweakers
+	if ((Get-Service -Name SysMain).Status -eq "Stopped")
+	{
+		Get-Service -Name SysMain | Set-Service -StartupType Automatic
+		Get-Service -Name SysMain | Start-Service
+
+		Start-Process -FileName "https://www.outsidethebox.ms/19318/"
+	}
+
 	# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
 	Get-ChildItem -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 
@@ -1030,7 +1039,7 @@ function ScheduledTasks
 
 	#region XAML Markup
 	# The section defines the design of the upcoming dialog box
-	[xml]$XAML = '
+	[xml]$XAML = @"
 	<Window
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -1082,7 +1091,7 @@ function ScheduledTasks
 			<Button Name="Button" Grid.Row="2"/>
 		</Grid>
 	</Window>
-	'
+"@
 	#endregion XAML Markup
 
 	$Reader = (New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML)
@@ -5158,7 +5167,7 @@ function WindowsFeatures
 
 	#region XAML Markup
 	# The section defines the design of the upcoming dialog box
-	[xml]$XAML = '
+	[xml]$XAML = @"
 	<Window
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -5210,7 +5219,7 @@ function WindowsFeatures
 			<Button Name="Button" Grid.Row="2"/>
 		</Grid>
 	</Window>
-	'
+"@
 	#endregion XAML Markup
 
 	$Reader = (New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML)
@@ -5510,7 +5519,7 @@ function WindowsCapabilities
 
 	#region XAML Markup
 	# The section defines the design of the upcoming dialog box
-	[xml]$XAML = '
+	[xml]$XAML = @"
 	<Window
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -5562,7 +5571,7 @@ function WindowsCapabilities
 			<Button Name="Button" Grid.Row="2"/>
 		</Grid>
 	</Window>
-	'
+"@
 	#endregion XAML Markup
 
 	$Reader = (New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML)
@@ -9310,7 +9319,7 @@ function PreventEdgeShortcutCreation
 	Internal SATA drives up as removeable media in the taskbar notification area
 
 	.PARAMETER Disable
-	Prevent all internal SATA drives from showing up as removable media in the taskbar notification area ###
+	Prevent all internal SATA drives from showing up as removable media in the taskbar notification area
 
 	.PARAMETER Default
 	Show up all internal SATA drives as removeable media in the taskbar notification area
@@ -9327,7 +9336,7 @@ function PreventEdgeShortcutCreation
 	.NOTES
 	Machine-wide
 #>
-function SATADrivesRemovableMedia ###
+function SATADrivesRemovableMedia
 {
 	param
 	(
@@ -9399,7 +9408,7 @@ function Install-WSL
 	#endregion
 
 	#region Xaml Markup
-	[xml]$XAML = '
+	[xml]$XAML = @"
 	<Window
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -9434,7 +9443,7 @@ function Install-WSL
 			<Button Name="ButtonInstall" Content="Install" Grid.Row="2"/>
 		</Grid>
 	</Window>
-	'
+"@
 	#endregion
 
 	#region Functions
@@ -9801,7 +9810,7 @@ function UninstallUWPApps
 	#region Variables
 	#region XAML Markup
 	# The section defines the design of the upcoming dialog box
-	[xml]$XAML = '
+	[xml]$XAML = @"
 	<Window
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -9868,7 +9877,7 @@ function UninstallUWPApps
 			<Button Name="ButtonUninstall" Grid.Row="2"/>
 		</Grid>
 	</Window>
-	'
+"@
 	#endregion XAML Markup
 
 	$Reader = (New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML)
@@ -10171,7 +10180,7 @@ function RestoreUWPApps
 	#region Variables
 	#region XAML Markup
 	# The section defines the design of the upcoming dialog box
-	[xml]$XAML = '
+	[xml]$XAML = @"
 	<Window
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -10234,7 +10243,7 @@ function RestoreUWPApps
 			<Button Name="ButtonRestore" Grid.Row="2"/>
 		</Grid>
 	</Window>
-	'
+"@
 	#endregion XAML Markup
 
 	$Reader = (New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML)
@@ -11196,11 +11205,11 @@ while (`$true)
 			Namespace = """WinAPI"""
 			Name = """Win32ShowWindowAsync"""
 			Language = """CSharp"""
-			MemberDefinition = @'
+			MemberDefinition = @"""
 [DllImport("""user32.dll""")]
 public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
-'@
-	}
+"""@
+		}
 
 		if (-not ("""WinAPI.Win32ShowWindowAsync""" -as [type]))
 		{
@@ -11240,39 +11249,143 @@ public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 			}
 			Register-ScheduledTask @Parameters -Force
 
+			# We have to call PowerShell script via another VBS script silently because VBS has appropriate feature to suppress console appearing (none of other workarounds work)
+			# powershell.exe process wakes up system anyway even from turned on Focus Assist mode (not a notification toast)
+			# https://github.com/DCourtel/Windows_10_Focus_Assist/blob/master/FocusAssistLibrary/FocusAssistLib.cs
+			# https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
 			$ToastNotification = @"
+# https://github.com/farag2/Sophia-Script-for-Windows
+# https://t.me/sophia_chat
+
+# Get Focus Assist status
+# https://github.com/DCourtel/Windows_10_Focus_Assist/blob/master/FocusAssistLibrary/FocusAssistLib.cs
+# https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
+
+`$Focus = @{
+	Namespace        = "WinAPI"
+	Name             = "Focus"
+	Language         = "CSharp"
+	MemberDefinition = @""
+[DllImport("NtDll.dll", SetLastError = true)]
+private static extern uint NtQueryWnfStateData(IntPtr pStateName, IntPtr pTypeId, IntPtr pExplicitScope, out uint nChangeStamp, out IntPtr pBuffer, ref uint nBufferSize);
+
+[StructLayout(LayoutKind.Sequential)]
+public struct WNF_TYPE_ID
+{
+	public Guid TypeId;
+}
+
+[StructLayout(LayoutKind.Sequential)]
+public struct WNF_STATE_NAME
+{
+	[MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+	public uint[] Data;
+
+	public WNF_STATE_NAME(uint Data1, uint Data2) : this()
+	{
+		uint[] newData = new uint[2];
+		newData[0] = Data1;
+		newData[1] = Data2;
+		Data = newData;
+	}
+}
+
+public enum FocusAssistState
+{
+	NOT_SUPPORTED = -2,
+	FAILED = -1,
+	OFF = 0,
+	PRIORITY_ONLY = 1,
+	ALARMS_ONLY = 2
+};
+
+// Returns the state of Focus Assist if available on this computer
+public static FocusAssistState GetFocusAssistState()
+{
+	try
+	{
+		WNF_STATE_NAME WNF_SHEL_QUIETHOURS_ACTIVE_PROFILE_CHANGED = new WNF_STATE_NAME(0xA3BF1C75, 0xD83063E);
+		uint nBufferSize = (uint)Marshal.SizeOf(typeof(IntPtr));
+		IntPtr pStateName = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(WNF_STATE_NAME)));
+		Marshal.StructureToPtr(WNF_SHEL_QUIETHOURS_ACTIVE_PROFILE_CHANGED, pStateName, false);
+
+		uint nChangeStamp = 0;
+		IntPtr pBuffer = IntPtr.Zero;
+		bool success = NtQueryWnfStateData(pStateName, IntPtr.Zero, IntPtr.Zero, out nChangeStamp, out pBuffer, ref nBufferSize) == 0;
+		Marshal.FreeHGlobal(pStateName);
+
+		if (success)
+		{
+			return (FocusAssistState)pBuffer;
+		}
+	}
+	catch {}
+
+	return FocusAssistState.FAILED;
+}
+""@
+}
+
+if (-not ("WinAPI.Focus" -as [type]))
+{
+	Add-Type @Focus
+}
+
+while ([WinAPI.Focus]::GetFocusAssistState() -ne "OFF")
+{
+	Start-Sleep -Seconds 600
+}
+
 [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
 [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
 
-[xml]`$ToastTemplate = @"""
-<toast duration="""Long""">
+[xml]`$ToastTemplate = @""
+<toast duration="Long">
 	<visual>
-		<binding template="""ToastGeneric""">
+		<binding template="ToastGeneric">
 			<text>$($Localization.CleanupTaskNotificationTitle)</text>
 			<group>
 				<subgroup>
-					<text hint-style="""body""" hint-wrap="""true""">$($Localization.CleanupTaskNotificationEvent)</text>
+					<text hint-style="body" hint-wrap="true">$($Localization.CleanupTaskNotificationEvent)</text>
 				</subgroup>
 			</group>
 		</binding>
 	</visual>
-	<audio src="""ms-winsoundevent:notification.default""" />
+	<audio src="ms-winsoundevent:notification.default" />
 	<actions>
-		<action content="""$($Localization.Run)""" arguments="""WindowsCleanup:""" activationType="""protocol"""/>
-		<action content="""""" arguments="""dismiss""" activationType="""system"""/>
+		<action content="$($Localization.Run)" arguments="WindowsCleanup:" activationType="protocol"/>
+		<action content="" arguments="dismiss" activationType="system"/>
 	</actions>
 </toast>
-"""@
+""@
 
 `$ToastXml = [Windows.Data.Xml.Dom.XmlDocument]::New()
 `$ToastXml.LoadXml(`$ToastTemplate.OuterXml)
 
 `$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New(`$ToastXML)
-[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("""Sophia""").Show(`$ToastMessage)
+[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("Sophia").Show(`$ToastMessage)
 "@
 
+			# Save script to be able to call them from VBS file
+			if (-not (Test-Path -Path $env:SystemRoot\System32\Tasks\Sophia))
+			{
+				New-Item -Path $env:SystemRoot\System32\Tasks\Sophia -Force
+			}
+			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1" -Value $ToastNotification -Encoding Default -Force
+			# Replace here-string double quotes with single ones
+			(Get-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1" -Encoding Default).Replace('@""', '@"').Replace('""@', '"@') | Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1" -Encoding Default -Force
+
+			# Create vbs script that will help us calling PS1 script silently, without interrupting system from Focus Assist mode turned on, when a powershell.exe console pops up
+			$ToastNotification = @"
+' https://github.com/farag2/Sophia-Script-for-Windows
+' https://t.me/sophia_chat
+
+CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoProfile -NoLogo -WindowStyle Hidden -File %SystemRoot%\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1", 0
+"@
+			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.vbs" -Value $ToastNotification -Encoding Default -Force
+
 			# Create the "Windows Cleanup Notification" task
-			$Action    = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $ToastNotification"
+			$Action    = New-ScheduledTaskAction -Execute wscript.exe -Argument "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.vbs"
 			$Settings  = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
 			$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
 			$Trigger   = New-ScheduledTaskTrigger -Daily -DaysInterval 30 -At 9pm
@@ -11325,6 +11438,8 @@ public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 					$ScheduleService.GetFolder("\").DeleteFolder("Sophia", $null)
 				}
 			}
+
+			Remove-Item -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.vbs", "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1" -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -11431,33 +11546,138 @@ function SoftwareDistributionTask
 			# Determines whether the app can be seen in Settings where the user can turn notifications on or off
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Name ShowInSettings -Value 0 -PropertyType DWord -Force
 
+			# We have to call PowerShell script via another VBS script silently because VBS has appropriate feature to suppress console appearing (none of other workarounds work)
+			# powershell.exe process wakes up system anyway even from turned on Focus Assist mode (not a notification toast)
+			# https://github.com/DCourtel/Windows_10_Focus_Assist/blob/master/FocusAssistLibrary/FocusAssistLib.cs
+			# https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
 			$SoftwareDistributionTask = @"
+# https://github.com/farag2/Sophia-Script-for-Windows
+# https://t.me/sophia_chat
+
+# Get Focus Assist status
+# https://github.com/DCourtel/Windows_10_Focus_Assist/blob/master/FocusAssistLibrary/FocusAssistLib.cs
+# https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
+
+`$Focus = @{
+	Namespace        = "WinAPI"
+	Name             = "Focus"
+	Language         = "CSharp"
+	MemberDefinition = @""
+[DllImport("NtDll.dll", SetLastError = true)]
+private static extern uint NtQueryWnfStateData(IntPtr pStateName, IntPtr pTypeId, IntPtr pExplicitScope, out uint nChangeStamp, out IntPtr pBuffer, ref uint nBufferSize);
+
+[StructLayout(LayoutKind.Sequential)]
+public struct WNF_TYPE_ID
+{
+	public Guid TypeId;
+}
+
+[StructLayout(LayoutKind.Sequential)]
+public struct WNF_STATE_NAME
+{
+	[MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+	public uint[] Data;
+
+	public WNF_STATE_NAME(uint Data1, uint Data2) : this()
+	{
+		uint[] newData = new uint[2];
+		newData[0] = Data1;
+		newData[1] = Data2;
+		Data = newData;
+	}
+}
+
+public enum FocusAssistState
+{
+	NOT_SUPPORTED = -2,
+	FAILED = -1,
+	OFF = 0,
+	PRIORITY_ONLY = 1,
+	ALARMS_ONLY = 2
+};
+
+// Returns the state of Focus Assist if available on this computer
+public static FocusAssistState GetFocusAssistState()
+{
+	try
+	{
+		WNF_STATE_NAME WNF_SHEL_QUIETHOURS_ACTIVE_PROFILE_CHANGED = new WNF_STATE_NAME(0xA3BF1C75, 0xD83063E);
+		uint nBufferSize = (uint)Marshal.SizeOf(typeof(IntPtr));
+		IntPtr pStateName = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(WNF_STATE_NAME)));
+		Marshal.StructureToPtr(WNF_SHEL_QUIETHOURS_ACTIVE_PROFILE_CHANGED, pStateName, false);
+
+		uint nChangeStamp = 0;
+		IntPtr pBuffer = IntPtr.Zero;
+		bool success = NtQueryWnfStateData(pStateName, IntPtr.Zero, IntPtr.Zero, out nChangeStamp, out pBuffer, ref nBufferSize) == 0;
+		Marshal.FreeHGlobal(pStateName);
+
+		if (success)
+		{
+			return (FocusAssistState)pBuffer;
+		}
+	}
+	catch {}
+
+	return FocusAssistState.FAILED;
+}
+""@
+}
+
+if (-not ("WinAPI.Focus" -as [type]))
+{
+	Add-Type @Focus
+}
+
+# Wait until it will be "OFF" (0)
+while ([WinAPI.Focus]::GetFocusAssistState() -ne "OFF")
+{
+	Start-Sleep -Seconds 600
+}
+
+# Run the task
 (Get-Service -Name wuauserv).WaitForStatus('Stopped', '01:00:00')
 Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -Force | Remove-Item -Recurse -Force
 
 [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
 [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
 
-[xml]`$ToastTemplate = @"""
-<toast duration="""Long""">
+[xml]`$ToastTemplate = @""
+<toast duration="Long">
 	<visual>
-		<binding template="""ToastGeneric""">
+		<binding template="ToastGeneric">
 			<text>$($Localization.SoftwareDistributionTaskNotificationEvent)</text>
 		</binding>
 	</visual>
-	<audio src="""ms-winsoundevent:notification.default""" />
+	<audio src="ms-winsoundevent:notification.default" />
 </toast>
-"""@
+""@
 
 `$ToastXml = [Windows.Data.Xml.Dom.XmlDocument]::New()
 `$ToastXml.LoadXml(`$ToastTemplate.OuterXml)
 
 `$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New(`$ToastXML)
-[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("""Sophia""").Show(`$ToastMessage)
+[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("Sophia").Show(`$ToastMessage)
 "@
+			# Save script to be able to call them from VBS file
+			if (-not (Test-Path -Path $env:SystemRoot\System32\Tasks\Sophia))
+			{
+				New-Item -Path $env:SystemRoot\System32\Tasks\Sophia -Force
+			}
+			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Value $SoftwareDistributionTask -Encoding Default -Force
+			# Replace here-string double quotes with single ones
+			(Get-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Encoding Default).Replace('@""', '@"').Replace('""@', '"@') | Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Encoding Default -Force
+
+			# Create vbs script that will help us calling PS1 script silently, without interrupting system from Focus Assist mode turned on, when a powershell.exe console pops up
+			$SoftwareDistributionTask = @"
+' https://github.com/farag2/Sophia-Script-for-Windows
+' https://t.me/sophia_chat
+
+CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoProfile -NoLogo -WindowStyle Hidden -File %SystemRoot%\System32\Tasks\Sophia\SoftwareDistributionTask.ps1", 0
+"@
+			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.vbs" -Value $SoftwareDistributionTask -Encoding Default -Force
 
 			# Create the "SoftwareDistribution" task
-			$Action    = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $SoftwareDistributionTask"
+			$Action    = New-ScheduledTaskAction -Execute wscript.exe -Argument "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.vbs"
 			$Settings  = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
 			$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
 			$Trigger   = New-ScheduledTaskTrigger -Daily -DaysInterval 90 -At 9pm
@@ -11505,6 +11725,8 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -For
 					$ScheduleService.GetFolder("\").DeleteFolder("Sophia", $null)
 				}
 			}
+
+			Remove-Item -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.vbs", "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -11612,32 +11834,135 @@ function TempTask
 			# Determines whether the app can be seen in Settings where the user can turn notifications on or off
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Name ShowInSettings -Value 0 -PropertyType DWord -Force
 
+			# We have to call PowerShell script via another VBS script silently because VBS has appropriate feature to suppress console appearing (none of other workarounds work)
+			# powershell.exe process wakes up system anyway even from turned on Focus Assist mode (not a notification toast)
 			$TempTask = @"
+# https://github.com/farag2/Sophia-Script-for-Windows
+# https://t.me/sophia_chat
+
+# Get Focus Assist status
+# https://github.com/DCourtel/Windows_10_Focus_Assist/blob/master/FocusAssistLibrary/FocusAssistLib.cs
+# https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
+
+`$Focus = @{
+	Namespace        = "WinAPI"
+	Name             = "Focus"
+	Language         = "CSharp"
+	MemberDefinition = @""
+[DllImport("NtDll.dll", SetLastError = true)]
+private static extern uint NtQueryWnfStateData(IntPtr pStateName, IntPtr pTypeId, IntPtr pExplicitScope, out uint nChangeStamp, out IntPtr pBuffer, ref uint nBufferSize);
+
+[StructLayout(LayoutKind.Sequential)]
+public struct WNF_TYPE_ID
+{
+	public Guid TypeId;
+}
+
+[StructLayout(LayoutKind.Sequential)]
+public struct WNF_STATE_NAME
+{
+	[MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+	public uint[] Data;
+
+	public WNF_STATE_NAME(uint Data1, uint Data2) : this()
+	{
+		uint[] newData = new uint[2];
+		newData[0] = Data1;
+		newData[1] = Data2;
+		Data = newData;
+	}
+}
+
+public enum FocusAssistState
+{
+	NOT_SUPPORTED = -2,
+	FAILED = -1,
+	OFF = 0,
+	PRIORITY_ONLY = 1,
+	ALARMS_ONLY = 2
+};
+
+// Returns the state of Focus Assist if available on this computer
+public static FocusAssistState GetFocusAssistState()
+{
+	try
+	{
+		WNF_STATE_NAME WNF_SHEL_QUIETHOURS_ACTIVE_PROFILE_CHANGED = new WNF_STATE_NAME(0xA3BF1C75, 0xD83063E);
+		uint nBufferSize = (uint)Marshal.SizeOf(typeof(IntPtr));
+		IntPtr pStateName = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(WNF_STATE_NAME)));
+		Marshal.StructureToPtr(WNF_SHEL_QUIETHOURS_ACTIVE_PROFILE_CHANGED, pStateName, false);
+
+		uint nChangeStamp = 0;
+		IntPtr pBuffer = IntPtr.Zero;
+		bool success = NtQueryWnfStateData(pStateName, IntPtr.Zero, IntPtr.Zero, out nChangeStamp, out pBuffer, ref nBufferSize) == 0;
+		Marshal.FreeHGlobal(pStateName);
+
+		if (success)
+		{
+			return (FocusAssistState)pBuffer;
+		}
+	}
+	catch {}
+
+	return FocusAssistState.FAILED;
+}
+""@
+}
+
+if (-not ("WinAPI.Focus" -as [type]))
+{
+	Add-Type @Focus
+}
+
+# Wait until it will be "OFF" (0)
+while ([WinAPI.Focus]::GetFocusAssistState() -ne "OFF")
+{
+	Start-Sleep -Seconds 600
+}
+
+# Run the task
 Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_.CreationTime -lt (Get-Date).AddDays(-1)} | Remove-Item -Recurse -Force
 
 [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
 [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
 
-[xml]`$ToastTemplate = @"""
-<toast duration="""Long""">
+[xml]`$ToastTemplate = @""
+<toast duration="Long">
 	<visual>
-		<binding template="""ToastGeneric""">
+		<binding template="ToastGeneric">
 			<text>$($Localization.TempTaskNotificationEvent)</text>
 		</binding>
 	</visual>
-	<audio src="""ms-winsoundevent:notification.default""" />
+	<audio src="ms-winsoundevent:notification.default" />
 </toast>
-"""@
+""@
 
 `$ToastXml = [Windows.Data.Xml.Dom.XmlDocument]::New()
 `$ToastXml.LoadXml(`$ToastTemplate.OuterXml)
 
 `$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New(`$ToastXML)
-[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("""Sophia""").Show(`$ToastMessage)
+[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("Sophia").Show(`$ToastMessage)
 "@
+			# Save script to be able to call them from VBS file
+			if (-not (Test-Path -Path $env:SystemRoot\System32\Tasks\Sophia))
+			{
+				New-Item -Path $env:SystemRoot\System32\Tasks\Sophia -Force
+			}
+			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Value $TempTask -Encoding Default -Force
+			# Replace here-string double quotes with single ones
+			(Get-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Encoding Default).Replace('@""', '@"').Replace('""@', '"@') | Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Encoding Default -Force
+
+			# Create vbs script that will help us calling PS1 script silently, without interrupting system from Focus Assist mode turned on, when a powershell.exe console pops up
+			$TempTask = @"
+' https://github.com/farag2/Sophia-Script-for-Windows
+' https://t.me/sophia_chat
+
+CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoProfile -NoLogo -WindowStyle Hidden -File %SystemRoot%\System32\Tasks\Sophia\TempTask.ps1", 0
+"@
+			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.vbs" -Value $TempTask -Encoding Default -Force
 
 			# Create the "Temp" task
-			$Action    = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $TempTask"
+			$Action    = New-ScheduledTaskAction -Execute wscript.exe -Argument "$env:SystemRoot\System32\Tasks\Sophia\TempTask.vbs"
 			$Settings  = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
 			$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
 			$Trigger   = New-ScheduledTaskTrigger -Daily -DaysInterval 60 -At 9pm
@@ -11685,6 +12010,8 @@ Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_
 					$ScheduleService.GetFolder("\").DeleteFolder("Sophia", $null)
 				}
 			}
+
+			Remove-Item -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.vbs", "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -13684,6 +14011,16 @@ public static void PostMessage()
 	# Check if any of scheduled tasks were created. Unless open Task Scheduler
 	if ($Script:ScheduledTasks)
 	{
+		# Find and close taskschd.msc by its' argument
+		$taskschd_Process_ID = (Get-CimInstance -ClassName CIM_Process | Where-Object -FilterScript {$_.Name -eq "mmc.exe"} | Where-Object -FilterScript {
+			$_.CommandLine -match "taskschd.msc"
+		}).Handle
+		# Due to "Set-StrictMode -Version Latest" we have to check before executing
+		if ($taskschd_Process_ID)
+		{
+			Get-Process -Id $taskschd_Process_ID | Stop-Process -Force
+		}
+
 		# Open Task Scheduler
 		Start-Process -FilePath taskschd.msc
 	}

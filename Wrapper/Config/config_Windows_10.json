@@ -1701,6 +1701,23 @@
     "WindowsDefault": "One"
   },
   {
+    "Id": 540,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "SATADrivesRemovableMedia",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Default"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One"
+  },
+  {
     "Id": 600,
     "Region": "WSL",
     "Control": "chk",

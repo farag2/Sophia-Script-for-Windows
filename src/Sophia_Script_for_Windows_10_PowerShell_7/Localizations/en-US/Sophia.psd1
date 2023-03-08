@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = The script supports Windows 10 x64 only
-UnsupportedOSBuild                        = The script supports Windows 10 21H2/22H2+
+UnsupportedOSBuild                        = The script supports Windows 10 22H2+
 UpdateWarning                             = Windows 10 cumulative update installed: {0}. Supported cumulative updates: 2604 and higher. Run Windows Update and try again
 UnsupportedLanguageMode                   = The PowerShell session in running in a limited language mode
 LoggedInUserNotAdmin                      = The logged-on user doesn't have admin rights
