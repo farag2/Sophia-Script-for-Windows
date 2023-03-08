@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.16.0 | 6.4.0 — 08.03.2023
+
+* Dropped support for `Windows 11 22000` & `Windows 10 21H2`;
+  * If you run the script on this build you will silently download and run `Windows 11 Installation Assistant`, download `the PC Health Check app` and expand it without installation to prepare for upgrading.
+* `CleanupTask`, `SoftwareDistributionTask`, `TempTask` re-written;
+  * Now all scheduled tasks respect `Focus Assist` mode and won't interrupt while you playing games or watching fullscreen videos with any notification toasts or powershell.exe pop-ups
+  * Uses the [FocusAssistLib.cs](https://github.com/DCourtel/Windows_10_Focus_Assist/blob/master/FocusAssistLibrary/FocusAssistLib.cs) code from @DCourtel!
+  * <https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html>
+  * I strongly recommend you to update them ([how-to](https://github.com/farag2/Sophia-Script-for-Windows#how-to-run-the-specific-functions))
+
+  ```powershell
+  # With dot at the beginning
+  . .\Functions.ps1
+
+  Sophia -Functions "CleanupTask -Register", "SoftwareDistributionTask -Register", "TempTask -Register"
+  ```
+
+* Improved `WSL-Install`;
+* Removed `RunPowerShellShortcut` function as not necessary any more;
+* `WSA` function renamed into `Install-WSA` and has no parameters any more;
+* Added `TaskbarSearch -SearchIconLabel` new parameter to configure search bar design on the taskbar;
+* Added `SATADrivesRemovableMedia` function to prevent all internal SATA drives from showing up as removable media in the taskbar notification area
+* #453 closed;
+* Many small changes and improvements.
+
+***
+
 ## 5.15.2 | 6.3.2 — 11.02.2023
 
 * Improved and fixed `WSL-Install` function when WSL output was parsed wrong;
