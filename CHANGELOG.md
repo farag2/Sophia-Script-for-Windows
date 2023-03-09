@@ -8,12 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## 5.16.0 | 6.4.0 — 08.03.2023
 
 * Dropped support for `Windows 11 22000` & `Windows 10 21H2`;
-  * If you run the script on this build you will silently download and run `Windows 11 Installation Assistant`, download `the PC Health Check app` and expand it without installation to prepare for upgrading.
+  * If you run the script on `Windows 11 22000` you will silently download and run [Windows 11 Installation Assistant](https://www.microsoft.com/software-download/windows11), then download the [PC Health Check app](https://support.microsoft.com/en-us/windows/how-to-use-the-pc-health-check-app-9c8abd9b-03ba-4e67-81ef-36f37caa7844) and expand it without installation to prepare for upgrading.
 * `CleanupTask`, `SoftwareDistributionTask`, `TempTask` re-written;
   * Now all scheduled tasks respect `Focus Assist` mode and won't interrupt while you playing games or watching fullscreen videos with any notification toasts or powershell.exe pop-ups
   * Uses the [FocusAssistLib.cs](https://github.com/DCourtel/Windows_10_Focus_Assist/blob/master/FocusAssistLibrary/FocusAssistLib.cs) code from @DCourtel!
   * <https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html>
-  * I strongly recommend you to update them ([how-to](https://github.com/farag2/Sophia-Script-for-Windows#how-to-run-the-specific-functions))
+  * **I strongly recommend you to update them** ([how-to](https://github.com/farag2/Sophia-Script-for-Windows#how-to-run-the-specific-functions))
 
   ```powershell
   # With dot at the beginning
@@ -29,8 +29,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `SATADrivesRemovableMedia` function to prevent all internal SATA drives from showing up as removable media in the taskbar notification area
 * #453 closed;
 * Many small changes and improvements.
-
-***
 
 ## 5.15.2 | 6.3.2 — 11.02.2023
 
