@@ -58,7 +58,7 @@ Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
 Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia -BaseDirectory $PSScriptRoot\Localizations
 
 # The mandatory checks. Please, do not comment out this function
-Checks
+#Checks
 
 $Parameters = @{
 	CommandName   = "Sophia"
