@@ -7238,6 +7238,16 @@ function WinPrtScrFolder
 		$Default
 	)
 
+	# Check if user is logged into OneDrive account (Microsoft account)
+	$UserEmail = Get-ItemProperty -Path HKCU:\Software\Microsoft\OneDrive\Accounts\Personal -Name UserEmail -ErrorAction Ignore
+	if ($UserEmail)
+	{
+		Write-Warning -Message ($Localization.OneDriveWarning -f $MyInvocation.Line.Trim())
+		Write-Error -Message ($Localization.OneDriveWarning -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+		return
+	}
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Desktop"
@@ -7249,20 +7259,28 @@ function WinPrtScrFolder
 
 			if ($PresetName)
 			{
-				# Get the name of a preset (e.g Sophia.ps1) regardless it was named
-				$PresetName = Split-Path -Path $PresetName.File -Leaf
 				# Check whether a preset contains the "OneDrive -Uninstall" string uncommented out
-				$OneDriveUninstallFunctionUncommented = (Get-Content -Path $PSScriptRoot\..\$PresetName -Encoding UTF8 -Force | Select-String -SimpleMatch "OneDrive -Uninstall").Line.StartsWith("#") -eq $false
+				if (Get-Content -Path $PresetName.File -Encoding UTF8 -Force | Select-String -SimpleMatch "OneDrive -Uninstall")
+				{
+					# The string exists and is commented
+					$IsOneDriveToUninstall = (Get-Content -Path $PresetName.File -Encoding UTF8 -Force | Select-String -SimpleMatch "OneDrive -Uninstall").Line.StartsWith("#") -eq $false
+				}
+				else
+				{
+					# The string doesn't exist
+					$IsOneDriveToUninstall = $false
+				}
+
 				$OneDriveInstalled = Get-Package -Name "Microsoft OneDrive" -ProviderName Programs -Force -ErrorAction Ignore
-				if ($OneDriveUninstallFunctionUncommented -or (-not $OneDriveInstalled))
+				if ($IsOneDriveToUninstall -or (-not $OneDriveInstalled))
 				{
 					$DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
 					New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -PropertyType ExpandString -Value $DesktopFolder -Force
 				}
 				else
 				{
-					Write-Warning -Message ($Localization.OneDriveWarning -f $MyInvocation.Line)
-					Write-Error -Message ($Localization.OneDriveWarning -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+					Write-Warning -Message ($Localization.OneDriveWarning -f $MyInvocation.Line.Trim())
+					Write-Error -Message ($Localization.OneDriveWarning -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 				}
 			}
 			else
@@ -7275,8 +7293,8 @@ function WinPrtScrFolder
 				}
 				else
 				{
-					Write-Warning -Message ($Localization.OneDriveWarning -f $MyInvocation.Line)
-					Write-Error -Message ($Localization.OneDriveWarning -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+					Write-Warning -Message ($Localization.OneDriveWarning -f $MyInvocation.Line.Trim())
+					Write-Error -Message ($Localization.OneDriveWarning -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 				}
 			}
 		}

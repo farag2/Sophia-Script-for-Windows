@@ -4022,9 +4022,6 @@ function TempFolder
 			# Restart the Printer Spooler service (Spooler)
 			Restart-Service -Name Spooler -Force
 
-			# Stop OneDrive processes
-			Stop-Process -Name OneDrive, FileCoAuth -Force -ErrorAction Ignore
-
 			if (-not (Test-Path -Path $env:SystemDrive\Temp))
 			{
 				New-Item -Path $env:SystemDrive\Temp -ItemType Directory -Force
@@ -4133,9 +4130,6 @@ Unregister-ScheduledTask -TaskName SymbolicLink -Confirm:`$false
 
 			# Restart the Printer Spooler service (Spooler)
 			Restart-Service -Name Spooler -Force
-
-			# Stop OneDrive processes
-			Stop-Process -Name OneDrive, FileCoAuth -Force -ErrorAction Ignore
 
 			# Remove a symbolic link to the %SystemDrive%\Temp folder
 			if (Get-Item -Path $env:LOCALAPPDATA\Temp -Force -ErrorAction Ignore | Where-Object -FilterScript {$_.LinkType -eq "SymbolicLink"})
