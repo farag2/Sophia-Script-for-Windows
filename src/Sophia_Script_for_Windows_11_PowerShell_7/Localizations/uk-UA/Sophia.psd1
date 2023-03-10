@@ -1,19 +1,19 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedOSBuild                        = Скрипт підтримує тільки Windows 11 22H2 та вище
-UpdateWarning                             = Ваш білд Windows 11: {0}.{1}. Підтримувані збірки: 22621.1344 та вище. Запустіть Windows Update і повторіть спробу
-UnsupportedLanguageMode                   = Сесія PowerShell працює в обмеженому режимі
-LoggedInUserNotAdmin                      = Поточний користувач, що увійшов, не має прав адміністратора
-UnsupportedPowerShell                     = Ви намагаєтеся запустити скрипт в PowerShell {0}.{1}. Запустіть скрипт у відповідній версії PowerShell
-UnsupportedISE                            = Скрипт не підтримує роботу через Windows PowerShell ISE
-Win10TweakerWarning                       = Ваша ОС, можливо, через бекдор в Win 10 Tweaker інфікована трояном. Детальніше: https://itnan.ru/post.php?c=1&p=557388
-SycnexWarning                             = Стабільність вашої ОС могла бути порушена використанням скрипту Windows10Debloater від Sycnex. З метою профілактики перевстановіть Windows
-Fs00Warning                               = Стабільність вашої ОС могла бути порушена використанням "Windows 10 Bloat Remover and Tweaker". З метою профілактики перевстановіть Windows
-bin                                       = У папці bin відсутні файли. Будь ласка, повторно завантажте архів
-RebootPending                             = Комп'ютер очікує на перезавантаження
-UnsupportedRelease                        = Виявлено нову версію
+UnsupportedOSBuild                        = \nСкрипт підтримує тільки Windows 11 22H2 та вище
+UpdateWarning                             = \nВаш білд Windows 11: {0}.{1}. Підтримувані збірки: 22621.1344 та вище. Запустіть Windows Update і повторіть спробу
+UnsupportedLanguageMode                   = \nСесія PowerShell працює в обмеженому режимі
+LoggedInUserNotAdmin                      = \nПоточний користувач, що увійшов, не має прав адміністратора
+UnsupportedPowerShell                     = \nВи намагаєтеся запустити скрипт в PowerShell {0}.{1}. Запустіть скрипт у відповідній версії PowerShell
+UnsupportedISE                            = \nСкрипт не підтримує роботу через Windows PowerShell ISE
+Win10TweakerWarning                       = \nВаша ОС, можливо, через бекдор в Win 10 Tweaker інфікована трояном. Детальніше: https://itnan.ru/post.php?c=1&p=557388
+SycnexWarning                             = \nСтабільність вашої ОС могла бути порушена використанням скрипту Windows10Debloater від Sycnex. З метою профілактики перевстановіть Windows
+Fs00Warning                               = \nСтабільність вашої ОС могла бути порушена використанням "Windows 10 Bloat Remover and Tweaker". З метою профілактики перевстановіть Windows
+bin                                       = \nУ папці bin відсутні файли. Будь ласка, повторно завантажте архів
+RebootPending                             = \nКомп'ютер очікує на перезавантаження
+UnsupportedRelease                        = \nВиявлено нову версію
 CustomizationWarning                      = \nВи налаштували всі функції в пресет-файлі {0} перед запуском Sophia Script?
-DefenderBroken                            = Microsoft Defender пошкоджено або видалено з ОС
-UpdateDefender                            = Визначення Microsoft Defender застаріли. Запустіть Windows Update і повторіть спробу
+DefenderBroken                            = \nMicrosoft Defender пошкоджено або видалено з ОС
+UpdateDefender                            = \nВизначення Microsoft Defender застаріли. Запустіть Windows Update і повторіть спробу
 ControlledFolderAccessDisabled            = Контрольований доступ до папок вимкнений
 ScheduledTasks                            = Заплановані задачі
 OneDriveUninstalling                      = Видалення OneDrive...

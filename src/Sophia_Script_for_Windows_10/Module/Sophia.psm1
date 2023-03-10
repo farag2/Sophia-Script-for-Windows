@@ -77,6 +77,8 @@ function Checks
 				Write-Warning -Message ($Localization.UpdateWarning -f $Version)
 
 				Start-Process -FilePath "https://t.me/sophia_chat"
+				Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+				Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows#system-requirements"
 
 				# Enable receiving updates for other Microsoft products when you update Windows
 				(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
@@ -104,6 +106,8 @@ function Checks
 		{
 			Write-Warning -Message $Localization.UnsupportedOSBuild
 			Start-Process -FilePath "https://t.me/sophia_chat"
+			Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+			Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows#system-requirements"
 			exit
 		}
 	}
@@ -114,6 +118,7 @@ function Checks
 		Write-Warning -Message $Localization.UnsupportedLanguageMode
 		Start-Process -FilePath "https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_language_modes"
 		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 		exit
 	}
 
@@ -126,6 +131,7 @@ function Checks
 	{
 		Write-Warning -Message $Localization.LoggedInUserNotAdmin
 		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 		exit
 	}
 
@@ -134,6 +140,7 @@ function Checks
 	{
 		Write-Warning -Message ($Localization.UnsupportedPowerShell -f $PSVersionTable.PSVersion.Major, $PSVersionTable.PSVersion.Minor)
 		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 		exit
 	}
 
@@ -142,6 +149,7 @@ function Checks
 	{
 		Write-Warning -Message $Localization.UnsupportedISE
 		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 		exit
 	}
 
@@ -153,6 +161,7 @@ function Checks
 		Start-Process -FilePath "https://youtu.be/na93MS-1EkM"
 		Start-Process -FilePath "https://pikabu.ru/story/byekdor_v_win_10_tweaker_ili_sovremennyie_metodyi_borbyi_s_piratstvom_8227558"
 		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 		exit
 	}
 
@@ -162,6 +171,7 @@ function Checks
 	{
 		Write-Warning -Message $Localization.SycnexWarning
 		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 		exit
 	}
 
@@ -171,6 +181,7 @@ function Checks
 	{
 		Write-Warning -Message $Localization.Fs00Warning
 		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 		exit
 	}
 
@@ -181,6 +192,7 @@ function Checks
 		Start-Sleep -Seconds 5
 		Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"
 		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 		exit
 	}
 
@@ -198,6 +210,7 @@ function Checks
 	{
 		Write-Warning -Message $Localization.RebootPending
 		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 		exit
 	}
 
@@ -235,6 +248,7 @@ function Checks
 
 				Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"
 				Start-Process -FilePath "https://t.me/sophia_chat"
+				Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 				exit
 			}
 		}
@@ -242,16 +256,12 @@ function Checks
 		{
 			Write-Warning -Message ($Localization.NoResponse -f "https://github.com")
 			Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
-
-			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
 		}
 	}
 	catch [System.Net.WebException]
 	{
 		Write-Warning -Message $Localization.NoInternetConnection
 		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
-
-		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
 	}
 
 	#region Defender checks
@@ -270,6 +280,7 @@ function Checks
 			Write-Warning -Message $Localization.DefenderBroken
 
 			Start-Process -FilePath "https://t.me/sophia_chat"
+			Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 
 			exit
 		}
@@ -284,6 +295,7 @@ function Checks
 	{
 		Write-Warning -Message $Localization.DefenderBroken
 		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 		exit
 	}
 	$Script:DefenderServices = ($Services | Where-Object -FilterScript {$_.Status -ne "running"} | Measure-Object).Count -lt $Services.Count
@@ -297,6 +309,7 @@ function Checks
 		{
 			Write-Warning -Message $Localization.DefenderBroken
 			Start-Process -FilePath "https://t.me/sophia_chat"
+			Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 			exit
 		}
 
@@ -360,6 +373,7 @@ function Checks
 			Write-Warning -Message $Localization.UpdateDefender
 
 			Start-Process -FilePath "https://t.me/sophia_chat"
+			Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 
 			# Enable receiving updates for other Microsoft products when you update Windows
 			(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
@@ -9267,6 +9281,9 @@ public static void Refresh()
 	.LINK
 	https://support.microsoft.com/en-us/topic/kb5005463-pc-health-check-application-e33cf4e2-49e2-4727-b913-f3c5b1ee0e56
 
+	.LINK
+	https://support.microsoft.com/en-us/windows/how-to-use-the-pc-health-check-app-9c8abd9b-03ba-4e67-81ef-36f37caa7844
+
 	.NOTES
 	This application is installed with the KB5005463 update to check if PC meets the system requirements of Windows 11
 
@@ -14603,25 +14620,6 @@ public static void PostMessage()
 		Set-WinHomeLocation -GeoId $Script:Region
 	}
 
-	# Persist Sophia notifications to prevent to immediately disappear from Action Center
-	if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia))
-	{
-		New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia -Force
-	}
-	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia -Name ShowInActionCenter -PropertyType DWord -Value 1 -Force
-
-	if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia))
-	{
-		New-Item -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Force
-	}
-	# Register app
-	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Name DisplayName -Value Sophia -PropertyType String -Force
-	# Determines whether the app can be seen in Settings where the user can turn notifications on or off
-	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Name ShowInSettings -Value 0 -PropertyType DWord -Force
-
-	[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
-	[Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
-
 	# Apply policies found in registry to re-build database database due to gpedit.msc relies in its' own database
 	if ((Test-Path -Path "$env:TEMP\Computer.txt") -or (Test-Path -Path "$env:TEMP\User.txt"))
 	{
@@ -14671,6 +14669,25 @@ public static void PostMessage()
 	#endregion Other actions
 
 	#region Toast notifications
+	# Persist Sophia notifications to prevent to immediately disappear from Action Center
+	if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia))
+	{
+		New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia -Force
+	}
+	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia -Name ShowInActionCenter -PropertyType DWord -Value 1 -Force
+
+	if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia))
+	{
+		New-Item -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Force
+	}
+	# Register app
+	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Name DisplayName -Value Sophia -PropertyType String -Force
+	# Determines whether the app can be seen in Settings where the user can turn notifications on or off
+	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Name ShowInSettings -Value 0 -PropertyType DWord -Force
+
+	[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
+	[Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
+
 	# Telegram group
 	[xml]$ToastTemplate = @"
 <toast duration="Long" scenario="reminder">

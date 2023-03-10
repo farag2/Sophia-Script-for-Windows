@@ -55,48 +55,86 @@ function Checks
 	# Unblock all files in the script folder by removing the Zone.Identifier alternate data stream with a value of "3"
 	Get-ChildItem -Path $PSScriptRoot\..\ -File -Recurse -Force | Unblock-File
 
+	[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 	# Detect the OS build version
 	switch ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber)
 	{
 		{$_ -eq 22000}
 		{
-			# Download PC Health Check app
-			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-			$Parameters = @{
-				Uri             = "https://aka.ms/GetPCHealthCheckApp"
-				OutFile         = "$DownloadsFolder\WindowsPCHealthCheckSetup.msi"
-				UseBasicParsing = $true
-				Verbose         = $true
+			if (Test-Path -Path "$env:LOCALAPPDATA\PCHealthCheck\PCHealthCheck.exe")
+			{
+				Start-Process -FilePath "$env:LOCALAPPDATA\PCHealthCheck\PCHealthCheck.exe"
+				break
 			}
-			Invoke-WebRequest @Parameters
 
-			# Extract WindowsPCHealthCheckSetup.msi without installing
-			$Arguments = @(
-				"/a `"$DownloadsFolder\WindowsPCHealthCheckSetup.msi`"",
-				"TARGETDIR=`"$DownloadsFolder\WindowsPCHealthCheckSetup`"",
-				"/qb"
-			)
-			Start-Process -FilePath "msiexec" -ArgumentList $Arguments -Wait
-			Remove-Item -Path "$DownloadsFolder\WindowsPCHealthCheckSetup.msi" -Force
-			Start-Process -FilePath "$DownloadsFolder\WindowsPCHealthCheckSetup\PCHealthCheck\PCHealthCheck.exe"
+			try
+			{
+				# Check the internet connection
+				$Parameters = @{
+					Uri              = "https://www.google.com"
+					Method           = "Head"
+					DisableKeepAlive = $true
+					UseBasicParsing  = $true
+				}
+				if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+				{
+					return
+				}
 
-			# Download Windows 11 Installation Assistant
-			# https://www.microsoft.com/software-download/windows11
-			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-			$Parameters = @{
-				Uri             = "https://go.microsoft.com/fwlink/?linkid=2171764"
-				OutFile         = "$DownloadsFolder\Windows11InstallationAssistant.exe"
-				UseBasicParsing = $true
-				Verbose         = $true
+				try
+				{
+					# Download PC Health Check app to start upgrade
+					$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+					$Parameters = @{
+						Uri             = "https://aka.ms/GetPCHealthCheckApp"
+						OutFile         = "$DownloadsFolder\WindowsPCHealthCheckSetup.msi"
+						UseBasicParsing = $true
+						Verbose         = $true
+					}
+					Invoke-WebRequest @Parameters
+
+					# Extract WindowsPCHealthCheckSetup.msi without installing
+					$Arguments = @(
+						"/a `"$DownloadsFolder\WindowsPCHealthCheckSetup.msi`"",
+						"TARGETDIR=`"$DownloadsFolder\WindowsPCHealthCheckSetup`"",
+						"/qb"
+					)
+					Start-Process -FilePath "msiexec" -ArgumentList $Arguments -Wait
+					Remove-Item -Path "$DownloadsFolder\WindowsPCHealthCheckSetup.msi" -Force
+					Start-Process -FilePath "$DownloadsFolder\WindowsPCHealthCheckSetup\PCHealthCheck\PCHealthCheck.exe"
+
+					# Download Windows 11 Installation Assistant
+					# https://www.microsoft.com/software-download/windows11
+					$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+					$Parameters = @{
+						Uri             = "https://go.microsoft.com/fwlink/?linkid=2171764"
+						OutFile         = "$DownloadsFolder\Windows11InstallationAssistant.exe"
+						UseBasicParsing = $true
+						Verbose         = $true
+					}
+					Invoke-WebRequest @Parameters
+					Start-Process -FilePath "$DownloadsFolder\Windows11InstallationAssistant.exe" -ArgumentList "/SkipEULA"
+				}
+				catch [System.Net.WebException]
+				{
+					Write-Warning -Message ($Localization.NoResponse -f "microsoft.com")
+					Write-Error -Message ($Localization.NoResponse -f "microsoft.com") -ErrorAction SilentlyContinue
+				}
 			}
-			Invoke-WebRequest @Parameters
-			Start-Process -FilePath "$DownloadsFolder\Windows11InstallationAssistant.exe" -ArgumentList "/SkipEULA"
+			catch [System.Net.WebException]
+			{
+				Write-Warning -Message $Localization.NoInternetConnection
+				Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+			}
 
 			$CurrentBuild = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
 			$UBR = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
 			Write-Warning -Message ($Localization.UpdateWarning -f $CurrentBuild.CurrentBuild, $UBR.UBR)
 
 			Start-Process -FilePath "https://t.me/sophia_chat"
+			Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+			Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows#system-requirements"
 
 			# Enable receiving updates for other Microsoft products when you update Windows
 			(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
@@ -130,6 +168,8 @@ function Checks
 				Write-Warning -Message ($Localization.UpdateWarning -f $CurrentBuild.CurrentBuild, $UBR.UBR)
 
 				Start-Process -FilePath "https://t.me/sophia_chat"
+				Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+				Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows#system-requirements"
 
 				# Enable receiving updates for other Microsoft products when you update Windows
 				(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
@@ -157,6 +197,8 @@ function Checks
 		{
 			Write-Warning -Message $Localization.UnsupportedOSBuild
 			Start-Process -FilePath "https://t.me/sophia_chat"
+			Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+			Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows#system-requirements"
 			exit
 		}
 	}
@@ -167,6 +209,7 @@ function Checks
 		Write-Warning -Message $Localization.UnsupportedLanguageMode
 		Start-Process -FilePath "https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_language_modes"
 		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 		exit
 	}
 
@@ -179,14 +222,16 @@ function Checks
 	{
 		Write-Warning -Message $Localization.LoggedInUserNotAdmin
 		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 		exit
 	}
 
-	# Check whether the script was run via PowerShell 7
-	if ($PSVersionTable.PSVersion.Major -ne 7)
+	# Check whether the script was run via PowerShell 5.1
+	if ($PSVersionTable.PSVersion.Major -ne 5)
 	{
 		Write-Warning -Message ($Localization.UnsupportedPowerShell -f $PSVersionTable.PSVersion.Major, $PSVersionTable.PSVersion.Minor)
 		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 		exit
 	}
 
@@ -195,6 +240,7 @@ function Checks
 	{
 		Write-Warning -Message $Localization.UnsupportedISE
 		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 		exit
 	}
 
@@ -206,6 +252,7 @@ function Checks
 		Start-Process -FilePath "https://youtu.be/na93MS-1EkM"
 		Start-Process -FilePath "https://pikabu.ru/story/byekdor_v_win_10_tweaker_ili_sovremennyie_metodyi_borbyi_s_piratstvom_8227558"
 		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 		exit
 	}
 
@@ -215,6 +262,7 @@ function Checks
 	{
 		Write-Warning -Message $Localization.SycnexWarning
 		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 		exit
 	}
 
@@ -224,6 +272,7 @@ function Checks
 	{
 		Write-Warning -Message $Localization.Fs00Warning
 		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 		exit
 	}
 
@@ -234,6 +283,7 @@ function Checks
 		Start-Sleep -Seconds 5
 		Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"
 		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 		exit
 	}
 
@@ -251,14 +301,13 @@ function Checks
 	{
 		Write-Warning -Message $Localization.RebootPending
 		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 		exit
 	}
 
 	# Check if the current module version is the latest one
 	try
 	{
-		[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-
 		# Check the internet connection
 		$Parameters = @{
 			Uri              = "https://www.google.com"
@@ -288,6 +337,7 @@ function Checks
 
 				Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"
 				Start-Process -FilePath "https://t.me/sophia_chat"
+				Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 				exit
 			}
 		}
@@ -295,16 +345,12 @@ function Checks
 		{
 			Write-Warning -Message ($Localization.NoResponse -f "https://github.com")
 			Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
-
-			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
 		}
 	}
 	catch [System.Net.WebException]
 	{
 		Write-Warning -Message $Localization.NoInternetConnection
 		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
-
-		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
 	}
 
 	#region Defender checks
@@ -320,6 +366,7 @@ function Checks
 		Write-Warning -Message $Localization.DefenderBroken
 
 		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 
 		exit
 	}
@@ -329,6 +376,7 @@ function Checks
 	{
 		Write-Warning -Message $Localization.DefenderBroken
 		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 		exit
 	}
 
@@ -341,6 +389,7 @@ function Checks
 	{
 		Write-Warning -Message $Localization.DefenderBroken
 		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 		exit
 	}
 	$Script:DefenderServices = ($Services | Where-Object -FilterScript {$_.Status -ne "running"} | Measure-Object).Count -lt $Services.Count
@@ -391,6 +440,7 @@ function Checks
 		Write-Warning -Message $Localization.UpdateDefender
 
 		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 
 		# Enable receiving updates for other Microsoft products when you update Windows
 		(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
@@ -517,6 +567,7 @@ function Checks
 
 				Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows#how-to-use"
 				Start-Process -FilePath "https://t.me/sophia_chat"
+				Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 
 				exit
 			}
@@ -538,9 +589,6 @@ function Checks
 
 	# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
 	Get-ChildItem -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
-
-	# Import PowerShell 5.1 modules
-	Import-Module -Name Microsoft.PowerShell.Management, PackageManagement, Appx -UseWindowsPowerShell
 
 	# Save all opened folders in order to restore them after File Explorer restart
 	$Script:OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
