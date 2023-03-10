@@ -226,8 +226,8 @@ function Checks
 		exit
 	}
 
-	# Check whether the script was run via PowerShell 5.1
-	if ($PSVersionTable.PSVersion.Major -ne 5)
+	# Check whether the script was run via PowerShell 7
+	if ($PSVersionTable.PSVersion.Major -ne 7)
 	{
 		Write-Warning -Message ($Localization.UnsupportedPowerShell -f $PSVersionTable.PSVersion.Major, $PSVersionTable.PSVersion.Minor)
 		Start-Process -FilePath "https://t.me/sophia_chat"

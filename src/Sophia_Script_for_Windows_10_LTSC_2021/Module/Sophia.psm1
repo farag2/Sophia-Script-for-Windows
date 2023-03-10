@@ -61,6 +61,7 @@ function Checks
 	{
 		Write-Warning -Message $Localization.UnsupportedOSBitness
 		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 		exit
 	}
 
