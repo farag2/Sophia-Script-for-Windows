@@ -779,7 +779,7 @@ InputMethod -English
 # InputMethod -Default
 
 <#
-	Move user folders location to the root of any drive using the interactive menu
+	Change user folders location to the root of any drive using the interactive menu
 	User files or folders won't me moved to a new location. Move them manually
 	They're located in the %USERPROFILE% folder by default
 
@@ -787,7 +787,7 @@ InputMethod -English
 	Пользовательские файлы и папки не будут перемещены в новое расположение. Переместите их вручную
 	По умолчанию они располагаются в папке %USERPROFILE%
 #>
-SetUserShellFolderLocation -Root
+Set-UserShellFolderLocation -Root
 
 <#
 	Select folders for user folders location manually using a folder browser dialog
@@ -798,7 +798,7 @@ SetUserShellFolderLocation -Root
 	Пользовательские файлы и папки не будут перемещены в новое расположение. Переместите их вручную
 	По умолчанию они располагаются в папке %USERPROFILE%
 #>
-# SetUserShellFolderLocation -Custom
+# Set-UserShellFolderLocation -Custom
 
 <#
 	Change user folders location to the default values
@@ -809,7 +809,7 @@ SetUserShellFolderLocation -Root
 	Пользовательские файлы и папки не будут перемещены в новое расположение. Переместите их вручную
 	По умолчанию они располагаются в папке %USERPROFILE%
 #>
-# SetUserShellFolderLocation -Default
+# Set-UserShellFolderLocation -Default
 
 # Use the latest installed .NET runtime for all apps
 # Использовать последнюю установленную среду выполнения .NET для всех приложений

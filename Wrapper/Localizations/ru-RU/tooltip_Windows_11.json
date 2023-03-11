@@ -1136,7 +1136,7 @@
   {
     "Id": 520,
     "Region": "System",
-    "Function": "SetUserShellFolderLocation",
+    "Function": "Set-UserShellFolderLocation",
     "Arg": {
       "Zero": {
         "Tag": "Root",

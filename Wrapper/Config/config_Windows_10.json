@@ -1371,7 +1371,7 @@
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
-    "Function": "SetUserShellFolderLocation",
+    "Function": "Set-UserShellFolderLocation",
     "Arg": {
       "Zero": {
         "Tag": "Root"

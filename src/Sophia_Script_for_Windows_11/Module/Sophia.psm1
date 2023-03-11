@@ -6231,10 +6231,10 @@ function InputMethod
 
 <#
 	.SYNOPSIS
-	User folders location
+	Change User folders location
 
 	.PARAMETER Root
-	Move user folders location to the root of any drive using the interactive menu
+	Change user folders location to the root of any drive using the interactive menu
 
 	.PARAMETER Custom
 	Select folders for user folders location manually using a folder browser dialog
@@ -6243,13 +6243,13 @@ function InputMethod
 	Change user folders location to the default values
 
 	.EXAMPLE
-	SetUserShellFolderLocation -Root
+	Set-UserShellFolderLocation -Root
 
 	.EXAMPLE
-	SetUserShellFolderLocation -Custom
+	Set-UserShellFolderLocation -Custom
 
 	.EXAMPLE
-	SetUserShellFolderLocation -Default
+	Set-UserShellFolderLocation -Default
 
 	.NOTES
 	User files or folders won't me moved to a new location
@@ -6257,7 +6257,7 @@ function InputMethod
 	.NOTES
 	Current user
 #>
-function SetUserShellFolderLocation
+function Set-UserShellFolderLocation
 {
 
 	param
@@ -6292,7 +6292,7 @@ function SetUserShellFolderLocation
 		The RemoveDesktopINI argument removes desktop.ini in the old user shell folder
 
 		.EXAMPLE
-		UserShellFolder -UserFolder Desktop -FolderPath "$env:SystemDrive:\Desktop" -RemoveDesktopINI
+		Set-UserShellFolder -UserFolder Desktop -FolderPath "$env:SystemDrive:\Desktop" -RemoveDesktopINI
 
 		.LINK
 		https://docs.microsoft.com/en-us/windows/win32/api/shlobj_core/nf-shlobj_core-shgetknownfolderpath
@@ -6300,7 +6300,7 @@ function SetUserShellFolderLocation
 		.NOTES
 		User files or folders won't me moved to a new location
 	#>
-	function UserShellFolder
+	function Set-UserShellFolder
 	{
 		[CmdletBinding()]
 		param
@@ -6324,9 +6324,9 @@ function SetUserShellFolderLocation
 			Redirect user folders to a new location
 
 			.EXAMPLE
-			KnownFolderPath -KnownFolder Desktop -Path "$env:SystemDrive:\Desktop"
+			Set-KnownFolderPath -KnownFolder Desktop -Path "$env:SystemDrive:\Desktop"
 		#>
-		function KnownFolderPath
+		function Set-KnownFolderPath
 		{
 			[CmdletBinding()]
 			param
@@ -6445,7 +6445,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				Remove-Item -Path "$CurrentUserFolderPath\desktop.ini" -Force -ErrorAction Ignore
 			}
 
-			KnownFolderPath -KnownFolder $UserFolder -Path $FolderPath
+			Set-KnownFolderPath -KnownFolder $UserFolder -Path $FolderPath
 			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name $UserShellFoldersGUIDs[$UserFolder] -PropertyType ExpandString -Value $FolderPath -Force
 
 			# Save desktop.ini in the UTF-16 LE encoding
@@ -6572,26 +6572,22 @@ public static string GetString(uint strId)
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message $Localization.RetrievingDrivesList -Verbose
 
-			# Store all drives letters to use them within ShowMenu function
-			$DriveLetters = @((Get-Disk | Where-Object -FilterScript {$_.BusType -ne "USB"} | Get-Partition | Get-Volume | Where-Object -FilterScript {$null -ne $_.DriveLetter}).DriveLetter | Sort-Object)
+			# Store all fixed disks' letters to use them within ShowMenu function
+			# https://learn.microsoft.com/en-us/dotnet/api/system.io.drivetype?view=net-7.0#fields
+			$DriveLetters = @((Get-CimInstance -ClassName CIM_LogicalDisk | Where-Object -FilterScript {$_.DriveType -eq 3}).DeviceID | Sort-Object)
 
 			# If the number of disks is more than one, set the second drive in the list as default drive
 			if ($DriveLetters.Count -gt 1)
 			{
 				$Script:Default = 1
 			}
-			else
-			{
-				$Script:Default = 0
-			}
 
 			# Desktop
+			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message ($Localization.DriveSelect -f $DesktopLocalizedString) -Verbose
 
 			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DesktopLocalizedString, $CurrentUserFolderLocation) -Verbose
-
-			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title = ""
@@ -6606,23 +6602,28 @@ public static string GetString(uint strId)
 			{
 				"0"
 				{
-					$SelectedDrive = ShowMenu -Title ($Localization.DriveSelect -f $DesktopLocalizedString) -Menu $DriveLetters -Default $Script:Default
-					UserShellFolder -UserFolder Desktop -FolderPath "${SelectedDrive}:\Desktop" -RemoveDesktopINI
+					if ($DriveLetters.Count -gt 1)
+					{
+						$SelectedDrive = ShowMenu -Title ($Localization.DriveSelect -f $DesktopLocalizedString) -Menu $DriveLetters -Default $Script:Default
+					}
+					else
+					{
+						$SelectedDrive = $env:SystemDrive
+					}
+					Set-UserShellFolder -UserFolder Desktop -FolderPath "${SelectedDrive}\Desktop" -RemoveDesktopINI
 				}
 				"1"
 				{
-					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
 			# Documents
+			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message ($Localization.DriveSelect -f $DocumentsLocalizedString) -Verbose
 
 			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DocumentsLocalizedString, $CurrentUserFolderLocation) -Verbose
-
-			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title         = ""
@@ -6637,23 +6638,28 @@ public static string GetString(uint strId)
 			{
 				"0"
 				{
-					$SelectedDrive = ShowMenu -Title ($Localization.DriveSelect -f $DocumentsLocalizedString) -Menu $DriveLetters -Default $Script:Default
-					UserShellFolder -UserFolder Documents -FolderPath "${SelectedDrive}:\Documents" -RemoveDesktopINI
+					if ($DriveLetters.Count -gt 1)
+					{
+						$SelectedDrive = ShowMenu -Title ($Localization.DriveSelect -f $DesktopLocalizedString) -Menu $DriveLetters -Default $Script:Default
+					}
+					else
+					{
+						$SelectedDrive = $env:SystemDrive
+					}
+					Set-UserShellFolder -UserFolder Documents -FolderPath "${SelectedDrive}\Documents" -RemoveDesktopINI
 				}
 				"1"
 				{
-					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
 			# Downloads
+			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message ($Localization.DriveSelect -f $DownloadsLocalizedString) -Verbose
 
 			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DownloadsLocalizedString, $CurrentUserFolderLocation) -Verbose
-
-			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title         = ""
@@ -6668,23 +6674,28 @@ public static string GetString(uint strId)
 			{
 				"0"
 				{
-					$SelectedDrive = ShowMenu -Title ($Localization.DriveSelect -f $DownloadsLocalizedString) -Menu $DriveLetters -Default $Script:Default
-					UserShellFolder -UserFolder Downloads -FolderPath "${SelectedDrive}:\Downloads" -RemoveDesktopINI
+					if ($DriveLetters.Count -gt 1)
+					{
+						$SelectedDrive = ShowMenu -Title ($Localization.DriveSelect -f $DesktopLocalizedString) -Menu $DriveLetters -Default $Script:Default
+					}
+					else
+					{
+						$SelectedDrive = $env:SystemDrive
+					}
+					Set-UserShellFolder -UserFolder Downloads -FolderPath "${SelectedDrive}\Downloads" -RemoveDesktopINI
 				}
 				"1"
 				{
-					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
 			# Music
+			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message ($Localization.DriveSelect -f $MusicLocalizedString) -Verbose
 
 			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $MusicLocalizedString, $CurrentUserFolderLocation) -Verbose
-
-			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title         = ""
@@ -6699,23 +6710,28 @@ public static string GetString(uint strId)
 			{
 				"0"
 				{
-					$SelectedDrive = ShowMenu -Title ($Localization.DriveSelect -f $MusicLocalizedString) -Menu $DriveLetters -Default $Script:Default
-					UserShellFolder -UserFolder Music -FolderPath "${SelectedDrive}:\Music" -RemoveDesktopINI
+					if ($DriveLetters.Count -gt 1)
+					{
+						$SelectedDrive = ShowMenu -Title ($Localization.DriveSelect -f $DesktopLocalizedString) -Menu $DriveLetters -Default $Script:Default
+					}
+					else
+					{
+						$SelectedDrive = $env:SystemDrive
+					}
+					Set-UserShellFolder -UserFolder Music -FolderPath "${SelectedDrive}\Music" -RemoveDesktopINI
 				}
 				"1"
 				{
-					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
 			# Pictures
+			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message ($Localization.DriveSelect -f $PicturesLocalizedString) -Verbose
 
 			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $PicturesLocalizedString, $CurrentUserFolderLocation) -Verbose
-
-			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title         = ""
@@ -6730,23 +6746,28 @@ public static string GetString(uint strId)
 			{
 				"0"
 				{
-					$SelectedDrive = ShowMenu -Title ($Localization.DriveSelect -f $PicturesLocalizedString) -Menu $DriveLetters -Default $Script:Default
-					UserShellFolder -UserFolder Pictures -FolderPath "${SelectedDrive}:\Pictures" -RemoveDesktopINI
+					if ($DriveLetters.Count -gt 1)
+					{
+						$SelectedDrive = ShowMenu -Title ($Localization.DriveSelect -f $DesktopLocalizedString) -Menu $DriveLetters -Default $Script:Default
+					}
+					else
+					{
+						$SelectedDrive = $env:SystemDrive
+					}
+					Set-UserShellFolder -UserFolder Pictures -FolderPath "${SelectedDrive}\Pictures" -RemoveDesktopINI
 				}
 				"1"
 				{
-					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
 			# Videos
+			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message ($Localization.DriveSelect -f $VideosLocalizedString) -Verbose
 
 			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Video"
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $VideosLocalizedString, $CurrentUserFolderLocation) -Verbose
-
-			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title         = ""
@@ -6761,12 +6782,18 @@ public static string GetString(uint strId)
 			{
 				"0"
 				{
-					$SelectedDrive = ShowMenu -Title ($Localization.DriveSelect -f $VideosLocalizedString) -Menu $DriveLetters -Default $Script:Default
-					UserShellFolder -UserFolder Videos -FolderPath "${SelectedDrive}:\Videos" -RemoveDesktopINI
+					if ($DriveLetters.Count -gt 1)
+					{
+						$SelectedDrive = ShowMenu -Title ($Localization.DriveSelect -f $DesktopLocalizedString) -Menu $DriveLetters -Default $Script:Default
+					}
+					else
+					{
+						$SelectedDrive = $env:SystemDrive
+					}
+					Set-UserShellFolder -UserFolder Videos -FolderPath "${SelectedDrive}\Videos" -RemoveDesktopINI
 				}
 				"1"
 				{
-					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
@@ -6774,10 +6801,10 @@ public static string GetString(uint strId)
 		"Custom"
 		{
 			# Desktop
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DesktopLocalizedString, $CurrentUserFolderLocation) -Verbose
-
 			Write-Information -MessageData "" -InformationAction Continue
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
+
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DesktopLocalizedString, $CurrentUserFolderLocation) -Verbose
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title         = ""
@@ -6803,22 +6830,21 @@ public static string GetString(uint strId)
 
 					if ($FolderBrowserDialog.SelectedPath)
 					{
-						UserShellFolder -UserFolder Desktop -FolderPath $FolderBrowserDialog.SelectedPath -RemoveDesktopINI
+						Set-UserShellFolder -UserFolder Desktop -FolderPath $FolderBrowserDialog.SelectedPath -RemoveDesktopINI
 						Write-Verbose -Message ($Localization.NewUserFolderLocation -f $FolderBrowserDialog.SelectedPath) -Verbose
 					}
 				}
 				"1"
 				{
-					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
 			# Documents
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DocumentsLocalizedString, $CurrentUserFolderLocation) -Verbose
-
 			Write-Information -MessageData "" -InformationAction Continue
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
+
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DocumentsLocalizedString, $CurrentUserFolderLocation) -Verbose
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title         = ""
@@ -6844,22 +6870,21 @@ public static string GetString(uint strId)
 
 					if ($FolderBrowserDialog.SelectedPath)
 					{
-						UserShellFolder -UserFolder Documents -FolderPath $FolderBrowserDialog.SelectedPath -RemoveDesktopINI
+						Set-UserShellFolder -UserFolder Documents -FolderPath $FolderBrowserDialog.SelectedPath -RemoveDesktopINI
 						Write-Verbose -Message ($Localization.NewUserFolderLocation -f $FolderBrowserDialog.SelectedPath) -Verbose
 					}
 				}
 				"1"
 				{
-					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
 			# Downloads
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DownloadsLocalizedString, $CurrentUserFolderLocation) -Verbose
-
 			Write-Information -MessageData "" -InformationAction Continue
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DownloadsLocalizedString, $CurrentUserFolderLocation) -Verbose
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title         = ""
@@ -6885,22 +6910,21 @@ public static string GetString(uint strId)
 
 					if ($FolderBrowserDialog.SelectedPath)
 					{
-						UserShellFolder -UserFolder Downloads -FolderPath $FolderBrowserDialog.SelectedPath -RemoveDesktopINI
+						Set-UserShellFolder -UserFolder Downloads -FolderPath $FolderBrowserDialog.SelectedPath -RemoveDesktopINI
 						Write-Verbose -Message ($Localization.NewUserFolderLocation -f $FolderBrowserDialog.SelectedPath) -Verbose
 					}
 				}
 				"1"
 				{
-					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
 			# Music
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $MusicLocalizedString, $CurrentUserFolderLocation) -Verbose
-
 			Write-Information -MessageData "" -InformationAction Continue
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
+
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $MusicLocalizedString, $CurrentUserFolderLocation) -Verbose
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title         = ""
@@ -6926,22 +6950,21 @@ public static string GetString(uint strId)
 
 					if ($FolderBrowserDialog.SelectedPath)
 					{
-						UserShellFolder -UserFolder Music -FolderPath $FolderBrowserDialog.SelectedPath -RemoveDesktopINI
+						Set-UserShellFolder -UserFolder Music -FolderPath $FolderBrowserDialog.SelectedPath -RemoveDesktopINI
 						Write-Verbose -Message ($Localization.NewUserFolderLocation -f $FolderBrowserDialog.SelectedPath) -Verbose
 					}
 				}
 				"1"
 				{
-					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
 			# Pictures
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $PicturesLocalizedString, $CurrentUserFolderLocation) -Verbose
-
 			Write-Information -MessageData "" -InformationAction Continue
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
+
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $PicturesLocalizedString, $CurrentUserFolderLocation) -Verbose
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title         = ""
@@ -6967,22 +6990,21 @@ public static string GetString(uint strId)
 
 					if ($FolderBrowserDialog.SelectedPath)
 					{
-						UserShellFolder -UserFolder Pictures -FolderPath $FolderBrowserDialog.SelectedPath -RemoveDesktopINI
+						Set-UserShellFolder -UserFolder Pictures -FolderPath $FolderBrowserDialog.SelectedPath -RemoveDesktopINI
 						Write-Verbose -Message ($Localization.NewUserFolderLocation -f $FolderBrowserDialog.SelectedPath) -Verbose
 					}
 				}
 				"1"
 				{
-					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
 			# Videos
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Video"
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $VideosLocalizedString, $CurrentUserFolderLocation) -Verbose
-
 			Write-Information -MessageData "" -InformationAction Continue
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Video"
+
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $VideosLocalizedString, $CurrentUserFolderLocation) -Verbose
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title         = ""
@@ -7008,13 +7030,12 @@ public static string GetString(uint strId)
 
 					if ($FolderBrowserDialog.SelectedPath)
 					{
-						UserShellFolder -UserFolder Videos -FolderPath $FolderBrowserDialog.SelectedPath -RemoveDesktopINI
+						Set-UserShellFolder -UserFolder Videos -FolderPath $FolderBrowserDialog.SelectedPath -RemoveDesktopINI
 						Write-Verbose -Message ($Localization.NewUserFolderLocation -f $FolderBrowserDialog.SelectedPath) -Verbose
 					}
 				}
 				"1"
 				{
-					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
@@ -7022,10 +7043,10 @@ public static string GetString(uint strId)
 		"Default"
 		{
 			# Desktop
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DesktopLocalizedString, $CurrentUserFolderLocation) -Verbose
-
 			Write-Information -MessageData "" -InformationAction Continue
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
+
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DesktopLocalizedString, $CurrentUserFolderLocation) -Verbose
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title         = ""
@@ -7040,20 +7061,19 @@ public static string GetString(uint strId)
 			{
 				"0"
 				{
-					UserShellFolder -UserFolder Desktop -FolderPath "$env:USERPROFILE\Desktop" -RemoveDesktopINI
+					Set-UserShellFolder -UserFolder Desktop -FolderPath "$env:USERPROFILE\Desktop" -RemoveDesktopINI
 				}
 				"1"
 				{
-					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
 			# Documents
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DocumentsLocalizedString, $CurrentUserFolderLocation) -Verbose
-
 			Write-Information -MessageData "" -InformationAction Continue
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
+
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DocumentsLocalizedString, $CurrentUserFolderLocation) -Verbose
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title         = ""
@@ -7068,20 +7088,19 @@ public static string GetString(uint strId)
 			{
 				"0"
 				{
-					UserShellFolder -UserFolder Documents -FolderPath "$env:USERPROFILE\Documents" -RemoveDesktopINI
+					Set-UserShellFolder -UserFolder Documents -FolderPath "$env:USERPROFILE\Documents" -RemoveDesktopINI
 				}
 				"1"
 				{
-					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
 			# Downloads
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DownloadsLocalizedString, $CurrentUserFolderLocation) -Verbose
-
 			Write-Information -MessageData "" -InformationAction Continue
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $DownloadsLocalizedString, $CurrentUserFolderLocation) -Verbose
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title         = ""
@@ -7096,20 +7115,19 @@ public static string GetString(uint strId)
 			{
 				"0"
 				{
-					UserShellFolder -UserFolder Downloads -FolderPath "$env:USERPROFILE\Downloads" -RemoveDesktopINI
+					Set-UserShellFolder -UserFolder Downloads -FolderPath "$env:USERPROFILE\Downloads" -RemoveDesktopINI
 				}
 				"1"
 				{
 					Write-Verbose -Message $Localization.Skipped -Verbose
-					Write-Information -MessageData "" -InformationAction Continue
 				}
 			}
 
 			# Music
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $MusicLocalizedString, $CurrentUserFolderLocation) -Verbose
-
 			Write-Information -MessageData "" -InformationAction Continue
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
+
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $MusicLocalizedString, $CurrentUserFolderLocation) -Verbose
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title         = ""
@@ -7124,20 +7142,19 @@ public static string GetString(uint strId)
 			{
 				"0"
 				{
-					UserShellFolder -UserFolder Music -FolderPath "$env:USERPROFILE\Music" -RemoveDesktopINI
+					Set-UserShellFolder -UserFolder Music -FolderPath "$env:USERPROFILE\Music" -RemoveDesktopINI
 				}
 				"1"
 				{
-					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
 			# Pictures
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $PicturesLocalizedString, $CurrentUserFolderLocation) -Verbose
-
 			Write-Information -MessageData "" -InformationAction Continue
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
+
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $PicturesLocalizedString, $CurrentUserFolderLocation) -Verbose
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			$Title         = ""
@@ -7152,23 +7169,20 @@ public static string GetString(uint strId)
 			{
 				"0"
 				{
-					UserShellFolder -UserFolder Pictures -FolderPath "$env:USERPROFILE\Pictures" -RemoveDesktopINI
+					Set-UserShellFolder -UserFolder Pictures -FolderPath "$env:USERPROFILE\Pictures" -RemoveDesktopINI
 				}
 				"1"
 				{
-					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 
 			# Videos
+			Write-Information -MessageData "" -InformationAction Continue
 			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Video"
+
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f $VideosLocalizedString, $CurrentUserFolderLocation) -Verbose
-
-			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			Write-Information -MessageData "" -InformationAction Continue
 
 			$Title         = ""
 			$Message       = $Localization.UserDefaultFolder -f $VideosLocalizedString
@@ -7182,11 +7196,10 @@ public static string GetString(uint strId)
 			{
 				"0"
 				{
-					UserShellFolder -UserFolder Videos -FolderPath "$env:USERPROFILE\Videos" -RemoveDesktopINI
+					Set-UserShellFolder -UserFolder Videos -FolderPath "$env:USERPROFILE\Videos" -RemoveDesktopINI
 				}
 				"1"
 				{
-					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}

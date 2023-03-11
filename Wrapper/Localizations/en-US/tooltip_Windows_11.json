@@ -1121,11 +1121,11 @@
   {
     "Id": 520,
     "Region": "System",
-    "Function": "SetUserShellFolderLocation",
+    "Function": "Set-UserShellFolderLocation",
     "Arg": {
       "Zero": {
         "Tag": "Root",
-        "ToolTip": "Move user folders location to the root of any drive using the interactive menu. User files or folders won't me moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default"
+        "ToolTip": "Change user folders location to the root of any drive using the interactive menu. User files or folders won't me moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default"
       },
       "One": {
         "Tag": "Custom",
