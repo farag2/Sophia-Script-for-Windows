@@ -276,8 +276,13 @@ function Checks
 		exit
 	}
 
-	# Check whether LGPO.exe exists in the bin folder
-	if (-not (Test-Path -Path "$PSScriptRoot\..\bin\LGPO.exe"))
+	# Check whether all necessary files exist in the bin folder
+	$Files = @(
+		"$PSScriptRoot\..\bin\LGPO.exe",
+		"$PSScriptRoot\..\bin\Microsoft.Windows.SDK.NET.dll",
+		"$PSScriptRoot\..\bin\WinRT.Runtime.dll"
+	)
+	if (($Files | Test-Path) -contains $false)
 	{
 		Write-Warning -Message $Localization.Bin
 		Start-Sleep -Seconds 5
@@ -14215,6 +14220,9 @@ public static void PostMessage()
 	# PowerShell 7.3 doesn't support yet using own caller app toast notifications. Fixed in PowerShell 7.4.0-preview.1
 	[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier().Show($ToastMessage)
 	#endregion Toast notifications
+
+	# Check for UWP apps updates
+	Get-CimInstance -Namespace root/CIMV2/mdm/dmmap -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 | Invoke-CimMethod -MethodName UpdateScanMethod
 }
 #endregion Post Actions
 
