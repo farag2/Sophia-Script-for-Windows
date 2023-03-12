@@ -3221,6 +3221,7 @@ function UnpinTaskbarShortcuts
 		Namespace        = "WinAPI"
 		Name             = "GetStr"
 		Language         = "CSharp"
+		UsingNamespace   = "System.Text"
 		MemberDefinition = @"
 [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
 public static extern IntPtr GetModuleHandle(string lpModuleName);
@@ -3239,7 +3240,7 @@ public static string GetString(uint strId)
 	}
 	if (-not ("WinAPI.GetStr" -as [type]))
 	{
-		Add-Type @Signature -Using System.Text
+		Add-Type @Signature
 	}
 
 	# Extract the localized "Unpin from taskbar" string from shell32.dll
@@ -4284,18 +4285,18 @@ function Cursors
 	# Reload cursor on-the-fly
 	$Signature = @{
 		Namespace        = "WinAPI"
-		Name             = "SystemParamInfo"
+		Name             = "Cursor"
 		Language         = "CSharp"
 		MemberDefinition = @"
 [DllImport("user32.dll", EntryPoint = "SystemParametersInfo")]
 public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, uint pvParam, uint fWinIni);
 "@
 	}
-	if (-not ("WinAPI.SystemParamInfo" -as [type]))
+	if (-not ("WinAPI.Cursor" -as [type]))
 	{
 		Add-Type @Signature
 	}
-	[WinAPI.SystemParamInfo]::SystemParametersInfo(0x0057, 0, $null, 0)
+	[WinAPI.Cursor]::SystemParametersInfo(0x0057, 0, $null, 0)
 }
 
 <#
@@ -6966,6 +6967,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 		Namespace        = "WinAPI"
 		Name             = "GetStr"
 		Language         = "CSharp"
+		UsingNamespace   = "System.Text"
 		MemberDefinition = @"
 [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
 public static extern IntPtr GetModuleHandle(string lpModuleName);
@@ -6984,7 +6986,7 @@ public static string GetString(uint strId)
 	}
 	if (-not ("WinAPI.GetStr" -as [type]))
 	{
-		Add-Type @Signature -Using System.Text
+		Add-Type @Signature
 	}
 
 	# The localized user folders names
@@ -8594,199 +8596,193 @@ function Set-Association
 	}
 
 	#region functions
-	$RegistryUtils = @'
-using System;
-using System.Runtime.InteropServices;
-using System.Security.AccessControl;
-using System.Text;
-using Microsoft.Win32;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
+	$Signature = @{
+		Namespace        = "WinAPI"
+		Name             = "Action"
+		Language         = "CSharp"
+		UsingNamespace   = "System.Text", "System.Security.AccessControl", "Microsoft.Win32"
+		MemberDefinition = @"
+[DllImport("advapi32.dll", CharSet = CharSet.Auto)]
+private static extern int RegOpenKeyEx(UIntPtr hKey, string subKey, int ulOptions, int samDesired, out UIntPtr hkResult);
 
-namespace RegistryUtils
+[DllImport("advapi32.dll", SetLastError = true)]
+private static extern int RegCloseKey(UIntPtr hKey);
+
+[DllImport("advapi32.dll", SetLastError=true, CharSet = CharSet.Unicode)]
+private static extern uint RegDeleteKey(UIntPtr hKey, string subKey);
+
+[DllImport("advapi32.dll", EntryPoint = "RegQueryInfoKey", CallingConvention = CallingConvention.Winapi, SetLastError = true)]
+private static extern int RegQueryInfoKey(UIntPtr hkey, out StringBuilder lpClass, ref uint lpcbClass, IntPtr lpReserved,
+	out uint lpcSubKeys, out uint lpcbMaxSubKeyLen, out uint lpcbMaxClassLen, out uint lpcValues, out uint lpcbMaxValueNameLen,
+	out uint lpcbMaxValueLen, out uint lpcbSecurityDescriptor, ref System.Runtime.InteropServices.ComTypes.FILETIME lpftLastWriteTime);
+
+[DllImport("advapi32.dll", ExactSpelling = true, SetLastError = true)]
+internal static extern bool OpenProcessToken(IntPtr h, int acc, ref IntPtr phtok);
+
+[DllImport("kernel32.dll", ExactSpelling = true)]
+internal static extern IntPtr GetCurrentProcess();
+
+[DllImport("advapi32.dll", SetLastError = true)]
+internal static extern bool LookupPrivilegeValue(string host, string name, ref long pluid);
+
+[DllImport("advapi32.dll", ExactSpelling = true, SetLastError = true)]
+internal static extern bool AdjustTokenPrivileges(IntPtr htok, bool disall, ref TokPriv1Luid newst, int len, IntPtr prev, IntPtr relen);
+
+[DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+private static extern int RegLoadKey(uint hKey, string lpSubKey, string lpFile);
+
+[DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+private static extern int RegUnLoadKey(uint hKey, string lpSubKey);
+
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
+internal struct TokPriv1Luid
 {
-	public static class Action
+	public int Count;
+	public long Luid;
+	public int Attr;
+}
+
+public static void DeleteKey(RegistryHive registryHive, string subkey)
+{
+	UIntPtr hKey = UIntPtr.Zero;
+
+	try
 	{
-		[DllImport("advapi32.dll", CharSet = CharSet.Auto)]
-		private static extern int RegOpenKeyEx(UIntPtr hKey, string subKey, int ulOptions, int samDesired, out UIntPtr hkResult);
-
-		[DllImport("advapi32.dll", SetLastError = true)]
-		private static extern int RegCloseKey(UIntPtr hKey);
-
-		[DllImport("advapi32.dll", SetLastError=true, CharSet = CharSet.Unicode)]
-		private static extern uint RegDeleteKey(UIntPtr hKey, string subKey);
-
-		[DllImport("advapi32.dll", EntryPoint = "RegQueryInfoKey", CallingConvention = CallingConvention.Winapi, SetLastError = true)]
-		private static extern int RegQueryInfoKey(UIntPtr hkey, out StringBuilder lpClass, ref uint lpcbClass, IntPtr lpReserved,
-			out uint lpcSubKeys, out uint lpcbMaxSubKeyLen, out uint lpcbMaxClassLen, out uint lpcValues, out uint lpcbMaxValueNameLen,
-			out uint lpcbMaxValueLen, out uint lpcbSecurityDescriptor, ref FILETIME lpftLastWriteTime);
-
-		[DllImport("advapi32.dll", ExactSpelling = true, SetLastError = true)]
-		internal static extern bool OpenProcessToken(IntPtr h, int acc, ref IntPtr phtok);
-
-		[DllImport("kernel32.dll", ExactSpelling = true)]
-		internal static extern IntPtr GetCurrentProcess();
-
-		[DllImport("advapi32.dll", SetLastError = true)]
-		internal static extern bool LookupPrivilegeValue(string host, string name, ref long pluid);
-
-		[DllImport("advapi32.dll", ExactSpelling = true, SetLastError = true)]
-		internal static extern bool AdjustTokenPrivileges(IntPtr htok, bool disall, ref TokPriv1Luid newst, int len, IntPtr prev, IntPtr relen);
-
-		[DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-		private static extern int RegLoadKey(uint hKey, string lpSubKey, string lpFile);
-
-		[DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-		private static extern int RegUnLoadKey(uint hKey, string lpSubKey);
-
-		[StructLayout(LayoutKind.Sequential, Pack = 1)]
-		internal struct TokPriv1Luid
+		var hive = new UIntPtr(unchecked((uint)registryHive));
+		RegOpenKeyEx(hive, subkey, 0, 0x20019, out hKey);
+		RegDeleteKey(hive, subkey);
+	}
+	finally
+	{
+		if (hKey != UIntPtr.Zero)
 		{
-			public int Count;
-			public long Luid;
-			public int Attr;
-		}
-
-		public static void DeleteKey(RegistryHive registryHive, string subkey)
-		{
-			UIntPtr hKey = UIntPtr.Zero;
-
-			try
-			{
-				var hive = new UIntPtr(unchecked((uint)registryHive));
-				RegOpenKeyEx(hive, subkey, 0, 0x20019, out hKey);
-				RegDeleteKey(hive, subkey);
-			}
-			finally
-			{
-				if (hKey != UIntPtr.Zero)
-				{
-					RegCloseKey(hKey);
-				}
-			}
-		}
-
-		private static DateTime ToDateTime(FILETIME ft)
-		{
-			IntPtr buf = IntPtr.Zero;
-			try
-			{
-				long[] longArray = new long[1];
-				int cb = Marshal.SizeOf(ft);
-				buf = Marshal.AllocHGlobal(cb);
-				Marshal.StructureToPtr(ft, buf, false);
-				Marshal.Copy(buf, longArray, 0, 1);
-				return DateTime.FromFileTime(longArray[0]);
-			}
-			finally
-			{
-				if (buf != IntPtr.Zero) Marshal.FreeHGlobal(buf);
-			}
-		}
-
-		public static DateTime? GetLastModified(RegistryHive registryHive, string subKey)
-		{
-			var lastModified = new FILETIME();
-			var lpcbClass = new uint();
-			var lpReserved = new IntPtr();
-			UIntPtr hKey = UIntPtr.Zero;
-
-			try
-			{
-				try
-				{
-					var hive = new UIntPtr(unchecked((uint)registryHive));
-					if (RegOpenKeyEx(hive, subKey, 0, (int)RegistryRights.ReadKey, out hKey) != 0)
-					{
-						return null;
-					}
-
-					uint lpcbSubKeys;
-					uint lpcbMaxKeyLen;
-					uint lpcbMaxClassLen;
-					uint lpcValues;
-					uint maxValueName;
-					uint maxValueLen;
-					uint securityDescriptor;
-					StringBuilder sb;
-
-					if (RegQueryInfoKey(hKey, out sb, ref lpcbClass, lpReserved, out lpcbSubKeys, out lpcbMaxKeyLen, out lpcbMaxClassLen,
-						out lpcValues, out maxValueName, out maxValueLen, out securityDescriptor, ref lastModified) != 0)
-					{
-						return null;
-					}
-
-					var result = ToDateTime(lastModified);
-					return result;
-				}
-				finally
-				{
-					if (hKey != UIntPtr.Zero)
-					{
-						RegCloseKey(hKey);
-					}
-				}
-			}
-			catch (Exception)
-			{
-				return null;
-			}
-		}
-
-		internal const int SE_PRIVILEGE_DISABLED = 0x00000000;
-		internal const int SE_PRIVILEGE_ENABLED = 0x00000002;
-		internal const int TOKEN_QUERY = 0x00000008;
-		internal const int TOKEN_ADJUST_PRIVILEGES = 0x00000020;
-
-		public enum RegistryHives : uint
-		{
-			HKEY_USERS = 0x80000003,
-			HKEY_LOCAL_MACHINE = 0x80000002
-		}
-
-		public static void AddPrivilege(string privilege)
-		{
-			bool retVal;
-			TokPriv1Luid tp;
-			IntPtr hproc = GetCurrentProcess();
-			IntPtr htok = IntPtr.Zero;
-			retVal = OpenProcessToken(hproc, TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, ref htok);
-			tp.Count = 1;
-			tp.Luid = 0;
-			tp.Attr = SE_PRIVILEGE_ENABLED;
-			retVal = LookupPrivilegeValue(null, privilege, ref tp.Luid);
-			retVal = AdjustTokenPrivileges(htok, false, ref tp, 0, IntPtr.Zero, IntPtr.Zero);
-			///return retVal;
-		}
-
-		public static int LoadHive(RegistryHives hive, string subKey, string filePath)
-		{
-			AddPrivilege("SeRestorePrivilege");
-			AddPrivilege("SeBackupPrivilege");
-
-			uint regHive = (uint)hive;
-			int result = RegLoadKey(regHive, subKey, filePath);
-
-			return result;
-		}
-
-		public static int UnloadHive(RegistryHives hive, string subKey)
-		{
-			AddPrivilege("SeRestorePrivilege");
-			AddPrivilege("SeBackupPrivilege");
-
-			uint regHive = (uint)hive;
-			int result = RegUnLoadKey(regHive, subKey);
-
-			return result;
+			RegCloseKey(hKey);
 		}
 	}
 }
-'@
 
-	if (-not ('RegistryUtils.Action' -as [type]))
+private static DateTime ToDateTime(System.Runtime.InteropServices.ComTypes.FILETIME ft)
+{
+	IntPtr buf = IntPtr.Zero;
+	try
 	{
-		Add-Type -TypeDefinition $RegistryUtils
+		long[] longArray = new long[1];
+		int cb = Marshal.SizeOf(ft);
+		buf = Marshal.AllocHGlobal(cb);
+		Marshal.StructureToPtr(ft, buf, false);
+		Marshal.Copy(buf, longArray, 0, 1);
+		return DateTime.FromFileTime(longArray[0]);
 	}
+	finally
+	{
+		if (buf != IntPtr.Zero) Marshal.FreeHGlobal(buf);
+	}
+}
+
+public static DateTime? GetLastModified(RegistryHive registryHive, string subKey)
+{
+	var lastModified = new System.Runtime.InteropServices.ComTypes.FILETIME();
+	var lpcbClass = new uint();
+	var lpReserved = new IntPtr();
+	UIntPtr hKey = UIntPtr.Zero;
+
+	try
+	{
+		try
+		{
+			var hive = new UIntPtr(unchecked((uint)registryHive));
+			if (RegOpenKeyEx(hive, subKey, 0, (int)RegistryRights.ReadKey, out hKey) != 0)
+			{
+				return null;
+			}
+
+			uint lpcbSubKeys;
+			uint lpcbMaxKeyLen;
+			uint lpcbMaxClassLen;
+			uint lpcValues;
+			uint maxValueName;
+			uint maxValueLen;
+			uint securityDescriptor;
+			StringBuilder sb;
+
+			if (RegQueryInfoKey(hKey, out sb, ref lpcbClass, lpReserved, out lpcbSubKeys, out lpcbMaxKeyLen, out lpcbMaxClassLen,
+			out lpcValues, out maxValueName, out maxValueLen, out securityDescriptor, ref lastModified) != 0)
+			{
+				return null;
+			}
+
+			var result = ToDateTime(lastModified);
+			return result;
+		}
+		finally
+		{
+			if (hKey != UIntPtr.Zero)
+			{
+				RegCloseKey(hKey);
+			}
+		}
+	}
+	catch (Exception)
+	{
+		return null;
+	}
+}
+
+internal const int SE_PRIVILEGE_DISABLED = 0x00000000;
+internal const int SE_PRIVILEGE_ENABLED = 0x00000002;
+internal const int TOKEN_QUERY = 0x00000008;
+internal const int TOKEN_ADJUST_PRIVILEGES = 0x00000020;
+
+public enum RegistryHives : uint
+{
+	HKEY_USERS = 0x80000003,
+	HKEY_LOCAL_MACHINE = 0x80000002
+}
+
+public static void AddPrivilege(string privilege)
+{
+	bool retVal;
+	TokPriv1Luid tp;
+	IntPtr hproc = GetCurrentProcess();
+	IntPtr htok = IntPtr.Zero;
+	retVal = OpenProcessToken(hproc, TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, ref htok);
+	tp.Count = 1;
+	tp.Luid = 0;
+	tp.Attr = SE_PRIVILEGE_ENABLED;
+	retVal = LookupPrivilegeValue(null, privilege, ref tp.Luid);
+	retVal = AdjustTokenPrivileges(htok, false, ref tp, 0, IntPtr.Zero, IntPtr.Zero);
+	///return retVal;
+}
+
+public static int LoadHive(RegistryHives hive, string subKey, string filePath)
+{
+	AddPrivilege("SeRestorePrivilege");
+	AddPrivilege("SeBackupPrivilege");
+
+	uint regHive = (uint)hive;
+	int result = RegLoadKey(regHive, subKey, filePath);
+
+	return result;
+}
+
+public static int UnloadHive(RegistryHives hive, string subKey)
+{
+	AddPrivilege("SeRestorePrivilege");
+	AddPrivilege("SeBackupPrivilege");
+
+	uint regHive = (uint)hive;
+	int result = RegUnLoadKey(regHive, subKey);
+
+	return result;
+}
+"@
+	}
+
+	if (-not ("WinAPI.Action" -as [type]))
+	{
+		Add-Type @Signature
+	}
+
 
 	function Set-Icon
 	{
@@ -8827,7 +8823,7 @@ namespace RegistryUtils
 			$SubKey
 		)
 
-		[RegistryUtils.Action]::DeleteKey([Microsoft.Win32.RegistryHive]::CurrentUser,$SubKey)
+		[WinAPI.Action]::DeleteKey([Microsoft.Win32.RegistryHive]::CurrentUser,$SubKey)
 	}
 
 	function Set-UserAccessKey
@@ -9056,132 +9052,138 @@ namespace RegistryUtils
 			$SubKey
 		)
 
-		$PatentHash = @'
-using System;
-
-namespace FileAssoc
+		$Signature = @{
+			Namespace        = "WinAPI"
+			Name             = "PatentHash"
+			Language         = "CSharp"
+			MemberDefinition = @"
+public static uint[] WordSwap(byte[] a, int sz, byte[] md5)
 {
-	public static class PatentHash
+	if (sz < 2 || (sz & 1) == 1)
 	{
-		public static uint[] WordSwap(byte[] a, int sz, byte[] md5)
+		throw new ArgumentException(String.Format("Invalid input size: {0}", sz), "sz");
+	}
+
+	unchecked
+	{
+		uint o1 = 0;
+		uint o2 = 0;
+		int ta = 0;
+		int ts = sz;
+		int ti = ((sz - 2) >> 1) + 1;
+
+		uint c0 = (BitConverter.ToUInt32(md5, 0) | 1) + 0x69FB0000;
+		uint c1 = (BitConverter.ToUInt32(md5, 4) | 1) + 0x13DB0000;
+
+		for (uint i = (uint)ti; i > 0; i--)
 		{
-			if (sz < 2 || (sz & 1) == 1) {
-				throw new ArgumentException(String.Format("Invalid input size: {0}", sz), "sz");
-			}
+			uint n = BitConverter.ToUInt32(a, ta) + o1;
+			ta += 8;
+			ts -= 2;
 
-			unchecked {
-				uint o1 = 0;
-				uint o2 = 0;
-				int ta = 0;
-				int ts = sz;
-				int ti = ((sz - 2) >> 1) + 1;
+			uint v1 = 0x79F8A395 * (n * c0 - 0x10FA9605 * (n >> 16)) + 0x689B6B9F * ((n * c0 - 0x10FA9605 * (n >> 16)) >> 16);
+			uint v2 = 0xEA970001 * v1 - 0x3C101569 * (v1 >> 16);
+			uint v3 = BitConverter.ToUInt32(a, ta - 4) + v2;
+			uint v4 = v3 * c1 - 0x3CE8EC25 * (v3 >> 16);
+			uint v5 = 0x59C3AF2D * v4 - 0x2232E0F1 * (v4 >> 16);
 
-				uint c0 = (BitConverter.ToUInt32(md5, 0) | 1) + 0x69FB0000;
-				uint c1 = (BitConverter.ToUInt32(md5, 4) | 1) + 0x13DB0000;
-
-				for (uint i = (uint)ti; i > 0; i--) {
-					uint n = BitConverter.ToUInt32(a, ta) + o1;
-					ta += 8;
-					ts -= 2;
-
-					uint v1 = 0x79F8A395 * (n * c0 - 0x10FA9605 * (n >> 16)) + 0x689B6B9F * ((n * c0 - 0x10FA9605 * (n >> 16)) >> 16);
-					uint v2 = 0xEA970001 * v1 - 0x3C101569 * (v1 >> 16);
-					uint v3 = BitConverter.ToUInt32(a, ta - 4) + v2;
-					uint v4 = v3 * c1 - 0x3CE8EC25 * (v3 >> 16);
-					uint v5 = 0x59C3AF2D * v4 - 0x2232E0F1 * (v4 >> 16);
-
-					o1 = 0x1EC90001 * v5 + 0x35BD1EC9 * (v5 >> 16);
-					o2 += o1 + v2;
-				}
-
-				if (ts == 1) {
-					uint n = BitConverter.ToUInt32(a, ta) + o1;
-
-					uint v1 = n * c0 - 0x10FA9605 * (n >> 16);
-					uint v2 = 0xEA970001 * (0x79F8A395 * v1 + 0x689B6B9F * (v1 >> 16)) - 0x3C101569 * ((0x79F8A395 * v1 + 0x689B6B9F * (v1 >> 16)) >> 16);
-					uint v3 = v2 * c1 - 0x3CE8EC25 * (v2 >> 16);
-
-					o1 = 0x1EC90001 * (0x59C3AF2D * v3 - 0x2232E0F1 * (v3 >> 16)) + 0x35BD1EC9 * ((0x59C3AF2D * v3 - 0x2232E0F1 * (v3 >> 16)) >> 16);
-					o2 += o1 + v2;
-				}
-
-				uint[] ret = new uint[2];
-				ret[0] = o1;
-				ret[1] = o2;
-				return ret;
-			}
+			o1 = 0x1EC90001 * v5 + 0x35BD1EC9 * (v5 >> 16);
+			o2 += o1 + v2;
 		}
 
-		public static uint[] Reversible(byte[] a, int sz, byte[] md5)
+		if (ts == 1)
 		{
-			if (sz < 2 || (sz & 1) == 1) {
-				throw new ArgumentException(String.Format("Invalid input size: {0}", sz), "sz");
-			}
+			uint n = BitConverter.ToUInt32(a, ta) + o1;
 
-			unchecked {
-				uint o1 = 0;
-				uint o2 = 0;
-				int ta = 0;
-				int ts = sz;
-				int ti = ((sz - 2) >> 1) + 1;
+			uint v1 = n * c0 - 0x10FA9605 * (n >> 16);
+			uint v2 = 0xEA970001 * (0x79F8A395 * v1 + 0x689B6B9F * (v1 >> 16)) - 0x3C101569 * ((0x79F8A395 * v1 + 0x689B6B9F * (v1 >> 16)) >> 16);
+			uint v3 = v2 * c1 - 0x3CE8EC25 * (v2 >> 16);
 
-				uint c0 = BitConverter.ToUInt32(md5, 0) | 1;
-				uint c1 = BitConverter.ToUInt32(md5, 4) | 1;
-
-				for (uint i = (uint)ti; i > 0; i--) {
-					uint n = (BitConverter.ToUInt32(a, ta) + o1) * c0;
-					n = 0xB1110000 * n - 0x30674EEF * (n >> 16);
-					ta += 8;
-					ts -= 2;
-
-					uint v1 = 0x5B9F0000 * n - 0x78F7A461 * (n >> 16);
-					uint v2 = 0x1D830000 * (0x12CEB96D * (v1 >> 16) - 0x46930000 * v1) + 0x257E1D83 * ((0x12CEB96D * (v1 >> 16) - 0x46930000 * v1) >> 16);
-					uint v3 = BitConverter.ToUInt32(a, ta - 4) + v2;
-
-					uint v4 = 0x16F50000 * c1 * v3 - 0x5D8BE90B * (c1 * v3 >> 16);
-					uint v5 = 0x2B890000 * (0x96FF0000 * v4 - 0x2C7C6901 * (v4 >> 16)) + 0x7C932B89 * ((0x96FF0000 * v4 - 0x2C7C6901 * (v4 >> 16)) >> 16);
-
-					o1 = 0x9F690000 * v5 - 0x405B6097 * (v5 >> 16);
-					o2 += o1 + v2;
-				}
-
-				if (ts == 1) {
-					uint n = BitConverter.ToUInt32(a, ta) + o1;
-
-					uint v1 = 0xB1110000 * c0 * n - 0x30674EEF * ((c0 * n) >> 16);
-					uint v2 = 0x5B9F0000 * v1 - 0x78F7A461 * (v1 >> 16);
-					uint v3 = 0x1D830000 * (0x12CEB96D * (v2 >> 16) - 0x46930000 * v2) + 0x257E1D83 * ((0x12CEB96D * (v2 >> 16) - 0x46930000 * v2) >> 16);
-					uint v4 = 0x16F50000 * c1 * v3 - 0x5D8BE90B * ((c1 * v3) >> 16);
-					uint v5 = 0x96FF0000 * v4 - 0x2C7C6901 * (v4 >> 16);
-					o1 = 0x9F690000 * (0x2B890000 * v5 + 0x7C932B89 * (v5 >> 16)) - 0x405B6097 * ((0x2B890000 * v5 + 0x7C932B89 * (v5 >> 16)) >> 16);
-					o2 += o1 + v2;
-				}
-
-				uint[] ret = new uint[2];
-				ret[0] = o1;
-				ret[1] = o2;
-				return ret;
-			}
+			o1 = 0x1EC90001 * (0x59C3AF2D * v3 - 0x2232E0F1 * (v3 >> 16)) + 0x35BD1EC9 * ((0x59C3AF2D * v3 - 0x2232E0F1 * (v3 >> 16)) >> 16);
+			o2 += o1 + v2;
 		}
 
-		public static long MakeLong(uint left, uint right) {
-			return (long)left << 32 | (long)right;
-		}
+		uint[] ret = new uint[2];
+		ret[0] = o1;
+		ret[1] = o2;
+		return ret;
 	}
 }
-'@
 
-		if ( -not ('FileAssoc.PatentHash' -as [type]))
+public static uint[] Reversible(byte[] a, int sz, byte[] md5)
+{
+	if (sz < 2 || (sz & 1) == 1)
+	{
+		throw new ArgumentException(String.Format("Invalid input size: {0}", sz), "sz");
+	}
+
+	unchecked
+	{
+		uint o1 = 0;
+		uint o2 = 0;
+		int ta = 0;
+		int ts = sz;
+		int ti = ((sz - 2) >> 1) + 1;
+
+		uint c0 = BitConverter.ToUInt32(md5, 0) | 1;
+		uint c1 = BitConverter.ToUInt32(md5, 4) | 1;
+
+		for (uint i = (uint)ti; i > 0; i--)
 		{
-			Add-Type -TypeDefinition $PatentHash
+			uint n = (BitConverter.ToUInt32(a, ta) + o1) * c0;
+			n = 0xB1110000 * n - 0x30674EEF * (n >> 16);
+			ta += 8;
+			ts -= 2;
+
+			uint v1 = 0x5B9F0000 * n - 0x78F7A461 * (n >> 16);
+			uint v2 = 0x1D830000 * (0x12CEB96D * (v1 >> 16) - 0x46930000 * v1) + 0x257E1D83 * ((0x12CEB96D * (v1 >> 16) - 0x46930000 * v1) >> 16);
+			uint v3 = BitConverter.ToUInt32(a, ta - 4) + v2;
+
+			uint v4 = 0x16F50000 * c1 * v3 - 0x5D8BE90B * (c1 * v3 >> 16);
+			uint v5 = 0x2B890000 * (0x96FF0000 * v4 - 0x2C7C6901 * (v4 >> 16)) + 0x7C932B89 * ((0x96FF0000 * v4 - 0x2C7C6901 * (v4 >> 16)) >> 16);
+
+			o1 = 0x9F690000 * v5 - 0x405B6097 * (v5 >> 16);
+			o2 += o1 + v2;
+		}
+
+		if (ts == 1)
+		{
+			uint n = BitConverter.ToUInt32(a, ta) + o1;
+
+			uint v1 = 0xB1110000 * c0 * n - 0x30674EEF * ((c0 * n) >> 16);
+			uint v2 = 0x5B9F0000 * v1 - 0x78F7A461 * (v1 >> 16);
+			uint v3 = 0x1D830000 * (0x12CEB96D * (v2 >> 16) - 0x46930000 * v2) + 0x257E1D83 * ((0x12CEB96D * (v2 >> 16) - 0x46930000 * v2) >> 16);
+			uint v4 = 0x16F50000 * c1 * v3 - 0x5D8BE90B * ((c1 * v3) >> 16);
+			uint v5 = 0x96FF0000 * v4 - 0x2C7C6901 * (v4 >> 16);
+			o1 = 0x9F690000 * (0x2B890000 * v5 + 0x7C932B89 * (v5 >> 16)) - 0x405B6097 * ((0x2B890000 * v5 + 0x7C932B89 * (v5 >> 16)) >> 16);
+			o2 += o1 + v2;
+		}
+
+		uint[] ret = new uint[2];
+		ret[0] = o1;
+		ret[1] = o2;
+		return ret;
+	}
+}
+
+public static long MakeLong(uint left, uint right)
+{
+	return (long)left << 32 | (long)right;
+}
+"@
+		}
+
+		if ( -not ("WinAPI.PatentHash" -as [type]))
+		{
+			Add-Type @Signature
 		}
 
 		function Get-KeyLastWriteTime ($SubKey)
 		{
-			$LM = [RegistryUtils.Action]::GetLastModified([Microsoft.Win32.RegistryHive]::CurrentUser,$SubKey)
-			$FT = ([DateTime]::New($LM.Year, $LM.Month, $LM.Day, $LM.Hour, $LM.Minute, 0, $LM.Kind)).ToFileTime()
+			$LastModified = [WinAPI.Action]::GetLastModified([Microsoft.Win32.RegistryHive]::CurrentUser,$SubKey)
+			$FileTime = ([DateTime]::New($LastModified.Year, $LastModified.Month, $LastModified.Day, $LastModified.Hour, $LastModified.Minute, 0, $LastModified.Kind)).ToFileTime()
 
-			return [string]::Format("{0:x8}{1:x8}", $FT -shr 32, $FT -band [uint32]::MaxValue)
+			return [string]::Format("{0:x8}{1:x8}", $FileTime -shr 32, $FileTime -band [uint32]::MaxValue)
 		}
 
 		function Get-DataArray
@@ -9191,9 +9193,9 @@ namespace FileAssoc
 			# Secret static string stored in %SystemRoot%\SysWOW64\shell32.dll
 			$userExperience        = "User Choice set via Windows User Experience {D18B6DD5-6124-4341-9318-804003BAFA0B}"
 			# Get user SID
-			$userSid               = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
+			$userSID               = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
 			$KeyLastWriteTime      = Get-KeyLastWriteTime -SubKey $SubKey
-			$baseInfo              = ("{0}{1}{2}{3}{4}" -f $Extension, $userSid, $ProgId, $KeyLastWriteTime, $userExperience).ToLowerInvariant()
+			$baseInfo              = ("{0}{1}{2}{3}{4}" -f $Extension, $userSID, $ProgId, $KeyLastWriteTime, $userExperience).ToLowerInvariant()
 			$StringToUTF16LEArray  = [System.Collections.ArrayList]@([System.Text.Encoding]::Unicode.GetBytes($baseInfo))
 			$StringToUTF16LEArray += (0,0)
 
@@ -9217,10 +9219,10 @@ namespace FileAssoc
 			$Size = $A.Count
 			$ShiftedSize = ($Size -shr 2) - ($Size -shr 2 -band 1) * 1
 
-			[uint32[]]$A1 = [FileAssoc.PatentHash]::WordSwap($A, [int]$ShiftedSize, $MD5)
-			[uint32[]]$A2 = [FileAssoc.PatentHash]::Reversible($A, [int]$ShiftedSize, $MD5)
+			[uint32[]]$A1 = [WinAPI.PatentHash]::WordSwap($A, [int]$ShiftedSize, $MD5)
+			[uint32[]]$A2 = [WinAPI.PatentHash]::Reversible($A, [int]$ShiftedSize, $MD5)
 
-			$Ret = [FileAssoc.PatentHash]::MakeLong($A1[1] -bxor $A2[1], $A1[0] -bxor $A2[0])
+			$Ret = [WinAPI.PatentHash]::MakeLong($A1[1] -bxor $A2[1], $A1[0] -bxor $A2[0])
 
 			return [System.Convert]::ToBase64String([System.BitConverter]::GetBytes([Int64]$Ret))
 		}
@@ -9264,9 +9266,9 @@ namespace FileAssoc
 	Write-AdditionalKeys -ProgId $ProgId -Extension $Extension
 
 	# Refresh the desktop icons
-	$UpdateExplorer = @{
+	$Signature = @{
 		Namespace        = "WinAPI"
-		Name             = "UpdateExplorer"
+		Name             = "Signature"
 		Language         = "CSharp"
 		MemberDefinition = @"
 [DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = false)]
@@ -9279,12 +9281,12 @@ public static void Refresh()
 }
 "@
 	}
-	if (-not ("WinAPI.UpdateExplorer" -as [type]))
+	if (-not ("WinAPI.Signature" -as [type]))
 	{
-		Add-Type @UpdateExplorer
+		Add-Type @Signature
 	}
 
-	[WinAPI.UpdateExplorer]::Refresh()
+	[WinAPI.Signature]::Refresh()
 }
 
 <#
@@ -10137,6 +10139,7 @@ function PinToStart
 			Namespace        = "WinAPI"
 			Name             = "GetStr"
 			Language         = "CSharp"
+			UsingNamespace   = "System.Text"
 			MemberDefinition = @"
 [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
 public static extern IntPtr GetModuleHandle(string lpModuleName);
@@ -10156,7 +10159,7 @@ public static string GetString(uint strId)
 
 		if (-not ("WinAPI.GetStr" -as [type]))
 		{
-			Add-Type @Signature -Using System.Text
+			Add-Type @Signature
 		}
 
 		# Extract the localized "Devices and Printers" string from shell32.dll

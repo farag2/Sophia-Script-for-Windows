@@ -200,5 +200,5 @@ Write-Verbose -Message "Sophia -Functions <tab>" -Verbose
 Write-Verbose -Message "Sophia -Functions temp<tab>" -Verbose
 Write-Verbose -Message "Sophia -Functions `"DiagTrackService -Disable`", `"DiagnosticDataLevel -Minimal`", UninstallUWPApps" -Verbose
 Write-Information -MessageData "" -InformationAction Continue
-Write-Verbose -Message "UninstallUWPApps, `"PinToStart -UnpinAll`"" -Verbose
-Write-Verbose -Message "`"Set-Association -ProgramPath ```"%ProgramFiles%\Notepad++\notepad++.exe```" -Extension .txt -Icon ```"%ProgramFiles%\Notepad++\notepad++.exe,0```"`"" -Verbose
+Write-Verbose -Message "Sophia -Functions `"UninstallUWPApps, `"PinToStart -UnpinAll`" -Verbose"
+Write-Verbose -Message "Sophia -Functions `"Set-Association -ProgramPath ```"%ProgramFiles%\Notepad++\notepad++.exe```" -Extension .txt -Icon ```"%ProgramFiles%\Notepad++\notepad++.exe,0```"`"" -Verbose
