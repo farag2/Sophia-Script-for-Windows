@@ -1091,15 +1091,15 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Disable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections. Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipv6-test.com"
+        "ToolTip": "Disable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections. Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipify.org"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections (default value). Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipv6-test.com"
+        "ToolTip": "Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections (default value). Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipify.org"
       },
       "Two": {
         "Tag": "PreferIPv4overIPv6",
-        "ToolTip": "Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections. Prefer IPv4 over IPv6. Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipv6-test.com"
+        "ToolTip": "Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections. Prefer IPv4 over IPv6. Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipify.org"
       }
     }
   },
@@ -1560,17 +1560,6 @@
     }
   },
   {
-    "Id": 806,
-    "Region": "UWP apps",
-    "Function": "CheckUWPAppsUpdates",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Check for UWP apps updates"
-      }
-    }
-  },
-  {
     "Id": 900,
     "Region": "Gaming",
     "Function": "XboxGameBar",
@@ -1603,7 +1592,7 @@
   {
     "Id": 902,
     "Region": "Gaming",
-    "Function": "SetAppGraphicsPerformance",
+    "Function": "Set-AppGraphicsPerformance",
     "Arg": {
       "Zero": {
         "Tag": "",

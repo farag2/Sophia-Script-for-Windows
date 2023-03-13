@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.6.0
-	Date: 07.03.2023
+	Version: v5.6.1
+	Date: 13.03.2023
 
 	Copyright (c) 2014—2023 farag
 	Copyright (c) 2019—2023 farag & Inestic
@@ -449,6 +449,33 @@ function Checks
 	}
 	#endregion Defender checks
 
+	# Extract strings from %SystemRoot%\System32\shell32.dll using its' number
+	$Signature = @{
+		Namespace        = "WinAPI"
+		Name             = "GetStr"
+		Language         = "CSharp"
+		UsingNamespace   = "System.Text"
+		MemberDefinition = @"
+[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+public static extern IntPtr GetModuleHandle(string lpModuleName);
+
+[DllImport("user32.dll", CharSet = CharSet.Auto)]
+internal static extern int LoadString(IntPtr hInstance, uint uID, StringBuilder lpBuffer, int nBufferMax);
+
+public static string GetString(uint strId)
+{
+	IntPtr intPtr = GetModuleHandle("shell32.dll");
+	StringBuilder sb = new StringBuilder(255);
+	LoadString(intPtr, strId, sb, sb.Capacity);
+	return sb.ToString();
+}
+"@
+	}
+	if (-not ("WinAPI.GetStr" -as [type]))
+	{
+		Add-Type @Signature
+	}
+
 	# Display a warning message about whether a user has customized the preset file
 	if ($Warning)
 	{
@@ -457,9 +484,11 @@ function Checks
 
 		$Title = ""
 		$Message       = $Localization.CustomizationWarning -f $PresetName
-		$Yes           = $Localization.Yes
-		$No            = $Localization.No
-		$Options       = "&$No", "&$Yes"
+		# Extract the localized "&Yes" string from shell32.dll
+		$Yes           = [WinAPI.GetStr]::GetString(33224)
+		# Extract the localized "&No" string from shell32.dll
+		$No            = [WinAPI.GetStr]::GetString(33232)
+		$Options       = $No, $Yes
 		$DefaultChoice = 0
 		$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -472,6 +501,9 @@ function Checks
 				Start-Sleep -Seconds 5
 
 				Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows#how-to-use"
+				Start-Process -FilePath "https://t.me/sophia_chat"
+				Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+
 				exit
 			}
 			"1"
@@ -753,12 +785,13 @@ function DiagnosticDataLevel
 		"Default"
 		{
 			# Full level
+			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Force -ErrorAction Ignore
+			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Type CLEAR
+
 			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack))
 			{
 				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Force
 			}
-			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Force -ErrorAction Ignore
-			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Type CLEAR
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name MaxTelemetryAllowed -PropertyType DWord -Value 3 -Force
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -PropertyType DWord -Value 3 -Force
 		}
@@ -1072,7 +1105,8 @@ function ScheduledTasks
 	function DisableButton
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.Patient -Verbose
+		# Extract the localized "Please wait..." string from shell32.dll
+		Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
 
 		[void]$Window.Close()
 
@@ -1083,7 +1117,8 @@ function ScheduledTasks
 	function EnableButton
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.Patient -Verbose
+		# Extract the localized "Please wait..." string from shell32.dll
+		Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
 
 		[void]$Window.Close()
 
@@ -1134,21 +1169,22 @@ function ScheduledTasks
 	{
 		"Enable"
 		{
-
-			$State = "Disabled"
-			$ButtonContent = $Localization.Enable
+			$State           = "Disabled"
+			# Extract the localized "Enable" string from shell32.dll
+			$ButtonContent   = [WinAPI.GetStr]::GetString(51472)
 			$ButtonAdd_Click = {EnableButton}
 		}
 		"Disable"
 		{
-			$State = "Ready"
-			$ButtonContent = $Localization.Disable
+			$State           = "Ready"
+			$ButtonContent   = $Localization.Disable
 			$ButtonAdd_Click = {DisableButton}
 		}
 	}
 
 	Write-Information -MessageData "" -InformationAction Continue
-	Write-Verbose -Message $Localization.Patient -Verbose
+	# Extract the localized "Please wait..." string from shell32.dll
+	Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
 
 	# Getting list of all scheduled tasks according to the conditions
 	$Tasks = Get-ScheduledTask | Where-Object -FilterScript {($_.State -eq $State) -and ($_.TaskName -in $CheckedScheduledTasks)}
@@ -3094,7 +3130,7 @@ function Cursors
 					Write-Warning -Message ($Localization.NoResponse -f "https://github.com")
 					Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
 
-					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 				}
 			}
 			catch [System.Net.WebException]
@@ -3102,7 +3138,7 @@ function Cursors
 				Write-Warning -Message $Localization.NoInternetConnection
 				Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 
-				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 			}
 		}
 		"Light"
@@ -3211,7 +3247,7 @@ function Cursors
 					Write-Warning -Message ($Localization.NoResponse -f "https://github.com")
 					Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
 
-					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 				}
 			}
 			catch [System.Net.WebException]
@@ -3219,7 +3255,7 @@ function Cursors
 				Write-Warning -Message $Localization.NoInternetConnection
 				Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 
-				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 			}
 		}
 		"Default"
@@ -4414,7 +4450,8 @@ function WindowsFeatures
 	function DisableButton
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.Patient -Verbose
+		# Extract the localized "Please wait..." string from shell32.dll
+		Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
 
 		[void]$Window.Close()
 
@@ -4425,7 +4462,8 @@ function WindowsFeatures
 	function EnableButton
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.Patient -Verbose
+		# Extract the localized "Please wait..." string from shell32.dll
+		Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
 
 		[void]$Window.Close()
 
@@ -4494,7 +4532,8 @@ function WindowsFeatures
 	}
 
 	Write-Information -MessageData "" -InformationAction Continue
-	Write-Verbose -Message $Localization.Patient -Verbose
+	# Extract the localized "Please wait..." string from shell32.dll
+	Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
 
 	# Getting list of all optional features according to the conditions
 	$OFS = "|"
@@ -4755,7 +4794,8 @@ function WindowsCapabilities
 	function UninstallButton
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.Patient -Verbose
+		# Extract the localized "Please wait..." string from shell32.dll
+		Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
 
 		[void]$Window.Close()
 
@@ -4772,7 +4812,8 @@ function WindowsCapabilities
 	function InstallButton
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.Patient -Verbose
+		# Extract the localized "Please wait..." string from shell32.dll
+		Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
 
 		[void]$Window.Close()
 
@@ -4855,7 +4896,7 @@ function WindowsCapabilities
 				Write-Warning -Message $Localization.NoInternetConnection
 				Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 
-				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 			}
 		}
 		"Uninstall"
@@ -4867,7 +4908,8 @@ function WindowsCapabilities
 	}
 
 	Write-Information -MessageData "" -InformationAction Continue
-	Write-Verbose -Message $Localization.Patient -Verbose
+	# Extract the localized "Please wait..." string from shell32.dll
+	Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
 
 	# Getting list of all capabilities according to the conditions
 	$OFS = "|"
@@ -5088,6 +5130,10 @@ function NetworkAdaptersSavePower
 		$Enable
 	)
 
+	Write-Information -MessageData "" -InformationAction Continue
+	# Extract the localized "Please wait..." string from shell32.dll
+	Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
+
 	if (Get-NetAdapter -Physical | Where-Object -FilterScript {($_.Status -eq "Up") -and $_.MacAddress})
 	{
 		$PhysicalAdaptersStatusUp = @((Get-NetAdapter -Physical | Where-Object -FilterScript {($_.Status -eq "Up") -and $_.MacAddress}).Name)
@@ -5125,7 +5171,8 @@ function NetworkAdaptersSavePower
 		)
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message $Localization.Patient -Verbose
+			# Extract the localized "Please wait..." string from shell32.dll
+			Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
 			Start-Sleep -Seconds 2
 		}
 	}
@@ -5154,7 +5201,7 @@ function NetworkAdaptersSavePower
 	IPv6Component -PreferIPv4overIPv6
 
 	.NOTES
-	Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipv6-test.com
+	Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipify.org
 
 	.NOTES
 	Current user
@@ -5201,9 +5248,9 @@ function IPv6Component
 
 		try
 		{
-			# Check whether the https://ipv6-test.com site is alive
+			# Check whether the https://ipify.org site is alive
 			$Parameters = @{
-				Uri              = "https://ipv6-test.com"
+				Uri              = "https://ipify.org"
 				Method           = "Head"
 				DisableKeepAlive = $true
 				UseBasicParsing  = $true
@@ -5213,19 +5260,20 @@ function IPv6Component
 				return
 			}
 
-			# Check whether the ISP supports IPv6 protocol using https://ipv6-test.com
+			# Check whether the ISP supports IPv6 protocol using https://ipify.org
 			$Parameters = @{
-				Uri             = "https://v4v6.ipv6-test.com/api/myip.php?json"
+				Uri             = "https://api64.ipify.org?format=json"
 				UseBasicParsing = $true
+				Verbose         = $true
 			}
-			$IPVersion = (Invoke-RestMethod @Parameters).proto
+			$IPAddress = (Invoke-RestMethod @Parameters).ip
 		}
 		catch [System.Net.WebException]
 		{
-			Write-Warning -Message ($Localization.NoResponse -f "https://ipv6-test.com")
-			Write-Error -Message ($Localization.NoResponse -f "https://ipv6-test.com") -ErrorAction SilentlyContinue
+			Write-Warning -Message ($Localization.NoResponse -f "https://ipify.org")
+			Write-Error -Message ($Localization.NoResponse -f "https://ipify.org") -ErrorAction SilentlyContinue
 
-			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 		}
 	}
 	catch [System.Net.WebException]
@@ -5233,29 +5281,28 @@ function IPv6Component
 		Write-Warning -Message $Localization.NoInternetConnection
 		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 
-		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 	}
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Disable"
 		{
-
-			if ($IPVersion -ne "ipv6")
+			if ($IPAddress -notmatch ":")
 			{
 				Disable-NetAdapterBinding -Name * -ComponentID ms_tcpip6
 			}
 		}
 		"Enable"
 		{
-			if ($IPVersion -eq "ipv6")
+			if ($IPAddress -match ":")
 			{
 				Enable-NetAdapterBinding -Name * -ComponentID ms_tcpip6
 			}
 		}
 		"PreferIPv4overIPv6"
 		{
-			if ($IPVersion -eq "ipv6")
+			if ($IPVersion -match ":")
 			{
 				Enable-NetAdapterBinding -Name * -ComponentID ms_tcpip6
 				New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters -Name DisabledComponents -PropertyType DWord -Value 32 -Force
@@ -5514,11 +5561,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 		$CurrentUserFolderPath = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name $UserShellFoldersRegistryNames[$UserFolder]
 		if ($CurrentUserFolder -ne $FolderPath)
 		{
-			if ((Get-ChildItem -Path $CurrentUserFolderPath | Measure-Object).Count -ne 0)
-			{
-				Write-Error -Message ($Localization.UserShellFolderNotEmpty -f $CurrentUserFolderPath) -ErrorAction SilentlyContinue
-			}
-
 			# Creating a new folder if there is no one
 			if (-not (Test-Path -Path $FolderPath))
 			{
@@ -5526,7 +5568,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			}
 
 			# Removing old desktop.ini
-			if ($RemoveDesktopINI.IsPresent)
+			if ($RemoveDesktopINI)
 			{
 				Remove-Item -Path "$CurrentUserFolderPath\desktop.ini" -Force -ErrorAction Ignore
 			}
@@ -5538,6 +5580,11 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			Set-Content -Path "$FolderPath\desktop.ini" -Value $DesktopINI[$UserFolder] -Encoding Unicode -Force
 			(Get-Item -Path "$FolderPath\desktop.ini" -Force).Attributes = "Hidden", "System", "Archive"
 			(Get-Item -Path "$FolderPath\desktop.ini" -Force).Refresh()
+
+			if ((Get-ChildItem -Path $CurrentUserFolderPath | Measure-Object).Count -ne 0)
+			{
+				Write-Error -Message ($Localization.UserShellFolderNotEmpty -f $CurrentUserFolderPath) -ErrorAction SilentlyContinue
+			}
 		}
 	}
 
@@ -5571,8 +5618,11 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 		Write-Information -MessageData $Title -InformationAction Continue
 
+		# Extract the localized "Skip" string from shell32.dll
+		$Menu += [WinAPI.GetStr]::GetString(16956)
 		$minY = [Console]::CursorTop
 		$y = [Math]::Max([Math]::Min($Default, $Menu.Count), 0)
+
 		do
 		{
 			[Console]::CursorTop = $minY
@@ -5610,38 +5660,18 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				}
 				"Enter"
 				{
+					# Extract the localized "Skip" string from shell32.dll
+					if ($Menu[$y] -eq [WinAPI.GetStr]::GetString(16956))
+					{
+						Write-Verbose -Message $Localization.Skipped -Verbose
+						return
+					}
+
 					return $Menu[$y]
 				}
 			}
 		}
 		while ($k.Key -notin ([ConsoleKey]::Escape, [ConsoleKey]::Enter))
-	}
-
-	# Get the localized user folders names
-	$Signature = @{
-		Namespace        = "WinAPI"
-		Name             = "GetStr"
-		Language         = "CSharp"
-		UsingNamespace   = "System.Text"
-		MemberDefinition = @"
-[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
-public static extern IntPtr GetModuleHandle(string lpModuleName);
-
-[DllImport("user32.dll", CharSet = CharSet.Auto)]
-internal static extern int LoadString(IntPtr hInstance, uint uID, StringBuilder lpBuffer, int nBufferMax);
-
-public static string GetString(uint strId)
-{
-	IntPtr intPtr = GetModuleHandle("shell32.dll");
-	StringBuilder sb = new StringBuilder(255);
-	LoadString(intPtr, strId, sb, sb.Capacity);
-	return sb.ToString();
-}
-"@
-	}
-	if (-not ("WinAPI.GetStr" -as [type]))
-	{
-		Add-Type @Signature
 	}
 
 	# The localized user folders names
@@ -5679,9 +5709,11 @@ public static string GetString(uint strId)
 
 			$Title = ""
 			$Message       = $Localization.UserFolderRequest -f $DesktopLocalizedString
-			$No            = $Localization.No
-			$Yes           = $Localization.Yes
-			$Options       = "&$Yes", "&$No"
+			# Extract the localized "&No" string from shell32.dll
+			$No            = [WinAPI.GetStr]::GetString(33232)
+			# Extract the localized "&Yes" string from shell32.dll
+			$Yes           = [WinAPI.GetStr]::GetString(33224)
+			$Options       = $Yes, $No
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -5697,7 +5729,11 @@ public static string GetString(uint strId)
 					{
 						$SelectedDrive = $env:SystemDrive
 					}
-					Set-UserShellFolder -UserFolder Desktop -FolderPath "${SelectedDrive}\Desktop" -RemoveDesktopINI
+
+					if ($SelectedDrive)
+					{
+						Set-UserShellFolder -UserFolder Desktop -FolderPath "${SelectedDrive}\Desktop" -RemoveDesktopINI
+					}
 				}
 				"1"
 				{
@@ -5715,9 +5751,11 @@ public static string GetString(uint strId)
 
 			$Title         = ""
 			$Message       = $Localization.UserFolderRequest -f $DocumentsLocalizedString
-			$No            = $Localization.No
-			$Yes           = $Localization.Yes
-			$Options       = "&$Yes", "&$No"
+			# Extract the localized "&No" string from shell32.dll
+			$No            = [WinAPI.GetStr]::GetString(33232)
+			# Extract the localized "&Yes" string from shell32.dll
+			$Yes           = [WinAPI.GetStr]::GetString(33224)
+			$Options       = $Yes, $No
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -5733,7 +5771,11 @@ public static string GetString(uint strId)
 					{
 						$SelectedDrive = $env:SystemDrive
 					}
-					Set-UserShellFolder -UserFolder Documents -FolderPath "${SelectedDrive}\Documents" -RemoveDesktopINI
+
+					if ($SelectedDrive)
+					{
+						Set-UserShellFolder -UserFolder Documents -FolderPath "${SelectedDrive}\Documents" -RemoveDesktopINI
+					}
 				}
 				"1"
 				{
@@ -5751,9 +5793,11 @@ public static string GetString(uint strId)
 
 			$Title         = ""
 			$Message       = $Localization.UserFolderRequest -f $DownloadsLocalizedString
-			$No            = $Localization.No
-			$Yes           = $Localization.Yes
-			$Options       = "&$Yes", "&$No"
+			# Extract the localized "&No" string from shell32.dll
+			$No            = [WinAPI.GetStr]::GetString(33232)
+			# Extract the localized "&Yes" string from shell32.dll
+			$Yes           = [WinAPI.GetStr]::GetString(33224)
+			$Options       = $Yes, $No
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -5769,7 +5813,11 @@ public static string GetString(uint strId)
 					{
 						$SelectedDrive = $env:SystemDrive
 					}
-					Set-UserShellFolder -UserFolder Downloads -FolderPath "${SelectedDrive}\Downloads" -RemoveDesktopINI
+
+					if ($SelectedDrive)
+					{
+						Set-UserShellFolder -UserFolder Downloads -FolderPath "${SelectedDrive}\Downloads" -RemoveDesktopINI
+					}
 				}
 				"1"
 				{
@@ -5787,9 +5835,11 @@ public static string GetString(uint strId)
 
 			$Title         = ""
 			$Message       = $Localization.UserFolderRequest -f $MusicLocalizedString
-			$No            = $Localization.No
-			$Yes           = $Localization.Yes
-			$Options       = "&$Yes", "&$No"
+			# Extract the localized "&No" string from shell32.dll
+			$No            = [WinAPI.GetStr]::GetString(33232)
+			# Extract the localized "&Yes" string from shell32.dll
+			$Yes           = [WinAPI.GetStr]::GetString(33224)
+			$Options       = $Yes, $No
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -5805,7 +5855,11 @@ public static string GetString(uint strId)
 					{
 						$SelectedDrive = $env:SystemDrive
 					}
-					Set-UserShellFolder -UserFolder Music -FolderPath "${SelectedDrive}\Music" -RemoveDesktopINI
+
+					if ($SelectedDrive)
+					{
+						Set-UserShellFolder -UserFolder Music -FolderPath "${SelectedDrive}\Music" -RemoveDesktopINI
+					}
 				}
 				"1"
 				{
@@ -5823,9 +5877,11 @@ public static string GetString(uint strId)
 
 			$Title         = ""
 			$Message       = $Localization.UserFolderRequest -f $PicturesLocalizedString
-			$No            = $Localization.No
-			$Yes           = $Localization.Yes
-			$Options       = "&$Yes", "&$No"
+			# Extract the localized "&No" string from shell32.dll
+			$No            = [WinAPI.GetStr]::GetString(33232)
+			# Extract the localized "&Yes" string from shell32.dll
+			$Yes           = [WinAPI.GetStr]::GetString(33224)
+			$Options       = $Yes, $No
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -5841,7 +5897,11 @@ public static string GetString(uint strId)
 					{
 						$SelectedDrive = $env:SystemDrive
 					}
-					Set-UserShellFolder -UserFolder Pictures -FolderPath "${SelectedDrive}\Pictures" -RemoveDesktopINI
+
+					if ($SelectedDrive)
+					{
+						Set-UserShellFolder -UserFolder Pictures -FolderPath "${SelectedDrive}\Pictures" -RemoveDesktopINI
+					}
 				}
 				"1"
 				{
@@ -5859,9 +5919,11 @@ public static string GetString(uint strId)
 
 			$Title         = ""
 			$Message       = $Localization.UserFolderRequest -f $VideosLocalizedString
-			$No            = $Localization.No
-			$Yes           = $Localization.Yes
-			$Options       = "&$Yes", "&$No"
+			# Extract the localized "&No" string from shell32.dll
+			$No            = [WinAPI.GetStr]::GetString(33232)
+			# Extract the localized "&Yes" string from shell32.dll
+			$Yes           = [WinAPI.GetStr]::GetString(33224)
+			$Options       = $Yes, $No
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -5877,7 +5939,11 @@ public static string GetString(uint strId)
 					{
 						$SelectedDrive = $env:SystemDrive
 					}
-					Set-UserShellFolder -UserFolder Videos -FolderPath "${SelectedDrive}\Videos" -RemoveDesktopINI
+
+					if ($SelectedDrive)
+					{
+						Set-UserShellFolder -UserFolder Videos -FolderPath "${SelectedDrive}\Videos" -RemoveDesktopINI
+					}
 				}
 				"1"
 				{
@@ -5896,9 +5962,11 @@ public static string GetString(uint strId)
 
 			$Title         = ""
 			$Message       = $Localization.UserFolderSelect -f $DesktopLocalizedString
-			$Browse        = $Localization.Browse
-			$No            = $Localization.No
-			$Options       = "&$Browse", "&$No"
+			# Extract the localized "Browse" string from shell32.dll
+			$Browse        = [WinAPI.GetStr]::GetString(9015)
+			# Extract the localized "&No" string from shell32.dll
+			$No            = [WinAPI.GetStr]::GetString(33232)
+			$Options       = "&$Browse", $No
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -5918,7 +5986,6 @@ public static string GetString(uint strId)
 					if ($FolderBrowserDialog.SelectedPath)
 					{
 						Set-UserShellFolder -UserFolder Desktop -FolderPath $FolderBrowserDialog.SelectedPath -RemoveDesktopINI
-						Write-Verbose -Message ($Localization.NewUserFolderLocation -f $FolderBrowserDialog.SelectedPath) -Verbose
 					}
 				}
 				"1"
@@ -5936,9 +6003,11 @@ public static string GetString(uint strId)
 
 			$Title         = ""
 			$Message       = $Localization.UserFolderSelect -f $DocumentsLocalizedString
-			$Browse        = $Localization.Browse
-			$No            = $Localization.No
-			$Options       = "&$Browse", "&$No"
+			# Extract the localized "Browse" string from shell32.dll
+			$Browse        = [WinAPI.GetStr]::GetString(9015)
+			# Extract the localized "&No" string from shell32.dll
+			$No            = [WinAPI.GetStr]::GetString(33232)
+			$Options       = "&$Browse", $No
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -5958,7 +6027,6 @@ public static string GetString(uint strId)
 					if ($FolderBrowserDialog.SelectedPath)
 					{
 						Set-UserShellFolder -UserFolder Documents -FolderPath $FolderBrowserDialog.SelectedPath -RemoveDesktopINI
-						Write-Verbose -Message ($Localization.NewUserFolderLocation -f $FolderBrowserDialog.SelectedPath) -Verbose
 					}
 				}
 				"1"
@@ -5976,9 +6044,11 @@ public static string GetString(uint strId)
 
 			$Title         = ""
 			$Message       = $Localization.UserFolderSelect -f $DownloadsLocalizedString
-			$Browse        = $Localization.Browse
-			$No            = $Localization.No
-			$Options       = "&$Browse", "&$No"
+			# Extract the localized "Browse" string from shell32.dll
+			$Browse        = [WinAPI.GetStr]::GetString(9015)
+			# Extract the localized "&No" string from shell32.dll
+			$No            = [WinAPI.GetStr]::GetString(33232)
+			$Options       = "&$Browse", $No
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -5998,7 +6068,6 @@ public static string GetString(uint strId)
 					if ($FolderBrowserDialog.SelectedPath)
 					{
 						Set-UserShellFolder -UserFolder Downloads -FolderPath $FolderBrowserDialog.SelectedPath -RemoveDesktopINI
-						Write-Verbose -Message ($Localization.NewUserFolderLocation -f $FolderBrowserDialog.SelectedPath) -Verbose
 					}
 				}
 				"1"
@@ -6016,9 +6085,11 @@ public static string GetString(uint strId)
 
 			$Title         = ""
 			$Message       = $Localization.UserFolderSelect -f $MusicLocalizedString
-			$Browse        = $Localization.Browse
-			$No            = $Localization.No
-			$Options       = "&$Browse", "&$No"
+			# Extract the localized "Browse" string from shell32.dll
+			$Browse        = [WinAPI.GetStr]::GetString(9015)
+			# Extract the localized "&No" string from shell32.dll
+			$No            = [WinAPI.GetStr]::GetString(33232)
+			$Options       = "&$Browse", $No
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -6038,7 +6109,6 @@ public static string GetString(uint strId)
 					if ($FolderBrowserDialog.SelectedPath)
 					{
 						Set-UserShellFolder -UserFolder Music -FolderPath $FolderBrowserDialog.SelectedPath -RemoveDesktopINI
-						Write-Verbose -Message ($Localization.NewUserFolderLocation -f $FolderBrowserDialog.SelectedPath) -Verbose
 					}
 				}
 				"1"
@@ -6056,9 +6126,11 @@ public static string GetString(uint strId)
 
 			$Title         = ""
 			$Message       = $Localization.UserFolderSelect -f $PicturesLocalizedString
-			$Browse        = $Localization.Browse
-			$No            = $Localization.No
-			$Options       = "&$Browse", "&$No"
+			# Extract the localized "Browse" string from shell32.dll
+			$Browse        = [WinAPI.GetStr]::GetString(9015)
+			# Extract the localized "&No" string from shell32.dll
+			$No            = [WinAPI.GetStr]::GetString(33232)
+			$Options       = "&$Browse", $No
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -6078,7 +6150,6 @@ public static string GetString(uint strId)
 					if ($FolderBrowserDialog.SelectedPath)
 					{
 						Set-UserShellFolder -UserFolder Pictures -FolderPath $FolderBrowserDialog.SelectedPath -RemoveDesktopINI
-						Write-Verbose -Message ($Localization.NewUserFolderLocation -f $FolderBrowserDialog.SelectedPath) -Verbose
 					}
 				}
 				"1"
@@ -6096,9 +6167,11 @@ public static string GetString(uint strId)
 
 			$Title         = ""
 			$Message       = $Localization.UserFolderSelect -f $VideosLocalizedString
-			$Browse        = $Localization.Browse
-			$No            = $Localization.No
-			$Options       = "&$Browse", "&$No"
+			# Extract the localized "Browse" string from shell32.dll
+			$Browse        = [WinAPI.GetStr]::GetString(9015)
+			# Extract the localized "&No" string from shell32.dll
+			$No            = [WinAPI.GetStr]::GetString(33232)
+			$Options       = "&$Browse", $No
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -6118,7 +6191,6 @@ public static string GetString(uint strId)
 					if ($FolderBrowserDialog.SelectedPath)
 					{
 						Set-UserShellFolder -UserFolder Videos -FolderPath $FolderBrowserDialog.SelectedPath -RemoveDesktopINI
-						Write-Verbose -Message ($Localization.NewUserFolderLocation -f $FolderBrowserDialog.SelectedPath) -Verbose
 					}
 				}
 				"1"
@@ -6138,9 +6210,11 @@ public static string GetString(uint strId)
 
 			$Title         = ""
 			$Message       = $Localization.UserDefaultFolder -f $DesktopLocalizedString
-			$Yes           = $Localization.Yes
-			$No            = $Localization.No
-			$Options       = "&$Yes", "&$No"
+			# Extract the localized "&Yes" string from shell32.dll
+			$Yes           = [WinAPI.GetStr]::GetString(33224)
+			# Extract the localized "&No" string from shell32.dll
+			$No            = [WinAPI.GetStr]::GetString(33232)
+			$Options       = $Yes, $No
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -6165,9 +6239,11 @@ public static string GetString(uint strId)
 
 			$Title         = ""
 			$Message       = $Localization.UserDefaultFolder -f $DocumentsLocalizedString
-			$Yes           = $Localization.Yes
-			$No            = $Localization.No
-			$Options       = "&$Yes", "&$No"
+			# Extract the localized "&Yes" string from shell32.dll
+			$Yes           = [WinAPI.GetStr]::GetString(33224)
+			# Extract the localized "&No" string from shell32.dll
+			$No            = [WinAPI.GetStr]::GetString(33232)
+			$Options       = $Yes, $No
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -6192,9 +6268,11 @@ public static string GetString(uint strId)
 
 			$Title         = ""
 			$Message       = $Localization.UserDefaultFolder -f $DownloadsLocalizedString
-			$Yes           = $Localization.Yes
-			$No            = $Localization.No
-			$Options       = "&$Yes", "&$No"
+			# Extract the localized "&Yes" string from shell32.dll
+			$Yes           = [WinAPI.GetStr]::GetString(33224)
+			# Extract the localized "&No" string from shell32.dll
+			$No            = [WinAPI.GetStr]::GetString(33232)
+			$Options       = $Yes, $No
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -6219,9 +6297,11 @@ public static string GetString(uint strId)
 
 			$Title         = ""
 			$Message       = $Localization.UserDefaultFolder -f $MusicLocalizedString
-			$Yes           = $Localization.Yes
-			$No            = $Localization.No
-			$Options       = "&$Yes", "&$No"
+			# Extract the localized "&Yes" string from shell32.dll
+			$Yes           = [WinAPI.GetStr]::GetString(33224)
+			# Extract the localized "&No" string from shell32.dll
+			$No            = [WinAPI.GetStr]::GetString(33232)
+			$Options       = $Yes, $No
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -6246,9 +6326,11 @@ public static string GetString(uint strId)
 
 			$Title         = ""
 			$Message       = $Localization.UserDefaultFolder -f $PicturesLocalizedString
-			$Yes           = $Localization.Yes
-			$No            = $Localization.No
-			$Options       = "&$Yes", "&$No"
+			# Extract the localized "&Yes" string from shell32.dll
+			$Yes           = [WinAPI.GetStr]::GetString(33224)
+			# Extract the localized "&No" string from shell32.dll
+			$No            = [WinAPI.GetStr]::GetString(33232)
+			$Options       = $Yes, $No
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -6273,9 +6355,11 @@ public static string GetString(uint strId)
 
 			$Title         = ""
 			$Message       = $Localization.UserDefaultFolder -f $VideosLocalizedString
-			$Yes           = $Localization.Yes
-			$No            = $Localization.No
-			$Options       = "&$Yes", "&$No"
+			# Extract the localized "&Yes" string from shell32.dll
+			$Yes           = [WinAPI.GetStr]::GetString(33224)
+			# Extract the localized "&No" string from shell32.dll
+			$No            = [WinAPI.GetStr]::GetString(33232)
+			$Options       = $Yes, $No
 			$DefaultChoice = 1
 			$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
@@ -6935,7 +7019,7 @@ function Set-Association
 
 	if (-not (Test-Path -Path $ProgramPath))
 	{
-		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 		return
 	}
@@ -7617,7 +7701,8 @@ public static long MakeLong(uint left, uint right)
 	}
 
 	Write-Information -MessageData "" -InformationAction Continue
-	Write-Verbose -Message $Localization.Patient -Verbose
+	# Extract the localized "Please wait..." string from shell32.dll
+	Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
 
 	# If the file extension specified configure the extension
 	Write-ExtensionKeys -ProgId $ProgId -Extension $Extension
@@ -7725,7 +7810,7 @@ function InstallVCRedist
 		Write-Warning -Message $Localization.NoInternetConnection
 		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 
-		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 	}
 }
 
@@ -7861,7 +7946,7 @@ function InstallDotNetRuntimes
 		Write-Warning -Message $Localization.NoInternetConnection
 		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 
-		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 	}
 }
 
@@ -8200,7 +8285,7 @@ function AppSuggestions
 	Choose an app and set the "High performance" graphics performance for it
 
 	.EXAMPLE
-	SetAppGraphicsPerformance
+	Set-AppGraphicsPerformance
 
 	.NOTES
 	Works only with a dedicated GPU
@@ -8208,15 +8293,17 @@ function AppSuggestions
 	.NOTES
 	Current user
 #>
-function SetAppGraphicsPerformance
+function Set-AppGraphicsPerformance
 {
 	if (Get-CimInstance -ClassName Win32_VideoController | Where-Object -FilterScript {($_.AdapterDACType -ne "Internal") -and ($null -ne $_.AdapterDACType)})
 	{
 		$Title         = $Localization.GraphicsPerformanceTitle
 		$Message       = $Localization.GraphicsPerformanceRequest
-		$Yes           = $Localization.Yes
-		$No            = $Localization.No
-		$Options       = "&$Yes", "&$No"
+		# Extract the localized "&Yes" string from shell32.dll
+		$Yes           = [WinAPI.GetStr]::GetString(33224)
+		# Extract the localized "&No" string from shell32.dll
+		$No            = [WinAPI.GetStr]::GetString(33232)
+		$Options       = $Yes, $No
 		$DefaultChoice = 1
 
 		do
@@ -8332,7 +8419,7 @@ function CleanupTask
 				{
 					Write-Verbose -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line, $TaskUserAccount) -Verbose
 					Write-Error -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line, $TaskUserAccount) -ErrorAction SilentlyContinue
-					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 					return
 				}
@@ -8586,7 +8673,7 @@ while ([WinAPI.Focus]::GetFocusAssistState() -ne "OFF")
 	</visual>
 	<audio src="ms-winsoundevent:notification.default" />
 	<actions>
-		<action content="$($Localization.Run)" arguments="WindowsCleanup:" activationType="protocol"/>
+		<action content="$([WinAPI.GetStr]::GetString(12850))" arguments="WindowsCleanup:" activationType="protocol"/>
 		<action content="" arguments="dismiss" activationType="system"/>
 	</actions>
 </toast>
@@ -8740,7 +8827,7 @@ function SoftwareDistributionTask
 				{
 					Write-Verbose -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line, $TaskUserAccount) -Verbose
 					Write-Error -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line, $TaskUserAccount) -ErrorAction SilentlyContinue
-					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 					return
 				}
@@ -9029,7 +9116,7 @@ function TempTask
 				{
 					Write-Verbose -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line, $TaskUserAccount) -Verbose
 					Write-Error -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line, $TaskUserAccount) -ErrorAction SilentlyContinue
-					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 					return
 				}
@@ -10591,7 +10678,7 @@ function BitmapImageNewContext
 					Write-Warning -Message $Localization.NoInternetConnection
 					Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 
-					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 				}
 			}
 		}
@@ -10682,7 +10769,7 @@ function RichTextDocumentNewContext
 					Write-Warning -Message $Localization.NoInternetConnection
 					Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 
-					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line) -ErrorAction SilentlyContinue
+					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 				}
 			}
 		}
@@ -10824,7 +10911,9 @@ function UpdateLGPEPolicies
 		Write-Verbose -Message ([string]($_.FriendlyName, '|', $_.MediaType, '|', $_.BusType)) -Verbose
 	}
 
-	Write-Verbose -Message $Localization.Patient -Verbose
+	Write-Information -MessageData "" -InformationAction Continue
+	# Extract the localized "Please wait..." string from shell32.dll
+	Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
 	Write-Verbose -Message $Localization.GPOUpdate -Verbose
 	Write-Verbose -Message HKLM -Verbose
 	Write-Information -MessageData "" -InformationAction Continue
@@ -11095,6 +11184,7 @@ public static void PostMessage()
 	[Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
 
 	# Telegram group
+	# Extract the localized "Open" string from shell32.dll
 	[xml]$ToastTemplate = @"
 <toast duration="Long" scenario="reminder">
 	<visual>
@@ -11109,7 +11199,7 @@ public static void PostMessage()
 	</visual>
 	<audio src="ms-winsoundevent:notification.default" />
 	<actions>
-		<action arguments="https://t.me/sophia_chat" content="$($Localization.Open)" activationType="protocol"/>
+		<action arguments="https://t.me/sophia_chat" content="$([WinAPI.GetStr]::GetString(12850))" activationType="protocol"/>
 		<action arguments="dismiss" content="" activationType="system"/>
 	</actions>
 </toast>
@@ -11122,6 +11212,7 @@ public static void PostMessage()
 	[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("Sophia").Show($ToastMessage)
 
 	# Telegram channel
+	# Extract the localized "Open" string from shell32.dll
 	[xml]$ToastTemplate = @"
 <toast duration="Long" scenario="reminder">
 	<visual>
@@ -11136,7 +11227,7 @@ public static void PostMessage()
 	</visual>
 	<audio src="ms-winsoundevent:notification.default" />
 	<actions>
-		<action arguments="https://t.me/sophianews" content="$($Localization.Open)" activationType="protocol"/>
+		<action arguments="https://t.me/sophianews" content="$([WinAPI.GetStr]::GetString(12850))" activationType="protocol"/>
 		<action arguments="dismiss" content="" activationType="system"/>
 	</actions>
 </toast>
@@ -11149,6 +11240,7 @@ public static void PostMessage()
 	[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("Sophia").Show($ToastMessage)
 
 	# Discord group
+	# Extract the localized "Open" string from shell32.dll
 	[xml]$ToastTemplate = @"
 <toast duration="Long" scenario="reminder">
 	<visual>
@@ -11163,7 +11255,7 @@ public static void PostMessage()
 	</visual>
 	<audio src="ms-winsoundevent:notification.default" />
 	<actions>
-		<action arguments="https://discord.gg/sSryhaEv79" content="$($Localization.Open)" activationType="protocol"/>
+		<action arguments="https://discord.gg/sSryhaEv79" content="$([WinAPI.GetStr]::GetString(12850))" activationType="protocol"/>
 		<action arguments="dismiss" content="" activationType="system"/>
 	</actions>
 </toast>
@@ -11191,9 +11283,10 @@ function Errors
 			}
 
 			[PSCustomObject]@{
-				$Localization.ErrorsLine    = $_.InvocationInfo.ScriptLineNumber
-				$Localization.ErrorsFile    = $ErrorInFile
-				$Localization.ErrorsMessage = $_.Exception.Message
+				$Localization.ErrorsLine              = $_.InvocationInfo.ScriptLineNumber
+				# Extract the localized "File" string from shell32.dll
+				"$([WinAPI.GetStr]::GetString(4130))" = $ErrorInFile
+				$Localization.ErrorsMessage           = $_.Exception.Message
 			}
 		} | Sort-Object -Property Line | Format-Table -AutoSize -Wrap | Out-String).Trim()
 	}

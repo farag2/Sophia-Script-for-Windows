@@ -2071,22 +2071,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 807,
-    "Region": "UWP apps",
-    "Control": "chk",
-    "Required": "false",
-    "Function": "CheckUWPAppsUpdates",
-    "Arg": {
-      "Zero": {
-        "Tag": ""
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "",
-    "LTSC2019": "false",
-    "LTSC2021": "false"
-  },
-  {
     "Id": 900,
     "Region": "Gaming",
     "Control": "cmb",
@@ -2129,7 +2113,7 @@
     "Region": "Gaming",
     "Control": "chk",
     "Required": "false",
-    "Function": "SetAppGraphicsPerformance",
+    "Function": "Set-AppGraphicsPerformance",
     "Arg": {
       "Zero": {
         "Tag": ""

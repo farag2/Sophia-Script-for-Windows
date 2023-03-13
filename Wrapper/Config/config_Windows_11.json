@@ -1756,20 +1756,6 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 806,
-    "Region": "UWP apps",
-    "Control": "chk",
-    "Required": "false",
-    "Function": "CheckUWPAppsUpdates",
-    "Arg": {
-      "Zero": {
-        "Tag": ""
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": ""
-  },
-  {
     "Id": 900,
     "Region": "Gaming",
     "Control": "cmb",
@@ -1808,7 +1794,7 @@
     "Region": "Gaming",
     "Control": "chk",
     "Required": "false",
-    "Function": "SetAppGraphicsPerformance",
+    "Function": "Set-AppGraphicsPerformance",
     "Arg": {
       "Zero": {
         "Tag": ""
