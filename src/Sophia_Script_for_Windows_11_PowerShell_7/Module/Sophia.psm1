@@ -6505,18 +6505,13 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			$Default
 		)
 
-		# There's a bug in Windows Terminal with double text in console
-		# https://github.com/microsoft/terminal/issues/14992
-		if ($env:WT_SESSION)
-		{
-			Clear-Host
-		}
-
 		Write-Information -MessageData $Title -InformationAction Continue
 		Write-Information -MessageData "" -InformationAction Continue
 
 		# Extract the localized "Skip" string from shell32.dll
 		$Menu += [WinAPI.GetStr]::GetString(16956)
+		# https://github.com/microsoft/terminal/issues/14992
+		[System.Console]::BufferHeight += $Menu.Count
 		$minY = [Console]::CursorTop
 		$y = [Math]::Max([Math]::Min($Default, $Menu.Count), 0)
 
