@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.16.1 | 6.4.1 — 14.03.2023
+
+* Code refactoring;
+* Fixed a bug in `ShowMenu` function when Windows Terminal console was overbuffered that broke interractive ShowMenu;
+  * Big thanks to [iNNOKENTIY21](https://forum.ru-board.com/profile.cgi?action=show&member=iNNOKENTIY21);
+  * <https://github.com/microsoft/terminal/issues/14992>
+* Fixed `IPv6Component` by switching to <https://ipify.org>
+* Removed `CheckUWPAppsUpdates` function and intergrated into code;
+* Renamed `SetUserShellFolderLocation` function into `Set-UserShellFolderLocation`;
+* Many small changes and improvements.
+
 ## 5.16.0 | 6.4.0 — 08.03.2023
 
 * Dropped support for `Windows 11 22000` & `Windows 10 21H2`;
