@@ -70,9 +70,9 @@ function Checks
 	{
 		$true
 		{
-			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 4010)
+			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 4131)
 			{
-				# Check whether the OS minor build version is 4010 minimum
+				# Check whether the OS minor build version is 4131 minimum
 				# https://docs.microsoft.com/en-us/windows/release-health/release-information
 				$Version = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
 				Write-Warning -Message ($Localization.UpdateWarning -f $Version)
@@ -150,7 +150,7 @@ function Checks
 
 	# Check whether the OS was infected by the Win 10 Tweaker's trojan
 	# https://win10tweaker.ru
-	if (Test-Path -Path "HKCU:\Software\Win 10 Tweaker")
+	if ((Test-Path -Path "HKCU:\Software\Win 10 Tweaker") -or (Test-Path -Path "${env:ProgramFiles(x86)}\Win 10 Tweakеr"))
 	{
 		Write-Warning -Message $Localization.Win10TweakerWarning
 		Start-Process -FilePath "https://youtu.be/na93MS-1EkM"
@@ -5616,7 +5616,15 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			$Default
 		)
 
+		# There's a bug in Windows Terminal with double text in console
+		# https://github.com/microsoft/terminal/issues/14992
+		if ($env:WT_SESSION)
+		{
+			Clear-Host
+		}
+
 		Write-Information -MessageData $Title -InformationAction Continue
+		Write-Information -MessageData "" -InformationAction Continue
 
 		# Extract the localized "Skip" string from shell32.dll
 		$Menu += [WinAPI.GetStr]::GetString(16956)
@@ -5632,11 +5640,11 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			{
 				if ($i -ne $y)
 				{
-					Write-Information -MessageData ('  {0}. {1}  ' -f ($i+1), $item) -InformationAction Continue
+					Write-Information -MessageData ('  {1}  ' -f ($i+1), $item) -InformationAction Continue
 				}
 				else
 				{
-					Write-Information -MessageData ('[ {0}. {1} ]' -f ($i+1), $item) -InformationAction Continue
+					Write-Information -MessageData ('[ {1} ]' -f ($i+1), $item) -InformationAction Continue
 				}
 				$i++
 			}

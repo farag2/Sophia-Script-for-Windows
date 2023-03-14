@@ -13,7 +13,7 @@
 	.NOTES
 	Supported Windows 10 version
 	Version: 21H2
-	Build: 19044.2604+
+	Build: 19044.2728+
 	Edition: Enterprise LTSC 2021
 	Architecture: x64
 
@@ -70,9 +70,9 @@ function Checks
 	{
 		$true
 		{
-			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 2604)
+			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 2728)
 			{
-				# Check whether the OS minor build version is 2604 minimum
+				# Check whether the OS minor build version is 2728 minimum
 				# https://docs.microsoft.com/en-us/windows/release-health/release-information
 				$Version = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
 				Write-Warning -Message ($Localization.UpdateWarning -f $Version)
@@ -150,7 +150,7 @@ function Checks
 
 	# Check whether the OS was infected by the Win 10 Tweaker's trojan
 	# https://win10tweaker.ru
-	if (Test-Path -Path "HKCU:\Software\Win 10 Tweaker")
+	if ((Test-Path -Path "HKCU:\Software\Win 10 Tweaker") -or (Test-Path -Path "${env:ProgramFiles(x86)}\Win 10 Tweakеr"))
 	{
 		Write-Warning -Message $Localization.Win10TweakerWarning
 		Start-Process -FilePath "https://youtu.be/na93MS-1EkM"
@@ -6003,7 +6003,15 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			$Default
 		)
 
+		# There's a bug in Windows Terminal with double text in console
+		# https://github.com/microsoft/terminal/issues/14992
+		if ($env:WT_SESSION)
+		{
+			Clear-Host
+		}
+
 		Write-Information -MessageData $Title -InformationAction Continue
+		Write-Information -MessageData "" -InformationAction Continue
 
 		# Extract the localized "Skip" string from shell32.dll
 		$Menu += [WinAPI.GetStr]::GetString(16956)
@@ -6019,11 +6027,11 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			{
 				if ($i -ne $y)
 				{
-					Write-Information -MessageData ('  {0}. {1}  ' -f ($i+1), $item) -InformationAction Continue
+					Write-Information -MessageData ('  {1}  ' -f ($i+1), $item) -InformationAction Continue
 				}
 				else
 				{
-					Write-Information -MessageData ('[ {0}. {1} ]' -f ($i+1), $item) -InformationAction Continue
+					Write-Information -MessageData ('[ {1} ]' -f ($i+1), $item) -InformationAction Continue
 				}
 				$i++
 			}
@@ -9156,35 +9164,6 @@ function PinToStart
 
 	process
 	{
-		# Extract strings from shell32.dll using its' number
-		# https://github.com/Disassembler0/Win10-Initial-Setup-Script/issues/8#issue-227159084
-		$Signature = @{
-			Namespace        = "WinAPI"
-			Name             = "GetStr"
-			Language         = "CSharp"
-			UsingNamespace   = "System.Text"
-			MemberDefinition = @"
-[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
-public static extern IntPtr GetModuleHandle(string lpModuleName);
-
-[DllImport("user32.dll", CharSet = CharSet.Auto)]
-internal static extern int LoadString(IntPtr hInstance, uint uID, StringBuilder lpBuffer, int nBufferMax);
-
-public static string GetString(uint strId)
-{
-	IntPtr intPtr = GetModuleHandle("shell32.dll");
-	StringBuilder sb = new StringBuilder(255);
-	LoadString(intPtr, strId, sb, sb.Capacity);
-	return sb.ToString();
-}
-"@
-		}
-
-		if (-not ("WinAPI.GetStr" -as [type]))
-		{
-			Add-Type @Signature
-		}
-
 		# Extract the localized "Devices and Printers" string from shell32.dll
 		$DevicesPrinters = [WinAPI.GetStr]::GetString(30493)
 

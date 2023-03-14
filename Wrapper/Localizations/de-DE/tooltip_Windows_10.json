@@ -43,7 +43,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Deaktiviert den Dienst \"Connected User Experiences and Telemetry\" (DiagTrack), und blockiert die Verbindung für den ausgehenden Verkehr des Unified Telemetry Client. Das Deaktivieren des Dienstes \"Benutzererfahrungen und Telemetrie im verbundenen Modus\" (DiagTrack) kann dazu führen, dass Sie keine Xbox-Erfolge mehr erhalten können"
+        "ToolTip": "Deaktiviert den Dienst \"Connected User Experiences and Telemetry\" (DiagTrack), und blockiert die Verbindung für den ausgehenden Verkehr des Unified Telemetry Client. Das Deaktivieren des Dienstes \"Benutzererfahrungen und Telemetrie im verbundenen Modus\" (DiagTrack) kann dazu führen, dass Sie keine Xbox-Erfolge mehr erhalten können, wirkt sich auf Feedback Hub aus"
       },
       "One": {
         "Tag": "Enable",

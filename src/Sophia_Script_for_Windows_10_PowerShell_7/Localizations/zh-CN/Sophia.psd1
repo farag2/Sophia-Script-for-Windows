@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = 该脚本仅支持Windows 10 x64
 UnsupportedOSBuild                        = \n该脚本支持Windows 10版本22H2/22H2+和更高版本
-UpdateWarning                             = \n安装了Windows 10累积更新： {0}. 支持的累积更新：2604及以上。运行Windows Update并再次尝试
+UpdateWarning                             = \n安装了Windows 10累积更新： {0}. 支持的累积更新：2728及以上。运行Windows Update并再次尝试
 UnsupportedLanguageMode                   = \nPowerShell会话在有限的语言模式下运行
 LoggedInUserNotAdmin                      = \n登录的用户没有管理员的权利
 UnsupportedPowerShell                     = \n你想通过PowerShell {0}.{1}运行脚本。在适当的PowerShell版本中运行该脚本

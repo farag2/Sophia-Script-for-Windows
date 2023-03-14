@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = \n该脚本支持Windows 11版本22H2和更高版本
-UpdateWarning                             = \n您的Windows 11构建: {0}.{1}。支持的构建: 22621.1344和更高版本。运行Windows Update并再次尝试
+UpdateWarning                             = \n您的Windows 11构建: {0}.{1}。支持的构建: 22621.1413和更高版本。运行Windows Update并再次尝试
 UnsupportedLanguageMode                   = \nPowerShell会话在有限的语言模式下运行
 LoggedInUserNotAdmin                      = \n登录的用户没有管理员的权利
 UnsupportedPowerShell                     = \n你想通过PowerShell {0}.{1}运行脚本。在适当的PowerShell版本中运行该脚本

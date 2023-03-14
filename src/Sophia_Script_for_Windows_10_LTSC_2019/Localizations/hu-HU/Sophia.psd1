@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = A szkript csak a Windows 10 64 bites verziót támogatja
 UnsupportedOSBuild                        = \nA szkript támogatja a Windows 10 Enterprise LTSC 2019 kiadást
-UpdateWarning                             = \nA Windows 10 összesített frissítése telepítve: {0}. Támogatott kumulatív frissítés: 4010 és magasabb verziószámok. Futtassa a Windows Update programot, és próbálja meg újra
+UpdateWarning                             = \nA Windows 10 összesített frissítése telepítve: {0}. Támogatott kumulatív frissítés: 4131 és magasabb verziószámok. Futtassa a Windows Update programot, és próbálja meg újra
 UnsupportedLanguageMode                   = \nA PowerShell munkamenet korlátozott nyelvi üzemmódban fut
 LoggedInUserNotAdmin                      = \nA bejelentkezett felhasználó nem rendelkezik admin jogokkal
 UnsupportedPowerShell                     = \nA PowerShell {0}.{1} segítségével próbálja futtatni a szkriptet. Futtassa a szkriptet a megfelelő PowerShell-verzióban
