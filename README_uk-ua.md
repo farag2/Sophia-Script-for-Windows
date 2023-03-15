@@ -170,11 +170,11 @@
 
 ### Автодоповнення <kbd>TAB</kbd>. Детальніше [тут](#як-запустити-певну-функціюї)
 
-![Image](./img/Autocomplete.gif)
+https://user-images.githubusercontent.com/10544660/225270281-908abad1-d125-4cae-a19b-2cf80d5d2751.mp4
 
 ### Програмна зміна розташування папок користувача за допомогою інтерактивного меню
 
-![Image](https://i.imgur.com/gJFAEOk.png)
+https://user-images.githubusercontent.com/10544660/225270532-8f0694d3-0b9e-44df-8a48-677212d62315.mp4
 
 ### Локалізовані назви UWP-пакетів
 
