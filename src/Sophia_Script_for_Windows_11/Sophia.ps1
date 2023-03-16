@@ -31,7 +31,7 @@
 	Editions: Home/Pro/Enterprise
 
 	.NOTES
-	To use the TAB completion for functions and their arguments dot source the Function.ps1 script first:
+	To use the TAB completion for functions and their arguments dot source the Functions.ps1 script first:
 		. .\Function.ps1 (with a dot at the beginning)
 	Read more in the Functions.ps1 file
 

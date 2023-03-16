@@ -4,10 +4,9 @@ UpdateWarning                             = \nВаш білд Windows 11: {0}.{1
 UnsupportedLanguageMode                   = \nСесія PowerShell працює в обмеженому режимі
 LoggedInUserNotAdmin                      = \nПоточний користувач, що увійшов, не має прав адміністратора
 UnsupportedPowerShell                     = \nВи намагаєтеся запустити скрипт в PowerShell {0}.{1}. Запустіть скрипт у відповідній версії PowerShell
-UnsupportedISE                            = \nСкрипт не підтримує роботу через Windows PowerShell ISE
+UnsupportedHost                           = \nСкрипт не підтримує роботу через {0}
 Win10TweakerWarning                       = \nВаша ОС, можливо, через бекдор в Win 10 Tweaker інфікована трояном. Детальніше: https://itnan.ru/post.php?c=1&p=557388
-SycnexWarning                             = \nСтабільність вашої ОС могла бути порушена використанням скрипту Windows10Debloater від Sycnex. З метою профілактики перевстановіть Windows
-Fs00Warning                               = \nСтабільність вашої ОС могла бути порушена використанням "Windows 10 Bloat Remover and Tweaker". З метою профілактики перевстановіть Windows
+TweakerWarning                            = \nСтабільність вашої ОС могла бути порушена використанням {0}. Про всяк випадок перевстановіть Windows
 bin                                       = \nУ папці bin відсутні файли. Будь ласка, повторно завантажте архів
 RebootPending                             = \nКомп'ютер очікує на перезавантаження
 UnsupportedRelease                        = \nВиявлено нову версію

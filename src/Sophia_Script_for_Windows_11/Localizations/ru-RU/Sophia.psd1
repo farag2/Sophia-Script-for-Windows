@@ -4,11 +4,10 @@ UpdateWarning                             = \nВаш билд Windows 11: {0}.{1
 UnsupportedLanguageMode                   = \nСессия PowerShell работает в ограниченном режиме
 LoggedInUserNotAdmin                      = \nТекущий вошедший пользователь не обладает правами администратора
 UnsupportedPowerShell                     = \nВы пытаетесь запустить скрипт в PowerShell {0}.{1}. Запустите скрипт в соответствующей версии PowerShell
-UnsupportedISE                            = \nСкрипт не поддерживает работу через Windows PowerShell ISE
-Win10TweakerWarning                       = \nВаша ОС, возможно, через бэкдор в Win 10 Tweaker была заражена трояном. Подробнее: https://itnan.ru/post.php?c=1&p=557388
-SycnexWarning                             = \nСтабильность Windows могла быть нарушена использованием скрипта Windows10Debloater от Sycnex. В целях профилактики переустановите ОС
-Fs00Warning                               = \nСтабильность Windows могла быть нарушена использованием "Windows 10 Bloat Remover and Tweaker". В целях профилактики переустановите ОС
-bin                                       = \nВ папке bin отсутствутствуют файлы. Пожалуйста, перекачайте архив
+UnsupportedHost                           = \nСкрипт не поддерживает работу через {0}
+Win10TweakerWarning                       = \nВаша ОС, возможно, через бэкдор в Win 10 Tweaker была заражена трояном
+TweakerWarning                            = \nСтабильность Windows могла быть нарушена использованием {0}. В целях профилактики переустановите ОС
+bin                                       = \nВ папке bin отсутствуют файлы. Пожалуйста, перекачайте архив
 RebootPending                             = \nКомпьютер ожидает перезагрузки
 UnsupportedRelease                        = \nОбнаружена новая версия
 CustomizationWarning                      = \nВы настроили все функции в пресет-файле {0} перед запуском Sophia Script?

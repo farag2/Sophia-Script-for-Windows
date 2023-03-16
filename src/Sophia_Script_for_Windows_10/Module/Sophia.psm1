@@ -145,45 +145,53 @@ function Checks
 		exit
 	}
 
-	# Check whether the script was run via PowerShell ISE
-	if ($Host.Name -match "ISE")
+	# Check whether the script was run in PowerShell ISE or VS Code
+	if (($Host.Name -match "ISE") -or ($env:TERM_PROGRAM -eq "vscode"))
 	{
-		Write-Warning -Message $Localization.UnsupportedISE
+		Write-Warning -Message ($Localization.UnsupportedHost -f $Host.Name.replace("Host", ""))
 		Start-Process -FilePath "https://t.me/sophia_chat"
 		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 		exit
 	}
 
-	# Check whether the OS was infected by the Win 10 Tweaker's trojan
-	# https://win10tweaker.ru
-	if ((Test-Path -Path "HKCU:\Software\Win 10 Tweaker") -or (Test-Path -Path "${env:ProgramFiles(x86)}\Win 10 Tweakеr"))
-	{
-		Write-Warning -Message $Localization.Win10TweakerWarning
-		Start-Process -FilePath "https://youtu.be/na93MS-1EkM"
-		Start-Process -FilePath "https://pikabu.ru/story/byekdor_v_win_10_tweaker_ili_sovremennyie_metodyi_borbyi_s_piratstvom_8227558"
-		Start-Process -FilePath "https://t.me/sophia_chat"
-		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
-		exit
+	# Check whether Windows was broken by 3rd party tweakers and trojans
+	$Tweakers = @{
+		# https://github.com/Sycnex/Windows10Debloater
+		Windows10Debloater  = "$env:SystemDrive\Temp\Windows10Debloater"
+		# https://github.com/Fs00/Win10BloatRemover
+		Win10BloatRemover   = "$env:TEMP\.net\Win10BloatRemover"
+		# https://github.com/arcadesdude/BRU
+		"Bloatware Removal" = "$env:SystemDrive\BRU\Bloatware-Removal*.log"
+		# https://www.youtube.com/GHOSTSPECTRE
+		"Ghost Toolbox"     = "$env:SystemRoot\System32\migwiz\dlmanifests\run.ghost.cmd"
+		# https://github.com/hellzerg/optimizer
+		Optimizer           = "$(Get-ItemPropertyValue -Path `"HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders`" -Name `"{374DE290-123F-4565-9164-39C4925E467B}`")\OptimizerDownloads"
+		# https://win10tweaker.ru
+		"Win 10 Tweaker"    = "HKCU:\Software\Win 10 Tweaker"
+		# https://forum.ru-board.com/topic.cgi?forum=5&topic=50519
+		"Modern Tweaker"    = "Registry::HKEY_CLASSES_ROOT\.exts\shell\open\command"
+		# https://boosterx.ru
+		BoosterX            = "$env:ProgramFiles\GameModeX\GameModeX.exe"
 	}
-
-	# Check whether Windows was destroyed by Windows10Debloater
-	# https://github.com/Sycnex/Windows10Debloater
-	if (Test-Path -Path $env:SystemDrive\Temp\Windows10Debloater)
+	foreach ($Tweaker in $Tweakers.Keys)
 	{
-		Write-Warning -Message $Localization.SycnexWarning
-		Start-Process -FilePath "https://t.me/sophia_chat"
-		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
-		exit
-	}
+		if (Test-Path -Path $Tweakers[$Tweaker])
+		{
+			if ($Tweakers[$Tweaker] -eq "HKCU:\Software\Win 10 Tweaker")
+			{
+				Write-Warning -Message $Localization.Win10TweakerWarning
+				Start-Process -FilePath "https://youtu.be/na93MS-1EkM"
+				Start-Process -FilePath "https://pikabu.ru/story/byekdor_v_win_10_tweaker_ili_sovremennyie_metodyi_borbyi_s_piratstvom_8227558"
+				Start-Process -FilePath "https://t.me/sophia_chat"
+				Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+				exit
+			}
 
-	# Check whether Windows was destroyed by Win10BloatRemover
-	# https://github.com/Fs00/Win10BloatRemover
-	if (Test-Path -Path $env:TEMP\.net\Win10BloatRemover)
-	{
-		Write-Warning -Message $Localization.Fs00Warning
-		Start-Process -FilePath "https://t.me/sophia_chat"
-		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
-		exit
+			Write-Warning -Message ($Localization.TweakerWarning -f $Tweaker)
+			Start-Process -FilePath "https://t.me/sophia_chat"
+			Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+			exit
+		}
 	}
 
 	# Check whether LGPO.exe exists in the bin folder
