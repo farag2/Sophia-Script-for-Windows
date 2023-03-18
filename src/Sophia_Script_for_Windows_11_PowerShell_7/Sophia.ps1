@@ -165,11 +165,11 @@ FeedbackFrequency -Never
 # FeedbackFrequency -Automatically
 
 # Turn off the diagnostics tracking scheduled tasks
-# Отключить задачи диагностического отслеживания
+# Отключить задания диагностического отслеживания
 ScheduledTasks -Disable
 
 # Turn on the diagnostics tracking scheduled tasks (default value)
-# Включить задачи диагностического отслеживания (значение по умолчанию)
+# Включить задания диагностического отслеживания (значение по умолчанию)
 # ScheduledTasks -Enable
 
 # Do not use sign-in info to automatically finish setting up device after an update
@@ -325,14 +325,6 @@ SnapAssist -Disable
 # When I snap a window, show what I can snap next to it (default value)
 # При прикреплении окна показывать, что можно прикрепить рядом с ним (значение по умолчанию)
 # SnapAssist -Enable
-
-# Show snap layouts when I hover over a windows's maximaze button (default value)
-# Показывать макеты прикрепления, частью которых является приложение, при наведении указателя мыши на кнопки панели задач (значение по умолчанию)
-SnapAssistFlyout -Enable
-
-# Hide snap layouts when I hover over a windows's maximaze button
-# Не показывать макеты прикрепления, частью которых является приложение, при наведении указателя мыши на кнопки панели задач
-# SnapAssistFlyout -Disable
 
 # Show the file transfer dialog box in the detailed mode
 # Отображать диалоговое окно передачи файлов в развернутом виде
@@ -585,7 +577,7 @@ Hibernation -Disable
 # TempFolder -SystemDrive
 
 # Change %TEMP% environment variable path to %LOCALAPPDATA%\Temp (default value)
-# Изменить путь переменной среды для %TEMP% на LOCALAPPDATA%\Temp (значение по умолчанию)
+# Изменить путь переменной среды для %TEMP% на %LOCALAPPDATA%\Temp (значение по умолчанию)
 # TempFolder -Default
 
 # Disable the Windows 260 characters path limit
@@ -1098,39 +1090,39 @@ GPUScheduling -Enable
 	Create the "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates
 	A native interactive toast notification pops up every 30 days. The task runs every 30 days
 
-	Создать задачу "Windows Cleanup" по очистке неиспользуемых файлов и обновлений Windows в Планировщике заданий
-	Нативный интерактивный тост всплывает каждые 30 дней. Задача выполняется каждые 30 дней
+	Создать задание "Windows Cleanup" по очистке неиспользуемых файлов и обновлений Windows в Планировщике заданий
+	Нативный интерактивный тост всплывает каждые 30 дней. Задание выполняется каждые 30 дней
 #>
 CleanupTask -Register
 
 # Delete the "Windows Cleanup" and "Windows Cleanup Notification" scheduled tasks for cleaning up Windows unused files and updates
-# Удалить задачи "Windows Cleanup" и "Windows Cleanup Notification" по очистке неиспользуемых файлов и обновлений Windows из Планировщика заданий
+# Удалить задания "Windows Cleanup" и "Windows Cleanup Notification" по очистке неиспользуемых файлов и обновлений Windows из Планировщика заданий
 # CleanupTask -Delete
 
 <#
 	Create the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
 	The task will wait until the Windows Updates service finishes running. The task runs every 90 days
 
-	Создать задачу "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download в Планировщике заданий
-	Задача будет ждать, пока служба обновлений Windows не закончит работу. Задача выполняется каждые 90 дней
+	Создать задание "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download в Планировщике заданий
+	Задание будет ждать, пока служба обновлений Windows не закончит работу. Задание выполняется каждые 90 дней
 #>
 SoftwareDistributionTask -Register
 
 # Delete the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
-# Удалить задачу "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download из Планировщика заданий
+# Удалить задание "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download из Планировщика заданий
 # SoftwareDistributionTask -Delete
 
 <#
 	Create the "Temp" scheduled task for cleaning up the %TEMP% folder
 	Only files older than one day will be deleted. The task runs every 60 days
 
-	Создать задачу "Temp" в Планировщике заданий по очистке папки %TEMP%
-	Удаляться будут только файлы старше одного дня. Задача выполняется каждые 60 дней
+	Создать задание "Temp" в Планировщике заданий по очистке папки %TEMP%
+	Удаляться будут только файлы старше одного дня. Задание выполняется каждые 60 дней
 #>
 TempTask -Register
 
 # Delete the "Temp" scheduled task for cleaning up the %TEMP% folder
-# Удалить задачу "Temp" по очистке папки %TEMP% из Планировщика заданий
+# Удалить задание "Temp" по очистке папки %TEMP% из Планировщика заданий
 # TempTask -Delete
 #endregion Scheduled tasks
 
@@ -1258,6 +1250,14 @@ DNSoverHTTPS -Enable -PrimaryDNS 1.0.0.1 -SecondaryDNS 1.1.1.1
 # Disable DNS-over-HTTPS for IPv4 (default value)
 # Выключить DNS-over-HTTPS для IPv4 (значение по умолчанию)
 # DNSoverHTTPS -Disable
+
+# Enable Local Security Authority protection to prevent code injection
+# Включить защиту локальной системы безопасности, чтобы предотвратить внедрение кода
+# LocalSecurityAuthority -Enable
+
+# Disable Local Security Authority protection (default value)
+# Выключить защиту локальной системы безопасности (значение по умолчанию)
+# LocalSecurityAuthority -Disable
 #endregion Microsoft Defender & Security
 
 #region Context menu

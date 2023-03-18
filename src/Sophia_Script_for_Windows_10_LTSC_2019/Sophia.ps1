@@ -152,11 +152,11 @@ FeedbackFrequency -Never
 # FeedbackFrequency -Automatically
 
 # Turn off the diagnostics tracking scheduled tasks
-# Отключить задачи диагностического отслеживания
+# Отключить задания диагностического отслеживания
 ScheduledTasks -Disable
 
 # Turn on the diagnostics tracking scheduled tasks (default value)
-# Включить задачи диагностического отслеживания (значение по умолчанию)
+# Включить задания диагностического отслеживания (значение по умолчанию)
 # ScheduledTasks -Enable
 
 # Do not use sign-in info to automatically finish setting up device and reopen apps after an update or restart
@@ -487,7 +487,7 @@ Hibernation -Disable
 # TempFolder -SystemDrive
 
 # Change %TEMP% environment variable path to %LOCALAPPDATA%\Temp (default value)
-# Изменить путь переменной среды для %TEMP% на LOCALAPPDATA%\Temp (значение по умолчанию)
+# Изменить путь переменной среды для %TEMP% на %LOCALAPPDATA%\Temp (значение по умолчанию)
 # TempFolder -Default
 
 # Disable the Windows 260 characters path limit
@@ -837,39 +837,39 @@ Set-AppGraphicsPerformance
 	Create the "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates
 	A native interactive toast notification pops up every 30 days. The task runs every 30 days
 
-	Создать задачу "Windows Cleanup" по очистке неиспользуемых файлов и обновлений Windows в Планировщике заданий
-	Нативный интерактивный тост всплывает каждые 30 дней. Задача выполняется каждые 30 дней
+	Создать задание "Windows Cleanup" по очистке неиспользуемых файлов и обновлений Windows в Планировщике заданий
+	Нативный интерактивный тост всплывает каждые 30 дней. Задание выполняется каждые 30 дней
 #>
 CleanupTask -Register
 
 # Delete the "Windows Cleanup" and "Windows Cleanup Notification" scheduled tasks for cleaning up Windows unused files and updates
-# Удалить задачи "Windows Cleanup" и "Windows Cleanup Notification" по очистке неиспользуемых файлов и обновлений Windows из Планировщика заданий
+# Удалить задания "Windows Cleanup" и "Windows Cleanup Notification" по очистке неиспользуемых файлов и обновлений Windows из Планировщика заданий
 # CleanupTask -Delete
 
 <#
 	Create the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
 	The task will wait until the Windows Updates service finishes running. The task runs every 90 days
 
-	Создать задачу "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download в Планировщике заданий
-	Задача будет ждать, пока служба обновлений Windows не закончит работу. Задача выполняется каждые 90 дней
+	Создать задание "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download в Планировщике заданий
+	Задание будет ждать, пока служба обновлений Windows не закончит работу. Задание выполняется каждые 90 дней
 #>
 SoftwareDistributionTask -Register
 
 # Delete the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
-# Удалить задачу "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download из Планировщика заданий
+# Удалить задание "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download из Планировщика заданий
 # SoftwareDistributionTask -Delete
 
 <#
 	Create the "Temp" scheduled task for cleaning up the %TEMP% folder
 	Only files older than one day will be deleted. The task runs every 60 days
 
-	Создать задачу "Temp" в Планировщике заданий по очистке папки %TEMP%
-	Удаляться будут только файлы старше одного дня. Задача выполняется каждые 60 дней
+	Создать задание "Temp" в Планировщике заданий по очистке папки %TEMP%
+	Удаляться будут только файлы старше одного дня. Задание выполняется каждые 60 дней
 #>
 TempTask -Register
 
 # Delete the "Temp" scheduled task for cleaning up the %TEMP% folder
-# Удалить задачу "Temp" по очистке папки %TEMP% из Планировщика заданий
+# Удалить задание "Temp" по очистке папки %TEMP% из Планировщика заданий
 # TempTask -Delete
 #endregion Scheduled tasks
 

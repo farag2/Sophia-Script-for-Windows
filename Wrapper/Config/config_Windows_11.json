@@ -440,23 +440,6 @@
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
-    "Function": "SnapAssistFlyout",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable"
-      },
-      "One": {
-        "Tag": "Disable"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "Zero"
-  },
-  {
-    "Id": 309,
-    "Region": "UI & Personalization",
-    "Control": "cmb",
-    "Required": "false",
     "Function": "SnapAssist",
     "Arg": {
       "Zero": {
@@ -470,7 +453,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 310,
+    "Id": 309,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -487,7 +470,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 311,
+    "Id": 310,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -504,7 +487,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 312,
+    "Id": 311,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -521,7 +504,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 313,
+    "Id": 312,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -538,7 +521,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 314,
+    "Id": 313,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -555,7 +538,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 315,
+    "Id": 314,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -578,7 +561,7 @@
     "WindowsDefault": "Three"
   },
   {
-    "Id": 316,
+    "Id": 315,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -595,7 +578,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 317,
+    "Id": 316,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -612,7 +595,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 318,
+    "Id": 317,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -629,7 +612,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 319,
+    "Id": 318,
     "Region": "UI & Personalization",
     "Control": "chk",
     "Required": "false",
@@ -646,7 +629,7 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 320,
+    "Id": 319,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -666,7 +649,7 @@
     "WindowsDefault": "Two"
   },
   {
-    "Id": 321,
+    "Id": 320,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -683,7 +666,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 322,
+    "Id": 321,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -700,7 +683,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 323,
+    "Id": 322,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -717,7 +700,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 324,
+    "Id": 323,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -734,7 +717,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 325,
+    "Id": 324,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -751,7 +734,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 326,
+    "Id": 325,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -768,7 +751,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 327,
+    "Id": 326,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -785,7 +768,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 328,
+    "Id": 327,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -802,7 +785,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 329,
+    "Id": 328,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -819,7 +802,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 330,
+    "Id": 329,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -839,7 +822,7 @@
     "WindowsDefault": "Zero"
   },
   {
-    "Id": 331,
+    "Id": 330,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -856,7 +839,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 332,
+    "Id": 331,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -2092,6 +2075,23 @@
     "Control": "cmb",
     "Required": "false",
     "Function": "DNSoverHTTPS",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One"
+  },
+  {
+    "Id": 1114,
+    "Region": "Microsoft Defender & Security",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "LocalSecurityAuthority",
     "Arg": {
       "Zero": {
         "Tag": "Enable"

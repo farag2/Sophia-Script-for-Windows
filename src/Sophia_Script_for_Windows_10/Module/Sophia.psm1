@@ -14483,7 +14483,7 @@ function UpdateLGPEPolicies
 		return
 	}
 
-	Get-Partition | Where-Object -FilterScript{$_. DriveLetter -eq "C"} | Get-Disk | Get-PhysicalDisk | ForEach-Object -Process {
+	Get-Partition | Where-Object -FilterScript {$_.DriveLetter -eq $([System.Environment]::ExpandEnvironmentVariables($env:SystemDrive).Replace(":", ""))} | Get-Disk | Get-PhysicalDisk | ForEach-Object -Process {
 		Write-Verbose -Message ([string]($_.FriendlyName, '|', $_.MediaType, '|', $_.BusType)) -Verbose
 	}
 

@@ -2386,58 +2386,6 @@ function SnapAssist
 
 <#
 	.SYNOPSIS
-	Snap layouts
-
-	.PARAMETER Enable
-	Show snap layouts when I hover over a windows's maximaze button
-
-	.PARAMETER Disable
-	Hide snap layouts when I hover over a windows's maximaze button
-
-	.EXAMPLE
-	SnapAssistFlyout -Enable
-
-	.EXAMPLE
-	SnapAssistFlyout -Disable
-
-	.NOTES
-	Current user
-#>
-function SnapAssistFlyout
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Enable"
-		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name EnableSnapAssistFlyout -PropertyType DWord -Value 1 -Force
-		}
-		"Disable"
-		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name EnableSnapAssistFlyout -PropertyType DWord -Value 0 -Force
-		}
-	}
-}
-
-
-<#
-	.SYNOPSIS
 	The file transfer dialog box mode
 
 	.PARAMETER Detailed
@@ -13033,6 +12981,78 @@ function DNSoverHTTPS
 	Clear-DnsClientCache
 	Register-DnsClient
 }
+
+<#
+	.SYNOPSIS
+	Local Security Authority
+
+	.PARAMETER Enable
+	Enable Local Security Authority to prevent code injection
+
+	.PARAMETER Disable
+	Disable Local Security Authority
+
+	.EXAMPLE
+	LocalSecurityAuthority -Enable
+
+	.EXAMPLE
+	LocalSecurityAuthority -Disable
+
+	.NOTES
+	Machine-wide
+#>
+function LocalSecurityAuthority
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Enable"
+		{
+			# Checking whether x86 virtualization is enabled in the firmware
+			if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled)
+			{
+				New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Lsa -Name RunAsPPL -PropertyType DWord -Value 2 -Force
+				New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Lsa -Name RunAsPPLBoot -PropertyType DWord -Value 2 -Force
+			}
+			else
+			{
+				try
+				{
+					# Determining whether Hyper-V is enabled
+					if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
+					{
+						New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Lsa -Name RunAsPPL -PropertyType DWord -Value 2 -Force
+						New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Lsa -Name RunAsPPLBoot -PropertyType DWord -Value 2 -Force
+					}
+				}
+				catch [System.Exception]
+				{
+					Write-Error -Message $Localization.EnableHardwareVT -ErrorAction SilentlyContinue
+				}
+			}
+		}
+		"Disable"
+		{
+			Remove-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Lsa -Name RunAsPPL, RunAsPPLBoot -Force -ErrorAction Ignore
+		}
+	}
+}
 #endregion Microsoft Defender & Security
 
 #region Context menu
@@ -13930,7 +13950,7 @@ function UpdateLGPEPolicies
 		return
 	}
 
-	Get-Partition | Where-Object -FilterScript{$_. DriveLetter -eq "C"} | Get-Disk | Get-PhysicalDisk | ForEach-Object -Process {
+	Get-Partition | Where-Object -FilterScript {$_.DriveLetter -eq $([System.Environment]::ExpandEnvironmentVariables($env:SystemDrive).Replace(":", ""))} | Get-Disk | Get-PhysicalDisk | ForEach-Object -Process {
 		Write-Verbose -Message ([string]($_.FriendlyName, '|', $_.MediaType, '|', $_.BusType)) -Verbose
 	}
 
