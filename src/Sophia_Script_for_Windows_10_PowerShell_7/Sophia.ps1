@@ -1049,17 +1049,17 @@ AppSuggestions -Hide
 # AppSuggestions -Show
 
 <#
-	Pin to Start the following shortcuts: Control Panel, Devices and Printers, PowerShell
-	Valid shortcuts values: ControlPanel, DevicesPrinters and PowerShell
+	Pin to Start the following shortcuts: Control Panel, Devices and Printers
+	Valid shortcuts values: ControlPanel and DevicesPrinters
 
-	Закрепить на начальном экране следующие ярлыки: Панель управления, Устройства и принтеры, PowerShell
-	Валидные значения ярлыков: ControlPanel, DevicesPrinters, PowerShell
+	Закрепить на начальном экране следующие ярлыки: Панель управления, Устройства и принтеры
+	Валидные значения ярлыков: ControlPanel и DevicesPrinters
 #>
-PinToStart -Tiles ControlPanel, DevicesPrinters, PowerShell
+PinToStart -Tiles ControlPanel, DevicesPrinters
 
 # Unpin all tiles first and pin necessary ones
 # Открепить все ярлыки сначала и закрепить необходимые
-# PinToStart -UnpinAll -Tiles ControlPanel, DevicesPrinters, PowerShell
+# PinToStart -UnpinAll -Tiles ControlPanel, DevicesPrinters
 
 # Unpin all the Start tiles
 # Открепить все ярлыки от начального экрана

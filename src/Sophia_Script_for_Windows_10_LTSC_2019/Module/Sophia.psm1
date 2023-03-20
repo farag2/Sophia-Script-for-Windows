@@ -527,7 +527,7 @@ public static string GetString(uint strId)
 		Get-Service -Name SysMain | Set-Service -StartupType Automatic
 		Get-Service -Name SysMain | Start-Service
 
-		Start-Process -FileName "https://www.outsidethebox.ms/19318/"
+		Start-Process -FilePath "https://www.outsidethebox.ms/19318/"
 	}
 
 	# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
