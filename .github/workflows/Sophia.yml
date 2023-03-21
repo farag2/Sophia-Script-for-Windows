@@ -64,11 +64,11 @@ jobs:
           }
           $Penultimate = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 1
 
-          # https://en.wikipedia.org/wiki/Percent-encoding
-          $Release = (Get-Content -Path ReleaseNotesTemplate.md -Encoding utf8 -Raw).replace("%", "%25").replace("`n", "%0A").replace("`r", "%0D").replace("NewVersion", "${{ github.ref_name }}").replace("OldVersion", $Penultimate)
+          # No need to replace special characters with percent-encoding ones
+          (Get-Content -Path ReleaseNotesTemplate.md -Encoding utf8 -Raw).replace("NewVersion", "${{ github.ref_name }}").replace("OldVersion", $Penultimate) | Set-Content -Path ReleaseNotesTemplate.md -Encoding utf8 -Force
 
           # https://trstringer.com/github-actions-multiline-strings/
-          echo "::set-output name=RELEASE_BODY::$Release"
+          Add-Content -Path $env:GITHUB_OUTPUT -Value "ReleaseBody=ReleaseNotesTemplate.md"
 
           $ReleaseName = Get-Date -f "dd.MM.yyyy"
           echo "RELEASE_NAME=$ReleaseName" >> $env:GITHUB_ENV
@@ -81,4 +81,4 @@ jobs:
           files: |
             Sophia*.zip
             SHA256SUM
-          body: ${{ steps.read_release.outputs.RELEASE_BODY }}
+          body_path: ${{ steps.read_release.outputs.ReleaseBody }}
