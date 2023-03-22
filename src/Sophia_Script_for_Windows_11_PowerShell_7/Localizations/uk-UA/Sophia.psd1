@@ -1,5 +1,5 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedOSBuild                        = \nСкрипт підтримує тільки Windows 11 22H2 та вище
+UnsupportedOSBuild                        = \nСкрипт підтримує Windows 11 22H2+
 UpdateWarning                             = \nВаш білд Windows 11: {0}.{1}. Підтримувані збірки: 22621.1413 та вище. Запустіть Windows Update і повторіть спробу
 UnsupportedLanguageMode                   = \nСесія PowerShell працює в обмеженому режимі
 LoggedInUserNotAdmin                      = \nПоточний користувач, що увійшов, не має прав адміністратора

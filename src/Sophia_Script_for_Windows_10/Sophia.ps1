@@ -378,10 +378,6 @@ TaskbarSearch -Hide
 # Показать поле поиска на панели задач (значение по умолчанию)
 # TaskbarSearch -SearchBox
 
-# Hide the Task View button on the taskbar
-# Скрыть кнопку Просмотра задач
-TaskViewButton -Hide
-
 # Hide search highlights
 # Скрыть главное в поиске
 SearchHighlights -Hide
@@ -389,6 +385,10 @@ SearchHighlights -Hide
 # Show search highlights (default value)
 # Показать главное в поиске (значение по умолчанию)
 # SearchHighlights -Show
+
+# Hide the Task View button on the taskbar
+# Скрыть кнопку Просмотра задач
+TaskViewButton -Hide
 
 # Show the Task View button on the taskbar (default value)
 # Отобразить кнопку Просмотра задач (значение по умолчанию)

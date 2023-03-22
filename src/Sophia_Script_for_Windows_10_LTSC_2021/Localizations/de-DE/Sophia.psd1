@@ -1,5 +1,5 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedOSBitness                      = Das Skript unterstützt nur Windows 10 x64
+UnsupportedOSBitness                      = Das Skript unterstützt nur 64-Bit-Windows
 UnsupportedOSBuild                        = \nDas Skript unterstützt Windows 10 Enterprise LTSC 2021
 UpdateWarning                             = \nDas kumulative Windows 10-Update wurde installiert: {0}. Unterstütztes kumulatives Update: 2728 und höher. Führen Sie Windows Update aus und versuchen Sie es erneut
 UnsupportedLanguageMode                   = \nDie PowerShell-Sitzung wird in einem eingeschränkten Sprachmodus ausgeführt

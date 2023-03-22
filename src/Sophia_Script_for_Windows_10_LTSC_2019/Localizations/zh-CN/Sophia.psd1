@@ -1,5 +1,5 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedOSBitness                      = 该脚本仅支持Windows 10 x64
+UnsupportedOSBitness                      = 该脚本仅支持64位Windows
 UnsupportedOSBuild                        = \n该脚本支持Windows 10版本Enterprise LTSC 2019
 UpdateWarning                             = \n安装了Windows 10累积更新：{0}. 支持的累积更新：4131及以上。运行Windows Update并再次尝试
 UnsupportedLanguageMode                   = \nPowerShell会话在有限的语言模式下运行
