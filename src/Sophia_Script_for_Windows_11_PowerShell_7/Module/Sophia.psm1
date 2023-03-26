@@ -266,6 +266,8 @@ function Checks
 		"Defender Control"  = "$env:APPDATA\Defender Control"
 		# https://forum.ru-board.com/topic.cgi?forum=5&topic=14285&start=260#12
 		"Defender Switch"   = "$env:ProgramData\DSW"
+		# https://revi.cc/revios/download
+		"Revision Tool"     = "${env:ProgramFiles(x86)}\Revision Tool"
 	}
 	foreach ($Tweaker in $Tweakers.Keys)
 	{
@@ -286,6 +288,15 @@ function Checks
 			Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 			exit
 		}
+	}
+
+	# Flibustier custom Windows image
+	if (Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\.NETFramework\Performance -Name *flibustier)
+	{
+		Write-Warning -Message ($Localization.TweakerWarning -f "flblauncher")
+		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+		exit
 	}
 
 	# Check whether all necessary files exist in the bin folder
@@ -628,7 +639,8 @@ public static string GetString(uint strId)
 	# Enable back the SysMain service if it was disabled by harmful tweakers
 	if ((Get-Service -Name SysMain).Status -eq "Stopped")
 	{
-		Get-Service -Name SysMain | Set-Service -StartupType Automatic | Start-Service
+		Get-Service -Name SysMain | Set-Service -StartupType Automatic
+		Get-Service -Name SysMain | Start-Service
 
 		Start-Process -FilePath "https://www.outsidethebox.ms/19318/"
 	}
@@ -820,13 +832,54 @@ function DiagTrackService
 		$Enable
 	)
 
+	# Revert back removed or commented out "Checks" functions
+	# Get the name of a preset (e.g Sophia.ps1) regardless it was named
+	$PresetName = ((Get-PSCallStack).Position | Where-Object -FilterScript {$_.File -match ".ps1"}).File
+	if (Select-String -Path $PresetName -Pattern Checks | Select-String -Pattern "{Checks}", "The mandatory checks" -NotMatch)
+	{
+		# The string exists and is commented
+		if ((Select-String -Path $PresetName -Pattern Checks | Select-String -Pattern "{Checks}", "The mandatory checks" -NotMatch).Line.StartsWith("#") -eq $true)
+		{
+			$Host.UI.RawUI.WindowTitle = "Checks | $($PresetName)"
+
+			$ReadFile = Get-Content -Path $PresetName -Encoding UTF8
+			# Calculate the string number to uncomment "Checks -Warning"
+			$LineNumber = (Select-String -Path $PresetName -Pattern Checks | Select-String -Pattern "{Checks}", "The mandatory checks" -NotMatch).LineNumber
+			# Get date from the required line to replace it with "Checks -Warning"
+			$RequiredLine = (Get-Content -Path $PresetName -Encoding UTF8) | Where-Object -FilterScript {$_.ReadCount -match $LineNumber}
+			(Get-Content -Path $PresetName -Encoding UTF8).Replace($RequiredLine, "Checks -Warning") | Set-Content -Path $PresetName -Encoding UTF8 -Force
+
+			Start-Process -FilePath "https://t.me/sophia_chat"
+			Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+
+			exit
+		}
+	}
+	else
+	{
+		$Host.UI.RawUI.WindowTitle = "Checks | $($PresetName)"
+
+		$ReadFile = Get-Content -Path $PresetName -Encoding UTF8
+		# Calculate the string number to add after "Checks -Warning"
+		$LineNumber = (Select-String -Path $PresetName -Pattern Import-LocalizedData).LineNumber
+		# Array of a new file: content before $LineNumber (including $LineNumber), new added string, the rest data of file
+		$UpdatedFile = @($ReadFile[0..($LineNumber - 1)], "`nChecks -Warning", $ReadFile[$LineNumber..($ReadFile.Length + 1)])
+		Set-Content -Path $PresetName -Value $UpdatedFile -Encoding UTF8 -Force
+
+		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+
+		exit
+	}
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Disable"
 		{
 			# Connected User Experiences and Telemetry
 			# Disabling the "Connected User Experiences and Telemetry" service (DiagTrack) can cause you not being able to get Xbox achievements anymore and affects Feedback Hub
-			Get-Service -Name DiagTrack | Stop-Service -Force | Set-Service -StartupType Disabled
+			Get-Service -Name DiagTrack | Stop-Service -Force
+			Get-Service -Name DiagTrack | Set-Service -StartupType Disabled
 
 			# Block connection for the Unified Telemetry Client Outbound Traffic
 			Get-NetFirewallRule -Group DiagTrack | Set-NetFirewallRule -Enabled False -Action Block
@@ -834,7 +887,8 @@ function DiagTrackService
 		"Enable"
 		{
 			# Connected User Experiences and Telemetry
-			Get-Service -Name DiagTrack | Set-Service -StartupType Automatic | Start-Service
+			Get-Service -Name DiagTrack | Set-Service -StartupType Automatic
+			Get-Service -Name DiagTrack | Start-Service
 
 			# Allow connection for the Unified Telemetry Client Outbound Traffic
 			Get-NetFirewallRule -Group DiagTrack | Set-NetFirewallRule -Enabled True -Action Allow
@@ -2923,6 +2977,9 @@ function UnpinTaskbarShortcuts
 		$Shortcuts
 	)
 
+	# Extract the localized "Unpin from taskbar" string from shell32.dll
+	$LocalizedString = [WinAPI.GetStr]::GetString(5387)
+
 	foreach ($Shortcut in $Shortcuts)
 	{
 		switch ($Shortcut)
@@ -2935,7 +2992,7 @@ function UnpinTaskbarShortcuts
 					$Shell = (New-Object -ComObject Shell.Application).NameSpace("$env:AppData\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar")
 					$Shortcut = $Shell.ParseName("Microsoft Edge.lnk")
 					# Extract the localized "Unpin from taskbar" string from shell32.dll
-					$Shortcut.Verbs() | Where-Object -FilterScript {$_.Name -eq [WinAPI.GetStr]::GetString(5387)} | ForEach-Object -Process {$_.DoIt()}
+					$Shortcut.Verbs() | Where-Object -FilterScript {$_.Name -eq "$([WinAPI.GetStr]::GetString(5387))"} | ForEach-Object -Process {$_.DoIt()}
 				}
 			}
 			Store
@@ -2946,7 +3003,7 @@ function UnpinTaskbarShortcuts
 					Start-Job -ScriptBlock {
 						$Apps = (New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
 						# Extract the localized "Unpin from taskbar" string from shell32.dll
-						($Apps | Where-Object -FilterScript {$_.Name -eq "Microsoft Store"}).Verbs() | Where-Object -FilterScript {$_.Name -eq [WinAPI.GetStr]::GetString(5387)} | ForEach-Object -Process {$_.DoIt()}
+						($Apps | Where-Object -FilterScript {$_.Name -eq "Microsoft Store"}).Verbs() | Where-Object -FilterScript {$_.Name -eq $using:LocalizedString} | ForEach-Object -Process {$_.DoIt()}
 					} | Receive-Job -Wait -AutoRemoveJob
 				}
 			}
@@ -7338,10 +7395,10 @@ function WinPrtScrFolder
 			if ($PresetName)
 			{
 				# Check whether a preset contains the "OneDrive -Uninstall" string uncommented out
-				if (Get-Content -Path $PresetName.File -Encoding UTF8 -Force | Select-String -SimpleMatch "OneDrive -Uninstall")
+				if (Select-String -Path $PresetName.File -Pattern "OneDrive -Uninstall" -SimpleMatch)
 				{
 					# The string exists and is commented
-					$IsOneDriveToUninstall = (Get-Content -Path $PresetName.File -Encoding UTF8 -Force | Select-String -SimpleMatch "OneDrive -Uninstall").Line.StartsWith("#") -eq $false
+					$IsOneDriveToUninstall = (Select-String -Path $PresetName.File -Pattern "OneDrive -Uninstall" -SimpleMatch).Line.StartsWith("#") -eq $false
 				}
 				else
 				{
@@ -9490,7 +9547,7 @@ function Install-WSL
 	[System.Console]::OutputEncoding = [System.Text.Encoding]::Unicode
 
 	$wsl = wsl --list --online
-	# We need to get the string number where the "FRIENDLY NAME" header begins to truncate all other unnecessary strings in the beginning
+	# Calculate the string number where the "FRIENDLY NAME" header begins to truncate all other unnecessary strings in the beginning
 	$LineNumber = ($wsl | Select-String -Pattern "FRIENDLY NAME" -CaseSensitive).LineNumber
 	# Remove first strings in output from the first to the $LineNumber
 	$Distros = ($wsl).Replace("  ", "").Replace("* ", "")[($LineNumber)..(($wsl).Count)] | ForEach-Object -Process {
