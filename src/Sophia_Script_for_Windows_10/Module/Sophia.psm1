@@ -540,6 +540,90 @@ public static string GetString(uint strId)
 		Add-Type @Signature
 	}
 
+	# Enable back the SysMain service if it was disabled by harmful tweakers
+	if ((Get-Service -Name SysMain).Status -eq "Stopped")
+	{
+		Get-Service -Name SysMain | Set-Service -StartupType Automatic
+		Get-Service -Name SysMain | Start-Service
+
+		Start-Process -FilePath "https://www.outsidethebox.ms/19318/"
+	}
+
+	# Automatically manage paging file size for all drives
+	if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).AutomaticManagedPageFile)
+	{
+		Get-CimInstance -ClassName CIM_ComputerSystem | Set-CimInstance -Property @{AutomaticManagedPageFile = $true}
+	}
+
+	# Check if Microsoft Edge as being a system component was removed by harmful tweakers
+	if (Test-Path -Path "${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe")
+	{
+		return
+	}
+	else
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		# Extract the localized "Please wait..." string from shell32.dll
+		Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
+
+		try
+		{
+			# Check the internet connection
+			$Parameters = @{
+				Uri              = "https://www.google.com"
+				Method           = "Head"
+				DisableKeepAlive = $true
+				UseBasicParsing  = $true
+			}
+			if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+			{
+				return
+			}
+
+			try
+			{
+				# Download Microsoft Edge Stable x64
+				$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+				$Parameters = @{
+					Uri             = "https://c2rsetup.officeapps.live.com/c2r/downloadEdge.aspx?platform=Default&source=EdgeStablePage&Channel=Stable&language=$((Get-WinSystemLocale).TwoLetterISOLanguageName)"
+					OutFile         = "$DownloadsFolder\MicrosoftEdgeSetup.exe"
+					UseBasicParsing = $true
+					Verbose         = $true
+				}
+				Invoke-Webrequest @Parameters
+
+				# Install Microsoft Edge Stable x64
+				Start-Process -FilePath "$DownloadsFolder\MicrosoftEdgeSetup.exe" -Wait
+
+				Get-Process -Name msedge | Stop-Process -Force -ErrorAction Ignore
+				Start-Sleep -Seconds 5
+
+				& "${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe" --no-first-run --noerrdialogs --no-default-browser-check --start-maximized
+
+				Remove-Item -Path "$DownloadsFolder\MicrosoftEdgeSetup.exe" -Force
+
+				Start-Process -FilePath "https://t.me/sophia_chat"
+				Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+			}
+			catch [System.Net.WebException]
+			{
+				Write-Warning -Message ($Localization.NoResponse -f "https://c2rsetup.officeapps.live.com")
+				Write-Error -Message ($Localization.NoResponse -f "https://c2rsetup.officeapps.live.com") -ErrorAction SilentlyContinue
+			}
+		}
+		catch [System.Net.WebException]
+		{
+			Write-Warning -Message $Localization.NoInternetConnection
+			Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+		}
+	}
+
+	# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+	Get-ChildItem -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
+
+	# Save all opened folders in order to restore them after File Explorer restart
+	$Script:OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
+
 	# Display a warning message about whether a user has customized the preset file
 	if ($Warning)
 	{
@@ -576,21 +660,6 @@ public static string GetString(uint strId)
 			}
 		}
 	}
-
-	# Enable back the SysMain service if it was disabled by harmful tweakers
-	if ((Get-Service -Name SysMain).Status -eq "Stopped")
-	{
-		Get-Service -Name SysMain | Set-Service -StartupType Automatic
-		Get-Service -Name SysMain | Start-Service
-
-		Start-Process -FilePath "https://www.outsidethebox.ms/19318/"
-	}
-
-	# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
-	Get-ChildItem -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
-
-	# Save all opened folders in order to restore them after File Explorer restart
-	$Script:OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
 }
 #endregion Checks
 
