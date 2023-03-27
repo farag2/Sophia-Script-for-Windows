@@ -785,7 +785,7 @@ function DiagTrackService
 			# Calculate the string number to uncomment "Checks -Warning"
 			$LineNumber = (Select-String -Path $PresetName -Pattern Checks | Select-String -Pattern "{Checks}", "The mandatory checks" -NotMatch).LineNumber
 			# Get date from the required line to replace it with "Checks -Warning"
-			$RequiredLine = (Get-Content -Path $PresetName -Encoding UTF8) | Where-Object -FilterScript {$_.ReadCount -match $LineNumber}
+			$RequiredLine = (Get-Content -Path $PresetName -Encoding UTF8) | Where-Object -FilterScript {$_.ReadCount -eq $LineNumber}
 			(Get-Content -Path $PresetName -Encoding UTF8).Replace($RequiredLine, "Checks -Warning") | Set-Content -Path $PresetName -Encoding UTF8 -Force
 
 			Start-Process -FilePath "https://t.me/sophia_chat"
@@ -14804,6 +14804,15 @@ public static void PostMessage()
 
 		# Open Task Scheduler
 		Start-Process -FilePath taskschd.msc
+	}
+
+	if ($Script:MeetNow)
+	{
+		MeetNow -Show
+	}
+	elseif ($Script:MeetNow -eq $false)
+	{
+		MeetNow -Hide
 	}
 	#endregion Other actions
 

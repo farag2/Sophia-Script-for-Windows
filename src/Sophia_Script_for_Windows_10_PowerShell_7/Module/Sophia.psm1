@@ -790,12 +790,12 @@ function DiagTrackService
 		{
 			$Host.UI.RawUI.WindowTitle = "Checks | $($PresetName)"
 
-			$ReadFile = Get-Content -Path $PresetName -Encoding UTF8
+			$ReadFile = Get-Content -Path $PresetName -Encoding utf8NoBOM
 			# Calculate the string number to uncomment "Checks -Warning"
 			$LineNumber = (Select-String -Path $PresetName -Pattern Checks | Select-String -Pattern "{Checks}", "The mandatory checks" -NotMatch).LineNumber
 			# Get date from the required line to replace it with "Checks -Warning"
-			$RequiredLine = (Get-Content -Path $PresetName -Encoding UTF8) | Where-Object -FilterScript {$_.ReadCount -match $LineNumber}
-			(Get-Content -Path $PresetName -Encoding UTF8).Replace($RequiredLine, "Checks -Warning") | Set-Content -Path $PresetName -Encoding UTF8 -Force
+			$RequiredLine = (Get-Content -Path $PresetName -Encoding utf8NoBOM) | Where-Object -FilterScript {$_.ReadCount -eq $LineNumber}
+			(Get-Content -Path $PresetName -Encoding utf8NoBOM).Replace($RequiredLine, "Checks -Warning") | Set-Content -Path $PresetName -Encoding utf8NoBOM -Force
 
 			Start-Process -FilePath "https://t.me/sophia_chat"
 			Start-Process -FilePath "https://discord.gg/sSryhaEv79"
@@ -807,12 +807,12 @@ function DiagTrackService
 	{
 		$Host.UI.RawUI.WindowTitle = "Checks | $($PresetName)"
 
-		$ReadFile = Get-Content -Path $PresetName -Encoding UTF8
+		$ReadFile = Get-Content -Path $PresetName -Encoding utf8NoBOM
 		# Calculate the string number to add after "Checks -Warning"
 		$LineNumber = (Select-String -Path $PresetName -Pattern Import-LocalizedData).LineNumber
 		# Array of a new file: content before $LineNumber (including $LineNumber), new added string, the rest data of file
 		$UpdatedFile = @($ReadFile[0..($LineNumber - 1)], "`nChecks -Warning", $ReadFile[$LineNumber..($ReadFile.Length + 1)])
-		Set-Content -Path $PresetName -Value $UpdatedFile -Encoding UTF8 -Force
+		Set-Content -Path $PresetName -Value $UpdatedFile -Encoding utf8NoBOM -Force
 
 		Start-Process -FilePath "https://t.me/sophia_chat"
 		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
@@ -10249,7 +10249,7 @@ function PinToStart
 			# Export the current Start layout
 			Export-StartLayout -Path $Script:StartLayout -UseDesktopApplicationID
 
-			[xml]$XML = Get-Content -Path $Script:StartLayout -Encoding UTF8 -Force
+			[xml]$XML = Get-Content -Path $Script:StartLayout -Encoding utf8 -Force
 			$Groups = $XML.LayoutModificationTemplate.DefaultLayoutOverride.StartLayoutCollection.StartLayout.Group
 
 			foreach ($Group in $Groups)
@@ -10343,7 +10343,7 @@ function PinToStart
 			Export-StartLayout -Path $Script:StartLayout -UseDesktopApplicationID
 		}
 
-		[xml]$XML = Get-Content -Path $Script:StartLayout -Encoding UTF8 -Force
+		[xml]$XML = Get-Content -Path $Script:StartLayout -Encoding utf8 -Force
 
 		foreach ($Tile in $Tiles)
 		{
@@ -13162,8 +13162,8 @@ function EventViewerCustomView
 				New-Item -Path "$env:ProgramData\Microsoft\Event Viewer\Views" -ItemType Directory -Force
 			}
 
-			# Save ProcessCreation.xml in the UTF-8 with BOM encoding
-			Set-Content -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Value $XML -Encoding UTF8 -Force
+			# Save ProcessCreation.xml in the UTF-8 without BOM encoding
+			Set-Content -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Value $XML -Encoding utf8 -NoNewline -Force ###
 		}
 		"Disable"
 		{
@@ -14610,7 +14610,7 @@ function UpdateLGPEPolicies
 				foreach ($admx in @(Get-ChildItem -Path "$env:SystemRoot\PolicyDefinitions" -File -Force))
 				{
 					# Parse every ADMX template searching if it contains full path and registry key simultaneously
-					[xml]$config = Get-Content -Path $admx.FullName -Encoding UTF8
+					[xml]$config = Get-Content -Path $admx.FullName -Encoding utf8
 					$config.SelectNodes("//@*") | ForEach-Object -Process {$_.value = $_.value.ToLower()}
 					$SplitPath = $Path.Name.Replace("HKEY_LOCAL_MACHINE\", "")
 
@@ -14668,7 +14668,7 @@ function UpdateLGPEPolicies
 				foreach ($admx in @(Get-ChildItem -Path "$env:SystemRoot\PolicyDefinitions" -File -Force))
 				{
 					# Parse every ADMX template searching if it contains full path and registry key simultaneously
-					[xml]$config = Get-Content -Path $admx.FullName -Encoding UTF8
+					[xml]$config = Get-Content -Path $admx.FullName -Encoding utf8
 					$config.SelectNodes("//@*") | ForEach-Object -Process {$_.value = $_.value.ToLower()}
 					$SplitPath = $Path.Name.Replace("HKEY_CURRENT_USER\", "")
 
@@ -14836,6 +14836,15 @@ public static void PostMessage()
 
 		# Open Task Scheduler
 		Start-Process -FilePath taskschd.msc
+	}
+
+	if ($Script:MeetNow)
+	{
+		MeetNow -Show
+	}
+	elseif ($Script:MeetNow -eq $false)
+	{
+		MeetNow -Hide
 	}
 	#endregion Other actions
 
