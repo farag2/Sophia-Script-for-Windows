@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.16.3 | 6.4.3 — 28.03.2023
+
+* Improved `Checks`;
+  * Expanded the list of harmful tweakers, trojans and other unwanted apps blocking the script running;
+  * Added Microsoft Edge instalation if it was removed by harmful tweakers. [WebView2 Runtime](https://helpdeskgeek.com/help-desk/what-is-microsoft-edge-webview2-runtime-and-how-to-reduce-cpu-usage/) is a mandatory Windows component.
+* Minor changes and improvements.
+
 ## 5.16.2 | 6.4.2 — 20.03.2023
 
 * Added `LocalSecurityAuthority` function to prevent code injection (for Windows 11 22H2 only);
