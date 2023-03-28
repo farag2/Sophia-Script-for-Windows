@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Improved `Checks`;
   * Expanded the list of harmful tweakers, trojans and other unwanted apps blocking the script running;
-  * Added Microsoft Edge instalation if it was removed by harmful tweakers. [WebView2 Runtime](https://helpdeskgeek.com/help-desk/what-is-microsoft-edge-webview2-runtime-and-how-to-reduce-cpu-usage/) is a mandatory Windows component.
+  * Added Microsoft Edge installation if it was removed by harmful tweakers. [WebView2 Runtime](https://helpdeskgeek.com/help-desk/what-is-microsoft-edge-webview2-runtime-and-how-to-reduce-cpu-usage/) is a mandatory Windows component.
 * Minor changes and improvements.
 
 ## 5.16.2 | 6.4.2 — 20.03.2023
