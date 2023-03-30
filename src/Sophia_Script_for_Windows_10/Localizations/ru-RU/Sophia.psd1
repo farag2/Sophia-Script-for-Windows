@@ -1,5 +1,5 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedOSBitness                      = Скрипт підтримує тільки 64-розрядну версію Windows
+UnsupportedOSBitness                      = Скрипт поддерживает только 64-битную версию Windows
 UnsupportedOSBuild                        = \nСкрипт поддерживает Windows 10 22H2+
 UpdateWarning                             = \nУстановленный накопительный пакет обновления Windows 10: {0}. Поддерживаемый накопительный пакет обновления: 2728 и выше. Запустите обновление Windows и попробуйте заново
 UnsupportedLanguageMode                   = \nСессия PowerShell работает в ограниченном режиме
