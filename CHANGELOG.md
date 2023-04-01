@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## 5.16.4 | 6.4.4 — 01.04.2023
 
 * Fixes for #466, #472, #470, and #469
+* Fixed a bug in Set-Association function when a used Desktop context menu item was accidentally removed;
+  * Thanks to @lowl1f3.
 
 ## 5.16.3 | 6.4.3 — 28.03.2023
 
