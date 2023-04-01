@@ -556,11 +556,7 @@ public static string GetString(uint strId)
 	}
 
 	# Check if Microsoft Edge as being a system component was removed by harmful tweakers
-	if (Test-Path -Path "${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe")
-	{
-		return
-	}
-	else
+	if (-not (Test-Path -Path "${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe"))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		# Extract the localized "Please wait..." string from shell32.dll
