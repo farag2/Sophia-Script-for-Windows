@@ -726,8 +726,8 @@ public static string GetString(uint strId)
 # To stop logging just close the console or type "Stop-Transcript"
 function Logging
 {
-	$TrascriptFilename = "Log-$((Get-Date).ToString("dd.MM.yyyy-HH-mm"))"
-	Start-Transcript -Path $PSScriptRoot\..\$TrascriptFilename.txt -Force
+	$TranscriptFilename = "Log-$((Get-Date).ToString("dd.MM.yyyy-HH-mm"))"
+	Start-Transcript -Path $PSScriptRoot\..\$TranscriptFilename.txt -Force
 }
 
 # Create a restore point for the system drive
