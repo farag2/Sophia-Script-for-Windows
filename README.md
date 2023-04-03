@@ -222,11 +222,18 @@ https://user-images.githubusercontent.com/10544660/225270532-8f0694d3-0b9e-44df-
   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 ```
 
-* Paste copied path to `Sophia.ps1` from the previous step (with [&](https://en.wikipedia.org/wiki/Ampersand));
+* Run `Sophia.ps1`
+  * On `Windows 11` paste copied path to `Sophia.ps1` from the previous step (with [&](https://en.wikipedia.org/wiki/Ampersand));
 
-```powershell
-  & <path_from_buffer>
-```
+   ```powershell
+   & <path_from_buffer>
+   ```
+
+  * On `Windows 11`
+
+   ```powershell
+   .\Sophia.ps1
+   ```
 
 ## How to use Wrapper
 
