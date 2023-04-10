@@ -56,6 +56,114 @@ function Checks
 	# Unblock all files in the script folder by removing the Zone.Identifier alternate data stream with a value of "3"
 	Get-ChildItem -Path $PSScriptRoot\..\ -File -Recurse -Force | Unblock-File
 
+	[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+	# Extract strings from %SystemRoot%\System32\shell32.dll using its' number
+	$Signature = @{
+		Namespace        = "WinAPI"
+		Name             = "GetStr"
+		Language         = "CSharp"
+		UsingNamespace   = "System.Text"
+		MemberDefinition = @"
+[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+public static extern IntPtr GetModuleHandle(string lpModuleName);
+
+[DllImport("user32.dll", CharSet = CharSet.Auto)]
+internal static extern int LoadString(IntPtr hInstance, uint uID, StringBuilder lpBuffer, int nBufferMax);
+
+public static string GetString(uint strId)
+{
+	IntPtr intPtr = GetModuleHandle("shell32.dll");
+	StringBuilder sb = new StringBuilder(255);
+	LoadString(intPtr, strId, sb, sb.Capacity);
+	return sb.ToString();
+}
+"@
+	}
+	if (-not ("WinAPI.GetStr" -as [type]))
+	{
+		Add-Type @Signature
+	}
+
+	# Check if Microsoft Edge as being a system component was removed by harmful tweakers
+	if (-not (Test-Path -Path "${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe"))
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		# Extract the localized "Please wait..." string from shell32.dll
+		Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
+
+		try
+		{
+			# Check the internet connection
+			$Parameters = @{
+				Uri              = "https://www.google.com"
+				Method           = "Head"
+				DisableKeepAlive = $true
+				UseBasicParsing  = $true
+			}
+			if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+			{
+				return
+			}
+
+			try
+			{
+				# Download Microsoft Edge Stable x64
+				$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+				$Parameters = @{
+					Uri             = "https://c2rsetup.officeapps.live.com/c2r/downloadEdge.aspx?platform=Default&source=EdgeStablePage&Channel=Stable&language=$((Get-WinSystemLocale).TwoLetterISOLanguageName)"
+					OutFile         = "$DownloadsFolder\MicrosoftEdgeSetup.exe"
+					UseBasicParsing = $true
+					Verbose         = $true
+				}
+				Invoke-Webrequest @Parameters
+
+				# Install Microsoft Edge Stable x64
+				Start-Process -FilePath "$DownloadsFolder\MicrosoftEdgeSetup.exe" -Wait
+
+				Get-Process -Name msedge | Stop-Process -Force -ErrorAction Ignore
+				Start-Sleep -Seconds 5
+
+				try
+				{
+					& "${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe" --no-first-run --noerrdialogs --no-default-browser-check --start-maximized
+				}
+				catch [System.InvalidOperationException]
+				{
+					Write-Warning -Message $Localization.WindowsComponentBroken -f "Microsoft Edge"
+
+					"https://t.me/sophia_chat"
+					"https://discord.gg/sSryhaEv79"
+
+					exit
+				}
+				catch [System.Management.Automation.ApplicationFailedException]
+				{
+					Write-Warning -Message $Localization.WindowsComponentBroken -f "Microsoft Edge"
+
+					"https://t.me/sophia_chat"
+					"https://discord.gg/sSryhaEv79"
+
+					exit
+				}
+
+				Stop-Process -Name msedge -Force -ErrorAction Ignore
+
+				Remove-Item -Path "$DownloadsFolder\MicrosoftEdgeSetup.exe" -Force
+			}
+			catch [System.Net.WebException]
+			{
+				Write-Warning -Message ($Localization.NoResponse -f "https://c2rsetup.officeapps.live.com")
+				Write-Error -Message ($Localization.NoResponse -f "https://c2rsetup.officeapps.live.com") -ErrorAction SilentlyContinue
+			}
+		}
+		catch [System.Net.WebException]
+		{
+			Write-Warning -Message $Localization.NoInternetConnection
+			Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+		}
+	}
+
 	# Detect the OS bitness
 	if (-not [System.Environment]::Is64BitOperatingSystem)
 	{
@@ -106,9 +214,11 @@ function Checks
 		{($_ -lt 19045) -or ($_ -gt 19048)}
 		{
 			Write-Warning -Message $Localization.UnsupportedOSBuild
+
 			Start-Process -FilePath "https://t.me/sophia_chat"
 			Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 			Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows#system-requirements"
+
 			exit
 		}
 	}
@@ -117,9 +227,11 @@ function Checks
 	if ($ExecutionContext.SessionState.LanguageMode -ne "FullLanguage")
 	{
 		Write-Warning -Message $Localization.UnsupportedLanguageMode
+
 		Start-Process -FilePath "https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_language_modes"
 		Start-Process -FilePath "https://t.me/sophia_chat"
 		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+
 		exit
 	}
 
@@ -131,8 +243,10 @@ function Checks
 	if ($CurrentUserName -ne $LoginUserName)
 	{
 		Write-Warning -Message $Localization.LoggedInUserNotAdmin
+
 		Start-Process -FilePath "https://t.me/sophia_chat"
 		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+
 		exit
 	}
 
@@ -140,8 +254,10 @@ function Checks
 	if ($PSVersionTable.PSVersion.Major -ne 5)
 	{
 		Write-Warning -Message ($Localization.UnsupportedPowerShell -f $PSVersionTable.PSVersion.Major, $PSVersionTable.PSVersion.Minor)
+
 		Start-Process -FilePath "https://t.me/sophia_chat"
 		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+
 		exit
 	}
 
@@ -149,12 +265,14 @@ function Checks
 	if (($Host.Name -match "ISE") -or ($env:TERM_PROGRAM -eq "vscode"))
 	{
 		Write-Warning -Message ($Localization.UnsupportedHost -f $Host.Name.replace("Host", ""))
+
 		Start-Process -FilePath "https://t.me/sophia_chat"
 		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+
 		exit
 	}
 
-	# Check whether Windows was broken by 3rd party tweakers and trojans
+	# Check whether Windows was broken by 3rd party harmful tweakers and trojans
 	$Tweakers = @{
 		# https://github.com/Sycnex/Windows10Debloater
 		Windows10Debloater  = "$env:SystemDrive\Temp\Windows10Debloater"
@@ -169,7 +287,7 @@ function Checks
 		# https://win10tweaker.ru
 		"Win 10 Tweaker"    = "HKCU:\Software\Win 10 Tweaker"
 		# https://forum.ru-board.com/topic.cgi?forum=5&topic=50519
-		"Modern Tweaker"    = "Registry::HKEY_CLASSES_ROOT\.exts\shell\open\command"
+		"Modern Tweaker"    = "Registry::HKEY_CLASSES_ROOT\CLSID\{645FF040-5081-101B-9F08-00AA002F954E}\shell\Modern Cleaner"
 		# https://boosterx.ru
 		BoosterX            = "$env:ProgramFiles\GameModeX\GameModeX.exe"
 		# https://forum.ru-board.com/topic.cgi?forum=5&topic=14285&start=400#11
@@ -178,6 +296,10 @@ function Checks
 		"Defender Switch"   = "$env:ProgramData\DSW"
 		# https://revi.cc/revios/download
 		"Revision Tool"     = "${env:ProgramFiles(x86)}\Revision Tool"
+		# https://www.youtube.com/watch?v=L0cj_I6OF2o
+		"WinterOS Tweaker"  = "$env:SystemRoot\WinterOS*"
+		# https://github.com/ThePCDuke/WinCry
+		WinCry              = "$env:SystemRoot\TempCleaner.exe"
 	}
 	foreach ($Tweaker in $Tweakers.Keys)
 	{
@@ -186,16 +308,20 @@ function Checks
 			if ($Tweakers[$Tweaker] -eq "HKCU:\Software\Win 10 Tweaker")
 			{
 				Write-Warning -Message $Localization.Win10TweakerWarning
+
 				Start-Process -FilePath "https://youtu.be/na93MS-1EkM"
 				Start-Process -FilePath "https://pikabu.ru/story/byekdor_v_win_10_tweaker_ili_sovremennyie_metodyi_borbyi_s_piratstvom_8227558"
 				Start-Process -FilePath "https://t.me/sophia_chat"
 				Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+
 				exit
 			}
 
 			Write-Warning -Message ($Localization.TweakerWarning -f $Tweaker)
+
 			Start-Process -FilePath "https://t.me/sophia_chat"
 			Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+
 			exit
 		}
 	}
@@ -204,8 +330,10 @@ function Checks
 	if (Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\.NETFramework\Performance -Name *flibustier)
 	{
 		Write-Warning -Message ($Localization.TweakerWarning -f "flblauncher")
+
 		Start-Process -FilePath "https://t.me/sophia_chat"
 		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+
 		exit
 	}
 
@@ -213,10 +341,11 @@ function Checks
 	if (-not (Test-Path -Path "$PSScriptRoot\..\bin\LGPO.exe"))
 	{
 		Write-Warning -Message $Localization.Bin
-		Start-Sleep -Seconds 5
+
 		Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"
 		Start-Process -FilePath "https://t.me/sophia_chat"
 		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+
 		exit
 	}
 
@@ -233,16 +362,16 @@ function Checks
 	if (($PendingActions | Test-Path) -contains $true)
 	{
 		Write-Warning -Message $Localization.RebootPending
+
 		Start-Process -FilePath "https://t.me/sophia_chat"
 		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+
 		exit
 	}
 
 	# Check if the current module version is the latest one
 	try
 	{
-		[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-
 		# Check the internet connection
 		$Parameters = @{
 			Uri              = "https://www.google.com"
@@ -269,11 +398,10 @@ function Checks
 			{
 				Write-Warning -Message $Localization.UnsupportedRelease
 
-				Start-Sleep -Seconds 5
-
 				Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"
 				Start-Process -FilePath "https://t.me/sophia_chat"
 				Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+
 				exit
 			}
 		}
@@ -302,7 +430,7 @@ function Checks
 		{
 			# Provider Load Failure exception
 			Write-Warning -Message $Global:Error.Exception.Message | Select-Object -First 1
-			Write-Warning -Message $Localization.DefenderBroken
+			Write-Warning -Message $Localization.WindowsComponentBroken -f "Microsoft Defender"
 
 			Start-Process -FilePath "https://t.me/sophia_chat"
 			Start-Process -FilePath "https://discord.gg/sSryhaEv79"
@@ -311,20 +439,6 @@ function Checks
 		}
 	}
 
-	# Checking services
-	try
-	{
-		$Services = Get-Service -Name Windefend, SecurityHealthService, wscsvc -ErrorAction Stop
-	}
-	catch [Microsoft.PowerShell.Commands.ServiceCommandException]
-	{
-		Write-Warning -Message $Localization.DefenderBroken
-		Start-Process -FilePath "https://t.me/sophia_chat"
-		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
-		exit
-	}
-	$Script:DefenderServices = ($Services | Where-Object -FilterScript {$_.Status -ne "running"} | Measure-Object).Count -lt $Services.Count
-
 	# Check Microsoft Defender state
 	# The Enterprise G edition doesn't has a built-in Defender
 	if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name EditionID) -ne "EnterpriseG")
@@ -332,9 +446,11 @@ function Checks
 		# Check Microsoft Defender state
 		if ($null -eq (Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction Ignore))
 		{
-			Write-Warning -Message $Localization.DefenderBroken
+			Write-Warning -Message $Localization.WindowsComponentBroken -f "Microsoft Defender" ###
+
 			Start-Process -FilePath "https://t.me/sophia_chat"
 			Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+
 			exit
 		}
 
@@ -354,6 +470,22 @@ function Checks
 	{
 		$Script:DefenderproductState = $false
 	}
+
+	# Checking services
+	try
+	{
+		$Services = Get-Service -Name Windefend, SecurityHealthService, wscsvc -ErrorAction Stop
+	}
+	catch [Microsoft.PowerShell.Commands.ServiceCommandException]
+	{
+		Write-Warning -Message $Localization.WindowsComponentBroken -f "Microsoft Defender"
+
+		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+
+		exit
+	}
+	$Script:DefenderServices = ($Services | Where-Object -FilterScript {$_.Status -ne "running"} | Measure-Object).Count -lt $Services.Count
 
 	# Specify whether Antispyware protection is enabled
 	if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name EditionID) -ne "EnterpriseG")
@@ -513,33 +645,6 @@ function Checks
 	}
 	#endregion Defender checks
 
-	# Extract strings from %SystemRoot%\System32\shell32.dll using its' number
-	$Signature = @{
-		Namespace        = "WinAPI"
-		Name             = "GetStr"
-		Language         = "CSharp"
-		UsingNamespace   = "System.Text"
-		MemberDefinition = @"
-[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
-public static extern IntPtr GetModuleHandle(string lpModuleName);
-
-[DllImport("user32.dll", CharSet = CharSet.Auto)]
-internal static extern int LoadString(IntPtr hInstance, uint uID, StringBuilder lpBuffer, int nBufferMax);
-
-public static string GetString(uint strId)
-{
-	IntPtr intPtr = GetModuleHandle("shell32.dll");
-	StringBuilder sb = new StringBuilder(255);
-	LoadString(intPtr, strId, sb, sb.Capacity);
-	return sb.ToString();
-}
-"@
-	}
-	if (-not ("WinAPI.GetStr" -as [type]))
-	{
-		Add-Type @Signature
-	}
-
 	# Enable back the SysMain service if it was disabled by harmful tweakers
 	if ((Get-Service -Name SysMain).Status -eq "Stopped")
 	{
@@ -555,18 +660,35 @@ public static string GetString(uint strId)
 		Get-CimInstance -ClassName CIM_ComputerSystem | Set-CimInstance -Property @{AutomaticManagedPageFile = $true}
 	}
 
-	# Check if Microsoft Edge as being a system component was removed by harmful tweakers
-	if (-not (Test-Path -Path "${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe"))
+	# Remove firewalled IP addresses that block Microsoft recourses added by harmful tweakers
+	# https://wpd.app
+	Get-NetFirewallRule | Where-Object -FilterScript {($_.DisplayName -match "Blocker MicrosoftTelemetry") -or ($_.DisplayName -match "Blocker MicrosoftExtra") -or ($_.DisplayName -match "windowsSpyBlocker")} | Remove-NetFirewallRule
+
+	Write-Information -MessageData "" -InformationAction Continue
+	# Extract the localized "Please wait..." string from shell32.dll
+	Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
+
+	# Remove IP addresses from hosts file that block Microsoft recourses added by WindowsSpyBlocker
+	# https://github.com/crazy-max/WindowsSpyBlocker
+	try
 	{
-		Write-Information -MessageData "" -InformationAction Continue
-		# Extract the localized "Please wait..." string from shell32.dll
-		Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
+		# Check the internet connection
+		$Parameters = @{
+			Uri              = "https://www.google.com"
+			Method           = "Head"
+			DisableKeepAlive = $true
+			UseBasicParsing  = $true
+		}
+		if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+		{
+			return
+		}
 
 		try
 		{
-			# Check the internet connection
+			# Check whether https://github.com is alive
 			$Parameters = @{
-				Uri              = "https://www.google.com"
+				Uri              = "https://github.com"
 				Method           = "Head"
 				DisableKeepAlive = $true
 				UseBasicParsing  = $true
@@ -576,42 +698,91 @@ public static string GetString(uint strId)
 				return
 			}
 
-			try
-			{
-				# Download Microsoft Edge Stable x64
-				$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-				$Parameters = @{
-					Uri             = "https://c2rsetup.officeapps.live.com/c2r/downloadEdge.aspx?platform=Default&source=EdgeStablePage&Channel=Stable&language=$((Get-WinSystemLocale).TwoLetterISOLanguageName)"
-					OutFile         = "$DownloadsFolder\MicrosoftEdgeSetup.exe"
-					UseBasicParsing = $true
-					Verbose         = $true
+			Clear-Variable -Name Array -ErrorAction Ignore
+
+			# https://github.com/crazy-max/WindowsSpyBlocker/tree/master/data/hosts
+			$Parameters = @{
+				Uri              = "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/extra.txt"
+				UseBasicParsing  = $true
+				Verbose          = $true
+			}
+			$extra = (Invoke-WebRequest @Parameters).Content
+
+			$Parameters = @{
+				Uri              = "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/extra_v6.txt"
+				UseBasicParsing  = $true
+				Verbose          = $true
+			}
+			$extra_v6 = (Invoke-WebRequest @Parameters).Content
+
+			$Parameters = @{
+				Uri              = "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt"
+				UseBasicParsing  = $true
+				Verbose          = $true
+			}
+			$spy = (Invoke-WebRequest @Parameters).Content
+
+			$Parameters = @{
+				Uri              = "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy_v6.txt"
+				UseBasicParsing  = $true
+				Verbose          = $true
+			}
+			$spy_v6 = (Invoke-WebRequest @Parameters).Content
+
+			$Parameters = @{
+				Uri              = "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/update.txt"
+				UseBasicParsing  = $true
+				Verbose          = $true
+			}
+			$update =(Invoke-WebRequest @Parameters).Content
+
+			$Parameters = @{
+				Uri              = "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/update_v6.txt"
+				UseBasicParsing  = $true
+				Verbose          = $true
+			}
+			$update_v6 = (Invoke-WebRequest @Parameters).Content
+
+			$IPArray += $extra, $extra_v6, $spy, $spy_v6, $update, $update_v6
+			# Split the Array variable content
+			$IPArray = $IPArray -split "`r?`n" | Where-Object -FilterScript {$_ -notmatch "#"}
+
+			# Clear hosts file
+			$hosts = Get-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Encoding Default -Force
+			$hosts | ForEach-Object -Process {
+				if (($_ -ne "") -and (-not $_.StartsWith("#")) -and ($IPArray -split "`r?`n" | Select-String -Pattern $_))
+				{
+					$UiData = $_
+					$hosts = $hosts | Where-Object -FilterScript {$_ -notmatch $UiData}
 				}
-				Invoke-Webrequest @Parameters
-
-				# Install Microsoft Edge Stable x64
-				Start-Process -FilePath "$DownloadsFolder\MicrosoftEdgeSetup.exe" -Wait
-
-				Get-Process -Name msedge | Stop-Process -Force -ErrorAction Ignore
-				Start-Sleep -Seconds 5
-
-				& "${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe" --no-first-run --noerrdialogs --no-default-browser-check --start-maximized
-
-				Remove-Item -Path "$DownloadsFolder\MicrosoftEdgeSetup.exe" -Force
-
-				Start-Process -FilePath "https://t.me/sophia_chat"
-				Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 			}
-			catch [System.Net.WebException]
-			{
-				Write-Warning -Message ($Localization.NoResponse -f "https://c2rsetup.officeapps.live.com")
-				Write-Error -Message ($Localization.NoResponse -f "https://c2rsetup.officeapps.live.com") -ErrorAction SilentlyContinue
-			}
+			$hosts | Set-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Encoding Default -Force
 		}
 		catch [System.Net.WebException]
 		{
-			Write-Warning -Message $Localization.NoInternetConnection
-			Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+			Write-Warning -Message ($Localization.NoResponse -f "https://github.com")
+			Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
+
+			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 		}
+	}
+	catch [System.Net.WebException]
+	{
+		Write-Warning -Message $Localization.NoInternetConnection
+		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+
+		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+	}
+
+	# Check if Microsoft Store as being an important system component was removed
+	if (-not (Get-AppxPackage -Name Microsoft.WindowsStore))
+	{
+		Write-Warning -Message $Localization.WindowsComponentBroken -f "Microsoft Store"
+
+		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+
+		exit
 	}
 
 	# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
@@ -3401,6 +3572,7 @@ function UnpinTaskbarShortcuts
 				{
 					Start-Job -ScriptBlock {
 						$Apps = (New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
+						# Extract the localized "Unpin from taskbar" string from shell32.dll
 						($Apps | Where-Object -FilterScript {$_.Name -eq "Microsoft Store"}).Verbs() | Where-Object -FilterScript {$_.Name -eq $using:LocalizedString} | ForEach-Object -Process {$_.DoIt()}
 					} | Receive-Job -Wait -AutoRemoveJob
 				}
@@ -11010,6 +11182,14 @@ function RestoreUWPApps
 		# You cannot retrieve packages using -PackageTypeFilter Bundle, otherwise you won't get the InstallLocation attribute. It can be retrieved only by comparing with $Bundles
 		$Bundles = (Get-AppXPackage -PackageTypeFilter Bundle -AllUsers).Name
 		$AppxPackages = @(Get-AppxPackage -AllUsers | Where-Object -FilterScript {$_.PackageUserInformation -match "Staged"} | Where-Object -FilterScript {$_.Name -in $Bundles})
+
+		# The Bundle packages contains no Spotify
+		if (Get-AppxPackage -Name SpotifyAB.SpotifyMusic -AllUsers)
+		{
+			# Temporarily hack: due to the fact that there are actually two Spotify packages, we need to choose the first one to display
+			$AppxPackages += Get-AppxPackage -Name SpotifyAB.SpotifyMusic -AllUsers | Where-Object -FilterScript {$_.PackageUserInformation -match "Staged"} | Select-Object -Index 0
+		}
+
 		$PackagesIds = [Windows.Management.Deployment.PackageManager, Windows.Web, ContentType = WindowsRuntime]::new().FindPackages() | Select-Object -Property DisplayName -ExpandProperty Id | Select-Object -Property Name, DisplayName
 
 		foreach ($AppxPackage in $AppxPackages)
@@ -13143,8 +13323,8 @@ function EventViewerCustomView
 				New-Item -Path "$env:ProgramData\Microsoft\Event Viewer\Views" -ItemType Directory -Force
 			}
 
-			# Save ProcessCreation.xml in the UTF-8 with BOM encoding
-			Set-Content -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Value $XML -Encoding UTF8 -Force
+			# Save ProcessCreation.xml in the UTF-8 without BOM encoding
+			Set-Content -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Value $XML -Encoding Default -NoNewline -Force
 		}
 		"Disable"
 		{
@@ -14817,6 +14997,7 @@ public static void PostMessage()
 		Start-Process -FilePath taskschd.msc
 	}
 
+	# ###
 	if ($Script:MeetNow)
 	{
 		MeetNow -Show
