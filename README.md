@@ -239,6 +239,7 @@ https://user-images.githubusercontent.com/10544660/225270532-8f0694d3-0b9e-44df-
 
 * Download and expand the archive;
 * Run `SophiaScriptWrapper.exe` and import `Sophia.ps1`;
+  * `Sophia.ps1` has to be in `Sophia Script` folder;
   * The Wrapper has a real time UI rendering;
 * Configure every function;
 * Open the `Console Output` tab and press `Run PowerShell`.

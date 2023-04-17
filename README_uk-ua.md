@@ -232,7 +232,8 @@ https://user-images.githubusercontent.com/10544660/225270532-8f0694d3-0b9e-44df-
 ## Як використовувати Wrapper
 
 * Завантажте та розпакуйте архів;
-* Запустіть `SophiaScriptWrapper.exe` та імпортуйте Sophia.ps1;
+* Запустіть `SophiaScriptWrapper.exe` та імпортуйте `Sophia.ps1`;
+  * `Sophia.ps1` повинен знаходитись у тій папці `Sophia Script`;
   * Wrapper має рендеринг інтерфейсу в реальному часі
 * Налаштуйте кожну функцію;
 * Відкрийте вкладку `Console Output` і натисніть `Run PowerShell`.
