@@ -806,7 +806,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Verwenden der Schaltfläche Bildschirm drucken(druck s-abf), um den das Snipping Tool zu starten."
+        "ToolTip": "Verwenden der Schaltfläche Bildschirm drucken(druck s-abf), um das Snipping Tool zu starten."
       },
       "One": {
         "Tag": "Disable",
