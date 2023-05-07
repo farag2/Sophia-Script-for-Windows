@@ -885,11 +885,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Den Navigatiosbereich des Explorers nicht zeigen (Keine standard Erweiterung des Menus) (Standardeinstellung)"
+        "ToolTip": "Den Navigatiosbereich des Explorers(Linker Abschnitt) nicht auf den aktuellen Ordner erweitern (aufklappen) (Standardeinstellung)"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Standard Erweiterung der Explorer-Leiste, um den Navigationsbereich zu öffnen"
+        "ToolTip": "Der Navigationsbereich des Explorers(Linker Abschnitt) wird auf den aktuellen Ordner erweitert (aufgeklappt)"
       }
     }
   },
