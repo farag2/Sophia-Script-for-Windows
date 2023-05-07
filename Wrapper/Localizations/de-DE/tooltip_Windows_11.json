@@ -562,15 +562,15 @@
     "Arg": {
       "Zero": {
         "Tag": "LargeIcons",
-        "ToolTip": "Große Symbole in der Systemsteuerung anzeigen"
+        "ToolTip": "\"Große Symbole\" in der Systemsteuerung anzeigen"
       },
       "One": {
         "Tag": "SmallIcons",
-        "ToolTip": "Kleine Symbole in der Systemsteuerung anzeigen"
+        "ToolTip": "\"Kleine Symbole\" in der Systemsteuerung anzeigen"
       },
       "Two": {
         "Tag": "Category",
-        "ToolTip": "Symbole der Systemsteuerung nach Kategorie anzeigen (Standardeinstellung)"
+        "ToolTip": "Symbole der Systemsteuerung nach \"Kategorie\" anzeigen (Standardeinstellung)"
       }
     }
   },
@@ -750,11 +750,11 @@
     "Arg": {
       "Zero": {
         "Tag": "None",
-        "ToolTip": "Gruppieren Sie keine Dateien und Ordner im Ordner \"Downloads\""
+        "ToolTip": "Ordner und Dateien im Ordner \"Downloads\" werden nicht automatisch gruppiert"
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Gruppieren Sie Dateien und Ordner im Ordner \"Downloads\" nach Änderungsdatum"
+        "ToolTip": "Gruppiert Dateien und Ordner im Ordner \"Downloads\" nach Änderungsdatum"
       }
     }
   },
@@ -765,11 +765,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Erweitern Sie nicht, um den Ordner im Navigationsbereich zu öffnen (Standardeinstellung)"
+        "ToolTip": "Der Navigationsbereich(Linker Abschnitt) im Explorer wird nicht mehr auf den aktuellen Ordner aufgeklappt (erweitert) (Standardeinstellung)"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Erweitern, um den Ordner im Navigationsbereich zu öffnen"
+        "ToolTip": "Klappt (erweitert) den Navigationsbereich(Linker Abschnitt) des Explorers automatisch auf den Order auf, den man aktuell offen hat."
       }
     }
   },
@@ -1129,11 +1129,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Desktop",
-        "ToolTip": "Speichern von Screenshots durch Drücken von Win+PrtScr auf dem Desktop. Funktion wird nur angewendet, wenn die Voreinstellung zum Entfernen von OneDrive konfiguriert ist. Andernfalls wird die Sicherungsfunktion für die Ordner \"Desktop\" und \"Bilder\" in OneDrive unterbrochen"
+        "ToolTip": "Speichern von Screenshots durch Drücken von Win+PrtScr(Windows-Taste + Druck s-abf-Taste) auf dem Desktop. Funktion wird nur angewendet, wenn die Voreinstellung zum Entfernen von OneDrive konfiguriert ist. Andernfalls wird die Sicherungsfunktion für die Ordner \"Desktop\" und \"Bilder\" in OneDrive unterbrochen"
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Speichern von Screenshots durch Drücken von Win+PrtScr im Ordner Bilder (Standardeinstellung)"
+        "ToolTip": "Speichern von Screenshots durch Drücken von Win+PrtScr(Windows-Taste + Druck s-abf-Taste)  im Ordner Bilder (Standardeinstellung)"
       }
     }
   },
@@ -1324,11 +1324,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Starten Sie das Gerät so bald wie möglich neu, wenn ein Neustart erforderlich ist, um ein Update zu installieren"
+        "ToolTip": "Startet das Gerät so bald wie möglich neu, wenn ein Neustart erforderlich ist, um ein Update zu installieren"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Dieses Gerät so schnell wie möglich nicht neu starten, wenn ein Neustart erforderlich ist, um ein Update zu installieren (Standardeinstellung)"
+        "ToolTip": "Startet das Gerät nicht so schnell wie möglich neu starten, wenn ein Neustart erforderlich ist, um ein Update zu installieren (Standardeinstellung)"
       }
     }
   },
@@ -1365,7 +1365,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Установить последнюю версию .NET Desktop Runtime 6, 7 (x86/x64)"
+        "ToolTip": "Installieren der neuesten .NET Desktop Runtime 6, 7 (x86/x64)"
       }
     }
   },
@@ -1428,7 +1428,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Alle Start-Apps freistellen"
+        "ToolTip": "Entferne alle \"Pins\" von den Start-Apps"
       }
     }
   },
@@ -1779,11 +1779,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Deaktiviert den Attachment Manager, der Dateien, die aus dem Internet heruntergeladen wurden, als unsicher markiert"
+        "ToolTip": "Deaktiviert den \"Attachment Manager\", der Dateien, die aus dem Internet heruntergeladen wurden, als unsicher markiert"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Aktiviert den Attachment Manager, der Dateien, die aus dem Internet heruntergeladen wurden, als unsicher markiert (Standardwert"
+        "ToolTip": "Aktiviert den \"Attachment Manager\", der Dateien, die aus dem Internet heruntergeladen wurden, als unsicher markiert (Standardwert"
       }
     }
   },
