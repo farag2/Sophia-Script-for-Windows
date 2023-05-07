@@ -557,11 +557,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Schaltfläche Personen ausblenden in der Taskleiste"
+        "ToolTip": "Schaltfläche \"Personen ausblenden\" in der Taskleiste"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Schaltfläche Personen in der Taskleiste anzeigen (Standardeinstellung)"
+        "ToolTip": "Schaltfläche \"Personen\" in der Taskleiste anzeigen (Standardeinstellung)"
       }
     }
   },
@@ -587,11 +587,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Ausblenden der Schaltfläche Windows-Ink-Arbeitsbereich in der Taskleiste"
+        "ToolTip": "Ausblenden der Schaltfläche \"Windows-Ink-Arbeitsbereich\" in der Taskleiste"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Die Schaltfläche Windows-Ink-Arbeitsbereich in der Taskleiste anzeigen (Standardeinstellung)"
+        "ToolTip": "Die Schaltfläche \"Windows-Ink-Arbeitsbereich\" in der Taskleiste anzeigen (Standardeinstellung)"
       }
     }
   },
@@ -602,11 +602,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Show",
-        "ToolTip": "Immer alle Symbole im Infobereich anzeigen"
+        "ToolTip": "Immer alle Symbole im Infobereich der Taskleiste anzeigen"
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Alle Symbole im Infobereich ausblenden (Standardeinstellung)"
+        "ToolTip": "Alle Symbole im Infobereich der Taskleiste ausblenden (Standardeinstellung)"
       }
     }
   },
@@ -617,11 +617,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Ausblenden des Meet-Now-Symbols im Infobereich"
+        "ToolTip": "Ausblenden des \"Meet-Now\" Symbols im Infobereich"
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Das Symbol Meet Now im Infobereich anzeigen (Standardeinstellung)"
+        "ToolTip": "Das Symbol \"Meet Now\" im Infobereich anzeigen (Standardeinstellung)"
       }
     }
   },
@@ -667,15 +667,15 @@
     "Arg": {
       "Zero": {
         "Tag": "LargeIcons",
-        "ToolTip": "Anzeigen der Symbole der Systemsteuerung durch große Symbole"
+        "ToolTip": "Anzeigen der Symbole der Systemsteuerung durch \"Große Symbole\""
       },
       "One": {
         "Tag": "SmallIcons",
-        "ToolTip": "Anzeige der Symbole der Systemsteuerung durch kleine Symbole"
+        "ToolTip": "Anzeige der Symbole der Systemsteuerung durch \"Kleine Symbole\""
       },
       "Two": {
         "Tag": "Category",
-        "ToolTip": "Anzeigen der Symbole der Systemsteuerung nach Kategorie (Standardeinstellung)"
+        "ToolTip": "Anzeigen der Symbole der Systemsteuerung nach \"Kategorie\" (Standardeinstellung)"
       }
     }
   },
@@ -686,11 +686,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Dark",
-        "ToolTip": "Den Windows-Standardmodus auf dunkel einstellen"
+        "ToolTip": "Den Windows-Standard-Farbmodus auf dunkel einstellen"
       },
       "One": {
         "Tag": "Light",
-        "ToolTip": "Den Windows-Standardmodus auf hell setzen (Standardeinstellung)"
+        "ToolTip": "Den Windows-Standard-Farbmodus auf hell setzen (Standardeinstellung)"
       }
     }
   },
@@ -701,11 +701,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Dark",
-        "ToolTip": "Den Standardmodus der Anwendung auf dunkel einstellen"
+        "ToolTip": "Den Standardfarbmodus der Anwendung auf dunkel einstellen"
       },
       "One": {
         "Tag": "Light",
-        "ToolTip": "Den Standard-Anwendungsmodus auf Hell setzen (Standardeinstellung)"
+        "ToolTip": "Den Standard-Anwendungsfarbmodus auf Hell setzen (Standardeinstellung)"
       }
     }
   },
@@ -806,11 +806,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Verwenden der Schaltfläche Bildschirm drucken, um den Bildschirmausschnitt zu öffnen."
+        "ToolTip": "Verwenden der Schaltfläche Bildschirm drucken(druck s-abf), um das Snipping Tool zu starten."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Die Schaltfläche Bildschirm drucken nicht zum Öffnen von Bildschirmausschnitten verwenden (Standardeinstellung)"
+        "ToolTip": "Die Schaltfläche Bildschirm drucken(druck s-abf) nicht zum Öffnen vom Snipping Tool verwenden (Standardeinstellung)"
       }
     }
   },
@@ -874,7 +874,7 @@
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Gruppieren Sie Dateien und Ordner im Ordner \"Downloads\" nach Änderungsdatum"
+        "ToolTip": "Gruppieren Sie Dateien und Ordner im Ordner \"Downloads\" nach \"Änderungsdatum\""
       }
     }
   },
@@ -885,11 +885,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Erweitern Sie nicht, um den Ordner im Navigationsbereich zu öffnen (Standardeinstellung)"
+        "ToolTip": "Den Navigatiosbereich des Explorers(Linker Abschnitt) nicht auf den aktuellen Ordner erweitern (aufklappen) (Standardeinstellung)"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Erweitern, um den Ordner im Navigationsbereich zu öffnen"
+        "ToolTip": "Der Navigationsbereich des Explorers(Linker Abschnitt) wird auf den aktuellen Ordner erweitert (aufgeklappt)"
       }
     }
   },
@@ -960,7 +960,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Löscht keine temporären Dateien, die von Anwendungen nicht verwendet werden."
+        "ToolTip": "Lösche keine temporären Dateien, die von Anwendungen nicht verwendet werden."
       }
     }
   },
@@ -1249,11 +1249,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Desktop",
-        "ToolTip": "Speichern von Screenshots durch Drücken von Win+PrtScr auf dem Desktop"
+        "ToolTip": "Speichern von Screenshots durch Drücken von Windows-Taste+\"druck\"-Taste auf dem Desktop"
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Speichern von Screenshots durch Drücken von Win+PrtScr im Ordner Bilder (Standardeinstellung)"
+        "ToolTip": "Speichern von Screenshots durch Drücken von Windows-Taste+\"druck\"-Taste im Ordner Bilder (Standardeinstellung)"
       }
     }
   },
@@ -1279,11 +1279,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Ordnerfenster in einem separaten Prozess starten"
+        "ToolTip": "Explorer in einem separaten Prozess starten"
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Ordnerfenster nicht in einem separaten Prozess starten (Standardeinstellung)"
+        "ToolTip": "Explorer nicht in einem separaten Prozess starten (Standardeinstellung)"
       }
     }
   },
@@ -1369,11 +1369,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Verwendet nicht die automatische Wiedergabe für alle Medien und Geräte"
+        "ToolTip": "Verwendet die \"Automatische Wiedergabe\" für alle Medien und Geräte - nicht"
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "AutoPlay für alle Medien und Geräte verwenden (Standardeinstellung)"
+        "ToolTip": "\"Automatische Wiedergabe\" für alle Medien und Geräte verwenden (Standardeinstellung)"
       }
     }
   },
@@ -1448,7 +1448,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Dieses Gerät so schnell wie möglich nicht neu starten, wenn ein Neustart erforderlich ist, um ein Update zu installieren (Standardeinstellung)"
+        "ToolTip": "Dieses Gerät nicht so schnell wie möglich neu starten, wenn ein Neustart erforderlich ist, um ein Update zu installieren (Standardeinstellung)"
       }
     }
   },
@@ -1807,7 +1807,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Erkennung von potenziell unerwünschten Anwendungen deaktivieren und diese blockieren (Standardeinstellung)"
+        "ToolTip": "Erkennung von potenziell unerwünschten Anwendungen deaktivieren. (Standardeinstellung)"
       }
     }
   },
