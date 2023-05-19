@@ -314,7 +314,7 @@ irm script.sophi.app -useb | iex
 
 ## SophiApp Community Edition (C# + WPF)
 
-[SophiApp](https://github.com/Sophia-Community/SophiApp) iist die vollständige GUI-Version von `Sophia Script for Windows` und sofort einsatzbereit. Sie wird laufend verbessert, Version 2.0 befindet sich in der Entwicklung. 🚀
+[SophiApp](https://github.com/Sophia-Community/SophiApp) ist die vollständige GUI-Version von `Sophia Script for Windows` und sofort einsatzbereit. Sie wird laufend verbessert, Version 2.0 befindet sich in der Entwicklung. 🚀
 
 ![Image](https://github.com/Sophia-Community/SophiApp/raw/master/img/0.gif)
 ![Image](https://github.com/Sophia-Community/SophiApp/raw/master/img/1.png)
