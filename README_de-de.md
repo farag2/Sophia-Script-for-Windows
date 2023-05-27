@@ -215,8 +215,8 @@ https://user-images.githubusercontent.com/10544660/225270532-8f0694d3-0b9e-44df-
   * Mit `Windows 10` drücke und halte die <kbd>Shift</kbd> Taste, Rechtsklick auf `Sophia.ps1`, anschließend `als Pfad kopieren` auswählen;
   * Mit `Windows 11` Rechtsklick auf `Sophia.ps1` und `als Pfad kopieren` auswählen.
 * Öffnen Sie `Windows PowerShell`
-  * Klicken Sie unter Windows 10 im Datei-Explorer auf "Datei", bewegen Sie den Mauszeiger über "Windows PowerShell öffnen" und wählen Sie "Windows PowerShell als Administrator öffnen" [(Anleitung mit Screenshots)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/)
-  * Unter "Windows 11" klicken Sie mit der rechten Maustaste auf das Symbol <kbd>Windows</kbd> und "Windows Terminal (Admin)" auswählen;
+  * Klicken Sie unter `Windows 10` im Datei-Explorer auf "Datei", bewegen Sie den Mauszeiger über "Windows PowerShell öffnen" und wählen Sie "Windows PowerShell als Administrator öffnen" [(Anleitung mit Screenshots)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/)
+  * Unter `Windows 11` klicken Sie mit der rechten Maustaste auf das Symbol <kbd>Windows</kbd> und "Windows Terminal (Admin)" auswählen;
 * Legen Sie die Ausführungsrichtlinie so fest, dass Skripts nur in der aktuellen PowerShell-Sitzung ausgeführt werden können;
 
 ```powershell
@@ -224,13 +224,13 @@ https://user-images.githubusercontent.com/10544660/225270532-8f0694d3-0b9e-44df-
 ```
 
 * Führe `Sophia.ps1` aus
-  * Unter "Windows 11" fügen Sie den kopierten Pfad zu "Sophia.ps1" aus dem vorherigen Schritt ein (mit [&](https://en.wikipedia.org/wiki/Ampersand));
+  * Unter `Windows 11` fügen Sie den kopierten Pfad zu "Sophia.ps1" aus dem vorherigen Schritt ein (mit [&](https://en.wikipedia.org/wiki/Ampersand));
 
    ```powershell
    & <path_from_buffer>
    ```
 
-  * On `Windows 11`
+  * On `Windows 10`
 
    ```powershell
    .\Sophia.ps1
