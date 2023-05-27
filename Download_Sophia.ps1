@@ -31,18 +31,7 @@ $Parameters = @{
 }
 $LatestGitHubRelease = (Invoke-RestMethod @Parameters).tag_name
 
-if ((Get-Location).Path -eq $env:USERPROFILE)
-{
-	$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-}
-elseif ((Get-Location).Path -eq "$env:SystemRoot\System32")
-{
-	$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-}
-else
-{
-	$DownloadsFolder = (Get-Location).Path
-}
+$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 
 if ($Wrapper)
 {
