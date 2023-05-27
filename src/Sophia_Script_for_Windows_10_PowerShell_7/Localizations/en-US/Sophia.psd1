@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = The script supports 64-bit Windows only
-UnsupportedOSBuild                        = \nThe script supports Windows 10 22H2+
-UpdateWarning                             = \nWindows 10 cumulative update installed: {0}. Supported cumulative updates: 2728 and higher. Run Windows Update and try again
+UnsupportedOSBuild                        = \nThe script supports Windows 10 22H2
+UpdateWarning                             = \nYour Windows 10 build: {0}.{1}. Supported builds: 19045.2965+. Run Windows Update and try again
 UnsupportedLanguageMode                   = \nThe PowerShell session in running in a limited language mode
 LoggedInUserNotAdmin                      = \nThe logged-on user doesn't have admin rights
 UnsupportedPowerShell                     = \nYou're trying to run script via PowerShell {0}.{1}. Run the script in the appropriate PowerShell version
@@ -52,7 +52,7 @@ ErrorsLine                                = Line
 ErrorsMessage                             = Errors/Warnings
 DialogBoxOpening                          = Displaying the dialog box...
 Disable                                   = Disable
-EXEFilesFilter                            = *.exe|*.exe|All Files (*.*)|*.*
+AllFilesFilter                            = All Files
 FolderSelect                              = Select a folder
 FilesWontBeMoved                          = Files will not be moved
 Install                                   = Install

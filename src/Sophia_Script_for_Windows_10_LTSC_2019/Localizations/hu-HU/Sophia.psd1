@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = A szkript csak a 64 bites Windows-t támogatja
 UnsupportedOSBuild                        = \nA szkript támogatja a Windows 10 Enterprise LTSC 2019 kiadást
-UpdateWarning                             = \nA Windows 10 összesített frissítése telepítve: {0}. Támogatott kumulatív frissítés: 4131 és magasabb verziószámok. Futtassa a Windows Update programot, és próbálja meg újra
+UpdateWarning                             = \nAz Ön Windows 10 építése: {0}.{1}. Támogatott buildek: 17763.4377+. Futtassa a Windows Update programot, és próbálja meg újra
 UnsupportedLanguageMode                   = \nA PowerShell munkamenet korlátozott nyelvi üzemmódban fut
 LoggedInUserNotAdmin                      = \nA bejelentkezett felhasználó nem rendelkezik admin jogokkal
 UnsupportedPowerShell                     = \nA PowerShell {0}.{1} segítségével próbálja futtatni a szkriptet. Futtassa a szkriptet a megfelelő PowerShell-verzióban
@@ -12,7 +12,7 @@ bin                                       = \nA bin mappában nincsenek fájlok.
 RebootPending                             = \nA számítógép újraindításra vár
 UnsupportedRelease                        = \nÚj verzió érhető el
 CustomizationWarning                      = \nSzemélyre szabott minden opciót a {0} preset fájlban, mielőtt futtatni kívánja a Sophia szkriptet?
-DefenderBroken                            = \nA Microsoft Defender elromlott vagy eltávolították az operációs rendszerből
+WindowsComponentBroken                    = \nA {0} elromlott vagy eltávolították az operációs rendszerből
 UpdateDefender                            = \nA Microsoft Defender definíciói elavultak. Futtassa a Windows Update programot, és próbálja meg újra
 ControlledFolderAccessDisabled            = Vezérelt mappához való hozzáférés kikapcsolva
 ScheduledTasks                            = Ütemezett feladatok
@@ -43,7 +43,7 @@ ErrorsLine                                = Sor
 ErrorsMessage                             = Hibák/Figyelmeztetések
 DialogBoxOpening                          = Párbeszédablak megjelenítése...
 Disable                                   = Kikapcsolás
-EXEFilesFilter                            = *.exe|*.exe|Minden fájl (*.*)|*.*
+AllFilesFilter                            = Minden fájl
 FolderSelect                              = Válasszon ki egy könyvtárat
 FilesWontBeMoved                          = A fájlok nem lesznek áthelyezve
 Install                                   = Telepítés

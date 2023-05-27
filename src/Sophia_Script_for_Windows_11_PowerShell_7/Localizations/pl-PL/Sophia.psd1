@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = \nSkrypt obsługuje system Windows 11 22H2+
-UpdateWarning                             = \nTwoja wersja systemu Windows 11: {0}.{1}. Obsługiwane kompilacje: 22621.1413 i nowsze. Uruchom aktualizację systemu Windows i spróbuj ponownie.
+UpdateWarning                             = \nTwoja wersja systemu Windows 11: {0}.{1}. Obsługiwane kompilacje: 22621.1702+. Uruchom aktualizację systemu Windows i spróbuj ponownie.
 UnsupportedLanguageMode                   = \nSesja PowerShell działa w trybie ograniczonego języka
 LoggedInUserNotAdmin                      = \nZalogowany użytkownik nie posiada uprawnień administratora
 UnsupportedPowerShell                     = \nPróbujesz uruchomić skrypt przy użyciu PowerShell {0}.{1}. Uruchom skrypt używając odpowiedniej wersji PowerShell
@@ -52,7 +52,7 @@ ErrorsLine                                = Linia
 ErrorsMessage                             = Błędy/Ostrzeżenia
 DialogBoxOpening                          = Wyświetlanie okna dialogowego...
 Disable                                   = Wyłączyć
-EXEFilesFilter                            = *.exe|*.exe|Wszystkie pliki (*.*)|*.*
+AllFilesFilter                            = Wszystkie pliki
 FolderSelect                              = Wybierz folder
 FilesWontBeMoved                          = Pliki nie zostaną przeniesione
 Install                                   = Zainstalluj

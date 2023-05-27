@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = A szkript csak a 64 bites Windows-t támogatja
-UnsupportedOSBuild                        = \nA szkript támogatja a Windows 10 22H2+ verziókat
-UpdateWarning                             = \nA Windows 10 összesített frissítése telepítve: {0}. Támogatott kumulatív frissítés: 2728 és magasabb verziószámok. Futtassa a Windows Update programot, és próbálja meg újra
+UnsupportedOSBuild                        = \nA szkript támogatja a Windows 10 22H2 verzióját
+UpdateWarning                             = \nAz Ön Windows 10 építése: {0}.{1}. Támogatott buildek: 19045.2965+. Futtassa a Windows Update programot, és próbálja meg újra
 UnsupportedLanguageMode                   = \nA PowerShell munkamenet korlátozott nyelvi üzemmódban fut
 LoggedInUserNotAdmin                      = \nA bejelentkezett felhasználó nem rendelkezik admin jogokkal
 UnsupportedPowerShell                     = \nA PowerShell {0}.{1} segítségével próbálja futtatni a szkriptet. Futtassa a szkriptet a megfelelő PowerShell-verzióban
@@ -52,7 +52,7 @@ ErrorsLine                                = Sor
 ErrorsMessage                             = Hibák/Figyelmeztetések
 DialogBoxOpening                          = Párbeszédablak megjelenítése...
 Disable                                   = Kikapcsolás
-EXEFilesFilter                            = *.exe|*.exe|Minden fájl (*.*)|*.*
+AllFilesFilter                            = Minden fájl
 FolderSelect                              = Válasszon ki egy könyvtárat
 FilesWontBeMoved                          = A fájlok nem lesznek áthelyezve
 Install                                   = Telepítés

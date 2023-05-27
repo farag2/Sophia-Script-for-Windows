@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = El script sólo es compatible con Windows de 64 bits
 UnsupportedOSBuild                        = \nEl script es compatible con versión Windows 10 Enterprise LTSC 2021
-UpdateWarning                             = \nActualización acumulativa de Windows 10 instalada: {0}. Actualización acumulativa soportada: 2728 y superior. Ejecute Windows Update y vuelva a intentarlo
+UpdateWarning                             = \nSu build de Windows 10: {0}.{1}. Compilaciones compatibles: 19044.2965+. Ejecute Windows Update y vuelva a intentarlo
 UnsupportedLanguageMode                   = \nSesión de PowerShell ejecutada en modo de lenguaje limitado
 LoggedInUserNotAdmin                      = \nEl usuario que inició sesión no tiene derechos de administrador
 UnsupportedPowerShell                     = \nEstás intentando ejecutar el script a través de PowerShell {0}.{1}. Ejecute el script en la versión apropiada de PowerShell
@@ -12,7 +12,7 @@ bin                                       = \nNo hay archivos en la carpeta bin.
 RebootPending                             = \nEl PC está esperando a ser reiniciado
 UnsupportedRelease                        = \nUna nueva versión encontrada
 CustomizationWarning                      = \n¿Ha personalizado todas las funciones del archivo predeterminado {0} antes de ejecutar Sophia Script?
-DefenderBroken                            = \nMicrosoft Defender dañado o eliminado del sistema operativo
+WindowsComponentBroken                    = \n{0} dañado o eliminado del sistema operativo
 UpdateDefender                            = \nLas definiciones de Microsoft Defender no están actualizadas. Ejecute Windows Update y vuelva a intentarlo
 ControlledFolderAccessDisabled            = Acceso a la carpeta controlada deshabilitado
 ScheduledTasks                            = Tareas programadas
@@ -45,7 +45,7 @@ ErrorsLine                                = Línea
 ErrorsMessage                             = Errores/Advertencias
 DialogBoxOpening                          = Viendo el cuadro de diálogo...
 Disable                                   = Desactivar
-EXEFilesFilter                            = *.exe|*.exe|Todos los Archivos (*.*)|*.*
+AllFilesFilter                            = Todos los Archivos
 FolderSelect                              = Seleccione una carpeta
 FilesWontBeMoved                          = Los archivos no se transferirán
 Install                                   = Instalar

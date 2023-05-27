@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Le script n'est compatible qu'avec Windows 64 bits
 UnsupportedOSBuild                        = \nLe script supporte le version Windows 10 Enterprise LTSC 2019
-UpdateWarning                             = \nLa mise à jour cumulative de Windows 10 est installée : {0}. Mise à jour cumulative prise en charge: 4131 et plus. Exécutez Windows Update et réessayez
+UpdateWarning                             = \nVotre version de Windows 10 : {0}.{1}. Versions prises en charge: 17763.4377+. Exécutez Windows Update et réessayez
 UnsupportedLanguageMode                   = \nLa session PowerShell s'exécute dans un mode de langue limité
 LoggedInUserNotAdmin                      = \nL'utilisateur connecté n'a pas de droits d'administrateur
 UnsupportedPowerShell                     = \nVous essayez d'exécuter le script via PowerShell {0}.{1}. Exécutez le script dans la version appropriée de PowerShell
@@ -12,7 +12,7 @@ bin                                       = \nIl n'y a pas de fichiers dans le d
 RebootPending                             = \nLe PC attend d'être redémarré
 UnsupportedRelease                        = \nNouvelle version trouvée
 CustomizationWarning                      = \nAvez-vous personnalisé chaque fonction du fichier de préréglage {0} avant d'exécuter Sophia Script?
-DefenderBroken                            = \nMicrosoft Defender cassé ou supprimé du système d'exploitation
+WindowsComponentBroken                    = \n{0} cassé ou supprimé du système d'exploitation
 UpdateDefender                            = \nLes définitions de Microsoft Defender ne sont pas à jour. Exécutez Windows Update et réessayez
 ControlledFolderAccessDisabled            = Contrôle d'accès aux dossiers désactivé
 ScheduledTasks                            = Tâches planifiées
@@ -43,7 +43,7 @@ ErrorsLine                                = Ligne
 ErrorsMessage                             = Erreurs/Avertissements
 DialogBoxOpening                          = Afficher la boîte de dialogue...
 Disable                                   = Désactiver
-EXEFilesFilter                            = *.exe|*.exe|Tous les Fichiers (*.*)|*.*
+AllFilesFilter                            = Tous les Fichiers
 FolderSelect                              = Sélectionner un dossier
 FilesWontBeMoved                          = Les fichiers ne seront pas déplacés
 Install                                   = Installer

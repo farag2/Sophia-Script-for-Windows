@@ -1,2252 +1,2252 @@
 [
-  {
-    "Id": 100,
-    "Region": "Protection",
-    "Function": "Checks",
-    "Arg": {
-      "Zero": {
-        "Tag": "Warning",
-        "ToolTip": "Обязательные проверки. Чтобы выключить предупреждение о необходимости настройки пресет-файла, удалите аргумент \"-Warning\""
-      },
-      "One": {
-        "Tag": "",
-        "ToolTip": "Обязательные проверки. Отсутствует предупреждающее сообщение о том, был ли настроен пресет-файл"
-      }
-    }
-  },
-  {
-    "Id": 101,
-    "Region": "Protection",
-    "Function": "Logging",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Включить логирование работы скрипта. Лог будет записываться в папку скрипта. Чтобы остановить логгирование, закройте консоль или наберите \"Stop-Transcript\""
-      }
-    }
-  },
-  {
-    "Id": 102,
-    "Region": "Protection",
-    "Function": "CreateRestorePoint",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Создать точку восстановления"
-      }
-    }
-  },
-  {
-    "Id": 200,
-    "Region": "Privacy & Telemetry",
-    "Function": "DiagTrackService",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Отключить службу \"Функциональные возможности для подключенных пользователей и телеметрия\" (DiagTrack) и блокировать соединение для исходящего трафик клиента единой телеметрии. Отключение службы \"Функциональные возможности для подключенных пользователей и телеметрия\" (DiagTrack) может привести к тому, что вы больше не сможете получать достижения Xbox"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Включить службу DiagTrack и разрешить соединение для исходящего трафик клиента единой телеметрии (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 201,
-    "Region": "Privacy & Telemetry",
-    "Function": "DiagnosticDataLevel",
-    "Arg": {
-      "Zero": {
-        "Tag": "Minimal",
-        "ToolTip": "Установить уровень сбора диагностических данных ОС на минимальный"
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Установить уровень сбора диагностических данных ОС по умолчанию (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 202,
-    "Region": "Privacy & Telemetry",
-    "Function": "ErrorReporting",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Отключить запись отчетов об ошибках Windows"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Включить отчеты об ошибках Windows (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 203,
-    "Region": "Privacy & Telemetry",
-    "Function": "FeedbackFrequency",
-    "Arg": {
-      "Zero": {
-        "Tag": "Never",
-        "ToolTip": "Изменить частоту формирования отзывов на \"Никогда\""
-      },
-      "One": {
-        "Tag": "Automatically",
-        "ToolTip": "Изменить частоту формирования отзывов на \"Автоматически\" (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 204,
-    "Region": "Privacy & Telemetry",
-    "Function": "ScheduledTasks",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Отключить задания диагностического отслеживания"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Включить задания диагностического отслеживания (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 205,
-    "Region": "Privacy & Telemetry",
-    "Function": "SigninInfo",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Не использовать данные для входа для автоматического завершения настройки устройства и открытия приложений после перезапуска или обновления"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Использовать данные для входа для автоматического завершения настройки устройства и открытия приложений после перезапуска или обновления (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 206,
-    "Region": "Privacy & Telemetry",
-    "Function": "LanguageListAccess",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 207,
-    "Region": "Privacy & Telemetry",
-    "Function": "AdvertisingID",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Не разрешать приложениям использовать идентификатор рекламы"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Разрешать приложениям использовать идентификатор рекламы (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 208,
-    "Region": "Privacy & Telemetry",
-    "Function": "WindowsWelcomeExperience",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрывать экран приветствия Windows после обновлений и иногда при входе, чтобы сообщить о новых функциях и предложениях"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показывать экран приветствия Windows после обновлений и иногда при входе, чтобы сообщить о новых функциях и предложениях (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 209,
-    "Region": "Privacy & Telemetry",
-    "Function": "WindowsTips",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Получать советы и предложения при использованию Windows (значение по умолчанию)"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Не получать советы и предложения при использованию Windows"
-      }
-    }
-  },
-  {
-    "Id": 210,
-    "Region": "Privacy & Telemetry",
-    "Function": "SettingsSuggestedContent",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрывать рекомендуемое содержимое в приложении \"Параметры\""
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показывать рекомендуемое содержимое в приложении \"Параметры\" (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 211,
-    "Region": "Privacy & Telemetry",
-    "Function": "AppsSilentInstalling",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Отключить автоматическую установку рекомендованных приложений"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Включить автоматическую установку рекомендованных приложений (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 212,
-    "Region": "Privacy & Telemetry",
-    "Function": "WhatsNewInWindows",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Не предлагать способы завершения настройки устройства для максимально эффективного использования Windows"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Предлагать способы завершения настройки устройства для максимально эффективного использования Windows (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 213,
-    "Region": "Privacy & Telemetry",
-    "Function": "TailoredExperiences",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Не разрешать корпорации Майкософт использовать ваши диагностические данные для предоставления вам персонализированных советов, рекламы и рекомендаций, чтобы улучшить работу со службами Майкрософт"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Разрешите корпорации Майкософт использовать ваши диагностические данные для предоставления вам персонализированных советов, рекламы и рекомендаций, чтобы улучшить работу со службами Майкрософт (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 214,
-    "Region": "Privacy & Telemetry",
-    "Function": "BingSearch",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Отключить в меню \"Пуск\" поиск через Bing (только для США)"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Включить поиск через Bing в меню \"Пуск\" (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 300,
-    "Region": "UI & Personalization",
-    "Function": "ThisPC",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Отображать значок \"Этот компьютер\" на рабочем столе"
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Скрывать \"Этот компьютер\" на рабочем столе (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 301,
-    "Region": "UI & Personalization",
-    "Function": "CheckBoxes",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Не использовать флажки для выбора элементов"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Использовать флажки для выбора элементов (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 302,
-    "Region": "UI & Personalization",
-    "Function": "HiddenItems",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Отображать скрытые файлы, папки и диски"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Не отображать скрытые файлы, папки и диски (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 303,
-    "Region": "UI & Personalization",
-    "Function": "FileExtensions",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Отображать расширения имён файлов"
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Скрывать расширения имён файлов файлов (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 304,
-    "Region": "UI & Personalization",
-    "Function": "MergeConflicts",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Не скрывать конфликт слияния папок"
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Скрывать конфликт слияния папок (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 305,
-    "Region": "UI & Personalization",
-    "Function": "OpenFileExplorerTo",
-    "Arg": {
-      "Zero": {
-        "Tag": "ThisPC",
-        "ToolTip": "Открывать проводник для \"Этот компьютер\""
-      },
-      "One": {
-        "Tag": "QuickAccess",
-        "ToolTip": "Открывать проводник для \"Быстрый доступ\" (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 306,
-    "Region": "UI & Personalization",
-    "Function": "FileExplorerMode",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Отключить компактный режим проводника"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Включить компактный режим проводника (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 307,
-    "Region": "UI & Personalization",
-    "Function": "CortanaButton",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрывать кнопку Кортаны на панели задач"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показать кнопку Кортаны на панели задач (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 308,
-    "Region": "UI & Personalization",
-    "Function": "OneDriveFileExplorerAd",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Не показывать уведомления поставщика синхронизации в проводнике"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показывать уведомления поставщика синхронизации в проводнике (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 309,
-    "Region": "UI & Personalization",
-    "Function": "SnapAssist",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "При прикреплении окна не показывать, что можно прикрепить рядом с ним"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "При прикреплении окна показывать, что можно прикрепить рядом с ним (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 310,
-    "Region": "UI & Personalization",
-    "Function": "FileTransferDialog",
-    "Arg": {
-      "Zero": {
-        "Tag": "Detailed",
-        "ToolTip": "Отображать диалоговое окно передачи файлов в развернутом виде"
-      },
-      "One": {
-        "Tag": "Compact",
-        "ToolTip": "Отображать диалоговое окно передачи файлов в свернутом виде (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 311,
-    "Region": "UI & Personalization",
-    "Function": "FileExplorerRibbon",
-    "Arg": {
-      "Zero": {
-        "Tag": "Expanded",
-        "ToolTip": "Развернуть ленту проводника"
-      },
-      "One": {
-        "Tag": "Minimized",
-        "ToolTip": "Свернуть ленту проводника (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 312,
-    "Region": "UI & Personalization",
-    "Function": "RecycleBinDeleteConfirmation",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Запрашивать подтверждение на удаление файлов в корзину"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Не запрашивать подтверждение на удаление файлов в корзину (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 313,
-    "Region": "UI & Personalization",
-    "Function": "3DObjects",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть папку \"Объемные объекты\" в \"Этот компьютер\" и панели быстрого доступа"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Отображать папку \"Объемные объекты\" в \"Этот компьютер\" и панели быстрого доступа (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 314,
-    "Region": "UI & Personalization",
-    "Function": "QuickAccessRecentFiles",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть недавно использовавшиеся файлы на панели быстрого доступа"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показать недавно использовавшиеся файлы на панели быстрого доступа (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 315,
-    "Region": "UI & Personalization",
-    "Function": "QuickAccessFrequentFolders",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть недавно используемые папки на панели быстрого доступа"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показать часто используемые папки на панели быстрого доступа (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 316,
-    "Region": "UI & Personalization",
-    "Function": "TaskbarSearch",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть поле или значок поиска на панели задач"
-      },
-      "One": {
-        "Tag": "SearchIcon",
-        "ToolTip": "Показать значок поиска на панели задач"
-      },
-      "Two": {
-        "Tag": "SearchBox",
-        "ToolTip": "Показать поле поиска на панели задач (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 317,
-    "Region": "UI & Personalization",
-    "Function": "TaskViewButton",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть главное в поиске"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показать главное в поиске (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 318,
-    "Region": "UI & Personalization",
-    "Function": "SearchHighlights",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть главное в поиске"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показать главное в поиске (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 319,
-    "Region": "UI & Personalization",
-    "Function": "PeopleTaskbar",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрывать панель \"Люди\" на панели задач"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показывать панель \"Люди\" на панели задач (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 320,
-    "Region": "UI & Personalization",
-    "Function": "SecondsInSystemClock",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Отображать секунды в системных часах на панели задач"
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Скрывать секунды в системных часах на панели задач (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 321,
-    "Region": "UI & Personalization",
-    "Function": "WindowsInkWorkspace",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Не показывать кнопку Windows Ink Workspace на панели задач"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показать кнопку Windows Ink Workspace на панели задач (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 322,
-    "Region": "UI & Personalization",
-    "Function": "NotificationAreaIcons",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Всегда отображать все значки в области уведомлений"
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть все значки в области уведомлений (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 323,
-    "Region": "UI & Personalization",
-    "Function": "MeetNow",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть иконку \"Провести собрание\" в области уведомлений"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Отображать иконку \"Провести собрание\" в трее (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 324,
-    "Region": "UI & Personalization",
-    "Function": "NewsInterests",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Отключить \"Новости и интересы\" на панели задач"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Включить \"Новости и интересы\" на панели задач (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 325,
-    "Region": "UI & Personalization",
-    "Function": "UnpinTaskbarShortcuts -Shortcuts",
-    "ToolTip": "Открепить ярлыки \"Microsoft Edge\", \"Microsoft Store\" или \"Почта\" от панели задач",
-    "Arg": {
-      "Zero": {
-        "Tag": "Edge",
-        "ToolTip": "Открепить ярлык \"Microsoft Edge\" от панели задач"
-      },
-      "One": {
-        "Tag": "Store",
-        "ToolTip": "Открепить ярлык \"Microsoft Store\" от панели задач"
-      },
-      "Two": {
-        "Tag": "Mail",
-        "ToolTip": "Открепить ярлык \"Почта\" от панели задач"
-      }
-    }
-  },
-  {
-    "Id": 326,
-    "Region": "UI & Personalization",
-    "Function": "ControlPanelView",
-    "Arg": {
-      "Zero": {
-        "Tag": "LargeIcons",
-        "ToolTip": "Просмотр иконок Панели управления как крупные значки"
-      },
-      "One": {
-        "Tag": "SmallIcons",
-        "ToolTip": "Просмотр иконок Панели управления как маленькие значки"
-      },
-      "Two": {
-        "Tag": "Category",
-        "ToolTip": "Просмотр иконок Панели управления как категория (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 327,
-    "Region": "UI & Personalization",
-    "Function": "WindowsColorMode",
-    "Arg": {
-      "Zero": {
-        "Tag": "Dark",
-        "ToolTip": "Установить режим Windows по умолчанию на темный"
-      },
-      "One": {
-        "Tag": "Light",
-        "ToolTip": "Установить режим Windows по умолчанию на светлый (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 328,
-    "Region": "UI & Personalization",
-    "Function": "AppColorMode",
-    "Arg": {
-      "Zero": {
-        "Tag": "Dark",
-        "ToolTip": "Установить цвет режима приложения на темный"
-      },
-      "One": {
-        "Tag": "Light",
-        "ToolTip": "Установить цвет режима приложения на светлый (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 329,
-    "Region": "UI & Personalization",
-    "Function": "NewAppInstalledNotification",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть уведомление \"Установлено новое приложение\""
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показывать уведомление \"Установлено новое приложение\" (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 330,
-    "Region": "UI & Personalization",
-    "Function": "FirstLogonAnimation",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Скрывать анимацию при первом входе в систему после обновления"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Показывать анимацию при первом входе в систему после обновления (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 331,
-    "Region": "UI & Personalization",
-    "Function": "JPEGWallpapersQuality",
-    "Arg": {
-      "Zero": {
-        "Tag": "Max",
-        "ToolTip": "Установить коэффициент качества обоев рабочего стола в формате JPEG на максимальный"
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Установить коэффициент качества обоев рабочего стола в формате JPEG по умолчанию (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 332,
-    "Region": "UI & Personalization",
-    "Function": "TaskManagerWindow",
-    "Arg": {
-      "Zero": {
-        "Tag": "Expanded",
-        "ToolTip": "Запускать Диспетчера задач в развернутом виде"
-      },
-      "One": {
-        "Tag": "Compact",
-        "ToolTip": "Запускать Диспетчера задач в свернутом виде (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 333,
-    "Region": "UI & Personalization",
-    "Function": "RestartNotification",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления"
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Не показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 334,
-    "Region": "UI & Personalization",
-    "Function": "ShortcutsSuffix",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Нe дoбaвлять \"- яpлык\" к имени coздaвaeмых яpлыков"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Дoбaвлять \"- яpлык\" к имени coздaвaeмых яpлыков (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 335,
-    "Region": "UI & Personalization",
-    "Function": "PrtScnSnippingTool",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Не использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 336,
-    "Region": "UI & Personalization",
-    "Function": "AppsLanguageSwitch",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Не использовать метод ввода для каждого окна (значение по умолчанию)"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Позволить выбирать метод ввода для каждого окна"
-      }
-    }
-  },
-  {
-    "Id": 337,
-    "Region": "UI & Personalization",
-    "Function": "AeroShaking",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Когда я беру строку заголовка окна и встряхиваю ее, сворачивайте все остальные окна (значение по умолчанию)"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "При захвате заголовка окна и встряхивании сворачиваются все остальные окна"
-      }
-    }
-  },
-  {
-    "Id": 338,
-    "Region": "UI & Personalization",
-    "Function": "Cursors",
-    "Arg": {
-      "Zero": {
-        "Tag": "Default",
-        "ToolTip": "Установить курсоры по умолчанию"
-      },
-      "One": {
-        "Tag": "Light",
-        "ToolTip": "Скачать и установить бесплатные светлые курсоры \"Windows 11 Cursors Concept v2\" от Jepri Creations"
-      },
-      "Two": {
-        "Tag": "Dark",
-        "ToolTip": "Скачать и установить бесплатные темные курсоры \"Windows 11 Cursors Concept v2\" от Jepri Creations"
-      }
-    }
-  },
-  {
-    "Id": 339,
-    "Region": "UI & Personalization",
-    "Function": "FolderGroupBy",
-    "Arg": {
-      "Zero": {
-        "Tag": "None",
-        "ToolTip": "Не группировать файлы и папки в папке Загрузки"
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Группировать файлы и папки по дате изменения (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 340,
-    "Region": "UI & Personalization",
-    "Function": "NavigationPaneExpand",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Не разворачивать до открытой папки область навигации (значение по умолчанию)"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Развернуть до открытой папки область навигации"
-      }
-    }
-  },
-  {
-    "Id": 400,
-    "Region": "OneDrive",
-    "Function": "OneDrive",
-    "Arg": {
-      "Zero": {
-        "Tag": "Uninstall",
-        "ToolTip": "Удалить OneDrive. Папка пользователя OneDrive не будет удалена"
-      },
-      "One": {
-        "Tag": "Install",
-        "ToolTip": "Установить OneDrive 64-бит"
-      }
-    }
-  },
     {
-    "Id": 401,
-    "Region": "OneDrive",
-    "Function": "OneDrive -AllUsers",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Установите OneDrive 64-бит для всех пользователей"
-      }
+        "Id":  100,
+        "Region":  "Protection",
+        "Function":  "Checks",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Warning",
+                                 "ToolTip":  "Обязательные проверки. Чтобы выключить предупреждение о необходимости настройки пресет-файла, удалите аргумент \"-Warning\"."
+                             },
+                    "One":  {
+                                "Tag":  "",
+                                "ToolTip":  "Обязательные проверки. Отсутствует предупреждающее сообщение о том, был ли настроен пресет-файл."
+                            }
+                }
+    },
+    {
+        "Id":  101,
+        "Region":  "Protection",
+        "Function":  "Logging",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  "Включить логирование работы скрипта. Лог будет записываться в папку скрипта. Чтобы остановить логгирование, закройте консоль или наберите \"Stop-Transcript\"."
+                             }
+                }
+    },
+    {
+        "Id":  102,
+        "Region":  "Protection",
+        "Function":  "CreateRestorePoint",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  "Создать точку восстановления."
+                             }
+                }
+    },
+    {
+        "Id":  200,
+        "Region":  "Privacy & Telemetry",
+        "Function":  "DiagTrackService",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Отключить службу \"Функциональные возможности для подключенных пользователей и телеметрия\" (DiagTrack) и блокировать соединение для исходящего трафик клиента единой телеметрии. Отключение службы \"Функциональные возможности для подключенных пользователей и телеметрия\" (DiagTrack) может привести к тому, что вы больше не сможете получать достижения Xbox."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Включить службу DiagTrack и разрешить соединение для исходящего трафик клиента единой телеметрии (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  201,
+        "Region":  "Privacy & Telemetry",
+        "Function":  "DiagnosticDataLevel",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Minimal",
+                                 "ToolTip":  "Установить уровень сбора диагностических данных ОС на минимальный."
+                             },
+                    "One":  {
+                                "Tag":  "Default",
+                                "ToolTip":  "Установить уровень сбора диагностических данных ОС по умолчанию (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  202,
+        "Region":  "Privacy & Telemetry",
+        "Function":  "ErrorReporting",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Отключить запись отчетов об ошибках Windows."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Включить отчеты об ошибках Windows (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  203,
+        "Region":  "Privacy & Telemetry",
+        "Function":  "FeedbackFrequency",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Never",
+                                 "ToolTip":  "Изменить частоту формирования отзывов на \"Никогда\"."
+                             },
+                    "One":  {
+                                "Tag":  "Automatically",
+                                "ToolTip":  "Изменить частоту формирования отзывов на \"Автоматически\" (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  204,
+        "Region":  "Privacy & Telemetry",
+        "Function":  "ScheduledTasks",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Отключить задания диагностического отслеживания."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Включить задания диагностического отслеживания (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  205,
+        "Region":  "Privacy & Telemetry",
+        "Function":  "SigninInfo",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Не использовать данные для входа для автоматического завершения настройки устройства и открытия приложений после перезапуска или обновления."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Использовать данные для входа для автоматического завершения настройки устройства и открытия приложений после перезапуска или обновления (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  206,
+        "Region":  "Privacy & Telemetry",
+        "Function":  "LanguageListAccess",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  207,
+        "Region":  "Privacy & Telemetry",
+        "Function":  "AdvertisingID",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Не разрешать приложениям использовать идентификатор рекламы."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Разрешать приложениям использовать идентификатор рекламы (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  208,
+        "Region":  "Privacy & Telemetry",
+        "Function":  "WindowsWelcomeExperience",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Скрывать экран приветствия Windows после обновлений и иногда при входе, чтобы сообщить о новых функциях и предложениях."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Показывать экран приветствия Windows после обновлений и иногда при входе, чтобы сообщить о новых функциях и предложениях (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  209,
+        "Region":  "Privacy & Telemetry",
+        "Function":  "WindowsTips",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Получать советы и предложения при использованию Windows (значение по умолчанию)."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Не получать советы и предложения при использованию Windows."
+                            }
+                }
+    },
+    {
+        "Id":  210,
+        "Region":  "Privacy & Telemetry",
+        "Function":  "SettingsSuggestedContent",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Скрывать рекомендуемое содержимое в приложении \"Параметры\"."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Показывать рекомендуемое содержимое в приложении \"Параметры\" (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  211,
+        "Region":  "Privacy & Telemetry",
+        "Function":  "AppsSilentInstalling",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Отключить автоматическую установку рекомендованных приложений."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Включить автоматическую установку рекомендованных приложений (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  212,
+        "Region":  "Privacy & Telemetry",
+        "Function":  "WhatsNewInWindows",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Не предлагать способы завершения настройки устройства для максимально эффективного использования Windows."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Предлагать способы завершения настройки устройства для максимально эффективного использования Windows (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  213,
+        "Region":  "Privacy & Telemetry",
+        "Function":  "TailoredExperiences",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Не разрешать корпорации Майкософт использовать ваши диагностические данные для предоставления вам персонализированных советов, рекламы и рекомендаций, чтобы улучшить работу со службами Майкрософт."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Разрешите корпорации Майкософт использовать ваши диагностические данные для предоставления вам персонализированных советов, рекламы и рекомендаций, чтобы улучшить работу со службами Майкрософт (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  214,
+        "Region":  "Privacy & Telemetry",
+        "Function":  "BingSearch",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Отключить в меню \"Пуск\" поиск через Bing (только для США)."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Включить поиск через Bing в меню \"Пуск\" (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  300,
+        "Region":  "UI & Personalization",
+        "Function":  "ThisPC",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Show",
+                                 "ToolTip":  "Отображать значок \"Этот компьютер\" на рабочем столе."
+                             },
+                    "One":  {
+                                "Tag":  "Hide",
+                                "ToolTip":  "Скрывать \"Этот компьютер\" на рабочем столе (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  301,
+        "Region":  "UI & Personalization",
+        "Function":  "CheckBoxes",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Не использовать флажки для выбора элементов."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Использовать флажки для выбора элементов (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  302,
+        "Region":  "UI & Personalization",
+        "Function":  "HiddenItems",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Отображать скрытые файлы, папки и диски."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Не отображать скрытые файлы, папки и диски (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  303,
+        "Region":  "UI & Personalization",
+        "Function":  "FileExtensions",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Show",
+                                 "ToolTip":  "Отображать расширения имён файлов."
+                             },
+                    "One":  {
+                                "Tag":  "Hide",
+                                "ToolTip":  "Скрывать расширения имён файлов файлов (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  304,
+        "Region":  "UI & Personalization",
+        "Function":  "MergeConflicts",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Show",
+                                 "ToolTip":  "Не скрывать конфликт слияния папок."
+                             },
+                    "One":  {
+                                "Tag":  "Hide",
+                                "ToolTip":  "Скрывать конфликт слияния папок (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  305,
+        "Region":  "UI & Personalization",
+        "Function":  "OpenFileExplorerTo",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "ThisPC",
+                                 "ToolTip":  "Открывать проводник для \"Этот компьютер\"."
+                             },
+                    "One":  {
+                                "Tag":  "QuickAccess",
+                                "ToolTip":  "Открывать проводник для \"Быстрый доступ\" (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  306,
+        "Region":  "UI & Personalization",
+        "Function":  "FileExplorerMode",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Отключить компактный режим проводника."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Включить компактный режим проводника (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  307,
+        "Region":  "UI & Personalization",
+        "Function":  "OneDriveFileExplorerAd",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Не показывать уведомления поставщика синхронизации в проводнике."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Показывать уведомления поставщика синхронизации в проводнике (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  308,
+        "Region":  "UI & Personalization",
+        "Function":  "SnapAssist",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "При прикреплении окна не показывать, что можно прикрепить рядом с ним."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "При прикреплении окна показывать, что можно прикрепить рядом с ним (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  309,
+        "Region":  "UI & Personalization",
+        "Function":  "FileTransferDialog",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Detailed",
+                                 "ToolTip":  "Отображать диалоговое окно передачи файлов в развернутом виде."
+                             },
+                    "One":  {
+                                "Tag":  "Compact",
+                                "ToolTip":  "Отображать диалоговое окно передачи файлов в свернутом виде (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  310,
+        "Region":  "UI & Personalization",
+        "Function":  "FileExplorerRibbon",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Expanded",
+                                 "ToolTip":  "Развернуть ленту проводника."
+                             },
+                    "One":  {
+                                "Tag":  "Minimized",
+                                "ToolTip":  "Свернуть ленту проводника (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  311,
+        "Region":  "UI & Personalization",
+        "Function":  "RecycleBinDeleteConfirmation",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Запрашивать подтверждение на удаление файлов в корзину."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Не запрашивать подтверждение на удаление файлов в корзину (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  312,
+        "Region":  "UI & Personalization",
+        "Function":  "3DObjects",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Скрыть папку \"Объемные объекты\" в \"Этот компьютер\" и панели быстрого доступа."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Отображать папку \"Объемные объекты\" в \"Этот компьютер\" и панели быстрого доступа (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  313,
+        "Region":  "UI & Personalization",
+        "Function":  "QuickAccessRecentFiles",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Скрыть недавно использовавшиеся файлы на панели быстрого доступа."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Показать недавно использовавшиеся файлы на панели быстрого доступа (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  314,
+        "Region":  "UI & Personalization",
+        "Function":  "QuickAccessFrequentFolders",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Скрыть недавно используемые папки на панели быстрого доступа."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Показать часто используемые папки на панели быстрого доступа (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  315,
+        "Region":  "UI & Personalization",
+        "Function":  "TaskbarSearch",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Скрыть поле или значок поиска на панели задач."
+                             },
+                    "One":  {
+                                "Tag":  "SearchIcon",
+                                "ToolTip":  "Показать значок поиска на панели задач."
+                            },
+                    "Two":  {
+                                "Tag":  "SearchBox",
+                                "ToolTip":  "Показать поле поиска на панели задач (значение по умолчанию)"
+                            }
+                }
+    },
+    {
+        "Id":  316,
+        "Region":  "UI & Personalization",
+        "Function":  "SearchHighlights",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Скрыть главное в поиске."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Показать главное в поиске (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  317,
+        "Region":  "UI & Personalization",
+        "Function":  "CortanaButton",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Скрывать кнопку Кортаны на панели задач."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Показать кнопку Кортаны на панели задач (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  318,
+        "Region":  "UI & Personalization",
+        "Function":  "TaskViewButton",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Скрыть главное в поиске."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Показать главное в поиске (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  319,
+        "Region":  "UI & Personalization",
+        "Function":  "NewsInterests",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Отключить \"Новости и интересы\" на панели задач."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Включить \"Новости и интересы\" на панели задач (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  320,
+        "Region":  "UI & Personalization",
+        "Function":  "PeopleTaskbar",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Скрывать панель \"Люди\" на панели задач."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Показывать панель \"Люди\" на панели задач (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  321,
+        "Region":  "UI & Personalization",
+        "Function":  "MeetNow",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Скрыть иконку \"Провести собрание\" в области уведомлений."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Отображать иконку \"Провести собрание\" в трее (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  322,
+        "Region":  "UI & Personalization",
+        "Function":  "WindowsInkWorkspace",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Не показывать кнопку Windows Ink Workspace на панели задач."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Показать кнопку Windows Ink Workspace на панели задач (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  323,
+        "Region":  "UI & Personalization",
+        "Function":  "SecondsInSystemClock",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Show",
+                                 "ToolTip":  "Отображать секунды в системных часах на панели задач."
+                             },
+                    "One":  {
+                                "Tag":  "Hide",
+                                "ToolTip":  "Скрывать секунды в системных часах на панели задач (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  324,
+        "Region":  "UI & Personalization",
+        "Function":  "NotificationAreaIcons",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Show",
+                                 "ToolTip":  "Всегда отображать все значки в области уведомлений."
+                             },
+                    "One":  {
+                                "Tag":  "Hide",
+                                "ToolTip":  "Скрыть все значки в области уведомлений (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  325,
+        "Region":  "UI & Personalization",
+        "Function":  "UnpinTaskbarShortcuts -Shortcuts",
+        "ToolTip":  "Открепить ярлыки \"Microsoft Edge\", \"Microsoft Store\" или \"Почта\" от панели задач",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Edge",
+                                 "ToolTip":  "Открепить ярлык \"Microsoft Edge\" от панели задач."
+                             },
+                    "One":  {
+                                "Tag":  "Store",
+                                "ToolTip":  "Открепить ярлык \"Microsoft Store\" от панели задач."
+                            },
+                    "Two":  {
+                                "Tag":  "Mail",
+                                "ToolTip":  "Открепить ярлык \"Почта\" от панели задач"
+                            }
+                }
+    },
+    {
+        "Id":  326,
+        "Region":  "UI & Personalization",
+        "Function":  "ControlPanelView",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "LargeIcons",
+                                 "ToolTip":  "Просмотр иконок Панели управления как крупные значки."
+                             },
+                    "One":  {
+                                "Tag":  "SmallIcons",
+                                "ToolTip":  "Просмотр иконок Панели управления как маленькие значки."
+                            },
+                    "Two":  {
+                                "Tag":  "Category",
+                                "ToolTip":  "Просмотр иконок Панели управления как категория (значение по умолчанию)"
+                            }
+                }
+    },
+    {
+        "Id":  327,
+        "Region":  "UI & Personalization",
+        "Function":  "WindowsColorMode",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Dark",
+                                 "ToolTip":  "Установить режим Windows по умолчанию на темный."
+                             },
+                    "One":  {
+                                "Tag":  "Light",
+                                "ToolTip":  "Установить режим Windows по умолчанию на светлый (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  328,
+        "Region":  "UI & Personalization",
+        "Function":  "AppColorMode",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Dark",
+                                 "ToolTip":  "Установить цвет режима приложения на темный."
+                             },
+                    "One":  {
+                                "Tag":  "Light",
+                                "ToolTip":  "Установить цвет режима приложения на светлый (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  329,
+        "Region":  "UI & Personalization",
+        "Function":  "NewAppInstalledNotification",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Скрыть уведомление \"Установлено новое приложение\"."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Показывать уведомление \"Установлено новое приложение\" (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  330,
+        "Region":  "UI & Personalization",
+        "Function":  "FirstLogonAnimation",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Скрывать анимацию при первом входе в систему после обновления."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Показывать анимацию при первом входе в систему после обновления (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  331,
+        "Region":  "UI & Personalization",
+        "Function":  "JPEGWallpapersQuality",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Max",
+                                 "ToolTip":  "Установить коэффициент качества обоев рабочего стола в формате JPEG на максимальный."
+                             },
+                    "One":  {
+                                "Tag":  "Default",
+                                "ToolTip":  "Установить коэффициент качества обоев рабочего стола в формате JPEG по умолчанию (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  332,
+        "Region":  "UI & Personalization",
+        "Function":  "TaskManagerWindow",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Expanded",
+                                 "ToolTip":  "Запускать Диспетчера задач в развернутом виде."
+                             },
+                    "One":  {
+                                "Tag":  "Compact",
+                                "ToolTip":  "Запускать Диспетчера задач в свернутом виде (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  333,
+        "Region":  "UI & Personalization",
+        "Function":  "ShortcutsSuffix",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Нe дoбaвлять \"- яpлык\" к имени coздaвaeмых яpлыков."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Дoбaвлять \"- яpлык\" к имени coздaвaeмых яpлыков (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  334,
+        "Region":  "UI & Personalization",
+        "Function":  "PrtScnSnippingTool",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Не использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  335,
+        "Region":  "UI & Personalization",
+        "Function":  "AppsLanguageSwitch",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Не использовать метод ввода для каждого окна (значение по умолчанию)."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Позволить выбирать метод ввода для каждого окна."
+                            }
+                }
+    },
+    {
+        "Id":  336,
+        "Region":  "UI & Personalization",
+        "Function":  "AeroShaking",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Когда я беру строку заголовка окна и встряхиваю ее, сворачивайте все остальные окна (значение по умолчанию)."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "При захвате заголовка окна и встряхивании сворачиваются все остальные окна."
+                            }
+                }
+    },
+    {
+        "Id":  337,
+        "Region":  "UI & Personalization",
+        "Function":  "Cursors",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Default",
+                                 "ToolTip":  "Установить курсоры по умолчанию."
+                             },
+                    "One":  {
+                                "Tag":  "Light",
+                                "ToolTip":  "Скачать и установить бесплатные светлые курсоры \"Windows 11 Cursors Concept v2\" от Jepri Creations."
+                            },
+                    "Two":  {
+                                "Tag":  "Dark",
+                                "ToolTip":  "Скачать и установить бесплатные темные курсоры \"Windows 11 Cursors Concept v2\" от Jepri Creations"
+                            }
+                }
+    },
+    {
+        "Id":  338,
+        "Region":  "UI & Personalization",
+        "Function":  "FolderGroupBy",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "None",
+                                 "ToolTip":  "Не группировать файлы и папки в папке Загрузки."
+                             },
+                    "One":  {
+                                "Tag":  "Default",
+                                "ToolTip":  "Группировать файлы и папки по дате изменения (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  339,
+        "Region":  "UI & Personalization",
+        "Function":  "NavigationPaneExpand",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Не разворачивать до открытой папки область навигации (значение по умолчанию)."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Развернуть до открытой папки область навигации."
+                            }
+                }
+    },
+    {
+        "Id":  400,
+        "Region":  "OneDrive",
+        "Function":  "OneDrive",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Uninstall",
+                                 "ToolTip":  "Удалить OneDrive. Папка пользователя OneDrive не будет удалена."
+                             },
+                    "One":  {
+                                "Tag":  "Install",
+                                "ToolTip":  "Установить OneDrive 64-бит."
+                            }
+                }
+    },
+    {
+        "Id":  401,
+        "Region":  "OneDrive",
+        "Function":  "OneDrive -AllUsers",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  "Установите OneDrive 64-бит для всех пользователей."
+                             }
+                }
+    },
+    {
+        "Id":  500,
+        "Region":  "System",
+        "Function":  "StorageSense",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Включить Контроль памяти."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Выключить Контроль памяти (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  501,
+        "Region":  "System",
+        "Function":  "StorageSenseFrequency",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Month",
+                                 "ToolTip":  "Запускать Контроль памяти каждый месяц."
+                             },
+                    "One":  {
+                                "Tag":  "Default",
+                                "ToolTip":  "Запускать Контроль памяти, когда остается мало место на диске (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  502,
+        "Region":  "System",
+        "Function":  "StorageSenseTempFiles",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Удалять временные файлы, не используемые в приложениях (значение по умолчанию)."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Не удалять временные файлы, не используемые в приложениях."
+                            }
+                }
+    },
+    {
+        "Id":  503,
+        "Region":  "System",
+        "Function":  "Hibernation",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Отключить режим гибернации. Не рекомендуется выключать на ноутбуках."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Включить режим гибернации (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  504,
+        "Region":  "System",
+        "Function":  "TempFolder",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "SystemDrive",
+                                 "ToolTip":  "Изменить путь переменной среды для %TEMP% на %SystemDrive%\\Temp."
+                             },
+                    "One":  {
+                                "Tag":  "Default",
+                                "ToolTip":  "Изменить путь переменной среды для %TEMP% на %LOCALAPPDATA%\\Temp (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  505,
+        "Region":  "System",
+        "Function":  "Win32LongPathLimit",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Отключить ограничение Windows на 260 символов в пути."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Включить ограничение Windows на 260 символов в пути (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  506,
+        "Region":  "System",
+        "Function":  "BSoDStopError",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Отображать код Stop-ошибки при появлении BSoD."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Не отображать код Stop-ошибки при появлении BSoD (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  507,
+        "Region":  "System",
+        "Function":  "AdminApprovalMode",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Never",
+                                 "ToolTip":  "Настройка уведомления об изменении параметров компьютера: никогда не уведомлять."
+                             },
+                    "One":  {
+                                "Tag":  "Default",
+                                "ToolTip":  "Настройка уведомления об изменении параметров компьютера: уведомлять меня только при попытках приложений внести изменения в компьютер (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  508,
+        "Region":  "System",
+        "Function":  "MappedDrivesAppElevatedAccess",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Включить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Выключить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  509,
+        "Region":  "System",
+        "Function":  "DeliveryOptimization",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Выключить оптимизацию доставки."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Включить оптимизацию доставки (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  510,
+        "Region":  "System",
+        "Function":  "WaitNetworkStartup",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Всегда ждать сеть при запуске и входе в систему для рабочих групп."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Никогда не ждать сеть при запуске и входе в систему для рабочих групп (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  511,
+        "Region":  "System",
+        "Function":  "WindowsManageDefaultPrinter",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Не разрешать Windows управлять принтером, используемым по умолчанию."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Разрешать Windows управлять принтером, используемым по умолчанию (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  512,
+        "Region":  "System",
+        "Function":  "WindowsFeatures",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Отключить компоненты Windows, используя всплывающее диалоговое окно. Если вы хотите оставить параметр \"Параметры мультимедиа\" в дополнительных параметрах схемы управления питанием, не отключайте \"Компоненты для работы с медиа\"."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Включить компоненты Windows, используя всплывающее диалоговое окно (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  513,
+        "Region":  "System",
+        "Function":  "WindowsCapabilities",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Uninstall",
+                                 "ToolTip":  "Удалить дополнительные компоненты, используя всплывающее диалоговое окно. Если вы хотите оставить параметр \"Параметры мультимедиа\" в дополнительных параметрах схемы управления питанием, не удаляйте компонент \"Компоненты для работы с медиа\"."
+                             },
+                    "One":  {
+                                "Tag":  "Install",
+                                "ToolTip":  "Установить дополнительные компоненты, используя всплывающее диалоговое окно (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  514,
+        "Region":  "System",
+        "Function":  "UpdateMicrosoftProducts",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "При обновлении Windows получать обновления для других продуктов Майкрософт."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "При обновлении Windows не получать обновления для других продуктов Майкрософт (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  515,
+        "Region":  "System",
+        "Function":  "PowerPlan",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "High",
+                                 "ToolTip":  "Установить схему управления питанием на \"Высокая производительность\". Не рекомендуется включать схему управления питанием \"Высокая производительность\" для ноутбуков."
+                             },
+                    "One":  {
+                                "Tag":  "Balanced",
+                                "ToolTip":  "Установить схему управления питанием на \"Сбалансированная\" (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  516,
+        "Region":  "System",
+        "Function":  "LatestInstalled.NET",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Использовать последнюю установленную среду выполнения .NET для всех приложений."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Не использовать последнюю установленную версию .NET для всех приложений (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  517,
+        "Region":  "System",
+        "Function":  "NetworkAdaptersSavePower",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Запретить отключение всех сетевых адаптеров для экономии энергии."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Разрешить отключение всех сетевых адаптеров для экономии энергии (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  518,
+        "Region":  "System",
+        "Function":  "IPv6Component",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Выключить IP версии 6 (TCP/IPv6). Перед выполнением функции будет проведена проверка: поддерживает ли ваш провайдер IPv6, используя ресурс https://ipify.org."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Включить IP версии 6 (TCP/IPv6) (значение по умолчанию). Перед выполнением функции будет проведена проверка: поддерживает ли ваш провайдер IPv6, используя ресурс https://ipify.org."
+                            },
+                    "Two":  {
+                                "Tag":  "PreferIPv4overIPv6",
+                                "ToolTip":  "Включить IP версии 6 (TCP/IPv6). Предпочтение IPv4 перед IPv6. Перед выполнением функции будет проведена проверка: поддерживает ли ваш провайдер IPv6, используя ресурс https://ipify.org"
+                            }
+                }
+    },
+    {
+        "Id":  519,
+        "Region":  "System",
+        "Function":  "InputMethod",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "English",
+                                 "ToolTip":  "Переопределить метод ввода по умолчанию: английский."
+                             },
+                    "One":  {
+                                "Tag":  "Default",
+                                "ToolTip":  "Переопределить метод ввода по умолчанию: использовать список языков (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  520,
+        "Region":  "System",
+        "Function":  "Set-UserShellFolderLocation",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Root",
+                                 "ToolTip":  "Переместить пользовательские папки в корень любого диска на выбор с помощью интерактивного меню. Пользовательские файлы и папки не будут перемещены в новое расположение. Переместите их вручную. По умолчанию они располагаются в папке %USERPROFILE%."
+                             },
+                    "One":  {
+                                "Tag":  "Custom",
+                                "ToolTip":  "Выбрать папки для расположения пользовательских папок вручную, используя диалог \"Обзор папок\". Пользовательские файлы и папки не будут перемещены в новое расположение. Переместите их вручную. По умолчанию они располагаются в папке %USERPROFILE%."
+                            },
+                    "Two":  {
+                                "Tag":  "Default",
+                                "ToolTip":  "Изменить расположение пользовательских папок на значения по умолчанию. Пользовательские файлы и папки не будут перемещены в новое расположение. Переместите их вручную. По умолчанию они располагаются в папке %USERPROFILE% (значение по умолчанию)"
+                            }
+                }
+    },
+    {
+        "Id":  521,
+        "Region":  "System",
+        "Function":  "WinPrtScrFolder",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Desktop",
+                                 "ToolTip":  "Сохранять скриншоты по нажатию Win+PrtScr на рабочий столе. Функция будет применена только в случае, если в пресете настроено удаление приложения OneDrive, иначе ломается функционал резервного копирования для папок \"Рабочий стол\" и \"Изображения\" в OneDrive."
+                             },
+                    "One":  {
+                                "Tag":  "Default",
+                                "ToolTip":  "Cохранять скриншоты по нажатию Win+PrtScr в папку \"Изображения\" (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  522,
+        "Region":  "System",
+        "Function":  "RecommendedTroubleshooting",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Automatically",
+                                 "ToolTip":  "Автоматически запускать средства устранения неполадок, а затем уведомлять. Чтобы заработала данная функция, уровень сбора диагностических данных ОС будет установлен на \"Необязательные диагностические данные\" и включится создание отчетов об ошибках Windows."
+                             },
+                    "One":  {
+                                "Tag":  "Default",
+                                "ToolTip":  "Спрашивать перед запуском средств устранения неполадок. Чтобы заработала данная функция, уровень сбора диагностических данных ОС будет установлен на \"Необязательные диагностические данные\" и включится создание отчетов об ошибках Windows (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  523,
+        "Region":  "System",
+        "Function":  "FoldersLaunchSeparateProcess",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Запускать окна с папками в отдельном процессе."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Не запускать окна с папками в отдельном процессе (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  524,
+        "Region":  "System",
+        "Function":  "ReservedStorage",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Отключить и удалить зарезервированное хранилище после следующей установки обновлений."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Включить зарезервированное хранилище (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  525,
+        "Region":  "System",
+        "Function":  "F1HelpPage",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Отключить открытие справки по нажатию F1."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Включить открытие справки по нажатию F1 (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  526,
+        "Region":  "System",
+        "Function":  "NumLock",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Включить Num Lock при загрузке."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Выключить Num Lock при загрузке (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  527,
+        "Region":  "System",
+        "Function":  "CapsLock",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Выключить Caps Lock."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Включить Caps Lock (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  528,
+        "Region":  "System",
+        "Function":  "StickyShift",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Выключить залипание клавиши Shift после 5 нажатий."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Включить залипание клавиши Shift после 5 нажатий (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  529,
+        "Region":  "System",
+        "Function":  "Autoplay",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Не использовать автозапуск для всех носителей и устройств."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Использовать автозапуск для всех носителей и устройств (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  530,
+        "Region":  "System",
+        "Function":  "ThumbnailCacheRemoval",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Отключить удаление кэша миниатюр."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Включить удаление кэша миниатюр (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  531,
+        "Region":  "System",
+        "Function":  "SaveRestartableApps",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Автоматически сохранять мои перезапускаемые приложения из системы и перезапускать их при повторном входе."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Выключить автоматическое сохранение моих перезапускаемых приложений из системы и перезапускать их при повторном входе (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  532,
+        "Region":  "System",
+        "Function":  "NetworkDiscovery",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Включить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Выключить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  533,
+        "Region":  "System",
+        "Function":  "RestartNotification",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Show",
+                                 "ToolTip":  "Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления."
+                             },
+                    "One":  {
+                                "Tag":  "Hide",
+                                "ToolTip":  "Не показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  534,
+        "Region":  "System",
+        "Function":  "RestartDeviceAfterUpdate",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Перезапускать это устройство как можно быстрее, если для установки обновления требуется перезагрузка."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Не перезапускать это устройство как можно быстрее, если для установки обновления требуется перезагрузка (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  535,
+        "Region":  "System",
+        "Function":  "ActiveHours",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Automatically",
+                                 "ToolTip":  "Автоматически изменять период активности для этого устройства на основе действий."
+                             },
+                    "One":  {
+                                "Tag":  "Manually",
+                                "ToolTip":  "Вручную изменять период активности для этого устройства на основе действий (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  536,
+        "Region":  "System",
+        "Function":  "UninstallPCHealthCheck",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Block",
+                                 "ToolTip":  "Удалить приложение \"Проверка работоспособности ПК Windows\" и заблокировать его установку в будущем. Обновление KB5005463 устанавливает приложение \"Проверка работоспособности ПК Windows\" для проверки соответствия компьютера системным требованиям Windows 11."
+                             }
+                }
+    },
+    {
+        "Id":  537,
+        "Region":  "System",
+        "Function":  "InstallVCRedist",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  "Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2022 (x86/x64)."
+                             }
+                }
+    },
+    {
+        "Id":  538,
+        "Region":  "System",
+        "Function":  "InstallDotNetRuntimes",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  "Установить последнюю версию .NET Desktop Runtime 6, 7 (x86/x64)."
+                             }
+                }
+    },
+    {
+        "Id":  539,
+        "Region":  "System",
+        "Function":  "RKNBypass",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора. Функция применима только для России."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Выключить проксирование только заблокированных сайтов из единого реестра Роскомнадзора (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  540,
+        "Region":  "System",
+        "Function":  "PreventEdgeShortcutCreation",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Channels",
+                                 "ToolTip":  "Перечислите каналы Microsoft Edge для предотвращения создания ярлыков на рабочем столе после его обновления."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Не предотвращать создание ярлыков на рабочем столе при обновлении Microsoft Edge (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  541,
+        "Region":  "System",
+        "Function":  "SATADrivesRemovableMedia",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Запретить отображать все внутренние SATA-диски как съемные носители в области уведомлений на панели задач."
+                             },
+                    "One":  {
+                                "Tag":  "Default",
+                                "ToolTip":  "Отображать все внутренние SATA-диски как съемные носители в области уведомлений на панели задач (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  600,
+        "Region":  "WSL",
+        "Function":  "Install-WSL",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  "Установить подсистему Windows для Linux (WSL), последний пакет обновления ядра Linux и дистрибутив Linux, используя всплывающую форму. Параметр \"При обновлении Windows получать обновления для других продуктов Майкрософт\" будет включен автоматически в Центре обновлении Windows, чтобы получать обновления ядра."
+                             }
+                }
+    },
+    {
+        "Id":  700,
+        "Region":  "Start menu",
+        "Function":  "RecentlyAddedApps",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Скрывать недавно добавленные приложения в меню \"Пуск\"."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Показывать недавно добавленные приложения в меню \"Пуск\" (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  701,
+        "Region":  "Start menu",
+        "Function":  "AppSuggestions",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Скрывать рекомендации в меню \"Пуск\"."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Показывать рекомендации в меню \"Пуск\" (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  702,
+        "Region":  "Start menu",
+        "Function":  "PinToStart -Tiles",
+        "ToolTip":  "Закрепить на начальном экране следующие ярлыки: Панель управления, Устройства и принтеры, PowerShell",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "ControlPanel",
+                                 "ToolTip":  "Закрепить на начальном экране ярлык \"Панель управления\"."
+                             },
+                    "One":  {
+                                "Tag":  "DevicesPrinters",
+                                "ToolTip":  "Закрепить на начальном экране ярлык \"Устройства и принтеры\"."
+                            },
+                    "Two":  {
+                                "Tag":  "PowerShell",
+                                "ToolTip":  "Закрепить на начальном экране ярлык \"PowerShell\""
+                            }
+                }
+    },
+    {
+        "Id":  703,
+        "Region":  "Start menu",
+        "Function":  "PinToStart -UnpinAll",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  "Открепить все ярлыки от начального экрана."
+                             }
+                }
+    },
+    {
+        "Id":  800,
+        "Region":  "UWP apps",
+        "Function":  "UninstallUWPApps",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  "Удалить UWP-приложения, используя всплывающее диалоговое окно. Пакеты приложений не будут установлены для новых пользователей, если отмечена галочка \"Для всех пользователей\"."
+                             }
+                }
+    },
+    {
+        "Id":  801,
+        "Region":  "UWP apps",
+        "Function":  "UninstallUWPApps -ForAllUsers",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  "Удалить UWP-приложения, используя всплывающее диалоговое окно. Пакеты приложений не будут установлены для новых пользователей, если отмечена галочка \"Для всех пользователей\". Аргумент \"ForAllUsers\" устанавливает галочку для удаления пакетов для всех пользователей."
+                             }
+                }
+    },
+    {
+        "Id":  802,
+        "Region":  "UWP apps",
+        "Function":  "RestoreUWPApps",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  "Восстановить стандартные UWP-приложения, используя всплывающее диалоговое окно. UWP-приложения могут быть восстановлены, только если они были удалены для текущего пользователя."
+                             }
+                }
+    },
+    {
+        "Id":  803,
+        "Region":  "UWP apps",
+        "Function":  "HEVC",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Manually",
+                                 "ToolTip":  "Открыть страницу \"Расширения для видео HEVC от производителя устройства\" в Microsoft Store, чтобы вручную установить расширение для открытия форматов .heic и .heif. Расширение может быть установлено бесплатно без учетной записи Microsoft."
+                             },
+                    "One":  {
+                                "Tag":  "Install",
+                                "ToolTip":  "Скачать и установить \"Расширения для видео HEVC от производителя устройства\", чтобы иметь возможность открывать форматы .heic и .heif."
+                            }
+                }
+    },
+    {
+        "Id":  804,
+        "Region":  "UWP apps",
+        "Function":  "CortanaAutostart",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Выключить автозагрузку Кортана."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Включить автозагрузку Кортана (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  805,
+        "Region":  "UWP apps",
+        "Function":  "BackgroundUWPApps",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Не разрешать UWP-приложениям работать в фоновом режиме."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Разрешить всем UWP-приложениям работать в фоновом режиме (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  900,
+        "Region":  "Gaming",
+        "Function":  "XboxGameBar",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Отключить Xbox Game Bar."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Включить Xbox Game Bar (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  901,
+        "Region":  "Gaming",
+        "Function":  "XboxGameTips",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Отключить советы Xbox Game Bar."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Включить советы Xbox Game Bar (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  902,
+        "Region":  "Gaming",
+        "Function":  "Set-AppGraphicsPerformance",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  "Выбрать приложение и установить параметры производительности графики на \"Высокая производительность\" для него. Только при наличии внешней видеокарты."
+                             }
+                }
+    },
+    {
+        "Id":  903,
+        "Region":  "Gaming",
+        "Function":  "GPUScheduling",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Включить планирование графического процессора с аппаратным ускорением. Необходима перезагрузка. Только при наличии внешней видеокарты и WDDM версии 2.7 и выше."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Выключить планирование графического процессора с аппаратным ускорением. Необходима перезагрузка (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1000,
+        "Region":  "Scheduled tasks",
+        "Function":  "CleanupTask",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Register",
+                                 "ToolTip":  "Создать задание \"Windows Cleanup\" по очистке неиспользуемых файлов и обновлений Windows в Планировщике заданий. Нативный интерактивный тост всплывает каждые 30 дней. Задание выполняется каждые 30 дней."
+                             },
+                    "One":  {
+                                "Tag":  "Delete",
+                                "ToolTip":  "Удалить задания \"Windows Cleanup\" и \"Windows Cleanup Notification\" по очистке неиспользуемых файлов и обновлений Windows из Планировщика заданий."
+                            }
+                }
+    },
+    {
+        "Id":  1001,
+        "Region":  "Scheduled tasks",
+        "Function":  "SoftwareDistributionTask",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Register",
+                                 "ToolTip":  "Создать задание \"SoftwareDistribution\" по очистке папки %SystemRoot%\\SoftwareDistribution\\Download в Планировщике заданий. Задание будет ждать, пока служба обновлений Windows не закончит работу. Задание выполняется каждые 90 дней."
+                             },
+                    "One":  {
+                                "Tag":  "Delete",
+                                "ToolTip":  "Удалить задание \"SoftwareDistribution\" по очистке папки %SystemRoot%\\SoftwareDistribution\\Download из Планировщика заданий."
+                            }
+                }
+    },
+    {
+        "Id":  1002,
+        "Region":  "Scheduled tasks",
+        "Function":  "TempTask",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Register",
+                                 "ToolTip":  "Создать задание \"Temp\" в Планировщике заданий по очистке папки %TEMP%. Удаляться будут только файлы старше одного дня. Задание выполняется каждые 60 дней."
+                             },
+                    "One":  {
+                                "Tag":  "Delete",
+                                "ToolTip":  "Удалить задание \"Temp\" по очистке папки %TEMP% из Планировщика заданий."
+                            }
+                }
+    },
+    {
+        "Id":  1100,
+        "Region":  "Microsoft Defender & Security",
+        "Function":  "NetworkProtection",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Включить защиту сети в Microsoft Defender Exploit Guard."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Выключить защиту сети в Microsoft Defender Exploit Guard (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1101,
+        "Region":  "Microsoft Defender & Security",
+        "Function":  "PUAppsDetection",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Включить обнаружение потенциально нежелательных приложений и блокировать их."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Выключить обнаружение потенциально нежелательных приложений и блокировать их (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1102,
+        "Region":  "Microsoft Defender & Security",
+        "Function":  "DefenderSandbox",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Включить песочницу для Microsoft Defender."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Выключить песочницу для Microsoft Defender (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1103,
+        "Region":  "Microsoft Defender & Security",
+        "Function":  "DismissMSAccount",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  "Отклонить предложение Microsoft Defender в \"Безопасность Windows\" о входе в аккаунт Microsoft."
+                             }
+                }
+    },
+    {
+        "Id":  1104,
+        "Region":  "Microsoft Defender & Security",
+        "Function":  "DismissSmartScreenFilter",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  "Отклонить предложение Microsoft Defender в \"Безопасность Windows\" включить фильтр SmartScreen для Microsoft Edge."
+                             }
+                }
+    },
+    {
+        "Id":  1105,
+        "Region":  "Microsoft Defender & Security",
+        "Function":  "AuditProcess",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Включить аудит событий, возникающих при создании или запуске процесса."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Выключить аудит событий, возникающих при создании или запуске процесса (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1106,
+        "Region":  "Microsoft Defender & Security",
+        "Function":  "CommandLineProcessAudit",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Включать командную строку в событиях создания процесса. Для того, чтобы работал данный функционал, будет включен аудит событий (AuditProcess -Enable)."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Не включать командную строку в событиях создания процесса (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1107,
+        "Region":  "Microsoft Defender & Security",
+        "Function":  "EventViewerCustomView",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Создать настраиваемое представление \"Создание процесса\" в Просмотре событий. Для того, чтобы работал данный функционал, буден включен аудит событий (AuditProcess -Enable) и командной строки (CommandLineProcessAudit -Enable) в событиях создания процесса."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Удалить настраиваемое представление \"Создание процесса\" в Просмотре событий (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1108,
+        "Region":  "Microsoft Defender & Security",
+        "Function":  "PowerShellModulesLogging",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Включить ведение журнала для всех модулей Windows PowerShell."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Выключить ведение журнала для всех модулей Windows PowerShell (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1109,
+        "Region":  "Microsoft Defender & Security",
+        "Function":  "PowerShellScriptsLogging",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Включить ведение журнала для всех вводимых сценариев PowerShell в журнале событий Windows PowerShell."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Выключить ведение журнала для всех вводимых сценариев PowerShell в журнале событий Windows PowerShell (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1110,
+        "Region":  "Microsoft Defender & Security",
+        "Function":  "AppsSmartScreen",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Microsoft Defender SmartScreen не помечает скачанные файлы из интернета как небезопасные."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Microsoft Defender SmartScreen помечает скачанные файлы из интернета как небезопасные (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1111,
+        "Region":  "Microsoft Defender & Security",
+        "Function":  "SaveZoneInformation",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Выключить проверку Диспетчером вложений файлов, скачанных из интернета, как небезопасные."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Включить проверку Диспетчера вложений файлов, скачанных из интернета как небезопасные (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1112,
+        "Region":  "Microsoft Defender & Security",
+        "Function":  "WindowsScriptHost",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Отключить Windows Script Host. Блокирует запуск файлов .js и .vbs."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Включить Windows Script Host (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1113,
+        "Region":  "Microsoft Defender & Security",
+        "Function":  "WindowsSandbox",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Включить Windows Sandbox."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Выключить Windows Sandbox (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1200,
+        "Region":  "Context menu",
+        "Function":  "MSIExtractContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Show",
+                                 "ToolTip":  "Отобразить пункт \"Извлечь все\" в контекстное меню Windows Installer (.msi)."
+                             },
+                    "One":  {
+                                "Tag":  "Hide",
+                                "ToolTip":  "Скрыть пункт \"Извлечь все\" из контекстного меню Windows Installer (.msi) (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1201,
+        "Region":  "Context menu",
+        "Function":  "CABInstallContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Show",
+                                 "ToolTip":  "Отобразить пункт \"Установить\" в контекстное меню .cab архивов."
+                             },
+                    "One":  {
+                                "Tag":  "Hide",
+                                "ToolTip":  "Скрыть пункт \"Установить\" из контекстного меню .cab архивов (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1202,
+        "Region":  "Context menu",
+        "Function":  "RunAsDifferentUserContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Show",
+                                 "ToolTip":  "Отобразить пункт \"Запуск от имени другого пользователя\" в контекстное меню .exe файлов."
+                             },
+                    "One":  {
+                                "Tag":  "Hide",
+                                "ToolTip":  "Скрыть пункт \"Запуск от имени другого пользователя\" из контекстное меню .exe файлов (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1203,
+        "Region":  "Context menu",
+        "Function":  "CastToDeviceContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Скрыть пункт \"Передать на устройство\" из контекстного меню медиа-файлов и папок."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Показывать пункт \"Передать на устройство\" в контекстном меню медиа-файлов и папок (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1204,
+        "Region":  "Context menu",
+        "Function":  "ShareContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Скрыть пункт \"Отправить\" (поделиться) из контекстного меню."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Показывать пункт \"Отправить\" (поделиться) в контекстном меню (значение по умолчанию). Отображение элемента \"Поделиться\" в контекстном меню приведет к отключению проводника из Windows 10."
+                            }
+                }
+    },
+    {
+        "Id":  1205,
+        "Region":  "Context menu",
+        "Function":  "EditWithPaint3DContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Скрыть пункт \"Изменить с помощью Paint 3D\" из контекстного меню медиа-файлов."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Показывать пункт \"Изменить с помощью Paint 3D\" в контекстном меню медиа-файлов (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1206,
+        "Region":  "Context menu",
+        "Function":  "EditWithPhotosContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Скрыть пункт \"Изменить с помощью приложения \"Фотографии\"\" из контекстного меню медиа-файлов."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Показывать пункт \"Изменить с помощью приложения \"Фотографии\"\" в контекстном меню медиа-файлов (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1207,
+        "Region":  "Context menu",
+        "Function":  "CreateANewVideoContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Скрыть пункт \"Создать новое видео\" из контекстного меню медиа-файлов."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Показывать пункт \"Создать новое видео\" в контекстном меню медиа-файлов (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1208,
+        "Region":  "Context menu",
+        "Function":  "ImagesEditContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Скрыть пункт \"Изменить\" из контекстного меню изображений."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Показывать пункт \"Изменить\" в контекстном меню изображений (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1209,
+        "Region":  "Context menu",
+        "Function":  "PrintCMDContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Скрыть пункт \"Печать\" из контекстного меню .bat и .cmd файлов."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Показывать пункт \"Печать\" в контекстном меню .bat и .cmd файлов (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1210,
+        "Region":  "Context menu",
+        "Function":  "IncludeInLibraryContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Скрыть пункт \"Добавить в библиотеку\" из контекстного меню папок и дисков."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Показывать пункт \"Добавить в библиотеку\" в контекстном меню папок и дисков (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1211,
+        "Region":  "Context menu",
+        "Function":  "SendToContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Скрыть пункт \"Отправить\" из контекстного меню папок."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Показывать пункт \"Отправить\" в контекстном меню папок (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1212,
+        "Region":  "Context menu",
+        "Function":  "BitmapImageNewContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Скрыть пункт \"Точечный рисунок\" из контекстного меню \"Создать\"."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Восстановить пункт \"Точечный рисунок\" в контекстного меню \"Создать\" (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1213,
+        "Region":  "Context menu",
+        "Function":  "RichTextDocumentNewContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Скрыть пункт \"Документ в формате RTF\" из контекстного меню \"Создать\"."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Восстановить пункт \"Документ в формате RTF\" в контекстного меню \"Создать\" (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1214,
+        "Region":  "Context menu",
+        "Function":  "CompressedFolderNewContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Скрыть пункт \"Сжатая ZIP-папка\" из контекстного меню \"Создать\"."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Восстановить пункт \"Сжатая ZIP-папка\" в контекстном меню \"Создать\" (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1215,
+        "Region":  "Context menu",
+        "Function":  "MultipleInvokeContext",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Включить элементы контекстного меню \"Открыть\", \"Изменить\" и \"Печать\" при выделении более 15 элементов."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Отключить элементы контекстного меню \"Открыть\", \"Изменить\" и \"Печать\" при выделении более 15 элементов (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1216,
+        "Region":  "Context menu",
+        "Function":  "UseStoreOpenWith",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Скрыть пункт \"Поиск приложения в Microsoft Store\" в диалоге \"Открыть с помощью\"."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Отображать пункт \"Поиск приложения в Microsoft Store\" в диалоге \"Открыть с помощью\" (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  1300,
+        "Region":  "Update Policies",
+        "Function":  "UpdateLGPEPolicies",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  "Отобразить все политики реестра (даже созданные вручную) в оснастке Редактора локальной групповой политики (gpedit.msc). Это может занять до 30 минут в зависимости от количества политик, созданных в реестре, и мощности вашей системы."
+                             }
+                }
     }
-  },
-  {
-    "Id": 500,
-    "Region": "System",
-    "Function": "StorageSense",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Включить Контроль памяти"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Выключить Контроль памяти (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 501,
-    "Region": "System",
-    "Function": "StorageSenseFrequency",
-    "Arg": {
-      "Zero": {
-        "Tag": "Month",
-        "ToolTip": "Запускать Контроль памяти каждый месяц"
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Запускать Контроль памяти, когда остается мало место на диске (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 502,
-    "Region": "System",
-    "Function": "StorageSenseTempFiles",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Удалять временные файлы, не используемые в приложениях (значение по умолчанию)"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Не удалять временные файлы, не используемые в приложениях"
-      }
-    }
-  },
-  {
-    "Id": 503,
-    "Region": "System",
-    "Function": "Hibernation",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Отключить режим гибернации. Не рекомендуется выключать на ноутбуках"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Включить режим гибернации (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 504,
-    "Region": "System",
-    "Function": "TempFolder",
-    "Arg": {
-      "Zero": {
-        "Tag": "SystemDrive",
-        "ToolTip": "Изменить путь переменной среды для %TEMP% на %SystemDrive%\\Temp"
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Изменить путь переменной среды для %TEMP% на %LOCALAPPDATA%\\Temp (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 505,
-    "Region": "System",
-    "Function": "Win32LongPathLimit",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Отключить ограничение Windows на 260 символов в пути"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Включить ограничение Windows на 260 символов в пути (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 506,
-    "Region": "System",
-    "Function": "BSoDStopError",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Отображать код Stop-ошибки при появлении BSoD"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Не отображать код Stop-ошибки при появлении BSoD (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 507,
-    "Region": "System",
-    "Function": "AdminApprovalMode",
-    "Arg": {
-      "Zero": {
-        "Tag": "Never",
-        "ToolTip": "Настройка уведомления об изменении параметров компьютера: никогда не уведомлять"
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Настройка уведомления об изменении параметров компьютера: уведомлять меня только при попытках приложений внести изменения в компьютер (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 508,
-    "Region": "System",
-    "Function": "MappedDrivesAppElevatedAccess",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Включить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Выключить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 509,
-    "Region": "System",
-    "Function": "DeliveryOptimization",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Выключить оптимизацию доставки"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Включить оптимизацию доставки (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 510,
-    "Region": "System",
-    "Function": "WaitNetworkStartup",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Всегда ждать сеть при запуске и входе в систему для рабочих групп"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Никогда не ждать сеть при запуске и входе в систему для рабочих групп (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 511,
-    "Region": "System",
-    "Function": "WindowsManageDefaultPrinter",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Не разрешать Windows управлять принтером, используемым по умолчанию"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Разрешать Windows управлять принтером, используемым по умолчанию (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 512,
-    "Region": "System",
-    "Function": "WindowsFeatures",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Отключить компоненты Windows, используя всплывающее диалоговое окно. Если вы хотите оставить параметр \"Параметры мультимедиа\" в дополнительных параметрах схемы управления питанием, не отключайте \"Компоненты для работы с медиа\""
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Включить компоненты Windows, используя всплывающее диалоговое окно (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 513,
-    "Region": "System",
-    "Function": "WindowsCapabilities",
-    "Arg": {
-      "Zero": {
-        "Tag": "Uninstall",
-        "ToolTip": "Удалить дополнительные компоненты, используя всплывающее диалоговое окно. Если вы хотите оставить параметр \"Параметры мультимедиа\" в дополнительных параметрах схемы управления питанием, не удаляйте компонент \"Компоненты для работы с медиа\""
-      },
-      "One": {
-        "Tag": "Install",
-        "ToolTip": "Установить дополнительные компоненты, используя всплывающее диалоговое окно (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 514,
-    "Region": "System",
-    "Function": "UpdateMicrosoftProducts",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "При обновлении Windows получать обновления для других продуктов Майкрософт"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "При обновлении Windows не получать обновления для других продуктов Майкрософт (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 515,
-    "Region": "System",
-    "Function": "PowerPlan",
-    "Arg": {
-      "Zero": {
-        "Tag": "High",
-        "ToolTip": "Установить схему управления питанием на \"Высокая производительность\". Не рекомендуется включать схему управления питанием \"Высокая производительность\" для ноутбуков"
-      },
-      "One": {
-        "Tag": "Balanced",
-        "ToolTip": "Установить схему управления питанием на \"Сбалансированная\" (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 516,
-    "Region": "System",
-    "Function": "LatestInstalled.NET",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Использовать последнюю установленную среду выполнения .NET для всех приложений"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Не использовать последнюю установленную версию .NET для всех приложений (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 517,
-    "Region": "System",
-    "Function": "NetworkAdaptersSavePower",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Запретить отключение всех сетевых адаптеров для экономии энергии"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Разрешить отключение всех сетевых адаптеров для экономии энергии (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 518,
-    "Region": "System",
-    "Function": "IPv6Component",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Выключить IP версии 6 (TCP/IPv6). Перед выполнением функции будет проведена проверка: поддерживает ли ваш провайдер IPv6, используя ресурс https://ipify.org"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Включить IP версии 6 (TCP/IPv6) (значение по умолчанию). Перед выполнением функции будет проведена проверка: поддерживает ли ваш провайдер IPv6, используя ресурс https://ipify.org"
-      },
-      "Two": {
-        "Tag": "PreferIPv4overIPv6",
-        "ToolTip": "Включить IP версии 6 (TCP/IPv6). Предпочтение IPv4 перед IPv6. Перед выполнением функции будет проведена проверка: поддерживает ли ваш провайдер IPv6, используя ресурс https://ipify.org"
-      }
-    }
-  },
-  {
-    "Id": 519,
-    "Region": "System",
-    "Function": "InputMethod",
-    "Arg": {
-      "Zero": {
-        "Tag": "English",
-        "ToolTip": "Переопределить метод ввода по умолчанию: английский"
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Переопределить метод ввода по умолчанию: использовать список языков (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 520,
-    "Region": "System",
-    "Function": "Set-UserShellFolderLocation",
-    "Arg": {
-      "Zero": {
-        "Tag": "Root",
-        "ToolTip": "Переместить пользовательские папки в корень любого диска на выбор с помощью интерактивного меню. Пользовательские файлы и папки не будут перемещены в новое расположение. Переместите их вручную. По умолчанию они располагаются в папке %USERPROFILE%"
-      },
-      "One": {
-        "Tag": "Custom",
-        "ToolTip": "Выбрать папки для расположения пользовательских папок вручную, используя диалог \"Обзор папок\". Пользовательские файлы и папки не будут перемещены в новое расположение. Переместите их вручную. По умолчанию они располагаются в папке %USERPROFILE%"
-      },
-      "Two": {
-        "Tag": "Default",
-        "ToolTip": "Изменить расположение пользовательских папок на значения по умолчанию. Пользовательские файлы и папки не будут перемещены в новое расположение. Переместите их вручную. По умолчанию они располагаются в папке %USERPROFILE% (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 521,
-    "Region": "System",
-    "Function": "WinPrtScrFolder",
-    "Arg": {
-      "Zero": {
-        "Tag": "Desktop",
-        "ToolTip": "Сохранять скриншоты по нажатию Win+PrtScr на рабочий столе. Функция будет применена только в случае, если в пресете настроено удаление приложения OneDrive, иначе ломается функционал резервного копирования для папок \"Рабочий стол\" и \"Изображения\" в OneDrive"
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Cохранять скриншоты по нажатию Win+PrtScr в папку \"Изображения\" (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 522,
-    "Region": "System",
-    "Function": "RecommendedTroubleshooting",
-    "Arg": {
-      "Zero": {
-        "Tag": "Automatically",
-        "ToolTip": "Автоматически запускать средства устранения неполадок, а затем уведомлять. Чтобы заработала данная функция, уровень сбора диагностических данных ОС будет установлен на \"Необязательные диагностические данные\" и включится создание отчетов об ошибках Windows"
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Спрашивать перед запуском средств устранения неполадок. Чтобы заработала данная функция, уровень сбора диагностических данных ОС будет установлен на \"Необязательные диагностические данные\" и включится создание отчетов об ошибках Windows (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 523,
-    "Region": "System",
-    "Function": "FoldersLaunchSeparateProcess",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Запускать окна с папками в отдельном процессе"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Не запускать окна с папками в отдельном процессе (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 524,
-    "Region": "System",
-    "Function": "ReservedStorage",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Отключить и удалить зарезервированное хранилище после следующей установки обновлений"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Включить зарезервированное хранилище (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 525,
-    "Region": "System",
-    "Function": "F1HelpPage",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Отключить открытие справки по нажатию F1"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Включить открытие справки по нажатию F1 (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 526,
-    "Region": "System",
-    "Function": "NumLock",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Включить Num Lock при загрузке"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Выключить Num Lock при загрузке (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 527,
-    "Region": "System",
-    "Function": "CapsLock",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Выключить Caps Lock"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Включить Caps Lock (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 528,
-    "Region": "System",
-    "Function": "StickyShift",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Выключить залипание клавиши Shift после 5 нажатий"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Включить залипание клавиши Shift после 5 нажатий (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 529,
-    "Region": "System",
-    "Function": "Autoplay",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Не использовать автозапуск для всех носителей и устройств"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Использовать автозапуск для всех носителей и устройств (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 530,
-    "Region": "System",
-    "Function": "ThumbnailCacheRemoval",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Отключить удаление кэша миниатюр"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Включить удаление кэша миниатюр (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 531,
-    "Region": "System",
-    "Function": "SaveRestartableApps",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Автоматически сохранять мои перезапускаемые приложения из системы и перезапускать их при повторном входе"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Выключить автоматическое сохранение моих перезапускаемых приложений из системы и перезапускать их при повторном входе (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 532,
-    "Region": "System",
-    "Function": "NetworkDiscovery",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Включить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Выключить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 533,
-    "Region": "System",
-    "Function": "ActiveHours",
-    "Arg": {
-      "Zero": {
-        "Tag": "Automatically",
-        "ToolTip": "Автоматически изменять период активности для этого устройства на основе действий"
-      },
-      "One": {
-        "Tag": "Manually",
-        "ToolTip": "Вручную изменять период активности для этого устройства на основе действий (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 534,
-    "Region": "System",
-    "Function": "RestartDeviceAfterUpdate",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Перезапускать это устройство как можно быстрее, если для установки обновления требуется перезагрузка"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Не перезапускать это устройство как можно быстрее, если для установки обновления требуется перезагрузка (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 535,
-    "Region": "System",
-    "Function": "UninstallPCHealthCheck",
-    "Arg": {
-      "Zero": {
-        "Tag": "Block",
-        "ToolTip": "Удалить приложение \"Проверка работоспособности ПК Windows\" и заблокировать его установку в будущем. Обновление KB5005463 устанавливает приложение \"Проверка работоспособности ПК Windows\" для проверки соответствия компьютера системным требованиям Windows 11"
-      }
-    }
-  },
-  {
-    "Id": 536,
-    "Region": "System",
-    "Function": "InstallVCRedist",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2022 (x86/x64)"
-      }
-    }
-  },
-  {
-    "Id": 537,
-    "Region": "System",
-    "Function": "InstallDotNetRuntimes",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Установить последнюю версию .NET Desktop Runtime 6, 7 (x86/x64)"
-      }
-    }
-  },
-  {
-    "Id": 538,
-    "Region": "System",
-    "Function": "RKNBypass",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора. Функция применима только для России."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Выключить проксирование только заблокированных сайтов из единого реестра Роскомнадзора (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 539,
-    "Region": "System",
-    "Function": "PreventEdgeShortcutCreation",
-    "Arg": {
-      "Zero": {
-        "Tag": "Channels",
-        "ToolTip": "Перечислите каналы Microsoft Edge для предотвращения создания ярлыков на рабочем столе после его обновления"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Не предотвращать создание ярлыков на рабочем столе при обновлении Microsoft Edge (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 540,
-    "Region": "System",
-    "Function": "SATADrivesRemovableMedia",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Запретить отображать все внутренние SATA-диски как съемные носители в области уведомлений на панели задач"
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Отображать все внутренние SATA-диски как съемные носители в области уведомлений на панели задач (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 600,
-    "Region": "WSL",
-    "Function": "Install-WSL",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Установить подсистему Windows для Linux (WSL), последний пакет обновления ядра Linux и дистрибутив Linux, используя всплывающую форму. Параметр \"При обновлении Windows получать обновления для других продуктов Майкрософт\" будет включен автоматически в Центре обновлении Windows, чтобы получать обновления ядра"
-      }
-    }
-  },
-  {
-    "Id": 700,
-    "Region": "Start menu",
-    "Function": "RecentlyAddedApps",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрывать недавно добавленные приложения в меню \"Пуск\""
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показывать недавно добавленные приложения в меню \"Пуск\" (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 701,
-    "Region": "Start menu",
-    "Function": "AppSuggestions",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрывать рекомендации в меню \"Пуск\""
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показывать рекомендации в меню \"Пуск\" (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 702,
-    "Region": "Start menu",
-    "Function": "PinToStart -Tiles",
-    "ToolTip": "Закрепить на начальном экране следующие ярлыки: Панель управления, Устройства и принтеры, PowerShell",
-    "Arg": {
-      "Zero": {
-        "Tag": "ControlPanel",
-        "ToolTip": "Закрепить на начальном экране ярлык \"Панель управления\""
-      },
-      "One": {
-        "Tag": "DevicesPrinters",
-        "ToolTip": "Закрепить на начальном экране ярлык \"Устройства и принтеры\""
-      },
-      "Two": {
-        "Tag": "PowerShell",
-        "ToolTip": "Закрепить на начальном экране ярлык \"PowerShell\""
-      }
-    }
-  },
-  {
-    "Id": 703,
-    "Region": "Start menu",
-    "Function": "PinToStart -UnpinAll",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Открепить все ярлыки от начального экрана"
-      }
-    }
-  },
-  {
-    "Id": 800,
-    "Region": "UWP apps",
-    "Function": "UninstallUWPApps",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Удалить UWP-приложения, используя всплывающее диалоговое окно. Пакеты приложений не будут установлены для новых пользователей, если отмечена галочка \"Для всех пользователей\""
-      }
-    }
-  },
-  {
-    "Id": 801,
-    "Region": "UWP apps",
-    "Function": "UninstallUWPApps -ForAllUsers",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Удалить UWP-приложения, используя всплывающее диалоговое окно. Пакеты приложений не будут установлены для новых пользователей, если отмечена галочка \"Для всех пользователей\". Аргумент \"ForAllUsers\" устанавливает галочку для удаления пакетов для всех пользователей"
-      }
-    }
-  },
-  {
-    "Id": 802,
-    "Region": "UWP apps",
-    "Function": "RestoreUWPApps",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Восстановить стандартные UWP-приложения, используя всплывающее диалоговое окно. UWP-приложения могут быть восстановлены, только если они были удалены для текущего пользователя"
-      }
-    }
-  },
-  {
-    "Id": 803,
-    "Region": "UWP apps",
-    "Function": "HEVC",
-    "Arg": {
-      "Zero": {
-        "Tag": "Manually",
-        "ToolTip": "Открыть страницу \"Расширения для видео HEVC от производителя устройства\" в Microsoft Store, чтобы вручную установить расширение для открытия форматов .heic и .heif. Расширение может быть установлено бесплатно без учетной записи Microsoft"
-      },
-      "One": {
-        "Tag": "Install",
-        "ToolTip": "Скачать и установить \"Расширения для видео HEVC от производителя устройства\", чтобы иметь возможность открывать форматы .heic и .heif"
-      }
-    }
-  },
-  {
-    "Id": 804,
-    "Region": "UWP apps",
-    "Function": "CortanaAutostart",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Выключить автозагрузку Кортана"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Включить автозагрузку Кортана (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 805,
-    "Region": "UWP apps",
-    "Function": "BackgroundUWPApps",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Не разрешать UWP-приложениям работать в фоновом режиме"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Разрешить всем UWP-приложениям работать в фоновом режиме (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 900,
-    "Region": "Gaming",
-    "Function": "XboxGameBar",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Отключить Xbox Game Bar"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Включить Xbox Game Bar (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 901,
-    "Region": "Gaming",
-    "Function": "XboxGameTips",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Отключить советы Xbox Game Bar"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Включить советы Xbox Game Bar (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 902,
-    "Region": "Gaming",
-    "Function": "Set-AppGraphicsPerformance",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Выбрать приложение и установить параметры производительности графики на \"Высокая производительность\" для него. Только при наличии внешней видеокарты"
-      }
-    }
-  },
-  {
-    "Id": 903,
-    "Region": "Gaming",
-    "Function": "GPUScheduling",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Включить планирование графического процессора с аппаратным ускорением. Необходима перезагрузка. Только при наличии внешней видеокарты и WDDM версии 2.7 и выше"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Выключить планирование графического процессора с аппаратным ускорением. Необходима перезагрузка (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1000,
-    "Region": "Scheduled tasks",
-    "Function": "CleanupTask",
-    "Arg": {
-      "Zero": {
-        "Tag": "Register",
-        "ToolTip": "Создать задание \"Windows Cleanup\" по очистке неиспользуемых файлов и обновлений Windows в Планировщике заданий. Нативный интерактивный тост всплывает каждые 30 дней. Задание выполняется каждые 30 дней"
-      },
-      "One": {
-        "Tag": "Delete",
-        "ToolTip": "Удалить задания \"Windows Cleanup\" и \"Windows Cleanup Notification\" по очистке неиспользуемых файлов и обновлений Windows из Планировщика заданий"
-      }
-    }
-  },
-  {
-    "Id": 1001,
-    "Region": "Scheduled tasks",
-    "Function": "SoftwareDistributionTask",
-    "Arg": {
-      "Zero": {
-        "Tag": "Register",
-        "ToolTip": "Создать задание \"SoftwareDistribution\" по очистке папки %SystemRoot%\\SoftwareDistribution\\Download в Планировщике заданий. Задание будет ждать, пока служба обновлений Windows не закончит работу. Задание выполняется каждые 90 дней"
-      },
-      "One": {
-        "Tag": "Delete",
-        "ToolTip": "Удалить задание \"SoftwareDistribution\" по очистке папки %SystemRoot%\\SoftwareDistribution\\Download из Планировщика заданий"
-      }
-    }
-  },
-  {
-    "Id": 1002,
-    "Region": "Scheduled tasks",
-    "Function": "TempTask",
-    "Arg": {
-      "Zero": {
-        "Tag": "Register",
-        "ToolTip": "Создать задание \"Temp\" в Планировщике заданий по очистке папки %TEMP%. Удаляться будут только файлы старше одного дня. Задание выполняется каждые 60 дней"
-      },
-      "One": {
-        "Tag": "Delete",
-        "ToolTip": "Удалить задание \"Temp\" по очистке папки %TEMP% из Планировщика заданий"
-      }
-    }
-  },
-  {
-    "Id": 1100,
-    "Region": "Microsoft Defender & Security",
-    "Function": "NetworkProtection",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Включить защиту сети в Microsoft Defender Exploit Guard"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Выключить защиту сети в Microsoft Defender Exploit Guard (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1101,
-    "Region": "Microsoft Defender & Security",
-    "Function": "PUAppsDetection",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Включить обнаружение потенциально нежелательных приложений и блокировать их"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Выключить обнаружение потенциально нежелательных приложений и блокировать их (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1102,
-    "Region": "Microsoft Defender & Security",
-    "Function": "DefenderSandbox",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Включить песочницу для Microsoft Defender"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Выключить песочницу для Microsoft Defender (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1103,
-    "Region": "Microsoft Defender & Security",
-    "Function": "DismissMSAccount",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Отклонить предложение Microsoft Defender в \"Безопасность Windows\" о входе в аккаунт Microsoft"
-      }
-    }
-  },
-  {
-    "Id": 1104,
-    "Region": "Microsoft Defender & Security",
-    "Function": "DismissSmartScreenFilter",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Отклонить предложение Microsoft Defender в \"Безопасность Windows\" включить фильтр SmartScreen для Microsoft Edge"
-      }
-    }
-  },
-  {
-    "Id": 1105,
-    "Region": "Microsoft Defender & Security",
-    "Function": "AuditProcess",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Включить аудит событий, возникающих при создании или запуске процесса"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Выключить аудит событий, возникающих при создании или запуске процесса (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1106,
-    "Region": "Microsoft Defender & Security",
-    "Function": "CommandLineProcessAudit",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Включать командную строку в событиях создания процесса. Для того, чтобы работал данный функционал, будет включен аудит событий (AuditProcess -Enable)"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Не включать командную строку в событиях создания процесса (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1107,
-    "Region": "Microsoft Defender & Security",
-    "Function": "EventViewerCustomView",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Создать настраиваемое представление \"Создание процесса\" в Просмотре событий. Для того, чтобы работал данный функционал, буден включен аудит событий (AuditProcess -Enable) и командной строки (CommandLineProcessAudit -Enable) в событиях создания процесса"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Удалить настраиваемое представление \"Создание процесса\" в Просмотре событий (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1108,
-    "Region": "Microsoft Defender & Security",
-    "Function": "PowerShellModulesLogging",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Включить ведение журнала для всех модулей Windows PowerShell"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Выключить ведение журнала для всех модулей Windows PowerShell (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1109,
-    "Region": "Microsoft Defender & Security",
-    "Function": "PowerShellScriptsLogging",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Включить ведение журнала для всех вводимых сценариев PowerShell в журнале событий Windows PowerShell"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Выключить ведение журнала для всех вводимых сценариев PowerShell в журнале событий Windows PowerShell (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1110,
-    "Region": "Microsoft Defender & Security",
-    "Function": "AppsSmartScreen",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Microsoft Defender SmartScreen не помечает скачанные файлы из интернета как небезопасные"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Microsoft Defender SmartScreen помечает скачанные файлы из интернета как небезопасные (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1111,
-    "Region": "Microsoft Defender & Security",
-    "Function": "SaveZoneInformation",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Выключить проверку Диспетчером вложений файлов, скачанных из интернета, как небезопасные"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Включить проверку Диспетчера вложений файлов, скачанных из интернета как небезопасные (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1112,
-    "Region": "Microsoft Defender & Security",
-    "Function": "WindowsScriptHost",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Отключить Windows Script Host. Блокирует запуск файлов .js и .vbs"
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Включить Windows Script Host (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1113,
-    "Region": "Microsoft Defender & Security",
-    "Function": "WindowsSandbox",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Включить Windows Sandbox"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Выключить Windows Sandbox (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1200,
-    "Region": "Context menu",
-    "Function": "MSIExtractContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Отобразить пункт \"Извлечь все\" в контекстное меню Windows Installer (.msi)"
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть пункт \"Извлечь все\" из контекстного меню Windows Installer (.msi) (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1201,
-    "Region": "Context menu",
-    "Function": "CABInstallContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Отобразить пункт \"Установить\" в контекстное меню .cab архивов"
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть пункт \"Установить\" из контекстного меню .cab архивов (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1202,
-    "Region": "Context menu",
-    "Function": "RunAsDifferentUserContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Отобразить пункт \"Запуск от имени другого пользователя\" в контекстное меню .exe файлов"
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть пункт \"Запуск от имени другого пользователя\" из контекстное меню .exe файлов (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1203,
-    "Region": "Context menu",
-    "Function": "CastToDeviceContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть пункт \"Передать на устройство\" из контекстного меню медиа-файлов и папок"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показывать пункт \"Передать на устройство\" в контекстном меню медиа-файлов и папок (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1204,
-    "Region": "Context menu",
-    "Function": "ShareContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть пункт \"Отправить\" (поделиться) из контекстного меню"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показывать пункт \"Отправить\" (поделиться) в контекстном меню (значение по умолчанию). Отображение элемента \"Поделиться\" в контекстном меню приведет к отключению проводника из Windows 10"
-      }
-    }
-  },
-  {
-    "Id": 1205,
-    "Region": "Context menu",
-    "Function": "EditWithPaint3DContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть пункт \"Изменить с помощью Paint 3D\" из контекстного меню медиа-файлов"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показывать пункт \"Изменить с помощью Paint 3D\" в контекстном меню медиа-файлов (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1206,
-    "Region": "Context menu",
-    "Function": "EditWithPhotosContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть пункт \"Изменить с помощью приложения \"Фотографии\"\" из контекстного меню медиа-файлов"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показывать пункт \"Изменить с помощью приложения \"Фотографии\"\" в контекстном меню медиа-файлов (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1207,
-    "Region": "Context menu",
-    "Function": "CreateANewVideoContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть пункт \"Создать новое видео\" из контекстного меню медиа-файлов"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показывать пункт \"Создать новое видео\" в контекстном меню медиа-файлов (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1208,
-    "Region": "Context menu",
-    "Function": "ImagesEditContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть пункт \"Изменить\" из контекстного меню изображений"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показывать пункт \"Изменить\" в контекстном меню изображений (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1209,
-    "Region": "Context menu",
-    "Function": "PrintCMDContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть пункт \"Печать\" из контекстного меню .bat и .cmd файлов"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показывать пункт \"Печать\" в контекстном меню .bat и .cmd файлов (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1210,
-    "Region": "Context menu",
-    "Function": "IncludeInLibraryContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть пункт \"Добавить в библиотеку\" из контекстного меню папок и дисков"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показывать пункт \"Добавить в библиотеку\" в контекстном меню папок и дисков (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1211,
-    "Region": "Context menu",
-    "Function": "SendToContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть пункт \"Отправить\" из контекстного меню папок"
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Показывать пункт \"Отправить\" в контекстном меню папок (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1212,
-    "Region": "Context menu",
-    "Function": "BitmapImageNewContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть пункт \"Точечный рисунок\" из контекстного меню \"Создать\""
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Восстановить пункт \"Точечный рисунок\" в контекстного меню \"Создать\" (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1213,
-    "Region": "Context menu",
-    "Function": "RichTextDocumentNewContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть пункт \"Документ в формате RTF\" из контекстного меню \"Создать\""
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Восстановить пункт \"Документ в формате RTF\" в контекстного меню \"Создать\" (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1214,
-    "Region": "Context menu",
-    "Function": "CompressedFolderNewContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть пункт \"Сжатая ZIP-папка\" из контекстного меню \"Создать\""
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Восстановить пункт \"Сжатая ZIP-папка\" в контекстном меню \"Создать\" (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1215,
-    "Region": "Context menu",
-    "Function": "MultipleInvokeContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Включить элементы контекстного меню \"Открыть\", \"Изменить\" и \"Печать\" при выделении более 15 элементов"
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Отключить элементы контекстного меню \"Открыть\", \"Изменить\" и \"Печать\" при выделении более 15 элементов (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1216,
-    "Region": "Context menu",
-    "Function": "UseStoreOpenWith",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть пункт \"Поиск приложения в Microsoft Store\" в диалоге \"Открыть с помощью\""
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Отображать пункт \"Поиск приложения в Microsoft Store\" в диалоге \"Открыть с помощью\" (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Id": 1300,
-    "Region": "Update Policies",
-    "Function": "UpdateLGPEPolicies",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Отобразить все политики реестра (даже созданные вручную) в оснастке Редактора локальной групповой политики (gpedit.msc). Это может занять до 30 минут в зависимости от количества политик, созданных в реестре, и мощности вашей системы"
-      }
-    }
-  }
 ]

@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = \nKomut dosyası Windows 11 22H2+'yı destekler
-UpdateWarning                             = \nWindows 11 yapınız: {0}.{1}. Desteklenen yapılar: 22621.1413 ve üstünü destekliyor. Windows Update'i çalıştırın ve tekrar deneyin
+UpdateWarning                             = \nWindows 11 yapınız: {0}.{1}. Desteklenen yapılar: 22621.1702+. Windows Update'i çalıştırın ve tekrar deneyin
 UnsupportedLanguageMode                   = \nSınırlı bir dil modunda çalışan PowerShell oturumu
 LoggedInUserNotAdmin                      = \nOturum açan kullanıcının yönetici hakları yok
 UnsupportedPowerShell                     = \nKomut dosyasını PowerShell {0}.{1} aracılığıyla çalıştırmaya çalışıyorsunuz. Komut dosyasını uygun PowerShell sürümünde çalıştırın
@@ -52,7 +52,7 @@ ErrorsLine                                = Satır
 ErrorsMessage                             = Hatalar/Uyarılar
 DialogBoxOpening                          = İletişim kutusu görüntüleniyor...
 Disable                                   = Devre dışı bırak
-EXEFilesFilter                            = *.exe|*.exe|Tüm Dosyalar (*.*)|*.*
+AllFilesFilter                            = Tüm Dosyalar
 FolderSelect                              = Klasör seç
 FilesWontBeMoved                          = Dosyalar taşınmayacak
 Install                                   = Yükle

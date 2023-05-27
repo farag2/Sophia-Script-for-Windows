@@ -1,13 +1,13 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Скрипт поддерживает только 64-битную версию Windows
-UnsupportedOSBuild                        = \nСкрипт поддерживает Windows 10 22H2+
-UpdateWarning                             = \nУстановленный накопительный пакет обновления Windows 10: {0}. Поддерживаемый накопительный пакет обновления: 2728 и выше. Запустите обновление Windows и попробуйте заново
+UnsupportedOSBuild                        = \nСкрипт поддерживает Windows 10 22H2
+UpdateWarning                             = \nВаш билд Windows 10: {0}.{1}. Поддерживаемые сборки: 19045.2965+. Запустите обновление Windows и попробуйте заново
 UnsupportedLanguageMode                   = \nСессия PowerShell работает в ограниченном режиме
 LoggedInUserNotAdmin                      = \nТекущий вошедший пользователь не обладает правами администратора
 UnsupportedPowerShell                     = \nВы пытаетесь запустить скрипт в PowerShell {0}.{1}. Запустите скрипт в соответствующей версии PowerShell
 UnsupportedHost                           = \nСкрипт не поддерживает работу через {0}
 Win10TweakerWarning                       = \nВаша ОС, возможно, через бэкдор в Win 10 Tweaker была заражена трояном
-TweakerWarning                            = \nСтабильность Windows могла быть нарушена использованием {0}. В целях профилактики переустановите ОС
+TweakerWarning                            = \nСтабильность Windows могла быть нарушена использованием {0}. На всякий случай переустановите Windows
 bin                                       = \nВ папке bin отсутствуют файлы. Пожалуйста, перекачайте архив
 RebootPending                             = \nКомпьютер ожидает перезагрузки
 UnsupportedRelease                        = \nОбнаружена новая версия
@@ -52,7 +52,7 @@ ErrorsLine                                = Строка
 ErrorsMessage                             = Ошибки/предупреждения
 DialogBoxOpening                          = Диалоговое окно открывается...
 Disable                                   = Отключить
-EXEFilesFilter                            = *.exe|*.exe|Все файлы (*.*)|*.*
+AllFilesFilter                            = Все файлы
 FolderSelect                              = Выберите папку
 FilesWontBeMoved                          = Файлы не будут перенесены
 Install                                   = Установить

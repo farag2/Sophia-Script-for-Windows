@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Komut dosyası yalnızca 64 bit Windows'u destekler
 UnsupportedOSBuild                        = \nKomut dosyası, Windows 10 Enterprise LTSC 2021
-UpdateWarning                             = \nWindows 10 toplu güncelleştirmesi yüklendi: {0}. Desteklenen toplu güncelleme: 2728 ve üstü. Windows Update'i çalıştırın ve tekrar deneyin
+UpdateWarning                             = \nWindows 10 yapınız: {0}.{1}. Desteklenen yapılar: 19044.2965+. Windows Update'i çalıştırın ve tekrar deneyin
 UnsupportedLanguageMode                   = \nSınırlı bir dil modunda çalışan PowerShell oturumu
 LoggedInUserNotAdmin                      = \nOturum açan kullanıcının yönetici hakları yok
 UnsupportedPowerShell                     = \nKomut dosyasını PowerShell {0}.{1} aracılığıyla çalıştırmaya çalışıyorsunuz. Komut dosyasını uygun PowerShell sürümünde çalıştırın
@@ -12,7 +12,7 @@ bin                                       = \nbin klasöründe dosya yok. Lütfe
 RebootPending                             = \nPC yeniden başlatılmayı bekliyor
 UnsupportedRelease                        = \nYeni sürüm bulundu
 CustomizationWarning                      = \nSophia Script'i çalıştırmadan önce {0} ön ayar dosyasındaki her işlevi özelleştirdiniz mi?
-DefenderBroken                            = \nMicrosoft Defender bozuk veya işletim sisteminden kaldırıldı
+WindowsComponentBroken                    = \n{0} bozuk veya işletim sisteminden kaldırıldı
 UpdateDefender                            = \nMicrosoft Defender tanımları güncel değil. Windows Update'i çalıştırın ve tekrar deneyin
 ControlledFolderAccessDisabled            = Kontrollü klasör erişimi devre dışı bırakıldı
 ScheduledTasks                            = Zamanlanan görevler
@@ -45,7 +45,7 @@ ErrorsLine                                = Satır
 ErrorsMessage                             = Hatalar/Uyarılar
 DialogBoxOpening                          = İletişim kutusu görüntüleniyor...
 Disable                                   = Devre dışı bırak
-EXEFilesFilter                            = *.exe|*.exe|Tüm Dosyalar (*.*)|*.*
+AllFilesFilter                            = Tüm Dosyalar
 FolderSelect                              = Klasör seç
 FilesWontBeMoved                          = Dosyalar taşınmayacak
 Install                                   = Yükle

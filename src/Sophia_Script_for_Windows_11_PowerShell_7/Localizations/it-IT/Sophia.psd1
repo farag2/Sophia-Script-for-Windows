@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = \nLo script supporta Windows 11 22H2+
-UpdateWarning                             = \nLa tua build di Windows 11 {0}.{1} non è supportata. Build supportate: 22621.1413 e successive. Eseguire Windows Update e riprovare
+UpdateWarning                             = \nLa tua build di Windows 11 {0}.{1} non è supportata. Build supportate: 22621.1702+. Eseguire Windows Update e riprovare
 UnsupportedLanguageMode                   = \nLa sessione PowerShell è in esecuzione in modalità lingua limitata
 LoggedInUserNotAdmin                      = \nL'utente in suo non ha i diritti di amministratore
 UnsupportedPowerShell                     = \nStai cercando di eseguire lo script tramite PowerShell {0}.{1}. Esegui lo script nella versione di PowerShell appropriata
@@ -52,7 +52,7 @@ ErrorsLine                                = Linea
 ErrorsMessage                             = Errori/avvisi
 DialogBoxOpening                          = Visualizzazione della finestra di dialogo...
 Disable                                   = Disattivare
-EXEFilesFilter                            = *.exe|*.exe|Tutti i file (*.*)|*.*
+AllFilesFilter                            = Tutti i file
 FolderSelect                              = Selezionare una cartella
 FilesWontBeMoved                          = I file non verranno trasferiti
 Install                                   = Installare

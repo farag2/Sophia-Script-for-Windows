@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Lo script supporta solo Windows a 64 bit
 UnsupportedOSBuild                        = \nLo script supporta Windows 10 Enterprise LTSC 2019
-UpdateWarning                             = \nWindows 10 cumulative update installato: {0}. È necessario l'aggiornamento cumulativo 4131 o superiori. Eseguire Windows Update e riprovare
+UpdateWarning                             = \nLa tua build di Windows 10 {0}.{1} non è supportata. Build supportate: 17763.4377+. Eseguire Windows Update e riprovare
 UnsupportedLanguageMode                   = \nLa sessione PowerShell è in esecuzione in modalità lingua limitata
 LoggedInUserNotAdmin                      = \nL'utente in suo non ha i diritti di amministratore
 UnsupportedPowerShell                     = \nStai cercando di eseguire lo script tramite PowerShell {0}.{1}. Esegui lo script nella versione di PowerShell appropriata
@@ -12,7 +12,7 @@ bin                                       = \nNon ci sono file nella cartella bi
 RebootPending                             = \nIl PC è in attesa di essere riavviato
 UnsupportedRelease                        = \nNuova versione trovata
 CustomizationWarning                      = \nSono state personalizzate tutte le funzioni nel file di configurazione {0} prima di eseguire Sophia Script?
-DefenderBroken                            = \nMicrosoft Defender rimosso dal sistema
+WindowsComponentBroken                    = \n{0} rimosso dal sistema
 UpdateDefender                            = \nLe definizioni di Microsoft Defender non sono aggiornate. Eseguire Windows Update e riprovare
 ControlledFolderAccessDisabled            = l'accesso alle cartelle controllata disattivata
 ScheduledTasks                            = Attività pianificate
@@ -43,7 +43,7 @@ ErrorsLine                                = Linea
 ErrorsMessage                             = Errori/avvisi
 DialogBoxOpening                          = Visualizzazione della finestra di dialogo...
 Disable                                   = Disattivare
-EXEFilesFilter                            = *.exe|*.exe|Tutti i file (*.*)|*.*
+AllFilesFilter                            = Tutti i file
 FolderSelect                              = Selezionare una cartella
 FilesWontBeMoved                          = I file non verranno trasferiti
 Install                                   = Installare

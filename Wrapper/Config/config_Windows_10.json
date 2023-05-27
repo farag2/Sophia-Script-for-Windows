@@ -402,23 +402,6 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 307,
-    "Region": "UI & Personalization",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "CortanaButton",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide"
-      },
-      "One": {
-        "Tag": "Show"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
     "Id": 308,
     "Region": "UI & Personalization",
     "Control": "cmb",
@@ -560,17 +543,20 @@
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
-    "Function": "TaskViewButton",
+    "Function": "TaskbarSearch",
     "Arg": {
       "Zero": {
         "Tag": "Hide"
       },
       "One": {
-        "Tag": "Show"
+        "Tag": "SearchIcon"
+      },
+      "Two": {
+        "Tag": "SearchBox"
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "Two"
   },
   {
     "Id": 317,
@@ -594,7 +580,7 @@
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
-    "Function": "PeopleTaskbar",
+    "Function": "CortanaButton",
     "Arg": {
       "Zero": {
         "Tag": "Hide"
@@ -611,13 +597,13 @@
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
-    "Function": "SecondsInSystemClock",
+    "Function": "TaskViewButton",
     "Arg": {
       "Zero": {
-        "Tag": "Show"
+        "Tag": "Hide"
       },
       "One": {
-        "Tag": "Hide"
+        "Tag": "Show"
       }
     },
     "Preset": "Zero",
@@ -625,77 +611,6 @@
   },
   {
     "Id": 320,
-    "Region": "UI & Personalization",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "TaskbarSearch",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide"
-      },
-      "One": {
-        "Tag": "SearchIcon"
-      },
-      "Two": {
-        "Tag": "SearchBox"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "Two"
-  },
-  {
-    "Id": 321,
-    "Region": "UI & Personalization",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "WindowsInkWorkspace",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide"
-      },
-      "One": {
-        "Tag": "Show"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
-    "Id": 322,
-    "Region": "UI & Personalization",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "NotificationAreaIcons",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide"
-      },
-      "One": {
-        "Tag": "Show"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
-    "Id": 323,
-    "Region": "UI & Personalization",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "MeetNow",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide"
-      },
-      "One": {
-        "Tag": "Show"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
-    "Id": 324,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -712,7 +627,92 @@
     "WindowsDefault": "One"
   },
   {
+    "Id": 321,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "PeopleTaskbar",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One"
+  },
+  {
+    "Id": 322,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "MeetNow",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One"
+  },
+  {
+    "Id": 323,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "WindowsInkWorkspace",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One"
+  },
+  {
+    "Id": 324,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "NotificationAreaIcons",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One"
+  },
+  {
     "Id": 325,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "SecondsInSystemClock",
+    "Arg": {
+      "Zero": {
+        "Tag": "Show"
+      },
+      "One": {
+        "Tag": "Hide"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One"
+  },
+  {
+    "Id": 326,
     "Region": "UI & Personalization",
     "Control": "chk",
     "Required": "false",
@@ -732,7 +732,7 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 326,
+    "Id": 327,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -752,7 +752,7 @@
     "WindowsDefault": "Two"
   },
   {
-    "Id": 327,
+    "Id": 328,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -769,7 +769,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 328,
+    "Id": 329,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -786,7 +786,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 329,
+    "Id": 330,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -803,7 +803,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 330,
+    "Id": 331,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -820,7 +820,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 331,
+    "Id": 332,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -837,7 +837,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 332,
+    "Id": 333,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -848,23 +848,6 @@
       },
       "One": {
         "Tag": "Compact"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
-    "Id": 333,
-    "Region": "UI & Personalization",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "RestartNotification",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show"
-      },
-      "One": {
-        "Tag": "Hide"
       }
     },
     "Preset": "Zero",
@@ -1009,7 +992,7 @@
     "Preset": "Zero",
     "WindowsDefault": ""
   },
-   {
+  {
     "Id": 401,
     "Region": "OneDrive",
     "Control": "chk",
@@ -1595,13 +1578,13 @@
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
-    "Function": "ActiveHours",
+    "Function": "RestartNotification",
     "Arg": {
       "Zero": {
-        "Tag": "Automatically"
+        "Tag": "Show"
       },
       "One": {
-        "Tag": "Manually"
+        "Tag": "Hide"
       }
     },
     "Preset": "Zero",
@@ -1627,6 +1610,23 @@
   {
     "Id": 535,
     "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "ActiveHours",
+    "Arg": {
+      "Zero": {
+        "Tag": "Automatically"
+      },
+      "One": {
+        "Tag": "Manually"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One"
+  },
+  {
+    "Id": 536,
+    "Region": "System",
     "Control": "chk",
     "Required": "false",
     "Function": "UninstallPCHealthCheck",
@@ -1639,7 +1639,7 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 536,
+    "Id": 537,
     "Region": "System",
     "Control": "chk",
     "Required": "false",
@@ -1653,7 +1653,7 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 537,
+    "Id": 538,
     "Region": "System",
     "Control": "chk",
     "Required": "false",
@@ -1667,7 +1667,7 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 538,
+    "Id": 539,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1684,7 +1684,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 539,
+    "Id": 540,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1701,7 +1701,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 540,
+    "Id": 541,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",

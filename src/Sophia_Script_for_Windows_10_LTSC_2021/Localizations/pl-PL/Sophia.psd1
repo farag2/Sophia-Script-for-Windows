@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Skrypt obsługuje tylko 64-bitowe systemy Windows
 UnsupportedOSBuild                        = \nSkrypt obsługuje system Windows 10 Enterprise LTSC 2021
-UpdateWarning                             = \nZainstalowano zbiorczą aktualizację systemu Windows 10: {0}. Obsługiwane aktualizacje zbiorcze: 2728 i nowsze. Uruchom aktualizację systemu Windows i spróbuj ponownie
+UpdateWarning                             = \nTwoja wersja systemu Windows 10: {0}.{1}. Obsługiwane kompilacje: 19044.2965+. Uruchom aktualizację systemu Windows i spróbuj ponownie.
 UnsupportedLanguageMode                   = \nSesja PowerShell działa w trybie ograniczonego języka
 LoggedInUserNotAdmin                      = \nZalogowany użytkownik nie posiada uprawnień administratora
 UnsupportedPowerShell                     = \nPróbujesz uruchomić skrypt przy użyciu PowerShell {0}.{1}. Uruchom skrypt używając odpowiedniej wersji PowerShell
@@ -12,7 +12,7 @@ bin                                       = \nW folderze bin nie ma żadnych pli
 RebootPending                             = \nKomputer oczekuje na ponowne uruchomienie
 UnsupportedRelease                        = \nZnaleziono nową wersję
 CustomizationWarning                      = \nCzy dostosowałeś funkcje w predefiniowanym pliku {0} przed uruchomieniem Sophia Script?
-DefenderBroken                            = \nMicrosoft Defender jest uszkodzony lub usunięty z systemu operacyjnego
+WindowsComponentBroken                    = \n{0} jest uszkodzony lub usunięty z systemu operacyjnego
 UpdateDefender                            = \nDefinicje programu Microsoft Defender są nieaktualne. Uruchom aktualizację systemu Windows i spróbuj ponownie.
 ControlledFolderAccessDisabled            = Kontrolowany dostęp do folderów został wyłączony
 ScheduledTasks                            = Zaplanowane zadania
@@ -45,7 +45,7 @@ ErrorsLine                                = Linia
 ErrorsMessage                             = Błędy/Ostrzeżenia
 DialogBoxOpening                          = Wyświetlanie okna dialogowego...
 Disable                                   = Wyłączyć
-EXEFilesFilter                            = *.exe|*.exe|Wszystkie pliki (*.*)|*.*
+AllFilesFilter                            = Wszystkie pliki
 FolderSelect                              = Wybierz folder
 FilesWontBeMoved                          = Pliki nie zostaną przeniesione
 Install                                   = Zainstalluj

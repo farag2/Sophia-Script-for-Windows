@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Скрипт поддерживает только 64-битную версию Windows
-UnsupportedOSBuild                        = \nСкрипт поддерживает Windows 10 22H2+
-UpdateWarning                             = \nУстановленный накопительный пакет обновления Windows 10: {0}. Поддерживаемый накопительный пакет обновления: 2728 и выше. Запустите обновление Windows и попробуйте заново
+UnsupportedOSBuild                        = \nСкрипт поддерживает Windows 10 22H2
+UpdateWarning                             = \nВаш билд Windows 10: {0}.{1}. Поддерживаемые сборки: 19045.2965+. Запустите обновление Windows и попробуйте заново
 UnsupportedLanguageMode                   = \nСессия PowerShell работает в ограниченном режиме
 LoggedInUserNotAdmin                      = \nТекущий вошедший пользователь не обладает правами администратора
 UnsupportedPowerShell                     = \nВы пытаетесь запустить скрипт в PowerShell {0}.{1}. Запустите скрипт в соответствующей версии PowerShell
@@ -52,7 +52,7 @@ ErrorsLine                                = Строка
 ErrorsMessage                             = Ошибки/предупреждения
 DialogBoxOpening                          = Диалоговое окно открывается...
 Disable                                   = Отключить
-EXEFilesFilter                            = *.exe|*.exe|Все файлы (*.*)|*.*
+AllFilesFilter                            = Все файлы
 FolderSelect                              = Выберите папку
 FilesWontBeMoved                          = Файлы не будут перенесены
 Install                                   = Установить

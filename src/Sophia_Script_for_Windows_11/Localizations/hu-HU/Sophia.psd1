@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = \nA szkript támogatja a Windows 11 22H2+ rendszert
-UpdateWarning                             = \nAz Ön Windows 11 építése: {0}.{1}. Támogatott buildek: 22621.1413 és magasabb verziószámok. Futtassa a Windows Update programot, és próbálja meg újra
+UpdateWarning                             = \nAz Ön Windows 11 építése: {0}.{1}. Támogatott buildek: 22621.1702+. Futtassa a Windows Update programot, és próbálja meg újra
 UnsupportedLanguageMode                   = \nA PowerShell munkamenet korlátozott nyelvi üzemmódban fut
 LoggedInUserNotAdmin                      = \nA bejelentkezett felhasználó nem rendelkezik admin jogokkal
 UnsupportedPowerShell                     = \nA PowerShell {0}.{1} segítségével próbálja futtatni a szkriptet. Futtassa a szkriptet a megfelelő PowerShell-verzióban
@@ -52,7 +52,7 @@ ErrorsLine                                = Sor
 ErrorsMessage                             = Hibák/Figyelmeztetések
 DialogBoxOpening                          = Párbeszédablak megjelenítése...
 Disable                                   = Kikapcsolás
-EXEFilesFilter                            = *.exe|*.exe|Minden fájl (*.*)|*.*
+AllFilesFilter                            = Minden fájl
 FolderSelect                              = Válasszon ki egy könyvtárat
 FilesWontBeMoved                          = A fájlok nem lesznek áthelyezve
 Install                                   = Telepítés

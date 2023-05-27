@@ -542,6 +542,23 @@
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
+    "Function": "TaskbarWidgets",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One"
+  },
+  {
+    "Id": 315,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
     "Function": "TaskbarSearch",
     "Arg": {
       "Zero": {
@@ -561,28 +578,11 @@
     "WindowsDefault": "Three"
   },
   {
-    "Id": 315,
-    "Region": "UI & Personalization",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "TaskViewButton",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide"
-      },
-      "One": {
-        "Tag": "Show"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
     "Id": 316,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
-    "Function": "TaskbarWidgets",
+    "Function": "TaskViewButton",
     "Arg": {
       "Zero": {
         "Tag": "Hide"
@@ -614,6 +614,23 @@
   {
     "Id": 318,
     "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "SecondsInSystemClock",
+    "Arg": {
+      "Zero": {
+        "Tag": "Show"
+      },
+      "One": {
+        "Tag": "Hide"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One"
+  },
+  {
+    "Id": 319,
+    "Region": "UI & Personalization",
     "Control": "chk",
     "Required": "false",
     "Function": "UnpinTaskbarShortcuts -Shortcuts",
@@ -629,7 +646,7 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 319,
+    "Id": 320,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -649,7 +666,7 @@
     "WindowsDefault": "Two"
   },
   {
-    "Id": 320,
+    "Id": 321,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -666,7 +683,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 321,
+    "Id": 322,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -683,7 +700,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 322,
+    "Id": 323,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -700,7 +717,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 323,
+    "Id": 324,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -711,23 +728,6 @@
       },
       "One": {
         "Tag": "Default"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
-    "Id": 324,
-    "Region": "UI & Personalization",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "RestartNotification",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show"
-      },
-      "One": {
-        "Tag": "Hide"
       }
     },
     "Preset": "Zero",
@@ -872,7 +872,7 @@
     "Preset": "Zero",
     "WindowsDefault": ""
   },
-   {
+  {
     "Id": 401,
     "Region": "OneDrive",
     "Control": "chk",
@@ -1458,13 +1458,13 @@
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
-    "Function": "ActiveHours",
+    "Function": "RestartNotification",
     "Arg": {
       "Zero": {
-        "Tag": "Automatically"
+        "Tag": "Show"
       },
       "One": {
-        "Tag": "Manually"
+        "Tag": "Hide"
       }
     },
     "Preset": "Zero",
@@ -1492,6 +1492,40 @@
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
+    "Function": "ActiveHours",
+    "Arg": {
+      "Zero": {
+        "Tag": "Automatically"
+      },
+      "One": {
+        "Tag": "Manually"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One"
+  },
+  {
+    "Id": 536,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "WindowsLatestUpdate",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "Zero"
+  },
+  {
+    "Id": 537,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
     "Function": "DefaultTerminalApp",
     "Arg": {
       "Zero": {
@@ -1505,7 +1539,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 536,
+    "Id": 538,
     "Region": "System",
     "Control": "chk",
     "Required": "false",
@@ -1519,7 +1553,7 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 537,
+    "Id": 539,
     "Region": "System",
     "Control": "chk",
     "Required": "false",
@@ -1533,7 +1567,7 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 538,
+    "Id": 540,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1550,7 +1584,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 539,
+    "Id": 541,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1564,7 +1598,7 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 540,
+    "Id": 542,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1581,7 +1615,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 541,
+    "Id": 543,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",

@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10 LTSC 2021"
 
-	Version: v5.16.4
-	Date: 01.04.2023
+	Version: v5.17.0
+	Date: 27.05.2023
 
 	Copyright (c) 2014—2023 farag
 	Copyright (c) 2019—2023 farag & Inestic
@@ -27,7 +27,7 @@
 	.NOTES
 	Supported Windows 10 version
 	Version: 21H2
-	Build: 19044.2728+
+	Build: 19044.2965+
 	Edition: Enterprise LTSC 2021
 	Architecture: x64
 
@@ -70,7 +70,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC 2021 v5.16.4 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2023"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC 2021 v5.17.0 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2023"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -321,6 +321,18 @@ QuickAccessFrequentFolders -Hide
 # Показать часто используемые папки на панели быстрого доступа (значение по умолчанию)
 # QuickAccessFrequentFolders -Show
 
+# Hide the search on the taskbar
+# Скрыть поле или значок поиска на панели задач
+TaskbarSearch -Hide
+
+# Show the search icon on the taskbar
+# Показать значок поиска на панели задач
+# TaskbarSearch -SearchIcon
+
+# Show the search box on the taskbar (default value)
+# Показать поле поиска на панели задач (значение по умолчанию)
+# TaskbarSearch -SearchBox
+
 # Hide the Task View button on the taskbar
 # Скрыть кнопку Просмотра задач
 TaskViewButton -Hide
@@ -337,26 +349,6 @@ PeopleTaskbar -Hide
 # Отобразить панель "Люди" на панели задач (значение по умолчанию)
 # PeopleTaskbar -Show
 
-# Show seconds on the taskbar clock
-# Отобразить секунды в системных часах на панели задач
-SecondsInSystemClock -Show
-
-# Hide seconds on the taskbar clock (default value)
-# Скрыть секунды в системных часах на панели задач (значение по умолчанию)
-# SecondsInSystemClock -Hide
-
-# Hide the search on the taskbar
-# Скрыть поле или значок поиска на панели задач
-TaskbarSearch -Hide
-
-# Show the search icon on the taskbar
-# Показать значок поиска на панели задач
-# TaskbarSearch -SearchIcon
-
-# Show the search box on the taskbar (default value)
-# Показать поле поиска на панели задач (значение по умолчанию)
-# TaskbarSearch -SearchBox
-
 # Hide the Windows Ink Workspace button on the taskbar
 # Скрыть кнопку Windows Ink Workspace на панели задач
 WindowsInkWorkspace -Hide
@@ -372,6 +364,14 @@ NotificationAreaIcons -Show
 # Hide all icons in the notification area (default value)
 # Скрыть все значки в области уведомлений (значение по умолчанию)
 # NotificationAreaIcons -Hide
+
+# Show seconds on the taskbar clock
+# Отобразить секунды в системных часах на панели задач
+SecondsInSystemClock -Show
+
+# Hide seconds on the taskbar clock (default value)
+# Скрыть секунды в системных часах на панели задач (значение по умолчанию)
+# SecondsInSystemClock -Hide
 
 # View the Control Panel icons by large icons
 # Просмотр иконок Панели управления как: крупные значки
@@ -432,14 +432,6 @@ TaskManagerWindow -Expanded
 # Start Task Manager in the compact mode (default value)
 # Запускать Диспетчера задач в свернутом виде (значение по умолчанию)
 # TaskManagerWindow -Compact
-
-# Show a notification when your PC requires a restart to finish updating
-# Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления
-RestartNotification -Show
-
-# Do not show a notification when your PC requires a restart to finish updating (default value)
-# Не показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления (значение по умолчанию)
-# RestartNotification -Hide
 
 # Do not add the "- Shortcut" suffix to the file name of created shortcuts
 # Нe дoбaвлять "- яpлык" к имени coздaвaeмых яpлыков
@@ -838,13 +830,13 @@ NetworkDiscovery -Enable
 # Выключить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп (значение по умолчанию)
 # NetworkDiscovery -Disable
 
-# Automatically adjust active hours for me based on daily usage
-# Автоматически изменять период активности для этого устройства на основе действий
-ActiveHours -Automatically
+# Show a notification when your PC requires a restart to finish updating
+# Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления
+RestartNotification -Show
 
-# Manually adjust active hours for me based on daily usage (default value)
-# Вручную изменять период активности для этого устройства на основе действий (значение по умолчанию)
-# ActiveHours -Manually
+# Do not show a notification when your PC requires a restart to finish updating (default value)
+# Не показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления (значение по умолчанию)
+# RestartNotification -Hide
 
 # Restart this device as soon as possible when a restart is required to install an update
 # Перезапускать это устройство как можно быстрее, если для установки обновления требуется перезагрузка
@@ -854,14 +846,32 @@ RestartDeviceAfterUpdate -Enable
 # Не перезапускать это устройство как можно быстрее, если для установки обновления требуется перезагрузка (значение по умолчанию)
 # RestartDeviceAfterUpdate -Disable
 
+# Automatically adjust active hours for me based on daily usage
+# Автоматически изменять период активности для этого устройства на основе действий
+ActiveHours -Automatically
+
+# Manually adjust active hours for me based on daily usage (default value)
+# Вручную изменять период активности для этого устройства на основе действий (значение по умолчанию)
+# ActiveHours -Manually
+
 <#
 	Register app, calculate hash, and associate with an extension with the "How do you want to open this" pop-up hidden
 	Зарегистрировать приложение, вычислить хэш и ассоциировать его с расширением без всплывающего окна "Каким образом вы хотите открыть этот файл?"
 
 	Set-Association -ProgramPath "C:\SumatraPDF.exe" -Extension .pdf -Icon "shell32.dll,100"
 	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .txt -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+	Set-Association -ProgramPath MSEdgeMHT -Extension .html
 #>
 # Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .txt -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+
+<#
+	Export all Windows associations. Associations will be exported as AppAssoc.json file in script root folder
+	Import exported JSON file after a clean installation. You have to install all apps according to an exported JSON file to restore all associations
+#>
+Export-Associations
+
+# Import all Windows associations from a JSON file. You have to install all apps according to an exported JSON file to restore all associations
+Import-Associations
 
 <#
 	Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 (x86/x64)

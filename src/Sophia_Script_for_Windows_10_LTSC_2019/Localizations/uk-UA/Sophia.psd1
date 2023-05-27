@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Скрипт підтримує тільки 64-розрядну версію Windows
 UnsupportedOSBuild                        = \nСкрипт підтримує тільки Windows 10 Enterprise LTSC 2019
-UpdateWarning                             = \nВстановлений накопичувальний пакет оновлення Windows 10: {0}. Підтримуваний накопичувальний пакет оновлення: 4131 і вище. Запустіть Windows Update і повторіть спробу
+UpdateWarning                             = \nВаш білд Windows 10: {0}.{1}. Підтримувані збірки: 17763.4377+. Запустіть Windows Update і повторіть спробу
 UnsupportedLanguageMode                   = \nСесія PowerShell працює в обмеженому режимі
 LoggedInUserNotAdmin                      = \nПоточний користувач, що увійшов, не має прав адміністратора
 UnsupportedPowerShell                     = \nВи намагаєтеся запустити скрипт в PowerShell {0}.{1}. Запустіть скрипт у відповідній версії PowerShell
@@ -12,7 +12,7 @@ bin                                       = \nУ папці bin відсутні
 RebootPending                             = \nКомп'ютер очікує на перезавантаження
 UnsupportedRelease                        = \nВиявлено нову версію
 CustomizationWarning                      = \nВи налаштували всі функції в пресет-файлі {0} перед запуском Sophia Script?
-DefenderBroken                            = \nMicrosoft Defender пошкоджено або видалено з ОС
+WindowsComponentBroken                    = \n{0} пошкоджено або видалено з ОС
 UpdateDefender                            = \nВизначення Microsoft Defender застаріли. Запустіть Windows Update і повторіть спробу
 ControlledFolderAccessDisabled            = Контрольований доступ до папок вимкнений
 ScheduledTasks                            = Заплановані задачі
@@ -43,7 +43,7 @@ ErrorsLine                                = Рядок
 ErrorsMessage                             = Помилки/попередження
 DialogBoxOpening                          = Діалогове вікно відкривається...
 Disable                                   = Вимкнути
-EXEFilesFilter                            = *.exe|*.exe|Усі файли (*.*)|*.*
+AllFilesFilter                            = Усі файли
 FolderSelect                              = Виберіть папку
 FilesWontBeMoved                          = Файли не будуть перенесені
 Install                                   = Встановити

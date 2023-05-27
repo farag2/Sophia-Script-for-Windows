@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10"
 
-	Version: v5.16.4
-	Date: 01.04.2023
+	Version: v5.17.0
+	Date: 27.05.2023
 
 	Copyright (c) 2014—2023 farag
 	Copyright (c) 2019—2023 farag & Inestic
@@ -27,7 +27,7 @@
 	.NOTES
 	Supported Windows 10 versions
 	Version: 22H2
-	Builds: 19045.2728+
+	Builds: 19045.2965+
 	Editions: Home/Pro/Enterprise
 	Architecture: x64
 
@@ -70,7 +70,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.16.4 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2023"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.17.0 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2023"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -294,14 +294,6 @@ OpenFileExplorerTo -ThisPC
 # Открывать проводник для "Быстрый доступ" (значение по умолчанию)
 # OpenFileExplorerTo -QuickAccess
 
-# Hide Cortana button on the taskbar
-# Скрывать кнопку Кортаны на панели задач
-CortanaButton -Hide
-
-# Show Cortana button on the taskbar (default value)
-# Показать кнопку Кортаны на панели задач (значение по умолчанию)
-# CortanaButton -Show
-
 # Do not show sync provider notification within File Explorer
 # Не показывать уведомления поставщика синхронизации в проводнике
 OneDriveFileExplorerAd -Hide
@@ -386,6 +378,14 @@ SearchHighlights -Hide
 # Показать главное в поиске (значение по умолчанию)
 # SearchHighlights -Show
 
+# Hide Cortana button on the taskbar
+# Скрывать кнопку Кортаны на панели задач
+CortanaButton -Hide
+
+# Show Cortana button on the taskbar (default value)
+# Показать кнопку Кортаны на панели задач (значение по умолчанию)
+# CortanaButton -Show
+
 # Hide the Task View button on the taskbar
 # Скрыть кнопку Просмотра задач
 TaskViewButton -Hide
@@ -393,6 +393,14 @@ TaskViewButton -Hide
 # Show the Task View button on the taskbar (default value)
 # Отобразить кнопку Просмотра задач (значение по умолчанию)
 # TaskViewButton -Show
+
+# Disable "News and Interests" on the taskbar
+# Отключить "Новости и интересы" на панели задач
+NewsInterests -Disable
+
+# Enable "News and Interests" on the taskbar (default value)
+# Включить "Новости и интересы" на панели задач (значение по умолчанию)
+# NewsInterests -Enable
 
 # Hide People on the taskbar
 # Скрыть панель "Люди" на панели задач
@@ -402,13 +410,13 @@ PeopleTaskbar -Hide
 # Отобразить панель "Люди" на панели задач (значение по умолчанию)
 # PeopleTaskbar -Show
 
-# Show seconds on the taskbar clock
-# Отобразить секунды в системных часах на панели задач
-SecondsInSystemClock -Show
+# Hide the Meet Now icon in the notification area
+# Скрыть иконку "Провести собрание" в области уведомлений
+MeetNow -Hide
 
-# Hide seconds on the taskbar clock (default value)
-# Скрыть секунды в системных часах на панели задач (значение по умолчанию)
-# SecondsInSystemClock -Hide
+# Show the Meet Now icon in the notification area (default value)
+# Отображать иконку "Провести собрание" в области уведомлений (значение по умолчанию)
+# MeetNow -Show
 
 # Hide the Windows Ink Workspace button on the taskbar
 # Скрыть кнопку Windows Ink Workspace на панели задач
@@ -426,21 +434,13 @@ NotificationAreaIcons -Show
 # Скрыть все значки в области уведомлений (значение по умолчанию)
 # NotificationAreaIcons -Hide
 
-# Hide the Meet Now icon in the notification area
-# Скрыть иконку "Провести собрание" в области уведомлений
-MeetNow -Hide
+# Show seconds on the taskbar clock
+# Отобразить секунды в системных часах на панели задач
+SecondsInSystemClock -Show
 
-# Show the Meet Now icon in the notification area (default value)
-# Отображать иконку "Провести собрание" в области уведомлений (значение по умолчанию)
-# MeetNow -Show
-
-# Disable "News and Interests" on the taskbar
-# Отключить "Новости и интересы" на панели задач
-NewsInterests -Disable
-
-# Enable "News and Interests" on the taskbar (default value)
-# Включить "Новости и интересы" на панели задач (значение по умолчанию)
-# NewsInterests -Enable
+# Hide seconds on the taskbar clock (default value)
+# Скрыть секунды в системных часах на панели задач (значение по умолчанию)
+# SecondsInSystemClock -Hide
 
 # Unpin the "Microsoft Edge", "Microsoft Store", or "Mail" shortcuts from the taskbar
 # Открепить ярлыки "Microsoft Edge", "Microsoft Store" или "Почта" от панели задач
@@ -505,14 +505,6 @@ TaskManagerWindow -Expanded
 # Start Task Manager in the compact mode (default value)
 # Запускать Диспетчера задач в свернутом виде (значение по умолчанию)
 # TaskManagerWindow -Compact
-
-# Show a notification when your PC requires a restart to finish updating
-# Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления
-RestartNotification -Show
-
-# Do not show a notification when your PC requires a restart to finish updating (default value)
-# Не показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления (значение по умолчанию)
-# RestartNotification -Hide
 
 # Do not add the "- Shortcut" suffix to the file name of created shortcuts
 # Нe дoбaвлять "- яpлык" к имени coздaвaeмых яpлыков
@@ -932,13 +924,13 @@ NetworkDiscovery -Enable
 # Выключить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп (значение по умолчанию)
 # NetworkDiscovery -Disable
 
-# Automatically adjust active hours for me based on daily usage
-# Автоматически изменять период активности для этого устройства на основе действий
-ActiveHours -Automatically
+# Show a notification when your PC requires a restart to finish updating
+# Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления
+RestartNotification -Show
 
-# Manually adjust active hours for me based on daily usage (default value)
-# Вручную изменять период активности для этого устройства на основе действий (значение по умолчанию)
-# ActiveHours -Manually
+# Do not show a notification when your PC requires a restart to finish updating (default value)
+# Не показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления (значение по умолчанию)
+# RestartNotification -Hide
 
 # Restart this device as soon as possible when a restart is required to install an update
 # Перезапускать это устройство как можно быстрее, если для установки обновления требуется перезагрузка
@@ -948,14 +940,32 @@ RestartDeviceAfterUpdate -Enable
 # Не перезапускать это устройство как можно быстрее, если для установки обновления требуется перезагрузка (значение по умолчанию)
 # RestartDeviceAfterUpdate -Disable
 
+# Automatically adjust active hours for me based on daily usage
+# Автоматически изменять период активности для этого устройства на основе действий
+ActiveHours -Automatically
+
+# Manually adjust active hours for me based on daily usage (default value)
+# Вручную изменять период активности для этого устройства на основе действий (значение по умолчанию)
+# ActiveHours -Manually
+
 <#
 	Register app, calculate hash, and associate with an extension with the "How do you want to open this" pop-up hidden
 	Зарегистрировать приложение, вычислить хэш и ассоциировать его с расширением без всплывающего окна "Каким образом вы хотите открыть этот файл?"
 
 	Set-Association -ProgramPath "C:\SumatraPDF.exe" -Extension .pdf -Icon "shell32.dll,100"
 	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .txt -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+	Set-Association -ProgramPath MSEdgeMHT -Extension .html
 #>
 # Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .txt -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+
+<#
+	Export all Windows associations. Associations will be exported as AppAssoc.json file in script root folder
+	Import exported JSON file after a clean installation. You have to install all apps according to an exported JSON file to restore all associations
+#>
+Export-Associations
+
+# Import all Windows associations from a JSON file. You have to install all apps according to an exported JSON file to restore all associations
+Import-Associations
 
 <#
 	Uninstall the "PC Health Check" app and prevent it from installing in the future

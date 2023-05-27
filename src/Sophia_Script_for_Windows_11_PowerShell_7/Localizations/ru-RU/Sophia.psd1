@@ -1,12 +1,12 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = \nСкрипт поддерживает Windows 11 22H2+
-UpdateWarning                             = \nВаш билд Windows 11: {0}.{1}. Поддерживаемые сборки: 22621.1413 и выше. Запустите обновление Windows и попробуйте заново
+UpdateWarning                             = \nВаш билд Windows 11: {0}.{1}. Поддерживаемые сборки: 22621.1702+. Запустите обновление Windows и попробуйте заново
 UnsupportedLanguageMode                   = \nСессия PowerShell работает в ограниченном режиме
 LoggedInUserNotAdmin                      = \nТекущий вошедший пользователь не обладает правами администратора
 UnsupportedPowerShell                     = \nВы пытаетесь запустить скрипт в PowerShell {0}.{1}. Запустите скрипт в соответствующей версии PowerShell
 UnsupportedHost                           = \nСкрипт не поддерживает работу через {0}
 Win10TweakerWarning                       = \nВаша ОС, возможно, через бэкдор в Win 10 Tweaker была заражена трояном
-TweakerWarning                            = \nСтабильность Windows могла быть нарушена использованием {0}. В целях профилактики переустановите ОС
+TweakerWarning                            = \nСтабильность Windows могла быть нарушена использованием {0}. На всякий случай переустановите Windows
 bin                                       = \nВ папке bin отсутствуют файлы. Пожалуйста, перекачайте архив
 RebootPending                             = \nКомпьютер ожидает перезагрузки
 UnsupportedRelease                        = \nОбнаружена новая версия
@@ -52,7 +52,7 @@ ErrorsLine                                = Строка
 ErrorsMessage                             = Ошибки/предупреждения
 DialogBoxOpening                          = Диалоговое окно открывается...
 Disable                                   = Отключить
-EXEFilesFilter                            = *.exe|*.exe|Все файлы (*.*)|*.*
+AllFilesFilter                            = Все файлы
 FolderSelect                              = Выберите папку
 FilesWontBeMoved                          = Файлы не будут перенесены
 Install                                   = Установить
