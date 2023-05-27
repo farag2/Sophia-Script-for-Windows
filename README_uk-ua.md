@@ -211,23 +211,29 @@ https://user-images.githubusercontent.com/10544660/225270532-8f0694d3-0b9e-44df-
 * Перегляньте файл `Sophia.ps1` для налаштування функцій, які потрібно запустити;
   * Помістіть символ "#" перед функцією, якщо ви не бажаєте, щоб вона виконувалась.
   * Приберіть символ "#" перед функцією, якщо ви бажаєте, щоб вона виконувалась.
-* Скопіюйте весь шлях до Sophia.ps1
-  * У Windows 10 натисніть і утримуйте клавішу <kbd>Shift</kbd>, клацніть правою кнопкою миші на Sophia.ps1 і виберіть Копіювати як шлях;
-  * У Windows 11 клацніть правою кнопкою миші на Sophia.ps1 і виберіть Копіювати як шлях.
-* Відкрийте Windows PowerShell
-  * У Windows 10 натисніть Файл у Провіднику файлів, наведіть курсор на Відкрити Windows PowerShell і виберіть Відкрити Windows PowerShell від імені адміністратора [(покрокова інструкція зі скріншотами)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/);
-  * У Windows 11 натисніть правою кнопкою миші на іконку <kbd>Windows</kbd> і відкрийте Термінал Windows (Admin).
+* Скопіюйте весь шлях до `Sophia.ps1`
+  * У `Windows 10` натисніть і утримуйте клавішу <kbd>Shift</kbd>, клацніть правою кнопкою миші на `Sophia.ps1` і виберіть Копіювати як шлях;
+  * У `Windows 11` клацніть правою кнопкою миші на `Sophia.ps1` і виберіть `Копіювати як шлях`.
+* Відкрийте `Windows PowerShell`
+  * У `Windows 10` натисніть `Файл` у Провіднику файлів, наведіть курсор на `Відкрити Windows PowerShell` і виберіть `Відкрити Windows PowerShell від імені адміністратора` [(покрокова інструкція зі скріншотами)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/);
+  * У `Windows 11` натисніть правою кнопкою миші на іконку <kbd>Windows</kbd> і відкрийте `Термінал Windows (Адміністратор)`.
 * Встановіть політику виконання, щоб мати змогу запускати сценарії лише у поточному сеансі PowerShell;
 
 ```powershell
   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 ```
 
-* Вставте скопійований шлях до Sophia.ps1 з попереднього кроку (за допомогою [&](https://en.wikipedia.org/wiki/Ampersand));
+* На `Windows 10` вставте скопійований шлях до `Sophia.ps1` з попереднього кроку (за допомогою [&](https://en.wikipedia.org/wiki/Ampersand));
 
-```powershell
-  & <path_from_buffer>
-```
+   ```powershell
+   & <path_from_buffer>
+   ```
+
+  * На `Windows 11`
+
+   ```powershell
+   .\Sophia.ps1
+   ```
 
 ## Як використовувати Wrapper
 

@@ -223,7 +223,7 @@ https://user-images.githubusercontent.com/10544660/225270532-8f0694d3-0b9e-44df-
 ```
 
 * Run `Sophia.ps1`
-  * On `Windows 11` paste copied path to `Sophia.ps1` from the previous step (with [&](https://en.wikipedia.org/wiki/Ampersand));
+  * On `Windows 10` paste copied path to `Sophia.ps1` from the previous step (with [&](https://en.wikipedia.org/wiki/Ampersand));
 
    ```powershell
    & <path_from_buffer>
