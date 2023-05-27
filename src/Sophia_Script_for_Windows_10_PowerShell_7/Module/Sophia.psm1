@@ -8939,13 +8939,13 @@ function Set-Association
 		if (-not (Test-Path -Path $ProgramPath))
 		{
 			# We cannot call here $MyInvocation.Line.Trim() to print function with error
-			($Icon)
+			if ($Icon)
 			{
-				Write-Error -Message ($Localization.RestartFunction -f "Set-Association -ProgramPath $ProgramPath -Extension $Extension -Icon $Icon") -ErrorAction SilentlyContinue
+				Write-Error -Message ($Localization.RestartFunction -f "Set-Association -ProgramPath `"$ProgramPath`" -Extension $Extension -Icon `"$Icon`"") -ErrorAction SilentlyContinue
 			}
 			else
 			{
-				Write-Error -Message ($Localization.RestartFunction -f "Set-Association -ProgramPath $ProgramPath -Extension $Extension") -ErrorAction SilentlyContinue
+				Write-Error -Message ($Localization.RestartFunction -f "Set-Association -ProgramPath `"$ProgramPath`" -Extension $Extension") -ErrorAction SilentlyContinue
 			}
 
 			return
@@ -8957,13 +8957,13 @@ function Set-Association
 		if (-not (Test-Path -Path "Registry::HKEY_CLASSES_ROOT\$ProgramPath"))
 		{
 			# We cannot call here $MyInvocation.Line.Trim() to print function with error
-			($Icon)
+			if ($Icon)
 			{
-				Write-Error -Message ($Localization.RestartFunction -f "Set-Association -ProgramPath $ProgramPath -Extension $Extension -Icon $Icon") -ErrorAction SilentlyContinue
+				Write-Error -Message ($Localization.RestartFunction -f "Set-Association -ProgramPath `"$ProgramPath`" -Extension `"$Extension`" -Icon `"$Icon`"") -ErrorAction SilentlyContinue
 			}
 			else
 			{
-				Write-Error -Message ($Localization.RestartFunction -f "Set-Association -ProgramPath $ProgramPath -Extension $Extension") -ErrorAction SilentlyContinue
+				Write-Error -Message ($Localization.RestartFunction -f "Set-Association -ProgramPath `"$ProgramPath`" -Extension `"$Extension`"") -ErrorAction SilentlyContinue
 			}
 
 			return
@@ -9732,7 +9732,7 @@ public static void Refresh()
 	Export-Associations
 
 	.NOTES
-	Associations will be exported as AppAssoc.json file in script root folder
+	Associations will be exported as Application_Associations.json file in script root folder
 
 	.NOTES
 	Import exported JSON file after a clean installation. You have to install all apps according to an exported JSON file to restore all associations
@@ -9742,14 +9742,14 @@ public static void Refresh()
 #>
 function Export-Associations
 {
-	Dism.exe /Online /Export-DefaultAppAssociations:"$env:TEMP\AppAssoc.xml"
+	Dism.exe /Online /Export-DefaultAppAssociations:"$env:TEMP\Application_Associations.xml"
 
 	Clear-Variable -Name AllJSON, ProgramPath, Icon -ErrorAction Ignore
 
 	$AllJSON = @()
 	$AppxProgIds = @((Get-ChildItem -Path "Registry::HKEY_CLASSES_ROOT\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\ProgIDs").PSChildName)
 
-	[xml]$XML = Get-Content -Path "$env:TEMP\AppAssoc.xml" -Encoding UTF8 -Force
+	[xml]$XML = Get-Content -Path "$env:TEMP\Application_Associations.xml" -Encoding UTF8 -Force
 	$XML.DefaultAssociations.Association | ForEach-Object -Process {
 		if ($AppxProgIds -contains $_.ProgId)
 		{
@@ -9883,9 +9883,9 @@ function Export-Associations
 		$AllJSON += $JSON
 	}
 
-	$AllJSON | ConvertTo-Json | Set-Content -Path "$PSScriptRoot\..\AppAssoc.json" -Force -Encoding utf8
+	$AllJSON | ConvertTo-Json | Set-Content -Path "$PSScriptRoot\..\Application_Associations.json" -Force -Encoding utf8
 
-	Remove-Item -Path "$env:TEMP\AppAssoc.xml" -Force
+	Remove-Item -Path "$env:TEMP\Application_Associations.xml" -Force
 }
 
 <#
@@ -9920,19 +9920,29 @@ function Import-Associations
 	{
 		$AppxProgIds = @((Get-ChildItem -Path "Registry::HKEY_CLASSES_ROOT\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\ProgIDs").PSChildName)
 
-		$JSON = Get-Content -Path $OpenFileDialog.FileName -Encoding UTF8 -Force | ConvertFrom-JSON
+		try
+		{
+			$JSON = Get-Content -Path $OpenFileDialog.FileName -Encoding UTF8 -Force | ConvertFrom-JSON
+		}
+		catch [System.Exception]
+		{
+			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+			return
+		}
+
 		$JSON | ForEach-Object -Process {
 			if ($AppxProgIds -contains $_.ProgId)
 			{
 				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message ([string]($_.ProgId, '|', $_.Extension)) -Verbose
+				Write-Verbose -Message ([string]($_.ProgId, "|", $_.Extension)) -Verbose
 
 				Set-Association -ProgramPath $_.ProgId -Extension $_.Extension
 			}
 			else
 			{
 				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message ([string]($_.ProgrammPath, '|', $_.Extension, '|', $_.Icon)) -Verbose
+				Write-Verbose -Message ([string]($_.ProgrammPath, "|", $_.Extension, "|", $_.Icon)) -Verbose
 
 				Set-Association -ProgramPath $_.ProgrammPath -Extension $_.Extension -Icon $_.Icon
 			}

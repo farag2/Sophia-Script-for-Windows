@@ -914,13 +914,13 @@ WindowsLatestUpdate -Disable
 # Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .txt -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
 
 <#
-	Export all Windows associations. Associations will be exported as AppAssoc.json file in script root folder
+	Export all Windows associations. Associations will be exported as Application_Associations.json file in script root folder
 	Import exported JSON file after a clean installation. You have to install all apps according to an exported JSON file to restore all associations
 #>
-Export-Associations
+# Export-Associations
 
 # Import all Windows associations from a JSON file. You have to install all apps according to an exported JSON file to restore all associations
-Import-Associations
+# Import-Associations
 
 # Set Windows Terminal as default terminal app to host the user interface for command-line applications
 # Установить Windows Terminal как приложение терминала по умолчанию для размещения пользовательского интерфейса для приложений командной строки
