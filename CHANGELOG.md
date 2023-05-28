@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.17.0 | 6.5.0 — 27.05.2023
+
+* Expanded start-up checks;
+  * Now the script checks and removes all IP addresses add to `hosts` file that block Microsoft recourses added by harmful tweaker [WindowsSpyBlocker](https://github.com/crazy-max/WindowsSpyBlocker);
+  * Now the script checks whether `Microsoft Edge` is instlaled, and if not it will be downloaded and installed.
+* Improved and fixed `Set-Association` function
+  * Now you can associate extensions with protocols: `Set-Association -ProgramPath MSEdgeMHT -Extension .html`.
+* Added `Export-Associations` and `Import-Associations` to let user export all Windows associations and import all Windows associations from a JSON file;
+  * `Export-Associations` exports `Application_Associations.json` to script root folder;
+  * You have to install all apps to the same folders according to an exported JSON file to restore all associations, unless this extension will be skipped;
+  * `Import-Associations` lets you import `Application_Associations.json` via an open file dialog;
+  * This is more of a `proof of concept` (and may contain bugs) which shows that is possible to restore associations from an old PC to a new one (like in some harmful tweakers like `Modern Tweaker` and `Win10Tweaker` provide). But I'd not recommend to rely on this approach. Better do it manually. But the functions works. :cat:
+* Fixes for #472, #476, #480, and #482;
+* Improved translations;
+* Minor changes.
+
+### Wrapper 2.6.6
+
+* Fixed JSON configs;
+* Improved the German translation;
+  * Thanks to @sensinsane.
+* Minor changes.
+
 ## 5.16.4 | 6.4.4 — 01.04.2023
 
 * Fixes for #466, #472, #470, and #469
