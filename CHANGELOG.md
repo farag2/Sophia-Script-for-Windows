@@ -29,6 +29,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Thanks to @sensinsane.
 * Minor changes.
 
+> **Note**: Please note that Wrapper doesn't have all functions as CLI `Sophia Script` provides. If you want to apply all functions, you need to 
+configure `Sophia.ps1` file.
+
+`Sophia Script for Windows` hits more than 700 000 downloads! Thank you for your interest to Windows tweaking! ❤️
+
 ## 5.16.4 | 6.4.4 — 01.04.2023
 
 * Fixes for #466, #472, #470, and #469
