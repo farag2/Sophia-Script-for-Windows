@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Expanded start-up checks;
   * Now the script checks and removes all IP addresses add to `hosts` file that block Microsoft recourses added by harmful tweaker [WindowsSpyBlocker](https://github.com/crazy-max/WindowsSpyBlocker);
-  * Now the script checks whether `Microsoft Edge` is instlaled, and if not it will be downloaded and installed.
+  * Now the script checks whether `Microsoft Edge` is installed, and if not it will be downloaded and installed.
 * Improved and fixed `Set-Association` function
   * Now you can associate extensions with protocols: `Set-Association -ProgramPath MSEdgeMHT -Extension .html`.
 * Added `Export-Associations` and `Import-Associations` to let user export all Windows associations and import all Windows associations from a JSON file;
