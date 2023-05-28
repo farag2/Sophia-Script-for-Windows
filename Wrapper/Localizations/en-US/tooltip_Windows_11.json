@@ -1350,6 +1350,28 @@
     {
         "Id":  537,
         "Region":  "System",
+        "Function":  "Export-Associations",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  "Export all Windows associations into Application_Associations.json file to script root folder."
+                             }
+                }
+    },
+    {
+        "Id":  538,
+        "Region":  "System",
+        "Function":  "Import-Associations",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  "Import all Windows associations from an Application_Associations.json file. You need to install all apps according to an exported Application_Associations.json file to restore all associations."
+                             }
+                }
+    },
+    {
+        "Id":  539,
+        "Region":  "System",
         "Function":  "DefaultTerminalApp",
         "Arg":  {
                     "Zero":  {
@@ -1363,7 +1385,7 @@
                 }
     },
     {
-        "Id":  538,
+        "Id":  540,
         "Region":  "System",
         "Function":  "InstallVCRedist",
         "Arg":  {
@@ -1374,7 +1396,7 @@
                 }
     },
     {
-        "Id":  539,
+        "Id":  541,
         "Region":  "System",
         "Function":  "InstallDotNetRuntimes",
         "Arg":  {
@@ -1385,7 +1407,7 @@
                 }
     },
     {
-        "Id":  540,
+        "Id":  542,
         "Region":  "System",
         "Function":  "RKNBypass",
         "Arg":  {
@@ -1400,7 +1422,7 @@
                 }
     },
     {
-        "Id":  541,
+        "Id":  543,
         "Region":  "System",
         "Function":  "Install-WSA",
         "Arg":  {
@@ -1411,7 +1433,7 @@
                 }
     },
     {
-        "Id":  542,
+        "Id":  544,
         "Region":  "System",
         "Function":  "PreventEdgeShortcutCreation",
         "Arg":  {
@@ -1426,7 +1448,7 @@
                 }
     },
     {
-        "Id":  543,
+        "Id":  545,
         "Region":  "System",
         "Function":  "SATADrivesRemovableMedia",
         "Arg":  {

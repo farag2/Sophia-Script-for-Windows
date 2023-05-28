@@ -1524,6 +1524,34 @@
   {
     "Id": 537,
     "Region": "System",
+    "Control": "chk",
+    "Required": "false",
+    "Function": "Export-Associations",
+    "Arg": {
+      "Zero": {
+        "Tag": ""
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": ""
+  },
+  {
+    "Id": 538,
+    "Region": "System",
+    "Control": "chk",
+    "Required": "false",
+    "Function": "Import-Associations",
+    "Arg": {
+      "Zero": {
+        "Tag": ""
+      }
+    },
+    "Preset": "",
+    "WindowsDefault": ""
+  },
+  {
+    "Id": 539,
+    "Region": "System",
     "Control": "cmb",
     "Required": "false",
     "Function": "DefaultTerminalApp",
@@ -1539,7 +1567,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 538,
+    "Id": 540,
     "Region": "System",
     "Control": "chk",
     "Required": "false",
@@ -1553,7 +1581,7 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 539,
+    "Id": 541,
     "Region": "System",
     "Control": "chk",
     "Required": "false",
@@ -1567,7 +1595,7 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 540,
+    "Id": 542,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1584,7 +1612,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 541,
+    "Id": 543,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1598,7 +1626,7 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 542,
+    "Id": 544,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1615,7 +1643,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 543,
+    "Id": 545,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",

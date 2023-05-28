@@ -1288,7 +1288,7 @@
                 }
     },
     {
-        "Id":  326,
+        "Id":  533,
         "Region":  "System",
         "Function":  "RestartNotification",
         "Arg":  {
@@ -1318,7 +1318,7 @@
                 }
     },
     {
-        "Id":  533,
+        "Id":  535,
         "Region":  "System",
         "Function":  "ActiveHours",
         "Arg":  {
@@ -1348,7 +1348,29 @@
                 }
     },
     {
-        "Id":  535,
+        "Id":  537,
+        "Region":  "System",
+        "Function":  "Export-Associations",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  "Экспортировать все ассоциации в Windows в корень папки в виде файла Application_Associations.json."
+                             }
+                }
+    },
+    {
+        "Id":  538,
+        "Region":  "System",
+        "Function":  "Import-Associations",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  "Импортировать все ассоциации в Windows из файла Application_Associations.json. Вам необходимо установить все приложения согласно экспортированному файлу Application_Associations.json, чтобы восстановить все ассоциации."
+                             }
+                }
+    },
+    {
+        "Id":  539,
         "Region":  "System",
         "Function":  "DefaultTerminalApp",
         "Arg":  {
@@ -1363,7 +1385,7 @@
                 }
     },
     {
-        "Id":  536,
+        "Id":  540,
         "Region":  "System",
         "Function":  "InstallVCRedist",
         "Arg":  {
@@ -1374,7 +1396,7 @@
                 }
     },
     {
-        "Id":  537,
+        "Id":  541,
         "Region":  "System",
         "Function":  "InstallDotNetRuntimes",
         "Arg":  {
@@ -1385,7 +1407,7 @@
                 }
     },
     {
-        "Id":  538,
+        "Id":  542,
         "Region":  "System",
         "Function":  "RKNBypass",
         "Arg":  {
@@ -1400,7 +1422,7 @@
                 }
     },
     {
-        "Id":  539,
+        "Id":  543,
         "Region":  "System",
         "Function":  "Install-WSA",
         "Arg":  {
@@ -1411,7 +1433,7 @@
                 }
     },
     {
-        "Id":  540,
+        "Id":  544,
         "Region":  "System",
         "Function":  "PreventEdgeShortcutCreation",
         "Arg":  {
@@ -1426,7 +1448,7 @@
                 }
     },
     {
-        "Id":  541,
+        "Id":  545,
         "Region":  "System",
         "Function":  "SATADrivesRemovableMedia",
         "Arg":  {

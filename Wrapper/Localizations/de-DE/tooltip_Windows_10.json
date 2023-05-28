@@ -1455,6 +1455,28 @@
     {
         "Id":  536,
         "Region":  "System",
+        "Function":  "Export-Associations",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  "Exportieren Sie alle Windows-Verknüpfungen in die Datei Application_Associations.json in den Skriptstammordner."
+                             }
+                }
+    },
+    {
+        "Id":  537,
+        "Region":  "System",
+        "Function":  "Import-Associations",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  "Importieren Sie alle Windows-Zuordnungen aus einer JSON-Datei. Sie müssen alle Anwendungen gemäß einer exportierten JSON-Datei installieren, um alle Zuordnungen wiederherzustellen."
+                             }
+                }
+    },
+    {
+        "Id":  538,
+        "Region":  "System",
         "Function":  "UninstallPCHealthCheck",
         "Arg":  {
                     "Zero":  {
@@ -1464,7 +1486,7 @@
                 }
     },
     {
-        "Id":  537,
+        "Id":  539,
         "Region":  "System",
         "Function":  "InstallVCRedist",
         "Arg":  {
@@ -1475,7 +1497,7 @@
                 }
     },
     {
-        "Id":  538,
+        "Id":  540,
         "Region":  "System",
         "Function":  "InstallDotNetRuntimes",
         "Arg":  {
@@ -1486,7 +1508,7 @@
                 }
     },
     {
-        "Id":  539,
+        "Id":  541,
         "Region":  "System",
         "Function":  "RKNBypass",
         "Arg":  {
@@ -1501,7 +1523,7 @@
                 }
     },
     {
-        "Id":  540,
+        "Id":  542,
         "Region":  "System",
         "Function":  "PreventEdgeShortcutCreation",
         "Arg":  {
@@ -1516,7 +1538,7 @@
                 }
     },
     {
-        "Id":  541,
+        "Id":  543,
         "Region":  "System",
         "Function":  "SATADrivesRemovableMedia",
         "Arg":  {

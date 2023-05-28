@@ -767,13 +767,17 @@ ActiveHours -Automatically
 #>
 # Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .txt -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
 
-<#
-	Export all Windows associations. Associations will be exported as Application_Associations.json file in script root folder
-	Import exported JSON file after a clean installation. You have to install all apps according to an exported JSON file to restore all associations
-#>
+# Экспортировать все ассоциации в Windows в корень папки в виде файла Application_Associations.json
+# Export all Windows associations into Application_Associations.json file to script root folder
 # Export-Associations
 
-# Import all Windows associations from a JSON file. You have to install all apps according to an exported JSON file to restore all associations
+<#
+	Импортировать все ассоциации в Windows из файла Application_Associations.json
+	Вам необходимо установить все приложения согласно экспортированному файлу Application_Associations.json, чтобы восстановить все ассоциации
+
+	Import all Windows associations from an Application_Associations.json file
+	You need to install all apps according to an exported Application_Associations.json file to restore all associations
+#>
 # Import-Associations
 
 <#

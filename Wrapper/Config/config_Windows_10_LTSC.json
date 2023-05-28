@@ -1776,6 +1776,38 @@
     "Region": "System",
     "Control": "chk",
     "Required": "false",
+    "Function": "Export-Associations",
+    "Arg": {
+      "Zero": {
+        "Tag": ""
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "",
+    "LTSC2019": "true",
+    "LTSC2021": "true"
+  },
+  {
+    "Id": 537,
+    "Region": "System",
+    "Control": "chk",
+    "Required": "false",
+    "Function": "Import-Associations",
+    "Arg": {
+      "Zero": {
+        "Tag": ""
+      }
+    },
+    "Preset": "",
+    "WindowsDefault": "",
+    "LTSC2019": "true",
+    "LTSC2021": "true"
+  },
+  {
+    "Id": 538,
+    "Region": "System",
+    "Control": "chk",
+    "Required": "false",
     "Function": "InstallVCRedist",
     "Arg": {
       "Zero": {
@@ -1788,7 +1820,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 537,
+    "Id": 539,
     "Region": "System",
     "Control": "chk",
     "Required": "false",
@@ -1804,7 +1836,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 538,
+    "Id": 540,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1818,10 +1850,12 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "",
+    "LTSC2019": "true",
+    "LTSC2021": "true"
   },
   {
-    "Id": 539,
+    "Id": 541,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1835,10 +1869,12 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "",
+    "LTSC2019": "true",
+    "LTSC2021": "true"
   },
   {
-    "Id": 540,
+    "Id": 542,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1852,7 +1888,9 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "",
+    "LTSC2019": "true",
+    "LTSC2021": "true"
   },
   {
     "Id": 600,
