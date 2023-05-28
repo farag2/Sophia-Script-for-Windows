@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * You have to install all apps to the same folders according to an exported JSON file to restore all associations, unless this extension will be skipped;
   * `Import-Associations` lets you import `Application_Associations.json` via an open file dialog;
   * This is more of a `proof of concept` (and may contain bugs) which shows that is possible to restore associations from an old PC to a new one (like in some harmful tweakers like `Modern Tweaker` and `Win10Tweaker` provide). But I'd not recommend to rely on this approach. Better do it manually. But the functions works. :cat:
+* Added `SecondsInSystemClock` function for Windows 11 to enable seconds in the taskbar as Windows 10 provides.
 * Fixes for #472, #476, #480, and #482;
 * Improved translations;
 * Minor changes.
