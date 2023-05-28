@@ -1339,11 +1339,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Holen Sie sich keine Windows-Updates, sobald sie für Ihr Gerät verfügbar sind (Standardeinstellung)."
+                                 "ToolTip":  "Не получать последние обновления, как только они будут доступны (значение по умолчанию)."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Holen Sie sich Windows-Updates, sobald sie für Ihr Gerät verfügbar sind."
+                                "ToolTip":  "Получайте последние обновления, как только они будут доступны."
                             }
                 }
     },
