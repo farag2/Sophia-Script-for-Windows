@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug in `Export-Associations`;
   * Reported by @lowl1f3.
 * Closed #494;
-  * Now `TaskbarChat` function except hiding the cion also prevents `Microsoft Teams` from installing for new users by creating a special registry key as `NT SERVICE\TrustedInstaller`.
+  * Now `TaskbarChat` function except hiding the iсon also prevents `Microsoft Teams` from installing for new users by creating a special registry key as `NT SERVICE\TrustedInstaller`.
 
 ### Wrapper 2.6.7
 
