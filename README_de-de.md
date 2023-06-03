@@ -150,6 +150,8 @@
 * Deinstallieren Sie Windows-Funktionen, die Paketnamen mit einem in [WPF] geschriebenen Popup-Formular, in lokalisierter Sprache anzeigen (#screenshots);
 * Laden Sie die [HEVC Video Extensions from Device Manufacturer](https://www.microsoft.com/p/hevc-video-extensions-from-device-manufacturer/9n4wgh0z6vhq) herunter und installieren Sie sie, um das Format [HEVC] (https://en.wikipedia.org/wiki/H.265) öffnen zu können;
 * Registrieren Sie Anwendung, berechnen Sie den Hash und legen Sie ihn als Standard für eine bestimmte Erweiterung fest, ohne das Popup-Fenster "Wie möchten Sie dies öffnen?" sehen zu müssen. All das mit einer speziellen [Funktion] (https://github.com/DanysysTeam/PS-SFTA);
+* Exportieren Sie alle Windows-Verknüpfungen in die Datei Application_Associations.json in den Skriptstammordner;
+* Importieren Sie alle Windows-Zuordnungen aus einer JSON-Datei. Sie müssen alle Anwendungen gemäß einer exportierten JSON-Datei installieren, um alle Zuordnungen wiederherzustellen;
 * Installieren Sie eine beliebige unterstützte Linux-Distribution für WSL, die lokalisierten Distro-Namen nutzt, mit einem in [WPF] geschriebenen Popup-Formular(#screenshots);
 * Erstellen Sie die geplanten Aufgaben `Windows-Bereinigung` und `Windows-Bereinigungsbenachrichtigung`, um nicht verwendete Dateien und Updates zu bereinigen;
   * Es wird eine native Toast-Benachrichtigung angezeigt, bei der Sie wählen können, ob Sie eine Schlummerfunktion nutzen, die Bereinigungsaufgabe ausführen oder [beenden](#native-interactive-toasts-for-the-scheduled-tasks)
@@ -164,6 +166,7 @@
 * Hinzufügen von Ausschlussdateien, die von der Überprüfung durch Microsoft Defender Antivirus ausgeschlossen werden, über das Dialogmenü;
 * Desktop-Symbole, Umgebungsvariablen und Taskleiste aktualisieren, ohne den Datei-Explorer neu zu starten;
 * Konfigurieren Sie die Windows-Sicherheit;
+* Zeigen Sie alle Richtlinien-Registrierungsschlüssel (auch manuell erstellte) im Snap-In Lokaler Gruppenrichtlinien-Editor (gpedit.msc) an;
 * Viele weitere "tiefe" Optimierungen des Datei-Explorers und des Kontextmenüs.
 
 ## Screenshots

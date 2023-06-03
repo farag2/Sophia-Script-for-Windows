@@ -150,6 +150,8 @@
 * Uninstall Windows capabilities displaying friendly packages names with pop-up form written in [WPF](#screenshots);
 * Download and install the [HEVC Video Extensions from Device Manufacturer](https://www.microsoft.com/p/hevc-video-extensions-from-device-manufacturer/9n4wgh0z6vhq) to be able to open [HEVC](https://en.wikipedia.org/wiki/H.265) format;
 * Register app, calculate hash, and set as default for specific extension without the "How do you want to open this" pop-up using special [function](https://github.com/DanysysTeam/PS-SFTA);
+* Export all Windows associations. Associations will be exported as Application_Associations.json file in script root folder;
+* Import exported JSON file after a clean installation. You have to install all apps according to an exported JSON file to restore all associations;
 * Install any supported Linux distrobution for WSL displaying friendly distro names with pop-up form written in [WPF](#screenshots);
 * Create a `Windows Cleanup` and `Windows Cleanup Notification` scheduled tasks for Windows cleaning up unused files and updates;
   * A native toast notification will be displayed where you can choose to snooze, run the cleanup task or [dismiss](#native-interactive-toasts-for-the-scheduled-tasks)
@@ -164,6 +166,7 @@
 * Add exclusion file from Microsoft Defender Antivirus scanning using dialog menu;
 * Refresh desktop icons, environment variables and taskbar without restarting File Explorer;
 * Configure the Windows security;
+* Display all policy registry keys (even manually created ones) in the Local Group Policy Editor snap-in (gpedit.msc);
 * Many more File Explorer and context menu "deep" tweaks.
 
 ## Screenshots
