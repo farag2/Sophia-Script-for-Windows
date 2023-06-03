@@ -501,7 +501,7 @@
                             },
                     "Two":  {
                                 "Tag":  "SearchBox",
-                                "ToolTip":  "Das Suchfeld in der Taskleiste anzeigen (Standardeinstellung)"
+                                "ToolTip":  "Das Suchfeld in der Taskleiste anzeigen (Standardeinstellung)."
                             }
                 }
     },
@@ -675,7 +675,7 @@
                             },
                     "Two":  {
                                 "Tag":  "Category",
-                                "ToolTip":  "Anzeigen der Symbole der Systemsteuerung nach \"Kategorie\" (Standardeinstellung)"
+                                "ToolTip":  "Anzeigen der Symbole der Systemsteuerung nach \"Kategorie\" (Standardeinstellung)."
                             }
                 }
     },
@@ -1223,7 +1223,7 @@
                             },
                     "Two":  {
                                 "Tag":  "Default",
-                                "ToolTip":  "Ändern Sie den Speicherort von Benutzerordnern auf die Standardeinstellunge Benutzerdateien oder -ordner lassen sich nicht an einen neuen Speicherort verschieben. Verschieben Sie sie manuell. Sie befinden sich standardmäßig im Ordner %USERPROFILE% (Standardeinstellung)"
+                                "ToolTip":  "Ändern Sie den Speicherort von Benutzerordnern auf die Standardeinstellunge Benutzerdateien oder -ordner lassen sich nicht an einen neuen Speicherort verschieben. Verschieben Sie sie manuell. Sie befinden sich standardmäßig im Ordner %USERPROFILE% (Standardeinstellung)."
                             }
                 }
     },

@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.17.0
-	Date: 27.05.2023
+	Version: v5.17.1
+	Date: 03.06.2023
 
 	Copyright (c) 2014—2023 farag
 	Copyright (c) 2019—2023 farag & Inestic
@@ -9774,9 +9774,12 @@ function Export-Associations
 					$PartProgramPath = (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Classes\$($_.ProgId)\Shell\Open\Command" -Name "(default)").Trim()
 					$Program = $PartProgramPath.Substring(0, ($PartProgramPath.IndexOf(".exe") + 4)).Trim('"')
 
-					if (Test-Path -Path $Program)
+					if ($Program)
 					{
-						$ProgramPath = $PartProgramPath
+						if (Test-Path -Path $([System.Environment]::ExpandEnvironmentVariables($Program)))
+						{
+							$ProgramPath = $PartProgramPath
+						}
 					}
 				}
 				elseif ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\$($_.ProgId)\Shell\Open\Command", "", $false))
@@ -9784,9 +9787,12 @@ function Export-Associations
 					$PartProgramPath = (Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Classes\$($_.ProgId)\Shell\Open\Command" -Name "(default)").Trim()
 					$Program = $PartProgramPath.Substring(0, ($PartProgramPath.IndexOf(".exe") + 4)).Trim('"')
 
-					if (Test-Path -Path $Program)
+					if ($Program)
 					{
-						$ProgramPath = $PartProgramPath
+						if (Test-Path -Path $([System.Environment]::ExpandEnvironmentVariables($Program)))
+						{
+							$ProgramPath = $PartProgramPath
+						}
 					}
 				}
 
@@ -9810,9 +9816,12 @@ function Export-Associations
 						}
 					}
 
-					if (Test-Path -Path $IconPath)
+					if ($IconPath)
 					{
-						$Icon = $IconPartPath
+						if (Test-Path -Path $([System.Environment]::ExpandEnvironmentVariables($IconPath)))
+						{
+							$Icon = $IconPartPath
+						}
 					}
 				}
 				elseif ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\$($_.ProgId)\DefaultIcon", "", $false))
@@ -9834,9 +9843,12 @@ function Export-Associations
 						}
 					}
 
-					if (Test-Path -Path $IconPath)
+					if ($IconPath)
 					{
-						$Icon = $IconPartPath
+						if (Test-Path -Path $([System.Environment]::ExpandEnvironmentVariables($IconPath)))
+						{
+							$Icon = $IconPartPath
+						}
 					}
 				}
 				elseif ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Classes\$($_.ProgId)\shell\open\command", "", $false))
@@ -9844,9 +9856,12 @@ function Export-Associations
 					$IconPartPath = (Get-ItemPropertyValue -Path "HKCU:\Software\Classes\$($_.ProgId)\shell\open\command" -Name "(default)").Trim()
 					$IconPath = $IconPartPath.Substring(0, $IconPartPath.IndexOf(".exe") + 4).Trim('"')
 
-					if (Test-Path -Path $IconPath)
+					if ($IconPath)
 					{
-						$Icon = "$IconPath,0"
+						if (Test-Path -Path $([System.Environment]::ExpandEnvironmentVariables($IconPath)))
+						{
+							$Icon = "$IconPath,0"
+						}
 					}
 				}
 				elseif ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\$($_.ProgId)\Shell\Open\Command", "", $false))
@@ -9854,9 +9869,12 @@ function Export-Associations
 					$IconPartPath = (Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Classes\$($_.ProgId)\Shell\Open\Command" -Name "(default)").Trim()
 					$IconPath = $IconPartPath.Substring(0, $IconPartPath.IndexOf(".exe") + 4)
 
-					if (Test-Path -Path $IconPath)
+					if ($IconPath)
 					{
-						$Icon = "$IconPath,0"
+						if (Test-Path -Path $([System.Environment]::ExpandEnvironmentVariables($IconPath)))
+						{
+							$Icon = "$IconPath,0"
+						}
 					}
 				}
 			}
@@ -9882,6 +9900,8 @@ function Export-Associations
 "@ | ConvertFrom-JSON
 		$AllJSON += $JSON
 	}
+
+	Clear-Variable -Name ProgramPath, Icon -ErrorAction Ignore
 
 	$AllJSON | ConvertTo-Json | Set-Content -Path "$PSScriptRoot\..\Application_Associations.json" -Force -Encoding utf8
 

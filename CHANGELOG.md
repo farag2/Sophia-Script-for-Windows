@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.17.1 | 6.5.1 — 03.06.2023
+
+* Fixed bug in `Export-Associations`;
+  * Reported by @lowl1f3.
+* Closed #494;
+  * Now `TaskbarChat` function except hiding the cion also prevents `Microsoft Teams` from installing for new users by creating a special registry key as `NT SERVICE\TrustedInstaller`.
+
+### Wrapper 2.6.7
+
+* Closed #490.
+
+> **Note**: Please note that Wrapper doesn't have all functions as CLI `Sophia Script` provides. If you want to apply all functions, you need to configure `Sophia.ps1` file.
+
+
 ## 5.17.0 | 6.5.0 — 27.05.2023
 
 * Expanded start-up checks;
@@ -29,8 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Thanks to @sensinsane.
 * Minor changes.
 
-> **Note**: Please note that Wrapper doesn't have all functions as CLI `Sophia Script` provides. If you want to apply all functions, you need to 
-configure `Sophia.ps1` file.
+> **Note**: Please note that Wrapper doesn't have all functions as CLI `Sophia Script` provides. If you want to apply all functions, you need to configure `Sophia.ps1` file.
 
 `Sophia Script for Windows` hits more than 700 000 downloads! Thank you for your interest in Windows tweaking! ❤️
 

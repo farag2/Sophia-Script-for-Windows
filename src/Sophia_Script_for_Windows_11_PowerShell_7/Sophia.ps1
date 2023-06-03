@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 11 (PowerShell 7)"
 
-	Version: v6.5.0
-	Date: 27.05.2023
+	Version: v6.5.1
+	Date: 03.06.2023
 
 	Copyright (c) 2014—2023 farag
 	Copyright (c) 2019—2023 farag & Inestic
@@ -69,7 +69,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.5.0 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2023"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.5.1 (PowerShell 7) | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2023"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -398,12 +398,12 @@ TaskbarWidgets -Hide
 # Отобразить кнопку "Мини-приложения" на панели задач (значение по умолчанию)
 # TaskbarWidgets -Show
 
-# Hide the Chat icon (Microsoft Teams) on the taskbar
-# Скрыть кнопку чата (Microsoft Teams) с панели задач
+# Hide the Chat icon (Microsoft Teams) on the taskbar and prevent Microsoft Teams from installing for new users
+# Скрыть кнопку чата (Microsoft Teams) с панели задач и запретить установку Microsoft Teams для новых пользователей
 TaskbarChat -Hide
 
-# Show the Chat icon (Microsoft Teams) on the taskbar (default value)
-# Отобразить кнопку чата (Microsoft Teams) на панели задач (значение по умолчанию)
+# Show the Chat icon (Microsoft Teams) on the taskbar and remove block from installing Microsoft Teams for new users (default value)
+# Отобразить кнопку чата (Microsoft Teams) на панели задач и убрать блокировку на устанвоку Microsoft Teams для новых пользователей (значение по умолчанию)
 # TaskbarChat -Show
 
 # Unpin the "Microsoft Edge", "Microsoft Store" shortcuts from the taskbar

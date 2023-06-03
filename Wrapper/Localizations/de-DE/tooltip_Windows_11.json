@@ -505,7 +505,7 @@
                             },
                     "Three":  {
                                   "Tag":  "SearchBox",
-                                  "ToolTip":  "Suchsymbol in der Taskleiste anzeigen (Standardeinstellung)"
+                                  "ToolTip":  "Suchsymbol in der Taskleiste anzeigen (Standardeinstellung)."
                               }
                 }
     },
@@ -531,11 +531,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Hide",
-                                 "ToolTip":  "Chat-Symbols (Microsoft Teams) in der Taskleiste ausblenden."
+                                 "ToolTip":  "Blenden Sie das Chat-Symbol (Microsoft Teams) in der Taskleiste aus und verhindern Sie, dass Microsoft Teams für neue Benutzer installiert wird."
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Chat-Symbol (Microsoft Teams) in der Taskleiste anzeigen (Standardeinstellung)."
+                                "ToolTip":  "Zeigen Sie das Chat-Symbol (Microsoft Teams) in der Taskleiste an und entfernen Sie die Sperre für die Installation von Microsoft Teams für neue Benutzer (Standardwert)."
                             }
                 }
     },
@@ -585,7 +585,7 @@
                             },
                     "Two":  {
                                 "Tag":  "Category",
-                                "ToolTip":  "Symbole der Systemsteuerung nach \"Kategorie\" anzeigen (Standardeinstellung)"
+                                "ToolTip":  "Symbole der Systemsteuerung nach \"Kategorie\" anzeigen (Standardeinstellung)."
                             }
                 }
     },
@@ -1103,7 +1103,7 @@
                             },
                     "Two":  {
                                 "Tag":  "Default",
-                                "ToolTip":  "Ändern Sie den Speicherort von Benutzerordnern auf die Standardeinstellunge Benutzerdateien oder -ordner lassen sich nicht an einen neuen Speicherort verschieben. Verschieben Sie sie manuell. Sie befinden sich standardmäßig im Ordner %USERPROFILE% (Standardeinstellung)"
+                                "ToolTip":  "Ändern Sie den Speicherort von Benutzerordnern auf die Standardeinstellunge Benutzerdateien oder -ordner lassen sich nicht an einen neuen Speicherort verschieben. Verschieben Sie sie manuell. Sie befinden sich standardmäßig im Ordner %USERPROFILE% (Standardeinstellung)."
                             }
                 }
     },
@@ -1499,7 +1499,7 @@
                             },
                     "Two":  {
                                 "Tag":  "ShowMoreRecommendations",
-                                "ToolTip":  "Weitere Empfehlungen auf Start anzeigen (nur für 22621+ Build)"
+                                "ToolTip":  "Weitere Empfehlungen auf Start anzeigen (nur für 22621+ Build)."
                             }
                 }
     },

@@ -10,7 +10,7 @@
                              },
                     "One":  {
                                 "Tag":  "",
-                                "ToolTip":  "The mandatory Checks. No argument therefore no warning message about whether you've customized the preset file"
+                                "ToolTip":  "The mandatory Checks. No argument therefore no warning message about whether you've customized the preset file."
                             }
                 }
     },
@@ -47,7 +47,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Enable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and allow connection (default value)"
+                                "ToolTip":  "Enable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and allow connection (default value)."
                             }
                 }
     },
@@ -62,7 +62,7 @@
                              },
                     "One":  {
                                 "Tag":  "Default",
-                                "ToolTip":  "Set the diagnostic data collection to default (default value)"
+                                "ToolTip":  "Set the diagnostic data collection to default (default value)."
                             }
                 }
     },
@@ -77,7 +77,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Turn on the Windows Error Reporting (default value)"
+                                "ToolTip":  "Turn on the Windows Error Reporting (default value)."
                             }
                 }
     },
@@ -92,7 +92,7 @@
                              },
                     "One":  {
                                 "Tag":  "Automatically",
-                                "ToolTip":  "Change the feedback frequency to \"Automatically\" (default value)"
+                                "ToolTip":  "Change the feedback frequency to \"Automatically\" (default value)."
                             }
                 }
     },
@@ -107,7 +107,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Turn on the diagnostics tracking scheduled tasks (default value)"
+                                "ToolTip":  "Turn on the diagnostics tracking scheduled tasks (default value)."
                             }
                 }
     },
@@ -122,7 +122,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Use sign-in info to automatically finish setting up device and reopen apps after an update or restart (default value)"
+                                "ToolTip":  "Use sign-in info to automatically finish setting up device and reopen apps after an update or restart (default value)."
                             }
                 }
     },
@@ -137,7 +137,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Let websites provide locally relevant content by accessing language list (default value)"
+                                "ToolTip":  "Let websites provide locally relevant content by accessing language list (default value)."
                             }
                 }
     },
@@ -152,7 +152,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Allow apps to use advertising ID (default value)"
+                                "ToolTip":  "Allow apps to use advertising ID (default value)."
                             }
                 }
     },
@@ -167,7 +167,7 @@
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Show the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested (default value)"
+                                "ToolTip":  "Show the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested (default value)."
                             }
                 }
     },
@@ -197,7 +197,7 @@
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Show me suggested content in the Settings app (default value)"
+                                "ToolTip":  "Show me suggested content in the Settings app (default value)."
                             }
                 }
     },
@@ -212,7 +212,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Turn on automatic installing suggested apps (default value)"
+                                "ToolTip":  "Turn on automatic installing suggested apps (default value)."
                             }
                 }
     },
@@ -227,7 +227,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Suggest ways I can finish setting up my device to get the most out of Windows (default value)"
+                                "ToolTip":  "Suggest ways I can finish setting up my device to get the most out of Windows (default value)."
                             }
                 }
     },
@@ -242,7 +242,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Let Microsoft offer you tailored experiences based on the diagnostic data setting you hava chosen (default value)"
+                                "ToolTip":  "Let Microsoft offer you tailored experiences based on the diagnostic data setting you hava chosen (default value)."
                             }
                 }
     },
@@ -257,7 +257,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Enable Bing search in the Start Menu (default value)"
+                                "ToolTip":  "Enable Bing search in the Start Menu (default value)."
                             }
                 }
     },
@@ -272,7 +272,7 @@
                              },
                     "One":  {
                                 "Tag":  "Hide",
-                                "ToolTip":  "Hide the \"This PC\" icon on Desktop (default value)"
+                                "ToolTip":  "Hide the \"This PC\" icon on Desktop (default value)."
                             }
                 }
     },
@@ -287,7 +287,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Use check boxes to select items (default value)"
+                                "ToolTip":  "Use check boxes to select items (default value)."
                             }
                 }
     },
@@ -302,7 +302,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Do not show hidden files, folders, and drives (default value)"
+                                "ToolTip":  "Do not show hidden files, folders, and drives (default value)."
                             }
                 }
     },
@@ -317,7 +317,7 @@
                              },
                     "One":  {
                                 "Tag":  "Hide",
-                                "ToolTip":  "Hide the file name extensions (default value)"
+                                "ToolTip":  "Hide the file name extensions (default value)."
                             }
                 }
     },
@@ -332,7 +332,7 @@
                              },
                     "One":  {
                                 "Tag":  "Hide",
-                                "ToolTip":  "Hide folder merge conflicts (default value)"
+                                "ToolTip":  "Hide folder merge conflicts (default value)."
                             }
                 }
     },
@@ -347,7 +347,7 @@
                              },
                     "One":  {
                                 "Tag":  "QuickAccess",
-                                "ToolTip":  "Open File Explorer to Quick access (default value)"
+                                "ToolTip":  "Open File Explorer to Quick access (default value)."
                             }
                 }
     },
@@ -362,7 +362,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Enable the File Explorer compact mode (default value)"
+                                "ToolTip":  "Enable the File Explorer compact mode (default value)."
                             }
                 }
     },
@@ -377,7 +377,7 @@
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Show sync provider notification within File Explorer (default value)"
+                                "ToolTip":  "Show sync provider notification within File Explorer (default value)."
                             }
                 }
     },
@@ -392,7 +392,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "When I snap a window, show what I can snap next to it (default value)"
+                                "ToolTip":  "When I snap a window, show what I can snap next to it (default value)."
                             }
                 }
     },
@@ -407,7 +407,7 @@
                              },
                     "One":  {
                                 "Tag":  "Compact",
-                                "ToolTip":  "Show the file transfer dialog box in the compact mode (default value)"
+                                "ToolTip":  "Show the file transfer dialog box in the compact mode (default value)."
                             }
                 }
     },
@@ -422,7 +422,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Do not display the recycle bin files delete confirmation (default value)"
+                                "ToolTip":  "Do not display the recycle bin files delete confirmation (default value)."
                             }
                 }
     },
@@ -437,7 +437,7 @@
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Show recently used files in Quick access (default value)"
+                                "ToolTip":  "Show recently used files in Quick access (default value)."
                             }
                 }
     },
@@ -452,7 +452,7 @@
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Show frequently used folders in Quick access (default value)"
+                                "ToolTip":  "Show frequently used folders in Quick access (default value)."
                             }
                 }
     },
@@ -467,7 +467,7 @@
                              },
                     "One":  {
                                 "Tag":  "Center",
-                                "ToolTip":  "Set the taskbar alignment to the center (default value)"
+                                "ToolTip":  "Set the taskbar alignment to the center (default value)."
                             }
                 }
     },
@@ -497,15 +497,15 @@
                              },
                     "One":  {
                                 "Tag":  "SearchIcon",
-                                "ToolTip":  "Show the search icon on the taskbar"
+                                "ToolTip":  "Show the search icon on the taskbar."
                             },
                     "Two":  {
                                 "Tag":  "SearchIconLabel",
-                                "ToolTip":  "Show the search icon and label on the taskbar"
+                                "ToolTip":  "Show the search icon and label on the taskbar."
                             },
                     "Three":  {
                                   "Tag":  "SearchBox",
-                                  "ToolTip":  "Show the search box on the taskbar (default value)"
+                                  "ToolTip":  "Show the search box on the taskbar (default value)."
                               }
                 }
     },
@@ -520,7 +520,7 @@
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Show the Task View button on the taskbar (default value)"
+                                "ToolTip":  "Show the Task View button on the taskbar (default value)."
                             }
                 }
     },
@@ -531,11 +531,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Hide",
-                                 "ToolTip":  "Hide the Chat icon (Microsoft Teams) on the taskbar."
+                                 "ToolTip":  "Hide the Chat icon (Microsoft Teams) on the taskbar and prevent Microsoft Teams from installing for new users."
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Show the Chat icon (Microsoft Teams) on the taskbar (default value)"
+                                "ToolTip":  "Show the Chat icon (Microsoft Teams) on the taskbar and remove block from installing Microsoft Teams for new users (default value)."
                             }
                 }
     },
@@ -581,11 +581,11 @@
                              },
                     "One":  {
                                 "Tag":  "SmallIcons",
-                                "ToolTip":  "View the Control Panel icons by small icons"
+                                "ToolTip":  "View the Control Panel icons by small icons."
                             },
                     "Two":  {
                                 "Tag":  "Category",
-                                "ToolTip":  "View the Control Panel icons by category (default value)"
+                                "ToolTip":  "View the Control Panel icons by category (default value)."
                             }
                 }
     },
@@ -600,7 +600,7 @@
                              },
                     "One":  {
                                 "Tag":  "Light",
-                                "ToolTip":  "Set the default Windows mode to light (default value)"
+                                "ToolTip":  "Set the default Windows mode to light (default value)."
                             }
                 }
     },
@@ -615,7 +615,7 @@
                              },
                     "One":  {
                                 "Tag":  "Light",
-                                "ToolTip":  "Set the default app mode to light (default value)"
+                                "ToolTip":  "Set the default app mode to light (default value)."
                             }
                 }
     },
@@ -630,7 +630,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Show user first sign-in animation after the upgrade (default value)"
+                                "ToolTip":  "Show user first sign-in animation after the upgrade (default value)."
                             }
                 }
     },
@@ -645,7 +645,7 @@
                              },
                     "One":  {
                                 "Tag":  "Default",
-                                "ToolTip":  "Set the quality factor of the JPEG desktop wallpapers to default (default value)"
+                                "ToolTip":  "Set the quality factor of the JPEG desktop wallpapers to default (default value)."
                             }
                 }
     },
@@ -660,7 +660,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Add the \"- Shortcut\" suffix to the file name of created shortcuts (default value)"
+                                "ToolTip":  "Add the \"- Shortcut\" suffix to the file name of created shortcuts (default value)."
                             }
                 }
     },
@@ -675,7 +675,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Do not use the Print screen button to open screen snipping (default value)"
+                                "ToolTip":  "Do not use the Print screen button to open screen snipping (default value)."
                             }
                 }
     },
@@ -690,7 +690,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Let me use a different input method for each app window"
+                                "ToolTip":  "Let me use a different input method for each app window."
                             }
                 }
     },
@@ -705,7 +705,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "When I grab a windows's title bar and shake it, don't minimize all other windows (default value)"
+                                "ToolTip":  "When I grab a windows's title bar and shake it, don't minimize all other windows (default value)."
                             }
                 }
     },
@@ -720,11 +720,11 @@
                              },
                     "One":  {
                                 "Tag":  "Light",
-                                "ToolTip":  "Download and install free light \"Windows 11 Cursors Concept v2\" cursors from Jepri Creations"
+                                "ToolTip":  "Download and install free light \"Windows 11 Cursors Concept v2\" cursors from Jepri Creations."
                             },
                     "Two":  {
                                 "Tag":  "Dark",
-                                "ToolTip":  "Download and install free dark \"Windows 11 Cursors Concept v2\" cursors from Jepri Creations"
+                                "ToolTip":  "Download and install free dark \"Windows 11 Cursors Concept v2\" cursors from Jepri Creations."
                             }
                 }
     },
@@ -739,7 +739,7 @@
                              },
                     "One":  {
                                 "Tag":  "Default",
-                                "ToolTip":  "Group files and folder by date modified in the Downloads folder"
+                                "ToolTip":  "Group files and folder by date modified in the Downloads folder."
                             }
                 }
     },
@@ -754,7 +754,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Expand to open folder on navigation pane"
+                                "ToolTip":  "Expand to open folder on navigation pane."
                             }
                 }
     },
@@ -769,7 +769,7 @@
                              },
                     "One":  {
                                 "Tag":  "Install",
-                                "ToolTip":  "Install OneDrive 64-bit"
+                                "ToolTip":  "Install OneDrive 64-bit."
                             }
                 }
     },
@@ -795,7 +795,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Turn off Storage Sense (default value)"
+                                "ToolTip":  "Turn off Storage Sense (default value)."
                             }
                 }
     },
@@ -810,7 +810,7 @@
                              },
                     "One":  {
                                 "Tag":  "Default",
-                                "ToolTip":  "Run Storage Sense during low free disk space (default value)"
+                                "ToolTip":  "Run Storage Sense during low free disk space (default value)."
                             }
                 }
     },
@@ -840,7 +840,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Enable hibernate (default value)"
+                                "ToolTip":  "Enable hibernate (default value)."
                             }
                 }
     },
@@ -855,7 +855,7 @@
                              },
                     "One":  {
                                 "Tag":  "Default",
-                                "ToolTip":  "Change %TEMP% environment variable path to %LOCALAPPDATA%\\Temp (default value)"
+                                "ToolTip":  "Change %TEMP% environment variable path to %LOCALAPPDATA%\\Temp (default value)."
                             }
                 }
     },
@@ -870,7 +870,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Enable the Windows 260 character path limit (default value)"
+                                "ToolTip":  "Enable the Windows 260 character path limit (default value)."
                             }
                 }
     },
@@ -885,7 +885,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Do not Stop error code when BSoD occurs (default value)"
+                                "ToolTip":  "Do not Stop error code when BSoD occurs (default value)."
                             }
                 }
     },
@@ -900,7 +900,7 @@
                              },
                     "One":  {
                                 "Tag":  "Default",
-                                "ToolTip":  "Choose when to be notified about changes to your computer: notify me only when apps try to make changes to my computer (default value)"
+                                "ToolTip":  "Choose when to be notified about changes to your computer: notify me only when apps try to make changes to my computer (default value)."
                             }
                 }
     },
@@ -915,7 +915,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Turn off access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled (default value)"
+                                "ToolTip":  "Turn off access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled (default value)."
                             }
                 }
     },
@@ -930,7 +930,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Turn on Delivery Optimization (default value)"
+                                "ToolTip":  "Turn on Delivery Optimization (default value)."
                             }
                 }
     },
@@ -945,7 +945,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Never wait for the network at computer startup and logon for workgroup networks (default value)"
+                                "ToolTip":  "Never wait for the network at computer startup and logon for workgroup networks (default value)."
                             }
                 }
     },
@@ -960,7 +960,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Let Windows manage my default printer (default value)"
+                                "ToolTip":  "Let Windows manage my default printer (default value)."
                             }
                 }
     },
@@ -975,7 +975,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Enable the Windows features using the pop-up dialog box (default value)"
+                                "ToolTip":  "Enable the Windows features using the pop-up dialog box (default value)."
                             }
                 }
     },
@@ -990,7 +990,7 @@
                              },
                     "One":  {
                                 "Tag":  "Install",
-                                "ToolTip":  "Install optional features using the pop-up dialog box (default value)"
+                                "ToolTip":  "Install optional features using the pop-up dialog box (default value)."
                             }
                 }
     },
@@ -1005,7 +1005,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Do not receive updates for other Microsoft products when you update Windows (default value)"
+                                "ToolTip":  "Do not receive updates for other Microsoft products when you update Windows (default value)."
                             }
                 }
     },
@@ -1020,7 +1020,7 @@
                              },
                     "One":  {
                                 "Tag":  "Balanced",
-                                "ToolTip":  "Set the power plan on \"Balanced\" (default value)"
+                                "ToolTip":  "Set the power plan on \"Balanced\" (default value)."
                             }
                 }
     },
@@ -1035,7 +1035,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Do not use the latest installed .NET runtime for all apps (default value)"
+                                "ToolTip":  "Do not use the latest installed .NET runtime for all apps (default value)."
                             }
                 }
     },
@@ -1050,7 +1050,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Allow the computer to turn off the network adapters to save power (default value)"
+                                "ToolTip":  "Allow the computer to turn off the network adapters to save power (default value)."
                             }
                 }
     },
@@ -1065,11 +1065,11 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections (default value). Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipify.org"
+                                "ToolTip":  "Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections (default value). Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipify.org."
                             },
                     "Two":  {
                                 "Tag":  "PreferIPv4overIPv6",
-                                "ToolTip":  "Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections. Prefer IPv4 over IPv6. Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipify.org"
+                                "ToolTip":  "Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections. Prefer IPv4 over IPv6. Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipify.org."
                             }
                 }
     },
@@ -1084,7 +1084,7 @@
                              },
                     "One":  {
                                 "Tag":  "Default",
-                                "ToolTip":  "Override for default input method: use language list (default value)"
+                                "ToolTip":  "Override for default input method: use language list (default value)."
                             }
                 }
     },
@@ -1103,7 +1103,7 @@
                             },
                     "Two":  {
                                 "Tag":  "Default",
-                                "ToolTip":  "Change user folders location to the default values. User files or folders won't me moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default (default value)"
+                                "ToolTip":  "Change user folders location to the default values. User files or folders won't me moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default (default value)."
                             }
                 }
     },
@@ -1118,7 +1118,7 @@
                              },
                     "One":  {
                                 "Tag":  "Default",
-                                "ToolTip":  "Save screenshots by pressing Win+PrtScr in the Pictures folder (default value)"
+                                "ToolTip":  "Save screenshots by pressing Win+PrtScr in the Pictures folder (default value)."
                             }
                 }
     },
@@ -1133,7 +1133,7 @@
                              },
                     "One":  {
                                 "Tag":  "Default",
-                                "ToolTip":  "Ask me before running troubleshooters. In order this feature to work the OS level of diagnostic data gathering will be set to \"Optional diagnostic data\" and the error reporting feature will be turned on (default value)"
+                                "ToolTip":  "Ask me before running troubleshooters. In order this feature to work the OS level of diagnostic data gathering will be set to \"Optional diagnostic data\" and the error reporting feature will be turned on (default value)."
                             }
                 }
     },
@@ -1148,7 +1148,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Do not launch folder windows in a separate process (default value)"
+                                "ToolTip":  "Do not launch folder windows in a separate process (default value)."
                             }
                 }
     },
@@ -1163,7 +1163,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Enable reserved storage (default value)"
+                                "ToolTip":  "Enable reserved storage (default value)."
                             }
                 }
     },
@@ -1178,7 +1178,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Enable help lookup via F1 (default value)"
+                                "ToolTip":  "Enable help lookup via F1 (default value)."
                             }
                 }
     },
@@ -1193,7 +1193,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Disable Num Lock at startup (default value)"
+                                "ToolTip":  "Disable Num Lock at startup (default value)."
                             }
                 }
     },
@@ -1208,7 +1208,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Enable Caps Lock (default value)"
+                                "ToolTip":  "Enable Caps Lock (default value)."
                             }
                 }
     },
@@ -1223,7 +1223,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Turn on pressing the Shift key 5 times to turn Sticky keys (default value)"
+                                "ToolTip":  "Turn on pressing the Shift key 5 times to turn Sticky keys (default value)."
                             }
                 }
     },
@@ -1238,7 +1238,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Use AutoPlay for all media and devices (default value)"
+                                "ToolTip":  "Use AutoPlay for all media and devices (default value)."
                             }
                 }
     },
@@ -1253,7 +1253,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Enable thumbnail cache removal (default value)"
+                                "ToolTip":  "Enable thumbnail cache removal (default value)."
                             }
                 }
     },
@@ -1268,7 +1268,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Disable automatically saving my restartable apps when signing out and restart them after signing in (default value)"
+                                "ToolTip":  "Disable automatically saving my restartable apps when signing out and restart them after signing in (default value)."
                             }
                 }
     },
@@ -1283,7 +1283,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Disable \"Network Discovery\" and \"File and Printers Sharing\" for workgroup networks (default value)"
+                                "ToolTip":  "Disable \"Network Discovery\" and \"File and Printers Sharing\" for workgroup networks (default value)."
                             }
                 }
     },
@@ -1298,7 +1298,7 @@
                              },
                     "One":  {
                                 "Tag":  "Hide",
-                                "ToolTip":  "Do not show a notification when your PC requires a restart to finish updating (default value)"
+                                "ToolTip":  "Do not show a notification when your PC requires a restart to finish updating (default value)."
                             }
                 }
     },
@@ -1313,7 +1313,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Do not restart this device as soon as possible when a restart is required to install an update (default value)"
+                                "ToolTip":  "Do not restart this device as soon as possible when a restart is required to install an update (default value)."
                             }
                 }
     },
@@ -1328,7 +1328,7 @@
                              },
                     "One":  {
                                 "Tag":  "Manually",
-                                "ToolTip":  "Manually adjust active hours for me based on daily usage (default value)"
+                                "ToolTip":  "Manually adjust active hours for me based on daily usage (default value)."
                             }
                 }
     },
@@ -1380,7 +1380,7 @@
                              },
                     "One":  {
                                 "Tag":  "ConsoleHost",
-                                "ToolTip":  "Set Windows Console Host as default terminal app to host the user interface for command-line applications (default value)"
+                                "ToolTip":  "Set Windows Console Host as default terminal app to host the user interface for command-line applications (default value)."
                             }
                 }
     },
@@ -1417,7 +1417,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Disable proxying only blocked sites from the unified registry of Roskomnadzor (default value)"
+                                "ToolTip":  "Disable proxying only blocked sites from the unified registry of Roskomnadzor (default value)."
                             }
                 }
     },
@@ -1443,7 +1443,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Do not prevent desktop shortcut creation upon Microsoft Edge update (default value)"
+                                "ToolTip":  "Do not prevent desktop shortcut creation upon Microsoft Edge update (default value)."
                             }
                 }
     },
@@ -1458,7 +1458,7 @@
                              },
                     "One":  {
                                 "Tag":  "Default",
-                                "ToolTip":  "Show up all internal SATA drives as removeable media in the taskbar notification area (default value)"
+                                "ToolTip":  "Show up all internal SATA drives as removeable media in the taskbar notification area (default value)."
                             }
                 }
     },
@@ -1495,11 +1495,11 @@
                              },
                     "One":  {
                                 "Tag":  "ShowMorePins",
-                                "ToolTip":  "Show more pins on Start (for 22621+ build only)"
+                                "ToolTip":  "Show more pins on Start (for 22621+ build only)."
                             },
                     "Two":  {
                                 "Tag":  "ShowMoreRecommendations",
-                                "ToolTip":  "Show more recommendations on Start (for 22621+ build only)"
+                                "ToolTip":  "Show more recommendations on Start (for 22621+ build only)."
                             }
                 }
     },
@@ -1562,7 +1562,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Enable Cortana autostarting (default value)"
+                                "ToolTip":  "Enable Cortana autostarting (default value)."
                             }
                 }
     },
@@ -1577,7 +1577,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Enable Microsoft Teams autostarting (default value)"
+                                "ToolTip":  "Enable Microsoft Teams autostarting (default value)."
                             }
                 }
     },
@@ -1592,7 +1592,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Enable Xbox Game Bar (default value)"
+                                "ToolTip":  "Enable Xbox Game Bar (default value)."
                             }
                 }
     },
@@ -1607,7 +1607,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Enable Xbox Game Bar tips (default value)"
+                                "ToolTip":  "Enable Xbox Game Bar tips (default value)."
                             }
                 }
     },
@@ -1633,7 +1633,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Turn off hardware-accelerated GPU scheduling. Restart needed (default value)"
+                                "ToolTip":  "Turn off hardware-accelerated GPU scheduling. Restart needed (default value)."
                             }
                 }
     },
@@ -1648,7 +1648,7 @@
                              },
                     "One":  {
                                 "Tag":  "Delete",
-                                "ToolTip":  "Delete the \"Windows Cleanup\" and \"Windows Cleanup Notification\" scheduled tasks for cleaning up Windows unused files and updates"
+                                "ToolTip":  "Delete the \"Windows Cleanup\" and \"Windows Cleanup Notification\" scheduled tasks for cleaning up Windows unused files and updates."
                             }
                 }
     },
@@ -1663,7 +1663,7 @@
                              },
                     "One":  {
                                 "Tag":  "Delete",
-                                "ToolTip":  "Delete the \"SoftwareDistribution\" scheduled task for cleaning up the %SystemRoot%\\SoftwareDistribution\\Download folder"
+                                "ToolTip":  "Delete the \"SoftwareDistribution\" scheduled task for cleaning up the %SystemRoot%\\SoftwareDistribution\\Download folder."
                             }
                 }
     },
@@ -1678,7 +1678,7 @@
                              },
                     "One":  {
                                 "Tag":  "Delete",
-                                "ToolTip":  "Delete the \"Temp\" scheduled task for cleaning up the %TEMP% folder"
+                                "ToolTip":  "Delete the \"Temp\" scheduled task for cleaning up the %TEMP% folder."
                             }
                 }
     },
@@ -1693,7 +1693,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Disable Microsoft Defender Exploit Guard network protection (default value)"
+                                "ToolTip":  "Disable Microsoft Defender Exploit Guard network protection (default value)."
                             }
                 }
     },
@@ -1708,7 +1708,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Disable detection for potentially unwanted applications and block them (default value)"
+                                "ToolTip":  "Disable detection for potentially unwanted applications and block them (default value)."
                             }
                 }
     },
@@ -1745,7 +1745,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Disable events auditing generated when a process is created (starts) (default value)"
+                                "ToolTip":  "Disable events auditing generated when a process is created (starts) (default value)."
                             }
                 }
     },
@@ -1760,7 +1760,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Do not include command line in process creation events (default value)"
+                                "ToolTip":  "Do not include command line in process creation events (default value)."
                             }
                 }
     },
@@ -1775,7 +1775,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Remove \"Process Creation\" Event Viewer сustom view to log executed processes and their arguments (default value)"
+                                "ToolTip":  "Remove \"Process Creation\" Event Viewer сustom view to log executed processes and their arguments (default value)."
                             }
                 }
     },
@@ -1790,7 +1790,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Disable logging for all Windows PowerShell modules (default value)"
+                                "ToolTip":  "Disable logging for all Windows PowerShell modules (default value)."
                             }
                 }
     },
@@ -1805,7 +1805,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Disable logging for all PowerShell scripts input to the Windows PowerShell event log (default value)"
+                                "ToolTip":  "Disable logging for all PowerShell scripts input to the Windows PowerShell event log (default value)."
                             }
                 }
     },
@@ -1820,7 +1820,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Microsoft Defender SmartScreen marks downloaded files from the Internet as unsafe (default value)"
+                                "ToolTip":  "Microsoft Defender SmartScreen marks downloaded files from the Internet as unsafe (default value)."
                             }
                 }
     },
@@ -1835,7 +1835,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Enable the Attachment Manager marking files that have been downloaded from the Internet as unsafe (default value)"
+                                "ToolTip":  "Enable the Attachment Manager marking files that have been downloaded from the Internet as unsafe (default value)."
                             }
                 }
     },
@@ -1850,7 +1850,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Enable Windows Script Host (default value)"
+                                "ToolTip":  "Enable Windows Script Host (default value)."
                             }
                 }
     },
@@ -1865,7 +1865,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Disable Windows Sandbox (default value)"
+                                "ToolTip":  "Disable Windows Sandbox (default value)."
                             }
                 }
     },
@@ -1880,7 +1880,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Disable DNS-over-HTTPS for IPv4 (default value)"
+                                "ToolTip":  "Disable DNS-over-HTTPS for IPv4 (default value)."
                             }
                 }
     },
@@ -1895,7 +1895,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Disable Local Security Authority protection (default value)"
+                                "ToolTip":  "Disable Local Security Authority protection (default value)."
                             }
                 }
     },
@@ -1910,7 +1910,7 @@
                              },
                     "One":  {
                                 "Tag":  "Hide",
-                                "ToolTip":  "Hide the \"Extract all\" item from the Windows Installer (.msi) context menu (default value)"
+                                "ToolTip":  "Hide the \"Extract all\" item from the Windows Installer (.msi) context menu (default value)."
                             }
                 }
     },
@@ -1925,7 +1925,7 @@
                              },
                     "One":  {
                                 "Tag":  "Hide",
-                                "ToolTip":  "Hide the \"Install\" item from the Cabinet (.cab) filenames extensions context menu (default value)"
+                                "ToolTip":  "Hide the \"Install\" item from the Cabinet (.cab) filenames extensions context menu (default value)."
                             }
                 }
     },
@@ -1940,7 +1940,7 @@
                              },
                     "One":  {
                                 "Tag":  "Hide",
-                                "ToolTip":  "Hide the \"Run as different user\" item from the .exe filename extensions context menu (default value)"
+                                "ToolTip":  "Hide the \"Run as different user\" item from the .exe filename extensions context menu (default value)."
                             }
                 }
     },
@@ -1955,7 +1955,7 @@
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Show the \"Cast to Device\" item in the media files and folders context menu (default value)"
+                                "ToolTip":  "Show the \"Cast to Device\" item in the media files and folders context menu (default value)."
                             }
                 }
     },
@@ -1970,7 +1970,7 @@
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Show the \"Share\" item in the context menu (default value)"
+                                "ToolTip":  "Show the \"Share\" item in the context menu (default value)."
                             }
                 }
     },
@@ -1985,7 +1985,7 @@
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Show the \"Edit with Clipchamp\" item in the media files context menu (default value)"
+                                "ToolTip":  "Show the \"Edit with Clipchamp\" item in the media files context menu (default value)."
                             }
                 }
     },
@@ -2000,7 +2000,7 @@
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Show the \"Print\" item in the .bat and .cmd context menu (default value)"
+                                "ToolTip":  "Show the \"Print\" item in the .bat and .cmd context menu (default value)."
                             }
                 }
     },
@@ -2015,7 +2015,7 @@
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Show the \"Include in Library\" item in the folders and drives context menu (default value)"
+                                "ToolTip":  "Show the \"Include in Library\" item in the folders and drives context menu (default value)."
                             }
                 }
     },
@@ -2030,7 +2030,7 @@
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Show the \"Send to\" item in the folders context menu (default value)"
+                                "ToolTip":  "Show the \"Send to\" item in the folders context menu (default value)."
                             }
                 }
     },
@@ -2045,7 +2045,7 @@
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Show the \"Compressed (zipped) Folder\" item to the \"New\" context menu (default value)"
+                                "ToolTip":  "Show the \"Compressed (zipped) Folder\" item to the \"New\" context menu (default value)."
                             }
                 }
     },
@@ -2060,7 +2060,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Disable the \"Open\", \"Print\", and \"Edit\" context menu items for more than 15 items selected (default value)"
+                                "ToolTip":  "Disable the \"Open\", \"Print\", and \"Edit\" context menu items for more than 15 items selected (default value)."
                             }
                 }
     },
@@ -2075,7 +2075,7 @@
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Show the \"Look for an app in the Microsoft Store\" item in the \"Open with\" dialog (default value)"
+                                "ToolTip":  "Show the \"Look for an app in the Microsoft Store\" item in the \"Open with\" dialog (default value)."
                             }
                 }
     },
@@ -2090,7 +2090,7 @@
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Show the \"Open in Windows Terminal\" menu option in the folders context menu (default value)"
+                                "ToolTip":  "Show the \"Open in Windows Terminal\" menu option in the folders context menu (default value)."
                             }
                 }
     },
@@ -2105,7 +2105,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Do not open Windows Terminal in context menu as administrator by default (default value)"
+                                "ToolTip":  "Do not open Windows Terminal in context menu as administrator by default (default value)."
                             }
                 }
     },
