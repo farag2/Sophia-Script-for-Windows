@@ -3255,7 +3255,7 @@ function TaskbarChat
 		{
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name TaskbarMn -PropertyType DWord -Value 1 -Force
 			# Save string to run it as "NT SERVICE\TrustedInstaller"
-			# Remove block for Microsoft Teams from installing for new users
+			# Remove block from installing Microsoft Teams for new users
 			$Task = "Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Communications -Name ConfigureChatAutoInstall -Value 1 -Type Dword -Force"
 		}
 	}
