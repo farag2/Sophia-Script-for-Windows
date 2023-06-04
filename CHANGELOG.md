@@ -7,17 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 5.17.1 | 6.5.1 — 03.06.2023
 
+[![actions](https://img.shields.io/badge/Sophia%20News-Telegram-blue?style=flat&logo=Telegram)](https://t.me/SophiaNews) [![actions](https://img.shields.io/badge/Sophia%20Chat-Telegram-blue?style=flat&logo=Telegram)](https://t.me/Sophia_Chat) [![Discord](https://discordapp.com/api/guilds/1006179075263561779/widget.png?style=shield)](https://discord.gg/sSryhaEv79)
+
+# [Donate](https://github.com/farag2/Sophia-Script-for-Windows#donations)
+
+## Enterprise LTSC 2019 | Enterprise LTSC 2021 | Windows 10 22H2 | Windows 11 22H2
+
+## 5.17.1 | 6.5.1 — 03.06.2023
+
 * Fixed bug in `Export-Associations`;
   * Reported by @lowl1f3.
 * Closed #494;
-  * Now `TaskbarChat` function except hiding the iсon also prevents `Microsoft Teams` from installing for new users by creating a special registry key as `NT SERVICE\TrustedInstaller`.
+  * Now `TaskbarChat` function except hiding the iсon also prevents `Microsoft Teams` from installing for new users by creating a special registry key as `NT SERVICE\TrustedInstaller`;
+* Fixed `Cursors` function.
+  * If you encountered with a wrong cursor applied, please re-apply the function.
 
 ### Wrapper 2.6.7
 
 * Closed #490.
-
-> **Note**: Please note that Wrapper doesn't have all functions as CLI `Sophia Script` provides. If you want to apply all functions, you need to configure `Sophia.ps1` file.
-
 
 ## 5.17.0 | 6.5.0 — 27.05.2023
 
