@@ -953,7 +953,7 @@ AppSuggestions -Hide
 	Valid shortcuts values: ControlPanel and DevicesPrinters
 
 	Закрепить на начальном экране следующие ярлыки: Панель управления, Устройства и принтеры
-	Валидные значения ярлыков: ControlPanel, DevicesPrinters
+	Валидные значения ярлыков: ControlPanel и DevicesPrinters
 #>
 PinToStart -Tiles ControlPanel, DevicesPrinters
 

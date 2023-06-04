@@ -366,6 +366,14 @@ TaskbarAlignment -Center
 # Установить выравнивание панели задач по левому краю
 # TaskbarAlignment -Left
 
+# Hide the widgets icon on the taskbar
+# Скрыть кнопку "Мини-приложения" с панели задач
+TaskbarWidgets -Hide
+
+# Show the widgets icon on the taskbar (default value)
+# Отобразить кнопку "Мини-приложения" на панели задач (значение по умолчанию)
+# TaskbarWidgets -Show
+
 # Hide the search on the taskbar
 # Скрыть поле или значок поиска на панели задач
 TaskbarSearch -Hide
@@ -390,14 +398,6 @@ TaskViewButton -Hide
 # Отобразить кнопку "Представление задач" на панели задач (значение по умолчанию)
 # TaskViewButton -Show
 
-# Hide the widgets icon on the taskbar
-# Скрыть кнопку "Мини-приложения" с панели задач
-TaskbarWidgets -Hide
-
-# Show the widgets icon on the taskbar (default value)
-# Отобразить кнопку "Мини-приложения" на панели задач (значение по умолчанию)
-# TaskbarWidgets -Show
-
 # Hide the Chat icon (Microsoft Teams) on the taskbar and prevent Microsoft Teams from installing for new users
 # Скрыть кнопку чата (Microsoft Teams) с панели задач и запретить установку Microsoft Teams для новых пользователей
 TaskbarChat -Hide
@@ -405,6 +405,14 @@ TaskbarChat -Hide
 # Show the Chat icon (Microsoft Teams) on the taskbar and remove block from installing Microsoft Teams for new users (default value)
 # Отобразить кнопку чата (Microsoft Teams) на панели задач и убрать блокировку на устанвоку Microsoft Teams для новых пользователей (значение по умолчанию)
 # TaskbarChat -Show
+
+# Show seconds on the taskbar clock
+# Отобразить секунды в системных часах на панели задач
+SecondsInSystemClock -Show
+
+# Hide seconds on the taskbar clock (default value)
+# Скрыть секунды в системных часах на панели задач (значение по умолчанию)
+# SecondsInSystemClock -Hide
 
 # Unpin the "Microsoft Edge", "Microsoft Store" shortcuts from the taskbar
 # Открепить ярлыки "Microsoft Edge", "Microsoft Store" от панели задач
@@ -453,38 +461,6 @@ JPEGWallpapersQuality -Max
 # Set the quality factor of the JPEG desktop wallpapers to default
 # Установить коэффициент качества обоев рабочего стола в формате JPEG по умолчанию
 # JPEGWallpapersQuality -Default
-
-# Notify me when a restart is required to finish updating
-# Уведомлять меня о необходимости перезагрузки для завершения обновления
-RestartNotification -Show
-
-# Do not notify me when a restart is required to finish updating (default value)
-# Не yведомлять меня о необходимости перезагрузки для завершения обновления (значение по умолчанию)
-# RestartNotification -Hide
-
-# Restart as soon as possible to finish updating
-# Перезапустить устройство как можно быстрее, чтобы завершить обновление
-RestartDeviceAfterUpdate -Enable
-
-# Don't restart as soon as possible to finish updating (default value)
-# Не перезапускать устройство как можно быстрее, чтобы завершить обновление (значение по умолчанию)
-# RestartDeviceAfterUpdate -Disable
-
-# Automatically adjust active hours for me based on daily usage
-# Автоматически изменять период активности для этого устройства на основе действий
-ActiveHours -Automatically
-
-# Manually adjust active hours for me based on daily usage (default value)
-# Вручную изменять период активности для этого устройства на основе действий (значение по умолчанию)
-# ActiveHours -Manually
-
-# Do not get Windows updates as soon as they're available for your device (default value)
-# Не получать последние обновления, как только они будут доступны (значение по умолчанию)
-# WindowsLatestUpdate -Disable
-
-# Get Windows updates as soon as they're available for your device
-# Получайте последние обновления, как только они будут доступны
-# WindowsLatestUpdate -Enable
 
 # Do not add the "- Shortcut" suffix to the file name of created shortcuts
 # Нe дoбaвлять "- яpлык" к имени coздaвaeмых яpлыков
@@ -903,6 +879,38 @@ NetworkDiscovery -Enable
 # Disable "Network Discovery" and "File and Printers Sharing" for workgroup networks (default value)
 # Выключить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп (значение по умолчанию)
 # NetworkDiscovery -Disable
+
+# Notify me when a restart is required to finish updating
+# Уведомлять меня о необходимости перезагрузки для завершения обновления
+RestartNotification -Show
+
+# Do not notify me when a restart is required to finish updating (default value)
+# Не yведомлять меня о необходимости перезагрузки для завершения обновления (значение по умолчанию)
+# RestartNotification -Hide
+
+# Restart as soon as possible to finish updating
+# Перезапустить устройство как можно быстрее, чтобы завершить обновление
+RestartDeviceAfterUpdate -Enable
+
+# Don't restart as soon as possible to finish updating (default value)
+# Не перезапускать устройство как можно быстрее, чтобы завершить обновление (значение по умолчанию)
+# RestartDeviceAfterUpdate -Disable
+
+# Automatically adjust active hours for me based on daily usage
+# Автоматически изменять период активности для этого устройства на основе действий
+ActiveHours -Automatically
+
+# Manually adjust active hours for me based on daily usage (default value)
+# Вручную изменять период активности для этого устройства на основе действий (значение по умолчанию)
+# ActiveHours -Manually
+
+# Do not get Windows updates as soon as they're available for your device (default value)
+# Не получать последние обновления, как только они будут доступны (значение по умолчанию)
+WindowsLatestUpdate -Disable
+
+# Get Windows updates as soon as they're available for your device
+# Получайте последние обновления, как только они будут доступны
+# WindowsLatestUpdate -Enable
 
 <#
 	Register app, calculate hash, and associate with an extension with the "How do you want to open this" pop-up hidden
