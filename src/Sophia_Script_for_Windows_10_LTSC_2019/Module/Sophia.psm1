@@ -957,7 +957,7 @@ function DiagTrackService
 			Get-Service -Name DiagTrack | Set-Service -StartupType Disabled
 
 			# Block connection for the Unified Telemetry Client Outbound Traffic
-			Get-NetFirewallRule -Group DiagTrack | Set-NetFirewallRule -Enabled False -Action Block
+			Get-NetFirewallRule -Group DiagTrack | Set-NetFirewallRule -Enabled True -Action Block
 		}
 		"Enable"
 		{
