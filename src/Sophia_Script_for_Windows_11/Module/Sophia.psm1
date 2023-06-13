@@ -533,8 +533,9 @@ public static string GetString(uint strId)
 	#region Defender checks
 	# Check whether necessary Microsoft Defender components exists
 	$Files = @(
-		"$env:SystemRoot\system32\smartscreen.exe",
-		"$env:SystemRoot\system32\SecurityHealthSystray.exe"
+		"$env:SystemRoot\System32\smartscreen.exe",
+		"$env:SystemRoot\System32\SecurityHealthSystray.exe",
+		"$env:SystemRoot\System32\CompatTelRunner.exe"
 	)
 	foreach ($File in $Files)
 	{
@@ -673,7 +674,7 @@ public static string GetString(uint strId)
 
 	# Check whether Microsoft Defender was turned off
 	# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
-	if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender", "DisableAntiSpyware", $false) -eq 1)
+	if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender", "DisableAntiSpyware", $null) -eq 1)
 	{
 		$Script:DisableAntiSpyware = $true
 	}
@@ -684,7 +685,7 @@ public static string GetString(uint strId)
 
 	# Check whether real-time protection prompts for known malware detection
 	# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
-	if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection", "DisableRealtimeMonitoring", $false) -eq 1)
+	if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection", "DisableRealtimeMonitoring", $null) -eq 1)
 	{
 		$Script:DisableRealtimeMonitoring = $true
 	}
@@ -695,7 +696,7 @@ public static string GetString(uint strId)
 
 	# Check whether behavior monitoring was disabled
 	# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
-	if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection", "DisableBehaviorMonitoring", $false) -eq 1)
+	if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection", "DisableBehaviorMonitoring", $null) -eq 1)
 	{
 		$Script:DisableBehaviorMonitoring = $true
 	}
@@ -820,7 +821,7 @@ public static string GetString(uint strId)
 				UseBasicParsing  = $true
 				Verbose          = $true
 			}
-			$update =(Invoke-WebRequest @Parameters).Content
+			$update = (Invoke-WebRequest @Parameters).Content
 
 			$Parameters = @{
 				Uri              = "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/update_v6.txt"
@@ -837,9 +838,9 @@ public static string GetString(uint strId)
 			Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
 
 			# Check if hosts contains any of string from $IPArray array
-			if ((Get-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Encoding Default -Force | ForEach-Object -Process {
-					($_ -ne "") -and (-not $_.StartsWith("#")) -and ($IPArray -split "`r?`n" | Select-String -Pattern $_.Trim())
-				}) -contains $true)
+			if ((Get-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Encoding Default -Force | ForEach-Object -Process {$_.Trim()} | ForEach-Object -Process {
+				($_ -ne "") -and ($_ -ne " ") -and (-not $_.StartsWith("#")) -and ($IPArray -split "`r?`n" | Select-String -Pattern $_)
+			}) -contains $true)
 			{
 				Write-Warning -Message ($Localization.TweakerWarning -f "WindowsSpyBlocker")
 
@@ -1162,7 +1163,7 @@ function DiagTrackService
 			Get-Service -Name DiagTrack | Set-Service -StartupType Disabled
 
 			# Block connection for the Unified Telemetry Client Outbound Traffic
-			Get-NetFirewallRule -Group DiagTrack | Set-NetFirewallRule -Enabled False -Action Block
+			Get-NetFirewallRule -Group DiagTrack | Set-NetFirewallRule -Enabled True -Action Block
 		}
 		"Enable"
 		{
@@ -1429,7 +1430,7 @@ function ScheduledTasks
 	# The following tasks will have their checkboxes checked
 	[string[]]$CheckedScheduledTasks = @(
 		# Collects program telemetry information if opted-in to the Microsoft Customer Experience Improvement Program
-		"ProgramDataUpdater",
+		"Microsoft Compatibility Appraiser",
 
 		# This task collects and uploads autochk SQM data if opted-in to the Microsoft Customer Experience Improvement Program
 		"Proxy",
@@ -4385,7 +4386,7 @@ function OneDrive
 				return
 			}
 
-			# Check if user is logged into OneDrive account (Microsoft account)
+			# Check if user is logged into OneDrive (Microsoft account)
 			$UserEmail = Get-ItemProperty -Path HKCU:\Software\Microsoft\OneDrive\Accounts\Personal -Name UserEmail -ErrorAction Ignore
 			if ($UserEmail)
 			{
@@ -4398,7 +4399,7 @@ function OneDrive
 			Stop-Process -Name OneDrive, OneDriveSetup, FileCoAuth -Force -ErrorAction Ignore
 
 			# Getting link to the OneDriveSetup.exe and its' argument(s)
-			[string[]]$OneDriveSetup = ($UninstallString -Replace("\s*/", ",/")).Split(",").Trim()
+			[string[]]$OneDriveSetup = ($UninstallString -replace("\s*/", ",/")).Split(",").Trim()
 			if ($OneDriveSetup.Count -eq 2)
 			{
 				Start-Process -FilePath $OneDriveSetup[0] -ArgumentList $OneDriveSetup[1..1] -Wait
@@ -6941,35 +6942,35 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 		$DesktopINI = @{
 			"Desktop"   = "",
                           "[.ShellClassInfo]",
-                          "LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21769",
-                          "IconResource=%SystemRoot%\system32\imageres.dll,-183"
+                          "LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21769",
+                          "IconResource=%SystemRoot%\System32\imageres.dll,-183"
 			"Documents" = "",
                           "[.ShellClassInfo]",
-                          "LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21770",
-                          "IconResource=%SystemRoot%\system32\imageres.dll,-112",
-                          "IconFile=%SystemRoot%\system32\shell32.dll",
+                          "LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21770",
+                          "IconResource=%SystemRoot%\System32\imageres.dll,-112",
+                          "IconFile=%SystemRoot%\System32\shell32.dll",
                           "IconIndex=-235"
 			"Downloads" = "",
-                          "[.ShellClassInfo]","LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21798",
-                          "IconResource=%SystemRoot%\system32\imageres.dll,-184"
+                          "[.ShellClassInfo]","LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21798",
+                          "IconResource=%SystemRoot%\System32\imageres.dll,-184"
 			"Music"     = "",
-                          "[.ShellClassInfo]","LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21790",
-                          "InfoTip=@%SystemRoot%\system32\shell32.dll,-12689",
-                          "IconResource=%SystemRoot%\system32\imageres.dll,-108",
-                          "IconFile=%SystemRoot%\system32\shell32.dll","IconIndex=-237"
+                          "[.ShellClassInfo]","LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21790",
+                          "InfoTip=@%SystemRoot%\System32\shell32.dll,-12689",
+                          "IconResource=%SystemRoot%\System32\imageres.dll,-108",
+                          "IconFile=%SystemRoot%\System32\shell32.dll","IconIndex=-237"
 			"Pictures" = "",
                           "[.ShellClassInfo]",
-                          "LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21779",
-                          "InfoTip=@%SystemRoot%\system32\shell32.dll,-12688",
-                          "IconResource=%SystemRoot%\system32\imageres.dll,-113",
-                          "IconFile=%SystemRoot%\system32\shell32.dll",
+                          "LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21779",
+                          "InfoTip=@%SystemRoot%\System32\shell32.dll,-12688",
+                          "IconResource=%SystemRoot%\System32\imageres.dll,-113",
+                          "IconFile=%SystemRoot%\System32\shell32.dll",
                           "IconIndex=-236"
 			"Videos"   = "",
                           "[.ShellClassInfo]",
-                          "LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21791",
-                          "InfoTip=@%SystemRoot%\system32\shell32.dll,-12690",
-                          "IconResource=%SystemRoot%\system32\imageres.dll,-189",
-                          "IconFile=%SystemRoot%\system32\shell32.dll","IconIndex=-238"
+                          "LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21791",
+                          "InfoTip=@%SystemRoot%\System32\shell32.dll,-12690",
+                          "IconResource=%SystemRoot%\System32\imageres.dll,-189",
+                          "IconFile=%SystemRoot%\System32\shell32.dll","IconIndex=-238"
 		}
 
 		# Determining the current user folder path
@@ -7883,7 +7884,7 @@ function WinPrtScrFolder
 		$Default
 	)
 
-	# Check if user is logged into OneDrive account (Microsoft account)
+	# Check if user is logged into OneDrive (Microsoft account)
 	$UserEmail = Get-ItemProperty -Path HKCU:\Software\Microsoft\OneDrive\Accounts\Personal -Name UserEmail -ErrorAction Ignore
 	if ($UserEmail)
 	{
@@ -8904,7 +8905,7 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 		}
 
 		# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
-		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\$Extension", "", $false) -ne "")
+		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\$Extension", "", $null) -ne "")
 		{
 			# Save possible ProgIds history with extension
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts -Name "$($ProgID)_$($Extension)" -PropertyType DWord -Value 0 -Force
@@ -8920,7 +8921,7 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 
 		# If ProgId doesn't exist set the specified ProgId for the extensions
 		# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
-		if (-not [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\$Extension", "", $false))
+		if (-not [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\$Extension", "", $null))
 		{
 			if (-not (Test-Path -Path "HKCU:\Software\Classes\$Extension"))
 			{
@@ -9011,7 +9012,7 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 
 		# If there is the system extension ProgId, write it to the already configured by default
 		# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
-		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\$Extension", "", $false))
+		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\$Extension", "", $null))
 		{
 			if (-not (Test-Path -Path Registry::HKEY_USERS\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\FileAssociations\ProgIds))
 			{
@@ -9051,12 +9052,12 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 		}
 
 		# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
-		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\KindMap", $Extension, $false))
+		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\KindMap", $Extension, $null))
 		{
 			$picture = (Get-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\KindMap -Name $Extension -ErrorAction Ignore).$Extension
 		}
 		# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
-		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\PBrush\CLSID", "", $false))
+		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\PBrush\CLSID", "", $null))
 		{
 			$PBrush = (Get-ItemProperty -Path HKLM:\SOFTWARE\Classes\PBrush\CLSID -Name "(default)" -ErrorAction Ignore)."(default)"
 		}
@@ -9071,28 +9072,28 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 		}
 
 		# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
-		if (([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\KindMap", $Extension, $false)) -eq "picture")
+		if (([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\KindMap", $Extension, $null)) -eq "picture")
 		{
 			$Script:RegisteredProgIDs += "PBrush"
 		}
 
 		if ($Extension.Contains("."))
 		{
-			[string]$Assocs = "FileAssociations"
+			[string]$Associations = "FileAssociations"
 		}
 		else
 		{
-			[string]$Assocs = "UrlAssociations"
+			[string]$Associations = "UrlAssociations"
 		}
 
-		foreach ($Item in (Get-Item -Path "HKLM:\SOFTWARE\RegisteredApplications").Property)
+		foreach ($Item in @((Get-Item -Path "HKLM:\SOFTWARE\RegisteredApplications").Property))
 		{
 			$Subkey = (Get-ItemProperty -Path "HKLM:\SOFTWARE\RegisteredApplications" -Name $Item -ErrorAction Ignore).$Item
 			if ($Subkey)
 			{
-				if (Test-Path -Path "HKLM:\$Subkey\$Assocs")
+				if (Test-Path -Path "HKLM:\$Subkey\$Associations")
 				{
-					$isProgID = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\$Subkey\$Assocs", $Extension, $false)
+					$isProgID = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\$Subkey\$Associations", $Extension, $null)
 					if ($isProgID)
 					{
 						$Script:RegisteredProgIDs += $isProgID
@@ -9109,9 +9110,9 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 			$Subkey = (Get-ItemProperty -Path "HKCU:\SOFTWARE\RegisteredApplications" -Name $Item -ErrorAction Ignore).$Item
 			if ($Subkey)
 			{
-				if (Test-Path -Path "HKCU:\$Subkey\$Assocs")
+				if (Test-Path -Path "HKCU:\$Subkey\$Associations")
 				{
-					$isProgID = [Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\$Subkey\$Assocs", $Extension, $false)
+					$isProgID = [Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\$Subkey\$Associations", $Extension, $null)
 					if ($isProgID)
 					{
 						$UserRegisteredProgIDs += $isProgID
@@ -9457,7 +9458,7 @@ function Export-Associations
 			if (Test-Path -Path "HKCU:\Software\Classes\$($_.ProgId)\Shell\Open\Command")
 			{
 
-				if ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Classes\$($_.ProgId)\shell\Open\Command", "DelegateExecute", $false))
+				if ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Classes\$($_.ProgId)\shell\Open\Command", "DelegateExecute", $null))
 				{
 					$ProgramPath, $Icon = ""
 				}
@@ -9468,7 +9469,7 @@ function Export-Associations
 			if (Test-Path -Path "Registry::HKEY_CLASSES_ROOT\$($_.ProgId)")
 			{
 				# ProgrammPath
-				if ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Classes\$($_.ProgId)\shell\Open\Command", "", $false))
+				if ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Classes\$($_.ProgId)\shell\Open\Command", "", $null))
 				{
 					$PartProgramPath = (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Classes\$($_.ProgId)\Shell\Open\Command" -Name "(default)").Trim()
 					$Program = $PartProgramPath.Substring(0, ($PartProgramPath.IndexOf(".exe") + 4)).Trim('"')
@@ -9481,7 +9482,7 @@ function Export-Associations
 						}
 					}
 				}
-				elseif ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\$($_.ProgId)\Shell\Open\Command", "", $false))
+				elseif ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\$($_.ProgId)\Shell\Open\Command", "", $null))
 				{
 					$PartProgramPath = (Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Classes\$($_.ProgId)\Shell\Open\Command" -Name "(default)").Trim()
 					$Program = $PartProgramPath.Substring(0, ($PartProgramPath.IndexOf(".exe") + 4)).Trim('"')
@@ -9496,9 +9497,9 @@ function Export-Associations
 				}
 
 				# Icon
-				if ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Classes\$($_.ProgId)\DefaultIcon", "", $false))
+				if ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Classes\$($_.ProgId)\DefaultIcon", "", $null))
 				{
-					$IconPartPath = (Get-ItemPropertyValue -Path "HKCU:\Software\Classes\$($_.ProgId)\DefaultIcon" -Name "(default)") 
+					$IconPartPath = (Get-ItemPropertyValue -Path "HKCU:\Software\Classes\$($_.ProgId)\DefaultIcon" -Name "(default)")
 					if ($IconPartPath.EndsWith(".ico"))
 					{
 						$IconPath = $IconPartPath
@@ -9523,7 +9524,7 @@ function Export-Associations
 						}
 					}
 				}
-				elseif ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\$($_.ProgId)\DefaultIcon", "", $false))
+				elseif ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\$($_.ProgId)\DefaultIcon", "", $null))
 				{
 					$IconPartPath = (Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Classes\$($_.ProgId)\DefaultIcon" -Name "(default)").Trim()
 					if ($IconPartPath.EndsWith(".ico"))
@@ -9550,7 +9551,7 @@ function Export-Associations
 						}
 					}
 				}
-				elseif ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Classes\$($_.ProgId)\shell\open\command", "", $false))
+				elseif ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Classes\$($_.ProgId)\shell\open\command", "", $null))
 				{
 					$IconPartPath = (Get-ItemPropertyValue -Path "HKCU:\Software\Classes\$($_.ProgId)\shell\open\command" -Name "(default)").Trim()
 					$IconPath = $IconPartPath.Substring(0, $IconPartPath.IndexOf(".exe") + 4).Trim('"')
@@ -9563,7 +9564,7 @@ function Export-Associations
 						}
 					}
 				}
-				elseif ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\$($_.ProgId)\Shell\Open\Command", "", $false))
+				elseif ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\$($_.ProgId)\Shell\Open\Command", "", $null))
 				{
 					$IconPartPath = (Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Classes\$($_.ProgId)\Shell\Open\Command" -Name "(default)").Trim()
 					$IconPath = $IconPartPath.Substring(0, $IconPartPath.IndexOf(".exe") + 4)
@@ -11978,12 +11979,28 @@ function CleanupTask
 		"Register"
 		{
 			# Checking if notifications and Action Center are disabled
-			if
-			(
-				((Get-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -ErrorAction Ignore).DisableNotificationCenter -eq 1) -or
-				((Get-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -ErrorAction Ignore).DisableNotificationCenter -eq 1)
-			)
+			# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
+			$UserNotificationCenter = [Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer", "DisableNotificationCenter", $null)
+			$MachineNotificationCenter = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Explorer", "DisableNotificationCenter", $null)
+			if (($UserNotificationCenter -eq 1) -or ($MachineNotificationCenter -eq 1))
 			{
+				Write-Verbose -Message ($Localization.ActionCenter -f $MyInvocation.Line.Trim()) -Verbose
+				Write-Error -Message ($Localization.ActionCenter -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+				return
+			}
+
+			# Checking if Windows Script Host is disabled
+			# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
+			$UserScriptHost = [Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Microsoft\Windows Script Host\Settings", "Enabled", $null)
+			$MachineScriptHost = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\Software\Microsoft\Windows Script Host\Settings", "Enabled", $null)
+			if (($UserScriptHost -eq 0) -or ($MachineScriptHost -eq 0))
+			{
+				Write-Verbose -Message ($Localization.WindowsScriptHost -f $MyInvocation.Line.Trim()) -Verbose
+				Write-Error -Message ($Localization.WindowsScriptHost -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
 				return
 			}
 
@@ -12089,7 +12106,7 @@ function CleanupTask
 Get-Process -Name cleanmgr, Dism, DismHost | Stop-Process -Force
 
 `$ProcessInfo = New-Object -TypeName System.Diagnostics.ProcessStartInfo
-`$ProcessInfo.FileName = """$env:SystemRoot\system32\cleanmgr.exe"""
+`$ProcessInfo.FileName = """$env:SystemRoot\System32\cleanmgr.exe"""
 `$ProcessInfo.Arguments = """/sagerun:1337"""
 `$ProcessInfo.UseShellExecute = `$true
 `$ProcessInfo.WindowStyle = [System.Diagnostics.ProcessWindowStyle]::Minimized
@@ -12131,7 +12148,7 @@ public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 }
 
 `$ProcessInfo = New-Object -TypeName System.Diagnostics.ProcessStartInfo
-`$ProcessInfo.FileName = """`$env:SystemRoot\system32\dism.exe"""
+`$ProcessInfo.FileName = """`$env:SystemRoot\System32\dism.exe"""
 `$ProcessInfo.Arguments = """/Online /English /Cleanup-Image /StartComponentCleanup /NoRestart"""
 `$ProcessInfo.UseShellExecute = `$true
 `$ProcessInfo.WindowStyle = [System.Diagnostics.ProcessWindowStyle]::Minimized
@@ -12399,6 +12416,19 @@ function SoftwareDistributionTask
 	{
 		"Register"
 		{
+			# Checking if Windows Script Host is disabled
+			# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
+			$UserScriptHost = [Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Microsoft\Windows Script Host\Settings", "Enabled", $null)
+			$MachineScriptHost = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\Software\Microsoft\Windows Script Host\Settings", "Enabled", $null)
+			if (($UserScriptHost -eq 0) -or ($MachineScriptHost -eq 0))
+			{
+				Write-Verbose -Message ($Localization.WindowsScriptHost -f $MyInvocation.Line.Trim()) -Verbose
+				Write-Error -Message ($Localization.WindowsScriptHost -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+				return
+			}
+
 			# Checking if we're trying to create the task when it was already created as another user
 			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName SoftwareDistribution -ErrorAction Ignore)
 			{
@@ -12690,6 +12720,19 @@ function TempTask
 	{
 		"Register"
 		{
+			# Checking if Windows Script Host is disabled
+			# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
+			$UserScriptHost = [Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Microsoft\Windows Script Host\Settings", "Enabled", $null)
+			$MachineScriptHost = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\Software\Microsoft\Windows Script Host\Settings", "Enabled", $null)
+			if (($UserScriptHost -eq 0) -or ($MachineScriptHost -eq 0))
+			{
+				Write-Verbose -Message ($Localization.WindowsScriptHost -f $MyInvocation.Line.Trim()) -Verbose
+				Write-Error -Message ($Localization.WindowsScriptHost -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+				return
+			}
+
 			# Checking if we're trying to create the task when it was already created as another user
 			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName Temp -ErrorAction Ignore)
 			{
@@ -14388,7 +14431,7 @@ function CompressedFolderNewContext
 				New-Item -Path Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder\ShellNew -Force
 			}
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder\ShellNew -Name Data -PropertyType Binary -Value ([byte[]](80,75,5,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)) -Force
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder\ShellNew -Name ItemName -PropertyType ExpandString -Value "@%SystemRoot%\system32\zipfldr.dll,-10194" -Force
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder\ShellNew -Name ItemName -PropertyType ExpandString -Value "@%SystemRoot%\System32\zipfldr.dll,-10194" -Force
 		}
 	}
 }

@@ -1117,11 +1117,11 @@ GPUScheduling -Enable
 
 #region Scheduled tasks
 <#
-	Create the "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates
-	A native interactive toast notification pops up every 30 days. The task runs every 30 days
+	Create the "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates.
+	A native interactive toast notification pops up every 30 days. You have to enable Windows Script Host in order to make the function work
 
-	Создать задание "Windows Cleanup" по очистке неиспользуемых файлов и обновлений Windows в Планировщике заданий
-	Нативный интерактивный тост всплывает каждые 30 дней. Задание выполняется каждые 30 дней
+	Создать задание "Windows Cleanup" по очистке неиспользуемых файлов и обновлений Windows в Планировщике заданий.
+	Задание выполняется каждые 30 дней. Необходимо включить Windows Script Host для того, чтобы работала функция
 #>
 CleanupTask -Register
 
@@ -1131,10 +1131,10 @@ CleanupTask -Register
 
 <#
 	Create the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
-	The task will wait until the Windows Updates service finishes running. The task runs every 90 days
+	The task will wait until the Windows Updates service finishes running. The task runs every 90 days. You have to enable Windows Script Host in order to make the function work
 
 	Создать задание "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download в Планировщике заданий
-	Задание будет ждать, пока служба обновлений Windows не закончит работу. Задание выполняется каждые 90 дней
+	Задание будет ждать, пока служба обновлений Windows не закончит работу. Задание выполняется каждые 90 дней. Необходимо включить Windows Script Host для того, чтобы работала функция
 #>
 SoftwareDistributionTask -Register
 
@@ -1144,10 +1144,10 @@ SoftwareDistributionTask -Register
 
 <#
 	Create the "Temp" scheduled task for cleaning up the %TEMP% folder
-	Only files older than one day will be deleted. The task runs every 60 days
+	Only files older than one day will be deleted. The task runs every 60 days. You have to enable Windows Script Host in order to make the function work
 
 	Создать задание "Temp" в Планировщике заданий по очистке папки %TEMP%
-	Удаляться будут только файлы старше одного дня. Задание выполняется каждые 60 дней
+	Удаляться будут только файлы старше одного дня. Задание выполняется каждые 60 дней. Необходимо включить Windows Script Host для того, чтобы работала функция
 #>
 TempTask -Register
 
@@ -1247,13 +1247,8 @@ SaveZoneInformation -Disable
 # Включить проверку Диспетчера вложений файлов, скачанных из интернета как небезопасные (значение по умолчанию)
 # SaveZoneInformation -Enable
 
-<#
-	Disable Windows Script Host
-	Blocks WSH from executing .js and .vbs files
-
-	Отключить Windows Script Host
-	Блокирует запуск файлов .js и .vbs
-#>
+# Disable Windows Script Host. Blocks WSH from executing .js and .vbs files
+# Отключить Windows Script Host. Блокирует запуск файлов .js и .vbs
 # WindowsScriptHost -Disable
 
 # Enable Windows Script Host (default value)
