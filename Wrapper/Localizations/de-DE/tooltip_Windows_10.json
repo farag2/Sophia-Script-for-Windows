@@ -956,7 +956,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Deaktiviert den Ruhezustand. Es wird nicht empfohlen, ihn auf Laptops zu deaktivieren."
+                                 "ToolTip":  "Deaktiviert den Ruhezustand. Es wird nicht empfohlen, die Funktion für Laptops zu deaktivieren."
                              },
                     "One":  {
                                 "Tag":  "Enable",
@@ -1136,7 +1136,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "High",
-                                 "ToolTip":  "Stellt den Energiesparplan auf \"Hohe Leistung\" ein. Es wird nicht empfohlen, den Energiesparplan \"Hohe Leistung\" auf Laptops zu aktivieren."
+                                 "ToolTip":  "Stellt den Energiesparplan auf \"Hohe Leistung\" ein. Es wird nicht empfohlen, sie für Laptops einzuschalten."
                              },
                     "One":  {
                                 "Tag":  "Balanced",
@@ -1166,7 +1166,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Erlauben Sie dem Computer nicht, die Netzwerkadapter auszuschalten, um Strom zu sparen."
+                                 "ToolTip":  "Erlauben Sie dem Computer nicht, die Netzwerkadapter auszuschalten, um Strom zu sparen. Es wird nicht empfohlen, die Funktion für Laptops zu deaktivieren."
                              },
                     "One":  {
                                 "Tag":  "Enable",

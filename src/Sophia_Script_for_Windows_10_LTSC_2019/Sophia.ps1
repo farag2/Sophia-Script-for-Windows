@@ -466,7 +466,7 @@ StorageSenseTempFiles -Enable
 # StorageSenseTempFiles -Disable
 #endregion StorageSense
 
-# Disable hibernation. Do not recommend turning it off on laptops
+# Disable hibernation. It isn't recommended to turn off for laptops
 # Отключить режим гибернации. Не рекомендуется выключать на ноутбуках
 Hibernation -Disable
 
@@ -572,21 +572,16 @@ UpdateMicrosoftProducts -Enable
 # При обновлении Windows не получать обновления для других продуктов Майкрософт (значение по умолчанию)
 # UpdateMicrosoftProducts -Disable
 
-<#
-	Set power plan on "High performance"
-	It isn't recommended to turn on the "High performance" power plan on laptops
-
-	Установить схему управления питанием на "Высокая производительность"
-	Не рекомендуется включать схему управления питанием "Высокая производительность" для ноутбуков
-#>
+# Set power plan on "High performance". It isn't recommended to turn on for laptops
+# Установить схему управления питанием на "Высокая производительность". Не рекомендуется включать на ноутбуках
 PowerPlan -High
 
 # Set power plan on "Balanced" (default value)
 # Установить схему управления питанием на "Сбалансированная" (значение по умолчанию)
 # PowerPlan -Balanced
 
-# Do not allow the computer to turn off the network adapters to save power
-# Запретить отключение всех сетевых адаптеров для экономии энергии
+# Do not allow the computer to turn off the network adapters to save power. It isn't recommended to turn off for laptops
+# Запретить отключение всех сетевых адаптеров для экономии энергии. Не рекомендуется выключать на ноутбуках
 NetworkAdaptersSavePower -Disable
 
 # Allow the computer to turn off the network adapters to save power (default value)

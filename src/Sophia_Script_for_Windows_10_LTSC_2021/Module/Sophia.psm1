@@ -60,7 +60,7 @@ function Checks
 
 	# Progress bar can significantly impact cmdlet performance
 	# https://github.com/PowerShell/PowerShell/issues/2138
-	$ProgressPreference = "SilentlyContinue"
+	$Script:ProgressPreference = "SilentlyContinue"
 
 	# Extract strings from %SystemRoot%\System32\shell32.dll using its' number
 	$Signature = @{
@@ -5643,7 +5643,7 @@ function UpdateMicrosoftProducts
 	PowerPlan -Balanced
 
 	.NOTES
-	It isn't recommended to turn on the "High performance" power plan on laptops
+	It isn't recommended to turn on for laptops
 
 	.NOTES
 	Current user
@@ -5697,7 +5697,7 @@ function PowerPlan
 	NetworkAdaptersSavePower -Enable
 
 	.NOTES
-	Do not recommend turning it on on laptops
+	It isn't recommended to turn off for laptops
 
 	.NOTES
 	Current user

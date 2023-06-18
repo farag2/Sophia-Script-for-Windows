@@ -836,7 +836,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Disable hibernation. Do not recommend turning it off on laptops."
+                                 "ToolTip":  "Disable hibernation. It isn't recommended to turn off for laptops."
                              },
                     "One":  {
                                 "Tag":  "Enable",
@@ -1016,7 +1016,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "High",
-                                 "ToolTip":  "Set power plan on \"High performance\". It isn't recommended to turn on the \"High performance\" power plan on laptops."
+                                 "ToolTip":  "Set power plan on \"High performance\". It isn't recommended to turn on for laptops."
                              },
                     "One":  {
                                 "Tag":  "Balanced",
@@ -1046,7 +1046,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Do not allow the computer to turn off the network adapters to save power."
+                                 "ToolTip":  "Do not allow the computer to turn off the network adapters to save power. It isn't recommended to turn off for laptops."
                              },
                     "One":  {
                                 "Tag":  "Enable",
