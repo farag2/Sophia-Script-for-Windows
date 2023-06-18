@@ -3812,7 +3812,7 @@ function StorageSenseFrequency
 	Hibernation -Disable
 
 	.NOTES
-	Do not recommend turning it off on laptops
+	It isn't recommended to turn off for laptops
 
 	.NOTES
 	Current user
@@ -5432,6 +5432,10 @@ function IPv6Component
 		[switch]
 		$PreferIPv4overIPv6
 	)
+
+	Write-Information -MessageData "" -InformationAction Continue
+	# Extract the localized "Please wait..." string from shell32.dll
+	Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
 
 	try
 	{
@@ -8101,7 +8105,7 @@ function Export-Associations
 			if (Test-Path -Path "HKCU:\Software\Classes\$($_.ProgId)\Shell\Open\Command")
 			{
 
-				if ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Classes\$($_.ProgId)\shell\Open\Command", "DelegateExecute", $null))
+				if ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Classes\$($_.ProgId)\shell\open\command", "DelegateExecute", $null))
 				{
 					$ProgramPath, $Icon = ""
 				}
@@ -8112,7 +8116,7 @@ function Export-Associations
 			if (Test-Path -Path "Registry::HKEY_CLASSES_ROOT\$($_.ProgId)")
 			{
 				# ProgrammPath
-				if ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Classes\$($_.ProgId)\shell\Open\Command", "", $null))
+				if ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Classes\$($_.ProgId)\shell\open\command", "", $null))
 				{
 					$PartProgramPath = (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Classes\$($_.ProgId)\Shell\Open\Command" -Name "(default)").Trim()
 					$Program = $PartProgramPath.Substring(0, ($PartProgramPath.IndexOf(".exe") + 4)).Trim('"')
@@ -8194,7 +8198,7 @@ function Export-Associations
 						}
 					}
 				}
-				elseif ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Classes\$($_.ProgId)\shell\Open\Command", "", $null))
+				elseif ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Classes\$($_.ProgId)\shell\open\command", "", $null))
 				{
 					$IconPartPath = (Get-ItemPropertyValue -Path "HKCU:\Software\Classes\$($_.ProgId)\shell\open\command" -Name "(default)").Trim()
 					$IconPath = $IconPartPath.Substring(0, $IconPartPath.IndexOf(".exe") + 4).Trim('"')
@@ -8974,7 +8978,7 @@ function CleanupTask
 			# Checking if notifications and Action Center are disabled
 			# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
 			$UserNotificationCenter = [Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer", "DisableNotificationCenter", $null)
-			$MachineNotificationCenter = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Explorer", "DisableNotificationCenter", $false)
+			$MachineNotificationCenter = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Explorer", "DisableNotificationCenter", $null)
 			if (($UserNotificationCenter -eq 1) -or ($MachineNotificationCenter -eq 1))
 			{
 				Write-Verbose -Message ($Localization.ActionCenter -f $MyInvocation.Line.Trim()) -Verbose
@@ -8986,8 +8990,8 @@ function CleanupTask
 
 			# Checking if Windows Script Host is disabled
 			# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
-			$UserScriptHost = [Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Microsoft\Windows Script Host\Settings", "Enabled", $false)
-			$MachineScriptHost = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\Software\Microsoft\Windows Script Host\Settings", "Enabled", $false)
+			$UserScriptHost = [Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Microsoft\Windows Script Host\Settings", "Enabled", $null)
+			$MachineScriptHost = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\Software\Microsoft\Windows Script Host\Settings", "Enabled", $null)
 			if (($UserScriptHost -eq 0) -or ($MachineScriptHost -eq 0))
 			{
 				Write-Verbose -Message ($Localization.WindowsScriptHost -f $MyInvocation.Line.Trim()) -Verbose
@@ -9411,8 +9415,8 @@ function SoftwareDistributionTask
 		{
 			# Checking if Windows Script Host is disabled
 			# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
-			$UserScriptHost = [Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Microsoft\Windows Script Host\Settings", "Enabled", $false)
-			$MachineScriptHost = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\Software\Microsoft\Windows Script Host\Settings", "Enabled", $false)
+			$UserScriptHost = [Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Microsoft\Windows Script Host\Settings", "Enabled", $null)
+			$MachineScriptHost = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\Software\Microsoft\Windows Script Host\Settings", "Enabled", $null)
 			if (($UserScriptHost -eq 0) -or ($MachineScriptHost -eq 0))
 			{
 				Write-Verbose -Message ($Localization.WindowsScriptHost -f $MyInvocation.Line.Trim()) -Verbose
@@ -9715,8 +9719,8 @@ function TempTask
 		{
 			# Checking if Windows Script Host is disabled
 			# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
-			$UserScriptHost = [Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Microsoft\Windows Script Host\Settings", "Enabled", $false)
-			$MachineScriptHost = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\Software\Microsoft\Windows Script Host\Settings", "Enabled", $false)
+			$UserScriptHost = [Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Microsoft\Windows Script Host\Settings", "Enabled", $null)
+			$MachineScriptHost = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\Software\Microsoft\Windows Script Host\Settings", "Enabled", $null)
 			if (($UserScriptHost -eq 0) -or ($MachineScriptHost -eq 0))
 			{
 				Write-Verbose -Message ($Localization.WindowsScriptHost -f $MyInvocation.Line.Trim()) -Verbose

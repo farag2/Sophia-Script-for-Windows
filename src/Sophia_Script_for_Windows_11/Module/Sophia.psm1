@@ -6468,7 +6468,7 @@ function WindowsLatestUpdate
 	PowerPlan -Balanced
 
 	.NOTES
-	It isn't recommended to turn on the "High performance" power plan on laptops
+	It isn't recommended to turn on for laptops
 
 	.NOTES
 	Current user
@@ -6647,6 +6647,10 @@ function IPv6Component
 		[switch]
 		$PreferIPv4overIPv6
 	)
+
+	Write-Information -MessageData "" -InformationAction Continue
+	# Extract the localized "Please wait..." string from shell32.dll
+	Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
 
 	try
 	{
@@ -9458,7 +9462,7 @@ function Export-Associations
 			if (Test-Path -Path "HKCU:\Software\Classes\$($_.ProgId)\Shell\Open\Command")
 			{
 
-				if ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Classes\$($_.ProgId)\shell\Open\Command", "DelegateExecute", $null))
+				if ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Classes\$($_.ProgId)\shell\open\command", "DelegateExecute", $null))
 				{
 					$ProgramPath, $Icon = ""
 				}
@@ -9469,7 +9473,7 @@ function Export-Associations
 			if (Test-Path -Path "Registry::HKEY_CLASSES_ROOT\$($_.ProgId)")
 			{
 				# ProgrammPath
-				if ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Classes\$($_.ProgId)\shell\Open\Command", "", $null))
+				if ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Classes\$($_.ProgId)\shell\open\command", "", $null))
 				{
 					$PartProgramPath = (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Classes\$($_.ProgId)\Shell\Open\Command" -Name "(default)").Trim()
 					$Program = $PartProgramPath.Substring(0, ($PartProgramPath.IndexOf(".exe") + 4)).Trim('"')
