@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 5.17.1 | 6.5.1 — 03.06.2023
+## 5.17.2 | 6.5.2 — 26.06.2023
 
 [![actions](https://img.shields.io/badge/Sophia%20News-Telegram-blue?style=flat&logo=Telegram)](https://t.me/SophiaNews) [![actions](https://img.shields.io/badge/Sophia%20Chat-Telegram-blue?style=flat&logo=Telegram)](https://t.me/Sophia_Chat) [![Discord](https://discordapp.com/api/guilds/1006179075263561779/widget.png?style=shield)](https://discord.gg/sSryhaEv79)
 
@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Enterprise LTSC 2019 | Enterprise LTSC 2021 | Windows 10 22H2 | Windows 11 22H2
 
-## 5.17.1 | 6.5.1 — 03.06.2023
+## 5.17.2 | 6.5.2 — 26.06.2023
 
 * Fixed bug in `Export-Associations`;
   * Reported by @lowl1f3.

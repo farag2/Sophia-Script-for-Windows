@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.17.1
-	Date: 03.06.2023
+	Version: v5.17.2
+	Date: 26.06.2023
 
 	Copyright (c) 2014—2023 farag
 	Copyright (c) 2019—2023 farag & Inestic
@@ -697,7 +697,8 @@ public static string GetString(uint strId)
 	if ($Warning)
 	{
 		# Get the name of a preset (e.g Sophia.ps1) regardless it was named
-		$PresetName = Split-Path -Path ((Get-PSCallStack).Position | Where-Object -FilterScript {$_.File -match ".ps1"}).File -Leaf
+		# $_.File has no EndsWith() method
+		$PresetName = Split-Path -Path (((Get-PSCallStack).Position | Where-Object -FilterScript {$_.File}).File | Where-Object -FilterScript {$_.EndsWith(".ps1")}) -Leaf
 
 		$Title = ""
 		$Message       = $Localization.CustomizationWarning -f $PresetName
@@ -870,7 +871,8 @@ $($Type):$($Value)`n
 function script:AdditionalChecks
 {
 	# Get the name of a preset (e.g Sophia.ps1) regardless it was named
-	$PresetName = ((Get-PSCallStack).Position | Where-Object -FilterScript {$_.File -match ".ps1"}).File
+	# $_.File has no EndsWith() method
+	$PresetName = ((Get-PSCallStack).Position | Where-Object -FilterScript {$_.File}).File | Where-Object -FilterScript {$_.EndsWith(".ps1")}
 	if (Select-String -Path $PresetName -Pattern Checks | Select-String -Pattern "{Checks}", "The mandatory checks" -NotMatch)
 	{
 		# The string exists and is commented
@@ -1997,10 +1999,10 @@ function HiddenItems
 	File name extensions
 
 	.PARAMETER Show
-	Show the file name extensions
+	Show file name extensions
 
 	.PARAMETER Hide
-	Hide the file name extensions
+	Hide file name extensions
 
 	.EXAMPLE
 	FileExtensions -Show

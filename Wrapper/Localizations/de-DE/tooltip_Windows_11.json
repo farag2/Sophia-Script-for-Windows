@@ -47,7 +47,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Aktiviert den DiagTrack-Dienst, die Firewall-Regel für ausgehenden Verkehr des Unified Telemetry Client und erlaubt die Verbindung (Standardeinstellung)."
+                                "ToolTip":  "Aktivieren Sie den Dienst \"Connected User Experiences and Telemetry\" (DiagTrack), und erlauben Sie die Verbindung für den ausgehenden Datenverkehr des Unified Telemetry Client (Standardeinstellung)."
                             }
                 }
     },
@@ -58,7 +58,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Minimal",
-                                 "ToolTip":  "Setzt die OS-Ebene der Diagnosedatenerfassung auf ein Minimum."
+                                 "ToolTip":  "Setzen Sie die Diagnosedatenerfassung auf ein Minimum."
                              },
                     "One":  {
                                 "Tag":  "Default",
@@ -118,11 +118,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Keine Anmeldedaten verwenden, um das Gerät automatisch einzurichten und Anwendungen nach einem Neustart oder einer Aktualisierung zu öffnen."
+                                 "ToolTip":  "Verwenden Sie keine Anmeldeinformationen, um die Einrichtung des Geräts nach einer Aktualisierung automatisch abzuschließen."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Anmeldedaten verwenden, um die Geräteeinrichtung und das Öffnen von Anwendungen nach einem Neustart oder einer Aktualisierung automatisch abzuschließen (Standardeinstellung)."
+                                "ToolTip":  "Anmeldeinformationen verwenden, um die Einrichtung des Geräts nach einer Aktualisierung automatisch abzuschließen (Standardeinstellung)."
                             }
                 }
     },
@@ -253,11 +253,26 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Bing-Suche im Startmenü deaktivieren (nur in den USA)."
+                                 "ToolTip":  "Bing-Suche im Startmenü deaktivieren."
                              },
                     "One":  {
                                 "Tag":  "Enable",
                                 "ToolTip":  "Bing-Suche im Startmenü aktivieren (Standardeinstellung)."
+                            }
+                }
+    },
+    {
+        "Id":  215,
+        "Region":  "Privacy & Telemetry",
+        "Function":  "BrowsingHistory",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Zeigen Sie keine Websites aus Ihrem Browserverlauf im Startmenü an."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Zeigen Sie Websites aus Ihrem Browserverlauf im Startmenü an (Standardeinstellung)."
                             }
                 }
     },
@@ -287,7 +302,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Kontrollkästchen für Elemente verwenden (Standardeinstellung)."
+                                "ToolTip":  "Kontrollkästchen verwenden (Standardeinstellung)."
                             }
                 }
     },
@@ -358,11 +373,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Kompaktmodus des Datei-Explorers deaktivieren."
+                                 "ToolTip":  "Kompaktmodus des Datei-Explorers deaktivieren (Standardeinstellung)."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Kompaktmodus des Datei-Explorers aktivieren (Standardeinstellung)."
+                                "ToolTip":  "Kompaktmodus des Datei-Explorers aktivieren."
                             }
                 }
     },
@@ -535,7 +550,7 @@
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Zeigen Sie das Chat-Symbol (Microsoft Teams) in der Taskleiste an und entfernen Sie die Sperre für die Installation von Microsoft Teams für neue Benutzer (Standardwert)."
+                                "ToolTip":  "Zeigen Sie das Chat-Symbol (Microsoft Teams) in der Taskleiste an und entfernen Sie die Sperre für die Installation von Microsoft Teams für neue Benutzer (Standardeinstellung)."
                             }
                 }
     },
@@ -645,7 +660,7 @@
                              },
                     "One":  {
                                 "Tag":  "Default",
-                                "ToolTip":  "Qualitätsfaktor der JPEG-Desktop-Hintergründe auf Standard einstellen (Standardeinstellung)."
+                                "ToolTip":  "Qualitätsfaktor der JPEG-Desktop-Hintergründe auf Standard einstellen."
                             }
                 }
     },
@@ -780,7 +795,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "",
-                                 "ToolTip":  "OneDrive für alle Benutzer installieren."
+                                 "ToolTip":  "Installieren Sie OneDrive 64-bit für alle Benutzer nach %ProgramFiles%, je nachdem welches Installationsprogramm ausgelöst wird."
                              }
                 }
     },
@@ -975,7 +990,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Windows-Funktionen über das Popup-Dialogfeld aktivieren (Standardeinstellung)."
+                                "ToolTip":  "Windows-Funktionen über das Popup-Dialogfeld aktivieren."
                             }
                 }
     },
@@ -990,7 +1005,7 @@
                              },
                     "One":  {
                                 "Tag":  "Install",
-                                "ToolTip":  "Optionale Funktionen über das Popup-Dialogfeld installieren (Standardeinstellung)."
+                                "ToolTip":  "Optionale Funktionen über das Popup-Dialogfeld installieren."
                             }
                 }
     },
@@ -1417,7 +1432,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Proxying nur für gesperrte Webseiten aus dem einheitlichen Register von Roskomnadzor (Standardwert) deaktivieren."
+                                "ToolTip":  "Proxying nur für gesperrte Webseiten aus dem einheitlichen Register von Roskomnadzor (Standardeinstellung) deaktivieren."
                             }
                 }
     },
@@ -1443,7 +1458,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Verhindern Sie nicht die Erstellung von Desktop-Verknüpfungen beim Update von Microsoft Edge (Standardwert)."
+                                "ToolTip":  "Verhindern Sie nicht die Erstellung von Desktop-Verknüpfungen beim Update von Microsoft Edge (Standardeinstellung)."
                             }
                 }
     },
@@ -1458,7 +1473,7 @@
                              },
                     "One":  {
                                 "Tag":  "Default",
-                                "ToolTip":  "Anzeige aller internen SATA-Laufwerke als entfernbare Medien im Infobereich der Taskleiste (Standardwert)."
+                                "ToolTip":  "Anzeige aller internen SATA-Laufwerke als entfernbare Medien im Infobereich der Taskleiste (Standardeinstellung)."
                             }
                 }
     },
@@ -1491,15 +1506,15 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Default",
-                                 "ToolTip":  "Standard-Startlayout anzeigen (nur für 22621+ Build) (Standardeinstellung)."
+                                 "ToolTip":  "Standard-Startlayout anzeigen (Standardeinstellung)."
                              },
                     "One":  {
                                 "Tag":  "ShowMorePins",
-                                "ToolTip":  "Mehr Pins auf Start anzeigen (nur für 22621+ Build)."
+                                "ToolTip":  "Mehr Pins auf Start anzeigen."
                             },
                     "Two":  {
                                 "Tag":  "ShowMoreRecommendations",
-                                "ToolTip":  "Weitere Empfehlungen auf Start anzeigen (nur für 22621+ Build)."
+                                "ToolTip":  "Weitere Empfehlungen auf Start anzeigen."
                             }
                 }
     },
@@ -1547,7 +1562,7 @@
                              },
                     "One":  {
                                 "Tag":  "Install",
-                                "ToolTip":  "\"HEVC Video Extensions from Device Manufacturer\" herunterladen und installieren, um die Formate .heic und .heif öffnen zu können. Die HEVC-Videoerweiterung ist bereits standardmäßig in Windows 11 22H2 installiert."
+                                "ToolTip":  "\"HEVC Video Extensions from Device Manufacturer\" herunterladen und installieren, um die Formate .heic und .heif öffnen zu können."
                             }
                 }
     },
@@ -1760,7 +1775,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Keine Einbeziehung der Befehlszeile in Ereignisse der Prozesserstellung (Standardwert)."
+                                "ToolTip":  "Keine Einbeziehung der Befehlszeile in Ereignisse der Prozesserstellung (Standardeinstellung)."
                             }
                 }
     },
@@ -1775,7 +1790,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Entfernt die Ereignisanzeige \"Prozesserstellung\", um ausgeführte Prozesse und ihre Argumente zu protokollieren (Standardwert)."
+                                "ToolTip":  "Entfernt die Ereignisanzeige \"Prozesserstellung\", um ausgeführte Prozesse und ihre Argumente zu protokollieren (Standardeinstellung)."
                             }
                 }
     },
@@ -1835,7 +1850,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Aktiviert den \"Attachment Manager\", der Dateien, die aus dem Internet heruntergeladen wurden, als unsicher markiert (Standardwert."
+                                "ToolTip":  "Aktiviert den \"Attachment Manager\", der Dateien, die aus dem Internet heruntergeladen wurden, als unsicher markiert (Standardeinstellung."
                             }
                 }
     },
@@ -2105,7 +2120,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Windows-Terminal im Kontextmenü standardmäßig als Administrator nicht öffnen (Standardwert)."
+                                "ToolTip":  "Windows-Terminal im Kontextmenü standardmäßig als Administrator nicht öffnen (Standardeinstellung)."
                             }
                 }
     },
@@ -2116,7 +2131,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Windows 10-Kontextmenüstil deaktivieren (Standardwert)."
+                                 "ToolTip":  "Windows 10-Kontextmenüstil deaktivieren (Standardeinstellung)."
                              },
                     "One":  {
                                 "Tag":  "Enable",

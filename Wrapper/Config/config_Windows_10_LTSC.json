@@ -2799,7 +2799,7 @@
     },
     "Preset": "Zero",
     "WindowsDefault": "One",
-    "LTSC2019": "true",
+    "LTSC2019": "false",
     "LTSC2021": "false"
   },
   {

@@ -47,7 +47,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Aktiviert den DiagTrack-Dienst, die Firewall-Regel für ausgehenden Verkehr des Unified Telemetry Client und erlaubt die Verbindung (Standardeinstellung)."
+                                "ToolTip":  "Aktivieren Sie den Dienst \"Connected User Experiences and Telemetry\" (DiagTrack), und erlauben Sie die Verbindung für den ausgehenden Datenverkehr des Unified Telemetry Client (Standardeinstellung)."
                             }
                 }
     },
@@ -58,7 +58,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Minimal",
-                                 "ToolTip":  "Setzt die OS-Ebene der Diagnosedatenerfassung auf ein Minimum."
+                                 "ToolTip":  "Setzen Sie die Diagnosedatenerfassung auf ein Minimum."
                              },
                     "One":  {
                                 "Tag":  "Default",
@@ -148,11 +148,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Erlauben Sie Anwendungen nicht, eine Werbe-ID zu verwenden."
+                                 "ToolTip":  "Erlauben Sie Apps nicht, Werbe-IDs zu verwenden, um Anzeigen auf der Grundlage Ihrer App-Nutzung für Sie interessanter zu machen."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Erlauben Sie Anwendungen die Verwendung einer Werbe-ID (Standardeinstellung)."
+                                "ToolTip":  "Lassen Sie Apps die Werbe-ID verwenden, um Anzeigen auf der Grundlage Ihrer App-Nutzung für Sie interessanter zu machen (Standardwert)."
                             }
                 }
     },
@@ -253,7 +253,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Bing-Suche im Startmenü deaktivieren (nur in den USA)."
+                                 "ToolTip":  "Bing-Suche im Startmenü deaktivieren."
                              },
                     "One":  {
                                 "Tag":  "Enable",
@@ -354,6 +354,21 @@
     {
         "Id":  306,
         "Region":  "UI & Personalization",
+        "Function":  "FileExplorerRibbon",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Expanded",
+                                 "ToolTip":  "Erweitert die Multifunktionsleiste des Datei-Explorers."
+                             },
+                    "One":  {
+                                "Tag":  "Minimized",
+                                "ToolTip":  "Minimiert die Multifunktionsleiste des Datei-Explorers (Standardeinstellung)."
+                            }
+                }
+    },
+    {
+        "Id":  307,
+        "Region":  "UI & Personalization",
         "Function":  "FileExplorerMode",
         "Arg":  {
                     "Zero":  {
@@ -367,7 +382,7 @@
                 }
     },
     {
-        "Id":  307,
+        "Id":  308,
         "Region":  "UI & Personalization",
         "Function":  "OneDriveFileExplorerAd",
         "Arg":  {
@@ -382,7 +397,7 @@
                 }
     },
     {
-        "Id":  308,
+        "Id":  309,
         "Region":  "UI & Personalization",
         "Function":  "SnapAssist",
         "Arg":  {
@@ -397,7 +412,7 @@
                 }
     },
     {
-        "Id":  309,
+        "Id":  310,
         "Region":  "UI & Personalization",
         "Function":  "FileTransferDialog",
         "Arg":  {
@@ -408,21 +423,6 @@
                     "One":  {
                                 "Tag":  "Compact",
                                 "ToolTip":  "Das Dialogfeld für die Dateiübertragung im Kompaktmodus anzeigen (Standardeinstellung)."
-                            }
-                }
-    },
-    {
-        "Id":  310,
-        "Region":  "UI & Personalization",
-        "Function":  "FileExplorerRibbon",
-        "Arg":  {
-                    "Zero":  {
-                                 "Tag":  "Expanded",
-                                 "ToolTip":  "Erweitert die Multifunktionsleiste des Datei-Explorers."
-                             },
-                    "One":  {
-                                "Tag":  "Minimized",
-                                "ToolTip":  "Minimiert die Multifunktionsleiste des Datei-Explorers (Standardeinstellung)."
                             }
                 }
     },
@@ -900,7 +900,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "",
-                                 "ToolTip":  "OneDrive für alle Benutzer installieren."
+                                 "ToolTip":  "Installieren Sie OneDrive 64-bit für alle Benutzer nach %ProgramFiles%, je nachdem welches Installationsprogramm ausgelöst wird."
                              }
                 }
     },
@@ -1765,7 +1765,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Register",
-                                 "ToolTip":  "Erstellt  eine geplante Aufgabe \"Windows Cleanup\" zum Bereinigen von nicht verwendeten Windows-Dateien und Updates. Alle 30 Tage wird eine interaktive Toast-Benachrichtigung angezeigt. Die Aufgabe wird alle 30 Tage ausgeführt."
+                                 "ToolTip":  "Erstellen Sie die geplante Aufgabe \"Windows Cleanup\" zum Bereinigen von nicht verwendeten Windows-Dateien und Updates. Alle 30 Tage wird eine interaktive Toast-Benachrichtigung angezeigt. Sie müssen den Windows Script Host aktivieren, damit die Funktion funktioniert."
                              },
                     "One":  {
                                 "Tag":  "Delete",
@@ -1780,11 +1780,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Register",
-                                 "ToolTip":  "Erstellt eine geplante Aufgabe \"SoftwareDistribution\" zum Bereinigen des Ordners \"%SystemRoot%\\SoftwareDistribution\\Download\".Die Aufgabe wartet, bis der Windows-Update-Dienst seine Ausführung beendet hat. Die Aufgabe wird alle 90 Tage ausgeführt."
+                                 "ToolTip":  "Erstellen Sie die geplante Aufgabe \"SoftwareDistribution\" zum Bereinigen des Ordners %SystemRoot%\\SoftwareDistribution\\Download. Die Aufgabe wartet, bis der Windows-Update-Dienst seine Ausführung beendet hat. Die Aufgabe wird alle 90 Tage ausgeführt."
                              },
                     "One":  {
                                 "Tag":  "Delete",
-                                "ToolTip":  "Löscht die geplante Aufgabe \"SoftwareDistribution\" zum Bereinigen des Ordners \"%SystemRoot%\\SoftwareDistribution\\Download\"."
+                                "ToolTip":  "Löscht die geplante Aufgabe \"SoftwareDistribution\" zum Bereinigen des Ordners %SystemRoot%\\SoftwareDistribution\\Download."
                             }
                 }
     },
@@ -1795,7 +1795,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Register",
-                                 "ToolTip":  "Erstellt eine geplante Aufgabe \"Temp\" zum Bereinigen des Ordners %TEMP%. Die Aufgabe wird alle 60 Tage ausgeführt."
+                                 "ToolTip":  "Create the \"Temp\" scheduled task for cleaning up the %TEMP% folder. Only files older than one day will be deleted. The task runs every 60 days. You have to enable Windows Script Host in order to make the function work"
                              },
                     "One":  {
                                 "Tag":  "Delete",

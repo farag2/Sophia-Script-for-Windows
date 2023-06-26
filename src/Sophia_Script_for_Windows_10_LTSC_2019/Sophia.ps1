@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10 LTSC 2019"
 
-	Version: v5.7.1
-	Date: 03.06.2023
+	Version: v5.7.2
+	Date: 26.06.2023
 
 	Copyright (c) 2014—2023 farag
 	Copyright (c) 2019—2023 farag & Inestic
@@ -70,7 +70,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC 2019 v5.7.1 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2023"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC 2019 v5.7.2 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2023"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -234,6 +234,14 @@ OpenFileExplorerTo -ThisPC
 # Открывать проводник для "Быстрый доступ" (значение по умолчанию)
 # OpenFileExplorerTo -QuickAccess
 
+# Expand the File Explorer ribbon
+# Развернуть ленту проводника
+FileExplorerRibbon -Expanded
+
+# Minimize the File Explorer ribbon (default value)
+# Свернуть ленту проводника (значение по умолчанию)
+# FileExplorerRibbon -Minimized
+
 # When I snap a window, do not show what I can snap next to it
 # При прикреплении окна не показывать, что можно прикрепить рядом с ним
 SnapAssist -Disable
@@ -249,14 +257,6 @@ FileTransferDialog -Detailed
 # Show the file transfer dialog box in the compact mode (default value)
 # Отображать диалоговое окно передачи файлов в свернутом виде (значение по умолчанию)
 # FileTransferDialog -Compact
-
-# Expand the File Explorer ribbon
-# Развернуть ленту проводника
-FileExplorerRibbon -Expanded
-
-# Minimize the File Explorer ribbon (default value)
-# Свернуть ленту проводника (значение по умолчанию)
-# FileExplorerRibbon -Minimized
 
 # Display the recycle bin files delete confirmation dialog
 # Запрашивать подтверждение на удаление файлов в корзину
@@ -418,8 +418,8 @@ Cursors -Dark
 # Скачать и установить бесплатные светлые курсоры "Windows 11 Cursors Concept v2" от Jepri Creations
 # Cursors -Light
 
-# Set default cursors (default value)
-# Установить курсоры по умолчанию (значение по умолчанию)
+# Set default cursors
+# Установить курсоры по умолчанию
 # Cursors -Default
 
 # Do not group files and folder in the Downloads folder
@@ -461,8 +461,8 @@ StorageSenseFrequency -Month
 # Удалять временные файлы, не используемые в приложениях
 StorageSenseTempFiles -Enable
 
-# Do not delete temporary files that apps aren't using
-# Не удалять временные файлы, не используемые в приложениях
+# Do not delete temporary files that apps aren't using (default value)
+# Не удалять временные файлы, не используемые в приложениях (значение по умолчанию)
 # StorageSenseTempFiles -Disable
 #endregion StorageSense
 
@@ -889,7 +889,7 @@ TempTask -Register
 NetworkProtection -Enable
 
 # Disable Microsoft Defender Exploit Guard network protection (default value)
-# Выключить защиту сети в Microsoft Defender Exploit Guard
+# Выключить защиту сети в Microsoft Defender Exploit Guard (значение по умолчанию)
 # NetworkProtection -Disable
 
 # Enable detection for potentially unwanted applications and block them
@@ -952,7 +952,7 @@ CommandLineProcessAudit -Enable
 EventViewerCustomView -Enable
 
 # Remove the "Process Creation" custom view in the Event Viewer to log executed processes and their arguments (default value)
-# Удалить настаиваемое представление "Создание процесса" в Просмотре событий для журналирования запускаемых процессов и их аргументов (значение по умолчанию)
+# Удалить настраиваемое представление "Создание процесса" в Просмотре событий для журналирования запускаемых процессов и их аргументов (значение по умолчанию)
 # EventViewerCustomView -Disable
 
 # Enable logging for all Windows PowerShell modules

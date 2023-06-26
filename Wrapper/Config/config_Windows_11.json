@@ -300,6 +300,23 @@
     "WindowsDefault": "One"
   },
   {
+    "Id": 215,
+    "Region": "Privacy & Telemetry",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "BrowsingHistory",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One"
+  },
+  {
     "Id": 300,
     "Region": "UI & Personalization",
     "Control": "cmb",

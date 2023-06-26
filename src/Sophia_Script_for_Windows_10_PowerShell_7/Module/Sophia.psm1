@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.17.1
-	Date: 03.06.2023
+	Version: v5.17.2
+	Date: 26.06.2023
 
 	Copyright (c) 2014—2023 farag
 	Copyright (c) 2019—2023 farag & Inestic
@@ -848,7 +848,8 @@ public static string GetString(uint strId)
 	if ($Warning)
 	{
 		# Get the name of a preset (e.g Sophia.ps1) regardless it was named
-		$PresetName = Split-Path -Path ((Get-PSCallStack).Position | Where-Object -FilterScript {$_.File -match ".ps1"}).File -Leaf
+		# $_.File has no EndsWith() method
+		$PresetName = Split-Path -Path (((Get-PSCallStack).Position | Where-Object -FilterScript {$_.File}).File | Where-Object -FilterScript {$_.EndsWith(".ps1")}) -Leaf
 
 		$Title = ""
 		$Message       = $Localization.CustomizationWarning -f $PresetName
@@ -1021,7 +1022,8 @@ $($Type):$($Value)`n
 function script:AdditionalChecks
 {
 	# Get the name of a preset (e.g Sophia.ps1) regardless it was named
-	$PresetName = ((Get-PSCallStack).Position | Where-Object -FilterScript {$_.File -match ".ps1"}).File
+	# $_.File has no EndsWith() method
+	$PresetName = ((Get-PSCallStack).Position | Where-Object -FilterScript {$_.File}).File | Where-Object -FilterScript {$_.EndsWith(".ps1")}
 	if (Select-String -Path $PresetName -Pattern Checks | Select-String -Pattern "{Checks}", "The mandatory checks" -NotMatch)
 	{
 		# The string exists and is commented
@@ -2375,10 +2377,10 @@ function HiddenItems
 	File name extensions
 
 	.PARAMETER Show
-	Show the file name extensions
+	Show file name extensions
 
 	.PARAMETER Hide
-	Hide the file name extensions
+	Hide file name extensions
 
 	.EXAMPLE
 	FileExtensions -Show
@@ -8056,17 +8058,15 @@ function WinPrtScrFolder
 		"Desktop"
 		{
 			# Check how the script was invoked: via a preset or Function.ps1
-			$PresetName = (Get-PSCallStack).Position | Where-Object -FilterScript {
-				(($_.File -match ".ps1") -and ($_.File -notmatch "Functions.ps1")) -and (($_.Text -eq "WinPrtScrFolder -Desktop") -or ($_.Text -match "Invoke-Expression"))
-			}
-
+			# $_.File has no EndsWith() method
+			$PresetName = ((Get-PSCallStack).Position | Where-Object -FilterScript {($_.Text -eq "WinPrtScrFolder -Desktop") -or ($_.Text -match "Invoke-Expression")}).File | Where-Object -FilterScript {$_.EndsWith(".ps1") -and ($_ -notmatch "Functions.ps1")}
 			if ($PresetName)
 			{
 				# Check whether a preset contains the "OneDrive -Uninstall" string uncommented out
-				if (Select-String -Path $PresetName.File -Pattern "OneDrive -Uninstall" -SimpleMatch)
+				if (Select-String -Path $PresetName -Pattern "OneDrive -Uninstall" -SimpleMatch)
 				{
 					# The string exists and is commented
-					$IsOneDriveToUninstall = (Select-String -Path $PresetName.File -Pattern "OneDrive -Uninstall" -SimpleMatch).Line.StartsWith("#") -eq $false
+					$IsOneDriveToUninstall = (Select-String -Path $PresetName -Pattern "OneDrive -Uninstall" -SimpleMatch).Line.StartsWith("#") -eq $false
 				}
 				else
 				{

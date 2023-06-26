@@ -21,7 +21,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "",
-                                 "ToolTip":  "Enable script logging. The log will be being recorded into the script folder. To stop logging just close the console or type \"Stop-Transcript\"."
+                                 "ToolTip":  "Enable script logging. Log will be recorded into the script folder. To stop logging just close the console or type \"Stop-Transcript\"."
                              }
                 }
     },
@@ -43,11 +43,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Disable the \"Connected User Experiences and Telemetry\" service (DiagTrack), and block the connection for the Unified Telemetry Client Outbound Traffic. Disabling the \"Connected User Experiences and Telemetry\" service (DiagTrack) can cause you not being able to get Xbox achievements anymore and affects Feedback Hub."
+                                 "ToolTip":  "Disable the \"Connected User Experiences and Telemetry\" service (DiagTrack), and block the connection for the Unified Telemetry Client Outbound Traffic. Disabling the \"Connected User Experiences and Telemetry\" service (DiagTrack) can cause you not being able to get Xbox achievements anymore and affects Feedback Hub and affects Feedback Hub."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Enable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and allow connection (default value)."
+                                "ToolTip":  "Enable the \"Connected User Experiences and Telemetry\" service (DiagTrack), and allow the connection for the Unified Telemetry Client Outbound Traffic (default value)."
                             }
                 }
     },
@@ -58,7 +58,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Minimal",
-                                 "ToolTip":  "Set the OS level of diagnostic data gathering to minimum."
+                                 "ToolTip":  "Set the diagnostic data collection to minimum."
                              },
                     "One":  {
                                 "Tag":  "Default",
@@ -148,11 +148,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Do not allow apps to use advertising ID."
+                                 "ToolTip":  "Do not allow apps to use advertising ID to make ads more interresting to you based on your app usage."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Allow apps to use advertising ID (default value)."
+                                "ToolTip":  "Let apps use advertising ID to make ads more interresting to you based on your app usage (default value)."
                             }
                 }
     },
@@ -253,7 +253,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Disable Bing search in the Start Menu (for the USA only)."
+                                 "ToolTip":  "Disable Bing search in the Start Menu."
                              },
                     "One":  {
                                 "Tag":  "Enable",
@@ -287,7 +287,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Use check boxes to select items (default value)."
+                                "ToolTip":  "Use check item check boxes (default value)."
                             }
                 }
     },
@@ -313,11 +313,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Show",
-                                 "ToolTip":  "Show the file name extensions."
+                                 "ToolTip":  "Show file name extensions."
                              },
                     "One":  {
                                 "Tag":  "Hide",
-                                "ToolTip":  "Hide the file name extensions (default value)."
+                                "ToolTip":  "Hide file name extensions (default value)."
                             }
                 }
     },
@@ -354,6 +354,21 @@
     {
         "Id":  306,
         "Region":  "UI & Personalization",
+        "Function":  "FileExplorerRibbon",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Expanded",
+                                 "ToolTip":  "Expand the File Explorer ribbon."
+                             },
+                    "One":  {
+                                "Tag":  "Minimized",
+                                "ToolTip":  "Minimize the File Explorer ribbon (default value)."
+                            }
+                }
+    },
+    {
+        "Id":  307,
+        "Region":  "UI & Personalization",
         "Function":  "OneDriveFileExplorerAd",
         "Arg":  {
                     "Zero":  {
@@ -367,7 +382,7 @@
                 }
     },
     {
-        "Id":  307,
+        "Id":  308,
         "Region":  "UI & Personalization",
         "Function":  "SnapAssist",
         "Arg":  {
@@ -382,7 +397,7 @@
                 }
     },
     {
-        "Id":  308,
+        "Id":  309,
         "Region":  "UI & Personalization",
         "Function":  "FileTransferDialog",
         "Arg":  {
@@ -393,21 +408,6 @@
                     "One":  {
                                 "Tag":  "Compact",
                                 "ToolTip":  "Show the file transfer dialog box in the compact mode (default value)."
-                            }
-                }
-    },
-    {
-        "Id":  309,
-        "Region":  "UI & Personalization",
-        "Function":  "FileExplorerRibbon",
-        "Arg":  {
-                    "Zero":  {
-                                 "Tag":  "Expanded",
-                                 "ToolTip":  "Expand the File Explorer ribbon."
-                             },
-                    "One":  {
-                                "Tag":  "Minimized",
-                                "ToolTip":  "Minimize the File Explorer ribbon (default value)."
                             }
                 }
     },
@@ -448,7 +448,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Hide",
-                                 "ToolTip":  "Hide frequently used files in Quick access."
+                                 "ToolTip":  "Hide recently used files in Quick access."
                              },
                     "One":  {
                                 "Tag":  "Show",
@@ -641,7 +641,7 @@
                             },
                     "Two":  {
                                 "Tag":  "Mail",
-                                "ToolTip":  "Unpin the \"Mail\" shortcut from the taskbar"
+                                "ToolTip":  "Unpin the \"Mail\" shortcut from the taskbar."
                             }
                 }
     },
@@ -716,11 +716,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Hide user first sign-in animation after the upgrade."
+                                 "ToolTip":  "Hide first sign-in animation after the upgrade."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Show user first sign-in animation after the upgrade (default value)."
+                                "ToolTip":  "Show first sign-in animation after the upgrade (default value)."
                             }
                 }
     },
@@ -735,7 +735,7 @@
                              },
                     "One":  {
                                 "Tag":  "Default",
-                                "ToolTip":  "Set the quality factor of the JPEG desktop wallpapers to default (default value)."
+                                "ToolTip":  "Set the quality factor of the JPEG desktop wallpapers to default."
                             }
                 }
     },
@@ -829,7 +829,7 @@
                             },
                     "Two":  {
                                 "Tag":  "Dark",
-                                "ToolTip":  "Download and install free dark \"Windows 11 Cursors Concept v2\" cursors from Jepri Creations"
+                                "ToolTip":  "Download and install free dark \"Windows 11 Cursors Concept v2\" cursors from Jepri Creations."
                             }
                 }
     },
@@ -885,7 +885,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "",
-                                 "ToolTip":  "Install OneDrive for all users."
+                                 "ToolTip":  "Install OneDrive 64-bit all users to %ProgramFiles% depending which installer is triggered."
                              }
                 }
     },
@@ -1125,7 +1125,7 @@
                              },
                     "One":  {
                                 "Tag":  "Balanced",
-                                "ToolTip":  "Set the power plan on \"Balanced\" (default value)."
+                                "ToolTip":  "Set power plan on \"Balanced\" (default value)."
                             }
                 }
     },
@@ -1174,7 +1174,7 @@
                             },
                     "Two":  {
                                 "Tag":  "PreferIPv4overIPv6",
-                                "ToolTip":  "Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections. Prefer IPv4 over IPv6. Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipify.org"
+                                "ToolTip":  "Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections. Prefer IPv4 over IPv6. Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipify.org."
                             }
                 }
     },
@@ -1324,11 +1324,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Do not allow the shortcut key to Start Sticky Keys by pressing the the Shift key 5 times to turn Sticky keys off."
+                                 "ToolTip":  "Do not allow the shortcut key to Start Sticky Keys by pressing the the Shift key 5 times."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Allow the shortcut key to Start Sticky Keys by pressing the the Shift key 5 times to turn Sticky keys on (default value)."
+                                "ToolTip":  "Allow the shortcut key to Start Sticky Keys by pressing the the Shift key 5 times (default value)."
                             }
                 }
     },
@@ -1594,7 +1594,7 @@
                             },
                     "Two":  {
                                 "Tag":  "PowerShell",
-                                "ToolTip":  "Pin the Windows PowerShell shortcut to Start"
+                                "ToolTip":  "Pin the Windows PowerShell shortcut to Start."
                             }
                 }
     },
@@ -1649,7 +1649,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Manually",
-                                 "ToolTip":  "Open Microsoft Store \"HEVC Video Extensions from Device Manufacturer\" page to install this extension manually to be able to open .heic and .heif image formats. The extension can be installed without a Microsoft account."
+                                 "ToolTip":  "Open Microsoft Store \"HEVC Video Extensions from Device Manufacturer\" page to install this extension manually to be able to open .heic and .heif image formats. The extension can be installed without an Microsoft account."
                              },
                     "One":  {
                                 "Tag":  "Install",
@@ -1750,7 +1750,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Register",
-                                 "ToolTip":  "Create the \"Windows Cleanup\" scheduled task for cleaning up Windows unused files and updates. A native interactive toast notification pops up every 30 days. The task runs every 30 days."
+                                 "ToolTip":  "Create the \"Windows Cleanup\" scheduled task for cleaning up Windows unused files and updates. A native interactive toast notification pops up every 30 days. You have to enable Windows Script Host in order to make the function work."
                              },
                     "One":  {
                                 "Tag":  "Delete",
@@ -1765,7 +1765,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Register",
-                                 "ToolTip":  "Create the \"SoftwareDistribution\" scheduled task for cleaning up the %SystemRoot%\\SoftwareDistribution\\Download folder. The task will wait until the Windows Updates service finishes running. The task runs every 90 days."
+                                 "ToolTip":  "Create the \"SoftwareDistribution\" scheduled task for cleaning up the %SystemRoot%\\SoftwareDistribution\\Download folder. The task will wait until the Windows Updates service finishes running. The task runs every 90 days. You have to enable Windows Script Host in order to make the function work"
                              },
                     "One":  {
                                 "Tag":  "Delete",
@@ -1780,7 +1780,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Register",
-                                 "ToolTip":  "Create the \"Temp\" scheduled task for cleaning up the %TEMP% folder. Only files older than one day will be deleted. The task runs every 60 days."
+                                 "ToolTip":  "Create the \"Temp\" scheduled task for cleaning up the %TEMP% folder. Only files older than one day will be deleted. The task runs every 60 days. You have to enable Windows Script Host in order to make the function work"
                              },
                     "One":  {
                                 "Tag":  "Delete",

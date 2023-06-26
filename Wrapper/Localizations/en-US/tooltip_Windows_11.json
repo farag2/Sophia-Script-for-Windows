@@ -21,7 +21,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "",
-                                 "ToolTip":  "Enable script logging. The log will be being recorded into the script folder. To stop logging just close the console or type \"Stop-Transcript\"."
+                                 "ToolTip":  "Enable script logging. Log will be recorded into the script folder. To stop logging just close the console or type \"Stop-Transcript\"."
                              }
                 }
     },
@@ -47,7 +47,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Enable the DiagTrack service, firewall rule for Unified Telemetry Client Outbound Traffic and allow connection (default value)."
+                                "ToolTip":  "Enable the \"Connected User Experiences and Telemetry\" service (DiagTrack), and allow the connection for the Unified Telemetry Client Outbound Traffic (default value)."
                             }
                 }
     },
@@ -58,7 +58,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Minimal",
-                                 "ToolTip":  "Set the OS level of diagnostic data gathering to minimum."
+                                 "ToolTip":  "Set the diagnostic data collection to minimum."
                              },
                     "One":  {
                                 "Tag":  "Default",
@@ -118,11 +118,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Do not use sign-in info to automatically finish setting up device and reopen apps after an update or restart."
+                                 "ToolTip":  "Do not use sign-in info to automatically finish setting up device after an update."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Use sign-in info to automatically finish setting up device and reopen apps after an update or restart (default value)."
+                                "ToolTip":  "Use sign-in info to automatically finish setting up device after an update (default value)."
                             }
                 }
     },
@@ -148,11 +148,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Do not allow apps to use advertising ID."
+                                 "ToolTip":  "Do not let apps show me personalized ads by using my advertising ID."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Allow apps to use advertising ID (default value)."
+                                "ToolTip":  "Let apps show me personalized ads by using my advertising ID (default value)."
                             }
                 }
     },
@@ -182,7 +182,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Do not get tips and suggestions when I use Windows"
+                                "ToolTip":  "Do not get tips and suggestions when I use Windows."
                             }
                 }
     },
@@ -223,11 +223,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Do not suggest ways I can finish setting up my device to get the most out of Windows."
+                                 "ToolTip":  "Do not suggest ways to get the most out of Windows and finish setting up this device."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Suggest ways I can finish setting up my device to get the most out of Windows (default value)."
+                                "ToolTip":  "Suggest ways to get the most out of Windows and finish setting up this device (default value)."
                             }
                 }
     },
@@ -238,11 +238,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Do not let Microsoft offer you tailored experiences based on the diagnostic data setting you hava chosen."
+                                 "ToolTip":  "Don't let Microsoft use your diagnostic data for personalized tips, ads, and recommendations."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Let Microsoft offer you tailored experiences based on the diagnostic data setting you hava chosen (default value)."
+                                "ToolTip":  "Let Microsoft use your diagnostic data for personalized tips, ads, and recommendations (default value)."
                             }
                 }
     },
@@ -253,11 +253,26 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Disable Bing search in the Start Menu (for the USA only)."
+                                 "ToolTip":  "Disable Bing search in the Start Menu."
                              },
                     "One":  {
                                 "Tag":  "Enable",
                                 "ToolTip":  "Enable Bing search in the Start Menu (default value)."
+                            }
+                }
+    },
+    {
+        "Id":  215,
+        "Region":  "Privacy & Telemetry",
+        "Function":  "BrowsingHistory",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Do not show websites from your browsing history in the Start menu."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Show websites from your browsing history in the Start menu (default value)."
                             }
                 }
     },
@@ -287,7 +302,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Use check boxes to select items (default value)."
+                                "ToolTip":  "Use check item check boxes (default value)."
                             }
                 }
     },
@@ -313,11 +328,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Show",
-                                 "ToolTip":  "Show the file name extensions."
+                                 "ToolTip":  "Show file name extensions."
                              },
                     "One":  {
                                 "Tag":  "Hide",
-                                "ToolTip":  "Hide the file name extensions (default value)."
+                                "ToolTip":  "Hide file name extensions (default value)."
                             }
                 }
     },
@@ -358,11 +373,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Disable the File Explorer compact mode."
+                                 "ToolTip":  "Disable the File Explorer compact mode (default value)."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Enable the File Explorer compact mode (default value)."
+                                "ToolTip":  "Enable the File Explorer compact mode."
                             }
                 }
     },
@@ -433,7 +448,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Hide",
-                                 "ToolTip":  "Hide frequently used files in Quick access."
+                                 "ToolTip":  "Hide recently used files in Quick access."
                              },
                     "One":  {
                                 "Tag":  "Show",
@@ -493,7 +508,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Hide",
-                                 "ToolTip":  "Hide the search button from the taskbar."
+                                 "ToolTip":  "Hide the search on the taskbar."
                              },
                     "One":  {
                                 "Tag":  "SearchIcon",
@@ -516,7 +531,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Hide",
-                                 "ToolTip":  "Hide the Task View button on the taskbar."
+                                 "ToolTip":  "Hide the Task view button from the taskbar."
                              },
                     "One":  {
                                 "Tag":  "Show",
@@ -566,7 +581,7 @@
                              },
                     "One":  {
                                 "Tag":  "Store",
-                                "ToolTip":  "Unpin the \"Microsoft Store\" shortcut from the taskbar"
+                                "ToolTip":  "Unpin the \"Microsoft Store\" shortcut from the taskbar."
                             }
                 }
     },
@@ -626,11 +641,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Hide user first sign-in animation after the upgrade."
+                                 "ToolTip":  "Hide first sign-in animation after the upgrade."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Show user first sign-in animation after the upgrade (default value)."
+                                "ToolTip":  "SShow first sign-in animation after the upgrade (default value)."
                             }
                 }
     },
@@ -645,7 +660,7 @@
                              },
                     "One":  {
                                 "Tag":  "Default",
-                                "ToolTip":  "Set the quality factor of the JPEG desktop wallpapers to default (default value)."
+                                "ToolTip":  "Set the quality factor of the JPEG desktop wallpapers to default."
                             }
                 }
     },
@@ -780,7 +795,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "",
-                                 "ToolTip":  "Install OneDrive for all users."
+                                 "ToolTip":  "Install OneDrive 64-bit all users to %ProgramFiles% depending which installer is triggered."
                              }
                 }
     },
@@ -821,11 +836,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Enable",
-                                 "ToolTip":  "Delete temporary files that apps aren't using (default value)."
+                                 "ToolTip":  "Turn on automatic cleaning up temporary system and app files (default value)."
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Do not delete temporary files that apps aren't using"
+                                "ToolTip":  "Turn off automatic cleaning up temporary system and app files."
                             }
                 }
     },
@@ -975,7 +990,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Enable the Windows features using the pop-up dialog box (default value)."
+                                "ToolTip":  "Enable the Windows features using the pop-up dialog box."
                             }
                 }
     },
@@ -990,7 +1005,7 @@
                              },
                     "One":  {
                                 "Tag":  "Install",
-                                "ToolTip":  "Install optional features using the pop-up dialog box (default value)."
+                                "ToolTip":  "Install optional features using the pop-up dialog box."
                             }
                 }
     },
@@ -1005,7 +1020,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Do not receive updates for other Microsoft products when you update Windows (default value)."
+                                "ToolTip":  "Do not receive updates for other Microsoft products (default value)."
                             }
                 }
     },
@@ -1099,7 +1114,7 @@
                              },
                     "One":  {
                                 "Tag":  "Custom",
-                                "ToolTip":  "Select folders for user folders location manually using a folder browser dialog. User files or folders won't me moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default"
+                                "ToolTip":  "Select folders for user folders location manually using a folder browser dialog. User files or folders won't me moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default."
                             },
                     "Two":  {
                                 "Tag":  "Default",
@@ -1264,11 +1279,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Enable",
-                                 "ToolTip":  "Enable automatically saving my restartable apps when signing out and restart them after signing in."
+                                 "ToolTip":  "Automatically saving my restartable apps and restart them when I sign back in."
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Disable automatically saving my restartable apps when signing out and restart them after signing in (default value)."
+                                "ToolTip":  "Turn off automatically saving my restartable apps and restart them when I sign back in (default value)."
                             }
                 }
     },
@@ -1294,11 +1309,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Show",
-                                 "ToolTip":  "Show a notification when your PC requires a restart to finish updating."
+                                 "ToolTip":  "Notify me when a restart is required to finish updating."
                              },
                     "One":  {
                                 "Tag":  "Hide",
-                                "ToolTip":  "Do not show a notification when your PC requires a restart to finish updating (default value)."
+                                "ToolTip":  "Do not notify me when a restart is required to finish updating (default value)."
                             }
                 }
     },
@@ -1309,11 +1324,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Enable",
-                                 "ToolTip":  "Restart this device as soon as possible when a restart is required to install an update."
+                                 "ToolTip":  "Restart as soon as possible to finish updating."
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Do not restart this device as soon as possible when a restart is required to install an update (default value)."
+                                "ToolTip":  "Don't restart as soon as possible to finish updating (default value)."
                             }
                 }
     },
@@ -1491,15 +1506,15 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Default",
-                                 "ToolTip":  "Show default Start layout (for 22621+ build only) (default value)."
+                                 "ToolTip":  "Show default Start layout (default value)."
                              },
                     "One":  {
                                 "Tag":  "ShowMorePins",
-                                "ToolTip":  "Show more pins on Start (for 22621+ build only)."
+                                "ToolTip":  "Show more pins on Start."
                             },
                     "Two":  {
                                 "Tag":  "ShowMoreRecommendations",
-                                "ToolTip":  "Show more recommendations on Start (for 22621+ build only)."
+                                "ToolTip":  "Show more recommendations on Start."
                             }
                 }
     },
@@ -1543,11 +1558,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Manually",
-                                 "ToolTip":  "Open Microsoft Store \"HEVC Video Extensions from Device Manufacturer\" page to install this extension manually to be able to open .heic and .heif image formats. The extension can be installed without a Microsoft account."
+                                 "ToolTip":  "Open Microsoft Store \"HEVC Video Extensions from Device Manufacturer\" page to install this extension manually to be able to open .heic and .heif image formats. The extension can be installed without an Microsoft account."
                              },
                     "One":  {
                                 "Tag":  "Install",
-                                "ToolTip":  "Download and install \"HEVC Video Extensions from Device Manufacturer\" to be able to open .heic and .heif formats. HEVC Video Extension is already installed in Windows 11 22H2 by default."
+                                "ToolTip":  "Download and install \"HEVC Video Extensions from Device Manufacturer\" to be able to open .heic and .heif formats."
                             }
                 }
     },
@@ -1644,7 +1659,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Register",
-                                 "ToolTip":  "Create the \"Windows Cleanup\" scheduled task for cleaning up Windows unused files and updates. A native interactive toast notification pops up every 30 days. The task runs every 30 days."
+                                 "ToolTip":  "Create the \"Windows Cleanup\" scheduled task for cleaning up Windows unused files and updates. A native interactive toast notification pops up every 30 days. You have to enable Windows Script Host in order to make the function work."
                              },
                     "One":  {
                                 "Tag":  "Delete",
@@ -1659,7 +1674,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Register",
-                                 "ToolTip":  "Create the \"SoftwareDistribution\" scheduled task for cleaning up the %SystemRoot%\\SoftwareDistribution\\Download folder. The task will wait until the Windows Updates service finishes running. The task runs every 90 days."
+                                 "ToolTip":  "Create the \"SoftwareDistribution\" scheduled task for cleaning up the %SystemRoot%\\SoftwareDistribution\\Download folder. The task will wait until the Windows Updates service finishes running. The task runs every 90 days. You have to enable Windows Script Host in order to make the function work"
                              },
                     "One":  {
                                 "Tag":  "Delete",
@@ -1674,7 +1689,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Register",
-                                 "ToolTip":  "Create the \"Temp\" scheduled task for cleaning up the %TEMP% folder. Only files older than one day will be deleted. The task runs every 60 days."
+                                 "ToolTip":  "Create the \"Temp\" scheduled task for cleaning up the %TEMP% folder. Only files older than one day will be deleted. The task runs every 60 days. You have to enable Windows Script Host in order to make the function work"
                              },
                     "One":  {
                                 "Tag":  "Delete",
@@ -1775,7 +1790,7 @@
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Remove \"Process Creation\" Event Viewer сustom view to log executed processes and their arguments (default value)."
+                                "ToolTip":  "Remove the \"Process Creation\" custom view in the Event Viewer to log executed processes and their arguments (default value)."
                             }
                 }
     },
@@ -2086,11 +2101,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Hide",
-                                 "ToolTip":  "Hide the \"Open in Windows Terminal\" menu option in the folders context menu."
+                                 "ToolTip":  "Hide the \"Open in Windows Terminal\" item in the folders context menu."
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Show the \"Open in Windows Terminal\" menu option in the folders context menu (default value)."
+                                "ToolTip":  "Show the \"Open in Windows Terminal\" item in the folders context menu (default value)."
                             }
                 }
     },

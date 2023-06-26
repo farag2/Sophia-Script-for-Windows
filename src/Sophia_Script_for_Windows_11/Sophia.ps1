@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 11"
 
-	Version: v6.5.1
-	Date: 03.06.2023
+	Version: v6.5.2
+	Date: 26.06.2023
 
 	Copyright (c) 2014—2023 farag
 	Copyright (c) 2019—2023 farag & Inestic
@@ -69,7 +69,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.5.1 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2023"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.5.2 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2023"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -223,8 +223,8 @@ AppsSilentInstalling -Disable
 # Не предлагать способы завершения настройки этого устройства для наиболее эффективного использования Windows
 WhatsNewInWindows -Disable
 
-# Suggest ways to get the most out of Windows and finish setting up this device
-# Предложить способы завершения настройки этого устройства для наиболее эффективного использования Windows
+# Suggest ways to get the most out of Windows and finish setting up this device (default value)
+# Предложить способы завершения настройки этого устройства для наиболее эффективного использования Windows (значение по умолчанию)
 # WhatsNewInWindows -Enable
 
 # Don't let Microsoft use your diagnostic data for personalized tips, ads, and recommendations
@@ -242,6 +242,14 @@ BingSearch -Disable
 # Enable Bing search in the Start Menu (default value)
 # Включить поиск через Bing в меню "Пуск" (значение по умолчанию)
 # BingSearch -Enable
+
+# Do not show websites from your browsing history in the Start menu
+# Не показать веб-сайты из журнала браузера в меню "Пуск"
+BrowsingHistory -Hide
+
+# Show websites from your browsing history in the Start menu (default value)
+# Показать веб-сайты из журнала браузера в меню "Пуск" (значение по умолчанию)
+# BrowsingHistory -Show
 #endregion Privacy & Telemetry
 
 #region UI & Personalization
@@ -493,8 +501,8 @@ Cursors -Dark
 # Скачать и установить бесплатные светлые курсоры "Windows 11 Cursors Concept v2" от Jepri Creations
 # Cursors -Light
 
-# Set default cursors (default value)
-# Установить курсоры по умолчанию (значение по умолчанию)
+# Set default cursors
+# Установить курсоры по умолчанию
 # Cursors -Default
 
 # Do not group files and folder in the Downloads folder
@@ -546,8 +554,8 @@ StorageSenseFrequency -Month
 # Запускать Контроль памяти, когда остается мало место на диске (значение по умолчанию)
 # StorageSenseFrequency -Default
 
-# Turn on automatic cleaning up temporary system and app files
-# Автоматически очищать временные файлы системы и приложений
+# Turn on automatic cleaning up temporary system and app files (default value)
+# Автоматически очищать временные файлы системы и приложений (значение по умолчанию)
 StorageSenseTempFiles -Enable
 
 # Turn off automatic cleaning up temporary system and app files
@@ -1026,18 +1034,13 @@ UninstallUWPApps
 #>
 # RestoreUWPApps
 
-<#
-	Download and install "HEVC Video Extensions from Device Manufacturer" to be able to open .heic and .heif formats
-	HEVC Video Extension is already installed in Windows 11 22H2 by default
-
-	Скачать и установить "Расширения для видео HEVC от производителя устройства", чтобы иметь возможность открывать форматы .heic и .heif
-	Расширение уже установлено в Windows 11 22H2 по умолчанию
-#>
+# Download and install "HEVC Video Extensions from Device Manufacturer" to be able to open .heic and .heif formats
+# Скачать и установить "Расширения для видео HEVC от производителя устройства", чтобы иметь возможность открывать форматы .heic и .heif
 HEVC -Install
 
 <#
 	Open Microsoft Store "HEVC Video Extensions from Device Manufacturer" page to install this extension manually to be able to open .heic and .heif formats
-	The extension can be installed without a Microsoft account
+	The extension can be installed without an Microsoft account
 
 	Открыть страницу "Расширения для видео HEVC от производителя устройства" в Microsoft Store, чтобы вручную установить расширение для открытия форматов .heic и .heif
 	Расширение может быть установлено бесплатно без учетной записи Microsoft
@@ -1148,7 +1151,7 @@ TempTask -Register
 NetworkProtection -Enable
 
 # Disable Microsoft Defender Exploit Guard network protection (default value)
-# Выключить защиту сети в Microsoft Defender Exploit Guard
+# Выключить защиту сети в Microsoft Defender Exploit Guard (значение по умолчанию)
 # NetworkProtection -Disable
 
 # Enable detection for potentially unwanted applications and block them
@@ -1198,7 +1201,7 @@ CommandLineProcessAudit -Enable
 EventViewerCustomView -Enable
 
 # Remove the "Process Creation" custom view in the Event Viewer to log executed processes and their arguments (default value)
-# Удалить настаиваемое представление "Создание процесса" в Просмотре событий для журналирования запускаемых процессов и их аргументов (значение по умолчанию)
+# Удалить настраиваемое представление "Создание процесса" в Просмотре событий для журналирования запускаемых процессов и их аргументов (значение по умолчанию)
 # EventViewerCustomView -Disable
 
 # Enable logging for all Windows PowerShell modules
