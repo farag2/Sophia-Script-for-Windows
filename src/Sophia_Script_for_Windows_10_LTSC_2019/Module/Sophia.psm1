@@ -877,7 +877,6 @@ function script:AdditionalChecks
 		{
 			$Host.UI.RawUI.WindowTitle = "Checks | $($PresetName)"
 
-			$ReadFile = Get-Content -Path $PresetName -Encoding UTF8
 			# Calculate the string number to uncomment "Checks -Warning"
 			$LineNumber = (Select-String -Path $PresetName -Pattern Checks | Select-String -Pattern "{Checks}", "The mandatory checks" -NotMatch).LineNumber
 			# Get date from the required line to replace it with "Checks -Warning"

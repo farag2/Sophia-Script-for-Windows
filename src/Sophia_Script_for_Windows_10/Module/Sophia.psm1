@@ -1027,10 +1027,9 @@ function script:AdditionalChecks
 		{
 			$Host.UI.RawUI.WindowTitle = "Checks | $($PresetName)"
 
-			$ReadFile = Get-Content -Path $PresetName -Encoding UTF8
 			# Calculate the string number to uncomment "Checks -Warning"
 			$LineNumber = (Select-String -Path $PresetName -Pattern Checks | Select-String -Pattern "{Checks}", "The mandatory checks" -NotMatch).LineNumber
-			# Get date from the required line to replace it with "Checks -Warning"
+			# Get data from the required line to replace it with "Checks -Warning"
 			$RequiredLine = (Get-Content -Path $PresetName -Encoding UTF8) | Where-Object -FilterScript {$_.ReadCount -eq $LineNumber}
 			(Get-Content -Path $PresetName -Encoding UTF8).Replace($RequiredLine, "Checks -Warning") | Set-Content -Path $PresetName -Encoding UTF8 -Force
 
@@ -12317,7 +12316,7 @@ function GPUScheduling
 				if ((Get-CimInstance -ClassName CIM_ComputerSystem).Model -notmatch "Virtual")
 				{
 					# Checking whether a WDDM verion is 2.7 or higher
-					$WddmVersion_Min = Get-ItemPropertyValue -Path HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\FeatureSetUsage -Name WddmVersion_Min
+					$WddmVersion_Min = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\FeatureSetUsage", "WddmVersion_Min", $null)
 					if ($WddmVersion_Min -ge 2700)
 					{
 						New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers" -Name HwSchMode -PropertyType DWord -Value 2 -Force
@@ -15424,13 +15423,13 @@ public static void PostMessage()
 	}
 
 	# Call MeetNow unless binary value is reverted
-	if ($Script:MeetNow)
-	{
-		MeetNow -Show
-	}
-	elseif ($Script:MeetNow -eq $false)
+	if (-not $Script:MeetNow)
 	{
 		MeetNow -Hide
+	}
+	elseif ($Script:MeetNow)
+	{
+		MeetNow -Show
 	}
 	#endregion Other actions
 
