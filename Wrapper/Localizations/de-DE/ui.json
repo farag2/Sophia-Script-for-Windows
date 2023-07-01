@@ -19,8 +19,8 @@
     "Id": "Tab",
     "Options": {
       "tabSystemProtection": "Systemschutz",
-      "tabPrivacyTelemetry": "Datenschutz und Telemetrie",
-      "tabUIPersonalization": "UI & Personalisierung",
+      "tabPrivacyTelemetry": "Datenschutz",
+      "tabUIPersonalization": "Personalisierung",
       "tabOneDrive": "OneDrive",
       "tabSystem": "System",
       "tabWSL": "WSL",
@@ -64,8 +64,8 @@
       "messageBoxNewSophiaFound": "Eine neue Version von 'Sophia Script' wurde entdeckt.\nGitHub-Seite öffnen?",
       "messageBoxDoesNotExist": "existiert nicht",
       "messageBoxPresetNotComp": "Voreinstellung ist nicht kompatibel!",
-      "messageBoxFilesMissingClose": "Die erforderlichen Sophia Script Wrapper-Dateien fehlen. Das Programm wird geschlossen",
-      "messageBoxConsoleEmpty": "Die Konsole ist leer.\n Drücken Sie die Schaltfläche Konsole aktualisieren, um ein Skript entsprechend Ihrer Auswahl zu erstellen"
+      "messageBoxFilesMissingClose": "Die erforderlichen Sophia Script Wrapper-Dateien fehlen. Das Programm wird geschlossen.",
+      "messageBoxConsoleEmpty": "Die Konsole ist leer.\n Drücken Sie die Schaltfläche Konsole aktualisieren, um ein Skript entsprechend Ihrer Auswahl zu erstellen."
     }
   }
 ]

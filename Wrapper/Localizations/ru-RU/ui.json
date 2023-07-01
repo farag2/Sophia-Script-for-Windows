@@ -19,8 +19,8 @@
     "Id": "Tab",
     "Options": {
       "tabSystemProtection": "Защита",
-      "tabPrivacyTelemetry": "Конфиденциальность & телеметрия",
-      "tabUIPersonalization": "UI & персонализация",
+      "tabPrivacyTelemetry": "Конфиденциальность",
+      "tabUIPersonalization": "Персонализация",
       "tabOneDrive": "OneDrive",
       "tabSystem": "Система",
       "tabWSL": "WSL",
@@ -53,7 +53,7 @@
       "statusBarPowerShellExport": "Скрипт для PowerShell создан!",
       "statusBarOpposite": "Выбраны обратные настройки!",
       "statusBarClear": "Выбранные элементы очищены!",
-      "statusBarDisabled": "Вы должны сначала \"Импортировать пресет\", чтобы использовать Wrapper. Импортируйте, чтобы включить элементы управления.",
+      "statusBarDisabled": "Импортируйте пресет, чтобы включить элементы управления.",
       "statusBarCurrentOS": "Текущая ОС"
     }
   },
@@ -64,8 +64,8 @@
       "messageBoxNewSophiaFound": "Обнаружена новая версия Sophia Script.\nОткрыть страницу GitHub?",
       "messageBoxDoesNotExist": "не существует",
       "messageBoxPresetNotComp": "Пресет не совместим!",
-      "messageBoxFilesMissingClose": "Отсутствуют необходимые файлы Sophia Script Wrapper. Программа будет закрыта",
-      "messageBoxConsoleEmpty": "Консоль пуста.\nНажмите кнопку \"Обновить консоль\", чтобы создать скрипт, согласно вышим выборам"
+      "messageBoxFilesMissingClose": "Отсутствуют необходимые файлы Sophia Script Wrapper. Программа будет закрыта.",
+      "messageBoxConsoleEmpty": "Консоль пуста.\nНажмите кнопку \"Обновить консоль\", чтобы создать скрипт согласно вышему выбору."
     }
   }
 ]

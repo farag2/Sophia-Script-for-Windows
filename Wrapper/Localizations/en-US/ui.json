@@ -19,8 +19,8 @@
     "Id": "Tab",
     "Options": {
       "tabSystemProtection": "System Protection",
-      "tabPrivacyTelemetry": "Privacy & Telemetry",
-      "tabUIPersonalization": "UI & Personalization",
+      "tabPrivacyTelemetry": "Privacy",
+      "tabUIPersonalization": "Personalization",
       "tabOneDrive": "OneDrive",
       "tabSystem": "System",
       "tabWSL": "WSL",
@@ -53,7 +53,7 @@
       "statusBarPowerShellExport": "PowerShell script created!",
       "statusBarOpposite": "Opposite selected!",
       "statusBarClear": "Selections all cleared!",
-      "statusBarDisabled": "You must 'Import Preset' first to enable use of Wrapper. Import to enable controls.",
+      "statusBarDisabled": "Import a preset to enable controls.",
       "statusBarCurrentOS": "Current OS"
     }
   },
@@ -64,8 +64,8 @@
       "messageBoxNewSophiaFound": "A new version Sophia Script found.\nOpen GitHub latest release page?",
       "messageBoxDoesNotExist": "does not exist",
       "messageBoxPresetNotComp": "preset file is not compatible!",
-      "messageBoxFilesMissingClose": "Files missing so Sophia Script Wrapper will close",
-      "messageBoxConsoleEmpty": "The console is empty.\nClick 'Refresh Console' button to create script with your selections"
+      "messageBoxFilesMissingClose": "Files missing so Sophia Script Wrapper will close.",
+      "messageBoxConsoleEmpty": "The console is empty.\nClick 'Refresh Console' button to create script with your selections."
     }
   }
 ]
