@@ -182,7 +182,6 @@ AdvertisingID -Disable
 # Let apps use advertising ID to make ads more interresting to you based on your app usage (default value)
 # Разрешить приложениям использовать идентификатор рекламы (значение по умолчанию)
 # AdvertisingID -Enable
-
 #endregion Privacy & Telemetry
 
 #region UI & Personalization

@@ -207,82 +207,6 @@
     "Region": "Privacy & Telemetry",
     "Control": "cmb",
     "Required": "false",
-    "Function": "WindowsWelcomeExperience",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide"
-      },
-      "One": {
-        "Tag": "Show"
-      }
-    },
-    "Preset": "One",
-    "WindowsDefault": "One",
-    "LTSC2019": "false",
-    "LTSC2021": "false"
-  },
-  {
-    "Id": 209,
-    "Region": "Privacy & Telemetry",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "WindowsTips",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable"
-      },
-      "One": {
-        "Tag": "Disable"
-      }
-    },
-    "Preset": "One",
-    "WindowsDefault": "One",
-    "LTSC2019": "false",
-    "LTSC2021": "false"
-  },
-  {
-    "Id": 210,
-    "Region": "Privacy & Telemetry",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "SettingsSuggestedContent",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide"
-      },
-      "One": {
-        "Tag": "Show"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One",
-    "LTSC2019": "false",
-    "LTSC2021": "false"
-  },
-  {
-    "Id": 211,
-    "Region": "Privacy & Telemetry",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "AppsSilentInstalling",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable"
-      },
-      "One": {
-        "Tag": "Enable"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One",
-    "LTSC2019": "false",
-    "LTSC2021": "false"
-  },
-  {
-    "Id": 212,
-    "Region": "Privacy & Telemetry",
-    "Control": "cmb",
-    "Required": "false",
     "Function": "WhatsNewInWindows",
     "Arg": {
       "Zero": {
@@ -295,10 +219,10 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-    "LTSC2021": "false"
+    "LTSC2021": "true"
   },
   {
-    "Id": 213,
+    "Id": 209,
     "Region": "Privacy & Telemetry",
     "Control": "cmb",
     "Required": "false",
@@ -314,10 +238,10 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-    "LTSC2021": "false"
+    "LTSC2021": "true"
   },
   {
-    "Id": 214,
+    "Id": 210,
     "Region": "Privacy & Telemetry",
     "Control": "cmb",
     "Required": "false",
@@ -454,19 +378,19 @@
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
-    "Function": "CortanaButton",
+    "Function": "FileExplorerRibbon",
     "Arg": {
       "Zero": {
-        "Tag": "Hide"
+        "Tag": "Expanded"
       },
       "One": {
-        "Tag": "Show"
+        "Tag": "Minimized"
       }
     },
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-    "LTSC2021": "false"
+    "LTSC2021": "true"
   },
   {
     "Id": 307,
@@ -485,7 +409,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-    "LTSC2021": "false"
+    "LTSC2021": "true"
   },
   {
     "Id": 308,
@@ -530,26 +454,6 @@
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
-    "Function": "FileExplorerRibbon",
-    "Arg": {
-      "Zero": {
-        "Tag": "Expanded"
-      },
-      "One": {
-        "Tag": "Minimized"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One",
-    "LTSC2019": "true",
-    "LTSC2021": "true"
-  },
-
-  {
-    "Id": 311,
-    "Region": "UI & Personalization",
-    "Control": "cmb",
-    "Required": "false",
     "Function": "RecycleBinDeleteConfirmation",
     "Arg": {
       "Zero": {
@@ -565,7 +469,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 312,
+    "Id": 311,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -584,7 +488,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 313,
+    "Id": 312,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -603,7 +507,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 314,
+    "Id": 313,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -622,7 +526,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 315,
+    "Id": 314,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -644,7 +548,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 316,
+    "Id": 315,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -663,7 +567,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 317,
+    "Id": 316,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -682,26 +586,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 318,
-    "Region": "UI & Personalization",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "SecondsInSystemClock",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show"
-      },
-      "One": {
-        "Tag": "Hide"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One",
-    "LTSC2019": "true",
-    "LTSC2021": "true"
-  },
-  {
-    "Id": 319,
+    "Id": 317,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -720,7 +605,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 320,
+    "Id": 318,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -735,71 +620,30 @@
     },
     "Preset": "Zero",
     "WindowsDefault": "One",
-    "LTSC2019": "false",
-    "LTSC2021": "false"
+    "LTSC2019": "true",
+    "LTSC2021": "true"
   },
   {
-    "Id": 321,
+    "Id": 319,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
-    "Function": "MeetNow",
+    "Function": "SecondsInSystemClock",
     "Arg": {
       "Zero": {
-        "Tag": "Hide"
-      },
-      "One": {
         "Tag": "Show"
+      },
+      "One": {
+        "Tag": "Hide"
       }
     },
     "Preset": "Zero",
     "WindowsDefault": "One",
-    "LTSC2019": "false",
-    "LTSC2021": "false"
+    "LTSC2019": "true",
+    "LTSC2021": "true"
   },
   {
-    "Id": 322,
-    "Region": "UI & Personalization",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "NewsInterests",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable"
-      },
-      "One": {
-        "Tag": "Enable"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One",
-    "LTSC2019": "false",
-    "LTSC2021": "false"
-  },
-  {
-    "Id": 323,
-    "Region": "UI & Personalization",
-    "Control": "chk",
-    "Required": "false",
-    "Function": "UnpinTaskbarShortcuts -Shortcuts",
-    "Arg": {
-      "Zero": {
-        "Tag": "Edge"
-      },
-      "One": {
-        "Tag": "Store"
-      },
-      "Two": {
-        "Tag": "Mail"
-      }
-    },
-    "Preset": "",
-    "WindowsDefault": "",
-    "LTSC2019": "false",
-    "LTSC2021": "false"
-  },
-  {
-    "Id": 324,
+    "Id": 320,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -821,7 +665,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 325,
+    "Id": 321,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -840,7 +684,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 326,
+    "Id": 322,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -859,7 +703,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 327,
+    "Id": 323,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -878,7 +722,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 328,
+    "Id": 324,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -897,7 +741,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 329,
+    "Id": 325,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -916,7 +760,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 330,
+    "Id": 326,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -935,7 +779,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 331,
+    "Id": 327,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -954,7 +798,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 332,
+    "Id": 328,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -973,7 +817,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 333,
+    "Id": 329,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -992,7 +836,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 334,
+    "Id": 330,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -1011,7 +855,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 335,
+    "Id": 331,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -1031,7 +875,7 @@
     "WindowsDefault": "Zero"
   },
   {
-    "Id": 336,
+    "Id": 332,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -1048,7 +892,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 337,
+    "Id": 333,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -1063,25 +907,6 @@
     },
     "Preset": "Zero",
     "WindowsDefault": "Zero"
-  },
-  {
-    "Id": 400,
-    "Region": "OneDrive",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "OneDrive",
-    "Arg": {
-      "Zero": {
-        "Tag": "Uninstall"
-      },
-      "One": {
-        "Tag": "Install"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "",
-    "LTSC2019": "false",
-    "LTSC2021": "false"
   },
   {
     "Id": 500,
@@ -1392,25 +1217,6 @@
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
-    "Function": "LatestInstalled.NET",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable"
-      },
-      "One": {
-        "Tag": "Disable"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One",
-    "LTSC2019": "true",
-    "LTSC2021": "true"
-  },
-  {
-    "Id": 517,
-    "Region": "System",
-    "Control": "cmb",
-    "Required": "false",
     "Function": "NetworkAdaptersSavePower",
     "Arg": {
       "Zero": {
@@ -1426,7 +1232,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 518,
+    "Id": 517,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1446,7 +1252,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 519,
+    "Id": 518,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1465,7 +1271,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 520,
+    "Id": 519,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1483,6 +1289,25 @@
     },
     "Preset": "Zero",
     "WindowsDefault": "Two",
+    "LTSC2019": "true",
+    "LTSC2021": "true"
+  },
+  {
+    "Id": 520,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "LatestInstalled.NET",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
     "LTSC2019": "true",
     "LTSC2021": "true"
   },
@@ -1958,9 +1783,6 @@
       },
       "One": {
         "Tag": "DevicesPrinters"
-      },
-      "Two": {
-        "Tag": "PowerShell"
       }
     },
     "Preset": "012",
@@ -1985,150 +1807,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 800,
-    "Region": "UWP apps",
-    "Control": "chk",
-    "Required": "false",
-    "Function": "UninstallUWPApps",
-    "Arg": {
-      "Zero": {
-        "Tag": ""
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "",
-    "LTSC2019": "false",
-    "LTSC2021": "false"
-  },
-  {
-    "Id": 801,
-    "Region": "UWP apps",
-    "Control": "chk",
-    "Required": "false",
-    "Function": "UninstallUWPApps -ForAllUsers",
-    "Arg": {
-      "Zero": {
-        "Tag": ""
-      }
-    },
-    "Preset": "",
-    "WindowsDefault": "",
-    "LTSC2019": "false",
-    "LTSC2021": "false"
-  },
-  {
-    "Id": 802,
-    "Region": "UWP apps",
-    "Control": "chk",
-    "Required": "false",
-    "Function": "RestoreUWPApps",
-    "Arg": {
-      "Zero": {
-        "Tag": ""
-      }
-    },
-    "Preset": "",
-    "WindowsDefault": "",
-    "LTSC2019": "false",
-    "LTSC2021": "false"
-  },
-  {
-    "Id": 803,
-    "Region": "UWP apps",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "HEVC",
-    "Arg": {
-      "Zero": {
-        "Tag": "Manually"
-      },
-      "One": {
-        "Tag": "Install"
-      }
-    },
-    "Preset": "One",
-    "WindowsDefault": "",
-    "LTSC2019": "false",
-    "LTSC2021": "false"
-  },
-  {
-    "Id": 804,
-    "Region": "UWP apps",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "CortanaAutostart",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable"
-      },
-      "One": {
-        "Tag": "Enable"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One",
-    "LTSC2019": "false",
-    "LTSC2021": "false"
-  },
-  {
-    "Id": 806,
-    "Region": "UWP apps",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "BackgroundUWPApps",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable"
-      },
-      "One": {
-        "Tag": "Enable"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One",
-    "LTSC2019": "false",
-    "LTSC2021": "true"
-  },
-  {
     "Id": 900,
-    "Region": "Gaming",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "XboxGameBar",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable"
-      },
-      "One": {
-        "Tag": "Enable"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One",
-    "LTSC2019": "true",
-    "LTSC2021": "false"
-  },
-  {
-    "Id": 901,
-    "Region": "Gaming",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "XboxGameTips",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable"
-      },
-      "One": {
-        "Tag": "Enable"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One",
-    "LTSC2019": "true",
-    "LTSC2021": "false"
-  },
-  {
-    "Id": 902,
     "Region": "Gaming",
     "Control": "chk",
     "Required": "false",
@@ -2144,7 +1823,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 903,
+    "Id": 901,
     "Region": "Gaming",
     "Control": "cmb",
     "Required": "false",
@@ -2598,44 +2277,6 @@
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
-    "Function": "EditWithPhotosContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide"
-      },
-      "One": {
-        "Tag": "Show"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One",
-    "LTSC2019": "false",
-    "LTSC2021": "false"
-  },
-  {
-    "Id": 1207,
-    "Region": "Context menu",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "CreateANewVideoContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide"
-      },
-      "One": {
-        "Tag": "Show"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One",
-    "LTSC2019": "false",
-    "LTSC2021": "false"
-  },
-  {
-    "Id": 1208,
-    "Region": "Context menu",
-    "Control": "cmb",
-    "Required": "false",
     "Function": "ImagesEditContext",
     "Arg": {
       "Zero": {
@@ -2648,10 +2289,10 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "false",
-    "LTSC2021": "false"
+    "LTSC2021": "true"
   },
   {
-    "Id": 1209,
+    "Id": 1207,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2670,7 +2311,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1210,
+    "Id": 1208,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2689,7 +2330,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1211,
+    "Id": 1209,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2708,7 +2349,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1212,
+    "Id": 1210,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2727,7 +2368,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1213,
+    "Id": 1211,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2746,7 +2387,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1214,
+    "Id": 1212,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2765,7 +2406,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1215,
+    "Id": 1213,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2782,25 +2423,6 @@
     "WindowsDefault": "One",
     "LTSC2019": "true",
     "LTSC2021": "true"
-  },
-  {
-    "Id": 1216,
-    "Region": "Context menu",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "UseStoreOpenWith",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide"
-      },
-      "One": {
-        "Tag": "Show"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One",
-    "LTSC2019": "false",
-    "LTSC2021": "false"
   },
   {
     "Id": 1300,

@@ -369,21 +369,6 @@
     {
         "Id":  307,
         "Region":  "UI & Personalization",
-        "Function":  "FileExplorerMode",
-        "Arg":  {
-                    "Zero":  {
-                                 "Tag":  "Disable",
-                                 "ToolTip":  "Deaktiviert den Kompaktmodus des Datei-Explorers."
-                             },
-                    "One":  {
-                                "Tag":  "Enable",
-                                "ToolTip":  "Aktivieret den Kompaktmodus des Datei-Explorers (Standardeinstellung)."
-                            }
-                }
-    },
-    {
-        "Id":  308,
-        "Region":  "UI & Personalization",
         "Function":  "OneDriveFileExplorerAd",
         "Arg":  {
                     "Zero":  {
@@ -397,7 +382,7 @@
                 }
     },
     {
-        "Id":  309,
+        "Id":  308,
         "Region":  "UI & Personalization",
         "Function":  "SnapAssist",
         "Arg":  {
@@ -412,7 +397,7 @@
                 }
     },
     {
-        "Id":  310,
+        "Id":  309,
         "Region":  "UI & Personalization",
         "Function":  "FileTransferDialog",
         "Arg":  {
@@ -427,7 +412,7 @@
                 }
     },
     {
-        "Id":  311,
+        "Id":  310,
         "Region":  "UI & Personalization",
         "Function":  "RecycleBinDeleteConfirmation",
         "Arg":  {
@@ -442,7 +427,7 @@
                 }
     },
     {
-        "Id":  312,
+        "Id":  311,
         "Region":  "UI & Personalization",
         "Function":  "3DObjects",
         "Arg":  {
@@ -457,7 +442,7 @@
                 }
     },
     {
-        "Id":  313,
+        "Id":  312,
         "Region":  "UI & Personalization",
         "Function":  "QuickAccessRecentFiles",
         "Arg":  {
@@ -472,7 +457,7 @@
                 }
     },
     {
-        "Id":  314,
+        "Id":  313,
         "Region":  "UI & Personalization",
         "Function":  "QuickAccessFrequentFolders",
         "Arg":  {
@@ -487,7 +472,7 @@
                 }
     },
     {
-        "Id":  315,
+        "Id":  314,
         "Region":  "UI & Personalization",
         "Function":  "TaskbarSearch",
         "Arg":  {
@@ -506,7 +491,7 @@
                 }
     },
     {
-        "Id":  316,
+        "Id":  315,
         "Region":  "UI & Personalization",
         "Function":  "SearchHighlights",
         "Arg":  {
@@ -521,7 +506,7 @@
                 }
     },
     {
-        "Id":  317,
+        "Id":  316,
         "Region":  "UI & Personalization",
         "Function":  "CortanaButton",
         "Arg":  {
@@ -536,7 +521,7 @@
                 }
     },
     {
-        "Id":  318,
+        "Id":  317,
         "Region":  "UI & Personalization",
         "Function":  "TaskViewButton",
         "Arg":  {
@@ -551,7 +536,7 @@
                 }
     },
     {
-        "Id":  319,
+        "Id":  318,
         "Region":  "UI & Personalization",
         "Function":  "NewsInterests",
         "Arg":  {
@@ -566,7 +551,7 @@
                 }
     },
     {
-        "Id":  320,
+        "Id":  319,
         "Region":  "UI & Personalization",
         "Function":  "PeopleTaskbar",
         "Arg":  {
@@ -581,7 +566,7 @@
                 }
     },
     {
-        "Id":  321,
+        "Id":  320,
         "Region":  "UI & Personalization",
         "Function":  "MeetNow",
         "Arg":  {
@@ -596,7 +581,7 @@
                 }
     },
     {
-        "Id":  322,
+        "Id":  321,
         "Region":  "UI & Personalization",
         "Function":  "WindowsInkWorkspace",
         "Arg":  {
@@ -607,6 +592,21 @@
                     "One":  {
                                 "Tag":  "Show",
                                 "ToolTip":  "Die Schaltfläche \"Windows-Ink-Arbeitsbereich\" in der Taskleiste anzeigen (Standardeinstellung)."
+                            }
+                }
+    },
+    {
+        "Id":  322,
+        "Region":  "UI & Personalization",
+        "Function":  "NotificationAreaIcons",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Show",
+                                 "ToolTip":  "Immer alle Symbole im Infobereich der Taskleiste anzeigen."
+                             },
+                    "One":  {
+                                "Tag":  "Hide",
+                                "ToolTip":  "Alle Symbole im Infobereich der Taskleiste ausblenden (Standardeinstellung)."
                             }
                 }
     },
@@ -628,21 +628,6 @@
     {
         "Id":  324,
         "Region":  "UI & Personalization",
-        "Function":  "NotificationAreaIcons",
-        "Arg":  {
-                    "Zero":  {
-                                 "Tag":  "Show",
-                                 "ToolTip":  "Immer alle Symbole im Infobereich der Taskleiste anzeigen."
-                             },
-                    "One":  {
-                                "Tag":  "Hide",
-                                "ToolTip":  "Alle Symbole im Infobereich der Taskleiste ausblenden (Standardeinstellung)."
-                            }
-                }
-    },
-    {
-        "Id":  325,
-        "Region":  "UI & Personalization",
         "Function":  "UnpinTaskbarShortcuts -Shortcuts",
         "ToolTip":  "Die Verknüpfungen \"Microsoft Edge\", \"Microsoft Store\" oder \"Mail\" von der Taskleiste lösen.",
         "Arg":  {
@@ -661,7 +646,7 @@
                 }
     },
     {
-        "Id":  326,
+        "Id":  325,
         "Region":  "UI & Personalization",
         "Function":  "ControlPanelView",
         "Arg":  {
@@ -680,7 +665,7 @@
                 }
     },
     {
-        "Id":  327,
+        "Id":  326,
         "Region":  "UI & Personalization",
         "Function":  "WindowsColorMode",
         "Arg":  {
@@ -695,7 +680,7 @@
                 }
     },
     {
-        "Id":  328,
+        "Id":  327,
         "Region":  "UI & Personalization",
         "Function":  "AppColorMode",
         "Arg":  {
@@ -710,7 +695,7 @@
                 }
     },
     {
-        "Id":  329,
+        "Id":  328,
         "Region":  "UI & Personalization",
         "Function":  "NewAppInstalledNotification",
         "Arg":  {
@@ -725,7 +710,7 @@
                 }
     },
     {
-        "Id":  330,
+        "Id":  329,
         "Region":  "UI & Personalization",
         "Function":  "FirstLogonAnimation",
         "Arg":  {
@@ -740,7 +725,7 @@
                 }
     },
     {
-        "Id":  331,
+        "Id":  330,
         "Region":  "UI & Personalization",
         "Function":  "JPEGWallpapersQuality",
         "Arg":  {
@@ -755,7 +740,7 @@
                 }
     },
     {
-        "Id":  332,
+        "Id":  331,
         "Region":  "UI & Personalization",
         "Function":  "TaskManagerWindow",
         "Arg":  {
@@ -770,7 +755,7 @@
                 }
     },
     {
-        "Id":  333,
+        "Id":  332,
         "Region":  "UI & Personalization",
         "Function":  "ShortcutsSuffix",
         "Arg":  {
@@ -785,7 +770,7 @@
                 }
     },
     {
-        "Id":  334,
+        "Id":  333,
         "Region":  "UI & Personalization",
         "Function":  "PrtScnSnippingTool",
         "Arg":  {
@@ -800,7 +785,7 @@
                 }
     },
     {
-        "Id":  335,
+        "Id":  334,
         "Region":  "UI & Personalization",
         "Function":  "AppsLanguageSwitch",
         "Arg":  {
@@ -815,7 +800,7 @@
                 }
     },
     {
-        "Id":  336,
+        "Id":  335,
         "Region":  "UI & Personalization",
         "Function":  "AeroShaking",
         "Arg":  {
@@ -830,7 +815,7 @@
                 }
     },
     {
-        "Id":  337,
+        "Id":  336,
         "Region":  "UI & Personalization",
         "Function":  "Cursors",
         "Arg":  {
@@ -849,7 +834,7 @@
                 }
     },
     {
-        "Id":  338,
+        "Id":  337,
         "Region":  "UI & Personalization",
         "Function":  "FolderGroupBy",
         "Arg":  {
@@ -864,7 +849,7 @@
                 }
     },
     {
-        "Id":  339,
+        "Id":  338,
         "Region":  "UI & Personalization",
         "Function":  "NavigationPaneExpand",
         "Arg":  {
@@ -1492,7 +1477,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "",
-                                 "ToolTip":  "Installieren Sie die neueste unterstützte Microsoft Visual C++ Redistributable 2015-2022 x64."
+                                 "ToolTip":  "Installieren Sie die neueste unterstützte Microsoft Visual C++ Redistributable 2015–2022 x64."
                              }
                 }
     },

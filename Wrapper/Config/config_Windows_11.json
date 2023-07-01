@@ -1180,23 +1180,6 @@
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
-    "Function": "LatestInstalled.NET",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable"
-      },
-      "One": {
-        "Tag": "Disable"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
-    "Id": 517,
-    "Region": "System",
-    "Control": "cmb",
-    "Required": "false",
     "Function": "NetworkAdaptersSavePower",
     "Arg": {
       "Zero": {
@@ -1210,7 +1193,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 518,
+    "Id": 517,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1230,7 +1213,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 519,
+    "Id": 518,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1247,7 +1230,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 520,
+    "Id": 519,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1265,6 +1248,23 @@
     },
     "Preset": "Zero",
     "WindowsDefault": "Two"
+  },
+  {
+    "Id": 520,
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "LatestInstalled.NET",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One"
   },
   {
     "Id": 521,

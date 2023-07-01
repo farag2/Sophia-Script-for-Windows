@@ -1033,7 +1033,7 @@ function script:AdditionalChecks
 
 			# Calculate the string number to uncomment "Checks -Warning"
 			$LineNumber = (Select-String -Path $PresetName -Pattern Checks | Select-String -Pattern "{Checks}", "The mandatory checks" -NotMatch).LineNumber
-			# Get date from the required line to replace it with "Checks -Warning"
+			# Get data from the required line to replace it with "Checks -Warning"
 			$RequiredLine = (Get-Content -Path $PresetName -Encoding UTF8) | Where-Object -FilterScript {$_.ReadCount -eq $LineNumber}
 			(Get-Content -Path $PresetName -Encoding UTF8).Replace($RequiredLine, "Checks -Warning") | Set-Content -Path $PresetName -Encoding UTF8 -Force
 
@@ -15417,6 +15417,16 @@ public static void PostMessage()
 		gpupdate /force
 	}
 
+	# Call MeetNow unless binary value is reverted
+	if (-not $Script:MeetNow)
+	{
+		MeetNow -Hide
+	}
+	elseif ($Script:MeetNow)
+	{
+		MeetNow -Show
+	}
+
 	# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
 	Get-ChildItem -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 
@@ -15447,16 +15457,6 @@ public static void PostMessage()
 
 		# Open Task Scheduler
 		Start-Process -FilePath taskschd.msc
-	}
-
-	# Call MeetNow unless binary value is reverted
-	if (-not $Script:MeetNow)
-	{
-		MeetNow -Hide
-	}
-	elseif ($Script:MeetNow)
-	{
-		MeetNow -Show
 	}
 	#endregion Other actions
 

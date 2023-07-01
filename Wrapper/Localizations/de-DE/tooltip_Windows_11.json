@@ -1042,21 +1042,6 @@
     {
         "Id":  516,
         "Region":  "System",
-        "Function":  "LatestInstalled.NET",
-        "Arg":  {
-                    "Zero":  {
-                                 "Tag":  "Enable",
-                                 "ToolTip":  "Neueste installierte .NET-Laufzeitumgebung für alle Apps verwenden."
-                             },
-                    "One":  {
-                                "Tag":  "Disable",
-                                "ToolTip":  "Neueste installierte .NET-Laufzeitumgebung nicht für alle Apps verwenden (Standardeinstellung)."
-                            }
-                }
-    },
-    {
-        "Id":  517,
-        "Region":  "System",
         "Function":  "NetworkAdaptersSavePower",
         "Arg":  {
                     "Zero":  {
@@ -1070,7 +1055,7 @@
                 }
     },
     {
-        "Id":  518,
+        "Id":  517,
         "Region":  "System",
         "Function":  "IPv6Component",
         "Arg":  {
@@ -1089,7 +1074,7 @@
                 }
     },
     {
-        "Id":  519,
+        "Id":  518,
         "Region":  "System",
         "Function":  "InputMethod",
         "Arg":  {
@@ -1104,7 +1089,7 @@
                 }
     },
     {
-        "Id":  520,
+        "Id":  519,
         "Region":  "System",
         "Function":  "Set-UserShellFolderLocation",
         "Arg":  {
@@ -1119,6 +1104,21 @@
                     "Two":  {
                                 "Tag":  "Default",
                                 "ToolTip":  "Ändern Sie den Speicherort von Benutzerordnern auf die Standardeinstellunge Benutzerdateien oder -ordner lassen sich nicht an einen neuen Speicherort verschieben. Verschieben Sie sie manuell. Sie befinden sich standardmäßig im Ordner %USERPROFILE% (Standardeinstellung)."
+                            }
+                }
+    },
+    {
+        "Id":  520,
+        "Region":  "System",
+        "Function":  "LatestInstalled.NET",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Enable",
+                                 "ToolTip":  "Neueste installierte .NET-Laufzeitumgebung für alle Apps verwenden."
+                             },
+                    "One":  {
+                                "Tag":  "Disable",
+                                "ToolTip":  "Neueste installierte .NET-Laufzeitumgebung nicht für alle Apps verwenden (Standardeinstellung)."
                             }
                 }
     },
@@ -1406,7 +1406,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "",
-                                 "ToolTip":  "Installieren Sie die neueste unterstützte Microsoft Visual C++ Redistributable 2015-2022 x64."
+                                 "ToolTip":  "Installieren Sie die neueste unterstützte Microsoft Visual C++ Redistributable 2015–2022 x64."
                              }
                 }
     },

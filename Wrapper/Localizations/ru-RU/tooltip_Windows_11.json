@@ -264,7 +264,7 @@
     {
         "Id":  215,
         "Region":  "Privacy & Telemetry",
-        "Function":  "BingSearch",
+        "Function":  "BrowsingHistory",
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Hide",
@@ -489,6 +489,21 @@
     {
         "Id":  314,
         "Region":  "UI & Personalization",
+        "Function":  "TaskbarWidgets",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Скрыть кнопку \"Мини-приложения\" с панели задач."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Отобразить кнопку \"Мини-приложения\" на панели задач (значение по умолчанию)."
+                            }
+                }
+    },
+    {
+        "Id":  315,
+        "Region":  "UI & Personalization",
         "Function":  "TaskbarSearch",
         "Arg":  {
                     "Zero":  {
@@ -510,7 +525,7 @@
                 }
     },
     {
-        "Id":  315,
+        "Id":  316,
         "Region":  "UI & Personalization",
         "Function":  "TaskViewButton",
         "Arg":  {
@@ -521,21 +536,6 @@
                     "One":  {
                                 "Tag":  "Show",
                                 "ToolTip":  "Отобразить кнопку \"Представление задач\" на панели задач (значение по умолчанию)."
-                            }
-                }
-    },
-    {
-        "Id":  316,
-        "Region":  "UI & Personalization",
-        "Function":  "TaskbarWidgets",
-        "Arg":  {
-                    "Zero":  {
-                                 "Tag":  "Hide",
-                                 "ToolTip":  "Скрыть кнопку \"Мини-приложения\" с панели задач."
-                             },
-                    "One":  {
-                                "Tag":  "Show",
-                                "ToolTip":  "Отобразить кнопку \"Мини-приложения\" на панели задач (значение по умолчанию)."
                             }
                 }
     },
@@ -2106,7 +2106,7 @@
                     "One":  {
                                  "Tag":  "Hide",
                                  "ToolTip":  "Скрыть пункт \"Открыть в Терминале Windows\" в контекстном меню папок."
-                             },
+                             }
                 }
     },
     {

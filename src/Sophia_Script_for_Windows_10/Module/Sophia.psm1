@@ -15390,6 +15390,16 @@ public static void PostMessage()
 		gpupdate /force
 	}
 
+	# Call MeetNow unless binary value is reverted
+	if (-not $Script:MeetNow)
+	{
+		MeetNow -Hide
+	}
+	elseif ($Script:MeetNow)
+	{
+		MeetNow -Show
+	}
+
 	# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
 	Get-ChildItem -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 
@@ -15420,16 +15430,6 @@ public static void PostMessage()
 
 		# Open Task Scheduler
 		Start-Process -FilePath taskschd.msc
-	}
-
-	# Call MeetNow unless binary value is reverted
-	if (-not $Script:MeetNow)
-	{
-		MeetNow -Hide
-	}
-	elseif ($Script:MeetNow)
-	{
-		MeetNow -Show
 	}
 	#endregion Other actions
 

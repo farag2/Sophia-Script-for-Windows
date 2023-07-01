@@ -1084,7 +1084,7 @@ function script:AdditionalChecks
 
 			# Calculate the string number to uncomment "Checks -Warning"
 			$LineNumber = (Select-String -Path $PresetName -Pattern Checks | Select-String -Pattern "{Checks}", "The mandatory checks" -NotMatch).LineNumber
-			# Get date from the required line to replace it with "Checks -Warning"
+			# Get data from the required line to replace it with "Checks -Warning"
 			$RequiredLine = (Get-Content -Path $PresetName -Encoding UTF8) | Where-Object -FilterScript {$_.ReadCount -eq $LineNumber}
 			(Get-Content -Path $PresetName -Encoding UTF8).Replace($RequiredLine, "Checks -Warning") | Set-Content -Path $PresetName -Encoding UTF8 -Force
 
@@ -7960,7 +7960,7 @@ function WinPrtScrFolder
 		"Desktop"
 		{
 			# Check how the script was invoked: via a preset or Function.ps1
-			# $_.File has no EndsWith() method 
+			# $_.File has no EndsWith() method
 			$PresetName = ((Get-PSCallStack).Position | Where-Object -FilterScript {($_.Text -eq "WinPrtScrFolder -Desktop") -or ($_.Text -match "Invoke-Expression")}).File | Where-Object -FilterScript {$_.EndsWith(".ps1") -and ($_ -notmatch "Functions.ps1")}
 			if ($PresetName)
 			{
