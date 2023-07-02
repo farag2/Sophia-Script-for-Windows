@@ -9,10 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added `BrowsingHistory` function to hide websites from your browsing history in the Start menu;
 * Fixed #506;
-* Imporved and fixed descriptions;
+* Improved and fixed descriptions;
 * Minor changes.
 
-Thanks @amd64fox for providing a remote access to reproduce the bug.
+Thanks to @amd64fox for providing a remote access to reproduce the bug.
+Thanks to frost_tg for bug reporting
 
 ### Wrapper 2.6.8
 
