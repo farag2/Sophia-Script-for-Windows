@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = \nKomut dosyası Windows 11 22H2+'yı destekler.
-UpdateWarning                             = \nWindows 11 yapınız: {0}.{1}. Desteklenen yapılar: 22621.1702+. Windows Update'i çalıştırın ve tekrar deneyin.
+UpdateWarning                             = \nWindows 11 yapınız: {0}.{1}. Desteklenen yapılar: 22621.1928+. Windows Update'i çalıştırın ve tekrar deneyin.
 UnsupportedLanguageMode                   = \nSınırlı bir dil modunda çalışan PowerShell oturumu.
 LoggedInUserNotAdmin                      = \nOturum açan kullanıcının yönetici hakları yok.
 UnsupportedPowerShell                     = \nKomut dosyasını PowerShell {0}.{1} aracılığıyla çalıştırmaya çalışıyorsunuz. Komut dosyasını uygun PowerShell sürümünde çalıştırın.

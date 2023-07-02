@@ -13,7 +13,7 @@
 	.NOTES
 	Supported Windows 11 versions
 	Version: 22H2/23H2+
-	Builds: 22621.1702+
+	Builds: 22621.1928+
 	Editions: Home/Pro/Enterprise
 
 	.LINK GitHub
@@ -275,9 +275,9 @@ public static string GetString(uint strId)
 		}
 		{($_ -ge 22621) -and ($_ -le 22624)}
 		{
-			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 1702)
+			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 1928)
 			{
-				# Check whether the OS minor build version is 1702 minimum
+				# Check whether the OS minor build version is 1928 minimum
 				# https://support.microsoft.com/help/5018680
 				$CurrentBuild = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
 				$UBR = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR

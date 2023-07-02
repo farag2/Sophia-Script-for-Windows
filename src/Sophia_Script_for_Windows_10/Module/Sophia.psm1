@@ -13,7 +13,7 @@
 	.NOTES
 	Supported Windows 10 versions
 	Version: 22H2
-	Builds: 19045.2965+
+	Builds: 19045.3155+
 	Editions: Home/Pro/Enterprise
 	Architecture: x64
 
@@ -194,9 +194,9 @@ public static string GetString(uint strId)
 	{
 		{$_ -eq 19045}
 		{
-			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 2965)
+			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 3155)
 			{
-				# Check whether the OS minor build version is 2965 minimum
+				# Check whether the OS minor build version is 3155 minimum
 				# https://support.microsoft.com/en-us/help/5018682
 				$CurrentBuild = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
 				$UBR = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR

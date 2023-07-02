@@ -13,7 +13,7 @@
 	.NOTES
 	Supported Windows 10 version
 	Version: 1809
-	Builds: 17763.3406+
+	Builds: 17763.4499+
 	Edition: Enterprise LTSC
 	Architecture: x64
 
@@ -105,9 +105,9 @@ public static string GetString(uint strId)
 	{
 		$true
 		{
-			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 4377)
+			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 4499)
 			{
-				# Check whether the OS minor build version is 4377 minimum
+				# Check whether the OS minor build version is 4499 minimum
 				# https://support.microsoft.com/en-us/help/4464619
 				$CurrentBuild = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
 				$UBR = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
