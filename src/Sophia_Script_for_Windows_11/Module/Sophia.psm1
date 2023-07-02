@@ -180,6 +180,16 @@ public static string GetString(uint strId)
 	# Detect the OS build version
 	switch ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber)
 	{
+		{$_ -lt 22000}
+		{
+			Write-Warning -Message $Localization.UnsupportedOSBuild
+
+			Start-Process -FilePath "https://t.me/sophia_chat"
+			Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+			Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows#system-requirements"
+
+			exit
+		}
 		{$_ -eq 22000}
 		{
 			if (Test-Path -Path "$env:LOCALAPPDATA\PCHealthCheck\PCHealthCheck.exe")
@@ -277,7 +287,7 @@ public static string GetString(uint strId)
 
 			exit
 		}
-		{($_ -ge 22621) -and ($_ -le 22624)}
+		{$_ -eq 22621}
 		{
 			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 1928)
 			{
@@ -312,16 +322,6 @@ public static string GetString(uint strId)
 
 				exit
 			}
-		}
-		{$_ -lt 22000}
-		{
-			Write-Warning -Message $Localization.UnsupportedOSBuild
-
-			Start-Process -FilePath "https://t.me/sophia_chat"
-			Start-Process -FilePath "https://discord.gg/sSryhaEv79"
-			Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows#system-requirements"
-
-			exit
 		}
 	}
 
@@ -2296,6 +2296,11 @@ function BrowsingHistory
 		[switch]
 		$Show
 	)
+
+	if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 1928)
+	{
+		return
+	}
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
