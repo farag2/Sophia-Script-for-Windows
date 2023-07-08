@@ -100,7 +100,7 @@ catch
 #>
 if ($Functions)
 {
-	Invoke-Command -ScriptBlock {Checks}
+	Invoke-Command -ScriptBlock {InitialActions}
 
 	foreach ($Function in $Functions)
 	{
@@ -116,7 +116,7 @@ if ($Functions)
 #region Protection
 # The mandatory checks. If you want to disable a warning message about whether the preset file was customized, remove the "-Warning" argument
 # Обязательные проверки. Чтобы выключить предупреждение о необходимости настройки пресет-файла, удалите аргумент "-Warning"
-Checks -Warning
+InitialActions -Warning
 
 # Enable script logging. Log will be recorded into the script folder. To stop logging just close console or type "Stop-Transcript"
 # Включить логирование работы скрипта. Лог будет записываться в папку скрипта. Чтобы остановить логгирование, закройте консоль или наберите "Stop-Transcript"

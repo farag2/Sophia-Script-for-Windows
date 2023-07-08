@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = El script sólo es compatible con Windows de 64 bits.
 UnsupportedOSBuild                        = \nEl script es compatible con versión Windows 10 Enterprise LTSC 2021.
-UpdateWarning                             = \nSu build de Windows 10: {0}.{1}. Compilaciones compatibles: 19044.3155+. Ejecute Windows Update y vuelva a intentarlo.
+UpdateWarning                             = \nSu build de Windows 10: {0}.{1}. Compilaciones compatibles: 19044.3086+. Ejecute Windows Update y vuelva a intentarlo.
 UnsupportedLanguageMode                   = \nSesión de PowerShell ejecutada en modo de lenguaje limitado.
 LoggedInUserNotAdmin                      = \nEl usuario que inició sesión no tiene derechos de administrador.
 UnsupportedPowerShell                     = \nEstás intentando ejecutar el script a través de PowerShell {0}.{1}. Ejecute el script en la versión apropiada de PowerShell.
@@ -28,8 +28,7 @@ UserFolderSelect                          = Seleccione una carpeta para la carpe
 UserDefaultFolder                         = ¿Le gustaría cambiar la ubicación de la carpeta "{0}" para el valor por defecto?
 ReservedStorageIsInUse                    = Esta operación no es compatible cuando el almacenamiento reservada está en uso\nPor favor, vuelva a ejecutar la función "{0}" después de reiniciar el PC.
 ShortcutPinning                           = El acceso directo "{0}" está siendo clavado en Start...
-GraphicsPerformanceTitle                  = Preferencia de rendimiento gráfico
-GraphicsPerformanceRequest                = ¿Le gustaría establecer la configuración de rendimiento gráfico de una aplicación de su elección a "alto rendimiento"?
+GraphicsPerformanceTitle                  = ¿Le gustaría establecer la configuración de rendimiento gráfico de una aplicación de su elección a "alto rendimiento"?
 ActionCenter                              = Um die Funktion "{0}" nutzen zu können, müssen Sie das Action Center aktivieren.
 WindowsScriptHost                         = Acceso a Windows Script Host deshabilitado en este equipo. Um die Funktion "{0}" nutzen zu können, müssen Sie den Windows Script Host aktivieren.
 ScheduledTaskPresented                    = La función "{0}" ya fue creada como "{1}".

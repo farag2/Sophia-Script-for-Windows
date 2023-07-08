@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = The script supports 64-bit Windows only.
 UnsupportedOSBuild                        = \nThe script supports Windows 10 Enterprise LTSC 2021.
-UpdateWarning                             = \nYour Windows 10 build: {0}.{1}. Supported builds: 19044.3155+. Run Windows Update and try again.
+UpdateWarning                             = \nYour Windows 10 build: {0}.{1}. Supported builds: 19044.3086+. Run Windows Update and try again.
 UnsupportedLanguageMode                   = \nThe PowerShell session in running in a limited language mode.
 LoggedInUserNotAdmin                      = \nThe logged-on user doesn't have admin rights.
 UnsupportedPowerShell                     = \nYou're trying to run script via PowerShell {0}.{1}. Run the script in the appropriate PowerShell version.
@@ -28,8 +28,7 @@ UserFolderSelect                          = Select a folder for the "{0}" folder
 UserDefaultFolder                         = Would you like to change the location of the "{0}" folder to the default value?
 ReservedStorageIsInUse                    = This operation is not supported when reserved storage is in use\nPlease re-run the "{0}" function again after PC restart.
 ShortcutPinning                           = The "{0}" shortcut is being pinned to Start...
-GraphicsPerformanceTitle                  = Graphics performance preference
-GraphicsPerformanceRequest                = Would you like to set the graphics performance setting of an app of your choice to "High performance"?
+GraphicsPerformanceTitle                  = Would you like to set the graphics performance setting of an app of your choice to "High performance"?
 ActionCenter                              = In order to use "{0}" function you have to enable Action Center.
 WindowsScriptHost                         = Windows Script Host access is disabled on this machine. In order to use "{0}" function you have to enable Windows Script Host.
 ScheduledTaskPresented                    = The "{0}" function was already created as "{1}".

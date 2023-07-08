@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = 该脚本仅支持64位Windows。
 UnsupportedOSBuild                        = \n该脚本支持Windows 10 Enterprise LTSC 2021。
-UpdateWarning                             = \n您的Windows 10构建: {0}.{1}。支持的构建: 19044.3155+。运行Windows Update并再次尝试。
+UpdateWarning                             = \n您的Windows 10构建: {0}.{1}。支持的构建: 19044.3086+。运行Windows Update并再次尝试。
 UnsupportedLanguageMode                   = \nPowerShell会话在有限的语言模式下运行。
 LoggedInUserNotAdmin                      = \n登录的用户没有管理员的权利。
 UnsupportedPowerShell                     = \n你想通过PowerShell {0}.{1}运行脚本。在适当的PowerShell版本中运行该脚本。
@@ -28,8 +28,7 @@ UserFolderSelect                          = 为"{0}"文件夹选择一个文件�
 UserDefaultFolder                         = 您想将"{0}"文件夹的位置更改为默认值吗？
 ReservedStorageIsInUse                    = 保留存储空间正在使用时不支持此操作\n请在电脑重启后重新运行"{0}"功能。
 ShortcutPinning                           = "{0}"快捷方式将被固定到开始菜单.....
-GraphicsPerformanceTitle                  = 图形性能偏好
-GraphicsPerformanceRequest                = 是否将所选应用程序的图形性能设置设为"高性能"？
+GraphicsPerformanceTitle                  = 是否将所选应用程序的图形性能设置设为"高性能"？
 ActionCenter                              = 为了使用"{0}"功能，你必须启用行动中心。
 WindowsScriptHost                         = 没有在该机执行 Windows 脚本宿主的权限。请与系统管理员联系。 为了使用"{0}"功能，你必须启用Windows脚本主机。
 ScheduledTaskPresented                    = "{0}"函数已经被创建为"{1}"。

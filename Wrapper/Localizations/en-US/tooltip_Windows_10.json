@@ -2,15 +2,15 @@
     {
         "Id":  100,
         "Region":  "Protection",
-        "Function":  "Checks",
+        "Function":  "InitialActions",
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Warning",
-                                 "ToolTip":  "The mandatory Checks. If you want to disable a warning message about whether the preset file was customized, remove the \"-Warning\" argument."
+                                 "ToolTip":  "The mandatory checks. If you want to disable a warning message about whether the preset file was customized, remove the \"-Warning\" argument."
                              },
                     "One":  {
                                 "Tag":  "",
-                                "ToolTip":  "The mandatory Checks. No argument therefore no warning message about whether you've customized the preset file."
+                                "ToolTip":  "The mandatory checks. No argument therefore no warning message about whether you've customized the preset file."
                             }
                 }
     },

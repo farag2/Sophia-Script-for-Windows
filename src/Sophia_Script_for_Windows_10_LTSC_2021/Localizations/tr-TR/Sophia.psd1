@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Komut dosyası yalnızca 64 bit Windows'u destekler.
 UnsupportedOSBuild                        = \nKomut dosyası, Windows 10 Enterprise LTSC 2021.
-UpdateWarning                             = \nWindows 10 yapınız: {0}.{1}. Desteklenen yapılar: 19044.3155+. Windows Update'i çalıştırın ve tekrar deneyin.
+UpdateWarning                             = \nWindows 10 yapınız: {0}.{1}. Desteklenen yapılar: 19044.3086+. Windows Update'i çalıştırın ve tekrar deneyin.
 UnsupportedLanguageMode                   = \nSınırlı bir dil modunda çalışan PowerShell oturumu.
 LoggedInUserNotAdmin                      = \nOturum açan kullanıcının yönetici hakları yok.
 UnsupportedPowerShell                     = \nKomut dosyasını PowerShell {0}.{1} aracılığıyla çalıştırmaya çalışıyorsunuz. Komut dosyasını uygun PowerShell sürümünde çalıştırın.
@@ -28,8 +28,7 @@ UserFolderSelect                          = "{0}" klasörü için bir klasör se
 UserDefaultFolder                         = "{0}" klasörünün konumunu varsayılan değerle değiştirmek ister misiniz?
 ReservedStorageIsInUse                    = Ayrılmış depolama kullanımdayken bu işlem desteklenmez\nBilgisayar yeniden başlatıldıktan sonra lütfen "{0}" işlevini yeniden çalıştırın.
 ShortcutPinning                           = "{0}" kısayolu Başlangıç sekmesine sabitlendi...
-GraphicsPerformanceTitle                  = Grafik performans tercihi
-GraphicsPerformanceRequest                = Seçtiğiniz bir uygulamanın grafik performansı ayarını "Yüksek performans" olarak belirlemek ister misiniz?
+GraphicsPerformanceTitle                  = Seçtiğiniz bir uygulamanın grafik performansı ayarını "Yüksek performans" olarak belirlemek ister misiniz?
 ActionCenter                              = "{0}" işlevini kullanmak için Eylem Merkezi'ni etkinleştirmeniz gerekir.
 WindowsScriptHost                         = Windows Kod Merkezi erişimi bu makineden devre dışı. "{0}" işlevini kullanmak için Windows Kod Merkezi'u etkinleştirmeniz gerekir.
 ScheduledTaskPresented                    = "{0}" işlevi zaten "{1}" olarak oluşturulmuştu.

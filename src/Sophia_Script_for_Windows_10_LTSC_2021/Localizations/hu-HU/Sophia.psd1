@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = A szkript csak a 64 bites Windows-t támogatja.
 UnsupportedOSBuild                        = \nA szkript támogatja a Windows 10 Enterprise LTSC 2021.
-UpdateWarning                             = \nAz Ön Windows 10 építése: {0}.{1}. Támogatott buildek: 19044.3155+. Futtassa a Windows Update programot, és próbálja meg újra.
+UpdateWarning                             = \nAz Ön Windows 10 építése: {0}.{1}. Támogatott buildek: 19044.3086+. Futtassa a Windows Update programot, és próbálja meg újra.
 UnsupportedLanguageMode                   = \nA PowerShell munkamenet korlátozott nyelvi üzemmódban fut.
 LoggedInUserNotAdmin                      = \nA bejelentkezett felhasználó nem rendelkezik admin jogokkal.
 UnsupportedPowerShell                     = \nA PowerShell {0}.{1} segítségével próbálja futtatni a szkriptet. Futtassa a szkriptet a megfelelő PowerShell-verzióban.
@@ -28,8 +28,7 @@ UserFolderSelect                          = Válasszon ki egy könyvtárat a "{0
 UserDefaultFolder                         = Szeretné visszaállítani a "{0}" könyvtár helyét a gyári értékekre?
 ReservedStorageIsInUse                    = Ez a művelet nem hajtható végre, amíg a fenntartott tárhely használatban van\nPonovno pokrenite funkciju "{0}" nakon ponovnog pokretanja računala.
 ShortcutPinning                           = A gyorsindító ikon "{0}" Startmenüre helyezése...
-GraphicsPerformanceTitle                  = Grafikus teljesítmény tulajdonság
-GraphicsPerformanceRequest                = Szeretné megváltoztatni a grafikus teljesítmény beállítást az ön által kiválasztott alkalmazásban "Nagy teljesítményre"?
+GraphicsPerformanceTitle                  = Szeretné megváltoztatni a grafikus teljesítmény beállítást az ön által kiválasztott alkalmazásban "Nagy teljesítményre"?
 ActionCenter                              = Az "{0}" funkció használatához engedélyeznie kell az Action Center funkciót.
 WindowsScriptHost                         = A Windows Script Host ezen a gépen nem érhető el. Az "{0}" funkció használatához engedélyeznie kell a Windows Script Host.
 ScheduledTaskPresented                    = A "{0}" funkciót már létrehoztuk "{1}" néven.

@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = O guião suporta apenas Windows de 64 bits.
 UnsupportedOSBuild                        = \nO script suporta versões Windows 10 Enterprise LTSC 2021.
-UpdateWarning                             = \nLa tua build di Windows 10: {0}.{1}. Build suportadas: 19044.3155+. Execute o Windows Update e tente novamente.
+UpdateWarning                             = \nLa tua build di Windows 10: {0}.{1}. Build suportadas: 19044.3086+. Execute o Windows Update e tente novamente.
 UnsupportedLanguageMode                   = \nA sessão PowerShell em funcionamento em um modo de linguagem limitada.
 LoggedInUserNotAdmin                      = \nO usuário logado não tem direitos de administrador.
 UnsupportedPowerShell                     = \nVocê está tentando executar o script via PowerShell {0}.{1}. Execute o script na versão apropriada do PowerShell.
@@ -28,8 +28,7 @@ UserFolderSelect                          = Selecione uma pasta para a pasta "{0
 UserDefaultFolder                         = Gostaria de alterar a localização da pasta "{0}" para o valor padrão?
 ReservedStorageIsInUse                    = Esta operação não é suportada quando o armazenamento reservada está em uso\nFavor executar novamente a função "{0}" após o reinício do PC.
 ShortcutPinning                           = O atalho "{0}" está sendo fixado no Iniciar...
-GraphicsPerformanceTitle                  = Preferência de desempenho gráfico
-GraphicsPerformanceRequest                = Gostaria de definir a configuração de performance gráfica de um app de sua escolha para "alta performance"?
+GraphicsPerformanceTitle                  = Gostaria de definir a configuração de performance gráfica de um app de sua escolha para "alta performance"?
 ActionCenter                              = Para utilizar a função {0}", tem de activar o Centro de Acção.
 WindowsScriptHost                         = O acesso ao Windows Script Host está desactivado neste computador. Para usar a função "{0}", é necessário ativar o Windows Script Host.
 ScheduledTaskPresented                    = A função "{0}" já foi criada como "{1}".

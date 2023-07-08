@@ -65,7 +65,7 @@ catch
 }
 
 # The mandatory checks. Please, do not comment out this function
-Checks
+InitialActions
 
 $Parameters = @{
 	CommandName   = "Sophia"
