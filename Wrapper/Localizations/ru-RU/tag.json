@@ -3,7 +3,6 @@
   "InitialActions": "Проверки",
   "Disable": "Выключить",
   "Enable": "Включить",
-  "None": "Пропустить",
   "Minimal": "Минимальный",
   "Default": "По умолчанию",
   "Never": "Никогда",
@@ -43,5 +42,6 @@
   "Center": "По центру",
   "WindowsTerminal": "Windows Терминал",
   "ConsoleHost": "Узел консоли Windows",
-  "Channels": "Каналы"
+  "Channels": "Каналы",
+  "Skip": "Пропустить"
 }
