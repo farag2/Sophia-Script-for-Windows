@@ -27,7 +27,6 @@ RetrievingDrivesList                      = Retrieving drives list...
 DriveSelect                               = Select the drive within the root of which the "{0}" folder will be created.
 CurrentUserFolderLocation                 = The current "{0}" folder location: "{1}".
 UserFolderRequest                         = Would you like to change the location of the "{0}" folder?
-UserFolderSelect                          = Select a folder for the "{0}" folder.
 UserDefaultFolder                         = Would you like to change the location of the "{0}" folder to the default value?
 ReservedStorageIsInUse                    = This operation is not supported when reserved storage is in use\nPlease re-run the "{0}" function again after PC restart.
 ShortcutPinning                           = The "{0}" shortcut is being pinned to Start...

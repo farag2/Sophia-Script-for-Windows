@@ -24,7 +24,6 @@ RetrievingDrivesList                      = Recuperando lista de unidades...
 DriveSelect                               = Seleccione la unidad dentro de la raíz de la cual se creó la carpeta "{0}".
 CurrentUserFolderLocation                 = La ubicación actual de la carpeta "{0}": "{1}".
 UserFolderRequest                         = ¿Le gustaría cambiar la ubicación de la "{0}" carpeta?
-UserFolderSelect                          = Seleccione una carpeta para la carpeta "{0}".
 UserDefaultFolder                         = ¿Le gustaría cambiar la ubicación de la carpeta "{0}" para el valor por defecto?
 GraphicsPerformanceTitle                  = ¿Le gustaría establecer la configuración de rendimiento gráfico de una aplicación de su elección a "alto rendimiento"?
 ActionCenter                              = Um die Funktion "{0}" nutzen zu können, müssen Sie das Action Center aktivieren.

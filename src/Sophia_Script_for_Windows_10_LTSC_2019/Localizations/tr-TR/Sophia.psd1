@@ -24,7 +24,6 @@ RetrievingDrivesList                      = Sürücü listesi alınıyor...
 DriveSelect                               = "{0}" klasörünün oluşturulacağı kök içindeki sürücüyü seçin.
 CurrentUserFolderLocation                 = Geçerli "{0}" klasör konumu: "{1}".
 UserFolderRequest                         = "{0}" klasörünün yerini değiştirmek ister misiniz?
-UserFolderSelect                          = "{0}" klasörü için bir klasör seçin.
 UserDefaultFolder                         = "{0}" klasörünün konumunu varsayılan değerle değiştirmek ister misiniz?
 GraphicsPerformanceTitle                  = Seçtiğiniz bir uygulamanın grafik performansı ayarını "Yüksek performans" olarak belirlemek ister misiniz?
 ActionCenter                              = "{0}" işlevini kullanmak için Eylem Merkezi'ni etkinleştirmeniz gerekir.

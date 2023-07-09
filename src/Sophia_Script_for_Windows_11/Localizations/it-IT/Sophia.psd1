@@ -27,7 +27,6 @@ RetrievingDrivesList                      = Recupero lista unità...
 DriveSelect                               = Selezionare l'unità all'interno della radice del quale verrà creato la cartella "{0}" .
 CurrentUserFolderLocation                 = La posizione attuale della cartella "{0}": "{1}".
 UserFolderRequest                         = Volete cambiare la posizione della cartella "{0}"?
-UserFolderSelect                          = Selezionare una posizione per la cartella "{0}".
 UserDefaultFolder                         = Volete cambiare la posizione della cartella "{0}" al valore di default?
 ReservedStorageIsInUse                    = Questa operazione non è supportata quando spazio riservato è in uso Si prega di eseguire nuovamente la funzione "{0}" dopo il riavvio del PC.
 ShortcutPinning                           = Il collegamento "{0}" è stato bloccato...

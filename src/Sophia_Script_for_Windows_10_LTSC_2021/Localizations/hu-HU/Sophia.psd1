@@ -24,7 +24,6 @@ RetrievingDrivesList                      = A meghajtók listájának lekérése
 DriveSelect                               = Válassza ki a meghajtó jelét a gyökérkönyvtárban ahol a "{0}" könyvtár létre lesz hozva.
 CurrentUserFolderLocation                 = Az aktuális "{0}" mappa helye: "{1}".
 UserFolderRequest                         = Kívánja megváltoztatni a "{0}" könyvtár helyét?
-UserFolderSelect                          = Válasszon ki egy könyvtárat a "{0}" könyvtárhoz.
 UserDefaultFolder                         = Szeretné visszaállítani a "{0}" könyvtár helyét a gyári értékekre?
 ReservedStorageIsInUse                    = Ez a művelet nem hajtható végre, amíg a fenntartott tárhely használatban van\nPonovno pokrenite funkciju "{0}" nakon ponovnog pokretanja računala.
 ShortcutPinning                           = A gyorsindító ikon "{0}" Startmenüre helyezése...

@@ -24,7 +24,6 @@ RetrievingDrivesList                      = Récupération de la liste des lecte
 DriveSelect                               = Sélectionnez le disque à la racine dans lequel le dossier "{0}" sera créé.
 CurrentUserFolderLocation                 = L'emplacement actuel du dossier "{0}": "{1}".
 UserFolderRequest                         = Voulez vous changer où est placé le dossier "{0}" ?
-UserFolderSelect                          = Sélectionnez un dossier pour le dossier "{0}".
 UserDefaultFolder                         = Voulez vous changer où est placé le dossier "{0}" à sa valeur par défaut?
 GraphicsPerformanceTitle                  = Souhaitez-vous définir le paramètre de performances graphiques d'une application de votre choix sur "Haute performance"?
 ActionCenter                              = Pour utiliser la fonction "{0}", vous devez activer le Centre d'action.

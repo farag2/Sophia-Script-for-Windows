@@ -28,7 +28,6 @@ RetrievingDrivesList                      = 取得驱动器列表.....
 DriveSelect                               = 选择将在其根目录中创建"{0}"文件夹的驱动器。
 CurrentUserFolderLocation                 = 当前"{0}"文件夹的位置:"{1}"。
 UserFolderRequest                         = 是否要更改"{0}"文件夹位置？
-UserFolderSelect                          = 为"{0}"文件夹选择一个文件夹。
 UserDefaultFolder                         = 您想将"{0}"文件夹的位置更改为默认值吗？
 ReservedStorageIsInUse                    = 保留存储空间正在使用时不支持此操作\n请在电脑重启后重新运行"{0}"功能。
 ShortcutPinning                           = "{0}"快捷方式将被固定到开始菜单.....

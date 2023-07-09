@@ -24,7 +24,6 @@ RetrievingDrivesList                      = 取得驱动器列表.....
 DriveSelect                               = 选择将在其根目录中创建"{0}"文件夹的驱动器。
 CurrentUserFolderLocation                 = 当前"{0}"文件夹的位置:"{1}"。
 UserFolderRequest                         = 是否要更改"{0}"文件夹位置？
-UserFolderSelect                          = 为"{0}"文件夹选择一个文件夹。
 UserDefaultFolder                         = 您想将"{0}"文件夹的位置更改为默认值吗？
 GraphicsPerformanceTitle                  = 是否将所选应用程序的图形性能设置设为"高性能"？
 ActionCenter                              = 为了使用"{0}"功能，你必须启用行动中心。

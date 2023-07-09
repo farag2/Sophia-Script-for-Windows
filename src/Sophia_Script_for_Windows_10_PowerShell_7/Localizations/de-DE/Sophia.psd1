@@ -28,7 +28,6 @@ RetrievingDrivesList                      = Laufwerksliste abrufen...
 DriveSelect                               = Wählen Sie das Laufwerk aus, in dessen Stammverzeichnis der Ordner "{0}" erstellt werden soll.
 CurrentUserFolderLocation                 = Der aktuelle Speicherort des Ordners "{0}" lautet: "{1}".
 UserFolderRequest                         = Möchten Sie den Speicherort des Ordners "{0}" ändern?
-UserFolderSelect                          = Wählen Sie einen Ordner für den Ordner "{0}".
 UserDefaultFolder                         = Möchten Sie den Speicherort des Ordners "{0}" auf den Standardwert ändern?
 ReservedStorageIsInUse                    = Dieser Vorgang wird nicht unterstützt, wenn reservierter Speicher verwendet wird\nBitte führen Sie die Funktion "{0}" nach dem PC-Neustart erneut aus.
 ShortcutPinning                           = Die Verknüpfung "{0}" wird an Start angeheftet...

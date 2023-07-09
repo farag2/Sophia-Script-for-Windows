@@ -24,7 +24,6 @@ RetrievingDrivesList                      = A meghajtók listájának lekérése
 DriveSelect                               = Válassza ki a meghajtó jelét a gyökérkönyvtárban ahol a "{0}" könyvtár létre lesz hozva.
 CurrentUserFolderLocation                 = Az aktuális "{0}" mappa helye: "{1}".
 UserFolderRequest                         = Kívánja megváltoztatni a "{0}" könyvtár helyét?
-UserFolderSelect                          = Válasszon ki egy könyvtárat a "{0}" könyvtárhoz.
 UserDefaultFolder                         = Szeretné visszaállítani a "{0}" könyvtár helyét a gyári értékekre?
 GraphicsPerformanceTitle                  = Szeretné megváltoztatni a grafikus teljesítmény beállítást az ön által kiválasztott alkalmazásban "Nagy teljesítményre"?
 ActionCenter                              = Az "{0}" funkció használatához engedélyeznie kell az Action Center funkciót.

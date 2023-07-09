@@ -24,7 +24,6 @@ RetrievingDrivesList                      = Pobieranie listy dysków...
 DriveSelect                               = Wybierz dysk w katalogu głównym, w którym zostanie utworzony folder "{0}".
 CurrentUserFolderLocation                 = Lokalizacja folderu "{0}": "{1}".
 UserFolderRequest                         = Czy chcesz zmienić lokalizację folderu "{0}"?
-UserFolderSelect                          = Wybierz folder dla folderu "{0}".
 UserDefaultFolder                         = Czy chcesz zmienić lokalizację folderu "{0}" na wartość domyślną?
 GraphicsPerformanceTitle                  = Czy chcesz ustawić wydajność grafiki wybranej aplikacji na "Wysoka wydajność"?
 ActionCenter                              = Aby korzystać z funkcji "{0}" należy włączyć Action Center.

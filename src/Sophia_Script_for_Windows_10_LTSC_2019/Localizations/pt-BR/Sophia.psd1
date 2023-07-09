@@ -24,7 +24,6 @@ RetrievingDrivesList                      = Recuperando lista de unidades...
 DriveSelect                               = Selecione a unidade dentro da raiz da qual a pasta "{0}" será criada.
 CurrentUserFolderLocation                 = A localização actual da pasta "{0}": "{1}".
 UserFolderRequest                         = Gostaria de alterar a localização da pasta "{0}"?
-UserFolderSelect                          = Selecione uma pasta para a pasta "{0}".
 UserDefaultFolder                         = Gostaria de alterar a localização da pasta "{0}" para o valor padrão?
 GraphicsPerformanceTitle                  = Gostaria de definir a configuração de performance gráfica de um app de sua escolha para "alta performance"?
 ActionCenter                              = Para utilizar a função {0}", tem de activar o Centro de Acção.

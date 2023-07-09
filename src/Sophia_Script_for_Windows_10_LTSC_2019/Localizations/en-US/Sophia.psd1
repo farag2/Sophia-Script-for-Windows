@@ -24,7 +24,6 @@ RetrievingDrivesList                      = Retrieving drives list...
 DriveSelect                               = Select the drive within the root of which the "{0}" folder will be created.
 CurrentUserFolderLocation                 = The current "{0}" folder location: "{1}".
 UserFolderRequest                         = Would you like to change the location of the "{0}" folder?
-UserFolderSelect                          = Select a folder for the "{0}" folder.
 UserDefaultFolder                         = Would you like to change the location of the "{0}" folder to the default value?
 GraphicsPerformanceTitle                  = Would you like to set the graphics performance setting of an app of your choice to "High performance"?
 ActionCenter                              = In order to use "{0}" function you have to enable Action Center.

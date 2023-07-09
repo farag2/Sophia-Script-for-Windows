@@ -27,7 +27,6 @@ RetrievingDrivesList                      = Récupération de la liste des lecte
 DriveSelect                               = Sélectionnez le disque à la racine dans lequel le dossier "{0}" sera créé.
 CurrentUserFolderLocation                 = L'emplacement actuel du dossier "{0}": "{1}".
 UserFolderRequest                         = Voulez vous changer où est placé le dossier "{0}" ?
-UserFolderSelect                          = Sélectionnez un dossier pour le dossier "{0}".
 UserDefaultFolder                         = Voulez vous changer où est placé le dossier "{0}" à sa valeur par défaut?
 ReservedStorageIsInUse                    = Cette opération n'est pas suppportée le stockage réservé est en cours d'utilisation\nVeuillez réexécuter la fonction "{0}" après le redémarrage du PC.
 ShortcutPinning                           = Le raccourci "{0}" est épinglé sur Démarrer...

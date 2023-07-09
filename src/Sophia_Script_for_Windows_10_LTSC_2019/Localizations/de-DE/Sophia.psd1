@@ -24,7 +24,6 @@ RetrievingDrivesList                      = Laufwerksliste abrufen...
 DriveSelect                               = Wählen Sie das Laufwerk aus, in dessen Stammverzeichnis der Ordner "{0}" erstellt werden soll.
 CurrentUserFolderLocation                 = Der aktuelle Speicherort des Ordners "{0}" lautet: "{1}".
 UserFolderRequest                         = Möchten Sie den Speicherort des Ordners "{0}" ändern?
-UserFolderSelect                          = Wählen Sie einen Ordner für den Ordner "{0}".
 UserDefaultFolder                         = Möchten Sie den Speicherort des Ordners "{0}" auf den Standardwert ändern?
 GraphicsPerformanceTitle                  = Möchten Sie die Einstellung der Grafikleistung einer App Ihrer Wahl auf "Hohe Leistung" einstellen?
 ActionCenter                              = Um die Funktion "{0}" nutzen zu können, müssen Sie das Action Center aktivieren.
