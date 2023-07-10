@@ -1,18 +1,18 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedOSBuild                        = \nСкрипт підтримує Windows 11 22H2+.
-UpdateWarning                             = \nВаш білд Windows 11: {0}.{1}. Підтримувані збірки: 22621.1928+. Запустіть Windows Update і повторіть спробу.
-UnsupportedLanguageMode                   = \nСесія PowerShell працює в обмеженому режимі.
-LoggedInUserNotAdmin                      = \nПоточний користувач, що увійшов, не має прав адміністратора.
-UnsupportedPowerShell                     = \nВи намагаєтеся запустити скрипт в PowerShell {0}.{1}. Запустіть скрипт у відповідній версії PowerShell.
-UnsupportedHost                           = \nСкрипт не підтримує роботу через {0}.
-Win10TweakerWarning                       = \nВаша ОС, можливо, через бекдор в Win 10 Tweaker інфікована трояном. Детальніше: https://itnan.ru/post.php?c=1&p=557388.
-TweakerWarning                            = \nСтабільність вашої ОС могла бути порушена використанням {0}. Про всяк випадок перевстановіть Windows.
-bin                                       = \nУ папці bin відсутні файли. Будь ласка, повторно завантажте архів.
-RebootPending                             = \nКомп'ютер очікує на перезавантаження.
-UnsupportedRelease                        = \nВиявлено нову версію.
-CustomizationWarning                      = \nВи налаштували всі функції в пресет-файлі {0} перед запуском Sophia Script?
-WindowsComponentBroken                    = \n{0} пошкоджено або видалено з ОС.
-UpdateDefender                            = \nВизначення Microsoft Defender застаріли. Запустіть Windows Update і повторіть спробу.
+UnsupportedOSBuild                        = Скрипт підтримує Windows 11 22H2+.
+UpdateWarning                             = Ваш білд Windows 11: {0}.{1}. Підтримувані збірки: 22621.1992+. Запустіть Windows Update і повторіть спробу.
+UnsupportedLanguageMode                   = Сесія PowerShell працює в обмеженому режимі.
+LoggedInUserNotAdmin                      = Поточний користувач, що увійшов, не має прав адміністратора.
+UnsupportedPowerShell                     = Ви намагаєтеся запустити скрипт в PowerShell {0}.{1}. Запустіть скрипт у відповідній версії PowerShell.
+UnsupportedHost                           = Скрипт не підтримує роботу через {0}.
+Win10TweakerWarning                       = Ваша ОС, можливо, через бекдор в Win 10 Tweaker інфікована трояном. Детальніше: https://itnan.ru/post.php?c=1&p=557388.
+TweakerWarning                            = Стабільність вашої ОС могла бути порушена використанням {0}. Про всяк випадок перевстановіть Windows.
+bin                                       = У папці bin відсутні файли. Будь ласка, повторно завантажте архів.
+RebootPending                             = Комп'ютер очікує на перезавантаження.
+UnsupportedRelease                        = Виявлено нову версію.
+CustomizationWarning                      = Ви налаштували всі функції в пресет-файлі {0} перед запуском Sophia Script?
+WindowsComponentBroken                    = {0} пошкоджено або видалено з ОС.
+UpdateDefender                            = Визначення Microsoft Defender застаріли. Запустіть Windows Update і повторіть спробу.
 ControlledFolderAccessDisabled            = Контрольований доступ до папок вимкнений.
 ScheduledTasks                            = Заплановані задачі
 OneDriveUninstalling                      = Видалення OneDrive...

@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.17.2
-	Date: 02.07.2023
+	Version: v5.17.3
+	Date: 11.07.2023
 
 	Copyright (c) 2014—2023 farag
 	Copyright (c) 2019—2023 farag & Inestic
@@ -13,7 +13,7 @@
 	.NOTES
 	Supported Windows 10 version
 	Version: 21H2
-	Build: 19044.3086+
+	Build: 19044.3208+
 	Edition: Enterprise LTSC 2021
 	Architecture: x64
 
@@ -105,10 +105,10 @@ public static string GetString(uint strId)
 	{
 		$true
 		{
-			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 3086)
+			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 3208)
 			{
-				# Check whether the OS minor build version is 3086 minimum
-				# https://support.microsoft.com/en-us/help/5018682
+				# Check whether the OS minor build version is 3208 minimum
+				# https://learn.microsoft.com/en-us/windows/release-health/release-information#windows-10-current-versions-by-servicing-option
 				$CurrentBuild = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
 				$UBR = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
 				Write-Warning -Message ($Localization.UpdateWarning -f $CurrentBuild.CurrentBuild, $UBR.UBR)
@@ -686,7 +686,6 @@ public static string GetString(uint strId)
 		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 	}
 
-
 	# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
 	Get-ChildItem -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 
@@ -697,8 +696,20 @@ public static string GetString(uint strId)
 		.SYNOPSIS
 		The "Show menu" function with the up/down arrow keys and enter key to make a selection
 
+		.PARAMETER Title
+		Add title
+
+		.PARAMETER Menu
+		Array of items to choose from
+
+		.PARAMETER Default
+		Default selected item in array
+
+		.PARAMETER AddSkip
+		Add localized extracted "Skip" string from shell32.dll
+
 		.EXAMPLE
-		Show-Menu -Menu $ListOfItems -Default $DefaultChoice
+		Show-Menu -Menu $Items -Default 1
 
 		.LINK
 		https://qna.habr.com/answer?answer_id=1522379
@@ -718,10 +729,23 @@ public static string GetString(uint strId)
 
 			[Parameter(Mandatory = $true)]
 			[int]
-			$Default
+			$Default,
+
+			[Parameter(Mandatory = $false)]
+			[switch]
+			$AddSkip
 		)
 
-		Write-Information -MessageData `n$Title -InformationAction Continue
+		Write-Information -MessageData $Title -InformationAction Continue
+
+		# Extract the localized "Waiting for confirmation" string from shell32.dll
+		$Menu += [WinAPI.GetStr]::GetString(33252)
+
+		if ($AddSkip)
+		{
+			# Extract the localized "Skip" string from shell32.dll
+			$Menu += [WinAPI.GetStr]::GetString(16956)
+		}
 
 		# https://github.com/microsoft/terminal/issues/14992
 		[System.Console]::BufferHeight += $Menu.Count
@@ -733,6 +757,7 @@ public static string GetString(uint strId)
 			[Console]::CursorTop = $minY
 			[Console]::CursorLeft = 0
 			$i = 0
+
 			foreach ($item in $Menu)
 			{
 				if ($i -ne $y)
@@ -743,6 +768,7 @@ public static string GetString(uint strId)
 				{
 					Write-Information -MessageData ('[ {1} ]' -f ($i+1), $item) -InformationAction Continue
 				}
+
 				$i++
 			}
 
@@ -773,24 +799,28 @@ public static string GetString(uint strId)
 	}
 
 	# Extract the localized "Browse" string from shell32.dll
-	$Browse = [WinAPI.GetStr]::GetString(9015)
+	$Script:Browse = [WinAPI.GetStr]::GetString(9015)
 	# Extract the localized "&No" string from shell32.dll
 	$Script:No = [WinAPI.GetStr]::GetString(33232).Replace("&", "")
 	# Extract the localized "&Yes" string from shell32.dll
 	$Script:Yes = [WinAPI.GetStr]::GetString(33224).Replace("&", "")
 	# Extract the localized "Waiting for confirmation" string from shell32.dll
 	$Script:Wait = [WinAPI.GetStr]::GetString(33252)
+	# Extract the localized "Skip" string from shell32.dll
+	$Script:Skip = [WinAPI.GetStr]::GetString(16956)
 
 	# Display a warning message about whether a user has customized the preset file
 	if ($Warning)
 	{
+		# Get the name of a preset (e.g Sophia.ps1) regardless it was named
+		# $_.File has no EndsWith() method
+		$PresetName = Split-Path -Path (((Get-PSCallStack).Position | Where-Object -FilterScript {$_.File}).File | Where-Object -FilterScript {$_.EndsWith(".ps1")}) -Leaf
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.CustomizationWarning -f $PresetName) -Verbose
+
 		do
 		{
-			# Get the name of a preset (e.g Sophia.ps1) regardless it was named
-			# $_.File has no EndsWith() method
-			$PresetName = Split-Path -Path (((Get-PSCallStack).Position | Where-Object -FilterScript {$_.File}).File | Where-Object -FilterScript {$_.EndsWith(".ps1")}) -Leaf
-			$Title = $Localization.CustomizationWarning -f $PresetName
-			$Choice = Show-Menu -Title $Title -Menu @($Yes, $No, $Wait) -Default 2
+			$Choice = Show-Menu -Title "" -Menu @($Yes, $No) -Default 2
 
 			switch ($Choice)
 			{
@@ -6279,8 +6309,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			# Store all fixed disks' letters to use them within Show-Menu function
 			# https://learn.microsoft.com/en-us/dotnet/api/system.io.drivetype?view=net-7.0#fields
 			$DriveLetters = @((Get-CimInstance -ClassName CIM_LogicalDisk | Where-Object -FilterScript {$_.DriveType -eq 3}).DeviceID | Sort-Object)
-			# Add $Skip to $DriveLetters array
-			$DriveLetters = $DriveLetters += $Skip
 
 			# Desktop
 			Write-Information -MessageData "" -InformationAction Continue
@@ -6292,7 +6320,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1]
+				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
 
 				switch ($Choice)
 				{
@@ -6320,7 +6348,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1]
+				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
 
 				switch ($Choice)
 				{
@@ -6348,7 +6376,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1]
+				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
 
 				switch ($Choice)
 				{
@@ -6376,7 +6404,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1]
+				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
 
 				switch ($Choice)
 				{
@@ -6404,7 +6432,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1]
+				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
 
 				switch ($Choice)
 				{
@@ -6432,7 +6460,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1]
+				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
 
 				switch ($Choice)
 				{

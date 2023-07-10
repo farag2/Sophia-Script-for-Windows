@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v6.5.2
-	Date: 02.07.2023
+	Version: v6.5.3
+	Date: 11.07.2023
 
 	Copyright (c) 2014—2023 farag
 	Copyright (c) 2019—2023 farag & Inestic
@@ -13,7 +13,7 @@
 	.NOTES
 	Supported Windows 11 versions
 	Version: 22H2/23H2+
-	Builds: 22621.1928+
+	Builds: 22621.1992+
 	Editions: Home/Pro/Enterprise
 
 	.LINK GitHub
@@ -244,6 +244,7 @@ public static string GetString(uint strId)
 						Verbose         = $true
 					}
 					Invoke-WebRequest @Parameters
+
 					Start-Process -FilePath "$DownloadsFolder\Windows11InstallationAssistant.exe" -ArgumentList "/SkipEULA"
 				}
 				catch [System.Net.WebException]
@@ -289,10 +290,10 @@ public static string GetString(uint strId)
 		}
 		{$_ -eq 22621}
 		{
-			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 1928)
+			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 1992)
 			{
-				# Check whether the OS minor build version is 1928 minimum
-				# https://support.microsoft.com/help/5018680
+				# Check whether the OS minor build version is 1992 minimum
+				# https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information#windows-11-current-versions
 				$CurrentBuild = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
 				$UBR = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
 				Write-Warning -Message ($Localization.UpdateWarning -f $CurrentBuild.CurrentBuild, $UBR.UBR)
@@ -895,8 +896,20 @@ public static string GetString(uint strId)
 		.SYNOPSIS
 		The "Show menu" function with the up/down arrow keys and enter key to make a selection
 
+		.PARAMETER Title
+		Add title
+
+		.PARAMETER Menu
+		Array of items to choose from
+
+		.PARAMETER Default
+		Default selected item in array
+
+		.PARAMETER AddSkip
+		Add localized extracted "Skip" string from shell32.dll
+
 		.EXAMPLE
-		Show-Menu -Menu $ListOfItems -Default $DefaultChoice
+		Show-Menu -Menu $Items -Default 1
 
 		.LINK
 		https://qna.habr.com/answer?answer_id=1522379
@@ -916,13 +929,24 @@ public static string GetString(uint strId)
 
 			[Parameter(Mandatory = $true)]
 			[int]
-			$Default
+			$Default,
+
+			[Parameter(Mandatory = $false)]
+			[switch]
+			$AddSkip
 		)
 
 		Write-Information -MessageData $Title -InformationAction Continue
 
 		# Extract the localized "Waiting for confirmation" string from shell32.dll
 		$Menu += [WinAPI.GetStr]::GetString(33252)
+
+		if ($AddSkip)
+		{
+			# Extract the localized "Skip" string from shell32.dll
+			$Menu += [WinAPI.GetStr]::GetString(16956)
+		}
+
 		# https://github.com/microsoft/terminal/issues/14992
 		[System.Console]::BufferHeight += $Menu.Count
 		$minY = [Console]::CursorTop
@@ -933,6 +957,7 @@ public static string GetString(uint strId)
 			[Console]::CursorTop = $minY
 			[Console]::CursorLeft = 0
 			$i = 0
+
 			foreach ($item in $Menu)
 			{
 				if ($i -ne $y)
@@ -943,6 +968,7 @@ public static string GetString(uint strId)
 				{
 					Write-Information -MessageData ('[ {1} ]' -f ($i+1), $item) -InformationAction Continue
 				}
+
 				$i++
 			}
 
@@ -986,13 +1012,15 @@ public static string GetString(uint strId)
 	# Display a warning message about whether a user has customized the preset file
 	if ($Warning)
 	{
+		# Get the name of a preset (e.g Sophia.ps1) regardless it was named
+		# $_.File has no EndsWith() method
+		$PresetName = Split-Path -Path (((Get-PSCallStack).Position | Where-Object -FilterScript {$_.File}).File | Where-Object -FilterScript {$_.EndsWith(".ps1")}) -Leaf
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.CustomizationWarning -f $PresetName) -Verbose
+
 		do
 		{
-			# Get the name of a preset (e.g Sophia.ps1) regardless it was named
-			# $_.File has no EndsWith() method
-			$PresetName = Split-Path -Path (((Get-PSCallStack).Position | Where-Object -FilterScript {$_.File}).File | Where-Object -FilterScript {$_.EndsWith(".ps1")}) -Leaf
-			$Title = $Localization.CustomizationWarning -f $PresetName
-			$Choice = Show-Menu -Title $Title -Menu @($Yes, $No, $Wait) -Default 2
+			$Choice = Show-Menu -Title "" -Menu @($Yes, $No) -Default 2
 
 			switch ($Choice)
 			{
@@ -2386,7 +2414,7 @@ function BrowsingHistory
 		$Show
 	)
 
-	if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 1928)
+	if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 1992)
 	{
 		return
 	}
@@ -7164,8 +7192,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			# Store all fixed disks' letters to use them within Show-Menu function
 			# https://learn.microsoft.com/en-us/dotnet/api/system.io.drivetype?view=net-7.0#fields
 			$DriveLetters = @((Get-CimInstance -ClassName CIM_LogicalDisk | Where-Object -FilterScript {$_.DriveType -eq 3}).DeviceID | Sort-Object)
-			# Add $Skip to $DriveLetters array
-			$DriveLetters = $DriveLetters += $Skip
 
 			# Desktop
 			Write-Information -MessageData "" -InformationAction Continue
@@ -7177,7 +7203,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1]
+				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
 
 				switch ($Choice)
 				{
@@ -7205,7 +7231,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1]
+				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
 
 				switch ($Choice)
 				{
@@ -7233,7 +7259,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1]
+				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
 
 				switch ($Choice)
 				{
@@ -7261,7 +7287,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1]
+				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
 
 				switch ($Choice)
 				{
@@ -7289,7 +7315,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1]
+				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
 
 				switch ($Choice)
 				{
@@ -7317,7 +7343,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1]
+				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
 
 				switch ($Choice)
 				{
@@ -10439,7 +10465,7 @@ FD2F77D9FBE75022FF5D13B168BD0B004D9C803E8F8C5D8F25CB22ACC97D8EDE169E5D50FCD87444
 52AB712AE758AE15C4D86ED3C23D4EB78C5ED94D8A5AB8AA93C43E18FC0CE418AC79DF945E81A58B70332A2C03C445436E8013E0B82AC59AF856C6A00812BCD3B6209449B6D008CA37D8A9210A61049
 350AD07F4E88FC7FBEC9FC64BC60C318912E36DBEA6D4058AF35CACD6E790C96B66EAE5966C47D3E1C4ACF42BF04D58FF363D20DBA61C9D32EBE433A45AFE02B41FD6FC91AE7157CCD7FACEC294623F
 825DE576F72A8245D2BC5D1D7C71B183166C8F0DAF9CF8ED6F1DAEBB0349D82E57BB81DB946128A5440235AD6222A294B27E97738D49F52170DE1B1B922C8C548215FD0D2980D7BA9B8F3133D9415BA
-B29670A5EDEC4858EB9D1A7E8FBD0296CB6D610BDD44A1A450EDEC61983152C237225F7AABABD482EB08328BC338D87BA1FE30864D9A97C20FA42CAEDF6359457C8BB26032A9728E819FFF9BF4F7154
+B29670A5EDEC4858EB9D1A7E8FBD0296CB6D610BDD44A1A450EDEC61983152C237225F7AABABD482EB08328BC338D87BA1FE32084D9A97C20FA42CAEDF6359457C8BB26032A9728E819FFF9BF4F7154
 69A0A4506A4CA1625E79CAE215683CDAADFB1E68ADC4987FF3FD7E9859CB40291478A4D2B281AEFEB97DC45C7F991311A68C2F173E2377709C355C6870DC4C14E5534120539C1DB0AD0D6E331D67058
 1F6E352DCB3E34D61E6742F957FE9F39854A324E07C68A17BE9CB19446583EDDAAFD0E433A54F4E0854709BD47B24AC76DF75849B9D917FF2B0F4228C94EA01CF658430B2C18F6EEAB104B9A935C6FB
 FEA494190BF3446DCC8C8AAF62BA01F0BFB18E15503C27558DB70C48EFB0AEA0B600F985C904E9F244E2A08464AE980E1A8CC05F22C9D4C23D753FD5250D0E190CB0CAC71404CF52A8CCEC988DBA22F

@@ -196,7 +196,7 @@ https://user-images.githubusercontent.com/10544660/225270532-8f0694d3-0b9e-44df-
 
 ### @BenchTweakGaming Sophia Script Wrapper
 
-![Wrapper](https://i.imgur.com/x0W7zqm.png)
+![Wrapper](https://i.imgur.com/AiuCUvW.png)
 
 ## Відео
 
