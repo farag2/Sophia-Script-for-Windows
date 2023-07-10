@@ -32,7 +32,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "",
-                                 "ToolTip":  "Einen Wiederherstellungspunkt erstellen."
+                                 "ToolTip":  "Erstellt einen Wiederherstellungspunkt."
                              }
                 }
     },
@@ -58,7 +58,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Minimal",
-                                 "ToolTip":  "Setzen Sie die Diagnosedatenerfassung auf ein Minimum."
+                                 "ToolTip":  "Setzt die Diagnosedatenerfassung auf ein Minimum."
                              },
                     "One":  {
                                 "Tag":  "Default",
@@ -118,11 +118,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Verwenden Sie keine Anmeldeinformationen, um die Einrichtung des Geräts nach einer Aktualisierung automatisch abzuschließen."
+                                 "ToolTip":  "Verwendet keine Anmeldeinformationen, um die Einrichtung des Geräts nach einer Aktualisierung automatisch abzuschließen."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Anmeldeinformationen verwenden, um die Einrichtung des Geräts nach einer Aktualisierung automatisch abzuschließen (Standardeinstellung)."
+                                "ToolTip":  "Verwendet Anmeldeinformationen, um die Einrichtung des Geräts nach einer Aktualisierung automatisch abzuschließen (Standardeinstellung)."
                             }
                 }
     },
@@ -133,11 +133,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Nicht zulassen, dass Webseiten lokal relevante Inhalte durch Zugriff auf die Sprachliste bereitstellen."
+                                 "ToolTip":  "Erlaubt Webseiten nicht, lokal relevante Inhalte durch Zugriff auf die Sprachliste bereitzustellen."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Webseiten erlauben, lokale Informationen durch Zugriff auf die Sprachliste bereitzustellen (Standardeinstellung)."
+                                "ToolTip":  "Erlaubt Webseiten, lokale Informationen durch Zugriff auf die Sprachliste bereitzustellen (Standardeinstellung)."
                             }
                 }
     },
@@ -148,11 +148,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Apps die Verwendung von Werbe-IDs nicht erlauben."
+                                 "ToolTip":  "Erlaubt Apps nicht die Verwendung von Werbe-IDs."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Apps die Verwendung von Werbe-IDs erlauben (Standardeinstellung)."
+                                "ToolTip":  "Erlaubt Apps die Verwendung von Werbe-IDs (Standardeinstellung)."
                             }
                 }
     },
@@ -163,11 +163,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Hide",
-                                 "ToolTip":  "Windows-Willkommenserfahrungen nach Updates und gelegentlich bei der Anmeldung ausblenden, um die neuen und vorgeschlagenen Funktionen hervorzuheben."
+                                 "ToolTip":  "Blendet Windows-Willkommenserfahrungen nach Updates und gelegentlich bei der Anmeldung aus, um die neuen und vorgeschlagenen Funktionen hervorzuheben."
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Windows-Willkommenserfahrungen nach Updates und gelegentlich bei der Anmeldung anzeigen, um hervorzuheben, was neu ist und vorgeschlagen wird (Standardeinstellung)."
+                                "ToolTip":  "Zeigt Windows-Willkommenserfahrungen nach Updates und gelegentlich bei der Anmeldung an, um hervorzuheben, was neu ist und vorgeschlagen wird (Standardeinstellung)."
                             }
                 }
     },
@@ -178,11 +178,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Enable",
-                                 "ToolTip":  "Tipps, Hinweise und Ratschläge zur Verwendung von Windows erhalten (Standardeinstellung)."
+                                 "ToolTip":  "Erhält Tipps, Hinweise und Ratschläge zur Verwendung von Windows (Standardeinstellung)."
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Keine Tipps, Hinweise und Ratschläge zur Verwendung von Windows zu erhalten."
+                                "ToolTip":  "Erhält keine Tipps, Hinweise und Ratschläge zur Verwendung von Windows."
                             }
                 }
     },
@@ -193,11 +193,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Hide",
-                                 "ToolTip":  "Vorgeschlagene Inhalte in der Einstellungs-App vor mir verbergen."
+                                 "ToolTip":  "Blendet vorgeschlagene Inhalte in der Einstellungs-App aus."
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Vorgeschlagene Inhalte in der Einstellungen-App anzeigen (Standardeinstellung)."
+                                "ToolTip":  "Zeigt vorgeschlagene Inhalte in der Einstellungs-App an (Standardeinstellung)."
                             }
                 }
     },
@@ -208,11 +208,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Automatische Installation der empfohlenen Apps deaktivieren."
+                                 "ToolTip":  "Deaktiviert die automatische Installation der empfohlenen Apps."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Automatische Installation der empfohlenen Apps aktivieren (Standardeinstellung)."
+                                "ToolTip":  "Aktiviert die automatische Installation der empfohlenen Apps (Standardeinstellung)."
                             }
                 }
     },
@@ -223,11 +223,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Keine Vorschläge, wie ich mein Gerät fertig einrichten kann, um Windows optimal zu nutzen."
+                                 "ToolTip":  "Erhält keine Vorschläge, wie das Gerät fertig eingerichtet werden kann, um Windows optimal zu nutzen."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Vorschläge, wie ich mein Gerät fertig einrichten kann, um Windows optimal zu nutzen (Standardeinstellung)."
+                                "ToolTip":  "Erhält Vorschläge, wie das Gerät fertig eingerichtet werden kann, um Windows optimal zu nutzen (Standardeinstellung)."
                             }
                 }
     },
@@ -238,11 +238,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Nicht zulassen, dass Microsoft Ihnen auf der Grundlage der von Ihnen gewählten Einstellung für Diagnosedaten maßgeschneiderte Erfahrungen anbietet."
+                                 "ToolTip":  "Erlaubt Microsoft nicht, auf Grundlage der gewählten Einstellung für Diagnosedaten maßgeschneiderte Erfahrungen anzubieten."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Microsoft kann Ihnen auf der Grundlage der von Ihnen gewählten Einstellung für Diagnosedaten maßgeschneiderte Erlebnisse anbieten (Standardeinstellung)."
+                                "ToolTip":  "Erlaubt Microsoft, auf Grundlage der gewählten Einstellung für Diagnosedaten maßgeschneiderte Erfahrungen anzubieten (Standardeinstellung)."
                             }
                 }
     },
@@ -253,11 +253,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Bing-Suche im Startmenü deaktivieren."
+                                 "ToolTip":  "Deaktiviert die Bing-Suche im Startmenü."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Bing-Suche im Startmenü aktivieren (Standardeinstellung)."
+                                "ToolTip":  "Aktiviert die Bing-Suche im Startmenü (Standardeinstellung)."
                             }
                 }
     },
@@ -268,11 +268,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Hide",
-                                 "ToolTip":  "Zeigen Sie keine Websites aus Ihrem Browserverlauf im Startmenü an."
+                                 "ToolTip":  "Zeigt keine Websites aus dem Browserverlauf im Startmenü an."
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Zeigen Sie Websites aus Ihrem Browserverlauf im Startmenü an (Standardeinstellung)."
+                                "ToolTip":  "Zeigt Websites aus dem Browserverlauf im Startmenü an (Standardeinstellung)."
                             }
                 }
     },
@@ -283,11 +283,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Show",
-                                 "ToolTip":  "Das Symbol \"Dieser PC\" auf dem Desktop anzeigen."
+                                 "ToolTip":  "Zeigt das Symbol \"Dieser PC\" auf dem Desktop an."
                              },
                     "One":  {
                                 "Tag":  "Hide",
-                                "ToolTip":  "Das Symbol \"Dieser PC\" auf dem Desktop ausblenden (Standardeinstellung)."
+                                "ToolTip":  "Blendet das Symbol \"Dieser PC\" auf dem Desktop aus (Standardeinstellung)."
                             }
                 }
     },
@@ -298,11 +298,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Keine Kontrollkästchen für Elemente verwenden."
+                                 "ToolTip":  "Verwendet keine Kontrollkästchen für Elemente."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Kontrollkästchen verwenden (Standardeinstellung)."
+                                "ToolTip":  "Verwendet Kontrollkästchen (Standardeinstellung)."
                             }
                 }
     },
@@ -313,11 +313,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Enable",
-                                 "ToolTip":  "Versteckte Dateien, Ordner und Laufwerke anzeigen."
+                                 "ToolTip":  "Zeigt versteckte Dateien, Ordner und Laufwerke an."
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Versteckte Dateien, Ordner und Laufwerke nicht anzeigen (Standardeinstellung)."
+                                "ToolTip":  "Zeigt versteckte Dateien, Ordner und Laufwerke nicht an (Standardeinstellung)."
                             }
                 }
     },
@@ -328,11 +328,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Show",
-                                 "ToolTip":  "Dateinamenerweiterungen anzeigen."
+                                 "ToolTip":  "Zeigt Dateinamenerweiterungen an."
                              },
                     "One":  {
                                 "Tag":  "Hide",
-                                "ToolTip":  "Dateinamenerweiterungen ausblenden (Standardeinstellung)."
+                                "ToolTip":  "Blendet Dateinamenerweiterungen aus (Standardeinstellung)."
                             }
                 }
     },
@@ -343,11 +343,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Show",
-                                 "ToolTip":  "Konflikte beim Zusammenführen von Ordnern anzeigen."
+                                 "ToolTip":  "Zeigt Konflikte beim Zusammenführen von Ordnern an."
                              },
                     "One":  {
                                 "Tag":  "Hide",
-                                "ToolTip":  "Konflikte beim Zusammenführen von Ordnern ausblenden (Standardeinstellung)."
+                                "ToolTip":  "Blendet Konflikte beim Zusammenführen von Ordnern aus (Standardeinstellung)."
                             }
                 }
     },
@@ -358,11 +358,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "ThisPC",
-                                 "ToolTip":  "Datei-Explorer mit \"Dieser PC\" öffnen."
+                                 "ToolTip":  "Öffnet den Datei-Explorer mit \"Dieser PC\"."
                              },
                     "One":  {
                                 "Tag":  "QuickAccess",
-                                "ToolTip":  "Datei-Explorer mit Schnellzugriff öffnen (Standardeinstellung)."
+                                "ToolTip":  "Öffnet den Datei-Explorer mit Schnellzugriff (Standardeinstellung)."
                             }
                 }
     },
@@ -373,11 +373,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Kompaktmodus des Datei-Explorers deaktivieren (Standardeinstellung)."
+                                 "ToolTip":  "Deaktiviert den Kompaktmodus des Datei-Explorers (Standardeinstellung)."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Kompaktmodus des Datei-Explorers aktivieren."
+                                "ToolTip":  "Aktiviert den Kompaktmodus des Datei-Explorers."
                             }
                 }
     },
@@ -388,11 +388,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Hide",
-                                 "ToolTip":  "Synchronisationsanbieter-Benachrichtigungen im Explorer nicht anzeigen."
+                                 "ToolTip":  "Zeigt keine Synchronisationsanbieter-Benachrichtigungen im Explorer an."
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Synchronisationsanbieter-Benachrichtigungen im Explorer anzeigen (Standardeinstellung)."
+                                "ToolTip":  "Zeigt Synchronisationsanbieter-Benachrichtigungen im Explorer an (Standardeinstellung)."
                             }
                 }
     },
@@ -403,11 +403,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Wenn Sie ein Fenster anbringen, zeigen Sie nicht, was daneben angebracht werden kann."
+                                 "ToolTip":  "Zeigt beim Anbringen eines Fensters nicht an, was daneben angebracht werden kann."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Beim Anhängen eines Fensters anzeigen, was daneben angehängt werden kann (Standardeinstellung)."
+                                "ToolTip":  "Zeigt beim Anbringen eines Fensters an, was daneben angebracht werden kann (Standardeinstellung)."
                             }
                 }
     },
@@ -418,11 +418,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Detailed",
-                                 "ToolTip":  "Dialogfeld für die Dateiübertragung im detaillierten Modus anzeigen."
+                                 "ToolTip":  "Zeigt das Dialogfeld für die Dateiübertragung im detaillierten Modus an."
                              },
                     "One":  {
                                 "Tag":  "Compact",
-                                "ToolTip":  "Dialogfeld für die Dateiübertragung im Kompaktmodus anzeigen (Standardeinstellung)."
+                                "ToolTip":  "Zeigt das Dialogfeld für die Dateiübertragung im Kompaktmodus an (Standardeinstellung)."
                             }
                 }
     },
@@ -433,11 +433,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Enable",
-                                 "ToolTip":  "Bestätigung des Löschens von Papierkorbdateien anzeigen."
+                                 "ToolTip":  "Zeigt eine Bestätigung beim Löschen von Dateien aus dem Papierkorb an."
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Bestätigung zum Löschen von Papierkorbdateien nicht anzeigen (Standardeinstellung)."
+                                "ToolTip":  "Zeigt keine Bestätigung beim Löschen von Dateien aus dem Papierkorb an (Standardeinstellung)."
                             }
                 }
     },
@@ -448,11 +448,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Hide",
-                                 "ToolTip":  "Häufig verwendete Ordner im Schnellzugriff ausblenden."
+                                 "ToolTip":  "Blendet zuletzt verwendete Dateien im Schnellzugriff aus."
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Zuletzt verwendete Dateien im Schnellzugriff anzeigen (Standardeinstellung)."
+                                "ToolTip":  "Zeigt zuletzt verwendete Dateien im Schnellzugriff an (Standardeinstellung)."
                             }
                 }
     },
@@ -463,11 +463,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Hide",
-                                 "ToolTip":  "Häufig verwendete Ordner im Schnellzugriff ausblenden."
+                                 "ToolTip":  "Blendet häufig verwendete Ordner im Schnellzugriff aus."
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Häufig verwendete Ordner im Schnellzugriff anzeigen (Standardeinstellung)."
+                                "ToolTip":  "Zeigt häufig verwendete Ordner im Schnellzugriff an (Standardeinstellung)."
                             }
                 }
     },
@@ -478,11 +478,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Left",
-                                 "ToolTip":  "Ausrichtung der Taskleiste nach links einstellen."
+                                 "ToolTip":  "Stellt die Ausrichtung der Taskleiste auf links ein."
                              },
                     "One":  {
                                 "Tag":  "Center",
-                                "ToolTip":  "Ausrichtung der Taskleiste auf die Mitte einstellen (Standardeinstellung)."
+                                "ToolTip":  "Stellt die Ausrichtung der Taskleiste auf die Mitte ein (Standardeinstellung)."
                             }
                 }
     },
@@ -493,11 +493,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Hide",
-                                 "ToolTip":  "Widgetsymbols in der Taskleiste ausblenden."
+                                 "ToolTip":  "Blendet das Widgets-Symbol in der Taskleiste aus."
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Widgetsymbol in der Taskleiste anzeigen (Standardeinstellung)."
+                                "ToolTip":  "Zeigt das Widgets-Symbol in der Taskleiste an (Standardeinstellung)."
                             }
                 }
     },
@@ -508,19 +508,19 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Hide",
-                                 "ToolTip":  "Suchschaltfläche in der Taskleiste ausblenden."
+                                 "ToolTip":  "Blendet die Suchschaltfläche in der Taskleiste aus."
                              },
                     "One":  {
                                 "Tag":  "SearchIcon",
-                                "ToolTip":  "Das Suchsymbol in der Taskleiste anzeigen."
+                                "ToolTip":  "Zeigt das Suchsymbol in der Taskleiste an."
                             },
                     "Two":  {
                                 "Tag":  "SearchIconLabel",
-                                "ToolTip":  "Show the search icon and label on the taskbar"
+                                "ToolTip":  "Zeigt das Suchsymbol und das Label in der Taskleiste an."
                             },
                     "Three":  {
                                   "Tag":  "SearchBox",
-                                  "ToolTip":  "Suchsymbol in der Taskleiste anzeigen (Standardeinstellung)."
+                                  "ToolTip":  "Zeigt das Suchfeld in der Taskleiste an (Standardeinstellung)."
                               }
                 }
     },
@@ -531,11 +531,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Hide",
-                                 "ToolTip":  "Schaltfläche Aufgabenansicht in der Taskleiste ausblenden."
+                                 "ToolTip":  "Blendet die Schaltfläche 'Aufgabenansicht' in der Taskleiste aus."
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Schaltfläche Aufgabenansicht in der Taskleiste anzeigen (Standardeinstellung)."
+                                "ToolTip":  "Zeigt die Schaltfläche 'Aufgabenansicht' in der Taskleiste an (Standardeinstellung)."
                             }
                 }
     },
@@ -546,11 +546,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Hide",
-                                 "ToolTip":  "Blenden Sie das Chat-Symbol (Microsoft Teams) in der Taskleiste aus und verhindern Sie, dass Microsoft Teams für neue Benutzer installiert wird."
+                                 "ToolTip":  "Blendet das Chat-Symbol (Microsoft Teams) in der Taskleiste aus und verhindert die Installation von Microsoft Teams für neue Benutzer."
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Zeigen Sie das Chat-Symbol (Microsoft Teams) in der Taskleiste an und entfernen Sie die Sperre für die Installation von Microsoft Teams für neue Benutzer (Standardeinstellung)."
+                                "ToolTip":  "Zeigt das Chat-Symbol (Microsoft Teams) in der Taskleiste an und ermöglicht die Installation von Microsoft Teams für neue Benutzer (Standardeinstellung)."
                             }
                 }
     },
@@ -561,11 +561,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Show",
-                                 "ToolTip":  "Sekunden auf der Taskleistenuhr anzeigen."
+                                 "ToolTip":  "Zeigt Sekunden auf der Taskleistenuhr an."
                              },
                     "One":  {
                                 "Tag":  "Hide",
-                                "ToolTip":  "Sekunden auf der Taskleistenuhr ausblenden (Standardeinstellung)."
+                                "ToolTip":  "Blendet Sekunden auf der Taskleistenuhr aus (Standardeinstellung)."
                             }
                 }
     },
@@ -573,15 +573,15 @@
         "Id":  319,
         "Region":  "UI & Personalization",
         "Function":  "UnpinTaskbarShortcuts -Shortcuts",
-        "ToolTip":  "Verknüpfungen \"Microsoft Edge\" oder \"Microsoft Store\" von der Taskleiste lösen",
+        "ToolTip":"Entfernt die Verknüpfungen \"Microsoft Edge\" oder \"Microsoft Store\" von der Taskleiste",
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Edge",
-                                 "ToolTip":  "Verknüpfung \"Microsoft Edge\" von der Taskleiste lösen."
+                                 "ToolTip":  "Entfernt die Verknüpfung \"Microsoft Edge\" von der Taskleiste."
                              },
                     "One":  {
                                 "Tag":  "Store",
-                                "ToolTip":  "Verknüpfung \"Microsoft Store\" von der Taskleiste lösen."
+                                "ToolTip":  "Entfernt die Verknüpfung \"Microsoft Store\" von der Taskleiste."
                             }
                 }
     },
@@ -592,15 +592,15 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "LargeIcons",
-                                 "ToolTip":  "\"Große Symbole\" in der Systemsteuerung anzeigen."
+                                 "ToolTip":  "Zeigt \"Große Symbole\" in der Systemsteuerung an."
                              },
                     "One":  {
                                 "Tag":  "SmallIcons",
-                                "ToolTip":  "\"Kleine Symbole\" in der Systemsteuerung anzeigen."
+                                "ToolTip":  "Zeigt \"Kleine Symbole\" in der Systemsteuerung an."
                             },
                     "Two":  {
                                 "Tag":  "Category",
-                                "ToolTip":  "Symbole der Systemsteuerung nach \"Kategorie\" anzeigen (Standardeinstellung)."
+                                "ToolTip":  "Zeigt Symbole in der Systemsteuerung nach \"Kategorie\" an (Standardeinstellung)."
                             }
                 }
     },
@@ -611,11 +611,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Dark",
-                                 "ToolTip":  "Windows-Standardmodus auf dunkel einstellen."
+                                 "ToolTip":  "Stellt den Windows-Standardmodus auf dunkel ein."
                              },
                     "One":  {
                                 "Tag":  "Light",
-                                "ToolTip":  "Windows-Standardmodus auf hell einstellen (Standardeinstellung)."
+                                "ToolTip":  "Stellt den Windows-Standardmodus auf hell ein (Standardeinstellung)."
                             }
                 }
     },
@@ -626,11 +626,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Dark",
-                                 "ToolTip":  "Standardmodus der App auf dunkel einstellen."
+                                 "ToolTip":  "Stellt den Standardmodus der App auf dunkel ein."
                              },
                     "One":  {
                                 "Tag":  "Light",
-                                "ToolTip":  "Standardmodus der App auf hell einstellen (Standardeinstellung)."
+                                "ToolTip":  "Stellt den Standardmodus der App auf hell ein (Standardeinstellung)."
                             }
                 }
     },
@@ -641,11 +641,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Animation zur Erstanmeldung nach dem Upgrade ausblenden."
+                                 "ToolTip":  "Blendet die Animation zur Erstanmeldung nach dem Upgrade aus."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Animation zur Erstanmeldung nach dem Upgrade anzeigen (Standardeinstellung)."
+                                "ToolTip":  "Zeigt die Animation zur Erstanmeldung nach dem Upgrade an (Standardeinstellung)."
                             }
                 }
     },
@@ -656,11 +656,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Max",
-                                 "ToolTip":  "Qualitätsfaktor der JPEG-Desktop-Hintergründe auf Maximum einstellen."
+                                 "ToolTip":  "Stellt den Qualitätsfaktor der JPEG-Desktop-Hintergründe auf Maximum ein."
                              },
                     "One":  {
                                 "Tag":  "Default",
-                                "ToolTip":  "Qualitätsfaktor der JPEG-Desktop-Hintergründe auf Standard einstellen."
+                                "ToolTip":  "Stellt den Qualitätsfaktor der JPEG-Desktop-Hintergründe auf Standard ein."
                             }
                 }
     },
@@ -671,11 +671,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Suffix \"-Verknüpfung\" nicht an den Dateinamen der erstellten Verknüpfungen anfügen."
+                                 "ToolTip":  "Fügt das Suffix \"-Verknüpfung\" nicht an den Dateinamen der erstellten Verknüpfungen an."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Suffix \"-Verknüpfung\" an den Dateinamen der erstellten Verknüpfungen anfügen (Standardeinstellung)."
+                                "ToolTip":  "Fügt das Suffix \"-Verknüpfung\" an den Dateinamen der erstellten Verknüpfungen an (Standardeinstellung)."
                             }
                 }
     },
@@ -686,11 +686,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Enable",
-                                 "ToolTip":  "Schaltfläche Bildschirm drucken verwenden, um den Bildschirmausschnitt zu öffnen."
+                                 "ToolTip":  "Verwendet die Schaltfläche 'Bildschirm drucken', um das Ausschneidewerkzeug zu öffnen."
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Schaltfläche Bildschirm drucken nicht verwenden, um den Bildschirmausschnitt zu öffnen (Standardeinstellung)."
+                                "ToolTip":  "Verwendet die Schaltfläche 'Bildschirm drucken' nicht, um das Ausschneidewerkzeug zu öffnen (Standardeinstellung)."
                             }
                 }
     },
@@ -701,11 +701,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Nicht für jedes App-Fenster eine andere Eingabemethode verwenden (Standardeinstellung)."
+                                 "ToolTip":  "Verwendet nicht für jedes App-Fenster eine andere Eingabemethode (Standardeinstellung)."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Für jedes App-Fenster eine andere Eingabemethode verwenden."
+                                "ToolTip":  "Verwendet für jedes App-Fenster eine andere Eingabemethode."
                             }
                 }
     },
@@ -716,11 +716,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Enable",
-                                 "ToolTip":  "Wenn ich die Titelleiste eines Fensters greife und schüttle, werden alle anderen Fenster minimiert."
+                                 "ToolTip":  "Wenn Sie die Titelleiste eines Fensters greifen und schütteln, werden alle anderen Fenster minimiert."
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Wenn ich die Titelleiste eines Fensters greife und schüttle, werden nicht alle anderen Fenster minimiert (Standardeinstellung)."
+                                "ToolTip":  "Wenn Sie die Titelleiste eines Fensters greifen und schütteln, werden nicht alle anderen Fenster minimiert (Standardeinstellung)."
                             }
                 }
     },
@@ -731,15 +731,15 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Default",
-                                 "ToolTip":  "Standard-Cursor einstellen."
+                                 "ToolTip":  "Stellt den Standard-Cursor ein."
                              },
                     "One":  {
                                 "Tag":  "Light",
-                                "ToolTip":  "Kostenlos helle \"Windows 11 Cursors Concept v2\" Cursor von Jepri Creations herunterladen und installieren."
+                                "ToolTip":  "Lädt und installiert kostenlos helle \"Windows 11 Cursors Concept v2\" Cursor von Jepri Creations."
                             },
                     "Two":  {
                                 "Tag":  "Dark",
-                                "ToolTip":  "Kostenlos dunkle \"Windows 11 Cursors Concept v2\" Cursors von Jepri Creations herunterladen und installieren"
+                                "ToolTip":  "Lädt und installiert kostenlos dunkle \"Windows 11 Cursors Concept v2\" Cursor von Jepri Creations."
                             }
                 }
     },
@@ -765,11 +765,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Der Navigationsbereich(Linker Abschnitt) im Explorer wird nicht mehr auf den aktuellen Ordner aufgeklappt (erweitert) (Standardeinstellung)."
+                                 "ToolTip":  "Der Navigationsbereich (linker Abschnitt) im Explorer wird nicht mehr auf den aktuellen Ordner aufgeklappt (erweitert) (Standardeinstellung)."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Klappt (erweitert) den Navigationsbereich(Linker Abschnitt) des Explorers automatisch auf den Order auf, den man aktuell offen hat."
+                                "ToolTip":  "Klappt (erweitert) den Navigationsbereich (linker Abschnitt) des Explorers automatisch auf den Ordner auf, den man aktuell offen hat."
                             }
                 }
     },
@@ -780,11 +780,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Uninstall",
-                                 "ToolTip":  "OneDrive deinstallieren. Der OneDrive-Benutzerordner wird nicht entfernt."
+                                 "ToolTip":  "Deinstalliert OneDrive. Der OneDrive-Benutzerordner wird nicht entfernt."
                              },
                     "One":  {
                                 "Tag":  "Install",
-                                "ToolTip":  "OneDrive 64-bit installieren."
+                                "ToolTip":  "Installiert OneDrive 64-bit."
                             }
                 }
     },
@@ -795,7 +795,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "",
-                                 "ToolTip":  "Installieren Sie OneDrive 64-bit für alle Benutzer nach %ProgramFiles%, je nachdem welches Installationsprogramm ausgelöst wird."
+                                 "ToolTip":  "Installiert OneDrive 64-bit für alle Benutzer in %ProgramFiles%, je nachdem welches Installationsprogramm ausgelöst wird."
                              }
                 }
     },
