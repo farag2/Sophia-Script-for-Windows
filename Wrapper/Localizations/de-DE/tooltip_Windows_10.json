@@ -6,7 +6,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Warning",
-                                 "ToolTip":  "Obligatorische Kontrollen. Um die Warnung bei der Einrichtung der Voreinstellungsdatei zu deaktivieren, löschen Sie das Argument \"-Warnung\"."
+                                 "ToolTip":  "Obligatorische Kontrollen. Um die Warnung bei der Einrichtung der Voreinstellungsdatei zu deaktivieren, löschen Sie das Argument \"-warning\"."
                              },
                     "One":  {
                                 "Tag":  "",
@@ -43,7 +43,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Deaktiviert den Dienst \"Connected User Experiences and Telemetry\" (DiagTrack), und blockiert die Verbindung für den ausgehenden Verkehr des Unified Telemetry Client. Das Deaktivieren des Dienstes \"Benutzererfahrungen und Telemetrie im verbundenen Modus\" (DiagTrack) kann dazu führen, dass Sie keine Xbox-Erfolge mehr erhalten können, wirkt sich auf Feedback Hub aus, wirkt sich auf Feedback Hub aus."
+                                 "ToolTip":  "Deaktiviert den Dienst \"Connected User Experiences and Telemetry\" (DiagTrack), und blockiert die Verbindung für den ausgehenden Verkehr des Unified Telemetry Client. Das Deaktivieren des Dienstes \"Benutzererfahrungen und Telemetrie im verbundenen Modus\" (DiagTrack) kann dazu führen, dass Sie keine Xbox-Erfolge mehr erhalten können, wirkt sich auf Feedback Hub aus."
                              },
                     "One":  {
                                 "Tag":  "Enable",
@@ -433,7 +433,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Hide",
-                                 "ToolTip":  "Ausblenden des Ordners \"3D-Objekte\" in \"Dieser PC\" und \"Schnellzugriff\"."
+                                 "ToolTip":  "Blendet den Ordner \"3D-Objekte\" in \"Dieser PC\" und \"Schnellzugriff\" aus."
                              },
                     "One":  {
                                 "Tag":  "Show",
@@ -448,7 +448,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Hide",
-                                 "ToolTip":  "Häufig verwendete Ordner im Schnellzugriff ausblenden."
+                                 "ToolTip":  "Häufig verwendete Dateien im Schnellzugriff ausblenden."
                              },
                     "One":  {
                                 "Tag":  "Show",
@@ -482,7 +482,7 @@
                              },
                     "One":  {
                                 "Tag":  "SearchIcon",
-                                "ToolTip":  "Das Suchsymbol in der Taskleiste anzeigen."
+                                "ToolTip":  "Zeigt das Suchsymbol in der Taskleiste an."
                             },
                     "Two":  {
                                 "Tag":  "SearchBox",
@@ -557,7 +557,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Hide",
-                                 "ToolTip":  "Schaltfläche \"Personen ausblenden\" in der Taskleiste."
+                                 "ToolTip":  "Blendet die Schaltfläche \"Personen ausblenden\" in der Taskleiste aus."
                              },
                     "One":  {
                                 "Tag":  "Show",
@@ -791,11 +791,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Disable",
-                                 "ToolTip":  "Nicht für jedes Anwendungsfenster eine andere Eingabemethode verwenden (Standardeinstellung)."
+                                 "ToolTip":  "Verwendet nicht für jedes Anwendungsfenster eine andere Eingabemethode (Standardeinstellung)."
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Lassen Sie mich für jedes Anwendungsfenster eine andere Eingabemethode verwenden."
+                                "ToolTip":  "Erlaubt die Verwendung einer anderen Eingabemethode für jedes Anwendungsfenster."
                             }
                 }
     },
@@ -806,11 +806,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Enable",
-                                 "ToolTip":  "Wenn ich die Titelleiste eines Fensters greife und schüttle, werden nicht alle anderen Fenster minimiert (Standardeinstellung)."
+                                 "ToolTip":  "Minimiert nicht alle anderen Fenster, wenn die Titelleiste eines Fensters gegriffen und geschüttelt wird (Standardeinstellung)."
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Wenn ich die Titelleiste eines Fensters greife und schüttle, werden alle anderen Fenster minimiert."
+                                "ToolTip":  "Minimiert alle anderen Fenster, wenn die Titelleiste eines Fensters gegriffen und geschüttelt wird."
                             }
                 }
     },
@@ -825,11 +825,11 @@
                              },
                     "One":  {
                                 "Tag":  "Light",
-                                "ToolTip":  "Downloaden und installieren Sie die kostenlosen leichte \"Windows 11 Cursors Concept v2\" Cursors von Jepri Creations."
+                                "ToolTip":  "Lädt und installiert die kostenlosen leichten \"Windows 11 Cursors Concept v2\" Cursors von Jepri Creations."
                             },
                     "Two":  {
                                 "Tag":  "Dark",
-                                "ToolTip":  "Downloaden und installieren Sie die kostenlosen dunklen \"Windows 11 Cursors Concept v2\" Cursors von Jepri Creations"
+                                "ToolTip":  "Lädt und installiert die kostenlosen dunklen \"Windows 11 Cursors Concept v2\" Cursors von Jepri Creations."
                             }
                 }
     },
@@ -885,7 +885,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "",
-                                 "ToolTip":  "Installieren Sie OneDrive 64-bit für alle Benutzer nach %ProgramFiles%, je nachdem welches Installationsprogramm ausgelöst wird."
+                                 "ToolTip":  "Installieren Sie OneDrive 64-bit für alle Benutzer in %ProgramFiles%. Je nachdem welches Installationsprogramm ausgelöst wird, 64bit oder 32bit."
                              }
                 }
     },
@@ -956,11 +956,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "SystemDrive",
-                                 "ToolTip":  "Ändert den Pfad der Umgebungsvariablen %TEMP% in %SystemDrive%\\Temp."
+                                 "ToolTip":  "Setzt den Pfad der Umgebungsvariablen %TEMP% auf %SystemDrive%\\Temp."
                              },
                     "One":  {
                                 "Tag":  "Default",
-                                "ToolTip":  "Ändert den Pfad der Umgebungsvariablen %TEMP% in %LOCALAPPDATA%\\Temp (Standardeinstellung)."
+                                "ToolTip":  "Setzt den Pfad der Umgebungsvariablen %TEMP% auf %LOCALAPPDATA%\\Temp (Standardeinstellung)."
                             }
                 }
     },
@@ -1106,11 +1106,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Enable",
-                                 "ToolTip":  "Updates für andere Microsoft-Produkte erhalten, wenn Sie Windows aktualisieren."
+                                 "ToolTip":  "Erlaubt das Empfangen von Updates für andere Microsoft-Produkte beim Aktualisieren von Windows."
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Keine Updates für andere Microsoft-Produkte erhalten, wenn Sie Windows aktualisieren (Standardeinstellung)."
+                                "ToolTip":  "Erlaubt nicht das Empfangen von Updates für andere Microsoft-Produkte beim Aktualisieren von Windows (Standardeinstellung)."
                             }
                 }
     },
@@ -1204,11 +1204,11 @@
                              },
                     "One":  {
                                 "Tag":  "Custom",
-                                "ToolTip":  "Wählen Sie Ordner für Benutzerordner manuell über einen Ordner-Browser-Dialog aus. Benutzerdateien oder -ordner werden nicht an einen neuen Speicherort verschoben. Verschieben Sie sie manuell. Sie befinden sich standardmäßig in dem Ordner %USERPROFILE%."
+                                "ToolTip":  "Wählen Sie  den Ordner für Benutzerordner manuell über einen Ordner-Browser-Dialog aus. Benutzerdateien oder -ordner werden nicht an einen neuen Speicherort verschoben. Verschieben Sie sie manuell. Sie befinden sich standardmäßig in dem Ordner %USERPROFILE%."
                             },
                     "Two":  {
                                 "Tag":  "Default",
-                                "ToolTip":  "Ändern Sie den Speicherort von Benutzerordnern auf die Standardeinstellunge Benutzerdateien oder -ordner lassen sich nicht an einen neuen Speicherort verschieben. Verschieben Sie sie manuell. Sie befinden sich standardmäßig im Ordner %USERPROFILE% (Standardeinstellung)."
+                                "ToolTip":  "Ändern Sie den Speicherort von Benutzerordnern auf die Standardeinstellungen. Benutzerdateien oder -ordner lassen sich nicht an einen neuen Speicherort verschieben. Verschieben Sie sie manuell. Sie befinden sich standardmäßig im Ordner %USERPROFILE% (Standardeinstellung)."
                             }
                 }
     },
@@ -1455,7 +1455,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "",
-                                 "ToolTip":  "Importieren Sie alle Windows-Zuordnungen aus einer JSON-Datei. Sie müssen alle Anwendungen gemäß einer exportierten JSON-Datei installieren, um alle Zuordnungen wiederherzustellen."
+                                 "ToolTip":  "Importieren Sie alle Windows-Zuordnungen aus einer JSON-Datei. Sie müssen alle Anwendungen gemäß der exportierten JSON-Datei installieren, um alle Zuordnungen wiederherzustellen."
                              }
                 }
     },
@@ -1582,7 +1582,7 @@
         "Id":  702,
         "Region":  "Start menu",
         "Function":  "PinToStart -Tiles",
-        "ToolTip":  "Folgendene Verknüpfungen: Systemsteuerung, Geräte und Drucker, PowerShell an das Startmenü anheften",
+        "ToolTip":  "Folgende Verknüpfungen: Systemsteuerung, Geräte und Drucker, PowerShell an das Startmenü anheften",
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "ControlPanel",
@@ -1627,7 +1627,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "",
-                                 "ToolTip":  "Deinstalliert UWP-Anwendungen über das Popup-Dialogfeld. Wenn das Argument \"Für alle Benutzer\" aktiviert ist, werden die Anwendungspakete für neue Benutzer nicht installiert. Das Argument \"Für alle Benutzer\" setzt ein Kontrollkästchen, um Pakete für alle Benutzer zu deinstallieren."
+                                 "ToolTip":  "Deinstalliert UWP-Anwendungen über das Popup-Dialogfeld. Wenn das Argument \"Für alle Benutzer\" aktiviert ist, werden die Anwendungspakete für neue Benutzer nicht installiert. Das Argument \"Für alle Benutzer\" aktiviert ein Kontrollkästchen, um Pakete für alle Benutzer zu deinstallieren."
                              }
                 }
     },
@@ -1735,11 +1735,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Enable",
-                                 "ToolTip":  "Aktiviert die hardwarebeschleunigte GPU-Planung. Neustart erforderlich. Nur mit einem dedizierten Grafikprozessor und einer WDDM-Version von 2.7 oder höher."
+                                 "ToolTip":  "Aktiviert die hardwarebeschleunigte GPU-Planung. Ein Neustart ist erforderlich. Nur mit einem dedizierten Grafikprozessor und einer WDDM-Version von 2.7 oder höher."
                              },
                     "One":  {
                                 "Tag":  "Disable",
-                                "ToolTip":  "Deaktiviert die hardwarebeschleunigte GPU-Planung. Neustart erforderlich (Standardeinstellung)."
+                                "ToolTip":  "Deaktiviert die hardwarebeschleunigte GPU-Planung. Ein Neustart ist erforderlich. Dies ist die Standardeinstellung."
                             }
                 }
     },
@@ -1780,7 +1780,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Register",
-                                 "ToolTip":  "Create the \"Temp\" scheduled task for cleaning up the %TEMP% folder. Only files older than one day will be deleted. The task runs every 60 days. You have to enable Windows Script Host in order to make the function work"
+                                 "ToolTip":  "Erstellt die \"Temp\" geplante Aufgabe zum bereinigen des Ordners %TEMP%. Nur Dateien, die älter als ein Tag sind werden gelöscht. Die Aufgabe wird alles 60 Tage ausgeführt. Sie müssen Windows-Script-Host aktivieren, damit die Funktion funktioniert."
                              },
                     "One":  {
                                 "Tag":  "Delete",
@@ -1956,7 +1956,7 @@
                              },
                     "One":  {
                                 "Tag":  "Enable",
-                                "ToolTip":  "Aktiviert den Dateianhangsmanager, um aus dem Internet heruntergeladene Dateien als unsicher zu prüfen (Standardeinstellung)."
+                                 "ToolTip":  "Aktiviert den Dateianhangsmanager, um aus dem Internet heruntergeladene Dateien als unsicher zu prüfen (Standardeinstellung)."
                             }
                 }
     },
@@ -2207,11 +2207,11 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Hide",
-                                 "ToolTip":  "Den Eintrag \"Komprimierter ZIP-Ordner\" \"Erstellen\" im Kontextmenü ausblenden."
+                                 "ToolTip":  "Den Eintrag \"Komprimierter ZIP-Ordner\" \"Neu\" im Kontextmenü ausblenden."
                              },
                     "One":  {
                                 "Tag":  "Show",
-                                "ToolTip":  "Den Eintrag \"Komprimierte (zip) Ordner\" \"Neu\"im Kontextmenü anzeigen (Standardeinstellung)."
+                                "ToolTip":  "Den Eintrag \"Komprimierter (zip) Ordner\" \"Neu\" im Kontextmenü anzeigen (Standardeinstellung)."
                             }
                 }
     },
@@ -2252,7 +2252,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "",
-                                 "ToolTip":  "Zeigen Sie alle Richtlinien-Registrierungsschlüssel (auch manuell erstellte) im Snap-In Lokaler Gruppenrichtlinien-Editor (gpedit.msc) an. Dies kann bis zu 30 Minuten dauern, abhängig von der Anzahl der in der Registrierung erstellten Richtlinien und Ihren Systemressourcen."
+                                 "ToolTip":  "Zeigt alle Richtlinien-Registrierungsschlüssel (auch manuell erstellte) im Snap-In Lokaler Gruppenrichtlinien-Editor (gpedit.msc) an. Dies kann bis zu 30 Minuten dauern, abhängig von der Anzahl der in der Registrierung erstellten Richtlinien und Ihren Systemressourcen."
                              }
                 }
     }
