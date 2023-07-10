@@ -6,7 +6,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "Warning",
-                                 "ToolTip":  "Obligatorische Kontrollen. Um die Warnung bei der Einrichtung der Voreinstellungsdatei zu deaktivieren, löschen Sie das Argument \"-warning\"."
+                                 "ToolTip":  "Obligatorische Kontrollen. Um die Warnung bei der Einrichtung der Voreinstellungsdatei zu deaktivieren, löschen Sie das Argument \"-Warning\"."
                              },
                     "One":  {
                                 "Tag":  "",
