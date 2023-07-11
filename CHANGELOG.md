@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.17.3 | 6.5.3 — 11.07.2023
+
+* Replaced interactive menus overall within a custom `Show-Menu` function;
+  * Thanks to [MaxKozlov](https://habr.com/users/MaxKozlov)
+  * [How-to](https://github.com/farag2/Sophia-Script-for-Windows/tree/master#change-user-folders-location-programmatically-using-the-interactive-menu).
+* Improved German translation. #514 merged;
+  * Thanks to @sensinsane.
+* Minor changes.
+
+### Wrapper 2.6.9
+
+* Small changes;
+  * Thanks to `ajt174`.
+
 ## 5.17.2 | 6.5.2 — 02.07.2023
 
 * Added `BrowsingHistory` function to hide websites from your browsing history in the Start menu;
