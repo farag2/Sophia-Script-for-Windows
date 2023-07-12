@@ -7618,7 +7618,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu @($Yes, $No) -Default 2
+				$Choice = Show-Menu -Title "" -Menu @($Yes, $Skip) -Default 2
 
 				switch ($Choice)
 				{
@@ -7626,7 +7626,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					{
 						Set-UserShellFolder -UserFolder Desktop -FolderPath "$env:USERPROFILE\Desktop" -RemoveDesktopINI
 					}
-					$No
+					$Skip
 					{
 						Write-Information -MessageData "" -InformationAction Continue
 						Write-Verbose -Message $Localization.Skipped -Verbose
@@ -7647,7 +7647,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu @($Yes, $No) -Default 2
+				$Choice = Show-Menu -Title "" -Menu @($Yes, $Skip) -Default 2
 
 				switch ($Choice)
 				{
@@ -7655,7 +7655,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					{
 						Set-UserShellFolder -UserFolder Documents -FolderPath "$env:USERPROFILE\Documents" -RemoveDesktopINI
 					}
-					$No
+					$Skip
 					{
 						Write-Information -MessageData "" -InformationAction Continue
 						Write-Verbose -Message $Localization.Skipped -Verbose
@@ -7676,7 +7676,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu @($Yes, $No) -Default 2
+				$Choice = Show-Menu -Title "" -Menu @($Yes, $Skip) -Default 2
 
 				switch ($Choice)
 				{
@@ -7684,7 +7684,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					{
 						Set-UserShellFolder -UserFolder Downloads -FolderPath "$env:USERPROFILE\Downloads" -RemoveDesktopINI
 					}
-					$No
+					$Skip
 					{
 						Write-Information -MessageData "" -InformationAction Continue
 						Write-Verbose -Message $Localization.Skipped -Verbose
@@ -7705,7 +7705,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu @($Yes, $No) -Default 2
+				$Choice = Show-Menu -Title "" -Menu @($Yes, $Skip) -Default 2
 
 				switch ($Choice)
 				{
@@ -7713,7 +7713,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					{
 						Set-UserShellFolder -UserFolder Music -FolderPath "$env:USERPROFILE\Music" -RemoveDesktopINI
 					}
-					$No
+					$Skip
 					{
 						Write-Information -MessageData "" -InformationAction Continue
 						Write-Verbose -Message $Localization.Skipped -Verbose
@@ -7734,7 +7734,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title $Title -Menu @($Yes, $No) -Default 2
+				$Choice = Show-Menu -Title $Title -Menu @($Yes, $Skip) -Default 2
 
 				switch ($Choice)
 				{
@@ -7742,7 +7742,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					{
 						Set-UserShellFolder -UserFolder Pictures -FolderPath "$env:USERPROFILE\Pictures" -RemoveDesktopINI
 					}
-					$No
+					$Skip
 					{
 						Write-Information -MessageData "" -InformationAction Continue
 						Write-Verbose -Message $Localization.Skipped -Verbose
@@ -7757,13 +7757,13 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			Write-Verbose -Message ($Localization.UserDefaultFolder -f [WinAPI.GetStr]::GetString(21791)) -Verbose
 
 			# Extract the localized "Pictures" string from shell32.dll
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Videos"
+			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Video"
 			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f [WinAPI.GetStr]::GetString(21791), $CurrentUserFolderLocation) -Verbose
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu @($Yes, $No) -Default 2
+				$Choice = Show-Menu -Title "" -Menu @($Yes, $Skip) -Default 2
 
 				switch ($Choice)
 				{
@@ -7771,7 +7771,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					{
 						Set-UserShellFolder -UserFolder Videos -FolderPath "$env:USERPROFILE\Videos" -RemoveDesktopINI
 					}
-					$No
+					$Skip
 					{
 						Write-Information -MessageData "" -InformationAction Continue
 						Write-Verbose -Message $Localization.Skipped -Verbose
