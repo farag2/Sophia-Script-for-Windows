@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Le script n'est compatible qu'avec Windows 64 bits.
 UnsupportedOSBuild                        = Le script supporte les versions Windows 10 22H2.
-UpdateWarning                             = Votre version de Windows 10 : {0}.{1}. Versions prises en charge: 19045.3208+. Exécutez Windows Update et réessayez.
+UpdateWarning                             = Votre version de Windows 10: {0}.{1}. Versions prises en charge: 19045.3208+. Exécutez Windows Update et réessayez.
 UnsupportedLanguageMode                   = La session PowerShell s'exécute dans un mode de langue limité.
 LoggedInUserNotAdmin                      = L'utilisateur connecté n'a pas de droits d'administrateur.
 UnsupportedPowerShell                     = Vous essayez d'exécuter le script via PowerShell {0}.{1}. Exécutez le script dans la version appropriée de PowerShell.
@@ -11,6 +11,7 @@ TweakerWarning                            = La stabilité de l'OS Windows peut a
 bin                                       = Il n'y a pas de fichiers dans le dossier bin. Veuillez retélécharger l'archive.
 RebootPending                             = Le PC attend d'être redémarré.
 UnsupportedRelease                        = Nouvelle version trouvée.
+KeyboardArrows                            = Veuillez utiliser les touches fléchées {0} et {1} de votre clavier pour sélectionner votre réponse
 CustomizationWarning                      = Avez-vous personnalisé chaque fonction du fichier de préréglage {0} avant d'exécuter Sophia Script?
 WindowsComponentBroken                    = {0} cassé ou supprimé du système d'exploitation.
 UpdateDefender                            = Les définitions de Microsoft Defender ne sont pas à jour. Exécutez Windows Update et réessayez.

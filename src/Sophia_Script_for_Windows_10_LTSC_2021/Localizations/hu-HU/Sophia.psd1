@@ -11,6 +11,7 @@ TweakerWarning                            = A Windows operációs rendszer stabi
 bin                                       = A bin mappában nincsenek fájlok. Kérjük, töltse le újra az archívumot.
 RebootPending                             = A számítógép újraindításra vár.
 UnsupportedRelease                        = Új verzió érhető el.
+KeyboardArrows                            = Kérjük, használja a billentyűzet {0} és {1} nyílbillentyűit a válasz kiválasztásához
 CustomizationWarning                      = Személyre szabott minden opciót a {0} preset fájlban, mielőtt futtatni kívánja a Sophia szkriptet?
 WindowsComponentBroken                    = A {0} elromlott vagy eltávolították az operációs rendszerből.
 UpdateDefender                            = A Microsoft Defender definíciói elavultak. Futtassa a Windows Update programot, és próbálja meg újra.

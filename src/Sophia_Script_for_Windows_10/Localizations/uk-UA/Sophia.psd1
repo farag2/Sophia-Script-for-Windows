@@ -11,6 +11,7 @@ TweakerWarning                            = Стабільність вашої 
 bin                                       = У папці bin відсутні файли. Будь ласка, повторно завантажте архів.
 RebootPending                             = Комп'ютер очікує на перезавантаження.
 UnsupportedRelease                        = Виявлено нову версію.
+KeyboardArrows                            = Для вибору відповіді на клавіатурі стрілки {0} і {1}
 CustomizationWarning                      = Ви налаштували всі функції в пресет-файлі {0} перед запуском Sophia Script?
 WindowsComponentBroken                    = {0} пошкоджено або видалено з ОС.
 UpdateDefender                            = Визначення Microsoft Defender застаріли. Запустіть Windows Update і повторіть спробу.

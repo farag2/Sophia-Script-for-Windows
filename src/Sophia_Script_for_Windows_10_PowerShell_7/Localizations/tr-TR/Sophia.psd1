@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Komut dosyası yalnızca 64 bit Windows'u destekler.
-UnsupportedOSBuild                        = Komut dosyası, Windows 10 22H2 sürümlerini destekler.
+UnsupportedOSBuild                        = Komut dosyası Windows 10 22H2'u destekler.
 UpdateWarning                             = Windows 10 yapınız: {0}.{1}. Desteklenen yapılar: 19045.3208+. Windows Update'i çalıştırın ve tekrar deneyin.
 UnsupportedLanguageMode                   = Sınırlı bir dil modunda çalışan PowerShell oturumu.
 LoggedInUserNotAdmin                      = Oturum açan kullanıcının yönetici hakları yok.
@@ -11,6 +11,7 @@ TweakerWarning                            = Windows işletim sistemi kararlılı
 bin                                       = bin klasöründe dosya yok. Lütfen arşivi yeniden indirin.
 RebootPending                             = PC yeniden başlatılmayı bekliyor.
 UnsupportedRelease                        = Yeni sürüm bulundu.
+KeyboardArrows                            = Lütfen cevabınızı seçmek için klavyenizdeki {0} ve {1} ok tuşlarını kullanın
 CustomizationWarning                      = Sophia Script'i çalıştırmadan önce {0} ön ayar dosyasındaki her işlevi özelleştirdiniz mi?
 WindowsComponentBroken                    = {0} bozuk veya işletim sisteminden kaldırıldı.
 UpdateDefender                            = Microsoft Defender tanımları güncel değil. Windows Update'i çalıştırın ve tekrar deneyin.

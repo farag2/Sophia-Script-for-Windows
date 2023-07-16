@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.17.4 | 6.5.4 — 16.07.2023
+
+* Improved interective menu UX.
+
 ## 5.17.3 | 6.5.3 — 11.07.2023
 
 * Replaced interactive menus overall within a custom `Show-Menu` function;

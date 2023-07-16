@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = El script sólo es compatible con Windows de 64 bits.
 UnsupportedOSBuild                        = El script es compatible con versión Windows 10 Enterprise LTSC 2019.
-UpdateWarning                             = Actualización acumulativa de Windows 10 instalada: {0}. Actualización acumulativa soportada: 4645 y superior. Ejecute Windows Update y vuelva a intentarlo.
+UpdateWarning                             = Su build de Windows 10: {0}.{1}. Compilaciones compatibles: 17763.4645+. Ejecute Windows Update y vuelva a intentarlo.
 UnsupportedLanguageMode                   = Sesión de PowerShell ejecutada en modo de lenguaje limitado.
 LoggedInUserNotAdmin                      = El usuario que inició sesión no tiene derechos de administrador.
 UnsupportedPowerShell                     = Estás intentando ejecutar el script a través de PowerShell {0}.{1}. Ejecute el script en la versión apropiada de PowerShell.
@@ -11,8 +11,9 @@ TweakerWarning                            = La estabilidad del sistema operativo
 bin                                       = No hay archivos en la carpeta bin. Por favor, vuelva a descargar el archivo.
 RebootPending                             = El PC está esperando a ser reiniciado.
 UnsupportedRelease                        = Una nueva versión encontrada.
+KeyboardArrows                            = Utilice las flechas {0} y {1} de su teclado para seleccionar la respuesta
 CustomizationWarning                      = ¿Ha personalizado todas las funciones del archivo predeterminado {0} antes de ejecutar Sophia Script?
-WindowsComponentBroken                    = Microsoft Defender dañado o eliminado del sistema operativo.
+WindowsComponentBroken                    = {0} dañado o eliminado del sistema operativo.
 UpdateDefender                            = Las definiciones de Microsoft Defender no están actualizadas. Ejecute Windows Update y vuelva a intentarlo.
 ControlledFolderAccessDisabled            = Acceso a la carpeta controlada deshabilitado.
 ScheduledTasks                            = Tareas programadas

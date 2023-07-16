@@ -10,6 +10,7 @@ TweakerWarning                            = Windows işletim sistemi kararlılı
 bin                                       = bin klasöründe dosya yok. Lütfen arşivi yeniden indirin.
 RebootPending                             = PC yeniden başlatılmayı bekliyor.
 UnsupportedRelease                        = Yeni sürüm bulundu.
+KeyboardArrows                            = Lütfen cevabınızı seçmek için klavyenizdeki {0} ve {1} ok tuşlarını kullanın
 CustomizationWarning                      = Sophia Script'i çalıştırmadan önce {0} ön ayar dosyasındaki her işlevi özelleştirdiniz mi?
 WindowsComponentBroken                    = {0} bozuk veya işletim sisteminden kaldırıldı.
 UpdateDefender                            = Microsoft Defender tanımları güncel değil. Windows Update'i çalıştırın ve tekrar deneyin.

@@ -11,6 +11,7 @@ TweakerWarning                            = Windows的稳定性可能已被{0}�
 bin                                       = bin文件夹中没有文件。请重新下载该档案。
 RebootPending                             = 计算机正在等待重新启动。
 UnsupportedRelease                        = 找到新版本。
+KeyboardArrows                            = 请使用键盘上的方向键{0}和{1}选择您的答案
 CustomizationWarning                      = 在运行Sophia Script之前，您是否已自定义{0}预设文件中的每个函数？
 WindowsComponentBroken                    = {0} 损坏或从操作系统中删除。
 UpdateDefender                            = Microsoft Defender的定义已经过期。运行Windows Update并再次尝试。

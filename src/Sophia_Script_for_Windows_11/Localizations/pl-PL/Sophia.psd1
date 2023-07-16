@@ -10,6 +10,7 @@ TweakerWarning                            = Stabilność systemu Windows mogła 
 bin                                       = W folderze bin nie ma żadnych plików. Proszę pobrać archiwum ponownie.
 RebootPending                             = Komputer oczekuje na ponowne uruchomienie.
 UnsupportedRelease                        = Znaleziono nową wersję.
+KeyboardArrows                            = Użyj klawiszy strzałek {0} i {1} na klawiaturze, aby wybrać odpowiedź
 CustomizationWarning                      = Czy dostosowałeś funkcje w predefiniowanym pliku {0} przed uruchomieniem Sophia Script?
 WindowsComponentBroken                    = {0} jest uszkodzony lub usunięty z systemu operacyjnego.
 UpdateDefender                            = Definicje programu Microsoft Defender są nieaktualne. Uruchom aktualizację systemu Windows i spróbuj ponownie.

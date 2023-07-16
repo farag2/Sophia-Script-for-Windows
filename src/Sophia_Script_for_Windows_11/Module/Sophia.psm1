@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v6.5.3
-	Date: 11.07.2023
+	Version: v6.5.4
+	Date: 16.07.2023
 
 	Copyright (c) 2014—2023 farag
 	Copyright (c) 2019—2023 farag & Inestic
@@ -896,9 +896,6 @@ public static string GetString(uint strId)
 		.SYNOPSIS
 		The "Show menu" function with the up/down arrow keys and enter key to make a selection
 
-		.PARAMETER Title
-		Add title
-
 		.PARAMETER Menu
 		Array of items to choose from
 
@@ -919,10 +916,6 @@ public static string GetString(uint strId)
 		[CmdletBinding()]
 		param
 		(
-			[Parameter(Mandatory = $false)]
-			[string]
-			$Title,
-
 			[Parameter(Mandatory = $true)]
 			[array]
 			$Menu,
@@ -936,10 +929,10 @@ public static string GetString(uint strId)
 			$AddSkip
 		)
 
-		Write-Information -MessageData $Title -InformationAction Continue
+		Write-Information -MessageData "" -InformationAction Continue
 
-		# Extract the localized "Waiting for confirmation" string from shell32.dll
-		$Menu += [WinAPI.GetStr]::GetString(33252)
+		# Add "Please use the arrow keys 🠕 and 🠗 on your keyboard to select your answer" to menu
+		$Menu += $Localization.KeyboardArrows -f [System.Char]::ConvertFromUtf32(0x1F815), [System.Char]::ConvertFromUtf32(0x1F817)
 
 		if ($AddSkip)
 		{
@@ -1004,8 +997,7 @@ public static string GetString(uint strId)
 	$Script:No = [WinAPI.GetStr]::GetString(33232).Replace("&", "")
 	# Extract the localized "&Yes" string from shell32.dll
 	$Script:Yes = [WinAPI.GetStr]::GetString(33224).Replace("&", "")
-	# Extract the localized "Waiting for confirmation" string from shell32.dll
-	$Script:Wait = [WinAPI.GetStr]::GetString(33252)
+	$Script:KeyboardArrows = $Localization.KeyboardArrows -f [System.Char]::ConvertFromUtf32(0x1F815), [System.Char]::ConvertFromUtf32(0x1F817)
 	# Extract the localized "Skip" string from shell32.dll
 	$Script:Skip = [WinAPI.GetStr]::GetString(16956)
 
@@ -1020,7 +1012,7 @@ public static string GetString(uint strId)
 
 		do
 		{
-			$Choice = Show-Menu -Title "" -Menu @($Yes, $No) -Default 2
+			$Choice = Show-Menu -Menu @($Yes, $No) -Default 2
 
 			switch ($Choice)
 			{
@@ -1040,10 +1032,10 @@ public static string GetString(uint strId)
 
 					exit
 				}
-				$Wait {}
+				$KeyboardArrows {}
 			}
 		}
-		until ($Choice -ne $Wait)
+		until ($Choice -ne $KeyboardArrows)
 	}
 }
 #endregion InitialActions
@@ -2413,11 +2405,6 @@ function BrowsingHistory
 		[switch]
 		$Show
 	)
-
-	if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 1992)
-	{
-		return
-	}
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
@@ -7203,7 +7190,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
+				$Choice = Show-Menu -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
 
 				switch ($Choice)
 				{
@@ -7216,10 +7203,10 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 						Write-Information -MessageData "" -InformationAction Continue
 						Write-Verbose -Message $Localization.Skipped -Verbose
 					}
-					$Wait {}
+					$KeyboardArrows {}
 				}
 			}
-			until ($Choice -ne $Wait)
+			until ($Choice -ne $KeyboardArrows)
 
 			# Documents
 			Write-Information -MessageData "" -InformationAction Continue
@@ -7231,7 +7218,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
+				$Choice = Show-Menu -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
 
 				switch ($Choice)
 				{
@@ -7244,10 +7231,10 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 						Write-Information -MessageData "" -InformationAction Continue
 						Write-Verbose -Message $Localization.Skipped -Verbose
 					}
-					$Wait {}
+					$KeyboardArrows {}
 				}
 			}
-			until ($Choice -ne $Wait)
+			until ($Choice -ne $KeyboardArrows)
 
 			# Downloads
 			Write-Information -MessageData "" -InformationAction Continue
@@ -7259,7 +7246,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
+				$Choice = Show-Menu -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
 
 				switch ($Choice)
 				{
@@ -7272,10 +7259,10 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 						Write-Information -MessageData "" -InformationAction Continue
 						Write-Verbose -Message $Localization.Skipped -Verbose
 					}
-					$Wait {}
+					$KeyboardArrows {}
 				}
 			}
-			until ($Choice -ne $Wait)
+			until ($Choice -ne $KeyboardArrows)
 
 			# Music
 			Write-Information -MessageData "" -InformationAction Continue
@@ -7287,7 +7274,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
+				$Choice = Show-Menu -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
 
 				switch ($Choice)
 				{
@@ -7300,10 +7287,10 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 						Write-Information -MessageData "" -InformationAction Continue
 						Write-Verbose -Message $Localization.Skipped -Verbose
 					}
-					$Wait {}
+					$KeyboardArrows {}
 				}
 			}
-			until ($Choice -ne $Wait)
+			until ($Choice -ne $KeyboardArrows)
 
 			# Pictures
 			Write-Information -MessageData "" -InformationAction Continue
@@ -7315,7 +7302,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
+				$Choice = Show-Menu -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
 
 				switch ($Choice)
 				{
@@ -7328,10 +7315,10 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 						Write-Information -MessageData "" -InformationAction Continue
 						Write-Verbose -Message $Localization.Skipped -Verbose
 					}
-					$Wait {}
+					$KeyboardArrows {}
 				}
 			}
-			until ($Choice -ne $Wait)
+			until ($Choice -ne $KeyboardArrows)
 
 			# Videos
 			Write-Information -MessageData "" -InformationAction Continue
@@ -7343,7 +7330,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
+				$Choice = Show-Menu -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
 
 				switch ($Choice)
 				{
@@ -7356,10 +7343,10 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 						Write-Information -MessageData "" -InformationAction Continue
 						Write-Verbose -Message $Localization.Skipped -Verbose
 					}
-					$Wait {}
+					$KeyboardArrows {}
 				}
 			}
-			until ($Choice -ne $Wait)
+			until ($Choice -ne $KeyboardArrows)
 		}
 		"Custom"
 		{
@@ -7373,7 +7360,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu @($Browse, $Skip) -Default 2
+				$Choice = Show-Menu -Menu @($Browse, $Skip) -Default 2
 
 				switch ($Choice)
 				{
@@ -7398,10 +7385,10 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 						Write-Information -MessageData "" -InformationAction Continue
 						Write-Verbose -Message $Localization.Skipped -Verbose
 					}
-					$Wait {}
+					$KeyboardArrows {}
 				}
 			}
-			until ($Choice -ne $Wait)
+			until ($Choice -ne $KeyboardArrows)
 
 			# Documents
 			Write-Information -MessageData "" -InformationAction Continue
@@ -7413,7 +7400,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu @($Browse, $Skip) -Default 2
+				$Choice = Show-Menu -Menu @($Browse, $Skip) -Default 2
 
 				switch ($Choice)
 				{
@@ -7438,10 +7425,10 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 						Write-Information -MessageData "" -InformationAction Continue
 						Write-Verbose -Message $Localization.Skipped -Verbose
 					}
-					$Wait {}
+					$KeyboardArrows {}
 				}
 			}
-			until ($Choice -ne $Wait)
+			until ($Choice -ne $KeyboardArrows)
 
 			# Downloads
 			Write-Information -MessageData "" -InformationAction Continue
@@ -7453,7 +7440,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu @($Browse, $Skip) -Default 2
+				$Choice = Show-Menu -Menu @($Browse, $Skip) -Default 2
 
 				switch ($Choice)
 				{
@@ -7478,10 +7465,10 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 						Write-Information -MessageData "" -InformationAction Continue
 						Write-Verbose -Message $Localization.Skipped -Verbose
 					}
-					$Wait {}
+					$KeyboardArrows {}
 				}
 			}
-			until ($Choice -ne $Wait)
+			until ($Choice -ne $KeyboardArrows)
 
 			# Music
 			Write-Information -MessageData "" -InformationAction Continue
@@ -7493,7 +7480,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu @($Browse, $Skip) -Default 2
+				$Choice = Show-Menu -Menu @($Browse, $Skip) -Default 2
 
 				switch ($Choice)
 				{
@@ -7518,10 +7505,10 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 						Write-Information -MessageData "" -InformationAction Continue
 						Write-Verbose -Message $Localization.Skipped -Verbose
 					}
-					$Wait {}
+					$KeyboardArrows {}
 				}
 			}
-			until ($Choice -ne $Wait)
+			until ($Choice -ne $KeyboardArrows)
 
 			# Pictures
 			Write-Information -MessageData "" -InformationAction Continue
@@ -7533,7 +7520,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu @($Browse, $Skip) -Default 2
+				$Choice = Show-Menu -Menu @($Browse, $Skip) -Default 2
 
 				switch ($Choice)
 				{
@@ -7558,10 +7545,10 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 						Write-Information -MessageData "" -InformationAction Continue
 						Write-Verbose -Message $Localization.Skipped -Verbose
 					}
-					$Wait {}
+					$KeyboardArrows {}
 				}
 			}
-			until ($Choice -ne $Wait)
+			until ($Choice -ne $KeyboardArrows)
 
 			# Videos
 			Write-Information -MessageData "" -InformationAction Continue
@@ -7573,7 +7560,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu @($Browse, $Skip) -Default 2
+				$Choice = Show-Menu -Menu @($Browse, $Skip) -Default 2
 
 				switch ($Choice)
 				{
@@ -7598,10 +7585,10 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 						Write-Information -MessageData "" -InformationAction Continue
 						Write-Verbose -Message $Localization.Skipped -Verbose
 					}
-					$Wait {}
+					$KeyboardArrows {}
 				}
 			}
-			until ($Choice -ne $Wait)
+			until ($Choice -ne $KeyboardArrows)
 		}
 		"Default"
 		{
@@ -7616,7 +7603,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu @($Yes, $Skip) -Default 2
+				$Choice = Show-Menu -Menu @($Yes, $Skip) -Default 2
 
 				switch ($Choice)
 				{
@@ -7629,10 +7616,10 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 						Write-Information -MessageData "" -InformationAction Continue
 						Write-Verbose -Message $Localization.Skipped -Verbose
 					}
-					$Wait {}
+					$KeyboardArrows {}
 				}
 			}
-			until ($Choice -ne $Wait)
+			until ($Choice -ne $KeyboardArrows)
 
 			# Documents
 			Write-Information -MessageData "" -InformationAction Continue
@@ -7645,7 +7632,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu @($Yes, $Skip) -Default 2
+				$Choice = Show-Menu -Menu @($Yes, $Skip) -Default 2
 
 				switch ($Choice)
 				{
@@ -7658,10 +7645,10 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 						Write-Information -MessageData "" -InformationAction Continue
 						Write-Verbose -Message $Localization.Skipped -Verbose
 					}
-					$Wait {}
+					$KeyboardArrows {}
 				}
 			}
-			until ($Choice -ne $Wait)
+			until ($Choice -ne $KeyboardArrows)
 
 			# Downloads
 			Write-Information -MessageData "" -InformationAction Continue
@@ -7674,7 +7661,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu @($Yes, $Skip) -Default 2
+				$Choice = Show-Menu -Menu @($Yes, $Skip) -Default 2
 
 				switch ($Choice)
 				{
@@ -7687,10 +7674,10 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 						Write-Information -MessageData "" -InformationAction Continue
 						Write-Verbose -Message $Localization.Skipped -Verbose
 					}
-					$Wait {}
+					$KeyboardArrows {}
 				}
 			}
-			until ($Choice -ne $Wait)
+			until ($Choice -ne $KeyboardArrows)
 
 			# Music
 			Write-Information -MessageData "" -InformationAction Continue
@@ -7703,7 +7690,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu @($Yes, $Skip) -Default 2
+				$Choice = Show-Menu -Menu @($Yes, $Skip) -Default 2
 
 				switch ($Choice)
 				{
@@ -7716,10 +7703,10 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 						Write-Information -MessageData "" -InformationAction Continue
 						Write-Verbose -Message $Localization.Skipped -Verbose
 					}
-					$Wait {}
+					$KeyboardArrows {}
 				}
 			}
-			until ($Choice -ne $Wait)
+			until ($Choice -ne $KeyboardArrows)
 
 			# Pictures
 			Write-Information -MessageData "" -InformationAction Continue
@@ -7732,7 +7719,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title $Title -Menu @($Yes, $Skip) -Default 2
+				$Choice = Show-Menu -Menu @($Yes, $Skip) -Default 2
 
 				switch ($Choice)
 				{
@@ -7745,10 +7732,10 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 						Write-Information -MessageData "" -InformationAction Continue
 						Write-Verbose -Message $Localization.Skipped -Verbose
 					}
-					$Wait {}
+					$KeyboardArrows {}
 				}
 			}
-			until ($Choice -ne $Wait)
+			until ($Choice -ne $KeyboardArrows)
 
 			# Videos
 			Write-Information -MessageData "" -InformationAction Continue
@@ -7761,7 +7748,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Title "" -Menu @($Yes, $Skip) -Default 2
+				$Choice = Show-Menu -Menu @($Yes, $Skip) -Default 2
 
 				switch ($Choice)
 				{
@@ -7774,10 +7761,10 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 						Write-Information -MessageData "" -InformationAction Continue
 						Write-Verbose -Message $Localization.Skipped -Verbose
 					}
-					$Wait {}
+					$KeyboardArrows {}
 				}
 			}
-			until ($Choice -ne $Wait)
+			until ($Choice -ne $KeyboardArrows)
 		}
 	}
 }
@@ -11810,14 +11797,16 @@ function Set-AppGraphicsPerformance
 {
 	if (Get-CimInstance -ClassName Win32_VideoController | Where-Object -FilterScript {($_.AdapterDACType -ne "Internal") -and ($null -ne $_.AdapterDACType)})
 	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message $Localization.GraphicsPerformanceTitle -Verbose
+
 		do
 		{
-			$Title = $Localization.GraphicsPerformanceTitle
-			$Choice = Show-Menu -Title $Title -Menu @($Yes, $No, $Wait) -Default 2
+			$Choice = Show-Menu -Menu @($Browse, $Skip) -Default 2
 
 			switch ($Choice)
 			{
-				$Yes
+				$Browse
 				{
 					Add-Type -AssemblyName System.Windows.Forms
 					$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
@@ -11838,15 +11827,15 @@ function Set-AppGraphicsPerformance
 						New-ItemProperty -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Name $OpenFileDialog.FileName -PropertyType String -Value "GpuPreference=2;" -Force
 					}
 				}
-				$No
+				$Skip
 				{
 					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
-				$Wait {}
+				$KeyboardArrows {}
 			}
 		}
-		until ($Choice -ne $Wait)
+		until ($Choice -ne $KeyboardArrows)
 	}
 }
 
