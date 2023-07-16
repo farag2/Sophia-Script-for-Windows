@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Improved interective menu UX.
 
+https://user-images.githubusercontent.com/10544660/253818031-b7ce6bf1-d968-41ea-a5c0-27f6845de402.mp4
+
 ## 5.17.3 | 6.5.3 — 11.07.2023
 
 * Replaced interactive menus overall within a custom `Show-Menu` function;
