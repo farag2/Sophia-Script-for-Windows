@@ -2407,6 +2407,11 @@ function BrowsingHistory
 		$Show
 	)
 
+	if ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber -lt 23451)
+	{
+		return
+	}
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Hide"
@@ -7004,11 +7009,8 @@ function Set-UserShellFolderLocation
 		.SYNOPSIS
 		Change the location of the each user folder using SHSetKnownFolderPath function
 
-		.PARAMETER RemoveDesktopINI
-		The RemoveDesktopINI argument removes desktop.ini in the old user shell folder
-
 		.EXAMPLE
-		Set-UserShellFolder -UserFolder Desktop -FolderPath "$env:SystemDrive:\Desktop" -RemoveDesktopINI
+		Set-UserShellFolder -UserFolder Desktop -FolderPath "$env:SystemDrive:\Desktop"
 
 		.LINK
 		https://docs.microsoft.com/en-us/windows/win32/api/shlobj_core/nf-shlobj_core-shgetknownfolderpath
@@ -7028,11 +7030,7 @@ function Set-UserShellFolderLocation
 
 			[Parameter(Mandatory = $true)]
 			[string]
-			$FolderPath,
-
-			[Parameter(Mandatory = $false)]
-			[switch]
-			$RemoveDesktopINI
+			$FolderPath
 		)
 
 		<#
@@ -7151,10 +7149,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			}
 
 			# Removing old desktop.ini
-			if ($RemoveDesktopINI)
-			{
-				Remove-Item -Path "$CurrentUserFolderPath\desktop.ini" -Force -ErrorAction Ignore
-			}
+			Remove-Item -Path "$CurrentUserFolderPath\desktop.ini" -Force -ErrorAction Ignore
 
 			Set-KnownFolderPath -KnownFolder $UserFolder -Path $FolderPath
 			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name $UserShellFoldersGUIDs[$UserFolder] -PropertyType ExpandString -Value $FolderPath -Force
@@ -7198,7 +7193,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				{
 					{$DriveLetters -contains $Choice}
 					{
-						Set-UserShellFolder -UserFolder Desktop -FolderPath "$($Choice)\Desktop" -RemoveDesktopINI
+						Set-UserShellFolder -UserFolder Desktop -FolderPath "$($Choice)\Desktop"
 					}
 					$Skip
 					{
@@ -7226,7 +7221,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				{
 					{$DriveLetters -contains $Choice}
 					{
-						Set-UserShellFolder -UserFolder Documents -FolderPath "$($Choice)\Documents" -RemoveDesktopINI
+						Set-UserShellFolder -UserFolder Documents -FolderPath "$($Choice)\Documents"
 					}
 					$Skip
 					{
@@ -7254,7 +7249,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				{
 					{$DriveLetters -contains $Choice}
 					{
-						Set-UserShellFolder -UserFolder Downloads -FolderPath "$($Choice)\Downloads" -RemoveDesktopINI
+						Set-UserShellFolder -UserFolder Downloads -FolderPath "$($Choice)\Downloads"
 					}
 					$Skip
 					{
@@ -7282,7 +7277,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				{
 					{$DriveLetters -contains $Choice}
 					{
-						Set-UserShellFolder -UserFolder Music -FolderPath "$($Choice)\Music" -RemoveDesktopINI
+						Set-UserShellFolder -UserFolder Music -FolderPath "$($Choice)\Music"
 					}
 					$Skip
 					{
@@ -7310,7 +7305,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				{
 					{$DriveLetters -contains $Choice}
 					{
-						Set-UserShellFolder -UserFolder Pictures -FolderPath "$($Choice)\Pictures" -RemoveDesktopINI
+						Set-UserShellFolder -UserFolder Pictures -FolderPath "$($Choice)\Pictures"
 					}
 					$Skip
 					{
@@ -7338,7 +7333,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				{
 					{$DriveLetters -contains $Choice}
 					{
-						Set-UserShellFolder -UserFolder Videos -FolderPath "$($Choice)\Videos" -RemoveDesktopINI
+						Set-UserShellFolder -UserFolder Videos -FolderPath "$($Choice)\Videos"
 					}
 					$Skip
 					{
@@ -7379,7 +7374,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 						if ($FolderBrowserDialog.SelectedPath)
 						{
-							Set-UserShellFolder -UserFolder Desktop -FolderPath "$($FolderBrowserDialog.SelectedPath)\Desktop" -RemoveDesktopINI
+							Set-UserShellFolder -UserFolder Desktop -FolderPath $FolderBrowserDialog.SelectedPath
 						}
 					}
 					$Skip
@@ -7419,7 +7414,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 						if ($FolderBrowserDialog.SelectedPath)
 						{
-							Set-UserShellFolder -UserFolder Documents -FolderPath "$($FolderBrowserDialog.SelectedPath)\Documents)" -RemoveDesktopINI
+							Set-UserShellFolder -UserFolder Documents -FolderPath $FolderBrowserDialog.SelectedPath
 						}
 					}
 					$Skip
@@ -7459,7 +7454,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 						if ($FolderBrowserDialog.SelectedPath)
 						{
-							Set-UserShellFolder -UserFolder Downloads -FolderPath "$($FolderBrowserDialog.SelectedPath)\Downloads)" -RemoveDesktopINI
+							Set-UserShellFolder -UserFolder Downloads -FolderPath $FolderBrowserDialog.SelectedPath
 						}
 					}
 					$Skip
@@ -7499,7 +7494,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 						if ($FolderBrowserDialog.SelectedPath)
 						{
-							Set-UserShellFolder -UserFolder Music -FolderPath "$($FolderBrowserDialog.SelectedPath)\Music)" -RemoveDesktopINI
+							Set-UserShellFolder -UserFolder Music -FolderPath $FolderBrowserDialog.SelectedPath
 						}
 					}
 					$Skip
@@ -7539,7 +7534,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 						if ($FolderBrowserDialog.SelectedPath)
 						{
-							Set-UserShellFolder -UserFolder Pictures -FolderPath "$($FolderBrowserDialog.SelectedPath)\Pictures)" -RemoveDesktopINI
+							Set-UserShellFolder -UserFolder Pictures -FolderPath $FolderBrowserDialog.SelectedPath
 						}
 					}
 					$Skip
@@ -7579,7 +7574,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 						if ($FolderBrowserDialog.SelectedPath)
 						{
-							Set-UserShellFolder -UserFolder Videos -FolderPath "$($FolderBrowserDialog.SelectedPath)\Videos)" -RemoveDesktopINI
+							Set-UserShellFolder -UserFolder Videos -FolderPath $FolderBrowserDialog.SelectedPath
 						}
 					}
 					$Skip
@@ -7611,7 +7606,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				{
 					$Yes
 					{
-						Set-UserShellFolder -UserFolder Desktop -FolderPath "$env:USERPROFILE\Desktop" -RemoveDesktopINI
+						Set-UserShellFolder -UserFolder Desktop -FolderPath "$env:USERPROFILE\Desktop"
 					}
 					$Skip
 					{
@@ -7640,7 +7635,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				{
 					$Yes
 					{
-						Set-UserShellFolder -UserFolder Documents -FolderPath "$env:USERPROFILE\Documents" -RemoveDesktopINI
+						Set-UserShellFolder -UserFolder Documents -FolderPath "$env:USERPROFILE\Documents"
 					}
 					$Skip
 					{
@@ -7669,7 +7664,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				{
 					$Yes
 					{
-						Set-UserShellFolder -UserFolder Downloads -FolderPath "$env:USERPROFILE\Downloads" -RemoveDesktopINI
+						Set-UserShellFolder -UserFolder Downloads -FolderPath "$env:USERPROFILE\Downloads"
 					}
 					$Skip
 					{
@@ -7698,7 +7693,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				{
 					$Yes
 					{
-						Set-UserShellFolder -UserFolder Music -FolderPath "$env:USERPROFILE\Music" -RemoveDesktopINI
+						Set-UserShellFolder -UserFolder Music -FolderPath "$env:USERPROFILE\Music"
 					}
 					$Skip
 					{
@@ -7727,7 +7722,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				{
 					$Yes
 					{
-						Set-UserShellFolder -UserFolder Pictures -FolderPath "$env:USERPROFILE\Pictures" -RemoveDesktopINI
+						Set-UserShellFolder -UserFolder Pictures -FolderPath "$env:USERPROFILE\Pictures"
 					}
 					$Skip
 					{
@@ -7756,7 +7751,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				{
 					$Yes
 					{
-						Set-UserShellFolder -UserFolder Videos -FolderPath "$env:USERPROFILE\Videos" -RemoveDesktopINI
+						Set-UserShellFolder -UserFolder Videos -FolderPath "$env:USERPROFILE\Videos"
 					}
 					$Skip
 					{
