@@ -6556,7 +6556,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 				switch ($Choice)
 				{
-					$Browser
+					$Browse
 					{
 						Add-Type -AssemblyName System.Windows.Forms
 						$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
@@ -6596,7 +6596,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 				switch ($Choice)
 				{
-					$Browser
+					$Browse
 					{
 						Add-Type -AssemblyName System.Windows.Forms
 						$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
@@ -6636,7 +6636,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 				switch ($Choice)
 				{
-					$Browser
+					$Browse
 					{
 						Add-Type -AssemblyName System.Windows.Forms
 						$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
@@ -6676,7 +6676,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 				switch ($Choice)
 				{
-					$Browser
+					$Browse
 					{
 						Add-Type -AssemblyName System.Windows.Forms
 						$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
