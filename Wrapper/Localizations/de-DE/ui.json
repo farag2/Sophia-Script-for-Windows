@@ -38,7 +38,9 @@
     "Id": "Button",
     "Options": {
       "btnRefreshConsole": "Konsole aktualisieren",
-      "btnRunPowerShell": "PowerShell ausführen"
+      "btnRunPowerShell": "PowerShell ausführen",
+      "btnOpen": "Offen",
+      "btnSave": "Speichern"
     }
   },
   {

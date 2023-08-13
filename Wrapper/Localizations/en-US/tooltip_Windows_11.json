@@ -1478,6 +1478,51 @@
                 }
     },
     {
+        "Id":  546,
+        "Region":  "System",
+        "Function":  "Set-Association",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  "Register app, calculate hash, and associate with an extension with the 'How do you want to open this' pop-up hidden."
+                             }
+                }
+    },
+	{
+        "Id":  547,
+        "Region":  "System",
+        "Function":  "ProgramPath",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  "Application location to open file."
+                             }
+                }
+    },
+	{
+        "Id":  548,
+        "Region":  "System",
+        "Function":  "Extension",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  "File type extension."
+                             }
+                }
+    },
+	{
+        "Id":  549,
+        "Region":  "System",
+        "Function":  "Icon",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "",
+                                 "ToolTip":  "File type icon."
+                             }
+                }
+    },
+	
+    {
         "Id":  600,
         "Region":  "WSL",
         "Function":  "Install-WSL",

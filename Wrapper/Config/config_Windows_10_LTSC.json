@@ -1718,6 +1718,20 @@
     "LTSC2021": "true"
   },
   {
+    "Id": 543,
+    "Region": "System",
+    "Control": "chk",
+    "Required": "false",
+    "Function": "Set-Association",
+    "Arg": {
+      "Zero": {
+        "Tag": ""
+      }
+    },
+    "Preset": "",
+    "WindowsDefault": ""
+  },
+  {
     "Id": 600,
     "Region": "WSL",
     "Control": "chk",

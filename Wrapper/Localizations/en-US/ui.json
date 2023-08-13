@@ -38,7 +38,9 @@
     "Id": "Button",
     "Options": {
       "btnRefreshConsole": "Refresh Console",
-      "btnRunPowerShell": "Run PowerShell"
+      "btnRunPowerShell": "Run PowerShell",
+      "btnOpen": "Open",
+      "btnSave": "Save"
     }
   },
   {
