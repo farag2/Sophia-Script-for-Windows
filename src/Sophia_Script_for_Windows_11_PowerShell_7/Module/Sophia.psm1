@@ -836,6 +836,7 @@ public static string GetString(uint strId)
 			# Split the Array variable content
 			$IPArray = $IPArray -split "`r?`n" | Where-Object -FilterScript {$_ -notmatch "#"}
 
+			Write-Information -MessageData "" -InformationAction Continue
 			# Extract the localized "Please wait..." string from shell32.dll
 			Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
 
@@ -2384,6 +2385,9 @@ function BingSearch
 
 	.EXAMPLE
 	BrowsingHistory -Show
+
+	.NOTES
+	Windows 11 build 23451 (Dev) required
 
 	.NOTES
 	Current user
@@ -6757,6 +6761,7 @@ function NetworkAdaptersSavePower
 			Write-Information -MessageData "" -InformationAction Continue
 			# Extract the localized "Please wait..." string from shell32.dll
 			Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
+
 			Start-Sleep -Seconds 2
 		}
 	}
@@ -7159,7 +7164,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			(Get-Item -Path "$FolderPath\desktop.ini" -Force).Attributes = "Hidden", "System", "Archive"
 			(Get-Item -Path "$FolderPath\desktop.ini" -Force).Refresh()
 
-			if ((Get-ChildItem -Path $CurrentUserFolderPath | Measure-Object).Count -ne 0)
+			if ((Get-ChildItem -Path $CurrentUserFolderPath -ErrorAction Ignore | Measure-Object).Count -ne 0)
 			{
 				Write-Error -Message ($Localization.UserShellFolderNotEmpty -f $CurrentUserFolderPath) -ErrorAction SilentlyContinue
 			}
@@ -9754,7 +9759,7 @@ function InstallVCRedist
 		if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
 		{
 			# https://github.com/microsoft/winget-pkgs/tree/master/manifests/m/Microsoft/VCRedist/2015%2B
-			winget install --id=Microsoft.VCRedist.2015+.x86 --exact --accept-source-agreements
+			winget install --id=Microsoft.VCRedist.2015+.x86 --exact --force --accept-source-agreements
 			winget install --id=Microsoft.VCRedist.2015+.x64 --exact --force --accept-source-agreements
 
 			# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
@@ -11524,6 +11529,7 @@ function HEVC
 						Write-Information -MessageData "" -InformationAction Continue
 						# Extract the localized "Please wait..." string from shell32.dll
 						Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
+
 						Write-Verbose -Message $Localization.HEVCDownloading -Verbose
 
 						$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
@@ -11814,13 +11820,16 @@ function Set-AppGraphicsPerformance
 {
 	if (Get-CimInstance -ClassName Win32_VideoController | Where-Object -FilterScript {($_.AdapterDACType -ne "Internal") -and ($null -ne $_.AdapterDACType)})
 	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message $Localization.GraphicsPerformanceTitle -Verbose
+
 		do
 		{
-			$Choice = Show-Menu -Title $Localization.GraphicsPerformanceTitle -Menu @($Yes, $No) -Default 2
+			$Choice = Show-Menu -Menu @($Browse, $Skip) -Default 2
 
 			switch ($Choice)
 			{
-				$Yes
+				$Browse
 				{
 					Add-Type -AssemblyName System.Windows.Forms
 					$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
@@ -11841,7 +11850,7 @@ function Set-AppGraphicsPerformance
 						New-ItemProperty -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Name $OpenFileDialog.FileName -PropertyType String -Value "GpuPreference=2;" -Force
 					}
 				}
-				$No
+				$Skip
 				{
 					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message $Localization.Skipped -Verbose
@@ -14782,6 +14791,7 @@ function UpdateLGPEPolicies
 	Write-Information -MessageData "" -InformationAction Continue
 	# Extract the localized "Please wait..." string from shell32.dll
 	Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
+
 	Write-Verbose -Message $Localization.GPOUpdate -Verbose
 	Write-Verbose -Message HKLM -Verbose
 	Write-Information -MessageData "" -InformationAction Continue
@@ -15140,6 +15150,7 @@ public static void PostMessage()
 	Write-Information -MessageData "" -InformationAction Continue
 	# Extract the localized "Please wait..." string from shell32.dll
 	Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
+
 	Get-CimInstance -Namespace root/CIMV2/mdm/dmmap -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 | Invoke-CimMethod -MethodName UpdateScanMethod
 }
 #endregion Post Actions

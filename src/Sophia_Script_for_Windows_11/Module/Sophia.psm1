@@ -835,6 +835,7 @@ public static string GetString(uint strId)
 			# Split the Array variable content
 			$IPArray = $IPArray -split "`r?`n" | Where-Object -FilterScript {$_ -notmatch "#"}
 
+			Write-Information -MessageData "" -InformationAction Continue
 			# Extract the localized "Please wait..." string from shell32.dll
 			Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
 
@@ -1540,7 +1541,7 @@ function ScheduledTasks
 	# The following tasks will have their checkboxes checked
 	[string[]]$CheckedScheduledTasks = @(
 		# Collects program telemetry information if opted-in to the Microsoft Customer Experience Improvement Program
-		"Microsoft Compatibility Appraiser", ###
+		"Microsoft Compatibility Appraiser",
 
 		# This task collects and uploads autochk SQM data if opted-in to the Microsoft Customer Experience Improvement Program
 		"Proxy",
@@ -2385,6 +2386,9 @@ function BingSearch
 	BrowsingHistory -Show
 
 	.NOTES
+	Windows 11 build 23451 (Dev) required
+
+	.NOTES
 	Current user
 #>
 function BrowsingHistory
@@ -2406,7 +2410,7 @@ function BrowsingHistory
 		$Show
 	)
 
-	if ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber -lt 23451) ### c:\vivetool\vivetool.exe /enable /id:42905461
+	if ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber -lt 23451)
 	{
 		return
 	}
@@ -6755,6 +6759,7 @@ function NetworkAdaptersSavePower
 			Write-Information -MessageData "" -InformationAction Continue
 			# Extract the localized "Please wait..." string from shell32.dll
 			Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
+
 			Start-Sleep -Seconds 2
 		}
 	}
@@ -7157,7 +7162,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			(Get-Item -Path "$FolderPath\desktop.ini" -Force).Attributes = "Hidden", "System", "Archive"
 			(Get-Item -Path "$FolderPath\desktop.ini" -Force).Refresh()
 
-			if ((Get-ChildItem -Path $CurrentUserFolderPath | Measure-Object).Count -ne 0)
+			if ((Get-ChildItem -Path $CurrentUserFolderPath -ErrorAction Ignore | Measure-Object).Count -ne 0)
 			{
 				Write-Error -Message ($Localization.UserShellFolderNotEmpty -f $CurrentUserFolderPath) -ErrorAction SilentlyContinue
 			}
@@ -7572,7 +7577,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 						if ($FolderBrowserDialog.SelectedPath)
 						{
-							Set-UserShellFolder -UserFolder Videos -FolderPath $FolderBrowserDialog.SelectedPath ###
+							Set-UserShellFolder -UserFolder Videos -FolderPath $FolderBrowserDialog.SelectedPath
 						}
 					}
 					$Skip
@@ -11502,6 +11507,7 @@ function HEVC
 						Write-Information -MessageData "" -InformationAction Continue
 						# Extract the localized "Please wait..." string from shell32.dll
 						Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
+
 						Write-Verbose -Message $Localization.HEVCDownloading -Verbose
 
 						$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
@@ -14764,6 +14770,7 @@ function UpdateLGPEPolicies
 	Write-Information -MessageData "" -InformationAction Continue
 	# Extract the localized "Please wait..." string from shell32.dll
 	Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
+
 	Write-Verbose -Message $Localization.GPOUpdate -Verbose
 	Write-Verbose -Message HKLM -Verbose
 	Write-Information -MessageData "" -InformationAction Continue
@@ -15122,6 +15129,7 @@ public static void PostMessage()
 	Write-Information -MessageData "" -InformationAction Continue
 	# Extract the localized "Please wait..." string from shell32.dll
 	Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
+
 	Get-CimInstance -Namespace root/CIMV2/mdm/dmmap -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 | Invoke-CimMethod -MethodName UpdateScanMethod
 }
 #endregion Post Actions

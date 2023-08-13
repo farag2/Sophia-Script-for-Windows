@@ -243,8 +243,8 @@ BingSearch -Disable
 # Включить поиск через Bing в меню "Пуск" (значение по умолчанию)
 # BingSearch -Enable
 
-# Do not show websites from your browsing history in the Start menu
-# Не показать веб-сайты из журнала браузера в меню "Пуск"
+# Do not show websites from your browsing history in the Start menu. Windows 11 build 23451 (Dev) required
+# Не показать веб-сайты из журнала браузера в меню "Пуск". Требуется Windows 11 build 23451 (Dev)
 BrowsingHistory -Hide
 
 # Show websites from your browsing history in the Start menu (default value)
