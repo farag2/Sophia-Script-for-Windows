@@ -1555,7 +1555,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "",
-                                 "ToolTip":  "Application location to open file."
+                                 "ToolTip":  "Path to executable file."
                              }
                 }
     },
@@ -1566,7 +1566,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "",
-                                 "ToolTip":  "File type extension."
+                                 "ToolTip":  "Extension."
                              }
                 }
     },
@@ -1577,7 +1577,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "",
-                                 "ToolTip":  "File type icon."
+                                 "ToolTip":  "Path to icon."
                              }
                 }
     },	

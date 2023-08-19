@@ -1555,7 +1555,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "",
-                                 "ToolTip":  "Anwendungsspeicherort zum Öffnen von Dateien."
+                                 "ToolTip":  "Pfad zur ausführbaren Datei."
                              }
                 }
     },
@@ -1566,7 +1566,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "",
-                                 "ToolTip":  "Dateityperweiterung."
+                                 "ToolTip":  "Erweiterung."
                              }
                 }
     },
@@ -1577,7 +1577,7 @@
         "Arg":  {
                     "Zero":  {
                                  "Tag":  "",
-                                 "ToolTip":  "Dateityp-Symbol."
+                                 "ToolTip":  "Pfad zum Symbol."
                              }
                 }
     },	

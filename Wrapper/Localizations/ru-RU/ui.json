@@ -39,8 +39,8 @@
     "Options": {
       "btnRefreshConsole": "Обновить консоль",
       "btnRunPowerShell": "Запустить PowerShell",
-      "btnOpen": "Открыть",
-      "btnSave": "Сохранять"
+      "btnOpen": "Обзор",
+      "btnSave": "Сохранить"
     }
   },
   {
