@@ -299,7 +299,7 @@ public static string GetString(uint strId)
 	{
 		# Check the internet connection
 		$Parameters = @{
-			Uri              = "https://www.google.com"
+			Uri              = "https://www.cloudflare.com"
 			Method           = "Head"
 			DisableKeepAlive = $true
 			UseBasicParsing  = $true
@@ -573,7 +573,7 @@ public static string GetString(uint strId)
 	{
 		# Check the internet connection
 		$Parameters = @{
-			Uri              = "https://www.google.com"
+			Uri              = "https://www.cloudflare.com"
 			Method           = "Head"
 			DisableKeepAlive = $true
 			UseBasicParsing  = $true
@@ -3336,7 +3336,7 @@ function Cursors
 			{
 				# Check the internet connection
 				$Parameters = @{
-					Uri              = "https://www.google.com"
+					Uri              = "https://www.cloudflare.com"
 					Method           = "Head"
 					DisableKeepAlive = $true
 					UseBasicParsing  = $true
@@ -3456,7 +3456,7 @@ function Cursors
 			{
 				# Check the internet connection
 				$Parameters = @{
-					Uri              = "https://www.google.com"
+					Uri              = "https://www.cloudflare.com"
 					Method           = "Head"
 					DisableKeepAlive = $true
 					UseBasicParsing  = $true
@@ -5191,7 +5191,7 @@ function WindowsCapabilities
 			{
 				# Check the internet connection
 				$Parameters = @{
-					Uri              = "https://www.google.com"
+					Uri              = "https://www.cloudflare.com"
 					Method           = "Head"
 					DisableKeepAlive = $true
 					UseBasicParsing  = $true
@@ -5555,7 +5555,7 @@ function IPv6Component
 	{
 		# Check the internet connection
 		$Parameters = @{
-			Uri              = "https://www.google.com"
+			Uri              = "https://www.cloudflare.com"
 			Method           = "Head"
 			DisableKeepAlive = $true
 			UseBasicParsing  = $true
@@ -8255,7 +8255,7 @@ function InstallVCRedist
 	{
 		# Check the internet connection
 		$Parameters = @{
-			Uri              = "https://www.google.com"
+			Uri              = "https://www.cloudflare.com"
 			Method           = "Head"
 			DisableKeepAlive = $true
 			UseBasicParsing  = $true
@@ -8335,7 +8335,7 @@ function InstallDotNetRuntimes
 	{
 		# Check the internet connection
 		$Parameters = @{
-			Uri              = "https://www.google.com"
+			Uri              = "https://www.cloudflare.com"
 			Method           = "Head"
 			DisableKeepAlive = $true
 			UseBasicParsing  = $true
@@ -11205,7 +11205,7 @@ function BitmapImageNewContext
 				{
 					# Check the internet connection
 					$Parameters = @{
-						Uri              = "https://www.google.com"
+						Uri              = "https://www.cloudflare.com"
 						Method           = "Head"
 						DisableKeepAlive = $true
 						UseBasicParsing  = $true
@@ -11296,7 +11296,7 @@ function RichTextDocumentNewContext
 				{
 					# Check the internet connection
 					$Parameters = @{
-						Uri              = "https://www.google.com"
+						Uri              = "https://www.cloudflare.com"
 						Method           = "Head"
 						DisableKeepAlive = $true
 						UseBasicParsing  = $true
