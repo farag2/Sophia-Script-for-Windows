@@ -46,6 +46,7 @@ ErrorsLine                                = Zeile
 ErrorsMessage                             = Fehler/Warnungen
 DialogBoxOpening                          = Anzeigen des Dialogfensters...
 Disable                                   = Deaktivieren
+Enable                                    = Aktivieren
 AllFilesFilter                            = Alle Dateien
 FolderSelect                              = Einen Ordner auswählen
 FilesWontBeMoved                          = Dateien werden nicht verschoben.

@@ -53,6 +53,7 @@ ErrorsLine                                = 行
 ErrorsMessage                             = 错误/警告
 DialogBoxOpening                          = 显示对话窗口.....
 Disable                                   = 禁用
+Enable                                    = 启用
 AllFilesFilter                            = 所有文件
 FolderSelect                              = 选择一个文件夹
 FilesWontBeMoved                          = 文件将不会被移动。

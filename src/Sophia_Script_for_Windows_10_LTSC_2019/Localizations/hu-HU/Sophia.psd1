@@ -44,6 +44,7 @@ ErrorsLine                                = Sor
 ErrorsMessage                             = Hibák/Figyelmeztetések
 DialogBoxOpening                          = Párbeszédablak megjelenítése...
 Disable                                   = Kikapcsolás
+Enable                                    = Engedélyezés
 AllFilesFilter                            = Minden fájl
 FolderSelect                              = Válasszon ki egy könyvtárat
 FilesWontBeMoved                          = A fájlok nem lesznek áthelyezve.

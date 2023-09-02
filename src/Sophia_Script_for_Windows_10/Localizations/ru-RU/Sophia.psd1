@@ -53,6 +53,7 @@ ErrorsLine                                = Строка
 ErrorsMessage                             = Ошибки/предупреждения
 DialogBoxOpening                          = Диалоговое окно открывается...
 Disable                                   = Отключить
+Enable                                    = Включить
 AllFilesFilter                            = Все файлы
 FolderSelect                              = Выберите папку
 FilesWontBeMoved                          = Файлы не будут перенесены.

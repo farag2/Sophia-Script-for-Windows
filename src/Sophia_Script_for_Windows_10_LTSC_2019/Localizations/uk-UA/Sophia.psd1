@@ -42,6 +42,7 @@ ErrorsLine                                = Рядок
 ErrorsMessage                             = Помилки/попередження
 DialogBoxOpening                          = Діалогове вікно відкривається...
 Disable                                   = Вимкнути
+Enable                                    = Увімкнути
 AllFilesFilter                            = Усі файли
 FolderSelect                              = Виберіть папку
 FilesWontBeMoved                          = Файли не будуть перенесені.

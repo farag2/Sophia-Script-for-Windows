@@ -46,6 +46,7 @@ ErrorsLine                                = Línea
 ErrorsMessage                             = Errores/Advertencias
 DialogBoxOpening                          = Viendo el cuadro de diálogo...
 Disable                                   = Desactivar
+Enable                                    = Habilitar
 AllFilesFilter                            = Todos los Archivos
 FolderSelect                              = Seleccione una carpeta
 FilesWontBeMoved                          = Los archivos no se transferirán.

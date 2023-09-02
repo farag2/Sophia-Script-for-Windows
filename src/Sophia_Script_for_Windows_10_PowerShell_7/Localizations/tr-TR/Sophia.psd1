@@ -53,6 +53,7 @@ ErrorsLine                                = Satır
 ErrorsMessage                             = Hatalar/Uyarılar
 DialogBoxOpening                          = İletişim kutusu görüntüleniyor...
 Disable                                   = Devre dışı bırak
+Enable                                    = Aktif et
 AllFilesFilter                            = Tüm Dosyalar
 FolderSelect                              = Klasör seç
 FilesWontBeMoved                          = Dosyalar taşınmayacak.
