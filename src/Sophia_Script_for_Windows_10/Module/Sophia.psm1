@@ -11029,6 +11029,9 @@ function UninstallUWPApps
 		# VP9 Video Extensions
 		"Microsoft.VP9VideoExtensions",
 
+		# Webp Image Extensions
+		"Microsoft.WebpImageExtension",
+
 		# PowerShell
 		"Microsoft.PowerShell",
 
@@ -12439,9 +12442,9 @@ while (`$true)
 	if (`$SourceMainWindowHandle -ne `$CurrentMainWindowHandle)
 	{
 		`$ShowWindowAsync = @{
-			Namespace = """WinAPI"""
-			Name = """Win32ShowWindowAsync"""
-			Language = """CSharp"""
+			Namespace        = """WinAPI"""
+			Name             = """Win32ShowWindowAsync"""
+			Language         = """CSharp"""
 			MemberDefinition = @"""
 [DllImport("""user32.dll""")]
 public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
