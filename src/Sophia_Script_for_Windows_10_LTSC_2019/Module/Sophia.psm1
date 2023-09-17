@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.7.5
-	Date: 19.08.2023
+	Version: v5.7.6
+	Date: 17.09.2023
 
 	Copyright (c) 2014—2023 farag
 	Copyright (c) 2019—2023 farag & Inestic
@@ -13,7 +13,7 @@
 	.NOTES
 	Supported Windows 10 version
 	Version: 1809
-	Build: 17763.4737+
+	Build: 17763.4851+
 	Edition: Enterprise LTSC
 	Architecture: x64
 
@@ -105,9 +105,9 @@ public static string GetString(uint strId)
 	{
 		$true
 		{
-			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 4737)
+			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 4851)
 			{
-				# Check whether the OS minor build version is 4737 minimum
+				# Check whether the OS minor build version is 4851 minimum
 				# https://learn.microsoft.com/en-us/windows/release-health/release-information#windows-10-current-versions-by-servicing-option
 				$CurrentBuild = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
 				$UBR = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
