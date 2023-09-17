@@ -67,7 +67,8 @@
       "messageBoxDoesNotExist": "does not exist",
       "messageBoxPresetNotComp": "preset file is not compatible!",
       "messageBoxFilesMissingClose": "Files missing so Sophia Script Wrapper will close.",
-      "messageBoxConsoleEmpty": "The console is empty.\nClick 'Refresh Console' button to create script with your selections."
+      "messageBoxConsoleEmpty": "The console is empty.\nClick 'Refresh Console' button to create script with your selections.",
+      "messageBoxPowerShellVersionNotInstalled": "PowerShell version you selected is not installed."
     }
   }
 ]

@@ -95,12 +95,12 @@ public static string GetString(uint strId)
 		{
 			# Check the internet connection
 			$Parameters = @{
-				Uri              = "https://www.cloudflare.com"
-				Method           = "Head"
-				DisableKeepAlive = $true
-				UseBasicParsing  = $true
+				Name        = "dns.msftncsi.com"
+				Server      = "1.1.1.1"
+				DnsOnly     = $true
+				ErrorAction = "Stop"
 			}
-			if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+			if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
 			{
 				return
 			}
@@ -166,7 +166,7 @@ public static string GetString(uint strId)
 				Write-Error -Message ($Localization.NoResponse -f "https://c2rsetup.officeapps.live.com") -ErrorAction SilentlyContinue
 			}
 		}
-		catch [System.Net.WebException]
+		catch [System.ComponentModel.Win32Exception]
 		{
 			Write-Warning -Message $Localization.NoInternetConnection
 			Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
@@ -198,12 +198,12 @@ public static string GetString(uint strId)
 			{
 				# Check the internet connection
 				$Parameters = @{
-					Uri              = "https://www.cloudflare.com"
-					Method           = "Head"
-					DisableKeepAlive = $true
-					UseBasicParsing  = $true
+					Name        = "dns.msftncsi.com"
+					Server      = "1.1.1.1"
+					DnsOnly     = $true
+					ErrorAction = "Stop"
 				}
-				if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+				if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
 				{
 					return
 				}
@@ -249,7 +249,7 @@ public static string GetString(uint strId)
 					Write-Error -Message ($Localization.NoResponse -f "microsoft.com") -ErrorAction SilentlyContinue
 				}
 			}
-			catch [System.Net.WebException]
+			catch [System.ComponentModel.Win32Exception]
 			{
 				Write-Warning -Message $Localization.NoInternetConnection
 				Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
@@ -489,12 +489,12 @@ public static string GetString(uint strId)
 	{
 		# Check the internet connection
 		$Parameters = @{
-			Uri              = "https://www.cloudflare.com"
-			Method           = "Head"
-			DisableKeepAlive = $true
-			UseBasicParsing  = $true
+			Name        = "dns.msftncsi.com"
+			Server      = "1.1.1.1"
+			DnsOnly     = $true
+			ErrorAction = "Stop"
 		}
-		if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+		if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
 		{
 			return
 		}
@@ -509,6 +509,7 @@ public static string GetString(uint strId)
 			}
 			$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_7
 			$CurrentRelease = (Get-Module -Name Sophia).Version.ToString()
+
 			if ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)
 			{
 				Write-Warning -Message $Localization.UnsupportedRelease
@@ -526,7 +527,7 @@ public static string GetString(uint strId)
 			Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
 		}
 	}
-	catch [System.Net.WebException]
+	catch [System.ComponentModel.Win32Exception]
 	{
 		Write-Warning -Message $Localization.NoInternetConnection
 		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
@@ -763,12 +764,12 @@ public static string GetString(uint strId)
 	{
 		# Check the internet connection
 		$Parameters = @{
-			Uri              = "https://www.cloudflare.com"
-			Method           = "Head"
-			DisableKeepAlive = $true
-			UseBasicParsing  = $true
+			Name        = "dns.msftncsi.com"
+			Server      = "1.1.1.1"
+			DnsOnly     = $true
+			ErrorAction = "Stop"
 		}
-		if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+		if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
 		{
 			return
 		}
@@ -791,44 +792,44 @@ public static string GetString(uint strId)
 
 			# https://github.com/crazy-max/WindowsSpyBlocker/tree/master/data/hosts
 			$Parameters = @{
-				Uri              = "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/extra.txt"
-				UseBasicParsing  = $true
-				Verbose          = $true
+				Uri             = "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/extra.txt"
+				UseBasicParsing = $true
+				Verbose         = $true
 			}
 			$extra = (Invoke-WebRequest @Parameters).Content
 
 			$Parameters = @{
-				Uri              = "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/extra_v6.txt"
-				UseBasicParsing  = $true
-				Verbose          = $true
+				Uri             = "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/extra_v6.txt"
+				UseBasicParsing = $true
+				Verbose         = $true
 			}
 			$extra_v6 = (Invoke-WebRequest @Parameters).Content
 
 			$Parameters = @{
-				Uri              = "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt"
-				UseBasicParsing  = $true
-				Verbose          = $true
+				Uri             = "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt"
+				UseBasicParsing = $true
+				Verbose         = $true
 			}
 			$spy = (Invoke-WebRequest @Parameters).Content
 
 			$Parameters = @{
-				Uri              = "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy_v6.txt"
-				UseBasicParsing  = $true
-				Verbose          = $true
+				Uri             = "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy_v6.txt"
+				UseBasicParsing = $true
+				Verbose         = $true
 			}
 			$spy_v6 = (Invoke-WebRequest @Parameters).Content
 
 			$Parameters = @{
-				Uri              = "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/update.txt"
-				UseBasicParsing  = $true
-				Verbose          = $true
+				Uri             = "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/update.txt"
+				UseBasicParsing = $true
+				Verbose         = $true
 			}
 			$update = (Invoke-WebRequest @Parameters).Content
 
 			$Parameters = @{
-				Uri              = "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/update_v6.txt"
-				UseBasicParsing  = $true
-				Verbose          = $true
+				Uri             = "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/update_v6.txt"
+				UseBasicParsing = $true
+				Verbose         = $true
 			}
 			$update_v6 = (Invoke-WebRequest @Parameters).Content
 
@@ -869,7 +870,7 @@ public static string GetString(uint strId)
 			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 		}
 	}
-	catch [System.Net.WebException]
+	catch [System.ComponentModel.Win32Exception]
 	{
 		Write-Warning -Message $Localization.NoInternetConnection
 		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
@@ -4096,12 +4097,12 @@ function Cursors
 			{
 				# Check the internet connection
 				$Parameters = @{
-					Uri              = "https://www.cloudflare.com"
-					Method           = "Head"
-					DisableKeepAlive = $true
-					UseBasicParsing  = $true
+					Name        = "dns.msftncsi.com"
+					Server      = "1.1.1.1"
+					DnsOnly     = $true
+					ErrorAction = "Stop"
 				}
-				if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+				if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
 				{
 					return
 				}
@@ -4202,7 +4203,7 @@ function Cursors
 					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 				}
 			}
-			catch [System.Net.WebException]
+			catch [System.ComponentModel.Win32Exception]
 			{
 				Write-Warning -Message $Localization.NoInternetConnection
 				Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
@@ -4216,12 +4217,12 @@ function Cursors
 			{
 				# Check the internet connection
 				$Parameters = @{
-					Uri              = "https://www.cloudflare.com"
-					Method           = "Head"
-					DisableKeepAlive = $true
-					UseBasicParsing  = $true
+					Name        = "dns.msftncsi.com"
+					Server      = "1.1.1.1"
+					DnsOnly     = $true
+					ErrorAction = "Stop"
 				}
-				if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+				if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
 				{
 					return
 				}
@@ -4322,7 +4323,7 @@ function Cursors
 					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 				}
 			}
-			catch [System.Net.WebException]
+			catch [System.ComponentModel.Win32Exception]
 			{
 				Write-Warning -Message $Localization.NoInternetConnection
 				Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
@@ -4644,8 +4645,8 @@ public static bool MarkFileDelete (string sourcefile)
 			Remove-Item -Path $Path -Recurse -Force -ErrorAction Ignore
 			Unregister-ScheduledTask -TaskName *OneDrive* -Confirm:$false -ErrorAction Ignore
 
-			# Getting the OneDrive folder path
-			$OneDriveFolder = Split-Path -Path (Split-Path -Path $OneDriveSetup[0] -Parent)
+			# Getting the OneDrive folder path and replacing quotes if exist
+			$OneDriveFolder = (Split-Path -Path (Split-Path -Path $OneDriveSetup[0] -Parent)) -replace '"', ""
 
 			# Terminate the File Explorer process
 			New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoRestartShell -PropertyType DWord -Value 0 -Force
@@ -4714,12 +4715,12 @@ public static bool MarkFileDelete (string sourcefile)
 				{
 					# Check the internet connection
 					$Parameters = @{
-						Uri              = "https://www.cloudflare.com"
-						Method           = "Head"
-						DisableKeepAlive = $true
-						UseBasicParsing  = $true
+						Name        = "dns.msftncsi.com"
+						Server      = "1.1.1.1"
+						DnsOnly     = $true
+						ErrorAction = "Stop"
 					}
-					if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+					if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
 					{
 						return
 					}
@@ -4762,7 +4763,7 @@ public static bool MarkFileDelete (string sourcefile)
 
 					Remove-Item -Path "$DownloadsFolder\OneDriveSetup.exe" -Force
 				}
-				catch [System.Net.WebException]
+				catch [System.ComponentModel.Win32Exception]
 				{
 					Write-Warning -Message $Localization.NoInternetConnection
 					Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
@@ -6260,13 +6261,12 @@ function WindowsCapabilities
 			{
 				# Check the internet connection
 				$Parameters = @{
-					Uri              = "https://www.cloudflare.com"
-					Method           = "Head"
-					SslProtocol      = "Tls13"
-					DisableKeepAlive = $true
-					UseBasicParsing  = $true
+					Name        = "dns.msftncsi.com"
+					Server      = "1.1.1.1"
+					DnsOnly     = $true
+					ErrorAction = "Stop"
 				}
-				if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+				if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
 				{
 					return
 				}
@@ -6275,7 +6275,7 @@ function WindowsCapabilities
 				$ButtonContent = $Localization.Install
 				$ButtonAdd_Click = {InstallButton}
 			}
-			catch [System.Net.WebException]
+			catch [System.ComponentModel.Win32Exception]
 			{
 				Write-Warning -Message $Localization.NoInternetConnection
 				Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
@@ -6829,12 +6829,12 @@ function IPv6Component
 	{
 		# Check the internet connection
 		$Parameters = @{
-			Uri              = "https://www.cloudflare.com"
-			Method           = "Head"
-			DisableKeepAlive = $true
-			UseBasicParsing  = $true
+			Name        = "dns.msftncsi.com"
+			Server      = "1.1.1.1"
+			DnsOnly     = $true
+			ErrorAction = "Stop"
 		}
-		if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+		if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
 		{
 			return
 		}
@@ -6869,7 +6869,7 @@ function IPv6Component
 			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 		}
 	}
-	catch [System.Net.WebException]
+	catch [System.ComponentModel.Win32Exception]
 	{
 		Write-Warning -Message $Localization.NoInternetConnection
 		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
@@ -9746,12 +9746,12 @@ function InstallVCRedist
 	{
 		# Check the internet connection
 		$Parameters = @{
-			Uri              = "https://www.cloudflare.com"
-			Method           = "Head"
-			DisableKeepAlive = $true
-			UseBasicParsing  = $true
+			Name        = "dns.msftncsi.com"
+			Server      = "1.1.1.1"
+			DnsOnly     = $true
+			ErrorAction = "Stop"
 		}
-		if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+		if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
 		{
 			return
 		}
@@ -9798,7 +9798,7 @@ function InstallVCRedist
 			Get-ChildItem -Path $Paths -Recurse -Force | Remove-Item -Recurse -Force -ErrorAction Ignore
 		}
 	}
-	catch [System.Net.WebException]
+	catch [System.ComponentModel.Win32Exception]
 	{
 		Write-Warning -Message $Localization.NoInternetConnection
 		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
@@ -9826,12 +9826,12 @@ function InstallDotNetRuntimes
 	{
 		# Check the internet connection
 		$Parameters = @{
-			Uri              = "https://www.cloudflare.com"
-			Method           = "Head"
-			DisableKeepAlive = $true
-			UseBasicParsing  = $true
+			Name        = "dns.msftncsi.com"
+			Server      = "1.1.1.1"
+			DnsOnly     = $true
+			ErrorAction = "Stop"
 		}
-		if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+		if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
 		{
 			return
 		}
@@ -9936,7 +9936,7 @@ function InstallDotNetRuntimes
 			Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 		}
 	}
-	catch [System.Net.WebException]
+	catch [System.ComponentModel.Win32Exception]
 	{
 		Write-Warning -Message $Localization.NoInternetConnection
 		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
@@ -10050,12 +10050,12 @@ function Install-WSA
 	{
 		# Check the internet connection
 		$Parameters = @{
-			Uri              = "https://www.cloudflare.com"
-			Method           = "Head"
-			DisableKeepAlive = $true
-			UseBasicParsing  = $true
+			Name        = "dns.msftncsi.com"
+			Server      = "1.1.1.1"
+			DnsOnly     = $true
+			ErrorAction = "Stop"
 		}
-		if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+		if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
 		{
 			return
 		}
@@ -10072,7 +10072,7 @@ function Install-WSA
 		# Open Misrosoft Store WSA page to install it manually
 		Start-Process -FilePath ms-windows-store://pdp/?ProductId=9P3395VX91NR
 	}
-	catch [System.Net.WebException]
+	catch [System.ComponentModel.Win32Exception]
 	{
 		Write-Warning -Message $Localization.NoInternetConnection
 		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
@@ -11468,17 +11468,17 @@ function HEVC
 	{
 		# Check the internet connection
 		$Parameters = @{
-			Uri              = "https://www.cloudflare.com"
-			Method           = "Head"
-			DisableKeepAlive = $true
-			UseBasicParsing  = $true
+			Name        = "dns.msftncsi.com"
+			Server      = "1.1.1.1"
+			DnsOnly     = $true
+			ErrorAction = "Stop"
 		}
-		if (-not (Invoke-WebRequest @Parameters).StatusDescription)
+		if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
 		{
 			return
 		}
 	}
-	catch [System.Net.WebException]
+	catch [System.ComponentModel.Win32Exception]
 	{
 		Write-Warning -Message $Localization.NoInternetConnection
 		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
