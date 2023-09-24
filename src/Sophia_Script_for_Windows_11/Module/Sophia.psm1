@@ -3396,6 +3396,7 @@ function TaskbarChat
 		"Hide"
 		{
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name TaskbarMn -PropertyType DWord -Value 0 -Force
+
 			# Save string to run it as "NT SERVICE\TrustedInstaller"
 			# Prevent Microsoft Teams from installing for new users
 			$Task = "New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Communications -Name ConfigureChatAutoInstall -Value 0 -Type Dword -Force"
@@ -3403,6 +3404,7 @@ function TaskbarChat
 		"Show"
 		{
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name TaskbarMn -PropertyType DWord -Value 1 -Force
+
 			# Save string to run it as "NT SERVICE\TrustedInstaller"
 			# Remove block from installing Microsoft Teams for new users
 			$Task = "Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Communications -Name ConfigureChatAutoInstall -Value 1 -Type Dword -Force"
@@ -9997,7 +9999,7 @@ function RKNBypass
 		}
 		"Disable"
 		{
-			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name AutoConfigURL -Force
+			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name AutoConfigURL -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -15157,7 +15159,7 @@ function Errors
 				"$([WinAPI.GetStr]::GetString(4130))" = $ErrorInFile
 				$Localization.ErrorsMessage           = $_.Exception.Message
 			}
-		} | Sort-Object -Property Line | Format-Table -AutoSize -Wrap | Out-String).Trim()
+		} | Sort-Object -Property $Localization.ErrorsLine | Format-Table -AutoSize -Wrap | Out-String).Trim()
 	}
 
 	Write-Information -MessageData "" -InformationAction Continue

@@ -9132,7 +9132,7 @@ function RKNBypass
 		}
 		"Disable"
 		{
-			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name AutoConfigURL -Force
+			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name AutoConfigURL -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -13006,7 +13006,7 @@ function Errors
 				"$([WinAPI.GetStr]::GetString(4130))" = $ErrorInFile
 				$Localization.ErrorsMessage           = $_.Exception.Message
 			}
-		} | Sort-Object -Property Line | Format-Table -AutoSize -Wrap | Out-String).Trim()
+		} | Sort-Object -Property $Localization.ErrorsLine | Format-Table -AutoSize -Wrap | Out-String).Trim()
 	}
 
 	Write-Information -MessageData "" -InformationAction Continue
