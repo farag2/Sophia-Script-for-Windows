@@ -599,7 +599,7 @@
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
-    "Function": "TaskViewButton",
+    "Function": "CopilotButton",
     "Arg": {
       "Zero": {
         "Tag": "Hide"
@@ -616,7 +616,7 @@
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
-    "Function": "TaskbarChat",
+    "Function": "TaskViewButton",
     "Arg": {
       "Zero": {
         "Tag": "Hide"
@@ -633,6 +633,23 @@
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
+    "Function": "TaskbarChat",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One"
+  },
+  {
+    "Id": 319,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
     "Function": "SecondsInSystemClock",
     "Arg": {
       "Zero": {
@@ -646,7 +663,27 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 319,
+    "Id": 320,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "TaskbarCombine",
+    "Arg": {
+      "Zero": {
+        "Tag": "Always"
+      },
+      "One": {
+        "Tag": "Full"
+      },
+      "Two": {
+        "Tag": "Never"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "Zero"
+  },
+  {
+    "Id": 321,
     "Region": "UI & Personalization",
     "Control": "chk",
     "Required": "false",
@@ -663,7 +700,7 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 320,
+    "Id": 322,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -683,7 +720,7 @@
     "WindowsDefault": "Two"
   },
   {
-    "Id": 321,
+    "Id": 323,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -700,7 +737,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 322,
+    "Id": 324,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -717,7 +754,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 323,
+    "Id": 325,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -734,7 +771,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 324,
+    "Id": 326,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -751,7 +788,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 325,
+    "Id": 327,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -768,7 +805,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 326,
+    "Id": 328,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -785,7 +822,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 327,
+    "Id": 329,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -802,7 +839,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 328,
+    "Id": 330,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -819,7 +856,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 329,
+    "Id": 331,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -839,7 +876,7 @@
     "WindowsDefault": "Zero"
   },
   {
-    "Id": 330,
+    "Id": 332,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -856,7 +893,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 331,
+    "Id": 333,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",

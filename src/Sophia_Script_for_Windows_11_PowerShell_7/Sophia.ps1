@@ -398,6 +398,14 @@ TaskbarSearch -Hide
 # Показать поле поиска на панели задач (значение по умолчанию)
 # TaskbarSearch -SearchBox
 
+# Hide Copilot button on the taskbar
+# Скрыть кнопку Copilot с панели задач
+CopilotButton -Hide
+
+# Show Copilot button on the taskbar (default value)
+# Отобразить кнопку Copilot на панели задач (значение по умолчанию)
+# CopilotButton -Show
+
 # Hide the Task view button from the taskbar
 # Скрыть кнопку "Представление задач" с панели задач
 TaskViewButton -Hide
@@ -421,6 +429,18 @@ SecondsInSystemClock -Show
 # Hide seconds on the taskbar clock (default value)
 # Скрыть секунды на часах на панели задач (значение по умолчанию)
 # SecondsInSystemClock -Hide
+
+# Combine taskbar buttons and always hide labels (default value)
+# Объединить кнопки панели задач и всегда скрывать метки (значение по умолчанию)
+TaskbarCombine -Always
+
+# Combine taskbar buttons and hide labels when taskbar is full
+# Объединить кнопки панели задач и скрывать метки при переполнении панели задач
+# TaskbarCombine -Full
+
+# Combine taskbar buttons and never hide labels
+# Объединить кнопки панели задач и никогда не скрывать метки
+# TaskbarCombine -Never
 
 # Unpin the "Microsoft Edge", "Microsoft Store" shortcuts from the taskbar
 # Открепить ярлыки "Microsoft Edge", "Microsoft Store" от панели задач

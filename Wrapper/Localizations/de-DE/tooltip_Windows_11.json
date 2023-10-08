@@ -527,6 +527,21 @@
     {
         "Id":  316,
         "Region":  "UI & Personalization",
+        "Function":  "CopilotButton",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Ausblenden der Schaltfläche Copilot in der Taskleiste."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Zeigen Sie die Schaltfläche "Copilot" in der Taskleiste an (Standardeinstellung)."
+                            }
+                }
+    },
+    {
+        "Id":  317,
+        "Region":  "UI & Personalization",
         "Function":  "TaskViewButton",
         "Arg":  {
                     "Zero":  {
@@ -540,7 +555,7 @@
                 }
     },
     {
-        "Id":  317,
+        "Id":  318,
         "Region":  "UI & Personalization",
         "Function":  "TaskbarChat",
         "Arg":  {
@@ -555,7 +570,7 @@
                 }
     },
     {
-        "Id":  318,
+        "Id":  319,
         "Region":  "UI & Personalization",
         "Function":  "SecondsInSystemClock",
         "Arg":  {
@@ -570,7 +585,26 @@
                 }
     },
     {
-        "Id":  319,
+        "Id":  320,
+        "Region":  "UI & Personalization",
+        "Function":  "TaskbarCombine",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Always",
+                                 "ToolTip":  "Kombinieren Sie Schaltflächen in der Taskleiste und blenden Sie Beschriftungen immer aus. (default value)."
+                             },
+                    "One":  {
+                                "Tag":  "Full",
+                                "ToolTip":  "Taskleistenschaltflächen zusammenfassen und Beschriftungen ausblenden, wenn die Taskleiste voll ist.."
+                            },
+                    "Two":  {
+                                "Tag":  "Never",
+                                "ToolTip":  "Kombinieren Sie die Schaltflächen der Taskleiste und blenden Sie die Beschriftungen nicht aus.."
+                            }
+                }
+    },
+    {
+        "Id":  321,
         "Region":  "UI & Personalization",
         "Function":  "UnpinTaskbarShortcuts -Shortcuts",
         "ToolTip":"Entfernt die Verknüpfungen \"Microsoft Edge\" oder \"Microsoft Store\" von der Taskleiste",
@@ -586,7 +620,7 @@
                 }
     },
     {
-        "Id":  320,
+        "Id":  322,
         "Region":  "UI & Personalization",
         "Function":  "ControlPanelView",
         "Arg":  {
@@ -605,7 +639,7 @@
                 }
     },
     {
-        "Id":  321,
+        "Id":  323,
         "Region":  "UI & Personalization",
         "Function":  "WindowsColorMode",
         "Arg":  {
@@ -620,7 +654,7 @@
                 }
     },
     {
-        "Id":  322,
+        "Id":  324,
         "Region":  "UI & Personalization",
         "Function":  "AppColorMode",
         "Arg":  {
@@ -635,7 +669,7 @@
                 }
     },
     {
-        "Id":  323,
+        "Id":  325,
         "Region":  "UI & Personalization",
         "Function":  "FirstLogonAnimation",
         "Arg":  {
@@ -650,7 +684,7 @@
                 }
     },
     {
-        "Id":  324,
+        "Id":  326,
         "Region":  "UI & Personalization",
         "Function":  "JPEGWallpapersQuality",
         "Arg":  {
@@ -665,7 +699,7 @@
                 }
     },
     {
-        "Id":  325,
+        "Id":  327,
         "Region":  "UI & Personalization",
         "Function":  "ShortcutsSuffix",
         "Arg":  {
@@ -680,7 +714,7 @@
                 }
     },
     {
-        "Id":  326,
+        "Id":  328,
         "Region":  "UI & Personalization",
         "Function":  "PrtScnSnippingTool",
         "Arg":  {
@@ -695,7 +729,7 @@
                 }
     },
     {
-        "Id":  327,
+        "Id":  329,
         "Region":  "UI & Personalization",
         "Function":  "AppsLanguageSwitch",
         "Arg":  {
@@ -710,7 +744,7 @@
                 }
     },
     {
-        "Id":  328,
+        "Id":  330,
         "Region":  "UI & Personalization",
         "Function":  "AeroShaking",
         "Arg":  {
@@ -725,7 +759,7 @@
                 }
     },
     {
-        "Id":  329,
+        "Id":  331,
         "Region":  "UI & Personalization",
         "Function":  "Cursors",
         "Arg":  {
@@ -744,7 +778,7 @@
                 }
     },
     {
-        "Id":  330,
+        "Id":  332,
         "Region":  "UI & Personalization",
         "Function":  "FolderGroupBy",
         "Arg":  {
@@ -759,7 +793,7 @@
                 }
     },
     {
-        "Id":  331,
+        "Id":  333,
         "Region":  "UI & Personalization",
         "Function":  "NavigationPaneExpand",
         "Arg":  {
@@ -1520,7 +1554,7 @@
                                  "ToolTip":  "Pfad zum Symbol."
                              }
                 }
-    },	
+    },
     {
         "Id":  600,
         "Region":  "WSL",
@@ -2148,8 +2182,8 @@
                                  "ToolTip":  "Menüoption \"In Windows Terminal öffnen\" im Kontextmenü von Ordnern ausblenden."
                              },
                     "One":  {
-                                "Tag":  "Show",
-                                "ToolTip":  "Menüoption \"In Windows Terminal öffnen\" im Kontextmenü der Ordner anzeigen (Standardeinstellung)."
+                               "Tag":  "Show",
+                               "ToolTip":  "Menüoption \"In Windows Terminal öffnen\" im Kontextmenü der Ordner anzeigen (Standardeinstellung)."
                             }
                 }
     },

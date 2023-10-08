@@ -209,26 +209,19 @@ public static string GetString(uint strId)
 				# Enable receiving updates for other Microsoft products when you update Windows
 				(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
 
-				Start-Sleep -Seconds 1
-
 				# Check for UWP apps updates
 				Get-CimInstance -Namespace root/CIMV2/mdm/dmmap -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 | Invoke-CimMethod -MethodName UpdateScanMethod
+
+				# Check for updates
+				Start-Process -FilePath "$env:SystemRoot\System32\UsoClient.exe" -ArgumentList StartInteractiveScan
 
 				# Open the "Windows Update" page
 				Start-Process -FilePath "ms-settings:windowsupdate"
 
-				# Check for updates
-				Start-Process -FilePath "ms-settings:windowsupdate-action"
-
-				Start-Sleep -Seconds 1
-
-				# Trigger Windows Update for detecting new updates
-				(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
-
 				exit
 			}
 		}
-		{($_ -lt 19045) -or ($_ -gt 19048)}
+		{($_ -lt 19045) -or ($_ -gt 19045)}
 		{
 			Write-Warning -Message $Localization.UnsupportedOSBuild
 
@@ -584,18 +577,14 @@ public static string GetString(uint strId)
 			# Enable receiving updates for other Microsoft products when you update Windows
 			(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
 
-			Start-Sleep -Seconds 1
+			# Check for UWP apps updates
+			Get-CimInstance -Namespace root/CIMV2/mdm/dmmap -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 | Invoke-CimMethod -MethodName UpdateScanMethod
+
+			# Check for updates
+			Start-Process -FilePath "$env:SystemRoot\System32\UsoClient.exe" -ArgumentList StartInteractiveScan
 
 			# Open the "Windows Update" page
 			Start-Process -FilePath "ms-settings:windowsupdate"
-
-			# Check for updates
-			Start-Process -FilePath "ms-settings:windowsupdate-action"
-
-			Start-Sleep -Seconds 1
-
-			# Trigger Windows Update for detecting new updates
-			(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
 
 			exit
 		}

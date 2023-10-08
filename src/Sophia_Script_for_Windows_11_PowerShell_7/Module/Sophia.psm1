@@ -242,6 +242,8 @@ public static string GetString(uint strId)
 					Invoke-WebRequest @Parameters
 
 					Start-Process -FilePath "$DownloadsFolder\Windows11InstallationAssistant.exe" -ArgumentList "/SkipEULA"
+
+					exit
 				}
 				catch [System.Net.WebException]
 				{
@@ -266,21 +268,14 @@ public static string GetString(uint strId)
 			# Enable receiving updates for other Microsoft products when you update Windows
 			(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
 
-			Start-Sleep -Seconds 1
-
 			# Check for UWP apps updates
 			Get-CimInstance -Namespace root/CIMV2/mdm/dmmap -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 | Invoke-CimMethod -MethodName UpdateScanMethod
 
+			# Check for updates
+			Start-Process -FilePath "$env:SystemRoot\System32\UsoClient.exe" -ArgumentList StartInteractiveScan
+
 			# Open the "Windows Update" page
 			Start-Process -FilePath "ms-settings:windowsupdate"
-
-			# Check for updates
-			Start-Process -FilePath "ms-settings:windowsupdate-action"
-
-			Start-Sleep -Seconds 1
-
-			# Trigger Windows Update for detecting new updates
-			(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
 
 			exit
 		}
@@ -301,21 +296,14 @@ public static string GetString(uint strId)
 				# Enable receiving updates for other Microsoft products when you update Windows
 				(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
 
-				Start-Sleep -Seconds 1
-
 				# Check for UWP apps updates
 				Get-CimInstance -Namespace root/CIMV2/mdm/dmmap -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 | Invoke-CimMethod -MethodName UpdateScanMethod
 
+				# Check for updates
+				Start-Process -FilePath "$env:SystemRoot\System32\UsoClient.exe" -ArgumentList StartInteractiveScan
+
 				# Open the "Windows Update" page
 				Start-Process -FilePath "ms-settings:windowsupdate"
-
-				# Check for updates
-				Start-Process -FilePath "ms-settings:windowsupdate-action"
-
-				Start-Sleep -Seconds 1
-
-				# Trigger Windows Update for detecting new updates
-				(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
 
 				exit
 			}
@@ -649,18 +637,14 @@ public static string GetString(uint strId)
 		# Enable receiving updates for other Microsoft products when you update Windows
 		(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
 
-		Start-Sleep -Seconds 1
+		# Check for UWP apps updates
+		Get-CimInstance -Namespace root/CIMV2/mdm/dmmap -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 | Invoke-CimMethod -MethodName UpdateScanMethod
+
+		# Check for updates
+		Start-Process -FilePath "$env:SystemRoot\System32\UsoClient.exe" -ArgumentList StartInteractiveScan
 
 		# Open the "Windows Update" page
 		Start-Process -FilePath "ms-settings:windowsupdate"
-
-		# Check for updates
-		Start-Process -FilePath "ms-settings:windowsupdate-action"
-
-		Start-Sleep -Seconds 1
-
-		# Trigger Windows Update for detecting new updates
-		(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
 
 		exit
 	}
@@ -3303,6 +3287,65 @@ function TaskbarSearch
 
 <#
 	.SYNOPSIS
+	Copilot button on the taskbar
+
+	.PARAMETER Hide
+	Hide Copilot button on the taskbar
+
+	.PARAMETER Show
+	Show Copilot button on the taskbar
+
+	.EXAMPLE
+	CopilotButton -Hide
+
+	.EXAMPLE
+	CopilotButton -Show
+
+	.NOTES
+	Current user
+#>
+function CopilotButton
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Hide"
+		)]
+		[switch]
+		$Hide,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Show"
+		)]
+		[switch]
+		$Show
+	)
+
+	switch ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber)
+	{
+		{($_ -ne 22631) -and ($_ -lt 23493)}
+		{
+			return
+		}
+	}
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Hide"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowCopilotButton -PropertyType DWord -Value 0 -Force
+		}
+		"Show"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowCopilotButton -PropertyType DWord -Value 1 -Force
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
 	Task view button on the taskbar
 
 	.PARAMETER Hide
@@ -3474,6 +3517,74 @@ function SecondsInSystemClock
 		"Show"
 		{
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowSecondsInSystemClock -PropertyType DWord -Value 1 -Force
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	Combine taskbar buttons and hide labels
+
+	.PARAMETER Always
+	Combine taskbar buttons and always hide labels
+
+	.PARAMETER Full
+	Combine taskbar buttons and hide labels when taskbar is full
+
+	.PARAMETER Never
+	Combine taskbar buttons and never hide labels
+
+	.EXAMPLE
+	TaskbarCombine -Always
+
+	.EXAMPLE
+	TaskbarCombine -Full
+
+	.EXAMPLE
+	TaskbarCombine -Never
+
+	.NOTES
+	Current user
+#>
+function TaskbarCombine
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Always"
+		)]
+		[switch]
+		$Always,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Full"
+		)]
+		[switch]
+		$Full,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Never"
+		)]
+		[switch]
+		$Never
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Always"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name taskbarGlomLevel -PropertyType DWord -Value 0 -Force
+		}
+		"Full"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name taskbarGlomLevel -PropertyType DWord -Value 1 -Force
+		}
+		"Never"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name taskbarGlomLevel -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -13698,6 +13809,9 @@ function WindowsSandbox
 	.EXAMPLE
 	DNSoverHTTPS -Enable -PrimaryDNS 1.0.0.1 -SecondaryDNS 1.1.1.1
 
+	.EXAMPLE Enable DNS-over-HTTPS via Comss.one DNS server. Applicable for Russia only
+	DNSoverHTTPS -ComssOneDNS
+
 	.EXAMPLE
 	DNSoverHTTPS -Disable
 
@@ -13706,6 +13820,9 @@ function WindowsSandbox
 
 	.LINK
 	https://docs.microsoft.com/en-us/windows-server/networking/dns/doh-client-support
+
+	.LINK
+	https://www.comss.ru/page.php?id=7315
 
 	.NOTES
 	Machine-wide
@@ -13740,6 +13857,14 @@ function DNSoverHTTPS
 		[string]
 		$SecondaryDNS,
 
+		# https://www.comss.ru/page.php?id=7315
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "ComssOneDNS"
+		)]
+		[switch]
+		$ComssOneDNS,
+
 		[Parameter(
 			Mandatory = $true,
 			ParameterSetName = "Disable"
@@ -13747,6 +13872,11 @@ function DNSoverHTTPS
 		[switch]
 		$Disable
 	)
+
+	if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain)
+	{
+		return
+	}
 
 	# Determining whether Hyper-V is enabled
 	# After enabling Hyper-V feature a virtual switch breing created, so we need to use different method to isolate the proper adapter
@@ -13763,54 +13893,80 @@ function DNSoverHTTPS
 	{
 		"Enable"
 		{
-			if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain)
+			if (((Get-WinHomeLocation).GeoId -ne "203") -or ((Get-WinHomeLocation).GeoId -ne "29"))
 			{
-				# Set a primary and secondary DNS servers
-				if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
-				{
-					Get-NetAdapter -Physical | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
-				}
-				else
-				{
-					Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
-				}
+				return
+			}
 
-				foreach ($InterfaceGuid in $InterfaceGuids)
+			# Set a primary and secondary DNS servers
+			if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
+			{
+				Get-NetAdapter -Physical | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
+			}
+			else
+			{
+				Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
+			}
+
+			foreach ($InterfaceGuid in $InterfaceGuids)
+			{
+				if (-not (Test-Path -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS"))
 				{
-					if (-not (Test-Path -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS"))
-					{
-						New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Force
-					}
-					if (-not (Test-Path -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS"))
-					{
-						New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS" -Force
-					}
-					# Encrypted preffered, unencrypted allowed
-					New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Name DohFlags -PropertyType QWord -Value 5 -Force
-					New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS" -Name DohFlags -PropertyType QWord -Value 5 -Force
+					New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Force
 				}
+				if (-not (Test-Path -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS"))
+				{
+					New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS" -Force
+				}
+				# Encrypted preffered, unencrypted allowed
+				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Name DohFlags -PropertyType QWord -Value 5 -Force
+				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS" -Name DohFlags -PropertyType QWord -Value 5 -Force
+			}
+		}
+		"ComssOneDNS"
+		{
+			if (-not (((Get-WinHomeLocation).GeoId -eq "203") -or ((Get-WinHomeLocation).GeoId -eq "29")))
+			{
+				return
+			}
+
+			# Set a primary and secondary DNS servers
+			if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
+			{
+				Get-NetAdapter -Physical | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ServerAddresses 92.223.65.71
+			}
+			else
+			{
+				Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ServerAddresses 92.223.65.71
+			}
+
+			foreach ($InterfaceGuid in $InterfaceGuids)
+			{
+				if (-not (Test-Path -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\92.223.65.71"))
+				{
+					New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\92.223.65.71" -Force
+				}
+				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\92.223.65.71" -Name DohFlags -PropertyType QWord -Value 2 -Force
+				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\92.223.65.71" -Name DohTemplate -PropertyType String -Value https://dns.comss.one/dns-query -Force
 			}
 		}
 		"Disable"
 		{
-			if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain)
+			# Determining whether Hyper-V is enabled
+			if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
 			{
-				# Determining whether Hyper-V is enabled
-				if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
-				{
-					# Configure DNS servers automatically
-					Get-NetAdapter -Physical | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ResetServerAddresses
-				}
-				else
-				{
-					# Configure DNS servers automatically
-					Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ResetServerAddresses
-				}
+				# Configure DNS servers automatically
+				Get-NetAdapter -Physical | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ResetServerAddresses
+			}
+			else
+			{
+				# Configure DNS servers automatically
+				Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ResetServerAddresses
+			}
 
-				foreach ($InterfaceGuid in $InterfaceGuids)
-				{
-					Remove-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh" -Recurse -Force -ErrorAction Ignore
-				}
+			foreach ($InterfaceGuid in $InterfaceGuids)
+			{
+				Remove-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh" -Recurse -Force -ErrorAction Ignore
 			}
 		}
 	}
