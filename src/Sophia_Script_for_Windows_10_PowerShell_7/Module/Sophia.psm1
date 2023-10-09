@@ -202,7 +202,7 @@ public static string GetString(uint strId)
 				Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 				Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows#system-requirements"
 
-				# Enable receiving updates for other Microsoft products when you update Windows
+				# Receive updates for other Microsoft products when you update Windows
 				(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
 
 				# Check for UWP apps updates
@@ -575,7 +575,7 @@ public static string GetString(uint strId)
 			Start-Process -FilePath "https://t.me/sophia_chat"
 			Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 
-			# Enable receiving updates for other Microsoft products when you update Windows
+			# Receive updates for other Microsoft products when you update Windows
 			(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
 
 			# Check for UWP apps updates
@@ -10384,7 +10384,7 @@ function SATADrivesRemovableMedia
 	.NOTES
 	Machine-wide
 #>
-function Install-WSL
+function Install-WSL ###
 {
 	[System.Console]::OutputEncoding = [System.Text.Encoding]::Unicode
 
@@ -10473,8 +10473,8 @@ function Install-WSL
 		# Receive updates for other Microsoft products when you update Windows
 		(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
 
-		# Trigger Windows Update for detecting new updates
-		(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
+		# Check for updates
+		Start-Process -FilePath "$env:SystemRoot\System32\UsoClient.exe" -ArgumentList StartInteractiveScan
 	}
 	#endregion
 

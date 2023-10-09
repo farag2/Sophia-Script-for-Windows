@@ -117,7 +117,7 @@ public static string GetString(uint strId)
 				Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 				Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows#system-requirements"
 
-				# Enable receiving updates for other Microsoft products when you update Windows
+				# Receive updates for other Microsoft products when you update Windows
 				(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
 
 				# Check for updates
@@ -449,21 +449,14 @@ public static string GetString(uint strId)
 		Start-Process -FilePath "https://t.me/sophia_chat"
 		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 
-		# Enable receiving updates for other Microsoft products when you update Windows
+		# Receive updates for other Microsoft products when you update Windows
 		(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
 
-		Start-Sleep -Seconds 1
+		# Check for updates
+		Start-Process -FilePath "$env:SystemRoot\System32\UsoClient.exe" -ArgumentList StartInteractiveScan
 
 		# Open the "Windows Update" page
 		Start-Process -FilePath "ms-settings:windowsupdate"
-
-		# Check for updates
-		Start-Process -FilePath "ms-settings:windowsupdate-action"
-
-		Start-Sleep -Seconds 1
-
-		# Trigger Windows Update for detecting new updates
-		(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
 
 		exit
 	}
@@ -9396,8 +9389,8 @@ function Install-WSL
 		# Receive updates for other Microsoft products when you update Windows
 		(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
 
-		# Trigger Windows Update for detecting new updates
-		(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
+		# Check for updates
+		Start-Process -FilePath "$env:SystemRoot\System32\UsoClient.exe" -ArgumentList StartInteractiveScan
 	}
 	#endregion
 
