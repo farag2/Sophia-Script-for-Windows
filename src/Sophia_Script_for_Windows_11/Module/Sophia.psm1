@@ -608,25 +608,26 @@ public static string GetString(uint strId)
 	}
 
 	# https://docs.microsoft.com/en-us/graph/api/resources/intune-devices-windowsdefenderproductstatus?view=graph-rest-beta
-	try
+	# Due to "Set-StrictMode -Version Latest" we have to call Get-Member first to check whether ProductStatus property exists
+	if (Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/Microsoft/Windows/Defender | Get-Member | Where-Object -FilterScript {$_.Name -eq "ProductStatus"})
 	{
 		if ($Script:DefenderproductState)
 		{
 			if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/Microsoft/Windows/Defender).ProductStatus -eq 1)
 			{
-				$Script:DefenderProductStatus = $false
+				$Script:DefenderProductState = $false
 			}
 			else
 			{
-				$Script:DefenderProductStatus = $true
+				$Script:DefenderProductState = $true
 			}
 		}
 		else
 		{
-			$Script:DefenderProductStatus = $false
+			$Script:DefenderProductState = $false
 		}
 	}
-	catch [System.Management.Automation.PropertyNotFoundException]
+	else
 	{
 		Write-Warning -Message $Localization.UpdateDefender
 
@@ -1311,6 +1312,16 @@ function DiagnosticDataLevel
 		$Default
 	)
 
+	if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection))
+	{
+		New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Force
+	}
+
+	if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack))
+	{
+		New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Force
+	}
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Minimal"
@@ -1318,43 +1329,29 @@ function DiagnosticDataLevel
 			if (Get-WindowsEdition -Online | Where-Object -FilterScript {($_.Edition -like "Enterprise*") -or ($_.Edition -eq "Education")})
 			{
 				# Diagnostic data off
-				if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection))
-				{
-					New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Force
-				}
 				New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 0 -Force
+
 				Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Type DWORD -Value 0
 			}
 			else
 			{
 				# Send required diagnostic data
-				if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection))
-				{
-					New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Force
-				}
 				New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 1 -Force
+
 				Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Type DWORD -Value 1
 			}
 
-			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack))
-			{
-				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Force
-			}
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name MaxTelemetryAllowed -PropertyType DWord -Value 1 -Force
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -PropertyType DWord -Value 1 -Force
 		}
 		"Default"
 		{
 			# Optional diagnostic data
-			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Force -ErrorAction Ignore
-			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Type CLEAR
-
-			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack))
-			{
-				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Force
-			}
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name MaxTelemetryAllowed -PropertyType DWord -Value 3 -Force
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -PropertyType DWord -Value 3 -Force
+
+			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Force -ErrorAction Ignore
+			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Type CLEAR
 		}
 	}
 }
@@ -9695,7 +9692,8 @@ function Export-Associations
 
 	Clear-Variable -Name ProgramPath, Icon -ErrorAction Ignore
 
-	$AllJSON | ConvertTo-Json | Set-Content -Path "$PSScriptRoot\..\Application_Associations.json" -Force -Encoding utf8
+	# Save in UTF-8 without BOM
+	$AllJSON | ConvertTo-Json | Set-Content -Path "$PSScriptRoot\..\Application_Associations.json" -Encoding Default -Force
 
 	Remove-Item -Path "$env:TEMP\Application_Associations.xml" -Force
 }
@@ -10372,126 +10370,145 @@ function SATADrivesRemovableMedia
 #>
 function Install-WSL
 {
-	[System.Console]::OutputEncoding = [System.Text.Encoding]::Unicode
-
-	$wsl = wsl --list --online
-	# Calculate the string number where the "FRIENDLY NAME" header begins to truncate all other unnecessary strings in the beginning
-	$LineNumber = ($wsl | Select-String -Pattern "FRIENDLY NAME" -CaseSensitive).LineNumber
-	# Remove first strings in output from the first to the $LineNumber
-	$Distros = ($wsl).Replace("  ", "").Replace("* ", "")[($LineNumber)..(($wsl).Count)] | ForEach-Object -Process {
-		[PSCustomObject]@{
-			"Distro" = ($_ -split " ", 2 | Select-Object -Last 1).Trim()
-			"Alias"  = ($_ -split " ", 2 | Select-Object -First 1).Trim()
-		}
-	}
-
-	Add-Type -AssemblyName PresentationCore, PresentationFramework
-
-	#region Variables
-	$CommandTag = $null
-
-	#region XAML Markup
-	# The section defines the design of the upcoming dialog box
-	[xml]$XAML = @"
-	<Window
-		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-		Name="Window"
-		Title="WSL"
-		MinHeight="460" MinWidth="350"
-		SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
-		TextOptions.TextFormattingMode="Display" SnapsToDevicePixels="True"
-		FontFamily="Candara" FontSize="16" ShowInTaskbar="True"
-		Background="#F1F1F1" Foreground="#262626">
-		<Window.Resources>
-			<Style TargetType="RadioButton">
-				<Setter Property="VerticalAlignment" Value="Center"/>
-				<Setter Property="Margin" Value="10"/>
-			</Style>
-			<Style TargetType="TextBlock">
-				<Setter Property="VerticalAlignment" Value="Center"/>
-				<Setter Property="Margin" Value="0, 0, 0, 2"/>
-			</Style>
-			<Style TargetType="Button">
-				<Setter Property="Margin" Value="20"/>
-				<Setter Property="Padding" Value="10"/>
-				<Setter Property="IsEnabled" Value="False"/>
-			</Style>
-		</Window.Resources>
-		<Grid>
-			<Grid.RowDefinitions>
-				<RowDefinition Height="*"/>
-				<RowDefinition Height="Auto"/>
-			</Grid.RowDefinitions>
-			<StackPanel Name="PanelContainer" Grid.Row="0"/>
-			<Button Name="ButtonInstall" Content="Install" Grid.Row="2"/>
-		</Grid>
-	</Window>
-"@
-	#endregion XAML Markup
-
-	$Form = [Windows.Markup.XamlReader]::Load((New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML))
-	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
-		Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name)
-	}
-
-	$ButtonInstall.Content = $Localization.Install
-	#endregion Variables
-
-	#region Functions
-	function RadioButtonChecked
+	try
 	{
-		$Script:CommandTag = $_.OriginalSource.Tag
-		if (-not $ButtonInstall.IsEnabled)
+		# Check the internet connection
+		$Parameters = @{
+			Name        = "dns.msftncsi.com"
+			Server      = "1.1.1.1"
+			DnsOnly     = $true
+			ErrorAction = "Stop"
+		}
+		if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
 		{
-			$ButtonInstall.IsEnabled = $true
+			return
 		}
-	}
 
-	function ButtonInstallClicked
-	{
-		Write-Warning -Message $Script:CommandTag
+		try
+		{
+			[System.Console]::OutputEncoding = [System.Text.Encoding]::Unicode
 
-		Start-Process -FilePath wsl.exe -ArgumentList "--install --distribution $Script:CommandTag" -Wait
+			# https://github.com/microsoft/WSL/blob/master/distributions/DistributionInfo.json
+			# wsl --list --online relies on Internet connection too, so it's much convenient to parse DistributionInfo.json, rather than parse a cmd output
+			$Parameters = @{
+				Uri             = "https://raw.githubusercontent.com/microsoft/WSL/master/distributions/DistributionInfo.json"
+				UseBasicParsing = $true
+				Verbose         = $true
+			}
+			(Invoke-RestMethod @Parameters).Distributions | ForEach-Object -Process {
+				[PSCustomObject]@{
+					"Distro" = $_.FriendlyName
+					"Alias"  = $_.Name
+				}
+			}
 
-		$Form.Close()
+			Add-Type -AssemblyName PresentationCore, PresentationFramework
 
-		# Receive updates for other Microsoft products when you update Windows
-		(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
+			#region Variables
+			$CommandTag = $null
 
-		# Check for updates
-		Start-Process -FilePath "$env:SystemRoot\System32\UsoClient.exe" -ArgumentList StartInteractiveScan
-	}
-	#endregion
+			#region XAML Markup
+			# The section defines the design of the upcoming dialog box
+			[xml]$XAML = @"
+<Window
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	Name="Window"
+	Title="WSL"
+	MinHeight="460" MinWidth="350"
+	SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
+	TextOptions.TextFormattingMode="Display" SnapsToDevicePixels="True"
+	FontFamily="Candara" FontSize="16" ShowInTaskbar="True"
+	Background="#F1F1F1" Foreground="#262626">
+	<Window.Resources>
+		<Style TargetType="RadioButton">
+			<Setter Property="VerticalAlignment" Value="Center"/>
+			<Setter Property="Margin" Value="10"/>
+		</Style>
+		<Style TargetType="TextBlock">
+			<Setter Property="VerticalAlignment" Value="Center"/>
+			<Setter Property="Margin" Value="0, 0, 0, 2"/>
+		</Style>
+		<Style TargetType="Button">
+			<Setter Property="Margin" Value="20"/>
+			<Setter Property="Padding" Value="10"/>
+			<Setter Property="IsEnabled" Value="False"/>
+		</Style>
+	</Window.Resources>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<StackPanel Name="PanelContainer" Grid.Row="0"/>
+		<Button Name="ButtonInstall" Content="Install" Grid.Row="2"/>
+	</Grid>
+</Window>
+"@
+			#endregion XAML Markup
 
-	foreach ($Distro in $Distros)
-	{
-		$Panel = New-Object -TypeName System.Windows.Controls.StackPanel
-		$RadioButton = New-Object -TypeName System.Windows.Controls.RadioButton
-		$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
-		$Panel.Orientation = "Horizontal"
-		$RadioButton.GroupName = "WslDistro"
-		$RadioButton.Tag = $Distro.Alias
-		$RadioButton.Add_Checked({RadioButtonChecked})
-		$TextBlock.Text = $Distro.Distro
-		$Panel.Children.Add($RadioButton) | Out-Null
-		$Panel.Children.Add($TextBlock) | Out-Null
-		$PanelContainer.Children.Add($Panel) | Out-Null
-	}
+			$Form = [Windows.Markup.XamlReader]::Load((New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML))
+			$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
+				Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name)
+			}
 
-	$ButtonInstall.Add_Click({ButtonInstallClicked})
+			$ButtonInstall.Content = $Localization.Install
+			#endregion Variables
 
-	#region Sendkey function
-	# Emulate the Backspace key sending to prevent the console window to freeze
-	Start-Sleep -Milliseconds 500
+			#region Functions
+			function RadioButtonChecked
+			{
+				$Script:CommandTag = $_.OriginalSource.Tag
+				if (-not $ButtonInstall.IsEnabled)
+				{
+					$ButtonInstall.IsEnabled = $true
+				}
+			}
 
-	Add-Type -AssemblyName System.Windows.Forms
+			function ButtonInstallClicked
+			{
+				Write-Warning -Message $Script:CommandTag
 
-	$Signature = @{
-		Namespace        = "WinAPI"
-		Name             = "ForegroundWindow"
-		Language         = "CSharp"
-		MemberDefinition = @"
+				Start-Process -FilePath wsl.exe -ArgumentList "--install --distribution $Script:CommandTag" -Wait
+
+				$Form.Close()
+
+				# Receive updates for other Microsoft products when you update Windows
+				(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
+
+				# Check for updates
+				Start-Process -FilePath "$env:SystemRoot\System32\UsoClient.exe" -ArgumentList StartInteractiveScan
+			}
+			#endregion
+
+			foreach ($Distro in $Distros)
+			{
+				$Panel = New-Object -TypeName System.Windows.Controls.StackPanel
+				$RadioButton = New-Object -TypeName System.Windows.Controls.RadioButton
+				$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
+				$Panel.Orientation = "Horizontal"
+				$RadioButton.GroupName = "WslDistro"
+				$RadioButton.Tag = $Distro.Alias
+				$RadioButton.Add_Checked({RadioButtonChecked})
+				$TextBlock.Text = $Distro.Distro
+				$Panel.Children.Add($RadioButton) | Out-Null
+				$Panel.Children.Add($TextBlock) | Out-Null
+				$PanelContainer.Children.Add($Panel) | Out-Null
+			}
+
+			$ButtonInstall.Add_Click({ButtonInstallClicked})
+
+			#region Sendkey function
+			# Emulate the Backspace key sending to prevent the console window to freeze
+			Start-Sleep -Milliseconds 500
+
+			Add-Type -AssemblyName System.Windows.Forms
+
+			$Signature = @{
+				Namespace        = "WinAPI"
+				Name             = "ForegroundWindow"
+				Language         = "CSharp"
+				MemberDefinition = @"
 [DllImport("user32.dll")]
 public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 
@@ -10499,32 +10516,45 @@ public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 [return: MarshalAs(UnmanagedType.Bool)]
 public static extern bool SetForegroundWindow(IntPtr hWnd);
 "@
-	}
+			}
 
-	if (-not ("WinAPI.ForegroundWindow" -as [type]))
+			if (-not ("WinAPI.ForegroundWindow" -as [type]))
+			{
+				Add-Type @Signature
+			}
+
+			Get-Process | Where-Object -FilterScript {(($_.ProcessName -eq "powershell") -or ($_.ProcessName -eq "WindowsTerminal")) -and ($_.MainWindowTitle -match "Sophia Script for Windows 11")} | ForEach-Object -Process {
+				# Show window, if minimized
+				[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
+
+				Start-Sleep -Seconds 1
+
+				# Force move the console window to the foreground
+				[WinAPI.ForegroundWindow]::SetForegroundWindow($_.MainWindowHandle)
+
+				Start-Sleep -Seconds 1
+
+				# Emulate the Backspace key sending
+				[System.Windows.Forms.SendKeys]::SendWait("{BACKSPACE 1}")
+			}
+			#endregion Sendkey function
+
+			# Force move the WPF form to the foreground
+			$Window.Add_Loaded({$Window.Activate()})
+			$Form.ShowDialog() | Out-Null
+		}
+		catch [System.Net.WebException]
+		{
+			Write-Warning -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com")
+			Write-Error -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com") -ErrorAction SilentlyContinue
+		}
+	}
+	catch [System.ComponentModel.Win32Exception]
 	{
-		Add-Type @Signature
+		Write-Warning -Message $Localization.NoInternetConnection
+		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 	}
 
-	Get-Process | Where-Object -FilterScript {(($_.ProcessName -eq "powershell") -or ($_.ProcessName -eq "WindowsTerminal")) -and ($_.MainWindowTitle -match "Sophia Script for Windows 11")} | ForEach-Object -Process {
-		# Show window, if minimized
-		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
-
-		Start-Sleep -Seconds 1
-
-		# Force move the console window to the foreground
-		[WinAPI.ForegroundWindow]::SetForegroundWindow($_.MainWindowHandle)
-
-		Start-Sleep -Seconds 1
-
-		# Emulate the Backspace key sending
-		[System.Windows.Forms.SendKeys]::SendWait("{BACKSPACE 1}")
-	}
-	#endregion Sendkey function
-
-	# Force move the WPF form to the foreground
-	$Window.Add_Loaded({$Window.Activate()})
-	$Form.ShowDialog() | Out-Null
 }
 #endregion WSL
 
@@ -12976,6 +13006,9 @@ while ([WinAPI.Focus]::GetFocusAssistState() -ne "OFF")
 # Run the task
 Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_.CreationTime -lt (Get-Date).AddDays(-1)} | Remove-Item -Recurse -Force
 
+# This the only way to get "C:\$WinREAgent" path because we need to open brackets for $env:SystemDrive but not for $WinREAgent
+Remove-Item -Path (-join ("`$env:SystemDrive\", '$WinREAgent')) -Recurse -Force
+
 [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
 [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
 
@@ -14798,11 +14831,9 @@ function OpenWindowsTerminalAdminContext
 			Stop-Process -Name WindowsTerminal -Force -PassThru
 		}
 
-		$settings = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
-
 		try
 		{
-			Get-Content -Path $settings -Encoding UTF8 -Force | ConvertFrom-Json
+			Get-Content -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json" -Encoding UTF8 -Force | ConvertFrom-Json
 		}
 		catch [System.ArgumentException]
 		{
@@ -14813,7 +14844,7 @@ function OpenWindowsTerminalAdminContext
 			return
 		}
 
-		$Terminal = Get-Content -Path $settings -Encoding UTF8 -Force | ConvertFrom-Json
+		$Terminal = Get-Content -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json" -Encoding UTF8 -Force | ConvertFrom-Json
 
 		switch ($PSCmdlet.ParameterSetName)
 		{
@@ -14841,9 +14872,8 @@ function OpenWindowsTerminalAdminContext
 			}
 		}
 
-		ConvertTo-Json -InputObject $Terminal -Depth 4 | Set-Content -Path $settings -Encoding UTF8 -Force
-		# Re-save in the UTF-8 without BOM encoding due to JSON must not has the BOM: https://datatracker.ietf.org/doc/html/rfc8259#section-8.1
-		Set-Content -Value (New-Object -TypeName System.Text.UTF8Encoding -ArgumentList $false).GetBytes($(Get-Content -Path $settings -Raw)) -Encoding Byte -Path $settings -Force
+		# Save in UTF-8 with BOM despite JSON must not has the BOM: https://datatracker.ietf.org/doc/html/rfc8259#section-8.1. Unless Terminal profile names which contains non-latin characters will have "?" instead of titles
+		ConvertTo-Json -InputObject $Terminal -Depth 4 | Set-Content -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json" -Encoding UTF8 -Force
 	}
 }
 
