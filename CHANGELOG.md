@@ -5,6 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.17.7 | 6.5.7 — 20.10.2023
+
+* Added `UserFolders` function to hide or show user folders in `This PC`;
+  * Applicable for `Windows 10` only;
+  * `UserFolders -ThreeDObjects Show -Desktop Show -Documents Show -Downloads Show -Music Show -Pictures Show -Videos Show`;
+  * Closed #535.
+* Added `CopilotButton` function to hide or show Copilot on the taskbar.
+  * Applicable for `Windows 11` only;
+
+  ```powershell
+  CopilotButton -Hide
+  CopilotButton -Show
+  ```
+
+* Added `TaskbarCombine` function to configure the icons on icons behaviour on the taskbar;
+  * Applicable for `Windows 11` only;
+
+  ```powershell
+  CopilotButton -Always
+  CopilotButton -Full
+  CopilotButton -Never
+  ```
+
+* Added `ComssOneDNS` argument for `DNSoverHTTPS` function to enable DNS-over-HTTPS via Comss.one DNS server;
+  * Applicable for Russia only
+  * <https://www.comss.ru/page.php?id=7315>
+* Minor changes.
+
+### Wrapper 2.6.11
+
+* Added compatibility with the latest `Sophia Script`` version;
+* Bug fix.
+
+
 ## 5.17.6 | 6.5.6 — 17.09.2023
 
 * Change method to detect whether Internet connection exist;
