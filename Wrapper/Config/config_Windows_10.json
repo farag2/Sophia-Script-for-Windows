@@ -975,6 +975,23 @@
     "WindowsDefault": "Zero"
   },
   {
+    "Id": 340,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "UserFolders",
+    "Arg": {
+      "Zero": {
+        "Tag": "Show"
+      },
+      "One": {
+        "Tag": "Hide"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "Zero"
+  },
+  {
     "Id": 400,
     "Region": "OneDrive",
     "Control": "cmb",

@@ -864,6 +864,21 @@
                 }
     },
     {
+        "Id":  339,
+        "Region":  "UI & Personalization",
+        "Function":  "UserFolders",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Show",
+                                 "ToolTip":  "Show user folders in \"This PC\"."
+                             },
+                    "One":  {
+                                "Tag":  "Hide",
+                                "ToolTip":  "Hide user folders in \"This PC\"."
+                            }
+                }
+    },
+    {
         "Id":  400,
         "Region":  "OneDrive",
         "Function":  "OneDrive",

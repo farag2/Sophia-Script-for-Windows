@@ -864,6 +864,21 @@
                 }
     },
     {
+        "Id":  339,
+        "Region":  "UI & Personalization",
+        "Function":  "UserFolders",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Show",
+                                 "ToolTip":  "Отобразить пользовательские папки в \"Этот компьютер\""
+                             },
+                    "One":  {
+                                "Tag":  "Hide",
+                                "ToolTip":  "Скрыть пользовательские папки в \"Этот компьютер\""
+                            }
+                }
+    },
+    {
         "Id":  400,
         "Region":  "OneDrive",
         "Function":  "OneDrive",

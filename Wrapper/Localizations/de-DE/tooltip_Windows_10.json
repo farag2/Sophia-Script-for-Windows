@@ -864,6 +864,21 @@
                 }
     },
     {
+        "Id":  339,
+        "Region":  "UI & Personalization",
+        "Function":  "UserFolders",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Show",
+                                 "ToolTip":  "Benutzerordner in \"Dieser PC\" anzeigen."
+                             },
+                    "One":  {
+                                "Tag":  "Hide",
+                                "ToolTip":  "Benutzerordner in \"Dieser PC\" ausblenden."
+                            }
+                }
+    },
+    {
         "Id":  400,
         "Region":  "OneDrive",
         "Function":  "OneDrive",
