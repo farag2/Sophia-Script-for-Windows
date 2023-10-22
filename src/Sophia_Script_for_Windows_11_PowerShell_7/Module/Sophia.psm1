@@ -6540,7 +6540,7 @@ function UpdateMicrosoftProducts
 	Notification when your PC requires a restart to finish updating
 
 	.PARAMETER Show
-	Notify me when a restart is required to finish updatingg
+	Notify me when a restart is required to finish updating
 
 	.PARAMETER Hide
 	Do not notify me when a restart is required to finish updating
