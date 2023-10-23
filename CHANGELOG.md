@@ -33,7 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * <https://www.comss.ru/page.php?id=7315>
 * Minor changes.
 
-### Wrapper 2.6.11
+### Wrapper 2.6.12
 
 * Added compatibility with the latest `Sophia Script`` version;
 * Bug fix.
