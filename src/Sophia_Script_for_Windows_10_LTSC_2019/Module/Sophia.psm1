@@ -10164,8 +10164,15 @@ while ([WinAPI.Focus]::GetFocusAssistState() -ne "OFF")
 # Run the task
 Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_.CreationTime -lt (Get-Date).AddDays(-1)} | Remove-Item -Recurse -Force
 
-# This the only way to get "C:\$WinREAgent" path because we need to open brackets for $env:SystemDrive but not for $WinREAgent
-Remove-Item -Path (-join ("`$env:SystemDrive\", '$WinREAgent')) -Recurse -Force
+# Unnecessary folders to remove
+`$Paths = @(
+	# Get "C:\$WinREAgent" path because we need to open brackets for $env:SystemDrive but not for $WinREAgent
+	(-join ("`$env:SystemDrive\", '`$WinREAgent')),
+	(Get-Item -Path `$env:SystemDrive\Recovery -Force | Where-Object -FilterScript {`$_.Attributes -match "Hidden"}).FullName,
+	"`$env:SystemDrive\Intel",
+	"`$env:SystemDrive\PerfLogs"
+)
+Remove-Item -Path `$Paths -Recurse -Force
 
 [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
 [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
