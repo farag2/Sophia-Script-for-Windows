@@ -23,9 +23,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Applicable for `Windows 11` only;
 
   ```powershell
-  CopilotButton -Always
-  CopilotButton -Full
-  CopilotButton -Never
+  TaskbarCombine -Always
+  TaskbarCombine -Full
+  TaskbarCombine -Never
   ```
 
 * Added `ComssOneDNS` argument for `DNSoverHTTPS` function to enable DNS-over-HTTPS via Comss.one DNS server;
