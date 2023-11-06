@@ -113,16 +113,17 @@
 
 |               Version                |    Marketing name   |    Build    | Arch |      Editions       |
 |:-------------------------------------|--------------------:|:-----------:|:----:|:-------------------:|
-| Windows 11 Insider Preview 23H2      | 2023 Update         | 22509+      |      | Home/Pro/Enterprise |
-| Windows 11 22H2                      | 2022 Update         | 22621.1928+ |      | Home/Pro/Enterprise |
-| Windows 10 22H2                      | 2022 Update         | 19045.3155+ | x64  | Home/Pro/Enterprise |
-| Windows 10 21H2 Enterprise LTSC 2021 | October 2021 Update | 19044.3155+ | x64  | Enterprise          |
-| Windows 10 1809 Enterprise LTSC 2019 | October 2018 Update | 17763.4499+ | x64  | Enterprise          |
+| Windows 11 Insider Preview 24H2      | 2024 Update         | 22509+      |      | Home/Pro/Enterprise |
+| Windows 11 23H2                      | 2023 Update         | 22631.2715+ |      | Home/Pro/Enterprise |
+| Windows 11 22H2                      | 2022 Update         | 22621.2428+ |      | Home/Pro/Enterprise |
+| Windows 10 22H2                      | 2022 Update         | 19045.3570+ | x64  | Home/Pro/Enterprise |
+| Windows 10 21H2 Enterprise LTSC 2021 | October 2021 Update | 19044.3570+ | x64  | Enterprise          |
+| Windows 10 1809 Enterprise LTSC 2019 | October 2018 Update | 17763.4974+ | x64  | Enterprise          |
 
 ### Warning
 
 * It's allowed to be logged in as one admin user only during application startup.
-* 🔥🔥🔥`Sophia Script for Windows` may not work on a homebrew Windows. Especially, if the homebrew image was created by OS makers being all thumbs who break Microsoft Defender and disable OS telemetry by purposely uprooting system components
+* 🔥🔥🔥 `Sophia Script for Windows` may not work on a homebrew Windows. Especially, if the homebrew image was created by OS makers being all thumbs who break Microsoft Defender and disable OS telemetry by purposely uprooting system components
 
 ## Key features
 
