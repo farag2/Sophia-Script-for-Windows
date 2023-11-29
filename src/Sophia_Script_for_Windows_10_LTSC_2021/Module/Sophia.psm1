@@ -103,6 +103,16 @@ public static string GetString(uint strId)
 	# Detect the OS build version
 	switch (((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber -eq 19044) -and ((Get-WindowsEdition -Online).Edition -match "EnterpriseS"))
 	{
+		$false
+		{
+			Write-Warning -Message $Localization.UnsupportedOSBuild
+
+			Start-Process -FilePath "https://t.me/sophia_chat"
+			Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+			Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows#system-requirements"
+
+			exit
+		}
 		$true
 		{
 			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 3570)
@@ -128,16 +138,6 @@ public static string GetString(uint strId)
 
 				exit
 			}
-		}
-		$false
-		{
-			Write-Warning -Message $Localization.UnsupportedOSBuild
-
-			Start-Process -FilePath "https://t.me/sophia_chat"
-			Start-Process -FilePath "https://discord.gg/sSryhaEv79"
-			Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows#system-requirements"
-
-			exit
 		}
 	}
 
@@ -218,6 +218,8 @@ public static string GetString(uint strId)
 		"WinterOS Tweaker"  = "$env:SystemRoot\WinterOS*"
 		# https://github.com/ThePCDuke/WinCry
 		WinCry              = "$env:SystemRoot\TempCleaner.exe"
+		# https://hone.gg
+		Hone                = "$env:LOCALAPPDATA\Programs\Hone\Hone.exe"
 	}
 	foreach ($Tweaker in $Tweakers.Keys)
 	{
@@ -357,6 +359,17 @@ public static string GetString(uint strId)
 		}
 	}
 
+	# Checking whether Windows Security Settings page was hidden from UI
+	if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer", "SettingsPageVisibility", $null) -match "hide:windowsdefender")
+	{
+		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
+
+		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+
+		exit
+	}
+
 	# Checking whether WMI is corrupted
 	try
 	{
@@ -406,107 +419,48 @@ public static string GetString(uint strId)
 	$DefenderState = ('0x{0:x}' -f $productState).Substring(3, 2)
 	if ($DefenderState -notmatch "00|01")
 	{
-		$Script:DefenderproductState = $true
-	}
-	else
-	{
-		$Script:DefenderproductState = $false
-	}
+		# Defender is a currently used AV. Continue...
+		$Script:DefenderProductState = $true
 
-	# Specify whether Antispyware protection is enabled
-	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/Microsoft/Windows/Defender).AntispywareEnabled)
-	{
-		$Script:DefenderAntispywareEnabled = $true
-	}
-	else
-	{
-		$Script:DefenderAntispywareEnabled = $false
-	}
-
-	# https://docs.microsoft.com/en-us/graph/api/resources/intune-devices-windowsdefenderproductstatus?view=graph-rest-beta
-	# Due to "Set-StrictMode -Version Latest" we have to call Get-Member first to check whether ProductStatus property exists
-	if (Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/Microsoft/Windows/Defender | Get-Member | Where-Object -FilterScript {$_.Name -eq "ProductStatus"})
-	{
-		if ($Script:DefenderproductState)
+		# Check whether Microsoft Defender was turned off via GPO
+		# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
+		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender", "DisableAntiSpyware", $null) -eq 1)
 		{
-			if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/Microsoft/Windows/Defender).ProductStatus -eq 1)
-			{
-				$Script:DefenderProductState = $false
-			}
-			else
-			{
-				$Script:DefenderProductState = $true
-			}
+			$Script:AntiSpywareEnabled = $false
 		}
 		else
 		{
-			$Script:DefenderProductState = $false
+			$Script:AntiSpywareEnabled = $true
+		}
+
+		# Check whether Microsoft Defender was turned off via GPO
+		# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
+		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection", "DisableRealtimeMonitoring", $null) -eq 1)
+		{
+			$Script:RealtimeMonitoringEnabled = $false
+		}
+		else
+		{
+			$Script:RealtimeMonitoringEnabled = $true
+		}
+
+		# Check whether Microsoft Defender was turned off via GPO
+		# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
+		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection", "DisableBehaviorMonitoring", $null) -eq 1)
+		{
+			$Script:BehaviorMonitoringEnabled = $false
+		}
+		else
+		{
+			$Script:BehaviorMonitoringEnabled = $true
 		}
 	}
 	else
 	{
-		Write-Warning -Message $Localization.UpdateDefender
-
-		Start-Process -FilePath "https://t.me/sophia_chat"
-		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
-
-		# Receive updates for other Microsoft products when you update Windows
-		(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
-
-		# Check for updates
-		Start-Process -FilePath "$env:SystemRoot\System32\UsoClient.exe" -ArgumentList StartInteractiveScan
-
-		# Open the "Windows Update" page
-		Start-Process -FilePath "ms-settings:windowsupdate"
-
-		exit
+		$Script:DefenderProductState = $false
 	}
 
-	# https://docs.microsoft.com/en-us/graph/api/resources/intune-devices-windowsdefenderproductstatus?view=graph-rest-beta
-	if ((Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/Microsoft/Windows/Defender).AMEngineVersion -eq "0.0.0.0")
-	{
-		$Script:DefenderAMEngineVersion = $false
-	}
-	else
-	{
-		$Script:DefenderAMEngineVersion = $true
-	}
-
-	# Check whether Microsoft Defender was turned off
-	# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
-	if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender", "DisableAntiSpyware", $null) -eq 1)
-	{
-		$Script:DisableAntiSpyware = $true
-	}
-	else
-	{
-		$Script:DisableAntiSpyware = $false
-	}
-
-	# Check whether real-time protection prompts for known malware detection
-	# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
-	if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection", "DisableRealtimeMonitoring", $null) -eq 1)
-	{
-		$Script:DisableRealtimeMonitoring = $true
-	}
-	else
-	{
-		$Script:DisableRealtimeMonitoring = $false
-	}
-
-	# Check whether behavior monitoring was disabled
-	# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
-	if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection", "DisableBehaviorMonitoring", $null) -eq 1)
-	{
-		$Script:DisableBehaviorMonitoring = $true
-	}
-	else
-	{
-		$Script:DisableBehaviorMonitoring = $false
-	}
-
-	if ($Script:DefenderproductState -and $Script:DefenderServices -and $Script:DefenderAntispywareEnabled -and $Script:DefenderAMEngineVersion -and
-	(-not $Script:DisableAntiSpyware) -and (-not $Script:DisableRealtimeMonitoring) -and (-not $Script:DisableBehaviorMonitoring))
+	if ($Script:DefenderServices -and $Script:DefenderproductState -and $Script:AntiSpywareEnabled -and $Script:RealtimeMonitoringEnabled -and $Script:BehaviorMonitoringEnabled)
 	{
 		# Defender is enabled
 		$Script:DefenderEnabled = $true
@@ -868,7 +822,7 @@ function CreateRestorePoint
 }
 #endregion Protection
 
-#region Additional functions
+#region Additional function
 <#
 	.SYNOPSIS
 	Create pre-configured text files for LGPO.exe tool
@@ -1005,7 +959,7 @@ function script:AdditionalActions
 		exit
 	}
 }
-#endregion Additional functions
+#endregion Additional function
 
 #region Privacy & Telemetry
 <#
@@ -11284,10 +11238,14 @@ Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_
 `$Paths = @(
 	# Get "C:\$WinREAgent" path because we need to open brackets for $env:SystemDrive but not for $WinREAgent
 	(-join ("`$env:SystemDrive\", '`$WinREAgent')),
-	(Get-Item -Path `$env:SystemDrive\Recovery -Force | Where-Object -FilterScript {`$_.Attributes -match "Hidden"}).FullName,
 	"`$env:SystemDrive\Intel",
 	"`$env:SystemDrive\PerfLogs"
 )
+
+if ((Get-Item -Path `$env:SystemDrive\Recovery -Force | Where-Object -FilterScript {`$_.Attributes -match "Hidden"}).FullName)
+{
+	`$Paths += (Get-Item -Path `$env:SystemDrive\Recovery -Force | Where-Object -FilterScript {`$_.Attributes -match "Hidden"}).FullName
+}
 Remove-Item -Path `$Paths -Recurse -Force
 
 [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null

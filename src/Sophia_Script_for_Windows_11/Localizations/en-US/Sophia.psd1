@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedOSBuild                        = The script supports Windows 11 22H2+.
-UpdateWarning                             = Your Windows 11 build: {0}.{1}. Supported builds: 22621.2428+. Run Windows Update and try again.
+UnsupportedOSBuild                        = The script supports Windows 11 23H2+.
+UpdateWarning                             = Your Windows 11 build: {0}.{1}. Supported builds: 22631.2715+. Run Windows Update and try again.
 UnsupportedLanguageMode                   = The PowerShell session in running in a limited language mode.
 LoggedInUserNotAdmin                      = The logged-on user doesn't have admin rights.
 UnsupportedPowerShell                     = You're trying to run script via PowerShell {0}.{1}. Run the script in the appropriate PowerShell version.
@@ -15,6 +15,7 @@ CustomizationWarning                      = Have you customized every function i
 WindowsComponentBroken                    = {0} broken or removed from the OS.
 UpdateDefender                            = Microsoft Defender definitions are out-of-date. Run Windows Update and try again.
 ControlledFolderAccessDisabled            = Controlled folder access disabled.
+InitialActionsCheckFailed                 = Please do not remove "InitialActions" function from preset file.
 ScheduledTasks                            = Scheduled tasks
 OneDriveUninstalling                      = Uninstalling OneDrive...
 OneDriveInstalling                        = Installing OneDrive...
