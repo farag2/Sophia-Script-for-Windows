@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.17.8 | 6.5.8 — 08.12.2023
+
+* The `InitialActions` function simplified;
+* Fixed bug in `TempTask` when `$env:SystemDrive\Recovery` folder wasn't removed;
+  * Thanks to `linchel23`.
+* Added `CopilotButton` function for `Windows 10` to hide ot show Copilot button on the taskbar as Windows starts supporting it with the latest available build;
+* Added `WindowsLatestUpdate` function for `Windows 10` to let user get Windows updates as soon as they're available for your device as Windows starts supporting it with the latest available build;
+* Removed `HEVC` function for `Windows 11` as unnecessary one as `Windows 11` already has `Microsoft.HEVCVideoExtension` package pre-installed;
+* Fixed typos;
+* Minor changes.
+
 ## 5.17.7 | 6.5.7 — 20.10.2023
 
 * Added `UserFolders` function to hide or show user folders in `This PC`;
