@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * The `InitialActions` function simplified;
 * Fixed bug in `TempTask` when `$env:SystemDrive\Recovery` folder wasn't removed;
+  * Just in case re-create `Temp` scheduled task via `. .\Functions.ps1` [method](https://github.com/farag2/Sophia-Script-for-Windows#how-to-run-the-specific-functions).
   * Thanks to `linchel23`.
 * Added `CopilotButton` function for `Windows 10` to hide ot show Copilot button on the taskbar as Windows starts supporting it with the latest available build;
 * Added `WindowsLatestUpdate` function for `Windows 10` to let user get Windows updates as soon as they're available for your device as Windows starts supporting it with the latest available build;
