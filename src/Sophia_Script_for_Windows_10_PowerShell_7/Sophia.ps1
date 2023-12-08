@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10 (PowerShell 7)"
 
-	Version: v5.17.7
-	Date: 22.10.2023
+	Version: v5.17.8
+	Date: 08.12.2023
 
 	Copyright (c) 2014—2023 farag
 	Copyright (c) 2019—2023 farag & Inestic
@@ -70,7 +70,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.17.7 (PowerShell 7) | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag & Inestic, 2014$([System.Char]0x2013)2023"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.17.8 (PowerShell 7) | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag & Inestic, 2014$([System.Char]0x2013)2023"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
@@ -394,6 +394,14 @@ CortanaButton -Hide
 # Show Cortana button on the taskbar (default value)
 # Показать кнопку Кортаны на панели задач (значение по умолчанию)
 # CortanaButton -Show
+
+# Hide Copilot button on the taskbar
+# Скрыть кнопку Copilot с панели задач
+CopilotButton -Hide
+
+# Show Copilot button on the taskbar (default value)
+# Отобразить кнопку Copilot на панели задач (значение по умолчанию)
+# CopilotButton -Show
 
 # Hide the Task View button on the taskbar
 # Скрыть кнопку Просмотра задач
@@ -951,6 +959,14 @@ ActiveHours -Automatically
 # Manually adjust active hours for me based on daily usage (default value)
 # Вручную изменять период активности для этого устройства на основе действий (значение по умолчанию)
 # ActiveHours -Manually
+
+# Do not get Windows updates as soon as they're available for your device (default value)
+# Не получать последние обновления, как только они будут доступны (значение по умолчанию)
+WindowsLatestUpdate -Disable
+
+# Get Windows updates as soon as they're available for your device
+# Получайте последние обновления, как только они будут доступны
+# WindowsLatestUpdate -Enable
 
 <#
 	Register app, calculate hash, and associate with an extension with the "How do you want to open this" pop-up hidden

@@ -16,6 +16,7 @@ CustomizationWarning                      = Ви налаштували всі �
 WindowsComponentBroken                    = {0} пошкоджено або видалено з ОС.
 UpdateDefender                            = Визначення Microsoft Defender застаріли. Запустіть Windows Update і повторіть спробу.
 ControlledFolderAccessDisabled            = Контрольований доступ до папок вимкнений.
+InitialActionsCheckFailed                 = Функція "InitialActions" не може бути завантажена з пресет-файлу {0}.
 ScheduledTasks                            = Заплановані задачі
 WindowsFeaturesTitle                      = Компоненти Windows
 OptionalFeaturesTitle                     = Додаткові компоненти

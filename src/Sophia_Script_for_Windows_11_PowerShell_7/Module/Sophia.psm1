@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v6.5.7
-	Date: 22.10.2023
+	Version: v6.5.8
+	Date: 08.12.2023
 
 	Copyright (c) 2014—2023 farag
 	Copyright (c) 2019—2023 farag & Inestic
@@ -1080,7 +1080,16 @@ function DiagTrackService
 	# Check whether "InitialActions" function was removed in preset file
 	if (-not ("WinAPI.GetStr" -as [type]))
 	{
-		###
+		# Get the name of a preset (e.g Sophia.ps1) regardless it was named
+		# $_.File has no EndsWith() method
+		$PresetName = Split-Path -Path (((Get-PSCallStack).Position | Where-Object -FilterScript {$_.File}).File | Where-Object -FilterScript {$_.EndsWith(".ps1")}) -Leaf
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.InitialActionsCheckFailed -f $PresetName) -Verbose
+
+		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+
+		exit
 	}
 
 	switch ($PSCmdlet.ParameterSetName)
@@ -3157,14 +3166,6 @@ function CopilotButton
 		[switch]
 		$Show
 	)
-
-	switch ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber)
-	{
-		{($_ -ne 22631) -and ($_ -lt 23493)}
-		{
-			return
-		}
-	}
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
@@ -11394,160 +11395,6 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 
 <#
 	.SYNOPSIS
-	"HEVC Video Extensions from Device Manufacturer" extension
-
-	.PARAMETER Install
-	Download and install the "HEVC Video Extensions from Device Manufacturer" extension
-
-	.PARAMETER Manually
-	Open Microsoft Store "HEVC Video Extensions from Device Manufacturer" page to install the extension manually
-
-	.EXAMPLE
-	HEVC -Install
-
-	.EXAMPLE
-	HEVC -Manually
-
-	.LINK
-	https://www.microsoft.com/store/productId/9n4wgh0z6vhq
-
-	.NOTES
-	The extension can be installed without Microsoft account
-
-	.NOTES
-	HEVC Video Extension is already installed in Windows 11 23H2 by default
-
-	.NOTES
-	Current user
-#>
-function HEVC
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Install"
-		)]
-		[switch]
-		$Install,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Manually"
-		)]
-		[switch]
-		$Manually
-	)
-
-	# Check whether the extension is already installed
-	if ((-not (Get-AppxPackage -Name Microsoft.Windows.Photos)) -or (Get-AppxPackage -Name Microsoft.HEVCVideoExtension))
-	{
-		return
-	}
-
-	try
-	{
-		# Check the internet connection
-		$Parameters = @{
-			Name        = "dns.msftncsi.com"
-			Server      = "1.1.1.1"
-			DnsOnly     = $true
-			ErrorAction = "Stop"
-		}
-		if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
-		{
-			return
-		}
-	}
-	catch [System.ComponentModel.Win32Exception]
-	{
-		Write-Warning -Message $Localization.NoInternetConnection
-		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
-		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-
-		return
-	}
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Install"
-		{
-			try
-			{
-				# Check whether https://store.rg-adguard.net is alive
-				$Parameters = @{
-					Uri              = "https://store.rg-adguard.net/api/GetFiles"
-					Method           = "Head"
-					DisableKeepAlive = $true
-					UseBasicParsing  = $true
-					Verbose          = $true
-				}
-				if (-not (Invoke-WebRequest @Parameters).StatusDescription)
-				{
-					return
-				}
-
-				$Body = @{
-					type = "url"
-					url  = "https://www.microsoft.com/store/productId/9n4wgh0z6vhq"
-					ring = "Retail"
-					lang = "en-US"
-				}
-				$Parameters = @{
-					Uri             = "https://store.rg-adguard.net/api/GetFiles"
-					Method          = "Post"
-					ContentType     = "application/x-www-form-urlencoded"
-					Body            = $Body
-					UseBasicParsing = $true
-					Verbose         = $true
-				}
-				$Raw = Invoke-WebRequest @Parameters
-
-				# Parsing the page
-				$Raw | Select-String -Pattern '<tr style.*<a href=\"(?<url>.*)"\s.*>(?<text>.*)<\/a>' -AllMatches | ForEach-Object -Process {$_.Matches} | Where-Object -FilterScript {$_.Value -like "*x64*.appx*"} | ForEach-Object -Process {
-					$TempURL = ($_.Groups | Select-Object -Index 1).Value
-					$HEVCPackageName = ($_.Groups | Select-Object -Index 2).Value.Split("_") | Select-Object -Index 1
-
-					# Installing "HEVC Video Extensions from Device Manufacturer"
-					if ([System.Version]$HEVCPackageName -gt [System.Version](Get-AppxPackage -Name Microsoft.HEVCVideoExtension).Version)
-					{
-						Write-Information -MessageData "" -InformationAction Continue
-						# Extract the localized "Please wait..." string from shell32.dll
-						Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
-
-						Write-Verbose -Message $Localization.HEVCDownloading -Verbose
-
-						$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-						$Parameters = @{
-							Uri             = $TempURL
-							OutFile         = "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx"
-							UseBasicParsing = $true
-							Verbose         = $true
-						}
-						Invoke-WebRequest @Parameters
-
-						Add-AppxPackage -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx" -Verbose
-						Remove-Item -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx" -Force
-					}
-				}
-			}
-			catch [System.Net.WebException]
-			{
-				Write-Warning -Message ($Localization.NoResponse -f "https://store.rg-adguard.net/api/GetFiles")
-				Write-Error -Message ($Localization.NoResponse -f "https://store.rg-adguard.net/api/GetFiles") -ErrorAction SilentlyContinue
-
-				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-			}
-		}
-		"Manually"
-		{
-			Start-Process -FilePath ms-windows-store://pdp/?ProductId=9n4wgh0z6vhq
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
 	Cortana autostarting
 
 	.PARAMETER Disable
@@ -13775,11 +13622,6 @@ function DNSoverHTTPS
 	{
 		"Enable"
 		{
-			if (((Get-WinHomeLocation).GeoId -ne "203") -or ((Get-WinHomeLocation).GeoId -ne "29"))
-			{
-				return
-			}
-
 			# Set a primary and secondary DNS servers
 			if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
 			{
@@ -13807,9 +13649,12 @@ function DNSoverHTTPS
 		}
 		"ComssOneDNS"
 		{
-			if (-not (((Get-WinHomeLocation).GeoId -eq "203") -or ((Get-WinHomeLocation).GeoId -eq "29")))
+			switch ((Get-WinHomeLocation).GeoId)
 			{
-				return
+				{($_ -ne 203) -and ($_ -ne 29)}
+				{
+					return
+				}
 			}
 
 			# Set a primary and secondary DNS servers

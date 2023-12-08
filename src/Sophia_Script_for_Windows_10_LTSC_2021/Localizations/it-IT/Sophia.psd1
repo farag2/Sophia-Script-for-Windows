@@ -16,6 +16,7 @@ CustomizationWarning                      = Sono state personalizzate tutte le f
 WindowsComponentBroken                    = {0} rimosso dal sistema.
 UpdateDefender                            = Le definizioni di Microsoft Defender non sono aggiornate. Eseguire Windows Update e riprovare.
 ControlledFolderAccessDisabled            = l'accesso alle cartelle controllata disattivata.
+InitialActionsCheckFailed                 = La funzione "InitialActions" non può essere caricata dal file di preselezione {0}.
 ScheduledTasks                            = Attività pianificate
 WindowsFeaturesTitle                      = Funzionalità di Windows
 OptionalFeaturesTitle                     = Caratteristiche opzionali

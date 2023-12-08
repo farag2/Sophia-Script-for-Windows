@@ -16,6 +16,7 @@ CustomizationWarning                      = Sophia Script'i çalıştırmadan ö
 WindowsComponentBroken                    = {0} bozuk veya işletim sisteminden kaldırıldı.
 UpdateDefender                            = Microsoft Defender tanımları güncel değil. Windows Update'i çalıştırın ve tekrar deneyin.
 ControlledFolderAccessDisabled            = Kontrollü klasör erişimi devre dışı bırakıldı.
+InitialActionsCheckFailed                 = "InitialActions" fonksiyonu {0} ön ayar dosyasından yüklenemez.
 ScheduledTasks                            = Zamanlanan görevler
 WindowsFeaturesTitle                      = Características do Windows
 OptionalFeaturesTitle                     = Opsiyonel özellikler

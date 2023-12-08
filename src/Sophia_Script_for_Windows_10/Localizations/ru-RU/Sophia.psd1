@@ -16,6 +16,7 @@ CustomizationWarning                      = Вы настроили все фу�
 WindowsComponentBroken                    = {0} сломан или удален из ОС.
 UpdateDefender                            = Определения Microsoft Defender устарели. Запустите обновление Windows.
 ControlledFolderAccessDisabled            = Контролируемый доступ к папкам выключен.
+InitialActionsCheckFailed                 = Функция "InitialActions" не может быть загружена из пресет-файла {0}.
 ScheduledTasks                            = Запланированные задания
 OneDriveUninstalling                      = Удаление OneDrive...
 OneDriveInstalling                        = OneDrive устанавливается...

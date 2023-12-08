@@ -16,6 +16,7 @@ CustomizationWarning                      = ¿Ha personalizado todas las funcion
 WindowsComponentBroken                    = {0} dañado o eliminado del sistema operativo.
 UpdateDefender                            = Las definiciones de Microsoft Defender no están actualizadas. Ejecute Windows Update y vuelva a intentarlo.
 ControlledFolderAccessDisabled            = Acceso a la carpeta controlada deshabilitado.
+InitialActionsCheckFailed                 = La función "InitialActions" no se puede cargar desde el archivo de preajuste {0}.
 ScheduledTasks                            = Tareas programadas
 OneDriveUninstalling                      = Desinstalar OneDrive...
 OneDriveInstalling                        = Instalación de OneDrive...

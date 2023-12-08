@@ -16,6 +16,7 @@ CustomizationWarning                      = Személyre szabott minden opciót a 
 WindowsComponentBroken                    = A {0} elromlott vagy eltávolították az operációs rendszerből.
 UpdateDefender                            = A Microsoft Defender definíciói elavultak. Futtassa a Windows Update programot, és próbálja meg újra.
 ControlledFolderAccessDisabled            = Vezérelt mappához való hozzáférés kikapcsolva.
+InitialActionsCheckFailed                 = Az "InitialActions" funkció nem tölthető be a {0} előre beállított fájlból.
 ScheduledTasks                            = Ütemezett feladatok
 OneDriveUninstalling                      = OneDrive eltávolítása...
 OneDriveInstalling                        = OneDrive telepítése...

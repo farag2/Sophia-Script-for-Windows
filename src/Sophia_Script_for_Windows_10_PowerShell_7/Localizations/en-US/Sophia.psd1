@@ -16,6 +16,7 @@ CustomizationWarning                      = Have you customized every function i
 WindowsComponentBroken                    = {0} broken or removed from the OS.
 UpdateDefender                            = Microsoft Defender definitions are out-of-date. Run Windows Update and try again.
 ControlledFolderAccessDisabled            = Controlled folder access disabled.
+InitialActionsCheckFailed                 = "InitialActions" function cannot be loaded from the {0} preset file.
 ScheduledTasks                            = Scheduled tasks
 OneDriveUninstalling                      = Uninstalling OneDrive...
 OneDriveInstalling                        = Installing OneDrive...

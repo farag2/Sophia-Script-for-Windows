@@ -16,6 +16,7 @@ CustomizationWarning                      = Haben Sie alle Funktionen in der vor
 WindowsComponentBroken                    = {0} defekt oder aus dem Betriebssystem entfernt.
 UpdateDefender                            = Die Microsoft Defender-Definitionen sind veraltet. Führen Sie Windows Update aus und versuchen Sie es erneut.
 ControlledFolderAccessDisabled            = Kontrollierter Ordnerzugriff deaktiviert.
+InitialActionsCheckFailed                 = Die Funktion "InitialActions" kann nicht aus der Voreinstellungsdatei {0} geladen werden.
 ScheduledTasks                            = Geplante Aufgaben
 WindowsFeaturesTitle                      = Windows-Features
 OptionalFeaturesTitle                     = Optionale Features

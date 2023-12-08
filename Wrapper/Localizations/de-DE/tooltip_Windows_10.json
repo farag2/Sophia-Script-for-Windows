@@ -523,6 +523,21 @@
     {
         "Id":  317,
         "Region":  "UI & Personalization",
+        "Function":  "CopilotButton",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Hide",
+                                 "ToolTip":  "Ausblenden der Schaltfläche Copilot in der Taskleiste."
+                             },
+                    "One":  {
+                                "Tag":  "Show",
+                                "ToolTip":  "Zeigen Sie die Schaltfläche Copilot in der Taskleiste an (Standardeinstellung)."
+                            }
+                }
+    },
+    {
+        "Id":  318,
+        "Region":  "UI & Personalization",
         "Function":  "TaskViewButton",
         "Arg":  {
                     "Zero":  {
@@ -536,7 +551,7 @@
                 }
     },
     {
-        "Id":  318,
+        "Id":  319,
         "Region":  "UI & Personalization",
         "Function":  "NewsInterests",
         "Arg":  {
@@ -551,7 +566,7 @@
                 }
     },
     {
-        "Id":  319,
+        "Id":  320,
         "Region":  "UI & Personalization",
         "Function":  "PeopleTaskbar",
         "Arg":  {
@@ -566,7 +581,7 @@
                 }
     },
     {
-        "Id":  320,
+        "Id":  321,
         "Region":  "UI & Personalization",
         "Function":  "MeetNow",
         "Arg":  {
@@ -581,7 +596,7 @@
                 }
     },
     {
-        "Id":  321,
+        "Id":  322,
         "Region":  "UI & Personalization",
         "Function":  "WindowsInkWorkspace",
         "Arg":  {
@@ -596,7 +611,7 @@
                 }
     },
     {
-        "Id":  322,
+        "Id":  323,
         "Region":  "UI & Personalization",
         "Function":  "NotificationAreaIcons",
         "Arg":  {
@@ -611,7 +626,7 @@
                 }
     },
     {
-        "Id":  323,
+        "Id":  324,
         "Region":  "UI & Personalization",
         "Function":  "SecondsInSystemClock",
         "Arg":  {
@@ -626,7 +641,7 @@
                 }
     },
     {
-        "Id":  324,
+        "Id":  325,
         "Region":  "UI & Personalization",
         "Function":  "UnpinTaskbarShortcuts -Shortcuts",
         "ToolTip":  "Die Verknüpfungen \"Microsoft Edge\", \"Microsoft Store\" oder \"Mail\" von der Taskleiste lösen.",
@@ -646,7 +661,7 @@
                 }
     },
     {
-        "Id":  325,
+        "Id":  326,
         "Region":  "UI & Personalization",
         "Function":  "ControlPanelView",
         "Arg":  {
@@ -665,7 +680,7 @@
                 }
     },
     {
-        "Id":  326,
+        "Id":  327,
         "Region":  "UI & Personalization",
         "Function":  "WindowsColorMode",
         "Arg":  {
@@ -680,7 +695,7 @@
                 }
     },
     {
-        "Id":  327,
+        "Id":  328,
         "Region":  "UI & Personalization",
         "Function":  "AppColorMode",
         "Arg":  {
@@ -695,7 +710,7 @@
                 }
     },
     {
-        "Id":  328,
+        "Id":  329,
         "Region":  "UI & Personalization",
         "Function":  "NewAppInstalledNotification",
         "Arg":  {
@@ -710,7 +725,7 @@
                 }
     },
     {
-        "Id":  329,
+        "Id":  330,
         "Region":  "UI & Personalization",
         "Function":  "FirstLogonAnimation",
         "Arg":  {
@@ -725,7 +740,7 @@
                 }
     },
     {
-        "Id":  330,
+        "Id":  331,
         "Region":  "UI & Personalization",
         "Function":  "JPEGWallpapersQuality",
         "Arg":  {
@@ -740,7 +755,7 @@
                 }
     },
     {
-        "Id":  331,
+        "Id":  332,
         "Region":  "UI & Personalization",
         "Function":  "TaskManagerWindow",
         "Arg":  {
@@ -755,7 +770,7 @@
                 }
     },
     {
-        "Id":  332,
+        "Id":  333,
         "Region":  "UI & Personalization",
         "Function":  "ShortcutsSuffix",
         "Arg":  {
@@ -770,7 +785,7 @@
                 }
     },
     {
-        "Id":  333,
+        "Id":  334,
         "Region":  "UI & Personalization",
         "Function":  "PrtScnSnippingTool",
         "Arg":  {
@@ -785,7 +800,7 @@
                 }
     },
     {
-        "Id":  334,
+        "Id":  335,
         "Region":  "UI & Personalization",
         "Function":  "AppsLanguageSwitch",
         "Arg":  {
@@ -800,7 +815,7 @@
                 }
     },
     {
-        "Id":  335,
+        "Id":  336,
         "Region":  "UI & Personalization",
         "Function":  "AeroShaking",
         "Arg":  {
@@ -815,7 +830,7 @@
                 }
     },
     {
-        "Id":  336,
+        "Id":  337,
         "Region":  "UI & Personalization",
         "Function":  "Cursors",
         "Arg":  {
@@ -834,7 +849,7 @@
                 }
     },
     {
-        "Id":  337,
+        "Id":  338,
         "Region":  "UI & Personalization",
         "Function":  "FolderGroupBy",
         "Arg":  {
@@ -849,7 +864,7 @@
                 }
     },
     {
-        "Id":  338,
+        "Id":  339,
         "Region":  "UI & Personalization",
         "Function":  "NavigationPaneExpand",
         "Arg":  {
@@ -864,7 +879,7 @@
                 }
     },
     {
-        "Id":  339,
+        "Id":  340,
         "Region":  "UI & Personalization",
         "Function":  "UserFolders",
         "Arg":  {
@@ -1455,6 +1470,21 @@
     {
         "Id":  536,
         "Region":  "System",
+        "Function":  "WindowsLatestUpdate",
+        "Arg":  {
+                    "Zero":  {
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Holen Sie sich keine Windows-Updates, sobald sie für Ihr Gerät verfügbar sind (Standardeinstellung)."
+                             },
+                    "One":  {
+                                "Tag":  "Enable",
+                                "ToolTip":  "Holen Sie sich Windows-Updates, sobald sie für Ihr Gerät verfügbar sind."
+                            }
+                }
+    },
+    {
+        "Id":  537,
+        "Region":  "System",
         "Function":  "Export-Associations",
         "Arg":  {
                     "Zero":  {
@@ -1464,7 +1494,7 @@
                 }
     },
     {
-        "Id":  537,
+        "Id":  538,
         "Region":  "System",
         "Function":  "Import-Associations",
         "Arg":  {
@@ -1475,7 +1505,7 @@
                 }
     },
     {
-        "Id":  538,
+        "Id":  539,
         "Region":  "System",
         "Function":  "UninstallPCHealthCheck",
         "Arg":  {
@@ -1486,7 +1516,7 @@
                 }
     },
     {
-        "Id":  539,
+        "Id":  540,
         "Region":  "System",
         "Function":  "InstallVCRedist",
         "Arg":  {
@@ -1497,7 +1527,7 @@
                 }
     },
     {
-        "Id":  540,
+        "Id":  541,
         "Region":  "System",
         "Function":  "InstallDotNetRuntimes",
         "Arg":  {
@@ -1508,7 +1538,7 @@
                 }
     },
     {
-        "Id":  541,
+        "Id":  542,
         "Region":  "System",
         "Function":  "RKNBypass",
         "Arg":  {
@@ -1523,7 +1553,7 @@
                 }
     },
     {
-        "Id":  542,
+        "Id":  543,
         "Region":  "System",
         "Function":  "PreventEdgeShortcutCreation",
         "Arg":  {
@@ -1538,7 +1568,7 @@
                 }
     },
     {
-        "Id":  543,
+        "Id":  544,
         "Region":  "System",
         "Function":  "SATADrivesRemovableMedia",
         "Arg":  {
@@ -1553,7 +1583,7 @@
                 }
     },
     {
-        "Id":  544,
+        "Id":  545,
         "Region":  "System",
         "Function":  "Set-Association",
         "Arg":  {
@@ -1563,8 +1593,8 @@
                              }
                 }
     },
-	{
-        "Id":  545,
+    {
+        "Id":  546,
         "Region":  "System",
         "Function":  "ProgramPath",
         "Arg":  {
@@ -1574,8 +1604,8 @@
                              }
                 }
     },
-	{
-        "Id":  546,
+    {
+        "Id":  547,
         "Region":  "System",
         "Function":  "Extension",
         "Arg":  {
@@ -1585,8 +1615,8 @@
                              }
                 }
     },
-	{
-        "Id":  547,
+    {
+        "Id":  548,
         "Region":  "System",
         "Function":  "Icon",
         "Arg":  {
@@ -1595,7 +1625,7 @@
                                  "ToolTip":  "Pfad zum Symbol."
                              }
                 }
-    },	
+    },    
     {
         "Id":  600,
         "Region":  "WSL",

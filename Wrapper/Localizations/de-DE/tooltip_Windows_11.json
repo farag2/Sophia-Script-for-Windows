@@ -1522,7 +1522,7 @@
                              }
                 }
     },
-	{
+    {
         "Id":  547,
         "Region":  "System",
         "Function":  "ProgramPath",
@@ -1533,7 +1533,7 @@
                              }
                 }
     },
-	{
+    {
         "Id":  548,
         "Region":  "System",
         "Function":  "Extension",
@@ -1544,7 +1544,7 @@
                              }
                 }
     },
-	{
+    {
         "Id":  549,
         "Region":  "System",
         "Function":  "Icon",

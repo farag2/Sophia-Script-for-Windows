@@ -16,6 +16,7 @@ CustomizationWarning                      = Você personalizou todas as funçõe
 WindowsComponentBroken                    = {0} quebrado ou removido do sistema operativo.
 UpdateDefender                            = As definições do Microsoft Defender estão desatualizadas. Execute o Windows Update e tente novamente.
 ControlledFolderAccessDisabled            = Acesso controlado a pasta desativada.
+InitialActionsCheckFailed                 = A função "InitialActions" não pode ser carregada do arquivo de predefinição {0}.
 ScheduledTasks                            = Tarefas agendadas
 WindowsFeaturesTitle                      = Recursos do Windows
 OptionalFeaturesTitle                     = Recursos opcionais

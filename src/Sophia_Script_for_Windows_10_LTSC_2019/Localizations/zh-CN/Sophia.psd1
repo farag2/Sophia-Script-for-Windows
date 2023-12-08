@@ -16,6 +16,7 @@ CustomizationWarning                      = 在运行Sophia Script之前，您�
 WindowsComponentBroken                    = {0} 损坏或从操作系统中删除。
 UpdateDefender                            = Microsoft Defender的定义已经过期。运行Windows Update并再次尝试。
 ControlledFolderAccessDisabled            = "受控文件夹访问"已禁用。
+InitialActionsCheckFailed                 = 无法从{0}预置文件中加载 "InitialActions "功能。
 ScheduledTasks                            = 计划任务
 WindowsFeaturesTitle                      = Windows功能
 OptionalFeaturesTitle                     = 可选功能

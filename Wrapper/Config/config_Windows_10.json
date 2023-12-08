@@ -596,7 +596,7 @@
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
-    "Function": "TaskViewButton",
+    "Function": "CopilotButton",
     "Arg": {
       "Zero": {
         "Tag": "Hide"
@@ -613,6 +613,23 @@
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
+    "Function": "TaskViewButton",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One"
+  },
+  {
+    "Id": 319,
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
     "Function": "NewsInterests",
     "Arg": {
       "Zero": {
@@ -626,7 +643,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 319,
+    "Id": 320,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -643,7 +660,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 320,
+    "Id": 321,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -660,7 +677,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 321,
+    "Id": 322,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -677,7 +694,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 322,
+    "Id": 323,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -694,7 +711,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 323,
+    "Id": 324,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -711,7 +728,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 324,
+    "Id": 325,
     "Region": "UI & Personalization",
     "Control": "chk",
     "Required": "false",
@@ -731,7 +748,7 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 325,
+    "Id": 326,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -751,7 +768,7 @@
     "WindowsDefault": "Two"
   },
   {
-    "Id": 326,
+    "Id": 327,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -768,7 +785,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 327,
+    "Id": 328,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -1643,6 +1660,23 @@
   {
     "Id": 536,
     "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "WindowsLatestUpdate",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "Zero"
+  },
+  {
+    "Id": 537,
+    "Region": "System",
     "Control": "chk",
     "Required": "false",
     "Function": "Export-Associations",
@@ -1655,7 +1689,7 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 537,
+    "Id": 538,
     "Region": "System",
     "Control": "chk",
     "Required": "false",
@@ -1669,7 +1703,7 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 538,
+    "Id": 539,
     "Region": "System",
     "Control": "chk",
     "Required": "false",
@@ -1683,7 +1717,7 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 539,
+    "Id": 540,
     "Region": "System",
     "Control": "chk",
     "Required": "false",
@@ -1697,7 +1731,7 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 540,
+    "Id": 541,
     "Region": "System",
     "Control": "chk",
     "Required": "false",
@@ -1711,7 +1745,7 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 541,
+    "Id": 542,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1728,7 +1762,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 542,
+    "Id": 543,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1745,7 +1779,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 543,
+    "Id": 544,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1762,7 +1796,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 544,
+    "Id": 545,
     "Region": "System",
     "Control": "chk",
     "Required": "false",
