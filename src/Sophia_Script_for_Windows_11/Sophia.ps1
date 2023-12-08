@@ -27,7 +27,7 @@
 	.NOTES
 	Supported Windows 11 versions
 	Version: 23H2
-	Builds: 22631.2715+
+	Builds: 22631.2792+
 	Editions: Home/Pro/Enterprise
 
 	.NOTES

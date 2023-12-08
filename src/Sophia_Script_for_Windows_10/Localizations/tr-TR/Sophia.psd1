@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Komut dosyası yalnızca 64 bit Windows'u destekler.
 UnsupportedOSBuild                        = Komut dosyası Windows 10 22H2'u destekler.
-UpdateWarning                             = Windows 10 yapınız: {0}.{1}. Desteklenen yapılar: 19045.3570+. Windows Update'i çalıştırın ve tekrar deneyin.
+UpdateWarning                             = Windows 10 yapınız: {0}.{1}. Desteklenen yapılar: 19045.3758+. Windows Update'i çalıştırın ve tekrar deneyin.
 UnsupportedLanguageMode                   = Sınırlı bir dil modunda çalışan PowerShell oturumu.
 LoggedInUserNotAdmin                      = Oturum açan kullanıcının yönetici hakları yok.
 UnsupportedPowerShell                     = Komut dosyasını PowerShell {0}.{1} aracılığıyla çalıştırmaya çalışıyorsunuz. Komut dosyasını uygun PowerShell sürümünde çalıştırın.
