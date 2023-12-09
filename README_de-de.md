@@ -284,7 +284,7 @@ Oder verwenden Sie ein Format im alten Stil ohne die TAB-Funktionen zum automati
 * Laden Sie das stets aktuelle Sophia-Script-Archiv herunter, indem Sie die PowerShell aufrufen (`auch als nicht-Administrator`)
 
 ```powershell
-irm script.sophi.app -useb | iex
+iwr script.sophia.team -useb | iex
 ```
 
 * Der Befehl lädt das neueste Sophia Script-Archiv herunter und extrahiert es (`ohne Ausführung`) entsprechend der Windows- und PowerShell-Version, unter der er ausgeführt wird. Wenn Sie es z. B. unter Windows 11 über PowerShell 5.1 ausführen, wird Sophia Script für `Windows 11 PowerShell 5.1` heruntergeladen.

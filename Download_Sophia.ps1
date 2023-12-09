@@ -7,7 +7,7 @@
 	E.g., if you start script on Windows 11 via PowerShell 5.1 you will start downloading Sophia Script for Windows 11 PowerShell 5.1
 
 	.EXAMPLE Download and expand Sophia Script archive
-	irm script.sophi.app -useb | iex
+	iwr script.sophia.team -useb | iex
 
 	.EXAMPLE Download and expand Wrapper archive
 	iex "& {$(irm script.sophi.app -useb)} -Wrapper"
@@ -24,6 +24,13 @@ param
 )
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+if ($Host.Version.Major -eq 5)
+{
+	# Progress bar can significantly impact cmdlet performance
+	# https://github.com/PowerShell/PowerShell/issues/2138
+	$Script:ProgressPreference = "SilentlyContinue"
+}
 
 $Parameters = @{
 	Uri              = "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases/latest"
