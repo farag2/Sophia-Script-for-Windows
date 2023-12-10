@@ -1214,23 +1214,6 @@
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
-    "Function": "WaitNetworkStartup",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable"
-      },
-      "One": {
-        "Tag": "Disable"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
-    "Id": 511,
-    "Region": "System",
-    "Control": "cmb",
-    "Required": "false",
     "Function": "WindowsManageDefaultPrinter",
     "Arg": {
       "Zero": {
@@ -1244,7 +1227,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 512,
+    "Id": 511,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1261,7 +1244,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 513,
+    "Id": 512,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1278,7 +1261,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 514,
+    "Id": 513,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1295,7 +1278,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 515,
+    "Id": 514,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1312,7 +1295,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 516,
+    "Id": 515,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1329,7 +1312,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 517,
+    "Id": 516,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1349,7 +1332,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 518,
+    "Id": 517,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1366,7 +1349,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 519,
+    "Id": 518,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1386,7 +1369,7 @@
     "WindowsDefault": "Two"
   },
   {
-    "Id": 520,
+    "Id": 519,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1403,7 +1386,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 521,
+    "Id": 520,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1420,7 +1403,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 522,
+    "Id": 521,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1437,7 +1420,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 523,
+    "Id": 522,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1454,7 +1437,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 524,
+    "Id": 523,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1471,7 +1454,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 525,
+    "Id": 524,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1488,7 +1471,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 526,
+    "Id": 525,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1505,7 +1488,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 527,
+    "Id": 526,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1522,7 +1505,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 528,
+    "Id": 527,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1539,7 +1522,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 529,
+    "Id": 528,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1556,7 +1539,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 530,
+    "Id": 529,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1573,7 +1556,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 531,
+    "Id": 530,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1590,7 +1573,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 532,
+    "Id": 531,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1607,7 +1590,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 533,
+    "Id": 532,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1624,7 +1607,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 534,
+    "Id": 533,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1641,7 +1624,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 535,
+    "Id": 534,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1658,7 +1641,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 536,
+    "Id": 535,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1675,7 +1658,7 @@
     "WindowsDefault": "Zero"
   },
   {
-    "Id": 537,
+    "Id": 536,
     "Region": "System",
     "Control": "chk",
     "Required": "false",
@@ -1689,7 +1672,7 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 538,
+    "Id": 537,
     "Region": "System",
     "Control": "chk",
     "Required": "false",
@@ -1703,7 +1686,7 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 539,
+    "Id": 538,
     "Region": "System",
     "Control": "chk",
     "Required": "false",
@@ -1717,7 +1700,7 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 540,
+    "Id": 539,
     "Region": "System",
     "Control": "chk",
     "Required": "false",
@@ -1731,7 +1714,7 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 541,
+    "Id": 540,
     "Region": "System",
     "Control": "chk",
     "Required": "false",
@@ -1745,7 +1728,7 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 542,
+    "Id": 541,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1762,7 +1745,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 543,
+    "Id": 542,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1779,7 +1762,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 544,
+    "Id": 543,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1796,7 +1779,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 545,
+    "Id": 544,
     "Region": "System",
     "Control": "chk",
     "Required": "false",

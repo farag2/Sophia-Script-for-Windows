@@ -1103,25 +1103,6 @@
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
-    "Function": "WaitNetworkStartup",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable"
-      },
-      "One": {
-        "Tag": "Disable"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One",
-    "LTSC2019": "true",
-    "LTSC2021": "true"
-  },
-  {
-    "Id": 511,
-    "Region": "System",
-    "Control": "cmb",
-    "Required": "false",
     "Function": "WindowsManageDefaultPrinter",
     "Arg": {
       "Zero": {
@@ -1137,7 +1118,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 512,
+    "Id": 511,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1156,7 +1137,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 513,
+    "Id": 512,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1175,7 +1156,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 514,
+    "Id": 513,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1194,7 +1175,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 515,
+    "Id": 514,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1213,7 +1194,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 516,
+    "Id": 515,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1232,7 +1213,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 517,
+    "Id": 516,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1252,7 +1233,7 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 518,
+    "Id": 517,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1271,7 +1252,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 519,
+    "Id": 518,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1293,7 +1274,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 520,
+    "Id": 519,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1312,7 +1293,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 521,
+    "Id": 520,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1331,7 +1312,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 522,
+    "Id": 521,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1350,7 +1331,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 523,
+    "Id": 522,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1369,7 +1350,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 524,
+    "Id": 523,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1388,7 +1369,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 525,
+    "Id": 524,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1407,7 +1388,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 526,
+    "Id": 525,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1426,7 +1407,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 527,
+    "Id": 526,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1445,7 +1426,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 528,
+    "Id": 527,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1464,7 +1445,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 529,
+    "Id": 528,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1483,7 +1464,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 530,
+    "Id": 529,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1502,7 +1483,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 531,
+    "Id": 530,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1521,7 +1502,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 532,
+    "Id": 531,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1540,7 +1521,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 533,
+    "Id": 532,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1559,7 +1540,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 534,
+    "Id": 533,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1578,7 +1559,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 535,
+    "Id": 534,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1597,7 +1578,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 536,
+    "Id": 535,
     "Region": "System",
     "Control": "chk",
     "Required": "false",
@@ -1613,7 +1594,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 537,
+    "Id": 536,
     "Region": "System",
     "Control": "chk",
     "Required": "false",
@@ -1629,7 +1610,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 538,
+    "Id": 537,
     "Region": "System",
     "Control": "chk",
     "Required": "false",
@@ -1645,7 +1626,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 539,
+    "Id": 538,
     "Region": "System",
     "Control": "chk",
     "Required": "false",
@@ -1661,7 +1642,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 540,
+    "Id": 539,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1680,7 +1661,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 541,
+    "Id": 540,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1699,7 +1680,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 542,
+    "Id": 541,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1718,7 +1699,7 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 543,
+    "Id": 542,
     "Region": "System",
     "Control": "chk",
     "Required": "false",

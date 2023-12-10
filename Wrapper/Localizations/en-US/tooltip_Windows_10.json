@@ -1072,21 +1072,6 @@
     {
         "Id":  510,
         "Region":  "System",
-        "Function":  "WaitNetworkStartup",
-        "Arg":  {
-                    "Zero":  {
-                                 "Tag":  "Enable",
-                                 "ToolTip":  "Always wait for the network at computer startup and logon for workgroup networks."
-                             },
-                    "One":  {
-                                "Tag":  "Disable",
-                                "ToolTip":  "Never wait for the network at computer startup and logon for workgroup networks (default value)."
-                            }
-                }
-    },
-    {
-        "Id":  511,
-        "Region":  "System",
         "Function":  "WindowsManageDefaultPrinter",
         "Arg":  {
                     "Zero":  {
@@ -1100,7 +1085,7 @@
                 }
     },
     {
-        "Id":  512,
+        "Id":  511,
         "Region":  "System",
         "Function":  "WindowsFeatures",
         "Arg":  {
@@ -1115,7 +1100,7 @@
                 }
     },
     {
-        "Id":  513,
+        "Id":  512,
         "Region":  "System",
         "Function":  "WindowsCapabilities",
         "Arg":  {
@@ -1130,7 +1115,7 @@
                 }
     },
     {
-        "Id":  514,
+        "Id":  513,
         "Region":  "System",
         "Function":  "UpdateMicrosoftProducts",
         "Arg":  {
@@ -1145,7 +1130,7 @@
                 }
     },
     {
-        "Id":  515,
+        "Id":  514,
         "Region":  "System",
         "Function":  "PowerPlan",
         "Arg":  {
@@ -1160,7 +1145,7 @@
                 }
     },
     {
-        "Id":  516,
+        "Id":  515,
         "Region":  "System",
         "Function":  "LatestInstalled.NET",
         "Arg":  {
@@ -1175,7 +1160,7 @@
                 }
     },
     {
-        "Id":  517,
+        "Id":  516,
         "Region":  "System",
         "Function":  "NetworkAdaptersSavePower",
         "Arg":  {
@@ -1190,7 +1175,7 @@
                 }
     },
     {
-        "Id":  518,
+        "Id":  517,
         "Region":  "System",
         "Function":  "IPv6Component",
         "Arg":  {
@@ -1209,7 +1194,7 @@
                 }
     },
     {
-        "Id":  519,
+        "Id":  518,
         "Region":  "System",
         "Function":  "InputMethod",
         "Arg":  {
@@ -1224,7 +1209,7 @@
                 }
     },
     {
-        "Id":  520,
+        "Id":  519,
         "Region":  "System",
         "Function":  "Set-UserShellFolderLocation",
         "Arg":  {
@@ -1243,7 +1228,7 @@
                 }
     },
     {
-        "Id":  521,
+        "Id":  520,
         "Region":  "System",
         "Function":  "WinPrtScrFolder",
         "Arg":  {
@@ -1258,7 +1243,7 @@
                 }
     },
     {
-        "Id":  522,
+        "Id":  521,
         "Region":  "System",
         "Function":  "RecommendedTroubleshooting",
         "Arg":  {
@@ -1273,7 +1258,7 @@
                 }
     },
     {
-        "Id":  523,
+        "Id":  522,
         "Region":  "System",
         "Function":  "FoldersLaunchSeparateProcess",
         "Arg":  {
@@ -1288,7 +1273,7 @@
                 }
     },
     {
-        "Id":  524,
+        "Id":  523,
         "Region":  "System",
         "Function":  "ReservedStorage",
         "Arg":  {
@@ -1303,7 +1288,7 @@
                 }
     },
     {
-        "Id":  525,
+        "Id":  524,
         "Region":  "System",
         "Function":  "F1HelpPage",
         "Arg":  {
@@ -1318,7 +1303,7 @@
                 }
     },
     {
-        "Id":  526,
+        "Id":  525,
         "Region":  "System",
         "Function":  "NumLock",
         "Arg":  {
@@ -1333,7 +1318,7 @@
                 }
     },
     {
-        "Id":  527,
+        "Id":  526,
         "Region":  "System",
         "Function":  "CapsLock",
         "Arg":  {
@@ -1348,7 +1333,7 @@
                 }
     },
     {
-        "Id":  528,
+        "Id":  527,
         "Region":  "System",
         "Function":  "StickyShift",
         "Arg":  {
@@ -1363,7 +1348,7 @@
                 }
     },
     {
-        "Id":  529,
+        "Id":  528,
         "Region":  "System",
         "Function":  "Autoplay",
         "Arg":  {
@@ -1378,7 +1363,7 @@
                 }
     },
     {
-        "Id":  530,
+        "Id":  529,
         "Region":  "System",
         "Function":  "ThumbnailCacheRemoval",
         "Arg":  {
@@ -1393,7 +1378,7 @@
                 }
     },
     {
-        "Id":  531,
+        "Id":  530,
         "Region":  "System",
         "Function":  "SaveRestartableApps",
         "Arg":  {
@@ -1408,7 +1393,7 @@
                 }
     },
     {
-        "Id":  532,
+        "Id":  531,
         "Region":  "System",
         "Function":  "NetworkDiscovery",
         "Arg":  {
@@ -1423,7 +1408,7 @@
                 }
     },
     {
-        "Id":  533,
+        "Id":  532,
         "Region":  "System",
         "Function":  "RestartNotification",
         "Arg":  {
@@ -1438,7 +1423,7 @@
                 }
     },
     {
-        "Id":  534,
+        "Id":  533,
         "Region":  "System",
         "Function":  "RestartDeviceAfterUpdate",
         "Arg":  {
@@ -1453,7 +1438,7 @@
                 }
     },
     {
-        "Id":  535,
+        "Id":  534,
         "Region":  "System",
         "Function":  "ActiveHours",
         "Arg":  {
@@ -1468,7 +1453,7 @@
                 }
     },
     {
-        "Id":  536,
+        "Id":  535,
         "Region":  "System",
         "Function":  "WindowsLatestUpdate",
         "Arg":  {
@@ -1483,7 +1468,7 @@
                 }
     },
     {
-        "Id":  537,
+        "Id":  536,
         "Region":  "System",
         "Function":  "Export-Associations",
         "Arg":  {
@@ -1494,7 +1479,7 @@
                 }
     },
     {
-        "Id":  538,
+        "Id":  537,
         "Region":  "System",
         "Function":  "Import-Associations",
         "Arg":  {
@@ -1505,7 +1490,7 @@
                 }
     },
     {
-        "Id":  539,
+        "Id":  538,
         "Region":  "System",
         "Function":  "UninstallPCHealthCheck",
         "Arg":  {
@@ -1516,7 +1501,7 @@
                 }
     },
     {
-        "Id":  540,
+        "Id":  539,
         "Region":  "System",
         "Function":  "InstallVCRedist",
         "Arg":  {
@@ -1527,7 +1512,7 @@
                 }
     },
     {
-        "Id":  541,
+        "Id":  540,
         "Region":  "System",
         "Function":  "InstallDotNetRuntimes",
         "Arg":  {
@@ -1538,7 +1523,7 @@
                 }
     },
     {
-        "Id":  542,
+        "Id":  541,
         "Region":  "System",
         "Function":  "RKNBypass",
         "Arg":  {
@@ -1553,7 +1538,7 @@
                 }
     },
     {
-        "Id":  543,
+        "Id":  542,
         "Region":  "System",
         "Function":  "PreventEdgeShortcutCreation",
         "Arg":  {
@@ -1568,7 +1553,7 @@
                 }
     },
     {
-        "Id":  544,
+        "Id":  543,
         "Region":  "System",
         "Function":  "SATADrivesRemovableMedia",
         "Arg":  {
@@ -1583,7 +1568,7 @@
                 }
     },
     {
-        "Id":  545,
+        "Id":  544,
         "Region":  "System",
         "Function":  "Set-Association",
         "Arg":  {
@@ -1594,7 +1579,7 @@
                 }
     },
     {
-        "Id":  546,
+        "Id":  545,
         "Region":  "System",
         "Function":  "ProgramPath",
         "Arg":  {
@@ -1605,7 +1590,7 @@
                 }
     },
     {
-        "Id":  547,
+        "Id":  546,
         "Region":  "System",
         "Function":  "Extension",
         "Arg":  {
@@ -1616,7 +1601,7 @@
                 }
     },
     {
-        "Id":  548,
+        "Id":  547,
         "Region":  "System",
         "Function":  "Icon",
         "Arg":  {

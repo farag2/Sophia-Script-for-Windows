@@ -577,14 +577,6 @@ DeliveryOptimization -Disable
 # Включить оптимизацию доставки (значение по умолчанию)
 # DeliveryOptimization -Enable
 
-# Always wait for the network at computer startup and logon for workgroup networks
-# Всегда ждать сеть при запуске и входе в систему для рабочих групп
-WaitNetworkStartup -Enable
-
-# Never wait for the network at computer startup and logon for workgroup networks (default value)
-# Никогда не ждать сеть при запуске и входе в систему для рабочих групп (значение по умолчанию)
-# WaitNetworkStartup -Disable
-
 # Do not let Windows manage my default printer
 # Не разрешать Windows управлять принтером, используемым по умолчанию
 WindowsManageDefaultPrinter -Disable
