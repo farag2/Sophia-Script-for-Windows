@@ -12071,7 +12071,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	HEVC -Manually
 
 	.LINK
-	https://www.microsoft.com/store/productId/9n4wgh0z6vhq
+	https://apps.microsoft.com/detail/9N4WGH0Z6VHQ
 
 	.NOTES
 	The extension can be installed without Microsoft account
@@ -12151,7 +12151,7 @@ function HEVC
 
 				$Body = @{
 					type = "url"
-					url  = "https://www.microsoft.com/store/productId/9n4wgh0z6vhq"
+					url  = "https://apps.microsoft.com/detail/9N4WGH0Z6VHQ"
 					ring = "Retail"
 					lang = "en-US"
 				}
@@ -12166,7 +12166,7 @@ function HEVC
 				$Raw = Invoke-WebRequest @Parameters
 
 				# Parsing the page
-				$Raw | Select-String -Pattern '<tr style.*<a href=\"(?<url>.*)"\s.*>(?<text>.*)<\/a>' -AllMatches | ForEach-Object -Process {$_.Matches} | Where-Object -FilterScript {$_.Value -like "*x64*.appx*"} | ForEach-Object -Process {
+				$Raw | Select-String -Pattern '<tr style.*<a href=\"(?<url>.*)"\s.*>(?<text>.*)<\/a>' -AllMatches | ForEach-Object -Process {$_.Matches} | Where-Object -FilterScript {$_.Value -like "*HEVCVideoExtension*.appxbundle*"} | ForEach-Object -Process {
 					$TempURL = ($_.Groups | Select-Object -Index 1).Value
 					$HEVCPackageName = ($_.Groups | Select-Object -Index 2).Value.Split("_") | Select-Object -Index 1
 
