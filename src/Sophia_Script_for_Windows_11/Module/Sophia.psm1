@@ -10748,6 +10748,12 @@ function UninstallUWPApps
 			$AppxPackages += Get-AppxPackage -Name Disney.37853FC22B2CE -AllUsers:$AllUsers
 		}
 
+		# The Bundle packages contains no Outlook
+		if (Get-AppxPackage -Name Microsoft.OutlookForWindows -AllUsers:$AllUsers)
+		{
+			$AppxPackages += Get-AppxPackage -Name Microsoft.OutlookForWindows -AllUsers:$AllUsers
+		}
+
 		$PackagesIds = [Windows.Management.Deployment.PackageManager, Windows.Web, ContentType = WindowsRuntime]::new().FindPackages() | Select-Object -Property DisplayName -ExpandProperty Id | Select-Object -Property Name, DisplayName
 
 		foreach ($AppxPackage in $AppxPackages)
