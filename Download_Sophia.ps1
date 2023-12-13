@@ -52,7 +52,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		}
 		else
 		{
-			Write-Verbose -Message "Windows version is not supported. Update your Windows" -Versbose
+			Write-Verbose -Message "Windows version is not supported. Update your Windows" -Verbose
 		}
 	}
 	"19044"
@@ -75,7 +75,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		}
 		else
 		{
-			Write-Verbose -Message "Windows version is not supported. Update your Windows" -Versbose
+			Write-Verbose -Message "Windows version is not supported. Update your Windows" -Verbose
 		}
 	}
 	"19045"
