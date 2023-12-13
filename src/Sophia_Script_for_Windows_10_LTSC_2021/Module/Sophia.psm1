@@ -5,15 +5,15 @@
 	Version: v5.17.8
 	Date: 08.12.2023
 
-	Copyright (c) 2014—2023 farag
-	Copyright (c) 2019—2023 farag & Inestic
+	Copyright (c) 2014—2024 farag
+	Copyright (c) 2019—2024 farag & Inestic
 
 	Thanks to all https://forum.ru-board.com members involved
 
 	.NOTES
 	Supported Windows 10 version
 	Version: 21H2
-	Build: 19044.3693+
+	Build: 19044.3803+
 	Edition: Enterprise LTSC 2021
 	Architecture: x64
 
@@ -100,45 +100,15 @@ public static string GetString(uint strId)
 		exit
 	}
 
-	# Detect the OS build version
-	switch (((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber -eq 19044) -and ((Get-WindowsEdition -Online).Edition -match "EnterpriseS"))
+	# Check if Get-WindowsEdition cmdlet is working
+	try
 	{
-		$false
-		{
-			Write-Warning -Message $Localization.UnsupportedOSBuild
-
-			Start-Process -FilePath "https://t.me/sophia_chat"
-			Start-Process -FilePath "https://discord.gg/sSryhaEv79"
-			Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows#system-requirements"
-
-			exit
-		}
-		$true
-		{
-			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 3693)
-			{
-				# Check whether the OS minor build version is 3693 minimum
-				# https://learn.microsoft.com/en-us/windows/release-health/release-information#windows-10-current-versions-by-servicing-option
-				$CurrentBuild = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
-				$UBR = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
-				Write-Warning -Message ($Localization.UpdateWarning -f $CurrentBuild.CurrentBuild, $UBR.UBR)
-
-				Start-Process -FilePath "https://t.me/sophia_chat"
-				Start-Process -FilePath "https://discord.gg/sSryhaEv79"
-				Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows#system-requirements"
-
-				# Receive updates for other Microsoft products when you update Windows
-				(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
-
-				# Check for updates
-				Start-Process -FilePath "$env:SystemRoot\System32\UsoClient.exe" -ArgumentList StartInteractiveScan
-
-				# Open the "Windows Update" page
-				Start-Process -FilePath "ms-settings:windowsupdate"
-
-				exit
-			}
-		}
+		Get-WindowsEdition -Online
+	}
+	catch [System.Runtime.InteropServices.COMException]
+	{
+		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Get-WindowsEdition")
+		exit
 	}
 
 	# Check the language mode
@@ -485,6 +455,58 @@ public static string GetString(uint strId)
 		}
 	}
 	#endregion Defender checks
+
+	# Detect the OS build version
+	if ((Get-WindowsEdition -Online).Edition -notmatch "EnterpriseS")
+	{
+		Write-Warning -Message $Localization.UnsupportedOSBuild
+
+		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+		Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows#system-requirements"
+
+		exit
+	}
+
+	switch ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber)
+	{
+		{$_ -ne 19044}
+		{
+			Write-Warning -Message $Localization.UnsupportedOSBuild
+
+			Start-Process -FilePath "https://t.me/sophia_chat"
+			Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+			Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows#system-requirements"
+
+			exit
+		}
+		"19044"
+		{
+			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 3803)
+			{
+				# Check whether the OS minor build version is 3803 minimum
+				# https://learn.microsoft.com/en-us/windows/release-health/release-information#windows-10-current-versions-by-servicing-option
+				$CurrentBuild = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
+				$UBR = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
+				Write-Warning -Message ($Localization.UpdateWarning -f $CurrentBuild.CurrentBuild, $UBR.UBR)
+
+				Start-Process -FilePath "https://t.me/sophia_chat"
+				Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+				Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows#system-requirements"
+
+				# Receive updates for other Microsoft products when you update Windows
+				(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
+
+				# Check for updates
+				Start-Process -FilePath "$env:SystemRoot\System32\UsoClient.exe" -ArgumentList StartInteractiveScan
+
+				# Open the "Windows Update" page
+				Start-Process -FilePath "ms-settings:windowsupdate"
+
+				exit
+			}
+		}
+	}
 
 	# Enable back the SysMain service if it was disabled by harmful tweakers
 	if ((Get-Service -Name SysMain).Status -eq "Stopped")

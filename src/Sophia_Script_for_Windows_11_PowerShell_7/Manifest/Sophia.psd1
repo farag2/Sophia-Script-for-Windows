@@ -3,7 +3,7 @@
 	ModuleVersion         = '6.5.8'
 	GUID                  = '109cc881-c42b-45af-a74a-550781989d6a'
 	Author                = 'Dmitry "farag" Nefedov'
-	Copyright             = '(c) 2014—2023 farag & Inestic. All rights reserved'
+	Copyright             = '(c) 2014—2024 farag & Inestic. All rights reserved'
 	Description           = 'Module for Windows fine-tuning and automating the routine tasks'
 	PowerShellVersion     = '7.3'
 	ProcessorArchitecture = 'AMD64'

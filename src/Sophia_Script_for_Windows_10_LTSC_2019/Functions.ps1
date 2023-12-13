@@ -5,8 +5,8 @@
 	Version: v5.7.8
 	Date: 08.12.2023
 
-	Copyright (c) 2014—2023 farag
-	Copyright (c) 2019—2023 farag & Inestic
+	Copyright (c) 2014—2024 farag
+	Copyright (c) 2019—2024 farag & Inestic
 
 	Thanks to all https://forum.ru-board.com members involved
 
@@ -50,7 +50,7 @@ function Sophia
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC 2019 v5.7.8 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([System.Char]0x00A9) farag & Inestic, 2014$([System.Char]0x2013)2023"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC 2019 v5.7.8 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows 10 | $([System.Char]0x00A9) farag & Inestic, 2014$([System.Char]0x2013)2024"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
