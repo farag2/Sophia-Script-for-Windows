@@ -159,7 +159,7 @@
   * `%SystemRoot%\SoftwareDistribution\Download`
   * `%TEMP%`
 * Anheften von Verknüpfungen an Start über reinen PowerShell-Code
-  * Drei Verknüpfungen sind so vorkonfiguriert, dass sie angeheftet werden können: Systemsteuerung, Geräte und Drucker im "alten Stil" und Windows PowerShell
+  * Drei Verknüpfungen sind so vorkonfiguriert, dass sie angeheftet werden können: Systemsteuerung, Geräte und Drucker im "alten Stil".
 * Heben Sie die Anheftung aller Startmenü-Kacheln auf;
 * Aktivieren Sie den kontrollierten Ordnerzugriff und fügen Sie geschützte Ordner über das Dialogmenü hinzu;
 * Hinzufügen von Ausschlussordnern, die von der Überprüfung durch Microsoft Defender Antivirus ausgeschlossen werden, über das Dialogmenü;

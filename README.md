@@ -159,7 +159,7 @@
   * `%SystemRoot%\SoftwareDistribution\Download`
   * `%TEMP%`
 * Pin shortcuts to Start via pure PowerShell
-  * Three shortcuts are pre-configured to be pinned: Control Panel, "old style" Devices and Printers, and Windows PowerShell
+  * Three shortcuts are pre-configured to be pinned: Control Panel, "old style" Devices and Printers.
 * Unpin all Start menu tiles;
 * Turn on Controlled folder access and add protected folders using dialog menu;
 * Add exclusion folder from Microsoft Defender Antivirus scanning using dialog menu;
