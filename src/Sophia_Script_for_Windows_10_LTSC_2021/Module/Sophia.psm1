@@ -103,7 +103,7 @@ public static string GetString(uint strId)
 	# Check if Get-WindowsEdition cmdlet is working
 	try
 	{
-		Get-WindowsEdition -Online
+		[void](Get-WindowsEdition -Online)
 	}
 	catch [System.Runtime.InteropServices.COMException]
 	{
@@ -1478,7 +1478,7 @@ function ScheduledTasks
 	# Getting list of all scheduled tasks according to the conditions
 	$Tasks = Get-ScheduledTask | Where-Object -FilterScript {($_.State -eq $State) -and ($_.TaskName -in $CheckedScheduledTasks)}
 
-	if (-not ($Tasks))
+	if (-not $Tasks)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message $Localization.NoData -Verbose
