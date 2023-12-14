@@ -3242,58 +3242,54 @@ function TaskViewButton
 
 <#
 	.SYNOPSIS
-	The Chat icon (Microsoft Teams) on the taskbar
+	Chat (Microsoft Teams) installation for new users
 
-	.PARAMETER Hide
-	Hide the Chat icon (Microsoft Teams) on the taskbar and prevent Microsoft Teams from installing for new users
+	.PARAMETER Disable
+	Prevent Chat (Microsoft Teams) from installing for new users
 
-	.PARAMETER Show
-	Show the Chat icon (Microsoft Teams) on the taskbar and remove block from installing Microsoft Teams for new users
-
-	.EXAMPLE
-	TaskbarChat -Hide
+	.PARAMETER Enable
+	Do not prevent Microsoft Teams from installing for new users
 
 	.EXAMPLE
-	TaskbarChat -Show
+	TeamsInstallation -Disable
+
+	.EXAMPLE
+	TeamsInstallation -Enable
 
 	.NOTES
 	Current user
 #>
-function TaskbarChat
+function TeamsInstallation
 {
 	param
 	(
 		[Parameter(
 			Mandatory = $true,
-			ParameterSetName = "Hide"
+			ParameterSetName = "Disable"
 		)]
 		[switch]
-		$Hide,
+		$Disable,
 
 		[Parameter(
 			Mandatory = $true,
-			ParameterSetName = "Show"
+			ParameterSetName = "Enable"
 		)]
 		[switch]
-		$Show
+		$Enable
 	)
 
 	Clear-Variable -Name Task -ErrorAction Ignore
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
-		"Hide"
+		"Disable"
 		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name TaskbarMn -PropertyType DWord -Value 0 -Force
-
 			# Save string to run it as "NT SERVICE\TrustedInstaller"
 			# Prevent Microsoft Teams from installing for new users
 			$Task = "New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Communications -Name ConfigureChatAutoInstall -Value 0 -Type Dword -Force"
 		}
-		"Show"
+		"Enable"
 		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name TaskbarMn -PropertyType DWord -Value 1 -Force
-
 			# Save string to run it as "NT SERVICE\TrustedInstaller"
 			# Remove block from installing Microsoft Teams for new users
 			$Task = "Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Communications -Name ConfigureChatAutoInstall -Value 1 -Type Dword -Force"
@@ -10729,37 +10725,32 @@ function UninstallUWPApps
 
 		$AppxPackages = @(Get-AppxPackage -PackageTypeFilter Bundle -AllUsers:$AllUsers | Where-Object -FilterScript {$_.Name -notin $ExcludedAppxPackages})
 
-		# The Bundle packages contains no Microsoft Teams
-		if (Get-AppxPackage -Name MicrosoftTeams -AllUsers:$AllUsers)
-		{
-			# Temporarily hack: due to the fact that there are actually two Microsoft Teams packages, we need to choose the first one to display
-			$AppxPackages += Get-AppxPackage -Name MicrosoftTeams -AllUsers:$AllUsers | Select-Object -Index 0
-		}
+		# The -PackageTypeFilter Bundle doesn't contain these packages, and we need to add manually
+		$Packages = @(
+			# Spotify
+			"SpotifyAB.SpotifyMusic",
 
-		# The Bundle packages contains no Spotify
-		if (Get-AppxPackage -Name SpotifyAB.SpotifyMusic -AllUsers:$AllUsers)
-		{
-			$AppxPackages += Get-AppxPackage -Name SpotifyAB.SpotifyMusic -AllUsers:$AllUsers
-		}
+			# Disney+
+			"Disney.37853FC22B2CE",
 
-		# The Bundle packages contains no Disney+
-		if (Get-AppxPackage -Name Disney.37853FC22B2CE -AllUsers:$AllUsers)
+			# Outlook
+			"Microsoft.OutlookForWindows",
+			
+			# Chat (Microsoft Teams)
+			"MicrosoftTeams"
+		)
+		foreach ($Package in $Packages)
 		{
-			$AppxPackages += Get-AppxPackage -Name Disney.37853FC22B2CE -AllUsers:$AllUsers
-		}
-
-		# The Bundle packages contains no Outlook
-		if (Get-AppxPackage -Name Microsoft.OutlookForWindows -AllUsers:$AllUsers)
-		{
-			$AppxPackages += Get-AppxPackage -Name Microsoft.OutlookForWindows -AllUsers:$AllUsers
+			if (Get-AppxPackage -Name $Package -AllUsers:$AllUsers)
+			{
+				$AppxPackages += Get-AppxPackage -Name $Package -AllUsers:$AllUsers
+			}
 		}
 
 		$PackagesIds = [Windows.Management.Deployment.PackageManager, Windows.Web, ContentType = WindowsRuntime]::new().FindPackages() | Select-Object -Property DisplayName -ExpandProperty Id | Select-Object -Property Name, DisplayName
-
 		foreach ($AppxPackage in $AppxPackages)
 		{
 			$PackageId = $PackagesIds | Where-Object -FilterScript {$_.Name -eq $AppxPackage.Name}
-
 			if (-not $PackageId)
 			{
 				continue
@@ -11101,15 +11092,7 @@ function RestoreUWPApps
 		# The Bundle packages contains no Microsoft Teams
 		if (Get-AppxPackage -Name MicrosoftTeams -AllUsers)
 		{
-			# Temporarily hack: due to the fact that there are actually two Microsoft Teams packages, we need to choose the first one to display
-			$AppxPackages += Get-AppxPackage -Name MicrosoftTeams -AllUsers | Where-Object -FilterScript {$_.PackageUserInformation -match "Staged"} | Select-Object -Index 0
-		}
-
-		# The Bundle packages contains no Spotify
-		if (Get-AppxPackage -Name SpotifyAB.SpotifyMusic -AllUsers)
-		{
-			# Temporarily hack: due to the fact that there are actually two Spotify packages, we need to choose the first one to display
-			$AppxPackages += Get-AppxPackage -Name SpotifyAB.SpotifyMusic -AllUsers | Where-Object -FilterScript {$_.PackageUserInformation -match "Staged"} | Select-Object -Index 0
+			$AppxPackages += Get-AppxPackage -Name MicrosoftTeams -AllUsers | Where-Object -FilterScript {$_.PackageUserInformation -match "Staged"}
 		}
 
 		$PackagesIds = [Windows.Management.Deployment.PackageManager, Windows.Web, ContentType = WindowsRuntime]::new().FindPackages() | Select-Object -Property DisplayName -ExpandProperty Id | Select-Object -Property Name, DisplayName

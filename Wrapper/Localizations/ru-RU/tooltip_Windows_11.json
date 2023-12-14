@@ -557,14 +557,14 @@
     {
         "Id":  318,
         "Region":  "UI & Personalization",
-        "Function":  "TaskbarChat",
+        "Function":  "TeamsInstallation",
         "Arg":  {
                     "Zero":  {
-                                 "Tag":  "Hide",
-                                 "ToolTip":  "Скрыть кнопку чата (Microsoft Teams) с панели задач и запретить установку Microsoft Teams для новых пользователей."
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Запретить установку Chat (Microsoft Teams) для новых пользователей."
                              },
                     "One":  {
-                                "Tag":  "Show",
+                                "Tag":  "Enable",
                                 "ToolTip":  "Отобразить кнопку чата (Microsoft Teams) на панели задач и убрать блокировку на устанвоку Microsoft Teams для новых пользователей (значение по умолчанию)."
                             }
                 }

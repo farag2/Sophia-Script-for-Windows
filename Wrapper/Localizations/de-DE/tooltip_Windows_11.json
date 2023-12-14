@@ -557,15 +557,15 @@
     {
         "Id":  318,
         "Region":  "UI & Personalization",
-        "Function":  "TaskbarChat",
+        "Function":  "TeamsInstallation",
         "Arg":  {
                     "Zero":  {
-                                 "Tag":  "Hide",
-                                 "ToolTip":  "Blendet das Chat-Symbol (Microsoft Teams) in der Taskleiste aus und verhindert die Installation von Microsoft Teams für neue Benutzer."
+                                 "Tag":  "Disable",
+                                 "ToolTip":  "Verhindern Sie die Installation von Chat (Microsoft Teams) für neue Benutzer."
                              },
                     "One":  {
-                                "Tag":  "Show",
-                                "ToolTip":  "Zeigt das Chat-Symbol (Microsoft Teams) in der Taskleiste an und ermöglicht die Installation von Microsoft Teams für neue Benutzer (Standardeinstellung)."
+                                "Tag":  "Enable",
+                                "ToolTip":  "Verhindern Sie nicht, dass Microsoft Teams für neue Benutzer installiert wird (Standardeinstellung)."
                             }
                 }
     },

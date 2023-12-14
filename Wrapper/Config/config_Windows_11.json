@@ -633,13 +633,13 @@
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
-    "Function": "TaskbarChat",
+    "Function": "TeamsInstallation",
     "Arg": {
       "Zero": {
-        "Tag": "Hide"
+        "Tag": "Disable"
       },
       "One": {
-        "Tag": "Show"
+        "Tag": "Enable"
       }
     },
     "Preset": "Zero",
