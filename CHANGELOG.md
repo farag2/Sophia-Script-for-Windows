@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.17.9 | 6.5.9 — 26.12.2023
+
+* Fixed bug in `HEVC` function that prevented package downloading;
+* Removed `WaitNetworkStartup` function as unnecessary one;
+* Renamed `TaskbarChat` function into `PreventTeamsInstallation`;
+* Fixed typos;
+* Minor changes.
+
+### Wrapper 2.6.13
+
+* Added compatibility with the latest `Sophia Script` version;
+* Bug fix.
+
+> **Note**: Please note that Wrapper doesn't have all functions as CLI `Sophia Script` provides. If you want to apply all functions, you need to configure `Sophia.ps1` file.
+
+With best wishes for a happy New Year from `Team Sophia` ![img](https://forum.ru-board.com/board/s/deds.gif)
+
 ## 5.17.8 | 6.5.8 — 08.12.2023
 
 * The `InitialActions` function simplified;
