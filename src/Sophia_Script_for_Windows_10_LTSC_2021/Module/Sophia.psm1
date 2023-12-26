@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.17.8
-	Date: 08.12.2023
+	Version: v5.17.9
+	Date: 26.12.2023
 
 	Copyright (c) 2014—2024 farag
 	Copyright (c) 2019—2024 farag & Inestic
@@ -1284,14 +1284,6 @@ function ScheduledTasks
 		# XblGameSave Standby Task
 		"XblGameSaveTask"
 	)
-
-	# Check if device has a camera
-	$DeviceHasCamera = Get-CimInstance -ClassName Win32_PnPEntity | Where-Object -FilterScript {(($_.PNPClass -eq "Camera") -or ($_.PNPClass -eq "Image")) -and ($_.Service -ne "StillCam")}
-	if (-not $DeviceHasCamera)
-	{
-		# Windows Hello
-		$CheckedScheduledTasks += "FODCleanupTask"
-	}
 	#endregion Variables
 
 	#region XAML Markup

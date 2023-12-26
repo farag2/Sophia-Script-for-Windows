@@ -1,6 +1,5 @@
 [
   {
-    "Id": 100,
     "Region": "Protection",
     "Control": "cmb",
     "Required": "true",
@@ -19,7 +18,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 101,
     "Region": "Protection",
     "Control": "chk",
     "Required": "false",
@@ -35,7 +33,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 102,
     "Region": "Protection",
     "Control": "chk",
     "Required": "false",
@@ -51,7 +48,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 200,
     "Region": "Privacy & Telemetry",
     "Control": "cmb",
     "Required": "false",
@@ -70,7 +66,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 201,
     "Region": "Privacy & Telemetry",
     "Control": "cmb",
     "Required": "false",
@@ -89,7 +84,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 202,
     "Region": "Privacy & Telemetry",
     "Control": "cmb",
     "Required": "false",
@@ -108,7 +102,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 203,
     "Region": "Privacy & Telemetry",
     "Control": "cmb",
     "Required": "false",
@@ -127,7 +120,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 204,
     "Region": "Privacy & Telemetry",
     "Control": "cmb",
     "Required": "false",
@@ -146,7 +138,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 205,
     "Region": "Privacy & Telemetry",
     "Control": "cmb",
     "Required": "false",
@@ -165,7 +156,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 206,
     "Region": "Privacy & Telemetry",
     "Control": "cmb",
     "Required": "false",
@@ -184,7 +174,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 207,
     "Region": "Privacy & Telemetry",
     "Control": "cmb",
     "Required": "false",
@@ -203,7 +192,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 208,
     "Region": "Privacy & Telemetry",
     "Control": "cmb",
     "Required": "false",
@@ -222,7 +210,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 209,
     "Region": "Privacy & Telemetry",
     "Control": "cmb",
     "Required": "false",
@@ -241,7 +228,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 210,
     "Region": "Privacy & Telemetry",
     "Control": "cmb",
     "Required": "false",
@@ -260,7 +246,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 300,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -279,7 +264,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 301,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -298,7 +282,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 302,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -317,7 +300,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 303,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -336,7 +318,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 304,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -355,7 +336,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 305,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -374,7 +354,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 306,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -393,7 +372,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 307,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -412,7 +390,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 308,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -431,7 +408,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 309,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -450,7 +426,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 310,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -469,7 +444,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 311,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -488,7 +462,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 312,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -507,7 +480,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 313,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -526,7 +498,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 314,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -548,7 +519,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 315,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -567,7 +537,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 316,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -586,7 +555,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 317,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -605,7 +573,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 318,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -624,7 +591,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 319,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -643,7 +609,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 320,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -665,7 +630,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 321,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -684,7 +648,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 322,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -703,7 +666,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 323,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -722,7 +684,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 324,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -741,7 +702,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 325,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -760,7 +720,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 326,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -779,7 +738,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 327,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -798,7 +756,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 328,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -817,7 +774,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 329,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -836,7 +792,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 330,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -855,7 +810,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 331,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -875,7 +829,6 @@
     "WindowsDefault": "Zero"
   },
   {
-    "Id": 332,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -892,7 +845,6 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 333,
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -909,7 +861,6 @@
     "WindowsDefault": "Zero"
   },
   {
-    "Id": 500,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -928,7 +879,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 501,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -947,7 +897,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 502,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -966,7 +915,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 503,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -985,7 +933,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 504,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1004,7 +951,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 505,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1023,7 +969,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 506,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1042,7 +987,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 507,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1061,7 +1005,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 508,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1080,7 +1023,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 509,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1099,7 +1041,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 510,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1118,7 +1059,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 511,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1137,7 +1077,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 512,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1156,7 +1095,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 513,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1175,7 +1113,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 514,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1194,7 +1131,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 515,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1213,7 +1149,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 516,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1233,7 +1168,6 @@
     "WindowsDefault": "One"
   },
   {
-    "Id": 517,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1252,7 +1186,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 518,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1274,7 +1207,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 519,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1293,7 +1225,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 520,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1312,7 +1243,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 521,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1331,7 +1261,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 522,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1350,7 +1279,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 523,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1369,7 +1297,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 524,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1388,7 +1315,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 525,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1407,7 +1333,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 526,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1426,7 +1351,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 527,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1445,7 +1369,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 528,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1464,7 +1387,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 529,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1483,7 +1405,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 530,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1502,7 +1423,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 531,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1521,7 +1441,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 532,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1540,7 +1459,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 533,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1559,7 +1477,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 534,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1578,7 +1495,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 535,
     "Region": "System",
     "Control": "chk",
     "Required": "false",
@@ -1594,7 +1510,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 536,
     "Region": "System",
     "Control": "chk",
     "Required": "false",
@@ -1610,7 +1525,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 537,
     "Region": "System",
     "Control": "chk",
     "Required": "false",
@@ -1626,7 +1540,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 538,
     "Region": "System",
     "Control": "chk",
     "Required": "false",
@@ -1642,7 +1555,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 539,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1661,7 +1573,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 540,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1680,7 +1591,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 541,
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
@@ -1699,7 +1609,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 542,
     "Region": "System",
     "Control": "chk",
     "Required": "false",
@@ -1713,7 +1622,6 @@
     "WindowsDefault": ""
   },
   {
-    "Id": 600,
     "Region": "WSL",
     "Control": "chk",
     "Required": "false",
@@ -1729,7 +1637,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 700,
     "Region": "Start menu",
     "Control": "cmb",
     "Required": "false",
@@ -1748,7 +1655,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 701,
     "Region": "Start menu",
     "Control": "cmb",
     "Required": "false",
@@ -1767,7 +1673,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 702,
     "Region": "Start menu",
     "Control": "chk",
     "Required": "false",
@@ -1786,7 +1691,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 703,
     "Region": "Start menu",
     "Control": "chk",
     "Required": "false",
@@ -1802,7 +1706,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 900,
     "Region": "Gaming",
     "Control": "chk",
     "Required": "false",
@@ -1818,7 +1721,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 901,
     "Region": "Gaming",
     "Control": "cmb",
     "Required": "false",
@@ -1837,7 +1739,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1000,
     "Region": "Scheduled tasks",
     "Control": "cmb",
     "Required": "false",
@@ -1856,7 +1757,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1001,
     "Region": "Scheduled tasks",
     "Control": "cmb",
     "Required": "false",
@@ -1875,7 +1775,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1002,
     "Region": "Scheduled tasks",
     "Control": "cmb",
     "Required": "false",
@@ -1894,7 +1793,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1100,
     "Region": "Microsoft Defender & Security",
     "Control": "cmb",
     "Required": "false",
@@ -1913,7 +1811,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1101,
     "Region": "Microsoft Defender & Security",
     "Control": "cmb",
     "Required": "false",
@@ -1932,7 +1829,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1102,
     "Region": "Microsoft Defender & Security",
     "Control": "cmb",
     "Required": "false",
@@ -1951,7 +1847,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1103,
     "Region": "Microsoft Defender & Security",
     "Control": "chk",
     "Required": "false",
@@ -1967,7 +1862,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1104,
     "Region": "Microsoft Defender & Security",
     "Control": "chk",
     "Required": "false",
@@ -1983,7 +1877,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1105,
     "Region": "Microsoft Defender & Security",
     "Control": "cmb",
     "Required": "false",
@@ -2002,7 +1895,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1106,
     "Region": "Microsoft Defender & Security",
     "Control": "cmb",
     "Required": "false",
@@ -2021,7 +1913,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1107,
     "Region": "Microsoft Defender & Security",
     "Control": "cmb",
     "Required": "false",
@@ -2040,7 +1931,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1108,
     "Region": "Microsoft Defender & Security",
     "Control": "cmb",
     "Required": "false",
@@ -2059,7 +1949,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1109,
     "Region": "Microsoft Defender & Security",
     "Control": "cmb",
     "Required": "false",
@@ -2078,7 +1967,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1110,
     "Region": "Microsoft Defender & Security",
     "Control": "cmb",
     "Required": "false",
@@ -2097,7 +1985,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1111,
     "Region": "Microsoft Defender & Security",
     "Control": "cmb",
     "Required": "false",
@@ -2116,7 +2003,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1112,
     "Region": "Microsoft Defender & Security",
     "Control": "cmb",
     "Required": "false",
@@ -2135,7 +2021,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1113,
     "Region": "Microsoft Defender & Security",
     "Control": "cmb",
     "Required": "false",
@@ -2154,7 +2039,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1200,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2173,7 +2057,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1201,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2192,7 +2075,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1202,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2211,7 +2093,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1203,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2230,7 +2111,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1204,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2249,7 +2129,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1205,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2268,7 +2147,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1206,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2287,7 +2165,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1207,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2306,7 +2183,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1208,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2325,7 +2201,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1209,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2344,7 +2219,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1210,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2363,7 +2237,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1211,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2382,7 +2255,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1212,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2401,7 +2273,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1213,
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
@@ -2420,7 +2291,6 @@
     "LTSC2021": "true"
   },
   {
-    "Id": 1300,
     "Region": "Update Policies",
     "Control": "chk",
     "Required": "false",

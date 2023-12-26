@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.17.8
-	Date: 08.12.2023
+	Version: v5.17.9
+	Date: 26.12.2023
 
 	Copyright (c) 2014—2024 farag
 	Copyright (c) 2019—2024 farag & Inestic
@@ -13,7 +13,7 @@
 	.NOTES
 	Supported Windows 10 versions
 	Version: 22H2
-	Builds: 19045.3758+
+	Builds: 19045.3803+
 	Editions: Home/Pro/Enterprise
 	Architecture: x64
 
@@ -595,9 +595,9 @@ public static string GetString(uint strId)
 		}
 		"19045"
 		{
-			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 3758)
+			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 3803)
 			{
-				# Check whether the OS minor build version is 3758 minimum
+				# Check whether the OS minor build version is 3803 minimum
 				# https://learn.microsoft.com/en-us/windows/release-health/release-information#windows-10-current-versions-by-servicing-option
 				$CurrentBuild = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
 				$UBR = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
@@ -1416,14 +1416,6 @@ function ScheduledTasks
 		# XblGameSave Standby Task
 		"XblGameSaveTask"
 	)
-
-	# Check if device has a camera
-	$DeviceHasCamera = Get-CimInstance -ClassName Win32_PnPEntity | Where-Object -FilterScript {(($_.PNPClass -eq "Camera") -or ($_.PNPClass -eq "Image")) -and ($_.Service -ne "StillCam")}
-	if (-not $DeviceHasCamera)
-	{
-		# Windows Hello
-		$CheckedScheduledTasks += "FODCleanupTask"
-	}
 	#endregion Variables
 
 	#region XAML Markup
