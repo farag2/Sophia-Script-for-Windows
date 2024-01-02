@@ -308,7 +308,7 @@ iwr script.sophia.team -useb | iex
 * [Neowin: Tech News, Reviews & Betas](https://www.neowin.net/news/this-windows-10-setup-script-lets-you-fine-tune-around-150-functions-for-new-installs)
 * [Comss.ru](https://www.comss.ru/page.php?id=8019)
 * [Habr](https://habr.com/company/skillfactory/blog/553800)
-* [Deskmodder.d](https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10/)
+* [Deskmodder.de](https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10/)
 * [PCsoleil Informatique](https://www.pcsoleil.fr/successeur-de-win10-initial-setup-script-sophia-script-comment-lutiliser/)
 * [Reddit (archived)](https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/)
   * PM [me](https://www.reddit.com/user/farag2/)
