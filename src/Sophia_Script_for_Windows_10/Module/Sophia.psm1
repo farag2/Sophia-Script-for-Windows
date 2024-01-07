@@ -10836,7 +10836,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Add-Type @Signature
 	}
 
-	Get-Process | Where-Object -FilterScript {(($_.ProcessName -eq "powershell") -or ($_.ProcessName -eq "WindowsTerminal")) -and ($_.MainWindowTitle -match "Sophia Script for Windows 11")} | ForEach-Object -Process {
+	Get-Process | Where-Object -FilterScript {(($_.ProcessName -eq "powershell") -or ($_.ProcessName -eq "WindowsTerminal")) -and ($_.MainWindowTitle -match "Sophia Script for Windows 10")} | ForEach-Object -Process {
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
@@ -12045,9 +12045,6 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	The extension can be installed without Microsoft account
 
 	.NOTES
-	HEVC Video Extension is already installed in Windows 11 22H2 by default
-
-	.NOTES
 	Current user
 #>
 function HEVC
@@ -12133,32 +12130,35 @@ function HEVC
 				}
 				$Raw = Invoke-WebRequest @Parameters
 
-				# Parsing the page
-				$Raw | Select-String -Pattern '<tr style.*<a href=\"(?<url>.*)"\s.*>(?<text>.*)<\/a>' -AllMatches | ForEach-Object -Process {$_.Matches} | Where-Object -FilterScript {$_.Value -like "*HEVCVideoExtension*.appxbundle*"} | ForEach-Object -Process {
-					$TempURL = ($_.Groups | Select-Object -Index 1).Value
-					$HEVCPackageName = ($_.Groups | Select-Object -Index 2).Value.Split("_") | Select-Object -Index 1
+				# Get a temp URL
+				$TempURL = $Raw.Links.href | Sort-Object -Property Length -Descending | Select-Object -First 1
+				$HEVCPackageName = ($Raw.Links.outerHTML | Where-Object -FilterScript {$_ -match "appxbundle"}).Split("_") | Select-Object -Index 1
 
-					# Installing "HEVC Video Extensions from Device Manufacturer"
-					if ([System.Version]$HEVCPackageName -gt [System.Version](Get-AppxPackage -Name Microsoft.HEVCVideoExtension).Version)
-					{
-						Write-Information -MessageData "" -InformationAction Continue
-						# Extract the localized "Please wait..." string from shell32.dll
-						Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
+				# Installing "HEVC Video Extensions from Device Manufacturer"
+				if ([System.Version]$HEVCPackageName -gt [System.Version](Get-AppxPackage -Name Microsoft.HEVCVideoExtension).Version)
+				{
+					Write-Information -MessageData "" -InformationAction Continue
+					# Extract the localized "Please wait..." string from shell32.dll
+					Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
 
-						Write-Verbose -Message $Localization.HEVCDownloading -Verbose
+					Write-Verbose -Message $Localization.HEVCDownloading -Verbose
 
-						$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-						$Parameters = @{
-							Uri             = $TempURL
-							OutFile         = "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx"
-							UseBasicParsing = $true
-							Verbose         = $true
-						}
-						Invoke-WebRequest @Parameters
-
-						Add-AppxPackage -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx" -Verbose
-						Remove-Item -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx" -Force
+					$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+					$Parameters = @{
+						Uri             = $TempURL
+						OutFile         = "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx"
+						UseBasicParsing = $true
+						Verbose         = $true
 					}
+					Invoke-WebRequest @Parameters
+
+					Add-AppxPackage -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx" -Verbose
+					Remove-Item -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx" -Force
+				}
+				else
+				{
+					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message $Localization.Skipped -Verbose
 				}
 			}
 			catch [System.Net.WebException]
