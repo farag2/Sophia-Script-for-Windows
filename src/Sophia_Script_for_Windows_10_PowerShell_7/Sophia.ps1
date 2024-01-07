@@ -832,7 +832,7 @@ WinPrtScrFolder -Desktop
 
 <#
 	Run troubleshooter automatically, then notify me
-	In order this feature to work the OS level of diagnostic data gathering will be set to "Optional diagnostic data", and the error reporting feature will be turned on
+	In order this feature to work Windows level of diagnostic data gathering will be set to "Optional diagnostic data", and the error reporting feature will be turned on
 
 	Автоматически запускать средства устранения неполадок, а затем уведомлять
 	Чтобы заработала данная функция, уровень сбора диагностических данных ОС будет установлен на "Необязательные диагностические данные" и включится создание отчетов об ошибках Windows
@@ -841,7 +841,7 @@ RecommendedTroubleshooting -Automatically
 
 <#
 	Ask me before running troubleshooter (default value)
-	In order this feature to work the OS level of diagnostic data gathering will be set to "Optional diagnostic data"
+	In order this feature to work Windows level of diagnostic data gathering will be set to "Optional diagnostic data"
 
 	Спрашивать перед запуском средств устранения неполадок (значение по умолчанию)
 	Чтобы заработала данная функция, уровень сбора диагностических данных ОС будет установлен на "Необязательные диагностические данные" и включится создание отчетов об ошибках Windows
@@ -985,7 +985,7 @@ WindowsLatestUpdate -Disable
 
 <#
 	Uninstall the "PC Health Check" app and prevent it from installing in the future
-	This application is installed with the KB5005463 update to check if PC meets the system requirements of Windows 11
+	This application is installed with the KB5005463 update to Check whether PC meets the system requirements of Windows 11
 
 	Удалить приложение "Проверка работоспособности ПК Windows" и заблокировать его установку в будущем
 	Данное приложение устанавливается обновлением KB5005463 для проверки соответствия компьютера системным требованиям Windows 11

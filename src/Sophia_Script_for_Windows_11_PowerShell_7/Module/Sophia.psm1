@@ -84,7 +84,7 @@ public static string GetString(uint strId)
 		Add-Type @Signature
 	}
 
-	# Check if Microsoft Edge as being a system component was removed by harmful tweakers
+	# Check whether Microsoft Edge as being a system component was removed by harmful tweakers
 	if (-not (Test-Path -Path "${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe"))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
@@ -171,17 +171,6 @@ public static string GetString(uint strId)
 			Write-Warning -Message $Localization.NoInternetConnection
 			Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 		}
-	}
-
-	# Check if Get-WindowsEdition cmdlet is working
-	try
-	{
-		[void](Get-WindowsEdition -Online)
-	}
-	catch [System.Runtime.InteropServices.COMException]
-	{
-		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Get-WindowsEdition")
-		exit
 	}
 
 	# Check the language mode
@@ -289,7 +278,7 @@ public static string GetString(uint strId)
 		}
 	}
 
-	# Flibustier custom Windows image
+	# Check whether this is a Flibustier custom Windows image
 	if (Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\.NETFramework\Performance -Name *flibustier)
 	{
 		Write-Warning -Message ($Localization.TweakerWarning -f "flblauncher")
@@ -297,6 +286,17 @@ public static string GetString(uint strId)
 		Start-Process -FilePath "https://t.me/sophia_chat"
 		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 
+		exit
+	}
+
+	# Check whether Get-WindowsEdition cmdlet is working
+	try
+	{
+		[void](Get-WindowsEdition -Online)
+	}
+	catch [System.Runtime.InteropServices.COMException]
+	{
+		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Get-WindowsEdition")
 		exit
 	}
 
@@ -311,36 +311,11 @@ public static string GetString(uint strId)
 		exit
 	}
 
-	# Check whether all necessary files exist in the bin folder
-	$Files = @(
-		"$PSScriptRoot\..\bin\LGPO.exe",
-		"$PSScriptRoot\..\bin\Microsoft.Windows.SDK.NET.dll",
-		"$PSScriptRoot\..\bin\WinRT.Runtime.dll"
-	)
-	if (($Files | Test-Path) -contains $false)
+	# Check whether EventLog service is running in order to be sire that Event Logger is enabled
+	if ((Get-Service -Name EventLog).Status -eq "Stopped")
 	{
-		Write-Warning -Message $Localization.Bin
-
-		Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"
-		Start-Process -FilePath "https://t.me/sophia_chat"
-		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
-
-		exit
-	}
-
-	# Check for a pending reboot
-	$PendingActions = @(
-		# CBS pending
-		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootPending",
-		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootInProgress",
-		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\PackagesPending",
-		# Windows Update pending
-		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\PostRebootReporting",
-		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired"
-	)
-	if (($PendingActions | Test-Path) -contains $true)
-	{
-		Write-Warning -Message $Localization.RebootPending
+		# Extract the localized "Event Viewer" string from shell32.dll
+		Write-Warning -Message ($Localization.WindowsComponentBroken -f $([WinAPI.GetStr]::GetString(22029))
 
 		Start-Process -FilePath "https://t.me/sophia_chat"
 		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
@@ -348,7 +323,7 @@ public static string GetString(uint strId)
 		exit
 	}
 
-	# Check if Microsoft Store being an important system component was removed
+	# Check whether Microsoft Store being an important system component was removed
 	if (-not (Get-AppxPackage -Name Microsoft.WindowsStore))
 	{
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Store")
@@ -357,55 +332,6 @@ public static string GetString(uint strId)
 		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 
 		exit
-	}
-
-	# Check if the current module version is the latest one
-	try
-	{
-		# Check the internet connection
-		$Parameters = @{
-			Name        = "dns.msftncsi.com"
-			Server      = "1.1.1.1"
-			DnsOnly     = $true
-			ErrorAction = "Stop"
-		}
-		if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
-		{
-			return
-		}
-
-		try
-		{
-			# https://github.com/farag2/Sophia-Script-for-Windows/blob/master/sophia_script_versions.json
-			$Parameters = @{
-				Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
-				Verbose         = $true
-				UseBasicParsing = $true
-			}
-			$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_7
-			$CurrentRelease = (Get-Module -Name Sophia).Version.ToString()
-
-			if ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)
-			{
-				Write-Warning -Message $Localization.UnsupportedRelease
-
-				Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"
-				Start-Process -FilePath "https://t.me/sophia_chat"
-				Start-Process -FilePath "https://discord.gg/sSryhaEv79"
-
-				exit
-			}
-		}
-		catch [System.Net.WebException]
-		{
-			Write-Warning -Message ($Localization.NoResponse -f "https://github.com")
-			Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
-		}
-	}
-	catch [System.ComponentModel.Win32Exception]
-	{
-		Write-Warning -Message $Localization.NoInternetConnection
-		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 	}
 
 	#region Defender checks
@@ -556,7 +482,93 @@ public static string GetString(uint strId)
 	}
 	#endregion Defender checks
 
-	# Detect the OS build version
+	# Check for a pending reboot
+	$PendingActions = @(
+		# CBS pending
+		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootPending",
+		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootInProgress",
+		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\PackagesPending",
+		# Windows Update pending
+		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\PostRebootReporting",
+		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired"
+	)
+	if (($PendingActions | Test-Path) -contains $true)
+	{
+		Write-Warning -Message $Localization.RebootPending
+
+		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+
+		exit
+	}
+
+	# Check whether the current module version is the latest one
+	try
+	{
+		# Check the internet connection
+		$Parameters = @{
+			Name        = "dns.msftncsi.com"
+			Server      = "1.1.1.1"
+			DnsOnly     = $true
+			ErrorAction = "Stop"
+		}
+		if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
+		{
+			return
+		}
+
+		try
+		{
+			# https://github.com/farag2/Sophia-Script-for-Windows/blob/master/sophia_script_versions.json
+			$Parameters = @{
+				Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
+				Verbose         = $true
+				UseBasicParsing = $true
+			}
+			$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_5_1
+			$CurrentRelease = (Get-Module -Name Sophia).Version.ToString()
+
+			if ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)
+			{
+				Write-Warning -Message $Localization.UnsupportedRelease
+
+				Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"
+				Start-Process -FilePath "https://t.me/sophia_chat"
+				Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+
+				exit
+			}
+		}
+		catch [System.Net.WebException]
+		{
+			Write-Warning -Message ($Localization.NoResponse -f "https://github.com")
+			Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
+		}
+	}
+	catch [System.ComponentModel.Win32Exception]
+	{
+		Write-Warning -Message $Localization.NoInternetConnection
+		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+	}
+
+	# Check whether all necessary files exist in the bin folder
+	$Files = @(
+		"$PSScriptRoot\..\bin\LGPO.exe",
+		"$PSScriptRoot\..\bin\Microsoft.Windows.SDK.NET.dll",
+		"$PSScriptRoot\..\bin\WinRT.Runtime.dll"
+	)
+	if (($Files | Test-Path) -contains $false)
+	{
+		Write-Warning -Message $Localization.Bin
+
+		Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"
+		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+
+		exit
+	}
+
+	# Detect Windows build version
 	switch ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber)
 	{
 		{$_ -lt 22631}
@@ -587,7 +599,7 @@ public static string GetString(uint strId)
 		{
 			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 2861)
 			{
-				# Check whether the OS minor build version is 2861 minimum
+				# Check whether Windows minor build version is 2861 minimum
 				# https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information#windows-11-current-versions
 				$CurrentBuild = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
 				$UBR = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
@@ -720,7 +732,7 @@ public static string GetString(uint strId)
 			# Extract the localized "Please wait..." string from shell32.dll
 			Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
 
-			# Check if hosts contains any of string from $IPArray array
+			# Check whether hosts contains any of string from $IPArray array
 			if ((Get-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Encoding Default -Force | ForEach-Object -Process {$_.Trim()} | ForEach-Object -Process {
 				($_ -ne "") -and ($_ -ne " ") -and (-not $_.StartsWith("#")) -and ($IPArray -split "`r?`n" | Select-String -Pattern $_)
 			}) -contains $true)
@@ -4505,7 +4517,7 @@ function OneDrive
 				return
 			}
 
-			# Check if user is logged into OneDrive (Microsoft account)
+			# Check whether user is logged into OneDrive (Microsoft account)
 			$UserEmail = Get-ItemProperty -Path HKCU:\Software\Microsoft\OneDrive\Accounts\Personal -Name UserEmail -ErrorAction Ignore
 			if ($UserEmail)
 			{
@@ -7750,7 +7762,7 @@ function WinPrtScrFolder
 		$Default
 	)
 
-	# Check if user is logged into OneDrive (Microsoft account)
+	# Check whether user is logged into OneDrive (Microsoft account)
 	$UserEmail = Get-ItemProperty -Path HKCU:\Software\Microsoft\OneDrive\Accounts\Personal -Name UserEmail -ErrorAction Ignore
 	if ($UserEmail)
 	{
@@ -7832,7 +7844,7 @@ function WinPrtScrFolder
 	RecommendedTroubleshooting -Default
 
 	.NOTES
-	In order this feature to work the OS level of diagnostic data gathering will be set to "Optional diagnostic data" and the error reporting feature will be turned on
+	In order this feature to work Windows level of diagnostic data gathering will be set to "Optional diagnostic data" and the error reporting feature will be turned on
 
 	.NOTES
 	Machine-wide
@@ -7876,7 +7888,7 @@ function RecommendedTroubleshooting
 		}
 	}
 
-	# Set the OS level of diagnostic data gathering to "Optional diagnostic data"
+	# Set Windows level of diagnostic data gathering to "Optional diagnostic data"
 	if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack))
 	{
 		New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Force
@@ -9921,7 +9933,7 @@ function Install-WSA
 		return
 	}
 
-	# Check if Windows 11 is installed on an SSD
+	# Check whether Windows 11 is installed on an SSD
 	$DiskNumber = (Get-Disk | Where-Object -FilterScript {$_.Isboot -and $_.IsSystem -and ($_.OperationalStatus -eq "Online")}).Number
 	if (Get-PhysicalDisk -DeviceNumber $DiskNumber | Where-Object -FilterScript {$_.MediaType -ne "SSD"})
 	{
@@ -11766,7 +11778,7 @@ function CleanupTask
 			# Checking if we're trying to create the task when it was already created as another user
 			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName "Windows Cleanup" -ErrorAction Ignore)
 			{
-				# Also we can parse "$env:SystemRoot\System32\Tasks\Sophia\Windows Cleanup" to check if the task was created
+				# Also we can parse "$env:SystemRoot\System32\Tasks\Sophia\Windows Cleanup" to Check whether the task was created
 				$ScheduleService = New-Object -ComObject Schedule.Service
 				$ScheduleService.Connect()
 				$ScheduleService.GetFolder("\Sophia").GetTasks(0) | Where-Object -FilterScript {$_.Name -eq "Windows Cleanup"} | Foreach-Object {
@@ -12191,7 +12203,7 @@ function SoftwareDistributionTask
 			# Checking if we're trying to create the task when it was already created as another user
 			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName SoftwareDistribution -ErrorAction Ignore)
 			{
-				# Also we can parse $env:SystemRoot\System32\Tasks\Sophia\SoftwareDistribution to check if the task was created
+				# Also we can parse $env:SystemRoot\System32\Tasks\Sophia\SoftwareDistribution to Check whether the task was created
 				$ScheduleService = New-Object -ComObject Schedule.Service
 				$ScheduleService.Connect()
 				$ScheduleService.GetFolder("\Sophia").GetTasks(0) | Where-Object -FilterScript {$_.Name -eq "SoftwareDistribution"} | Foreach-Object {
@@ -12495,7 +12507,7 @@ function TempTask
 			# Checking if we're trying to create the task when it was already created as another user
 			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName Temp -ErrorAction Ignore)
 			{
-				# Also we can parse $env:SystemRoot\System32\Tasks\Sophia\Temp to check if the task was created
+				# Also we can parse $env:SystemRoot\System32\Tasks\Sophia\Temp to Check whether the task was created
 				$ScheduleService = New-Object -ComObject Schedule.Service
 				$ScheduleService.Connect()
 				$ScheduleService.GetFolder("\Sophia").GetTasks(0) | Where-Object -FilterScript {$_.Name -eq "Temp"} | Foreach-Object {
@@ -14465,11 +14477,11 @@ function OpenWindowsTerminalAdminContext
 
 	if
 	(
-		# Check if it is not blocked by policy
+		# Check whether it is not blocked by policy
 		(-not (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{9F156763-7844-4DC4-B2B1-901F640F5155}" -ErrorAction Ignore)) -and
-		# Check if the package installed
+		# Check whether the package installed
 		(Get-AppxPackage -Name Microsoft.WindowsTerminal) -and
-		# Check if Windows Terminal version is greater or equal than 1.11
+		# Check whether Windows Terminal version is greater or equal than 1.11
 		([System.Version](Get-AppxPackage -Name Microsoft.WindowsTerminal).Version -ge [System.Version]"1.11")
 	)
 	{
@@ -14626,7 +14638,7 @@ function UpdateLGPEPolicies
 	{
 		foreach ($Item in $Path.Property)
 		{
-			# Check if property isn't equal to "(default)" and exists
+			# Check whether property isn't equal to "(default)" and exists
 			if (($null -ne $Item) -and ($Item -ne "(default)"))
 			{
 				# Where all ADMX templates are located to compare with
@@ -14684,7 +14696,7 @@ function UpdateLGPEPolicies
 	{
 		foreach ($Item in $Path.Property)
 		{
-			# Check if property isn't equal to "(default)" and exists
+			# Check whether property isn't equal to "(default)" and exists
 			if (($null -ne $Item) -and ($Item -ne "(default)"))
 			{
 				# Where all ADMX templates are located to compare with
@@ -14844,7 +14856,7 @@ public static void PostMessage()
 		}
 	}
 
-	# Check if any of scheduled tasks were created. Unless open Task Scheduler
+	# Check whether any of scheduled tasks were created. Unless open Task Scheduler
 	if ($Script:ScheduledTasks)
 	{
 		# Find and close taskschd.msc by its' argument

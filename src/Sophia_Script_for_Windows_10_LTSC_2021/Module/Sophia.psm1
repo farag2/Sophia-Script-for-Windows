@@ -89,7 +89,7 @@ public static string GetString(uint strId)
 		Add-Type @Signature
 	}
 
-	# Detect the OS bitness
+	# Detect Windows bitness
 	if (-not [System.Environment]::Is64BitOperatingSystem)
 	{
 		Write-Warning -Message $Localization.UnsupportedOSBitness
@@ -97,17 +97,6 @@ public static string GetString(uint strId)
 		Start-Process -FilePath "https://t.me/sophia_chat"
 		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 
-		exit
-	}
-
-	# Check if Get-WindowsEdition cmdlet is working
-	try
-	{
-		[void](Get-WindowsEdition -Online)
-	}
-	catch [System.Runtime.InteropServices.COMException]
-	{
-		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Get-WindowsEdition")
 		exit
 	}
 
@@ -216,7 +205,7 @@ public static string GetString(uint strId)
 		}
 	}
 
-	# Flibustier custom Windows image
+	# Check whether this is a Flibustier custom Windows image
 	if (Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\.NETFramework\Performance -Name *flibustier)
 	{
 		Write-Warning -Message ($Localization.TweakerWarning -f "flblauncher")
@@ -227,12 +216,23 @@ public static string GetString(uint strId)
 		exit
 	}
 
-	# Check whether LGPO.exe exists in the bin folder
-	if (-not (Test-Path -Path "$PSScriptRoot\..\bin\LGPO.exe"))
+	# Check whether Get-WindowsEdition cmdlet is working
+	try
 	{
-		Write-Warning -Message $Localization.Bin
+		[void](Get-WindowsEdition -Online)
+	}
+	catch [System.Runtime.InteropServices.COMException]
+	{
+		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Get-WindowsEdition")
+		exit
+	}
 
-		Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"
+	# Check whether EventLog service is running in order to be sire that Event Logger is enabled
+	if ((Get-Service -Name EventLog).Status -eq "Stopped")
+	{
+		# Extract the localized "Event Viewer" string from shell32.dll
+		Write-Warning -Message ($Localization.WindowsComponentBroken -f $([WinAPI.GetStr]::GetString(22029))
+
 		Start-Process -FilePath "https://t.me/sophia_chat"
 		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 
@@ -257,55 +257,6 @@ public static string GetString(uint strId)
 		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 
 		exit
-	}
-
-	# Check if the current module version is the latest one
-	try
-	{
-		# Check the internet connection
-		$Parameters = @{
-			Name        = "dns.msftncsi.com"
-			Server      = "1.1.1.1"
-			DnsOnly     = $true
-			ErrorAction = "Stop"
-		}
-		if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
-		{
-			return
-		}
-
-		try
-		{
-			# https://github.com/farag2/Sophia-Script-for-Windows/blob/master/sophia_script_versions.json
-			$Parameters = @{
-				Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
-				Verbose         = $true
-				UseBasicParsing = $true
-			}
-			$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_LTSC2021
-			$CurrentRelease = (Get-Module -Name Sophia).Version.ToString()
-
-			if ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)
-			{
-				Write-Warning -Message $Localization.UnsupportedRelease
-
-				Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"
-				Start-Process -FilePath "https://t.me/sophia_chat"
-				Start-Process -FilePath "https://discord.gg/sSryhaEv79"
-
-				exit
-			}
-		}
-		catch [System.Net.WebException]
-		{
-			Write-Warning -Message ($Localization.NoResponse -f "https://github.com")
-			Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
-		}
-	}
-	catch [System.ComponentModel.Win32Exception]
-	{
-		Write-Warning -Message $Localization.NoInternetConnection
-		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 	}
 
 	#region Defender checks
@@ -456,7 +407,68 @@ public static string GetString(uint strId)
 	}
 	#endregion Defender checks
 
-	# Detect the OS build version
+	# Check whether the current module version is the latest one
+	try
+	{
+		# Check the internet connection
+		$Parameters = @{
+			Name        = "dns.msftncsi.com"
+			Server      = "1.1.1.1"
+			DnsOnly     = $true
+			ErrorAction = "Stop"
+		}
+		if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
+		{
+			return
+		}
+
+		try
+		{
+			# https://github.com/farag2/Sophia-Script-for-Windows/blob/master/sophia_script_versions.json
+			$Parameters = @{
+				Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
+				Verbose         = $true
+				UseBasicParsing = $true
+			}
+			$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_LTSC2021
+			$CurrentRelease = (Get-Module -Name Sophia).Version.ToString()
+
+			if ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)
+			{
+				Write-Warning -Message $Localization.UnsupportedRelease
+
+				Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"
+				Start-Process -FilePath "https://t.me/sophia_chat"
+				Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+
+				exit
+			}
+		}
+		catch [System.Net.WebException]
+		{
+			Write-Warning -Message ($Localization.NoResponse -f "https://github.com")
+			Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
+		}
+	}
+	catch [System.ComponentModel.Win32Exception]
+	{
+		Write-Warning -Message $Localization.NoInternetConnection
+		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+	}
+
+	# Check whether LGPO.exe exists in the bin folder
+	if (-not (Test-Path -Path "$PSScriptRoot\..\bin\LGPO.exe"))
+	{
+		Write-Warning -Message $Localization.Bin
+
+		Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"
+		Start-Process -FilePath "https://t.me/sophia_chat"
+		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+
+		exit
+	}
+
+	# Detect Windows build version
 	if ((Get-WindowsEdition -Online).Edition -notmatch "EnterpriseS")
 	{
 		Write-Warning -Message $Localization.UnsupportedOSBuild
@@ -484,7 +496,7 @@ public static string GetString(uint strId)
 		{
 			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 3803)
 			{
-				# Check whether the OS minor build version is 3803 minimum
+				# Check whether Windows minor build version is 3803 minimum
 				# https://learn.microsoft.com/en-us/windows/release-health/release-information#windows-10-current-versions-by-servicing-option
 				$CurrentBuild = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
 				$UBR = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
@@ -614,7 +626,7 @@ public static string GetString(uint strId)
 			# Extract the localized "Please wait..." string from shell32.dll
 			Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
 
-			# Check if hosts contains any of string from $IPArray array
+			# Check whether hosts contains any of string from $IPArray array
 			if ((Get-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Encoding Default -Force | ForEach-Object -Process {$_.Trim()} | ForEach-Object -Process {
 				($_ -ne "") -and ($_ -ne " ") -and (-not $_.StartsWith("#")) -and ($IPArray -split "`r?`n" | Select-String -Pattern $_)
 			}) -contains $true)
@@ -7252,7 +7264,7 @@ function WinPrtScrFolder
 	RecommendedTroubleshooting -Default
 
 	.NOTES
-	In order this feature to work the OS level of diagnostic data gathering will be set to "Optional diagnostic data" and the error reporting feature will be turned on
+	In order this feature to work Windows level of diagnostic data gathering will be set to "Optional diagnostic data" and the error reporting feature will be turned on
 
 	.NOTES
 	Machine-wide
@@ -7296,7 +7308,7 @@ function RecommendedTroubleshooting
 		}
 	}
 
-	# Set the OS level of diagnostic data gathering to "Optional diagnostic data"
+	# Set Windows level of diagnostic data gathering to "Optional diagnostic data"
 	if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack))
 	{
 		New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Force
@@ -9908,7 +9920,7 @@ function PinToStart
 		# Extract the localized "Devices and Printers" string from shell32.dll
 		$DevicesPrinters = [WinAPI.GetStr]::GetString(30493)
 
-		# Check if an argument is "DevicesPrinters". The Devices and Printers's AppID attribute can be retrieved only if the shortcut was created
+		# Check whether an argument is "DevicesPrinters". The Devices and Printers's AppID attribute can be retrieved only if the shortcut was created
 		if (((Get-Command -Name PinToStart).Parametersets.Parameters | Where-Object -FilterScript {$null -eq $_.Attributes.AliasNames}).Attributes.ValidValues | Where-Object -FilterScript {$_ -match "DevicesPrinters"})
 		{
 			# Create the old-style "Devices and Printers" shortcut in the Start menu
@@ -10281,7 +10293,7 @@ function CleanupTask
 			# Checking if we're trying to create the task when it was already created as another user
 			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName "Windows Cleanup" -ErrorAction Ignore)
 			{
-				# Also we can parse "$env:SystemRoot\System32\Tasks\Sophia\Windows Cleanup" to check if the task was created
+				# Also we can parse "$env:SystemRoot\System32\Tasks\Sophia\Windows Cleanup" to Check whether the task was created
 				$ScheduleService = New-Object -ComObject Schedule.Service
 				$ScheduleService.Connect()
 				$ScheduleService.GetFolder("\Sophia").GetTasks(0) | Where-Object -FilterScript {$_.Name -eq "Windows Cleanup"} | Foreach-Object {
@@ -10706,7 +10718,7 @@ function SoftwareDistributionTask
 			# Checking if we're trying to create the task when it was already created as another user
 			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName SoftwareDistribution -ErrorAction Ignore)
 			{
-				# Also we can parse $env:SystemRoot\System32\Tasks\Sophia\SoftwareDistribution to check if the task was created
+				# Also we can parse $env:SystemRoot\System32\Tasks\Sophia\SoftwareDistribution to Check whether the task was created
 				$ScheduleService = New-Object -ComObject Schedule.Service
 				$ScheduleService.Connect()
 				$ScheduleService.GetFolder("\Sophia").GetTasks(0) | Where-Object -FilterScript {$_.Name -eq "SoftwareDistribution"} | Foreach-Object {
@@ -11010,7 +11022,7 @@ function TempTask
 			# Checking if we're trying to create the task when it was already created as another user
 			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName Temp -ErrorAction Ignore)
 			{
-				# Also we can parse $env:SystemRoot\System32\Tasks\Sophia\Temp to check if the task was created
+				# Also we can parse $env:SystemRoot\System32\Tasks\Sophia\Temp to Check whether the task was created
 				$ScheduleService = New-Object -ComObject Schedule.Service
 				$ScheduleService.Connect()
 				$ScheduleService.GetFolder("\Sophia").GetTasks(0) | Where-Object -FilterScript {$_.Name -eq "Temp"} | Foreach-Object {
@@ -12911,7 +12923,7 @@ function UpdateLGPEPolicies
 	{
 		foreach ($Item in $Path.Property)
 		{
-			# Check if property isn't equal to "(default)" and exists
+			# Check whether property isn't equal to "(default)" and exists
 			if (($null -ne $Item) -and ($Item -ne "(default)"))
 			{
 				# Where all ADMX templates are located to compare with
@@ -12969,7 +12981,7 @@ function UpdateLGPEPolicies
 	{
 		foreach ($Item in $Path.Property)
 		{
-			# Check if property isn't equal to "(default)" and exists
+			# Check whether property isn't equal to "(default)" and exists
 			if (($null -ne $Item) -and ($Item -ne "(default)"))
 			{
 				# Where all ADMX templates are located to compare with
@@ -13129,7 +13141,7 @@ public static void PostMessage()
 		}
 	}
 
-	# Check if any of scheduled tasks were created. Unless open Task Scheduler
+	# Check whether any of scheduled tasks were created. Unless open Task Scheduler
 	if ($Script:ScheduledTasks)
 	{
 		# Find and close taskschd.msc by its' argument
