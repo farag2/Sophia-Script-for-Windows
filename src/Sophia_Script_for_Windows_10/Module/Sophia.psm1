@@ -308,7 +308,7 @@ public static string GetString(uint strId)
 	# Check whether Get-WindowsEdition cmdlet is working
 	try
 	{
-		[void](Get-WindowsEdition -Online)
+		Get-WindowsEdition -Online
 	}
 	catch [System.Runtime.InteropServices.COMException]
 	{
@@ -331,7 +331,7 @@ public static string GetString(uint strId)
 	if ((Get-Service -Name EventLog).Status -eq "Stopped")
 	{
 		# Extract the localized "Event Viewer" string from shell32.dll
-		Write-Warning -Message ($Localization.WindowsComponentBroken -f $([WinAPI.GetStr]::GetString(22029))
+		Write-Warning -Message ($Localization.WindowsComponentBroken -f $([WinAPI.GetStr]::GetString(22029)))
 
 		Start-Process -FilePath "https://t.me/sophia_chat"
 		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
