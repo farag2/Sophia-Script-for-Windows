@@ -252,6 +252,8 @@ public static string GetString(uint strId)
 		WinCry              = "$env:SystemRoot\TempCleaner.exe"
 		# https://hone.gg
 		Hone                = "$env:LOCALAPPDATA\Programs\Hone\Hone.exe"
+		# https://github.com/ChrisTitusTech/winutil
+		winutil             = "$env:TEMP\cttlogo.png", "$env:TEMP\Winutil.log"
 	}
 	foreach ($Tweaker in $Tweakers.Keys)
 	{
