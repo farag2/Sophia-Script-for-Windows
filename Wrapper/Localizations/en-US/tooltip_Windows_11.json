@@ -1292,6 +1292,46 @@
   },
   {
     "Region": "System",
+    "Function": "Set-Association",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Register app, calculate hash, and associate with an extension with the 'How do you want to open this' pop-up hidden."
+      }
+    }
+  },
+  {
+    "Region": "System",
+    "Function": "ProgramPath",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Path to executable file."
+      }
+    }
+  },
+  {
+    "Region": "System",
+    "Function": "Extension",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Extension."
+      }
+    }
+  },
+  {
+    "Region": "System",
+    "Function": "Icon",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Path to icon."
+      }
+    }
+  },
+  {
+    "Region": "System",
     "Function": "Export-Associations",
     "Arg": {
       "Zero": {
@@ -1398,41 +1438,15 @@
   },
   {
     "Region": "System",
-    "Function": "Set-Association",
+    "Function": "RegistryBackup",
     "Arg": {
       "Zero": {
-        "Tag": "",
-        "ToolTip": "Register app, calculate hash, and associate with an extension with the 'How do you want to open this' pop-up hidden."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "ProgramPath",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Path to executable file."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "Extension",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Extension."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "Icon",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Path to icon."
+        "Tag": "Enable",
+        "ToolTip": "Back up the system registry to %SystemRoot%\\System32\\config\\RegBack folder when PC restarts and create a RegIdleBackup in the Task Scheduler task to manage subsequent backups."
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Do not back up the system registry to %SystemRoot%\\System32\\config\\RegBack folder (default value)."
       }
     }
   },

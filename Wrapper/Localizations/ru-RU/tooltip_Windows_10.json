@@ -571,20 +571,6 @@
   },
   {
     "Region": "UI & Personalization",
-    "Function": "SecondsInSystemClock",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Отобразить секунды в системных часах на панели задач."
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть секунды в системных часах на панели задач (значение по умолчанию)"
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
     "Function": "NotificationAreaIcons",
     "Arg": {
       "Zero": {
@@ -594,6 +580,20 @@
       "One": {
         "Tag": "Hide",
         "ToolTip": "Скрыть все значки в области уведомлений (значение по умолчанию)."
+      }
+    }
+  },
+  {
+    "Region": "UI & Personalization",
+    "Function": "SecondsInSystemClock",
+    "Arg": {
+      "Zero": {
+        "Tag": "Show",
+        "ToolTip": "Отобразить секунды в системных часах на панели задач."
+      },
+      "One": {
+        "Tag": "Hide",
+        "ToolTip": "Скрыть секунды в системных часах на панели задач (значение по умолчанию)"
       }
     }
   },
@@ -1372,6 +1372,46 @@
   },
   {
     "Region": "System",
+    "Function": "Set-Association",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Зарегистрировать приложение, вычислить хэш и ассоциировать его с расширением без всплывающего окна 'Каким образом вы хотите открыть этот файл?'"
+      }
+    }
+  },
+  {
+    "Region": "System",
+    "Function": "ProgramPath",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Путь до исполняемого файла."
+      }
+    }
+  },
+  {
+    "Region": "System",
+    "Function": "Extension",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Расширение."
+      }
+    }
+  },
+  {
+    "Region": "System",
+    "Function": "Icon",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Путь до значка."
+      }
+    }
+  },
+  {
+    "Region": "System",
     "Function": "Export-Associations",
     "Arg": {
       "Zero": {
@@ -1464,41 +1504,15 @@
   },
   {
     "Region": "System",
-    "Function": "Set-Association",
+    "Function": "RegistryBackup",
     "Arg": {
       "Zero": {
-        "Tag": "",
-        "ToolTip": "Зарегистрируйте приложение, рассчитайте хэш и свяжите его с расширением со скрытым всплывающим окном 'Как вы хотите открыть это'."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "ProgramPath",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Путь до исполняемого файла."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "Extension",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Расширение."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "Icon",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Путь до значка."
+        "Tag": "Enable",
+        "ToolTip": "Создавать копии реестра при перезагрузки ПК и создавать задание RegIdleBackup в Планировщике задания для управления последующими резервными копиями."
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Не создавать копии реестра при перезагрузки ПК (значение по умолчанию)."
       }
     }
   },

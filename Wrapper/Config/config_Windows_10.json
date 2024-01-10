@@ -1564,6 +1564,19 @@
     "Region": "System",
     "Control": "chk",
     "Required": "false",
+    "Function": "Set-Association",
+    "Arg": {
+      "Zero": {
+        "Tag": ""
+      }
+    },
+    "Preset": "",
+    "WindowsDefault": ""
+  },
+  {
+    "Region": "System",
+    "Control": "chk",
+    "Required": "false",
     "Function": "Export-Associations",
     "Arg": {
       "Zero": {
@@ -1675,16 +1688,19 @@
   },
   {
     "Region": "System",
-    "Control": "chk",
+    "Control": "cmb",
     "Required": "false",
-    "Function": "Set-Association",
+    "Function": "RegistryBackup",
     "Arg": {
       "Zero": {
-        "Tag": ""
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
       }
     },
-    "Preset": "",
-    "WindowsDefault": ""
+    "Preset": "Zero",
+    "WindowsDefault": "One"
   },
   {
     "Region": "WSL",

@@ -1070,20 +1070,6 @@
   },
   {
     "Region": "System",
-    "Function": "LatestInstalled.NET",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Use the latest installed .NET runtime for all apps."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Do not use the latest installed .NET runtime for all apps (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
     "Function": "NetworkAdaptersSavePower",
     "Arg": {
       "Zero": {
@@ -1143,6 +1129,20 @@
       "Two": {
         "Tag": "Default",
         "ToolTip": "Change user folders location to the default values. User files or folders won't me moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default (default value)."
+      }
+    }
+  },
+  {
+    "Region": "System",
+    "Function": "LatestInstalled.NET",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Use the latest installed .NET runtime for all apps."
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Do not use the latest installed .NET runtime for all apps (default value)."
       }
     }
   },
@@ -1372,6 +1372,46 @@
   },
   {
     "Region": "System",
+    "Function": "Set-Association",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Register app, calculate hash, and associate with an extension with the 'How do you want to open this' pop-up hidden."
+      }
+    }
+  },
+  {
+    "Region": "System",
+    "Function": "ProgramPath",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Path to executable file."
+      }
+    }
+  },
+  {
+    "Region": "System",
+    "Function": "Extension",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Extension."
+      }
+    }
+  },
+  {
+    "Region": "System",
+    "Function": "Icon",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Path to icon."
+      }
+    }
+  },
+  {
+    "Region": "System",
     "Function": "Export-Associations",
     "Arg": {
       "Zero": {
@@ -1464,41 +1504,15 @@
   },
   {
     "Region": "System",
-    "Function": "Set-Association",
+    "Function": "RegistryBackup",
     "Arg": {
       "Zero": {
-        "Tag": "",
-        "ToolTip": "Register app, calculate hash, and associate with an extension with the 'How do you want to open this' pop-up hidden."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "ProgramPath",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Path to executable file."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "Extension",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Extension."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "Icon",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Path to icon."
+        "Tag": "Enable",
+        "ToolTip": "Back up the system registry to %SystemRoot%\\System32\\config\\RegBack folder when PC restarts and create a RegIdleBackup in the Task Scheduler task to manage subsequent backups."
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Do not back up the system registry to %SystemRoot%\\System32\\config\\RegBack folder (default value)."
       }
     }
   },

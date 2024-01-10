@@ -257,7 +257,7 @@ public static string GetString(uint strId)
 		# https://hone.gg
 		Hone                = "$env:LOCALAPPDATA\Programs\Hone\Hone.exe"
 		# https://github.com/ChrisTitusTech/winutil
-		winutil             = "$env:TEMP\cttlogo.png", "$env:TEMP\Winutil.log"
+		winutil             = "$env:TEMP\Winutil.log"
 	}
 	foreach ($Tweaker in $Tweakers.Keys)
 	{
@@ -8418,11 +8418,6 @@ function NetworkDiscovery
 		$Disable
 	)
 
-	if ((Get-CimInstance -ClassName CIM_ComputerSystem).PartOfDomain)
-	{
-		return
-	}
-
 	$FirewallRules = @(
 		# File and printer sharing
 		"@FirewallAPI.dll,-32752",
@@ -10133,6 +10128,57 @@ function SATADrivesRemovableMedia
 		"Default"
 		{
 			Remove-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\storahci\Parameters\Device -Name TreatAsInternalPort -Force -ErrorAction Ignore
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	Back up the system registry to %SystemRoot%\System32\config\RegBack folder when PC restarts and create a RegIdleBackup in the Task Scheduler task to manage subsequent backups
+
+	.PARAMETER Enable
+	Back up the system registry to %SystemRoot%\System32\config\RegBack folder
+
+	.PARAMETER Disable
+	Do not back up the system registry to %SystemRoot%\System32\config\RegBack folder
+
+	.EXAMPLE
+	RegistryBackup -Enable
+
+	.EXAMPLE
+	RegistryBackup -Disable
+
+	.NOTES
+	Machine-wide
+#>
+function RegistryBackup
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Enable"
+		{
+			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Configuration Manager" -Name EnablePeriodicBackup -Type DWord -Value 1 -Force
+		}
+		"Disable"
+		{
+			Remove-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Configuration Manager" -Name EnablePeriodicBackup -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -12640,9 +12686,9 @@ Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_
 	"`$env:SystemDrive\PerfLogs"
 )
 
-if ((Get-Item -Path `$env:SystemDrive\Recovery -Force | Where-Object -FilterScript {`$_.Attributes -match "Hidden"}).FullName)
+if ((Get-ChildItem -Path `$env:SystemDrive\Recovery -Force | Where-Object -FilterScript {`$_.Name -eq "ReAgentOld.xml"}).FullName)
 {
-	`$Paths += (Get-Item -Path `$env:SystemDrive\Recovery -Force | Where-Object -FilterScript {`$_.Attributes -match "Hidden"}).FullName
+	`$Paths += "$env:SystemDrive\Recovery"
 }
 Remove-Item -Path `$Paths -Recurse -Force
 

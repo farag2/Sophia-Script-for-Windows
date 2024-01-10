@@ -1035,6 +1035,14 @@ SATADrivesRemovableMedia -Disable
 # Show up all internal SATA drives as removeable media in the taskbar notification area (default value)
 # Отображать все внутренние SATA-диски как съемные носители в области уведомлений на панели задач (значение по умолчанию)
 # SATADrivesRemovableMedia -Default
+
+# Back up the system registry to %SystemRoot%\System32\config\RegBack folder when PC restarts and create a RegIdleBackup in the Task Scheduler task to manage subsequent backups
+# Создавать копии реестра при перезагрузки ПК и создавать задание RegIdleBackup в Планировщике задания для управления последующими резервными копиями
+# RegistryBackup -Enable
+
+# Do not back up the system registry to %SystemRoot%\System32\config\RegBack folder (default value)
+# Не создавать копии реестра при перезагрузки ПК (значение по умолчанию)
+# RegistryBackup -Disable
 #endregion System
 
 #region WSL
