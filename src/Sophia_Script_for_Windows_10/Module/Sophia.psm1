@@ -296,15 +296,24 @@ public static string GetString(uint strId)
 		}
 	}
 
-	# Check whether this is a Flibustier custom Windows image
-	if (Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\.NETFramework\Performance -Name *flibustier)
+	# Check whether Windows was broken by 3rd party harmful tweakers and trojans
+	$Tweakers = @{
+		# https://forum.ru-board.com/topic.cgi?forum=62&topic=30617&start=1600#14
+		AutoSettingsPS = "$(Get-Item -Path `"HKLM:\SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths`" | Where-Object -FilterScript {$_.Property -match `"AutoSettingsPS`"})"
+		# Flibustier custom Windows image
+		Flibustier     = "$(Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\.NETFramework\Performance -Name *flibustier)"
+	}
+	foreach ($Tweaker in $Tweakers.Keys)
 	{
-		Write-Warning -Message ($Localization.TweakerWarning -f "flblauncher")
+		if ($Tweakers[$Tweaker])
+		{
+			Write-Warning -Message ($Localization.TweakerWarning -f $Tweaker)
 
-		Start-Process -FilePath "https://t.me/sophia_chat"
-		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+			Start-Process -FilePath "https://t.me/sophia_chat"
+			Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 
-		exit
+			exit
+		}
 	}
 
 	# Check whether Get-WindowsEdition cmdlet is working
@@ -659,6 +668,7 @@ public static string GetString(uint strId)
 	Write-Information -MessageData "" -InformationAction Continue
 	# Extract the localized "Please wait..." string from shell32.dll
 	Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
+	Write-Information -MessageData "" -InformationAction Continue
 
 	# Remove IP addresses from hosts file that block Microsoft recourses added by WindowsSpyBlocker
 	# https://github.com/crazy-max/WindowsSpyBlocker
@@ -742,6 +752,7 @@ public static string GetString(uint strId)
 			Write-Information -MessageData "" -InformationAction Continue
 			# Extract the localized "Please wait..." string from shell32.dll
 			Write-Verbose -Message ([WinAPI.GetStr]::GetString(12612)) -Verbose
+			Write-Information -MessageData "" -InformationAction Continue
 
 			# Check whether hosts contains any of string from $IPArray array
 			if ((Get-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Encoding Default -Force | ForEach-Object -Process {$_.Trim()} | ForEach-Object -Process {
