@@ -1377,37 +1377,19 @@
       "Zero": {
         "Tag": "",
         "ToolTip": "Registrieren Sie die App, berechnen Sie den Hash und verknüpfen Sie sie mit einer Erweiterung, wobei das Popup 'Wie möchten Sie diese öffnen?' ausgeblendet ist."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "ProgramPath",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Pfad zur ausführbaren Datei."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "Extension",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Erweiterung."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "Icon",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Pfad zum Symbol."
-      }
+      },
+      "One":  {
+		"Tag": "ProgramPath",
+		"ToolTip":  "Pfad zur ausführbaren Datei."
+	  },
+	  "Two":  {
+	    "Tag": "Extension",
+		"ToolTip":  "Erweiterung."
+	  },	
+	  "Three": {
+		"Tag": "Icon",
+		"ToolTip":  "Pfad zum Symbol."
+	  }	
     }
   },
   {

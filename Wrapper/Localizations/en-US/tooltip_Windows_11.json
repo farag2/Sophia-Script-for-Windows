@@ -1297,37 +1297,19 @@
       "Zero": {
         "Tag": "",
         "ToolTip": "Register app, calculate hash, and associate with an extension with the 'How do you want to open this' pop-up hidden."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "ProgramPath",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Path to executable file."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "Extension",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Extension."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "Icon",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Path to icon."
-      }
+      },
+      "One":  {
+		"Tag": "ProgramPath",
+		"ToolTip":  "Path to executable file."
+	  },
+	  "Two":  {
+	    "Tag": "Extension",
+		"ToolTip":  "Extension."
+	  },	
+	  "Three": {
+		"Tag": "Icon",
+		"ToolTip":  "Path to icon."
+	  }	
     }
   },
   {
