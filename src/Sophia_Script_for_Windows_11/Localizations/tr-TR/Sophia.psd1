@@ -4,6 +4,7 @@ UpdateWarning                             = Windows 11 yapınız: {0}.{1}. Deste
 UnsupportedLanguageMode                   = Sınırlı bir dil modunda çalışan PowerShell oturumu.
 LoggedInUserNotAdmin                      = Oturum açan kullanıcının yönetici hakları yok.
 UnsupportedPowerShell                     = Komut dosyasını PowerShell {0}.{1} aracılığıyla çalıştırmaya çalışıyorsunuz. Komut dosyasını uygun PowerShell sürümünde çalıştırın.
+PowerShellx86Warning                      = Komut dosyasını PowerShell (x86) üzerinden çalıştırmaya çalışıyorsunuz. Komut dosyasını PowerShell'de (x64) çalıştırın.
 UnsupportedHost                           = Komut dosyası, {0} üzerinden çalıştırmayı desteklemiyor.
 Win10TweakerWarning                       = Muhtemelen işletim sisteminize Win 10 Tweaker arka kapısı yoluyla bulaştı.
 TweakerWarning                            = Windows işletim sistemi kararlılığı, {0} betiği kullanılarak tehlikeye atılmış olabilir. Her ihtimale karşı, Windows'u yeniden yükleyin.

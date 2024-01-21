@@ -4,6 +4,7 @@ UpdateWarning                             = Ваш билд Windows 11: {0}.{1}.
 UnsupportedLanguageMode                   = Сессия PowerShell работает в ограниченном режиме.
 LoggedInUserNotAdmin                      = Текущий вошедший пользователь не обладает правами администратора.
 UnsupportedPowerShell                     = Вы пытаетесь запустить скрипт в PowerShell {0}.{1}. Запустите скрипт в соответствующей версии PowerShell.
+PowerShellx86Warning                      = Вы пытаетесь запустить скрипт в PowerShell (x86). Запустите скрипт в PowerShell (x64).
 UnsupportedHost                           = Скрипт не поддерживает работу через {0}.
 Win10TweakerWarning                       = Ваша ОС, возможно, через бэкдор в Win 10 Tweaker была заражена трояном.
 TweakerWarning                            = Стабильность Windows могла быть нарушена использованием {0}. На всякий случай переустановите Windows.

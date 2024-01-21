@@ -2,7 +2,7 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10 LTSC 2019"
 
-	Version: v5.7.9
+	Version: v5.8.0
 	Date: 26.12.2023
 
 	Copyright (c) 2014—2024 farag
@@ -70,12 +70,25 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC 2019 v5.7.9 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag & Inestic, 2014$([System.Char]0x2013)2024"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC 2019 v5.8.0 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag & Inestic, 2014$([System.Char]0x2013)2024"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
-Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
-
 Import-LocalizedData -BindingVariable Global:Localization -BaseDirectory $PSScriptRoot\Localizations -FileName Sophia
+
+# Check whether script is not running via PowerShell (x86)
+try
+{
+	Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force -ErrorAction Stop
+}
+catch [System.InvalidOperationException]
+{
+	Write-Warning -Message $Localization.PowerShellx86Warning
+
+	Start-Process -FilePath "https://t.me/sophia_chat"
+	Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+
+	exit
+}
 
 <#
 	.SYNOPSIS

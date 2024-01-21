@@ -5,6 +5,7 @@ UpdateWarning                             = 您的Windows 10构建: {0}.{1}。�
 UnsupportedLanguageMode                   = PowerShell会话在有限的语言模式下运行。
 LoggedInUserNotAdmin                      = 登录的用户没有管理员的权利。
 UnsupportedPowerShell                     = 你想通过PowerShell {0}.{1}运行脚本。在适当的PowerShell版本中运行该脚本。
+PowerShellx86Warning                      = 您正尝试在 PowerShell (x86) 中运行脚本。在 PowerShell (x64) 中运行脚本。
 UnsupportedHost                           = 该脚本不支持通过{0}运行。
 Win10TweakerWarning                       = 可能你的操作系统是通过"Win 10 Tweaker"后门感染的。
 TweakerWarning                            = Windows的稳定性可能已被{0}所破坏。预防性地，重新安装整个操作系统。

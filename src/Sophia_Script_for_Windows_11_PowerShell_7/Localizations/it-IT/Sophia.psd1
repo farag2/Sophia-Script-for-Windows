@@ -4,6 +4,7 @@ UpdateWarning                             = La tua build di Windows 11 {0}.{1} n
 UnsupportedLanguageMode                   = La sessione PowerShell è in esecuzione in modalità lingua limitata.
 LoggedInUserNotAdmin                      = L'utente in suo non ha i diritti di amministratore.
 UnsupportedPowerShell                     = Stai cercando di eseguire lo script tramite PowerShell {0}.{1}. Esegui lo script nella versione di PowerShell appropriata.
+PowerShellx86Warning                      = Si sta cercando di eseguire lo script tramite PowerShell (x86). Eseguire lo script in PowerShell (x64).
 UnsupportedHost                           = Lo script non supporta l'esecuzione tramite {0}.
 Win10TweakerWarning                       = Probabilmente il tuo sistema operativo è stato infettato tramite una backdoor in Win 10 Tweaker.
 TweakerWarning                            = La stabilità del sistema operativo Windows potrebbe essere stata compromessa dall'utilizzo dello {0}. Per sicurezza, reinstallare Windows.

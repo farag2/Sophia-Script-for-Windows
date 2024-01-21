@@ -5,6 +5,7 @@ UpdateWarning                             = Ihr Windows 10-Build: {0}.{1}. Unter
 UnsupportedLanguageMode                   = Die PowerShell-Sitzung wird in einem eingeschränkten Sprachmodus ausgeführt.
 LoggedInUserNotAdmin                      = Der angemeldete Benutzer hat keine Administratorrechte.
 UnsupportedPowerShell                     = Sie versuchen ein Skript über PowerShell {0}.{1} auszuführen. Das Skript in der entsprechenden PowerShell-Version ausführen.
+PowerShellx86Warning                      = Sie versuchen ein Skript über PowerShell (x86). Führen Sie das Skript in PowerShell (x64) aus.
 UnsupportedHost                           = Das Skript unterstützt nicht die Ausführung über {0}.
 Win10TweakerWarning                       = Wahrscheinlich wurde Ihr Betriebssystem über die Win 10 Tweaker-Hintertür infiziert.
 TweakerWarning                            = Die Stabilität des Windows-Betriebssystems kann durch die Verwendung des {0} beeinträchtigt worden sein. Installieren Sie Windows vorsichtshalber neu.

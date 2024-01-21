@@ -2,7 +2,7 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v6.5.9
+	Version: v6.6.0
 	Date: 26.12.2023
 
 	Copyright (c) 2014—2024 farag
@@ -218,7 +218,7 @@ public static string GetString(uint strId)
 	# Check whether the script was run in PowerShell ISE or VS Code
 	if (($Host.Name -match "ISE") -or ($env:TERM_PROGRAM -eq "vscode"))
 	{
-		Write-Warning -Message ($Localization.UnsupportedHost -f $Host.Name.replace("Host", ""))
+		Write-Warning -Message ($Localization.UnsupportedHost -f $Host.Name.Replace("Host", ""))
 
 		Start-Process -FilePath "https://t.me/sophia_chat"
 		Start-Process -FilePath "https://discord.gg/sSryhaEv79"

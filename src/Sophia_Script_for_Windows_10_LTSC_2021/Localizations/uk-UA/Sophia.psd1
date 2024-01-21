@@ -5,6 +5,7 @@ UpdateWarning                             = Ваш білд Windows 10: {0}.{1}.
 UnsupportedLanguageMode                   = Сесія PowerShell працює в обмеженому режимі.
 LoggedInUserNotAdmin                      = Поточний користувач, що увійшов, не має прав адміністратора.
 UnsupportedPowerShell                     = Ви намагаєтеся запустити скрипт в PowerShell {0}.{1}. Запустіть скрипт у відповідній версії PowerShell.
+PowerShellx86Warning                      = Ви намагаєтеся запустити скрипт у PowerShell (x86). Запустіть скрипт у PowerShell (x64).
 UnsupportedHost                           = Скрипт не підтримує роботу через {0}.
 Win10TweakerWarning                       = Ваша ОС, можливо, через бекдор в Win 10 Tweaker інфікована трояном. Детальніше: https://itnan.ru/post.php?c=1&p=557388.
 TweakerWarning                            = Стабільність вашої ОС могла бути порушена використанням {0}. Про всяк випадок перевстановіть Windows.

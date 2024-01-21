@@ -4,6 +4,7 @@ UpdateWarning                             = Az Ön Windows 11 építése: {0}.{1
 UnsupportedLanguageMode                   = A PowerShell munkamenet korlátozott nyelvi üzemmódban fut.
 LoggedInUserNotAdmin                      = A bejelentkezett felhasználó nem rendelkezik admin jogokkal.
 UnsupportedPowerShell                     = A PowerShell {0}.{1} segítségével próbálja futtatni a szkriptet. Futtassa a szkriptet a megfelelő PowerShell-verzióban.
+PowerShellx86Warning                      = A PowerShell (x86) segítségével próbálja futtatni a szkriptet. Futtassa a szkriptet a PowerShell (x64) programban.
 UnsupportedHost                           = A szkript nem támogatja a {0} futtatását.
 Win10TweakerWarning                       = Valószínűleg az operációs rendszerét a Win 10 Tweaker backdoor segítségével fertőzték meg.
 TweakerWarning                            = A Windows operációs rendszer stabilitását veszélyeztethette a {0}. A biztonság kedvéért telepítse újra a Windowst.

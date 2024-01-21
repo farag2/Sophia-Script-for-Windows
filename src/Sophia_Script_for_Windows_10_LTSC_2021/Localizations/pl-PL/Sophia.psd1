@@ -5,6 +5,7 @@ UpdateWarning                             = Twoja wersja systemu Windows 10: {0}
 UnsupportedLanguageMode                   = Sesja PowerShell działa w trybie ograniczonego języka.
 LoggedInUserNotAdmin                      = Zalogowany użytkownik nie posiada uprawnień administratora.
 UnsupportedPowerShell                     = Próbujesz uruchomić skrypt przy użyciu PowerShell {0}.{1}. Uruchom skrypt używając odpowiedniej wersji PowerShell.
+PowerShellx86Warning                      = Próbujesz uruchomić skrypt przez PowerShell (x86). Uruchom skrypt w PowerShell (x64).
 UnsupportedHost                           = Skrypt nie może być uruchamiany w {0}.
 Win10TweakerWarning                       = Prawdopodobnie twój system operacyjny został zainfekowany przez backdoora pochodzącego z Win 10 Tweaker.
 TweakerWarning                            = Stabilność systemu Windows mogła zostać naruszona przez użycie {0}. Na wszelki wypadek przeinstaluj system Windows.

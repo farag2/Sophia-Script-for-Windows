@@ -2,7 +2,7 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10 (PowerShell 7)"
 
-	Version: v5.17.9
+	Version: v5.18.0
 	Date: 26.12.2023
 
 	Copyright (c) 2014—2024 farag
@@ -70,13 +70,11 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.17.9 (PowerShell 7) | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag & Inestic, 2014$([System.Char]0x2013)2024"
-
-Remove-Module -Name Sophia -Force -ErrorAction Ignore
-Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.18.0 (PowerShell 7) | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag & Inestic, 2014$([System.Char]0x2013)2024"
 
 # PowerShell 7 doesn't load en-us localization automatically if there is no localization folder in user's language which is determined by $PSUICulture
 # https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/import-localizeddata?view=powershell-7.3
+# https://github.com/PowerShell/PowerShell/pull/19896
 try
 {
 	Import-LocalizedData -BindingVariable Global:Localization -UICulture $PSUICulture -BaseDirectory $PSScriptRoot\Localizations -FileName Sophia -ErrorAction Stop
@@ -84,6 +82,21 @@ try
 catch
 {
 	Import-LocalizedData -BindingVariable Global:Localization -UICulture en-US -BaseDirectory $PSScriptRoot\Localizations -FileName Sophia
+}
+
+# Check whether script is not running via PowerShell (x86)
+try
+{
+	Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force -ErrorAction Stop
+}
+catch [System.InvalidOperationException]
+{
+	Write-Warning -Message $Localization.PowerShellx86Warning
+
+	Start-Process -FilePath "https://t.me/sophia_chat"
+	Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+
+	exit
 }
 
 <#

@@ -5,6 +5,7 @@ UpdateWarning                             = La tua build di Windows 10: {0}.{1}.
 UnsupportedLanguageMode                   = A sessão PowerShell em funcionamento em um modo de linguagem limitada.
 LoggedInUserNotAdmin                      = O usuário logado não tem direitos de administrador.
 UnsupportedPowerShell                     = Você está tentando executar o script via PowerShell {0}.{1}. Execute o script na versão apropriada do PowerShell.
+PowerShellx86Warning                      = Você está tentando executar o script via PowerShell (x86). Execute o script no PowerShell (x64).
 UnsupportedHost                           = O guião não suporta a execução através do {0}.
 Win10TweakerWarning                       = Probabilmente il tuo sistema operativo è stato infettato tramite la backdoor Win 10 Tweaker.
 TweakerWarning                            = A estabilidade do sistema operacional Windows pode ter sido comprometida pela utilização do {0}. Só por precaução, reinstale o Windows.
