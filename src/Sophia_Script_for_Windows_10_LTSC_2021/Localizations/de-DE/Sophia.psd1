@@ -1,7 +1,8 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Das Skript unterstützt nur 64-Bit-Windows.
 UnsupportedOSBuild                        = Das Skript unterstützt Windows 10 Enterprise LTSC 2021.
-UpdateWarning                             = Ihr Windows 10-Build: {0}.{1}. Unterstützter Builds: 19044.3803+. Führen Sie Windows Update aus und versuchen Sie es erneut.
+NonLatinUsernameWarning                   = PowerShell 5.1 kompiliert keinen Code, wenn der Benutzername nicht-lateinische Zeichen (einschließlich Emoji) enthält und in Kleinbuchstaben geschrieben ist. Bitte verwenden Sie PowerShell 7.
+UpdateWarning                             = Ihr Windows 10-Build: {0}.{1}. Unterstützter Builds: 19044.3930+. Führen Sie Windows Update aus und versuchen Sie es erneut.
 UnsupportedLanguageMode                   = Die PowerShell-Sitzung wird in einem eingeschränkten Sprachmodus ausgeführt.
 LoggedInUserNotAdmin                      = Der angemeldete Benutzer hat keine Administratorrechte.
 UnsupportedPowerShell                     = Sie versuchen ein Skript über PowerShell {0}.{1} auszuführen. Das Skript in der entsprechenden PowerShell-Version ausführen.
@@ -9,7 +10,7 @@ PowerShellx86Warning                      = Sie versuchen ein Skript über Power
 UnsupportedHost                           = Das Skript unterstützt nicht die Ausführung über {0}.
 Win10TweakerWarning                       = Wahrscheinlich wurde Ihr Betriebssystem über die Win 10 Tweaker-Hintertür infiziert.
 TweakerWarning                            = Die Stabilität des Windows-Betriebssystems kann durch die Verwendung des {0} beeinträchtigt worden sein. Installieren Sie Windows vorsichtshalber neu.
-bin                                       = Im Ordner "bin" befinden sich keine Dateien. Bitte das Archiv erneut herunterladen.
+Bin                                       = Im Ordner "bin" befinden sich keine Dateien. Bitte das Archiv erneut herunterladen.
 RebootPending                             = Der PC wartet darauf, neu gestartet zu werden.
 UnsupportedRelease                        = Neue Version gefunden.
 KeyboardArrows                            = Bitte verwenden Sie die Pfeiltasten {0} und {1} auf Ihrer Tastatur, um Ihre Antwort auszuwählen

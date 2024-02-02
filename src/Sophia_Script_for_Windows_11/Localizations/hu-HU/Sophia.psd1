@@ -1,6 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = A szkript támogatja a Windows 11 23H2+ rendszert.
-UpdateWarning                             = Az Ön Windows 11 építése: {0}.{1}. Támogatott buildek: 22631.2861+. Futtassa a Windows Update programot, és próbálja meg újra.
+NonLatinUsernameWarning                   = A PowerShell 5.1 nem fordít kódot, ha a felhasználónév nem latin betűket tartalmaz (beleértve az emojikat is), és kisbetűvel van írva. Kérjük, használja a PowerShell 7-et.
+UpdateWarning                             = Az Ön Windows 11 építése: {0}.{1}. Támogatott buildek: 22631.3085+. Futtassa a Windows Update programot, és próbálja meg újra.
 UnsupportedLanguageMode                   = A PowerShell munkamenet korlátozott nyelvi üzemmódban fut.
 LoggedInUserNotAdmin                      = A bejelentkezett felhasználó nem rendelkezik admin jogokkal.
 UnsupportedPowerShell                     = A PowerShell {0}.{1} segítségével próbálja futtatni a szkriptet. Futtassa a szkriptet a megfelelő PowerShell-verzióban.
@@ -8,7 +9,7 @@ PowerShellx86Warning                      = A PowerShell (x86) segítségével p
 UnsupportedHost                           = A szkript nem támogatja a {0} futtatását.
 Win10TweakerWarning                       = Valószínűleg az operációs rendszerét a Win 10 Tweaker backdoor segítségével fertőzték meg.
 TweakerWarning                            = A Windows operációs rendszer stabilitását veszélyeztethette a {0}. A biztonság kedvéért telepítse újra a Windowst.
-bin                                       = A bin mappában nincsenek fájlok. Kérjük, töltse le újra az archívumot.
+Bin                                       = A bin mappában nincsenek fájlok. Kérjük, töltse le újra az archívumot.
 RebootPending                             = A számítógép újraindításra vár.
 UnsupportedRelease                        = Új verzió érhető el.
 KeyboardArrows                            = Kérjük, használja a billentyűzet {0} és {1} nyílbillentyűit a válasz kiválasztásához

@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = Скрипт поддерживает Windows 11 23H2+.
-UpdateWarning                             = Ваш билд Windows 11: {0}.{1}. Поддерживаемые сборки: 22631.2861+. Запустите обновление Windows и попробуйте заново.
+UpdateWarning                             = Ваш билд Windows 11: {0}.{1}. Поддерживаемые сборки: 22631.3085+. Запустите обновление Windows и попробуйте заново.
 UnsupportedLanguageMode                   = Сессия PowerShell работает в ограниченном режиме.
 LoggedInUserNotAdmin                      = Текущий вошедший пользователь не обладает правами администратора.
 UnsupportedPowerShell                     = Вы пытаетесь запустить скрипт в PowerShell {0}.{1}. Запустите скрипт в соответствующей версии PowerShell.
@@ -8,7 +8,7 @@ PowerShellx86Warning                      = Вы пытаетесь запуст
 UnsupportedHost                           = Скрипт не поддерживает работу через {0}.
 Win10TweakerWarning                       = Ваша ОС, возможно, через бэкдор в Win 10 Tweaker была заражена трояном.
 TweakerWarning                            = Стабильность Windows могла быть нарушена использованием {0}. На всякий случай переустановите Windows.
-bin                                       = В папке bin отсутствуют файлы. Пожалуйста, перекачайте архив.
+Bin                                       = В папке bin отсутствуют файлы. Пожалуйста, перекачайте архив.
 RebootPending                             = Компьютер ожидает перезагрузки.
 UnsupportedRelease                        = Обнаружена новая версия.
 KeyboardArrows                            = Для выбора используйте на клавиатуре стрелки {0} и {1}

@@ -1,7 +1,8 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Skrypt obsługuje tylko 64-bitowe systemy Windows.
 UnsupportedOSBuild                        = Skrypt obsługuje system Windows 10 Enterprise LTSC 2021.
-UpdateWarning                             = Twoja wersja systemu Windows 10: {0}.{1}. Obsługiwane kompilacje: 19044.3803+. Uruchom aktualizację systemu Windows i spróbuj ponownie.
+NonLatinUsernameWarning                   = PowerShell 5.1 nie kompiluje kodu, jeśli nazwa użytkownika zawiera znaki spoza alfabetu łacińskiego (w tym emoji) i jest zapisana małymi literami. Prosimy o używanie PowerShell 7.
+UpdateWarning                             = Twoja wersja systemu Windows 10: {0}.{1}. Obsługiwane kompilacje: 19044.3930+. Uruchom aktualizację systemu Windows i spróbuj ponownie.
 UnsupportedLanguageMode                   = Sesja PowerShell działa w trybie ograniczonego języka.
 LoggedInUserNotAdmin                      = Zalogowany użytkownik nie posiada uprawnień administratora.
 UnsupportedPowerShell                     = Próbujesz uruchomić skrypt przy użyciu PowerShell {0}.{1}. Uruchom skrypt używając odpowiedniej wersji PowerShell.
@@ -9,7 +10,7 @@ PowerShellx86Warning                      = Próbujesz uruchomić skrypt przez P
 UnsupportedHost                           = Skrypt nie może być uruchamiany w {0}.
 Win10TweakerWarning                       = Prawdopodobnie twój system operacyjny został zainfekowany przez backdoora pochodzącego z Win 10 Tweaker.
 TweakerWarning                            = Stabilność systemu Windows mogła zostać naruszona przez użycie {0}. Na wszelki wypadek przeinstaluj system Windows.
-bin                                       = W folderze bin nie ma żadnych plików. Proszę pobrać archiwum ponownie.
+Bin                                       = W folderze bin nie ma żadnych plików. Proszę pobrać archiwum ponownie.
 RebootPending                             = Komputer oczekuje na ponowne uruchomienie.
 UnsupportedRelease                        = Znaleziono nową wersję.
 KeyboardArrows                            = Użyj klawiszy strzałek {0} i {1} na klawiaturze, aby wybrać odpowiedź

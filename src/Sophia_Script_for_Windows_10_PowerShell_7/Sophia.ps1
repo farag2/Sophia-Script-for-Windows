@@ -3,7 +3,7 @@
 	Default preset file for "Sophia Script for Windows 10 (PowerShell 7)"
 
 	Version: v5.18.0
-	Date: 26.12.2023
+	Date: 02.02.2024
 
 	Copyright (c) 2014—2024 farag
 	Copyright (c) 2019—2024 farag & Inestic
@@ -27,7 +27,7 @@
 	.NOTES
 	Supported Windows 10 versions
 	Version: 22H2
-	Builds: 19045.3803+
+	Builds: 19045.3996+
 	Editions: Home/Pro/Enterprise
 	Architecture: x64
 

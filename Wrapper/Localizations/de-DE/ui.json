@@ -18,6 +18,7 @@
   {
     "Id": "Tab",
     "Options": {
+      "tabSearch": "Suchen",
       "tabSystemProtection": "Systemschutz",
       "tabPrivacyTelemetry": "Datenschutz",
       "tabUIPersonalization": "Personalisierung",
@@ -40,7 +41,9 @@
       "btnRefreshConsole": "Konsole aktualisieren",
       "btnRunPowerShell": "PowerShell ausführen",
       "btnOpen": "Offen",
-      "btnSave": "Speichern"
+      "btnSave": "Speichern",
+      "btnSearch": "Suchen",
+      "btnClear": "Klar"
     }
   },
   {
@@ -64,11 +67,19 @@
     "Options": {
       "messageBoxNewWrapperFound": "Eine neue Version von 'Wrapper' wurde entdeckt.\nGitHub-Seite öffnen?",
       "messageBoxNewSophiaFound": "Eine neue Version von 'Sophia Script' wurde entdeckt.\nGitHub-Seite öffnen?",
-      "messageBoxDoesNotExist": "existiert nicht",
+      "messageBoxDoesNotExist": "existiert nicht.",
       "messageBoxPresetNotComp": "Voreinstellung ist nicht kompatibel!",
       "messageBoxFilesMissingClose": "Die erforderlichen Sophia Script Wrapper-Dateien fehlen. Das Programm wird geschlossen.",
       "messageBoxConsoleEmpty": "Die Konsole ist leer.\n Drücken Sie die Schaltfläche Konsole aktualisieren, um ein Skript entsprechend Ihrer Auswahl zu erstellen.",
-      "messageBoxPowerShellVersionNotInstalled": "Die von Ihnen ausgewählte PowerShell-Version ist nicht installiert."
+      "messageBoxPowerShellVersionNotInstalled": "Die von Ihnen ausgewählte PowerShell-Version ist nicht installiert.",
+      "messageBoxMaybeFilesNotUnzippedProperly": "Möglicherweise wurden die Dateien nicht ordnungsgemäß entpackt."
+    }
+  },
+  {
+    "Id": "Other",
+    "Options": {
+      "textBlockSearchInfo": "Geben Sie die Suchzeichenfolge ein, um die Option zu finden. Die Registerkarte wird in der Farbe Rot umrandet, um die Registerkarte zu finden, die die Option(en) enthält, und die Beschriftung der Option wird ebenfalls in Rot umrandet.",
+      "textBlockSearchFound": "Anzahl der gefundenen Optionen:"
     }
   }
 ]

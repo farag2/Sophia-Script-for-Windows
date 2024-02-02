@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = The script supports Windows 11 23H2+.
-UpdateWarning                             = Your Windows 11 build: {0}.{1}. Supported builds: 22631.2861+. Run Windows Update and try again.
+UpdateWarning                             = Your Windows 11 build: {0}.{1}. Supported builds: 22631.3085+. Run Windows Update and try again.
 UnsupportedLanguageMode                   = The PowerShell session in running in a limited language mode.
 LoggedInUserNotAdmin                      = The logged-on user doesn't have admin rights.
 UnsupportedPowerShell                     = You're trying to run script via PowerShell {0}.{1}. Run the script in the appropriate PowerShell version.
@@ -8,7 +8,7 @@ PowerShellx86Warning                      = You're trying to run script via Powe
 UnsupportedHost                           = The script doesn't support running via {0}.
 Win10TweakerWarning                       = Probably your OS was infected via the Win 10 Tweaker backdoor.
 TweakerWarning                            = The Windows stability may have been compromised by using {0}. Just in case, reinstall Windows.
-bin                                       = There are no files in the bin folder. Please, re-download the archive.
+Bin                                       = There are no files in the bin folder. Please, re-download the archive.
 RebootPending                             = The PC is waiting to be restarted.
 UnsupportedRelease                        = A new version found.
 KeyboardArrows                            = Please use the arrow keys {0} and {1} on your keyboard to select your answer

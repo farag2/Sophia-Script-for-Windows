@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = Das Skript unterstützt Windows 11 23H2+.
-UpdateWarning                             = Ihr Windows 11-Build: {0}.{1}. Unterstützter Builds: 22631.2861+. Führen Sie Windows Update aus und versuchen Sie es erneut.
+UpdateWarning                             = Ihr Windows 11-Build: {0}.{1}. Unterstützter Builds: 22631.3085+. Führen Sie Windows Update aus und versuchen Sie es erneut.
 UnsupportedLanguageMode                   = Die PowerShell-Sitzung wird in einem eingeschränkten Sprachmodus ausgeführt.
 LoggedInUserNotAdmin                      = Der angemeldete Benutzer hat keine Administratorrechte.
 UnsupportedPowerShell                     = Sie versuchen ein Skript über PowerShell {0}.{1} auszuführen. Das Skript in der entsprechenden PowerShell-Version ausführen.
@@ -8,7 +8,7 @@ PowerShellx86Warning                      = Sie versuchen ein Skript über Power
 UnsupportedHost                           = Das Skript unterstützt nicht die Ausführung über {0}.
 Win10TweakerWarning                       = Wahrscheinlich wurde Ihr Betriebssystem über die Win 10 Tweaker-Hintertür infiziert.
 TweakerWarning                            = Die Stabilität des Windows-Betriebssystems kann durch die Verwendung des {0} beeinträchtigt worden sein. Installieren Sie Windows vorsichtshalber neu.
-bin                                       = Im Ordner "bin" befinden sich keine Dateien. Bitte das Archiv erneut herunterladen.
+Bin                                       = Im Ordner "bin" befinden sich keine Dateien. Bitte das Archiv erneut herunterladen.
 RebootPending                             = Der PC wartet darauf, neu gestartet zu werden.
 UnsupportedRelease                        = Neue Version gefunden.
 KeyboardArrows                            = Bitte verwenden Sie die Pfeiltasten {0} und {1} auf Ihrer Tastatur, um Ihre Antwort auszuwählen

@@ -1,6 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = Komut dosyası Windows 11 23H2+'yı destekler.
-UpdateWarning                             = Windows 11 yapınız: {0}.{1}. Desteklenen yapılar: 22631.2861+. Windows Update'i çalıştırın ve tekrar deneyin.
+NonLatinUsernameWarning                   = PowerShell 5.1, kullanıcı adı Latin olmayan karakterler içeriyorsa (emoji dahil) ve küçük harfle yazılmışsa kodu derlemez. Lütfen PowerShell 7 kullanın.
+UpdateWarning                             = Windows 11 yapınız: {0}.{1}. Desteklenen yapılar: 22631.3085+. Windows Update'i çalıştırın ve tekrar deneyin.
 UnsupportedLanguageMode                   = Sınırlı bir dil modunda çalışan PowerShell oturumu.
 LoggedInUserNotAdmin                      = Oturum açan kullanıcının yönetici hakları yok.
 UnsupportedPowerShell                     = Komut dosyasını PowerShell {0}.{1} aracılığıyla çalıştırmaya çalışıyorsunuz. Komut dosyasını uygun PowerShell sürümünde çalıştırın.
@@ -8,7 +9,7 @@ PowerShellx86Warning                      = Komut dosyasını PowerShell (x86) �
 UnsupportedHost                           = Komut dosyası, {0} üzerinden çalıştırmayı desteklemiyor.
 Win10TweakerWarning                       = Muhtemelen işletim sisteminize Win 10 Tweaker arka kapısı yoluyla bulaştı.
 TweakerWarning                            = Windows işletim sistemi kararlılığı, {0} betiği kullanılarak tehlikeye atılmış olabilir. Her ihtimale karşı, Windows'u yeniden yükleyin.
-bin                                       = bin klasöründe dosya yok. Lütfen arşivi yeniden indirin.
+Bin                                       = bin klasöründe dosya yok. Lütfen arşivi yeniden indirin.
 RebootPending                             = PC yeniden başlatılmayı bekliyor.
 UnsupportedRelease                        = Yeni sürüm bulundu.
 KeyboardArrows                            = Lütfen cevabınızı seçmek için klavyenizdeki {0} ve {1} ok tuşlarını kullanın

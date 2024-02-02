@@ -18,6 +18,7 @@
   {
     "Id": "Tab",
     "Options": {
+      "tabSearch": "Поиск",
       "tabSystemProtection": "Защита",
       "tabPrivacyTelemetry": "Конфиденциальность",
       "tabUIPersonalization": "Персонализация",
@@ -40,7 +41,9 @@
       "btnRefreshConsole": "Обновить консоль",
       "btnRunPowerShell": "Запустить PowerShell",
       "btnOpen": "Обзор",
-      "btnSave": "Сохранить"
+      "btnSave": "Сохранить",
+      "btnSearch": "Поиск",
+      "btnClear": "Очистить"
     }
   },
   {
@@ -64,11 +67,19 @@
     "Options": {
       "messageBoxNewWrapperFound": "Обнаружена новая версия Wrapper.\nОткрыть страницу GitHub?",
       "messageBoxNewSophiaFound": "Обнаружена новая версия Sophia Script.\nОткрыть страницу GitHub?",
-      "messageBoxDoesNotExist": "не существует",
+      "messageBoxDoesNotExist": "не существует.",
       "messageBoxPresetNotComp": "Пресет не совместим!",
       "messageBoxFilesMissingClose": "Отсутствуют необходимые файлы Sophia Script Wrapper. Программа будет закрыта.",
       "messageBoxConsoleEmpty": "Консоль пуста.\nНажмите кнопку \"Обновить консоль\", чтобы создать скрипт согласно вышему выбору.",
-      "messageBoxPowerShellVersionNotInstalled": "Выбранная вами версия PowerShell не установлена."
+      "messageBoxPowerShellVersionNotInstalled": "Выбранная вами версия PowerShell не установлена.",
+      "messageBoxMaybeFilesNotUnzippedProperly": "Возможно, файлы не разархивированы должным образом."
+    }
+  },
+  {
+    "Id": "Other",
+    "Options": {
+      "textBlockSearchInfo": "Введите запрос в строку поиска, чтобы увидеть найденные результаты. При совпадении категории будут подсвечены красной рамкой. Совпадения по именам функций будут также подсвечены внутри категорий.",
+      "textBlockSearchFound": "Количество найденных вариантов:"
     }
   }
 ]

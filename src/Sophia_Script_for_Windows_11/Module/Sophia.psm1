@@ -3,7 +3,7 @@
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
 	Version: v6.6.0
-	Date: 26.12.2023
+	Date: 02.02.2024
 
 	Copyright (c) 2014—2024 farag
 	Copyright (c) 2019—2024 farag & Inestic
@@ -13,7 +13,7 @@
 	.NOTES
 	Supported Windows 11 versions
 	Version: 23H2+
-	Builds: 22631.2861+
+	Builds: 22631.3085+
 	Editions: Home/Pro/Enterprise
 
 	.LINK GitHub
@@ -85,7 +85,22 @@ public static string GetString(uint strId)
 	}
 	if (-not ("WinAPI.GetStr" -as [type]))
 	{
-		Add-Type @Signature
+		try
+		{
+			Add-Type @Signature
+		}
+		catch [System.ComponentModel.Win32Exception]
+		{
+			Write-Warning -Message $Localization.NonLatinUsernameWarning
+
+			Start-Process -FilePath "https://t.me/sophia_chat"
+			Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+
+			Start-Process -FilePath "https://github.com/PowerShell/PowerShell/releases/latest"
+			Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"
+
+			exit
+		}
 	}
 
 	# Check whether Microsoft Edge as being a system component was removed by harmful tweakers
@@ -145,8 +160,8 @@ public static string GetString(uint strId)
 				{
 					Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Edge")
 
-					"https://t.me/sophia_chat"
-					"https://discord.gg/sSryhaEv79"
+					Start-Process -FilePath "https://t.me/sophia_chat"
+					Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 
 					exit
 				}
@@ -154,8 +169,8 @@ public static string GetString(uint strId)
 				{
 					Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Edge")
 
-					"https://t.me/sophia_chat"
-					"https://discord.gg/sSryhaEv79"
+					Start-Process -FilePath "https://t.me/sophia_chat"
+					Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 
 					exit
 				}
@@ -583,9 +598,7 @@ public static string GetString(uint strId)
 	{
 		{$_ -lt 22631}
 		{
-			$CurrentBuild = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
-			$UBR = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
-			Write-Warning -Message ($Localization.UpdateWarning -f $CurrentBuild.CurrentBuild, $UBR.UBR)
+			Write-Warning -Message $Localization.UnsupportedOSBuild
 
 			Start-Process -FilePath "https://t.me/sophia_chat"
 			Start-Process -FilePath "https://discord.gg/sSryhaEv79"
@@ -607,9 +620,9 @@ public static string GetString(uint strId)
 		}
 		"22631"
 		{
-			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 2861)
+			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 3085)
 			{
-				# Check whether Windows minor build version is 2861 minimum
+				# Check whether Windows minor build version is 3085 minimum
 				# https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information#windows-11-current-versions
 				$CurrentBuild = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
 				$UBR = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
@@ -781,7 +794,7 @@ public static string GetString(uint strId)
 		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 	}
 
-	# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+	# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 	Get-ChildItem -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 
 	# Save all opened folders in order to restore them after File Explorer restart
@@ -893,8 +906,6 @@ public static string GetString(uint strId)
 	# Extract the localized "&Yes" string from shell32.dll
 	$Script:Yes = [WinAPI.GetStr]::GetString(33224).Replace("&", "")
 	$Script:KeyboardArrows = $Localization.KeyboardArrows -f [System.Char]::ConvertFromUtf32(0x2191), [System.Char]::ConvertFromUtf32(0x2193)
-	# Extract the localized "Skip" string from shell32.dll
-	$Script:Skip = [WinAPI.GetStr]::GetString(16956)
 
 	# Display a warning message about whether a user has customized the preset file
 	if ($Warning)
@@ -5031,7 +5042,7 @@ function TempFolder
 				return
 			}
 
-			# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+			# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 			if ((Get-Item -Path $env:TEMP).FullName -eq "$env:SystemDrive\Temp")
 			{
 				return
@@ -5143,7 +5154,7 @@ Unregister-ScheduledTask -TaskName SymbolicLink -Confirm:`$false
 		}
 		"Default"
 		{
-			# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+			# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 			if ((Get-Item -Path $env:TEMP).FullName -eq "$env:LOCALAPPDATA\Temp")
 			{
 				return
@@ -5171,7 +5182,7 @@ Unregister-ScheduledTask -TaskName SymbolicLink -Confirm:`$false
 			}
 
 			# Removing folders
-			# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+			# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 			Remove-Item -Path $((Get-Item -Path $env:TEMP).FullName) -Recurse -Force -ErrorAction Ignore
 
 			if ((Get-ChildItem -Path $env:TEMP -Force -ErrorAction Ignore | Measure-Object).Count -ne 0)
@@ -5206,7 +5217,7 @@ public static bool MarkFileDelete (string sourcefile)
 
 				try
 				{
-					# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 					Remove-Item -Path $((Get-Item -Path $env:TEMP).FullName) -Recurse -Force -ErrorAction Stop
 				}
 				catch
@@ -5215,7 +5226,7 @@ public static bool MarkFileDelete (string sourcefile)
 					Get-ChildItem -Path $env:TEMP -Recurse -Force | ForEach-Object -Process {[WinAPI.DeleteFiles]::MarkFileDelete($_.FullName)}
 				}
 
-				# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+				# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 				$TempFolder = (Get-Item -Path $env:TEMP).FullName
 				$TempFolderCleanupTask = @"
 Remove-Item -Path "$TempFolder" -Recurse -Force
@@ -7270,7 +7281,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Menu @($Browse, $Skip) -Default 2
+				$Choice = Show-Menu -Menu $Browse -Default 1 -AddSkip
 
 				switch ($Choice)
 				{
@@ -7310,7 +7321,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Menu @($Browse, $Skip) -Default 2
+				$Choice = Show-Menu -Menu $Browse -Default 1 -AddSkip
 
 				switch ($Choice)
 				{
@@ -7350,7 +7361,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Menu @($Browse, $Skip) -Default 2
+				$Choice = Show-Menu -Menu $Browse -Default 1 -AddSkip
 
 				switch ($Choice)
 				{
@@ -7390,7 +7401,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Menu @($Browse, $Skip) -Default 2
+				$Choice = Show-Menu -Menu $Browse -Default 1 -AddSkip
 
 				switch ($Choice)
 				{
@@ -7430,7 +7441,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Menu @($Browse, $Skip) -Default 2
+				$Choice = Show-Menu -Menu $Browse -Default 1 -AddSkip
 
 				switch ($Choice)
 				{
@@ -7470,7 +7481,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Menu @($Browse, $Skip) -Default 2
+				$Choice = Show-Menu -Menu $Browse -Default 1 -AddSkip
 
 				switch ($Choice)
 				{
@@ -7508,12 +7519,12 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			# Extract the localized "Desktop" string from shell32.dll
 			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f [WinAPI.GetStr]::GetString(21790), $CurrentUserFolderLocation) -Verbose
+			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f [WinAPI.GetStr]::GetString(21769), $CurrentUserFolderLocation) -Verbose
 			Write-Warning -Message $Localization.FilesWontBeMoved
 
 			do
 			{
-				$Choice = Show-Menu -Menu @($Yes, $Skip) -Default 2
+				$Choice = Show-Menu -Menu $Yes -Default 1 -AddSkip
 
 				switch ($Choice)
 				{
@@ -7542,7 +7553,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Menu @($Yes, $Skip) -Default 2
+				$Choice = Show-Menu -Menu $Yes -Default 1 -AddSkip
 
 				switch ($Choice)
 				{
@@ -7571,7 +7582,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Menu @($Yes, $Skip) -Default 2
+				$Choice = Show-Menu -Menu $Yes -Default 1 -AddSkip
 
 				switch ($Choice)
 				{
@@ -7600,7 +7611,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Menu @($Yes, $Skip) -Default 2
+				$Choice = Show-Menu -Menu $Yes -Default 1 -AddSkip
 
 				switch ($Choice)
 				{
@@ -7629,7 +7640,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Menu @($Yes, $Skip) -Default 2
+				$Choice = Show-Menu -Menu $Yes -Default 1 -AddSkip
 
 				switch ($Choice)
 				{
@@ -7658,7 +7669,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 			do
 			{
-				$Choice = Show-Menu -Menu @($Yes, $Skip) -Default 2
+				$Choice = Show-Menu -Menu $Yes -Default 1 -AddSkip
 
 				switch ($Choice)
 				{
@@ -9665,7 +9676,7 @@ function InstallVCRedist
 			winget install --id=Microsoft.VCRedist.2015+.x86 --exact --force --accept-source-agreements
 			winget install --id=Microsoft.VCRedist.2015+.x64 --exact --force --accept-source-agreements
 
-			# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+			# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 			Get-ChildItem -Path "$env:TEMP\WinGet" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 		}
 		else
@@ -9691,7 +9702,7 @@ function InstallVCRedist
 
 			Start-Process -FilePath "$DownloadsFolder\VC_redist.x64.exe" -ArgumentList "/install /passive /norestart" -Wait
 
-			# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+			# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 			$Paths = @(
 				"$DownloadsFolder\VC_redist.x86.exe",
 				"$DownloadsFolder\VC_redist.x64.exe",
@@ -9753,7 +9764,7 @@ function InstallDotNetRuntimes
 			# .NET Desktop Runtime 7 x64
 			winget install --id=Microsoft.DotNet.DesktopRuntime.7 --architecture x64 --exact --force --accept-source-agreements
 
-			# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+			# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 			Get-ChildItem -Path "$env:TEMP\WinGet" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 		}
 		else
@@ -9790,7 +9801,7 @@ function InstallDotNetRuntimes
 
 			Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
 
-			# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+			# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 			$Paths = @(
 				"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe",
 				"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe",
@@ -9830,7 +9841,7 @@ function InstallDotNetRuntimes
 
 			Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
 
-			# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+			# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 			$Paths = @(
 				"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe",
 				"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe",
@@ -10450,7 +10461,7 @@ FEA494190BF3446DCC8C8AAF62BA01F0BFB18E15503C27558DB70C48EFB0AEA0B600F985C904E9F2
 2EEEF7B09850D29B2F412DEF3D0BD9194CAE8113B3B38085C77C238CB8D15BF6D6AB42C193F4E2F27F8BEDABB2D6ADE9E486B6AFAFD8D5DBE3B7D7305790F96ECDCC2DD016C5B9B200CB72E6CF54D71
 F69A01CDE4E3A0A4C5A03627DECD491F215C1420EB07AB8FD2763FCFF5211EB964C82E69DA208BDFA76306D54642B117DCB9A92927CE2E633338D4EEA63B571349B8DA1D4B5523C4CA10308769E4F46
 1ADD16DD5DFDB0E705187593DEF5CCCF659E48366462CC21D7930E1064234157A7A08E9C90927A37C5CF23D54C755002E4E657BB6E70D9B4BE7C468C19D6969FAE138EBF2C20DD3F5A0BC4C0E97D5BF
-DB8744A21396C44549286117BEAD5AE14FF602E69E75B87784DE5F30BE14106E8D8A081DC8CCCFBF93896E622F755F27E82A596DDCA3469A93ECB9E2E897BF0FCC063426DACDC3B1D81E1EFE6B63932
+DB8744A21396C44549308517BEAD5AE14FF602E69E75B87784DE5F30BE14106E8D8A081DC8CCCFBF93896E622F755F27E82A596DDCA3469A93ECB9E2E897BF0FCC063426DACDC3B1D81E1EFE6B63932
 6CA43526CFAEDF9922EAC3204FEB84AAED781EE5516FA5B4DCAB85DB5FF33CEC454DAA375BDA5EEA7C871C310AEDC5BD6B220B59B901D377E22FFFE95FEDA28CE2CE33CAEB8541EE05E1B5650D776C4
 B2A246DB4613E2CC5D96A44D24AE662D848A7C9E3E922AFF0632B7B40505402956FABC5C3AAB55EEE29085046C127E8776CEFC1690B76EE99371AF9B1D7EF6F79E78325DD3BD8377E9B73B936C6F261
 1D0A1223A4D7C6CF3037922DD0686A701FF86761993F294D26E13A7BB8B1C61ACAF38D50334A88DABB3FA412B4FC79F6FBFD0D0A92301484FF1BD1CF3DC67780E4562E05CCA329CABA7CB2B77D9A707
@@ -14571,7 +14582,7 @@ function OpenWindowsTerminalAdminContext
 			}
 		}
 
-		# Save in UTF-8 with BOM despite JSON must not has the BOM: https://datatracker.ietf.org/doc/html/rfc8259#section-8.1. Unless Terminal profile names which contains non-latin characters will have "?" instead of titles
+		# Save in UTF-8 with BOM despite JSON must not has the BOM: https://datatracker.ietf.org/doc/html/rfc8259#section-8.1. Unless Terminal profile names which contains non-Latin characters will have "?" instead of titles
 		ConvertTo-Json -InputObject $Terminal -Depth 4 | Set-Content -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json" -Encoding UTF8 -Force
 	}
 }
@@ -14879,7 +14890,7 @@ public static void PostMessage()
 		gpupdate /force
 	}
 
-	# PowerShell 5.1 (7.3 too) interprets 8.3 file name literally, if an environment variable contains a non-latin word
+	# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 	Get-ChildItem -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 
 	Stop-Process -Name explorer -Force

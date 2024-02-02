@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = Le script prend en charge Windows 11 23H2+.
-UpdateWarning                             = Votre version de Windows 11 : {0}.{1}. Versions prises en charge: 22631.2861+. Exécutez Windows Update et réessayez.
+UpdateWarning                             = Votre version de Windows 11 : {0}.{1}. Versions prises en charge: 22631.3085+. Exécutez Windows Update et réessayez.
 UnsupportedLanguageMode                   = La session PowerShell s'exécute dans un mode de langue limité.
 LoggedInUserNotAdmin                      = L'utilisateur connecté n'a pas de droits d'administrateur.
 UnsupportedPowerShell                     = Vous essayez d'exécuter le script via PowerShell {0}.{1}. Exécutez le script dans la version appropriée de PowerShell.
@@ -8,7 +8,7 @@ PowerShellx86Warning                      = Vous essayez d'exécuter le script v
 UnsupportedHost                           = Le script ne supporte pas l'exécution via {0}.
 Win10TweakerWarning                       = Votre système d'exploitation a probablement été infecté par la porte dérobée Win 10 Tweaker.
 TweakerWarning                            = La stabilité de l'OS Windows peut avoir été compromise par l'utilisation du {0}. Au cas où, réinstallez Windows.
-bin                                       = Il n'y a pas de fichiers dans le dossier bin. Veuillez retélécharger l'archive.
+Bin                                       = Il n'y a pas de fichiers dans le dossier bin. Veuillez retélécharger l'archive.
 RebootPending                             = Le PC attend d'être redémarré.
 UnsupportedRelease                        = Nouvelle version trouvée.
 KeyboardArrows                            = Veuillez utiliser les touches fléchées {0} et {1} de votre clavier pour sélectionner votre réponse

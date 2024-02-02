@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = 脚本支持Windows 11 23H2+。
-UpdateWarning                             = 您的Windows 11构建: {0}.{1}。支持的构建: 22631.2861+。运行Windows Update并再次尝试。
+UpdateWarning                             = 您的Windows 11构建: {0}.{1}。支持的构建: 22631.3085+。运行Windows Update并再次尝试。
 UnsupportedLanguageMode                   = PowerShell会话在有限的语言模式下运行。
 LoggedInUserNotAdmin                      = 登录的用户没有管理员的权利。
 UnsupportedPowerShell                     = 你想通过PowerShell {0}.{1}运行脚本。在适当的PowerShell版本中运行该脚本。
@@ -8,7 +8,7 @@ PowerShellx86Warning                      = 您正尝试在 PowerShell (x86) 中
 UnsupportedHost                           = 该脚本不支持通过{0}运行。
 Win10TweakerWarning                       = 可能你的操作系统是通过"Win 10 Tweaker"后门感染的。
 TweakerWarning                            = Windows的稳定性可能已被{0}所破坏。预防性地，重新安装整个操作系统。
-bin                                       = bin文件夹中没有文件。请重新下载该档案。
+Bin                                       = bin文件夹中没有文件。请重新下载该档案。
 RebootPending                             = 计算机正在等待重新启动。
 UnsupportedRelease                        = 找到新版本。
 KeyboardArrows                            = 请使用键盘上的方向键{0}和{1}选择您的答案

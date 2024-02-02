@@ -3,7 +3,7 @@
 	Default preset file for "Sophia Script for Windows 11"
 
 	Version: v6.6.0
-	Date: 26.12.2023
+	Date: 02.02.2024
 
 	Copyright (c) 2014—2024 farag
 	Copyright (c) 2019—2024 farag & Inestic
@@ -27,7 +27,7 @@
 	.NOTES
 	Supported Windows 11 versions
 	Version: 23H2+
-	Builds: 22631.2861+
+	Builds: 22631.3085+
 	Editions: Home/Pro/Enterprise
 
 	.NOTES

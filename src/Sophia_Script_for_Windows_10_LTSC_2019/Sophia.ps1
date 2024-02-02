@@ -3,7 +3,7 @@
 	Default preset file for "Sophia Script for Windows 10 LTSC 2019"
 
 	Version: v5.8.0
-	Date: 26.12.2023
+	Date: 02.02.2024
 
 	Copyright (c) 2014—2024 farag
 	Copyright (c) 2019—2024 farag & Inestic
@@ -27,7 +27,7 @@
 	.NOTES
 	Supported Windows 10 version
 	Version: 1809
-	Build: 17763.5206+
+	Build: 17763.5329+
 	Edition: Enterprise LTSC 2019
 	Architecture: x64
 
