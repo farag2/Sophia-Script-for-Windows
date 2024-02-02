@@ -1,5 +1,5 @@
 # Sign all scripts in folder recursively by a self-signed certificate
-$CertName             = "Sophia Project"
+$CertName             = "Team Sophia"
 $FolderPath           = "src"
 $ExtensionsToSearchIn = @(".ps1", ".psm1", ".psd1")
 # Get-ChildItem -Path Cert:\LocalMachine\My, Cert:\CurrentUser\My | Where-Object -FilterScript {$_.Subject -eq "CN=$CertName"} | Remove-Item
