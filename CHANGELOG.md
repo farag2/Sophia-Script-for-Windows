@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.18.0 | 6.6.0 — 02.02.2024
+
+* Improved initial checks;
+* Extended harmful tweakers list checks;
+* Improved HEVC package downloading function;
+* Fixed typos;
+* Minor changes.
+
+### Wrapper 2.6.15
+
+* Added search function
+
+![изображение](https://github.com/farag2/Sophia-Script-for-Windows/assets/10544660/25a74d12-75ff-42f4-bbc4-b6157563ed41)
+
+![изображение](https://github.com/farag2/Sophia-Script-for-Windows/assets/10544660/19a94e40-9656-454a-9acf-44f3d44931ed)
+
 ## 5.17.9 | 6.5.9 — 26.12.2023
 
 * Fixed bug in `HEVC` function that prevented package downloading;
