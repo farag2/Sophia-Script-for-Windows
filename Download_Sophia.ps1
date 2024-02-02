@@ -208,7 +208,7 @@ if (-not ("WinAPI.ForegroundWindow" -as [type]))
 	{
 		Add-Type @Signature
 	}
-	catch [System.ComponentModel.Win32Exception]
+	catch [System.Management.Automation.ParameterBindingValidationException]
 	{
 		Write-Warning -Message "PowerShell 5.1 does not compile code if the username contains non-Latin characters (including emoji) and is written in lowercase."
 
