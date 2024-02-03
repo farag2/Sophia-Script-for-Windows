@@ -206,9 +206,9 @@ if (-not ("WinAPI.ForegroundWindow" -as [type]))
 {
 	try
 	{
-		Add-Type @Signature
+		Add-Type @SetForegroundWindow
 	}
-	catch [System.Management.Automation.ParameterBindingException]
+	catch [System.ComponentModel.Win32Exception]
 	{
 		Write-Warning -Message "PowerShell 5.1 does not compile code if the username contains non-Latin characters (including emoji) and is written in lowercase. Ignore this error message. Open background folder manually."
 	}
