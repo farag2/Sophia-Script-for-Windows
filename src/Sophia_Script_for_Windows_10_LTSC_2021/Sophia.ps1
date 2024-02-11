@@ -891,7 +891,7 @@ InstallVCRedist
 
 	https://dotnet.microsoft.com/en-us/download/dotnet
 #>
-InstallDotNetRuntimes
+InstallDotNetRuntimes -Runtimes NET6x86, NET6x64, NET7x86, NET7x64, NET8x86, NET8x64
 
 # Enable proxying only blocked sites from the unified registry of Roskomnadzor. The function is applicable for Russia only
 # Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора. Функция применима только для России

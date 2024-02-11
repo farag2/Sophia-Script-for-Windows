@@ -79,6 +79,30 @@ $Parameters = @{
 		{
 			$ParameterSets = (Get-Command -Name $Command).Parametersets.Parameters | Where-Object -FilterScript {$null -eq $_.Attributes.AliasNames}
 
+			# If a module command is InstallDotNetRuntimes
+			if ($Command -eq "InstallDotNetRuntimes")
+			{
+				# Get all command arguments, excluding defaults
+				foreach ($ParameterSet in $ParameterSets.Name)
+				{
+					# If an argument is Runtimes
+					if ($ParameterSet -eq "Runtimes")
+					{
+						$ValidValues = ((Get-Command -Name InstallDotNetRuntimes).Parametersets.Parameters | Where-Object -FilterScript {$null -eq $_.Attributes.AliasNames}).Attributes.ValidValues
+						foreach ($ValidValue in $ValidValues)
+						{
+							# The "InstallDotNetRuntimes -Runtimes <function>" construction
+							"InstallDotNetRuntimes" + " " + "-" + $ParameterSet + " " + $ValidValue | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
+						}
+
+						# The "InstallDotNetRuntimes -Runtimes <functions>" construction
+						"InstallDotNetRuntimes" + " " + "-" + $ParameterSet + " " + ($ValidValues -join ", ") | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
+					}
+
+					continue
+				}
+			}
+
 			# If a module command is Set-Policy
 			if ($Command -eq "Set-Policy")
 			{

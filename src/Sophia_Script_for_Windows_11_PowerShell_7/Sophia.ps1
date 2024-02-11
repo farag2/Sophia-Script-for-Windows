@@ -413,6 +413,14 @@ TaskbarSearch -Hide
 # Показать поле поиска на панели задач (значение по умолчанию)
 # TaskbarSearch -SearchBox
 
+# Hide search highlights
+# Скрыть главное в поиске
+SearchHighlights -Hide
+
+# Show search highlights (default value)
+# Показать главное в поиске (значение по умолчанию)
+# SearchHighlights -Show
+
 # Hide Copilot button on the taskbar
 # Скрыть кнопку Copilot с панели задач
 CopilotButton -Hide
@@ -934,11 +942,11 @@ ActiveHours -Automatically
 # Вручную изменять период активности для этого устройства на основе действий (значение по умолчанию)
 # ActiveHours -Manually
 
-# Do not get Windows updates as soon as they're available for your device (default value)
+# Do not get the latest updates as soon as they're available (default value)
 # Не получать последние обновления, как только они будут доступны (значение по умолчанию)
 WindowsLatestUpdate -Disable
 
-# Get Windows updates as soon as they're available for your device
+# Get the latest updates as soon as they're available
 # Получайте последние обновления, как только они будут доступны
 # WindowsLatestUpdate -Enable
 
@@ -987,7 +995,7 @@ InstallVCRedist
 
 	https://dotnet.microsoft.com/en-us/download/dotnet
 #>
-InstallDotNetRuntimes
+InstallDotNetRuntimes -Runtimes NET6x86, NET6x64, NET7x86, NET7x64, NET8x86, NET8x64
 
 # Enable proxying only blocked sites from the unified registry of Roskomnadzor. The function is applicable for Russia only
 # Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора. Функция применима только для России

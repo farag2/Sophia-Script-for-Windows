@@ -491,6 +491,20 @@
   },
   {
     "Region": "UI & Personalization",
+    "Function": "SearchHighlights",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Suchhighlights ausblenden."
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Suchhighlights anzeigen (Standardeinstellung)."
+      }
+    }
+  },
+  {
+    "Region": "UI & Personalization",
     "Function": "CopilotButton",
     "Arg": {
       "Zero": {
@@ -1282,11 +1296,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Holen Sie sich keine Windows-Updates, sobald sie für Ihr Gerät verfügbar sind (Standardeinstellung)."
+        "ToolTip": "Sie erhalten die neuesten Updates nicht, sobald sie verfügbar sind (Standardeinstellung)."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Holen Sie sich Windows-Updates, sobald sie für Ihr Gerät verfügbar sind."
+        "ToolTip": "Erhalten Sie die neuesten Updates, sobald sie verfügbar sind."
       }
     }
   },

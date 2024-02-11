@@ -491,6 +491,20 @@
   },
   {
     "Region": "UI & Personalization",
+    "Function": "SearchHighlights",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Скрыть главное в поиске."
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Показать главное в поиске (значение по умолчанию)."
+      }
+    }
+  },
+  {
+    "Region": "UI & Personalization",
     "Function": "CopilotButton",
     "Arg": {
       "Zero": {
