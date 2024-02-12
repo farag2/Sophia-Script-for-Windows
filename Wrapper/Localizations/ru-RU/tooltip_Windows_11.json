@@ -1372,11 +1372,32 @@
   },
   {
     "Region": "System",
-    "Function": "InstallDotNetRuntimes",
+    "Function": "InstallDotNetRuntimes -Runtimes",
+	"ToolTip": "Установить последнюю версию .NET Desktop Runtime 6, 7, 8 (x86/x64).",
     "Arg": {
       "Zero": {
-        "Tag": "",
-        "ToolTip": "Установить последнюю версию .NET Desktop Runtime 6, 7 (x86/x64)."
+        "Tag": "NET6x86",
+        "ToolTip": ".NET Desktop Runtime 6 x86."
+      },
+      "One": {
+        "Tag": "NET6x64",
+        "ToolTip": ".NET Desktop Runtime 6 x64."
+      },
+      "Two": {
+        "Tag": "NET7x86",
+        "ToolTip": ".NET Desktop Runtime 7 x86."
+      },
+      "Three": {
+        "Tag": "NET7x64",
+        "ToolTip": ".NET Desktop Runtime 7 x64."
+      },
+      "Four": {
+        "Tag": "NET8x86",
+        "ToolTip": ".NET Desktop Runtime 8 x86."
+      },
+      "Five": {
+        "Tag": "NET8x64",
+        "ToolTip": ".NET Desktop Runtime 8 x64."
       }
     }
   },

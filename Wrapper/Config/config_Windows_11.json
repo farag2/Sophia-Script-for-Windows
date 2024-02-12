@@ -1555,13 +1555,28 @@
     "Region": "System",
     "Control": "chk",
     "Required": "false",
-    "Function": "InstallDotNetRuntimes",
+    "Function": "InstallDotNetRuntimes -Runtimes",
     "Arg": {
       "Zero": {
-        "Tag": ""
+        "Tag": "NET6x86"
+      },
+      "One": {
+        "Tag": "NET6x64"
+      },
+      "Two": {
+        "Tag": "NET7x86"
+      },
+      "Three": {
+        "Tag": "NET7x64"
+      },
+      "Four": {
+        "Tag": "NET8x86"
+      },
+      "Five": {
+        "Tag": "NET8x64"
       }
     },
-    "Preset": "",
+    "Preset": "012345",
     "WindowsDefault": ""
   },
   {

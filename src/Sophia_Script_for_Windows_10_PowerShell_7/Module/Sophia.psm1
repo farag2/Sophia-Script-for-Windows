@@ -11625,8 +11625,8 @@ function UninstallUWPApps
 	#region Variables
 	# The following UWP apps will have their checkboxes unchecked
 	$UncheckedAppxPackages = @(
-		# Sticky Notes
-		"Microsoft.MicrosoftStickyNotes",
+		# Windows Media Player
+		"Microsoft.ZuneMusic",
 
 		# Screen Sketch
 		"Microsoft.ScreenSketch",
