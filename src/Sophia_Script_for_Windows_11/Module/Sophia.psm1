@@ -11009,11 +11009,20 @@ function UninstallUWPApps
 		"AppUp.IntelGraphicsControlPanel",
 		"AppUp.IntelGraphicsExperience",
 
+		# Microsoft Application Compatibility Enhancements
+		"Microsoft.ApplicationCompatibilityEnhancements",
+
+		# AVC Encoder Video Extension
+		"Microsoft.AVCEncoderVideoExtension", 
+
 		# Microsoft Desktop App Installer
 		"Microsoft.DesktopAppInstaller",
 
 		# Store Experience Host
 		"Microsoft.StorePurchaseApp",
+
+		# Cross Device Experience Host
+		"MicrosoftWindows.CrossDevice",
 
 		# Notepad
 		"Microsoft.WindowsNotepad",
