@@ -881,6 +881,7 @@ public static string GetIndirectString(string indirectString)
 	Unregister-ScheduledTask -TaskName SophiaTempScheduledTask -Confirm:$false -ErrorAction Ignore
 
 	# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+	# https://github.com/PowerShell/PowerShell/issues/21070
 	Get-ChildItem -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 
 	# Save all opened folders in order to restore them after File Explorer restart
@@ -5391,10 +5392,12 @@ public static bool MarkFileDelete (string sourcefile)
 			# Getting the OneDrive folder path and replacing quotes if exist
 			$OneDriveFolder = (Split-Path -Path (Split-Path -Path $OneDriveSetup[0] -Parent)) -replace '"', ""
 
-			# Terminate the File Explorer process
+			# Do not restart the File Explorer process automatically if it stops in order to unload libraries
 			New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoRestartShell -PropertyType DWord -Value 0 -Force
-			Stop-Process -Name explorer -Force
+			# Kill all explorer instances but only one in case enabled to launch folder windows in a separate process
+			Get-Process -Name explorer | Stop-Process -Force
 			Start-Sleep -Seconds 3
+			# Restart the File Explorer process automatically if it stops in order to unload libraries
 			New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoRestartShell -PropertyType DWord -Value 1 -Force
 
 			# Attempt to unregister FileSyncShell64.dll and remove
@@ -5416,10 +5419,9 @@ public static bool MarkFileDelete (string sourcefile)
 				}
 			}
 
-			Start-Sleep -Seconds 1
-
-			# Start the File Explorer process
+			# We need to wait for a few seconds to let explore launch unless it will fail to do so
 			Start-Process -FilePath explorer
+			Start-Sleep -Seconds 3
 
 			$Path = @(
 				$OneDriveFolder,
@@ -5813,6 +5815,7 @@ function TempFolder
 			}
 
 			# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+			# https://github.com/PowerShell/PowerShell/issues/21070
 			if ((Get-Item -Path $env:TEMP).FullName -eq "$env:SystemDrive\Temp")
 			{
 				Write-Information -MessageData "" -InformationAction Continue
@@ -5928,6 +5931,7 @@ Unregister-ScheduledTask -TaskName SymbolicLink -Confirm:`$false
 		"Default"
 		{
 			# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+			# https://github.com/PowerShell/PowerShell/issues/21070
 			if ((Get-Item -Path $env:TEMP).FullName -eq "$env:LOCALAPPDATA\Temp")
 			{
 				Write-Information -MessageData "" -InformationAction Continue
@@ -5959,6 +5963,7 @@ Unregister-ScheduledTask -TaskName SymbolicLink -Confirm:`$false
 
 			# Removing folders
 			# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+			# https://github.com/PowerShell/PowerShell/issues/21070
 			Remove-Item -Path $((Get-Item -Path $env:TEMP).FullName) -Recurse -Force -ErrorAction Ignore
 
 			if ((Get-ChildItem -Path $env:TEMP -Force -ErrorAction Ignore | Measure-Object).Count -ne 0)
@@ -5994,6 +5999,7 @@ public static bool MarkFileDelete (string sourcefile)
 				try
 				{
 					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+					# https://github.com/PowerShell/PowerShell/issues/21070
 					Remove-Item -Path $((Get-Item -Path $env:TEMP).FullName) -Recurse -Force -ErrorAction Stop
 				}
 				catch
@@ -6003,6 +6009,7 @@ public static bool MarkFileDelete (string sourcefile)
 				}
 
 				# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+				# https://github.com/PowerShell/PowerShell/issues/21070
 				$TempFolder = (Get-Item -Path $env:TEMP).FullName
 				$TempFolderCleanupTask = @"
 Remove-Item -Path "$TempFolder" -Recurse -Force
@@ -10445,6 +10452,7 @@ function InstallVCRedist
 			winget install --id=Microsoft.VCRedist.2015+.x64 --exact --force --accept-source-agreements
 
 			# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+			# https://github.com/PowerShell/PowerShell/issues/21070
 			Get-ChildItem -Path "$env:TEMP\WinGet" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 		}
 		else
@@ -10471,6 +10479,7 @@ function InstallVCRedist
 			Start-Process -FilePath "$DownloadsFolder\VC_redist.x64.exe" -ArgumentList "/install /passive /norestart" -Wait
 
 			# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+			# https://github.com/PowerShell/PowerShell/issues/21070
 			$Paths = @(
 				"$DownloadsFolder\VC_redist.x86.exe",
 				"$DownloadsFolder\VC_redist.x64.exe",
@@ -10509,7 +10518,7 @@ function InstallDotNetRuntimes
 	(
 		[Parameter(
 			Mandatory = $false,
-			ParameterSetName = "Channels"
+			ParameterSetName = "Runtimes"
 		)]
 		[ValidateSet("NET6x86", "NET6x64", "NET7x86", "NET7x64", "NET8x86", "NET8x64")]
 		[string[]]
@@ -10554,6 +10563,7 @@ function InstallDotNetRuntimes
 					winget install --id=Microsoft.DotNet.DesktopRuntime.6 --architecture x86 --exact --force --accept-source-agreements
 
 					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+					# https://github.com/PowerShell/PowerShell/issues/21070
 					Get-ChildItem -Path "$env:TEMP\WinGet" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 				}
 				else
@@ -10580,6 +10590,7 @@ function InstallDotNetRuntimes
 					Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe" -ArgumentList "/install /passive /norestart" -Wait
 
 					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+					# https://github.com/PowerShell/PowerShell/issues/21070
 					$Paths = @(
 						"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe",
 						"$env:TEMP\Microsoft_.NET_Runtime*.log"
@@ -10596,6 +10607,7 @@ function InstallDotNetRuntimes
 					winget install --id=Microsoft.DotNet.DesktopRuntime.6 --architecture x64 --exact --force --accept-source-agreements
 
 					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+					# https://github.com/PowerShell/PowerShell/issues/21070
 					Get-ChildItem -Path "$env:TEMP\WinGet" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 				}
 				else
@@ -10622,6 +10634,7 @@ function InstallDotNetRuntimes
 					Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
 
 					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+					# https://github.com/PowerShell/PowerShell/issues/21070
 					$Paths = @(
 						"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe",
 						"$env:TEMP\Microsoft_.NET_Runtime*.log"
@@ -10665,6 +10678,7 @@ function InstallDotNetRuntimes
 
 
 					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+					# https://github.com/PowerShell/PowerShell/issues/21070
 					$Paths = @(
 						"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe",
 						"$env:TEMP\Microsoft_.NET_Runtime*.log"
@@ -10681,6 +10695,7 @@ function InstallDotNetRuntimes
 					winget install --id=Microsoft.DotNet.DesktopRuntime.7 --architecture x64 --exact --force --accept-source-agreements
 
 					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+					# https://github.com/PowerShell/PowerShell/issues/21070
 					Get-ChildItem -Path "$env:TEMP\WinGet" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 				}
 				else
@@ -10707,6 +10722,7 @@ function InstallDotNetRuntimes
 					Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
 
 					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+					# https://github.com/PowerShell/PowerShell/issues/21070
 					$Paths = @(
 						"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe",
 						"$env:TEMP\Microsoft_.NET_Runtime*.log"
@@ -10724,6 +10740,7 @@ function InstallDotNetRuntimes
 					winget install --id=Microsoft.DotNet.DesktopRuntime.8 --architecture x86 --exact --force --accept-source-agreements
 
 					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+					# https://github.com/PowerShell/PowerShell/issues/21070
 					Get-ChildItem -Path "$env:TEMP\WinGet" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 				}
 				else
@@ -10750,6 +10767,7 @@ function InstallDotNetRuntimes
 					Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe" -ArgumentList "/install /passive /norestart" -Wait
 
 					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+					# https://github.com/PowerShell/PowerShell/issues/21070
 					$Paths = @(
 						"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe",
 						"$env:TEMP\Microsoft_.NET_Runtime*.log"
@@ -10766,6 +10784,7 @@ function InstallDotNetRuntimes
 					winget install --id=Microsoft.DotNet.DesktopRuntime.8 --architecture x64 --exact --force --accept-source-agreements
 
 					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+					# https://github.com/PowerShell/PowerShell/issues/21070
 					Get-ChildItem -Path "$env:TEMP\WinGet" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 				}
 				else
@@ -10792,6 +10811,7 @@ function InstallDotNetRuntimes
 					Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
 
 					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+					# https://github.com/PowerShell/PowerShell/issues/21070
 					$Paths = @(
 						"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe",
 						"$env:TEMP\Microsoft_.NET_Runtime*.log"
@@ -16100,9 +16120,11 @@ public static void PostMessage()
 	}
 
 	# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+	# https://github.com/PowerShell/PowerShell/issues/21070
 	Get-ChildItem -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 
-	Stop-Process -Name explorer -Force
+	# Kill all explorer instances but only one in case enabled to launch folder windows in a separate process
+	Get-Process -Name explorer | Stop-Process -Force
 	Start-Sleep -Seconds 3
 
 	# Restoring closed folders
