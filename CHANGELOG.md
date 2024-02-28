@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Improved initial checks;
 * Extended harmful tweakers list checks;
 * Improved HEVC package downloading function;
+* Added `RegistryBackup` function to back up the system registry to %SystemRoot%\System32\config\RegBack folder when PC restarts and create a RegIdleBackup in the Task Scheduler task to manage subsequent backups;
 * Fixed typos;
 * Minor changes.
 
