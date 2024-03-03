@@ -28,6 +28,7 @@ WindowsFeaturesTitle                      = Windows features
 OptionalFeaturesTitle                     = Optional features
 EnableHardwareVT                          = Enable Virtualization in UEFI.
 UserShellFolderNotEmpty                   = Some files left in the "{0}" folder. Move them manually to a new location.
+UserFolderLocationMove                    = You shouldn't change user folder location to C drive root.
 RetrievingDrivesList                      = Retrieving drives list...
 DriveSelect                               = Select the drive within the root of which the "{0}" folder will be created.
 CurrentUserFolderLocation                 = The current "{0}" folder location: "{1}".

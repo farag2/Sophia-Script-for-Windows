@@ -26,6 +26,7 @@ WindowsFeaturesTitle                      = Windows-Features
 OptionalFeaturesTitle                     = Optionale Features
 EnableHardwareVT                          = Virtualisierung in UEFI aktivieren.
 UserShellFolderNotEmpty                   = Im Ordner "{0}" befinden sich noch Dateien \nVerschieben Sie sie manuell an einen neuen Ort.
+UserFolderLocationMove                    = Sie sollten den Speicherort des Benutzerordners nicht in das Stammverzeichnis des Laufwerks C ändern.
 RetrievingDrivesList                      = Laufwerksliste abrufen...
 DriveSelect                               = Wählen Sie das Laufwerk aus, in dessen Stammverzeichnis der Ordner "{0}" erstellt werden soll.
 CurrentUserFolderLocation                 = Der aktuelle Speicherort des Ordners "{0}" lautet: "{1}".

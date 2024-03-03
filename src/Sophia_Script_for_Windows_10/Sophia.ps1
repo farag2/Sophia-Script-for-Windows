@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10"
 
-	Version: v5.18.0
-	Date: 02.02.2024
+	Version: v5.18.1
+	Date: 03.03.2024
 
 	Copyright (c) 2014—2024 farag
 	Copyright (c) 2019—2024 farag & Inestic
@@ -70,7 +70,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.18.0 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag & Inestic, 2014$([System.Char]0x2013)2024"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.18.1 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag & Inestic, 2014$([System.Char]0x2013)2024"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-LocalizedData -BindingVariable Global:Localization -BaseDirectory $PSScriptRoot\Localizations -FileName Sophia
@@ -1007,8 +1007,8 @@ UninstallPCHealthCheck
 InstallVCRedist
 
 <#
-	Install the latest .NET Desktop Runtime 6, 7 (x86/x64)
-	Установить последнюю версию .NET Desktop Runtime 6, 7 (x86/x64)
+	Install the latest .NET Desktop Runtime 6, 7, 8 (x86/x64)
+	Установить последнюю версию .NET Desktop Runtime 6, 7, 8 (x86/x64)
 
 	https://dotnet.microsoft.com/en-us/download/dotnet
 #>

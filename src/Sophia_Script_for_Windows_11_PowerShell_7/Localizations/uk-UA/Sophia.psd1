@@ -26,6 +26,7 @@ WindowsFeaturesTitle                      = Компоненти Windows
 OptionalFeaturesTitle                     = Додаткові компоненти
 EnableHardwareVT                          = Увімкніть віртуалізацію в UEFI.
 UserShellFolderNotEmpty                   = У папці "{0}" залишилися файли. Перемістіть їх вручну в нове розташування.
+UserFolderLocationMove                    = Не слід переміщати користувацькі папки в корінь диска C.
 RetrievingDrivesList                      = Отримання списку дисків...
 DriveSelect                               = Виберіть диск, в корні якого буде створена папка для "{0}".
 CurrentUserFolderLocation                 = Поточне розташування папки "{0}": "{1}".

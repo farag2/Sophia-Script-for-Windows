@@ -27,6 +27,7 @@ WindowsFeaturesTitle                      = Funzionalità di Windows
 OptionalFeaturesTitle                     = Caratteristiche opzionali
 EnableHardwareVT                          = Abilita virtualizzazione in UEFI.
 UserShellFolderNotEmpty                   = Alcuni file rimasti nella cartella "{0}". Spostali manualmente in una nuova posizione.
+UserFolderLocationMove                    = Non si dovrebbe modificare la posizione della cartella utente nella radice dell'unità C.
 RetrievingDrivesList                      = Recupero lista unità...
 DriveSelect                               = Selezionare l'unità all'interno della radice del quale verrà creato la cartella "{0}" .
 CurrentUserFolderLocation                 = La posizione attuale della cartella "{0}": "{1}".

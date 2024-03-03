@@ -26,6 +26,7 @@ WindowsFeaturesTitle                      = Características do Windows
 OptionalFeaturesTitle                     = Opsiyonel özellikler
 EnableHardwareVT                          = UEFI'dan sanallaştırmayı aktifleştirin.
 UserShellFolderNotEmpty                   = "{0}" klasöründe bazı dosyalar kaldı. \nKendiniz yeni konuma taşıyın.
+UserFolderLocationMove                    = Kullanıcı klasörü konumunu C sürücüsü kökü olarak değiştirmemelisiniz.
 RetrievingDrivesList                      = Sürücü listesi alınıyor...
 DriveSelect                               = "{0}" klasörünün oluşturulacağı kök içindeki sürücüyü seçin.
 CurrentUserFolderLocation                 = Geçerli "{0}" klasör konumu: "{1}".

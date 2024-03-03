@@ -24,6 +24,7 @@ WindowsFeaturesTitle                      = Recursos do Windows
 OptionalFeaturesTitle                     = Recursos opcionais
 EnableHardwareVT                          = Habilitar virtualização em UEFI.
 UserShellFolderNotEmpty                   = Alguns arquivos deixados na pasta "{0}". Movê-los manualmente para um novo local.
+UserFolderLocationMove                    = Você não deve alterar o local da pasta do usuário para a raiz da unidade C.
 RetrievingDrivesList                      = Recuperando lista de unidades...
 DriveSelect                               = Selecione a unidade dentro da raiz da qual a pasta "{0}" será criada.
 CurrentUserFolderLocation                 = A localização actual da pasta "{0}": "{1}".

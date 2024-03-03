@@ -24,6 +24,7 @@ WindowsFeaturesTitle                      = Windows功能
 OptionalFeaturesTitle                     = 可选功能
 EnableHardwareVT                          = UEFI中开启虚拟化。
 UserShellFolderNotEmpty                   = 一些文件留在了"{0}"文件夹。请手动将它们移到一个新位置。
+UserFolderLocationMove                    = 不应将用户文件夹位置更改为 C 盘根目录。
 RetrievingDrivesList                      = 取得驱动器列表.....
 DriveSelect                               = 选择将在其根目录中创建"{0}"文件夹的驱动器。
 CurrentUserFolderLocation                 = 当前"{0}"文件夹的位置:"{1}"。

@@ -26,6 +26,7 @@ WindowsFeaturesTitle                      = Fonctionnalités
 OptionalFeaturesTitle                     = Fonctionnalités optionnelles
 EnableHardwareVT                          = Activer la virtualisation dans UEFI.
 UserShellFolderNotEmpty                   = Certains fichiers laissés dans le dossier "{0}". Déplacer les manuellement vers un nouvel emplacement.
+UserFolderLocationMove                    = Vous ne devez pas changer l'emplacement du dossier de l'utilisateur pour la racine du lecteur C.
 RetrievingDrivesList                      = Récupération de la liste des lecteurs...
 DriveSelect                               = Sélectionnez le disque à la racine dans lequel le dossier "{0}" sera créé.
 CurrentUserFolderLocation                 = L'emplacement actuel du dossier "{0}": "{1}".

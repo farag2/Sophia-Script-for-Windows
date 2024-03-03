@@ -26,6 +26,7 @@ WindowsFeaturesTitle                      = Funkcje Windows
 OptionalFeaturesTitle                     = Funkcje opcjonalne
 EnableHardwareVT                          = Włącz wirtualizację w UEFI.
 UserShellFolderNotEmpty                   = Niektóre pliki pozostały w folderze "{0}". Przenieś je ręcznie w nowe miejsce.
+UserFolderLocationMove                    = Nie należy zmieniać lokalizacji folderu użytkownika na katalog główny dysku C.
 RetrievingDrivesList                      = Pobieranie listy dysków...
 DriveSelect                               = Wybierz dysk w katalogu głównym, w którym zostanie utworzony folder "{0}".
 CurrentUserFolderLocation                 = Lokalizacja folderu "{0}": "{1}".

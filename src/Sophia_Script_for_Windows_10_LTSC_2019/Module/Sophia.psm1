@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.8.0
-	Date: 02.02.2024
+	Version: v5.8.1
+	Date: 03.03.2024
 
 	Copyright (c) 2014—2024 farag
 	Copyright (c) 2019—2024 farag & Inestic
@@ -129,6 +129,44 @@ public static string GetIndirectString(string indirectString)
 
 			Start-Process -FilePath "https://github.com/PowerShell/PowerShell/releases/latest"
 			Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"
+
+			Start-Process -FilePath "https://github.com/PowerShell/PowerShell/issues/21070"
+
+			exit
+		}
+	}
+
+	$Signature = @{
+		Namespace        = "WinAPI"
+		Name             = "ForegroundWindow"
+		Language         = "CSharp"
+		MemberDefinition = @"
+[DllImport("user32.dll")]
+public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
+
+[DllImport("user32.dll")]
+[return: MarshalAs(UnmanagedType.Bool)]
+public static extern bool SetForegroundWindow(IntPtr hWnd);
+"@
+	}
+
+	if (-not ("WinAPI.ForegroundWindow" -as [type]))
+	{
+		try
+		{
+			Add-Type @Signature
+		}
+		catch [System.ComponentModel.Win32Exception]
+		{
+			Write-Warning -Message $Localization.NonLatinUsernameWarning
+
+			Start-Process -FilePath "https://t.me/sophia_chat"
+			Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+
+			Start-Process -FilePath "https://github.com/PowerShell/PowerShell/releases/latest"
+			Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"
+
+			Start-Process -FilePath "https://github.com/PowerShell/PowerShell/issues/21070"
 
 			exit
 		}
@@ -1608,26 +1646,7 @@ function ScheduledTasks
 
 	Add-Type -AssemblyName System.Windows.Forms
 
-	$Signature = @{
-		Namespace        = "WinAPI"
-		Name             = "ForegroundWindow"
-		Language         = "CSharp"
-		MemberDefinition = @"
-[DllImport("user32.dll")]
-public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
-
-[DllImport("user32.dll")]
-[return: MarshalAs(UnmanagedType.Bool)]
-public static extern bool SetForegroundWindow(IntPtr hWnd);
-"@
-	}
-
-	if (-not ("WinAPI.ForegroundWindow" -as [type]))
-	{
-		Add-Type @Signature
-	}
-
-	Get-Process | Where-Object -FilterScript {($_.ProcessName -eq "powershell") -and ($_.MainWindowTitle -match "Sophia Script for Windows 10 LTSC")} | ForEach-Object -Process {
+	Get-Process | Where-Object -FilterScript {($_.ProcessName -eq "powershell") -and ($_.MainWindowTitle -match "Sophia Script for Windows 10 LTSC 2019")} | ForEach-Object -Process {
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
@@ -5272,26 +5291,7 @@ function WindowsFeatures
 
 	Add-Type -AssemblyName System.Windows.Forms
 
-	$Signature = @{
-		Namespace        = "WinAPI"
-		Name             = "ForegroundWindow"
-		Language         = "CSharp"
-		MemberDefinition = @"
-[DllImport("user32.dll")]
-public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
-
-[DllImport("user32.dll")]
-[return: MarshalAs(UnmanagedType.Bool)]
-public static extern bool SetForegroundWindow(IntPtr hWnd);
-"@
-	}
-
-	if (-not ("WinAPI.ForegroundWindow" -as [type]))
-	{
-		Add-Type @Signature
-	}
-
-	Get-Process | Where-Object -FilterScript {($_.ProcessName -eq "powershell") -and ($_.MainWindowTitle -match "Sophia Script for Windows 10 LTSC")} | ForEach-Object -Process {
+	Get-Process | Where-Object -FilterScript {($_.ProcessName -eq "powershell") -and ($_.MainWindowTitle -match "Sophia Script for Windows 10 LTSC 2019")} | ForEach-Object -Process {
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
@@ -5650,26 +5650,7 @@ function WindowsCapabilities
 
 	Add-Type -AssemblyName System.Windows.Forms
 
-	$Signature = @{
-		Namespace        = "WinAPI"
-		Name             = "ForegroundWindow"
-		Language         = "CSharp"
-		MemberDefinition = @"
-[DllImport("user32.dll")]
-public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
-
-[DllImport("user32.dll")]
-[return: MarshalAs(UnmanagedType.Bool)]
-public static extern bool SetForegroundWindow(IntPtr hWnd);
-"@
-	}
-
-	if (-not ("WinAPI.ForegroundWindow" -as [type]))
-	{
-		Add-Type @Signature
-	}
-
-	Get-Process | Where-Object -FilterScript {($_.ProcessName -eq "powershell") -and ($_.MainWindowTitle -match "Sophia Script for Windows 10 LTSC")} | ForEach-Object -Process {
+	Get-Process | Where-Object -FilterScript {($_.ProcessName -eq "powershell") -and ($_.MainWindowTitle -match "Sophia Script for Windows 10 LTSC 2019")} | ForEach-Object -Process {
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
@@ -6308,12 +6289,20 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 	{
 		"Root"
 		{
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message $Localization.RetrievingDrivesList -Verbose
-
 			# Store all fixed disks' letters to use them within Show-Menu function
 			# https://learn.microsoft.com/en-us/dotnet/api/system.io.drivetype?view=net-7.0#fields
 			$DriveLetters = @((Get-CimInstance -ClassName CIM_LogicalDisk | Where-Object -FilterScript {$_.DriveType -eq 3}).DeviceID | Sort-Object)
+
+			if ($DriveLetters.Count -eq 1)
+			{
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Verbose -Message $Localization.UserFolderLocationMove -Verbose
+
+				return
+			}
+
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Verbose -Message $Localization.RetrievingDrivesList -Verbose
 
 			# Desktop
 			Write-Information -MessageData "" -InformationAction Continue
@@ -6512,7 +6501,17 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 						if ($FolderBrowserDialog.SelectedPath)
 						{
-							Set-UserShellFolder -UserFolder Desktop -FolderPath $FolderBrowserDialog.SelectedPath
+							if ($FolderBrowserDialog.SelectedPath -eq "C:\")
+							{
+								Write-Information -MessageData "" -InformationAction Continue
+								Write-Verbose -Message $Localization.UserFolderLocationMove -Verbose
+
+								continue
+							}
+							else
+							{
+								Set-UserShellFolder -UserFolder Desktop -FolderPath $FolderBrowserDialog.SelectedPath
+							}
 						}
 					}
 					$Skip
@@ -6552,7 +6551,17 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 						if ($FolderBrowserDialog.SelectedPath)
 						{
-							Set-UserShellFolder -UserFolder Documents -FolderPath $FolderBrowserDialog.SelectedPath
+							if ($FolderBrowserDialog.SelectedPath -eq "C:\")
+							{
+								Write-Information -MessageData "" -InformationAction Continue
+								Write-Verbose -Message $Localization.UserFolderLocationMove -Verbose
+
+								continue
+							}
+							else
+							{
+								Set-UserShellFolder -UserFolder Documents -FolderPath $FolderBrowserDialog.SelectedPath
+							}
 						}
 					}
 					$Skip
@@ -6592,7 +6601,17 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 						if ($FolderBrowserDialog.SelectedPath)
 						{
-							Set-UserShellFolder -UserFolder Downloads -FolderPath $FolderBrowserDialog.SelectedPath
+							if ($FolderBrowserDialog.SelectedPath -eq "C:\")
+							{
+								Write-Information -MessageData "" -InformationAction Continue
+								Write-Verbose -Message $Localization.UserFolderLocationMove -Verbose
+
+								continue
+							}
+							else
+							{
+								Set-UserShellFolder -UserFolder Downloads -FolderPath $FolderBrowserDialog.SelectedPath
+							}
 						}
 					}
 					$Skip
@@ -6632,7 +6651,17 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 						if ($FolderBrowserDialog.SelectedPath)
 						{
-							Set-UserShellFolder -UserFolder Music -FolderPath $FolderBrowserDialog.SelectedPath
+							if ($FolderBrowserDialog.SelectedPath -eq "C:\")
+							{
+								Write-Information -MessageData "" -InformationAction Continue
+								Write-Verbose -Message $Localization.UserFolderLocationMove -Verbose
+
+								continue
+							}
+							else
+							{
+								Set-UserShellFolder -UserFolder Music -FolderPath $FolderBrowserDialog.SelectedPath
+							}
 						}
 					}
 					$Skip
@@ -6672,7 +6701,17 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 						if ($FolderBrowserDialog.SelectedPath)
 						{
-							Set-UserShellFolder -UserFolder Pictures -FolderPath $FolderBrowserDialog.SelectedPath
+							if ($FolderBrowserDialog.SelectedPath -eq "C:\")
+							{
+								Write-Information -MessageData "" -InformationAction Continue
+								Write-Verbose -Message $Localization.UserFolderLocationMove -Verbose
+
+								continue
+							}
+							else
+							{
+								Set-UserShellFolder -UserFolder Pictures -FolderPath $FolderBrowserDialog.SelectedPath
+							}
 						}
 					}
 					$Skip
@@ -6712,7 +6751,17 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 						if ($FolderBrowserDialog.SelectedPath)
 						{
-							Set-UserShellFolder -UserFolder Videos -FolderPath $FolderBrowserDialog.SelectedPath
+							if ($FolderBrowserDialog.SelectedPath -eq "C:\")
+							{
+								Write-Information -MessageData "" -InformationAction Continue
+								Write-Verbose -Message $Localization.UserFolderLocationMove -Verbose
+
+								continue
+							}
+							else
+							{
+								Set-UserShellFolder -UserFolder Videos -FolderPath $FolderBrowserDialog.SelectedPath
+							}
 						}
 					}
 					$Skip
@@ -8744,7 +8793,7 @@ function InstallDotNetRuntimes
 	param
 	(
 		[Parameter(
-			Mandatory = $false,
+			Mandatory = $true,
 			ParameterSetName = "Runtimes"
 		)]
 		[ValidateSet("NET6x86", "NET6x64", "NET7x86", "NET7x64", "NET8x86", "NET8x64")]
@@ -9711,7 +9760,7 @@ public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 }
 
 `$ProcessInfo = New-Object -TypeName System.Diagnostics.ProcessStartInfo
-`$ProcessInfo.FileName = """`$env:SystemRoot\System32\dism.exe"""
+`$ProcessInfo.FileName = """`$env:SystemRoot\System32\Dism.exe"""
 `$ProcessInfo.Arguments = """/Online /English /Cleanup-Image /StartComponentCleanup /NoRestart"""
 `$ProcessInfo.UseShellExecute = `$true
 `$ProcessInfo.WindowStyle = [System.Diagnostics.ProcessWindowStyle]::Minimized
@@ -11262,57 +11311,56 @@ function WindowsSandbox
 		$Enable
 	)
 
+	if (-not (Get-WindowsEdition -Online | Where-Object -FilterScript {($_.Edition -eq "Professional") -or ($_.Edition -like "Enterprise*")}))
+	{
+		return
+	}
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Disable"
 		{
-			if (Get-WindowsEdition -Online | Where-Object -FilterScript {($_.Edition -eq "Professional") -or ($_.Edition -like "Enterprise*")})
+			# Checking whether x86 virtualization is enabled in the firmware
+			if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled)
 			{
-				# Checking whether x86 virtualization is enabled in the firmware
-				if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled)
+				Disable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -Online -NoRestart
+			}
+			else
+			{
+				try
 				{
-					Disable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -Online -NoRestart
+					# Determining whether Hyper-V is enabled
+					if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
+					{
+						Disable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -Online -NoRestart
+					}
 				}
-				else
+				catch [System.Exception]
 				{
-					try
-					{
-						# Determining whether Hyper-V is enabled
-						if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
-						{
-							Disable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -Online -NoRestart
-						}
-					}
-					catch [System.Exception]
-					{
-						Write-Error -Message $Localization.EnableHardwareVT -ErrorAction SilentlyContinue
-					}
+					Write-Error -Message $Localization.EnableHardwareVT -ErrorAction SilentlyContinue
 				}
 			}
 		}
 		"Enable"
 		{
-			if (Get-WindowsEdition -Online | Where-Object -FilterScript {($_.Edition -eq "Professional") -or ($_.Edition -like "Enterprise*")})
+			# Checking whether x86 virtualization is enabled in the firmware
+			if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled)
 			{
-				# Checking whether x86 virtualization is enabled in the firmware
-				if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled)
+				Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart
+			}
+			else
+			{
+				try
 				{
-					Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart
+					# Determining whether Hyper-V is enabled
+					if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
+					{
+						Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart
+					}
 				}
-				else
+				catch [System.Exception]
 				{
-					try
-					{
-						# Determining whether Hyper-V is enabled
-						if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
-						{
-							Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart
-						}
-					}
-					catch [System.Exception]
-					{
-						Write-Error -Message $Localization.EnableHardwareVT -ErrorAction SilentlyContinue
-					}
+					Write-Error -Message $Localization.EnableHardwareVT -ErrorAction SilentlyContinue
 				}
 			}
 		}
@@ -11526,19 +11574,21 @@ function CastToDeviceContext
 		$Show
 	)
 
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{7AD84985-87B4-4a16-BE58-8B72A5B390F7}" -Force -ErrorAction Ignore
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Hide"
 		{
-			if (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"))
+			if (-not (Test-Path -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"))
 			{
-				New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Force
+				New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Force
 			}
-			New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{7AD84985-87B4-4a16-BE58-8B72A5B390F7}" -PropertyType String -Value "Play to menu" -Force
+			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{7AD84985-87B4-4a16-BE58-8B72A5B390F7}" -PropertyType String -Value "" -Force
 		}
 		"Show"
 		{
-			Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{7AD84985-87B4-4a16-BE58-8B72A5B390F7}" -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{7AD84985-87B4-4a16-BE58-8B72A5B390F7}" -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -11581,19 +11631,21 @@ function ShareContext
 		$Show
 	)
 
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}" -Force -ErrorAction Ignore
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Hide"
 		{
-			if (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"))
+			if (-not (Test-Path -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"))
 			{
-				New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Force
+				New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Force
 			}
-			New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}" -PropertyType String -Value "" -Force
+			New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}" -PropertyType String -Value "" -Force
 		}
 		"Show"
 		{
-			Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}" -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}" -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -11635,6 +11687,13 @@ function EditWithPaint3DContext
 		[switch]
 		$Show
 	)
+
+	if (-not (Get-AppxPackage -Name Microsoft.MSPaint))
+	{
+		return
+	}
+
+	$Extensions = @(".bmp", ".gif", ".jpe", ".jpeg", ".jpg", ".png", ".tif", ".tiff")
 
 	switch ($PSCmdlet.ParameterSetName)
 	{

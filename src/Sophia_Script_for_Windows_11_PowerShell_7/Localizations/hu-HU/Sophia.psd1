@@ -26,6 +26,7 @@ WindowsFeaturesTitle                      = Windows szolgáltatások
 OptionalFeaturesTitle                     = Opcionális szolgáltatások
 EnableHardwareVT                          = Virtualizáció engedélyezése UEFI-ben.
 UserShellFolderNotEmpty                   = Néhány fájl maradt a "{0}" könyvtárban. Kérem helyezze át ezeket egy új helyre.
+UserFolderLocationMove                    = Nem szabad megváltoztatni a felhasználói mappa helyét a C meghajtó gyökerére.
 RetrievingDrivesList                      = A meghajtók listájának lekérése...
 DriveSelect                               = Válassza ki a meghajtó jelét a gyökérkönyvtárban ahol a "{0}" könyvtár létre lesz hozva.
 CurrentUserFolderLocation                 = Az aktuális "{0}" mappa helye: "{1}".
