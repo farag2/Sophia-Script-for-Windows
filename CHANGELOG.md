@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed small bug when explorer process didn't load back after restating in `OneDrive -Uninstall` function;
 * Closed #554;
 * Added `SearchHighlights` function to show or hide hightlights in the search on the taskbar;
+* Fixed bug in all creating scheduled tasks where a wrong encoding were used that cased mojibake;
+  * You may re-create them if you've encountered such bug.
+  * Thanks to @lowl1f3.
 * Fixed typos;
 * Minor changes.
 
