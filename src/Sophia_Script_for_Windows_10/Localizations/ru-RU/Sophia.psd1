@@ -2,7 +2,7 @@
 UnsupportedOSBitness                      = Скрипт поддерживает только 64-битную версию Windows.
 UnsupportedOSBuild                        = Скрипт поддерживает Windows 10 22H2.
 NonLatinUsernameWarning                   = PowerShell 5.1 не компилирует код, если имя пользователя содержит нелатинские символы (включая эмодзи) и написано со строчной буквы. Пожалуйста, используйте PowerShell 7.
-UpdateWarning                             = Ваш билд Windows 10: {0}.{1}. Поддерживаемые сборки: 19045.3996+. Запустите обновление Windows и попробуйте заново.
+UpdateWarning                             = Ваш билд Windows 10: {0}.{1}. Поддерживаемые сборки: 19045.4123+. Запустите обновление Windows и попробуйте заново.
 UnsupportedLanguageMode                   = Сессия PowerShell работает в ограниченном режиме.
 LoggedInUserNotAdmin                      = Текущий вошедший пользователь не обладает правами администратора.
 UnsupportedPowerShell                     = Вы пытаетесь запустить скрипт в PowerShell {0}.{1}. Запустите скрипт в соответствующей версии PowerShell.

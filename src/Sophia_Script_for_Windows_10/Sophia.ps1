@@ -27,7 +27,7 @@
 	.NOTES
 	Supported Windows 10 versions
 	Version: 22H2
-	Builds: 19045.3996+
+	Builds: 19045.4123+
 	Editions: Home/Pro/Enterprise
 	Architecture: x64
 

@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.18.1 | 6.6.1 — 03.03.2024
+
+* Code refactoring;
+* Improved initial checks;
+* Fixed small bug when explorer process didn't load back after restating in `OneDrive -Uninstall` function;
+* Closed #554;
+* Added `SearchHighlights` function to show or hide hightlights in the search on the taskbar;
+* Fixed typos;
+* Minor changes.
+
+### Wrapper 2.6.17
+
+* Added `InstallDotNetRuntimes -Runtimes` function to install latest `.NET 6, 7, 8 frameworks`
+* Fixed bug crash when searching in Windows 10 src.
+
 ## 5.18.0 | 6.6.0 — 02.02.2024
 
 * Improved initial checks;

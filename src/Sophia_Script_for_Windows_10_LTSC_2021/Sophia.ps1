@@ -27,7 +27,7 @@
 	.NOTES
 	Supported Windows 10 version
 	Version: 21H2
-	Build: 19044.3930+
+	Build: 19044.4046+
 	Edition: Enterprise LTSC 2021
 	Architecture: x64
 
