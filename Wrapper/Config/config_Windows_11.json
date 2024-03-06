@@ -1558,25 +1558,16 @@
     "Function": "InstallDotNetRuntimes -Runtimes",
     "Arg": {
       "Zero": {
-        "Tag": "NET6x86"
-      },
-      "One": {
         "Tag": "NET6x64"
       },
-      "Two": {
-        "Tag": "NET7x86"
-      },
-      "Three": {
+      "One": {
         "Tag": "NET7x64"
       },
-      "Four": {
-        "Tag": "NET8x86"
-      },
-      "Five": {
+      "Two": {
         "Tag": "NET8x64"
       }
     },
-    "Preset": "012345",
+    "Preset": "",
     "WindowsDefault": ""
   },
   {

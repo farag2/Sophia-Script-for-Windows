@@ -2,7 +2,7 @@
 UnsupportedOSBitness                      = El script sólo es compatible con Windows de 64 bits.
 UnsupportedOSBuild                        = El script es compatible con versión Windows 10 Enterprise LTSC 2019.
 NonLatinUsernameWarning                   = PowerShell 5.1 no compila código si el nombre de usuario contiene caracteres no latinos (incluidos los emoji) y está escrito en minúsculas. Por favor, utiliza PowerShell 7.
-UpdateWarning                             = Su build de Windows 10: {0}.{1}. Compilaciones compatibles: 17763.5458+. Ejecute Windows Update y vuelva a intentarlo.
+UpdateWarning                             = Su build de Windows 10: {0}.{1}. Compilaciones compatibles: {2}+. Ejecute Windows Update y vuelva a intentarlo.
 UnsupportedLanguageMode                   = Sesión de PowerShell ejecutada en modo de lenguaje limitado.
 LoggedInUserNotAdmin                      = El usuario que inició sesión no tiene derechos de administrador.
 UnsupportedPowerShell                     = Estás intentando ejecutar el script a través de PowerShell {0}.{1}. Ejecute el script en la versión apropiada de PowerShell.

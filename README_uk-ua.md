@@ -114,10 +114,10 @@
 |                Версія                    | Маркетингова назва  |   Збіркa    |       Видання       |
 |:-----------------------------------------|--------------------:|:-----------:|:-------------------:|
 | Windows 11 Insider Preview 24H2          | 2024 Update         | 22509+      | Home/Pro/Enterprise |
-| Windows 11 23H2                          | 2023 Update         | 22631.3085+ | Home/Pro/Enterprise |
-| Windows 10 x64 22H2                      | 2022 Update         | 19045.3996+ | Home/Pro/Enterprise |
-| Windows 10 x64 21H2 Enterprise LTSC 2021 | October 2021 Update | 19044.3930+ | Enterprise          |
-| Windows 10 x64 1809 Enterprise LTSC 2019 | October 2018 Update | 17763.5329+ | Enterprise          |
+| Windows 11 23H2                          | 2023 Update         | 22631.3155+ | Home/Pro/Enterprise |
+| Windows 10 x64 22H2                      | 2022 Update         | 19045.4046+ | Home/Pro/Enterprise |
+| Windows 10 x64 21H2 Enterprise LTSC 2021 | October 2021 Update | 19044.4046+ | Enterprise          |
+| Windows 10 x64 1809 Enterprise LTSC 2019 | October 2018 Update | 17763.5458+ | Enterprise          |
 
 ### Увага
 

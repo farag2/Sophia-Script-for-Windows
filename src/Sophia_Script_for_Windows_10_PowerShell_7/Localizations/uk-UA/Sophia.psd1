@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Скрипт підтримує тільки 64-розрядну версію Windows.
 UnsupportedOSBuild                        = Скрипт підтримує Windows 10 22H2.
-UpdateWarning                             = Ваш білд Windows 10: {0}.{1}. Підтримувані збірки: 19045.4123+. Запустіть Windows Update і повторіть спробу.
+UpdateWarning                             = Ваш білд Windows 10: {0}.{1}. Підтримувані збірки: {2}+. Запустіть Windows Update і повторіть спробу.
 UnsupportedLanguageMode                   = Сесія PowerShell працює в обмеженому режимі.
 LoggedInUserNotAdmin                      = Поточний користувач, що увійшов, не має прав адміністратора.
 UnsupportedPowerShell                     = Ви намагаєтеся запустити скрипт в PowerShell {0}.{1}. Запустіть скрипт у відповідній версії PowerShell.

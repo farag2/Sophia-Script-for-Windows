@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v6.6.1
-	Date: 03.03.2024
+	Version: v6.6.2
+	Date: 06.03.2024
 
 	Copyright (c) 2014—2024 farag
 	Copyright (c) 2019—2024 farag & Inestic
@@ -147,89 +147,6 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			Start-Process -FilePath "https://github.com/PowerShell/PowerShell/issues/21070"
 
 			exit
-		}
-	}
-
-	# Check whether Microsoft Edge as being a system component was removed by harmful tweakers
-	if (-not (Test-Path -Path "${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe"))
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		# Extract the localized "Please wait..." string from shell32.dll
-		Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
-
-		try
-		{
-			# Check the internet connection
-			$Parameters = @{
-				Name        = "dns.msftncsi.com"
-				Server      = "1.1.1.1"
-				DnsOnly     = $true
-				ErrorAction = "Stop"
-			}
-			if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
-			{
-				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message $Localization.Skipped -Verbose
-
-				return
-			}
-
-			try
-			{
-				# Download Microsoft Edge Stable x64
-				# https://edgeupdates.microsoft.com/api/products?view=enterprise
-				$Parameters = @{
-					Uri             = "https://edgeupdates.microsoft.com/api/products?view=enterprise"
-					UseBasicParsing = $true
-					Verbose         = $true
-				}
-				$EdgeLinks = Invoke-RestMethod @Parameters
-				$EdgeURL = (($EdgeLinks | Where-Object -FilterScript {$_.Product -eq "Stable"}).Releases | Where-Object -FilterScript {($_.Platform -eq "Windows") -and ($_.Architecture -eq "x64")} | Select-Object -Index 1).Artifacts.Location
-
-				$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-				$Parameters = @{
-					Uri             = $EdgeURL
-					OutFile         = "$DownloadsFolder\MicrosoftEdgeEnterpriseX64.msi"
-					UseBasicParsing = $true
-					Verbose         = $true
-				}
-				Invoke-Webrequest @Parameters
-
-				# Install Microsoft Edge Stable x64
-				Start-Process -FilePath "$DownloadsFolder\MicrosoftEdgeEnterpriseX64.msi" -ArgumentList "/passive /norestart DONOTCREATEDESKTOPSHORTCUT=TRUE" -Wait
-
-				Remove-Item -Path "$env:Public\Desktop\Microsoft Edge.lnk" -Force -ErrorAction Ignore
-
-				Start-Sleep -Seconds 5
-
-				try
-				{
-					& "${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe" --no-first-run --noerrdialogs --no-default-browser-check --start-maximized
-				}
-				catch
-				{
-					Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Edge")
-
-					Start-Process -FilePath "https://t.me/sophia_chat"
-					Start-Process -FilePath "https://discord.gg/sSryhaEv79"
-
-					exit
-				}
-
-				Stop-Process -Name msedge -Force -ErrorAction Ignore
-
-				Remove-Item -Path "$DownloadsFolder\MicrosoftEdgeEnterpriseX64.msi" -Force
-			}
-			catch [System.Net.WebException]
-			{
-				Write-Warning -Message ($Localization.NoResponse -f "https://edgeupdates.microsoft.com")
-				Write-Error -Message ($Localization.NoResponse -f "https://edgeupdates.microsoft.com") -ErrorAction SilentlyContinue
-			}
-		}
-		catch [System.ComponentModel.Win32Exception]
-		{
-			Write-Warning -Message $Localization.NoInternetConnection
-			Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 		}
 	}
 
@@ -588,9 +505,6 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		}
 		if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
 		{
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message $Localization.Skipped -Verbose
-
 			return
 		}
 
@@ -672,13 +586,53 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		}
 		"22631"
 		{
-			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt 3235)
+			# Check whether the current module version is the latest one
+			try
 			{
-				# Check whether Windows minor build version is 3235 minimum
-				# https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information#windows-11-current-versions
+				# Check the internet connection
+				$Parameters = @{
+					Name        = "dns.msftncsi.com"
+					Server      = "1.1.1.1"
+					DnsOnly     = $true
+					ErrorAction = "Stop"
+				}
+				if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
+				{
+					return
+				}
+
+				try
+				{
+					# https://github.com/farag2/Sophia-Script-for-Windows/blob/master/supported_windows_builds.json
+					$Parameters = @{
+						Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/supported_windows_builds.json"
+						Verbose         = $true
+						UseBasicParsing = $true
+					}
+					$LatestSupportedBuild = (Invoke-RestMethod @Parameters).Windows_11
+				}
+				catch [System.Net.WebException]
+				{
+					Write-Warning -Message ($Localization.NoResponse -f "https://github.com")
+					Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
+				}
+			}
+			catch [System.ComponentModel.Win32Exception]
+			{
+				$LatestSupportedBuild = 0
+
+				Write-Warning -Message $Localization.NoInternetConnection
+				Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
+			}
+
+			# We may use Test-Path -Path variable:LatestSupportedBuild
+			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt $LatestSupportedBuild)
+			{
+				# Check Windows minor build version
+				# https://support.microsoft.com/en-us/topic/windows-11-version-23h2-update-history-59875222-b990-4bd9-932f-91a5954de434
 				$CurrentBuild = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
 				$UBR = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
-				Write-Warning -Message ($Localization.UpdateWarning -f $CurrentBuild.CurrentBuild, $UBR.UBR)
+				Write-Warning -Message ($Localization.UpdateWarning -f $CurrentBuild.CurrentBuild, $UBR.UBR, $LatestSupportedBuild)
 
 				Start-Process -FilePath "https://t.me/sophia_chat"
 				Start-Process -FilePath "https://discord.gg/sSryhaEv79"
@@ -738,9 +692,6 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		}
 		if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
 		{
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message $Localization.Skipped -Verbose
-
 			return
 		}
 
@@ -870,7 +821,6 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	{
 		Write-Verbose -Message ($Localization.WindowsComponentBroken -f [WinAPI.GetStrings]::GetIndirectString("@%SystemRoot%\system32\schedsvc.dll,-100")) -Verbose
 
-		Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"
 		Start-Process -FilePath "https://t.me/sophia_chat"
 		Start-Process -FilePath "https://discord.gg/sSryhaEv79"
 
@@ -4230,9 +4180,6 @@ function Cursors
 				}
 				if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
 				{
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message $Localization.Skipped -Verbose
-
 					return
 				}
 
@@ -4356,9 +4303,6 @@ function Cursors
 				}
 				if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
 				{
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message $Localization.Skipped -Verbose
-
 					return
 				}
 
@@ -4869,9 +4813,6 @@ public static bool MarkFileDelete (string sourcefile)
 					}
 					if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
 					{
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message $Localization.Skipped -Verbose
-
 						return
 					}
 
@@ -6344,9 +6285,6 @@ function WindowsCapabilities
 				}
 				if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
 				{
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message $Localization.Skipped -Verbose
-
 					return
 				}
 
@@ -6896,9 +6834,6 @@ function IPv6Component
 		}
 		if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
 		{
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message $Localization.Skipped -Verbose
-
 			return
 		}
 
@@ -9888,9 +9823,6 @@ function InstallVCRedist
 		}
 		if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
 		{
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message $Localization.Skipped -Verbose
-
 			return
 		}
 
@@ -9949,10 +9881,10 @@ function InstallVCRedist
 
 <#
 	.SYNOPSIS
-	Install the latest .NET Desktop Runtime 6, 7, 8 (x86/x64)
+	Install the latest .NET Desktop Runtime 6, 7, 8 x64
 
 	.EXAMPLE
-	InstallDotNetRuntimes -Runtimes NET6x86, NET6x64, NET7x86, NET7x64, NET8x86, NET8x64
+	InstallDotNetRuntimes -Runtimes NET6x64, NET7x64, NET8x64
 
 	.LINK
 	https://dotnet.microsoft.com/en-us/download/dotnet
@@ -9969,7 +9901,7 @@ function InstallDotNetRuntimes
 			Mandatory = $true,
 			ParameterSetName = "Runtimes"
 		)]
-		[ValidateSet("NET6x86", "NET6x64", "NET7x86", "NET7x64", "NET8x86", "NET8x64")]
+		[ValidateSet("NET6x64", "NET7x64", "NET8x64")]
 		[string[]]
 		$Runtimes
 	)
@@ -9985,9 +9917,6 @@ function InstallDotNetRuntimes
 		}
 		if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
 		{
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message $Localization.Skipped -Verbose
-
 			return
 		}
 	}
@@ -10003,50 +9932,6 @@ function InstallDotNetRuntimes
 	{
 		switch ($Runtime)
 		{
-			NET6x86
-			{
-				if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
-				{
-					# https://github.com/microsoft/winget-pkgs/tree/master/manifests/m/Microsoft/DotNet/DesktopRuntime/6
-					# .NET Desktop Runtime 6 x86
-					winget install --id=Microsoft.DotNet.DesktopRuntime.6 --architecture x86 --exact --force --accept-source-agreements
-
-					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-					# https://github.com/PowerShell/PowerShell/issues/21070
-					Get-ChildItem -Path "$env:TEMP\WinGet" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
-				}
-				else
-				{
-					# Install .NET Desktop Runtime 6
-					# https://github.com/dotnet/core/blob/main/release-notes/releases-index.json
-					$Parameters = @{
-						Uri             = "https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/6.0/releases.json"
-						Verbose         = $true
-						UseBasicParsing = $true
-					}
-					$LatestRelease = (Invoke-RestMethod @Parameters)."latest-release"
-					$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-
-					# .NET Desktop Runtime 6 x86
-					$Parameters = @{
-						Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$LatestRelease/dotnet-runtime-$LatestRelease-win-x86.exe"
-						OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe"
-						UseBasicParsing = $true
-						Verbose         = $true
-					}
-					Invoke-WebRequest @Parameters
-
-					Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe" -ArgumentList "/install /passive /norestart" -Wait
-
-					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-					# https://github.com/PowerShell/PowerShell/issues/21070
-					$Paths = @(
-						"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe",
-						"$env:TEMP\Microsoft_.NET_Runtime*.log"
-					)
-					Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
-				}
-			}
 			NET6x64
 			{
 				if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
@@ -10086,50 +9971,6 @@ function InstallDotNetRuntimes
 					# https://github.com/PowerShell/PowerShell/issues/21070
 					$Paths = @(
 						"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe",
-						"$env:TEMP\Microsoft_.NET_Runtime*.log"
-					)
-					Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
-				}
-			}
-			NET7x86
-			{
-				if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
-				{
-					# https://github.com/microsoft/winget-pkgs/tree/master/manifests/m/Microsoft/DotNet/DesktopRuntime/7
-					# .NET Desktop Runtime 7 x86
-					winget install --id=Microsoft.DotNet.DesktopRuntime.7 --architecture x86 --exact --force --accept-source-agreements
-
-					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-					Get-ChildItem -Path "$env:TEMP\WinGet" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
-				}
-				else
-				{
-					# .NET Desktop Runtime 7
-					# https://github.com/dotnet/core/blob/main/release-notes/releases-index.json
-					$Parameters = @{
-						Uri             = "https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/7.0/releases.json"
-						Verbose         = $true
-						UseBasicParsing = $true
-					}
-					$LatestRelease = (Invoke-RestMethod @Parameters)."latest-release"
-					$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-
-					# .NET Desktop Runtime 7 x86
-					$Parameters = @{
-						Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$LatestRelease/dotnet-runtime-$LatestRelease-win-x86.exe"
-						OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe"
-						UseBasicParsing = $true
-						Verbose         = $true
-					}
-					Invoke-WebRequest @Parameters
-
-					Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe" -ArgumentList "/install /passive /norestart" -Wait
-
-
-					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-					# https://github.com/PowerShell/PowerShell/issues/21070
-					$Paths = @(
-						"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe",
 						"$env:TEMP\Microsoft_.NET_Runtime*.log"
 					)
 					Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
@@ -10178,52 +10019,6 @@ function InstallDotNetRuntimes
 					)
 					Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 				}
-
-			}
-			NET8x86
-			{
-				if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
-				{
-					# https://github.com/microsoft/winget-pkgs/tree/master/manifests/m/Microsoft/DotNet/DesktopRuntime/8
-					# .NET Desktop Runtime 8 x86
-					winget install --id=Microsoft.DotNet.DesktopRuntime.8 --architecture x86 --exact --force --accept-source-agreements
-
-					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-					# https://github.com/PowerShell/PowerShell/issues/21070
-					Get-ChildItem -Path "$env:TEMP\WinGet" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
-				}
-				else
-				{
-					# .NET Desktop Runtime 8
-					# https://github.com/dotnet/core/blob/main/release-notes/releases-index.json
-					$Parameters = @{
-						Uri             = "https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/8.0/releases.json"
-						Verbose         = $true
-						UseBasicParsing = $true
-					}
-					$LatestRelease = (Invoke-RestMethod @Parameters)."latest-release"
-					$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-
-					# .NET Desktop Runtime 8 x86
-					$Parameters = @{
-						Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$LatestRelease/dotnet-runtime-$LatestRelease-win-x86.exe"
-						OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe"
-						UseBasicParsing = $true
-						Verbose         = $true
-					}
-					Invoke-WebRequest @Parameters
-
-					Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe" -ArgumentList "/install /passive /norestart" -Wait
-
-					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-					# https://github.com/PowerShell/PowerShell/issues/21070
-					$Paths = @(
-						"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x86.exe",
-						"$env:TEMP\Microsoft_.NET_Runtime*.log"
-					)
-					Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
-				}
-
 			}
 			NET8x64
 			{
@@ -10267,7 +10062,6 @@ function InstallDotNetRuntimes
 					)
 					Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 				}
-
 			}
 		}
 	}
@@ -10388,9 +10182,6 @@ function Install-WSA
 		}
 		if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
 		{
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message $Localization.Skipped -Verbose
-
 			return
 		}
 
@@ -10659,9 +10450,6 @@ function Install-WSL
 		}
 		if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
 		{
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message $Localization.Skipped -Verbose
-
 			return
 		}
 
@@ -15458,10 +15246,10 @@ function Errors
 			}
 
 			[PSCustomObject]@{
-				$Localization.ErrorsLine              = $_.InvocationInfo.ScriptLineNumber
+				$Localization.ErrorsLine                  = $_.InvocationInfo.ScriptLineNumber
 				# Extract the localized "File" string from shell32.dll
 				"$([WinAPI.GetStrings]::GetString(4130))" = $ErrorInFile
-				$Localization.ErrorsMessage           = $_.Exception.Message
+				$Localization.ErrorsMessage               = $_.Exception.Message
 			}
 		} | Sort-Object -Property $Localization.ErrorsLine | Format-Table -AutoSize -Wrap | Out-String).Trim()
 	}

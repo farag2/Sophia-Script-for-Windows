@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = 脚本支持Windows 11 23H2+。
 NonLatinUsernameWarning                   = 如果用户名包含非拉丁字符（包括表情符号）且以小写字母书写，PowerShell 5.1 将无法编译代码。请使用 PowerShell 7。
-UpdateWarning                             = 您的Windows 11构建: {0}.{1}。支持的构建: 22631.3235+。运行Windows Update并再次尝试。
+UpdateWarning                             = 您的Windows 11构建: {0}.{1}。支持的构建: {2}+。运行Windows Update并再次尝试。
 UnsupportedLanguageMode                   = PowerShell会话在有限的语言模式下运行。
 LoggedInUserNotAdmin                      = 登录的用户没有管理员的权利。
 UnsupportedPowerShell                     = 你想通过PowerShell {0}.{1}运行脚本。在适当的PowerShell版本中运行该脚本。
