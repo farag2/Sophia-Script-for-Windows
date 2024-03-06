@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.18.2 | 6.6.2 — 06.03.2024
+
+* Initial checks simplified;
+  * Script now relies on parsing <https://github.com/farag2/Sophia-Script-for-Windows/blob/master/supported_windows_builds.json> to check the actual supported Windows build;
+    * If there's no Internet connection established, the check will be skipped.
+  * In anticipation of providing an ability to remove Edge from Microsoft, the Edge check was removed.
+* `InstallDotNetRuntimes` function has now only `NET6x64, NET7x64, NET8x64` supported arguments
+* Minor changes.
+
+### Wrapper 2.6.18
+
+* Fixed Set-Association;
+  * Can include spaces in filepath.
+* More organized output console 2.6.18.
+
 ## 5.18.1 | 6.6.1 — 03.03.2024
 
 * Code refactoring;
