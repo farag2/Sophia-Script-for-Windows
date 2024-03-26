@@ -1877,20 +1877,6 @@
   },
   {
     "Region": "Context menu",
-    "Function": "RunAsDifferentUserContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "\"Als anderer Benutzer ausführen\" im Kontextmenü der .exe-Dateien anzeigen."
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "\"Als anderer Benutzer ausführen\" im Kontextmenü der .exe-Dateien ausblenden (Standardeinstellung)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
     "Function": "CastToDeviceContext",
     "Arg": {
       "Zero": {

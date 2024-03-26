@@ -610,7 +610,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 					DnsOnly     = $true
 					ErrorAction = "Stop"
 				}
-				if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
+				if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255") ###
 				{
 					return
 				}
@@ -4176,6 +4176,14 @@ function Cursors
 		$Default
 	)
 
+	if (-not (Test-Path -Path "$env:SystemRoot\System32\tar.exe"))
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message $Localization.Skipped -Verbose
+
+		return
+	}
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Dark"
@@ -4213,8 +4221,8 @@ function Cursors
 
 					$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 					$Parameters = @{
-						Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/Cursors.zip"
-						OutFile         = "$DownloadsFolder\Cursors.zip"
+						Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/dark.zip"
+						OutFile         = "$DownloadsFolder\dark.zip"
 						UseBasicParsing = $true
 						Verbose         = $true
 					}
@@ -4225,14 +4233,8 @@ function Cursors
 						New-Item -Path "$env:SystemRoot\Cursors\W11_dark_v2.2" -ItemType Directory -Force
 					}
 
-					Add-Type -Assembly System.IO.Compression.FileSystem
-					$ZIP = [IO.Compression.ZipFile]::OpenRead("$DownloadsFolder\Cursors.zip")
-					$ZIP.Entries | Where-Object -FilterScript {$_.FullName -like "dark/*.*"} | ForEach-Object -Process {
-						[IO.Compression.ZipFileExtensions]::ExtractToFile($_, "$env:SystemRoot\Cursors\W11_dark_v2.2\$($_.Name)", $true)
-					}
-					$ZIP.Dispose()
-
-					Remove-Item -Path "$DownloadsFolder\Cursors.zip" -Force
+					# Extract archive
+					Start-Process -FilePath "$env:SystemRoot\System32\tar.exe" -ArgumentList "-xf `"$DownloadsFolder\dark.zip`" -C `"$env:SystemRoot\Cursors\W11_dark_v2.2`" -v"
 
 					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursors Dark Free v2.2 by Jepri Creations" -Force
 					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\working.ani" -Force
@@ -4284,6 +4286,8 @@ function Cursors
 						"%SystemRoot%\Cursors\W11_dark_v2.2\pin.cur"
 					) -join ","
 					New-ItemProperty -Path "HKCU:\Control Panel\Cursors\Schemes" -Name "W11 Cursors Dark Free v2.2 by Jepri Creations" -PropertyType String -Value $Schemes -Force
+
+					Remove-Item -Path "$DownloadsFolder\dark.zip" -Force
 				}
 				catch [System.Net.WebException]
 				{
@@ -4336,8 +4340,8 @@ function Cursors
 
 					$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 					$Parameters = @{
-						Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/Cursors.zip"
-						OutFile         = "$DownloadsFolder\Cursors.zip"
+						Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/light.zip"
+						OutFile         = "$DownloadsFolder\light.zip"
 						UseBasicParsing = $true
 						Verbose         = $true
 					}
@@ -4348,14 +4352,8 @@ function Cursors
 						New-Item -Path "$env:SystemRoot\Cursors\W11_light_v2.2" -ItemType Directory -Force
 					}
 
-					Add-Type -Assembly System.IO.Compression.FileSystem
-					$ZIP = [IO.Compression.ZipFile]::OpenRead("$DownloadsFolder\Cursors.zip")
-					$ZIP.Entries | Where-Object -FilterScript {$_.FullName -like "light/*.*"} | ForEach-Object -Process {
-						[IO.Compression.ZipFileExtensions]::ExtractToFile($_, "$env:SystemRoot\Cursors\W11_light_v2.2\$($_.Name)", $true)
-					}
-					$ZIP.Dispose()
-
-					Remove-Item -Path "$DownloadsFolder\Cursors.zip" -Force
+					# Extract archive
+					Start-Process -FilePath "$env:SystemRoot\System32\tar.exe" -ArgumentList "-xf `"$DownloadsFolder\light.zip`" -C `"$env:SystemRoot\Cursors\W11_light_v2.2`" -v"
 
 					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursor Light Free v2.2 by Jepri Creations" -Force
 					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\working.ani" -Force
@@ -4388,25 +4386,27 @@ function Cursors
 						New-Item -Path "HKCU:\Control Panel\Cursors\Schemes" -Force
 					}
 					[string[]]$Schemes = (
-						"%SystemRoot%\Cursors\W11_dark_v2.2\pointer.cur",
-						"%SystemRoot%\Cursors\W11_dark_v2.2\help.cur",
-						"%SystemRoot%\Cursors\W11_dark_v2.2\working.ani",
-						"%SystemRoot%\Cursors\W11_dark_v2.2\busy.ani",,
-						"%SystemRoot%\Cursors\W11_dark_v2.2\precision.cur",
-						"%SystemRoot%\Cursors\W11_dark_v2.2\beam.cur",
-						"%SystemRoot%\Cursors\W11_dark_v2.2\handwriting.cur",
-						"%SystemRoot%\Cursors\W11_dark_v2.2\unavailable.cur",
-						"%SystemRoot%\Cursors\W11_dark_v2.2\vert.cur",
-						"%SystemRoot%\Cursors\W11_dark_v2.2\horz.cur",
-						"%SystemRoot%\Cursors\W11_dark_v2.2\dgn1.cur",
-						"%SystemRoot%\Cursors\W11_dark_v2.2\dgn2.cur",
-						"%SystemRoot%\Cursors\W11_dark_v2.2\move.cur",
-						"%SystemRoot%\Cursors\W11_dark_v2.2\alternate.cur",
-						"%SystemRoot%\Cursors\W11_dark_v2.2\link.cur",
-						"%SystemRoot%\Cursors\W11_dark_v2.2\person.cur",
-						"%SystemRoot%\Cursors\W11_dark_v2.2\pin.cur"
+						"%SystemRoot%\Cursors\W11_light_v2.2\pointer.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\help.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\working.ani",
+						"%SystemRoot%\Cursors\W11_light_v2.2\busy.ani",,
+						"%SystemRoot%\Cursors\W11_light_v2.2\precision.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\beam.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\handwriting.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\unavailable.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\vert.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\horz.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\dgn1.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\dgn2.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\move.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\alternate.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\link.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\person.cur",
+						"%SystemRoot%\Cursors\W11_light_v2.2\pin.cur"
 					) -join ","
 					New-ItemProperty -Path "HKCU:\Control Panel\Cursors\Schemes" -Name "W11 Cursor Light Free v2.2 by Jepri Creations" -PropertyType String -Value $Schemes -Force
+
+					Remove-Item -Path "$DownloadsFolder\light.zip" -Force
 				}
 				catch [System.Net.WebException]
 				{
@@ -14062,57 +14062,6 @@ function CABInstallContext
 		"Hide"
 		{
 			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas -Recurse -Force -ErrorAction Ignore
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	The "Run as different user" item for the .exe filename extensions context menu
-
-	.PARAMETER Show
-	Show the "Run as different user" item in the .exe filename extensions context menu
-
-	.PARAMETER Hide
-	Hide the "Run as different user" item from the .exe filename extensions context menu
-
-	.EXAMPLE
-	RunAsDifferentUserContext -Show
-
-	.EXAMPLE
-	RunAsDifferentUserContext -Hide
-
-	.NOTES
-	Current user
-#>
-function RunAsDifferentUserContext
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Show"
-		)]
-		[switch]
-		$Show,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Hide"
-		)]
-		[switch]
-		$Hide
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Show"
-		{
-			Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name Extended -Force -ErrorAction Ignore
-		}
-		"Hide"
-		{
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\exefile\shell\runasuser -Name Extended -PropertyType String -Value "" -Force
 		}
 	}
 }

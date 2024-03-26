@@ -49,7 +49,7 @@
   {
     "Id": "StatusBar",
     "Options": {
-      "statusBarHover": "Hover your mouse cursor over the selection items to information about each option",
+      "statusBarHover": "Hover your mouse cursor over the selection items for information about each option",
       "statusBarPresetLoaded": "preset loaded!",
       "statusBarPresetNotComp": "preset file is not compatible!",
       "statusBarSophiaPreset": "Sophia preset loaded!",

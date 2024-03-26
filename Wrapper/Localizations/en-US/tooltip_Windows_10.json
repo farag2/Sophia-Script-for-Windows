@@ -1958,20 +1958,6 @@
   },
   {
     "Region": "Context menu",
-    "Function": "RunAsDifferentUserContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Show the \"Run as different user\" item to the .exe filename extensions context menu."
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"Run as different user\" item from the .exe filename extensions context menu (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
     "Function": "CastToDeviceContext",
     "Arg": {
       "Zero": {
@@ -2009,34 +1995,6 @@
       "One": {
         "Tag": "Show",
         "ToolTip": "Show the \"Edit with Paint 3D\" item in the media files context menu (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
-    "Function": "EditWithPhotosContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"Edit with Photos\" item from the media files context menu."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show the \"Edit with Photos\" item in the media files context menu (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
-    "Function": "CreateANewVideoContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"Create a new video\" item in the media files context menu."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show the \"Create a new video\" item in the media files context menu (default value)."
       }
     }
   },

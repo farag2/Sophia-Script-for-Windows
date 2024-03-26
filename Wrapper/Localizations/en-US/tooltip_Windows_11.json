@@ -1877,20 +1877,6 @@
   },
   {
     "Region": "Context menu",
-    "Function": "RunAsDifferentUserContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Show the \"Run as different user\" item to the .exe filename extensions context menu."
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"Run as different user\" item from the .exe filename extensions context menu (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
     "Function": "CastToDeviceContext",
     "Arg": {
       "Zero": {

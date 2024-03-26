@@ -1365,14 +1365,6 @@ CABInstallContext -Show
 # Скрыть пункт "Установить" из контекстного меню .cab архивов (значение по умолчанию)
 # CABInstallContext -Hide
 
-# Show the "Run as different user" item to the .exe filename extensions context menu
-# Отобразить пункт "Запуск от имени другого пользователя" в контекстное меню .exe файлов
-RunAsDifferentUserContext -Show
-
-# Hide the "Run as different user" item from the .exe filename extensions context menu (default value)
-# Скрыть пункт "Запуск от имени другого пользователя" из контекстное меню .exe файлов (значение по умолчанию)
-# RunAsDifferentUserContext -Hide
-
 # Hide the "Cast to Device" item from the media files and folders context menu
 # Скрыть пункт "Передать на устройство" из контекстного меню медиа-файлов и папок
 CastToDeviceContext -Hide
@@ -1396,22 +1388,6 @@ EditWithPaint3DContext -Hide
 # Show the "Edit with Paint 3D" item in the media files context menu (default value)
 # Отобразить пункт "Изменить с помощью Paint 3D" в контекстном меню медиа-файлов (значение по умолчанию)
 # EditWithPaint3DContext -Show
-
-# Hide the "Edit with Photos" item from the media files context menu
-# Скрыть пункт "Изменить с помощью приложения "Фотографии"" из контекстного меню медиа-файлов
-EditWithPhotosContext -Hide
-
-# Show the "Edit with Photos" item in the media files context menu (default value)
-# Отобразить пункт "Изменить с помощью приложения "Фотографии"" в контекстном меню медиа-файлов (значение по умолчанию)
-# EditWithPhotosContext -Show
-
-# Hide the "Create a new video" item in the media files context menu
-# Скрыть пункт "Создать новое видео" из контекстного меню медиа-файлов
-CreateANewVideoContext -Hide
-
-# Show the "Create a new video" item in the media files context menu (default value)
-# Отобразить пункт "Создать новое видео" в контекстном меню медиа-файлов (значение по умолчанию)
-# CreateANewVideoContext -Show
 
 # Hide the "Edit" item from the images context menu
 # Скрыть пункт "Изменить" из контекстного меню изображений

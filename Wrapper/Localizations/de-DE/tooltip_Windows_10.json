@@ -1958,20 +1958,6 @@
   },
   {
     "Region": "Context menu",
-    "Function": "RunAsDifferentUserContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Anzeige von \"Als anderer Benutzer ausführen\" im Kontextmenü der .exe-Dateien."
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Die Option \"Als anderer Benutzer ausführen\" im Kontextmenü der .exe-Dateien ausblenden (Standardeinstellung)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
     "Function": "CastToDeviceContext",
     "Arg": {
       "Zero": {
@@ -2009,34 +1995,6 @@
       "One": {
         "Tag": "Show",
         "ToolTip": "Den Eintrag \"Mit Paint 3D bearbeiten\" im Kontextmenü der Mediendateien anzeigen (Standardeinstellung)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
-    "Function": "EditWithPhotosContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Ausblenden des Eintrags \"Mit Fotos bearbeiten\" im Kontextmenü von Mediendateien."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Den Eintrag \"Mit Fotos bearbeiten\" im Kontextmenü der Mediendateien anzeigen (Standardeinstellung)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
-    "Function": "CreateANewVideoContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Ausblenden des Eintrags \"Neues Video erstellen\" im Kontextmenü der Mediendateien."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Den Eintrag \"Ein neues Video erstellen\" im Kontextmenü der Mediendateien anzeigen (Standardeinstellung)."
       }
     }
   },

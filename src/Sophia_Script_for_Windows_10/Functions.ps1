@@ -195,7 +195,7 @@ $Parameters = @{
 				continue
 			}
 
-			# If a module command is UserFolders
+			# If a module command is UserFolders ###
 			if ($Command -eq "UserFolders")
 			{
 				# Get all command arguments, excluding defaults

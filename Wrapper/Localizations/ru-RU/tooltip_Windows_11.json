@@ -1877,20 +1877,6 @@
   },
   {
     "Region": "Context menu",
-    "Function": "RunAsDifferentUserContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Отобразить пункт \"Запуск от имени другого пользователя\" в контекстное меню .exe файлов."
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть пункт \"Запуск от имени другого пользователя\" из контекстное меню .exe файлов (значение по умолчанию)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
     "Function": "CastToDeviceContext",
     "Arg": {
       "Zero": {
