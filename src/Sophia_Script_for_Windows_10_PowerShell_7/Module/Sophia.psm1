@@ -244,6 +244,8 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Hone                = "$env:LOCALAPPDATA\Programs\Hone\Hone.exe"
 		# https://github.com/ChrisTitusTech/winutil
 		winutil             = "$env:TEMP\Winutil.log"
+		# https://www.youtube.com/watch?v=5NBqbUUB1Pk
+		WinClean             = "$env:ProgramFiles\WinClean Plus Apps"
 	}
 	foreach ($Tweaker in $Tweakers.Keys)
 	{
