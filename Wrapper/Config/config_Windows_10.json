@@ -1634,9 +1634,6 @@
       "Zero": {
         "Tag": "NET6x64"
       },
-      "One": {
-        "Tag": "NET7x64"
-      },
       "Two": {
         "Tag": "NET8x64"
       }
@@ -2277,22 +2274,6 @@
       }
     },
     "Preset": "",
-    "WindowsDefault": "One"
-  },
-  {
-    "Region": "Context menu",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "ImagesEditContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide"
-      },
-      "One": {
-        "Tag": "Show"
-      }
-    },
-    "Preset": "Zero",
     "WindowsDefault": "One"
   },
   {

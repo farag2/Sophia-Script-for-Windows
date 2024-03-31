@@ -1379,10 +1379,6 @@
         "Tag": "NET6x64",
         "ToolTip": ".NET Desktop Runtime 6 x64."
       },
-      "One": {
-        "Tag": "NET7x64",
-        "ToolTip": ".NET Desktop Runtime 7 x64."
-      },
       "Two": {
         "Tag": "NET8x64",
         "ToolTip": ".NET Desktop Runtime 8 x64."

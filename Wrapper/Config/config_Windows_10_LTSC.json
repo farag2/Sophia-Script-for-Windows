@@ -1561,9 +1561,6 @@
       "Zero": {
         "Tag": "NET6x64"
       },
-      "One": {
-        "Tag": "NET7x64"
-      },
       "Two": {
         "Tag": "NET8x64"
       }
