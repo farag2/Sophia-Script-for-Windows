@@ -1373,13 +1373,13 @@
   {
     "Region": "System",
     "Function": "InstallDotNetRuntimes -Runtimes",
-    "ToolTip": "Installieren Sie die neueste .NET Desktop Runtime 6, 7, 8 x64.",
+    "ToolTip": "Installieren Sie die neueste .NET Desktop Runtime 6, 8 x64.",
     "Arg": {
       "Zero": {
         "Tag": "NET6x64",
         "ToolTip": ".NET Desktop Runtime 6 x64."
       },
-      "Two": {
+      "One": {
         "Tag": "NET8x64",
         "ToolTip": ".NET Desktop Runtime 8 x64."
       }
