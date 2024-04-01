@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.18.3 | 6.6.3 — 01.04.2024
+
+* Removed `RunAsDifferentUserContext`, `EditWithPhotosContext`, `ImagesEditContext` for Windows 10 as unnecessary ones.
+* Fixed `UserFolders` function;
+  * Fixes #561.
+* Removed `NET7x64` argument from `InstallDotNetRuntimes` function as .NET 7 will have EOF status in May;
+* Fixed and improved `Cursors` function;
+* Now it's possible to create any scheduled task even computer name is equal to user name (what's prohibited in Windows);
+  * Removes warning that Task Scheduler is removed or broken;
+  * Fixes #561.
+* Minor changes.
+
+Thanks to @lowl1f3 for bug reporting.
+
+### Wrapper 2.6.20
+
+* Code refactoring
+  * Proper variable naming, removed experimental code, removed extras, added regions.
+
 ## 5.18.2 | 6.6.2 — 06.03.2024
 
 * Initial checks simplified;
