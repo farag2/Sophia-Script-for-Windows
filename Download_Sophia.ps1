@@ -54,7 +54,16 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		else
 		{
 			Write-Verbose -Message "Windows version is not supported. Update your Windows" -Verbose
+
+			# Receive updates for other Microsoft products when you update Windows
+			(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
+
+			# Check for updates
+			Start-Process -FilePath "$env:SystemRoot\System32\UsoClient.exe" -ArgumentList StartInteractiveScan
+
+			# Open the "Windows Update" page
 			Start-Process -FilePath "ms-settings:windowsupdate"
+
 			exit
 		}
 	}
@@ -75,7 +84,16 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		else
 		{
 			Write-Verbose -Message "Windows version is not supported. Update your Windows" -Verbose
+
+			# Receive updates for other Microsoft products when you update Windows
+			(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
+
+			# Check for updates
+			Start-Process -FilePath "$env:SystemRoot\System32\UsoClient.exe" -ArgumentList StartInteractiveScan
+
+			# Open the "Windows Update" page
 			Start-Process -FilePath "ms-settings:windowsupdate"
+
 			exit
 		}
 	}
