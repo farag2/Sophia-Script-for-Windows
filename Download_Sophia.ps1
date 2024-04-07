@@ -199,11 +199,16 @@ switch ($Version)
 	}
 }
 
-$SetForegroundWindow = @{
-	Namespace        = "WinAPI"
-	Name             = "ForegroundWindow"
-	Language         = "CSharp"
-	MemberDefinition = @"
+# https://github.com/PowerShell/PowerShell/issues/21070
+$CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
+$CompilerParameters.TempFiles = [System.CodeDom.Compiler.TempFileCollection]::new($env:TEMP, $false)
+$CompilerParameters.GenerateInMemory = $true
+$Signature = @{
+	Namespace          = "WinAPI"
+	Name               = "ForegroundWindow"
+	Language           = "CSharp"
+	CompilerParameters = $CompilerParameters
+	MemberDefinition   = @"
 [DllImport("user32.dll")]
 public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 [DllImport("user32.dll")]
@@ -213,14 +218,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 }
 if (-not ("WinAPI.ForegroundWindow" -as [type]))
 {
-	try
-	{
-		Add-Type @SetForegroundWindow
-	}
-	catch [System.ComponentModel.Win32Exception]
-	{
-		Write-Warning -Message "PowerShell 5.1 does not compile code if the username contains non-Latin characters (including emoji) and is written in lowercase. Ignore this error message. Open background folder manually."
-	}
+	Add-Type @Signature
 }
 
 Start-Sleep -Seconds 1

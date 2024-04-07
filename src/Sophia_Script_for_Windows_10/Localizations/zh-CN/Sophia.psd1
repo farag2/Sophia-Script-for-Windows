@@ -1,7 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = 该脚本仅支持64位Windows。
 UnsupportedOSBuild                        = 该脚本支持Windows 10版本22H2和更高版本。
-NonLatinUsernameWarning                   = 如果用户名包含非拉丁字符（包括表情符号）且以小写字母书写，PowerShell 5.1 将无法编译代码。请使用 PowerShell 7。
 UpdateWarning                             = 您的Windows 10构建: {0}.{1}。支持的构建: {2}+。运行Windows Update并再次尝试。
 UnsupportedLanguageMode                   = PowerShell会话在有限的语言模式下运行。
 LoggedInUserNotAdmin                      = 登录的用户没有管理员的权利。

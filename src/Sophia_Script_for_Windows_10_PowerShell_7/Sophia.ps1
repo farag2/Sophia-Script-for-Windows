@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10 (PowerShell 7)"
 
-	Version: v5.18.3
-	Date: 01.04.2024
+	Version: v5.18.4
+	Date: 07.04.2024
 
 	Copyright (c) 2014—2024 farag, Inestic & lowl1f3
 
@@ -26,7 +26,7 @@
 	.NOTES
 	Supported Windows 10 versions
 	Version: 22H2
-	Builds: 19045.4123+
+	Builds: 19045.4170+
 	Editions: Home/Pro/Enterprise
 	Architecture: x64
 
@@ -70,7 +70,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.18.3 (PowerShell 7) | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2024"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.18.4 (PowerShell 7) | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2024"
 
 # PowerShell 7 doesn't load en-us localization automatically if there is no localization folder in user's language which is determined by $PSUICulture
 # https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/import-localizeddata?view=powershell-7.3
@@ -93,8 +93,8 @@ catch [System.InvalidOperationException]
 {
 	Write-Warning -Message $Localization.PowerShellx86Warning
 
-	Start-Process -FilePath "https://t.me/sophia_chat"
-	Start-Process -FilePath "https://discord.gg/sSryhaEv79"
+	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 	exit
 }

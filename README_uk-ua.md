@@ -14,8 +14,8 @@
   <a href="https://github.com/farag2/Sophia-Script-for-Windows/actions"><img src="https://img.shields.io/github/actions/workflow/status/farag2/Sophia-Script-for-Windows/Sophia.yml?label=GitHub%20Actions&logo=GitHub"></a>
   <img src="https://img.shields.io/badge/PowerShell%205.1%20&%207.3-Ready-blue.svg?color=5391FE&style=flat&logo=powershell">
 
-  <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases"><img src="https://img.shields.io/github/v/release/farag2/Sophia-Script-for-Windows">
-  </a><a href="https://github.com/farag2/Sophia-Script-for-Windows"><img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/farag2/9852d6b9569a91bf69ceba8a94cc97f4/raw/SophiaScript.json"></a>
+  <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases"><img src="https://img.shields.io/github/v/release/farag2/Sophia-Script-for-Windows"></a>
+  <a href="https://github.com/farag2/Sophia-Script-for-Windows"><img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/farag2/9852d6b9569a91bf69ceba8a94cc97f4/raw/SophiaScript.json"></a>
 
   <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases"><img src="https://img.shields.io/github/downloads/farag2/Sophia-Script-for-Windows/total?label=downloads%20%28since%20May%202020%29"></a>
   <a href="https://community.chocolatey.org/packages/sophia"><img src="https://img.shields.io/chocolatey/dt/sophia?color=blue&label=chocolatey%20package"></a>
@@ -26,7 +26,7 @@
   [telegram-news-badge]: https://img.shields.io/badge/Sophia%20News-Telegram-blue?style=flat&logo=Telegram
   [telegram-news]: https://t.me/sophianews
   [telegram-group]: https://t.me/sophia_chat
-  [telegram-group-badge]: https://img.shields.io/badge/Sophia%20Chat-Telegram-blue?style=flat&logo=Telegram
+  [telegram-group-badge]: https://img.shields.io/endpoint?color=neon&label=Sophia%20Chat&style=flat&url=https%3A%2F%2Ftg.sumanjay.workers.dev%2Fsophia_chat
 
   [![Telegram][telegram-news-badge]][telegram-news]
   [![Telegram][telegram-group-badge]][telegram-group]
@@ -114,10 +114,10 @@
 |                Версія                    | Маркетингова назва  |   Збіркa    |       Видання       |
 |:-----------------------------------------|--------------------:|:-----------:|:-------------------:|
 | Windows 11 Insider Preview 24H2          | 2024 Update         | 22509+      | Home/Pro/Enterprise |
-| Windows 11 23H2                          | 2023 Update         | 22631.3155+ | Home/Pro/Enterprise |
-| Windows 10 x64 22H2                      | 2022 Update         | 19045.4046+ | Home/Pro/Enterprise |
-| Windows 10 x64 21H2 Enterprise LTSC 2021 | October 2021 Update | 19044.4046+ | Enterprise          |
-| Windows 10 x64 1809 Enterprise LTSC 2019 | October 2018 Update | 17763.5458+ | Enterprise          |
+| Windows 11 23H2                          | 2023 Update         | 22631.3296+ | Home/Pro/Enterprise |
+| Windows 10 x64 22H2                      | 2022 Update         | 19045.4170+ | Home/Pro/Enterprise |
+| Windows 10 x64 21H2 Enterprise LTSC 2021 | October 2021 Update | 19044.4170+ | Enterprise          |
+| Windows 10 x64 1809 Enterprise LTSC 2019 | October 2018 Update | 17763.5579+ | Enterprise          |
 
 ### Увага
 

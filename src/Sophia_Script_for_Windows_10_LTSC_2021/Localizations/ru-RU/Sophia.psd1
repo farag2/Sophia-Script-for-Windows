@@ -1,7 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Скрипт поддерживает только 64-битную версию Windows.
 UnsupportedOSBuild                        = Скрипт поддерживает только Windows 10 Enterprise LTSC 2021.
-NonLatinUsernameWarning                   = PowerShell 5.1 не компилирует код, если имя пользователя содержит нелатинские символы (включая эмодзи) и написано со строчной буквы. Пожалуйста, используйте PowerShell 7.
 UpdateWarning                             = Ваш билд Windows 10: {0}.{1}. Поддерживаемые сборки: {2}+. Запустите обновление Windows и попробуйте заново.
 UnsupportedLanguageMode                   = Сессия PowerShell работает в ограниченном режиме.
 LoggedInUserNotAdmin                      = Текущий вошедший пользователь не обладает правами администратора.

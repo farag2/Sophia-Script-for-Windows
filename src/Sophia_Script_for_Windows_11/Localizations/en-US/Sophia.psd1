@@ -1,6 +1,5 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBuild                        = The script supports Windows 11 23H2+.
-NonLatinUsernameWarning                   = PowerShell 5.1 does not compile code if the username contains non-Latin characters (including emoji) and is written in lowercase. Please, use PowerShell 7.
 UpdateWarning                             = Your Windows 11 build: {0}.{1}. Supported builds: {2}+. Run Windows Update and try again.
 UnsupportedLanguageMode                   = The PowerShell session in running in a limited language mode.
 LoggedInUserNotAdmin                      = The logged-on user doesn't have admin rights.

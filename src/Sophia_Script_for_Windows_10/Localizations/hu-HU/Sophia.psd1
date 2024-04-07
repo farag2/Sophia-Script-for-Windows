@@ -1,7 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = A szkript csak a 64 bites Windows-t támogatja.
 UnsupportedOSBuild                        = A szkript támogatja a Windows 10 22H2 verzióját.
-NonLatinUsernameWarning                   = A PowerShell 5.1 nem fordít kódot, ha a felhasználónév nem latin betűket tartalmaz (beleértve az emojikat is), és kisbetűvel van írva. Kérjük, használja a PowerShell 7-et.
 UpdateWarning                             = Az Ön Windows 10 építése: {0}.{1}. Támogatott buildek: {2}+. Futtassa a Windows Update programot, és próbálja meg újra.
 UnsupportedLanguageMode                   = A PowerShell munkamenet korlátozott nyelvi üzemmódban fut.
 LoggedInUserNotAdmin                      = A bejelentkezett felhasználó nem rendelkezik admin jogokkal.
