@@ -5,12 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-
 ## 5.18.4 | 6.6.4 — 07.04.2024
 
 * Fixed script not checking version correctly;
-* Script-wide improved compiling .NET code compatibility when `%COMPUTERNAME%` is equal to `%USERNAME%`;
-* Fixed `Cursors` function not extracting files from archives using `%SystemRoot%\System32\tar.exe` if `%COMPUTERNAME%` is equal to `%USERNAME%`;
+* Script-wide improved compiling .NET code compatibility when a username has the first capital letter`;
+  * https://github.com/PowerShell/PowerShell/issues/21070
+* Fixed `Cursors` function not extracting files from archives using `%SystemRoot%\System32\tar.exe` when a username has the first capital letter`;
+  * https://github.com/PowerShell/PowerShell/issues/21070
 * Fixed `Set-UserShellFolderLocation -Root` function not checking drives correctly what results in skipping the whole function;
 * Minor changes.
 
