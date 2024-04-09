@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v5.8.4
-	Date: 07.04.2024
+	Version: v5.8.5
+	Date: 14.04.2024
 
 	Copyright (c) 2014—2024 farag, Inestic & lowl1f3
 
@@ -12,7 +12,7 @@
 	.NOTES
 	Supported Windows 10 version
 	Version: 1809
-	Build: 17763.5579+
+	Build: 17763.5696+
 	Edition: Enterprise LTSC
 	Architecture: x64
 
@@ -3551,14 +3551,6 @@ function Cursors
 		$Default
 	)
 
-	if (-not (Test-Path -Path "$env:SystemRoot\System32\tar.exe"))
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.Skipped -Verbose
-
-		return
-	}
-
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Dark"
@@ -3612,7 +3604,7 @@ function Cursors
 					# Start-Process -FilePath "$env:SystemRoot\System32\tar.exe" -ArgumentList "-xf `"$DownloadsFolder\dark.zip`" -C `"$env:SystemRoot\Cursors\W11_dark_v2.2`" -v"
 					# https://github.com/PowerShell/PowerShell/issues/21070
 					Add-Type -Assembly System.IO.Compression.FileSystem
-					$ZIP = [IO.Compression.ZipFile]::OpenRead("C:\Users\тест\Downloads\dark.zip")
+					$ZIP = [IO.Compression.ZipFile]::OpenRead("$DownloadsFolder\dark.zip")
 					$ZIP.Entries | ForEach-Object -Process {
 						[IO.Compression.ZipFileExtensions]::ExtractToFile($_, "$env:SystemRoot\Cursors\W11_dark_v2.2\$($_.Name)", $true)
 					}
@@ -3737,10 +3729,10 @@ function Cursors
 					}
 
 					# Extract archive. We cannot call tar.exe due to it fails to extract files if username has cyrillic first letter in lowercase
-					# Start-Process -FilePath "$env:SystemRoot\System32\tar.exe" -ArgumentList "-xf `"$DownloadsFolder\dark.zip`" -C `"$env:SystemRoot\Cursors\W11_dark_v2.2`" -v"
+					# Start-Process -FilePath "$env:SystemRoot\System32\tar.exe" -ArgumentList "-xf `"$DownloadsFolder\light.zip`" -C `"$env:SystemRoot\Cursors\W11_dark_v2.2`" -v"
 					# https://github.com/PowerShell/PowerShell/issues/21070
 					Add-Type -Assembly System.IO.Compression.FileSystem
-					$ZIP = [IO.Compression.ZipFile]::OpenRead("C:\Users\тест\Downloads\dark.zip")
+					$ZIP = [IO.Compression.ZipFile]::OpenRead("$DownloadsFolder\light.zip")
 					$ZIP.Entries | ForEach-Object -Process {
 						[IO.Compression.ZipFileExtensions]::ExtractToFile($_, "$env:SystemRoot\Cursors\W11_light_v2.2\$($_.Name)", $true)
 					}
@@ -3758,10 +3750,8 @@ function Cursors
 					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name IBeam -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\beam.cur" -Force
 					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name No -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\unavailable.cur" -Force
 					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name NWPen -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\handwriting.cur" -Force
-					# This is not a typo
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Person -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\pin.cur" -Force
-					# This is not a typo
-					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Pin -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\person.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Person -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\person.cur" -Force
+					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Pin -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\pin.cur" -Force
 					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name precisionhair -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\precision.cur" -Force
 					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "Scheme Source" -PropertyType DWord -Value 1 -Force
 					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeAll -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\move.cur" -Force
@@ -4559,7 +4549,7 @@ function Win32LongPathLimit
 	Display Stop error code when BSoD occurs
 
 	.PARAMETER Disable
-	Do not Stop error code when BSoD occurs
+	Do not display stop error code when BSoD occurs
 
 	.EXAMPLE
 	BSoDStopError -Enable
@@ -5874,7 +5864,7 @@ function InputMethod
 	Set-UserShellFolderLocation -Default
 
 	.NOTES
-	User files or folders won't me moved to a new location
+	User files or folders won't be moved to a new location
 
 	.NOTES
 	Current user
@@ -5917,7 +5907,7 @@ function Set-UserShellFolderLocation
 		https://docs.microsoft.com/en-us/windows/win32/api/shlobj_core/nf-shlobj_core-shgetknownfolderpath
 
 		.NOTES
-		User files or folders won't me moved to a new location
+		User files or folders won't be moved to a new location
 	#>
 	function Set-UserShellFolder
 	{
@@ -7399,6 +7389,9 @@ function ActiveHours
 	https://forum.ru-board.com/profile.cgi?action=show&member=westlife
 
 	.NOTES
+	Microsoft blocked ability to write to UserChoice key for .pdf extention and http and https protocols with KB5034763 release
+
+	.NOTES
 	Machine-wide
 #>
 function Set-Association
@@ -7427,6 +7420,15 @@ function Set-Association
 		[string]
 		$Icon
 	)
+
+	# Microsoft blocked ability to write to UserChoice key for .pdf extention and http and https protocols with KB5034763 release
+	if (@(".pdf", "http", "https") -contains $Extension)
+	{
+		Write-Verbose -Message $Localization.UserChoiceWarning -Verbose
+		Write-Error -Message $Localization.UserChoiceWarning -ErrorAction SilentlyContinue
+
+		return
+	}
 
 	$ProgramPath = [System.Environment]::ExpandEnvironmentVariables($ProgramPath)
 
@@ -8758,7 +8760,7 @@ function RKNBypass
 			# If current region is Russia
 			if (((Get-WinHomeLocation).GeoId -eq "203"))
 			{
-				New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name AutoConfigURL -PropertyType String -Value "https://antizapret.prostovpn.org:8443/proxy.pac" -Force
+				New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name AutoConfigURL -PropertyType String -Value "https://p.thenewone.lol:8443/proxy.pac" -Force
 			}
 		}
 		"Disable"
@@ -8808,7 +8810,7 @@ function PreventEdgeShortcutCreation
 		$Disable
 	)
 
-	if (($null -eq (Get-Package -Name "Microsoft Edge Update" -ProviderName Programs -ErrorAction Ignore)) -or ([System.Version](Get-Package -Name "Microsoft Edge Update" -ProviderName Programs -ErrorAction Ignore).Version -lt [System.Version]"1.3.128.0"))
+	if (-not (Get-Package -Name "Microsoft Edge Update" -ProviderName Programs -ErrorAction Ignore))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message $Localization.Skipped -Verbose
@@ -12002,7 +12004,7 @@ public static void PostMessage()
 	# https://github.com/PowerShell/PowerShell/issues/21070
 	Get-ChildItem -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 
-	# Kill all explorer instances but only one in case enabled to launch folder windows in a separate process
+	# Kill all explorer instances in case launch folder windows in a separate process enabled
 	Get-Process -Name explorer | Stop-Process -Force
 	Start-Sleep -Seconds 3
 

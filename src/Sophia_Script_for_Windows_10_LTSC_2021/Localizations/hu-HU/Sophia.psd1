@@ -50,6 +50,7 @@ ErrorsMessage                             = Hibák/Figyelmeztetések
 DialogBoxOpening                          = Párbeszédablak megjelenítése...
 Disable                                   = Kikapcsolás
 Enable                                    = Engedélyezés
+UserChoiceWarning                         = A Microsoft a KB5034765 kiadással blokkolta a UserChoice kulcs írási hozzáférését a .pdf kiterjesztéshez és a http/https protokollhoz.
 AllFilesFilter                            = Minden fájl
 FolderSelect                              = Válasszon ki egy könyvtárat
 FilesWontBeMoved                          = A fájlok nem lesznek áthelyezve.

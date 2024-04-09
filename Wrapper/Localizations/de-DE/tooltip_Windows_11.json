@@ -1463,16 +1463,6 @@
   },
   {
     "Region": "Start menu",
-    "Function": "UnpinAllStartApps",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Entferne alle \"Pins\" von den Start-Apps."
-      }
-    }
-  },
-  {
-    "Region": "Start menu",
     "Function": "StartLayout",
     "Arg": {
       "Zero": {
@@ -1882,20 +1872,6 @@
       "One": {
         "Tag": "Show",
         "ToolTip": "Eintrag \"Auf Gerät übertragen\" im Kontextmenü von Mediendateien und Ordnern anzeigen (Standardeinstellung)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
-    "Function": "ShareContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Eintrag \"Teilen\" im Kontextmenü ausblenden."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Eintrag \"Teilen\" im Kontextmenü anzeigen (Standardeinstellung)."
       }
     }
   },

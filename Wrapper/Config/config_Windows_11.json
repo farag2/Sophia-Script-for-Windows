@@ -1659,19 +1659,6 @@
   },
   {
     "Region": "Start menu",
-    "Control": "chk",
-    "Required": "false",
-    "Function": "UnpinAllStartApps",
-    "Arg": {
-      "Zero": {
-        "Tag": ""
-      }
-    },
-    "Preset": "",
-    "WindowsDefault": ""
-  },
-  {
-    "Region": "Start menu",
     "Control": "cmb",
     "Required": "false",
     "Function": "StartLayout",
@@ -2140,22 +2127,6 @@
     "Control": "cmb",
     "Required": "false",
     "Function": "CastToDeviceContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide"
-      },
-      "One": {
-        "Tag": "Show"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
-    "Region": "Context menu",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "ShareContext",
     "Arg": {
       "Zero": {
         "Tag": "Hide"

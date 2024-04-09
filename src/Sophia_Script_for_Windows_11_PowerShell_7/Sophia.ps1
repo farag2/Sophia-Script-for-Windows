@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 11 (PowerShell 7)"
 
-	Version: v6.6.4
-	Date: 07.04.2024
+	Version: v6.6.5
+	Date: 14.04.2024
 
 	Copyright (c) 2014—2024 farag, Inestic & lowl1f3
 
@@ -26,7 +26,7 @@
 	.NOTES
 	Supported Windows 11 versions
 	Version: 23H2+
-	Builds: 22631.3296+
+	Builds: 22631.3447+
 	Editions: Home/Pro/Enterprise
 
 	.NOTES
@@ -69,7 +69,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.6.4 (PowerShell 7) | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2024"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.6.5 (PowerShell 7) | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2024"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 
@@ -643,7 +643,7 @@ Win32LongPathLimit -Disable
 # Отображать код Stop-ошибки при появлении BSoD
 BSoDStopError -Enable
 
-# Do not Stop error code when BSoD occurs (default value)
+# Do not display stop error code when BSoD occurs (default value)
 # Не отображать код Stop-ошибки при появлении BSoD (значение по умолчанию)
 # BSoDStopError -Disable
 
@@ -766,7 +766,7 @@ InputMethod -English
 
 <#
 	Change user folders location to the root of any drive using the interactive menu
-	User files or folders won't me moved to a new location. Move them manually
+	User files or folders won't be moved to a new location. Move them manually
 	They're located in the %USERPROFILE% folder by default
 
 	Переместить пользовательские папки в корень любого диска на выбор с помощью интерактивного меню
@@ -777,7 +777,7 @@ Set-UserShellFolderLocation -Root
 
 <#
 	Select folders for user folders location manually using a folder browser dialog
-	User files or folders won't me moved to a new location. Move them manually
+	User files or folders won't be moved to a new location. Move them manually
 	They're located in the %USERPROFILE% folder by default
 
 	Выбрать папки для расположения пользовательских папок вручную, используя диалог "Обзор папок"
@@ -788,7 +788,7 @@ Set-UserShellFolderLocation -Root
 
 <#
 	Change user folders location to the default values
-	User files or folders won't me moved to the new location. Move them manually
+	User files or folders won't be moved to the new location. Move them manually
 	They're located in the %USERPROFILE% folder by default
 
 	Изменить расположение пользовательских папок на значения по умолчанию
@@ -1048,10 +1048,6 @@ SATADrivesRemovableMedia -Disable
 #endregion WSL
 
 #region Start menu
-# Unpin all Start apps
-# Открепить все приложения от начального экрана
-# UnpinAllStartApps
-
 # Show default Start layout (default value)
 # Отображать стандартный макет начального экрана (значение по умолчанию)
 # StartLayout -Default
@@ -1341,14 +1337,6 @@ CastToDeviceContext -Hide
 # Show the "Cast to Device" item in the media files and folders context menu (default value)
 # Отобразить пункт "Передать на устройство" в контекстном меню медиа-файлов и папок (значение по умолчанию)
 # CastToDeviceContext -Show
-
-# Hide the "Share" item from the context menu
-# Скрыть пункт "Отправить" (поделиться) из контекстного меню
-ShareContext -Hide
-
-# Show the "Share" item in the context menu (default value)
-# Отобразить пункт "Отправить" (поделиться) в контекстном меню (значение по умолчанию)
-# ShareContext -Show
 
 # Hide the "Edit with Clipchamp" item from the media files context menu
 # Скрыть пункт "Редактировать в Climpchamp" из контекстного меню

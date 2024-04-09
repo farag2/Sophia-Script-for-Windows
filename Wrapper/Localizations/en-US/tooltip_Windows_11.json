@@ -886,7 +886,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Do not Stop error code when BSoD occurs (default value)."
+        "ToolTip": "Do not display stop error code when BSoD occurs (default value)."
       }
     }
   },
@@ -1054,15 +1054,15 @@
     "Arg": {
       "Zero": {
         "Tag": "Root",
-        "ToolTip": "Change user folders location to the root of any drive using the interactive menu. User files or folders won't me moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default."
+        "ToolTip": "Change user folders location to the root of any drive using the interactive menu. User files or folders won't be moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default."
       },
       "One": {
         "Tag": "Custom",
-        "ToolTip": "Select folders for user folders location manually using a folder browser dialog. User files or folders won't me moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default."
+        "ToolTip": "Select folders for user folders location manually using a folder browser dialog. User files or folders won't be moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default."
       },
       "Two": {
         "Tag": "Default",
-        "ToolTip": "Change user folders location to the default values. User files or folders won't me moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default (default value)."
+        "ToolTip": "Change user folders location to the default values. User files or folders won't be moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default (default value)."
       }
     }
   },
@@ -1458,16 +1458,6 @@
       "Zero": {
         "Tag": "",
         "ToolTip": "Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form. The \"Receive updates for other Microsoft products\" setting will enabled automatically to receive kernel updates."
-      }
-    }
-  },
-  {
-    "Region": "Start menu",
-    "Function": "UnpinAllStartApps",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Unpin all Start apps."
       }
     }
   },
@@ -1882,20 +1872,6 @@
       "One": {
         "Tag": "Show",
         "ToolTip": "Show the \"Cast to Device\" item in the media files and folders context menu (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
-    "Function": "ShareContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"Share\" item from the context menu."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show the \"Share\" item in the context menu (default value)."
       }
     }
   },

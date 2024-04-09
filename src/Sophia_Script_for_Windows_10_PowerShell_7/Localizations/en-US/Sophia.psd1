@@ -57,6 +57,7 @@ ErrorsMessage                             = Errors/Warnings
 DialogBoxOpening                          = Displaying the dialog box...
 Disable                                   = Disable
 Enable                                    = Enable
+UserChoiceWarning                         = Microsoft has blocked write access to UserChoice key for .pdf extention and http/https protocols with KB5034765 release.
 AllFilesFilter                            = All Files
 FolderSelect                              = Select a folder
 FilesWontBeMoved                          = Files will not be moved.

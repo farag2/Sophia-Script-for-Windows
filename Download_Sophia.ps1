@@ -215,7 +215,16 @@ public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 [return: MarshalAs(UnmanagedType.Bool)]
 public static extern bool SetForegroundWindow(IntPtr hWnd);
 "@
+	}
+
+# PowerShell 7 has CompilerOptions argument instead of CompilerParameters as PowerShell 5 has
+# https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/add-type#-compileroptions
+if ($Host.Version.Major -eq 7)
+{
+	$Signature.Remove("CompilerParameters")
+	$Signature.Add("CompilerOptions", $CompilerParameters)
 }
+
 if (-not ("WinAPI.ForegroundWindow" -as [type]))
 {
 	Add-Type @Signature

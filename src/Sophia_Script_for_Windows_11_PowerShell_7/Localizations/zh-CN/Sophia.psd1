@@ -56,6 +56,7 @@ ErrorsMessage                             = 错误/警告
 DialogBoxOpening                          = 显示对话窗口.....
 Disable                                   = 禁用
 Enable                                    = 启用
+UserChoiceWarning                         = 微软在发布 KB5034765 时阻止了对 .pdf 扩展和 http/https 协议的 UserChoice 密钥的写入访问。
 AllFilesFilter                            = 所有文件
 FolderSelect                              = 选择一个文件夹
 FilesWontBeMoved                          = 文件将不会被移动。

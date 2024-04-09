@@ -48,6 +48,7 @@ ErrorsMessage                             = Errori/avvisi
 DialogBoxOpening                          = Visualizzazione della finestra di dialogo...
 Disable                                   = Disattivare
 Enable                                    = Abilitare
+UserChoiceWarning                         = Microsoft ha bloccato l'accesso in scrittura alla chiave UserChoice per l'estensione .pdf e il protocollo http/https con il rilascio della KB5034765.
 AllFilesFilter                            = Tutti i file
 FolderSelect                              = Selezionare una cartella
 FilesWontBeMoved                          = I file non verranno trasferiti.

@@ -50,6 +50,7 @@ ErrorsMessage                             = Fehler/Warnungen
 DialogBoxOpening                          = Anzeigen des Dialogfensters...
 Disable                                   = Deaktivieren
 Enable                                    = Aktivieren
+UserChoiceWarning                         = Microsoft hat den Schreibzugriff auf den UserChoice-Schlüssel für die .pdf-Erweiterung und das http/https-Protokoll mit der Version KB5034765 gesperrt.
 AllFilesFilter                            = Alle Dateien
 FolderSelect                              = Einen Ordner auswählen
 FilesWontBeMoved                          = Dateien werden nicht verschoben.

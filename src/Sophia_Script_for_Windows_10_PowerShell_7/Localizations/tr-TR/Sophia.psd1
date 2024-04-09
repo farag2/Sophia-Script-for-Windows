@@ -57,6 +57,7 @@ ErrorsMessage                             = Hatalar/Uyarılar
 DialogBoxOpening                          = İletişim kutusu görüntüleniyor...
 Disable                                   = Devre dışı bırak
 Enable                                    = Aktif et
+UserChoiceWarning                         = Microsoft, KB5034765 sürümü ile .pdf uzantısı ve http/https protokolü için UserChoice anahtarına yazma erişimini engellemiştir.
 AllFilesFilter                            = Tüm Dosyalar
 FolderSelect                              = Klasör seç
 FilesWontBeMoved                          = Dosyalar taşınmayacak.
