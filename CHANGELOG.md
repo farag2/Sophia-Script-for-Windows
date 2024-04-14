@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Microsoft has blocked write access to UserChoice key for .pdf extention and http/https protocols with KB5034765 release.
 * `RKNBypass` updated;
   * Changed URL to `https://p.thenewone.lol:8443/proxy.pac`. Applicable for Russia only.
-* Minor numerous typos.
+* Fixed numerous typos.
 
 ## 5.18.4 | 6.6.4 — 07.04.2024
 
