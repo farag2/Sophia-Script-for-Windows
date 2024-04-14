@@ -9029,7 +9029,7 @@ function WindowsLatestUpdate
 	https://forum.ru-board.com/profile.cgi?action=show&member=westlife
 
 	.NOTES
-	Microsoft blocked ability to write to UserChoice key for .pdf extention and http and https protocols with
+	Microsoft blocked ability to write to UserChoice key for .pdf extention and http and https protocols with KB5034763 release
 
 	.NOTES
 	Machine-wide
