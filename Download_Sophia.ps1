@@ -154,6 +154,23 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 }
 Invoke-WebRequest @Parameters
 
+if (Test-Path -Path "$DownloadsFolder\Sophia.Script.zip")
+{
+	continue
+}
+else
+{
+	Write-Verbose -Message "Your Windows build is unsupported. Run Windows Update and try again." -Verbose
+
+ 	# Check for updates
+	Start-Process -FilePath "$env:SystemRoot\System32\UsoClient.exe" -ArgumentList StartInteractiveScan
+
+	# Open the "Windows Update" page
+	Start-Process -FilePath "ms-settings:windowsupdate"
+    
+	return
+}
+
 $Parameters = @{
 	Path            = "$DownloadsFolder\Sophia.Script.zip"
 	DestinationPath = "$DownloadsFolder"
