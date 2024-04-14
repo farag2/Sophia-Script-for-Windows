@@ -1248,7 +1248,7 @@ function DiagnosticDataLevel
 	{
 		"Minimal"
 		{
-			if (Get-WindowsEdition -Online | Where-Object -FilterScript {($_.Edition -like "Enterprise*") -or ($_.Edition -eq "Education")})
+			if (Get-WindowsEdition -Online | Where-Object -FilterScript {($_.Edition -eq "Enterprise") -or ($_.Edition -eq "Education")})
 			{
 				# Security level
 				New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 0 -Force
@@ -11490,7 +11490,10 @@ function UninstallUWPApps
 			"Microsoft.OutlookForWindows",
 
 			# Chat (Microsoft Teams)
-			"MicrosoftTeams"
+			"MicrosoftTeams",
+
+			# Microsoft Copilot
+			"Microsoft.Windows.Ai.CoPilot.Provider"
 		)
 		foreach ($Package in $Packages)
 		{
@@ -13781,9 +13784,6 @@ function PUAppsDetection
 	DefenderSandbox -Disable
 
 	.NOTES
-	There is a bug in KVM with QEMU: enabling this function causes VM to freeze up during the loading phase of Windows
-
-	.NOTES
 	Machine-wide
 #>
 function DefenderSandbox
@@ -14365,7 +14365,7 @@ function WindowsSandbox
 		$Enable
 	)
 
-	if (-not (Get-WindowsEdition -Online | Where-Object -FilterScript {($_.Edition -eq "Professional") -or ($_.Edition -like "Enterprise*")}))
+	if (-not (Get-WindowsEdition -Online | Where-Object -FilterScript {($_.Edition -eq "Professional") -or ($_.Edition -eq "Enterprise")}))
 	{
 		return
 	}

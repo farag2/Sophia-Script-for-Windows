@@ -11497,9 +11497,6 @@ function PUAppsDetection
 	DefenderSandbox -Disable
 
 	.NOTES
-	There is a bug in KVM with QEMU: enabling this function causes VM to freeze up during the loading phase of Windows
-
-	.NOTES
 	Machine-wide
 #>
 function DefenderSandbox
@@ -12080,11 +12077,6 @@ function WindowsSandbox
 		[switch]
 		$Enable
 	)
-
-	if (-not (Get-WindowsEdition -Online | Where-Object -FilterScript {($_.Edition -eq "Professional") -or ($_.Edition -like "Enterprise*")}))
-	{
-		return
-	}
 
 	switch ($PSCmdlet.ParameterSetName)
 	{

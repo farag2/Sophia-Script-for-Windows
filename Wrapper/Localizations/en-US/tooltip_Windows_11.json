@@ -1661,6 +1661,20 @@
   },
   {
     "Region": "Microsoft Defender & Security",
+    "Function": "DefenderSandbox",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Enable sandboxing for Microsoft Defender."
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Disable sandboxing for Microsoft Defender (default value)."
+      }
+    }
+  },
+  {
+    "Region": "Microsoft Defender & Security",
     "Function": "DismissMSAccount",
     "Arg": {
       "Zero": {
@@ -1863,20 +1877,6 @@
   },
   {
     "Region": "Context menu",
-    "Function": "CastToDeviceContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"Cast to Device\" item from the media files and folders context menu."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show the \"Cast to Device\" item in the media files and folders context menu (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
     "Function": "EditWithClipchampContext",
     "Arg": {
       "Zero": {
@@ -1900,34 +1900,6 @@
       "One": {
         "Tag": "Show",
         "ToolTip": "Show the \"Print\" item in the .bat and .cmd context menu (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
-    "Function": "IncludeInLibraryContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"Include in Library\" item from the folders and drives context menu."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show the \"Include in Library\" item in the folders and drives context menu (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
-    "Function": "SendToContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"Send to\" item from the folders context menu."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show the \"Send to\" item in the folders context menu (default value)."
       }
     }
   },

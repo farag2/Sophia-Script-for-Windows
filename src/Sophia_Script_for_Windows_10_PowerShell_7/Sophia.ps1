@@ -1253,13 +1253,8 @@ PUAppsDetection -Enable
 # Выключить обнаружение потенциально нежелательных приложений и блокировать их (значение по умолчанию)
 # PUAppsDetection -Disable
 
-<#
-	Enable sandboxing for Microsoft Defender
-	There is a bug in KVM with QEMU: enabling this function causes VM to freeze up during the loading phase of Windows
-
-	Включить песочницу для Microsoft Defender
-	В KVM с QEMU присутствует баг: включение этой функции приводит ВМ к зависанию во время загрузки Windows
-#>
+# Enable sandboxing for Microsoft Defender
+# Включить песочницу для Microsoft Defender
 DefenderSandbox -Enable
 
 # Disable sandboxing for Microsoft Defender (default value)

@@ -1197,6 +1197,14 @@ PUAppsDetection -Enable
 # Выключить обнаружение потенциально нежелательных приложений и блокировать их (значение по умолчанию)
 # PUAppsDetection -Disable
 
+# Enable sandboxing for Microsoft Defender
+# Включить песочницу для Microsoft Defender
+DefenderSandbox -Enable
+
+# Disable sandboxing for Microsoft Defender (default value)
+# Выключить песочницу для Microsoft Defender (значение по умолчанию)
+# DefenderSandbox -Disable
+
 # Dismiss Microsoft Defender offer in the Windows Security about signing in Microsoft account
 # Отклонить предложение Microsoft Defender в "Безопасность Windows" о входе в аккаунт Microsoft
 DismissMSAccount
@@ -1330,14 +1338,6 @@ CABInstallContext -Show
 # Скрыть пункт "Установить" из контекстного меню .cab архивов (значение по умолчанию)
 # CABInstallContext -Hide
 
-# Hide the "Cast to Device" item from the media files and folders context menu
-# Скрыть пункт "Передать на устройство" из контекстного меню медиа-файлов и папок
-CastToDeviceContext -Hide
-
-# Show the "Cast to Device" item in the media files and folders context menu (default value)
-# Отобразить пункт "Передать на устройство" в контекстном меню медиа-файлов и папок (значение по умолчанию)
-# CastToDeviceContext -Show
-
 # Hide the "Edit with Clipchamp" item from the media files context menu
 # Скрыть пункт "Редактировать в Climpchamp" из контекстного меню
 EditWithClipchampContext -Hide
@@ -1353,22 +1353,6 @@ PrintCMDContext -Hide
 # Show the "Print" item in the .bat and .cmd context menu (default value)
 # Отобразить пункт "Печать" в контекстном меню .bat и .cmd файлов (значение по умолчанию)
 # PrintCMDContext -Show
-
-# Hide the "Include in Library" item from the folders and drives context menu
-# Скрыть пункт "Добавить в библиотеку" из контекстного меню папок и дисков
-IncludeInLibraryContext -Hide
-
-# Show the "Include in Library" item in the folders and drives context menu (default value)
-# Отобразить пункт "Добавить в библиотеку" в контекстном меню папок и дисков (значение по умолчанию)
-# IncludeInLibraryContext -Show
-
-# Hide the "Send to" item from the folders context menu
-# Скрыть пункт "Отправить" из контекстного меню папок
-SendToContext -Hide
-
-# Show the "Send to" item in the folders context menu (default value)
-# Отобразить пункт "Отправить" в контекстном меню папок (значение по умолчанию)
-# SendToContext -Show
 
 # Hide the "Compressed (zipped) Folder" item from the "New" context menu
 # Скрыть пункт "Сжатая ZIP-папка" из контекстного меню "Создать"

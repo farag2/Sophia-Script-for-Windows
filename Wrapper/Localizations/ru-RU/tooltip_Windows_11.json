@@ -1661,6 +1661,20 @@
   },
   {
     "Region": "Microsoft Defender & Security",
+    "Function": "DefenderSandbox",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Включить песочницу для Microsoft Defender."
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Выключить песочницу для Microsoft Defender (значение по умолчанию)."
+      }
+    }
+  },
+  {
+    "Region": "Microsoft Defender & Security",
     "Function": "DismissMSAccount",
     "Arg": {
       "Zero": {
@@ -1863,20 +1877,6 @@
   },
   {
     "Region": "Context menu",
-    "Function": "CastToDeviceContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть пункт \"Передать на устройство\" из контекстного меню медиа-файлов и папок."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Отобразить пункт \"Передать на устройство\" в контекстном меню медиа-файлов и папок (значение по умолчанию)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
     "Function": "EditWithClipchampContext",
     "Arg": {
       "Zero": {
@@ -1900,34 +1900,6 @@
       "One": {
         "Tag": "Show",
         "ToolTip": "Отобразить пункт \"Печать\" в контекстном меню .bat и .cmd файлов (значение по умолчанию)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
-    "Function": "IncludeInLibraryContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть пункт \"Добавить в библиотеку\" из контекстного меню папок и дисков."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Отобразить пункт \"Добавить в библиотеку\" в контекстном меню папок и дисков (значение по умолчанию)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
-    "Function": "SendToContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть пункт \"Отправить\" из контекстного меню папок."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Отобразить пункт \"Отправить\" в контекстном меню папок (значение по умолчанию)."
       }
     }
   },

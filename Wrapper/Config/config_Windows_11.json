@@ -1890,6 +1890,22 @@
   },
   {
     "Region": "Microsoft Defender & Security",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "DefenderSandbox",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One"
+  },
+  {
+    "Region": "Microsoft Defender & Security",
     "Control": "chk",
     "Required": "false",
     "Function": "DismissMSAccount",
@@ -2126,22 +2142,6 @@
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
-    "Function": "CastToDeviceContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide"
-      },
-      "One": {
-        "Tag": "Show"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
-    "Region": "Context menu",
-    "Control": "cmb",
-    "Required": "false",
     "Function": "EditWithClipchampContext",
     "Arg": {
       "Zero": {
@@ -2159,38 +2159,6 @@
     "Control": "cmb",
     "Required": "false",
     "Function": "PrintCMDContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide"
-      },
-      "One": {
-        "Tag": "Show"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
-    "Region": "Context menu",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "IncludeInLibraryContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide"
-      },
-      "One": {
-        "Tag": "Show"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
-    "Region": "Context menu",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "SendToContext",
     "Arg": {
       "Zero": {
         "Tag": "Hide"
