@@ -1974,20 +1974,6 @@
     }
   },
   {
-    "Region": "Context menu",
-    "Function": "Windows10ContextMenu",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Windows 10-Kontextmenüstil deaktivieren (Standardeinstellung)."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Windows 10-Kontextmenüstil aktivieren."
-      }
-    }
-  },
-  {
     "Region": "Update Policies",
     "Function": "UpdateLGPEPolicies",
     "Arg": {

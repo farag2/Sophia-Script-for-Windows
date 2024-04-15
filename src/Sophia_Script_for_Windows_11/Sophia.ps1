@@ -1382,14 +1382,6 @@ OpenWindowsTerminalAdminContext -Enable
 # Do not open Windows Terminal in context menu as administrator by default (default value)
 # Не открывать Windows Terminal из контекстного меню от имени администратора по умолчанию (значение по умолчанию)
 # OpenWindowsTerminalAdminContext -Disable
-
-# Disable the Windows 10 context menu style (default value)
-# Отключить стиль контекстного меню из Windows 10 (значение по умолчанию)
-Windows10ContextMenu -Disable
-
-# Enable the Windows 10 context menu style
-# Включить стиль контекстного меню из Windows 10
-# Windows10ContextMenu -Enable
 #endregion Context menu
 
 #region Update Policies

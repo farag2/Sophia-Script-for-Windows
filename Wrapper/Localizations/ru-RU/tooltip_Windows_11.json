@@ -1974,20 +1974,6 @@
     }
   },
   {
-    "Region": "Context menu",
-    "Function": "Windows10ContextMenu",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Отключить стиль контекстного меню из Windows 10 (значение по умолчанию)."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Включить стиль контекстного меню из Windows 10."
-      }
-    }
-  },
-  {
     "Region": "Update Policies",
     "Function": "UpdateLGPEPolicies",
     "Arg": {

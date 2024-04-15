@@ -1974,20 +1974,6 @@
     }
   },
   {
-    "Region": "Context menu",
-    "Function": "Windows10ContextMenu",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Disable the Windows 10 context menu style (default value)."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Enable the Windows 10 context menu style"
-      }
-    }
-  },
-  {
     "Region": "Update Policies",
     "Function": "UpdateLGPEPolicies",
     "Arg": {

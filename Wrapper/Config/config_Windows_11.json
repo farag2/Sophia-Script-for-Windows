@@ -2251,22 +2251,6 @@
     "WindowsDefault": "One"
   },
   {
-    "Region": "Context menu",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "Windows10ContextMenu",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable"
-      },
-      "One": {
-        "Tag": "Enable"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "Zero"
-  },
-  {
     "Region": "Update Policies",
     "Control": "chk",
     "Required": "false",
