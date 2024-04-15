@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## 5.18.5 | 6.6.5 — 14.04.2024
 
 * Removed `ShareContext` & `UnpinAllStartApps` functions for `Windows 11`;
-  * Start icon positions are stored in a binary format in an obfuscated JSON file `$env:LOCALAPPDATA\Packages\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\LocalState\start2.bin`, and it's changed with every update;
+  * Start icon positions are stored in a binary obfuscated JSON file `$env:LOCALAPPDATA\Packages\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\LocalState\start2.bin`, and it's changed with every update;
   * Take a look at https://gist.github.com/rad1ke/d8c4121931633eca04ca625d09ff1a11#file-windows-11-setup-ps1-L42 if you're interested in the function.
 * Fixed `Cursors` function;
   * Please re-run it by using `. .\Functions.ps1` module
