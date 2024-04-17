@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed `Cursors` function;
   * Please re-run it by using `. .\Functions.ps1` module
 * Added a warning for `Set-Association` function: `.pdf` and `http/https` protocol will be skipped;
-  * Microsoft has blocked write access to UserChoice key for .pdf extention and http/https protocols with KB5034765 release.
+  * Microsoft has blocked write access to UserChoice key for .pdf extention and http/https protocols with KB5034765 and KB5034763 for Windows 11 and Windows 10 respectively.
 * `RKNBypass` updated;
   * Changed URL to `https://p.thenewone.lol:8443/proxy.pac`. Applicable for Russia only.
 * Fixed numerous typos.
