@@ -12,7 +12,7 @@
 	.DESCRIPTION
 	Place the "#" char before function if you don't want to run it
 	Remove the "#" char before function if you want to run it
-	Every tweak in the preset file has its' corresponding function to restore the default settings
+	Every tweak in the preset file has its corresponding function to restore the default settings
 
 	.EXAMPLE Run the whole script
 	.\Sophia.ps1
@@ -1000,7 +1000,7 @@ RKNBypass -Enable
 # Включить все необходимые зависимости (может потребоваться перезагрузка) и открыть страницу WSA в Microsoft Store, чтобы вручную установить Windows Subsystem for Android™ with Amazon Appstore
 # Install-WSA
 
-# List Microsoft Edge channels to prevent desktop shortcut creation upon its' update
+# List Microsoft Edge channels to prevent desktop shortcut creation upon its update
 # Перечислите каналы Microsoft Edge для предотвращения создания ярлыков на рабочем столе после его обновления
 PreventEdgeShortcutCreation -Channels Stable, Beta, Dev, Canary
 

@@ -62,7 +62,7 @@ function InitialActions
 	# https://github.com/PowerShell/PowerShell/issues/2138
 	$Script:ProgressPreference = "SilentlyContinue"
 
-	# Extract strings from %SystemRoot%\System32\shell32.dll using its' number
+	# Extract strings from %SystemRoot%\System32\shell32.dll using its number
 	# https://github.com/SamuelArnold/StarKill3r/blob/master/Star%20Killer/Star%20Killer/bin/Debug/Scripts/SANS-SEC505-master/scripts/Day1-PowerShell/Expand-IndirectString.ps1
 	# [WinAPI.GetStrings]::GetIndirectString("@%SystemRoot%\system32\schedsvc.dll,-100")
 
@@ -9402,7 +9402,7 @@ function RKNBypass
 	Desktop shortcut creation upon Microsoft Edge update
 
 	.PARAMETER Channels
-	List Microsoft Edge channels to prevent desktop shortcut creation upon its' update
+	List Microsoft Edge channels to prevent desktop shortcut creation upon its update
 
 	.PARAMETER Disable
 	Do not prevent desktop shortcut creation upon Microsoft Edge update
@@ -13168,7 +13168,7 @@ public static void PostMessage()
 		Set-WinHomeLocation -GeoId $Script:Region
 	}
 
-	# Apply policies found in registry to re-build database database due to gpedit.msc relies in its' own database
+	# Apply policies found in registry to re-build database database due to gpedit.msc relies in its own database
 	if ((Test-Path -Path "$env:TEMP\Computer.txt") -or (Test-Path -Path "$env:TEMP\User.txt"))
 	{
 		if (Test-Path -Path "$env:TEMP\Computer.txt")
@@ -13187,7 +13187,7 @@ public static void PostMessage()
 	# https://github.com/PowerShell/PowerShell/issues/21070
 	Get-ChildItem -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 
-	# Kill all explorer instances in case launch folder windows in a separate process enabled
+	# Kill all explorer instances in case "launch folder windows in a separate process" enabled
 	Get-Process -Name explorer | Stop-Process -Force
 	Start-Sleep -Seconds 3
 
@@ -13203,7 +13203,7 @@ public static void PostMessage()
 	# Check whether any of scheduled tasks were created. Unless open Task Scheduler
 	if ($Script:ScheduledTasks)
 	{
-		# Find and close taskschd.msc by its' argument
+		# Find and close taskschd.msc by its argument
 		$taskschd_Process_ID = (Get-CimInstance -ClassName CIM_Process | Where-Object -FilterScript {$_.Name -eq "mmc.exe"} | Where-Object -FilterScript {
 			$_.CommandLine -match "taskschd.msc"
 		}).Handle

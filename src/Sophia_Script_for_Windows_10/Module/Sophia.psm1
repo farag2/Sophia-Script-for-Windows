@@ -62,7 +62,7 @@ function InitialActions
 	# https://github.com/PowerShell/PowerShell/issues/2138
 	$Script:ProgressPreference = "SilentlyContinue"
 
-	# Extract strings from %SystemRoot%\System32\shell32.dll using its' number
+	# Extract strings from %SystemRoot%\System32\shell32.dll using its number
 	# https://github.com/SamuelArnold/StarKill3r/blob/master/Star%20Killer/Star%20Killer/bin/Debug/Scripts/SANS-SEC505-master/scripts/Day1-PowerShell/Expand-IndirectString.ps1
 	# [WinAPI.GetStrings]::GetIndirectString("@%SystemRoot%\system32\schedsvc.dll,-100")
 
@@ -3822,12 +3822,13 @@ function UnpinTaskbarShortcuts
 			Store
 			{
 				# Start-Job is used due to that the calling this function before UninstallUWPApps breaks the retrieval of the localized UWP apps packages names
-				if ((New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items() | Where-Object -FilterScript {$_.Path -eq "Microsoft.WindowsStore_8wekyb3d8bbwe!App"})
+				if ((New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items() | Where-Object -FilterScript {$_.Name -eq "Microsoft Store"})
 				{
 					Start-Job -ScriptBlock {
-						$Apps = (New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
 						# Extract the localized "Unpin from taskbar" string from shell32.dll
-						($Apps | Where-Object -FilterScript {$_.Name -eq "Microsoft Store"}).Verbs() | Where-Object -FilterScript {$_.Name -eq $using:LocalizedString} | ForEach-Object -Process {$_.DoIt()}
+						((New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items() | Where-Object -FilterScript {
+							$_.Name -eq "Microsoft Store"
+						}).Verbs() | Where-Object -FilterScript {$_.Name -eq $using:LocalizedString} | ForEach-Object -Process {$_.DoIt()}
 					} | Receive-Job -Wait -AutoRemoveJob
 				}
 			}
@@ -5028,7 +5029,7 @@ function OneDrive
 
 			Stop-Process -Name OneDrive, OneDriveSetup, FileCoAuth -Force -ErrorAction Ignore
 
-			# Getting link to the OneDriveSetup.exe and its' argument(s)
+			# Getting link to the OneDriveSetup.exe and its argument(s)
 			[string[]]$OneDriveSetup = ($UninstallString -replace("\s*/", ",/")).Split(",").Trim()
 			if ($OneDriveSetup.Count -eq 2)
 			{
@@ -5109,7 +5110,7 @@ public static bool MarkFileDelete (string sourcefile)
 
 			# Do not restart the File Explorer process automatically if it stops in order to unload libraries
 			New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoRestartShell -PropertyType DWord -Value 0 -Force
-			# Kill all explorer instances in case launch folder windows in a separate process enabled
+			# Kill all explorer instances in case "launch folder windows in a separate process" enabled
 			Get-Process -Name explorer | Stop-Process -Force
 			Start-Sleep -Seconds 3
 			# Restart the File Explorer process automatically if it stops in order to unload libraries
@@ -10463,7 +10464,7 @@ function RKNBypass
 	Desktop shortcut creation upon Microsoft Edge update
 
 	.PARAMETER Channels
-	List Microsoft Edge channels to prevent desktop shortcut creation upon its' update
+	List Microsoft Edge channels to prevent desktop shortcut creation upon its update
 
 	.PARAMETER Disable
 	Do not prevent desktop shortcut creation upon Microsoft Edge update
@@ -11576,7 +11577,7 @@ function UninstallUWPApps
 
 		$Window.Close() | Out-Null
 
-		# If Xbox Game Bar is selected to uninstall stop its' processes
+		# If Xbox Game Bar is selected to uninstall stop its processes
 		if ($PackagesToRemove -match "Microsoft.XboxGamingOverlay")
 		{
 			Get-Process -Name GameBar, GameBarFTServer -ErrorAction Ignore | Stop-Process -Force
@@ -15432,7 +15433,7 @@ public static void PostMessage()
 		Set-WinHomeLocation -GeoId $Script:Region
 	}
 
-	# Apply policies found in registry to re-build database database due to gpedit.msc relies in its' own database
+	# Apply policies found in registry to re-build database database due to gpedit.msc relies in its own database
 	if ((Test-Path -Path "$env:TEMP\Computer.txt") -or (Test-Path -Path "$env:TEMP\User.txt"))
 	{
 		if (Test-Path -Path "$env:TEMP\Computer.txt")
@@ -15461,7 +15462,7 @@ public static void PostMessage()
 	# https://github.com/PowerShell/PowerShell/issues/21070
 	Get-ChildItem -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 
-	# Kill all explorer instances in case launch folder windows in a separate process enabled
+	# Kill all explorer instances in case "launch folder windows in a separate process" enabled
 	Get-Process -Name explorer | Stop-Process -Force
 	Start-Sleep -Seconds 3
 
@@ -15477,7 +15478,7 @@ public static void PostMessage()
 	# Check whether any of scheduled tasks were created. Unless open Task Scheduler
 	if ($Script:ScheduledTasks)
 	{
-		# Find and close taskschd.msc by its' argument
+		# Find and close taskschd.msc by its argument
 		$taskschd_Process_ID = (Get-CimInstance -ClassName CIM_Process | Where-Object -FilterScript {$_.Name -eq "mmc.exe"} | Where-Object -FilterScript {
 			$_.CommandLine -match "taskschd.msc"
 		}).Handle
@@ -15596,13 +15597,6 @@ public static void PostMessage()
 	$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New($ToastXML)
 	[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("Sophia").Show($ToastMessage)
 	#endregion Toast notifications
-
-	# Check for UWP apps updates
-	Write-Information -MessageData "" -InformationAction Continue
-	# Extract the localized "Please wait..." string from shell32.dll
-	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
-
-	Get-CimInstance -Namespace root/CIMV2/mdm/dmmap -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 | Invoke-CimMethod -MethodName UpdateScanMethod
 }
 #endregion Post Actions
 
