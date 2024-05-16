@@ -245,15 +245,29 @@
   },
   {
     "Region": "Privacy & Telemetry",
-    "Function": "BrowsingHistory",
+    "Function": "StartRecommendationsTips",
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Do not show websites from your browsing history in the Start menu."
+        "ToolTip": "Do not show recommendations for tips, shortcuts, new apps, and more in the Start menu."
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show websites from your browsing history in the Start menu (default value)."
+        "ToolTip": "Show recommendations for tips, shortcuts, new apps, and more in the Start menu (default value)."
+      }
+    }
+  },
+  {
+    "Region": "Privacy & Telemetry",
+    "Function": "StartAccountNotifications",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Do not show Microsoft account-related notifications on Start Menu in the Start menu."
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Show Microsoft account-related notifications on Start Menu in the Start menu (default value)."
       }
     }
   },

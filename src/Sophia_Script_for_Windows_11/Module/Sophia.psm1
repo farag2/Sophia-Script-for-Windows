@@ -228,6 +228,8 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		winutil             = "$env:TEMP\Winutil.log"
 		# https://www.youtube.com/watch?v=5NBqbUUB1Pk
 		WinClean             = "$env:ProgramFiles\WinClean Plus Apps"
+		# https://github.com/Atlas-OS/Atlas
+		AtlasOS              = "$env:SystemRoot\AtlasModules"
 	}
 	foreach ($Tweaker in $Tweakers.Keys)
 	{
@@ -2223,27 +2225,24 @@ function BingSearch
 
 <#
 	.SYNOPSIS
-	Browsing history in the Start menu
+	Recommendations for tips, shortcuts, new apps, and more in the Start menu
 
 	.PARAMETER Hide
-	Do not show websites from your browsing history in the Start menu
+	Do not show recommendations for tips, shortcuts, new apps, and more in the Start menu
 
 	.PARAMETER Show
-	Show websites from your browsing history in the Start menu
+	Show recommendations for tips, shortcuts, new apps, and more in the Start menu
 
 	.EXAMPLE
-	BrowsingHistory -Hide
+	StartRecommendationsTips -Hide
 
 	.EXAMPLE
-	BrowsingHistory -Show
-
-	.NOTES
-	Windows 11 build 23451 (Dev) required
+	StartRecommendationsTips -Show
 
 	.NOTES
 	Current user
 #>
-function BrowsingHistory
+function StartRecommendationsTips
 {
 	param
 	(
@@ -2262,23 +2261,66 @@ function BrowsingHistory
 		$Show
 	)
 
-	if ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber -lt 23451)
+	switch ($PSCmdlet.ParameterSetName)
 	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.Skipped -Verbose
-
-		return
+		"Hide"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_IrisRecommendations -PropertyType DWord -Value 0 -Force
+		}
+		"Show"
+		{
+			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_IrisRecommendations -Force -ErrorAction Ignore
+		}
 	}
+}
+
+<#
+	.SYNOPSIS
+	Microsoft account-related notifications on Start Menu
+
+	.PARAMETER Hide
+	Do not show Microsoft account-related notifications on Start Menu in the Start menu
+
+	.PARAMETER Show
+	Show Microsoft account-related notifications on Start Menu in the Start menu
+
+	.EXAMPLE
+	StartAccountNotifications -Hide
+
+	.EXAMPLE
+	StartAccountNotifications -Show
+
+	.NOTES
+	Current user
+#>
+function StartAccountNotifications
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Hide"
+		)]
+		[switch]
+		$Hide,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Show"
+		)]
+		[switch]
+		$Show
+	)
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Hide"
 		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_RecoPersonalizedSites -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_AccountNotifications -PropertyType DWord -Value 0 -Force
 		}
 		"Show"
 		{
-			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_RecoPersonalizedSites -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_AccountNotifications -Force -ErrorAction Ignore
 		}
 	}
 }

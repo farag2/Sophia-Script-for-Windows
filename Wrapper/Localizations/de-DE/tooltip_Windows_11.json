@@ -245,15 +245,29 @@
   },
   {
     "Region": "Privacy & Telemetry",
-    "Function": "BrowsingHistory",
+    "Function": "StartRecommendationsTips",
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Zeigt keine Websites aus dem Browserverlauf im Startmenü an."
+        "ToolTip": "Im Startmenü werden keine Empfehlungen für Tipps, Verknüpfungen, neue Apps und mehr angezeigt."
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Zeigt Websites aus dem Browserverlauf im Startmenü an (Standardeinstellung)."
+        "ToolTip": "Empfehlungen für Tipps, Verknüpfungen, neue Apps und mehr im Startmenü anzeigen (Standardeinstellung)."
+      }
+    }
+  },
+  {
+    "Region": "Privacy & Telemetry",
+    "Function": "StartAccountNotifications",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Microsoft-Kontobezogene Benachrichtigungen werden im Startmenü nicht angezeigt."
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Microsoft-Kontobezogene Benachrichtigungen im Startmenü im Startmenü anzeigen (Standardeinstellung)."
       }
     }
   },

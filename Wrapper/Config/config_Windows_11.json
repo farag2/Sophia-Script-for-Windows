@@ -285,7 +285,23 @@
     "Region": "Privacy & Telemetry",
     "Control": "cmb",
     "Required": "false",
-    "Function": "BrowsingHistory",
+    "Function": "StartRecommendationsTips",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One"
+  },
+  {
+    "Region": "Privacy & Telemetry",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "StartAccountNotifications",
     "Arg": {
       "Zero": {
         "Tag": "Hide"

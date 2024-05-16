@@ -72,6 +72,8 @@ Clear-Host
 
 $Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.18.5 (PowerShell 7) | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2024"
 
+Remove-Module -Name Sophia -Force -ErrorAction Ignore
+
 # PowerShell 7 doesn't load en-us localization automatically if there is no localization folder in user's language which is determined by $PSUICulture
 # https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/import-localizeddata?view=powershell-7.3
 # https://github.com/PowerShell/PowerShell/pull/19896
@@ -265,6 +267,14 @@ BingSearch -Disable
 # Enable Bing search in the Start Menu (default value)
 # Включить поиск через Bing в меню "Пуск" (значение по умолчанию)
 # BingSearch -Enable
+
+# Do not show Microsoft account-related notifications on Start Menu in the Start menu
+# Не показывать в меню "Пуск" уведомления, связанные с учетной записью Microsoft
+StartAccountNotifications -Hide
+
+# Show Microsoft account-related notifications on Start Menu in the Start menu (default value)
+# Переодически показывать в меню "Пуск" уведомления, связанные с учетной записью Microsoft (значение по умолчанию)
+# StartAccountNotifications -Show
 #endregion Privacy & Telemetry
 
 #region UI & Personalization

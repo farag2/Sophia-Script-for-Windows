@@ -256,6 +256,14 @@ BingSearch -Disable
 # Enable Bing search in the Start Menu (default value)
 # Включить поиск через Bing в меню "Пуск" (значение по умолчанию)
 # BingSearch -Enable
+
+# Do not show Microsoft account-related notifications on Start Menu in the Start menu
+# Не показывать в меню "Пуск" уведомления, связанные с учетной записью Microsoft
+StartAccountNotifications -Hide
+
+# Show Microsoft account-related notifications on Start Menu in the Start menu (default value)
+# Переодически показывать в меню "Пуск" уведомления, связанные с учетной записью Microsoft (значение по умолчанию)
+# StartAccountNotifications -Show
 #endregion Privacy & Telemetry
 
 #region UI & Personalization

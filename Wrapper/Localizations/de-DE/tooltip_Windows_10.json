@@ -244,6 +244,20 @@
     }
   },
   {
+    "Region": "Privacy & Telemetry",
+    "Function": "StartRecommendationsTips",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Microsoft-Kontobezogene Benachrichtigungen werden im Startmenü nicht angezeigt."
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Zeigen Sie Benachrichtigungen zu Microsoft-Konten im Startmenü im Startmenü an (Standardeinstellung)."
+      }
+    }
+  },
+  {
     "Region": "UI & Personalization",
     "Function": "ThisPC",
     "Arg": {
@@ -1385,7 +1399,7 @@
       "Two":  {
         "Tag": "Extension",
         "ToolTip": "Erweiterung."
-      }
+      },
       "Three": {
         "Tag": "Icon",
         "ToolTip": "Pfad zum Symbol."

@@ -236,6 +236,8 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		winutil             = "$env:TEMP\Winutil.log"
 		# https://www.youtube.com/watch?v=5NBqbUUB1Pk
 		WinClean             = "$env:ProgramFiles\WinClean Plus Apps"
+		# https://github.com/Atlas-OS/Atlas
+		AtlasOS              = "$env:SystemRoot\AtlasModules"
 	}
 	foreach ($Tweaker in $Tweakers.Keys)
 	{
@@ -2241,6 +2243,57 @@ function BingSearch
 		{
 			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name DisableSearchBoxSuggestions -Force -ErrorAction Ignore
 			Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name DisableSearchBoxSuggestions -Type CLEAR
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	Microsoft account-related notifications on Start Menu
+
+	.PARAMETER Hide
+	Do not show Microsoft account-related notifications on Start Menu in the Start menu
+
+	.PARAMETER Show
+	Show Microsoft account-related notifications on Start Menu in the Start menu
+
+	.EXAMPLE
+	StartAccountNotifications -Hide
+
+	.EXAMPLE
+	StartAccountNotifications -Show
+
+	.NOTES
+	Current user
+#>
+function StartAccountNotifications
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Hide"
+		)]
+		[switch]
+		$Hide,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Show"
+		)]
+		[switch]
+		$Show
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Hide"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_AccountNotifications -PropertyType DWord -Value 0 -Force
+		}
+		"Show"
+		{
+			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_AccountNotifications -Force -ErrorAction Ignore
 		}
 	}
 }
