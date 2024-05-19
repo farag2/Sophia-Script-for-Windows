@@ -13146,57 +13146,6 @@ function DismissSmartScreenFilter
 
 <#
 	.SYNOPSIS
-	Audit process creation
-
-	.PARAMETER Enable
-	Enable events auditing generated when a process is created (starts)
-
-	.PARAMETER Disable
-	Disable events auditing generated when a process is created (starts)
-
-	.EXAMPLE
-	AuditProcess -Enable
-
-	.EXAMPLE
-	AuditProcess -Disable
-
-	.NOTES
-	Machine-wide
-#>
-function AuditProcess
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Enable"
-		{
-			auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:enable /failure:enable
-		}
-		"Disable"
-		{
-			auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:disable /failure:disable
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
 	Сommand line auditing
 
 	.PARAMETER Enable

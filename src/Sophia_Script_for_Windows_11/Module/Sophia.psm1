@@ -13123,57 +13123,6 @@ function DismissSmartScreenFilter
 
 <#
 	.SYNOPSIS
-	Audit process creation
-
-	.PARAMETER Enable
-	Enable events auditing generated when a process is created (starts)
-
-	.PARAMETER Disable
-	Disable events auditing generated when a process is created (starts)
-
-	.EXAMPLE
-	AuditProcess -Enable
-
-	.EXAMPLE
-	AuditProcess -Disable
-
-	.NOTES
-	Machine-wide
-#>
-function AuditProcess
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Enable"
-		{
-			auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:enable /failure:enable
-		}
-		"Disable"
-		{
-			auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:disable /failure:disable
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
 	Сommand line auditing
 
 	.PARAMETER Enable
@@ -13226,7 +13175,9 @@ function CommandLineProcessAudit
 		}
 		"Disable"
 		{
+			auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:disable /failure:disable
 			Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -Force -ErrorAction Ignore
+
 			Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -Type CLEAR
 		}
 	}
@@ -13309,8 +13260,8 @@ function EventViewerCustomView
 				New-Item -Path "$env:ProgramData\Microsoft\Event Viewer\Views" -ItemType Directory -Force
 			}
 
-			# Save ProcessCreation.xml in the UTF-8 without BOM encoding
-			Set-Content -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Value $XML -Encoding Default -NoNewline -Force
+			# Save ProcessCreation.xml in the UTF-8 with BOM encoding
+			Set-Content -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Value $XML -Encoding UTF8 -NoNewline -Force ###
 		}
 		"Disable"
 		{
@@ -13883,7 +13834,7 @@ function DNSoverHTTPS
 	Local Security Authority protection
 
 	.PARAMETER Enable
-	Enable Local Security Authority protection to prevent code injection
+	Enable Local Security Authority protection to prevent code injection without UEFI lock ###
 
 	.PARAMETER Disable
 	Disable Local Security Authority protection
@@ -13949,6 +13900,9 @@ function LocalSecurityAuthority
 		"Disable"
 		{
 			Remove-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Lsa -Name RunAsPPL, RunAsPPLBoot -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\System -Name RunAsPPL -Force -ErrorAction Ignore ###
+
+			Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Type CLEAR
 		}
 	}
 }

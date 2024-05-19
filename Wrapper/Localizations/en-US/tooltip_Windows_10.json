@@ -1814,25 +1814,11 @@
   },
   {
     "Region": "Microsoft Defender & Security",
-    "Function": "AuditProcess",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Enable events auditing generated when a process is created (starts)."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Disable events auditing generated when a process is created (starts) (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
     "Function": "CommandLineProcessAudit",
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Include command line in process creation events. In order this feature to work events auditing (ProcessAudit -Enable) will be enabled."
+        "ToolTip": "Include command line in process creation events."
       },
       "One": {
         "Tag": "Disable",
@@ -1846,7 +1832,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Create the \"Process Creation\" сustom view in the Event Viewer to log executed processes and their arguments. In order this feature to work events auditing (AuditProcess -Enable) and command line (CommandLineProcessAudit -Enable) in process creation events will be enabled."
+        "ToolTip": "Create the \"Process Creation\" сustom view in the Event Viewer to log executed processes and their arguments. In order this feature to work events command line (CommandLineProcessAudit -Enable) in process creation events will be enabled."
       },
       "One": {
         "Tag": "Disable",

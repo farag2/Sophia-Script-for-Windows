@@ -2072,22 +2072,6 @@
     "Region": "Microsoft Defender & Security",
     "Control": "cmb",
     "Required": "false",
-    "Function": "AuditProcess",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable"
-      },
-      "One": {
-        "Tag": "Disable"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
-    "Region": "Microsoft Defender & Security",
-    "Control": "cmb",
-    "Required": "false",
     "Function": "CommandLineProcessAudit",
     "Arg": {
       "Zero": {

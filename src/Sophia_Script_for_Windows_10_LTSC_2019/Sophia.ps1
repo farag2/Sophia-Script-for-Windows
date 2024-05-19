@@ -928,34 +928,16 @@ DismissMSAccount
 # Отклонить предложение Microsoft Defender в "Безопасность Windows" включить фильтр SmartScreen для Microsoft Edge
 DismissSmartScreenFilter
 
-# Enable events auditing generated when a process is created (starts)
-# Включить аудит событий, возникающих при создании или запуске процесса
-AuditProcess -Enable
-
-# Disable events auditing generated when a process is created (starts) (default value)
-# Выключить аудит событий, возникающих при создании или запуске процесса (значение по умолчанию)
-# AuditProcess -Disable
-
-<#
-	Include command line in process creation events
-	In order this feature to work events auditing (ProcessAudit -Enable) will be enabled
-
-	Включать командную строку в событиях создания процесса
-	Для того, чтобы работал данный функционал, будет включен аудит событий (AuditProcess -Enable)
-#>
+# Create the "Process Creation" сustom view in the Event Viewer to log executed processes and their arguments
+# Создать настраиваемое представление "Создание процесса" в Просмотре событий для журналирования запускаемых процессов и их аргументов
 CommandLineProcessAudit -Enable
 
 # Do not include command line in process creation events (default value)
 # Не включать командную строку в событиях создания процесса (значение по умолчанию)
 # CommandLineProcessAudit -Disable
 
-<#
-	Create the "Process Creation" сustom view in the Event Viewer to log executed processes and their arguments
-	In order this feature to work events auditing (AuditProcess -Enable) and command line (CommandLineProcessAudit -Enable) in process creation events will be enabled
-
-	Создать настраиваемое представление "Создание процесса" в Просмотре событий для журналирования запускаемых процессов и их аргументов
-	Для того, чтобы работал данный функционал, буден включен аудит событий (AuditProcess -Enable) и командной строки (CommandLineProcessAudit -Enable) в событиях создания процесса
-#>
+# Create the "Process Creation" сustom view in the Event Viewer to log executed processes and their arguments
+# Создать настраиваемое представление "Создание процесса" в Просмотре событий для журналирования запускаемых процессов и их аргументов
 EventViewerCustomView -Enable
 
 # Remove the "Process Creation" custom view in the Event Viewer to log executed processes and their arguments (default value)

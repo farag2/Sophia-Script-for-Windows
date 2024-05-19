@@ -1709,25 +1709,11 @@
   },
   {
     "Region": "Microsoft Defender & Security",
-    "Function": "AuditProcess",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Aktiviert das Überwachen von Ereignissen, die beim Erstellen (Starten) eines Prozesses erzeugt werden."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Deaktiviert das Überwachen von Ereignissen, die beim Erstellen (Starten) eines Prozesses erzeugt werden."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
     "Function": "CommandLineProcessAudit",
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Einbeziehung der Befehlszeile in Ereignisse der Prozesserstellung. Damit diese Funktion funktioniert, muss die Ereignisüberprüfung (ProcessAudit -Enable) aktiviert werden."
+        "ToolTip": "Einbeziehung der Befehlszeile in Ereignisse der Prozesserstellung."
       },
       "One": {
         "Tag": "Disable",
@@ -1741,7 +1727,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Erstellt eine benutzerdefinierte Ansicht \"Prozesserstellung\", um ausgeführte Prozesse und ihre Argumente zu protokollieren. Damit diese Funktion funktioniert, müssen die Ereignisprüfung (AuditProcess -Enable) und die Befehlszeile (CommandLineProcessAudit -Enable) in Ereignissen zur Prozesserstellung aktiviert werden."
+        "ToolTip": "Erstellt eine benutzerdefinierte Ansicht \"Prozesserstellung\", um ausgeführte Prozesse und ihre Argumente zu protokollieren. Damit diese Funktion funktioniert, müssen Ereignisse in der Befehlszeile (CommandLineProcessAudit -Enable) in den Ereignissen der Prozesserstellung aktiviert werden."
       },
       "One": {
         "Tag": "Disable",
