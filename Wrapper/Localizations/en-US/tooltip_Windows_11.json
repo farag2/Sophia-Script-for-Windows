@@ -1839,11 +1839,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Enable Local Security Authority protection to prevent code injection."
+        "ToolTip": "Enable Local Security Authority protection to prevent code injection without UEFI lock."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Disable Local Security Authority protection (default value)."
+        "ToolTip": "Disable Local Security Authority protection without UEFI lock (default value)."
       }
     }
   },

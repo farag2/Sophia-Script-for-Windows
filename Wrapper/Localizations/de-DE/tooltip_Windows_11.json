@@ -1839,11 +1839,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Aktivieren Sie einen zusätzlichen Schutz für den LSA-Prozess (Local Security Authority), um die Einspeisung von Code zu verhindern, der Anmeldeinformationen gefährden könnte."
+        "ToolTip": "Aktivieren Sie den Schutz der lokalen Sicherheitsbehörde, um Code-Injektion ohne UEFI-Sperre zu verhindern."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Deaktivieren Sie den Schutz der lokalen Sicherheitsbehörde (Standardeinstellung)."
+        "ToolTip": "Deaktivieren Sie den Schutz der lokalen Sicherheitsbehörde ohne UEFI-Sperre (Standardeinstellung)."
       }
     }
   },
