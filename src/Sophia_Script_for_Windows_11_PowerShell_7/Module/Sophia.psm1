@@ -4253,15 +4253,8 @@ function Cursors
 						New-Item -Path "$env:SystemRoot\Cursors\W11_dark_v2.2" -ItemType Directory -Force
 					}
 
-					# Extract archive. We cannot call tar.exe due to it fails to extract files if username has cyrillic first letter in lowercase
-					# Start-Process -FilePath "$env:SystemRoot\System32\tar.exe" -ArgumentList "-xf `"$DownloadsFolder\dark.zip`" -C `"$env:SystemRoot\Cursors\W11_dark_v2.2`" -v"
-					# https://github.com/PowerShell/PowerShell/issues/21070
-					Add-Type -Assembly System.IO.Compression.FileSystem
-					$ZIP = [IO.Compression.ZipFile]::OpenRead("$DownloadsFolder\dark.zip")
-					$ZIP.Entries | ForEach-Object -Process {
-						[IO.Compression.ZipFileExtensions]::ExtractToFile($_, "$env:SystemRoot\Cursors\W11_dark_v2.2\$($_.Name)", $true)
-					}
-					$ZIP.Dispose()
+					# Extract archive
+					Start-Process -FilePath "$env:SystemRoot\System32\tar.exe" -ArgumentList "-xf `"$DownloadsFolder\dark.zip`" -C `"$env:SystemRoot\Cursors\W11_dark_v2.2`" -v"
 
 					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursors Dark Free v2.2 by Jepri Creations" -Force
 					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\working.ani" -Force
@@ -4379,15 +4372,8 @@ function Cursors
 						New-Item -Path "$env:SystemRoot\Cursors\W11_light_v2.2" -ItemType Directory -Force
 					}
 
-					# Extract archive. We cannot call tar.exe due to it fails to extract files if username has cyrillic first letter in lowercase
-					# Start-Process -FilePath "$env:SystemRoot\System32\tar.exe" -ArgumentList "-xf `"$DownloadsFolder\light.zip`" -C `"$env:SystemRoot\Cursors\W11_dark_v2.2`" -v"
-					# https://github.com/PowerShell/PowerShell/issues/21070
-					Add-Type -Assembly System.IO.Compression.FileSystem
-					$ZIP = [IO.Compression.ZipFile]::OpenRead("$DownloadsFolder\light.zip")
-					$ZIP.Entries | ForEach-Object -Process {
-						[IO.Compression.ZipFileExtensions]::ExtractToFile($_, "$env:SystemRoot\Cursors\W11_light_v2.2\$($_.Name)", $true)
-					}
-					$ZIP.Dispose()
+					# Extract archive
+					Start-Process -FilePath "$env:SystemRoot\System32\tar.exe" -ArgumentList "-xf `"$DownloadsFolder\light.zip`" -C `"$env:SystemRoot\Cursors\W11_light_v2.2`" -v"
 
 					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursor Light Free v2.2 by Jepri Creations" -Force
 					New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\working.ani" -Force
@@ -10812,7 +10798,7 @@ function UninstallUWPApps
 		"Microsoft.ApplicationCompatibilityEnhancements",
 
 		# AVC Encoder Video Extension
-		"Microsoft.AVCEncoderVideoExtension", 
+		"Microsoft.AVCEncoderVideoExtension",
 
 		# Microsoft Desktop App Installer
 		"Microsoft.DesktopAppInstaller",
