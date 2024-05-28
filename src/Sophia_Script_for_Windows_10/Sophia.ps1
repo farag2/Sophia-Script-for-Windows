@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10"
 
-	Version: v5.18.5
-	Date: 14.04.2024
+	Version: v5.18.6
+	Date: 28.05.2024
 
 	Copyright (c) 2014—2024 farag, Inestic & lowl1f3
 
@@ -26,7 +26,7 @@
 	.NOTES
 	Supported Windows 10 versions
 	Version: 22H2
-	Builds: 19045.4291+
+	Builds: 19045.4412+
 	Editions: Home/Pro/Enterprise
 	Architecture: x64
 
@@ -70,7 +70,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.18.5 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2024"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.18.6 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2024"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-LocalizedData -BindingVariable Global:Localization -BaseDirectory $PSScriptRoot\Localizations -FileName Sophia
