@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.18.6 | 6.6.6 — 28.05.2024
+
+* Removed `Windows10ContextMenu` (as this was a strange function to make Windows 11 looks like an old OS), `AuditProcess` (as `CommandLineProcessAudit -Enable` contains the same functionality), `BrowsingHistory`  functions for `Windows 11`;
+* Added `StartRecommendationsTips` & `StartAccountNotifications` functions to `Show recommendations for tips, shortcuts, new apps, and more in the Start menu` and `Show Microsoft account-related notifications on Start Menu in the Start menu` respectively;
+* `DefenderSandbox` functions re-added for `Windows 11`;
+* Added `AtlasOS`, which for some reason positions itself as a replacement for Windows (!!!), as a harmful tweaker from another scammers;
+* Other improvements.
+
+> [!IMPORTANT]
+> ![image](https://github.com/farag2/Sophia-Script-for-Windows/assets/10544660/26b8f211-4d5b-4f30-9c35-1944a7edfacc)
+> Happy 6.6.6 version!
+
 ## 5.18.5 | 6.6.5 — 14.04.2024
 
 * Removed `ShareContext` & `UnpinAllStartApps` functions for `Windows 11`;
