@@ -1603,19 +1603,6 @@
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
-    "Function": "Install-WSA",
-    "Arg": {
-      "Zero": {
-        "Tag": ""
-      }
-    },
-    "Preset": "",
-    "WindowsDefault": ""
-  },
-  {
-    "Region": "System",
-    "Control": "cmb",
-    "Required": "false",
     "Function": "PreventEdgeShortcutCreation",
     "Arg": {
       "Zero": {

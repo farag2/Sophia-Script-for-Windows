@@ -212,11 +212,11 @@ TailoredExperiences -Disable
 # Разрешите корпорации Майкософт использовать ваши диагностические данные для предоставления вам персонализированных советов, рекламы и рекомендаций, чтобы улучшить работу со службами Майкрософт (значение по умолчанию)
 # TailoredExperiences -Enable
 
-# Disable Bing search in the Start Menu
+# Disable Bing search in Start Menu
 # Отключить в меню "Пуск" поиск через Bing
 BingSearch -Disable
 
-# Enable Bing search in the Start Menu (default value)
+# Enable Bing search in Start Menu (default value)
 # Включить поиск через Bing в меню "Пуск" (значение по умолчанию)
 # BingSearch -Enable
 #endregion Privacy & Telemetry

@@ -996,6 +996,9 @@ function CreateRestorePoint
 	.EXAMPLE
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Type DWORD -Value 0
 
+	.EXAMPLE
+	Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name DisableSearchBoxSuggestions -Type DWORD -Value 1
+
 	.NOTES
 	https://techcommunity.microsoft.com/t5/microsoft-security-baselines/lgpo-exe-local-group-policy-object-utility-v1-0/ba-p/701045
 
@@ -1288,7 +1291,9 @@ function ErrorReporting
 
 	# Remove all policies in order to make changes visible in UI only if it's possible
 	Remove-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction Ignore
+	Remove-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Type CLEAR
+	Set-Policy -Scope User -Path "Software\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Type CLEAR
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
@@ -2197,13 +2202,13 @@ function TailoredExperiences
 
 <#
 	.SYNOPSIS
-	Bing search in the Start Menu
+	Bing search in Start Menu
 
 	.PARAMETER Disable
-	Disable Bing search in the Start Menu
+	Disable Bing search in Start Menu
 
 	.PARAMETER Enable
-	Enable Bing search in the Start Menu
+	Enable Bing search in Start Menu
 
 	.EXAMPLE
 	BingSearch -Disable
@@ -10144,87 +10149,6 @@ function RKNBypass
 
 <#
 	.SYNOPSIS
-	Enable all necessary dependencies (reboot may require) and open Microsoft Store WSA page to install it manually
-
-	.LINK
-	https://support.microsoft.com/en-us/windows/install-mobile-apps-and-the-amazon-appstore-f8d0abb5-44ad-47d8-b9fb-ad6b1459ff6c
-
-	.LINK
-	https://docs.microsoft.com/en-us/windows/android/wsa/
-
-	.LINK
-	https://apps.microsoft.com/store/detail/windows-subsystem-for-android™-with-amazon-appstore/9P3395VX91NR
-
-	.NOTES
-	Machine-wide
-#>
-function Install-WSA
-{
-	# Enable Virtual Machine Platform
-	if ((Get-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform).State -eq "Disabled")
-	{
-		Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -NoRestart
-
-		Write-Warning -Message $Localization.RestartWarning
-		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-
-		return
-	}
-
-	if (Get-AppxPackage -Name MicrosoftCorporationII.WindowsSubsystemForAndroid)
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.Skipped -Verbose
-
-		return
-	}
-
-	# Check whether Windows 11 is installed on an SSD
-	$DiskNumber = (Get-Disk | Where-Object -FilterScript {$_.Isboot -and $_.IsSystem -and ($_.OperationalStatus -eq "Online")}).Number
-	if (Get-PhysicalDisk -DeviceNumber $DiskNumber | Where-Object -FilterScript {$_.MediaType -ne "SSD"})
-	{
-		Write-Warning -Message $Localization.SSDRequired
-
-		return
-	}
-
-	try
-	{
-		# Check the internet connection
-		$Parameters = @{
-			Name        = "dns.msftncsi.com"
-			Server      = "1.1.1.1"
-			DnsOnly     = $true
-			ErrorAction = "Stop"
-		}
-		if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
-		{
-			return
-		}
-
-		if (((Get-WinHomeLocation).GeoId -ne "244"))
-		{
-			# Set Windows region to USA
-			$Script:Region = (Get-WinHomeLocation).GeoId
-			Set-WinHomeLocation -GeoId 244
-
-			$Script:RegionChanged = $true
-		}
-
-		# Open Misrosoft Store WSA page to install it manually
-		Start-Process -FilePath ms-windows-store://pdp/?ProductId=9P3395VX91NR
-	}
-	catch [System.ComponentModel.Win32Exception]
-	{
-		Write-Warning -Message $Localization.NoInternetConnection
-		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
-
-		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-	}
-}
-
-<#
-	.SYNOPSIS
 	Desktop shortcut creation upon Microsoft Edge update
 
 	.PARAMETER Channels
@@ -13274,8 +13198,8 @@ function EventViewerCustomView
 				New-Item -Path "$env:ProgramData\Microsoft\Event Viewer\Views" -ItemType Directory -Force
 			}
 
-			# Save ProcessCreation.xml in the UTF-8 with BOM encoding
-			Set-Content -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Value $XML -Encoding UTF8 -NoNewline -Force
+			# Save ProcessCreation.xml in the UTF-8 without BOM encoding
+			Set-Content -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Value $XML -Encoding Default -NoNewline -Force
 		}
 		"Disable"
 		{
@@ -13884,6 +13808,9 @@ function LocalSecurityAuthority
 		$Disable
 	)
 
+	# Remove all policies in order to make changes visible in UI only if it's possible
+	Set-Policy -Scope Computer -Path Software\Policies\Microsoft\Windows\Explorer -Name RunAsPPL -Type CLEAR
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Enable"
@@ -13915,8 +13842,6 @@ function LocalSecurityAuthority
 		{
 			Remove-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Lsa -Name RunAsPPL, RunAsPPLBoot -Force -ErrorAction Ignore
 			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\System -Name RunAsPPL -Force -ErrorAction Ignore
-
-			Set-Policy -Scope Computer -Path Software\Policies\Microsoft\Windows\Explorer -Name RunAsPPL -Type CLEAR
 		}
 	}
 }
@@ -14298,6 +14223,10 @@ function UseStoreOpenWith
 		[switch]
 		$Show
 	)
+
+	# Remove all policies in order to make changes visible in UI only if it's possible
+	Remove-ItemProperty -Path HKLM:\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Force -ErrorAction Ignore
+	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Type CLEAR
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
@@ -14709,12 +14638,6 @@ public static void PostMessage()
 		{
 			Set-MpPreference -EnableControlledFolderAccess Enabled
 		}
-	}
-
-	if ($Script:RegionChanged)
-	{
-		# Set the original region ID
-		Set-WinHomeLocation -GeoId $Script:Region
 	}
 
 	# Apply policies found in registry to re-build database database due to gpedit.msc relies in its own database

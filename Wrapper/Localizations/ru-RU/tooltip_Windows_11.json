@@ -1415,16 +1415,6 @@
   },
   {
     "Region": "System",
-    "Function": "Install-WSA",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Включить все необходимые зависимости (может потребоваться перезагрузка) и открыть страницу WSA в Microsoft Store, чтобы вручную установить Windows Subsystem for Android™ with Amazon Appstore."
-      }
-    }
-  },
-  {
-    "Region": "System",
     "Function": "PreventEdgeShortcutCreation",
     "Arg": {
       "Zero": {

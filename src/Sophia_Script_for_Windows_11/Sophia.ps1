@@ -248,11 +248,11 @@ TailoredExperiences -Disable
 # Разрешить корпорации Майкрософт использовать диагностические данные для персонализированных советов, рекламы и рекомендаций (значение по умолчанию)
 # TailoredExperiences -Enable
 
-# Disable Bing search in the Start Menu
+# Disable Bing search in Start Menu
 # Отключить в меню "Пуск" поиск через Bing
 BingSearch -Disable
 
-# Enable Bing search in the Start Menu (default value)
+# Enable Bing search in Start Menu (default value)
 # Включить поиск через Bing в меню "Пуск" (значение по умолчанию)
 # BingSearch -Enable
 
@@ -1003,10 +1003,6 @@ RKNBypass -Enable
 # Выключить проксирование только заблокированных сайтов из единого реестра Роскомнадзора (значение по умолчанию)
 # https://antizapret.prostovpn.org
 # RKNBypass -Disable
-
-# Enable all necessary dependencies (reboot may require) and open Microsoft Store WSA page to install Windows Subsystem for Android™ with Amazon Appstore manually
-# Включить все необходимые зависимости (может потребоваться перезагрузка) и открыть страницу WSA в Microsoft Store, чтобы вручную установить Windows Subsystem for Android™ with Amazon Appstore
-# Install-WSA
 
 # List Microsoft Edge channels to prevent desktop shortcut creation upon its update
 # Перечислите каналы Microsoft Edge для предотвращения создания ярлыков на рабочем столе после его обновления

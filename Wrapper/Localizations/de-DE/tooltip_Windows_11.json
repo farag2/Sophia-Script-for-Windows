@@ -1415,16 +1415,6 @@
   },
   {
     "Region": "System",
-    "Function": "Install-WSA",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Alle erforderlichen Abhängigkeiten aktivieren (ein Neustart kann erforderlich sein) und die Microsoft Store WSA-Seite öffnen, um Windows Subsystem for Android™ mit Amazon-Appstore manuell zu installieren."
-      }
-    }
-  },
-  {
-    "Region": "System",
     "Function": "PreventEdgeShortcutCreation",
     "Arg": {
       "Zero": {
