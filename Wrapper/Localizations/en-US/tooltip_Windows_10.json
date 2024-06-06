@@ -245,7 +245,7 @@
   },
   {
     "Region": "Privacy & Telemetry",
-    "Function": "StartRecommendationsTips",
+    "Function": "StartAccountNotifications",
     "Arg": {
       "Zero": {
         "Tag": "Hide",
@@ -1036,7 +1036,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Enable the Windows features using the pop-up dialog box (default value)."
+        "ToolTip": "Enable the Windows features using the pop-up dialog box."
       }
     }
   },
@@ -1050,7 +1050,7 @@
       },
       "One": {
         "Tag": "Install",
-        "ToolTip": "Install optional features using the pop-up dialog box (default value)."
+        "ToolTip": "Install optional features using the pop-up dialog box."
       }
     }
   },
@@ -1392,11 +1392,11 @@
         "Tag": "",
         "ToolTip": "Register app, calculate hash, and associate with an extension with the 'How do you want to open this' pop-up hidden."
       },
-      "One":  {
+      "One": {
         "Tag": "ProgramPath",
         "ToolTip": "Path to executable file."
       },
-      "Two":  {
+      "Two": {
         "Tag": "Extension",
         "ToolTip": "Extension."
       },
@@ -1814,25 +1814,11 @@
   },
   {
     "Region": "Microsoft Defender & Security",
-    "Function": "CommandLineProcessAudit",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Include command line in process creation events."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Do not include command line in process creation events (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
     "Function": "EventViewerCustomView",
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Create the \"Process Creation\" сustom view in the Event Viewer to log executed processes and their arguments. In order this feature to work events command line (CommandLineProcessAudit -Enable) in process creation events will be enabled."
+        "ToolTip": "Create the \"Process Creation\" сustom view in the Event Viewer to log executed processes and their arguments."
       },
       "One": {
         "Tag": "Disable",

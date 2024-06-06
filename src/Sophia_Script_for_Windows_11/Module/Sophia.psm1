@@ -2260,13 +2260,13 @@ function BingSearch
 
 <#
 	.SYNOPSIS
-	Recommendations for tips, shortcuts, new apps, and more in the Start menu
+	Recommendations for tips, shortcuts, new apps, and more in Start menu
 
 	.PARAMETER Hide
-	Do not show recommendations for tips, shortcuts, new apps, and more in the Start menu
+	Do not show recommendations for tips, shortcuts, new apps, and more in Start menu
 
 	.PARAMETER Show
-	Show recommendations for tips, shortcuts, new apps, and more in the Start menu
+	Show recommendations for tips, shortcuts, new apps, and more in Start menu
 
 	.EXAMPLE
 	StartRecommendationsTips -Hide
@@ -2314,10 +2314,10 @@ function StartRecommendationsTips
 	Microsoft account-related notifications on Start Menu
 
 	.PARAMETER Hide
-	Do not show Microsoft account-related notifications on Start Menu in the Start menu
+	Do not show Microsoft account-related notifications on Start Menu in Start menu
 
 	.PARAMETER Show
-	Show Microsoft account-related notifications on Start Menu in the Start menu
+	Show Microsoft account-related notifications on Start Menu in Start menu
 
 	.EXAMPLE
 	StartAccountNotifications -Hide
@@ -13061,68 +13061,6 @@ function DismissSmartScreenFilter
 
 <#
 	.SYNOPSIS
-	Сommand line auditing
-
-	.PARAMETER Enable
-	Include command line in process creation events
-
-	.PARAMETER Disable
-	Do not include command line in process creation events
-
-	.EXAMPLE
-	CommandLineProcessAudit -Enable
-
-	.EXAMPLE
-	CommandLineProcessAudit -Disable
-
-	.NOTES
-	In order this feature to work events auditing (ProcessAudit -Enable) will be enabled
-
-	.NOTES
-	Machine-wide
-#>
-function CommandLineProcessAudit
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Enable"
-		{
-			# Enable events auditing generated when a process is created (starts)
-			auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:enable /failure:enable
-
-			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -PropertyType DWord -Value 1 -Force
-
-			Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -Type DWORD -Value 1
-		}
-		"Disable"
-		{
-			auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:disable /failure:disable
-			Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -Force -ErrorAction Ignore
-
-			Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -Type CLEAR
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
 	The "Process Creation" Event Viewer custom view
 
 	.PARAMETER Enable
@@ -13138,7 +13076,7 @@ function CommandLineProcessAudit
 	EventViewerCustomView -Disable
 
 	.NOTES
-	In order this feature to work events auditing (ProcessAudit -Enable) and command line (CommandLineProcessAudit -Enable) in process creation events will be enabled
+	In order this feature to work events auditing and command line in process creation events will be enabled
 
 	.NOTES
 	Machine-wide
@@ -13203,6 +13141,8 @@ function EventViewerCustomView
 		}
 		"Disable"
 		{
+			Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -Force -ErrorAction Ignore
+			Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -Type CLEAR
 			Remove-Item -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Force -ErrorAction Ignore
 		}
 	}
@@ -14626,7 +14566,7 @@ public static void PostMessage()
 	# Refresh desktop icons, environment variables, taskbar
 	[WinAPI.UpdateEnvironment]::Refresh()
 
-	# Restart the Start menu
+	# Restart Start menu
 	Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
 	#endregion Refresh Environment
 

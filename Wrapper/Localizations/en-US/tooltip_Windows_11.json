@@ -662,7 +662,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "SShow first sign-in animation after the upgrade (default value)."
+        "ToolTip": "Show first sign-in animation after the upgrade (default value)."
       }
     }
   },
@@ -1012,7 +1012,7 @@
       },
       "One": {
         "Tag": "Balanced",
-        "ToolTip": "Set the power plan on \"Balanced\" (default value)."
+        "ToolTip": "Set power plan on \"Balanced\" (default value)."
       }
     }
   },
@@ -1699,25 +1699,11 @@
   },
   {
     "Region": "Microsoft Defender & Security",
-    "Function": "CommandLineProcessAudit",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Include command line in process creation events."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Do not include command line in process creation events (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
     "Function": "EventViewerCustomView",
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Create the \"Process Creation\" Event Viewer сustom view to log executed processes and their arguments. In order this feature to work events command line (CommandLineProcessAudit -Enable) in process creation events will be enabled."
+        "ToolTip": "Create the \"Process Creation\" сustom view in the Event Viewer to log executed processes and their arguments."
       },
       "One": {
         "Tag": "Disable",

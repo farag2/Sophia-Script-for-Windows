@@ -940,19 +940,19 @@ SATADrivesRemovableMedia -Disable
 #endregion WSL
 
 #region Start menu
-# Hide recently added apps in the Start menu
+# Hide recently added apps in Start menu
 # Скрывать недавно добавленные приложения в меню "Пуск"
 RecentlyAddedApps -Hide
 
-# Show recently added apps in the Start menu (default value)
+# Show recently added apps in Start menu (default value)
 # Показывать недавно добавленные приложения в меню "Пуск" (значение по умолчанию)
 # RecentlyAddedApps -Show
 
-# Hide app suggestions in the Start menu
+# Hide app suggestions in Start menu
 # Скрывать рекомендации в меню "Пуск"
 AppSuggestions -Hide
 
-# Show app suggestions in the Start menu (default value)
+# Show app suggestions in Start menu (default value)
 # Показывать рекомендации в меню "Пуск" (значение по умолчанию)
 # AppSuggestions -Show
 
@@ -1066,14 +1066,6 @@ DismissMSAccount
 # Dismiss Microsoft Defender offer in the Windows Security about turning on the SmartScreen filter for Microsoft Edge
 # Отклонить предложение Microsoft Defender в "Безопасность Windows" включить фильтр SmartScreen для Microsoft Edge
 DismissSmartScreenFilter
-
-# Create the "Process Creation" сustom view in the Event Viewer to log executed processes and their arguments
-# Создать настраиваемое представление "Создание процесса" в Просмотре событий для журналирования запускаемых процессов и их аргументов
-CommandLineProcessAudit -Enable
-
-# Do not include command line in process creation events (default value)
-# Не включать командную строку в событиях создания процесса (значение по умолчанию)
-# CommandLineProcessAudit -Disable
 
 # Create the "Process Creation" сustom view in the Event Viewer to log executed processes and their arguments
 # Создать настраиваемое представление "Создание процесса" в Просмотре событий для журналирования запускаемых процессов и их аргументов

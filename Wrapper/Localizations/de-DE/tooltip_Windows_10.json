@@ -29,7 +29,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Einen Wiederherstellungspunkt erstellen."
+        "ToolTip": "Erstellt einen Wiederherstellungspunkt."
       }
     }
   },
@@ -53,7 +53,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Minimal",
-        "ToolTip": "Setzen Sie die Diagnosedatenerfassung auf ein Minimum."
+        "ToolTip": "Setzt die Diagnosedatenerfassung auf ein Minimum."
       },
       "One": {
         "Tag": "Default",
@@ -141,7 +141,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Lassen Sie Apps die Werbe-ID verwenden, um Anzeigen auf der Grundlage Ihrer App-Nutzung für Sie interessanter zu machen (Standardwert)."
+        "ToolTip": "Lassen Sie Apps die Werbe-ID verwenden, um Anzeigen auf der Grundlage Ihrer App-Nutzung für Sie interessanter zu machen (Standardeinstellung)."
       }
     }
   },
@@ -235,25 +235,25 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Bing-Suche im Startmenü deaktivieren."
+        "ToolTip": "Deaktiviert die Bing-Suche im Startmenü."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Bing-Suche im Startmenü aktivieren (Standardeinstellung)."
+        "ToolTip": "Aktiviert die Bing-Suche im Startmenü (Standardeinstellung)."
       }
     }
   },
   {
     "Region": "Privacy & Telemetry",
-    "Function": "StartRecommendationsTips",
+    "Function": "StartAccountNotifications",
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Microsoft-Kontobezogene Benachrichtigungen werden im Startmenü nicht angezeigt."
+        "ToolTip": "Keine Microsoft-Konto-Benachrichtigungen im Startmenü im Startmenü anzeigen."
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Zeigen Sie Benachrichtigungen zu Microsoft-Konten im Startmenü im Startmenü an (Standardeinstellung)."
+        "ToolTip": "Anzeigen von Microsoft-Konto-Benachrichtigungen im Startmenü im Startmenü. (Standardeinstellung)."
       }
     }
   },
@@ -263,11 +263,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Show",
-        "ToolTip": "Das Symbol \"Dieser PC\" auf dem Desktop anzeigen."
+        "ToolTip": "Zeigt das Symbol \"Dieser PC\" auf dem Desktop an."
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Das Symbol \"Dieser PC\" auf dem Desktop ausblenden (Standardeinstellung)."
+        "ToolTip": "Blendet das Symbol \"Dieser PC\" auf dem Desktop aus (Standardeinstellung)."
       }
     }
   },
@@ -277,11 +277,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Verwende keine Kontrollkästchen zur Auswahl von Elementen."
+        "ToolTip": "Verwendet keine Kontrollkästchen für Elemente."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Verwende Kontrollkästchen, um Elemente auszuwählen (Standardeinstellung)."
+        "ToolTip": "Verwendet Kontrollkästchen (Standardeinstellung)."
       }
     }
   },
@@ -291,11 +291,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Versteckte Dateien, Ordner und Laufwerke anzeigen."
+        "ToolTip": "Zeigt versteckte Dateien, Ordner und Laufwerke an."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Versteckte Dateien, Ordner und Laufwerke nicht anzeigen (Standardeinstellung)."
+        "ToolTip": "Zeigt versteckte Dateien, Ordner und Laufwerke nicht an (Standardeinstellung)."
       }
     }
   },
@@ -305,11 +305,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Show",
-        "ToolTip": "Dateinamenerweiterungen anzeigen."
+        "ToolTip": "Zeigt Dateinamenerweiterungen an."
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Dateinamenerweiterungen ausblenden (Standardeinstellung)."
+        "ToolTip": "Blendet Dateinamenerweiterungen aus (Standardeinstellung)."
       }
     }
   },
@@ -319,11 +319,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Show",
-        "ToolTip": "Konflikte beim Zusammenführen von Ordnern anzeigen."
+        "ToolTip": "Zeigt Konflikte beim Zusammenführen von Ordnern an."
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Konflikte beim Zusammenführen von Ordnern ausblenden (Standardeinstellung)."
+        "ToolTip": "Blendet Konflikte beim Zusammenführen von Ordnern aus (Standardeinstellung)."
       }
     }
   },
@@ -333,11 +333,11 @@
     "Arg": {
       "Zero": {
         "Tag": "ThisPC",
-        "ToolTip": "Öffnet den Datei-Explorer zu \"Dieser PC\"."
+        "ToolTip": "Öffnet den Datei-Explorer mit \"Dieser PC\"."
       },
       "One": {
         "Tag": "QuickAccess",
-        "ToolTip": "Datei-Explorer für Schnellzugriff öffnen (Standardeinstellung)."
+        "ToolTip": "Öffnet den Datei-Explorer mit Schnellzugriff (Standardeinstellung)."
       }
     }
   },
@@ -361,11 +361,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Synchronisationsanbieter-Benachrichtigungen im Explorer nicht anzeigen."
+        "ToolTip": "Zeigt keine Synchronisationsanbieter-Benachrichtigungen im Explorer an."
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Synchronisationsanbieter-Benachrichtigungen im Explorer anzeigen (Standardeinstellung)."
+        "ToolTip": "Zeigt Synchronisationsanbieter-Benachrichtigungen im Explorer an (Standardeinstellung)."
       }
     }
   },
@@ -375,11 +375,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Wenn Sie ein Fenster anbringen, zeigen Sie nicht, was daneben angebracht werden kann."
+        "ToolTip": "Zeigt beim Anbringen eines Fensters nicht an, was daneben angebracht werden kann."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Beim Anhängen eines Fensters anzeigen, was daneben angehängt werden kann (Standardeinstellung)."
+        "ToolTip": "Zeigt beim Anbringen eines Fensters an, was daneben angebracht werden kann (Standardeinstellung)."
       }
     }
   },
@@ -389,11 +389,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Detailed",
-        "ToolTip": "Das Dialogfeld für die Dateiübertragung im detaillierten Modus anzeigen."
+        "ToolTip": "Zeigt das Dialogfeld für die Dateiübertragung im detaillierten Modus an."
       },
       "One": {
         "Tag": "Compact",
-        "ToolTip": "Das Dialogfeld für die Dateiübertragung im Kompaktmodus anzeigen (Standardeinstellung)."
+        "ToolTip": "Zeigt das Dialogfeld für die Dateiübertragung im Kompaktmodus an (Standardeinstellung)."
       }
     }
   },
@@ -403,11 +403,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Anzeige der Bestätigung des Löschens von Papierkorbdateien."
+        "ToolTip": "Zeigt eine Bestätigung beim Löschen von Dateien aus dem Papierkorb an."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Die Bestätigung zum Löschen von Papierkorbdateien nicht anzeigen (Standardeinstellung)."
+        "ToolTip": "Zeigt keine Bestätigung beim Löschen von Dateien aus dem Papierkorb an (Standardeinstellung)."
       }
     }
   },
@@ -431,11 +431,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Häufig verwendete Dateien im Schnellzugriff ausblenden."
+        "ToolTip": "Blendet zuletzt verwendete Dateien im Schnellzugriff aus."
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Zuletzt verwendete Dateien im Schnellzugriff anzeigen (Standardeinstellung)."
+        "ToolTip": "Zeigt zuletzt verwendete Dateien im Schnellzugriff an (Standardeinstellung)."
       }
     }
   },
@@ -445,11 +445,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Häufig verwendete Ordner im Schnellzugriff ausblenden."
+        "ToolTip": "Blendet häufig verwendete Ordner im Schnellzugriff aus."
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Häufig verwendete Ordner im Schnellzugriff anzeigen (Standardeinstellung)."
+        "ToolTip": "Zeigt häufig verwendete Ordner im Schnellzugriff an (Standardeinstellung)."
       }
     }
   },
@@ -459,7 +459,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Ausblenden der Suche in der Taskleiste."
+        "ToolTip": "Blendet die Suchschaltfläche in der Taskleiste aus."
       },
       "One": {
         "Tag": "SearchIcon",
@@ -467,7 +467,7 @@
       },
       "Two": {
         "Tag": "SearchBox",
-        "ToolTip": "Das Suchfeld in der Taskleiste anzeigen (Standardeinstellung)."
+        "ToolTip": "Zeigt das Suchfeld in der Taskleiste an (Standardeinstellung)."
       }
     }
   },
@@ -603,11 +603,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Show",
-        "ToolTip": "Sekunden auf der Taskleistenuhr anzeigen."
+        "ToolTip": "Zeigt Sekunden auf der Taskleistenuhr an."
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Sekunden auf der Taskleistenuhr ausblenden (Standardeinstellung)."
+        "ToolTip": "Blendet Sekunden auf der Taskleistenuhr aus (Standardeinstellung)."
       }
     }
   },
@@ -1392,11 +1392,11 @@
         "Tag": "",
         "ToolTip": "Registrieren Sie die App, berechnen Sie den Hash und verknüpfen Sie sie mit einer Erweiterung, wobei das Popup 'Wie möchten Sie diese öffnen?' ausgeblendet ist."
       },
-      "One":  {
+      "One": {
         "Tag": "ProgramPath",
         "ToolTip": "Pfad zur ausführbaren Datei."
       },
-      "Two":  {
+      "Two": {
         "Tag": "Extension",
         "ToolTip": "Erweiterung."
       },
@@ -1471,7 +1471,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Deaktivieren Sie das Proxying nur für gesperrte Websites aus dem einheitlichen Register von Roskomnadzor (Standardwert)."
+        "ToolTip": "Deaktivieren Sie das Proxying nur für gesperrte Websites aus dem einheitlichen Register von Roskomnadzor (Standardeinstellung)."
       }
     }
   },
@@ -1485,7 +1485,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Verhindern Sie nicht die Erstellung von Desktop-Verknüpfungen beim Update von Microsoft Edge (Standardwert)."
+        "ToolTip": "Verhindern Sie nicht die Erstellung von Desktop-Verknüpfungen beim Update von Microsoft Edge (Standardeinstellung)."
       }
     }
   },
@@ -1499,7 +1499,7 @@
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Anzeige aller internen SATA-Laufwerke als entfernbare Medien im Infobereich der Taskleiste (Standardwert)."
+        "ToolTip": "Anzeige aller internen SATA-Laufwerke als entfernbare Medien im Infobereich der Taskleiste (Standardeinstellung)."
       }
     }
   },
@@ -1704,7 +1704,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Deaktiviert die hardwarebeschleunigte GPU-Planung. Ein Neustart ist erforderlich. Dies ist die Standardeinstellung."
+        "ToolTip": "Deaktiviert die hardwarebeschleunigte GPU-Planung (Standardeinstellung). Ein Neustart ist erforderlich."
       }
     }
   },
@@ -1814,29 +1814,15 @@
   },
   {
     "Region": "Microsoft Defender & Security",
-    "Function": "CommandLineProcessAudit",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Einbeziehung der Befehlszeile in Ereignisse der Prozesserstellung."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Befehlszeile nicht in Prozesserzeugungsereignisse aufnehmen (Standardeinstellung)."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
     "Function": "EventViewerCustomView",
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Erstellt eine dauerhafte Ansicht \"Prozesserstellung\" in der Ereignisanzeige. Damit diese Funktion funktioniert, müssen Ereignisse in der Befehlszeile (CommandLineProcessAudit -Enable) in den Ereignissen der Prozesserstellung aktiviert werden."
+        "ToolTip": "Erstellt eine benutzerdefinierte Ansicht \"Prozesserstellung\", um ausgeführte Prozesse und ihre Argumente zu protokollieren."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Benutzerdefinierte Ansicht \"Prozesserstellung\" der Ereignisanzeige entfernen (Standardeinstellung)."
+        "ToolTip": "Entfernt die Ereignisanzeige \"Prozesserstellung\", um ausgeführte Prozesse und ihre Argumente zu protokollieren (Standardeinstellung)."
       }
     }
   },
@@ -1934,7 +1920,7 @@
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Ausblenden der Option \"Alle extrahieren\" im Kontextmenü des Windows Installers (.msi) ( Standardeinstellung)."
+        "ToolTip": "Ausblenden der Option \"Alle extrahieren\" im Kontextmenü des Windows Installers (.msi) (Standardeinstellung)."
       }
     }
   },

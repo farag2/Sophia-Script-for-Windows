@@ -5,7 +5,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Warning",
-        "ToolTip": "Obligatorische Kontrollen. Um die Warnung bei der Einrichtung der Voreinstellungsdatei zu deaktivieren, löschen Sie das Argument \"-Warnung\"."
+        "ToolTip": "Obligatorische Kontrollen. Um die Warnung bei der Einrichtung der Voreinstellungsdatei zu deaktivieren, löschen Sie das Argument \"-Warning\"."
       },
       "One": {
         "Tag": "",
@@ -249,11 +249,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Im Startmenü werden keine Empfehlungen für Tipps, Verknüpfungen, neue Apps und mehr angezeigt."
+        "ToolTip": "Zeigen Sie im Startmenü keine Empfehlungen für Tipps, Verknüpfungen, neue Anwendungen und mehr an."
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Empfehlungen für Tipps, Verknüpfungen, neue Apps und mehr im Startmenü anzeigen (Standardeinstellung)."
+        "ToolTip": "Anzeigen von Empfehlungen für Tipps, Verknüpfungen, neue Anwendungen und mehr im Startmenü (Standardeinstellung)."
       }
     }
   },
@@ -263,11 +263,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Microsoft-Kontobezogene Benachrichtigungen werden im Startmenü nicht angezeigt."
+        "ToolTip": "Keine Microsoft-Konto-Benachrichtigungen im Startmenü im Startmenü anzeigen."
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Microsoft-Kontobezogene Benachrichtigungen im Startmenü im Startmenü anzeigen (Standardeinstellung)."
+        "ToolTip": "Anzeigen von Microsoft-Konto-Benachrichtigungen im Startmenü im Startmenü. (Standardeinstellung)."
       }
     }
   },
@@ -537,11 +537,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Blendet die Schaltfläche 'Aufgabenansicht' in der Taskleiste aus."
+        "ToolTip": "Blendet die Schaltfläche \"Aufgabenansicht\" in der Taskleiste aus."
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Zeigt die Schaltfläche 'Aufgabenansicht' in der Taskleiste an (Standardeinstellung)."
+        "ToolTip": "Zeigt die Schaltfläche \"Aufgabenansicht\" in der Taskleiste an (Standardeinstellung)."
       }
     }
   },
@@ -555,7 +555,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Zeigen Sie das Chat-Symbol (Microsoft Teams) in der Taskleiste an und entfernen Sie die Sperre für die Installation von Microsoft Teams für neue Benutzer (Standardwert)."
+        "ToolTip": "Zeigen Sie das Chat-Symbol (Microsoft Teams) in der Taskleiste an und entfernen Sie die Sperre für die Installation von Microsoft Teams für neue Benutzer (Standardeinstellung)."
       }
     }
   },
@@ -594,15 +594,15 @@
   {
     "Region": "UI & Personalization",
     "Function": "UnpinTaskbarShortcuts -Shortcuts",
-    "ToolTip": "Entfernt die Verknüpfungen \"Microsoft Edge\" oder \"Microsoft Store\" von der Taskleiste",
+    "ToolTip": "Die Verknüpfungen \"Microsoft Edge\", \"Microsoft Store\" oder \"Mail\" von der Taskleiste lösen.",
     "Arg": {
       "Zero": {
         "Tag": "Edge",
-        "ToolTip": "Entfernt die Verknüpfung \"Microsoft Edge\" von der Taskleiste."
+        "ToolTip": "Die Verknüpfung \"Microsoft Edge\" von der Taskleiste lösen."
       },
       "One": {
         "Tag": "Store",
-        "ToolTip": "Entfernt die Verknüpfung \"Microsoft Store\" von der Taskleiste."
+        "ToolTip": "Die Verknüpfung \"Microsoft Store\" von der Taskleiste lösen."
       }
     }
   },
@@ -612,15 +612,15 @@
     "Arg": {
       "Zero": {
         "Tag": "LargeIcons",
-        "ToolTip": "Zeigt \"Große Symbole\" in der Systemsteuerung an."
+        "ToolTip": "Anzeigen der Symbole der Systemsteuerung durch \"Große Symbole\"."
       },
       "One": {
         "Tag": "SmallIcons",
-        "ToolTip": "Zeigt \"Kleine Symbole\" in der Systemsteuerung an."
+        "ToolTip": "Anzeige der Symbole der Systemsteuerung durch \"Kleine Symbole\"."
       },
       "Two": {
         "Tag": "Category",
-        "ToolTip": "Zeigt Symbole in der Systemsteuerung nach \"Kategorie\" an (Standardeinstellung)."
+        "ToolTip": "Anzeigen der Symbole der Systemsteuerung nach \"Kategorie\" (Standardeinstellung)."
       }
     }
   },
@@ -630,11 +630,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Dark",
-        "ToolTip": "Stellt den Windows-Standardmodus auf dunkel ein."
+        "ToolTip": "Den Windows-Standard-Farbmodus auf dunkel einstellen."
       },
       "One": {
         "Tag": "Light",
-        "ToolTip": "Stellt den Windows-Standardmodus auf hell ein (Standardeinstellung)."
+        "ToolTip": "Den Windows-Standard-Farbmodus auf hell setzen (Standardeinstellung)."
       }
     }
   },
@@ -644,11 +644,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Dark",
-        "ToolTip": "Stellt den Standardmodus der App auf dunkel ein."
+        "ToolTip": "Den Standardfarbmodus der Anwendung auf dunkel einstellen."
       },
       "One": {
         "Tag": "Light",
-        "ToolTip": "Stellt den Standardmodus der App auf hell ein (Standardeinstellung)."
+        "ToolTip": "Den Standard-Anwendungsfarbmodus auf Hell setzen (Standardeinstellung)."
       }
     }
   },
@@ -658,11 +658,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Blendet die Animation zur Erstanmeldung nach dem Upgrade aus."
+        "ToolTip": "Animation zur Erstanmeldung nach dem Upgrade ausblenden."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Zeigt die Animation zur Erstanmeldung nach dem Upgrade an (Standardeinstellung)."
+        "ToolTip": "Animation zur ersten Anmeldung des Benutzers nach dem Upgrade anzeigen (Standardeinstellung)."
       }
     }
   },
@@ -672,11 +672,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Max",
-        "ToolTip": "Stellt den Qualitätsfaktor der JPEG-Desktop-Hintergründe auf Maximum ein."
+        "ToolTip": "Setzt den Qualitätsfaktor der JPEG-Desktop-Hintergründe auf Maximum."
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Stellt den Qualitätsfaktor der JPEG-Desktop-Hintergründe auf Standard ein."
+        "ToolTip": "Setzt den Qualitätsfaktor der JPEG-Desktop-Hintergründe auf Standard (Standardeinstellung)."
       }
     }
   },
@@ -686,11 +686,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Fügt das Suffix \"-Verknüpfung\" nicht an den Dateinamen der erstellten Verknüpfungen an."
+        "ToolTip": "Das Suffix \"-Verknüpfung\" nicht an den Dateinamen der erstellten Verknüpfungen anhängen."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Fügt das Suffix \"-Verknüpfung\" an den Dateinamen der erstellten Verknüpfungen an (Standardeinstellung)."
+        "ToolTip": "Das Suffix \"-Verknüpfung\" an den Dateinamen der erstellten Verknüpfungen anhängen (Standardeinstellung)."
       }
     }
   },
@@ -700,11 +700,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Verwendet die Schaltfläche 'Bildschirm drucken', um das Ausschneidewerkzeug zu öffnen."
+        "ToolTip": "Verwenden der Schaltfläche Bildschirm drucken(druck s-abf), um das Snipping Tool zu starten."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Verwendet die Schaltfläche 'Bildschirm drucken' nicht, um das Ausschneidewerkzeug zu öffnen (Standardeinstellung)."
+        "ToolTip": "Die Schaltfläche Bildschirm drucken(druck s-abf) nicht zum Öffnen vom Snipping Tool verwenden (Standardeinstellung)."
       }
     }
   },
@@ -714,11 +714,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Verwendet nicht für jedes App-Fenster eine andere Eingabemethode (Standardeinstellung)."
+        "ToolTip": "Verwendet nicht für jedes Anwendungsfenster eine andere Eingabemethode (Standardeinstellung)."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Verwendet für jedes App-Fenster eine andere Eingabemethode."
+        "ToolTip": "Erlaubt die Verwendung einer anderen Eingabemethode für jedes Anwendungsfenster."
       }
     }
   },
@@ -728,11 +728,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Wenn Sie die Titelleiste eines Fensters greifen und schütteln, werden alle anderen Fenster minimiert."
+        "ToolTip": "Minimiert nicht alle anderen Fenster, wenn die Titelleiste eines Fensters gegriffen und geschüttelt wird (Standardeinstellung)."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Wenn Sie die Titelleiste eines Fensters greifen und schütteln, werden nicht alle anderen Fenster minimiert (Standardeinstellung)."
+        "ToolTip": "Minimiert alle anderen Fenster, wenn die Titelleiste eines Fensters gegriffen und geschüttelt wird."
       }
     }
   },
@@ -742,15 +742,15 @@
     "Arg": {
       "Zero": {
         "Tag": "Default",
-        "ToolTip": "Stellt den Standard-Cursor ein."
+        "ToolTip": "Standard-Cursor einstellen."
       },
       "One": {
         "Tag": "Light",
-        "ToolTip": "Lädt und installiert kostenlos helle \"Windows 11 Cursors Concept v2\" Cursor von Jepri Creations."
+        "ToolTip": "Lädt und installiert die kostenlosen leichten \"Windows 11 Cursors Concept v2\" Cursors von Jepri Creations."
       },
       "Two": {
         "Tag": "Dark",
-        "ToolTip": "Lädt und installiert kostenlos dunkle \"Windows 11 Cursors Concept v2\" Cursor von Jepri Creations."
+        "ToolTip": "Lädt und installiert die kostenlosen dunklen \"Windows 11 Cursors Concept v2\" Cursors von Jepri Creations."
       }
     }
   },
@@ -760,11 +760,11 @@
     "Arg": {
       "Zero": {
         "Tag": "None",
-        "ToolTip": "Ordner und Dateien im Ordner \"Downloads\" werden nicht automatisch gruppiert."
+        "ToolTip": "Gruppieren Sie keine Dateien und Ordner im Ordner \"Downloads\"."
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Gruppiert Dateien und Ordner im Ordner \"Downloads\" nach Änderungsdatum."
+        "ToolTip": "Gruppieren Sie Dateien und Ordner im Ordner \"Downloads\" nach \"Änderungsdatum\"."
       }
     }
   },
@@ -774,11 +774,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Der Navigationsbereich (linker Abschnitt) im Explorer wird nicht mehr auf den aktuellen Ordner aufgeklappt (erweitert) (Standardeinstellung)."
+        "ToolTip": "Den Navigatiosbereich des Explorers(Linker Abschnitt) nicht auf den aktuellen Ordner erweitern (aufklappen) (Standardeinstellung)."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Klappt (erweitert) den Navigationsbereich (linker Abschnitt) des Explorers automatisch auf den Ordner auf, den man aktuell offen hat."
+        "ToolTip": "Der Navigationsbereich des Explorers(Linker Abschnitt) wird auf den aktuellen Ordner erweitert (aufgeklappt)."
       }
     }
   },
@@ -788,11 +788,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Uninstall",
-        "ToolTip": "Deinstalliert OneDrive. Der OneDrive-Benutzerordner wird nicht entfernt."
+        "ToolTip": "OneDrive deinstallieren. Der OneDrive-Benutzerordner wird nicht entfernt."
       },
       "One": {
         "Tag": "Install",
-        "ToolTip": "Installiert OneDrive 64-bit."
+        "ToolTip": "OneDrive 64-bit installieren."
       }
     }
   },
@@ -802,7 +802,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Installiert OneDrive 64-bit für alle Benutzer in %ProgramFiles%, je nachdem welches Installationsprogramm ausgelöst wird."
+        "ToolTip": "Installieren Sie OneDrive 64-bit für alle Benutzer in %ProgramFiles%. Je nachdem welches Installationsprogramm ausgelöst wird, 64bit oder 32bit."
       }
     }
   },
@@ -840,11 +840,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Temporäre Dateien löschen, die von Apps nicht verwendet werden (Standardeinstellung)."
+        "ToolTip": "Temporäre Dateien löschen, die von Anwendungen nicht verwendet werden (Standardeinstellung)."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Keine temporären Dateien löschen, die von Apps nicht verwendet werden."
+        "ToolTip": "Lösche keine temporären Dateien, die von Anwendungen nicht verwendet werden."
       }
     }
   },
@@ -854,11 +854,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Ruhezustand deaktivieren. Es wird nicht empfohlen, die Funktion für Laptops zu deaktivieren."
+        "ToolTip": "Deaktiviert den Ruhezustand. Es wird nicht empfohlen, die Funktion für Laptops zu deaktivieren."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Ruhezustand aktivieren (Standardeinstellung)."
+        "ToolTip": "Ruhezustand einschalten (Standardeinstellung)."
       }
     }
   },
@@ -868,11 +868,11 @@
     "Arg": {
       "Zero": {
         "Tag": "SystemDrive",
-        "ToolTip": "Ändert den Pfad der Umgebungsvariablen %TEMP% in %SystemDrive%\\Temp."
+        "ToolTip": "Setzt den Pfad der Umgebungsvariablen %TEMP% auf %SystemDrive%\\Temp."
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Ändert den Pfad der Umgebungsvariablen %TEMP% in %LOCALAPPDATA%\\Temp (Standardeinstellung)."
+        "ToolTip": "Setzt den Pfad der Umgebungsvariablen %TEMP% auf %LOCALAPPDATA%\\Temp (Standardeinstellung)."
       }
     }
   },
@@ -896,11 +896,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Stop-Fehlercodes beim Auftreten von BSoD anzeigen."
+        "ToolTip": "Anzeige der Stop-Fehlerinformationen auf dem BSoD."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Stop-Fehlercodes beim Auftreten von BSoD nicht anzeigen (Standardeinstellung)."
+        "ToolTip": "Keine Anzeige der Stop-Fehler-Informationen in der BSoD (Standardeinstellung)."
       }
     }
   },
@@ -956,7 +956,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Standarddrucker von Windows verwalten lassen (Standardeinstellung)."
+        "ToolTip": "Windows meinen Standarddrucker verwalten lassen (Standardeinstellung)."
       }
     }
   },
@@ -966,11 +966,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Windows-Funktionen über das Popup-Dialogfeld deaktivieren."
+        "ToolTip": "Deaktivieren Sie die Windows-Funktionen über das Popup-Dialogfeld."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Windows-Funktionen über das Popup-Dialogfeld aktivieren."
+        "ToolTip": "Aktivieren Sie die Windows-Funktionen über das Popup-Dialogfeld (Standardeinstellung)."
       }
     }
   },
@@ -980,11 +980,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Uninstall",
-        "ToolTip": "Optionale Funktionen über das Pop-up-Dialogfeld deinstallieren."
+        "ToolTip": "Deinstalliert optionale Funktionen über das Pop-up-Dialogfeld."
       },
       "One": {
         "Tag": "Install",
-        "ToolTip": "Optionale Funktionen über das Popup-Dialogfeld installieren."
+        "ToolTip": "Optionale Funktionen über das Popup-Dialogfeld installieren (Standardeinstellung)."
       }
     }
   },
@@ -994,11 +994,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Updates für andere Microsoft-Produkte erhalten, wenn Sie Windows aktualisieren."
+        "ToolTip": "Erlaubt das Empfangen von Updates für andere Microsoft-Produkte beim Aktualisieren von Windows."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Keine Updates für andere Microsoft-Produkte erhalten, wenn Sie Windows aktualisieren (Standardeinstellung)."
+        "ToolTip": "Erlaubt nicht das Empfangen von Updates für andere Microsoft-Produkte beim Aktualisieren von Windows (Standardeinstellung)."
       }
     }
   },
@@ -1008,11 +1008,11 @@
     "Arg": {
       "Zero": {
         "Tag": "High",
-        "ToolTip": "Energiesparplan auf \"Hohe Leistung\" einstellen. Es wird nicht empfohlen, sie für Laptops einzuschalten."
+        "ToolTip": "Stellt den Energiesparplan auf \"Hohe Leistung\" ein. Es wird nicht empfohlen, sie für Laptops einzuschalten."
       },
       "One": {
         "Tag": "Balanced",
-        "ToolTip": "Energiesparplan auf \"Ausgeglichen\" einstellen (Standardeinstellung)."
+        "ToolTip": "Einstellen des Energiesparplans auf \"Ausgeglichen\" (Standardeinstellung)."
       }
     }
   },
@@ -1022,11 +1022,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Computer nicht erlauben, die Netzwerkadapter auszuschalten, um Strom zu sparen. Es wird nicht empfohlen, die Funktion für Laptops zu deaktivieren."
+        "ToolTip": "Erlauben Sie dem Computer nicht, die Netzwerkadapter auszuschalten, um Strom zu sparen. Es wird nicht empfohlen, die Funktion für Laptops zu deaktivieren."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Computer erlauben, die Netzwerkadapter auszuschalten, um Strom zu sparen (Standardeinstellung)."
+        "ToolTip": "Dem Computer erlauben, die Netzwerkadapter auszuschalten, um Strom zu sparen (Standardeinstellung)."
       }
     }
   },
@@ -1054,11 +1054,11 @@
     "Arg": {
       "Zero": {
         "Tag": "English",
-        "ToolTip": "Standard-Eingabemethode überschreiben: Englisch."
+        "ToolTip": "Überschreiben Sie die Standard-Eingabemethode: Englisch."
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Standard-Eingabemethode: Sprachliste verwenden (Standardeinstellung)."
+        "ToolTip": "Überschreibung für Standard-Eingabemethode: Sprachliste verwenden (Standardeinstellung)."
       }
     }
   },
@@ -1072,11 +1072,11 @@
       },
       "One": {
         "Tag": "Custom",
-        "ToolTip": "Wählen Sie Ordner für Benutzerordner manuell über einen Ordner-Browser-Dialog aus. Benutzerdateien oder -ordner werden nicht an einen neuen Speicherort verschoben. Verschieben Sie sie manuell. Sie befinden sich standardmäßig in dem Ordner %USERPROFILE%."
+        "ToolTip": "Wählen Sie  den Ordner für Benutzerordner manuell über einen Ordner-Browser-Dialog aus. Benutzerdateien oder -ordner werden nicht an einen neuen Speicherort verschoben. Verschieben Sie sie manuell. Sie befinden sich standardmäßig in dem Ordner %USERPROFILE%."
       },
       "Two": {
         "Tag": "Default",
-        "ToolTip": "Ändern Sie den Speicherort von Benutzerordnern auf die Standardeinstellunge Benutzerdateien oder -ordner lassen sich nicht an einen neuen Speicherort verschieben. Verschieben Sie sie manuell. Sie befinden sich standardmäßig im Ordner %USERPROFILE% (Standardeinstellung)."
+        "ToolTip": "Ändern Sie den Speicherort von Benutzerordnern auf die Standardeinstellungen. Benutzerdateien oder -ordner lassen sich nicht an einen neuen Speicherort verschieben. Verschieben Sie sie manuell. Sie befinden sich standardmäßig im Ordner %USERPROFILE% (Standardeinstellung)."
       }
     }
   },
@@ -1086,11 +1086,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Neueste installierte .NET-Laufzeitumgebung für alle Apps verwenden."
+        "ToolTip": "Verwenden Sie die neueste installierte .NET-Laufzeitumgebung für alle Anwendungen."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Neueste installierte .NET-Laufzeitumgebung nicht für alle Apps verwenden (Standardeinstellung)."
+        "ToolTip": "Die zuletzt installierte .NET-Laufzeitumgebung nicht für alle Anwendungen verwenden (Standardeinstellung)."
       }
     }
   },
@@ -1100,11 +1100,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Desktop",
-        "ToolTip": "Speichern von Screenshots durch Drücken von Win+PrtScr(Windows-Taste + Druck s-abf-Taste) auf dem Desktop. Funktion wird nur angewendet, wenn die Voreinstellung zum Entfernen von OneDrive konfiguriert ist. Andernfalls wird die Sicherungsfunktion für die Ordner \"Desktop\" und \"Bilder\" in OneDrive unterbrochen."
+        "ToolTip": "Speichern von Screenshots durch Drücken von Windows-Taste+\"druck\"-Taste auf dem Desktop."
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Speichern von Screenshots durch Drücken von Win+PrtScr(Windows-Taste + Druck s-abf-Taste)  im Ordner Bilder (Standardeinstellung)."
+        "ToolTip": "Speichern von Screenshots durch Drücken von Windows-Taste+\"druck\"-Taste im Ordner Bilder (Standardeinstellung)."
       }
     }
   },
@@ -1128,11 +1128,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Ordnerfenster in einem separaten Prozess starten."
+        "ToolTip": "Explorer in einem separaten Prozess starten."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Ordnerfenster nicht in einem separaten Prozess starten (Standardeinstellung)."
+        "ToolTip": "Explorer nicht in einem separaten Prozess starten (Standardeinstellung)."
       }
     }
   },
@@ -1184,11 +1184,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Feststelltaste deaktivieren (Standardeinstellung)."
+        "ToolTip": "Feststelltaste deaktivieren."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Feststelltaste einschalten."
+        "ToolTip": "Feststelltaste einschalten (Standardeinstellung)."
       }
     }
   },
@@ -1212,11 +1212,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Verwendet nicht die automatische Wiedergabe für alle Medien und Geräte."
+        "ToolTip": "Verwendet die \"Automatische Wiedergabe\" für alle Medien und Geräte - nicht."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "AutoPlay für alle Medien und Geräte verwenden (Standardeinstellung)."
+        "ToolTip": "\"Automatische Wiedergabe\" für alle Medien und Geräte verwenden (Standardeinstellung)."
       }
     }
   },
@@ -1268,7 +1268,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Show",
-        "ToolTip": "Benachrichtigung anzeigen, wenn Ihr PC neu gestartet werden muss, um die Aktualisierung abzuschließen."
+        "ToolTip": "Eine Benachrichtigung anzeigen, wenn Ihr PC neu gestartet werden muss, um die Aktualisierung abzuschließen."
       },
       "One": {
         "Tag": "Hide",
@@ -1282,11 +1282,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Startet das Gerät so bald wie möglich neu, wenn ein Neustart erforderlich ist, um ein Update zu installieren."
+        "ToolTip": "Starten Sie das Gerät so bald wie möglich neu, wenn ein Neustart erforderlich ist, um ein Update zu installieren."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Startet das Gerät nicht so schnell wie möglich neu starten, wenn ein Neustart erforderlich ist, um ein Update zu installieren (Standardeinstellung)."
+        "ToolTip": "Dieses Gerät nicht so schnell wie möglich neu starten, wenn ein Neustart erforderlich ist, um ein Update zu installieren (Standardeinstellung)."
       }
     }
   },
@@ -1310,11 +1310,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Sie erhalten die neuesten Updates nicht, sobald sie verfügbar sind (Standardeinstellung)."
+        "ToolTip": "Holen Sie sich keine Windows-Updates, sobald sie für Ihr Gerät verfügbar sind (Standardeinstellung)."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Erhalten Sie die neuesten Updates, sobald sie verfügbar sind."
+        "ToolTip": "Holen Sie sich Windows-Updates, sobald sie für Ihr Gerät verfügbar sind."
       }
     }
   },
@@ -1356,7 +1356,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Importieren Sie alle Windows-Zuordnungen aus einer JSON-Datei. Sie müssen alle Anwendungen gemäß einer exportierten JSON-Datei installieren, um alle Zuordnungen wiederherzustellen."
+        "ToolTip": "Importieren Sie alle Windows-Zuordnungen aus einer JSON-Datei. Sie müssen alle Anwendungen gemäß der exportierten JSON-Datei installieren, um alle Zuordnungen wiederherzustellen."
       }
     }
   },
@@ -1405,11 +1405,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Proxying nur für gesperrte Webseiten aus dem einheitlichen Register von Roskomnadzor aktivieren. Die Funktion ist nur für Russland anwendbar."
+        "ToolTip": "Aktivieren Sie das Proxying nur für gesperrte Websites aus der einheitlichen Registrierung von Roskomnadzor. Die Funktion ist nur für Russland anwendbar."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Proxying nur für gesperrte Webseiten aus dem einheitlichen Register von Roskomnadzor (Standardeinstellung) deaktivieren."
+        "ToolTip": "Deaktivieren Sie das Proxying nur für gesperrte Websites aus dem einheitlichen Register von Roskomnadzor (Standardeinstellung)."
       }
     }
   },
@@ -1489,7 +1489,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "UWP-Anwendungen über das Pop-up-Dialogfeld deinstallieren."
+        "ToolTip": "Deinstallation von UWP-Anwendungen über das Pop-up-Dialogfeld."
       }
     }
   },
@@ -1499,7 +1499,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "UWP-Anwendungen über das Popup-Dialogfeld deinstallieren. Wenn das Argument \"Für alle Benutzer\" aktiviert ist, werden die App-pakete für neue Benutzer nicht installiert. Das Argument \"Für alle Benutzer\" setzt ein Kontrollkästchen, um Pakete für alle Benutzer zu deinstallieren."
+        "ToolTip": "Deinstalliert UWP-Anwendungen über das Popup-Dialogfeld. Wenn das Argument \"Für alle Benutzer\" aktiviert ist, werden die Anwendungspakete für neue Benutzer nicht installiert. Das Argument \"Für alle Benutzer\" aktiviert ein Kontrollkästchen, um Pakete für alle Benutzer zu deinstallieren."
       }
     }
   },
@@ -1519,11 +1519,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Cortana-Autostart deaktivieren."
+        "ToolTip": "Autostart von Cortana deaktivieren."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Cortana-Autostart aktivieren (Standardeinstellung)."
+        "ToolTip": "Autostart von Cortana aktivieren (Standardeinstellung)."
       }
     }
   },
@@ -1561,7 +1561,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Xbox Game Bar-Tipps deaktivieren."
+        "ToolTip": "Deaktivieren der Xbox Game Bar Tipps."
       },
       "One": {
         "Tag": "Enable",
@@ -1575,7 +1575,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "App auswählen und diese \"Hohe Leistung\" für die Grafik einstellen. Nur mit einer dedizierten GPU."
+        "ToolTip": "Wählen Sie eine Anwendung aus und stellen Sie für diese die \"Hohe Leistung\" für die Grafikleistung ein. Nur mit einer dedizierten GPU."
       }
     }
   },
@@ -1585,11 +1585,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Aktiviert die Hardwarebeschleunigte GPU-Planung. Neustart erforderlich. Nur mit einem dedizierten Grafikprozessor und einer WDDM-Version von 2.7 oder höher."
+        "ToolTip": "Aktiviert die hardwarebeschleunigte GPU-Planung. Ein Neustart ist erforderlich. Nur mit einem dedizierten Grafikprozessor und einer WDDM-Version von 2.7 oder höher."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Deaktiviert die Hardwarebeschleunigte GPU-Planung. Neustart erforderlich (Standardeinstellung)."
+        "ToolTip": "Deaktiviert die hardwarebeschleunigte GPU-Planung (Standardeinstellung). Ein Neustart ist erforderlich."
       }
     }
   },
@@ -1699,25 +1699,11 @@
   },
   {
     "Region": "Microsoft Defender & Security",
-    "Function": "CommandLineProcessAudit",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Einbeziehung der Befehlszeile in Ereignisse der Prozesserstellung."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Keine Einbeziehung der Befehlszeile in Ereignisse der Prozesserstellung (Standardeinstellung)."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
     "Function": "EventViewerCustomView",
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Erstellt eine benutzerdefinierte Ansicht \"Prozesserstellung\", um ausgeführte Prozesse und ihre Argumente zu protokollieren. Damit diese Funktion funktioniert, müssen Ereignisse in der Befehlszeile (CommandLineProcessAudit -Enable) in den Ereignissen der Prozesserstellung aktiviert werden."
+        "ToolTip": "Erstellt eine benutzerdefinierte Ansicht \"Prozesserstellung\", um ausgeführte Prozesse und ihre Argumente zu protokollieren."
       },
       "One": {
         "Tag": "Disable",
@@ -1819,7 +1805,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Deaktiviert DNS-over-HTTPS für IPv4 ( Standardeinstellung)."
+        "ToolTip": "Deaktiviert DNS-over-HTTPS für IPv4 (Standardeinstellung)."
       }
     }
   },
@@ -1843,11 +1829,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Show",
-        "ToolTip": "Zeigt den Eintrag \"Alle extrahieren\" im Kontextmenü des Windows-Installationsprogramms (.msi) an."
+        "ToolTip": "Anzeigen der Option \"Alle extrahieren\" im Kontextmenü des Windows-Installationsprogramms (.msi)."
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Zeigt den Eintrag \"Alle extrahieren\" im Kontextmenü des Windows-Installationsprogramms (.msi) nicht an."
+        "ToolTip": "Ausblenden der Option \"Alle extrahieren\" im Kontextmenü des Windows Installers (.msi) (Standardeinstellung)."
       }
     }
   },
@@ -1885,11 +1871,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Eintrag \"Drucken\" im Kontextmenü von .bat und .cmd ausblenden."
+        "ToolTip": "Ausblenden des Eintrags \"Drucken\" im Kontextmenü von .bat und .cmd."
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Eintrag \"Drucken\" im Kontextmenü von .bat und .cmd anzeigen (Standardeinstellung)."
+        "ToolTip": "Den Eintrag \"Drucken\" im Kontextmenü von .bat und .cmd anzeigen (Standardeinstellung)."
       }
     }
   },
@@ -1899,11 +1885,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Eintrag \"Komprimierter (gezippter) Ordner\" \"Erstellen\" im Kontextmenü ausblenden."
+        "ToolTip": "Den Eintrag \"Komprimierter ZIP-Ordner\" \"Neu\" im Kontextmenü ausblenden."
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Eintrag \"Komprimierter (gezippter) Ordner\" \"Neu\"im Kontextmenü anzeigen (Standardeinstellung)."
+        "ToolTip": "Den Eintrag \"Komprimierter (zip) Ordner\" \"Neu\" im Kontextmenü anzeigen (Standardeinstellung)."
       }
     }
   },
@@ -1969,7 +1955,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Zeigen Sie alle Richtlinien-Registrierungsschlüssel (auch manuell erstellte) im Snap-In Lokaler Gruppenrichtlinien-Editor (gpedit.msc) an. Dies kann bis zu 30 Minuten dauern, abhängig von der Anzahl der in der Registrierung erstellten Richtlinien und Ihren Systemressourcen."
+        "ToolTip": "Zeigt alle Richtlinien-Registrierungsschlüssel (auch manuell erstellte) im Snap-In Lokaler Gruppenrichtlinien-Editor (gpedit.msc) an. Dies kann bis zu 30 Minuten dauern, abhängig von der Anzahl der in der Registrierung erstellten Richtlinien und Ihren Systemressourcen."
       }
     }
   }

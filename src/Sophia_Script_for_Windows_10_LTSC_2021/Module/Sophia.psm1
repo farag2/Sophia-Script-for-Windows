@@ -9813,13 +9813,13 @@ function Install-WSL
 #region Start menu
 <#
 	.SYNOPSIS
-	Recently added apps in the Start menu
+	Recently added apps in Start menu
 
 	.PARAMETER Hide
-	Hide recently added apps in the Start menu
+	Hide recently added apps in Start menu
 
 	.PARAMETER Show
-	Show recently added apps in the Start menu
+	Show recently added apps in Start menu
 
 	.EXAMPLE
 	RecentlyAddedApps -Hide
@@ -9868,13 +9868,13 @@ function RecentlyAddedApps
 
 <#
 	.SYNOPSIS
-	App suggestions in the Start menu
+	App suggestions in Start menu
 
 	.PARAMETER Hide
-	Hide app suggestions in the Start menu
+	Hide app suggestions in Start menu
 
 	.PARAMETER Show
-	Show app suggestions in the Start menu
+	Show app suggestions in Start menu
 
 	.EXAMPLE
 	AppSuggestions -Hide
@@ -10003,7 +10003,7 @@ function PinToStart
 		# Check whether an argument is "DevicesPrinters". The Devices and Printers's AppID attribute can be retrieved only if the shortcut was created
 		if (((Get-Command -Name PinToStart).Parametersets.Parameters | Where-Object -FilterScript {$null -eq $_.Attributes.AliasNames}).Attributes.ValidValues | Where-Object -FilterScript {$_ -match "DevicesPrinters"})
 		{
-			# Create the old-style "Devices and Printers" shortcut in the Start menu
+			# Create the old-style "Devices and Printers" shortcut in Start menu
 			$Shell                 = New-Object -ComObject Wscript.Shell
 			$Shortcut              = $Shell.CreateShortcut("$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesPrinters.lnk")
 			$Shortcut.TargetPath   = "control"
@@ -10130,7 +10130,7 @@ function PinToStart
 
 	end
 	{
-		# Temporarily disable changing the Start menu layout
+		# Temporarily disable changing Start menu layout
 		if (-not (Test-Path -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer))
 		{
 			New-Item -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Force
@@ -10140,18 +10140,18 @@ function PinToStart
 
 		Start-Sleep -Seconds 3
 
-		# Restart the Start menu
+		# Restart Start menu
 		Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
 
 		Start-Sleep -Seconds 3
 
-		# Open the Start menu to load the new layout
+		# Open Start menu to load the new layout
 		$wshell = New-Object -ComObject WScript.Shell
 		$wshell.SendKeys("^{ESC}")
 
 		Start-Sleep -Seconds 3
 
-		# Enable changing the Start menu layout
+		# Enable changing Start menu layout
 		Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name LockedStartLayout -Force -ErrorAction Ignore
 		Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name StartLayoutFile -Force -ErrorAction Ignore
 
@@ -10161,7 +10161,7 @@ function PinToStart
 
 		Start-Sleep -Seconds 3
 
-		# Open the Start menu to load the new layout
+		# Open Start menu to load the new layout
 		$wshell = New-Object -ComObject WScript.Shell
 		$wshell.SendKeys("^{ESC}")
 	}
@@ -11565,68 +11565,6 @@ function DismissSmartScreenFilter
 
 <#
 	.SYNOPSIS
-	Сommand line auditing
-
-	.PARAMETER Enable
-	Include command line in process creation events
-
-	.PARAMETER Disable
-	Do not include command line in process creation events
-
-	.EXAMPLE
-	CommandLineProcessAudit -Enable
-
-	.EXAMPLE
-	CommandLineProcessAudit -Disable
-
-	.NOTES
-	In order this feature to work events auditing (ProcessAudit -Enable) will be enabled
-
-	.NOTES
-	Machine-wide
-#>
-function CommandLineProcessAudit
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Enable"
-		{
-			# Enable events auditing generated when a process is created (starts)
-			auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:enable /failure:enable
-
-			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -PropertyType DWord -Value 1 -Force
-
-			Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -Type DWORD -Value 1
-		}
-		"Disable"
-		{
-			auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:disable /failure:disable
-			Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -Force -ErrorAction Ignore
-
-			Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -Type CLEAR
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
 	The "Process Creation" Event Viewer custom view
 
 	.PARAMETER Enable
@@ -11642,7 +11580,7 @@ function CommandLineProcessAudit
 	EventViewerCustomView -Disable
 
 	.NOTES
-	In order this feature to work events auditing (ProcessAudit -Enable) and command line (CommandLineProcessAudit -Enable) in process creation events will be enabled
+	In order this feature to work events auditing and command line in process creation events will be enabled
 
 	.NOTES
 	Machine-wide
@@ -11707,6 +11645,9 @@ function EventViewerCustomView
 		}
 		"Disable"
 		{
+			auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:disable /failure:disable
+			Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -Force -ErrorAction Ignore
+			Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -Type CLEAR
 			Remove-Item -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Force -ErrorAction Ignore
 		}
 	}
@@ -13110,7 +13051,7 @@ public static void PostMessage()
 	# Refresh desktop icons, environment variables, taskbar
 	[WinAPI.UpdateEnvironment]::Refresh()
 
-	# Restart the Start menu
+	# Restart Start menu
 	Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
 	#endregion Refresh Environment
 
