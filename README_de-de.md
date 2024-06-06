@@ -93,11 +93,13 @@
 
 ![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Fira+Code&size30&pause=1000&width=435&lines=Made+with+%E2%9D%A4%EF%B8%8F+of+Windows%C2%AE)
 
-> **Hinweis**: Sophia Script für Windows ist das größte PowerShell-Modul auf `GitHub` für `Windows 10` & `Windows 11` zur Feinabstimmung und Automatisierung von Routineaufgaben. Es bietet mehr als 150 einzigartige Tweaks und zeigt, wie Windows konfiguriert werden kann, ohne Windows dabei zu schaden.
+> [!IMPORTANT]
+> Sophia Script für Windows ist das größte PowerShell-Modul auf `GitHub` für `Windows 10` & `Windows 11` zur Feinabstimmung und Automatisierung von Routineaufgaben. Es bietet mehr als 150 einzigartige Tweaks und zeigt, wie Windows konfiguriert werden kann, ohne Windows dabei zu schaden.
 
 ## Vor der Ausführung
 
-> **Anmerkung**: Da das Skript mehr als **150** Funktionen mit unterschiedlichen Argumenten enthält, müssen Sie die gesamte Datei **Sophia.ps1** sorgfältig lesen und **die Funktionen, die Sie nicht ausführen möchten, auskommentieren/entkommentieren** (ohne den Code bearbeiten zu müssen) oder [Wrapper](https://github.com/farag2/Sophia-Script-for-Windows#benchtweakgaming-sophia-script-wrapper) verwenden. Für jede Änderung in der Voreinstellungsdatei gibt es eine entsprechende Funktion zum **Wiederherstellen der Standardeinstellungen**. Das Skript sollte am besten auf einem frisch installierten System ausgeführt werden, da die Ausführung auf einem **falsch** getweakten System zu Fehlern führen kann.
+> [!CAUTION]
+> Da das Skript mehr als **150** Funktionen mit unterschiedlichen Argumenten enthält, müssen Sie die gesamte Datei **Sophia.ps1** sorgfältig lesen und **die Funktionen, die Sie nicht ausführen möchten, auskommentieren/entkommentieren** (ohne den Code bearbeiten zu müssen) oder [Wrapper](https://github.com/farag2/Sophia-Script-for-Windows#benchtweakgaming-sophia-script-wrapper) verwenden. Für jede Änderung in der Voreinstellungsdatei gibt es eine entsprechende Funktion zum **Wiederherstellen der Standardeinstellungen**. Das Skript sollte am besten auf einem frisch installierten System ausgeführt werden, da die Ausführung auf einem **falsch** getweakten System zu Fehlern führen kann.
 
 ## Spenden
 
@@ -119,10 +121,10 @@
 | Windows 10 x64 21H2 Enterprise LTSC 2021 | October 2021 Update | 19044.4291+ | Enterprise          |
 | Windows 10 x64 1809 Enterprise LTSC 2019 | October 2018 Update | 17763.5696+ | Enterprise          |
 
-### Warnung
-
-* Es darf nur ein Admin-Benutzer während des Starts der Anwendung angemeldet sein.
-* 🔥🔥🔥 `Sophia Script for Windows` funktioniert möglicherweise nicht auf einem selbstgebauten Windows. Insbesondere, wenn das Homebrew-Image von Betriebssystemherstellern erstellt wurde, die Microsoft Defender zerstören und die Telemetrie des Betriebssystems deaktivieren, indem sie absichtlich Systemkomponenten "uprooten".
+> [!WARNING]
+> Es darf nur ein Admin-Benutzer während des Starts der Anwendung angemeldet sein.
+> 
+> `Sophia Script for Windows` funktioniert möglicherweise nicht auf einem selbstgebauten Windows. Insbesondere, wenn das Homebrew-Image von Betriebssystemherstellern erstellt wurde, die Microsoft Defender zerstören und die Telemetrie des Betriebssystems deaktivieren, indem sie absichtlich Systemkomponenten "uprooten".
 
 ## Haupt-Features
 

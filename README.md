@@ -93,11 +93,13 @@
 
 ![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Fira+Code&size30&pause=1000&width=435&lines=Made+with+%E2%9D%A4%EF%B8%8F+of+Windows%C2%AE)
 
-> **Note**: Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Windows 10` & `Windows 11` for fine-tuning and automating the routine tasks. It offers more than 150 unique tweaks, and shows how Windows can be configured without making any harm to it.
+> [!IMPORTANT]
+> Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Windows 10` & `Windows 11` for fine-tuning and automating the routine tasks. It offers more than 150 unique tweaks, and shows how Windows can be configured without making any harm to it.
 
 ## Before running
 
-> **Note**: Due to the fact that the script includes more than **150** functions with different arguments, you must read the entire **Sophia.ps1** carefully and **comment out/uncomment** those functions that you do/do not want to be executed (without need to edit the code), or use [Wrapper](https://github.com/farag2/Sophia-Script-for-Windows#benchtweakgaming-sophia-script-wrapper). Every tweak in the preset file has its' corresponding function to **restore the default settings**. Running the script is best done on a fresh install because running it on **wrong** tweaked system may result in errors occurring.
+> [!CAUTION]
+> Due to the fact that the script includes more than **150** functions with different arguments, you must read the entire **Sophia.ps1** carefully and **comment out/uncomment** those functions that you do/do not want to be executed (without need to edit the code), or use [Wrapper](https://github.com/farag2/Sophia-Script-for-Windows#benchtweakgaming-sophia-script-wrapper). Every tweak in the preset file has its' corresponding function to **restore the default settings**. Running the script is best done on a fresh install because running it on **wrong** tweaked system may result in errors occurring.
 
 ## Donations
 
@@ -119,10 +121,10 @@
 | Windows 10 x64 21H2 Enterprise LTSC 2021 | October 2021 Update | 19044.4291+ | Enterprise          |
 | Windows 10 x64 1809 Enterprise LTSC 2019 | October 2018 Update | 17763.5696+ | Enterprise          |
 
-### Warning
-
-* It's allowed to be logged in as one admin user only during application startup.
-* 🔥🔥🔥 `Sophia Script for Windows` may not work on a homebrew Windows. Especially, if the homebrew image was created by OS makers being all thumbs who break Microsoft Defender and disable OS telemetry by purposely uprooting system components
+> [!WARNING]
+> It's allowed to be logged in as one admin user only during application startup.
+> 
+> `Sophia Script for Windows` may not work on a homebrew Windows. Especially, if the homebrew image was created by OS makers being all thumbs who break Microsoft Defender and disable OS telemetry by purposely uprooting system components.
 
 ## Key features
 
