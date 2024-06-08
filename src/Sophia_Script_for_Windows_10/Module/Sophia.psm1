@@ -10219,14 +10219,18 @@ function UninstallPCHealthCheck
 	foreach ($MSI in @(Get-ChildItem -Path "$env:SystemRoot\Installer" -Filter *.msi -File -Force))
 	{
 		$Name = $Files.Keys | Where-Object -FilterScript {$_ -eq $MSI.Name}
-		$File = $Files[$Name]
-
-		# https://learn.microsoft.com/en-us/previous-versions/tn-archive/ee176615(v=technet.10)
-		# "22" is the "Subject" file property
-		if ($Folder.GetDetailsOf($File, 22) -eq "Windows PC Health Check")
+		# Check if necessary files exist in folder unless we get a bunch of errors for $File variable
+		if ($Name)
 		{
-			Start-Process -FilePath msiexec.exe -ArgumentList "/uninstall $($MSI.FullName) /quiet /norestart" -Wait
-			break
+			$File = $Files[$Name]
+
+			# https://learn.microsoft.com/en-us/previous-versions/tn-archive/ee176615(v=technet.10)
+			# "22" is the "Subject" file property
+			if ($Folder.GetDetailsOf($File, 22) -eq "Windows PC Health Check")
+			{
+				Start-Process -FilePath msiexec.exe -ArgumentList "/uninstall $($MSI.FullName) /quiet /norestart" -Wait
+				break
+			}
 		}
 	}
 
