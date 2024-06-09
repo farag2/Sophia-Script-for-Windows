@@ -941,11 +941,21 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	# Extract the localized "Skip" string from shell32.dll
 	$Script:Skip = [WinAPI.GetStrings]::GetString(16956)
 
+	Write-Information -MessageData "┏┓    ┓ •    ┏┓   •     ┏      ┓ ┏•   ┓ " -InformationAction Continue
+	Write-Information -MessageData "┗┓┏┓┏┓┣┓┓┏┓  ┗┓┏┏┓┓┏┓╋  ╋┏┓┏┓  ┃┃┃┓┏┓┏┫┏┓┓┏┏┏" -InformationAction Continue
+	Write-Information -MessageData "┗┛┗┛┣┛┛┗┗┗┻  ┗┛┗┛ ┗┣┛┗  ┛┗┛┛   ┗┻┛┗┛┗┗┻┗┛┗┻┛┛" -InformationAction Continue
+	Write-Information -MessageData "    ┛              ┛                   " -InformationAction Continue
+
+	Write-Information -MessageData "https://t.me/sophianews" -InformationAction Continue
+	Write-Information -MessageData "https://t.me/sophia_chat" -InformationAction Continue
+	Write-Information -MessageData "https://discord.gg/sSryhaEv79" -InformationAction Continue
+
 	# Display a warning message about whether a user has customized the preset file
 	if ($Warning)
 	{
 		# Get the name of a preset (e.g Sophia.ps1) regardless it was named
 		# $_.File has no EndsWith() method
+		Write-Information -MessageData "" -InformationAction Continue
 		$PresetName = Split-Path -Path (((Get-PSCallStack).Position | Where-Object -FilterScript {$_.File}).File | Where-Object -FilterScript {$_.EndsWith(".ps1")}) -Leaf
 		Write-Verbose -Message ($Localization.CustomizationWarning -f $PresetName) -Verbose
 
