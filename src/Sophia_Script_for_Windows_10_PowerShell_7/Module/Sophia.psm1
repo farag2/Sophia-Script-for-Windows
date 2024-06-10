@@ -58,20 +58,23 @@ function InitialActions
 
 	[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
+	# Import PowerShell 5.1 modules
+	Import-Module -Name Microsoft.PowerShell.Management, PackageManagement, Appx -UseWindowsPowerShell
+
 	# Extract strings from %SystemRoot%\System32\shell32.dll using its number
 	# https://github.com/SamuelArnold/StarKill3r/blob/master/Star%20Killer/Star%20Killer/bin/Debug/Scripts/SANS-SEC505-master/scripts/Day1-PowerShell/Expand-IndirectString.ps1
 	# [WinAPI.GetStrings]::GetIndirectString("@%SystemRoot%\system32\schedsvc.dll,-100")
 
 	# https://github.com/PowerShell/PowerShell/issues/21070
-	$Script:CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
-	$Script:CompilerParameters.TempFiles = [System.CodeDom.Compiler.TempFileCollection]::new($env:TEMP, $false)
-	$Script:CompilerParameters.GenerateInMemory = $true
+	$Script:CompilerOptions = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
+	$Script:CompilerOptions.TempFiles = [System.CodeDom.Compiler.TempFileCollection]::new($env:TEMP, $false)
+	$Script:CompilerOptions.GenerateInMemory = $true
 	$Signature = @{
 		Namespace        = "WinAPI"
 		Name             = "GetStrings"
 		Language         = "CSharp"
 		UsingNamespace   = "System.Text"
-		CompilerOptions  = $CompilerParameters
+		CompilerOptions  = $CompilerOptions
 		MemberDefinition = @"
 [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
 public static extern IntPtr GetModuleHandle(string lpModuleName);
@@ -126,7 +129,7 @@ public static string GetIndirectString(string indirectString)
 		Namespace        = "WinAPI"
 		Name             = "ForegroundWindow"
 		Language         = "CSharp"
-		CompilerOptions  = $CompilerParameters
+		CompilerOptions  = $CompilerOptions
 		MemberDefinition = @"
 [DllImport("user32.dll")]
 public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
@@ -828,9 +831,6 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 
 	# Save all opened folders in order to restore them after File Explorer restart
 	$Script:OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
-
-	# Import PowerShell 5.1 modules
-	Import-Module -Name Microsoft.PowerShell.Management, PackageManagement, Appx -UseWindowsPowerShell
 
 	<#
 		.SYNOPSIS
@@ -4904,8 +4904,8 @@ function Cursors
 		Namespace          = "WinAPI"
 		Name               = "Cursor"
 		Language           = "CSharp"
-		CompilerParameters = $CompilerParameters
-		MemberDefinition   = @"
+		CompilerOptions  = $CompilerOptions
+		MemberDefinition = @"
 [DllImport("user32.dll", EntryPoint = "SystemParametersInfo")]
 public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, uint pvParam, uint fWinIni);
 "@
@@ -5142,7 +5142,7 @@ function OneDrive
 						Namespace        = "WinAPI"
 						Name             = "DeleteFiles"
 						Language         = "CSharp"
-						CompilerOptions  = $CompilerParameters
+						CompilerOptions  = $CompilerOptions
 						MemberDefinition = @"
 public enum MoveFileFlags
 {
@@ -5655,7 +5655,7 @@ function TempFolder
 					Namespace        = "WinAPI"
 					Name             = "DeleteFiles"
 					Language         = "CSharp"
-					CompilerOptions  = $CompilerParameters
+					CompilerOptions  = $CompilerOptions
 					MemberDefinition = @"
 public enum MoveFileFlags
 {
@@ -5779,7 +5779,7 @@ Unregister-ScheduledTask -TaskName SymbolicLink -Confirm:`$false
 					Namespace        = "WinAPI"
 					Name             = "DeleteFiles"
 					Language         = "CSharp"
-					CompilerOptions  = $CompilerParameters
+					CompilerOptions  = $CompilerOptions
 					MemberDefinition = @"
 public enum MoveFileFlags
 {
@@ -7340,7 +7340,7 @@ function Set-UserShellFolderLocation
 				Namespace        = "WinAPI"
 				Name             = "KnownFolders"
 				Language         = "CSharp"
-				CompilerOptions  = $CompilerParameters
+				CompilerOptions  = $CompilerOptions
 				MemberDefinition = @"
 [DllImport("shell32.dll")]
 public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, IntPtr token, [MarshalAs(UnmanagedType.LPWStr)] string path);
@@ -9220,7 +9220,7 @@ function Set-Association
 		Name             = "Action"
 		Language         = "CSharp"
 		UsingNamespace   = "System.Text", "System.Security.AccessControl", "Microsoft.Win32"
-		CompilerOptions  = $CompilerParameters
+		CompilerOptions  = $CompilerOptions
 		MemberDefinition = @"
 [DllImport("advapi32.dll", CharSet = CharSet.Auto)]
 private static extern int RegOpenKeyEx(UIntPtr hKey, string subKey, int ulOptions, int samDesired, out UIntPtr hkResult);
@@ -9690,7 +9690,7 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 			Namespace        = "WinAPI"
 			Name             = "PatentHash"
 			Language         = "CSharp"
-			CompilerOptions  = $CompilerParameters
+			CompilerOptions  = $CompilerOptions
 			MemberDefinition = @"
 public static uint[] WordSwap(byte[] a, int sz, byte[] md5)
 {
@@ -9936,7 +9936,7 @@ public static long MakeLong(uint left, uint right)
 		Namespace        = "WinAPI"
 		Name             = "Signature"
 		Language         = "CSharp"
-		CompilerOptions  = $CompilerParameters
+		CompilerOptions  = $CompilerOptions
 		MemberDefinition = @"
 [DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = false)]
 private static extern int SHChangeNotify(int eventId, int flags, IntPtr item1, IntPtr item2);
@@ -14008,6 +14008,7 @@ function EventViewerCustomView
 		}
 		"Disable"
 		{
+			# Unlike in Windows 11 default value for Windows 10 is "disable"
 			auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:disable /failure:disable
 			Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -Force -ErrorAction Ignore
 			Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -Type CLEAR
@@ -15368,7 +15369,7 @@ function PostActions
 		Namespace        = "WinAPI"
 		Name             = "UpdateEnvironment"
 		Language         = "CSharp"
-		CompilerOptions  = $CompilerParameters
+		CompilerOptions  = $CompilerOptions
 		MemberDefinition = @"
 private static readonly IntPtr HWND_BROADCAST = new IntPtr(0xffff);
 private const int WM_SETTINGCHANGE = 0x1a;
