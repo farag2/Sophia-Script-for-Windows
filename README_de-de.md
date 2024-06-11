@@ -113,13 +113,18 @@
 
 ## System-Voraussetzungen
 
-|               Version                    |    Marketing name   |    Build    |      Editions       |
-|:-----------------------------------------|--------------------:|:-----------:|:-------------------:|
-| Windows 11 Insider Preview 24H2          | 2024 Update         | 22509+      | Home/Pro/Enterprise |
-| Windows 11 23H2                          | 2023 Update         | 22631.3447+ | Home/Pro/Enterprise |
-| Windows 10 x64 22H2                      | 2022 Update         | 19045.4291+ | Home/Pro/Enterprise |
-| Windows 10 x64 21H2 Enterprise LTSC 2021 | October 2021 Update | 19044.4291+ | Enterprise          |
-| Windows 10 x64 1809 Enterprise LTSC 2019 | October 2018 Update | 17763.5696+ | Enterprise          |
+[Windows-10]: https://support.microsoft.com/topic/windows-10-update-history-8127c2c6-6edf-4fdf-8b9f-0f7be1ef3562
+[Windows-10-LTSC-2019]: https://support.microsoft.com/topic/windows-10-and-windows-server-2019-update-history-725fc2e1-4443-6831-a5ca-51ff5cbcb059
+[Windows-10-LTSC-2021]: https://support.microsoft.com/topic/windows-10-update-history-857b8ccb-71e4-49e5-b3f6-7073197d98fb
+[Windows-11]: https://support.microsoft.com/topic/windows-11-version-23h2-update-history-59875222-b990-4bd9-932f-91a5954de434
+
+|               Version                    |    Marketing name   |                          Build                  |      Editions       |
+|:-----------------------------------------|--------------------:|:-----------------------------------------------:|:-------------------:|
+| Windows 11 Insider Preview 24H2          | 2024 Update         | 22509+                                          | Home/Pro/Enterprise |
+| Windows 11 23H2                          | 2023 Update         | [Neueste stabile Version][Windows-11]           | Home/Pro/Enterprise |
+| Windows 10 x64 22H2                      | 2022 Update         | [Neueste stabile Version][Windows-10]           | Home/Pro/Enterprise |
+| Windows 10 x64 21H2 Enterprise LTSC 2021 | October 2021 Update | [Neueste stabile Version][Windows-10-LTSC-2021] | Enterprise          |
+| Windows 10 x64 1809 Enterprise LTSC 2019 | October 2018 Update | [Neueste stabile Version][Windows-10-LTSC-2019] | Enterprise          |
 
 > [!WARNING]
 > Es darf nur ein Admin-Benutzer während des Starts der Anwendung angemeldet sein.
