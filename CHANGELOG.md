@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.18.7 | 6.6.7 — 12.06.2024
+
+* Removed `CommandLineProcessAudit` and `Install-WSA` as WSA support is deprecated;
+* Improved `EventViewerCustomView -Disable` function;
+* Fixed typos;
+* Minor changes;
+* Thanks to @lowl1f3.
+
 ## 5.18.6 | 6.6.6 — 28.05.2024
 
 * Removed `Windows10ContextMenu` (as this was a strange function to make Windows 11 looks like an old OS), `AuditProcess` (as `CommandLineProcessAudit -Enable` contains the same functionality), `BrowsingHistory`  functions for `Windows 11`;
