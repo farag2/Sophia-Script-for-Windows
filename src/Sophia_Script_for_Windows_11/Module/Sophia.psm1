@@ -147,7 +147,9 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	# Check the language mode
 	if ($ExecutionContext.SessionState.LanguageMode -ne "FullLanguage")
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message $Localization.UnsupportedLanguageMode
+		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_language_modes" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
@@ -163,7 +165,9 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 
 	if ($CurrentUserName -ne $LoginUserName)
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message $Localization.LoggedInUserNotAdmin
+		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
@@ -174,7 +178,9 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	# Check whether the script was run via PowerShell 5.1
 	if ($PSVersionTable.PSVersion.Major -ne 5)
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message ($Localization.UnsupportedPowerShell -f $PSVersionTable.PSVersion.Major, $PSVersionTable.PSVersion.Minor)
+		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
@@ -185,7 +191,9 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	# Check whether the script was run in PowerShell ISE or VS Code
 	if (($Host.Name -match "ISE") -or ($env:TERM_PROGRAM -eq "vscode"))
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message ($Localization.UnsupportedHost -f $Host.Name.Replace("Host", ""))
+		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
@@ -236,7 +244,9 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		{
 			if ($Tweakers[$Tweaker] -eq "HKCU:\Software\Win 10 Tweaker")
 			{
+				Write-Information -MessageData "" -InformationAction Continue
 				Write-Warning -Message $Localization.Win10TweakerWarning
+				Write-Information -MessageData "" -InformationAction Continue
 
 				Write-Verbose -Message "https://youtu.be/na93MS-1EkM" -Verbose
 				Write-Verbose -Message "https://pikabu.ru/story/byekdor_v_win_10_tweaker_ili_sovremennyie_metodyi_borbyi_s_piratstvom_8227558" -Verbose
@@ -246,7 +256,9 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 				exit
 			}
 
+			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message ($Localization.TweakerWarning -f $Tweaker)
+			Write-Information -MessageData "" -InformationAction Continue
 
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
@@ -266,7 +278,9 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	{
 		if ($Tweakers[$Tweaker])
 		{
+			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message ($Localization.TweakerWarning -f $Tweaker)
+			Write-Information -MessageData "" -InformationAction Continue
 
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
@@ -276,20 +290,26 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	}
 
 	# Check whether Get-WindowsEdition cmdlet is working
+	# https://github.com/PowerShell/PowerShell/issues/21295
 	try
 	{
 		Get-WindowsEdition -Online
 	}
 	catch [System.Runtime.InteropServices.COMException]
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Get-WindowsEdition")
+		Write-Information -MessageData "" -InformationAction Continue
+
 		exit
 	}
 
 	# Check whether Windows Feature Experience Pack was removed by harmful tweakers
 	if (-not (Get-AppxPackage -Name MicrosoftWindows.Client.CBS))
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Windows Feature Experience Pack")
+		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
@@ -300,8 +320,10 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	# Check whether EventLog service is running in order to be sire that Event Logger is enabled
 	if ((Get-Service -Name EventLog).Status -eq "Stopped")
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		# Extract the localized "Event Viewer" string from shell32.dll
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f $([WinAPI.GetStrings]::GetString(22029)))
+		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
@@ -312,7 +334,9 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	# Check whether Microsoft Store being an important system component was removed
 	if (-not (Get-AppxPackage -Name Microsoft.WindowsStore))
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Store")
+		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
@@ -331,7 +355,9 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	{
 		if (-not (Test-Path -Path $File))
 		{
+			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message ($Localization.WindowsComponentBroken -f $File)
+			Write-Information -MessageData "" -InformationAction Continue
 
 			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest" -Verbose
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
@@ -344,7 +370,9 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	# Checking whether Windows Security Settings page was hidden from UI
 	if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer", "SettingsPageVisibility", $null) -match "hide:windowsdefender")
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
+		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
@@ -360,8 +388,10 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	catch [Microsoft.Management.Infrastructure.CimException]
 	{
 		# Provider Load Failure exception
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message $Global:Error.Exception.Message | Select-Object -First 1
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
+		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
@@ -372,7 +402,9 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	# Check Microsoft Defender state
 	if ($null -eq (Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction Ignore))
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
+		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
@@ -388,7 +420,9 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	}
 	catch [Microsoft.PowerShell.Commands.ServiceCommandException]
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
+		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
@@ -481,7 +515,9 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	)
 	if (($PendingActions | Test-Path) -contains $true)
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message $Localization.RebootPending
+		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
@@ -517,7 +553,9 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 
 			if ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)
 			{
+				Write-Information -MessageData "" -InformationAction Continue
 				Write-Warning -Message $Localization.UnsupportedRelease
+				Write-Information -MessageData "" -InformationAction Continue
 
 				Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest" -Verbose
 				Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
@@ -541,7 +579,9 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	# Check whether LGPO.exe exists in the bin folder
 	if (-not (Test-Path -Path "$PSScriptRoot\..\bin\LGPO.exe"))
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message $Localization.Bin
+		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
@@ -555,7 +595,9 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	{
 		{$_ -lt 22631}
 		{
+			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.UnsupportedOSBuild
+			Write-Information -MessageData "" -InformationAction Continue
 
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
@@ -623,7 +665,9 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 				# https://support.microsoft.com/en-us/topic/windows-11-version-23h2-update-history-59875222-b990-4bd9-932f-91a5954de434
 				$CurrentBuild = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
 				$UBR = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
+				Write-Information -MessageData "" -InformationAction Continue
 				Write-Warning -Message ($Localization.UpdateWarning -f $CurrentBuild.CurrentBuild, $UBR.UBR, $LatestSupportedBuild)
+				Write-Information -MessageData "" -InformationAction Continue
 
 				Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 				Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
@@ -1149,6 +1193,7 @@ function DiagTrackService
 		$PresetName = Split-Path -Path (((Get-PSCallStack).Position | Where-Object -FilterScript {$_.File}).File | Where-Object -FilterScript {$_.EndsWith(".ps1")}) -Leaf
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.InitialActionsCheckFailed -f $PresetName) -Verbose
+		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
@@ -10895,8 +10940,8 @@ function UninstallUWPApps
 			# Outlook
 			"Microsoft.OutlookForWindows",
 
-			# Chat (Microsoft Teams)
-			"MicrosoftTeams",
+			# Microsoft Teams
+			"MSTeams",
 
 			# Microsoft Copilot
 			"Microsoft.Windows.Ai.CoPilot.Provider"
@@ -11995,7 +12040,7 @@ while (`$true)
 	[int]`$CurrentMainWindowHandle = (Get-Process -Name cleanmgr | Where-Object -FilterScript {`$_.PriorityClass -eq """BelowNormal"""}).MainWindowHandle
 	if (`$SourceMainWindowHandle -ne `$CurrentMainWindowHandle)
 	{
-		`$CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
+		`$CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new("""System.dll""")
 		`$CompilerParameters.TempFiles = [System.CodeDom.Compiler.TempFileCollection]::new(`$env:TEMP, `$false)
 		`$CompilerParameters.GenerateInMemory = `$true
 		`$Signature = @{
@@ -12061,7 +12106,7 @@ public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 # https://github.com/DCourtel/Windows_10_Focus_Assist/blob/master/FocusAssistLibrary/FocusAssistLib.cs
 # https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
 
-`$CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
+`$CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new("""System.dll""")
 `$CompilerParameters.TempFiles = [System.CodeDom.Compiler.TempFileCollection]::new(`$env:TEMP, `$false)
 `$CompilerParameters.GenerateInMemory = `$true
 `$Signature = @{
@@ -12382,7 +12427,7 @@ function SoftwareDistributionTask
 # https://github.com/DCourtel/Windows_10_Focus_Assist/blob/master/FocusAssistLibrary/FocusAssistLib.cs
 # https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
 
-`$CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
+`$CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new("""System.dll""")
 `$CompilerParameters.TempFiles = [System.CodeDom.Compiler.TempFileCollection]::new(`$env:TEMP, `$false)
 `$CompilerParameters.GenerateInMemory = `$true
 `$Signature = @{
@@ -12692,7 +12737,7 @@ function TempTask
 # https://github.com/DCourtel/Windows_10_Focus_Assist/blob/master/FocusAssistLibrary/FocusAssistLib.cs
 # https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
 
-`$CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
+`$CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new("""System.dll""")
 `$CompilerParameters.TempFiles = [System.CodeDom.Compiler.TempFileCollection]::new(`$env:TEMP, `$false)
 `$CompilerParameters.GenerateInMemory = `$true
 `$Signature = @{
