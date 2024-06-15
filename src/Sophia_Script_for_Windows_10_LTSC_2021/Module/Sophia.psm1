@@ -223,8 +223,6 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		"Bloatware Removal" = "$env:SystemDrive\BRU\Bloatware-Removal*.log"
 		# https://www.youtube.com/GHOSTSPECTRE
 		"Ghost Toolbox"     = "$env:SystemRoot\System32\migwiz\dlmanifests\run.ghost.cmd"
-		# https://github.com/hellzerg/optimizer
-		Optimizer           = "$(Get-ItemPropertyValue -Path `"HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders`" -Name `"{374DE290-123F-4565-9164-39C4925E467B}`")\OptimizerDownloads"
 		# https://win10tweaker.ru
 		"Win 10 Tweaker"    = "HKCU:\Software\Win 10 Tweaker"
 		# https://forum.ru-board.com/topic.cgi?forum=5&topic=50519
@@ -283,6 +281,10 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		AutoSettingsPS = "$(Get-Item -Path `"HKLM:\SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths`" | Where-Object -FilterScript {$_.Property -match `"AutoSettingsPS`"})"
 		# Flibustier custom Windows image
 		Flibustier     = "$(Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\.NETFramework\Performance -Name *flibustier)"
+		# https://github.com/hellzerg/optimizer
+		Optimizer      = "$((Get-ItemProperty -Path `"HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache`").PSObject.Properties | Where-Object -FilterScript {$_.Value -eq `"optimizer`"})"
+		# https://github.com/builtbybel/Winpilot
+		Winpilot       = "$((Get-ItemProperty -Path `"HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache`").PSObject.Properties | Where-Object -FilterScript {$_.Value -eq `"Winpilot`"})"
 	}
 	foreach ($Tweaker in $Tweakers.Keys)
 	{
