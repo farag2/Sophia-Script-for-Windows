@@ -7,11 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 5.18.7 | 6.6.7 — 12.06.2024
 
+* Fixed `CleanupTask -Register` function not working due to a typo;
+  * Please re-create it via invoking `. .\Functions.ps1` (with a dot at the beginning) method.
 * Removed `CommandLineProcessAudit` and `Install-WSA` as WSA support is deprecated;
 * Improved `EventViewerCustomView -Disable` function;
 * Fixed typos;
 * Minor changes;
 * Thanks to @lowl1f3.
+
+### Wrapper 2.7.1
+
+Closed #576
 
 ## 5.18.6 | 6.6.6 — 28.05.2024
 
