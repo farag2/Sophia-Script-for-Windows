@@ -11584,11 +11584,6 @@ function TeamsAutostart
 
 	if (Get-AppxPackage -Name MSTeams)
 	{
-		if (-not (Test-Path -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData\MSTeams_8wekyb3d8bbwe\TeamsTfwStartupTask"))
-		{
-			New-Item -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData\MSTeams_8wekyb3d8bbwe\TeamsTfwStartupTask" -Force
-		}
-
 		switch ($PSCmdlet.ParameterSetName)
 		{
 			"Disable"
