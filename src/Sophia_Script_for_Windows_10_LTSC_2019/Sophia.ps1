@@ -485,14 +485,6 @@ Hibernation -Disable
 # Включить режим гибернации (значение по умолчанию)
 # Hibernation -Enable
 
-# Change the %TEMP% environment variable path to %SystemDrive%\Temp
-# Изменить путь переменной среды для %TEMP% на %SystemDrive%\Temp
-# TempFolder -SystemDrive
-
-# Change %TEMP% environment variable path to %LOCALAPPDATA%\Temp (default value)
-# Изменить путь переменной среды для %TEMP% на %LOCALAPPDATA%\Temp (значение по умолчанию)
-# TempFolder -Default
-
 # Disable the Windows 260 characters path limit
 # Отключить ограничение Windows на 260 символов в пути
 Win32LongPathLimit -Disable
@@ -668,7 +660,7 @@ LatestInstalled.NET -Enable
 # LatestInstalled.NET -Disable
 
 # Save screenshots by pressing Win+PrtScr on the Desktop
-# Сохранять скриншоты по нажатию Win+PrtScr на рабочий столе
+# Сохранять скриншоты по нажатию Win+PrtScr на рабочий стол
 WinPrtScrFolder -Desktop
 
 # Save screenshots by pressing Win+PrtScr in the Pictures folder (default value)

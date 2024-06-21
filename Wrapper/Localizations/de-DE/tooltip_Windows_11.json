@@ -864,20 +864,6 @@
   },
   {
     "Region": "System",
-    "Function": "TempFolder",
-    "Arg": {
-      "Zero": {
-        "Tag": "SystemDrive",
-        "ToolTip": "Setzt den Pfad der Umgebungsvariablen %TEMP% auf %SystemDrive%\\Temp."
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Setzt den Pfad der Umgebungsvariablen %TEMP% auf %LOCALAPPDATA%\\Temp (Standardeinstellung)."
-      }
-    }
-  },
-  {
-    "Region": "System",
     "Function": "Win32LongPathLimit",
     "Arg": {
       "Zero": {
@@ -1500,16 +1486,6 @@
       "Zero": {
         "Tag": "",
         "ToolTip": "Deinstalliert UWP-Anwendungen über das Popup-Dialogfeld. Wenn das Argument \"Für alle Benutzer\" aktiviert ist, werden die Anwendungspakete für neue Benutzer nicht installiert. Das Argument \"Für alle Benutzer\" aktiviert ein Kontrollkästchen, um Pakete für alle Benutzer zu deinstallieren."
-      }
-    }
-  },
-  {
-    "Region": "UWP apps",
-    "Function": "RestoreUWPApps",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Standard-UWP-Apps mithilfe des Popup-Dialogfelds wieder herstellen. UWP-Apps können nur wiederhergestellt werden, wenn sie nur für den aktuellen Benutzer deinstalliert wurden."
       }
     }
   },

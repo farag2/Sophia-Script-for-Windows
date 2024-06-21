@@ -985,22 +985,6 @@
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
-    "Function": "TempFolder",
-    "Arg": {
-      "Zero": {
-        "Tag": "SystemDrive"
-      },
-      "One": {
-        "Tag": "Default"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
-    "Region": "System",
-    "Control": "cmb",
-    "Required": "false",
     "Function": "Win32LongPathLimit",
     "Arg": {
       "Zero": {
@@ -1697,19 +1681,6 @@
     "Control": "chk",
     "Required": "false",
     "Function": "UninstallUWPApps -ForAllUsers",
-    "Arg": {
-      "Zero": {
-        "Tag": ""
-      }
-    },
-    "Preset": "",
-    "WindowsDefault": ""
-  },
-  {
-    "Region": "UWP apps",
-    "Control": "chk",
-    "Required": "false",
-    "Function": "RestoreUWPApps",
     "Arg": {
       "Zero": {
         "Tag": ""

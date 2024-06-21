@@ -580,7 +580,7 @@ NavigationPaneExpand -Disable
 # OneDrive -Install
 
 # Install OneDrive 64-bit all users to %ProgramFiles% depending which installer is triggered
-# Установить OneDrive 64-бит для всех пользователей в %ProgramFiles% в зависимости от от того, как запускается инсталлятор
+# Установить OneDrive 64-бит для всех пользователей в %ProgramFiles% в зависимости от того, как запускается инсталлятор
 # OneDrive -Install -AllUsers
 #endregion OneDrive
 
@@ -618,14 +618,6 @@ Hibernation -Disable
 # Enable hibernate (default value)
 # Включить режим гибернации (значение по умолчанию)
 # Hibernation -Enable
-
-# Change the %TEMP% environment variable path to %SystemDrive%\Temp
-# Изменить путь переменной среды для %TEMP% на %SystemDrive%\Temp
-# TempFolder -SystemDrive
-
-# Change %TEMP% environment variable path to %LOCALAPPDATA%\Temp (default value)
-# Изменить путь переменной среды для %TEMP% на %LOCALAPPDATA%\Temp (значение по умолчанию)
-# TempFolder -Default
 
 # Disable the Windows 260 characters path limit
 # Отключить ограничение Windows на 260 символов в пути
@@ -806,7 +798,7 @@ LatestInstalled.NET -Enable
 	The function will be applied only if the preset is configured to remove the OneDrive application, or the app was already uninstalled
 	Otherwise the backup functionality for the "Desktop" and "Pictures" folders in OneDrive breaks
 
-	Сохранять скриншоты по нажатию Win+PrtScr на рабочий столе
+	Сохранять скриншоты по нажатию Win+PrtScr на рабочий стол
 	Функция будет применена только в случае, если в пресете настроено удаление приложения OneDrive или приложение уже удалено,
 	иначе в OneDrive ломается функционал резервного копирования для папок "Рабочий стол" и "Изображения"
 #>
@@ -1054,25 +1046,18 @@ StartLayout -ShowMorePins
 #endregion Start menu
 
 #region UWP apps
-<#
-	Uninstall UWP apps using the pop-up dialog box
-	If the "For All Users" is checked apps packages will not be installed for new users
-	The "ForAllUsers" argument sets a checkbox to unistall packages for all users
-
-	Удалить UWP-приложения, используя всплывающее диалоговое окно
-	Пакеты приложений не будут установлены для новых пользователей, если отмечена галочка "Для всех пользователей"
-	Аргумент "ForAllUsers" устанавливает галочку для удаления пакетов для всех пользователей
-#>
+# Uninstall UWP apps using the pop-up dialog box
+# Удалить UWP-приложения, используя всплывающее диалоговое окно
 UninstallUWPApps
 
 <#
-	Restore the default UWP apps using the pop-up dialog box
-	UWP apps can be restored only if they were uninstalled only for the current user
+	Uninstall UWP apps for all users using the pop-up dialog box
+	If the "For All Users" is checked apps packages will not be installed for new users
 
-	Восстановить стандартные UWP-приложения, используя всплывающее диалоговое окно
-	UWP-приложения могут быть восстановлены, только если они были удалены для текущего пользователя
+	Удалить UWP-приложения для всех пользователей, используя всплывающее диалоговое окно
+	Пакеты приложений не будут установлены для новых пользователей, если отмечена галочка "Для всех пользователей"
 #>
-# RestoreUWPApps
+# UninstallUWPApps -ForAllUsers
 
 # Disable Cortana autostarting
 # Выключить автозагрузку Кортана

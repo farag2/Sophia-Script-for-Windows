@@ -213,8 +213,6 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		"Ghost Toolbox"     = "$env:SystemRoot\System32\migwiz\dlmanifests\run.ghost.cmd"
 		# https://win10tweaker.ru
 		"Win 10 Tweaker"    = "HKCU:\Software\Win 10 Tweaker"
-		# https://forum.ru-board.com/topic.cgi?forum=5&topic=50519
-		"Modern Tweaker"    = "Registry::HKEY_CLASSES_ROOT\CLSID\{645FF040-5081-101B-9F08-00AA002F954E}\shell\Modern Cleaner"
 		# https://boosterx.ru
 		BoosterX            = "$env:ProgramFiles\GameModeX\GameModeX.exe"
 		# https://forum.ru-board.com/topic.cgi?forum=5&topic=14285&start=400#11
@@ -235,6 +233,8 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		WinClean             = "$env:ProgramFiles\WinClean Plus Apps"
 		# https://github.com/Atlas-OS/Atlas
 		AtlasOS              = "$env:SystemRoot\AtlasModules"
+		# https://www.gearupbooster.com
+		"GearUP Booster"     = "${env:ProgramFiles(x86)}\GearUPBooster"
 	}
 	foreach ($Tweaker in $Tweakers.Keys)
 	{
@@ -268,13 +268,15 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	# Check whether Windows was broken by 3rd party harmful tweakers and trojans
 	$Tweakers = @{
 		# https://forum.ru-board.com/topic.cgi?forum=62&topic=30617&start=1600#14
-		AutoSettingsPS = "$(Get-Item -Path `"HKLM:\SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths`" | Where-Object -FilterScript {$_.Property -match `"AutoSettingsPS`"})"
+		AutoSettingsPS   = "$(Get-Item -Path `"HKLM:\SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths`" | Where-Object -FilterScript {$_.Property -match `"AutoSettingsPS`"})"
 		# Flibustier custom Windows image
-		Flibustier     = "$(Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\.NETFramework\Performance -Name *flibustier)"
+		Flibustier       = "$(Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\.NETFramework\Performance -Name *flibustier)"
 		# https://github.com/hellzerg/optimizer
-		Optimizer      = "$((Get-ItemProperty -Path `"HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache`").PSObject.Properties | Where-Object -FilterScript {$_.Value -eq `"optimizer`"})"
+		Optimizer        = "$((Get-ItemProperty -Path `"HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache`").PSObject.Properties | Where-Object -FilterScript {$_.Value -eq `"optimizer`"})"
 		# https://github.com/builtbybel/Winpilot
-		Winpilot       = "$((Get-ItemProperty -Path `"HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache`").PSObject.Properties | Where-Object -FilterScript {$_.Value -eq `"Winpilot`"})"
+		Winpilot         = "$((Get-ItemProperty -Path `"HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache`").PSObject.Properties | Where-Object -FilterScript {$_.Value -eq `"Winpilot`"})"
+		# https://forum.ru-board.com/topic.cgi?forum=5&topic=50519
+		"Modern Tweaker" = "$((Get-ItemProperty -Path `"HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache`").PSObject.Properties | Where-Object -FilterScript {$_.Value -eq `"Modern Tweaker`"})"
 	}
 	foreach ($Tweaker in $Tweakers.Keys)
 	{
@@ -588,6 +590,20 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+		exit
+	}
+
+	if ((Get-WindowsEdition -Online).Edition -match "EnterpriseS")
+	{
+		# Will be removed when Windows 11 Enterprise LTSC will be released officially this Autumn along side with 24H2
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Warning -Message "You're using a leaked Windows 11 Enterprise LTSC image. The official release set to November."
+		Write-Information -MessageData "" -InformationAction Continue
+
+		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows#system-requirements" -Verbose
 
 		exit
 	}
@@ -1902,7 +1918,7 @@ function AdvertisingID
 	)
 
 	# Remove all policies in order to make changes visible in UI only if it's possible
-	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo -Name DisabledByGroupPolicy -Force -ErrorAction Ignore 
+	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo -Name DisabledByGroupPolicy -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name DisabledByGroupPolicy -Type CLEAR
 
 	switch ($PSCmdlet.ParameterSetName)
@@ -4711,10 +4727,6 @@ function OneDrive
 		[switch]
 		$Install,
 
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Install"
-		)]
 		[switch]
 		$AllUsers
 	)
@@ -4884,11 +4896,11 @@ public static bool MarkFileDelete (string sourcefile)
 				if ($AllUsers)
 				{
 					# Install OneDrive for all users
-					Start-Process -FilePath $env:SystemRoot\System32\OneDriveSetup.exe -ArgumentList "/allusers" -Wait
+					Start-Process -FilePath $env:SystemRoot\System32\OneDriveSetup.exe -ArgumentList "/allusers"
 				}
 				else
 				{
-					Start-Process -FilePath $env:SystemRoot\System32\OneDriveSetup.exe -Wait
+					Start-Process -FilePath $env:SystemRoot\System32\OneDriveSetup.exe
 				}
 			}
 			else
@@ -4923,7 +4935,7 @@ public static bool MarkFileDelete (string sourcefile)
 					# Remove invalid chars
 					[xml]$OneDriveXML = $Content -replace "ï»¿", ""
 
-					$OneDriveURL = ($OneDriveXML).root.update.amd64binary.url | Select-Object -Index 1
+					$OneDriveURL = $OneDriveXML.root.update.amd64binary.url | Select-Object -Index 1
 					$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 					$Parameters = @{
 						Uri             = $OneDriveURL
@@ -4936,7 +4948,7 @@ public static bool MarkFileDelete (string sourcefile)
 					if ($AllUsers)
 					{
 						# Install OneDrive for all users to %ProgramFiles%
-						Start-Process -FilePath $env:SystemRoot\SysWOW64\OneDriveSetup.exe -ArgumentList "/allusers" -Wait
+						Start-Process -FilePath $env:SystemRoot\SysWOW64\OneDriveSetup.exe -ArgumentList "/allusers"
 					}
 					else
 					{
@@ -5191,296 +5203,6 @@ function Hibernation
 		"Enable"
 		{
 			POWERCFG /HIBERNATE ON
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	The %TEMP% environment variable path
-
-	.PARAMETER SystemDrive
-	Change the %TEMP% environment variable path to %SystemDrive%\Temp
-
-	.PARAMETER Default
-	Change the %TEMP% environment variable path to %LOCALAPPDATA%\Temp
-
-	.EXAMPLE
-	TempFolder -SystemDrive
-
-	.EXAMPLE
-	TempFolder -Default
-
-	.NOTES
-	Machine-wide
-#>
-function TempFolder
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "SystemDrive"
-		)]
-		[switch]
-		$SystemDrive,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Default"
-		)]
-		[switch]
-		$Default
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"SystemDrive"
-		{
-			if ((Get-LocalUser | Where-Object -FilterScript {$_.Enabled}).Count -gt 1)
-			{
-				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message $Localization.Skipped -Verbose
-
-				return
-			}
-
-			# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-			# https://github.com/PowerShell/PowerShell/issues/21070
-			if ((Get-Item -Path $env:TEMP).FullName -eq "$env:SystemDrive\Temp")
-			{
-				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message $Localization.Skipped -Verbose
-
-				return
-			}
-
-			# Restart the Printer Spooler service (Spooler)
-			Restart-Service -Name Spooler -Force
-
-			# Stop OneDrive processes
-			Stop-Process -Name OneDrive, FileCoAuth -Force -ErrorAction Ignore
-
-			if (-not (Test-Path -Path $env:SystemDrive\Temp))
-			{
-				New-Item -Path $env:SystemDrive\Temp -ItemType Directory -Force
-			}
-
-			# Cleaning up folders
-			Remove-Item -Path $env:SystemRoot\Temp -Recurse -Force -ErrorAction Ignore
-			Get-Item -Path $env:TEMP -Force | Where-Object -FilterScript {$_.LinkType -ne "SymbolicLink"} | Remove-Item -Recurse -Force -ErrorAction Ignore
-
-			if (-not (Test-Path -Path $env:LOCALAPPDATA\Temp))
-			{
-				New-Item -Path $env:LOCALAPPDATA\Temp -ItemType Directory -Force
-			}
-
-			# If there are some files or folders left in %LOCALAPPDATA\Temp%
-			if ((Get-ChildItem -Path $env:TEMP -Force -ErrorAction Ignore | Measure-Object).Count -ne 0)
-			{
-				# https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexa
-				# The system does not move the file until the operating system is restarted
-				# The system moves the file immediately after AUTOCHK is executed, but before creating any paging files
-				$Signature = @{
-					Namespace          = "WinAPI"
-					Name               = "DeleteFiles"
-					Language           = "CSharp"
-					CompilerParameters = $CompilerParameters
-					MemberDefinition   = @"
-public enum MoveFileFlags
-{
-	MOVEFILE_DELAY_UNTIL_REBOOT = 0x00000004
-}
-
-[DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-static extern bool MoveFileEx(string lpExistingFileName, string lpNewFileName, MoveFileFlags dwFlags);
-
-public static bool MarkFileDelete (string sourcefile)
-{
-	return MoveFileEx(sourcefile, null, MoveFileFlags.MOVEFILE_DELAY_UNTIL_REBOOT);
-}
-"@
-				}
-
-				if (-not ("WinAPI.DeleteFiles" -as [type]))
-				{
-					Add-Type @Signature
-				}
-
-				try
-				{
-					Get-ChildItem -Path $env:TEMP -Recurse -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Stop
-				}
-				catch
-				{
-					# If files are in use remove them at the next boot
-					Get-ChildItem -Path $env:TEMP -Recurse -Force -ErrorAction Ignore | ForEach-Object -Process {[WinAPI.DeleteFiles]::MarkFileDelete($_.FullName)}
-				}
-
-				$SymbolicLinkTask = @"
-Get-ChildItem -Path `$env:LOCALAPPDATA\Temp -Recurse -Force | Remove-Item -Recurse -Force
-
-Get-Item -Path `$env:LOCALAPPDATA\Temp -Force | Where-Object -FilterScript {`$_.LinkType -ne """SymbolicLink"""} | Remove-Item -Recurse -Force
-New-Item -Path `$env:LOCALAPPDATA\Temp -ItemType SymbolicLink -Value `$env:SystemDrive\Temp -Force
-
-Unregister-ScheduledTask -TaskName SymbolicLink -Confirm:`$false
-"@
-
-				# Create a temporary scheduled task to create a symbolic link to the %SystemDrive%\Temp folder
-				# We cannot create a schedule task if %COMPUTERNAME% is equal to %USERNAME%, so we have to use a "$env:COMPUTERNAME\$env:USERNAME" method
-				# https://github.com/PowerShell/PowerShell/issues/21377
-				$Action     = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $SymbolicLinkTask"
-				$Trigger    = New-ScheduledTaskTrigger -AtLogon -User $env:USERNAME
-				$Settings   = New-ScheduledTaskSettingsSet -Compatibility Win8
-				$Principal  = New-ScheduledTaskPrincipal -UserId "$env:COMPUTERNAME\$env:USERNAME" -RunLevel Highest
-				$Parameters = @{
-					TaskName  = "SymbolicLink"
-					Principal = $Principal
-					Action    = $Action
-					Settings  = $Settings
-					Trigger   = $Trigger
-				}
-				Register-ScheduledTask @Parameters -Force
-			}
-			else
-			{
-				# Create a symbolic link to the %SystemDrive%\Temp folder
-				New-Item -Path $env:LOCALAPPDATA\Temp -ItemType SymbolicLink -Value $env:SystemDrive\Temp -Force
-			}
-
-			# Change the %TEMP% environment variable path to %LOCALAPPDATA%\Temp
-			# The additional registry key creating are needed to fix the property type of the keys: SetEnvironmentVariable creates them with the "String" type instead of "ExpandString" as by default
-			[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "User")
-			[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Machine")
-			[Environment]::SetEnvironmentVariable("TMP", "$env:SystemDrive\Temp", "Process")
-			New-ItemProperty -Path HKCU:\Environment -Name TMP -PropertyType ExpandString -Value $env:SystemDrive\Temp -Force
-
-			[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "User")
-			[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Machine")
-			[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemDrive\Temp", "Process")
-			New-ItemProperty -Path HKCU:\Environment -Name TEMP -PropertyType ExpandString -Value $env:SystemDrive\Temp -Force
-
-			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TMP -PropertyType ExpandString -Value $env:SystemDrive\Temp -Force
-		}
-		"Default"
-		{
-			# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-			# https://github.com/PowerShell/PowerShell/issues/21070
-			if ((Get-Item -Path $env:TEMP).FullName -eq "$env:LOCALAPPDATA\Temp")
-			{
-				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message $Localization.Skipped -Verbose
-
-				return
-			}
-
-			# Restart the Printer Spooler service (Spooler)
-			Restart-Service -Name Spooler -Force
-
-			# Stop OneDrive processes
-			Stop-Process -Name OneDrive, FileCoAuth -Force -ErrorAction Ignore
-
-			# Remove a symbolic link to the %SystemDrive%\Temp folder
-			if (Get-Item -Path $env:LOCALAPPDATA\Temp -Force -ErrorAction Ignore | Where-Object -FilterScript {$_.LinkType -eq "SymbolicLink"})
-			{
-				(Get-Item -Path $env:LOCALAPPDATA\Temp -Force).Delete()
-			}
-
-			if (-not (Test-Path -Path $env:SystemRoot\Temp))
-			{
-				New-Item -Path $env:SystemRoot\Temp -ItemType Directory -Force
-			}
-			if (-not (Test-Path -Path $env:LOCALAPPDATA\Temp))
-			{
-				New-Item -Path $env:LOCALAPPDATA\Temp -ItemType Directory -Force
-			}
-
-			# Removing folders
-			# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-			# https://github.com/PowerShell/PowerShell/issues/21070
-			Remove-Item -Path $((Get-Item -Path $env:TEMP).FullName) -Recurse -Force -ErrorAction Ignore
-
-			if ((Get-ChildItem -Path $env:TEMP -Force -ErrorAction Ignore | Measure-Object).Count -ne 0)
-			{
-				# https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexa
-				# The system does not move the file until the operating system is restarted
-				# The system moves the file immediately after AUTOCHK is executed, but before creating any paging files
-				$Signature = @{
-					Namespace          = "WinAPI"
-					Name               = "DeleteFiles"
-					Language           = "CSharp"
-					CompilerParameters = $CompilerParameters
-					MemberDefinition   = @"
-public enum MoveFileFlags
-{
-	MOVEFILE_DELAY_UNTIL_REBOOT = 0x00000004
-}
-
-[DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-static extern bool MoveFileEx(string lpExistingFileName, string lpNewFileName, MoveFileFlags dwFlags);
-
-public static bool MarkFileDelete (string sourcefile)
-{
-	return MoveFileEx(sourcefile, null, MoveFileFlags.MOVEFILE_DELAY_UNTIL_REBOOT);
-}
-"@
-				}
-
-				if (-not ("WinAPI.DeleteFiles" -as [type]))
-				{
-					Add-Type @Signature
-				}
-
-				try
-				{
-					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-					# https://github.com/PowerShell/PowerShell/issues/21070
-					Remove-Item -Path $((Get-Item -Path $env:TEMP).FullName) -Recurse -Force -ErrorAction Stop
-				}
-				catch
-				{
-					# If files are in use remove them at the next boot
-					Get-ChildItem -Path $env:TEMP -Recurse -Force | ForEach-Object -Process {[WinAPI.DeleteFiles]::MarkFileDelete($_.FullName)}
-				}
-
-				# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-				# https://github.com/PowerShell/PowerShell/issues/21070
-				$TempFolder = (Get-Item -Path $env:TEMP).FullName
-				$TempFolderCleanupTask = @"
-Remove-Item -Path "$TempFolder" -Recurse -Force
-Unregister-ScheduledTask -TaskName TemporaryTask -Confirm:`$false
-"@
-
-				# Create a temporary scheduled task to clean up the temporary folder
-				# We cannot create a schedule task if %COMPUTERNAME% is equal to %USERNAME%, so we have to use a "$env:COMPUTERNAME\$env:USERNAME" method
-				# https://github.com/PowerShell/PowerShell/issues/21377
-				$Action     = New-ScheduledTaskAction -Execute powershell.exe -Argument "-WindowStyle Hidden -Command $TempFolderCleanupTask"
-				$Trigger    = New-ScheduledTaskTrigger -AtLogon -User $env:USERNAME
-				$Settings   = New-ScheduledTaskSettingsSet -Compatibility Win8
-				$Principal  = New-ScheduledTaskPrincipal -UserId "$env:COMPUTERNAME\$env:USERNAME" -RunLevel Highest
-				$Parameters = @{
-					TaskName  = "TemporaryTask"
-					Principal = $Principal
-					Action    = $Action
-					Settings  = $Settings
-					Trigger   = $Trigger
-				}
-				Register-ScheduledTask @Parameters -Force
-			}
-
-			# Change the %TEMP% environment variable path to %LOCALAPPDATA%\Temp
-			[Environment]::SetEnvironmentVariable("TMP", "$env:LOCALAPPDATA\Temp", "User")
-			[Environment]::SetEnvironmentVariable("TMP", "$env:SystemRoot\TEMP", "Machine")
-			[Environment]::SetEnvironmentVariable("TMP", "$env:LOCALAPPDATA\Temp", "Process")
-			New-ItemProperty -Path HKCU:\Environment -Name TMP -PropertyType ExpandString -Value "%USERPROFILE%\AppData\Local\Temp" -Force
-
-			[Environment]::SetEnvironmentVariable("TEMP", "$env:LOCALAPPDATA\Temp", "User")
-			[Environment]::SetEnvironmentVariable("TEMP", "$env:SystemRoot\TEMP", "Machine")
-			[Environment]::SetEnvironmentVariable("TEMP", "$env:LOCALAPPDATA\Temp", "Process")
-			New-ItemProperty -Path HKCU:\Environment -Name TEMP -PropertyType ExpandString -Value "%USERPROFILE%\AppData\Local\Temp" -Force
-
-			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TMP -PropertyType ExpandString -Value "%SystemRoot%\TEMP" -Force
-			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" -Name TEMP -PropertyType ExpandString -Value "%SystemRoot%\TEMP" -Force
 		}
 	}
 }
@@ -8123,7 +7845,7 @@ function WinPrtScrFolder
 	.NOTES
 	Machine-wide
 #>
-function RecommendedTroubleshooting
+function RecommendedTroubleshooting ###
 {
 	param
 	(
@@ -8151,6 +7873,24 @@ function RecommendedTroubleshooting
 				New-Item -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation -Force
 			}
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation -Name UserPreference -PropertyType DWord -Value 3 -Force
+
+			# Set Windows level of diagnostic data gathering to "Optional diagnostic data"
+			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack))
+			{
+				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Force
+			}
+			New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 3 -Force
+			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name MaxTelemetryAllowed -PropertyType DWord -Value 3 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -PropertyType DWord -Value 3 -Force
+
+			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Type DWORD -Value 3
+
+			# Turn on Windows Error Reporting
+			Get-ScheduledTask -TaskName QueueReporting | Enable-ScheduledTask
+			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction Ignore
+
+			Get-Service -Name WerSvc | Set-Service -StartupType Manual
+			Get-Service -Name WerSvc | Start-Service
 		}
 		"Default"
 		{
@@ -8161,24 +7901,6 @@ function RecommendedTroubleshooting
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation -Name UserPreference -PropertyType DWord -Value 2 -Force
 		}
 	}
-
-	# Set Windows level of diagnostic data gathering to "Optional diagnostic data"
-	if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack))
-	{
-		New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Force
-	}
-	New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 3 -Force
-	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name MaxTelemetryAllowed -PropertyType DWord -Value 3 -Force
-	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -PropertyType DWord -Value 3 -Force
-
-	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Type DWORD -Value 1
-
-	# Turn on Windows Error Reporting
-	Get-ScheduledTask -TaskName QueueReporting | Enable-ScheduledTask
-	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction Ignore
-
-	Get-Service -Name WerSvc | Set-Service -StartupType Manual
-	Get-Service -Name WerSvc | Start-Service
 }
 
 <#
@@ -10461,7 +10183,7 @@ function Install-WSL
 				UseBasicParsing = $true
 				Verbose         = $true
 			}
-			(Invoke-RestMethod @Parameters).Distributions | ForEach-Object -Process {
+			$Distros = (Invoke-RestMethod @Parameters).Distributions | ForEach-Object -Process {
 				[PSCustomObject]@{
 					"Distro" = $_.FriendlyName
 					"Alias"  = $_.Name
@@ -11161,316 +10883,6 @@ function UninstallUWPApps
 		if ($PackagesToRemove.Count -gt 0)
 		{
 			$ButtonUninstall.IsEnabled = $true
-		}
-
-		# Force move the WPF form to the foreground
-		$Window.Add_Loaded({$Window.Activate()})
-		$Form.ShowDialog() | Out-Null
-	}
-}
-
-<#
-	.SYNOPSIS
-	Restore the default UWP apps
-
-	.EXAMPLE
-	RestoreUWPAppsUWPApps
-
-	.NOTES
-	UWP apps can be restored only if they were uninstalled for the current user
-
-	.NOTES
-	Current user
-#>
-function RestoreUWPApps
-{
-	Add-Type -AssemblyName PresentationCore, PresentationFramework
-
-	#region Variables
-	#region XAML Markup
-	# The section defines the design of the upcoming dialog box
-	[xml]$XAML = @"
-	<Window
-		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-		Name="Window"
-		MinHeight="400" MinWidth="410"
-		SizeToContent="Width" WindowStartupLocation="CenterScreen"
-		TextOptions.TextFormattingMode="Display" SnapsToDevicePixels="True"
-		FontFamily="Candara" FontSize="16" ShowInTaskbar="True"
-		Background="#F1F1F1" Foreground="#262626">
-		<Window.Resources>
-			<Style TargetType="StackPanel">
-				<Setter Property="Orientation" Value="Horizontal"/>
-				<Setter Property="VerticalAlignment" Value="Top"/>
-			</Style>
-			<Style TargetType="CheckBox">
-				<Setter Property="Margin" Value="10, 13, 10, 10"/>
-				<Setter Property="IsChecked" Value="True"/>
-			</Style>
-			<Style TargetType="TextBlock">
-				<Setter Property="Margin" Value="0, 10, 10, 10"/>
-			</Style>
-			<Style TargetType="Button">
-				<Setter Property="Margin" Value="20"/>
-				<Setter Property="Padding" Value="10"/>
-				<Setter Property="IsEnabled" Value="False"/>
-			</Style>
-			<Style TargetType="Border">
-				<Setter Property="Grid.Row" Value="1"/>
-				<Setter Property="CornerRadius" Value="0"/>
-				<Setter Property="BorderThickness" Value="0, 1, 0, 1"/>
-				<Setter Property="BorderBrush" Value="#000000"/>
-			</Style>
-			<Style TargetType="ScrollViewer">
-				<Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
-				<Setter Property="BorderBrush" Value="#000000"/>
-				<Setter Property="BorderThickness" Value="0, 1, 0, 1"/>
-			</Style>
-		</Window.Resources>
-		<Grid>
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto"/>
-				<RowDefinition Height="*"/>
-				<RowDefinition Height="Auto"/>
-			</Grid.RowDefinitions>
-			<Grid Grid.Row="0">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="*"/>
-					<ColumnDefinition Width="*"/>
-				</Grid.ColumnDefinitions>
-				<StackPanel Name="PanelSelectAll" Grid.Column="0" HorizontalAlignment="Left">
-					<CheckBox Name="CheckBoxSelectAll" IsChecked="False"/>
-					<TextBlock Name="TextBlockSelectAll" Margin="10,10, 0, 10"/>
-				</StackPanel>
-			</Grid>
-			<Border>
-				<ScrollViewer>
-					<StackPanel Name="PanelContainer" Orientation="Vertical"/>
-				</ScrollViewer>
-			</Border>
-			<Button Name="ButtonRestore" Grid.Row="2"/>
-		</Grid>
-	</Window>
-"@
-	#endregion XAML Markup
-
-	$Form = [Windows.Markup.XamlReader]::Load((New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML))
-	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
-		Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name)
-	}
-
-	$Window.Title            = $Localization.UWPAppsTitle
-	$ButtonRestore.Content   = $Localization.Restore
-	# Extract the localized "Select all" string from shell32.dll
-	$TextBlockSelectAll.Text = [WinAPI.GetStrings]::GetString(31276)
-
-	$ButtonRestore.Add_Click({ButtonRestoreClick})
-	$CheckBoxSelectAll.Add_Click({CheckBoxSelectAllClick})
-	#endregion Variables
-
-	#region Functions
-	function Get-AppxManifest
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		# Extract the localized "Please wait..." string from shell32.dll
-		Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
-
-		# You cannot retrieve packages using -PackageTypeFilter Bundle, otherwise you won't get the InstallLocation attribute. It can be retrieved only by comparing with $Bundles
-		$Bundles = (Get-AppXPackage -PackageTypeFilter Bundle -AllUsers).Name
-		$AppxPackages = @(Get-AppxPackage -AllUsers | Where-Object -FilterScript {$_.PackageUserInformation -match "Staged"} | Where-Object -FilterScript {$_.Name -in $Bundles})
-
-		# The Bundle packages contains no Microsoft Teams
-		if (Get-AppxPackage -Name MSTeams -AllUsers)
-		{
-			$AppxPackages += Get-AppxPackage -Name MSTeams -AllUsers | Where-Object -FilterScript {$_.PackageUserInformation -match "Staged"}
-		}
-
-		$PackagesIds = [Windows.Management.Deployment.PackageManager, Windows.Web, ContentType = WindowsRuntime]::new().FindPackages() | Select-Object -Property DisplayName -ExpandProperty Id | Select-Object -Property Name, DisplayName
-
-		foreach ($AppxPackage in $AppxPackages)
-		{
-			$PackageId = $PackagesIds | Where-Object -FilterScript {$_.Name -eq $AppxPackage.Name}
-
-			if (-not $PackageId)
-			{
-				continue
-			}
-
-			[PSCustomObject]@{
-				Name            = $AppxPackage.Name
-				PackageFullName = $AppxPackage.PackageFullName
-				DisplayName     = $PackageId.DisplayName
-				AppxManifest    = "$($AppxPackage.InstallLocation)\AppxManifest.xml"
-			}
-		}
-	}
-
-	function Add-Control
-	{
-		[CmdletBinding()]
-		param
-		(
-			[Parameter(
-				Mandatory = $true,
-				ValueFromPipeline = $true
-			)]
-			[ValidateNotNull()]
-			[PSCustomObject[]]
-			$Packages
-		)
-
-		process
-		{
-			foreach ($Package in $Packages)
-			{
-				$CheckBox = New-Object -TypeName System.Windows.Controls.CheckBox
-				$CheckBox.Tag = $Package.AppxManifest
-
-				$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
-
-				if ($Package.DisplayName)
-				{
-					$TextBlock.Text = $Package.DisplayName
-				}
-				else
-				{
-					$TextBlock.Text = $Package.Name
-				}
-
-				$StackPanel = New-Object -TypeName System.Windows.Controls.StackPanel
-				$StackPanel.Children.Add($CheckBox) | Out-Null
-				$StackPanel.Children.Add($TextBlock) | Out-Null
-
-				$PanelContainer.Children.Add($StackPanel) | Out-Null
-
-				$CheckBox.IsChecked = $true
-				$PackagesToRestore.Add($Package.AppxManifest)
-
-				$CheckBox.Add_Click({CheckBoxClick})
-			}
-		}
-	}
-
-	function ButtonRestoreClick
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		# Extract the localized "Please wait..." string from shell32.dll
-		Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
-
-		$Window.Close() | Out-Null
-
-		$Parameters = @{
-			Register                  = $true
-			ForceApplicationShutdown  = $true
-			ForceUpdateFromAnyVersion = $true
-			DisableDevelopmentMode    = $true
-			Verbose                   = $true
-		}
-		$PackagesToRestore | Add-AppxPackage @Parameters
-	}
-
-	function CheckBoxClick
-	{
-		$CheckBox = $_.Source
-
-		if ($CheckBox.IsChecked)
-		{
-			$PackagesToRestore.Add($CheckBox.Tag) | Out-Null
-		}
-		else
-		{
-			$PackagesToRestore.Remove($CheckBox.Tag)
-		}
-
-		ButtonRestoreSetIsEnabled
-	}
-
-	function CheckBoxSelectAllClick
-	{
-		$CheckBox = $_.Source
-
-		if ($CheckBox.IsChecked)
-		{
-			$PackagesToRestore.Clear()
-
-			foreach ($Item in $PanelContainer.Children.Children)
-			{
-				if ($Item -is [System.Windows.Controls.CheckBox])
-				{
-					$Item.IsChecked = $true
-					$PackagesToRestore.Add($Item.Tag)
-				}
-			}
-		}
-		else
-		{
-			$PackagesToRestore.Clear()
-
-			foreach ($Item in $PanelContainer.Children.Children)
-			{
-				if ($Item -is [System.Windows.Controls.CheckBox])
-				{
-					$Item.IsChecked = $false
-				}
-			}
-		}
-
-		ButtonRestoreSetIsEnabled
-	}
-
-	function ButtonRestoreSetIsEnabled
-	{
-		if ($PackagesToRestore.Count -gt 0)
-		{
-			$ButtonRestore.IsEnabled = $true
-		}
-		else
-		{
-			$ButtonRestore.IsEnabled = $false
-		}
-	}
-	#endregion Functions
-
-	$PackagesToRestore = [Collections.Generic.List[string]]::new()
-	$AppXPackages = Get-AppxManifest
-	$AppXPackages | Add-Control
-
-	if ($AppxPackages.Count -eq 0)
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.NoData -Verbose
-	}
-	else
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
-
-		#region Sendkey function
-		# Emulate the Backspace key sending to prevent the console window to freeze
-		Start-Sleep -Milliseconds 500
-
-		Add-Type -AssemblyName System.Windows.Forms
-
-		Get-Process | Where-Object -FilterScript {(($_.ProcessName -eq "powershell") -or ($_.ProcessName -eq "WindowsTerminal")) -and ($_.MainWindowTitle -match "Sophia Script for Windows 11")} | ForEach-Object -Process {
-			# Show window, if minimized
-			[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
-
-			Start-Sleep -Seconds 1
-
-			# Force move the console window to the foreground
-			[WinAPI.ForegroundWindow]::SetForegroundWindow($_.MainWindowHandle)
-
-			Start-Sleep -Seconds 1
-
-			# Emulate the Backspace key sending to prevent the console window to freeze
-			[System.Windows.Forms.SendKeys]::SendWait("{BACKSPACE 1}")
-		}
-		#endregion Sendkey function
-
-		if ($PackagesToRestore.Count -gt 0)
-		{
-			$ButtonRestore.IsEnabled = $true
 		}
 
 		# Force move the WPF form to the foreground
@@ -14213,7 +13625,7 @@ function UseStoreOpenWith
 	)
 
 	# Remove all policies in order to make changes visible in UI only if it's possible
-	Remove-ItemProperty -Path HKLM:\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Force -ErrorAction Ignore
+	Remove-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Type CLEAR
 
 	switch ($PSCmdlet.ParameterSetName)

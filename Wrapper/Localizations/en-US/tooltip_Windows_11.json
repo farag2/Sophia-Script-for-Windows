@@ -864,20 +864,6 @@
   },
   {
     "Region": "System",
-    "Function": "TempFolder",
-    "Arg": {
-      "Zero": {
-        "Tag": "SystemDrive",
-        "ToolTip": "Change the %TEMP% environment variable path to %SystemDrive%\\Temp."
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Change %TEMP% environment variable path to %LOCALAPPDATA%\\Temp (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
     "Function": "Win32LongPathLimit",
     "Arg": {
       "Zero": {
@@ -1500,16 +1486,6 @@
       "Zero": {
         "Tag": "",
         "ToolTip": "Uninstall UWP apps using the pop-up dialog box. If the \"For all users\" is checked apps packages will not be installed for new users. The \"ForAllUsers\" argument sets a checkbox to unistall packages for all users."
-      }
-    }
-  },
-  {
-    "Region": "UWP apps",
-    "Function": "RestoreUWPApps",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Restore the default UWP apps using the pop-up dialog box. UWP apps can be restored only if they were uninstalled only for the current user."
       }
     }
   },
