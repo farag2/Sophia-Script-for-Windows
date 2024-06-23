@@ -20,8 +20,11 @@ jobs:
 
       - name: Get the Numbers
         run: |
-          $Summary = ((Get-Content -Path "src\Sophia_Script_for_Windows_11\Module\Sophia.psm1").Count | Measure-Object -Sum).Sum
-          $Summary = "{0:N1}k" -f ($Summary/1000)
+          $a = 0
+          Get-ChildItem -Path src -File -Recurse | ForEach-Object -Process {
+            $a += ((Get-Content -Path $_.FullName).Count | Measure-Object -Sum).Sum
+          }
+          $Summary = "{0:N1}k" -f ($a/1000)
 
           Write-Verbose -Message $Summary -Verbose
 
