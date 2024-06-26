@@ -10557,10 +10557,10 @@ function Install-WSL
 				UseBasicParsing = $true
 				Verbose         = $true
 			}
-			$Distros = (Invoke-RestMethod @Parameters).Distributions | ForEach-Object -Process {
+			$Distributions = (Invoke-RestMethod @Parameters).Distributions | ForEach-Object -Process {
 				[PSCustomObject]@{
-					"Distro" = $_.FriendlyName
-					"Alias"  = $_.Name
+					"Distribution" = $_.FriendlyName
+					"Alias"        = $_.Name
 				}
 			}
 
@@ -10643,16 +10643,16 @@ function Install-WSL
 			}
 			#endregion
 
-			foreach ($Distro in $Distros)
+			foreach ($Distribution in $Distributions)
 			{
 				$Panel = New-Object -TypeName System.Windows.Controls.StackPanel
 				$RadioButton = New-Object -TypeName System.Windows.Controls.RadioButton
 				$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
 				$Panel.Orientation = "Horizontal"
-				$RadioButton.GroupName = "WslDistro"
-				$RadioButton.Tag = $Distro.Alias
+				$RadioButton.GroupName = "WslDistribution"
+				$RadioButton.Tag = $Distribution.Alias
 				$RadioButton.Add_Checked({RadioButtonChecked})
-				$TextBlock.Text = $Distro.Distro
+				$TextBlock.Text = $Distribution.Distribution
 				$Panel.Children.Add($RadioButton) | Out-Null
 				$Panel.Children.Add($TextBlock) | Out-Null
 				$PanelContainer.Children.Add($Panel) | Out-Null
@@ -10697,7 +10697,6 @@ function Install-WSL
 		Write-Warning -Message $Localization.NoInternetConnection
 		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
 	}
-
 }
 #endregion WSL
 
@@ -12125,31 +12124,14 @@ function CleanupTask
 	{
 		"Register"
 		{
-			# Checking if notifications and Action Center are disabled
-			# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
-			$UserNotificationCenter = [Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer", "DisableNotificationCenter", $null)
-			$MachineNotificationCenter = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Explorer", "DisableNotificationCenter", $null)
-			if (($UserNotificationCenter -eq 1) -or ($MachineNotificationCenter -eq 1))
-			{
-				Write-Verbose -Message ($Localization.ActionCenter -f $MyInvocation.Line.Trim()) -Verbose
-				Write-Error -Message ($Localization.ActionCenter -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+			# Remove registry keys if notifications and Action Center are disabled
+			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Force -ErrorAction Ignore
 
-				return
-			}
+			# Remove registry keys if Windows Script Host is disabled
+			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Script Host\Settings", "HKLM:\Software\Microsoft\Windows Script Host\Settings" -Name Enabled -Force -ErrorAction Ignore
 
-			# Checking if Windows Script Host is disabled
-			# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
-			$UserScriptHost = [Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Microsoft\Windows Script Host\Settings", "Enabled", $null)
-			$MachineScriptHost = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\Software\Microsoft\Windows Script Host\Settings", "Enabled", $null)
-			if (($UserScriptHost -eq 0) -or ($MachineScriptHost -eq 0))
-			{
-				Write-Verbose -Message ($Localization.WindowsScriptHost -f $MyInvocation.Line.Trim()) -Verbose
-				Write-Error -Message ($Localization.WindowsScriptHost -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-
-				return
-			}
+			# Enable notifications
+			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\PushNotifications -Name ToastEnabled -Force -ErrorAction Ignore
 
 			# Checking if we're trying to create the task when it was already created as another user
 			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName "Windows Cleanup" -ErrorAction Ignore)
@@ -12576,18 +12558,14 @@ function SoftwareDistributionTask
 	{
 		"Register"
 		{
-			# Checking if Windows Script Host is disabled
-			# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
-			$UserScriptHost = [Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Microsoft\Windows Script Host\Settings", "Enabled", $null)
-			$MachineScriptHost = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\Software\Microsoft\Windows Script Host\Settings", "Enabled", $null)
-			if (($UserScriptHost -eq 0) -or ($MachineScriptHost -eq 0))
-			{
-				Write-Verbose -Message ($Localization.WindowsScriptHost -f $MyInvocation.Line.Trim()) -Verbose
-				Write-Error -Message ($Localization.WindowsScriptHost -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+			# Remove registry keys if notifications and Action Center are disabled
+			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Force -ErrorAction Ignore
 
-				return
-			}
+			# Remove registry keys if Windows Script Host is disabled
+			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Script Host\Settings", "HKLM:\Software\Microsoft\Windows Script Host\Settings" -Name Enabled -Force -ErrorAction Ignore
+
+			# Enable notifications
+			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\PushNotifications -Name ToastEnabled -Force -ErrorAction Ignore
 
 			# Checking if we're trying to create the task when it was already created as another user
 			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName SoftwareDistribution -ErrorAction Ignore)
@@ -12887,18 +12865,14 @@ function TempTask
 	{
 		"Register"
 		{
-			# Checking if Windows Script Host is disabled
-			# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
-			$UserScriptHost = [Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Microsoft\Windows Script Host\Settings", "Enabled", $null)
-			$MachineScriptHost = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\Software\Microsoft\Windows Script Host\Settings", "Enabled", $null)
-			if (($UserScriptHost -eq 0) -or ($MachineScriptHost -eq 0))
-			{
-				Write-Verbose -Message ($Localization.WindowsScriptHost -f $MyInvocation.Line.Trim()) -Verbose
-				Write-Error -Message ($Localization.WindowsScriptHost -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+			# Remove registry keys if notifications and Action Center are disabled
+			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Force -ErrorAction Ignore
 
-				return
-			}
+			# Remove registry keys if Windows Script Host is disabled
+			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Script Host\Settings", "HKLM:\Software\Microsoft\Windows Script Host\Settings" -Name Enabled -Force -ErrorAction Ignore
+
+			# Enable notifications
+			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\PushNotifications -Name ToastEnabled -Force -ErrorAction Ignore
 
 			# Checking if we're trying to create the task when it was already created as another user
 			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName Temp -ErrorAction Ignore)
@@ -14916,6 +14890,12 @@ public static void PostMessage()
 
 	#region Toast notifications
 	# Persist Sophia notifications to prevent to immediately disappear from Action Center
+	# Remove registry keys if notifications and Action Center are disabled
+	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Force -ErrorAction Ignore
+
+	# Enable notifications
+	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\PushNotifications -Name ToastEnabled -Force -ErrorAction Ignore
+
 	if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia))
 	{
 		New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia -Force
