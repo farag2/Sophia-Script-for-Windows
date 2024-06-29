@@ -147,7 +147,9 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	# Detect Windows bitness
 	if (-not [System.Environment]::Is64BitOperatingSystem)
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message $Localization.UnsupportedOSBitness
+		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
@@ -875,7 +877,12 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	Get-ChildItem -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 
 	# Save all opened folders in order to restore them after File Explorer restart
-	$Script:OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
+	try
+	{
+		$Script:OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
+	}
+	catch [System.Management.Automation.PropertyNotFoundException]
+	{}
 
 	<#
 		.SYNOPSIS
@@ -1001,7 +1008,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		# Get the name of a preset (e.g Sophia.ps1) regardless it was named
 		# $_.File has no EndsWith() method
 		Write-Information -MessageData "" -InformationAction Continue
-		$PresetName = Split-Path -Path (((Get-PSCallStack).Position | Where-Object -FilterScript {$_.File}).File | Where-Object -FilterScript {$_.EndsWith(".ps1")}) -Leaf
+		[string]$PresetName = ((Get-PSCallStack).Position | Where-Object -FilterScript {$_.File}).File | Where-Object -FilterScript {$_.EndsWith(".ps1")}
 		Write-Verbose -Message ($Localization.CustomizationWarning -f $PresetName) -Verbose
 
 		do
@@ -4950,8 +4957,8 @@ function Cursors
 		Namespace          = "WinAPI"
 		Name               = "Cursor"
 		Language           = "CSharp"
-		CompilerOptions  = $CompilerOptions
-		MemberDefinition = @"
+		CompilerOptions    = $CompilerOptions
+		MemberDefinition   = @"
 [DllImport("user32.dll", EntryPoint = "SystemParametersInfo")]
 public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, uint pvParam, uint fWinIni);
 "@
@@ -12593,6 +12600,7 @@ function SoftwareDistributionTask
 					# Get user's SID the task was created as
 					$Script:SID = ([xml]$_.xml).Task.Principals.Principal.UserID
 				}
+
 				# Convert SID to username
 				$TaskUserAccount = (New-Object System.Security.Principal.SecurityIdentifier($SID)).Translate([System.Security.Principal.NTAccount]).Value -split "\\" | Select-Object -Last 1
 
@@ -13702,6 +13710,14 @@ function WindowsScriptHost
 	{
 		"Disable"
 		{
+			# Check if any scheduled tasks were created before, because they rely on Windows Host running vbs files
+			Get-ScheduledTask -TaskName SoftwareDistribution, Temp, "Windows Cleanup", "Windows Cleanup Notification" | ForEach-Object -Process {
+				if ($_.State -eq "Ready")
+				{
+					continue
+				}
+			}
+
 			if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows Script Host\Settings"))
 			{
 				New-Item -Path "HKCU:\Software\Microsoft\Windows Script Host\Settings" -Force
@@ -14878,11 +14894,14 @@ public static void PostMessage()
 	Start-Sleep -Seconds 3
 
 	# Restoring closed folders
-	foreach ($Script:OpenedFolder in $Script:OpenedFolders)
+	if (Get-Variable -Name OpenedFolder -ErrorAction Ignore)
 	{
-		if (Test-Path -Path $Script:OpenedFolder)
+		foreach ($Script:OpenedFolder in $Script:OpenedFolders)
 		{
-			Start-Process -FilePath explorer -ArgumentList $Script:OpenedFolder
+			if (Test-Path -Path $Script:OpenedFolder)
+			{
+				Start-Process -FilePath explorer -ArgumentList $Script:OpenedFolder
+			}
 		}
 	}
 
