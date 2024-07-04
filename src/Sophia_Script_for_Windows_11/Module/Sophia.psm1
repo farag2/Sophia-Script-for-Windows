@@ -2,10 +2,10 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v6.6.7
-	Date: 12.05.2024
+	Version: v6.6.8
+	Date: 06.07.2025
 
-	Copyright (c) 2014—2024 farag, Inestic & lowl1f3
+	Copyright (c) 2014—2025 farag, Inestic & lowl1f3
 
 	Thanks to all https://forum.ru-board.com members involved
 
@@ -594,20 +594,6 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		exit
 	}
 
-	if ((Get-WindowsEdition -Online).Edition -match "EnterpriseS")
-	{
-		# Will be removed when Windows 11 Enterprise LTSC will be released officially this Autumn along side with 24H2
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message "You're using a leaked Windows 11 Enterprise LTSC image. The official release set to November."
-		Write-Information -MessageData "" -InformationAction Continue
-
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows#system-requirements" -Verbose
-
-		exit
-	}
-
 	# Detect Windows build version
 	switch ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber)
 	{
@@ -993,7 +979,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		# $_.File has no EndsWith() method
 		Write-Information -MessageData "" -InformationAction Continue
 		[string]$PresetName = ((Get-PSCallStack).Position | Where-Object -FilterScript {$_.File}).File | Where-Object -FilterScript {$_.EndsWith(".ps1")}
-		Write-Verbose -Message ($Localization.CustomizationWarning -f $PresetName) -Verbose
+		Write-Verbose -Message ($Localization.CustomizationWarning -f "`"$PresetName`"") -Verbose
 
 		do
 		{
@@ -1007,7 +993,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 				}
 				$No
 				{
-					Invoke-Item -Path $PSScriptRoot\..\$PresetName
+					Invoke-Item -Path $PresetName
 
 					Start-Sleep -Seconds 5
 
@@ -1215,7 +1201,7 @@ function DiagTrackService
 		# $_.File has no EndsWith() method
 		$PresetName = Split-Path -Path (((Get-PSCallStack).Position | Where-Object -FilterScript {$_.File}).File | Where-Object -FilterScript {$_.EndsWith(".ps1")}) -Leaf
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.InitialActionsCheckFailed -f $PresetName) -Verbose
+		Write-Verbose -Message ($Localization.InitialActionsCheckFailed -f "`"$PresetName`"") -Verbose
 		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
@@ -7008,7 +6994,8 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 			if (-not $DriveLetters)
 			{
 				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message $Localization.UserFolderLocationMove -Verbose
+				Write-Warning -Message $Localization.UserFolderLocationMove
+				Write-Error -Message $Localization.UserFolderLocationMove -ErrorAction SilentlyContinue
 
 				return
 			}
@@ -7764,6 +7751,7 @@ function WinPrtScrFolder
 	$UserEmail = Get-ItemProperty -Path HKCU:\Software\Microsoft\OneDrive\Accounts\Personal -Name UserEmail -ErrorAction Ignore
 	if ($UserEmail)
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message ($Localization.OneDriveWarning -f $MyInvocation.Line.Trim())
 		Write-Error -Message ($Localization.OneDriveWarning -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
@@ -8507,8 +8495,12 @@ function Set-Association
 	# Microsoft blocked ability to write to UserChoice key for .pdf extention and http and https protocols with KB5034765 release
 	if (@(".pdf", "http", "https") -contains $Extension)
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message $Localization.UserChoiceWarning -Verbose
 		Write-Error -Message $Localization.UserChoiceWarning -ErrorAction SilentlyContinue
+
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message $Localization.Skipped -Verbose
 
 		return
 	}
@@ -9533,6 +9525,7 @@ function Import-Associations
 		}
 		catch [System.Exception]
 		{
+			Write-Warning -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim())
 			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -10436,6 +10429,9 @@ function UninstallUWPApps
 	#region Variables
 	# The following UWP apps will have their checkboxes unchecked
 	$UncheckedAppxPackages = @(
+		# Dolby Access
+		"DolbyLaboratories.DolbyAccess",
+
 		# Windows Media Player
 		"Microsoft.ZuneMusic",
 
@@ -11329,9 +11325,13 @@ function CleanupTask
 
 				if ($TaskUserAccount -ne $env:USERNAME)
 				{
-					Write-Verbose -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line.Trim(), $TaskUserAccount) -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
+					Write-Warning -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line.Trim(), $TaskUserAccount)
 					Write-Error -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line.Trim(), $TaskUserAccount) -ErrorAction SilentlyContinue
 					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message $Localization.Skipped -Verbose
 
 					return
 				}
@@ -11763,9 +11763,13 @@ function SoftwareDistributionTask
 
 				if ($TaskUserAccount -ne $env:USERNAME)
 				{
-					Write-Verbose -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line.Trim(), $TaskUserAccount) -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
+					Write-Warning -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line.Trim(), $TaskUserAccount)
 					Write-Error -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line.Trim(), $TaskUserAccount) -ErrorAction SilentlyContinue
 					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message $Localization.Skipped -Verbose
 
 					return
 				}
@@ -12071,9 +12075,13 @@ function TempTask
 
 				if ($TaskUserAccount -ne $env:USERNAME)
 				{
-					Write-Verbose -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line.Trim(), $TaskUserAccount) -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
+					Write-Warning -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line.Trim(), $TaskUserAccount)
 					Write-Error -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line.Trim(), $TaskUserAccount) -ErrorAction SilentlyContinue
 					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message $Localization.Skipped -Verbose
 
 					return
 				}
@@ -12866,10 +12874,11 @@ function WindowsScriptHost
 		"Disable"
 		{
 			# Check if any scheduled tasks were created before, because they rely on Windows Host running vbs files
-			Get-ScheduledTask -TaskName SoftwareDistribution, Temp, "Windows Cleanup", "Windows Cleanup Notification" | ForEach-Object -Process {
+			Get-ScheduledTask -TaskName SoftwareDistribution, Temp, "Windows Cleanup", "Windows Cleanup Notification" -ErrorAction Ignore | ForEach-Object -Process {
+				# Skip if a scheduled task exists
 				if ($_.State -eq "Ready")
 				{
-					continue
+					break
 				}
 			}
 
@@ -12926,6 +12935,9 @@ function WindowsSandbox
 
 	if (-not (Get-WindowsEdition -Online | Where-Object -FilterScript {($_.Edition -eq "Professional") -or ($_.Edition -eq "Enterprise") -or ($_.Edition -eq "Education")}))
 	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message $Localization.Skipped -Verbose
+
 		return
 	}
 
@@ -13392,6 +13404,9 @@ function EditWithClipchampContext
 
 	if (-not (Get-AppxPackage -Name Clipchamp.Clipchamp))
 	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message $Localization.Skipped -Verbose
+
 		return
 	}
 
@@ -13676,6 +13691,9 @@ function OpenWindowsTerminalContext
 
 	if (-not (Get-AppxPackage -Name Microsoft.WindowsTerminal))
 	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message $Localization.Skipped -Verbose
+
 		return
 	}
 
@@ -13738,6 +13756,9 @@ function OpenWindowsTerminalAdminContext
 
 	if (-not (Get-AppxPackage -Name Microsoft.WindowsTerminal))
 	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message $Localization.Skipped -Verbose
+
 		return
 	}
 
@@ -13754,6 +13775,7 @@ function OpenWindowsTerminalAdminContext
 	}
 	catch [System.ArgumentException]
 	{
+		Write-Warning -Message ($Global:Error.Exception.Message | Select-Object -First 1)
 		Write-Error -Message ($Global:Error.Exception.Message | Select-Object -First 1) -ErrorAction SilentlyContinue
 
 		Invoke-Item -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState"

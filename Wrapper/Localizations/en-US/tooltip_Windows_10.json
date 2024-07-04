@@ -1056,6 +1056,62 @@
   },
   {
     "Region": "System",
+    "Function": "RestartNotification",
+    "Arg": {
+      "Zero": {
+        "Tag": "Show",
+        "ToolTip": "Show a notification when your PC requires a restart to finish updating."
+      },
+      "One": {
+        "Tag": "Hide",
+        "ToolTip": "Do not show a notification when your PC requires a restart to finish updating (default value)."
+      }
+    }
+  },
+  {
+    "Region": "System",
+    "Function": "RestartDeviceAfterUpdate",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Restart this device as soon as possible when a restart is required to install an update."
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Do not restart this device as soon as possible when a restart is required to install an update (default value)."
+      }
+    }
+  },
+  {
+    "Region": "System",
+    "Function": "ActiveHours",
+    "Arg": {
+      "Zero": {
+        "Tag": "Automatically",
+        "ToolTip": "Automatically adjust active hours for me based on daily usage."
+      },
+      "One": {
+        "Tag": "Manually",
+        "ToolTip": "Manually adjust active hours for me based on daily usage (default value)."
+      }
+    }
+  },
+  {
+    "Region": "System",
+    "Function": "WindowsLatestUpdate",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Do not get Windows updates as soon as they're available for your device (default value)."
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Get Windows updates as soon as they're available for your device."
+      }
+    }
+  },
+  {
+    "Region": "System",
     "Function": "PowerPlan",
     "Arg": {
       "Zero": {
@@ -1311,62 +1367,6 @@
       "One": {
         "Tag": "Disable",
         "ToolTip": "Disable \"Network Discovery\" and \"File and Printers Sharing\" for workgroup networks (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "RestartNotification",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Show a notification when your PC requires a restart to finish updating."
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Do not show a notification when your PC requires a restart to finish updating (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "RestartDeviceAfterUpdate",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Restart this device as soon as possible when a restart is required to install an update."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Do not restart this device as soon as possible when a restart is required to install an update (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "ActiveHours",
-    "Arg": {
-      "Zero": {
-        "Tag": "Automatically",
-        "ToolTip": "Automatically adjust active hours for me based on daily usage."
-      },
-      "One": {
-        "Tag": "Manually",
-        "ToolTip": "Manually adjust active hours for me based on daily usage (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "WindowsLatestUpdate",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Do not get Windows updates as soon as they're available for your device (default value)."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Get Windows updates as soon as they're available for your device."
       }
     }
   },

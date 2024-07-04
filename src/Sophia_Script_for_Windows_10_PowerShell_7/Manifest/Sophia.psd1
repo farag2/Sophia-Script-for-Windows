@@ -1,9 +1,9 @@
 ﻿@{
 	RootModule            = '..\Module\Sophia.psm1'
-	ModuleVersion         = '5.18.7'
+	ModuleVersion         = '5.18.8'
 	GUID                  = 'aa0b47a7-1770-4b5d-8c9f-cc6c505bcc7a'
 	Author                = 'Dmitry "farag" Nefedov'
-	Copyright             = '(c) 2014—2024 farag, Inestic & lowl1f3. All rights reserved'
+	Copyright             = '(c) 2014—2025 farag, Inestic & lowl1f3. All rights reserved'
 	Description           = 'Module for Windows fine-tuning and automating the routine tasks'
 	PowerShellVersion     = '7.3'
 	ProcessorArchitecture = 'AMD64'

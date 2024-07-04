@@ -990,6 +990,62 @@
   },
   {
     "Region": "System",
+    "Function": "RestartNotification",
+    "Arg": {
+      "Zero": {
+        "Tag": "Show",
+        "ToolTip": "Eine Benachrichtigung anzeigen, wenn Ihr PC neu gestartet werden muss, um die Aktualisierung abzuschließen."
+      },
+      "One": {
+        "Tag": "Hide",
+        "ToolTip": "Keine Benachrichtigung anzeigen, wenn Ihr PC neu gestartet werden muss, um die Aktualisierung abzuschließen (Standardeinstellung)."
+      }
+    }
+  },
+  {
+    "Region": "System",
+    "Function": "RestartDeviceAfterUpdate",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Starten Sie das Gerät so bald wie möglich neu, wenn ein Neustart erforderlich ist, um ein Update zu installieren."
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Dieses Gerät nicht so schnell wie möglich neu starten, wenn ein Neustart erforderlich ist, um ein Update zu installieren (Standardeinstellung)."
+      }
+    }
+  },
+  {
+    "Region": "System",
+    "Function": "ActiveHours",
+    "Arg": {
+      "Zero": {
+        "Tag": "Automatically",
+        "ToolTip": "Automatische Anpassung der aktiven Stunden auf der Grundlage der täglichen Nutzung."
+      },
+      "One": {
+        "Tag": "Manually",
+        "ToolTip": "Manuelle Anpassung der aktiven Stunden für mich auf der Grundlage der täglichen Nutzung (Standardeinstellung)."
+      }
+    }
+  },
+  {
+    "Region": "System",
+    "Function": "WindowsLatestUpdate",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Holen Sie sich keine Windows-Updates, sobald sie für Ihr Gerät verfügbar sind (Standardeinstellung)."
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Holen Sie sich Windows-Updates, sobald sie für Ihr Gerät verfügbar sind."
+      }
+    }
+  },
+  {
+    "Region": "System",
     "Function": "PowerPlan",
     "Arg": {
       "Zero": {
@@ -1245,62 +1301,6 @@
       "One": {
         "Tag": "Disable",
         "ToolTip": "Deaktiviert die \"Netzwerkerkennung\" und \"Datei- und Druckerfreigabe\" für Arbeitsgruppennetzwerke (Standardeinstellung)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "RestartNotification",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Eine Benachrichtigung anzeigen, wenn Ihr PC neu gestartet werden muss, um die Aktualisierung abzuschließen."
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Keine Benachrichtigung anzeigen, wenn Ihr PC neu gestartet werden muss, um die Aktualisierung abzuschließen (Standardeinstellung)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "RestartDeviceAfterUpdate",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Starten Sie das Gerät so bald wie möglich neu, wenn ein Neustart erforderlich ist, um ein Update zu installieren."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Dieses Gerät nicht so schnell wie möglich neu starten, wenn ein Neustart erforderlich ist, um ein Update zu installieren (Standardeinstellung)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "ActiveHours",
-    "Arg": {
-      "Zero": {
-        "Tag": "Automatically",
-        "ToolTip": "Automatische Anpassung der aktiven Stunden auf der Grundlage der täglichen Nutzung."
-      },
-      "One": {
-        "Tag": "Manually",
-        "ToolTip": "Manuelle Anpassung der aktiven Stunden für mich auf der Grundlage der täglichen Nutzung (Standardeinstellung)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "WindowsLatestUpdate",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Holen Sie sich keine Windows-Updates, sobald sie für Ihr Gerät verfügbar sind (Standardeinstellung)."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Holen Sie sich Windows-Updates, sobald sie für Ihr Gerät verfügbar sind."
       }
     }
   },
