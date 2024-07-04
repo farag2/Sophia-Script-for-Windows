@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.18.8 | 6.6.8 — 06.07.2024
+
+* Removed `RestoreUWPApps`
+  * It doesn't work at all anymore.
+* Removed `TempFolder` as it makes more harm than good;
+* Fixed `OneDrive -Install -AllUsers` and `Install-WSL` functions;
+* Improved all three scheduled tasks related functions;
+* Improved `WindowsScriptHost -Disable`
+  * Now it checks whether scheduled tasks were created. If so, the function will be skipped to due to they rely on VBS scripts execution.
+* Fixed typos;
+* Minor changes;
+* Thanks to Kudzor.
+
 ## 5.18.7 | 6.6.7 — 12.06.2024
 
 * Fixed `CleanupTask -Register` function not working due to a typo;

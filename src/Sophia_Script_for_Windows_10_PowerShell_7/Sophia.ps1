@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10 (PowerShell 7)"
 
-	Version: v5.18.7
-	Date: 12.05.2024
+	Version: v5.18.8
+	Date: 06.07.2024
 
 	Copyright (c) 2014—2024 farag, Inestic & lowl1f3
 
@@ -69,7 +69,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.18.7 (PowerShell 7) | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2024"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.18.8 (PowerShell 7) | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2024"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 
@@ -737,6 +737,38 @@ UpdateMicrosoftProducts -Enable
 # При обновлении Windows не получать обновления для других продуктов Майкрософт (значение по умолчанию)
 # UpdateMicrosoftProducts -Disable
 
+# Notify me when a restart is required to finish updating
+# Уведомлять меня о необходимости перезагрузки для завершения обновления
+RestartNotification -Show
+
+# Do not notify me when a restart is required to finish updating (default value)
+# Не yведомлять меня о необходимости перезагрузки для завершения обновления (значение по умолчанию)
+# RestartNotification -Hide
+
+# Restart as soon as possible to finish updating
+# Перезапустить устройство как можно быстрее, чтобы завершить обновление
+RestartDeviceAfterUpdate -Enable
+
+# Don't restart as soon as possible to finish updating (default value)
+# Не перезапускать устройство как можно быстрее, чтобы завершить обновление (значение по умолчанию)
+# RestartDeviceAfterUpdate -Disable
+
+# Automatically adjust active hours for me based on daily usage
+# Автоматически изменять период активности для этого устройства на основе действий
+ActiveHours -Automatically
+
+# Manually adjust active hours for me based on daily usage (default value)
+# Вручную изменять период активности для этого устройства на основе действий (значение по умолчанию)
+# ActiveHours -Manually
+
+# Do not get the latest updates as soon as they're available (default value)
+# Не получать последние обновления, как только они будут доступны (значение по умолчанию)
+WindowsLatestUpdate -Disable
+
+# Get the latest updates as soon as they're available
+# Получайте последние обновления, как только они будут доступны
+# WindowsLatestUpdate -Enable
+
 # Set power plan on "High performance". It isn't recommended to turn on for laptops
 # Установить схему управления питанием на "Высокая производительность". Не рекомендуется включать на ноутбуках
 PowerPlan -High
@@ -942,38 +974,6 @@ NetworkDiscovery -Enable
 # Выключить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп (значение по умолчанию)
 # NetworkDiscovery -Disable
 
-# Show a notification when your PC requires a restart to finish updating
-# Показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления
-RestartNotification -Show
-
-# Do not show a notification when your PC requires a restart to finish updating (default value)
-# Не показывать уведомление, когда компьютеру требуется перезагрузка для завершения обновления (значение по умолчанию)
-# RestartNotification -Hide
-
-# Restart this device as soon as possible when a restart is required to install an update
-# Перезапускать это устройство как можно быстрее, если для установки обновления требуется перезагрузка
-RestartDeviceAfterUpdate -Enable
-
-# Do not restart this device as soon as possible when a restart is required to install an update (default value)
-# Не перезапускать это устройство как можно быстрее, если для установки обновления требуется перезагрузка (значение по умолчанию)
-# RestartDeviceAfterUpdate -Disable
-
-# Automatically adjust active hours for me based on daily usage
-# Автоматически изменять период активности для этого устройства на основе действий
-ActiveHours -Automatically
-
-# Manually adjust active hours for me based on daily usage (default value)
-# Вручную изменять период активности для этого устройства на основе действий (значение по умолчанию)
-# ActiveHours -Manually
-
-# Do not get Windows updates as soon as they're available for your device (default value)
-# Не получать последние обновления, как только они будут доступны (значение по умолчанию)
-WindowsLatestUpdate -Disable
-
-# Get Windows updates as soon as they're available for your device
-# Получайте последние обновления, как только они будут доступны
-# WindowsLatestUpdate -Enable
-
 <#
 	Register app, calculate hash, and associate with an extension with the "How do you want to open this" pop-up hidden
 	Зарегистрировать приложение, вычислить хэш и ассоциировать его с расширением без всплывающего окна "Каким образом вы хотите открыть этот файл?"
@@ -1106,6 +1106,10 @@ PinToStart -Tiles ControlPanel, DevicesPrinters
 #endregion Start menu
 
 #region UWP apps
+# Uninstall UWP apps using the pop-up dialog box
+# Удалить UWP-приложения, используя всплывающее диалоговое окно
+UninstallUWPApps
+
 <#
 	Uninstall UWP apps for all users using the pop-up dialog box
 	If the "For All Users" is checked apps packages will not be installed for new users
