@@ -281,11 +281,9 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	# Check whether Windows was broken by 3rd party harmful tweakers and trojans
 	$Tweakers = @{
 		# https://forum.ru-board.com/topic.cgi?forum=62&topic=30617&start=1600#14
-		AutoSettingsPS   = "$(Get-Item -Path `"HKLM:\SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths`" | Where-Object -FilterScript {$_.Property -match `"AutoSettingsPS`"})"
+		AutoSettingsPS   = "$(Get-WinEvent -LogName `"Windows PowerShell`" | Where-Object -FilterScript {($_.Id -eq 800) -and ($_.Message -match `"AutoSettingsPS`")} | Select-Object -First 1)"
 		# Flibustier custom Windows image
 		Flibustier       = "$(Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\.NETFramework\Performance -Name *flibustier)"
-		# https://github.com/hellzerg/optimizer
-		Optimizer        = "$((Get-ItemProperty -Path `"HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache`").PSObject.Properties | Where-Object -FilterScript {$_.Value -eq `"optimizer`"})"
 		# https://github.com/builtbybel/Winpilot
 		Winpilot         = "$((Get-ItemProperty -Path `"HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache`").PSObject.Properties | Where-Object -FilterScript {$_.Value -eq `"Winpilot`"})"
 		# https://forum.ru-board.com/topic.cgi?forum=5&topic=50519
@@ -3978,26 +3976,21 @@ function UnpinTaskbarShortcuts
 			}
 			Store
 			{
-				# Start-Job is used due to that the calling this function before UninstallUWPApps breaks the retrieval of the localized UWP apps packages names
 				if ((New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items() | Where-Object -FilterScript {$_.Name -eq "Microsoft Store"})
 				{
-					Start-Job -ScriptBlock {
-						# Extract the localized "Unpin from taskbar" string from shell32.dll
-						((New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items() | Where-Object -FilterScript {
-							$_.Name -eq "Microsoft Store"
-						}).Verbs() | Where-Object -FilterScript {$_.Name -eq $using:LocalizedString} | ForEach-Object -Process {$_.DoIt()}
-					} | Receive-Job -Wait -AutoRemoveJob
+					# Extract the localized "Unpin from taskbar" string from shell32.dll
+					((New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items() | Where-Object -FilterScript {
+						$_.Name -eq "Microsoft Store"
+					}).Verbs() | Where-Object -FilterScript {$_.Name -eq $LocalizedString} | ForEach-Object -Process {$_.DoIt()}
 				}
 			}
 			Mail
 			{
-				# Start-Job is used due to that the calling this function before UninstallUWPApps breaks the retrieval of the localized UWP apps packages names
 				if (Get-AppxPackage -Name microsoft.windowscommunicationsapps)
 				{
-					Start-Job -ScriptBlock {
-						$Apps = (New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items()
-						($Apps | Where-Object -FilterScript {$_.Path -eq "microsoft.windowscommunicationsapps_8wekyb3d8bbwe!microsoft.windowslive.mail"}).Verbs() | Where-Object -FilterScript {$_.Name -eq $using:LocalizedString} | ForEach-Object -Process {$_.DoIt()}
-					} | Receive-Job -Wait -AutoRemoveJob
+					((New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items() | Where-Object -FilterScript {
+						$_.Path -match "microsoft.windowscommunicationsapp"
+					}).Verbs() | Where-Object -FilterScript {$_.Name -eq $LocalizedString} | ForEach-Object -Process {$_.DoIt()}
 				}
 			}
 		}
@@ -11122,7 +11115,7 @@ function UninstallUWPApps
 	$UncheckedAppxPackages = @(
 		# Dolby Access
 		"DolbyLaboratories.DolbyAccess",
-	
+
 		# Windows Media Player
 		"Microsoft.ZuneMusic",
 
@@ -11360,7 +11353,7 @@ function UninstallUWPApps
 			}
 		}
 
-		$PackagesIds = [Windows.Management.Deployment.PackageManager, Windows.Web, ContentType = WindowsRuntime]::new().FindPackages() | Select-Object -Property DisplayName -ExpandProperty Id | Select-Object -Property Name, DisplayName
+		$PackagesIds = [Windows.Management.Deployment.PackageManager]::new().FindPackages() | Select-Object -Property DisplayName -ExpandProperty Id | Select-Object -Property Name, DisplayName
 		foreach ($AppxPackage in $AppxPackages)
 		{
 			$PackageId = $PackagesIds | Where-Object -FilterScript {$_.Name -eq $AppxPackage.Name}

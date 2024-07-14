@@ -282,11 +282,9 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	# Check whether Windows was broken by 3rd party harmful tweakers and trojans
 	$Tweakers = @{
 		# https://forum.ru-board.com/topic.cgi?forum=62&topic=30617&start=1600#14
-		AutoSettingsPS   = "$(Get-Item -Path `"HKLM:\SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths`" | Where-Object -FilterScript {$_.Property -match `"AutoSettingsPS`"})"
+		AutoSettingsPS   = "$(Get-WinEvent -LogName `"Windows PowerShell`" | Where-Object -FilterScript {($_.Id -eq 800) -and ($_.Message -match `"AutoSettingsPS`")} | Select-Object -First 1)"
 		# Flibustier custom Windows image
 		Flibustier       = "$(Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\.NETFramework\Performance -Name *flibustier)"
-		# https://github.com/hellzerg/optimizer
-		Optimizer        = "$((Get-ItemProperty -Path `"HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache`").PSObject.Properties | Where-Object -FilterScript {$_.Value -eq `"optimizer`"})"
 		# https://github.com/builtbybel/Winpilot
 		Winpilot         = "$((Get-ItemProperty -Path `"HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache`").PSObject.Properties | Where-Object -FilterScript {$_.Value -eq `"Winpilot`"})"
 		# https://forum.ru-board.com/topic.cgi?forum=5&topic=50519
