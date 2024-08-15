@@ -253,7 +253,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Anzeigen von Microsoft-Konto-Benachrichtigungen im Startmenü im Startmenü. (Standardeinstellung)."
+        "ToolTip": "Anzeigen von Microsoft-Konto-Benachrichtigungen im Startmenü im Startmenü (Standardeinstellung)."
       }
     }
   },
@@ -1544,7 +1544,7 @@
   {
     "Region": "Start menu",
     "Function": "PinToStart -Tiles",
-    "ToolTip": "Folgende Verknüpfungen: Systemsteuerung, Geräte und Drucker, PowerShell an das Startmenü anheften",
+    "ToolTip": "Folgende Verknüpfungen: Systemsteuerung, Geräte und Drucker, PowerShell an das Startmenü anheften.",
     "Arg": {
       "Zero": {
         "Tag": "ControlPanel",
@@ -1750,7 +1750,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Erkennung von potenziell unerwünschten Anwendungen deaktivieren. (Standardeinstellung)."
+        "ToolTip": "Erkennung von potenziell unerwünschten Anwendungen deaktivieren (Standardeinstellung)."
       }
     }
   },
@@ -1883,6 +1883,20 @@
       "One": {
         "Tag": "Disable",
         "ToolTip": "Windows-Sandbox deaktivieren (Standardeinstellung)."
+      }
+    }
+  },
+  {
+    "Region": "Microsoft Defender & Security",
+    "Function": "DNSoverHTTPS",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Aktiviert DNS-over-HTTPS für IPv4. Gültige IPv4-Adressen: 1.0.0.1, 1.1.1.1, 149.112.112.112, 8.8.4.4, 8.8.8.8, 9.9.9.91."
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Deaktiviert DNS-over-HTTPS für IPv4 (Standardeinstellung)."
       }
     }
   },

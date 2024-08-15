@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: v6.6.8
-	Date: 06.07.2024
+	Version: v6.6.9
+	Date: 16.08.2024
 
 	Copyright (c) 2014—2024 farag, Inestic & lowl1f3
 
@@ -268,11 +268,13 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	# Check whether Windows was broken by 3rd party harmful tweakers and trojans
 	$Tweakers = @{
 		# https://forum.ru-board.com/topic.cgi?forum=62&topic=30617&start=1600#14
-		AutoSettingsPS   = "$(Get-WinEvent -LogName `"Windows PowerShell`" | Where-Object -FilterScript {($_.Id -eq 800) -and ($_.Message -match `"AutoSettingsPS`")} | Select-Object -First 1)"
+		AutoSettingsPS   = "$(Get-Item -Path `"HKLM:\SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths`" | Where-Object -FilterScript {$_.Property -match `"AutoSettingsPS`"})"
 		# Flibustier custom Windows image
 		Flibustier       = "$(Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\.NETFramework\Performance -Name *flibustier)"
 		# https://github.com/builtbybel/Winpilot
 		Winpilot         = "$((Get-ItemProperty -Path `"HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache`").PSObject.Properties | Where-Object -FilterScript {$_.Value -eq `"Winpilot`"})"
+		# https://github.com/builtbybel/xd-AntiSpy
+		"xd-AntiSpy"     = "$((Get-ItemProperty -Path `"HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache`").PSObject.Properties | Where-Object -FilterScript {$_.Value -eq `"xd-AntiSpy`"})"
 		# https://forum.ru-board.com/topic.cgi?forum=5&topic=50519
 		"Modern Tweaker" = "$((Get-ItemProperty -Path `"HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache`").PSObject.Properties | Where-Object -FilterScript {$_.Value -eq `"Modern Tweaker`"})"
 	}
@@ -391,7 +393,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	{
 		# Provider Load Failure exception
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message $Global:Error.Exception.Message | Select-Object -First 1
+		Write-Warning -Message ($Global:Error.Exception.Message | Select-Object -First 1)
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
 		Write-Information -MessageData "" -InformationAction Continue
 
@@ -743,9 +745,6 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			}
 			if (-not (Invoke-WebRequest @Parameters).StatusDescription)
 			{
-				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message $Localization.Skipped -Verbose
-
 				return
 			}
 
@@ -1729,6 +1728,7 @@ function ScheduledTasks
 
 	Add-Type -AssemblyName System.Windows.Forms
 
+	# We cannot use Get-Process -Id $PID as script might be invoked via Terminal with different $PID
 	Get-Process | Where-Object -FilterScript {(($_.ProcessName -eq "powershell") -or ($_.ProcessName -eq "WindowsTerminal")) -and ($_.MainWindowTitle -match "Sophia Script for Windows 11")} | ForEach-Object -Process {
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
@@ -3197,14 +3197,32 @@ function TaskbarWidgets
 		{
 			if (Get-AppxPackage -Name MicrosoftWindows.Client.WebExperience)
 			{
-				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name TaskbarDa -PropertyType DWord -Value 0 -Force
+				# Microsoft blocked access for editing TaskbarDa key in KB5041585
+				try
+				{
+					New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name TaskbarDa -PropertyType DWord -Value 0 -Force -ErrorAction Stop
+				}
+				catch [System.UnauthorizedAccessException]
+				{
+					Write-Warning -Message ($Global:Error.Exception.Message | Select-Object -First 1)
+					Write-Error -Message ($Global:Error.Exception.Message | Select-Object -First 1) -ErrorAction SilentlyContinue
+				}
 			}
 		}
 		"Show"
 		{
 			if (Get-AppxPackage -Name MicrosoftWindows.Client.WebExperience)
 			{
-				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name TaskbarDa -PropertyType DWord -Value 1 -Force
+				# Microsoft blocked access for editing TaskbarDa key in KB5041585
+				try
+				{
+					New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name TaskbarDa -PropertyType DWord -Value 1 -Force -ErrorAction Stop
+				}
+				catch [System.UnauthorizedAccessException]
+				{
+					Write-Warning -Message ($Global:Error.Exception.Message | Select-Object -First 1)
+					Write-Error -Message ($Global:Error.Exception.Message | Select-Object -First 1) -ErrorAction SilentlyContinue
+				}
 			}
 		}
 	}
@@ -3708,6 +3726,62 @@ function UnpinTaskbarShortcuts
 					}).Verbs() | Where-Object -FilterScript {$_.Name -eq $LocalizedString} | ForEach-Object -Process {$_.DoIt()}
 				}
 			}
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	End task in taskbar by right click
+
+	.PARAMETER Enable
+	Enable end task in taskbar by right click
+
+	.PARAMETER Disable
+	Disable end task in taskbar by right click
+
+	.EXAMPLE
+	TaskbarEndTask -Enable
+
+	.EXAMPLE
+	TaskbarEndTask -Disable
+
+	.NOTES
+	Current user
+#>
+function TaskbarEndTask
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable
+	)
+
+	if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings))
+	{
+		New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings -Force
+	}
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Enable"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings -Name TaskbarEndTask -PropertyType DWord -Value 1 -Force
+		}
+		"Disable"
+		{
+			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings -Name TaskbarEndTask -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -4293,9 +4367,6 @@ function Cursors
 					}
 					if (-not (Invoke-WebRequest @Parameters).StatusDescription)
 					{
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message $Localization.Skipped -Verbose
-
 						return
 					}
 
@@ -4412,9 +4483,6 @@ function Cursors
 					}
 					if (-not (Invoke-WebRequest @Parameters).StatusDescription)
 					{
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message $Localization.Skipped -Verbose
-
 						return
 					}
 
@@ -5779,6 +5847,7 @@ function WindowsFeatures
 
 	Add-Type -AssemblyName System.Windows.Forms
 
+	# We cannot use Get-Process -Id $PID as script might be invoked via Terminal with different $PID
 	Get-Process | Where-Object -FilterScript {(($_.ProcessName -eq "powershell") -or ($_.ProcessName -eq "WindowsTerminal")) -and ($_.MainWindowTitle -match "Sophia Script for Windows 11")} | ForEach-Object -Process {
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
@@ -6141,6 +6210,7 @@ function WindowsCapabilities
 
 	Add-Type -AssemblyName System.Windows.Forms
 
+	# We cannot use Get-Process -Id $PID as script might be invoked via Terminal with different $PID
 	Get-Process | Where-Object -FilterScript {(($_.ProcessName -eq "powershell") -or ($_.ProcessName -eq "WindowsTerminal")) -and ($_.MainWindowTitle -match "Sophia Script for Windows 11")} | ForEach-Object -Process {
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
@@ -6653,9 +6723,6 @@ function IPv6Component
 			}
 			if (-not (Invoke-WebRequest @Parameters).StatusDescription)
 			{
-				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message $Localization.Skipped -Verbose
-
 				return
 			}
 
@@ -9906,7 +9973,7 @@ function RKNBypass
 		"Enable"
 		{
 			# If current region is Russia
-			if (((Get-WinHomeLocation).GeoId -eq "203"))
+			if ((Get-WinHomeLocation).GeoId -eq "203")
 			{
 				New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name AutoConfigURL -PropertyType String -Value "https://p.thenewone.lol:8443/proxy.pac" -Force
 			}
@@ -9916,6 +9983,28 @@ function RKNBypass
 			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name AutoConfigURL -Force -ErrorAction Ignore
 		}
 	}
+
+	$Signature = @{
+		Namespace          = "WinAPI"
+		Name               = "wininet"
+		Language           = "CSharp"
+		CompilerParameters = $CompilerParameters
+		MemberDefinition   = @"
+[DllImport("wininet.dll", SetLastError = true, CharSet=CharSet.Auto)]
+public static extern bool InternetSetOption(IntPtr hInternet, int dwOption, IntPtr lpBuffer, int dwBufferLength);
+"@
+	}
+	if (-not ("WinAPI.wininet" -as [type]))
+	{
+		Add-Type @Signature
+	}
+
+	# Apply changed proxy settings
+	# https://learn.microsoft.com/en-us/windows/win32/wininet/option-flags
+	$INTERNET_OPTION_SETTINGS_CHANGED = 39
+	$INTERNET_OPTION_REFRESH          = 37
+	[WinAPI.wininet]::InternetSetOption(0, $INTERNET_OPTION_SETTINGS_CHANGED, 0, 0)
+	[WinAPI.wininet]::InternetSetOption(0, $INTERNET_OPTION_REFRESH, 0, 0)
 }
 
 <#
@@ -10167,8 +10256,6 @@ function Install-WSL
 
 		try
 		{
-			[System.Console]::OutputEncoding = [System.Text.Encoding]::Unicode
-
 			# https://github.com/microsoft/WSL/blob/master/distributions/DistributionInfo.json
 			# wsl --list --online relies on Internet connection too, so it's much convenient to parse DistributionInfo.json, rather than parse a cmd output
 			$Parameters = @{
@@ -10285,6 +10372,7 @@ function Install-WSL
 
 			Add-Type -AssemblyName System.Windows.Forms
 
+			# We cannot use Get-Process -Id $PID as script might be invoked via Terminal with different $PID
 			Get-Process | Where-Object -FilterScript {(($_.ProcessName -eq "powershell") -or ($_.ProcessName -eq "WindowsTerminal")) -and ($_.MainWindowTitle -match "Sophia Script for Windows 11")} | ForEach-Object -Process {
 				# Show window, if minimized
 				[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
@@ -10514,6 +10602,7 @@ function UninstallUWPApps
 
 		# HEVC Video Extensions from Device Manufacturer
 		"Microsoft.HEVCVideoExtension",
+		"Microsoft.HEVCVideoExtensions",
 
 		# Raw Image Extension
 		"Microsoft.RawImageExtension",
@@ -10859,6 +10948,7 @@ function UninstallUWPApps
 
 		Add-Type -AssemblyName System.Windows.Forms
 
+		# We cannot use Get-Process -Id $PID as script might be invoked via Terminal with different $PID
 		Get-Process | Where-Object -FilterScript {(($_.ProcessName -eq "powershell") -or ($_.ProcessName -eq "WindowsTerminal")) -and ($_.MainWindowTitle -match "Sophia Script for Windows 11")} | ForEach-Object -Process {
 			# Show window, if minimized
 			[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
@@ -11355,16 +11445,18 @@ function CleanupTask
 			}
 
 			$VolumeCaches = @(
-				"Delivery Optimization Files",
 				"BranchCache",
+				"Delivery Optimization Files",
 				"Device Driver Packages",
 				"Language Pack",
 				"Previous Installations",
 				"Setup Log Files",
 				"System error memory dump files",
 				"System error minidump files",
+				"Temporary Files",
 				"Temporary Setup Files",
 				"Update Cleanup",
+				"Upgrade Discarded Files",
 				"Windows Defender",
 				"Windows ESD installation files",
 				"Windows Upgrade Log Files"
@@ -11420,40 +11512,6 @@ Get-Process -Name cleanmgr, Dism, DismHost | Stop-Process -Force
 `$Process.Start() | Out-Null
 
 Start-Sleep -Seconds 3
-
-[int]`$SourceMainWindowHandle = (Get-Process -Name cleanmgr | Where-Object -FilterScript {`$_.PriorityClass -eq """BelowNormal"""}).MainWindowHandle
-
-while (`$true)
-{
-	[int]`$CurrentMainWindowHandle = (Get-Process -Name cleanmgr | Where-Object -FilterScript {`$_.PriorityClass -eq """BelowNormal"""}).MainWindowHandle
-	if (`$SourceMainWindowHandle -ne `$CurrentMainWindowHandle)
-	{
-		`$CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new("""System.dll""")
-		`$CompilerParameters.TempFiles = [System.CodeDom.Compiler.TempFileCollection]::new(`$env:TEMP, `$false)
-		`$CompilerParameters.GenerateInMemory = `$true
-		`$Signature = @{
-			Namespace          = """WinAPI"""
-			Name               = """Win32ShowWindowAsync"""
-			Language           = """CSharp"""
-			CompilerParameters = `$CompilerParameters
-			MemberDefinition   = @"""
-[DllImport("""user32.dll""")]
-public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
-"""@
-		}
-
-		if (-not ("""WinAPI.Win32ShowWindowAsync""" -as [type]))
-		{
-			Add-Type @Signature
-		}
-		`$MainWindowHandle = (Get-Process -Name cleanmgr | Where-Object -FilterScript {`$_.PriorityClass -eq """BelowNormal"""}).MainWindowHandle
-		[WinAPI.Win32ShowWindowAsync]::ShowWindowAsync(`$MainWindowHandle, 2)
-
-		break
-	}
-
-	Start-Sleep -Milliseconds 5
-}
 
 `$ProcessInfo = New-Object -TypeName System.Diagnostics.ProcessStartInfo
 `$ProcessInfo.FileName = """`$env:SystemRoot\System32\Dism.exe"""
@@ -13031,19 +13089,17 @@ function DNSoverHTTPS
 		$Enable,
 
 		[Parameter(Mandatory = $false)]
-		[ValidateSet("1.0.0.1", "1.1.1.1", "149.112.112.112", "8.8.4.4", "8.8.8.8", "9.9.9.9")]
-		# Isolate the IPv4 addresses only
 		[ValidateScript({
-			(@((Get-ChildItem -Path HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters\DohWellKnownServers).PSChildName) | Where-Object {$_ -notmatch ":"}) -contains $_
+			# isolate IPv4 IP addresses and check if $PrimaryDNS is not equal to $SecondaryDNS
+			((@((Get-ChildItem -Path HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters\DohWellKnownServers).PSChildName) | Where-Object -FilterScript {($_ -as [IPAddress]).AddressFamily -ne "InterNetworkV6"}) -contains $_) -and ($_ -ne $SecondaryDNS)
 		})]
 		[string]
 		$PrimaryDNS,
 
 		[Parameter(Mandatory = $false)]
-		[ValidateSet("1.0.0.1", "1.1.1.1", "149.112.112.112", "8.8.4.4", "8.8.8.8", "9.9.9.9")]
-		# Isolate the IPv4 addresses only
 		[ValidateScript({
-			(@((Get-ChildItem -Path HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters\DohWellKnownServers).PSChildName) | Where-Object {$_ -notmatch ":"}) -contains $_
+			# isolate IPv4 IP addresses and check if $PrimaryDNS is not equal to $SecondaryDNS
+			((@((Get-ChildItem -Path HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters\DohWellKnownServers).PSChildName) | Where-Object -FilterScript {($_ -as [IPAddress]).AddressFamily -ne "InterNetworkV6"}) -contains $_) -and ($_ -ne $PrimaryDNS)
 		})]
 		[string]
 		$SecondaryDNS,
@@ -13770,8 +13826,8 @@ function OpenWindowsTerminalAdminContext
 	}
 	catch [System.ArgumentException]
 	{
-		Write-Warning -Message ($Global:Error.Exception.Message | Select-Object -First 1)
-		Write-Error -Message ($Global:Error.Exception.Message | Select-Object -First 1) -ErrorAction SilentlyContinue
+		Write-Warning -Message (($Global:Error.Exception.Message | Select-Object -First 1))
+		Write-Error -Message (($Global:Error.Exception.Message | Select-Object -First 1)) -ErrorAction SilentlyContinue
 
 		Invoke-Item -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState"
 

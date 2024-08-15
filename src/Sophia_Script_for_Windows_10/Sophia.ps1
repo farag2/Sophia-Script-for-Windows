@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10"
 
-	Version: v5.18.8
-	Date: 06.07.2024
+	Version: v5.18.9
+	Date: 16.08.2024
 
 	Copyright (c) 2014—2024 farag, Inestic & lowl1f3
 
@@ -69,7 +69,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.18.8 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2024"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.18.9 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2024"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-LocalizedData -BindingVariable Global:Localization -BaseDirectory $PSScriptRoot\Localizations -FileName Sophia
@@ -1307,6 +1307,23 @@ SaveZoneInformation -Disable
 # Disable Windows Sandbox (default value)
 # Выключить Windows Sandbox (значение по умолчанию)
 # WindowsSandbox -Disable
+
+<#
+	Enable DNS-over-HTTPS for IPv4
+	The valid IPv4 addresses: 1.0.0.1, 1.1.1.1, 149.112.112.112, 8.8.4.4, 8.8.8.8, 9.9.9.9
+
+	Включить DNS-over-HTTPS для IPv4
+	Действительные IPv4-адреса: 1.0.0.1, 1.1.1.1, 149.112.112.112, 8.8.4.4, 8.8.8.8, 9.9.9.9
+#>
+DNSoverHTTPS -Enable -PrimaryDNS 1.0.0.1 -SecondaryDNS 1.1.1.1
+
+# Disable DNS-over-HTTPS for IPv4 (default value)
+# Выключить DNS-over-HTTPS для IPv4 (значение по умолчанию)
+# DNSoverHTTPS -Disable
+
+# Enable DNS-over-HTTPS via Comss.one DNS server. Applicable for Russia only
+# Включить DNS-over-HTTPS для IPv4 через DNS-сервер Comss.one. Применимо только для России
+# DNSoverHTTPS -ComssOneDNS
 #endregion Microsoft Defender & Security
 
 #region Context menu

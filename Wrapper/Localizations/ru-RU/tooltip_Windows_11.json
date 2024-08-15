@@ -594,7 +594,7 @@
   {
     "Region": "UI & Personalization",
     "Function": "UnpinTaskbarShortcuts -Shortcuts",
-    "ToolTip": "Открепить ярлыки \"Microsoft Edge\", \"Microsoft Store\" от панели задач",
+    "ToolTip": "Открепить ярлыки \"Microsoft Edge\", \"Microsoft Store\" от панели задач.",
     "Arg": {
       "Zero": {
         "Tag": "Edge",
@@ -603,6 +603,20 @@
       "One": {
         "Tag": "Store",
         "ToolTip": "Открепить ярлык \"Microsoft Store\" от панели задач."
+      }
+    }
+  },
+  {
+    "Region": "UI & Personalization",
+    "Function": "TaskbarEndTask",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Включить завершение задачи на панели задач правой кнопкой мыши."
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Выключить завершение задачи на панели задач правой кнопкой мыши (default value)."
       }
     }
   },
@@ -1575,7 +1589,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Register",
-        "ToolTip": "Создать задание \"Windows Cleanup\" по очистке неиспользуемых файлов и обновлений Windows в Планировщике заданий. Задание выполняется каждые 30 дней. Необходимо включить Windows Script Host для того, чтобы работала функция."
+        "ToolTip": "Создать задания \"Windows Cleanup\" (основное задание) и \"Windows Cleanup Notification\" (задание для создания всплывающего уведомления) по очистке неиспользуемых файлов и обновлений Windows в Планировщике заданий в папке Sophia. Перед началом очистки всплывет нативное уведомление Windows с предложением запустить задание. Задание выполняется каждые 30 дней. Для работы задания необходимо включить Windows Script Host."
       },
       "One": {
         "Tag": "Delete",
@@ -1589,7 +1603,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Register",
-        "ToolTip": "Создать задание \"SoftwareDistribution\" по очистке папки %SystemRoot%\\SoftwareDistribution\\Download в Планировщике заданий. Задание будет ждать, пока служба обновлений Windows не закончит работу. Задание выполняется каждые 90 дней. Необходимо включить Windows Script Host для того, чтобы работала функция."
+        "ToolTip": "Создать задание \"SoftwareDistribution\" по очистке папки %SystemRoot%\\SoftwareDistribution\\Download, куда скачиваются установочные файлы всех обновлений Windows, в папке Sophia в Планировщике заданий. Задание будет ждать, пока служба обновлений Windows не закончит работу. Задача выполняется каждые 90 дней. Необходимо включить Windows Script Host для того, чтобы работала функция."
       },
       "One": {
         "Tag": "Delete",

@@ -2152,6 +2152,22 @@
     "WindowsDefault": "One"
   },
   {
+    "Region": "Microsoft Defender & Security",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "DNSoverHTTPS",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One"
+  },
+  {
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",

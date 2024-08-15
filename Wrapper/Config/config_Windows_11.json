@@ -694,6 +694,22 @@
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
+    "Function": "TaskbarEndTask",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One"
+  },
+  {
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
     "Function": "ControlPanelView",
     "Arg": {
       "Zero": {

@@ -614,7 +614,7 @@
   {
     "Region": "UI & Personalization",
     "Function": "UnpinTaskbarShortcuts -Shortcuts",
-    "ToolTip": "Unpin the \"Microsoft Edge\", \"Microsoft Store\", or \"Mail\" shortcuts from the taskbar",
+    "ToolTip": "Unpin the \"Microsoft Edge\", \"Microsoft Store\", or \"Mail\" shortcuts from the taskbar.",
     "Arg": {
       "Zero": {
         "Tag": "Edge",
@@ -1544,7 +1544,7 @@
   {
     "Region": "Start menu",
     "Function": "PinToStart -Tiles",
-    "ToolTip": "Pin to Start the following shortcuts: Control Panel, Devices and Printers, PowerShell",
+    "ToolTip": "Pin to Start the following shortcuts: Control Panel, Devices and Printers, PowerShell.",
     "Arg": {
       "Zero": {
         "Tag": "ControlPanel",
@@ -1690,7 +1690,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Register",
-        "ToolTip": "Create the \"Windows Cleanup\" scheduled task for cleaning up Windows unused files and updates. A native interactive toast notification pops up every 30 days. You have to enable Windows Script Host in order to make the function work."
+        "ToolTip": "Create \"Windows Cleanup\" (main task) and \"Windows Cleanup Notification\" (task to generate a pop-up notification) tasks to clean up unused files and Windows updates in the Task Scheduler in the Sophia folder. A native notification prompting you to run the task will pop up before the cleanup begins. The task runs every 30 days. Windows Script Host must be enabled for the task to run."
       },
       "One": {
         "Tag": "Delete",
@@ -1704,7 +1704,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Register",
-        "ToolTip": "Create the \"SoftwareDistribution\" scheduled task for cleaning up the %SystemRoot%\\SoftwareDistribution\\Download folder. The task will wait until the Windows Updates service finishes running. The task runs every 90 days. You have to enable Windows Script Host in order to make the function work"
+        "ToolTip": "Create a \"SoftwareDistribution\" task to clean up the %SystemRoot%\\SoftwareDistribution\\Download folder where the installation files for all Windows updates are downloaded, in the Sophia folder in the  Task Scheduler. The task will wait until the Windows Update service has finished running. The task runs every 90 days. Windows Script Host must be enabled for the task to run."
       },
       "One": {
         "Tag": "Delete",
@@ -1718,7 +1718,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Register",
-        "ToolTip": "Create the \"Temp\" scheduled task for cleaning up the %TEMP% folder. Only files older than one day will be deleted. The task runs every 60 days. You have to enable Windows Script Host in order to make the function work"
+        "ToolTip": "Create a \"Temp\" task in the Task Scheduler to clean up the %TEMP% folder. Only files older than one day will be deleted. The task runs every 60 days. Windows Script Host must be enabled for the task to run."
       },
       "One": {
         "Tag": "Delete",
@@ -1883,6 +1883,20 @@
       "One": {
         "Tag": "Disable",
         "ToolTip": "Disable Windows Sandbox (default value)."
+      }
+    }
+  },
+  {
+    "Region": "Microsoft Defender & Security",
+    "Function": "DNSoverHTTPS",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Enable DNS-over-HTTPS for IPv4. The valid IPv4 addresses: 1.0.0.1, 1.1.1.1, 149.112.112.112, 8.8.4.4, 8.8.8.8, 9.9.9.9."
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Disable DNS-over-HTTPS for IPv4 (default value)."
       }
     }
   },

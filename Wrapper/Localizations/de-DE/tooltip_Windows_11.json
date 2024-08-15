@@ -267,7 +267,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Anzeigen von Microsoft-Konto-Benachrichtigungen im Startmenü im Startmenü. (Standardeinstellung)."
+        "ToolTip": "Anzeigen von Microsoft-Konto-Benachrichtigungen im Startmenü im Startmenü (Standardeinstellung)."
       }
     }
   },
@@ -579,7 +579,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Always",
-        "ToolTip": "Kombinieren Sie Schaltflächen in der Taskleiste und blenden Sie Beschriftungen immer aus. (default value)."
+        "ToolTip": "Kombinieren Sie Schaltflächen in der Taskleiste und blenden Sie Beschriftungen immer aus (Standardeinstellung)."
       },
       "One": {
         "Tag": "Full",
@@ -603,6 +603,20 @@
       "One": {
         "Tag": "Store",
         "ToolTip": "Die Verknüpfung \"Microsoft Store\" von der Taskleiste lösen."
+      }
+    }
+  },
+  {
+    "Region": "UI & Personalization",
+    "Function": "TaskbarEndTask",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "\"Task beenden\" in Taskleiste durch Rechtsklick aktivieren."
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "\"Task beenden\" in Taskleiste durch Rechtsklick deaktivieren (Standardeinstellung)."
       }
     }
   },

@@ -99,7 +99,6 @@
 
 ## Donations
 
-<a href="https://yoomoney.ru/to/4100116615568835"><img src="https://yoomoney.ru/i/shop/iomoney_logo_color_example.png" width=220px height=46px align="left">
 </a><a href="https://ko-fi.com/farag"><img src="https://www.ko-fi.com/img/githubbutton_sm.svg" width=220px height=46px align="left"></a>
 
 | ![ko-fi](https://img.shields.io/badge/tether-168363?style=for-the-badge&logo=tether&logoColor=white) |
