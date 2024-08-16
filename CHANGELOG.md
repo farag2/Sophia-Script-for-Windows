@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.18.9 | 6.6.9 — 16.08.2024
+
+* Added function `DNS-over-HTTPS for IPv4` for Windows 10
+  * `DNSoverHTTPS -Enable -PrimaryDNS 1.0.0.1 -SecondaryDNS 1.1.1.1`
+  * `DNSoverHTTPS -ComssOneDNS` to use [COMSS.ONE'](https://www.comss.ru) DNS. Applicable for Russia only.
+  * The valid IPv4 addresses: 1.0.0.1, 1.1.1.1, 149.112.112.112, 8.8.4.4, 8.8.8.8, 9.9.9.9
+* Added `TaskbarEndTask` function to add `End task in taskbar by right click`. Applicable for `Windows 11` only.
+* Simplify a little bit all Scheduled Tasks related function.
+  * You may update them by using `. .\Functions` module. Nothing new.
+* Expanded harmful tweakers by adding [xd-AntiSpy](https://github.com/builtbybel/xd-AntiSpy) for letting users remove system UWP components to break Windows in the end ([Winpilot](https://github.com/builtbybel/Winpilot) does the same (archived). You're welcome again. Bravo! 👏
+* Improved `RKNBypass` function. Now all browsers will know about a new proxy server isntantly by using [InternetSetOption](https://learn.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetsetoptiona) API.
+* Small improvements;
+* Minor changes.
+
 ## 5.18.8 | 6.6.8 — 06.07.2024
 
 * Removed `RestoreUWPApps`
