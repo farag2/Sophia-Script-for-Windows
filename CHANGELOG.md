@@ -14,8 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `TaskbarEndTask` function to add `End task in taskbar by right click`. Applicable for `Windows 11` only.
 * Simplify a little bit all Scheduled Tasks related function.
   * You may update them by using `. .\Functions` module. Nothing new.
-* Expanded harmful tweakers by adding [xd-AntiSpy](https://github.com/builtbybel/xd-AntiSpy) for letting users remove system UWP components to break Windows in the end ([Winpilot](https://github.com/builtbybel/Winpilot) does the same (archived). You're welcome again. Bravo! 👏
+* Expanded harmful tweakers by adding [xd-AntiSpy](https://github.com/builtbybel/xd-AntiSpy) for letting users remove system UWP components to break Windows in the end (along side with [Winpilot](https://github.com/builtbybel/Winpilot). You're welcome again. Bravo! 👏
 * Improved `RKNBypass` function. Now all browsers will know about a new proxy server isntantly by using [InternetSetOption](https://learn.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetsetoptiona) API.
+* `TaskbarWidgets`' function future is up in the air due to Microsoft has blocked access for editing TaskbarDa key in KB5041585, so technically the function doesn't work throwing `Attempted to perform an unauthorized operation.`
 * Small improvements;
 * Minor changes.
 
