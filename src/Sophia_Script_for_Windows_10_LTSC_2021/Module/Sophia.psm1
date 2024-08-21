@@ -10304,7 +10304,7 @@ Start-Sleep -Seconds 3
 # https://github.com/DCourtel/Windows_10_Focus_Assist/blob/master/FocusAssistLibrary/FocusAssistLib.cs
 # https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
 
-`$CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new("""System.dll""")
+`$CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
 `$CompilerParameters.TempFiles = [System.CodeDom.Compiler.TempFileCollection]::new(`$env:TEMP, `$false)
 `$CompilerParameters.GenerateInMemory = `$true
 `$Signature = @{
@@ -10400,7 +10400,7 @@ while ([WinAPI.Focus]::GetFocusAssistState() -ne "OFF")
 	</visual>
 	<audio src="ms-winsoundevent:notification.default" />
 	<actions>
-		<action content="$([WinAPI.GetStrings]::GetString(12850))" arguments="WindowsCleanup:" activationType="protocol"/>
+		<action content="$($Localization.Run)" arguments="WindowsCleanup:" activationType="protocol"/>
 		<action content="" arguments="dismiss" activationType="system"/>
 	</actions>
 </toast>
@@ -10626,7 +10626,7 @@ function SoftwareDistributionTask
 # https://github.com/DCourtel/Windows_10_Focus_Assist/blob/master/FocusAssistLibrary/FocusAssistLib.cs
 # https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
 
-`$CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new("""System.dll""")
+`$CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
 `$CompilerParameters.TempFiles = [System.CodeDom.Compiler.TempFileCollection]::new(`$env:TEMP, `$false)
 `$CompilerParameters.GenerateInMemory = `$true
 `$Signature = @{
@@ -10707,7 +10707,7 @@ while ([WinAPI.Focus]::GetFocusAssistState() -ne "OFF")
 }
 
 # Run the task
-(Get-Service -Name wuauserv).WaitForStatus('Stopped', '01:00:00')
+(Get-Service -Name wuauserv).WaitForStatus("Stopped", "01:00:00")
 Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -Force | Remove-Item -Recurse -Force
 
 [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
@@ -10936,7 +10936,7 @@ function TempTask
 # https://github.com/DCourtel/Windows_10_Focus_Assist/blob/master/FocusAssistLibrary/FocusAssistLib.cs
 # https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
 
-`$CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new("""System.dll""")
+`$CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
 `$CompilerParameters.TempFiles = [System.CodeDom.Compiler.TempFileCollection]::new(`$env:TEMP, `$false)
 `$CompilerParameters.GenerateInMemory = `$true
 `$Signature = @{
@@ -13094,7 +13094,7 @@ public static void PostMessage()
 	</visual>
 	<audio src="ms-winsoundevent:notification.default" />
 	<actions>
-		<action arguments="https://t.me/sophia_chat" content="$([WinAPI.GetStrings]::GetString(12850))" activationType="protocol"/>
+		<action arguments="https://t.me/sophia_chat" content="$($Localization.Run)" activationType="protocol"/>
 		<action arguments="dismiss" content="" activationType="system"/>
 	</actions>
 </toast>
@@ -13122,7 +13122,7 @@ public static void PostMessage()
 	</visual>
 	<audio src="ms-winsoundevent:notification.default" />
 	<actions>
-		<action arguments="https://t.me/sophianews" content="$([WinAPI.GetStrings]::GetString(12850))" activationType="protocol"/>
+		<action arguments="https://t.me/sophianews" content="$($Localization.Run)" activationType="protocol"/>
 		<action arguments="dismiss" content="" activationType="system"/>
 	</actions>
 </toast>
@@ -13150,7 +13150,7 @@ public static void PostMessage()
 	</visual>
 	<audio src="ms-winsoundevent:notification.default" />
 	<actions>
-		<action arguments="https://discord.gg/sSryhaEv79" content="$([WinAPI.GetStrings]::GetString(12850))" activationType="protocol"/>
+		<action arguments="https://discord.gg/sSryhaEv79" content="$($Localization.Run)" activationType="protocol"/>
 		<action arguments="dismiss" content="" activationType="system"/>
 	</actions>
 </toast>
