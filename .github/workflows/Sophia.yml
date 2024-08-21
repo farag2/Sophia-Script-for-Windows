@@ -64,8 +64,33 @@ jobs:
           }
           $Penultimate = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 1
 
+          # Parse json for the latest script versions
+          $Parameters = @{
+              Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
+              UseBasicParsing = $true
+              Verbose         = $true
+          }
+          $Sophia_Script_Windows_10_PowerShell_5_1 = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_PowerShell_5_1
+          $Sophia_Script_Windows_10_PowerShell_7 = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_PowerShell_7
+          $Sophia_Script_Windows_10_LTSC2019 = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_LTSC2019
+          $Sophia_Script_Windows_10_LTSC2021 = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_LTSC2021
+          $Sophia_Script_Windows_11_PowerShell_5_1 = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_5_1
+          $Sophia_Script_Windows_11_PowerShell_7 = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_7
+          $Sophia_Script_Wrapper = (Invoke-RestMethod @Parameters).Sophia_Script_Wrapper
+
+          # Replace variables with script latest versions
           # No need to replace special characters with percent-encoding ones
-          (Get-Content -Path ReleaseNotesTemplate.md -Encoding utf8 -Raw).replace("NewVersion", "${{ github.ref_name }}").replace("OldVersion", $Penultimate) | Set-Content -Path ReleaseNotesTemplate.md -Encoding utf8 -Force
+          (Get-Content -Path ReleaseNotesTemplate.md -Encoding utf8 -Raw) | Foreach-Object -Process {
+              $_ -replace "NewVersion", "${{ github.ref_name }}" `
+              -replace "OldVersion", $Penultimate `
+              -replace "Sophia_Script_Windows_10_PowerShell_5_1", $Sophia_Script_Windows_10_PowerShell_5_1 `
+              -replace "Sophia_Script_Windows_10_PowerShell_7", $Sophia_Script_Windows_10_PowerShell_7 `
+              -replace "Sophia_Script_Windows_10_LTSC2019", $Sophia_Script_Windows_10_LTSC2019 `
+              -replace "Sophia_Script_Windows_10_LTSC2021", $Sophia_Script_Windows_10_LTSC2021 `
+              -replace "Sophia_Script_Windows_11_PowerShell_5_1", $Sophia_Script_Windows_11_PowerShell_5_1 `
+              -replace "Sophia_Script_Windows_11_PowerShell_7", $Sophia_Script_Windows_11_PowerShell_7 `
+              -replace "Sophia_Script_Wrapper", $Sophia_Script_Wrapper
+          } | Set-Content -Path ReleaseNotesTemplate.md -Encoding utf8 -Force
 
           # https://trstringer.com/github-actions-multiline-strings/
           Add-Content -Path $env:GITHUB_OUTPUT -Value "ReleaseBody=ReleaseNotesTemplate.md"

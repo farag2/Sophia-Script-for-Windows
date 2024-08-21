@@ -101,11 +101,6 @@
 
 </a><a href="https://ko-fi.com/farag"><img src="https://www.ko-fi.com/img/githubbutton_sm.svg" width=220px height=46px align="left"></a>
 
-| ![ko-fi](https://img.shields.io/badge/tether-168363?style=for-the-badge&logo=tether&logoColor=white) |
-|:----------------------------------------------------------------------------------------------------:|
-|                                         USDT (TRC20)                                                 |
-|                             `TQtMjdocUWbKAeg1kLtB4ApjAVHt1v8Rtf`                                     |
-
 ## Системні вимоги
 
 [Windows-10]: https://support.microsoft.com/topic/windows-10-update-history-8127c2c6-6edf-4fdf-8b9f-0f7be1ef3562
