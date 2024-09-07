@@ -816,6 +816,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 						$hosts = $hosts | Where-Object -FilterScript {$_ -notmatch $hostsData}
 					}
 				}
+				# Save in UTF8 without BOM
 				$hosts | Set-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Encoding Default -Force
 
 				Start-Process -FilePath notepad.exe "$env:SystemRoot\System32\drivers\etc\hosts"
@@ -1143,6 +1144,7 @@ $($Type):$($Value)`n
 		$Path = "$env:TEMP\User.txt"
 	}
 
+	# Save in UTF8 without BOM
 	Add-Content -Path $Path -Value $Policy -Encoding Default -Force
 }
 #endregion Additional function
@@ -11496,7 +11498,7 @@ function CleanupTask
 			# Start the "Windows Cleanup" task if the "Run" button clicked
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup\shell\open\command -Name "(default)" -PropertyType String -Value 'powershell.exe -Command "& {Start-ScheduledTask -TaskPath ''\Sophia\'' -TaskName ''Windows Cleanup''}"' -Force
 
-			$CleanupTask = @"
+			$CleanupTaskPS = @"
 # https://github.com/farag2/Sophia-Script-for-Windows
 # https://t.me/sophia_chat
 
@@ -11531,17 +11533,17 @@ Start-Sleep -Seconds 3
 				New-Item -Path $env:SystemRoot\System32\Tasks\Sophia -ItemType Directory -Force
 			}
 			# Save in UTF8 with BOM
-			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup.ps1" -Value $CleanupTask -Encoding UTF8 -Force
+			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup.ps1" -Value $CleanupTaskPS -Encoding UTF8 -Force
 
 			# Create vbs script that will help us calling Windows_Cleanup.ps1 script silently, without interrupting system from Focus Assist mode turned on, when a powershell.exe console pops up
-			$CleanupTask = @"
+			$CleanupTaskVBS = @"
 ' https://github.com/farag2/Sophia-Script-for-Windows
 ' https://t.me/sophia_chat
 
 CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoProfile -NoLogo -WindowStyle Hidden -File %SystemRoot%\System32\Tasks\Sophia\Windows_Cleanup.ps1", 0
 "@
 			# Save in UTF8 without BOM
-			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup.vbs" -Value $CleanupTask -Encoding Default -Force
+			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup.vbs" -Value $CleanupTaskVBS -Encoding Default -Force
 
 			# Create "Windows Cleanup" task
 			# We cannot create a schedule task if %COMPUTERNAME% is equal to %USERNAME%, so we have to use a "$env:COMPUTERNAME\$env:USERNAME" method
@@ -11563,7 +11565,7 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 			# powershell.exe process wakes up system anyway even from turned on Focus Assist mode (not a notification toast)
 			# https://github.com/DCourtel/Windows_10_Focus_Assist/blob/master/FocusAssistLibrary/FocusAssistLib.cs
 			# https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
-			$ToastNotification = @"
+			$ToastNotificationPS = @"
 # https://github.com/farag2/Sophia-Script-for-Windows
 # https://t.me/sophia_chat
 
@@ -11681,18 +11683,19 @@ while ([WinAPI.Focus]::GetFocusAssistState() -ne "OFF")
 "@
 
 			# Save in UTF8 with BOM
-			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1" -Value $ToastNotification -Encoding UTF8 -Force
+			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1" -Value $ToastNotificationPS -Encoding UTF8 -Force
 			# Replace here-string double quotes with single ones
 			(Get-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1" -Encoding UTF8).Replace('@""', '@"').Replace('""@', '"@') | Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1" -Encoding UTF8 -Force
 
 			# Create vbs script that will help us calling Windows_Cleanup_Notification.ps1 script silently, without interrupting system from Focus Assist mode turned on, when a powershell.exe console pops up
-			$ToastNotification = @"
+			$ToastNotificationVBS = @"
 ' https://github.com/farag2/Sophia-Script-for-Windows
 ' https://t.me/sophia_chat
 
 CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoProfile -NoLogo -WindowStyle Hidden -File %SystemRoot%\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1", 0
 "@
-			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.vbs" -Value $ToastNotification -Encoding Default -Force
+			# Save in UTF8 without BOM
+			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.vbs" -Value $ToastNotificationVBS -Encoding Default -Force
 
 			# Create the "Windows Cleanup Notification" task
 			# We cannot create a schedule task if %COMPUTERNAME% is equal to %USERNAME%, so we have to use a "$env:COMPUTERNAME\$env:USERNAME" method
@@ -11886,7 +11889,7 @@ function SoftwareDistributionTask
 			# powershell.exe process wakes up system anyway even from turned on Focus Assist mode (not a notification toast)
 			# https://github.com/DCourtel/Windows_10_Focus_Assist/blob/master/FocusAssistLibrary/FocusAssistLib.cs
 			# https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
-			$SoftwareDistributionTask = @"
+			$SoftwareDistributionTaskPS = @"
 # https://github.com/farag2/Sophia-Script-for-Windows
 # https://t.me/sophia_chat
 
@@ -12004,18 +12007,19 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -For
 				New-Item -Path $env:SystemRoot\System32\Tasks\Sophia -ItemType Directory -Force
 			}
 			# Save in UTF8 with BOM
-			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Value $SoftwareDistributionTask -Encoding UTF8 -Force
+			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Value $SoftwareDistributionTaskPS -Encoding UTF8 -Force
 			# Replace here-string double quotes with single ones
 			(Get-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Encoding UTF8).Replace('@""', '@"').Replace('""@', '"@') | Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Encoding UTF8 -Force
 
 			# Create vbs script that will help us calling PS1 script silently, without interrupting system from Focus Assist mode turned on, when a powershell.exe console pops up
-			$SoftwareDistributionTask = @"
+			$SoftwareDistributionTaskVBS = @"
 ' https://github.com/farag2/Sophia-Script-for-Windows
 ' https://t.me/sophia_chat
 
 CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoProfile -NoLogo -WindowStyle Hidden -File %SystemRoot%\System32\Tasks\Sophia\SoftwareDistributionTask.ps1", 0
 "@
-			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.vbs" -Value $SoftwareDistributionTask -Encoding Default -Force
+			# Save in UTF8 without BOM
+			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.vbs" -Value $SoftwareDistributionTaskVBS -Encoding Default -Force
 
 			# Create the "SoftwareDistribution" task
 			# We cannot create a schedule task if %COMPUTERNAME% is equal to %USERNAME%, so we have to use a "$env:COMPUTERNAME\$env:USERNAME" method
@@ -12196,7 +12200,7 @@ function TempTask
 
 			# We have to call PowerShell script via another VBS script silently because VBS has appropriate feature to suppress console appearing (none of other workarounds work)
 			# powershell.exe process wakes up system anyway even from turned on Focus Assist mode (not a notification toast)
-			$TempTask = @"
+			$TempTaskPS = @"
 # https://github.com/farag2/Sophia-Script-for-Windows
 # https://t.me/sophia_chat
 
@@ -12327,18 +12331,19 @@ Remove-Item -Path `$Paths -Recurse -Force
 				New-Item -Path $env:SystemRoot\System32\Tasks\Sophia -ItemType Directory -Force
 			}
 			# Save in UTF8 with BOM
-			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Value $TempTask -Encoding UTF8 -Force
+			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Value $TempTaskPS -Encoding UTF8 -Force
 			# Replace here-string double quotes with single ones
 			(Get-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Encoding UTF8).Replace('@""', '@"').Replace('""@', '"@') | Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Encoding UTF8 -Force
 
 			# Create vbs script that will help us calling PS1 script silently, without interrupting system from Focus Assist mode turned on, when a powershell.exe console pops up
-			$TempTask = @"
+			$TempTaskVBS = @"
 ' https://github.com/farag2/Sophia-Script-for-Windows
 ' https://t.me/sophia_chat
 
 CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoProfile -NoLogo -WindowStyle Hidden -File %SystemRoot%\System32\Tasks\Sophia\TempTask.ps1", 0
 "@
-			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.vbs" -Value $TempTask -Encoding Default -Force
+			# Save in UTF8 without BOM
+			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.vbs" -Value $TempTaskVBS -Encoding Default -Force
 
 			# Create the "Temp" task
 			# We cannot create a schedule task if %COMPUTERNAME% is equal to %USERNAME%, so we have to use a "$env:COMPUTERNAME\$env:USERNAME" method
