@@ -3613,6 +3613,9 @@ function TaskViewButton
 	NewsInterests -Enable
 
 	.NOTES
+	https://forums.mydigitallife.net/threads/taskbarda-widgets-registry-change-is-now-blocked.88547/#post-1848877
+
+	.NOTES
 	Current user
 #>
 function NewsInterests
@@ -3634,27 +3637,90 @@ function NewsInterests
 		$Enable
 	)
 
+	# Remove all policies in order to make changes visible in UI only if it's possible
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds" -Name EnableFeeds -Force -ErrorAction Ignore
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\PolicyManager\default\NewsAndInterests\AllowNewsAndInterests" -Name value -Force -ErrorAction Ignore
+
+	# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
+	$MachineId = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\SQMClient", "MachineId", $null)
+	if (-not $MachineId)
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message $Localization.Skipped -Verbose
+
+		return
+	}
+
+	if (-not (Get-Package -Name "Microsoft Edge Update" -ProviderName Programs -ErrorAction Ignore))
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message $Localization.Skipped -Verbose
+
+		return
+	}
+
+	# https://forums.mydigitallife.net/threads/taskbarda-widgets-registry-change-is-now-blocked.88547/#post-1849006
+	$Signature = @{
+		Namespace          = "WinAPI"
+		Name               = "Signature"
+		Language           = "CSharp"
+		CompilerParameters = $CompilerOptions
+		MemberDefinition   = @"
+[DllImport("Shlwapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true, SetLastError = false)]
+public static extern int HashData(byte[] pbData, int cbData, byte[] piet, int outputLen);
+"@
+	}
+	if (-not ("WinAPI.GetStrings" -as [type]))
+	{
+		Add-Type @Signature
+	}
+
+	# We cannot call any of APIs except copying reg.exe with a different name due to a UCPD driver tracks all executables to blocke the access to the registry
+	Copy-Item -Path "$env:SystemRoot\system32\reg.exe" -Destination "$env:SystemRoot\system32\reg_temp.exe" -Force
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Disable"
 		{
-			if (-not (Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds"))
-			{
-				New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds" -Force
-			}
-			New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds" -Name EnableFeeds -PropertyType DWord -Value 0 -Force
+			# Combine variables into a string
+			$Combined = $MachineId + '_' + 2
+			# Reverse the whole string
+			$CharArray = $Combined.ToCharArray()
+			[array]::Reverse($CharArray)
+			$Reverse = -join $CharArray
+			$bytesIn = [System.Text.Encoding]::Unicode.GetBytes($Reverse)
+			$bytesOut = [byte[]]::new(4)
+			[WinAPI.Signature]::HashData($bytesIn, 0x53, $bytesOut, $bytesOut.Count)
+			# Get value to save in EnShellFeedsTaskbarViewMode key
+			$DWordData = [System.BitConverter]::ToUInt32($bytesOut,0)
 
-			if (-not (Test-Path -Path HKLM:\SOFTWARE\Microsoft\PolicyManager\default\NewsAndInterests\AllowNewsAndInterests))
-			{
-				New-Item -Path HKLM:\SOFTWARE\Microsoft\PolicyManager\default\NewsAndInterests\AllowNewsAndInterests -Force
-			}
-			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\PolicyManager\default\NewsAndInterests\AllowNewsAndInterests -Name value -PropertyType DWord -Value 0 -Force
+			# https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_parsing?view=powershell-7.4#the-stop-parsing-token
+			# We cannot put --% inside the command below as it breaks parsing of $DWordData variable
+			$EscapeParser = "--%"
+			& "$env:SystemRoot\system32\reg_temp.exe" $EscapeParser ADD HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds /v EnShellFeedsTaskbarViewMode /t REG_DWORD /d $DWordData /f
 		}
 		"Enable"
 		{
-			Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds" -Name EnableFeeds -Force -ErrorAction Ignore
+			# Combine variables into a string
+			$Combined = $MachineId + '_' + 0
+			# Reverse the whole string
+			$CharArray = $Combined.ToCharArray()
+			[array]::Reverse($CharArray)
+			$Reverse = -join $CharArray
+			$bytesIn = [System.Text.Encoding]::Unicode.GetBytes($Reverse)
+			$bytesOut = [byte[]]::new(4)
+			[WinAPI.Signature]::HashData($bytesIn, 0x53, $bytesOut, $bytesOut.Count)
+			# Get value to save in EnShellFeedsTaskbarViewMode key
+			$DWordData = [System.BitConverter]::ToUInt32($bytesOut,0)
+
+			# https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_parsing?view=powershell-7.4#the-stop-parsing-token
+			# We cannot put --% inside the command below as it breaks parsing of $DWordData variable
+			$EscapeParser = "--%"
+			& "$env:SystemRoot\system32\reg_temp.exe" $EscapeParser ADD HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds /v EnShellFeedsTaskbarViewMode /t REG_DWORD /d $DWordData /f
 		}
 	}
+
+	Remove-Item -Path "$env:SystemRoot\system32\reg_temp.exe" -Force
 }
 
 <#

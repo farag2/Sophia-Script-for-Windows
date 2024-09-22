@@ -3191,41 +3191,34 @@ function TaskbarWidgets
 		$Show
 	)
 
+	# We cannot call any of APIs except copying reg.exe with a different name due to a UCPD driver tracks all executables to blocke the access to the registry
+	Copy-Item -Path "$env:SystemRoot\system32\reg.exe" -Destination "$env:SystemRoot\system32\reg_temp.exe" -Force
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Hide"
 		{
 			if (Get-AppxPackage -Name MicrosoftWindows.Client.WebExperience)
 			{
-				# Microsoft blocked access for editing TaskbarDa key in KB5041585
-				try
-				{
-					New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name TaskbarDa -PropertyType DWord -Value 0 -Force -ErrorAction Stop
-				}
-				catch [System.UnauthorizedAccessException]
-				{
-					Write-Warning -Message ($Global:Error.Exception.Message | Select-Object -First 1)
-					Write-Error -Message ($Global:Error.Exception.Message | Select-Object -First 1) -ErrorAction SilentlyContinue
-				}
+				# https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_parsing?view=powershell-7.4#the-stop-parsing-token
+				# We cannot put --% inside the command below as it breaks parsing of $DWordData variable
+				$EscapeParser = "--%"
+				& "$env:SystemRoot\system32\reg_temp.exe" $EscapeParser ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /v TaskbarDa  /t REG_DWORD /d 0 /f
 			}
 		}
 		"Show"
 		{
 			if (Get-AppxPackage -Name MicrosoftWindows.Client.WebExperience)
 			{
-				# Microsoft blocked access for editing TaskbarDa key in KB5041585
-				try
-				{
-					New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name TaskbarDa -PropertyType DWord -Value 1 -Force -ErrorAction Stop
-				}
-				catch [System.UnauthorizedAccessException]
-				{
-					Write-Warning -Message ($Global:Error.Exception.Message | Select-Object -First 1)
-					Write-Error -Message ($Global:Error.Exception.Message | Select-Object -First 1) -ErrorAction SilentlyContinue
-				}
+				# https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_parsing?view=powershell-7.4#the-stop-parsing-token
+				# We cannot put --% inside the command below as it breaks parsing of $DWordData variable
+				$EscapeParser = "--%"
+				& "$env:SystemRoot\system32\reg_temp.exe" $EscapeParser ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /v TaskbarDa  /t REG_DWORD /d 1 /f
 			}
 		}
 	}
+
+	Remove-Item -Path "$env:SystemRoot\system32\reg_temp.exe" -Force
 }
 
 <#
