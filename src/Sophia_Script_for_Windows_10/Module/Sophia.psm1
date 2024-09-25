@@ -3633,13 +3633,7 @@ function NewsInterests
 		$Enable
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
-	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds" -Name EnableFeeds -Force -ErrorAction Ignore
-	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\PolicyManager\default\NewsAndInterests\AllowNewsAndInterests" -Name value -Force -ErrorAction Ignore
-
-	# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
-	$MachineId = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\SQMClient", "MachineId", $null)
-	if (-not $MachineId)
+	if (-not (Get-Package -Name "Microsoft Edge Update" -ProviderName Programs -ErrorAction Ignore))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message $Localization.Skipped -Verbose
@@ -3647,7 +3641,13 @@ function NewsInterests
 		return
 	}
 
-	if (-not (Get-Package -Name "Microsoft Edge Update" -ProviderName Programs -ErrorAction Ignore))
+	# Remove all policies in order to make changes visible in UI only if it's possible
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds" -Name EnableFeeds -Force -ErrorAction Ignore
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\PolicyManager\default\NewsAndInterests\AllowNewsAndInterests" -Name value -Force -ErrorAction Ignore
+
+	# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
+	$MachineId = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\SQMClient", "MachineId", $null)
+	if (-not $MachineId)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message $Localization.Skipped -Verbose
@@ -14126,7 +14126,7 @@ function MSIExtractContext
 			{
 				New-Item -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract\Command -Force
 			}
-			$Value = "{0}" -f "msiexec.exe /a `"%1`" /qb TARGETDIR=`"%1 extracted`""
+			$Value = "msiexec.exe /a `"%1`" /qb TARGETDIR=`"%1 extracted`""
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract\Command -Name "(default)" -PropertyType String -Value $Value -Force
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract -Name MUIVerb -PropertyType String -Value "@shell32.dll,-37514" -Force
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract -Name Icon -PropertyType String -Value "shell32.dll,-16817" -Force
@@ -14184,7 +14184,7 @@ function CABInstallContext
 			{
 				New-Item -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas\Command -Force
 			}
-			$Value = "{0}" -f "cmd /c DISM.exe /Online /Add-Package /PackagePath:`"%1`" /NoRestart & pause"
+			$Value = "cmd /c DISM.exe /Online /Add-Package /PackagePath:`"%1`" /NoRestart & pause"
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas\Command -Name "(default)" -PropertyType String -Value $Value -Force
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas -Name MUIVerb -PropertyType String -Value "@shell32.dll,-10210" -Force
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas -Name HasLUAShield -PropertyType String -Value "" -Force
