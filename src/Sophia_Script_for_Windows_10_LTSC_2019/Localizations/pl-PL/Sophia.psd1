@@ -48,7 +48,6 @@ ErrorsMessage                             = Błędy/Ostrzeżenia
 DialogBoxOpening                          = Wyświetlanie okna dialogowego...
 Disable                                   = Wyłączyć
 Enable                                    = Włączać
-UserChoiceWarning                         = Microsoft zablokował dostęp do zapisu klucza UserChoice dla rozszerzenia .pdf i protokołu http/https wraz z wydaniem KB5034765.
 AllFilesFilter                            = Wszystkie pliki
 FolderSelect                              = Wybierz folder
 FilesWontBeMoved                          = Pliki nie zostaną przeniesione.

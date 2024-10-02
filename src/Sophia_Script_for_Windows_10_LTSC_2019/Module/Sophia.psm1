@@ -63,7 +63,7 @@ function InitialActions
 
 	# Extract strings from %SystemRoot%\System32\shell32.dll using its number
 	# https://github.com/SamuelArnold/StarKill3r/blob/master/Star%20Killer/Star%20Killer/bin/Debug/Scripts/SANS-SEC505-master/scripts/Day1-PowerShell/Expand-IndirectString.ps1
-	# [WinAPI.GetStrings]::GetIndirectString("@%SystemRoot%\system32\schedsvc.dll,-100")
+	# [WinAPI.GetStrings]::GetIndirectString("@%SystemRoot%\System32\schedsvc.dll,-100")
 
 	# https://github.com/PowerShell/PowerShell/issues/21070
 	$Script:CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
@@ -7156,15 +7156,12 @@ function ActiveHours
 	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .txt -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
 
 	.EXAMPLE
-	Set-Association -ProgramPath MSEdgeMHT -Extension .html
+	Set-Association -ProgramPath MSEdgeHTM -Extension .html
 
 	.LINK
 	https://github.com/DanysysTeam/PS-SFTA
 	https://github.com/default-username-was-already-taken/set-fileassoc
 	https://forum.ru-board.com/profile.cgi?action=show&member=westlife
-
-	.NOTES
-	Microsoft blocked ability to write to UserChoice key for .pdf extention and http and https protocols with KB5034763 release
 
 	.NOTES
 	Machine-wide
@@ -7196,18 +7193,9 @@ function Set-Association
 		$Icon
 	)
 
-	# Microsoft blocked ability to write to UserChoice key for .pdf extention and http and https protocols with KB5034763 release
-	if (@(".pdf", "http", "https") -contains $Extension)
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.UserChoiceWarning -Verbose
-		Write-Error -Message $Localization.UserChoiceWarning -ErrorAction SilentlyContinue
-
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.Skipped -Verbose
-
-		return
-	}
+	# Microsoft has blocked write access to UserChoice key for .pdf extention and http/https protocols with KB5034765 release, so we have to write values with a copy of powershell.exe to bypass a UCPD driver restrictions
+	# UCPD driver tracks all executables to block the access to the registry so all registry records will be made within powershell_temp.exe in this function just in case
+	Copy-Item -Path "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -Destination "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Force
 
 	$ProgramPath = [System.Environment]::ExpandEnvironmentVariables($ProgramPath)
 
@@ -7546,7 +7534,25 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 		{
 			New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice" -Force
 		}
-		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice" -Name ProgId -PropertyType String -Value $ProgID -Force
+
+		# We need to remove DENY permission set for user before setting a value
+		if (@(".pdf", "http", "https") -contains $Extension)
+		{
+			# https://powertoe.wordpress.com/2010/08/28/controlling-registry-acl-permissions-with-powershell/
+			$Key = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice",[Microsoft.Win32.RegistryKeyPermissionCheck]::ReadWriteSubTree,[System.Security.AccessControl.RegistryRights]::ChangePermissions)
+			$ACL = $key.GetAccessControl()
+			$Principal = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
+			# https://learn.microsoft.com/en-us/dotnet/api/system.security.accesscontrol.filesystemrights
+			$Rule = New-Object -TypeName System.Security.AccessControl.RegistryAccessRule -ArgumentList ($Principal,"FullControl","Deny")
+			$ACL.RemoveAccessRule($Rule)
+			$Key.SetAccessControl($ACL)
+
+			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command "& {New-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice' -Name ProgId -PropertyType String -Value $ProgID -Force}"
+		}
+		else
+		{
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice" -Name ProgId -PropertyType String -Value $ProgID -Force
+		}
 
 		# Getting a hash based on the time of the section's last modification. After creating and setting the first parameter
 		$ProgHash = Get-Hash -ProgId $ProgId -Extension $Extension -SubKey "Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice"
@@ -7555,7 +7561,15 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 		{
 			New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice" -Force
 		}
-		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice" -Name Hash -PropertyType String -Value $ProgHash -Force
+
+		if (@(".pdf", "http", "https") -contains $Extension)
+		{
+			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command "& {New-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice' -Name Hash -PropertyType String -Value $ProgHash -Force}"
+		}
+		else
+		{
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice" -Name Hash -PropertyType String -Value $ProgHash -Force
+		}
 
 		# Setting a block on changing the UserChoice section
 		# Due to "Set-StrictMode -Version Latest" we have to use OpenSubKey()
@@ -7973,9 +7987,29 @@ public static long MakeLong(uint left, uint right)
 		{
 			New-Item -Path "HKCU:\Software\Microsoft\Windows\Shell\Associations\UrlAssociations\$Extension\UserChoice" -Force
 		}
+
 		$ProgHash = Get-Hash -ProgId $ProgId -Extension $Extension -SubKey "Software\Microsoft\Windows\Shell\Associations\UrlAssociations\$Extension\UserChoice"
-		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\Shell\Associations\UrlAssociations\$Extension\UserChoice" -Name ProgId -PropertyType String -Value $ProgId -Force
-		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\Shell\Associations\UrlAssociations\$Extension\UserChoice" -Name Hash -PropertyType String -Value $ProgHash -Force
+
+		# We need to remove DENY permission set for user before setting a value
+		if (@(".pdf", "http", "https") -contains $Extension)
+		{
+			# https://powertoe.wordpress.com/2010/08/28/controlling-registry-acl-permissions-with-powershell/
+			$Key = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey("Software\Microsoft\Windows\Shell\Associations\UrlAssociations\$Extension\UserChoice",[Microsoft.Win32.RegistryKeyPermissionCheck]::ReadWriteSubTree,[System.Security.AccessControl.RegistryRights]::ChangePermissions)
+			$ACL = $key.GetAccessControl()
+			$Principal = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
+			# https://learn.microsoft.com/en-us/dotnet/api/system.security.accesscontrol.filesystemrights
+			$Rule = New-Object -TypeName System.Security.AccessControl.RegistryAccessRule -ArgumentList ($Principal,"FullControl","Deny")
+			$ACL.RemoveAccessRule($Rule)
+			$Key.SetAccessControl($ACL)
+
+			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command "& {New-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\Shell\Associations\UrlAssociations\$Extension\UserChoice' -Name ProgId -PropertyType String -Value $ProgID -Force}"
+			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command "& {New-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\Shell\Associations\UrlAssociations\$Extension\UserChoice' -Name Hash -PropertyType String -Value $ProgHash -Force}"
+		}
+		else
+		{
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\Shell\Associations\UrlAssociations\$Extension\UserChoice" -Name ProgId -PropertyType String -Value $ProgId -Force
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\Shell\Associations\UrlAssociations\$Extension\UserChoice" -Name Hash -PropertyType String -Value $ProgHash -Force
+		}
 	}
 
 	# Setting additional parameters to comply with the requirements before configuring the extension
@@ -8004,6 +8038,8 @@ public static void Refresh()
 	}
 
 	[WinAPI.Signature]::Refresh()
+
+	Remove-Item -Path "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Force
 }
 
 <#
@@ -8286,7 +8322,7 @@ function InstallVCRedist
 			return
 		}
 
-		if (Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore)
+		if (Get-AppxPackage -Name Microsoft.DesktopAppInstaller)
 		{
 			if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller).Version -ge [System.Version]"1.17")
 			{
@@ -8397,7 +8433,7 @@ function InstallDotNetRuntimes
 		{
 			NET6x64
 			{
-				if (Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore)
+				if (Get-AppxPackage -Name Microsoft.DesktopAppInstaller)
 				{
 					if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller).Version -ge [System.Version]"1.17")
 					{
@@ -8444,7 +8480,7 @@ function InstallDotNetRuntimes
 			}
 			NET8x64
 			{
-				if (Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore)
+				if (Get-AppxPackage -Name Microsoft.DesktopAppInstaller)
 				{
 					if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller).Version -ge [System.Version]"1.17")
 					{
