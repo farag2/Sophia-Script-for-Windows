@@ -788,11 +788,25 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Den Navigatiosbereich des Explorers(Linker Abschnitt) nicht auf den aktuellen Ordner erweitern (aufklappen) (Standardeinstellung)."
+        "ToolTip": "Den Navigatiosbereich des Explorers(Linker Abschnitt) nicht auf den aktuellen Ordner erweitern (Standardeinstellung)."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Der Navigationsbereich des Explorers(Linker Abschnitt) wird auf den aktuellen Ordner erweitert (aufgeklappt)."
+        "ToolTip": "Der Navigationsbereich des Explorers(Linker Abschnitt) wird auf den aktuellen Ordner erweitert."
+      }
+    }
+  },
+  {
+    "Region": "UI & Personalization",
+    "Function": "HideRecommendedSection",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Entfernen Sie den Abschnitt Empfohlen im Startmenü."
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Entfernen Sie nicht den Abschnitt Empfohlen im Startmenü (Standardeinstellung)."
       }
     }
   },

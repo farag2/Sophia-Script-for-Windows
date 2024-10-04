@@ -797,6 +797,20 @@
     }
   },
   {
+    "Region": "UI & Personalization",
+    "Function": "HideRecommendedSection",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable",
+        "ToolTip": "Do not expand to open folder on navigation pane (default value)."
+      },
+      "One": {
+        "Tag": "Disable",
+        "ToolTip": "Do not remove Recommended section in Start Menu (default value)."
+      }
+    }
+  },
+  {
     "Region": "OneDrive",
     "Function": "OneDrive",
     "Arg": {

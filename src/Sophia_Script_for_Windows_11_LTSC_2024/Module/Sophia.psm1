@@ -3125,70 +3125,6 @@ function TaskbarAlignment
 
 <#
 	.SYNOPSIS
-	The widgets icon on the taskbar
-
-	.PARAMETER Hide
-	Hide the widgets icon on the taskbar
-
-	.PARAMETER Show
-	Show the widgets icon on the taskbar
-
-	.EXAMPLE
-	TaskbarWidgets -Hide
-
-	.EXAMPLE
-	TaskbarWidgets -Show
-
-	.NOTES
-	Current user
-#>
-function TaskbarWidgets
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Hide"
-		)]
-		[switch]
-		$Hide,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Show"
-		)]
-		[switch]
-		$Show
-	)
-
-	if (-not (Get-AppxPackage -Name MicrosoftWindows.Client.WebExperience))
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.Skipped -Verbose
-
-		return
-	}
-
-	# We cannot set a value to TaskbarDa, having called any of APIs, except of copying powershell.exe (or any other tricks) with a different name, due to a UCPD driver tracks all executables to block the access to the registry
-	Copy-Item -Path "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -Destination "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Force
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Hide"
-		{
-			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command {New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name TaskbarDa -PropertyType DWord -Value 0 -Force}
-		}
-		"Show"
-		{
-			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command {New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name TaskbarDa -PropertyType DWord -Value 1 -Force}
-		}
-	}
-
-	Remove-Item -Path "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Force
-}
-
-<#
-	.SYNOPSIS
 	Search on the taskbar
 
 	.PARAMETER Hide
@@ -4637,17 +4573,17 @@ function NavigationPaneExpand
 	.SYNOPSIS
 	Recommended section in Start Menu
 
-	.PARAMETER Disable
+	.PARAMETER Enable
 	Remove Recommended section in Start Menu
 
-	.PARAMETER Enable
+	.PARAMETER Disable
 	Do not remove Recommended section in Start Menu (default value)
 
 	.EXAMPLE
-	HideRecommendedSection -Disable
+	HideRecommendedSection -Enable
 
 	.EXAMPLE
-	HideRecommendedSection -Enable
+	HideRecommendedSection -Disable
 
 	.NOTES
 	Current user
@@ -4658,22 +4594,22 @@ function HideRecommendedSection
 	(
 		[Parameter(
 			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable,
-
-		[Parameter(
-			Mandatory = $true,
 			ParameterSetName = "Enable"
 		)]
 		[switch]
-		$Enable
+		$Enable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable
 	)
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
-		"Disable"
+		"Enable"
 		{
 			if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
 			{
@@ -4683,7 +4619,7 @@ function HideRecommendedSection
 
 			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecommendedSection -Type DWORD -Value 1
 		}
-		"Enable"
+		"Disable"
 		{
 			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecommendedSection -Force -ErrorAction Ignore
 			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecommendedSection -Type CLEAR
@@ -12817,71 +12753,6 @@ function CABInstallContext
 
 <#
 	.SYNOPSIS
-	The "Edit with Clipchamp" item in the media files context menu
-
-	.PARAMETER Hide
-	Hide the "Edit with Clipchamp" item from the media files context menu
-
-	.PARAMETER Show
-	Show the "Edit with Clipchamp" item in the media files context menu
-
-	.EXAMPLE
-	EditWithClipchampContext -Hide
-
-	.EXAMPLE
-	EditWithClipchampContext -Show
-
-	.NOTES
-	Current user
-#>
-function EditWithClipchampContext
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Hide"
-		)]
-		[switch]
-		$Hide,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Show"
-		)]
-		[switch]
-		$Show
-	)
-
-	if (-not (Get-AppxPackage -Name Clipchamp.Clipchamp))
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.Skipped -Verbose
-
-		return
-	}
-
-	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{8AB635F8-9A67-4698-AB99-784AD929F3B4}" -Force -ErrorAction Ignore
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Hide"
-		{
-			if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"))
-			{
-				New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Force
-			}
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{8AB635F8-9A67-4698-AB99-784AD929F3B4}" -PropertyType String -Value "" -Force
-		}
-		"Show"
-		{
-			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{8AB635F8-9A67-4698-AB99-784AD929F3B4}" -Force -ErrorAction Ignore
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
 	The "Print" item in the .bat and .cmd context menu
 
 	.PARAMETER Hide
@@ -13038,174 +12909,6 @@ function MultipleInvokeContext
 			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name MultipleInvokePromptMinimum -Force -ErrorAction Ignore
 		}
 	}
-}
-
-<#
-	.SYNOPSIS
-	The "Open in Windows Terminal" item in the folders context menu
-
-	.PARAMETER Hide
-	Hide the "Open in Windows Terminal" item in the folders context menu
-
-	.PARAMETER Show
-	Show the "Open in Windows Terminal" item in the folders context menu
-
-	.EXAMPLE
-	OpenWindowsTerminalContext -Show
-
-	.EXAMPLE
-	OpenWindowsTerminalContext -Hide
-
-	.NOTES
-	Current user
-#>
-function OpenWindowsTerminalContext
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Show"
-		)]
-		[switch]
-		$Show,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Hide"
-		)]
-		[switch]
-		$Hide
-	)
-
-	if (-not (Get-AppxPackage -Name Microsoft.WindowsTerminal))
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.Skipped -Verbose
-
-		return
-	}
-
-	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{9F156763-7844-4DC4-B2B1-901F640F5155}" -Force -ErrorAction Ignore
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Show"
-		{
-			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{9F156763-7844-4DC4-B2B1-901F640F5155}" -Force -ErrorAction Ignore
-		}
-		"Hide"
-		{
-			if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"))
-			{
-				New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Force
-			}
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{9F156763-7844-4DC4-B2B1-901F640F5155}" -PropertyType String -Value "" -Force
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	Open Windows Terminal in context menu as administrator
-
-	.PARAMETER Enable
-	Open Windows Terminal in context menu as administrator by default
-
-	.PARAMETER Disable
-	Do not open Windows Terminal in context menu as administrator by default
-
-	.EXAMPLE
-	OpenWindowsTerminalAdminContext -Enable
-
-	.EXAMPLE
-	OpenWindowsTerminalAdminContext -Disable
-
-	.NOTES
-	Current user
-#>
-function OpenWindowsTerminalAdminContext
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable
-	)
-
-	if (-not (Get-AppxPackage -Name Microsoft.WindowsTerminal))
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.Skipped -Verbose
-
-		return
-	}
-
-	if (-not (Test-Path -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"))
-	{
-		Start-Process -FilePath wt -PassThru
-		Start-Sleep -Seconds 2
-		Stop-Process -Name WindowsTerminal -Force -PassThru
-	}
-
-	try
-	{
-		$Terminal = Get-Content -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json" -Encoding UTF8 -Force | ConvertFrom-Json
-	}
-	catch [System.ArgumentException]
-	{
-		Write-Warning -Message (($Global:Error.Exception.Message | Select-Object -First 1))
-		Write-Error -Message (($Global:Error.Exception.Message | Select-Object -First 1)) -ErrorAction SilentlyContinue
-
-		Invoke-Item -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState"
-
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.Skipped -Verbose
-
-		return
-	}
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Enable"
-		{
-			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{9F156763-7844-4DC4-B2B1-901F640F5155}" -ErrorAction Ignore
-			Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{9F156763-7844-4DC4-B2B1-901F640F5155}" -ErrorAction Ignore
-
-			if ($Terminal.profiles.defaults.elevate)
-			{
-				$Terminal.profiles.defaults.elevate = $true
-			}
-			else
-			{
-				$Terminal.profiles.defaults | Add-Member -MemberType NoteProperty -Name elevate -Value $true -Force
-			}
-		}
-		"Disable"
-		{
-			if ($Terminal.profiles.defaults.elevate)
-			{
-				$Terminal.profiles.defaults.elevate = $false
-			}
-			else
-			{
-				$Terminal.profiles.defaults | Add-Member -MemberType NoteProperty -Name elevate -Value $false -Force
-			}
-		}
-	}
-
-	# Save in UTF-8 with BOM despite JSON must not has the BOM: https://datatracker.ietf.org/doc/html/rfc8259#section-8.1. Unless Terminal profile names which contains non-Latin characters will have "?" instead of titles
-	ConvertTo-Json -InputObject $Terminal -Depth 4 | Set-Content -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json" -Encoding UTF8 -Force
 }
 #endregion Context menu
 

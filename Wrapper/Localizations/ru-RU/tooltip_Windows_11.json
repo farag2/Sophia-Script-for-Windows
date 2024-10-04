@@ -797,6 +797,20 @@
     }
   },
   {
+    "Region": "UI & Personalization",
+    "Function": "NavigationPaneExpand",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Удалить раздел \"Рекомендуем\" в меню \"Пуск\"."
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Не удалять раздел \"Рекомендуем\" в меню \"Пуск\" (значение по умолчанию)."
+      }
+    }
+  },
+  {
     "Region": "OneDrive",
     "Function": "OneDrive",
     "Arg": {

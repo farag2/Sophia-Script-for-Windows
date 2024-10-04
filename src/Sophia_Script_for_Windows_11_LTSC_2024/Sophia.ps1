@@ -1,6 +1,6 @@
 ﻿<#
 	.SYNOPSIS
-	Default preset file for "Sophia Script for Windows 11 LTSC 202024""
+	Default preset file for "Sophia Script for Windows 11 LTSC 2024"
 
 	Version: v6.6.9
 	Date: 16.08.2024
@@ -92,7 +92,7 @@ catch [System.InvalidOperationException]
 	Запустить скрипт, указав в качестве аргумента функции
 
 	.EXAMPLE
-	.\Sophia.ps1 -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal"
+	.\Sophia.ps1 -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
 
 	.NOTES
 	Use commas to separate funtions
@@ -383,14 +383,6 @@ TaskbarAlignment -Center
 # Установить выравнивание панели задач по левому краю
 # TaskbarAlignment -Left
 
-# Hide the widgets icon on the taskbar
-# Скрыть кнопку "Мини-приложения" с панели задач
-TaskbarWidgets -Hide
-
-# Show the widgets icon on the taskbar (default value)
-# Отобразить кнопку "Мини-приложения" на панели задач (значение по умолчанию)
-# TaskbarWidgets -Show
-
 # Hide the search on the taskbar
 # Скрыть поле или значок поиска на панели задач
 TaskbarSearch -Hide
@@ -573,11 +565,11 @@ NavigationPaneExpand -Disable
 
 # Remove Recommended section in Start Menu
 # Удалить раздел "Рекомендуем" в меню "Пуск"
-# HideRecommendedSection -Enable
+HideRecommendedSection -Enable
 
 # Do not remove Recommended section in Start Menu (default value)
 # Не удалять раздел "Рекомендуем" в меню "Пуск" (значение по умолчанию)
-HideRecommendedSection -Disable
+# HideRecommendedSection -Disable
 #endregion UI & Personalization
 
 #region System
@@ -1240,14 +1232,6 @@ CABInstallContext -Show
 # Скрыть пункт "Установить" из контекстного меню .cab архивов (значение по умолчанию)
 # CABInstallContext -Hide
 
-# Hide the "Edit with Clipchamp" item from the media files context menu
-# Скрыть пункт "Редактировать в Climpchamp" из контекстного меню
-EditWithClipchampContext -Hide
-
-# Show the "Edit with Clipchamp" item in the media files context menu (default value)
-# Отобразить пункт "Редактировать в Climpchamp" в контекстном меню (значение по умолчанию)
-# EditWithClipchampContext -Show
-
 # Hide the "Print" item from the .bat and .cmd context menu
 # Скрыть пункт "Печать" из контекстного меню .bat и .cmd файлов
 PrintCMDContext -Hide
@@ -1271,22 +1255,6 @@ MultipleInvokeContext -Enable
 # Disable the "Open", "Print", and "Edit" context menu items for more than 15 items selected (default value)
 # Отключить элементы контекстного меню "Открыть", "Изменить" и "Печать" при выделении более 15 элементов (значение по умолчанию)
 # MultipleInvokeContext -Disable
-
-# Show the "Open in Windows Terminal" item in the folders context menu (default value)
-# Отобразить пункт "Открыть в Терминале Windows" в контекстном меню папок (значение по умолчанию)
-OpenWindowsTerminalContext -Show
-
-# Hide the "Open in Windows Terminal" item in the folders context menu
-# Скрыть пункт "Открыть в Терминале Windows" в контекстном меню папок
-# OpenWindowsTerminalContext -Hide
-
-# Open Windows Terminal in context menu as administrator by default
-# Открывать Windows Terminal из контекстного меню от имени администратора по умолчанию
-OpenWindowsTerminalAdminContext -Enable
-
-# Do not open Windows Terminal in context menu as administrator by default (default value)
-# Не открывать Windows Terminal из контекстного меню от имени администратора по умолчанию (значение по умолчанию)
-# OpenWindowsTerminalAdminContext -Disable
 #endregion Context menu
 
 #region Update Policies
