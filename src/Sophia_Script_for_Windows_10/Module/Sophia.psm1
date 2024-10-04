@@ -6323,9 +6323,6 @@ function WindowsCapabilities
 		# Steps Recorder
 		"App.StepsRecorder*",
 
-		# Microsoft Quick Assist
-		"App.Support.QuickAssist*",
-
 		# Microsoft Paint
 		"Microsoft.Windows.MSPaint*",
 

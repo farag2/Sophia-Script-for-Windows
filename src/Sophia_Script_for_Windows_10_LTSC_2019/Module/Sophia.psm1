@@ -10,9 +10,7 @@
 	Thanks to all https://forum.ru-board.com members involved
 
 	.NOTES
-	Supported Windows 10 version
-	Version: 1809
-	Edition: Enterprise LTSC
+	Supported Windows 10 Enterprise LTSC 2019
 	Architecture: x64
 
 	.LINK GitHub
