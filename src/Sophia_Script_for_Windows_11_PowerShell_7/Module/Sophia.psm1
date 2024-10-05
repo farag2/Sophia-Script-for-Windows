@@ -902,8 +902,12 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			$Menu += [WinAPI.GetStrings]::GetString(16956)
 		}
 
-		# https://github.com/microsoft/terminal/issues/14992
-		[System.Console]::BufferHeight += $Menu.Count
+		# Check if current terminal is Windows Terminal
+		if ($env:WT_SESSION)
+		{
+			# https://github.com/microsoft/terminal/issues/14992
+			[System.Console]::BufferHeight += $Menu.Count
+		}
 		$minY = [Console]::CursorTop
 		$y = [Math]::Max([Math]::Min($Default, $Menu.Count), 0)
 
