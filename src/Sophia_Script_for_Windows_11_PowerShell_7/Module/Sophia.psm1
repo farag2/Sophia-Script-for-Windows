@@ -11236,7 +11236,7 @@ function XboxGameTips
 		$Enable
 	)
 
-	if (-not ((Get-AppxPackage -Name Microsoft.XboxGamingOverlay) -or(Get-AppxPackage -Name Microsoft.GamingApp)))
+	if (-not ((Get-AppxPackage -Name Microsoft.XboxGamingOverlay) -or (Get-AppxPackage -Name Microsoft.GamingApp)))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message $Localization.Skipped -Verbose
@@ -11361,18 +11361,16 @@ function GPUScheduling
 	{
 		"Enable"
 		{
-			if (Get-CimInstance -ClassName CIM_VideoController | Where-Object -FilterScript {($_.AdapterDACType -ne "Internal") -and ($null -ne $_.AdapterDACType)})
+			# Determining whether PC has an external graphics card
+			$AdapterDACType = Get-CimInstance -ClassName CIM_VideoController | Where-Object -FilterScript {($_.AdapterDACType -ne "Internal") -and ($null -ne $_.AdapterDACType)}
+			# Determining whether an OS is not installed on a virtual machine
+			$ComputerSystemModel = (Get-CimInstance -ClassName CIM_ComputerSystem).Model -notmatch "Virtual"
+			# Checking whether a WDDM verion is 2.7 or higher
+			$WddmVersion_Min = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\FeatureSetUsage", "WddmVersion_Min", $null)
+
+			if ($AdapterDACType -and ($ComputerSystemModel -notmatch "Virtual") -and ($WddmVersion_Min -ge 2700))
 			{
-				# Determining whether an OS is not installed on a virtual machine
-				if ((Get-CimInstance -ClassName CIM_ComputerSystem).Model -notmatch "Virtual")
-				{
-					# Checking whether a WDDM verion is 2.7 or higher
-					$WddmVersion_Min = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\FeatureSetUsage", "WddmVersion_Min", $null)
-					if ($WddmVersion_Min -ge 2700)
-					{
-						New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers -Name HwSchMode -PropertyType DWord -Value 2 -Force
-					}
-				}
+				New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers -Name HwSchMode -PropertyType DWord -Value 2 -Force
 			}
 		}
 		"Disable"
@@ -11608,6 +11606,11 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 			}
 			Register-ScheduledTask @Parameters -Force
 
+			# Set author for scheduled task
+			$Task = Get-ScheduledTask -TaskName "Windows Cleanup"
+			$Task.Author = "Team Sophia"
+			$Task | Set-ScheduledTask
+
 			# We have to call PowerShell script via another VBS script silently because VBS has appropriate feature to suppress console appearing (none of other workarounds work)
 			# powershell.exe process wakes up system anyway even from turned on Focus Assist mode (not a notification toast)
 			# https://github.com/DCourtel/Windows_10_Focus_Assist/blob/master/FocusAssistLibrary/FocusAssistLib.cs
@@ -11761,6 +11764,11 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 				Description = $Localization.CleanupNotificationTaskDescription
 			}
 			Register-ScheduledTask @Parameters -Force
+
+			# Set author for scheduled task
+			$Task = Get-ScheduledTask -TaskName "Windows Cleanup Notification"
+			$Task.Author = "Team Sophia"
+			$Task | Set-ScheduledTask
 
 			# Start Task Scheduler in the end if any scheduled task was created
 			$Script:ScheduledTasks = $true
@@ -12086,6 +12094,11 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 			}
 			Register-ScheduledTask @Parameters -Force
 
+			# Set author for scheduled task
+			$Task = Get-ScheduledTask -TaskName "SoftwareDistribution"
+			$Task.Author = "Team Sophia"
+			$Task | Set-ScheduledTask
+
 			$Script:ScheduledTasks = $true
 		}
 		"Delete"
@@ -12409,6 +12422,11 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 				Description = $Localization.FolderTaskDescription -f "%TEMP%"
 			}
 			Register-ScheduledTask @Parameters -Force
+
+			# Set author for scheduled task
+			$Task = Get-ScheduledTask -TaskName "Temp"
+			$Task.Author = "Team Sophia"
+			$Task | Set-ScheduledTask
 
 			$Script:ScheduledTasks = $true
 		}

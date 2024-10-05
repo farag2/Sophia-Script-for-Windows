@@ -13,7 +13,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": ""
+    "WindowsDefault": "",
+    "LTSC2024": "true"
   },
   {
     "Region": "Protection",
@@ -26,7 +27,8 @@
       }
     },
     "Preset": "",
-    "WindowsDefault": ""
+    "WindowsDefault": "",
+    "LTSC2024": "true"
   },
   {
     "Region": "Protection",
@@ -39,7 +41,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "Zero"
+    "WindowsDefault": "Zero",
+    "LTSC2024": "true"
   },
   {
     "Region": "Privacy & Telemetry",
@@ -55,7 +58,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Privacy & Telemetry",
@@ -71,7 +75,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Privacy & Telemetry",
@@ -87,7 +92,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Privacy & Telemetry",
@@ -103,7 +109,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Privacy & Telemetry",
@@ -119,7 +126,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Privacy & Telemetry",
@@ -135,7 +143,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Privacy & Telemetry",
@@ -151,7 +160,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Privacy & Telemetry",
@@ -167,7 +177,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Privacy & Telemetry",
@@ -183,7 +194,8 @@
       }
     },
     "Preset": "One",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Privacy & Telemetry",
@@ -199,7 +211,8 @@
       }
     },
     "Preset": "One",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Privacy & Telemetry",
@@ -215,7 +228,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Privacy & Telemetry",
@@ -231,7 +245,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Privacy & Telemetry",
@@ -247,7 +262,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Privacy & Telemetry",
@@ -263,7 +279,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Privacy & Telemetry",
@@ -279,7 +296,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Privacy & Telemetry",
@@ -295,7 +313,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Privacy & Telemetry",
@@ -311,7 +330,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -327,7 +347,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -343,7 +364,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -359,7 +381,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -375,7 +398,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -391,7 +415,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -407,7 +432,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -423,7 +449,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -439,7 +466,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -455,7 +483,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -471,7 +500,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -487,7 +517,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -503,7 +534,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -519,7 +551,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -535,7 +568,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -557,7 +591,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "Three"
+    "WindowsDefault": "Three",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -573,7 +608,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -589,7 +625,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -605,7 +642,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -621,7 +659,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -637,7 +676,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -656,7 +696,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "Zero"
+    "WindowsDefault": "Zero",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -672,7 +713,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -691,7 +733,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "Two"
+    "WindowsDefault": "Two",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -707,7 +750,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -723,7 +767,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -739,7 +784,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -755,7 +801,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -771,7 +818,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -787,7 +835,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -803,7 +852,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -819,7 +869,8 @@
       }
     },
     "Preset": "One",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -838,7 +889,8 @@
       }
     },
     "Preset": "One",
-    "WindowsDefault": "Zero"
+    "WindowsDefault": "Zero",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -854,7 +906,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -870,7 +923,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "Zero"
+    "WindowsDefault": "Zero",
+    "LTSC2024": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -886,7 +940,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "Zero"
+    "WindowsDefault": "Zero",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -902,7 +957,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": ""
+    "WindowsDefault": "",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -918,7 +974,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": ""
+    "WindowsDefault": "",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -934,7 +991,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "Zero"
+    "WindowsDefault": "Zero",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -950,7 +1008,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -966,7 +1025,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -982,7 +1042,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -998,7 +1059,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1014,7 +1076,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1030,7 +1093,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1046,7 +1110,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1062,7 +1127,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1078,7 +1144,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1094,7 +1161,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1110,7 +1178,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1126,7 +1195,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1142,7 +1212,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1158,7 +1229,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "Zero"
+    "WindowsDefault": "Zero",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1174,7 +1246,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1190,7 +1263,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1209,7 +1283,8 @@
       }
     },
     "Preset": "One",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1225,7 +1300,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1244,7 +1320,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "Two"
+    "WindowsDefault": "Two",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1260,7 +1337,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1276,7 +1354,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1292,7 +1371,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1308,7 +1388,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1324,7 +1405,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1340,7 +1422,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1356,7 +1439,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1372,7 +1456,8 @@
       }
     },
     "Preset": "",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1388,7 +1473,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1404,7 +1490,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1420,7 +1507,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1436,7 +1524,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1452,7 +1541,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1465,7 +1555,8 @@
       }
     },
     "Preset": "",
-    "WindowsDefault": ""
+    "WindowsDefault": "",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1478,7 +1569,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": ""
+    "WindowsDefault": "",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1491,7 +1583,8 @@
       }
     },
     "Preset": "",
-    "WindowsDefault": ""
+    "WindowsDefault": "",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1504,7 +1597,8 @@
       }
     },
     "Preset": "",
-    "WindowsDefault": ""
+    "WindowsDefault": "",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1520,7 +1614,8 @@
       }
     },
     "Preset": "",
-    "WindowsDefault": ""
+    "WindowsDefault": "",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1536,7 +1631,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1552,7 +1648,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1568,7 +1665,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "System",
@@ -1584,7 +1682,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "WSL",
@@ -1597,7 +1696,8 @@
       }
     },
     "Preset": "",
-    "WindowsDefault": ""
+    "WindowsDefault": "",
+    "LTSC2024": "true"
   },
   {
     "Region": "Start menu",
@@ -1616,7 +1716,8 @@
       }
     },
     "Preset": "One",
-    "WindowsDefault": "Zero"
+    "WindowsDefault": "Zero",
+    "LTSC2024": "true"
   },
   {
     "Region": "UWP apps",
@@ -1629,7 +1730,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": ""
+    "WindowsDefault": "",
+    "LTSC2024": "true"
   },
   {
     "Region": "UWP apps",
@@ -1642,7 +1744,8 @@
       }
     },
     "Preset": "",
-    "WindowsDefault": ""
+    "WindowsDefault": "",
+    "LTSC2024": "true"
   },
   {
     "Region": "Gaming",
@@ -1655,7 +1758,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": ""
+    "WindowsDefault": "",
+    "LTSC2024": "true"
   },
   {
     "Region": "Gaming",
@@ -1671,7 +1775,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Scheduled tasks",
@@ -1687,7 +1792,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": ""
+    "WindowsDefault": "",
+    "LTSC2024": "true"
   },
   {
     "Region": "Scheduled tasks",
@@ -1703,7 +1809,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": ""
+    "WindowsDefault": "",
+    "LTSC2024": "true"
   },
   {
     "Region": "Scheduled tasks",
@@ -1719,7 +1826,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": ""
+    "WindowsDefault": "",
+    "LTSC2024": "true"
   },
   {
     "Region": "Microsoft Defender & Security",
@@ -1735,7 +1843,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Microsoft Defender & Security",
@@ -1751,7 +1860,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Microsoft Defender & Security",
@@ -1767,7 +1877,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Microsoft Defender & Security",
@@ -1780,7 +1891,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": ""
+    "WindowsDefault": "",
+    "LTSC2024": "true"
   },
   {
     "Region": "Microsoft Defender & Security",
@@ -1793,7 +1905,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": ""
+    "WindowsDefault": "",
+    "LTSC2024": "true"
   },
   {
     "Region": "Microsoft Defender & Security",
@@ -1809,7 +1922,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Microsoft Defender & Security",
@@ -1825,7 +1939,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Microsoft Defender & Security",
@@ -1841,7 +1956,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Microsoft Defender & Security",
@@ -1857,7 +1973,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Microsoft Defender & Security",
@@ -1873,7 +1990,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Microsoft Defender & Security",
@@ -1889,7 +2007,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Microsoft Defender & Security",
@@ -1905,7 +2024,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Microsoft Defender & Security",
@@ -1921,7 +2041,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Microsoft Defender & Security",
@@ -1937,7 +2058,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Context menu",
@@ -1953,7 +2075,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Context menu",
@@ -1969,7 +2092,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Context menu",
@@ -1985,7 +2109,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Context menu",
@@ -2001,7 +2126,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Context menu",
@@ -2017,7 +2143,8 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2024": "true"
   },
   {
     "Region": "Update Policies",

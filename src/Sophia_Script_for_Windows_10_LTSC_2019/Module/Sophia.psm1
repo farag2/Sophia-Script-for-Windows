@@ -9214,6 +9214,11 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 			}
 			Register-ScheduledTask @Parameters -Force
 
+			# Set author for scheduled task
+			$Task = Get-ScheduledTask -TaskName "Windows Cleanup"
+			$Task.Author = "Team Sophia"
+			$Task | Set-ScheduledTask
+
 			# We have to call PowerShell script via another VBS script silently because VBS has appropriate feature to suppress console appearing (none of other workarounds work)
 			# powershell.exe process wakes up system anyway even from turned on Focus Assist mode (not a notification toast)
 			# https://github.com/DCourtel/Windows_10_Focus_Assist/blob/master/FocusAssistLibrary/FocusAssistLib.cs
@@ -9367,6 +9372,11 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 				Description = $Localization.CleanupNotificationTaskDescription
 			}
 			Register-ScheduledTask @Parameters -Force
+
+			# Set author for scheduled task
+			$Task = Get-ScheduledTask -TaskName "Windows Cleanup Notification"
+			$Task.Author = "Team Sophia"
+			$Task | Set-ScheduledTask
 
 			# Start Task Scheduler in the end if any scheduled task was created
 			$Script:ScheduledTasks = $true
@@ -9692,6 +9702,11 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 			}
 			Register-ScheduledTask @Parameters -Force
 
+			# Set author for scheduled task
+			$Task = Get-ScheduledTask -TaskName "SoftwareDistribution"
+			$Task.Author = "Team Sophia"
+			$Task | Set-ScheduledTask
+
 			$Script:ScheduledTasks = $true
 		}
 		"Delete"
@@ -10015,6 +10030,11 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 				Description = $Localization.FolderTaskDescription -f "%TEMP%"
 			}
 			Register-ScheduledTask @Parameters -Force
+
+			# Set author for scheduled task
+			$Task = Get-ScheduledTask -TaskName "Temp"
+			$Task.Author = "Team Sophia"
+			$Task | Set-ScheduledTask
 
 			$Script:ScheduledTasks = $true
 		}
