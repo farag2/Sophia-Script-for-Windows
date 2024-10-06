@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.19.0 | 6.7.0 — 16.08.2024
+
+* Added Windows 11 Enterprise LTSC 2024 support;
+* Added bypass for UCPD driver restriction in `Set-Association` function while associaing an app with .pdf extention and http/https protocols;
+  * Microsoft has blocked write access to UserChoice key for .pdf extention and http/https protocols with KB5034765 release.
+* Added bypass for UCPD driver restriction in `TaskbarWidgets` function for Windows 11;
+* Added bypass for UCPD driver restriction in `NewsInterests` function for Windows 10;
+* Small improvements for Scheduled tasks. You my re-create them if you wish by using `. .\Functions` approach.
+* Minor changes.
+
 ## 5.18.9 | 6.6.9 — 16.08.2024
 
 * Added function `DNS-over-HTTPS for IPv4` for Windows 10
