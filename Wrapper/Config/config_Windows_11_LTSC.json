@@ -2140,6 +2140,7 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": ""
+    "WindowsDefault": "",
+    "LTSC2024": "true"
   }
 ]
