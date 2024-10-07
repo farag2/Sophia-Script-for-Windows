@@ -8,6 +8,7 @@ Diff from vOldVersion
 [OldVersion...NewVersion](https://github.com/farag2/Sophia-Script-for-Windows/compare/OldVersion...NewVersion)
 
 
+
 ***
 
 [Sophia-Script-Windows-10-PowerShell-5-1]: https://github.com/farag2/Sophia-Script-for-Windows/releases/download/NewVersion/Sophia.Script.for.Windows.10.vSophia_Script_Windows_10_PowerShell_5_1.zip
