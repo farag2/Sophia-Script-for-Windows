@@ -580,7 +580,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	}
 
 	# Detect Windows build version
-	if ((Get-WindowsEdition -Online).Edition -notmatch "EnterpriseS")
+	if ((Get-WindowsEdition -Online).Edition -ne "EnterpriseS")
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message $Localization.UnsupportedOSBuild
@@ -1344,11 +1344,8 @@ function ErrorReporting
 	{
 		"Disable"
 		{
-			if ((Get-WindowsEdition -Online).Edition -notmatch "Core")
-			{
-				Get-ScheduledTask -TaskName QueueReporting -ErrorAction Ignore | Disable-ScheduledTask
-				New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\Windows Error Reporting" -Name Disabled -PropertyType DWord -Value 1 -Force
-			}
+			Get-ScheduledTask -TaskName QueueReporting -ErrorAction Ignore | Disable-ScheduledTask
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\Windows Error Reporting" -Name Disabled -PropertyType DWord -Value 1 -Force
 
 			Get-Service -Name WerSvc | Stop-Service -Force
 			Get-Service -Name WerSvc | Set-Service -StartupType Disabled
