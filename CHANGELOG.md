@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Microsoft has blocked write access to UserChoice key for .pdf extention and http/https protocols with KB5034765 release.
 * Added bypass for UCPD driver restriction in `TaskbarWidgets` function for Windows 11;
 * Added bypass for UCPD driver restriction in `NewsInterests` function for Windows 10;
-* Small improvements for Scheduled tasks. You my re-create them if you wish by using `. .\Functions` approach.
+* Small improvements for Scheduled tasks. You may re-create them if you wish within `. .\Functions`.
 * Minor changes.
 
 ## 5.18.9 | 6.6.9 — 16.08.2024
