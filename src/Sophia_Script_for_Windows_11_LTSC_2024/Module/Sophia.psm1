@@ -578,7 +578,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	}
 
 	# Detect Windows build version
-	if ((Get-WindowsEdition -Online).Edition -ne "EnterpriseS")
+	if ((Get-WindowsEdition -Online).Edition -notmatch "EnterpriseS")
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message $Localization.UnsupportedOSBuild
