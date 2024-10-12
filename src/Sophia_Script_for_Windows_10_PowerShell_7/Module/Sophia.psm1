@@ -238,14 +238,10 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		"WinterOS Tweaker"  = "$env:SystemRoot\WinterOS*"
 		# https://github.com/ThePCDuke/WinCry
 		WinCry              = "$env:SystemRoot\TempCleaner.exe"
-		# https://hone.gg
-		Hone                = "$env:LOCALAPPDATA\Programs\Hone\Hone.exe"
 		# https://www.youtube.com/watch?v=5NBqbUUB1Pk
 		WinClean             = "$env:ProgramFiles\WinClean Plus Apps"
 		# https://github.com/Atlas-OS/Atlas
 		AtlasOS              = "$env:SystemRoot\AtlasModules"
-		# https://www.gearupbooster.com
-		"GearUP Booster"     = "${env:ProgramFiles(x86)}\GearUPBooster"
 	}
 	foreach ($Tweaker in $Tweakers.Keys)
 	{
