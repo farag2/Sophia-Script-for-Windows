@@ -1302,25 +1302,6 @@
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
-    "Function": "IPv6Component",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable"
-      },
-      "One": {
-        "Tag": "Enable"
-      },
-      "Two": {
-        "Tag": "PreferIPv4overIPv6"
-      }
-    },
-    "Preset": "One",
-    "WindowsDefault": "One"
-  },
-  {
-    "Region": "System",
-    "Control": "cmb",
-    "Required": "false",
     "Function": "InputMethod",
     "Arg": {
       "Zero": {

@@ -5616,6 +5616,9 @@ function WindowsFeatures
 		# Microsoft XPS Document Writer
 		"Printing-XPSServices-Features",
 
+		# Recall
+		"Recall"
+
 		# Work Folders Client
 		"WorkFolders-Client"
 	)
@@ -6622,143 +6625,6 @@ function NetworkAdaptersSavePower
 			Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 			Start-Sleep -Seconds 2
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	Internet Protocol Version 6 (TCP/IPv6) component
-
-	.PARAMETER Disable
-	Disable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections if your ISP doesn't support it
-
-	.PARAMETER Enable
-	Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections if your ISP supports it
-
-	.PARAMETER PreferIPv4overIPv6
-	Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections if your ISP supports it. Prefer IPv4 over IPv6
-
-	.EXAMPLE
-	IPv6Component -Disable
-
-	.EXAMPLE
-	IPv6Component -Enable
-
-	.EXAMPLE
-	IPv6Component -PreferIPv4overIPv6
-
-	.NOTES
-	Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipify.org
-
-	.NOTES
-	Current user
-#>
-function IPv6Component
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "PreferIPv4overIPv6"
-		)]
-		[switch]
-		$PreferIPv4overIPv6
-	)
-
-	Write-Information -MessageData "" -InformationAction Continue
-	# Extract the localized "Please wait..." string from shell32.dll
-	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
-
-	try
-	{
-		# Check the internet connection
-		$Parameters = @{
-			Name        = "dns.msftncsi.com"
-			Server      = "1.1.1.1"
-			DnsOnly     = $true
-			ErrorAction = "Stop"
-		}
-		if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
-		{
-			return
-		}
-
-		try
-		{
-			# Check whether the https://ipify.org site is alive
-			$Parameters = @{
-				Uri              = "https://ipify.org"
-				Method           = "Head"
-				DisableKeepAlive = $true
-				UseBasicParsing  = $true
-			}
-			if (-not (Invoke-WebRequest @Parameters).StatusDescription)
-			{
-				return
-			}
-
-			# Check whether the ISP supports IPv6 protocol using https://ipify.org
-			$Parameters = @{
-				Uri             = "https://api64.ipify.org?format=json"
-				UseBasicParsing = $true
-				Verbose         = $true
-			}
-			$IPAddress = (Invoke-RestMethod @Parameters).ip
-		}
-		catch [System.Net.WebException]
-		{
-			Write-Warning -Message ($Localization.NoResponse -f "https://ipify.org")
-			Write-Error -Message ($Localization.NoResponse -f "https://ipify.org") -ErrorAction SilentlyContinue
-
-			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-		}
-	}
-	catch [System.ComponentModel.Win32Exception]
-	{
-		Write-Warning -Message $Localization.NoInternetConnection
-		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
-
-		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-	}
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Disable"
-		{
-			if ($IPAddress -notmatch ":")
-			{
-				Disable-NetAdapterBinding -Name * -ComponentID ms_tcpip6
-			}
-		}
-		"Enable"
-		{
-			if ($IPAddress -match ":")
-			{
-				Enable-NetAdapterBinding -Name * -ComponentID ms_tcpip6
-			}
-		}
-		"PreferIPv4overIPv6"
-		{
-			if ($IPVersion -match ":")
-			{
-				Enable-NetAdapterBinding -Name * -ComponentID ms_tcpip6
-				New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters -Name DisabledComponents -PropertyType DWord -Value 32 -Force
-			}
 		}
 	}
 }
@@ -10572,10 +10438,10 @@ function UninstallUWPApps
 		# Xbox Speech To Text Overlay
 		"Microsoft.XboxSpeechToTextOverlay",
 
-		# Xbox Game Bar
+		# Game Bar
 		"Microsoft.XboxGamingOverlay",
 
-		# Xbox Game Bar Plugin
+		# Game Bar Plugin
 		"Microsoft.XboxGameOverlay"
 	)
 
@@ -10587,6 +10453,10 @@ function UninstallUWPApps
 		# Intel Graphics Control Center
 		"AppUp.IntelGraphicsControlPanel",
 		"AppUp.IntelGraphicsExperience",
+
+		# ELAN Touchpad
+		"ELANMicroelectronicsCorpo.ELANTouchpadforThinkpad",
+		"ELANMicroelectronicsCorpo.ELANTrackPointforThinkpa",
 
 		# Microsoft Application Compatibility Enhancements
 		"Microsoft.ApplicationCompatibilityEnhancements",
@@ -10648,7 +10518,11 @@ function UninstallUWPApps
 		"NVIDIACorp.NVIDIAControlPanel",
 
 		# Realtek Audio Console
-		"RealtekSemiconductorCorp.RealtekAudioControl"
+		"RealtekSemiconductorCorp.RealtekAudioControl",
+
+		# Synaptics
+		"SynapticsIncorporated.SynapticsControlPanel",
+		"SynapticsIncorporated.24916F58D6E7"
 	)
 
 	#region Variables
@@ -10873,7 +10747,7 @@ function UninstallUWPApps
 
 		$Window.Close() | Out-Null
 
-		# If Xbox Game Bar is selected to uninstall stop its processes
+		# If Game Bar is selected to uninstall stop its processes
 		if ($PackagesToRemove -match "Microsoft.XboxGamingOverlay")
 		{
 			Get-Process -Name GameBar, GameBarFTServer -ErrorAction Ignore | Stop-Process -Force
@@ -11128,13 +11002,13 @@ function TeamsAutostart
 #region Gaming
 <#
 	.SYNOPSIS
-	Xbox Game Bar
+	Game Bar
 
 	.PARAMETER Disable
-	Disable Xbox Game Bar
+	Disable Game Bar
 
 	.PARAMETER Enable
-	Enable Xbox Game Bar
+	Enable Game Bar
 
 	.EXAMPLE
 	XboxGameBar -Disable
@@ -11143,7 +11017,7 @@ function TeamsAutostart
 	XboxGameBar -Enable
 
 	.NOTES
-	To prevent popping up the "You'll need a new app to open this ms-gamingoverlay" warning, you need to disable the Xbox Game Bar app, even if you uninstalled it before
+	To prevent popping up the "You'll need a new app to open this ms-gamingoverlay" warning, you need to disable the Game Bar app, even if you uninstalled it before
 
 	.NOTES
 	Current user
@@ -11184,13 +11058,13 @@ function XboxGameBar
 
 <#
 	.SYNOPSIS
-	Xbox Game Bar tips
+	Game Bar tips
 
 	.PARAMETER Disable
-	Disable Xbox Game Bar tips
+	Disable Game Bar tips
 
 	.PARAMETER Enable
-	Enable Xbox Game Bar tips
+	Enable Game Bar tips
 
 	.EXAMPLE
 	XboxGameTips -Disable
@@ -11220,7 +11094,7 @@ function XboxGameTips
 		$Enable
 	)
 
-	if (-not ((Get-AppxPackage -Name Microsoft.XboxGamingOverlay) -or (Get-AppxPackage -Name Microsoft.GamingApp)))
+	if (-not (Get-AppxPackage -Name Microsoft.GamingApp))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message $Localization.Skipped -Verbose
@@ -13550,6 +13424,71 @@ function EditWithClipchampContext
 		"Show"
 		{
 			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{8AB635F8-9A67-4698-AB99-784AD929F3B4}" -Force -ErrorAction Ignore
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	The "Edit with Photos" item in the media files context menu
+
+	.PARAMETER Hide
+	Hide the "Edit with Photos" item from the media files context menu
+
+	.PARAMETER Show
+	Show the "Edit with Photos" item in the media files context menu
+
+	.EXAMPLE
+	EditWithPhotosContext -Hide
+
+	.EXAMPLE
+	EditWithPhotosContext -Show
+
+	.NOTES
+	Current user
+#>
+function EditWithPhotosContext
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Hide"
+		)]
+		[switch]
+		$Hide,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Show"
+		)]
+		[switch]
+		$Show
+	)
+
+	if (-not (Get-AppxPackage -Name Microsoft.Windows.Photos))
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message $Localization.Skipped -Verbose
+
+		return
+	}
+
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{BFE0E2A4-C70C-4AD7-AC3D-10D1ECEBB5B4}" -Force -ErrorAction Ignore
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Hide"
+		{
+			if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"))
+			{
+				New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Force
+			}
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{BFE0E2A4-C70C-4AD7-AC3D-10D1ECEBB5B4}" -PropertyType String -Value "" -Force
+		}
+		"Show"
+		{
+			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{BFE0E2A4-C70C-4AD7-AC3D-10D1ECEBB5B4}" -Force -ErrorAction Ignore
 		}
 	}
 }

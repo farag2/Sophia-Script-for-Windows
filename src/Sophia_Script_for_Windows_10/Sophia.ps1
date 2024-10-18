@@ -72,7 +72,7 @@ Clear-Host
 $Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.19.0 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2024"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
-Import-LocalizedData -BindingVariable Global:Localization -BaseDirectory $PSScriptRoot\Localizations -FileName Sophia
+Import-LocalizedData -BindingVariable Global:Localization -UICulture $PSUICulture -BaseDirectory $PSScriptRoot\Localizations -FileName Sophia
 
 # Check whether script is not running via PowerShell (x86)
 try
@@ -773,33 +773,6 @@ NetworkAdaptersSavePower -Disable
 # Allow the computer to turn off the network adapters to save power (default value)
 # Разрешить отключение всех сетевых адаптеров для экономии энергии (значение по умолчанию)
 # NetworkAdaptersSavePower -Enable
-
-<#
-	Disable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections
-	Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipify.org
-
-	Выключить IP версии 6 (TCP/IPv6)
-	Перед выполнением функции будет проведена проверка: поддерживает ли ваш провайдер IPv6, используя ресурс https://ipify.org
-#>
-IPv6Component -Disable
-
-<#
-	Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections (default value)
-	Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipify.org
-
-	Включить IP версии 6 (TCP/IPv6) (значение по умолчанию)
-	Перед выполнением функции будет проведена проверка: поддерживает ли ваш провайдер IPv6, используя ресурс https://ipify.org
-#>
-# IPv6Component -Enable
-
-<#
-	Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections. Prefer IPv4 over IPv6
-	Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipify.org
-
-	Включить IP версии 6 (TCP/IPv6) и предпочитать. Предпочтение IPv4 перед IPv6
-	Перед выполнением функции будет проведена проверка: поддерживает ли ваш провайдер IPv6, используя ресурс https://ipify.org
-#>
-# IPv6Component -PreferIPv4overIPv6
 
 # Override for default input method: English
 # Переопределить метод ввода по умолчанию: английский

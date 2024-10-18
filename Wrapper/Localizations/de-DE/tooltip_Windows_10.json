@@ -1140,24 +1140,6 @@
   },
   {
     "Region": "System",
-    "Function": "IPv6Component",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Deaktiviert die Komponente Internet Protocol Version 6 (TCP/IPv6) für alle Netzwerkverbindungen. Bevor die Funktion aufgerufen wird, wird geprüft, ob Ihr ISP das IPv6-Protokoll unterstützt. https://ipify.org."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Aktiviert die Komponente Internet Protocol Version 6 (TCP/IPv6) für alle Netzwerkverbindungen (Standardeinstellung). Bevor die Funktion aufgerufen wird, wird geprüft, ob Ihr ISP das IPv6-Protokoll unterstützt. https://ipify.org."
-      },
-      "Two": {
-        "Tag": "PreferIPv4overIPv6",
-        "ToolTip": "Aktiviert die Komponente Internet Protocol Version 6 (TCP/IPv6) für alle Netzwerkverbindungen. IPv4 gegenüber IPv6 bevorzugen. Bevor die Funktion aufgerufen wird, wird geprüft, ob Ihr ISP das IPv6-Protokoll unterstützt. https://ipify.org"
-      }
-    }
-  },
-  {
-    "Region": "System",
     "Function": "InputMethod",
     "Arg": {
       "Zero": {

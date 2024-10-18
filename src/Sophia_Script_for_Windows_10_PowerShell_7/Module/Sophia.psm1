@@ -3670,13 +3670,13 @@ function NewsInterests
 public static extern int HashData(byte[] pbData, int cbData, byte[] piet, int outputLen);
 "@
 	}
-	if (-not ("WinAPI.GetStrings" -as [type]))
+	if (-not ("WinAPI.Signature" -as [type]))
 	{
 		Add-Type @Signature
 	}
 
-	# We cannot call any of APIs except copying reg.exe with a different name due to a UCPD driver tracks all executables to block the access to the registry
-	Copy-Item -Path "$env:SystemRoot\System32\reg.exe" -Destination "$env:SystemRoot\System32\reg_temp.exe" -Force
+	# We cannot set a value to EnShellFeedsTaskbarViewMode, having called any of APIs, except of copying powershell.exe (or any other tricks) with a different name, due to a UCPD driver tracks all executables to block the access to the registry
+	Copy-Item -Path "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -Destination "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Force
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
@@ -3694,10 +3694,7 @@ public static extern int HashData(byte[] pbData, int cbData, byte[] piet, int ou
 			# Get value to save in EnShellFeedsTaskbarViewMode key
 			$DWordData = [System.BitConverter]::ToUInt32($bytesOut,0)
 
-			# https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_parsing?view=powershell-7.4#the-stop-parsing-token
-			# We cannot put --% inside the command below as it breaks parsing of $DWordData variable
-			$EscapeParser = "--%"
-			& "$env:SystemRoot\System32\reg_temp.exe" $EscapeParser ADD HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds /v EnShellFeedsTaskbarViewMode /t REG_DWORD /d $DWordData /f
+			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command {New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds -Name EnShellFeedsTaskbarViewMode -PropertyType DWord -Value $DWordData -Force}
 		}
 		"Enable"
 		{
@@ -3713,14 +3710,11 @@ public static extern int HashData(byte[] pbData, int cbData, byte[] piet, int ou
 			# Get value to save in EnShellFeedsTaskbarViewMode key
 			$DWordData = [System.BitConverter]::ToUInt32($bytesOut,0)
 
-			# https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_parsing?view=powershell-7.4#the-stop-parsing-token
-			# We cannot put --% inside the command below as it breaks parsing of $DWordData variable
-			$EscapeParser = "--%"
-			& "$env:SystemRoot\System32\reg_temp.exe" $EscapeParser ADD HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds /v EnShellFeedsTaskbarViewMode /t REG_DWORD /d $DWordData /f
+			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command {New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds -Name EnShellFeedsTaskbarViewMode -PropertyType DWord -Value $DWordData -Force}
 		}
 	}
 
-	Remove-Item -Path "$env:SystemRoot\System32\reg_temp.exe" -Force
+	Remove-Item -Path "$env:SystemRoot\System32\powershell_temp.exe" -Force
 }
 
 <#
@@ -6846,143 +6840,6 @@ function NetworkAdaptersSavePower
 
 <#
 	.SYNOPSIS
-	Internet Protocol Version 6 (TCP/IPv6) component
-
-	.PARAMETER Disable
-	Disable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections if your ISP doesn't support it
-
-	.PARAMETER Enable
-	Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections if your ISP supports it
-
-	.PARAMETER PreferIPv4overIPv6
-	Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections if your ISP supports it. Prefer IPv4 over IPv6
-
-	.EXAMPLE
-	IPv6Component -Disable
-
-	.EXAMPLE
-	IPv6Component -Enable
-
-	.EXAMPLE
-	IPv6Component -PreferIPv4overIPv6
-
-	.NOTES
-	Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipify.org
-
-	.NOTES
-	Current user
-#>
-function IPv6Component
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "PreferIPv4overIPv6"
-		)]
-		[switch]
-		$PreferIPv4overIPv6
-	)
-
-	Write-Information -MessageData "" -InformationAction Continue
-	# Extract the localized "Please wait..." string from shell32.dll
-	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
-
-	try
-	{
-		# Check the internet connection
-		$Parameters = @{
-			Name        = "dns.msftncsi.com"
-			Server      = "1.1.1.1"
-			DnsOnly     = $true
-			ErrorAction = "Stop"
-		}
-		if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
-		{
-			return
-		}
-
-		try
-		{
-			# Check whether the https://ipify.org site is alive
-			$Parameters = @{
-				Uri              = "https://ipify.org"
-				Method           = "Head"
-				DisableKeepAlive = $true
-				UseBasicParsing  = $true
-			}
-			if (-not (Invoke-WebRequest @Parameters).StatusDescription)
-			{
-				return
-			}
-
-			# Check whether the ISP supports IPv6 protocol using https://ipify.org
-			$Parameters = @{
-				Uri             = "https://api64.ipify.org?format=json"
-				UseBasicParsing = $true
-				Verbose         = $true
-			}
-			$IPAddress = (Invoke-RestMethod @Parameters).ip
-		}
-		catch [System.Net.WebException]
-		{
-			Write-Warning -Message ($Localization.NoResponse -f "https://ipify.org")
-			Write-Error -Message ($Localization.NoResponse -f "https://ipify.org") -ErrorAction SilentlyContinue
-
-			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-		}
-	}
-	catch [System.ComponentModel.Win32Exception]
-	{
-		Write-Warning -Message $Localization.NoInternetConnection
-		Write-Error -Message $Localization.NoInternetConnection -ErrorAction SilentlyContinue
-
-		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-	}
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Disable"
-		{
-			if ($IPAddress -notmatch ":")
-			{
-				Disable-NetAdapterBinding -Name * -ComponentID ms_tcpip6
-			}
-		}
-		"Enable"
-		{
-			if ($IPAddress -match ":")
-			{
-				Enable-NetAdapterBinding -Name * -ComponentID ms_tcpip6
-			}
-		}
-		"PreferIPv4overIPv6"
-		{
-			if ($IPVersion -match ":")
-			{
-				Enable-NetAdapterBinding -Name * -ComponentID ms_tcpip6
-				New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters -Name DisabledComponents -PropertyType DWord -Value 32 -Force
-			}
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
 	Override for default input method
 
 	.PARAMETER English
@@ -9804,6 +9661,8 @@ public static void Refresh()
 	}
 
 	[WinAPI.Signature]::Refresh()
+
+	Remove-Item -Path "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Force
 }
 
 <#
@@ -11278,11 +11137,24 @@ function UninstallUWPApps
 		"AppUp.IntelGraphicsControlPanel",
 		"AppUp.IntelGraphicsExperience",
 
+		# ELAN Touchpad
+		"ELANMicroelectronicsCorpo.ELANTouchpadforThinkpad",
+		"ELANMicroelectronicsCorpo.ELANTrackPointforThinkpa",
+
+		# Microsoft Application Compatibility Enhancements
+		"Microsoft.ApplicationCompatibilityEnhancements",
+
+		# AVC Encoder Video Extension
+		"Microsoft.AVCEncoderVideoExtension",
+
 		# Microsoft Desktop App Installer
 		"Microsoft.DesktopAppInstaller",
 
 		# Store Experience Host
 		"Microsoft.StorePurchaseApp",
+
+		# Cross Device Experience Host
+		"MicrosoftWindows.CrossDevice",
 
 		# Notepad
 		"Microsoft.WindowsNotepad",
@@ -11329,7 +11201,11 @@ function UninstallUWPApps
 		"NVIDIACorp.NVIDIAControlPanel",
 
 		# Realtek Audio Console
-		"RealtekSemiconductorCorp.RealtekAudioControl"
+		"RealtekSemiconductorCorp.RealtekAudioControl",
+
+		# Synaptics
+		"SynapticsIncorporated.SynapticsControlPanel",
+		"SynapticsIncorporated.24916F58D6E7"
 	)
 
 	#region Variables
@@ -12071,7 +11947,7 @@ function XboxGameTips
 		$Enable
 	)
 
-	if (-not ((Get-AppxPackage -Name Microsoft.XboxGamingOverlay) -or (Get-AppxPackage -Name Microsoft.GamingApp)))
+	if (-not (Get-AppxPackage -Name Microsoft.GamingApp))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message $Localization.Skipped -Verbose

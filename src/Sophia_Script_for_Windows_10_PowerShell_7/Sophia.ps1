@@ -785,33 +785,6 @@ NetworkAdaptersSavePower -Disable
 # Разрешить отключение всех сетевых адаптеров для экономии энергии (значение по умолчанию)
 # NetworkAdaptersSavePower -Enable
 
-<#
-	Disable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections
-	Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipify.org
-
-	Выключить IP версии 6 (TCP/IPv6)
-	Перед выполнением функции будет проведена проверка: поддерживает ли ваш провайдер IPv6, используя ресурс https://ipify.org
-#>
-IPv6Component -Disable
-
-<#
-	Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections (default value)
-	Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipify.org
-
-	Включить IP версии 6 (TCP/IPv6) (значение по умолчанию)
-	Перед выполнением функции будет проведена проверка: поддерживает ли ваш провайдер IPv6, используя ресурс https://ipify.org
-#>
-# IPv6Component -Enable
-
-<#
-	Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections. Prefer IPv4 over IPv6
-	Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipify.org
-
-	Включить IP версии 6 (TCP/IPv6) и предпочитать. Предпочтение IPv4 перед IPv6
-	Перед выполнением функции будет проведена проверка: поддерживает ли ваш провайдер IPv6, используя ресурс https://ipify.org
-#>
-# IPv6Component -PreferIPv4overIPv6
-
 # Override for default input method: English
 # Переопределить метод ввода по умолчанию: английский
 InputMethod -English

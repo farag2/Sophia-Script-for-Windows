@@ -1140,24 +1140,6 @@
   },
   {
     "Region": "System",
-    "Function": "IPv6Component",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Disable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections. Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipify.org."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections (default value). Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipify.org."
-      },
-      "Two": {
-        "Tag": "PreferIPv4overIPv6",
-        "ToolTip": "Enable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections. Prefer IPv4 over IPv6. Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using https://ipify.org."
-      }
-    }
-  },
-  {
-    "Region": "System",
     "Function": "InputMethod",
     "Arg": {
       "Zero": {
