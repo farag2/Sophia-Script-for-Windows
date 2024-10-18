@@ -14,7 +14,7 @@
 #>
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-if ($Host.Version.Major -eq 5) ###
+if ($Host.Version.Major -eq 5)
 {
 	# Progress bar can significantly impact cmdlet performance
 	# https://github.com/PowerShell/PowerShell/issues/2138
@@ -126,29 +126,44 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 	}
 	{$_ -ge 22631}
 	{
-		if ($Host.Version.Major -eq 5)
+		if ((Get-WindowsEdition -Online).Edition -notmatch "EnterpriseS")
 		{
-			$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_5_1
-			$Parameters = @{
-				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.v$LatestRelease.zip"
-				OutFile         = "$DownloadsFolder\Sophia.Script.zip"
-				UseBasicParsing = $true
-				Verbose         = $true
-			}
+			if ($Host.Version.Major -eq 5)
+			{
+				$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_5_1
+				$Parameters = @{
+					Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.v$LatestRelease.zip"
+					OutFile         = "$DownloadsFolder\Sophia.Script.zip"
+					UseBasicParsing = $true
+					Verbose         = $true
+				}
 
-			$Version = "Windows_11_PowerShell_5.1"
+				$Version = "Windows_11_PowerShell_5.1"
+			}
+			else
+			{
+				$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_7
+				$Parameters = @{
+					Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.PowerShell.7.v$LatestRelease.zip"
+					OutFile         = "$DownloadsFolder\Sophia.Script.zip"
+					UseBasicParsing = $true
+					Verbose         = $true
+				}
+
+				$Version = "Windows_11_PowerShell_7"
+			}
 		}
 		else
 		{
-			$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_7
+			$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_LTSC2024
 			$Parameters = @{
-				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.PowerShell.7.v$LatestRelease.zip"
+				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.LTSC.2024.v$LatestRelease.zip"
 				OutFile         = "$DownloadsFolder\Sophia.Script.zip"
 				UseBasicParsing = $true
 				Verbose         = $true
 			}
 
-			$Version = "Windows_11_PowerShell_7"
+			$Version = "LTSC2024"
 		}
 	}
 }
@@ -194,6 +209,14 @@ switch ($Version)
 		if ((([System.Security.Principal.WindowsIdentity]::GetCurrent()).Owner -eq "S-1-5-32-544"))
 		{
 			Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_LTSC_2021_v$LatestRelease"
+		}
+	}
+	"LTSC2024"
+	{
+		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_LTSC_2024_v$LatestRelease"
+		if ((([System.Security.Principal.WindowsIdentity]::GetCurrent()).Owner -eq "S-1-5-32-544"))
+		{
+			Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_LTSC_2024_v$LatestRelease"
 		}
 	}
 	"Windows_10_PowerShell_5.1"
