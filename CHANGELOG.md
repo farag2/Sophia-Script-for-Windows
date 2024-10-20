@@ -5,7 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 5.19.0 | 6.7.0 — 16.08.2024
+## 5.19.1 | 6.7.1 — 20.10.2024
+
+* Removed `IPv6Component` function as an unnecessary one;
+* Formally added support for `Windows 11 IoT Enterprise LTSC 2024`
+  * Closes #591
+* Code refactoring;
+* Minor changes.
+
+## 5.19.0 | 6.7.0 — 07.10.2024
 
 * Added Windows 11 Enterprise LTSC 2024 support;
 * Added bypass for UCPD driver restriction in `Set-Association` function while associaing an app with .pdf extention and http/https protocols;
