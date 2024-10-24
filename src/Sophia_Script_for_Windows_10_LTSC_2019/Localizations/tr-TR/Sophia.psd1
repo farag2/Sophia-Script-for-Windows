@@ -53,7 +53,6 @@ FolderSelect                              = Klasör seç
 FilesWontBeMoved                          = Dosyalar taşınmayacak.
 Install                                   = Yükle
 NoData                                    = Görüntülenecek bir şey yok.
-NoInternetConnection                      = İnternet bağlantısı yok.
 RestartFunction                           = Lütfen "{0}" işlevini yeniden çalıştırın.
 NoResponse                                = {0} ile bağlantı kurulamadı.
 Restore                                   = Onar

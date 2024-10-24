@@ -62,7 +62,6 @@ FolderSelect                              = Escolha uma pasta
 FilesWontBeMoved                          = Os arquivos não serão transferidos.
 Install                                   = Instalar
 NoData                                    = Nada à exibir.
-NoInternetConnection                      = Sem conexão à Internet.
 RestartFunction                           = Favor reiniciar a função "{0}".
 NoResponse                                = Uma conexão não pôde ser estabelecida com {0}.
 Restore                                   = Restaurar

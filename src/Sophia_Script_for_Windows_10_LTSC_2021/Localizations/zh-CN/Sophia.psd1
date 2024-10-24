@@ -55,7 +55,6 @@ FolderSelect                              = 选择一个文件夹
 FilesWontBeMoved                          = 文件将不会被移动。
 Install                                   = 安装
 NoData                                    = 无数据。
-NoInternetConnection                      = 无网络连接。
 RestartFunction                           = 请重新运行"{0}"函数。
 NoResponse                                = 无法建立{0}。
 Restore                                   = 恢复

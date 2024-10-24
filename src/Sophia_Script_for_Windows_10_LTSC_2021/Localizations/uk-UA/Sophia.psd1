@@ -55,7 +55,6 @@ FolderSelect                              = Виберіть папку
 FilesWontBeMoved                          = Файли не будуть перенесені.
 Install                                   = Встановити
 NoData                                    = Відсутні дані.
-NoInternetConnection                      = Відсутнє інтернет-з'єднання.
 RestartFunction                           = Будь ласка, повторно запустіть функцію "{0}".
 NoResponse                                = Не вдалося встановити зв’язок із {0}.
 Restore                                   = Відновити

@@ -55,7 +55,6 @@ FolderSelect                              = Válasszon ki egy könyvtárat
 FilesWontBeMoved                          = A fájlok nem lesznek áthelyezve.
 Install                                   = Telepítés
 NoData                                    = Nincs megjeleníthető információ.
-NoInternetConnection                      = Nincs internetkapcsolat.
 RestartFunction                           = Ponovo pokrenite funkciju "{0}".
 NoResponse                                = Nem hozható létre kapcsolat a {0} weboldallal.
 Restore                                   = Visszaállítás

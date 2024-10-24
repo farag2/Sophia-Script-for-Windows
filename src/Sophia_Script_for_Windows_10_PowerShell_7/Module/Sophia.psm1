@@ -242,6 +242,8 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		WinClean             = "$env:ProgramFiles\WinClean Plus Apps"
 		# https://github.com/Atlas-OS/Atlas
 		AtlasOS              = "$env:SystemRoot\AtlasModules"
+		# https://x.com/NPKirbyy
+		KirbyOS              = "$env:ProgramData\KirbyOS"
 	}
 	foreach ($Tweaker in $Tweakers.Keys)
 	{
@@ -3633,7 +3635,9 @@ public static extern int HashData(byte[] pbData, int cbData, byte[] piet, int ou
 			# Get value to save in EnShellFeedsTaskbarViewMode key
 			$DWordData = [System.BitConverter]::ToUInt32($bytesOut,0)
 
-			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command {New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds -Name EnShellFeedsTaskbarViewMode -PropertyType DWord -Value $DWordData -Force}
+			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command {New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds -Name ShellFeedsTaskbarViewMode -PropertyType DWord -Value 2 -Force}
+			# We need to use here an approach with "-Command & {}"
+			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command "& {New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds -Name EnShellFeedsTaskbarViewMode -PropertyType DWord -Value $DWordData -Force}"
 		}
 		"Enable"
 		{
@@ -3649,7 +3653,9 @@ public static extern int HashData(byte[] pbData, int cbData, byte[] piet, int ou
 			# Get value to save in EnShellFeedsTaskbarViewMode key
 			$DWordData = [System.BitConverter]::ToUInt32($bytesOut,0)
 
-			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command {New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds -Name EnShellFeedsTaskbarViewMode -PropertyType DWord -Value $DWordData -Force}
+			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command {New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds -Name ShellFeedsTaskbarViewMode -PropertyType DWord -Value 0 -Force}
+			# We need to use here an approach with "-Command & {}"
+			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command "& {New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds -Name EnShellFeedsTaskbarViewMode -PropertyType DWord -Value $DWordData -Force}"
 		}
 	}
 
@@ -5298,8 +5304,8 @@ public static bool MarkFileDelete (string sourcefile)
 				}
 				catch [System.Net.WebException]
 				{
-					Write-Warning -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com")
-					Write-Error -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com") -ErrorAction SilentlyContinue
+					Write-Warning -Message ($Localization.NoResponse -f "https://oneclient.sfx.ms")
+					Write-Error -Message ($Localization.NoResponse -f "https://oneclient.sfx.ms") -ErrorAction SilentlyContinue
 
 					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 

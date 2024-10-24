@@ -241,6 +241,8 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		WinClean             = "$env:ProgramFiles\WinClean Plus Apps"
 		# https://github.com/Atlas-OS/Atlas
 		AtlasOS              = "$env:SystemRoot\AtlasModules"
+		# https://x.com/NPKirbyy
+		KirbyOS              = "$env:ProgramData\KirbyOS"
 	}
 	foreach ($Tweaker in $Tweakers.Keys)
 	{

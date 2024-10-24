@@ -229,6 +229,8 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		WinClean             = "$env:ProgramFiles\WinClean Plus Apps"
 		# https://github.com/Atlas-OS/Atlas
 		AtlasOS              = "$env:SystemRoot\AtlasModules"
+		# https://x.com/NPKirbyy
+		KirbyOS              = "$env:ProgramData\KirbyOS"
 	}
 	foreach ($Tweaker in $Tweakers.Keys)
 	{
@@ -4885,8 +4887,8 @@ public static bool MarkFileDelete (string sourcefile)
 				}
 				catch [System.Net.WebException]
 				{
-					Write-Warning -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com")
-					Write-Error -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com") -ErrorAction SilentlyContinue
+					Write-Warning -Message ($Localization.NoResponse -f "https://oneclient.sfx.ms")
+					Write-Error -Message ($Localization.NoResponse -f "https://oneclient.sfx.ms") -ErrorAction SilentlyContinue
 
 					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
