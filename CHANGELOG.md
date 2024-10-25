@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `IPv6Component` function as an unnecessary one;
 * Formally added support for `Windows 11 IoT Enterprise LTSC 2024`
   * Closes #591
+* Added `EditWithPhotosContext` for `Windows 11` to hide the "Edit with Photos" item from the media files context menu;
 * Code refactoring;
 * Minor changes.
 
