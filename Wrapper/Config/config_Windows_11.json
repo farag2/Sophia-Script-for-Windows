@@ -2097,7 +2097,7 @@
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
-    "Function": "EditWithClipchampContext",
+    "Function": "EditWithPhotosContext",
     "Arg": {
       "Zero": {
         "Tag": "Hide"

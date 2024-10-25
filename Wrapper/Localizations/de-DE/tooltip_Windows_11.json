@@ -1853,7 +1853,7 @@
   },
   {
     "Region": "Context menu",
-    "Function": "EditWithClipchampContext",
+    "Function": "EditWithPhotosContext",
     "Arg": {
       "Zero": {
         "Tag": "Hide",
