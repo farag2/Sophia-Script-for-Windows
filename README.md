@@ -92,6 +92,98 @@
 > [!IMPORTANT]
 > Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Windows 10` & `Windows 11` for fine-tuning and automating the routine tasks. It offers more than 150 unique tweaks, and shows how Windows can be configured without making any harm to it.
 
+## How to use
+
+# Windows 11
+
+https://github.com/user-attachments/assets/2654b005-9577-4e56-ac9e-501d3e8a18bd
+
+# Windows 10
+
+https://github.com/user-attachments/assets/f5bda68f-9509-41dc-b3b1-1518aeaee36f
+
+***
+
+* Choose the right script version for your `Windows`;
+* Download [up-to-date version](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest);
+* Expand the archive;
+* Open folder with the expanded archive;
+* Look through the `Sophia.ps1` file to configure functions that you want to be run;
+  * Place the "#" char before function if you don't want it to be run.
+  * Remove the "#" char before function if you want it to be run.
+* Copy the whole path to `Sophia.ps1`
+  * On `Windows 10` press and hold the <kbd>Shift</kbd> key, right click on `Sophia.ps1`, and click on `Copy as path`;
+  * On `Windows 11` right click on `Sophia.ps1` and click on `Copy as path`.
+* Open `Windows PowerShell`
+  * On `Windows 10` click `File` in the File Explorer, hover over `Open Windows PowerShell`, and select `Open Windows PowerShell as Administrator` [(how-to with screenshots)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/)
+  * On `Windows 11` right-click on the <kbd>Windows</kbd> icon and open `Windows Terminal (Admin)`;
+* Set execution policy to be able to run scripts only in the current PowerShell session;
+
+```powershell
+  Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+```
+
+* Run `Sophia.ps1`
+  * On `Windows 10` paste copied path to `Sophia.ps1` from the previous step (with [&](https://en.wikipedia.org/wiki/Ampersand));
+
+   ```powershell
+   & <path_from_buffer>
+   ```
+
+  * On `Windows 11`
+
+   ```powershell
+   .\Sophia.ps1
+   ```
+
+## How to download Sophia Script via PowerShell
+
+* Download the always latest Sophia Script archive by invoking (`not as administrator too`) in PowerShell
+
+```powershell
+iwr script.sophia.team -useb | iex
+```
+
+* The command will download and expand the latest Sophia Script archive (`without running`) according which Windows and PowerShell versions it is run on. If you run it on, e.g., Windows 11 via PowerShell 5.1, it will download Sophia Script for `Windows 11 PowerShell 5.1`.
+
+## How to use Wrapper
+
+* Download and expand the archive;
+* Run `SophiaScriptWrapper.exe` and import `Sophia.ps1`;
+  * `Sophia.ps1` has to be in `Sophia Script` folder;
+  * The Wrapper has a real time UI rendering;
+* Configure every function;
+* Open the `Console Output` tab and press `Run PowerShell`.
+
+***
+
+### How to run the specific function(s)
+
+To run the specific function(s) [dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator) the `Functions.ps1` file first:
+
+```powershell
+# With a dot at the beginning
+. .\Functions.ps1
+```
+
+* Now you can do like this (the quotation marks required)
+
+```powershell
+Sophia -FunctionsTAB
+Sophia -Functions temp<TAB>
+Sophia -Functions unin<TAB>
+Sophia -Functions uwp<TAB>
+Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
+
+UninstallUWPApps, "PinToStart -UnpinAll"
+```
+
+Or use an old-style format without the TAB functions autocomplete (the quotation marks required)
+
+```powershell
+.\Sophia.ps1 -Functions CreateRestorePoint, "ScheduledTasks -Disable", "WindowsCapabilities -Uninstall"
+```
+
 ## Before running
 
 > [!CAUTION]
@@ -205,89 +297,6 @@ https://user-images.githubusercontent.com/10544660/253818031-b7ce6bf1-d968-41ea-
 
 [![YT](https://img.youtube.com/vi/8E6OT_QcHaU/1.jpg)](https://youtu.be/8E6OT_QcHaU?t=370) [![YT](https://img.youtube.com/vi/091SOihvx0k/1.jpg)](https://youtu.be/091SOihvx0k?t=490)
 
-## How to use
-
-* Choose the right script version for your `Windows`;
-* Download [up-to-date version](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest);
-* Expand the archive;
-* Open folder with the expanded archive;
-* Look through the `Sophia.ps1` file to configure functions that you want to be run;
-  * Place the "#" char before function if you don't want it to be run.
-  * Remove the "#" char before function if you want it to be run.
-* Copy the whole path to `Sophia.ps1`
-  * On `Windows 10` press and hold the <kbd>Shift</kbd> key, right click on `Sophia.ps1`, and click on `Copy as path`;
-  * On `Windows 11` right click on `Sophia.ps1` and click on `Copy as path`.
-* Open `Windows PowerShell`
-  * On `Windows 10` click `File` in the File Explorer, hover over `Open Windows PowerShell`, and select `Open Windows PowerShell as Administrator` [(how-to with screenshots)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/)
-  * On `Windows 11` right-click on the <kbd>Windows</kbd> icon and open `Windows Terminal (Admin)`;
-* Set execution policy to be able to run scripts only in the current PowerShell session;
-
-```powershell
-  Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
-```
-
-* Run `Sophia.ps1`
-  * On `Windows 10` paste copied path to `Sophia.ps1` from the previous step (with [&](https://en.wikipedia.org/wiki/Ampersand));
-
-   ```powershell
-   & <path_from_buffer>
-   ```
-
-  * On `Windows 11`
-
-   ```powershell
-   .\Sophia.ps1
-   ```
-
-## How to use Wrapper
-
-* Download and expand the archive;
-* Run `SophiaScriptWrapper.exe` and import `Sophia.ps1`;
-  * `Sophia.ps1` has to be in `Sophia Script` folder;
-  * The Wrapper has a real time UI rendering;
-* Configure every function;
-* Open the `Console Output` tab and press `Run PowerShell`.
-
-***
-
-### How to run the specific function(s)
-
-To run the specific function(s) [dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator) the `Functions.ps1` file first:
-
-```powershell
-# With a dot at the beginning
-. .\Functions.ps1
-```
-
-* Now you can do like this (the quotation marks required)
-
-```powershell
-Sophia -FunctionsTAB
-Sophia -Functions temp<TAB>
-Sophia -Functions unin<TAB>
-Sophia -Functions uwp<TAB>
-Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
-
-UninstallUWPApps, "PinToStart -UnpinAll"
-```
-
-Or use an old-style format without the TAB functions autocomplete (the quotation marks required)
-
-```powershell
-.\Sophia.ps1 -Functions CreateRestorePoint, "ScheduledTasks -Disable", "WindowsCapabilities -Uninstall"
-```
-
-***
-
-## How to download Sophia Script via PowerShell
-
-* Download the always latest Sophia Script archive by invoking (`not as administrator too`) in PowerShell
-
-```powershell
-iwr script.sophia.team -useb | iex
-```
-
-* The command will download and expand the latest Sophia Script archive (`without running`) according which Windows and PowerShell versions it is run on. If you run it on, e.g., Windows 11 via PowerShell 5.1, it will download Sophia Script for `Windows 11 PowerShell 5.1`.
 
 ## How to translate
 

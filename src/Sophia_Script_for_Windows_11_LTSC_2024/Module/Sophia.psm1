@@ -292,7 +292,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 
 	# Remove firewalled IP addresses that block Microsoft recourses added by harmful tweakers
 	# https://wpd.app
-	Get-NetFirewallRule | Where-Object -FilterScript {($_.DisplayName -match "Blocker MicrosoftTelemetry") -or ($_.DisplayName -match "Blocker MicrosoftExtra") -or ($_.DisplayName -match "windowsSpyBlocker")} | Remove-NetFirewallRule
+	Get-NetFirewallRule -DisplayName "Blocker MicrosoftTelemetry*", "Blocker MicrosoftExtra*", "windowsSpyBlocker*" -ErrorAction Ignore | Remove-NetFirewallRule
 
 	Write-Information -MessageData "" -InformationAction Continue
 	# Extract the localized "Please wait..." string from shell32.dll
@@ -310,10 +310,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			DisableKeepAlive = $true
 			UseBasicParsing  = $true
 		}
-		if (-not (Invoke-WebRequest @Parameters).StatusDescription)
-		{
-			return
-		}
+		(Invoke-WebRequest @Parameters).StatusDescription
 
 		Clear-Variable -Name IPArray -ErrorAction Ignore
 
@@ -399,15 +396,14 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 
 	# Check whether Get-WindowsEdition cmdlet is working
 	# https://github.com/PowerShell/PowerShell/issues/21295
-	try
-	{
-		Get-WindowsEdition -Online
-	}
-	catch [System.Runtime.InteropServices.COMException]
+	if ((Get-Process -Id $PID).Path -match "C:\\Program Files\\WindowsApps")
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Get-WindowsEdition")
 		Write-Information -MessageData "" -InformationAction Continue
+
+		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 		exit
 	}
@@ -495,7 +491,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	}
 
 	# Check Microsoft Defender state
-	if ($null -eq (Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction Ignore))
+	if ($null -eq (Get-CimInstance -ClassName AntiVirusProduct -Namespace root/SecurityCenter2 -ErrorAction Ignore))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
@@ -527,7 +523,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	$Script:DefenderServices = ($Services | Where-Object -FilterScript {$_.Status -ne "running"} | Measure-Object).Count -lt $Services.Count
 
 	# Check Microsoft Defender state
-	$productState = (Get-CimInstance -Namespace root/SecurityCenter2 -ClassName Antivirusproduct | Where-Object -FilterScript {$_.instanceGuid -eq "{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}"}).productState
+	$productState = (Get-CimInstance -ClassName AntiVirusProduct -Namespace root/SecurityCenter2 | Where-Object -FilterScript {$_.instanceGuid -eq "{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}"}).productState
 	$DefenderState = ('0x{0:x}' -f $productState).Substring(3, 2)
 	if ($DefenderState -notmatch "00|01")
 	{
@@ -1042,7 +1038,7 @@ function script:Set-Policy
 	if (-not (Test-Path -Path "$env:SystemRoot\System32\gpedit.msc"))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.Skipped -Verbose
+		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 
 		return
 	}
@@ -3206,7 +3202,7 @@ function SearchHighlights
 			if (($BingSearchEnabled -eq 1) -or ($DisableSearchBoxSuggestions -eq 1))
 			{
 				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message $Localization.Skipped -Verbose
+				Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 
 				return
 			}
@@ -4068,10 +4064,7 @@ function Cursors
 					DisableKeepAlive = $true
 					UseBasicParsing  = $true
 				}
-				if (-not (Invoke-WebRequest @Parameters).StatusDescription)
-				{
-					return
-				}
+				(Invoke-WebRequest @Parameters).StatusDescription
 
 				$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 				$Parameters = @{
@@ -4160,12 +4153,9 @@ function Cursors
 					Uri              = "https://github.com"
 					Method           = "Head"
 					DisableKeepAlive = $true
-						UseBasicParsing  = $true
+					UseBasicParsing  = $true
 				}
-				if (-not (Invoke-WebRequest @Parameters).StatusDescription)
-				{
-					return
-				}
+				(Invoke-WebRequest @Parameters).StatusDescription
 
 				$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 				$Parameters = @{
@@ -6029,12 +6019,26 @@ function NetworkAdaptersSavePower
 	# Extract the localized "Please wait..." string from shell32.dll
 	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
-	if (Get-NetAdapter -Physical | Where-Object -FilterScript {($_.Status -eq "Up") -and $_.MacAddress})
+	# Check whether there's an adapter that has AllowComputerToTurnOffDevice property to manage
+	$Adapters = Get-NetAdapter -Physical | Where-Object -FilterScript {$_.MacAddress} | Get-NetAdapterPowerManagement | Where-Object -FilterScript {$_.AllowComputerToTurnOffDevice -ne "Unsupported"}
+	if (-not $Adapters)
 	{
-		$PhysicalAdaptersStatusUp = @((Get-NetAdapter -Physical | Where-Object -FilterScript {($_.Status -eq "Up") -and $_.MacAddress}).Name)
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+
+		return
 	}
 
-	$Adapters = Get-NetAdapter -Physical | Where-Object -FilterScript {$_.MacAddress} | Get-NetAdapterPowerManagement | Where-Object -FilterScript {$_.AllowComputerToTurnOffDevice -ne "Unsupported"}
+	$PhysicalAdaptersStatusUp = @(Get-NetAdapter -Physical | Where-Object -FilterScript {($_.Status -eq "Up") -and $_.MacAddress})
+
+	# Check whether PC is currently connected to a Wi-Fi network
+	# NetConnectionStatus 2 is Wi-Fi
+	$InterfaceIndex = (Get-CimInstance -ClassName Win32_NetworkAdapter -Namespace root/CIMV2 | Where-Object -FilterScript {$_.NetConnectionStatus -eq 2}).InterfaceIndex
+	if (Get-NetAdapter -Physical | Where-Object -FilterScript {($_.Status -eq "Up") -and ($_.PhysicalMediaType -eq "Native 802.11") -and ($_.InterfaceIndex -eq $InterfaceIndex)})
+	{
+		# Get Currently connected Wi-Fi network SSID
+		$SSID = (Get-NetConnectionProfile).Name
+	}
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
@@ -6060,9 +6064,17 @@ function NetworkAdaptersSavePower
 	# Otherwise functions below will indicate that there is no the Internet connection
 	if ($PhysicalAdaptersStatusUp)
 	{
+		# If Wi-Fi network was used
+		if ($SSID)
+		{
+			Write-Verbose -Message $SSID -Verbose
+			# Connect to it
+			netsh wlan connect name=$SSID
+		}
+
 		while
 		(
-			Get-NetAdapter -Physical -Name $PhysicalAdaptersStatusUp | Where-Object -FilterScript {($_.Status -eq "Disconnected") -and $_.MacAddress}
+			Get-NetAdapter -Physical -Name $PhysicalAdaptersStatusUp.Name | Where-Object -FilterScript {($_.Status -eq "Disconnected") -and $_.MacAddress}
 		)
 		{
 			Write-Information -MessageData "" -InformationAction Continue
@@ -6383,7 +6395,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					$Skip
 					{
 						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message $Localization.Skipped -Verbose
+						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 					}
 					$KeyboardArrows {}
 				}
@@ -6411,7 +6423,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					$Skip
 					{
 						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message $Localization.Skipped -Verbose
+						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 					}
 					$KeyboardArrows {}
 				}
@@ -6439,7 +6451,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					$Skip
 					{
 						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message $Localization.Skipped -Verbose
+						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 					}
 					$KeyboardArrows {}
 				}
@@ -6467,7 +6479,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					$Skip
 					{
 						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message $Localization.Skipped -Verbose
+						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 					}
 					$KeyboardArrows {}
 				}
@@ -6495,7 +6507,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					$Skip
 					{
 						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message $Localization.Skipped -Verbose
+						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 					}
 					$KeyboardArrows {}
 				}
@@ -6523,7 +6535,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					$Skip
 					{
 						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message $Localization.Skipped -Verbose
+						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 					}
 					$KeyboardArrows {}
 				}
@@ -6575,7 +6587,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					$Skip
 					{
 						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message $Localization.Skipped -Verbose
+						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 					}
 					$KeyboardArrows {}
 				}
@@ -6625,7 +6637,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					$Skip
 					{
 						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message $Localization.Skipped -Verbose
+						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 					}
 					$KeyboardArrows {}
 				}
@@ -6675,7 +6687,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					$Skip
 					{
 						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message $Localization.Skipped -Verbose
+						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 					}
 					$KeyboardArrows {}
 				}
@@ -6725,7 +6737,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					$Skip
 					{
 						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message $Localization.Skipped -Verbose
+						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 					}
 					$KeyboardArrows {}
 				}
@@ -6775,7 +6787,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					$Skip
 					{
 						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message $Localization.Skipped -Verbose
+						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 					}
 					$KeyboardArrows {}
 				}
@@ -6825,7 +6837,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					$Skip
 					{
 						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message $Localization.Skipped -Verbose
+						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 					}
 					$KeyboardArrows {}
 				}
@@ -6856,7 +6868,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					$Skip
 					{
 						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message $Localization.Skipped -Verbose
+						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 					}
 					$KeyboardArrows {}
 				}
@@ -6885,7 +6897,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					$Skip
 					{
 						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message $Localization.Skipped -Verbose
+						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 					}
 					$KeyboardArrows {}
 				}
@@ -6914,7 +6926,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					$Skip
 					{
 						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message $Localization.Skipped -Verbose
+						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 					}
 					$KeyboardArrows {}
 				}
@@ -6943,7 +6955,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					$Skip
 					{
 						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message $Localization.Skipped -Verbose
+						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 					}
 					$KeyboardArrows {}
 				}
@@ -6972,7 +6984,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					$Skip
 					{
 						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message $Localization.Skipped -Verbose
+						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 					}
 					$KeyboardArrows {}
 				}
@@ -7001,7 +7013,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 					$Skip
 					{
 						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message $Localization.Skipped -Verbose
+						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 					}
 					$KeyboardArrows {}
 				}
@@ -7115,7 +7127,7 @@ function WinPrtScrFolder
 		Write-Error -Message ($Localization.OneDriveWarning -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.Skipped -Verbose
+		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 
 		return
 	}
@@ -8202,6 +8214,7 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 			$ACL.RemoveAccessRule($Rule)
 			$Key.SetAccessControl($ACL)
 
+			# We need to use here an approach with "-Command & {}" as there's a variable inside
 			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command "& {New-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice' -Name ProgId -PropertyType String -Value $ProgID -Force}"
 		}
 		else
@@ -8219,6 +8232,7 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 
 		if (@(".pdf", "http", "https") -contains $Extension)
 		{
+			# We need to use here an approach with "-Command & {}" as there's a variable inside
 			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command "& {New-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice' -Name Hash -PropertyType String -Value $ProgHash -Force}"
 		}
 		else
@@ -8657,6 +8671,7 @@ public static long MakeLong(uint left, uint right)
 			$ACL.RemoveAccessRule($Rule)
 			$Key.SetAccessControl($ACL)
 
+			# We need to use here an approach with "-Command & {}" as there's a variable inside
 			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command "& {New-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\Shell\Associations\UrlAssociations\$Extension\UserChoice' -Name ProgId -PropertyType String -Value $ProgID -Force}"
 			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command "& {New-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\Shell\Associations\UrlAssociations\$Extension\UserChoice' -Name Hash -PropertyType String -Value $ProgHash -Force}"
 		}
@@ -8922,9 +8937,6 @@ function Import-Associations
 		{
 			Write-Warning -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim())
 			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message $Localization.Skipped -Verbose
 
 			return
 		}
@@ -9273,7 +9285,7 @@ function PreventEdgeShortcutCreation
 	if (-not (Get-Package -Name "Microsoft Edge Update" -ProviderName Programs -ErrorAction Ignore))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.Skipped -Verbose
+		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 
 		return
 	}
@@ -10243,7 +10255,7 @@ function Set-AppGraphicsPerformance
 				$Skip
 				{
 					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 				}
 				$KeyboardArrows {}
 			}
@@ -10394,10 +10406,6 @@ function CleanupTask
 					Write-Information -MessageData "" -InformationAction Continue
 					Write-Warning -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line.Trim(), $TaskUserAccount)
 					Write-Error -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line.Trim(), $TaskUserAccount) -ErrorAction SilentlyContinue
-					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message $Localization.Skipped -Verbose
 
 					return
 				}
@@ -10833,10 +10841,6 @@ function SoftwareDistributionTask
 					Write-Information -MessageData "" -InformationAction Continue
 					Write-Warning -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line.Trim(), $TaskUserAccount)
 					Write-Error -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line.Trim(), $TaskUserAccount) -ErrorAction SilentlyContinue
-					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message $Localization.Skipped -Verbose
 
 					return
 				}
@@ -11151,10 +11155,6 @@ function TempTask
 					Write-Information -MessageData "" -InformationAction Continue
 					Write-Warning -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line.Trim(), $TaskUserAccount)
 					Write-Error -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line.Trim(), $TaskUserAccount) -ErrorAction SilentlyContinue
-					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message $Localization.Skipped -Verbose
 
 					return
 				}
@@ -11444,18 +11444,23 @@ function NetworkProtection
 		$Disable
 	)
 
-	if ($Script:DefenderEnabled)
+	if (-not $Script:DefenderEnabled)
 	{
-		switch ($PSCmdlet.ParameterSetName)
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+
+		return
+	}
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Enable"
 		{
-			"Enable"
-			{
-				Set-MpPreference -EnableNetworkProtection Enabled
-			}
-			"Disable"
-			{
-				Set-MpPreference -EnableNetworkProtection Disabled
-			}
+			Set-MpPreference -EnableNetworkProtection Enabled
+		}
+		"Disable"
+		{
+			Set-MpPreference -EnableNetworkProtection Disabled
 		}
 	}
 }
@@ -11498,18 +11503,23 @@ function PUAppsDetection
 		$Disable
 	)
 
-	if ($Script:DefenderEnabled)
+	if (-not $Script:DefenderEnabled)
 	{
-		switch ($PSCmdlet.ParameterSetName)
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+
+		return
+	}
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Enable"
 		{
-			"Enable"
-			{
-				Set-MpPreference -PUAProtection Enabled
+			Set-MpPreference -PUAProtection Enabled
 			}
-			"Disable"
-			{
-				Set-MpPreference -PUAProtection Disabled
-			}
+		"Disable"
+		{
+			Set-MpPreference -PUAProtection Disabled
 		}
 	}
 }
@@ -11552,18 +11562,23 @@ function DefenderSandbox
 		$Disable
 	)
 
-	if ($Script:DefenderEnabled)
+	if (-not $Script:DefenderEnabled)
 	{
-		switch ($PSCmdlet.ParameterSetName)
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+
+		return
+	}
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Enable"
 		{
-			"Enable"
-			{
-				setx /M MP_FORCE_USE_SANDBOX 1
-			}
-			"Disable"
-			{
-				setx /M MP_FORCE_USE_SANDBOX 0
-			}
+			& "$env:SystemRoot\System32\setx.exe" /M MP_FORCE_USE_SANDBOX 1
+		}
+		"Disable"
+		{
+			& "$env:SystemRoot\System32\setx.exe" /M MP_FORCE_USE_SANDBOX 0
 		}
 	}
 }
@@ -11571,19 +11586,29 @@ function DefenderSandbox
 # Dismiss Microsoft Defender offer in the Windows Security about signing in Microsoft account
 function DismissMSAccount
 {
-	if ($Script:DefenderEnabled)
+	if (-not $Script:DefenderEnabled)
 	{
-		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AccountProtection_MicrosoftAccount_Disconnected -PropertyType DWord -Value 1 -Force
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+
+		return
 	}
+
+	New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AccountProtection_MicrosoftAccount_Disconnected -PropertyType DWord -Value 1 -Force
 }
 
 # Dismiss Microsoft Defender offer in the Windows Security about turning on the SmartScreen filter for Microsoft Edge
 function DismissSmartScreenFilter
 {
-	if ($Script:DefenderEnabled)
+	if (-not $Script:DefenderEnabled)
 	{
-		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AppAndBrowser_EdgeSmartScreenOff -PropertyType DWord -Value 0 -Force
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+
+		return
 	}
+
+	New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AppAndBrowser_EdgeSmartScreenOff -PropertyType DWord -Value 0 -Force
 }
 
 <#
@@ -11833,18 +11858,23 @@ function AppsSmartScreen
 		$Enable
 	)
 
-	if ($Script:DefenderEnabled)
+	if (-not $Script:DefenderEnabled)
 	{
-		switch ($PSCmdlet.ParameterSetName)
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+
+		return
+	}
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Disable"
 		{
-			"Disable"
-			{
-				New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name SmartScreenEnabled -PropertyType String -Value Off -Force
-			}
-			"Enable"
-			{
-				New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name SmartScreenEnabled -PropertyType String -Value Warn -Force
-			}
+			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name SmartScreenEnabled -PropertyType String -Value Off -Force
+		}
+		"Enable"
+		{
+			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name SmartScreenEnabled -PropertyType String -Value Warn -Force
 		}
 	}
 }
@@ -12187,7 +12217,7 @@ function DNSoverHTTPS
 				{($_ -ne 203) -and ($_ -ne 29)}
 				{
 					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message $Localization.Skipped -Verbose
+					Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 
 					return
 				}
@@ -12617,7 +12647,7 @@ function UpdateLGPEPolicies
 	if (-not (Test-Path -Path "$env:SystemRoot\System32\gpedit.msc"))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.Skipped -Verbose
+		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 
 		return
 	}
@@ -12924,7 +12954,7 @@ public static void PostMessage()
 	</visual>
 	<audio src="ms-winsoundevent:notification.default" />
 	<actions>
-		<action arguments="https://t.me/sophia_chat" content="$($Localization.Run)" activationType="protocol"/>
+		<action arguments="https://t.me/sophia_chat" content="$([WinAPI.GetStrings]::GetString(12850))" activationType="protocol"/>
 		<action arguments="dismiss" content="" activationType="system"/>
 	</actions>
 </toast>
@@ -12952,7 +12982,7 @@ public static void PostMessage()
 	</visual>
 	<audio src="ms-winsoundevent:notification.default" />
 	<actions>
-		<action arguments="https://t.me/sophianews" content="$($Localization.Run)" activationType="protocol"/>
+		<action arguments="https://t.me/sophianews" content="$([WinAPI.GetStrings]::GetString(12850))" activationType="protocol"/>
 		<action arguments="dismiss" content="" activationType="system"/>
 	</actions>
 </toast>
@@ -12980,7 +13010,7 @@ public static void PostMessage()
 	</visual>
 	<audio src="ms-winsoundevent:notification.default" />
 	<actions>
-		<action arguments="https://discord.gg/sSryhaEv79" content="$($Localization.Run)" activationType="protocol"/>
+		<action arguments="https://discord.gg/sSryhaEv79" content="$([WinAPI.GetStrings]::GetString(12850))" activationType="protocol"/>
 		<action arguments="dismiss" content="" activationType="system"/>
 	</actions>
 </toast>

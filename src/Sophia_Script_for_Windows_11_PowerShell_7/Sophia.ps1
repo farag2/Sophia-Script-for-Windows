@@ -70,6 +70,35 @@ Clear-Host
 
 $Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.7.1 (PowerShell 7) | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2024"
 
+# Check whether all files were expanded before running
+$ScriptFiles = @(
+	"$PSScriptRoot\Localizations\de-DE\Sophia.psd1",
+	"$PSScriptRoot\Localizations\en-US\Sophia.psd1",
+	"$PSScriptRoot\Localizations\es-ES\Sophia.psd1",
+	"$PSScriptRoot\Localizations\fr-FR\Sophia.psd1",
+	"$PSScriptRoot\Localizations\hu-HU\Sophia.psd1",
+	"$PSScriptRoot\Localizations\it-IT\Sophia.psd1",
+	"$PSScriptRoot\Localizations\pl-PL\Sophia.psd1",
+	"$PSScriptRoot\Localizations\pt-BR\Sophia.psd1",
+	"$PSScriptRoot\Localizations\ru-RU\Sophia.psd1",
+	"$PSScriptRoot\Localizations\tr-TR\Sophia.psd1",
+	"$PSScriptRoot\Localizations\uk-UA\Sophia.psd1",
+	"$PSScriptRoot\Localizations\zh-CN\Sophia.psd1",
+	"$PSScriptRoot\Module\Sophia.psm1",
+	"$PSScriptRoot\Manifest\Sophia.psd1"
+)
+if (($ScriptFiles | Test-Path) -contains $false)
+{
+	Write-Information -MessageData "" -InformationAction Continue
+	Write-Warning -Message "There are no files in the script folder. Please, re-download the archive and follow the guide: https://github.com/farag2/Sophia-Script-for-Windows?tab=readme-ov-file#how-to-use."
+	Write-Information -MessageData "" -InformationAction Continue
+
+	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+	exit
+}
+
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 
 # PowerShell 7 doesn't load en-us localization automatically if there is no localization folder in user's language which is determined by $PSUICulture

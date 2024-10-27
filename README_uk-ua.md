@@ -92,6 +92,97 @@
 > [!IMPORTANT]
 > Sophia Script для Windows - найбільший модуль PowerShell на `GitHub` для тонкого налаштування і автоматизації рутинних завдань в `Windows 10` і `Windows 11`. Він пропонує сучасні UI/UX, більше 130 різних функцій і показує, як можна налаштувати Windows, не ламаючи функціонал.
 
+## Як користуватися
+
+# Windows 11
+
+https://github.com/user-attachments/assets/2654b005-9577-4e56-ac9e-501d3e8a18bd
+
+# Windows 10
+
+https://github.com/user-attachments/assets/f5bda68f-9509-41dc-b3b1-1518aeaee36f
+
+***
+
+* Виберіть відповідну версію скрипта для Вашої `Windows`;
+* Завантажте [актуальну версію](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest);
+* Розпакуйте архів;
+* Відкрийте папку розпакованого архіву;
+* Перегляньте файл `Sophia.ps1` для налаштування функцій, які потрібно запустити;
+  * Помістіть символ "#" перед функцією, якщо ви не бажаєте, щоб вона виконувалась.
+  * Приберіть символ "#" перед функцією, якщо ви бажаєте, щоб вона виконувалась.
+* Скопіюйте весь шлях до `Sophia.ps1`
+  * У `Windows 10` натисніть і утримуйте клавішу <kbd>Shift</kbd>, клацніть правою кнопкою миші на `Sophia.ps1` і виберіть Копіювати як шлях;
+  * У `Windows 11` клацніть правою кнопкою миші на `Sophia.ps1` і виберіть `Копіювати як шлях`.
+* Відкрийте `Windows PowerShell`
+  * У `Windows 10` натисніть `Файл` у Провіднику файлів, наведіть курсор на `Відкрити Windows PowerShell` і виберіть `Відкрити Windows PowerShell від імені адміністратора` [(покрокова інструкція зі скріншотами)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/);
+  * У `Windows 11` натисніть правою кнопкою миші на іконку <kbd>Windows</kbd> і відкрийте `Термінал Windows (Адміністратор)`.
+* Встановіть політику виконання, щоб мати змогу запускати сценарії лише у поточному сеансі PowerShell;
+
+```powershell
+  Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+```
+
+* На `Windows 10` вставте скопійований шлях до `Sophia.ps1` з попереднього кроку (за допомогою [&](https://en.wikipedia.org/wiki/Ampersand));
+
+   ```powershell
+   & <path_from_buffer>
+   ```
+
+  * На `Windows 11`
+
+   ```powershell
+   .\Sophia.ps1
+   ```
+
+## Як завантажити Sophia Script через PowerShell
+
+* Завантажте актуальний архів Sophia Script, викликавши (`також не від імені адміністратора`) в PowerShell
+
+```powershell
+iwr script.sophia.team -useb | iex
+```
+
+* Команда завантажить і розпакує останній архів Sophia Script (`без запуску`) відповідно до того, під якою версією Windows і PowerShell він запускається. Якщо запустити її, наприклад, в Windows 11 через PowerShell 5.1, вона завантажить Sophia Script для `Windows 11 PowerShell 5.1`.
+
+## Як використовувати Wrapper
+
+* Завантажте та розпакуйте архів;
+* Запустіть `SophiaScriptWrapper.exe` та імпортуйте `Sophia.ps1`;
+  * `Sophia.ps1` повинен знаходитись у тій папці `Sophia Script`;
+  * Wrapper має рендеринг інтерфейсу в реальному часі
+* Налаштуйте кожну функцію;
+* Відкрийте вкладку `Console Output` і натисніть `Run PowerShell`.
+
+***
+
+### Як запустити певну функцію(ї)
+
+Для запуску певної функції(й) [dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator) необхідно запустити файл `Functions.ps1`:
+
+```powershell
+# З крапкою на початку
+. .\Functions.ps1
+```
+
+* Тепер можна зробити так (лапки обов'язкові)
+
+```powershell
+Sophia -Functions<kbd>TAB</kbd>
+Sophia -Functions temp<kbd>TAB</kbd>
+Sophia -Functions unin<kbd>TAB</kbd>
+Sophia -Functions uwp<kbd>TAB</kbd>
+Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
+
+UninstallUWPApps, "PinToStart -UnpinAll"
+```
+
+Або використовуйте формат старого зразка без автозаповнення функцій TAB (лапки обов'язкові)
+
+```powershell
+.\Sophia.ps1 -Functions CreateRestorePoint, "ScheduledTasks -Disable", "WindowsCapabilities -Uninstall"
+```
+
 ## Перед запуском
 
 > [!CAUTION]
@@ -203,89 +294,6 @@ https://user-images.githubusercontent.com/10544660/253818031-b7ce6bf1-d968-41ea-
 [![YT](https://img.youtube.com/vi/q_weQifFM58/0.jpg)](https://www.youtube.com/watch?v=q_weQifFM58)
 
 [![YT](https://img.youtube.com/vi/8E6OT_QcHaU/1.jpg)](https://youtu.be/8E6OT_QcHaU?t=370) [![YT](https://img.youtube.com/vi/091SOihvx0k/1.jpg)](https://youtu.be/091SOihvx0k?t=490)
-
-## Як користуватися
-
-* Виберіть відповідну версію скрипта для Вашої `Windows`;
-* Завантажте [актуальну версію](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest);
-* Розпакуйте архів;
-* Відкрийте папку розпакованого архіву;
-* Перегляньте файл `Sophia.ps1` для налаштування функцій, які потрібно запустити;
-  * Помістіть символ "#" перед функцією, якщо ви не бажаєте, щоб вона виконувалась.
-  * Приберіть символ "#" перед функцією, якщо ви бажаєте, щоб вона виконувалась.
-* Скопіюйте весь шлях до `Sophia.ps1`
-  * У `Windows 10` натисніть і утримуйте клавішу <kbd>Shift</kbd>, клацніть правою кнопкою миші на `Sophia.ps1` і виберіть Копіювати як шлях;
-  * У `Windows 11` клацніть правою кнопкою миші на `Sophia.ps1` і виберіть `Копіювати як шлях`.
-* Відкрийте `Windows PowerShell`
-  * У `Windows 10` натисніть `Файл` у Провіднику файлів, наведіть курсор на `Відкрити Windows PowerShell` і виберіть `Відкрити Windows PowerShell від імені адміністратора` [(покрокова інструкція зі скріншотами)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/);
-  * У `Windows 11` натисніть правою кнопкою миші на іконку <kbd>Windows</kbd> і відкрийте `Термінал Windows (Адміністратор)`.
-* Встановіть політику виконання, щоб мати змогу запускати сценарії лише у поточному сеансі PowerShell;
-
-```powershell
-  Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
-```
-
-* На `Windows 10` вставте скопійований шлях до `Sophia.ps1` з попереднього кроку (за допомогою [&](https://en.wikipedia.org/wiki/Ampersand));
-
-   ```powershell
-   & <path_from_buffer>
-   ```
-
-  * На `Windows 11`
-
-   ```powershell
-   .\Sophia.ps1
-   ```
-
-## Як використовувати Wrapper
-
-* Завантажте та розпакуйте архів;
-* Запустіть `SophiaScriptWrapper.exe` та імпортуйте `Sophia.ps1`;
-  * `Sophia.ps1` повинен знаходитись у тій папці `Sophia Script`;
-  * Wrapper має рендеринг інтерфейсу в реальному часі
-* Налаштуйте кожну функцію;
-* Відкрийте вкладку `Console Output` і натисніть `Run PowerShell`.
-
-***
-
-### Як запустити певну функцію(ї)
-
-Для запуску певної функції(й) [dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator) необхідно запустити файл `Functions.ps1`:
-
-```powershell
-# З крапкою на початку
-. .\Functions.ps1
-```
-
-* Тепер можна зробити так (лапки обов'язкові)
-
-```powershell
-Sophia -Functions<kbd>TAB</kbd>
-Sophia -Functions temp<kbd>TAB</kbd>
-Sophia -Functions unin<kbd>TAB</kbd>
-Sophia -Functions uwp<kbd>TAB</kbd>
-Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
-
-UninstallUWPApps, "PinToStart -UnpinAll"
-```
-
-Або використовуйте формат старого зразка без автозаповнення функцій TAB (лапки обов'язкові)
-
-```powershell
-.\Sophia.ps1 -Functions CreateRestorePoint, "ScheduledTasks -Disable", "WindowsCapabilities -Uninstall"
-```
-
-***
-
-## Як завантажити Sophia Script через PowerShell
-
-* Завантажте актуальний архів Sophia Script, викликавши (`також не від імені адміністратора`) в PowerShell
-
-```powershell
-iwr script.sophia.team -useb | iex
-```
-
-* Команда завантажить і розпакує останній архів Sophia Script (`без запуску`) відповідно до того, під якою версією Windows і PowerShell він запускається. Якщо запустити її, наприклад, в Windows 11 через PowerShell 5.1, вона завантажить Sophia Script для `Windows 11 PowerShell 5.1`.
 
 ## Як перекласти
 
