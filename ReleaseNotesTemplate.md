@@ -2,7 +2,7 @@
 
 # [Donate](https://github.com/farag2/Sophia-Script-for-Windows#donations)
 
-## Windows 10 Enterprise LTSC 2019 | Windows 10 Enterprise LTSC 2021 | Windows 10 22H2 | Windows 11 23H2 | Windows 11 Enterprise LTSC 2024
+## Windows 10 Enterprise LTSC 2019 | Windows 10 Enterprise LTSC 2021 | Windows 10 22H2 | Windows 11 23H2+ | Windows 11 Enterprise LTSC 2024
 
 Diff from vOldVersion
 [OldVersion...NewVersion](https://github.com/farag2/Sophia-Script-for-Windows/compare/OldVersion...NewVersion)
