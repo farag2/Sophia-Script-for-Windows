@@ -1,116 +1,83 @@
-<div align="right">
-  This page also in:
-  <a title="Українська" href="README_uk-ua.md"><img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Ukraine.svg" height="11px"/></a>
-  <a title="Deutsch" href="README_de-de.md"><img src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Flag_of_Germany.svg" height="11px"/></a>
-</div>
+<div align="center">
+
+<img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/img/Sophia.png" alt="Sophia Script for Windows" width='150'>
 
 # Sophia Script for Windows
 
-<img src="./img/Sophia.png" alt="Sophia Script" width='350' align="right">
+**Sophia Script for Windows is the most powerfull PowerShell module for fine-tuning Windows**
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Windows_10_Logo.svg" height="30px"/> &emsp; <img src="https://upload.wikimedia.org/wikipedia/commons/e/e6/Windows_11_logo.svg" height="30px"/>
+![downloads](https://img.shields.io/github/downloads/farag2/Sophia-Script-for-Windows/total?label=downloads%20%28since%20May%202020%29) [![chocolatey](https://img.shields.io/chocolatey/dt/sophia?color=blue&label=chocolatey%20package)](https://community.chocolatey.org/packages/sophia) [![lines](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/farag2/9852d6b9569a91bf69ceba8a94cc97f4/raw/SophiaScript.json)](https://github.com/farag2/Sophia-Script-for-Windows)
 
-<p align="left">
-  <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases"><img src="https://img.shields.io/github/downloads/farag2/Sophia-Script-for-Windows/total?label=downloads%20%28since%20May%202020%29"></a>
-  <a href="https://community.chocolatey.org/packages/sophia"><img src="https://img.shields.io/chocolatey/dt/sophia?color=blue&label=chocolatey%20package"></a>
+[telegram-news-badge]: https://img.shields.io/badge/Sophia%20News-Telegram-blue?style=flat&logo=Telegram
+[telegram-news]: https://t.me/sophianews
+[telegram-group]: https://t.me/sophia_chat
+[telegram-group-badge]: https://img.shields.io/endpoint?color=neon&label=Sophia%20Chat&style=flat&url=https%3A%2F%2Ftg.sumanjay.workers.dev%2Fsophia_chat
+[discord-news-badge]: https://discordapp.com/api/guilds/1006179075263561779/widget.png?style=shield
+[discord-link]: https://discord.gg/sSryhaEv79
 
-  <a href="https://twitter.com/tea_head_"><img src="https://img.shields.io/badge/Logo%20by-teahead-blue?style=flat&logo=X"></a>
-  <img src="https://img.shields.io/badge/Made%20with-149ce2.svg?color=149ce2"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/heart.svg" height="17px"/>
-  <a href="https://github.com/farag2/Sophia-Script-for-Windows"><img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/farag2/9852d6b9569a91bf69ceba8a94cc97f4/raw/SophiaScript.json"></a>
+[![Telegram][telegram-news-badge]][telegram-news]
+[![Telegram][telegram-group-badge]][telegram-group]
+[![Discord][discord-news-badge]][discord-link]
 
-  [telegram-news-badge]: https://img.shields.io/badge/Sophia%20News-Telegram-blue?style=flat&logo=Telegram
-  [telegram-news]: https://t.me/sophianews
-  [telegram-group]: https://t.me/sophia_chat
-  [telegram-group-badge]: https://img.shields.io/endpoint?color=neon&label=Sophia%20Chat&style=flat&url=https%3A%2F%2Ftg.sumanjay.workers.dev%2Fsophia_chat
+[![build](https://img.shields.io/github/actions/workflow/status/farag2/Sophia-Script-for-Windows/Sophia.yml?label=build&logo=GitHub)](https://github.com/farag2/Sophia-Script-for-Windows/actions)
+[![GitHub Release](https://img.shields.io/github/v/release/farag2/Sophia-Script-for-Windows)](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)
 
-  [![Telegram][telegram-news-badge]][telegram-news]
-  [![Telegram][telegram-group-badge]][telegram-group]
+[![uk-UA](https://img.shields.io/badge/lang-uk--UA-blue)](./docs/README_uk-ua.md)
+[![de](https://img.shields.io/badge/lang-de-black)](./docs/README_de-de.md)
 
-  [discord-news-badge]: https://discordapp.com/api/guilds/1006179075263561779/widget.png?style=shield
-  [discord-link]: https://discord.gg/sSryhaEv79
-  [![Discord][discord-news-badge]][discord-link]
-  <a href="https://github.com/farag2/Sophia-Script-for-Windows/actions"><img src="https://img.shields.io/github/actions/workflow/status/farag2/Sophia-Script-for-Windows/Sophia.yml?label=GitHub%20Actions&logo=GitHub"></a>
-</p>
+<img src="./img/SophiaScript.png" alt="Sophia Script for Windows" width='800'>
 
-<p align="left">
-  <img title="English" src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Flag_of_the_United_Kingdom_(1-2).svg" height="20px"/>
-  &nbsp;
-  <img title="中国人" src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Flag_of_the_People's_Republic_of_China.svg" height="20px"/>
-  &nbsp;
-  <img title="Deutsch" src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Flag_of_Germany.svg" height="20px"/>
-  &nbsp;
-  <img title="Français" src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg" height="20px"/>
-  &nbsp;
-  <img title="Italiano" src="https://upload.wikimedia.org/wikipedia/commons/0/03/Flag_of_Italy.svg" height="20px"/>
-  &nbsp;
-  <img title="Русский" src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Russia.svg" height="20px"/>
-  &nbsp;
-  <img title="Українська" src="https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Ukraine.svg" height="20px"/>
-  &nbsp;
-  <img title="Türkçe" src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Flag_of_Turkey.svg" height="20px"/>
-  &nbsp;
-  <img title="Español" src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Spain.svg" height="20px"/>
-  &nbsp;
-  <img title="Português" src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Flag_of_Portugal.svg" height="20px"/>
-  &nbsp;
-  <img title="Magyar" src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Flag_of_Hungary.svg" height="20px"/>
-  &nbsp;
-  <img title="Polski" src="https://upload.wikimedia.org/wikipedia/commons/1/12/Flag_of_Poland.svg" height="20px"/>
-</p>
-
-***
-
-<a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/get-it-on-github.svg" width="50%" height="50%"></a>
-
-***
-
-<p align="center">
- &bull;
- <a href="#donations">Donations</a>
- &bull;
- <a href="#system-requirements">System Requirements</a>
- &bull;
- <a href="#screenshots">Screenshots</a>
- &bull;
- <a href="#videos">Videos</a>
- &bull;
- <a href="#key-features">Key features</a>
- &bull;
- <a href="#how-to-use">How to use</a>
- &bull;
- <a href="#how-to-translate">How to translate</a>
- &bull;
- <a href="#sophiapp-community-edition-c--wpf">SophiApp</a>
- &bull;
- <a href="https://github.com/farag2/Sophia-Script-for-Windows/blob/master/CHANGELOG.md">Changelog</a>
-</p>
+</div>
 
 ## About Sophia Script
 
-![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Fira+Code&size30&pause=1000&width=435&lines=Made+with+%E2%9D%A4%EF%B8%8F+of+Windows%C2%AE)
+`Sophia Script for Windows` is the largest PowerShell module on `GitHub` for `Windows 10` & `Windows 11` for fine-tuning and automating the routine tasks. It offers more than 150 unique tweaks, and shows how Windows can be configured without making any harm to it.
 
-> [!IMPORTANT]
-> Sophia Script for Windows is the largest PowerShell module on `GitHub` for `Windows 10` & `Windows 11` for fine-tuning and automating the routine tasks. It offers more than 150 unique tweaks, and shows how Windows can be configured without making any harm to it.
+Made with <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/heart.svg" height="17px"/> of Windows.
+
+## Table of Contents
+
+* [How to use](#how-to-use)
+  * [Download via PowerShell](#download-via-powershell)
+  * [Manual method](#manual-method)
+  * [Wrapper](#wrapper)
+  * [How to run the specific function(s)](#how-to-run-the-specific-functions)
+* [Donations](#donations)
+* [System Requirements](#system-requirements)
+* [Key features](#key-features)
+* [Screenshots](#screenshots)
+* [Videos](#videos)
+* [How to translate](#how-to-translate)
+* [Media](#media)
+* [SophiApp](#sophiapp-c--wpf)
 
 ## How to use
 
-# Windows 11
+> [!IMPORTANT]
+> Every tweak in the preset file has its' corresponding function to restore the default settings. Running the script is best done on a fresh install because running it on wrong tweaked system may result in errors occurring.
 
-https://github.com/user-attachments/assets/2654b005-9577-4e56-ac9e-501d3e8a18bd
+> [!WARNING]
+> It's allowed to be logged in as one admin user only during application startup.
+>
+> `Sophia Script for Windows` may not work on a homebrew Windows. Especially, if the homebrew image was created by OS makers being all thumbs who break Microsoft Defender and disable OS telemetry by purposely uprooting system components.
 
-# Windows 10
+### Download via PowerShell
 
-https://github.com/user-attachments/assets/f5bda68f-9509-41dc-b3b1-1518aeaee36f
+To download the latest `Sophia Script for Windows` version run as `Administrator`
 
-***
+```powershell
+iwr script.sophia.team -useb | iex
+```
 
-* Choose the right script version for your `Windows`;
-* Download [up-to-date version](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest);
-* Expand the archive;
-* Open folder with the expanded archive;
+The command will download and expand the latest Sophia Script archive (`without running`) according which Windows and PowerShell versions it is run on. If you run it on, e.g., Windows 11 via PowerShell 5.1, it will download Sophia Script for `Windows 11 PowerShell 5.1`.
+
+### Manual method
+
+* Download an [archive](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest) according to your Windows and PowerShell versions;
+* Expand archive;
 * Look through the `Sophia.ps1` file to configure functions that you want to be run;
-  * Place the "#" char before function if you don't want it to be run.
-  * Remove the "#" char before function if you want it to be run.
+  * Place the `#` char before function if you don't want it to be run.
+  * Remove the `#` char before function if you want it to be run.
 * Copy the whole path to `Sophia.ps1`
   * On `Windows 10` press and hold the <kbd>Shift</kbd> key, right click on `Sophia.ps1`, and click on `Copy as path`;
   * On `Windows 11` right click on `Sophia.ps1` and click on `Copy as path`.
@@ -123,43 +90,28 @@ https://github.com/user-attachments/assets/f5bda68f-9509-41dc-b3b1-1518aeaee36f
   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 ```
 
-* Run `Sophia.ps1`
-  * On `Windows 10` paste copied path to `Sophia.ps1` from the previous step (with [&](https://en.wikipedia.org/wiki/Ampersand));
+### Windows 11
 
-   ```powershell
-   & <path_from_buffer>
-   ```
+https://github.com/user-attachments/assets/2654b005-9577-4e56-ac9e-501d3e8a18bd
 
-  * On `Windows 11`
+### Windows 10
 
-   ```powershell
-   .\Sophia.ps1
-   ```
+https://github.com/user-attachments/assets/f5bda68f-9509-41dc-b3b1-1518aeaee36f
 
-## How to download Sophia Script via PowerShell
+## Wrapper
 
-* Download the always latest Sophia Script archive by invoking (`not as administrator too`) in PowerShell
-
-```powershell
-iwr script.sophia.team -useb | iex
-```
-
-* The command will download and expand the latest Sophia Script archive (`without running`) according which Windows and PowerShell versions it is run on. If you run it on, e.g., Windows 11 via PowerShell 5.1, it will download Sophia Script for `Windows 11 PowerShell 5.1`.
-
-## How to use Wrapper
-
-* Download and expand the archive;
+* Download the [latest](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest) Wrapper version;
+* Expand archive;
 * Run `SophiaScriptWrapper.exe` and import `Sophia.ps1`;
   * `Sophia.ps1` has to be in `Sophia Script` folder;
   * The Wrapper has a real time UI rendering;
 * Configure every function;
 * Open the `Console Output` tab and press `Run PowerShell`.
 
-***
-
 ### How to run the specific function(s)
 
-To run the specific function(s) [dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator) the `Functions.ps1` file first:
+* Do all steps from [Manual method](#manual-method) section and stop at settings execution policy in `PowerShell`;
+* [Dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator) the `Functions.ps1` file first:
 
 ```powershell
 # With a dot at the beginning
@@ -169,7 +121,7 @@ To run the specific function(s) [dot source](https://docs.microsoft.com/ru-ru/po
 * Now you can do like this (the quotation marks required)
 
 ```powershell
-Sophia -FunctionsTAB
+Sophia -Functions<TAB>
 Sophia -Functions temp<TAB>
 Sophia -Functions unin<TAB>
 Sophia -Functions uwp<TAB>
@@ -184,11 +136,6 @@ Or use an old-style format without the TAB functions autocomplete (the quotation
 .\Sophia.ps1 -Functions CreateRestorePoint, "ScheduledTasks -Disable", "WindowsCapabilities -Uninstall"
 ```
 
-## Before running
-
-> [!CAUTION]
-> Due to the fact that the script includes more than **150** functions with different arguments, you must read the entire **Sophia.ps1** carefully and **comment out/uncomment** those functions that you do/do not want to be executed (without need to edit the code), or use [Wrapper](https://github.com/farag2/Sophia-Script-for-Windows#benchtweakgaming-sophia-script-wrapper). Every tweak in the preset file has its' corresponding function to **restore the default settings**. Running the script is best done on a fresh install because running it on **wrong** tweaked system may result in errors occurring.
-
 ## Donations
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/farag)
@@ -198,7 +145,7 @@ Or use an old-style format without the TAB functions autocomplete (the quotation
 [Windows-10]: https://support.microsoft.com/topic/windows-10-update-history-8127c2c6-6edf-4fdf-8b9f-0f7be1ef3562
 [Windows-10-LTSC-2019]: https://support.microsoft.com/topic/windows-10-and-windows-server-2019-update-history-725fc2e1-4443-6831-a5ca-51ff5cbcb059
 [Windows-10-LTSC-2021]: https://support.microsoft.com/topic/windows-10-update-history-857b8ccb-71e4-49e5-b3f6-7073197d98fb
-[Windows-11-LTSC-2024]: https://support.microsoft.com/en-us/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5
+[Windows-11-LTSC-2024]: https://support.microsoft.com/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5
 [Windows-11-23h2]: https://support.microsoft.com/topic/windows-11-version-23h2-update-history-59875222-b990-4bd9-932f-91a5954de434
 [Windows-11-24h2]: https://support.microsoft.com/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5
 
@@ -210,11 +157,6 @@ Or use an old-style format without the TAB functions autocomplete (the quotation
 | Windows 11 Enterprise LTSC 2024          | 2024 Update         | [Latest stable][Windows-11-LTSC-2024] | Enterprise          |
 | Windows 10 x64 21H2 Enterprise LTSC 2021 | October 2021 Update | [Latest stable][Windows-10-LTSC-2021] | Enterprise          |
 | Windows 10 x64 1809 Enterprise LTSC 2019 | October 2018 Update | [Latest stable][Windows-10-LTSC-2019] | Enterprise          |
-
-> [!WARNING]
-> It's allowed to be logged in as one admin user only during application startup.
->
-> `Sophia Script for Windows` may not work on a homebrew Windows. Especially, if the homebrew image was created by OS makers being all thumbs who break Microsoft Defender and disable OS telemetry by purposely uprooting system components.
 
 ## Key features
 
@@ -297,7 +239,6 @@ https://user-images.githubusercontent.com/10544660/253818031-b7ce6bf1-d968-41ea-
 
 [![YT](https://img.youtube.com/vi/8E6OT_QcHaU/1.jpg)](https://youtu.be/8E6OT_QcHaU?t=370) [![YT](https://img.youtube.com/vi/091SOihvx0k/1.jpg)](https://youtu.be/091SOihvx0k?t=490)
 
-
 ## How to translate
 
 * Get your OS UI culture by invoking `$PSUICulture` in PowerShell;
@@ -324,7 +265,7 @@ https://user-images.githubusercontent.com/10544660/253818031-b7ce6bf1-d968-41ea-
 
 ***
 
-## SophiApp Community Edition (C# + WPF)
+## SophiApp (C# + WPF)
 
 [SophiApp](https://github.com/Sophia-Community/SophiApp) is the full GUI version of `Sophia Script for Windows` and ready for use. It is in ongoing improvements with version 2.0 in development 🚀
 
