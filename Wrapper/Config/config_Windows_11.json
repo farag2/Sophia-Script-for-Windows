@@ -627,22 +627,6 @@
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
-    "Function": "PreventTeamsInstallation",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable"
-      },
-      "One": {
-        "Tag": "Disable"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
-    "Region": "UI & Personalization",
-    "Control": "cmb",
-    "Required": "false",
     "Function": "SecondsInSystemClock",
     "Arg": {
       "Zero": {

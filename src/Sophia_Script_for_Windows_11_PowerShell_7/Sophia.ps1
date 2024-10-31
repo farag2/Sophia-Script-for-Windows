@@ -473,14 +473,6 @@ TaskViewButton -Hide
 # Отобразить кнопку "Представление задач" на панели задач (значение по умолчанию)
 # TaskViewButton -Show
 
-# Hide the Chat icon (Microsoft Teams) on the taskbar and prevent Microsoft Teams from installing for new users
-# Скрыть кнопку чата (Microsoft Teams) с панели задач и запретить установку Microsoft Teams для новых пользователей
-PreventTeamsInstallation -Enable
-
-# Show the Chat icon (Microsoft Teams) on the taskbar and remove block from installing Microsoft Teams for new users (default value)
-# Отобразить кнопку чата (Microsoft Teams) на панели задач и убрать блокировку на устанвоку Microsoft Teams для новых пользователей (значение по умолчанию)
-# PreventTeamsInstallation -Disable
-
 # Show seconds on the taskbar clock
 # Показывать секунды на часах на панели задач
 SecondsInSystemClock -Show

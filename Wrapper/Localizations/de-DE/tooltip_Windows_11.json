@@ -547,20 +547,6 @@
   },
   {
     "Region": "UI & Personalization",
-    "Function": "PreventTeamsInstallation",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Blenden Sie das Chat-Symbol (Microsoft Teams) in der Taskleiste aus und verhindern Sie, dass Microsoft Teams für neue Benutzer installiert wird."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Zeigen Sie das Chat-Symbol (Microsoft Teams) in der Taskleiste an und entfernen Sie die Sperre für die Installation von Microsoft Teams für neue Benutzer (Standardeinstellung)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
     "Function": "SecondsInSystemClock",
     "Arg": {
       "Zero": {

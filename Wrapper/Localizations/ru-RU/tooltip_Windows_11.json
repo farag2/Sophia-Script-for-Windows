@@ -547,20 +547,6 @@
   },
   {
     "Region": "UI & Personalization",
-    "Function": "PreventTeamsInstallation",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Скрыть кнопку чата (Microsoft Teams) с панели задач и запретить установку Microsoft Teams для новых пользователей."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Отобразить кнопку чата (Microsoft Teams) на панели задач и убрать блокировку на устанвоку Microsoft Teams для новых пользователей (значение по умолчанию)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
     "Function": "SecondsInSystemClock",
     "Arg": {
       "Zero": {

@@ -9884,9 +9884,10 @@ function UninstallPCHealthCheck
 #>
 function InstallVCRedist
 {
+	$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+
 	try
 	{
-		$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 		$Parameters = @{
 			Uri             = "https://aka.ms/vs/17/release/VC_redist.x86.exe"
 			OutFile         = "$DownloadsFolder\VC_redist.x86.exe"
@@ -9894,28 +9895,6 @@ function InstallVCRedist
 			Verbose         = $true
 		}
 		Invoke-WebRequest @Parameters
-
-		Start-Process -FilePath "$DownloadsFolder\VC_redist.x86.exe" -ArgumentList "/install /passive /norestart" -Wait
-
-		$Parameters = @{
-			Uri             = "https://aka.ms/vs/17/release/VC_redist.x64.exe"
-			OutFile         = "$DownloadsFolder\VC_redist.x64.exe"
-			UseBasicParsing = $true
-			Verbose         = $true
-		}
-		Invoke-WebRequest @Parameters
-
-		Start-Process -FilePath "$DownloadsFolder\VC_redist.x64.exe" -ArgumentList "/install /passive /norestart" -Wait
-
-		# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-		# https://github.com/PowerShell/PowerShell/issues/21070
-		$Paths = @(
-			"$DownloadsFolder\VC_redist.x86.exe",
-			"$DownloadsFolder\VC_redist.x64.exe",
-			"$env:TEMP\dd_vcredist_x86_*.log",
-			"$env:TEMP\dd_vcredist_amd64_*.log"
-		)
-		Get-ChildItem -Path $Paths -Recurse -Force | Remove-Item -Recurse -Force -ErrorAction Ignore
 	}
 	catch [System.Net.WebException]
 	{
@@ -9923,7 +9902,49 @@ function InstallVCRedist
 		Write-Error -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com") -ErrorAction SilentlyContinue
 
 		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+		return
 	}
+
+	Write-Information -MessageData "" -InformationAction Continue
+	Write-Verbose -Message "Visual C++ Redistributable x86" -Verbose
+
+	Start-Process -FilePath "$DownloadsFolder\VC_redist.x86.exe" -ArgumentList "/install /passive /norestart" -Wait
+
+	try
+	{
+		$Parameters = @{
+			Uri             = "https://aka.ms/vs/17/release/VC_redist.x64.exe"
+			OutFile         = "$DownloadsFolder\VC_redist.x64.exe"
+			UseBasicParsing = $true
+			Verbose         = $true
+		}
+		Invoke-WebRequest @Parameters
+	}
+	catch [System.Net.WebException]
+	{
+		Write-Warning -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com")
+		Write-Error -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com") -ErrorAction SilentlyContinue
+
+		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+		return
+	}
+
+	Write-Information -MessageData "" -InformationAction Continue
+	Write-Verbose -Message "Visual C++ Redistributable x64" -Verbose
+
+	Start-Process -FilePath "$DownloadsFolder\VC_redist.x64.exe" -ArgumentList "/install /passive /norestart" -Wait
+
+	# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+	# https://github.com/PowerShell/PowerShell/issues/21070
+	$Paths = @(
+		"$DownloadsFolder\VC_redist.x86.exe",
+		"$DownloadsFolder\VC_redist.x64.exe",
+		"$env:TEMP\dd_vcredist_x86_*.log",
+		"$env:TEMP\dd_vcredist_amd64_*.log"
+	)
+	Get-ChildItem -Path $Paths -Recurse -Force | Remove-Item -Recurse -Force -ErrorAction Ignore
 }
 
 <#
@@ -9953,6 +9974,8 @@ function InstallDotNetRuntimes
 		$Runtimes
 	)
 
+	$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+
 	foreach ($Runtime in $Runtimes)
 	{
 		switch ($Runtime)
@@ -9969,7 +9992,6 @@ function InstallDotNetRuntimes
 						UseBasicParsing = $true
 					}
 					$LatestRelease = (Invoke-RestMethod @Parameters)."latest-release"
-					$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 				}
 				catch [System.Net.WebException]
 				{
@@ -10002,6 +10024,9 @@ function InstallDotNetRuntimes
 					return
 				}
 
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Verbose -Message ".NET $LatestRelease" -Verbose
+
 				Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
 
 				# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
@@ -10024,7 +10049,6 @@ function InstallDotNetRuntimes
 						UseBasicParsing = $true
 					}
 					$LatestRelease = (Invoke-RestMethod @Parameters)."latest-release"
-					$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 				}
 				catch [System.Net.WebException]
 				{
@@ -10056,6 +10080,9 @@ function InstallDotNetRuntimes
 
 					return
 				}
+
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Verbose -Message ".NET $LatestRelease" -Verbose
 
 				Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
 
@@ -14968,6 +14995,9 @@ public static void PostMessage()
 			}
 		}
 	}
+
+	# Open Startup page
+	Start-Process -FilePath "ms-settings:startupapps"
 
 	# Check whether any of scheduled tasks were created. Unless open Task Scheduler
 	if ($Script:ScheduledTasks)

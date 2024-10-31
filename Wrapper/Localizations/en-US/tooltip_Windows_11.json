@@ -547,20 +547,6 @@
   },
   {
     "Region": "UI & Personalization",
-    "Function": "PreventTeamsInstallation",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Hide the Chat icon (Microsoft Teams) on the taskbar and prevent Microsoft Teams from installing for new users."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Show the Chat icon (Microsoft Teams) on the taskbar and remove block from installing Microsoft Teams for new users (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
     "Function": "SecondsInSystemClock",
     "Arg": {
       "Zero": {
