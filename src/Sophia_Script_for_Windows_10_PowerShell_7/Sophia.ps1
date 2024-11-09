@@ -71,7 +71,7 @@ Clear-Host
 
 $Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.19.2 (PowerShell 7) | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2024"
 
-# Check whether all files were expanded before running
+# Checking whether all files were expanded before running
 $ScriptFiles = @(
 	"$PSScriptRoot\Localizations\de-DE\Sophia.psd1",
 	"$PSScriptRoot\Localizations\en-US\Sophia.psd1",
@@ -114,14 +114,14 @@ catch
 	Import-LocalizedData -BindingVariable Global:Localization -UICulture en-US -BaseDirectory $PSScriptRoot\Localizations -FileName Sophia
 }
 
-# Check whether script is not running via PowerShell (x86)
+# Checking whether script is the correct PowerShell version
 try
 {
 	Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force -ErrorAction Stop
 }
 catch [System.InvalidOperationException]
 {
-	Write-Warning -Message $Localization.PowerShellx86Warning
+	Write-Warning -Message $Localization.UnsupportedPowerShell
 
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
@@ -1001,7 +1001,7 @@ NetworkDiscovery -Enable
 
 <#
 	Uninstall the "PC Health Check" app and prevent it from installing in the future
-	This application is installed with the KB5005463 update to Check whether PC meets the system requirements of Windows 11
+	This application is installed with the KB5005463 update to сheck whether PC meets the system requirements of Windows 11
 
 	Удалить приложение "Проверка работоспособности ПК Windows" и заблокировать его установку в будущем
 	Данное приложение устанавливается обновлением KB5005463 для проверки соответствия компьютера системным требованиям Windows 11
