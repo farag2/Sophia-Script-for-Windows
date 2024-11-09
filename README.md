@@ -4,7 +4,7 @@
 
 # Sophia Script for Windows
 
-**Sophia Script for Windows is the most powerfull PowerShell module for fine-tuning Windows**
+**Sophia Script for Windows is the most powerful PowerShell module for fine-tuning Windows**
 
 ![downloads](https://img.shields.io/github/downloads/farag2/Sophia-Script-for-Windows/total?label=downloads%20%28since%20May%202020%29) [![chocolatey](https://img.shields.io/chocolatey/dt/sophia?color=blue&label=chocolatey%20package)](https://community.chocolatey.org/packages/sophia) [![lines](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/farag2/9852d6b9569a91bf69ceba8a94cc97f4/raw/SophiaScript.json)](https://github.com/farag2/Sophia-Script-for-Windows)
 
@@ -24,6 +24,7 @@
 
 [![uk-UA](https://img.shields.io/badge/lang-uk--UA-blue)](./docs/README_uk-ua.md)
 [![de](https://img.shields.io/badge/lang-de-black)](./docs/README_de-de.md)
+[![ru](https://img.shields.io/badge/lang-ru-red)](./docs/README_ru-ru.md)
 
 <img src="./img/SophiaScript.png" alt="Sophia Script for Windows" width='800'>
 
@@ -110,7 +111,7 @@ https://github.com/user-attachments/assets/f5bda68f-9509-41dc-b3b1-1518aeaee36f
 
 ### How to run the specific function(s)
 
-* Do all steps from [Manual method](#manual-method) section and stop at settings execution policy in `PowerShell`;
+* Do all steps from [Manual method](#manual-method) section and stop at setting execution policy in `PowerShell`;
 * [Dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator) the `Functions.ps1` file first:
 
 ```powershell
@@ -149,7 +150,7 @@ Or use an old-style format without the TAB functions autocomplete (the quotation
 [Windows-11-23h2]: https://support.microsoft.com/topic/windows-11-version-23h2-update-history-59875222-b990-4bd9-932f-91a5954de434
 [Windows-11-24h2]: https://support.microsoft.com/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5
 
-|               Version                    |    Marketing name   |                  Build                |      Editions       |
+|               Version                    |    Marketing name   |                  Build                |      Edition        |
 |:-----------------------------------------|--------------------:|:-------------------------------------:|:-------------------:|
 | Windows 11 24H2                          | 2024 Update         | [Latest stable][Windows-11-24h2]      | Home/Pro/Enterprise |
 | Windows 11 23H2                          | 2023 Update         | [Latest stable][Windows-11-23h2]      | Home/Pro/Enterprise |
@@ -167,38 +168,33 @@ Or use an old-style format without the TAB functions autocomplete (the quotation
 * Uninstall OneDrive "correctly";
 * Interactive [prompts](#change-user-folders-location-programmatically-using-the-interactive-menu);
 * The <kbd>TAB</kbd> [completion](#the-tab-autocomplete-read-more-here) for functions and their arguments (if using the Functions.ps1 file);
-* Change %TEMP% environment variable path to %SystemDrive%\Temp;
 * Change location of the user folders programmatically (without moving user files) within interactive menu using arrows to select a drive
-  * "Desktop"
-  * "Documents"
-  * "Downloads"
-  * "Music"
-  * "Pictures"
-  * "Videos"
+  * Desktop
+  * Documents
+  * Downloads
+  * Music
+  * Pictures
+  * Videos
 * Install free (light and dark) "Windows 11 Cursors Concept v2" cursors from [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) on-the-fly;
-* Uninstall UWP apps displaying  packages names;
-  * Generate installed UWP apps list dynamically
-* Restore the default uninstalled UWP apps for current user displaying [localized](#localized-uwp-packages-names) packages names;
-* The <kbd>TAB</kbd> [autocompletion](#the-tab-autocomplete-read-more-here) for function and its' arguments by typing first letters;
+* Uninstall UWP apps displaying thier localized packages names;
+  * Script generates installed UWP apps list [dynamically](#localized-uwp-packages-names)
 * Disable Windows features displaying friendly packages names with pop-up form written in [WPF](#screenshots);
 * Uninstall Windows capabilities displaying friendly packages names with pop-up form written in [WPF](#screenshots);
 * Download and install the [HEVC Video Extensions from Device Manufacturer](https://apps.microsoft.com/detail/9N4WGH0Z6VHQ) to be able to open [HEVC](https://en.wikipedia.org/wiki/H.265) format;
-* Register app, calculate hash, and set as default for specific extension without the "How do you want to open this" pop-up using special [function](https://github.com/DanysysTeam/PS-SFTA);
+* Set an app as default one for specific extension without the "How do you want to open this" pop-up using special [function](https://github.com/DanysysTeam/PS-SFTA);
 * Export all Windows associations. Associations will be exported as Application_Associations.json file in script root folder;
 * Import exported JSON file after a clean installation. You have to install all apps according to an exported JSON file to restore all associations;
-* Install any supported Linux distrobution for WSL displaying friendly distro names with pop-up form written in [WPF](#screenshots);
-* Create a `Windows Cleanup` and `Windows Cleanup Notification` scheduled tasks for Windows cleaning up unused files and updates;
-  * A native toast notification will be displayed where you can choose to snooze, run the cleanup task or [dismiss](#native-interactive-toasts-for-the-scheduled-tasks)
+* Install any supported Linux distribution for WSL displaying friendly distro names with pop-up form written in [WPF](#screenshots);
+* Create scheduled tasks with a native toast notification, where you will be able to run or [dismiss](#native-interactive-toasts-for-the-scheduled-tasks) tasks;
+  * Create scheduled tasks `Windows Cleanup` and `Windows Cleanup Notification` for cleaning up Windows of unused files and Windows updates files;
+  * Create a scheduled task `SoftwareDistribution` for cleaning up `%SystemRoot%\SoftwareDistribution\Download`;
+  * Create a scheduled task `Temp` for cleaning up `%TEMP%`.
 * Create tasks in the Task Scheduler to clear
   * `%SystemRoot%\SoftwareDistribution\Download`
   * `%TEMP%`
 * Pin shortcuts to Start via pure PowerShell
-  * Three shortcuts are pre-configured to be pinned: Control Panel, "old style" Devices and Printers.
+  * `Control Panel` & "old style" `Devices and Printers` shortcuts will be pinned.
 * Unpin all Start menu tiles;
-* Turn on Controlled folder access and add protected folders using dialog menu;
-* Add exclusion folder from Microsoft Defender Antivirus scanning using dialog menu;
-* Add exclusion file from Microsoft Defender Antivirus scanning using dialog menu;
-* Refresh desktop icons, environment variables and taskbar without restarting File Explorer;
 * Configure the Windows security;
 * Display all policy registry keys (even manually created ones) in the Local Group Policy Editor snap-in (gpedit.msc);
 * Many more File Explorer and context menu "deep" tweaks.
@@ -254,8 +250,8 @@ https://user-images.githubusercontent.com/10544660/253818031-b7ce6bf1-d968-41ea-
 * [rutracker](https://rutracker.org/forum/viewtopic.php?t=5996011)
 * [My Digital Life](https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/)
 * [4sysops](https://4sysops.com/archives/windows-10-sophia-script-powershell-functions-for-windows-10-fine-tuning-and-automating-routine-configuration-tasks/)
-* [gHacks Technology News](https://www.ghacks.net/2020/09/27/windows-10-setup-script-has-a-new-name-and-is-now-easier-to-use/)
-* [Neowin: Tech News, Reviews & Betas](https://www.neowin.net/news/this-windows-10-setup-script-lets-you-fine-tune-around-150-functions-for-new-installs)
+* [gHacks](https://www.ghacks.net/2020/09/27/windows-10-setup-script-has-a-new-name-and-is-now-easier-to-use/)
+* [Neowin](https://www.neowin.net/news/this-windows-10-setup-script-lets-you-fine-tune-around-150-functions-for-new-installs)
 * [Comss.ru](https://www.comss.ru/page.php?id=8019)
 * [Habr](https://habr.com/company/skillfactory/blog/553800)
 * [Deskmodder.de](https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10/)
@@ -267,7 +263,7 @@ https://user-images.githubusercontent.com/10544660/253818031-b7ce6bf1-d968-41ea-
 
 ## SophiApp (C# + WPF)
 
-[SophiApp](https://github.com/Sophia-Community/SophiApp) is the full GUI version of `Sophia Script for Windows` and ready for use. It is in ongoing improvements with version 2.0 in development 🚀
+[SophiApp 2.0](https://github.com/Sophia-Community/SophiApp) is in ongoing development. 🚀
 
 ![Image](https://github.com/Sophia-Community/SophiApp/raw/master/img/0.gif)
 ![Image](https://github.com/Sophia-Community/SophiApp/raw/master/img/1.png)

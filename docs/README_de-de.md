@@ -23,7 +23,8 @@
 [![GitHub Release](https://img.shields.io/github/v/release/farag2/Sophia-Script-for-Windows)](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)
 
 [![en-US](https://img.shields.io/badge/lang-en--us-green)](../README.md)
-[![uk-UA](https://img.shields.io/badge/lang-uk--UA-blue)](../docs/README_uk-ua.md)
+[![uk-UA](https://img.shields.io/badge/lang-uk--UA-blue)](./README_uk-ua.md)
+[![ru](https://img.shields.io/badge/lang-ru-red)](./README_ru-ru.md)
 
 <img src="../img/SophiaScript.png" alt="Sophia Script for Windows" width='800'>
 
@@ -149,7 +150,7 @@ Oder verwenden Sie ein Format im alten Stil ohne die TAB-Funktionen zum automati
 [Windows-11-23h2]: https://support.microsoft.com/topic/windows-11-version-23h2-update-history-59875222-b990-4bd9-932f-91a5954de434
 [Windows-11-24h2]: https://support.microsoft.com/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5
 
-|               Version                    |    Marketing name   |                          Build                  |      Editions       |
+|               Version                    |    Marketing name   |                          Build                  |      Edition        |
 |:-----------------------------------------|--------------------:|:-----------------------------------------------:|:-------------------:|
 | Windows 11 24H2                          | 2024 Update         | [Neueste stabile Version][Windows-11-24h2]      | Home/Pro/Enterprise |
 | Windows 11 23H2                          | 2023 Update         | [Neueste stabile Version][Windows-11-23h2]      | Home/Pro/Enterprise |
@@ -167,19 +168,16 @@ Oder verwenden Sie ein Format im alten Stil ohne die TAB-Funktionen zum automati
 * OneDrive "richtig" deinstallieren;
 * Interaktive [Eingabeaufforderungen](#change-user-folders-location-programmatically-using-the-interactive-menu);
 * Die <kbd>TAB</kbd> [Autovervollständigung](#the-tab-autocomplete-read-more-here) für Funktionen und ihre Argumente (bei Verwendung der Datei Functions.ps1);
-* Ändern Sie den Pfad der Umgebungsvariablen %TEMP% in %SystemDrive%\Temp;
 * Ändern Sie den Speicherort der Benutzerordner programmatisch (ohne die Benutzerdateien zu verschieben) im interaktiven Menü mit Hilfe von Pfeilen zur Auswahl eines Laufwerks
-  * "Desktop"
-  * "Dokumente"
-  * "Downloads"
-  * "Musik"
-  * "Bilder"
-  * "Videos"
+  * Desktop
+  * Dokumente
+  * Downloads
+  * Musik
+  * Bilder
+  * Videos
 * Installieren Sie den kostenlosen (helle und dunkle) "Windows 11 Cursors Concept v2" Cursor von [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) on-the-fly;
 * Deinstallieren Sie UWP-Anwendungen, mithilfe der Paketnamen;
-  * Generiert eine Liste der UWP-Anwendungen dynamisch;
-* Wiederherstellen der deinstallierten UWP-Apps für den aktuellen Benutzer, wobei [localized](#localized-uwp-packages-names) Paketnamen angezeigt werden;
-* Die <kbd>TAB</kbd> [Autovervollständigung](#the-tab-autocomplete-read-more-here) für Funktionen und ihre Argumente durch Eingabe der ersten Buchstaben;
+  * Skript generiert Liste der installierten UWP-Apps [dynamisch](#lokalisierte-namen-von-uwp-paketen);
 * Deaktivieren Sie Windows-Funktionen, die Paketnamen mit einem in [WPF] geschriebenen Popup-Formular, in lokalisierter Sprache anzeigen (#screenshots);
 * Deinstallieren Sie Windows-Funktionen, die Paketnamen mit einem in [WPF] geschriebenen Popup-Formular, in lokalisierter Sprache anzeigen (#screenshots);
 * Laden Sie die [HEVC Video Extensions from Device Manufacturer](https://apps.microsoft.com/detail/9N4WGH0Z6VHQ) herunter und installieren Sie sie, um das Format [HEVC] (<https://en.wikipedia.org/wiki/H.265>) öffnen zu können;
@@ -187,18 +185,13 @@ Oder verwenden Sie ein Format im alten Stil ohne die TAB-Funktionen zum automati
 * Exportieren Sie alle Windows-Verknüpfungen in die Datei Application_Associations.json in den Skriptstammordner;
 * Importieren Sie alle Windows-Zuordnungen aus einer JSON-Datei. Sie müssen alle Anwendungen gemäß einer exportierten JSON-Datei installieren, um alle Zuordnungen wiederherzustellen;
 * Installieren Sie eine beliebige unterstützte Linux-Distribution für WSL, die lokalisierten Distro-Namen nutzt, mit einem in [WPF] geschriebenen Popup-Formular(#screenshots);
-* Erstellen Sie die geplanten Aufgaben `Windows-Bereinigung` und `Windows-Bereinigungsbenachrichtigung`, um nicht verwendete Dateien und Updates zu bereinigen;
-  * Es wird eine native Toast-Benachrichtigung angezeigt, bei der Sie wählen können, ob Sie eine Schlummerfunktion nutzen, die Bereinigungsaufgabe ausführen oder [beenden](#native-interactive-toasts-for-the-scheduled-tasks)
-* Erstellen Sie Aufgaben im Aufgabenplaner zur Verwaltung der Reinigung von
-  * `%SystemRoot%\SoftwareDistribution\Download`
-  * `%TEMP%`
-* Anheften von Verknüpfungen an Start über reinen PowerShell-Code
-  * Drei Verknüpfungen sind so vorkonfiguriert, dass sie angeheftet werden können: Systemsteuerung, Geräte und Drucker im "alten Stil".
+* Erstellen Sie geplante Aufgaben mit einer nativen Toast-Benachrichtigung, mit der Sie Aufgaben ausführen oder [abbrechen können](#native-interactive-toasts-for-the-scheduled-tasks);
+  * Erstellen Sie die geplanten Aufgaben `Windows Cleanup` und `Windows Cleanup Notification`, um Windows von ungenutzten Dateien und Windows-Updates zu bereinigen;
+  * Erstellen Sie eine geplante Aufgabe `SoftwareDistribution` zur Bereinigung von `%SystemRoot%\SoftwareDistribution\Download`.
+  * Erstellen Sie eine geplante Aufgabe `Temp` zum Aufräumen von `%TEMP%`.
+* Anheften von Verknüpfungen an Start über reinen PowerShell-Code (nur für Windows 10)
+  * Die Verknüpfungen `Systemsteuerung` und `Geräte und Drucker` im "alten Stil"“" werden angeheftet.
 * Heben Sie die Anheftung aller Startmenü-Kacheln auf;
-* Aktivieren Sie den kontrollierten Ordnerzugriff und fügen Sie geschützte Ordner über das Dialogmenü hinzu;
-* Hinzufügen von Ausschlussordnern, die von der Überprüfung durch Microsoft Defender Antivirus ausgeschlossen werden, über das Dialogmenü;
-* Hinzufügen von Ausschlussdateien, die von der Überprüfung durch Microsoft Defender Antivirus ausgeschlossen werden, über das Dialogmenü;
-* Desktop-Symbole, Umgebungsvariablen und Taskleiste aktualisieren, ohne den Datei-Explorer neu zu starten;
 * Konfigurieren Sie die Windows-Sicherheit;
 * Zeigen Sie alle Richtlinien-Registrierungsschlüssel (auch manuell erstellte) im Snap-In Lokaler Gruppenrichtlinien-Editor (gpedit.msc) an;
 * Viele weitere "tiefe" Optimierungen des Datei-Explorers und des Kontextmenüs.
@@ -254,8 +247,8 @@ https://user-images.githubusercontent.com/10544660/253818031-b7ce6bf1-d968-41ea-
 * [rutracker](https://rutracker.org/forum/viewtopic.php?t=5996011)
 * [My Digital Life](https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/)
 * [4sysops](https://4sysops.com/archives/windows-10-sophia-script-powershell-functions-for-windows-10-fine-tuning-and-automating-routine-configuration-tasks/)
-* [gHacks Technology News](https://www.ghacks.net/2020/09/27/windows-10-setup-script-has-a-new-name-and-is-now-easier-to-use/)
-* [Neowin: Tech News, Reviews & Betas](https://www.neowin.net/news/this-windows-10-setup-script-lets-you-fine-tune-around-150-functions-for-new-installs)
+* [gHacks](https://www.ghacks.net/2020/09/27/windows-10-setup-script-has-a-new-name-and-is-now-easier-to-use/)
+* [Neowin](https://www.neowin.net/news/this-windows-10-setup-script-lets-you-fine-tune-around-150-functions-for-new-installs)
 * [Comss.ru](https://www.comss.ru/page.php?id=8019)
 * [Habr](https://habr.com/company/skillfactory/blog/553800)
 * [Deskmodder.de](https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10/)
@@ -267,7 +260,7 @@ https://user-images.githubusercontent.com/10544660/253818031-b7ce6bf1-d968-41ea-
 
 ## SophiApp (C# + WPF)
 
-[SophiApp](https://github.com/Sophia-Community/SophiApp) ist die vollständige GUI-Version von `Sophia Script for Windows` und sofort einsatzbereit. Sie wird laufend verbessert, Version 2.0 befindet sich in der Entwicklung. 🚀
+[SophiApp 2.0](https://github.com/Sophia-Community/SophiApp) befindet sich in der Entwicklung. 🚀
 
 ![Image](https://github.com/Sophia-Community/SophiApp/raw/master/img/0.gif)
 ![Image](https://github.com/Sophia-Community/SophiApp/raw/master/img/1.png)

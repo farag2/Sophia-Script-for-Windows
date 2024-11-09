@@ -484,7 +484,6 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			Write-Warning -Message ($Localization.WindowsComponentBroken -f $File)
 			Write-Information -MessageData "" -InformationAction Continue
 
-			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest" -Verbose
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
@@ -712,6 +711,35 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		exit
 	}
 
+	# Get the real Windows version like %SystemRoot%\system32\winver.exe relies on
+	$Signature = @{
+		Namespace        = "WinAPI"
+		Name             = "Winbrand"
+		Language         = "CSharp"
+		CompilerOptions  = $CompilerOptions
+		MemberDefinition = @"
+[DllImport("Winbrand.dll", CharSet = CharSet.Unicode)]
+public extern static string BrandingFormatString(string sFormat);
+"@
+	}
+	if (-not ("WinAPI.Winbrand" -as [type]))
+	{
+		Add-Type @Signature
+	}
+
+	if ([WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%") -notmatch "Windows 10")
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Warning -Message $Localization.UnsupportedOSBuild
+		Write-Information -MessageData "" -InformationAction Continue
+
+		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows#system-requirements" -Verbose
+
+		exit
+	}
+
 	# Detect Windows build version
 	switch ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber)
 	{
@@ -798,7 +826,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Get-Service -Name SysMain | Set-Service -StartupType Automatic
 		Get-Service -Name SysMain | Start-Service
 
-		Write-Verbose -Message "https://www.outsidethebox.ms/19318/" -Verbose
+		Start-Process -FilePath "https://www.outsidethebox.ms/19318"
 	}
 
 	# Automatically manage paging file size for all drives

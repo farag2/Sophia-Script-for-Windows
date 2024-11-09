@@ -444,7 +444,6 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			Write-Warning -Message ($Localization.WindowsComponentBroken -f $File)
 			Write-Information -MessageData "" -InformationAction Continue
 
-			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest" -Verbose
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
@@ -655,8 +654,24 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		exit
 	}
 
-	# Detect Windows build version
-	if ((Get-WindowsEdition -Online).Edition -notmatch "EnterpriseS")
+	# Get the real Windows version like %SystemRoot%\system32\winver.exe relies on
+	$Signature = @{
+		Namespace          = "WinAPI"
+		Name               = "Winbrand"
+		Language           = "CSharp"
+		CompilerParameters = $CompilerParameters
+		MemberDefinition   = @"
+[DllImport("Winbrand.dll", CharSet = CharSet.Unicode)]
+public extern static string BrandingFormatString(string sFormat);
+"@
+	}
+	if (-not ("WinAPI.Winbrand" -as [type]))
+	{
+		Add-Type @Signature
+	}
+
+	$WINDOWS_LONG = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
+	if (-not (($WINDOWS_LONG -match "Windows 10") -and ($WINDOWS_LONG -match "LTSC")))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message $Localization.UnsupportedOSBuild
@@ -748,7 +763,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Get-Service -Name SysMain | Set-Service -StartupType Automatic
 		Get-Service -Name SysMain | Start-Service
 
-		Write-Verbose -Message "https://www.outsidethebox.ms/19318/" -Verbose
+		Start-Process -FilePath "https://www.outsidethebox.ms/19318"
 	}
 
 	# Automatically manage paging file size for all drives
