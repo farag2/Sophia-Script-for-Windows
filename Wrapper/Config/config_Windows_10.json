@@ -576,22 +576,6 @@
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
-    "Function": "CopilotButton",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide"
-      },
-      "One": {
-        "Tag": "Show"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
-    "Region": "UI & Personalization",
-    "Control": "cmb",
-    "Required": "false",
     "Function": "TaskViewButton",
     "Arg": {
       "Zero": {
@@ -699,6 +683,25 @@
     },
     "Preset": "Zero",
     "WindowsDefault": "One"
+  },
+  {
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "TaskbarCombine",
+    "Arg": {
+      "Zero": {
+        "Tag": "Always"
+      },
+      "One": {
+        "Tag": "Full"
+      },
+      "Two": {
+        "Tag": "Never"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "Zero"
   },
   {
     "Region": "UI & Personalization",
@@ -1101,22 +1104,6 @@
       },
       "One": {
         "Tag": "Default"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
-    "Region": "System",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "MappedDrivesAppElevatedAccess",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable"
-      },
-      "One": {
-        "Tag": "Disable"
       }
     },
     "Preset": "Zero",
@@ -2226,6 +2213,22 @@
       }
     },
     "Preset": "",
+    "WindowsDefault": "One"
+  },
+  {
+    "Region": "Context menu",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "ImagesEditContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
     "WindowsDefault": "One"
   },
   {

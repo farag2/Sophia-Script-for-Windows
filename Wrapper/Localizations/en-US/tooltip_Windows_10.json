@@ -347,11 +347,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Expanded",
-        "ToolTip": "Expand the File Explorer ribbon."
+        "ToolTip": "Expand File Explorer ribbon."
       },
       "One": {
         "Tag": "Minimized",
-        "ToolTip": "Minimize the File Explorer ribbon (default value)."
+        "ToolTip": "Minimize File Explorer ribbon (default value)."
       }
     }
   },
@@ -501,20 +501,6 @@
   },
   {
     "Region": "UI & Personalization",
-    "Function": "CopilotButton",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide Copilot button on the taskbar."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show Copilot button on the taskbar (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
     "Function": "TaskViewButton",
     "Arg": {
       "Zero": {
@@ -594,6 +580,20 @@
       "One": {
         "Tag": "Hide",
         "ToolTip": "Hide all icons in the notification area (default value)."
+      }
+    }
+  },
+  {
+    "Region": "UI & Personalization",
+    "Function": "SecondsInSystemClock",
+    "Arg": {
+      "Zero": {
+        "Tag": "Show",
+        "ToolTip": "Show seconds on the taskbar clock."
+      },
+      "One": {
+        "Tag": "Hide",
+        "ToolTip": "Hide seconds on the taskbar clock (default value)."
       }
     }
   },
@@ -967,20 +967,6 @@
       "One": {
         "Tag": "Default",
         "ToolTip": "Choose when to be notified about changes to your computer: notify me only when apps try to make changes to my computer (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "MappedDrivesAppElevatedAccess",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Turn on access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Turn off access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled (default value)."
       }
     }
   },

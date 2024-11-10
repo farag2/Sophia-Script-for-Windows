@@ -357,11 +357,11 @@ OpenFileExplorerTo -ThisPC
 # Открывать проводник для "Быстрый доступ" (значение по умолчанию)
 # OpenFileExplorerTo -QuickAccess
 
-# Disable the File Explorer compact mode (default value)
+# Disable File Explorer compact mode (default value)
 # Отключить компактный вид проводника (значение по умолчанию)
 FileExplorerCompactMode -Disable
 
-# Enable the File Explorer compact mode
+# Enable File Explorer compact mode
 # Включить компактный вид проводника
 # FileExplorerCompactMode -Enable
 
@@ -452,14 +452,6 @@ SearchHighlights -Hide
 # Show search highlights (default value)
 # Показать главное в поиске (значение по умолчанию)
 # SearchHighlights -Show
-
-# Hide Copilot button on the taskbar
-# Скрыть кнопку Copilot с панели задач
-CopilotButton -Hide
-
-# Show Copilot button on the taskbar (default value)
-# Отобразить кнопку Copilot на панели задач (значение по умолчанию)
-# CopilotButton -Show
 
 # Hide the Task view button from the taskbar
 # Скрыть кнопку "Представление задач" с панели задач
@@ -678,14 +670,6 @@ AdminApprovalMode -Never
 # Choose when to be notified about changes to your computer: notify me only when apps try to make changes to my computer (default value)
 # Настройка уведомления об изменении параметров компьютера: уведомлять меня только при попытках приложений внести изменения в компьютер (значение по умолчанию)
 # AdminApprovalMode -Default
-
-# Turn on access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled
-# Включить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами
-MappedDrivesAppElevatedAccess -Enable
-
-# Turn off access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled (default value)
-# Выключить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами (значение по умолчанию)
-# MappedDrivesAppElevatedAccess -Disable
 
 # Turn off Delivery Optimization
 # Выключить оптимизацию доставки

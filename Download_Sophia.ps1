@@ -3,7 +3,7 @@
 	Download and expand latest Sophia Script version, depending on what Windows or PowerShell versions are used to
 
 	.SYNOPSIS
-	E.g., if you start script on Windows 11 via PowerShell 5.1 you will start downloading Sophia Script for Windows 11 PowerShell 5.1
+	For example, if you start script on Windows 11 via PowerShell 5.1 you will start downloading Sophia Script for Windows 11 PowerShell 5.1
 
 	.EXAMPLE
 	iwr script.sophia.team -useb | iex
@@ -32,6 +32,7 @@ $Parameters = @{
 	Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
 	UseBasicParsing = $true
 }
+$JSONVersions = Invoke-WebRequest @Parameters
 
 switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 {
@@ -40,13 +41,14 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		# Check for Windows 10 LTSC 2019
 		if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName) -match "LTSC 2019")
 		{
-			$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_LTSC2019
+			$LatestRelease = $JSONVersions.Sophia_Script_Windows_10_LTSC2019
 			$Parameters = @{
 				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.LTSC.2019.v$LatestRelease.zip"
 				OutFile         = "$DownloadsFolder\Sophia.Script.zip"
 				UseBasicParsing = $true
 				Verbose         = $true
 			}
+			Invoke-WebRequest @Parameters
 
 			$Version = "Windows_10_LTSC2019"
 		}
@@ -72,13 +74,15 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		# Check for Windows 10 LTSC 2021
 		if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName) -match "LTSC 2021")
 		{
-			$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_LTSC2021
+			$LatestRelease = $JSONVersions.Sophia_Script_Windows_10_LTSC2021
 			$Parameters = @{
 				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.LTSC.2021.v$LatestRelease.zip"
 				OutFile         = "$DownloadsFolder\Sophia.Script.zip"
 				UseBasicParsing = $true
 				Verbose         = $true
 			}
+			Invoke-WebRequest @Parameters
+
 			$Version = "Windows_10_LTSC2021"
 		}
 		else
@@ -102,13 +106,14 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 	{
 		if ($Host.Version.Major -eq 5)
 		{
-			$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_PowerShell_5_1
+			$LatestRelease = $JSONVersions.Sophia_Script_Windows_10_PowerShell_5_1
 			$Parameters = @{
 				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.v$LatestRelease.zip"
 				OutFile         = "$DownloadsFolder\Sophia.Script.zip"
 				UseBasicParsing = $true
 				Verbose         = $true
 			}
+			Invoke-WebRequest @Parameters
 
 			$Version = "Windows_10_PowerShell_5.1"
 		}
@@ -121,6 +126,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 				UseBasicParsing = $true
 				Verbose         = $true
 			}
+			Invoke-WebRequest @Parameters
 
 			$Version = "Windows_10_PowerShell_7"
 		}
@@ -132,44 +138,46 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		{
 			if ($Host.Version.Major -eq 5)
 			{
-				$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_5_1
+				$LatestRelease = $JSONVersions.Sophia_Script_Windows_11_PowerShell_5_1
 				$Parameters = @{
 					Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.v$LatestRelease.zip"
 					OutFile         = "$DownloadsFolder\Sophia.Script.zip"
 					UseBasicParsing = $true
 					Verbose         = $true
 				}
+				Invoke-WebRequest @Parameters
 
 				$Version = "Windows_11_PowerShell_5.1"
 			}
 			else
 			{
-				$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_7
+				$LatestRelease = $JSONVersions.Sophia_Script_Windows_11_PowerShell_7
 				$Parameters = @{
 					Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.PowerShell.7.v$LatestRelease.zip"
 					OutFile         = "$DownloadsFolder\Sophia.Script.zip"
 					UseBasicParsing = $true
 					Verbose         = $true
 				}
+				Invoke-WebRequest @Parameters
 
 				$Version = "Windows_11_PowerShell_7"
 			}
 		}
 		else
 		{
-			$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_LTSC2024
+			$LatestRelease = $JSONVersions.Sophia_Script_Windows_11_LTSC2024
 			$Parameters = @{
 				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.LTSC.2024.v$LatestRelease.zip"
 				OutFile         = "$DownloadsFolder\Sophia.Script.zip"
 				UseBasicParsing = $true
 				Verbose         = $true
 			}
+			Invoke-WebRequest @Parameters
 
 			$Version = "Windows_11_LTSC2024"
 		}
 	}
 }
-Invoke-WebRequest @Parameters
 
 if (-not (Test-Path -Path "$DownloadsFolder\Sophia.Script.zip"))
 {

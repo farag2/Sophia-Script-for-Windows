@@ -417,7 +417,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
 	}
 
-	# Checking whether Get-WindowsEdition cmdlet is working
+	# Checking whether PowerShell 7 was installed from the Microsoft Store
 	# https://github.com/PowerShell/PowerShell/issues/21295
 	if ((Get-Process -Id $PID).Path -match "C:\\Program Files\\WindowsApps")
 	{
@@ -1283,7 +1283,7 @@ function DiagnosticDataLevel
 	{
 		"Minimal"
 		{
-			if (Get-WindowsEdition -Online | Where-Object -FilterScript {($_.Edition -eq "Enterprise") -or ($_.Edition -eq "Education")})
+			if (([WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%") -match "Enterprise") -or ([WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%") -match "Education"))
 			{
 				# Security level
 				New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 0 -Force
@@ -1350,8 +1350,7 @@ function ErrorReporting
 	)
 
 	# Remove all policies in order to make changes visible in UI only if it's possible
-	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction Ignore
-	Remove-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction Ignore
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting", "HKCU:\Software\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Type CLEAR
 	Set-Policy -Scope User -Path "Software\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Type CLEAR
 
@@ -1359,11 +1358,8 @@ function ErrorReporting
 	{
 		"Disable"
 		{
-			if ((Get-WindowsEdition -Online).Edition -notmatch "Core")
-			{
-				Get-ScheduledTask -TaskName QueueReporting -ErrorAction Ignore | Disable-ScheduledTask
-				New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\Windows Error Reporting" -Name Disabled -PropertyType DWord -Value 1 -Force
-			}
+			Get-ScheduledTask -TaskName QueueReporting -ErrorAction Ignore | Disable-ScheduledTask
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\Windows Error Reporting" -Name Disabled -PropertyType DWord -Value 1 -Force
 
 			Get-Service -Name WerSvc | Stop-Service -Force
 			Get-Service -Name WerSvc | Set-Service -StartupType Disabled
@@ -1431,11 +1427,11 @@ function FeedbackFrequency
 			}
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Siuf\Rules -Name NumberOfSIUFInPeriod -PropertyType DWord -Value 0 -Force
 
-			Remove-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Siuf\Rules -Name PeriodInNanoSeconds -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Siuf\Rules -Name PeriodInNanoSeconds -Force -ErrorAction Ignore
 		}
 		"Automatically"
 		{
-			Remove-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Siuf\Rules -Name PeriodInNanoSeconds, NumberOfSIUFInPeriod -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Siuf\Rules -Name PeriodInNanoSeconds, NumberOfSIUFInPeriod -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -1904,22 +1900,19 @@ function AdvertisingID
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo -Name DisabledByGroupPolicy -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name DisabledByGroupPolicy -Type CLEAR
 
+	if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo))
+	{
+		New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo -Force
+	}
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Disable"
 		{
-			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo))
-			{
-				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo -Force
-			}
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo -Name Enabled -PropertyType DWord -Value 0 -Force
 		}
 		"Enable"
 		{
-			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo))
-			{
-				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo -Force
-			}
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo -Name Enabled -PropertyType DWord -Value 1 -Force
 		}
 	}
@@ -2179,22 +2172,19 @@ function WhatsNewInWindows
 		$Enable
 	)
 
+	if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement))
+	{
+		New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement -Force
+	}
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Disable"
 		{
-			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement))
-			{
-				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement -Force
-			}
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement -Name ScoobeSystemSettingEnabled -PropertyType DWord -Value 0 -Force
 		}
 		"Enable"
 		{
-			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement))
-			{
-				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement -Force
-			}
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement -Name ScoobeSystemSettingEnabled -PropertyType DWord -Value 1 -Force
 		}
 	}
@@ -2765,6 +2755,8 @@ function SnapAssist
 		$Enable
 	)
 
+	New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name WindowArrangementActive -PropertyType DWord -Value 0 -Force
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Disable"
@@ -2816,22 +2808,19 @@ function FileTransferDialog
 		$Compact
 	)
 
+	if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager))
+	{
+		New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager -Force
+	}
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Detailed"
 		{
-			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager))
-			{
-				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager -Force
-			}
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager -Name EnthusiastMode -PropertyType DWord -Value 1 -Force
 		}
 		"Compact"
 		{
-			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager))
-			{
-				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager -Force
-			}
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager -Name EnthusiastMode -PropertyType DWord -Value 0 -Force
 		}
 	}
@@ -2839,13 +2828,13 @@ function FileTransferDialog
 
 <#
 	.SYNOPSIS
-	The File Explorer ribbon
+	File Explorer ribbon
 
 	.PARAMETER Expanded
-	Expand the File Explorer ribbon
+	Expand File Explorer ribbon
 
 	.PARAMETER Minimized
-	Minimize the File Explorer ribbon
+	Minimize File Explorer ribbon
 
 	.EXAMPLE
 	FileExplorerRibbon -Expanded
@@ -2874,6 +2863,11 @@ function FileExplorerRibbon
 		[switch]
 		$Minimized
 	)
+
+	# Remove all policies in order to make changes visible in UI only if it's possible
+	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer, HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name ExplorerRibbonStartsMinimized -Force -ErrorAction Ignore
+	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name ExplorerRibbonStartsMinimized -Type CLEAR
+	Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name ExplorerRibbonStartsMinimized -Type CLEAR
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
@@ -2933,6 +2927,11 @@ function RecycleBinDeleteConfirmation
 		[switch]
 		$Disable
 	)
+
+	# Remove all policies in order to make changes visible in UI only if it's possible
+	Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer, HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name ConfirmFileDelete -Force -ErrorAction Ignore
+	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name ConfirmFileDelete -Type CLEAR
+	Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name ConfirmFileDelete -Type CLEAR
 
 	$ShellState = Get-ItemPropertyValue -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name ShellState
 
@@ -3222,6 +3221,11 @@ function QuickAccessRecentFiles
 		$Show
 	)
 
+	# Remove all policies in order to make changes visible in UI only if it's possible
+	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer, HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoRecentDocsHistory -Force -ErrorAction Ignore
+	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoRecentDocsHistory -Type CLEAR
+	Set-Policy -Scope User -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoRecentDocsHistory -Type CLEAR
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Hide"
@@ -3337,6 +3341,23 @@ function TaskbarSearch
 		$SearchBox
 	)
 
+	# Remove all policies in order to make changes visible in UI only if it's possible
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name DisableSearch, SearchOnTaskbarMode -Force -ErrorAction Ignore
+	Set-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name DisableSearch -Type CLEAR
+	Set-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name SearchOnTaskbarMode -Type CLEAR
+
+	# Checking whether small taskbar buttons enabled
+	# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
+	$TaskbarSmallIcons = ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "TaskbarSmallIcons", $null))
+	if ($TaskbarSmallIcons -eq 1)
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+		return
+	}
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Hide"
@@ -3392,12 +3413,30 @@ function SearchHighlights
 		$Show
 	)
 
+	# Remove all policies in order to make changes visible in UI only if it's possible
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name EnableDynamicContentInWSB -Force -ErrorAction Ignore
+	Set-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name EnableDynamicContentInWSB -Type CLEAR
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Hide"
 		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Feeds\DSB -Name ShowDynamicContent -PropertyType DWord -Value 0 -Force
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\SearchSettings -Name IsDynamicSearchBoxEnabled -PropertyType DWord -Value 0 -Force
+			# Checking whether "Web search in Windows Search" was disabled. It also disable Search Highlights automatically
+			# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
+			$DisableSearchBoxSuggestions = ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer", "DisableSearchBoxSuggestions", $null))
+			if ($DisableSearchBoxSuggestions -eq 1)
+			{
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+				Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+				return
+			}
+			else
+			{
+				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Feeds\DSB -Name ShowDynamicContent -PropertyType DWord -Value 0 -Force
+				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\SearchSettings -Name IsDynamicSearchBoxEnabled -PropertyType DWord -Value 0 -Force
+			}
 		}
 		"Show"
 		{
@@ -3445,6 +3484,10 @@ function CortanaButton
 		$Show
 	)
 
+	# Remove all policies in order to make changes visible in UI only if it's possible
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name AllowCortana -Force -ErrorAction Ignore
+	Set-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name AllowCortana -Type CLEAR
+
 	if (-not (Get-AppxPackage -Name Microsoft.549981C3F5F10))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
@@ -3463,57 +3506,6 @@ function CortanaButton
 		"Show"
 		{
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowCortanaButton -PropertyType DWord -Value 1 -Force
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	Copilot button on the taskbar
-
-	.PARAMETER Hide
-	Hide Copilot button on the taskbar
-
-	.PARAMETER Show
-	Show Copilot button on the taskbar
-
-	.EXAMPLE
-	CopilotButton -Hide
-
-	.EXAMPLE
-	CopilotButton -Show
-
-	.NOTES
-	Current user
-#>
-function CopilotButton
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Hide"
-		)]
-		[switch]
-		$Hide,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Show"
-		)]
-		[switch]
-		$Show
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Hide"
-		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowCopilotButton -PropertyType DWord -Value 0 -Force
-		}
-		"Show"
-		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowCopilotButton -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -3610,7 +3602,11 @@ function NewsInterests
 		$Enable
 	)
 
-	if (-not (Get-Package -Name "Microsoft Edge Update" -ProviderName Programs -ErrorAction Ignore))
+	# Remove all policies in order to make changes visible in UI only if it's possible
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds" -Name EnableFeeds -Force -ErrorAction Ignore
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\PolicyManager\default\NewsAndInterests\AllowNewsAndInterests" -Name value -Force -ErrorAction Ignore
+
+	if (-not (Get-Package -Name "Microsoft Edge" -ProviderName Programs -ErrorAction Ignore))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
@@ -3618,10 +3614,6 @@ function NewsInterests
 
 		return
 	}
-
-	# Remove all policies in order to make changes visible in UI only if it's possible
-	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds" -Name EnableFeeds -Force -ErrorAction Ignore
-	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\PolicyManager\default\NewsAndInterests\AllowNewsAndInterests" -Name value -Force -ErrorAction Ignore
 
 	# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
 	$MachineId = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\SQMClient", "MachineId", $null)
@@ -3636,11 +3628,11 @@ function NewsInterests
 
 	# https://forums.mydigitallife.net/threads/taskbarda-widgets-registry-change-is-now-blocked.88547/#post-1849006
 	$Signature = @{
-		Namespace          = "WinAPI"
-		Name               = "Signature"
-		Language           = "CSharp"
-		CompilerParameters = $CompilerOptions
-		MemberDefinition   = @"
+		Namespace        = "WinAPI"
+		Name             = "Signature"
+		Language         = "CSharp"
+		CompilerOptions  = $CompilerOptions
+		MemberDefinition = @"
 [DllImport("Shlwapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true, SetLastError = false)]
 public static extern int HashData(byte[] pbData, int cbData, byte[] piet, int outputLen);
 "@
@@ -3669,9 +3661,9 @@ public static extern int HashData(byte[] pbData, int cbData, byte[] piet, int ou
 			# Get value to save in EnShellFeedsTaskbarViewMode key
 			$DWordData = [System.BitConverter]::ToUInt32($bytesOut,0)
 
-			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command {New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds -Name ShellFeedsTaskbarViewMode -PropertyType DWord -Value 2 -Force}
+			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command {New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Feeds -Name ShellFeedsTaskbarViewMode -PropertyType DWord -Value 2 -Force}
 			# We need to use here an approach with "-Command & {}" as there's a variable inside
-			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command "& {New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds -Name EnShellFeedsTaskbarViewMode -PropertyType DWord -Value $DWordData -Force}"
+			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command "& {New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Feeds -Name EnShellFeedsTaskbarViewMode -PropertyType DWord -Value $DWordData -Force}"
 		}
 		"Enable"
 		{
@@ -3687,9 +3679,9 @@ public static extern int HashData(byte[] pbData, int cbData, byte[] piet, int ou
 			# Get value to save in EnShellFeedsTaskbarViewMode key
 			$DWordData = [System.BitConverter]::ToUInt32($bytesOut,0)
 
-			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command {New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds -Name ShellFeedsTaskbarViewMode -PropertyType DWord -Value 0 -Force}
+			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command {New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Feeds -Name ShellFeedsTaskbarViewMode -PropertyType DWord -Value 0 -Force}
 			# We need to use here an approach with "-Command & {}" as there's a variable inside
-			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command "& {New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds -Name EnShellFeedsTaskbarViewMode -PropertyType DWord -Value $DWordData -Force}"
+			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command "& {New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Feeds -Name EnShellFeedsTaskbarViewMode -PropertyType DWord -Value $DWordData -Force}"
 		}
 	}
 
@@ -3733,6 +3725,11 @@ function PeopleTaskbar
 		[switch]
 		$Show
 	)
+
+	# Remove all policies in order to make changes visible in UI only if it's possible
+	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HidePeopleBar -Force -ErrorAction Ignore
+	Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name HidePeopleBar -Type CLEAR
+	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HidePeopleBar -Type CLEAR
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
@@ -3793,6 +3790,11 @@ function MeetNow
 		$Show
 	)
 
+	# Remove all policies in order to make changes visible in UI only if it's possible
+	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer, HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name HideSCAMeetNow -Force -ErrorAction Ignore
+	Set-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name HideSCAMeetNow -Type CLEAR
+	Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name HideSCAMeetNow -Type CLEAR
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Hide"
@@ -3850,6 +3852,10 @@ function WindowsInkWorkspace
 		$Show
 	)
 
+	# Remove all policies in order to make changes visible in UI only if it's possible
+	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\WindowsInkWorkspace -Name AllowWindowsInkWorkspace -Force -ErrorAction Ignore
+	Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name HideSCAMeetNow -Type CLEAR
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Hide"
@@ -3900,6 +3906,11 @@ function NotificationAreaIcons
 		[switch]
 		$Hide
 	)
+
+	# Remove all policies in order to make changes visible in UI only if it's possible
+	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer, HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoAutoTrayNotify -Force -ErrorAction Ignore
+	Set-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoAutoTrayNotify -Type CLEAR
+	Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoAutoTrayNotify -Type CLEAR
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
@@ -3961,6 +3972,79 @@ function SecondsInSystemClock
 		"Show"
 		{
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowSecondsInSystemClock -PropertyType DWord -Value 1 -Force
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	Combine taskbar buttons and hide labels
+
+	.PARAMETER Always
+	Combine taskbar buttons and always hide labels
+
+	.PARAMETER Full
+	Combine taskbar buttons and hide labels when taskbar is full
+
+	.PARAMETER Never
+	Combine taskbar buttons and never hide labels
+
+	.EXAMPLE
+	TaskbarCombine -Always
+
+	.EXAMPLE
+	TaskbarCombine -Full
+
+	.EXAMPLE
+	TaskbarCombine -Never
+
+	.NOTES
+	Current user
+#>
+function TaskbarCombine
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Always"
+		)]
+		[switch]
+		$Always,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Full"
+		)]
+		[switch]
+		$Full,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Never"
+		)]
+		[switch]
+		$Never
+	)
+
+	# Remove all policies in order to make changes visible in UI only if it's possible
+	Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer, HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoTaskGrouping -Force -ErrorAction Ignore
+	Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoTaskGrouping -Type CLEAR
+	Set-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoTaskGrouping -Type CLEAR
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Always"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name TaskbarGlomLevel -PropertyType DWord -Value 0 -Force
+		}
+		"Full"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name TaskbarGlomLevel -PropertyType DWord -Value 1 -Force
+		}
+		"Never"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name TaskbarGlomLevel -PropertyType DWord -Value 2 -Force
 		}
 	}
 }
@@ -4087,32 +4171,29 @@ function ControlPanelView
 		$SmallIcons
 	)
 
+	# Remove all policies in order to make changes visible in UI only if it's possible
+	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name ForceClassicControlPanel -Force -ErrorAction Ignore
+	Set-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name ForceClassicControlPanel -Type CLEAR
+
+	if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
+	{
+		New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Force
+	}
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Category"
 		{
-			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
-			{
-				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Force
-			}
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name AllItemsIconView -PropertyType DWord -Value 0 -Force
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name StartupPage -PropertyType DWord -Value 0 -Force
 		}
 		"LargeIcons"
 		{
-			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
-			{
-				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Force
-			}
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name AllItemsIconView -PropertyType DWord -Value 0 -Force
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name StartupPage -PropertyType DWord -Value 1 -Force
 		}
 		"SmallIcons"
 		{
-			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel))
-			{
-				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Force
-			}
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name AllItemsIconView -PropertyType DWord -Value 1 -Force
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel -Name StartupPage -PropertyType DWord -Value 1 -Force
 		}
@@ -4268,10 +4349,13 @@ function NewAppInstalledNotification
 				New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Force
 			}
 			New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoNewAppAlert -PropertyType DWord -Value 1 -Force
+
+			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoNewAppAlert -Type DWORD -Value 1
 		}
 		"Show"
 		{
 			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoNewAppAlert -Force -ErrorAction Ignore
+			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoNewAppAlert -Type CLEAR
 		}
 	}
 }
@@ -4313,6 +4397,10 @@ function FirstLogonAnimation
 		[switch]
 		$Enable
 	)
+
+	# Remove all policies in order to make changes visible in UI only if it's possible
+	Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableFirstLogonAnimation -Force -ErrorAction Ignore
+	Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableFirstLogonAnimation -Type CLEAR
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
@@ -4490,6 +4578,8 @@ function ShortcutsSuffix
 		$Enable
 	)
 
+	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name link -Force -ErrorAction Ignore
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Disable"
@@ -4647,6 +4737,11 @@ function AeroShaking
 		$Disable
 	)
 
+	# Remove all policies in order to make changes visible in UI only if it's possible
+	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\Software\Policies\Microsoft\Windows\Explorer -Name NoWindowMinimizingShortcuts -Force -ErrorAction Ignore
+	Set-Policy -Scope User -Path Software\Software\Policies\Microsoft\Windows\Explorer -Name NoWindowMinimizingShortcuts -Type CLEAR
+	Set-Policy -Scope Computer -Path SOFTWARE\Software\Policies\Microsoft\Windows\Explorer -Name NoWindowMinimizingShortcuts -Type CLEAR
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Enable"
@@ -4747,7 +4842,7 @@ function Cursors
 				}
 
 				# Extract archive
-				Start-Process -FilePath "$env:SystemRoot\System32\tar.exe" -ArgumentList "-xf `"$DownloadsFolder\dark.zip`" -C `"$env:SystemRoot\Cursors\W11_dark_v2.2`" -v"
+				& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\dark.zip" -C "$env:SystemRoot\Cursors\W11_dark_v2.2"
 
 				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursors Dark Free v2.2 by Jepri Creations" -Force
 				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\working.ani" -Force
@@ -4838,7 +4933,7 @@ function Cursors
 				}
 
 				# Extract archive
-				Start-Process -FilePath "$env:SystemRoot\System32\tar.exe" -ArgumentList "-xf `"$DownloadsFolder\light.zip`" -C `"$env:SystemRoot\Cursors\W11_light_v2.2`" -v"
+				& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\light.zip" -C "$env:SystemRoot\Cursors\W11_light_v2.2"
 
 				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursor Light Free v2.2 by Jepri Creations" -Force
 				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\working.ani" -Force
@@ -5053,7 +5148,7 @@ function NavigationPaneExpand
 	{
 		"Disable"
 		{
-			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name NavPaneExpandToCurrentFolder -Force -ErrorAction Ignore
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name NavPaneExpandToCurrentFolder -PropertyType DWord -Value 0 -Force
 		}
 		"Enable"
 		{
@@ -5225,12 +5320,12 @@ public static bool MarkFileDelete (string sourcefile)
 			# Getting the OneDrive folder path and replacing quotes if exist
 			$OneDriveFolder = (Split-Path -Path (Split-Path -Path $OneDriveSetup[0] -Parent)) -replace '"', ""
 
-			# Do not restart the File Explorer process automatically if it stops in order to unload libraries
+			# Do not restart File Explorer process automatically if it stops in order to unload libraries
 			New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoRestartShell -PropertyType DWord -Value 0 -Force
 			# Kill all explorer instances in case "launch folder windows in a separate process" enabled
 			Get-Process -Name explorer | Stop-Process -Force
 			Start-Sleep -Seconds 3
-			# Restart the File Explorer process automatically if it stops in order to unload libraries
+			# Restart File Explorer process automatically if it stops in order to unload libraries
 			New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoRestartShell -PropertyType DWord -Value 1 -Force
 
 			# Attempt to unregister FileSyncShell64.dll and remove
@@ -5394,22 +5489,19 @@ function StorageSense
 		$Disable
 	)
 
+	if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy))
+	{
+		New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -ItemType Directory -Force
+	}
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Enable"
 		{
-			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy))
-			{
-				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -ItemType Directory -Force
-			}
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01 -PropertyType DWord -Value 1 -Force
 		}
 		"Disable"
 		{
-			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy))
-			{
-				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -ItemType Directory -Force
-			}
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01 -PropertyType DWord -Value 0 -Force
 		}
 	}
@@ -5734,57 +5826,6 @@ function AdminApprovalMode
 		"Default"
 		{
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name ConsentPromptBehaviorAdmin -PropertyType DWord -Value 5 -Force
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	Access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled
-
-	.PARAMETER Enable
-	Turn on access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled
-
-	.PARAMETER Disable
-	Turn off access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled
-
-	.EXAMPLE
-	MappedDrivesAppElevatedAccess -Enable
-
-	.EXAMPLE
-	MappedDrivesAppElevatedAccess -Disable
-
-	.NOTES
-	Machine-wide
-#>
-function MappedDrivesAppElevatedAccess
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Enable"
-		{
-			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableLinkedConnections -PropertyType DWord -Value 1 -Force
-		}
-		"Disable"
-		{
-			Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableLinkedConnections -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -6410,19 +6451,29 @@ function WindowsCapabilities
 
 	function InstallButton
 	{
-		Write-Information -MessageData "" -InformationAction Continue
-		# Extract the localized "Please wait..." string from shell32.dll
-		Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
-
-		[void]$Window.Close()
-
-		$SelectedCapabilities | ForEach-Object -Process {Write-Verbose -Message $_.DisplayName -Verbose}
-		$SelectedCapabilities | Where-Object -FilterScript {$_.Name -in ((Get-WindowsCapability -Online).Name)} | Add-WindowsCapability -Online
-
-		if ([string]$SelectedCapabilities.Name -match "Browser.InternetExplorer")
+		try
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Warning -Message $Localization.RestartWarning
+			# Extract the localized "Please wait..." string from shell32.dll
+			Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
+
+			[void]$Window.Close()
+
+			$SelectedCapabilities | ForEach-Object -Process {Write-Verbose -Message $_.DisplayName -Verbose}
+			$SelectedCapabilities | Where-Object -FilterScript {$_.Name -in ((Get-WindowsCapability -Online).Name)} | Add-WindowsCapability -Online
+
+			if ([string]$SelectedCapabilities.Name -match "Browser.InternetExplorer")
+			{
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Warning -Message $Localization.RestartWarning
+			}
+		}
+		catch [System.Runtime.InteropServices.COMException]
+		{
+			Write-Warning -Message ($Localization.NoResponse -f "http://tlu.dl.delivery.mp.microsoft.com/filestreamingservice")
+			Write-Error -Message ($Localization.NoResponse -f "http://tlu.dl.delivery.mp.microsoft.com/filestreamingservice") -ErrorAction SilentlyContinue
+
+			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 		}
 	}
 
@@ -6474,18 +6525,6 @@ function WindowsCapabilities
 		{
 			try
 			{
-				# Check the internet connection
-				$Parameters = @{
-					Name        = "dns.msftncsi.com"
-					Server      = "1.1.1.1"
-					DnsOnly     = $true
-					ErrorAction = "Stop"
-				}
-				if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
-				{
-					return
-				}
-
 				$State = "NotPresent"
 				$ButtonContent = $Localization.Install
 				$ButtonAdd_Click = {InstallButton}
@@ -9094,7 +9133,7 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 		}
 		New-ItemProperty -Path "HKCU:\Software\Classes\$Extension\OpenWithProgids" -Name $ProgId -PropertyType None -Value ([byte[]]@()) -Force
 
-		# Set the system ProgId to the extension parameters for the File Explorer to the possible options for the assignment, and if absent set the specified ProgId
+		# Set the system ProgId to the extension parameters for File Explorer to the possible options for the assignment, and if absent set the specified ProgId
 		# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
 		if ($OrigProgID)
 		{
@@ -9973,6 +10012,7 @@ function InstallVCRedist
 
 	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message "Visual C++ Redistributable x86" -Verbose
+	Write-Information -MessageData "" -InformationAction Continue
 
 	Start-Process -FilePath "$DownloadsFolder\VC_redist.x86.exe" -ArgumentList "/install /passive /norestart" -Wait
 
@@ -9998,6 +10038,7 @@ function InstallVCRedist
 
 	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message "Visual C++ Redistributable x64" -Verbose
+	Write-Information -MessageData "" -InformationAction Continue
 
 	Start-Process -FilePath "$DownloadsFolder\VC_redist.x64.exe" -ArgumentList "/install /passive /norestart" -Wait
 
@@ -10091,6 +10132,7 @@ function InstallDotNetRuntimes
 
 				Write-Information -MessageData "" -InformationAction Continue
 				Write-Verbose -Message ".NET $LatestRelease" -Verbose
+				Write-Information -MessageData "" -InformationAction Continue
 
 				Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
 
@@ -10148,6 +10190,7 @@ function InstallDotNetRuntimes
 
 				Write-Information -MessageData "" -InformationAction Continue
 				Write-Verbose -Message ".NET $LatestRelease" -Verbose
+				Write-Information -MessageData "" -InformationAction Continue
 
 				Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
 
@@ -10221,11 +10264,11 @@ function RKNBypass
 	}
 
 	$Signature = @{
-		Namespace          = "WinAPI"
-		Name               = "wininet"
-		Language           = "CSharp"
-		CompilerParameters = $CompilerParameters
-		MemberDefinition   = @"
+		Namespace        = "WinAPI"
+		Name             = "wininet"
+		Language         = "CSharp"
+		CompilerOptions  = $CompilerOptions
+		MemberDefinition = @"
 [DllImport("wininet.dll", SetLastError = true, CharSet=CharSet.Auto)]
 public static extern bool InternetSetOption(IntPtr hInternet, int dwOption, IntPtr lpBuffer, int dwBufferLength);
 "@
@@ -10283,13 +10326,18 @@ function PreventEdgeShortcutCreation
 		$Disable
 	)
 
-	if (-not (Get-Package -Name "Microsoft Edge Update" -ProviderName Programs -ErrorAction Ignore))
+	if (-not (Get-Package -Name "Microsoft Edge" -ProviderName Programs -ErrorAction Ignore))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 		return
+	}
+
+	if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate))
+	{
+		New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Force
 	}
 
 	foreach ($Channel in $Channels)
@@ -10300,44 +10348,32 @@ function PreventEdgeShortcutCreation
 			{
 				if (Get-Package -Name "Microsoft Edge" -ProviderName Programs -ErrorAction Ignore)
 				{
-					if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate))
-					{
-						New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Force
-					}
 					New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}" -PropertyType DWord -Value 0 -Force
+					Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}" -Type DWORD -Value 3
 				}
 			}
 			Beta
 			{
 				if (Get-Package -Name "Microsoft Edge Beta" -ProviderName Programs -ErrorAction Ignore)
 				{
-					if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate))
-					{
-						New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Force
-					}
 					New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{2CD8A007-E189-409D-A2C8-9AF4EF3C72AA}" -PropertyType DWord -Value 0 -Force
+					Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}" -Type DWORD -Value 3
 				}
 			}
 			Dev
 			{
 				if (Get-Package -Name "Microsoft Edge Dev" -ProviderName Programs -ErrorAction Ignore)
 				{
-					if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate))
-					{
-						New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Force
-					}
 					New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{0D50BFEC-CD6A-4F9A-964C-C7416E3ACB10}" -PropertyType DWord -Value 0 -Force
+					Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}" -Type DWORD -Value 3
 				}
 			}
 			Canary
 			{
 				if (Get-Package -Name "Microsoft Edge Canary" -ProviderName Programs -ErrorAction Ignore)
 				{
-					if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate))
-					{
-						New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Force
-					}
 					New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{65C35B14-6C1D-4122-AC46-7148CC9D6497}" -PropertyType DWord -Value 0 -Force
+					Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}" -Type DWORD -Value 3
 				}
 			}
 		}
@@ -10352,6 +10388,11 @@ function PreventEdgeShortcutCreation
 			"CreateDesktopShortcut{65C35B14-6C1D-4122-AC46-7148CC9D6497}"
 		)
 		Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Name $Names -Force -ErrorAction Ignore
+
+		Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}" -Type CLEAR
+		Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{2CD8A007-E189-409D-A2C8-9AF4EF3C72AA}" -Type CLEAR
+		Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{0D50BFEC-CD6A-4F9A-964C-C7416E3ACB10}" -Type CLEAR
+		Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{65C35B14-6C1D-4122-AC46-7148CC9D6497}" -Type CLEAR
 	}
 }
 
@@ -10667,19 +10708,25 @@ function RecentlyAddedApps
 		$Show
 	)
 
+	# Remove all policies in order to make changes visible in UI only if it's possible
+	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Force -ErrorAction Ignore
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Hide"
 		{
-			if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer))
+			if (-not (Test-Path -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer))
 			{
-				New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Force
+				New-Item -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Force
 			}
-			New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -PropertyType DWord -Value 1 -Force
+
+			Set-Policy -Scope User -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Type DWORD -Value 1
 		}
 		"Show"
 		{
-			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Force -ErrorAction Ignore
+			Set-Policy -Scope User -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Type CLEAR
 		}
 	}
 }
@@ -10721,6 +10768,13 @@ function AppSuggestions
 		[switch]
 		$Show
 	)
+
+	# Remove all policies in order to make changes visible in UI only if it's possible
+	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent -Name DisableWindowsConsumerFeatures -Force -ErrorAction Ignore
+	if (([WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%") -match "Enterprise") -or ([WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%") -match "Education"))
+	{
+		Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\CloudContent -Name DisableWindowsConsumerFeatures -Type CLEAR
+	}
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
@@ -11701,22 +11755,19 @@ function CortanaAutostart
 		return
 	}
 
+	if (-not (Test-Path -Path "Registry::HKEY_CLASSES_ROOT\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData\Microsoft.549981C3F5F10_8wekyb3d8bbwe\CortanaStartupId"))
+	{
+		New-Item -Path "Registry::HKEY_CLASSES_ROOT\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData\Microsoft.549981C3F5F10_8wekyb3d8bbwe\CortanaStartupId" -Force
+	}
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Disable"
 		{
-			if (-not (Test-Path -Path "Registry::HKEY_CLASSES_ROOT\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData\Microsoft.549981C3F5F10_8wekyb3d8bbwe\CortanaStartupId"))
-			{
-				New-Item -Path "Registry::HKEY_CLASSES_ROOT\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData\Microsoft.549981C3F5F10_8wekyb3d8bbwe\CortanaStartupId" -Force
-			}
 			New-ItemProperty -Path "Registry::HKEY_CLASSES_ROOT\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData\Microsoft.549981C3F5F10_8wekyb3d8bbwe\CortanaStartupId" -Name State -PropertyType DWord -Value 1 -Force
 		}
 		"Enable"
 		{
-			if (-not (Test-Path -Path "Registry::HKEY_CLASSES_ROOT\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData\Microsoft.549981C3F5F10_8wekyb3d8bbwe\CortanaStartupId"))
-			{
-				New-Item -Path "Registry::HKEY_CLASSES_ROOT\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData\Microsoft.549981C3F5F10_8wekyb3d8bbwe\CortanaStartupId" -Force
-			}
 			New-ItemProperty -Path "Registry::HKEY_CLASSES_ROOT\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData\Microsoft.549981C3F5F10_8wekyb3d8bbwe\CortanaStartupId" -Name State -PropertyType DWord -Value 2 -Force
 		}
 	}
@@ -12089,14 +12140,18 @@ function CleanupTask
 	{
 		"Register"
 		{
-			# Remove registry keys if notifications and Action Center are disabled
-			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Force -ErrorAction Ignore
+			# Enable notifications in Action Center
+			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Force -ErrorAction Ignore
+			Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
+			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
 
 			# Remove registry keys if Windows Script Host is disabled
-			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Script Host\Settings", "HKLM:\Software\Microsoft\Windows Script Host\Settings" -Name Enabled -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Script Host\Settings", "HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings" -Name Enabled -Force -ErrorAction Ignore
 
 			# Enable notifications
 			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\PushNotifications -Name ToastEnabled -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\CurrentVersion\PushNotifications -Name NoToastApplicationNotification -Force -ErrorAction Ignore
+			Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
 
 			# Checking if we're trying to create the task when it was already created as another user
 			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName "Windows Cleanup" -ErrorAction Ignore)
@@ -12524,14 +12579,18 @@ function SoftwareDistributionTask
 	{
 		"Register"
 		{
-			# Remove registry keys if notifications and Action Center are disabled
-			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Force -ErrorAction Ignore
+			# Enable notifications in Action Center
+			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Force -ErrorAction Ignore
+			Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
+			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
 
 			# Remove registry keys if Windows Script Host is disabled
-			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Script Host\Settings", "HKLM:\Software\Microsoft\Windows Script Host\Settings" -Name Enabled -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Script Host\Settings", "HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings" -Name Enabled -Force -ErrorAction Ignore
 
 			# Enable notifications
 			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\PushNotifications -Name ToastEnabled -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\CurrentVersion\PushNotifications -Name NoToastApplicationNotification -Force -ErrorAction Ignore
+			Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
 
 			# Checking if we're trying to create the task when it was already created as another user
 			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName SoftwareDistribution -ErrorAction Ignore)
@@ -12838,14 +12897,18 @@ function TempTask
 	{
 		"Register"
 		{
-			# Remove registry keys if notifications and Action Center are disabled
-			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Force -ErrorAction Ignore
+			# Enable notifications in Action Center
+			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Force -ErrorAction Ignore
+			Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
+			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
 
 			# Remove registry keys if Windows Script Host is disabled
-			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Script Host\Settings", "HKLM:\Software\Microsoft\Windows Script Host\Settings" -Name Enabled -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Script Host\Settings", "HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings" -Name Enabled -Force -ErrorAction Ignore
 
 			# Enable notifications
 			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\PushNotifications -Name ToastEnabled -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\CurrentVersion\PushNotifications -Name NoToastApplicationNotification -Force -ErrorAction Ignore
+			Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
 
 			# Checking if we're trying to create the task when it was already created as another user
 			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName Temp -ErrorAction Ignore)
@@ -13229,7 +13292,7 @@ function PUAppsDetection
 		"Enable"
 		{
 			Set-MpPreference -PUAProtection Enabled
-			}
+		}
 		"Disable"
 		{
 			Set-MpPreference -PUAProtection Disabled
@@ -13761,7 +13824,8 @@ function WindowsSandbox
 		$Enable
 	)
 
-	if (-not (Get-WindowsEdition -Online | Where-Object -FilterScript {($_.Edition -eq "Professional") -or ($_.Edition -eq "Enterprise") -or ($_.Edition -eq "Education")}))
+	$WINDOWS_LONG = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
+	if (($WINDOWS_LONG -notmatch "Pro") -and ($WINDOWS_LONG -notmatch "Enterprise") -and ($WINDOWS_LONG -notmatch "Education"))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
@@ -14303,6 +14367,66 @@ function EditWithPaint3DContext
 
 <#
 	.SYNOPSIS
+	The "Edit" item in the images context menu
+
+	.PARAMETER Hide
+	Hide the "Edit" item from the images context menu
+
+	.PARAMETER Show
+	Show the "Edit" item in the images context menu
+
+	.EXAMPLE
+	ImagesEditContext -Hide
+
+	.EXAMPLE
+	ImagesEditContext -Show
+
+	.NOTES
+	Current user
+#>
+function ImagesEditContext
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Hide"
+		)]
+		[switch]
+		$Hide,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Show"
+		)]
+		[switch]
+		$Show
+	)
+
+	if ((Get-WindowsCapability -Online -Name "Microsoft.Windows.MSPaint*").State -ne "Installed")
+	{
+		return
+	}
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Hide"
+		{
+			if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\SystemFileAssociations\image\shell\edit))
+			{
+				New-Item -Path Registry::HKEY_CLASSES_ROOT\SystemFileAssociations\image\shell\edit -Force
+			}
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\SystemFileAssociations\image\shell\edit -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
+		}
+		"Show"
+		{
+			Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\SystemFileAssociations\image\shell\edit -Name ProgrammaticAccessOnly -Force -ErrorAction Ignore
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
 	The "Print" item in the .bat and .cmd context menu
 
 	.PARAMETER Hide
@@ -14518,24 +14642,12 @@ function BitmapImageNewContext
 			{
 				try
 				{
-					# Check the internet connection
-					$Parameters = @{
-						Name        = "dns.msftncsi.com"
-						Server      = "1.1.1.1"
-						DnsOnly     = $true
-						ErrorAction = "Stop"
-					}
-					if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
-					{
-						return
-					}
-
 					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message $Localization.Patient -Verbose
 
 					Get-WindowsCapability -Online -Name "Microsoft.Windows.MSPaint*" | Add-WindowsCapability -Online
 				}
-				catch [System.ComponentModel.Win32Exception]
+				catch [System.Runtime.InteropServices.COMException]
 				{
 					Write-Warning -Message ($Localization.NoResponse -f "http://tlu.dl.delivery.mp.microsoft.com/filestreamingservice")
 					Write-Error -Message ($Localization.NoResponse -f "http://tlu.dl.delivery.mp.microsoft.com/filestreamingservice") -ErrorAction SilentlyContinue
@@ -14609,24 +14721,12 @@ function RichTextDocumentNewContext
 			{
 				try
 				{
-					# Check the internet connection
-					$Parameters = @{
-						Name        = "dns.msftncsi.com"
-						Server      = "1.1.1.1"
-						DnsOnly     = $true
-						ErrorAction = "Stop"
-					}
-					if ((Resolve-DnsName @Parameters).IPAddress -notcontains "131.107.255.255")
-					{
-						return
-					}
-
 					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message $Localization.Patient -Verbose
 
 					Get-WindowsCapability -Online -Name "Microsoft.Windows.WordPad*" | Add-WindowsCapability -Online
 				}
-				catch [System.ComponentModel.Win32Exception]
+				catch [System.Runtime.InteropServices.COMException]
 				{
 					Write-Warning -Message ($Localization.NoResponse -f "http://tlu.dl.delivery.mp.microsoft.com/filestreamingservice")
 					Write-Error -Message ($Localization.NoResponse -f "http://tlu.dl.delivery.mp.microsoft.com/filestreamingservice") -ErrorAction SilentlyContinue
@@ -14784,7 +14884,7 @@ function UseStoreOpenWith
 	)
 
 	# Remove all policies in order to make changes visible in UI only if it's possible
-	Remove-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Force -ErrorAction Ignore
+	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Type CLEAR
 
 	switch ($PSCmdlet.ParameterSetName)
@@ -15110,11 +15210,15 @@ public static void PostMessage()
 
 	#region Toast notifications
 	# Persist Sophia notifications to prevent to immediately disappear from Action Center
-	# Remove registry keys if notifications and Action Center are disabled
-	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Force -ErrorAction Ignore
+	# Enable notifications in Action Center
+	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Force -ErrorAction Ignore
+	Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
+	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
 
 	# Enable notifications
 	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\PushNotifications -Name ToastEnabled -Force -ErrorAction Ignore
+	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\CurrentVersion\PushNotifications -Name NoToastApplicationNotification -Force -ErrorAction Ignore
+	Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
 
 	if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia))
 	{

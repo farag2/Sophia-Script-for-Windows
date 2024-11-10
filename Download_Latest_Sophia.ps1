@@ -3,10 +3,9 @@
 	Download the latest Sophia Script version, depending on what Windows or PowerShell versions are used to
 
 	.SYNOPSIS
-	Download the latest Sophia Script version, depending on what Windows or PowerShell versions are used to
-	E.g., if you start script on Windows 11 via PowerShell 5.1 you will start downloading Sophia Script for Windows 11 PowerShell 5.1
+	For example, if you start script on Windows 11 via PowerShell 5.1 you will start downloading Sophia Script for Windows 11 PowerShell 5.1
 
-	.EXAMPLE Download and expand Sophia Script archive
+	.EXAMPLE
 	iwr sl.sophia.team -useb | iex
 #>
 
@@ -111,7 +110,6 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		}
 	}
 }
-Invoke-WebRequest @Parameters
 
 if (-not (Test-Path -Path "$DownloadsFolder\SophiaScriptTemp"))
 {

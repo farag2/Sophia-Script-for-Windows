@@ -361,11 +361,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Disable the File Explorer compact mode (default value)."
+        "ToolTip": "Disable File Explorer compact mode (default value)."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Enable the File Explorer compact mode."
+        "ToolTip": "Enable File Explorer compact mode."
       }
     }
   },
@@ -514,20 +514,6 @@
       "One": {
         "Tag": "Show",
         "ToolTip": "Show search highlights (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "CopilotButton",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide Copilot button on the taskbar."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show Copilot button on the taskbar (default value)."
       }
     }
   },
@@ -915,20 +901,6 @@
       "One": {
         "Tag": "Default",
         "ToolTip": "Choose when to be notified about changes to your computer: notify me only when apps try to make changes to my computer (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "MappedDrivesAppElevatedAccess",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Turn on access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Turn off access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled (default value)."
       }
     }
   },

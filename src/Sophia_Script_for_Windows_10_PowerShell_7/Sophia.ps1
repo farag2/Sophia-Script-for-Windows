@@ -354,11 +354,11 @@ OpenFileExplorerTo -ThisPC
 # Открывать проводник для "Быстрый доступ" (значение по умолчанию)
 # OpenFileExplorerTo -QuickAccess
 
-# Expand the File Explorer ribbon
+# Expand File Explorer ribbon
 # Развернуть ленту проводника
 FileExplorerRibbon -Expanded
 
-# Minimize the File Explorer ribbon (default value)
+# Minimize File Explorer ribbon (default value)
 # Свернуть ленту проводника (значение по умолчанию)
 # FileExplorerRibbon -Minimized
 
@@ -446,14 +446,6 @@ CortanaButton -Hide
 # Показать кнопку Кортаны на панели задач (значение по умолчанию)
 # CortanaButton -Show
 
-# Hide Copilot button on the taskbar
-# Скрыть кнопку Copilot с панели задач
-CopilotButton -Hide
-
-# Show Copilot button on the taskbar (default value)
-# Отобразить кнопку Copilot на панели задач (значение по умолчанию)
-# CopilotButton -Show
-
 # Hide the Task View button on the taskbar
 # Скрыть кнопку Просмотра задач
 TaskViewButton -Hide
@@ -509,6 +501,18 @@ SecondsInSystemClock -Show
 # Hide seconds on the taskbar clock (default value)
 # Скрыть секунды в системных часах на панели задач (значение по умолчанию)
 # SecondsInSystemClock -Hide
+
+# Combine taskbar buttons and always hide labels (default value)
+# Объединить кнопки панели задач и всегда скрывать метки (значение по умолчанию)
+TaskbarCombine -Always
+
+# Combine taskbar buttons and hide labels when taskbar is full
+# Объединить кнопки панели задач и скрывать метки при переполнении панели задач
+# TaskbarCombine -Full
+
+# Combine taskbar buttons and never hide labels
+# Объединить кнопки панели задач и никогда не скрывать метки
+# TaskbarCombine -Never
 
 # Unpin the "Microsoft Edge", "Microsoft Store", or "Mail" shortcuts from the taskbar
 # Открепить ярлыки "Microsoft Edge", "Microsoft Store" или "Почта" от панели задач
@@ -707,14 +711,6 @@ AdminApprovalMode -Never
 # Choose when to be notified about changes to your computer: notify me only when apps try to make changes to my computer (default value)
 # Настройка уведомления об изменении параметров компьютера: уведомлять меня только при попытках приложений внести изменения в компьютер (значение по умолчанию)
 # AdminApprovalMode -Default
-
-# Turn on access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled
-# Включить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами
-MappedDrivesAppElevatedAccess -Enable
-
-# Turn off access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled (default value)
-# Выключить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами (значение по умолчанию)
-# MappedDrivesAppElevatedAccess -Disable
 
 # Turn off Delivery Optimization
 # Выключить оптимизацию доставки
@@ -1379,6 +1375,14 @@ EditWithPaint3DContext -Hide
 # Show the "Edit with Paint 3D" item in the media files context menu (default value)
 # Отобразить пункт "Изменить с помощью Paint 3D" в контекстном меню медиа-файлов (значение по умолчанию)
 # EditWithPaint3DContext -Show
+
+# Hide the "Edit" item from the images context menu
+# Скрыть пункт "Изменить" из контекстного меню изображений
+ImagesEditContext -Hide
+
+# Show the "Edit" item in images context menu (default value)
+# Отобразить пункт "Изменить" в контекстном меню изображений (значение по умолчанию)
+# ImagesEditContext -Show
 
 # Hide the "Print" item from the .bat and .cmd context menu
 # Скрыть пункт "Печать" из контекстного меню .bat и .cmd файлов

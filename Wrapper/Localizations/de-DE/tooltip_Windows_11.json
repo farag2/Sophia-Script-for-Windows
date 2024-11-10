@@ -519,20 +519,6 @@
   },
   {
     "Region": "UI & Personalization",
-    "Function": "CopilotButton",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Ausblenden der Schaltfläche Copilot in der Taskleiste."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Zeigen Sie die Schaltfläche Copilot in der Taskleiste an (Standardeinstellung)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
     "Function": "TaskViewButton",
     "Arg": {
       "Zero": {
@@ -915,20 +901,6 @@
       "One": {
         "Tag": "Default",
         "ToolTip": "Wählen Sie, wann Sie über Änderungen an Ihrem Computer benachrichtigt werden möchten: Nur benachrichtigen, wenn Anwendungen versuchen, Änderungen an meinem Computer vorzunehmen (Standardeinstellung)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "MappedDrivesAppElevatedAccess",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Aktiviert den Zugriff auf zugeordnete Laufwerke von einer Anwendung, die mit erweiterten Berechtigungen und aktiviertem Admin-Genehmigungsmodus ausgeführt wird."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Deaktiviert den Zugriff auf zugeordnete Laufwerke von Anwendungen, die mit erweiterten Berechtigungen und aktiviertem Admin-Genehmigungsmodus ausgeführt werden (Standardeinstellung)."
       }
     }
   },

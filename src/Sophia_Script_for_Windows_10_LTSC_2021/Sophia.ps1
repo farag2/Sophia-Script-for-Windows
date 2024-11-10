@@ -303,11 +303,11 @@ OpenFileExplorerTo -ThisPC
 # Открывать проводник для "Быстрый доступ" (значение по умолчанию)
 # OpenFileExplorerTo -QuickAccess
 
-# Expand the File Explorer ribbon
+# Expand File Explorer ribbon
 # Развернуть ленту проводника
 FileExplorerRibbon -Expanded
 
-# Minimize the File Explorer ribbon (default value)
+# Minimize File Explorer ribbon (default value)
 # Свернуть ленту проводника (значение по умолчанию)
 # FileExplorerRibbon -Minimized
 
@@ -418,6 +418,18 @@ SecondsInSystemClock -Show
 # Hide seconds on the taskbar clock (default value)
 # Скрыть секунды в системных часах на панели задач (значение по умолчанию)
 # SecondsInSystemClock -Hide
+
+# Combine taskbar buttons and always hide labels (default value)
+# Объединить кнопки панели задач и всегда скрывать метки (значение по умолчанию)
+TaskbarCombine -Always
+
+# Combine taskbar buttons and hide labels when taskbar is full
+# Объединить кнопки панели задач и скрывать метки при переполнении панели задач
+# TaskbarCombine -Full
+
+# Combine taskbar buttons and never hide labels
+# Объединить кнопки панели задач и никогда не скрывать метки
+# TaskbarCombine -Never
 
 # View the Control Panel icons by large icons
 # Просмотр иконок Панели управления как: крупные значки
@@ -598,14 +610,6 @@ AdminApprovalMode -Never
 # Choose when to be notified about changes to your computer: notify me only when apps try to make changes to my computer (default value)
 # Настройка уведомления об изменении параметров компьютера: уведомлять меня только при попытках приложений внести изменения в компьютер (значение по умолчанию)
 # AdminApprovalMode -Default
-
-# Turn on access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled
-# Включить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами
-MappedDrivesAppElevatedAccess -Enable
-
-# Turn off access to mapped drives from app running with elevated permissions with Admin Approval Mode enabled (default value)
-# Выключить доступ к сетевым дискам при включенном режиме одобрения администратором при доступе из программ, запущенных с повышенными правами (значение по умолчанию)
-# MappedDrivesAppElevatedAccess -Disable
 
 # Turn off Delivery Optimization
 # Выключить оптимизацию доставки
