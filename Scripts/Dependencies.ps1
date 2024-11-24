@@ -29,6 +29,7 @@ Move-Item @Parameters
 Remove-Item -Path "Scripts\LGPO_30", "Scripts\LGPO.zip"  -Recurse -Force
 
 # Download Microsoft.Windows.SDK.NET.dll & WinRT.Runtime.dll
+# https://www.nuget.org/packages/Microsoft.Windows.SDK.NET.Ref
 $Parameters = @{
 	Uri             = "https://www.nuget.org/api/v2/package/Microsoft.Windows.SDK.NET.Ref"
 	OutFile         = "Scripts\microsoft.windows.sdk.net.ref.zip"
