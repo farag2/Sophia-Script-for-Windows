@@ -64,13 +64,17 @@
 
 ### Скачать через PowerShell
 
-Чтобы скачать последнюю версию `Sophia Script for Windows`, запустите от имен `Администратора`
+Команда скачает и распакуют последнюю версию архива Sophia Script (`без последующего запуска`) согласно тем версиям Windows и PowerShell, на которых она запускалась. Допустим, если вы запустите ее на Windows 11 в PowerShell 5.1, то скачается Sophia Script для `Windows 11 PowerShell 5.1`.
 
 ```powershell
 iwr script.sophia.team -useb | iex
 ```
 
-Команда скачает и распакуют последнюю версию архива Sophia Script (`без последюушего запуска`) согласно тем версиям Windows и PowerShell, на которых она запускалась. Допустим, если вы запустите ее на Windows 11 в PowerShell 5.1, то скачается Sophia Script для `Windows 11 PowerShell 5.1`.
+Команда скачает и распакуют последнюю версию архива Sophia Script (`без последующего запуска`) из последнего доступного коммита согласно тем версиям Windows и PowerShell, на которых она запускалась.
+
+```powershell
+iwr sl.sophia.team -useb | iex
+```
 
 ### Вручную
 

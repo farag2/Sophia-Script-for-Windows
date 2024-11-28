@@ -64,13 +64,17 @@ Made with <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-W
 
 ### Download via PowerShell
 
-To download the latest `Sophia Script for Windows` version run as `Administrator`
+The command will download and expand the latest Sophia Script archive (`without running`) according which Windows and PowerShell versions it is run on. If you run it on, e.g., Windows 11 via PowerShell 5.1, it will download Sophia Script for `Windows 11 PowerShell 5.1`.
 
 ```powershell
 iwr script.sophia.team -useb | iex
 ```
 
-The command will download and expand the latest Sophia Script archive (`without running`) according which Windows and PowerShell versions it is run on. If you run it on, e.g., Windows 11 via PowerShell 5.1, it will download Sophia Script for `Windows 11 PowerShell 5.1`.
+The command will download and expand the latest Sophia Script archive (`without running`) from the `last commit available` according which Windows and PowerShell versions it is run on.
+
+```powershell
+iwr sl.sophia.team -useb | iex
+```
 
 ### Manual method
 

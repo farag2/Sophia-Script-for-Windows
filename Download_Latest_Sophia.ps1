@@ -1,6 +1,6 @@
 <#
 	.SYNOPSIS
-	Download the latest Sophia Script version, depending on what Windows or PowerShell versions are used to
+	Download the latest Sophia Script version from the last commit available, depending on what Windows or PowerShell versions are used to
 
 	.SYNOPSIS
 	For example, if you start script on Windows 11 via PowerShell 5.1 you will start downloading Sophia Script for Windows 11 PowerShell 5.1

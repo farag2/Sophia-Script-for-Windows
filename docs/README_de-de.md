@@ -64,13 +64,17 @@ Mit <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows
 
 ## Herunterladen über PowerShell
 
-* Laden Sie das stets aktuelle Sophia-Script-Archiv herunter, indem Sie die PowerShell aufrufen (`auch als nicht-Administrator`)
+Der Befehl lädt das neueste Sophia Script-Archiv herunter und extrahiert es (`ohne Ausführung`) entsprechend der Windows- und PowerShell-Version, unter der er ausgeführt wird. Wenn Sie es z. B. unter Windows 11 über PowerShell 5.1 ausführen, wird Sophia Script für `Windows 11 PowerShell 5.1` heruntergeladen.
 
 ```powershell
 iwr script.sophia.team -useb | iex
 ```
 
-* Der Befehl lädt das neueste Sophia Script-Archiv herunter und extrahiert es (`ohne Ausführung`) entsprechend der Windows- und PowerShell-Version, unter der er ausgeführt wird. Wenn Sie es z. B. unter Windows 11 über PowerShell 5.1 ausführen, wird Sophia Script für `Windows 11 PowerShell 5.1` heruntergeladen.
+Der Befehl lädt das neueste Sophia Script-Archiv (ohne es auszuführen) aus dem letzten verfügbaren Commit herunter und erweitert es, je nachdem, auf welchen Windows- und PowerShell-Versionen es ausgeführt wird.
+
+```powershell
+iwr sl.sophia.team -useb | iex
+```
 
 ### Manuelle Methode
 
