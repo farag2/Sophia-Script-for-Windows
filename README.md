@@ -64,13 +64,17 @@ Made with <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-W
 
 ### Download via PowerShell
 
-To download the latest `Sophia Script for Windows` version run as `Administrator`
+The command will download and expand the latest Sophia Script archive (`without running`) according which Windows and PowerShell versions it is run on. If you run it on, e.g., Windows 11 via PowerShell 5.1, it will download Sophia Script for `Windows 11 PowerShell 5.1`.
 
 ```powershell
 iwr script.sophia.team -useb | iex
 ```
 
-The command will download and expand the latest Sophia Script archive (`without running`) according which Windows and PowerShell versions it is run on. If you run it on, e.g., Windows 11 via PowerShell 5.1, it will download Sophia Script for `Windows 11 PowerShell 5.1`.
+The command will download and expand the latest Sophia Script archive (`without running`) from the `last commit available` according which Windows and PowerShell versions it is run on.
+
+```powershell
+iwr sl.sophia.team -useb | iex
+```
 
 ### Manual method
 
@@ -89,6 +93,12 @@ The command will download and expand the latest Sophia Script archive (`without 
 
 ```powershell
   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+```
+
+* Type `.\Sophia.ps1`and press <kbd>Enter</kbd>;
+
+```powershell
+  .Sophia.ps1
 ```
 
 ### Windows 11
@@ -112,6 +122,12 @@ https://github.com/user-attachments/assets/f5bda68f-9509-41dc-b3b1-1518aeaee36f
 ### How to run the specific function(s)
 
 * Do all steps from [Manual method](#manual-method) section and stop at setting execution policy in `PowerShell`;
+* Set execution policy to be able to run scripts only in the current PowerShell session;
+
+```powershell
+  Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+```
+
 * [Dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator) the `Functions.ps1` file first:
 
 ```powershell
@@ -192,9 +208,8 @@ Or use an old-style format without the TAB functions autocomplete (the quotation
 * Create tasks in the Task Scheduler to clear
   * `%SystemRoot%\SoftwareDistribution\Download`
   * `%TEMP%`
-* Pin shortcuts to Start via pure PowerShell
-  * `Control Panel` & "old style" `Devices and Printers` shortcuts will be pinned.
-* Unpin all Start menu tiles;
+* Install the latest provided Microsoft Visual C++ 2015–2022 x86/x64;
+* Install the latest provided .NET Desktop Runtime 6, 8 x86/x64;
 * Configure the Windows security;
 * Display all policy registry keys (even manually created ones) in the Local Group Policy Editor snap-in (gpedit.msc);
 * Many more File Explorer and context menu "deep" tweaks.

@@ -64,13 +64,17 @@ Mit <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows
 
 ## Herunterladen über PowerShell
 
-* Laden Sie das stets aktuelle Sophia-Script-Archiv herunter, indem Sie die PowerShell aufrufen (`auch als nicht-Administrator`)
+Der Befehl lädt das neueste Sophia Script-Archiv herunter und extrahiert es (`ohne Ausführung`) entsprechend der Windows- und PowerShell-Version, unter der er ausgeführt wird. Wenn Sie es z. B. unter Windows 11 über PowerShell 5.1 ausführen, wird Sophia Script für `Windows 11 PowerShell 5.1` heruntergeladen.
 
 ```powershell
 iwr script.sophia.team -useb | iex
 ```
 
-* Der Befehl lädt das neueste Sophia Script-Archiv herunter und extrahiert es (`ohne Ausführung`) entsprechend der Windows- und PowerShell-Version, unter der er ausgeführt wird. Wenn Sie es z. B. unter Windows 11 über PowerShell 5.1 ausführen, wird Sophia Script für `Windows 11 PowerShell 5.1` heruntergeladen.
+Der Befehl lädt das neueste Sophia Script-Archiv (ohne es auszuführen) aus dem letzten verfügbaren Commit herunter und erweitert es, je nachdem, auf welchen Windows- und PowerShell-Versionen es ausgeführt wird.
+
+```powershell
+iwr sl.sophia.team -useb | iex
+```
 
 ### Manuelle Methode
 
@@ -89,6 +93,12 @@ iwr script.sophia.team -useb | iex
 
 ```powershell
   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+```
+
+* Geben Sie `.\Sophia.ps1` ein und drücken Sie <kbd>Enter</kbd>;
+
+```powershell
+  .Sophia.ps1
 ```
 
 ### Windows 11
@@ -112,6 +122,12 @@ https://github.com/user-attachments/assets/f5bda68f-9509-41dc-b3b1-1518aeaee36f
 ### Verwendung von spezifischen Funktionen
 
 * Führen Sie alle Schritte aus dem Abschnitt [Manuelle Methode](#manuelle-methode) aus und stoppen Sie bei den Einstellungen der Ausführungsrichtlinie in PowerShell.
+* Legen Sie die Ausführungsrichtlinie so fest, dass Skripts nur in der aktuellen PowerShell-Sitzung ausgeführt werden können;
+
+```powershell
+  Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+```
+
 * Um spezifische Funktionen auszuführen [dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator) die `Functions.ps1` datei zuerst:
 
 ```powershell
@@ -189,9 +205,8 @@ Oder verwenden Sie ein Format im alten Stil ohne die TAB-Funktionen zum automati
   * Erstellen Sie die geplanten Aufgaben `Windows Cleanup` und `Windows Cleanup Notification`, um Windows von ungenutzten Dateien und Windows-Updates zu bereinigen;
   * Erstellen Sie eine geplante Aufgabe `SoftwareDistribution` zur Bereinigung von `%SystemRoot%\SoftwareDistribution\Download`.
   * Erstellen Sie eine geplante Aufgabe `Temp` zum Aufräumen von `%TEMP%`.
-* Anheften von Verknüpfungen an Start über reinen PowerShell-Code (nur für Windows 10)
-  * Die Verknüpfungen `Systemsteuerung` und `Geräte und Drucker` im "alten Stil"“" werden angeheftet.
-* Heben Sie die Anheftung aller Startmenü-Kacheln auf;
+* Installieren Sie die neueste bereitgestellte Version von Microsoft Visual C++ 2015–2022 x86/x64;
+* Installieren Sie die neueste bereitgestellte Version von .NET Desktop Runtime 6, 8 x86/x64;
 * Konfigurieren Sie die Windows-Sicherheit;
 * Zeigen Sie alle Richtlinien-Registrierungsschlüssel (auch manuell erstellte) im Snap-In Lokaler Gruppenrichtlinien-Editor (gpedit.msc) an;
 * Viele weitere "tiefe" Optimierungen des Datei-Explorers und des Kontextmenüs.

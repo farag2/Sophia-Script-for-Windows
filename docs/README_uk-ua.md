@@ -64,13 +64,17 @@
 
 ## Завантажити через PowerShell
 
-* Завантажте актуальний архів Sophia Script, викликавши (`також не від імені адміністратора`) в PowerShell
+Команда завантажить і розпакує останній архів Sophia Script (`без запуску`) відповідно до того, під якою версією Windows і PowerShell він запускається. Якщо запустити її, наприклад, в Windows 11 через PowerShell 5.1, вона завантажить Sophia Script для `Windows 11 PowerShell 5.1`.
 
 ```powershell
 iwr script.sophia.team -useb | iex
 ```
 
-Команда завантажить і розпакує останній архів Sophia Script (`без запуску`) відповідно до того, під якою версією Windows і PowerShell він запускається. Якщо запустити її, наприклад, в Windows 11 через PowerShell 5.1, вона завантажить Sophia Script для `Windows 11 PowerShell 5.1`.
+Команда скачає і розпакує останню версію архіву Sophia Script (`без запуску`) з останнього доступного комміту згідно з тими версіями Windows і PowerShell, на яких вона запускалася.
+
+```powershell
+iwr sl.sophia.team -useb | iex
+```
 
 ### Вручну
 
@@ -89,6 +93,12 @@ iwr script.sophia.team -useb | iex
 
 ```powershell
   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+```
+
+* Введіть `.\Sophia.ps1` і натисніть <kbd>Enter</kbd>;
+
+```powershell
+  .Sophia.ps1
 ```
 
 ### Windows 11
@@ -112,6 +122,12 @@ https://github.com/user-attachments/assets/f5bda68f-9509-41dc-b3b1-1518aeaee36f
 ### Як запустити певну функцію(ї)
 
 * Повторіть усі кроки з розділу [Вручну](#manual-method) і зупиніться на кроці встановлення політики виконання скриптів у `PowerShell`;
+* Встановіть політику виконання, щоб мати змогу запускати сценарії лише у поточному сеансі PowerShell;
+
+```powershell
+  Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+```
+
 * Для запуску певної функції(й) [запустити](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator) необхідно запустити файл `Functions.ps1`:
 
 ```powershell
@@ -189,9 +205,8 @@ UninstallUWPApps, "PinToStart -UnpinAll"
   * Створити завдання `Windows Cleanup` и `Windows Cleanup Notification` для очищення Windows від невикористовуваних файлів та оновлень;
   * Створити завдання `SoftwareDistribution` для очищення `%SystemRoot%\SoftwareDistribution\Download`;
   * Створити завдання `Temp` для очищення `%TEMP%`.
-* Закріплення ярликів в Пуск через чистий PowerShell
-  * Будуть закріплені ярлики `Панель керування` і старий вигляд `Пристрої та принтери`.
-* Відкріплення всіх плиток меню "Пуск";
+* Встановити останню версію розповсюджуваних пакетів Microsoft Visual C++ 2015–2022 x86/x64;
+* Встановити останню версію розповсюджуваних пакетів .NET Desktop Runtime 6, 8 x86/x64;
 * Налаштування безпеки Windows;
 * Відобразити всі ключі політик реєстру в оснащенні редагування групових політик (gpedit.msc).
 * Ще багато "глибоких" налаштувань Файлового Провідника та контекстного меню.
