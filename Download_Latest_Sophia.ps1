@@ -1,6 +1,6 @@
 <#
 	.SYNOPSIS
-	Download the latest Sophia Script version, depending on what Windows or PowerShell versions are used to
+	Download the latest Sophia Script version from the last commit available, depending on which Windows or PowerShell versions are used to
 
 	.SYNOPSIS
 	For example, if you start script on Windows 11 via PowerShell 5.1 you will start downloading Sophia Script for Windows 11 PowerShell 5.1
@@ -8,6 +8,7 @@
 	.EXAMPLE
 	iwr sl.sophia.team -useb | iex
 #>
+Clear-Host
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
@@ -37,6 +38,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName) -match "LTSC 2019")
 		{
 			$Version = "Sophia_Script_for_Windows_10_LTSC_2019"
+			$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC 2019 | Latest | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2024"
 		}
 		else
 		{
@@ -61,6 +63,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName) -match "LTSC 2021")
 		{
 			$Version = "Sophia_Script_for_Windows_10_LTSC_2021"
+			$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC 2021 | Latest | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2024"
 		}
 		else
 		{
@@ -84,10 +87,12 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		if ($Host.Version.Major -eq 5)
 		{
 			$Version = "Sophia_Script_for_Windows_10"
+			$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 | Latest | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2024"
 		}
 		else
 		{
 			$Version = "Sophia_Script_for_Windows_10_PowerShell_7"
+			$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 PowerShell 7 | Latest | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2024"
 		}
 	}
 	{$_ -ge 22631}
@@ -98,15 +103,18 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 			if ($Host.Version.Major -eq 5)
 			{
 				$Version = "Sophia_Script_for_Windows_11"
+				$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 | Latest | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2024"
 			}
 			else
 			{
 				$Version = "Sophia_Script_for_Windows_11_PowerShell_7"
+				$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 PowerShell 7 | Latest | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2024"
 			}
 		}
 		else
 		{
 			$Version = "Sophia_Script_for_Windows_11_LTSC_2024"
+			$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 LTSC 2024 | Latest | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2024"
 		}
 	}
 }

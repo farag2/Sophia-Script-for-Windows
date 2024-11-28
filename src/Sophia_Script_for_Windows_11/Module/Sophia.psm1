@@ -2819,7 +2819,7 @@ function SnapAssist
 		$Enable
 	)
 
-	New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name WindowArrangementActive -PropertyType DWord -Value 0 -Force
+	New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name WindowArrangementActive -PropertyType DWord -Value 1 -Force
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
@@ -5555,15 +5555,15 @@ function WindowsFeatures
 	{
 		"Enable"
 		{
-			$State = @("Disabled", "DisablePending")
-			$ButtonContent = $Localization.Enable
+			$State           = @("Disabled", "DisablePending")
+			$ButtonContent   = $Localization.Enable
 			$ButtonAdd_Click = {EnableButton}
 		}
 		"Disable"
 		{
-			$State = @("Enabled", "EnablePending")
-			$ButtonContent = $Localization.Disable
-			$ButtonAdd_Click = {DisableButton}
+			$State           = @("Enabled", "EnablePending")
+			$ButtonContent   = $Localization.Disable
+			$ButtonAdd_Click = {DisableButton} ###
 		}
 	}
 

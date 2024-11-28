@@ -21,7 +21,7 @@
 	.\Sophia.ps1 -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal"
 
 	.EXAMPLE Download and expand the latest Sophia Script version archive (without running) according which Windows and PowerShell versions it is run on
-	irm script.sophi.app -useb | iex
+	iwr script.sophia.team -useb | iex
 
 	.NOTES
 	Supported Windows 10 Enterprise LTSC 2019
@@ -30,7 +30,7 @@
 	.NOTES
 	To use the TAB completion for functions and their arguments dot source the Functions.ps1 script first:
 		. .\Function.ps1 (with a dot at the beginning)
-	Read more in the Functions.ps1 file
+	Read more at https://github.com/farag2/Sophia-Script-for-Windows?tab=readme-ov-file#how-to-run-the-specific-functions
 
 	.LINK GitHub
 	https://github.com/farag2/Sophia-Script-for-Windows
