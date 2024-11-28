@@ -1,12 +1,12 @@
 {
 	"Windows_10_URL": "https://support.microsoft.com/en-us/topic/windows-10-update-history-8127c2c6-6edf-4fdf-8b9f-0f7be1ef3562",
-	"Windows_10": "5011",
+	"Windows_10": "5131",
 	"Windows_10_LTSC_2019_URL": "https://support.microsoft.com/en-us/topic/windows-10-and-windows-server-2019-update-history-725fc2e1-4443-6831-a5ca-51ff5cbcb059",
-	"Windows_10_LTSC_2019": "6414",
+	"Windows_10_LTSC_2019": "6532",
 	"Windows_10_LTSC_2021_URL": "https://support.microsoft.com/en-us/topic/windows-10-update-history-857b8ccb-71e4-49e5-b3f6-7073197d98fb",
-	"Windows_10_LTSC_2021": "5011",
+	"Windows_10_LTSC_2021": "5131",
 	"Windows_11_URL": "https://support.microsoft.com/en-us/topic/windows-11-version-23h2-update-history-59875222-b990-4bd9-932f-91a5954de434",
-	"Windows_11": "4317",
+	"Windows_11": "4460",
 	"Windows_11_LTSC_2024_URL": "https://support.microsoft.com/en-us/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5",
-	"Windows_11_LTSC_2024": "2033"
+	"Windows_11_LTSC_2024": "2314"
 }
