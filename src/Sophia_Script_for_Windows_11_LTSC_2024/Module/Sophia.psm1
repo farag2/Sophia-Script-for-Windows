@@ -5167,14 +5167,14 @@ function WindowsFeatures
 	{
 		"Enable"
 		{
-			$State = @("Disabled", "DisablePending")
-			$ButtonContent = $Localization.Enable
+			$State           = @("Disabled", "DisablePending")
+			$ButtonContent   = $Localization.Enable
 			$ButtonAdd_Click = {EnableButton}
 		}
 		"Disable"
 		{
-			$State = @("Enabled", "EnablePending")
-			$ButtonContent = $Localization.Disable
+			$State           = @("Enabled", "EnablePending")
+			$ButtonContent   = $Localization.Disable
 			$ButtonAdd_Click = {DisableButton}
 		}
 	}
@@ -6301,9 +6301,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 				return
 			}
-
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message $Localization.RetrievingDrivesList -Verbose
 
 			# Desktop
 			Write-Information -MessageData "" -InformationAction Continue
