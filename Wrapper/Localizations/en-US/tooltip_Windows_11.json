@@ -822,34 +822,6 @@
   },
   {
     "Region": "System",
-    "Function": "StorageSenseFrequency",
-    "Arg": {
-      "Zero": {
-        "Tag": "Month",
-        "ToolTip": "Run Storage Sense every month."
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Run Storage Sense during low free disk space (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "StorageSenseTempFiles",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Turn on automatic cleaning up temporary system and app files (default value)."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Turn off automatic cleaning up temporary system and app files."
-      }
-    }
-  },
-  {
-    "Region": "System",
     "Function": "Hibernation",
     "Arg": {
       "Zero": {

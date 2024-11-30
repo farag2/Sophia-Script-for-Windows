@@ -892,34 +892,6 @@
   },
   {
     "Region": "System",
-    "Function": "StorageSenseFrequency",
-    "Arg": {
-      "Zero": {
-        "Tag": "Month",
-        "ToolTip": "Запускать Контроль памяти каждый месяц."
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Запускать Контроль памяти, когда остается мало место на диске (значение по умолчанию)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "StorageSenseTempFiles",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Удалять временные файлы, не используемые в приложениях."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Не удалять временные файлы, не используемые в приложениях (значение по умолчанию)."
-      }
-    }
-  },
-  {
-    "Region": "System",
     "Function": "Hibernation",
     "Arg": {
       "Zero": {

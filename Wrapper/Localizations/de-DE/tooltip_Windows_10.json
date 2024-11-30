@@ -892,34 +892,6 @@
   },
   {
     "Region": "System",
-    "Function": "StorageSenseFrequency",
-    "Arg": {
-      "Zero": {
-        "Tag": "Month",
-        "ToolTip": "Speicheroptimierung einmal im Monat ausführen."
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Speicheroptimierung bei geringem freien Speicherplatz ausführen (Standardeinstellung)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "StorageSenseTempFiles",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Temporäre Dateien löschen, die von Anwendungen nicht verwendet werden (Standardeinstellung)."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Lösche keine temporären Dateien, die von Anwendungen nicht verwendet werden."
-      }
-    }
-  },
-  {
-    "Region": "System",
     "Function": "Hibernation",
     "Arg": {
       "Zero": {

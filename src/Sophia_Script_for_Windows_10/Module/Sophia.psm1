@@ -821,7 +821,7 @@ public extern static string BrandingFormatString(string sFormat);
 
 	# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 	# https://github.com/PowerShell/PowerShell/issues/21070
-	Get-ChildItem -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
+	Get-ChildItem -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
 
 	# Save all opened folders in order to restore them after File Explorer restart
 	try
@@ -1179,8 +1179,9 @@ function DiagTrackService
 		# Get the name of a preset (e.g Sophia.ps1) regardless it was named
 		# $_.File has no EndsWith() method
 		$PresetName = Split-Path -Path (((Get-PSCallStack).Position | Where-Object -FilterScript {$_.File}).File | Where-Object -FilterScript {$_.EndsWith(".ps1")}) -Leaf
+
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.InitialActionsCheckFailed -f "`"$PresetName`"") -Verbose
+		Write-Verbose -Message ($Localization.InitialActionsCheckFailed -f $PresetName) -Verbose
 		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
@@ -4721,8 +4722,8 @@ function AeroShaking
 
 	# Remove all policies in order to make changes visible in UI only if it's possible
 	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\Software\Policies\Microsoft\Windows\Explorer -Name NoWindowMinimizingShortcuts -Force -ErrorAction Ignore
-	Set-Policy -Scope User -Path Software\Software\Policies\Microsoft\Windows\Explorer -Name NoWindowMinimizingShortcuts -Type CLEAR
-	Set-Policy -Scope Computer -Path SOFTWARE\Software\Policies\Microsoft\Windows\Explorer -Name NoWindowMinimizingShortcuts -Type CLEAR
+	Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name NoWindowMinimizingShortcuts -Type CLEAR
+	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoWindowMinimizingShortcuts -Type CLEAR
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
@@ -5430,7 +5431,6 @@ public static bool MarkFileDelete (string sourcefile)
 #endregion OneDrive
 
 #region System
-#region StorageSense
 <#
 	.SYNOPSIS
 	Storage Sense
@@ -5478,130 +5478,28 @@ function StorageSense
 	{
 		"Enable"
 		{
+			# Turn on Storage Sense
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01 -PropertyType DWord -Value 1 -Force
+
+			# Turn on automatic cleaning up temporary system and app files
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01 -PropertyType DWord -Value 1 -Force
+
+			# Run Storage Sense every month
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 2048 -PropertyType DWord -Value 30 -Force
 		}
 		"Disable"
 		{
+			# Turn off Storage Sense
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01 -PropertyType DWord -Value 0 -Force
+
+			# Turn off automatic cleaning up temporary system and app files
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01 -PropertyType DWord -Value 0 -Force
+
+			# Run Storage Sense during low free disk space
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 2048 -PropertyType DWord -Value 0 -Force
 		}
 	}
 }
-
-<#
-	.SYNOPSIS
-	Clean up of temporary files
-
-	.PARAMETER Enable
-	Delete temporary files that apps aren't using
-
-	.PARAMETER Disable
-	Do not delete temporary files that apps aren't using
-
-	.EXAMPLE
-	StorageSenseTempFiles -Enable
-
-	.EXAMPLE
-	StorageSenseTempFiles -Disable
-
-	.NOTES
-	Current user
-#>
-function StorageSenseTempFiles
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Enable"
-		{
-			if ((Get-ItemPropertyValue -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01) -eq "1")
-			{
-				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 04 -PropertyType DWord -Value 1 -Force
-			}
-		}
-		"Disable"
-		{
-			if ((Get-ItemPropertyValue -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01) -eq "1")
-			{
-				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 04 -PropertyType DWord -Value 0 -Force
-			}
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	Storage Sense running frequency
-
-	.PARAMETER Month
-	Run Storage Sense every month
-
-	.PARAMETER Default
-	Run Storage Sense during low free disk space
-
-	.EXAMPLE
-	StorageSenseFrequency -Month
-
-	.EXAMPLE
-	StorageSenseFrequency -Default
-
-	.NOTES
-	Current user
-#>
-function StorageSenseFrequency
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Month"
-		)]
-		[switch]
-		$Month,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Default"
-		)]
-		[switch]
-		$Default
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Month"
-		{
-			if ((Get-ItemPropertyValue -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01) -eq "1")
-			{
-				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 2048 -PropertyType DWord -Value 30 -Force
-			}
-		}
-		"Default"
-		{
-			if ((Get-ItemPropertyValue -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01) -eq "1")
-			{
-				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 2048 -PropertyType DWord -Value 0 -Force
-			}
-		}
-	}
-}
-
-#endregion StorageSense
 
 <#
 	.SYNOPSIS
@@ -9965,69 +9863,127 @@ function UninstallPCHealthCheck
 #>
 function InstallVCRedist
 {
+	# Get latest build version
+	# https://github.com/ScoopInstaller/Extras/blob/master/bucket/vcredist2022.json
+	try
+	{
+		$Parameters = @{
+			Uri             = "https://raw.githubusercontent.com/ScoopInstaller/Extras/refs/heads/master/bucket/vcredist2022.json"
+			UseBasicParsing = $true
+			Verbose         = $true
+		}
+		$vcredistVersion = (Invoke-RestMethod @Parameters).version
+	}
+	catch [System.Net.WebException]
+	{
+		$vcredistVersion = "0.0"
+	}
+
+	# Checking whether VC_redist builds installed
+	if (Test-Path -Path "$env:ProgramData\Package Cache\{e7802eac-3305-4da0-9378-e55d1ed05518}\VC_redist.x86.exe")
+	{
+		$msvcpx86Version = (Get-Item -Path "$env:ProgramData\Package Cache\{e7802eac-3305-4da0-9378-e55d1ed05518}\VC_redist.x86.exe").VersionInfo.FileVersion
+	}
+	else
+	{
+		$msvcpx86Version = "0.0"
+	}
+	if (Test-Path -Path "$env:ProgramData\Package Cache\{804e7d66-ccc2-4c12-84ba-476da31d103d}\VC_redist.x64.exe")
+	{
+		$msvcpx64Version = (Get-Item -Path "$env:ProgramData\Package Cache\{804e7d66-ccc2-4c12-84ba-476da31d103d}\VC_redist.x64.exe").VersionInfo.FileVersion
+	}
+	else
+	{
+		$msvcpx64Version = "0.0"
+	}
+
 	$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 
-	try
+	# Proceed if currently installed build is lower than available from Microsoft or json file is unreachable, or VC_redist is not installed
+	if (([System.Version]$vcredistVersion -gt [System.Version]$msvcpx86Version) -or (($vcredistVersion -eq "0.0") -or ($msvcpx86Version -eq "0.0")))
 	{
-		$Parameters = @{
-			Uri             = "https://aka.ms/vs/17/release/VC_redist.x86.exe"
-			OutFile         = "$DownloadsFolder\VC_redist.x86.exe"
-			UseBasicParsing = $true
-			Verbose         = $true
+		try
+		{
+			$Parameters = @{
+				Uri             = "https://aka.ms/vs/17/release/VC_redist.x86.exe"
+				OutFile         = "$DownloadsFolder\VC_redist.x86.exe"
+				UseBasicParsing = $true
+				Verbose         = $true
+			}
+			Invoke-WebRequest @Parameters
+
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Verbose -Message "Visual C++ Redistributable x86" -Verbose
+			Write-Information -MessageData "" -InformationAction Continue
+
+			Start-Process -FilePath "$DownloadsFolder\VC_redist.x86.exe" -ArgumentList "/install /passive /norestart" -Wait
+
+			# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+			# https://github.com/PowerShell/PowerShell/issues/21070
+			$Paths = @(
+				"$DownloadsFolder\VC_redist.x86.exe",
+				"$env:TEMP\dd_vcredist_x86_*.log"
+			)
+			Get-ChildItem -Path $Paths -Force | Remove-Item -Force -ErrorAction Ignore
 		}
-		Invoke-WebRequest @Parameters
-	}
-	catch [System.Net.WebException]
-	{
-		Write-Warning -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com")
-		Write-Error -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com") -ErrorAction SilentlyContinue
+		catch [System.Net.WebException]
+		{
+			Write-Warning -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com")
+			Write-Error -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com") -ErrorAction SilentlyContinue
+			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
-		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-
-		return
-	}
-
-	Write-Information -MessageData "" -InformationAction Continue
-	Write-Verbose -Message "Visual C++ Redistributable x86" -Verbose
-	Write-Information -MessageData "" -InformationAction Continue
-
-	Start-Process -FilePath "$DownloadsFolder\VC_redist.x86.exe" -ArgumentList "/install /passive /norestart" -Wait
-
-	try
-	{
-		$Parameters = @{
-			Uri             = "https://aka.ms/vs/17/release/VC_redist.x64.exe"
-			OutFile         = "$DownloadsFolder\VC_redist.x64.exe"
-			UseBasicParsing = $true
-			Verbose         = $true
+			return
 		}
-		Invoke-WebRequest @Parameters
 	}
-	catch [System.Net.WebException]
+	else
 	{
-		Write-Warning -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com")
-		Write-Error -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com") -ErrorAction SilentlyContinue
-
-		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-
-		return
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 	}
 
-	Write-Information -MessageData "" -InformationAction Continue
-	Write-Verbose -Message "Visual C++ Redistributable x64" -Verbose
-	Write-Information -MessageData "" -InformationAction Continue
+	# Proceed if currently installed build is lower than available from Microsoft or json file is unreachable, or VC_redist is not installed
+	if (([System.Version]$vcredistVersion -gt [System.Version]$msvcpx64Version) -or (($vcredistVersion -eq "0.0") -or ($msvcpx64Version -eq "0.0")))
+	{
+		try
+		{
+			$Parameters = @{
+				Uri             = "https://aka.ms/vs/17/release/VC_redist.x64.exe"
+				OutFile         = "$DownloadsFolder\VC_redist.x64.exe"
+				UseBasicParsing = $true
+				Verbose         = $true
+			}
+			Invoke-WebRequest @Parameters
+		}
+		catch [System.Net.WebException]
+		{
+			Write-Warning -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com")
+			Write-Error -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com") -ErrorAction SilentlyContinue
+			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
-	Start-Process -FilePath "$DownloadsFolder\VC_redist.x64.exe" -ArgumentList "/install /passive /norestart" -Wait
+			return
+		}
 
-	# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-	# https://github.com/PowerShell/PowerShell/issues/21070
-	$Paths = @(
-		"$DownloadsFolder\VC_redist.x86.exe",
-		"$DownloadsFolder\VC_redist.x64.exe",
-		"$env:TEMP\dd_vcredist_x86_*.log",
-		"$env:TEMP\dd_vcredist_amd64_*.log"
-	)
-	Get-ChildItem -Path $Paths -Recurse -Force | Remove-Item -Recurse -Force -ErrorAction Ignore
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message "Visual C++ Redistributable x64" -Verbose
+		Write-Information -MessageData "" -InformationAction Continue
+
+		Start-Process -FilePath "$DownloadsFolder\VC_redist.x64.exe" -ArgumentList "/install /passive /norestart" -Wait
+
+		# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+		# https://github.com/PowerShell/PowerShell/issues/21070
+		$Paths = @(
+			"$DownloadsFolder\VC_redist.x64.exe",
+			"$env:TEMP\dd_vcredist_amd64_*.log"
+		)
+		Get-ChildItem -Path $Paths -Force | Remove-Item -Force -ErrorAction Ignore
+	}
+	else
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+	}
 }
 
 <#
@@ -10067,117 +10023,157 @@ function InstallDotNetRuntimes
 			{
 				try
 				{
-					# Install .NET Desktop Runtime 6
+					# Get latest build version
 					# https://github.com/dotnet/core/blob/main/release-notes/releases-index.json
 					$Parameters = @{
 						Uri             = "https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/6.0/releases.json"
 						Verbose         = $true
 						UseBasicParsing = $true
 					}
-					$LatestRelease = (Invoke-RestMethod @Parameters)."latest-release"
+					$NET6Version = (Invoke-RestMethod @Parameters)."latest-release"
 				}
 				catch [System.Net.WebException]
 				{
 					Write-Warning -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com")
 					Write-Error -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com") -ErrorAction SilentlyContinue
-
 					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 					return
 				}
 
-				try
+				# Checking whether .NET 6 installed
+				if (Test-Path -Path "$env:ProgramData\Package Cache\{9d3fc73f-1cf4-412c-a1c9-d2ad28ccbd62}\dotnet-runtime-*-win-x64.exe")
 				{
-					# .NET Desktop Runtime 6 x64
-					$Parameters = @{
-						Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$LatestRelease/dotnet-runtime-$LatestRelease-win-x64.exe"
-						OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe"
-						UseBasicParsing = $true
-						Verbose         = $true
+					# FileVersion has four properties while $NET6Version has only three, unless the [System.Version] accelerator fails
+					$dotnet6Version = (Get-Item -Path "$env:ProgramData\Package Cache\{9d3fc73f-1cf4-412c-a1c9-d2ad28ccbd62}\dotnet-runtime-*-win-x64.exe").VersionInfo.FileVersion
+					$dotnet6Version = "{0}.{1}.{2}" -f $dotnet6Version.Split(".")
+				}
+				else
+				{
+					$dotnet6Version = "0.0"
+				}
+
+				# Proceed if currently installed build is lower than available from Microsoft or json file is unreachable, or .NET 6 is not installed at all
+				if (([System.Version]$NET6Version -gt [System.Version]$dotnet6Version) -or ($dotnet6Version -eq "0.0"))
+				{
+					try
+					{
+						# Downloading .NET Desktop Runtime 6 x64
+						$Parameters = @{
+							Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$NET6Version/dotnet-runtime-$NET6Version-win-x64.exe"
+							OutFile         = "$DownloadsFolder\dotnet-runtime-$NET6Version-win-x64.exe"
+							UseBasicParsing = $true
+							Verbose         = $true
+						}
+						Invoke-WebRequest @Parameters
 					}
-					Invoke-WebRequest @Parameters
+					catch [System.Net.WebException]
+					{
+						Write-Warning -Message ($Localization.NoResponse -f "https://dotnetcli.blob.core.windows.net")
+						Write-Error -Message ($Localization.NoResponse -f "https://dotnetcli.blob.core.windows.net") -ErrorAction SilentlyContinue
+						Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+						return
+					}
+
+					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message ".NET $NET6Version" -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
+
+					Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$NET6Version-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
+
+					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+					# https://github.com/PowerShell/PowerShell/issues/21070
+					$Paths = @(
+						"$DownloadsFolder\dotnet-runtime-$NET6Version-win-x64.exe",
+						"$env:TEMP\Microsoft_.NET_Runtime*.log"
+					)
+					Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
 				}
-				catch [System.Net.WebException]
+				else
 				{
-					Write-Warning -Message ($Localization.NoResponse -f "https://dotnetcli.blob.core.windows.net")
-					Write-Error -Message ($Localization.NoResponse -f "https://dotnetcli.blob.core.windows.net") -ErrorAction SilentlyContinue
-
-					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-
-					return
+					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+					Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 				}
-
-				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message ".NET $LatestRelease" -Verbose
-				Write-Information -MessageData "" -InformationAction Continue
-
-				Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
-
-				# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-				# https://github.com/PowerShell/PowerShell/issues/21070
-				$Paths = @(
-					"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe",
-					"$env:TEMP\Microsoft_.NET_Runtime*.log"
-				)
-				Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 			}
 			NET8x64
 			{
 				try
 				{
-					# .NET Desktop Runtime 8
+					# Get latest build version
 					# https://github.com/dotnet/core/blob/main/release-notes/releases-index.json
 					$Parameters = @{
 						Uri             = "https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/8.0/releases.json"
 						Verbose         = $true
 						UseBasicParsing = $true
 					}
-					$LatestRelease = (Invoke-RestMethod @Parameters)."latest-release"
+					$NET8Version = (Invoke-RestMethod @Parameters)."latest-release"
 				}
 				catch [System.Net.WebException]
 				{
-					Write-Warning -Message ($Localization.NoResponse -f "https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/8.0/releases.json")
-					Write-Error -Message ($Localization.NoResponse -f "https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/8.0/releases.json") -ErrorAction SilentlyContinue
-
+					Write-Warning -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com")
+					Write-Error -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com") -ErrorAction SilentlyContinue
 					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 					return
 				}
 
-				try
+				# Checking whether .NET 8 installed
+				if (Test-Path -Path "$env:ProgramData\Package Cache\{e883dae5-a63d-4a45-afb9-257f64d5a59b}\dotnet-runtime-*-win-x64.exe")
 				{
-					# .NET Desktop Runtime 8 x64
-					$Parameters = @{
-						Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$LatestRelease/dotnet-runtime-$LatestRelease-win-x64.exe"
-						OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe"
-						UseBasicParsing = $true
-						Verbose         = $true
+					# FileVersion has four properties while $NET8Version has only three, unless the [System.Version] accelerator fails
+					$dotnet8Version = (Get-Item -Path "$env:ProgramData\Package Cache\{e883dae5-a63d-4a45-afb9-257f64d5a59b}\dotnet-runtime-*-win-x64.exe").VersionInfo.FileVersion
+					$dotnet8Version = "{0}.{1}.{2}" -f $dotnet8Version.Split(".")
+				}
+				else
+				{
+					$dotnet8Version = "0.0"
+				}
+
+				# Proceed if currently installed build is lower than available from Microsoft or json file is unreachable, or .NET 8 is not installed at all
+				if (([System.Version]$NET8Version -gt [System.Version]$dotnet8Version) -or ($dotnet8Version -eq "0.0"))
+				{
+					try
+					{
+						# .NET Desktop Runtime 8 x64
+						$Parameters = @{
+							Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$NET8Version/dotnet-runtime-$NET8Version-win-x64.exe"
+							OutFile         = "$DownloadsFolder\dotnet-runtime-$NET8Version-win-x64.exe"
+							UseBasicParsing = $true
+							Verbose         = $true
+						}
+						Invoke-WebRequest @Parameters
 					}
-					Invoke-WebRequest @Parameters
+					catch [System.Net.WebException]
+					{
+						Write-Warning -Message ($Localization.NoResponse -f "https://dotnetcli.blob.core.windows.net")
+						Write-Error -Message ($Localization.NoResponse -f "https://dotnetcli.blob.core.windows.net") -ErrorAction SilentlyContinue
+						Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+						return
+					}
+
+					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message ".NET $NET8Version" -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
+
+					Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$NET8Version-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
+
+					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+					# https://github.com/PowerShell/PowerShell/issues/21070
+					$Paths = @(
+						"$DownloadsFolder\dotnet-runtime-$NET8Version-win-x64.exe",
+						"$env:TEMP\Microsoft_.NET_Runtime*.log"
+					)
+					Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
 				}
-				catch [System.Net.WebException]
+				else
 				{
-					Write-Warning -Message ($Localization.NoResponse -f "https://dotnetcli.blob.core.windows.net")
-					Write-Error -Message ($Localization.NoResponse -f "https://dotnetcli.blob.core.windows.net") -ErrorAction SilentlyContinue
-
-					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-
-					return
+					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+					Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 				}
-
-				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message ".NET $LatestRelease" -Verbose
-				Write-Information -MessageData "" -InformationAction Continue
-
-				Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
-
-				# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-				# https://github.com/PowerShell/PowerShell/issues/21070
-				$Paths = @(
-					"$DownloadsFolder\dotnet-runtime-$LatestRelease-win-x64.exe",
-					"$env:TEMP\Microsoft_.NET_Runtime*.log"
-				)
-				Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 			}
 		}
 	}
@@ -11396,10 +11392,11 @@ function UninstallUWPApps
 
 		$Window.Close() | Out-Null
 
-		# If Xbox Game Bar is selected to uninstall stop its processes
-		if ($PackagesToRemove -match "Microsoft.XboxGamingOverlay")
+		# If MSTeams is selected to uninstall, delete quietly "Microsoft Teams Meeting Add-in for Microsoft Office" too
+		# & "$env:SystemRoot\System32\msiexec.exe" --% /x {A7AB73A3-CB10-4AA5-9D38-6AEFFBDE4C91} /qn
+		if ($PackagesToRemove -match "MSTeams")
 		{
-			Get-Process -Name GameBar, GameBarFTServer -ErrorAction Ignore | Stop-Process -Force
+			Start-Process -FilePath "$env:SystemRoot\System32\msiexec.exe" -ArgumentList "/x {A7AB73A3-CB10-4AA5-9D38-6AEFFBDE4C91} /qn" -Wait
 		}
 
 		$PackagesToRemove | Remove-AppxPackage -AllUsers:$CheckBoxForAllUsers.IsChecked -Verbose
@@ -13666,6 +13663,10 @@ function SaveZoneInformation
 		$Enable
 	)
 
+	# Remove all policies in order to make changes visible in UI only if it's possible
+	Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Attachments -Name SaveZoneInformation -Force -ErrorAction Ignore
+	Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Attachments -Name SaveZoneInformation -Type CLEAR
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Disable"
@@ -15143,7 +15144,7 @@ public static void PostMessage()
 
 	# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 	# https://github.com/PowerShell/PowerShell/issues/21070
-	Get-ChildItem -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
+	Get-ChildItem -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
 
 	# Kill all explorer instances in case "launch folder windows in a separate process" enabled
 	Get-Process -Name explorer | Stop-Process -Force

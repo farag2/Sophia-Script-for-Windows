@@ -613,7 +613,6 @@ NavigationPaneExpand -Disable
 #endregion OneDrive
 
 #region System
-#region StorageSense
 # Turn on Storage Sense
 # Включить Контроль памяти
 StorageSense -Enable
@@ -621,23 +620,6 @@ StorageSense -Enable
 # Turn off Storage Sense (default value)
 # Выключить Контроль памяти (значение по умолчанию)
 # StorageSense -Disable
-
-# Run Storage Sense every month
-# Запускать Контроль памяти каждый месяц
-StorageSenseFrequency -Month
-
-# Run Storage Sense during low free disk space (default value)
-# Запускать Контроль памяти, когда остается мало место на диске (значение по умолчанию)
-# StorageSenseFrequency -Default
-
-# Turn on automatic cleaning up temporary system and app files (default value)
-# Автоматически очищать временные файлы системы и приложений (значение по умолчанию)
-StorageSenseTempFiles -Enable
-
-# Turn off automatic cleaning up temporary system and app files
-# Не очищать временные файлы системы и приложений
-# StorageSenseTempFiles -Disable
-#endregion StorageSense
 
 # Disable hibernation. It isn't recommended to turn off for laptops
 # Отключить режим гибернации. Не рекомендуется выключать на ноутбуках
