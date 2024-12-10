@@ -98,7 +98,7 @@ iwr sl.sophia.team -useb | iex
 * Type `.\Sophia.ps1`and press <kbd>Enter</kbd>;
 
 ```powershell
-  .Sophia.ps1
+  .\Sophia.ps1
 ```
 
 ### Windows 11
@@ -110,6 +110,10 @@ https://github.com/user-attachments/assets/2654b005-9577-4e56-ac9e-501d3e8a18bd
 https://github.com/user-attachments/assets/f5bda68f-9509-41dc-b3b1-1518aeaee36f
 
 ## Wrapper
+
+![Wrapper](https://i.imgur.com/AiuCUvW.png)
+
+@BenchTweakGaming
 
 * Download the [latest](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest) Wrapper version;
 * Expand archive;
@@ -177,6 +181,7 @@ Or use an old-style format without the TAB functions autocomplete (the quotation
 
 ## Key features
 
+* All archives are being built via GitHub Actions [automatically](https://github.com/farag2/Sophia-Script-for-Windows/actions);
 * Set up Privacy & Telemetry;
 * Enable DNS-over-HTTPS for IPv4;
 * Turn off diagnostics tracking scheduled tasks with pop-up form written in [WPF](#screenshots);
@@ -239,10 +244,6 @@ https://user-images.githubusercontent.com/10544660/253818031-b7ce6bf1-d968-41ea-
 ### Native interactive toasts for the scheduled tasks
 
 ![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/master/img/Toasts.png)
-
-### @BenchTweakGaming Sophia Script Wrapper
-
-![Wrapper](https://i.imgur.com/AiuCUvW.png)
 
 ## Videos
 

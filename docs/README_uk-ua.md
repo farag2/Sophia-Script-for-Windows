@@ -98,7 +98,7 @@ iwr sl.sophia.team -useb | iex
 * Введіть `.\Sophia.ps1` і натисніть <kbd>Enter</kbd>;
 
 ```powershell
-  .Sophia.ps1
+  .\Sophia.ps1
 ```
 
 ### Windows 11
@@ -110,6 +110,10 @@ https://github.com/user-attachments/assets/2654b005-9577-4e56-ac9e-501d3e8a18bd
 https://github.com/user-attachments/assets/f5bda68f-9509-41dc-b3b1-1518aeaee36f
 
 ## Wrapper
+
+![Wrapper](https://i.imgur.com/AiuCUvW.png)
+
+@BenchTweakGaming
 
 * Завантажте [останню](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest) версію Wrapper
 * Завантажте та розпакуйте архів;
@@ -177,6 +181,7 @@ UninstallUWPApps, "PinToStart -UnpinAll"
 
 ## Ключові особливості
 
+* Усі архіви з використанням GitHub Actions [автоматично](https://github.com/farag2/Sophia-Script-for-Windows/actions);
 * Налаштування конфіденційності і телеметрії;
 * Активація DNS-over-HTTPS для IPv4;
 * Вимкнення запланованих завдань з відстеження зі спливаючою формою, написаною на [WPF](#скріншоти);
@@ -236,10 +241,6 @@ https://user-images.githubusercontent.com/10544660/253818031-b7ce6bf1-d968-41ea-
 ### Інтерактивні тости для запланованих завдань
 
 ![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/master/img/Toasts.png)
-
-### @BenchTweakGaming Sophia Script Wrapper
-
-![Wrapper](https://i.imgur.com/AiuCUvW.png)
 
 ## Відео
 

@@ -625,7 +625,9 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "Zero"
+    "WindowsDefault": "Zero",
+    "LTSC2019": "true",
+    "LTSC2021": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -845,7 +847,9 @@
       }
     },
     "Preset": "One",
-    "WindowsDefault": "Zero"
+    "WindowsDefault": "Zero",
+    "LTSC2019": "false",
+    "LTSC2021": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -861,7 +865,9 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2019": "false",
+    "LTSC2021": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -877,7 +883,9 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "Zero"
+    "WindowsDefault": "Zero",
+    "LTSC2019": "false",
+    "LTSC2021": "true"
   },
   {
     "Region": "System",
@@ -1433,7 +1441,9 @@
       }
     },
     "Preset": "",
-    "WindowsDefault": ""
+    "WindowsDefault": "",
+    "LTSC2019": "true",
+    "LTSC2021": "true"
   },
   {
     "Region": "System",
@@ -1487,14 +1497,16 @@
     "Function": "InstallDotNetRuntimes -Runtimes",
     "Arg": {
       "Zero": {
-        "Tag": "NET6x64"
+        "Tag": "NET8x64"
       },
       "One": {
-        "Tag": "NET8x64"
+        "Tag": "NET9x64"
       }
     },
     "Preset": "",
-    "WindowsDefault": ""
+    "WindowsDefault": "",
+    "LTSC2019": "true",
+    "LTSC2021": "true"
   },
   {
     "Region": "System",
@@ -1536,24 +1548,6 @@
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
-    "Function": "SATADrivesRemovableMedia",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable"
-      },
-      "One": {
-        "Tag": "Default"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "",
-    "LTSC2019": "true",
-    "LTSC2021": "true"
-  },
-  {
-    "Region": "System",
-    "Control": "cmb",
-    "Required": "false",
     "Function": "RegistryBackup",
     "Arg": {
       "Zero": {
@@ -1564,7 +1558,9 @@
       }
     },
     "Preset": "Zero",
-    "WindowsDefault": "One"
+    "WindowsDefault": "One",
+    "LTSC2019": "true",
+    "LTSC2021": "true"
   },
   {
     "Region": "WSL",

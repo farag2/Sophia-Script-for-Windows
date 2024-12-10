@@ -14,6 +14,22 @@ Clear-Host
 
 Remove-Variable * -ErrorAction Ignore
 
+# Checking whether the logged-in user is an admin
+$CurrentUserName = (Get-CimInstance -ClassName Win32_Process -Filter ProcessId=$PID | Invoke-CimMethod -MethodName GetOwner | Select-Object -First 1).User
+$LoginUserName = (Get-CimInstance -ClassName Win32_Process -Filter "name='explorer.exe'" | Invoke-CimMethod -MethodName GetOwner | Select-Object -First 1).User
+
+if ($CurrentUserName -ne $LoginUserName)
+{
+	Write-Information -MessageData "" -InformationAction Continue
+	Write-Warning -Message "The logged-on user doesn't have admin rights."
+	Write-Information -MessageData "" -InformationAction Continue
+
+	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+	break
+}
+
 if ($Host.Version.Major -eq 5)
 {
 	# Progress bar can significantly impact cmdlet performance
@@ -119,34 +135,20 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 	}
 }
 
-if (-not (Test-Path -Path "$DownloadsFolder\SophiaScriptTemp"))
+if (Test-Path -Path "$DownloadsFolder\SophiaScriptTemp")
 {
-	New-Item -Path "$DownloadsFolder\SophiaScriptTemp" -ItemType Directory -Force
-}
-else
-{
-	Remove-Item -Path "$DownloadsFolder\SophiaScriptTemp" -Force -Recurse
+	Write-Verbose -Message "Please remove `"$DownloadsFolder\SophiaScriptTemp`" manually and try to use script again." -Verbose
 
-	if ((Get-ChildItem -Path "$DownloadsFolder\SophiaScriptTemp" -ErrorAction Ignore | Measure-Object).Count -ne 0)
-	{
-		Write-Verbose -Message "Some files in `"$DownloadsFolder\SophiaScriptTemp`" folder are in use. Please remove them manually and try to use script again." -Verbose
-
-		pause
-		exit
-	}
+	pause
+	exit
 }
 
 if (Test-Path -Path "$DownloadsFolder\$($Version)_Latest")
 {
-	Remove-Item -Path "$DownloadsFolder\$($Version)_Latest" -Recurse -Force -ErrorAction Ignore
+	Write-Verbose -Message "Please remove `"$DownloadsFolder\$($Version)_Latest`" manually and try to use script again." -Verbose
 
-	if ((Get-ChildItem -Path "$DownloadsFolder\$($Version)_Latest" -ErrorAction Ignore | Measure-Object).Count -ne 0)
-	{
-		Write-Verbose -Message "Some files in `"$DownloadsFolder\$($Version)_Latest`" folder are in use. Please remove `"$DownloadsFolder\$($Version)_Latest`" manually and try to use script again." -Verbose
-
-		pause
-		exit
-	}
+	pause
+	exit
 }
 
 & "$env:SystemRoot\System32\tar.exe" -C "$DownloadsFolder\SophiaScriptTemp" -xf "$DownloadsFolder\master.zip" "Sophia-Script-for-Windows-master/src/$Version"

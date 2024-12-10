@@ -67,6 +67,7 @@
     "Options": {
       "messageBoxNewWrapperFound": "Обнаружена новая версия Wrapper.\nОткрыть страницу GitHub?",
       "messageBoxNewSophiaFound": "Обнаружена новая версия Sophia Script.\nОткрыть страницу GitHub?",
+      "messageBoxPS1FileHasToBeInFolder": "Пресет-файлл Sophia.ps1 должен находиться в папке Sophia Script.",
       "messageBoxDoesNotExist": "не существует.",
       "messageBoxPresetNotComp": "Пресет не совместим!",
       "messageBoxFilesMissingClose": "Отсутствуют необходимые файлы Sophia Script Wrapper. Программа будет закрыта.",

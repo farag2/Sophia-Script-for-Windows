@@ -98,7 +98,7 @@ iwr sl.sophia.team -useb | iex
 * Geben Sie `.\Sophia.ps1` ein und drücken Sie <kbd>Enter</kbd>;
 
 ```powershell
-  .Sophia.ps1
+  .\Sophia.ps1
 ```
 
 ### Windows 11
@@ -110,6 +110,10 @@ https://github.com/user-attachments/assets/2654b005-9577-4e56-ac9e-501d3e8a18bd
 https://github.com/user-attachments/assets/f5bda68f-9509-41dc-b3b1-1518aeaee36f
 
 ## Wrapper
+
+![Wrapper](https://i.imgur.com/AiuCUvW.png)
+
+@BenchTweakGaming
 
 * Laden Sie die (neueste)(<https://github.com/farag2/Sophia-Script-for-Windows/releases/latest>) Wrapper-Version herunter.
 * Das Archiv extrahieren;
@@ -177,6 +181,7 @@ Oder verwenden Sie ein Format im alten Stil ohne die TAB-Funktionen zum automati
 
 ## Haupt-Features
 
+* Alle Archive werden [automatisch](https://github.com/farag2/Sophia-Script-for-Windows/actions) über GitHub Actions erstellt.
 * Datenschutz und Telemetrie einrichten;
 * DNS-über-HTTPS für IPv4 aktivieren;
 * Deaktivieren Sie die Diagnoseverfolgung geplanter Aufgaben mit einem in [WPF] geschriebenen Popup-Formular (#screenshots);
@@ -236,10 +241,6 @@ https://user-images.githubusercontent.com/10544660/253818031-b7ce6bf1-d968-41ea-
 ### Native interaktive Toasts für die geplanten Aufgaben
 
 ![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/master/img/Toasts.png)
-
-### @BenchTweakGaming Sophia Script Wrapper
-
-![Wrapper](https://i.imgur.com/AiuCUvW.png)
 
 ## Videos
 

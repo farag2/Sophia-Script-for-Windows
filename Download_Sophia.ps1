@@ -14,6 +14,22 @@ Clear-Host
 
 Remove-Variable * -ErrorAction Ignore
 
+# Checking whether the logged-in user is an admin
+$CurrentUserName = (Get-CimInstance -ClassName Win32_Process -Filter ProcessId=$PID | Invoke-CimMethod -MethodName GetOwner | Select-Object -First 1).User
+$LoginUserName = (Get-CimInstance -ClassName Win32_Process -Filter "name='explorer.exe'" | Invoke-CimMethod -MethodName GetOwner | Select-Object -First 1).User
+
+if ($CurrentUserName -ne $LoginUserName)
+{
+	Write-Information -MessageData "" -InformationAction Continue
+	Write-Warning -Message "The logged-on user doesn't have admin rights."
+	Write-Information -MessageData "" -InformationAction Continue
+
+	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+	break
+}
+
 if ($Host.Version.Major -eq 5)
 {
 	# Progress bar can significantly impact cmdlet performance

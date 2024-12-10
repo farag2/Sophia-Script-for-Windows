@@ -67,6 +67,7 @@
     "Options": {
       "messageBoxNewWrapperFound": "A new version of 'Wrapper' found.\nOpen GitHub latest release page?",
       "messageBoxNewSophiaFound": "A new version Sophia Script found.\nOpen GitHub latest release page?",
+      "messageBoxPS1FileHasToBeInFolder": "Sophia.ps1 preset file must be in Sophia Script folder.",
       "messageBoxDoesNotExist": "does not exist.",
       "messageBoxPresetNotComp": "preset file is not compatible!",
       "messageBoxFilesMissingClose": "Files missing so Sophia Script Wrapper will close.",

@@ -1502,10 +1502,10 @@
     "Function": "InstallDotNetRuntimes -Runtimes",
     "Arg": {
       "Zero": {
-        "Tag": "NET6x64"
+        "Tag": "NET8x64"
       },
       "One": {
-        "Tag": "NET8x64"
+        "Tag": "NET9x64"
       }
     },
     "Preset": "",
@@ -1540,23 +1540,6 @@
       },
       "One": {
         "Tag": "Disable"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One",
-    "LTSC2024": "true"
-  },
-  {
-    "Region": "System",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "SATADrivesRemovableMedia",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable"
-      },
-      "One": {
-        "Tag": "Default"
       }
     },
     "Preset": "Zero",

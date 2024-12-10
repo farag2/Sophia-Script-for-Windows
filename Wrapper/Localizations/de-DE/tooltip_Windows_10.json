@@ -43,7 +43,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Aktivieren Sie den Dienst \"Connected User Experiences and Telemetry\" (DiagTrack), und erlauben Sie die Verbindung für den ausgehenden Datenverkehr des Unified Telemetry Client (Standardeinstellung)."
+        "ToolTip": "Aktivieren Sie den Dienst \"Connected User Experiences and Telemetry\" (DiagTrack), und erlauben Sie die Verbindung für den ausgehenden Datenverkehr des Unified Telemetry Client (Standardwert)."
       }
     }
   },
@@ -57,7 +57,7 @@
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Setzt die Diagnosedatenerfassung auf Standard (Standardeinstellung)."
+        "ToolTip": "Setzt die Diagnosedatenerfassung auf Standard (Standardwert)."
       }
     }
   },
@@ -71,7 +71,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Aktiviert die Windows-Fehlerberichterstattung (Standardeinstellung)."
+        "ToolTip": "Aktiviert die Windows-Fehlerberichterstattung (Standardwert)."
       }
     }
   },
@@ -85,7 +85,7 @@
       },
       "One": {
         "Tag": "Automatically",
-        "ToolTip": "Ändert die Rückmeldefrequenz auf \"Automatisch\" (Standardeinstellung)."
+        "ToolTip": "Ändert die Rückmeldefrequenz auf \"Automatisch\" (Standardwert)."
       }
     }
   },
@@ -99,7 +99,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Aktiviert die Diagnoseverfolgung für geplante Aufgaben (Standardeinstellung)."
+        "ToolTip": "Aktiviert die Diagnoseverfolgung für geplante Aufgaben (Standardwert)."
       }
     }
   },
@@ -113,7 +113,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Anmeldedaten verwenden, um die Geräteeinrichtung und das Öffnen von Anwendungen nach einem Neustart oder einer Aktualisierung automatisch abzuschließen (Standardeinstellung)."
+        "ToolTip": "Anmeldedaten verwenden, um die Geräteeinrichtung und das Öffnen von Anwendungen nach einem Neustart oder einer Aktualisierung automatisch abzuschließen (Standardwert)."
       }
     }
   },
@@ -127,7 +127,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Websites erlauben, lokale Informationen durch Zugriff auf die Sprachliste bereitzustellen (Standardeinstellung)."
+        "ToolTip": "Websites erlauben, lokale Informationen durch Zugriff auf die Sprachliste bereitzustellen (Standardwert)."
       }
     }
   },
@@ -141,7 +141,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Lassen Sie Apps die Werbe-ID verwenden, um Anzeigen auf der Grundlage Ihrer App-Nutzung für Sie interessanter zu machen (Standardeinstellung)."
+        "ToolTip": "Lassen Sie Apps die Werbe-ID verwenden, um Anzeigen auf der Grundlage Ihrer App-Nutzung für Sie interessanter zu machen (Standardwert)."
       }
     }
   },
@@ -155,7 +155,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Anwendungen die Verwendung des Werbekennzeichens erlauben (Standardeinstellung)."
+        "ToolTip": "Anwendungen die Verwendung des Werbekennzeichens erlauben (Standardwert)."
       }
     }
   },
@@ -165,7 +165,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Tipps, Hinweise und Ratschläge zur Verwendung von Windows erhalten (Standardeinstellung)."
+        "ToolTip": "Tipps, Hinweise und Ratschläge zur Verwendung von Windows erhalten (Standardwert)."
       },
       "One": {
         "Tag": "Disable",
@@ -183,7 +183,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Vorgeschlagene Inhalte in der Einstellungen-App anzeigen (Standardeinstellung)."
+        "ToolTip": "Vorgeschlagene Inhalte in der Einstellungen-App anzeigen (Standardwert)."
       }
     }
   },
@@ -197,7 +197,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Automatische Installation der empfohlenen Apps aktivieren (Standardeinstellung)."
+        "ToolTip": "Automatische Installation der empfohlenen Apps aktivieren (Standardwert)."
       }
     }
   },
@@ -211,7 +211,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Vorschläge, wie ich mein Gerät fertig einrichten kann, um Windows optimal zu nutzen (Standardeinstellung)."
+        "ToolTip": "Vorschläge, wie ich mein Gerät fertig einrichten kann, um Windows optimal zu nutzen (Standardwert)."
       }
     }
   },
@@ -225,7 +225,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Microsoft bietet Ihnen auf der Grundlage der von Ihnen gewählten Einstellung für Diagnosedaten maßgeschneiderte Erfahrungen an (Standardeinstellung)."
+        "ToolTip": "Microsoft bietet Ihnen auf der Grundlage der von Ihnen gewählten Einstellung für Diagnosedaten maßgeschneiderte Erfahrungen an (Standardwert)."
       }
     }
   },
@@ -239,7 +239,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Aktiviert die Bing-Suche im Startmenü (Standardeinstellung)."
+        "ToolTip": "Aktiviert die Bing-Suche im Startmenü (Standardwert)."
       }
     }
   },
@@ -253,7 +253,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Anzeigen von Microsoft-Konto-Benachrichtigungen im Startmenü im Startmenü (Standardeinstellung)."
+        "ToolTip": "Anzeigen von Microsoft-Konto-Benachrichtigungen im Startmenü im Startmenü (Standardwert)."
       }
     }
   },
@@ -267,7 +267,7 @@
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Blendet das Symbol \"Dieser PC\" auf dem Desktop aus (Standardeinstellung)."
+        "ToolTip": "Blendet das Symbol \"Dieser PC\" auf dem Desktop aus (Standardwert)."
       }
     }
   },
@@ -281,7 +281,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Verwendet Kontrollkästchen (Standardeinstellung)."
+        "ToolTip": "Verwendet Kontrollkästchen (Standardwert)."
       }
     }
   },
@@ -295,7 +295,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Zeigt versteckte Dateien, Ordner und Laufwerke nicht an (Standardeinstellung)."
+        "ToolTip": "Zeigt versteckte Dateien, Ordner und Laufwerke nicht an (Standardwert)."
       }
     }
   },
@@ -309,7 +309,7 @@
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Blendet Dateinamenerweiterungen aus (Standardeinstellung)."
+        "ToolTip": "Blendet Dateinamenerweiterungen aus (Standardwert)."
       }
     }
   },
@@ -323,7 +323,7 @@
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Blendet Konflikte beim Zusammenführen von Ordnern aus (Standardeinstellung)."
+        "ToolTip": "Blendet Konflikte beim Zusammenführen von Ordnern aus (Standardwert)."
       }
     }
   },
@@ -337,7 +337,7 @@
       },
       "One": {
         "Tag": "QuickAccess",
-        "ToolTip": "Öffnet den Datei-Explorer mit Schnellzugriff (Standardeinstellung)."
+        "ToolTip": "Öffnet den Datei-Explorer mit Schnellzugriff (Standardwert)."
       }
     }
   },
@@ -351,7 +351,7 @@
       },
       "One": {
         "Tag": "Minimized",
-        "ToolTip": "Minimiert die Multifunktionsleiste des Datei-Explorers (Standardeinstellung)."
+        "ToolTip": "Minimiert die Multifunktionsleiste des Datei-Explorers (Standardwert)."
       }
     }
   },
@@ -365,7 +365,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Zeigt Synchronisationsanbieter-Benachrichtigungen im Explorer an (Standardeinstellung)."
+        "ToolTip": "Zeigt Synchronisationsanbieter-Benachrichtigungen im Explorer an (Standardwert)."
       }
     }
   },
@@ -379,7 +379,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Zeigt beim Anbringen eines Fensters an, was daneben angebracht werden kann (Standardeinstellung)."
+        "ToolTip": "Zeigt beim Anbringen eines Fensters an, was daneben angebracht werden kann (Standardwert)."
       }
     }
   },
@@ -393,7 +393,7 @@
       },
       "One": {
         "Tag": "Compact",
-        "ToolTip": "Zeigt das Dialogfeld für die Dateiübertragung im Kompaktmodus an (Standardeinstellung)."
+        "ToolTip": "Zeigt das Dialogfeld für die Dateiübertragung im Kompaktmodus an (Standardwert)."
       }
     }
   },
@@ -407,7 +407,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Zeigt keine Bestätigung beim Löschen von Dateien aus dem Papierkorb an (Standardeinstellung)."
+        "ToolTip": "Zeigt keine Bestätigung beim Löschen von Dateien aus dem Papierkorb an (Standardwert)."
       }
     }
   },
@@ -421,7 +421,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Den Ordner \"3D-Objekte\" in \"Dieser PC\" und \"Schnellzugriff\" anzeigen (Standardeinstellung)."
+        "ToolTip": "Den Ordner \"3D-Objekte\" in \"Dieser PC\" und \"Schnellzugriff\" anzeigen (Standardwert)."
       }
     }
   },
@@ -435,7 +435,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Zeigt zuletzt verwendete Dateien im Schnellzugriff an (Standardeinstellung)."
+        "ToolTip": "Zeigt zuletzt verwendete Dateien im Schnellzugriff an (Standardwert)."
       }
     }
   },
@@ -449,7 +449,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Zeigt häufig verwendete Ordner im Schnellzugriff an (Standardeinstellung)."
+        "ToolTip": "Zeigt häufig verwendete Ordner im Schnellzugriff an (Standardwert)."
       }
     }
   },
@@ -467,7 +467,7 @@
       },
       "Two": {
         "Tag": "SearchBox",
-        "ToolTip": "Zeigt das Suchfeld in der Taskleiste an (Standardeinstellung)."
+        "ToolTip": "Zeigt das Suchfeld in der Taskleiste an (Standardwert)."
       }
     }
   },
@@ -481,7 +481,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Suchhighlights anzeigen (Standardeinstellung)."
+        "ToolTip": "Suchhighlights anzeigen (Standardwert)."
       }
     }
   },
@@ -495,7 +495,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Cortana-Schaltfläche in der Taskleiste anzeigen (Standardeinstellung)."
+        "ToolTip": "Cortana-Schaltfläche in der Taskleiste anzeigen (Standardwert)."
       }
     }
   },
@@ -509,7 +509,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Die Schaltfläche Aufgabenansicht in der Taskleiste anzeigen (Standardeinstellung)."
+        "ToolTip": "Die Schaltfläche Aufgabenansicht in der Taskleiste anzeigen (Standardwert)."
       }
     }
   },
@@ -523,7 +523,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Aktiviert \"Nachrichten und Interessen\" auf der Taskleiste (Standardeinstellung)."
+        "ToolTip": "Aktiviert \"Nachrichten und Interessen\" auf der Taskleiste (Standardwert)."
       }
     }
   },
@@ -537,7 +537,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Schaltfläche \"Personen\" in der Taskleiste anzeigen (Standardeinstellung)."
+        "ToolTip": "Schaltfläche \"Personen\" in der Taskleiste anzeigen (Standardwert)."
       }
     }
   },
@@ -551,7 +551,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Das Symbol \"Meet Now\" im Infobereich anzeigen (Standardeinstellung)."
+        "ToolTip": "Das Symbol \"Meet Now\" im Infobereich anzeigen (Standardwert)."
       }
     }
   },
@@ -565,7 +565,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Die Schaltfläche \"Windows-Ink-Arbeitsbereich\" in der Taskleiste anzeigen (Standardeinstellung)."
+        "ToolTip": "Die Schaltfläche \"Windows-Ink-Arbeitsbereich\" in der Taskleiste anzeigen (Standardwert)."
       }
     }
   },
@@ -579,7 +579,7 @@
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Alle Symbole im Infobereich der Taskleiste ausblenden (Standardeinstellung)."
+        "ToolTip": "Alle Symbole im Infobereich der Taskleiste ausblenden (Standardwert)."
       }
     }
   },
@@ -593,7 +593,7 @@
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Blendet Sekunden auf der Taskleistenuhr aus (Standardeinstellung)."
+        "ToolTip": "Blendet Sekunden auf der Taskleistenuhr aus (Standardwert)."
       }
     }
   },
@@ -603,7 +603,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Always",
-        "ToolTip": "Kombinieren Sie Schaltflächen in der Taskleiste und blenden Sie Beschriftungen immer aus (Standardeinstellung)."
+        "ToolTip": "Kombinieren Sie Schaltflächen in der Taskleiste und blenden Sie Beschriftungen immer aus (Standardwert)."
       },
       "One": {
         "Tag": "Full",
@@ -648,7 +648,7 @@
       },
       "Two": {
         "Tag": "Category",
-        "ToolTip": "Anzeigen der Symbole der Systemsteuerung nach \"Kategorie\" (Standardeinstellung)."
+        "ToolTip": "Anzeigen der Symbole der Systemsteuerung nach \"Kategorie\" (Standardwert)."
       }
     }
   },
@@ -662,7 +662,7 @@
       },
       "One": {
         "Tag": "Light",
-        "ToolTip": "Den Windows-Standard-Farbmodus auf hell setzen (Standardeinstellung)."
+        "ToolTip": "Den Windows-Standard-Farbmodus auf hell setzen (Standardwert)."
       }
     }
   },
@@ -676,7 +676,7 @@
       },
       "One": {
         "Tag": "Light",
-        "ToolTip": "Den Standard-Anwendungsfarbmodus auf Hell setzen (Standardeinstellung)."
+        "ToolTip": "Den Standard-Anwendungsfarbmodus auf Hell setzen (Standardwert)."
       }
     }
   },
@@ -690,7 +690,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Den Indikator \"Neue App installiert\" anzeigen (Standardeinstellung)."
+        "ToolTip": "Den Indikator \"Neue App installiert\" anzeigen (Standardwert)."
       }
     }
   },
@@ -704,7 +704,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Animation zur ersten Anmeldung des Benutzers nach dem Upgrade anzeigen (Standardeinstellung)."
+        "ToolTip": "Animation zur ersten Anmeldung des Benutzers nach dem Upgrade anzeigen (Standardwert)."
       }
     }
   },
@@ -718,7 +718,7 @@
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Setzt den Qualitätsfaktor der JPEG-Desktop-Hintergründe auf Standard (Standardeinstellung)."
+        "ToolTip": "Setzt den Qualitätsfaktor der JPEG-Desktop-Hintergründe auf Standard (Standardwert)."
       }
     }
   },
@@ -732,7 +732,7 @@
       },
       "One": {
         "Tag": "Compact",
-        "ToolTip": "Task-Manager im kompakten Modus starten (Standardeinstellung)."
+        "ToolTip": "Task-Manager im kompakten Modus starten (Standardwert)."
       }
     }
   },
@@ -746,7 +746,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Das Suffix \"-Verknüpfung\" an den Dateinamen der erstellten Verknüpfungen anhängen (Standardeinstellung)."
+        "ToolTip": "Das Suffix \"-Verknüpfung\" an den Dateinamen der erstellten Verknüpfungen anhängen (Standardwert)."
       }
     }
   },
@@ -760,7 +760,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Die Schaltfläche Bildschirm drucken(druck s-abf) nicht zum Öffnen vom Snipping Tool verwenden (Standardeinstellung)."
+        "ToolTip": "Die Schaltfläche Bildschirm drucken(druck s-abf) nicht zum Öffnen vom Snipping Tool verwenden (Standardwert)."
       }
     }
   },
@@ -770,7 +770,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Verwendet nicht für jedes Anwendungsfenster eine andere Eingabemethode (Standardeinstellung)."
+        "ToolTip": "Verwendet nicht für jedes Anwendungsfenster eine andere Eingabemethode (Standardwert)."
       },
       "One": {
         "Tag": "Enable",
@@ -784,7 +784,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Minimiert nicht alle anderen Fenster, wenn die Titelleiste eines Fensters gegriffen und geschüttelt wird (Standardeinstellung)."
+        "ToolTip": "Minimiert nicht alle anderen Fenster, wenn die Titelleiste eines Fensters gegriffen und geschüttelt wird (Standardwert)."
       },
       "One": {
         "Tag": "Disable",
@@ -830,7 +830,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Den Navigatiosbereich des Explorers(Linker Abschnitt) nicht auf den aktuellen Ordner erweitern (aufklappen) (Standardeinstellung)."
+        "ToolTip": "Den Navigatiosbereich des Explorers(Linker Abschnitt) nicht auf den aktuellen Ordner erweitern (aufklappen) (Standardwert)."
       },
       "One": {
         "Tag": "Enable",
@@ -886,7 +886,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Speicheroptimierung ausschalten (Standardeinstellung)."
+        "ToolTip": "Speicheroptimierung ausschalten (Standardwert)."
       }
     }
   },
@@ -900,7 +900,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Ruhezustand einschalten (Standardeinstellung)."
+        "ToolTip": "Ruhezustand einschalten (Standardwert)."
       }
     }
   },
@@ -914,7 +914,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Aktiviert die Windows-Pfadbegrenzung auf 260 Zeichen (Standardeinstellung)."
+        "ToolTip": "Aktiviert die Windows-Pfadbegrenzung auf 260 Zeichen (Standardwert)."
       }
     }
   },
@@ -928,7 +928,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Keine Anzeige der Stop-Fehler-Informationen in der BSoD (Standardeinstellung)."
+        "ToolTip": "Keine Anzeige der Stop-Fehler-Informationen in der BSoD (Standardwert)."
       }
     }
   },
@@ -942,7 +942,7 @@
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Wählen Sie, wann Sie über Änderungen an Ihrem Computer benachrichtigt werden möchten: Nur benachrichtigen, wenn Anwendungen versuchen, Änderungen an meinem Computer vorzunehmen (Standardeinstellung)."
+        "ToolTip": "Wählen Sie, wann Sie über Änderungen an Ihrem Computer benachrichtigt werden möchten: Nur benachrichtigen, wenn Anwendungen versuchen, Änderungen an meinem Computer vorzunehmen (Standardwert)."
       }
     }
   },
@@ -956,7 +956,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Zustellungsoptimierung einschalten (Standardeinstellung)."
+        "ToolTip": "Zustellungsoptimierung einschalten (Standardwert)."
       }
     }
   },
@@ -970,7 +970,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Windows meinen Standarddrucker verwalten lassen (Standardeinstellung)."
+        "ToolTip": "Windows meinen Standarddrucker verwalten lassen (Standardwert)."
       }
     }
   },
@@ -984,7 +984,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Aktivieren Sie die Windows-Funktionen über das Popup-Dialogfeld (Standardeinstellung)."
+        "ToolTip": "Aktivieren Sie die Windows-Funktionen über das Popup-Dialogfeld (Standardwert)."
       }
     }
   },
@@ -998,7 +998,7 @@
       },
       "One": {
         "Tag": "Install",
-        "ToolTip": "Optionale Funktionen über das Popup-Dialogfeld installieren (Standardeinstellung)."
+        "ToolTip": "Optionale Funktionen über das Popup-Dialogfeld installieren (Standardwert)."
       }
     }
   },
@@ -1012,7 +1012,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Erlaubt nicht das Empfangen von Updates für andere Microsoft-Produkte beim Aktualisieren von Windows (Standardeinstellung)."
+        "ToolTip": "Erlaubt nicht das Empfangen von Updates für andere Microsoft-Produkte beim Aktualisieren von Windows (Standardwert)."
       }
     }
   },
@@ -1026,7 +1026,7 @@
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Keine Benachrichtigung anzeigen, wenn Ihr PC neu gestartet werden muss, um die Aktualisierung abzuschließen (Standardeinstellung)."
+        "ToolTip": "Keine Benachrichtigung anzeigen, wenn Ihr PC neu gestartet werden muss, um die Aktualisierung abzuschließen (Standardwert)."
       }
     }
   },
@@ -1040,7 +1040,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Dieses Gerät nicht so schnell wie möglich neu starten, wenn ein Neustart erforderlich ist, um ein Update zu installieren (Standardeinstellung)."
+        "ToolTip": "Dieses Gerät nicht so schnell wie möglich neu starten, wenn ein Neustart erforderlich ist, um ein Update zu installieren (Standardwert)."
       }
     }
   },
@@ -1054,7 +1054,7 @@
       },
       "One": {
         "Tag": "Manually",
-        "ToolTip": "Manuelle Anpassung der aktiven Stunden für mich auf der Grundlage der täglichen Nutzung (Standardeinstellung)."
+        "ToolTip": "Manuelle Anpassung der aktiven Stunden für mich auf der Grundlage der täglichen Nutzung (Standardwert)."
       }
     }
   },
@@ -1064,7 +1064,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Holen Sie sich keine Windows-Updates, sobald sie für Ihr Gerät verfügbar sind (Standardeinstellung)."
+        "ToolTip": "Holen Sie sich keine Windows-Updates, sobald sie für Ihr Gerät verfügbar sind (Standardwert)."
       },
       "One": {
         "Tag": "Enable",
@@ -1082,7 +1082,7 @@
       },
       "One": {
         "Tag": "Balanced",
-        "ToolTip": "Einstellen des Energiesparplans auf \"Ausgeglichen\" (Standardeinstellung)."
+        "ToolTip": "Einstellen des Energiesparplans auf \"Ausgeglichen\" (Standardwert)."
       }
     }
   },
@@ -1096,7 +1096,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Dem Computer erlauben, die Netzwerkadapter auszuschalten, um Strom zu sparen (Standardeinstellung)."
+        "ToolTip": "Dem Computer erlauben, die Netzwerkadapter auszuschalten, um Strom zu sparen (Standardwert)."
       }
     }
   },
@@ -1110,7 +1110,7 @@
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Überschreibung für Standard-Eingabemethode: Sprachliste verwenden (Standardeinstellung)."
+        "ToolTip": "Überschreibung für Standard-Eingabemethode: Sprachliste verwenden (Standardwert)."
       }
     }
   },
@@ -1128,7 +1128,7 @@
       },
       "Two": {
         "Tag": "Default",
-        "ToolTip": "Ändern Sie den Speicherort von Benutzerordnern auf die Standardeinstellungen. Benutzerdateien oder -ordner lassen sich nicht an einen neuen Speicherort verschieben. Verschieben Sie sie manuell. Sie befinden sich standardmäßig im Ordner %USERPROFILE% (Standardeinstellung)."
+        "ToolTip": "Ändern Sie den Speicherort von Benutzerordnern auf die Standardwerten. Benutzerdateien oder -ordner lassen sich nicht an einen neuen Speicherort verschieben. Verschieben Sie sie manuell. Sie befinden sich standardmäßig im Ordner %USERPROFILE% (Standardwert)."
       }
     }
   },
@@ -1142,7 +1142,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Die zuletzt installierte .NET-Laufzeitumgebung nicht für alle Anwendungen verwenden (Standardeinstellung)."
+        "ToolTip": "Die zuletzt installierte .NET-Laufzeitumgebung nicht für alle Anwendungen verwenden (Standardwert)."
       }
     }
   },
@@ -1156,7 +1156,7 @@
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Speichern von Screenshots durch Drücken von Windows-Taste+\"druck\"-Taste im Ordner Bilder (Standardeinstellung)."
+        "ToolTip": "Speichern von Screenshots durch Drücken von Windows-Taste+\"druck\"-Taste im Ordner Bilder (Standardwert)."
       }
     }
   },
@@ -1170,7 +1170,7 @@
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Fragen Sie mich, bevor Sie Troubleshooter ausführen. Damit diese Funktion funktioniert, muss die Betriebssystemebene der Diagnosedatenerfassung auf \"Optionale Diagnosedaten\" eingestellt und die Fehlerberichtsfunktion aktiviert werden (Standardeinstellung)."
+        "ToolTip": "Fragen Sie mich, bevor Sie Troubleshooter ausführen. Damit diese Funktion funktioniert, muss die Betriebssystemebene der Diagnosedatenerfassung auf \"Optionale Diagnosedaten\" eingestellt und die Fehlerberichtsfunktion aktiviert werden (Standardwert)."
       }
     }
   },
@@ -1184,7 +1184,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Explorer nicht in einem separaten Prozess starten (Standardeinstellung)."
+        "ToolTip": "Explorer nicht in einem separaten Prozess starten (Standardwert)."
       }
     }
   },
@@ -1198,7 +1198,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Reservierten Speicher aktivieren (Standardeinstellung)."
+        "ToolTip": "Reservierten Speicher aktivieren (Standardwert)."
       }
     }
   },
@@ -1212,7 +1212,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Hilfesuche über F1 aktivieren (Standardeinstellung)."
+        "ToolTip": "Hilfesuche über F1 aktivieren (Standardwert)."
       }
     }
   },
@@ -1226,7 +1226,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Num Lock beim Starten deaktivieren (Standardeinstellung)."
+        "ToolTip": "Num Lock beim Starten deaktivieren (Standardwert)."
       }
     }
   },
@@ -1240,7 +1240,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Feststelltaste einschalten (Standardeinstellung)."
+        "ToolTip": "Feststelltaste einschalten (Standardwert)."
       }
     }
   },
@@ -1254,7 +1254,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Aktivieren Sie das 5-malige Drücken der Umschalttaste, um Sticky Keys zu aktivieren (Standardeinstellung)."
+        "ToolTip": "Aktivieren Sie das 5-malige Drücken der Umschalttaste, um Sticky Keys zu aktivieren (Standardwert)."
       }
     }
   },
@@ -1268,7 +1268,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "\"Automatische Wiedergabe\" für alle Medien und Geräte verwenden (Standardeinstellung)."
+        "ToolTip": "\"Automatische Wiedergabe\" für alle Medien und Geräte verwenden (Standardwert)."
       }
     }
   },
@@ -1282,7 +1282,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Entfernen des Thumbnail-Cache aktivieren (Standardeinstellung)."
+        "ToolTip": "Entfernen des Thumbnail-Cache aktivieren (Standardwert)."
       }
     }
   },
@@ -1296,7 +1296,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Deaktivieren Sie das automatische Speichern meiner neu zu startenden Anwendungen beim Abmelden und starten Sie sie neu, nachdem Sie sich angemeldet haben (Standardeinstellung)."
+        "ToolTip": "Deaktivieren Sie das automatische Speichern meiner neu zu startenden Anwendungen beim Abmelden und starten Sie sie neu, nachdem Sie sich angemeldet haben (Standardwert)."
       }
     }
   },
@@ -1310,7 +1310,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Deaktiviert die \"Netzwerkerkennung\" und \"Datei- und Druckerfreigabe\" für Arbeitsgruppennetzwerke (Standardeinstellung)."
+        "ToolTip": "Deaktiviert die \"Netzwerkerkennung\" und \"Datei- und Druckerfreigabe\" für Arbeitsgruppennetzwerke (Standardwert)."
       }
     }
   },
@@ -1379,15 +1379,15 @@
   {
     "Region": "System",
     "Function": "InstallDotNetRuntimes -Runtimes",
-    "ToolTip": "Installieren Sie die neueste .NET Desktop Runtime 6, 8 x64.",
+    "ToolTip": "Installieren Sie die neueste .NET Desktop Runtime 8, 9 x64.",
     "Arg": {
       "Zero": {
-        "Tag": "NET6x64",
-        "ToolTip": ".NET Desktop Runtime 6 x64."
-      },
-      "One": {
         "Tag": "NET8x64",
         "ToolTip": ".NET Desktop Runtime 8 x64."
+      },
+      "One": {
+        "Tag": "NET9x64",
+        "ToolTip": ".NET Desktop Runtime 9 x64."
       }
     }
   },
@@ -1401,7 +1401,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Deaktivieren Sie das Proxying nur für gesperrte Websites aus dem einheitlichen Register von Roskomnadzor (Standardeinstellung)."
+        "ToolTip": "Deaktivieren Sie das Proxying nur für gesperrte Websites aus dem einheitlichen Register von Roskomnadzor (Standardwert)."
       }
     }
   },
@@ -1415,21 +1415,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Verhindern Sie nicht die Erstellung von Desktop-Verknüpfungen beim Update von Microsoft Edge (Standardeinstellung)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "SATADrivesRemovableMedia",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Verhindern, dass alle internen SATA-Laufwerke im Infobereich der Taskleiste als Wechselmedien angezeigt werden."
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Anzeige aller internen SATA-Laufwerke als entfernbare Medien im Infobereich der Taskleiste (Standardeinstellung)."
+        "ToolTip": "Verhindern Sie nicht die Erstellung von Desktop-Verknüpfungen beim Update von Microsoft Edge (Standardwert)."
       }
     }
   },
@@ -1443,7 +1429,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Sichern Sie die Systemregistrierung nicht im Ordner %SystemRoot%\\System32\\config\\RegBack (Standardeinstellung)."
+        "ToolTip": "Sichern Sie die Systemregistrierung nicht im Ordner %SystemRoot%\\System32\\config\\RegBack (Standardwert)."
       }
     }
   },
@@ -1467,7 +1453,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Zuletzt hinzugefügte Anwendungen im Startmenü anzeigen (Standardeinstellung)."
+        "ToolTip": "Zuletzt hinzugefügte Anwendungen im Startmenü anzeigen (Standardwert)."
       }
     }
   },
@@ -1481,7 +1467,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Anwendungsvorschläge im Startmenü anzeigen (Standardeinstellung)."
+        "ToolTip": "Anwendungsvorschläge im Startmenü anzeigen (Standardwert)."
       }
     }
   },
@@ -1558,7 +1544,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Autostart von Cortana aktivieren (Standardeinstellung)."
+        "ToolTip": "Autostart von Cortana aktivieren (Standardwert)."
       }
     }
   },
@@ -1572,7 +1558,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Alle UWP-Anwendungen im Hintergrund ausführen lassen (Standardeinstellung)."
+        "ToolTip": "Alle UWP-Anwendungen im Hintergrund ausführen lassen (Standardwert)."
       }
     }
   },
@@ -1586,7 +1572,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Xbox Game Bar aktivieren (Standardeinstellung)."
+        "ToolTip": "Xbox Game Bar aktivieren (Standardwert)."
       }
     }
   },
@@ -1600,7 +1586,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Xbox Game Bar-Tipps aktivieren (Standardeinstellung)."
+        "ToolTip": "Xbox Game Bar-Tipps aktivieren (Standardwert)."
       }
     }
   },
@@ -1624,7 +1610,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Deaktiviert die hardwarebeschleunigte GPU-Planung (Standardeinstellung). Ein Neustart ist erforderlich."
+        "ToolTip": "Deaktiviert die hardwarebeschleunigte GPU-Planung (Standardwert). Ein Neustart ist erforderlich."
       }
     }
   },
@@ -1680,7 +1666,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Deaktiviert den Microsoft Defender Exploit Guard-Netzwerkschutz (Standardeinstellung)."
+        "ToolTip": "Deaktiviert den Microsoft Defender Exploit Guard-Netzwerkschutz (Standardwert)."
       }
     }
   },
@@ -1694,7 +1680,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Erkennung von potenziell unerwünschten Anwendungen deaktivieren (Standardeinstellung)."
+        "ToolTip": "Erkennung von potenziell unerwünschten Anwendungen deaktivieren (Standardwert)."
       }
     }
   },
@@ -1708,7 +1694,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Sandboxing für Microsoft Defender deaktivieren (Standardeinstellung)."
+        "ToolTip": "Sandboxing für Microsoft Defender deaktivieren (Standardwert)."
       }
     }
   },
@@ -1742,7 +1728,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Entfernt die Ereignisanzeige \"Prozesserstellung\", um ausgeführte Prozesse und ihre Argumente zu protokollieren (Standardeinstellung)."
+        "ToolTip": "Entfernt die Ereignisanzeige \"Prozesserstellung\", um ausgeführte Prozesse und ihre Argumente zu protokollieren (Standardwert)."
       }
     }
   },
@@ -1756,7 +1742,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Deaktiviert die Protokollierung für alle Windows PowerShell-Module (Standardeinstellung)."
+        "ToolTip": "Deaktiviert die Protokollierung für alle Windows PowerShell-Module (Standardwert)."
       }
     }
   },
@@ -1770,7 +1756,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Deaktivieren der Protokollierung für alle PowerShell-Skripte, die in das Windows PowerShell-Ereignisprotokoll eingegeben werden (Standardeinstellung)."
+        "ToolTip": "Deaktivieren der Protokollierung für alle PowerShell-Skripte, die in das Windows PowerShell-Ereignisprotokoll eingegeben werden (Standardwert)."
       }
     }
   },
@@ -1784,7 +1770,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Microsoft Defender SmartScreen markiert aus dem Internet heruntergeladene Dateien als unsicher (Standardeinstellung)."
+        "ToolTip": "Microsoft Defender SmartScreen markiert aus dem Internet heruntergeladene Dateien als unsicher (Standardwert)."
       }
     }
   },
@@ -1798,7 +1784,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Aktiviert den Dateianhangsmanager, um aus dem Internet heruntergeladene Dateien als unsicher zu prüfen (Standardeinstellung)."
+        "ToolTip": "Aktiviert den Dateianhangsmanager, um aus dem Internet heruntergeladene Dateien als unsicher zu prüfen (Standardwert)."
       }
     }
   },
@@ -1812,7 +1798,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Windows Script Host aktivieren (Standardeinstellung)."
+        "ToolTip": "Windows Script Host aktivieren (Standardwert)."
       }
     }
   },
@@ -1822,11 +1808,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Windows-Sandbox aktivieren."
+        "ToolTip": "Aktivieren Sie die Windows-Sandbox. Gilt nur für die Editionen Professional, Enterprise und Education."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Windows-Sandbox deaktivieren (Standardeinstellung)."
+        "ToolTip": "Windows-Sandbox deaktivieren (Standardwert). Gilt nur für die Editionen Professional, Enterprise und Education."
       }
     }
   },
@@ -1840,7 +1826,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Deaktiviert DNS-over-HTTPS für IPv4 (Standardeinstellung)."
+        "ToolTip": "Deaktiviert DNS-over-HTTPS für IPv4 (Standardwert)."
       }
     }
   },
@@ -1854,7 +1840,7 @@
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Ausblenden der Option \"Alle extrahieren\" im Kontextmenü des Windows Installers (.msi) (Standardeinstellung)."
+        "ToolTip": "Ausblenden der Option \"Alle extrahieren\" im Kontextmenü des Windows Installers (.msi) (Standardwert)."
       }
     }
   },
@@ -1868,7 +1854,7 @@
       },
       "One": {
         "Tag": "Hide",
-        "ToolTip": "Ausblenden der Option \"Installieren\" im Kontextmenü der .cab-Archive (Standardeinstellung)."
+        "ToolTip": "Ausblenden der Option \"Installieren\" im Kontextmenü der .cab-Archive (Standardwert)."
       }
     }
   },
@@ -1882,7 +1868,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Übertragen auf \"Gerät\" im Kontextmenü von Mediendateien und Ordnern anzeigen (Standardeinstellung)."
+        "ToolTip": "Übertragen auf \"Gerät\" im Kontextmenü von Mediendateien und Ordnern anzeigen (Standardwert)."
       }
     }
   },
@@ -1896,7 +1882,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Den Eintrag \"Senden (Teilen)\" im Kontextmenü anzeigen (Standardeinstellung)."
+        "ToolTip": "Den Eintrag \"Senden (Teilen)\" im Kontextmenü anzeigen (Standardwert)."
       }
     }
   },
@@ -1910,7 +1896,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Den Eintrag \"Mit Paint 3D bearbeiten\" im Kontextmenü der Mediendateien anzeigen (Standardeinstellung)."
+        "ToolTip": "Den Eintrag \"Mit Paint 3D bearbeiten\" im Kontextmenü der Mediendateien anzeigen (Standardwert)."
       }
     }
   },
@@ -1924,7 +1910,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Den Eintrag \"Bearbeiten\" im Kontextmenü von Bildern anzeigen (Standardeinstellung)."
+        "ToolTip": "Den Eintrag \"Bearbeiten\" im Kontextmenü von Bildern anzeigen (Standardwert)."
       }
     }
   },
@@ -1938,7 +1924,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Den Eintrag \"Drucken\" im Kontextmenü von .bat und .cmd anzeigen (Standardeinstellung)."
+        "ToolTip": "Den Eintrag \"Drucken\" im Kontextmenü von .bat und .cmd anzeigen (Standardwert)."
       }
     }
   },
@@ -1952,7 +1938,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Den Eintrag \"In Bibliothek einbeziehen\" im Kontextmenü von Ordnern und Laufwerken anzeigen (Standardeinstellung)."
+        "ToolTip": "Den Eintrag \"In Bibliothek einbeziehen\" im Kontextmenü von Ordnern und Laufwerken anzeigen (Standardwert)."
       }
     }
   },
@@ -1966,7 +1952,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Den Eintrag \"Senden an\" im Kontextmenü der Ordner anzeigen (Standardeinstellung)."
+        "ToolTip": "Den Eintrag \"Senden an\" im Kontextmenü der Ordner anzeigen (Standardwert)."
       }
     }
   },
@@ -1980,7 +1966,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Den Eintrag \"Bitmap-Bild\" im Kontextmenü \"Neu\" anzeigen (Standardeinstellung)."
+        "ToolTip": "Den Eintrag \"Bitmap-Bild\" im Kontextmenü \"Neu\" anzeigen (Standardwert)."
       }
     }
   },
@@ -1994,7 +1980,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Den Eintrag \"Rich Text Document\" \"Neu\" im Kontextmenü anzeigen (Standardeinstellung)."
+        "ToolTip": "Den Eintrag \"Rich Text Document\" \"Neu\" im Kontextmenü anzeigen (Standardwert)."
       }
     }
   },
@@ -2008,7 +1994,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Den Eintrag \"Komprimierter (zip) Ordner\" \"Neu\" im Kontextmenü anzeigen (Standardeinstellung)."
+        "ToolTip": "Den Eintrag \"Komprimierter (zip) Ordner\" \"Neu\" im Kontextmenü anzeigen (Standardwert)."
       }
     }
   },
@@ -2022,7 +2008,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Deaktiviert die Kontextmenüelemente \"Öffnen\", \"Drucken\" und \"Bearbeiten\" für mehr als 15 ausgewählte Elemente (Standardeinstellung)."
+        "ToolTip": "Deaktiviert die Kontextmenüelemente \"Öffnen\", \"Drucken\" und \"Bearbeiten\" für mehr als 15 ausgewählte Elemente (Standardwert)."
       }
     }
   },
@@ -2036,7 +2022,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Den Punkt \"Nach einer App im Microsoft Store suchen\" im Dialogfeld \"Öffnen mit\" anzeigen (Standardeinstellung)."
+        "ToolTip": "Den Punkt \"Nach einer App im Microsoft Store suchen\" im Dialogfeld \"Öffnen mit\" anzeigen (Standardwert)."
       }
     }
   },
