@@ -177,6 +177,7 @@ Oder verwenden Sie ein Format im alten Stil ohne die TAB-Funktionen zum automati
 
 ## Haupt-Features
 
+* Alle Archive werden [automatisch](https://github.com/farag2/Sophia-Script-for-Windows/actions) über GitHub Actions erstellt.
 * Datenschutz und Telemetrie einrichten;
 * DNS-über-HTTPS für IPv4 aktivieren;
 * Deaktivieren Sie die Diagnoseverfolgung geplanter Aufgaben mit einem in [WPF] geschriebenen Popup-Formular (#screenshots);

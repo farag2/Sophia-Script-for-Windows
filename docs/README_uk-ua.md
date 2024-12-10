@@ -177,6 +177,7 @@ UninstallUWPApps, "PinToStart -UnpinAll"
 
 ## Ключові особливості
 
+* Усі архіви з використанням GitHub Actions [автоматично](https://github.com/farag2/Sophia-Script-for-Windows/actions);
 * Налаштування конфіденційності і телеметрії;
 * Активація DNS-over-HTTPS для IPv4;
 * Вимкнення запланованих завдань з відстеження зі спливаючою формою, написаною на [WPF](#скріншоти);

@@ -953,12 +953,12 @@ DefaultTerminalApp -WindowsTerminal
 InstallVCRedist
 
 <#
-	Install the latest .NET Desktop Runtime 6, 8 x64
-	Установить последнюю версию .NET Desktop Runtime 6, 8 x64
+	Install the latest .NET Desktop Runtime 8, 9 x64
+	Установить последнюю версию .NET Desktop Runtime 8, 9 x64
 
 	https://dotnet.microsoft.com/en-us/download/dotnet
 #>
-InstallDotNetRuntimes -Runtimes NET6x64, NET8x64
+InstallDotNetRuntimes -Runtimes NET8x64, NET9x64
 
 # Enable proxying only blocked sites from the unified registry of Roskomnadzor. The function is applicable for Russia only
 # Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора. Функция применима только для России
@@ -977,14 +977,6 @@ PreventEdgeShortcutCreation -Channels Stable, Beta, Dev, Canary
 # Do not prevent desktop shortcut creation upon Microsoft Edge update (default value)
 # Не предотвращать создание ярлыков на рабочем столе при обновлении Microsoft Edge (значение по умолчанию)
 # PreventEdgeShortcutCreation -Disable
-
-# Prevent all internal SATA drives from showing up as removable media in the taskbar notification area
-# Запретить отображать все внутренние SATA-диски как съемные носители в области уведомлений на панели задач
-SATADrivesRemovableMedia -Disable
-
-# Show up all internal SATA drives as removeable media in the taskbar notification area (default value)
-# Отображать все внутренние SATA-диски как съемные носители в области уведомлений на панели задач (значение по умолчанию)
-# SATADrivesRemovableMedia -Default
 
 # Back up the system registry to %SystemRoot%\System32\config\RegBack folder when PC restarts and create a RegIdleBackup in the Task Scheduler task to manage subsequent backups
 # Создавать копии реестра при перезагрузки ПК и создавать задание RegIdleBackup в Планировщике задания для управления последующими резервными копиями
@@ -1041,14 +1033,6 @@ CortanaAutostart -Disable
 # Enable Cortana autostarting (default value)
 # Включить автозагрузку Кортана (значение по умолчанию)
 # CortanaAutostart -Enable
-
-# Disable Microsoft Teams autostarting
-# Выключить автозагрузку Microsoft Teams
-TeamsAutostart -Disable
-
-# Enable Microsoft Teams autostarting (default value)
-# Включить автозагрузку Microsoft Teams (значение по умолчанию)
-# TeamsAutostart -Enable
 #endregion UWP apps
 
 #region Gaming

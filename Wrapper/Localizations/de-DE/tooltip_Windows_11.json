@@ -1313,15 +1313,15 @@
   {
     "Region": "System",
     "Function": "InstallDotNetRuntimes -Runtimes",
-    "ToolTip": "Installieren Sie die neueste .NET Desktop Runtime 6, 8 x64.",
+    "ToolTip": "Installieren Sie die neueste .NET Desktop Runtime 8, 9 x64.",
     "Arg": {
       "Zero": {
-        "Tag": "NET6x64",
-        "ToolTip": ".NET Desktop Runtime 6 x64."
-      },
-      "One": {
         "Tag": "NET8x64",
         "ToolTip": ".NET Desktop Runtime 8 x64."
+      },
+      "One": {
+        "Tag": "NET9x64",
+        "ToolTip": ".NET Desktop Runtime 9 x64."
       }
     }
   },
@@ -1350,20 +1350,6 @@
       "One": {
         "Tag": "Disable",
         "ToolTip": "Verhindern Sie nicht die Erstellung von Desktop-Verknüpfungen beim Update von Microsoft Edge (Standardeinstellung)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "SATADrivesRemovableMedia",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Verhindern, dass alle internen SATA-Laufwerke im Infobereich der Taskleiste als Wechselmedien angezeigt werden."
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Anzeige aller internen SATA-Laufwerke als entfernbare Medien im Infobereich der Taskleiste (Standardeinstellung)."
       }
     }
   },
@@ -1440,20 +1426,6 @@
       "One": {
         "Tag": "Enable",
         "ToolTip": "Autostart von Cortana aktivieren (Standardeinstellung)."
-      }
-    }
-  },
-  {
-    "Region": "UWP apps",
-    "Function": "TeamsAutostart",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Microsoft Teams-Autostart deaktivieren."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Microsoft Teams-Autostart aktivieren (Standardeinstellung)."
       }
     }
   },

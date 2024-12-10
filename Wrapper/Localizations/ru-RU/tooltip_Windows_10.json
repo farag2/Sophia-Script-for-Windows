@@ -1379,15 +1379,15 @@
   {
     "Region": "System",
     "Function": "InstallDotNetRuntimes -Runtimes",
-    "ToolTip": "Установить последнюю версию .NET Desktop Runtime 6, 8 x64.",
+    "ToolTip": "Установить последнюю версию .NET Desktop Runtime 8, 9 x64.",
     "Arg": {
       "Zero": {
-        "Tag": "NET6x64",
-        "ToolTip": ".NET Desktop Runtime 6 x64."
+        "Tag": "NET9x64",
+        "ToolTip": ".NET Desktop Runtime 8 x64."
       },
       "One": {
-        "Tag": "NET8x64",
-        "ToolTip": ".NET Desktop Runtime 8 x64."
+        "Tag": "NET9x64",
+        "ToolTip": ".NET Desktop Runtime 9 x64."
       }
     }
   },
@@ -1416,20 +1416,6 @@
       "One": {
         "Tag": "Disable",
         "ToolTip": "Не предотвращать создание ярлыков на рабочем столе при обновлении Microsoft Edge (значение по умолчанию)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "SATADrivesRemovableMedia",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Запретить отображать все внутренние SATA-диски как съемные носители в области уведомлений на панели задач."
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Отображать все внутренние SATA-диски как съемные носители в области уведомлений на панели задач (значение по умолчанию)."
       }
     }
   },

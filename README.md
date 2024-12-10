@@ -177,6 +177,7 @@ Or use an old-style format without the TAB functions autocomplete (the quotation
 
 ## Key features
 
+* All archives are being built via GitHub Actions [automatically](https://github.com/farag2/Sophia-Script-for-Windows/actions);
 * Set up Privacy & Telemetry;
 * Enable DNS-over-HTTPS for IPv4;
 * Turn off diagnostics tracking scheduled tasks with pop-up form written in [WPF](#screenshots);
