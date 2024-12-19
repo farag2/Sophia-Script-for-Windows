@@ -37,6 +37,11 @@ if ($Host.Version.Major -eq 5)
 	$Script:ProgressPreference = "SilentlyContinue"
 }
 
+# https://github.com/PowerShell/PowerShell/issues/21070
+$Script:CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
+$Script:CompilerParameters.TempFiles = [System.CodeDom.Compiler.TempFileCollection]::new($env:TEMP, $false)
+$Script:CompilerParameters.GenerateInMemory = $true
+
 $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 $Parameters = @{
 	Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/archive/refs/heads/master.zip"
@@ -85,8 +90,40 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		{
 			Write-Verbose -Message "Windows version is not supported. Update your Windows" -Verbose
 
+			# Get the real Windows version like %SystemRoot%\system32\winver.exe relies on
+			$Signature = @{
+				Namespace          = "WinAPI"
+				Name               = "Winbrand"
+				Language           = "CSharp"
+				CompilerParameters = $CompilerParameters
+				MemberDefinition   = @"
+[DllImport("Winbrand.dll", CharSet = CharSet.Unicode)]
+public extern static string BrandingFormatString(string sFormat);
+"@
+			}
+
+			# PowerShell 7 has CompilerOptions argument instead of CompilerParameters as PowerShell 5 has
+			# https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/add-type#-compileroptions
+			if ($Host.Version.Major -eq 7)
+			{
+				$Signature.Remove("CompilerParameters")
+				$Signature.Add("CompilerOptions", $CompilerParameters)
+			}
+
+			if (-not ("WinAPI.Winbrand" -as [type]))
+			{
+				Add-Type @Signature
+			}
+
 			# Receive updates for other Microsoft products when you update Windows
-			(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
+			if ([WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%") -match "Windows 11")
+			{
+				(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
+			}
+			else
+			{
+				New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name AllowMUUpdateService -PropertyType DWord -Value 1 -Force
+			}
 
 			# Check for updates
 			Start-Process -FilePath "$env:SystemRoot\System32\UsoClient.exe" -ArgumentList StartInteractiveScan
@@ -151,9 +188,9 @@ if (Test-Path -Path "$DownloadsFolder\$($Version)_Latest")
 	exit
 }
 
-& "$env:SystemRoot\System32\tar.exe" -C "$DownloadsFolder\SophiaScriptTemp" -xf "$DownloadsFolder\master.zip" "Sophia-Script-for-Windows-master/src/$Version"
-
 New-Item -Path "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-master\src\$Version\bin" -ItemType Directory -Force
+
+& "$env:SystemRoot\System32\tar.exe" -C "$DownloadsFolder\SophiaScriptTemp" -xf "$DownloadsFolder\master.zip" "Sophia-Script-for-Windows-master/src/$Version"
 
 # Download LGPO
 # https://techcommunity.microsoft.com/t5/microsoft-security-baselines/lgpo-exe-local-group-policy-object-utility-v1-0/ba-p/701045
@@ -198,7 +235,7 @@ if ($Version -match "PowerShell_7")
 	$Entries | ForEach-Object -Process {[IO.Compression.ZipFileExtensions]::ExtractToFile($_, "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-master\src\$Version\bin\$($_.Name)", $true)}
 	$ZIP.Dispose()
 
-	Remove-Item -Path "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-master\src\$Version\bin\microsoft.windows.sdk.net.ref.zip" -Recurse -Force
+	Remove-Item -Path "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-master\src\$Version\bin\microsoft.windows.sdk.net.ref.zip" -Force
 }
 
 $Parameters = @{
@@ -292,10 +329,6 @@ switch ($Version)
 	}
 }
 
-# https://github.com/PowerShell/PowerShell/issues/21070
-$CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
-$CompilerParameters.TempFiles = [System.CodeDom.Compiler.TempFileCollection]::new($env:TEMP, $false)
-$CompilerParameters.GenerateInMemory = $true
 $Signature = @{
 	Namespace          = "WinAPI"
 	Name               = "ForegroundWindow"
