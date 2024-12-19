@@ -5,7 +5,7 @@
 	Version: 5.9.3
 	Date: 28.11.2024
 
-	Copyright (c) 2014—2024 farag, Inestic & lowl1f3
+	Copyright (c) 2014—2025 farag, Inestic & lowl1f3
 
 	Thanks to all https://forum.ru-board.com members involved
 

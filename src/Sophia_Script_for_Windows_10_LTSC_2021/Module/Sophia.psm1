@@ -2,25 +2,32 @@
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
-	Version: 5.19.3
-	Date: 28.11.2024
+	.VERSION
+	5.9.3
 
-	Copyright (c) 2014—2024 farag, Inestic & lowl1f3
+	.DATE
+	28.11.2024
 
+	.AUTHOR
+	farag, Inestic & lowl1f3
+
+	.COPYRIGHT
+	(c) 2014—2025
+
+	.THANKS
 	Thanks to all https://forum.ru-board.com members involved
 
 	.NOTES
-	Supported Windows 10 Enterprise LTSC 2021
-	Architecture: x64
+	Supports Windows 10 x64 Enterprise LTSC 2021
 
-	.LINK GitHub
+	.LINK
 	https://github.com/farag2/Sophia-Script-for-Windows
 
-	.LINK Telegram
+	.LINK
 	https://t.me/sophianews
 	https://t.me/sophia_chat
 
-	.LINK Discord
+	.LINK
 	https://discord.gg/sSryhaEv79
 
 	.NOTES
@@ -29,7 +36,7 @@
 	https://forums.mydigitallife.net/threads/powershell-sophia-script-for-windows-10-windows-11-5-17-8-6-5-8-x64-2023.81675/
 	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
 
-	.LINK Authors
+	.LINK
 	https://github.com/farag2
 	https://github.com/Inestic
 	https://github.com/lowl1f3
@@ -11951,27 +11958,27 @@ function DNSoverHTTPS
 			# https://www.comss.ru/page.php?id=7315
 			if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
 			{
-				Get-NetAdapter -Physical | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ServerAddresses 195.133.25.16, 195.133.25.99
+				Get-NetAdapter -Physical | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ServerAddresses 83.220.169.155, 195.133.25.16
 			}
 			else
 			{
-				Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ServerAddresses 195.133.25.16, 195.133.25.99
+				Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ServerAddresses 83.220.169.155, 195.133.25.16
 			}
 
 			foreach ($InterfaceGuid in $InterfaceGuids)
 			{
+				if (-not (Test-Path -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\83.220.169.155"))
+				{
+					New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\83.220.169.155" -Force
+				}
 				if (-not (Test-Path -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\195.133.25.16"))
 				{
 					New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\195.133.25.16" -Force
 				}
-				if (-not (Test-Path -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\195.133.25.99"))
-				{
-					New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\195.133.25.99" -Force
-				}
+				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\83.220.169.155" -Name DohFlags -PropertyType QWord -Value 2 -Force
+				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\83.220.169.155" -Name DohTemplate -PropertyType String -Value https://dns.comss.one/dns-query -Force
 				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\195.133.25.16" -Name DohFlags -PropertyType QWord -Value 2 -Force
 				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\195.133.25.16" -Name DohTemplate -PropertyType String -Value https://dns.comss.one/dns-query -Force
-				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\195.133.25.99" -Name DohFlags -PropertyType QWord -Value 2 -Force
-				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\195.133.25.99" -Name DohTemplate -PropertyType String -Value https://dns.comss.one/dns-query -Force
 			}
 		}
 		"Disable"

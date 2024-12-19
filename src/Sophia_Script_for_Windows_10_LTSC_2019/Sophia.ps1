@@ -5,7 +5,7 @@
 	Version: 5.9.3
 	Date: 28.11.2024
 
-	Copyright (c) 2014—2024 farag, Inestic & lowl1f3
+	Copyright (c) 2014—2025 farag, Inestic & lowl1f3
 
 	Thanks to all https://forum.ru-board.com members involved
 
@@ -48,7 +48,7 @@
 	https://forums.mydigitallife.net/threads/powershell-sophia-script-for-windows-10-windows-11-5-17-8-6-5-8-x64-2023.81675/
 	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
 
-	.LINK Authors
+	.LINK
 	https://github.com/farag2
 	https://github.com/Inestic
 	https://github.com/lowl1f3
