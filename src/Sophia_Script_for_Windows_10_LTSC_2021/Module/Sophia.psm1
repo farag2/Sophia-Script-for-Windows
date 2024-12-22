@@ -314,6 +314,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			Write-Warning -Message ($Localization.TweakerWarning -f $Tweaker)
 			Write-Information -MessageData "" -InformationAction Continue
 
+			Write-Verbose -Message "https://www.microsoft.com/software-download/windows10" -Verbose
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
@@ -458,6 +459,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			Write-Warning -Message ($Localization.WindowsComponentBroken -f $File)
 			Write-Information -MessageData "" -InformationAction Continue
 
+			Write-Verbose -Message "https://www.microsoft.com/software-download/windows10" -Verbose
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
@@ -472,6 +474,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
 		Write-Information -MessageData "" -InformationAction Continue
 
+		Write-Verbose -Message "https://www.microsoft.com/software-download/windows10" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
@@ -491,6 +494,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
 		Write-Information -MessageData "" -InformationAction Continue
 
+		Write-Verbose -Message "https://www.microsoft.com/software-download/windows10" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
@@ -504,6 +508,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
 		Write-Information -MessageData "" -InformationAction Continue
 
+		Write-Verbose -Message "https://www.microsoft.com/software-download/windows10" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
@@ -522,6 +527,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
 		Write-Information -MessageData "" -InformationAction Continue
 
+		Write-Verbose -Message "https://www.microsoft.com/software-download/windows10" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
@@ -540,6 +546,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
 		Write-Information -MessageData "" -InformationAction Continue
 
+		Write-Verbose -Message "https://www.microsoft.com/software-download/windows10" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
@@ -555,7 +562,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		$Script:DefenderProductState = $true
 
 		# Checking whether Microsoft Defender was turned off via GPO
-		# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
+		# We have to use GetValue() due to "Set-StrictMode -Version Latest"
 		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender", "DisableAntiSpyware", $null) -eq 1)
 		{
 			$Script:AntiSpywareEnabled = $false
@@ -566,7 +573,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		}
 
 		# Checking whether Microsoft Defender was turned off via GPO
-		# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
+		# We have to use GetValue() due to "Set-StrictMode -Version Latest"
 		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection", "DisableRealtimeMonitoring", $null) -eq 1)
 		{
 			$Script:RealtimeMonitoringEnabled = $false
@@ -577,7 +584,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		}
 
 		# Checking whether Microsoft Defender was turned off via GPO
-		# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
+		# We have to use GetValue() due to "Set-StrictMode -Version Latest"
 		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection", "DisableBehaviorMonitoring", $null) -eq 1)
 		{
 			$Script:BehaviorMonitoringEnabled = $false
@@ -3064,7 +3071,7 @@ function TaskbarSearch
 	Set-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name SearchOnTaskbarMode -Type CLEAR
 
 	# Checking whether small taskbar buttons enabled
-	# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
+	# We have to use GetValue() due to "Set-StrictMode -Version Latest"
 	$TaskbarSmallIcons = ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "TaskbarSmallIcons", $null))
 	if ($TaskbarSmallIcons -eq 1)
 	{
@@ -5739,7 +5746,7 @@ function NetworkAdaptersSavePower
 	$InterfaceIndex = (Get-CimInstance -ClassName Win32_NetworkAdapter -Namespace root/CIMV2 | Where-Object -FilterScript {$_.NetConnectionStatus -eq 2}).InterfaceIndex
 	if (Get-NetAdapter -Physical | Where-Object -FilterScript {($_.Status -eq "Up") -and ($_.PhysicalMediaType -eq "Native 802.11") -and ($_.InterfaceIndex -eq $InterfaceIndex)})
 	{
-		# Get Currently connected Wi-Fi network SSID
+		# Get currently connected Wi-Fi network SSID
 		$SSID = (Get-NetConnectionProfile).Name
 	}
 
@@ -7966,7 +7973,7 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 			$Extension
 		)
 
-		# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
+		# We have to use GetValue() due to "Set-StrictMode -Version Latest"
 		$OrigProgID = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\$Extension", "", $null)
 		if ($OrigProgID)
 		{
@@ -7974,7 +7981,7 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 			$Script:RegisteredProgIDs += $OrigProgID
 		}
 
-		# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
+		# We have to use GetValue() due to "Set-StrictMode -Version Latest"
 		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\$Extension", "", $null) -ne "")
 		{
 			# Save possible ProgIds history with extension
@@ -7990,7 +7997,7 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 		}
 
 		# If ProgId doesn't exist set the specified ProgId for the extensions
-		# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
+		# We have to use GetValue() due to "Set-StrictMode -Version Latest"
 		if (-not [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\$Extension", "", $null))
 		{
 			if (-not (Test-Path -Path "HKCU:\Software\Classes\$Extension"))
@@ -8008,7 +8015,7 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 		New-ItemProperty -Path "HKCU:\Software\Classes\$Extension\OpenWithProgids" -Name $ProgId -PropertyType None -Value ([byte[]]@()) -Force
 
 		# Set the system ProgId to the extension parameters for File Explorer to the possible options for the assignment, and if absent set the specified ProgId
-		# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
+		# We have to use GetValue() due to "Set-StrictMode -Version Latest"
 		if ($OrigProgID)
 		{
 			if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\OpenWithProgids"))
@@ -8076,7 +8083,7 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 		}
 
 		# Setting a block on changing the UserChoice section
-		# Due to "Set-StrictMode -Version Latest" we have to use OpenSubKey()
+		# We have to use OpenSubKey() due to "Set-StrictMode -Version Latest"
 		$OpenSubKey = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice", "ReadWriteSubTree", "TakeOwnership")
 		if ($OpenSubKey)
 		{
@@ -8109,7 +8116,7 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 		)
 
 		# If there is the system extension ProgId, write it to the already configured by default
-		# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
+		# We have to use GetValue() due to "Set-StrictMode -Version Latest"
 		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\$Extension", "", $null))
 		{
 			if (-not (Test-Path -Path Registry::HKEY_USERS\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\FileAssociations\ProgIds))
@@ -8120,7 +8127,7 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 		}
 
 		# Setting 'NoOpenWith' for all registered the extension ProgIDs
-		# Due to "Set-StrictMode -Version Latest" we have to check everything
+		# We have to check everything due to "Set-StrictMode -Version Latest"
 		if (Get-Item -Path "Registry::HKEY_CLASSES_ROOT\$Extension\OpenWithProgids" -ErrorAction Ignore)
 		{
 			[psobject]$OpenSubkey = (Get-Item -Path "Registry::HKEY_CLASSES_ROOT\$Extension\OpenWithProgids" -ErrorAction Ignore).Property
@@ -8149,18 +8156,18 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 			}
 		}
 
-		# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
+		# We have to use GetValue() due to "Set-StrictMode -Version Latest"
 		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\KindMap", $Extension, $null))
 		{
 			$picture = (Get-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\KindMap -Name $Extension -ErrorAction Ignore).$Extension
 		}
-		# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
+		# We have to use GetValue() due to "Set-StrictMode -Version Latest"
 		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\PBrush\CLSID", "", $null))
 		{
 			$PBrush = (Get-ItemProperty -Path HKLM:\SOFTWARE\Classes\PBrush\CLSID -Name "(default)" -ErrorAction Ignore)."(default)"
 		}
 
-		# Due to "Set-StrictMode -Version Latest" we have to check everything
+		# We have to check everything due to "Set-StrictMode -Version Latest"
 		if (Get-Variable -Name picture -ErrorAction Ignore)
 		{
 			if (($picture -eq "picture") -and $PBrush)
@@ -8169,7 +8176,7 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 			}
 		}
 
-		# Due to "Set-StrictMode -Version Latest" we have to use GetValue()
+		# We have to use GetValue() due to "Set-StrictMode -Version Latest"
 		if (([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\KindMap", $Extension, $null)) -eq "picture")
 		{
 			$Script:RegisteredProgIDs += "PBrush"
@@ -11714,6 +11721,10 @@ function WindowsScriptHost
 				# Skip if a scheduled task exists
 				if ($_.State -eq "Ready")
 				{
+					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+					Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
 					break
 				}
 			}
@@ -13020,7 +13031,7 @@ public static void PostMessage()
 		}
 	}
 
-	# Apply policies found in registry to re-build database database due to gpedit.msc relies in its own database
+	# Apply policies found in registry to re-build database database because gpedit.msc relies in its own database
 	if ((Test-Path -Path "$env:TEMP\Computer.txt") -or (Test-Path -Path "$env:TEMP\User.txt"))
 	{
 		if (Test-Path -Path "$env:TEMP\Computer.txt")
@@ -13065,7 +13076,7 @@ public static void PostMessage()
 		$taskschd_Process_ID = (Get-CimInstance -ClassName CIM_Process | Where-Object -FilterScript {$_.Name -eq "mmc.exe"} | Where-Object -FilterScript {
 			$_.CommandLine -match "taskschd.msc"
 		}).Handle
-		# Due to "Set-StrictMode -Version Latest" we have to check before executing
+		# We have to check before executing due to "Set-StrictMode -Version Latest"
 		if ($taskschd_Process_ID)
 		{
 			Get-Process -Id $taskschd_Process_ID | Stop-Process -Force
