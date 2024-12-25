@@ -1,4 +1,3 @@
----
 name: Sophia Script 🐛
 description: Report errors or unexpected behavior 🤔
 body:
@@ -25,24 +24,26 @@ body:
 - type: textarea
   attributes:
     label: Steps to reproduce
-    placeholder: >
-      Paste your Sophia Script preset
+    placeholder:  Write something :)
   validations:
     required: true
 - type: textarea
   attributes:
+    label: Your Sophia Script preset
+    placeholder: Paste your Sophia Script preset
+  validations:
+      required: true
+- type: textarea
+  attributes:
     label: Describe the bug
-    description: >
-      Write something :)
-    placeholder: >
-      Describe the issue you are facing
+    description: Write something :)
+    placeholder: Describe the issue you are facing with
   validations:
     required: true
 - type: textarea
   attributes:
     label: Screenshot with an error
-    placeholder: >
-      Paste here a screenshot with an error
+    placeholder: Paste here a screenshot with an error
   validations:
     required: true
 - type: markdown
