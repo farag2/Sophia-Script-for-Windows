@@ -2479,7 +2479,7 @@ function SnapAssist
 		$Enable
 	)
 
-	New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name WindowArrangementActive -PropertyType DWord -Value 1 -Force
+	New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name WindowArrangementActive -PropertyType String -Value 1 -Force
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
