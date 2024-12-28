@@ -3,10 +3,10 @@
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
 	.VERSION
-	6.7.3
+	6.8.0
 
 	.DATE
-	28.11.2024
+	29.12.2024
 
 	.AUTHOR
 	farag, Inestic & lowl1f3

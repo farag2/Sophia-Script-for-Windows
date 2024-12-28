@@ -105,9 +105,10 @@ jobs:
           echo "RELEASE_NAME=$ReleaseName" >> $env:GITHUB_ENV
 
       - name: Uploading
-        uses: softprops/action-gh-release@master
+        # https://github.com/softprops/action-gh-release/issues/556#issuecomment-2556947371
+        uses: softprops/action-gh-release@v2.1.0
         with:
-          name: ${{ env.RELEASE_NAME }}
+          name: ${{ steps.read_release.outputs.RELEASE_NAME }}
           token: ${{ github.token }}
           files: |
             Sophia*.zip
