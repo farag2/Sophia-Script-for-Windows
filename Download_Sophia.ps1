@@ -37,11 +37,23 @@ if ($Host.Version.Major -eq 5)
 	$Script:ProgressPreference = "SilentlyContinue"
 }
 
+# https://github.com/PowerShell/PowerShell/issues/21070
+$Script:CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
+$Script:CompilerParameters.TempFiles = [System.CodeDom.Compiler.TempFileCollection]::new($env:TEMP, $false)
+$Script:CompilerParameters.GenerateInMemory = $true
+
 $Parameters = @{
 	Uri             = "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases/latest"
 	UseBasicParsing = $true
 }
 $LatestGitHubRelease = (Invoke-RestMethod @Parameters).tag_name
+
+if (-not $LatestGitHubRelease)
+{
+	Write-Warning -Message "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases/latest is unreachable. Please fix connection."
+	pause
+	exit
+}
 
 $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 
@@ -288,10 +300,6 @@ switch ($Version)
 	}
 }
 
-# https://github.com/PowerShell/PowerShell/issues/21070
-$CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
-$CompilerParameters.TempFiles = [System.CodeDom.Compiler.TempFileCollection]::new($env:TEMP, $false)
-$CompilerParameters.GenerateInMemory = $true
 $Signature = @{
 	Namespace          = "WinAPI"
 	Name               = "ForegroundWindow"

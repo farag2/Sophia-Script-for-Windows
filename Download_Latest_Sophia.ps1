@@ -90,40 +90,8 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		{
 			Write-Verbose -Message "Windows version is not supported. Update your Windows" -Verbose
 
-			# Get the real Windows version like %SystemRoot%\system32\winver.exe relies on
-			$Signature = @{
-				Namespace          = "WinAPI"
-				Name               = "Winbrand"
-				Language           = "CSharp"
-				CompilerParameters = $CompilerParameters
-				MemberDefinition   = @"
-[DllImport("Winbrand.dll", CharSet = CharSet.Unicode)]
-public extern static string BrandingFormatString(string sFormat);
-"@
-			}
-
-			# PowerShell 7 has CompilerOptions argument instead of CompilerParameters as PowerShell 5 has
-			# https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/add-type#-compileroptions
-			if ($Host.Version.Major -eq 7)
-			{
-				$Signature.Remove("CompilerParameters")
-				$Signature.Add("CompilerOptions", $CompilerParameters)
-			}
-
-			if (-not ("WinAPI.Winbrand" -as [type]))
-			{
-				Add-Type @Signature
-			}
-
 			# Receive updates for other Microsoft products when you update Windows
-			if ([WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%") -match "Windows 11")
-			{
-				(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
-			}
-			else
-			{
-				New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name AllowMUUpdateService -PropertyType DWord -Value 1 -Force
-			}
+			(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
 
 			# Check for updates
 			Start-Process -FilePath "$env:SystemRoot\System32\UsoClient.exe" -ArgumentList StartInteractiveScan
@@ -315,8 +283,6 @@ switch ($Version)
 		{
 			Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_Latest"
 		}
-
-		return
 	}
 	"Sophia_Script_for_Windows_11_PowerShell_7"
 	{
