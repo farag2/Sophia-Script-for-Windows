@@ -12865,9 +12865,6 @@ function WindowsScriptHost
 				}
 			}
 
-111
-pause
-
 			if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows Script Host\Settings"))
 			{
 				New-Item -Path "HKCU:\Software\Microsoft\Windows Script Host\Settings" -Force
