@@ -680,10 +680,10 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	}
 
 	# Checking whether LGPO.exe exists in the bin folder
-	if (-not (Test-Path -Path "$PSScriptRoot\..\bin\LGPO.exe"))
+	if (-not (Test-Path -Path "$PSScriptRoot\..\Binaries\LGPO.exe"))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message ($Localization.Bin -f [IO.Path]::GetFullPath("$PSScriptRoot\..\bin"))
+		Write-Warning -Message ($Localization.Bin -f [IO.Path]::GetFullPath("$PSScriptRoot\..\Binaries"))
 		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest" -Verbose
@@ -4453,38 +4453,38 @@ function NavigationPaneExpand
 	.SYNOPSIS
 	Recommended section in Start Menu
 
-	.PARAMETER Enable
+	.PARAMETER Hide
 	Remove Recommended section in Start Menu
 
-	.PARAMETER Disable
+	.PARAMETER Show
 	Do not remove Recommended section in Start Menu (default value)
 
 	.EXAMPLE
-	HideRecommendedSection -Enable
+	StartRecommendedSection -Hide
 
 	.EXAMPLE
-	HideRecommendedSection -Disable
+	StartRecommendedSection -Show
 
 	.NOTES
 	Current user
 #>
-function HideRecommendedSection
+function StartRecommendedSection
 {
 	param
 	(
 		[Parameter(
 			Mandatory = $true,
-			ParameterSetName = "Enable"
+			ParameterSetName = "Hide"
 		)]
 		[switch]
-		$Enable,
+		$Hide,
 
 		[Parameter(
 			Mandatory = $true,
-			ParameterSetName = "Disable"
+			ParameterSetName = "Show"
 		)]
 		[switch]
-		$Disable
+		$Show
 	)
 
 	# Windows 11 IoT Enterprise not supported
@@ -4504,7 +4504,7 @@ function HideRecommendedSection
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
-		"Enable"
+		"Hide"
 		{
 			if (-not (Test-Path -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer))
 			{
@@ -4514,7 +4514,7 @@ function HideRecommendedSection
 
 			Set-Policy -Scope User -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecommendedSection -Type DWORD -Value 1
 		}
-		"Disable"
+		"Show"
 		{
 			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name HideRecommendedSection -Force -ErrorAction Ignore
 			Set-Policy -Scope User -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecommendedSection -Type CLEAR
@@ -13039,11 +13039,11 @@ public static void PostMessage()
 	{
 		if (Test-Path -Path "$env:TEMP\Computer.txt")
 		{
-			& "$PSScriptRoot\..\bin\LGPO.exe" /t "$env:TEMP\Computer.txt"
+			& "$PSScriptRoot\..\Binaries\LGPO.exe" /t "$env:TEMP\Computer.txt"
 		}
 		if (Test-Path -Path "$env:TEMP\User.txt")
 		{
-			& "$PSScriptRoot\..\bin\LGPO.exe" /t "$env:TEMP\User.txt"
+			& "$PSScriptRoot\..\Binaries\LGPO.exe" /t "$env:TEMP\User.txt"
 		}
 
 		gpupdate /force

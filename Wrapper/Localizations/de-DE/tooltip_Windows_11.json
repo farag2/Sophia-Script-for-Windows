@@ -760,25 +760,25 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Den Navigatiosbereich des Explorers(Linker Abschnitt) nicht auf den aktuellen Ordner erweitern (Standardwert)."
+        "ToolTip": "Den Navigatiosbereich des Explorers (Linker Abschnitt) nicht auf den aktuellen Ordner erweitern (Standardwert)."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Der Navigationsbereich des Explorers(Linker Abschnitt) wird auf den aktuellen Ordner erweitert."
+        "ToolTip": "Der Navigationsbereich des Explorers (Linker Abschnitt) wird auf den aktuellen Ordner erweitert."
       }
     }
   },
   {
     "Region": "UI & Personalization",
-    "Function": "HideRecommendedSection",
+    "Function": "StartRecommendedSection",
     "Arg": {
       "Zero": {
-        "Tag": "Disable",
+        "Tag": "Hide",
         "ToolTip": "Entfernen Sie den Abschnitt Empfohlen im Startmenü. Gilt nur für die Editionen Enterprise und Education, aber nicht für IoT Enterprise."
       },
       "One": {
-        "Tag": "Enable",
-        "ToolTip": "Den Abschnitt Empfohlen im Startmenü nicht entfernen (Standardwert). Gilt nur für die Editionen Enterprise und Education, aber nicht für IoT Enterprise."
+        "Tag": "Show",
+        "ToolTip": "Abschnitt Empfohlen im Startmenü anzeigen (Standardwert). Gilt nur für die Editionen Enterprise und Education, aber nicht für IoT Enterprise."
       }
     }
   },

@@ -708,14 +708,14 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 
 	# Checking whether all necessary files exist in the script folder
 	$Files = @(
-		"$PSScriptRoot\..\bin\LGPO.exe",
-		"$PSScriptRoot\..\bin\Microsoft.Windows.SDK.NET.dll",
-		"$PSScriptRoot\..\bin\WinRT.Runtime.dll"
+		"$PSScriptRoot\..\Binaries\LGPO.exe",
+		"$PSScriptRoot\..\Binaries\Microsoft.Windows.SDK.NET.dll",
+		"$PSScriptRoot\..\Binaries\WinRT.Runtime.dll"
 	)
 	if (($Files | Test-Path) -contains $false)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message ($Localization.Bin -f [IO.Path]::GetFullPath("$PSScriptRoot\..\bin"))
+		Write-Warning -Message ($Localization.Bin -f [IO.Path]::GetFullPath("$PSScriptRoot\..\Binaries"))
 		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest" -Verbose
@@ -4629,38 +4629,38 @@ function NavigationPaneExpand
 	.SYNOPSIS
 	Recommended section in Start Menu
 
-	.PARAMETER Enable
+	.PARAMETER Hide
 	Remove Recommended section in Start Menu
 
-	.PARAMETER Disable
+	.PARAMETER Show
 	Do not remove Recommended section in Start Menu (default value)
 
 	.EXAMPLE
-	HideRecommendedSection -Enable
+	StartRecommendedSection -Hide
 
 	.EXAMPLE
-	HideRecommendedSection -Disable
+	StartRecommendedSection -Show
 
 	.NOTES
 	Current user
 #>
-function HideRecommendedSection
+function StartRecommendedSection
 {
 	param
 	(
 		[Parameter(
 			Mandatory = $true,
-			ParameterSetName = "Enable"
+			ParameterSetName = "Hide"
 		)]
 		[switch]
-		$Enable,
+		$Hide,
 
 		[Parameter(
 			Mandatory = $true,
-			ParameterSetName = "Disable"
+			ParameterSetName = "Show"
 		)]
 		[switch]
-		$Disable
+		$Show
 	)
 
 	# Windows 11 IoT Enterprise not supported
@@ -4680,7 +4680,7 @@ function HideRecommendedSection
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
-		"Enable"
+		"Hide"
 		{
 			if (-not (Test-Path -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer))
 			{
@@ -4690,7 +4690,7 @@ function HideRecommendedSection
 
 			Set-Policy -Scope User -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecommendedSection -Type DWORD -Value 1
 		}
-		"Disable"
+		"Show"
 		{
 			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name HideRecommendedSection -Force -ErrorAction Ignore
 			Set-Policy -Scope User -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecommendedSection -Type CLEAR
@@ -10351,8 +10351,8 @@ function UninstallUWPApps
 		$ForAllUsers
 	)
 
-	Add-Type -AssemblyName "$PSScriptRoot\..\bin\WinRT.Runtime.dll"
-	Add-Type -AssemblyName "$PSScriptRoot\..\bin\Microsoft.Windows.SDK.NET.dll"
+	Add-Type -AssemblyName "$PSScriptRoot\..\Binaries\WinRT.Runtime.dll"
+	Add-Type -AssemblyName "$PSScriptRoot\..\Binaries\Microsoft.Windows.SDK.NET.dll"
 
 	Add-Type -AssemblyName PresentationCore, PresentationFramework
 
@@ -14152,11 +14152,11 @@ public static void PostMessage()
 	{
 		if (Test-Path -Path "$env:TEMP\Computer.txt")
 		{
-			& "$PSScriptRoot\..\bin\LGPO.exe" /t "$env:TEMP\Computer.txt"
+			& "$PSScriptRoot\..\Binaries\LGPO.exe" /t "$env:TEMP\Computer.txt"
 		}
 		if (Test-Path -Path "$env:TEMP\User.txt")
 		{
-			& "$PSScriptRoot\..\bin\LGPO.exe" /t "$env:TEMP\User.txt"
+			& "$PSScriptRoot\..\Binaries\LGPO.exe" /t "$env:TEMP\User.txt"
 		}
 
 		gpupdate /force
@@ -14230,8 +14230,8 @@ public static void PostMessage()
 	# Determines whether the app can be seen in Settings where the user can turn notifications on or off
 	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Name ShowInSettings -Value 0 -PropertyType DWord -Force
 
-	Add-Type -AssemblyName "$PSScriptRoot\..\bin\WinRT.Runtime.dll"
-	Add-Type -AssemblyName "$PSScriptRoot\..\bin\Microsoft.Windows.SDK.NET.dll"
+	Add-Type -AssemblyName "$PSScriptRoot\..\Binaries\WinRT.Runtime.dll"
+	Add-Type -AssemblyName "$PSScriptRoot\..\Binaries\Microsoft.Windows.SDK.NET.dll"
 
 	# Telegram group
 	# Extract the localized "Open" string from shell32.dll

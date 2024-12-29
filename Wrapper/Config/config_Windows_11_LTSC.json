@@ -896,13 +896,13 @@
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
-    "Function": "HideRecommendedSection",
+    "Function": "StartRecommendedSection",
     "Arg": {
       "Zero": {
-        "Tag": "Disable"
+        "Tag": "Hide"
       },
       "One": {
-        "Tag": "Enable"
+        "Tag": "Show"
       }
     },
     "Preset": "Zero",

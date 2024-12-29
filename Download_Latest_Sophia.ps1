@@ -156,7 +156,7 @@ if (Test-Path -Path "$DownloadsFolder\$($Version)_Latest")
 	exit
 }
 
-New-Item -Path "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-master\src\$Version\bin" -ItemType Directory -Force
+New-Item -Path "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-master\src\$Version\Binaries" -ItemType Directory -Force
 
 & "$env:SystemRoot\System32\tar.exe" -C "$DownloadsFolder\SophiaScriptTemp" -xf "$DownloadsFolder\master.zip" "Sophia-Script-for-Windows-master/src/$Version"
 
@@ -164,23 +164,23 @@ New-Item -Path "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-mast
 # https://techcommunity.microsoft.com/t5/microsoft-security-baselines/lgpo-exe-local-group-policy-object-utility-v1-0/ba-p/701045
 $Parameters = @{
 	Uri             = "https://download.microsoft.com/download/8/5/C/85C25433-A1B0-4FFA-9429-7E023E7DA8D8/LGPO.zip"
-	OutFile         = "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-master\src\$Version\bin\LGPO.zip"
+	OutFile         = "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-master\src\$Version\Binaries\LGPO.zip"
 	UseBasicParsing = $true
 	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
 
 $Parameters = @{
-	Path            = "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-master\src\$Version\bin\LGPO.zip"
-	DestinationPath = "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-master\src\$Version\bin"
+	Path            = "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-master\src\$Version\Binaries\LGPO.zip"
+	DestinationPath = "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-master\src\$Version\Binaries"
 	Force           = $true
 	Verbose         = $true
 }
 Expand-Archive @Parameters
 
 $Parameters = @{
-	Path        = "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-master\src\$Version\bin\LGPO_30\LGPO.exe"
-	Destination = "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-master\src\$Version\bin\LGPO.exe"
+	Path        = "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-master\src\$Version\Binaries\LGPO_30\LGPO.exe"
+	Destination = "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-master\src\$Version\Binaries\LGPO.exe"
 	Force       = $true
 }
 Move-Item @Parameters
@@ -191,19 +191,19 @@ if ($Version -match "PowerShell_7")
 	# https://www.nuget.org/packages/Microsoft.Windows.SDK.NET.Ref
 	$Parameters = @{
 		Uri             = "https://www.nuget.org/api/v2/package/Microsoft.Windows.SDK.NET.Ref"
-		OutFile         = "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-master\src\$Version\bin\microsoft.windows.sdk.net.ref.zip"
+		OutFile         = "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-master\src\$Version\Binaries\microsoft.windows.sdk.net.ref.zip"
 		UseBasicParsing = $true
 	}
 	Invoke-RestMethod @Parameters
 
 	# Extract Microsoft.Windows.SDK.NET.dll & WinRT.Runtime.dll from archive
 	Add-Type -Assembly System.IO.Compression.FileSystem
-	$ZIP = [IO.Compression.ZipFile]::OpenRead("$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-master\src\$Version\bin\microsoft.windows.sdk.net.ref.zip")
+	$ZIP = [IO.Compression.ZipFile]::OpenRead("$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-master\src\$Version\Binaries\microsoft.windows.sdk.net.ref.zip")
 	$Entries = $ZIP.Entries | Where-Object -FilterScript {($_.FullName -eq "lib/net8.0/Microsoft.Windows.SDK.NET.dll") -or ($_.FullName -eq "lib/net8.0/WinRT.Runtime.dll")}
-	$Entries | ForEach-Object -Process {[IO.Compression.ZipFileExtensions]::ExtractToFile($_, "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-master\src\$Version\bin\$($_.Name)", $true)}
+	$Entries | ForEach-Object -Process {[IO.Compression.ZipFileExtensions]::ExtractToFile($_, "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-master\src\$Version\Binaries\$($_.Name)", $true)}
 	$ZIP.Dispose()
 
-	Remove-Item -Path "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-master\src\$Version\bin\microsoft.windows.sdk.net.ref.zip" -Force
+	Remove-Item -Path "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-master\src\$Version\Binaries\microsoft.windows.sdk.net.ref.zip" -Force
 }
 
 $Parameters = @{
@@ -222,8 +222,8 @@ Move-Item @Parameters
 
 $Path = @(
 	"$DownloadsFolder\SophiaScriptTemp",
-	"$DownloadsFolder\$($Version)_Latest\bin\LGPO_30",
-	"$DownloadsFolder\$($Version)_Latest\bin\LGPO.zip",
+	"$DownloadsFolder\$($Version)_Latest\Binaries\LGPO_30",
+	"$DownloadsFolder\$($Version)_Latest\Binaries\LGPO.zip",
 	"$DownloadsFolder\master.zip"
 )
 Remove-Item -Path $Path -Recurse -Force

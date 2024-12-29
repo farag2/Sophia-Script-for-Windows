@@ -770,15 +770,15 @@
   },
   {
     "Region": "UI & Personalization",
-    "Function": "HideRecommendedSection",
+    "Function": "StartRecommendedSection",
     "Arg": {
       "Zero": {
-        "Tag": "Disable",
+        "Tag": "Hide",
         "ToolTip": "Удалить раздел \"Рекомендуем\" в меню \"Пуск\". Применимо только к редакциям Enterprise и Education, но не к IoT Enterprise."
       },
       "One": {
-        "Tag": "Enable",
-        "ToolTip": "Не удалять раздел \"Рекомендуем\" в меню \"Пуск\". Применимо только к редакциям Enterprise и Education, но не к IoT Enterprise."
+        "Tag": "Show",
+        "ToolTip": "Показывать раздел \"Рекомендуем\" в меню \"Пуск\". Применимо только к редакциям Enterprise и Education, но не к IoT Enterprise."
       }
     }
   },

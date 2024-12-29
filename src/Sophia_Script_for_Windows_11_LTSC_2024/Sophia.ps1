@@ -590,11 +590,11 @@ NavigationPaneExpand -Disable
 
 # Remove Recommended section in Start Menu. Applicable only to Enterprise and Education editions, but not to IoT Enterprise
 # Удалить раздел "Рекомендуем" в меню "Пуск". Применимо только к редакциям Enterprise и Education, но не к IoT Enterprise
-HideRecommendedSection -Enable
+StartRecommendedSection -Hide
 
-# Do not remove Recommended section in Start Menu (default value). Applicable only to Enterprise and Education editions, but not to IoT Enterprise
-# Не удалять раздел "Рекомендуем" в меню "Пуск" (значение по умолчанию). Применимо только к редакциям Enterprise и Education, но не к IoT Enterprise
-# HideRecommendedSection -Disable
+# Show Recommended section in Start Menu (default value). Applicable only to Enterprise and Education editions, but not to IoT Enterprise
+# Показывать раздел "Рекомендуем" в меню "Пуск" (значение по умолчанию). Применимо только к редакциям Enterprise и Education, но не к IoT Enterprise
+# StartRecommendedSection -Show
 #endregion UI & Personalization
 
 #region System

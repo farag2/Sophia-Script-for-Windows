@@ -770,15 +770,15 @@
   },
   {
     "Region": "UI & Personalization",
-    "Function": "HideRecommendedSection",
+    "Function": "StartRecommendedSection",
     "Arg": {
       "Zero": {
-        "Tag": "Disable",
+        "Tag": "Hide",
         "ToolTip": "Remove Recommended section in Start Menu. Applicable only to Enterprise and Education editions, but not to IoT Enterprise."
       },
       "One": {
-        "Tag": "Enable",
-        "ToolTip": "Do not remove Recommended section in Start Menu (default value). Applicable only to Enterprise and Education editions, but not to IoT Enterprise."
+        "Tag": "Show",
+        "ToolTip": "Show Recommended section in Start Menu (default value). Applicable only to Enterprise and Education editions, but not to IoT Enterprise."
       }
     }
   },

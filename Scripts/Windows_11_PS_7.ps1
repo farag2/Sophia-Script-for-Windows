@@ -6,11 +6,11 @@ $LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerS
 
 Write-Verbose -Message "Sophia.Script.for.Windows.11.PowerShell.7.v$LatestRelease.zip" -Verbose
 
-New-Item -Path "Sophia_Script_for_Windows_11_PowerShell_7_v$LatestRelease\bin" -ItemType Directory -Force
+New-Item -Path "Sophia_Script_for_Windows_11_PowerShell_7_v$LatestRelease\Binaries" -ItemType Directory -Force
 
 $Parameters = @{
 	Path        = @("Scripts\LGPO.exe", "Scripts\WinRT.Runtime.dll", "Scripts\Microsoft.Windows.SDK.NET.dll")
-	Destination = "Sophia_Script_for_Windows_11_PowerShell_7_v$LatestRelease\bin"
+	Destination = "Sophia_Script_for_Windows_11_PowerShell_7_v$LatestRelease\Binaries"
 	Recurse     = $true
 	Force       = $true
 }
