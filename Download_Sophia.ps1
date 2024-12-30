@@ -50,7 +50,7 @@ $LatestGitHubRelease = (Invoke-RestMethod @Parameters).tag_name
 
 if (-not $LatestGitHubRelease)
 {
-	Write-Warning -Message "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases/latest is unreachable. Please fix connection."
+	Write-Warning -Message "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases/latest is unreachable. Please fix connection or change your DNS records."
 	pause
 	exit
 }
