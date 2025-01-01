@@ -51,6 +51,18 @@ $LatestGitHubRelease = (Invoke-RestMethod @Parameters).tag_name
 if (-not $LatestGitHubRelease)
 {
 	Write-Warning -Message "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases/latest is unreachable. Please fix connection or change your DNS records."
+	Write-Information -MessageData "" -InformationAction Continue
+
+	if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
+	{
+		$DNS = (Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Get-DnsClientServerAddress -AddressFamily IPv4).ServerAddresses
+	}
+	else
+	{
+		$DNS = (Get-NetAdapter -Physical | Get-NetIPInterface -AddressFamily IPv4 | Get-DnsClientServerAddress -AddressFamily IPv4).ServerAddresses
+	}
+	Write-Warning -Message "Your DNS are $(if ($DNS.Count -gt 1) {$DNS -join ', '} else {$DNS})"
+
 	pause
 	exit
 }
@@ -222,12 +234,29 @@ if (-not (Test-Path -Path "$DownloadsFolder\Sophia.Script.zip"))
 	exit
 }
 
-$Parameters = @{
-	Path            = "$DownloadsFolder\Sophia.Script.zip"
-	DestinationPath = "$DownloadsFolder"
-	Force           = $true
+try
+{
+	$Parameters = @{
+		Path            = "$DownloadsFolder\Sophia.Script.zip"
+		DestinationPath = "$DownloadsFolder"
+		ErrorAction     = "Stop"
+		Force           = $true
+	}
+	Expand-Archive @Parameters
 }
-Expand-Archive @Parameters
+catch
+{
+	Write-Verbose -Message "Archive cannot be expanded. Probably, this was caused by your antivirus. Please update its definitions and try again." -Verbose
+
+	# Check for updates
+	Start-Process -FilePath "$env:SystemRoot\System32\UsoClient.exe" -ArgumentList StartInteractiveScan
+
+	# Open t"Windows Update" page
+	Start-Process -FilePath "ms-settings:windowsupdate"
+
+	pause
+	exit
+}
 
 Remove-Item -Path "$DownloadsFolder\Sophia.Script.zip" -Force
 

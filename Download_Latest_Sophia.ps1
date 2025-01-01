@@ -158,7 +158,23 @@ if (Test-Path -Path "$DownloadsFolder\$($Version)_Latest")
 
 New-Item -Path "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-master\src\$Version\Binaries" -ItemType Directory -Force
 
-& "$env:SystemRoot\System32\tar.exe" -C "$DownloadsFolder\SophiaScriptTemp" -xf "$DownloadsFolder\master.zip" "Sophia-Script-for-Windows-master/src/$Version"
+try
+{
+	& "$env:SystemRoot\System32\tar.exe" -C "$DownloadsFolder\SophiaScriptTemp" -xf "$DownloadsFolder\master.zip" "Sophia-Script-for-Windows-master/src/$Version"
+}
+catch
+{
+	Write-Verbose -Message "Archive cannot be expanded. Probably, this was caused by your antivirus. Please update its definitions and try again." -Verbose
+
+	# Check for updates
+	Start-Process -FilePath "$env:SystemRoot\System32\UsoClient.exe" -ArgumentList StartInteractiveScan
+
+	# Open t"Windows Update" page
+	Start-Process -FilePath "ms-settings:windowsupdate"
+
+	pause
+	exit
+}
 
 # Download LGPO
 # https://techcommunity.microsoft.com/t5/microsoft-security-baselines/lgpo-exe-local-group-policy-object-utility-v1-0/ba-p/701045
