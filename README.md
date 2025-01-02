@@ -41,8 +41,8 @@ Made with <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-W
 * [How to use](#how-to-use)
   * [Download via PowerShell](#download-via-powershell)
   * [Manual method](#manual-method)
-  * [Wrapper](#wrapper)
   * [How to run the specific function(s)](#how-to-run-the-specific-functions)
+  * [Wrapper](#wrapper)
 * [Donations](#donations)
 * [System Requirements](#system-requirements)
 * [Key features](#key-features)
@@ -109,29 +109,9 @@ https://github.com/user-attachments/assets/2654b005-9577-4e56-ac9e-501d3e8a18bd
 
 https://github.com/user-attachments/assets/f5bda68f-9509-41dc-b3b1-1518aeaee36f
 
-## Wrapper
-
-![Wrapper](https://i.imgur.com/AiuCUvW.png)
-
-@BenchTweakGaming
-
-* Download the [latest](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest) Wrapper version;
-* Expand archive;
-* Run `SophiaScriptWrapper.exe` and import `Sophia.ps1`;
-  * `Sophia.ps1` has to be in `Sophia Script` folder;
-  * The Wrapper has a real time UI rendering;
-* Configure every function;
-* Open the `Console Output` tab and press `Run PowerShell`.
-
 ### How to run the specific function(s)
 
 * Do all steps from [Manual method](#manual-method) section and stop at setting execution policy in `PowerShell`;
-* Set execution policy to be able to run scripts only in the current PowerShell session;
-
-```powershell
-  Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
-```
-
 * [Dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator) the `Functions.ps1` file first:
 
 ```powershell
@@ -151,11 +131,25 @@ Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", U
 UninstallUWPApps, "PinToStart -UnpinAll"
 ```
 
-Or use an old-style format without the TAB functions autocomplete (the quotation marks required)
+Or use an old-style format without the <kbd>TAB</kbd> functions autocomplete (the quotation marks required)
 
 ```powershell
 .\Sophia.ps1 -Functions CreateRestorePoint, "ScheduledTasks -Disable", "WindowsCapabilities -Uninstall"
 ```
+
+## Wrapper
+
+![Wrapper](https://i.imgur.com/AiuCUvW.png)
+
+@BenchTweakGaming
+
+* Download the [latest](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest) Wrapper version;
+* Expand archive;
+* Run `SophiaScriptWrapper.exe` and import `Sophia.ps1`;
+  * `Sophia.ps1` has to be in `Sophia Script` folder;
+  * The Wrapper has a real time UI rendering;
+* Configure every function;
+* Open the `Console Output` tab and press `Run PowerShell`.
 
 ## Donations
 

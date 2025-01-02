@@ -41,8 +41,8 @@
 * [Як користуватися](#як-користуватися)
   * [Як завантажити Sophia Script через PowerShell](#завантажити-через-powershell)
   * [Вручну](#вручну)
-  * [Wrapper](#wrapper)
   * [Як запустити певну функцію(ї)](#як-запустити-певну-функціюї)
+  * [Wrapper](#wrapper)
 * [Пожертвування](#пожертвування)
 * [Системні вимоги](#системні-вимоги)
 * [Ключові особливості](#ключові-особливості)
@@ -109,29 +109,9 @@ https://github.com/user-attachments/assets/2654b005-9577-4e56-ac9e-501d3e8a18bd
 
 https://github.com/user-attachments/assets/f5bda68f-9509-41dc-b3b1-1518aeaee36f
 
-## Wrapper
-
-![Wrapper](https://i.imgur.com/AiuCUvW.png)
-
-@BenchTweakGaming
-
-* Завантажте [останню](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest) версію Wrapper
-* Завантажте та розпакуйте архів;
-* Запустіть `SophiaScriptWrapper.exe` та імпортуйте `Sophia.ps1`;
-  * `Sophia.ps1` повинен знаходитись у тій папці `Sophia Script`;
-  * Wrapper має рендеринг інтерфейсу в реальному часі
-* Налаштуйте кожну функцію;
-* Відкрийте вкладку `Console Output` і натисніть `Run PowerShell`.
-
 ### Як запустити певну функцію(ї)
 
-* Повторіть усі кроки з розділу [Вручну](#manual-method) і зупиніться на кроці встановлення політики виконання скриптів у `PowerShell`;
-* Встановіть політику виконання, щоб мати змогу запускати сценарії лише у поточному сеансі PowerShell;
-
-```powershell
-  Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
-```
-
+* Повторіть усі кроки з розділу [Вручну](#вручну) і зупиніться на кроці встановлення політики виконання скриптів у `PowerShell`;
 * Для запуску певної функції(й) [запустити](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator) необхідно запустити файл `Functions.ps1`:
 
 ```powershell
@@ -151,11 +131,25 @@ Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", U
 UninstallUWPApps, "PinToStart -UnpinAll"
 ```
 
-Або використовуйте формат старого зразка без автозаповнення функцій TAB (лапки обов'язкові)
+Або використовуйте формат старого зразка без автозаповнення функцій <kbd>TAB</kbd> (лапки обов'язкові)
 
 ```powershell
 .\Sophia.ps1 -Functions CreateRestorePoint, "ScheduledTasks -Disable", "WindowsCapabilities -Uninstall"
 ```
+
+## Wrapper
+
+![Wrapper](https://i.imgur.com/AiuCUvW.png)
+
+@BenchTweakGaming
+
+* Завантажте [останню](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest) версію Wrapper
+* Завантажте та розпакуйте архів;
+* Запустіть `SophiaScriptWrapper.exe` та імпортуйте `Sophia.ps1`;
+  * `Sophia.ps1` повинен знаходитись у тій папці `Sophia Script`;
+  * Wrapper має рендеринг інтерфейсу в реальному часі
+* Налаштуйте кожну функцію;
+* Відкрийте вкладку `Console Output` і натисніть `Run PowerShell`.
 
 ## Пожертвування
 

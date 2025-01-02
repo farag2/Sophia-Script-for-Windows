@@ -41,8 +41,8 @@ Mit <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows
 * [Verwendung](#verwendung)
   * [Herunterladen über PowerShell](#herunterladen-über-powershell)
   * [Manuelle Methode](#manuelle-methode)
-  * [Wrapper](#wrapper)
   * [Verwendung von spezifischen Funktionen](#verwendung-von-spezifischen-funktionen)
+  * [Wrapper](#wrapper)
 * [Spenden](#spenden)
 * [System-Voraussetzungen](#system-voraussetzungen)
 * [Haupt-Features](#haupt-features)
@@ -109,29 +109,9 @@ https://github.com/user-attachments/assets/2654b005-9577-4e56-ac9e-501d3e8a18bd
 
 https://github.com/user-attachments/assets/f5bda68f-9509-41dc-b3b1-1518aeaee36f
 
-## Wrapper
-
-![Wrapper](https://i.imgur.com/AiuCUvW.png)
-
-@BenchTweakGaming
-
-* Laden Sie die (neueste)(<https://github.com/farag2/Sophia-Script-for-Windows/releases/latest>) Wrapper-Version herunter.
-* Das Archiv extrahieren;
-* Führe `SophiaScriptWrapper.exe` aus und importiere `Sophia.ps1`;
-  * `Sophia.ps1`muss im `Sophia Script` Ordner enthalten sein;
-  * Der Wrapper hat ein Echtzeit-UI-Rendering;
-* Konfiguriere jede Funktion;
-* Öffne das `Console Output` Tab und drücke `Run PowerShell`.
-
 ### Verwendung von spezifischen Funktionen
 
 * Führen Sie alle Schritte aus dem Abschnitt [Manuelle Methode](#manuelle-methode) aus und stoppen Sie bei den Einstellungen der Ausführungsrichtlinie in PowerShell.
-* Legen Sie die Ausführungsrichtlinie so fest, dass Skripts nur in der aktuellen PowerShell-Sitzung ausgeführt werden können;
-
-```powershell
-  Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
-```
-
 * Um spezifische Funktionen auszuführen [dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator) die `Functions.ps1` datei zuerst:
 
 ```powershell
@@ -151,11 +131,25 @@ Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", U
 UninstallUWPApps, "PinToStart -UnpinAll"
 ```
 
-Oder verwenden Sie ein Format im alten Stil ohne die TAB-Funktionen zum automatischen Ausfüllen (die Anführungszeichen sind erforderlich)
+Oder verwenden Sie ein Format im alten Stil ohne die <kbd>TAB</kbd>-Funktionen zum automatischen Ausfüllen (die Anführungszeichen sind erforderlich)
 
 ```powershell
 .\Sophia.ps1 -Functions CreateRestorePoint, "ScheduledTasks -Disable", "WindowsCapabilities -Uninstall"
 ```
+
+## Wrapper
+
+![Wrapper](https://i.imgur.com/AiuCUvW.png)
+
+@BenchTweakGaming
+
+* Laden Sie die (neueste)(<https://github.com/farag2/Sophia-Script-for-Windows/releases/latest>) Wrapper-Version herunter.
+* Das Archiv extrahieren;
+* Führe `SophiaScriptWrapper.exe` aus und importiere `Sophia.ps1`;
+  * `Sophia.ps1`muss im `Sophia Script` Ordner enthalten sein;
+  * Der Wrapper hat ein Echtzeit-UI-Rendering;
+* Konfiguriere jede Funktion;
+* Öffne das `Console Output` Tab und drücke `Run PowerShell`.
 
 ## Spenden
 
