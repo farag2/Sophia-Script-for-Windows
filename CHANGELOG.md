@@ -23,6 +23,8 @@ Happy New Year. Team Sophia wishes you the best in the coming year. Hopefully, i
   * Moved to .NET 8 & 9. 
 * Now before configuring any functions related function olicies will be reset in order to avoid situations when a user has a blocked UI features due to harmful tweaks usage.
   * E.g. before `RecycleBinDeleteConfirmation` function will be applied `ConfirmFileDelete` policy will be reset via LGPO.
+* Fixed `UpdateMicrosoftProducts` function for Windows 11;
+  * Please re-apply using this manual: https://github.com/farag2/Sophia-Script-for-Windows?tab=readme-ov-file#how-to-run-the-specific-functions
 * Minor changes;
 * Fixed and improved translations;
 
