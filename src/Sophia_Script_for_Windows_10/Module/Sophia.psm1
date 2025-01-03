@@ -4807,13 +4807,13 @@ function AeroShaking
 
 <#
 	.SYNOPSIS
-	Free "Windows 11 Cursors Concept v2" cursors from Jepri Creations
+	Free "Windows 11 Cursors Concept" cursors from Jepri Creations
 
 	.PARAMETER Dark
-	Download and install free dark "Windows 11 Cursors Concept v2" cursors from Jepri Creations
+	Download and install free dark "Windows 11 Cursors Concept" cursors from Jepri Creations
 
 	.PARAMETER Light
-	Download and install free light "Windows 11 Cursors Concept v2" cursors from Jepri Creations
+	Download and install free light "Windows 11 Cursors Concept" cursors from Jepri Creations
 
 	.PARAMETER Default
 	Set default cursors
@@ -4828,10 +4828,10 @@ function AeroShaking
 	Cursors -Default
 
 	.LINK
-	https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356
+	https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-886489356
 
 	.NOTES
-	The 21/05/23 version
+	The 14/12/24 version
 
 	.NOTES
 	Current user
@@ -4886,62 +4886,58 @@ function Cursors
 				}
 				Invoke-WebRequest @Parameters
 
-				if (-not (Test-Path -Path "$env:SystemRoot\Cursors\W11_dark_v2.2"))
+				if (-not (Test-Path -Path "$env:SystemRoot\Cursors\W11 Cursor Dark Free"))
 				{
-					New-Item -Path "$env:SystemRoot\Cursors\W11_dark_v2.2" -ItemType Directory -Force
+					New-Item -Path "$env:SystemRoot\Cursors\W11 Cursor Dark Free" -ItemType Directory -Force
 				}
 
 				# Extract archive
-				& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\dark.zip" -C "$env:SystemRoot\Cursors\W11_dark_v2.2"
+				& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\dark.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Dark Free"
 
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursors Dark Free v2.2 by Jepri Creations" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\working.ani" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Arrow -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\pointer.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name ContactVisualization -PropertyType DWord -Value 1 -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Crosshair -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\precision.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name CursorBaseSize -PropertyType DWord -Value 32 -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name GestureVisualization -PropertyType DWord -Value 31 -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Hand -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\link.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Help -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\help.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name IBeam -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\beam.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name No -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\unavailable.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name NWPen -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\handwriting.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Person -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\person.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Pin -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\pin.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name precisionhair -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\precision.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursor Dark Free by Jepri Creations" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\appstarting.ani" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Arrow -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\arrow.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Crosshair -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\crosshair.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Hand -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\hand.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Help -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\help.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name IBeam -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\ibeam.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name No -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\no.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name NWPen -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\nwpen.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Person -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\person.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Pin -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\pin.cur" -Force
 				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "Scheme Source" -PropertyType DWord -Value 1 -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeAll -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\move.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNESW -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\dgn2.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNS -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\vert.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNWSE -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\dgn1.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeWE -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\horz.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name UpArrow -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\alternate.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Wait -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_dark_v2.2\busy.ani" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeAll -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\sizeall.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNESW -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\sizenesw.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNS -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\sizens.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNWSE -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\sizenwse.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeWE -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\sizewe.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name UpArrow -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\uparrow.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Wait -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\wait.ani" -Force
 
 				if (-not (Test-Path -Path "HKCU:\Control Panel\Cursors\Schemes"))
 				{
 					New-Item -Path "HKCU:\Control Panel\Cursors\Schemes" -Force
 				}
 				[string[]]$Schemes = (
-					"%SystemRoot%\Cursors\W11_dark_v2.2\pointer.cur",
-					"%SystemRoot%\Cursors\W11_dark_v2.2\help.cur",
-					"%SystemRoot%\Cursors\W11_dark_v2.2\working.ani",
-					"%SystemRoot%\Cursors\W11_dark_v2.2\busy.ani",
-					"%SystemRoot%\Cursors\W11_dark_v2.2\precision.cur",
-					"%SystemRoot%\Cursors\W11_dark_v2.2\beam.cur",
-					"%SystemRoot%\Cursors\W11_dark_v2.2\handwriting.cur",
-					"%SystemRoot%\Cursors\W11_dark_v2.2\unavailable.cur",
-					"%SystemRoot%\Cursors\W11_dark_v2.2\vert.cur",
-					"%SystemRoot%\Cursors\W11_dark_v2.2\horz.cur",
-					"%SystemRoot%\Cursors\W11_dark_v2.2\dgn1.cur",
-					"%SystemRoot%\Cursors\W11_dark_v2.2\dgn2.cur",
-					"%SystemRoot%\Cursors\W11_dark_v2.2\move.cur",
-					"%SystemRoot%\Cursors\W11_dark_v2.2\alternate.cur",
-					"%SystemRoot%\Cursors\W11_dark_v2.2\link.cur",
-					"%SystemRoot%\Cursors\W11_dark_v2.2\person.cur",
-					"%SystemRoot%\Cursors\W11_dark_v2.2\pin.cur"
+					"%SystemRoot%\Cursors\W11 Cursor Dark Free\arrow.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Dark Free\help.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Dark Free\appstarting.ani",
+					"%SystemRoot%\Cursors\W11 Cursor Dark Free\wait.ani",
+					"%SystemRoot%\Cursors\W11 Cursor Dark Free\crosshair.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Dark Free\sizens.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Dark Free\nwpen.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Dark Free\no.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Dark Free\sizens.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Dark Free\sizewe.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Dark Free\sizenwse.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Dark Free\sizenesw.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Dark Free\sizeall.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Dark Free\uparrow.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Dark Free\hand.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Dark Free\person.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Dark Free\pin.cur"
 				) -join ","
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors\Schemes" -Name "W11 Cursors Dark Free v2.2 by Jepri Creations" -PropertyType String -Value $Schemes -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors\Schemes" -Name "W11 Cursor Dark Free by Jepri Creations" -PropertyType String -Value $Schemes -Force
 
 				Start-Sleep -Seconds 1
 
@@ -4976,62 +4972,58 @@ function Cursors
 				}
 				Invoke-WebRequest @Parameters
 
-				if (-not (Test-Path -Path "$env:SystemRoot\Cursors\W11_light_v2.2"))
+				if (-not (Test-Path -Path "$env:SystemRoot\Cursors\W11 Cursor Light Free"))
 				{
-					New-Item -Path "$env:SystemRoot\Cursors\W11_light_v2.2" -ItemType Directory -Force
+					New-Item -Path "$env:SystemRoot\Cursors\W11 Cursor Light Free" -ItemType Directory -Force
 				}
 
 				# Extract archive
-				& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\light.zip" -C "$env:SystemRoot\Cursors\W11_light_v2.2"
+				& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\light.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Light Free"
 
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursor Light Free v2.2 by Jepri Creations" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\working.ani" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Arrow -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\pointer.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name ContactVisualization -PropertyType DWord -Value 1 -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Crosshair -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\precision.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name CursorBaseSize -PropertyType DWord -Value 32 -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name GestureVisualization -PropertyType DWord -Value 31 -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Hand -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\link.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Help -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\help.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name IBeam -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\beam.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name No -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\unavailable.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name NWPen -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\handwriting.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Person -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\person.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Pin -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\pin.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name precisionhair -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\precision.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursor Light Free by Jepri Creations" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\appstarting.ani" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Arrow -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\arrow.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Crosshair -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\crosshair.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Hand -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\hand.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Help -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\help.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name IBeam -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\ibeam.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name No -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\no.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name NWPen -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\nwpen.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Person -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\person.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Pin -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\pin.cur" -Force
 				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "Scheme Source" -PropertyType DWord -Value 1 -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeAll -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\move.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNESW -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\dgn2.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNS -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\vert.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNWSE -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\dgn1.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeWE -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\horz.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name UpArrow -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\alternate.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Wait -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11_light_v2.2\busy.ani" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeAll -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\sizeall.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNESW -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\sizenesw.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNS -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\sizens.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNWSE -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\sizenwse.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeWE -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\sizewe.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name UpArrow -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\uparrow.cur" -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Wait -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\wait.ani" -Force
 
 				if (-not (Test-Path -Path "HKCU:\Control Panel\Cursors\Schemes"))
 				{
 					New-Item -Path "HKCU:\Control Panel\Cursors\Schemes" -Force
 				}
 				[string[]]$Schemes = (
-					"%SystemRoot%\Cursors\W11_light_v2.2\pointer.cur",
-					"%SystemRoot%\Cursors\W11_light_v2.2\help.cur",
-					"%SystemRoot%\Cursors\W11_light_v2.2\working.ani",
-					"%SystemRoot%\Cursors\W11_light_v2.2\busy.ani",,
-					"%SystemRoot%\Cursors\W11_light_v2.2\precision.cur",
-					"%SystemRoot%\Cursors\W11_light_v2.2\beam.cur",
-					"%SystemRoot%\Cursors\W11_light_v2.2\handwriting.cur",
-					"%SystemRoot%\Cursors\W11_light_v2.2\unavailable.cur",
-					"%SystemRoot%\Cursors\W11_light_v2.2\vert.cur",
-					"%SystemRoot%\Cursors\W11_light_v2.2\horz.cur",
-					"%SystemRoot%\Cursors\W11_light_v2.2\dgn1.cur",
-					"%SystemRoot%\Cursors\W11_light_v2.2\dgn2.cur",
-					"%SystemRoot%\Cursors\W11_light_v2.2\move.cur",
-					"%SystemRoot%\Cursors\W11_light_v2.2\alternate.cur",
-					"%SystemRoot%\Cursors\W11_light_v2.2\link.cur",
-					"%SystemRoot%\Cursors\W11_light_v2.2\person.cur",
-					"%SystemRoot%\Cursors\W11_light_v2.2\pin.cur"
+					"%SystemRoot%\Cursors\W11 Cursor Light Free\arrow.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Light Free\help.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Light Free\appstarting.ani",
+					"%SystemRoot%\Cursors\W11 Cursor Light Free\wait.ani",,
+					"%SystemRoot%\Cursors\W11 Cursor Light Free\crosshair.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Light Free\sizens.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Light Free\nwpen.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Light Free\no.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Light Free\sizens.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Light Free\sizewe.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Light Free\sizenwse.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Light Free\sizenesw.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Light Free\sizeall.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Light Free\uparrow.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Light Free\hand.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Light Free\person.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Light Free\pin.cur"
 				) -join ","
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors\Schemes" -Name "W11 Cursor Light Free v2.2 by Jepri Creations" -PropertyType String -Value $Schemes -Force
+				New-ItemProperty -Path "HKCU:\Control Panel\Cursors\Schemes" -Name "W11 Cursor Light Free by Jepri Creations" -PropertyType String -Value $Schemes -Force
 
 				Start-Sleep -Seconds 1
 
@@ -5049,10 +5041,7 @@ function Cursors
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "" -Force
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\cursors\aero_working.ani" -Force
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Arrow -PropertyType ExpandString -Value "%SystemRoot%\cursors\aero_arrow.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name ContactVisualization -PropertyType DWord -Value 1 -Force
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Crosshair -PropertyType ExpandString -Value "" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name CursorBaseSize -PropertyType DWord -Value 32 -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name GestureVisualization -PropertyType DWord -Value 31 -Force
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Hand -PropertyType ExpandString -Value "%SystemRoot%\cursors\aero_link.cur" -Force
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Help -PropertyType ExpandString -Value "%SystemRoot%\cursors\aero_helpsel.cur" -Force
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name IBeam -PropertyType ExpandString -Value "" -Force
@@ -7024,21 +7013,23 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
                           "IconFile=%SystemRoot%\System32\shell32.dll",
                           "IconIndex=-235"
 			"Downloads" = "",
-                          "[.ShellClassInfo]","LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21798",
+                          "[.ShellClassInfo]",
+                          "LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21798",
                           "IconResource=%SystemRoot%\System32\imageres.dll,-184"
 			"Music"     = "",
-                          "[.ShellClassInfo]","LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21790",
+                          "[.ShellClassInfo]",
+                          "LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21790",
                           "InfoTip=@%SystemRoot%\System32\shell32.dll,-12689",
                           "IconResource=%SystemRoot%\System32\imageres.dll,-108",
                           "IconFile=%SystemRoot%\System32\shell32.dll","IconIndex=-237"
-			"Pictures" = "",
+			"Pictures"  = "",
                           "[.ShellClassInfo]",
                           "LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21779",
                           "InfoTip=@%SystemRoot%\System32\shell32.dll,-12688",
                           "IconResource=%SystemRoot%\System32\imageres.dll,-113",
                           "IconFile=%SystemRoot%\System32\shell32.dll",
                           "IconIndex=-236"
-			"Videos"   = "",
+			"Videos"    = "",
                           "[.ShellClassInfo]",
                           "LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21791",
                           "InfoTip=@%SystemRoot%\System32\shell32.dll,-12690",
@@ -9993,7 +9984,7 @@ function UninstallPCHealthCheck
 	Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 (x86/x64)
 
 	.EXAMPLE
-	InstallVCRedist
+	Install-VCRedist -Redistributables 2015_2022_x86, 2015_2022_x64
 
 	.LINK
 	https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist
@@ -10001,8 +9992,20 @@ function UninstallPCHealthCheck
 	.NOTES
 	Machine-wide
 #>
-function InstallVCRedist
+function Install-VCRedist
 {
+	[CmdletBinding()]
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Redistributables"
+		)]
+		[ValidateSet("2015_2022_x86", "2015_2022_x64")]
+		[string[]]
+		$Redistributables
+	)
+
 	# Get latest build version
 	# https://github.com/ScoopInstaller/Extras/blob/master/bucket/vcredist2022.json
 	try
@@ -10039,90 +10042,101 @@ function InstallVCRedist
 
 	$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 
-	# Proceed if currently installed build is lower than available from Microsoft or json file is unreachable, or VC_redist is not installed
-	if (([System.Version]$vcredistVersion -gt [System.Version]$msvcpx86Version) -or (($vcredistVersion -eq "0.0") -or ($msvcpx86Version -eq "0.0")))
+	foreach ($Redistributable in $Redistributables)
 	{
-		try
+		switch ($Redistributable)
 		{
-			$Parameters = @{
-				Uri             = "https://aka.ms/vs/17/release/VC_redist.x86.exe"
-				OutFile         = "$DownloadsFolder\VC_redist.x86.exe"
-				UseBasicParsing = $true
-				Verbose         = $true
+			2015_2022_x86
+			{
+				# Proceed if currently installed build is lower than available from Microsoft or json file is unreachable, or redistributable is not installed
+				if (([System.Version]$vcredistVersion -gt [System.Version]$msvcpx86Version) -or (($vcredistVersion -eq "0.0") -or ($msvcpx86Version -eq "0.0")))
+				{
+					try
+					{
+						$Parameters = @{
+							Uri             = "https://aka.ms/vs/17/release/VC_redist.x86.exe"
+							OutFile         = "$DownloadsFolder\VC_redist.x86.exe"
+							UseBasicParsing = $true
+							Verbose         = $true
+						}
+						Invoke-WebRequest @Parameters
+
+						Write-Information -MessageData "" -InformationAction Continue
+						Write-Verbose -Message "Visual C++ Redistributable x86" -Verbose
+						Write-Information -MessageData "" -InformationAction Continue
+
+						Start-Process -FilePath "$DownloadsFolder\VC_redist.x86.exe" -ArgumentList "/install /passive /norestart" -Wait
+
+						# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+						# https://github.com/PowerShell/PowerShell/issues/21070
+						$Paths = @(
+							"$DownloadsFolder\VC_redist.x86.exe",
+							"$env:TEMP\dd_vcredist_x86_*.log"
+						)
+						Get-ChildItem -Path $Paths -Force | Remove-Item -Force -ErrorAction Ignore
+					}
+					catch [System.Net.WebException]
+					{
+						Write-Warning -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com")
+						Write-Error -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com") -ErrorAction SilentlyContinue
+						Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+						return
+					}
+				}
+				else
+				{
+					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -Verbose
+					Write-Error -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -ErrorAction SilentlyContinue
+				}
 			}
-			Invoke-WebRequest @Parameters
+			2015_2022_x64
+			{
+				# Proceed if currently installed build is lower than available from Microsoft or json file is unreachable, or redistributable is not installed
+				if (([System.Version]$vcredistVersion -gt [System.Version]$msvcpx64Version) -or (($vcredistVersion -eq "0.0") -or ($msvcpx64Version -eq "0.0")))
+				{
+					try
+					{
+						$Parameters = @{
+							Uri             = "https://aka.ms/vs/17/release/VC_redist.x64.exe"
+							OutFile         = "$DownloadsFolder\VC_redist.x64.exe"
+							UseBasicParsing = $true
+							Verbose         = $true
+						}
+						Invoke-WebRequest @Parameters
+					}
+					catch [System.Net.WebException]
+					{
+						Write-Warning -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com")
+						Write-Error -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com") -ErrorAction SilentlyContinue
+						Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message "Visual C++ Redistributable x86" -Verbose
-			Write-Information -MessageData "" -InformationAction Continue
+						return
+					}
 
-			Start-Process -FilePath "$DownloadsFolder\VC_redist.x86.exe" -ArgumentList "/install /passive /norestart" -Wait
+					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message "Visual C++ Redistributable x64" -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 
-			# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-			# https://github.com/PowerShell/PowerShell/issues/21070
-			$Paths = @(
-				"$DownloadsFolder\VC_redist.x86.exe",
-				"$env:TEMP\dd_vcredist_x86_*.log"
-			)
-			Get-ChildItem -Path $Paths -Force | Remove-Item -Force -ErrorAction Ignore
-		}
-		catch [System.Net.WebException]
-		{
-			Write-Warning -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com")
-			Write-Error -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com") -ErrorAction SilentlyContinue
-			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+					Start-Process -FilePath "$DownloadsFolder\VC_redist.x64.exe" -ArgumentList "/install /passive /norestart" -Wait
 
-			return
-		}
-	}
-	else
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-	}
-
-	# Proceed if currently installed build is lower than available from Microsoft or json file is unreachable, or VC_redist is not installed
-	if (([System.Version]$vcredistVersion -gt [System.Version]$msvcpx64Version) -or (($vcredistVersion -eq "0.0") -or ($msvcpx64Version -eq "0.0")))
-	{
-		try
-		{
-			$Parameters = @{
-				Uri             = "https://aka.ms/vs/17/release/VC_redist.x64.exe"
-				OutFile         = "$DownloadsFolder\VC_redist.x64.exe"
-				UseBasicParsing = $true
-				Verbose         = $true
+					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+					# https://github.com/PowerShell/PowerShell/issues/21070
+					$Paths = @(
+						"$DownloadsFolder\VC_redist.x64.exe",
+						"$env:TEMP\dd_vcredist_amd64_*.log"
+					)
+					Get-ChildItem -Path $Paths -Force | Remove-Item -Force -ErrorAction Ignore
+				}
+				else
+				{
+					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -Verbose
+					Write-Error -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -ErrorAction SilentlyContinue
+				}
 			}
-			Invoke-WebRequest @Parameters
 		}
-		catch [System.Net.WebException]
-		{
-			Write-Warning -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com")
-			Write-Error -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com") -ErrorAction SilentlyContinue
-			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-
-			return
-		}
-
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message "Visual C++ Redistributable x64" -Verbose
-		Write-Information -MessageData "" -InformationAction Continue
-
-		Start-Process -FilePath "$DownloadsFolder\VC_redist.x64.exe" -ArgumentList "/install /passive /norestart" -Wait
-
-		# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-		# https://github.com/PowerShell/PowerShell/issues/21070
-		$Paths = @(
-			"$DownloadsFolder\VC_redist.x64.exe",
-			"$env:TEMP\dd_vcredist_amd64_*.log"
-		)
-		Get-ChildItem -Path $Paths -Force | Remove-Item -Force -ErrorAction Ignore
-	}
-	else
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 	}
 }
 
@@ -10130,8 +10144,14 @@ function InstallVCRedist
 	.SYNOPSIS
 	Install the latest .NET Desktop Runtime 8, 9 x64
 
+	.PARAMETER NET8x64
+	Install the latest .NET Desktop Runtime 8 x64
+
+	.PARAMETER NET9x64
+	Install the latest .NET Desktop Runtime 9 x64
+
 	.EXAMPLE
-	InstallDotNetRuntimes -Runtimes NET8x64, NET9x64
+	Install-DotNetRuntimes -Runtimes NET8x64, NET9x64
 
 	.LINK
 	https://dotnet.microsoft.com/en-us/download/dotnet
@@ -10139,7 +10159,7 @@ function InstallVCRedist
 	.NOTES
 	Machine-wide
 #>
-function InstallDotNetRuntimes
+function Install-DotNetRuntimes
 {
 	[CmdletBinding()]
 	param
@@ -10166,7 +10186,7 @@ function InstallDotNetRuntimes
 					# Get latest build version
 					# https://github.com/dotnet/core/blob/main/release-notes/releases-index.json
 					$Parameters = @{
-						Uri             = "https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/8.0/releases.json"
+						Uri             = "https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json"
 						Verbose         = $true
 						UseBasicParsing = $true
 					}
@@ -10200,7 +10220,7 @@ function InstallDotNetRuntimes
 					{
 						# .NET Desktop Runtime 8 x64
 						$Parameters = @{
-							Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$NET8Version/dotnet-runtime-$NET8Version-win-x64.exe"
+							Uri             = "https://builds.dotnet.microsoft.com/dotnet/Runtime/$NET8Version/dotnet-runtime-$NET8Version-win-x64.exe"
 							OutFile         = "$DownloadsFolder\dotnet-runtime-$NET8Version-win-x64.exe"
 							UseBasicParsing = $true
 							Verbose         = $true
@@ -10209,8 +10229,8 @@ function InstallDotNetRuntimes
 					}
 					catch [System.Net.WebException]
 					{
-						Write-Warning -Message ($Localization.NoResponse -f "https://dotnetcli.blob.core.windows.net")
-						Write-Error -Message ($Localization.NoResponse -f "https://dotnetcli.blob.core.windows.net") -ErrorAction SilentlyContinue
+						Write-Warning -Message ($Localization.NoResponse -f "https://builds.dotnet.microsoft.com")
+						Write-Error -Message ($Localization.NoResponse -f "https://builds.dotnet.microsoft.com") -ErrorAction SilentlyContinue
 						Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 						return
@@ -10233,8 +10253,8 @@ function InstallDotNetRuntimes
 				else
 				{
 					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-					Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+					Write-Verbose -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -Verbose
+					Write-Error -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -ErrorAction SilentlyContinue
 				}
 			}
 			NET9x64
@@ -10244,7 +10264,7 @@ function InstallDotNetRuntimes
 					# Get latest build version
 					# https://github.com/dotnet/core/blob/main/release-notes/releases-index.json
 					$Parameters = @{
-						Uri             = "https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/9.0/releases.json"
+						Uri             = "https://builds.dotnet.microsoft.com/dotnet/release-metadata/9.0/releases.json"
 						Verbose         = $true
 						UseBasicParsing = $true
 					}
@@ -10278,7 +10298,7 @@ function InstallDotNetRuntimes
 					{
 						# Downloading .NET Desktop Runtime 9 x64
 						$Parameters = @{
-							Uri             = "https://dotnetcli.azureedge.net/dotnet/Runtime/$NET9Version/dotnet-runtime-$NET9Version-win-x64.exe"
+							Uri             = "https://builds.dotnet.microsoft.com/dotnet/Runtime/$NET9Version/dotnet-runtime-$NET9Version-win-x64.exe"
 							OutFile         = "$DownloadsFolder\dotnet-runtime-$NET9Version-win-x64.exe"
 							UseBasicParsing = $true
 							Verbose         = $true
@@ -10287,8 +10307,8 @@ function InstallDotNetRuntimes
 					}
 					catch [System.Net.WebException]
 					{
-						Write-Warning -Message ($Localization.NoResponse -f "https://dotnetcli.blob.core.windows.net")
-						Write-Error -Message ($Localization.NoResponse -f "https://dotnetcli.blob.core.windows.net") -ErrorAction SilentlyContinue
+						Write-Warning -Message ($Localization.NoResponse -f "https://builds.dotnet.microsoft.com")
+						Write-Error -Message ($Localization.NoResponse -f "https://builds.dotnet.microsoft.com") -ErrorAction SilentlyContinue
 						Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 						return
@@ -10311,8 +10331,8 @@ function InstallDotNetRuntimes
 				else
 				{
 					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-					Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+					Write-Verbose -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -Verbose
+					Write-Error -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -ErrorAction SilentlyContinue
 				}
 			}
 		}
@@ -14042,13 +14062,13 @@ function DNSoverHTTPS
 		"Enable"
 		{
 			# Set a primary and secondary DNS servers
-			if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
+			if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
 			{
-				Get-NetAdapter -Physical | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
+				Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
 			}
 			else
 			{
-				Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
+				Get-NetAdapter -Physical | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
 			}
 
 			foreach ($InterfaceGuid in $InterfaceGuids)

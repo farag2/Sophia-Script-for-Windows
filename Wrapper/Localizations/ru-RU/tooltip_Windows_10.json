@@ -1368,17 +1368,21 @@
   },
   {
     "Region": "System",
-    "Function": "InstallVCRedist",
+    "Function": "Install-VCRedist -Redistributables",
     "Arg": {
       "Zero": {
-        "Tag": "",
-        "ToolTip": "Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2022 (x86/x64)."
+        "Tag": "2015_2022_x86",
+        "ToolTip": "Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2022 x86."
+      },
+      "One": {
+        "Tag": "2015_2022_x64",
+        "ToolTip": "Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2022 x64."
       }
     }
   },
   {
     "Region": "System",
-    "Function": "InstallDotNetRuntimes -Runtimes",
+    "Function": "Install-DotNetRuntimes -Runtimes",
     "ToolTip": "Установить последнюю версию .NET Desktop Runtime 8, 9 x64.",
     "Arg": {
       "Zero": {

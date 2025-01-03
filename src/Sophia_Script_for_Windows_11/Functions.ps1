@@ -140,8 +140,32 @@ $Parameters = @{
 				}
 			}
 
-			# If a module command is InstallDotNetRuntimes
-			if ($Command -eq "InstallDotNetRuntimes")
+			# If a module command is Install-VCRedist
+			if ($Command -eq "Install-VCRedist")
+			{
+				# Get all command arguments, excluding defaults
+				foreach ($ParameterSet in $ParameterSets.Name)
+				{
+					# If an argument is Redistributables
+					if ($ParameterSet -eq "Redistributables")
+					{
+						$ValidValues = ((Get-Command -Name Install-VCRedist).Parametersets.Parameters | Where-Object -FilterScript {$null -eq $_.Attributes.AliasNames}).Attributes.ValidValues
+						foreach ($ValidValue in $ValidValues)
+						{
+							# The "Install-VCRedist -Redistributables <function>" construction
+							"Install-VCRedist" + " " + "-" + $ParameterSet + " " + $ValidValue | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
+						}
+
+						# The "Install-VCRedist -Redistributables <functions>" construction
+						"Install-VCRedist" + " " + "-" + $ParameterSet + " " + ($ValidValues -join ", ") | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
+					}
+
+					continue
+				}
+			}
+
+			# If a module command is Install-DotNetRuntimes
+			if ($Command -eq "Install-DotNetRuntimes")
 			{
 				# Get all command arguments, excluding defaults
 				foreach ($ParameterSet in $ParameterSets.Name)
@@ -149,15 +173,15 @@ $Parameters = @{
 					# If an argument is Runtimes
 					if ($ParameterSet -eq "Runtimes")
 					{
-						$ValidValues = ((Get-Command -Name InstallDotNetRuntimes).Parametersets.Parameters | Where-Object -FilterScript {$null -eq $_.Attributes.AliasNames}).Attributes.ValidValues
+						$ValidValues = ((Get-Command -Name Install-DotNetRuntimes).Parametersets.Parameters | Where-Object -FilterScript {$null -eq $_.Attributes.AliasNames}).Attributes.ValidValues
 						foreach ($ValidValue in $ValidValues)
 						{
-							# The "InstallDotNetRuntimes -Runtimes <function>" construction
-							"InstallDotNetRuntimes" + " " + "-" + $ParameterSet + " " + $ValidValue | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
+							# The "Install-DotNetRuntimes -Runtimes <function>" construction
+							"Install-DotNetRuntimes" + " " + "-" + $ParameterSet + " " + $ValidValue | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
 						}
 
-						# The "InstallDotNetRuntimes -Runtimes <functions>" construction
-						"InstallDotNetRuntimes" + " " + "-" + $ParameterSet + " " + ($ValidValues -join ", ") | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
+						# The "Install-DotNetRuntimes -Runtimes <functions>" construction
+						"Install-DotNetRuntimes" + " " + "-" + $ParameterSet + " " + ($ValidValues -join ", ") | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
 					}
 
 					continue

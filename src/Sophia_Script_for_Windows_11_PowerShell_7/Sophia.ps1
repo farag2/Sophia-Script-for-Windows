@@ -578,12 +578,14 @@ AeroShaking -Enable
 # При захвате заголовка окна и встряхивании не сворачиваются все остальные окна (значение по умолчанию)
 # AeroShaking -Disable
 
-# Download and install free dark "Windows 11 Cursors Concept v2" cursors from Jepri Creations
-# Скачать и установить бесплатные темные курсоры "Windows 11 Cursors Concept v2" от Jepri Creations
+# Download and install free dark "Windows 11 Cursors Concept" cursors from Jepri Creations
+# Скачать и установить бесплатные темные курсоры "Windows 11 Cursors Concept" от Jepri Creations
+# https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-886489356
 Cursors -Dark
 
-# Download and install free light "Windows 11 Cursors Concept v2" cursors from Jepri Creations
-# Скачать и установить бесплатные светлые курсоры "Windows 11 Cursors Concept v2" от Jepri Creations
+# Download and install free light "Windows 11 Cursors Concept" cursors from Jepri Creations
+# Скачать и установить бесплатные светлые курсоры "Windows 11 Cursors Concept" от Jepri Creations
+# https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-886489356
 # Cursors -Light
 
 # Set default cursors
@@ -961,21 +963,13 @@ DefaultTerminalApp -WindowsTerminal
 # Установить Windows Console Host как приложение терминала по умолчанию для размещения пользовательского интерфейса для приложений командной строки (значение по умолчанию)
 # DefaultTerminalApp -ConsoleHost
 
-<#
-	Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 (x86/x64)
-	Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2022 (x86/x64)
+# Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 (x86/x64)
+# Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2022 (x86/x64)
+Install-VCRedist -Redistributables 2015_2022_x86, 2015_2022_x64
 
-	https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist
-#>
-InstallVCRedist
-
-<#
-	Install the latest .NET Desktop Runtime 8, 9 x64
-	Установить последнюю версию .NET Desktop Runtime 8, 9 x64
-
-	https://dotnet.microsoft.com/en-us/download/dotnet
-#>
-InstallDotNetRuntimes -Runtimes NET8x64, NET9x64
+# Install the latest .NET Desktop Runtime 8, 9 x64
+#Установить последнюю версию .NET Desktop Runtime 8, 9 x64
+Install-DotNetRuntimes -Runtimes NET8x64, NET9x64
 
 # Enable proxying only blocked sites from the unified registry of Roskomnadzor. The function is applicable for Russia only
 # Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора. Функция применима только для России

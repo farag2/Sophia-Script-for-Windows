@@ -1552,10 +1552,13 @@
     "Region": "System",
     "Control": "chk",
     "Required": "false",
-    "Function": "InstallVCRedist",
+    "Function": "Install-VCRedist -Redistributables",
     "Arg": {
       "Zero": {
-        "Tag": ""
+        "Tag": "2015_2022_x86"
+      },
+      "One": {
+        "Tag": "2015_2022_x64"
       }
     },
     "Preset": "",
@@ -1565,7 +1568,7 @@
     "Region": "System",
     "Control": "chk",
     "Required": "false",
-    "Function": "InstallDotNetRuntimes -Runtimes",
+    "Function": "Install-DotNetRuntimes -Runtimes",
     "Arg": {
       "Zero": {
         "Tag": "NET8x64"
