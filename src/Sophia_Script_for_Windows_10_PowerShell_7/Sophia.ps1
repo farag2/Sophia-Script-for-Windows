@@ -2,11 +2,16 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10 (PowerShell 7)"
 
-	Version: 5.20.0
-	Date: 29.12.2024
+	.VERSION
+	5.20.0
 
-	Copyright (c) 2014—2025 farag, Inestic & lowl1f3
+	.DATE
+	29.12.2024
 
+	.COPYRIGHT
+	(c) 2014—2025 farag, Inestic & lowl1f3
+
+	.THANKS
 	Thanks to all https://forum.ru-board.com members involved
 
 	.DESCRIPTION

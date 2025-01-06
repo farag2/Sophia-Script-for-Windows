@@ -2,11 +2,16 @@
 	.SYNOPSIS
 	Default preset file for "Sophia Script for Windows 10 LTSC 2021"
 
-	Version: 5.20.0
-	Date: 29.12.2024
+	.VERSION
+	5.20.0
 
-	Copyright (c) 2014—2025 farag, Inestic & lowl1f3
+	.DATE
+	29.12.2024
 
+	.COPYRIGHT
+	(c) 2014—2025 farag, Inestic & lowl1f3
+
+	.THANKS
 	Thanks to all https://forum.ru-board.com members involved
 
 	.DESCRIPTION
@@ -24,7 +29,7 @@
 	iwr script.sophia.team -useb | iex
 
 	.NOTES
-	Supported Windows 10 Enterprise LTSC 2021
+	Supports Windows 10 Enterprise LTSC 2021
 	Architecture: x64
 
 	.NOTES
