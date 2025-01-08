@@ -10584,20 +10584,11 @@ function UninstallUWPApps
 
 		# The -PackageTypeFilter Bundle doesn't contain these packages, and we need to add manually
 		$Packages = @(
-			# Spotify
-			"SpotifyAB.SpotifyMusic",
-
-			# Disney+
-			"Disney.37853FC22B2CE",
-
 			# Outlook
 			"Microsoft.OutlookForWindows",
 
 			# Microsoft Teams
-			"MSTeams",
-
-			# Microsoft Copilot
-			"Microsoft.Windows.Ai.CoPilot.Provider"
+			"MSTeams"
 		)
 		foreach ($Package in $Packages)
 		{

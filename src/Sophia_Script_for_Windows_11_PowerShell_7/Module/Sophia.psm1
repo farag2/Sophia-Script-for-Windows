@@ -568,7 +568,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	{
 		(Get-MpPreference -ErrorAction Stop).EnableControlledFolderAccess
 	}
-	catch [Microsoft.Management.Infrastructure.CimException]
+	catch [System.Management.Automation.RemoteException]
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
@@ -10614,20 +10614,11 @@ function UninstallUWPApps
 
 		# The -PackageTypeFilter Bundle doesn't contain these packages, and we need to add manually
 		$Packages = @(
-			# Spotify
-			"SpotifyAB.SpotifyMusic",
-
-			# Disney+
-			"Disney.37853FC22B2CE",
-
 			# Outlook
 			"Microsoft.OutlookForWindows",
 
 			# Microsoft Teams
-			"MSTeams",
-
-			# Microsoft Copilot
-			"Microsoft.Windows.Ai.CoPilot.Provider"
+			"MSTeams"
 		)
 		foreach ($Package in $Packages)
 		{
