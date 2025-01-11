@@ -8,21 +8,16 @@
 
 ![downloads](https://img.shields.io/github/downloads/farag2/Sophia-Script-for-Windows/total?label=downloads%20%28since%20May%202020%29) [![chocolatey](https://img.shields.io/chocolatey/dt/sophia?color=blue&label=chocolatey%20package)](https://community.chocolatey.org/packages/sophia) [![lines](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/farag2/9852d6b9569a91bf69ceba8a94cc97f4/raw/SophiaScript.json)](https://github.com/farag2/Sophia-Script-for-Windows)
 
-<kbd>
-	<a href="https://t.me/sophianews">
-		<img src="https://img.shields.io/badge/telegram-green?style=for-the-badge&logo=Telegram&logoColor=white&label=Sophia%20News&labelColor=151B23&color=151B23">
-	</a>
-</kbd>
-<kbd>
-	<a href="https://t.me/sophia_chat">
-		<img src="https://img.shields.io/endpoint?style=for-the-badge&logo=Telegram&labelColor=151B23&color=151B23&logoColor=white&label=Sophia%20Chat&url=https%3A%2F%2Ftg.sumanjay.workers.dev%2Fsophia_chat">
-	</a>
-</kbd>
-<kbd>
-	<a href="https://discord.gg/sSryhaEv79">
-		<img src="https://img.shields.io/badge/discord-green?style=for-the-badge&logo=discord&logoColor=white&labelColor=151B23&color=151B23">
-	</a>
-</kbd>
+[telegram-news-badge]: https://img.shields.io/badge/Sophia%20News-Telegram-blue?style=flat&logo=Telegram
+[telegram-news]: https://t.me/sophianews
+[telegram-group]: https://t.me/sophia_chat
+[telegram-group-badge]: https://img.shields.io/endpoint?color=neon&label=Sophia%20Chat&style=flat&url=https%3A%2F%2Ftg.sumanjay.workers.dev%2Fsophia_chat
+[discord-news-badge]: https://discordapp.com/api/guilds/1006179075263561779/widget.png?style=shield
+[discord-link]: https://discord.gg/sSryhaEv79
+
+[![Telegram][telegram-news-badge]][telegram-news]
+[![Telegram][telegram-group-badge]][telegram-group]
+[![Discord][discord-news-badge]][discord-link]
 
 [![build](https://img.shields.io/github/actions/workflow/status/farag2/Sophia-Script-for-Windows/Sophia.yml?label=build&logo=GitHub)](https://github.com/farag2/Sophia-Script-for-Windows/actions)
 [![GitHub Release](https://img.shields.io/github/v/release/farag2/Sophia-Script-for-Windows)](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)
