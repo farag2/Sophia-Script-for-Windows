@@ -4879,8 +4879,8 @@ function Cursors
 
 				$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 				$Parameters = @{
-					Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/dark.zip"
-					OutFile         = "$DownloadsFolder\dark.zip"
+					Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/dark_new.zip"
+					OutFile         = "$DownloadsFolder\dark_new.zip"
 					UseBasicParsing = $true
 					Verbose         = $true
 				}
@@ -4892,7 +4892,7 @@ function Cursors
 				}
 
 				# Extract archive
-				& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\dark.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Dark Free"
+				& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\dark_new.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Dark Free"
 
 				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursor Dark Free by Jepri Creations" -Force
 				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\appstarting.ani" -Force
@@ -4941,7 +4941,7 @@ function Cursors
 
 				Start-Sleep -Seconds 1
 
-				Remove-Item -Path "$DownloadsFolder\dark.zip" -Force
+				Remove-Item -Path "$DownloadsFolder\dark_new.zip" -Force
 			}
 			catch [System.Net.WebException]
 			{
@@ -4965,8 +4965,8 @@ function Cursors
 
 				$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 				$Parameters = @{
-					Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/light.zip"
-					OutFile         = "$DownloadsFolder\light.zip"
+					Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/light_new.zip"
+					OutFile         = "$DownloadsFolder\light_new.zip"
 					UseBasicParsing = $true
 					Verbose         = $true
 				}
@@ -4978,7 +4978,7 @@ function Cursors
 				}
 
 				# Extract archive
-				& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\light.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Light Free"
+				& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\light_new.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Light Free"
 
 				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursor Light Free by Jepri Creations" -Force
 				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\appstarting.ani" -Force
@@ -5027,7 +5027,7 @@ function Cursors
 
 				Start-Sleep -Seconds 1
 
-				Remove-Item -Path "$DownloadsFolder\light.zip" -Force
+				Remove-Item -Path "$DownloadsFolder\light_new.zip" -Force
 			}
 			catch [System.Net.WebException]
 			{
