@@ -4652,9 +4652,9 @@ function StartRecommendedSection
 		$Show
 	)
 
-	# Windows 11 IoT Enterprise not supported
-	$WINDOWS_LONG = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
-	if (($WINDOWS_LONG -notmatch "Enterprise") -and ($WINDOWS_LONG -notmatch "Education") -or ($WINDOWS_LONG -eq "Windows 11 IoT Enterprise"))
+	# We cannot call [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%") here per this approach does not show a localized edition name
+	# Windows 11 Home not supported
+	if ((Get-ComputerInfo).WindowsProductName -match "Home")
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
@@ -4675,13 +4675,20 @@ function StartRecommendedSection
 			{
 				New-Item -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Force
 			}
+			if (-not (Test-Path -Path HKLM:\SOFTWARE\Microsoft\PolicyManager\current\device\Education))
+			{
+				New-Item -Path HKLM:\SOFTWARE\Microsoft\PolicyManager\current\device\Education -Force
+			}
 			New-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name HideRecommendedSection -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\PolicyManager\current\device\Education -Name IsEducationEnvironment -PropertyType DWord -Value 1 -Force
 
 			Set-Policy -Scope User -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecommendedSection -Type DWORD -Value 1
 		}
 		"Show"
 		{
 			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name HideRecommendedSection -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\PolicyManager\current\device\Education -Name IsEducationEnvironment -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\PolicyManager\current\device\Start -Name HideRecommendedSection -Force -ErrorAction Ignore
 			Set-Policy -Scope User -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecommendedSection -Type CLEAR
 		}
 	}
