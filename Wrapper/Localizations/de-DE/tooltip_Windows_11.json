@@ -566,15 +566,19 @@
   {
     "Region": "UI & Personalization",
     "Function": "UnpinTaskbarShortcuts -Shortcuts",
-    "ToolTip": "Die Verknüpfungen \"Microsoft Edge\", \"Microsoft Store\" oder \"Mail\" von der Taskleiste lösen.",
+    "ToolTip": "Die Verknüpfungen Microsoft Edge, Microsoft Store oder Outlook von der Taskleiste lösen.",
     "Arg": {
       "Zero": {
         "Tag": "Edge",
-        "ToolTip": "Die Verknüpfung \"Microsoft Edge\" von der Taskleiste lösen."
+        "ToolTip": "Die Verknüpfung Microsoft Edge von der Taskleiste lösen."
       },
       "One": {
         "Tag": "Store",
-        "ToolTip": "Die Verknüpfung \"Microsoft Store\" von der Taskleiste lösen."
+        "ToolTip": "Die Verknüpfung Microsoft Store von der Taskleiste lösen."
+      },
+      "Two": {
+        "Tag": "Outlook",
+        "ToolTip": "Die Verknüpfung Outlook von der Taskleiste lösen."
       }
     }
   },

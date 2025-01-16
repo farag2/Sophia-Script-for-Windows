@@ -66,10 +66,6 @@ function InitialActions
 	# https://github.com/PowerShell/PowerShell/issues/2138
 	$Script:ProgressPreference = "SilentlyContinue"
 
-	# Extract strings from %SystemRoot%\System32\shell32.dll using its number
-	# https://github.com/SamuelArnold/StarKill3r/blob/master/Star%20Killer/Star%20Killer/bin/Debug/Scripts/SANS-SEC505-master/scripts/Day1-PowerShell/Expand-IndirectString.ps1
-	# [WinAPI.GetStrings]::GetIndirectString("@%SystemRoot%\System32\schedsvc.dll,-100")
-
 	# https://github.com/PowerShell/PowerShell/issues/21070
 	$Script:CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
 	$Script:CompilerParameters.TempFiles = [System.CodeDom.Compiler.TempFileCollection]::new($env:TEMP, $false)

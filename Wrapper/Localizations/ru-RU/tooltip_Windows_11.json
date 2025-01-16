@@ -566,15 +566,19 @@
   {
     "Region": "UI & Personalization",
     "Function": "UnpinTaskbarShortcuts -Shortcuts",
-    "ToolTip": "Открепить ярлыки \"Microsoft Edge\", \"Microsoft Store\" от панели задач.",
+    "ToolTip": "Открепить ярлыки Microsoft Edge, Microsoft Store и Outlook от панели задач.",
     "Arg": {
       "Zero": {
         "Tag": "Edge",
-        "ToolTip": "Открепить ярлык \"Microsoft Edge\" от панели задач."
+        "ToolTip": "Открепить ярлык Microsoft Edge от панели задач."
       },
       "One": {
         "Tag": "Store",
-        "ToolTip": "Открепить ярлык \"Microsoft Store\" от панели задач."
+        "ToolTip": "Открепить ярлык Microsoft Store от панели задач."
+      },
+      "Two": {
+        "Tag": "Outlook",
+        "ToolTip": "Открепить ярлык Outlook от панели задач."
       }
     }
   },

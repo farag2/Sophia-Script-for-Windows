@@ -65,10 +65,6 @@ function InitialActions
 	# Import PowerShell 5.1 modules
 	Import-Module -Name Microsoft.PowerShell.Management, PackageManagement, Appx, DISM -UseWindowsPowerShell
 
-	# Extract strings from %SystemRoot%\System32\shell32.dll using its number
-	# https://github.com/SamuelArnold/StarKill3r/blob/master/Star%20Killer/Star%20Killer/bin/Debug/Scripts/SANS-SEC505-master/scripts/Day1-PowerShell/Expand-IndirectString.ps1
-	# [WinAPI.GetStrings]::GetIndirectString("@%SystemRoot%\System32\schedsvc.dll,-100")
-
 	# https://github.com/PowerShell/PowerShell/issues/21070
 	$Script:CompilerOptions = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
 	$Script:CompilerOptions.TempFiles = [System.CodeDom.Compiler.TempFileCollection]::new($env:TEMP, $false)
@@ -3612,13 +3608,16 @@ function TaskbarCombine
 	Unpin shortcuts from the taskbar
 
 	.PARAMETER Edge
-	Unpin the "Microsoft Edge" shortcut from the taskbar
+	Unpin Microsoft Edge shortcut from the taskbar
 
 	.PARAMETER Store
-	Unpin the "Microsoft Store" shortcut from the taskbar
+	Unpin Microsoft Store from the taskbar
+
+	.PARAMETER Outlook
+	Unpin Outlook shortcut from the taskbar
 
 	.EXAMPLE
-	UnpinTaskbarShortcuts -Shortcuts Edge, Store
+	UnpinTaskbarShortcuts -Shortcuts Edge, Store, Outlook
 
 	.NOTES
 	Current user
@@ -3629,7 +3628,7 @@ function UnpinTaskbarShortcuts
 	param
 	(
 		[Parameter(Mandatory = $true)]
-		[ValidateSet("Edge", "Store")]
+		[ValidateSet("Edge", "Store", "Outlook")]
 		[string[]]
 		$Shortcuts
 	)
@@ -3659,6 +3658,16 @@ function UnpinTaskbarShortcuts
 					# Extract the localized "Unpin from taskbar" string from shell32.dll
 					((New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items() | Where-Object -FilterScript {
 						$_.Name -eq "Microsoft Store"
+					}).Verbs() | Where-Object -FilterScript {$_.Name -eq $LocalizedString} | ForEach-Object -Process {$_.DoIt()}
+				}
+			}
+			Outlook
+			{
+				if ((New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items() | Where-Object -FilterScript {$_.Name -match "Outlook"})
+				{
+					# Extract the localized "Unpin from taskbar" string from shell32.dll
+					((New-Object -ComObject Shell.Application).NameSpace("shell:::{4234d49b-0245-4df3-b780-3893943456e1}").Items() | Where-Object -FilterScript {
+						$_.Name -match "Outlook"
 					}).Verbs() | Where-Object -FilterScript {$_.Name -eq $LocalizedString} | ForEach-Object -Process {$_.DoIt()}
 				}
 			}

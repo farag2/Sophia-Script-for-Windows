@@ -495,9 +495,9 @@ TaskbarCombine -Always
 # Объединить кнопки панели задач и никогда не скрывать метки
 # TaskbarCombine -Never
 
-# Unpin the "Microsoft Edge", "Microsoft Store" shortcuts from the taskbar
-# Открепить ярлыки "Microsoft Edge", "Microsoft Store" от панели задач
-UnpinTaskbarShortcuts -Shortcuts Edge, Store
+# Unpin Microsoft Edge, Microsoft Store, and Outlook shortcuts from the taskbar
+# Открепить ярлыки Microsoft Edge, Microsoft Store и Outlook от панели задач
+UnpinTaskbarShortcuts -Shortcuts Edge, Store, Outlook
 
 # Enable end task in taskbar by right click
 # Включить завершение задачи на панели задач правой кнопкой мыши

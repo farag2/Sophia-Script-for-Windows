@@ -614,19 +614,19 @@
   {
     "Region": "UI & Personalization",
     "Function": "UnpinTaskbarShortcuts -Shortcuts",
-    "ToolTip": "Unpin the \"Microsoft Edge\", \"Microsoft Store\", or \"Mail\" shortcuts from the taskbar.",
+    "ToolTip": "Unpin Microsoft Edge, Microsoft Store, or Mail shortcuts from the taskbar.",
     "Arg": {
       "Zero": {
         "Tag": "Edge",
-        "ToolTip": "Unpin the \"Microsoft Edge\" shortcut from the taskbar."
+        "ToolTip": "Unpin Microsoft Edge shortcut from the taskbar."
       },
       "One": {
         "Tag": "Store",
-        "ToolTip": "Unpin the \"Microsoft Store\" shortcut from the taskbar."
+        "ToolTip": "Unpin Microsoft Store shortcut from the taskbar."
       },
       "Two": {
         "Tag": "Mail",
-        "ToolTip": "Unpin the \"Mail\" shortcut from the taskbar."
+        "ToolTip": "Unpin Mail shortcut from the taskbar."
       }
     }
   },
