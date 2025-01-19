@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	The TAB completion for functions and their arguments
 
-	Version: 6.8.0
-	Date: 29.12.2024
+	Version: 6.8.1
+	Date: 19.01.2025
 
 	Copyright (c) 2014—2025 farag, Inestic & lowl1f3
 
@@ -49,7 +49,7 @@ function Sophia
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.8.0 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2025"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.8.1 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2025"
 
 Remove-Module -Name Sophia -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
