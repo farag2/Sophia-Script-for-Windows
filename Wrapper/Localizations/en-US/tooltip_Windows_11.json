@@ -1777,6 +1777,20 @@
   },
   {
     "Region": "Context menu",
+    "Function": "EditWithPaintContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Hide the \"Edit with Paint\" item from the media files context menu."
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Show the \"Edit with Paint\" item in the media files context menu (default value)."
+      }
+    }
+  },
+  {
+    "Region": "Context menu",
     "Function": "PrintCMDContext",
     "Arg": {
       "Zero": {

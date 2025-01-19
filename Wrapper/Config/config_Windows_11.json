@@ -2020,6 +2020,22 @@
     "Region": "Context menu",
     "Control": "cmb",
     "Required": "false",
+    "Function": "EditWithPaintContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One"
+  },
+  {
+    "Region": "Context menu",
+    "Control": "cmb",
+    "Required": "false",
     "Function": "PrintCMDContext",
     "Arg": {
       "Zero": {

@@ -1276,6 +1276,14 @@ EditWithPhotosContext -Hide
 # Отобразить пункт "Изменить с помощью приложения "Фотографии"" в контекстном меню (значение по умолчанию)
 # EditWithPhotosContext -Show
 
+# Hide the "Edit with Paint" item from the media files context menu
+# Скрыть пункт "Изменить с помощью приложения "Paint"" из контекстного меню
+EditWithPaintContext -Hide
+
+# Show the "Edit with Paint" item in the media files context menu (default value)
+# Отобразить пункт "Изменить с помощью приложения "Paint"" в контекстном меню (значение по умолчанию)
+# EditWithPaintContext -Show
+
 # Hide the "Print" item from the .bat and .cmd context menu
 # Скрыть пункт "Печать" из контекстного меню .bat и .cmd файлов
 PrintCMDContext -Hide

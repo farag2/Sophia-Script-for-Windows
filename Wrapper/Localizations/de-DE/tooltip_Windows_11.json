@@ -1777,6 +1777,20 @@
   },
   {
     "Region": "Context menu",
+    "Function": "EditWithPaintContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Eintrag \"Mit Paint bearbeiten\" im Kontextmenü ausblenden."
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Eintrag \"Mit Paint bearbeiten\" im Kontextmenü anzeigen (Standardwert)."
+      }
+    }
+  },
+  {
+    "Region": "Context menu",
     "Function": "PrintCMDContext",
     "Arg": {
       "Zero": {

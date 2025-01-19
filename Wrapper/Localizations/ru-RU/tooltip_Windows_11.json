@@ -1777,6 +1777,20 @@
   },
   {
     "Region": "Context menu",
+    "Function": "EditWithPaintContext",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Скрыть пункт \"Изменить с помощью приложения Paint\" из контекстного меню медиа-файлов."
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Отобразить пункт \"Изменить с помощью приложения Paint\" в контекстном меню медиа-файлов (значение по умолчанию)."
+      }
+    }
+  },
+  {
+    "Region": "Context menu",
     "Function": "PrintCMDContext",
     "Arg": {
       "Zero": {
