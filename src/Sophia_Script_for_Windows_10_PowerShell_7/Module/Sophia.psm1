@@ -3,10 +3,10 @@
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
 	.VERSION
-	5.20.1
+	5.20.2
 
 	.DATE
-	19.01.2025
+	26.01.2025
 
 	.AUTHOR
 	farag, Inestic & lowl1f3
@@ -575,19 +575,12 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	# Checking Get-MpPreference cmdlet
 	try
 	{
-		(Get-MpPreference -ErrorAction Stop).EnableControlledFolderAccess
+		$Script:DefenderMpPreferenceBroken = $false
+		(Get-MpPreference -ErrorAction Stop).EnableControlledFolderAccess 
 	}
 	catch [System.Management.Automation.RemoteException]
 	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
-		Write-Information -MessageData "" -InformationAction Continue
-
-		Write-Verbose -Message "https://www.microsoft.com/software-download/windows10" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-		exit
+		$Script:DefenderMpPreferenceBroken = $true
 	}
 
 	# Check Microsoft Defender state
@@ -653,22 +646,25 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		# Defender is enabled
 		$Script:DefenderEnabled = $true
 
-		switch ((Get-MpPreference).EnableControlledFolderAccess)
+		if (-not $Script:DefenderMpPreferenceBroken)
 		{
-			"1"
+			switch ((Get-MpPreference).EnableControlledFolderAccess)
 			{
-				Write-Warning -Message $Localization.ControlledFolderAccessDisabled
+				"1"
+				{
+					Write-Warning -Message $Localization.ControlledFolderAccessDisabled
 
-				# Turn off Controlled folder access to let the script proceed
-				$Script:ControlledFolderAccess = $true
-				Set-MpPreference -EnableControlledFolderAccess Disabled
+					# Turn off Controlled folder access to let the script proceed
+					$Script:ControlledFolderAccess = $true
+					Set-MpPreference -EnableControlledFolderAccess Disabled
 
-				# Open "Ransomware protection" page
-				Start-Process -FilePath windowsdefender://RansomwareProtection
-			}
-			"0"
-			{
-				$Script:ControlledFolderAccess = $false
+					# Open "Ransomware protection" page
+					Start-Process -FilePath windowsdefender://RansomwareProtection
+				}
+				"0"
+				{
+					$Script:ControlledFolderAccess = $false
+				}
 			}
 		}
 	}
@@ -4893,8 +4889,8 @@ function Cursors
 
 				$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 				$Parameters = @{
-					Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/dark_new.zip"
-					OutFile         = "$DownloadsFolder\dark_new.zip"
+					Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/dark.zip"
+					OutFile         = "$DownloadsFolder\dark.zip"
 					UseBasicParsing = $true
 					Verbose         = $true
 				}
@@ -4906,7 +4902,7 @@ function Cursors
 				}
 
 				# Extract archive
-				& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\dark_new.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Dark Free"
+				& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\dark.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Dark Free"
 
 				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursor Dark Free by Jepri Creations" -Force
 				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\appstarting.ani" -Force
@@ -4955,7 +4951,7 @@ function Cursors
 
 				Start-Sleep -Seconds 1
 
-				Remove-Item -Path "$DownloadsFolder\dark_new.zip" -Force
+				Remove-Item -Path "$DownloadsFolder\dark.zip" -Force
 			}
 			catch [System.Net.WebException]
 			{
@@ -4979,8 +4975,8 @@ function Cursors
 
 				$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 				$Parameters = @{
-					Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/light_new.zip"
-					OutFile         = "$DownloadsFolder\light_new.zip"
+					Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/light.zip"
+					OutFile         = "$DownloadsFolder\light.zip"
 					UseBasicParsing = $true
 					Verbose         = $true
 				}
@@ -4992,7 +4988,7 @@ function Cursors
 				}
 
 				# Extract archive
-				& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\light_new.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Light Free"
+				& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\light.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Light Free"
 
 				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursor Light Free by Jepri Creations" -Force
 				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\appstarting.ani" -Force
@@ -5041,7 +5037,7 @@ function Cursors
 
 				Start-Sleep -Seconds 1
 
-				Remove-Item -Path "$DownloadsFolder\light_new.zip" -Force
+				Remove-Item -Path "$DownloadsFolder\light.zip" -Force
 			}
 			catch [System.Net.WebException]
 			{
@@ -13309,7 +13305,7 @@ function NetworkProtection
 		$Disable
 	)
 
-	if (-not $Script:DefenderEnabled)
+	if ((-not $Script:DefenderEnabled) -or $Script:DefenderMpPreferenceBroken)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
@@ -13369,7 +13365,7 @@ function PUAppsDetection
 		$Disable
 	)
 
-	if (-not $Script:DefenderEnabled)
+	if ((-not $Script:DefenderEnabled) -or $Script:DefenderMpPreferenceBroken)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
@@ -15238,7 +15234,7 @@ public static void PostMessage()
 
 	#region Other actions
 	# Turn on Controlled folder access if it was turned off
-	if ($Script:DefenderEnabled)
+	if ($Script:DefenderEnabled -and (-not $Script:DefenderMpPreferenceBroken))
 	{
 		if ($Script:ControlledFolderAccess)
 		{
@@ -15339,82 +15335,20 @@ public static void PostMessage()
 	# Determines whether the app can be seen in Settings where the user can turn notifications on or off
 	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Name ShowInSettings -Value 0 -PropertyType DWord -Force
 
-	Add-Type -AssemblyName "$PSScriptRoot\..\Binaries\WinRT.Runtime.dll"
-	Add-Type -AssemblyName "$PSScriptRoot\..\Binaries\Microsoft.Windows.SDK.NET.dll"
+	# Call toast notification
+	[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
+	[Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
 
-	# Telegram group
-	# Extract the localized "Open" string from shell32.dll
 	[xml]$ToastTemplate = @"
 <toast duration="Long" scenario="reminder">
 	<visual>
 		<binding template="ToastGeneric">
-			<text>$($Localization.TelegramGroupTitle)</text>
-			<group>
-				<subgroup>
-					<text hint-style="body" hint-wrap="true">https://t.me/sophia_chat</text>
-				</subgroup>
-			</group>
+			<text>$($Localization.ThankfulToastTitle)</text>
 		</binding>
 	</visual>
 	<audio src="ms-winsoundevent:notification.default" />
 	<actions>
-		<action arguments="https://t.me/sophia_chat" content="$([WinAPI.GetStrings]::GetString(12850))" activationType="protocol"/>
-		<action arguments="dismiss" content="" activationType="system"/>
-	</actions>
-</toast>
-"@
-
-	$ToastXml = [Windows.Data.Xml.Dom.XmlDocument]::New()
-	$ToastXml.LoadXml($ToastTemplate.OuterXml)
-
-	$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New($ToastXML)
-	[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("Sophia").Show($ToastMessage)
-
-	# Telegram channel
-	# Extract the localized "Open" string from shell32.dll
-	[xml]$ToastTemplate = @"
-<toast duration="Long" scenario="reminder">
-	<visual>
-		<binding template="ToastGeneric">
-			<text>$($Localization.TelegramChannelTitle)</text>
-			<group>
-				<subgroup>
-					<text hint-style="body" hint-wrap="true">https://t.me/sophianews</text>
-				</subgroup>
-			</group>
-		</binding>
-	</visual>
-	<audio src="ms-winsoundevent:notification.default" />
-	<actions>
-		<action arguments="https://t.me/sophianews" content="$([WinAPI.GetStrings]::GetString(12850))" activationType="protocol"/>
-		<action arguments="dismiss" content="" activationType="system"/>
-	</actions>
-</toast>
-"@
-
-	$ToastXml = [Windows.Data.Xml.Dom.XmlDocument]::New()
-	$ToastXml.LoadXml($ToastTemplate.OuterXml)
-
-	$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New($ToastXML)
-	[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("Sophia").Show($ToastMessage)
-
-	# Discord group
-	# Extract the localized "Open" string from shell32.dll
-	[xml]$ToastTemplate = @"
-<toast duration="Long" scenario="reminder">
-	<visual>
-		<binding template="ToastGeneric">
-			<text>$($Localization.DiscordChannelTitle)</text>
-			<group>
-				<subgroup>
-					<text hint-style="body" hint-wrap="true">https://discord.gg/sSryhaEv79</text>
-				</subgroup>
-			</group>
-		</binding>
-	</visual>
-	<audio src="ms-winsoundevent:notification.default" />
-	<actions>
-		<action arguments="https://discord.gg/sSryhaEv79" content="$([WinAPI.GetStrings]::GetString(12850))" activationType="protocol"/>
+		<action arguments="https://ko-fi.com/Q5Q51QUJC" content="$($Localization.DonateToastButton)" activationType="protocol"/>
 		<action arguments="dismiss" content="" activationType="system"/>
 	</actions>
 </toast>
@@ -15426,6 +15360,12 @@ public static void PostMessage()
 	$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New($ToastXML)
 	[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("Sophia").Show($ToastMessage)
 	#endregion Toast notifications
+
+	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+	Write-Verbose -Message "https://t.me/sophianews" -Verbose
+	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+	Write-Verbose -Message "https://ko-fi.com/Q5Q51QUJC" -Verbose
+
 }
 #endregion Post Actions
 

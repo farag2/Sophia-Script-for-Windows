@@ -3,10 +3,10 @@
 	Default preset file for "Sophia Script for Windows 10 LTSC 2019"
 
 	.VERSION
-	5.10.1
+	5.10.2
 
 	.DATE
-	19.01.2025
+	26.01.2025
 
 	.COPYRIGHT
 	(c) 2014—2025 farag, Inestic & lowl1f3
@@ -75,7 +75,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC 2019 v5.10.1 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2025"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC 2019 v5.10.2 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2025"
 
 # Checking whether all files were expanded before running
 $ScriptFiles = @(
@@ -130,6 +130,9 @@ catch [System.InvalidOperationException]
 
 	exit
 }
+
+# Set console font to Consolas when script is called only from the Wrapper due to it is not loaded by default
+& "$PSScriptRoot\Private\Set-ConsoleFont.ps1"
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Preset configuration starts here
