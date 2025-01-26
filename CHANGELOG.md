@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.20.2 | 6.8.2 — 26.01.2025
+
+* Closed #605 as fixed;
+* Due to Wrapper fails to load Consolas font, I added a new `Private\Set-ConsoleFont.ps1` script to make it forcibly do that, unless a Sophia Script logo in console is distored;
+* Minor changes.
+
+## Wrapper 2.7.9
+
+* Fixed Bugs: Fix order of functions in System Region.
+
 ## 5.20.1 | 6.8.1 — 19.01.2025
 
 * Added a tutorial video how to run the specific function(s) via `Functions.ps1` script;
