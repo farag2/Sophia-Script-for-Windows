@@ -15242,21 +15242,6 @@ public static void PostMessage()
 		}
 	}
 
-	# Apply policies found in registry to re-build database database because gpedit.msc relies in its own database
-	if ((Test-Path -Path "$env:TEMP\Computer.txt") -or (Test-Path -Path "$env:TEMP\User.txt"))
-	{
-		if (Test-Path -Path "$env:TEMP\Computer.txt")
-		{
-			& "$PSScriptRoot\..\Binaries\LGPO.exe" /t "$env:TEMP\Computer.txt"
-		}
-		if (Test-Path -Path "$env:TEMP\User.txt")
-		{
-			& "$PSScriptRoot\..\Binaries\LGPO.exe" /t "$env:TEMP\User.txt"
-		}
-
-		gpupdate /force
-	}
-
 	# Call MeetNow unless binary value is reverted
 	if (-not $Script:MeetNow)
 	{
@@ -15266,10 +15251,6 @@ public static void PostMessage()
 	{
 		MeetNow -Show
 	}
-
-	# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-	# https://github.com/PowerShell/PowerShell/issues/21070
-	Get-ChildItem -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
 
 	# Kill all explorer instances in case "launch folder windows in a separate process" enabled
 	Get-Process -Name explorer | Stop-Process -Force
@@ -15366,6 +15347,24 @@ public static void PostMessage()
 	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 	Write-Verbose -Message "https://ko-fi.com/Q5Q51QUJC" -Verbose
 
+	# Apply policies found in registry to re-build database database because gpedit.msc relies in its own database
+	if ((Test-Path -Path "$env:TEMP\Computer.txt") -or (Test-Path -Path "$env:TEMP\User.txt"))
+	{
+		if (Test-Path -Path "$env:TEMP\Computer.txt")
+		{
+			& "$PSScriptRoot\..\Binaries\LGPO.exe" /t "$env:TEMP\Computer.txt"
+		}
+		if (Test-Path -Path "$env:TEMP\User.txt")
+		{
+			& "$PSScriptRoot\..\Binaries\LGPO.exe" /t "$env:TEMP\User.txt"
+		}
+
+		gpupdate /force
+	}
+
+	# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+	# https://github.com/PowerShell/PowerShell/issues/21070
+	Get-ChildItem -Path "$env:TEMP\Computer.txt", "$env:TEMP\User.txt" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
 }
 #endregion Post Actions
 
