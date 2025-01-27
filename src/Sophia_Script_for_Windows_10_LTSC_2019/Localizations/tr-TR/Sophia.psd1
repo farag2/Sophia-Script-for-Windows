@@ -56,6 +56,6 @@ Restore                                   = Onar
 Run                                       = Başlat
 Skipped                                   = "{0}" işlevi atlandı.
 GPOUpdate                                 = GPO Güncelleniyor...
-ThankfulToastTitle                        = Sophia Script'i kullandığınız için teşekkür ederiz
-DonateToastButton                         = Bağış yapmak
+ThankfulToastTitle                        = Sophia Script kullandığınız için teşekkür ederiz ❤️
+DonateToastTitle                          = Bu projeyi beğendiyseniz lütfen bağışta bulunun 🕊️
 '@

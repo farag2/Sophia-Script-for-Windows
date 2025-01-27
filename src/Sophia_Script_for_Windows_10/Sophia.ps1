@@ -133,9 +133,6 @@ catch [System.InvalidOperationException]
 	exit
 }
 
-# Set console font to Consolas when script is called only from the Wrapper due to it is not loaded by default
-& "$PSScriptRoot\Private\Set-ConsoleFont.ps1"
-
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Preset configuration starts here
 # Отсюда начинается настройка пресета

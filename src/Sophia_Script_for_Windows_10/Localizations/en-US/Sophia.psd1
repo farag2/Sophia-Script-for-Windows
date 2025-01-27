@@ -65,6 +65,6 @@ Restore                                   = Restore
 Run                                       = Run
 Skipped                                   = Function "{0}" skipped.
 GPOUpdate                                 = Updating GPO...
-ThankfulToastTitle                        = Thank you for using Sophia Script
-DonateToastButton                         = Donate
+ThankfulToastTitle                        = Thank you for using Sophia Script ❤️
+DonateToastTitle                          = Please donate, if you like this project 🕊️
 '@

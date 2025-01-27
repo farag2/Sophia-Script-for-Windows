@@ -62,6 +62,6 @@ Restore                                   = 恢复
 Run                                       = 运行
 Skipped                                   = 跳过函数"{0}"。
 GPOUpdate                                 = GPO更新.....
-ThankfulToastTitle                        = 感謝您使用Sophia Script
-DonateToastButton                         = 捐
+ThankfulToastTitle                        = 感謝您使用Sophia Script ❤️
+DonateToastTitle                          = 如果您喜歡這個專案，請捐款 🕊️
 '@

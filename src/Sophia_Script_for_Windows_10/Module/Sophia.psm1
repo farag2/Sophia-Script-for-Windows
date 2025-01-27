@@ -1254,20 +1254,20 @@ function DiagTrackService
 		{
 			# Connected User Experiences and Telemetry
 			# Disabling the "Connected User Experiences and Telemetry" service (DiagTrack) can cause you not being able to get Xbox achievements anymore and affects Feedback Hub
-			Get-Service -Name DiagTrack | Stop-Service -Force
-			Get-Service -Name DiagTrack | Set-Service -StartupType Disabled
+			Get-Service -Name DiagTrack -ErrorAction Ignore | Stop-Service -Force
+			Get-Service -Name DiagTrack -ErrorAction Ignore | Set-Service -StartupType Disabled
 
 			# Block connection for the Unified Telemetry Client Outbound Traffic
-			Get-NetFirewallRule -Group DiagTrack | Set-NetFirewallRule -Enabled True -Action Block
+			Get-NetFirewallRule -Group DiagTrack -ErrorAction Ignore | Set-NetFirewallRule -Enabled True -Action Block
 		}
 		"Enable"
 		{
 			# Connected User Experiences and Telemetry
-			Get-Service -Name DiagTrack | Set-Service -StartupType Automatic
-			Get-Service -Name DiagTrack | Start-Service
+			Get-Service -Name DiagTrack -ErrorAction Ignore | Set-Service -StartupType Automatic
+			Get-Service -Name DiagTrack -ErrorAction Ignore | Start-Service
 
 			# Allow connection for the Unified Telemetry Client Outbound Traffic
-			Get-NetFirewallRule -Group DiagTrack | Set-NetFirewallRule -Enabled True -Action Allow
+			Get-NetFirewallRule -Group DiagTrack -ErrorAction Ignore | Set-NetFirewallRule -Enabled True -Action Allow
 		}
 	}
 }
@@ -1324,8 +1324,8 @@ function DiagnosticDataLevel
 	{
 		"Minimal"
 		{
-			$WINDOWS_LONG = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
-			if (($WINDOWS_LONG -match "Enterprise") -or ($WINDOWS_LONG -match "Education"))
+			$EditionID = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion").EditionID
+			if (($EditionID -match "Enterprise") -or ($EditionID -match "Education"))
 			{
 				# Security level
 				New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 0 -Force
@@ -4916,7 +4916,7 @@ function Cursors
 					"%SystemRoot%\Cursors\W11 Cursor Dark Free\appstarting.ani",
 					"%SystemRoot%\Cursors\W11 Cursor Dark Free\wait.ani",
 					"%SystemRoot%\Cursors\W11 Cursor Dark Free\crosshair.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Dark Free\sizens.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Dark Free\ibeam.cur",
 					"%SystemRoot%\Cursors\W11 Cursor Dark Free\nwpen.cur",
 					"%SystemRoot%\Cursors\W11 Cursor Dark Free\no.cur",
 					"%SystemRoot%\Cursors\W11 Cursor Dark Free\sizens.cur",
@@ -5002,7 +5002,7 @@ function Cursors
 					"%SystemRoot%\Cursors\W11 Cursor Light Free\appstarting.ani",
 					"%SystemRoot%\Cursors\W11 Cursor Light Free\wait.ani",,
 					"%SystemRoot%\Cursors\W11 Cursor Light Free\crosshair.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Light Free\sizens.cur",
+					"%SystemRoot%\Cursors\W11 Cursor Light Free\ibeam.cur",
 					"%SystemRoot%\Cursors\W11 Cursor Light Free\nwpen.cur",
 					"%SystemRoot%\Cursors\W11 Cursor Light Free\no.cur",
 					"%SystemRoot%\Cursors\W11 Cursor Light Free\sizens.cur",
@@ -10007,29 +10007,29 @@ function Install-VCRedist
 			UseBasicParsing = $true
 			Verbose         = $true
 		}
-		$vcredistVersion = (Invoke-RestMethod @Parameters).version
+		$LatestVCRedistVersion = (Invoke-RestMethod @Parameters).version
 	}
 	catch [System.Net.WebException]
 	{
-		$vcredistVersion = "0.0"
+		$LatestVCRedistVersion = "0.0"
 	}
 
 	# Checking whether VC_redist builds installed
 	if (Test-Path -Path "$env:ProgramData\Package Cache\{e7802eac-3305-4da0-9378-e55d1ed05518}\VC_redist.x86.exe")
 	{
-		$msvcpx86Version = (Get-Item -Path "$env:ProgramData\Package Cache\{e7802eac-3305-4da0-9378-e55d1ed05518}\VC_redist.x86.exe").VersionInfo.FileVersion
+		$VCredistx86Version = (Get-Item -Path "$env:ProgramData\Package Cache\{e7802eac-3305-4da0-9378-e55d1ed05518}\VC_redist.x86.exe").VersionInfo.FileVersion
 	}
 	else
 	{
-		$msvcpx86Version = "0.0"
+		$VCredistx86Version = "0.0"
 	}
 	if (Test-Path -Path "$env:ProgramData\Package Cache\{804e7d66-ccc2-4c12-84ba-476da31d103d}\VC_redist.x64.exe")
 	{
-		$msvcpx64Version = (Get-Item -Path "$env:ProgramData\Package Cache\{804e7d66-ccc2-4c12-84ba-476da31d103d}\VC_redist.x64.exe").VersionInfo.FileVersion
+		$VCredistx64Version = (Get-Item -Path "$env:ProgramData\Package Cache\{804e7d66-ccc2-4c12-84ba-476da31d103d}\VC_redist.x64.exe").VersionInfo.FileVersion
 	}
 	else
 	{
-		$msvcpx64Version = "0.0"
+		$VCredistx64Version = "0.0"
 	}
 
 	$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
@@ -10041,7 +10041,7 @@ function Install-VCRedist
 			2015_2022_x86
 			{
 				# Proceed if currently installed build is lower than available from Microsoft or json file is unreachable, or redistributable is not installed
-				if (([System.Version]$vcredistVersion -gt [System.Version]$msvcpx86Version) -or (($vcredistVersion -eq "0.0") -or ($msvcpx86Version -eq "0.0")))
+				if (([System.Version]$LatestVCRedistVersion -gt [System.Version]$VCredistx86Version) -or (($LatestVCRedistVersion -eq "0.0") -or ($VCredistx86Version -eq "0.0")))
 				{
 					try
 					{
@@ -10086,7 +10086,7 @@ function Install-VCRedist
 			2015_2022_x64
 			{
 				# Proceed if currently installed build is lower than available from Microsoft or json file is unreachable, or redistributable is not installed
-				if (([System.Version]$vcredistVersion -gt [System.Version]$msvcpx64Version) -or (($vcredistVersion -eq "0.0") -or ($msvcpx64Version -eq "0.0")))
+				if (([System.Version]$LatestVCRedistVersion -gt [System.Version]$VCredistx64Version) -or (($LatestVCRedistVersion -eq "0.0") -or ($VCredistx64Version -eq "0.0")))
 				{
 					try
 					{
@@ -10182,7 +10182,7 @@ function Install-DotNetRuntimes
 						Verbose         = $true
 						UseBasicParsing = $true
 					}
-					$NET8Version = (Invoke-RestMethod @Parameters)."latest-release"
+					$LatestNET8Version = (Invoke-RestMethod @Parameters)."latest-release"
 				}
 				catch [System.Net.WebException]
 				{
@@ -10194,26 +10194,26 @@ function Install-DotNetRuntimes
 				}
 
 				# Checking whether .NET 8 installed
-				if (Test-Path -Path "$env:ProgramData\Package Cache\{e883dae5-a63d-4a45-afb9-257f64d5a59b}\dotnet-runtime-*-win-x64.exe")
+				if (Test-Path -Path "$env:ProgramData\Package Cache\*\dotnet-runtime-$LatestNET8Version-win-x64.exe")
 				{
-					# FileVersion has four properties while $NET8Version has only three, unless the [System.Version] accelerator fails
-					$dotnet8Version = (Get-Item -Path "$env:ProgramData\Package Cache\{e883dae5-a63d-4a45-afb9-257f64d5a59b}\dotnet-runtime-*-win-x64.exe").VersionInfo.FileVersion
-					$dotnet8Version = "{0}.{1}.{2}" -f $dotnet8Version.Split(".")
+					# FileVersion has four properties while $LatestNET8Version has only three, unless the [System.Version] accelerator fails
+					$CurrentNET8Version = (Get-Item -Path "$env:ProgramData\Package Cache\*\dotnet-runtime-$LatestNET8Version-win-x64.exe").VersionInfo.FileVersion
+					$CurrentNET8Version = "{0}.{1}.{2}" -f $CurrentNET8Version.Split(".")
 				}
 				else
 				{
-					$dotnet8Version = "0.0"
+					$CurrentNET8Version = "0.0"
 				}
 
 				# Proceed if currently installed build is lower than available from Microsoft or json file is unreachable, or .NET 8 is not installed at all
-				if (([System.Version]$NET8Version -gt [System.Version]$dotnet8Version) -or ($dotnet8Version -eq "0.0"))
+				if (([System.Version]$LatestNET8Version -gt [System.Version]$CurrentNET8Version) -or ($CurrentNET8Version -eq "0.0"))
 				{
 					try
 					{
 						# .NET Desktop Runtime 8 x64
 						$Parameters = @{
-							Uri             = "https://builds.dotnet.microsoft.com/dotnet/Runtime/$NET8Version/dotnet-runtime-$NET8Version-win-x64.exe"
-							OutFile         = "$DownloadsFolder\dotnet-runtime-$NET8Version-win-x64.exe"
+							Uri             = "https://builds.dotnet.microsoft.com/dotnet/Runtime/$LatestNET8Version/dotnet-runtime-$LatestNET8Version-win-x64.exe"
+							OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestNET8Version-win-x64.exe"
 							UseBasicParsing = $true
 							Verbose         = $true
 						}
@@ -10229,15 +10229,15 @@ function Install-DotNetRuntimes
 					}
 
 					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message ".NET $NET8Version" -Verbose
+					Write-Verbose -Message ".NET $LatestNET8Version" -Verbose
 					Write-Information -MessageData "" -InformationAction Continue
 
-					Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$NET8Version-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
+					Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestNET8Version-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
 
 					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 					# https://github.com/PowerShell/PowerShell/issues/21070
 					$Paths = @(
-						"$DownloadsFolder\dotnet-runtime-$NET8Version-win-x64.exe",
+						"$DownloadsFolder\dotnet-runtime-$LatestNET8Version-win-x64.exe",
 						"$env:TEMP\Microsoft_.NET_Runtime*.log"
 					)
 					Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
@@ -10260,7 +10260,7 @@ function Install-DotNetRuntimes
 						Verbose         = $true
 						UseBasicParsing = $true
 					}
-					$NET9Version = (Invoke-RestMethod @Parameters)."latest-release"
+					$LatestNET9Version = (Invoke-RestMethod @Parameters)."latest-release"
 				}
 				catch [System.Net.WebException]
 				{
@@ -10272,26 +10272,26 @@ function Install-DotNetRuntimes
 				}
 
 				# Checking whether .NET 9 installed
-				if (Test-Path -Path "$env:ProgramData\Package Cache\{72922c3b-f4df-4f93-9e3b-5b9c8a5ffb42}\dotnet-runtime-*-win-x64.exe")
+				if (Test-Path -Path "$env:ProgramData\Package Cache\*\dotnet-runtime-$LatestNET9Version-win-x64.exe")
 				{
-					# FileVersion has four properties while $NET9Version has only three, unless the [System.Version] accelerator fails
-					$dotnet9Version = (Get-Item -Path "$env:ProgramData\Package Cache\{72922c3b-f4df-4f93-9e3b-5b9c8a5ffb42}\dotnet-runtime-*-win-x64.exe").VersionInfo.FileVersion
-					$dotnet9Version = "{0}.{1}.{2}" -f $dotnet9Version.Split(".")
+					# FileVersion has four properties while $LatestNET9Version has only three, unless the [System.Version] accelerator fails
+					$CurrentNET9Version = (Get-Item -Path "$env:ProgramData\Package Cache\*\dotnet-runtime-$LatestNET9Version-win-x64.exe").VersionInfo.FileVersion
+					$CurrentNET9Version = "{0}.{1}.{2}" -f $CurrentNET9Version.Split(".")
 				}
 				else
 				{
-					$dotnet9Version = "0.0"
+					$CurrentNET9Version = "0.0"
 				}
 
 				# Proceed if currently installed build is lower than available from Microsoft or json file is unreachable, or .NET 9 is not installed at all
-				if (([System.Version]$NET9Version -gt [System.Version]$dotnet9Version) -or ($dotnet9Version -eq "0.0"))
+				if (([System.Version]$LatestNET9Version -gt [System.Version]$CurrentNET9Version) -or ($CurrentNET9Version -eq "0.0"))
 				{
 					try
 					{
 						# Downloading .NET Desktop Runtime 9 x64
 						$Parameters = @{
-							Uri             = "https://builds.dotnet.microsoft.com/dotnet/Runtime/$NET9Version/dotnet-runtime-$NET9Version-win-x64.exe"
-							OutFile         = "$DownloadsFolder\dotnet-runtime-$NET9Version-win-x64.exe"
+							Uri             = "https://builds.dotnet.microsoft.com/dotnet/Runtime/$LatestNET9Version/dotnet-runtime-$LatestNET9Version-win-x64.exe"
+							OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestNET9Version-win-x64.exe"
 							UseBasicParsing = $true
 							Verbose         = $true
 						}
@@ -10307,15 +10307,15 @@ function Install-DotNetRuntimes
 					}
 
 					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message ".NET $NET9Version" -Verbose
+					Write-Verbose -Message ".NET $LatestNET9Version" -Verbose
 					Write-Information -MessageData "" -InformationAction Continue
 
-					Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$NET9Version-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
+					Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestNET9Version-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
 
 					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 					# https://github.com/PowerShell/PowerShell/issues/21070
 					$Paths = @(
-						"$DownloadsFolder\dotnet-runtime-$NET9Version-win-x64.exe",
+						"$DownloadsFolder\dotnet-runtime-$LatestNET9Version-win-x64.exe",
 						"$env:TEMP\Microsoft_.NET_Runtime*.log"
 					)
 					Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
@@ -13889,8 +13889,8 @@ function WindowsSandbox
 		$Enable
 	)
 
-	$WINDOWS_LONG = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
-	if (($WINDOWS_LONG -notmatch "Pro") -and ($WINDOWS_LONG -notmatch "Enterprise") -and ($WINDOWS_LONG -notmatch "Education"))
+	$EditionID = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion").EditionID
+	if (($EditionID -notmatch "Professional") -and ($EditionID -notmatch "Enterprise") -and ($EditionID -notmatch "Education"))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
@@ -15295,12 +15295,13 @@ public static void PostMessage()
 	<visual>
 		<binding template="ToastGeneric">
 			<text>$($Localization.ThankfulToastTitle)</text>
+			<text>$($Localization.DonateToastTitle)</text>
 		</binding>
 	</visual>
 	<audio src="ms-winsoundevent:notification.default" />
 	<actions>
-		<action arguments="https://ko-fi.com/Q5Q51QUJC" content="$($Localization.DonateToastButton)" activationType="protocol"/>
-		<action arguments="dismiss" content="" activationType="system"/>
+		<action content="Ko-fi" arguments="https://ko-fi.com/Q5Q51QUJC" activationType="protocol"/>
+		<action content="Boosty" arguments="https://boosty.to/sophiascript" activationType="protocol"/>
 	</actions>
 </toast>
 "@
@@ -15333,8 +15334,10 @@ public static void PostMessage()
 
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 	Write-Verbose -Message "https://t.me/sophianews" -Verbose
+	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 	Write-Verbose -Message "https://ko-fi.com/Q5Q51QUJC" -Verbose
+	Write-Verbose -Message "https://boosty.to/sophiascript" -Verbose
 }
 #endregion Post Actions
 

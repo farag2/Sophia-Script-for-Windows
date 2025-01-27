@@ -58,6 +58,6 @@ Restore                                   = Wiederherstellen
 Run                                       = Starten
 Skipped                                   = Funktion "{0}" übersprungen.
 GPOUpdate                                 = GPO-Aktualisierung...
-ThankfulToastTitle                        = Vielen Dank für die Verwendung von Sophia Script
-DonateToastButton                         = Spenden
+ThankfulToastTitle                        = Vielen Dank, dass Sie Sophia Script verwenden ❤️
+DonateToastTitle                          = Bitte spenden Sie, wenn Sie dieses Projekt mögen 🕊
 '@
