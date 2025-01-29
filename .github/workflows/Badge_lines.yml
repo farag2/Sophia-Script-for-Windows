@@ -1,4 +1,4 @@
-name: Badge
+name: Badge Lines
 
 on:
   push:
@@ -12,7 +12,7 @@ on:
 
 jobs:
   update-badges:
-    name: Update Badges
+    name: Update Badge Lines
     runs-on: windows-latest
     steps:
       - name: Checkout Repository

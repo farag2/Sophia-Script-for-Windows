@@ -1,0 +1,64 @@
+name: Badge Downloads
+
+on:
+  workflow_dispatch:
+  schedule:
+    # https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#schedule
+    # At 7 am UTC every day
+    - cron: "0 7 * * *"
+
+jobs:
+  update-badges:
+    name: Update Badges
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@main
+
+      - name: Get the Numbers
+        run: |
+          # Count downloads for the first page of the repo
+          # By default, GitHub parses only first page
+          $Token = "${{ secrets.GITHUB_TOKEN }}"
+          $Headers = @{
+              Accept        = "application/json"
+              Authorization = "Bearer $Token"
+          }
+          $Parameters = @{
+              Uri     = "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases?per_page=100&page=1"
+              Headers = $Headers
+              Verbose = $true
+          }
+          $page1 = ((Invoke-RestMethod @Parameters).assets.download_count | Measure-Object -Sum).Sum
+
+          # Count downloads for the second page of the repo
+          $Token = "${{ secrets.GITHUB_TOKEN }}"
+          $Headers = @{
+              Accept        = "application/json"
+              Authorization = "Bearer $Token"
+              Verbose = $true
+          }
+          $Parameters = @{
+              Uri     = "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases?per_page=100&page=2"
+              Headers = $Headers
+              Verbose = $true
+          }
+          $page2 = ((Invoke-RestMethod @Parameters).assets.download_count | Measure-Object -Sum).Sum
+
+          $Summary = $page1 + $page2
+          $Summary = "{0:N1}k" -f ($Summary/1000)
+
+          Write-Verbose -Message $Summary -Verbose
+
+          echo "DOWNLOADS_COUNT=$Summary" >> $env:GITHUB_ENV
+
+      - name: Writing to Gist
+        uses: schneegans/dynamic-badges-action@master
+        with:
+          auth: ${{ secrets.GIST_SOPHIASCRIPT_DOWNLOADS_COUNT }}
+          gistID: 25ddc72387f298503b752ad5b8d16eed
+          filename: SophiaScriptDownloadsCount.json 
+          label: downloads (since May 2020)
+          message: ${{ env.DOWNLOADS_COUNT }}
+          namedLogo: PowerShell
+          color: brightgreen
