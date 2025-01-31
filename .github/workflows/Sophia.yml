@@ -57,7 +57,7 @@ jobs:
           # Get a penultimate build tag
           $Token = "${{ secrets.GITHUB_TOKEN }}"
           $Headers = @{
-              Accept        = "application/json"
+              Accept        = "application/vnd.github+json"
               Authorization = "Bearer $Token"
           }
           $Parameters = @{
