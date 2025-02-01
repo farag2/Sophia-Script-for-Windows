@@ -6720,7 +6720,8 @@ function NetworkAdaptersSavePower
 	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 	# Checking whether there's an adapter that has AllowComputerToTurnOffDevice property to manage
-	$Adapters = Get-NetAdapter -Physical | Where-Object -FilterScript {$_.MacAddress} | Get-NetAdapterPowerManagement | Where-Object -FilterScript {$_.AllowComputerToTurnOffDevice -ne "Unsupported"}
+	# We need also check for adapter status per some laptops have many equal adapters records in adapters list
+	$Adapters = Get-NetAdapter -Physical | Where-Object -FilterScript {$_.MacAddress -and ($_.Status -eq "Up")} | Get-NetAdapterPowerManagement | Where-Object -FilterScript {$_.AllowComputerToTurnOffDevice -ne "Unsupported"}
 	if (-not $Adapters)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
@@ -15338,6 +15339,7 @@ public static void PostMessage()
 	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 	Write-Verbose -Message "https://ko-fi.com/Q5Q51QUJC" -Verbose
 	Write-Verbose -Message "https://boosty.to/sophiascript" -Verbose
+	Write-Information -MessageData "" -InformationAction Continue
 }
 #endregion Post Actions
 
