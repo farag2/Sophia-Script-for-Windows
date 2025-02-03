@@ -1,8 +1,8 @@
 [![actions](https://img.shields.io/badge/Sophia%20News-Telegram-blue?style=flat&logo=Telegram)](https://t.me/SophiaNews) [![actions](https://img.shields.io/badge/Sophia%20Chat-Telegram-blue?style=flat&logo=Telegram)](https://t.me/Sophia_Chat) [![Discord](https://discordapp.com/api/guilds/1006179075263561779/widget.png?style=shield)](https://discord.gg/sSryhaEv79)
 
-# [Donate](https://ko-fi.com/Q5Q51QUJC) | [How to](https://github.com/farag2/Sophia-Script-for-Windows/tree/master?tab=readme-ov-file#table-of-contents)
+# [How to](https://github.com/farag2/Sophia-Script-for-Windows/tree/master?tab=readme-ov-file#table-of-contents)
 
-## Windows 10 Enterprise LTSC 2019 | Windows 10 Enterprise LTSC 2021 | Windows 10 22H2 | Windows 11 23H2+ | Windows 11 Enterprise LTSC 2024
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/farag)⠀⠀⠀<a href="https://boosty.to/teamsophia"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/boosty.png" width='40'></a>
 
 Diff from vOldVersion
 [OldVersion...NewVersion](https://github.com/farag2/Sophia-Script-for-Windows/compare/OldVersion...NewVersion)
