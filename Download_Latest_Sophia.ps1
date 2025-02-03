@@ -143,7 +143,8 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 if (Test-Path -Path "$DownloadsFolder\SophiaScriptTemp")
 {
 	Write-Verbose -Message "Please remove `"$DownloadsFolder\SophiaScriptTemp`" manually and try to use script again." -Verbose
-
+	Remove-Item -Path "$DownloadsFolder\master.zip" -Force
+ 
 	pause
 	exit
 }
@@ -151,6 +152,7 @@ if (Test-Path -Path "$DownloadsFolder\SophiaScriptTemp")
 if (Test-Path -Path "$DownloadsFolder\$($Version)_Latest")
 {
 	Write-Verbose -Message "Please remove `"$DownloadsFolder\$($Version)_Latest`" manually and try to use script again." -Verbose
+	Remove-Item -Path "$DownloadsFolder\master.zip" -Force
 
 	pause
 	exit
