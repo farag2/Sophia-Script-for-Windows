@@ -163,7 +163,7 @@ Oder verwenden Sie ein Format im alten Stil ohne die <kbd>TAB</kbd>-Funktionen z
 
 ## Spenden
 
-[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/farag)
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/farag)⠀⠀⠀<a href="https://boosty.to/teamsophia"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/boosty.png" width='40'></a>
 
 ## System-Voraussetzungen
 

@@ -15332,7 +15332,7 @@ public static void PostMessage()
 	<audio src="ms-winsoundevent:notification.default" />
 	<actions>
 		<action content="Ko-fi" arguments="https://ko-fi.com/Q5Q51QUJC" activationType="protocol"/>
-		<action content="Boosty" arguments="https://boosty.to/sophiascript" activationType="protocol"/>
+		<action content="Boosty" arguments="https://boosty.to/teamsophia" activationType="protocol"/>
 	</actions>
 </toast>
 "@
@@ -15365,10 +15365,10 @@ public static void PostMessage()
 
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 	Write-Verbose -Message "https://t.me/sophianews" -Verbose
-	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message "https://ko-fi.com/Q5Q51QUJC" -Verbose
-	Write-Verbose -Message "https://boosty.to/sophiascript" -Verbose
+	Write-Verbose -Message "https://boosty.to/teamsophia" -Verbose
 	Write-Information -MessageData "" -InformationAction Continue
 }
 #endregion Post Actions
