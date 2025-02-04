@@ -9,7 +9,7 @@
 	26.01.2025
 
 	.AUTHOR
-	farag, Inestic & lowl1f3
+	Team Sophia
 
 	.COPYRIGHT
 	(c) 2014—2025
@@ -29,6 +29,10 @@
 
 	.LINK
 	https://discord.gg/sSryhaEv79
+
+	.DONATE
+	https://ko-fi.com/Q5Q51QUJC
+	https://boosty.to/teamsophia
 
 	.NOTES
 	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15

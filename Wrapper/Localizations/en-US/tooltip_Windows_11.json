@@ -778,11 +778,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Remove Recommended section in Start Menu. Applicable only to Enterprise and Education editions, but not to IoT Enterprise."
+        "ToolTip": "Remove Recommended section in Start Menu. Not applicable to Home edition."
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show Recommended section in Start Menu (default value). Applicable only to Enterprise and Education editions, but not to IoT Enterprise."
+        "ToolTip": "Show Recommended section in Start Menu (default value). Not applicable to Home edition."
       }
     }
   },

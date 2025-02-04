@@ -9,7 +9,7 @@
 	26.01.2025
 
 	.AUTHOR
-	farag, Inestic & lowl1f3
+	Team Sophia
 
 	.COPYRIGHT
 	(c) 2014—2025
@@ -29,6 +29,10 @@
 
 	.LINK
 	https://discord.gg/sSryhaEv79
+
+	.DONATE
+	https://ko-fi.com/Q5Q51QUJC
+	https://boosty.to/teamsophia
 
 	.NOTES
 	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
@@ -14118,11 +14122,11 @@ function DNSoverHTTPS
 			# https://www.comss.ru/page.php?id=7315
 			if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
 			{
-				Get-NetAdapter -Physical | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ServerAddresses 83.220.169.155, 195.133.25.16
+				Get-NetAdapter -Physical | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ServerAddresses 83.220.169.155, 212.109.195.93
 			}
 			else
 			{
-				Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ServerAddresses 83.220.169.155, 195.133.25.16
+				Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ServerAddresses 83.220.169.155, 212.109.195.93
 			}
 
 			foreach ($InterfaceGuid in $InterfaceGuids)
@@ -14131,14 +14135,14 @@ function DNSoverHTTPS
 				{
 					New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\83.220.169.155" -Force
 				}
-				if (-not (Test-Path -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\195.133.25.16"))
+				if (-not (Test-Path -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\212.109.195.93"))
 				{
-					New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\195.133.25.16" -Force
+					New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\212.109.195.93" -Force
 				}
 				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\83.220.169.155" -Name DohFlags -PropertyType QWord -Value 2 -Force
 				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\83.220.169.155" -Name DohTemplate -PropertyType String -Value https://dns.comss.one/dns-query -Force
-				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\195.133.25.16" -Name DohFlags -PropertyType QWord -Value 2 -Force
-				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\195.133.25.16" -Name DohTemplate -PropertyType String -Value https://dns.comss.one/dns-query -Force
+				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\212.109.195.93" -Name DohFlags -PropertyType QWord -Value 2 -Force
+				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\212.109.195.93" -Name DohTemplate -PropertyType String -Value https://dns.comss.one/dns-query -Force
 			}
 		}
 		"Disable"
