@@ -3,7 +3,7 @@
 	The TAB completion for functions and their arguments
 
 	Version: 5.10.2
-	Date: 26.01.2025
+	Date: 06.02.2025
 
 	Copyright (c) 2014—2025 Team Sophia
 
