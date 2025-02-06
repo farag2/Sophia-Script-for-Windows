@@ -1306,7 +1306,8 @@
   },
   {
     "Region": "System",
-    "Function": "Install-VCRedist",
+    "Function": "Install-VCRedist -Redistributables",
+    "ToolTip": "Installieren Sie die neueste Microsoft Visual C++ Redistributable Packages x86, x64",
     "Arg": {
       "Zero": {
         "Tag": "2015_2022_x86",
