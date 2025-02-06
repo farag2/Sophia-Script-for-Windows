@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.20.3 | 6.8.3 — 06.02.2025
+
+* Для российских пользователей мы создали страницу на Boosty: <https://boosty.to/teamsophia>;
+  * Если вам нравится наш проект, вы можете пожертвовать.
+
+![Безымянный](https://github.com/user-attachments/assets/da352591-f126-4f07-a453-1ad2a44a5102)
+
+* Changed Comss DNS records to `83.220.169.155` and `212.109.195.93` according to <https://www.comss.ru/page.php?id=7315>
+  * Please re-apply `DNSoverHTTPS -ComssOneDNS` function.
+* Small fix for `Cursors` function.
+  * Please re-apply `Cursors -Dark` or `Cursors -Light` function.
+* Fixed `Install-VCRedist` not detecting installed version correctly; 
+* Minor changes.
+
+Thanks to iGor202512, mogbi, and homeless
+
+## Wrapper 2.7.11
+
+* Moved `Set-ConsoleFont.ps1` to Wrapper's `Config` folder;
+* Name change "Install-VCRedist -Redistributables" support and 'main' tooltip in Localizations for all languages. Install-DotNetRuntimes -Runtimes name change support.
+
 ## 5.20.2 | 6.8.2 — 26.01.2025
 
 * Closed #605 as fixed;
