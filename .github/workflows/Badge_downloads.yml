@@ -47,6 +47,7 @@ jobs:
 
           $Summary = $page1 + $page2
           $Summary = "{0:N1}k" -f ($Summary/1000)
+          # "{0:N1} million" -f ($Summary/1000000)
 
           Write-Verbose -Message $Summary -Verbose
 
