@@ -12,8 +12,6 @@ Clear-Host
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-Remove-Variable * -ErrorAction Ignore
-
 # Checking whether the logged-in user is an admin
 $CurrentUserName = (Get-CimInstance -ClassName Win32_Process -Filter ProcessId=$PID | Invoke-CimMethod -MethodName GetOwner | Select-Object -First 1).User
 $LoginUserName = (Get-CimInstance -ClassName Win32_Process -Filter "name='explorer.exe'" | Invoke-CimMethod -MethodName GetOwner | Select-Object -First 1).User
