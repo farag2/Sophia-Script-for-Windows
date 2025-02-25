@@ -3,7 +3,7 @@
 	Default preset file for "Sophia Script for Windows 10 LTSC 2019"
 
 	.VERSION
-	5.10.2
+	5.10.3
 
 	.DATE
 	06.02.2025
@@ -75,7 +75,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC 2019 v5.10.2 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) Team Sophia, 2014$([System.Char]0x2013)2025"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC 2019 v5.10.3 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) Team Sophia, 2014$([System.Char]0x2013)2025"
 
 # Checking whether all files were expanded before running
 $ScriptFiles = @(
@@ -123,7 +123,7 @@ try
 }
 catch [System.InvalidOperationException]
 {
-	Write-Warning -Message $Localization.UnsupportedPowerShell
+	Write-Warning -Message ($Localization.UnsupportedPowerShell -f $PSVersionTable.PSVersion.Major, $PSVersionTable.PSVersion.Minor)
 
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
@@ -642,7 +642,7 @@ InputMethod -English
 # InputMethod -Default
 
 <#
-	Change user folders location to the root of any drive using the interactive menu
+	Change user folders location to the root of any drive using an interactive menu
 	User files or folders won't be moved to a new location. Move them manually
 	They're located in the %USERPROFILE% folder by default
 

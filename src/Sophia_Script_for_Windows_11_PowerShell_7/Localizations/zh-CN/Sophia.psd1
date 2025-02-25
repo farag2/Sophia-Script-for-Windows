@@ -1,4 +1,5 @@
 ﻿ConvertFrom-StringData -StringData @'
+PowerShellImportFailed                    = 请关闭PowerShell 7并重新运行脚本。
 UnsupportedOSBuild                        = 腳本支援 Windows 11 23H2 及更高版本。您的作業系統是 {0}。
 UnsupportedWindowsTerminal                = Windows Terminal版本低於1.20。請在Microsoft商店更新後再試。
 UpdateWarning                             = 您的Windows 11构建: {0}.{1}。支援的版本：{2} 及更高版本。运行Windows Update并再次尝试。

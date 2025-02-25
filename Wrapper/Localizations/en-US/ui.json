@@ -8,6 +8,8 @@
       "menuPresets": "Presets",
       "menuOpposite": "Opposite",
       "menuClear": "Clear",
+      "menuClearTab": "Clear Tab",
+      "menuClearEverything": "Clear Everything",
       "menuTheme": "Theme",
       "menuThemeDark": "Dark",
       "menuThemeLight": "Light",

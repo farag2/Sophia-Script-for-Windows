@@ -1,5 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedOSBuild                        = Komut dosyası Windows 11 23H2 ve üstünü destekler. İşletim sisteminiz {0}.
+PowerShellImportFailed                    = Lütfen PowerShell 7 yi kapatın ve komut dosyasını yeniden çalıştırın.
+UnsupportedOSBuild                        = Komut dosyası Windows 11 23H2 ve üstünü destekler. Sizin işletim sisteminiz {0}.
 UnsupportedWindowsTerminal                = Windows Terminal sürümü 1.20'den daha düşük. Lütfen Microsoft Store'da güncelleyin ve tekrar deneyin.
 UpdateWarning                             = Windows 11 yapınız: {0}.{1}. Desteklenen yapılar: {2} ve üzeri sürümler.. Windows Update'i çalıştırın ve tekrar deneyin.
 UnsupportedLanguageMode                   = Sınırlı bir dil modunda çalışan PowerShell oturumu.

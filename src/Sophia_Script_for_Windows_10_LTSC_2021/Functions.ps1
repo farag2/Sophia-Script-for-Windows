@@ -156,6 +156,23 @@ $Parameters = @{
 				continue
 			}
 
+			# If a module command is UserFolders
+			if ($Command -eq "UserFolders")
+			{
+				# Get all command arguments, excluding defaults
+				foreach ($ParameterSet in $ParameterSets.Name)
+				{
+					$ValidValues = ((Get-Command -Name UserFolders).Parametersets.Parameters | Where-Object -FilterScript {$null -eq $_.Attributes.AliasNames}).Attributes.ValidValues
+					foreach ($ValidValue in $ValidValues)
+					{
+						# The "UserFolders -ThreeDObjects Hide" construction
+						"UserFolders" + " " + "-" + $ParameterSet + " " + $ValidValue | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
+					}
+
+					continue
+				}
+			}
+
 			foreach ($ParameterSet in $ParameterSets.Name)
 			{
 				# The "Function -Argument" construction

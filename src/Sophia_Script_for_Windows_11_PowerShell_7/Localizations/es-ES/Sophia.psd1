@@ -1,4 +1,5 @@
 ﻿ConvertFrom-StringData -StringData @'
+PowerShellImportFailed                    = Cierre PowerShell 7 y vuelva a ejecutar el script.
 UnsupportedOSBuild                        = El script es compatible con Windows 11 23H2 y superiores. Su sistema operativo es {0}.
 UnsupportedWindowsTerminal                = La versión de Windows Terminal es inferior a la 1.20. Por favor, actualízala en la Microsoft Store e inténtalo de nuevo.
 UpdateWarning                             = Su build de Windows 11: {0}.{1}. Compilaciones compatibles: {2} y superior. Ejecute Windows Update y vuelva a intentarlo.
@@ -14,7 +15,7 @@ UnsupportedRelease                        = Se ha encontrado una nueva versión 
 KeyboardArrows                            = Utilice las flechas {0} y {1} de su teclado para seleccionar la respuesta
 CustomizationWarning                      = ¿Ha personalizado todas las funciones del archivo predeterminado {0} antes de ejecutar Sophia Script?
 WindowsComponentBroken                    = {0} dañado o eliminado del sistema operativo. Reinstale Windows utilizando sólo una imagen ISO original.
-MicroSoftStorePowerShellWarning           = PowerShell descargado de Microsoft Store no es compatible. Ejecute una versión MSI.\nhttps://github.com/powershell/powershell/releases/latest
+MicroSoftStorePowerShellWarning           = PowerShell téléchargé depuis le Microsoft Store n'est pas pris en charge. Veuillez exécuter une version MSI.\nhttps://github.com/powershell/powershell/releases/latest
 ControlledFolderAccessDisabled            = Acceso a la carpeta controlada deshabilitado.
 InitialActionsCheckFailed                 = La función InitialActions no se puede cargar desde el archivo de presets {0}. Compruebe el archivo de preajuste y vuelva a intentarlo.
 ScheduledTasks                            = Tareas programadas

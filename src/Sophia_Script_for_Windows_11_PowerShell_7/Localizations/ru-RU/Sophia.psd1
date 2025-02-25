@@ -1,4 +1,5 @@
 ﻿ConvertFrom-StringData -StringData @'
+PowerShellImportFailed                    = Пожалуйста, закройте PowerShell 7 и запустите скрип заново.
 UnsupportedOSBuild                        = Скрипт поддерживает Windows 11 23H2 и выше. Ваша ОС — {0}.
 UnsupportedWindowsTerminal                = Версия Windows Terminal ниже 1.20. Пожалуйста, обновите его в Microsoft Store и попробуйте заново.
 UpdateWarning                             = Ваш билд Windows 11: {0}.{1}. Поддерживаемые сборки: {2} и выше. Запустите обновление Windows и попробуйте заново.

@@ -1,4 +1,5 @@
 ﻿ConvertFrom-StringData -StringData @'
+PowerShellImportFailed                    = Kérjük, zárja be a PowerShell 7 programot, és futtassa újra a szkriptet.
 UnsupportedOSBitness                      = A szkript csak a 64 bites Windows-t támogatja.
 UnsupportedOSBuild                        = A szkript csak a Windows 10 22H2 rendszert támogatja. Az Ön operációs rendszere {0}.
 UnsupportedWindowsTerminal                = A Windows Terminal verziója alacsonyabb, mint 1.20. Kérjük, frissítse azt a Microsoft Store-ban, és próbálja meg újra.

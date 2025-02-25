@@ -1,7 +1,8 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedOSBuild                        = Le script est compatible avec Windows 11 23H2 et les versions ultérieures. Votre système d'exploitation est {0}.
+PowerShellImportFailed                    = Veuillez fermer PowerShell 7 et réexécuter le script.
+UnsupportedOSBuild                        = Le script ne supporte que Windows 11 23H2. Votre système d'exploitation est {0}.
 UnsupportedWindowsTerminal                = La version de Windows Terminal est inférieure à 1.20. Veuillez la mettre à jour dans le Microsoft Store et réessayer.
-UpdateWarning                             = Votre version de Windows 11 : {0}.{1}. Versions prises en charge: {2} et plus. Exécutez Windows Update et réessayez.
+UpdateWarning                             = Votre version de Windows 11: {0}.{1}. Versions prises en charge: {2} et plus. Exécutez Windows Update et réessayez.
 UnsupportedLanguageMode                   = La session PowerShell s'exécute dans un mode de langue limité.
 LoggedInUserNotAdmin                      = L'utilisateur connecté n'a pas de droits d'administrateur.
 UnsupportedPowerShell                     = Vous essayez d'exécuter le script via PowerShell {0}.{1}. Exécutez le script dans la version appropriée de PowerShell.
@@ -14,7 +15,7 @@ UnsupportedRelease                        = Une nouvelle version du script a ét
 KeyboardArrows                            = Veuillez utiliser les touches fléchées {0} et {1} de votre clavier pour sélectionner votre réponse
 CustomizationWarning                      = Avez-vous personnalisé chaque fonction du fichier de préréglage {0} avant d'exécuter Sophia Script?
 WindowsComponentBroken                    = {0} cassé ou supprimé du système d'exploitation. Réinstallez Windows en utilisant uniquement une image ISO authentique.
-MicroSoftStorePowerShellWarning           = PowerShell téléchargé depuis le Microsoft Store n'est pas pris en charge. Veuillez exécuter une version MSI.
+MicroSoftStorePowerShellWarning           = PowerShell téléchargé depuis le Microsoft Store n'est pas pris en charge. Veuillez exécuter une version MSI.\nhttps://github.com/powershell/powershell/releases/latest
 ControlledFolderAccessDisabled            = Contrôle d'accès aux dossiers désactivé.
 InitialActionsCheckFailed                 = La fonction InitialActions ne peut pas être chargée à partir du fichier de présélection {0}. Veuillez vérifier le fichier de présélection et réessayer.
 ScheduledTasks                            = Tâches planifiées

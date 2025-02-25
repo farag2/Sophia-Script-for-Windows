@@ -128,7 +128,7 @@ try
 }
 catch [System.InvalidOperationException]
 {
-	Write-Warning -Message $Localization.UnsupportedPowerShell
+	Write-Warning -Message ($Localization.UnsupportedPowerShell -f $PSVersionTable.PSVersion.Major, $PSVersionTable.PSVersion.Minor)
 
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
@@ -787,7 +787,7 @@ InputMethod -English
 # InputMethod -Default
 
 <#
-	Change user folders location to the root of any drive using the interactive menu
+	Change user folders location to the root of any drive using an interactive menu
 	User files or folders won't be moved to a new location. Move them manually
 	They're located in the %USERPROFILE% folder by default
 

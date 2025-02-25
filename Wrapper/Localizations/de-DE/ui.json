@@ -8,6 +8,8 @@
       "menuPresets": "Voreinstellungen",
       "menuOpposite": "Alle umkehren",
       "menuClear": "Löschen",
+      "menuClearTab": "Registerkarte löschen",
+      "menuClearEverything": "Alles löschen",
       "menuTheme": "Thema",
       "menuThemeDark": "Dunkel",
       "menuThemeLight": "Hell",

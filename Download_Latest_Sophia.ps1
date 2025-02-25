@@ -25,7 +25,8 @@ if ($CurrentUserName -ne $LoginUserName)
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-	break
+	pause
+	exit
 }
 
 if ($Host.Version.Major -eq 5)

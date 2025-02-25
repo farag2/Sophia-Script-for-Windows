@@ -1,4 +1,5 @@
 ﻿ConvertFrom-StringData -StringData @'
+PowerShellImportFailed                    = Пожалуйста, закройте PowerShell 7 и запустите скрип заново.
 UnsupportedOSBitness                      = Скрипт поддерживает только 64-битную версию Windows.
 UnsupportedOSBuild                        = Скрипт поддерживает только Windows 10 22H2. Ваша ОС — {0}.
 UnsupportedWindowsTerminal                = Версия Windows Terminal ниже 1.20. Пожалуйста, обновите его в Microsoft Store и попробуйте заново.

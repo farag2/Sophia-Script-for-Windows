@@ -8,6 +8,8 @@
       "menuPresets": "Пресеты",
       "menuOpposite": "Противоположные значения",
       "menuClear": "Очистить",
+      "menuClearTab": "Очистить вкладку",
+      "menuClearEverything": "Очистить все",
       "menuTheme": "Тема",
       "menuThemeDark": "Тёмная",
       "menuThemeLight": "Светлая",

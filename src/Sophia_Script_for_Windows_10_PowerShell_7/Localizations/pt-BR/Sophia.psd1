@@ -1,4 +1,5 @@
 ﻿ConvertFrom-StringData -StringData @'
+PowerShellImportFailed                    = Feche o PowerShell 7 e execute o script novamente.
 UnsupportedOSBitness                      = O guião suporta apenas Windows de 64 bits.
 UnsupportedOSBuild                        = O script é compatível apenas com o Windows 10 22H2. Seu sistema operacional é o {0}.
 UnsupportedWindowsTerminal                = A versão do Windows Terminal é inferior a 1.20. Atualize-a na Microsoft Store e tente novamente.

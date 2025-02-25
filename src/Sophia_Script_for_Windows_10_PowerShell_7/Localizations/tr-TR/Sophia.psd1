@@ -1,4 +1,5 @@
 ﻿ConvertFrom-StringData -StringData @'
+PowerShellImportFailed                    = Lütfen PowerShell 7 yi kapatın ve komut dosyasını yeniden çalıştırın.
 UnsupportedOSBitness                      = Komut dosyası yalnızca 64 bit Windows'u destekler.
 UnsupportedOSBuild                        = Komut dosyası yalnızca Windows 10 22H2'yi destekler. Sizin işletim sisteminiz {0}.
 UnsupportedWindowsTerminal                = Windows Terminal sürümü 1.20'den daha düşük. Lütfen Microsoft Store'da güncelleyin ve tekrar deneyin.

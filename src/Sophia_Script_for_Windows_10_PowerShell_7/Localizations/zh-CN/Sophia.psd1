@@ -1,4 +1,5 @@
 ﻿ConvertFrom-StringData -StringData @'
+PowerShellImportFailed                    = 请关闭PowerShell 7并重新运行脚本。
 UnsupportedOSBitness                      = 该脚本仅支持64位Windows。
 UnsupportedOSBuild                        = 腳本僅支援 Windows 10 22H2。您的作業系統是 {0}。
 UnsupportedWindowsTerminal                = Windows Terminal版本低於1.20。請在Microsoft商店更新後再試。
