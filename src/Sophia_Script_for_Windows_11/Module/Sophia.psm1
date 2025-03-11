@@ -1122,7 +1122,7 @@ function script:Set-Policy
 			Mandatory = $true,
 			Position = 4
 		)]
-		[ValidateSet("DWORD", "SZ", "EXSZ", "CLEAR")] ###
+		[ValidateSet("DWORD", "SZ", "EXSZ", "CLEAR")]
 		[string]
 		$Type,
 
@@ -11659,6 +11659,9 @@ function SoftwareDistributionTask
 			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
 			Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
 
+			# Remove registry keys if Windows Script Host is disabled
+			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Script Host\Settings", "HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings" -Name Enabled -Force -ErrorAction Ignore
+
 			# Checking whether VBS engine is enabled
 			if ((Get-WindowsCapability -Online -Name VBSCRIPT*).State -ne "Installed")
 			{
@@ -11994,6 +11997,9 @@ function TempTask
 			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\CurrentVersion\PushNotifications -Name NoToastApplicationNotification -Force -ErrorAction Ignore
 			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
 			Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
+
+			# Remove registry keys if Windows Script Host is disabled
+			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Script Host\Settings", "HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings" -Name Enabled -Force -ErrorAction Ignore
 
 			# Checking whether VBS engine is enabled
 			if ((Get-WindowsCapability -Online -Name VBSCRIPT*).State -ne "Installed")
