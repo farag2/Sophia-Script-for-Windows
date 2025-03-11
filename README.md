@@ -11,8 +11,9 @@
 [chocolatey-link]: https://community.chocolatey.org/packages/sophia
 [lines-badge]: https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/farag2/9852d6b9569a91bf69ceba8a94cc97f4/raw/SophiaScript.json
 [lines-link]: https://github.com/farag2/Sophia-Script-for-Windows
+[badge-code]: https://github.com/farag2/Sophia-Script-for-Windows/blob/master/.github/workflows/Badge_downloads.yml
 
-![downloads][downloads-badge]
+[![downloads][downloads-badge]][badge-code]
 [![chocolatey][chocolatey-badge]][chocolatey-link]
 [![lines][lines-badge]][lines-link]
 
