@@ -46,6 +46,7 @@ jobs:
           $page2 = ((Invoke-RestMethod @Parameters).assets.download_count | Measure-Object -Sum).Sum
 
           $Summary = $page1 + $page2
+          Write-Verbose -Message $Summary -Verbose
           $Summary = "{0:N1} Million" -f ($Summary/1000000)
 
           Write-Verbose -Message $Summary -Verbose
