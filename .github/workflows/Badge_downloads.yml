@@ -47,7 +47,7 @@ jobs:
 
           $Summary = $page1 + $page2
           Write-Verbose -Message $Summary -Verbose
-          $Summary = "{0:N1} Million" -f ($Summary/1000000)
+          $Summary = "{0:N3} Million" -f ($Summary/1000000)
 
           Write-Verbose -Message $Summary -Verbose
 
