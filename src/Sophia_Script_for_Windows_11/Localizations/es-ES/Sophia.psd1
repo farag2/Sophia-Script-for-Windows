@@ -1,5 +1,5 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedOSBuild                        = El script es compatible con Windows 11 23H2 y superiores. Su sistema operativo es {0}.
+UnsupportedOSBuild                        = El script es compatible con Windows 11 24H2 y superiores. Su sistema operativo es {0}.
 UnsupportedWindowsTerminal                = La versión de Windows Terminal es inferior a la 1.20. Por favor, actualízala en la Microsoft Store e inténtalo de nuevo.
 UpdateWarning                             = Su build de Windows 11: {0}.{1}. Compilaciones compatibles: {2} y superior. Ejecute Windows Update y vuelva a intentarlo.
 UnsupportedLanguageMode                   = Sesión de PowerShell ejecutada en modo de lenguaje limitado.
@@ -61,7 +61,6 @@ NoResponse                                = No se pudo establecer una conexión 
 Restore                                   = Restaurar
 Run                                       = Iniciar
 Skipped                                   = Función "{0}" omitida.
-GPOUpdate                                 = Actualización de GPO...
 ThankfulToastTitle                        = Gracias por utilizar Sophia Script ❤️
 DonateToastTitle                          = Si te gusta este proyecto, haz una donación 🕊
 '@

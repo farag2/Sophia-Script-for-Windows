@@ -172,13 +172,11 @@ UninstallUWPApps, "PinToStart -UnpinAll"
 [Windows-10-LTSC-2019]: https://support.microsoft.com/topic/windows-10-and-windows-server-2019-update-history-725fc2e1-4443-6831-a5ca-51ff5cbcb059
 [Windows-10-LTSC-2021]: https://support.microsoft.com/topic/windows-10-update-history-857b8ccb-71e4-49e5-b3f6-7073197d98fb
 [Windows-11-LTSC-2024]: https://support.microsoft.com/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5
-[Windows-11-23h2]: https://support.microsoft.com/topic/windows-11-version-23h2-update-history-59875222-b990-4bd9-932f-91a5954de434
 [Windows-11-24h2]: https://support.microsoft.com/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5
 
 |                Версія                    | Маркетингова назва  |                           Збіркa          |       Видання       |
 |:-----------------------------------------|--------------------:|:-----------------------------------------:|:-------------------:|
 | Windows 11 24H2                          | 2024 Update         | [Остання стабільна][Windows-11-24h2]      | Home/Pro/Enterprise |
-| Windows 11 23H2                          | 2023 Update         | [Остання стабільна][Windows-11-23h2]      | Home/Pro/Enterprise |
 | Windows 10 x64 22H2                      | 2022 Update         | [Остання стабільна][Windows-10]           | Home/Pro/Enterprise |
 | Windows 11 Enterprise LTSC 2024          | 2024 Update         | [Остання стабільна][Windows-11-LTSC-2024] | Enterprise          |
 | Windows 10 x64 21H2 Enterprise LTSC 2021 | October 2021 Update | [Остання стабільна][Windows-10-LTSC-2021] | Enterprise          |

@@ -58,7 +58,6 @@ NoResponse                                = {0} ile bağlantı kurulamadı.
 Restore                                   = Onar
 Run                                       = Başlat
 Skipped                                   = "{0}" işlevi atlandı.
-GPOUpdate                                 = GPO Güncelleniyor...
 ThankfulToastTitle                        = Sophia Script kullandığınız için teşekkür ederiz ❤️
 DonateToastTitle                          = Bu projeyi beğendiyseniz lütfen bağışta bulunun 🕊️
 '@

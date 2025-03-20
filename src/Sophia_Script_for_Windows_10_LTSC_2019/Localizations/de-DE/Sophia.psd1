@@ -55,7 +55,6 @@ NoResponse                                = Eine Verbindung mit {0} konnte nicht
 Restore                                   = Wiederherstellen
 Run                                       = Starten
 Skipped                                   = Funktion "{0}" übersprungen.
-GPOUpdate                                 = GPO-Aktualisierung...
 ThankfulToastTitle                        = Vielen Dank, dass Sie Sophia Script verwenden ❤️
 DonateToastTitle                          = Bitte spenden Sie, wenn Sie dieses Projekt mögen 🕊
 '@

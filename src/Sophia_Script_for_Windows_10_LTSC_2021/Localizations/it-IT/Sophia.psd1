@@ -57,7 +57,6 @@ NoResponse                                = Non è stato possibile stabilire una
 Restore                                   = Ristabilire
 Run                                       = Eseguire
 Skipped                                   = Funzione "{0}" saltata.
-GPOUpdate                                 = Aggiornamento GPO...
 ThankfulToastTitle                        = Grazie per aver utilizzato Sophia Script ❤️
 DonateToastTitle                          = Se vi piace questo progetto, fate una donazione 🕊
 '@

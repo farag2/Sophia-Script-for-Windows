@@ -59,7 +59,7 @@ jobs:
           auth: ${{ secrets.GIST_SOPHIASCRIPT_DOWNLOADS_COUNT }}
           gistID: 25ddc72387f298503b752ad5b8d16eed
           filename: SophiaScriptDownloadsCount.json 
-          label: downloads (since May 2020)
+          label: downloads
           message: ${{ env.DOWNLOADS_COUNT }}
           namedLogo: PowerShell
           color: brightgreen

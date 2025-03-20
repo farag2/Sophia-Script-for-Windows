@@ -1610,22 +1610,6 @@
     "WindowsDefault": ""
   },
   {
-    "Region": "UWP apps",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "CortanaAutostart",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable"
-      },
-      "One": {
-        "Tag": "Enable"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
     "Region": "Gaming",
     "Control": "cmb",
     "Required": "false",

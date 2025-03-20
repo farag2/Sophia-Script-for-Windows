@@ -1224,14 +1224,9 @@ MultipleInvokeContext -Enable
 #endregion Context menu
 
 #region Update Policies
-<#
-	Display all policy registry keys (even manually created ones) in the Local Group Policy Editor snap-in (gpedit.msc)
-	This can take up to 30 minutes, depending on the number of policies created in the registry and your system resources
-
-	Отобразить все политики реестра (даже созданные вручную) в оснастке Редактора локальной групповой политики (gpedit.msc)
-	Это может занять до 30 минут в зависимости от количества политик, созданных в реестре, и мощности вашей системы
-#>
-# UpdateLGPEPolicies
+# Scan the Windows registry and display all policies (even created manually) in the Local Group Policy Editor snap-in (gpedit.msc)
+# Просканировать реестр и отобразить все политики (даже созданные вручную) в оснастке Редактора локальной групповой политики (gpedit.msc)
+# ScanRegistryPolicies
 #endregion Update Policies
 
 # Environment refresh and other neccessary post actions

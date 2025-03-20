@@ -1433,7 +1433,7 @@ function ErrorReporting
 		$Enable
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting", "HKCU:\Software\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Type CLEAR
 	Set-Policy -Scope User -Path "Software\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Type CLEAR
@@ -1497,7 +1497,7 @@ function FeedbackFrequency
 		$Automatically
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name DoNotShowFeedbackNotifications -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name DoNotShowFeedbackNotifications -Type CLEAR
 
@@ -1868,7 +1868,7 @@ function SigninInfo
 		$Enable
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name DisableAutomaticRestartSignOn -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name DisableAutomaticRestartSignOn -Type CLEAR
 
@@ -1980,7 +1980,7 @@ function AdvertisingID
 		$Enable
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo -Name DisabledByGroupPolicy -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name DisabledByGroupPolicy -Type CLEAR
 
@@ -2091,7 +2091,7 @@ function WindowsTips
 		$Enable
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent -Name DisableSoftLanding -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\CloudContent -Name DisableSoftLanding -Type CLEAR
 
@@ -2201,7 +2201,7 @@ function AppsSilentInstalling
 		$Enable
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent -Name DisableWindowsConsumerFeatures -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\CloudContent -Name DisableWindowsConsumerFeatures -Type CLEAR
 
@@ -2312,7 +2312,7 @@ function TailoredExperiences
 		$Enable
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\CloudContent -Name DisableTailoredExperiencesWithDiagnosticData -Force -ErrorAction Ignore
 	Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\CloudContent -Name DisableTailoredExperiencesWithDiagnosticData -Type CLEAR
 
@@ -2948,7 +2948,7 @@ function FileExplorerRibbon
 		$Minimized
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer, HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name ExplorerRibbonStartsMinimized -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name ExplorerRibbonStartsMinimized -Type CLEAR
 	Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name ExplorerRibbonStartsMinimized -Type CLEAR
@@ -3012,7 +3012,7 @@ function RecycleBinDeleteConfirmation
 		$Disable
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer, HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name ConfirmFileDelete -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name ConfirmFileDelete -Type CLEAR
 	Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name ConfirmFileDelete -Type CLEAR
@@ -3305,7 +3305,7 @@ function QuickAccessRecentFiles
 		$Show
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer, HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoRecentDocsHistory -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoRecentDocsHistory -Type CLEAR
 	Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name NoRecentDocsHistory -Type CLEAR
@@ -3425,7 +3425,7 @@ function TaskbarSearch
 		$SearchBox
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name DisableSearch, SearchOnTaskbarMode -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name DisableSearch -Type CLEAR
 	Set-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name SearchOnTaskbarMode -Type CLEAR
@@ -3497,7 +3497,7 @@ function SearchHighlights
 		$Show
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name EnableDynamicContentInWSB -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name EnableDynamicContentInWSB -Type CLEAR
 
@@ -3568,7 +3568,7 @@ function CortanaButton
 		$Show
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name AllowCortana -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name AllowCortana -Type CLEAR
 
@@ -3686,7 +3686,7 @@ function NewsInterests
 		$Enable
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds" -Name EnableFeeds -Force -ErrorAction Ignore
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\PolicyManager\default\NewsAndInterests\AllowNewsAndInterests" -Name value -Force -ErrorAction Ignore
 
@@ -3810,7 +3810,7 @@ function PeopleTaskbar
 		$Show
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HidePeopleBar -Force -ErrorAction Ignore
 	Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name HidePeopleBar -Type CLEAR
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HidePeopleBar -Type CLEAR
@@ -3874,7 +3874,7 @@ function MeetNow
 		$Show
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer, HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name HideSCAMeetNow -Force -ErrorAction Ignore
 	Set-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name HideSCAMeetNow -Type CLEAR
 	Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name HideSCAMeetNow -Type CLEAR
@@ -3936,7 +3936,7 @@ function WindowsInkWorkspace
 		$Show
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\WindowsInkWorkspace -Name AllowWindowsInkWorkspace -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name HideSCAMeetNow -Type CLEAR
 
@@ -3991,7 +3991,7 @@ function NotificationAreaIcons
 		$Hide
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer, HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoAutoTrayNotify -Force -ErrorAction Ignore
 	Set-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoAutoTrayNotify -Type CLEAR
 	Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoAutoTrayNotify -Type CLEAR
@@ -4111,7 +4111,7 @@ function TaskbarCombine
 		$Never
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer, HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoTaskGrouping -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoTaskGrouping -Type CLEAR
 	Set-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoTaskGrouping -Type CLEAR
@@ -4255,7 +4255,7 @@ function ControlPanelView
 		$SmallIcons
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name ForceClassicControlPanel -Force -ErrorAction Ignore
 	Set-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name ForceClassicControlPanel -Type CLEAR
 
@@ -4482,7 +4482,7 @@ function FirstLogonAnimation
 		$Enable
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableFirstLogonAnimation -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableFirstLogonAnimation -Type CLEAR
 
@@ -4821,7 +4821,7 @@ function AeroShaking
 		$Disable
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\Software\Policies\Microsoft\Windows\Explorer -Name NoWindowMinimizingShortcuts -Force -ErrorAction Ignore
 	Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name NoWindowMinimizingShortcuts -Type CLEAR
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoWindowMinimizingShortcuts -Type CLEAR
@@ -5280,7 +5280,7 @@ function OneDrive
 		$AllUsers
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\Policies\Microsoft\Windows\OneDrive -Name DisableFileSyncNGSC -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\OneDrive -Name DisableFileSyncNGSC -Type CLEAR
 
@@ -5562,7 +5562,7 @@ function StorageSense
 		$Disable
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\StorageSense -Name AllowStorageSenseGlobal -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\StorageSense -Name AllowStorageSenseGlobal -Type CLEAR
 
@@ -5792,7 +5792,7 @@ function AdminApprovalMode
 		$Default
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name ConsentPromptBehaviorUser -PropertyType DWord -Value 3 -Force
 	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableInstallerDetection -PropertyType DWord -Value 1 -Force
 	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name ValidateAdminCodeSignatures -PropertyType DWord -Value 0 -Force
@@ -5863,7 +5863,7 @@ function DeliveryOptimization
 		$Enable
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization -Name DODownloadMode -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization -Name DODownloadMode -Type CLEAR
 
@@ -6640,7 +6640,7 @@ function UpdateMicrosoftProducts
 		$Disable
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Name AllowMUUpdateService -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Name AllowMUUpdateService -Type CLEAR
 
@@ -6701,7 +6701,7 @@ function PowerPlan
 		$Balanced
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Power\PowerSettings -Name ActivePowerScheme -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Power\PowerSettings -Name ActivePowerScheme -Type CLEAR
 
@@ -8395,7 +8395,7 @@ function Autoplay
 		$Enable
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer, HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoDriveTypeAutoRun -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoDriveTypeAutoRun -Type CLEAR
 	Set-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoDriveTypeAutoRun -Type CLEAR
@@ -8616,7 +8616,7 @@ function RestartNotification
 		$Hide
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate -Name SetAutoRestartNotificationDisable -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate -Name SetAutoRestartNotificationDisable -Type CLEAR
 
@@ -8671,7 +8671,7 @@ function RestartDeviceAfterUpdate
 		$Disable
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate -Name ActiveHoursEnd, ActiveHoursStart, SetActiveHours -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate -Name ActiveHoursEnd -Type CLEAR
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate -Name ActiveHoursStart -Type CLEAR
@@ -8728,7 +8728,7 @@ function ActiveHours
 		$Manually
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Name NoAutoRebootWithLoggedOnUsers, AlwaysAutoRebootAtScheduledTime -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Name NoAutoRebootWithLoggedOnUsers -Type CLEAR
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Name AlwaysAutoRebootAtScheduledTime -Type CLEAR
@@ -8789,7 +8789,7 @@ function WindowsLatestUpdate
 		$Enable
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate -Name AllowOptionalContent, SetAllowOptionalContent -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate -Name AllowOptionalContent -Type CLEAR
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate -Name SetAllowOptionalContent -Type CLEAR
@@ -10828,7 +10828,7 @@ function RecentlyAddedApps
 		$Show
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Force -ErrorAction Ignore
 
 	switch ($PSCmdlet.ParameterSetName)
@@ -10889,7 +10889,7 @@ function AppSuggestions
 		$Show
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent -Name DisableWindowsConsumerFeatures -Force -ErrorAction Ignore
 	if (([WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%") -match "Enterprise") -or ([WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%") -match "Education"))
 	{
@@ -13432,7 +13432,7 @@ function DefenderSandbox
 		$Disable
 	)
 
-	if (-not $Script:DefenderEnabled)
+	if ((-not $Script:DefenderEnabled) -or $Script:DefenderMpPreferenceBroken)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
@@ -13457,7 +13457,7 @@ function DefenderSandbox
 # Dismiss Microsoft Defender offer in the Windows Security about signing in Microsoft account
 function DismissMSAccount
 {
-	if (-not $Script:DefenderEnabled)
+	if ((-not $Script:DefenderEnabled) -or $Script:DefenderMpPreferenceBroken)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
@@ -13472,7 +13472,7 @@ function DismissMSAccount
 # Dismiss Microsoft Defender offer in the Windows Security about turning on the SmartScreen filter for Microsoft Edge
 function DismissSmartScreenFilter
 {
-	if (-not $Script:DefenderEnabled)
+	if ((-not $Script:DefenderEnabled) -or $Script:DefenderMpPreferenceBroken)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
@@ -13733,7 +13733,7 @@ function AppsSmartScreen
 		$Enable
 	)
 
-	if (-not $Script:DefenderEnabled)
+	if ((-not $Script:DefenderEnabled) -or $Script:DefenderMpPreferenceBroken)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
@@ -13793,7 +13793,7 @@ function SaveZoneInformation
 		$Enable
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Attachments -Name SaveZoneInformation -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Attachments -Name SaveZoneInformation -Type CLEAR
 
@@ -14990,7 +14990,7 @@ function UseStoreOpenWith
 		$Show
 	)
 
-	# Remove all policies in order to make changes visible in UI only if it's possible
+	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Type CLEAR
 
@@ -15018,11 +15018,10 @@ function UseStoreOpenWith
 #region Update Policies
 <#
 	.SYNOPSIS
-	Display all policy registry keys (even manually created ones) in the Local Group Policy Editor snap-in (gpedit.msc)
-	This can take up to 30 minutes, depending on the number of policies created in the registry and your system resources
+	Scan the Windows registry and display all policies (even created manually) in the Local Group Policy Editor snap-in (gpedit.msc)
 
 	.EXAMPLE
-	UpdateLGPEPolicies
+	ScanRegistryPolicies
 
 	.NOTES
 	https://techcommunity.microsoft.com/t5/microsoft-security-baselines/lgpo-exe-local-group-policy-object-utility-v1-0/ba-p/701045
@@ -15031,7 +15030,7 @@ function UseStoreOpenWith
 	Machine-wide user
 	Current user
 #>
-function UpdateLGPEPolicies
+function ScanRegistryPolicies
 {
 	if (-not (Test-Path -Path "$env:SystemRoot\System32\gpedit.msc"))
 	{
@@ -15042,85 +15041,19 @@ function UpdateLGPEPolicies
 		return
 	}
 
-	Get-Partition | Where-Object -FilterScript {$_.DriveLetter -eq $([System.Environment]::ExpandEnvironmentVariables($env:SystemDrive).Replace(":", ""))} | Get-Disk | Get-PhysicalDisk | ForEach-Object -Process {
-		Write-Verbose -Message ([string]($_.FriendlyName, '|', $_.MediaType, '|', $_.BusType)) -Verbose
-	}
-
 	Write-Information -MessageData "" -InformationAction Continue
 	# Extract the localized "Please wait..." string from shell32.dll
 	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
-
-	Write-Verbose -Message $Localization.GPOUpdate -Verbose
-
-	Write-Information -MessageData "" -InformationAction Continue
-	Write-Verbose -Message HKLM -Verbose
 	Write-Information -MessageData "" -InformationAction Continue
 
-	# Local Machine policies paths to scan recursively
-	$LM_Paths = @(
+	# Policy paths to scan recursively
+	$PolicyKeys = @(
 		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies",
-		"HKLM:\SOFTWARE\Policies\Microsoft"
-	)
-	foreach ($Path in (@(Get-ChildItem -Path $LM_Paths -Recurse -Force -ErrorAction Ignore)))
-	{
-		foreach ($Item in $Path.Property)
-		{
-			# Checking whether property isn't equal to "(default)" and exists
-			if (($null -ne $Item) -and ($Item -ne "(default)"))
-			{
-				# Where all ADMX templates are located to compare with
-				foreach ($admx in @(Get-ChildItem -Path "$env:SystemRoot\PolicyDefinitions" -File -Force))
-				{
-					# Parse every ADMX template searching if it contains full path and registry key simultaneously
-					[xml]$config = Get-Content -Path $admx.FullName -Encoding utf8
-					$config.SelectNodes("//@*") | ForEach-Object -Process {$_.value = $_.value.ToLower()}
-					$SplitPath = $Path.Name.Replace("HKEY_LOCAL_MACHINE\", "")
-
-					if ($config.SelectSingleNode("//*[local-name()='policy' and @key='$($SplitPath.ToLower())' and (@valueName='$($Item.ToLower())' or @Name='$($Item.ToLower())' or .//*[local-name()='enum' and @valueName='$($Item.ToLower())'])]"))
-					{
-						Write-Verbose -Message ([string]($SplitPath, "|", $Item.Replace("{}", ""), "|", $(Get-ItemPropertyValue -Path $Path.PSPath -Name $Item))) -Verbose
-
-						$Type = switch ((Get-Item -Path $Path.PSPath).GetValueKind($Item))
-						{
-							"DWord"
-							{
-								(Get-Item -Path $Path.PSPath).GetValueKind($Item).ToString().ToUpper()
-							}
-							"ExpandString"
-							{
-								"EXSZ"
-							}
-							"String"
-							{
-								"SZ"
-							}
-						}
-
-						$Parameters = @{
-							Scope = "Computer"
-							# e.g. SOFTWARE\Microsoft\Windows\CurrentVersion\Policies
-							Path  = $Path.Name.Replace("HKEY_LOCAL_MACHINE\", "")
-							Name  = $Item.Replace("{}", "")
-							Type  = $Type
-							Value = Get-ItemPropertyValue -Path $Path.PSPath -Name $Item
-						}
-						Set-Policy @Parameters
-					}
-				}
-			}
-		}
-	}
-
-	Write-Information -MessageData "" -InformationAction Continue
-	Write-Verbose -Message HKCU -Verbose
-	Write-Information -MessageData "" -InformationAction Continue
-
-	# Current User policies paths to scan recursively
-	$CU_Paths = @(
+		"HKLM:\SOFTWARE\Policies\Microsoft",
 		"HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies",
 		"HKCU:\Software\Policies\Microsoft"
 	)
-	foreach ($Path in (@(Get-ChildItem -Path $CU_Paths -Recurse -Force)))
+	foreach ($Path in (@(Get-ChildItem -Path $PolicyKeys -Recurse -Force -ErrorAction Ignore)))
 	{
 		foreach ($Item in $Path.Property)
 		{
@@ -15128,16 +15061,16 @@ function UpdateLGPEPolicies
 			if (($null -ne $Item) -and ($Item -ne "(default)"))
 			{
 				# Where all ADMX templates are located to compare with
-				foreach ($admx in @(Get-ChildItem -Path "$env:SystemRoot\PolicyDefinitions" -File -Force))
+				foreach ($admx in @(Get-ChildItem -Path "$env:SystemRoot\PolicyDefinitions" -File -Filter *.admx -Force))
 				{
 					# Parse every ADMX template searching if it contains full path and registry key simultaneously
-					[xml]$config = Get-Content -Path $admx.FullName -Encoding utf8
-					$config.SelectNodes("//@*") | ForEach-Object -Process {$_.value = $_.value.ToLower()}
-					$SplitPath = $Path.Name.Replace("HKEY_CURRENT_USER\", "")
+					# No -Force argument
+					[xml]$admxtemplate = Get-Content -Path $admx.FullName -Encoding UTF8
+					$SplitPath = $Path.Name.Replace("HKEY_LOCAL_MACHINE\", "").Replace("HKEY_CURRENT_USER\", "")
 
-					if ($config.SelectSingleNode("//*[local-name()='policy' and @key='$($SplitPath.ToLower())' and (@valueName='$($Item.ToLower())' or @Name='$($Item.ToLower())' or .//*[local-name()='enum' and @valueName='$($Item.ToLower())'])]"))
+					if ($admxtemplate.policyDefinitions.policies.policy | Where-Object -FilterScript {($_.key -eq $SplitPath) -and (($_.valueName -eq $Item) -or ($_.Name -eq $Item))})
 					{
-						Write-Verbose -Message ([string]($SplitPath, "|", $Item.Replace("{}", ""), "|", $(Get-ItemPropertyValue -Path $Path.PSPath -Name $Item))) -Verbose
+						Write-Verbose -Message ([string]($Path.Name, "|", $Item.Replace("{}", ""), "|", $(Get-ItemPropertyValue -Path $Path.PSPath -Name $Item))) -Verbose
 
 						$Type = switch ((Get-Item -Path $Path.PSPath).GetValueKind($Item))
 						{
@@ -15155,12 +15088,25 @@ function UpdateLGPEPolicies
 							}
 						}
 
+						$Scope = if ($Path.Name -match "HKEY_LOCAL_MACHINE")
+						{
+							"Computer"
+						}
+						else
+						{
+							"User"
+						}
+
 						$Parameters = @{
-							Scope = "User"
+							# e.g. User
+							Scope = $Scope
 							# e.g. SOFTWARE\Microsoft\Windows\CurrentVersion\Policies
-							Path  = $Path.Name.Replace("HKEY_CURRENT_USER\", "")
+							Path  = $Path.Name.Replace("HKEY_LOCAL_MACHINE\", "").Replace("HKEY_CURRENT_USER\", "")
+							# e.g. NoUseStoreOpenWith
 							Name  = $Item.Replace("{}", "")
+							# e.g. DWORD
 							Type  = $Type
+							# e.g. 1
 							Value = Get-ItemPropertyValue -Path $Path.PSPath -Name $Item
 						}
 						Set-Policy @Parameters
@@ -15170,7 +15116,7 @@ function UpdateLGPEPolicies
 		}
 	}
 
-	gpupdate.exe /force
+	& "$env:SystemRoot\System32\gpupdate.exe" /force
 }
 #endregion Update Policies
 

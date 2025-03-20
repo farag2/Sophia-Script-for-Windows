@@ -30,7 +30,7 @@
 
 	.NOTES
 	Supported Windows 11 versions
-	Version: 23H2+
+	Version: 24H2+
 	Editions: Home/Pro/Enterprise
 
 	.NOTES
@@ -1037,14 +1037,6 @@ UninstallUWPApps
 	Пакеты приложений не будут установлены для новых пользователей, если отмечена галочка "Для всех пользователей"
 #>
 # UninstallUWPApps -ForAllUsers
-
-# Disable Cortana autostarting
-# Выключить автозагрузку Кортана
-CortanaAutostart -Disable
-
-# Enable Cortana autostarting (default value)
-# Включить автозагрузку Кортана (значение по умолчанию)
-# CortanaAutostart -Enable
 #endregion UWP apps
 
 #region Gaming
@@ -1334,14 +1326,9 @@ OpenWindowsTerminalAdminContext -Enable
 #endregion Context menu
 
 #region Update Policies
-<#
-	Display all policy registry keys (even manually created ones) in the Local Group Policy Editor snap-in (gpedit.msc)
-	This can take up to 30 minutes, depending on the number of policies created in the registry and your system resources
-
-	Отобразить все политики реестра (даже созданные вручную) в оснастке Редактора локальной групповой политики (gpedit.msc)
-	Это может занять до 30 минут в зависимости от количества политик, созданных в реестре, и мощности вашей системы
-#>
-# UpdateLGPEPolicies
+# Scan the Windows registry and display all policies (even created manually) in the Local Group Policy Editor snap-in (gpedit.msc)
+# Просканировать реестр и отобразить все политики (даже созданные вручную) в оснастке Редактора локальной групповой политики (gpedit.msc)
+# ScanRegistryPolicies
 #endregion Update Policies
 
 # Environment refresh and other neccessary post actions

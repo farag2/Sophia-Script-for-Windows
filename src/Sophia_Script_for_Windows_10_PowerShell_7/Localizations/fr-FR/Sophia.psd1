@@ -66,7 +66,6 @@ NoResponse                                = Une connexion n'a pas pu être étab
 Restore                                   = Restaurer
 Run                                       = Démarrer
 Skipped                                   = Fonction "{0}" ignorée.
-GPOUpdate                                 = Mise à jour de la GPO...
 ThankfulToastTitle                        = Merci d'avoir utilisé Sophia Script ❤️
 DonateToastTitle                          = Si vous aimez ce projet, faites un don 🕊
 '@

@@ -57,7 +57,6 @@ NoResponse                                = Nem hozható létre kapcsolat a {0} 
 Restore                                   = Visszaállítás
 Run                                       = Futtatás
 Skipped                                   = Az "{0}" funkció kihagyva.
-GPOUpdate                                 = GPO frissítése...
 ThankfulToastTitle                        = Köszönjük, hogy használta a Sophia Script ❤️
 DonateToastTitle                          = Kérjük, adományozzon, ha tetszik ez a projekt 🕊
 '@

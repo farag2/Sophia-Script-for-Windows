@@ -1425,20 +1425,6 @@
     }
   },
   {
-    "Region": "UWP apps",
-    "Function": "CortanaAutostart",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Disable Cortana autostarting."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Enable Cortana autostarting (default value)."
-      }
-    }
-  },
-  {
     "Region": "Gaming",
     "Function": "XboxGameBar",
     "Arg": {
