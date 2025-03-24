@@ -520,8 +520,8 @@ StorageSense -Enable
 # Выключить Контроль памяти (значение по умолчанию)
 # StorageSense -Disable
 
-# Disable hibernation. It isn't recommended to turn off for laptops
-# Отключить режим гибернации. Не рекомендуется выключать на ноутбуках
+# Disable hibernation. Not recommended for laptops
+# Отключить режим гибернации. Не рекомендуется для ноутбуков
 Hibernation -Disable
 
 # Enable hibernate (default value)
@@ -617,16 +617,16 @@ ActiveHours -Automatically
 # Вручную изменять период активности для этого устройства на основе действий (значение по умолчанию)
 # ActiveHours -Manually
 
-# Set power plan on "High performance". It isn't recommended to turn on for laptops
-# Установить схему управления питанием на "Высокая производительность". Не рекомендуется включать на ноутбуках
+# Set power plan on "High performance". Not recommended for laptops
+# Установить схему управления питанием на "Высокая производительность". Не рекомендуется для ноутбуков
 PowerPlan -High
 
 # Set power plan on "Balanced" (default value)
 # Установить схему управления питанием на "Сбалансированная" (значение по умолчанию)
 # PowerPlan -Balanced
 
-# Do not allow the computer to turn off the network adapters to save power. It isn't recommended to turn off for laptops
-# Запретить отключение всех сетевых адаптеров для экономии энергии. Не рекомендуется выключать на ноутбуках
+# Do not allow the computer to turn off the network adapters to save power. Not recommended for laptops
+# Запретить отключение всех сетевых адаптеров для экономии энергии. Не рекомендуется для ноутбуков
 NetworkAdaptersSavePower -Disable
 
 # Allow the computer to turn off the network adapters to save power (default value)
@@ -803,11 +803,11 @@ PreventEdgeShortcutCreation -Channels Stable, Beta, Dev, Canary
 # PreventEdgeShortcutCreation -Disable
 
 # Back up the system registry to %SystemRoot%\System32\config\RegBack folder when PC restarts and create a RegIdleBackup in the Task Scheduler task to manage subsequent backups
-# Создавать копии реестра при перезагрузки ПК и создавать задание RegIdleBackup в Планировщике задания для управления последующими резервными копиями
+# Создавать копии реестра при перезагрузке ПК и задание RegIdleBackup в Планировщике для управления последующими резервными копиями
 # RegistryBackup -Enable
 
 # Do not back up the system registry to %SystemRoot%\System32\config\RegBack folder (default value)
-# Не создавать копии реестра при перезагрузки ПК (значение по умолчанию)
+# Не создавать копии реестра при перезагрузке ПК (значение по умолчанию)
 # RegistryBackup -Disable
 #endregion System
 
