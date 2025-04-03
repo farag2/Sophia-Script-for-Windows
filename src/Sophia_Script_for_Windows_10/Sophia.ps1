@@ -471,14 +471,6 @@ NewsInterests -Disable
 # Включить "Новости и интересы" на панели задач (значение по умолчанию)
 # NewsInterests -Enable
 
-# Hide People on the taskbar
-# Скрыть панель "Люди" на панели задач
-PeopleTaskbar -Hide
-
-# Show People on the taskbar (default value)
-# Отобразить панель "Люди" на панели задач (значение по умолчанию)
-# PeopleTaskbar -Show
-
 # Hide the Meet Now icon in the notification area
 # Скрыть иконку "Провести собрание" в области уведомлений
 MeetNow -Hide

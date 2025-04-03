@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = The script supports 64-bit Windows only.
 UnsupportedOSBuild                        = The script supports only Windows 10 Enterprise LTSC 2019. Your OS is {0}.
-UnsupportedWindowsTerminal                = Windows Terminal version is lower than 1.20. Please update it in the Microsoft Store and try again.
+UnsupportedWindowsTerminal                = Windows Terminal version is lower than 1.22. Please update it in the Microsoft Store and try again.
 UpdateWarning                             = Your Windows 10 build: {0}.{1}. Supported builds: {2} and higher. Run Windows Update and try again.
 UnsupportedLanguageMode                   = The PowerShell session in running in a limited language mode.
 LoggedInUserNotAdmin                      = The logged-on user doesn't have admin rights.

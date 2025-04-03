@@ -608,22 +608,6 @@
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
-    "Function": "PeopleTaskbar",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide"
-      },
-      "One": {
-        "Tag": "Show"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
-    "Region": "UI & Personalization",
-    "Control": "cmb",
-    "Required": "false",
     "Function": "MeetNow",
     "Arg": {
       "Zero": {

@@ -529,20 +529,6 @@
   },
   {
     "Region": "UI & Personalization",
-    "Function": "PeopleTaskbar",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide People on the taskbar."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show People on the taskbar (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
     "Function": "MeetNow",
     "Arg": {
       "Zero": {

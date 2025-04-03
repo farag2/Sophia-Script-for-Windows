@@ -43,5 +43,9 @@
   "WindowsTerminal": "Windows Терминал",
   "ConsoleHost": "Узел консоли Windows",
   "Channels": "Каналы",
+  "None": "Отсутствует",
+  "ShowMorePins": "Показать больше закреплений",
+  "ShowMoreRecommendations": "Показать больше рекомендаций",
+  "SearchIconLabel": "Знакчок и метка поиска",
   "Skip": "Пропустить"
 }

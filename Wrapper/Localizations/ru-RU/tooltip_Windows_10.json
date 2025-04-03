@@ -529,20 +529,6 @@
   },
   {
     "Region": "UI & Personalization",
-    "Function": "PeopleTaskbar",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть панель \"Люди\" на панели задач."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Отобразить панель \"Люди\" на панели задач (значение по умолчанию)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
     "Function": "MeetNow",
     "Arg": {
       "Zero": {

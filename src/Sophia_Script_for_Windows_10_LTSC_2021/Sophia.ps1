@@ -400,13 +400,13 @@ TaskViewButton -Hide
 # Отобразить кнопку Просмотра задач (значение по умолчанию)
 # TaskViewButton -Show
 
-# Hide People on the taskbar
-# Скрыть панель "Люди" на панели задач
-PeopleTaskbar -Hide
+# Hide the Meet Now icon in the notification area
+# Скрыть иконку "Провести собрание" в области уведомлений
+MeetNow -Hide
 
-# Show People on the taskbar (default value)
-# Отобразить панель "Люди" на панели задач (значение по умолчанию)
-# PeopleTaskbar -Show
+# Show the Meet Now icon in the notification area (default value)
+# Отображать иконку "Провести собрание" в области уведомлений (значение по умолчанию)
+# MeetNow -Show
 
 # Hide the Windows Ink Workspace button on the taskbar
 # Скрыть кнопку Windows Ink Workspace на панели задач

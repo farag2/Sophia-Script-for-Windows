@@ -552,6 +552,24 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
+    "LTSC2021": "false"
+  },
+  {
+    "Region": "UI & Personalization",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "MeetNow",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide"
+      },
+      "One": {
+        "Tag": "Show"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "LTSC2019": "false",
     "LTSC2021": "true"
   },
   {

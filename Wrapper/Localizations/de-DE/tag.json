@@ -43,5 +43,9 @@
   "WindowsTerminal": "Windows-Terminal",
   "ConsoleHost": "Konsolenhost",
   "Channels": "Kanäle",
+  "None": "Keiner",
+  "ShowMorePins": "Mehr Pins anzeigen",
+  "ShowMoreRecommendations": "Weitere Empfehlungen anzeigen",
+  "SearchIconLabel": "Beschriftung des Suchsymbols",
   "Skip": "Überspringen"
 }
