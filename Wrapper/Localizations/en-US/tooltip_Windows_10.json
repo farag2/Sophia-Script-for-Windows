@@ -1299,20 +1299,17 @@
   {
     "Region": "System",
     "Function": "Set-Association",
-    "Arg": {
+    "ToolTip": "Register app, calculate hash, and associate with an extension with the 'How do you want to open this' pop-up hidden.",
+    "Arg": {      
       "Zero": {
-        "Tag": "",
-        "ToolTip": "Register app, calculate hash, and associate with an extension with the 'How do you want to open this' pop-up hidden."
-      },
-      "One": {
         "Tag": "ProgramPath",
         "ToolTip": "Path to executable file."
       },
-      "Two": {
+      "One": {
         "Tag": "Extension",
         "ToolTip": "Extension."
       },
-      "Three": {
+      "Two": {
         "Tag": "Icon",
         "ToolTip": "Path to icon."
       }
@@ -1500,10 +1497,11 @@
   {
     "Region": "UWP apps",
     "Function": "UninstallUWPApps -ForAllUsers",
+    "ToolTip": "Uninstall UWP apps using the pop-up dialog box. If the \"For all users\" is checked apps packages will not be installed for new users. The \"ForAllUsers\" argument sets a checkbox to unistall packages for all users.",     
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Uninstall UWP apps using the pop-up dialog box. If the \"For all users\" is checked apps packages will not be installed for new users. The \"ForAllUsers\" argument sets a checkbox to unistall packages for all users."
+        "ToolTip": ""
       }
     }
   },

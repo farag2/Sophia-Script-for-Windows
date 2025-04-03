@@ -1251,10 +1251,29 @@
   {
     "Region": "System",
     "Function": "Set-Association",
+    "ToolTip": "Register app, calculate hash, and associate with an extension with the 'How do you want to open this' pop-up hidden.",
+    "Arg": {      
+    "Zero": {
+      "Tag": "ProgramPath",
+      "ToolTip": "Path to executable file."
+      },
+      "One": {
+        "Tag": "Extension",
+        "ToolTip": "Extension."
+      },
+      "Two": {
+        "Tag": "Icon",
+        "ToolTip": "Path to icon."
+      }
+    }
+  },
+  {
+    "Region": "System",
+    "Function": "Get-Association",
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Register app, calculate hash, and associate with an extension with the 'How do you want to open this' pop-up hidden."
+        "ToolTip": "Get app, calculate hash, and associate with an extension with the 'How do you want to open this' pop-up hidden."
       },
       "One": {
         "Tag": "ProgramPath",
