@@ -49,6 +49,7 @@
 
 * [Как использовать](#как-использовать)
   * [Скачать через PowerShell](#скачать-через-powershell)
+  * [Скачать через Chocolatey](#скачать-через-chocolatey)
   * [Вручную](#вручную)
   * [Как выполните конкретную функцию(и)](#как-выполните-конкретную-функциюи)
   * [Wrapper](#wrapper)
@@ -83,6 +84,20 @@ iwr script.sophia.team -useb | iex
 
 ```powershell
 iwr sl.sophia.team -useb | iex
+```
+
+### Скачать через Chocolatey
+
+Команда скачает и распакуют последнюю версию архива Sophia Script (`без последующего запуска`) согласно версии Windows, на которой она запускалась. Допустим, если вы запустите ее на Windows 11, то скачается Sophia Script для `Windows 11`. По умолчанию для `PowerShell 5.1`, если не указано обратное.
+
+```powershell
+choco install sophia --force -y
+```
+
+Скачать `Sophia Script for Windows` для `PowerShell 7`.
+
+```powershell
+choco install sophia --params "/PS7" --force -y
 ```
 
 ### Вручную

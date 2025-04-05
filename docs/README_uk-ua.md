@@ -48,7 +48,8 @@
 ## Зміст
 
 * [Як користуватися](#як-користуватися)
-  * [Як завантажити Sophia Script через PowerShell](#завантажити-через-powershell)
+  * [Завантажити через PowerShell](#завантажити-через-powershell)
+  * [Завантажити через Chocolatey](#завантажити-через-chocolatey)
   * [Вручну](#вручну)
   * [Як запустити певну функцію(ї)](#як-запустити-певну-функціюї)
   * [Wrapper](#wrapper)
@@ -71,7 +72,7 @@
 >
 > `Sophia Script для Windows` може не працювати на "самопальних" збірках Windows. Особливо, якщо збірка була створена так, що в ній спеціально було зламано Microsoft Defender і вимкнено телеметрію, вирізавши системні компоненти.
 
-## Завантажити через PowerShell
+### Завантажити через PowerShell
 
 Команда завантажить і розпакує останній архів Sophia Script (`без запуску`) відповідно до того, під якою версією Windows і PowerShell він запускається. Якщо запустити її, наприклад, в Windows 11 через PowerShell 5.1, вона завантажить Sophia Script для `Windows 11 PowerShell 5.1`.
 
@@ -83,6 +84,20 @@ iwr script.sophia.team -useb | iex
 
 ```powershell
 iwr sl.sophia.team -useb | iex
+```
+
+### Завантажити через Chocolatey
+
+TКоманда завантажить і розпакує останню версію архіву Sophia Script (`без подальшого запуску`) згідно з версією Windows, на якій вона запускалася. Припустимо, якщо ви запустите її на Windows 11, то завантажиться Sophia Script для `Windows 11`. За замовчуванням для `PowerShell 5.1`, якщо не вказано зворотне.
+
+```powershell
+choco install sophia --force -y
+```
+
+Завантажити `Sophia Script for Windows` для `PowerShell 7`.
+
+```powershell
+choco install sophia --params "/PS7" --force -y
 ```
 
 ### Вручну

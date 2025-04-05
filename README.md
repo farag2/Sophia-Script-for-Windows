@@ -49,6 +49,7 @@ Made with <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-W
 
 * [How to use](#how-to-use)
   * [Download via PowerShell](#download-via-powershell)
+  * [Download via Chocolatey](#download-via-chocolatey)
   * [Manual method](#manual-method)
   * [How to run the specific function(s)](#how-to-run-the-specific-functions)
   * [Wrapper](#wrapper)
@@ -83,6 +84,20 @@ The command will download and expand the latest Sophia Script archive (`without 
 
 ```powershell
 iwr sl.sophia.team -useb | iex
+```
+
+### Download via Chocolatey
+
+The command will download and expand the latest Sophia Script archive (`without running`) according which Windows it is run on. If you run it on Windows 11, it will download Sophia Script for `Windows 11`. For `PowerShell 5.1` by default is not otherwise specified.
+
+```powershell
+choco install sophia --force -y
+```
+
+Download `Sophia Script for Windows` for `PowerShell 7`.
+
+```powershell
+choco install sophia --params "/PS7" --force -y
 ```
 
 ### Manual method

@@ -49,6 +49,7 @@ Mit <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows
 
 * [Verwendung](#verwendung)
   * [Herunterladen über PowerShell](#herunterladen-über-powershell)
+  * [Herunterladen über Chocolatey](#herunterladen-über-chocolatey)
   * [Manuelle Methode](#manuelle-methode)
   * [Verwendung von spezifischen Funktionen](#verwendung-von-spezifischen-funktionen)
   * [Wrapper](#wrapper)
@@ -79,10 +80,24 @@ Der Befehl lädt das neueste Sophia Script-Archiv herunter und extrahiert es (`o
 iwr script.sophia.team -useb | iex
 ```
 
-Der Befehl lädt das neueste Sophia Script-Archiv (ohne es auszuführen) aus dem letzten verfügbaren Commit herunter und erweitert es, je nachdem, auf welchen Windows- und PowerShell-Versionen es ausgeführt wird.
+Der Befehl lädt das neueste Sophia Script-Archiv (`ohne es auszuführen`) aus dem letzten verfügbaren Commit herunter und erweitert es, je nachdem, auf welchen Windows- und PowerShell-Versionen es ausgeführt wird.
 
 ```powershell
 iwr sl.sophia.team -useb | iex
+```
+
+### Herunterladen über Chocolatey
+
+Der Befehl lädt das neueste Sophia Script-Archiv herunter und erweitert es (`ohne es auszuführen)`, je nachdem, unter welchem Windows er ausgeführt wird. Wenn Sie ihn unter Windows 11 ausführen, wird Sophia Script für `Windows 11` heruntergeladen. Für `PowerShell 5.1` ist standardmäßig nichts anderes angegeben.
+
+```powershell
+choco install sophia --force -y
+```
+
+Download `Sophia Script for Windows` for `PowerShell 7`.
+
+```powershell
+choco install sophia --params "/PS7" --force -y
 ```
 
 ### Manuelle Methode
