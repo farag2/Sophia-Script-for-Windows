@@ -5122,7 +5122,7 @@ function StorageSense
 	Hibernation -Disable
 
 	.NOTES
-	It isn't recommended to turn off for laptops
+	Not recommended to turn off for laptops
 
 	.NOTES
 	Current user
@@ -6407,7 +6407,7 @@ function WindowsLatestUpdate
 	PowerPlan -Balanced
 
 	.NOTES
-	It isn't recommended to turn on for laptops
+	Not recommended to turn on for laptops
 
 	.NOTES
 	Current user
@@ -6465,7 +6465,7 @@ function PowerPlan
 	NetworkAdaptersSavePower -Enable
 
 	.NOTES
-	It isn't recommended to turn off for laptops
+	Not recommended to turn off for laptops
 
 	.NOTES
 	Current user
