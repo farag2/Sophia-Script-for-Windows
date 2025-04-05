@@ -1,0 +1,7 @@
+﻿VERIFICATION
+Verification is intended to assist the Chocolatey moderators and community
+in verifying that this package's contents are trustworthy.
+
+This package is published by Team Sophia, the developers of Sophia Script for Windows.
+Any files will be identical to other package types published by the project as all binaries are downloaded via Ci/CD:
+https://github.com/farag2/Sophia-Script-for-Windows/blob/master/.github/workflows/Sophia.yml

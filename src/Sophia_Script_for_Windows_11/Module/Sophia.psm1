@@ -557,6 +557,35 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	}
 	$Script:DefenderServices = ($Services | Where-Object -FilterScript {$_.Status -ne "running"} | Measure-Object).Count -lt $Services.Count
 
+	# Checking wdFilter service
+	try
+	{
+		if ((Get-Service -Name wdFilter -ErrorAction Stop).Status -ne "Running")
+		{
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
+			Write-Information -MessageData "" -InformationAction Continue
+
+			Write-Verbose -Message "https://www.microsoft.com/software-download/windows11" -Verbose
+			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+			exit
+		}
+	}
+	catch [System.ComponentModel.Win32Exception]
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
+		Write-Information -MessageData "" -InformationAction Continue
+
+		Write-Verbose -Message "https://www.microsoft.com/software-download/windows11" -Verbose
+		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+		exit
+	}
+
 	# Checking Get-MpPreference cmdlet
 	try
 	{

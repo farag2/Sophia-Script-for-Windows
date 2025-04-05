@@ -1,0 +1,10 @@
+﻿From: https://github.com/farag2/Sophia-Script-for-Windows/blob/master/LICENSE
+
+LICENSE
+
+The MIT License (MIT)
+
+Copyright (c) 2014—2025 Team Sophia
+
+LGPO.exe is developed by Microsoft Corporation
+License: https://www.microsoft.com/en-us/download/details.aspx?id=55319
