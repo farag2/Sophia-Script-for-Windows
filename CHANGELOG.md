@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.20.4 | 6.8.4 — 05.04.2025
+
+* Code refactoring;
+* Renamed `UpdateLGPEPolicies` function into `ScanRegistryPolicies`;
+  * The function was improved and re-written.
+* Removed `PeopleTaskbar` function for `Windows 10`;
+* Fixed `Show-menu` function for make a selection in an interective menu;
+* Got an access to Chocolatey `sophia` package;
+  * All choco installer re-written;
+  * The command will download and expand the latest Sophia Script archive (without running) according which Windows it is run on. If you run it on Windows 11, it will download Sophia Script for Windows 11. For PowerShell 5.1 by default is not otherwise specified.
+
+```powershell
+# Download a PowerShell 5.1 version of Sophia Script by default
+choco install sophia --force -y
+
+# Download a PowerShell 7 version of Sophia Script
+choco install sophia --params "/PS7" --force -y
+```
+
+* Added `MeetNow` function for `Windows 10 x64 Enterprise LTSC 2021`
+* Minor changes.
+
+Thanks to @gtumanyan, @lowl1f3, nikolay7v, @ryandunton
+
+## Wrapper 2.7.13
+
+* Refactor mostly to JSON (Basically done)
+* Add changes to translations in 'tag.json' like None, ShowMorePins, ShowMoreRecommendations, SearchIconLabel
+* Imported LTSC versions have red colored tab icon and text to show which tab is disabled. Donation to Sophia (1. ko-fi, 2. Boosty).
+
 ## 5.20.3 | 6.8.3 — 06.02.2025
 
 * Для российских пользователей мы создали страницу на Boosty: <https://boosty.to/teamsophia>;
