@@ -26,7 +26,7 @@
 [![Discord][discord-news-badge]][discord-link]
 
 [![build](https://img.shields.io/github/actions/workflow/status/farag2/Sophia-Script-for-Windows/Sophia.yml?label=build&logo=GitHub)](https://github.com/farag2/Sophia-Script-for-Windows/actions)
-[![GitHub Release](https://img.shields.io/github/v/release/farag2/Sophia-Script-for-Windows)](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)
+[![GitHub Release](https://img.shields.io/github/v/release/farag2/Sophia-Script-for-Windows?logo=GitHub)](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)
 
 [![en-US](https://img.shields.io/badge/lang-en--us-green)](../README.md)
 [![uk-UA](https://img.shields.io/badge/lang-uk--UA-blue)](./README_uk-ua.md)
