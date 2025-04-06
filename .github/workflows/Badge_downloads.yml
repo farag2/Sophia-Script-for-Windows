@@ -68,5 +68,5 @@ jobs:
           filename: SophiaScriptDownloadsCount.json 
           label: downloads
           message: ${{ env.DOWNLOADS_COUNT }}
-          namedLogo: PowerShell
+          namedLogo: GitHub
           color: brightgreen
