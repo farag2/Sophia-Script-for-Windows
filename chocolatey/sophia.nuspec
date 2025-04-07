@@ -3,8 +3,8 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
     <id>sophia</id>
-    <version>6.8.3</version>
-    <packageSourceUrl>https://github.com/farag2/Sophia-Script-for-Windows</packageSourceUrl>
+    <version>6.8.4.2</version>
+    <packageSourceUrl>https://github.com/farag2/Sophia-Script-for-Windows/tree/master/chocolatey</packageSourceUrl>
     <owners>Team Sophia</owners>
     <title>Sophia Script for Windows</title>
     <authors>Team Sophia</authors>

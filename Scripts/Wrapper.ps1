@@ -1,24 +1,18 @@
 # https://github.com/farag2/Sophia-Script-for-Windows/blob/master/sophia_script_versions.json
 $Parameters = @{
-    Uri = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
+	Uri = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
 }
+$Latest_Release_Sophia_Script_Wrapper = (Invoke-RestMethod @Parameters).Sophia_Script_Wrapper
 
-$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Wrapper
+Write-Verbose -Message "Sophia.Script.Wrapper.v$Latest_Release_Sophia_Script_Wrapper.zip" -Verbose
 
-Write-Verbose -Message "Sophia.Script.Wrapper.v$LatestRelease.zip" -Verbose
+New-Item -Path "Sophia_Script_Wrapper_v$Latest_Release_Sophia_Script_Wrapper" -ItemType Directory -Force
 
-New-Item -Path "Sophia_Script_Wrapper_v$LatestRelease" -ItemType Directory -Force
-
-Get-ChildItem -Path Wrapper -Exclude README.md -Force | Copy-Item -Destination "Sophia_Script_Wrapper_v$LatestRelease" -Recurse -Force
+Get-ChildItem -Path Wrapper -Exclude README.md -Force | Copy-Item -Destination "Sophia_Script_Wrapper_v$Latest_Release_Sophia_Script_Wrapper" -Recurse -Force
 $Parameters = @{
-    Path             = "Sophia_Script_Wrapper_v$LatestRelease"
-    DestinationPath  = "Sophia.Script.Wrapper.v$LatestRelease.zip"
-    CompressionLevel = "Fastest"
-    Force            = $true
+	Path             = "Sophia_Script_Wrapper_v$Latest_Release_Sophia_Script_Wrapper"
+	DestinationPath  = "Sophia.Script.Wrapper.v$Latest_Release_Sophia_Script_Wrapper.zip"
+	CompressionLevel = "Fastest"
+	Force            = $true
 }
 Compress-Archive @Parameters
-
-# Calculate hash
-Get-Item -Path "Sophia.Script.Wrapper.v$LatestRelease.zip" -Force | ForEach-Object -Process {
-    "$($_.Name)  $((Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash)"
-} | Add-Content -Path SHA256SUM -Encoding utf8 -Force

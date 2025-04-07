@@ -68,7 +68,7 @@ Thanks to iGor202512, mogbi, and homeless
 
 ## 5.20.1 | 6.8.1 — 19.01.2025
 
-* Added a tutorial video how to run the specific function(s) via `Functions.ps1` script;
+* Added a tutorial video how to run the specific function(s) via `Import-TabCompletion.ps1` script;
   * <https://github.com/farag2/Sophia-Script-for-Windows?tab=readme-ov-file#how-to-run-the-specific-functions>
 * Updated cursor pack for `Cursor` function up to the latest available version from <https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-886489356>;
 * Changed names for functions, having added parameter values to choose:
@@ -200,7 +200,7 @@ The imported .ps1 file must be in Sophia Script folder.
 ## 5.18.7 | 6.6.7 — 12.06.2024
 
 * Fixed `CleanupTask -Register` function not working due to a typo;
-  * Please re-create it via invoking `. .\Functions.ps1` (with a dot at the beginning) method.
+  * Please re-create it via invoking `. .\Import-TabCompletion.ps1` (with a dot at the beginning) method.
 * Removed `CommandLineProcessAudit` and `Install-WSA` as WSA support is deprecated;
 * Improved `EventViewerCustomView -Disable` function;
 * Fixed typos;
@@ -229,7 +229,7 @@ Closed #576
   * Start icon positions are stored in a binary obfuscated JSON file that changes with every update. `$env:LOCALAPPDATA\Packages\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\LocalState\start2.bin`, and it's changed with every update;
   * Take a look at https://gist.github.com/rad1ke/d8c4121931633eca04ca625d09ff1a11#file-windows-11-setup-ps1-L42 if you're interested in the function.
 * Fixed `Cursors` function;
-  * Please re-run it by using `. .\Functions.ps1` module
+  * Please re-run it by using `. .\Import-TabCompletion.ps1` module
 * Added a warning for `Set-Association` function: `.pdf` and `http/https` protocols will be skipped;
   * Microsoft has blocked write access to UserChoice key for .pdf extention and http/https protocols with KB5034765 and KB5034763 for Windows 11 and Windows 10 respectively.
 * `RKNBypass` updated;
@@ -341,7 +341,7 @@ With best wishes for a happy New Year from `Team Sophia` ![img](https://forum.ru
 
 * The `InitialActions` function simplified;
 * Fixed bug in `TempTask` when `$env:SystemDrive\Recovery` folder wasn't removed;
-  * Just in case re-create `Temp` scheduled task via `. .\Functions.ps1` [method](https://github.com/farag2/Sophia-Script-for-Windows#how-to-run-the-specific-functions).
+  * Just in case re-create `Temp` scheduled task via `. .\Import-TabCompletion.ps1` [method](https://github.com/farag2/Sophia-Script-for-Windows#how-to-run-the-specific-functions).
   * Thanks to `linchel23`.
 * Added `CopilotButton` function for `Windows 10` to hide ot show Copilot button on the taskbar as Windows starts supporting it with the latest available build;
 * Added `WindowsLatestUpdate` function for `Windows 10` to let user get Windows updates as soon as they're available for your device as Windows starts supporting it with the latest available build;
@@ -531,7 +531,7 @@ Thanks to frost_tg for bug reporting
 
   ```powershell
   # With dot at the beginning
-  . .\Functions.ps1
+  . .\Import-TabCompletion.ps1
 
   Sophia -Functions "CleanupTask -Register", "SoftwareDistributionTask -Register", "TempTask -Register"
   ```
@@ -1462,8 +1462,8 @@ Diff from v5.9
 * Calling the specific function was completely rewritten! :rocket:
   * Added the <kbd>Tab</kbd> functions autocompletion by typing its' first letters
     https://user-images.githubusercontent.com/10544660/225270281-908abad1-d125-4cae-a19b-2cf80d5d2751.mp4
-  * The code from moved to the `Functions.ps1` file;
-  * If you want to call the specific function you need to [dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-) the `Functions.ps1` first
+  * The code from moved to the `Import-TabCompletion.ps1` file;
+  * If you want to call the specific function you need to [dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-) the `Import-TabCompletion.ps1` first
 
     ```powershell
     # With a dot at the beginning

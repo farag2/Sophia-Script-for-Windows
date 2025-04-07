@@ -133,11 +133,11 @@ choco install sophia --params "/PS7" --force -y
 ### Verwendung von spezifischen Funktionen
 
 * Führen Sie alle Schritte aus dem Abschnitt [Manuelle Methode](#manuelle-methode) aus und stoppen Sie bei den Einstellungen der Ausführungsrichtlinie in PowerShell.
-* Um spezifische Funktionen auszuführen [dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator) die `Functions.ps1` datei zuerst:
+* Um spezifische Funktionen auszuführen [dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator) die `Import-TabCompletion.ps1` datei zuerst:
 
 ```powershell
 # With a dot at the beginning
-. .\Functions.ps1
+. .\Import-TabCompletion.ps1
 ```
 
 * Jetzt können Sie dies tun (die Anführungszeichen sind erforderlich)
@@ -203,7 +203,7 @@ Oder verwenden Sie ein Format im alten Stil ohne die <kbd>TAB</kbd>-Funktionen z
 * UI & Personalisierung einrichten;
 * OneDrive "richtig" deinstallieren;
 * Interaktive [Eingabeaufforderungen](#change-user-folders-location-programmatically-using-the-interactive-menu);
-* Die <kbd>TAB</kbd> [Autovervollständigung](#the-tab-autocomplete-read-more-here) für Funktionen und ihre Argumente (bei Verwendung der Datei Functions.ps1);
+* Die <kbd>TAB</kbd> [Autovervollständigung](#the-tab-autocomplete-read-more-here) für Funktionen und ihre Argumente (bei Verwendung der Datei Import-TabCompletion.ps1);
 * Ändern Sie den Speicherort der Benutzerordner programmatisch (ohne die Benutzerdateien zu verschieben) im interaktiven Menü mit Hilfe von Pfeilen zur Auswahl eines Laufwerks
   * Desktop
   * Dokumente
@@ -267,7 +267,7 @@ https://user-images.githubusercontent.com/10544660/253818031-b7ce6bf1-d968-41ea-
 
 * Holen Sie sich die Sprache der Benutzeroberfläche Ihres Betriebssystems, indem Sie "$PSUICulture" in PowerShell aufrufen;
 * Erstellen Sie einen Ordner mit dem Namen der UI-Sprache;
-* Legen Sie Ihre lokalisierte Sophia.psd1-Datei in diesen Ordner.
+* Legen Sie Ihre lokalisierte SophiaScript.psd1-Datei in diesen Ordner.
 
 ## Media
 

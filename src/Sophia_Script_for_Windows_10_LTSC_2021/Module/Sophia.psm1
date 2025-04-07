@@ -545,7 +545,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	# Checking wdFilter service
 	try
 	{
-		if (Get-Service -Name wdFilter -ErrorAction Stop)
+		if (-not (Get-Service -Name wdFilter -ErrorAction Stop))
 		{
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
@@ -688,7 +688,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			UseBasicParsing = $true
 		}
 		$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_PowerShell_5_1
-		$CurrentRelease = (Get-Module -Name Sophia).Version.ToString()
+		$CurrentRelease = (Get-Module -Name SophiaScript).Version.ToString()
 
 		if ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)
 		{
@@ -4300,7 +4300,7 @@ function Cursors
 					"%SystemRoot%\Cursors\W11 Cursor Light Free\arrow.cur",
 					"%SystemRoot%\Cursors\W11 Cursor Light Free\help.cur",
 					"%SystemRoot%\Cursors\W11 Cursor Light Free\appstarting.ani",
-					"%SystemRoot%\Cursors\W11 Cursor Light Free\wait.ani",,
+					"%SystemRoot%\Cursors\W11 Cursor Light Free\wait.ani",
 					"%SystemRoot%\Cursors\W11 Cursor Light Free\crosshair.cur",
 					"%SystemRoot%\Cursors\W11 Cursor Light Free\ibeam.cur",
 					"%SystemRoot%\Cursors\W11 Cursor Light Free\nwpen.cur",

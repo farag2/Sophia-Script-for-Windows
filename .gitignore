@@ -1,4 +1,1 @@
 # Exclude user-created configurations
-/Sophia Script/*/*.ps1
-!/Sophia Script/*/Functions.ps1
-!/Sophia Script/*/Sophia.ps1

@@ -587,7 +587,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	# Checking wdFilter service
 	try
 	{
-		if (Get-Service -Name wdFilter -ErrorAction Stop)
+		if (-not (Get-Service -Name wdFilter -ErrorAction Stop))
 		{
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
@@ -729,7 +729,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			UseBasicParsing = $true
 		}
 		$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_5_1
-		$CurrentRelease = (Get-Module -Name Sophia).Version.ToString()
+		$CurrentRelease = (Get-Module -Name SophiaScript).Version.ToString()
 
 		if ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)
 		{
@@ -4469,7 +4469,7 @@ function Cursors
 					"%SystemRoot%\Cursors\W11 Cursor Light Free\arrow.cur",
 					"%SystemRoot%\Cursors\W11 Cursor Light Free\help.cur",
 					"%SystemRoot%\Cursors\W11 Cursor Light Free\appstarting.ani",
-					"%SystemRoot%\Cursors\W11 Cursor Light Free\wait.ani",,
+					"%SystemRoot%\Cursors\W11 Cursor Light Free\wait.ani",
 					"%SystemRoot%\Cursors\W11 Cursor Light Free\crosshair.cur",
 					"%SystemRoot%\Cursors\W11 Cursor Light Free\ibeam.cur",
 					"%SystemRoot%\Cursors\W11 Cursor Light Free\nwpen.cur",
@@ -7634,15 +7634,15 @@ function WinPrtScrFolder
 				return
 			}
 
-			# Checking how the script was invoked: via a preset or Functions.ps1
+			# Checking how the script was invoked: via a preset or Import-TabCompletion.ps1
 			# https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/get-variable
 			# This function works only if OneDrive was already uninstalled, or user is intended to uninstall "OneDrive -Uninstall" within commandline
 			$PresetName = (Get-Variable -Name MyInvocation -Scope Script).Value.PSCommandPath
 			$PSCallStack = (Get-PSCallStack).Position.Text
 			$OneDriveInstalled = Get-Package -Name "Microsoft OneDrive" -ProviderName Programs -Force -ErrorAction Ignore
 
-			# Checking whether function was called from Functions.ps1
-			if ($PresetName -match "Functions.ps1")
+			# Checking whether function was called from Import-TabCompletion.ps1
+			if ($PresetName -match "Import-TabCompletion.ps1")
 			{
 				# Checking whether command contains "WinPrtScrFolder -Desktop"
 				if ($PSCallStack -match "WinPrtScrFolder -Desktop")

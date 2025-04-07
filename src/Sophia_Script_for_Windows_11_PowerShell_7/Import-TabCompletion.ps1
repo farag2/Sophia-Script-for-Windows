@@ -1,6 +1,6 @@
-﻿<#
+<#
 	.SYNOPSIS
-	The TAB completion for functions and their arguments
+	Enable tab completion to invoke for functions if you do not know function name
 
 	Version: 6.8.4
 	Date: 05.04.2025
@@ -10,7 +10,7 @@
 	Thanks to all https://forum.ru-board.com members involved
 
 	.DESCRIPTION
-	Dot source the script first: . .\Function.ps1 (with a dot at the beginning)
+	Dot source the script first: . .\Import-TabCompletion.ps1 (with a dot at the beginning)
 	Start typing any characters contained in the function's name or its arguments, and press the TAB button
 
 	.EXAMPLE
@@ -26,7 +26,7 @@
 #>
 
 #Requires -RunAsAdministrator
-#Requires -Version 5.1
+#Requires -Version 7.4
 
 function Sophia
 {
@@ -51,10 +51,17 @@ Clear-Host
 
 $Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.8.4 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) Team Sophia, 2014$([System.Char]0x2013)2025"
 
-Remove-Module -Name Sophia -Force -ErrorAction Ignore
-Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force
+Remove-Module -Name SophiaScript -Force -ErrorAction Ignore
+Import-Module -Name $PSScriptRoot\Manifest\SophiaScript.psd1 -PassThru -Force
 
-Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia -BaseDirectory $PSScriptRoot\Localizations
+try
+{
+	Import-LocalizedData -BindingVariable Global:Localization -UICulture $PSUICulture -BaseDirectory $PSScriptRoot\Localizations -FileName Sophia -ErrorAction Stop
+}
+catch
+{
+	Import-LocalizedData -BindingVariable Global:Localization -UICulture en-US -BaseDirectory $PSScriptRoot\Localizations -FileName Sophia
+}
 
 # The mandatory checks. Please, do not comment out this function
 InitialActions
@@ -73,7 +80,7 @@ $Parameters = @{
 		)
 
 		# Get functions list with arguments to complete
-		$Commands = (Get-Module -Name Sophia).ExportedCommands.Keys
+		$Commands = (Get-Module -Name SophiaScript).ExportedCommands.Keys
 		foreach ($Command in $Commands)
 		{
 			$ParameterSets = (Get-Command -Name $Command).Parametersets.Parameters | Where-Object -FilterScript {$null -eq $_.Attributes.AliasNames}
@@ -91,6 +98,30 @@ $Parameters = @{
 					{
 						# The "OneDrive -Install -AllUsers" construction
 						"OneDrive" + " " + "-Install" + " " + "-" + $ParameterSet | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
+					}
+
+					continue
+				}
+			}
+
+			# If a module command is UnpinTaskbarShortcuts
+			if ($Command -eq "UnpinTaskbarShortcuts")
+			{
+				# Get all command arguments, excluding defaults
+				foreach ($ParameterSet in $ParameterSets.Name)
+				{
+					# If an argument is Shortcuts
+					if ($ParameterSet -eq "Shortcuts")
+					{
+						$ValidValues = ((Get-Command -Name UnpinTaskbarShortcuts).Parametersets.Parameters | Where-Object -FilterScript {$null -eq $_.Attributes.AliasNames}).Attributes.ValidValues
+						foreach ($ValidValue in $ValidValues)
+						{
+							# The "UnpinTaskbarShortcuts -Shortcuts <function>" construction
+							"UnpinTaskbarShortcuts" + " " + "-" + $ParameterSet + " " + $ValidValue | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
+						}
+
+						# The "UnpinTaskbarShortcuts -Shortcuts <functions>" construction
+						"UnpinTaskbarShortcuts" + " " + "-" + $ParameterSet + " " + ($ValidValues -join ", ") | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
 					}
 
 					continue

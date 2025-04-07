@@ -37,8 +37,8 @@
 	Editions: Home/Pro/Enterprise
 
 	.NOTES
-	To use the TAB completion for functions and their arguments dot source the Functions.ps1 script first:
-		. .\Function.ps1 (with a dot at the beginning)
+	To use Enable tab completion to invoke for functions if you do not know function name dot source the Import-TabCompletion.ps1 script first:
+		. .\Import-TabCompletion.ps1 (with a dot at the beginning)
 	Read more at https://github.com/farag2/Sophia-Script-for-Windows?tab=readme-ov-file#how-to-run-the-specific-functions
 
 	.LINK GitHub
@@ -93,7 +93,7 @@ $ScriptFiles = @(
 	"$PSScriptRoot\Localizations\uk-UA\Sophia.psd1",
 	"$PSScriptRoot\Localizations\zh-CN\Sophia.psd1",
 	"$PSScriptRoot\Module\Sophia.psm1",
-	"$PSScriptRoot\Manifest\Sophia.psd1"
+	"$PSScriptRoot\Manifest\SophiaScript.psd1"
 )
 if (($ScriptFiles | Test-Path) -contains $false)
 {
@@ -107,7 +107,7 @@ if (($ScriptFiles | Test-Path) -contains $false)
 	exit
 }
 
-Remove-Module -Name Sophia -Force -ErrorAction Ignore
+Remove-Module -Name SophiaScript -Force -ErrorAction Ignore
 
 # PowerShell 7 doesn't load en-us localization automatically if there is no localization folder in user's language which is determined by $PSUICulture
 # https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/import-localizeddata?view=powershell-7.3
@@ -124,7 +124,7 @@ catch
 # Checking whether script is the correct PowerShell version
 try
 {
-	Import-Module -Name $PSScriptRoot\Manifest\Sophia.psd1 -PassThru -Force -ErrorAction Stop
+	Import-Module -Name $PSScriptRoot\Manifest\SophiaScript.psd1 -PassThru -Force -ErrorAction Stop
 }
 catch [System.InvalidOperationException]
 {

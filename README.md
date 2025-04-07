@@ -133,11 +133,11 @@ choco install sophia --params "/PS7" --force -y
 ### How to run the specific function(s)
 
 * Do all steps from [Manual method](#manual-method) section and stop at setting execution policy in `PowerShell`;
-* [Dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator) the `Functions.ps1` file first:
+* [Dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator) the `Import-TabCompletion.ps1` file first:
 
 ```powershell
 # With a dot at the beginning
-. .\Functions.ps1
+. .\Import-TabCompletion.ps1
 ```
 
 * Now you can do like this (the quotation marks required)
@@ -203,7 +203,7 @@ Or use an old-style format without the <kbd>TAB</kbd> functions autocomplete (th
 * Set up UI & Personalization;
 * Uninstall OneDrive "correctly";
 * Interactive [prompts](#change-user-folders-location-programmatically-using-the-interactive-menu);
-* The <kbd>TAB</kbd> [completion](#the-tab-autocomplete-read-more-here) for functions and their arguments (if using the Functions.ps1 file);
+* The <kbd>TAB</kbd> [completion](#the-tab-autocomplete-read-more-here) for functions and their arguments (if using the Import-TabCompletion.ps1 file);
 * Change location of the user folders programmatically (without moving user files) within interactive menu using arrows to select a drive
   * Desktop
   * Documents
@@ -270,7 +270,7 @@ https://user-images.githubusercontent.com/10544660/253818031-b7ce6bf1-d968-41ea-
 
 * Get your OS UI culture by invoking `$PSUICulture` in PowerShell;
 * Create a folder with the UI culture name;
-* Place your localized Sophia.psd1 file into this folder.
+* Place your localized SophiaScript.psd1 file into this folder.
 
 ## Media
 

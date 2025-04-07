@@ -9,11 +9,15 @@ jobs:
   patch:
     runs-on: windows-latest
     timeout-minutes: 5
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@main
-      - name: Signing all .ps1, .psm1, .psd1 files
-        run: |
-          . Scripts\Sign.ps1
+      - name: Checkout repository
+        uses: actions/checkout@main
+
+        with:
+          ref: refs/heads/master
+          fetch-depth: 0
 
       - name: Dependencies
         run: |
@@ -52,64 +56,40 @@ jobs:
           . "Scripts\Wrapper.ps1"
 
       - name: ReleaseNotesTemplate
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Set $env:GITHUB_REF_NAME variable to use in ps1 file instead of ${{ github.ref_name }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
         id: read_release
         run: |
-          # Get a penultimate build tag
-          $Token = "${{ secrets.GITHUB_TOKEN }}"
-          $Headers = @{
-              Accept        = "application/vnd.github+json"
-              Authorization = "Bearer $Token"
+          . "Scripts\ReleaseNotesTemplate.ps1"
+
+      - name: Adding SHA256SUM.json
+        run: |
+          $JSON = @{}
+          Get-ChildItem -Path . -File | Where-Object -FilterScript {$_.Name -match "zip|exe"} | ForEach-Object -Process {
+            Write-Verbose -Message "$($_.Name) has $((Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash) hashsum" -Verbose
+
+            $JSON += @{
+              "$($_.Name)" = "$((Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash)"
+            }
           }
-          $Parameters = @{
-              Uri             = "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases"
-              Headers         = $Headers
-              UseBasicParsing = $true
-              Verbose         = $true
-          }
-          $Penultimate = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 1
+          $JSON | ConvertTo-Json | Set-Content -Path SHA256SUM.json -Encoding utf8 -Force
 
-          # Parse json for the latest script versions
-          $Parameters = @{
-              Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
-              UseBasicParsing = $true
-              Verbose         = $true
-          }
-          $Sophia_Script_Windows_10_PowerShell_5_1 = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_PowerShell_5_1
-          $Sophia_Script_Windows_10_PowerShell_7 = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_PowerShell_7
-          $Sophia_Script_Windows_10_LTSC2019 = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_LTSC2019
-          $Sophia_Script_Windows_10_LTSC2021 = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_LTSC2021
-          $Sophia_Script_Windows_11_PowerShell_5_1 = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_5_1
-          $Sophia_Script_Windows_11_PowerShell_7 = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_7
-          $Sophia_Script_Windows_11_LTSC2024 = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_LTSC2024
-          $Sophia_Script_Wrapper = (Invoke-RestMethod @Parameters).Sophia_Script_Wrapper
-
-          # Replace variables with script latest versions
-          # No need to replace special characters with percent-encoding ones
-          (Get-Content -Path ReleaseNotesTemplate.md -Encoding utf8 -Raw) | Foreach-Object -Process {
-              $_ -replace "NewVersion", "${{ github.ref_name }}" `
-              -replace "OldVersion", $Penultimate `
-              -replace "Sophia_Script_Windows_10_PowerShell_5_1", $Sophia_Script_Windows_10_PowerShell_5_1 `
-              -replace "Sophia_Script_Windows_10_PowerShell_7", $Sophia_Script_Windows_10_PowerShell_7 `
-              -replace "Sophia_Script_Windows_10_LTSC2019", $Sophia_Script_Windows_10_LTSC2019 `
-              -replace "Sophia_Script_Windows_10_LTSC2021", $Sophia_Script_Windows_10_LTSC2021 `
-              -replace "Sophia_Script_Windows_11_PowerShell_5_1", $Sophia_Script_Windows_11_PowerShell_5_1 `
-              -replace "Sophia_Script_Windows_11_PowerShell_7", $Sophia_Script_Windows_11_PowerShell_7 `
-              -replace "Sophia_Script_Windows_11_LTSC2024", $Sophia_Script_Windows_11_LTSC2024 `
-              -replace "Sophia_Script_Wrapper", $Sophia_Script_Wrapper
-          } | Set-Content -Path ReleaseNotesTemplate.md -Encoding utf8 -Force
-
-          # https://trstringer.com/github-actions-multiline-strings/
-          Add-Content -Path $env:GITHUB_OUTPUT -Value "ReleaseBody=ReleaseNotesTemplate.md"
-
-          $ReleaseName = Get-Date -f "dd.MM.yyyy"
-          echo "RELEASE_NAME=$ReleaseName" >> $env:GITHUB_ENV
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add SHA256SUM.json
+          git commit -m "Update from ${{ github.ref_name }} for adding SHA256SUM.json"
+          # repository and branch to push to
+          git push origin HEAD:refs/heads/master
 
       - name: Uploading
         uses: softprops/action-gh-release@master
         with:
           name: ${{ steps.read_release.outputs.RELEASE_NAME }}
           token: ${{ github.token }}
+          # Use "/" in path to files
           files: |
             Sophia*.zip
-            SHA256SUM
+            chocolatey/tools/chocolateyinstall.ps1
           body_path: ${{ steps.read_release.outputs.ReleaseBody }}
