@@ -560,7 +560,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	# Checking wdFilter service
 	try
 	{
-		if ((Get-Service -Name wdFilter -ErrorAction Stop).Status -ne "Running")
+		if (Get-Service -Name wdFilter -ErrorAction Stop)
 		{
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
