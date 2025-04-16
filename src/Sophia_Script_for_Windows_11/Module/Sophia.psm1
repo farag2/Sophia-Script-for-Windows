@@ -995,7 +995,7 @@ public extern static string BrandingFormatString(string sFormat);
 				}
 			}
 		}
-		while ($Key.Key -ne [ConsoleKey]::Enter)
+		while ($Key.Key -notin ([ConsoleKey]::Escape, [ConsoleKey]::Enter))
 	}
 
 	# Extract the localized "Browse" string from shell32.dll
