@@ -13,10 +13,6 @@ jobs:
 
       - name: Getting hashes
         run: |
-          . "Scripts\Chocolatey.ps1"
-
-      - name: Pack and push to Chocolatey
-        run: |
           # https://github.com/farag2/Sophia-Script-for-Windows/blob/master/SHA256SUM.json
           $Parameters = @{
             Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/SHA256SUM.json"
@@ -43,6 +39,8 @@ jobs:
             -replace "Hash_Sophia_Script_Wrapper", $SHA256SUM."Sophia.Script.Wrapper.v$($Latest_Release.Sophia_Script_Wrapper).zip"
           } | Set-Content -Path "chocolatey\tools\chocolateyinstall.ps1" -Encoding utf8 -Force
 
+      - name: Pack and push to Chocolatey
+        run: |
           choco pack chocolatey\sophia.nuspec --outputdirectory chocolatey
           choco apikey --key ${{ secrets.CHOCOLATEY_SECRET }} --source https://push.chocolatey.org/
           [xml]$Version = Get-Content -Path chocolatey\sophia.nuspec
