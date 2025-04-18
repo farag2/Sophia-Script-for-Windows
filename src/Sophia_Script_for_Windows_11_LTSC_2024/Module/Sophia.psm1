@@ -499,6 +499,8 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	# Check Windows default antivirus
 	try
 	{
+		$Script:DefenderDefaultAV = $false
+
 		$productState = (Get-CimInstance -ClassName AntiVirusProduct -Namespace root/SecurityCenter2 | Where-Object -FilterScript {$_.instanceGuid -eq "{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}"}).productState
 		$DefenderState = ('0x{0:x}' -f $productState).Substring(3, 2)
 		# Defender is a currently used AV. Continue...
