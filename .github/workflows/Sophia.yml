@@ -91,5 +91,4 @@ jobs:
           # Use "/" in path to files
           files: |
             Sophia*.zip
-            chocolatey/tools/chocolateyinstall.ps1
           body_path: ${{ steps.read_release.outputs.ReleaseBody }}
