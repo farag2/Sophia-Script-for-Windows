@@ -11,6 +11,10 @@ Diff from vOldVersion
 
 ***
 
+[SHA256 Hashes](https://github.com/farag2/Sophia-Script-for-Windows/blob/master/SHA256SUM.json)
+
+***
+
 [Sophia-Script-Windows-10-PowerShell-5-1]: https://github.com/farag2/Sophia-Script-for-Windows/releases/download/NewVersion/Sophia.Script.for.Windows.10.vSophia_Script_Windows_10_PowerShell_5_1.zip
 [Sophia-Script-Windows-10-PowerShell-5-1-badge]: https://img.shields.io/badge/Windows%2010%20x64-PowerShell%205.1-67b7d1.svg
 
