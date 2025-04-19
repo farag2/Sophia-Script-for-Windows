@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.20.5 | 6.8.5 — 18.04.2025
+
+* CI/CD configs refactored;
+* Functions.ps1 renamed into Import-TabCompletion.ps1 to not mislead users what is [this file for](https://github.com/farag2/Sophia-Script-for-Windows?tab=readme-ov-file#how-to-run-the-specific-functions);
+  * Closes #622
+* Minor changes.
+
+Thanks to @gtumanyan
+
 ## 5.20.4 | 6.8.4 — 05.04.2025
 
 * Code refactoring;
