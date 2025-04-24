@@ -283,22 +283,6 @@
     "WindowsDefault": "One"
   },
   {
-    "Region": "Privacy & Telemetry",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "StartRecommendationsTips",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide"
-      },
-      "One": {
-        "Tag": "Show"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
@@ -478,7 +462,7 @@
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
-    "Function": "3DObjects",
+    "Function": "UserFolders",
     "Arg": {
       "Zero": {
         "Tag": "Hide"
@@ -2451,7 +2435,7 @@
     "Region": "Update Policies",
     "Control": "chk",
     "Required": "false",
-    "Function": "UpdateLGPEPolicies",
+    "Function": "ScanRegistryPolicies",
     "Arg": {
       "Zero": {
         "Tag": ""

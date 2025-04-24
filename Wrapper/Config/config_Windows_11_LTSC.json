@@ -1467,9 +1467,7 @@
             "Width": "250",
             "Number": "1000"
           }
-        }
-      }
-    },
+        },
     "Preset": "",
     "WindowsDefault": "",
     "LTSC2024": "true"
@@ -2122,7 +2120,7 @@
     "Region": "Update Policies",
     "Control": "chk",
     "Required": "false",
-    "Function": "UpdateLGPEPolicies",
+    "Function": "ScanRegistryPolicies",
     "Arg": {
       "Zero": {
         "Tag": ""

@@ -1862,7 +1862,7 @@
   },
   {
     "Region": "Update Policies",
-    "Function": "UpdateLGPEPolicies",
+    "Function": "ScanRegistryPolicies",
     "Arg": {
       "Zero": {
         "Tag": "",

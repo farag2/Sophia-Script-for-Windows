@@ -2181,7 +2181,7 @@
     "Region": "Update Policies",
     "Control": "chk",
     "Required": "false",
-    "Function": "UpdateLGPEPolicies",
+    "Function": "ScanRegistryPolicies",
     "Arg": {
       "Zero": {
         "Tag": ""

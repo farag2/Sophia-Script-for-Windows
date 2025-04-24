@@ -413,7 +413,7 @@
   },
   {
     "Region": "UI & Personalization",
-    "Function": "3DObjects",
+    "Function": "UserFolders",
     "Arg": {
       "Zero": {
         "Tag": "Hide",
@@ -2019,7 +2019,7 @@
   },
   {
     "Region": "Update Policies",
-    "Function": "UpdateLGPEPolicies",
+    "Function": "ScanRegistryPolicies",
     "Arg": {
       "Zero": {
         "Tag": "",

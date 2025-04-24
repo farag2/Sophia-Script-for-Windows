@@ -448,7 +448,7 @@
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
-    "Function": "3DObjects",
+    "Function": "UserFolders",
     "Arg": {
       "Zero": {
         "Tag": "Hide"
@@ -460,7 +460,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-    "LTSC2021": "true"
+    "LTSC2021": "false"
   },
   {
     "Region": "UI & Personalization",
@@ -571,7 +571,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-    "LTSC2021": "true"
+    "LTSC2021": "false"
   },
   {
     "Region": "UI & Personalization",
@@ -1622,7 +1622,7 @@
     "Region": "WSL",
     "Control": "chk",
     "Required": "false",
-    "Function": "WSL",
+    "Function": "Install-WSL",
     "Arg": {
       "Zero": {
         "Tag": ""
@@ -2301,7 +2301,7 @@
     "Region": "Update Policies",
     "Control": "chk",
     "Required": "false",
-    "Function": "UpdateLGPEPolicies",
+    "Function": "ScanRegistryPolicies",
     "Arg": {
       "Zero": {
         "Tag": ""
