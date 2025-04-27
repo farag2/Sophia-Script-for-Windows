@@ -2368,57 +2368,6 @@ function BingSearch
 		}
 	}
 }
-
-<#
-	.SYNOPSIS
-	Microsoft account-related notifications on Start Menu
-
-	.PARAMETER Hide
-	Do not show Microsoft account-related notifications on Start Menu in Start menu
-
-	.PARAMETER Show
-	Show Microsoft account-related notifications on Start Menu in Start menu
-
-	.EXAMPLE
-	StartAccountNotifications -Hide
-
-	.EXAMPLE
-	StartAccountNotifications -Show
-
-	.NOTES
-	Current user
-#>
-function StartAccountNotifications
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Hide"
-		)]
-		[switch]
-		$Hide,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Show"
-		)]
-		[switch]
-		$Show
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Hide"
-		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_AccountNotifications -PropertyType DWord -Value 0 -Force
-		}
-		"Show"
-		{
-			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_AccountNotifications -Force -ErrorAction Ignore
-		}
-	}
-}
 #endregion Privacy & Telemetry
 
 #region UI & Personalization
@@ -9666,9 +9615,12 @@ function Export-Associations
 
 	[xml]$XML = Get-Content -Path "$env:TEMP\Application_Associations.xml" -Encoding UTF8 -Force
 	$XML.DefaultAssociations.Association | ForEach-Object -Process {
+		# Clear varibale not to begin double "\" char
+		$ProgramPath, $Icon = $null
+
 		if ($AppxProgIds -contains $_.ProgId)
 		{
-			# if ProgId is a UWP app
+			# ProgId is a UWP app
 			# ProgrammPath
 			if (Test-Path -Path "HKCU:\Software\Classes\$($_.ProgId)\Shell\Open\Command")
 			{
@@ -9817,8 +9769,6 @@ function Export-Associations
 "@ | ConvertFrom-JSON
 		$AllJSON += $JSON
 	}
-
-	Clear-Variable -Name ProgramPath, Icon -ErrorAction Ignore
 
 	# Save in UTF-8 without BOM
 	$AllJSON | ConvertTo-Json | Set-Content -Path "$PSScriptRoot\..\Application_Associations.json" -Encoding Default -Force
@@ -14200,14 +14150,24 @@ function CABInstallContext
 	{
 		"Show"
 		{
-			if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas\Command))
+			if ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.cab\UserChoice", "ProgId", $null) -eq "CABFolder")
 			{
-				New-Item -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas\Command -Force
+				if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas\Command))
+				{
+					New-Item -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas\Command -Force
+				}
+				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas\Command -Name "(default)" -PropertyType String -Value "cmd /c DISM.exe /Online /Add-Package /PackagePath:`"%1`" /NoRestart & pause" -Force
+				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas -Name MUIVerb -PropertyType String -Value "@shell32.dll,-10210" -Force
+				New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas -Name HasLUAShield -PropertyType String -Value "" -Force
 			}
-			$Value = "cmd /c DISM.exe /Online /Add-Package /PackagePath:`"%1`" /NoRestart & pause"
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas\Command -Name "(default)" -PropertyType String -Value $Value -Force
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas -Name MUIVerb -PropertyType String -Value "@shell32.dll,-10210" -Force
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas -Name HasLUAShield -PropertyType String -Value "" -Force
+			else
+			{
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+				Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+				return
+			}
 		}
 		"Hide"
 		{

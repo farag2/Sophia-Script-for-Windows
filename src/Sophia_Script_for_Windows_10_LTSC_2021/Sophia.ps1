@@ -358,6 +358,7 @@ RecycleBinDeleteConfirmation -Enable
 
 # Hide user folders in "This PC"
 # Скрыть пользовательские папки в "Этот компьютер"
+UserFolders -ThreeDObjects Hide
 # UserFolders -ThreeDObjects Hide -Desktop Hide -Documents Hide -Downloads Hide -Music Hide -Pictures Hide -Videos Hide
 
 # Show user folders in "This PC" (default value)

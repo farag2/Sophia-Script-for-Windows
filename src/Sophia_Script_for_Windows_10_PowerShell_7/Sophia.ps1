@@ -308,14 +308,6 @@ BingSearch -Disable
 # Enable Bing search in Start Menu (default value)
 # Включить поиск через Bing в меню "Пуск" (значение по умолчанию)
 # BingSearch -Enable
-
-# Do not show Microsoft account-related notifications on Start Menu in Start menu
-# Не показывать в меню "Пуск" уведомления, связанные с учетной записью Microsoft
-StartAccountNotifications -Hide
-
-# Show Microsoft account-related notifications on Start Menu in Start menu (default value)
-# Переодически показывать в меню "Пуск" уведомления, связанные с учетной записью Microsoft (значение по умолчанию)
-# StartAccountNotifications -Show
 #endregion Privacy & Telemetry
 
 #region UI & Personalization
@@ -409,6 +401,7 @@ RecycleBinDeleteConfirmation -Enable
 
 # Hide user folders in "This PC"
 # Скрыть пользовательские папки в "Этот компьютер"
+UserFolders -ThreeDObjects Hide
 # UserFolders -ThreeDObjects Hide -Desktop Hide -Documents Hide -Downloads Hide -Music Hide -Pictures Hide -Videos Hide
 
 # Show user folders in "This PC" (default value)
