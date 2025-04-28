@@ -14,14 +14,14 @@ jobs:
           }
           $Latest_Release = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_5_1
 
-      - name: Publish Sophia Script for Windows (Windows 11)
-        # https://github.com/vedantmgoyal9/winget-releaser
-        uses: vedantmgoyal9/winget-releaser@main
-        with:
-          identifier: TeamSophia.SophiaScript
-          version: $Latest_Release
-          release-tag: $Latest_Release
-          installers-regex: "Sophia.Script.for.Windows.11.v$($Latest_Release).zip"
-          release-notes-url: https://github.com/farag2/Sophia-Script-for-Windows/blob/master/CHANGELOG.md
-          # https://github.com/settings/tokens
-          token: ${{ secrets.WINGET_TOKEN }}
+          $installerUrl = https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$Latest_Release/Sophia.Script.for.Windows.11.v$Latest_Release.zip
+
+      - name: Create winget PR
+        run: |
+          $Parameters = @{
+            Uri     = "https://aka.ms/wingetcreate/latest"
+            OutFile = "wingetcreate.exe"
+          }
+          Invoke-WebRequest @Parameters
+
+          & wingetcreate.exe update TeamSophia.SophiaScript --urls $installerUrl --version $Latest_Release --token "${{ secrets.WINGET_TOKEN }}" --submit
