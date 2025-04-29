@@ -652,7 +652,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-    "LTSC2021": "true"
+    "LTSC2021": "false"
   },
   {
     "Region": "UI & Personalization",
@@ -1703,7 +1703,7 @@
     "Region": "WSL",
     "Control": "chk",
     "Required": "false",
-    "Function": "WSL",
+    "Function": "Install-WSL",
     "Arg": {
       "Zero": {
         "Tag": ""
