@@ -19,20 +19,15 @@ body:
     - label: I do not use a homebrew Windows image;
       required: true
     - label: I did not tweak Windows before that could cause system instability;
-      required: true
+      required: false
     - label: If your issue concerns the Wrapper, please mention @BenchTweakGaming in issue
+    - label: Upload you Sophia.ps1 preset file
 - type: textarea
   attributes:
     label: Steps to reproduce
     placeholder:  Write something :)
   validations:
     required: true
-- type: textarea
-  attributes:
-    label: Your Sophia Script preset
-    placeholder: Paste your Sophia Script preset
-  validations:
-      required: true
 - type: textarea
   attributes:
     label: Describe the bug
