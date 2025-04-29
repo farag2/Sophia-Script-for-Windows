@@ -449,14 +449,95 @@
     "Control": "cmbcmb",
     "Required": "false",
     "Function": "UserFolders",
+    "Arg2Width": "110",
+    "Arg2ArgWidth": "100",
     "Arg": {
       "Zero": {
-        "Tag": "Hide"
+        "Tag": "Show"
       },
       "One": {
-        "Tag": "Show"
+        "Tag": "Hide"
       }
     },
+    "Arg2": {
+      "Zero": {
+        "Function": "ThreeDObjects",
+        "Arg": {
+          "Zero": {
+            "Tag": "Show"
+          },
+          "One": {
+            "Tag": "Hide"
+          }
+        }
+      },
+      "One": {
+       "Function": "Desktop",
+       "Arg": {
+         "Zero": {
+           "Tag": "Show"
+         },
+         "One": {
+           "Tag": "Hide"
+         }
+        }
+       },
+       "Two": {
+         "Function": "Documents",
+         "Arg": {
+            "Zero": {
+              "Tag": "Show"
+            },
+            "One": {
+              "Tag": "Hide"
+            }
+         }
+        },
+        "Three": {
+          "Function": "Downloads",
+          "Arg": {
+            "Zero": {
+              "Tag": "Show"
+            },
+            "One": {
+              "Tag": "Hide"
+            }
+           }
+          },
+         "Four": {
+           "Function": "Music",
+           "Arg": {
+             "Zero": {
+               "Tag": "Show"
+             },
+             "One": {
+               "Tag": "Hide"
+             }
+           }
+          },
+          "Five": {
+            "Function": "Pictures",
+            "Arg": {
+              "Zero": {
+                "Tag": "Show"
+              },
+              "One": {
+                "Tag": "Hide"
+              }
+            }
+          },
+          "Six": {
+            "Function": "Videos",
+            "Arg": {
+              "Zero": {
+                "Tag": "Show"
+              },
+              "One": {
+                "Tag": "Hide"
+              }
+            }
+          }
+	},
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
@@ -571,7 +652,7 @@
     "Preset": "Zero",
     "WindowsDefault": "One",
     "LTSC2019": "true",
-    "LTSC2021": "false"
+    "LTSC2021": "true"
   },
   {
     "Region": "UI & Personalization",
@@ -1622,7 +1703,7 @@
     "Region": "WSL",
     "Control": "chk",
     "Required": "false",
-    "Function": "Install-WSL",
+    "Function": "WSL",
     "Arg": {
       "Zero": {
         "Tag": ""

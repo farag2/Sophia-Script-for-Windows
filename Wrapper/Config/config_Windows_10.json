@@ -460,22 +460,6 @@
   },
   {
     "Region": "UI & Personalization",
-    "Control": "cmbcmb",
-    "Required": "false",
-    "Function": "UserFolders",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide"
-      },
-      "One": {
-        "Tag": "Show"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
-    "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
     "Function": "QuickAccessRecentFiles",
@@ -923,7 +907,7 @@
   },
   {
     "Region": "UI & Personalization",
-    "Control": "cmb",
+    "Control": "cmbcmb",
     "Required": "false",
     "Function": "UserFolders",
     "Arg2Width": "110",
