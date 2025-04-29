@@ -446,7 +446,7 @@
   },
   {
     "Region": "UI & Personalization",
-    "Control": "cmb",
+    "Control": "cmbcmb",
     "Required": "false",
     "Function": "UserFolders",
     "Arg": {
