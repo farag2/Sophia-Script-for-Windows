@@ -47,6 +47,7 @@
 * [Как использовать](#как-использовать)
   * [Скачать через PowerShell](#скачать-через-powershell)
   * [Скачать через Chocolatey](#скачать-через-chocolatey)
+  * [Скачать через WinGet](#скачать-через-winget)
   * [Вручную](#вручную)
   * [Как выполните конкретную функцию(и)](#как-выполните-конкретную-функциюи)
   * [Wrapper](#wrapper)
@@ -95,6 +96,26 @@ choco install sophia --force -y
 
 ```powershell
 choco install sophia --params "/PS7" --force -y
+```
+
+```powershell
+# Удалить Sophia Script
+# Удалите скачанную папку вручную
+choco uninstall sophia --force -y
+```
+
+### Скачать через WinGet
+
+Команда завантажує тільки архів для `Windows 11 (PowerShell 5.1)` у вашу папку `Завантаження` (порівняно зі [скриптом](#скачать-через-winget) для `Chocolatey`) і розпаковує його.
+
+```powershell
+$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+winget install --id TeamSophia.SophiaScript --location $DownloadsFolder --accept-source-agreements --force
+```
+
+```powershell
+# Удалить Sophia Script
+winget uninstall --id TeamSophia.SophiaScript --force
 ```
 
 ### Вручную
@@ -166,7 +187,7 @@ UninstallUWPApps, "PinToStart -UnpinAll"
 
 @BenchTweakGaming
 
-* Скачайте [последнюю](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest) версию version;
+* Скачайте [последнюю](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest) версию;
 * Распакуйте архив;
 * Запустите `SophiaScriptWrapper.exe` и импортируйте `Sophia.ps1`;
   * Файл `Sophia.ps1` должен находиться в папке `Sophia Script`;
