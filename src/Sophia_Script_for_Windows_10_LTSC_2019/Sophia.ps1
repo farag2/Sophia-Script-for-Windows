@@ -234,7 +234,7 @@ LanguageListAccess -Disable
 # Позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков (значение по умолчанию)
 # LanguageListAccess -Enable
 
-# Do not allow apps to use advertising ID to make ads more interresting to you based on your app usage 
+# Do not allow apps to use advertising ID to make ads more interresting to you based on your app usage
 # Не разрешать приложениям использовать идентификатор рекламы
 AdvertisingID -Disable
 

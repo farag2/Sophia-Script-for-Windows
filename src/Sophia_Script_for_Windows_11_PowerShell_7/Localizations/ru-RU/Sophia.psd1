@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 PowerShellImportFailed                    = Пожалуйста, закройте PowerShell 7 и запустите скрип заново.
-UnsupportedOSBuild                        = Скрипт поддерживает Windows 11 24H2 и выше. Ваша ОС — {0}.
+UnsupportedOSBuild                        = Скрипт поддерживает Windows 11 24H2 и выше. Ваша ОС — {0} {1}. Обновите Windows и попробуйте заново.
 UnsupportedWindowsTerminal                = Версия Windows Terminal ниже 1.20. Пожалуйста, обновите его в Microsoft Store и попробуйте заново.
 UpdateWarning                             = Ваш билд Windows 11: {0}.{1}. Поддерживаемые сборки: {2} и выше. Запустите обновление Windows и попробуйте заново.
 UnsupportedLanguageMode                   = Сессия PowerShell работает в ограниченном режиме.
@@ -11,7 +11,7 @@ Win10TweakerWarning                       = Windows была заражена т
 TweakerWarning                            = Стабильность Windows могла быть нарушена использованием {0}. Переустановите Windows, используя только подлинный ISO-образ.
 Bin                                       = В папке "{0}" отсутствуют файлы. Пожалуйста, перекачайте архив.
 RebootPending                             = Компьютер ожидает перезагрузки.
-UnsupportedRelease                        = Обнаружена новая версия скрипта. Пожалуйста, используйте только последнюю версию Sophia Script. 
+UnsupportedRelease                        = Обнаружена новая версия скрипта. Пожалуйста, используйте только последнюю версию Sophia Script.
 KeyboardArrows                            = Для выбора используйте на клавиатуре стрелки {0} и {1}
 CustomizationWarning                      = Вы настроили все функции в пресет-файле {0} перед запуском Sophia Script?
 WindowsComponentBroken                    = {0} сломан или удален из ОС. Переустановите Windows, используя только подлинный ISO-образ. Переустановите Windows, используя только подлинный ISO-образ.

@@ -1,8 +1,8 @@
 ﻿ConvertFrom-StringData -StringData @'
 PowerShellImportFailed                    = Будь ласка, закрийте PowerShell 7 і запустіть сценарій знову.
-UnsupportedOSBuild                        = Скрипт підтримує тільки Windows 11 24H2 і вище. Ваша ОС — {0}.
+UnsupportedOSBuild                        = Скрипт підтримує тільки Windows 11 24H2 і вище. Ваша ОС — {0} {1}. Оновіть Windows і спробуйте ще раз.
 UnsupportedWindowsTerminal                = Версія Windows Terminal нижча за 1.20. Будь ласка, оновіть його в Microsoft Store і спробуйте заново.
-UpdateWarning                             = Ваш білд Windows 11: {0}.{1}. Підтримувані збірки: {2} і вище.. Запустіть Windows Update і повторіть спробу.
+UpdateWarning                             = Ваш білд Windows 11: {0}.{1}. Підтримувані збірки: {2} і вище. Запустіть Windows Update і повторіть спробу.
 UnsupportedLanguageMode                   = Сесія PowerShell працює в обмеженому режимі.
 LoggedInUserNotAdmin                      = Поточний користувач, що увійшов, не має прав адміністратора.
 UnsupportedPowerShell                     = Ви намагаєтеся запустити скрипт в PowerShell {0}.{1}. Запустіть скрипт у відповідній версії PowerShell.
@@ -11,7 +11,7 @@ Win10TweakerWarning                       = Windows була заражена т
 TweakerWarning                            = Стабільність вашої ОС могла бути порушена використанням {0}. Перевстановіть Windows, використовуючи тільки справжній ISO-образ.
 Bin                                       = У папці "{0}" відсутні файли. Будь ласка, перекачайте архів.
 RebootPending                             = Комп'ютер очікує на перезавантаження.
-UnsupportedRelease                        = Виявлено нову версію скрипта. Будь ласка, використовуйте тільки останню версію Sophia Script. 
+UnsupportedRelease                        = Виявлено нову версію скрипта. Будь ласка, використовуйте тільки останню версію Sophia Script.
 KeyboardArrows                            = Для вибору відповіді використовуйте на клавіатурі стрілки  {0} і {1}
 CustomizationWarning                      = Ви налаштували всі функції в пресет-файлі {0} перед запуском Sophia Script?
 WindowsComponentBroken                    = {0} пошкоджено або видалено з ОС. Перевстановіть Windows, використовуючи тільки справжній ISO-образ.

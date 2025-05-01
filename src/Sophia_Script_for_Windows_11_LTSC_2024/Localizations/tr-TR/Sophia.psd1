@@ -1,5 +1,5 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedOSBuild                        = Komut dosyası yalnızca Windows 11 Enterprise LTSC 2024'yi destekler. Sizin işletim sisteminiz {0}.
+UnsupportedOSBuild                        = Komut dosyası yalnızca Windows 11 Enterprise LTSC 2024'yi destekler. Sizin işletim sisteminiz {0}. Windows'unuzu yükseltin ve tekrar deneyin.
 UnsupportedWindowsTerminal                = Windows Terminal sürümü 1.20'den daha düşük. Lütfen Microsoft Store'da güncelleyin ve tekrar deneyin.
 UpdateWarning                             = Windows 11 yapınız: {0}.{1}. Desteklenen yapılar: {2} ve üzeri sürümler.. Windows Update'i çalıştırın ve tekrar deneyin.
 UnsupportedLanguageMode                   = Sınırlı bir dil modunda çalışan PowerShell oturumu.

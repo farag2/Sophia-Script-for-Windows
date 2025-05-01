@@ -745,12 +745,29 @@ public extern static string BrandingFormatString(string sFormat);
 	if (-not (($WINDOWS_LONG -match "Windows 10") -and ($WINDOWS_LONG -match "LTSC")))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message ($Localization.UnsupportedOSBuild -f [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%"))
+
+		# Windows 11 Pro
+		$Windows_Long = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
+		$Windows_Long_First_Item = $Windows_Long.split(" ")[0]
+		$Windows_Long_Second_Item = $Windows_Long.split(" ")[1]
+		# Windows 11
+		$Windows_Long = ($Windows_Long_First_Item, $Windows_Long_Second_Item) -join " "
+
+		# 24H2
+		$DisplayVersion = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name DisplayVersion
+
+		Write-Warning -Message ($Localization.UnsupportedOSBuild -f $Windows_Long, $DisplayVersion)
 		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows#system-requirements" -Verbose
+
+		# Receive updates for other Microsoft products when you update Windows
+		New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name AllowMUUpdateService -PropertyType DWord -Value 1 -Force
+
+		# Check for updates
+		Start-Process -FilePath "$env:SystemRoot\System32\UsoClient.exe" -ArgumentList StartInteractiveScan
 
 		exit
 	}
@@ -834,10 +851,10 @@ public extern static string BrandingFormatString(string sFormat);
 			{
 				# Check Windows minor build version
 				# https://support.microsoft.com/en-us/topic/windows-10-update-history-857b8ccb-71e4-49e5-b3f6-7073197d98fb
-				$CurrentBuild = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
-				$UBR = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
+				$CurrentBuild = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
+				$UBR = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
 				Write-Information -MessageData "" -InformationAction Continue
-				Write-Warning -Message ($Localization.UpdateWarning -f $CurrentBuild.CurrentBuild, $UBR.UBR, $LatestSupportedBuild)
+				Write-Warning -Message ($Localization.UpdateWarning -f $CurrentBuild, $UBR, $LatestSupportedBuild)
 				Write-Information -MessageData "" -InformationAction Continue
 
 				Write-Verbose -Message "https://t.me/sophia_chat" -Verbose

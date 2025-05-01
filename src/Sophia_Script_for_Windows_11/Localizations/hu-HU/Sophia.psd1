@@ -1,5 +1,5 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedOSBuild                        = A szkript támogatja a Windows 11 24H2 és magasabb verziószámú operációs rendszereket. Az Ön operációs rendszere {0}.
+UnsupportedOSBuild                        = A szkript támogatja a Windows 11 24H2 és magasabb verziószámú operációs rendszereket. Az Ön operációs rendszere {0}. Frissítse a Windows-t, és próbálja meg újra.
 UnsupportedWindowsTerminal                = A Windows Terminal verziója alacsonyabb, mint 1.20. Kérjük, frissítse azt a Microsoft Store-ban, és próbálja meg újra.
 UpdateWarning                             = Az Ön Windows 11 építése: {0}.{1}. Támogatott buildek: {2} és újabb verziók. Futtassa a Windows Update programot, és próbálja meg újra.
 UnsupportedLanguageMode                   = A PowerShell munkamenet korlátozott nyelvi üzemmódban fut.
