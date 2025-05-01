@@ -3,7 +3,7 @@
     "Region": "Protection",
     "Control": "cmb",
     "Required": "true",
-    "RequiredIndex" : "0",
+    "RequiredIndex": "0",
     "Function": "InitialActions",
     "Arg": {
       "Zero": {
@@ -1453,21 +1453,21 @@
     "WidthOpen": "75",
     "WidthSave": "100",
     "MarginSave": "225",
-      "Arg": {
-        "Zero": {
-          "Tag": "ProgramPath",
-            "Width": "325"
-          },
-          "One": {
-            "Tag": "Extension",
-            "Width": "85"
-          },
-          "Two": {
-            "Tag": "Icon",
-            "Width": "250",
-            "Number": "1000"
-          }
-        },
+    "Arg": {
+      "Zero": {
+        "Tag": "ProgramPath",
+        "Width": "325"
+      },
+      "One": {
+        "Tag": "Extension",
+        "Width": "85"
+      },
+      "Two": {
+        "Tag": "Icon",
+        "Width": "250",
+        "Number": "1000"
+      }
+    },
     "Preset": "",
     "WindowsDefault": "",
     "LTSC2024": "true"
@@ -1557,12 +1557,12 @@
     "Required": "false",
     "Function": "PreventEdgeShortcutCreation",
     "Arg": {
-            "Zero": {
-                "Tag": "Channels"
-            },
-            "One": {
-                "Tag": "Disable"
-            }
+      "Zero": {
+        "Tag": "Channels"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
     },
     "Arg2": {
       "Zero": {

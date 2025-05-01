@@ -1,0 +1,18 @@
+[
+	{
+		"psd1Filename": "SophiaScript.psd1",
+		"folderPsd1Filename": "Manifest",
+		"psm1Filename": "Sophia.psm1",
+		"folderPsm1Filename": "Module",
+		"setConsoleFontPs1Filename": "Set-ConsoleFont.ps1",
+		"folderSetConsoleFontPs1": "Config",
+		"functionControlsPerColumn": "100",
+		"urlSophiaScriptVersionsJson": "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json",
+		"urlLatestSophiaScriptDownloads": "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest",
+		"autosaveFilename": "autosave.ps1",
+		"autosaveIntervalInSeconds": "300",
+		"widthWrapperInPixelsEN": "872",
+		"widthWrapperInPixelsRU": "1055",
+		"widthWrapperInPixelsDE": "1020",
+	}
+]

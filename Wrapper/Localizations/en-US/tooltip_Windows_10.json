@@ -413,20 +413,6 @@
   },
   {
     "Region": "UI & Personalization",
-    "Function": "UserFolders",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"3D Objects\" folder in \"This PC\" and \"Quick access\"."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show the \"3D Objects\" folder in \"This PC\" and \"Quick access\" (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
     "Function": "QuickAccessRecentFiles",
     "Arg": {
       "Zero": {
@@ -1300,7 +1286,7 @@
     "Region": "System",
     "Function": "Set-Association",
     "ToolTip": "Register app, calculate hash, and associate with an extension with the 'How do you want to open this' pop-up hidden.",
-    "Arg": {      
+    "Arg": {
       "Zero": {
         "Tag": "ProgramPath",
         "ToolTip": "Path to executable file."
@@ -1497,7 +1483,7 @@
   {
     "Region": "UWP apps",
     "Function": "UninstallUWPApps -ForAllUsers",
-    "ToolTip": "Uninstall UWP apps using the pop-up dialog box. If the \"For all users\" is checked apps packages will not be installed for new users. The \"ForAllUsers\" argument sets a checkbox to unistall packages for all users.",     
+    "ToolTip": "Uninstall UWP apps using the pop-up dialog box. If the \"For all users\" is checked apps packages will not be installed for new users. The \"ForAllUsers\" argument sets a checkbox to unistall packages for all users.",
     "Arg": {
       "Zero": {
         "Tag": "",

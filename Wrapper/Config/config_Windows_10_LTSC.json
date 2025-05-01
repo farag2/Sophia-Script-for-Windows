@@ -3,7 +3,7 @@
     "Region": "Protection",
     "Control": "cmb",
     "Required": "true",
-    "RequiredIndex" : "0",
+    "RequiredIndex": "0",
     "Function": "InitialActions",
     "Arg": {
       "Zero": {
@@ -446,15 +446,96 @@
   },
   {
     "Region": "UI & Personalization",
-    "Control": "cmbcmb",
+    "Control": "cmbs",
     "Required": "false",
     "Function": "UserFolders",
+    "Arg2Width": "110",
+    "Arg2ArgWidth": "100",
     "Arg": {
       "Zero": {
         "Tag": "Hide"
       },
       "One": {
         "Tag": "Show"
+      }
+    },
+    "Arg2": {
+      "Zero": {
+        "Function": "ThreeDObjects",
+        "Arg": {
+          "Zero": {
+            "Tag": "Hide"
+          },
+          "One": {
+            "Tag": "Show"
+          }
+        }
+      },
+      "One": {
+        "Function": "Desktop",
+        "Arg": {
+          "Zero": {
+            "Tag": "Hide"
+          },
+          "One": {
+            "Tag": "Show"
+          }
+        }
+      },
+      "Two": {
+        "Function": "Documents",
+        "Arg": {
+          "Zero": {
+            "Tag": "Hide"
+          },
+          "One": {
+            "Tag": "Show"
+          }
+        }
+      },
+      "Three": {
+        "Function": "Downloads",
+        "Arg": {
+          "Zero": {
+            "Tag": "Hide"
+          },
+          "One": {
+            "Tag": "Show"
+          }
+        }
+      },
+      "Four": {
+        "Function": "Music",
+        "Arg": {
+          "Zero": {
+            "Tag": "Hide"
+          },
+          "One": {
+            "Tag": "Show"
+          }
+        }
+      },
+      "Five": {
+        "Function": "Pictures",
+        "Arg": {
+          "Zero": {
+            "Tag": "Hide"
+          },
+          "One": {
+            "Tag": "Show"
+          }
+        }
+      },
+      "Six": {
+        "Function": "Videos",
+        "Arg": {
+          "Zero": {
+            "Tag": "Hide"
+          },
+          "One": {
+            "Tag": "Show"
+          }
+        }
       }
     },
     "Preset": "Zero",
@@ -1450,36 +1531,36 @@
     "LTSC2021": "true"
   },
   {
-        "Region": "System",
-        "Control": "tboxtboxtbox",
-        "Required": "false",
-        "Function": "Set-Association",
-        "Width": "170",
-        "WidthMinus": "35",
-        "MarginMinus": "5",
-        "WidthPlus": "35",
-        "MarginPlus": "5",
-        "WidthOpen": "75",
-        "WidthSave": "100",
-        "MarginSave": "225",
-        "Arg": {
-            "Zero": {
-                "Tag": "ProgramPath",
-                "Width": "325"
-            },
-            "One": {
-                "Tag": "Extension",
-                "Width": "85"
-            },
-            "Two": {
-                "Tag": "Icon",
-                "Width": "250",
-                "Number": "1000"
-            }
-        },
-        "Preset": "",
-        "WindowsDefault": ""
+    "Region": "System",
+    "Control": "tboxtboxtbox",
+    "Required": "false",
+    "Function": "Set-Association",
+    "Width": "170",
+    "WidthMinus": "35",
+    "MarginMinus": "5",
+    "WidthPlus": "35",
+    "MarginPlus": "5",
+    "WidthOpen": "75",
+    "WidthSave": "100",
+    "MarginSave": "225",
+    "Arg": {
+      "Zero": {
+        "Tag": "ProgramPath",
+        "Width": "325"
+      },
+      "One": {
+        "Tag": "Extension",
+        "Width": "85"
+      },
+      "Two": {
+        "Tag": "Icon",
+        "Width": "250",
+        "Number": "1000"
+      }
     },
+    "Preset": "",
+    "WindowsDefault": ""
+  },
   {
     "Region": "System",
     "Control": "chk",
@@ -1565,41 +1646,41 @@
     "LTSC2021": "true"
   },
   {
-        "Region": "System",
-        "Control": "cmbchk",
-        "Required": "false",
-        "Function": "PreventEdgeShortcutCreation",
-        "Arg": {
-            "Zero": {
-                "Tag": "Channels"
-            },
-            "One": {
-                "Tag": "Disable"
-            }
-        },
-        "Arg2": {
-            "Zero": {
-                "Tag": "Stable",
-                "Width": "75"
-            },
-            "One": {
-                "Tag": "Beta",
-                "Width": "65"
-            },
-            "Two": {
-                "Tag": "Dev",
-                "Width": "62"
-            },
-            "Three": {
-                "Tag": "Canary",
-                "Width": "80"
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
-        "Preset2": "0123",
-        "WindowsDefault2": ""
+    "Region": "System",
+    "Control": "cmbchk",
+    "Required": "false",
+    "Function": "PreventEdgeShortcutCreation",
+    "Arg": {
+      "Zero": {
+        "Tag": "Channels"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
     },
+    "Arg2": {
+      "Zero": {
+        "Tag": "Stable",
+        "Width": "75"
+      },
+      "One": {
+        "Tag": "Beta",
+        "Width": "65"
+      },
+      "Two": {
+        "Tag": "Dev",
+        "Width": "62"
+      },
+      "Three": {
+        "Tag": "Canary",
+        "Width": "80"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "Preset2": "0123",
+    "WindowsDefault2": ""
+  },
   {
     "Region": "System",
     "Control": "cmb",
@@ -2000,69 +2081,69 @@
     "LTSC2021": "true"
   },
   {
-        "Region": "Microsoft Defender & Security",
-        "Control": "cmbcmbcmb",
-        "Required": "false",
-        "Function": "DNSoverHTTPS",
-        "Key": "SYSTEM\\CurrentControlSet\\Services\\Dnscache\\Parameters\\DohWellKnownServers",
-        "PrefixArg2": "PrimaryDNS",
-        "PrefixArg3": "SecondaryDNS",
-        "Arg2_3_Width": "145",
-        "Arg": {
-            "Zero": {
-                "Tag": "Enable"
-            },
-            "One": {
-                "Tag": "Disable"
-            }
-        },
-        "Arg2": {
-            "Zero": {
-                "Tag": "1.0.0.1"
-            },
-            "One": {
-                "Tag": "1.1.1.1"
-            },
-            "Two": {
-                "Tag": "149.112.112.112"
-            },
-            "Three": {
-                "Tag": "8.8.4.4"
-            },
-            "Four": {
-                "Tag": "8.8.8.8"
-            },
-            "Five": {
-                "Tag": "9.9.9.9"
-            }
-        },
-        "Arg3": {
-            "Zero": {
-                "Tag": "1.0.0.1"
-            },
-            "One": {
-                "Tag": "1.1.1.1"
-            },
-            "Two": {
-                "Tag": "149.112.112.112"
-            },
-            "Three": {
-                "Tag": "8.8.4.4"
-            },
-            "Four": {
-                "Tag": "8.8.8.8"
-            },
-            "Five": {
-                "Tag": "9.9.9.9"
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
-        "Preset2": "Zero",
-        "WindowsDefault2": "",
-        "Preset3": "One",
-        "WindowsDefault3": ""
+    "Region": "Microsoft Defender & Security",
+    "Control": "cmbcmbcmb",
+    "Required": "false",
+    "Function": "DNSoverHTTPS",
+    "Key": "SYSTEM\\CurrentControlSet\\Services\\Dnscache\\Parameters\\DohWellKnownServers",
+    "PrefixArg2": "PrimaryDNS",
+    "PrefixArg3": "SecondaryDNS",
+    "Arg2_3_Width": "145",
+    "Arg": {
+      "Zero": {
+        "Tag": "Enable"
+      },
+      "One": {
+        "Tag": "Disable"
+      }
     },
+    "Arg2": {
+      "Zero": {
+        "Tag": "1.0.0.1"
+      },
+      "One": {
+        "Tag": "1.1.1.1"
+      },
+      "Two": {
+        "Tag": "149.112.112.112"
+      },
+      "Three": {
+        "Tag": "8.8.4.4"
+      },
+      "Four": {
+        "Tag": "8.8.8.8"
+      },
+      "Five": {
+        "Tag": "9.9.9.9"
+      }
+    },
+    "Arg3": {
+      "Zero": {
+        "Tag": "1.0.0.1"
+      },
+      "One": {
+        "Tag": "1.1.1.1"
+      },
+      "Two": {
+        "Tag": "149.112.112.112"
+      },
+      "Three": {
+        "Tag": "8.8.4.4"
+      },
+      "Four": {
+        "Tag": "8.8.8.8"
+      },
+      "Five": {
+        "Tag": "9.9.9.9"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One",
+    "Preset2": "Zero",
+    "WindowsDefault2": "",
+    "Preset3": "One",
+    "WindowsDefault3": ""
+  },
   {
     "Region": "Context menu",
     "Control": "cmb",

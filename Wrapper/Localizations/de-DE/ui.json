@@ -5,7 +5,7 @@
       "menuImportExportPreset": "Importieren | Exportieren",
       "menuImportPreset": "Voreinstellung importieren",
       "menuExportPreset": "Voreinstellung exportieren",
-      "menuPresets": "Voreinstellungen",
+      "menuAutosave": "Automatisches Speichern",
       "menuOpposite": "Alle umkehren",
       "menuClear": "Löschen",
       "menuClearTab": "Registerkarte löschen",
@@ -75,8 +75,7 @@
       "messageBoxPresetNotComp": "Voreinstellung ist nicht kompatibel!",
       "messageBoxFilesMissingClose": "Die erforderlichen Sophia Script Wrapper-Dateien fehlen. Das Programm wird geschlossen.",
       "messageBoxConsoleEmpty": "Die Konsole ist leer.\n Drücken Sie die Schaltfläche Konsole aktualisieren, um ein Skript entsprechend Ihrer Auswahl zu erstellen.",
-      "messageBoxPowerShellVersionNotInstalled": "Die von Ihnen ausgewählte PowerShell-Version ist nicht installiert.",
-      "messageBoxMaybeFilesNotUnzippedProperly": "Möglicherweise wurden die Dateien nicht ordnungsgemäß entpackt."
+      "messageBoxPowerShellVersionNotInstalled": "Die von Ihnen ausgewählte PowerShell-Version ist nicht installiert."
     }
   },
   {

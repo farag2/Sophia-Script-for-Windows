@@ -413,20 +413,6 @@
   },
   {
     "Region": "UI & Personalization",
-    "Function": "UserFolders",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Скрыть папку \"Объемные объекты\" в \"Этот компьютер\" и панели быстрого доступа."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Отобразить папку \"Объемные объекты\" в \"Этот компьютер\" и панели быстрого доступа (значение по умолчанию)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
     "Function": "QuickAccessRecentFiles",
     "Arg": {
       "Zero": {

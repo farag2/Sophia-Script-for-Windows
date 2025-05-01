@@ -3,7 +3,7 @@
     "Region": "Protection",
     "Control": "cmb",
     "Required": "true",
-    "RequiredIndex" : "0",	
+    "RequiredIndex": "0",
     "Function": "InitialActions",
     "Arg": {
       "Zero": {
@@ -1543,7 +1543,7 @@
     "Arg2": {
       "Zero": {
         "Tag": "Stable",
-          "Width": "75"
+        "Width": "75"
       },
       "One": {
         "Tag": "Beta",

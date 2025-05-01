@@ -413,20 +413,6 @@
   },
   {
     "Region": "UI & Personalization",
-    "Function": "UserFolders",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Blendet den Ordner \"3D-Objekte\" in \"Dieser PC\" und \"Schnellzugriff\" aus."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Den Ordner \"3D-Objekte\" in \"Dieser PC\" und \"Schnellzugriff\" anzeigen (Standardwert)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
     "Function": "QuickAccessRecentFiles",
     "Arg": {
       "Zero": {
