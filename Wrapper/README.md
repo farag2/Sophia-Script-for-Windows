@@ -6,11 +6,13 @@ This program creates a PowerShell script file that you can run to customize Wind
 ## Wrapper Files
 
 * `Sophia Script Wrapper.exe`: The GUI program.
+* `wrapper_config.json`: JSON that contatins the configuration settings for the GUI program.
+* `Set-ConsoleFont.ps1`: PS1 that is run to set PS console to correct font when running PS version 5.x. 
 * `config_Windows_1x.json`: JSON that contains the options (function names), Sophia preset and Windows Default preset, LTSC version.
 * `before_after.json`: JSON that contains the options (function names) for before and after the user selections for PowerShell script output.
-* `tooltip_Windows_1x.json`: ToolTips in JSON format.
-* `tag.json`: tags in JSON format.
-* `ui.json`: UI in JSON format.
+* `tooltip_Windows_1x.json`: JSON that contains translations for ToolTips/comments above functions.
+* `tag.json`: JSON that contains translations for tags.
+* `ui.json`: JSON that contains translations for UI.
 
 # How to translate UI into another language
 
