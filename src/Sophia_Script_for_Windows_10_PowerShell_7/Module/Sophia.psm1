@@ -5295,7 +5295,7 @@ public static bool MarkFileDelete (string sourcefile)
 				}
 				else
 				{
-					Start-Process -FilePath explorer -ArgumentList $env:OneDrive
+					Start-Process -FilePath "$env:SystemRoot\explorer.exe" -ArgumentList $env:OneDrive
 				}
 			}
 
@@ -5323,7 +5323,7 @@ public static bool MarkFileDelete (string sourcefile)
 			$FileSyncShell64dlls = Get-ChildItem -Path "$OneDriveFolder\*\FileSyncShell64.dll" -Force
 			foreach ($FileSyncShell64dll in $FileSyncShell64dlls.FullName)
 			{
-				Start-Process -FilePath regsvr32.exe -ArgumentList "/u /s $FileSyncShell64dll" -Wait
+				Start-Process -FilePath "$env:SystemRoot\System32\regsvr32.exe" -ArgumentList "/u /s $FileSyncShell64dll" -Wait
 				Remove-Item -Path $FileSyncShell64dll -Force -ErrorAction Ignore
 
 				if (Test-Path -Path $FileSyncShell64dll)
@@ -5339,7 +5339,7 @@ public static bool MarkFileDelete (string sourcefile)
 			}
 
 			# We need to wait for a few seconds to let explore launch unless it will fail to do so
-			Start-Process -FilePath explorer
+			Start-Process -FilePath "$env:SystemRoot\explorer.exe"
 			Start-Sleep -Seconds 3
 
 			$Path = @(
@@ -15163,7 +15163,7 @@ public static void PostMessage()
 		{
 			if (Test-Path -Path $Script:OpenedFolder)
 			{
-				Start-Process -FilePath explorer -ArgumentList $Script:OpenedFolder
+				Start-Process -FilePath "$env:SystemRoot\explorer.exe" -ArgumentList $Script:OpenedFolder
 			}
 		}
 	}

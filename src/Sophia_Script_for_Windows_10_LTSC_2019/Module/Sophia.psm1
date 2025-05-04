@@ -11666,7 +11666,7 @@ public static void PostMessage()
 		{
 			if (Test-Path -Path $Script:OpenedFolder)
 			{
-				Start-Process -FilePath explorer -ArgumentList $Script:OpenedFolder
+				Start-Process -FilePath "$env:SystemRoot\explorer.exe" -ArgumentList $Script:OpenedFolder
 			}
 		}
 	}
