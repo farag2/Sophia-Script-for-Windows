@@ -1,10 +1,10 @@
 {
-    "Sophia_Script_Windows_10_PowerShell_5_1": "5.20.5",
-    "Sophia_Script_Windows_10_PowerShell_7": "5.20.5",
-    "Sophia_Script_Windows_10_LTSC2019": "5.10.5",
-    "Sophia_Script_Windows_10_LTSC2021": "5.20.5",
-    "Sophia_Script_Windows_11_PowerShell_5_1": "6.8.5",
-    "Sophia_Script_Windows_11_LTSC2024": "6.8.5",
-    "Sophia_Script_Windows_11_PowerShell_7": "6.8.5",
-    "Sophia_Script_Wrapper": "2.7.15"
+    "Sophia_Script_Windows_10_PowerShell_5_1": "5.20.6",
+    "Sophia_Script_Windows_10_PowerShell_7": "5.20.6",
+    "Sophia_Script_Windows_10_LTSC2019": "5.10.6",
+    "Sophia_Script_Windows_10_LTSC2021": "5.20.6",
+    "Sophia_Script_Windows_11_PowerShell_5_1": "6.8.6",
+    "Sophia_Script_Windows_11_LTSC2024": "6.8.6",
+    "Sophia_Script_Windows_11_PowerShell_7": "6.8.6",
+    "Sophia_Script_Wrapper": "2.7.16"
 }

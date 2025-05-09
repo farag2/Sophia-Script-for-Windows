@@ -3,10 +3,10 @@
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
 	.VERSION
-	5.20.5
+	5.20.6
 
 	.DATE
-	18.04.2025
+	09.05.2025
 
 	.AUTHOR
 	Team Sophia
@@ -9875,13 +9875,13 @@ function Import-Associations
 function UninstallPCHealthCheck
 {
 	$Folder = (New-Object -ComObject Shell.Application).NameSpace("$env:SystemRoot\Installer")
-	$Files = [hashtable]::new() ### @{{}}
+	$Files = @{}
 	$Folder.Items() | Where-Object -FilterScript {$_.Path.EndsWith(".msi")} | ForEach-Object -Process {$Files.Add($_.Name, $_)} | Out-Null
 
 	# Find the necessary .msi with the Subject property equal to "Windows PC Health Check"
 	foreach ($MSI in @(Get-ChildItem -Path "$env:SystemRoot\Installer" -Filter *.msi -File -Force))
 	{
-		$Name = $Files.Keys | Where-Object -FilterScript {$_ -eq $MSI.Name}
+		$Name = $Files.Keys | Where-Object -FilterScript {$_ -eq $MSI.BaseName}
 		# Checking whether necessary files exist in folder unless we get a bunch of errors for $File variable
 		if ($Name)
 		{
