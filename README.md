@@ -42,26 +42,6 @@
 
 Made with <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/heart.svg" height="17px"/> of Windows.
 
-## Table of Contents
-
-* [How to use](#how-to-use)
-  * [Download via PowerShell](#download-via-powershell)
-  * [Download via Chocolatey](#download-via-chocolatey)
-  * [Download via WinGet](#download-via-winget)
-  * [Manual method](#manual-method)
-  * [How to run the specific function(s)](#how-to-run-the-specific-functions)
-  * [Wrapper](#wrapper)
-* [Donations](#donations)
-* [System Requirements](#system-requirements)
-* [Key features](#key-features)
-* [Screenshots](#screenshots)
-* [Videos](#videos)
-* [How to translate](#how-to-translate)
-* [Media](#media)
-* [SophiApp](#sophiapp-c--wpf)
-
-## How to use
-
 > [!IMPORTANT]
 > Every tweak in the preset file has its' corresponding function to restore the default settings. Running the script is best done on a fresh install because running it on wrong tweaked system may result in errors occurring.
 
@@ -69,6 +49,28 @@ Made with <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-W
 > It's allowed to be logged in as one admin user only during application startup.
 >
 > `Sophia Script for Windows` may not work on a homebrew Windows. Especially, if the homebrew image was created by OS makers being all thumbs who break Microsoft Defender and disable OS telemetry by purposely uprooting system components.
+
+## Table of Contents
+
+* [How to download](#how-to-download)
+  * [Download via PowerShell](#download-via-powershell)
+  * [Download via Chocolatey](#download-via-chocolatey)
+  * [Download via WinGet](#download-via-winget)
+  * [From release page](#from-release-page)
+* [How to use](#how-to-use)
+  * [How to run the specific function(s)](#how-to-run-the-specific-functions)
+  * [Wrapper](#wrapper)
+  * [How to revert changes](#how-to-revert-changes)
+* [Donations](#donations)
+* [System Requirements](#system-requirements)
+* [Key features](#key-features)
+* [Screenshots](#screenshots)
+* [Videos](#videos)
+* [How to translate](#how-to-translate)
+* [Media](#media)
+* [SophiApp 2](#sophiapp-2-c--winui-3)
+
+## How to download
 
 ### Download via PowerShell
 
@@ -118,10 +120,13 @@ winget install --id TeamSophia.SophiaScript --location $DownloadsFolder --accept
 winget uninstall --id TeamSophia.SophiaScript --force
 ```
 
-### Manual method
+### From release page
 
-* Download an [archive](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest) according to your Windows and PowerShell versions;
-* Expand archive;
+Download an [archive](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest) according to your Windows and PowerShell versions.
+
+## How to use
+
+* Download archive and expand it;
 * Look through the `Sophia.ps1` file to configure functions that you want to be run;
   * Place the `#` char before function if you don't want it to be run.
   * Remove the `#` char before function if you want it to be run.
@@ -153,7 +158,7 @@ winget uninstall --id TeamSophia.SophiaScript --force
 
 ### How to run the specific function(s)
 
-* Do all steps from [Manual method](#manual-method) section and stop at setting execution policy in `PowerShell`;
+* Do all steps from [How to use](#how-to-use) section and stop at setting execution policy in `PowerShell`;
 * [Dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator) the `Import-TabCompletion.ps1` file first:
 
 ```powershell
@@ -194,6 +199,22 @@ Or use an old-style format without the <kbd>TAB</kbd> functions autocomplete (th
   * The Wrapper has a real time UI rendering;
 * Configure every function;
 * Open the `Console Output` tab and press `Run PowerShell`.
+
+## How to revert changes
+
+* Do all steps from [How to use](#how-to-use) section and stop at setting execution policy in `PowerShell`;
+* [Dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator) the `Import-TabCompletion.ps1` file first:
+
+```powershell
+# With a dot at the beginning
+. .\Import-TabCompletion.ps1
+```
+
+* Call functions from `Sophia.ps1` you want to revert like this.
+
+```powershell
+Sophia -Functions "DiagTrackService -Enable", UninstallUWPApps
+```
 
 ## Donations
 
@@ -250,7 +271,7 @@ Or use an old-style format without the <kbd>TAB</kbd> functions autocomplete (th
   * `%SystemRoot%\SoftwareDistribution\Download`
   * `%TEMP%`
 * Install the latest provided Microsoft Visual C++ 2015–2022 x86/x64;
-* Install the latest provided .NET Desktop Runtime 6, 8 x86/x64;
+* Install the latest provided .NET Desktop Runtime 8, 9 x86/x64;
 * Configure the Windows security;
 * Display all policy registry keys (even manually created ones) in the Local Group Policy Editor snap-in (gpedit.msc);
 * Many more File Explorer and context menu "deep" tweaks.
@@ -295,12 +316,7 @@ https://user-images.githubusercontent.com/10544660/253818031-b7ce6bf1-d968-41ea-
 
 ## Media
 
-* [![Discord](https://discordapp.com/api/guilds/1006179075263561779/widget.png?style=shield)](https://discord.gg/sSryhaEv79)
-* [Telegram discussion group](https://t.me/sophia_chat)
-* [Telegram channel](https://t.me/sophianews)
-* [Ru-Board](https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15)
-* [rutracker](https://rutracker.org/forum/viewtopic.php?t=5996011)
-* [My Digital Life](https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/)
+* [XDA](https://www.xda-developers.com/sophia-script-returns-control-windows-11)
 * [4sysops](https://4sysops.com/archives/windows-10-sophia-script-powershell-functions-for-windows-10-fine-tuning-and-automating-routine-configuration-tasks/)
 * [gHacks](https://www.ghacks.net/2020/09/27/windows-10-setup-script-has-a-new-name-and-is-now-easier-to-use/)
 * [Neowin](https://www.neowin.net/news/this-windows-10-setup-script-lets-you-fine-tune-around-150-functions-for-new-installs)
@@ -310,12 +326,15 @@ https://user-images.githubusercontent.com/10544660/253818031-b7ce6bf1-d968-41ea-
 * [PCsoleil Informatique](https://www.pcsoleil.fr/successeur-de-win10-initial-setup-script-sophia-script-comment-lutiliser/)
 * [Reddit (archived)](https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/)
   * PM [me](https://www.reddit.com/user/farag2/)
+* [Ru-Board](https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15)
+* [rutracker](https://rutracker.org/forum/viewtopic.php?t=5996011)
+* [My Digital Life](https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/)
 
 ***
 
-## SophiApp (C# + WPF)
+## SophiApp 2 (C# + WinUI 3)
 
 [SophiApp 2.0](https://github.com/Sophia-Community/SophiApp) is in ongoing development. 🚀
 
-![Image](https://github.com/Sophia-Community/SophiApp/raw/master/img/0.gif)
-![Image](https://github.com/Sophia-Community/SophiApp/raw/master/img/1.png)
+![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/master/img/0.gif)
+![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/master/img/1.png)
