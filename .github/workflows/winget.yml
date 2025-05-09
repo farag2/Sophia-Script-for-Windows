@@ -14,7 +14,7 @@ jobs:
           }
           $Latest_Release = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_5_1
 
-          $installerUrl = https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$Latest_Release/Sophia.Script.for.Windows.11.v$Latest_Release.zip
+          $InstallerUrl = https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$Latest_Release/Sophia.Script.for.Windows.11.v$($Latest_Release).zip
 
       - name: Create winget PR
         run: |
