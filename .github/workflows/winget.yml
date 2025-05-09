@@ -7,21 +7,17 @@ jobs:
   publish:
     runs-on: windows-latest
     steps:
-      - name: Getting latest release for Windows 11
+      - name: Create WinGet PR
         run: |
           $Parameters = @{
             Uri = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
           }
           $Latest_Release = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_5_1
 
-          $InstallerUrl = https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$Latest_Release/Sophia.Script.for.Windows.11.v$($Latest_Release).zip
-
-      - name: Create winget PR
-        run: |
           $Parameters = @{
             Uri     = "https://aka.ms/wingetcreate/latest"
             OutFile = "wingetcreate.exe"
           }
           Invoke-WebRequest @Parameters
 
-          & wingetcreate.exe update TeamSophia.SophiaScript --urls $installerUrl --version $Latest_Release --token "${{ secrets.WINGET_TOKEN }}" --submit
+          & .\wingetcreate.exe update TeamSophia.SophiaScript --urls "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$Latest_Release/Sophia.Script.for.Windows.11.v$($Latest_Release).zip" --version $Latest_Release --submit --token "${{ secrets.WINGET_TOKEN }}"
