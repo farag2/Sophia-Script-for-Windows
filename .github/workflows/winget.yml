@@ -1,4 +1,4 @@
-name: Publish to WinGet
+name: WinGet push
 
 on:
   workflow_dispatch:
