@@ -189,7 +189,7 @@ Oder verwenden Sie ein Format im alten Stil ohne die <kbd>TAB</kbd>-Funktionen z
 
 ## Wrapper
 
-![Wrapper](https://i.imgur.com/AiuCUvW.png)
+![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/master/img/Wrapper.png)
 
 @BenchTweakGaming
 
