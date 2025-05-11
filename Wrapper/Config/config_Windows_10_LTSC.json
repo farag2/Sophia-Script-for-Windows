@@ -1785,21 +1785,6 @@
   },
   {
     "Region": "Gaming",
-    "Control": "chk",
-    "Required": "false",
-    "Function": "Set-AppGraphicsPerformance",
-    "Arg": {
-      "Zero": {
-        "Tag": ""
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "",
-    "LTSC2019": "true",
-    "LTSC2021": "true"
-  },
-  {
-    "Region": "Gaming",
     "Control": "cmb",
     "Required": "false",
     "Function": "GPUScheduling",

@@ -830,12 +830,6 @@ AppSuggestions -Hide
 # AppSuggestions -Show
 #endregion Start menu
 
-#region Gaming
-# Choose an app and set the "High performance" graphics performance for it. Only if you have a dedicated GPU
-# Выбрать приложение и установить для него параметры производительности графики на "Высокая производительность". Только при наличии внешней видеокарты
-Set-AppGraphicsPerformance
-#endregion Gaming
-
 #region Scheduled tasks
 <#
 	Create the "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates.

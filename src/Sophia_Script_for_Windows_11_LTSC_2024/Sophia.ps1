@@ -1007,10 +1007,6 @@ UninstallUWPApps
 #endregion UWP apps
 
 #region Gaming
-# Choose an app and set the "High performance" graphics performance for it. Only if you have a dedicated GPU
-# Выбрать приложение и установить для него параметры производительности графики на "Высокая производительность". Только при наличии внешней видеокарты
-Set-AppGraphicsPerformance
-
 <#
 	Turn on hardware-accelerated GPU scheduling. Restart needed
 	Only if you have a dedicated GPU and WDDM verion is 2.7 or higher

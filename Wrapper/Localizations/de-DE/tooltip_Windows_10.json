@@ -1569,16 +1569,6 @@
   },
   {
     "Region": "Gaming",
-    "Function": "Set-AppGraphicsPerformance",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Wählen Sie eine Anwendung aus und stellen Sie für diese die \"Hohe Leistung\" für die Grafikleistung ein. Nur mit einer dedizierten GPU."
-      }
-    }
-  },
-  {
-    "Region": "Gaming",
     "Function": "GPUScheduling",
     "Arg": {
       "Zero": {

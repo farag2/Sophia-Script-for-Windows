@@ -1569,16 +1569,6 @@
   },
   {
     "Region": "Gaming",
-    "Function": "Set-AppGraphicsPerformance",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Выбрать приложение и установить для него параметры производительности графики на \"Высокая производительность\". Только при наличии внешней видеокарты."
-      }
-    }
-  },
-  {
-    "Region": "Gaming",
     "Function": "GPUScheduling",
     "Arg": {
       "Zero": {

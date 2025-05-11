@@ -9972,66 +9972,6 @@ function PinToStart
 #region Gaming
 <#
 	.SYNOPSIS
-	Choose an app and set the "High performance" graphics performance for it
-
-	.EXAMPLE
-	Set-AppGraphicsPerformance
-
-	.NOTES
-	Works only with a dedicated GPU
-
-	.NOTES
-	Current user
-#>
-function Set-AppGraphicsPerformance
-{
-	if (Get-CimInstance -ClassName Win32_VideoController | Where-Object -FilterScript {($_.AdapterDACType -ne "Internal") -and ($null -ne $_.AdapterDACType)})
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.GraphicsPerformanceTitle -Verbose
-
-		do
-		{
-			$Choice = Show-Menu -Menu $Browse -Default 1 -AddSkip
-
-			switch ($Choice)
-			{
-				$Browse
-				{
-					Add-Type -AssemblyName System.Windows.Forms
-					$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
-					$OpenFileDialog.Filter = "*.exe|*.exe|{0} (*.*)|*.*" -f $Localization.AllFilesFilter
-					$OpenFileDialog.InitialDirectory = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
-					$OpenFileDialog.Multiselect = $false
-
-					# Force move the open file dialog to the foreground
-					$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
-					$OpenFileDialog.ShowDialog($Focus)
-
-					if ($OpenFileDialog.FileName)
-					{
-						if (-not (Test-Path -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences))
-						{
-							New-Item -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Force
-						}
-						New-ItemProperty -Path HKCU:\Software\Microsoft\DirectX\UserGpuPreferences -Name $OpenFileDialog.FileName -PropertyType String -Value "GpuPreference=2;" -Force
-					}
-				}
-				$Skip
-				{
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-					Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-				}
-				$KeyboardArrows {}
-			}
-		}
-		until ($Choice -ne $KeyboardArrows)
-	}
-}
-
-<#
-	.SYNOPSIS
 	Hardware-accelerated GPU scheduling
 
 	.PARAMETER Enable

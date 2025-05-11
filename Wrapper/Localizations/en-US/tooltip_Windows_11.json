@@ -1473,16 +1473,6 @@
   },
   {
     "Region": "Gaming",
-    "Function": "Set-AppGraphicsPerformance",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Choose an app and set the \"High performance\" graphics performance for it. Only if you have a dedicated GPU."
-      }
-    }
-  },
-  {
-    "Region": "Gaming",
     "Function": "GPUScheduling",
     "Arg": {
       "Zero": {
