@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.20.6 | 6.8.56 — 09.05.2025
+
+* Updated Readme;
+* Removed `StartAccountNotifications` function for Windows 10;
+* Improved `CABInstallContext` function;
+* Fixed `Export-Associations` function;
+* Fixed `UninstallPCHealthCheck` function;
+* Added package for Windows 11 (PowerShell 5.1) to [WinGet](https://github.com/microsoft/winget-pkgs/tree/master/manifests/t/TeamSophia/SophiaScript)
+  * The command downloads only `Windows 11 (PowerShell 5.1)` archive to your `Downloads` folder unlike the `Chocolatey` [script](#download-via-chocolatey) and expands it.
+
+```powershell
+# Install Sophia Script and expand it to Downloads folder
+$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+winget install --id TeamSophia.SophiaScript --location $DownloadsFolder --accept-source-agreements --force
+
+# Uninstall Sophia Script
+winget uninstall --id TeamSophia.SophiaScript --force
+```
+
+* Minor changes.
+
+## Wrapper 2.7.16
+
+![Безымянный](https://github.com/user-attachments/assets/dd3ed870-6ee5-4738-94a4-6bbd866be3a2)
+
+* Improved UI;
+* Fixed JSONs
+* Refactor, changed Manifest file name from Sophia.psd1 to SophiaScript.psd1
+* Fixed control 'cmbcmb' renamed to 'cmbs' which is used for 'UserFolders' in Windows 10
+* Autosave feature added: saves to Sophia Script folder after 5 mins to a file called 'autosave.ps1'
+* JSON created for Wrapper to change setting in wrapper
+* 'Presets' translation so put back menu translations for 'Presets', Fixed 'Set-Association' - Can add association to textboxes even when the '+/Plus' button has not been pressed yet. It adds a spot for you. Before it crashed the whole program when pressing 'Save'.
+
 ## 5.20.5 | 6.8.5 — 18.04.2025
 
 * CI/CD configs refactored;
