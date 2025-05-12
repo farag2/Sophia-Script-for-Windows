@@ -60,4 +60,5 @@ Run                                       = Başlat
 Skipped                                   = "{0}" işlevi atlandı.
 ThankfulToastTitle                        = Sophia Script kullandığınız için teşekkür ederiz ❤️
 DonateToastTitle                          = Bu projeyi beğendiyseniz lütfen bağışta bulunun 🕊️
+DotSourcedWarning                         = Lütfen işlevi "nokta-kaynaklı" (başında nokta olan) olarak yazın:\n. .\\Import-TabCompletion.ps1
 '@

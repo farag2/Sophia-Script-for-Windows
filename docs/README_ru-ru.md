@@ -159,7 +159,7 @@ winget uninstall --id TeamSophia.SophiaScript --force
 ### Как выполните конкретную функцию(и)
 
 * Выполните все шаги из пункта [Как использовать](#как-использовать) и остановитесь на пункте по изменнию политики выполнения скриптов в `PowerShell`;
-* Сначала загрузите файл `Import-TabCompletion.ps1` через [дот сорсинг](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator):
+* Сначала загрузите файл `Import-TabCompletion.ps1` через [дот сорсинг](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-):
 
 ```powershell
 # С точкой в начале
@@ -203,7 +203,7 @@ UninstallUWPApps, "PinToStart -UnpinAll"
 ## Как откатить изменения
 
 * Выполните все шаги из пункта [Как использовать](#как-использовать) и остановитесь на пункте по изменнию политики выполнения скриптов в `PowerShell`;
-* Сначала загрузите файл `Import-TabCompletion.ps1` через [дот сорсинг](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator):
+* Сначала загрузите файл `Import-TabCompletion.ps1` через [дот сорсинг](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-):
 
 ```powershell
 # С точкой в начале

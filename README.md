@@ -159,7 +159,7 @@ Download an [archive](https://github.com/farag2/Sophia-Script-for-Windows/releas
 ### How to run the specific function(s)
 
 * Do all steps from [How to use](#how-to-use) section and stop at setting execution policy in `PowerShell`;
-* [Dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator) the `Import-TabCompletion.ps1` file first:
+* [Dot source](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-) the `Import-TabCompletion.ps1` file first:
 
 ```powershell
 # With a dot at the beginning
@@ -203,7 +203,7 @@ Or use an old-style format without the <kbd>TAB</kbd> functions autocomplete (th
 ## How to revert changes
 
 * Do all steps from [How to use](#how-to-use) section and stop at setting execution policy in `PowerShell`;
-* [Dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator) the `Import-TabCompletion.ps1` file first:
+* [Dot source](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-) the `Import-TabCompletion.ps1` file first:
 
 ```powershell
 # With a dot at the beginning

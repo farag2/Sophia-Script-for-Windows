@@ -57,4 +57,5 @@ Run                                       = 运行
 Skipped                                   = 跳过函数"{0}"。
 ThankfulToastTitle                        = 感謝您使用Sophia Script ❤️
 DonateToastTitle                          = 如果您喜歡這個專案，請捐款 🕊️
+DotSourcedWarning                         = 請"點源"功能（開頭有點）:\n. .\\Import-TabCompletion.ps1
 '@

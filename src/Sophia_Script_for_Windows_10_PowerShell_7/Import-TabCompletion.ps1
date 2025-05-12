@@ -63,6 +63,21 @@ catch
 	Import-LocalizedData -BindingVariable Global:Localization -UICulture en-US -BaseDirectory $PSScriptRoot\Localizations -FileName Sophia
 }
 
+# Checking if function wasn't dot-sourced, but called explicitly
+# ".\Import-TabCompletion.ps1" instead of ". .\Import-TabCompletion.ps1"
+if ($MyInvocation.Line -ne ". .\Import-TabCompletion.ps1")
+{
+	Write-Information -MessageData "" -InformationAction Continue
+	Write-Warning -Message $Localization.NotDotSourced
+	Write-Information -MessageData "" -InformationAction Continue
+
+	Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows?tab=readme-ov-file#how-to-run-the-specific-functions" -Verbose
+	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+	exit
+}
+
 # The mandatory checks. Please, do not comment out this function
 InitialActions
 

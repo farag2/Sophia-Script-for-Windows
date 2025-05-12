@@ -1505,7 +1505,7 @@ Diff from v5.9
   * Added the <kbd>Tab</kbd> functions autocompletion by typing its' first letters
     https://user-images.githubusercontent.com/10544660/225270281-908abad1-d125-4cae-a19b-2cf80d5d2751.mp4
   * The code from moved to the `Import-TabCompletion.ps1` file;
-  * If you want to call the specific function you need to [dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-) the `Import-TabCompletion.ps1` first
+  * If you want to call the specific function you need to [dot source](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-) the `Import-TabCompletion.ps1` first
 
     ```powershell
     # With a dot at the beginning

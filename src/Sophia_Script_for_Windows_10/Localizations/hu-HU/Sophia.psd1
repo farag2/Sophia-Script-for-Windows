@@ -66,4 +66,5 @@ Run                                       = Futtatás
 Skipped                                   = Az "{0}" funkció kihagyva.
 ThankfulToastTitle                        = Köszönjük, hogy használta a Sophia Script ❤️
 DonateToastTitle                          = Kérjük, adományozzon, ha tetszik ez a projekt 🕊
+DotSourcedWarning                         = Kérjük, "dot-source"-olja a függvényt (egy ponttal az elején):\n. .\\Import-TabCompletion.ps1
 '@

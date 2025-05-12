@@ -65,4 +65,5 @@ Run                                       = Eseguire
 Skipped                                   = Funzione "{0}" saltata.
 ThankfulToastTitle                        = Grazie per aver utilizzato Sophia Script ❤️
 DonateToastTitle                          = Se vi piace questo progetto, fate una donazione 🕊
+DotSourcedWarning                         = Si prega di "dot-source" la funzione (con un punto all'inizio):\n. .\\Import-TabCompletion.ps1
 '@
