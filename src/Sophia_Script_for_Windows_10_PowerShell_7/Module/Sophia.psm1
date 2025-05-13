@@ -9934,7 +9934,7 @@ function UninstallPCHealthCheck
 	# Find the necessary .msi with the Subject property equal to "Windows PC Health Check"
 	foreach ($MSI in @(Get-ChildItem -Path "$env:SystemRoot\Installer" -Filter *.msi -File -Force))
 	{
-		$Name = $Files.Keys | Where-Object -FilterScript {$_ -eq $MSI.BaseName}
+		$Name = $Files.Keys | Where-Object -FilterScript {($_ -eq $MSI.BaseName) -or ($_ -eq $MSI.Name)}
 		# Checking whether necessary files exist in folder unless we get a bunch of errors for $File variable
 		if ($Name)
 		{
