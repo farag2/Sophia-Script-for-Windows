@@ -122,7 +122,7 @@ winget uninstall --id TeamSophia.SophiaScript --force
 
 ### Со страницы релиза
 
-Скачайте [архив](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest) согласно версиям вашей Windows и PowerShell.
+Скачайте [архив](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest) согласно версиям ваших Windows и PowerShell.
 
 ## Как использовать
 
