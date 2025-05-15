@@ -13,6 +13,26 @@ jobs:
 
       - name: Preparation
         run: |
+          # Get local uploaded manifest version of the package
+          $String = Get-Content -Path "WinGet_Manifests\TeamSophia.SophiaScript.yaml" | Where-Object -FilterScript {$_ -match "ManifestVersion"}
+          $LocalManifest = $String -split " " | Select-Object -Last 1
+
+          # Get latest supported manifest version provided
+          # https://github.com/microsoft/winget-cli/tree/master/schemas/JSON/manifests
+          # Parse GitHub folder
+          $Parameters = @{
+            Uri             = "https://api.github.com/repos/microsoft/winget-cli/contents/schemas/JSON/manifests"
+            UseBasicParsing = $true
+            Verbose         = $true
+          }
+          $LatestManifest = ((Invoke-RestMethod @Parameters).name | Where-Object {$_ -ne "preview"}) -replace ("v", "") | Sort-Object -Property {[System.Version]$_} | Select-Object -Last 1
+
+          if ([System.Version]$LocalManifest -lt [System.Version]$LatestManifest)
+          {
+            Write-Warning -Message "New $($LatestManifest) manifest available. Edit manifests in Scripts\WinGet_Manifests"
+            exit
+          }
+
           # Get latest version tag for Windows 11
           $Parameters = @{
             Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/sophia_script_versions.json"
