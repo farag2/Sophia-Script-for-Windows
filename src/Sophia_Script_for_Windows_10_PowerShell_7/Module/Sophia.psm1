@@ -266,6 +266,8 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		PCNP                 = "HKCU:\Software\PCNP"
 		# https://www.reddit.com/r/TronScript/
 		Tron                 = "$env:SystemDrive\logs\tron"
+		# https://github.com/es3n1n/defendnot
+		defendnot            = "$env:SystemRoot\System32\Tasks\defendnot"
 	}
 	foreach ($Tweaker in $Tweakers.Keys)
 	{
