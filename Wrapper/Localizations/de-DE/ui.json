@@ -8,6 +8,8 @@
       "menuAutosave": "Automatisches Speichern",
       "menuPresets": "Voreinstellungen",
       "menuOpposite": "Alle umkehren",
+      "menuOppositeTab": "Gegenüberliegende Registerkarte",
+      "menuOppositeEverything": "Gegen alles",
       "menuClear": "Löschen",
       "menuClearTab": "Registerkarte löschen",
       "menuClearEverything": "Alles löschen",
@@ -60,8 +62,10 @@
       "statusBarWindowsDefaultPreset": "Windows Standardvoreinstellung geladen!",
       "statusBarPowerShellScriptCreatedFromSelections": "PowerShell Skript, das anhand Ihrer Auswahlen erstellt wurde! Sie können es ausführen oder speichern.",
       "statusBarPowerShellExport": "PowerShell Skript erstellt!",
-      "statusBarOpposite": "Umgekehrte Einstellungen ausgewählt!",
-      "statusBarClear": "Auswahlen alle gelöscht!",
+      "statusBarOppositeTab": "Für diese Registerkarte ausgewählte Gegenteile!",
+      "statusBarOppositeEverything": "Für alles ausgewählte Gegensätze!",
+      "statusBarClearTab": "Auswahl für Registerkarte gelöscht!",
+      "statusBarClearEverything": "Alle Auswahlen gelöscht!",
       "statusBarDisabled": "Sie müssen zuerst 'Voreinstellung importieren', um die Verwendung von Wrapper zu aktivieren. Importieren, um Steuerelemente zu aktivieren.",
       "statusBarCurrentOS": "Aktuelles OS"
     }

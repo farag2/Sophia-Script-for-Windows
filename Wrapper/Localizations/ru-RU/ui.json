@@ -8,6 +8,8 @@
       "menuAutosave": "Автосохранение",
       "menuPresets": "Пресеты",
       "menuOpposite": "Противоположные значения",
+      "menuOppositeTab": "Противоположная вкладка",
+      "menuOppositeEverything": "Напротив всего",
       "menuClear": "Очистить",
       "menuClearTab": "Очистить вкладку",
       "menuClearEverything": "Очистить все",
@@ -60,8 +62,10 @@
       "statusBarWindowsDefaultPreset": "Загружен пресет по умолчанию!",
       "statusBarPowerShellScriptCreatedFromSelections": "Скрипт для PowerShell создан из ваших выбранных элементов. Можете запустить и сохранить его.",
       "statusBarPowerShellExport": "Скрипт для PowerShell создан!",
-      "statusBarOpposite": "Выбраны обратные настройки!",
-      "statusBarClear": "Выбранные элементы очищены!",
+      "statusBarOppositeTab": "Для этой вкладки выбраны противоположности!",
+      "statusBarOppositeEverything": "Для всего выбраны противоположности!",
+      "statusBarClearTab": "Выбор для вкладки очищен!",
+      "statusBarClearEverything": "Все выборы очищены!",
       "statusBarDisabled": "Импортируйте пресет, чтобы включить элементы управления.",
       "statusBarCurrentOS": "Текущая ОС"
     }
