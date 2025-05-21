@@ -1252,10 +1252,10 @@
     "Region": "System",
     "Function": "Set-Association",
     "ToolTip": "Register app, calculate hash, and associate with an extension with the 'How do you want to open this' pop-up hidden.",
-    "Arg": {
-      "Zero": {
-        "Tag": "ProgramPath",
-        "ToolTip": "Path to executable file."
+    "Arg": {      
+    "Zero": {
+      "Tag": "ProgramPath",
+      "ToolTip": "Path to executable file."
       },
       "One": {
         "Tag": "Extension",
@@ -1468,6 +1468,16 @@
       "One": {
         "Tag": "Enable",
         "ToolTip": "Enable Xbox Game Bar tips (default value)."
+      }
+    }
+  },
+  {
+    "Region": "Gaming",
+    "Function": "Set-AppGraphicsPerformance",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Choose an app and set the \"High performance\" graphics performance for it. Only if you have a dedicated GPU."
       }
     }
   },

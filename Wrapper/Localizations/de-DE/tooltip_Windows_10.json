@@ -410,7 +410,7 @@
         "ToolTip": "Zeigt keine Bestätigung beim Löschen von Dateien aus dem Papierkorb an (Standardwert)."
       }
     }
-  },
+  },  
   {
     "Region": "UI & Personalization",
     "Function": "QuickAccessRecentFiles",
@@ -1564,6 +1564,16 @@
       "One": {
         "Tag": "Enable",
         "ToolTip": "Xbox Game Bar-Tipps aktivieren (Standardwert)."
+      }
+    }
+  },
+  {
+    "Region": "Gaming",
+    "Function": "Set-AppGraphicsPerformance",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Wählen Sie eine Anwendung aus und stellen Sie für diese die \"Hohe Leistung\" für die Grafikleistung ein. Nur mit einer dedizierten GPU."
       }
     }
   },

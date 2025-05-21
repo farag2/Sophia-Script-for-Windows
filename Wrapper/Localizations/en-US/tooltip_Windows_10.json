@@ -1286,7 +1286,7 @@
     "Region": "System",
     "Function": "Set-Association",
     "ToolTip": "Register app, calculate hash, and associate with an extension with the 'How do you want to open this' pop-up hidden.",
-    "Arg": {
+    "Arg": {      
       "Zero": {
         "Tag": "ProgramPath",
         "ToolTip": "Path to executable file."
@@ -1483,7 +1483,7 @@
   {
     "Region": "UWP apps",
     "Function": "UninstallUWPApps -ForAllUsers",
-    "ToolTip": "Uninstall UWP apps using the pop-up dialog box. If the \"For all users\" is checked apps packages will not be installed for new users. The \"ForAllUsers\" argument sets a checkbox to unistall packages for all users.",
+    "ToolTip": "Uninstall UWP apps using the pop-up dialog box. If the \"For all users\" is checked apps packages will not be installed for new users. The \"ForAllUsers\" argument sets a checkbox to unistall packages for all users.",     
     "Arg": {
       "Zero": {
         "Tag": "",
@@ -1558,6 +1558,16 @@
       "One": {
         "Tag": "Enable",
         "ToolTip": "Enable Xbox Game Bar tips (default value)."
+      }
+    }
+  },
+  {
+    "Region": "Gaming",
+    "Function": "Set-AppGraphicsPerformance",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Choose an app and set the \"High performance\" graphics performance for it. Only if you have a dedicated GPU."
       }
     }
   },
