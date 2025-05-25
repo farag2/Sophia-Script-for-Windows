@@ -8,6 +8,8 @@
       "menuAutosave": "Autosave",
       "menuPresets": "Presets",
       "menuOpposite": "Opposite",
+      "menuOppositeTab": "Opposite Tab",
+      "menuOppositeEverything": "Opposite Everything",
       "menuClear": "Clear",
       "menuClearTab": "Clear Tab",
       "menuClearEverything": "Clear Everything",
@@ -60,8 +62,10 @@
       "statusBarWindowsDefaultPreset": "Windows Default preset loaded!",
       "statusBarPowerShellScriptCreatedFromSelections": "PowerShell Script created from your selections! You can run it or save it.",
       "statusBarPowerShellExport": "PowerShell script created!",
-      "statusBarOpposite": "Opposite selected!",
-      "statusBarClear": "Selections all cleared!",
+      "statusBarOppositeTab": "Opposites selected for this tab!",
+      "statusBarOppositeEverything": "Opposites selected for everything!",
+      "statusBarClearTab": "Selections for tab cleared!",
+      "statusBarClearEverything": "Selections all cleared!",
       "statusBarDisabled": "Import a preset to enable controls.",
       "statusBarCurrentOS": "Current OS"
     }
