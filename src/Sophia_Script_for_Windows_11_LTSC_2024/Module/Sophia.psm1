@@ -9869,6 +9869,9 @@ function UninstallUWPApps
 		# Calculator
 		"Microsoft.WindowsCalculator",
 
+		# Windows Advanced Settings
+		"Microsoft.Windows.DevHome",
+
 		# Windows Camera
 		"Microsoft.WindowsCamera",
 
