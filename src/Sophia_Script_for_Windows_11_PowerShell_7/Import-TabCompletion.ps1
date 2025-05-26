@@ -68,7 +68,7 @@ catch
 if ($MyInvocation.Line -ne ". .\Import-TabCompletion.ps1")
 {
 	Write-Information -MessageData "" -InformationAction Continue
-	Write-Warning -Message $Localization.NotDotSourced
+	Write-Warning -Message $Localization.DotSourcedWarning
 	Write-Information -MessageData "" -InformationAction Continue
 
 	Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows?tab=readme-ov-file#how-to-run-the-specific-functions" -Verbose
