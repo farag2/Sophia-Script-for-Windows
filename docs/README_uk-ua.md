@@ -229,13 +229,13 @@ Sophia -Functions "DiagTrackService -Enable", UninstallUWPApps
 [Windows-11-LTSC-2024]: https://support.microsoft.com/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5
 [Windows-11-24h2]: https://support.microsoft.com/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5
 
-|                Версія                    | Маркетингова назва  |                           Збіркa          |       Видання       |
-|:-----------------------------------------|--------------------:|:-----------------------------------------:|:-------------------:|
-| Windows 11 24H2                          | 2024 Update         | [Остання стабільна][Windows-11-24h2]      | Home/Pro/Enterprise |
-| Windows 10 x64 22H2                      | 2022 Update         | [Остання стабільна][Windows-10]           | Home/Pro/Enterprise |
-| Windows 11 Enterprise LTSC 2024          | 2024 Update         | [Остання стабільна][Windows-11-LTSC-2024] | Enterprise          |
-| Windows 10 x64 21H2 Enterprise LTSC 2021 | October 2021 Update | [Остання стабільна][Windows-10-LTSC-2021] | Enterprise          |
-| Windows 10 x64 1809 Enterprise LTSC 2019 | October 2018 Update | [Остання стабільна][Windows-10-LTSC-2019] | Enterprise          |
+|                Версія                    |              Збіркa                   |       Видання       |
+|:-----------------------------------------|:-------------------------------------:|:-------------------:|
+| Windows 11 24H2                          | [Latest stable][Windows-11-24h2]      | Home/Pro/Enterprise |
+| Windows 10 x64 22H2                      | [Latest stable][Windows-10]           | Home/Pro/Enterprise |
+| Windows 11 Enterprise LTSC 2024          | [Latest stable][Windows-11-LTSC-2024] | Enterprise          |
+| Windows 10 x64 21H2 Enterprise LTSC 2021 | [Latest stable][Windows-10-LTSC-2021] | Enterprise          |
+| Windows 10 x64 1809 Enterprise LTSC 2019 | [Latest stable][Windows-10-LTSC-2019] | Enterprise          |
 
 ## Ключові особливості
 
