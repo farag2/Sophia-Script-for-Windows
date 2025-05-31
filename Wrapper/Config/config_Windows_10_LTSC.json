@@ -586,13 +586,16 @@
     "Function": "TaskbarSearch",
     "Arg": {
       "Zero": {
-        "Tag": "Hide"
+        "Tag": "Hide",
+		"Opposite": "Two"
       },
       "One": {
-        "Tag": "SearchIcon"
+        "Tag": "SearchIcon",
+		"Opposite": "Zero"
       },
       "Two": {
-        "Tag": "SearchBox"
+        "Tag": "SearchBox",
+		"Opposite": "Zero"
       }
     },
     "Preset": "Zero",
@@ -715,13 +718,16 @@
     "Function": "TaskbarCombine",
     "Arg": {
       "Zero": {
-        "Tag": "Always"
+        "Tag": "Always",
+		"Opposite": "Two"
       },
       "One": {
-        "Tag": "Full"
+        "Tag": "Full",
+		"Opposite": "Two"
       },
       "Two": {
-        "Tag": "Never"
+        "Tag": "Never",
+		"Opposite": "Zero"
       }
     },
     "Preset": "Zero",
@@ -736,13 +742,16 @@
     "Function": "ControlPanelView",
     "Arg": {
       "Zero": {
-        "Tag": "LargeIcons"
+        "Tag": "LargeIcons",
+		"Opposite": "One"
       },
       "One": {
-        "Tag": "SmallIcons"
+        "Tag": "SmallIcons",
+		"Opposite": "Zero"
       },
       "Two": {
-        "Tag": "Category"
+        "Tag": "Category",
+		"Opposite": "Two"
       }
     },
     "Preset": "Zero",
@@ -937,13 +946,16 @@
     "Function": "Cursors",
     "Arg": {
       "Zero": {
-        "Tag": "Default"
+        "Tag": "Default",
+		"Opposite": "Zero"
       },
       "One": {
-        "Tag": "Dark"
+        "Tag": "Dark",
+		"Opposite": "Two"
       },
       "Two": {
-        "Tag": "Light"
+        "Tag": "Light",
+		"Opposite": "One"
       }
     },
     "Preset": "One",
@@ -1282,13 +1294,16 @@
     "Function": "Set-UserShellFolderLocation",
     "Arg": {
       "Zero": {
-        "Tag": "Root"
+        "Tag": "Root",
+		"Opposite": "Two"
       },
       "One": {
-        "Tag": "Custom"
+        "Tag": "Custom",
+		"Opposite": "Two"
       },
       "Two": {
-        "Tag": "Default"
+        "Tag": "Default",
+		"Opposite": "One"
       }
     },
     "Preset": "Zero",
