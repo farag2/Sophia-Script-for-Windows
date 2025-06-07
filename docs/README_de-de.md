@@ -286,15 +286,15 @@ https://user-images.githubusercontent.com/10544660/253818031-b7ce6bf1-d968-41ea-
 
 ### Lokalisierte Namen von UWP-Paketen
 
-![Image](https://i.imgur.com/xeiBbes.png) ![Image](https://i.imgur.com/0zj0h2S.png)
+![Image](./img/uwpapps.png)
 
 ### Lokalisierte Namen von Windows-Features
 
-![Image](https://i.imgur.com/xlMR2mz.png) ![Image](https://i.imgur.com/yl9j9Vt.png)
+![Image](./img/optionalfeatures.png) ![Image](./img/windowsfeatures.png)
 
 ### Herunterladen und Installieren einer beliebigen unterstützten Linux-Distribution im automatischen Modus
 
-![Image](https://i.imgur.com/Xn5SqxE.png)
+![Image](./img/wsl.png)
 
 ### Native interaktive Toasts für die geplanten Aufgaben
 

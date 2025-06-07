@@ -286,15 +286,15 @@ https://user-images.githubusercontent.com/10544660/253818031-b7ce6bf1-d968-41ea-
 
 ### Локалізовані назви UWP-пакетів
 
-![Image](https://i.imgur.com/xeiBbes.png) ![Image](https://i.imgur.com/0zj0h2S.png)
+![Image](./img/uwpapps.png)
 
 ### Локалізовані назви функцій Windows
 
-![Image](https://i.imgur.com/xlMR2mz.png) ![Image](https://i.imgur.com/yl9j9Vt.png)
+![Image](./img/optionalfeatures.png) ![Image](./img/windowsfeatures.png)
 
 ### Завантажте та встановіть будь-який підтримуваний дистрибутив Linux в автоматичному режимі
 
-![Image](https://i.imgur.com/Xn5SqxE.png)
+![Image](./img/wsl.png)
 
 ### Інтерактивні тости для запланованих завдань
 

@@ -285,15 +285,15 @@ https://user-images.githubusercontent.com/10544660/253818031-b7ce6bf1-d968-41ea-
 
 ### Локализированные имена пакетов
 
-![Image](https://i.imgur.com/xeiBbes.png) ![Image](https://i.imgur.com/0zj0h2S.png)
+![Image](./img/uwpapps.png)
 
 ### Локализированные имена компонентов Windows
 
-![Image](https://i.imgur.com/xlMR2mz.png) ![Image](https://i.imgur.com/yl9j9Vt.png)
+![Image](./img/optionalfeatures.png) ![Image](./img/windowsfeatures.png)
 
 ### Скачать и установить любые поддерживаемые дистрибутивые Linux через WSL в автоматическом режиме
 
-![Image](https://i.imgur.com/Xn5SqxE.png)
+![Image](./img/wsl.png)
 
 ### Нативные тостовые уведомления для заданий Планировщика заданий
 

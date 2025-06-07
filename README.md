@@ -122,7 +122,7 @@ winget uninstall --id TeamSophia.SophiaScript --force
 
 ### From release page
 
-Download an [archive](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest) according to your Windows and PowerShell versions.
+Download [archive](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest) according to your Windows and PowerShell versions.
 
 ## How to use
 
@@ -261,7 +261,7 @@ Sophia -Functions "DiagTrackService -Enable", UninstallUWPApps
 * Download and install the [HEVC Video Extensions from Device Manufacturer](https://apps.microsoft.com/detail/9N4WGH0Z6VHQ) to be able to open [HEVC](https://en.wikipedia.org/wiki/H.265) format;
 * Set an app as default one for specific extension without the "How do you want to open this" pop-up using special [function](https://github.com/DanysysTeam/PS-SFTA);
 * Export all Windows associations. Associations will be exported as Application_Associations.json file in script root folder;
-* Import exported JSON file after a clean installation. You have to install all apps according to an exported JSON file to restore all associations;
+* Import exported JSON file after a clean installation. You need to install all apps according to exported JSON file to restore all associations;
 * Install any supported Linux distribution for WSL displaying friendly distro names with pop-up form written in [WPF](#screenshots);
 * Create scheduled tasks with a native toast notification, where you will be able to run or [dismiss](#native-interactive-toasts-for-the-scheduled-tasks) tasks;
   * Create scheduled tasks `Windows Cleanup` and `Windows Cleanup Notification` for cleaning up Windows of unused files and Windows updates files;
@@ -288,15 +288,15 @@ https://user-images.githubusercontent.com/10544660/253818031-b7ce6bf1-d968-41ea-
 
 ### Localized UWP packages names
 
-![Image](https://i.imgur.com/xeiBbes.png) ![Image](https://i.imgur.com/0zj0h2S.png)
+![Image](./img/uwpapps.png)
 
 ### Localized Windows features names
 
-![Image](https://i.imgur.com/xlMR2mz.png) ![Image](https://i.imgur.com/yl9j9Vt.png)
+![Image](./img/optionalfeatures.png) ![Image](./img/windowsfeatures.png)
 
 ### Download and install any supported Linux distribution in automatic mode
 
-![Image](https://i.imgur.com/Xn5SqxE.png)
+![Image](./img/wsl.png)
 
 ### Native interactive toasts for the scheduled tasks
 
