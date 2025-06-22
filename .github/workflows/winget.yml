@@ -14,7 +14,7 @@ jobs:
       - name: Preparation
         run: |
           # Get local uploaded manifest version of the package
-          $String = Get-Content -Path "WinGet_Manifests\TeamSophia.SophiaScript.yaml" | Where-Object -FilterScript {$_ -match "ManifestVersion"}
+          $String = Get-Content -Path "Scripts\WinGet_Manifests\TeamSophia.SophiaScript.yaml" | Where-Object -FilterScript {$_ -match "ManifestVersion"}
           $LocalManifest = $String -split " " | Select-Object -Last 1
 
           # Get latest supported manifest version provided
