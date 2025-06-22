@@ -5,7 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 5.20.6 | 6.8.56 — 09.05.2025
+## 5.20.7 | 6.8.7 — 22.06.2025
+
+* Removed Set-AppGraphicsPerformance;
+* Minor changes.
+
+## Wrapper 2.8.1
+* Moved `Console Output` to top, fixed `Clear` search, fixed disabled tabs when importing LTSC versions
+* Fixed ToolTips for Labels
+* Opposite Tab and Opposite Everything in menu, Fixed: `PinToStart -Tiles` Sophia preset
+* Fixed selecting opposites for InitialActions combobox on first tab System Protection
+* Opposite options in JSON for combobox functions with 3 or more options, fixed LTSC import to work when there is no Internet connection
+
+## 5.20.6 | 6.8.6 — 09.05.2025
 
 * Updated Readme;
 * Removed `StartAccountNotifications` function for Windows 10;
