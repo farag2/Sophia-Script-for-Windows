@@ -1,13 +1,30 @@
-[![actions](https://img.shields.io/badge/Sophia%20News-Telegram-blue?style=flat&logo=Telegram)](https://t.me/SophiaNews) [![actions](https://img.shields.io/badge/Sophia%20Chat-Telegram-blue?style=flat&logo=Telegram)](https://t.me/Sophia_Chat) [![Discord](https://discordapp.com/api/guilds/1006179075263561779/widget.png?style=shield)](https://discord.gg/sSryhaEv79)
+<kbd>
+	<a href="https://t.me/sophianews"><img src="https://img.shields.io/badge/Sophia%20News-green?labelColor=151B23&color=151B23&style=for-the-badge&logo=telegram&logoColor=white"></a>
+</kbd>
+<kbd>
+	<a href="https://t.me/sophia_chat"><img src="https://img.shields.io/badge/Sophia%20Chat-green?labelColor=151B23&color=151B23&style=for-the-badge&logo=telegram&logoColor=white"></a>
+</kbd>
+<kbd>
+	<a href="https://discord.gg/sSryhaEv79"><img src="https://img.shields.io/badge/Disord-green?labelColor=151B23&color=151B23&style=for-the-badge&logo=discord&logoColor=white" href="#"></a>
+</kbd>
 
-# [How to](https://github.com/farag2/Sophia-Script-for-Windows/tree/master?tab=readme-ov-file#table-of-contents)
+<br>
+<br>
 
-[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/farag)⠀⠀⠀<a href="https://boosty.to/teamsophia"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/boosty.png" width='40'></a>
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/farag)⠀<a href="https://boosty.to/teamsophia"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/boosty.png" width='40'></a>
 
 Diff from vOldVersion
 [OldVersion...NewVersion](https://github.com/farag2/Sophia-Script-for-Windows/compare/OldVersion...NewVersion)
 
 
+***
+
+Manual avaliable in other languages
+
+<a href="./README.md#how-to-use"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/img/united-states.png" height="70px"/></a>
+<a href="./docs/README_uk-ua.md#як-використовувати"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/img/ukraine.png" height="70px"/></a>
+<a href="./docs/README_de-de.md#wie-zu-verwenden"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/img/germany.png" height="70px"/></a>
+<a href="./docs/README_ru-ru.md#как-использовать"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/img/russia.png" height="70px"/></a>
 
 [Sophia-Script-Windows-10-PowerShell-5-1]: https://github.com/farag2/Sophia-Script-for-Windows/releases/download/NewVersion/Sophia.Script.for.Windows.10.vSophia_Script_Windows_10_PowerShell_5_1.zip
 [Sophia-Script-Windows-10-PowerShell-5-1-badge]: https://img.shields.io/badge/Windows%2010%20x64-PowerShell%205.1-67b7d1.svg

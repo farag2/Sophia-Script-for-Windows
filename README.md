@@ -6,31 +6,42 @@
 
 **Sophia Script for Windows is the most powerful PowerShell module for fine-tuning Windows**
 
-[downloads-badge]: https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/farag2/25ddc72387f298503b752ad5b8d16eed/raw/SophiaScriptDownloadsCount.json
-[lines-badge]: https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/farag2/9852d6b9569a91bf69ceba8a94cc97f4/raw/SophiaScript.json
-[lines-link]: https://github.com/farag2/Sophia-Script-for-Windows/blob/master/.github/workflows/Badge_lines.yml
-[badge-code]: https://github.com/farag2/Sophia-Script-for-Windows/blob/master/.github/workflows/Badge_downloads.yml
+<kbd>
+	<a href="https://github.com/farag2/Sophia-Script-for-Windows/actions"><img src="https://img.shields.io/github/actions/workflow/status/farag2/Sophia-Script-for-Windows/Sophia.yml?labelColor=151B23&color=151B23&style=for-the-badge&label=build&logo=GitHub"></a>
+</kbd>
+<kbd>
+	<a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/github/v/release/farag2/Sophia-Script-for-Windows?labelColor=151B23&color=151B23&style=for-the-badge&logo=GitHub"></a>
+</kbd>
 
-[![downloads][downloads-badge]][badge-code]
-[![lines][lines-badge]][lines-link]
+<br>
 
-[telegram-news-badge]: https://img.shields.io/badge/Sophia%20News-Telegram-blue?style=flat&logo=Telegram
-[telegram-news]: https://t.me/sophianews
-[telegram-group]: https://t.me/sophia_chat
-[telegram-group-badge]: https://img.shields.io/endpoint?color=neon&label=Sophia%20Chat&style=flat&url=https%3A%2F%2Ftg.sumanjay.workers.dev%2Fsophia_chat
-[discord-news-badge]: https://discordapp.com/api/guilds/1006179075263561779/widget.png?style=shield
-[discord-link]: https://discord.gg/sSryhaEv79
+<kbd>
+	<a href="https://github.com/farag2/Sophia-Script-for-Windows/blob/master/.github/workflows/Badge_downloads.yml"><img src="https://img.shields.io/endpoint?labelColor=151B23&color=151B23&style=for-the-badge&url=https://gist.githubusercontent.com/farag2/25ddc72387f298503b752ad5b8d16eed/raw/SophiaScriptDownloadsCount.json"></a>
+</kbd>
+<kbd>
+	<a href="https://github.com/farag2/Sophia-Script-for-Windows/blob/master/.github/workflows/Badge_lines.yml"><img src="https://img.shields.io/endpoint?labelColor=151B23&color=151B23&style=for-the-badge&url=https://gist.githubusercontent.com/farag2/9852d6b9569a91bf69ceba8a94cc97f4/raw/SophiaScript.json"></a>
+</kbd>
 
-[![Telegram][telegram-news-badge]][telegram-news]
-[![Telegram][telegram-group-badge]][telegram-group]
-[![Discord][discord-news-badge]][discord-link]
+<br>
 
-[![build](https://img.shields.io/github/actions/workflow/status/farag2/Sophia-Script-for-Windows/Sophia.yml?label=build&logo=GitHub)](https://github.com/farag2/Sophia-Script-for-Windows/actions)
-[![GitHub Release](https://img.shields.io/github/v/release/farag2/Sophia-Script-for-Windows?logo=GitHub)](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest)
+<kbd>
+	<a href="https://t.me/sophianews"><img src="https://img.shields.io/badge/Sophia%20News-green?labelColor=151B23&color=151B23&style=for-the-badge&logo=telegram&logoColor=white"></a>
+</kbd>
+<kbd>
+	<a href="https://t.me/sophia_chat"><img src="https://img.shields.io/badge/Sophia%20Chat-green?labelColor=151B23&color=151B23&style=for-the-badge&logo=telegram&logoColor=white"></a>
+</kbd>
+<kbd>
+	<a href="https://discord.gg/sSryhaEv79"><img src="https://img.shields.io/badge/Disord-green?labelColor=151B23&color=151B23&style=for-the-badge&logo=discord&logoColor=white" href="#"></a>
+</kbd>
 
-[![uk-UA](https://img.shields.io/badge/lang-uk--UA-blue)](./docs/README_uk-ua.md)
-[![de](https://img.shields.io/badge/lang-de-black)](./docs/README_de-de.md)
-[![ru](https://img.shields.io/badge/lang-ru-red)](./docs/README_ru-ru.md)
+<br>
+<br>
+
+This page is also available in other languages
+
+<a href="./docs/README_uk-ua.md"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/img/ukraine.png" height="70px"/></a>
+<a href="./docs/README_de-de.md"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/img/germany.png" height="70px"/></a>
+<a href="./docs/README_ru-ru.md"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/img/russia.png" height="70px"/></a>
 
 <img src="./img/SophiaScript.png" alt="Sophia Script for Windows" width='800'>
 
