@@ -197,7 +197,8 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	if ($PSVersionTable.PSVersion.Major -ne 5)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message ($Localization.UnsupportedPowerShell -f $PSVersionTable.PSVersion.Major, $PSVersionTable.PSVersion.Minor)
+		$MandatoryPSVersion = (Import-PowershellDataFile -Path "$PSScriptRoot\..\Manifest\SophiaScript.psd1").PowerShellVersion
+		Write-Warning -Message ($Localization.UnsupportedPowerShell -f $PSVersionTable.PSVersion.Major, $PSVersionTable.PSVersion.Minor, $MandatoryPSVersion)
 		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
@@ -1041,8 +1042,6 @@ public extern static string BrandingFormatString(string sFormat);
 				$No
 				{
 					Invoke-Item -Path $PresetName
-
-					Start-Sleep -Seconds 5
 
 					Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows#how-to-use" -Verbose
 					Write-Verbose -Message "https://t.me/sophia_chat" -Verbose

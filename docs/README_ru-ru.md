@@ -4,7 +4,9 @@
 
 # Sophia Script for Windows
 
-**Sophia Script for Windows — это самый мощный PowerShell-модуль для тонкой настройки Windows**
+**Самый мощный PowerShell-модуль на GitHub для тонкой настройки Windows**
+
+Сделано с <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/heart.svg" height="17px"/> к Windows
 
 <kbd>
 	<a href="https://github.com/farag2/Sophia-Script-for-Windows/actions"><img src="https://img.shields.io/github/actions/workflow/status/farag2/Sophia-Script-for-Windows/Sophia.yml?labelColor=151B23&color=151B23&style=for-the-badge&label=build&logo=GitHub"></a>
@@ -51,15 +53,13 @@ This page is also available in other languages
 
 `Sophia Script for Windows` — это самый мощный PowerShell-модуль на `GitHub` для тонкой настройки `Windows 10` и `Windows 11` и автоматизации рутинных задач. Он предлагает более 150 уникальных твиков и показывает, как можно настоить Windows, ничего не сломав.
 
-Сделано с <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/heart.svg" height="17px"/> к Windows.
-
 > [!IMPORTANT]
 > Каждый твик в пресет-файле имеет соответствующую функцию для возврата значений по умолчанию. Использование скрипта лучше всего производить на свежеустановленной Windows в связи с тем, что неправильно настроенная ОС может вызвать сбои при работе скрипта.
 
 > [!WARNING]
 > При использовании скрипта только один администратор должен войти в систему.
 >
-> `Sophia Script for Windows` может не работать на кастомных образах Windows. Особенно, если такой образ был создан дилетантами, которые ломают работу Microsoft Defender и выключают работу телеметрии, удаляя системные компоненты из системы.
+> `Sophia Script for Windows` может не работать на кастомных образах Windows.
 
 ## Содержание
 

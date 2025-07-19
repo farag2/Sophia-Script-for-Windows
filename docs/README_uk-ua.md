@@ -4,7 +4,9 @@
 
 # Sophia Script for Windows
 
-**Sophia Script for Windows це найпотужніший PowerShell-модуль для тонкого налаштування Windows**
+**Найпотужніший PowerShell-модуль на GitHub для тонкого настроювання Windows**
+
+Зроблено з <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/heart.svg" height="17px"/> до Windows
 
 <kbd>
 	<a href="https://github.com/farag2/Sophia-Script-for-Windows/actions"><img src="https://img.shields.io/github/actions/workflow/status/farag2/Sophia-Script-for-Windows/Sophia.yml?labelColor=151B23&color=151B23&style=for-the-badge&label=build&logo=GitHub"></a>
@@ -51,15 +53,13 @@ This page is also available in other languages
 
 `Sophia Script для Windows` - найбільший модуль PowerShell на `GitHub` для тонкого налаштування і автоматизації рутинних завдань в `Windows 10` і `Windows 11`. Він пропонує сучасні UI/UX, більше 150 різних функцій і показує, як можна налаштувати Windows, не ламаючи функціонал.
 
-Зроблено з <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/heart.svg" height="17px"/> до Windows.
-
 > [!IMPORTANT]
 > Кожна зміна у файлі налаштувань має відповідну функцію для відновлення налаштувань за замовчуванням. Запускати скрипт найкраще на свіжій установці, оскільки запуск на неправильно налаштованій системі може призвести до виникнення помилок.
 
 > [!WARNING]
 > Запуск додатку можливий лише якщо в системі присутній один користувач з правами адміністратора;
 >
-> `Sophia Script для Windows` може не працювати на "самопальних" збірках Windows. Особливо, якщо збірка була створена так, що в ній спеціально було зламано Microsoft Defender і вимкнено телеметрію, вирізавши системні компоненти.
+> `Sophia Script для Windows` може не працювати на "самопальних" збірках Windows.
 
 ## Зміст
 

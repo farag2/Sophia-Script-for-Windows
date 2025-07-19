@@ -4,7 +4,9 @@
 
 # Sophia Script for Windows
 
-**Sophia Script for Windows is the most powerful PowerShell module for fine-tuning Windows**
+**The most powerful PowerShell module for fine-tuning Windows on GitHub**
+
+Made with <img src="./img/heart.svg" height="17px"/> of Windows.
 
 <kbd>
 	<a href="https://github.com/farag2/Sophia-Script-for-Windows/actions"><img src="https://img.shields.io/github/actions/workflow/status/farag2/Sophia-Script-for-Windows/Sophia.yml?labelColor=151B23&color=151B23&style=for-the-badge&label=build&logo=GitHub"></a>
@@ -49,9 +51,7 @@ This page is also available in other languages
 
 ## About Sophia Script
 
-`Sophia Script for Windows` is the largest PowerShell module on `GitHub` for `Windows 10` & `Windows 11` for fine-tuning and automating the routine tasks. It offers more than 150 unique tweaks, and shows how Windows can be configured without making any harm to it.
-
-Made with <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/heart.svg" height="17px"/> of Windows.
+`Sophia Script for Windows` is the most powerful PowerShell module for fine-tuning `Windows` and automating the routine tasks on `GitHub`. It offers more than 150 unique tweaks, and shows how Windows can be configured without making any harm to it.
 
 > [!IMPORTANT]
 > Every tweak in the preset file has its' corresponding function to restore the default settings. Running the script is best done on a fresh install because running it on wrong tweaked system may result in errors occurring.
@@ -59,7 +59,7 @@ Made with <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-W
 > [!WARNING]
 > It's allowed to be logged in as one admin user only during application startup.
 >
-> `Sophia Script for Windows` may not work on a homebrew Windows. Especially, if the homebrew image was created by OS makers being all thumbs who break Microsoft Defender and disable OS telemetry by purposely uprooting system components.
+> `Sophia Script for Windows` may not work on a homebrew Windows.
 
 ## Table of Contents
 

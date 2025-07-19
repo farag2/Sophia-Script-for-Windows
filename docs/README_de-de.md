@@ -4,7 +4,9 @@
 
 # Sophia Script for Windows
 
-**Sophia Script für Windows ist das leistungsstärkste PowerShell-Modul zur Feinabstimmung von Windows**
+**Das leistungsstärkste PowerShell-Modul zur Feinabstimmung von Windows auf GitHub**
+
+Mit <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/heart.svg" height="17px"/> zu Windows gemacht.
 
 <kbd>
 	<a href="https://github.com/farag2/Sophia-Script-for-Windows/actions"><img src="https://img.shields.io/github/actions/workflow/status/farag2/Sophia-Script-for-Windows/Sophia.yml?labelColor=151B23&color=151B23&style=for-the-badge&label=build&logo=GitHub"></a>
@@ -51,15 +53,13 @@ This page is also available in other languages
 
 `Sophia Script for Windows` ist das größte PowerShell-Modul auf `GitHub` für `Windows 10` & `Windows 11` zur Feinabstimmung und Automatisierung von Routineaufgaben. Es bietet mehr als 150 einzigartige Tweaks und zeigt, wie Windows konfiguriert werden kann, ohne Windows dabei zu schaden.
 
-Mit <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/heart.svg" height="17px"/> zu Windows gemacht.
-
 > [!IMPORTANT]
 > Für jede Änderung in der Voreinstellungsdatei gibt es eine entsprechende Funktion zum Wiederherstellen der Standardeinstellungen. Das Skript sollte am besten auf einem frisch installierten System ausgeführt werden, da die Ausführung auf einem falsch getweakten System zu Fehlern führen kann.
 
 > [!WARNING]
 > Es darf nur ein Admin-Benutzer während des Starts der Anwendung angemeldet sein.
 >
-> `Sophia Script for Windows` funktioniert möglicherweise nicht auf einem selbstgebauten Windows. Insbesondere, wenn das Homebrew-Image von Betriebssystemherstellern erstellt wurde, die Microsoft Defender zerstören und die Telemetrie des Betriebssystems deaktivieren, indem sie absichtlich Systemkomponenten "uprooten".
+> `Sophia Script for Windows` funktioniert möglicherweise nicht auf einem selbstgebauten Windows.
 
 ## Table of Contents
 
