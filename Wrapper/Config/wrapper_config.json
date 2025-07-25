@@ -17,14 +17,14 @@
 		"widthLabelInPixelsDefault": "225",
 		"widthLabelInPixelsContextTab": "243",
 		"widthComboBoxInPixelsEN": "155",
-		"widthComboBoxSystemTabInPixelsEN": "155",
-		"widthComboBoxStartMenuTabInPixelsEN": "230",
+		"widthComboBoxInPixelsSystemTabEN": "155",
+		"widthComboBoxInPixelsStartMenuTabEN": "230",
 		"widthComboBoxInPixelsRU": "175",
-		"widthComboBoxSystemTabInPixelsRU": "235",
-		"widthComboBoxStartMenuTabInPixelsRU": "260",
+		"widthComboBoxInPixelsSystemTabRU": "235",
+		"widthComboBoxInPixelsStartMenuTabRU": "260",
 		"widthComboBoxInPixelsDE": "150",
-		"widthComboBoxSystemTabInPixelsDE": "165",
-		"widthComboBoxStartMenuTabInPixelsDE": "250",
+		"widthComboBoxInPixelsSystemTabDE": "165",
+		"widthComboBoxInPixelsStartMenuTabDE": "250",
 		"startLineRegionSystemProtection": "#region Protection",
 		"endLineRegionSystemProtection": "#endregion Protection",
 		"startLineRegionPrivacy": "#region Privacy & Telemetry",
@@ -53,3 +53,4 @@
 		"endLineRegionUpdatePolicies": "#endregion Update Policies"
 	}
 ]
+
