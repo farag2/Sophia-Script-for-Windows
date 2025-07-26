@@ -1,9 +1,9 @@
 ﻿ConvertFrom-StringData -StringData @'
 PowerShellImportFailed                    = 请关闭PowerShell 7并重新运行脚本。
 UnsupportedOSBitness                      = 该脚本仅支持64位Windows。
-UnsupportedOSBuild                        = 腳本僅支援 Windows 10 22H2。您的作業系統是 {0}。升级 Windows，然后再试一次。
+UnsupportedOSBuild                        = 腳本僅支援 Windows 10 22H2。您正在使用 {0} {1}。升级 Windows，然后再试一次。
 UnsupportedWindowsTerminal                = Windows Terminal版本低於1.20。請在Microsoft商店更新後再試。
-UpdateWarning                             = 您的Windows 10构建: {0}.{1}。支援的版本：{2} 及更高版本。运行Windows Update并再次尝试。
+UpdateWarning                             = 您当前使用的是 Windows 10 {0}.{1} 版本。支持的版本为 Windows 10 {0}.{2} 及更高版本。请运行 Windows 更新并重新尝试。
 UnsupportedLanguageMode                   = PowerShell会话在有限的语言模式下运行。
 LoggedInUserNotAdmin                      = 登录的用户没有管理员的权利。
 UnsupportedPowerShell                     = 你想通过PowerShell {0}.{1}运行脚本。请在PowerShell {2}中运行脚本。
@@ -24,7 +24,7 @@ ScheduledTasks                            = 计划任务
 OneDriveUninstalling                      = 卸载OneDrive.....
 OneDriveInstalling                        = OneDrive正在安装.....
 OneDriveDownloading                       = 正在下载OneDrive.....
-OneDriveWarning                           = "WinPrtScrFolder -Desktop" 功能僅在使用者設定腳本移除 OneDrive (或 OneDrive 已移除) 後才會套用\n否則 OneDrive 中「桌面」和「圖片」資料夾的備份功能會中斷。
+OneDriveWarning                           = "WinPrtScrFolder -Desktop" 功能僅在使用者設定腳本移除 OneDrive (或 OneDrive 已移除) 後才會套用。否則 OneDrive 中「桌面」和「圖片」資料夾的備份功能會中斷。
 WindowsFeaturesTitle                      = Windows功能
 OptionalFeaturesTitle                     = 可选功能
 EnableHardwareVT                          = UEFI中开启虚拟化。

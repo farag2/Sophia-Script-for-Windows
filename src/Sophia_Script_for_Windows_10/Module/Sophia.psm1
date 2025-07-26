@@ -787,11 +787,11 @@ public extern static string BrandingFormatString(string sFormat);
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 
-		# Windows 11 Pro
+		# Windows 10 Pro
 		$Windows_Long = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
 		$Windows_Long_First_Item = $Windows_Long.split(" ")[0]
 		$Windows_Long_Second_Item = $Windows_Long.split(" ")[1]
-		# Windows 11
+		# Windows 10
 		$Windows_Long = ($Windows_Long_First_Item, $Windows_Long_Second_Item) -join " "
 
 		# 24H2
@@ -897,6 +897,7 @@ public extern static string BrandingFormatString(string sFormat);
 				# https://support.microsoft.com/en-us/topic/windows-10-update-history-8127c2c6-6edf-4fdf-8b9f-0f7be1ef3562
 				$CurrentBuild = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
 				$UBR = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
+
 				Write-Information -MessageData "" -InformationAction Continue
 				Write-Warning -Message ($Localization.UpdateWarning -f $CurrentBuild, $UBR, $LatestSupportedBuild)
 				Write-Information -MessageData "" -InformationAction Continue
@@ -5195,6 +5196,7 @@ function OneDrive
 		"Uninstall"
 		{
 			[string]$UninstallString = Get-Package -Name "Microsoft OneDrive" -ProviderName Programs -ErrorAction Ignore | ForEach-Object -Process {$_.Meta.Attributes["UninstallString"]}
+
 			if (-not $UninstallString)
 			{
 				Write-Information -MessageData "" -InformationAction Continue
@@ -5222,14 +5224,7 @@ function OneDrive
 
 			# Getting link to the OneDriveSetup.exe and its argument(s)
 			[string[]]$OneDriveSetup = ($UninstallString -replace("\s*/", ",/")).Split(",").Trim()
-			if ($OneDriveSetup.Count -eq 2)
-			{
-				Start-Process -FilePath $OneDriveSetup[0] -ArgumentList $OneDriveSetup[1..1] -Wait
-			}
-			else
-			{
-				Start-Process -FilePath $OneDriveSetup[0] -ArgumentList $OneDriveSetup[1..2] -Wait
-			}
+			Start-Process -FilePath $OneDriveSetup[0] -ArgumentList $OneDriveSetup[1..$OneDriveSetup.Count] -Wait
 
 			# Get the OneDrive user folder path and remove it if it doesn't contain any user files
 			if (Test-Path -Path $env:OneDrive)
@@ -5237,104 +5232,58 @@ function OneDrive
 				if ((Get-ChildItem -Path $env:OneDrive -ErrorAction Ignore | Measure-Object).Count -eq 0)
 				{
 					Remove-Item -Path $env:OneDrive -Recurse -Force -ErrorAction Ignore
-
-					# https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexa
-					# The system does not move the file until the operating system is restarted
-					# The system moves the file immediately after AUTOCHK is executed, but before creating any paging files
-					$Script:Signature = @{
-						Namespace          = "WinAPI"
-						Name               = "DeleteFiles"
-						Language           = "CSharp"
-						CompilerParameters = $CompilerParameters
-						MemberDefinition   = @"
-public enum MoveFileFlags
-{
-	MOVEFILE_DELAY_UNTIL_REBOOT = 0x00000004
-}
-
-[DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-static extern bool MoveFileEx(string lpExistingFileName, string lpNewFileName, MoveFileFlags dwFlags);
-
-public static bool MarkFileDelete (string sourcefile)
-{
-	return MoveFileEx(sourcefile, null, MoveFileFlags.MOVEFILE_DELAY_UNTIL_REBOOT);
-}
-"@
-					}
-
-					# If there are some files or folders left in %OneDrive%
-					if ((Get-ChildItem -Path $env:OneDrive -Force -ErrorAction Ignore | Measure-Object).Count -ne 0)
-					{
-						if (-not ("WinAPI.DeleteFiles" -as [type]))
-						{
-							Add-Type @Signature
-						}
-
-						try
-						{
-							Remove-Item -Path $env:OneDrive -Recurse -Force -ErrorAction Stop
-						}
-						catch
-						{
-							# If files are in use remove them at the next boot
-							Get-ChildItem -Path $env:OneDrive -Recurse -Force | ForEach-Object -Process {[WinAPI.DeleteFiles]::MarkFileDelete($_.FullName)}
-						}
-					}
 				}
 				else
 				{
+					# That means that some files are left
 					Start-Process -FilePath "$env:SystemRoot\explorer.exe" -ArgumentList $env:OneDrive
 				}
 			}
-
-			Remove-ItemProperty -Path HKCU:\Environment -Name OneDrive, OneDriveConsumer -Force -ErrorAction Ignore
-			$Path = @(
-				"HKCU:\Software\Microsoft\OneDrive",
-				"$env:ProgramData\Microsoft OneDrive",
-				"$env:SystemDrive\OneDriveTemp"
-			)
-			Remove-Item -Path $Path -Recurse -Force -ErrorAction Ignore
-			Unregister-ScheduledTask -TaskName *OneDrive* -Confirm:$false -ErrorAction Ignore
-
-			# Getting the OneDrive folder path and replacing quotes if exist
-			$OneDriveFolder = (Split-Path -Path (Split-Path -Path $OneDriveSetup[0] -Parent)) -replace '"', ""
 
 			# Do not restart File Explorer process automatically if it stops in order to unload libraries
 			New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoRestartShell -PropertyType DWord -Value 0 -Force
 			# Kill all explorer instances in case "launch folder windows in a separate process" enabled
 			Get-Process -Name explorer | Stop-Process -Force
+
+			Write-Information -MessageData "" -InformationAction Continue
+			# Extract the localized "Please wait..." string from shell32.dll
+			Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
+
 			Start-Sleep -Seconds 3
+
 			# Restart File Explorer process automatically if it stops in order to unload libraries
 			New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoRestartShell -PropertyType DWord -Value 1 -Force
 
-			# Attempt to unregister FileSyncShell64.dll and remove
-			$FileSyncShell64dlls = Get-ChildItem -Path "$OneDriveFolder\*\FileSyncShell64.dll" -Force
-			foreach ($FileSyncShell64dll in $FileSyncShell64dlls.FullName)
-			{
+			Get-Process -Name UserOOBEBroker -ErrorAction Ignore | Stop-Process -Force
+
+			Get-ChildItem -Path "$OneDriveFolder\*\FileSyncShell64.dll" -Force | Foreach-Object -Process {
 				Start-Process -FilePath "$env:SystemRoot\System32\regsvr32.exe" -ArgumentList "/u /s $FileSyncShell64dll" -Wait
-				Remove-Item -Path $FileSyncShell64dll -Force -ErrorAction Ignore
-
-				if (Test-Path -Path $FileSyncShell64dll)
-				{
-					if (-not ("WinAPI.DeleteFiles" -as [type]))
-					{
-						Add-Type @Signature
-					}
-
-					# If files are in use remove them at the next boot
-					Get-ChildItem -Path $FileSyncShell64dll -Recurse -Force | ForEach-Object -Process {[WinAPI.DeleteFiles]::MarkFileDelete($_.FullName)}
-				}
 			}
+
+			# Getting OneDrive folder path
+			$OneDriveFolder = (Split-Path -Path (Split-Path -Path $OneDriveSetup[0] -Parent)) -replace '"', ""
+			Remove-Item -Path $OneDriveFolder -Force -Recurse -ErrorAction Ignore
 
 			# We need to wait for a few seconds to let explore launch unless it will fail to do so
 			Start-Process -FilePath "$env:SystemRoot\explorer.exe"
+
+			Write-Information -MessageData "" -InformationAction Continue
+			# Extract the localized "Please wait..." string from shell32.dll
+			Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
+
 			Start-Sleep -Seconds 3
 
+			Remove-ItemProperty -Path HKCU:\Environment -Name OneDrive, OneDriveConsumer -Force -ErrorAction Ignore
+			Unregister-ScheduledTask -TaskName *OneDrive* -Confirm:$false -ErrorAction Ignore
 			$Path = @(
-				$OneDriveFolder,
 				"$env:LOCALAPPDATA\OneDrive",
 				"$env:LOCALAPPDATA\Microsoft\OneDrive",
-				"$env:APPDATA\Microsoft\Windows\Start Menu\Programs\OneDrive.lnk"
+				"$env:LOCALAPPDATA\Microsoft\OneAuth",
+				"$env:APPDATA\Microsoft\Windows\Start Menu\Programs\OneDrive.lnk",
+				"$env:ProgramData\Microsoft OneDrive",
+				"$env:ProgramFiles\Microsoft OneDrive",
+				"$env:SystemDrive\OneDriveTemp",
+				"HKCU:\Software\Microsoft\OneDrive"
 			)
 			Remove-Item -Path $Path -Recurse -Force -ErrorAction Ignore
 		}
@@ -5350,7 +5299,7 @@ public static bool MarkFileDelete (string sourcefile)
 				return
 			}
 
-			if (Test-Path -Path $env:SystemRoot\SysWOW64\OneDriveSetup.exe)
+			if (Test-Path -Path $env:SystemRoot\System32\OneDriveSetup.exe)
 			{
 				Write-Information -MessageData "" -InformationAction Continue
 				Write-Verbose -Message $Localization.OneDriveInstalling -Verbose
@@ -5358,22 +5307,21 @@ public static bool MarkFileDelete (string sourcefile)
 				if ($AllUsers)
 				{
 					# Install OneDrive for all users
-					Start-Process -FilePath $env:SystemRoot\SysWOW64\OneDriveSetup.exe -ArgumentList "/allusers"
+					Start-Process -FilePath $env:SystemRoot\System32\OneDriveSetup.exe -ArgumentList "/allusers"
 				}
 				else
 				{
-					Start-Process -FilePath $env:SystemRoot\SysWOW64\OneDriveSetup.exe
+					Start-Process -FilePath $env:SystemRoot\System32\OneDriveSetup.exe
 				}
 			}
 			else
 			{
 				try
 				{
-					# Downloading the latest OneDrive installer 64-bit
 					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message $Localization.OneDriveDownloading -Verbose
 
-					# Parse XML to get the URL
+					# Downloading the latest OneDrive installer 64-bit
 					# https://go.microsoft.com/fwlink/p/?LinkID=844652
 					$Parameters = @{
 						Uri             = "https://g.live.com/1rewlive5skydrive/OneDriveProductionV2"
@@ -5398,13 +5346,16 @@ public static bool MarkFileDelete (string sourcefile)
 					if ($AllUsers)
 					{
 						# Install OneDrive for all users to %ProgramFiles%
-						Start-Process -FilePath $env:SystemRoot\SysWOW64\OneDriveSetup.exe -ArgumentList "/allusers"
+						Start-Process -FilePath "$DownloadsFolder\OneDriveSetup.exe" -ArgumentList "/allusers"
 					}
 					else
 					{
-						Start-Process -FilePath $env:SystemRoot\SysWOW64\OneDriveSetup.exe
+						Start-Process -FilePath "$DownloadsFolder\OneDriveSetup.exe"
 					}
 
+					Start-Sleep -Seconds 3
+
+					Get-Process -Name OneDriveSetup -ErrorAction Ignore | Stop-Process -Force
 					Remove-Item -Path "$DownloadsFolder\OneDriveSetup.exe" -Force
 				}
 				catch [System.Net.WebException]
@@ -10088,13 +10039,13 @@ function Install-VCRedist
 
 <#
 	.SYNOPSIS
-	Install the latest .NET Desktop Runtime 8, 9 x64
+	Install the latest .NET Runtime 8, 9 x64
 
 	.PARAMETER NET8x64
-	Install the latest .NET Desktop Runtime 8 x64
+	Install the latest .NET Runtime 8 x64
 
 	.PARAMETER NET9x64
-	Install the latest .NET Desktop Runtime 9 x64
+	Install the latest .NET Runtime 9 x64
 
 	.EXAMPLE
 	Install-DotNetRuntimes -Runtimes NET8x64, NET9x64
@@ -10164,7 +10115,7 @@ function Install-DotNetRuntimes
 				{
 					try
 					{
-						# .NET Desktop Runtime 8 x64
+						# .NET Runtime 8 x64
 						$Parameters = @{
 							Uri             = "https://builds.dotnet.microsoft.com/dotnet/Runtime/$LatestNET8Version/dotnet-runtime-$LatestNET8Version-win-x64.exe"
 							OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestNET8Version-win-x64.exe"
@@ -10242,7 +10193,7 @@ function Install-DotNetRuntimes
 				{
 					try
 					{
-						# Downloading .NET Desktop Runtime 9 x64
+						# Downloading .NET Runtime 9 x64
 						$Parameters = @{
 							Uri             = "https://builds.dotnet.microsoft.com/dotnet/Runtime/$LatestNET9Version/dotnet-runtime-$LatestNET9Version-win-x64.exe"
 							OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestNET9Version-win-x64.exe"

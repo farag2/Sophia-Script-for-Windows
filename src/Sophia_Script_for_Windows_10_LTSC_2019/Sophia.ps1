@@ -781,8 +781,8 @@ NetworkDiscovery -Enable
 # Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 (x86/x64)
 Install-VCRedist -Redistributables 2015_2022_x86, 2015_2022_x64
 
-# Install the latest .NET Desktop Runtime 8, 9 x64
-#Установить последнюю версию .NET Desktop Runtime 8, 9 x64
+# Install the latest .NET Runtime 8, 9 x64
+#Установить последнюю версию .NET Runtime 8, 9 x64
 Install-DotNetRuntimes -Runtimes NET8x64, NET9x64
 
 # Enable proxying only blocked sites from the unified registry of Roskomnadzor. The function is applicable for Russia only

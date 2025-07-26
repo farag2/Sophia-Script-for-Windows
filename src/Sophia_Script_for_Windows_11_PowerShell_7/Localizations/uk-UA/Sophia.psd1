@@ -1,8 +1,8 @@
 ﻿ConvertFrom-StringData -StringData @'
 PowerShellImportFailed                    = Будь ласка, закрийте PowerShell 7 і запустіть сценарій знову.
-UnsupportedOSBuild                        = Скрипт підтримує тільки Windows 11 24H2 і вище. Ваша ОС — {0} {1}. Оновіть Windows і спробуйте ще раз.
+UnsupportedOSBuild                        = Скрипт підтримує тільки Windows 11 24H2 і вище. Ви використовуєте {0} {1}. Оновіть Windows і спробуйте ще раз.
 UnsupportedWindowsTerminal                = Версія Windows Terminal нижча за 1.20. Будь ласка, оновіть його в Microsoft Store і спробуйте заново.
-UpdateWarning                             = Ваш білд Windows 11: {0}.{1}. Підтримувані збірки: {2} і вище. Запустіть Windows Update і повторіть спробу.
+UpdateWarning                             = Ви використовуєте Windows 11 {0}.{1}. Підтримувані збірки: Windows 11 {0}.{2} і вище. Запустіть оновлення Windows і спробуйте ще раз.
 UnsupportedLanguageMode                   = Сесія PowerShell працює в обмеженому режимі.
 LoggedInUserNotAdmin                      = Поточний користувач, що увійшов, не має прав адміністратора.
 UnsupportedPowerShell                     = Ви намагаєтеся запустити скрипт в PowerShell {0}.{1}. Запустіть скрипт в PowerShell {2}.
@@ -23,7 +23,7 @@ ScheduledTasks                            = Заплановані задачі
 OneDriveUninstalling                      = Видалення OneDrive...
 OneDriveInstalling                        = OneDrive встановлюється...
 OneDriveDownloading                       = Завантажується OneDrive...
-OneDriveWarning                           = Функція "WinPrtScrFolder -Desktop" буде застосована тільки в разі, якщо користувач налаштував видалення OneDrive (або застосунок уже видалено).\nІнакше ламається функціонал резервного копіювання для папок "Робочий стіл" і "Зображення" в OneDrive.
+OneDriveWarning                           = Функція "WinPrtScrFolder -Desktop" буде застосована тільки в разі, якщо користувач налаштував видалення OneDrive (або застосунок уже видалено). Інакше ламається функціонал резервного копіювання для папок "Робочий стіл" і "Зображення" в OneDrive.
 WindowsFeaturesTitle                      = Компоненти Windows
 OptionalFeaturesTitle                     = Додаткові компоненти
 EnableHardwareVT                          = Увімкніть віртуалізацію в UEFI.

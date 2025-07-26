@@ -1,8 +1,8 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Lo script supporta solo Windows a 64 bit.
-UnsupportedOSBuild                        = Lo script supporta solo Windows 10 22H2. Il vostro sistema operativo è {0}. Aggiornare Windows e riprovare.
+UnsupportedOSBuild                        = Lo script supporta solo Windows 10 22H2. Stai utilizzando {0} {1}. Aggiornare Windows e riprovare.
 UnsupportedWindowsTerminal                = La versione di Windows Terminal è inferiore a 1.20. Aggiornarla nel Microsoft Store e riprovare.
-UpdateWarning                             = La tua build di Windows 10 {0}.{1} non è supportata. Build supportate: {2} e successive. Eseguire Windows Update e riprovare.
+UpdateWarning                             = Windows 10 {0}.{1} rendszert használ. A támogatott verzió Windows 10 {0}.{2} vagy újabb. Futtassa a Windows Update programot, majd próbálja meg újra.
 UnsupportedLanguageMode                   = La sessione PowerShell è in esecuzione in modalità lingua limitata.
 LoggedInUserNotAdmin                      = L'utente in suo non ha i diritti di amministratore.
 UnsupportedPowerShell                     = Stai cercando di eseguire lo script tramite PowerShell {0}.{1}. Eseguire lo script in PowerShell {2}.
@@ -22,7 +22,7 @@ ScheduledTasks                            = Attività pianificate
 OneDriveUninstalling                      = Disinstallazione di OneDrive...
 OneDriveInstalling                        = Installazione di OneDrive...
 OneDriveDownloading                       = Download di OneDrive...
-OneDriveWarning                           = La funzione "WinPrtScrFolder -Desktop" verrà applicata solo se l'utente ha configurato lo script per rimuovere OneDrive (o se OneDrive è già stato rimosso).\nIn caso contrario, la funzionalità di backup per le cartelle "Desktop" e "Immagini" di OneDrive si interrompe.
+OneDriveWarning                           = La funzione "WinPrtScrFolder -Desktop" verrà applicata solo se l'utente ha configurato lo script per rimuovere OneDrive (o se OneDrive è già stato rimosso). In caso contrario, la funzionalità di backup per le cartelle "Desktop" e "Immagini" di OneDrive si interrompe.
 WindowsFeaturesTitle                      = Funzionalità di Windows
 OptionalFeaturesTitle                     = Caratteristiche opzionali
 EnableHardwareVT                          = Abilita virtualizzazione in UEFI.

@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedOSBuild                        = Skrypt obsługuje tylko system Windows 10 Enterprise LTSC 2021. Twoim systemem operacyjnym jest {0}. Zaktualizuj system Windows i spróbuj ponownie.
+UnsupportedOSBuild                        = Skrypt obsługuje tylko system Windows 10 Enterprise LTSC 2021. Używasz systemu {0} {1}. Zaktualizuj system Windows i spróbuj ponownie.
 UnsupportedWindowsTerminal                = Wersja Windows Terminal jest niższa niż 1.20. Zaktualizuj ją w Microsoft Store i spróbuj ponownie.
-UpdateWarning                             = Twoja wersja systemu Windows 11: {0}.{1}. Obsługiwane kompilacje: {2} i nowsze. Uruchom aktualizację systemu Windows i spróbuj ponownie.
+UpdateWarning                             = Windows 11 {0}.{1} rendszert használ. A támogatott verzió Windows 11 {0}.{2} vagy újabb. Futtassa a Windows Update programot, majd próbálja meg újra.
 UnsupportedLanguageMode                   = Sesja PowerShell działa w trybie ograniczonego języka.
 LoggedInUserNotAdmin                      = Zalogowany użytkownik nie posiada uprawnień administratora.
 UnsupportedPowerShell                     = Próbujesz uruchomić skrypt przy użyciu PowerShell {0}.{1}. Uruchom skrypt w PowerShell {2}.
@@ -18,7 +18,7 @@ WindowsComponentBroken                    = {0} jest uszkodzony lub usunięty z 
 ControlledFolderAccessDisabled            = Kontrolowany dostęp do folderów został wyłączony.
 InitialActionsCheckFailed                 = Nie można załadować funkcji InitialActions z pliku ustawień wstępnych {0}. Sprawdź plik ustawień wstępnych i spróbuj ponownie.
 ScheduledTasks                            = Zaplanowane zadania
-OneDriveWarning                           = Funkcja "WinPrtScrFolder -Desktop" zostanie zastosowana tylko wtedy, gdy użytkownik skonfigurował skrypt do usuwania OneDrive (lub OneDrive został już usunięty).\nW przeciwnym razie funkcja tworzenia kopii zapasowych folderów "Pulpit" i "Zdjęcia" w OneDrive zostanie przerwana.
+OneDriveWarning                           = Funkcja "WinPrtScrFolder -Desktop" zostanie zastosowana tylko wtedy, gdy użytkownik skonfigurował skrypt do usuwania OneDrive (lub OneDrive został już usunięty). W przeciwnym razie funkcja tworzenia kopii zapasowych folderów "Pulpit" i "Zdjęcia" w OneDrive zostanie przerwana.
 WindowsFeaturesTitle                      = Funkcje Windows
 OptionalFeaturesTitle                     = Funkcje opcjonalne
 EnableHardwareVT                          = Włącz wirtualizację w UEFI.

@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedOSBuild                        = Le script ne supporte que Windows 11 Enterprise LTSC 2024. Votre système d'exploitation est {0}. Mettez à jour votre système d'exploitation Windows et réessayez.
+UnsupportedOSBuild                        = Le script ne supporte que Windows 11 Enterprise LTSC 2024. Vous utilisez {0} {1}. Mettez à jour votre système d'exploitation Windows et réessayez.
 UnsupportedWindowsTerminal                = La version de Windows Terminal est inférieure à 1.20. Veuillez la mettre à jour dans le Microsoft Store et réessayer.
-UpdateWarning                             = Votre version de Windows 11: {0}.{1}. Versions prises en charge: {2} et plus. Exécutez Windows Update et réessayez.
+UpdateWarning                             = Vous utilisez Windows 11 {0}.{1}. La version prise en charge est Windows 11 {0}.{2} et supérieure. Exécutez Windows Update et réessayez.
 UnsupportedLanguageMode                   = La session PowerShell s'exécute dans un mode de langue limité.
 LoggedInUserNotAdmin                      = L'utilisateur connecté n'a pas de droits d'administrateur.
 UnsupportedPowerShell                     = Vous essayez d'exécuter le script via PowerShell {0}.{1}. Veuillez exécuter le script en PowerShell {2}.
@@ -18,7 +18,7 @@ WindowsComponentBroken                    = {0} cassé ou supprimé du système 
 ControlledFolderAccessDisabled            = Contrôle d'accès aux dossiers désactivé.
 InitialActionsCheckFailed                 = La fonction InitialActions ne peut pas être chargée à partir du fichier de présélection {0}. Veuillez vérifier le fichier de présélection et réessayer.
 ScheduledTasks                            = Tâches planifiées
-OneDriveWarning                           = La fonction "WinPrtScrFolder -Desktop" ne sera appliquée que si l'utilisateur a configuré le script pour supprimer OneDrive (ou si OneDrive a déjà été supprimé).\nDans le cas contraire, la fonctionnalité de sauvegarde des dossiers "Desktop" et "Pictures" dans OneDrive est interrompue.
+OneDriveWarning                           = La fonction "WinPrtScrFolder -Desktop" ne sera appliquée que si l'utilisateur a configuré le script pour supprimer OneDrive (ou si OneDrive a déjà été supprimé). Dans le cas contraire, la fonctionnalité de sauvegarde des dossiers "Desktop" et "Pictures" dans OneDrive est interrompue.
 WindowsFeaturesTitle                      = Fonctionnalités
 OptionalFeaturesTitle                     = Fonctionnalités optionnelles
 EnableHardwareVT                          = Activer la virtualisation dans UEFI.

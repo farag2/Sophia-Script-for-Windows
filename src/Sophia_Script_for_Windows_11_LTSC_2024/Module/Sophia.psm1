@@ -999,6 +999,7 @@ public extern static string BrandingFormatString(string sFormat);
 				# https://support.microsoft.com/en-us/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5
 				$CurrentBuild = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
 				$UBR = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
+
 				Write-Information -MessageData "" -InformationAction Continue
 				Write-Warning -Message ($Localization.UpdateWarning -f $CurrentBuild, $UBR, $LatestSupportedBuild)
 				Write-Information -MessageData "" -InformationAction Continue
@@ -9176,13 +9177,13 @@ function Install-VCRedist
 
 <#
 	.SYNOPSIS
-	Install the latest .NET Desktop Runtime 8, 9 x64
+	Install the latest .NET Runtime 8, 9 x64
 
 	.PARAMETER NET8x64
-	Install the latest .NET Desktop Runtime 8 x64
+	Install the latest .NET Runtime 8 x64
 
 	.PARAMETER NET9x64
-	Install the latest .NET Desktop Runtime 9 x64
+	Install the latest .NET Runtime 9 x64
 
 	.EXAMPLE
 	Install-DotNetRuntimes -Runtimes NET8x64, NET9x64
@@ -9252,7 +9253,7 @@ function Install-DotNetRuntimes
 				{
 					try
 					{
-						# .NET Desktop Runtime 8 x64
+						# .NET Runtime 8 x64
 						$Parameters = @{
 							Uri             = "https://builds.dotnet.microsoft.com/dotnet/Runtime/$LatestNET8Version/dotnet-runtime-$LatestNET8Version-win-x64.exe"
 							OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestNET8Version-win-x64.exe"
@@ -9330,7 +9331,7 @@ function Install-DotNetRuntimes
 				{
 					try
 					{
-						# Downloading .NET Desktop Runtime 9 x64
+						# Downloading .NET Runtime 9 x64
 						$Parameters = @{
 							Uri             = "https://builds.dotnet.microsoft.com/dotnet/Runtime/$LatestNET9Version/dotnet-runtime-$LatestNET9Version-win-x64.exe"
 							OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestNET9Version-win-x64.exe"

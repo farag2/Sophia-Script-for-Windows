@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedOSBuild                        = The script supports Windows 11 24H2 and higher. Your OS is {0}. Upgrade your Windows and try again.
+UnsupportedOSBuild                        = The script supports Windows 11 24H2 and higher. You're using {0} {1}. Upgrade your Windows and try again.
 UnsupportedWindowsTerminal                = Windows Terminal version is lower than 1.22. Please update it in the Microsoft Store and try again.
-UpdateWarning                             = Your Windows 11 build: {0}.{1}. Supported builds: {2} and higher. Run Windows Update and try again.
+UpdateWarning                             = You're using Windows 11 {0}.{1}. Supported builds are Windows 11 {0}.{2} and higher. Run Windows Update and try again.
 UnsupportedLanguageMode                   = The PowerShell session in running in a limited language mode.
 LoggedInUserNotAdmin                      = The logged-on user doesn't have admin rights.
 UnsupportedPowerShell                     = You're trying to run script via PowerShell {0}.{1}. Please run the script in PowerShell {2}.
@@ -21,7 +21,7 @@ ScheduledTasks                            = Scheduled tasks
 OneDriveUninstalling                      = Uninstalling OneDrive...
 OneDriveInstalling                        = Installing OneDrive...
 OneDriveDownloading                       = Downloading OneDrive...
-OneDriveWarning                           = "WinPrtScrFolder -Desktop" function will be applied only if user configured script to remove OneDrive (or OneDrive was already removed).\nOtherwise the backup functionality for the "Desktop" and "Pictures" folders in OneDrive breaks.
+OneDriveWarning                           = "WinPrtScrFolder -Desktop" function will be applied only if user configured script to remove OneDrive (or OneDrive was already removed). Otherwise the backup functionality for the "Desktop" and "Pictures" folders in OneDrive breaks.
 WindowsFeaturesTitle                      = Windows features
 OptionalFeaturesTitle                     = Optional features
 EnableHardwareVT                          = Enable Virtualization in UEFI.

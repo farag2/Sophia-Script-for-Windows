@@ -1,8 +1,8 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = 该脚本仅支持64位Windows。
-UnsupportedOSBuild                        = 腳本僅支援 Windows 10 Enterprise LTSC 2019。您的作業系統是 {0}。升级 Windows，然后再试一次。
+UnsupportedOSBuild                        = 腳本僅支援 Windows 10 Enterprise LTSC 2019。您正在使用 {0} {1}。升级 Windows，然后再试一次。
 UnsupportedWindowsTerminal                = Windows Terminal版本低於1.20。請在Microsoft商店更新後再試。
-UpdateWarning                             = 您的Windows 10构建: {0}.{1}。支援的版本：{2} 及更高版本。运行Windows Update并再次尝试。
+UpdateWarning                             = 您当前使用的是 Windows 10 {0}.{1} 版本。支持的版本为 Windows 10 {0}.{2} 及更高版本。请运行 Windows 更新并重新尝试。
 UnsupportedLanguageMode                   = PowerShell会话在有限的语言模式下运行。
 LoggedInUserNotAdmin                      = 登录的用户没有管理员的权利。
 UnsupportedPowerShell                     = 你想通过PowerShell {0}.{1}运行脚本。请在PowerShell {2}中运行脚本。

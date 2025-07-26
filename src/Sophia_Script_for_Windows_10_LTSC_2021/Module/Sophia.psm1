@@ -749,11 +749,11 @@ public extern static string BrandingFormatString(string sFormat);
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 
-		# Windows 11 Pro
+		# Windows 10 Pro
 		$Windows_Long = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
 		$Windows_Long_First_Item = $Windows_Long.split(" ")[0]
 		$Windows_Long_Second_Item = $Windows_Long.split(" ")[1]
-		# Windows 11
+		# Windows 10
 		$Windows_Long = ($Windows_Long_First_Item, $Windows_Long_Second_Item) -join " "
 
 		# 24H2
@@ -856,6 +856,7 @@ public extern static string BrandingFormatString(string sFormat);
 				# https://support.microsoft.com/en-us/topic/windows-10-update-history-857b8ccb-71e4-49e5-b3f6-7073197d98fb
 				$CurrentBuild = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
 				$UBR = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
+
 				Write-Information -MessageData "" -InformationAction Continue
 				Write-Warning -Message ($Localization.UpdateWarning -f $CurrentBuild, $UBR, $LatestSupportedBuild)
 				Write-Information -MessageData "" -InformationAction Continue
@@ -9013,13 +9014,13 @@ function Install-VCRedist
 
 <#
 	.SYNOPSIS
-	Install the latest .NET Desktop Runtime 8, 9 x64
+	Install the latest .NET Runtime 8, 9 x64
 
 	.PARAMETER NET8x64
-	Install the latest .NET Desktop Runtime 8 x64
+	Install the latest .NET Runtime 8 x64
 
 	.PARAMETER NET9x64
-	Install the latest .NET Desktop Runtime 9 x64
+	Install the latest .NET Runtime 9 x64
 
 	.EXAMPLE
 	Install-DotNetRuntimes -Runtimes NET8x64, NET9x64
@@ -9089,7 +9090,7 @@ function Install-DotNetRuntimes
 				{
 					try
 					{
-						# .NET Desktop Runtime 8 x64
+						# .NET Runtime 8 x64
 						$Parameters = @{
 							Uri             = "https://builds.dotnet.microsoft.com/dotnet/Runtime/$LatestNET8Version/dotnet-runtime-$LatestNET8Version-win-x64.exe"
 							OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestNET8Version-win-x64.exe"
@@ -9167,7 +9168,7 @@ function Install-DotNetRuntimes
 				{
 					try
 					{
-						# Downloading .NET Desktop Runtime 9 x64
+						# Downloading .NET Runtime 9 x64
 						$Parameters = @{
 							Uri             = "https://builds.dotnet.microsoft.com/dotnet/Runtime/$LatestNET9Version/dotnet-runtime-$LatestNET9Version-win-x64.exe"
 							OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestNET9Version-win-x64.exe"

@@ -1,9 +1,9 @@
 ﻿ConvertFrom-StringData -StringData @'
 PowerShellImportFailed                    = Feche o PowerShell 7 e execute o script novamente.
 UnsupportedOSBitness                      = O guião suporta apenas Windows de 64 bits.
-UnsupportedOSBuild                        = O script é compatível apenas com o Windows 10 22H2. Seu sistema operacional é o {0}. Atualize seu Windows e tente novamente.
+UnsupportedOSBuild                        = O script é compatível apenas com o Windows 10 22H2. Você está usando o {0} {1}. Atualize seu Windows e tente novamente.
 UnsupportedWindowsTerminal                = A versão do Windows Terminal é inferior a 1.20. Atualize-a na Microsoft Store e tente novamente.
-UpdateWarning                             = La tua build di Windows 10: {0}.{1}. Build suportadas: {2}+. Execute o Windows Update e tente novamente.
+UpdateWarning                             = Windows 10 {0}.{1} rendszert használ. A támogatott verzió Windows 10 {0}.{2} vagy újabb. Futtassa a Windows Update programot, majd próbálja meg újra.
 UnsupportedLanguageMode                   = A sessão PowerShell em funcionamento em um modo de linguagem limitada.
 LoggedInUserNotAdmin                      = O usuário logado não tem direitos de administrador.
 UnsupportedPowerShell                     = Você está tentando executar o script via PowerShell {0}.{1}. Execute o script no PowerShell {2}.
@@ -24,7 +24,7 @@ ScheduledTasks                            = Tarefas agendadas
 OneDriveUninstalling                      = Desinstalar OneDrive...
 OneDriveInstalling                        = Instalar o OneDrive...
 OneDriveDownloading                       = Baixando OneDrive...
-OneDriveWarning                           = A função "WinPrtScrFolder -Desktop" será aplicada somente se o usuário tiver configurado o script para remover o OneDrive (ou se o OneDrive já tiver sido removido).\nCaso contrário, a funcionalidade de backup para as pastas "Desktop" e "Pictures" no OneDrive será interrompida.
+OneDriveWarning                           = A função "WinPrtScrFolder -Desktop" será aplicada somente se o usuário tiver configurado o script para remover o OneDrive (ou se o OneDrive já tiver sido removido). Caso contrário, a funcionalidade de backup para as pastas "Desktop" e "Pictures" no OneDrive será interrompida.
 WindowsFeaturesTitle                      = Recursos do Windows
 OptionalFeaturesTitle                     = Recursos opcionais
 EnableHardwareVT                          = Habilitar virtualização em UEFI.

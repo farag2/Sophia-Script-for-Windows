@@ -1,8 +1,8 @@
 ﻿ConvertFrom-StringData -StringData @'
 PowerShellImportFailed                    = Cierre PowerShell 7 y vuelva a ejecutar el script.
-UnsupportedOSBuild                        = El script es compatible con Windows 11 24H2 y superiores. Su sistema operativo es {0}. Actualiza tu Windows e inténtalo de nuevo.
+UnsupportedOSBuild                        = El script es compatible con Windows 11 24H2 y superiores. Estás usando Windows {0} {1}. Actualiza tu Windows e inténtalo de nuevo.
 UnsupportedWindowsTerminal                = La versión de Windows Terminal es inferior a la 1.20. Por favor, actualízala en la Microsoft Store e inténtalo de nuevo.
-UpdateWarning                             = Su build de Windows 11: {0}.{1}. Compilaciones compatibles: {2} y superior. Ejecute Windows Update y vuelva a intentarlo.
+UpdateWarning                             = Estás utilizando Windows 11 {0}.{1}. La versión compatible es Windows 11 {0}.{2} y superior. Ejecuta Windows Update e inténtalo de nuevo.
 UnsupportedLanguageMode                   = Sesión de PowerShell ejecutada en modo de lenguaje limitado.
 LoggedInUserNotAdmin                      = El usuario que inició sesión no tiene derechos de administrador.
 UnsupportedPowerShell                     = Estás intentando ejecutar el script a través de PowerShell {0}.{1}. Por favor, ejecute el script en PowerShell {2}.
@@ -23,7 +23,7 @@ ScheduledTasks                            = Tareas programadas
 OneDriveUninstalling                      = Desinstalar OneDrive...
 OneDriveInstalling                        = Instalación de OneDrive...
 OneDriveDownloading                       = Descargando OneDrive...
-OneDriveWarning                           = La función "WinPrtScrFolder -Desktop" se aplicará sólo si el usuario configuró el script para eliminar OneDrive (o OneDrive ya fue eliminado).\nDe lo contrario, la funcionalidad de copia de seguridad para las carpetas "Escritorio" e "Imágenes" en OneDrive se rompe.
+OneDriveWarning                           = La función "WinPrtScrFolder -Desktop" se aplicará sólo si el usuario configuró el script para eliminar OneDrive (o OneDrive ya fue eliminado). De lo contrario, la funcionalidad de copia de seguridad para las carpetas "Escritorio" e "Imágenes" en OneDrive se rompe.
 WindowsFeaturesTitle                      = Características de Windows
 OptionalFeaturesTitle                     = Características opcionales
 EnableHardwareVT                          = Habilitar la virtualización en UEFI.

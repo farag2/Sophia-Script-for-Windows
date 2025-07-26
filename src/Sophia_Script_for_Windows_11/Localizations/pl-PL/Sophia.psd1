@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedOSBuild                        = Skrypt obsługuje system Windows 11 24H2 i nowsze wersje. Twoim systemem operacyjnym jest {0}. Zaktualizuj system Windows i spróbuj ponownie.
+UnsupportedOSBuild                        = Skrypt obsługuje system Windows 11 24H2 i nowsze wersje. Używasz systemu {0} {1}. Zaktualizuj system Windows i spróbuj ponownie.
 UnsupportedWindowsTerminal                = Wersja Windows Terminal jest niższa niż 1.20. Zaktualizuj ją w Microsoft Store i spróbuj ponownie.
-UpdateWarning                             = Twoja wersja systemu Windows 11: {0}.{1}. Obsługiwane kompilacje: {2} i nowsze. Uruchom aktualizację systemu Windows i spróbuj ponownie.
+UpdateWarning                             = Windows 11 {0}.{1} rendszert használ. A támogatott verzió Windows 11 {0}.{2} vagy újabb. Futtassa a Windows Update programot, majd próbálja meg újra.
 UnsupportedLanguageMode                   = Sesja PowerShell działa w trybie ograniczonego języka.
 LoggedInUserNotAdmin                      = Zalogowany użytkownik nie posiada uprawnień administratora.
 UnsupportedPowerShell                     = Próbujesz uruchomić skrypt przy użyciu PowerShell {0}.{1}. Uruchom skrypt w PowerShell {2}.
@@ -21,7 +21,7 @@ ScheduledTasks                            = Zaplanowane zadania
 OneDriveUninstalling                      = Odinstalowywanie OneDrive...
 OneDriveInstalling                        = Instalowanie OneDrive...
 OneDriveDownloading                       = Pobieranie OneDrive...
-OneDriveWarning                           = Funkcja "WinPrtScrFolder -Desktop" zostanie zastosowana tylko wtedy, gdy użytkownik skonfigurował skrypt do usuwania OneDrive (lub OneDrive został już usunięty).\nW przeciwnym razie funkcja tworzenia kopii zapasowych folderów "Pulpit" i "Zdjęcia" w OneDrive zostanie przerwana.
+OneDriveWarning                           = Funkcja "WinPrtScrFolder -Desktop" zostanie zastosowana tylko wtedy, gdy użytkownik skonfigurował skrypt do usuwania OneDrive (lub OneDrive został już usunięty). W przeciwnym razie funkcja tworzenia kopii zapasowych folderów "Pulpit" i "Zdjęcia" w OneDrive zostanie przerwana.
 WindowsFeaturesTitle                      = Funkcje Windows
 OptionalFeaturesTitle                     = Funkcje opcjonalne
 EnableHardwareVT                          = Włącz wirtualizację w UEFI.

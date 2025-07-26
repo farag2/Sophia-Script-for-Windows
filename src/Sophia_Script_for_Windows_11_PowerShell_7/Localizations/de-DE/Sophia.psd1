@@ -1,8 +1,8 @@
 ﻿ConvertFrom-StringData -StringData @'
 PowerShellImportFailed                    = Bitte schließen Sie PowerShell 7 und führen Sie das Skript erneut aus.
-UnsupportedOSBuild                        = Das Skript unterstützt Windows 11 24H2 und höher. Ihr Betriebssystem ist {0}. Aktualisieren Sie Ihr Windows und versuchen Sie es erneut.
+UnsupportedOSBuild                        = Das Skript unterstützt Windows 11 24H2 und höher. Sie verwenden Windows {0} {1}. Aktualisieren Sie Ihr Windows und versuchen Sie es erneut.
 UnsupportedWindowsTerminal                = Die Windows Terminal-Version ist niedriger als 1.20. Bitte aktualisieren Sie es im Microsoft Store und versuchen Sie es erneut.
-UpdateWarning                             = Ihr Windows 11-Build: {0}.{1}. Unterstützter Builds: {2} und höher. Führen Sie Windows Update aus und versuchen Sie es erneut.
+UpdateWarning                             = Sie verwenden Windows 11 {0}.{1}. Unterstützt wird Windows 11 {0}.{2} und höher. Führen Sie Windows Update aus und versuchen Sie es erneut.
 UnsupportedLanguageMode                   = Die PowerShell-Sitzung wird in einem eingeschränkten Sprachmodus ausgeführt.
 LoggedInUserNotAdmin                      = Der angemeldete Benutzer hat keine Administratorrechte.
 UnsupportedPowerShell                     = Sie versuchen ein Skript über PowerShell {0}.{1} auszuführen. Bitte führen Sie das Skript in PowerShell {2} aus.
@@ -23,7 +23,7 @@ ScheduledTasks                            = Geplante Aufgaben
 OneDriveUninstalling                      = OneDrive deinstallieren...
 OneDriveInstalling                        = OneDrive installieren...
 OneDriveDownloading                       = OneDrive herunterladen...
-OneDriveWarning                           = Die Funktion "WinPrtScrFolder -Desktop" wird nur angewendet, wenn der Benutzer das Skript zum Entfernen von OneDrive konfiguriert hat (oder OneDrive bereits entfernt wurde).\nAndernfalls wird die Backup-Funktionalität für die Ordner "Desktop" und "Bilder" in OneDrive unterbrochen.
+OneDriveWarning                           = Die Funktion "WinPrtScrFolder -Desktop" wird nur angewendet, wenn der Benutzer das Skript zum Entfernen von OneDrive konfiguriert hat (oder OneDrive bereits entfernt wurde). Andernfalls wird die Backup-Funktionalität für die Ordner "Desktop" und "Bilder" in OneDrive unterbrochen.
 WindowsFeaturesTitle                      = Windows-Features
 OptionalFeaturesTitle                     = Optionale Features
 EnableHardwareVT                          = Virtualisierung in UEFI aktivieren.

@@ -1,9 +1,9 @@
 ﻿ConvertFrom-StringData -StringData @'
 PowerShellImportFailed                    = Kérjük, zárja be a PowerShell 7 programot, és futtassa újra a szkriptet.
 UnsupportedOSBitness                      = A szkript csak a 64 bites Windows-t támogatja.
-UnsupportedOSBuild                        = A szkript csak a Windows 10 22H2 rendszert támogatja. Az Ön operációs rendszere {0}. Frissítse a Windows-t, és próbálja meg újra.
+UnsupportedOSBuild                        = A szkript csak a Windows 10 22H2 rendszert támogatja. {0} {1}-et használsz. Frissítse a Windows-t, és próbálja meg újra.
 UnsupportedWindowsTerminal                = A Windows Terminal verziója alacsonyabb, mint 1.20. Kérjük, frissítse azt a Microsoft Store-ban, és próbálja meg újra.
-UpdateWarning                             = Az Ön Windows 10 építése: {0}.{1}. Támogatott buildek: {2} és újabb verziók. Futtassa a Windows Update programot, és próbálja meg újra.
+UpdateWarning                             = Vous utilisez Windows 10 {0}.{1}. La version prise en charge est Windows 10 {0}.{2} et supérieure. Exécutez Windows Update et réessayez.
 UnsupportedLanguageMode                   = A PowerShell munkamenet korlátozott nyelvi üzemmódban fut.
 LoggedInUserNotAdmin                      = A bejelentkezett felhasználó nem rendelkezik admin jogokkal.
 UnsupportedPowerShell                     = A PowerShell {0}.{1} segítségével próbálja futtatni a szkriptet. Kérjük, futtassa a szkriptet a PowerShell {2}-ben.
@@ -24,7 +24,7 @@ ScheduledTasks                            = Ütemezett feladatok
 OneDriveUninstalling                      = OneDrive eltávolítása...
 OneDriveInstalling                        = OneDrive telepítése...
 OneDriveDownloading                       = OneDrive letöltése...
-OneDriveWarning                           = A "WinPrtScrFolder -Desktop" funkció csak akkor kerül alkalmazásra, ha a felhasználó a OneDrive eltávolítására konfigurálta a szkriptet (vagy a OneDrive már eltávolításra került).\nEllenkező esetben a OneDrive "Desktop" és "Pictures" mappáinak biztonsági mentési funkciója megszakad.
+OneDriveWarning                           = A "WinPrtScrFolder -Desktop" funkció csak akkor kerül alkalmazásra, ha a felhasználó a OneDrive eltávolítására konfigurálta a szkriptet (vagy a OneDrive már eltávolításra került). Ellenkező esetben a OneDrive "Desktop" és "Pictures" mappáinak biztonsági mentési funkciója megszakad.
 WindowsFeaturesTitle                      = Windows szolgáltatások
 OptionalFeaturesTitle                     = Opcionális szolgáltatások
 EnableHardwareVT                          = Virtualizáció engedélyezése UEFI-ben.
