@@ -1,5 +1,5 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedOSBuild                        = Скрипт поддерживает Windows 11 24H2 и выше. Ваша ОС — {0} {1}. Обновите Windows и попробуйте заново.
+UnsupportedOSBuild                        = Скрипт поддерживает Windows 11 24H2 и выше. Вы используете {0} {1}. Обновите Windows и попробуйте заново.
 UnsupportedWindowsTerminal                = Версия Windows Terminal ниже 1.20. Пожалуйста, обновите его в Microsoft Store и попробуйте заново.
 UpdateWarning                             = Ваш билд Windows 11: {0}.{1}. Поддерживаемые сборки: {2} и выше. Запустите обновление Windows и попробуйте заново.
 UnsupportedLanguageMode                   = Сессия PowerShell работает в ограниченном режиме.

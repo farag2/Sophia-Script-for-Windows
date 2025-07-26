@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 PowerShellImportFailed                    = Cierre PowerShell 7 y vuelva a ejecutar el script.
-UnsupportedOSBuild                        = El script es compatible con Windows 11 24H2 y superiores. Su sistema operativo es {0}. Actualiza tu Windows e inténtalo de nuevo.
+UnsupportedOSBuild                        = El script es compatible con Windows 11 24H2 y superiores. Estás usando Windows {0} {1}. Actualiza tu Windows e inténtalo de nuevo.
 UnsupportedWindowsTerminal                = La versión de Windows Terminal es inferior a la 1.20. Por favor, actualízala en la Microsoft Store e inténtalo de nuevo.
 UpdateWarning                             = Su build de Windows 11: {0}.{1}. Compilaciones compatibles: {2} y superior. Ejecute Windows Update y vuelva a intentarlo.
 UnsupportedLanguageMode                   = Sesión de PowerShell ejecutada en modo de lenguaje limitado.

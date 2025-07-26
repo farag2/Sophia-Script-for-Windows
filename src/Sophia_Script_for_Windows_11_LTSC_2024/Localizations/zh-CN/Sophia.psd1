@@ -1,5 +1,5 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedOSBuild                        = 腳本僅支援 Windows 11 Enterprise LTSC 2024。您的作業系統是 {0}。升级 Windows，然后再试一次。
+UnsupportedOSBuild                        = 腳本僅支援 Windows 11 Enterprise LTSC 2024。您正在使用 {0} {1}。升级 Windows，然后再试一次。
 UnsupportedWindowsTerminal                = Windows Terminal版本低於1.20。請在Microsoft商店更新後再試。
 UpdateWarning                             = 您的Windows 11构建: {0}.{1}。支援的版本：{2} 及更高版本。运行Windows Update并再次尝试。
 UnsupportedLanguageMode                   = PowerShell会话在有限的语言模式下运行。

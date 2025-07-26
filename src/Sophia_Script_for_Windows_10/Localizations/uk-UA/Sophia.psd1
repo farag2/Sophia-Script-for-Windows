@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Скрипт підтримує тільки 64-розрядну версію Windows.
-UnsupportedOSBuild                        = Скрипт підтримує тільки Windows 10 22H2. Ваша ОС — {0} {1}. Оновіть Windows і спробуйте ще раз.
+UnsupportedOSBuild                        = Скрипт підтримує тільки Windows 10 22H2. Ви використовуєте {0} {1}. Оновіть Windows і спробуйте ще раз.
 UnsupportedWindowsTerminal                = Версія Windows Terminal нижча за 1.20. Будь ласка, оновіть його в Microsoft Store і спробуйте заново.
 UpdateWarning                             = Ваш білд Windows 10: {0}.{1}. Підтримувані збірки: {2} і вище. Запустіть Windows Update і повторіть спробу.
 UnsupportedLanguageMode                   = Сесія PowerShell працює в обмеженому режимі.

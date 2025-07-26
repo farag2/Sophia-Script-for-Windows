@@ -1,5 +1,5 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedOSBuild                        = The script supports Windows 11 24H2 and higher. Your OS is {0}. Upgrade your Windows and try again.
+UnsupportedOSBuild                        = The script supports Windows 11 24H2 and higher. You're using {0} {1}. Upgrade your Windows and try again. ###
 UnsupportedWindowsTerminal                = Windows Terminal version is lower than 1.22. Please update it in the Microsoft Store and try again.
 UpdateWarning                             = Your Windows 11 build: {0}.{1}. Supported builds: {2} and higher. Run Windows Update and try again.
 UnsupportedLanguageMode                   = The PowerShell session in running in a limited language mode.

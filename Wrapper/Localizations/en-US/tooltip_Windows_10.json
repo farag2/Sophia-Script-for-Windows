@@ -1349,15 +1349,15 @@
   {
     "Region": "System",
     "Function": "Install-DotNetRuntimes -Runtimes",
-    "ToolTip": "Install the latest .NET Desktop Runtime 8, 9 x64.",
+    "ToolTip": "Install the latest .NET Runtime 8, 9 x64.",
     "Arg": {
       "Zero": {
         "Tag": "NET8x64",
-        "ToolTip": ".NET Desktop Runtime 8 x64."
+        "ToolTip": ".NET Runtime 8 x64."
       },
       "One": {
         "Tag": "NET9x64",
-        "ToolTip": ".NET Desktop Runtime 9 x64."
+        "ToolTip": ".NET Runtime 9 x64."
       }
     }
   },

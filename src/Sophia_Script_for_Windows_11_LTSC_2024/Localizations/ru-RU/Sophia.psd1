@@ -1,5 +1,5 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedOSBuild                        = Скрипт поддерживает только Windows 11 Enterprise LTSC 2024. Ваша ОС — {0} {1}. Обновите Windows и попробуйте заново.
+UnsupportedOSBuild                        = Скрипт поддерживает только Windows 11 Enterprise LTSC 2024. Вы используете {0} {1}. Обновите Windows и попробуйте заново.
 UnsupportedWindowsTerminal                = Версия Windows Terminal ниже 1.20. Пожалуйста, обновите его в Microsoft Store и попробуйте заново.
 UpdateWarning                             = Ваш билд Windows 11: {0}.{1}. Поддерживаемые сборки: {2} и выше. Запустите обновление Windows и попробуйте заново.
 UnsupportedLanguageMode                   = Сессия PowerShell работает в ограниченном режиме.
@@ -14,7 +14,7 @@ RebootPending                             = Компьютер ожидает п
 UnsupportedRelease                        = Обнаружена новая версия скрипта. Пожалуйста, используйте только последнюю версию Sophia Script.
 KeyboardArrows                            = Для выбора используйте на клавиатуре стрелки {0} и {1}
 CustomizationWarning                      = Вы настроили все функции в пресет-файле {0} перед запуском Sophia Script?
-WindowsComponentBroken                    = {0} сломан или удален из ОС. Переустановите Windows, используя только подлинный ISO-образ. Переустановите Windows, используя только подлинный ISO-образ.
+WindowsComponentBroken                    = {0} сломан или удален из ОС. Переустановите Windows, используя только подлинный ISO-образ.
 ControlledFolderAccessDisabled            = Контролируемый доступ к папкам выключен.
 InitialActionsCheckFailed                 = Функция InitialActions не может быть загружена из пресет-файла {0}. Пожалуйста, проверьте пресет-файл и попробуйте заново.
 ScheduledTasks                            = Запланированные задания
