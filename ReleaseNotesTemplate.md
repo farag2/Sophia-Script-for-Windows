@@ -41,10 +41,10 @@ Manual avaliable in other languages
 [Sophia-Script-Windows-11-PowerShell-5-1]: https://github.com/farag2/Sophia-Script-for-Windows/releases/download/NewVersion/Sophia.Script.for.Windows.11.vSophia_Script_Windows_11_PowerShell_5_1.zip
 [Sophia-Script-Windows-11-PowerShell-5-1-badge]: https://img.shields.io/badge/Windows%2011-PowerShell%205.1-67b7d1.svg
 
-[Sophia-Script-Windows-11-Arm-PowerShell-5-1]: https://github.com/farag2/Sophia-Script-for-Windows/releases/download/NewVersion/Sophia.Script.for.Windows.11.vSophia_Script_Windows_11_Arm_PowerShell_5_1.zip
+[Sophia-Script-Windows-11-Arm-PowerShell-5-1]: https://github.com/farag2/Sophia-Script-for-Windows/releases/download/NewVersion/Sophia.Script.for.Windows.11.Arm.vSophia_Script_Windows_11_Arm_PowerShell_5_1.zip
 [Sophia-Script-Windows-11-Arm-PowerShell-5-1-badge]: https://img.shields.io/badge/Windows%2011%20Arm-PowerShell%205.1-67b7d1.svg
 
-[Sophia-Script-Windows-11-Arm-PowerShell-7]: https://github.com/farag2/Sophia-Script-for-Windows/releases/download/NewVersion/Sophia.Script.for.Windows.11.vSophia_Script_Windows_11_Arm_PowerShell_7.zip
+[Sophia-Script-Windows-11-Arm-PowerShell-7]: https://github.com/farag2/Sophia-Script-for-Windows/releases/download/NewVersion/Sophia.Script.for.Windows.11.Arm.PowerShell.7.vSophia_Script_Windows_11_Arm_PowerShell_7.zip
 [Sophia-Script-Windows-11-Arm-PowerShell-7-badge]: https://img.shields.io/badge/Windows%2011%20Arm-PowerShell%207-67b7d1.svg
 
 [Sophia-Script-Windows-11-PowerShell-7]: https://github.com/farag2/Sophia-Script-for-Windows/releases/download/NewVersion/Sophia.Script.for.Windows.11.PowerShell.7.vSophia_Script_Windows_11_PowerShell_7.zip
