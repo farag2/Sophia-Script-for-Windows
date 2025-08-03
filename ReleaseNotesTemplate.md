@@ -21,10 +21,7 @@ Diff from vOldVersion
 
 Manual avaliable in other languages
 
-<a href="./README.md#how-to-use"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/img/united-states.png" height="70px"/></a>
-<a href="./docs/README_uk-ua.md#як-використовувати"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/img/ukraine.png" height="70px"/></a>
-<a href="./docs/README_de-de.md#wie-zu-verwenden"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/img/germany.png" height="70px"/></a>
-<a href="./docs/README_ru-ru.md#как-использовать"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/img/russia.png" height="70px"/></a>
+<a href="./README.md#how-to-use"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/img/united-states.png" height="70px"/></a> <a href="./docs/README_uk-ua.md#як-використовувати"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/img/ukraine.png" height="70px"/></a> <a href="./docs/README_de-de.md#wie-zu-verwenden"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/img/germany.png" height="70px"/></a> <a href="./docs/README_ru-ru.md#как-использовать"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/img/russia.png" height="70px"/></a>
 
 [Sophia-Script-Windows-10-PowerShell-5-1]: https://github.com/farag2/Sophia-Script-for-Windows/releases/download/NewVersion/Sophia.Script.for.Windows.10.vSophia_Script_Windows_10_PowerShell_5_1.zip
 [Sophia-Script-Windows-10-PowerShell-5-1-badge]: https://img.shields.io/badge/Windows%2010%20x64-PowerShell%205.1-67b7d1.svg
