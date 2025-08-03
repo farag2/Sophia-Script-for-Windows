@@ -3,7 +3,7 @@
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
 	.VERSION
-	5.20.7
+	5.21.0
 
 	.DATE
 	22.06.2025
@@ -157,6 +157,20 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Warning -Message $Localization.UnsupportedOSBitness
 		Write-Information -MessageData "" -InformationAction Continue
 
+		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+		exit
+	}
+
+	# Check CPU architecture
+	if ((Get-CimInstance -ClassName CIM_Processor).Caption -notmatch "AMD64")
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Warning -Message ($Localization.UnsupportedArchitecture -f (Get-CimInstance -ClassName CIM_Processor).Caption)
+		Write-Information -MessageData "" -InformationAction Continue
+
+		Write-Verbose -Message "https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_language_modes" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
@@ -1056,21 +1070,25 @@ public extern static string BrandingFormatString(string sFormat);
 	# Extract the localized "Skip" string from shell32.dll
 	$Script:Skip = [WinAPI.GetStrings]::GetString(16956)
 
+	Write-Information -MessageData "" -InformationAction Continue
 	Write-Information -MessageData "┏┓    ┓ •    ┏┓   •     ┏      ┓ ┏•   ┓ " -InformationAction Continue
 	Write-Information -MessageData "┗┓┏┓┏┓┣┓┓┏┓  ┗┓┏┏┓┓┏┓╋  ╋┏┓┏┓  ┃┃┃┓┏┓┏┫┏┓┓┏┏┏" -InformationAction Continue
 	Write-Information -MessageData "┗┛┗┛┣┛┛┗┗┗┻  ┗┛┗┛ ┗┣┛┗  ┛┗┛┛   ┗┻┛┗┛┗┗┻┗┛┗┻┛┛" -InformationAction Continue
 	Write-Information -MessageData "    ┛              ┛                   " -InformationAction Continue
 
-	Write-Information -MessageData "https://t.me/sophianews" -InformationAction Continue
-	Write-Information -MessageData "https://t.me/sophia_chat" -InformationAction Continue
-	Write-Information -MessageData "https://discord.gg/sSryhaEv79" -InformationAction Continue
+	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+	Write-Verbose -Message "https://t.me/sophianews" -Verbose
+	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+	Write-Information -MessageData "" -InformationAction Continue
+	Write-Verbose -Message "https://ko-fi.com/farag" -Verbose
+	Write-Verbose -Message "https://boosty.to/teamsophia" -Verbose
+	Write-Information -MessageData "" -InformationAction Continue
 
 	# Display a warning message about whether a user has customized the preset file
 	if ($Warning)
 	{
 		# Get the name of a preset (e.g Sophia.ps1) regardless it was named
 		# $_.File has no EndsWith() method
-		Write-Information -MessageData "" -InformationAction Continue
 		[string]$PresetName = ((Get-PSCallStack).Position | Where-Object -FilterScript {$_.File}).File | Where-Object -FilterScript {$_.EndsWith(".ps1")}
 		Write-Verbose -Message ($Localization.CustomizationWarning -f "`"$PresetName`"") -Verbose
 

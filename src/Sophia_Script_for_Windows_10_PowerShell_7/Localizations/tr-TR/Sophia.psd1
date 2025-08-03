@@ -1,5 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 PowerShellImportFailed                    = Lütfen PowerShell 7 yi kapatın ve komut dosyasını yeniden çalıştırın.
+UnsupportedArchitecture                   = "{0}" tabanlı mimari CPU kullanıyorsunuz. Bu komut dosyası yalnızca x64 mimari tabanlı CPU'ları destekler. Mimariniz için komut dosyası sürümünü indirin ve çalıştırın.
 UnsupportedOSBitness                      = Komut dosyası yalnızca 64 bit Windows'u destekler.
 UnsupportedOSBuild                        = Komut dosyası yalnızca Windows 10 22H2'yi destekler. {0} {1} kullanıyorsunuz. Windows'unuzu yükseltin ve tekrar deneyin.
 UnsupportedWindowsTerminal                = Windows Terminal sürümü 1.20'den daha düşük. Lütfen Microsoft Store'da güncelleyin ve tekrar deneyin.

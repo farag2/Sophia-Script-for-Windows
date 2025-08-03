@@ -3,7 +3,7 @@
 	Default preset file for "Sophia Script for Windows 10 (PowerShell 7)"
 
 	.VERSION
-	5.20.7
+	5.21.0
 
 	.DATE
 	22.06.2025
@@ -77,7 +77,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.20.7 (PowerShell 7) | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) Team Sophia, 2014$([System.Char]0x2013)2025"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.21.0 (PowerShell 7) | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) Team Sophia, 2014$([System.Char]0x2013)2025"
 
 # Checking whether all files were expanded before running
 $ScriptFiles = @(

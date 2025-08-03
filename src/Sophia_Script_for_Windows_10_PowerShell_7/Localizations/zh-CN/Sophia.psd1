@@ -1,5 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 PowerShellImportFailed                    = 请关闭PowerShell 7并重新运行脚本。
+UnsupportedArchitecture                   = 您正在使用基于"{0}"架构的CPU。此脚本仅支持基于x64架构的CPU。请下载并运行适用于您架构的脚本版本。
 UnsupportedOSBitness                      = 该脚本仅支持64位Windows。
 UnsupportedOSBuild                        = 腳本僅支援 Windows 10 22H2。您正在使用 {0} {1}。升级 Windows，然后再试一次。
 UnsupportedWindowsTerminal                = Windows Terminal版本低於1.20。請在Microsoft商店更新後再試。

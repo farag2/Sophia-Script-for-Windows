@@ -1,5 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 PowerShellImportFailed                    = Пожалуйста, закройте PowerShell 7 и запустите скрип заново.
+UnsupportedArchitecture                   = Вы используете ЦП с архитектурой "{0}". Скрипт поддерживает ЦП с архитектурой x64. Скачайте и запустите версию скрипта для вашей архитектуры.
 UnsupportedOSBitness                      = Скрипт поддерживает только 64-битную версию Windows.
 UnsupportedOSBuild                        = Скрипт поддерживает только Windows 10 22H2. Вы используете {0} {1}. Обновите Windows и попробуйте заново.
 UnsupportedWindowsTerminal                = Версия Windows Terminal ниже 1.20. Пожалуйста, обновите его в Microsoft Store и попробуйте заново.
@@ -16,7 +17,7 @@ RebootPending                             = Компьютер ожидает п
 UnsupportedRelease                        = Обнаружена новая версия скрипта. Пожалуйста, используйте только последнюю версию Sophia Script.
 KeyboardArrows                            = Для выбора используйте на клавиатуре стрелки {0} и {1}
 CustomizationWarning                      = Вы настроили все функции в пресет-файле {0} перед запуском Sophia Script?
-WindowsComponentBroken                    = {0} сломан или удален из ОС. Переустановите Windows, используя только подлинный ISO-образ. Переустановите Windows, используя только подлинный ISO-образ.
+WindowsComponentBroken                    = {0} сломан или удален из ОС. Переустановите Windows, используя только подлинный ISO-образ.
 MicroSoftStorePowerShellWarning           = PowerShell, скачанный из Microsoft Store, не поддерживается. Пожалуйста, запустите MSI-версию.\nhttps://github.com/powershell/powershell/releases/latest
 ControlledFolderAccessDisabled            = Контролируемый доступ к папкам выключен.
 InitialActionsCheckFailed                 = Функция InitialActions не может быть загружена из пресет-файла {0}. Пожалуйста, проверьте пресет-файл и попробуйте заново.

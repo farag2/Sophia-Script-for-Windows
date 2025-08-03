@@ -1,4 +1,5 @@
 ﻿ConvertFrom-StringData -StringData @'
+UnsupportedArchitecture                   = Ви використовуєте процесор з архітектурою "{0}". Скрипт підтримує процесори з архітектурою x64. Завантажте та запустіть версію скрипту для вашої архітектури.
 UnsupportedOSBuild                        = Скрипт підтримує тільки Windows 11 Enterprise LTSC 2024. Ви використовуєте {0} {1}. Оновіть Windows і спробуйте ще раз.
 UnsupportedWindowsTerminal                = Версія Windows Terminal нижча за 1.20. Будь ласка, оновіть його в Microsoft Store і спробуйте заново.
 UpdateWarning                             = Ви використовуєте Windows 11 {0}.{1}. Підтримувані збірки: Windows 11 {0}.{2} і вище. Запустіть оновлення Windows і спробуйте ще раз.

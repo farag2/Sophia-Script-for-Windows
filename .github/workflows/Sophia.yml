@@ -47,6 +47,14 @@ jobs:
         run: |
           . "Scripts\Windows_11_PS_7.ps1"
 
+      - name: Sophia Script for Windows 11 Arm
+        run: |
+          . "Scripts\Windows_11_Arm.ps1"
+
+      - name: Sophia Script for Windows 11 Arm PowerShell 7
+        run: |
+          . "Scripts\Windows_11_Arm_PS_7.ps1"
+
       - name: Sophia Script for Windows 11 LTSC 2024
         run: |
           . "Scripts\Windows_11_LTSC_2024.ps1"

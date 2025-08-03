@@ -1,5 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 PowerShellImportFailed                    = Kérjük, zárja be a PowerShell 7 programot, és futtassa újra a szkriptet.
+UnsupportedArchitecture                   = Ön "{0}" alapú architektúrájú CPU-t használ. Ez a szkript csak x64 architektúrájú CPU-kat támogat. Töltse le és futtassa az Ön architektúrájához megfelelő szkript verziót.
 UnsupportedOSBitness                      = A szkript csak a 64 bites Windows-t támogatja.
 UnsupportedOSBuild                        = A szkript csak a Windows 10 22H2 rendszert támogatja. {0} {1}-et használsz. Frissítse a Windows-t, és próbálja meg újra.
 UnsupportedWindowsTerminal                = A Windows Terminal verziója alacsonyabb, mint 1.20. Kérjük, frissítse azt a Microsoft Store-ban, és próbálja meg újra.

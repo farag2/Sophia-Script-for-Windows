@@ -122,13 +122,29 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		{
 			if ($Host.Version.Major -eq 5)
 			{
-				$Version = "Sophia_Script_for_Windows_11"
-				$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 | Latest | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2025"
+				if ((Get-CimInstance -ClassName CIM_Processor).Caption -match "ARM")
+				{
+					$Version = "Sophia_Script_for_Windows_11_ARM"
+					$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 (Arm) | Latest | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2025"
+				}
+				else
+				{
+					$Version = "Sophia_Script_for_Windows_11"
+					$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 | Latest | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2025"
+				}
 			}
 			else
 			{
-				$Version = "Sophia_Script_for_Windows_11_PowerShell_7"
-				$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 PowerShell 7 | Latest | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2025"
+				if ((Get-CimInstance -ClassName CIM_Processor).Caption -match "ARM")
+				{
+					$Version = "Sophia_Script_for_Windows_11_ARM_PowerShell_7"
+					$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 (Arm | PowerShell 7) | Latest | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2025"
+				}
+				else
+				{
+					$Version = "Sophia_Script_for_Windows_11_PowerShell_7"
+					$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 (PowerShell) | Latest | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2025"
+				}
 			}
 		}
 		else

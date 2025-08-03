@@ -1,5 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 PowerShellImportFailed                    = Kérjük, zárja be a PowerShell 7 programot, és futtassa újra a szkriptet.
+UnsupportedArchitecture                   = Ön "{0}" alapú architektúrájú CPU-t használ. Ez a szkript csak x64 architektúrájú CPU-kat támogat. Töltse le és futtassa az Ön architektúrájához megfelelő szkript verziót.
 UnsupportedOSBuild                        = A szkript támogatja a Windows 11 24H2 és magasabb verziószámú operációs rendszereket. {0} {1}-et használsz. Frissítse a Windows-t, és próbálja meg újra.
 UnsupportedWindowsTerminal                = A Windows Terminal verziója alacsonyabb, mint 1.20. Kérjük, frissítse azt a Microsoft Store-ban, és próbálja meg újra.
 UpdateWarning                             = Vous utilisez Windows 11 {0}.{1}. La version prise en charge est Windows 11 {0}.{2} et supérieure. Exécutez Windows Update et réessayez.

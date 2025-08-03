@@ -60,7 +60,7 @@ if (-not $LatestGitHubRelease)
 	{
 		$DNS = (Get-NetAdapter -Physical | Get-NetIPInterface -AddressFamily IPv4 | Get-DnsClientServerAddress -AddressFamily IPv4).ServerAddresses
 	}
-	Write-Warning -Message "Your DNS are $(if ($DNS.Count -gt 1) {$DNS -join ', '} else {$DNS})"
+	Write-Warning -Message "You're using DNS $(if ($DNS.Count -gt 1) {$DNS -join ', '} else {$DNS})"
 
 	pause
 	exit
@@ -176,31 +176,67 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		# Check for Windows 11 LTSC 2024
 		if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName) -notmatch "LTSC 2024")
 		{
+			# PowerShell 5.1
 			if ($Host.Version.Major -eq 5)
 			{
-				$LatestRelease = $JSONVersions.Sophia_Script_Windows_11_PowerShell_5_1
-				$Parameters = @{
-					Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.v$LatestRelease.zip"
-					OutFile         = "$DownloadsFolder\Sophia.Script.zip"
-					UseBasicParsing = $true
-					Verbose         = $true
-				}
-				Invoke-WebRequest @Parameters
+				if ((Get-CimInstance -ClassName CIM_Processor).Caption -match "ARM")
+				{
+					# Arm based
+					$LatestRelease = $JSONVersions.Sophia_Script_Windows_11_PowerShell_5_1
+					$Parameters = @{
+						Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.ARM.v$LatestRelease.zip"
+						OutFile         = "$DownloadsFolder\Sophia.Script.zip"
+						UseBasicParsing = $true
+						Verbose         = $true
+					}
+					Invoke-WebRequest @Parameters
 
-				$Version = "Windows_11_PowerShell_5.1"
+					$Version = "Windows_11_PowerShell_5.1"
+				}
+				else
+				{
+					$LatestRelease = $JSONVersions.Sophia_Script_Windows_11_PowerShell_5_1
+					$Parameters = @{
+						Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.v$LatestRelease.zip"
+						OutFile         = "$DownloadsFolder\Sophia.Script.zip"
+						UseBasicParsing = $true
+						Verbose         = $true
+					}
+					Invoke-WebRequest @Parameters
+
+					$Version = "Windows_11_PowerShell_5.1"
+				}
 			}
 			else
 			{
-				$LatestRelease = $JSONVersions.Sophia_Script_Windows_11_PowerShell_7
-				$Parameters = @{
-					Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.PowerShell.7.v$LatestRelease.zip"
-					OutFile         = "$DownloadsFolder\Sophia.Script.zip"
-					UseBasicParsing = $true
-					Verbose         = $true
-				}
-				Invoke-WebRequest @Parameters
+				# PowerShell 7
+				if ((Get-CimInstance -ClassName CIM_Processor).Caption -match "ARM")
+				{
+					# Arm based
+					$LatestRelease = $JSONVersions.Sophia_Script_Windows_11_PowerShell_7
+					$Parameters = @{
+						Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.ARM.PowerShell.7.v$LatestRelease.zip"
+						OutFile         = "$DownloadsFolder\Sophia.Script.zip"
+						UseBasicParsing = $true
+						Verbose         = $true
+					}
+					Invoke-WebRequest @Parameters
 
-				$Version = "Windows_11_PowerShell_7"
+					$Version = "Windows_11_PowerShell_7"
+				}
+				else
+				{
+					$LatestRelease = $JSONVersions.Sophia_Script_Windows_11_PowerShell_7
+					$Parameters = @{
+						Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.PowerShell.7.v$LatestRelease.zip"
+						OutFile         = "$DownloadsFolder\Sophia.Script.zip"
+						UseBasicParsing = $true
+						Verbose         = $true
+					}
+					Invoke-WebRequest @Parameters
+
+					$Version = "Windows_11_PowerShell_7"
+				}
 			}
 		}
 		else

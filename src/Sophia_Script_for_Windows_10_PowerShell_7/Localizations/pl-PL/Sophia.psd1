@@ -1,5 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 PowerShellImportFailed                    = Zamknij PowerShell 7 i ponownie uruchom skrypt.
+UnsupportedArchitecture                   = Korzystasz z procesora opartego na architekturze "{0}". Ten skrypt obsługuje wyłącznie procesory oparte na architekturze x64. Pobierz i uruchom wersję skryptu odpowiednią dla swojej architektury.
 UnsupportedOSBitness                      = Skrypt obsługuje tylko 64-bitowe systemy Windows.
 UnsupportedOSBuild                        = Skrypt obsługuje tylko system Windows 10 22H2. Używasz systemu {0} {1}. Zaktualizuj system Windows i spróbuj ponownie.
 UnsupportedWindowsTerminal                = Wersja Windows Terminal jest niższa niż 1.20. Zaktualizuj ją w Microsoft Store i spróbuj ponownie.
