@@ -31,6 +31,8 @@ $JSON = Invoke-RestMethod @Parameters
 	-replace "Sophia_Script_Windows_10_LTSC2021", $JSON.Sophia_Script_Windows_10_LTSC2021 `
 	-replace "Sophia_Script_Windows_11_PowerShell_5_1", $JSON.Sophia_Script_Windows_11_PowerShell_5_1 `
 	-replace "Sophia_Script_Windows_11_PowerShell_7", $JSON.Sophia_Script_Windows_11_PowerShell_7 `
+	-replace "Sophia_Script_Windows_11_Arm_PowerShell_5_1", $JSON.Sophia_Script_Windows_11_PowerShell_5_1 `
+	-replace "Sophia_Script_Windows_11_Arm_PowerShell_7", $JSON.Sophia_Script_Windows_11_PowerShell_7 `
 	-replace "Sophia_Script_Windows_11_LTSC2024", $JSON.Sophia_Script_Windows_11_LTSC2024 `
 	-replace "Sophia_Script_Wrapper", $JSON.Sophia_Script_Wrapper
 } | Set-Content -Path ReleaseNotesTemplate.md -Encoding utf8 -Force
