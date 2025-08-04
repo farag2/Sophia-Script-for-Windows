@@ -260,13 +260,13 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	}
 
 	# Check CPU architecture
-	if ((Get-CimInstance -ClassName CIM_Processor).Caption -notmatch "ARM")
+	$Caption = (Get-CimInstance -ClassName CIM_Processor).Caption
+	if (($Caption -notmatch "AMD64") -and ($Caption -notmatch "Intel64"))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message ($Localization.UnsupportedArchitecture -f (Get-CimInstance -ClassName CIM_Processor).Caption)
+		Write-Warning -Message ($Localization.UnsupportedArchitecture -f $Caption)
 		Write-Information -MessageData "" -InformationAction Continue
 
-		Write-Verbose -Message "https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_language_modes" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
@@ -866,7 +866,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			Verbose         = $true
 			UseBasicParsing = $true
 		}
-		$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_5_1
+		$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_Arm_PowerShell_5_1
 		$CurrentRelease = (Get-Module -Name SophiaScript).Version.ToString()
 
 		if ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)

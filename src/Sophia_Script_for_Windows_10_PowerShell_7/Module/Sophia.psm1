@@ -177,13 +177,13 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	}
 
 	# Check CPU architecture
-	if ((Get-CimInstance -ClassName CIM_Processor).Caption -notmatch "AMD64")
+	$Caption = (Get-CimInstance -ClassName CIM_Processor).Caption
+	if (($Caption -notmatch "AMD64") -and ($Caption -notmatch "Intel64"))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message ($Localization.UnsupportedArchitecture -f (Get-CimInstance -ClassName CIM_Processor).Caption)
+		Write-Warning -Message ($Localization.UnsupportedArchitecture -f $Caption)
 		Write-Information -MessageData "" -InformationAction Continue
 
-		Write-Verbose -Message "https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_language_modes" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
