@@ -124,12 +124,12 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 			{
 				if ((Get-CimInstance -ClassName CIM_Processor).Caption -match "ARM")
 				{
-					$Version = "Sophia_Script_for_Windows_11_ARM"
+					$Version = "Windows_11_PowerShell_5_1"
 					$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 (Arm) | Latest | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2025"
 				}
 				else
 				{
-					$Version = "Sophia_Script_for_Windows_11"
+					$Version = "Windows_11_Arm_PowerShell_5_1"
 					$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 | Latest | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) farag, Inestic & lowl1f3, 2014$([System.Char]0x2013)2025"
 				}
 			}
@@ -320,6 +320,24 @@ switch ($Version)
 	"Sophia_Script_for_Windows_11_PowerShell_7"
 	{
 		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_PowerShell_7_Latest"
+
+		if ((([System.Security.Principal.WindowsIdentity]::GetCurrent()).Owner -eq "S-1-5-32-544"))
+		{
+			Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_PowerShell_7_Latest"
+		}
+	}
+	"Sophia_Script_for_Windows_11_Arm_PowerShell_5_1"
+	{
+		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_Arm_Latest"
+
+		if ((([System.Security.Principal.WindowsIdentity]::GetCurrent()).Owner -eq "S-1-5-32-544"))
+		{
+			Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_PowerShell_7_Latest"
+		}
+	}
+	"Sophia_Script_for_Windows_11_Arm_PowerShell_7"
+	{
+		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_Arm_PowerShell_7_Latest"
 
 		if ((([System.Security.Principal.WindowsIdentity]::GetCurrent()).Owner -eq "S-1-5-32-544"))
 		{

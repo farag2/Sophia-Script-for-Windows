@@ -6,7 +6,7 @@
 	Copyright             = '(c) 2014—2025 Team Sophia. All rights reserved'
 	Description           = 'Module for Windows fine-tuning and automating the routine tasks'
 	PowerShellVersion     = '5.1'
-	ProcessorArchitecture = 'AMD64'
+	ProcessorArchitecture = 'None'
 	FunctionsToExport     = '*'
 
 	PrivateData = @{

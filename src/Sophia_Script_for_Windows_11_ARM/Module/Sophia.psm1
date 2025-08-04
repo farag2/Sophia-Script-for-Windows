@@ -261,7 +261,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 
 	# Check CPU architecture
 	$Caption = (Get-CimInstance -ClassName CIM_Processor).Caption
-	if (($Caption -notmatch "AMD64") -and ($Caption -notmatch "Intel64"))
+	if ($Caption -notmatch "Arm")
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message ($Localization.UnsupportedArchitecture -f $Caption)
