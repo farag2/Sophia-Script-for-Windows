@@ -1022,7 +1022,7 @@ public extern static string BrandingFormatString(string sFormat);
 			}
 
 			# We may use Test-Path -Path variable:LatestSupportedBuild
-			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -gt $LatestSupportedBuild)
+			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt $LatestSupportedBuild)
 			{
 				# Check Windows minor build version
 				# https://support.microsoft.com/en-us/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5
