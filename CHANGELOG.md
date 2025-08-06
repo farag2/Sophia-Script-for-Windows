@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.21.0 | 6.9.0 — 03.08.2025
+
+* Added `Arm` CPU based support for `Windows 11` (PowerShell 5.1 & PowerShell 7);
+  * This version doesn't support `UnpinTaskbarShortcuts` function as calling `Verbs()` results in console hanging;
+  * Thanks to Ganiest.
+* Updated Readme;
+* Fixed & improved localizations;
+* #654 fixed;
+* Minor improvements.
+
+## Wrapper 2.8.4
+
+* Fixed text color menu item `Autosave` in light theme
+* `wrapper_config.json` variables renamed
+* `wrapper_config.json` expanded
+* Timer added to `Autosave`
+* Windows Edition shown: Home, Professional, Enterprise, etc.
+
 ## 5.20.7 | 6.8.7 — 22.06.2025
 
 * Removed Set-AppGraphicsPerformance;
