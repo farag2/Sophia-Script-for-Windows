@@ -13020,7 +13020,7 @@ function DNSoverHTTPS
 	)
 
 	# Determining whether Hyper-V is enabled
-	# After enabling Hyper-V feature a virtual switch breing created, so we need to use different method to isolate the proper adapter
+	# After enabling Hyper-V feature a virtual switch being created, so we need to use different method to isolate the proper adapter
 	if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
 	{
 		$InterfaceGuids = @((Get-NetAdapter -Physical).InterfaceGuid)
@@ -13082,6 +13082,15 @@ function DNSoverHTTPS
 			{
 				Write-Warning -Message ($Localization.NoResponse -f "https://dns.comss.one/dns-query")
 				Write-Error -Message ($Localization.NoResponse -f "https://dns.comss.one/dns-query") -ErrorAction SilentlyContinue
+
+				return
+			}
+
+			if ($ResolveComss.IPAddress.Count -ne 2)
+			{
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+				Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 				return
 			}

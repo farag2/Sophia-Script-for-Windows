@@ -1135,6 +1135,7 @@ public extern static string BrandingFormatString(string sFormat);
 	if ($Warning)
 	{
 		# Get the name of a preset (e.g Sophia.ps1) regardless it was named
+		# $_.File has no EndsWith() method
 		Write-Information -MessageData "" -InformationAction Continue
 		[string]$PresetName = ((Get-PSCallStack).Position | Where-Object -FilterScript {$_.File}).File | Where-Object -FilterScript {$_.EndsWith(".ps1")}
 		Write-Verbose -Message ($Localization.CustomizationWarning -f "`"$PresetName`"") -Verbose
@@ -9489,10 +9490,10 @@ function DefaultTerminalApp
 
 <#
 	.SYNOPSIS
-	Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 (x86/x64)
+	Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 (ARM64)
 
 	.EXAMPLE
-	Install-VCRedist -Redistributables 2015_2022_x86, 2015_2022_x64
+	Install-VCRedist
 
 	.LINK
 	https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist
@@ -9502,18 +9503,6 @@ function DefaultTerminalApp
 #>
 function Install-VCRedist
 {
-	[CmdletBinding()]
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Redistributables"
-		)]
-		[ValidateSet("2015_2022_x86", "2015_2022_x64")]
-		[string[]]
-		$Redistributables
-	)
-
 	# Get latest build version
 	# https://github.com/ScoopInstaller/Extras/blob/master/bucket/vcredist2022.json
 	try
@@ -9531,135 +9520,73 @@ function Install-VCRedist
 	}
 
 	# Checking whether VC_redist builds installed
-	if (Test-Path -Path "$env:ProgramData\Package Cache\{e7802eac-3305-4da0-9378-e55d1ed05518}\VC_redist.x86.exe")
+	if (Test-Path -Path "$env:ProgramData\Package Cache\{a87e42cd-475d-4f15-8848-e0d60c63c02f}\VC_redist.arm64.exe")
 	{
-		$VCredistx86Version = (Get-Item -Path "$env:ProgramData\Package Cache\{e7802eac-3305-4da0-9378-e55d1ed05518}\VC_redist.x86.exe").VersionInfo.FileVersion
+		$VCredistVersion = (Get-Item -Path "$env:ProgramData\Package Cache\{a87e42cd-475d-4f15-8848-e0d60c63c02f}\VC_redist.arm64.exe").VersionInfo.FileVersion
 	}
 	else
 	{
-		$VCredistx86Version = "0.0"
-	}
-	if (Test-Path -Path "$env:ProgramData\Package Cache\{804e7d66-ccc2-4c12-84ba-476da31d103d}\VC_redist.x64.exe")
-	{
-		$VCredistx64Version = (Get-Item -Path "$env:ProgramData\Package Cache\{804e7d66-ccc2-4c12-84ba-476da31d103d}\VC_redist.x64.exe").VersionInfo.FileVersion
-	}
-	else
-	{
-		$VCredistx64Version = "0.0"
+		$VCredistVersion = "0.0"
 	}
 
 	$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 
-	foreach ($Redistributable in $Redistributables)
+	# Proceed if currently installed build is lower than available from Microsoft or json file is unreachable, or redistributable is not installed
+	if (([System.Version]$LatestVCRedistVersion -gt [System.Version]$VCredistVersion) -or (($LatestVCRedistVersion -eq "0.0") -or ($VCredistVersion -eq "0.0")))
 	{
-		switch ($Redistributable)
+		try
 		{
-			2015_2022_x86
-			{
-				# Proceed if currently installed build is lower than available from Microsoft or json file is unreachable, or redistributable is not installed
-				if (([System.Version]$LatestVCRedistVersion -gt [System.Version]$VCredistx86Version) -or (($LatestVCRedistVersion -eq "0.0") -or ($VCredistx86Version -eq "0.0")))
-				{
-					try
-					{
-						$Parameters = @{
-							Uri             = "https://aka.ms/vs/17/release/VC_redist.x86.exe"
-							OutFile         = "$DownloadsFolder\VC_redist.x86.exe"
-							UseBasicParsing = $true
-							Verbose         = $true
-						}
-						Invoke-WebRequest @Parameters
-
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message "Visual C++ Redistributable x86" -Verbose
-						Write-Information -MessageData "" -InformationAction Continue
-
-						Start-Process -FilePath "$DownloadsFolder\VC_redist.x86.exe" -ArgumentList "/install /passive /norestart" -Wait
-
-						# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-						# https://github.com/PowerShell/PowerShell/issues/21070
-						$Paths = @(
-							"$DownloadsFolder\VC_redist.x86.exe",
-							"$env:TEMP\dd_vcredist_x86_*.log"
-						)
-						Get-ChildItem -Path $Paths -Force | Remove-Item -Force -ErrorAction Ignore
-					}
-					catch [System.Net.WebException]
-					{
-						Write-Warning -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com")
-						Write-Error -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com") -ErrorAction SilentlyContinue
-						Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-
-						return
-					}
-				}
-				else
-				{
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -Verbose
-					Write-Error -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -ErrorAction SilentlyContinue
-				}
+			$Parameters = @{
+				Uri             = "https://aka.ms/vs/17/release/vc_redist.arm64.exe"
+				OutFile         = "$DownloadsFolder\vc_redist.arm64.exe"
+				UseBasicParsing = $true
+				Verbose         = $true
 			}
-			2015_2022_x64
-			{
-				# Proceed if currently installed build is lower than available from Microsoft or json file is unreachable, or redistributable is not installed
-				if (([System.Version]$LatestVCRedistVersion -gt [System.Version]$VCredistx64Version) -or (($LatestVCRedistVersion -eq "0.0") -or ($VCredistx64Version -eq "0.0")))
-				{
-					try
-					{
-						$Parameters = @{
-							Uri             = "https://aka.ms/vs/17/release/VC_redist.x64.exe"
-							OutFile         = "$DownloadsFolder\VC_redist.x64.exe"
-							UseBasicParsing = $true
-							Verbose         = $true
-						}
-						Invoke-WebRequest @Parameters
-					}
-					catch [System.Net.WebException]
-					{
-						Write-Warning -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com")
-						Write-Error -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com") -ErrorAction SilentlyContinue
-						Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-
-						return
-					}
-
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message "Visual C++ Redistributable x64" -Verbose
-					Write-Information -MessageData "" -InformationAction Continue
-
-					Start-Process -FilePath "$DownloadsFolder\VC_redist.x64.exe" -ArgumentList "/install /passive /norestart" -Wait
-
-					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-					# https://github.com/PowerShell/PowerShell/issues/21070
-					$Paths = @(
-						"$DownloadsFolder\VC_redist.x64.exe",
-						"$env:TEMP\dd_vcredist_amd64_*.log"
-					)
-					Get-ChildItem -Path $Paths -Force | Remove-Item -Force -ErrorAction Ignore
-				}
-				else
-				{
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -Verbose
-					Write-Error -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -ErrorAction SilentlyContinue
-				}
-			}
+			Invoke-WebRequest @Parameters
 		}
+		catch [System.Net.WebException]
+		{
+			Write-Warning -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com")
+			Write-Error -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com") -ErrorAction SilentlyContinue
+			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+			return
+		}
+
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message "Visual C++ Redistributable ARM64" -Verbose
+		Write-Information -MessageData "" -InformationAction Continue
+
+		Start-Process -FilePath "$DownloadsFolder\vc_redist.arm64.exe" -ArgumentList "/install /passive /norestart" -Wait
+
+		# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+		# https://github.com/PowerShell/PowerShell/issues/21070
+		$Paths = @(
+			"$DownloadsFolder\vc_redist.arm64.exe",
+			"$env:TEMP\dd_vcredist_arm64_*.log"
+		)
+		Get-ChildItem -Path $Paths -Force | Remove-Item -Force -ErrorAction Ignore
+	}
+	else
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 	}
 }
 
 <#
 	.SYNOPSIS
-	Install the latest .NET Runtime 8, 9 x64
+	Install the latest .NET Runtime 8, 9
 
-	.PARAMETER NET8x64
-	Install the latest .NET Runtime 8 x64
+	.PARAMETER NET8
+	Install the latest .NET Runtime 8
 
-	.PARAMETER NET9x64
-	Install the latest .NET Runtime 9 x64
+	.PARAMETER NET9
+	Install the latest .NET Runtime 9
 
 	.EXAMPLE
-	Install-DotNetRuntimes -Runtimes NET8x64, NET9x64
+	Install-DotNetRuntimes -Runtimes NET8, NET9
 
 	.LINK
 	https://dotnet.microsoft.com/en-us/download/dotnet
@@ -9676,7 +9603,7 @@ function Install-DotNetRuntimes
 			Mandatory = $true,
 			ParameterSetName = "Runtimes"
 		)]
-		[ValidateSet("NET8x64", "NET9x64")]
+		[ValidateSet("NET8", "NET9")]
 		[string[]]
 		$Runtimes
 	)
@@ -9687,7 +9614,7 @@ function Install-DotNetRuntimes
 	{
 		switch ($Runtime)
 		{
-			NET8x64
+			NET8
 			{
 				try
 				{
@@ -9710,10 +9637,10 @@ function Install-DotNetRuntimes
 				}
 
 				# Checking whether .NET 8 installed
-				if (Test-Path -Path "$env:ProgramData\Package Cache\*\dotnet-runtime-$LatestNET8Version-win-x64.exe")
+				if (Test-Path -Path "$env:ProgramData\Package Cache\*\dotnet-runtime-$LatestNET8Version-win-arm64.exe")
 				{
 					# FileVersion has four properties while $LatestNET8Version has only three, unless the [System.Version] accelerator fails
-					$CurrentNET8Version = (Get-Item -Path "$env:ProgramData\Package Cache\*\dotnet-runtime-$LatestNET8Version-win-x64.exe").VersionInfo.FileVersion
+					$CurrentNET8Version = (Get-Item -Path "$env:ProgramData\Package Cache\*\dotnet-runtime-$LatestNET8Version-win-arm64.exe").VersionInfo.FileVersion
 					$CurrentNET8Version = "{0}.{1}.{2}" -f $CurrentNET8Version.Split(".")
 				}
 				else
@@ -9726,10 +9653,10 @@ function Install-DotNetRuntimes
 				{
 					try
 					{
-						# .NET Runtime 8 x64
+						# .NET Runtime 8
 						$Parameters = @{
-							Uri             = "https://builds.dotnet.microsoft.com/dotnet/Runtime/$LatestNET8Version/dotnet-runtime-$LatestNET8Version-win-x64.exe"
-							OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestNET8Version-win-x64.exe"
+							Uri             = "https://builds.dotnet.microsoft.com/dotnet/Runtime/$LatestNET8Version/dotnet-runtime-$LatestNET8Version-win-arm64.exe"
+							OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestNET8Version-win-arm64.exe"
 							UseBasicParsing = $true
 							Verbose         = $true
 						}
@@ -9745,15 +9672,15 @@ function Install-DotNetRuntimes
 					}
 
 					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message ".NET $LatestNET8Version" -Verbose
+					Write-Verbose -Message ".NET $LatestNET8Version ARM64" -Verbose
 					Write-Information -MessageData "" -InformationAction Continue
 
-					Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestNET8Version-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
+					Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestNET8Version-win-arm64.exe" -ArgumentList "/install /passive /norestart" -Wait
 
 					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 					# https://github.com/PowerShell/PowerShell/issues/21070
 					$Paths = @(
-						"$DownloadsFolder\dotnet-runtime-$LatestNET8Version-win-x64.exe",
+						"$DownloadsFolder\dotnet-runtime-$LatestNET8Version-win-arm64.exe",
 						"$env:TEMP\Microsoft_.NET_Runtime*.log"
 					)
 					Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
@@ -9765,7 +9692,7 @@ function Install-DotNetRuntimes
 					Write-Error -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -ErrorAction SilentlyContinue
 				}
 			}
-			NET9x64
+			NET9
 			{
 				try
 				{
@@ -9788,10 +9715,10 @@ function Install-DotNetRuntimes
 				}
 
 				# Checking whether .NET 9 installed
-				if (Test-Path -Path "$env:ProgramData\Package Cache\*\dotnet-runtime-$LatestNET9Version-win-x64.exe")
+				if (Test-Path -Path "$env:ProgramData\Package Cache\*\dotnet-runtime-$LatestNET9Version-win-arm64.exe")
 				{
 					# FileVersion has four properties while $LatestNET9Version has only three, unless the [System.Version] accelerator fails
-					$CurrentNET9Version = (Get-Item -Path "$env:ProgramData\Package Cache\*\dotnet-runtime-$LatestNET9Version-win-x64.exe").VersionInfo.FileVersion
+					$CurrentNET9Version = (Get-Item -Path "$env:ProgramData\Package Cache\*\dotnet-runtime-$LatestNET9Version-win-arm64.exe").VersionInfo.FileVersion
 					$CurrentNET9Version = "{0}.{1}.{2}" -f $CurrentNET9Version.Split(".")
 				}
 				else
@@ -9804,10 +9731,10 @@ function Install-DotNetRuntimes
 				{
 					try
 					{
-						# Downloading .NET Runtime 9 x64
+						# Downloading .NET Runtime 9
 						$Parameters = @{
-							Uri             = "https://builds.dotnet.microsoft.com/dotnet/Runtime/$LatestNET9Version/dotnet-runtime-$LatestNET9Version-win-x64.exe"
-							OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestNET9Version-win-x64.exe"
+							Uri             = "https://builds.dotnet.microsoft.com/dotnet/Runtime/$LatestNET9Version/dotnet-runtime-$LatestNET9Version-win-arm64.exe"
+							OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestNET9Version-win-arm64.exe"
 							UseBasicParsing = $true
 							Verbose         = $true
 						}
@@ -9823,15 +9750,15 @@ function Install-DotNetRuntimes
 					}
 
 					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message ".NET $LatestNET9Version" -Verbose
+					Write-Verbose -Message ".NET $LatestNET9Version ARM64" -Verbose
 					Write-Information -MessageData "" -InformationAction Continue
 
-					Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestNET9Version-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
+					Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestNET9Version-win-arm64.exe" -ArgumentList "/install /passive /norestart" -Wait
 
 					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 					# https://github.com/PowerShell/PowerShell/issues/21070
 					$Paths = @(
-						"$DownloadsFolder\dotnet-runtime-$LatestNET9Version-win-x64.exe",
+						"$DownloadsFolder\dotnet-runtime-$LatestNET9Version-win-arm64.exe",
 						"$env:TEMP\Microsoft_.NET_Runtime*.log"
 					)
 					Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
@@ -12951,7 +12878,7 @@ function DNSoverHTTPS
 	)
 
 	# Determining whether Hyper-V is enabled
-	# After enabling Hyper-V feature a virtual switch breing created, so we need to use different method to isolate the proper adapter
+	# After enabling Hyper-V feature a virtual switch being created, so we need to use different method to isolate the proper adapter
 	if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
 	{
 		$InterfaceGuids = @((Get-NetAdapter -Physical).InterfaceGuid)
@@ -13013,6 +12940,15 @@ function DNSoverHTTPS
 			{
 				Write-Warning -Message ($Localization.NoResponse -f "https://dns.comss.one/dns-query")
 				Write-Error -Message ($Localization.NoResponse -f "https://dns.comss.one/dns-query") -ErrorAction SilentlyContinue
+
+				return
+			}
+
+			if ($ResolveComss.IPAddress.Count -ne 2)
+			{
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+				Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 				return
 			}
