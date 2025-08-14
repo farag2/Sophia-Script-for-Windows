@@ -36,7 +36,7 @@ Made with <img src="./img/heart.svg" height="17px"/> of Windows.
 	<a href="https://t.me/sophia_chat"><img src="https://img.shields.io/badge/Sophia%20Chat-green?labelColor=151B23&color=151B23&style=for-the-badge&logo=telegram&logoColor=white"></a>
 </kbd>
 <kbd>
-	<a href="https://discord.gg/sSryhaEv79"><img src="https://img.shields.io/badge/Disord-green?labelColor=151B23&color=151B23&style=for-the-badge&logo=discord&logoColor=white" href="#"></a>
+	<a href="https://discord.gg/sSryhaEv79"><img src="https://img.shields.io/badge/Discord-green?labelColor=151B23&color=151B23&style=for-the-badge&logo=discord&logoColor=white" href="#"></a>
 </kbd>
 
 <br>
