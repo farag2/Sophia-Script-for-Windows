@@ -1325,7 +1325,7 @@
     "ToolTip": "Установить последнюю версию .NET Runtime 8, 9 x64.",
     "Arg": {
       "Zero": {
-        "Tag": "NET9x64",
+        "Tag": "NET8x64",
         "ToolTip": ".NET Runtime 8 x64."
       },
       "One": {
