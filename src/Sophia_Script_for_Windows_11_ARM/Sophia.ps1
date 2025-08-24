@@ -968,7 +968,7 @@ DefaultTerminalApp -WindowsTerminal
 Install-VCRedist
 
 # Install the latest .NET Runtime 8, 9
-# Установить последнюю версию .NET Runtime 8, 9 ###
+# Установить последнюю версию .NET Runtime 8, 9
 Install-DotNetRuntimes -Runtimes NET8, NET9
 
 # Enable proxying only blocked sites from the unified registry of Roskomnadzor. The function is applicable for Russia only

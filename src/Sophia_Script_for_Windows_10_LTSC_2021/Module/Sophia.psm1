@@ -11989,8 +11989,8 @@ function DNSoverHTTPS
 			}
 			catch [System.Net.WebException]
 			{
-				Write-Warning -Message ($Localization.NoResponse -f "https://dns.comss.one/dns-query")
-				Write-Error -Message ($Localization.NoResponse -f "https://dns.comss.one/dns-query") -ErrorAction SilentlyContinue
+				Write-Warning -Message ($Localization.NoResponse -f "https://dns.comss.one")
+				Write-Error -Message ($Localization.NoResponse -f "https://dns.comss.one") -ErrorAction SilentlyContinue
 
 				return
 			}
