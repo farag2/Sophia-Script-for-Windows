@@ -913,7 +913,7 @@ public extern static string BrandingFormatString(string sFormat);
 		# Windows 11
 		$Windows_Long = ($Windows_Long_First_Item, $Windows_Long_Second_Item) -join " "
 
-		# 24H2
+		# e.g. 24H2
 		$DisplayVersion = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name DisplayVersion
 
 		Write-Warning -Message ($Localization.UnsupportedOSBuild -f $Windows_Long, $DisplayVersion)
@@ -967,7 +967,17 @@ public extern static string BrandingFormatString(string sFormat);
 		{$_ -ne 26100}
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Warning -Message ($Localization.UnsupportedOSBuild -f [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%"))
+
+			# Windows 11 Pro
+			$Windows_Long = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
+			$Windows_Long_First_Item = $Windows_Long.split(" ")[0]
+			$Windows_Long_Second_Item = $Windows_Long.split(" ")[1]
+			# Windows 11
+			$Windows_Long = ($Windows_Long_First_Item, $Windows_Long_Second_Item) -join " "
+			# e.g. 24H2
+			$DisplayVersion = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name DisplayVersion
+
+			Write-Warning -Message ($Localization.UnsupportedOSBuild -f $Windows_Long, $DisplayVersion)
 			Write-Information -MessageData "" -InformationAction Continue
 
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose

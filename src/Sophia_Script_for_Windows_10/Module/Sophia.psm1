@@ -405,8 +405,8 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		$Parameters = @{
 			Uri             = "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/update_v6.txt"
 			UseBasicParsing = $true
-				Verbose         = $true
-			}
+			Verbose         = $true
+		}
 		$update_v6 = (Invoke-WebRequest @Parameters).Content
 
 		$IPArray += $extra, $extra_v6, $spy, $spy_v6, $update, $update_v6
@@ -807,8 +807,7 @@ public extern static string BrandingFormatString(string sFormat);
 		$Windows_Long_Second_Item = $Windows_Long.split(" ")[1]
 		# Windows 10
 		$Windows_Long = ($Windows_Long_First_Item, $Windows_Long_Second_Item) -join " "
-
-		# 24H2
+		# e.g. 24H2
 		$DisplayVersion = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name DisplayVersion
 
 		Write-Warning -Message ($Localization.UnsupportedOSBuild -f $Windows_Long, $DisplayVersion)
@@ -862,7 +861,17 @@ public extern static string BrandingFormatString(string sFormat);
 		{$_ -ne 19045}
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Warning -Message ($Localization.UnsupportedOSBuild -f [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%"))
+
+			# Windows 10 Pro
+			$Windows_Long = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
+			$Windows_Long_First_Item = $Windows_Long.split(" ")[0]
+			$Windows_Long_Second_Item = $Windows_Long.split(" ")[1]
+			# Windows 11
+			$Windows_Long = ($Windows_Long_First_Item, $Windows_Long_Second_Item) -join " "
+			# e.g. 24H2
+			$DisplayVersion = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name DisplayVersion
+
+			Write-Warning -Message ($Localization.UnsupportedOSBuild -f $Windows_Long, $DisplayVersion)
 			Write-Information -MessageData "" -InformationAction Continue
 
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
@@ -1088,7 +1097,7 @@ public extern static string BrandingFormatString(string sFormat);
 	if ($Warning)
 	{
 		# Get the name of a preset (e.g Sophia.ps1) regardless it was named
-		# $_.File has no EndsWith() method
+		Write-Information -MessageData "" -InformationAction Continue
 		[string]$PresetName = ((Get-PSCallStack).Position | Where-Object -FilterScript {$_.File}).File | Where-Object -FilterScript {$_.EndsWith(".ps1")}
 		Write-Verbose -Message ($Localization.CustomizationWarning -f "`"$PresetName`"") -Verbose
 

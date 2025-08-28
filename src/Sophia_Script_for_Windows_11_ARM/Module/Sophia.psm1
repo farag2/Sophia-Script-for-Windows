@@ -929,7 +929,7 @@ public extern static string BrandingFormatString(string sFormat);
 		# Windows 11
 		$Windows_Long = ($Windows_Long_First_Item, $Windows_Long_Second_Item) -join " "
 
-		# 24H2
+		# e.g. 24H2
 		$DisplayVersion = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name DisplayVersion
 
 		Write-Warning -Message ($Localization.UnsupportedOSBuild -f $Windows_Long, $DisplayVersion)
