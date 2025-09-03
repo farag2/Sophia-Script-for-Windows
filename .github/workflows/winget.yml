@@ -19,17 +19,16 @@ jobs:
 
           # Get latest supported manifest version provided
           # https://github.com/microsoft/winget-cli/tree/master/schemas/JSON/manifests
-          # Parse GitHub folder
           $Parameters = @{
             Uri             = "https://api.github.com/repos/microsoft/winget-cli/contents/schemas/JSON/manifests"
             UseBasicParsing = $true
             Verbose         = $true
           }
-          $LatestManifest = ((Invoke-RestMethod @Parameters).name | Where-Object {$_ -ne "preview"}) -replace ("v", "") | Sort-Object -Property {[System.Version]$_} | Select-Object -Last 1
+          $LatestManifest = ((Invoke-RestMethod @Parameters).name | Where-Object {($_ -ne "preview") -and ($_ -ne "latest")}) -replace ("v", "") | Sort-Object -Property {[System.Version]$_} | Select-Object -Last 1
 
           if ([System.Version]$LocalManifest -lt [System.Version]$LatestManifest)
           {
-            Write-Warning -Message "New $($LatestManifest) manifest available. Edit manifests in Scripts\WinGet_Manifests"
+            Write-Warning -Message "A new manifest $($LatestManifest) available. Edit manifests in Scripts\WinGet_Manifests."
             exit
           }
 
