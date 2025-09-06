@@ -163,6 +163,112 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		exit
 	}
 
+	# Extract the localized "Browse" string from shell32.dll
+	$Script:Browse = [WinAPI.GetStrings]::GetString(9015)
+	# Extract the localized "&No" string from shell32.dll
+	$Script:No = [WinAPI.GetStrings]::GetString(33232).Replace("&", "")
+	# Extract the localized "&Yes" string from shell32.dll
+	$Script:Yes = [WinAPI.GetStrings]::GetString(33224).Replace("&", "")
+	$Script:KeyboardArrows = $Localization.KeyboardArrows -f [System.Char]::ConvertFromUtf32(0x2191), [System.Char]::ConvertFromUtf32(0x2193)
+	# Extract the localized "Skip" string from shell32.dll
+	$Script:Skip = [WinAPI.GetStrings]::GetString(16956)
+
+	<#
+		.SYNOPSIS
+		The "Show menu" function with the up/down arrow keys and enter key to make a selection
+
+		.PARAMETER Menu
+		Array of items to choose from
+
+		.PARAMETER Default
+		Default selected item in array
+
+		.PARAMETER AddSkip
+		Add localized extracted "Skip" string from shell32.dll
+
+		.EXAMPLE
+		Show-Menu -Menu @($Item1, $Item2) -Default 1
+
+		.LINK
+		https://qna.habr.com/answer?answer_id=1522379
+		https://github.com/ryandunton/InteractivePSMenu
+	#>
+	function script:Show-Menu
+	{
+		[CmdletBinding()]
+		param
+		(
+			[Parameter(Mandatory = $true)]
+			[array]
+			$Menu,
+
+			[Parameter(Mandatory = $true)]
+			[int]
+			$Default,
+
+			[Parameter(Mandatory = $false)]
+			[switch]
+			$AddSkip
+		)
+
+		Write-Information -MessageData "" -InformationAction Continue
+
+		# Add "Please use the arrow keys 🠕 and 🠗 on your keyboard to select your answer" to menu
+		$Menu += $Localization.KeyboardArrows -f [System.Char]::ConvertFromUtf32(0x2191), [System.Char]::ConvertFromUtf32(0x2193)
+
+		if ($AddSkip)
+		{
+			# Extract the localized "Skip" string from shell32.dll
+			$Menu += [WinAPI.GetStrings]::GetString(16956)
+		}
+
+		$i = 0
+		while ($i -lt $Menu.Count)
+		{
+			$i++
+			Write-Host -Object ""
+		}
+
+		$SelectedValueIndex = [Math]::Max([Math]::Min($Default, $Menu.Count), 0)
+
+		do
+		{
+			[Console]::SetCursorPosition(0, [Console]::CursorTop - $Menu.Count)
+
+			for ($i = 0; $i -lt $Menu.Count; $i++)
+			{
+				if ($i -eq $SelectedValueIndex)
+				{
+					Write-Host -Object "[>] $($Menu[$i])" -NoNewline
+				}
+				else
+				{
+					Write-Host -Object "[ ] $($Menu[$i])" -NoNewline
+				}
+
+				Write-Host -Object ""
+			}
+
+			$Key = [Console]::ReadKey()
+			switch ($Key.Key)
+			{
+				"UpArrow"
+				{
+					$SelectedValueIndex = [Math]::Max(0, $SelectedValueIndex - 1)
+				}
+				"DownArrow"
+				{
+					$SelectedValueIndex = [Math]::Min($Menu.Count - 1, $SelectedValueIndex + 1)
+				}
+				"Enter"
+				{
+					return $Menu[$SelectedValueIndex]
+				}
+			}
+		}
+		while ($Key.Key -notin ([ConsoleKey]::Escape, [ConsoleKey]::Enter))
+	}
+
 	# Check CPU architecture
 	$Caption = (Get-CimInstance -ClassName CIM_Processor).Caption
 	if (($Caption -notmatch "AMD64") -and ($Caption -notmatch "Intel64"))
@@ -350,6 +456,43 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	# Extract the localized "Please wait..." string from shell32.dll
 	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 	Write-Information -MessageData "" -InformationAction Continue
+
+	# Check if third-party enries added to hosts file
+	foreach ($Item in @(Get-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Force))
+	{
+		if (-not ([string]::IsNullOrEmpty($Item) -or $Item.StartsWith("#")))
+		{
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Verbose -Message ($Localization.HostsWarning -f "$env:SystemRoot\System32\drivers\etc\hosts") -Verbose
+
+			do
+			{
+				$Choice = Show-Menu -Menu @($Yes, $No) -Default 2
+
+				switch ($Choice)
+				{
+					$Yes
+					{
+						continue
+					}
+					$No
+					{
+						Invoke-Item -Path $PresetName "$env:SystemRoot\System32\drivers\etc"
+
+						Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows" -Verbose
+						Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+						Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+						exit
+					}
+					$KeyboardArrows {}
+				}
+			}
+			until ($Choice -ne $KeyboardArrows)
+
+			break
+		}
+	}
 
 	# Remove IP addresses from hosts file that block Microsoft recourses added by WindowsSpyBlocker
 	# https://github.com/crazy-max/WindowsSpyBlocker
@@ -751,7 +894,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		if ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Warning -Message $Localization.UnsupportedRelease
+			Write-Warning -Message ($Localization.UnsupportedRelease -f $LatestRelease)
 			Write-Information -MessageData "" -InformationAction Continue
 
 			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest" -Verbose
@@ -972,112 +1115,6 @@ public extern static string BrandingFormatString(string sFormat);
 	}
 	catch [System.Management.Automation.PropertyNotFoundException]
 	{}
-
-	<#
-		.SYNOPSIS
-		The "Show menu" function with the up/down arrow keys and enter key to make a selection
-
-		.PARAMETER Menu
-		Array of items to choose from
-
-		.PARAMETER Default
-		Default selected item in array
-
-		.PARAMETER AddSkip
-		Add localized extracted "Skip" string from shell32.dll
-
-		.EXAMPLE
-		Show-Menu -Menu @($Item1, $Item2) -Default 1
-
-		.LINK
-		https://qna.habr.com/answer?answer_id=1522379
-		https://github.com/ryandunton/InteractivePSMenu
-	#>
-	function script:Show-Menu
-	{
-		[CmdletBinding()]
-		param
-		(
-			[Parameter(Mandatory = $true)]
-			[array]
-			$Menu,
-
-			[Parameter(Mandatory = $true)]
-			[int]
-			$Default,
-
-			[Parameter(Mandatory = $false)]
-			[switch]
-			$AddSkip
-		)
-
-		Write-Information -MessageData "" -InformationAction Continue
-
-		# Add "Please use the arrow keys 🠕 and 🠗 on your keyboard to select your answer" to menu
-		$Menu += $Localization.KeyboardArrows -f [System.Char]::ConvertFromUtf32(0x2191), [System.Char]::ConvertFromUtf32(0x2193)
-
-		if ($AddSkip)
-		{
-			# Extract the localized "Skip" string from shell32.dll
-			$Menu += [WinAPI.GetStrings]::GetString(16956)
-		}
-
-		$i = 0
-		while ($i -lt $Menu.Count)
-		{
-			$i++
-			Write-Host -Object ""
-		}
-
-		$SelectedValueIndex = [Math]::Max([Math]::Min($Default, $Menu.Count), 0)
-
-		do
-		{
-			[Console]::SetCursorPosition(0, [Console]::CursorTop - $Menu.Count)
-
-			for ($i = 0; $i -lt $Menu.Count; $i++)
-			{
-				if ($i -eq $SelectedValueIndex)
-				{
-					Write-Host -Object "[>] $($Menu[$i])" -NoNewline
-				}
-				else
-				{
-					Write-Host -Object "[ ] $($Menu[$i])" -NoNewline
-				}
-
-				Write-Host -Object ""
-			}
-
-			$Key = [Console]::ReadKey()
-			switch ($Key.Key)
-			{
-				"UpArrow"
-				{
-					$SelectedValueIndex = [Math]::Max(0, $SelectedValueIndex - 1)
-				}
-				"DownArrow"
-				{
-					$SelectedValueIndex = [Math]::Min($Menu.Count - 1, $SelectedValueIndex + 1)
-				}
-				"Enter"
-				{
-					return $Menu[$SelectedValueIndex]
-				}
-			}
-		}
-		while ($Key.Key -notin ([ConsoleKey]::Escape, [ConsoleKey]::Enter))
-	}
-
-	# Extract the localized "Browse" string from shell32.dll
-	$Script:Browse = [WinAPI.GetStrings]::GetString(9015)
-	# Extract the localized "&No" string from shell32.dll
-	$Script:No = [WinAPI.GetStrings]::GetString(33232).Replace("&", "")
-	# Extract the localized "&Yes" string from shell32.dll
-	$Script:Yes = [WinAPI.GetStrings]::GetString(33224).Replace("&", "")
-	$Script:KeyboardArrows = $Localization.KeyboardArrows -f [System.Char]::ConvertFromUtf32(0x2191), [System.Char]::ConvertFromUtf32(0x2193)
-	# Extract the localized "Skip" string from shell32.dll
-	$Script:Skip = [WinAPI.GetStrings]::GetString(16956)
 
 	Write-Information -MessageData "" -InformationAction Continue
 	Write-Information -MessageData "┏┓    ┓ •    ┏┓   •     ┏      ┓ ┏•   ┓ " -InformationAction Continue
@@ -11076,9 +11113,6 @@ function UninstallUWPApps
 	#region Variables
 	# The following UWP apps will have their checkboxes unchecked
 	$UncheckedAppxPackages = @(
-		# Dolby Access
-		"DolbyLaboratories.DolbyAccess",
-
 		# Windows Media Player
 		"Microsoft.ZuneMusic",
 
@@ -11091,6 +11125,9 @@ function UninstallUWPApps
 
 		# Calculator
 		"Microsoft.WindowsCalculator",
+
+		# Windows Advanced Settings
+		"Microsoft.Windows.DevHome",
 
 		# Windows Camera
 		"Microsoft.WindowsCamera",
@@ -11123,6 +11160,10 @@ function UninstallUWPApps
 
 	# The following UWP apps will be excluded from the display
 	$ExcludedAppxPackages = @(
+		# Dolby Access
+		"DolbyLaboratories.DolbyAccess",
+		"DolbyLaboratories.DolbyDigitalPlusDecoderOEM",
+
 		# AMD Radeon Software
 		"AdvancedMicroDevicesInc-2.AMDRadeonSoftware",
 
@@ -11198,7 +11239,9 @@ function UninstallUWPApps
 
 		# Synaptics
 		"SynapticsIncorporated.SynapticsControlPanel",
-		"SynapticsIncorporated.24916F58D6E7"
+		"SynapticsIncorporated.241916F58D6E7",
+		"ELANMicroelectronicsCorpo.ELANTrackPointforThinkpa",
+		"ELANMicroelectronicsCorpo.TrackPoint"
 	)
 
 	#region Variables

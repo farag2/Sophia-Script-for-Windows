@@ -458,9 +458,9 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	Write-Information -MessageData "" -InformationAction Continue
 
 	# Check if third-party enries added to hosts file
-	foreach ($host in @(Get-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Force))
+	foreach ($Item in @(Get-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Force))
 	{
-		if (-not ([string]::IsNullOrEmpty($host) -or $host.StartsWith("#")))
+		if (-not ([string]::IsNullOrEmpty($Item) -or $Item.StartsWith("#")))
 		{
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message ($Localization.HostsWarning -f "$env:SystemRoot\System32\drivers\etc\hosts") -Verbose
@@ -896,7 +896,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		if ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Warning -Message $Localization.UnsupportedRelease
+			Write-Warning -Message ($Localization.UnsupportedRelease -f $LatestRelease)
 			Write-Information -MessageData "" -InformationAction Continue
 
 			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest" -Verbose
@@ -10451,9 +10451,6 @@ function UninstallUWPApps
 	#region Variables
 	# The following UWP apps will have their checkboxes unchecked
 	$UncheckedAppxPackages = @(
-		# Dolby Access
-		"DolbyLaboratories.DolbyAccess",
-
 		# Windows Media Player
 		"Microsoft.ZuneMusic",
 
@@ -10501,6 +10498,10 @@ function UninstallUWPApps
 
 	# The following UWP apps will be excluded from the display
 	$ExcludedAppxPackages = @(
+		# Dolby Access
+		"DolbyLaboratories.DolbyAccess",
+		"DolbyLaboratories.DolbyDigitalPlusDecoderOEM",
+
 		# AMD Radeon Software
 		"AdvancedMicroDevicesInc-2.AMDRadeonSoftware",
 
@@ -10576,7 +10577,9 @@ function UninstallUWPApps
 
 		# Synaptics
 		"SynapticsIncorporated.SynapticsControlPanel",
-		"SynapticsIncorporated.24916F58D6E7"
+		"SynapticsIncorporated.241916F58D6E7",
+		"ELANMicroelectronicsCorpo.ELANTrackPointforThinkpa",
+		"ELANMicroelectronicsCorpo.TrackPoint"
 	)
 
 	#region Variables
