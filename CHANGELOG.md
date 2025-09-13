@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.21.1 | 6.9.1 — 02.09.2025
+
+* Fixed `Install-VCRedist` & `Install-DotNetRuntimes` functions for Arm.
+  * Please be noted that for `Arm` versions only `Install-VCRedist -Redistributables 2015_2022_x86, 2015_2022_x64` changed to `Install-VCRedist`, and `Install-DotNetRuntimes -Runtimes NET8x64, NET9x64` to `Install-DotNetRuntimes -Runtimes NET8, NET9`.
+* Improved `DNSoverHTTPS` function handling for single IP address;
+  * Thanks to @Windr.
+* Minor improvements.
+
+## Wrapper 2.8.6
+- ARM support added
+- Fixed Windows 10 LTSC 2019 support
+- Some refactoring
+
 ## 5.21.0 | 6.9.0 — 03.08.2025
 
 * Added `Arm` CPU based support for `Windows 11` (PowerShell 5.1 & PowerShell 7);
