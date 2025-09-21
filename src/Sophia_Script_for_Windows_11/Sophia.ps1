@@ -619,8 +619,8 @@ StartRecommendedSection -Hide
 #endregion UI & Personalization
 
 #region OneDrive
-# Uninstall OneDrive. The OneDrive user folder won't be removed
-# Удалить OneDrive. Папка пользователя OneDrive не будет удалена
+# Uninstall OneDrive. OneDrive user folder won't be removed if any file found there
+# Удалить OneDrive. Папка пользователя OneDrive не будет удалена при обнаружении в ней файлов
 # OneDrive -Uninstall
 
 # Install OneDrive 64-bit (default value)
@@ -649,13 +649,13 @@ Hibernation -Disable
 # Включить режим гибернации (значение по умолчанию)
 # Hibernation -Enable
 
-# Disable the Windows 260 characters path limit
-# Отключить ограничение Windows на 260 символов в пути
-Win32LongPathLimit -Disable
+# Enable Windows long paths support which is limited for 260 characters by default
+# Включить поддержку длинных путей, ограниченных по умолчанию 260 символами
+Win32LongPathSupport -Enable
 
-# Enable the Windows 260 character path limit (default value)
-# Включить ограничение Windows на 260 символов в пути (значение по умолчанию)
-# Win32LongPathLimit -Enable
+# Disable Windows long paths support which is limited for 260 characters by default (default value)
+# Отключить поддержку длинных путей, ограниченных по умолчанию 260 символами (значение по умолчанию)
+# Win32LongPathSupport -Disable
 
 # Display Stop error code when BSoD occurs
 # Отображать код Stop-ошибки при появлении BSoD
@@ -812,27 +812,20 @@ Set-UserShellFolderLocation -Root
 #>
 # Set-UserShellFolderLocation -Default
 
-# Use the latest installed .NET runtime for all apps
-# Использовать последнюю установленную среду выполнения .NET для всех приложений
-LatestInstalled.NET -Enable
+# Use .NET Framework 4.8.1 for old apps
+# Использовать .NET Framework 4.8.1 для устаревших программ
+# LatestInstalled.NET -Enable
 
-# Do not use the latest installed .NET runtime for all apps (default value)
-# Не использовать последнюю установленную версию .NET для всех приложений (значение по умолчанию)
+# Do not Use .NET Framework 4.8.1 for old apps (default value)
+# Не использовать .NET Framework 4.8.1 для устаревших программ (значение по умолчанию)
 # LatestInstalled.NET -Disable
 
-<#
-	Save screenshots by pressing Win+PrtScr on the Desktop
-	The function will be applied only if the preset is configured to remove the OneDrive application, or the app was already uninstalled
-	Otherwise the backup functionality for the "Desktop" and "Pictures" folders in OneDrive breaks
-
-	Сохранять скриншоты по нажатию Win+PrtScr на рабочий стол
-	Функция будет применена только в случае, если в пресете настроено удаление приложения OneDrive или приложение уже удалено,
-	иначе в OneDrive ломается функционал резервного копирования для папок "Рабочий стол" и "Изображения"
-#>
+# Save screenshots on the Desktop when pressing Windows+PrtScr or using Windows+Shift+S
+# Сохранять скриншоты по нажатию Windows+PrtScr или Windows+Shift+S на рабочий стол
 WinPrtScrFolder -Desktop
 
-# Save screenshots by pressing Win+PrtScr in the Pictures folder (default value)
-# Cохранять скриншоты по нажатию Win+PrtScr в папку "Изображения" (значение по умолчанию)
+# Save screenshots in the Pictures folder when pressing Windows+PrtScr or using Windows+Shift+S (default value)
+# Cохранять скриншоты по нажатию Windows+PrtScr или Windows+Shift+S в папку "Изображения" (значение по умолчанию)
 # WinPrtScrFolder -Default
 
 <#
@@ -852,14 +845,6 @@ RecommendedTroubleshooting -Automatically
 	Чтобы заработала данная функция, уровень сбора диагностических данных ОС будет установлен на "Необязательные диагностические данные" и включится создание отчетов об ошибках Windows
 #>
 # RecommendedTroubleshooting -Default
-
-# Launch folder windows in a separate process
-# Запускать окна с папками в отдельном процессе
-FoldersLaunchSeparateProcess -Enable
-
-# Do not launch folder windows in a separate process (default value)
-# Не запускать окна с папками в отдельном процессе (значение по умолчанию)
-# FoldersLaunchSeparateProcess -Disable
 
 # Disable and delete reserved storage after the next update installation
 # Отключить и удалить зарезервированное хранилище после следующей установки обновлений
@@ -924,6 +909,14 @@ SaveRestartableApps -Enable
 # Turn off automatically saving my restartable apps and restart them when I sign back in (default value)
 # Выключить автоматическое сохранение моих перезапускаемых приложений из системы и перезапускать их при повторном входе (значение по умолчанию)
 # SaveRestartableApps -Disable
+
+# Do not restore previous folder windows at logon (default value)
+# Не восстанавливать прежние окна папок при входе в систему (значение по умолчанию)
+RestorePreviousFolders -Disable
+
+# Restore previous folder windows at logon
+# Восстанавливать прежние окна папок при входе в систему
+# RestorePreviousFolders -Enable
 
 # Enable "Network Discovery" and "File and Printers Sharing" for workgroup networks
 # Включить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп

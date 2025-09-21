@@ -826,7 +826,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Uninstall",
-        "ToolTip": "Uninstall OneDrive. The OneDrive user folder won't be removed."
+        "ToolTip": "Uninstall OneDrive. OneDrive user folder won't be removed if any file found there."
       },
       "One": {
         "Tag": "Install",
@@ -874,15 +874,15 @@
   },
   {
     "Region": "System",
-    "Function": "Win32LongPathLimit",
+    "Function": "Win32LongPathSupport",
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Disable the Windows 260 characters path limit."
+        "ToolTip": "Enable Windows long paths support which is limited for 260 characters by default."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Enable the Windows 260 character path limit (default value)."
+        "ToolTip": "Disable Windows long paths support which is limited for 260 characters by default (default value)."
       }
     }
   },
@@ -1106,11 +1106,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Use the latest installed .NET runtime for all apps."
+        "ToolTip": "Use .NET Framework 4.8.1 for old apps."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Do not use the latest installed .NET runtime for all apps (default value)."
+        "ToolTip": "Do not use .NET Framework 4.8.1 for old apps (default value)."
       }
     }
   },
@@ -1120,11 +1120,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Desktop",
-        "ToolTip": "Save screenshots by pressing Win+PrtScr on the Desktop. The function will be applied only if the preset is configured to remove OneDrive. Otherwise the backup functionality for the \"Desktop\" and \"Pictures\" folders in OneDrive breaks."
+        "ToolTip": "Save screenshots on the Desktop when pressing Windows+PrtScr or using Windows+Shift+S."
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Save screenshots by pressing Win+PrtScr in the Pictures folder (default value)."
+        "ToolTip": "Save screenshots in the Pictures folder when pressing Windows+PrtScr or using Windows+Shift+S (default value)."
       }
     }
   },
@@ -1218,11 +1218,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Do not allow the shortcut key to Start Sticky Keys by pressing the the Shift key 5 times."
+        "ToolTip": "Do not allow the shortcut key to Start Sticky Keys when pressing the the Shift key 5 times."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Allow the shortcut key to Start Sticky Keys by pressing the the Shift key 5 times (default value)."
+        "ToolTip": "Allow the shortcut key to Start Sticky Keys when pressing the the Shift key 5 times (default value)."
       }
     }
   },

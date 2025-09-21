@@ -956,13 +956,13 @@
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
-    "Function": "Win32LongPathLimit",
+    "Function": "Win32LongPathSupport",
     "Arg": {
       "Zero": {
-        "Tag": "Disable"
+        "Tag": "Enable"
       },
       "One": {
-        "Tag": "Enable"
+        "Tag": "Disable"
       }
     },
     "Preset": "Zero",
@@ -1266,22 +1266,6 @@
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
-    "Function": "FoldersLaunchSeparateProcess",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable"
-      },
-      "One": {
-        "Tag": "Disable"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
-    "Region": "System",
-    "Control": "cmb",
-    "Required": "false",
     "Function": "ReservedStorage",
     "Arg": {
       "Zero": {
@@ -1401,6 +1385,22 @@
       },
       "One": {
         "Tag": "Disable"
+      }
+    },
+    "Preset": "Zero",
+    "WindowsDefault": "One"
+  },
+  {
+    "Region": "System",
+    "Control": "cmb",
+    "Required": "false",
+    "Function": "RestorePreviousFolders",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable"
+      },
+      "One": {
+        "Tag": "Enable"
       }
     },
     "Preset": "Zero",

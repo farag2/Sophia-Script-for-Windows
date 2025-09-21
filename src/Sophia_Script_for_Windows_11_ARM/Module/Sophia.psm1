@@ -836,7 +836,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	#endregion Defender checks
 
 	# Check for a pending reboot
-	$PendingActions = @(
+	$PendingActions = [Array]::TrueForAll(@(
 		# CBS pending
 		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootPending",
 		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootInProgress",
@@ -844,8 +844,13 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		# Windows Update pending
 		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\PostRebootReporting",
 		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired"
-	)
-	if (($PendingActions | Test-Path) -contains $true)
+	),
+	[Predicate[string]]{
+		param($PendingAction)
+
+		Test-Path -Path $PendingAction
+	})
+	if ($PendingActions)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message $Localization.RebootPending
@@ -4727,7 +4732,7 @@ function StartRecommendedSection
 	OneDrive -Install -AllUsers
 
 	.NOTES
-	The OneDrive user folder won't be removed
+	OneDrive user folder won't be removed if any file found there
 
 	.NOTES
 	Machine-wide
@@ -4935,7 +4940,7 @@ function OneDrive
 				}
 			}
 
-			# Save screenshots by pressing Win+PrtScr in the Pictures folder
+			# Save screenshots in the Pictures folder when pressing Windows+PrtScr or using Windows+Shift+S
 			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -Force -ErrorAction Ignore
 
 			Get-ScheduledTask -TaskName "Onedrive* Update*" | Enable-ScheduledTask
@@ -5065,62 +5070,64 @@ function Hibernation
 	{
 		"Disable"
 		{
-			POWERCFG /HIBERNATE OFF
+			& "$env:SystemRoot\System32\powercfg.exe" /HIBERNATE OFF
 		}
 		"Enable"
 		{
-			POWERCFG /HIBERNATE ON
+			& "$env:SystemRoot\System32\powercfg.exe" /HIBERNATE ON
 		}
 	}
 }
 
 <#
 	.SYNOPSIS
-	The Windows 260 character path limit
-
-	.PARAMETER Disable
-	Disable the Windows 260 character path limit
+	Windows 260 character paths support limit
 
 	.PARAMETER Enable
-	Enable the Windows 260 character path limit
+	Enable Windows long paths support which is limited for 260 characters by default
+
+	.PARAMETER Disable
+	Disable Windows long paths support which is limited for 260 characters by default
 
 	.EXAMPLE
-	Win32LongPathLimit -Disable
+	Win32LongPathsSupport -Enable
 
 	.EXAMPLE
-	Win32LongPathLimit -Enable
+	Win32LongPathsSupport -Disable
 
 	.NOTES
 	Machine-wide
 #>
-function Win32LongPathLimit
+function Win32LongPathSupport
 {
 	param
 	(
 		[Parameter(
 			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable,
-
-		[Parameter(
-			Mandatory = $true,
 			ParameterSetName = "Enable"
 		)]
 		[switch]
-		$Enable
+		$Enable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable
 	)
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
-		"Disable"
-		{
-			New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -PropertyType DWord -Value 1 -Force
-		}
 		"Enable"
 		{
+			New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -PropertyType DWord -Value 1 -Force
+			Set-Policy -Scope Computer -Path SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -Type DWORD -Value 1
+		}
+		"Disable"
+		{
 			New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -PropertyType DWord -Value 0 -Force
+			Set-Policy -Scope Computer -Path SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -Type DWORD -Value 0
 		}
 	}
 }
@@ -6354,11 +6361,11 @@ function PowerPlan
 	{
 		"High"
 		{
-			POWERCFG /SETACTIVE SCHEME_MIN
+			& "$env:SystemRoot\System32\powercfg.exe" /SETACTIVE SCHEME_MIN
 		}
 		"Balanced"
 		{
-			POWERCFG /SETACTIVE SCHEME_BALANCED
+			& "$env:SystemRoot\System32\powercfg.exe" /SETACTIVE SCHEME_BALANCED
 		}
 	}
 }
@@ -7440,10 +7447,10 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 	The the latest installed .NET runtime for all apps usage
 
 	.PARAMETER Enable
-	Use the latest installed .NET runtime for all apps
+	Use .NET Framework 4.8.1 for old apps
 
 	.PARAMETER Disable
-	Do not use the latest installed .NET runtime for all apps
+	Do not Use .NET Framework 4.8.1 for old apps
 
 	.EXAMPLE
 	LatestInstalled.NET -Enable
@@ -7489,23 +7496,19 @@ function LatestInstalled.NET
 
 <#
 	.SYNOPSIS
-	The location to save screenshots by pressing Win+PrtScr
+	The location to save screenshots when pressing Windows+PrtScr or using Windows+Shift+S
 
 	.PARAMETER Desktop
-	Save screenshots by pressing Win+PrtScr on the Desktop
+	Save screenshots on the Desktop when pressing Windows+PrtScr or using Windows+Shift+S
 
 	.PARAMETER Default
-	Save screenshots by pressing Win+PrtScr in the Pictures folder
+	Save screenshots in the Pictures folder when pressing Windows+PrtScr or using Windows+Shift+S
 
 	.EXAMPLE
 	WinPrtScrFolder -Desktop
 
 	.EXAMPLE
 	WinPrtScrFolder -Default
-
-	.NOTES
-	The function will be applied only if the preset is configured to remove the OneDrive application, or the app was already uninstalled
-	otherwise the backup functionality for the "Desktop" and "Pictures" folders in OneDrive breaks
 
 	.NOTES
 	Current user
@@ -7548,60 +7551,8 @@ function WinPrtScrFolder
 				return
 			}
 
-			# Checking how the script was invoked: via a preset or Import-TabCompletion.ps1
-			# https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/get-variable
-			# This function works only if OneDrive was already uninstalled, or user is intended to uninstall "OneDrive -Uninstall" within commandline
-			$PresetName = (Get-Variable -Name MyInvocation -Scope Script).Value.PSCommandPath
-			$PSCallStack = (Get-PSCallStack).Position.Text
-			$OneDriveInstalled = Get-Package -Name "Microsoft OneDrive" -ProviderName Programs -Force -ErrorAction Ignore
-
-			# Checking whether function was called from Import-TabCompletion.ps1
-			if ($PresetName -match "Import-TabCompletion.ps1")
-			{
-				# Checking whether command contains "WinPrtScrFolder -Desktop"
-				if ($PSCallStack -match "WinPrtScrFolder -Desktop")
-				{
-					# Checking whether other commands contains "OneDrive -Uninstall" which means that user is intended to uninstall "OneDrive -Uninstall", or OneDrive was uinstalled
-					if (($PSCallStack -match "OneDrive -Uninstall") -or (-not $OneDriveInstalled))
-					{
-						$DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
-						New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -PropertyType ExpandString -Value $DesktopFolder -Force
-					}
-					else
-					{
-						Write-Warning -Message ($Localization.OneDriveWarning -f $MyInvocation.Line.Trim())
-						Write-Error -Message ($Localization.OneDriveWarning -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-						Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-					}
-				}
-			}
-			else
-			{
-				# Checking whether function was called from Sophia.ps1, and preset contains the "OneDrive -Uninstall" string is uncommented that means OneDrive will be unistalled
-				if (Select-String -Path $PresetName -Pattern "OneDrive -Uninstall" -SimpleMatch)
-				{
-					# Checking whether string exists and is uncommented
-					$IsOneDriveToUninstall = (Select-String -Path $PresetName -Pattern "OneDrive -Uninstall" -SimpleMatch).Line.StartsWith("#") -eq $false
-					# Checking whether string exists and is uncommented, or OneDrive was uninstalled, or user called "OneDrive -Uninstall" from Sophia.ps1 alongside with "WinPrtScrFolder -Desktop"
-					if ($IsOneDriveToUninstall -or (-not $OneDriveInstalled) -or ($PSCallStack -match "OneDrive -Uninstall"))
-					{
-						$DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
-						New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -PropertyType ExpandString -Value $DesktopFolder -Force
-					}
-					else
-					{
-						Write-Warning -Message ($Localization.OneDriveWarning -f $MyInvocation.Line.Trim())
-						Write-Error -Message ($Localization.OneDriveWarning -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-						Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-					}
-				}
-			}
+			$DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}" -PropertyType ExpandString -Value $DesktopFolder -Force
 		}
 		"Default"
 		{
@@ -7681,57 +7632,6 @@ function RecommendedTroubleshooting
 				New-Item -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation -Force
 			}
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation -Name UserPreference -PropertyType DWord -Value 2 -Force
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	Folder windows launching in a separate process
-
-	.PARAMETER Enable
-	Launch folder windows in a separate process
-
-	.PARAMETER Disable
-	Do not launch folder windows in a separate process
-
-	.EXAMPLE
-	FoldersLaunchSeparateProcess -Enable
-
-	.EXAMPLE
-	FoldersLaunchSeparateProcess -Disable
-
-	.NOTES
-	Current user
-#>
-function FoldersLaunchSeparateProcess
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Enable"
-		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SeparateProcess -PropertyType DWord -Value 1 -Force
-		}
-		"Disable"
-		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SeparateProcess -PropertyType DWord -Value 0 -Force
 		}
 	}
 }
@@ -7959,10 +7859,10 @@ function CapsLock
 	The shortcut to start Sticky Keys
 
 	.PARAMETER Disable
-	Turn off Sticky keys by pressing the Shift key 5 times
+	Turn off Sticky keys when pressing the Shift key 5 times
 
 	.PARAMETER Enable
-	Turn on Sticky keys by pressing the Shift key 5 times
+	Turn on Sticky keys when pressing the Shift key 5 times
 
 	.EXAMPLE
 	StickyShift -Disable
@@ -8161,6 +8061,57 @@ function SaveRestartableApps
 		"Disable"
 		{
 			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name RestartApps -PropertyType DWord -Value 0 -Force
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	Restore previous folder windows at logon
+
+	.PARAMETER Disable
+	Do not restore previous folder windows at logon
+
+	.PARAMETER Enable
+	Restore previous folder windows at logon
+
+	.EXAMPLE
+	RestorePreviousFolders -Disable
+
+	.EXAMPLE
+	RestorePreviousFolders -Enable
+
+	.NOTES
+	Current user
+#>
+function RestorePreviousFolders
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Disable"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name PersistBrowsers -PropertyType DWord -Value 0 -Force
+		}
+		"Enable"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name PersistBrowsers -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -9464,10 +9415,10 @@ function DefaultTerminalApp
 
 <#
 	.SYNOPSIS
-	Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 (ARM64)
+	Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 (x86/x64)
 
 	.EXAMPLE
-	Install-VCRedist
+	Install-VCRedist -Redistributables 2015_2022_x86, 2015_2022_x64
 
 	.LINK
 	https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist
@@ -9477,6 +9428,18 @@ function DefaultTerminalApp
 #>
 function Install-VCRedist
 {
+	[CmdletBinding()]
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Redistributables"
+		)]
+		[ValidateSet("2015_2022_x86", "2015_2022_x64")]
+		[string[]]
+		$Redistributables
+	)
+
 	# Get latest build version
 	# https://github.com/ScoopInstaller/Extras/blob/master/bucket/vcredist2022.json
 	try
@@ -9490,77 +9453,145 @@ function Install-VCRedist
 	}
 	catch [System.Net.WebException]
 	{
-		$LatestVCRedistVersion = "0.0"
+		Write-Warning -Message ($Localization.NoResponse -f "https://githubusercontent.com")
+		Write-Error -Message ($Localization.NoResponse -f "https://githubusercontent.com") -ErrorAction SilentlyContinue
+		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+		return
 	}
 
 	# Checking whether VC_redist builds installed
-	if (Test-Path -Path "$env:ProgramData\Package Cache\{a87e42cd-475d-4f15-8848-e0d60c63c02f}\VC_redist.arm64.exe")
+	if (Test-Path -Path "$env:ProgramData\Package Cache\*\VC_redist.x86.exe")
 	{
-		$VCredistVersion = (Get-Item -Path "$env:ProgramData\Package Cache\{a87e42cd-475d-4f15-8848-e0d60c63c02f}\VC_redist.arm64.exe").VersionInfo.FileVersion
+		# Choose the first item if user has more than one package installed
+		$CurrentVCredistx86Version = (Get-Item -Path "$env:ProgramData\Package Cache\*\VC_redist.x86.exe" | Select-Object -First 1).VersionInfo.FileVersion
 	}
 	else
 	{
-		$VCredistVersion = "0.0"
+		$CurrentVCredistx86Version = "0.0"
+	}
+	if (Test-Path -Path "$env:ProgramData\Package Cache\*\VC_redist.x64.exe")
+	{
+		# Choose the first item if user has more than one package installed
+		$CurrentVCredistx64Version = (Get-Item -Path "$env:ProgramData\Package Cache\*\VC_redist.x64.exe" | Select-Object -First 1).VersionInfo.FileVersion
+	}
+	else
+	{
+		$CurrentVCredistx64Version = "0.0"
 	}
 
 	$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 
-	# Proceed if currently installed build is lower than available from Microsoft or json file is unreachable, or redistributable is not installed
-	if (([System.Version]$LatestVCRedistVersion -gt [System.Version]$VCredistVersion) -or (($LatestVCRedistVersion -eq "0.0") -or ($VCredistVersion -eq "0.0")))
+	foreach ($Redistributable in $Redistributables)
 	{
-		try
+		switch ($Redistributable)
 		{
-			$Parameters = @{
-				Uri             = "https://aka.ms/vs/17/release/vc_redist.arm64.exe"
-				OutFile         = "$DownloadsFolder\vc_redist.arm64.exe"
-				UseBasicParsing = $true
-				Verbose         = $true
+			2015_2022_x86
+			{
+				# Proceed if currently installed build is lower than available from Microsoft or json file is unreachable, or redistributable is not installed
+				if (([System.Version]$LatestVCRedistVersion -gt [System.Version]$CurrentVCredistx86Version) -or ($CurrentVCredistx86Version -eq "0.0"))
+				{
+					try
+					{
+						$Parameters = @{
+							Uri             = "https://aka.ms/vs/17/release/VC_redist.x86.exe"
+							OutFile         = "$DownloadsFolder\VC_redist.x86.exe"
+							UseBasicParsing = $true
+							Verbose         = $true
+						}
+						Invoke-WebRequest @Parameters
+
+						Write-Information -MessageData "" -InformationAction Continue
+						Write-Verbose -Message "Visual C++ Redistributable x86" -Verbose
+						Write-Information -MessageData "" -InformationAction Continue
+
+						Start-Process -FilePath "$DownloadsFolder\VC_redist.x86.exe" -ArgumentList "/install /passive /norestart" -Wait
+
+						# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+						# https://github.com/PowerShell/PowerShell/issues/21070
+						$Paths = @(
+							"$DownloadsFolder\VC_redist.x86.exe",
+							"$env:TEMP\dd_vcredist_x86_*.log"
+						)
+						Get-ChildItem -Path $Paths -Force | Remove-Item -Force -ErrorAction Ignore
+					}
+					catch [System.Net.WebException]
+					{
+						Write-Warning -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com")
+						Write-Error -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com") -ErrorAction SilentlyContinue
+						Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+						return
+					}
+				}
+				else
+				{
+					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -Verbose
+					Write-Error -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -ErrorAction SilentlyContinue
+				}
 			}
-			Invoke-WebRequest @Parameters
+			2015_2022_x64
+			{
+				# Proceed if currently installed build is lower than available from Microsoft or json file is unreachable, or redistributable is not installed
+				if (([System.Version]$LatestVCRedistVersion -gt [System.Version]$CurrentVCredistx64Versionn) -or ($CurrentVCredistx64Version -eq "0.0"))
+				{
+					try
+					{
+						$Parameters = @{
+							Uri             = "https://aka.ms/vs/17/release/VC_redist.x64.exe"
+							OutFile         = "$DownloadsFolder\VC_redist.x64.exe"
+							UseBasicParsing = $true
+							Verbose         = $true
+						}
+						Invoke-WebRequest @Parameters
+					}
+					catch [System.Net.WebException]
+					{
+						Write-Warning -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com")
+						Write-Error -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com") -ErrorAction SilentlyContinue
+						Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+						return
+					}
+
+					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message "Visual C++ Redistributable x64" -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
+
+					Start-Process -FilePath "$DownloadsFolder\VC_redist.x64.exe" -ArgumentList "/install /passive /norestart" -Wait
+
+					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+					# https://github.com/PowerShell/PowerShell/issues/21070
+					$Paths = @(
+						"$DownloadsFolder\VC_redist.x64.exe",
+						"$env:TEMP\dd_vcredist_amd64_*.log"
+					)
+					Get-ChildItem -Path $Paths -Force | Remove-Item -Force -ErrorAction Ignore
+				}
+				else
+				{
+					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -Verbose
+					Write-Error -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -ErrorAction SilentlyContinue
+				}
+			}
 		}
-		catch [System.Net.WebException]
-		{
-			Write-Warning -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com")
-			Write-Error -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com") -ErrorAction SilentlyContinue
-			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-
-			return
-		}
-
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message "Visual C++ Redistributable ARM64" -Verbose
-		Write-Information -MessageData "" -InformationAction Continue
-
-		Start-Process -FilePath "$DownloadsFolder\vc_redist.arm64.exe" -ArgumentList "/install /passive /norestart" -Wait
-
-		# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-		# https://github.com/PowerShell/PowerShell/issues/21070
-		$Paths = @(
-			"$DownloadsFolder\vc_redist.arm64.exe",
-			"$env:TEMP\dd_vcredist_arm64_*.log"
-		)
-		Get-ChildItem -Path $Paths -Force | Remove-Item -Force -ErrorAction Ignore
-	}
-	else
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 	}
 }
 
 <#
 	.SYNOPSIS
-	Install the latest .NET Runtime 8, 9
+	Install the latest .NET Runtime 8, 9 x64
 
-	.PARAMETER NET8
-	Install the latest .NET Runtime 8
+	.PARAMETER NET8x64
+	Install the latest .NET Runtime 8 x64
 
-	.PARAMETER NET9
-	Install the latest .NET Runtime 9
+	.PARAMETER NET9x64
+	Install the latest .NET Runtime 9 x64
 
 	.EXAMPLE
-	Install-DotNetRuntimes -Runtimes NET8, NET9
+	Install-DotNetRuntimes -Runtimes NET8x64, NET9x64
 
 	.LINK
 	https://dotnet.microsoft.com/en-us/download/dotnet
@@ -9577,7 +9608,7 @@ function Install-DotNetRuntimes
 			Mandatory = $true,
 			ParameterSetName = "Runtimes"
 		)]
-		[ValidateSet("NET8", "NET9")]
+		[ValidateSet("NET8x64", "NET9x64")]
 		[string[]]
 		$Runtimes
 	)
@@ -9588,7 +9619,7 @@ function Install-DotNetRuntimes
 	{
 		switch ($Runtime)
 		{
-			NET8
+			NET8x64
 			{
 				try
 				{
@@ -9603,18 +9634,19 @@ function Install-DotNetRuntimes
 				}
 				catch [System.Net.WebException]
 				{
-					Write-Warning -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com")
-					Write-Error -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com") -ErrorAction SilentlyContinue
+					Write-Warning -Message ($Localization.NoResponse -f "https://builds.dotnet.microsoft.com")
+					Write-Error -Message ($Localization.NoResponse -f "https://builds.dotnet.microsoft.com") -ErrorAction SilentlyContinue
 					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 					return
 				}
 
 				# Checking whether .NET 8 installed
-				if (Test-Path -Path "$env:ProgramData\Package Cache\*\dotnet-runtime-$LatestNET8Version-win-arm64.exe")
+				if (Test-Path -Path "$env:ProgramData\Package Cache\*\windowsdesktop-runtime-$LatestNET8Version-win-x64.exe")
 				{
+					# Choose the first item if user has more than one package installed
 					# FileVersion has four properties while $LatestNET8Version has only three, unless the [System.Version] accelerator fails
-					$CurrentNET8Version = (Get-Item -Path "$env:ProgramData\Package Cache\*\dotnet-runtime-$LatestNET8Version-win-arm64.exe").VersionInfo.FileVersion
+					$CurrentNET8Version = (Get-Item -Path "$env:ProgramData\Package Cache\*\windowsdesktop-runtime-$LatestNET8Version-win-x64.exe" | Select-Object -First 1).VersionInfo.FileVersion
 					$CurrentNET8Version = "{0}.{1}.{2}" -f $CurrentNET8Version.Split(".")
 				}
 				else
@@ -9627,10 +9659,10 @@ function Install-DotNetRuntimes
 				{
 					try
 					{
-						# .NET Runtime 8
+						# .NET Runtime 8 x64
 						$Parameters = @{
-							Uri             = "https://builds.dotnet.microsoft.com/dotnet/Runtime/$LatestNET8Version/dotnet-runtime-$LatestNET8Version-win-arm64.exe"
-							OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestNET8Version-win-arm64.exe"
+							Uri             = "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNET8Version/windowsdesktop-runtime-$LatestNET8Version-win-x64.exe"
+							OutFile         = "$DownloadsFolder\windowsdesktop-runtime-$LatestNET8Version-win-x64.exe"
 							UseBasicParsing = $true
 							Verbose         = $true
 						}
@@ -9646,16 +9678,16 @@ function Install-DotNetRuntimes
 					}
 
 					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message ".NET $LatestNET8Version ARM64" -Verbose
+					Write-Verbose -Message ".NET $LatestNET8Version" -Verbose
 					Write-Information -MessageData "" -InformationAction Continue
 
-					Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestNET8Version-win-arm64.exe" -ArgumentList "/install /passive /norestart" -Wait
+					Start-Process -FilePath "$DownloadsFolder\windowsdesktop-runtime-$LatestNET8Version-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
 
 					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 					# https://github.com/PowerShell/PowerShell/issues/21070
 					$Paths = @(
-						"$DownloadsFolder\dotnet-runtime-$LatestNET8Version-win-arm64.exe",
-						"$env:TEMP\Microsoft_.NET_Runtime*.log"
+						"$DownloadsFolder\windowsdesktop-runtime-$LatestNET8Version-win-x64.exe",
+						"$env:TEMP\Microsoft_Windows_Desktop_Runtime*.log"
 					)
 					Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
 				}
@@ -9666,7 +9698,7 @@ function Install-DotNetRuntimes
 					Write-Error -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -ErrorAction SilentlyContinue
 				}
 			}
-			NET9
+			NET9x64
 			{
 				try
 				{
@@ -9681,18 +9713,19 @@ function Install-DotNetRuntimes
 				}
 				catch [System.Net.WebException]
 				{
-					Write-Warning -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com")
-					Write-Error -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com") -ErrorAction SilentlyContinue
+					Write-Warning -Message ($Localization.NoResponse -f "https://builds.dotnet.microsoft.com")
+					Write-Error -Message ($Localization.NoResponse -f "https://builds.dotnet.microsoft.com") -ErrorAction SilentlyContinue
 					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 					return
 				}
 
 				# Checking whether .NET 9 installed
-				if (Test-Path -Path "$env:ProgramData\Package Cache\*\dotnet-runtime-$LatestNET9Version-win-arm64.exe")
+				if (Test-Path -Path "$env:ProgramData\Package Cache\*\windowsdesktop-runtime-$LatestNET9Version-win-x64.exe")
 				{
+					# Choose the first item if user has more than one package installed
 					# FileVersion has four properties while $LatestNET9Version has only three, unless the [System.Version] accelerator fails
-					$CurrentNET9Version = (Get-Item -Path "$env:ProgramData\Package Cache\*\dotnet-runtime-$LatestNET9Version-win-arm64.exe").VersionInfo.FileVersion
+					$CurrentNET9Version = (Get-Item -Path "$env:ProgramData\Package Cache\*\windowsdesktop-runtime-$LatestNET9Version-win-x64.exe" | Select-Object -First 1).VersionInfo.FileVersion
 					$CurrentNET9Version = "{0}.{1}.{2}" -f $CurrentNET9Version.Split(".")
 				}
 				else
@@ -9705,10 +9738,10 @@ function Install-DotNetRuntimes
 				{
 					try
 					{
-						# Downloading .NET Runtime 9
+						# Downloading .NET Runtime 9 x64
 						$Parameters = @{
-							Uri             = "https://builds.dotnet.microsoft.com/dotnet/Runtime/$LatestNET9Version/dotnet-runtime-$LatestNET9Version-win-arm64.exe"
-							OutFile         = "$DownloadsFolder\dotnet-runtime-$LatestNET9Version-win-arm64.exe"
+							Uri             = "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNET9Version/windowsdesktop-runtime-$LatestNET9Version-win-x64.exe"
+							OutFile         = "$DownloadsFolder\windowsdesktop-runtime-$LatestNET9Version-win-x64.exe"
 							UseBasicParsing = $true
 							Verbose         = $true
 						}
@@ -9724,16 +9757,16 @@ function Install-DotNetRuntimes
 					}
 
 					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message ".NET $LatestNET9Version ARM64" -Verbose
+					Write-Verbose -Message ".NET $LatestNET9Version" -Verbose
 					Write-Information -MessageData "" -InformationAction Continue
 
-					Start-Process -FilePath "$DownloadsFolder\dotnet-runtime-$LatestNET9Version-win-arm64.exe" -ArgumentList "/install /passive /norestart" -Wait
+					Start-Process -FilePath "$DownloadsFolder\windowsdesktop-runtime-$LatestNET9Version-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
 
 					# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 					# https://github.com/PowerShell/PowerShell/issues/21070
 					$Paths = @(
-						"$DownloadsFolder\dotnet-runtime-$LatestNET9Version-win-arm64.exe",
-						"$env:TEMP\Microsoft_.NET_Runtime*.log"
+						"$DownloadsFolder\windowsdesktop-runtime-$LatestNET9Version-win-x64.exe",
+						"$env:TEMP\Microsoft_Windows_Desktop_Runtime*.log"
 					)
 					Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
 				}

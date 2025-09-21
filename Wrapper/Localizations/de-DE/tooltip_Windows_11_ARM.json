@@ -840,15 +840,15 @@
   },
   {
     "Region": "System",
-    "Function": "Win32LongPathLimit",
+    "Function": "Win32LongPathSupport",
     "Arg": {
       "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Deaktiviert die Windows-Pfadbegrenzung auf 260 Zeichen."
+        "Tag": "Enable",
+        "ToolTip": "Aktivieren Sie die Unterstützung langer Windows-Pfade, die standardmäßig auf 260 Zeichen begrenzt ist."
       },
       "One": {
-        "Tag": "Enable",
-        "ToolTip": "Aktiviert die Windows-Pfadbegrenzung auf 260 Zeichen (Standardwert)."
+        "Tag": "Disable",
+        "ToolTip": "Deaktivieren Sie die Unterstützung langer Windows-Pfade, die standardmäßig auf 260 Zeichen begrenzt ist (Standardwert)."
       }
     }
   },
@@ -1086,11 +1086,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Desktop",
-        "ToolTip": "Speichern von Screenshots durch Drücken von Windows-Taste+\"druck\"-Taste auf dem Desktop."
+        "ToolTip": "Speichern Sie Screenshots auf dem Desktop, indem Sie Windows+PrtScr drücken oder Windows+Shift+S verwenden."
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Speichern von Screenshots durch Drücken von Windows-Taste+\"druck\"-Taste im Ordner Bilder (Standardwert)."
+        "ToolTip": "Speichern Sie Screenshots im Ordner Bilder, indem Sie Windows+PrtScr drücken oder Windows+Shift+S verwenden (Standardwert)."
       }
     }
   },
@@ -1105,20 +1105,6 @@
       "One": {
         "Tag": "Default",
         "ToolTip": "Fragen Sie mich, bevor Sie Troubleshooter ausführen. Damit diese Funktion funktioniert, muss die Betriebssystemebene der Diagnosedatenerfassung auf \"Optionale Diagnosedaten\" eingestellt und die Fehlerberichtsfunktion aktiviert werden (Standardwert)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "FoldersLaunchSeparateProcess",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Explorer in einem separaten Prozess starten."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Explorer nicht in einem separaten Prozess starten (Standardwert)."
       }
     }
   },
@@ -1231,6 +1217,20 @@
       "One": {
         "Tag": "Disable",
         "ToolTip": "Deaktivieren Sie das automatische Speichern meiner neu zu startenden Anwendungen beim Abmelden und starten Sie sie neu, nachdem Sie sich angemeldet haben (Standardwert)."
+      }
+    }
+  },
+  {
+    "Region": "System",
+    "Function": "RestorePreviousFolders",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Vorherige Ordnerfenster bei der Anmeldung nicht wiederherstellen (Standardwert)."
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Stellen Sie bei der Anmeldung die vorherigen Ordnerfenster wieder her."
       }
     }
   },

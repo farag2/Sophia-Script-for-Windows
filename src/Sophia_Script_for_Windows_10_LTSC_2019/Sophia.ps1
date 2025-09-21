@@ -529,13 +529,13 @@ Hibernation -Disable
 # Включить режим гибернации (значение по умолчанию)
 # Hibernation -Enable
 
-# Disable the Windows 260 characters path limit
-# Отключить ограничение Windows на 260 символов в пути
-Win32LongPathLimit -Disable
+# Enable Windows long paths support which is limited for 260 characters by default
+# Включить поддержку длинных путей, ограниченных по умолчанию 260 символами
+Win32LongPathSupport -Enable
 
-# Enable the Windows 260 character path limit (default value)
-# Включить ограничение Windows на 260 символов в пути (значение по умолчанию)
-# Win32LongPathLimit -Enable
+# Disable Windows long paths support which is limited for 260 characters by default (default value)
+# Отключить поддержку длинных путей, ограниченных по умолчанию 260 символами (значение по умолчанию)
+# Win32LongPathSupport -Disable
 
 # Display Stop error code when BSoD occurs
 # Отображать код Stop-ошибки при появлении BSoD
@@ -675,20 +675,20 @@ Set-UserShellFolderLocation -Root
 #>
 # Set-UserShellFolderLocation -Default
 
-# Use the latest installed .NET runtime for all apps
-# Использовать последнюю установленную среду выполнения .NET для всех приложений
-LatestInstalled.NET -Enable
+# Use .NET Framework 4.8.1 for old apps
+# Использовать .NET Framework 4.8.1 для устаревших программ
+# LatestInstalled.NET -Enable
 
-# Do not use the latest installed .NET runtime for all apps (default value)
-# Не использовать последнюю установленную версию .NET для всех приложений (значение по умолчанию)
+# Do not Use .NET Framework 4.8.1 for old apps (default value)
+# Не использовать .NET Framework 4.8.1 для устаревших программ (значение по умолчанию)
 # LatestInstalled.NET -Disable
 
-# Save screenshots by pressing Win+PrtScr on the Desktop
-# Сохранять скриншоты по нажатию Win+PrtScr на рабочий стол
+# Save screenshots on the Desktop when pressing Windows+PrtScr or using Windows+Shift+S
+# Сохранять скриншоты по нажатию Windows+PrtScr или Windows+Shift+S на рабочий стол
 WinPrtScrFolder -Desktop
 
-# Save screenshots by pressing Win+PrtScr in the Pictures folder (default value)
-# Cохранять скриншоты по нажатию Win+PrtScr в папку "Изображения" (значение по умолчанию)
+# Save screenshots in the Pictures folder when pressing Windows+PrtScr or using Windows+Shift+S (default value)
+# Cохранять скриншоты по нажатию Windows+PrtScr или Windows+Shift+S в папку "Изображения" (значение по умолчанию)
 # WinPrtScrFolder -Default
 
 # Launch folder windows in a separate process
@@ -723,11 +723,11 @@ NumLock -Enable
 # Включить Caps Lock (значение по умолчанию)
 # CapsLock -Enable
 
-# Do not allow the shortcut key to Start Sticky Keys by pressing the the Shift key 5 times
+# Do not allow the shortcut key to Start Sticky Keys when pressing the the Shift key 5 times
 # Не разрешать включения залипания клавиши Shift после 5 нажатий
 StickyShift -Disable
 
-# Allow the shortcut key to Start Sticky Keys by pressing the the Shift key 5 times (default value)
+# Allow the shortcut key to Start Sticky Keys when pressing the the Shift key 5 times (default value)
 # Разрешать включения залипания клавиши Shift после 5 нажатий (значение по умолчанию)
 # StickyShift -Enable
 
