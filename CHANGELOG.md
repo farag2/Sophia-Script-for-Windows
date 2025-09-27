@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed `Install-VCRedist` & `Install-DotNetRuntimes` functions for Arm.
   * Please be noted that for `Arm` versions only `Install-VCRedist -Redistributables 2015_2022_x86, 2015_2022_x64` changed to `Install-VCRedist`, and `Install-DotNetRuntimes -Runtimes NET8x64, NET9x64` to `Install-DotNetRuntimes -Runtimes NET8, NET9`.
 * Improved `DNSoverHTTPS` function handling for single IP address;
-  * Thanks to @Windr.
+  * Thanks to @gtumanyan.
 * Minor improvements.
 
 ## Wrapper 2.8.6
@@ -164,7 +164,7 @@ Thanks to iGor202512, mogbi, and homeless
 * Added `EditWithPaintContext` function for only `Windows 11` to hide/show "Edit with Paint" item from the media files context menu;
 * Minor changes.
 
-Thanks to WindR and homeless
+Thanks to @gtumanyan and homeless
 
 ## Wrapper 2.7.8
 
@@ -1840,7 +1840,7 @@ Diff from v5.3
 * Fixed typo causing bug in ```CleanUpTask -Register``` function. Please re-register task;
 * Added ```Logging``` function using the ```Start-Transcript``` cmdlet. Commented out by default.
   * To stop logging just close the console or type ```Stop-Transcript```. The log will be being recorded into the script folder
-* Added ```AppsLanguageSwitch``` function. Lets use a different input method for each app window. Thanks to [WindR](https://forum.ru-board.com/profile.cgi?action=show&member=WindR)
+* Added ```AppsLanguageSwitch``` function. Lets use a different input method for each app window. Thanks to @gtumanyan
 * Updated the Italian translation. Closed #103. Thanks to @garf02;
 * Updated syspin app up to the 0.99.9.1;
 * Minor changes. :feelsgood:
