@@ -268,7 +268,7 @@ Sophia -Functions "DiagTrackService -Enable", UninstallUWPApps
   * Pictures
   * Videos
 * Install free (light and dark) "Windows 11 Cursors Concept v2" cursors from [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) on-the-fly;
-* Uninstall UWP apps displaying thier localized packages names;
+* Uninstall UWP apps displaying their localized packages names;
   * Script generates installed UWP apps list [dynamically](#localized-uwp-packages-names)
 * Disable Windows features displaying friendly packages names with pop-up form written in [WPF](#screenshots);
 * Uninstall Windows capabilities displaying friendly packages names with pop-up form written in [WPF](#screenshots);
