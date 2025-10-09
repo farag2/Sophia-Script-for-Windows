@@ -547,6 +547,20 @@
   },
   {
     "Region": "UI & Personalization",
+    "Function": "ClockInNotificationCenter",
+    "Arg": {
+      "Zero": {
+        "Tag": "Show",
+        "ToolTip": "Sekunden im Benachrichtigungscenter anzeigen."
+      },
+      "One": {
+        "Tag": "Hide",
+        "ToolTip": "Zeit im Benachrichtigungscenter ausblenden (default value)."
+      }
+    }
+  },
+  {
+    "Region": "UI & Personalization",
     "Function": "TaskbarCombine",
     "Arg": {
       "Zero": {
@@ -796,7 +810,7 @@
       },
       "One": {
         "Tag": "Install",
-        "ToolTip": "OneDrive 64-bit installieren."
+        "ToolTip": "OneDrive installieren. Internetverbindung erforderlich."
       }
     }
   },
@@ -806,7 +820,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Installieren Sie OneDrive 64-bit für alle Benutzer in %ProgramFiles%. Je nachdem welches Installationsprogramm ausgelöst wird, 64bit oder 32bit."
+        "ToolTip": "Installieren Sie OneDrive für alle Benutzer in %ProgramFiles%. Internetverbindung erforderlich."
       }
     }
   },
@@ -1251,22 +1265,19 @@
   {
     "Region": "System",
     "Function": "Set-Association",
+    "ToolTip": "App registrieren, Hash berechnen und mit einer Erweiterung verknüpfen, wobei das Popup-Fenster 'Wie möchten Sie dies öffnen?' ausgeblendet ist.",
     "Arg": {
       "Zero": {
-        "Tag": "",
-        "ToolTip": "Registrieren Sie die App, berechnen Sie den Hash und verknüpfen Sie sie mit einer Erweiterung, wobei das Popup 'Wie möchten Sie diese öffnen?' ausgeblendet ist."
-      },
-      "One": {
         "Tag": "ProgramPath",
         "ToolTip": "Pfad zur ausführbaren Datei."
       },
-      "Two": {
+      "One": {
         "Tag": "Extension",
         "ToolTip": "Erweiterung."
       },
-      "Three": {
+      "Two": {
         "Tag": "Icon",
-        "ToolTip": "Pfad zum Symbol."
+        "ToolTip": "Pfad zur Ikone."
       }
     }
   },
@@ -1311,7 +1322,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": ""
+        "ToolTip": "Internetverbindung erforderlich."
       }
     }
   },
@@ -1322,11 +1333,11 @@
     "Arg": {
       "Zero": {
         "Tag": "NET8",
-        "ToolTip": ".NET Runtime 8."
+        "ToolTip": ".NET Runtime 8. Internetverbindung erforderlich."
       },
       "One": {
         "Tag": "NET9",
-        "ToolTip": ".NET Runtime 9."
+        "ToolTip": ".NET Runtime 9. Internetverbindung erforderlich."
       }
     }
   },
@@ -1378,7 +1389,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Aktiviert das Windows Subsystem für Linux (WSL), installiert die neueste Version des WSL-Linux-Kernels und eine Linux-Distribution über ein Popup-Formular. Die Einstellung \"Updates für andere Microsoft-Produkte empfangen\" wird automatisch aktiviert, um Kernel-Updates zu erhalten."
+        "ToolTip": "Aktiviert das Windows Subsystem für Linux (WSL), installiert die neueste Version des WSL-Linux-Kernels und eine Linux-Distribution über ein Popup-Formular. Internetverbindung erforderlich."
       }
     }
   },

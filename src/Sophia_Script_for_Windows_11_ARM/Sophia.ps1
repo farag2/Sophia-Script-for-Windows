@@ -482,6 +482,14 @@ SecondsInSystemClock -Show
 # Скрыть секунды на часах на панели задач (значение по умолчанию)
 # SecondsInSystemClock -Hide
 
+# Show time in Notification Center
+# Показывать секунды в центре уведомлений
+ClockInNotificationCenter -Show
+
+# Hide time in Notification Center (default value)
+# Скрыть секунды в центре уведомлений (значение по умолчанию)
+# ClockInNotificationCenter -Hide
+
 # Combine taskbar buttons and always hide labels (default value)
 # Объединить кнопки панели задач и всегда скрывать метки (значение по умолчанию)
 TaskbarCombine -Always
@@ -578,13 +586,13 @@ AeroShaking -Enable
 # При захвате заголовка окна и встряхивании не сворачиваются все остальные окна (значение по умолчанию)
 # AeroShaking -Disable
 
-# Download and install free dark "Windows 11 Cursors Concept" cursors from Jepri Creations
-# Скачать и установить бесплатные темные курсоры "Windows 11 Cursors Concept" от Jepri Creations
+# Download and install free dark "Windows 11 Cursors Concept" cursors from Jepri Creations. Internet connection required
+# Скачать и установить бесплатные темные курсоры "Windows 11 Cursors Concept" от Jepri Creations. Требуется соединение с интернетом
 # https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-886489356
 Cursors -Dark
 
-# Download and install free light "Windows 11 Cursors Concept" cursors from Jepri Creations
-# Скачать и установить бесплатные светлые курсоры "Windows 11 Cursors Concept" от Jepri Creations
+# Download and install free light "Windows 11 Cursors Concept" cursors from Jepri Creations. Internet connection required
+# Скачать и установить бесплатные светлые курсоры "Windows 11 Cursors Concept" от Jepri Creations. Требуется соединение с интернетом
 # https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-886489356
 # Cursors -Light
 
@@ -622,11 +630,11 @@ StartRecommendedSection -Hide
 # Удалить OneDrive. Папка пользователя OneDrive не будет удалена при обнаружении в ней файлов
 # OneDrive -Uninstall
 
-# Install OneDrive 64-bit (default value)
+# Install OneDrive (default value)
 # Установить OneDrive 64-бит (значение по умолчанию)
 # OneDrive -Install
 
-# Install OneDrive 64-bit all users to %ProgramFiles% depending which installer is triggered
+# Install OneDrive all users to %ProgramFiles% depending which installer is triggered
 # Установить OneDrive 64-бит для всех пользователей в %ProgramFiles% в зависимости от того, как запускается инсталлятор
 # OneDrive -Install -AllUsers
 #endregion OneDrive
@@ -960,8 +968,8 @@ DefaultTerminalApp -WindowsTerminal
 # Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2022 (ARM64)
 Install-VCRedist
 
-# Install the latest .NET Runtime 8, 9
-# Установить последнюю версию .NET Runtime 8, 9
+# Install the latest .NET Runtime 8, 9. Internet connection required
+# Установить последнюю версию .NET Runtime 8, 9. Требуется соединение с интернетом
 Install-DotNetRuntimes -Runtimes NET8, NET9
 
 # Enable proxying only blocked sites from the unified registry of Roskomnadzor. The function is applicable for Russia only
@@ -992,13 +1000,8 @@ PreventEdgeShortcutCreation -Channels Stable, Beta, Dev, Canary
 #endregion System
 
 #region WSL
-<#
-	Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form
-	The "Receive updates for other Microsoft products" setting will enabled automatically to receive kernel updates
-
-	Установить подсистему Windows для Linux (WSL), последний пакет обновления ядра Linux и дистрибутив Linux, используя всплывающую форму
-	Параметр "При обновлении Windows получать обновления для других продуктов Майкрософт" будет включен автоматически в Центре обновлении Windows, чтобы получать обновления ядра
-#>
+# Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form. Internet connection required
+# Установить подсистему Windows для Linux (WSL), последний пакет обновления ядра Linux и дистрибутив Linux, используя всплывающую форму. Требуется соединение с интернетом
 # Install-WSL
 #endregion WSL
 

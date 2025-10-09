@@ -1,5 +1,4 @@
 ﻿ConvertFrom-StringData -StringData @'
-PowerShellImportFailed                    = Please close PowerShell 7 and re-run the script again.
 UnsupportedArchitecture                   = Your're using "{0}" based architecture CPU. This script supports Arm architecture based CPU only. Download and run script version for your archicture.
 UnsupportedOSBuild                        = The script supports Windows 11 24H2 and higher. You're using {0} {1}. Upgrade your Windows and try again.
 UnsupportedWindowsTerminal                = Windows Terminal version is lower than 1.22. Please update it in the Microsoft Store and try again.
@@ -13,6 +12,7 @@ TweakerWarning                            = The Windows stability may have been 
 HostsWarning                              = Third-party entries found in the {0} file. They may block connections to resources used in the script. Do you want to continue?
 Bin                                       = There are no files in "{0}" folder. Please, re-download the archive.
 RebootPending                             = The PC is waiting to be restarted.
+BitLockerWarning                          = BitLocker encryption in process, or BitLocker is off, but at the same time drive is encrypted. Complete drive BitLocker configuration and try again.
 UnsupportedRelease                        = A newer Sophia Script version found: {0}. Please download the latest version.
 KeyboardArrows                            = Please use the arrow keys {0} and {1} on your keyboard to select your answer
 CustomizationWarning                      = Have you customized every function in the {0} preset file before running Sophia Script?
@@ -23,7 +23,7 @@ ScheduledTasks                            = Scheduled tasks
 OneDriveUninstalling                      = Uninstalling OneDrive...
 OneDriveInstalling                        = Installing OneDrive...
 OneDriveDownloading                       = Downloading OneDrive...
-OneDriveWarning                           = "WinPrtScrFolder -Desktop" function will be applied only if user configured script to remove OneDrive (or OneDrive was already removed). Otherwise the backup functionality for the "Desktop" and "Pictures" folders in OneDrive breaks.
+OneDriveWarning                           = Please log out from OneDrive account before uninstalling the application.
 WindowsFeaturesTitle                      = Windows features
 OptionalFeaturesTitle                     = Optional features
 EnableHardwareVT                          = Enable Virtualization in UEFI.

@@ -911,6 +911,21 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		exit
 	}
 
+	# Checking whether BitLocker encryption in process, or BitLocker is off, but at the same time drive is encrypted
+	if (Get-BitLockerVolume | Where-Object -FilterScript {($_.ProtectionStatus -eq "Off") -and (($_.VolumeStatus -eq "DecryptionInProgress") -or ($_.VolumeStatus -eq "FullyEncrypted"))})
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Warning -Message $Localization.BitLockerWarning
+		Write-Information -MessageData "" -InformationAction Continue
+
+		Get-BitLockerVolume
+
+		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+		exit
+	}
+
 	# Checking whether the current module version is the latest one
 	try
 	{
@@ -4026,17 +4041,17 @@ function NotificationAreaIcons
 	.SYNOPSIS
 	Seconds on the taskbar clock
 
-	.PARAMETER Hide
-	Hide seconds on the taskbar clock
-
 	.PARAMETER Show
 	Show seconds on the taskbar clock
 
-	.EXAMPLE
-	SecondsInSystemClock -Hide
+	.PARAMETER Hide
+	Hide seconds on the taskbar clock
 
 	.EXAMPLE
 	SecondsInSystemClock -Show
+
+	.EXAMPLE
+	SecondsInSystemClock -Hide
 
 	.NOTES
 	Current user
@@ -4047,28 +4062,28 @@ function SecondsInSystemClock
 	(
 		[Parameter(
 			Mandatory = $true,
-			ParameterSetName = "Hide"
-		)]
-		[switch]
-		$Hide,
-
-		[Parameter(
-			Mandatory = $true,
 			ParameterSetName = "Show"
 		)]
 		[switch]
-		$Show
+		$Show,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Hide"
+		)]
+		[switch]
+		$Hide
 	)
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
-		"Hide"
-		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowSecondsInSystemClock -PropertyType DWord -Value 0 -Force
-		}
 		"Show"
 		{
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowSecondsInSystemClock -PropertyType DWord -Value 1 -Force
+		}
+		"Hide"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowSecondsInSystemClock -PropertyType DWord -Value 0 -Force
 		}
 	}
 }
@@ -5251,10 +5266,10 @@ function NavigationPaneExpand
 	Uninstall OneDrive
 
 	.PARAMETER Install
-	Install OneDrive 64-bit depending which installer is triggered
+	Install OneDrive depending which installer is triggered
 
 	.PARAMETER Install -AllUsers
-	Install OneDrive 64-bit for all users to %ProgramFiles% depending which installer is triggered
+	Install OneDrive for all users to %ProgramFiles% depending which installer is triggered
 
 	.EXAMPLE
 	OneDrive -Uninstall
@@ -10099,16 +10114,16 @@ function Install-VCRedist
 
 <#
 	.SYNOPSIS
-	Install the latest .NET Runtime 8, 9 x64
+	Install the latest .NET Runtime 8, 9
 
-	.PARAMETER NET8x64
-	Install the latest .NET Runtime 8 x64
+	.PARAMETER NET8
+	Install the latest .NET Runtime 8
 
-	.PARAMETER NET9x64
-	Install the latest .NET Runtime 9 x64
+	.PARAMETER NET9
+	Install the latest .NET Runtime 9
 
 	.EXAMPLE
-	Install-DotNetRuntimes -Runtimes NET8x64, NET9x64
+	Install-DotNetRuntimes -Runtimes NET8, NET9
 
 	.LINK
 	https://dotnet.microsoft.com/en-us/download/dotnet
@@ -10125,7 +10140,7 @@ function Install-DotNetRuntimes
 			Mandatory = $true,
 			ParameterSetName = "Runtimes"
 		)]
-		[ValidateSet("NET8x64", "NET9x64")]
+		[ValidateSet("NET8", "NET9")]
 		[string[]]
 		$Runtimes
 	)
@@ -10136,7 +10151,7 @@ function Install-DotNetRuntimes
 	{
 		switch ($Runtime)
 		{
-			NET8x64
+			NET8
 			{
 				try
 				{
@@ -10176,7 +10191,7 @@ function Install-DotNetRuntimes
 				{
 					try
 					{
-						# .NET Runtime 8 x64
+						# .NET Runtime 8
 						$Parameters = @{
 							Uri             = "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNET8Version/windowsdesktop-runtime-$LatestNET8Version-win-x64.exe"
 							OutFile         = "$DownloadsFolder\windowsdesktop-runtime-$LatestNET8Version-win-x64.exe"
@@ -10215,7 +10230,7 @@ function Install-DotNetRuntimes
 					Write-Error -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -ErrorAction SilentlyContinue
 				}
 			}
-			NET9x64
+			NET9
 			{
 				try
 				{
@@ -10255,7 +10270,7 @@ function Install-DotNetRuntimes
 				{
 					try
 					{
-						# Downloading .NET Runtime 9 x64
+						# Downloading .NET Runtime 9
 						$Parameters = @{
 							Uri             = "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNET9Version/windowsdesktop-runtime-$LatestNET9Version-win-x64.exe"
 							OutFile         = "$DownloadsFolder\windowsdesktop-runtime-$LatestNET9Version-win-x64.exe"
@@ -12273,7 +12288,15 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 			# https://github.com/PowerShell/PowerShell/issues/21377
 			$Action     = New-ScheduledTaskAction -Execute wscript.exe -Argument "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup.vbs"
 			$Settings   = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-			$Principal  = New-ScheduledTaskPrincipal -UserId "$env:COMPUTERNAME\$env:USERNAME" -RunLevel Highest
+			# If PC is domain joined, we cannot obtain its SID, because account is cloud managed
+			$Principal = if ($env:USERDOMAIN)
+			{
+				New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
+			}
+			else
+			{
+				New-ScheduledTaskPrincipal -UserId "$env:COMPUTERNAME\$env:USERNAME" -RunLevel Highest
+			}
 			$Parameters = @{
 				TaskName    = "Windows Cleanup"
 				TaskPath    = "Sophia"
@@ -12430,7 +12453,15 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 			# https://github.com/PowerShell/PowerShell/issues/21377
 			$Action    = New-ScheduledTaskAction -Execute wscript.exe -Argument "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.vbs"
 			$Settings  = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-			$Principal = New-ScheduledTaskPrincipal -UserId "$env:COMPUTERNAME\$env:USERNAME" -RunLevel Highest
+			# If PC is domain joined, we cannot obtain its SID, because account is cloud managed
+			$Principal = if ($env:USERDOMAIN)
+			{
+				New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
+			}
+			else
+			{
+				New-ScheduledTaskPrincipal -UserId "$env:COMPUTERNAME\$env:USERNAME" -RunLevel Highest
+			}
 			$Trigger   = New-ScheduledTaskTrigger -Daily -DaysInterval 30 -At 9pm
 			$Parameters = @{
 				TaskName    = "Windows Cleanup Notification"
@@ -12753,7 +12784,15 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 			# https://github.com/PowerShell/PowerShell/issues/21377
 			$Action    = New-ScheduledTaskAction -Execute wscript.exe -Argument "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.vbs"
 			$Settings  = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-			$Principal = New-ScheduledTaskPrincipal -UserId "$env:COMPUTERNAME\$env:USERNAME" -RunLevel Highest
+			# If PC is domain joined, we cannot obtain its SID, because account is cloud managed
+			$Principal = if ($env:USERDOMAIN)
+			{
+				New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
+			}
+			else
+			{
+				New-ScheduledTaskPrincipal -UserId "$env:COMPUTERNAME\$env:USERNAME" -RunLevel Highest
+			}
 			$Trigger   = New-ScheduledTaskTrigger -Daily -DaysInterval 90 -At 9pm
 			$Parameters = @{
 				TaskName    = "SoftwareDistribution"
@@ -13079,7 +13118,15 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 			# https://github.com/PowerShell/PowerShell/issues/21377
 			$Action    = New-ScheduledTaskAction -Execute wscript.exe -Argument "$env:SystemRoot\System32\Tasks\Sophia\TempTask.vbs"
 			$Settings  = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-			$Principal = New-ScheduledTaskPrincipal -UserId "$env:COMPUTERNAME\$env:USERNAME" -RunLevel Highest
+			# If PC is domain joined, we cannot obtain its SID, because account is cloud managed
+			$Principal = if ($env:USERDOMAIN)
+			{
+				New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
+			}
+			else
+			{
+				New-ScheduledTaskPrincipal -UserId "$env:COMPUTERNAME\$env:USERNAME" -RunLevel Highest
+			}
 			$Trigger   = New-ScheduledTaskTrigger -Daily -DaysInterval 60 -At 9pm
 			$Parameters = @{
 				TaskName    = "Temp"

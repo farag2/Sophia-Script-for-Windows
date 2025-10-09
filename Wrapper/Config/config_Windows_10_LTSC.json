@@ -1631,10 +1631,10 @@
     "Function": "Install-DotNetRuntimes -Runtimes",
     "Arg": {
       "Zero": {
-        "Tag": "NET8x64"
+        "Tag": "NET8"
       },
       "One": {
-        "Tag": "NET9x64"
+        "Tag": "NET9"
       }
     },
     "Preset": "",

@@ -57,15 +57,52 @@ This page is also available in other languages
 `Sophia Script for Windows` is the most powerful PowerShell module for fine-tuning `Windows` and automating the routine tasks on `GitHub`. It offers more than 150 unique tweaks, and shows how Windows can be configured without making any harm to it.
 
 > [!IMPORTANT]
-> Every tweak in the preset file has its' corresponding function to restore the default settings. Running the script is best done on a fresh install because running it on wrong tweaked system may result in errors occurring.
+> Every tweak in the preset file has its' corresponding function to restore the default settings.
 
-> [!WARNING]
-> It's allowed to be logged in as one admin user only during application startup.
->
-> `Sophia Script for Windows` may not work on a homebrew Windows.
+## Key features
+
+* All archives are being built via GitHub Actions [automatically](https://github.com/farag2/Sophia-Script-for-Windows/actions);
+* Has no conflict with [VAC](https://help.steampowered.com/faqs/view/571A-97DA-70E9-FF74#whatisvac);
+* Set up Privacy & Telemetry;
+* Enable DNS-over-HTTPS for IPv4;
+* Turn off diagnostics tracking scheduled tasks with pop-up form written in [WPF](#screenshots);
+* Set up UI & Personalization;
+* Uninstall OneDrive "correctly";
+* Interactive [prompts](#change-user-folders-location-programmatically-using-the-interactive-menu);
+* The <kbd>TAB</kbd> [completion](#the-tab-autocomplete-read-more-here) for functions and their arguments (if using the Import-TabCompletion.ps1 file);
+* Change location of the user folders programmatically (without moving user files) within interactive menu using arrows to select a drive
+  * Desktop
+  * Documents
+  * Downloads
+  * Music
+  * Pictures
+  * Videos
+* Install free (light and dark) "Windows 11 Cursors Concept v2" cursors from [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) on-the-fly;
+* Uninstall UWP apps displaying their localized packages names;
+  * Script generates installed UWP apps list [dynamically](#localized-uwp-packages-names)
+* Disable Windows features displaying friendly packages names with pop-up form written in [WPF](#screenshots);
+* Uninstall Windows capabilities displaying friendly packages names with pop-up form written in [WPF](#screenshots);
+* Download and install the [HEVC Video Extensions from Device Manufacturer](https://apps.microsoft.com/detail/9N4WGH0Z6VHQ) to be able to open [HEVC](https://en.wikipedia.org/wiki/H.265) format;
+* Set an app as default one for specific extension without the "How do you want to open this" pop-up using special [function](https://github.com/DanysysTeam/PS-SFTA);
+* Export all Windows associations. Associations will be exported as Application_Associations.json file in script root folder;
+* Import exported JSON file after a clean installation. You need to install all apps according to exported JSON file to restore all associations;
+* Install any supported Linux distribution for WSL displaying friendly distro names with pop-up form written in [WPF](#screenshots);
+* Create scheduled tasks with a native toast notification, where you will be able to run or [dismiss](#native-interactive-toasts-for-the-scheduled-tasks) tasks;
+  * Create scheduled tasks `Windows Cleanup` and `Windows Cleanup Notification` for cleaning up Windows of unused files and Windows updates files;
+  * Create a scheduled task `SoftwareDistribution` for cleaning up `%SystemRoot%\SoftwareDistribution\Download`;
+  * Create a scheduled task `Temp` for cleaning up `%TEMP%`.
+* Create tasks in the Task Scheduler to clear
+  * `%SystemRoot%\SoftwareDistribution\Download`
+  * `%TEMP%`
+* Install the latest provided Microsoft Visual C++ 2015–2022 x86/x64;
+* Install the latest provided .NET Desktop Runtime 8, 9;
+* Configure the Windows security;
+* Display all policy registry keys (even manually created ones) in the Local Group Policy Editor snap-in (gpedit.msc);
+* Many more File Explorer and context menu "deep" tweaks.
 
 ## Table of Contents
 
+* [Key features](#key-features)
 * [How to download](#how-to-download)
   * [Download via PowerShell](#download-via-powershell)
   * [Download via Chocolatey](#download-via-chocolatey)
@@ -77,7 +114,6 @@ This page is also available in other languages
   * [How to revert changes](#how-to-revert-changes)
 * [Donations](#donations)
 * [System Requirements](#system-requirements)
-* [Key features](#key-features)
 * [Screenshots](#screenshots)
 * [Videos](#videos)
 * [How to translate](#how-to-translate)
@@ -249,46 +285,6 @@ Sophia -Functions "DiagTrackService -Enable", UninstallUWPApps
 | Windows 11 Enterprise LTSC 2024          | [Latest stable][Windows-11-LTSC-2024] | Enterprise          |
 | Windows 10 x64 21H2 Enterprise LTSC 2021 | [Latest stable][Windows-10-LTSC-2021] | Enterprise          |
 | Windows 10 x64 1809 Enterprise LTSC 2019 | [Latest stable][Windows-10-LTSC-2019] | Enterprise          |
-
-## Key features
-
-* All archives are being built via GitHub Actions [automatically](https://github.com/farag2/Sophia-Script-for-Windows/actions);
-* Set up Privacy & Telemetry;
-* Enable DNS-over-HTTPS for IPv4;
-* Turn off diagnostics tracking scheduled tasks with pop-up form written in [WPF](#screenshots);
-* Set up UI & Personalization;
-* Uninstall OneDrive "correctly";
-* Interactive [prompts](#change-user-folders-location-programmatically-using-the-interactive-menu);
-* The <kbd>TAB</kbd> [completion](#the-tab-autocomplete-read-more-here) for functions and their arguments (if using the Import-TabCompletion.ps1 file);
-* Change location of the user folders programmatically (without moving user files) within interactive menu using arrows to select a drive
-  * Desktop
-  * Documents
-  * Downloads
-  * Music
-  * Pictures
-  * Videos
-* Install free (light and dark) "Windows 11 Cursors Concept v2" cursors from [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) on-the-fly;
-* Uninstall UWP apps displaying their localized packages names;
-  * Script generates installed UWP apps list [dynamically](#localized-uwp-packages-names)
-* Disable Windows features displaying friendly packages names with pop-up form written in [WPF](#screenshots);
-* Uninstall Windows capabilities displaying friendly packages names with pop-up form written in [WPF](#screenshots);
-* Download and install the [HEVC Video Extensions from Device Manufacturer](https://apps.microsoft.com/detail/9N4WGH0Z6VHQ) to be able to open [HEVC](https://en.wikipedia.org/wiki/H.265) format;
-* Set an app as default one for specific extension without the "How do you want to open this" pop-up using special [function](https://github.com/DanysysTeam/PS-SFTA);
-* Export all Windows associations. Associations will be exported as Application_Associations.json file in script root folder;
-* Import exported JSON file after a clean installation. You need to install all apps according to exported JSON file to restore all associations;
-* Install any supported Linux distribution for WSL displaying friendly distro names with pop-up form written in [WPF](#screenshots);
-* Create scheduled tasks with a native toast notification, where you will be able to run or [dismiss](#native-interactive-toasts-for-the-scheduled-tasks) tasks;
-  * Create scheduled tasks `Windows Cleanup` and `Windows Cleanup Notification` for cleaning up Windows of unused files and Windows updates files;
-  * Create a scheduled task `SoftwareDistribution` for cleaning up `%SystemRoot%\SoftwareDistribution\Download`;
-  * Create a scheduled task `Temp` for cleaning up `%TEMP%`.
-* Create tasks in the Task Scheduler to clear
-  * `%SystemRoot%\SoftwareDistribution\Download`
-  * `%TEMP%`
-* Install the latest provided Microsoft Visual C++ 2015–2022 x86/x64;
-* Install the latest provided .NET Desktop Runtime 8, 9 x86/x64;
-* Configure the Windows security;
-* Display all policy registry keys (even manually created ones) in the Local Group Policy Editor snap-in (gpedit.msc);
-* Many more File Explorer and context menu "deep" tweaks.
 
 ## Screenshots
 

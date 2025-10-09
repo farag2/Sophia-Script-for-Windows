@@ -547,6 +547,20 @@
   },
   {
     "Region": "UI & Personalization",
+    "Function": "ClockInNotificationCenter",
+    "Arg": {
+      "Zero": {
+        "Tag": "Show",
+        "ToolTip": "Show time in Notification Center."
+      },
+      "One": {
+        "Tag": "Hide",
+        "ToolTip": "Hide time in Notification Center (default value)."
+      }
+    }
+  },
+  {
+    "Region": "UI & Personalization",
     "Function": "TaskbarCombine",
     "Arg": {
       "Zero": {
@@ -796,7 +810,7 @@
       },
       "One": {
         "Tag": "Install",
-        "ToolTip": "Install OneDrive 64-bit."
+        "ToolTip": "Install OneDrive. Internet connection required."
       }
     }
   },
@@ -806,7 +820,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Install OneDrive 64-bit all users to %ProgramFiles% depending which installer is triggered."
+        "ToolTip": "Install OneDrive all users to %ProgramFiles% depending which installer is triggered. Internet connection required."
       }
     }
   },
@@ -1269,28 +1283,6 @@
   },
   {
     "Region": "System",
-    "Function": "Get-Association",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Get app, calculate hash, and associate with an extension with the 'How do you want to open this' pop-up hidden."
-      },
-      "One": {
-        "Tag": "ProgramPath",
-        "ToolTip": "Path to executable file."
-      },
-      "Two": {
-        "Tag": "Extension",
-        "ToolTip": "Extension."
-      },
-      "Three": {
-        "Tag": "Icon",
-        "ToolTip": "Path to icon."
-      }
-    }
-  },
-  {
-    "Region": "System",
     "Function": "Export-Associations",
     "Arg": {
       "Zero": {
@@ -1330,22 +1322,22 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": ""
+        "ToolTip": "Internet connection required."
       }
     }
   },
   {
     "Region": "System",
     "Function": "Install-DotNetRuntimes -Runtimes",
-    "ToolTip": "Install the latest .NET Runtime 8, 9.",
+    "ToolTip": "Install the latest .NET Runtime 8, 9. Internet connection required",
     "Arg": {
       "Zero": {
         "Tag": "NET8",
-        "ToolTip": ".NET Runtime 8."
+        "ToolTip": ".NET Runtime 8. Internet connection required."
       },
       "One": {
         "Tag": "NET9",
-        "ToolTip": ".NET Runtime 9."
+        "ToolTip": ".NET Runtime 9. Internet connection required."
       }
     }
   },
@@ -1397,7 +1389,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form. The \"Receive updates for other Microsoft products\" setting will enabled automatically to receive kernel updates."
+        "ToolTip": "Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form. Internet connection required."
       }
     }
   },

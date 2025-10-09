@@ -481,13 +481,13 @@ AppsLanguageSwitch -Enable
 # Не использовать метод ввода для каждого окна (значение по умолчанию)
 # AppsLanguageSwitch -Disable
 
-# Download and install free dark "Windows 11 Cursors Concept" cursors from Jepri Creations
-# Скачать и установить бесплатные темные курсоры "Windows 11 Cursors Concept" от Jepri Creations
+# Download and install free dark "Windows 11 Cursors Concept" cursors from Jepri Creations. Internet connection required
+# Скачать и установить бесплатные темные курсоры "Windows 11 Cursors Concept" от Jepri Creations. Требуется соединение с интернетом
 # https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-886489356
 Cursors -Dark
 
-# Download and install free light "Windows 11 Cursors Concept" cursors from Jepri Creations
-# Скачать и установить бесплатные светлые курсоры "Windows 11 Cursors Concept" от Jepri Creations
+# Download and install free light "Windows 11 Cursors Concept" cursors from Jepri Creations. Internet connection required
+# Скачать и установить бесплатные светлые курсоры "Windows 11 Cursors Concept" от Jepri Creations. Требуется соединение с интернетом
 # https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-886489356
 # Cursors -Light
 
@@ -778,12 +778,12 @@ NetworkDiscovery -Enable
 #>
 # Import-Associations
 
-# Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 (x86/x64)
+# Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 (x86/x64). Internet connection required
 Install-VCRedist -Redistributables 2015_2022_x86, 2015_2022_x64
 
-# Install the latest .NET Runtime 8, 9 x64
-#Установить последнюю версию .NET Runtime 8, 9 x64
-Install-DotNetRuntimes -Runtimes NET8x64, NET9x64
+# Install the latest .NET Runtime 8, 9. Internet connection required
+# Установить последнюю версию .NET Runtime 8, 9. Требуется соединение с интернетом
+Install-DotNetRuntimes -Runtimes NET8, NET9
 
 # Enable proxying only blocked sites from the unified registry of Roskomnadzor. The function is applicable for Russia only
 # Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора. Функция применима только для России

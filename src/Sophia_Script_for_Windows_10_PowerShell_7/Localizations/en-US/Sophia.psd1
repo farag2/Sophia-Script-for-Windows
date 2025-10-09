@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 PowerShellImportFailed                    = Please close PowerShell 7 and re-run the script again.
 UnsupportedArchitecture                   = Your're using "{0}" based architecture CPU. This script supports x64 architecture based CPU only. Download and run script version for your archicture.
-UnsupportedOSBitness                      = The script supports 64-bit Windows only.
+UnsupportedOSBitness                      = The script supports Windows only.
 UnsupportedOSBuild                        = The script supports only Windows 10 22H2. You're using {0} {1}. Upgrade your Windows and try again.
 UnsupportedWindowsTerminal                = Windows Terminal version is lower than 1.22. Please update it in the Microsoft Store and try again.
 UpdateWarning                             = You're using Windows 10 {0}.{1}. Supported builds are Windows 10 {0}.{2} and higher. Run Windows Update and try again.
@@ -14,6 +14,7 @@ TweakerWarning                            = The Windows stability may have been 
 HostsWarning                              = Third-party entries found in the {0} file. They may block connections to resources used in the script. Do you want to continue?
 Bin                                       = There are no files in "{0}" folder. Please, re-download the archive.
 RebootPending                             = The PC is waiting to be restarted.
+BitLockerWarning                          = BitLocker encryption in process, or BitLocker is off, but at the same time drive is encrypted. Complete drive BitLocker configuration and try again.
 UnsupportedRelease                        = A newer Sophia Script version found: {0}. Please download the latest version.
 KeyboardArrows                            = Please use the arrow keys {0} and {1} on your keyboard to select your answer
 CustomizationWarning                      = Have you customized every function in the {0} preset file before running Sophia Script?
@@ -25,7 +26,7 @@ ScheduledTasks                            = Scheduled tasks
 OneDriveUninstalling                      = Uninstalling OneDrive...
 OneDriveInstalling                        = Installing OneDrive...
 OneDriveDownloading                       = Downloading OneDrive...
-OneDriveWarning                           = "WinPrtScrFolder -Desktop" function will be applied only if user configured script to remove OneDrive (or OneDrive was already removed). Otherwise the backup functionality for the "Desktop" and "Pictures" folders in OneDrive breaks.
+OneDriveWarning                           = Please log out from OneDrive account before uninstalling the application.
 WindowsFeaturesTitle                      = Windows features
 OptionalFeaturesTitle                     = Optional features
 EnableHardwareVT                          = Enable Virtualization in UEFI.

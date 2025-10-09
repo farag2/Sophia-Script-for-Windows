@@ -571,20 +571,6 @@
   },
   {
     "Region": "UI & Personalization",
-    "Function": "SecondsInSystemClock",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Show seconds on the taskbar clock."
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Hide seconds on the taskbar clock (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
     "Function": "UnpinTaskbarShortcuts -Shortcuts",
     "ToolTip": "Unpin Microsoft Edge, Microsoft Store, or Mail shortcuts from the taskbar.",
     "Arg": {
@@ -752,11 +738,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "When I grab a windows's title bar and shake it, don't minimize all other windows (default value)."
+        "ToolTip": "When I grab a windows's title bar and shake it, minimize all other windows (default value)."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "When I grab a windows's title bar and shake it, minimize all other windows."
+        "ToolTip": "When I grab a windows's title bar and shake it, don't minimize all other windows."
       }
     }
   },
@@ -830,7 +816,7 @@
       },
       "One": {
         "Tag": "Install",
-        "ToolTip": "Install OneDrive 64-bit."
+        "ToolTip": "Install OneDrive. Internet connection required."
       }
     }
   },
@@ -840,7 +826,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Install OneDrive 64-bit all users to %ProgramFiles% depending which installer is triggered."
+        "ToolTip": "Install OneDrive all users to %ProgramFiles% depending which installer is triggered. Internet connection required."
       }
     }
   },
@@ -877,11 +863,11 @@
     "Function": "Win32LongPathSupport",
     "Arg": {
       "Zero": {
-        "Tag": "Disable",
+        "Tag": "Enable",
         "ToolTip": "Enable Windows long paths support which is limited for 260 characters by default."
       },
       "One": {
-        "Tag": "Enable",
+        "Tag": "Disable",
         "ToolTip": "Disable Windows long paths support which is limited for 260 characters by default (default value)."
       }
     }
@@ -1338,26 +1324,26 @@
     "Arg": {
       "Zero": {
         "Tag": "2015_2022_x86",
-        "ToolTip": "Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 x86."
+        "ToolTip": "Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 x86. Internet connection required."
       },
       "One": {
         "Tag": "2015_2022_x64",
-        "ToolTip": "Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 x64."
+        "ToolTip": "Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 x64. Internet connection required."
       }
     }
   },
   {
     "Region": "System",
     "Function": "Install-DotNetRuntimes -Runtimes",
-    "ToolTip": "Install the latest .NET Runtime 8, 9 x64.",
+    "ToolTip": "Install the latest .NET Runtime 8, 9. Internet connection required",
     "Arg": {
       "Zero": {
-        "Tag": "NET8x64",
-        "ToolTip": ".NET Runtime 8 x64."
+        "Tag": "NET8",
+        "ToolTip": ".NET Runtime 8. Internet connection required."
       },
       "One": {
-        "Tag": "NET9x64",
-        "ToolTip": ".NET Runtime 9 x64."
+        "Tag": "NET9",
+        "ToolTip": ".NET Runtime 9. Internet connection required."
       }
     }
   },
@@ -1409,7 +1395,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form. The \"Receive updates for other Microsoft products\" setting will enabled automatically to receive kernel updates."
+        "ToolTip": "Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form. Internet connection required."
       }
     }
   },

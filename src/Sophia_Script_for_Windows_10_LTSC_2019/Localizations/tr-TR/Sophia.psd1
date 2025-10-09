@@ -12,6 +12,7 @@ TweakerWarning                            = Windows işletim sistemi kararlılı
 HostsWarning                              = {0} dosyasında bulunan üçüncü taraf girişleri. Bunlar, betikte kullanılan kaynaklara bağlantıları engelleyebilir. Devam etmek istiyor musunuz?
 Bin                                       = "{0}" klasöründe dosya yok. Lütfen arşivi yeniden indirin.
 RebootPending                             = PC yeniden başlatılmayı bekliyor.
+BitLockerWarning                          = BitLocker şifreleme işlemi devam ediyor veya BitLocker kapalı, ancak aynı zamanda sürücü şifrelenmiş durumda. Sürücünün BitLocker yapılandırmasını tamamlayın ve tekrar deneyin.
 UnsupportedRelease                        = Daha yeni bir Sophia Script sürümü bulundu: {0}. Lütfen en son sürümü indirin.
 KeyboardArrows                            = Lütfen cevabınızı seçmek için klavyenizdeki {0} ve {1} ok tuşlarını kullanın
 CustomizationWarning                      = Sophia Script'i çalıştırmadan önce {0} ön ayar dosyasındaki her işlevi özelleştirdiniz mi?

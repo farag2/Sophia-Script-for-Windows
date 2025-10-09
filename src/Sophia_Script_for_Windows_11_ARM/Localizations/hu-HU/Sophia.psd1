@@ -1,5 +1,4 @@
 ﻿ConvertFrom-StringData -StringData @'
-PowerShellImportFailed                    = Kérjük, zárja be a PowerShell 7 programot, és futtassa újra a szkriptet.
 UnsupportedArchitecture                   = Ön "{0}" alapú architektúrájú CPU-t használ. Ez a szkript csak Arm architektúrájú CPU-kat támogat. Töltse le és futtassa az Ön architektúrájához megfelelő szkript verziót.
 UnsupportedOSBuild                        = A szkript támogatja a Windows 11 24H2 és magasabb verziószámú operációs rendszereket. {0} {1}-et használsz. Frissítse a Windows-t, és próbálja meg újra.
 UnsupportedWindowsTerminal                = A Windows Terminal verziója alacsonyabb, mint 1.20. Kérjük, frissítse azt a Microsoft Store-ban, és próbálja meg újra.
@@ -13,6 +12,7 @@ TweakerWarning                            = A Windows operációs rendszer stabi
 HostsWarning                              = A {0} fájlban található harmadik féltől származó bejegyzések. Ezek blokkolhatják a szkriptben használt erőforrásokhoz való kapcsolódást. Folytatni szeretné?
 Bin                                       = A "{0}" mappában nincsenek fájlok. Kérjük, töltse le újra az archívumot.
 RebootPending                             = A számítógép újraindításra vár.
+BitLockerWarning                          = A BitLocker titkosítás folyamatban van, vagy a BitLocker ki van kapcsolva, de a meghajtó titkosítva van. Végezze el a BitLocker meghajtókonfigurációját, majd próbálkozzon újra.
 UnsupportedRelease                        = Újabb Sophia Script verzió található: {0}. Kérjük, töltse le a legújabb verziót.
 KeyboardArrows                            = Kérjük, használja a billentyűzet {0} és {1} nyílbillentyűit a válasz kiválasztásához
 CustomizationWarning                      = Személyre szabott minden opciót a {0} preset fájlban, mielőtt futtatni kívánja a Sophia szkriptet?
@@ -23,7 +23,7 @@ ScheduledTasks                            = Ütemezett feladatok
 OneDriveUninstalling                      = OneDrive eltávolítása...
 OneDriveInstalling                        = OneDrive telepítése...
 OneDriveDownloading                       = OneDrive letöltése...
-OneDriveWarning                           = A "WinPrtScrFolder -Desktop" funkció csak akkor kerül alkalmazásra, ha a felhasználó a OneDrive eltávolítására konfigurálta a szkriptet (vagy a OneDrive már eltávolításra került). Ellenkező esetben a OneDrive "Desktop" és "Pictures" mappáinak biztonsági mentési funkciója megszakad.
+OneDriveWarning                           = Kérjük, jelentkezzen ki a OneDrive-fiókjából, mielőtt eltávolítja az alkalmazást.
 WindowsFeaturesTitle                      = Windows szolgáltatások
 OptionalFeaturesTitle                     = Opcionális szolgáltatások
 EnableHardwareVT                          = Virtualizáció engedélyezése UEFI-ben.

@@ -1,5 +1,4 @@
 ﻿ConvertFrom-StringData -StringData @'
-PowerShellImportFailed                    = Будь ласка, закрийте PowerShell 7 і запустіть сценарій знову.
 UnsupportedArchitecture                   = Ви використовуєте процесор з архітектурою "{0}". Скрипт підтримує процесори з архітектурою Arm. Завантажте та запустіть версію скрипту для вашої архітектури.
 UnsupportedOSBuild                        = Скрипт підтримує тільки Windows 11 24H2 і вище. Ви використовуєте {0} {1}. Оновіть Windows і спробуйте ще раз.
 UnsupportedWindowsTerminal                = Версія Windows Terminal нижча за 1.20. Будь ласка, оновіть його в Microsoft Store і спробуйте заново.
@@ -13,6 +12,7 @@ TweakerWarning                            = Стабільність вашої 
 HostsWarning                              = У файлі {0} виявлено сторонні записи. Вони можуть блокувати з'єднання з ресурсами, використовуваними в роботі скрипта. Хочете продовжити?
 Bin                                       = У папці "{0}" відсутні файли. Будь ласка, перекачайте архів.
 RebootPending                             = Комп'ютер очікує на перезавантаження.
+BitLockerWarning                          = Виконується шифрування BitLocker або BitLocker вимкнено, але водночас диск зашифровано. Завершіть налаштування BitLocker для диска та спробуйте знову.
 UnsupportedRelease                        = Виявлено нову версію Sophia Script: {0}. Будь ласка, завантажте останню версію.
 KeyboardArrows                            = Для вибору відповіді використовуйте на клавіатурі стрілки  {0} і {1}
 CustomizationWarning                      = Ви налаштували всі функції в пресет-файлі {0} перед запуском Sophia Script?
@@ -23,7 +23,7 @@ ScheduledTasks                            = Заплановані задачі
 OneDriveUninstalling                      = Видалення OneDrive...
 OneDriveInstalling                        = OneDrive встановлюється...
 OneDriveDownloading                       = Завантажується OneDrive...
-OneDriveWarning                           = Функція "WinPrtScrFolder -Desktop" буде застосована тільки в разі, якщо користувач налаштував видалення OneDrive (або застосунок уже видалено). Інакше ламається функціонал резервного копіювання для папок "Робочий стіл" і "Зображення" в OneDrive.
+OneDriveWarning                           = Будь ласка, вийдіть з облікового запису OneDrive перед видаленням програми.
 WindowsFeaturesTitle                      = Компоненти Windows
 OptionalFeaturesTitle                     = Додаткові компоненти
 EnableHardwareVT                          = Увімкніть віртуалізацію в UEFI.

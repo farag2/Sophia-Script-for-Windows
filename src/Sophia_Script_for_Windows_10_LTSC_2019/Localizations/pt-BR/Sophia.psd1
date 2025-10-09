@@ -12,6 +12,7 @@ TweakerWarning                            = A estabilidade do sistema operaciona
 HostsWarning                              = Entradas de terceiros encontradas no arquivo {0}. Elas podem bloquear as conexões com os recursos usados no script. Deseja continuar?
 Bin                                       = Não há arquivos na pasta "{0}". Faça o download do arquivo novamente.
 RebootPending                             = O PC está esperando para ser reiniciado.
+BitLockerWarning                          = A criptografia do BitLocker está em andamento ou o BitLocker está desativado, mas ao mesmo tempo a unidade está criptografada. Conclua a configuração do BitLocker na unidade e tente novamente.
 UnsupportedRelease                        = Encontrada uma versão mais recente do Sophia Script: {0}. Faça o download da versão mais recente.
 KeyboardArrows                            = Use as teclas de seta {0} e {1} do teclado para selecionar sua resposta
 CustomizationWarning                      = Você personalizou todas as funções no arquivo de predefinição {0} antes de executar o Sophia Script?

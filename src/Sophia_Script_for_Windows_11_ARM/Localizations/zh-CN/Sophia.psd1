@@ -1,5 +1,4 @@
 ﻿ConvertFrom-StringData -StringData @'
-PowerShellImportFailed                    = 请关闭PowerShell 7并重新运行脚本。
 UnsupportedArchitecture                   = 您正在使用基于"{0}"架构的CPU。此脚本仅支持基于Arm架构的CPU。请下载并运行适用于您架构的脚本版本。
 UnsupportedOSBuild                        = 腳本支援 Windows 11 24H2 及更高版本。您正在使用 {0} {1}。升级 Windows，然后再试一次。
 UnsupportedWindowsTerminal                = Windows Terminal版本低於1.20。請在Microsoft商店更新後再試。
@@ -13,6 +12,7 @@ TweakerWarning                            = Windows的稳定性可能已被{0}�
 HostsWarning                              = 在{0}文件中发现的第三方条目。它们可能会阻止与脚本中使用的资源的连接。要继续吗？
 Bin                                       = "{0}" 資料夾中沒有檔案。請重新下載存檔。
 RebootPending                             = 计算机正在等待重新启动。
+BitLockerWarning                          = BitLocker加密正在进行中，或BitLocker已关闭，但驱动器同时处于加密状态。请完成驱动器的BitLocker配置后重试。
 UnsupportedRelease                        = 发现新版Sophia Script：{0}。请下载最新版本。
 KeyboardArrows                            = 请使用键盘上的方向键{0}和{1}选择您的答案
 CustomizationWarning                      = 在运行Sophia Script之前，您是否已自定义{0}预设文件中的每个函数？
@@ -23,7 +23,7 @@ ScheduledTasks                            = 计划任务
 OneDriveUninstalling                      = 卸载OneDrive.....
 OneDriveInstalling                        = OneDrive正在安装.....
 OneDriveDownloading                       = 正在下载OneDrive.....
-OneDriveWarning                           = "WinPrtScrFolder -Desktop" 功能僅在使用者設定腳本移除 OneDrive (或 OneDrive 已移除) 後才會套用。否則 OneDrive 中「桌面」和「圖片」資料夾的備份功能會中斷。
+OneDriveWarning                           = 请在卸载应用程序前先退出 OneDrive 账户。
 WindowsFeaturesTitle                      = Windows功能
 OptionalFeaturesTitle                     = 可选功能
 EnableHardwareVT                          = UEFI中开启虚拟化。

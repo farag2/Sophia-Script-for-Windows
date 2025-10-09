@@ -12,6 +12,7 @@ TweakerWarning                            = A Windows operációs rendszer stabi
 HostsWarning                              = A {0} fájlban található harmadik féltől származó bejegyzések. Ezek blokkolhatják a szkriptben használt erőforrásokhoz való kapcsolódást. Folytatni szeretné?
 Bin                                       = A "{0}" mappában nincsenek fájlok. Kérjük, töltse le újra az archívumot.
 RebootPending                             = A számítógép újraindításra vár.
+BitLockerWarning                          = A BitLocker titkosítás folyamatban van, vagy a BitLocker ki van kapcsolva, de a meghajtó titkosítva van. Végezze el a BitLocker meghajtókonfigurációját, majd próbálkozzon újra.
 UnsupportedRelease                        = Újabb Sophia Script verzió található: {0}. Kérjük, töltse le a legújabb verziót.
 KeyboardArrows                            = Kérjük, használja a billentyűzet {0} és {1} nyílbillentyűit a válasz kiválasztásához
 CustomizationWarning                      = Személyre szabott minden opciót a {0} preset fájlban, mielőtt futtatni kívánja a Sophia szkriptet?

@@ -12,6 +12,7 @@ TweakerWarning                            = La stabilité de l'OS Windows peut a
 HostsWarning                              = Entrées tierces trouvées dans le fichier {0}. Elles peuvent bloquer les connexions aux ressources utilisées dans le script. Voulez-vous continuer?
 Bin                                       = Il n'y a pas de fichiers dans le dossier "{0}". Veuillez retélécharger l'archive.
 RebootPending                             = Le PC attend d'être redémarré.
+BitLockerWarning                          = Le chiffrement BitLocker est en cours, ou BitLocker est désactivé, mais le lecteur est tout de même chiffré. Terminez la configuration BitLocker du lecteur et réessayez.
 UnsupportedRelease                        = Une nouvelle version de Sophia Script a été trouvée: {0}. Veuillez télécharger la dernière version.
 KeyboardArrows                            = Veuillez utiliser les touches fléchées {0} et {1} de votre clavier pour sélectionner votre réponse
 CustomizationWarning                      = Avez-vous personnalisé chaque fonction du fichier de préréglage {0} avant d'exécuter Sophia Script?

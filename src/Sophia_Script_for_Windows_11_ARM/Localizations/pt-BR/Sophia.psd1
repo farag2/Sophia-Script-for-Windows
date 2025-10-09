@@ -1,5 +1,4 @@
 ﻿ConvertFrom-StringData -StringData @'
-PowerShellImportFailed                    = Feche o PowerShell 7 e execute o script novamente.
 UnsupportedArchitecture                   = Você está usando uma CPU com arquitetura baseada em "{0}". Este script suporta apenas CPUs com arquitetura Arm. Baixe e execute a versão do script para a sua arquitetura.
 UnsupportedOSBuild                        = O script é compatível com o Windows 11 24H2 e superior. Você está usando o {0} {1}. Atualize seu Windows e tente novamente.
 UnsupportedWindowsTerminal                = A versão do Windows Terminal é inferior a 1.20. Atualize-a na Microsoft Store e tente novamente.
@@ -13,6 +12,7 @@ TweakerWarning                            = A estabilidade do sistema operaciona
 HostsWarning                              = Entradas de terceiros encontradas no arquivo {0}. Elas podem bloquear as conexões com os recursos usados no script. Deseja continuar?
 Bin                                       = Não há arquivos na pasta "{0}". Faça o download do arquivo novamente.
 RebootPending                             = O PC está esperando para ser reiniciado.
+BitLockerWarning                          = A criptografia do BitLocker está em andamento ou o BitLocker está desativado, mas ao mesmo tempo a unidade está criptografada. Conclua a configuração do BitLocker na unidade e tente novamente.
 UnsupportedRelease                        = Encontrada uma versão mais recente do Sophia Script: {0}. Faça o download da versão mais recente.
 KeyboardArrows                            = Use as teclas de seta {0} e {1} do teclado para selecionar sua resposta
 CustomizationWarning                      = Você personalizou todas as funções no arquivo de predefinição {0} antes de executar o Sophia Script?
@@ -23,7 +23,7 @@ ScheduledTasks                            = Tarefas agendadas
 OneDriveUninstalling                      = Desinstalar OneDrive...
 OneDriveInstalling                        = Instalar o OneDrive...
 OneDriveDownloading                       = Baixando OneDrive...
-OneDriveWarning                           = A função "WinPrtScrFolder -Desktop" será aplicada somente se o usuário tiver configurado o script para remover o OneDrive (ou se o OneDrive já tiver sido removido). Caso contrário, a funcionalidade de backup para as pastas "Desktop" e "Pictures" no OneDrive será interrompida.
+OneDriveWarning                           = Faça logout da conta do OneDrive antes de desinstalar o aplicativo.
 WindowsFeaturesTitle                      = Recursos do Windows
 OptionalFeaturesTitle                     = Recursos opcionais
 EnableHardwareVT                          = Habilitar virtualização em UEFI.
