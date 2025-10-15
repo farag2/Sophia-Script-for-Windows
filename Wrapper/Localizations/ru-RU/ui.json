@@ -66,8 +66,10 @@
       "statusBarOppositeEverything": "Выбраны все противоположные значения!",
       "statusBarClearTab": "Отмеченные элементы для вкладки очищены!",
       "statusBarClearEverything": "Все отмеченные элементы очищены!",
-      "statusBarDisabled": "Импортируйте пресет, чтобы включить элементы управления.",
-      "statusBarCurrentOS": "Текущая ОС"
+      "statusBarDisabled": "Загрузите Sophia Script for Windows и импортируйте пресет Sophia.ps1, чтобы включить элементы управления",
+      "statusBarMessageDownloadMessagePart1of3": "Скачайте",
+      "statusBarMessageDownloadLinkPart2of3": "Sophia Script for Windows",
+      "statusBarMessageDownloadMessagePart3of3": "и импортируйте пресет Sophia.ps1, чтобы включить элементы управления"
     }
   },
   {
@@ -87,7 +89,9 @@
     "Id": "Other",
     "Options": {
       "textBlockSearchInfo": "Введите запрос в строку поиска, чтобы увидеть найденные результаты. При совпадении категории будут подсвечены красной рамкой. Совпадения по именам функций будут также подсвечены внутри категорий.",
-      "textBlockSearchFound": "Количество найденных вариантов:"
+      "textBlockSearchFound": "Количество найденных вариантов:",
+      "textBlockInformation": "Информация",
+      "textBlockWhichSSfWYouNeed": "Какой 'Sophia Script for Windows' вам нужен?"
     }
   }
 ]

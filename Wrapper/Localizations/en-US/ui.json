@@ -66,8 +66,10 @@
       "statusBarOppositeEverything": "Opposites selected for everything!",
       "statusBarClearTab": "Selections for tab cleared!",
       "statusBarClearEverything": "Selections all cleared!",
-      "statusBarDisabled": "Import a preset to enable controls.",
-      "statusBarCurrentOS": "Current OS"
+      "statusBarDisabled": "Download Sophia Script for Windows and import Sophia.ps1 preset to enable controls",
+      "statusBarMessageDownloadMessagePart1of3": "Download",
+      "statusBarMessageDownloadLinkPart2of3": "Sophia Script for Windows",
+      "statusBarMessageDownloadMessagePart3of3": "and import Sophia.ps1 preset to enable controls"
     }
   },
   {
@@ -87,7 +89,9 @@
     "Id": "Other",
     "Options": {
       "textBlockSearchInfo": "Enter search string to find the option. The tab will be outlined in the color red locating the tab containing the option(s) and the option's label will also be in outlined in red.",
-      "textBlockSearchFound": "Number of options found:"
+      "textBlockSearchFound": "Number of options found:",
+      "textBlockInformation": "Information",
+      "textBlockWhichSSfWYouNeed": "Which 'Sophia Script for Windows' you need"
     }
   }
 ]

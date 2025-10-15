@@ -12,7 +12,7 @@ TweakerWarning                            = The Windows stability may have been 
 HostsWarning                              = Third-party entries found in the {0} file. They may block connections to resources used in the script. Do you want to continue?
 Bin                                       = There are no files in "{0}" folder. Please, re-download the archive.
 RebootPending                             = The PC is waiting to be restarted.
-BitLockerWarning                          = BitLocker encryption in process, or BitLocker is off, but at the same time drive is encrypted. Complete drive BitLocker configuration and try again.
+BitLockerWarning                          = BitLocker encryption is in progress. Complete BitLocker drive configuration and try again.
 UnsupportedRelease                        = A newer Sophia Script version found: {0}. Please download the latest version.
 KeyboardArrows                            = Please use the arrow keys {0} and {1} on your keyboard to select your answer
 CustomizationWarning                      = Have you customized every function in the {0} preset file before running Sophia Script?
@@ -67,6 +67,6 @@ Restore                                   = Restore
 Run                                       = Run
 Skipped                                   = Function "{0}" skipped.
 ThankfulToastTitle                        = Thank you for using Sophia Script ❤️
-DonateToastTitle                          = Please donate, if you like this project 🕊️
+DonateToastTitle                          = You may donate below 🕊️
 DotSourcedWarning                         = Please dot-source the function (with a dot at the beginning):\n. .\\Import-TabCompletion.ps1
 '@

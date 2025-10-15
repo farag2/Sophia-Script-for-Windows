@@ -278,7 +278,7 @@ Sophia -Functions "DiagTrackService -Enable", UninstallUWPApps
 
 |                Версія                    |              Збіркa                   |       Видання       |
 |:-----------------------------------------|:-------------------------------------:|:-------------------:|
-| Windows 11 24H2                          | [Latest stable][Windows-11-24h2]      | Home/Pro/Enterprise |
+| Windows 11 24H2/25H2+                    | [Latest stable][Windows-11-24h2]      | Home/Pro/Enterprise |
 | Windows 10 x64 22H2                      | [Latest stable][Windows-10]           | Home/Pro/Enterprise |
 | Windows 11 Enterprise LTSC 2024          | [Latest stable][Windows-11-LTSC-2024] | Enterprise          |
 | Windows 10 x64 21H2 Enterprise LTSC 2021 | [Latest stable][Windows-10-LTSC-2021] | Enterprise          |

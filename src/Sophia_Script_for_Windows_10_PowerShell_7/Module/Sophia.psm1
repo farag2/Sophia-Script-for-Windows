@@ -911,8 +911,8 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		exit
 	}
 
-	# Checking whether BitLocker encryption in process, or BitLocker is off, but at the same time drive is encrypted
-	if (Get-BitLockerVolume | Where-Object -FilterScript {($_.ProtectionStatus -eq "Off") -and (($_.VolumeStatus -eq "DecryptionInProgress") -or ($_.VolumeStatus -eq "FullyEncrypted"))})
+	# Checking whether BitLocker encryption in process
+	if (Get-BitLockerVolume | Where-Object -FilterScript {$_.VolumeStatus -eq "DecryptionInProgress"})
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message $Localization.BitLockerWarning
@@ -15186,6 +15186,17 @@ public static void PostMessage()
 
 	# Open Startup page
 	Start-Process -FilePath "ms-settings:startupapps"
+
+	# Checking whether BitLocker drive encryption if off, despite drive is encrypted
+	if (Get-BitLockerVolume | Where-Object -FilterScript {($_.ProtectionStatus -eq "Off") -and ($_.VolumeStatus -eq "FullyEncrypted")})
+	{
+		Get-BitLockerVolume
+
+		Start-Process -Path "https://support.microsoft.com/windows/cf7e2b6f-3e70-4882-9532-18633605b7df"
+
+		# Open BitLocker settings
+		& "$env:SystemRoot\System32\control.exe" /name Microsoft.BitLockerDriveEncryption
+	}
 
 	# Checking whether any of scheduled tasks were created. Unless open Task Scheduler
 	if ($Script:ScheduledTasks)

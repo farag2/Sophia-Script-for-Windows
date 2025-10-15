@@ -66,8 +66,10 @@
       "statusBarOppositeEverything": "Für alles ausgewählte Gegensätze!",
       "statusBarClearTab": "Auswahl für Registerkarte gelöscht!",
       "statusBarClearEverything": "Alle Auswahlen gelöscht!",
-      "statusBarDisabled": "Sie müssen zuerst 'Voreinstellung importieren', um die Verwendung von Wrapper zu aktivieren. Importieren, um Steuerelemente zu aktivieren.",
-      "statusBarCurrentOS": "Aktuelles OS"
+      "statusBarDisabled": "Laden Sie Sophia Script for Windows herunter und importieren Sie die Voreinstellung Sophia.ps1, um die Steuerelemente zu aktivieren",
+      "statusBarMessageDownloadMessagePart1of3": "Herunterladen",
+      "statusBarMessageDownloadLinkPart2of3": "Sophia Script for Windows",
+      "statusBarMessageDownloadMessagePart3of3": "und importieren Sie die Voreinstellung Sophia.ps1, um die Steuerelemente zu aktivieren"
     }
   },
   {
@@ -87,7 +89,9 @@
     "Id": "Other",
     "Options": {
       "textBlockSearchInfo": "Geben Sie die Suchzeichenfolge ein, um die Option zu finden. Die Registerkarte wird in der Farbe Rot umrandet, um die Registerkarte zu finden, die die Option(en) enthält, und die Beschriftung der Option wird ebenfalls in Rot umrandet.",
-      "textBlockSearchFound": "Anzahl der gefundenen Optionen:"
+      "textBlockSearchFound": "Anzahl der gefundenen Optionen:",
+      "textBlockInformation": "Information",
+      "textBlockWhichSSfWYouNeed": "Welches 'Sophia Script für Windows' Sie benötigen"
     }
   }
 ]

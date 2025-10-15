@@ -12,7 +12,7 @@ TweakerWarning                            = Die Stabilität des Windows-Betriebs
 HostsWarning                              = Einträge von Drittanbietern, die in der Datei {0} gefunden werden. Sie können Verbindungen zu den im Skript verwendeten Ressourcen blockieren. Möchten Sie fortfahren?
 Bin                                       = Im Ordner "{0}" befinden sich keine Dateien. Bitte laden Sie das Archiv erneut herunter.
 RebootPending                             = Der PC wartet darauf, neu gestartet zu werden.
-BitLockerWarning                          = BitLocker-Verschlüsselung wird ausgeführt oder BitLocker ist deaktiviert, aber gleichzeitig ist das Laufwerk verschlüsselt. Schließen Sie die BitLocker-Konfiguration für das Laufwerk ab und versuchen Sie es erneut.
+BitLockerWarning                          = Die BitLocker-Verschlüsselung wird gerade durchgeführt. Schließen Sie die BitLocker-Laufwerkskonfiguration ab und versuchen Sie es erneut.
 UnsupportedRelease                        = Eine neuere Version von Sophia Script gefunden: {0}. Bitte laden Sie die neueste Version herunter.
 KeyboardArrows                            = Bitte verwenden Sie die Pfeiltasten {0} und {1} auf Ihrer Tastatur, um Ihre Antwort auszuwählen
 CustomizationWarning                      = Haben Sie alle Funktionen in der voreingestellten Datei {0} angepasst, bevor Sie Sophia Script ausführen?
@@ -62,6 +62,6 @@ Restore                                   = Wiederherstellen
 Run                                       = Starten
 Skipped                                   = Funktion "{0}" übersprungen.
 ThankfulToastTitle                        = Vielen Dank, dass Sie Sophia Script verwenden ❤️
-DonateToastTitle                          = Bitte spenden Sie, wenn Sie dieses Projekt mögen 🕊
+DonateToastTitle                          = Sie können unten spenden 🕊
 DotSourcedWarning                         = Bitte "dot-source" die Funktion (mit einem Punkt am Anfang):\n. .\\Import-TabCompletion.ps1
 '@

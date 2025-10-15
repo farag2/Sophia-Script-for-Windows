@@ -12,7 +12,7 @@ TweakerWarning                            = Stabilność systemu Windows mogła 
 HostsWarning                              = Voci di terze parti presenti nel file {0}. Potrebbero bloccare le connessioni alle risorse utilizzate nello script. Volete continuare?
 Bin                                       = W folderze "{0}" nie ma żadnych plików. Prosimy o ponowne pobranie archiwum.
 RebootPending                             = Komputer oczekuje na ponowne uruchomienie.
-BitLockerWarning                          = Trwa szyfrowanie BitLocker lub funkcja BitLocker jest wyłączona, ale jednocześnie dysk jest zaszyfrowany. Ukończ konfigurację funkcji BitLocker dla dysku i spróbuj ponownie.
+BitLockerWarning                          = Trwa szyfrowanie za pomocą funkcji BitLocker. Zakończ konfigurację dysku BitLocker i spróbuj ponownie.
 UnsupportedRelease                        = Znaleziono nowszą wersję skryptu Sophia: {0}. Proszę pobrać najnowszą wersję.
 KeyboardArrows                            = Użyj klawiszy strzałek {0} i {1} na klawiaturze, aby wybrać odpowiedź
 CustomizationWarning                      = Czy dostosowałeś funkcje w predefiniowanym pliku {0} przed uruchomieniem Sophia Script?
@@ -65,6 +65,6 @@ Restore                                   = Przywróć
 Run                                       = Uruchom
 Skipped                                   = Pominięto.
 ThankfulToastTitle                        = Dziękujemy za korzystanie z Sophia Script ❤️
-DonateToastTitle                          = Przekaż darowiznę, jeśli podoba Ci się ten projekt 🕊
+DonateToastTitle                          = Możesz przekazać darowiznę poniżej 🕊
 DotSourcedWarning                         = Prosimy o "dot-source" funkcji (z kropką na początku):\n. .\\Import-TabCompletion.ps1
 '@

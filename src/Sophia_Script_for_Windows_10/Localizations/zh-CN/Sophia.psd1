@@ -12,7 +12,7 @@ TweakerWarning                            = Windows的稳定性可能已被{0}�
 HostsWarning                              = 在{0}文件中发现的第三方条目。它们可能会阻止与脚本中使用的资源的连接。要继续吗？
 Bin                                       = "{0}" 資料夾中沒有檔案。請重新下載存檔。
 RebootPending                             = 计算机正在等待重新启动。
-BitLockerWarning                          = BitLocker加密正在进行中，或BitLocker已关闭，但驱动器同时处于加密状态。请完成驱动器的BitLocker配置后重试。
+BitLockerWarning                          = BitLocker加密正在进行中。请完成BitLocker驱动器配置后重试。
 UnsupportedRelease                        = 发现新版Sophia Script：{0}。请下载最新版本。
 KeyboardArrows                            = 请使用键盘上的方向键{0}和{1}选择您的答案
 CustomizationWarning                      = 在运行Sophia Script之前，您是否已自定义{0}预设文件中的每个函数？
@@ -67,6 +67,6 @@ Restore                                   = 恢复
 Run                                       = 运行
 Skipped                                   = 跳过函数"{0}"。
 ThankfulToastTitle                        = 感謝您使用Sophia Script ❤️
-DonateToastTitle                          = 如果您喜歡這個專案，請捐款 🕊️
+DonateToastTitle                          = 您可以在下方进行捐赠 🕊️
 DotSourcedWarning                         = 請"點源"功能（開頭有點）:\n. .\\Import-TabCompletion.ps1
 '@
