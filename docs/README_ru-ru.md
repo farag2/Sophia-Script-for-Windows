@@ -92,7 +92,7 @@ This page is also available in other languages
   * Создать задание `SoftwareDistribution` для очистки `%SystemRoot%\SoftwareDistribution\Download`;
   * Создать задание `Temp` для очистки `%TEMP%`.
 * Установить последней версии распространяемых пакетов Microsoft Visual C++ 2015–2022 x86/x64;
-* Установить последней версии распространяемых пакетов .NET Desktop Runtime 8, 9 x86/x64;
+* Установить последней версии распространяемых пакетов .NET Desktop Runtime 8, 9 x64;
 * Настроить безопасность Windows;
 * Отобразить все ключи политик реестра в оснастке редактирования групповых политик (gpedit.msc);
 * Много других твиков проводника и контекстного меню.

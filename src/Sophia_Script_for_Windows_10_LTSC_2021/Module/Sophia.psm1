@@ -13177,7 +13177,7 @@ public static void PostMessage()
 	{
 		Get-BitLockerVolume
 
-		Start-Process -Path "https://support.microsoft.com/windows/cf7e2b6f-3e70-4882-9532-18633605b7df"
+		Start-Process -FilePath "https://support.microsoft.com/windows/cf7e2b6f-3e70-4882-9532-18633605b7df"
 
 		# Open BitLocker settings
 		& "$env:SystemRoot\System32\control.exe" /name Microsoft.BitLockerDriveEncryption
