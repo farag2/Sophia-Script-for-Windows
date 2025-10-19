@@ -3,31 +3,25 @@
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
 	.VERSION
-	6.9.1
+	6.9.2
 
 	.DATE
-	01.09.2025
-
-	.AUTHOR
-	Team Sophia
+	19.10.2025
 
 	.COPYRIGHT
-	(c) 2014—2025
-
-	.THANKS
-	Thanks to all https://forum.ru-board.com members involved
+	(c) 2014—2025 Team Sophia
 
 	.NOTES
 	Supports Windows 11 Enterprise LTSC 2024
 
-	.LINK
+	.LINK GitHub
 	https://github.com/farag2/Sophia-Script-for-Windows
 
-	.LINK
+	.LINK Telegram
 	https://t.me/sophianews
 	https://t.me/sophia_chat
 
-	.LINK
+	.LINK Discord
 	https://discord.gg/sSryhaEv79
 
 	.DONATE
@@ -57,9 +51,6 @@ function InitialActions
 	)
 
 	Set-StrictMode -Version Latest
-
-	# Сlear the $Error variable
-	$Global:Error.Clear()
 
 	# Unblock all files in the script folder by removing the Zone.Identifier alternate data stream with a value of "3"
 	Get-ChildItem -Path $PSScriptRoot\..\ -File -Recurse -Force | Unblock-File
@@ -256,20 +247,6 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		while ($Key.Key -notin ([ConsoleKey]::Escape, [ConsoleKey]::Enter))
 	}
 
-	# Check CPU architecture
-	$Caption = (Get-CimInstance -ClassName CIM_Processor).Caption
-	if (($Caption -notmatch "AMD64") -and ($Caption -notmatch "Intel64"))
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message ($Localization.UnsupportedArchitecture -f $Caption)
-		Write-Information -MessageData "" -InformationAction Continue
-
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-		exit
-	}
-
 	# Check the language mode
 	if ($ExecutionContext.SessionState.LanguageMode -ne "FullLanguage")
 	{
@@ -277,7 +254,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Warning -Message $Localization.UnsupportedLanguageMode
 		Write-Information -MessageData "" -InformationAction Continue
 
-		Write-Verbose -Message "https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_language_modes" -Verbose
+		Write-Verbose -Message "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_language_modes" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
@@ -928,11 +905,7 @@ public extern static string BrandingFormatString(string sFormat);
 
 		# Windows 11 Pro
 		$Windows_Long = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
-		$Windows_Long_First_Item = $Windows_Long.split(" ")[0]
-		$Windows_Long_Second_Item = $Windows_Long.split(" ")[1]
-		# Windows 11
-		$Windows_Long = ($Windows_Long_First_Item, $Windows_Long_Second_Item) -join " "
-		# e.g. 24H2
+		# e.g. 25H2
 		$DisplayVersion = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name DisplayVersion
 
 		Write-Warning -Message ($Localization.UnsupportedOSBuild -f $Windows_Long, $DisplayVersion)
@@ -6329,7 +6302,7 @@ function Set-UserShellFolderLocation
 		Set-UserShellFolder -UserFolder Desktop -FolderPath "$env:SystemDrive:\Desktop"
 
 		.LINK
-		https://docs.microsoft.com/en-us/windows/win32/api/shlobj_core/nf-shlobj_core-shgetknownfolderpath
+		https://learn.microsoft.com/en-us/windows/win32/api/shlobj_core/nf-shlobj_core-shgetknownfolderpath
 
 		.NOTES
 		User files or folders won't be moved to a new location
@@ -7181,7 +7154,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 	Use .NET Framework 4.8.1 for old apps
 
 	.PARAMETER Disable
-	Do not Use .NET Framework 4.8.1 for old apps
+	Do not use .NET Framework 4.8.1 for old apps
 
 	.EXAMPLE
 	LatestInstalled.NET -Enable
@@ -9075,7 +9048,7 @@ function Import-Associations
 	Install-VCRedist -Redistributables 2015_2022_x86, 2015_2022_x64
 
 	.LINK
-	https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist
+	https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist
 
 	.NOTES
 	Machine-wide
@@ -12385,7 +12358,7 @@ function WindowsSandbox
 	The valid IPv4 addresses: 1.0.0.1, 1.1.1.1, 149.112.112.112, 8.8.4.4, 8.8.8.8, 9.9.9.9
 
 	.LINK
-	https://docs.microsoft.com/en-us/windows-server/networking/dns/doh-client-support
+	https://learn.microsoft.com/en-us/windows-server/networking/dns/doh-client-support
 
 	.LINK
 	https://www.comss.ru/page.php?id=7315

@@ -3,16 +3,13 @@
 	Default preset file for "Sophia Script for Windows 10"
 
 	.VERSION
-	5.21.1
+	5.21.2
 
 	.DATE
-	01.09.2025
+	19.10.2025
 
 	.COPYRIGHT
 	(c) 2014—2025 Team Sophia
-
-	.THANKS
-	Thanks to all https://forum.ru-board.com members involved
 
 	.DESCRIPTION
 	Place the "#" char before function if you don't want to run it
@@ -32,10 +29,7 @@
 	iwr sl.sophia.team -useb | iex
 
 	.NOTES
-	Supported Windows 10 versions
-	Version: 22H2
-	Editions: Home/Pro/Enterprise
-	Architecture: x64
+	Supports Windows 10 22H2 x64 Home/Pro/Enterprise
 
 	.NOTES
 	To use Enable tab completion to invoke for functions if you do not know function name dot source the Import-TabCompletion.ps1 script first:
@@ -51,6 +45,10 @@
 
 	.LINK Discord
 	https://discord.gg/sSryhaEv79
+
+	.DONATE
+	https://ko-fi.com/farag
+	https://boosty.to/teamsophia
 
 	.NOTES
 	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
@@ -76,11 +74,12 @@ param
 )
 
 Clear-Host
+$Global:Error.Clear()
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.21.1 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) Team Sophia, 2014$([System.Char]0x2013)2025"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.21.2 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) Team Sophia, 2014$([System.Char]0x2013)2025"
 
 # Checking whether all files were expanded before running
-$ScriptFiles = @(
+$ScriptFiles = [Array]::TrueForAll(@(
 	"$PSScriptRoot\Localizations\de-DE\Sophia.psd1",
 	"$PSScriptRoot\Localizations\en-US\Sophia.psd1",
 	"$PSScriptRoot\Localizations\es-ES\Sophia.psd1",
@@ -94,9 +93,15 @@ $ScriptFiles = @(
 	"$PSScriptRoot\Localizations\uk-UA\Sophia.psd1",
 	"$PSScriptRoot\Localizations\zh-CN\Sophia.psd1",
 	"$PSScriptRoot\Module\Sophia.psm1",
-	"$PSScriptRoot\Manifest\SophiaScript.psd1"
-)
-if (($ScriptFiles | Test-Path) -contains $false)
+	"$PSScriptRoot\Manifest\SophiaScript.psd1",
+	"$PSScriptRoot\Import-TabCompletion.ps1"
+),
+[Predicate[string]]{
+	param($File)
+
+	Test-Path -Path $File
+})
+if (-not $ScriptFiles)
 {
 	Write-Information -MessageData "" -InformationAction Continue
 	Write-Warning -Message "There are no files in the script folder. Please, re-download the archive and follow the guide: https://github.com/farag2/Sophia-Script-for-Windows?tab=readme-ov-file#how-to-use."
@@ -109,6 +114,7 @@ if (($ScriptFiles | Test-Path) -contains $false)
 }
 
 Remove-Module -Name SophiaScript -Force -ErrorAction Ignore
+
 try
 {
 	Import-LocalizedData -BindingVariable Global:Localization -UICulture $PSUICulture -BaseDirectory $PSScriptRoot\Localizations -FileName Sophia -ErrorAction Stop
@@ -118,14 +124,13 @@ catch
 	Import-LocalizedData -BindingVariable Global:Localization -UICulture en-US -BaseDirectory $PSScriptRoot\Localizations -FileName Sophia
 }
 
-# Checking whether script is the correct PowerShell version
-try
+# Check CPU architecture
+$Caption = (Get-CimInstance -ClassName CIM_Processor).Caption
+if (($Caption -notmatch "AMD64") -and ($Caption -notmatch "Intel64"))
 {
-	Import-Module -Name $PSScriptRoot\Manifest\SophiaScript.psd1 -PassThru -Force -ErrorAction Stop
-}
-catch [System.InvalidOperationException]
-{
-	Write-Warning -Message ($Localization.UnsupportedPowerShell -f $PSVersionTable.PSVersion.Major, $PSVersionTable.PSVersion.Minor)
+	Write-Information -MessageData "" -InformationAction Continue
+	Write-Warning -Message ($Localization.UnsupportedArchitecture -f $Caption)
+	Write-Information -MessageData "" -InformationAction Continue
 
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
@@ -133,9 +138,11 @@ catch [System.InvalidOperationException]
 	exit
 }
 
+Import-Module -Name $PSScriptRoot\Manifest\SophiaScript.psd1 -PassThru -Force
+
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Preset configuration starts here
-# Отсюда начинается настройка пресета
+# Настройка пресет-файла начинается здесь
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 <#
@@ -833,7 +840,7 @@ Set-UserShellFolderLocation -Root
 # Использовать .NET Framework 4.8.1 для устаревших программ
 # LatestInstalled.NET -Enable
 
-# Do not Use .NET Framework 4.8.1 for old apps (default value)
+# Do not use .NET Framework 4.8.1 for old apps (default value)
 # Не использовать .NET Framework 4.8.1 для устаревших программ (значение по умолчанию)
 # LatestInstalled.NET -Disable
 

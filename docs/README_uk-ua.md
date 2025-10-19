@@ -82,7 +82,7 @@ This page is also available in other languages
   * Скрипт генерує список встановлених UWP-додатків [динамічно](#локалізовані-назви-uwp-пакетів).
 * Вимкнення функцій Windows для відображення дружніх назв пакетів у спливаючій формі, написаній на [WPF](#скріншоти);
 * Видалення можливостей Windows відображати дружні назви пакетів у спливаючій формі, написаній на [WPF](#скріншоти);
-* Завантаження та встановлення [HEVC Video Extensions від виробника пристрою](https://apps.microsoft.com/detail/9N4WGH0Z6VHQ) для відкриття формата [HEVC](https://uk.wikipedia.org/wiki/H.265);
+* Завантаження та встановлення [HEVC Video Extensions від виробника пристрою](https://apps.microsoft.com/detail/9N4WGH0Z6VHQ) для відкриття формата [HEVC](https://en.wikipedia.org/wiki/High_Efficiency_Video_Coding);
 * Реєстрація програми, розрахунок хешу та встановлення за замовчуванням для певного розширення без спливаючого вікна "Як ви хочете відкрити це" за допомогою спеціальної [функції](https://github.com/DanysysTeam/PS-SFTA);
 * Експортувати всі асоціації в Windows у корінь папки у вигляді файлу Application_Associations.json;
 Імпортувати всі асоціації в Windows з файлу Application_Associations.json. Вам необхідно встановити всі програми згідно з експортованим файлом Application_Associations.json, щоб відновити всі асоціації;
@@ -94,7 +94,7 @@ This page is also available in other languages
 * Встановити останню версію розповсюджуваних пакетів Microsoft Visual C++ 2015–2022 x86/x64;
 * Встановити останню версію розповсюджуваних пакетів .NET Desktop Runtime 8, 9 x64;
 * Налаштування безпеки Windows;
-* Відобразити всі ключі політик реєстру в оснащенні редагування групових політик (gpedit.msc).
+* Відобразити застосовані політики реєстру в оснащенні редагування групових політик. (gpedit.msc).
 * Ще багато "глибоких" налаштувань Файлового Провідника та контекстного меню.
 
 ## Зміст
@@ -274,7 +274,7 @@ Sophia -Functions "DiagTrackService -Enable", UninstallUWPApps
 [Windows-10-LTSC-2019]: https://support.microsoft.com/topic/windows-10-and-windows-server-2019-update-history-725fc2e1-4443-6831-a5ca-51ff5cbcb059
 [Windows-10-LTSC-2021]: https://support.microsoft.com/topic/windows-10-update-history-857b8ccb-71e4-49e5-b3f6-7073197d98fb
 [Windows-11-LTSC-2024]: https://support.microsoft.com/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5
-[Windows-11-24h2]: https://support.microsoft.com/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5
+[Windows-11-24h2]: https://support.microsoft.com/topic/windows-11-version-25h2-update-history-99c7f493-df2a-4832-bd2d-6706baa0dec0
 
 |                Версія                    |              Збіркa                   |       Видання       |
 |:-----------------------------------------|:-------------------------------------:|:-------------------:|

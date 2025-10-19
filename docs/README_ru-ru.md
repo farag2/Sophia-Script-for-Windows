@@ -82,7 +82,7 @@ This page is also available in other languages
   * Скрипт генерирует список установленных UWP-приложений [динамически](#локализированные-имена-пакетов)
 * Отключить компоненты Windows, отображая локализированные пакеты с помощью всплывающего окошка, написанного на [WPF](#скриншоты);
 * Удалить дополнительные компоненты Windows, отображая локализированные пакеты с помощью всплывающего окошка, написанного на [WPF](#скриншоты);
-* Скачать и установить [Расширения для видео HEVC от производителя](https://apps.microsoft.com/detail/9N4WGH0Z6VHQ), чтобы иметь поддержку формата [HEVC](https://en.wikipedia.org/wiki/H.265);
+* Скачать и установить [Расширения для видео HEVC от производителя](https://apps.microsoft.com/detail/9N4WGH0Z6VHQ), чтобы иметь поддержку формата [HEVC](https://en.wikipedia.org/wiki/High_Efficiency_Video_Coding);
 * Установить приложение по умолчанию для конкретного расширения без всплывающего окошка "Каким образом вы хотите открыть этот файл?", используя специльную [функцию](https://github.com/DanysysTeam/PS-SFTA);
 * Экспортировать все ассоциации в Windows. Ассоциации будут экспортированы в файл `Application_Associations.json` в корне папки скрипта;
 * Импортировать выгруженный `Application_Associations.json` после чистой установки. Вам необходимо установить все приложения из списка выгруженного `Application_Associations.json`, чтобы восстановить ассоциации;
@@ -94,7 +94,7 @@ This page is also available in other languages
 * Установить последней версии распространяемых пакетов Microsoft Visual C++ 2015–2022 x86/x64;
 * Установить последней версии распространяемых пакетов .NET Desktop Runtime 8, 9 x64;
 * Настроить безопасность Windows;
-* Отобразить все ключи политик реестра в оснастке редактирования групповых политик (gpedit.msc);
+* Отобразить примененные политики реестра в оснастке редактирования групповых политик (gpedit.msc);
 * Много других твиков проводника и контекстного меню.
 
 ## Содержание
@@ -265,7 +265,7 @@ Sophia -Functions "DiagTrackService -Enable", UninstallUWPApps
 
 ## Пожертвования
 
-[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/farag)⠀⠀⠀<a href="https://boosty.to/teamsophia"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/boosty.png" width='40'></a>
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/farag) <a href="https://boosty.to/teamsophia"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/boosty.png" width='40'></a>
 
 ## Системные требования
 
@@ -273,7 +273,7 @@ Sophia -Functions "DiagTrackService -Enable", UninstallUWPApps
 [Windows-10-LTSC-2019]: https://support.microsoft.com/topic/windows-10-and-windows-server-2019-update-history-725fc2e1-4443-6831-a5ca-51ff5cbcb059
 [Windows-10-LTSC-2021]: https://support.microsoft.com/topic/windows-10-update-history-857b8ccb-71e4-49e5-b3f6-7073197d98fb
 [Windows-11-LTSC-2024]: https://support.microsoft.com/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5
-[Windows-11-24h2]: https://support.microsoft.com/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5
+[Windows-11-24h2]: https://support.microsoft.com/topic/windows-11-version-25h2-update-history-99c7f493-df2a-4832-bd2d-6706baa0dec0
 
 |                Версия                    |                 Билд                  |      Издание        |
 |:-----------------------------------------|:-------------------------------------:|:-------------------:|

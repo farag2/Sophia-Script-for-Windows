@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	Enable tab completion to invoke for functions if you do not know function name
 
-	Version: 5.21.1
-	Date: 01.09.2025
+	Version: 5.21.2
+	Date: 19.10.2025
 
 	Copyright (c) 2014—2025 Team Sophia
 
@@ -49,7 +49,7 @@ function Sophia
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC 2021 v5.21.1 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) Team Sophia, 2014$([System.Char]0x2013)2025"
+$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC 2021 v5.21.2 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) Team Sophia, 2014$([System.Char]0x2013)2025"
 
 Remove-Module -Name SophiaScript -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\SophiaScript.psd1 -PassThru -Force

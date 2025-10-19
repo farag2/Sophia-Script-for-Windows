@@ -1,6 +1,6 @@
 ﻿@{
 	RootModule            = '..\Module\Sophia.psm1'
-	ModuleVersion         = '5.11.1'
+	ModuleVersion         = '5.11.2'
 	GUID                  = 'a36a65ca-70f9-43df-856c-3048fc5e7f01'
 	Author                = 'Team Sophia'
 	Copyright             = '(c) 2014—2025 Team Sophia. All rights reserved'
