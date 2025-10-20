@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 5.21.2 | 6.9.2 — 21.09.2025
+
+* Improved localizations and wording;
+* Improve startup checks & updated readmes
+* Changed `Win32LongPathLimit` function name to `Win32LongPathSupport`;
+* Simplified `WinPrtScrFolder` function;
+* Removed `FoldersLaunchSeparateProcess` function for Windows 11 only;
+* Added `RestorePreviousFolders` function to restore previous folder windows at logon;
+* Added `ClockInNotificationCenter` for `Windows 11 25H2` only to show clock in Notification Center;
+* Fixed `Install-VCRedist` and `Install-DotNetRuntimes`;
+* Added BitLocker checks if system drive is encrypted but protection is not enabled;
+* Minor improvements.
+
+Thanks to @lowl1f3
+
+## Wrapper 2.8.7
+* Added more statusbar messages;
+* Some refactoring.
+
 ## 5.21.1 | 6.9.1 — 02.09.2025
 
 * Fixed `Install-VCRedist` & `Install-DotNetRuntimes` functions for Arm.
