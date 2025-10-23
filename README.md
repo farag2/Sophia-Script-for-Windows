@@ -6,7 +6,7 @@
 
 **The most powerful PowerShell module for fine-tuning Windows on GitHub**
 
-Made with <img src="./img/heart.svg" height="17px"/> of Windows.
+Made with <img src="./img/heart.svg" height="17px"/> of Windows
 
 <kbd>
 	<a href="https://github.com/farag2/Sophia-Script-for-Windows/actions"><img src="https://img.shields.io/github/actions/workflow/status/farag2/Sophia-Script-for-Windows/Sophia.yml?labelColor=151B23&color=151B23&style=for-the-badge&label=build&logo=GitHub"></a>
@@ -306,7 +306,7 @@ https://user-images.githubusercontent.com/10544660/253818031-b7ce6bf1-d968-41ea-
 
 ### Download and install any supported Linux distribution in automatic mode
 
-![Image](./img/wsl.png)
+![Image](./img/WSL.png)
 
 ### Native interactive toasts for the scheduled tasks
 

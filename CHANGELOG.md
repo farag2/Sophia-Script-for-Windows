@@ -663,7 +663,7 @@ Thanks to frost_tg for bug reporting
 
 * `WSL` function re-written and renamed into `WSL-Install`
   * Now it generates always actual distros supported list by parsing the `wsl --list --online` output;
-  * ![img](./img/wsl.png)
+  * ![img](./img/WSL.png)
   * Thanks to @Inestic, the main [SophiApp](https://github.com/Sophia-Community/SophiApp) developer.
 * Improved `OneDrive` function;
 * Added `NavigationPaneExpand` function to expand navigation pane to open folder

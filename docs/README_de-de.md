@@ -6,7 +6,7 @@
 
 **Das leistungsstärkste PowerShell-Modul zur Feinabstimmung von Windows auf GitHub**
 
-Mit <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/heart.svg" height="17px"/> zu Windows gemacht.
+Mit <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/heart.svg" height="17px"/> zu Windows gemacht
 
 <kbd>
 	<a href="https://github.com/farag2/Sophia-Script-for-Windows/actions"><img src="https://img.shields.io/github/actions/workflow/status/farag2/Sophia-Script-for-Windows/Sophia.yml?labelColor=151B23&color=151B23&style=for-the-badge&label=build&logo=GitHub"></a>
@@ -304,7 +304,7 @@ https://user-images.githubusercontent.com/10544660/253818031-b7ce6bf1-d968-41ea-
 
 ### Herunterladen und Installieren einer beliebigen unterstützten Linux-Distribution im automatischen Modus
 
-![Image](./img/wsl.png)
+![Image](./img/WSL.png)
 
 ### Native interaktive Toasts für die geplanten Aufgaben
 
