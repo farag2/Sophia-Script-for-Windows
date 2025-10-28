@@ -1690,20 +1690,6 @@
     "LTSC2024": "true"
   },
   {
-    "Region": "UWP apps",
-    "Control": "chk",
-    "Required": "false",
-    "Function": "UninstallUWPApps -ForAllUsers",
-    "Arg": {
-      "Zero": {
-        "Tag": ""
-      }
-    },
-    "Preset": "",
-    "WindowsDefault": "",
-    "LTSC2024": "true"
-  },
-  {
     "Region": "Gaming",
     "Control": "cmb",
     "Required": "false",
