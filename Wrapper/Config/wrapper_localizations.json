@@ -1,0 +1,34 @@
+[
+	{
+		"English": {
+			"Code": "en",
+			"Folder": "en-US",
+			"WidthOfWrapperInPixels": "872",
+			"WidthLabelInPixels": "225",
+			"WidthLabelContextTabInPixels": "243",
+			"WidthComboBoxInPixels": "155",
+			"WidthComboBoxSystemTabInPixels": "155",
+			"WidthComboBoxStartMenuTabInPixels": "230"
+		},
+		"German": {
+			"Code": "de",
+			"Folder": "de-DE",
+			"WidthOfWrapperInPixels": "1020",
+			"WidthLabelInPixels": "225",
+			"WidthLabelContextTabInPixels": "243",
+			"WidthComboBoxInPixels": "150",
+			"WidthComboBoxSystemTabInPixels": "165",
+			"WidthComboBoxStartMenuTabInPixels": "250"			
+		},
+		"Russian": {
+			"Code": "ru",
+			"Folder": "ru-RU",
+			"WidthOfWrapperInPixels": "1055",
+			"WidthLabelInPixels": "225",
+			"WidthLabelContextTabInPixels": "243",
+			"WidthComboBoxInPixels": "175",
+			"WidthComboBoxSystemTabInPixels": "235",
+			"WidthComboBoxStartMenuTabInPixels": "260"			
+		}
+	}
+]
