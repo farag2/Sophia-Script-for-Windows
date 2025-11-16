@@ -6,7 +6,7 @@
 
 **Das leistungsstärkste PowerShell-Modul zur Feinabstimmung von Windows auf GitHub**
 
-Mit <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/heart.svg" height="17px"/> zu Windows gemacht
+Mit <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/heart.svg" height="17px"/> zu Windows hergestellt
 
 <kbd>
 	<a href="https://github.com/farag2/Sophia-Script-for-Windows/actions"><img src="https://img.shields.io/github/actions/workflow/status/farag2/Sophia-Script-for-Windows/Sophia.yml?labelColor=151B23&color=151B23&style=for-the-badge&label=build&logo=GitHub"></a>
@@ -238,6 +238,8 @@ Oder verwenden Sie ein Format im alten Stil ohne die <kbd>TAB</kbd>-Funktionen z
 
 ![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/master/img/Wrapper.png)
 
+Lesen Sie [hier mehr dazu](../Wrapper/README.md)
+
 @BenchTweakGaming
 
 * Laden Sie die (neueste)(<https://github.com/farag2/Sophia-Script-for-Windows/releases/latest>) Wrapper-Version herunter.
@@ -286,7 +288,7 @@ Sophia -Functions "DiagTrackService -Enable", UninstallUWPApps
 
 ## Screenshots
 
-### Die <kbd>TAB</kbd> Autovervollständigung. Mehr lesen: [here](#how-to-run-the-specific-functions)
+### Die <kbd>TAB</kbd> Autovervollständigung. Lesen Sie [hier mehr dazu](#how-to-run-the-specific-functions)
 
 https://user-images.githubusercontent.com/10544660/225270281-908abad1-d125-4cae-a19b-2cf80d5d2751.mp4
 
@@ -296,15 +298,15 @@ https://user-images.githubusercontent.com/10544660/253818031-b7ce6bf1-d968-41ea-
 
 ### Lokalisierte Namen von UWP-Paketen
 
-![Image](./img/uwpapps.png)
+![Image](../img/uwpapps.png)
 
 ### Lokalisierte Namen von Windows-Features
 
-![Image](./img/optionalfeatures.png) ![Image](./img/windowsfeatures.png)
+![Image](../img/optionalfeatures.png) ![Image](../img/windowsfeatures.png)
 
 ### Herunterladen und Installieren einer beliebigen unterstützten Linux-Distribution im automatischen Modus
 
-![Image](./img/WSL.png)
+![Image](../img/WSL.png)
 
 ### Native interaktive Toasts für die geplanten Aufgaben
 

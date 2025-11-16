@@ -238,6 +238,8 @@ UninstallUWPApps, "PinToStart -UnpinAll"
 
 ![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/master/img/Wrapper.png)
 
+Детальніше [тут](./Wrapper/README.md)
+
 @BenchTweakGaming
 
 * Завантажте [останню](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest) версію Wrapper
@@ -296,15 +298,15 @@ https://user-images.githubusercontent.com/10544660/253818031-b7ce6bf1-d968-41ea-
 
 ### Локалізовані назви UWP-пакетів
 
-![Image](./img/uwpapps.png)
+![Image](../img/uwpapps.png)
 
 ### Локалізовані назви функцій Windows
 
-![Image](./img/optionalfeatures.png) ![Image](./img/windowsfeatures.png)
+![Image](../img/optionalfeatures.png) ![Image](../img/windowsfeatures.png)
 
 ### Завантажте та встановіть будь-який підтримуваний дистрибутив Linux в автоматичному режимі
 
-![Image](./img/WSL.png)
+![Image](../img/WSL.png)
 
 ### Інтерактивні тости для запланованих завдань
 

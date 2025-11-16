@@ -240,6 +240,8 @@ Or use an old-style format without the <kbd>TAB</kbd> functions autocomplete (th
 
 ![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/master/img/Wrapper.png)
 
+Read more [here](./Wrapper/README.md)
+
 @BenchTweakGaming
 
 * Download the [latest](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest) Wrapper version;

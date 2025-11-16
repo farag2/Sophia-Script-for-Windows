@@ -237,6 +237,8 @@ UninstallUWPApps, "PinToStart -UnpinAll"
 
 ![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/master/img/Wrapper.png)
 
+Подробнее [здесь](./Wrapper/README.md)
+
 @BenchTweakGaming
 
 * Скачайте [последнюю](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest) версию;
@@ -295,15 +297,15 @@ https://user-images.githubusercontent.com/10544660/253818031-b7ce6bf1-d968-41ea-
 
 ### Локализированные имена пакетов
 
-![Image](./img/uwpapps.png)
+![Image](../img/uwpapps.png)
 
 ### Локализированные имена компонентов Windows
 
-![Image](./img/optionalfeatures.png) ![Image](./img/windowsfeatures.png)
+![Image](../img/optionalfeatures.png) ![Image](../img/windowsfeatures.png)
 
 ### Скачать и установить любые поддерживаемые дистрибутивые Linux через WSL в автоматическом режиме
 
-![Image](./img/WSL.png)
+![Image](../img/WSL.png)
 
 ### Нативные тостовые уведомления для заданий Планировщика заданий
 
