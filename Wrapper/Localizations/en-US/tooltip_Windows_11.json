@@ -854,7 +854,7 @@
   },
   {
     "Region": "System",
-    "Function": "Win32LongPathSupport",
+    "Function": "Win32LongPathsSupport",
     "Arg": {
       "Zero": {
         "Tag": "Enable",
@@ -1648,20 +1648,6 @@
       "One": {
         "Tag": "Enable",
         "ToolTip": "Enable the Attachment Manager marking files that have been downloaded from the Internet as unsafe (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
-    "Function": "WindowsScriptHost",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Disable Windows Script Host. Blocks WSH from executing .js and .vbs files."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Enable Windows Script Host (default value)."
       }
     }
   },

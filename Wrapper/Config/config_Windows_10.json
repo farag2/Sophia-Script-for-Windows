@@ -1068,7 +1068,7 @@
     "Region": "System",
     "Control": "cmb",
     "Required": "false",
-    "Function": "Win32LongPathSupport",
+    "Function": "Win32LongPathsSupport",
     "Arg": {
       "Zero": {
         "Tag": "Enable"
@@ -1798,18 +1798,15 @@
   },
   {
     "Region": "UWP apps",
-    "Control": "cmb",
+    "Control": "chk",
     "Required": "false",
-    "Function": "HEVC",
+    "Function": "Install-HEVC",
     "Arg": {
       "Zero": {
-        "Tag": "Manually"
-      },
-      "One": {
-        "Tag": "Install"
+        "Tag": ""
       }
     },
-    "Preset": "One",
+    "Preset": "Zero",
     "WindowsDefault": ""
   },
   {
@@ -2083,22 +2080,6 @@
     "Control": "cmb",
     "Required": "false",
     "Function": "SaveZoneInformation",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable"
-      },
-      "One": {
-        "Tag": "Enable"
-      }
-    },
-    "Preset": "Zero",
-    "WindowsDefault": "One"
-  },
-  {
-    "Region": "Microsoft Defender & Security",
-    "Control": "cmb",
-    "Required": "false",
-    "Function": "WindowsScriptHost",
     "Arg": {
       "Zero": {
         "Tag": "Disable"

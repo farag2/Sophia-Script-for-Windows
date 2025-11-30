@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Improved localizations and wording;
 * Improve startup checks & updated readmes
-* Changed `Win32LongPathLimit` function name to `Win32LongPathSupport`;
+* Changed `Win32LongPathLimit` function name to `Win32LongPathsSupport`;
 * Simplified `WinPrtScrFolder` function;
 * Removed `FoldersLaunchSeparateProcess` function for Windows 11 only;
 * Added `RestorePreviousFolders` function to restore previous folder windows at logon;

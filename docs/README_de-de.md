@@ -226,12 +226,6 @@ Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", U
 UninstallUWPApps, "PinToStart -UnpinAll"
 ```
 
-Oder verwenden Sie ein Format im alten Stil ohne die <kbd>TAB</kbd>-Funktionen zum automatischen Ausfüllen (die Anführungszeichen sind erforderlich)
-
-```powershell
-.\Sophia.ps1 -Functions CreateRestorePoint, "ScheduledTasks -Disable", "WindowsCapabilities -Uninstall"
-```
-
 <https://github.com/user-attachments/assets/ea90122a-bdb3-4687-bf8b-9b6e7af46826>
 
 ## Wrapper
