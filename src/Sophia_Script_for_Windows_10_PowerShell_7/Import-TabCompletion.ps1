@@ -2,12 +2,14 @@
 	.SYNOPSIS
 	Enable tab completion to invoke for functions if you do not know function name
 
-	Version: 5.21.2
-	Date: 19.10.2025
+	.VERSION
+	5.21.2
 
-	Copyright (c) 2014—2025 Team Sophia
+	.DATE
+	19.10.2025
 
-	Thanks to all https://forum.ru-board.com members involved
+	.COPYRIGHT
+	(c) 2014—2026 Team Sophia
 
 	.DESCRIPTION
 	Dot source the script first: . .\Import-TabCompletion.ps1 (with a dot at the beginning)
@@ -47,21 +49,8 @@ function Sophia
 	Invoke-Command -ScriptBlock {PostActions; Errors}
 }
 
-Clear-Host
-
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v5.21.2 (PowerShell 7) | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) Team Sophia, 2014$([System.Char]0x2013)2025"
-
-Remove-Module -Name SophiaScript -Force -ErrorAction Ignore
-Import-Module -Name $PSScriptRoot\Manifest\SophiaScript.psd1 -PassThru -Force
-
-try
-{
-	Import-LocalizedData -BindingVariable Global:Localization -UICulture $PSUICulture -BaseDirectory $PSScriptRoot\Localizations -FileName Sophia -ErrorAction Stop
-}
-catch
-{
-	Import-LocalizedData -BindingVariable Global:Localization -UICulture en-US -BaseDirectory $PSScriptRoot\Localizations -FileName Sophia
-}
+#region Initial Actions
+$Global:Failed = 0
 
 # Checking if function wasn't dot-sourced, but called explicitly
 # ".\Import-TabCompletion.ps1" instead of ". .\Import-TabCompletion.ps1"
@@ -78,8 +67,22 @@ if ($MyInvocation.Line -ne ". .\Import-TabCompletion.ps1")
 	exit
 }
 
-# The mandatory checks. Please, do not comment out this function
+# Unload and import module
+Remove-Module -Name SophiaScript -Force -ErrorAction Ignore
+Import-Module -Name $PSScriptRoot\Manifest\SophiaScript.psd1 -PassThru -Force
+
+# Import functions
+Get-ChildItem -Path $PSScriptRoot\Module\private | Foreach-Object -Process {. $_.FullName}
+
+# Dot-source script with checks
 InitialActions
+
+# Global variable if checks failed
+if ($Global:Failed -eq 1)
+{
+	exit
+}
+#endregion Initial Actions
 
 $Parameters = @{
 	CommandName   = "Sophia"
@@ -234,9 +237,27 @@ $Parameters = @{
 				}
 			}
 
-			# If a module command is Set-Policy
-			if ($Command -eq "Set-Policy")
+			# If a module command is DNSoverHTTPS
+			if ($Command -eq "DNSoverHTTPS")
 			{
+				(Get-Command -Name $Command).Name | Where-Object -FilterScript {$_ -like "*$wordToComplete*"}
+
+				# Get the valid IPv4 addresses array
+				# ((Get-Command -Name DNSoverHTTPS).Parametersets.Parameters | Where-Object -FilterScript {$null -eq $_.Attributes.AliasNames}).Attributes.ValidValues | Select-Object -Unique
+				$ValidValues = @((Get-ChildItem -Path HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters\DohWellKnownServers).PSChildName) | Where-Object {$_ -notmatch ":"}
+				foreach ($ValidValue in $ValidValues)
+				{
+					$ValidValuesDescending = @((Get-ChildItem -Path HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters\DohWellKnownServers).PSChildName) | Where-Object {$_ -notmatch ":"}
+					foreach ($ValidValueDescending in $ValidValuesDescending)
+					{
+						# The "DNSoverHTTPS -Enable -PrimaryDNS x.x.x.x -SecondaryDNS x.x.x.x" construction
+						"DNSoverHTTPS -Enable -PrimaryDNS $ValidValue -SecondaryDNS $ValidValueDescending" | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
+					}
+				}
+
+				"DNSoverHTTPS -Disable" | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
+				"DNSoverHTTPS -ComssOneDNS" | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
+
 				continue
 			}
 
@@ -255,6 +276,12 @@ $Parameters = @{
 
 					continue
 				}
+			}
+
+			# If a module command is Set-Policy
+			if ($Command -eq "Set-Policy")
+			{
+				continue
 			}
 
 			foreach ($ParameterSet in $ParameterSets.Name)

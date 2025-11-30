@@ -860,7 +860,7 @@
   },
   {
     "Region": "System",
-    "Function": "Win32LongPathSupport",
+    "Function": "Win32LongPathsSupport",
     "Arg": {
       "Zero": {
         "Tag": "Enable",
@@ -1479,14 +1479,10 @@
   },
   {
     "Region": "UWP apps",
-    "Function": "HEVC",
+    "Function": "Install-HEVC",
     "Arg": {
       "Zero": {
-        "Tag": "Manually",
-        "ToolTip": "Open Microsoft Store \"HEVC Video Extensions from Device Manufacturer\" page to install this extension manually to be able to open .heic and .heif image formats. The extension can be installed without an Microsoft account."
-      },
-      "One": {
-        "Tag": "Install",
+        "Tag": "",
         "ToolTip": "Download and install \"HEVC Video Extensions from Device Manufacturer\" to be able to open .heic and .heif formats."
       }
     }
@@ -1732,20 +1728,6 @@
       "One": {
         "Tag": "Enable",
         "ToolTip": "Enable the Attachment Manager marking files that have been downloaded from the Internet as unsafe (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
-    "Function": "WindowsScriptHost",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Disable Windows Script Host. Blocks WSH from executing .js and .vbs files."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Enable Windows Script Host (default value)."
       }
     }
   },

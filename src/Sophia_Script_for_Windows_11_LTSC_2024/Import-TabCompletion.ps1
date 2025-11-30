@@ -2,12 +2,14 @@
 	.SYNOPSIS
 	Enable tab completion to invoke for functions if you do not know function name
 
-	Version: 6.9.2
-	Date: 19.10.2025
+	.VERSION
+	6.9.2
 
-	Copyright (c) 2014—2025 Team Sophia
+	.DATE
+	19.10.2025
 
-	Thanks to all https://forum.ru-board.com members involved
+	.COPYRIGHT
+	(c) 2014—2026 Team Sophia
 
 	.DESCRIPTION
 	Dot source the script first: . .\Import-TabCompletion.ps1 (with a dot at the beginning)
@@ -47,14 +49,8 @@ function Sophia
 	Invoke-Command -ScriptBlock {PostActions; Errors}
 }
 
-Clear-Host
-
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.9.2 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) Team Sophia, 2014$([System.Char]0x2013)2025"
-
-Remove-Module -Name SophiaScript -Force -ErrorAction Ignore
-Import-Module -Name $PSScriptRoot\Manifest\SophiaScript.psd1 -PassThru -Force
-
-Import-LocalizedData -BindingVariable Global:Localization -FileName Sophia -BaseDirectory $PSScriptRoot\Localizations
+#region Initial Actions
+$Global:Failed = 0
 
 # Checking if function wasn't dot-sourced, but called explicitly
 # ".\Import-TabCompletion.ps1" instead of ". .\Import-TabCompletion.ps1"
@@ -71,8 +67,22 @@ if ($MyInvocation.Line -ne ". .\Import-TabCompletion.ps1")
 	exit
 }
 
-# The mandatory checks. Please, do not comment out this function
+# Unload and import module
+Remove-Module -Name SophiaScript -Force -ErrorAction Ignore
+Import-Module -Name $PSScriptRoot\Manifest\SophiaScript.psd1 -PassThru -Force
+
+# Import functions
+Get-ChildItem -Path $PSScriptRoot\Module\private | Foreach-Object -Process {. $_.FullName}
+
+# Dot-source script with checks
 InitialActions
+
+# Global variable if checks failed
+if ($Global:Failed -eq 1)
+{
+	exit
+}
+#endregion Initial Actions
 
 $Parameters = @{
 	CommandName   = "Sophia"

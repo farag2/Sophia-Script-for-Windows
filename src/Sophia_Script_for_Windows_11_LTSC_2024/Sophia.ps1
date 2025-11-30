@@ -9,7 +9,7 @@
 	19.10.2025
 
 	.COPYRIGHT
-	(c) 2014—2025 Team Sophia
+	(c) 2014—2026 Team Sophia
 
 	.DESCRIPTION
 	Place the "#" char before function if you don't want to run it
@@ -18,9 +18,6 @@
 
 	.EXAMPLE Run the whole script
 	.\Sophia.ps1
-
-	.EXAMPLE Run the script by specifying the module functions as an argument
-	.\Sophia.ps1 -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
 
 	.EXAMPLE Download and expand the latest Sophia Script version archive (without running) according which Windows and PowerShell versions it is run on
 	iwr script.sophia.team -useb | iex
@@ -65,116 +62,33 @@
 #Requires -RunAsAdministrator
 #Requires -Version 5.1
 
-[CmdletBinding()]
-param
-(
-	[Parameter(Mandatory = $false)]
-	[string[]]
-	$Functions
-)
+#region Initial Actions
+$Global:Failed = 0
 
-Clear-Host
-
-$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 LTSC 2024 v6.9.2 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) Team Sophia, 2014$([System.Char]0x2013)2025"
-
-# Checking whether all files were expanded before running
-$ScriptFiles = [Array]::TrueForAll(@(
-	"$PSScriptRoot\Localizations\de-DE\Sophia.psd1",
-	"$PSScriptRoot\Localizations\en-US\Sophia.psd1",
-	"$PSScriptRoot\Localizations\es-ES\Sophia.psd1",
-	"$PSScriptRoot\Localizations\fr-FR\Sophia.psd1",
-	"$PSScriptRoot\Localizations\hu-HU\Sophia.psd1",
-	"$PSScriptRoot\Localizations\it-IT\Sophia.psd1",
-	"$PSScriptRoot\Localizations\pl-PL\Sophia.psd1",
-	"$PSScriptRoot\Localizations\pt-BR\Sophia.psd1",
-	"$PSScriptRoot\Localizations\ru-RU\Sophia.psd1",
-	"$PSScriptRoot\Localizations\tr-TR\Sophia.psd1",
-	"$PSScriptRoot\Localizations\uk-UA\Sophia.psd1",
-	"$PSScriptRoot\Localizations\zh-CN\Sophia.psd1",
-	"$PSScriptRoot\Module\Sophia.psm1",
-	"$PSScriptRoot\Manifest\SophiaScript.psd1",
-	"$PSScriptRoot\Import-TabCompletion.ps1"
-),
-[Predicate[string]]{
-	param($File)
-
-	Test-Path -Path $File
-})
-if (-not $ScriptFiles)
-{
-	Write-Information -MessageData "" -InformationAction Continue
-	Write-Warning -Message "There are no files in the script folder. Please, re-download the archive and follow the guide: https://github.com/farag2/Sophia-Script-for-Windows?tab=readme-ov-file#how-to-use."
-	Write-Information -MessageData "" -InformationAction Continue
-
-	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-	exit
-}
-
+# Unload and import module
 Remove-Module -Name SophiaScript -Force -ErrorAction Ignore
-try
-{
-	Import-LocalizedData -BindingVariable Global:Localization -UICulture $PSUICulture -BaseDirectory $PSScriptRoot\Localizations -FileName Sophia -ErrorAction Stop
-}
-catch
-{
-	Import-LocalizedData -BindingVariable Global:Localization -UICulture en-US -BaseDirectory $PSScriptRoot\Localizations -FileName Sophia
-}
-
-# Check CPU architecture
-$Caption = (Get-CimInstance -ClassName CIM_Processor).Caption
-if (($Caption -notmatch "AMD64") -and ($Caption -notmatch "Intel64"))
-{
-	Write-Information -MessageData "" -InformationAction Continue
-	Write-Warning -Message ($Localization.UnsupportedArchitecture -f $Caption)
-	Write-Information -MessageData "" -InformationAction Continue
-
-	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-	exit
-}
-
 Import-Module -Name $PSScriptRoot\Manifest\SophiaScript.psd1 -PassThru -Force
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-# Preset configuration starts here
-# Настройка пресет-файла начинается здесь
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Load private functions
+Get-ChildItem -Path $PSScriptRoot\Module\private | Foreach-Object -Process {. $_.FullName}
 
-<#
-	.SYNOPSIS
-	Run the script by specifying functions as an argument
-	Запустить скрипт, указав в качестве аргумента функции
-
-	.EXAMPLE
-	.\Sophia.ps1 -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
-
-	.NOTES
-	Use commas to separate funtions
-	Разделяйте функции запятыми
-#>
-if ($Functions)
-{
-	Invoke-Command -ScriptBlock {InitialActions}
-
-	foreach ($Function in $Functions)
-	{
-		Invoke-Expression -Command $Function
-	}
-
-	# The "PostActions" and "Errors" functions will be executed at the end
-	Invoke-Command -ScriptBlock {PostActions; Errors}
-
-	exit
-}
-
-#region Protection
-# The mandatory checks. If you want to disable a warning message about whether the preset file was customized, remove the "-Warning" argument
-# Обязательные проверки. Чтобы выключить предупреждение о необходимости настройки пресет-файла, удалите аргумент "-Warning"
+# "-Warning" argument enables and disables a warning message about whether the preset file was customized
+# Аргумент "-Warning" включает и выключает предупреждение о необходимости настройки пресет-файла
 InitialActions -Warning
 
+# Global variable if checks failed
+if ($Global:Failed -eq 1)
+{
+	exit
+}
+#endregion Initial Actions
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Preset configuration starts here                                    #
+# Настройка пресет-файла начинается здесь                             #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+#region Protection
 # Enable script logging. Log will be recorded into the script folder. To stop logging just close console or type "Stop-Transcript"
 # Включить логирование работы скрипта. Лог будет записываться в папку скрипта. Чтобы остановить логгирование, закройте консоль или наберите "Stop-Transcript"
 # Logging
@@ -642,11 +556,11 @@ Hibernation -Disable
 
 # Enable Windows long paths support which is limited for 260 characters by default
 # Включить поддержку длинных путей, ограниченных по умолчанию 260 символами
-Win32LongPathSupport -Enable
+Win32LongPathsSupport -Enable
 
 # Disable Windows long paths support which is limited for 260 characters by default (default value)
 # Отключить поддержку длинных путей, ограниченных по умолчанию 260 символами (значение по умолчанию)
-# Win32LongPathSupport -Disable
+# Win32LongPathsSupport -Disable
 
 # Display Stop error code when BSoD occurs
 # Отображать код Stop-ошибки при появлении BSoD
@@ -684,8 +598,8 @@ WindowsManageDefaultPrinter -Disable
 	Disable the Windows features using the pop-up dialog box
 	If you want to leave "Multimedia settings" element in the advanced settings of Power Options do not disable the "Media Features" feature
 
-	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах схемы управления питанием, не отключайте "Компоненты для работы с медиа"
 	Отключить компоненты Windows, используя всплывающее диалоговое окно
+	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах схемы управления питанием, не отключайте "Компоненты для работы с мультимедиа"
 #>
 WindowsFeatures -Disable
 
@@ -693,13 +607,8 @@ WindowsFeatures -Disable
 # Включить компоненты Windows, используя всплывающее диалоговое окно
 # WindowsFeatures -Enable
 
-<#
-	Uninstall optional features using the pop-up dialog box
-	If you want to leave "Multimedia settings" element in the advanced settings of Power Options do not uninstall the "Media Features" feature
-
-	Удалить дополнительные компоненты, используя всплывающее диалоговое окно
-	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах схемы управления питанием, не удаляйте компонент "Компоненты для работы с медиа"
-#>
+# Uninstall optional features using the pop-up dialog box
+# Удалить дополнительные компоненты, используя всплывающее диалоговое окно
 WindowsCapabilities -Uninstall
 
 # Install optional features using the pop-up dialog box
@@ -941,7 +850,7 @@ NetworkDiscovery -Enable
 # Import-Associations
 
 # Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 (x86/x64). Internet connection required
-# Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 (x86/x64). Требуется соединение с интернетом
+# Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2022 (x86/x64). Требуется соединение с интернетом
 Install-VCRedist -Redistributables 2015_2022_x86, 2015_2022_x64
 
 # Install the latest .NET Runtime 8, 9. Internet connection required
@@ -1123,13 +1032,13 @@ PowerShellScriptsLogging -Enable
 # Выключить ведение журнала для всех вводимых сценариев PowerShell в журнале событий Windows PowerShell (значение по умолчанию)
 # PowerShellScriptsLogging -Disable
 
-# Microsoft Defender SmartScreen doesn't marks downloaded files from the Internet as unsafe
-# Microsoft Defender SmartScreen не помечает скачанные файлы из интернета как небезопасные
-AppsSmartScreen -Disable
-
 # Microsoft Defender SmartScreen marks downloaded files from the Internet as unsafe (default value)
 # Microsoft Defender SmartScreen помечает скачанные файлы из интернета как небезопасные (значение по умолчанию)
-# AppsSmartScreen -Enable
+AppsSmartScreen -Enable
+
+# Microsoft Defender SmartScreen doesn't marks downloaded files from the Internet as unsafe
+# Microsoft Defender SmartScreen не помечает скачанные файлы из интернета как небезопасные
+# AppsSmartScreen -Disable
 
 # Disable the Attachment Manager marking files that have been downloaded from the Internet as unsafe
 # Выключить проверку Диспетчером вложений файлов, скачанных из интернета, как небезопасные
@@ -1138,14 +1047,6 @@ SaveZoneInformation -Disable
 # Enable the Attachment Manager marking files that have been downloaded from the Internet as unsafe (default value)
 # Включить проверку Диспетчера вложений файлов, скачанных из интернета как небезопасные (значение по умолчанию)
 # SaveZoneInformation -Enable
-
-# Disable Windows Script Host. Blocks WSH from executing .js and .vbs files
-# Отключить Windows Script Host. Блокирует запуск файлов .js и .vbs
-# WindowsScriptHost -Disable
-
-# Enable Windows Script Host (default value)
-# Включить Windows Script Host (значение по умолчанию)
-# WindowsScriptHost -Enable
 
 # Enable Windows Sandbox. Applicable only to Professional, Enterprise and Education editions
 # Включить Windows Sandbox. Применимо только к редакциям Professional, Enterprise и Education
