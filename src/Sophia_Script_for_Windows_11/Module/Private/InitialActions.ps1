@@ -131,8 +131,10 @@ function InitialActions
 		Namespace          = "WinAPI"
 		Name               = "GetStrings"
 		Language           = "CSharp"
-		UsingNamespace     = "System.Text"
-		CompilerParameters = $CompilerParameters
+    # FIX 1: Added System.Runtime.InteropServices for [DllImport]
+    UsingNamespace     = @("System.Text", "System.Runtime.InteropServices") 
+    # FIX 2: Referenced the Global variable correctly
+    CompilerParameters = $Global:CompilerParameters 
 		MemberDefinition   = @"
 [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
 public static extern IntPtr GetModuleHandle(string lpModuleName);
@@ -172,7 +174,7 @@ public static string GetIndirectString(string indirectString)
 	}
 	catch // (Exception ex)
 	{
-		return nu1ll;
+           return null; // FIX 3: Fixed typo 'nu1ll'
 		// return "Exception Message: " + ex.Message;
 	}
 }
@@ -187,6 +189,10 @@ public static string GetIndirectString(string indirectString)
 		catch
 		{
 			Write-Information -MessageData "" -InformationAction Continue
+			# Troubleshooting: Print the ACTUAL C# compiler errors
+        	Write-Host "C# Compilation Errors:" -ForegroundColor Red
+        	$_.Exception.LoaderExceptions | ForEach-Object { Write-Host $_.Message -ForegroundColor Red }
+			
 			Write-Warning -Message $Localization.CodeCompilationFailedWarning
 			Write-Information -MessageData "" -InformationAction Continue
 
