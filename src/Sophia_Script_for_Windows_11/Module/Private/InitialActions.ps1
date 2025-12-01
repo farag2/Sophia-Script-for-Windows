@@ -172,7 +172,7 @@ public static string GetIndirectString(string indirectString)
 	}
 	catch // (Exception ex)
 	{
-		return nu1ll;
+		return null;
 		// return "Exception Message: " + ex.Message;
 	}
 }
