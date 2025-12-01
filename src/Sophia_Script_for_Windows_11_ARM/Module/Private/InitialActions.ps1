@@ -28,7 +28,7 @@ function InitialActions
 
 	Set-StrictMode -Version Latest
 
-	$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.9.2 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) Team Sophia, 2014$([System.Char]0x2013)2025"
+	$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.9.2 (Arm) | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) Team Sophia, 2014$([System.Char]0x2013)2025"
 
 	# Unblock all files in the script folder by removing the Zone.Identifier alternate data stream with a value of "3"
 	Get-ChildItem -Path $PSScriptRoot\..\..\ -File -Recurse -Force | Unblock-File
@@ -92,7 +92,7 @@ function InitialActions
 
 	# Check CPU architecture
 	$Caption = (Get-CimInstance -ClassName CIM_Processor).Caption
-	if (($Caption -notmatch "AMD64") -and ($Caption -notmatch "Intel64"))
+	if ($Caption -notmatch "Arm")
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message ($Localization.UnsupportedArchitecture -f $Caption)
@@ -882,7 +882,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			Verbose         = $true
 			UseBasicParsing = $true
 		}
-		$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_5_1
+		$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_Arm_PowerShell_5_1
 		$CurrentRelease = (Get-Module -Name SophiaScript).Version.ToString()
 
 		if ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)

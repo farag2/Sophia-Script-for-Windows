@@ -1,4 +1,4 @@
-﻿<#
+<#
 	.SYNOPSIS
 	Initial checks before proceeding to module execution
 
@@ -28,7 +28,7 @@ function InitialActions
 
 	Set-StrictMode -Version Latest
 
-	$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.9.2 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) Team Sophia, 2014$([System.Char]0x2013)2025"
+	$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.9.2 (Arm | PowerShell 7) | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) Team Sophia, 2014$([System.Char]0x2013)2025"
 
 	# Unblock all files in the script folder by removing the Zone.Identifier alternate data stream with a value of "3"
 	Get-ChildItem -Path $PSScriptRoot\..\..\ -File -Recurse -Force | Unblock-File
@@ -58,7 +58,9 @@ function InitialActions
 		"$PSScriptRoot\..\..\Module\Private\Set-Policy.ps1",
 		"$PSScriptRoot\..\..\Manifest\SophiaScript.psd1",
 		"$PSScriptRoot\..\..\Import-TabCompletion.ps1",
-		"$PSScriptRoot\..\..\Binaries\LGPO.exe"
+		"$PSScriptRoot\..\..\Binaries\LGPO.exe",
+		"$PSScriptRoot\..\..\Binaries\Microsoft.Windows.SDK.NET.dll",
+		"$PSScriptRoot\..\..\Binaries\WinRT.Runtime.dll"
 	),
 	[Predicate[string]]{
 		param($File)
@@ -106,8 +108,8 @@ function InitialActions
 		exit
 	}
 
-	# Checking whether the script was run via PowerShell 5.1
-	if ($PSVersionTable.PSVersion.Major -ne 5)
+	# Checking whether the script was run via PowerShell 7
+	if ($PSVersionTable.PSVersion.Major -ne 7)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		$MandatoryPSVersion = (Import-PowershellDataFile -Path "$PSScriptRoot\..\..\Manifest\SophiaScript.psd1").PowerShellVersion
@@ -122,18 +124,53 @@ function InitialActions
 		exit
 	}
 
+	# Checking whether PowerShell 7 was installed from the Microsoft Store
+	# https://github.com/PowerShell/PowerShell/issues/21295
+	if ((Get-Process -Id $PID).Path -match "C:\\Program Files\\WindowsApps")
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Warning -Message $Localization.MicroSoftStorePowerShellWarning
+		Write-Information -MessageData "" -InformationAction Continue
+
+		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+		$Global:Failed = 1
+
+		exit
+	}
+
+	# Import PowerShell 5.1 modules
+	try
+	{
+		Import-Module -Name Microsoft.PowerShell.Management, PackageManagement, Appx, DISM -UseWindowsPowerShell -Force -ErrorAction Stop
+	}
+	catch
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Warning -Message $Localization.PowerShellImportFailed
+		Write-Information -MessageData "" -InformationAction Continue
+
+		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+		$Global:Failed = 1
+
+		exit
+	}
+
 	# https://github.com/PowerShell/PowerShell/issues/21070
-	$Global:CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
-	$Global:CompilerParameters.TempFiles = [System.CodeDom.Compiler.TempFileCollection]::new($env:TEMP, $false)
-	$Global:CompilerParameters.GenerateInMemory = $true
+	$Global:CompilerOptions = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
+	$Global:CompilerOptions.TempFiles = [System.CodeDom.Compiler.TempFileCollection]::new($env:TEMP, $false)
+	$Global:CompilerOptions.GenerateInMemory = $true
 
 	$Signature = @{
-		Namespace          = "WinAPI"
-		Name               = "GetStrings"
-		Language           = "CSharp"
-		UsingNamespace     = "System.Text"
-		CompilerParameters = $CompilerParameters
-		MemberDefinition   = @"
+		Namespace        = "WinAPI"
+		Name             = "GetStrings"
+		Language         = "CSharp"
+		UsingNamespace   = "System.Text"
+		CompilerOptions  = $CompilerOptions
+		MemberDefinition = @"
 [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
 public static extern IntPtr GetModuleHandle(string lpModuleName);
 
@@ -200,11 +237,11 @@ public static string GetIndirectString(string indirectString)
 	}
 
 	$Signature = @{
-		Namespace          = "WinAPI"
-		Name               = "ForegroundWindow"
-		Language           = "CSharp"
-		CompilerParameters = $CompilerParameters
-		MemberDefinition   = @"
+		Namespace        = "WinAPI"
+		Name             = "ForegroundWindow"
+		Language         = "CSharp"
+		CompilerOptions  = $CompilerOptions
+		MemberDefinition = @"
 [DllImport("user32.dll")]
 public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 
@@ -524,14 +561,14 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Information -MessageData "" -InformationAction Continue
 
 		# Checking whether hosts contains any of string from $IPArray array
-		if ((Get-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Encoding Default -Force | ForEach-Object -Process {$_.Trim()} | ForEach-Object -Process {
+		if ((Get-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Encoding utf8NoBOM -Force | ForEach-Object -Process {$_.Trim()} | ForEach-Object -Process {
 			($_ -ne "") -and ($_ -ne " ") -and (-not $_.StartsWith("#")) -and ($IPArray -split "`r?`n" | Select-String -Pattern $_)
 		}) -contains $true)
 		{
 			Write-Warning -Message ($Localization.TweakerWarning -f "WindowsSpyBlocker")
 
 			# Clear hosts file
-			$hosts = Get-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Encoding Default -Force
+			$hosts = Get-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Encoding utf8NoBOM -Force
 			$hosts | ForEach-Object -Process {
 				if (($_ -ne "") -and (-not $_.StartsWith("#")) -and ($IPArray -split "`r?`n" | Select-String -Pattern $_.Trim()))
 				{
@@ -540,7 +577,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 				}
 			}
 			# Save in UTF8 without BOM
-			$hosts | Set-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Encoding Default -Force
+			$hosts | Set-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Encoding utf8NoBOM -Force
 
 			Start-Process -FilePath notepad.exe "$env:SystemRoot\System32\drivers\etc\hosts"
 		}
@@ -728,7 +765,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			exit
 		}
 	}
-	catch [System.ComponentModel.Win32Exception]
+	catch [Microsoft.PowerShell.Commands.ServiceCommandException]
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
@@ -749,7 +786,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		$Script:DefenderMpPreferenceBroken = $false
 		(Get-MpPreference -ErrorAction Stop).EnableControlledFolderAccess
 	}
-	catch [Microsoft.Management.Infrastructure.CimException]
+	catch [System.Management.Automation.RemoteException]
 	{
 		$Script:DefenderMpPreferenceBroken = $true
 	}
@@ -882,7 +919,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			Verbose         = $true
 			UseBasicParsing = $true
 		}
-		$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_5_1
+		$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_Arm_PowerShell_7
 		$CurrentRelease = (Get-Module -Name SophiaScript).Version.ToString()
 
 		if ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)
@@ -908,11 +945,11 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 
 	# Get the real Windows version like %SystemRoot%\system32\winver.exe relies on
 	$Signature = @{
-		Namespace          = "WinAPI"
-		Name               = "Winbrand"
-		Language           = "CSharp"
-		CompilerParameters = $CompilerParameters
-		MemberDefinition   = @"
+		Namespace        = "WinAPI"
+		Name             = "Winbrand"
+		Language         = "CSharp"
+		CompilerOptions  = $CompilerOptions
+		MemberDefinition = @"
 [DllImport("Winbrand.dll", CharSet = CharSet.Unicode)]
 public extern static string BrandingFormatString(string sFormat);
 "@
