@@ -63,6 +63,10 @@ jobs:
         run: |
           . "Scripts\Wrapper.ps1"
 
+      - name: SFX
+        run: |
+          . "Scripts\SFX.ps1"
+
       - name: ReleaseNotesTemplate
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -99,4 +103,5 @@ jobs:
           # Use "/" in path to files
           files: |
             Sophia*.zip
+            SophiaScriptWinGet_*.exe
           body_path: ${{ steps.read_release.outputs.ReleaseBody }}
