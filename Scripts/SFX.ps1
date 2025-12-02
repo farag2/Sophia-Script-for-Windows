@@ -23,8 +23,9 @@ $Latest_Release_Windows_11_PowerShell_5_1 = (Invoke-RestMethod @Parameters).Soph
 
 (Get-Content -Path Scripts\SFX_config.txt -Encoding utf8NoBOM -Raw) | Foreach-Object -Process {$_ -replace "SophiaScriptVersion", $Latest_Release_Windows_11_PowerShell_5_1} | Set-Content -Path Scripts\SFX_config.txt -Encoding utf8NoBOM -Force
 
-Import-Module -Name PackageManagement -UseWindowsPowerShell
-get-package -Name *rar* | fl *
+Get-Content -Path Scripts\SFX_config.txt
+
+get-childitem "Sophia_Script_for_Windows_11_v$($Latest_Release_Windows_11_PowerShell_5_1)"
 
 # Create SFX archive
-& "C:\Program Files\WinRAR\Rar.exe" a -sfx -z"Scripts\SFX_config.txt" -ep1 -r "SophiaScriptWinGet_SophiaScriptVersion.exe" "Sophia_Script_for_Windows_11_v$($Latest_Release_Windows_11_PowerShell_5_1)\*"
+& "C:\Program Files\WinRAR\Rar.exe" a -sfx -z"Scripts\SFX_config.txt" -ep1 -r "SophiaScriptWinGet_$($Latest_Release_Windows_11_PowerShell_5_1).exe" "Sophia_Script_for_Windows_11_v$($Latest_Release_Windows_11_PowerShell_5_1)\*"
