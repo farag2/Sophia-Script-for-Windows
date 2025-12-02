@@ -1,14 +1,18 @@
+Write-Verbose -Message Dependencies -Verbose
+
 # Download WinRAR
 # https://www.rarlab.com
+New-Item -Path Bin -ItemType Directory -Force
+
 $Parameters = @{
 	Uri             = "https://www.rarlab.com/rar/winrar-x64-713.exe"
-	OutFile         = "winrar-x64-713.exe"
+	OutFile         = "Bin\winrar-x64-713.exe"
 	UseBasicParsing = $true
 }
 Invoke-WebRequest @Parameters
-
+test-path "Bin\winrar-x64-713.exe"
 # Install WinRAR
-& winrar-x64-713.exe -s
+& "Bin\winrar-x64-713.exe" -s
 
 # Get latest version tag for Windows 11
 $Parameters = @{
