@@ -2,17 +2,17 @@ Write-Verbose -Message Dependencies -Verbose
 
 # Download WinRAR
 # https://www.rarlab.com
-New-Item -Path Bin -ItemType Directory -Force
+New-Item -Path WinRAR -ItemType Directory -Force
 
 $Parameters = @{
 	Uri             = "https://www.rarlab.com/rar/winrar-x64-713.exe"
-	OutFile         = "Bin\winrar-x64-713.exe"
+	OutFile         = "WinRAR\winrar-x64-713.exe"
 	UseBasicParsing = $true
 }
 Invoke-WebRequest @Parameters
-test-path "Bin\winrar-x64-713.exe"
-# Install WinRAR
-& "Bin\winrar-x64-713.exe" -s
+
+# Install WinRAR silently
+& "WinRAR\winrar-x64-713.exe" -s
 
 # Get latest version tag for Windows 11
 $Parameters = @{
@@ -26,10 +26,14 @@ $Latest_Release_Windows_11_PowerShell_5_1 = (Invoke-RestMethod @Parameters).Soph
 ; Expand SFX archive
 Path=$env:TEMP\Sophia_Script_for_Windows_11_v$($Latest_Release_Windows_11_PowerShell_5_1)
 ; Copy folder recursively to user's Desktop folder
-Setup=C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -WindowStyle Hidden -Command & {Copy-Item -Path "$env:TEMP\Sophia_Script_for_Windows_11_v$($Latest_Release_Windows_11_PowerShell_5_1)" -Destination "$(Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}")\1" -Recurse -Force}
+Setup=C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -WindowStyle Hidden -Command & {Copy-Item -Path "$env:TEMP\Sophia_Script_for_Windows_11_v$($Latest_Release_Windows_11_PowerShell_5_1)" -Destination '$(Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop)\1' -Recurse -Force}
 ; No GUI while expanding SFX archive
 Silent=1
 "@ | Set-Content -Path config.txt -Encoding Default -Force
+
+get-content config.txt
+
+Write-Verbose -Message "$(Get-ItemPropertyValue -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -Name Desktop)\1" -Verbose
 
 # Create SFX archive
 & "C:\Program Files\WinRAR\Rar.exe" a -sfx -z"config.txt" -ep1 -r "SophiaScriptWinGet_SophiaScriptVersion.exe" "Sophia_Script_for_Windows_11_v$($Latest_Release_Windows_11_PowerShell_5_1)\*"
