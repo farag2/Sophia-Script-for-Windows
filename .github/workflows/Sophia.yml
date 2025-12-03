@@ -76,25 +76,6 @@ jobs:
         run: |
           . "Scripts\ReleaseNotesTemplate.ps1"
 
-      - name: Adding SHA256SUM.json
-        run: |
-          $JSON = @{}
-          Get-ChildItem -Path . -File | Where-Object -FilterScript {$_.Name -match "zip|exe"} | ForEach-Object -Process {
-            Write-Verbose -Message "$($_.Name) has $((Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash) hashsum" -Verbose
-
-            $JSON += @{
-              "$($_.Name)" = "$((Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash)"
-            }
-          }
-          $JSON | ConvertTo-Json | Set-Content -Path SHA256SUM.json -Encoding utf8 -Force
-
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add SHA256SUM.json
-          git commit -m "Update from ${{ github.ref_name }} for adding SHA256SUM.json"
-          # repository and branch to push to
-          git push origin HEAD:refs/heads/master
-
       - name: Uploading
         uses: softprops/action-gh-release@master
         with:
@@ -103,5 +84,5 @@ jobs:
           # Use "/" in path to files
           files: |
             Sophia*.zip
-            SophiaScriptWinGet_*.exe
+            Sophia.Script.for.Windows*WinGet.exe
           body_path: ${{ steps.read_release.outputs.ReleaseBody }}

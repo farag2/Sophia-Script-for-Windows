@@ -149,7 +149,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 }
 
 $Downloads = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-$packageArgs = @{
+$Parameters = @{
 	packageName   = $env:ChocolateyPackageName
 	fileType      = "ZIP"
 	unzipLocation = $Downloads
@@ -157,4 +157,4 @@ $packageArgs = @{
 	checksum      = $Hash
 	checksumType  = "sha256"
 }
-Install-ChocolateyZipPackage @packageArgs
+Install-ChocolateyZipPackage @Parameters
