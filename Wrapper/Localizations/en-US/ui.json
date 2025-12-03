@@ -80,7 +80,11 @@
       "messageBoxPresetNotComp": "preset file is not compatible!",
       "messageBoxFilesMissingClose": "Files missing so Sophia Script Wrapper will close.",
       "messageBoxConsoleEmpty": "The console is empty.\nClick 'Refresh Console' button to create script with your selections.",
-      "messageBoxPowerShellVersionNotInstalled": "PowerShell version you selected is not installed."
+      "messageBoxPowerShellVersionNotInstalled": "PowerShell version you selected is not installed.",
+	  "messageBoxImportErrorsTitle": "Import Errors",
+	  "messageBoxNumberOfFunctionsMatched": "Number of functions that matched available Wrapper functions:",
+	  "messageBoxNumberOfFunctionsInYourSophiaPs1": "Number of functions in your 'Sophia.ps1':",
+	  "messageBoxYourFunctionsNotFound": "Your functions not found in this version of Wrapper:"
     }
   },
   {

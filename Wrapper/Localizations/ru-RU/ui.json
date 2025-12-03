@@ -81,6 +81,10 @@
       "messageBoxFilesMissingClose": "Отсутствуют необходимые файлы Sophia Script Wrapper. Программа будет закрыта.",
       "messageBoxConsoleEmpty": "Консоль пуста.\nНажмите кнопку \"Обновить консоль\", чтобы создать скрипт согласно вышему выбору.",
       "messageBoxPowerShellVersionNotInstalled": "Выбранная вами версия PowerShell не установлена."
+	  "messageBoxImportErrorsTitle": "Ошибки импорта",
+	  "messageBoxNumberOfFunctionsMatched": "Количество функций, соответствующих доступным функциям Wrapper:",
+	  "messageBoxNumberOfFunctionsInYourSophiaPs1": "Количество функций в вашем 'Sophia.ps1':",
+	  "messageBoxYourFunctionsNotFound": "Ваши функции не найдены в этой версии Wrapper:"
     }
   },
   {
