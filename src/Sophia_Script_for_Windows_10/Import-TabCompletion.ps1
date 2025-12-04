@@ -3,10 +3,10 @@
 	Enable tab completion to invoke for functions if you do not know function name
 
 	.VERSION
-	5.21.2
+	6.0.0
 
 	.DATE
-	19.10.2025
+	05.12.2025
 
 	.COPYRIGHT
 	(c) 2014—2026 Team Sophia
