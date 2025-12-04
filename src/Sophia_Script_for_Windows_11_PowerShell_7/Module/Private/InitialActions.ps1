@@ -160,8 +160,8 @@ function InitialActions
 	}
 
 	# https://github.com/PowerShell/PowerShell/issues/21070
-	$Global:CompilerOptions = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
-	$Global:CompilerOptions.TempFiles = [System.CodeDom.Compiler.TempFileCollection]::new($env:TEMP, $false)
+	$Global:CompilerOptions                  = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
+	$Global:CompilerOptions.TempFiles        = [System.CodeDom.Compiler.TempFileCollection]::new($env:TEMP, $false)
 	$Global:CompilerOptions.GenerateInMemory = $true
 
 	$Signature = @{

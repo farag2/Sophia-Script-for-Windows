@@ -8483,9 +8483,11 @@ while ([WinAPI.Focus]::GetFocusAssistState() -ne "OFF")
 	Start-Sleep -Seconds 600
 }
 
-# Run the task
+# Wait until Windows Update service will stop
 (Get-Service -Name wuauserv).WaitForStatus("Stopped", "01:00:00")
 Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -Force | Remove-Item -Recurse -Force
+# Remove files which can be removed in a user scope only
+Get-ChildItem -Path $env:SystemRoot\SoftwareDistribution\Download -Recurse | Remove-Item -Recurse
 
 [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
 [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
