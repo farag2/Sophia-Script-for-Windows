@@ -6425,6 +6425,18 @@ function WinPrtScrFolder
 		$Default
 	)
 
+	# Checking whether user is logged into OneDrive (Microsoft account)
+	$UserEmailPersonal = Get-ItemProperty -Path HKCU:\Software\Microsoft\OneDrive\Accounts\Personal -Name UserEmail -ErrorAction Ignore
+	$UserEmailBusiness = Get-ItemProperty -Path HKCU:\Software\Microsoft\OneDrive\Accounts\Business1 -Name UserEmail -ErrorAction Ignore
+	if ($UserEmailPersonal -or $UserEmailBusiness)
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+		return
+	}
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Desktop"
