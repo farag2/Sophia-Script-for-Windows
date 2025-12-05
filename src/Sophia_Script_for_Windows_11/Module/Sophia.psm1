@@ -3246,15 +3246,6 @@ function Cursors
 		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 	}
 
-	$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-	$Parameters = @{
-		Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/dark.zip"
-		OutFile         = "$DownloadsFolder\dark.zip"
-		UseBasicParsing = $true
-		Verbose         = $true
-		}
-	Invoke-WebRequest @Parameters
-
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Dark"

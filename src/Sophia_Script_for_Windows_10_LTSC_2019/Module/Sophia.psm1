@@ -2691,179 +2691,161 @@ function Cursors
 		$Default
 	)
 
+	try
+	{
+		# Checking whether https://github.com is alive
+		$Parameters = @{
+			Uri              = "https://github.com"
+			Method           = "Head"
+			DisableKeepAlive = $true
+			UseBasicParsing  = $true
+		}
+		(Invoke-WebRequest @Parameters).StatusDescription
+	}
+	catch [System.Net.WebException]
+	{
+		Write-Warning -Message ($Localization.NoResponse -f "https://github.com")
+		Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
+		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+	}
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Dark"
 		{
-			try
-			{
-				# Checking whether https://github.com is alive
-				$Parameters = @{
-					Uri              = "https://github.com"
-					Method           = "Head"
-					DisableKeepAlive = $true
-					UseBasicParsing  = $true
-				}
-				(Invoke-WebRequest @Parameters).StatusDescription
-
-				$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-				$Parameters = @{
-					Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/dark.zip"
-					OutFile         = "$DownloadsFolder\dark.zip"
-					UseBasicParsing = $true
-					Verbose         = $true
-				}
-				Invoke-WebRequest @Parameters
-
-				if (-not (Test-Path -Path "$env:SystemRoot\Cursors\W11 Cursor Dark Free"))
-				{
-					New-Item -Path "$env:SystemRoot\Cursors\W11 Cursor Dark Free" -ItemType Directory -Force
-				}
-
-				# Extract archive
-				& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\dark.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Dark Free"
-
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursor Dark Free by Jepri Creations" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\appstarting.ani" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Arrow -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\arrow.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Crosshair -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\crosshair.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Hand -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\hand.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Help -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\help.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name IBeam -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\ibeam.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name No -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\no.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name NWPen -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\nwpen.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Person -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\person.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Pin -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\pin.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "Scheme Source" -PropertyType DWord -Value 1 -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeAll -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\sizeall.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNESW -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\sizenesw.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNS -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\sizens.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNWSE -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\sizenwse.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeWE -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\sizewe.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name UpArrow -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\uparrow.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Wait -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\wait.ani" -Force
-
-				if (-not (Test-Path -Path "HKCU:\Control Panel\Cursors\Schemes"))
-				{
-					New-Item -Path "HKCU:\Control Panel\Cursors\Schemes" -Force
-				}
-				[string[]]$Schemes = (
-					"%SystemRoot%\Cursors\W11 Cursor Dark Free\arrow.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Dark Free\help.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Dark Free\appstarting.ani",
-					"%SystemRoot%\Cursors\W11 Cursor Dark Free\wait.ani",
-					"%SystemRoot%\Cursors\W11 Cursor Dark Free\crosshair.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Dark Free\ibeam.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Dark Free\nwpen.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Dark Free\no.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Dark Free\sizens.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Dark Free\sizewe.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Dark Free\sizenwse.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Dark Free\sizenesw.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Dark Free\sizeall.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Dark Free\uparrow.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Dark Free\hand.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Dark Free\person.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Dark Free\pin.cur"
-				) -join ","
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors\Schemes" -Name "W11 Cursor Dark Free by Jepri Creations" -PropertyType String -Value $Schemes -Force
-
-				Start-Sleep -Seconds 1
-
-				Remove-Item -Path "$DownloadsFolder\dark.zip" -Force
+			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+			$Parameters = @{
+				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/dark.zip"
+				OutFile         = "$DownloadsFolder\dark.zip"
+				UseBasicParsing = $true
+				Verbose         = $true
 			}
-			catch [System.Net.WebException]
+			Invoke-WebRequest @Parameters
+
+			if (-not (Test-Path -Path "$env:SystemRoot\Cursors\W11 Cursor Dark Free"))
 			{
-				Write-Warning -Message ($Localization.NoResponse -f "https://github.com")
-				Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
-				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+				New-Item -Path "$env:SystemRoot\Cursors\W11 Cursor Dark Free" -ItemType Directory -Force
 			}
+
+			# Extract archive
+			& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\dark.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Dark Free"
+
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursor Dark Free by Jepri Creations" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\appstarting.ani" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Arrow -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\arrow.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Crosshair -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\crosshair.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Hand -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\hand.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Help -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\help.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name IBeam -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\ibeam.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name No -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\no.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name NWPen -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\nwpen.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Person -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\person.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Pin -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\pin.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "Scheme Source" -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeAll -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\sizeall.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNESW -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\sizenesw.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNS -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\sizens.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNWSE -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\sizenwse.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeWE -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\sizewe.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name UpArrow -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\uparrow.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Wait -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\wait.ani" -Force
+
+			if (-not (Test-Path -Path "HKCU:\Control Panel\Cursors\Schemes"))
+			{
+				New-Item -Path "HKCU:\Control Panel\Cursors\Schemes" -Force
+			}
+			[string[]]$Schemes = (
+				"%SystemRoot%\Cursors\W11 Cursor Dark Free\arrow.cur",
+				"%SystemRoot%\Cursors\W11 Cursor Dark Free\help.cur",
+				"%SystemRoot%\Cursors\W11 Cursor Dark Free\appstarting.ani",
+				"%SystemRoot%\Cursors\W11 Cursor Dark Free\wait.ani",
+				"%SystemRoot%\Cursors\W11 Cursor Dark Free\crosshair.cur",
+				"%SystemRoot%\Cursors\W11 Cursor Dark Free\ibeam.cur",
+				"%SystemRoot%\Cursors\W11 Cursor Dark Free\nwpen.cur",
+				"%SystemRoot%\Cursors\W11 Cursor Dark Free\no.cur",
+				"%SystemRoot%\Cursors\W11 Cursor Dark Free\sizens.cur",
+				"%SystemRoot%\Cursors\W11 Cursor Dark Free\sizewe.cur",
+				"%SystemRoot%\Cursors\W11 Cursor Dark Free\sizenwse.cur",
+				"%SystemRoot%\Cursors\W11 Cursor Dark Free\sizenesw.cur",
+				"%SystemRoot%\Cursors\W11 Cursor Dark Free\sizeall.cur",
+				"%SystemRoot%\Cursors\W11 Cursor Dark Free\uparrow.cur",
+				"%SystemRoot%\Cursors\W11 Cursor Dark Free\hand.cur",
+				"%SystemRoot%\Cursors\W11 Cursor Dark Free\person.cur",
+				"%SystemRoot%\Cursors\W11 Cursor Dark Free\pin.cur"
+			) -join ","
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors\Schemes" -Name "W11 Cursor Dark Free by Jepri Creations" -PropertyType String -Value $Schemes -Force
+
+			Start-Sleep -Seconds 1
+
+			Remove-Item -Path "$DownloadsFolder\dark.zip" -Force
 		}
 		"Light"
 		{
-			try
-			{
-				# Checking whether https://github.com is alive
-				$Parameters = @{
-					Uri              = "https://github.com"
-					Method           = "Head"
-					DisableKeepAlive = $true
-					UseBasicParsing  = $true
-				}
-				(Invoke-WebRequest @Parameters).StatusDescription
-
-				$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-				$Parameters = @{
-					Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/light.zip"
-					OutFile         = "$DownloadsFolder\light.zip"
-					UseBasicParsing = $true
-					Verbose         = $true
-				}
-				Invoke-WebRequest @Parameters
-
-				if (-not (Test-Path -Path "$env:SystemRoot\Cursors\W11 Cursor Light Free"))
-				{
-					New-Item -Path "$env:SystemRoot\Cursors\W11 Cursor Light Free" -ItemType Directory -Force
-				}
-
-				# Extract archive
-				& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\light.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Light Free"
-
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursor Light Free by Jepri Creations" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\appstarting.ani" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Arrow -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\arrow.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Crosshair -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\crosshair.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Hand -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\hand.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Help -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\help.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name IBeam -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\ibeam.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name No -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\no.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name NWPen -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\nwpen.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Person -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\person.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Pin -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\pin.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "Scheme Source" -PropertyType DWord -Value 1 -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeAll -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\sizeall.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNESW -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\sizenesw.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNS -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\sizens.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNWSE -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\sizenwse.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeWE -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\sizewe.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name UpArrow -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\uparrow.cur" -Force
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Wait -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\wait.ani" -Force
-
-				if (-not (Test-Path -Path "HKCU:\Control Panel\Cursors\Schemes"))
-				{
-					New-Item -Path "HKCU:\Control Panel\Cursors\Schemes" -Force
-				}
-				[string[]]$Schemes = (
-					"%SystemRoot%\Cursors\W11 Cursor Light Free\arrow.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Light Free\help.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Light Free\appstarting.ani",
-					"%SystemRoot%\Cursors\W11 Cursor Light Free\wait.ani",
-					"%SystemRoot%\Cursors\W11 Cursor Light Free\crosshair.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Light Free\ibeam.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Light Free\nwpen.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Light Free\no.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Light Free\sizens.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Light Free\sizewe.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Light Free\sizenwse.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Light Free\sizenesw.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Light Free\sizeall.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Light Free\uparrow.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Light Free\hand.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Light Free\person.cur",
-					"%SystemRoot%\Cursors\W11 Cursor Light Free\pin.cur"
-				) -join ","
-				New-ItemProperty -Path "HKCU:\Control Panel\Cursors\Schemes" -Name "W11 Cursor Light Free by Jepri Creations" -PropertyType String -Value $Schemes -Force
-
-				Start-Sleep -Seconds 1
-
-				Remove-Item -Path "$DownloadsFolder\light.zip" -Force
+			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+			$Parameters = @{
+				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/light.zip"
+				OutFile         = "$DownloadsFolder\light.zip"
+				UseBasicParsing = $true
+				Verbose         = $true
 			}
-			catch [System.Net.WebException]
+			Invoke-WebRequest @Parameters
+
+			if (-not (Test-Path -Path "$env:SystemRoot\Cursors\W11 Cursor Light Free"))
 			{
-				Write-Warning -Message ($Localization.NoResponse -f "https://github.com")
-				Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
-				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+				New-Item -Path "$env:SystemRoot\Cursors\W11 Cursor Light Free" -ItemType Directory -Force
 			}
+
+			# Extract archive
+			& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\light.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Light Free"
+
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursor Light Free by Jepri Creations" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\appstarting.ani" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Arrow -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\arrow.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Crosshair -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\crosshair.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Hand -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\hand.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Help -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\help.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name IBeam -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\ibeam.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name No -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\no.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name NWPen -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\nwpen.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Person -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\person.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Pin -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\pin.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "Scheme Source" -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeAll -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\sizeall.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNESW -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\sizenesw.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNS -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\sizens.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNWSE -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\sizenwse.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeWE -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\sizewe.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name UpArrow -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\uparrow.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Wait -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\wait.ani" -Force
+
+			if (-not (Test-Path -Path "HKCU:\Control Panel\Cursors\Schemes"))
+			{
+				New-Item -Path "HKCU:\Control Panel\Cursors\Schemes" -Force
+			}
+			[string[]]$Schemes = (
+				"%SystemRoot%\Cursors\W11 Cursor Light Free\arrow.cur",
+				"%SystemRoot%\Cursors\W11 Cursor Light Free\help.cur",
+				"%SystemRoot%\Cursors\W11 Cursor Light Free\appstarting.ani",
+				"%SystemRoot%\Cursors\W11 Cursor Light Free\wait.ani",
+				"%SystemRoot%\Cursors\W11 Cursor Light Free\crosshair.cur",
+				"%SystemRoot%\Cursors\W11 Cursor Light Free\ibeam.cur",
+				"%SystemRoot%\Cursors\W11 Cursor Light Free\nwpen.cur",
+				"%SystemRoot%\Cursors\W11 Cursor Light Free\no.cur",
+				"%SystemRoot%\Cursors\W11 Cursor Light Free\sizens.cur",
+				"%SystemRoot%\Cursors\W11 Cursor Light Free\sizewe.cur",
+				"%SystemRoot%\Cursors\W11 Cursor Light Free\sizenwse.cur",
+				"%SystemRoot%\Cursors\W11 Cursor Light Free\sizenesw.cur",
+				"%SystemRoot%\Cursors\W11 Cursor Light Free\sizeall.cur",
+				"%SystemRoot%\Cursors\W11 Cursor Light Free\uparrow.cur",
+				"%SystemRoot%\Cursors\W11 Cursor Light Free\hand.cur",
+				"%SystemRoot%\Cursors\W11 Cursor Light Free\person.cur",
+				"%SystemRoot%\Cursors\W11 Cursor Light Free\pin.cur"
+			) -join ","
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors\Schemes" -Name "W11 Cursor Light Free by Jepri Creations" -PropertyType String -Value $Schemes -Force
+
+			Start-Sleep -Seconds 1
+
+			Remove-Item -Path "$DownloadsFolder\light.zip" -Force
 		}
 		"Default"
 		{
@@ -2906,6 +2888,7 @@ public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, uint
 	}
 	[WinAPI.Cursor]::SystemParametersInfo(0x0057, 0, $null, 0)
 }
+
 
 <#
 	.SYNOPSIS
