@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 6.0.0 | 7.0.0 — 05.12.2025
+
+* Code refactoring;
+  * Private functions were extracted from module into `Errors.ps1`, `InitialActions.ps1`, `Set-Policy.ps1`, `PostActions.ps1`, and `Show-Menu.ps1` scripts.
+* Preset file simplified;
+* Now WinGet script creation builds an SFX executable file instead of a ZIP archive due to new WinGet scheme policy;
+* `PreventEdgeShortcutCreation` function improved;
+* `OneDrive` and `WinPrtScrFolder` functions fixed;
+* `WindowsScriptHost` function removed;
+* Changed `Win32LongPathLimit` function name to `Win32LongPathsSupport`;
+* Simplified `WinPrtScrFolder` function;
+* `RecycleBinDeleteConfirmation` function improved;
+  * Closes #504
+* Renamed `Win32LongPathSupport` function into `Win32LongPathsSupport`;
+* Minor improvements.
+
+Thanks to @agadiffe and Ganiest.
+
+## 5.21.3 | 6.9.3 — 21.10.2025 
+
+* Improved localizations and wording;
+* Improve startup checks & updated readmes
+* Changed `Win32LongPathLimit` function name to `Win32LongPathSupport`;
+* Simplified `WinPrtScrFolder` function;
+* Removed `FoldersLaunchSeparateProcess` function for Windows 11 only;
+* Added `RestorePreviousFolders` function to restore previous folder windows at logon;
+* Added `ClockInNotificationCenter` for `Windows 11 25H2` only to show clock in Notification Center;
+* Fixed `Install-VCRedist` and `Install-DotNetRuntimes`;
+* Added BitLocker checks if system drive is encrypted but protection is not enabled;
+* Minor improvements.
+
+Thanks to @lowl1f3
+
+## Wrapper 2.8.7
+* Added more statusbar messages;
+* Some refactoring.
+
 ## 5.21.2 | 6.9.2 — 21.09.2025
 
 * Improved localizations and wording;
