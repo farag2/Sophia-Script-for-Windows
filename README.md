@@ -42,6 +42,13 @@ Made with <img src="./img/heart.svg" height="17px"/> of Windows
 <br>
 <br>
 
+<kbd>
+	<a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Download-green?labelColor=151B23&color=151B23&style=for-the-badge" href="#"></a>
+</kbd>
+
+<br>
+<br>
+
 This page is also available in other languages
 
 <a href="./docs/README_uk-ua.md"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/img/ukraine.png" height="70px"/></a>

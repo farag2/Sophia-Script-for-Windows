@@ -8,6 +8,7 @@
 	.EXAMPLE
 	iwr script.sophia.team -useb | iex
 #>
+
 Clear-Host
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -37,8 +38,8 @@ if ($Host.Version.Major -eq 5)
 }
 
 # https://github.com/PowerShell/PowerShell/issues/21070
-$Script:CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
-$Script:CompilerParameters.TempFiles = [System.CodeDom.Compiler.TempFileCollection]::new($env:TEMP, $false)
+$Script:CompilerParameters                  = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
+$Script:CompilerParameters.TempFiles        = [System.CodeDom.Compiler.TempFileCollection]::new($env:TEMP, $false)
 $Script:CompilerParameters.GenerateInMemory = $true
 
 $Parameters = @{
