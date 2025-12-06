@@ -5,6 +5,8 @@ PackageIdentifier: TeamSophia.SophiaScript
 PackageVersion: SophiaScriptVersion
 ReleaseDate: SophiaScriptDate
 InstallerType: portable
+Commands:
+- sophiascript
 Installers:
 - Architecture: x64
   InstallerUrl: https://github.com/farag2/Sophia-Script-for-Windows/releases/download/SophiaScriptVersion/SophiaScriptWinGet_SophiaScriptVersion.exe

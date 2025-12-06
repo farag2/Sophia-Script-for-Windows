@@ -3,6 +3,6 @@
 ; Expand SFX archive
 Path=%TEMP%\Sophia_Script_for_Windows_11_vSophiaScriptVersion
 ; Copy folder recursively to user's Desktop folder
-Setup=C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -WindowStyle Hidden -Command & {Copy-Item -Path "$env:TEMP\Sophia_Script_for_Windows_11_vSophiaScriptVersion" -Destination (Join-Path -Path "$(Get-ItemPropertyValue -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -Name Desktop)" -ChildPath "Sophia_Script_for_Windows_11_vSophiaScriptVersion") -Recurse -Force}
+Setup=C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -WindowStyle Hidden -Command & {Copy-Item -Path "$env:TEMP\Sophia_Script_for_Windows_11_vSophiaScriptVersion" -Destination (Join-Path -Path "$(Get-ItemPropertyValue -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -Name '{374DE290-123F-4565-9164-39C4925E467B}')" -ChildPath "Sophia_Script_for_Windows_11_vSophiaScriptVersion") -Recurse -Force}
 ; No GUI while expaning SFX archive
 Silent=1

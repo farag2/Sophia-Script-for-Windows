@@ -58,6 +58,8 @@ jobs:
 
       - name: Publish to WinGet
         run: |
+          # %LOCALAPPDATA%\Microsoft\WinGet\Packages
+
           # Get the latest wingetcreate
           # https://github.com/microsoft/winget-create
           $Parameters = @{
