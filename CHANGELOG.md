@@ -23,6 +23,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Thanks to @agadiffe and Ganiest.
 
+## Wrapper 2.8.10
+
+* Support new file structure
+* Add your own translations by editing JSONs
+* Fixed Windows 11 ARM comparison to online
+* Detect import preset incompatibility
+* Refactor
+
 ## 5.21.3 | 6.9.3 — 21.10.2025 
 
 * Improved localizations and wording;
