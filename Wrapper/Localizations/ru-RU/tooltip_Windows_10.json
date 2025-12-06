@@ -1,7 +1,7 @@
 [
   {
     "Region": "Protection",
-    "Function": "InitialActions",
+    "Function": "Initial Actions",
     "Arg": {
       "Zero": {
         "Tag": "Warning",

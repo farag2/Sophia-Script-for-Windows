@@ -1,6 +1,6 @@
 [
   {
-    "Region": "Protection",
+    "Region": "Initial Actions",
     "Control": "cmb",
     "Required": "true",
     "RequiredIndex": "0",

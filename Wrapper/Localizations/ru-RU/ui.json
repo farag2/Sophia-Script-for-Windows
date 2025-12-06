@@ -25,6 +25,7 @@
     "Id": "Tab",
     "Options": {
       "tabSearch": "Поиск",
+      "tabInitialActions": "Первоочередные действия",
       "tabSystemProtection": "Защита",
       "tabPrivacyTelemetry": "Конфиденциальность",
       "tabUIPersonalization": "Персонализация",

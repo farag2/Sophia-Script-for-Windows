@@ -25,6 +25,7 @@
     "Id": "Tab",
     "Options": {
       "tabSearch": "Search",
+      "tabInitialActions": "Initial Actions",
       "tabSystemProtection": "System Protection",
       "tabPrivacyTelemetry": "Privacy",
       "tabUIPersonalization": "Personalization",

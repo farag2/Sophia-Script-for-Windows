@@ -25,6 +25,7 @@
     "Id": "Tab",
     "Options": {
       "tabSearch": "Suchen",
+      "tabInitialActions": "Erste Maßnahmen",
       "tabSystemProtection": "Systemschutz",
       "tabPrivacyTelemetry": "Datenschutz",
       "tabUIPersonalization": "Personalisierung",
