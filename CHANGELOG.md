@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 6.0.0 | 7.0.0 — 05.12.2025
 
-* Code refactoring;
+* Huge code refactoring;
   * Private functions were extracted from module into `Errors.ps1`, `InitialActions.ps1`, `Set-Policy.ps1`, `PostActions.ps1`, and `Show-Menu.ps1` scripts.
 * Preset file simplified;
 * Now WinGet script creation builds an SFX executable file instead of a ZIP archive due to new WinGet scheme policy;
@@ -23,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Thanks to @agadiffe and Ganiest.
 
-## Wrapper 2.8.10
+## Wrapper 2.8.11
 
 * Support new file structure
 * Add your own translations by editing JSONs
