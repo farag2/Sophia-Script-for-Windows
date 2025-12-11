@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedArchitecture                   = Estás utilizando una CPU con arquitectura basada en "{0}". Este script solo es compatible con CPU con arquitectura x64. Descarga y ejecuta la versión del script adecuada para tu arquitectura.
 UnsupportedOSBuild                        = El script sólo es compatible con Windows 11 Enterprise LTSC 2024. Estás usando Windows {0} {1}. Actualiza tu Windows e inténtalo de nuevo.
-UnsupportedWindowsTerminal                = La versión de Windows Terminal es inferior a la 1.20. Por favor, actualízala en la Microsoft Store e inténtalo de nuevo.
+UnsupportedWindowsTerminal                = La versión de Windows Terminal es inferior a la 1.23. Por favor, actualízala en la Microsoft Store e inténtalo de nuevo.
 UpdateWarning                             = Estás utilizando Windows 11 {0}.{1}. La versión compatible es Windows 11 {0}.{2} y superior. Ejecuta Windows Update e inténtalo de nuevo.
 UnsupportedLanguageMode                   = Sesión de PowerShell ejecutada en modo de lenguaje limitado.
 LoggedInUserNotAdmin                      = El usuario que inició sesión no tiene derechos de administrador.

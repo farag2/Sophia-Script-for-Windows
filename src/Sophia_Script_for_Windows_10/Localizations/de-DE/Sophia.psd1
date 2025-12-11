@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Das Skript unterstützt nur 64-Bit-Windows.
 UnsupportedOSBuild                        = Das Skript unterstützt nur Windows 10 22H2. Sie verwenden Windows {0} {1}. Aktualisieren Sie Ihr Windows und versuchen Sie es erneut.
-UnsupportedWindowsTerminal                = Die Windows Terminal-Version ist niedriger als 1.20. Bitte aktualisieren Sie es im Microsoft Store und versuchen Sie es erneut.
+UnsupportedWindowsTerminal                = Die Windows Terminal-Version ist niedriger als 1.23. Bitte aktualisieren Sie es im Microsoft Store und versuchen Sie es erneut.
 UpdateWarning                             = Sie verwenden Windows 10 {0}.{1}. Unterstützt wird Windows 10 {0}.{2} und höher. Führen Sie Windows Update aus und versuchen Sie es erneut.
 UnsupportedLanguageMode                   = Die PowerShell-Sitzung wird in einem eingeschränkten Sprachmodus ausgeführt.
 LoggedInUserNotAdmin                      = Der angemeldete Benutzer hat keine Administratorrechte.

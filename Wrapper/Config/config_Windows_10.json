@@ -498,15 +498,15 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-		"Opposite": "Two"
+        "Opposite": "Two"
       },
       "One": {
         "Tag": "SearchIcon",
-		"Opposite": "Zero"
+        "Opposite": "Zero"
       },
       "Two": {
         "Tag": "SearchBox",
-		"Opposite": "Zero"
+        "Opposite": "Zero"
       }
     },
     "Preset": "Zero",
@@ -648,15 +648,15 @@
     "Arg": {
       "Zero": {
         "Tag": "Always",
-		"Opposite": "Two"
+        "Opposite": "Two"
       },
       "One": {
         "Tag": "Full",
-		"Opposite": "Two"
+        "Opposite": "Two"
       },
       "Two": {
         "Tag": "Never",
-		"Opposite": "Zero"
+        "Opposite": "Zero"
       }
     },
     "Preset": "Zero",
@@ -689,15 +689,15 @@
     "Arg": {
       "Zero": {
         "Tag": "LargeIcons",
-		"Opposite": "One"
+        "Opposite": "One"
       },
       "One": {
         "Tag": "SmallIcons",
-		"Opposite": "Zero"
+        "Opposite": "Zero"
       },
       "Two": {
         "Tag": "Category",
-		"Opposite": "Two"
+        "Opposite": "Two"
       }
     },
     "Preset": "Zero",
@@ -867,19 +867,19 @@
     "Region": "UI & Personalization",
     "Control": "cmb",
     "Required": "false",
-    "Function": "Cursors",
+    "Function": "Install-Cursors",
     "Arg": {
       "Zero": {
         "Tag": "Default",
-		"Opposite": "Zero"
+        "Opposite": "Zero"
       },
       "One": {
         "Tag": "Dark",
-		"Opposite": "Two"
+        "Opposite": "Two"
       },
       "Two": {
         "Tag": "Light",
-		"Opposite": "One"
+        "Opposite": "One"
       }
     },
     "Preset": "One",
@@ -1312,15 +1312,15 @@
     "Arg": {
       "Zero": {
         "Tag": "Root",
-		"Opposite": "Two"
+        "Opposite": "Two"
       },
       "One": {
         "Tag": "Custom",
-		"Opposite": "Two"
+        "Opposite": "Two"
       },
       "Two": {
         "Tag": "Default",
-		"Opposite": "One"
+        "Opposite": "One"
       }
     },
     "Preset": "Zero",

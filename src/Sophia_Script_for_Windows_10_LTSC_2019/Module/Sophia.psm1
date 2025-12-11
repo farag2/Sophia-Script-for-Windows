@@ -318,6 +318,8 @@ function FeedbackFrequency
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name DoNotShowFeedbackNotifications -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name DoNotShowFeedbackNotifications -Type DELETE
 
+	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Siuf\Rules -Name PeriodInNanoSeconds -Force -ErrorAction Ignore
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Never"
@@ -327,12 +329,10 @@ function FeedbackFrequency
 				New-Item -Path HKCU:\Software\Microsoft\Siuf\Rules -Force
 			}
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Siuf\Rules -Name NumberOfSIUFInPeriod -PropertyType DWord -Value 0 -Force
-
-			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Siuf\Rules -Name PeriodInNanoSeconds -Force -ErrorAction Ignore
 		}
 		"Automatically"
 		{
-			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Siuf\Rules -Name PeriodInNanoSeconds, NumberOfSIUFInPeriod -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Siuf\Rules -Name NumberOfSIUFInPeriod -Force -ErrorAction Ignore
 		}
 	}
 }
@@ -2648,13 +2648,13 @@ function AppsLanguageSwitch
 	Set default cursors
 
 	.EXAMPLE
-	Cursors -Dark
+	Install-Cursors -Dark
 
 	.EXAMPLE
-	Cursors -Light
+	Install-Cursors -Light
 
 	.EXAMPLE
-	Cursors -Default
+	Install-Cursors -Default
 
 	.LINK
 	https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-886489356
@@ -2665,7 +2665,7 @@ function AppsLanguageSwitch
 	.NOTES
 	Current user
 #>
-function Cursors
+function Install-Cursors
 {
 	param
 	(
@@ -2695,17 +2695,16 @@ function Cursors
 	{
 		# Checking whether https://github.com is alive
 		$Parameters = @{
-			Uri              = "https://github.com"
-			Method           = "Head"
-			DisableKeepAlive = $true
+			Uri              = "https://raw.githubusercontent.com"
 			UseBasicParsing  = $true
+			Verbose          = $true
 		}
-		(Invoke-WebRequest @Parameters).StatusDescription
+		(Invoke-WebRequest @Parameters).StatusCode
 	}
 	catch [System.Net.WebException]
 	{
-		Write-Warning -Message ($Localization.NoResponse -f "https://github.com")
-		Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
+		Write-Warning -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com")
+		Write-Error -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com") -ErrorAction SilentlyContinue
 		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 	}
 
@@ -2715,7 +2714,7 @@ function Cursors
 		{
 			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 			$Parameters = @{
-				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/dark.zip"
+				Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/Misc/dark.zip"
 				OutFile         = "$DownloadsFolder\dark.zip"
 				UseBasicParsing = $true
 				Verbose         = $true
@@ -2783,7 +2782,7 @@ function Cursors
 		{
 			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 			$Parameters = @{
-				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/light.zip"
+				Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/Misc/light.zip"
 				OutFile         = "$DownloadsFolder\light.zip"
 				UseBasicParsing = $true
 				Verbose         = $true
@@ -2888,7 +2887,6 @@ public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, uint
 	}
 	[WinAPI.Cursor]::SystemParametersInfo(0x0057, 0, $null, 0)
 }
-
 
 <#
 	.SYNOPSIS
@@ -7105,8 +7103,8 @@ function Install-VCRedist
 	}
 	catch [System.Net.WebException]
 	{
-		Write-Warning -Message ($Localization.NoResponse -f "https://githubusercontent.com")
-		Write-Error -Message ($Localization.NoResponse -f "https://githubusercontent.com") -ErrorAction SilentlyContinue
+		Write-Warning -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com")
+		Write-Error -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com") -ErrorAction SilentlyContinue
 		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 		return

@@ -509,12 +509,12 @@ AeroShaking -Enable
 # Download and install free dark "Windows 11 Cursors Concept" cursors from Jepri Creations. Internet connection required
 # Скачать и установить бесплатные темные курсоры "Windows 11 Cursors Concept" от Jepri Creations. Требуется соединение с интернетом
 # https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-886489356
-Cursors -Dark
+Install-Cursors -Dark
 
 # Download and install free light "Windows 11 Cursors Concept" cursors from Jepri Creations. Internet connection required
 # Скачать и установить бесплатные светлые курсоры "Windows 11 Cursors Concept" от Jepri Creations. Требуется соединение с интернетом
 # https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-886489356
-# Cursors -Light
+# Install-Cursors -Light
 
 # Set default cursors
 # Установить курсоры по умолчанию

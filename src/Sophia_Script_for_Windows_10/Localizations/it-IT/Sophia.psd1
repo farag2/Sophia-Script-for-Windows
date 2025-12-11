@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Lo script supporta solo Windows a 64 bit.
 UnsupportedOSBuild                        = Lo script supporta solo Windows 10 22H2. Stai utilizzando {0} {1}. Aggiornare Windows e riprovare.
-UnsupportedWindowsTerminal                = La versione di Windows Terminal è inferiore a 1.20. Aggiornarla nel Microsoft Store e riprovare.
+UnsupportedWindowsTerminal                = La versione di Windows Terminal è inferiore a 1.23. Aggiornarla nel Microsoft Store e riprovare.
 UpdateWarning                             = Windows 10 {0}.{1} rendszert használ. A támogatott verzió Windows 10 {0}.{2} vagy újabb. Futtassa a Windows Update programot, majd próbálja meg újra.
 UnsupportedLanguageMode                   = La sessione PowerShell è in esecuzione in modalità lingua limitata.
 LoggedInUserNotAdmin                      = L'utente in suo non ha i diritti di amministratore.

@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = Komut dosyası yalnızca 64 bit Windows'u destekler.
 UnsupportedOSBuild                        = Komut dosyası yalnızca Windows 10 Enterprise LTSC 2019'yi destekler. {0} {1} kullanıyorsunuz. Windows'unuzu yükseltin ve tekrar deneyin.
-UnsupportedWindowsTerminal                = Windows Terminal sürümü 1.20'den daha düşük. Lütfen Microsoft Store'da güncelleyin ve tekrar deneyin.
+UnsupportedWindowsTerminal                = Windows Terminal sürümü 1.23'den daha düşük. Lütfen Microsoft Store'da güncelleyin ve tekrar deneyin.
 UpdateWarning                             = Windows 10 {0}.{1} rendszert használ. A támogatott verzió Windows 10 {0}.{2} vagy újabb. Futtassa a Windows Update programot, majd próbálja meg újra.
 UnsupportedLanguageMode                   = Sınırlı bir dil modunda çalışan PowerShell oturumu.
 LoggedInUserNotAdmin                      = Oturum açan kullanıcının yönetici hakları yok.

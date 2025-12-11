@@ -90,6 +90,39 @@ function InitialActions
 		Import-LocalizedData -BindingVariable Global:Localization -UICulture en-US -BaseDirectory $PSScriptRoot\..\..\Localizations -FileName Sophia
 	}
 
+	# Checking whether the current module version is the latest one
+	try
+	{
+		# https://github.com/farag2/Sophia-Script-for-Windows/blob/master/sophia_script_versions.json
+		$Parameters = @{
+			Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
+			Verbose         = $true
+			UseBasicParsing = $true
+		}
+		$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_PowerShell_5_1
+		$CurrentRelease = (Get-Module -Name SophiaScript).Version.ToString()
+
+		if ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)
+		{
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Warning -Message ($Localization.UnsupportedRelease -f $LatestRelease)
+			Write-Information -MessageData "" -InformationAction Continue
+
+			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest" -Verbose
+			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+			$Global:Failed = 1
+
+			exit
+		}
+	}
+	catch [System.Net.WebException]
+	{
+		Write-Warning -Message ($Localization.NoResponse -f "https://github.com")
+		Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
+	}
+
 	# Check CPU architecture
 	$Caption = (Get-CimInstance -ClassName CIM_Processor).Caption
 	if (($Caption -notmatch "AMD64") -and ($Caption -notmatch "Intel64"))
@@ -482,7 +515,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			DisableKeepAlive = $true
 			UseBasicParsing  = $true
 		}
-		(Invoke-WebRequest @Parameters).StatusDescription
+		(Invoke-WebRequest @Parameters).StatusCode
 
 		Clear-Variable -Name IPArray -ErrorAction Ignore
 
@@ -900,40 +933,6 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		exit
 	}
 
-	# Checking whether the current module version is the latest one
-	try
-	{
-		# https://github.com/farag2/Sophia-Script-for-Windows/blob/master/sophia_script_versions.json
-		$Parameters = @{
-			Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
-			Verbose         = $true
-			UseBasicParsing = $true
-		}
-		$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_PowerShell_5_1
-		$CurrentRelease = (Get-Module -Name SophiaScript).Version.ToString()
-
-		if ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)
-		{
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Warning -Message ($Localization.UnsupportedRelease -f $LatestRelease)
-			Write-Information -MessageData "" -InformationAction Continue
-
-			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest" -Verbose
-			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-			$Global:Failed = 1
-
-			exit
-		}
-	}
-	catch [System.Net.WebException]
-	{
-		Write-Warning -Message ($Localization.NoResponse -f "https://github.com")
-		Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
-	}
-
-
 	# Get the real Windows version like %SystemRoot%\system32\winver.exe relies on
 	$Signature = @{
 		Namespace          = "WinAPI"
@@ -996,14 +995,14 @@ public extern static string BrandingFormatString(string sFormat);
 	# Checking whether current terminal is Windows Terminal
 	if ($env:WT_SESSION)
 	{
-		# Checking whether Windows Terminal version is higher than 1.22
+		# Checking whether Windows Terminal version is higher than 1.23
 		# Get Windows Terminal process PID
 		$ParentProcessID = (Get-CimInstance -ClassName Win32_Process -Filter ProcessID=$PID).ParentProcessID
 		$WindowsTerminalVersion = (Get-Process -Id $ParentProcessID).FileVersion
 		# FileVersion has four properties while $WindowsTerminalVersion has only three, unless the [System.Version] accelerator fails
 		$WindowsTerminalVersion = "{0}.{1}.{2}" -f $WindowsTerminalVersion.Split(".")
 
-		if ([System.Version]$WindowsTerminalVersion -lt [System.Version]"1.22.0")
+		if ([System.Version]$WindowsTerminalVersion -lt [System.Version]"1.23.0")
 		{
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.UnsupportedWindowsTerminal

@@ -2,7 +2,7 @@
 PowerShellImportFailed                    = Importing modules from PowerShell 5.1 failed. Please close PowerShell 7 console and re-run the script again.
 UnsupportedArchitecture                   = Your're using "{0}" based architecture CPU. This script supports Arm architecture based CPU only. Download and run script version for your archicture.
 UnsupportedOSBuild                        = The script supports Windows 11 24H2 and higher. You're using {0} {1}. Upgrade your Windows and try again.
-UnsupportedWindowsTerminal                = Windows Terminal version is lower than 1.22. Please update it in the Microsoft Store and try again.
+UnsupportedWindowsTerminal                = Windows Terminal version is lower than 1.23. Please update it in the Microsoft Store and try again.
 UpdateWarning                             = You're using Windows 11 {0}.{1}. Supported builds are Windows 11 {0}.{2} and higher. Run Windows Update and try again.
 UnsupportedLanguageMode                   = The PowerShell session in running in a limited language mode.
 LoggedInUserNotAdmin                      = The logged-on user doesn't have admin rights.
