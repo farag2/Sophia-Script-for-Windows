@@ -1133,8 +1133,7 @@ public extern static string BrandingFormatString(string sFormat);
 	{
 		# Get the name of a preset (e.g Sophia.ps1) regardless it was named
 		Write-Information -MessageData "" -InformationAction Continue
-		$CurrentScriptName = Split-Path -Path $MyInvocation.PSCommandPath -Leaf
-		[string]$PresetName = ((Get-PSCallStack).Position | Where-Object -FilterScript {$_.File}).File | Where-Object -FilterScript {$_ -match $CurrentScriptName}
+		[string]$PresetName = ((Get-PSCallStack).Position | Where-Object -FilterScript {($_.Text -match "InitialActions") -and ($_.Text -notmatch "Get-PSCallStack")}).File
 		Write-Verbose -Message ($Localization.CustomizationWarning -f $PresetName) -Verbose
 
 		do

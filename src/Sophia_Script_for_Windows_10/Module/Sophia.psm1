@@ -333,7 +333,6 @@ function FeedbackFrequency
 	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name DoNotShowFeedbackNotifications -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name DoNotShowFeedbackNotifications -Type DELETE
-
 	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Siuf\Rules -Name PeriodInNanoSeconds -Force -ErrorAction Ignore
 
 	switch ($PSCmdlet.ParameterSetName)
@@ -888,19 +887,19 @@ function WindowsWelcomeExperience
 
 <#
 	.SYNOPSIS
-	Getting tips, tricks, and suggestions as you use Windows
+	Getting tip and suggestions when I use Windows
 
 	.PARAMETER Enable
-	Get tips, tricks, and suggestions as you use Windows
+	Get tip and suggestions when using Windows
 
 	.PARAMETER Disable
-	Do not get tips, tricks, and suggestions as you use Windows
-
-	.EXAMPLE
-	WindowsTips -Enable
+	Do not get tip and suggestions when I use Windows
 
 	.EXAMPLE
 	WindowsTips -Disable
+
+	.EXAMPLE
+	WindowsTips -Enable
 
 	.NOTES
 	Current user
@@ -930,13 +929,13 @@ function WindowsTips
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
-		"Enable"
-		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338389Enabled -PropertyType DWord -Value 1 -Force
-		}
 		"Disable"
 		{
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338389Enabled -PropertyType DWord -Value 0 -Force
+		}
+		"Enable"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338389Enabled -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
