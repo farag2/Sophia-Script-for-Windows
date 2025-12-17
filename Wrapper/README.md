@@ -1,6 +1,7 @@
 ## Sophia Script Wrapper
 
-Created by David from [BenchTweakGaming.com](https://benchtweakgaming.com/sophia-script-wrapper-for-sophia-script-for-windows/).
+Created by @BenchTweakGaming
+
 This program creates a PowerShell script file that you can run to customize Windows based on Sophia Script. It serves as a front-end GUI for the Sophia Script. It is called a Wrapper.
 
 ## Wrapper Files
@@ -17,4 +18,6 @@ This program creates a PowerShell script file that you can run to customize Wind
 
 # How to translate UI into another language
 
-UPDATE: Adding languages is user created now. Copy and translate the `en-US` folder files in `Localizations` to your language. You also need to translate the `tag.json` from either the `ru-RU` or `de-DE` folders in `Localizations` to your language. Edit the `wrapper_localizations.json` file to add the language entry with control sizing.
+* Copy and translate the `en-US` folder files in `Localizations` to your language
+* You also need to translate the `tag.json` from either the `ru-RU` or `de-DE` folders in `Localizations` to your language
+* Edit the `wrapper_localizations.json` file to add the language entry with control sizing
