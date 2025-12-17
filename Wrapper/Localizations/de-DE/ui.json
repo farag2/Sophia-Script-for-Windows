@@ -1,94 +1,94 @@
 [
-  {
-    "Id": "Menu",
-    "Options": {
-      "menuImportExportPreset": "Importieren | Exportieren",
-      "menuImportPreset": "Voreinstellung importieren",
-      "menuExportPreset": "Voreinstellung exportieren",
-      "menuAutosave": "Automatisches Speichern",
-      "menuPresets": "Voreinstellungen",
-      "menuOpposite": "Alle umkehren",
-      "menuOppositeTab": "Gegenüberliegende Registerkarte",
-      "menuOppositeEverything": "Gegen alles",
-      "menuClear": "Löschen",
-      "menuClearTab": "Registerkarte löschen",
-      "menuClearEverything": "Alles löschen",
-      "menuTheme": "Thema",
-      "menuThemeDark": "Dunkel",
-      "menuThemeLight": "Hell",
-      "menuLanguage": "Sprache",
-      "menuAbout": "Über",
-      "menuDonate": "Spenden"
+    {
+        "Id": "Menu",
+        "Options": {
+            "menuImportExportPreset": "Importieren | Exportieren",
+            "menuImportPreset": "Voreinstellung importieren",
+            "menuExportPreset": "Voreinstellung exportieren",
+            "menuAutosave": "Automatisches Speichern",
+            "menuPresets": "Voreinstellungen",
+            "menuOpposite": "Alle umkehren",
+            "menuOppositeTab": "Gegenüberliegende Registerkarte",
+            "menuOppositeEverything": "Gegen alles",
+            "menuClear": "Löschen",
+            "menuClearTab": "Registerkarte löschen",
+            "menuClearEverything": "Alles löschen",
+            "menuTheme": "Thema",
+            "menuThemeDark": "Dunkel",
+            "menuThemeLight": "Hell",
+            "menuLanguage": "Sprache",
+            "menuAbout": "Über",
+            "menuDonate": "Spenden"
+        }
+    },
+    {
+        "Id": "Tab",
+        "Options": {
+            "tabSearch": "Suchen",
+            "tabInitialActions": "Erste Maßnahmen",
+            "tabSystemProtection": "Systemschutz",
+            "tabPrivacyTelemetry": "Datenschutz",
+            "tabUIPersonalization": "Personalisierung",
+            "tabOneDrive": "OneDrive",
+            "tabSystem": "System",
+            "tabWSL": "WSL",
+            "tabStartMenu": "Startmenü",
+            "tabUWP": "UWP Apps",
+            "tabGaming": "Gaming",
+            "tabScheduledTasks": "Geplante Aufgaben",
+            "tabDefenderSecurity": "Defender & Security",
+            "tabContextMenu": "Kontextmenü",
+            "tabUpdatePolicies": "Aktualisieren Sie die Richtlinien",
+            "tabConsoleOutput": "Konsolenausgabe"
+        }
+    },
+    {
+        "Id": "Button",
+        "Options": {
+            "btnRefreshConsole": "Konsole aktualisieren",
+            "btnRunPowerShell": "PowerShell ausführen",
+            "btnOpen": "Offen",
+            "btnSave": "Speichern",
+            "btnSearch": "Suchen",
+            "btnClear": "Klar"
+        }
+    },
+    {
+        "Id": "StatusBar",
+        "Options": {
+            "statusBarHover": "Bewegen Sie den Mauszeiger über die Auswahlpunkte, um Informationen zu jeder Option zu erhalten",
+            "statusBarPresetLoaded": "Voreinstellung geladen!",
+            "statusBarSophiaPreset": "Sophia Voreinstellung geladen!",
+            "statusBarWindowsDefaultPreset": "Windows Standardvoreinstellung geladen!",
+            "statusBarPowerShellScriptCreatedFromSelections": "PowerShell Skript, das anhand Ihrer Auswahlen erstellt wurde! Sie können es ausführen oder speichern.",
+            "statusBarPowerShellExport": "PowerShell Skript erstellt!",
+            "statusBarOppositeTab": "Für diese Registerkarte ausgewählte Gegenteile!",
+            "statusBarOppositeEverything": "Für alles ausgewählte Gegensätze!",
+            "statusBarClearTab": "Auswahl für Registerkarte gelöscht!",
+            "statusBarClearEverything": "Alle Auswahlen gelöscht!",
+            "statusBarMessageDownloadMessagePart1of3": "Herunterladen",
+            "statusBarMessageDownloadLinkPart2of3": "Sophia Script for Windows",
+            "statusBarMessageDownloadMessagePart3of3": "und importieren Sie die Voreinstellung Sophia.ps1, um die Steuerelemente zu aktivieren"
+        }
+    },
+    {
+        "Id": "MessageBox",
+        "Options": {
+            "messageBoxNewWrapperFound": "Eine neue Version von 'Wrapper' wurde entdeckt.\nGitHub-Seite öffnen?",
+            "messageBoxNewSophiaFound": "Eine neue Version von 'Sophia Script' wurde entdeckt.\nGitHub-Seite öffnen?",
+            "messageBoxPS1FileHasToBeInFolder": "Die Voreinstellungsdatei Sophia.ps1 muss sich im Ordner Sophia Script befinden.",
+            "messageBoxDoesNotExist": "existiert nicht.",
+            "messageBoxPresetNotComp": "Voreinstellung ist nicht kompatibel!",
+            "messageBoxFilesMissingClose": "Die erforderlichen Sophia Script Wrapper-Dateien fehlen. Das Programm wird geschlossen.",
+            "messageBoxConsoleEmpty": "Die Konsole ist leer.\n Drücken Sie die Schaltfläche Konsole aktualisieren, um ein Skript entsprechend Ihrer Auswahl zu erstellen.",
+            "messageBoxPowerShellVersionNotInstalled": "Die von Ihnen ausgewählte PowerShell-Version ist nicht installiert."
+        }
+    },
+    {
+        "Id": "Other",
+        "Options": {
+            "textBlockSearchInfo": "Geben Sie die Suchzeichenfolge ein, um die Option zu finden. Die Registerkarte wird in der Farbe Rot umrandet, um die Registerkarte zu finden, die die Option(en) enthält, und die Beschriftung der Option wird ebenfalls in Rot umrandet.",
+            "textBlockSearchFound": "Anzahl der gefundenen Optionen:"
+        }
     }
-  },
-  {
-    "Id": "Tab",
-    "Options": {
-      "tabSearch": "Suchen",
-      "tabInitialActions": "Erste Maßnahmen",
-      "tabSystemProtection": "Systemschutz",
-      "tabPrivacyTelemetry": "Datenschutz",
-      "tabUIPersonalization": "Personalisierung",
-      "tabOneDrive": "OneDrive",
-      "tabSystem": "System",
-      "tabWSL": "WSL",
-      "tabStartMenu": "Startmenü",
-      "tabUWP": "UWP Apps",
-      "tabGaming": "Gaming",
-      "tabScheduledTasks": "Geplante Aufgaben",
-      "tabDefenderSecurity": "Defender & Security",
-      "tabContextMenu": "Kontextmenü",
-      "tabUpdatePolicies": "Aktualisieren Sie die Richtlinien",
-      "tabConsoleOutput": "Konsolenausgabe"
-    }
-  },
-  {
-    "Id": "Button",
-    "Options": {
-      "btnRefreshConsole": "Konsole aktualisieren",
-      "btnRunPowerShell": "PowerShell ausführen",
-      "btnOpen": "Offen",
-      "btnSave": "Speichern",
-      "btnSearch": "Suchen",
-      "btnClear": "Klar"
-    }
-  },
-  {
-    "Id": "StatusBar",
-    "Options": {
-      "statusBarHover": "Bewegen Sie den Mauszeiger über die Auswahlpunkte, um Informationen zu jeder Option zu erhalten",
-      "statusBarPresetLoaded": "Voreinstellung geladen!",
-      "statusBarSophiaPreset": "Sophia Voreinstellung geladen!",
-      "statusBarWindowsDefaultPreset": "Windows Standardvoreinstellung geladen!",
-      "statusBarPowerShellScriptCreatedFromSelections": "PowerShell Skript, das anhand Ihrer Auswahlen erstellt wurde! Sie können es ausführen oder speichern.",
-      "statusBarPowerShellExport": "PowerShell Skript erstellt!",
-      "statusBarOppositeTab": "Für diese Registerkarte ausgewählte Gegenteile!",
-      "statusBarOppositeEverything": "Für alles ausgewählte Gegensätze!",
-      "statusBarClearTab": "Auswahl für Registerkarte gelöscht!",
-      "statusBarClearEverything": "Alle Auswahlen gelöscht!",
-      "statusBarMessageDownloadMessagePart1of3": "Herunterladen",
-      "statusBarMessageDownloadLinkPart2of3": "Sophia Script for Windows",
-      "statusBarMessageDownloadMessagePart3of3": "und importieren Sie die Voreinstellung Sophia.ps1, um die Steuerelemente zu aktivieren"
-    }
-  },
-  {
-    "Id": "MessageBox",
-    "Options": {
-      "messageBoxNewWrapperFound": "Eine neue Version von 'Wrapper' wurde entdeckt.\nGitHub-Seite öffnen?",
-      "messageBoxNewSophiaFound": "Eine neue Version von 'Sophia Script' wurde entdeckt.\nGitHub-Seite öffnen?",
-      "messageBoxPS1FileHasToBeInFolder": "Die Voreinstellungsdatei Sophia.ps1 muss sich im Ordner Sophia Script befinden.",
-      "messageBoxDoesNotExist": "existiert nicht.",
-      "messageBoxPresetNotComp": "Voreinstellung ist nicht kompatibel!",
-      "messageBoxFilesMissingClose": "Die erforderlichen Sophia Script Wrapper-Dateien fehlen. Das Programm wird geschlossen.",
-      "messageBoxConsoleEmpty": "Die Konsole ist leer.\n Drücken Sie die Schaltfläche Konsole aktualisieren, um ein Skript entsprechend Ihrer Auswahl zu erstellen.",
-      "messageBoxPowerShellVersionNotInstalled": "Die von Ihnen ausgewählte PowerShell-Version ist nicht installiert."
-    }
-  },
-  {
-    "Id": "Other",
-    "Options": {
-      "textBlockSearchInfo": "Geben Sie die Suchzeichenfolge ein, um die Option zu finden. Die Registerkarte wird in der Farbe Rot umrandet, um die Registerkarte zu finden, die die Option(en) enthält, und die Beschriftung der Option wird ebenfalls in Rot umrandet.",
-      "textBlockSearchFound": "Anzahl der gefundenen Optionen:"
-    }
-  }
 ]

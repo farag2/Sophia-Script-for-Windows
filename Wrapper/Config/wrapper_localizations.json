@@ -18,7 +18,7 @@
             "WidthLabelContextTabInPixels": "243",
             "WidthComboBoxInPixels": "150",
             "WidthComboBoxSystemTabInPixels": "165",
-            "WidthComboBoxStartMenuTabInPixels": "250"            
+            "WidthComboBoxStartMenuTabInPixels": "250"
         },
         "Russian": {
             "Code": "ru",
@@ -28,7 +28,7 @@
             "WidthLabelContextTabInPixels": "243",
             "WidthComboBoxInPixels": "175",
             "WidthComboBoxSystemTabInPixels": "235",
-            "WidthComboBoxStartMenuTabInPixels": "260"            
+            "WidthComboBoxStartMenuTabInPixels": "260"
         }
     }
 ]

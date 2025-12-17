@@ -742,7 +742,7 @@
   },
   {
     "Region": "UI & Personalization",
-    "Function": "Install-Cursors",
+    "Function": "Cursors",
     "Arg": {
       "Zero": {
         "Tag": "Default",

@@ -1,22 +1,22 @@
 [
-  {
-    "Id": 100,
-    "Region": "before",
-    "Function": ""
-  },
-  {
-    "Id": 101,
-    "Region": "before",
-    "Function": ""
-  },
-  {
-    "Id": 200,
-    "Region": "after",
-    "Function": "PostActions"
-  },
-  {
-    "Id": 201,
-    "Region": "after",
-    "Function": "Errors"
-  }
+    {
+        "Id": 100,
+        "Region": "before",
+        "Function": ""
+    },
+    {
+        "Id": 101,
+        "Region": "before",
+        "Function": ""
+    },
+    {
+        "Id": 200,
+        "Region": "after",
+        "Function": "PostActions"
+    },
+    {
+        "Id": 201,
+        "Region": "after",
+        "Function": "Errors"
+    }
 ]

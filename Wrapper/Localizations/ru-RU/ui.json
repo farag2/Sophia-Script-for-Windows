@@ -1,94 +1,94 @@
 [
-  {
-    "Id": "Menu",
-    "Options": {
-      "menuImportExportPreset": "Импорт | экспорт",
-      "menuImportPreset": "Импортировать пресет",
-      "menuExportPreset": "Экспортировать пресет",
-      "menuAutosave": "Автосохранение",
-      "menuPresets": "Пресеты",
-      "menuOpposite": "Противоположные значения",
-      "menuOppositeTab": "Противоположная вкладка",
-      "menuOppositeEverything": "Напротив всего",
-      "menuClear": "Очистить",
-      "menuClearTab": "Очистить вкладку",
-      "menuClearEverything": "Очистить все",
-      "menuTheme": "Тема",
-      "menuThemeDark": "Тёмная",
-      "menuThemeLight": "Светлая",
-      "menuLanguage": "Язык",
-      "menuAbout": "О программе",
-      "menuDonate": "Пожертвовать"
+    {
+        "Id": "Menu",
+        "Options": {
+            "menuImportExportPreset": "Импорт | экспорт",
+            "menuImportPreset": "Импортировать пресет",
+            "menuExportPreset": "Экспортировать пресет",
+            "menuAutosave": "Автосохранение",
+            "menuPresets": "Пресеты",
+            "menuOpposite": "Противоположные значения",
+            "menuOppositeTab": "Противоположная вкладка",
+            "menuOppositeEverything": "Напротив всего",
+            "menuClear": "Очистить",
+            "menuClearTab": "Очистить вкладку",
+            "menuClearEverything": "Очистить все",
+            "menuTheme": "Тема",
+            "menuThemeDark": "Тёмная",
+            "menuThemeLight": "Светлая",
+            "menuLanguage": "Язык",
+            "menuAbout": "О программе",
+            "menuDonate": "Пожертвовать"
+        }
+    },
+    {
+        "Id": "Tab",
+        "Options": {
+            "tabSearch": "Поиск",
+            "tabInitialActions": "Первоочередные действия",
+            "tabSystemProtection": "Защита",
+            "tabPrivacyTelemetry": "Конфиденциальность",
+            "tabUIPersonalization": "Персонализация",
+            "tabOneDrive": "OneDrive",
+            "tabSystem": "Система",
+            "tabWSL": "WSL",
+            "tabStartMenu": "Меню \"Пуск\"",
+            "tabUWP": "UWP-приложения",
+            "tabGaming": "Игры",
+            "tabScheduledTasks": "Планировщик заданий",
+            "tabDefenderSecurity": "Defender и защита",
+            "tabContextMenu": "Контекстное меню",
+            "tabUpdatePolicies": "Обновление политик",
+            "tabConsoleOutput": "Вывод консоли"
+        }
+    },
+    {
+        "Id": "Button",
+        "Options": {
+            "btnRefreshConsole": "Обновить консоль",
+            "btnRunPowerShell": "Запустить PowerShell",
+            "btnOpen": "Обзор",
+            "btnSave": "Сохранить",
+            "btnSearch": "Поиск",
+            "btnClear": "Очистить"
+        }
+    },
+    {
+        "Id": "StatusBar",
+        "Options": {
+            "statusBarHover": "Наведите курсором на функции, чтобы увидеть подсказки по каждой опции",
+            "statusBarPresetLoaded": "Модуль загружен!",
+            "statusBarSophiaPreset": "Загружен пресет Sophia!",
+            "statusBarWindowsDefaultPreset": "Загружен пресет по умолчанию!",
+            "statusBarPowerShellScriptCreatedFromSelections": "Скрипт для PowerShell создан из ваших выбранных элементов. Можете запустить и сохранить его.",
+            "statusBarPowerShellExport": "Скрипт для PowerShell создан!",
+            "statusBarOppositeTab": "Для этой вкладки выбраны противоположные значения!",
+            "statusBarOppositeEverything": "Выбраны все противоположные значения!",
+            "statusBarClearTab": "Отмеченные элементы для вкладки очищены!",
+            "statusBarClearEverything": "Все отмеченные элементы очищены!",
+            "statusBarMessageDownloadMessagePart1of3": "Скачайте",
+            "statusBarMessageDownloadLinkPart2of3": "Sophia Script for Windows",
+            "statusBarMessageDownloadMessagePart3of3": "и импортируйте пресет Sophia.ps1, чтобы включить элементы управления"
+        }
+    },
+    {
+        "Id": "MessageBox",
+        "Options": {
+            "messageBoxNewWrapperFound": "Обнаружена новая версия Wrapper.\nОткрыть страницу GitHub?",
+            "messageBoxNewSophiaFound": "Обнаружена новая версия Sophia Script.\nОткрыть страницу GitHub?",
+            "messageBoxPS1FileHasToBeInFolder": "Пресет-файлл Sophia.ps1 должен находиться в папке Sophia Script.",
+            "messageBoxDoesNotExist": "не существует.",
+            "messageBoxPresetNotComp": "Пресет несовместим!",
+            "messageBoxFilesMissingClose": "Отсутствуют необходимые файлы Sophia Script Wrapper. Программа будет закрыта.",
+            "messageBoxConsoleEmpty": "Консоль пуста.\nНажмите кнопку \"Обновить консоль\", чтобы создать скрипт согласно вышему выбору.",
+            "messageBoxPowerShellVersionNotInstalled": "Выбранная вами версия PowerShell не установлена."
+        }
+    },
+    {
+        "Id": "Other",
+        "Options": {
+            "textBlockSearchInfo": "Введите запрос в строку поиска, чтобы увидеть найденные результаты. При совпадении категории будут подсвечены красной рамкой. Совпадения по именам функций будут также подсвечены внутри категорий.",
+            "textBlockSearchFound": "Количество найденных вариантов:"
+        }
     }
-  },
-  {
-    "Id": "Tab",
-    "Options": {
-      "tabSearch": "Поиск",
-      "tabInitialActions": "Первоочередные действия",
-      "tabSystemProtection": "Защита",
-      "tabPrivacyTelemetry": "Конфиденциальность",
-      "tabUIPersonalization": "Персонализация",
-      "tabOneDrive": "OneDrive",
-      "tabSystem": "Система",
-      "tabWSL": "WSL",
-      "tabStartMenu": "Меню \"Пуск\"",
-      "tabUWP": "UWP-приложения",
-      "tabGaming": "Игры",
-      "tabScheduledTasks": "Планировщик заданий",
-      "tabDefenderSecurity": "Defender и защита",
-      "tabContextMenu": "Контекстное меню",
-      "tabUpdatePolicies": "Обновление политик",
-      "tabConsoleOutput": "Вывод консоли"
-    }
-  },
-  {
-    "Id": "Button",
-    "Options": {
-      "btnRefreshConsole": "Обновить консоль",
-      "btnRunPowerShell": "Запустить PowerShell",
-      "btnOpen": "Обзор",
-      "btnSave": "Сохранить",
-      "btnSearch": "Поиск",
-      "btnClear": "Очистить"
-    }
-  },
-  {
-    "Id": "StatusBar",
-    "Options": {
-      "statusBarHover": "Наведите курсором на функции, чтобы увидеть подсказки по каждой опции",
-      "statusBarPresetLoaded": "Модуль загружен!",
-      "statusBarSophiaPreset": "Загружен пресет Sophia!",
-      "statusBarWindowsDefaultPreset": "Загружен пресет по умолчанию!",
-      "statusBarPowerShellScriptCreatedFromSelections": "Скрипт для PowerShell создан из ваших выбранных элементов. Можете запустить и сохранить его.",
-      "statusBarPowerShellExport": "Скрипт для PowerShell создан!",
-      "statusBarOppositeTab": "Для этой вкладки выбраны противоположные значения!",
-      "statusBarOppositeEverything": "Выбраны все противоположные значения!",
-      "statusBarClearTab": "Отмеченные элементы для вкладки очищены!",
-      "statusBarClearEverything": "Все отмеченные элементы очищены!",
-      "statusBarMessageDownloadMessagePart1of3": "Скачайте",
-      "statusBarMessageDownloadLinkPart2of3": "Sophia Script for Windows",
-      "statusBarMessageDownloadMessagePart3of3": "и импортируйте пресет Sophia.ps1, чтобы включить элементы управления"
-    }
-  },
-  {
-    "Id": "MessageBox",
-    "Options": {
-      "messageBoxNewWrapperFound": "Обнаружена новая версия Wrapper.\nОткрыть страницу GitHub?",
-      "messageBoxNewSophiaFound": "Обнаружена новая версия Sophia Script.\nОткрыть страницу GitHub?",
-      "messageBoxPS1FileHasToBeInFolder": "Пресет-файлл Sophia.ps1 должен находиться в папке Sophia Script.",
-      "messageBoxDoesNotExist": "не существует.",
-      "messageBoxPresetNotComp": "Пресет несовместим!",
-      "messageBoxFilesMissingClose": "Отсутствуют необходимые файлы Sophia Script Wrapper. Программа будет закрыта.",
-      "messageBoxConsoleEmpty": "Консоль пуста.\nНажмите кнопку \"Обновить консоль\", чтобы создать скрипт согласно вышему выбору.",
-      "messageBoxPowerShellVersionNotInstalled": "Выбранная вами версия PowerShell не установлена."
-    }
-  },
-  {
-    "Id": "Other",
-    "Options": {
-      "textBlockSearchInfo": "Введите запрос в строку поиска, чтобы увидеть найденные результаты. При совпадении категории будут подсвечены красной рамкой. Совпадения по именам функций будут также подсвечены внутри категорий.",
-      "textBlockSearchFound": "Количество найденных вариантов:"
-    }
-  }
 ]

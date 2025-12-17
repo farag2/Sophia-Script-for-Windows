@@ -1,1860 +1,1860 @@
 [
-  {
-    "Region": "Initial Actions",
-    "Function": "InitialActions",
-    "Arg": {
-      "Zero": {
-        "Tag": "Warning",
-        "ToolTip": "The mandatory checks. If you want to disable a warning message about whether the preset file was customized, remove the \"-Warning\" argument."
-      },
-      "One": {
-        "Tag": "",
-        "ToolTip": "The mandatory checks. No argument therefore no warning message about whether you've customized the preset file."
-      }
+    {
+        "Region": "Initial Actions",
+        "Function": "InitialActions",
+        "Arg": {
+            "Zero": {
+                "Tag": "Warning",
+                "ToolTip": "The mandatory checks. If you want to disable a warning message about whether the preset file was customized, remove the \"-Warning\" argument."
+            },
+            "One": {
+                "Tag": "",
+                "ToolTip": "The mandatory checks. No argument therefore no warning message about whether you've customized the preset file."
+            }
+        }
+    },
+    {
+        "Region": "Protection",
+        "Function": "Logging",
+        "Arg": {
+            "Zero": {
+                "Tag": "",
+                "ToolTip": "Enable script logging. Log will be recorded into the script folder. To stop logging just close the console or type \"Stop-Transcript\"."
+            }
+        }
+    },
+    {
+        "Region": "Protection",
+        "Function": "CreateRestorePoint",
+        "Arg": {
+            "Zero": {
+                "Tag": "",
+                "ToolTip": "Create a restore point."
+            }
+        }
+    },
+    {
+        "Region": "Privacy & Telemetry",
+        "Function": "DiagTrackService",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Disable the \"Connected User Experiences and Telemetry\" service (DiagTrack), and block the connection for the Unified Telemetry Client Outbound Traffic. Disabling the \"Connected User Experiences and Telemetry\" service (DiagTrack) can cause you not being able to get Xbox achievements anymore and affects Feedback Hub and affects Feedback Hub."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Enable the \"Connected User Experiences and Telemetry\" service (DiagTrack), and allow the connection for the Unified Telemetry Client Outbound Traffic (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Privacy & Telemetry",
+        "Function": "DiagnosticDataLevel",
+        "Arg": {
+            "Zero": {
+                "Tag": "Minimal",
+                "ToolTip": "Set the diagnostic data collection to minimum."
+            },
+            "One": {
+                "Tag": "Default",
+                "ToolTip": "Set the diagnostic data collection to default (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Privacy & Telemetry",
+        "Function": "ErrorReporting",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Turn off the Windows Error Reporting."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Turn on the Windows Error Reporting (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Privacy & Telemetry",
+        "Function": "FeedbackFrequency",
+        "Arg": {
+            "Zero": {
+                "Tag": "Never",
+                "ToolTip": "Change the feedback frequency to \"Never\"."
+            },
+            "One": {
+                "Tag": "Automatically",
+                "ToolTip": "Change the feedback frequency to \"Automatically\" (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Privacy & Telemetry",
+        "Function": "ScheduledTasks",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Turn off the diagnostics tracking scheduled tasks."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Turn on the diagnostics tracking scheduled tasks (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Privacy & Telemetry",
+        "Function": "SigninInfo",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Do not use sign-in info to automatically finish setting up device after an update."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Use sign-in info to automatically finish setting up device after an update (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Privacy & Telemetry",
+        "Function": "LanguageListAccess",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Do not let websites provide locally relevant content by accessing language list."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Let websites provide locally relevant content by accessing language list (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Privacy & Telemetry",
+        "Function": "AdvertisingID",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Do not let apps show me personalized ads by using my advertising ID."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Let apps show me personalized ads by using my advertising ID (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Privacy & Telemetry",
+        "Function": "WindowsWelcomeExperience",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Hide the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Show the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Privacy & Telemetry",
+        "Function": "WindowsTips",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "Get tips and suggestions when I use Windows (default value)."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Do not get tips and suggestions when I use Windows."
+            }
+        }
+    },
+    {
+        "Region": "Privacy & Telemetry",
+        "Function": "SettingsSuggestedContent",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Hide from me suggested content in the Settings app."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Show me suggested content in the Settings app (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Privacy & Telemetry",
+        "Function": "AppsSilentInstalling",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Turn off automatic installing suggested apps."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Turn on automatic installing suggested apps (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Privacy & Telemetry",
+        "Function": "WhatsNewInWindows",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Do not suggest ways to get the most out of Windows and finish setting up this device."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Suggest ways to get the most out of Windows and finish setting up this device (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Privacy & Telemetry",
+        "Function": "TailoredExperiences",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Don't let Microsoft use your diagnostic data for personalized tips, ads, and recommendations."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Let Microsoft use your diagnostic data for personalized tips, ads, and recommendations (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Privacy & Telemetry",
+        "Function": "BingSearch",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Disable Bing search in the Start Menu."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Enable Bing search in the Start Menu (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Privacy & Telemetry",
+        "Function": "StartRecommendationsTips",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Do not show recommendations for tips, shortcuts, new apps, and more in the Start menu."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Show recommendations for tips, shortcuts, new apps, and more in the Start menu (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Privacy & Telemetry",
+        "Function": "StartAccountNotifications",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Do not show Microsoft account-related notifications on Start Menu in the Start menu."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Show Microsoft account-related notifications on Start Menu in the Start menu (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "ThisPC",
+        "Arg": {
+            "Zero": {
+                "Tag": "Show",
+                "ToolTip": "Show the \"This PC\" icon on Desktop."
+            },
+            "One": {
+                "Tag": "Hide",
+                "ToolTip": "Hide the \"This PC\" icon on Desktop (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "CheckBoxes",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Do not use item check boxes."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Use check item check boxes (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "HiddenItems",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "Show hidden files, folders, and drives."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Do not show hidden files, folders, and drives (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "FileExtensions",
+        "Arg": {
+            "Zero": {
+                "Tag": "Show",
+                "ToolTip": "Show file name extensions."
+            },
+            "One": {
+                "Tag": "Hide",
+                "ToolTip": "Hide file name extensions (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "MergeConflicts",
+        "Arg": {
+            "Zero": {
+                "Tag": "Show",
+                "ToolTip": "Show folder merge conflicts."
+            },
+            "One": {
+                "Tag": "Hide",
+                "ToolTip": "Hide folder merge conflicts (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "OpenFileExplorerTo",
+        "Arg": {
+            "Zero": {
+                "Tag": "ThisPC",
+                "ToolTip": "Open File Explorer to \"This PC\"."
+            },
+            "One": {
+                "Tag": "QuickAccess",
+                "ToolTip": "Open File Explorer to Quick access (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "FileExplorerCompactMode",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Disable File Explorer compact mode (default value)."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Enable File Explorer compact mode."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "OneDriveFileExplorerAd",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Do not show sync provider notification within File Explorer."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Show sync provider notification within File Explorer (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "SnapAssist",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "When I snap a window, do not show what I can snap next to it."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "When I snap a window, show what I can snap next to it (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "FileTransferDialog",
+        "Arg": {
+            "Zero": {
+                "Tag": "Detailed",
+                "ToolTip": "Show the file transfer dialog box in the detailed mode."
+            },
+            "One": {
+                "Tag": "Compact",
+                "ToolTip": "Show the file transfer dialog box in the compact mode (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "RecycleBinDeleteConfirmation",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "Display the recycle bin files delete confirmation."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Do not display the recycle bin files delete confirmation (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "QuickAccessRecentFiles",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Hide recently used files in Quick access."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Show recently used files in Quick access (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "QuickAccessFrequentFolders",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Hide frequently used folders in Quick access."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Show frequently used folders in Quick access (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "TaskbarAlignment",
+        "Arg": {
+            "Zero": {
+                "Tag": "Left",
+                "ToolTip": "Set the taskbar alignment to the left."
+            },
+            "One": {
+                "Tag": "Center",
+                "ToolTip": "Set the taskbar alignment to the center (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "TaskbarWidgets",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Hide the widgets icon on the taskbar."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Show the widgets icon on the taskbar (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "TaskbarSearch",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Hide the search on the taskbar."
+            },
+            "One": {
+                "Tag": "SearchIcon",
+                "ToolTip": "Show the search icon on the taskbar."
+            },
+            "Two": {
+                "Tag": "SearchIconLabel",
+                "ToolTip": "Show the search icon and label on the taskbar."
+            },
+            "Three": {
+                "Tag": "SearchBox",
+                "ToolTip": "Show the search box on the taskbar (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "SearchHighlights",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Hide search highlights."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Show search highlights (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "TaskViewButton",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Hide the Task view button from the taskbar."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Show the Task View button on the taskbar (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "SecondsInSystemClock",
+        "Arg": {
+            "Zero": {
+                "Tag": "Show",
+                "ToolTip": "Show seconds on the taskbar clock."
+            },
+            "One": {
+                "Tag": "Hide",
+                "ToolTip": "Hide seconds on the taskbar clock (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "ClockInNotificationCenter",
+        "Arg": {
+            "Zero": {
+                "Tag": "Show",
+                "ToolTip": "Show time in Notification Center."
+            },
+            "One": {
+                "Tag": "Hide",
+                "ToolTip": "Hide time in Notification Center (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "TaskbarCombine",
+        "Arg": {
+            "Zero": {
+                "Tag": "Always",
+                "ToolTip": "Combine taskbar buttons and always hide labels (default value)."
+            },
+            "One": {
+                "Tag": "Full",
+                "ToolTip": "Combine taskbar buttons and hide labels when taskbar is full."
+            },
+            "Two": {
+                "Tag": "Never",
+                "ToolTip": "Combine taskbar buttons and never hide labels."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "UnpinTaskbarShortcuts -Shortcuts",
+        "ToolTip": "Unpin Microsoft Edge, Microsoft Store, and Outlook shortcuts from the taskbar.",
+        "Arg": {
+            "Zero": {
+                "Tag": "Edge",
+                "ToolTip": "Unpin Microsoft Edge shortcut from the taskbar."
+            },
+            "One": {
+                "Tag": "Store",
+                "ToolTip": "Unpin Microsoft Store shortcut from the taskbar."
+            },
+            "Two": {
+                "Tag": "Outlook",
+                "ToolTip": "Unpin Outlook shortcut from the taskbar."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "TaskbarEndTask",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "Enable end task in taskbar by right click."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Disable end task in taskbar by right click (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "ControlPanelView",
+        "Arg": {
+            "Zero": {
+                "Tag": "LargeIcons",
+                "ToolTip": "View the Control Panel icons by large icons."
+            },
+            "One": {
+                "Tag": "SmallIcons",
+                "ToolTip": "View the Control Panel icons by small icons."
+            },
+            "Two": {
+                "Tag": "Category",
+                "ToolTip": "View the Control Panel icons by category (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "WindowsColorMode",
+        "Arg": {
+            "Zero": {
+                "Tag": "Dark",
+                "ToolTip": "Set the default Windows mode to dark."
+            },
+            "One": {
+                "Tag": "Light",
+                "ToolTip": "Set the default Windows mode to light (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "AppColorMode",
+        "Arg": {
+            "Zero": {
+                "Tag": "Dark",
+                "ToolTip": "Set the default app mode to dark."
+            },
+            "One": {
+                "Tag": "Light",
+                "ToolTip": "Set the default app mode to light (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "FirstLogonAnimation",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Hide first sign-in animation after the upgrade."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Show first sign-in animation after the upgrade (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "JPEGWallpapersQuality",
+        "Arg": {
+            "Zero": {
+                "Tag": "Max",
+                "ToolTip": "Set the quality factor of the JPEG desktop wallpapers to maximum."
+            },
+            "One": {
+                "Tag": "Default",
+                "ToolTip": "Set the quality factor of the JPEG desktop wallpapers to default."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "ShortcutsSuffix",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Do not add the \"- Shortcut\" suffix to the file name of created shortcuts."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Add the \"- Shortcut\" suffix to the file name of created shortcuts (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "PrtScnSnippingTool",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "Use the Print screen button to open screen snipping."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Do not use the Print screen button to open screen snipping (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "AppsLanguageSwitch",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Do not use a different input method for each app window (default value)."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Let me use a different input method for each app window."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "AeroShaking",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "When I grab a windows's title bar and shake it, minimize all other windows."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "When I grab a windows's title bar and shake it, don't minimize all other windows (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "Cursors",
+        "Arg": {
+            "Zero": {
+                "Tag": "Default",
+                "ToolTip": "Set default cursors."
+            },
+            "One": {
+                "Tag": "Light",
+                "ToolTip": "Download and install free light \"Windows 11 Cursors Concept v2\" cursors from Jepri Creations."
+            },
+            "Two": {
+                "Tag": "Dark",
+                "ToolTip": "Download and install free dark \"Windows 11 Cursors Concept v2\" cursors from Jepri Creations."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "FolderGroupBy",
+        "Arg": {
+            "Zero": {
+                "Tag": "None",
+                "ToolTip": "Do not group files and folder in the Downloads folder."
+            },
+            "One": {
+                "Tag": "Default",
+                "ToolTip": "Group files and folder by date modified in the Downloads folder."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "NavigationPaneExpand",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Do not expand to open folder on navigation pane (default value)."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Expand to open folder on navigation pane."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "StartRecommendedSection",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Remove Recommended section in Start Menu. Not applicable to Home edition."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Show Recommended section in Start Menu (default value). Not applicable to Home edition."
+            }
+        }
+    },
+    {
+        "Region": "OneDrive",
+        "Function": "OneDrive",
+        "Arg": {
+            "Zero": {
+                "Tag": "Uninstall",
+                "ToolTip": "Uninstall OneDrive. OneDrive user folder won't be removed if any file found there."
+            },
+            "One": {
+                "Tag": "Install",
+                "ToolTip": "Install OneDrive. Internet connection required."
+            }
+        }
+    },
+    {
+        "Region": "OneDrive",
+        "Function": "OneDrive -AllUsers",
+        "Arg": {
+            "Zero": {
+                "Tag": "",
+                "ToolTip": "Install OneDrive all users to %ProgramFiles%. Internet connection required."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "StorageSense",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "Turn on Storage Sense."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Turn off Storage Sense (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "Hibernation",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Disable hibernation. Not recommended for laptops."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Enable hibernate (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "Win32LongPathsSupport",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "Enable Windows long paths support which is limited for 260 characters by default."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Disable Windows long paths support which is limited for 260 characters by default (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "BSoDStopError",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "Display Stop error code when BSoD occurs."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Do not display stop error code when BSoD occurs (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "AdminApprovalMode",
+        "Arg": {
+            "Zero": {
+                "Tag": "Never",
+                "ToolTip": "Choose when to be notified about changes to your computer: never notify."
+            },
+            "One": {
+                "Tag": "Default",
+                "ToolTip": "Choose when to be notified about changes to your computer: notify me only when apps try to make changes to my computer (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "DeliveryOptimization",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Turn off Delivery Optimization."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Turn on Delivery Optimization (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "WindowsManageDefaultPrinter",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Do not let Windows manage my default printer."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Let Windows manage my default printer (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "WindowsFeatures",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Disable the Windows features using the pop-up dialog box."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Enable the Windows features using the pop-up dialog box."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "WindowsCapabilities",
+        "Arg": {
+            "Zero": {
+                "Tag": "Uninstall",
+                "ToolTip": "Uninstall optional features using the pop-up dialog box."
+            },
+            "One": {
+                "Tag": "Install",
+                "ToolTip": "Install optional features using the pop-up dialog box."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "UpdateMicrosoftProducts",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "Receive updates for other Microsoft products when you update Windows."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Do not receive updates for other Microsoft products (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "RestartNotification",
+        "Arg": {
+            "Zero": {
+                "Tag": "Show",
+                "ToolTip": "Notify me when a restart is required to finish updating."
+            },
+            "One": {
+                "Tag": "Hide",
+                "ToolTip": "Do not notify me when a restart is required to finish updating (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "RestartDeviceAfterUpdate",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "Restart as soon as possible to finish updating."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Don't restart as soon as possible to finish updating (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "ActiveHours",
+        "Arg": {
+            "Zero": {
+                "Tag": "Automatically",
+                "ToolTip": "Automatically adjust active hours for me based on daily usage."
+            },
+            "One": {
+                "Tag": "Manually",
+                "ToolTip": "Manually adjust active hours for me based on daily usage (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "WindowsLatestUpdate",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Do not get the latest updates as soon as they're available (default value)."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Get the latest updates as soon as they're available."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "PowerPlan",
+        "Arg": {
+            "Zero": {
+                "Tag": "High",
+                "ToolTip": "Set power plan on \"High performance\". Not recommended for laptops."
+            },
+            "One": {
+                "Tag": "Balanced",
+                "ToolTip": "Set power plan on \"Balanced\" (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "NetworkAdaptersSavePower",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Do not allow the computer to turn off the network adapters to save power. Not recommended for laptops."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Allow the computer to turn off the network adapters to save power (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "InputMethod",
+        "Arg": {
+            "Zero": {
+                "Tag": "English",
+                "ToolTip": "Override for default input method: English."
+            },
+            "One": {
+                "Tag": "Default",
+                "ToolTip": "Override for default input method: use language list (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "Set-UserShellFolderLocation",
+        "Arg": {
+            "Zero": {
+                "Tag": "Root",
+                "ToolTip": "Change user folders location to the root of any drive using the interactive menu. User files or folders won't be moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default."
+            },
+            "One": {
+                "Tag": "Custom",
+                "ToolTip": "Select folders for user folders location manually using a folder browser dialog. User files or folders won't be moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default."
+            },
+            "Two": {
+                "Tag": "Default",
+                "ToolTip": "Change user folders location to the default values. User files or folders won't be moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "LatestInstalled.NET",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "Use .NET Framework 4.8.1 for old apps."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Do not use .NET Framework 4.8.1 for old apps (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "WinPrtScrFolder",
+        "Arg": {
+            "Zero": {
+                "Tag": "Desktop",
+                "ToolTip": "Save screenshots on the Desktop when pressing Windows+PrtScr or using Windows+Shift+S."
+            },
+            "One": {
+                "Tag": "Default",
+                "ToolTip": "Save screenshots in the Pictures folder when pressing Windows+PrtScr or using Windows+Shift+S (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "RecommendedTroubleshooting",
+        "Arg": {
+            "Zero": {
+                "Tag": "Automatically",
+                "ToolTip": "Run troubleshooter automatically, then notify. In order this feature to work the OS level of diagnostic data gathering will be set to \"Optional diagnostic data\" and the error reporting feature will be turned on."
+            },
+            "One": {
+                "Tag": "Default",
+                "ToolTip": "Ask me before running troubleshooters. In order this feature to work the OS level of diagnostic data gathering will be set to \"Optional diagnostic data\" and the error reporting feature will be turned on (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "ReservedStorage",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Disable and delete reserved storage after the next update installation."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Enable reserved storage (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "F1HelpPage",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Disable help lookup via F1."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Enable help lookup via F1 (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "NumLock",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "Enable Num Lock at startup."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Disable Num Lock at startup (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "CapsLock",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Disable Caps Lock."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Enable Caps Lock (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "StickyShift",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Turn off pressing the Shift key 5 times to turn Sticky keys."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Turn on pressing the Shift key 5 times to turn Sticky keys (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "Autoplay",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Don't use AutoPlay for all media and devices."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Use AutoPlay for all media and devices (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "ThumbnailCacheRemoval",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Disable thumbnail cache removal."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Enable thumbnail cache removal (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "SaveRestartableApps",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "Automatically saving my restartable apps and restart them when I sign back in."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Turn off automatically saving my restartable apps and restart them when I sign back in (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "RestorePreviousFolders",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Do not restore previous folder windows at logon (default value)."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Restore previous folder windows at logon."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "NetworkDiscovery",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "Enable \"Network Discovery\" and \"File and Printers Sharing\" for workgroup networks."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Disable \"Network Discovery\" and \"File and Printers Sharing\" for workgroup networks (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "Set-Association",
+        "ToolTip": "Register app, calculate hash, and associate with an extension with the 'How do you want to open this' pop-up hidden.",
+        "Arg": {
+            "Zero": {
+                "Tag": "ProgramPath",
+                "ToolTip": "Path to executable file."
+            },
+            "One": {
+                "Tag": "Extension",
+                "ToolTip": "Extension."
+            },
+            "Two": {
+                "Tag": "Icon",
+                "ToolTip": "Path to icon."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "Export-Associations",
+        "Arg": {
+            "Zero": {
+                "Tag": "",
+                "ToolTip": "Export all Windows associations into Application_Associations.json file to script root folder."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "Import-Associations",
+        "Arg": {
+            "Zero": {
+                "Tag": "",
+                "ToolTip": "Import all Windows associations from an Application_Associations.json file. You need to install all apps according to an exported Application_Associations.json file to restore all associations."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "DefaultTerminalApp",
+        "Arg": {
+            "Zero": {
+                "Tag": "WindowsTerminal",
+                "ToolTip": "Set Windows Terminal as default terminal app to host the user interface for command-line applications."
+            },
+            "One": {
+                "Tag": "ConsoleHost",
+                "ToolTip": "Set Windows Console Host as default terminal app to host the user interface for command-line applications (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "Install-VCRedist -Redistributables",
+        "ToolTip": "Install the latest Microsoft Visual C++ Redistributable Packages x86, x64",
+        "Arg": {
+            "Zero": {
+                "Tag": "2015_2022_x86",
+                "ToolTip": "Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 x86. Internet connection required."
+            },
+            "One": {
+                "Tag": "2015_2022_x64",
+                "ToolTip": "Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 x64. Internet connection required."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "Install-DotNetRuntimes -Runtimes",
+        "ToolTip": "Install the latest .NET Runtime 8, 9. Internet connection required",
+        "Arg": {
+            "Zero": {
+                "Tag": "NET8",
+                "ToolTip": ".NET Runtime 8. Internet connection required."
+            },
+            "One": {
+                "Tag": "NET9",
+                "ToolTip": ".NET Runtime 9. Internet connection required."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "RKNBypass",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "Enable proxying only blocked sites from the unified registry of Roskomnadzor. The function is applicable for Russia only."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Disable proxying only blocked sites from the unified registry of Roskomnadzor (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "PreventEdgeShortcutCreation",
+        "Arg": {
+            "Zero": {
+                "Tag": "Channels",
+                "ToolTip": "List Microsoft Edge channels to prevent desktop shortcut creation upon its' update."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Do not prevent desktop shortcut creation upon Microsoft Edge update (default value)."
+            }
+        }
+    },
+    {
+        "Region": "System",
+        "Function": "RegistryBackup",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "Back up the system registry to %SystemRoot%\\System32\\config\\RegBack folder when PC restarts and create a RegIdleBackup in the Task Scheduler task to manage subsequent backups."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Do not back up the system registry to %SystemRoot%\\System32\\config\\RegBack folder (default value)."
+            }
+        }
+    },
+    {
+        "Region": "WSL",
+        "Function": "Install-WSL",
+        "Arg": {
+            "Zero": {
+                "Tag": "",
+                "ToolTip": "Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form. Internet connection required."
+            }
+        }
+    },
+    {
+        "Region": "Start menu",
+        "Function": "StartLayout",
+        "Arg": {
+            "Zero": {
+                "Tag": "Default",
+                "ToolTip": "Show default Start layout (default value)."
+            },
+            "One": {
+                "Tag": "ShowMorePins",
+                "ToolTip": "Show more pins on Start."
+            },
+            "Two": {
+                "Tag": "ShowMoreRecommendations",
+                "ToolTip": "Show more recommendations on Start."
+            }
+        }
+    },
+    {
+        "Region": "UWP apps",
+        "Function": "UninstallUWPApps",
+        "Arg": {
+            "Zero": {
+                "Tag": "",
+                "ToolTip": "Uninstall UWP apps using the pop-up dialog box."
+            }
+        }
+    },
+    {
+        "Region": "UWP apps",
+        "Function": "UninstallUWPApps -ForAllUsers",
+        "Arg": {
+            "Zero": {
+                "Tag": "",
+                "ToolTip": "Uninstall UWP apps using the pop-up dialog box. If the \"For all users\" is checked apps packages will not be installed for new users. The \"ForAllUsers\" argument sets a checkbox to unistall packages for all users."
+            }
+        }
+    },
+    {
+        "Region": "Gaming",
+        "Function": "XboxGameBar",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Disable Xbox Game Bar. To prevent popping up the \"You'll need a new app to open this ms-gamingoverlay\" warning, you need to disable the Xbox Game Bar app, even if you uninstalled it before."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Enable Xbox Game Bar (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Gaming",
+        "Function": "XboxGameTips",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Disable Xbox Game Bar tips."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Enable Xbox Game Bar tips (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Gaming",
+        "Function": "GPUScheduling",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "Turn on hardware-accelerated GPU scheduling. Restart needed. Only if you have a dedicated GPU and WDDM verion is 2.7 or higher."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Turn off hardware-accelerated GPU scheduling. Restart needed (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Scheduled tasks",
+        "Function": "CleanupTask",
+        "Arg": {
+            "Zero": {
+                "Tag": "Register",
+                "ToolTip": "Create \"Windows Cleanup\" (main task) and \"Windows Cleanup Notification\" (task to generate a pop-up notification) tasks to clean up unused files and Windows updates in the Task Scheduler in the Sophia folder. A native notification prompting you to run the task will pop up before the cleanup begins. The task runs every 30 days. Windows Script Host must be enabled for the task to run."
+            },
+            "One": {
+                "Tag": "Delete",
+                "ToolTip": "Delete the \"Windows Cleanup\" and \"Windows Cleanup Notification\" scheduled tasks for cleaning up Windows unused files and updates."
+            }
+        }
+    },
+    {
+        "Region": "Scheduled tasks",
+        "Function": "SoftwareDistributionTask",
+        "Arg": {
+            "Zero": {
+                "Tag": "Register",
+                "ToolTip": "Create a \"SoftwareDistribution\" task to clean up the %SystemRoot%\\SoftwareDistribution\\Download folder where the installation files for all Windows updates are downloaded, in the Sophia folder in the  Task Scheduler. The task will wait until the Windows Update service has finished running. The task runs every 90 days. Windows Script Host must be enabled for the task to run."
+            },
+            "One": {
+                "Tag": "Delete",
+                "ToolTip": "Delete the \"SoftwareDistribution\" scheduled task for cleaning up the %SystemRoot%\\SoftwareDistribution\\Download folder."
+            }
+        }
+    },
+    {
+        "Region": "Scheduled tasks",
+        "Function": "TempTask",
+        "Arg": {
+            "Zero": {
+                "Tag": "Register",
+                "ToolTip": "Create a \"Temp\" task in the Task Scheduler to clean up the %TEMP% folder. Only files older than one day will be deleted. The task runs every 60 days. Windows Script Host must be enabled for the task to run."
+            },
+            "One": {
+                "Tag": "Delete",
+                "ToolTip": "Delete the \"Temp\" scheduled task for cleaning up the %TEMP% folder."
+            }
+        }
+    },
+    {
+        "Region": "Microsoft Defender & Security",
+        "Function": "NetworkProtection",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "Enable Microsoft Defender Exploit Guard network protection."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Disable Microsoft Defender Exploit Guard network protection (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Microsoft Defender & Security",
+        "Function": "PUAppsDetection",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "Enable detection for potentially unwanted applications and block them."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Disable detection for potentially unwanted applications and block them (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Microsoft Defender & Security",
+        "Function": "DefenderSandbox",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "Enable sandboxing for Microsoft Defender."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Disable sandboxing for Microsoft Defender (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Microsoft Defender & Security",
+        "Function": "DismissMSAccount",
+        "Arg": {
+            "Zero": {
+                "Tag": "",
+                "ToolTip": "Dismiss Microsoft Defender offer in the Windows Security about signing in Microsoft account."
+            }
+        }
+    },
+    {
+        "Region": "Microsoft Defender & Security",
+        "Function": "DismissSmartScreenFilter",
+        "Arg": {
+            "Zero": {
+                "Tag": "",
+                "ToolTip": "Dismiss Microsoft Defender offer in the Windows Security about turning on the SmartScreen filter for Microsoft Edge."
+            }
+        }
+    },
+    {
+        "Region": "Microsoft Defender & Security",
+        "Function": "EventViewerCustomView",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "Create the \"Process Creation\" сustom view in the Event Viewer to log executed processes and their arguments."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Remove the \"Process Creation\" custom view in the Event Viewer to log executed processes and their arguments (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Microsoft Defender & Security",
+        "Function": "PowerShellModulesLogging",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "Enable logging for all Windows PowerShell modules."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Disable logging for all Windows PowerShell modules (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Microsoft Defender & Security",
+        "Function": "PowerShellScriptsLogging",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "Enable logging for all PowerShell scripts input to the Windows PowerShell event log."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Disable logging for all PowerShell scripts input to the Windows PowerShell event log (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Microsoft Defender & Security",
+        "Function": "AppsSmartScreen",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Microsoft Defender SmartScreen doesn't marks downloaded files from the Internet as unsafe."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Microsoft Defender SmartScreen marks downloaded files from the Internet as unsafe (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Microsoft Defender & Security",
+        "Function": "SaveZoneInformation",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable",
+                "ToolTip": "Disable the Attachment Manager marking files that have been downloaded from the Internet as unsafe."
+            },
+            "One": {
+                "Tag": "Enable",
+                "ToolTip": "Enable the Attachment Manager marking files that have been downloaded from the Internet as unsafe (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Microsoft Defender & Security",
+        "Function": "WindowsSandbox",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "Enable Windows Sandbox. Applicable only to Professional, Enterprise and Education editions."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Disable Windows Sandbox (default value). Applicable only to Professional, Enterprise and Education editions."
+            }
+        }
+    },
+    {
+        "Region": "Microsoft Defender & Security",
+        "Function": "DNSoverHTTPS",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "Enable DNS-over-HTTPS for IPv4. The valid IPv4 addresses: 1.0.0.1, 1.1.1.1, 149.112.112.112, 8.8.4.4, 8.8.8.8, 9.9.9.9."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Disable DNS-over-HTTPS for IPv4 (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Microsoft Defender & Security",
+        "Function": "LocalSecurityAuthority",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "Enable Local Security Authority protection to prevent code injection without UEFI lock."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Disable Local Security Authority protection without UEFI lock (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Context menu",
+        "Function": "MSIExtractContext",
+        "Arg": {
+            "Zero": {
+                "Tag": "Show",
+                "ToolTip": "Show the \"Extract all\" item in the Windows Installer (.msi) context menu."
+            },
+            "One": {
+                "Tag": "Hide",
+                "ToolTip": "Hide the \"Extract all\" item from the Windows Installer (.msi) context menu (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Context menu",
+        "Function": "CABInstallContext",
+        "Arg": {
+            "Zero": {
+                "Tag": "Show",
+                "ToolTip": "Show the \"Install\" item in the Cabinet (.cab) filenames extensions context menu."
+            },
+            "One": {
+                "Tag": "Hide",
+                "ToolTip": "Hide the \"Install\" item from the Cabinet (.cab) filenames extensions context menu (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Context menu",
+        "Function": "EditWithClipchampContext",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Hide the \"Edit with Clipchamp\" item from the media files context menu."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Show the \"Edit with Clipchamp\" item in the media files context menu (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Context menu",
+        "Function": "EditWithPhotosContext",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Hide the \"Edit with Photos\" item from the media files context menu."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Show the \"Edit with Photos\" item in the media files context menu (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Context menu",
+        "Function": "EditWithPaintContext",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Hide the \"Edit with Paint\" item from the media files context menu."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Show the \"Edit with Paint\" item in the media files context menu (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Context menu",
+        "Function": "PrintCMDContext",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Hide the \"Print\" item from the .bat and .cmd context menu."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Show the \"Print\" item in the .bat and .cmd context menu (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Context menu",
+        "Function": "CompressedFolderNewContext",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Hide the \"Compressed (zipped) Folder\" item from the \"New\" context menu."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Show the \"Compressed (zipped) Folder\" item to the \"New\" context menu (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Context menu",
+        "Function": "MultipleInvokeContext",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "Enable the \"Open\", \"Print\", and \"Edit\" context menu items for more than 15 items selected."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Disable the \"Open\", \"Print\", and \"Edit\" context menu items for more than 15 items selected (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Context menu",
+        "Function": "UseStoreOpenWith",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Hide the \"Look for an app in the Microsoft Store\" item in the \"Open with\" dialog."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Show the \"Look for an app in the Microsoft Store\" item in the \"Open with\" dialog (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Context menu",
+        "Function": "OpenWindowsTerminalContext",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Hide the \"Open in Windows Terminal\" item in the folders context menu."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Show the \"Open in Windows Terminal\" item in the folders context menu (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Context menu",
+        "Function": "OpenWindowsTerminalAdminContext",
+        "Arg": {
+            "Zero": {
+                "Tag": "Enable",
+                "ToolTip": "Open Windows Terminal in context menu as administrator by default."
+            },
+            "One": {
+                "Tag": "Disable",
+                "ToolTip": "Do not open Windows Terminal in context menu as administrator by default (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Update Policies",
+        "Function": "ScanRegistryPolicies",
+        "Arg": {
+            "Zero": {
+                "Tag": "",
+                "ToolTip": "Display all policy registry keys (even manually created ones) in the Local Group Policy Editor snap-in (gpedit.msc). This can take up to 30 minutes, depending on the number of policies created in the registry and your system resources."
+            }
+        }
     }
-  },
-  {
-    "Region": "Protection",
-    "Function": "Logging",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Enable script logging. Log will be recorded into the script folder. To stop logging just close the console or type \"Stop-Transcript\"."
-      }
-    }
-  },
-  {
-    "Region": "Protection",
-    "Function": "CreateRestorePoint",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Create a restore point."
-      }
-    }
-  },
-  {
-    "Region": "Privacy & Telemetry",
-    "Function": "DiagTrackService",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Disable the \"Connected User Experiences and Telemetry\" service (DiagTrack), and block the connection for the Unified Telemetry Client Outbound Traffic. Disabling the \"Connected User Experiences and Telemetry\" service (DiagTrack) can cause you not being able to get Xbox achievements anymore and affects Feedback Hub and affects Feedback Hub."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Enable the \"Connected User Experiences and Telemetry\" service (DiagTrack), and allow the connection for the Unified Telemetry Client Outbound Traffic (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Privacy & Telemetry",
-    "Function": "DiagnosticDataLevel",
-    "Arg": {
-      "Zero": {
-        "Tag": "Minimal",
-        "ToolTip": "Set the diagnostic data collection to minimum."
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Set the diagnostic data collection to default (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Privacy & Telemetry",
-    "Function": "ErrorReporting",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Turn off the Windows Error Reporting."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Turn on the Windows Error Reporting (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Privacy & Telemetry",
-    "Function": "FeedbackFrequency",
-    "Arg": {
-      "Zero": {
-        "Tag": "Never",
-        "ToolTip": "Change the feedback frequency to \"Never\"."
-      },
-      "One": {
-        "Tag": "Automatically",
-        "ToolTip": "Change the feedback frequency to \"Automatically\" (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Privacy & Telemetry",
-    "Function": "ScheduledTasks",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Turn off the diagnostics tracking scheduled tasks."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Turn on the diagnostics tracking scheduled tasks (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Privacy & Telemetry",
-    "Function": "SigninInfo",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Do not use sign-in info to automatically finish setting up device after an update."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Use sign-in info to automatically finish setting up device after an update (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Privacy & Telemetry",
-    "Function": "LanguageListAccess",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Do not let websites provide locally relevant content by accessing language list."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Let websites provide locally relevant content by accessing language list (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Privacy & Telemetry",
-    "Function": "AdvertisingID",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Do not let apps show me personalized ads by using my advertising ID."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Let apps show me personalized ads by using my advertising ID (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Privacy & Telemetry",
-    "Function": "WindowsWelcomeExperience",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Privacy & Telemetry",
-    "Function": "WindowsTips",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Get tips and suggestions when I use Windows (default value)."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Do not get tips and suggestions when I use Windows."
-      }
-    }
-  },
-  {
-    "Region": "Privacy & Telemetry",
-    "Function": "SettingsSuggestedContent",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide from me suggested content in the Settings app."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show me suggested content in the Settings app (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Privacy & Telemetry",
-    "Function": "AppsSilentInstalling",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Turn off automatic installing suggested apps."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Turn on automatic installing suggested apps (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Privacy & Telemetry",
-    "Function": "WhatsNewInWindows",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Do not suggest ways to get the most out of Windows and finish setting up this device."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Suggest ways to get the most out of Windows and finish setting up this device (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Privacy & Telemetry",
-    "Function": "TailoredExperiences",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Don't let Microsoft use your diagnostic data for personalized tips, ads, and recommendations."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Let Microsoft use your diagnostic data for personalized tips, ads, and recommendations (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Privacy & Telemetry",
-    "Function": "BingSearch",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Disable Bing search in the Start Menu."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Enable Bing search in the Start Menu (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Privacy & Telemetry",
-    "Function": "StartRecommendationsTips",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Do not show recommendations for tips, shortcuts, new apps, and more in the Start menu."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show recommendations for tips, shortcuts, new apps, and more in the Start menu (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Privacy & Telemetry",
-    "Function": "StartAccountNotifications",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Do not show Microsoft account-related notifications on Start Menu in the Start menu."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show Microsoft account-related notifications on Start Menu in the Start menu (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "ThisPC",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Show the \"This PC\" icon on Desktop."
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"This PC\" icon on Desktop (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "CheckBoxes",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Do not use item check boxes."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Use check item check boxes (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "HiddenItems",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Show hidden files, folders, and drives."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Do not show hidden files, folders, and drives (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "FileExtensions",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Show file name extensions."
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Hide file name extensions (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "MergeConflicts",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Show folder merge conflicts."
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Hide folder merge conflicts (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "OpenFileExplorerTo",
-    "Arg": {
-      "Zero": {
-        "Tag": "ThisPC",
-        "ToolTip": "Open File Explorer to \"This PC\"."
-      },
-      "One": {
-        "Tag": "QuickAccess",
-        "ToolTip": "Open File Explorer to Quick access (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "FileExplorerCompactMode",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Disable File Explorer compact mode (default value)."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Enable File Explorer compact mode."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "OneDriveFileExplorerAd",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Do not show sync provider notification within File Explorer."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show sync provider notification within File Explorer (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "SnapAssist",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "When I snap a window, do not show what I can snap next to it."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "When I snap a window, show what I can snap next to it (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "FileTransferDialog",
-    "Arg": {
-      "Zero": {
-        "Tag": "Detailed",
-        "ToolTip": "Show the file transfer dialog box in the detailed mode."
-      },
-      "One": {
-        "Tag": "Compact",
-        "ToolTip": "Show the file transfer dialog box in the compact mode (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "RecycleBinDeleteConfirmation",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Display the recycle bin files delete confirmation."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Do not display the recycle bin files delete confirmation (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "QuickAccessRecentFiles",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide recently used files in Quick access."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show recently used files in Quick access (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "QuickAccessFrequentFolders",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide frequently used folders in Quick access."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show frequently used folders in Quick access (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "TaskbarAlignment",
-    "Arg": {
-      "Zero": {
-        "Tag": "Left",
-        "ToolTip": "Set the taskbar alignment to the left."
-      },
-      "One": {
-        "Tag": "Center",
-        "ToolTip": "Set the taskbar alignment to the center (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "TaskbarWidgets",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the widgets icon on the taskbar."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show the widgets icon on the taskbar (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "TaskbarSearch",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the search on the taskbar."
-      },
-      "One": {
-        "Tag": "SearchIcon",
-        "ToolTip": "Show the search icon on the taskbar."
-      },
-      "Two": {
-        "Tag": "SearchIconLabel",
-        "ToolTip": "Show the search icon and label on the taskbar."
-      },
-      "Three": {
-        "Tag": "SearchBox",
-        "ToolTip": "Show the search box on the taskbar (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "SearchHighlights",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide search highlights."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show search highlights (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "TaskViewButton",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the Task view button from the taskbar."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show the Task View button on the taskbar (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "SecondsInSystemClock",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Show seconds on the taskbar clock."
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Hide seconds on the taskbar clock (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "ClockInNotificationCenter",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Show time in Notification Center."
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Hide time in Notification Center (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "TaskbarCombine",
-    "Arg": {
-      "Zero": {
-        "Tag": "Always",
-        "ToolTip": "Combine taskbar buttons and always hide labels (default value)."
-      },
-      "One": {
-        "Tag": "Full",
-        "ToolTip": "Combine taskbar buttons and hide labels when taskbar is full."
-      },
-      "Two": {
-        "Tag": "Never",
-        "ToolTip": "Combine taskbar buttons and never hide labels."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "UnpinTaskbarShortcuts -Shortcuts",
-    "ToolTip": "Unpin Microsoft Edge, Microsoft Store, and Outlook shortcuts from the taskbar.",
-    "Arg": {
-      "Zero": {
-        "Tag": "Edge",
-        "ToolTip": "Unpin Microsoft Edge shortcut from the taskbar."
-      },
-      "One": {
-        "Tag": "Store",
-        "ToolTip": "Unpin Microsoft Store shortcut from the taskbar."
-      },
-      "Two": {
-        "Tag": "Outlook",
-        "ToolTip": "Unpin Outlook shortcut from the taskbar."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "TaskbarEndTask",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Enable end task in taskbar by right click."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Disable end task in taskbar by right click (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "ControlPanelView",
-    "Arg": {
-      "Zero": {
-        "Tag": "LargeIcons",
-        "ToolTip": "View the Control Panel icons by large icons."
-      },
-      "One": {
-        "Tag": "SmallIcons",
-        "ToolTip": "View the Control Panel icons by small icons."
-      },
-      "Two": {
-        "Tag": "Category",
-        "ToolTip": "View the Control Panel icons by category (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "WindowsColorMode",
-    "Arg": {
-      "Zero": {
-        "Tag": "Dark",
-        "ToolTip": "Set the default Windows mode to dark."
-      },
-      "One": {
-        "Tag": "Light",
-        "ToolTip": "Set the default Windows mode to light (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "AppColorMode",
-    "Arg": {
-      "Zero": {
-        "Tag": "Dark",
-        "ToolTip": "Set the default app mode to dark."
-      },
-      "One": {
-        "Tag": "Light",
-        "ToolTip": "Set the default app mode to light (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "FirstLogonAnimation",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Hide first sign-in animation after the upgrade."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Show first sign-in animation after the upgrade (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "JPEGWallpapersQuality",
-    "Arg": {
-      "Zero": {
-        "Tag": "Max",
-        "ToolTip": "Set the quality factor of the JPEG desktop wallpapers to maximum."
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Set the quality factor of the JPEG desktop wallpapers to default."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "ShortcutsSuffix",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Do not add the \"- Shortcut\" suffix to the file name of created shortcuts."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Add the \"- Shortcut\" suffix to the file name of created shortcuts (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "PrtScnSnippingTool",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Use the Print screen button to open screen snipping."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Do not use the Print screen button to open screen snipping (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "AppsLanguageSwitch",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Do not use a different input method for each app window (default value)."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Let me use a different input method for each app window."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "AeroShaking",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "When I grab a windows's title bar and shake it, minimize all other windows."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "When I grab a windows's title bar and shake it, don't minimize all other windows (default value)."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "Install-Cursors",
-    "Arg": {
-      "Zero": {
-        "Tag": "Default",
-        "ToolTip": "Set default cursors."
-      },
-      "One": {
-        "Tag": "Light",
-        "ToolTip": "Download and install free light \"Windows 11 Cursors Concept v2\" cursors from Jepri Creations."
-      },
-      "Two": {
-        "Tag": "Dark",
-        "ToolTip": "Download and install free dark \"Windows 11 Cursors Concept v2\" cursors from Jepri Creations."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "FolderGroupBy",
-    "Arg": {
-      "Zero": {
-        "Tag": "None",
-        "ToolTip": "Do not group files and folder in the Downloads folder."
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Group files and folder by date modified in the Downloads folder."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "NavigationPaneExpand",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Do not expand to open folder on navigation pane (default value)."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Expand to open folder on navigation pane."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "StartRecommendedSection",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Remove Recommended section in Start Menu. Not applicable to Home edition."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show Recommended section in Start Menu (default value). Not applicable to Home edition."
-      }
-    }
-  },
-  {
-    "Region": "OneDrive",
-    "Function": "OneDrive",
-    "Arg": {
-      "Zero": {
-        "Tag": "Uninstall",
-        "ToolTip": "Uninstall OneDrive. OneDrive user folder won't be removed if any file found there."
-      },
-      "One": {
-        "Tag": "Install",
-        "ToolTip": "Install OneDrive. Internet connection required."
-      }
-    }
-  },
-  {
-    "Region": "OneDrive",
-    "Function": "OneDrive -AllUsers",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Install OneDrive all users to %ProgramFiles%. Internet connection required."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "StorageSense",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Turn on Storage Sense."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Turn off Storage Sense (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "Hibernation",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Disable hibernation. Not recommended for laptops."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Enable hibernate (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "Win32LongPathsSupport",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Enable Windows long paths support which is limited for 260 characters by default."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Disable Windows long paths support which is limited for 260 characters by default (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "BSoDStopError",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Display Stop error code when BSoD occurs."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Do not display stop error code when BSoD occurs (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "AdminApprovalMode",
-    "Arg": {
-      "Zero": {
-        "Tag": "Never",
-        "ToolTip": "Choose when to be notified about changes to your computer: never notify."
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Choose when to be notified about changes to your computer: notify me only when apps try to make changes to my computer (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "DeliveryOptimization",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Turn off Delivery Optimization."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Turn on Delivery Optimization (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "WindowsManageDefaultPrinter",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Do not let Windows manage my default printer."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Let Windows manage my default printer (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "WindowsFeatures",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Disable the Windows features using the pop-up dialog box."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Enable the Windows features using the pop-up dialog box."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "WindowsCapabilities",
-    "Arg": {
-      "Zero": {
-        "Tag": "Uninstall",
-        "ToolTip": "Uninstall optional features using the pop-up dialog box."
-      },
-      "One": {
-        "Tag": "Install",
-        "ToolTip": "Install optional features using the pop-up dialog box."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "UpdateMicrosoftProducts",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Receive updates for other Microsoft products when you update Windows."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Do not receive updates for other Microsoft products (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "RestartNotification",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Notify me when a restart is required to finish updating."
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Do not notify me when a restart is required to finish updating (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "RestartDeviceAfterUpdate",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Restart as soon as possible to finish updating."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Don't restart as soon as possible to finish updating (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "ActiveHours",
-    "Arg": {
-      "Zero": {
-        "Tag": "Automatically",
-        "ToolTip": "Automatically adjust active hours for me based on daily usage."
-      },
-      "One": {
-        "Tag": "Manually",
-        "ToolTip": "Manually adjust active hours for me based on daily usage (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "WindowsLatestUpdate",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Do not get the latest updates as soon as they're available (default value)."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Get the latest updates as soon as they're available."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "PowerPlan",
-    "Arg": {
-      "Zero": {
-        "Tag": "High",
-        "ToolTip": "Set power plan on \"High performance\". Not recommended for laptops."
-      },
-      "One": {
-        "Tag": "Balanced",
-        "ToolTip": "Set power plan on \"Balanced\" (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "NetworkAdaptersSavePower",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Do not allow the computer to turn off the network adapters to save power. Not recommended for laptops."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Allow the computer to turn off the network adapters to save power (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "InputMethod",
-    "Arg": {
-      "Zero": {
-        "Tag": "English",
-        "ToolTip": "Override for default input method: English."
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Override for default input method: use language list (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "Set-UserShellFolderLocation",
-    "Arg": {
-      "Zero": {
-        "Tag": "Root",
-        "ToolTip": "Change user folders location to the root of any drive using the interactive menu. User files or folders won't be moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default."
-      },
-      "One": {
-        "Tag": "Custom",
-        "ToolTip": "Select folders for user folders location manually using a folder browser dialog. User files or folders won't be moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default."
-      },
-      "Two": {
-        "Tag": "Default",
-        "ToolTip": "Change user folders location to the default values. User files or folders won't be moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "LatestInstalled.NET",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Use .NET Framework 4.8.1 for old apps."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Do not use .NET Framework 4.8.1 for old apps (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "WinPrtScrFolder",
-    "Arg": {
-      "Zero": {
-        "Tag": "Desktop",
-        "ToolTip": "Save screenshots on the Desktop when pressing Windows+PrtScr or using Windows+Shift+S."
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Save screenshots in the Pictures folder when pressing Windows+PrtScr or using Windows+Shift+S (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "RecommendedTroubleshooting",
-    "Arg": {
-      "Zero": {
-        "Tag": "Automatically",
-        "ToolTip": "Run troubleshooter automatically, then notify. In order this feature to work the OS level of diagnostic data gathering will be set to \"Optional diagnostic data\" and the error reporting feature will be turned on."
-      },
-      "One": {
-        "Tag": "Default",
-        "ToolTip": "Ask me before running troubleshooters. In order this feature to work the OS level of diagnostic data gathering will be set to \"Optional diagnostic data\" and the error reporting feature will be turned on (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "ReservedStorage",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Disable and delete reserved storage after the next update installation."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Enable reserved storage (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "F1HelpPage",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Disable help lookup via F1."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Enable help lookup via F1 (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "NumLock",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Enable Num Lock at startup."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Disable Num Lock at startup (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "CapsLock",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Disable Caps Lock."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Enable Caps Lock (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "StickyShift",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Turn off pressing the Shift key 5 times to turn Sticky keys."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Turn on pressing the Shift key 5 times to turn Sticky keys (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "Autoplay",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Don't use AutoPlay for all media and devices."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Use AutoPlay for all media and devices (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "ThumbnailCacheRemoval",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Disable thumbnail cache removal."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Enable thumbnail cache removal (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "SaveRestartableApps",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Automatically saving my restartable apps and restart them when I sign back in."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Turn off automatically saving my restartable apps and restart them when I sign back in (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "RestorePreviousFolders",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Do not restore previous folder windows at logon (default value)."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Restore previous folder windows at logon."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "NetworkDiscovery",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Enable \"Network Discovery\" and \"File and Printers Sharing\" for workgroup networks."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Disable \"Network Discovery\" and \"File and Printers Sharing\" for workgroup networks (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "Set-Association",
-    "ToolTip": "Register app, calculate hash, and associate with an extension with the 'How do you want to open this' pop-up hidden.",
-    "Arg": {
-      "Zero": {
-        "Tag": "ProgramPath",
-        "ToolTip": "Path to executable file."
-      },
-      "One": {
-        "Tag": "Extension",
-        "ToolTip": "Extension."
-      },
-      "Two": {
-        "Tag": "Icon",
-        "ToolTip": "Path to icon."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "Export-Associations",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Export all Windows associations into Application_Associations.json file to script root folder."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "Import-Associations",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Import all Windows associations from an Application_Associations.json file. You need to install all apps according to an exported Application_Associations.json file to restore all associations."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "DefaultTerminalApp",
-    "Arg": {
-      "Zero": {
-        "Tag": "WindowsTerminal",
-        "ToolTip": "Set Windows Terminal as default terminal app to host the user interface for command-line applications."
-      },
-      "One": {
-        "Tag": "ConsoleHost",
-        "ToolTip": "Set Windows Console Host as default terminal app to host the user interface for command-line applications (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "Install-VCRedist -Redistributables",
-    "ToolTip": "Install the latest Microsoft Visual C++ Redistributable Packages x86, x64",
-    "Arg": {
-      "Zero": {
-        "Tag": "2015_2022_x86",
-        "ToolTip": "Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 x86. Internet connection required."
-      },
-      "One": {
-        "Tag": "2015_2022_x64",
-        "ToolTip": "Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 x64. Internet connection required."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "Install-DotNetRuntimes -Runtimes",
-    "ToolTip": "Install the latest .NET Runtime 8, 9. Internet connection required",
-    "Arg": {
-      "Zero": {
-        "Tag": "NET8",
-        "ToolTip": ".NET Runtime 8. Internet connection required."
-      },
-      "One": {
-        "Tag": "NET9",
-        "ToolTip": ".NET Runtime 9. Internet connection required."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "RKNBypass",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Enable proxying only blocked sites from the unified registry of Roskomnadzor. The function is applicable for Russia only."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Disable proxying only blocked sites from the unified registry of Roskomnadzor (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "PreventEdgeShortcutCreation",
-    "Arg": {
-      "Zero": {
-        "Tag": "Channels",
-        "ToolTip": "List Microsoft Edge channels to prevent desktop shortcut creation upon its' update."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Do not prevent desktop shortcut creation upon Microsoft Edge update (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "RegistryBackup",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Back up the system registry to %SystemRoot%\\System32\\config\\RegBack folder when PC restarts and create a RegIdleBackup in the Task Scheduler task to manage subsequent backups."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Do not back up the system registry to %SystemRoot%\\System32\\config\\RegBack folder (default value)."
-      }
-    }
-  },
-  {
-    "Region": "WSL",
-    "Function": "Install-WSL",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form. Internet connection required."
-      }
-    }
-  },
-  {
-    "Region": "Start menu",
-    "Function": "StartLayout",
-    "Arg": {
-      "Zero": {
-        "Tag": "Default",
-        "ToolTip": "Show default Start layout (default value)."
-      },
-      "One": {
-        "Tag": "ShowMorePins",
-        "ToolTip": "Show more pins on Start."
-      },
-      "Two": {
-        "Tag": "ShowMoreRecommendations",
-        "ToolTip": "Show more recommendations on Start."
-      }
-    }
-  },
-  {
-    "Region": "UWP apps",
-    "Function": "UninstallUWPApps",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Uninstall UWP apps using the pop-up dialog box."
-      }
-    }
-  },
-  {
-    "Region": "UWP apps",
-    "Function": "UninstallUWPApps -ForAllUsers",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Uninstall UWP apps using the pop-up dialog box. If the \"For all users\" is checked apps packages will not be installed for new users. The \"ForAllUsers\" argument sets a checkbox to unistall packages for all users."
-      }
-    }
-  },
-  {
-    "Region": "Gaming",
-    "Function": "XboxGameBar",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Disable Xbox Game Bar. To prevent popping up the \"You'll need a new app to open this ms-gamingoverlay\" warning, you need to disable the Xbox Game Bar app, even if you uninstalled it before."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Enable Xbox Game Bar (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Gaming",
-    "Function": "XboxGameTips",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Disable Xbox Game Bar tips."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Enable Xbox Game Bar tips (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Gaming",
-    "Function": "GPUScheduling",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Turn on hardware-accelerated GPU scheduling. Restart needed. Only if you have a dedicated GPU and WDDM verion is 2.7 or higher."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Turn off hardware-accelerated GPU scheduling. Restart needed (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Scheduled tasks",
-    "Function": "CleanupTask",
-    "Arg": {
-      "Zero": {
-        "Tag": "Register",
-        "ToolTip": "Create \"Windows Cleanup\" (main task) and \"Windows Cleanup Notification\" (task to generate a pop-up notification) tasks to clean up unused files and Windows updates in the Task Scheduler in the Sophia folder. A native notification prompting you to run the task will pop up before the cleanup begins. The task runs every 30 days. Windows Script Host must be enabled for the task to run."
-      },
-      "One": {
-        "Tag": "Delete",
-        "ToolTip": "Delete the \"Windows Cleanup\" and \"Windows Cleanup Notification\" scheduled tasks for cleaning up Windows unused files and updates."
-      }
-    }
-  },
-  {
-    "Region": "Scheduled tasks",
-    "Function": "SoftwareDistributionTask",
-    "Arg": {
-      "Zero": {
-        "Tag": "Register",
-        "ToolTip": "Create a \"SoftwareDistribution\" task to clean up the %SystemRoot%\\SoftwareDistribution\\Download folder where the installation files for all Windows updates are downloaded, in the Sophia folder in the  Task Scheduler. The task will wait until the Windows Update service has finished running. The task runs every 90 days. Windows Script Host must be enabled for the task to run."
-      },
-      "One": {
-        "Tag": "Delete",
-        "ToolTip": "Delete the \"SoftwareDistribution\" scheduled task for cleaning up the %SystemRoot%\\SoftwareDistribution\\Download folder."
-      }
-    }
-  },
-  {
-    "Region": "Scheduled tasks",
-    "Function": "TempTask",
-    "Arg": {
-      "Zero": {
-        "Tag": "Register",
-        "ToolTip": "Create a \"Temp\" task in the Task Scheduler to clean up the %TEMP% folder. Only files older than one day will be deleted. The task runs every 60 days. Windows Script Host must be enabled for the task to run."
-      },
-      "One": {
-        "Tag": "Delete",
-        "ToolTip": "Delete the \"Temp\" scheduled task for cleaning up the %TEMP% folder."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
-    "Function": "NetworkProtection",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Enable Microsoft Defender Exploit Guard network protection."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Disable Microsoft Defender Exploit Guard network protection (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
-    "Function": "PUAppsDetection",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Enable detection for potentially unwanted applications and block them."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Disable detection for potentially unwanted applications and block them (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
-    "Function": "DefenderSandbox",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Enable sandboxing for Microsoft Defender."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Disable sandboxing for Microsoft Defender (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
-    "Function": "DismissMSAccount",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Dismiss Microsoft Defender offer in the Windows Security about signing in Microsoft account."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
-    "Function": "DismissSmartScreenFilter",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Dismiss Microsoft Defender offer in the Windows Security about turning on the SmartScreen filter for Microsoft Edge."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
-    "Function": "EventViewerCustomView",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Create the \"Process Creation\" сustom view in the Event Viewer to log executed processes and their arguments."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Remove the \"Process Creation\" custom view in the Event Viewer to log executed processes and their arguments (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
-    "Function": "PowerShellModulesLogging",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Enable logging for all Windows PowerShell modules."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Disable logging for all Windows PowerShell modules (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
-    "Function": "PowerShellScriptsLogging",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Enable logging for all PowerShell scripts input to the Windows PowerShell event log."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Disable logging for all PowerShell scripts input to the Windows PowerShell event log (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
-    "Function": "AppsSmartScreen",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Microsoft Defender SmartScreen doesn't marks downloaded files from the Internet as unsafe."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Microsoft Defender SmartScreen marks downloaded files from the Internet as unsafe (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
-    "Function": "SaveZoneInformation",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Disable the Attachment Manager marking files that have been downloaded from the Internet as unsafe."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Enable the Attachment Manager marking files that have been downloaded from the Internet as unsafe (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
-    "Function": "WindowsSandbox",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Enable Windows Sandbox. Applicable only to Professional, Enterprise and Education editions."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Disable Windows Sandbox (default value). Applicable only to Professional, Enterprise and Education editions."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
-    "Function": "DNSoverHTTPS",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Enable DNS-over-HTTPS for IPv4. The valid IPv4 addresses: 1.0.0.1, 1.1.1.1, 149.112.112.112, 8.8.4.4, 8.8.8.8, 9.9.9.9."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Disable DNS-over-HTTPS for IPv4 (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
-    "Function": "LocalSecurityAuthority",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Enable Local Security Authority protection to prevent code injection without UEFI lock."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Disable Local Security Authority protection without UEFI lock (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
-    "Function": "MSIExtractContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Show the \"Extract all\" item in the Windows Installer (.msi) context menu."
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"Extract all\" item from the Windows Installer (.msi) context menu (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
-    "Function": "CABInstallContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Show the \"Install\" item in the Cabinet (.cab) filenames extensions context menu."
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"Install\" item from the Cabinet (.cab) filenames extensions context menu (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
-    "Function": "EditWithClipchampContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"Edit with Clipchamp\" item from the media files context menu."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show the \"Edit with Clipchamp\" item in the media files context menu (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
-    "Function": "EditWithPhotosContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"Edit with Photos\" item from the media files context menu."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show the \"Edit with Photos\" item in the media files context menu (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
-    "Function": "EditWithPaintContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"Edit with Paint\" item from the media files context menu."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show the \"Edit with Paint\" item in the media files context menu (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
-    "Function": "PrintCMDContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"Print\" item from the .bat and .cmd context menu."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show the \"Print\" item in the .bat and .cmd context menu (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
-    "Function": "CompressedFolderNewContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"Compressed (zipped) Folder\" item from the \"New\" context menu."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show the \"Compressed (zipped) Folder\" item to the \"New\" context menu (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
-    "Function": "MultipleInvokeContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Enable the \"Open\", \"Print\", and \"Edit\" context menu items for more than 15 items selected."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Disable the \"Open\", \"Print\", and \"Edit\" context menu items for more than 15 items selected (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
-    "Function": "UseStoreOpenWith",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"Look for an app in the Microsoft Store\" item in the \"Open with\" dialog."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show the \"Look for an app in the Microsoft Store\" item in the \"Open with\" dialog (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
-    "Function": "OpenWindowsTerminalContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"Open in Windows Terminal\" item in the folders context menu."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show the \"Open in Windows Terminal\" item in the folders context menu (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
-    "Function": "OpenWindowsTerminalAdminContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Open Windows Terminal in context menu as administrator by default."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Do not open Windows Terminal in context menu as administrator by default (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Update Policies",
-    "Function": "ScanRegistryPolicies",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Display all policy registry keys (even manually created ones) in the Local Group Policy Editor snap-in (gpedit.msc). This can take up to 30 minutes, depending on the number of policies created in the registry and your system resources."
-      }
-    }
-  }
 ]
