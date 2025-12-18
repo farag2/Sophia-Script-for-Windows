@@ -71,9 +71,9 @@ jobs:
         run: |
           # Get Defender path
           $DefenderPath = (Get-ChildItem -Path "$env:ProgramData\Microsoft\Windows Defender\Platform" -Directory | Sort-Object Name -Descending | Select-Object -First 1).FullName
+          # Update Defender definitions
           & "$DefenderPath\MpCmdRun.exe" -SignatureUpdate -Verbose
           # Start scan
-
           & "$DefenderPath\MpCmdRun.exe" -Scan -ScanType 3 -DisableRemediation -File $((Get-Item -Path Sophia_Script).FullName) | ForEach-Object {Write-Verbose -Message $_ -Verbose}
 
           Get-Content -Path $env:TEMP\MpCmdRun.log
