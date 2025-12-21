@@ -10994,8 +10994,8 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 # https://github.com/DCourtel/Windows_10_Focus_Assist/blob/master/FocusAssistLibrary/FocusAssistLib.cs
 # https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
 
-`$CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
-`$CompilerParameters.TempFiles = [System.CodeDom.Compiler.TempFileCollection]::new(`$env:TEMP, `$false)
+`$CompilerParameters                  = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
+`$CompilerParameters.TempFiles        = [System.CodeDom.Compiler.TempFileCollection]::new(`$env:TEMP, `$false)
 `$CompilerParameters.GenerateInMemory = `$true
 `$Signature = @{
 	Namespace          = "WinAPI"
@@ -11325,8 +11325,8 @@ function SoftwareDistributionTask
 # https://github.com/DCourtel/Windows_10_Focus_Assist/blob/master/FocusAssistLibrary/FocusAssistLib.cs
 # https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
 
-`$CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
-`$CompilerParameters.TempFiles = [System.CodeDom.Compiler.TempFileCollection]::new(`$env:TEMP, `$false)
+`$CompilerParameters                  = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
+`$CompilerParameters.TempFiles        = [System.CodeDom.Compiler.TempFileCollection]::new(`$env:TEMP, `$false)
 `$CompilerParameters.GenerateInMemory = `$true
 `$Signature = @{
 	Namespace          = "WinAPI"
@@ -11644,8 +11644,8 @@ function TempTask
 # https://github.com/DCourtel/Windows_10_Focus_Assist/blob/master/FocusAssistLibrary/FocusAssistLib.cs
 # https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
 
-`$CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
-`$CompilerParameters.TempFiles = [System.CodeDom.Compiler.TempFileCollection]::new(`$env:TEMP, `$false)
+`$CompilerParameters                  = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
+`$CompilerParameters.TempFiles        = [System.CodeDom.Compiler.TempFileCollection]::new(`$env:TEMP, `$false)
 `$CompilerParameters.GenerateInMemory = `$true
 `$Signature = @{
 	Namespace          = "WinAPI"

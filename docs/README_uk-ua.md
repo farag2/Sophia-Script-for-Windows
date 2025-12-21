@@ -111,6 +111,7 @@ This page is also available in other languages
   * [Завантажити через PowerShell](#завантажити-через-powershell)
   * [Завантажити через Chocolatey](#завантажити-через-chocolatey)
   * [Завантажити через WinGet](#завантажити-через-winget)
+  * [Завантажити через scoop](#завантажити-через-scoop)
   * [Зі сторінки релізу](#зі-сторінки-релізу)
 * [Як використовувати](#як-використовувати)
   * [Як запустити певну функцію(ї)](#як-запустити-певну-функціюї)
@@ -162,7 +163,7 @@ choco uninstall sophia --force -y
 
 ### Завантажити через WinGet
 
-Команда скачивает только архив для `Windows 11 (PowerShell 5.1)` в вашу папку `Загрузки` (по сравнению со [скриптом](#завантажити-через-winget) для `Chocolatey`) и распаковывает его.
+Команда завантажує тільки архів для `Windows 11 (PowerShell 5.1)` у вашу папку `Завантаження`.
 
 ```powershell
 $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
@@ -172,6 +173,18 @@ winget install --id TeamSophia.SophiaScript --location $DownloadsFolder --accept
 ```powershell
 # Видалити Sophia Script
 winget uninstall --id TeamSophia.SophiaScript --force
+```
+
+### Завантажити через scoop
+
+```powershell
+scoop bucket add extras
+scoop install sophia-script --no-cache
+```
+
+```powershell
+# Видалити Sophia Script
+scoop uninstall sophia-script -p
 ```
 
 ### Зі сторінки релізу

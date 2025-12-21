@@ -74,7 +74,7 @@ jobs:
           # Update Defender definitions
           & "$DefenderPath\MpCmdRun.exe" -SignatureUpdate -Verbose
           # Start scan
-          & "$DefenderPath\MpCmdRun.exe" -Scan -ScanType 3 -DisableRemediation -File $((Get-Item -Path Sophia_Script).FullName) | ForEach-Object {Write-Verbose -Message $_ -Verbose}
+          & "$DefenderPath\MpCmdRun.exe" -Scan -ScanType 3 -DisableRemediation -File Sophia_Script | ForEach-Object {Write-Verbose -Message $_ -Verbose}
 
           Get-Content -Path $env:TEMP\MpCmdRun.log
 
