@@ -4,6 +4,7 @@
             "Code": "en",
             "Folder": "en-US",
             "WidthOfWrapperInPixels": "872",
+            "HeightOfWrapperInPixels": "650",
             "WidthLabelInPixels": "225",
             "WidthLabelContextTabInPixels": "243",
             "WidthComboBoxInPixels": "155",
@@ -13,7 +14,8 @@
         "German": {
             "Code": "de",
             "Folder": "de-DE",
-            "WidthOfWrapperInPixels": "1020",
+            "WidthOfWrapperInPixels": "1120",
+            "HeightOfWrapperInPixels": "650",
             "WidthLabelInPixels": "225",
             "WidthLabelContextTabInPixels": "243",
             "WidthComboBoxInPixels": "150",
@@ -23,7 +25,8 @@
         "Russian": {
             "Code": "ru",
             "Folder": "ru-RU",
-            "WidthOfWrapperInPixels": "1055",
+            "WidthOfWrapperInPixels": "1155",
+            "HeightOfWrapperInPixels": "650",
             "WidthLabelInPixels": "225",
             "WidthLabelContextTabInPixels": "243",
             "WidthComboBoxInPixels": "175",
