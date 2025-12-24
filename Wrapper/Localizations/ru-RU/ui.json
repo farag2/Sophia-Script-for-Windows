@@ -18,6 +18,10 @@
             "menuThemeLight": "Светлая",
             "menuLanguage": "Язык",
             "menuAbout": "О программе",
+            "menuAccessibility": "Доступность",
+            "menuScaleUp": "Масштабирование",
+            "menuScale": "масштаб",
+            "menuScaleDown": "Уменьшить масштаб",
             "menuDonate": "Пожертвовать"
         }
     },
