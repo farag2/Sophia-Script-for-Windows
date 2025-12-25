@@ -3635,43 +3635,43 @@ function Install-Cursors
 		$Default
 	)
 
-	try
+	if (-not $Default)
 	{
-		# Checking whether https://github.com is alive
-		$Parameters = @{
-			Uri              = "https://raw.githubusercontent.com"
-			UseBasicParsing  = $true
-			Verbose          = $true
+		$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+
+		try
+		{
+			# Download cursors
+			# The archive was saved in the "Cursors" folder using DeviantArt API via GitHub CI/CD
+			# https://github.com/farag2/Sophia-Script-for-Windows/tree/master/Cursors
+			# https://github.com/farag2/Sophia-Script-for-Windows/blob/master/.github/workflows/Cursors.yml
+			$Parameters = @{
+				Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/Cursors/Windows11Cursors.zip"
+				OutFile         = "$DownloadsFolder\Windows11Cursors.zip"
+				UseBasicParsing = $true
+				Verbose         = $true
+			}
+			Invoke-WebRequest @Parameters
 		}
-		(Invoke-WebRequest @Parameters).StatusCode
-	}
-	catch [System.Net.WebException]
-	{
-		Write-Warning -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com")
-		Write-Error -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com") -ErrorAction SilentlyContinue
-		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+		catch [System.Net.WebException]
+		{
+			Write-Warning -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com")
+			Write-Error -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com") -ErrorAction SilentlyContinue
+			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+		}
 	}
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Dark"
 		{
-			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-			$Parameters = @{
-				Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/Misc/dark.zip"
-				OutFile         = "$DownloadsFolder\dark.zip"
-				UseBasicParsing = $true
-				Verbose         = $true
-			}
-			Invoke-WebRequest @Parameters
-
 			if (-not (Test-Path -Path "$env:SystemRoot\Cursors\W11 Cursor Dark Free"))
 			{
 				New-Item -Path "$env:SystemRoot\Cursors\W11 Cursor Dark Free" -ItemType Directory -Force
 			}
 
-			# Extract archive
-			& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\dark.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Dark Free"
+			# Extract archive from "dark" folder only
+			& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\Windows11Cursors.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Dark Free" --strip-components=1 dark/
 
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursor Dark Free by Jepri Creations" -Force
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\appstarting.ani" -Force
@@ -3720,26 +3720,17 @@ function Install-Cursors
 
 			Start-Sleep -Seconds 1
 
-			Remove-Item -Path "$DownloadsFolder\dark.zip" -Force
+			Remove-Item -Path "$DownloadsFolder\Windows11Cursors.zip", "$env:SystemRoot\Cursors\W11 Cursor Dark Free\Install.inf" -Force
 		}
 		"Light"
 		{
-			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-			$Parameters = @{
-				Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/Misc/light.zip"
-				OutFile         = "$DownloadsFolder\light.zip"
-				UseBasicParsing = $true
-				Verbose         = $true
-			}
-			Invoke-WebRequest @Parameters
-
 			if (-not (Test-Path -Path "$env:SystemRoot\Cursors\W11 Cursor Light Free"))
 			{
 				New-Item -Path "$env:SystemRoot\Cursors\W11 Cursor Light Free" -ItemType Directory -Force
 			}
 
-			# Extract archive
-			& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\light.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Light Free"
+			# Extract archive from "light" folder only
+			& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\Windows11Cursors.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Light Free" --strip-components=1 light/
 
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursor Light Free by Jepri Creations" -Force
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\appstarting.ani" -Force
@@ -3788,7 +3779,7 @@ function Install-Cursors
 
 			Start-Sleep -Seconds 1
 
-			Remove-Item -Path "$DownloadsFolder\light.zip" -Force
+			Remove-Item -Path "$DownloadsFolder\Windows11Cursors.zip", "$env:SystemRoot\Cursors\W11 Cursor Light Free\Install.inf" -Force
 		}
 		"Default"
 		{
@@ -4123,8 +4114,8 @@ function OneDrive
 
 				if ($AllUsers)
 				{
-					# Install OneDrive for all users
-					Start-Process -FilePath $env:SystemRoot\System32\OneDriveSetup.exe -ArgumentList "/allusers"
+					# Install OneDrive for all users to %ProgramFiles%
+					& $env:SystemRoot\System32\OneDriveSetup.exe /allusers
 				}
 				else
 				{
@@ -4163,7 +4154,7 @@ function OneDrive
 					if ($AllUsers)
 					{
 						# Install OneDrive for all users to %ProgramFiles%
-						Start-Process -FilePath "$DownloadsFolder\OneDriveSetup.exe" -ArgumentList "/allusers"
+						& "$DownloadsFolder\OneDriveSetup.exe" /allusers
 					}
 					else
 					{
@@ -5430,7 +5421,7 @@ function NetworkAdaptersSavePower
 
 	# Checking whether there's an adapter that has AllowComputerToTurnOffDevice property to manage
 	# We need also check for adapter status per some laptops have many equal adapters records in adapters list
-	$Adapters = Get-NetAdapter -Physical | Where-Object -FilterScript {$_.MacAddress -and ($_.Status -eq "Up")} | Get-NetAdapterPowerManagement | Where-Object -FilterScript {$_.AllowComputerToTurnOffDevice -ne "Unsupported"}
+	$Adapters = Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-NetAdapterPowerManagement | Where-Object -FilterScript {$_.AllowComputerToTurnOffDevice -ne "Unsupported"}
 	if (-not $Adapters)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
@@ -5440,7 +5431,7 @@ function NetworkAdaptersSavePower
 		return
 	}
 
-	$PhysicalAdaptersStatusUp = @(Get-NetAdapter -Physical | Where-Object -FilterScript {($_.Status -eq "Up") -and $_.MacAddress})
+	$PhysicalAdaptersStatusUp = @(Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"})
 
 	# Checking whether PC is currently connected to a Wi-Fi network
 	# NetConnectionStatus 2 is Wi-Fi
@@ -9377,7 +9368,7 @@ function Install-WSL
 		(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
 
 		# Check for updates
-		Start-Process -FilePath "$env:SystemRoot\System32\UsoClient.exe" -ArgumentList StartInteractiveScan
+		& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
 	}
 	#endregion
 
@@ -12536,19 +12527,21 @@ function DNSoverHTTPS
 		$Enable,
 
 		[Parameter(Mandatory = $false)]
-		[ValidateSet("1.0.0.1", "1.1.1.1", "149.112.112.112", "8.8.4.4", "8.8.8.8", "9.9.9.9")]
 		[ValidateScript({
-			# Checking whether $PrimaryDNS is not equal to $SecondaryDNS
-			$_ -ne $SecondaryDNS
+			# Isolate IPv4 IP addresses and check whether $PrimaryDNS is not equal to $SecondaryDNS
+			((@((Get-ChildItem -Path HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters\DohWellKnownServers).PSChildName) | Where-Object -FilterScript {
+				($_ -as [IPAddress]).AddressFamily -ne "InterNetworkV6"
+			}) -contains $_) -and ($_ -ne $SecondaryDNS)
 		})]
 		[string]
 		$PrimaryDNS,
 
 		[Parameter(Mandatory = $false)]
-		[ValidateSet("1.0.0.1", "1.1.1.1", "149.112.112.112", "8.8.4.4", "8.8.8.8", "9.9.9.9")]
 		[ValidateScript({
-			# Checking whether $PrimaryDNS is not equal to $SecondaryDNS
-			$_ -ne $PrimaryDNS
+			# Isolate IPv4 IP addresses and check whether $PrimaryDNS is not equal to $SecondaryDNS
+			((@((Get-ChildItem -Path HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters\DohWellKnownServers).PSChildName) | Where-Object -FilterScript {
+				($_ -as [IPAddress]).AddressFamily -ne "InterNetworkV6"
+			}) -contains $_) -and ($_ -ne $PrimaryDNS)
 		})]
 		[string]
 		$SecondaryDNS,
@@ -12571,13 +12564,13 @@ function DNSoverHTTPS
 
 	# Determining whether Hyper-V is enabled
 	# After enabling Hyper-V feature a virtual switch being created, so we need to use different method to isolate the proper adapter
-	if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
+	if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
 	{
-		$InterfaceGuids = @((Get-NetAdapter -Physical).InterfaceGuid)
+		$InterfaceGuids = @((Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Where-Object -FilterScript {$_.Status -eq "Up"}).InterfaceGuid)
 	}
 	else
 	{
-		$InterfaceGuids = @((Get-NetRoute -AddressFamily IPv4 | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter).InterfaceGuid)
+		$InterfaceGuids = @((Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"}).InterfaceGuid)
 	}
 
 	switch ($PSCmdlet.ParameterSetName)
@@ -12587,11 +12580,11 @@ function DNSoverHTTPS
 			# Set a primary and secondary DNS servers
 			if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
 			{
-				Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
+				Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Where-Object -FilterScript {$_.Status -eq "Up"} | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
 			}
 			else
 			{
-				Get-NetAdapter -Physical | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
+				Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
 			}
 
 			foreach ($InterfaceGuid in $InterfaceGuids)
@@ -12649,26 +12642,26 @@ function DNSoverHTTPS
 
 			# Set a primary and secondary DNS servers
 			# https://www.comss.ru/page.php?id=7315
-			if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
+			if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
 			{
 				if ($SecondIPAddress)
 				{
-					Get-NetAdapter -Physical | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ServerAddresses $FirstIPAddress, $SecondIPAddress
+					Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Where-Object -FilterScript {$_.Status -eq "Up"} | Set-DnsClientServerAddress -ServerAddresses $FirstIPAddress, $SecondIPAddress
 				}
 				else
 				{
-					Get-NetAdapter -Physical | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ServerAddresses $FirstIPAddress
+					Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Where-Object -FilterScript {$_.Status -eq "Up"} | Set-DnsClientServerAddress -ServerAddresses $FirstIPAddress
 				}
 			}
 			else
 			{
 				if ($SecondIPAddress)
 				{
-					Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ServerAddresses $FirstIPAddress, $SecondIPAddress
+					Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ServerAddresses $FirstIPAddress, $SecondIPAddress
 				}
 				else
 				{
-					Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ServerAddresses $FirstIPAddress
+					Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ServerAddresses $FirstIPAddress
 				}
 			}
 
@@ -12695,15 +12688,15 @@ function DNSoverHTTPS
 		"Disable"
 		{
 			# Determining whether Hyper-V is enabled
-			if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
+			if (Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
 			{
 				# Configure DNS servers automatically
-				Get-NetAdapter -Physical | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ResetServerAddresses
+				Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Where-Object -FilterScript {$_.Status -eq "Up"} | Set-DnsClientServerAddress -ResetServerAddresses
 			}
 			else
 			{
 				# Configure DNS servers automatically
-				Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Set-DnsClientServerAddress -ResetServerAddresses
+				Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ResetServerAddresses
 			}
 
 			foreach ($InterfaceGuid in $InterfaceGuids)

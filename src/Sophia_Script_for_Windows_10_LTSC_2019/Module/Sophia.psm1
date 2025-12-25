@@ -2690,43 +2690,43 @@ function Install-Cursors
 		$Default
 	)
 
-	try
+	if (-not $Default)
 	{
-		# Checking whether https://github.com is alive
-		$Parameters = @{
-			Uri              = "https://raw.githubusercontent.com"
-			UseBasicParsing  = $true
-			Verbose          = $true
+		$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+
+		try
+		{
+			# Download cursors
+			# The archive was saved in the "Cursors" folder using DeviantArt API via GitHub CI/CD
+			# https://github.com/farag2/Sophia-Script-for-Windows/tree/master/Cursors
+			# https://github.com/farag2/Sophia-Script-for-Windows/blob/master/.github/workflows/Cursors.yml
+			$Parameters = @{
+				Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/Cursors/Windows11Cursors.zip"
+				OutFile         = "$DownloadsFolder\Windows11Cursors.zip"
+				UseBasicParsing = $true
+				Verbose         = $true
+			}
+			Invoke-WebRequest @Parameters
 		}
-		(Invoke-WebRequest @Parameters).StatusCode
-	}
-	catch [System.Net.WebException]
-	{
-		Write-Warning -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com")
-		Write-Error -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com") -ErrorAction SilentlyContinue
-		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+		catch [System.Net.WebException]
+		{
+			Write-Warning -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com")
+			Write-Error -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com") -ErrorAction SilentlyContinue
+			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+		}
 	}
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Dark"
 		{
-			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-			$Parameters = @{
-				Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/Misc/dark.zip"
-				OutFile         = "$DownloadsFolder\dark.zip"
-				UseBasicParsing = $true
-				Verbose         = $true
-			}
-			Invoke-WebRequest @Parameters
-
 			if (-not (Test-Path -Path "$env:SystemRoot\Cursors\W11 Cursor Dark Free"))
 			{
 				New-Item -Path "$env:SystemRoot\Cursors\W11 Cursor Dark Free" -ItemType Directory -Force
 			}
 
-			# Extract archive
-			& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\dark.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Dark Free"
+			# Extract archive from "dark" folder only
+			& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\Windows11Cursors.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Dark Free" --strip-components=1 dark/
 
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursor Dark Free by Jepri Creations" -Force
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\appstarting.ani" -Force
@@ -2775,26 +2775,17 @@ function Install-Cursors
 
 			Start-Sleep -Seconds 1
 
-			Remove-Item -Path "$DownloadsFolder\dark.zip" -Force
+			Remove-Item -Path "$DownloadsFolder\Windows11Cursors.zip", "$env:SystemRoot\Cursors\W11 Cursor Dark Free\Install.inf" -Force
 		}
 		"Light"
 		{
-			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-			$Parameters = @{
-				Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/Misc/light.zip"
-				OutFile         = "$DownloadsFolder\light.zip"
-				UseBasicParsing = $true
-				Verbose         = $true
-			}
-			Invoke-WebRequest @Parameters
-
 			if (-not (Test-Path -Path "$env:SystemRoot\Cursors\W11 Cursor Light Free"))
 			{
 				New-Item -Path "$env:SystemRoot\Cursors\W11 Cursor Light Free" -ItemType Directory -Force
 			}
 
-			# Extract archive
-			& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\light.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Light Free"
+			# Extract archive from "light" folder only
+			& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\Windows11Cursors.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Light Free" --strip-components=1 light/
 
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursor Light Free by Jepri Creations" -Force
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\appstarting.ani" -Force
@@ -2843,7 +2834,7 @@ function Install-Cursors
 
 			Start-Sleep -Seconds 1
 
-			Remove-Item -Path "$DownloadsFolder\light.zip" -Force
+			Remove-Item -Path "$DownloadsFolder\Windows11Cursors.zip", "$env:SystemRoot\Cursors\W11 Cursor Light Free\Install.inf" -Force
 		}
 		"Default"
 		{
@@ -4226,7 +4217,7 @@ function NetworkAdaptersSavePower
 
 	# Checking whether there's an adapter that has AllowComputerToTurnOffDevice property to manage
 	# We need also check for adapter status per some laptops have many equal adapters records in adapters list
-	$Adapters = Get-NetAdapter -Physical | Where-Object -FilterScript {$_.MacAddress -and ($_.Status -eq "Up")} | Get-NetAdapterPowerManagement | Where-Object -FilterScript {$_.AllowComputerToTurnOffDevice -ne "Unsupported"}
+	$Adapters = Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-NetAdapterPowerManagement | Where-Object -FilterScript {$_.AllowComputerToTurnOffDevice -ne "Unsupported"}
 	if (-not $Adapters)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
@@ -4236,7 +4227,7 @@ function NetworkAdaptersSavePower
 		return
 	}
 
-	$PhysicalAdaptersStatusUp = @(Get-NetAdapter -Physical | Where-Object -FilterScript {($_.Status -eq "Up") -and $_.MacAddress})
+	$PhysicalAdaptersStatusUp = @(Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"})
 
 	# Checking whether PC is currently connected to a Wi-Fi network
 	# NetConnectionStatus 2 is Wi-Fi

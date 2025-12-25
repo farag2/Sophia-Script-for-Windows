@@ -297,11 +297,10 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	# Checking whether the logged-in user is an admin
 	$CurrentUserName = (Get-Process -Id $PID -IncludeUserName).UserName | Split-Path -Leaf
 	$LoginUserName = (Get-CimInstance -ClassName Win32_Process -Filter "name='explorer.exe'" | Invoke-CimMethod -MethodName GetOwner | Select-Object -First 1).User
-
 	if ($CurrentUserName -ne $LoginUserName)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message $Localization.LoggedInUserNotAdmin
+		Write-Warning -Message ($Localization.LoggedInUserNotAdmin -f $CurrentUserName, $LoginUserName)
 		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
@@ -575,7 +574,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			# Save in UTF8 without BOM
 			$hosts | Set-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Encoding Default -Force
 
-			Start-Process -FilePath notepad.exe "$env:SystemRoot\System32\drivers\etc\hosts"
+			Start-Process -FilePath notepad.exe -ArgumentList "$env:SystemRoot\System32\drivers\etc\hosts"
 		}
 	}
 	catch [System.Net.WebException]
@@ -849,7 +848,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 					Set-MpPreference -EnableControlledFolderAccess Disabled
 
 					# Open "Ransomware protection" page
-					Start-Process -FilePath windowsdefender://RansomwareProtection
+					Start-Process -FilePath "windowsdefender://RansomwareProtection"
 				}
 				"0"
 				{
@@ -958,7 +957,7 @@ public extern static string BrandingFormatString(string sFormat);
 		New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name AllowMUUpdateService -PropertyType DWord -Value 1 -Force
 
 		# Check for updates
-		Start-Process -FilePath "$env:SystemRoot\System32\UsoClient.exe" -ArgumentList StartInteractiveScan
+		& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
 
 		$Global:Failed = 1
 
@@ -1022,7 +1021,7 @@ public extern static string BrandingFormatString(string sFormat);
 			Get-CimInstance -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 -Namespace root/CIMV2/mdm/dmmap | Invoke-CimMethod -MethodName UpdateScanMethod
 
 			# Check for updates
-			Start-Process -FilePath "$env:SystemRoot\System32\UsoClient.exe" -ArgumentList StartInteractiveScan
+			& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
 
 			# Open the "Windows Update" page
 			Start-Process -FilePath "ms-settings:windowsupdate"
@@ -1075,7 +1074,7 @@ public extern static string BrandingFormatString(string sFormat);
 				Get-CimInstance -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 -Namespace root/CIMV2/mdm/dmmap | Invoke-CimMethod -MethodName UpdateScanMethod
 
 				# Check for updates
-				Start-Process -FilePath "$env:SystemRoot\System32\UsoClient.exe" -ArgumentList StartInteractiveScan
+				& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
 
 				# Open the "Windows Update" page
 				Start-Process -FilePath "ms-settings:windowsupdate"
