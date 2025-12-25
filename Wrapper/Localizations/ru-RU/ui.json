@@ -8,8 +8,8 @@
             "menuAutosave": "Автосохранение",
             "menuPresets": "Пресеты",
             "menuOpposite": "Противоположные значения",
-            "menuOppositeTab": "Противоположная вкладка",
-            "menuOppositeEverything": "Напротив всего",
+            "menuOppositeTab": "Противоположное значение",
+            "menuOppositeEverything": "Противоположные значения у всего",
             "menuClear": "Очистить",
             "menuClearTab": "Очистить вкладку",
             "menuClearEverything": "Очистить все",
@@ -20,7 +20,7 @@
             "menuAbout": "О программе",
             "menuAccessibility": "Доступность",
             "menuScaleUp": "Масштабирование",
-            "menuScale": "масштаб",
+            "menuScale": "Масштаб",
             "menuScaleDown": "Уменьшить масштаб",
             "menuDonate": "Пожертвовать"
         }
