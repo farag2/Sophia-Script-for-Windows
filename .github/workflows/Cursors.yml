@@ -1,0 +1,32 @@
+name: Download cursors
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  download-and-save:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@main
+
+      - name: Get token and download cursors
+        env:
+          DEVIANTART_CLIENT_ID: ${{ secrets.DEVIANTART_CLIENT_ID }}
+          DEVIANTART_CLIENT_SECRET: ${{ secrets.DEVIANTART_CLIENT_SECRET }}
+        run: |
+          . "Scripts\Cursors.ps1"
+
+      - name: Commit and push changes
+        run: |
+          # Save Windows11Cursors.zip to Cursors folder
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+
+          git add Cursors/Windows11Cursors.zip
+          git commit -m "Update Windows11Cursors.zip archive"
+          git push
