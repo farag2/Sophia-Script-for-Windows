@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 6.0.1 | 7.0.1 — 25.12.2025
+
+With best wishes for a happy New Year from `Team Sophia` ![gif](https://forum.ru-board.com/board/s/deds.gif)
+
+* Improved `Install-Cursor` function
+  * [Added](https://github.com/farag2/Sophia-Script-for-Windows/blob/master/.github/workflows/Cursors.yml) CI/CD config to download always up-to-date jepricreations' cursors via a DeviantArt API to the [Cursors folder](https://github.com/farag2/Sophia-Script-for-Windows/tree/master/Cursors).
+* Added cloud Defender scan before uploading to release page;
+  * https://github.com/farag2/Sophia-Script-for-Windows/blob/master/.github/workflows/Sophia.yml#L70
+* Added `Sophia Script` to [scoop](https://scoop.sh)
+  * https://github.com/ScoopInstaller/Extras/blob/master/bucket/sophia-script.json
+  * Fix for #684
+
+```powershell
+scoop bucket add extras
+scoop install sophia-script --no-cache
+
+# Uninstall Sophia Script
+scoop uninstall sophia-script -p
+```
+
+* Updated localizations
+* Minor improvements.
+
+## Wrapper 2.8.14
+
+Fix for #682
+Fix bugs and Accessibility Scaling UI
+
 ## 6.0.0 | 7.0.0 — 05.12.2025
 
 * Huge code refactoring;
