@@ -18,6 +18,10 @@
             "menuThemeLight": "Hell",
             "menuLanguage": "Sprache",
             "menuAbout": "Über",
+            "menuAccessibility": "Zugänglichkeit",
+            "menuScaleUp": "Vergrößern",
+            "menuScale": "Skala",
+            "menuScaleDown": "Verkleinern",
             "menuDonate": "Spenden"
         }
     },
