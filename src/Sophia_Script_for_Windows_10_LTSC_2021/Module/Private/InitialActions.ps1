@@ -3,10 +3,10 @@
 	Initial checks before proceeding to module execution
 
 	.VERSION
-	6.0.0
+	6.0.1
 
 	.DATE
-	05.12.2025
+	25.12.2025
 
 	.COPYRIGHT
 	(c) 2014—2026 Team Sophia
@@ -28,7 +28,7 @@ function InitialActions
 
 	Set-StrictMode -Version Latest
 
-	$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC 2021 v6.0.0 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) Team Sophia, 2014$([System.Char]0x2013)2025"
+	$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 LTSC 2021 v6.0.1 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) Team Sophia, 2014$([System.Char]0x2013)2026"
 
 	# Unblock all files in the script folder by removing the Zone.Identifier alternate data stream with a value of "3"
 	Get-ChildItem -Path $PSScriptRoot\..\..\ -File -Recurse -Force | Unblock-File
@@ -37,7 +37,7 @@ function InitialActions
 
 	# Progress bar can significantly impact cmdlet performance
 	# https://github.com/PowerShell/PowerShell/issues/2138
-	$Script:ProgressPreference = "SilentlyContinue"
+	$Global:ProgressPreference = "SilentlyContinue"
 
 	# Checking whether all files were expanded before running
 	$ScriptFiles = [Array]::TrueForAll(@(
@@ -74,7 +74,7 @@ function InitialActions
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-		$Global:Failed = 1
+		$Global:Failed = $true
 
 		exit
 	}
@@ -112,7 +112,7 @@ function InitialActions
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-			$Global:Failed = 1
+			$Global:Failed = $true
 
 			exit
 		}
@@ -134,7 +134,7 @@ function InitialActions
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-		$Global:Failed = 1
+		$Global:Failed = $true
 
 		exit
 	}
@@ -150,7 +150,7 @@ function InitialActions
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-		$Global:Failed = 1
+		$Global:Failed = $true
 
 		exit
 	}
@@ -226,7 +226,7 @@ public static string GetIndirectString(string indirectString)
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-			$Global:Failed = 1
+			$Global:Failed = $true
 
 			exit
 		}
@@ -262,7 +262,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-			$Global:Failed = 1
+			$Global:Failed = $true
 
 			exit
 		}
@@ -278,20 +278,20 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-		$Global:Failed = 1
+		$Global:Failed = $true
 
 		exit
 	}
 
 	# Extract the localized "Browse" string from shell32.dll
-	$Script:Browse = [WinAPI.GetStrings]::GetString(9015)
+	$Global:Browse = [WinAPI.GetStrings]::GetString(9015)
 	# Extract the localized "&No" string from shell32.dll
-	$Script:No = [WinAPI.GetStrings]::GetString(33232).Replace("&", "")
+	$Global:No = [WinAPI.GetStrings]::GetString(33232).Replace("&", "")
 	# Extract the localized "&Yes" string from shell32.dll
-	$Script:Yes = [WinAPI.GetStrings]::GetString(33224).Replace("&", "")
-	$Script:KeyboardArrows = $Localization.KeyboardArrows -f [System.Char]::ConvertFromUtf32(0x2191), [System.Char]::ConvertFromUtf32(0x2193)
+	$Global:Yes = [WinAPI.GetStrings]::GetString(33224).Replace("&", "")
+	$Global:KeyboardArrows = $Localization.KeyboardArrows -f [System.Char]::ConvertFromUtf32(0x2191), [System.Char]::ConvertFromUtf32(0x2193)
 	# Extract the localized "Skip" string from shell32.dll
-	$Script:Skip = [WinAPI.GetStrings]::GetString(16956)
+	$Global:Skip = [WinAPI.GetStrings]::GetString(16956)
 
 	# Check the language mode
 	if ($ExecutionContext.SessionState.LanguageMode -ne "FullLanguage")
@@ -304,7 +304,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-		$Global:Failed = 1
+		$Global:Failed = $true
 
 		exit
 	}
@@ -321,7 +321,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-		$Global:Failed = 1
+		$Global:Failed = $true
 
 		exit
 	}
@@ -336,7 +336,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-		$Global:Failed = 1
+		$Global:Failed = $true
 
 		exit
 	}
@@ -394,7 +394,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 				Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 				Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-				$Global:Failed = 1
+				$Global:Failed = $true
 
 				exit
 			}
@@ -407,7 +407,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-			$Global:Failed = 1
+			$Global:Failed = $true
 
 			exit
 		}
@@ -446,7 +446,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-			$Global:Failed = 1
+			$Global:Failed = $true
 
 			exit
 		}
@@ -490,7 +490,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 						Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 						Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-						$Global:Failed = 1
+						$Global:Failed = $true
 
 						exit
 					}
@@ -609,7 +609,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Verbose -Message "https://www.microsoft.com/software-download/windows10" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-		$Global:Failed = 1
+		$Global:Failed = $true
 
 		exit
 	}
@@ -633,7 +633,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-			$Global:Failed = 1
+			$Global:Failed = $true
 
 			exit
 		}
@@ -650,7 +650,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-		$Global:Failed = 1
+		$Global:Failed = $true
 
 		exit
 	}
@@ -666,7 +666,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-		$Global:Failed = 1
+		$Global:Failed = $true
 
 		exit
 	}
@@ -674,7 +674,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	# Check Windows default antivirus
 	try
 	{
-		$Script:DefenderDefaultAV = $false
+		$Global:DefenderDefaultAV = $false
 
 		$productState = (Get-CimInstance -ClassName AntiVirusProduct -Namespace root/SecurityCenter2 | Where-Object -FilterScript {$_.instanceGuid -eq "{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}"}).productState
 		$DefenderState = ('0x{0:x}' -f $productState).Substring(3, 2)
@@ -682,7 +682,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		if ($DefenderState -notmatch "00|01")
 		{
 			Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/Microsoft/Windows/Defender -ErrorAction Stop | Out-Null
-			$Script:DefenderDefaultAV = $true
+			$Global:DefenderDefaultAV = $true
 		}
 	}
 	catch [Microsoft.Management.Infrastructure.CimException]
@@ -697,7 +697,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-		$Global:Failed = 1
+		$Global:Failed = $true
 
 		exit
 	}
@@ -718,11 +718,11 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-		$Global:Failed = 1
+		$Global:Failed = $true
 
 		exit
 	}
-	$Script:DefenderServices = ($Services | Where-Object -FilterScript {$_.Status -ne "running"} | Measure-Object).Count -lt $Services.Count
+	$Global:DefenderServices = ($Services | Where-Object -FilterScript {$_.Status -ne "running"} | Measure-Object).Count -lt $Services.Count
 
 	# Checking wdFilter service
 	try
@@ -737,7 +737,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-			$Global:Failed = 1
+			$Global:Failed = $true
 
 			exit
 		}
@@ -752,7 +752,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-		$Global:Failed = 1
+		$Global:Failed = $true
 
 		exit
 	}
@@ -760,65 +760,65 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	# Checking Get-MpPreference cmdlet
 	try
 	{
-		$Script:DefenderMpPreferenceBroken = $false
+		$Global:DefenderMpPreferenceBroken = $false
 		(Get-MpPreference -ErrorAction Stop).EnableControlledFolderAccess
 	}
 	catch [Microsoft.Management.Infrastructure.CimException]
 	{
-		$Script:DefenderMpPreferenceBroken = $true
+		$Global:DefenderMpPreferenceBroken = $true
 	}
 
 	# Check Microsoft Defender configuration
-	if ($Script:DefenderDefaultAV)
+	if ($Global:DefenderDefaultAV)
 
 	{
 		# Defender is a currently used AV. Continue...
-		$Script:DefenderProductState = $true
+		$Global:DefenderProductState = $true
 
 		# Checking whether Microsoft Defender was turned off via GPO
 		# We have to use GetValue() due to "Set-StrictMode -Version Latest"
 		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender", "DisableAntiSpyware", $null) -eq 1)
 		{
-			$Script:AntiSpywareEnabled = $false
+			$Global:AntiSpywareEnabled = $false
 		}
 		else
 		{
-			$Script:AntiSpywareEnabled = $true
+			$Global:AntiSpywareEnabled = $true
 		}
 
 		# Checking whether Microsoft Defender was turned off via GPO
 		# We have to use GetValue() due to "Set-StrictMode -Version Latest"
 		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection", "DisableRealtimeMonitoring", $null) -eq 1)
 		{
-			$Script:RealtimeMonitoringEnabled = $false
+			$Global:RealtimeMonitoringEnabled = $false
 		}
 		else
 		{
-			$Script:RealtimeMonitoringEnabled = $true
+			$Global:RealtimeMonitoringEnabled = $true
 		}
 
 		# Checking whether Microsoft Defender was turned off via GPO
 		# We have to use GetValue() due to "Set-StrictMode -Version Latest"
 		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection", "DisableBehaviorMonitoring", $null) -eq 1)
 		{
-			$Script:BehaviorMonitoringEnabled = $false
+			$Global:BehaviorMonitoringEnabled = $false
 		}
 		else
 		{
-			$Script:BehaviorMonitoringEnabled = $true
+			$Global:BehaviorMonitoringEnabled = $true
 		}
 	}
 	else
 	{
-		$Script:DefenderProductState = $false
+		$Global:DefenderProductState = $false
 	}
 
-	if ($Script:DefenderServices -and $Script:DefenderproductState -and $Script:AntiSpywareEnabled -and $Script:RealtimeMonitoringEnabled -and $Script:BehaviorMonitoringEnabled)
+	if ($Global:DefenderServices -and $Global:DefenderproductState -and $Global:AntiSpywareEnabled -and $Global:RealtimeMonitoringEnabled -and $Global:BehaviorMonitoringEnabled)
 	{
 		# Defender is enabled
-		$Script:DefenderEnabled = $true
+		$Global:DefenderEnabled = $true
 
-		if (-not $Script:DefenderMpPreferenceBroken)
+		if (-not $Global:DefenderMpPreferenceBroken)
 		{
 			switch ((Get-MpPreference).EnableControlledFolderAccess)
 			{
@@ -827,7 +827,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 					Write-Warning -Message $Localization.ControlledFolderAccessDisabled
 
 					# Turn off Controlled folder access to let the script proceed
-					$Script:ControlledFolderAccess = $true
+					$Global:ControlledFolderAccess = $true
 					Set-MpPreference -EnableControlledFolderAccess Disabled
 
 					# Open "Ransomware protection" page
@@ -835,7 +835,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 				}
 				"0"
 				{
-					$Script:ControlledFolderAccess = $false
+					$Global:ControlledFolderAccess = $false
 				}
 			}
 		}
@@ -866,7 +866,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-		$Global:Failed = 1
+		$Global:Failed = $true
 
 		exit
 	}
@@ -883,7 +883,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-		$Global:Failed = 1
+		$Global:Failed = $true
 
 		exit
 	}
@@ -914,7 +914,7 @@ public extern static string BrandingFormatString(string sFormat);
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-			$Global:Failed = 1
+			$Global:Failed = $true
 
 			exit
 		}
@@ -943,7 +943,7 @@ public extern static string BrandingFormatString(string sFormat);
 		# Check for updates
 		& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
 
-		$Global:Failed = 1
+		$Global:Failed = $true
 
 		exit
 	}
@@ -973,7 +973,7 @@ public extern static string BrandingFormatString(string sFormat);
 			# Check for UWP apps updates
 			Get-CimInstance -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 -Namespace root/CIMV2/mdm/dmmap | Invoke-CimMethod -MethodName UpdateScanMethod
 
-			$Global:Failed = 1
+			$Global:Failed = $true
 
 			exit
 		}
@@ -1007,7 +1007,7 @@ public extern static string BrandingFormatString(string sFormat);
 			# Open the "Windows Update" page
 			Start-Process -FilePath "ms-settings:windowsupdate"
 
-			$Global:Failed = 1
+			$Global:Failed = $true
 
 			exit
 		}
@@ -1057,7 +1057,7 @@ public extern static string BrandingFormatString(string sFormat);
 				# Open the "Windows Update" page
 				Start-Process -FilePath "ms-settings:windowsupdate"
 
-				$Global:Failed = 1
+				$Global:Failed = $true
 
 				exit
 			}
@@ -1086,7 +1086,7 @@ public extern static string BrandingFormatString(string sFormat);
 	# Save all opened folders in order to restore them after File Explorer restart
 	try
 	{
-		$Script:OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
+		$Global:OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
 	}
 	catch [System.Management.Automation.PropertyNotFoundException]
 	{}
@@ -1131,7 +1131,7 @@ public extern static string BrandingFormatString(string sFormat);
 					Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 					Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-					$Global:Failed = 1
+					$Global:Failed = $true
 
 					exit
 				}

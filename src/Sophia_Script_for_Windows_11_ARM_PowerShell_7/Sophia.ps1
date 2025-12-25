@@ -3,10 +3,10 @@
 	Default preset file for "Sophia Script for Windows 11 (Arm | PowerShell 7)"
 
 	.VERSION
-	7.0.0
+	7.0.1
 
 	.DATE
-	05.12.2025
+	25.12.2025
 
 	.COPYRIGHT
 	(c) 2014—2026 Team Sophia
@@ -63,7 +63,7 @@
 #Requires -Version 7.5
 
 #region Initial Actions
-$Global:Failed = 0
+$Global:Failed = $false
 
 # Unload and import module
 Remove-Module -Name SophiaScript -Force -ErrorAction Ignore
@@ -77,7 +77,7 @@ Get-ChildItem -Path $PSScriptRoot\Module\private | Foreach-Object -Process {. $_
 InitialActions -Warning
 
 # Global variable if checks failed
-if ($Global:Failed -eq 1)
+if ($Global:Failed)
 {
 	exit
 }

@@ -3,10 +3,10 @@
 	Initial checks before proceeding to module execution
 
 	.VERSION
-	7.0.0
+	7.0.1
 
 	.DATE
-	05.12.2025
+	25.12.2025
 
 	.COPYRIGHT
 	(c) 2014—2026 Team Sophia
@@ -80,9 +80,9 @@ public static void PostMessage()
 
 	#region Other actions
 	# Turn on Controlled folder access if it was turned off
-	if ($Script:DefenderEnabled -and (-not $Script:DefenderMpPreferenceBroken))
+	if ($Global:DefenderEnabled -and (-not $Global:DefenderMpPreferenceBroken))
 	{
-		if ($Script:ControlledFolderAccess)
+		if ($Global:ControlledFolderAccess)
 		{
 			Set-MpPreference -EnableControlledFolderAccess Enabled
 		}
@@ -95,11 +95,11 @@ public static void PostMessage()
 	# Restoring closed folders
 	if (Get-Variable -Name OpenedFolder -ErrorAction Ignore)
 	{
-		foreach ($Script:OpenedFolder in $Script:OpenedFolders)
+		foreach ($Global:OpenedFolder in $Global:OpenedFolders)
 		{
-			if (Test-Path -Path $Script:OpenedFolder)
+			if (Test-Path -Path $Global:OpenedFolder)
 			{
-				Start-Process -FilePath "$env:SystemRoot\explorer.exe" -ArgumentList $Script:OpenedFolder
+				Start-Process -FilePath "$env:SystemRoot\explorer.exe" -ArgumentList $Global:OpenedFolder
 			}
 		}
 	}
@@ -119,7 +119,7 @@ public static void PostMessage()
 	}
 
 	# Checking whether any of scheduled tasks were created. Unless open Task Scheduler
-	if ($Script:ScheduledTasks)
+	if ($Global:ScheduledTasks)
 	{
 		# Find and close taskschd.msc by its argument
 		$taskschd_Process_ID = (Get-CimInstance -ClassName CIM_Process | Where-Object -FilterScript {$_.Name -eq "mmc.exe"} | Where-Object -FilterScript {

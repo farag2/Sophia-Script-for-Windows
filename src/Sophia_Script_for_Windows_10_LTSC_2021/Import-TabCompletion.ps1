@@ -3,10 +3,10 @@
 	Enable tab completion to invoke for functions if you do not know function name
 
 	.VERSION
-	6.0.0
+	6.0.1
 
 	.DATE
-	05.12.2025
+	25.12.2025
 
 	.COPYRIGHT
 	(c) 2014—2026 Team Sophia
@@ -50,7 +50,7 @@ function Sophia
 }
 
 #region Initial Actions
-$Global:Failed = 0
+$Global:Failed = $false
 
 # Checking if function wasn't dot-sourced, but called explicitly
 # ".\Import-TabCompletion.ps1" instead of ". .\Import-TabCompletion.ps1"
@@ -78,7 +78,7 @@ Get-ChildItem -Path $PSScriptRoot\Module\private | Foreach-Object -Process {. $_
 InitialActions
 
 # Global variable if checks failed
-if ($Global:Failed -eq 1)
+if ($Global:Failed)
 {
 	exit
 }

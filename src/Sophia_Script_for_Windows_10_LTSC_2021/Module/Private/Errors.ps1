@@ -3,10 +3,10 @@
 	Initial checks before proceeding to module execution
 
 	.VERSION
-	7.0.0
+	7.0.1
 
 	.DATE
-	05.12.2025
+	25.12.2025
 
 	.COPYRIGHT
 	(c) 2014—2026 Team Sophia

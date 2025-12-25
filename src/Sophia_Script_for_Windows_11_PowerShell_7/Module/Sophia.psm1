@@ -3,10 +3,10 @@
 	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
 
 	.VERSION
-	7.0.0
+	7.0.1
 
 	.DATE
-	05.12.2025
+	25.12.2025
 
 	.COPYRIGHT
 	(c) 2014—2026 Team Sophia
@@ -55,10 +55,10 @@ function CreateRestorePoint
 	$SystemDriveUniqueID = (Get-Volume | Where-Object -FilterScript {$_.DriveLetter -eq "$($env:SystemDrive[0])"}).UniqueID
 	$SystemProtection = ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SPP\Clients" -ErrorAction Ignore)."{09F7EDC5-294E-4180-AF6A-FB0E6A0E9513}") | Where-Object -FilterScript {$_ -match [regex]::Escape($SystemDriveUniqueID)}
 
-	$Script:ComputerRestorePoint = $false
+	$Global:ComputerRestorePoint = $false
 
 	$SystemProtection ?? (& {
-			$Script:ComputerRestorePoint = $true
+			$Global:ComputerRestorePoint = $true
 			Enable-ComputerRestore -Drive $env:SystemDrive
 		}
 	)
@@ -72,7 +72,7 @@ function CreateRestorePoint
 	New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 1440 -Force
 
 	# Turn off System Protection for the system drive if it was turned off before without deleting the existing restore points
-	if ($Script:ComputerRestorePoint)
+	if ($Global:ComputerRestorePoint)
 	{
 		Disable-ComputerRestore -Drive $env:SystemDrive
 	}
@@ -7370,7 +7370,7 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 
 	Clear-Variable -Name RegisteredProgIDs -Force -ErrorAction Ignore
 
-	[array]$Script:RegisteredProgIDs = @()
+	[array]$Global:RegisteredProgIDs = @()
 
 	function Write-ExtensionKeys
 	{
@@ -7396,7 +7396,7 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 		if ($OrigProgID)
 		{
 			# Save ProgIds history with extensions or protocols for the system ProgId
-			$Script:RegisteredProgIDs += $OrigProgID
+			$Global:RegisteredProgIDs += $OrigProgID
 		}
 
 		# We have to use GetValue() due to "Set-StrictMode -Version Latest"
@@ -7567,7 +7567,7 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 							New-ItemProperty -Path "HKCU:\Software\Classes\$AppxProgID" -Name NoOpenWith -PropertyType String -Value "" -Force
 						}
 
-						$Script:RegisteredProgIDs += $AppxProgID
+						$Global:RegisteredProgIDs += $AppxProgID
 					}
 				}
 			}
@@ -7596,7 +7596,7 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 		# We have to use GetValue() due to "Set-StrictMode -Version Latest"
 		if (([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\KindMap", $Extension, $null)) -eq "picture")
 		{
-			$Script:RegisteredProgIDs += "PBrush"
+			$Global:RegisteredProgIDs += "PBrush"
 		}
 
 		if ($Extension.Contains("."))
@@ -7618,7 +7618,7 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 					$isProgID = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\$Subkey\$Associations", $Extension, $null)
 					if ($isProgID)
 					{
-						$Script:RegisteredProgIDs += $isProgID
+						$Global:RegisteredProgIDs += $isProgID
 					}
 				}
 			}
@@ -7643,7 +7643,7 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 			}
 		}
 
-		$UserRegisteredProgIDs = ($Script:RegisteredProgIDs + $UserRegisteredProgIDs | Sort-Object -Unique)
+		$UserRegisteredProgIDs = ($Global:RegisteredProgIDs + $UserRegisteredProgIDs | Sort-Object -Unique)
 		foreach ($UserProgID in $UserRegisteredProgIDs)
 		{
 			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Name "$($UserProgID)_$($Extension)" -PropertyType DWord -Value 0 -Force
@@ -9031,7 +9031,7 @@ function Install-WSL
 	#region Functions
 	function RadioButtonChecked
 	{
-		$Script:CommandTag = $_.OriginalSource.Tag
+		$Global:CommandTag = $_.OriginalSource.Tag
 		if (-not $ButtonInstall.IsEnabled)
 		{
 			$ButtonInstall.IsEnabled = $true
@@ -9040,9 +9040,9 @@ function Install-WSL
 
 	function ButtonInstallClicked
 	{
-		Write-Warning -Message $Script:CommandTag
+		Write-Warning -Message $Global:CommandTag
 
-		Start-Process -FilePath wsl.exe -ArgumentList "--install --distribution $Script:CommandTag" -Wait
+		Start-Process -FilePath wsl.exe -ArgumentList "--install --distribution $Global:CommandTag" -Wait
 
 		$Form.Close()
 
@@ -9950,7 +9950,7 @@ function CleanupTask
 					Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 					Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-					$Global:Failed = 1
+					$Global:Failed = $true
 
 					exit
 				}
@@ -9964,7 +9964,7 @@ function CleanupTask
 				$ScheduleService.Connect()
 				$ScheduleService.GetFolder("\Sophia").GetTasks(0) | Where-Object -FilterScript {$_.Name -eq "Windows Cleanup"} | Foreach-Object {
 					# Get user's SID the task was created as
-					$Script:SID = ([xml]$_.xml).Task.Principals.Principal.UserID
+					$Global:SID = ([xml]$_.xml).Task.Principals.Principal.UserID
 				}
 
 				# Convert SID to username
@@ -10293,7 +10293,7 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 			$Task | Set-ScheduledTask
 
 			# Start Task Scheduler in the end if any scheduled task was created
-			$Script:ScheduledTasks = $true
+			$Global:ScheduledTasks = $true
 		}
 		"Delete"
 		{
@@ -10422,7 +10422,7 @@ function SoftwareDistributionTask
 					Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 					Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-					$Global:Failed = 1
+					$Global:Failed = $true
 
 					exit
 				}
@@ -10436,7 +10436,7 @@ function SoftwareDistributionTask
 				$ScheduleService.Connect()
 				$ScheduleService.GetFolder("\Sophia").GetTasks(0) | Where-Object -FilterScript {$_.Name -eq "SoftwareDistribution"} | Foreach-Object {
 					# Get user's SID the task was created as
-					$Script:SID = ([xml]$_.xml).Task.Principals.Principal.UserID
+					$Global:SID = ([xml]$_.xml).Task.Principals.Principal.UserID
 				}
 
 				# Convert SID to username
@@ -10648,7 +10648,7 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 			$Task.Author = "Team Sophia"
 			$Task | Set-ScheduledTask
 
-			$Script:ScheduledTasks = $true
+			$Global:ScheduledTasks = $true
 		}
 		"Delete"
 		{
@@ -10766,7 +10766,7 @@ function TempTask
 					Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 					Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-					$Global:Failed = 1
+					$Global:Failed = $true
 
 					exit
 				}
@@ -10780,7 +10780,7 @@ function TempTask
 				$ScheduleService.Connect()
 				$ScheduleService.GetFolder("\Sophia").GetTasks(0) | Where-Object -FilterScript {$_.Name -eq "Temp"} | Foreach-Object {
 					# Get user's SID the task was created as
-					$Script:SID = ([xml]$_.xml).Task.Principals.Principal.UserID
+					$Global:SID = ([xml]$_.xml).Task.Principals.Principal.UserID
 				}
 
 				# Convert SID to username
@@ -11006,7 +11006,7 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 			$Task.Author = "Team Sophia"
 			$Task | Set-ScheduledTask
 
-			$Script:ScheduledTasks = $true
+			$Global:ScheduledTasks = $true
 		}
 		"Delete"
 		{
@@ -11086,7 +11086,7 @@ function NetworkProtection
 		$Disable
 	)
 
-	if ((-not $Script:DefenderEnabled) -or $Script:DefenderMpPreferenceBroken)
+	if ((-not $Global:DefenderEnabled) -or $Global:DefenderMpPreferenceBroken)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
@@ -11146,7 +11146,7 @@ function PUAppsDetection
 		$Disable
 	)
 
-	if ((-not $Script:DefenderEnabled) -or $Script:DefenderMpPreferenceBroken)
+	if ((-not $Global:DefenderEnabled) -or $Global:DefenderMpPreferenceBroken)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
@@ -11206,7 +11206,7 @@ function DefenderSandbox
 		$Disable
 	)
 
-	if ((-not $Script:DefenderEnabled) -or $Script:DefenderMpPreferenceBroken)
+	if ((-not $Global:DefenderEnabled) -or $Global:DefenderMpPreferenceBroken)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
@@ -11231,7 +11231,7 @@ function DefenderSandbox
 # Dismiss Microsoft Defender offer in the Windows Security about signing in Microsoft account
 function DismissMSAccount
 {
-	if ((-not $Script:DefenderEnabled) -or $Script:DefenderMpPreferenceBroken)
+	if ((-not $Global:DefenderEnabled) -or $Global:DefenderMpPreferenceBroken)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
@@ -11246,7 +11246,7 @@ function DismissMSAccount
 # Dismiss Microsoft Defender offer in the Windows Security about turning on the SmartScreen filter for Microsoft Edge
 function DismissSmartScreenFilter
 {
-	if ((-not $Script:DefenderEnabled) -or $Script:DefenderMpPreferenceBroken)
+	if ((-not $Global:DefenderEnabled) -or $Global:DefenderMpPreferenceBroken)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
@@ -11504,7 +11504,7 @@ function AppsSmartScreen
 		$Disable
 	)
 
-	if ((-not $Script:DefenderEnabled) -or $Script:DefenderMpPreferenceBroken)
+	if ((-not $Global:DefenderEnabled) -or $Global:DefenderMpPreferenceBroken)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
@@ -11894,7 +11894,7 @@ function DNSoverHTTPS
 		"Disable"
 		{
 			# Determining whether Hyper-V is enabled
-			if (Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
+			if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
 			{
 				# Configure DNS servers automatically
 				Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Where-Object -FilterScript {$_.Status -eq "Up"} | Set-DnsClientServerAddress -ResetServerAddresses
