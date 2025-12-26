@@ -43,7 +43,7 @@
 <br>
 
 <kbd>
-	<a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/github/v/release/farag2/Sophia-Script-for-Windows?labelColor=151B23&color=151B23&style=for-the-badge&logo=GitHub"></a>
+	<a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Завантажити-green?labelColor=151B23&color=151B23&style=for-the-badge"></a>
 </kbd>
 
 <br>
