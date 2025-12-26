@@ -96,5 +96,5 @@ jobs:
           # Use "/" in path to files
           files: |
             Sophia_Script/Sophia*.zip
-            Sophia.Script.for.Windows*WinGet.exe
+            Sophia_Script/Sophia*.exe
           body_path: ${{ steps.read_release.outputs.ReleaseBody }}
