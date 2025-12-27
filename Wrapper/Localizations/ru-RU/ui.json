@@ -16,12 +16,12 @@
             "menuTheme": "Тема",
             "menuThemeDark": "Тёмная",
             "menuThemeLight": "Светлая",
-            "menuLanguage": "Язык",
-            "menuAbout": "О программе",
+            "menuLanguage": "Язык",            
             "menuAccessibility": "Доступность",
             "menuScaleUp": "Масштабирование",
             "menuScale": "Масштаб",
             "menuScaleDown": "Уменьшить масштаб",
+            "menuAbout": "О программе",
             "menuDonate": "Пожертвовать"
         }
     },

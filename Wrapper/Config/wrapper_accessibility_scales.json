@@ -1,0 +1,28 @@
+[
+    {
+        "70": {
+            "HeightAdjustInPixels": "30"            
+        },
+		"80": {
+            "HeightAdjustInPixels": "30"            
+        },
+		"90": {
+            "HeightAdjustInPixels": "20"            
+        },
+		"100": {
+            "HeightAdjustInPixels": "20"            
+        },
+		"125": {
+            "HeightAdjustInPixels": "12"            
+        },
+		"150": {
+            "HeightAdjustInPixels": "10"            
+        },
+		"175": {
+            "HeightAdjustInPixels": "10"            
+        },
+		"200": {
+            "HeightAdjustInPixels": "1"            
+        }
+    }
+]
