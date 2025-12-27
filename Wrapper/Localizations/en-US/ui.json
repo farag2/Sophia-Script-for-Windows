@@ -17,11 +17,11 @@
             "menuThemeDark": "Dark",
             "menuThemeLight": "Light",
             "menuLanguage": "Language",
-            "menuAbout": "About",
             "menuAccessibility": "Accessibility",
             "menuScaleUp": "Scale Up",
             "menuScale": "Scale",
             "menuScaleDown": "Scale Down",
+            "menuAbout": "About",
             "menuDonate": "Donate"
         }
     },
