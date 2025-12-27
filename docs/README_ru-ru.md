@@ -108,11 +108,11 @@ This page is also available in other languages
 
 * [Ключевые возможности](#ключевые-возможности)
 * [Как скачать](#как-скачать)
+  * [Со страницы релиза](#со-страницы-релиза)
   * [Скачать через PowerShell](#скачать-через-powershell)
   * [Скачать через Chocolatey](#скачать-через-chocolatey)
   * [Скачать через WinGet](#скачать-через-winget)
   * [Скачать через scoop](#скачать-через-scoop)
-  * [Со страницы релиза](#со-страницы-релиза)
 * [Как использовать](#как-использовать)
   * [Как выполнить конкретную функцию(и)](#как-выполните-конкретную-функциюи)
   * [Wrapper](#wrapper)
@@ -127,15 +127,18 @@ This page is also available in other languages
 
 ## Как скачать
 
+### Со страницы релиза
+
+Скачайте [архив](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest) в зависимости от версий ваших Windows и PowerShell.
+
 ### Скачать через PowerShell
 
-Команда скачает и распакуют последнюю версию архива Sophia Script (`без последующего запуска`) согласно тем версиям Windows и PowerShell, на которых она запускалась. Допустим, если вы запустите ее на Windows 11 в PowerShell 5.1, то скачается Sophia Script для `Windows 11 PowerShell 5.1`.
+Скачать и распаковать в папку Загрузки последнюю версию `Sophia Script for Windows` в зависимости от версий ваших Windows и PowerShell.
 
 ```powershell
 iwr script.sophia.team -useb | iex
 ```
-
-Команда скачает и распакуют последнюю версию архива Sophia Script (`без последующего запуска`) из последнего доступного коммита согласно тем версиям Windows и PowerShell, на которых она запускалась.
+Скачать и распаковать в папку Загрузки последнюю версию `Sophia Script for Windows` из актуального [коммита](https://github.com/farag2/Sophia-Script-for-Windows/commits/master/) в зависимости от версий ваших Windows и PowerShell.
 
 ```powershell
 iwr sl.sophia.team -useb | iex
@@ -143,53 +146,59 @@ iwr sl.sophia.team -useb | iex
 
 ### Скачать через Chocolatey
 
-Команда скачает и распакуют последнюю версию архива Sophia Script (`без последующего запуска`) согласно версии Windows, на которой она запускалась. Допустим, если вы запустите ее на Windows 11, то скачается Sophia Script для `Windows 11`. По умолчанию для `PowerShell 5.1`, если не указано обратное.
+<https://chocolatey.org>
+
+Скачать и распаковать в папку Загрузки последнюю версию `Sophia Script for Windows` в зависимости от вашей версии Windows.
 
 ```powershell
 choco install sophia --force -y
 ```
 
-Скачать `Sophia Script for Windows` для `PowerShell 7`.
+Скачать и распаковать в папку Загрузки последнюю версию `Sophia Script for Windows` для PowerShell 7 в зависимости от вашей версии Windows.
 
 ```powershell
 choco install sophia --params "/PS7" --force -y
 ```
 
 ```powershell
-# Удалить Sophia Script
-# Удалите скачанную папку вручную
+# Удалить, а затем удалить вручную скачанную папку
 choco uninstall sophia --force -y
 ```
 
 ### Скачать через WinGet
 
-Команда скачивает только архив для `Windows 11 (PowerShell 5.1)` в вашу папку `Загрузки`.
+<https://github.com/microsoft/winget-cli>
+
+Скачать и распаковать в папку Загрузки последнюю версию `Sophia Script for Windows` для Windows 11 и PowerShell 5.1 (SFX-архив `sophiascript.exe`).
 
 ```powershell
 $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 winget install --id TeamSophia.SophiaScript --location $DownloadsFolder --accept-source-agreements --force
+
+& "$DownloadsFolder\sophiascript.exe"
 ```
 
 ```powershell
-# Удалить Sophia Script
+# Удалить Sophia Script for Windows
 winget uninstall --id TeamSophia.SophiaScript --force
 ```
 
 ### Скачать через scoop
 
+<https://scoop.sh>
+
+Скачать и распаковать в папку Загрузки последнюю версию `Sophia Script for Windows` для Windows 11 и PowerShell 5.1.
+
 ```powershell
+# scoop bucket rm extras
 scoop bucket add extras
 scoop install sophia-script --no-cache
 ```
 
 ```powershell
-# Удалить Sophia Script
+# Удалить Sophia Script for Windows
 scoop uninstall sophia-script -p
 ```
-
-### Со страницы релиза
-
-Скачайте [архив](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest) согласно версиям ваших Windows и PowerShell.
 
 ## Как использовать
 

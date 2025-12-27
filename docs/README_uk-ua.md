@@ -108,11 +108,11 @@ This page is also available in other languages
 
 * [Ключові особливості](#ключові-особливості)
 * [Як завантажити](#як-завантажити)
+  * [Зі сторінки релізу](#зі-сторінки-релізу)
   * [Завантажити через PowerShell](#завантажити-через-powershell)
   * [Завантажити через Chocolatey](#завантажити-через-chocolatey)
   * [Завантажити через WinGet](#завантажити-через-winget)
   * [Завантажити через scoop](#завантажити-через-scoop)
-  * [Зі сторінки релізу](#зі-сторінки-релізу)
 * [Як використовувати](#як-використовувати)
   * [Як запустити певну функцію(ї)](#як-запустити-певну-функціюї)
   * [Wrapper](#wrapper)
@@ -127,15 +127,18 @@ This page is also available in other languages
 
 ## Як завантажити
 
+### Зі сторінки релізу
+
+Завантажте [архів](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest) відповідно до версій ваших Windows і PowerShell.
+
 ### Завантажити через PowerShell
 
-Команда завантажить і розпакує останній архів Sophia Script (`без запуску`) відповідно до того, під якою версією Windows і PowerShell він запускається. Якщо запустити її, наприклад, в Windows 11 через PowerShell 5.1, вона завантажить Sophia Script для `Windows 11 PowerShell 5.1`.
+Завантажте та розпакуйте в папку Завантаження останню версію `Sophia Script for Windows` залежно від версій ваших Windows та PowerShell.
 
 ```powershell
 iwr script.sophia.team -useb | iex
 ```
-
-Команда скачає і розпакує останню версію архіву Sophia Script (`без запуску`) з останнього доступного комміту згідно з тими версіями Windows і PowerShell, на яких вона запускалася.
+Завантажте та розпакуйте в папку Завантаження останню версію `Sophia Script for Windows` з актуального [коміту](https://github.com/farag2/Sophia-Script-for-Windows/commits/master/) залежно від версій ваших Windows і PowerShell.
 
 ```powershell
 iwr sl.sophia.team -useb | iex
@@ -143,53 +146,59 @@ iwr sl.sophia.team -useb | iex
 
 ### Завантажити через Chocolatey
 
-TКоманда завантажить і розпакує останню версію архіву Sophia Script (`без подальшого запуску`) згідно з версією Windows, на якій вона запускалася. Припустимо, якщо ви запустите її на Windows 11, то завантажиться Sophia Script для `Windows 11`. За замовчуванням для `PowerShell 5.1`, якщо не вказано зворотне.
+<https://chocolatey.org>
+
+Завантажте та розпакуйте в папку Завантаження останню версію `Sophia Script for Windows` залежно від вашої версії Windows.
 
 ```powershell
 choco install sophia --force -y
 ```
 
-Завантажити `Sophia Script for Windows` для `PowerShell 7`.
+Завантажте та розпакуйте в папку Завантаження останню версію `Sophia Script for Windows` для PowerShell 7 залежно від вашої версії Windows.
 
 ```powershell
 choco install sophia --params "/PS7" --force -y
 ```
 
 ```powershell
-# Видалити Sophia Script
-# Видаліть завантажену папку вручну
+# Видалити, а потім видалити вручну завантажену папку
 choco uninstall sophia --force -y
 ```
 
 ### Завантажити через WinGet
 
-Команда завантажує тільки архів для `Windows 11 (PowerShell 5.1)` у вашу папку `Завантаження`.
+<https://github.com/microsoft/winget-cli>
+
+Завантажте та розпакуйте в папку Завантаження останню версію `Sophia Script for Windows` для Windows 11 і PowerShell 5.1 (SFX-архів `sophiascript.exe`).
 
 ```powershell
 $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 winget install --id TeamSophia.SophiaScript --location $DownloadsFolder --accept-source-agreements --force
+
+& "$DownloadsFolder\sophiascript.exe"
 ```
 
 ```powershell
-# Видалити Sophia Script
+# Видалити Sophia Script for Windows
 winget uninstall --id TeamSophia.SophiaScript --force
 ```
 
 ### Завантажити через scoop
 
+<https://scoop.sh>
+
+Завантажте та розпакуйте в папку Завантаження останню версію `Sophia Script for Windows` для Windows 11 та PowerShell 5.1.
+
 ```powershell
+# scoop bucket rm extras
 scoop bucket add extras
 scoop install sophia-script --no-cache
 ```
 
 ```powershell
-# Видалити Sophia Script
+# Видалити Sophia Script for Windows
 scoop uninstall sophia-script -p
 ```
-
-### Зі сторінки релізу
-
-Скачайте [архів](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest) згідно з версіями вашої Windows і PowerShell.
 
 ## Як використовувати
 
