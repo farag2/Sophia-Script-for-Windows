@@ -1344,19 +1344,19 @@
         "ToolTip": "Installieren Sie die neueste Microsoft Visual C++ Redistributable Packages x86, x64",
         "Arg": {
             "Zero": {
-                "Tag": "2015_2022_x86",
-                "ToolTip": "Installieren Sie die neueste unterstützte Microsoft Visual C++ Redistributable 2015–2022 x86. Internetverbindung erforderlich."
+                "Tag": "2015_2026_x86",
+                "ToolTip": "Installieren Sie die neueste unterstützte Microsoft Visual C++ Redistributable 2015–2026 x86. Internetverbindung erforderlich."
             },
             "One": {
-                "Tag": "2015_2022_x64",
-                "ToolTip": "Installieren Sie die neueste unterstützte Microsoft Visual C++ Redistributable 2015–2022 x64. Internetverbindung erforderlich."
+                "Tag": "2015_2026_x64",
+                "ToolTip": "Installieren Sie die neueste unterstützte Microsoft Visual C++ Redistributable 2015–2026 x64. Internetverbindung erforderlich."
             }
         }
     },
     {
         "Region": "System",
         "Function": "Install-DotNetRuntimes -Runtimes",
-        "ToolTip": "Installieren Sie die neueste .NET Runtime 8, 9.",
+        "ToolTip": "Installieren Sie die neueste .NET Runtime 8, 9, 10 x64.",
         "Arg": {
             "Zero": {
                 "Tag": "NET8",

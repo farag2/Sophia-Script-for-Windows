@@ -101,9 +101,9 @@ This page is also available in other languages
 * Create tasks in the Task Scheduler to clear
   * `%SystemRoot%\SoftwareDistribution\Download`
   * `%TEMP%`
-* Install the latest provided Microsoft Visual C++ 2015–2022 x86/x64;
-* Install the latest provided .NET Desktop Runtime 8, 9;
-* Configure the Windows security;
+* Install the latest provided Microsoft Visual C++ 2015–2026 x86/x64 (ARM64 supported);
+* Install the latest provided .NET Desktop Runtime 8, 9, 10 x64;
+* Configure Windows security;
 * Display applied registry policies in the Local Group Policy Editor snap-in (gpedit.msc);
 * Many more File Explorer and context menu "deep" tweaks.
 

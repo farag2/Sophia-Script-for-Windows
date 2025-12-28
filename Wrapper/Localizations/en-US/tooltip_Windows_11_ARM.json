@@ -1318,7 +1318,7 @@
     {
         "Region": "System",
         "Function": "Install-VCRedist",
-        "ToolTip": "Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 (ARM64)",
+        "ToolTip": "Install the latest Microsoft Visual C++ Redistributable Packages 2015–2026 (ARM64)",
         "Arg": {
             "Zero": {
                 "Tag": "",
@@ -1329,7 +1329,7 @@
     {
         "Region": "System",
         "Function": "Install-DotNetRuntimes -Runtimes",
-        "ToolTip": "Install the latest .NET Runtime 8, 9. Internet connection required",
+        "ToolTip": "Install the latest .NET Runtime 8, 9, 10 x64. Internet connection required",
         "Arg": {
             "Zero": {
                 "Tag": "NET8",
@@ -1338,6 +1338,10 @@
             "One": {
                 "Tag": "NET9",
                 "ToolTip": ".NET Runtime 9. Internet connection required."
+            },
+            "Two": {
+                "Tag": "NET10",
+                "ToolTip": ".NET Runtime 10. Internet connection required."
             }
         }
     },

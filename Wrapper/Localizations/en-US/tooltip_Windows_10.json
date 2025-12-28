@@ -1323,19 +1323,19 @@
         "ToolTip": "Install the latest Microsoft Visual C++ Redistributable Packages x86, x64",
         "Arg": {
             "Zero": {
-                "Tag": "2015_2022_x86",
-                "ToolTip": "Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 x86. Internet connection required."
+                "Tag": "2015_2026_x86",
+                "ToolTip": "Install the latest Microsoft Visual C++ Redistributable Packages 2015–2026 x86. Internet connection required."
             },
             "One": {
-                "Tag": "2015_2022_x64",
-                "ToolTip": "Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 x64. Internet connection required."
+                "Tag": "2015_2026_x64",
+                "ToolTip": "Install the latest Microsoft Visual C++ Redistributable Packages 2015–2026 x64. Internet connection required."
             }
         }
     },
     {
         "Region": "System",
         "Function": "Install-DotNetRuntimes -Runtimes",
-        "ToolTip": "Install the latest .NET Runtime 8, 9. Internet connection required",
+        "ToolTip": "Install the latest .NET Runtime 8, 9, 10 x64. Internet connection required",
         "Arg": {
             "Zero": {
                 "Tag": "NET8",
@@ -1344,6 +1344,10 @@
             "One": {
                 "Tag": "NET9",
                 "ToolTip": ".NET Runtime 9. Internet connection required."
+            },
+            "Two": {
+                "Tag": "NET10",
+                "ToolTip": ".NET Runtime 10. Internet connection required."
             }
         }
     },

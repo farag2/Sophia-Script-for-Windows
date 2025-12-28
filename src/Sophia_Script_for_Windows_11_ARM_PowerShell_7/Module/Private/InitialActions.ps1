@@ -3,10 +3,10 @@
 	Initial checks before proceeding to module execution
 
 	.VERSION
-	7.0.1
+	7.0.2
 
 	.DATE
-	25.12.2025
+	28.12.2025
 
 	.COPYRIGHT
 	(c) 2014—2026 Team Sophia
@@ -28,7 +28,7 @@ function InitialActions
 
 	Set-StrictMode -Version Latest
 
-	$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v7.0.1 (Arm | PowerShell 7) | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) Team Sophia, 2014$([System.Char]0x2013)2026"
+	$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v7.0.2 (Arm | PowerShell 7) | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) Team Sophia, 2014$([System.Char]0x2013)2026"
 
 	# Unblock all files in the script folder by removing the Zone.Identifier alternate data stream with a value of "3"
 	Get-ChildItem -Path $PSScriptRoot\..\..\ -File -Recurse -Force | Unblock-File

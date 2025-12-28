@@ -98,8 +98,8 @@ This page is also available in other languages
   * Erstellen Sie die geplanten Aufgaben `Windows Cleanup` und `Windows Cleanup Notification`, um Windows von ungenutzten Dateien und Windows-Updates zu bereinigen;
   * Erstellen Sie eine geplante Aufgabe `SoftwareDistribution` zur Bereinigung von `%SystemRoot%\SoftwareDistribution\Download`.
   * Erstellen Sie eine geplante Aufgabe `Temp` zum Aufräumen von `%TEMP%`.
-* Installieren Sie die neueste bereitgestellte Version von Microsoft Visual C++ 2015–2022 x86/x64;
-* Installieren Sie die neueste bereitgestellte Version von .NET Desktop Runtime 8, 9;
+* Installieren Sie die neueste bereitgestellte Version von Microsoft Visual C++ 2015–2026 x86/x64 (ARM64 supported);
+* Installieren Sie die neueste bereitgestellte Version von .NET Desktop Runtime 8, 9, 10 (ARM64 supported);
 * Konfigurieren Sie die Windows-Sicherheit;
 * Zeigen Sie die angewendeten Registrierungsrichtlinien im Snap-Ins Editor für lokale Gruppenrichtlinien (gpedit.msc) an;
 * Viele weitere "tiefe" Optimierungen des Datei-Explorers und des Kontextmenüs.

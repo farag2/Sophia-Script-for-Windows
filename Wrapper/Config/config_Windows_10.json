@@ -1611,10 +1611,10 @@
         "Function": "Install-VCRedist -Redistributables",
         "Arg": {
             "Zero": {
-                "Tag": "2015_2022_x86"
+                "Tag": "2015_2026_x86"
             },
             "One": {
-                "Tag": "2015_2022_x64"
+                "Tag": "2015_2026_x64"
             }
         },
         "Preset": "",

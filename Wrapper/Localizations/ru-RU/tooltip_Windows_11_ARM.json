@@ -1321,7 +1321,7 @@
   {
     "Region": "System",
     "Function": "Install-VCRedist",
-    "ToolTip": "Установить последнюю версию Microsoft Visual C++ Redistributable Packages 2015–2022 (ARM64)",
+    "ToolTip": "Установить последнюю версию Microsoft Visual C++ Redistributable Packages 2015–2026 (ARM64)",
     "Arg": {
       "Zero": {
         "Tag": "",
@@ -1332,7 +1332,7 @@
   {
     "Region": "System",
     "Function": "Install-DotNetRuntimes -Runtimes",
-    "ToolTip": "Установить последнюю версию .NET Runtime 8, 9.",
+    "ToolTip": "Установить последнюю версию .NET Runtime 8, 9, 10 x64.",
     "Arg": {
       "Zero": {
         "Tag": "NET8",

@@ -3,10 +3,10 @@
 	Default preset file for "Sophia Script for Windows 11 LTSC 2024"
 
 	.VERSION
-	7.0.1
+	7.0.2
 
 	.DATE
-	25.12.2025
+	28.12.2025
 
 	.COPYRIGHT
 	(c) 2014—2026 Team Sophia
@@ -849,13 +849,13 @@ NetworkDiscovery -Enable
 #>
 # Import-Associations
 
-# Install the latest Microsoft Visual C++ Redistributable Packages 2015–2022 (x86/x64). Internet connection required
-# Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2022 (x86/x64). Требуется соединение с интернетом
-Install-VCRedist -Redistributables 2015_2022_x86, 2015_2022_x64
+# Install the latest Microsoft Visual C++ Redistributable Packages 2015–2026 (x86/x64). Internet connection required
+# Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2026 (x86/x64). Требуется соединение с интернетом
+Install-VCRedist -Redistributables 2015_2026_x86, 2015_2026_x64
 
-# Install the latest .NET Runtime 8, 9. Internet connection required
-# Установить последнюю версию .NET Runtime 8, 9. Требуется соединение с интернетом
-Install-DotNetRuntimes -Runtimes NET8, NET9
+# Install the latest .NET Runtime 8, 9, 10 x64. Internet connection required
+# Установить последнюю версию .NET Runtime 8, 9, 10 x64. Требуется соединение с интернетом
+Install-DotNetRuntimes -Runtimes NET8, NET9, NET10
 
 # Enable proxying only blocked sites from the unified registry of Roskomnadzor. The function is applicable for Russia only
 # Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора. Функция применима только для России
