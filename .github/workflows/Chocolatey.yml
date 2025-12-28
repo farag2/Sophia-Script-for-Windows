@@ -16,13 +16,11 @@ jobs:
           . "Scripts\Chocolatey.ps1"
 
       - name: Pack and push to Chocolatey
-        env:
-          Latest_Release: ${{ secrets.Latest_Release }}
         run: |
-          Write-Verbose -Message $env.Latest_Release -Verbose
+          Write-Verbose -Message $env:LatestRelease -Verbose
 
           # Replace variables with script latest versions
-          (Get-Content -Path "chocolatey\sophia.nuspec" -Encoding utf8NoBOM -Raw) -replace ("SophiaScriptVersion", "${{ env.Latest_Release }}") | Set-Content -Path "chocolatey\sophia.nuspec" -Encoding utf8NoBOM -Force
+          (Get-Content -Path "chocolatey\sophia.nuspec" -Encoding utf8NoBOM -Raw) -replace ("SophiaScriptVersion", "${{ env.LatestRelease }}") | Set-Content -Path "chocolatey\sophia.nuspec" -Encoding utf8NoBOM -Force
 
           choco pack chocolatey\sophia.nuspec --outputdirectory chocolatey
           choco apikey --key ${{ secrets.CHOCOLATEY_SECRET }} --source https://push.chocolatey.org/

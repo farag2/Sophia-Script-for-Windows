@@ -39,5 +39,5 @@ $Sophia_Script_Wrapper                       = ($assets | Where-Object -FilterSc
 } | Set-Content -Path "chocolatey\tools\chocolateyinstall.ps1" -Encoding utf8 -Force
 
 # Save latest release tag for sophia.nuspec
-$Latest_Release = $Latest_Release.Sophia_Script_Windows_11_PowerShell_5_1
-echo "Latest_Release=$Latest_Release" >> $env:GITHUB_ENV
+$LatestRelease = $Latest_Release.Sophia_Script_Windows_11_PowerShell_5_1
+"LatestRelease=$LatestRelease" >> $env:GITHUB_ENV
