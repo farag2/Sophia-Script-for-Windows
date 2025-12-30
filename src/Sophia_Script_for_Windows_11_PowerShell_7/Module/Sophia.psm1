@@ -9410,7 +9410,7 @@ function UninstallUWPApps
 	<Window
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-		Name="Window"
+		x:Name="Window"
 		MinHeight="400" MinWidth="415"
 		SizeToContent="Width" WindowStartupLocation="CenterScreen"
 		TextOptions.TextFormattingMode="Display" SnapsToDevicePixels="True"
@@ -9422,11 +9422,11 @@ function UninstallUWPApps
 				<Setter Property="VerticalAlignment" Value="Top"/>
 			</Style>
 			<Style TargetType="CheckBox">
-				<Setter Property="Margin" Value="10, 13, 10"/>
+				<Setter Property="Margin" Value="10,13,10,13"/>
 				<Setter Property="IsChecked" Value="True"/>
 			</Style>
 			<Style TargetType="TextBlock">
-				<Setter Property="Margin" Value="0, 10, 10, 10"/>
+				<Setter Property="Margin" Value="0,10,10,10"/>
 			</Style>
 			<Style TargetType="Button">
 				<Setter Property="Margin" Value="20"/>
@@ -9434,15 +9434,13 @@ function UninstallUWPApps
 				<Setter Property="IsEnabled" Value="False"/>
 			</Style>
 			<Style TargetType="Border">
-				<Setter Property="Grid.Row" Value="1"/>
-				<Setter Property="CornerRadius" Value="0"/>
-				<Setter Property="BorderThickness" Value="0, 1, 0, 1"/>
+				<Setter Property="BorderThickness" Value="0,1,0,1"/>
 				<Setter Property="BorderBrush" Value="#000000"/>
 			</Style>
 			<Style TargetType="ScrollViewer">
 				<Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
 				<Setter Property="BorderBrush" Value="#000000"/>
-				<Setter Property="BorderThickness" Value="0, 1, 0, 1"/>
+				<Setter Property="BorderThickness" Value="0,1,0,1"/>
 			</Style>
 		</Window.Resources>
 		<Grid>
@@ -9456,21 +9454,21 @@ function UninstallUWPApps
 					<ColumnDefinition Width="*"/>
 					<ColumnDefinition Width="*"/>
 				</Grid.ColumnDefinitions>
-				<StackPanel Name="PanelSelectAll" Grid.Column="0" HorizontalAlignment="Left">
-					<CheckBox Name="CheckBoxSelectAll" IsChecked="False"/>
-					<TextBlock Name="TextBlockSelectAll" Margin="10,10, 0, 10"/>
+				<StackPanel x:Name="PanelSelectAll" Grid.Column="0" HorizontalAlignment="Left">
+					<CheckBox x:Name="CheckBoxSelectAll" IsChecked="False"/>
+					<TextBlock x:Name="TextBlockSelectAll" Margin="10,10,0,10"/>
 				</StackPanel>
-				<StackPanel Name="PanelRemoveForAll" Grid.Column="1" HorizontalAlignment="Right">
-					<TextBlock Name="TextBlockRemoveForAll" Margin="10,10, 0, 10"/>
-					<CheckBox Name="CheckBoxForAllUsers" IsChecked="False"/>
+				<StackPanel x:Name="PanelRemoveForAll" Grid.Column="1" HorizontalAlignment="Right">
+					<TextBlock x:Name="TextBlockRemoveForAll" Margin="10,10,0,10"/>
+					<CheckBox x:Name="CheckBoxForAllUsers" IsChecked="False"/>
 				</StackPanel>
 			</Grid>
-			<Border>
+			<Border Grid.Row="1">
 				<ScrollViewer>
-					<StackPanel Name="PanelContainer" Orientation="Vertical"/>
+					<StackPanel x:Name="PanelContainer" Orientation="Vertical"/>
 				</ScrollViewer>
 			</Border>
-			<Button Name="ButtonUninstall" Grid.Row="2"/>
+			<Button x:Name="ButtonUninstall" Grid.Row="2"/>
 		</Grid>
 	</Window>
 "@
