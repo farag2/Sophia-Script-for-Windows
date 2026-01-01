@@ -30,7 +30,7 @@ scoop bucket add extras
 scoop install sophia-script --no-cache
 
 # Uninstall Sophia Script
-scoop uninstall sophia-script -p
+scoop uninstall sophia-script --purge
 ```
 
 * Updated localizations

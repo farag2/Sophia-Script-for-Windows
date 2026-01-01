@@ -24,38 +24,33 @@ jobs:
               Accept        = "application/vnd.github+json"
               Authorization = "Bearer $Token"
           }
+
           $Parameters = @{
-              Uri     = "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases?per_page=100&page=1"
-              Headers = $Headers
-              Verbose = $true
+              Uri             = "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases?per_page=100&page=1"
+              Headers         = $Headers
+              UseBasicParsing = $true
+              Verbose         = $true
           }
           $page1 = ((Invoke-RestMethod @Parameters).assets.download_count | Measure-Object -Sum).Sum
 
           # Count downloads for the second page of the repo
-          $Token = "${{ secrets.GITHUB_TOKEN }}"
-          $Headers = @{
-              Accept        = "application/vnd.github+json"
-              Authorization = "Bearer $Token"
-              Verbose = $true
-          }
           $Parameters = @{
-              Uri     = "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases?per_page=100&page=2"
-              Headers = $Headers
-              Verbose = $true
+              Uri             = "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases?per_page=100&page=2"
+              Headers         = $Headers
+              UseBasicParsing = $true
+              Verbose         = $true
           }
           $page2 = ((Invoke-RestMethod @Parameters).assets.download_count | Measure-Object -Sum).Sum
 
           # https://community.chocolatey.org/packages/sophia
           $Parameters = @{
               Uri     = "https://community.chocolatey.org/api/v2/Packages()?`$filter=Id eq 'sophia' and IsLatestVersion"
-              Verbose = $true
+              UseBasicParsing = $true
+              Verbose         = $true
           }
           $choco = (Invoke-RestMethod @Parameters).properties.DownloadCount."#text"
-          
-          $Summary = $page1 + $page2 + $choco
-          Write-Verbose -Message $Summary -Verbose
-          $Summary = "{0:N3} Million" -f ($Summary/1000000)
 
+          $Summary = "{0:N3} Million" -f (($page1 + $page2 + $choco)/1000000)
           Write-Verbose -Message $Summary -Verbose
 
           echo "DOWNLOADS_COUNT=$Summary" >> $env:GITHUB_ENV

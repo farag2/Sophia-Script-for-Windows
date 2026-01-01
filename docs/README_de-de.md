@@ -198,7 +198,7 @@ scoop install sophia-script --no-cache
 
 ```powershell
 # Deinstallieren Sie Sophia Script for Windows
-scoop uninstall sophia-script -p
+scoop uninstall sophia-script --purge
 ```
 
 ## Wie zu verwenden
