@@ -1,4 +1,4 @@
-<#
+﻿<#
 	.SYNOPSIS
 	"Show menu" function with the up/down arrow keys and enter key to make a selection
 

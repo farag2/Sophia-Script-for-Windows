@@ -15,35 +15,40 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@main
 
-        with:
-          ref: refs/heads/master
-          fetch-depth: 0
+      - name: Run PSScriptAnalyzer
+        run: |
+          $Results = @(Get-ChildItem -Path src -File -Recurse -Include *.ps1, *.psm1, *.psd1 | Invoke-ScriptAnalyzer)
+          if ($Results | Where-Object -FilterScript {($_.Severity -eq "Error") -or ($_.Severity -eq "ParseError")})
+          {
+            Write-Verbose -Message "Found script issues" -Verbose
+            exit 1  # Exit with a non-zero status to fail the job
+          }
 
-      - name: Dependencies
+      - name: Download Dependencies
         run: |
           . "Scripts\Dependencies.ps1"
 
-      - name: Sophia Script for Windows 10
+      - name: Windows 10
         run: |
           . "Scripts\Windows_10.ps1"
 
-      - name: Sophia Script for Windows 10 PowerShell 7
+      - name: Windows 10 PowerShell 7
         run: |
           . "Scripts\Windows_10_PS_7.ps1"
 
-      - name: Sophia Script for Windows 10 LTSC 2019
+      - name: Windows 10 LTSC 2019
         run: |
           . "Scripts\Windows_10_LTSC_2019.ps1"
 
-      - name: Sophia Script for Windows 10 LTSC 2021
+      - name: Windows 10 LTSC 2021
         run: |
           . "Scripts\Windows_10_LTSC_2021.ps1"
 
-      - name: Sophia Script for Windows 11
+      - name: Windows 11
         run: |
           . "Scripts\Windows_11.ps1"
 
-      - name: Sophia Script for Windows 11 PowerShell 7
+      - name: Windows 11 PowerShell 7
         run: |
           . "Scripts\Windows_11_PS_7.ps1"
 
@@ -51,11 +56,11 @@ jobs:
         run: |
           . "Scripts\Windows_11_Arm.ps1"
 
-      - name: Sophia Script for Windows 11 Arm PowerShell 7
+      - name: Windows 11 Arm PowerShell 7
         run: |
           . "Scripts\Windows_11_Arm_PS_7.ps1"
 
-      - name: Sophia Script for Windows 11 LTSC 2024
+      - name: Windows 11 LTSC 2024
         run: |
           . "Scripts\Windows_11_LTSC_2024.ps1"
 
@@ -63,11 +68,11 @@ jobs:
         run: |
           . "Scripts\Wrapper.ps1"
 
-      - name: SFX
+      - name: Create SFX Archive
         run: |
           . "Scripts\SFX.ps1"
 
-      - name: Defender
+      - name: Defender Scan
         run: |
           # Get Defender path
           $DefenderPath = (Get-ChildItem -Path "$env:ProgramData\Microsoft\Windows Defender\Platform" -Directory | Sort-Object Name -Descending | Select-Object -First 1).FullName
@@ -79,7 +84,7 @@ jobs:
 
           Get-Content -Path $env:TEMP\MpCmdRun.log
 
-      - name: ReleaseNotesTemplate
+      - name: Release Notes Template
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Set $env:GITHUB_REF_NAME variable to use in ps1 file instead of ${{ github.ref_name }}
