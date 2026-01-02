@@ -1365,6 +1365,10 @@
             "One": {
                 "Tag": "NET9",
                 "ToolTip": ".NET Runtime 9. Internetverbindung erforderlich."
+            },
+            "Two": {
+                "Tag": "NET10",
+                "ToolTip": ".NET Runtime 10. Internetverbindung erforderlich."
             }
         }
     },
