@@ -1724,7 +1724,7 @@
         "Region": "Start menu",
         "Control": "cmb",
         "Required": "false",
-        "Function": "RecentlyAddedApps",
+        "Function": "RecentlyAddedStartApps",
         "Arg": {
             "Zero": {
                 "Tag": "Hide"
@@ -1785,12 +1785,28 @@
         "WindowsDefault": ""
     },
     {
+        "Region": "Start menu",
+        "Control": "cmb",
+        "Required": "false",
+        "Function": "StartAccountNotifications",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide"
+            },
+            "One": {
+                "Tag": "Show"
+            }
+        },
+        "Preset": "Zero",
+        "WindowsDefault": "One"
+    },
+    {
         "Region": "UWP apps",
         "Control": "chkchkalter",
         "Required": "false",
         "Separate": "true",
-        "Function": "UninstallUWPApps",
-        "Function2": "UninstallUWPApps -ForAllUsers",
+        "Function": "Uninstall-UWPApps",
+        "Function2": "Uninstall-UWPApps -ForAllUsers",
         "Arg": {
             "Zero": {
                 "Tag": ""

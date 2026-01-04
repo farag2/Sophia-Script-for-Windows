@@ -52,14 +52,17 @@ function Logging
 # Create a restore point for the system drive
 function CreateRestorePoint
 {
+	# Check if system protection is turned on
 	$SystemDriveUniqueID = (Get-Volume | Where-Object -FilterScript {$_.DriveLetter -eq "$($env:SystemDrive[0])"}).UniqueID
 	$SystemProtection = ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SPP\Clients" -ErrorAction Ignore)."{09F7EDC5-294E-4180-AF6A-FB0E6A0E9513}") | Where-Object -FilterScript {$_ -match [regex]::Escape($SystemDriveUniqueID)}
 
 	$Global:ComputerRestorePoint = $false
 
-	if ($null -eq $SystemProtection)
+	# System protection is turned off
+	if (-not $SystemProtection)
 	{
-		$ComputerRestorePoint = $true
+		# Turn it on for a while
+		$Global:ComputerRestorePoint = $true
 		Enable-ComputerRestore -Drive $env:SystemDrive
 	}
 
@@ -486,7 +489,7 @@ function ScheduledTasks
 
 	$Form = [Windows.Markup.XamlReader]::Load((New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML))
 	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
-		Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name)
+		Set-Variable -Name $_.Name -Value $Form.FindName($_.Name)
 	}
 
 	#region Functions
@@ -1212,120 +1215,18 @@ function BingSearch
 		}
 	}
 }
-
-<#
-	.SYNOPSIS
-	Recommendations for tips, shortcuts, new apps, and more in Start menu
-
-	.PARAMETER Hide
-	Do not show recommendations for tips, shortcuts, new apps, and more in Start menu
-
-	.PARAMETER Show
-	Show recommendations for tips, shortcuts, new apps, and more in Start menu
-
-	.EXAMPLE
-	StartRecommendationsTips -Hide
-
-	.EXAMPLE
-	StartRecommendationsTips -Show
-
-	.NOTES
-	Current user
-#>
-function StartRecommendationsTips
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Hide"
-		)]
-		[switch]
-		$Hide,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Show"
-		)]
-		[switch]
-		$Show
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Hide"
-		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_IrisRecommendations -PropertyType DWord -Value 0 -Force
-		}
-		"Show"
-		{
-			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_IrisRecommendations -Force -ErrorAction Ignore
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	Microsoft account-related notifications on Start Menu
-
-	.PARAMETER Hide
-	Do not show Microsoft account-related notifications on Start Menu in Start menu
-
-	.PARAMETER Show
-	Show Microsoft account-related notifications on Start Menu in Start menu
-
-	.EXAMPLE
-	StartAccountNotifications -Hide
-
-	.EXAMPLE
-	StartAccountNotifications -Show
-
-	.NOTES
-	Current user
-#>
-function StartAccountNotifications
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Hide"
-		)]
-		[switch]
-		$Hide,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Show"
-		)]
-		[switch]
-		$Show
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Hide"
-		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_AccountNotifications -PropertyType DWord -Value 0 -Force
-		}
-		"Show"
-		{
-			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_AccountNotifications -Force -ErrorAction Ignore
-		}
-	}
-}
 #endregion Privacy & Telemetry
 
 #region UI & Personalization
 <#
 	.SYNOPSIS
-	The "This PC" icon on Desktop
+	"This PC" icon on Desktop
 
 	.PARAMETER Show
-	Show the "This PC" icon on Desktop
+	Show "This PC" icon on Desktop
 
 	.PARAMETER Hide
-	Hide the "This PC" icon on Desktop
+	Hide "This PC" icon on Desktop
 
 	.EXAMPLE
 	ThisPC -Show
@@ -1683,7 +1584,7 @@ function FileExplorerCompactMode
 	Sync provider notification in File Explorer
 
 	.PARAMETER Hide
-	Do not show sync provider notification within File Explorer
+	Hide sync provider notification within File Explorer
 
 	.PARAMETER Show
 	Show sync provider notification within File Explorer
@@ -3381,13 +3282,149 @@ function NavigationPaneExpand
 
 <#
 	.SYNOPSIS
-	Recommended section in Start Menu
+	Recently Added Apps
 
 	.PARAMETER Hide
-	Remove Recommended section in Start Menu
+	Hide recently added apps in Start
 
 	.PARAMETER Show
-	Do not remove Recommended section in Start Menu (default value)
+	Show recently added apps in Start (default value)
+
+	.EXAMPLE
+	RecentlyAddedStartApps -Hide
+
+	.EXAMPLE
+	RecentlyAddedStartApps -Show
+
+	.NOTES
+	Current user
+#>
+function RecentlyAddedStartApps
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Hide"
+		)]
+		[switch]
+		$Hide,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Show"
+		)]
+		[switch]
+		$Show
+	)
+
+	# Remove all policies in order to make changes visible in UI
+	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Force -ErrorAction Ignore
+	Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Type DELETE
+	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Type DELETE
+
+	if (Get-Process -Name Start11Srv, StartAllBackCfg, StartMenu -ErrorAction Ignore)
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+		return
+	}
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Hide"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Start -Name ShowRecentList -PropertyType DWord -Value 0 -Force
+		}
+		"Show"
+		{
+			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Start -Name ShowRecentList -Force -ErrorAction Ignore
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	Most used apps in Start
+
+	.PARAMETER Hide
+	Hide most used Apps in Start
+
+	.PARAMETER Show
+	Show most used Apps in Start (default value)
+
+	.EXAMPLE
+	MostUsedStartApps -Hide
+
+	.EXAMPLE
+	MostUsedStartApps -Show
+
+	.NOTES
+	Current user
+#>
+function MostUsedStartApps
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Hide"
+		)]
+		[switch]
+		$Hide,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Show"
+		)]
+		[switch]
+		$Show
+	)
+
+	# Remove all policies in order to make changes visible in UI
+	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name ShowOrHideMostUsedApps -Force -ErrorAction Ignore
+	Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name ShowOrHideMostUsedApps -Type DELETE
+	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name ShowOrHideMostUsedApps -Type DELETE
+
+	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer, HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoStartMenuMFUprogramsList, NoInstrumentation -Force -ErrorAction Ignore
+	Set-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoStartMenuMFUprogramsList -Type DELETE
+	Set-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoInstrumentation -Type DELETE
+	Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoStartMenuMFUprogramsList -Type DELETE
+	Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoInstrumentation -Type DELETE
+
+	if (Get-Process -Name Start11Srv, StartAllBackCfg, StartMenu -ErrorAction Ignore)
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+		return
+	}
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Hide"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Start -Name ShowFrequentList -PropertyType DWord -Value 0 -Force
+		}
+		"Show"
+		{
+			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Start -Name ShowFrequentList -Force -ErrorAction Ignore
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	Recommended section in Start
+
+	.PARAMETER Hide
+	Hide recommended section in Start
+
+	.PARAMETER Show
+	Show remove recommended section in Start (default value)
 
 	.EXAMPLE
 	StartRecommendedSection -Hide
@@ -3418,26 +3455,263 @@ function StartRecommendedSection
 	)
 
 	# Remove all policies in order to make changes visible in UI
-	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecommendedSection -Force -ErrorAction Ignore
+	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecommendedSection -Force -ErrorAction Ignore
+	Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name HideRecommendedSection -Type DELETE
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecommendedSection -Type DELETE
+
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\PolicyManager\current\device\Education -Name IsEducationEnvironment -Force -ErrorAction Ignore
+	Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\PolicyManager\current\device\Start -Name HideRecommendedSection -Force -ErrorAction Ignore
+
+	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer, HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoRecentDocsHistory -Force -ErrorAction Ignore
+	Set-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoRecentDocsHistory -Type DELETE
+	Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoRecentDocsHistory -Type DELETE
+
+	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Force -ErrorAction Ignore
+	Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Type DELETE
+	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Type DELETE
+
+	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name ShowOrHideMostUsedApps -Force -ErrorAction Ignore
+	Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name ShowOrHideMostUsedApps -Type DELETE
+	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name ShowOrHideMostUsedApps -Type DELETE
+
+	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer, HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoStartMenuMFUprogramsList, NoInstrumentation -Force -ErrorAction Ignore
+	Set-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoStartMenuMFUprogramsList -Type DELETE
+	Set-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoInstrumentation -Type DELETE
+	Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoStartMenuMFUprogramsList -Type DELETE
+	Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoInstrumentation -Type DELETE
+
+	if (Get-Process -Name Start11Srv, StartAllBackCfg, StartMenu -ErrorAction Ignore)
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+		return
+	}
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Hide"
 		{
-			if (-not (Test-Path -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer))
-			{
-				New-Item -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Force
-			}
-			New-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name HideRecommendedSection -PropertyType DWord -Value 1 -Force
+			# Hide recently added apps in Start
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Start -Name ShowRecentList -PropertyType DWord -Value 0 -Force
+			# Hide most used Apps in Start
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Start -Name ShowFrequentList -PropertyType DWord -Value 0 -Force
+			# Hide recommendations for tips, shortcuts, new apps, and more in Start
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_IrisRecommendations -PropertyType DWord -Value 0 -Force
 
-			Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name HideRecommendedSection -Type DWORD -Value 1
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_TrackDocs -PropertyType DWord -Value 0 -Force
 		}
 		"Show"
 		{
-			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\SOFTWARE\Microsoft\PolicyManager\current\device\Start -Name HideRecommendedSection -Force -ErrorAction Ignore
-			Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name HideRecommendedSection -Type DELETE
+			# Show recently added apps in Start
+			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Start -Name ShowRecentList -Force -ErrorAction Ignore
+			# Show most used Apps in Start
+			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Start -Name ShowFrequentList -Force -ErrorAction Ignore
+			# Show recommendations for tips, shortcuts, new apps, and more in Start
+			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_IrisRecommendations -Force -ErrorAction Ignore
+
+			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_TrackDocs -Force -ErrorAction Ignore
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	Recommendations for tips, shortcuts, new apps, and more in Start
+
+	.PARAMETER Hide
+	Hide recommendations for tips, shortcuts, new apps, and more in Start
+
+	.PARAMETER Show
+	Show recommendations for tips, shortcuts, new apps, and more in Start
+
+	.EXAMPLE
+	StartRecommendationsTips -Hide
+
+	.EXAMPLE
+	StartRecommendationsTips -Show
+
+	.NOTES
+	Current user
+#>
+function StartRecommendationsTips
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Hide"
+		)]
+		[switch]
+		$Hide,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Show"
+		)]
+		[switch]
+		$Show
+	)
+
+	if (Get-Process -Name Start11Srv, StartAllBackCfg, StartMenu -ErrorAction Ignore)
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+		return
+	}
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Hide"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_IrisRecommendations -PropertyType DWord -Value 0 -Force
+		}
+		"Show"
+		{
+			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_IrisRecommendations -Force -ErrorAction Ignore
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	Microsoft account-related notifications in Start
+
+	.PARAMETER Hide
+	Hide Microsoft account-related notifications in Start
+
+	.PARAMETER Show
+	Show Microsoft account-related notifications in Start
+
+	.EXAMPLE
+	StartAccountNotifications -Hide
+
+	.EXAMPLE
+	StartAccountNotifications -Show
+
+	.NOTES
+	Current user
+#>
+function StartAccountNotifications
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Hide"
+		)]
+		[switch]
+		$Hide,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Show"
+		)]
+		[switch]
+		$Show
+	)
+
+	if (Get-Process -Name Start11Srv, StartAllBackCfg, StartMenu -ErrorAction Ignore)
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+		return
+	}
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Hide"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_AccountNotifications -PropertyType DWord -Value 0 -Force
+		}
+		"Show"
+		{
+			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_AccountNotifications -Force -ErrorAction Ignore
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	Configure Start layout
+
+	.PARAMETER Default
+	Show default Start layout
+
+	.PARAMETER ShowMorePins
+	Show more pins on Start
+
+	.PARAMETER ShowMoreRecommendations
+	Show more recommendations on Start
+
+	.EXAMPLE
+	StartLayout -Default
+
+	.EXAMPLE
+	StartLayout -ShowMorePins
+
+	.EXAMPLE
+	StartLayout -ShowMoreRecommendations
+
+	.NOTES
+	Current user
+#>
+function StartLayout
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Default"
+		)]
+		[switch]
+		$Default,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "ShowMorePins"
+		)]
+		[switch]
+		$ShowMorePins,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "ShowMoreRecommendations"
+		)]
+		[switch]
+		$ShowMoreRecommendations
+	)
+
+	if (Get-Process -Name Start11Srv, StartAllBackCfg, StartMenu -ErrorAction Ignore)
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+		return
+	}
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Default"
+		{
+			# Default
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_Layout -PropertyType DWord -Value 0 -Force
+		}
+		"ShowMorePins"
+		{
+			# Show More Pins
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_Layout -PropertyType DWord -Value 1 -Force
+		}
+		"ShowMoreRecommendations"
+		{
+			# Show More Recommendations
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_Layout -PropertyType DWord -Value 2 -Force
 		}
 	}
 }
@@ -3980,7 +4254,7 @@ function WindowsFeatures
 
 	$Form = [Windows.Markup.XamlReader]::Load((New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML))
 	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
-		Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name)
+		Set-Variable -Name $_.Name -Value $Form.FindName($_.Name)
 	}
 
 	#region Functions
@@ -4304,7 +4578,7 @@ function WindowsCapabilities
 
 	$Form = [Windows.Markup.XamlReader]::Load((New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML))
 	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
-		Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name)
+		Set-Variable -Name $_.Name -Value $Form.FindName($_.Name)
 	}
 
 	#region Functions
@@ -5928,7 +6202,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 <#
 	.SYNOPSIS
-	The the latest installed .NET runtime for all apps usage
+	The the latest installed .NET Desktop Runtime for all apps usage
 
 	.PARAMETER Enable
 	Use .NET Framework 4.8.1 for old apps
@@ -7587,7 +7861,7 @@ function Export-Associations
 	[xml]$XML = Get-Content -Path "$env:TEMP\Application_Associations.xml" -Encoding UTF8 -Force
 	$XML.DefaultAssociations.Association | ForEach-Object -Process {
 		# Clear varibale not to begin double "\" char
-		$ProgramPath, $Icon = $null
+		$null = $ProgramPath, $Icon
 
 		if ($AppxProgIds -contains $_.ProgId)
 		{
@@ -7968,16 +8242,16 @@ function Install-VCRedist
 
 <#
 	.SYNOPSIS
-	Install the latest .NET Runtime 8, 9, 10
+	Install the latest .NET Desktop Runtime 8, 9, 10
 
 	.PARAMETER NET8
-	Install the latest .NET Runtime 8
+	Install the latest .NET Desktop Runtime 8
 
 	.PARAMETER NET9
-	Install the latest .NET Runtime 9
+	Install the latest .NET Desktop Runtime 9
 
 	.PARAMETER NET10
-	Install the latest .NET Runtime 10
+	Install the latest .NET Desktop Runtime 10
 
 	.EXAMPLE
 	Install-DotNetRuntimes -Runtimes NET8, NET9, NET10
@@ -8048,7 +8322,7 @@ function Install-DotNetRuntimes
 				{
 					try
 					{
-						# .NET Runtime 8
+						# .NET Desktop Runtime 8
 						$Parameters = @{
 							Uri             = "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNET8Version/windowsdesktop-runtime-$LatestNET8Version-win-x64.exe"
 							OutFile         = "$DownloadsFolder\windowsdesktop-runtime-$LatestNET8Version-win-x64.exe"
@@ -8118,7 +8392,7 @@ function Install-DotNetRuntimes
 				{
 					try
 					{
-						# .NET Runtime 9
+						# .NET Desktop Runtime 9
 						$Parameters = @{
 							Uri             = "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNET9Version/windowsdesktop-runtime-$LatestNET9Version-win-x64.exe"
 							OutFile         = "$DownloadsFolder\windowsdesktop-runtime-$LatestNET9Version-win-x64.exe"
@@ -8188,7 +8462,7 @@ function Install-DotNetRuntimes
 				{
 					try
 					{
-						# .NET Runtime 10
+						# .NET Desktop Runtime 10
 						$Parameters = @{
 							Uri             = "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNET10Version/windowsdesktop-runtime-$LatestNET10Version-win-x64.exe"
 							OutFile         = "$DownloadsFolder\windowsdesktop-runtime-$LatestNET10Version-win-x64.exe"
@@ -8530,8 +8804,8 @@ function Install-WSL
 	}
 	catch [System.Net.WebException]
 	{
-		Write-Warning -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com/microsoft/WSL/master/distributions/DistributionInfo.json")
-		Write-Error -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com/microsoft/WSL/master/distributions/DistributionInfo.json") -ErrorAction SilentlyContinue
+		Write-Warning -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com")
+		Write-Error -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com") -ErrorAction SilentlyContinue
 		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 		return
@@ -8540,7 +8814,7 @@ function Install-WSL
 	Add-Type -AssemblyName PresentationCore, PresentationFramework
 
 	#region Variables
-	$CommandTag = $null
+	$null = $CommandTag
 
 	#region XAML Markup
 	# The section defines the design of the upcoming dialog box
@@ -8550,11 +8824,18 @@ function Install-WSL
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	Name="Window"
 	Title="WSL"
-	MinHeight="460" MinWidth="350"
-	SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
-	TextOptions.TextFormattingMode="Display" SnapsToDevicePixels="True"
-	FontFamily="Candara" FontSize="16" ShowInTaskbar="True"
-	Background="#F1F1F1" Foreground="#262626">
+	MinHeight="460"
+	MinWidth="350"
+	SizeToContent="WidthAndHeight"
+	WindowStartupLocation="CenterScreen"
+	TextOptions.TextFormattingMode="Display"
+	SnapsToDevicePixels="True"
+	FontFamily="Candara"
+	FontSize="16"
+	ShowInTaskbar="True"
+	Background="#F1F1F1"
+	Foreground="#262626">
+
 	<Window.Resources>
 		<Style TargetType="RadioButton">
 			<Setter Property="VerticalAlignment" Value="Center"/>
@@ -8570,6 +8851,7 @@ function Install-WSL
 			<Setter Property="IsEnabled" Value="False"/>
 		</Style>
 	</Window.Resources>
+
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
@@ -8584,7 +8866,7 @@ function Install-WSL
 
 	$Form = [Windows.Markup.XamlReader]::Load((New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML))
 	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
-		Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name)
+		Set-Variable -Name $_.Name -Value $Form.FindName($_.Name)
 	}
 
 	$ButtonInstall.Content = $Localization.Install
@@ -8662,97 +8944,24 @@ function Install-WSL
 }
 #endregion WSL
 
-#region Start menu
-<#
-	.SYNOPSIS
-	Configure Start layout
-
-	.PARAMETER Default
-	Show default Start layout
-
-	.PARAMETER ShowMorePins
-	Show more pins on Start
-
-	.PARAMETER ShowMoreRecommendations
-	Show more recommendations on Start
-
-	.EXAMPLE
-	StartLayout -Default
-
-	.EXAMPLE
-	StartLayout -ShowMorePins
-
-	.EXAMPLE
-	StartLayout -ShowMoreRecommendations
-
-	.NOTES
-	Current user
-#>
-function StartLayout
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Default"
-		)]
-		[switch]
-		$Default,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "ShowMorePins"
-		)]
-		[switch]
-		$ShowMorePins,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "ShowMoreRecommendations"
-		)]
-		[switch]
-		$ShowMoreRecommendations
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Default"
-		{
-			# Default
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_Layout -PropertyType DWord -Value 0 -Force
-		}
-		"ShowMorePins"
-		{
-			# Show More Pins
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_Layout -PropertyType DWord -Value 1 -Force
-		}
-		"ShowMoreRecommendations"
-		{
-			# Show More Recommendations
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_Layout -PropertyType DWord -Value 2 -Force
-		}
-	}
-}
-#endregion Start menu
-
 #region UWP apps
 <#
 	.SYNOPSIS
 	Uninstall UWP apps
 
 	.PARAMETER ForAllUsers
-	The "ForAllUsers" argument sets a checkbox to unistall packages for all users
+	"ForAllUsers" argument sets a checkbox to unistall packages for all users
 
 	.EXAMPLE
-	UninstallUWPApps
+	Uninstall-UWPApps
 
 	.EXAMPLE
-	UninstallUWPApps -ForAllUsers
+	Uninstall-UWPApps -ForAllUsers
 
 	.NOTES
 	Current user
 #>
-function UninstallUWPApps
+function Uninstall-UWPApps
 {
 	[CmdletBinding()]
 	param
@@ -8905,7 +9114,7 @@ function UninstallUWPApps
 	<Window
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-		Name="Window"
+		x:Name="Window"
 		MinHeight="400" MinWidth="415"
 		SizeToContent="Width" WindowStartupLocation="CenterScreen"
 		TextOptions.TextFormattingMode="Display" SnapsToDevicePixels="True"
@@ -8917,11 +9126,11 @@ function UninstallUWPApps
 				<Setter Property="VerticalAlignment" Value="Top"/>
 			</Style>
 			<Style TargetType="CheckBox">
-				<Setter Property="Margin" Value="10, 13, 10"/>
+				<Setter Property="Margin" Value="10,13,10,13"/>
 				<Setter Property="IsChecked" Value="True"/>
 			</Style>
 			<Style TargetType="TextBlock">
-				<Setter Property="Margin" Value="0, 10, 10, 10"/>
+				<Setter Property="Margin" Value="0,10,10,10"/>
 			</Style>
 			<Style TargetType="Button">
 				<Setter Property="Margin" Value="20"/>
@@ -8929,15 +9138,13 @@ function UninstallUWPApps
 				<Setter Property="IsEnabled" Value="False"/>
 			</Style>
 			<Style TargetType="Border">
-				<Setter Property="Grid.Row" Value="1"/>
-				<Setter Property="CornerRadius" Value="0"/>
-				<Setter Property="BorderThickness" Value="0, 1, 0, 1"/>
+				<Setter Property="BorderThickness" Value="0,1,0,1"/>
 				<Setter Property="BorderBrush" Value="#000000"/>
 			</Style>
 			<Style TargetType="ScrollViewer">
 				<Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
 				<Setter Property="BorderBrush" Value="#000000"/>
-				<Setter Property="BorderThickness" Value="0, 1, 0, 1"/>
+				<Setter Property="BorderThickness" Value="0,1,0,1"/>
 			</Style>
 		</Window.Resources>
 		<Grid>
@@ -8951,21 +9158,21 @@ function UninstallUWPApps
 					<ColumnDefinition Width="*"/>
 					<ColumnDefinition Width="*"/>
 				</Grid.ColumnDefinitions>
-				<StackPanel Name="PanelSelectAll" Grid.Column="0" HorizontalAlignment="Left">
-					<CheckBox Name="CheckBoxSelectAll" IsChecked="False"/>
-					<TextBlock Name="TextBlockSelectAll" Margin="10,10, 0, 10"/>
+				<StackPanel x:Name="PanelSelectAll" Grid.Column="0" HorizontalAlignment="Left">
+					<CheckBox x:Name="CheckBoxSelectAll" IsChecked="False"/>
+					<TextBlock x:Name="TextBlockSelectAll" Margin="10,10,0,10"/>
 				</StackPanel>
-				<StackPanel Name="PanelRemoveForAll" Grid.Column="1" HorizontalAlignment="Right">
-					<TextBlock Name="TextBlockRemoveForAll" Margin="10,10, 0, 10"/>
-					<CheckBox Name="CheckBoxForAllUsers" IsChecked="False"/>
+				<StackPanel x:Name="PanelRemoveForAll" Grid.Column="1" HorizontalAlignment="Right">
+					<TextBlock x:Name="TextBlockRemoveForAll" Margin="10,10,0,10"/>
+					<CheckBox x:Name="CheckBoxForAllUsers" IsChecked="False"/>
 				</StackPanel>
 			</Grid>
-			<Border>
+			<Border Grid.Row="1">
 				<ScrollViewer>
-					<StackPanel Name="PanelContainer" Orientation="Vertical"/>
+					<StackPanel x:Name="PanelContainer" Orientation="Vertical"/>
 				</ScrollViewer>
 			</Border>
-			<Button Name="ButtonUninstall" Grid.Row="2"/>
+			<Button x:Name="ButtonUninstall" Grid.Row="2"/>
 		</Grid>
 	</Window>
 "@
@@ -8973,7 +9180,7 @@ function UninstallUWPApps
 
 	$Form = [Windows.Markup.XamlReader]::Load((New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML))
 	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
-		Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name)
+		Set-Variable -Name $_.Name -Value $Form.FindName($_.Name)
 	}
 
 	$Window.Title               = $Localization.UWPAppsTitle

@@ -223,30 +223,14 @@ BingSearch -Disable
 # Enable Bing search in Start Menu (default value)
 # Включить поиск через Bing в меню "Пуск" (значение по умолчанию)
 # BingSearch -Enable
-
-# Do not show recommendations for tips, shortcuts, new apps, and more in Start menu
-# Не показать рекомендации с советами, сочетаниями клавиш, новыми приложениями и т. д. в меню "Пуск"
-StartRecommendationsTips -Hide
-
-# Show recommendations for tips, shortcuts, new apps, and more in Start menu (default value)
-# Показать рекомендации с советами, сочетаниями клавиш, новыми приложениями и т. д. в меню "Пуск" (значение по умолчанию)
-# StartRecommendationsTips -Show
-
-# Do not show Microsoft account-related notifications on Start Menu in Start menu
-# Не показывать в меню "Пуск" уведомления, связанные с учетной записью Microsoft
-StartAccountNotifications -Hide
-
-# Show Microsoft account-related notifications on Start Menu in Start menu (default value)
-# Переодически показывать в меню "Пуск" уведомления, связанные с учетной записью Microsoft (значение по умолчанию)
-# StartAccountNotifications -Show
 #endregion Privacy & Telemetry
 
 #region UI & Personalization
-# Show the "This PC" icon on Desktop
+# Show "This PC" icon on Desktop
 # Отобразить значок "Этот компьютер" на рабочем столе
 ThisPC -Show
 
-# Hide the "This PC" icon on Desktop (default value)
+# Hide "This PC" icon on Desktop (default value)
 # Скрыть "Этот компьютер" на рабочем столе (значение по умолчанию)
 # ThisPC -Hide
 
@@ -298,7 +282,7 @@ FileExplorerCompactMode -Disable
 # Включить компактный вид проводника
 # FileExplorerCompactMode -Enable
 
-# Do not show sync provider notification within File Explorer
+# Hide sync provider notification within File Explorer
 # Не показывать уведомления поставщика синхронизации в проводнике
 OneDriveFileExplorerAd -Hide
 
@@ -536,13 +520,57 @@ NavigationPaneExpand -Disable
 # Развернуть до открытой папки область навигации
 # NavigationPaneExpand -Enable
 
-# Remove Recommended section in Start Menu. Not applicable to Home edition
-# Удалить раздел "Рекомендуем" в меню "Пуск". Неприменимо к редакции Home
+# Hide recently added apps in Start
+# Не показывать недавно добавленные приложения на начальном экране
+RecentlyAddedStartApps -Hide
+
+# Show recently added apps in Start (default value)
+# Показывать недавно добавленные приложения на начальном экране (значение по умолчанию)
+# RecentlyAddedStartApps -Show
+
+# Hide most used apps in Start (default value)
+# Не показывать наиболее часто используемые приложения на начальном экране (значение по умолчанию)
+MostUsedStartApps -Hide
+
+# Show most used Apps in Start (default value)
+# Показывать наиболее часто используемые приложения на начальном экране (значение по умолчанию)
+# MostUsedStartApps -Show
+
+# Remove Recommended section in Start
+# Удалить раздел "Рекомендуем" на начальном экране
 StartRecommendedSection -Hide
 
-# Show Recommended section in Start Menu (default value). Not applicable to Home edition
-# Показывать раздел "Рекомендуем" в меню "Пуск" (значение по умолчанию). Неприменимо к редакции Home
+# Show Recommended section in Start (default value)
+# Показывать раздел "Рекомендуем" на начальном экране
 # StartRecommendedSection -Show
+
+# Hide recommendations for tips, shortcuts, new apps, and more in Start
+# Не показать рекомендации с советами, сочетаниями клавиш, новыми приложениями и т. д. на начальном экране
+StartRecommendationsTips -Hide
+
+# Show recommendations for tips, shortcuts, new apps, and more in Start (default value)
+# Показать рекомендации с советами, сочетаниями клавиш, новыми приложениями и т. д. на начальном экране (значение по умолчанию)
+# StartRecommendationsTips -Show
+
+# Hide Microsoft account-related notifications in Start
+# Не отображать на начальном экране уведомления, касающиеся учетной записи Microsoft
+StartAccountNotifications -Hide
+
+# Show Microsoft account-related notifications on Start (default value)
+# Переодически показывать в меню "Пуск" уведомления, связанные с учетной записью Microsoft (значение по умолчанию)
+# StartAccountNotifications -Show
+
+# Show default Start layout (default value)
+# Отображать стандартный макет начального экрана (значение по умолчанию)
+# StartLayout -Default
+
+# Show more pins on Start
+# Отображать больше закреплений на начальном экране
+StartLayout -ShowMorePins
+
+# Show more recommendations on Start
+# Отображать больше рекомендаций на начальном экране
+# StartLayout -ShowMoreRecommendations
 #endregion UI & Personalization
 
 #region OneDrive
@@ -883,8 +911,8 @@ DefaultTerminalApp -WindowsTerminal
 # Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2026 (ARM64). Требуется соединение с интернетом
 Install-VCRedist
 
-# Install the latest .NET Runtime 8, 9, 10 x64. Internet connection required
-# Установить последнюю версию .NET Runtime 8, 9, 10 x64. Требуется соединение с интернетом
+# Install the latest .NET Desktop Runtime 8, 9, 10 x64. Internet connection required
+# Установить последнюю версию .NET Desktop Runtime 8, 9, 10 x64. Требуется соединение с интернетом
 Install-DotNetRuntimes -Runtimes NET8, NET9, NET10
 
 # Enable proxying only blocked sites from the unified registry of Roskomnadzor. The function is applicable for Russia only
@@ -920,24 +948,10 @@ RegistryBackup -Enable
 # Install-WSL
 #endregion WSL
 
-#region Start menu
-# Show default Start layout (default value)
-# Отображать стандартный макет начального экрана (значение по умолчанию)
-# StartLayout -Default
-
-# Show more pins on Start
-# Отображать больше закреплений на начальном экране
-StartLayout -ShowMorePins
-
-# Show more recommendations on Start
-# Отображать больше рекомендаций на начальном экране
-# StartLayout -ShowMoreRecommendations
-#endregion Start menu
-
 #region UWP apps
 # Uninstall UWP apps using the pop-up dialog box
 # Удалить UWP-приложения, используя всплывающее диалоговое окно
-UninstallUWPApps
+Uninstall-UWPApps
 
 <#
 	Uninstall UWP apps for all users using the pop-up dialog box
@@ -946,7 +960,7 @@ UninstallUWPApps
 	Удалить UWP-приложения для всех пользователей, используя всплывающее диалоговое окно
 	Пакеты приложений не будут установлены для новых пользователей, если отмечена галочка "Для всех пользователей"
 #>
-# UninstallUWPApps -ForAllUsers
+# Uninstall-UWPApps -ForAllUsers
 #endregion UWP apps
 
 #region Gaming

@@ -244,20 +244,6 @@
         }
     },
     {
-        "Region": "Privacy & Telemetry",
-        "Function": "StartAccountNotifications",
-        "Arg": {
-            "Zero": {
-                "Tag": "Hide",
-                "ToolTip": "Do not show Microsoft account-related notifications on Start Menu in the Start menu."
-            },
-            "One": {
-                "Tag": "Show",
-                "ToolTip": "Show Microsoft account-related notifications on Start Menu in the Start menu (default value)."
-            }
-        }
-    },
-    {
         "Region": "UI & Personalization",
         "Function": "ThisPC",
         "Arg": {
@@ -361,7 +347,7 @@
         "Arg": {
             "Zero": {
                 "Tag": "Hide",
-                "ToolTip": "Do not show sync provider notification within File Explorer."
+                "ToolTip": "Hide sync provider notification within File Explorer."
             },
             "One": {
                 "Tag": "Show",
@@ -566,6 +552,24 @@
             "One": {
                 "Tag": "Hide",
                 "ToolTip": "Hide seconds on the taskbar clock (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "TaskbarCombine",
+        "Arg": {
+            "Zero": {
+                "Tag": "Always",
+                "ToolTip": "Combine taskbar buttons and always hide labels (default value)."
+            },
+            "One": {
+                "Tag": "Full",
+                "ToolTip": "Combine taskbar buttons and hide labels when taskbar is full"
+            },
+            "Two": {
+                "Tag": "Never",
+                "ToolTip": "Combine taskbar buttons and never hide labels."
             }
         }
     },
@@ -1335,19 +1339,19 @@
     {
         "Region": "System",
         "Function": "Install-DotNetRuntimes -Runtimes",
-        "ToolTip": "Install the latest .NET Runtime 8, 9, 10 x64. Internet connection required",
+        "ToolTip": "Install the latest .NET Desktop Runtime 8, 9, 10 x64",
         "Arg": {
             "Zero": {
                 "Tag": "NET8",
-                "ToolTip": ".NET Runtime 8. Internet connection required."
+                "ToolTip": ".NET Desktop Runtime 8. Internet connection required."
             },
             "One": {
                 "Tag": "NET9",
-                "ToolTip": ".NET Runtime 9. Internet connection required."
+                "ToolTip": ".NET Desktop Runtime 9. Internet connection required."
             },
             "Two": {
                 "Tag": "NET10",
-                "ToolTip": ".NET Runtime 10. Internet connection required."
+                "ToolTip": ".NET Desktop Runtime 10. Internet connection required."
             }
         }
     },
@@ -1405,7 +1409,7 @@
     },
     {
         "Region": "Start menu",
-        "Function": "RecentlyAddedApps",
+        "Function": "RecentlyAddedStartApps",
         "Arg": {
             "Zero": {
                 "Tag": "Hide",
@@ -1461,8 +1465,22 @@
         }
     },
     {
+        "Region": "Start menu",
+        "Function": "StartAccountNotifications",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Hide Microsoft account-related notifications on Start."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Show Microsoft account-related notifications on Start (default value)."
+            }
+        }
+    },
+    {
         "Region": "UWP apps",
-        "Function": "UninstallUWPApps",
+        "Function": "Uninstall-UWPApps",
         "Arg": {
             "Zero": {
                 "Tag": "",
@@ -1472,7 +1490,7 @@
     },
     {
         "Region": "UWP apps",
-        "Function": "UninstallUWPApps -ForAllUsers",
+        "Function": "Uninstall-UWPApps -ForAllUsers",
         "ToolTip": "Uninstall UWP apps using the pop-up dialog box. If the \"For all users\" is checked apps packages will not be installed for new users. The \"ForAllUsers\" argument sets a checkbox to unistall packages for all users.",
         "Arg": {
             "Zero": {

@@ -244,20 +244,6 @@
         }
     },
     {
-        "Region": "Privacy & Telemetry",
-        "Function": "StartAccountNotifications",
-        "Arg": {
-            "Zero": {
-                "Tag": "Hide",
-                "ToolTip": "Не показать рекомендации с советами, сочетаниями клавиш, новыми приложениями и т. д. в меню \"Пуск\"."
-            },
-            "One": {
-                "Tag": "Show",
-                "ToolTip": "Показать рекомендации с советами, сочетаниями клавиш, новыми приложениями и т. д. в меню \"Пуск\" (значение по умолчанию)."
-            }
-        }
-    },
-    {
         "Region": "UI & Personalization",
         "Function": "ThisPC",
         "Arg": {
@@ -1289,22 +1275,19 @@
     {
         "Region": "System",
         "Function": "Set-Association",
+        "ToolTip": "Зарегистрируйте приложение, рассчитайте хэш и свяжите его с расширением со скрытым всплывающим окном 'Как вы хотите открыть это'.",
         "Arg": {
             "Zero": {
                 "Tag": "",
-                "ToolTip": "Зарегистрируйте приложение, рассчитайте хэш и свяжите его с расширением со скрытым всплывающим окном 'Как вы хотите открыть это'."
-            },
-            "One": {
-                "Tag": "ProgramPath",
                 "ToolTip": "Путь до исполняемого файла."
             },
-            "Two": {
+            "One": {
                 "Tag": "Extension",
                 "ToolTip": "Расширение."
             },
-            "Three": {
+            "Two": {
                 "Tag": "Icon",
-                "ToolTip": "Путь до значка."
+                "ToolTip": "Путь до иконки."
             }
         }
     },
@@ -1356,19 +1339,19 @@
     {
         "Region": "System",
         "Function": "Install-DotNetRuntimes -Runtimes",
-        "ToolTip": "Установить последнюю версию .NET Runtime 8, 9, 10 x64.",
+        "ToolTip": "Установить последнюю версию .NET Desktop Runtime 8, 9, 10 x64.",
         "Arg": {
             "Zero": {
                 "Tag": "NET8",
-                "ToolTip": ".NET Runtime 8. Требуется соединение с интернетом."
+                "ToolTip": ".NET Desktop Runtime 8. Требуется соединение с интернетом."
             },
             "One": {
                 "Tag": "NET9",
-                "ToolTip": ".NET Runtime 9. Требуется соединение с интернетом."
+                "ToolTip": ".NET Desktop Runtime 9. Требуется соединение с интернетом."
             },
             "Two": {
                 "Tag": "NET10",
-                "ToolTip": ".NET Runtime 10. Требуется соединение с интернетом."
+                "ToolTip": ".NET Desktop Runtime 10. Требуется соединение с интернетом."
             }
         }
     },
@@ -1426,15 +1409,15 @@
     },
     {
         "Region": "Start menu",
-        "Function": "RecentlyAddedApps",
+        "Function": "RecentlyAddedStartApps",
         "Arg": {
             "Zero": {
                 "Tag": "Hide",
-                "ToolTip": "Скрывать недавно добавленные приложения в меню \"Пуск\"."
+                "ToolTip": "Не показывать недавно добавленные приложения на начальном экране."
             },
             "One": {
                 "Tag": "Show",
-                "ToolTip": "Показывать недавно добавленные приложения в меню \"Пуск\" (значение по умолчанию)."
+                "ToolTip": "Показывать недавно добавленные приложения на начальном экране (значение по умолчанию)."
             }
         }
     },
@@ -1482,8 +1465,22 @@
         }
     },
     {
+        "Region": "Start menu",
+        "Function": "StartAccountNotifications",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Hide Microsoft account-related notifications in Start."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Show Microsoft account-related notifications on Start (default value)."
+            }
+        }
+    },
+    {
         "Region": "UWP apps",
-        "Function": "UninstallUWPApps",
+        "Function": "Uninstall-UWPApps",
         "Arg": {
             "Zero": {
                 "Tag": "",
@@ -1493,7 +1490,7 @@
     },
     {
         "Region": "UWP apps",
-        "Function": "UninstallUWPApps -ForAllUsers",
+        "Function": "Uninstall-UWPApps -ForAllUsers",
         "Arg": {
             "Zero": {
                 "Tag": "",

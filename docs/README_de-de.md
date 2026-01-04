@@ -251,9 +251,9 @@ Sophia -Functions<TAB>
 Sophia -Functions temp<TAB>
 Sophia -Functions unin<TAB>
 Sophia -Functions uwp<TAB>
-Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
+Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", Uninstall-UWPApps
 
-UninstallUWPApps, "PinToStart -UnpinAll"
+Uninstall-UWPApps, "PinToStart -UnpinAll"
 ```
 
 <https://github.com/user-attachments/assets/ea90122a-bdb3-4687-bf8b-9b6e7af46826>
@@ -287,7 +287,7 @@ Lesen Sie [hier mehr dazu](../Wrapper/README.md)
 * Rufen Sie die Funktionen aus `Sophia.ps1` auf, die Sie rückgängig machen wollen, wie folgt.
 
 ```powershell
-Sophia -Functions "DiagTrackService -Enable", UninstallUWPApps
+Sophia -Functions "DiagTrackService -Enable", Uninstall-UWPApps
 ```
 
 ## Spenden

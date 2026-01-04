@@ -18,7 +18,7 @@
 	.EXAMPLE
 	Sophia -Functions <tab>
 	Sophia -Functions temp<tab>
-	Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
+	Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", Uninstall-UWPApps
 
 	.NOTES
 	Use commas to separate funtions
@@ -122,8 +122,8 @@ $Parameters = @{
 				}
 			}
 
-			# If a module command is UninstallUWPApps
-			if ($Command -eq "UninstallUWPApps")
+			# If a module command is Uninstall-UWPApps
+			if ($Command -eq "Uninstall-UWPApps")
 			{
 				(Get-Command -Name $Command).Name | Where-Object -FilterScript {$_ -like "*$wordToComplete*"}
 
@@ -133,8 +133,8 @@ $Parameters = @{
 					# If an argument is ForAllUsers
 					if ($ParameterSet -eq "ForAllUsers")
 					{
-						# The "UninstallUWPApps -ForAllUsers" construction
-						"UninstallUWPApps" + " " + "-" + $ParameterSet | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
+						# The "Uninstall-UWPApps -ForAllUsers" construction
+						"Uninstall-UWPApps" + " " + "-" + $ParameterSet | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
 					}
 
 					continue
@@ -239,7 +239,7 @@ Register-ArgumentCompleter @Parameters
 Write-Information -MessageData "" -InformationAction Continue
 Write-Verbose -Message "Sophia -Functions <tab>" -Verbose
 Write-Verbose -Message "Sophia -Functions temp<tab>" -Verbose
-Write-Verbose -Message "Sophia -Functions `"DiagTrackService -Disable`", `"DiagnosticDataLevel -Minimal`", UninstallUWPApps" -Verbose
+Write-Verbose -Message "Sophia -Functions `"DiagTrackService -Disable`", `"DiagnosticDataLevel -Minimal`", Uninstall-UWPApps" -Verbose
 Write-Information -MessageData "" -InformationAction Continue
-Write-Verbose -Message "Sophia -Functions `"UninstallUWPApps, `"PinToStart -UnpinAll`" -Verbose"
+Write-Verbose -Message "Sophia -Functions `"Uninstall-UWPApps, `"PinToStart -UnpinAll`" -Verbose"
 Write-Verbose -Message "Sophia -Functions `"Set-Association -ProgramPath ```"%ProgramFiles%\Notepad++\notepad++.exe```" -Extension .txt -Icon ```"%ProgramFiles%\Notepad++\notepad++.exe,0```"`"" -Verbose

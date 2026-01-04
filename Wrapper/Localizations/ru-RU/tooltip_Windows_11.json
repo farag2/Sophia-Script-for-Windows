@@ -244,34 +244,6 @@
         }
     },
     {
-        "Region": "Privacy & Telemetry",
-        "Function": "StartRecommendationsTips",
-        "Arg": {
-            "Zero": {
-                "Tag": "Hide",
-                "ToolTip": "Не показать рекомендации с советами, сочетаниями клавиш, новыми приложениями и т. д. в меню \"Пуск\"."
-            },
-            "One": {
-                "Tag": "Show",
-                "ToolTip": "Показать рекомендации с советами, сочетаниями клавиш, новыми приложениями и т. д. в меню \"Пуск\" (значение по умолчанию)."
-            }
-        }
-    },
-    {
-        "Region": "Privacy & Telemetry",
-        "Function": "StartAccountNotifications",
-        "Arg": {
-            "Zero": {
-                "Tag": "Hide",
-                "ToolTip": "Не показывать в меню \"Пуск\" уведомления, связанные с учетной записью Microsoft."
-            },
-            "One": {
-                "Tag": "Show",
-                "ToolTip": "Переодически показывать в меню \"Пуск\" уведомления, связанные с учетной записью Microsoft (значение по умолчанию)."
-            }
-        }
-    },
-    {
         "Region": "UI & Personalization",
         "Function": "ThisPC",
         "Arg": {
@@ -788,15 +760,89 @@
     },
     {
         "Region": "UI & Personalization",
+        "Function": "RecentlyAddedStartApps",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Не показывать недавно добавленные приложения на начальном экране."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Показывать недавно добавленные приложения на начальном экране (значение по умолчанию)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "MostUsedStartApps",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Показывать недавно добавленные приложения на начальном экране (значение по умолчанию)."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Не показывать наиболее часто используемые приложения на начальном экране (значение по умолчанию)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
         "Function": "StartRecommendedSection",
         "Arg": {
             "Zero": {
                 "Tag": "Hide",
-                "ToolTip": "Удалить раздел \"Рекомендуем\" в меню \"Пуск\". Неприменимо к редакции Home."
+                "ToolTip": "Удалить раздел \"Рекомендуем\" на начальном экране."
             },
             "One": {
                 "Tag": "Show",
-                "ToolTip": "Показывать раздел \"Рекомендуем\" в меню \"Пуск\". Неприменимо к редакции Home."
+                "ToolTip": "Показывать раздел \"Рекомендуем\" на начальном экране."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "StartRecommendationsTips",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Не показать рекомендации с советами, сочетаниями клавиш, новыми приложениями и т. д. на начальном экране."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Показать рекомендации с советами, сочетаниями клавиш, новыми приложениями и т. д. на начальном экране (значение по умолчанию)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "StartAccountNotifications",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Не отображать на начальном экране уведомления, касающиеся учетной записи Microsoft."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Отображать на начальном экране уведомления, касающиеся учетной записи Microsoft (значение по умолчанию)."
+            }
+        }
+    },
+    {
+        "Region": "Start menu",
+        "Function": "StartLayout",
+        "Arg": {
+            "Zero": {
+                "Tag": "Default",
+                "ToolTip": "Отображать стандартный макет начального экрана (значение по умолчанию)."
+            },
+            "One": {
+                "Tag": "ShowMorePins",
+                "ToolTip": "Отображать больше закреплений на начальном экране."
+            },
+            "Two": {
+                "Tag": "ShowMoreRecommendations",
+                "ToolTip": "Отображать больше рекомендаций на начальном экране."
             }
         }
     },
@@ -1265,21 +1311,18 @@
     {
         "Region": "System",
         "Function": "Set-Association",
+        "ToolTip": "Зарегистрируйте приложение, рассчитайте хэш и свяжите его с расширением со скрытым всплывающим окном 'Как вы хотите открыть это'.",
         "Arg": {
             "Zero": {
-                "Tag": "",
-                "ToolTip": "Зарегистрируйте приложение, рассчитайте хэш и свяжите его с расширением со скрытым всплывающим окном 'Как вы хотите открыть это'."
-            },
-            "One": {
                 "Tag": "ProgramPath",
                 "ToolTip": "Путь до исполняемого файла."
             },
-            "Two": {
+            "One": {
                 "Tag": "Extension",
                 "ToolTip": "Расширение."
             },
-            "Three": {
-                "Tag": "Icon",
+            "Two": {
+                "Tag": "Иконка",
                 "ToolTip": "Путь до иконки."
             }
         }
@@ -1336,19 +1379,19 @@
     {
         "Region": "System",
         "Function": "Install-DotNetRuntimes -Runtimes",
-        "ToolTip": "Установить последнюю версию .NET Runtime 8, 9, 10 x64.",
+        "ToolTip": "Установить последнюю версию .NET Desktop Runtime 8, 9, 10 x64.",
         "Arg": {
             "Zero": {
                 "Tag": "NET8",
-                "ToolTip": ".NET Runtime 8. Требуется соединение с интернетом."
+                "ToolTip": ".NET Desktop Runtime 8. Требуется соединение с интернетом."
             },
             "One": {
                 "Tag": "NET9",
-                "ToolTip": ".NET Runtime 9. Требуется соединение с интернетом."
+                "ToolTip": ".NET Desktop Runtime 9. Требуется соединение с интернетом."
             },
             "Two": {
-                "Tag": "NET9",
-                "ToolTip": ".NET Runtime 10. Требуется соединение с интернетом."
+                "Tag": "NET10",
+                "ToolTip": ".NET Desktop Runtime 10. Требуется соединение с интернетом."
             }
         }
     },
@@ -1405,26 +1448,8 @@
         }
     },
     {
-        "Region": "Start menu",
-        "Function": "StartLayout",
-        "Arg": {
-            "Zero": {
-                "Tag": "Default",
-                "ToolTip": "Отображать стандартный макет начального экрана (значение по умолчанию)."
-            },
-            "One": {
-                "Tag": "ShowMorePins",
-                "ToolTip": "Отображать больше закреплений на начальном экране."
-            },
-            "Two": {
-                "Tag": "ShowMoreRecommendations",
-                "ToolTip": "Отображать больше рекомендаций на начальном экране."
-            }
-        }
-    },
-    {
         "Region": "UWP apps",
-        "Function": "UninstallUWPApps",
+        "Function": "Uninstall-UWPApps",
         "Arg": {
             "Zero": {
                 "Tag": "",
@@ -1434,7 +1459,7 @@
     },
     {
         "Region": "UWP apps",
-        "Function": "UninstallUWPApps -ForAllUsers",
+        "Function": "Uninstall-UWPApps -ForAllUsers",
         "Arg": {
             "Zero": {
                 "Tag": "",

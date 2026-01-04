@@ -52,14 +52,17 @@ function Logging
 # Create a restore point for the system drive
 function CreateRestorePoint
 {
+	# Check if system protection is turned on
 	$SystemDriveUniqueID = (Get-Volume | Where-Object -FilterScript {$_.DriveLetter -eq "$($env:SystemDrive[0])"}).UniqueID
 	$SystemProtection = ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SPP\Clients" -ErrorAction Ignore)."{09F7EDC5-294E-4180-AF6A-FB0E6A0E9513}") | Where-Object -FilterScript {$_ -match [regex]::Escape($SystemDriveUniqueID)}
 
 	$Global:ComputerRestorePoint = $false
 
-	if ($null -eq $SystemProtection)
+	# System protection is turned off
+	if (-not $SystemProtection)
 	{
-		$ComputerRestorePoint = $true
+		# Turn it on for a while
+		$Global:ComputerRestorePoint = $true
 		Enable-ComputerRestore -Drive $env:SystemDrive
 	}
 
@@ -476,7 +479,7 @@ function ScheduledTasks
 
 	$Form = [Windows.Markup.XamlReader]::Load((New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML))
 	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
-		Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name)
+		Set-Variable -Name $_.Name -Value $Form.FindName($_.Name)
 	}
 
 	#region Functions
@@ -822,13 +825,13 @@ function AdvertisingID
 #region UI & Personalization
 <#
 	.SYNOPSIS
-	The "This PC" icon on Desktop
+	"This PC" icon on Desktop
 
 	.PARAMETER Show
-	Show the "This PC" icon on Desktop
+	Show "This PC" icon on Desktop
 
 	.PARAMETER Hide
-	Hide the "This PC" icon on Desktop
+	Hide "This PC" icon on Desktop
 
 	.EXAMPLE
 	ThisPC -Show
@@ -3528,7 +3531,7 @@ function WindowsFeatures
 
 	$Form = [Windows.Markup.XamlReader]::Load((New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML))
 	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
-		Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name)
+		Set-Variable -Name $_.Name -Value $Form.FindName($_.Name)
 	}
 
 	#region Functions
@@ -3846,7 +3849,7 @@ function WindowsCapabilities
 
 	$Form = [Windows.Markup.XamlReader]::Load((New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML))
 	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
-		Set-Variable -Name ($_.Name) -Value $Form.FindName($_.Name)
+		Set-Variable -Name $_.Name -Value $Form.FindName($_.Name)
 	}
 
 	#region Functions
@@ -5244,7 +5247,7 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 
 <#
 	.SYNOPSIS
-	The the latest installed .NET runtime for all apps usage
+	The the latest installed .NET Desktop Runtime for all apps usage
 
 	.PARAMETER Enable
 	Use .NET Framework 4.8.1 for old apps
@@ -6833,7 +6836,7 @@ function Export-Associations
 	[xml]$XML = Get-Content -Path "$env:TEMP\Application_Associations.xml" -Encoding UTF8 -Force
 	$XML.DefaultAssociations.Association | ForEach-Object -Process {
 		# Clear varibale not to begin double "\" char
-		$ProgramPath, $Icon = $null
+		$null = $ProgramPath, $Icon
 
 		if ($AppxProgIds -contains $_.ProgId)
 		{
@@ -7214,16 +7217,16 @@ function Install-VCRedist
 
 <#
 	.SYNOPSIS
-	Install the latest .NET Runtime 8, 9, 10
+	Install the latest .NET Desktop Runtime 8, 9, 10
 
 	.PARAMETER NET8
-	Install the latest .NET Runtime 8
+	Install the latest .NET Desktop Runtime 8
 
 	.PARAMETER NET9
-	Install the latest .NET Runtime 9
+	Install the latest .NET Desktop Runtime 9
 
 	.PARAMETER NET10
-	Install the latest .NET Runtime 10
+	Install the latest .NET Desktop Runtime 10
 
 	.EXAMPLE
 	Install-DotNetRuntimes -Runtimes NET8, NET9, NET10
@@ -7294,7 +7297,7 @@ function Install-DotNetRuntimes
 				{
 					try
 					{
-						# .NET Runtime 8
+						# .NET Desktop Runtime 8
 						$Parameters = @{
 							Uri             = "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNET8Version/windowsdesktop-runtime-$LatestNET8Version-win-x64.exe"
 							OutFile         = "$DownloadsFolder\windowsdesktop-runtime-$LatestNET8Version-win-x64.exe"
@@ -7364,7 +7367,7 @@ function Install-DotNetRuntimes
 				{
 					try
 					{
-						# .NET Runtime 9
+						# .NET Desktop Runtime 9
 						$Parameters = @{
 							Uri             = "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNET9Version/windowsdesktop-runtime-$LatestNET9Version-win-x64.exe"
 							OutFile         = "$DownloadsFolder\windowsdesktop-runtime-$LatestNET9Version-win-x64.exe"
@@ -7434,7 +7437,7 @@ function Install-DotNetRuntimes
 				{
 					try
 					{
-						# .NET Runtime 10
+						# .NET Desktop Runtime 10
 						$Parameters = @{
 							Uri             = "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNET10Version/windowsdesktop-runtime-$LatestNET10Version-win-x64.exe"
 							OutFile         = "$DownloadsFolder\windowsdesktop-runtime-$LatestNET10Version-win-x64.exe"
@@ -7742,24 +7745,24 @@ function RegistryBackup
 #region Start menu
 <#
 	.SYNOPSIS
-	Recently added apps in Start menu
+	Recently added apps on Start
 
 	.PARAMETER Hide
-	Hide recently added apps in Start menu
+	Hide recently added apps on Start
 
 	.PARAMETER Show
-	Show recently added apps in Start menu
+	Show recently added apps on Start
 
 	.EXAMPLE
-	RecentlyAddedApps -Hide
+	RecentlyAddedStartApps -Hide
 
 	.EXAMPLE
-	RecentlyAddedApps -Show
+	RecentlyAddedStartApps -Show
 
 	.NOTES
 	Machine-wide
 #>
-function RecentlyAddedApps
+function RecentlyAddedStartApps
 {
 	param
 	(
@@ -7779,7 +7782,9 @@ function RecentlyAddedApps
 	)
 
 	# Remove all policies in order to make changes visible in UI
-	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Force -ErrorAction Ignore
+	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Force -ErrorAction Ignore
+	Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Type DELETE
+	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Type DELETE
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
@@ -7803,13 +7808,13 @@ function RecentlyAddedApps
 
 <#
 	.SYNOPSIS
-	App suggestions in Start menu
+	App suggestions on Start
 
 	.PARAMETER Hide
-	Hide app suggestions in Start menu
+	Hide app suggestions on Start
 
 	.PARAMETER Show
-	Show app suggestions in Start menu
+	Show app suggestions on Start
 
 	.EXAMPLE
 	AppSuggestions -Hide

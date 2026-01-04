@@ -283,38 +283,6 @@
         "WindowsDefault": "One"
     },
     {
-        "Region": "Privacy & Telemetry",
-        "Control": "cmb",
-        "Required": "false",
-        "Function": "StartRecommendationsTips",
-        "Arg": {
-            "Zero": {
-                "Tag": "Hide"
-            },
-            "One": {
-                "Tag": "Show"
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "One"
-    },
-    {
-        "Region": "Privacy & Telemetry",
-        "Control": "cmb",
-        "Required": "false",
-        "Function": "StartAccountNotifications",
-        "Arg": {
-            "Zero": {
-                "Tag": "Hide"
-            },
-            "One": {
-                "Tag": "Show"
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "One"
-    },
-    {
         "Region": "UI & Personalization",
         "Control": "cmb",
         "Required": "false",
@@ -890,6 +858,38 @@
         "Region": "UI & Personalization",
         "Control": "cmb",
         "Required": "false",
+        "Function": "RecentlyAddedStartApps",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide"
+            },
+            "One": {
+                "Tag": "Show"
+            }
+        },
+        "Preset": "Zero",
+        "WindowsDefault": "Zero"
+    },
+    {
+        "Region": "UI & Personalization",
+        "Control": "cmb",
+        "Required": "false",
+        "Function": "MostUsedStartApps",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide"
+            },
+            "One": {
+                "Tag": "Show"
+            }
+        },
+        "Preset": "Zero",
+        "WindowsDefault": "Zero"
+    },
+    {
+        "Region": "UI & Personalization",
+        "Control": "cmb",
+        "Required": "false",
         "Function": "StartRecommendedSection",
         "Arg": {
             "Zero": {
@@ -900,6 +900,60 @@
             }
         },
         "Preset": "Zero",
+        "WindowsDefault": "Zero"
+    },
+    {
+        "Region": "UI & Personalization",
+        "Control": "cmb",
+        "Required": "false",
+        "Function": "StartRecommendationsTips",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide"
+            },
+            "One": {
+                "Tag": "Show"
+            }
+        },
+        "Preset": "Zero",
+        "WindowsDefault": "Zero"
+    },
+    {
+        "Region": "UI & Personalization",
+        "Control": "cmb",
+        "Required": "false",
+        "Function": "StartAccountNotifications",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide"
+            },
+            "One": {
+                "Tag": "Show"
+            }
+        },
+        "Preset": "Zero",
+        "WindowsDefault": "Zero"
+    },
+    {
+        "Region": "Start menu",
+        "Control": "cmb",
+        "Required": "false",
+        "Function": "StartLayout",
+        "Arg": {
+            "Zero": {
+                "Tag": "Default",
+                "Opposite": "Two"
+            },
+            "One": {
+                "Tag": "ShowMorePins",
+                "Opposite": "Zero"
+            },
+            "Two": {
+                "Tag": "ShowMoreRecommendations",
+                "Opposite": "Zero"
+            }
+        },
+        "Preset": "One",
         "WindowsDefault": "Zero"
     },
     {
@@ -1609,34 +1663,12 @@
         "WindowsDefault": ""
     },
     {
-        "Region": "Start menu",
-        "Control": "cmb",
-        "Required": "false",
-        "Function": "StartLayout",
-        "Arg": {
-            "Zero": {
-                "Tag": "Default",
-                "Opposite": "Two"
-            },
-            "One": {
-                "Tag": "ShowMorePins",
-                "Opposite": "Zero"
-            },
-            "Two": {
-                "Tag": "ShowMoreRecommendations",
-                "Opposite": "Zero"
-            }
-        },
-        "Preset": "One",
-        "WindowsDefault": "Zero"
-    },
-    {
         "Region": "UWP apps",
         "Control": "chkchkalter",
         "Required": "false",
         "Separate": "true",
-        "Function": "UninstallUWPApps",
-        "Function2": "UninstallUWPApps -ForAllUsers",
+        "Function": "Uninstall-UWPApps",
+        "Function2": "Uninstall-UWPApps -ForAllUsers",
         "Arg": {
             "Zero": {
                 "Tag": ""

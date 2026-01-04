@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 6.0.3 | 7.0.3 — 30.12.2025
 
-Fixed XAML markup in `UninstallUWPApps` function. Thanks to Gugenot Murm for bugreport.
+Fixed XAML markup in `Uninstall-UWPApps` function. Thanks to Gugenot Murm for bugreport.
 
 ## 6.0.2 | 7.0.2 — 29.12.2025
 
@@ -268,7 +268,7 @@ Thanks to @gtumanyan and homeless
 
 ## Wrapper 2.7.8
 
-* Fixed bugs: .NET Runtimes options cutting off.
+* Fixed bugs: .NET Desktop Runtimes options cutting off.
 
 ## 5.20.0 | 6.8.0 — 29.12.2024
 
@@ -968,7 +968,7 @@ Diff from v6.1.3
     * [CsWinRT](https://github.com/microsoft/CsWinRT).
 * Fixed bug in `NetworkAdaptersSavePower` function when script hung if one network adapter was disabled;
   * Reported by @poohart.
-* Fixed bug in `UninstallUWPApps` function for PowerShell 7 based scripts when a WPF form didn't render at all;
+* Fixed bug in `Uninstall-UWPApps` function for PowerShell 7 based scripts when a WPF form didn't render at all;
   * Reported by @poohart.
 * Improved `UpdateLGPEPolicies` function;
   * Now it creates `GPT.ini` file automatically if it doesn't exist.
@@ -1169,7 +1169,7 @@ Diff from v6.1.3
 * Fixed major in `WinPrtScrFolder` (closes #260);
   * It turned out that it has an influence on the OneDrive behavoir. Now the function will be applied only if the preset is configured to remove OneDrive, otherwise the backup functionality for the "Desktop" and "Pictures" folders in OneDrive breaks;
 * Merged #264;
-* Added `Spotify` for removing to `UninstallUWPApps`;
+* Added `Spotify` for removing to `Uninstall-UWPApps`;
 * `ShareContext` now uses another method that doesn't have an influence on `Windows10FileExplorer`
   * To revert changes invoke
 
@@ -1661,7 +1661,7 @@ Diff from v5.9
     Sophia -Functions <tab>
     Sophia -Functions temp<tab>
     Sophia -Functions unin<tab>
-    Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
+    Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", Uninstall-UWPApps
     ```
 
   * The code isn't perfect but it works. Anyway it's better than recalling the functions' names. Hopefully I'll improve it in the next releases.
@@ -1675,7 +1675,7 @@ Diff from v5.9
 * David updated his wrapper;
   * Now you need to import Sophia.ps1 to configure it.
 * Fixed bug in the `PinToStart` function when it was unable to pin the "Devices and Printers" shortcut;
-* Fixed bug in the `UninstallUWPApps` function when packages names displayed in the center instead of the top;
+* Fixed bug in the `Uninstall-UWPApps` function when packages names displayed in the center instead of the top;
 * Now the `TempTask` task removes only files and folders older than a day;
 * After script applying a pop-up will apper
 
@@ -1693,7 +1693,7 @@ Diff from v5.9
 
 * Для граждан СНГ добавил перевод пожертвований с помощью [ЮMoney](https://yoomoney.ru/to/4100116615568835), используя прямой перевод с карты;
 * Updated the `UnpinTaskbarEdgeStore` function again;
-  * Fixed bug when calling this function before `UninstallUWPApps` breaks the retrieval of the localized UWP apps packages names;
+  * Fixed bug when calling this function before `Uninstall-UWPApps` breaks the retrieval of the localized UWP apps packages names;
   * Refixed #145;
   * Thanks to [iNNOKENTIY21](https://forum.ru-board.com/profile.cgi?action=show&member=iNNOKENTIY21)
 * The `TempFolders` and the `OneDrive` functions update
@@ -1731,7 +1731,7 @@ public static bool MarkFileDelete (string sourcefile)
 Diff from v5.7
 [5.7...5.8](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.7...5.7)
 
-* The `UninstallUWPApps` function huge update
+* The `Uninstall-UWPApps` function huge update
   * The `PowerShell 7.x` version now shares the same codebase as PowerShell 5.1;
     * By loading the `WinRT.Runtime.dll` (289 KB) and `Microsoft.Windows.SDK.NET.dll` (25,4 MB) assemblies (both are being downloaded and archived by GitHub Actions) it becomes possible to get localized UWP apps packages names too;
     * <https://github.com/microsoft/CsWinRT>;
@@ -1867,10 +1867,10 @@ Diff from v5.3.3
 * Updated the ```CreateRestorePoint``` function
   * Closed #124
 * Updated the ```EnableWSL2``` function
-* Code refactoring for the ```ScheduledTasks```, ```WindowsFeatures```, ```WindowsCapabilities``` & ```UninstallUWPApps```
+* Code refactoring for the ```ScheduledTasks```, ```WindowsFeatures```, ```WindowsCapabilities``` & ```Uninstall-UWPApps```
   * The ```WindowsFeatures``` function generates **friendly** Windows features names instead of packages names :rocket:
   * The ```WindowsCapabilities``` function generates **friendly** Windows capabilities names instead of packages names :rocket:
-  * The ```UninstallUWPApps``` function generates **friendly** UWP apps names instead of packages names :rocket:
+  * The ```Uninstall-UWPApps``` function generates **friendly** UWP apps names instead of packages names :rocket:
     * Clicking on "Uninstall for all users" dynamically generates UWP apps list for all users and vice versa. Currently works only on PowerShell 5.1 :thinking:
   * Thanks to [iNNOKENTIY21](https://forum.ru-board.com/profile.cgi?action=show&member=iNNOKENTIY21) & @oz-zo
   * Closed #56
@@ -2485,7 +2485,7 @@ DISM.exe /Online /English /Cleanup-Image /StartComponentCleanup /NoRestart
 
 ## 4.0.28 — 20.03.2020
 
-* Added "Do not show sync provider notification" section;
+* Added "Hide sync provider notification" section;
 * "Save screenshots by pressing Win+PrtScr to the Desktop" section. To return the original value execute
 
   ```powershell

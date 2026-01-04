@@ -68,8 +68,10 @@ function InitialActions
 	if (-not $ScriptFiles)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message "There are no files in the script folder. Please, re-download the archive and follow the guide: https://github.com/farag2/Sophia-Script-for-Windows?tab=readme-ov-file#how-to-use."
+		Write-Warning -Message "Required files are missing. Please, do not download the whole code from the repository, but download archive for you system."
 		Write-Information -MessageData "" -InformationAction Continue
+
+		Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"
 
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
@@ -344,7 +346,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		"Defender Control"  = "$env:APPDATA\Defender Control"
 		# https://forum.ru-board.com/topic.cgi?forum=5&topic=14285&start=260#12
 		"Defender Switch"   = "$env:ProgramData\DSW"
-		# https://revi.cc/revios/download
+		# https://revi.cc
 		"Revision Tool"     = "${env:ProgramFiles(x86)}\Revision Tool"
 		# https://www.youtube.com/watch?v=L0cj_I6OF2o
 		"WinterOS Tweaker"  = "$env:SystemRoot\WinterOS*"
@@ -406,7 +408,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Flibustier       = "$(Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\.NETFramework\Performance -Name *flibustier)"
 		# https://github.com/builtbybel/Winpilot
 		Winpilot         = "$((Get-ItemProperty -Path `"HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache`").PSObject.Properties | Where-Object -FilterScript {$_.Value -eq `"Winpilot`"})"
-		# https://github.com/builtbybel/Winpilot
+		# https://github.com/builtbybel/Bloatynosy
 		Bloatynosy       = "$((Get-ItemProperty -Path `"HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache`").PSObject.Properties | Where-Object -FilterScript {$_.Value -eq `"BloatynosyNue`"})"
 		# https://github.com/builtbybel/xd-AntiSpy
 		"xd-AntiSpy"     = "$((Get-ItemProperty -Path `"HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache`").PSObject.Properties | Where-Object -FilterScript {$_.Value -eq `"xd-AntiSpy`"})"
@@ -418,6 +420,8 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		KernelOS         = "$(Get-CimInstance -Namespace root/CIMV2/power -ClassName Win32_PowerPlan | Where-Object -FilterScript {$_.ElementName -match `"KernelOS`"})"
 		# https://discord.com/invite/9ZCgxhaYV6
 		ChlorideOS       = "$(Get-Volume | Where-Object -FilterScript {$_.FileSystemLabel -eq `"ChlorideOS`"})"
+		# https://crystalcry.ru
+		CrystalCry       = "$(Get-Item -Path HKLM:\SOFTWARE\CrystalCry -ErrorAction Ignore)"
 	}
 	foreach ($Tweaker in $Tweakers.Keys)
 	{
@@ -469,7 +473,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 					}
 					$No
 					{
-						Invoke-Item -Path $PresetName "$env:SystemRoot\System32\drivers\etc"
+						Invoke-Item -Path "$env:SystemRoot\System32\drivers\etc"
 
 						Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows" -Verbose
 						Write-Verbose -Message "https://t.me/sophia_chat" -Verbose

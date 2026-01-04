@@ -244,34 +244,6 @@
         }
     },
     {
-        "Region": "Privacy & Telemetry",
-        "Function": "StartRecommendationsTips",
-        "Arg": {
-            "Zero": {
-                "Tag": "Hide",
-                "ToolTip": "Zeigen Sie im Startmenü keine Empfehlungen für Tipps, Verknüpfungen, neue Anwendungen und mehr an."
-            },
-            "One": {
-                "Tag": "Show",
-                "ToolTip": "Anzeigen von Empfehlungen für Tipps, Verknüpfungen, neue Anwendungen und mehr im Startmenü (Standardwert)."
-            }
-        }
-    },
-    {
-        "Region": "Privacy & Telemetry",
-        "Function": "StartAccountNotifications",
-        "Arg": {
-            "Zero": {
-                "Tag": "Hide",
-                "ToolTip": "Keine Microsoft-Konto-Benachrichtigungen im Startmenü im Startmenü anzeigen."
-            },
-            "One": {
-                "Tag": "Show",
-                "ToolTip": "Anzeigen von Microsoft-Konto-Benachrichtigungen im Startmenü im Startmenü (Standardwert)."
-            }
-        }
-    },
-    {
         "Region": "UI & Personalization",
         "Function": "ThisPC",
         "Arg": {
@@ -788,6 +760,34 @@
     },
     {
         "Region": "UI & Personalization",
+        "Function": "RecentlyAddedStartApps",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Zuletzt hinzugefügte Apps nicht in Start anzeigen."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Zuletzt hinzugefügte Apps in Start anzeigen (Standardwert)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "MostUsedStartApps",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Die am häufigsten verwendeten Apps nicht in Start anzeigen (Standardwert) (Standardwert)."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Die am häufigsten verwendeten Apps in Start anzeigen."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
         "Function": "StartRecommendedSection",
         "Arg": {
             "Zero": {
@@ -797,6 +797,52 @@
             "One": {
                 "Tag": "Show",
                 "ToolTip": "Abschnitt Empfohlen im Startmenü anzeigen (Standardwert). Gilt nicht für die Home-Edition."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "StartRecommendationsTips",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Empfehlungen für Tipps, Verknüpfungen, neue Apps und mehr nicht in Start anzeigen."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Empfehlungen für Tipps, Tastenkombinationen, neue Apps und mehr in Start anzeigen (Standardwert)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "StartAccountNotifications",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Zeige keine Benachrichtigungen zu Microsoft-Konten auf Start an."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Benachrichtigungen zum Microsoft-Konto auf Start anzeigen (Standardwert)."
+            }
+        }
+    },
+    {
+        "Region": "Start menu",
+        "Function": "StartLayout",
+        "Arg": {
+            "Zero": {
+                "Tag": "Default",
+                "ToolTip": "Standard-Startlayout anzeigen (Standardwert)."
+            },
+            "One": {
+                "Tag": "ShowMorePins",
+                "ToolTip": "Mehr Pins auf Start anzeigen."
+            },
+            "Two": {
+                "Tag": "ShowMoreRecommendations",
+                "ToolTip": "Weitere Empfehlungen auf Start anzeigen."
             }
         }
     },
@@ -1333,19 +1379,19 @@
     {
         "Region": "System",
         "Function": "Install-DotNetRuntimes -Runtimes",
-        "ToolTip": "Installieren Sie die neueste .NET Runtime 8, 9, 10 x64.",
+        "ToolTip": "Installieren Sie die neueste .NET Desktop Runtime 8, 9, 10 x64.",
         "Arg": {
             "Zero": {
                 "Tag": "NET8",
-                "ToolTip": ".NET Runtime 8. Internetverbindung erforderlich."
+                "ToolTip": ".NET Desktop Runtime 8. Internetverbindung erforderlich."
             },
             "One": {
                 "Tag": "NET9",
-                "ToolTip": ".NET Runtime 9. Internetverbindung erforderlich."
+                "ToolTip": ".NET Desktop Runtime 9. Internetverbindung erforderlich."
             },
             "Two": {
                 "Tag": "NET10",
-                "ToolTip": ".NET Runtime 10. Internetverbindung erforderlich."
+                "ToolTip": ".NET Desktop Runtime 10. Internetverbindung erforderlich."
             }
         }
     },
@@ -1402,26 +1448,8 @@
         }
     },
     {
-        "Region": "Start menu",
-        "Function": "StartLayout",
-        "Arg": {
-            "Zero": {
-                "Tag": "Default",
-                "ToolTip": "Standard-Startlayout anzeigen (Standardwert)."
-            },
-            "One": {
-                "Tag": "ShowMorePins",
-                "ToolTip": "Mehr Pins auf Start anzeigen."
-            },
-            "Two": {
-                "Tag": "ShowMoreRecommendations",
-                "ToolTip": "Weitere Empfehlungen auf Start anzeigen."
-            }
-        }
-    },
-    {
         "Region": "UWP apps",
-        "Function": "UninstallUWPApps",
+        "Function": "Uninstall-UWPApps",
         "Arg": {
             "Zero": {
                 "Tag": "",
@@ -1431,7 +1459,7 @@
     },
     {
         "Region": "UWP apps",
-        "Function": "UninstallUWPApps -ForAllUsers",
+        "Function": "Uninstall-UWPApps -ForAllUsers",
         "Arg": {
             "Zero": {
                 "Tag": "",

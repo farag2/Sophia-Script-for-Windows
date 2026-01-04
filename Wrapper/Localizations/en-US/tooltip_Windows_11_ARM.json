@@ -244,34 +244,6 @@
         }
     },
     {
-        "Region": "Privacy & Telemetry",
-        "Function": "StartRecommendationsTips",
-        "Arg": {
-            "Zero": {
-                "Tag": "Hide",
-                "ToolTip": "Do not show recommendations for tips, shortcuts, new apps, and more in the Start menu."
-            },
-            "One": {
-                "Tag": "Show",
-                "ToolTip": "Show recommendations for tips, shortcuts, new apps, and more in the Start menu (default value)."
-            }
-        }
-    },
-    {
-        "Region": "Privacy & Telemetry",
-        "Function": "StartAccountNotifications",
-        "Arg": {
-            "Zero": {
-                "Tag": "Hide",
-                "ToolTip": "Do not show Microsoft account-related notifications on Start Menu in the Start menu."
-            },
-            "One": {
-                "Tag": "Show",
-                "ToolTip": "Show Microsoft account-related notifications on Start Menu in the Start menu (default value)."
-            }
-        }
-    },
-    {
         "Region": "UI & Personalization",
         "Function": "ThisPC",
         "Arg": {
@@ -375,7 +347,7 @@
         "Arg": {
             "Zero": {
                 "Tag": "Hide",
-                "ToolTip": "Do not show sync provider notification within File Explorer."
+                "ToolTip": "Hide sync provider notification within File Explorer."
             },
             "One": {
                 "Tag": "Show",
@@ -579,25 +551,6 @@
     },
     {
         "Region": "UI & Personalization",
-        "Function": "UnpinTaskbarShortcuts -Shortcuts",
-        "ToolTip": "Unpin Microsoft Edge, Microsoft Store, and Outlook shortcuts from the taskbar.",
-        "Arg": {
-            "Zero": {
-                "Tag": "Edge",
-                "ToolTip": "Unpin Microsoft Edge shortcut from the taskbar."
-            },
-            "One": {
-                "Tag": "Store",
-                "ToolTip": "Unpin Microsoft Store shortcut from the taskbar."
-            },
-            "Two": {
-                "Tag": "Outlook",
-                "ToolTip": "Unpin Outlook shortcut from the taskbar."
-            }
-        }
-    },
-    {
-        "Region": "UI & Personalization",
         "Function": "TaskbarEndTask",
         "Arg": {
             "Zero": {
@@ -788,15 +741,89 @@
     },
     {
         "Region": "UI & Personalization",
+        "Function": "RecentlyAddedStartApps",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Hide recently added apps in Start."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Show recently added apps in Start (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "MostUsedStartApps",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Hide most used apps in Start (default value) (default value)."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Show most used Apps in Start."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
         "Function": "StartRecommendedSection",
         "Arg": {
             "Zero": {
                 "Tag": "Hide",
-                "ToolTip": "Remove Recommended section in Start Menu. Not applicable to Home edition."
+                "ToolTip": "Remove Recommended section in Start."
             },
             "One": {
                 "Tag": "Show",
-                "ToolTip": "Show Recommended section in Start Menu (default value). Not applicable to Home edition."
+                "ToolTip": "Show Recommended section in Start (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "StartRecommendationsTips",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Hide recommendations for tips, shortcuts, new apps, and more in Start."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Show recommendations for tips, shortcuts, new apps, and more in Start (default value)."
+            }
+        }
+    },
+    {
+        "Region": "UI & Personalization",
+        "Function": "StartAccountNotifications",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Hide Microsoft account-related notifications on Start."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Show Microsoft account-related notifications on Start (default value)."
+            }
+        }
+    },
+    {
+        "Region": "Start menu",
+        "Function": "StartLayout",
+        "Arg": {
+            "Zero": {
+                "Tag": "Default",
+                "ToolTip": "Show default Start layout (default value)."
+            },
+            "One": {
+                "Tag": "ShowMorePins",
+                "ToolTip": "Show more pins on Start."
+            },
+            "Two": {
+                "Tag": "ShowMoreRecommendations",
+                "ToolTip": "Show more recommendations on Start."
             }
         }
     },
@@ -820,7 +847,7 @@
         "Arg": {
             "Zero": {
                 "Tag": "",
-                "ToolTip": "Install OneDrive all users to %ProgramFiles% depending which installer is triggered. Internet connection required."
+                "ToolTip": "Install OneDrive all users to %ProgramFiles%. Internet connection required."
             }
         }
     },
@@ -1329,19 +1356,19 @@
     {
         "Region": "System",
         "Function": "Install-DotNetRuntimes -Runtimes",
-        "ToolTip": "Install the latest .NET Runtime 8, 9, 10 x64. Internet connection required",
+        "ToolTip": "Install the latest .NET Desktop Runtime 8, 9, 10 x64.",
         "Arg": {
             "Zero": {
                 "Tag": "NET8",
-                "ToolTip": ".NET Runtime 8. Internet connection required."
+                "ToolTip": ".NET Desktop Runtime 8. Internet connection required."
             },
             "One": {
                 "Tag": "NET9",
-                "ToolTip": ".NET Runtime 9. Internet connection required."
+                "ToolTip": ".NET Desktop Runtime 9. Internet connection required."
             },
             "Two": {
                 "Tag": "NET10",
-                "ToolTip": ".NET Runtime 10. Internet connection required."
+                "ToolTip": ".NET Desktop Runtime 10. Internet connection required."
             }
         }
     },
@@ -1398,26 +1425,8 @@
         }
     },
     {
-        "Region": "Start menu",
-        "Function": "StartLayout",
-        "Arg": {
-            "Zero": {
-                "Tag": "Default",
-                "ToolTip": "Show default Start layout (default value)."
-            },
-            "One": {
-                "Tag": "ShowMorePins",
-                "ToolTip": "Show more pins on Start."
-            },
-            "Two": {
-                "Tag": "ShowMoreRecommendations",
-                "ToolTip": "Show more recommendations on Start."
-            }
-        }
-    },
-    {
         "Region": "UWP apps",
-        "Function": "UninstallUWPApps",
+        "Function": "Uninstall-UWPApps",
         "Arg": {
             "Zero": {
                 "Tag": "",
@@ -1427,7 +1436,7 @@
     },
     {
         "Region": "UWP apps",
-        "Function": "UninstallUWPApps -ForAllUsers",
+        "Function": "Uninstall-UWPApps -ForAllUsers",
         "Arg": {
             "Zero": {
                 "Tag": "",

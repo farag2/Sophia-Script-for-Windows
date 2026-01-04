@@ -1329,19 +1329,19 @@
     {
         "Region": "System",
         "Function": "Install-DotNetRuntimes -Runtimes",
-        "ToolTip": "Installieren Sie die neueste .NET Runtime 8, 9, 10 x64.",
+        "ToolTip": "Installieren Sie die neueste .NET Desktop Runtime 8, 9, 10 x64.",
         "Arg": {
             "Zero": {
                 "Tag": "NET8",
-                "ToolTip": ".NET Runtime 8. Internetverbindung erforderlich."
+                "ToolTip": ".NET Desktop Runtime 8. Internetverbindung erforderlich."
             },
             "One": {
                 "Tag": "NET9",
-                "ToolTip": ".NET Runtime 9. Internetverbindung erforderlich."
+                "ToolTip": ".NET Desktop Runtime 9. Internetverbindung erforderlich."
             },
             "Two": {
-                "Tag": "NET9",
-                "ToolTip": ".NET Runtime 10. Internetverbindung erforderlich."
+                "Tag": "NET10",
+                "ToolTip": ".NET Desktop Runtime 10. Internetverbindung erforderlich."
             }
         }
     },
@@ -1417,7 +1417,7 @@
     },
     {
         "Region": "UWP apps",
-        "Function": "UninstallUWPApps",
+        "Function": "Uninstall-UWPApps",
         "Arg": {
             "Zero": {
                 "Tag": "",
@@ -1427,7 +1427,7 @@
     },
     {
         "Region": "UWP apps",
-        "Function": "UninstallUWPApps -ForAllUsers",
+        "Function": "Uninstall-UWPApps -ForAllUsers",
         "Arg": {
             "Zero": {
                 "Tag": "",

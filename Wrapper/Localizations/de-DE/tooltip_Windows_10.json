@@ -244,20 +244,6 @@
         }
     },
     {
-        "Region": "Privacy & Telemetry",
-        "Function": "StartAccountNotifications",
-        "Arg": {
-            "Zero": {
-                "Tag": "Hide",
-                "ToolTip": "Keine Microsoft-Konto-Benachrichtigungen im Startmenü im Startmenü anzeigen."
-            },
-            "One": {
-                "Tag": "Show",
-                "ToolTip": "Anzeigen von Microsoft-Konto-Benachrichtigungen im Startmenü im Startmenü (Standardwert)."
-            }
-        }
-    },
-    {
         "Region": "UI & Personalization",
         "Function": "ThisPC",
         "Arg": {
@@ -1289,20 +1275,17 @@
     {
         "Region": "System",
         "Function": "Set-Association",
+        "ToolTip": "Registrieren Sie die App, berechnen Sie den Hash und verknüpfen Sie sie mit einer Erweiterung, wobei das Popup 'Wie möchten Sie diese öffnen?' ausgeblendet ist.",
         "Arg": {
             "Zero": {
-                "Tag": "",
-                "ToolTip": "Registrieren Sie die App, berechnen Sie den Hash und verknüpfen Sie sie mit einer Erweiterung, wobei das Popup 'Wie möchten Sie diese öffnen?' ausgeblendet ist."
-            },
-            "One": {
                 "Tag": "ProgramPath",
                 "ToolTip": "Pfad zur ausführbaren Datei."
             },
-            "Two": {
+            "One": {
                 "Tag": "Extension",
                 "ToolTip": "Erweiterung."
             },
-            "Three": {
+            "Two": {
                 "Tag": "Icon",
                 "ToolTip": "Pfad zum Symbol."
             }
@@ -1356,19 +1339,19 @@
     {
         "Region": "System",
         "Function": "Install-DotNetRuntimes -Runtimes",
-        "ToolTip": "Installieren Sie die neueste .NET Runtime 8, 9, 10 x64.",
+        "ToolTip": "Installieren Sie die neueste .NET Desktop Runtime 8, 9, 10 x64.",
         "Arg": {
             "Zero": {
                 "Tag": "NET8",
-                "ToolTip": ".NET Runtime 8. Internetverbindung erforderlich."
+                "ToolTip": ".NET Desktop Runtime 8. Internetverbindung erforderlich."
             },
             "One": {
                 "Tag": "NET9",
-                "ToolTip": ".NET Runtime 9. Internetverbindung erforderlich."
+                "ToolTip": ".NET Desktop Runtime 9. Internetverbindung erforderlich."
             },
             "Two": {
                 "Tag": "NET10",
-                "ToolTip": ".NET Runtime 10. Internetverbindung erforderlich."
+                "ToolTip": ".NET Desktop Runtime 10. Internetverbindung erforderlich."
             }
         }
     },
@@ -1426,7 +1409,7 @@
     },
     {
         "Region": "Start menu",
-        "Function": "RecentlyAddedApps",
+        "Function": "RecentlyAddedStartApps",
         "Arg": {
             "Zero": {
                 "Tag": "Hide",
@@ -1482,8 +1465,22 @@
         }
     },
     {
+        "Region": "Start menu",
+        "Function": "StartAccountNotifications",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide",
+                "ToolTip": "Zeige keine Benachrichtigungen zu Microsoft-Konten auf Start an."
+            },
+            "One": {
+                "Tag": "Show",
+                "ToolTip": "Benachrichtigungen zum Microsoft-Konto auf Start anzeigen (Standardwert)."
+            }
+        }
+    },
+    {
         "Region": "UWP apps",
-        "Function": "UninstallUWPApps",
+        "Function": "Uninstall-UWPApps",
         "Arg": {
             "Zero": {
                 "Tag": "",
@@ -1493,7 +1490,7 @@
     },
     {
         "Region": "UWP apps",
-        "Function": "UninstallUWPApps -ForAllUsers",
+        "Function": "Uninstall-UWPApps -ForAllUsers",
         "Arg": {
             "Zero": {
                 "Tag": "",

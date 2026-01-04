@@ -253,9 +253,9 @@ Sophia -Functions<TAB>
 Sophia -Functions temp<TAB>
 Sophia -Functions unin<TAB>
 Sophia -Functions uwp<TAB>
-Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", UninstallUWPApps
+Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", Uninstall-UWPApps
 
-UninstallUWPApps, "PinToStart -UnpinAll"
+Uninstall-UWPApps, "PinToStart -UnpinAll"
 ```
 
 <https://github.com/user-attachments/assets/ea90122a-bdb3-4687-bf8b-9b6e7af46826>
@@ -289,7 +289,7 @@ Read more [here](./Wrapper/README.md)
 * Call functions from `Sophia.ps1` you want to revert like this.
 
 ```powershell
-Sophia -Functions "DiagTrackService -Enable", UninstallUWPApps
+Sophia -Functions "DiagTrackService -Enable", Uninstall-UWPApps
 ```
 
 ## Donations

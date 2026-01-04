@@ -165,11 +165,11 @@ AdvertisingID -Disable
 #endregion Privacy & Telemetry
 
 #region UI & Personalization
-# Show the "This PC" icon on Desktop
+# Show "This PC" icon on Desktop
 # Отобразить значок "Этот компьютер" на рабочем столе
 ThisPC -Show
 
-# Hide the "This PC" icon on Desktop (default value)
+# Hide "This PC" icon on Desktop (default value)
 # Скрыть "Этот компьютер" на рабочем столе (значение по умолчанию)
 # ThisPC -Hide
 
@@ -698,8 +698,8 @@ NetworkDiscovery -Enable
 # Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2026 (x86/x64). Требуется соединение с интернетом
 Install-VCRedist -Redistributables 2015_2026_x86, 2015_2026_x64
 
-# Install the latest .NET Runtime 8, 9, 10 x64. Internet connection required
-# Установить последнюю версию .NET Runtime 8, 9, 10 x64. Требуется соединение с интернетом
+# Install the latest .NET Desktop Runtime 8, 9, 10 x64. Internet connection required
+# Установить последнюю версию .NET Desktop Runtime 8, 9, 10 x64. Требуется соединение с интернетом
 Install-DotNetRuntimes -Runtimes NET8, NET9, NET10
 
 # Enable proxying only blocked sites from the unified registry of Roskomnadzor. The function is applicable for Russia only
@@ -730,19 +730,19 @@ RegistryBackup -Enable
 #endregion System
 
 #region Start menu
-# Hide recently added apps in Start menu
+# Hide recently added apps on Start
 # Скрывать недавно добавленные приложения в меню "Пуск"
-RecentlyAddedApps -Hide
+RecentlyAddedStartApps -Hide
 
-# Show recently added apps in Start menu (default value)
+# Show recently added apps on Start (default value)
 # Показывать недавно добавленные приложения в меню "Пуск" (значение по умолчанию)
-# RecentlyAddedApps -Show
+# RecentlyAddedStartApps -Show
 
-# Hide app suggestions in Start menu
+# Hide app suggestions on Start
 # Скрывать рекомендации в меню "Пуск"
 AppSuggestions -Hide
 
-# Show app suggestions in Start menu (default value)
+# Show app suggestions on Start (default value)
 # Показывать рекомендации в меню "Пуск" (значение по умолчанию)
 # AppSuggestions -Show
 #endregion Start menu

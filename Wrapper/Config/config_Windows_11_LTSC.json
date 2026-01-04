@@ -301,40 +301,6 @@
         "LTSC2024": "true"
     },
     {
-        "Region": "Privacy & Telemetry",
-        "Control": "cmb",
-        "Required": "false",
-        "Function": "StartRecommendationsTips",
-        "Arg": {
-            "Zero": {
-                "Tag": "Hide"
-            },
-            "One": {
-                "Tag": "Show"
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
-        "LTSC2024": "true"
-    },
-    {
-        "Region": "Privacy & Telemetry",
-        "Control": "cmb",
-        "Required": "false",
-        "Function": "StartAccountNotifications",
-        "Arg": {
-            "Zero": {
-                "Tag": "Hide"
-            },
-            "One": {
-                "Tag": "Show"
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
-        "LTSC2024": "true"
-    },
-    {
         "Region": "UI & Personalization",
         "Control": "cmb",
         "Required": "false",
@@ -926,6 +892,40 @@
         "Region": "UI & Personalization",
         "Control": "cmb",
         "Required": "false",
+        "Function": "RecentlyAddedStartApps",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide"
+            },
+            "One": {
+                "Tag": "Show"
+            }
+        },
+        "Preset": "Zero",
+        "WindowsDefault": "Zero",
+        "LTSC2024": "true"
+    },
+    {
+        "Region": "UI & Personalization",
+        "Control": "cmb",
+        "Required": "false",
+        "Function": "MostUsedStartApps",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide"
+            },
+            "One": {
+                "Tag": "Show"
+            }
+        },
+        "Preset": "Zero",
+        "WindowsDefault": "Zero",
+        "LTSC2024": "true"
+    },
+    {
+        "Region": "UI & Personalization",
+        "Control": "cmb",
+        "Required": "false",
         "Function": "StartRecommendedSection",
         "Arg": {
             "Zero": {
@@ -937,6 +937,82 @@
         },
         "Preset": "Zero",
         "WindowsDefault": "Zero",
+        "LTSC2024": "true"
+    },
+    {
+        "Region": "UI & Personalization",
+        "Control": "cmb",
+        "Required": "false",
+        "Function": "StartRecommendationsTips",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide"
+            },
+            "One": {
+                "Tag": "Show"
+            }
+        },
+        "Preset": "Zero",
+        "WindowsDefault": "Zero",
+        "LTSC2024": "true"
+    },
+    {
+        "Region": "UI & Personalization",
+        "Control": "cmb",
+        "Required": "false",
+        "Function": "StartAccountNotifications",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide"
+            },
+            "One": {
+                "Tag": "Show"
+            }
+        },
+        "Preset": "Zero",
+        "WindowsDefault": "Zero",
+        "LTSC2024": "true"
+    },
+    {
+        "Region": "Start menu",
+        "Control": "cmb",
+        "Required": "false",
+        "Function": "StartLayout",
+        "Arg": {
+            "Zero": {
+                "Tag": "Default",
+                "Opposite": "Two"
+            },
+            "One": {
+                "Tag": "ShowMorePins",
+                "Opposite": "Zero"
+            },
+            "Two": {
+                "Tag": "ShowMoreRecommendations",
+                "Opposite": "Zero"
+            }
+        },
+        "Preset": "One",
+        "WindowsDefault": "Zero",
+        "LTSC2024": "true"
+    },
+    {
+        "Region": "OneDrive",
+        "Control": "cmbchkalter",
+        "Required": "false",
+        "Function": "OneDrive",
+        "Function2": "OneDrive -AllUsers",
+        "Function2Selects": "1",
+        "Arg": {
+            "Zero": {
+                "Tag": "Uninstall"
+            },
+            "One": {
+                "Tag": "Install"
+            }
+        },
+        "Preset": "Zero",
+        "WindowsDefault": "",
         "LTSC2024": "true"
     },
     {
@@ -1654,35 +1730,12 @@
         "LTSC2024": "true"
     },
     {
-        "Region": "Start menu",
-        "Control": "cmb",
-        "Required": "false",
-        "Function": "StartLayout",
-        "Arg": {
-            "Zero": {
-                "Tag": "Default",
-                "Opposite": "Two"
-            },
-            "One": {
-                "Tag": "ShowMorePins",
-                "Opposite": "Zero"
-            },
-            "Two": {
-                "Tag": "ShowMoreRecommendations",
-                "Opposite": "Zero"
-            }
-        },
-        "Preset": "One",
-        "WindowsDefault": "Zero",
-        "LTSC2024": "true"
-    },
-    {
         "Region": "UWP apps",
         "Control": "chkchkalter",
         "Required": "false",
         "Separate": "true",
-        "Function": "UninstallUWPApps",
-        "Function2": "UninstallUWPApps -ForAllUsers",
+        "Function": "Uninstall-UWPApps",
+        "Function2": "Uninstall-UWPApps -ForAllUsers",
         "Arg": {
             "Zero": {
                 "Tag": ""
