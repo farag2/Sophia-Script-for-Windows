@@ -10,7 +10,7 @@
 #>
 
 Clear-Host
-$Global:Error.Clear()
+$Error.Clear()
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
@@ -36,7 +36,7 @@ try
 }
 catch [System.Net.WebException]
 {
-	Write-Warning -Message "api.github.com is unreachable. Please fix connection or change your DNS records."
+	Write-Warning -Message "https://api.github.com is unreachable. Please fix connection or change your DNS records."
 	Write-Information -MessageData "" -InformationAction Continue
 
 	if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
@@ -47,7 +47,7 @@ catch [System.Net.WebException]
 	{
 		$DNS = (Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-NetIPInterface -AddressFamily IPv4 | Get-DnsClientServerAddress -AddressFamily IPv4).ServerAddresses
 	}
-	Write-Warning -Message "You're using DNS $(if ($DNS.Count -gt 1) {$DNS -join ', '} else {$DNS})"
+	Write-Warning -Message "You're using $(if ($DNS.Count -gt 1) {$DNS -join ', '} else {$DNS}) DNS records"
 
 	pause
 	exit

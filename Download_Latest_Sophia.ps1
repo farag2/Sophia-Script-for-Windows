@@ -10,7 +10,7 @@
 #>
 
 Clear-Host
-$Global:Error.Clear()
+$Error.Clear()
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
@@ -31,7 +31,7 @@ $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows
 try
 {
 	$Parameters = @{
-		Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/archive/refs/heads/master.zip"
+		Uri             = "https://codeload.github.com/farag2/Sophia-Script-for-Windows/zip/refs/heads/master"
 		OutFile         = "$DownloadsFolder\master.zip"
 		UseBasicParsing = $true
 		Verbose         = $true
@@ -40,7 +40,7 @@ try
 }
 catch [System.Net.WebException]
 {
-	Write-Warning -Message "github.com is unreachable. Please fix connection or change your DNS records."
+	Write-Warning -Message "https://github.com is unreachable. Please fix connection or change your DNS records."
 	Write-Information -MessageData "" -InformationAction Continue
 
 	if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
@@ -51,7 +51,7 @@ catch [System.Net.WebException]
 	{
 		$DNS = (Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-NetIPInterface -AddressFamily IPv4 | Get-DnsClientServerAddress -AddressFamily IPv4).ServerAddresses ### 
 	}
-	Write-Warning -Message "You're using DNS $(if ($DNS.Count -gt 1) {$DNS -join ', '} else {$DNS})"
+	Write-Warning -Message "You're using $(if ($DNS.Count -gt 1) {$DNS -join ', '} else {$DNS}) DNS records"
 
 	pause
 	exit
@@ -155,7 +155,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 
 if (Test-Path -Path "$DownloadsFolder\SophiaScriptTemp")
 {
-	Write-Verbose -Message "Please remove `"$DownloadsFolder\SophiaScriptTemp`" manually and try to use script again." -Verbose
+	Write-Verbose -Message "Please remove `"$DownloadsFolder\SophiaScriptTemp`" manually and try to download again." -Verbose
 	Remove-Item -Path "$DownloadsFolder\master.zip" -Force
  
 	pause
@@ -164,7 +164,7 @@ if (Test-Path -Path "$DownloadsFolder\SophiaScriptTemp")
 
 if (Test-Path -Path "$DownloadsFolder\$($Version)_Latest")
 {
-	Write-Verbose -Message "Please remove `"$DownloadsFolder\$($Version)_Latest`" manually and try to use script again." -Verbose
+	Write-Verbose -Message "Please remove `"$DownloadsFolder\$($Version)_Latest`" manually and try to download again." -Verbose
 	Remove-Item -Path "$DownloadsFolder\master.zip" -Force
 
 	pause
