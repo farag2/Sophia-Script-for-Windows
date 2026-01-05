@@ -3151,6 +3151,8 @@ function Install-Cursors
 			Write-Warning -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com")
 			Write-Error -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com") -ErrorAction SilentlyContinue
 			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+			return
 		}
 	}
 
@@ -3213,7 +3215,7 @@ function Install-Cursors
 
 			Start-Sleep -Seconds 1
 
-			Remove-Item -Path "$DownloadsFolder\Windows11Cursors.zip", "$env:SystemRoot\Cursors\W11 Cursor Dark Free\Install.inf" -Force
+			Remove-Item -Path "$DownloadsFolder\Windows11Cursors.zip", "$env:SystemRoot\Cursors\W11 Cursor Dark Free\Install.inf" -Force -ErrorAction Ignore
 		}
 		"Light"
 		{
@@ -3929,7 +3931,7 @@ function OneDrive
 		"Uninstall"
 		{
 			# {$_.Meta.Attributes["UninstallString"]} is broken
-			[xml]$UninstallString = Get-Package -Name "Microsoft OneDrive" -ProviderName Programs -ErrorAction Ignore | ForEach-Object -Process {$_.SwidTagText}
+			[xml]$UninstallString = Get-Package -Name "Microsoft OneDrive" -ErrorAction Ignore | ForEach-Object -Process {$_.SwidTagText}
 			[string]$UninstallString = $UninstallString.SoftwareIdentity.Meta.UninstallString
 
 			if (-not $UninstallString)
@@ -4025,7 +4027,7 @@ function OneDrive
 		}
 		"Install"
 		{
-			$OneDrive = Get-Package -Name "Microsoft OneDrive" -ProviderName Programs -Force -ErrorAction Ignore
+			$OneDrive = Get-Package -Name "Microsoft OneDrive" -Force -ErrorAction Ignore
 			if ($OneDrive)
 			{
 				Write-Information -MessageData "" -InformationAction Continue
@@ -9121,7 +9123,7 @@ function PreventEdgeShortcutCreation
 		$Disable
 	)
 
-	if (-not (Get-Package -Name "Microsoft Edge" -ProviderName Programs -ErrorAction Ignore))
+	if (-not (Get-Package -Name "Microsoft Edge" -ErrorAction Ignore))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
@@ -9141,7 +9143,7 @@ function PreventEdgeShortcutCreation
 		{
 			Stable
 			{
-				if (Get-Package -Name "Microsoft Edge" -ProviderName Programs -ErrorAction Ignore)
+				if (Get-Package -Name "Microsoft Edge" -ErrorAction Ignore)
 				{
 					New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}" -PropertyType DWord -Value 0 -Force
 					# msedgeupdate.admx is not a default ADMX template
@@ -9153,7 +9155,7 @@ function PreventEdgeShortcutCreation
 			}
 			Beta
 			{
-				if (Get-Package -Name "Microsoft Edge Beta" -ProviderName Programs -ErrorAction Ignore)
+				if (Get-Package -Name "Microsoft Edge Beta" -ErrorAction Ignore)
 				{
 					New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{2CD8A007-E189-409D-A2C8-9AF4EF3C72AA}" -PropertyType DWord -Value 0 -Force
 					# msedgeupdate.admx is not a default ADMX template
@@ -9165,7 +9167,7 @@ function PreventEdgeShortcutCreation
 			}
 			Dev
 			{
-				if (Get-Package -Name "Microsoft Edge Dev" -ProviderName Programs -ErrorAction Ignore)
+				if (Get-Package -Name "Microsoft Edge Dev" -ErrorAction Ignore)
 				{
 					New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{0D50BFEC-CD6A-4F9A-964C-C7416E3ACB10}" -PropertyType DWord -Value 0 -Force
 					# msedgeupdate.admx is not a default ADMX template
@@ -9177,7 +9179,7 @@ function PreventEdgeShortcutCreation
 			}
 			Canary
 			{
-				if (Get-Package -Name "Microsoft Edge Canary" -ProviderName Programs -ErrorAction Ignore)
+				if (Get-Package -Name "Microsoft Edge Canary" -ErrorAction Ignore)
 				{
 					New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{65C35B14-6C1D-4122-AC46-7148CC9D6497}" -PropertyType DWord -Value 0 -Force
 					# msedgeupdate.admx is not a default ADMX template

@@ -95,7 +95,7 @@ if ($Global:Failed)
 
 # Create a restore point
 # Создать точку восстановления
-CreateRestorePoint
+# CreateRestorePoint
 #endregion Protection
 
 #region Privacy & Telemetry

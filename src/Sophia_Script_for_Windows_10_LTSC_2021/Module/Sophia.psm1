@@ -3096,6 +3096,8 @@ function Install-Cursors
 			Write-Warning -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com")
 			Write-Error -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com") -ErrorAction SilentlyContinue
 			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
+			return
 		}
 	}
 
@@ -3158,7 +3160,7 @@ function Install-Cursors
 
 			Start-Sleep -Seconds 1
 
-			Remove-Item -Path "$DownloadsFolder\Windows11Cursors.zip", "$env:SystemRoot\Cursors\W11 Cursor Dark Free\Install.inf" -Force
+			Remove-Item -Path "$DownloadsFolder\Windows11Cursors.zip", "$env:SystemRoot\Cursors\W11 Cursor Dark Free\Install.inf" -Force -ErrorAction Ignore
 		}
 		"Light"
 		{
@@ -8240,7 +8242,7 @@ function PreventEdgeShortcutCreation
 		$Disable
 	)
 
-	if (-not (Get-Package -Name "Microsoft Edge" -ProviderName Programs -ErrorAction Ignore))
+	if (-not (Get-Package -Name "Microsoft Edge" -ErrorAction Ignore))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
@@ -8260,7 +8262,7 @@ function PreventEdgeShortcutCreation
 		{
 			Stable
 			{
-				if (Get-Package -Name "Microsoft Edge" -ProviderName Programs -ErrorAction Ignore)
+				if (Get-Package -Name "Microsoft Edge" -ErrorAction Ignore)
 				{
 					New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}" -PropertyType DWord -Value 0 -Force
 					# msedgeupdate.admx is not a default ADMX template
@@ -8272,7 +8274,7 @@ function PreventEdgeShortcutCreation
 			}
 			Beta
 			{
-				if (Get-Package -Name "Microsoft Edge Beta" -ProviderName Programs -ErrorAction Ignore)
+				if (Get-Package -Name "Microsoft Edge Beta" -ErrorAction Ignore)
 				{
 					New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{2CD8A007-E189-409D-A2C8-9AF4EF3C72AA}" -PropertyType DWord -Value 0 -Force
 					# msedgeupdate.admx is not a default ADMX template
@@ -8284,7 +8286,7 @@ function PreventEdgeShortcutCreation
 			}
 			Dev
 			{
-				if (Get-Package -Name "Microsoft Edge Dev" -ProviderName Programs -ErrorAction Ignore)
+				if (Get-Package -Name "Microsoft Edge Dev" -ErrorAction Ignore)
 				{
 					New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{0D50BFEC-CD6A-4F9A-964C-C7416E3ACB10}" -PropertyType DWord -Value 0 -Force
 					# msedgeupdate.admx is not a default ADMX template
@@ -8296,7 +8298,7 @@ function PreventEdgeShortcutCreation
 			}
 			Canary
 			{
-				if (Get-Package -Name "Microsoft Edge Canary" -ProviderName Programs -ErrorAction Ignore)
+				if (Get-Package -Name "Microsoft Edge Canary" -ErrorAction Ignore)
 				{
 					New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{65C35B14-6C1D-4122-AC46-7148CC9D6497}" -PropertyType DWord -Value 0 -Force
 					# msedgeupdate.admx is not a default ADMX template
@@ -10732,233 +10734,6 @@ function WindowsSandbox
 			}
 		}
 	}
-}
-
-<#
-	.SYNOPSIS
-	DNS-over-HTTPS for IPv4
-
-	.PARAMETER Enable
-	Enable DNS-over-HTTPS for IPv4
-
-	.PARAMETER Disable
-	Disable DNS-over-HTTPS for IPv4
-
-	.EXAMPLE
-	DNSoverHTTPS -Enable -PrimaryDNS 1.0.0.1 -SecondaryDNS 1.1.1.1
-
-	.EXAMPLE Enable DNS-over-HTTPS via Comss.one DNS server. Applicable for Russia only
-	DNSoverHTTPS -ComssOneDNS
-
-	.EXAMPLE
-	DNSoverHTTPS -Disable
-
-	.NOTES
-	The valid IPv4 addresses: 1.0.0.1, 1.1.1.1, 149.112.112.112, 8.8.4.4, 8.8.8.8, 9.9.9.9
-
-	.LINK
-	https://learn.microsoft.com/en-us/windows-server/networking/dns/doh-client-support
-
-	.LINK
-	https://www.comss.ru/page.php?id=7315
-
-	.NOTES
-	Machine-wide
-#>
-function DNSoverHTTPS
-{
-	[CmdletBinding()]
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable,
-
-		[Parameter(Mandatory = $false)]
-		[ValidateScript({
-			# Isolate IPv4 IP addresses and check whether $PrimaryDNS is not equal to $SecondaryDNS
-			((@((Get-ChildItem -Path HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters\DohWellKnownServers).PSChildName) | Where-Object -FilterScript {
-				($_ -as [IPAddress]).AddressFamily -ne "InterNetworkV6"
-			}) -contains $_) -and ($_ -ne $SecondaryDNS)
-		})]
-		[string]
-		$PrimaryDNS,
-
-		[Parameter(Mandatory = $false)]
-		[ValidateScript({
-			# Isolate IPv4 IP addresses and check whether $PrimaryDNS is not equal to $SecondaryDNS
-			((@((Get-ChildItem -Path HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters\DohWellKnownServers).PSChildName) | Where-Object -FilterScript {
-				($_ -as [IPAddress]).AddressFamily -ne "InterNetworkV6"
-			}) -contains $_) -and ($_ -ne $PrimaryDNS)
-		})]
-		[string]
-		$SecondaryDNS,
-
-		# https://www.comss.ru/page.php?id=7315
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "ComssOneDNS"
-		)]
-		[switch]
-		$ComssOneDNS,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable
-	)
-
-	# Determining whether Hyper-V is enabled
-	# After enabling Hyper-V feature a virtual switch being created, so we need to use different method to isolate the proper adapter
-	if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
-	{
-		$InterfaceGuids = @((Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Where-Object -FilterScript {$_.Status -eq "Up"}).InterfaceGuid)
-	}
-	else
-	{
-		$InterfaceGuids = @((Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"}).InterfaceGuid)
-	}
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Enable"
-		{
-			# Set a primary and secondary DNS servers
-			if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
-			{
-				Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Where-Object -FilterScript {$_.Status -eq "Up"} | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
-			}
-			else
-			{
-				Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
-			}
-
-			foreach ($InterfaceGuid in $InterfaceGuids)
-			{
-				if (-not (Test-Path -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS"))
-				{
-					New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Force
-				}
-				if (-not (Test-Path -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS"))
-				{
-					New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS" -Force
-				}
-				# Encrypted preffered, unencrypted allowed
-				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Name DohFlags -PropertyType QWord -Value 5 -Force
-				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS" -Name DohFlags -PropertyType QWord -Value 5 -Force
-			}
-		}
-		"ComssOneDNS"
-		{
-			switch ((Get-WinHomeLocation).GeoId)
-			{
-				{($_ -ne 203) -and ($_ -ne 29)}
-				{
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-					Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-
-					return
-				}
-			}
-
-			# Resolve dns.comss.one to get its IP address to use
-			try
-			{
-				$ResolveComss = Resolve-DnsName -Name dns.comss.one -NoHostsFile -Verbose
-			}
-			catch [System.Net.WebException]
-			{
-				Write-Warning -Message ($Localization.NoResponse -f "https://dns.comss.one")
-				Write-Error -Message ($Localization.NoResponse -f "https://dns.comss.one") -ErrorAction SilentlyContinue
-
-				return
-			}
-
-			# Some ISPs block IP address resolving, and user get only one IP address
-			if ($ResolveComss.IPAddress.Count -eq 1)
-			{
-				$FirstIPAddress = $ResolveComss.IPAddress | Select-Object -First 1
-			}
-			else
-			{
-				$FirstIPAddress = $ResolveComss.IPAddress | Select-Object -First 1
-				$SecondIPAddress = $ResolveComss.IPAddress | Select-Object -Last 1
-			}
-
-			# Set a primary and secondary DNS servers
-			# https://www.comss.ru/page.php?id=7315
-			if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
-			{
-				if ($SecondIPAddress)
-				{
-					Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Where-Object -FilterScript {$_.Status -eq "Up"} | Set-DnsClientServerAddress -ServerAddresses $FirstIPAddress, $SecondIPAddress
-				}
-				else
-				{
-					Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Where-Object -FilterScript {$_.Status -eq "Up"} | Set-DnsClientServerAddress -ServerAddresses $FirstIPAddress
-				}
-			}
-			else
-			{
-				if ($SecondIPAddress)
-				{
-					Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ServerAddresses $FirstIPAddress, $SecondIPAddress
-				}
-				else
-				{
-					Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ServerAddresses $FirstIPAddress
-				}
-			}
-
-			foreach ($InterfaceGuid in $InterfaceGuids)
-			{
-				if (-not (Test-Path -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$FirstIPAddress"))
-				{
-					New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$FirstIPAddress" -Force
-				}
-				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$FirstIPAddress" -Name DohFlags -PropertyType QWord -Value 2 -Force
-				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$FirstIPAddress" -Name DohTemplate -PropertyType String -Value https://dns.comss.one/dns-query -Force
-
-				if ($SecondIPAddress)
-				{
-					if (-not (Test-Path -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondIPAddress"))
-					{
-						New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondIPAddress" -Force
-					}
-					New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondIPAddress" -Name DohFlags -PropertyType QWord -Value 2 -Force
-					New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondIPAddress" -Name DohTemplate -PropertyType String -Value https://dns.comss.one/dns-query -Force
-				}
-			}
-		}
-		"Disable"
-		{
-			# Determining whether Hyper-V is enabled
-			if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
-			{
-				# Configure DNS servers automatically
-				Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Where-Object -FilterScript {$_.Status -eq "Up"} | Set-DnsClientServerAddress -ResetServerAddresses
-			}
-			else
-			{
-				# Configure DNS servers automatically
-				Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ResetServerAddresses
-			}
-
-			foreach ($InterfaceGuid in $InterfaceGuids)
-			{
-				Remove-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh" -Recurse -Force -ErrorAction Ignore
-			}
-		}
-	}
-
-	Clear-DnsClientCache
-	Register-DnsClient
 }
 #endregion Microsoft Defender & Security
 
