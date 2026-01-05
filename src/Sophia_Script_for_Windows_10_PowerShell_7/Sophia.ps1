@@ -3,10 +3,10 @@
 	Default preset file for "Sophia Script for Windows 10 (PowerShell 7)"
 
 	.VERSION
-	6.0.3
+	6.0.4
 
 	.DATE
-	30.12.2025
+	05.01.2026
 
 	.COPYRIGHT
 	(c) 2014—2026 Team Sophia

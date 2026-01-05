@@ -3,10 +3,10 @@
 	Default preset file for "Sophia Script for Windows 11"
 
 	.VERSION
-	7.0.3
+	7.0.4
 
 	.DATE
-	30.12.2025
+	05.01.2026
 
 	.COPYRIGHT
 	(c) 2014—2026 Team Sophia
