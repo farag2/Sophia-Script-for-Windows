@@ -55,7 +55,7 @@ This page is also available in other languages
 <a href="../docs/README_uk-ua.md"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/img/ukraine.png" height="70px"/></a>
 <a href="../docs/README_ru-ru.md"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/img/russia.png" height="70px"/></a>
 
-<img src="../img/SophiaScript.png" alt="Sophia Script for Windows" width='800'>
+<img src="../img/SophiaScript.gif" width='800'>
 
 </div>
 
@@ -68,15 +68,20 @@ This page is also available in other languages
 
 ## Haupt-Features
 
-* Alle Archive werden [automatisch](https://github.com/farag2/Sophia-Script-for-Windows/actions) über GitHub Actions erstellt.
-* Es besteht kein Konflikt mit [VAC](https://help.steampowered.com/faqs/view/571A-97DA-70E9-FF74#whatisvac);
-* Datenschutz und Telemetrie einrichten;
-* DNS-über-HTTPS für IPv4 aktivieren;
-* Deaktivieren Sie die Diagnoseverfolgung geplanter Aufgaben mit einem in [WPF] geschriebenen Popup-Formular (#screenshots);
-* UI & Personalisierung einrichten;
-* OneDrive "richtig" deinstallieren;
-* Interaktive [Eingabeaufforderungen](#change-user-folders-location-programmatically-using-the-interactive-menu);
-* Die <kbd>TAB</kbd> [Autovervollständigung](#the-tab-autocomplete-read-more-here) für Funktionen und ihre Argumente (bei Verwendung der Datei Import-TabCompletion.ps1);
+* Vollständig quelloffenes Projekt
+  * Alle Archive werden [automatisch](https://github.com/farag2/Sophia-Script-for-Windows/actions) mit GitHub Actions erstellt und hochgeladen
+  * Cursor von [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) wurden mithilfe der [DeviantArt API](https://github.com/farag2/Sophia-Script-for-Windows/blob/master/.github/workflows/Cursors.yml) heruntergeladen
+* Verfügbar über Scoop, Chocolatey und WinGet
+* Es besteht kein Konflikt mit [VAC](https://help.steampowered.com/faqs/view/571A-97DA-70E9-FF74#whatisvac)
+* Windows-Datenschutz konfigurieren
+* Konfigurieren Sie die Windows-Sicherheit
+* Windows-Benutzeroberfläche personalisieren
+* Zeigen Sie die angewendeten Registrierungsrichtlinien im Snap-Ins Editor für lokale Gruppenrichtlinien (gpedit.msc) an
+* DNS-über-HTTPS für IPv4 aktivieren
+* Deaktivieren Sie die Diagnoseverfolgung geplanter Aufgaben mit einem in [WPF] geschriebenen Popup-Formular (#screenshots)
+* OneDrive "richtig" deinstallieren
+* Interaktive [Eingabeaufforderungen](#change-user-folders-location-programmatically-using-the-interactive-menu)
+* Die <kbd>TAB</kbd> [Autovervollständigung](#the-tab-autocomplete-read-more-here) für Funktionen und ihre Argumente (bei Verwendung der Datei Import-TabCompletion.ps1)
 * Ändern Sie den Speicherort der Benutzerordner programmatisch (ohne die Benutzerdateien zu verschieben) im interaktiven Menü mit Hilfe von Pfeilen zur Auswahl eines Laufwerks
   * Desktop
   * Dokumente
@@ -84,25 +89,21 @@ This page is also available in other languages
   * Musik
   * Bilder
   * Videos
-* Installieren Sie den kostenlosen (helle und dunkle) "Windows 11 Cursors Concept v2" Cursor von [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) on-the-fly;
-* Deinstallieren Sie UWP-Anwendungen, mithilfe der Paketnamen;
-  * Skript generiert Liste der installierten UWP-Apps [dynamisch](#lokalisierte-namen-von-uwp-paketen);
-* Deaktivieren Sie Windows-Funktionen, die Paketnamen mit einem in [WPF] geschriebenen Popup-Formular, in lokalisierter Sprache anzeigen (#screenshots);
-* Deinstallieren Sie Windows-Funktionen, die Paketnamen mit einem in [WPF] geschriebenen Popup-Formular, in lokalisierter Sprache anzeigen (#screenshots);
-* Laden Sie die [HEVC Video Extensions from Device Manufacturer](https://apps.microsoft.com/detail/9N4WGH0Z6VHQ) herunter und installieren Sie sie, um das Format [HEVC](https://en.wikipedia.org/wiki/High_Efficiency_Video_Coding) öffnen zu können;
-* Registrieren Sie Anwendung, berechnen Sie den Hash und legen Sie ihn als Standard für eine bestimmte Erweiterung fest, ohne das Popup-Fenster "Wie möchten Sie dies öffnen?" sehen zu müssen. All das mit einer speziellen [Funktion] (<https://github.com/DanysysTeam/PS-SFTA>);
-* Exportieren Sie alle Windows-Verknüpfungen in die Datei Application_Associations.json in den Skriptstammordner;
-* Importieren Sie alle Windows-Zuordnungen aus einer JSON-Datei. Sie müssen alle Anwendungen gemäß einer exportierten JSON-Datei installieren, um alle Zuordnungen wiederherzustellen;
-* Installieren Sie eine beliebige unterstützte Linux-Distribution für WSL, die lokalisierten Distro-Namen nutzt, mit einem in [WPF] geschriebenen Popup-Formular(#screenshots);
-* Erstellen Sie geplante Aufgaben mit einer nativen Toast-Benachrichtigung, mit der Sie Aufgaben ausführen oder [abbrechen können](#native-interactive-toasts-for-the-scheduled-tasks);
-  * Erstellen Sie die geplanten Aufgaben `Windows Cleanup` und `Windows Cleanup Notification`, um Windows von ungenutzten Dateien und Windows-Updates zu bereinigen;
-  * Erstellen Sie eine geplante Aufgabe `SoftwareDistribution` zur Bereinigung von `%SystemRoot%\SoftwareDistribution\Download`.
-  * Erstellen Sie eine geplante Aufgabe `Temp` zum Aufräumen von `%TEMP%`.
-* Installieren Sie die neueste bereitgestellte Version von Microsoft Visual C++ 2015–2026 x86/x64 (ARM64 supported);
-* Installieren Sie die neueste bereitgestellte Version von .NET Desktop Runtime 8, 9, 10 (ARM64 supported);
-* Konfigurieren Sie die Windows-Sicherheit;
-* Zeigen Sie die angewendeten Registrierungsrichtlinien im Snap-Ins Editor für lokale Gruppenrichtlinien (gpedit.msc) an;
-* Viele weitere "tiefe" Optimierungen des Datei-Explorers und des Kontextmenüs.
+* Installieren Sie den kostenlosen (helle und dunkle) "Windows 11 Cursors Concept v2" Cursor von [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) on-the-fly
+* Deinstallieren Sie UWP-Anwendungen, mithilfe der Paketnamen
+  * Skript generiert Liste der installierten UWP-Apps [dynamisch](#lokalisierte-namen-von-uwp-paketen)
+* Laden Sie die [HEVC Video Extensions from Device Manufacturer](https://apps.microsoft.com/detail/9N4WGH0Z6VHQ) herunter und installieren Sie sie, um das Format [HEVC](https://en.wikipedia.org/wiki/High_Efficiency_Video_Coding) öffnen zu können
+* Registrieren Sie Anwendung, berechnen Sie den Hash und legen Sie ihn als Standard für eine bestimmte Erweiterung fest, ohne das Popup-Fenster "Wie möchten Sie dies öffnen?" sehen zu müssen. All das mit einer speziellen [Funktion] (<https://github.com/DanysysTeam/PS-SFTA>)
+* Exportieren Sie alle Windows-Verknüpfungen in die Datei Application_Associations.json in den Skriptstammordner
+* Importieren Sie alle Windows-Zuordnungen aus einer JSON-Datei. Sie müssen alle Anwendungen gemäß einer exportierten JSON-Datei installieren, um alle Zuordnungen wiederherzustellen
+* Installieren Sie eine beliebige unterstützte Linux-Distribution für WSL, die lokalisierten Distro-Namen nutzt, mit einem in [WPF] geschriebenen Popup-Formular(#screenshots)
+* Erstellen Sie geplante Aufgaben mit einer nativen Toast-Benachrichtigung, mit der Sie Aufgaben ausführen oder [abbrechen können](#native-interactive-toasts-for-the-scheduled-tasks)
+  * Erstellen Sie die geplanten Aufgaben `Windows Cleanup` und `Windows Cleanup Notification`, um Windows von ungenutzten Dateien und Windows-Updates zu bereinigen
+  * Erstellen Sie eine geplante Aufgabe `SoftwareDistribution` zur Bereinigung von `%SystemRoot%\SoftwareDistribution\Download`
+  * Erstellen Sie eine geplante Aufgabe `Temp` zum Aufräumen von `%TEMP%`
+* Installieren Sie die neueste bereitgestellte Version von Microsoft Visual C++ 2015–2026 x86/x64 (ARM64 supported)
+* Installieren Sie die neueste bereitgestellte Version von .NET Desktop Runtime 8, 9, 10 (ARM64 supported)
+* Viele weitere "tiefe" Optimierungen des Datei-Explorers und des Kontextmenüs
 
 ## Table of Contents
 
@@ -203,24 +204,24 @@ scoop uninstall sophia-script --purge
 
 ## Wie zu verwenden
 
-* Archiv herunterladen und erweitern;
-* Das Archiv extrahieren;
-* Schauen Sie sich die Datei `Sophia.ps1` an, um die Funktionen zu konfigurieren, die Sie ausführen möchten;
+* Archiv herunterladen und erweitern
+* Das Archiv extrahieren
+* Schauen Sie sich die Datei `Sophia.ps1` an, um die Funktionen zu konfigurieren, die Sie ausführen möchten
   * Setzen Sie das `#`-Zeichen vor die Funktion, wenn Sie nicht möchten, dass sie ausgeführt wird.
   * Entfernen Sie das `#`-Zeichen vor der Funktion, wenn sie ausgeführt werden soll.
 * Kopieren Sie den gesamten Pfad zu `Sophia.ps1`.
-  * Mit `Windows 10` drücke und halte die <kbd>Shift</kbd> Taste, Rechtsklick auf `Sophia.ps1`, anschließend `als Pfad kopieren` auswählen;
+  * Mit `Windows 10` drücke und halte die <kbd>Shift</kbd> Taste, Rechtsklick auf `Sophia.ps1`, anschließend `als Pfad kopieren` auswählen
   * Mit `Windows 11` Rechtsklick auf `Sophia.ps1` und `als Pfad kopieren` auswählen.
 * Öffnen Sie `Windows PowerShell`
   * Klicken Sie unter `Windows 10` im Datei-Explorer auf "Datei", bewegen Sie den Mauszeiger über "Windows PowerShell öffnen" und wählen Sie "Windows PowerShell als Administrator öffnen" [(Anleitung mit Screenshots)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/)
-  * Unter `Windows 11` klicken Sie mit der rechten Maustaste auf das Symbol <kbd>Windows</kbd> und "Windows Terminal (Admin)" auswählen;
-* Legen Sie die Ausführungsrichtlinie so fest, dass Skripts nur in der aktuellen PowerShell-Sitzung ausgeführt werden können;
+  * Unter `Windows 11` klicken Sie mit der rechten Maustaste auf das Symbol <kbd>Windows</kbd> und "Windows Terminal (Admin)" auswählen
+* Legen Sie die Ausführungsrichtlinie so fest, dass Skripts nur in der aktuellen PowerShell-Sitzung ausgeführt werden können
 
 ```powershell
   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 ```
 
-* Geben Sie `.\Sophia.ps1` ein und drücken Sie <kbd>Enter</kbd>;
+* Geben Sie `.\Sophia.ps1` ein und drücken Sie <kbd>Enter</kbd>
 
 ```powershell
   .\Sophia.ps1
@@ -244,7 +245,7 @@ scoop uninstall sophia-script --purge
 . .\Import-TabCompletion.ps1
 ```
 
-* Jetzt können Sie dies tun (die Anführungszeichen sind erforderlich)
+* Rufen Sie jede Skriptfunktion mit Namensautokomplettierung über die <kbd>TAB</kbd>-Taste auf.
 
 ```powershell
 Sophia -Functions<TAB>
@@ -256,7 +257,7 @@ Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", U
 Uninstall-UWPApps, "PinToStart -UnpinAll"
 ```
 
-<https://github.com/user-attachments/assets/ea90122a-bdb3-4687-bf8b-9b6e7af46826>
+<https://github.com/user-attachments/assets/b7ba9ff5-fa3f-481c-a91f-d8bac5631a56>
 
 ## Wrapper
 
@@ -264,14 +265,14 @@ Uninstall-UWPApps, "PinToStart -UnpinAll"
 
 Lesen Sie [hier mehr dazu](../Wrapper/README.md)
 
-@BenchTweakGaming
+[@BenchTweakGaming](https://github.com/BenchTweakGaming)
 
-* Laden Sie die (neueste)(<https://github.com/farag2/Sophia-Script-for-Windows/releases/latest>) Wrapper-Version herunter.
-* Das Archiv extrahieren;
-* Führe `SophiaScriptWrapper.exe` aus und importiere `Sophia.ps1`;
-  * `Sophia.ps1`muss im `Sophia Script` Ordner enthalten sein;
-  * Der Wrapper hat ein Echtzeit-UI-Rendering;
-* Konfiguriere jede Funktion;
+* Laden Sie die [neueste](<https://github.com/farag2/Sophia-Script-for-Windows/releases/latest>) Wrapper-Version herunter.
+* Das Archiv extrahieren
+* Führe `SophiaScriptWrapper.exe` aus und importiere `Sophia.ps1`
+  * `Sophia.ps1`muss im `Sophia Script` Ordner enthalten sein
+  * Der Wrapper hat ein Echtzeit-UI-Rendering
+* Konfiguriere jede Funktion
 * Öffne das `Console Output` Tab und drücke `Run PowerShell`.
 
 ## Wie man Änderungen rückgängig macht
@@ -312,21 +313,9 @@ Sophia -Functions "DiagTrackService -Enable", Uninstall-UWPApps
 
 ## Screenshots
 
-### Die <kbd>TAB</kbd> Autovervollständigung. Lesen Sie [hier mehr dazu](#how-to-run-the-specific-functions)
-
-https://user-images.githubusercontent.com/10544660/225270281-908abad1-d125-4cae-a19b-2cf80d5d2751.mp4
-
-### Ändern Sie den Speicherort von Benutzerordnern programmatisch über das interaktive Menü
-
-https://user-images.githubusercontent.com/10544660/253818031-b7ce6bf1-d968-41ea-a5c0-27f6845de402.mp4
-
 ### Lokalisierte Namen von UWP-Paketen
 
 ![Image](../img/uwpapps.png)
-
-### Lokalisierte Namen von Windows-Features
-
-![Image](../img/optionalfeatures.png) ![Image](../img/windowsfeatures.png)
 
 ### Herunterladen und Installieren einer beliebigen unterstützten Linux-Distribution im automatischen Modus
 
@@ -338,14 +327,16 @@ https://user-images.githubusercontent.com/10544660/253818031-b7ce6bf1-d968-41ea-
 
 ## Videos
 
-[![YT](https://img.youtube.com/vi/q_weQifFM58/0.jpg)](https://www.youtube.com/watch?v=q_weQifFM58)
+[Video Tutorial](https://www.youtube.com/watch?v=q_weQifFM58)
 
-[![YT](https://img.youtube.com/vi/8E6OT_QcHaU/1.jpg)](https://youtu.be/8E6OT_QcHaU?t=370) [![YT](https://img.youtube.com/vi/091SOihvx0k/1.jpg)](https://youtu.be/091SOihvx0k?t=490)
+[Chris Titus Tech' Review](https://youtu.be/8E6OT_QcHaU?t=370)
+
+[Znorux' Review](https://youtu.be/091SOihvx0k?t=490)
 
 ## Wie man übersetzt
 
-* Holen Sie sich die Sprache der Benutzeroberfläche Ihres Betriebssystems, indem Sie "$PSUICulture" in PowerShell aufrufen;
-* Erstellen Sie einen Ordner mit dem Namen der UI-Sprache;
+* Holen Sie sich die Sprache der Benutzeroberfläche Ihres Betriebssystems, indem Sie "$PSUICulture" in PowerShell aufrufen
+* Erstellen Sie einen Ordner mit dem Namen der UI-Sprache
 * Legen Sie Ihre lokalisierte SophiaScript.psd1-Datei in diesen Ordner.
 
 ## Media
@@ -366,7 +357,7 @@ https://user-images.githubusercontent.com/10544660/253818031-b7ce6bf1-d968-41ea-
 
 ***
 
-## SophiApp 2 (C# + WinUI 3)
+## SophiApp 2.0 (C# + WinUI 3)
 
 [SophiApp 2.0](https://github.com/Sophia-Community/SophiApp) befindet sich in der Entwicklung. 🚀
 
