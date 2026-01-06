@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 6.0.4 | 7.0.4 — 05.01.2026
+
+* Added `RecentlyAddedStartApps` and `MostUsedStartApps` for Windows 11
+* `StartRecommendedSection` function re-written. Please re-apply it
+* Removed `DNSoverHTTPS` function for Windows 10
+* `Install-HEVC` function fixed
+* Renamed `RecentlyAddedApps` into `RecentlyAddedStartApps` for Windows 10
+* Renamed `UninstallUWPApps` into `Uninstall-UWPApps`
+* Updated Readme
+
 ## 6.0.3 | 7.0.3 — 30.12.2025
 
 Fixed XAML markup in `Uninstall-UWPApps` function. Thanks to Gugenot Murm for bugreport.
