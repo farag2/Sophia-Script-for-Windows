@@ -31,7 +31,7 @@ Fixed XAML markup in `Uninstall-UWPApps` function. Thanks to Gugenot Murm for bu
   * [Added](https://github.com/farag2/Sophia-Script-for-Windows/blob/master/.github/workflows/Cursors.yml) CI/CD config to download always up-to-date jepricreations' cursors via a DeviantArt API to the [Cursors folder](https://github.com/farag2/Sophia-Script-for-Windows/tree/master/Cursors).
 * Added cloud Defender scan before uploading to release page;
   * https://github.com/farag2/Sophia-Script-for-Windows/blob/master/.github/workflows/Sophia.yml#L70
-* Added `Sophia Script` to [scoop](https://scoop.sh)
+* Added `Sophia Script` to [Scoop](https://scoop.sh)
   * https://github.com/ScoopInstaller/Extras/blob/master/bucket/sophia-script.json
   * Fix for #684
 

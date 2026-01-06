@@ -15,7 +15,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@main
 
-      - name: Get the Numbers
+      - name: Get download counts
         run: |
           # Count downloads for the first page of the repo
           # By default, GitHub parses only first page
@@ -24,7 +24,6 @@ jobs:
               Accept        = "application/vnd.github+json"
               Authorization = "Bearer $Token"
           }
-
           $Parameters = @{
               Uri             = "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases?per_page=100&page=1"
               Headers         = $Headers
@@ -44,13 +43,21 @@ jobs:
 
           # https://community.chocolatey.org/packages/sophia
           $Parameters = @{
-              Uri     = "https://community.chocolatey.org/api/v2/Packages()?`$filter=Id eq 'sophia' and IsLatestVersion"
+              Uri             = "https://community.chocolatey.org/api/v2/Packages()?`$filter=Id eq 'sophia' and IsLatestVersion"
               UseBasicParsing = $true
               Verbose         = $true
           }
           $choco = (Invoke-RestMethod @Parameters).properties.DownloadCount."#text"
 
-          $Summary = "{0:N3} Million" -f (($page1 + $page2 + $choco)/1000000)
+          # https://sourceforge.net/projects/sophia-script-windows.mirror/
+          $Parameters = @{
+              Uri             = "https://sourceforge.net/projects/sophia-script-windows.mirror/files/stats/json?start_date=2025-09-11&end_date=$(Get-Date -Format "yyyy-MM-dd")"
+              UseBasicParsing = $true
+              Verbose         = $true
+          }
+          $sourceforge = (Invoke-RestMethod @Parameters).total
+
+          $Summary = "{0:N3} Million" -f (($page1 + $page2 + $choco + $sourceforge)/1000000)
           Write-Verbose -Message $Summary -Verbose
 
           echo "DOWNLOADS_COUNT=$Summary" >> $env:GITHUB_ENV

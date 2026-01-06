@@ -1,10 +1,12 @@
+🌐 [English](/README.md) | [Deutsche](/README_de-de.md) | [Русский](/README_ru-ru.md) | [Українська](/README_uk-ua.md)
+
 <div align="center">
 
 <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/img/Sophia.png" alt="Sophia Script for Windows" width='150'>
 
 # Sophia Script for Windows
 
-**Самый мощный PowerShell-модуль на GitHub для тонкой настройки Windows**
+Самый мощный PowerShell-модуль на `GitHub` для тонкой настройки `Windows`
 
 Сделано с <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/heart.svg" height="17px"/> к Windows
 
@@ -12,7 +14,7 @@
 	<a href="https://github.com/farag2/Sophia-Script-for-Windows/actions"><img src="https://img.shields.io/github/actions/workflow/status/farag2/Sophia-Script-for-Windows/Sophia.yml?labelColor=151B23&color=151B23&style=for-the-badge&label=build&logo=GitHub"></a>
 </kbd>
 <kbd>
-  <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Arm-support-green?labelColor=151B23&color=151B23&style=for-the-badge&logo=Arm&logoColor=white" href="#"></a>
+	<a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Arm-support-green?labelColor=151B23&color=151B23&style=for-the-badge&logo=Arm&logoColor=white" href="#"></a>
 </kbd>
 <kbd>
 	<a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Human%20Coded%20100%25-green?labelColor=151B23&color=151B23&style=for-the-badge" href="#"></a>
@@ -49,40 +51,29 @@
 <br>
 <br>
 
-This page is also available in other languages
-
-<a href="../README.md"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/img/united-states.png" height="70px"/></a>
-<a href="../docs/README_uk-ua.md"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/img/ukraine.png" height="70px"/></a>
-<a href="../docs/README_de-de.md"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/img/germany.png" height="70px"/></a>
-
-<img src="../img/SophiaScript.gif" width='800'>
+<img src="./img/SophiaScript.gif" width='800'>
 
 </div>
 
-## О Sophia Script
-
-`Sophia Script for Windows` — это самый мощный PowerShell-модуль на `GitHub` для тонкой настройки `Windows 10` и `Windows 11` и автоматизации рутинных задач. Он предлагает более 150 уникальных твиков и показывает, как можно настоить Windows, ничего не сломав.
-
-> [!IMPORTANT]
-> Каждый функция в пресет-файле (файл предустановок) имеет соответствующую функцию для возврата значений по умолчанию.
-
 ## Ключевые возможности
 
+* Более 150 уникальных функций для настройки Windows с использованием официально задокументированных методов Microsoft без вреда системе
+  * Каждая настройка имеет соответствующую функцию для восстановления значений по умолчанию
+* Настройка Windows AI
+* Настройка приватности, безопасности и персонализации Windows
 * Проект с полностью открытым исходным кодом
   * Все архивы собираются и загружаются на страницу релизов, используя GitHub Actions, в [автоматическом режиме](https://github.com/farag2/Sophia-Script-for-Windows/actions)
-  * Курсоры от [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) были скачаны, используя [DeviantArt API](https://github.com/farag2/Sophia-Script-for-Windows/blob/master/.github/workflows/Cursors.yml)
-* Доступен через scoop, Chocolatey, and WinGet
+* Доступен через Scoop, Chocolatey и WinGet
+* Поддержка ARM64 и PowerShell 7
 * Не конфликтует с [VAC](https://help.steampowered.com/faqs/view/571A-97DA-70E9-FF74#whatisvac)
-* Настройка конфиденциальности Windows
-* Настроить безопасность Windows
-* Персонализация пользовательского интерфейса Windows
+* Удаление UWP-приложений с отображением локализованных имен пакетов
+  * Скрипт генерирует список установленных UWP-приложений [динамически](#локализованные-имена-uwp-пакетов)
 * Отобразить примененные политики реестра в оснастке редактирования групповых политик (gpedit.msc)
-* Включить DNS-over-HTTPS для IPv4
-* Выключить диагностические задания в Планировщике заданий с помощью всплывыющего окошка, написанного на [WPF](#скриншоты)
-* "Правильно" удалить OneDrive
-* Интерактивные [подсказки](#программно-изменить-расположение-пользовательских-папок-с-помощью-интерактивного-меню)
-* [Автопродление](#автопродление-функций-с-помощью-tab-подробнее-здесь) функций и их аргументов с помощью <kbd>TAB</kbd> (при условии использования файла Import-TabCompletion.ps1)
-* Программно изменить расположение пользовательских папок с помощью интерактивного меню (без перемещения пользовательских файлов), используя стрелки для выбора диска
+* Включить DNS-over-HTTPS
+* Удаление OneDrive
+* Интерактивные [подсказки и всплывающие окна](#скриншоты)
+* [Автопродление](#как-выполнить-конкретную-функциюи) функций и их аргументов с помощью <kbd>TAB</kbd> (используя Import-TabCompletion.ps1)
+* Изменить расположение пользовательских папок (без перемещения пользовательских файлов) с помощью интерактивного меню
   * Рабочий стол
   * Документы
   * Загрузки
@@ -90,19 +81,16 @@ This page is also available in other languages
   * Изображения
   * Видео
 * Установить бесплатный (светлый и темный) курсор "Windows 11 Cursors Concept v2" от [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) на лету (без перезагрузок)
-* Удалить UWP-приложения, отображая их локализированные имена пакетов
-  * Скрипт генерирует список установленных UWP-приложений [динамически](#локализированные-имена-пакетов)
-* Скачать и установить [Расширения для видео HEVC от производителя](https://apps.microsoft.com/detail/9N4WGH0Z6VHQ), чтобы иметь поддержку формата [HEVC](https://en.wikipedia.org/wiki/High_Efficiency_Video_Coding)
-* Установить приложение по умолчанию для конкретного расширения без всплывающего окошка "Каким образом вы хотите открыть этот файл?", используя специльную [функцию](https://github.com/DanysysTeam/PS-SFTA)
-* Экспортировать все ассоциации в Windows. Ассоциации будут экспортированы в файл `Application_Associations.json` в корне папки скрипта
-* Импортировать выгруженный `Application_Associations.json` после чистой установки. Вам необходимо установить все приложения из списка выгруженного `Application_Associations.json`, чтобы восстановить ассоциации
-* Установить любой поддерживаемый дистрибутив Linux через WSL, отображая локализированные имена дистрибутивов с помощью всплывающего окошка, написанного на [WPF](#скриншоты)
+  * Архив был скачан в папку [Cursors](https://github.com/farag2/Sophia-Script-for-Windows/tree/master/Cursors), используя [DeviantArt API](https://github.com/farag2/Sophia-Script-for-Windows/blob/master/.github/workflows/Cursors.yml)
+* Установить приложение по умолчанию для конкретного расширения без всплывающего окошка "Каким образом вы хотите открыть этот файл?"
+* Экспортировать и импортировать все ассоциации в Windows. Необходимо установить все приложения в соответствии с экспортированным файлом JSON-файлом, чтобы восстановить ассоциации
+* Установить дистрибутив Linux через WSL, используя локализованные имена дистрибутивов с помощью всплывающего [окна](#скриншоты)
 * Создать задания в Планировщике заданий с нативным тостовым уведомлением, где вы сможете запустить или отменить [выполнение](#нативные-тостовые-уведомления-для-заданий-планировщика-заданий) задания
   * Создать задания `Windows Cleanup` и `Windows Cleanup Notification` для очистки Winsows от неиспользуемых файлов и файлов обновлений
   * Создать задание `SoftwareDistribution` для очистки `%SystemRoot%\SoftwareDistribution\Download`
   * Создать задание `Temp` для очистки `%TEMP%`
-* Установить последней версии распространяемых пакетов Microsoft Visual C++ 2015–2026 x86/x64 (поддержка ARM64)
-* Установить последней версии распространяемых пакетов .NET Desktop Runtime 8, 9, 10 x64 (поддержка ARM64)
+* Установить последней версии распространяемых пакетов Microsoft Visual C++ 2015–2026 x86/x64
+* Установить последней версии распространяемых пакетов .NET Desktop Runtime 8, 9, 10 x64
 * Много других твиков проводника и контекстного меню
 
 ## Содержание
@@ -113,9 +101,9 @@ This page is also available in other languages
   * [Скачать через PowerShell](#скачать-через-powershell)
   * [Скачать через Chocolatey](#скачать-через-chocolatey)
   * [Скачать через WinGet](#скачать-через-winget)
-  * [Скачать через scoop](#скачать-через-scoop)
+  * [Скачать через Scoop](#скачать-через-Scoop)
 * [Как использовать](#как-использовать)
-  * [Как выполнить конкретную функцию(и)](#как-выполните-конкретную-функциюи)
+  * [Как выполнить конкретную функцию(и)](#как-выполнить-конкретную-функциюи)
   * [Wrapper](#wrapper)
   * [Как откатить изменения](#как-откатить-изменения)
 * [Пожертвования](#пожертвования)
@@ -124,13 +112,43 @@ This page is also available in other languages
 * [Видео](#видео)
 * [Перевод](#перевод)
 * [Ссылки](#ссылки)
-* [SophiApp 2](#sophiapp-2-c--winui-3)
+* [SophiApp 2](#sophiapp-20-c--winui-3)
 
 ## Как скачать
 
 ### Со страницы релиза
 
-Скачайте [архив](https://github.com/farag2/Sophia-Script-for-Windows/releases/latest) в зависимости от версий ваших Windows и PowerShell.
+<table>
+  <tbody>
+    <tr>
+      <td align="center">Windows 10</td>
+      <td align="center">Windows 11</td>
+    </tr>
+    <tr>
+      <td align="left"><a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Windows%2010%20x64-PowerShell%205.1-green?labelColor=151B23&color=151B23&style=for-the-badge"></a></td>
+      <td align="left"><a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Windows%2011-PowerShell%205.1-green?labelColor=151B23&color=151B23&style=for-the-badge"></a></td>
+    </tr>
+    <tr>
+      <td align="left"><a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Windows%2010%20x64-PowerShell%207-green?labelColor=151B23&color=151B23&style=for-the-badge"></a></td>
+      <td align="left"><a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Windows%2011-PowerShell%207-green?labelColor=151B23&color=151B23&style=for-the-badge"></a></td>
+    </tr>
+    <tr>
+      <td align="left"><a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Windows%2010%20x64-LTSC%202019-green?labelColor=151B23&color=151B23&style=for-the-badge"></a></td>
+      <td align="left"><a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Windows%2011%20LTSC%202024-PowerShell%205.1-green?labelColor=151B23&color=151B23&style=for-the-badge"></a></td>
+    </tr>
+    <tr>
+      <td align="left"><a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Windows%2010%20x64-LTSC%202021-green?labelColor=151B23&color=151B23&style=for-the-badge"></a></td>
+      <td align="left"><a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Windows%2011%20Arm-PowerShell%205.1-green?labelColor=151B23&color=151B23&style=for-the-badge"></a></td>
+    </tr>
+    <tr>
+      <td align="left"></td>
+      <td align="left"><a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Windows%2011%20Arm-PowerShell%207-green?labelColor=151B23&color=151B23&style=for-the-badge"></a></td>
+    </tr>
+    <tr>
+      <td align="center" colspan="2"><a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Sophia%20Script%20Wrapper-green?labelColor=151B23&color=151B23&style=for-the-badge"></a></td>
+    </tr>
+  </tbody>
+</table>
 
 ### Скачать через PowerShell
 
@@ -139,6 +157,7 @@ This page is also available in other languages
 ```powershell
 iwr script.sophia.team -useb | iex
 ```
+
 Скачать и распаковать в папку Загрузки последнюю версию `Sophia Script for Windows` из актуального [коммита](https://github.com/farag2/Sophia-Script-for-Windows/commits/master/) в зависимости от версий ваших Windows и PowerShell.
 
 ```powershell
@@ -184,7 +203,7 @@ winget install --id TeamSophia.SophiaScript --location $DownloadsFolder --accept
 winget uninstall --id TeamSophia.SophiaScript --force
 ```
 
-### Скачать через scoop
+### Скачать через Scoop
 
 <https://scoop.sh>
 
@@ -233,7 +252,7 @@ scoop uninstall sophia-script --purge
 
 <https://github.com/user-attachments/assets/f5bda68f-9509-41dc-b3b1-1518aeaee36f>
 
-### Как выполните конкретную функцию(и)
+### Как выполнить конкретную функцию(и)
 
 * Выполните все шаги из пункта [Как использовать](#как-использовать) и остановитесь на пункте по изменнию политики выполнения скриптов в `PowerShell`
 * Сначала загрузите файл `Import-TabCompletion.ps1` через [дот сорсинг](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-):
@@ -261,7 +280,7 @@ Uninstall-UWPApps, "PinToStart -UnpinAll"
 
 ![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/master/img/Wrapper.png)
 
-Подробнее [здесь](../Wrapper/README.md)
+Подробнее [здесь](./Wrapper/README.md)
 
 [@BenchTweakGaming](https://github.com/BenchTweakGaming)
 
@@ -301,23 +320,23 @@ Sophia -Functions "DiagTrackService -Enable", Uninstall-UWPApps
 [Windows-11-LTSC-2024]: https://support.microsoft.com/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5
 [Windows-11-24h2]: https://support.microsoft.com/topic/windows-11-version-25h2-update-history-99c7f493-df2a-4832-bd2d-6706baa0dec0
 
-|                Версия                    |                 Билд                  |      Издание        |
-|:-----------------------------------------|:-------------------------------------:|:-------------------:|
-| Windows 11 24H2/25H2+                    | [Latest stable][Windows-11-24h2]      | Home/Pro/Enterprise |
-| Windows 10 x64 22H2                      | [Latest stable][Windows-10]           | Home/Pro/Enterprise |
-| Windows 11 Enterprise LTSC 2024          | [Latest stable][Windows-11-LTSC-2024] | Enterprise          |
-| Windows 10 x64 21H2 Enterprise LTSC 2021 | [Latest stable][Windows-10-LTSC-2021] | Enterprise          |
-| Windows 10 x64 1809 Enterprise LTSC 2019 | [Latest stable][Windows-10-LTSC-2019] | Enterprise          |
+|                Версия                    |                 Сборка                       |      Издание        |
+|:-----------------------------------------|:--------------------------------------------:|:-------------------:|
+| Windows 11 24H2/25H2+                    | [Последняя стабильная][Windows-11-24h2]      | Home/Pro/Enterprise |
+| Windows 10 x64 22H2                      | [Последняя стабильная][Windows-10]           | Home/Pro/Enterprise |
+| Windows 11 Enterprise LTSC 2024          | [Последняя стабильная][Windows-11-LTSC-2024] | Enterprise          |
+| Windows 10 x64 21H2 Enterprise LTSC 2021 | [Последняя стабильная][Windows-10-LTSC-2021] | Enterprise          |
+| Windows 10 x64 1809 Enterprise LTSC 2019 | [Последняя стабильная][Windows-10-LTSC-2019] | Enterprise          |
 
 ## Скриншоты
 
-### Локализированные имена пакетов
+### Локализованные имена UWP-пакетов
 
-![Image](../img/uwpapps.png)
+![Image](./img/uwpapps.png)
 
 ### Скачать и установить любые поддерживаемые дистрибутивые Linux через WSL в автоматическом режиме
 
-![Image](../img/WSL.png)
+![Image](./img/WSL.png)
 
 ### Нативные тостовые уведомления для заданий Планировщика заданий
 
