@@ -49,6 +49,9 @@ catch [System.Net.WebException]
 	}
 	Write-Warning -Message "You're using $(if ($DNS.Count -gt 1) {$DNS -join ', '} else {$DNS}) DNS records"
 
+	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
 	pause
 	exit
 }
@@ -81,7 +84,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		}
 		else
 		{
-			Write-Verbose -Message "Windows version is not supported. Update your Windows" -Verbose
+			Write-Verbose -Message "Windows version is not supported. Update your Windows and try again." -Verbose
 
 			# Receive updates for other Microsoft products when you update Windows
 			(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
@@ -91,6 +94,9 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 
 			# Open the "Windows Update" page
 			Start-Process -FilePath "ms-settings:windowsupdate"
+
+			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 			pause
 			exit
@@ -114,7 +120,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		}
 		else
 		{
-			Write-Verbose -Message "Windows version is not supported. Update your Windows" -Verbose
+			Write-Verbose -Message "Windows version is not supported. Update your Windows and try again." -Verbose
 
 			# Receive updates for other Microsoft products when you update Windows
 			(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
@@ -124,6 +130,9 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 
 			# Open the "Windows Update" page
 			Start-Process -FilePath "ms-settings:windowsupdate"
+
+			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 			pause
 			exit
@@ -240,20 +249,25 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 			$Version = "Windows_11_LTSC2024"
 		}
 	}
-}
+	default
+	{
+		Write-Verbose -Message "Windows version is not supported. Update your Windows and try again." -Verbose
 
-if (-not (Test-Path -Path "$DownloadsFolder\Sophia.Script.zip"))
-{
-	Write-Verbose -Message "Your Windows build is unsupported. Run Windows Update and try again." -Verbose
+		# Receive updates for other Microsoft products when you update Windows
+		(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
 
-	# Check for updates
-	& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
+		# Check for updates
+		& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
 
-	# Open t"Windows Update" page
-	Start-Process -FilePath "ms-settings:windowsupdate"
+		# Open the "Windows Update" page
+		Start-Process -FilePath "ms-settings:windowsupdate"
 
-	pause
-	exit
+		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+		pause
+		exit
+	}
 }
 
 try
@@ -275,6 +289,9 @@ catch
 
 	# Open t"Windows Update" page
 	Start-Process -FilePath "ms-settings:windowsupdate"
+
+	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 	pause
 	exit
