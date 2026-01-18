@@ -6,7 +6,7 @@
 
 # Sophia Script for Windows
 
-**Самый мощный PowerShell-модуль на GitHub для тонкой настройки Windows**
+Самый мощный PowerShell-модуль на `GitHub` для тонкой настройки `Windows 10` и `Windows 11` и автоматизации рутинных задач
 
 Сделано с <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/heart.svg" height="17px"/> к Windows
 
@@ -14,7 +14,7 @@
 	<a href="https://github.com/farag2/Sophia-Script-for-Windows/actions"><img src="https://img.shields.io/github/actions/workflow/status/farag2/Sophia-Script-for-Windows/Sophia.yml?labelColor=151B23&color=151B23&style=for-the-badge&label=build&logo=GitHub"></a>
 </kbd>
 <kbd>
-  <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Arm-support-green?labelColor=151B23&color=151B23&style=for-the-badge&logo=Arm&logoColor=white" href="#"></a>
+	<a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Arm-support-green?labelColor=151B23&color=151B23&style=for-the-badge&logo=Arm&logoColor=white" href="#"></a>
 </kbd>
 <kbd>
 	<a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Human%20Coded%20100%25-green?labelColor=151B23&color=151B23&style=for-the-badge" href="#"></a>
@@ -55,30 +55,25 @@
 
 </div>
 
-## О Sophia Script
-
-`Sophia Script for Windows` — это самый мощный PowerShell-модуль на `GitHub` для тонкой настройки `Windows 10` и `Windows 11` и автоматизации рутинных задач. Он предлагает более 150 уникальных твиков и показывает, как можно настоить Windows, ничего не сломав.
-
-> [!IMPORTANT]
-> Каждый функция в пресет-файле (файл предустановок) имеет соответствующую функцию для возврата значений по умолчанию.
-
 ## Ключевые возможности
 
+* Более 150 уникальных функций для настройки Windows с использованием официально задокументированных методов Microsoft без вреда системе
+  * Каждая настройка имеет соответствующую функцию для восстановления значений по умолчанию
+* Настройка Windows AI
+* Настройка приватности, безопасности и персонализации Windows
 * Проект с полностью открытым исходным кодом
   * Все архивы собираются и загружаются на страницу релизов, используя GitHub Actions, в [автоматическом режиме](https://github.com/farag2/Sophia-Script-for-Windows/actions)
-  * Курсоры от [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) были скачаны, используя [DeviantArt API](https://github.com/farag2/Sophia-Script-for-Windows/blob/master/.github/workflows/Cursors.yml)
 * Доступен через scoop, Chocolatey, and WinGet
+* Поддержка ARM64 и PowerShell 7
 * Не конфликтует с [VAC](https://help.steampowered.com/faqs/view/571A-97DA-70E9-FF74#whatisvac)
-* Настройка конфиденциальности Windows
-* Настроить безопасность Windows
-* Персонализация пользовательского интерфейса Windows
+* Удаление UWP-приложений с отображением локализованныъ имен пакетов
+  * Скрипт генерирует список установленных UWP-приложений [динамически](#локализованные-имена-uwp-пакетов)
 * Отобразить примененные политики реестра в оснастке редактирования групповых политик (gpedit.msc)
 * Включить DNS-over-HTTPS для IPv4
-* Выключить диагностические задания в Планировщике заданий с помощью интерактивного окна
-* "Правильно" удалить OneDrive
+* Удаление OneDrive
 * Интерактивные [подсказки и всплывающие окна](#скриншоты)
 * [Автопродление](#как-выполнить-конкретную-функциюи) функций и их аргументов с помощью <kbd>TAB</kbd> (используя Import-TabCompletion.ps1)
-* Программно изменить расположение пользовательских папок (без перемещения пользовательских файлов) с помощью интерактивного меню со стрелками
+* Изменить расположение пользовательских папок (без перемещения пользовательских файлов) с помощью интерактивного меню
   * Рабочий стол
   * Документы
   * Загрузки
@@ -86,9 +81,7 @@
   * Изображения
   * Видео
 * Установить бесплатный (светлый и темный) курсор "Windows 11 Cursors Concept v2" от [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) на лету (без перезагрузок)
-* Удалить UWP-приложения, отображая их локализованные имена пакетов
-  * Скрипт генерирует список установленных UWP-приложений [динамически](#локализованные-имена-uwp-пакетов)
-* Скачать и установить [Расширения для видео HEVC от производителя](https://apps.microsoft.com/detail/9N4WGH0Z6VHQ), чтобы иметь поддержку формата [HEVC](https://en.wikipedia.org/wiki/High_Efficiency_Video_Coding)
+  * Архив был скачан в папку [Cursors](https://github.com/farag2/Sophia-Script-for-Windows/tree/master/Cursors), используя [DeviantArt API](https://github.com/farag2/Sophia-Script-for-Windows/blob/master/.github/workflows/Cursors.yml)
 * Установить приложение по умолчанию для конкретного расширения без всплывающего окошка "Каким образом вы хотите открыть этот файл?"
 * Экспортировать и импортировать все ассоциации в Windows. Необходимо установить все приложения в соответствии с экспортированным файлом JSON-файлом, чтобы восстановить ассоциации
 * Установить дистрибутив Linux через WSL, используя локализованные имена дистрибутивов с помощью всплывающего [окна](#скриншоты)
@@ -96,8 +89,8 @@
   * Создать задания `Windows Cleanup` и `Windows Cleanup Notification` для очистки Winsows от неиспользуемых файлов и файлов обновлений
   * Создать задание `SoftwareDistribution` для очистки `%SystemRoot%\SoftwareDistribution\Download`
   * Создать задание `Temp` для очистки `%TEMP%`
-* Установить последней версии распространяемых пакетов Microsoft Visual C++ 2015–2026 x86/x64 (поддержка ARM64)
-* Установить последней версии распространяемых пакетов .NET Desktop Runtime 8, 9, 10 x64 (поддержка ARM64)
+* Установить последней версии распространяемых пакетов Microsoft Visual C++ 2015–2026 x86/x64
+* Установить последней версии распространяемых пакетов .NET Desktop Runtime 8, 9, 10 x64
 * Много других твиков проводника и контекстного меню
 
 ## Содержание

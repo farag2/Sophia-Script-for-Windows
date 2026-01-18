@@ -6,7 +6,7 @@
 
 # Sophia Script for Windows
 
-**Das leistungsstärkste PowerShell-Modul zur Feinabstimmung von Windows auf GitHub**
+Das leistungsstärkste PowerShell-Modul zur Feinabstimmung von Windows und zur Automatisierung von Routineaufgaben auf GitHub
 
 Mit <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/heart.svg" height="17px"/> zu Windows hergestellt
 
@@ -55,27 +55,22 @@ Mit <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows
 
 </div>
 
-## About Sophia Script
-
-`Sophia Script for Windows` ist das größte PowerShell-Modul auf `GitHub` für `Windows 10` & `Windows 11` zur Feinabstimmung und Automatisierung von Routineaufgaben. Es bietet mehr als 150 einzigartige Tweaks und zeigt, wie Windows konfiguriert werden kann, ohne Windows dabei zu schaden.
-
-> [!IMPORTANT]
-> Für jede Änderung in der Voreinstellungsdatei gibt es eine entsprechende Funktion zum Wiederherstellen der Standardeinstellungen.
-
 ## Haupt-Features
 
+* Mehr als 150 einzigartige Funktionen zur Konfiguration von Windows unter Verwendung der offiziell von Microsoft dokumentierten Methoden, ohne das System zu beschädigen.
+  * Für jede Änderung in der Voreinstellungsdatei gibt es eine entsprechende Funktion zum Wiederherstellen der Standardeinstellungen
+* Konfigurieren Sie Windows AI
+* Konfigurieren Sie die Privatsphäre, Sicherheit und Personalisierung von Windows
 * Vollständig quelloffenes Projekt
   * Alle Archive werden [automatisch](https://github.com/farag2/Sophia-Script-for-Windows/actions) mit GitHub Actions erstellt und hochgeladen
-  * Cursor von [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) wurden mithilfe der [DeviantArt API](https://github.com/farag2/Sophia-Script-for-Windows/blob/master/.github/workflows/Cursors.yml) heruntergeladen
 * Verfügbar über Scoop, Chocolatey und WinGet
+* Unterstützt ARM64 und PowerShell 7
 * Es besteht kein Konflikt mit [VAC](https://help.steampowered.com/faqs/view/571A-97DA-70E9-FF74#whatisvac)
-* Windows-Datenschutz konfigurieren
-* Konfigurieren Sie die Windows-Sicherheit
-* Windows-Benutzeroberfläche personalisieren
+* Deinstallieren Sie UWP-Anwendungen, mithilfe der Paketnamen
+  * Skript generiert Liste der installierten UWP-Apps [dynamisch](#lokalisierte-namen-von-uwp-paketen)
 * Zeigen Sie die angewendeten Registrierungsrichtlinien im Snap-Ins Editor für lokale Gruppenrichtlinien (gpedit.msc) an
 * DNS-über-HTTPS für IPv4 aktivieren
-* Deaktivieren Sie die Diagnoseverfolgung geplanter Aufgaben mit interaktivem Fenster
-* OneDrive "richtig" deinstallieren
+* OneDrive entfernen
 * Interaktive [Eingabeaufforderungen und Popups](#screenshots)
 * Die <kbd>TAB</kbd> [Autovervollständigung](#verwendung-von-spezifischen-funktionen) für Funktionen und ihre Argumente (mit Import-TabCompletion.ps1)
 * Ändern Sie den Speicherort der Benutzerordner programmatisch (ohne die Benutzerdateien zu verschieben) im interaktiven Menü mit Hilfe von Pfeilen zur Auswahl eines Laufwerks
@@ -86,9 +81,7 @@ Mit <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows
   * Bilder
   * Videos
 * Installieren Sie den kostenlosen (helle und dunkle) "Windows 11 Cursors Concept v2" Cursor von [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) on-the-fly
-* Deinstallieren Sie UWP-Anwendungen, mithilfe der Paketnamen
-  * Skript generiert Liste der installierten UWP-Apps [dynamisch](#lokalisierte-namen-von-uwp-paketen)
-* Laden Sie die [HEVC Video Extensions from Device Manufacturer](https://apps.microsoft.com/detail/9N4WGH0Z6VHQ) herunter und installieren Sie sie, um das Format [HEVC](https://en.wikipedia.org/wiki/High_Efficiency_Video_Coding) öffnen zu können
+  * Das Archiv wurde mit der [DeviantArt API](https://github.com/farag2/Sophia-Script-for-Windows/blob/master/.github/workflows/Cursors.yml) in den Ordner  [Cursors](https://github.com/farag2/Sophia-Script-for-Windows/tree/master/Cursors) heruntergeladen
 * Eine App als Standard für eine bestimmte Dateiendung festlegen, ohne dass das Popup-Fenster „Wie möchten Sie diese Datei öffnen?“ angezeigt wird
 * Exportieren und importieren Sie alle Windows-Zuordnungen. Sie müssen alle Apps gemäß der exportierten JSON-Datei installieren, um alle Zuordnungen wiederherzustellen
 * Installieren Sie die WSL-Linux-Distribution mit Popup-Fenster(#screenshots) unter Verwendung benutzerfreundlicher Distributionsnamen
@@ -96,9 +89,9 @@ Mit <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows
   * Erstellen Sie die geplanten Aufgaben `Windows Cleanup` und `Windows Cleanup Notification`, um Windows von ungenutzten Dateien und Windows-Updates zu bereinigen
   * Erstellen Sie eine geplante Aufgabe `SoftwareDistribution` zur Bereinigung von `%SystemRoot%\SoftwareDistribution\Download`
   * Erstellen Sie eine geplante Aufgabe `Temp` zum Aufräumen von `%TEMP%`
-* Installieren Sie die neueste bereitgestellte Version von Microsoft Visual C++ 2015–2026 x86/x64 (ARM64 supported)
-* Installieren Sie die neueste bereitgestellte Version von .NET Desktop Runtime 8, 9, 10 (ARM64 supported)
-* Viele weitere Optimierungen des Datei-Explorers und des Kontextmenüs
+* Installieren Sie die neueste bereitgestellte Version von Microsoft Visual C++ 2015–2026 x86/x64
+* Installieren Sie die neueste bereitgestellte Version von .NET Desktop Runtime 8, 9, 10
+* Viele weitere Optimierungen für den Datei-Explorer und das Kontextmenü
 
 ## Table of Contents
 
@@ -229,8 +222,7 @@ scoop uninstall sophia-script --purge
 
 ## Wie zu verwenden
 
-* Archiv herunterladen und erweitern
-* Das Archiv extrahieren
+* Archiv herunterladen und entpacken
 * Schauen Sie sich die Datei `Sophia.ps1` an, um die Funktionen zu konfigurieren, die Sie ausführen möchten
   * Setzen Sie das `#`-Zeichen vor die Funktion, wenn Sie nicht möchten, dass sie ausgeführt wird.
   * Entfernen Sie das `#`-Zeichen vor der Funktion, wenn sie ausgeführt werden soll.

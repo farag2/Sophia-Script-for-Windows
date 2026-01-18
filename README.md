@@ -6,7 +6,7 @@
 
 # Sophia Script for Windows
 
-**The most powerful PowerShell module for fine-tuning Windows on GitHub**
+The most powerful PowerShell module for fine-tuning Windows and automating routine tasks on GitHub
 
 Made with <img src="./img/heart.svg" height="17px"/> of Windows
 
@@ -55,40 +55,33 @@ Made with <img src="./img/heart.svg" height="17px"/> of Windows
 
 </div>
 
-## About Sophia Script
-
-`Sophia Script for Windows` is the most powerful PowerShell module for fine-tuning `Windows` and automating the routine tasks on `GitHub`. It offers more than 150 unique tweaks, and shows how Windows can be configured without making any harm to it.
-
-> [!IMPORTANT]
-> Every tweak in the preset file has its corresponding function to restore default settings.
-
 ## Key features
 
+* More than 150 unique functions to configure Windows using Microsoft's officially documented ways without making any harm to it
+  * Every tweak has its corresponding function to restore default settings
+* Configure Windows AI
+* Configure Windows privacy, security, personalization
 * Fully open-source project
-  * All archives are being built and uploaded using GitHub Actions [automatically](https://github.com/farag2/Sophia-Script-for-Windows/actions)
-  * Cursors from [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) was downloaded using [DeviantArt API](https://github.com/farag2/Sophia-Script-for-Windows/blob/master/.github/workflows/Cursors.yml)
+  * All archives are being built and uploaded using [GitHub Actions](https://github.com/farag2/Sophia-Script-for-Windows/actions)
 * Available via scoop, Chocolatey, and WinGet
+* Supports ARM64 and PowerShell 7
 * Has no conflict with [VAC](https://help.steampowered.com/faqs/view/571A-97DA-70E9-FF74#whatisvac)
-* Configure Windows privacy
-* Configure Windows security
-* Personalize Windows UI
+* Uninstall UWP apps displaying their localized packages names
+  * Script generates installed UWP apps list [dynamically](#localized-uwp-packages-names)
 * Display applied registry policies in the Local Group Policy Editor snap-in (gpedit.msc)
-* Enable DNS-over-HTTPS for IPv4
-* Turn off diagnostics tracking scheduled tasks with interactive window
-* Uninstall OneDrive "correctly"
+* Enable DNS-over-HTTPS
+* Uninstall OneDrive
 * Interactive [prompts and popups](#screenshots)
 * <kbd>TAB</kbd> [completion](#how-to-run-the-specific-functions) for functions and their arguments (using Import-TabCompletion.ps1)
-* Change location of the user folders programmatically (without moving user files) using an interactive menu with arrows
+* Change location of the user folders (without moving user files) using an interactive menu
   * Desktop
   * Documents
   * Downloads
   * Music
   * Pictures
   * Videos
-* Install free (light and dark) "Windows 11 Cursors Concept v2" cursors from [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) on-the-fly
-* Uninstall UWP apps displaying their localized packages names
-  * Script generates installed UWP apps list [dynamically](#localized-uwp-packages-names)
-* Download and install [HEVC Video Extensions from Device Manufacturer](https://apps.microsoft.com/detail/9N4WGH0Z6VHQ)
+* Install free (light and dark) `Windows 11 Cursors Concept v2` cursors from [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) on-the-fly
+  * Archive was downloaded to [Cursors](https://github.com/farag2/Sophia-Script-for-Windows/tree/master/Cursors) folder using [DeviantArt API](https://github.com/farag2/Sophia-Script-for-Windows/blob/master/.github/workflows/Cursors.yml)
 * Set an app as default one for specific extension without "How do you want to open this" pop-up
 * Export and import all Windows associations. You need to install all apps according to exported JSON file to restore all associations
 * Install WSL Linux distribution with [pop-up](#screenshots) using friendly distro names
@@ -96,10 +89,7 @@ Made with <img src="./img/heart.svg" height="17px"/> of Windows
   * Create scheduled tasks `Windows Cleanup` and `Windows Cleanup Notification` for cleaning up Windows of unused files and Windows updates files
   * Create a scheduled task `SoftwareDistribution` for cleaning up `%SystemRoot%\SoftwareDistribution\Download`
   * Create a scheduled task `Temp` for cleaning up `%TEMP%`
-* Create tasks in the Task Scheduler to clear
-  * `%SystemRoot%\SoftwareDistribution\Download`
-  * `%TEMP%`
-* Install the latest provided Microsoft Visual C++ 2015–2026 x86/x64 (ARM64 supported)
+* Install the latest provided Microsoft Visual C++ 2015–2026 x86/x64
 * Install the latest provided .NET Desktop Runtime 8, 9, 10 x64
 * Many more File Explorer and context menu tweaks
 
@@ -122,7 +112,7 @@ Made with <img src="./img/heart.svg" height="17px"/> of Windows
 * [Videos](#videos)
 * [How to translate](#how-to-translate)
 * [Media](#media)
-* [SophiApp 2](#sophiapp-2-c--winui-3)
+* [SophiApp 2](#sophiapp-20-c--winui-3)
 
 ## How to download
 
