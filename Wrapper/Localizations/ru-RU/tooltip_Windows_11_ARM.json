@@ -243,7 +243,6 @@
       }
     }
   },
-
   {
     "Region": "UI & Personalization",
     "Function": "ThisPC",
@@ -550,7 +549,6 @@
       }
     }
   },
-
   {
     "Region": "UI & Personalization",
     "Function": "TaskbarEndTask",
@@ -742,94 +740,94 @@
     }
   },
   {
-       "Region": "UI & Personalization",
-       "Function": "RecentlyAddedStartApps",
-       "Arg": {
-           "Zero": {
-               "Tag": "Hide",
-               "ToolTip": "Не показывать недавно добавленные приложения на начальном экране."
-           },
-           "One": {
-               "Tag": "Show",
-               "ToolTip": "Показывать недавно добавленные приложения на начальном экране (значение по умолчанию)."
-           }
-       }
-   },
-   {
-       "Region": "UI & Personalization",
-       "Function": "MostUsedStartApps",
-       "Arg": {
-           "Zero": {
-               "Tag": "Hide",
-               "ToolTip": "Показывать недавно добавленные приложения на начальном экране (значение по умолчанию)."
-           },
-           "One": {
-               "Tag": "Show",
-               "ToolTip": "Не показывать наиболее часто используемые приложения на начальном экране (значение по умолчанию)."
-           }
-       }
-   },
-   {
-       "Region": "UI & Personalization",
-       "Function": "StartRecommendedSection",
-       "Arg": {
-           "Zero": {
-               "Tag": "Hide",
-               "ToolTip": "Удалить раздел \"Рекомендуем\" на начальном экране."
-           },
-           "One": {
-               "Tag": "Show",
-               "ToolTip": "Показывать раздел \"Рекомендуем\" на начальном экране."
-           }
-       }
-   },
-   {
-       "Region": "UI & Personalization",
-       "Function": "StartRecommendationsTips",
-       "Arg": {
-           "Zero": {
-               "Tag": "Hide",
-               "ToolTip": "Не показать рекомендации с советами, сочетаниями клавиш, новыми приложениями и т. д. на начальном экране."
-           },
-           "One": {
-               "Tag": "Show",
-               "ToolTip": "Показать рекомендации с советами, сочетаниями клавиш, новыми приложениями и т. д. на начальном экране (значение по умолчанию)."
-           }
-       }
-   },
-   {
-       "Region": "UI & Personalization",
-       "Function": "StartAccountNotifications",
-       "Arg": {
-           "Zero": {
-               "Tag": "Hide",
-               "ToolTip": "Не отображать на начальном экране уведомления, касающиеся учетной записи Microsoft."
-           },
-           "One": {
-               "Tag": "Show",
-               "ToolTip": "Отображать на начальном экране уведомления, касающиеся учетной записи Microsoft (значение по умолчанию)."
-           }
-       }
-   },
-   {
-       "Region": "Start menu",
-       "Function": "StartLayout",
-       "Arg": {
-           "Zero": {
-               "Tag": "Default",
-               "ToolTip": "Отображать стандартный макет начального экрана (значение по умолчанию)."
-           },
-           "One": {
-               "Tag": "ShowMorePins",
-               "ToolTip": "Отображать больше закреплений на начальном экране."
-           },
-           "Two": {
-               "Tag": "ShowMoreRecommendations",
-               "ToolTip": "Отображать больше рекомендаций на начальном экране."
-           }
-       }
-   },
-   {
+    "Region": "UI & Personalization",
+    "Function": "RecentlyAddedStartApps",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Не показывать недавно добавленные приложения на начальном экране."
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Показывать недавно добавленные приложения на начальном экране (значение по умолчанию)."
+      }
+    }
+  },
+  {
+    "Region": "UI & Personalization",
+    "Function": "MostUsedStartApps",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Показывать недавно добавленные приложения на начальном экране (значение по умолчанию)."
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Не показывать наиболее часто используемые приложения на начальном экране (значение по умолчанию)."
+      }
+    }
+  },
+  {
+    "Region": "UI & Personalization",
+    "Function": "StartRecommendedSection",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Удалить раздел \"Рекомендуем\" на начальном экране."
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Показывать раздел \"Рекомендуем\" на начальном экране."
+      }
+    }
+  },
+  {
+    "Region": "UI & Personalization",
+    "Function": "StartRecommendationsTips",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Не показать рекомендации с советами, сочетаниями клавиш, новыми приложениями и т. д. на начальном экране."
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Показать рекомендации с советами, сочетаниями клавиш, новыми приложениями и т. д. на начальном экране (значение по умолчанию)."
+      }
+    }
+  },
+  {
+    "Region": "UI & Personalization",
+    "Function": "StartAccountNotifications",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Не отображать на начальном экране уведомления, касающиеся учетной записи Microsoft."
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Отображать на начальном экране уведомления, касающиеся учетной записи Microsoft (значение по умолчанию)."
+      }
+    }
+  },
+  {
+    "Region": "Start menu",
+    "Function": "StartLayout",
+    "Arg": {
+      "Zero": {
+        "Tag": "Default",
+        "ToolTip": "Отображать стандартный макет начального экрана (значение по умолчанию)."
+      },
+      "One": {
+        "Tag": "ShowMorePins",
+        "ToolTip": "Отображать больше закреплений на начальном экране."
+      },
+      "Two": {
+        "Tag": "ShowMoreRecommendations",
+        "ToolTip": "Отображать больше рекомендаций на начальном экране."
+      }
+    }
+  },
+  {
     "Region": "OneDrive",
     "Function": "OneDrive",
     "Arg": {
@@ -1297,7 +1295,7 @@
     "ToolTip": "Зарегистрируйте приложение, рассчитайте хэш и свяжите его с расширением со скрытым всплывающим окном 'Как вы хотите открыть это'.",
     "Arg": {
       "Zero": {
-       "Tag": "ProgramPath",
+        "Tag": "ProgramPath",
         "ToolTip": "Путь до исполняемого файла."
       },
       "One": {
@@ -1305,7 +1303,7 @@
         "ToolTip": "Расширение."
       },
       "Two": {
-        "Tag": "Иконка",
+        "Tag": "Icon",
         "ToolTip": "Путь до иконки."
       }
     }
@@ -1574,26 +1572,6 @@
   },
   {
     "Region": "Microsoft Defender & Security",
-    "Function": "DismissMSAccount",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Отклонить предложение Microsoft Defender в \"Безопасность Windows\" о входе в аккаунт Microsoft."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
-    "Function": "DismissSmartScreenFilter",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Отклонить предложение Microsoft Defender в \"Безопасность Windows\" включить фильтр SmartScreen для Microsoft Edge."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
     "Function": "EventViewerCustomView",
     "Arg": {
       "Zero": {
@@ -1687,6 +1665,10 @@
       "One": {
         "Tag": "Disable",
         "ToolTip": "Выключить DNS-over-HTTPS для IPv4 (значение по умолчанию)."
+      },
+      "Two": {
+        "Tag": "ComssOneDNS",
+        "ToolTip": "Включить DNS-over-HTTPS через DNS-сервер Comss.one."
       }
     }
   },

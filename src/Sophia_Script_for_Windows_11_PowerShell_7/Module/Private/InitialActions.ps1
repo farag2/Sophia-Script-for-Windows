@@ -53,11 +53,19 @@ function InitialActions
 		"$PSScriptRoot\..\..\Localizations\tr-TR\Sophia.psd1",
 		"$PSScriptRoot\..\..\Localizations\uk-UA\Sophia.psd1",
 		"$PSScriptRoot\..\..\Localizations\zh-CN\Sophia.psd1",
-		"$PSScriptRoot\..\..\Module\Sophia.psm1",
+
+		"$PSScriptRoot\..\..\Module\Private\Get-Hash.ps1",
 		"$PSScriptRoot\..\..\Module\Private\InitialActions.ps1",
+		"$PSScriptRoot\..\..\Module\Private\PostActions.ps1",
 		"$PSScriptRoot\..\..\Module\Private\Set-Policy.ps1",
+		"$PSScriptRoot\..\..\Module\Private\Show-Menu.ps1",
+		"$PSScriptRoot\..\..\Module\Private\Write-AdditionalKeys.ps1",
+		"$PSScriptRoot\..\..\Module\Private\Write-ExtensionKeys.ps1",
+
+		"$PSScriptRoot\..\..\Module\Sophia.psm1",
 		"$PSScriptRoot\..\..\Manifest\SophiaScript.psd1",
 		"$PSScriptRoot\..\..\Import-TabCompletion.ps1",
+
 		"$PSScriptRoot\..\..\Binaries\LGPO.exe",
 		"$PSScriptRoot\..\..\Binaries\Microsoft.Windows.SDK.NET.dll",
 		"$PSScriptRoot\..\..\Binaries\WinRT.Runtime.dll"
@@ -70,7 +78,7 @@ function InitialActions
 	if (-not $ScriptFiles)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message "Required files are missing. Please, do not download the whole code from the repository, but download archive for you system."
+		Write-Warning -Message "Required files are missing. Please, do not download the whole code from the repository, but download archive from release page for you system."
 		Write-Information -MessageData "" -InformationAction Continue
 
 		Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"
@@ -92,6 +100,22 @@ function InitialActions
 	{
 		# If there's no folder with current localization ID ($PSUICulture), then import en-US localization
 		Import-LocalizedData -BindingVariable Global:Localization -UICulture en-US -BaseDirectory $PSScriptRoot\..\..\Localizations -FileName Sophia
+	}
+
+	# Check CPU architecture
+	$Caption = (Get-CimInstance -ClassName CIM_Processor).Caption
+	if (($Caption -notmatch "AMD64") -and ($Caption -notmatch "Intel64"))
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Warning -Message ($Localization.UnsupportedArchitecture -f $Caption)
+		Write-Information -MessageData "" -InformationAction Continue
+
+		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+		$Global:Failed = $true
+
+		exit
 	}
 
 	# Checking whether the current module version is the latest one
@@ -125,22 +149,6 @@ function InitialActions
 	{
 		Write-Warning -Message ($Localization.NoResponse -f "https://github.com")
 		Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
-	}
-
-	# Check CPU architecture
-	$Caption = (Get-CimInstance -ClassName CIM_Processor).Caption
-	if (($Caption -notmatch "AMD64") -and ($Caption -notmatch "Intel64"))
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message ($Localization.UnsupportedArchitecture -f $Caption)
-		Write-Information -MessageData "" -InformationAction Continue
-
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-		$Global:Failed = $true
-
-		exit
 	}
 
 	# Checking whether the script was run via PowerShell 7
@@ -367,38 +375,24 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 
 	# Checking whether Windows was broken by 3rd party harmful tweakers, trojans, or custom Windows images
 	$Tweakers = @{
-		# https://github.com/Sycnex/Windows10Debloater
-		Windows10Debloater  = "$env:SystemDrive\Temp\Windows10Debloater"
-		# https://github.com/Fs00/Win10BloatRemover
-		Win10BloatRemover   = "$env:TEMP\.net\Win10BloatRemover"
-		# https://github.com/arcadesdude/BRU
-		"Bloatware Removal" = "$env:SystemDrive\BRU\Bloatware-Removal*.log"
 		# https://www.youtube.com/GHOSTSPECTRE
 		"Ghost Toolbox"     = "$env:SystemRoot\System32\migwiz\dlmanifests\run.ghost.cmd"
 		# https://win10tweaker.ru
 		"Win 10 Tweaker"    = "HKCU:\Software\Win 10 Tweaker"
-		# https://boosterx.ru
-		BoosterX            = "$env:ProgramFiles\GameModeX\GameModeX.exe"
-		# https://forum.ru-board.com/topic.cgi?forum=5&topic=14285&start=400#11
-		"Defender Control"  = "$env:APPDATA\Defender Control"
-		# https://forum.ru-board.com/topic.cgi?forum=5&topic=14285&start=260#12
-		"Defender Switch"   = "$env:ProgramData\DSW"
 		# https://revi.cc
 		"Revision Tool"     = "${env:ProgramFiles(x86)}\Revision Tool"
-		# https://www.youtube.com/watch?v=L0cj_I6OF2o
-		"WinterOS Tweaker"  = "$env:SystemRoot\WinterOS*"
-		# https://github.com/ThePCDuke/WinCry
-		WinCry              = "$env:SystemRoot\TempCleaner.exe"
-		# https://www.youtube.com/watch?v=5NBqbUUB1Pk
-		WinClean             = "$env:ProgramFiles\WinClean Plus Apps"
 		# https://github.com/Atlas-OS/Atlas
 		AtlasOS              = "$env:SystemRoot\AtlasModules"
-		# https://x.com/NPKirbyy
-		KirbyOS              = "$env:ProgramData\KirbyOS"
+		# https://boosterx.ru
+		BoosterX            = "$env:ProgramFiles\GameModeX\GameModeX.exe"
+		# https://www.youtube.com/watch?v=5NBqbUUB1Pk
+		WinClean             = "$env:ProgramFiles\WinClean Plus Apps"
 		# https://pc-np.com
 		PCNP                 = "HKCU:\Software\PCNP"
 		# https://www.reddit.com/r/TronScript/
 		Tron                 = "$env:SystemDrive\logs\tron"
+		# https://crystalcry.ru
+		CrystalCry           = "HKLM:\SOFTWARE\CrystalCry"
 		# https://github.com/es3n1n/defendnot
 		defendnot            = "$env:SystemRoot\System32\Tasks\defendnot"
 	}
@@ -440,25 +434,9 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	# Checking whether Windows was broken by 3rd party harmful tweakers, trojans, or custom Windows images
 	$Tweakers = @{
 		# https://forum.ru-board.com/topic.cgi?forum=62&topic=30617&start=1600#14
-		AutoSettingsPS   = "$(Get-Item -Path `"HKLM:\SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths`" | Where-Object -FilterScript {$_.Property -match `"AutoSettingsPS`"})"
-		# Flibustier custom Windows image
-		Flibustier       = "$(Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\.NETFramework\Performance -Name *flibustier)"
-		# https://github.com/builtbybel/Winpilot
-		Winpilot         = "$((Get-ItemProperty -Path `"HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache`").PSObject.Properties | Where-Object -FilterScript {$_.Value -eq `"Winpilot`"})"
-		# https://github.com/builtbybel/Bloatynosy
-		Bloatynosy       = "$((Get-ItemProperty -Path `"HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache`").PSObject.Properties | Where-Object -FilterScript {$_.Value -eq `"BloatynosyNue`"})"
-		# https://github.com/builtbybel/xd-AntiSpy
-		"xd-AntiSpy"     = "$((Get-ItemProperty -Path `"HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache`").PSObject.Properties | Where-Object -FilterScript {$_.Value -eq `"xd-AntiSpy`"})"
+		AutoSettingsPS                   = "$(Get-ItemProperty -Path `"HKLM:\SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths`" -Name *AutoSettingsPS*)"
 		# https://forum.ru-board.com/topic.cgi?forum=5&topic=50519
-		"Modern Tweaker" = "$((Get-ItemProperty -Path `"HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache`").PSObject.Properties | Where-Object -FilterScript {$_.Value -eq `"Modern Tweaker`"})"
-		# https://github.com/ChrisTitusTech/winutil
-		winutil          = "$(Get-CimInstance -Namespace root/CIMV2/power -ClassName Win32_PowerPlan | Where-Object -FilterScript {$_.ElementName -match `"ChrisTitus`"})"
-		# https://discord.com/invite/kernelos
-		KernelOS         = "$(Get-CimInstance -Namespace root/CIMV2/power -ClassName Win32_PowerPlan | Where-Object -FilterScript {$_.ElementName -match `"KernelOS`"})"
-		# https://discord.com/invite/9ZCgxhaYV6
-		ChlorideOS       = "$(Get-Volume | Where-Object -FilterScript {$_.FileSystemLabel -eq `"ChlorideOS`"})"
-		# https://crystalcry.ru
-		CrystalCry       = "$(Get-Item -Path HKLM:\SOFTWARE\CrystalCry -ErrorAction Ignore)"
+		"Modern Tweaker"                 = "$(Get-ItemProperty -Path `"HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache`" -Name *ModernTweaker*)"
 	}
 	foreach ($Tweaker in $Tweakers.Keys)
 	{
@@ -478,25 +456,18 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		}
 	}
 
-	# Remove harmful blocked DNS domains list from https://github.com/schrebra/Windows.10.DNS.Block.List
-	Get-NetFirewallRule -DisplayName Block.MSFT* -ErrorAction Ignore | Remove-NetFirewallRule
-
-	# Remove firewalled IP addresses that block Microsoft recourses added by harmful tweakers
-	# https://wpd.app
-	Get-NetFirewallRule -DisplayName "Blocker MicrosoftTelemetry*", "Blocker MicrosoftExtra*", "windowsSpyBlocker*" -ErrorAction Ignore | Remove-NetFirewallRule
-
 	Write-Information -MessageData "" -InformationAction Continue
 	# Extract the localized "Please wait..." string from shell32.dll
 	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 	Write-Information -MessageData "" -InformationAction Continue
 
-	# Check if third-party enries added to hosts file
+	# Check whether third-party enries added to hosts file
 	foreach ($Item in @(Get-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Force))
 	{
 		if (-not ([string]::IsNullOrEmpty($Item) -or $Item.StartsWith("#")))
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message ($Localization.HostsWarning -f "$env:SystemRoot\System32\drivers\etc\hosts") -Verbose
+			Write-Verbose -Message $Localization.HostsWarning -Verbose
 
 			do
 			{
@@ -529,117 +500,6 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		}
 	}
 
-	# Remove IP addresses from hosts file that block Microsoft recourses added by WindowsSpyBlocker
-	# https://github.com/crazy-max/WindowsSpyBlocker
-	try
-	{
-		# Checking whether https://github.com is alive
-		$Parameters = @{
-			Uri              = "https://github.com"
-			Method           = "Head"
-			DisableKeepAlive = $true
-			UseBasicParsing  = $true
-		}
-		(Invoke-WebRequest @Parameters).StatusCode
-
-		Clear-Variable -Name IPArray -ErrorAction Ignore
-
-		# https://github.com/crazy-max/WindowsSpyBlocker/tree/master/data/hosts
-		$Parameters = @{
-			Uri             = "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/extra.txt"
-			UseBasicParsing = $true
-			Verbose         = $true
-		}
-		$extra = (Invoke-WebRequest @Parameters).Content
-
-		$Parameters = @{
-			Uri             = "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/extra_v6.txt"
-			UseBasicParsing = $true
-			Verbose         = $true
-		}
-		$extra_v6 = (Invoke-WebRequest @Parameters).Content
-
-		$Parameters = @{
-			Uri             = "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt"
-			UseBasicParsing = $true
-			Verbose         = $true
-		}
-		$spy = (Invoke-WebRequest @Parameters).Content
-
-		$Parameters = @{
-			Uri             = "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy_v6.txt"
-			UseBasicParsing = $true
-			Verbose         = $true
-		}
-		$spy_v6 = (Invoke-WebRequest @Parameters).Content
-
-		$Parameters = @{
-			Uri             = "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/update.txt"
-			UseBasicParsing = $true
-			Verbose         = $true
-		}
-		$update = (Invoke-WebRequest @Parameters).Content
-
-		$Parameters = @{
-			Uri             = "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/update_v6.txt"
-			UseBasicParsing = $true
-			Verbose         = $true
-		}
-		$update_v6 = (Invoke-WebRequest @Parameters).Content
-
-		$IPArray += $extra, $extra_v6, $spy, $spy_v6, $update, $update_v6
-		# Split the Array variable content
-		$IPArray = $IPArray -split "`r?`n" | Where-Object -FilterScript {$_ -notmatch "#"}
-
-		Write-Information -MessageData "" -InformationAction Continue
-		# Extract the localized "Please wait..." string from shell32.dll
-		Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
-		Write-Information -MessageData "" -InformationAction Continue
-
-		# Checking whether hosts contains any of string from $IPArray array
-		if ((Get-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Encoding utf8NoBOM -Force | ForEach-Object -Process {$_.Trim()} | ForEach-Object -Process {
-			($_ -ne "") -and ($_ -ne " ") -and (-not $_.StartsWith("#")) -and ($IPArray -split "`r?`n" | Select-String -Pattern $_)
-		}) -contains $true)
-		{
-			Write-Warning -Message ($Localization.TweakerWarning -f "WindowsSpyBlocker")
-
-			# Clear hosts file
-			$hosts = Get-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Encoding utf8NoBOM -Force
-			$hosts | ForEach-Object -Process {
-				if (($_ -ne "") -and (-not $_.StartsWith("#")) -and ($IPArray -split "`r?`n" | Select-String -Pattern $_.Trim()))
-				{
-					$hostsData = $_
-					$hosts = $hosts | Where-Object -FilterScript {$_ -notmatch $hostsData}
-				}
-			}
-			# Save in UTF8 without BOM
-			$hosts | Set-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Encoding utf8NoBOM -Force
-
-			Start-Process -FilePath notepad.exe -ArgumentList "$env:SystemRoot\System32\drivers\etc\hosts"
-		}
-	}
-	catch [System.Net.WebException]
-	{
-		Write-Warning -Message ($Localization.NoResponse -f "https://github.com")
-		Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
-	}
-
-	# Checking whether Windows Feature Experience Pack was removed by harmful tweakers
-	if (-not (Get-AppxPackage -Name MicrosoftWindows.Client.CBS))
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Windows Feature Experience Pack")
-		Write-Information -MessageData "" -InformationAction Continue
-
-		Write-Verbose -Message "https://www.microsoft.com/software-download/windows11" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-		$Global:Failed = $true
-
-		exit
-	}
-
 	# Checking whether EventLog service is running in order to be sire that Event Logger is enabled
 	if ((Get-Service -Name EventLog).Status -eq "Stopped")
 	{
@@ -657,11 +517,20 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		exit
 	}
 
-	# Checking whether the Microsoft Store being an important system component was removed
-	if (-not (Get-AppxPackage -Name Microsoft.WindowsStore))
+	# Checking whether the Microsoft Store and Windows Feature Experience Pack was removed
+	$UWPComponents = [Array]::TrueForAll(@(
+		"Microsoft.WindowsStore",
+		"MicrosoftWindows.Client.CBS"
+	),
+	[Predicate[string]]{
+		param($UWPComponent)
+
+		(Get-AppxPackage -Name $UWPComponent).Status -eq "OK"
+	})
+	if (-not $UWPComponents)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Store")
+		Write-Warning -Message ($Localization.WindowsComponentBroken -f "UWP")
 		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://www.microsoft.com/software-download/windows11" -Verbose
@@ -675,31 +544,33 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 
 	#region Defender checks
 	# Checking whether necessary Microsoft Defender components exists
-	$Files = @(
+	$Files = [Array]::TrueForAll(@(
 		"$env:SystemRoot\System32\smartscreen.exe",
 		"$env:SystemRoot\System32\SecurityHealthSystray.exe",
 		"$env:SystemRoot\System32\CompatTelRunner.exe"
-	)
-	foreach ($File in $Files)
+	),
+	[Predicate[string]]{
+		param($File)
+
+		Test-Path -Path $File
+	})
+	if (-not $Files)
 	{
-		if (-not (Test-Path -Path $File))
-		{
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Warning -Message ($Localization.WindowsComponentBroken -f $File)
-			Write-Information -MessageData "" -InformationAction Continue
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
+		Write-Information -MessageData "" -InformationAction Continue
 
-			Write-Verbose -Message "https://www.microsoft.com/software-download/windows11" -Verbose
-			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+		Write-Verbose -Message "https://www.microsoft.com/software-download/windows11" -Verbose
+		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-			$Global:Failed = $true
+		$Global:Failed = $true
 
-			exit
-		}
+		exit
 	}
 
 	# Checking whether Windows Security Settings page was hidden from UI
-	if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer", "SettingsPageVisibility", $null) -match "hide:windowsdefender")
+	if ((Get-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name SettingsPageVisibility -ErrorAction Ignore) -match "hide:windowsdefender")
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
@@ -714,8 +585,17 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		exit
 	}
 
-	# Check Microsoft Defender state
-	if ($null -eq (Get-CimInstance -ClassName AntiVirusProduct -Namespace root/SecurityCenter2 -ErrorAction Ignore))
+	# Checking Microsoft Defender properties
+	try
+	{
+		$AntiVirusProduct = @(
+			Get-Service -Name Windefend, SecurityHealthService, wscsvc, wdFilter -ErrorAction Stop
+			Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/Microsoft/Windows/Defender -ErrorAction Stop
+			Get-CimInstance -ClassName AntiVirusProduct -Namespace root/SecurityCenter2 -ErrorAction Stop
+			Get-MpPreference -ErrorAction Stop
+		)
+	}
+	catch
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
@@ -730,78 +610,36 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		exit
 	}
 
-	# Check Windows default antivirus
+	if ((Get-Service -Name SecurityHealthService).Status -ne "running")
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
+		Write-Information -MessageData "" -InformationAction Continue
+
+		Write-Verbose -Message "https://www.microsoft.com/software-download/windows11" -Verbose
+		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+		$Global:Failed = $true
+
+		exit
+	}
+
+	# Check whether Microsoft Defender is a default AV
 	try
 	{
 		$Global:DefenderDefaultAV = $false
 
-		$productState = (Get-CimInstance -ClassName AntiVirusProduct -Namespace root/SecurityCenter2 | Where-Object -FilterScript {$_.instanceGuid -eq "{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}"}).productState
+		$productState = (Get-CimInstance -ClassName AntiVirusProduct -Namespace root/SecurityCenter2 -ErrorAction Stop | Where-Object -FilterScript {$_.instanceGuid -eq "{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}"}).productState
 		$DefenderState = ('0x{0:x}' -f $productState).Substring(3, 2)
-		# Defender is a currently used AV. Continue...
+
 		if ($DefenderState -notmatch "00|01")
 		{
-			Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/Microsoft/Windows/Defender -ErrorAction Stop | Out-Null
+			# Defender is a default AV
 			$Global:DefenderDefaultAV = $true
 		}
 	}
-	catch [Microsoft.Management.Infrastructure.CimException]
-	{
-		# Provider Load Failure exception
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message ($Global:Error.Exception.Message | Select-Object -First 1)
-		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
-		Write-Information -MessageData "" -InformationAction Continue
-
-		Write-Verbose -Message "https://www.microsoft.com/software-download/windows11" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-		$Global:Failed = $true
-
-		exit
-	}
-
-	# Checking services
-	try
-	{
-		$Services = Get-Service -Name Windefend, SecurityHealthService, wscsvc -ErrorAction Stop
-		Get-Service -Name SecurityHealthService -ErrorAction Stop | Start-Service
-	}
-	catch [Microsoft.PowerShell.Commands.ServiceCommandException]
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
-		Write-Information -MessageData "" -InformationAction Continue
-
-		Write-Verbose -Message "https://www.microsoft.com/software-download/windows11" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-		$Global:Failed = $true
-
-		exit
-	}
-	$Global:DefenderServices = ($Services | Where-Object -FilterScript {$_.Status -ne "running"} | Measure-Object).Count -lt $Services.Count
-
-	# Checking wdFilter service
-	try
-	{
-		if (-not (Get-Service -Name wdFilter -ErrorAction Stop))
-		{
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
-			Write-Information -MessageData "" -InformationAction Continue
-
-			Write-Verbose -Message "https://www.microsoft.com/software-download/windows11" -Verbose
-			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-			$Global:Failed = $true
-
-			exit
-		}
-	}
-	catch [Microsoft.PowerShell.Commands.ServiceCommandException]
+	catch
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
@@ -816,87 +654,22 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		exit
 	}
 
-	# Checking Get-MpPreference cmdlet
-	try
+	# Check whether Controlled Folder Access is enabled
+	if ((Get-MpPreference).EnableControlledFolderAccess -eq 1)
 	{
-		$Global:DefenderMpPreferenceBroken = $false
-		(Get-MpPreference -ErrorAction Stop).EnableControlledFolderAccess
-	}
-	catch [System.Management.Automation.RemoteException]
-	{
-		$Global:DefenderMpPreferenceBroken = $true
-	}
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Warning -Message $Localization.ControlledFolderAccessEnabledWarning
+		Write-Information -MessageData "" -InformationAction Continue
 
-	# Check Microsoft Defender configuration
-	if ($Global:DefenderDefaultAV)
-	{
-		# Defender is a currently used AV. Continue...
-		$Global:DefenderProductState = $true
+		Start-Process -FilePath "windowsdefender://RansomwareProtection"
 
-		# Checking whether Microsoft Defender was turned off via GPO
-		# We have to use GetValue() due to "Set-StrictMode -Version Latest"
-		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender", "DisableAntiSpyware", $null) -eq 1)
-		{
-			$Global:AntiSpywareEnabled = $false
-		}
-		else
-		{
-			$Global:AntiSpywareEnabled = $true
-		}
+		Write-Verbose -Message "https://www.microsoft.com/software-download/windows11" -Verbose
+		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-		# Checking whether Microsoft Defender was turned off via GPO
-		# We have to use GetValue() due to "Set-StrictMode -Version Latest"
-		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection", "DisableRealtimeMonitoring", $null) -eq 1)
-		{
-			$Global:RealtimeMonitoringEnabled = $false
-		}
-		else
-		{
-			$Global:RealtimeMonitoringEnabled = $true
-		}
+		$Global:Failed = $true
 
-		# Checking whether Microsoft Defender was turned off via GPO
-		# We have to use GetValue() due to "Set-StrictMode -Version Latest"
-		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection", "DisableBehaviorMonitoring", $null) -eq 1)
-		{
-			$Global:BehaviorMonitoringEnabled = $false
-		}
-		else
-		{
-			$Global:BehaviorMonitoringEnabled = $true
-		}
-	}
-	else
-	{
-		$Global:DefenderProductState = $false
-	}
-
-	if ($Global:DefenderServices -and $Global:DefenderproductState -and $Global:AntiSpywareEnabled -and $Global:RealtimeMonitoringEnabled -and $Global:BehaviorMonitoringEnabled)
-	{
-		# Defender is enabled
-		$Global:DefenderEnabled = $true
-
-		if (-not $Global:DefenderMpPreferenceBroken)
-		{
-			switch ((Get-MpPreference).EnableControlledFolderAccess)
-			{
-				"1"
-				{
-					Write-Warning -Message $Localization.ControlledFolderAccessDisabled
-
-					# Turn off Controlled folder access to let the script proceed
-					$Global:ControlledFolderAccess = $true
-					Set-MpPreference -EnableControlledFolderAccess Disabled
-
-					# Open "Ransomware protection" page
-					Start-Process -FilePath "windowsdefender://RansomwareProtection"
-				}
-				"0"
-				{
-					$Global:ControlledFolderAccess = $false
-				}
-			}
-		}
+		exit
 	}
 	#endregion Defender checks
 
@@ -929,11 +702,11 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		exit
 	}
 
-	# Checking whether BitLocker encryption in process
-	if (Get-BitLockerVolume | Where-Object -FilterScript {$_.VolumeStatus -eq "DecryptionInProgress"})
+	# Checking whether BitLocker encryption or decryption in process
+	if (Get-BitLockerVolume | Where-Object -FilterScript {$_.VolumeStatus -notin @("FullyEncrypted", "FullyDecrypted")})
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message $Localization.BitLockerWarning
+		Write-Warning -Message $Localization.BitLockerInOperation
 		Write-Information -MessageData "" -InformationAction Continue
 
 		Get-BitLockerVolume
@@ -1147,14 +920,8 @@ public extern static string BrandingFormatString(string sFormat);
 	Get-ChildItem -Path "$env:TEMP\LGPO.txt" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
 
 	# Save all opened folders in order to restore them after File Explorer restart
-	try
-	{
-		$Global:OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
-	}
-	catch [System.Management.Automation.PropertyNotFoundException]
-	{}
+	$Global:OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
 
-	Write-Information -MessageData "" -InformationAction Continue
 	Write-Information -MessageData "┏┓    ┓ •    ┏┓   •     ┏      ┓ ┏•   ┓ " -InformationAction Continue
 	Write-Information -MessageData "┗┓┏┓┏┓┣┓┓┏┓  ┗┓┏┏┓┓┏┓╋  ╋┏┓┏┓  ┃┃┃┓┏┓┏┫┏┓┓┏┏┏" -InformationAction Continue
 	Write-Information -MessageData "┗┛┗┛┣┛┛┗┗┗┻  ┗┛┗┛ ┗┣┛┗  ┛┗┛┛   ┗┻┛┗┛┗┗┻┗┛┗┻┛┛" -InformationAction Continue
@@ -1172,7 +939,6 @@ public extern static string BrandingFormatString(string sFormat);
 	if ($Warning)
 	{
 		# Get the name of a preset (e.g Sophia.ps1) regardless it was named
-		Write-Information -MessageData "" -InformationAction Continue
 		[string]$PresetName = ((Get-PSCallStack).Position | Where-Object -FilterScript {($_.Text -match "InitialActions") -and ($_.Text -notmatch "Get-PSCallStack")}).File
 		Write-Verbose -Message ($Localization.CustomizationWarning -f $PresetName) -Verbose
 

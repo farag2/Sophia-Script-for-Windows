@@ -1361,7 +1361,7 @@
         "Arg": {
             "Zero": {
                 "Tag": "Enable",
-                "ToolTip": "Enable proxying only blocked sites from the unified registry of Roskomnadzor. The function is applicable for Russia only."
+                "ToolTip": "Enable proxying only blocked sites from the unified registry of Roskomnadzor. Applicable for Russia only."
             },
             "One": {
                 "Tag": "Disable",
@@ -1660,26 +1660,6 @@
             "One": {
                 "Tag": "Disable",
                 "ToolTip": "Disable sandboxing for Microsoft Defender (default value)."
-            }
-        }
-    },
-    {
-        "Region": "Microsoft Defender & Security",
-        "Function": "DismissMSAccount",
-        "Arg": {
-            "Zero": {
-                "Tag": "",
-                "ToolTip": "Dismiss Microsoft Defender offer in the Windows Security about signing in Microsoft account."
-            }
-        }
-    },
-    {
-        "Region": "Microsoft Defender & Security",
-        "Function": "DismissSmartScreenFilter",
-        "Arg": {
-            "Zero": {
-                "Tag": "",
-                "ToolTip": "Dismiss Microsoft Defender offer in the Windows Security about turning on the SmartScreen filter for Microsoft Edge."
             }
         }
     },

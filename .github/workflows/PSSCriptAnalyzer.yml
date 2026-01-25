@@ -1,0 +1,23 @@
+name: PSScriptAnalyzer
+
+on:
+  workflow_dispatch:
+
+jobs:
+  patch:
+    runs-on: windows-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@main
+
+      - name: Run PSScriptAnalyzer
+        run: |
+          $Results = @(Get-ChildItem -Path src -File -Recurse -Include *.ps1, *.psm1, *.psd1 | Invoke-ScriptAnalyzer)
+          if ($Results | Where-Object -FilterScript {($_.Severity -eq "Error") -or ($_.Severity -eq "ParseError")})
+          {
+            Write-Verbose -Message "Found script issues" -Verbose
+            exit 1  # Exit with a non-zero status to fail the job
+          }

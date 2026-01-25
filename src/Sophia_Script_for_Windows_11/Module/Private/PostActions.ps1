@@ -1,6 +1,6 @@
 ﻿<#
 	.SYNOPSIS
-	Initial checks before proceeding to module execution
+	Post actions
 
 	.VERSION
 	7.0.4
@@ -79,15 +79,6 @@ public static void PostMessage()
 	#endregion Refresh Environment
 
 	#region Other actions
-	# Turn on Controlled folder access if it was turned off
-	if ($Global:DefenderEnabled -and (-not $Global:DefenderMpPreferenceBroken))
-	{
-		if ($Global:ControlledFolderAccess)
-		{
-			Set-MpPreference -EnableControlledFolderAccess Enabled
-		}
-	}
-
 	# Kill all explorer instances in case "launch folder windows in a separate process" enabled
 	Get-Process -Name explorer | Stop-Process -Force
 	Start-Sleep -Seconds 3
@@ -107,15 +98,23 @@ public static void PostMessage()
 	# Open Startup page
 	Start-Process -FilePath "ms-settings:startupapps"
 
-	# Checking whether BitLocker drive encryption if off, despite drive is encrypted
+	# Checking whether BitLocker drive encryption is off, despite drive is encrypted
 	if (Get-BitLockerVolume | Where-Object -FilterScript {($_.ProtectionStatus -eq "Off") -and ($_.VolumeStatus -eq "FullyEncrypted")})
 	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Warning -Message $Localization.BitLockerAutomaticEncryption
+		Write-Error -Message $Localization.BitLockerAutomaticEncryption -ErrorAction SilentlyContinue
+		Write-Verbose -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -Verbose
+		Write-Error -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -ErrorAction SilentlyContinue
+
 		Get-BitLockerVolume
 
-		Start-Process -FilePath "https://support.microsoft.com/windows/cf7e2b6f-3e70-4882-9532-18633605b7df"
-
-		# Open BitLocker settings
-		& "$env:SystemRoot\System32\control.exe" /name Microsoft.BitLockerDriveEncryption
+		# Open if Windows edition is not Home
+		if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion").EditionID -ne "Core")
+		{
+			# Open BitLocker settings
+			& "$env:SystemRoot\System32\control.exe" /name Microsoft.BitLockerDriveEncryption
+		}
 	}
 
 	# Checking whether any of scheduled tasks were created. Unless open Task Scheduler
@@ -133,6 +132,8 @@ public static void PostMessage()
 
 		# Open Task Scheduler
 		Start-Process -FilePath taskschd.msc
+
+		$Global:ScheduledTasks = $false
 	}
 	#endregion Other actions
 
@@ -202,4 +203,25 @@ public static void PostMessage()
 	Write-Verbose -Message "https://ko-fi.com/farag" -Verbose
 	Write-Verbose -Message "https://boosty.to/teamsophia" -Verbose
 	Write-Information -MessageData "" -InformationAction Continue
+
+	if ($Global:Error)
+	{
+		($Global:Error | ForEach-Object -Process {
+			# Some errors may have the Windows nature and don't have a path to any of the module's files
+			$ErrorInFile = if ($_.InvocationInfo.PSCommandPath)
+			{
+				Split-Path -Path $_.InvocationInfo.PSCommandPath -Leaf
+			}
+
+			[PSCustomObject]@{
+				$Localization.ErrorsLine                  = $_.InvocationInfo.ScriptLineNumber
+				# Extract the localized "File" string from shell32.dll
+				"$([WinAPI.GetStrings]::GetString(4130))" = $ErrorInFile
+				$Localization.ErrorsMessage               = $_.Exception.Message
+			}
+		} | Sort-Object -Property $Localization.ErrorsLine | Format-Table -AutoSize -Wrap | Out-String).Trim()
+	}
+
+	Write-Information -MessageData "" -InformationAction Continue
+	Write-Warning -Message $Localization.RestartWarning
 }
