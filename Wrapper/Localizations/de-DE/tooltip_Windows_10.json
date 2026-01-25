@@ -1664,26 +1664,6 @@
     },
     {
         "Region": "Microsoft Defender & Security",
-        "Function": "DismissMSAccount",
-        "Arg": {
-            "Zero": {
-                "Tag": "",
-                "ToolTip": "Das Angebot von Microsoft Defender ablehnen, sich bei Ihrem Microsoft-Konto anzumelden."
-            }
-        }
-    },
-    {
-        "Region": "Microsoft Defender & Security",
-        "Function": "DismissSmartScreenFilter",
-        "Arg": {
-            "Zero": {
-                "Tag": "",
-                "ToolTip": "Ablehnen des Vorschlags von Microsoft Defender in \"Windows Security\", den SmartScreen-Filter für Microsoft Edge zu aktivieren."
-            }
-        }
-    },
-    {
-        "Region": "Microsoft Defender & Security",
         "Function": "EventViewerCustomView",
         "Arg": {
             "Zero": {

@@ -1665,26 +1665,6 @@
     },
     {
         "Region": "Microsoft Defender & Security",
-        "Function": "DismissMSAccount",
-        "Arg": {
-            "Zero": {
-                "Tag": "",
-                "ToolTip": "Dismiss Microsoft Defender offer in the Windows Security about signing in Microsoft account."
-            }
-        }
-    },
-    {
-        "Region": "Microsoft Defender & Security",
-        "Function": "DismissSmartScreenFilter",
-        "Arg": {
-            "Zero": {
-                "Tag": "",
-                "ToolTip": "Dismiss Microsoft Defender offer in the Windows Security about turning on the SmartScreen filter for Microsoft Edge."
-            }
-        }
-    },
-    {
-        "Region": "Microsoft Defender & Security",
         "Function": "EventViewerCustomView",
         "Arg": {
             "Zero": {

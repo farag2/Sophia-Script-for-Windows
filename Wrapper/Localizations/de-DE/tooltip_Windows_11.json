@@ -778,7 +778,7 @@
         "Arg": {
             "Zero": {
                 "Tag": "Hide",
-                "ToolTip": "Die am häufigsten verwendeten Apps nicht in Start anzeigen (Standardwert) (Standardwert)."
+                "ToolTip": "Die am häufigsten verwendeten Apps nicht in Start anzeigen (Standardwert)."
             },
             "One": {
                 "Tag": "Show",
@@ -1590,26 +1590,6 @@
             "One": {
                 "Tag": "Disable",
                 "ToolTip": "Sandboxing für Microsoft Defender deaktivieren (Standardwert)."
-            }
-        }
-    },
-    {
-        "Region": "Microsoft Defender & Security",
-        "Function": "DismissMSAccount",
-        "Arg": {
-            "Zero": {
-                "Tag": "",
-                "ToolTip": "Microsoft Defender-Angebot in der Windows-Sicherheit über die Anmeldung im Microsoft-Konto ablehnen."
-            }
-        }
-    },
-    {
-        "Region": "Microsoft Defender & Security",
-        "Function": "DismissSmartScreenFilter",
-        "Arg": {
-            "Zero": {
-                "Tag": "",
-                "ToolTip": "Microsoft Defender-Angebot in der Windows-Sicherheit über die Aktivierung des SmartScreen-Filters für Microsoft Edge ablehnen."
             }
         }
     },

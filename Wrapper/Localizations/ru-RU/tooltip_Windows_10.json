@@ -1,6 +1,6 @@
 [
     {
-        "Region": "Protection",
+        "Region": "Initial Actions",
         "Function": "Initial Actions",
         "Arg": {
             "Zero": {
@@ -1316,7 +1316,7 @@
         "Function": "UninstallPCHealthCheck",
         "Arg": {
             "Zero": {
-                "Tag": "Block",
+                "Tag": "",
                 "ToolTip": "Удалить приложение \"Проверка работоспособности ПК Windows\" и заблокировать его установку в будущем. Обновление KB5005463 устанавливает приложение \"Проверка работоспособности ПК Windows\" для проверки соответствия компьютера системным требованиям Windows 11."
             }
         }
@@ -1324,7 +1324,7 @@
     {
         "Region": "System",
         "Function": "Install-VCRedist -Redistributables",
-        "ToolTip": "Установить последнюю версию Microsoft Visual C++ Redistributable Packages x86, x64",
+        "ToolTip": "Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2026. Требуется соединение с интернетом.",
         "Arg": {
             "Zero": {
                 "Tag": "2015_2026_x86",
@@ -1339,7 +1339,7 @@
     {
         "Region": "System",
         "Function": "Install-DotNetRuntimes -Runtimes",
-        "ToolTip": "Установить последнюю версию .NET Desktop Runtime 8, 9, 10 x64.",
+        "ToolTip": "Установить последнюю версию .NET Desktop Runtime 8, 9, 10 x64. Требуется соединение с интернетом.",
         "Arg": {
             "Zero": {
                 "Tag": "NET8",
@@ -1374,7 +1374,7 @@
         "Function": "PreventEdgeShortcutCreation",
         "Arg": {
             "Zero": {
-                "Tag": "Channels",
+                "Tag": "Channels Stable, Beta, Dev, Canary",
                 "ToolTip": "Перечислите каналы Microsoft Edge для предотвращения создания ярлыков на рабочем столе после его обновления."
             },
             "One": {
@@ -1389,11 +1389,11 @@
         "Arg": {
             "Zero": {
                 "Tag": "Enable",
-                "ToolTip": "Создавать копии реестра при перезагрузки ПК и создавать задание RegIdleBackup в Планировщике задания для управления последующими резервными копиями."
+                "ToolTip": "Создавать копии реестра при перезагрузке ПК и задание RegIdleBackup в Планировщике для управления последующими резервными копиями."
             },
             "One": {
                 "Tag": "Disable",
-                "ToolTip": "Не создавать копии реестра при перезагрузки ПК (значение по умолчанию)."
+                "ToolTip": "Не создавать копии реестра при перезагрузке ПК (значение по умолчанию)."
             }
         }
     },
@@ -1659,26 +1659,6 @@
             "One": {
                 "Tag": "Disable",
                 "ToolTip": "Выключить песочницу для Microsoft Defender (значение по умолчанию)."
-            }
-        }
-    },
-    {
-        "Region": "Microsoft Defender & Security",
-        "Function": "DismissMSAccount",
-        "Arg": {
-            "Zero": {
-                "Tag": "",
-                "ToolTip": "Отклонить предложение Microsoft Defender в \"Безопасность Windows\" о входе в аккаунт Microsoft."
-            }
-        }
-    },
-    {
-        "Region": "Microsoft Defender & Security",
-        "Function": "DismissSmartScreenFilter",
-        "Arg": {
-            "Zero": {
-                "Tag": "",
-                "ToolTip": "Отклонить предложение Microsoft Defender в \"Безопасность Windows\" включить фильтр SmartScreen для Microsoft Edge."
             }
         }
     },

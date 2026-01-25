@@ -1,6 +1,6 @@
 ﻿<#
 	.SYNOPSIS
-	Sophia Script is a PowerShell module for Windows 10 & Windows 11 fine-tuning and automating the routine tasks
+	Sophia Script is a PowerShell module for fine-tuning Windows and automating routine tasks
 
 	.VERSION
 	6.0.4
@@ -31,7 +31,7 @@
 	.NOTES
 	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
 	https://habr.com/companies/skillfactory/articles/553800/
-	https://forums.mydigitallife.net/threads/powershell-sophia-script-for-windows-10-windows-11-5-17-8-6-5-8-x64-2023.81675/
+	https://forums.mydigitallife.net/threads/powershell-sophia-script-for-windows-6-0-4-7-0-4-2026.81675/page-21
 	https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/
 
 	.LINK
@@ -607,13 +607,13 @@ function ScheduledTasks
 	if (-not $Tasks)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.NoData -Verbose
+		Write-Verbose -Message $Localization.NoScheduledTasks -Verbose
+		Write-Error -Message $Localization.NoScheduledTasks -ErrorAction SilentlyContinue
+		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 		return
 	}
-
-	Write-Information -MessageData "" -InformationAction Continue
-	Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
 
 	#region Sendkey function
 	# Emulate the Backspace key sending to prevent the console window to freeze
@@ -2010,6 +2010,8 @@ function TaskbarSearch
 	if ($TaskbarSmallIcons -eq 1)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message $Localization.TaskbarSmallIcons -Verbose
+		Write-Error -Message $Localization.TaskbarSmallIcons -ErrorAction SilentlyContinue
 		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
@@ -3093,6 +3095,7 @@ function Install-Cursors
 		}
 		catch [System.Net.WebException]
 		{
+			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com")
 			Write-Error -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com") -ErrorAction SilentlyContinue
 			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
@@ -4049,13 +4052,13 @@ function WindowsFeatures
 	if (-not $Features)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.NoData -Verbose
+		Write-Verbose -Message $Localization.NoWindowsFeatures -Verbose
+		Write-Error -Message $Localization.NoWindowsFeatures -ErrorAction SilentlyContinue
+		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 		return
 	}
-
-	Write-Information -MessageData "" -InformationAction Continue
-	Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
 
 	#region Sendkey function
 	# Emulate the Backspace key sending to prevent the console window to freeze
@@ -4295,12 +4298,6 @@ function WindowsCapabilities
 
 		$SelectedCapabilities | ForEach-Object -Process {Write-Verbose -Message $_.DisplayName -Verbose}
 		$SelectedCapabilities | Where-Object -FilterScript {$_.Name -in (Get-WindowsCapability -Online).Name} | Remove-WindowsCapability -Online
-
-		if ([string]$SelectedCapabilities.Name -match "Browser.InternetExplorer")
-		{
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Warning -Message $Localization.RestartWarning
-		}
 	}
 
 	function InstallButton
@@ -4315,17 +4312,12 @@ function WindowsCapabilities
 
 			$SelectedCapabilities | ForEach-Object -Process {Write-Verbose -Message $_.DisplayName -Verbose}
 			$SelectedCapabilities | Where-Object -FilterScript {$_.Name -in ((Get-WindowsCapability -Online).Name)} | Add-WindowsCapability -Online
-
-			if ([string]$SelectedCapabilities.Name -match "Browser.InternetExplorer")
-			{
-				Write-Information -MessageData "" -InformationAction Continue
-				Write-Warning -Message $Localization.RestartWarning
-			}
 		}
 		catch [System.Runtime.InteropServices.COMException]
 		{
-			Write-Warning -Message ($Localization.NoResponse -f "http://tlu.dl.delivery.mp.microsoft.com/filestreamingservice")
-			Write-Error -Message ($Localization.NoResponse -f "http://tlu.dl.delivery.mp.microsoft.com/filestreamingservice") -ErrorAction SilentlyContinue
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Warning -Message ($Localization.NoResponse -f "http://tlu.dl.delivery.mp.microsoft.com")
+			Write-Error -Message ($Localization.NoResponse -f "http://tlu.dl.delivery.mp.microsoft.com") -ErrorAction SilentlyContinue
 			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 		}
 	}
@@ -4378,14 +4370,15 @@ function WindowsCapabilities
 		{
 			try
 			{
-				$State = "NotPresent"
-				$ButtonContent = $Localization.Install
+				$State           = "NotPresent"
+				$ButtonContent   = $Localization.Install
 				$ButtonAdd_Click = {InstallButton}
 			}
 			catch [System.ComponentModel.Win32Exception]
 			{
-				Write-Warning -Message ($Localization.NoResponse -f "http://tlu.dl.delivery.mp.microsoft.com/filestreamingservice")
-				Write-Error -Message ($Localization.NoResponse -f "http://tlu.dl.delivery.mp.microsoft.com/filestreamingservice") -ErrorAction SilentlyContinue
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Warning -Message ($Localization.NoResponse -f "http://tlu.dl.delivery.mp.microsoft.com")
+				Write-Error -Message ($Localization.NoResponse -f "http://tlu.dl.delivery.mp.microsoft.com") -ErrorAction SilentlyContinue
 				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 				return
@@ -4413,13 +4406,13 @@ function WindowsCapabilities
 	if (-not $Capabilities)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.NoData -Verbose
+		Write-Verbose -Message $Localization.NoOptionalFeatures -Verbose
+		Write-Error -Message $Localization.NoOptionalFeatures -ErrorAction SilentlyContinue
+		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 		return
 	}
-
-	Write-Information -MessageData "" -InformationAction Continue
-	Write-Verbose -Message $Localization.DialogBoxOpening -Verbose
 
 	#region Sendkey function
 	# Emulate the Backspace key sending to prevent the console window to freeze
@@ -4622,6 +4615,8 @@ function NetworkAdaptersSavePower
 	if (-not $Adapters)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message $Localization.NoSupportedNetworkAdapters -Verbose
+		Write-Error -Message $Localization.NoSupportedNetworkAdapters -ErrorAction SilentlyContinue
 		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
@@ -4968,8 +4963,6 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				Write-Information -MessageData "" -InformationAction Continue
 				Write-Warning -Message $Localization.UserFolderLocationMove
 				Write-Error -Message $Localization.UserFolderLocationMove -ErrorAction SilentlyContinue
-
-				Write-Information -MessageData "" -InformationAction Continue
 				Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 				Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
@@ -5923,8 +5916,10 @@ function ReservedStorage
 			}
 			catch [System.Runtime.InteropServices.COMException]
 			{
-				Write-Warning -Message ($Localization.ReservedStorageIsInUse -f $MyInvocation.Line.Trim())
-				Write-Error -Message ($Localization.ReservedStorageIsInUse -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Warning -Message $Localization.ReservedStorageIsInUse
+				Write-Error -Message $Localization.ReservedStorageIsInUse -ErrorAction SilentlyContinue
+				Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 			}
 		}
 		"Enable"
@@ -6543,22 +6538,22 @@ function ActiveHours
 	Register app, calculate hash, and associate with an extension with the "How do you want to open this" pop-up hidden
 
 	.PARAMETER ProgramPath
-	Set a path to a program to associate an extension with
+	Path to program to associate an extension with
 
 	.PARAMETER ProgramPath
 	Protocol (ProgId)
 
 	.PARAMETER Extension
-	Set the extension type
+	Extension type
 
 	.PARAMETER Icon
-	Set a path to an icon
+	Path to an icon
 
 	.EXAMPLE
-	Set-Association -ProgramPath "C:\SumatraPDF.exe" -Extension .pdf -Icon "shell32.dll,100"
+	Set-Association -ProgramPath 'C:\SumatraPDF.exe' -Extension .pdf -Icon 'shell32.dll,100'
 
 	.EXAMPLE
-	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .txt -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+	Set-Association -ProgramPath '%ProgramFiles%\Notepad++\notepad++.exe' -Extension .txt -Icon '%ProgramFiles%\Notepad++\notepad++.exe,0'
 
 	.EXAMPLE
 	Set-Association -ProgramPath MSEdgeHTM -Extension .html
@@ -6604,21 +6599,15 @@ function Set-Association
 
 	$ProgramPath = [System.Environment]::ExpandEnvironmentVariables($ProgramPath)
 
+	# If $ProgramPath is a path to an executable
 	if ($ProgramPath.Contains(":"))
 	{
-		# Cut string to get executable path to check
-		$ProgramPath = $ProgramPath.Substring(0, $ProgramPath.IndexOf(".exe") + 4).Trim('"')
 		if (-not (Test-Path -Path $ProgramPath))
 		{
-			# We cannot call here $MyInvocation.Line.Trim() to print function with error
-			if ($Icon)
-			{
-				Write-Error -Message ($Localization.RestartFunction -f "Set-Association -ProgramPath `"$ProgramPath`" -Extension $Extension -Icon `"$Icon`"") -ErrorAction SilentlyContinue
-			}
-			else
-			{
-				Write-Error -Message ($Localization.RestartFunction -f "Set-Association -ProgramPath `"$ProgramPath`" -Extension $Extension") -ErrorAction SilentlyContinue
-			}
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Verbose -Message ($Localization.ProgramPathNotExists -f $ProgramPath) -Verbose
+			Write-Error -Message ($Localization.ProgramPathNotExists -f $ProgramPath) -Verbose -ErrorAction SilentlyContinue
+			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 			return
 		}
@@ -6628,15 +6617,10 @@ function Set-Association
 		# ProgId is not registered
 		if (-not (Test-Path -Path "Registry::HKEY_CLASSES_ROOT\$ProgramPath"))
 		{
-			# We cannot call here $MyInvocation.Line.Trim() to print function with error
-			if ($Icon)
-			{
-				Write-Error -Message ($Localization.RestartFunction -f "Set-Association -ProgramPath `"$ProgramPath`" -Extension `"$Extension`" -Icon `"$Icon`"") -ErrorAction SilentlyContinue
-			}
-			else
-			{
-				Write-Error -Message ($Localization.RestartFunction -f "Set-Association -ProgramPath `"$ProgramPath`" -Extension `"$Extension`"") -ErrorAction SilentlyContinue
-			}
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Verbose -Message ($Localization.ProgIdNotExists -f $ProgramPath) -Verbose
+			Write-Error -Message ($Localization.ProgIdNotExists -f $ProgramPath) -Verbose -ErrorAction SilentlyContinue
+			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 			return
 		}
@@ -6657,7 +6641,6 @@ function Set-Association
 		$ProgId = $ProgramPath
 	}
 
-	#region functions
 	$Signature = @{
 		Namespace          = "WinAPI"
 		Name               = "Action"
@@ -6847,498 +6830,7 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 	}
 
 	Clear-Variable -Name RegisteredProgIDs -Force -ErrorAction Ignore
-
 	[array]$Global:RegisteredProgIDs = @()
-
-	function Write-ExtensionKeys
-	{
-		Param
-		(
-			[Parameter(
-				Mandatory = $true,
-				Position = 0
-			)]
-			[string]
-			$ProgId,
-
-			[Parameter(
-				Mandatory = $true,
-				Position = 1
-			)]
-			[string]
-			$Extension
-		)
-
-		# We have to use GetValue() due to "Set-StrictMode -Version Latest"
-		$OrigProgID = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\$Extension", "", $null)
-		if ($OrigProgID)
-		{
-			# Save ProgIds history with extensions or protocols for the system ProgId
-			$Global:RegisteredProgIDs += $OrigProgID
-		}
-
-		# We have to use GetValue() due to "Set-StrictMode -Version Latest"
-		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\$Extension", "", $null) -ne "")
-		{
-			# Save possible ProgIds history with extension
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts -Name "$($ProgID)_$($Extension)" -PropertyType DWord -Value 0 -Force
-		}
-
-		$Name = "{0}_$($Extension)" -f (Split-Path -Path $ProgId -Leaf)
-		New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts -Name $Name -PropertyType DWord -Value 0 -Force
-
-		if ("$($ProgID)_$($Extension)" -ne $Name)
-		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts -Name "$($ProgID)_$($Extension)" -PropertyType DWord -Value 0 -Force
-		}
-
-		# If ProgId doesn't exist set the specified ProgId for the extensions
-		# We have to use GetValue() due to "Set-StrictMode -Version Latest"
-		if (-not [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\$Extension", "", $null))
-		{
-			if (-not (Test-Path -Path "HKCU:\Software\Classes\$Extension"))
-			{
-				New-Item -Path "HKCU:\Software\Classes\$Extension" -Force
-			}
-			New-ItemProperty -Path "HKCU:\Software\Classes\$Extension" -Name "(default)" -PropertyType String -Value $ProgId -Force
-		}
-
-		# Set the specified ProgId in the possible options for the assignment
-		if (-not (Test-Path -Path "HKCU:\Software\Classes\$Extension\OpenWithProgids"))
-		{
-			New-Item -Path "HKCU:\Software\Classes\$Extension\OpenWithProgids" -Force
-		}
-		New-ItemProperty -Path "HKCU:\Software\Classes\$Extension\OpenWithProgids" -Name $ProgId -PropertyType None -Value ([byte[]]@()) -Force
-
-		# Set the system ProgId to the extension parameters for File Explorer to the possible options for the assignment, and if absent set the specified ProgId
-		# We have to use GetValue() due to "Set-StrictMode -Version Latest"
-		if ($OrigProgID)
-		{
-			if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\OpenWithProgids"))
-			{
-				New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\OpenWithProgids" -Force
-			}
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\OpenWithProgids" -Name $OrigProgID -PropertyType None -Value ([byte[]]@()) -Force
-		}
-
-		if (-not (Test-Path -Path "HKCU:\Software\Classes\$Extension\OpenWithProgids"))
-		{
-			New-Item -Path "HKCU:\Software\Classes\$Extension\OpenWithProgids" -Force
-		}
-		New-ItemProperty -Path "HKCU:\Software\Classes\$Extension\OpenWithProgids" -Name $ProgID -PropertyType None -Value ([byte[]]@()) -Force
-
-		# A small pause added to complete all operations, unless sometimes PowerShell has not time to clear reguistry permissions
-		Start-Sleep -Seconds 1
-
-		# Removing the UserChoice key
-		[WinAPI.Action]::DeleteKey([Microsoft.Win32.RegistryHive]::CurrentUser, "Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice")
-		Remove-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice" -Force -ErrorAction Ignore
-
-		# Setting parameters in UserChoice. The key is being autocreated
-		if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice"))
-		{
-			New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice" -Force
-		}
-
-		# We need to remove DENY permission set for user before setting a value
-		if (@(".pdf", "http", "https") -contains $Extension)
-		{
-			# https://powertoe.wordpress.com/2010/08/28/controlling-registry-acl-permissions-with-powershell/
-			$Key = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice",[Microsoft.Win32.RegistryKeyPermissionCheck]::ReadWriteSubTree,[System.Security.AccessControl.RegistryRights]::ChangePermissions)
-			$ACL = $key.GetAccessControl()
-			$Principal = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
-			# https://learn.microsoft.com/en-us/dotnet/api/system.security.accesscontrol.filesystemrights
-			$Rule = New-Object -TypeName System.Security.AccessControl.RegistryAccessRule -ArgumentList ($Principal,"FullControl","Deny")
-			$ACL.RemoveAccessRule($Rule)
-			$Key.SetAccessControl($ACL)
-
-			# We need to use here an approach with "-Command & {}" as there's a variable inside
-			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command "& {New-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice' -Name ProgId -PropertyType String -Value $ProgID -Force}"
-		}
-		else
-		{
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice" -Name ProgId -PropertyType String -Value $ProgID -Force
-		}
-
-		# Getting a hash based on the time of the section's last modification. After creating and setting the first parameter
-		$ProgHash = Get-Hash -ProgId $ProgId -Extension $Extension -SubKey "Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice"
-
-		if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice"))
-		{
-			New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice" -Force
-		}
-
-		if (@(".pdf", "http", "https") -contains $Extension)
-		{
-			# We need to use here an approach with "-Command & {}" as there's a variable inside
-			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command "& {New-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice' -Name Hash -PropertyType String -Value $ProgHash -Force}"
-		}
-		else
-		{
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice" -Name Hash -PropertyType String -Value $ProgHash -Force
-		}
-
-		# Setting a block on changing the UserChoice section
-		# We have to use OpenSubKey() due to "Set-StrictMode -Version Latest"
-		$OpenSubKey = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice", "ReadWriteSubTree", "TakeOwnership")
-		if ($OpenSubKey)
-		{
-			$Acl = [System.Security.AccessControl.RegistrySecurity]::new()
-			# Get current user SID
-			$UserSID = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
-			$Acl.SetSecurityDescriptorSddlForm("O:$UserSID`G:$UserSID`D:AI(D;;DC;;;$UserSID)")
-			$OpenSubKey.SetAccessControl($Acl)
-			$OpenSubKey.Close()
-		}
-	}
-
-	function Write-AdditionalKeys
-	{
-		Param
-		(
-			[Parameter(
-				Mandatory = $true,
-				Position = 0
-			)]
-			[string]
-			$ProgId,
-
-			[Parameter(
-				Mandatory = $true,
-				Position = 1
-			)]
-			[string]
-			$Extension
-		)
-
-		# If there is the system extension ProgId, write it to the already configured by default
-		# We have to use GetValue() due to "Set-StrictMode -Version Latest"
-		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\$Extension", "", $null))
-		{
-			if (-not (Test-Path -Path Registry::HKEY_USERS\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\FileAssociations\ProgIds))
-			{
-				New-Item -Path Registry::HKEY_USERS\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\FileAssociations\ProgIds -Force
-			}
-			New-ItemProperty -Path Registry::HKEY_USERS\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\FileAssociations\ProgIds -Name "_$($Extension)" -PropertyType DWord -Value 1 -Force
-		}
-
-		# Setting 'NoOpenWith' for all registered the extension ProgIDs
-		# We have to check everything due to "Set-StrictMode -Version Latest"
-		if (Get-Item -Path "Registry::HKEY_CLASSES_ROOT\$Extension\OpenWithProgids" -ErrorAction Ignore)
-		{
-			[psobject]$OpenSubkey = (Get-Item -Path "Registry::HKEY_CLASSES_ROOT\$Extension\OpenWithProgids" -ErrorAction Ignore).Property
-			if ($OpenSubkey)
-			{
-				foreach ($AppxProgID in ($OpenSubkey | Where-Object -FilterScript {$_ -match "AppX"}))
-				{
-					# If an app is installed
-					if (Get-ItemPropertyValue -Path "HKCU:\Software\Classes\$AppxProgID\Shell\open" -Name PackageId)
-					{
-						# If the specified ProgId is equal to UWP installed ProgId
-						if ($ProgId -eq $AppxProgID)
-						{
-							# Remove association limitations for this UWP apps
-							Remove-ItemProperty -Path "HKCU:\Software\Classes\$AppxProgID" -Name NoOpenWith, NoStaticDefaultVerb -Force -ErrorAction Ignore
-						}
-						else
-						{
-							New-ItemProperty -Path "HKCU:\Software\Classes\$AppxProgID" -Name NoOpenWith -PropertyType String -Value "" -Force
-						}
-
-						$Global:RegisteredProgIDs += $AppxProgID
-					}
-				}
-			}
-		}
-
-		# We have to use GetValue() due to "Set-StrictMode -Version Latest"
-		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\KindMap", $Extension, $null))
-		{
-			$picture = (Get-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\KindMap -Name $Extension -ErrorAction Ignore).$Extension
-		}
-		# We have to use GetValue() due to "Set-StrictMode -Version Latest"
-		if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\PBrush\CLSID", "", $null))
-		{
-			$PBrush = (Get-ItemProperty -Path HKLM:\SOFTWARE\Classes\PBrush\CLSID -Name "(default)" -ErrorAction Ignore)."(default)"
-		}
-
-		# We have to check everything due to "Set-StrictMode -Version Latest"
-		if (Get-Variable -Name picture -ErrorAction Ignore)
-		{
-			if (($picture -eq "picture") -and $PBrush)
-			{
-				New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts -Name "PBrush_$($Extension)" -PropertyType DWord -Value 0 -Force
-			}
-		}
-
-		# We have to use GetValue() due to "Set-StrictMode -Version Latest"
-		if (([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\KindMap", $Extension, $null)) -eq "picture")
-		{
-			$Global:RegisteredProgIDs += "PBrush"
-		}
-
-		if ($Extension.Contains("."))
-		{
-			[string]$Associations = "FileAssociations"
-		}
-		else
-		{
-			[string]$Associations = "UrlAssociations"
-		}
-
-		foreach ($Item in @((Get-Item -Path "HKLM:\SOFTWARE\RegisteredApplications").Property))
-		{
-			$Subkey = (Get-ItemProperty -Path "HKLM:\SOFTWARE\RegisteredApplications" -Name $Item -ErrorAction Ignore).$Item
-			if ($Subkey)
-			{
-				if (Test-Path -Path "HKLM:\$Subkey\$Associations")
-				{
-					$isProgID = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\$Subkey\$Associations", $Extension, $null)
-					if ($isProgID)
-					{
-						$Global:RegisteredProgIDs += $isProgID
-					}
-				}
-			}
-		}
-
-		Clear-Variable -Name UserRegisteredProgIDs -Force -ErrorAction Ignore
-		[array]$UserRegisteredProgIDs = @()
-
-		foreach ($Item in (Get-Item -Path "HKCU:\Software\RegisteredApplications").Property)
-		{
-			$Subkey = (Get-ItemProperty -Path "HKCU:\Software\RegisteredApplications" -Name $Item -ErrorAction Ignore).$Item
-			if ($Subkey)
-			{
-				if (Test-Path -Path "HKCU:\$Subkey\$Associations")
-				{
-					$isProgID = [Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\$Subkey\$Associations", $Extension, $null)
-					if ($isProgID)
-					{
-						$UserRegisteredProgIDs += $isProgID
-					}
-				}
-			}
-		}
-
-		$UserRegisteredProgIDs = ($Global:RegisteredProgIDs + $UserRegisteredProgIDs | Sort-Object -Unique)
-		foreach ($UserProgID in $UserRegisteredProgIDs)
-		{
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts" -Name "$($UserProgID)_$($Extension)" -PropertyType DWord -Value 0 -Force
-		}
-	}
-
-	function Get-Hash
-	{
-		[CmdletBinding()]
-		[OutputType([string])]
-		Param
-		(
-			[Parameter(
-				Mandatory = $true,
-				Position = 0
-			)]
-			[string]
-			$ProgId,
-
-			[Parameter(
-				Mandatory = $true,
-				Position = 1
-			)]
-			[string]
-			$Extension,
-
-			[Parameter(
-				Mandatory = $true,
-				Position = 2
-			)]
-			[string]
-			$SubKey
-		)
-
-		$Signature = @{
-			Namespace          = "WinAPI"
-			Name               = "PatentHash"
-			Language           = "CSharp"
-			CompilerParameters = $CompilerParameters
-			MemberDefinition   = @"
-public static uint[] WordSwap(byte[] a, int sz, byte[] md5)
-{
-	if (sz < 2 || (sz & 1) == 1)
-	{
-		throw new ArgumentException(String.Format("Invalid input size: {0}", sz), "sz");
-	}
-
-	unchecked
-	{
-		uint o1 = 0;
-		uint o2 = 0;
-		int ta = 0;
-		int ts = sz;
-		int ti = ((sz - 2) >> 1) + 1;
-
-		uint c0 = (BitConverter.ToUInt32(md5, 0) | 1) + 0x69FB0000;
-		uint c1 = (BitConverter.ToUInt32(md5, 4) | 1) + 0x13DB0000;
-
-		for (uint i = (uint)ti; i > 0; i--)
-		{
-			uint n = BitConverter.ToUInt32(a, ta) + o1;
-			ta += 8;
-			ts -= 2;
-
-			uint v1 = 0x79F8A395 * (n * c0 - 0x10FA9605 * (n >> 16)) + 0x689B6B9F * ((n * c0 - 0x10FA9605 * (n >> 16)) >> 16);
-			uint v2 = 0xEA970001 * v1 - 0x3C101569 * (v1 >> 16);
-			uint v3 = BitConverter.ToUInt32(a, ta - 4) + v2;
-			uint v4 = v3 * c1 - 0x3CE8EC25 * (v3 >> 16);
-			uint v5 = 0x59C3AF2D * v4 - 0x2232E0F1 * (v4 >> 16);
-
-			o1 = 0x1EC90001 * v5 + 0x35BD1EC9 * (v5 >> 16);
-			o2 += o1 + v2;
-		}
-
-		if (ts == 1)
-		{
-			uint n = BitConverter.ToUInt32(a, ta) + o1;
-
-			uint v1 = n * c0 - 0x10FA9605 * (n >> 16);
-			uint v2 = 0xEA970001 * (0x79F8A395 * v1 + 0x689B6B9F * (v1 >> 16)) - 0x3C101569 * ((0x79F8A395 * v1 + 0x689B6B9F * (v1 >> 16)) >> 16);
-			uint v3 = v2 * c1 - 0x3CE8EC25 * (v2 >> 16);
-
-			o1 = 0x1EC90001 * (0x59C3AF2D * v3 - 0x2232E0F1 * (v3 >> 16)) + 0x35BD1EC9 * ((0x59C3AF2D * v3 - 0x2232E0F1 * (v3 >> 16)) >> 16);
-			o2 += o1 + v2;
-		}
-
-		uint[] ret = new uint[2];
-		ret[0] = o1;
-		ret[1] = o2;
-		return ret;
-	}
-}
-
-public static uint[] Reversible(byte[] a, int sz, byte[] md5)
-{
-	if (sz < 2 || (sz & 1) == 1)
-	{
-		throw new ArgumentException(String.Format("Invalid input size: {0}", sz), "sz");
-	}
-
-	unchecked
-	{
-		uint o1 = 0;
-		uint o2 = 0;
-		int ta = 0;
-		int ts = sz;
-		int ti = ((sz - 2) >> 1) + 1;
-
-		uint c0 = BitConverter.ToUInt32(md5, 0) | 1;
-		uint c1 = BitConverter.ToUInt32(md5, 4) | 1;
-
-		for (uint i = (uint)ti; i > 0; i--)
-		{
-			uint n = (BitConverter.ToUInt32(a, ta) + o1) * c0;
-			n = 0xB1110000 * n - 0x30674EEF * (n >> 16);
-			ta += 8;
-			ts -= 2;
-
-			uint v1 = 0x5B9F0000 * n - 0x78F7A461 * (n >> 16);
-			uint v2 = 0x1D830000 * (0x12CEB96D * (v1 >> 16) - 0x46930000 * v1) + 0x257E1D83 * ((0x12CEB96D * (v1 >> 16) - 0x46930000 * v1) >> 16);
-			uint v3 = BitConverter.ToUInt32(a, ta - 4) + v2;
-
-			uint v4 = 0x16F50000 * c1 * v3 - 0x5D8BE90B * (c1 * v3 >> 16);
-			uint v5 = 0x2B890000 * (0x96FF0000 * v4 - 0x2C7C6901 * (v4 >> 16)) + 0x7C932B89 * ((0x96FF0000 * v4 - 0x2C7C6901 * (v4 >> 16)) >> 16);
-
-			o1 = 0x9F690000 * v5 - 0x405B6097 * (v5 >> 16);
-			o2 += o1 + v2;
-		}
-
-		if (ts == 1)
-		{
-			uint n = BitConverter.ToUInt32(a, ta) + o1;
-
-			uint v1 = 0xB1110000 * c0 * n - 0x30674EEF * ((c0 * n) >> 16);
-			uint v2 = 0x5B9F0000 * v1 - 0x78F7A461 * (v1 >> 16);
-			uint v3 = 0x1D830000 * (0x12CEB96D * (v2 >> 16) - 0x46930000 * v2) + 0x257E1D83 * ((0x12CEB96D * (v2 >> 16) - 0x46930000 * v2) >> 16);
-			uint v4 = 0x16F50000 * c1 * v3 - 0x5D8BE90B * ((c1 * v3) >> 16);
-			uint v5 = 0x96FF0000 * v4 - 0x2C7C6901 * (v4 >> 16);
-			o1 = 0x9F690000 * (0x2B890000 * v5 + 0x7C932B89 * (v5 >> 16)) - 0x405B6097 * ((0x2B890000 * v5 + 0x7C932B89 * (v5 >> 16)) >> 16);
-			o2 += o1 + v2;
-		}
-
-		uint[] ret = new uint[2];
-		ret[0] = o1;
-		ret[1] = o2;
-		return ret;
-	}
-}
-
-public static long MakeLong(uint left, uint right)
-{
-	return (long)left << 32 | (long)right;
-}
-"@
-		}
-
-		if (-not ("WinAPI.PatentHash" -as [type]))
-		{
-			Add-Type @Signature
-		}
-
-		function Get-KeyLastWriteTime ($SubKey)
-		{
-			$LastModified = [WinAPI.Action]::GetLastModified([Microsoft.Win32.RegistryHive]::CurrentUser,$SubKey)
-			$FileTime = ([DateTime]::New($LastModified.Year, $LastModified.Month, $LastModified.Day, $LastModified.Hour, $LastModified.Minute, 0, $LastModified.Kind)).ToFileTime()
-
-			return [string]::Format("{0:x8}{1:x8}", $FileTime -shr 32, $FileTime -band [uint32]::MaxValue)
-		}
-
-		function Get-DataArray
-		{
-			[OutputType([array])]
-
-			# Secret static string stored in %SystemRoot%\SysWOW64\shell32.dll
-			$userExperience        = "User Choice set via Windows User Experience {D18B6DD5-6124-4341-9318-804003BAFA0B}"
-			# Get user SID
-			$userSID               = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
-			$KeyLastWriteTime      = Get-KeyLastWriteTime -SubKey $SubKey
-			$baseInfo              = ("{0}{1}{2}{3}{4}" -f $Extension, $userSID, $ProgId, $KeyLastWriteTime, $userExperience).ToLowerInvariant()
-			$StringToUTF16LEArray  = [System.Collections.ArrayList]@([System.Text.Encoding]::Unicode.GetBytes($baseInfo))
-			$StringToUTF16LEArray += (0,0)
-
-			return $StringToUTF16LEArray
-		}
-
-		function Get-PatentHash
-		{
-			[OutputType([string])]
-			param
-			(
-				[Parameter(Mandatory = $true)]
-				[byte[]]
-				$Array,
-
-				[Parameter(Mandatory = $true)]
-				[byte[]]
-				$MD5
-			)
-
-			$Size = $Array.Count
-			$ShiftedSize = ($Size -shr 2) - ($Size -shr 2 -band 1) * 1
-
-			[uint32[]]$Array1 = [WinAPI.PatentHash]::WordSwap($Array, [int]$ShiftedSize, $MD5)
-			[uint32[]]$Array2 = [WinAPI.PatentHash]::Reversible($Array, [int]$ShiftedSize, $MD5)
-
-			$Ret = [WinAPI.PatentHash]::MakeLong($Array1[1] -bxor $Array2[1], $Array1[0] -bxor $Array2[0])
-
-			return [System.Convert]::ToBase64String([System.BitConverter]::GetBytes([Int64]$Ret))
-		}
-
-		$DataArray = Get-DataArray
-		$DataMD5   = [System.Security.Cryptography.HashAlgorithm]::Create("MD5").ComputeHash($DataArray)
-		$Hash      = Get-PatentHash -Array $DataArray -MD5 $DataMD5
-
-		return $Hash
-	}
-	#endregion functions
 
 	Write-Information -MessageData "" -InformationAction Continue
 	# Extract the localized "Please wait..." string from shell32.dll
@@ -7421,30 +6913,6 @@ public static long MakeLong(uint left, uint right)
 
 	# Setting additional parameters to comply with the requirements before configuring the extension
 	Write-AdditionalKeys -ProgId $ProgId -Extension $Extension
-
-	# Refresh the desktop icons
-	$Signature = @{
-		Namespace          = "WinAPI"
-		Name               = "Signature"
-		Language           = "CSharp"
-		CompilerParameters = $CompilerParameters
-		MemberDefinition   = @"
-[DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = false)]
-private static extern int SHChangeNotify(int eventId, int flags, IntPtr item1, IntPtr item2);
-
-public static void Refresh()
-{
-	// Update desktop icons
-	SHChangeNotify(0x8000000, 0x1000, IntPtr.Zero, IntPtr.Zero);
-}
-"@
-	}
-	if (-not ("WinAPI.Signature" -as [type]))
-	{
-		Add-Type @Signature
-	}
-
-	[WinAPI.Signature]::Refresh()
 
 	Remove-Item -Path "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Force
 }
@@ -7672,7 +7140,9 @@ function Import-Associations
 		}
 		catch [System.Exception]
 		{
-			Write-Warning -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim())
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Verbose -Message ($Localization.JSONNotValid -f $OpenFileDialog.FileName) -Verbose
+			Write-Error -Message ($Localization.JSONNotValid -f $OpenFileDialog.FileName) -Verbose -ErrorAction SilentlyContinue
 			Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 			return
@@ -7737,6 +7207,7 @@ function Install-VCRedist
 	}
 	catch [System.Net.WebException]
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com")
 		Write-Error -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com") -ErrorAction SilentlyContinue
 		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
@@ -7792,6 +7263,7 @@ function Install-VCRedist
 					}
 					catch [System.Net.WebException]
 					{
+						Write-Information -MessageData "" -InformationAction Continue
 						Write-Warning -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com")
 						Write-Error -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com") -ErrorAction SilentlyContinue
 						Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
@@ -7802,6 +7274,8 @@ function Install-VCRedist
 				else
 				{
 					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message ($Localization.PackageIsInstalled -f "Microsoft Visual C++ Redistributable Packages 2015–2026 x86") -Verbose
+					Write-Error -Message ($Localization.PackageIsInstalled -f "Microsoft Visual C++ Redistributable Packages 2015–2026 x86") -Verbose -ErrorAction SilentlyContinue
 					Write-Verbose -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -Verbose
 					Write-Error -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -ErrorAction SilentlyContinue
 				}
@@ -7823,6 +7297,7 @@ function Install-VCRedist
 					}
 					catch [System.Net.WebException]
 					{
+						Write-Information -MessageData "" -InformationAction Continue
 						Write-Warning -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com")
 						Write-Error -Message ($Localization.NoResponse -f "https://download.visualstudio.microsoft.com") -ErrorAction SilentlyContinue
 						Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
@@ -7838,6 +7313,8 @@ function Install-VCRedist
 				else
 				{
 					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message ($Localization.PackageIsInstalled -f "Microsoft Visual C++ Redistributable Packages 2015–2026 x64") -Verbose
+					Write-Error -Message ($Localization.PackageIsInstalled -f "Microsoft Visual C++ Redistributable Packages 2015–2026 x64") -Verbose -ErrorAction SilentlyContinue
 					Write-Verbose -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -Verbose
 					Write-Error -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -ErrorAction SilentlyContinue
 				}
@@ -7913,6 +7390,7 @@ function Install-DotNetRuntimes
 				}
 				catch [System.Net.WebException]
 				{
+					Write-Information -MessageData "" -InformationAction Continue
 					Write-Warning -Message ($Localization.NoResponse -f "https://builds.dotnet.microsoft.com")
 					Write-Error -Message ($Localization.NoResponse -f "https://builds.dotnet.microsoft.com") -ErrorAction SilentlyContinue
 					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
@@ -7949,6 +7427,7 @@ function Install-DotNetRuntimes
 					}
 					catch [System.Net.WebException]
 					{
+						Write-Information -MessageData "" -InformationAction Continue
 						Write-Warning -Message ($Localization.NoResponse -f "https://builds.dotnet.microsoft.com")
 						Write-Error -Message ($Localization.NoResponse -f "https://builds.dotnet.microsoft.com") -ErrorAction SilentlyContinue
 						Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
@@ -7964,6 +7443,8 @@ function Install-DotNetRuntimes
 				else
 				{
 					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message ($Localization.PackageIsInstalled -f ".NET 8") -Verbose
+					Write-Error -Message ($Localization.PackageIsInstalled -f ".NET 8") -Verbose -ErrorAction SilentlyContinue
 					Write-Verbose -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -Verbose
 					Write-Error -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -ErrorAction SilentlyContinue
 				}
@@ -7983,6 +7464,7 @@ function Install-DotNetRuntimes
 				}
 				catch [System.Net.WebException]
 				{
+					Write-Information -MessageData "" -InformationAction Continue
 					Write-Warning -Message ($Localization.NoResponse -f "https://builds.dotnet.microsoft.com")
 					Write-Error -Message ($Localization.NoResponse -f "https://builds.dotnet.microsoft.com") -ErrorAction SilentlyContinue
 					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
@@ -8019,6 +7501,7 @@ function Install-DotNetRuntimes
 					}
 					catch [System.Net.WebException]
 					{
+						Write-Information -MessageData "" -InformationAction Continue
 						Write-Warning -Message ($Localization.NoResponse -f "https://builds.dotnet.microsoft.com")
 						Write-Error -Message ($Localization.NoResponse -f "https://builds.dotnet.microsoft.com") -ErrorAction SilentlyContinue
 						Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
@@ -8034,6 +7517,8 @@ function Install-DotNetRuntimes
 				else
 				{
 					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message ($Localization.PackageIsInstalled -f ".NET 9") -Verbose
+					Write-Error -Message ($Localization.PackageIsInstalled -f ".NET 9") -Verbose -ErrorAction SilentlyContinue
 					Write-Verbose -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -Verbose
 					Write-Error -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -ErrorAction SilentlyContinue
 				}
@@ -8053,6 +7538,7 @@ function Install-DotNetRuntimes
 				}
 				catch [System.Net.WebException]
 				{
+					Write-Information -MessageData "" -InformationAction Continue
 					Write-Warning -Message ($Localization.NoResponse -f "https://builds.dotnet.microsoft.com")
 					Write-Error -Message ($Localization.NoResponse -f "https://builds.dotnet.microsoft.com") -ErrorAction SilentlyContinue
 					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
@@ -8089,6 +7575,7 @@ function Install-DotNetRuntimes
 					}
 					catch [System.Net.WebException]
 					{
+						Write-Information -MessageData "" -InformationAction Continue
 						Write-Warning -Message ($Localization.NoResponse -f "https://builds.dotnet.microsoft.com")
 						Write-Error -Message ($Localization.NoResponse -f "https://builds.dotnet.microsoft.com") -ErrorAction SilentlyContinue
 						Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
@@ -8104,6 +7591,8 @@ function Install-DotNetRuntimes
 				else
 				{
 					Write-Information -MessageData "" -InformationAction Continue
+					Write-Verbose -Message ($Localization.PackageIsInstalled -f ".NET 10") -Verbose
+					Write-Error -Message ($Localization.PackageIsInstalled -f ".NET 10") -Verbose -ErrorAction SilentlyContinue
 					Write-Verbose -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -Verbose
 					Write-Error -Message ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -ErrorAction SilentlyContinue
 				}
@@ -8245,6 +7734,8 @@ function PreventEdgeShortcutCreation
 	if (-not (Get-Package -Name "Microsoft Edge" -ErrorAction Ignore))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.PackageNotInstalled -f "Microsoft Edge") -Verbose
+		Write-Error -Message ($Localization.PackageNotInstalled -f "Microsoft Edge") -Verbose -ErrorAction SilentlyContinue
 		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
@@ -8420,6 +7911,7 @@ function Install-WSL
 	}
 	catch [System.Net.WebException]
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com")
 		Write-Error -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com") -ErrorAction SilentlyContinue
 		Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
@@ -8842,19 +8334,6 @@ function PinToStart
 
 		foreach ($Tile in $Tiles)
 		{
-			switch ($Tile)
-			{
-				ControlPanel
-				{
-					$ControlPanel = [WinAPI.GetStrings]::GetString(12712)
-					Write-Verbose -Message ($Localization.ShortcutPinning -f $ControlPanel) -Verbose
-				}
-				DevicesPrinters
-				{
-					Write-Verbose -Message ($Localization.ShortcutPinning -f $DevicesPrinters) -Verbose
-				}
-			}
-
 			$Parameter = $Parameters | Where-Object -FilterScript {$_.Name -eq $Tile}
 			$Group = $XML.LayoutModificationTemplate.DefaultLayoutOverride.StartLayoutCollection.StartLayout.Group | Where-Object -FilterScript {$_.Name -eq "Sophia Script"}
 
@@ -9074,8 +8553,10 @@ function CleanupTask
 				if ($TaskUserAccount -ne $env:USERNAME)
 				{
 					Write-Information -MessageData "" -InformationAction Continue
-					Write-Warning -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line.Trim(), $TaskUserAccount)
-					Write-Error -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line.Trim(), $TaskUserAccount) -ErrorAction SilentlyContinue
+					Write-Warning -Message ($Localization.ScheduledTaskCreatedByAnotherUser -f "Windows Cleanup", $TaskUserAccount)
+					Write-Error -Message ($Localization.ScheduledTaskCreatedByAnotherUser -f "Windows Cleanup", $TaskUserAccount) -ErrorAction SilentlyContinue
+					Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+					Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 					return
 				}
@@ -9523,8 +9004,10 @@ function SoftwareDistributionTask
 				if ($TaskUserAccount -ne $env:USERNAME)
 				{
 					Write-Information -MessageData "" -InformationAction Continue
-					Write-Warning -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line.Trim(), $TaskUserAccount)
-					Write-Error -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line.Trim(), $TaskUserAccount) -ErrorAction SilentlyContinue
+					Write-Warning -Message ($Localization.ScheduledTaskCreatedByAnotherUser -f "SoftwareDistribution", $TaskUserAccount)
+					Write-Error -Message ($Localization.ScheduledTaskCreatedByAnotherUser -f "SoftwareDistribution", $TaskUserAccount) -ErrorAction SilentlyContinue
+					Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+					Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 					return
 				}
@@ -9844,8 +9327,10 @@ function TempTask
 				if ($TaskUserAccount -ne $env:USERNAME)
 				{
 					Write-Information -MessageData "" -InformationAction Continue
-					Write-Warning -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line.Trim(), $TaskUserAccount)
-					Write-Error -Message ($Localization.ScheduledTaskPresented -f $MyInvocation.Line.Trim(), $TaskUserAccount) -ErrorAction SilentlyContinue
+					Write-Warning -Message ($Localization.ScheduledTaskCreatedByAnotherUser -f "Temp", $TaskUserAccount)
+					Write-Error -Message ($Localization.ScheduledTaskCreatedByAnotherUser -f "Temp", $TaskUserAccount) -ErrorAction SilentlyContinue
+					Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+					Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 					return
 				}
@@ -10141,9 +9626,11 @@ function NetworkProtection
 		$Disable
 	)
 
-	if ((-not $Global:DefenderEnabled) -or $Global:DefenderMpPreferenceBroken)
+	if (-not $Global:DefenderDefaultAV)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
+		Write-Warning -Message $Localization.ThirdPartyAVInstalled
+		Write-Error -Message $Localization.ThirdPartyAVInstalled -ErrorAction SilentlyContinue
 		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
@@ -10201,9 +9688,11 @@ function PUAppsDetection
 		$Disable
 	)
 
-	if ((-not $Global:DefenderEnabled) -or $Global:DefenderMpPreferenceBroken)
+	if (-not $Global:DefenderDefaultAV)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
+		Write-Warning -Message $Localization.ThirdPartyAVInstalled
+		Write-Error -Message $Localization.ThirdPartyAVInstalled -ErrorAction SilentlyContinue
 		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
@@ -10261,9 +9750,11 @@ function DefenderSandbox
 		$Disable
 	)
 
-	if ((-not $Global:DefenderEnabled) -or $Global:DefenderMpPreferenceBroken)
+	if (-not $Global:DefenderDefaultAV)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
+		Write-Warning -Message $Localization.ThirdPartyAVInstalled
+		Write-Error -Message $Localization.ThirdPartyAVInstalled -ErrorAction SilentlyContinue
 		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
@@ -10281,36 +9772,6 @@ function DefenderSandbox
 			& "$env:SystemRoot\System32\setx.exe" /M MP_FORCE_USE_SANDBOX 0
 		}
 	}
-}
-
-# Dismiss Microsoft Defender offer in the Windows Security about signing in Microsoft account
-function DismissMSAccount
-{
-	if ((-not $Global:DefenderEnabled) -or $Global:DefenderMpPreferenceBroken)
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-
-		return
-	}
-
-	New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AccountProtection_MicrosoftAccount_Disconnected -PropertyType DWord -Value 1 -Force
-}
-
-# Dismiss Microsoft Defender offer in the Windows Security about turning on the SmartScreen filter for Microsoft Edge
-function DismissSmartScreenFilter
-{
-	if ((-not $Global:DefenderEnabled) -or $Global:DefenderMpPreferenceBroken)
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-
-		return
-	}
-
-	New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Security Health\State" -Name AppAndBrowser_EdgeSmartScreenOff -PropertyType DWord -Value 0 -Force
 }
 
 <#
@@ -10389,8 +9850,8 @@ function EventViewerCustomView
 				New-Item -Path "$env:ProgramData\Microsoft\Event Viewer\Views" -ItemType Directory -Force
 			}
 
-			# Save ProcessCreation.xml in the UTF-8 without BOM encoding
-			Set-Content -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Value $XML -Encoding Default -NoNewline -Force
+			# Save ProcessCreation.xml in the UTF-8 with BOM encoding
+			Set-Content -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Value $XML -Encoding UTF8 -NoNewline -Force
 		}
 		"Disable"
 		{
@@ -10561,9 +10022,11 @@ function AppsSmartScreen
 		$Disable
 	)
 
-	if ((-not $Global:DefenderEnabled) -or $Global:DefenderMpPreferenceBroken)
+	if (-not $Global:DefenderDefaultAV)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
+		Write-Warning -Message $Localization.ThirdPartyAVInstalled
+		Write-Error -Message $Localization.ThirdPartyAVInstalled -ErrorAction SilentlyContinue
 		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
@@ -10704,6 +10167,8 @@ function WindowsSandbox
 				}
 				catch [System.Exception]
 				{
+					Write-Information -MessageData "" -InformationAction Continue
+					Write-Warning -Message $Localization.EnableHardwareVT
 					Write-Error -Message $Localization.EnableHardwareVT -ErrorAction SilentlyContinue
 					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 				}
@@ -10728,6 +10193,8 @@ function WindowsSandbox
 				}
 				catch [System.Exception]
 				{
+					Write-Information -MessageData "" -InformationAction Continue
+					Write-Warning -Message $Localization.EnableHardwareVT
 					Write-Error -Message $Localization.EnableHardwareVT -ErrorAction SilentlyContinue
 					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 				}
@@ -10851,6 +10318,8 @@ function CABInstallContext
 			else
 			{
 				Write-Information -MessageData "" -InformationAction Continue
+				Write-Warning -Message $Localization.ThirdPartyArchiverInstalled
+				Write-Error -Message $Localization.ThirdPartyArchiverInstalled -ErrorAction SilentlyContinue
 				Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
 				Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
@@ -11079,6 +10548,12 @@ function ImagesEditContext
 
 	if ((Get-WindowsCapability -Online -Name "Microsoft.Windows.MSPaint*").State -ne "Installed")
 	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.PackageNotInstalled -f "Paint") -Verbose
+		Write-Error -Message ($Localization.PackageNotInstalled -f "Paint") -Verbose -ErrorAction SilentlyContinue
+		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+
 		return
 	}
 
@@ -11322,8 +10797,9 @@ function BitmapImageNewContext
 				}
 				catch [System.Runtime.InteropServices.COMException]
 				{
-					Write-Warning -Message ($Localization.NoResponse -f "http://tlu.dl.delivery.mp.microsoft.com/filestreamingservice")
-					Write-Error -Message ($Localization.NoResponse -f "http://tlu.dl.delivery.mp.microsoft.com/filestreamingservice") -ErrorAction SilentlyContinue
+					Write-Information -MessageData "" -InformationAction Continue
+					Write-Warning -Message ($Localization.NoResponse -f "http://tlu.dl.delivery.mp.microsoft.com")
+					Write-Error -Message ($Localization.NoResponse -f "http://tlu.dl.delivery.mp.microsoft.com") -ErrorAction SilentlyContinue
 					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 				}
 			}
@@ -11400,8 +10876,9 @@ function RichTextDocumentNewContext
 				}
 				catch [System.Runtime.InteropServices.COMException]
 				{
-					Write-Warning -Message ($Localization.NoResponse -f "http://tlu.dl.delivery.mp.microsoft.com/filestreamingservice")
-					Write-Error -Message ($Localization.NoResponse -f "http://tlu.dl.delivery.mp.microsoft.com/filestreamingservice") -ErrorAction SilentlyContinue
+					Write-Information -MessageData "" -InformationAction Continue
+					Write-Warning -Message ($Localization.NoResponse -f "http://tlu.dl.delivery.mp.microsoft.com")
+					Write-Error -Message ($Localization.NoResponse -f "http://tlu.dl.delivery.mp.microsoft.com") -ErrorAction SilentlyContinue
 					Write-Error -Message ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 				}
 			}
@@ -11533,15 +11010,6 @@ function MultipleInvokeContext
 #>
 function ScanRegistryPolicies
 {
-	if (-not (Test-Path -Path "$env:SystemRoot\System32\gpedit.msc"))
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-		Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-
-		return
-	}
-
 	Write-Information -MessageData "" -InformationAction Continue
 	# Extract the localized "Please wait..." string from shell32.dll
 	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose

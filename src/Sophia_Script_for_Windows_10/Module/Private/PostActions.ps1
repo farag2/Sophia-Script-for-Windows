@@ -79,15 +79,6 @@ public static void PostMessage()
 	#endregion Refresh Environment
 
 	#region Other actions
-	# Turn on Controlled folder access if it was turned off
-	if ($Global:DefenderEnabled -and (-not $Global:DefenderMpPreferenceBroken))
-	{
-		if ($Global:ControlledFolderAccess)
-		{
-			Set-MpPreference -EnableControlledFolderAccess Enabled
-		}
-	}
-
 	# Call MeetNow unless binary value is reverted
 	if (-not $Global:MeetNow)
 	{
@@ -117,15 +108,18 @@ public static void PostMessage()
 	# Open Startup page
 	Start-Process -FilePath "ms-settings:startupapps"
 
-	# Checking whether BitLocker drive encryption if off, despite drive is encrypted
+	# Checking whether BitLocker drive encryption is off, despite drive is encrypted
 	if (Get-BitLockerVolume | Where-Object -FilterScript {($_.ProtectionStatus -eq "Off") -and ($_.VolumeStatus -eq "FullyEncrypted")})
 	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Warning -Message $Localization.BitLockerAutomaticEncryption
+		Write-Error -Message $Localization.BitLockerAutomaticEncryption -ErrorAction SilentlyContinue
+		Write-Verbose -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -Verbose
+		Write-Error -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -ErrorAction SilentlyContinue
+
 		Get-BitLockerVolume
 
-		Start-Process -FilePath "https://support.microsoft.com/windows/cf7e2b6f-3e70-4882-9532-18633605b7df"
-		Start-Process -FilePath "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/"
-
-		# Open if Windows edition is Home
+		# Open if Windows edition is not Home
 		if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion").EditionID -ne "Core")
 		{
 			# Open BitLocker settings
@@ -148,6 +142,8 @@ public static void PostMessage()
 
 		# Open Task Scheduler
 		Start-Process -FilePath taskschd.msc
+
+		$Global:ScheduledTasks = $false
 	}
 	#endregion Other actions
 
@@ -216,5 +212,4 @@ public static void PostMessage()
 	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message "https://ko-fi.com/farag" -Verbose
 	Write-Verbose -Message "https://boosty.to/teamsophia" -Verbose
-	Write-Information -MessageData "" -InformationAction Continue
 }

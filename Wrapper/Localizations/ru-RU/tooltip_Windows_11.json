@@ -1595,26 +1595,6 @@
     },
     {
         "Region": "Microsoft Defender & Security",
-        "Function": "DismissMSAccount",
-        "Arg": {
-            "Zero": {
-                "Tag": "",
-                "ToolTip": "Отклонить предложение Microsoft Defender в \"Безопасность Windows\" о входе в аккаунт Microsoft."
-            }
-        }
-    },
-    {
-        "Region": "Microsoft Defender & Security",
-        "Function": "DismissSmartScreenFilter",
-        "Arg": {
-            "Zero": {
-                "Tag": "",
-                "ToolTip": "Отклонить предложение Microsoft Defender в \"Безопасность Windows\" включить фильтр SmartScreen для Microsoft Edge."
-            }
-        }
-    },
-    {
-        "Region": "Microsoft Defender & Security",
         "Function": "EventViewerCustomView",
         "Arg": {
             "Zero": {

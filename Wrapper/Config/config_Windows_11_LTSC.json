@@ -1866,34 +1866,6 @@
     },
     {
         "Region": "Microsoft Defender & Security",
-        "Control": "chk",
-        "Required": "false",
-        "Function": "DismissMSAccount",
-        "Arg": {
-            "Zero": {
-                "Tag": ""
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "",
-        "LTSC2024": "true"
-    },
-    {
-        "Region": "Microsoft Defender & Security",
-        "Control": "chk",
-        "Required": "false",
-        "Function": "DismissSmartScreenFilter",
-        "Arg": {
-            "Zero": {
-                "Tag": ""
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "",
-        "LTSC2024": "true"
-    },
-    {
-        "Region": "Microsoft Defender & Security",
         "Control": "cmb",
         "Required": "false",
         "Function": "EventViewerCustomView",
