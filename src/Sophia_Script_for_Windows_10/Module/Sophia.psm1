@@ -3928,6 +3928,491 @@ function NavigationPaneExpand
 		}
 	}
 }
+
+<#
+	.SYNOPSIS
+	Recently added apps on Start
+
+	.PARAMETER Hide
+	Hide recently added apps on Start
+
+	.PARAMETER Show
+	Show recently added apps on Start
+
+	.EXAMPLE
+	RecentlyAddedStartApps -Hide
+
+	.EXAMPLE
+	RecentlyAddedStartApps -Show
+
+	.NOTES
+	Machine-wide
+#>
+function RecentlyAddedStartApps
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Hide"
+		)]
+		[switch]
+		$Hide,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Show"
+		)]
+		[switch]
+		$Show
+	)
+
+	# Remove all policies in order to make changes visible in UI
+	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Force -ErrorAction Ignore
+	Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Type DELETE
+	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Type DELETE
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Hide"
+		{
+			if (-not (Test-Path -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer))
+			{
+				New-Item -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Force
+			}
+			New-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -PropertyType DWord -Value 1 -Force
+
+			Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Type DWORD -Value 1
+		}
+		"Show"
+		{
+			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Force -ErrorAction Ignore
+			Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Type DELETE
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	Most used apps in Start
+
+	.PARAMETER Hide
+	Hide most used Apps in Start
+
+	.PARAMETER Show
+	Show most used Apps in Start (default value)
+
+	.EXAMPLE
+	MostUsedStartApps -Hide
+
+	.EXAMPLE
+	MostUsedStartApps -Show
+
+	.NOTES
+	Current user
+#>
+function MostUsedStartApps
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Hide"
+		)]
+		[switch]
+		$Hide,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Show"
+		)]
+		[switch]
+		$Show
+	)
+
+	# Remove all policies in order to make changes visible in UI
+	Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoStartMenuMFUprogramsList -Force -ErrorAction Ignore
+	Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoStartMenuMFUprogramsList -Type DELETE
+
+	if (Get-Process -Name Start11Srv, StartAllBackCfg, StartMenu -ErrorAction Ignore)
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.CustomStartMenu, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message ($Localization.CustomStartMenu, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+
+		return
+	}
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Hide"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoStartMenuMFUprogramsList -PropertyType DWord -Value 1 -Force
+			Set-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoStartMenuMFUprogramsList -Type DWORD -Value 1
+		}
+		"Show"
+		{
+			Remove-ItemProperty -Path HKCU:\NoStartMenuMFUprogramsList -Name Start_TrackProgs -Force -ErrorAction Ignore
+			Set-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoStartMenuMFUprogramsList-Type DELETE
+			Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoStartMenuMFUprogramsList-Type DELETE
+			Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoInstrumentation-Type DELETE
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	Microsoft account-related notifications in Start
+
+	.PARAMETER Hide
+	Hide Microsoft account-related notifications in Start
+
+	.PARAMETER Show
+	Show Microsoft account-related notifications in Start
+
+	.EXAMPLE
+	StartAccountNotifications -Hide
+
+	.EXAMPLE
+	StartAccountNotifications -Show
+
+	.NOTES
+	Current user
+#>
+function StartAccountNotifications
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Hide"
+		)]
+		[switch]
+		$Hide,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Show"
+		)]
+		[switch]
+		$Show
+	)
+
+	if (Get-Process -Name Start11Srv, StartAllBackCfg, StartMenu -ErrorAction Ignore)
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.CustomStartMenu, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message ($Localization.CustomStartMenu, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+
+		return
+	}
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Hide"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_AccountNotifications -PropertyType DWord -Value 0 -Force
+		}
+		"Show"
+		{
+			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_AccountNotifications -Force -ErrorAction Ignore
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	App suggestions on Start
+
+	.PARAMETER Hide
+	Hide app suggestions on Start
+
+	.PARAMETER Show
+	Show app suggestions on Start
+
+	.EXAMPLE
+	AppSuggestions -Hide
+
+	.EXAMPLE
+	AppSuggestions -Show
+
+	.NOTES
+	Current user
+#>
+function AppSuggestions
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Hide"
+		)]
+		[switch]
+		$Hide,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Show"
+		)]
+		[switch]
+		$Show
+	)
+
+	# Remove all policies in order to make changes visible in UI
+	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent -Name DisableWindowsConsumerFeatures -Force -ErrorAction Ignore
+	if (([WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%") -match "Enterprise") -or ([WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%") -match "Education"))
+	{
+		Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\CloudContent -Name DisableWindowsConsumerFeatures -Type DELETE
+	}
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Hide"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338388Enabled -PropertyType DWord -Value 0 -Force
+		}
+		"Show"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338388Enabled -PropertyType DWord -Value 1 -Force
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	Pin to Start "Control Panel" & "Devices & Printers"
+
+	.PARAMETER ControlPanel
+	Pin the "Control Panel" shortcut to Start
+
+	.PARAMETER DevicesPrinters
+	Pin the "Devices & Printers" shortcut to Start
+
+	.PARAMETER UnpinAll
+	Unpin all the Start tiles
+
+	.EXAMPLE
+	PinToStart -Tiles ControlPanel, DevicesPrinters
+
+	.EXAMPLE
+	PinToStart -UnpinAll
+
+	.EXAMPLE
+	PinToStart -UnpinAll -Tiles ControlPanel, DevicesPrinters
+
+	.EXAMPLE
+	PinToStart -UnpinAll -Tiles ControlPanel
+
+	.EXAMPLE
+	PinToStart -Tiles ControlPanel -UnpinAll
+
+	.NOTES
+	Use commas to separate arguments
+
+	.NOTES
+	Current user
+#>
+function PinToStart
+{
+	[CmdletBinding()]
+	param
+	(
+		[Parameter(
+			Mandatory = $false,
+			Position = 0
+		)]
+		[switch]
+		$UnpinAll,
+
+		[Parameter(
+			Mandatory = $false,
+			Position = 1
+		)]
+		[ValidateSet("ControlPanel", "DevicesPrinters")]
+		[string[]]
+		$Tiles
+	)
+
+	begin
+	{
+		$Global:StartLayout = "$PSScriptRoot\..\..\StartLayout.xml"
+
+		# Unpin all the Start tiles
+		if ($UnpinAll)
+		{
+			# Export the current Start layout
+			Export-StartLayout -Path $Global:StartLayout -UseDesktopApplicationID
+
+			[xml]$XML = Get-Content -Path $Global:StartLayout -Encoding UTF8 -Force
+			$Groups = $XML.LayoutModificationTemplate.DefaultLayoutOverride.StartLayoutCollection.StartLayout.Group
+
+			foreach ($Group in $Groups)
+			{
+				# Removing all groups inside XML
+				$Group.ParentNode.RemoveChild($Group) | Out-Null
+			}
+
+			$XML.Save($Global:StartLayout)
+		}
+	}
+
+	process
+	{
+		# Extract the localized "Devices and Printers" string from shell32.dll
+		$DevicesPrinters = [WinAPI.GetStrings]::GetString(30493)
+
+		# Checking whether an argument is "DevicesPrinters". The Devices and Printers's AppID attribute can be retrieved only if the shortcut was created
+		if (((Get-Command -Name PinToStart).Parametersets.Parameters | Where-Object -FilterScript {$null -eq $_.Attributes.AliasNames}).Attributes.ValidValues | Where-Object -FilterScript {$_ -match "DevicesPrinters"})
+		{
+			# Create the old-style "Devices and Printers" shortcut on Start
+			$Shell                 = New-Object -ComObject Wscript.Shell
+			$Shortcut              = $Shell.CreateShortcut("$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesPrinters.lnk")
+			$Shortcut.TargetPath   = "control"
+			$Shortcut.Arguments    = "printers"
+			$Shortcut.IconLocation = "$env:SystemRoot\System32\DeviceCenter.dll"
+			$Shortcut.Save()
+
+			Start-Sleep -Seconds 3
+		}
+
+		# Get the AppID because it's auto generated AppID for the "Devices and Printers" shortcut
+		$DevicesPrintersAppID = (Get-StartApps | Where-Object -FilterScript {$_.Name -eq $DevicesPrinters}).AppID
+
+		$Parameters = @(
+			# Control Panel hash table
+			@{
+				# Special name for Control Panel
+				Name   = "ControlPanel"
+				Size   = "2x2"
+				Column = 0
+				Row    = 0
+				AppID  = "Microsoft.Windows.ControlPanel"
+			},
+			# "Devices & Printers" hash table
+			@{
+				# Special name for "Devices & Printers"
+				Name   = "DevicesPrinters"
+				Size   = "2x2"
+				Column = 2
+				Row    = 0
+				AppID  = $DevicesPrintersAppID
+			}
+		)
+
+		# Valid columns to place tiles in
+		$ValidColumns = @(0, 2, 4)
+		[string]$StartLayoutNS = "http://schemas.microsoft.com/Start/2014/StartLayout"
+
+		# Add pre-configured hastable to XML
+		function Add-Tile
+		{
+			param
+			(
+				[string]
+				$Size,
+
+				[int]
+				$Column,
+
+				[int]
+				$Row,
+
+				[string]
+				$AppID
+			)
+
+			[string]$elementName = "start:DesktopApplicationTile"
+			[Xml.XmlElement]$Table = $xml.CreateElement($elementName, $StartLayoutNS)
+			$Table.SetAttribute("Size", $Size)
+			$Table.SetAttribute("Column", $Column)
+			$Table.SetAttribute("Row", $Row)
+			$Table.SetAttribute("DesktopApplicationID", $AppID)
+
+			$Table
+		}
+
+		if (-not (Test-Path -Path $Global:StartLayout))
+		{
+			# Export the current Start layout
+			Export-StartLayout -Path $Global:StartLayout -UseDesktopApplicationID
+		}
+
+		[xml]$XML = Get-Content -Path $Global:StartLayout -Encoding UTF8 -Force
+
+		foreach ($Tile in $Tiles)
+		{
+			$Parameter = $Parameters | Where-Object -FilterScript {$_.Name -eq $Tile}
+			$Group = $XML.LayoutModificationTemplate.DefaultLayoutOverride.StartLayoutCollection.StartLayout.Group | Where-Object -FilterScript {$_.Name -eq "Sophia Script"}
+
+			# If the "Sophia Script" group exists in Start
+			if ($Group)
+			{
+				$DesktopApplicationID = ($Parameters | Where-Object -FilterScript {$_.Name -eq $Tile}).AppID
+
+				if (-not ($Group.DesktopApplicationTile | Where-Object -FilterScript {$_.DesktopApplicationID -eq $DesktopApplicationID}))
+				{
+					# Calculate current filled columns
+					$CurrentColumns = @($Group.DesktopApplicationTile.Column)
+					# Calculate current free columns and take the first one
+					$Column = (Compare-Object -ReferenceObject $ValidColumns -DifferenceObject $CurrentColumns).InputObject | Select-Object -First 1
+					# If filled cells contain desired ones assign the first free column
+					if ($CurrentColumns -contains $Parameter.Column)
+					{
+						$Parameter.Column = $Column
+					}
+					$Group.AppendChild((Add-Tile @Parameter)) | Out-Null
+				}
+			}
+			else
+			{
+				# Create the "Sophia Script" group
+				[Xml.XmlElement]$Group = $XML.CreateElement("start:Group", $StartLayoutNS)
+				$Group.SetAttribute("Name","Sophia Script")
+				$Group.AppendChild((Add-Tile @Parameter)) | Out-Null
+				$XML.LayoutModificationTemplate.DefaultLayoutOverride.StartLayoutCollection.StartLayout.AppendChild($Group) | Out-Null
+			}
+		}
+
+		$XML.Save($Global:StartLayout)
+	}
+
+	end
+	{
+		# Temporarily disable changing Start menu layout
+		if (-not (Test-Path -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer))
+		{
+			New-Item -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Force
+		}
+		New-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name LockedStartLayout -PropertyType DWord -Value 1 -Force
+		New-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name StartLayoutFile -PropertyType ExpandString -Value $Global:StartLayout -Force
+
+		Start-Sleep -Seconds 3
+
+		# Restart Start menu
+		Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
+
+		Start-Sleep -Seconds 3
+
+		# Open Start menu to load the new layout
+		$wshell = New-Object -ComObject WScript.Shell
+		$wshell.SendKeys("^{ESC}")
+
+		Start-Sleep -Seconds 3
+
+		# Enable changing Start menu layout
+		Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name LockedStartLayout, StartLayoutFile -Force -ErrorAction Ignore
+
+		Remove-Item -Path $Global:StartLayout -Force
+
+		Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
+
+		Start-Sleep -Seconds 3
+
+		# Open Start menu to load the new layout
+		$wshell = New-Object -ComObject WScript.Shell
+		$wshell.SendKeys("^{ESC}")
+	}
+}
 #endregion UI & Personalization
 
 #region OneDrive
@@ -8938,425 +9423,6 @@ function Install-WSL
 	$Form.ShowDialog() | Out-Null
 }
 #endregion WSL
-
-#region Start menu
-<#
-	.SYNOPSIS
-	Recently added apps on Start
-
-	.PARAMETER Hide
-	Hide recently added apps on Start
-
-	.PARAMETER Show
-	Show recently added apps on Start
-
-	.EXAMPLE
-	RecentlyAddedStartApps -Hide
-
-	.EXAMPLE
-	RecentlyAddedStartApps -Show
-
-	.NOTES
-	Machine-wide
-#>
-function RecentlyAddedStartApps
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Hide"
-		)]
-		[switch]
-		$Hide,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Show"
-		)]
-		[switch]
-		$Show
-	)
-
-	# Remove all policies in order to make changes visible in UI
-	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Force -ErrorAction Ignore
-	Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Type DELETE
-	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Type DELETE
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Hide"
-		{
-			if (-not (Test-Path -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer))
-			{
-				New-Item -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Force
-			}
-			New-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -PropertyType DWord -Value 1 -Force
-
-			Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Type DWORD -Value 1
-		}
-		"Show"
-		{
-			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Force -ErrorAction Ignore
-			Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps -Type DELETE
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	App suggestions on Start
-
-	.PARAMETER Hide
-	Hide app suggestions on Start
-
-	.PARAMETER Show
-	Show app suggestions on Start
-
-	.EXAMPLE
-	AppSuggestions -Hide
-
-	.EXAMPLE
-	AppSuggestions -Show
-
-	.NOTES
-	Current user
-#>
-function AppSuggestions
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Hide"
-		)]
-		[switch]
-		$Hide,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Show"
-		)]
-		[switch]
-		$Show
-	)
-
-	# Remove all policies in order to make changes visible in UI
-	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent -Name DisableWindowsConsumerFeatures -Force -ErrorAction Ignore
-	if (([WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%") -match "Enterprise") -or ([WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%") -match "Education"))
-	{
-		Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\CloudContent -Name DisableWindowsConsumerFeatures -Type DELETE
-	}
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Hide"
-		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338388Enabled -PropertyType DWord -Value 0 -Force
-		}
-		"Show"
-		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SubscribedContent-338388Enabled -PropertyType DWord -Value 1 -Force
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	Pin to Start "Control Panel" & "Devices & Printers"
-
-	.PARAMETER ControlPanel
-	Pin the "Control Panel" shortcut to Start
-
-	.PARAMETER DevicesPrinters
-	Pin the "Devices & Printers" shortcut to Start
-
-	.PARAMETER UnpinAll
-	Unpin all the Start tiles
-
-	.EXAMPLE
-	PinToStart -Tiles ControlPanel, DevicesPrinters
-
-	.EXAMPLE
-	PinToStart -UnpinAll
-
-	.EXAMPLE
-	PinToStart -UnpinAll -Tiles ControlPanel, DevicesPrinters
-
-	.EXAMPLE
-	PinToStart -UnpinAll -Tiles ControlPanel
-
-	.EXAMPLE
-	PinToStart -Tiles ControlPanel -UnpinAll
-
-	.NOTES
-	Use commas to separate arguments
-
-	.NOTES
-	Current user
-#>
-function PinToStart
-{
-	[CmdletBinding()]
-	param
-	(
-		[Parameter(
-			Mandatory = $false,
-			Position = 0
-		)]
-		[switch]
-		$UnpinAll,
-
-		[Parameter(
-			Mandatory = $false,
-			Position = 1
-		)]
-		[ValidateSet("ControlPanel", "DevicesPrinters")]
-		[string[]]
-		$Tiles
-	)
-
-	begin
-	{
-		$Global:StartLayout = "$PSScriptRoot\..\..\StartLayout.xml"
-
-		# Unpin all the Start tiles
-		if ($UnpinAll)
-		{
-			# Export the current Start layout
-			Export-StartLayout -Path $Global:StartLayout -UseDesktopApplicationID
-
-			[xml]$XML = Get-Content -Path $Global:StartLayout -Encoding UTF8 -Force
-			$Groups = $XML.LayoutModificationTemplate.DefaultLayoutOverride.StartLayoutCollection.StartLayout.Group
-
-			foreach ($Group in $Groups)
-			{
-				# Removing all groups inside XML
-				$Group.ParentNode.RemoveChild($Group) | Out-Null
-			}
-
-			$XML.Save($Global:StartLayout)
-		}
-	}
-
-	process
-	{
-		# Extract the localized "Devices and Printers" string from shell32.dll
-		$DevicesPrinters = [WinAPI.GetStrings]::GetString(30493)
-
-		# Checking whether an argument is "DevicesPrinters". The Devices and Printers's AppID attribute can be retrieved only if the shortcut was created
-		if (((Get-Command -Name PinToStart).Parametersets.Parameters | Where-Object -FilterScript {$null -eq $_.Attributes.AliasNames}).Attributes.ValidValues | Where-Object -FilterScript {$_ -match "DevicesPrinters"})
-		{
-			# Create the old-style "Devices and Printers" shortcut on Start
-			$Shell                 = New-Object -ComObject Wscript.Shell
-			$Shortcut              = $Shell.CreateShortcut("$env:APPDATA\Microsoft\Windows\Start menu\Programs\System Tools\$DevicesPrinters.lnk")
-			$Shortcut.TargetPath   = "control"
-			$Shortcut.Arguments    = "printers"
-			$Shortcut.IconLocation = "$env:SystemRoot\System32\DeviceCenter.dll"
-			$Shortcut.Save()
-
-			Start-Sleep -Seconds 3
-		}
-
-		# Get the AppID because it's auto generated AppID for the "Devices and Printers" shortcut
-		$DevicesPrintersAppID = (Get-StartApps | Where-Object -FilterScript {$_.Name -eq $DevicesPrinters}).AppID
-
-		$Parameters = @(
-			# Control Panel hash table
-			@{
-				# Special name for Control Panel
-				Name   = "ControlPanel"
-				Size   = "2x2"
-				Column = 0
-				Row    = 0
-				AppID  = "Microsoft.Windows.ControlPanel"
-			},
-			# "Devices & Printers" hash table
-			@{
-				# Special name for "Devices & Printers"
-				Name   = "DevicesPrinters"
-				Size   = "2x2"
-				Column = 2
-				Row    = 0
-				AppID  = $DevicesPrintersAppID
-			}
-		)
-
-		# Valid columns to place tiles in
-		$ValidColumns = @(0, 2, 4)
-		[string]$StartLayoutNS = "http://schemas.microsoft.com/Start/2014/StartLayout"
-
-		# Add pre-configured hastable to XML
-		function Add-Tile
-		{
-			param
-			(
-				[string]
-				$Size,
-
-				[int]
-				$Column,
-
-				[int]
-				$Row,
-
-				[string]
-				$AppID
-			)
-
-			[string]$elementName = "start:DesktopApplicationTile"
-			[Xml.XmlElement]$Table = $xml.CreateElement($elementName, $StartLayoutNS)
-			$Table.SetAttribute("Size", $Size)
-			$Table.SetAttribute("Column", $Column)
-			$Table.SetAttribute("Row", $Row)
-			$Table.SetAttribute("DesktopApplicationID", $AppID)
-
-			$Table
-		}
-
-		if (-not (Test-Path -Path $Global:StartLayout))
-		{
-			# Export the current Start layout
-			Export-StartLayout -Path $Global:StartLayout -UseDesktopApplicationID
-		}
-
-		[xml]$XML = Get-Content -Path $Global:StartLayout -Encoding UTF8 -Force
-
-		foreach ($Tile in $Tiles)
-		{
-			$Parameter = $Parameters | Where-Object -FilterScript {$_.Name -eq $Tile}
-			$Group = $XML.LayoutModificationTemplate.DefaultLayoutOverride.StartLayoutCollection.StartLayout.Group | Where-Object -FilterScript {$_.Name -eq "Sophia Script"}
-
-			# If the "Sophia Script" group exists in Start
-			if ($Group)
-			{
-				$DesktopApplicationID = ($Parameters | Where-Object -FilterScript {$_.Name -eq $Tile}).AppID
-
-				if (-not ($Group.DesktopApplicationTile | Where-Object -FilterScript {$_.DesktopApplicationID -eq $DesktopApplicationID}))
-				{
-					# Calculate current filled columns
-					$CurrentColumns = @($Group.DesktopApplicationTile.Column)
-					# Calculate current free columns and take the first one
-					$Column = (Compare-Object -ReferenceObject $ValidColumns -DifferenceObject $CurrentColumns).InputObject | Select-Object -First 1
-					# If filled cells contain desired ones assign the first free column
-					if ($CurrentColumns -contains $Parameter.Column)
-					{
-						$Parameter.Column = $Column
-					}
-					$Group.AppendChild((Add-Tile @Parameter)) | Out-Null
-				}
-			}
-			else
-			{
-				# Create the "Sophia Script" group
-				[Xml.XmlElement]$Group = $XML.CreateElement("start:Group", $StartLayoutNS)
-				$Group.SetAttribute("Name","Sophia Script")
-				$Group.AppendChild((Add-Tile @Parameter)) | Out-Null
-				$XML.LayoutModificationTemplate.DefaultLayoutOverride.StartLayoutCollection.StartLayout.AppendChild($Group) | Out-Null
-			}
-		}
-
-		$XML.Save($Global:StartLayout)
-	}
-
-	end
-	{
-		# Temporarily disable changing Start menu layout
-		if (-not (Test-Path -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer))
-		{
-			New-Item -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Force
-		}
-		New-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name LockedStartLayout -PropertyType DWord -Value 1 -Force
-		New-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name StartLayoutFile -PropertyType ExpandString -Value $Global:StartLayout -Force
-
-		Start-Sleep -Seconds 3
-
-		# Restart Start menu
-		Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
-
-		Start-Sleep -Seconds 3
-
-		# Open Start menu to load the new layout
-		$wshell = New-Object -ComObject WScript.Shell
-		$wshell.SendKeys("^{ESC}")
-
-		Start-Sleep -Seconds 3
-
-		# Enable changing Start menu layout
-		Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name LockedStartLayout, StartLayoutFile -Force -ErrorAction Ignore
-
-		Remove-Item -Path $Global:StartLayout -Force
-
-		Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
-
-		Start-Sleep -Seconds 3
-
-		# Open Start menu to load the new layout
-		$wshell = New-Object -ComObject WScript.Shell
-		$wshell.SendKeys("^{ESC}")
-	}
-}
-
-<#
-	.SYNOPSIS
-	Microsoft account-related notifications in Start
-
-	.PARAMETER Hide
-	Hide Microsoft account-related notifications in Start
-
-	.PARAMETER Show
-	Show Microsoft account-related notifications in Start
-
-	.EXAMPLE
-	StartAccountNotifications -Hide
-
-	.EXAMPLE
-	StartAccountNotifications -Show
-
-	.NOTES
-	Current user
-#>
-function StartAccountNotifications
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Hide"
-		)]
-		[switch]
-		$Hide,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Show"
-		)]
-		[switch]
-		$Show
-	)
-
-	if (Get-Process -Name Start11Srv, StartAllBackCfg, StartMenu -ErrorAction Ignore)
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.CustomStartMenu, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message ($Localization.CustomStartMenu, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-
-		return
-	}
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Hide"
-		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_AccountNotifications -PropertyType DWord -Value 0 -Force
-		}
-		"Show"
-		{
-			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_AccountNotifications -Force -ErrorAction Ignore
-		}
-	}
-}
-#endregion Start menu
 
 #region UWP apps
 <#

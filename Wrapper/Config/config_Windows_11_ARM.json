@@ -935,7 +935,7 @@
         "WindowsDefault": "Zero"
     },
     {
-        "Region": "Start menu",
+        "Region": "UI & Personalization",
         "Control": "cmb",
         "Required": "false",
         "Function": "StartLayout",

@@ -430,6 +430,30 @@ NavigationPaneExpand -Disable
 # Expand to open folder on navigation pane
 # Развернуть до открытой папки область навигации
 # NavigationPaneExpand -Enable
+
+# Hide recently added apps on Start
+# Скрывать недавно добавленные приложения в меню "Пуск"
+RecentlyAddedStartApps -Hide
+
+# Show recently added apps on Start (default value)
+# Показывать недавно добавленные приложения в меню "Пуск" (значение по умолчанию)
+# RecentlyAddedStartApps -Show
+
+# Hide most used apps in Start (default value)
+# Не показывать наиболее часто используемые приложения на начальном экране (значение по умолчанию)
+MostUsedStartApps -Hide
+
+# Show most used Apps in Start
+# Показывать наиболее часто используемые приложения на начальном экране
+# MostUsedStartApps -Show
+
+# Hide app suggestions on Start
+# Скрывать рекомендации в меню "Пуск"
+AppSuggestions -Hide
+
+# Show app suggestions on Start (default value)
+# Показывать рекомендации в меню "Пуск" (значение по умолчанию)
+# AppSuggestions -Show
 #endregion UI & Personalization
 
 #region System
@@ -727,24 +751,6 @@ RegistryBackup -Enable
 # Не создавать копии реестра при перезагрузке ПК (значение по умолчанию)
 # RegistryBackup -Disable
 #endregion System
-
-#region Start menu
-# Hide recently added apps on Start
-# Скрывать недавно добавленные приложения в меню "Пуск"
-RecentlyAddedStartApps -Hide
-
-# Show recently added apps on Start (default value)
-# Показывать недавно добавленные приложения в меню "Пуск" (значение по умолчанию)
-# RecentlyAddedStartApps -Show
-
-# Hide app suggestions on Start
-# Скрывать рекомендации в меню "Пуск"
-AppSuggestions -Hide
-
-# Show app suggestions on Start (default value)
-# Показывать рекомендации в меню "Пуск" (значение по умолчанию)
-# AppSuggestions -Show
-#endregion Start menu
 
 #region Scheduled tasks
 <#

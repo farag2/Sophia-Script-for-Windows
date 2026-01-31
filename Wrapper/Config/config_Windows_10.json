@@ -460,6 +460,103 @@
     },
     {
         "Region": "UI & Personalization",
+        "Control": "cmbs",
+        "Required": "false",
+        "Function": "UserFolders",
+        "Arg2Width": "110",
+        "Arg2ArgWidth": "100",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide"
+            },
+            "One": {
+                "Tag": "Show"
+            }
+        },
+        "Arg2": {
+            "Zero": {
+                "Function": "ThreeDObjects",
+                "Arg": {
+                    "Zero": {
+                        "Tag": "Hide"
+                    },
+                    "One": {
+                        "Tag": "Show"
+                    }
+                }
+            },
+            "One": {
+                "Function": "Desktop",
+                "Arg": {
+                    "Zero": {
+                        "Tag": "Hide"
+                    },
+                    "One": {
+                        "Tag": "Show"
+                    }
+                }
+            },
+            "Two": {
+                "Function": "Documents",
+                "Arg": {
+                    "Zero": {
+                        "Tag": "Hide"
+                    },
+                    "One": {
+                        "Tag": "Show"
+                    }
+                }
+            },
+            "Three": {
+                "Function": "Downloads",
+                "Arg": {
+                    "Zero": {
+                        "Tag": "Hide"
+                    },
+                    "One": {
+                        "Tag": "Show"
+                    }
+                }
+            },
+            "Four": {
+                "Function": "Music",
+                "Arg": {
+                    "Zero": {
+                        "Tag": "Hide"
+                    },
+                    "One": {
+                        "Tag": "Show"
+                    }
+                }
+            },
+            "Five": {
+                "Function": "Pictures",
+                "Arg": {
+                    "Zero": {
+                        "Tag": "Hide"
+                    },
+                    "One": {
+                        "Tag": "Show"
+                    }
+                }
+            },
+            "Six": {
+                "Function": "Videos",
+                "Arg": {
+                    "Zero": {
+                        "Tag": "Hide"
+                    },
+                    "One": {
+                        "Tag": "Show"
+                    }
+                }
+            }
+        },
+        "Preset": "Zero",
+        "WindowsDefault": "One"
+    },
+    {
+        "Region": "UI & Personalization",
         "Control": "cmb",
         "Required": "false",
         "Function": "QuickAccessRecentFiles",
@@ -919,11 +1016,9 @@
     },
     {
         "Region": "UI & Personalization",
-        "Control": "cmbs",
+        "Control": "cmb",
         "Required": "false",
-        "Function": "UserFolders",
-        "Arg2Width": "110",
-        "Arg2ArgWidth": "100",
+        "Function": "RecentlyAddedStartApps",
         "Arg": {
             "Zero": {
                 "Tag": "Hide"
@@ -932,87 +1027,85 @@
                 "Tag": "Show"
             }
         },
-        "Arg2": {
+        "Preset": "Zero",
+        "WindowsDefault": "One"
+    },
+    {
+        "Region": "UI & Personalization",
+        "Control": "cmb",
+        "Required": "false",
+        "Function": "MostUsedStartApps",
+        "Arg": {
             "Zero": {
-                "Function": "ThreeDObjects",
-                "Arg": {
-                    "Zero": {
-                        "Tag": "Hide"
-                    },
-                    "One": {
-                        "Tag": "Show"
-                    }
-                }
+                "Tag": "Hide"
             },
             "One": {
-                "Function": "Desktop",
-                "Arg": {
-                    "Zero": {
-                        "Tag": "Hide"
-                    },
-                    "One": {
-                        "Tag": "Show"
-                    }
-                }
+                "Tag": "Show"
+            }
+        },
+        "Preset": "Zero",
+        "WindowsDefault": "Zero"
+    },
+    {
+        "Region": "UI & Personalization",
+        "Control": "cmb",
+        "Required": "false",
+        "Function": "StartAccountNotifications",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide"
             },
-            "Two": {
-                "Function": "Documents",
-                "Arg": {
-                    "Zero": {
-                        "Tag": "Hide"
-                    },
-                    "One": {
-                        "Tag": "Show"
-                    }
-                }
-            },
-            "Three": {
-                "Function": "Downloads",
-                "Arg": {
-                    "Zero": {
-                        "Tag": "Hide"
-                    },
-                    "One": {
-                        "Tag": "Show"
-                    }
-                }
-            },
-            "Four": {
-                "Function": "Music",
-                "Arg": {
-                    "Zero": {
-                        "Tag": "Hide"
-                    },
-                    "One": {
-                        "Tag": "Show"
-                    }
-                }
-            },
-            "Five": {
-                "Function": "Pictures",
-                "Arg": {
-                    "Zero": {
-                        "Tag": "Hide"
-                    },
-                    "One": {
-                        "Tag": "Show"
-                    }
-                }
-            },
-            "Six": {
-                "Function": "Videos",
-                "Arg": {
-                    "Zero": {
-                        "Tag": "Hide"
-                    },
-                    "One": {
-                        "Tag": "Show"
-                    }
-                }
+            "One": {
+                "Tag": "Show"
             }
         },
         "Preset": "Zero",
         "WindowsDefault": "One"
+    },
+    {
+        "Region": "UI & Personalization",
+        "Control": "cmb",
+        "Required": "false",
+        "Function": "AppSuggestions",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide"
+            },
+            "One": {
+                "Tag": "Show"
+            }
+        },
+        "Preset": "Zero",
+        "WindowsDefault": "One"
+    },
+    {
+        "Region": "UI & Personalization",
+        "Control": "chk",
+        "Required": "false",
+        "Function": "PinToStart -Tiles",
+        "Arg": {
+            "Zero": {
+                "Tag": "ControlPanel"
+            },
+            "One": {
+                "Tag": "DevicesPrinters"
+            }
+        },
+        "Preset": "012",
+        "WindowsDefault": ""
+    },
+    {
+        "Region": "UI & Personalization",
+        "Control": "chk",
+        "Required": "false",
+        "Function": "PinToStart -UnpinAll",
+        "Arg": {
+            "Zero": {
+                "Tag": ""
+            }
+        },
+        "Preset": "",
+        "WindowsDefault": ""
     },
     {
         "Region": "OneDrive",
@@ -1719,86 +1812,6 @@
         },
         "Preset": "",
         "WindowsDefault": ""
-    },
-    {
-        "Region": "Start menu",
-        "Control": "cmb",
-        "Required": "false",
-        "Function": "RecentlyAddedStartApps",
-        "Arg": {
-            "Zero": {
-                "Tag": "Hide"
-            },
-            "One": {
-                "Tag": "Show"
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "One"
-    },
-    {
-        "Region": "Start menu",
-        "Control": "cmb",
-        "Required": "false",
-        "Function": "AppSuggestions",
-        "Arg": {
-            "Zero": {
-                "Tag": "Hide"
-            },
-            "One": {
-                "Tag": "Show"
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "One"
-    },
-    {
-        "Region": "Start menu",
-        "Control": "chk",
-        "Required": "false",
-        "Function": "PinToStart -Tiles",
-        "Arg": {
-            "Zero": {
-                "Tag": "ControlPanel"
-            },
-            "One": {
-                "Tag": "DevicesPrinters"
-            },
-            "Two": {
-                "Tag": "PowerShell"
-            }
-        },
-        "Preset": "012",
-        "WindowsDefault": ""
-    },
-    {
-        "Region": "Start menu",
-        "Control": "chk",
-        "Required": "false",
-        "Function": "PinToStart -UnpinAll",
-        "Arg": {
-            "Zero": {
-                "Tag": ""
-            }
-        },
-        "Preset": "",
-        "WindowsDefault": ""
-    },
-    {
-        "Region": "Start menu",
-        "Control": "cmb",
-        "Required": "false",
-        "Function": "StartAccountNotifications",
-        "Arg": {
-            "Zero": {
-                "Tag": "Hide"
-            },
-            "One": {
-                "Tag": "Show"
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "One"
     },
     {
         "Region": "UWP apps",

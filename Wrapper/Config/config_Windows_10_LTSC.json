@@ -978,7 +978,7 @@
         },
         "Preset": "Zero",
         "WindowsDefault": "One",
-        "LTSC2019": "false",
+        "LTSC2019": "true",
         "LTSC2021": "true"
     },
     {
@@ -995,7 +995,110 @@
             }
         },
         "Preset": "Zero",
-        "WindowsDefault": "Zero",
+        "WindowsDefault": "One",
+        "LTSC2019": "true",
+        "LTSC2021": "true"
+    },
+    {
+        "Region": "UI & Personalization",
+        "Control": "cmb",
+        "Required": "false",
+        "Function": "RecentlyAddedStartApps",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide"
+            },
+            "One": {
+                "Tag": "Show"
+            }
+        },
+        "Preset": "Zero",
+        "WindowsDefault": "One",
+        "LTSC2019": "true",
+        "LTSC2021": "true"
+    },
+    {
+        "Region": "UI & Personalization",
+        "Control": "cmb",
+        "Required": "false",
+        "Function": "MostUsedStartApps",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide"
+            },
+            "One": {
+                "Tag": "Show"
+            }
+        },
+        "Preset": "Zero",
+        "WindowsDefault": "Zero"
+    },
+    {
+        "Region": "UI & Personalization",
+        "Control": "cmb",
+        "Required": "false",
+        "Function": "StartAccountNotifications",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide"
+            },
+            "One": {
+                "Tag": "Show"
+            }
+        },
+        "Preset": "Zero",
+        "WindowsDefault": "One",
+        "LTSC2019": "false",
+        "LTSC2021": "true"
+    },
+    {
+        "Region": "UI & Personalization",
+        "Control": "cmb",
+        "Required": "false",
+        "Function": "AppSuggestions",
+        "Arg": {
+            "Zero": {
+                "Tag": "Hide"
+            },
+            "One": {
+                "Tag": "Show"
+            }
+        },
+        "Preset": "Zero",
+        "WindowsDefault": "One",
+        "LTSC2019": "true",
+        "LTSC2021": "true"
+    },
+    {
+        "Region": "UI & Personalization",
+        "Control": "chk",
+        "Required": "false",
+        "Function": "PinToStart -Tiles",
+        "Arg": {
+            "Zero": {
+                "Tag": "ControlPanel"
+            },
+            "One": {
+                "Tag": "DevicesPrinters"
+            }
+        },
+        "Preset": "01",
+        "WindowsDefault": "",
+        "LTSC2019": "false",
+        "LTSC2021": "true"
+    },
+    {
+        "Region": "UI & Personalization",
+        "Control": "chk",
+        "Required": "false",
+        "Function": "PinToStart -UnpinAll",
+        "Arg": {
+            "Zero": {
+                "Tag": ""
+            }
+        },
+        "Preset": "",
+        "WindowsDefault": "",
         "LTSC2019": "false",
         "LTSC2021": "true"
     },
@@ -1230,8 +1333,24 @@
         },
         "Preset": "Zero",
         "WindowsDefault": "One",
-        "LTSC2019": "true",
+        "LTSC2019": "false",
         "LTSC2021": "true"
+    },
+    {
+        "Region": "System",
+        "Control": "cmb",
+        "Required": "false",
+        "Function": "WindowsLatestUpdate",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable"
+            },
+            "One": {
+                "Tag": "Enable"
+            }
+        },
+        "Preset": "Zero",
+        "WindowsDefault": "Zero"
     },
     {
         "Region": "System",
@@ -1722,75 +1841,6 @@
         "Control": "chk",
         "Required": "false",
         "Function": "Install-WSL",
-        "Arg": {
-            "Zero": {
-                "Tag": ""
-            }
-        },
-        "Preset": "",
-        "WindowsDefault": "",
-        "LTSC2019": "false",
-        "LTSC2021": "true"
-    },
-    {
-        "Region": "Start menu",
-        "Control": "cmb",
-        "Required": "false",
-        "Function": "RecentlyAddedStartApps",
-        "Arg": {
-            "Zero": {
-                "Tag": "Hide"
-            },
-            "One": {
-                "Tag": "Show"
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
-        "LTSC2019": "true",
-        "LTSC2021": "true"
-    },
-    {
-        "Region": "Start menu",
-        "Control": "cmb",
-        "Required": "false",
-        "Function": "AppSuggestions",
-        "Arg": {
-            "Zero": {
-                "Tag": "Hide"
-            },
-            "One": {
-                "Tag": "Show"
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
-        "LTSC2019": "true",
-        "LTSC2021": "true"
-    },
-    {
-        "Region": "Start menu",
-        "Control": "chk",
-        "Required": "false",
-        "Function": "PinToStart -Tiles",
-        "Arg": {
-            "Zero": {
-                "Tag": "ControlPanel"
-            },
-            "One": {
-                "Tag": "DevicesPrinters"
-            }
-        },
-        "Preset": "01",
-        "WindowsDefault": "",
-        "LTSC2019": "false",
-        "LTSC2021": "true"
-    },
-    {
-        "Region": "Start menu",
-        "Control": "chk",
-        "Required": "false",
-        "Function": "PinToStart -UnpinAll",
         "Arg": {
             "Zero": {
                 "Tag": ""

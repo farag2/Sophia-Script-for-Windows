@@ -974,7 +974,7 @@
         "LTSC2024": "true"
     },
     {
-        "Region": "Start menu",
+        "Region": "UI & Personalization",
         "Control": "cmb",
         "Required": "false",
         "Function": "StartLayout",

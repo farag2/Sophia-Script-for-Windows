@@ -1515,11 +1515,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Register",
-        "ToolTip": "Erstellt eine geplante Aufgabe \"Windows Cleanup\", um nicht verwendete Windows-Dateien und Updates zu bereinigen. Alle 30 Tage wird eine interaktive Toast-Benachrichtigung angezeigt. Die Aufgabe wird alle 30 Tage ausgeführt."
+        "ToolTip": "Erstellen Sie die geplante Aufgabe \"Windows Cleanup\" zum Bereinigen von nicht verwendeten Windows-Dateien und Updates. Alle 30 Tage wird eine interaktive Toast-Benachrichtigung angezeigt. Sie müssen den Windows Script Host aktivieren, damit die Funktion funktioniert."
       },
       "One": {
         "Tag": "Delete",
-        "ToolTip": "Löscht geplante Aufgaben \"Windows-Bereinigung\" und \"Windows-Bereinigungsbenachrichtigung\", um nicht verwendeten Windows-Dateien und Updates zu bereinigen."
+        "ToolTip": "Löscht die geplanten Aufgaben \"Windows-Bereinigung\" und \"Windows-Bereinigungsbenachrichtigung\" zum Bereinigen von nicht verwendeten Windows-Dateien und Updates."
       }
     }
   },
@@ -1529,11 +1529,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Register",
-        "ToolTip": "Erstellt eine geplante Aufgabe \"SoftwareDistribution\", um den Ordner \"%SystemRoot%\\SoftwareDistribution\\Download\" zu bereinigen. Die Aufgabe wartet, bis der Windows-Update-Dienst seine Ausführung beendet hat. Die Aufgabe wird alle 90 Tage ausgeführt."
+        "ToolTip": "Erstellen Sie die geplante Aufgabe \"SoftwareDistribution\" zum Bereinigen des Ordners %SystemRoot%\\SoftwareDistribution\\Download. Die Aufgabe wartet, bis der Windows-Update-Dienst seine Ausführung beendet hat. Die Aufgabe wird alle 90 Tage ausgeführt."
       },
       "One": {
         "Tag": "Delete",
-        "ToolTip": "Löscht die geplante Aufgabe \"SoftwareDistribution\", um den Ordner \"%SystemRoot%\\SoftwareDistribution\\Download\" zu bereinigen."
+        "ToolTip": "Löscht die geplante Aufgabe \"SoftwareDistribution\" zum Bereinigen des Ordners %SystemRoot%\\SoftwareDistribution\\Download."
       }
     }
   },
@@ -1543,11 +1543,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Register",
-        "ToolTip": "Erstellt eine geplante Aufgabe \"Temp\", um den Ordner %TEMP% zu bereinigen. Die Aufgabe wird alle 60 Tage ausgeführt."
+        "ToolTip": "Erstellt die \"Temp\" geplante Aufgabe zum bereinigen des Ordners %TEMP%. Nur Dateien, die älter als ein Tag sind werden gelöscht. Die Aufgabe wird alles 60 Tage ausgeführt. Sie müssen Windows-Script-Host aktivieren, damit die Funktion funktioniert."
       },
       "One": {
         "Tag": "Delete",
-        "ToolTip": "Löscht die geplante Aufgabe \"Temp\", um den Ordner %TEMP% zu bereinigen."
+        "ToolTip": "Löscht die geplante Aufgabe \"Temp\" zum Bereinigen des Ordners %TEMP%."
       }
     }
   },
@@ -1557,11 +1557,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Netzwerkschutz von Microsoft Defender Exploit Guard aktivieren."
+        "ToolTip": "Aktivieren Sie den Netzwerkschutz von Microsoft Defender Exploit Guard."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Netzwerkschutz von Microsoft Defender Exploit Guard deaktivieren (Standardwert)."
+        "ToolTip": "Deaktivieren Sie den Netzwerkschutz von Microsoft Defender Exploit Guard (Standardwert)."
       }
     }
   },
@@ -1571,11 +1571,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Erkennung potenziell unerwünschter Apps aktivieren und diese blockieren."
+        "ToolTip": "Aktivieren Sie die Erkennung potenziell unerwünschter Anwendungen und blockieren Sie diese."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Erkennung potenziell unerwünschter Apps deaktivieren und diese blockieren (Standardwert)."
+        "ToolTip": "Erkennung von potenziell unerwünschten Anwendungen deaktivieren (Standardwert)."
       }
     }
   },
@@ -1627,11 +1627,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Aktiviert die Protokollierung für alle PowerShell-Skripte, die in das Windows PowerShell-Ereignisprotokoll eingegeben werden."
+        "ToolTip": "Aktivieren Sie die Protokollierung für alle PowerShell-Skripte, die in das Windows PowerShell-Ereignisprotokoll eingegeben werden."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Deaktiviert die Protokollierung für alle PowerShell-Skripte, die in das Windows PowerShell-Ereignisprotokoll eingegeben werden (Standardwert)."
+        "ToolTip": "Deaktivieren Sie die Protokollierung für alle PowerShell-Skripte, die in das Windows PowerShell-Ereignisprotokoll eingegeben werden (Standardwert)."
       }
     }
   },
@@ -1655,11 +1655,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Deaktiviert den \"Attachment Manager\", der Dateien, die aus dem Internet heruntergeladen wurden, als unsicher markiert."
+        "ToolTip": "Deaktivieren Sie den Anhang-Manager, der aus dem Internet heruntergeladene Dateien als unsicher markiert.."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Aktiviert den \"Attachment Manager\", der Dateien, die aus dem Internet heruntergeladen wurden, als unsicher markiert (Standardwert."
+        "ToolTip": "Aktivieren Sie den Anhang-Manager, der aus dem Internet heruntergeladene Dateien als unsicher markiert (Standardwert)."
       }
     }
   },

@@ -30,25 +30,6 @@
 #Requires -RunAsAdministrator
 #Requires -Version 5.1
 
-function Sophia
-{
-	[CmdletBinding()]
-	param
-	(
-		[Parameter(Mandatory = $false)]
-		[string[]]
-		$Functions
-	)
-
-	foreach ($Function in $Functions)
-	{
-		Invoke-Expression -Command $Function
-	}
-
-	# The "PostActions" and "Errors" functions will be executed at the end
-	Invoke-Command -ScriptBlock {PostActions}
-}
-
 #region Initial Actions
 $Global:Failed = $false
 
@@ -84,6 +65,25 @@ if ($Global:Failed)
 	exit
 }
 #endregion Initial Actions
+
+function Sophia
+{
+	[CmdletBinding()]
+	param
+	(
+		[Parameter(Mandatory = $false)]
+		[string[]]
+		$Functions
+	)
+
+	foreach ($Function in $Functions)
+	{
+		Invoke-Expression -Command $Function
+	}
+
+	# The "PostActions" and "Errors" functions will be executed at the end
+	Invoke-Command -ScriptBlock {PostActions}
+}
 
 $Parameters = @{
 	CommandName   = "Sophia"

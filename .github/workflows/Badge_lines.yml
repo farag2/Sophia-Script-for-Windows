@@ -18,10 +18,10 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@main
 
-      - name: Get Sophia_Script_for_Windows_11 folder lines number
+      - name: Get src folder lines number
         run: |
           $Summary = 0
-          Get-ChildItem -Path src\Sophia_Script_for_Windows_11 -File -Recurse | ForEach-Object -Process {
+          Get-ChildItem -Path src -File -Recurse | ForEach-Object -Process {
               $Summary += ((Get-Content -Path $_.FullName).Count | Measure-Object -Sum).Sum
           }
           $Summary = "{0:N1}k" -f ($Summary/1000)

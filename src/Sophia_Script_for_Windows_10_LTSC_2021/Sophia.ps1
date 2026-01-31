@@ -486,6 +486,55 @@ NavigationPaneExpand -Disable
 # Expand to open folder on navigation pane
 # Развернуть до открытой папки область навигации
 # NavigationPaneExpand -Enable
+
+# Hide recently added apps on Start
+# Скрывать недавно добавленные приложения в меню "Пуск"
+RecentlyAddedStartApps -Hide
+
+# Show recently added apps on Start (default value)
+# Показывать недавно добавленные приложения в меню "Пуск" (значение по умолчанию)
+# RecentlyAddedStartApps -Show
+
+# Hide most used apps in Start (default value)
+# Не показывать наиболее часто используемые приложения на начальном экране (значение по умолчанию)
+MostUsedStartApps -Hide
+
+# Show most used Apps in Start
+# Показывать наиболее часто используемые приложения на начальном экране
+# MostUsedStartApps -Show
+
+# Hide Microsoft account-related notifications in Start
+# Не отображать на начальном экране уведомления, касающиеся учетной записи Microsoft
+StartAccountNotifications -Hide
+
+# Show Microsoft account-related notifications on Start (default value)
+# Отображать на начальном экране уведомления, касающиеся учетной записи Microsoft (значение по умолчанию)
+# StartAccountNotifications -Show
+
+# Hide app suggestions on Start
+# Скрывать рекомендации в меню "Пуск"
+AppSuggestions -Hide
+
+# Show app suggestions on Start (default value)
+# Показывать рекомендации в меню "Пуск" (значение по умолчанию)
+# AppSuggestions -Show
+
+<#
+	Pin to Start the following shortcuts: Control Panel, Devices and Printers
+	Valid shortcuts values: ControlPanel and DevicesPrinters
+
+	Закрепить на начальном экране следующие ярлыки: Панель управления, Устройства и принтеры
+	Доступные значения: ControlPanel и DevicesPrinters
+#>
+PinToStart -Tiles ControlPanel, DevicesPrinters
+
+# Unpin all tiles first and pin necessary ones
+# Открепить все ярлыки и закрепить необходимые
+# PinToStart -UnpinAll -Tiles ControlPanel, DevicesPrinters
+
+# Unpin all the Start tiles
+# Открепить все ярлыки от начального экрана
+# PinToStart -UnpinAll
 #endregion UI & Personalization
 
 #region System
@@ -573,30 +622,6 @@ UpdateMicrosoftProducts -Enable
 # Do not receive updates for other Microsoft products when you update Windows (default value)
 # При обновлении Windows не получать обновления для других продуктов Майкрософт (значение по умолчанию)
 # UpdateMicrosoftProducts -Disable
-
-# Notify me when a restart is required to finish updating
-# Уведомлять меня о необходимости перезагрузки для завершения обновления
-RestartNotification -Show
-
-# Do not notify me when a restart is required to finish updating (default value)
-# Не yведомлять меня о необходимости перезагрузки для завершения обновления (значение по умолчанию)
-# RestartNotification -Hide
-
-# Restart as soon as possible to finish updating
-# Перезапустить устройство как можно быстрее, чтобы завершить обновление
-RestartDeviceAfterUpdate -Enable
-
-# Don't restart as soon as possible to finish updating (default value)
-# Не перезапускать устройство как можно быстрее, чтобы завершить обновление (значение по умолчанию)
-# RestartDeviceAfterUpdate -Disable
-
-# Automatically adjust active hours for me based on daily usage
-# Автоматически изменять период активности для этого устройства на основе действий
-ActiveHours -Automatically
-
-# Manually adjust active hours for me based on daily usage (default value)
-# Вручную изменять период активности для этого устройства на основе действий (значение по умолчанию)
-# ActiveHours -Manually
 
 # Set power plan on "High performance". Not recommended for laptops
 # Установить схему управления питанием на "Высокая производительность". Не рекомендуется для ноутбуков
@@ -769,6 +794,38 @@ NetworkDiscovery -Enable
 # Выключить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп (значение по умолчанию)
 # NetworkDiscovery -Disable
 
+# Notify me when a restart is required to finish updating
+# Уведомлять меня о необходимости перезагрузки для завершения обновления
+RestartNotification -Show
+
+# Do not notify me when a restart is required to finish updating (default value)
+# Не yведомлять меня о необходимости перезагрузки для завершения обновления (значение по умолчанию)
+# RestartNotification -Hide
+
+# Restart as soon as possible to finish updating
+# Перезапустить устройство как можно быстрее, чтобы завершить обновление
+RestartDeviceAfterUpdate -Enable
+
+# Don't restart as soon as possible to finish updating (default value)
+# Не перезапускать устройство как можно быстрее, чтобы завершить обновление (значение по умолчанию)
+# RestartDeviceAfterUpdate -Disable
+
+# Automatically adjust active hours for me based on daily usage
+# Автоматически изменять период активности для этого устройства на основе действий
+ActiveHours -Automatically
+
+# Manually adjust active hours for me based on daily usage (default value)
+# Вручную изменять период активности для этого устройства на основе действий (значение по умолчанию)
+# ActiveHours -Manually
+
+# Do not get the latest updates as soon as they're available (default value)
+# Не получать последние обновления, как только они будут доступны (значение по умолчанию)
+WindowsLatestUpdate -Disable
+
+# Get the latest updates as soon as they're available
+# Получайте последние обновления, как только они будут доступны
+# WindowsLatestUpdate -Enable
+
 <#
 	Register app, calculate hash, and associate with an extension with the "How do you want to open this" pop-up hidden
 	Зарегистрировать приложение, вычислить хэш и ассоциировать его с расширением без всплывающего окна "Каким образом вы хотите открыть этот файл?"
@@ -832,41 +889,6 @@ RegistryBackup -Enable
 # Установить подсистему Windows для Linux (WSL), последний пакет обновления ядра Linux и дистрибутив Linux, используя всплывающую форму. Требуется соединение с интернетом
 # Install-WSL
 #endregion WSL
-
-#region Start menu
-# Hide recently added apps on Start
-# Скрывать недавно добавленные приложения в меню "Пуск"
-RecentlyAddedStartApps -Hide
-
-# Show recently added apps on Start (default value)
-# Показывать недавно добавленные приложения в меню "Пуск" (значение по умолчанию)
-# RecentlyAddedStartApps -Show
-
-# Hide app suggestions on Start
-# Скрывать рекомендации в меню "Пуск"
-AppSuggestions -Hide
-
-# Show app suggestions on Start (default value)
-# Показывать рекомендации в меню "Пуск" (значение по умолчанию)
-# AppSuggestions -Show
-
-<#
-	Pin to Start the following shortcuts: Control Panel, Devices and Printers
-	Valid shortcuts values: ControlPanel and DevicesPrinters
-
-	Закрепить на начальном экране следующие ярлыки: Панель управления, Устройства и принтеры
-	Доступные значения: ControlPanel и DevicesPrinters
-#>
-PinToStart -Tiles ControlPanel, DevicesPrinters
-
-# Unpin all tiles first and pin necessary ones
-# Открепить все ярлыки и закрепить необходимые
-# PinToStart -UnpinAll -Tiles ControlPanel, DevicesPrinters
-
-# Unpin all the Start tiles
-# Открепить все ярлыки от начального экрана
-# PinToStart -UnpinAll
-#endregion Start menu
 
 #region Gaming
 <#

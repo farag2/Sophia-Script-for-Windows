@@ -829,7 +829,7 @@
     }
   },
   {
-    "Region": "Start menu",
+    "Region": "UI & Personalization",
     "Function": "StartLayout",
     "Arg": {
       "Zero": {
